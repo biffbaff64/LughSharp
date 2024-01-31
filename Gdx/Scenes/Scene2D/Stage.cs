@@ -1,31 +1,45 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
+
 
 using System.Reflection.Metadata;
 
-using LibGDXSharp.Graphics.G2D;
-using LibGDXSharp.Scenes.Listeners;
-using LibGDXSharp.Scenes.Scene2D.UI;
-using LibGDXSharp.Utils.Collections;
-using LibGDXSharp.Utils.Pooling;
-using LibGDXSharp.Utils.Viewport;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Graphics.G2D;
+using LibGDXSharp.Gdx.Graphics.GLUtils;
+using LibGDXSharp.Gdx.Maths;
+using LibGDXSharp.Gdx.Scenes.Scene2D.Listeners;
+using LibGDXSharp.Gdx.Scenes.Scene2D.UI;
+using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.Gdx.Utils.Collections;
+using LibGDXSharp.Gdx.Utils.Pooling;
+using LibGDXSharp.Gdx.Utils.Viewport;
 
-using Matrix4 = LibGDXSharp.Maths.Matrix4;
+using Matrix4 = LibGDXSharp.Gdx.Maths.Matrix4;
 
-namespace LibGDXSharp.Scenes.Scene2D;
+namespace LibGDXSharp.Gdx.Scenes.Scene2D;
 
 /// <summary>
 ///     A 2D scene graph containing hierarchies of actors. Stage handles the viewport and
@@ -45,26 +59,25 @@ namespace LibGDXSharp.Scenes.Scene2D;
 /// </summary>
 public class Stage : InputAdapter
 {
-    public readonly SnapshotArray< TouchFocus > touchFocuses = new( true, 4 );
+    private readonly bool                        _ownsBatch;
+    private readonly Actor?[]                    _pointerOverActors = new Actor?[ 20 ];
+    private readonly int[]                       _pointerScreenX    = new int[ 20 ];
+    private readonly int[]                       _pointerScreenY    = new int[ 20 ];
+    private readonly bool[]                      _pointerTouched    = new bool[ 20 ];
+    private readonly Group                       _root              = null!;
+    private readonly Vector2                     _tempCoords        = new();
+    public readonly  SnapshotArray< TouchFocus > touchFocuses       = new( true, 4 );
 
-    private readonly bool            _ownsBatch;
-    private readonly Actor?[]        _pointerOverActors = new Actor?[ 20 ];
-    private readonly int[]           _pointerScreenX    = new int[ 20 ];
-    private readonly int[]           _pointerScreenY    = new int[ 20 ];
-    private readonly bool[]          _pointerTouched    = new bool[ 20 ];
-    private readonly Group           _root              = null!;
-    private readonly Vector2         _tempCoords        = new();
-    private          ShapeRenderer?  _debugShapes;
-    private          Table.DebugType _debugTableUnderMouse = Table.DebugType.None;
-
-    private bool   _debugAll;
-    private bool   _debugParentUnderMouse;
-    private bool   _debugUnderMouse;
-    private Actor? _keyboardFocus;
-    private Actor? _mouseOverActor;
-    private int    _mouseScreenX;
-    private int    _mouseScreenY;
-    private Actor? _scrollFocus;
+    private bool            _debugAll;
+    private bool            _debugParentUnderMouse;
+    private ShapeRenderer?  _debugShapes;
+    private Table.DebugType _debugTableUnderMouse = Table.DebugType.None;
+    private bool            _debugUnderMouse;
+    private Actor?          _keyboardFocus;
+    private Actor?          _mouseOverActor;
+    private int             _mouseScreenX;
+    private int             _mouseScreenY;
+    private Actor?          _scrollFocus;
 
     // True if any actor has ever had debug enabled.
     public bool debug;
@@ -76,8 +89,8 @@ public class Stage : InputAdapter
     /// </summary>
     public Stage()
         : this( new ScalingViewport( Scaling.Stretch,
-                                     Gdx.Graphics.Width,
-                                     Gdx.Graphics.Height,
+                                     Core.Gdx.Graphics.Width,
+                                     Core.Gdx.Graphics.Height,
                                      new OrthographicCamera() ),
                 new SpriteBatch() ) => _ownsBatch = true;
 
@@ -105,7 +118,7 @@ public class Stage : InputAdapter
         Root = new Group();
         Root.SetStage( this );
 
-        viewport.Update( Gdx.Graphics.Width, Gdx.Graphics.Height, true );
+        viewport.Update( Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height, true );
     }
 
     /// <summary>
@@ -399,7 +412,7 @@ public class Stage : InputAdapter
     ///     Calls <see cref="Act(float)" /> with Gdx.Graphics.GetDeltaTime(),
     ///     limited to a minimum of 30fps.
     /// </summary>
-    public virtual void Act() => Act( Math.Min( Gdx.Graphics.DeltaTime, 1 / 30f ) );
+    public virtual void Act() => Act( Math.Min( Core.Gdx.Graphics.DeltaTime, 1 / 30f ) );
 
     /// <summary>
     ///     Calls the <see cref="Actor.Act(float)" /> method on each actor in the
@@ -456,7 +469,7 @@ public class Stage : InputAdapter
         }
 
         // Update over actor for the mouse on the desktop.
-        IApplication.ApplicationType type = Gdx.App.AppType;
+        IApplication.ApplicationType type = Core.Gdx.App.AppType;
 
         if ( type is IApplication.ApplicationType.Desktop
                      or IApplication.ApplicationType.WebGL )
@@ -1162,7 +1175,7 @@ public class Stage : InputAdapter
     public virtual Vector2 StageToScreenCoordinates( Vector2 stageCoords )
     {
         Viewport.Project( stageCoords );
-        stageCoords.Y = Gdx.Graphics.Height - stageCoords.Y;
+        stageCoords.Y = Core.Gdx.Graphics.Height - stageCoords.Y;
 
         return stageCoords;
     }
@@ -1247,7 +1260,7 @@ public class Stage : InputAdapter
           || _debugParentUnderMouse
           || ( _debugTableUnderMouse != Table.DebugType.None ) )
         {
-            ScreenToStageCoordinates( _tempCoords.Set( Gdx.Input.GetX(), Gdx.Input.GetY() ) );
+            ScreenToStageCoordinates( _tempCoords.Set( Core.Gdx.Input.GetX(), Core.Gdx.Input.GetY() ) );
 
             Actor? actor = Hit( _tempCoords.X, _tempCoords.Y, true );
 
@@ -1300,7 +1313,7 @@ public class Stage : InputAdapter
             }
         }
 
-        Gdx.GL.GLEnable( IGL20.GL_BLEND );
+        Core.Gdx.GL.GLEnable( IGL20.GL_BLEND );
 
         _debugShapes.ProjectionMatrix = Camera!.Combined;
         _debugShapes.Begin();
@@ -1309,7 +1322,7 @@ public class Stage : InputAdapter
 
         _debugShapes.End();
 
-        Gdx.GL.GLDisable( IGL20.GL_BLEND );
+        Core.Gdx.GL.GLDisable( IGL20.GL_BLEND );
     }
 
     /// <summary>
@@ -1360,7 +1373,7 @@ public class Stage : InputAdapter
         var y0 = Viewport.ScreenY;
         var y1 = y0 + Viewport.ScreenHeight;
 
-        screenY = Gdx.Graphics.Height - 1 - screenY;
+        screenY = Core.Gdx.Graphics.Height - 1 - screenY;
 
         return ( screenX >= x0 ) && ( screenX < x1 ) && ( screenY >= y0 ) && ( screenY < y1 );
     }

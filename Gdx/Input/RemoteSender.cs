@@ -1,20 +1,33 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Input;
+
+using LibGDXSharp.Gdx.Core;
+
+using Exception = System.Exception;
+
+namespace LibGDXSharp.Gdx.Input;
 
 /// <summary>
 ///     Sends all inputs from touch, key, accelerometer and compass to
@@ -88,7 +101,7 @@ public class RemoteSender : IInputProcessor
             _out.Write( KEY_DOWN );
             _out.Write( keycode );
         }
-        catch ( System.Exception )
+        catch ( Exception )
         {
             lock ( this )
             {
@@ -114,7 +127,7 @@ public class RemoteSender : IInputProcessor
             _out?.Write( KEY_UP );
             _out?.Write( keycode );
         }
-        catch ( System.Exception )
+        catch ( Exception )
         {
             lock ( this )
             {
@@ -140,7 +153,7 @@ public class RemoteSender : IInputProcessor
             _out?.Write( KEY_TYPED );
             _out?.Write( character );
         }
-        catch ( System.Exception )
+        catch ( Exception )
         {
             lock ( this )
             {
@@ -170,7 +183,7 @@ public class RemoteSender : IInputProcessor
             _out.Write( y );
             _out.Write( pointer );
         }
-        catch ( System.Exception )
+        catch ( Exception )
         {
             lock ( this )
             {
@@ -200,7 +213,7 @@ public class RemoteSender : IInputProcessor
             _out.Write( y );
             _out.Write( pointer );
         }
-        catch ( System.Exception )
+        catch ( Exception )
         {
             lock ( this )
             {
@@ -230,7 +243,7 @@ public class RemoteSender : IInputProcessor
             _out.Write( y );
             _out.Write( pointer );
         }
-        catch ( System.Exception )
+        catch ( Exception )
         {
             lock ( this )
             {
@@ -260,22 +273,22 @@ public class RemoteSender : IInputProcessor
         try
         {
             _out.Write( ACCEL );
-            _out.Write( Gdx.Input.GetAccelerometerX() );
-            _out.Write( Gdx.Input.GetAccelerometerY() );
-            _out.Write( Gdx.Input.GetAccelerometerZ() );
+            _out.Write( Core.Gdx.Input.GetAccelerometerX() );
+            _out.Write( Core.Gdx.Input.GetAccelerometerY() );
+            _out.Write( Core.Gdx.Input.GetAccelerometerZ() );
             _out.Write( COMPASS );
-            _out.Write( Gdx.Input.GetAzimuth() );
-            _out.Write( Gdx.Input.GetPitch() );
-            _out.Write( Gdx.Input.GetRoll() );
+            _out.Write( Core.Gdx.Input.GetAzimuth() );
+            _out.Write( Core.Gdx.Input.GetPitch() );
+            _out.Write( Core.Gdx.Input.GetRoll() );
             _out.Write( SIZE );
-            _out.Write( Gdx.Graphics.Width );
-            _out.Write( Gdx.Graphics.Height );
+            _out.Write( Core.Gdx.Graphics.Width );
+            _out.Write( Core.Gdx.Graphics.Height );
             _out.Write( GYRO );
-            _out.Write( Gdx.Input.GetGyroscopeX() );
-            _out.Write( Gdx.Input.GetGyroscopeY() );
-            _out.Write( Gdx.Input.GetGyroscopeZ() );
+            _out.Write( Core.Gdx.Input.GetGyroscopeX() );
+            _out.Write( Core.Gdx.Input.GetGyroscopeY() );
+            _out.Write( Core.Gdx.Input.GetGyroscopeZ() );
         }
-        catch ( System.Exception )
+        catch ( Exception )
         {
             _out       = null;
             _connected = false;

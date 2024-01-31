@@ -1,28 +1,40 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Graphics.G2D;
-using LibGDXSharp.Scenes.Listeners;
-using LibGDXSharp.Scenes.Scene2D.Utils;
-using LibGDXSharp.Utils.Collections;
-using LibGDXSharp.Utils.Pooling;
 
-using Color = LibGDXSharp.Graphics.Color;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Graphics.G2D;
+using LibGDXSharp.Gdx.Maths;
+using LibGDXSharp.Gdx.Scenes.Scene2D.Listeners;
+using LibGDXSharp.Gdx.Scenes.Scene2D.Utils;
+using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.Gdx.Utils.Collections.Extensions;
+using LibGDXSharp.Gdx.Utils.Pooling;
 
-namespace LibGDXSharp.Scenes.Scene2D.UI;
+using Color = LibGDXSharp.Gdx.Graphics.Color;
+
+namespace LibGDXSharp.Gdx.Scenes.Scene2D.UI;
 
 /// <summary>
 ///     A list box displays textual items and highlights the currently selected item.
@@ -83,6 +95,12 @@ public class ListBox<T> : Widget
         set => _prefHeight = value;
     }
 
+    /// <summary>
+    ///     Returns the list's style. Modifying the returned style may not have an
+    ///     effect until <see cref="SetStyle(ListStyle)" />" is called.
+    /// </summary>
+    public ListStyle? Style { get; set; }
+
     private void Create( ListStyle style )
     {
         Selection = new ArraySelection< T >( Items )
@@ -99,12 +117,6 @@ public class ListBox<T> : Widget
         AddListener( KeyListener );
         AddListener( new ListInputListener( this ) );
     }
-
-    /// <summary>
-    ///     Returns the list's style. Modifying the returned style may not have an
-    ///     effect until <see cref="SetStyle(ListStyle)" />" is called.
-    /// </summary>
-    public ListStyle? Style { get; set; }
 
     public void SetStyle( ListStyle style )
     {
@@ -312,15 +324,9 @@ public class ListBox<T> : Widget
         }
     }
 
-    public T? GetOverItem()
-    {
-        return _overIndex == -1 ? default( T? ) : Items![ _overIndex ];
-    }
+    public T? GetOverItem() => _overIndex == -1 ? default( T? ) : Items![ _overIndex ];
 
-    public T? GetPressedItem()
-    {
-        return _pressedIndex == -1 ? default( T? ) : Items![ _pressedIndex ];
-    }
+    public T? GetPressedItem() => _pressedIndex == -1 ? default( T? ) : Items![ _pressedIndex ];
 
     public T? GetItemAt( float y )
     {
@@ -427,7 +433,7 @@ public class ListBox<T> : Widget
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     public class ListKeyListener : InputListener
     {
         private readonly ListBox< T > _parent;

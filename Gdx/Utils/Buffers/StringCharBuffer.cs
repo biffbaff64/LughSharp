@@ -1,20 +1,29 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Utils.Buffers;
+
+namespace LibGDXSharp.Gdx.Utils.Buffers;
 
 [PublicAPI]
 public class StringCharBuffer : CharBuffer
@@ -35,10 +44,7 @@ public class StringCharBuffer : CharBuffer
     }
 
     private StringCharBuffer( string s, int mark, int pos, int limit, int cap, int offset )
-        : base( mark, pos, limit, cap, null, offset )
-    {
-        _string = s;
-    }
+        : base( mark, pos, limit, cap, null, offset ) => _string = s;
 
     /// <summary>
     ///     Returns <tt>true</tt> if, and only if, this buffer is read-only.
@@ -64,15 +70,12 @@ public class StringCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The new char buffer </returns>
-    public override CharBuffer Slice()
-    {
-        return new StringCharBuffer( _string,
-                                     -1,
-                                     0,
-                                     Remaining(),
-                                     Remaining(),
-                                     offset + Position );
-    }
+    public override CharBuffer Slice() => new StringCharBuffer( _string,
+                                                                -1,
+                                                                0,
+                                                                Remaining(),
+                                                                Remaining(),
+                                                                offset + Position );
 
     /// <summary>
     ///     Creates a new char buffer that shares this buffer's content.
@@ -90,10 +93,7 @@ public class StringCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The new char buffer </returns>
-    public override CharBuffer Duplicate()
-    {
-        return new StringCharBuffer( _string, MarkValue(), Position, Limit, Capacity, offset );
-    }
+    public override CharBuffer Duplicate() => new StringCharBuffer( _string, MarkValue(), Position, Limit, Capacity, offset );
 
     /// <summary>
     ///     Creates a new, read-only char buffer that shares this buffer's
@@ -211,7 +211,7 @@ public class StringCharBuffer : CharBuffer
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     /// <exception cref="GdxRuntimeException">As this buffer is read-only </exception>
     protected override CharBuffer Put( char c ) => throw new GdxRuntimeException( "Buffer is Read Only!" );
 

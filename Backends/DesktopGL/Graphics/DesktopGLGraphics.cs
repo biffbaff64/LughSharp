@@ -1,24 +1,39 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Backends.Desktop.Utils;
-using LibGDXSharp.Backends.Desktop.Window;
-using LibGDXSharp.Utils.Buffers;
 
-namespace LibGDXSharp.Backends.Desktop.Graphics;
+using LibGDXSharp.Backends.DesktopGL.Utils;
+using LibGDXSharp.Backends.DesktopGL.Window;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Graphics.GLUtils;
+using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.Gdx.Utils.Buffers;
+
+using Monitor = GLFW.Monitor;
+
+namespace LibGDXSharp.Backends.DesktopGL.Graphics;
 
 using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 
@@ -109,7 +124,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         GLWindow.MakeCurrent();
 
-        Gdx.GL20.GLViewport( 0, 0, width, height );
+        Gdx.Core.Gdx.GL20.GLViewport( 0, 0, width, height );
 
         GLWindow.Listener.Resize( Width, Height );
         GLWindow.Listener.Render();
@@ -170,8 +185,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     private void InitiateGL()
     {
-        var vendorString   = Gdx.GL20.GLGetString( IGL20.GL_VENDOR );
-        var rendererString = Gdx.GL20.GLGetString( IGL20.GL_RENDERER );
+        var vendorString   = Gdx.Core.Gdx.GL20.GLGetString( IGL20.GL_VENDOR );
+        var rendererString = Gdx.Core.Gdx.GL20.GLGetString( IGL20.GL_RENDERER );
 
         GLVersion = new GLVersion( IApplication.ApplicationType.Desktop,
                                    Glfw.VersionString,
@@ -272,7 +287,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         GLWindow.Config.WindowDecorated = !undecorated;
 
-        Glfw.SetWindowAttribute( GLWindow.GlfwWindow, GLFW.WindowAttribute.Decorated, undecorated );
+        Glfw.SetWindowAttribute( GLWindow.GlfwWindow, WindowAttribute.Decorated, undecorated );
     }
 
     public override void SetResizable( bool resizable )
@@ -281,7 +296,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         GLWindow.Config.WindowResizable = resizable;
 
-        Glfw.SetWindowAttribute( GLWindow.GlfwWindow, GLFW.WindowAttribute.Resizable, resizable );
+        Glfw.SetWindowAttribute( GLWindow.GlfwWindow, WindowAttribute.Resizable, resizable );
     }
 
     public override void SetVSync( bool vsync )
@@ -312,7 +327,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
-        return Glfw.GetWindowMonitor( GLWindow.GlfwWindow ) != GLFW.Monitor.None;
+        return Glfw.GetWindowMonitor( GLWindow.GlfwWindow ) != Monitor.None;
     }
 
     /// <summary>
@@ -321,8 +336,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <param name="xHotspot"></param>
     /// <param name="yHotspot"></param>
     /// <returns></returns>
-    public override ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot )
-        => new DesktopGLCursor( GLWindow!, pixmap, xHotspot, yHotspot );
+    public override ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot ) => new DesktopGLCursor( GLWindow!, pixmap, xHotspot, yHotspot );
 
     /// <summary>
     ///     Browsers that support cursor:url() and support the png format (the pixmap
@@ -332,7 +346,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     ///     and maximum one time per frame.
     /// </summary>
     /// <param name="cursor">
-    ///     The mouse cursor as a <see cref="T:LibGDXSharp.Graphics.ICursor" />
+    ///     The mouse cursor as a <see cref="T:LibGDXSharp.Gdx.Graphics.ICursor" />
     /// </param>
     public override void SetCursor( ICursor cursor )
     {
@@ -342,7 +356,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     /// <summary>
-    ///     Sets one of the predefined <see cref="T:LibGDXSharp.Graphics.ICursor.SystemCursor" />s.
+    ///     Sets one of the predefined <see cref="T:LibGDXSharp.Gdx.Graphics.ICursor.SystemCursor" />s.
     /// </summary>
     /// <param name="systemCursor">The system cursor to use.</param>
     public override void SetSystemCursor( ICursor.SystemCursor systemCursor )
@@ -378,8 +392,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <inheritdoc />
     public override IGraphics.MonitorDescriptor[] GetMonitors()
     {
-        GLFW.Monitor[] glfwMonitors = Glfw.Monitors;
-        var            monitors     = new IGraphics.MonitorDescriptor[ glfwMonitors.Length ];
+        Monitor[] glfwMonitors = Glfw.Monitors;
+        var       monitors     = new IGraphics.MonitorDescriptor[ glfwMonitors.Length ];
 
         for ( var i = 0; i < Glfw.Monitors.Length; i++ )
         {
@@ -392,16 +406,14 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
 
     /// <inheritdoc />
-    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes()
-        => DesktopGLApplicationConfiguration.GetDisplayModes();
+    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes() => DesktopGLApplicationConfiguration.GetDisplayModes();
 
     /// <inheritdoc />
     public override IGraphics.DisplayModeDescriptor[] GetDisplayModes( IGraphics.MonitorDescriptor monitor )
         => DesktopGLApplicationConfiguration.GetDisplayModes( monitor.MonitorHandle );
 
     /// <inheritdoc />
-    public override IGraphics.DisplayModeDescriptor GetDisplayMode()
-        => DesktopGLApplicationConfiguration.GetDisplayMode( GetMonitor().MonitorHandle );
+    public override IGraphics.DisplayModeDescriptor GetDisplayMode() => DesktopGLApplicationConfiguration.GetDisplayMode( GetMonitor().MonitorHandle );
 
     /// <inheritdoc />
     public override IGraphics.DisplayModeDescriptor GetDisplayMode( IGraphics.MonitorDescriptor monitor )
@@ -506,14 +518,14 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public class DesktopGLDisplayMode : IGraphics.DisplayModeDescriptor
     {
-        public DesktopGLDisplayMode( GLFW.Monitor monitor,
+        public DesktopGLDisplayMode( Monitor monitor,
                                      int width,
                                      int height,
                                      int refreshRate,
                                      int bitsPerPixel )
             : base( width, height, refreshRate, bitsPerPixel ) => MonitorHandle = monitor;
 
-        public GLFW.Monitor MonitorHandle { get; set; }
+        public Monitor MonitorHandle { get; set; }
     }
 
     // ------------------------------------------------------------------------
@@ -521,13 +533,13 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public class DesktopGLMonitor : IGraphics.MonitorDescriptor
     {
-        public GLFW.Monitor MonitorHandle { get; private set; }
-
-        public DesktopGLMonitor( GLFW.Monitor monitor,
+        public DesktopGLMonitor( Monitor monitor,
                                  int virtualX,
                                  int virtualY,
                                  string name )
-            : base( virtualX, virtualY, name ) => this.MonitorHandle = monitor;
+            : base( virtualX, virtualY, name ) => MonitorHandle = monitor;
+
+        public Monitor MonitorHandle { get; private set; }
     }
 
     // ------------------------------------------------------------------------

@@ -1,53 +1,64 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Graphics.G2D;
-using LibGDXSharp.Scenes.Listeners;
-using LibGDXSharp.Scenes.Scene2D.Utils;
-using LibGDXSharp.Utils.Pooling;
 
-namespace LibGDXSharp.Scenes.Scene2D.UI;
+using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Graphics.G2D;
+using LibGDXSharp.Gdx.Maths;
+using LibGDXSharp.Gdx.Scenes.Scene2D.Listeners;
+using LibGDXSharp.Gdx.Scenes.Scene2D.Utils;
+using LibGDXSharp.Gdx.Utils.Pooling;
+
+namespace LibGDXSharp.Gdx.Scenes.Scene2D.UI;
 
 /// <summary>
-/// An on-screen joystick. The movement area of the joystick is circular, centered on the
-/// touchpad, and its size determined by the smaller touchpad dimension.
-/// <para>
-/// The preferred size of the touchpad is determined by the background.
-/// </para>
-/// <para>
-/// A <see cref="ChangeListener.ChangeEvent"/> is fired when the touchpad knob is moved.
-/// Cancelling the event will move the knob to where it was previously.
-/// </para>
+///     An on-screen joystick. The movement area of the joystick is circular, centered on the
+///     touchpad, and its size determined by the smaller touchpad dimension.
+///     <para>
+///         The preferred size of the touchpad is determined by the background.
+///     </para>
+///     <para>
+///         A <see cref="ChangeListener.ChangeEvent" /> is fired when the touchpad knob is moved.
+///         Cancelling the event will move the knob to where it was previously.
+///     </para>
 /// </summary>
 public class Touchpad : Widget
 {
-    private readonly Circle  _knobBounds     = new( 0, 0, 0 );
-    private readonly Circle  _touchBounds    = new( 0, 0, 0 );
     private readonly Circle  _deadzoneBounds = new( 0, 0, 0 );
-    private readonly Vector2 _knobPosition   = new();
+    private readonly Circle  _knobBounds     = new( 0, 0, 0 );
     private readonly Vector2 _knobPercent    = new();
+    private readonly Vector2 _knobPosition   = new();
+    private readonly Circle  _touchBounds    = new( 0, 0, 0 );
+    private          float   _deadzoneRadius;
 
     private TouchpadStyle _style = null!;
-    private float         _deadzoneRadius;
 
     /// <summary>
-    /// Constructor
+    ///     Constructor
     /// </summary>
     /// <param name="deadzoneRadius">
-    /// The distance in pixels from the center of the touchpad required for the knob to be moved.
+    ///     The distance in pixels from the center of the touchpad required for the knob to be moved.
     /// </param>
     /// <param name="skin"></param>
     public Touchpad( float deadzoneRadius, Skin skin )
@@ -56,10 +67,10 @@ public class Touchpad : Widget
     }
 
     /// <summary>
-    /// Constructor
+    ///     Constructor
     /// </summary>
     /// <param name="deadzoneRadius">
-    /// The distance in pixels from the center of the touchpad required for the knob to be moved.
+    ///     The distance in pixels from the center of the touchpad required for the knob to be moved.
     /// </param>
     /// <param name="skin"></param>
     /// <param name="styleName"></param>
@@ -69,11 +80,11 @@ public class Touchpad : Widget
     }
 
     /// <summary>
-    /// Constructs a new Touchpad using the supplied <see cref="TouchpadStyle"/>
-    /// and deadzone radius.
+    ///     Constructs a new Touchpad using the supplied <see cref="TouchpadStyle" />
+    ///     and deadzone radius.
     /// </summary>
     /// <param name="deadzoneRadius">
-    /// The distance in pixels from the center of the touchpad required for the knob to be moved.
+    ///     The distance in pixels from the center of the touchpad required for the knob to be moved.
     /// </param>
     /// <param name="style"></param>
     public Touchpad( float deadzoneRadius, TouchpadStyle style )
@@ -83,7 +94,7 @@ public class Touchpad : Widget
             throw new ArgumentException( "deadzoneRadius must be > 0" );
         }
 
-        this._deadzoneRadius = deadzoneRadius;
+        _deadzoneRadius = deadzoneRadius;
 
         _knobPosition.Set( Width / 2f, Height / 2f );
 
@@ -93,6 +104,54 @@ public class Touchpad : Widget
 
         AddListener( new TouchpadInputListener( this ) );
     }
+
+    public TouchpadStyle Style
+    {
+        get => _style;
+        set
+        {
+            ArgumentNullException.ThrowIfNull( value );
+
+            _style = value;
+
+            InvalidateHierarchy();
+        }
+    }
+
+    public bool IsTouched { get; set; }
+
+    public override float PrefWidth => _style.Background?.MinWidth ?? 0;
+
+    public override float PrefHeight => _style.Background?.MinHeight ?? 0;
+
+    /// <summary>
+    ///     Whether to reset the knob to the center on touch up.
+    /// </summary>
+    public bool ResetOnTouchUp { get; set; } = true;
+
+    /// <summary>
+    ///     Returns the x-position of the knob relative to the center of the widget.
+    ///     The positive direction is right.
+    /// </summary>
+    public float KnobX => _knobPosition.X;
+
+    /// <summary>
+    ///     Returns the y-position of the knob relative to the center of the widget.
+    ///     The positive direction is up.
+    /// </summary>
+    public float KnobY => _knobPosition.Y;
+
+    /// <summary>
+    ///     Returns the x-position of the knob as a percentage from the center of the touchpad
+    ///     to the edge of the circular movement area. The positive direction is right.
+    /// </summary>
+    public float KnobPercentX => _knobPercent.X;
+
+    /// <summary>
+    ///     Returns the y-position of the knob as a percentage from the center of the touchpad
+    ///     to the edge of the circular movement area. The positive direction is up.
+    /// </summary>
+    public float KnobPercentY => _knobPercent.Y;
 
     private void CalculatePositionAndValue( float x, float y, bool isTouchUp )
     {
@@ -144,22 +203,9 @@ public class Touchpad : Widget
         }
     }
 
-    public TouchpadStyle Style
-    {
-        get => _style;
-        set
-        {
-            ArgumentNullException.ThrowIfNull( value );
-
-            this._style = value;
-
-            InvalidateHierarchy();
-        }
-    }
-
     public override Actor? Hit( float x, float y, bool touchable )
     {
-        if ( touchable && ( this.Touchable != Touchable.Enabled ) )
+        if ( touchable && ( Touchable != Touchable.Enabled ) )
         {
             return null;
         }
@@ -201,8 +247,8 @@ public class Touchpad : Widget
         Color c = Color;
         batch.SetColor( c.R, c.G, c.B, c.A * parentAlpha );
 
-        var x = this.X;
-        var y = this.Y;
+        var x = X;
+        var y = Y;
 
         IDrawable? bg = _style.Background;
 
@@ -220,7 +266,7 @@ public class Touchpad : Widget
     }
 
     /// <summary>
-    /// The distance in pixels from the center of the touchpad required for the knob to be moved.
+    ///     The distance in pixels from the center of the touchpad required for the knob to be moved.
     /// </summary>
     public void SetDeadzone( float deadzoneRadius )
     {
@@ -229,45 +275,10 @@ public class Touchpad : Widget
             throw new ArgumentException( "deadzoneRadius must be > 0" );
         }
 
-        this._deadzoneRadius = deadzoneRadius;
+        _deadzoneRadius = deadzoneRadius;
 
         Invalidate();
     }
-
-    public bool IsTouched { get; set; }
-
-    public override float PrefWidth => _style.Background?.MinWidth ?? 0;
-
-    public override float PrefHeight => _style.Background?.MinHeight ?? 0;
-
-    /// <summary>
-    /// Whether to reset the knob to the center on touch up.
-    /// </summary>
-    public bool ResetOnTouchUp { get; set; } = true;
-
-    /// <summary>
-    /// Returns the x-position of the knob relative to the center of the widget.
-    /// The positive direction is right.
-    /// </summary>
-    public float KnobX => _knobPosition.X;
-
-    /// <summary>
-    /// Returns the y-position of the knob relative to the center of the widget.
-    /// The positive direction is up.
-    /// </summary>
-    public float KnobY => _knobPosition.Y;
-
-    /// <summary>
-    /// Returns the x-position of the knob as a percentage from the center of the touchpad
-    /// to the edge of the circular movement area. The positive direction is right.
-    /// </summary>
-    public float KnobPercentX => _knobPercent.X;
-
-    /// <summary>
-    /// Returns the y-position of the knob as a percentage from the center of the touchpad
-    /// to the edge of the circular movement area. The positive direction is up.
-    /// </summary>
-    public float KnobPercentY => _knobPercent.Y;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -276,10 +287,7 @@ public class Touchpad : Widget
     {
         private readonly Touchpad _pad;
 
-        public TouchpadInputListener( Touchpad pad )
-        {
-            _pad = pad;
-        }
+        public TouchpadInputListener( Touchpad pad ) => _pad = pad;
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
@@ -294,10 +302,7 @@ public class Touchpad : Widget
             return true;
         }
 
-        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
-        {
-            _pad.CalculatePositionAndValue( x, y, false );
-        }
+        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer ) => _pad.CalculatePositionAndValue( x, y, false );
 
         public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
         {
@@ -311,19 +316,14 @@ public class Touchpad : Widget
 
     public class TouchpadStyle
     {
-        /** Stretched in both directions. */
-        public IDrawable? Background { get; set; }
-
-        public IDrawable? Knob { get; set; }
-
         public TouchpadStyle()
         {
         }
 
         public TouchpadStyle( IDrawable? background, IDrawable? knob )
         {
-            this.Background = background;
-            this.Knob       = knob;
+            Background = background;
+            Knob       = knob;
         }
 
         public TouchpadStyle( TouchpadStyle style )
@@ -331,5 +331,12 @@ public class Touchpad : Widget
             Background = style.Background;
             Knob       = style.Knob;
         }
+
+        /**
+         * Stretched in both directions.
+         */
+        public IDrawable? Background { get; set; }
+
+        public IDrawable? Knob { get; set; }
     }
 }

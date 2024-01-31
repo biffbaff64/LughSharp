@@ -1,34 +1,37 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// // Copyright [2023] [Richard Ikin]
-// //
-// // Licensed under the Apache License, Version 2.0 (the "License");
-// // you may not use this file except in compliance with the License.
-// // You may obtain a copy of the License at
-// //
-// // http: //www.apache.org/licenses/LICENSE-2.0
-// //
-// // Unless required by applicable law or agreed to in writing, software
-// // distributed under the License is distributed on an "AS IS" BASIS,
-// // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// // See the License for the specific language governing permissions and
-// // limitations under the License.
+// MIT License
+//
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Scenes.Listeners;
 
-namespace LibGDXSharp.Scenes.Scene2D.UI;
+using LibGDXSharp.Gdx.Scenes.Scene2D.Listeners;
+
+namespace LibGDXSharp.Gdx.Scenes.Scene2D.UI;
 
 /// <summary>
-/// A listener that shows a tooltip actor when the mouse is over another actor.
+///     A listener that shows a tooltip actor when the mouse is over another actor.
 /// </summary>
 public class Tooltip<T> : InputListener where T : Actor
 {
-    public Container< T >      Container   { get; set; }
-    public TooltipManager< T > Manager     { get; set; }
-    public Actor?              TargetActor { get; set; }
-    public bool                Instant     { get; set; }
-    public bool                Always      { get; set; }
-
     private readonly Vector2 _tmp = new();
 
     public Tooltip( T? contents ) : this( contents, new TooltipManager< T >() )
@@ -37,10 +40,16 @@ public class Tooltip<T> : InputListener where T : Actor
 
     public Tooltip( T? contents, TooltipManager< T > manager )
     {
-        this.Manager             = manager;
-        this.Container           = new TooltipContainer( this, contents );
-        this.Container.Touchable = Touchable.Disabled;
+        Manager             = manager;
+        Container           = new TooltipContainer( this, contents );
+        Container.Touchable = Touchable.Disabled;
     }
+
+    public Container< T >      Container   { get; set; }
+    public TooltipManager< T > Manager     { get; set; }
+    public Actor?              TargetActor { get; set; }
+    public bool                Instant     { get; set; }
+    public bool                Always      { get; set; }
 
     public Actor? Actor
     {
@@ -81,7 +90,7 @@ public class Tooltip<T> : InputListener where T : Actor
             return;
         }
 
-        this.TargetActor = actor;
+        TargetActor = actor;
 
         Container.Pack();
 
@@ -121,7 +130,7 @@ public class Tooltip<T> : InputListener where T : Actor
 
     public override void Enter( InputEvent? ev, float x, float y, int pointer, Actor? fromActor )
     {
-        if ( ( pointer != -1 ) || ( Gdx.Input.IsTouched() ) )
+        if ( ( pointer != -1 ) || Core.Gdx.Input.IsTouched() )
         {
             return;
         }
@@ -135,7 +144,7 @@ public class Tooltip<T> : InputListener where T : Actor
 
         SetContainerPosition( actor, x, y );
 
-        this.Manager.Enter( this );
+        Manager.Enter( this );
     }
 
     public override void Exit( InputEvent? ev, float x, float y, int pointer, Actor? toActor )
@@ -148,10 +157,7 @@ public class Tooltip<T> : InputListener where T : Actor
         Hide();
     }
 
-    public void Hide()
-    {
-        this.Manager.Hide( this );
-    }
+    public void Hide() => Manager.Hide( this );
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -161,10 +167,7 @@ public class Tooltip<T> : InputListener where T : Actor
         private readonly Tooltip< T > _parent;
 
         public TooltipContainer( Tooltip< T > parent, T? contents )
-            : base( contents )
-        {
-            _parent = parent;
-        }
+            : base( contents ) => _parent = parent;
 
         public override void Act( float delta )
         {

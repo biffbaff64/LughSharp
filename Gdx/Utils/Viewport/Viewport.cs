@@ -1,25 +1,38 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Maths.Collision;
-using LibGDXSharp.Scenes.Scene2D.Utils;
 
-using Matrix4 = LibGDXSharp.Maths.Matrix4;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Graphics.GLUtils;
+using LibGDXSharp.Gdx.Maths;
+using LibGDXSharp.Gdx.Maths.Collision;
+using LibGDXSharp.Gdx.Scenes.Scene2D.Utils;
 
-namespace LibGDXSharp.Utils.Viewport;
+using Matrix4 = LibGDXSharp.Gdx.Maths.Matrix4;
+
+namespace LibGDXSharp.Gdx.Utils.Viewport;
 
 /// <summary>
 ///     Manages a <see cref="Camera" /> and determines how world coordinates
@@ -30,20 +43,6 @@ namespace LibGDXSharp.Utils.Viewport;
 [PublicAPI]
 public abstract class Viewport
 {
-    // ------------------------------------------------------------------------
-
-    #region properties
-
-    public Camera? Camera       { get; set; }
-    public float   WorldWidth   { get; set; }
-    public float   WorldHeight  { get; set; }
-    public int     ScreenX      { get; set; }
-    public int     ScreenY      { get; set; }
-    public int     ScreenWidth  { get; set; }
-    public int     ScreenHeight { get; set; }
-
-    #endregion properties
-
     private Vector3 _tmp = Vector3.Zero;
 
     // ------------------------------------------------------------------------
@@ -64,7 +63,7 @@ public abstract class Viewport
     /// <summary>
     ///     Returns the right gutter (black bar) width in screen coordinates.
     /// </summary>
-    public virtual int RightGutterWidth => Gdx.Graphics.Width - ( ScreenX + ScreenWidth );
+    public virtual int RightGutterWidth => Core.Gdx.Graphics.Width - ( ScreenX + ScreenWidth );
 
     /// <summary>
     ///     Returns the bottom gutter (black bar) height in screen coordinates.
@@ -79,7 +78,7 @@ public abstract class Viewport
     /// <summary>
     ///     Returns the top gutter (black bar) height in screen coordinates.
     /// </summary>
-    public virtual int TopGutterHeight => Gdx.Graphics.Height - ( ScreenY + ScreenHeight );
+    public virtual int TopGutterHeight => Core.Gdx.Graphics.Height - ( ScreenY + ScreenHeight );
 
     /// <summary>
     ///     Applies the viewport to the camera and sets the glViewport.
@@ -110,7 +109,7 @@ public abstract class Viewport
     /// <summary>
     ///     Configures this viewport's screen bounds using the specified screen
     ///     size and calls <see cref="Apply(bool)" />. Typically called
-    ///     from <see cref="IApplicationListener.Resize(int, int)" /> or
+    ///     from <see cref="IApplicationListener.Resize" /> or
     ///     <see cref="IScreen.Resize(int, int)" />.
     /// </summary>
     /// <param name="screenWidth"></param>
@@ -225,12 +224,12 @@ public abstract class Viewport
     /// </summary>
     public virtual void CalculateScissors( Matrix4 batchTransform, RectangleShape area, RectangleShape scissor )
     {
-        if ( this.Camera == null )
+        if ( Camera == null )
         {
             return;
         }
-        
-        ScissorStack.CalculateScissors( this.Camera,
+
+        ScissorStack.CalculateScissors( Camera,
                                         ScreenX,
                                         ScreenY,
                                         ScreenWidth,
@@ -257,9 +256,9 @@ public abstract class Viewport
 
         Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
-        Debug.Assert( Gdx.Graphics != null );
+        Debug.Assert( Core.Gdx.Graphics != null );
 
-        _tmp.Y = Gdx.Graphics.Height - _tmp.Y;
+        _tmp.Y = Core.Gdx.Graphics.Height - _tmp.Y;
 
         worldCoords.X = _tmp.X;
         worldCoords.Y = _tmp.Y;
@@ -308,4 +307,18 @@ public abstract class Viewport
         ScreenWidth  = screenWidth;
         ScreenHeight = screenHeight;
     }
+
+    // ------------------------------------------------------------------------
+
+    #region properties
+
+    public Camera? Camera       { get; set; }
+    public float   WorldWidth   { get; set; }
+    public float   WorldHeight  { get; set; }
+    public int     ScreenX      { get; set; }
+    public int     ScreenY      { get; set; }
+    public int     ScreenWidth  { get; set; }
+    public int     ScreenHeight { get; set; }
+
+    #endregion properties
 }

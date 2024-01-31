@@ -1,26 +1,44 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
+
 
 using System.Text;
 
-using LibGDXSharp.Graphics.G2D;
-using LibGDXSharp.Scenes.Scene2D.UI;
-using LibGDXSharp.Utils.Collections;
+using LibGDXSharp.Gdx.Assets.Loaders;
+using LibGDXSharp.Gdx.Assets.Loaders.Resolvers;
+using LibGDXSharp.Gdx.Audio;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Graphics.G2D;
+using LibGDXSharp.Gdx.Graphics.GLUtils;
+using LibGDXSharp.Gdx.Scenes.Scene2D.UI;
+using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.Gdx.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.Assets;
+using Exception = System.Exception;
+
+namespace LibGDXSharp.Gdx.Assets;
 
 /// <summary>
 ///     Loads and stores assets like textures, bitmapfonts, tile maps, sounds, music and so on.
@@ -28,20 +46,6 @@ namespace LibGDXSharp.Assets;
 [PublicAPI]
 public class AssetManager
 {
-    public Logger Log { get; set; }
-
-    /// <summary>
-    ///     Returns the <see cref="IFileHandleResolver" /> which this
-    ///     AssetManager was loaded with.
-    /// </summary>
-    /// <returns>the file handle resolver which this AssetManager uses.</returns>
-    public IFileHandleResolver FileHandleResolver { get; set; }
-
-    /// <summary>
-    ///     Returns the number of loaded assets.
-    /// </summary>
-    public int LoadedAssetsCount => _assetTypes.Count;
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -99,6 +103,20 @@ public class AssetManager
 
         FileHandleResolver = resolver;
     }
+
+    public Logger Log { get; set; }
+
+    /// <summary>
+    ///     Returns the <see cref="IFileHandleResolver" /> which this
+    ///     AssetManager was loaded with.
+    /// </summary>
+    /// <returns>the file handle resolver which this AssetManager uses.</returns>
+    public IFileHandleResolver FileHandleResolver { get; set; }
+
+    /// <summary>
+    ///     Returns the number of loaded assets.
+    /// </summary>
+    public int LoadedAssetsCount => _assetTypes.Count;
 
     /// <summary>
     /// </summary>
@@ -437,20 +455,14 @@ public class AssetManager
     /// </summary>
     /// <param name="fileName">the file name of the asset</param>
     /// <returns>whether the asset is loaded</returns>
-    public bool IsLoaded( string? fileName )
-    {
-        return ( fileName != null ) && _assetTypes.ContainsKey( fileName );
-    }
+    public bool IsLoaded( string? fileName ) => ( fileName != null ) && _assetTypes.ContainsKey( fileName );
 
     /// <summary>
     /// </summary>
     /// <param name="fileName">the file name of the asset</param>
     /// <param name="type"></param>
     /// <returns>whether the asset is loaded</returns>
-    public bool IsLoaded( string fileName, Type type )
-    {
-        return _assets[ type ][ fileName ].Asset != null;
-    }
+    public bool IsLoaded( string fileName, Type type ) => _assets[ type ][ fileName ].Asset != null;
 
     /// <summary>
     ///     Returns the loader for the given type and the specified filename.
@@ -572,7 +584,7 @@ public class AssetManager
     /// <summary>
     ///     Adds the given asset to the loading queue of the AssetManager.
     /// </summary>
-    /// <param name="desc">the <see cref="LibGDXSharp.Assets.AssetDescriptor" /></param>
+    /// <param name="desc">the <see cref="AssetDescriptor" /></param>
     public void Load( AssetDescriptor desc )
     {
         ArgumentNullException.ThrowIfNull( desc );
@@ -607,7 +619,7 @@ public class AssetManager
 
             return UpdateTask() && ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
         }
-        catch ( System.Exception t )
+        catch ( Exception t )
         {
             HandleTaskError( t );
 
@@ -641,10 +653,7 @@ public class AssetManager
     ///     Returns true when all assets are loaded. Can be called from any thread but
     ///     note <see cref="Update()" /> or related methods must be called to process tasks.
     /// </summary>
-    public bool IsFinished()
-    {
-        return ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
-    }
+    public bool IsFinished() => ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
 
     /// <summary>
     ///     Blocks until all assets are loaded.
@@ -665,10 +674,7 @@ public class AssetManager
     ///     Blocks until the specified asset is loaded.
     /// </summary>
     /// <param name="assetDesc">the AssetDescriptor of the asset</param>
-    public T FinishLoadingAsset<T>( AssetDescriptor assetDesc )
-    {
-        return FinishLoadingAsset< T >( assetDesc.Filepath );
-    }
+    public T FinishLoadingAsset<T>( AssetDescriptor assetDesc ) => FinishLoadingAsset< T >( assetDesc.Filepath );
 
     /// <summary>
     ///     Blocks until the specified asset is loaded.
@@ -824,7 +830,7 @@ public class AssetManager
     }
 
     /// <summary>
-    ///     Adds a <see cref="LibGDXSharp.Assets.AssetLoadingTask" /> to the task stack for the given asset.
+    ///     Adds a <see cref="AssetLoadingTask" /> to the task stack for the given asset.
     /// </summary>
     public void AddTask( AssetDescriptor assetDesc )
     {
@@ -923,10 +929,7 @@ public class AssetManager
     ///     A subclass may supress the default implementation when loading assets where loading
     ///     failure is recoverable.
     /// </summary>
-    public virtual void TaskFailed( AssetDescriptor assetDesc, System.Exception ex )
-    {
-        throw ex;
-    }
+    public virtual void TaskFailed( AssetDescriptor assetDesc, Exception ex ) => throw ex;
 
     /// <summary>
     /// </summary>
@@ -959,7 +962,7 @@ public class AssetManager
     ///     invoking the <see cref="IAssetErrorListener" />.
     /// </summary>
     /// <param name="t"></param>
-    public void HandleTaskError( System.Exception t )
+    public void HandleTaskError( Exception t )
     {
         Log.Error( $"Error loading asset: {t}" );
 
@@ -1039,10 +1042,7 @@ public class AssetManager
     /// <summary>
     ///     Returns the number of currently queued assets.
     /// </summary>
-    public int GetQueuedAssets()
-    {
-        return _loadQueue.Count + _tasks.Count;
-    }
+    public int GetQueuedAssets() => _loadQueue.Count + _tasks.Count;
 
     /// <summary>
     ///     Returns the progress in percent of completion.
@@ -1067,18 +1067,12 @@ public class AssetManager
     /// <summary>
     ///     Sets an <see cref="IAssetErrorListener" /> to be invoked in case loading an asset failed.
     /// </summary>
-    public void SetErrorListener( IAssetErrorListener listener )
-    {
-        _listener = listener;
-    }
+    public void SetErrorListener( IAssetErrorListener listener ) => _listener = listener;
 
     /// <summary>
     ///     Disposes all assets in the manager and stops all asynchronous loading.
     /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
-    }
+    public void Dispose() => Dispose( true );
 
     private void Dispose( bool disposing )
     {
@@ -1276,7 +1270,7 @@ public class AssetManager
     }
 
     /// <summary>
-    /// Returns the asset type for the given asset name.
+    ///     Returns the asset type for the given asset name.
     /// </summary>
     /// <param name="name"> String holding the asset name. </param>
     /// <returns> The asset type. </returns>

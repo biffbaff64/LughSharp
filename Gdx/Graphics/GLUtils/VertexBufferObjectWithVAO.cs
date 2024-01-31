@@ -1,22 +1,31 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils.Buffers;
 
-namespace LibGDXSharp.Graphics.GLUtils;
+using LibGDXSharp.Gdx.Utils.Buffers;
+
+namespace LibGDXSharp.Gdx.Graphics.GLUtils;
 
 public class VertexBufferObjectWithVAO : IVertexData
 {
@@ -64,7 +73,7 @@ public class VertexBufferObjectWithVAO : IVertexData
         _buffer.Flip();
         _byteBuffer.Flip();
 
-        _bufferHandle = Gdx.GL20.GLGenBuffer();
+        _bufferHandle = Core.Gdx.GL20.GLGenBuffer();
         _usage        = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
 
         CreateVAO();
@@ -82,7 +91,7 @@ public class VertexBufferObjectWithVAO : IVertexData
         _buffer.Flip();
         _byteBuffer.Flip();
 
-        _bufferHandle = Gdx.GL20.GLGenBuffer();
+        _bufferHandle = Core.Gdx.GL20.GLGenBuffer();
         _usage        = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
 
         CreateVAO();
@@ -168,12 +177,12 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        Gdx.GL30?.GLBindVertexArray( _vaoHandle );
+        Core.Gdx.GL30?.GLBindVertexArray( _vaoHandle );
 
         BindAttributes( shader, locations );
 
         //if our data has changed upload it:
-        BindData( Gdx.GL30 );
+        BindData( Core.Gdx.GL30 );
 
         _isBound = true;
     }
@@ -185,7 +194,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Unbind( ShaderProgram? shader, int[]? locations = null )
     {
-        Gdx.GL30?.GLBindVertexArray( 0 );
+        Core.Gdx.GL30?.GLBindVertexArray( 0 );
         _isBound = false;
     }
 
@@ -194,7 +203,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     public void Invalidate()
     {
-        _bufferHandle = Gdx.GL30!.GLGenBuffer();
+        _bufferHandle = Core.Gdx.GL30!.GLGenBuffer();
 
         CreateVAO();
 
@@ -207,8 +216,8 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     public void Dispose()
     {
-        Gdx.GL30?.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Gdx.GL30?.GLDeleteBuffers( _bufferHandle );
+        Core.Gdx.GL30?.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        Core.Gdx.GL30?.GLDeleteBuffers( _bufferHandle );
 
         _bufferHandle = 0;
 
@@ -224,8 +233,8 @@ public class VertexBufferObjectWithVAO : IVertexData
     {
         if ( _isBound )
         {
-            Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
-            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
+            Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+            Core.Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
             _isDirty = false;
         }
     }
@@ -261,7 +270,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
         if ( !stillValid )
         {
-            Gdx.GL.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+            Core.Gdx.GL.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
 
             UnbindAttributes( shader );
 
@@ -334,7 +343,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     {
         TmpHandle.Clear();
 
-        Gdx.GL30?.GLGenVertexArrays( 1, TmpHandle );
+        Core.Gdx.GL30?.GLGenVertexArrays( 1, TmpHandle );
 
         _vaoHandle = TmpHandle.Get();
     }
@@ -348,7 +357,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
             TmpHandle.Flip();
 
-            Gdx.GL30?.GLDeleteVertexArrays( 1, TmpHandle );
+            Core.Gdx.GL30?.GLDeleteVertexArrays( 1, TmpHandle );
 
             _vaoHandle = -1;
         }

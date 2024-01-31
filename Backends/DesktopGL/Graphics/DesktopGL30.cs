@@ -1,32 +1,38 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils.Buffers;
+
+using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Utils.Buffers;
 
 using Buffer = LibGDXSharp.Files.Buffers.Buffer;
 
-namespace LibGDXSharp.Backends.Desktop.Graphics;
+namespace LibGDXSharp.Backends.DesktopGL.Graphics;
 
 public class DesktopGL30 : DesktopGL20, IGL30
 {
     public void GLReadBuffer( int mode )
-    {
-    }
-
-    public void GLDrawRangeElements( int mode, int start, int end, int count, int type, Buffer indices )
     {
     }
 
@@ -43,34 +49,7 @@ public class DesktopGL30 : DesktopGL20, IGL30
                               int border,
                               int format,
                               int type,
-                              Buffer pixels )
-    {
-    }
-
-    public void GLTexImage3D( int target,
-                              int level,
-                              int internalformat,
-                              int width,
-                              int height,
-                              int depth,
-                              int border,
-                              int format,
-                              int type,
                               int offset )
-    {
-    }
-
-    public void GLTexSubImage3D( int target,
-                                 int level,
-                                 int xoffset,
-                                 int yoffset,
-                                 int zoffset,
-                                 int width,
-                                 int height,
-                                 int depth,
-                                 int format,
-                                 int type,
-                                 Buffer pixels )
     {
     }
 
@@ -136,8 +115,6 @@ public class DesktopGL30 : DesktopGL20, IGL30
 
     public bool GLUnmapBuffer( int target ) => false;
 
-    public Buffer GLGetBufferPointerv( int target, int pname ) => null;
-
     public void GLDrawBuffers( int n, IntBuffer bufs )
     {
     }
@@ -186,8 +163,6 @@ public class DesktopGL30 : DesktopGL20, IGL30
     public void GLFramebufferTextureLayer( int target, int attachment, int texture, int level, int layer )
     {
     }
-
-    public Buffer GLMapBufferRange( int target, int offset, int length, int access ) => null;
 
     public void GLFlushMappedBufferRange( int target, int offset, int length )
     {
@@ -309,10 +284,6 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    public void GLGetActiveUniformBlockName( int program, int uniformBlockIndex, Buffer length, Buffer uniformBlockName )
-    {
-    }
-
     public string GLGetActiveUniformBlockName( int program, int uniformBlockIndex ) => null;
 
     public void GLUniformBlockBinding( int program, int uniformBlockIndex, int uniformBlockBinding )
@@ -430,6 +401,45 @@ public class DesktopGL30 : DesktopGL20, IGL30
                                             int y,
                                             int width,
                                             int height )
+    {
+    }
+
+    public void GLDrawRangeElements( int mode, int start, int end, int count, int type, Buffer indices )
+    {
+    }
+
+    public void GLTexImage3D( int target,
+                              int level,
+                              int internalformat,
+                              int width,
+                              int height,
+                              int depth,
+                              int border,
+                              int format,
+                              int type,
+                              Buffer pixels )
+    {
+    }
+
+    public void GLTexSubImage3D( int target,
+                                 int level,
+                                 int xoffset,
+                                 int yoffset,
+                                 int zoffset,
+                                 int width,
+                                 int height,
+                                 int depth,
+                                 int format,
+                                 int type,
+                                 Buffer pixels )
+    {
+    }
+
+    public Buffer GLGetBufferPointerv( int target, int pname ) => null;
+
+    public Buffer GLMapBufferRange( int target, int offset, int length, int access ) => null;
+
+    public void GLGetActiveUniformBlockName( int program, int uniformBlockIndex, Buffer length, Buffer uniformBlockName )
     {
     }
 }

@@ -1,20 +1,32 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Core;
+
+using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Utils;
+
+namespace LibGDXSharp.Gdx.Core;
 
 /// <summary>
 ///     Environment class holding references to the Application,
@@ -23,41 +35,41 @@ namespace LibGDXSharp.Core;
 [PublicAPI]
 public static class Gdx
 {
-    private static IApplication? _app       = null;
-    private static IAudio?       _audio     = null;
-    private static IInput?       _input     = null;
-    private static IFiles?       _files     = null;
-    private static IGraphics?    _graphics  = null;
-    private static INet?         _net       = null;
-    private static IGL20?        _gl        = null;
-    private static IGL20?        _gl20      = null;
-    private static IGL30?        _gl30      = null;
+    private static IApplication? _app      = null;
+    private static IAudio?       _audio    = null;
+    private static IInput?       _input    = null;
+    private static IFiles?       _files    = null;
+    private static IGraphics?    _graphics = null;
+    private static INet?         _net      = null;
+    private static IGL20?        _gl       = null;
+    private static IGL20?        _gl20     = null;
+    private static IGL30?        _gl30     = null;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// From Wiktionary...
-    /// <para>
-    /// "1. (video games) A game mode where the player character is invulnerable to damage,
-    /// typically activated by entering a cheat code."
-    /// </para>
-    /// <para>
-    /// "2. (video games) A mode of play in (mostly) roguelike games, allowing the player to
-    /// create objects on demand, to be resurrected in the case of death, etc."
-    /// </para>
-    /// <para>
-    /// Note: Only the flag is provided by this library. It is intended for use in your local
-    /// game code.
-    /// </para>
+    ///     From Wiktionary...
+    ///     <para>
+    ///         "1. (video games) A game mode where the player character is invulnerable to damage,
+    ///         typically activated by entering a cheat code."
+    ///     </para>
+    ///     <para>
+    ///         "2. (video games) A mode of play in (mostly) roguelike games, allowing the player to
+    ///         create objects on demand, to be resurrected in the case of death, etc."
+    ///     </para>
+    ///     <para>
+    ///         Note: Only the flag is provided by this library. It is intended for use in your local
+    ///         game code.
+    ///     </para>
     /// </summary>
-    /// <seealso cref="https://en.wiktionary.org/wiki/god_mode"/>
+    /// <seealso cref="https://en.wiktionary.org/wiki/god_mode" />
     [PublicAPI]
     public static bool GodMode { get; set; } = false;
 
     /// <summary>
-    /// Test mode flag which, when TRUE, means that all developer options are enabled.
-    /// This must, however, mean that software with this enabled cannot be published.
+    ///     Test mode flag which, when TRUE, means that all developer options are enabled.
+    ///     This must, however, mean that software with this enabled cannot be published.
     /// </summary>
     [PublicAPI]
     public static bool DevMode { get; set; } = false;
@@ -65,7 +77,7 @@ public static class Gdx
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    /// <inheritdoc cref="IApplication"/>
+    /// <inheritdoc cref="IApplication" />
     public static IApplication App
     {
         get
@@ -77,7 +89,7 @@ public static class Gdx
         set => _app = value;
     }
 
-    /// <inheritdoc cref="IAudio"/>
+    /// <inheritdoc cref="IAudio" />
     public static IAudio Audio
     {
         get
@@ -89,7 +101,7 @@ public static class Gdx
         set => _audio = value;
     }
 
-    /// <inheritdoc cref="IInput"/>
+    /// <inheritdoc cref="IInput" />
     public static IInput Input
     {
         get
@@ -101,7 +113,7 @@ public static class Gdx
         set => _input = value;
     }
 
-    /// <inheritdoc cref="IFiles"/>
+    /// <inheritdoc cref="IFiles" />
     public static IFiles Files
     {
         get
@@ -113,7 +125,7 @@ public static class Gdx
         set => _files = value;
     }
 
-    /// <inheritdoc cref="IGraphics"/>
+    /// <inheritdoc cref="IGraphics" />
     public static IGraphics Graphics
     {
         get
@@ -125,7 +137,7 @@ public static class Gdx
         set => _graphics = value;
     }
 
-    /// <inheritdoc cref="INet"/>
+    /// <inheritdoc cref="INet" />
     public static INet Net
     {
         get
@@ -137,7 +149,7 @@ public static class Gdx
         set => _net = value;
     }
 
-    /// <inheritdoc cref="IGL20"/>
+    /// <inheritdoc cref="IGL20" />
     public static IGL20 GL
     {
         get
@@ -149,7 +161,7 @@ public static class Gdx
         set => _gl = value;
     }
 
-    /// <inheritdoc cref="IGL20"/>
+    /// <inheritdoc cref="IGL20" />
     public static IGL20 GL20
     {
         get
@@ -161,7 +173,7 @@ public static class Gdx
         set => _gl20 = value;
     }
 
-    /// <inheritdoc cref="IGL30"/>
+    /// <inheritdoc cref="IGL30" />
     public static IGL30? GL30
     {
         get

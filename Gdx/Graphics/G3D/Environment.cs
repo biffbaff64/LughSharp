@@ -1,38 +1,48 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Graphics.G3D.Attributes;
-using LibGDXSharp.Graphics.G3D.Env;
 
-namespace LibGDXSharp.Graphics.G3D;
+using LibGDXSharp.Gdx.Graphics.G3D.Attributes;
+using LibGDXSharp.Gdx.Graphics.G3D.Env;
+using LibGDXSharp.Gdx.Utils;
+
+namespace LibGDXSharp.Gdx.Graphics.G3D;
 
 public class Environment : AttributesGroup
 {
-    /// <summary>
-    /// Shadow map used to render shadows
-    /// </summary>
-    public IShadowMap? ShadowMap { get; set; }
-
     public Environment()
     {
     }
 
     /// <summary>
-    /// Adds one or more Lights, extended from <see cref="BaseLight"/>, to the
-    /// attributes list in <see cref="AttributesGroup"/> .
+    ///     Shadow map used to render shadows
+    /// </summary>
+    public IShadowMap? ShadowMap { get; set; }
+
+    /// <summary>
+    ///     Adds one or more Lights, extended from <see cref="BaseLight" />, to the
+    ///     attributes list in <see cref="AttributesGroup" /> .
     /// </summary>
     /// <param name="lights"></param>
     /// <returns></returns>
@@ -80,7 +90,7 @@ public class Environment : AttributesGroup
 
     public Environment Add( DirectionalLight light )
     {
-        var dirLights = ( ( DirectionalLightsAttribute? )Get( DirectionalLightsAttribute.Type ) );
+        var dirLights = ( DirectionalLightsAttribute? )Get( DirectionalLightsAttribute.Type );
 
         if ( dirLights == null )
         {
@@ -94,7 +104,7 @@ public class Environment : AttributesGroup
 
     public Environment Add( PointLight light )
     {
-        var pointLights = ( ( PointLightsAttribute? )Get( PointLightsAttribute.Type ) );
+        var pointLights = ( PointLightsAttribute? )Get( PointLightsAttribute.Type );
 
         if ( pointLights == null )
         {
@@ -108,7 +118,7 @@ public class Environment : AttributesGroup
 
     public Environment Add( SpotLight light )
     {
-        var spotLights = ( ( SpotLightsAttribute? )Get( SpotLightsAttribute.Type ) );
+        var spotLights = ( SpotLightsAttribute? )Get( SpotLightsAttribute.Type );
 
         if ( spotLights == null )
         {
@@ -166,7 +176,7 @@ public class Environment : AttributesGroup
     {
         if ( Has( DirectionalLightsAttribute.Type ) )
         {
-            var dirLights = ( ( DirectionalLightsAttribute? )Get( DirectionalLightsAttribute.Type ) );
+            var dirLights = ( DirectionalLightsAttribute? )Get( DirectionalLightsAttribute.Type );
 
             dirLights?.lights.Remove( light );
 
@@ -183,7 +193,7 @@ public class Environment : AttributesGroup
     {
         if ( Has( PointLightsAttribute.Type ) )
         {
-            var pointLights = ( ( PointLightsAttribute? )Get( PointLightsAttribute.Type ) );
+            var pointLights = ( PointLightsAttribute? )Get( PointLightsAttribute.Type );
 
             pointLights?.lights.Remove( light );
 
@@ -200,7 +210,7 @@ public class Environment : AttributesGroup
     {
         if ( Has( SpotLightsAttribute.Type ) )
         {
-            var spotLights = ( ( SpotLightsAttribute? )Get( SpotLightsAttribute.Type ) );
+            var spotLights = ( SpotLightsAttribute? )Get( SpotLightsAttribute.Type );
 
             spotLights?.lights.Remove( light );
 

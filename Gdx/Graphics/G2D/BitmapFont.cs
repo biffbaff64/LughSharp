@@ -1,24 +1,37 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
+
 
 using System.Text.RegularExpressions;
 
-using LibGDXSharp.Utils.Collections;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.Gdx.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.Graphics.G2D;
+using Exception = System.Exception;
+
+namespace LibGDXSharp.Gdx.Graphics.G2D;
 
 [PublicAPI]
 public class BitmapFont
@@ -42,8 +55,8 @@ public class BitmapFont
     ///     a bitmap font yourself.
     /// </summary>
     public BitmapFont()
-        : this( Gdx.Files.Internal( FONT_NAME ),
-                Gdx.Files.Internal( FONT_NAME ),
+        : this( Core.Gdx.Files.Internal( FONT_NAME ),
+                Core.Gdx.Files.Internal( FONT_NAME ),
                 false ) => _fileType = FileType.Internal;
 
     /// <summary>
@@ -59,8 +72,8 @@ public class BitmapFont
     ///     the upper left corner.
     /// </param>
     public BitmapFont( bool flip )
-        : this( Gdx.Files.Internal( FONT_NAME ),
-                Gdx.Files.Internal( FONT_NAME ),
+        : this( Core.Gdx.Files.Internal( FONT_NAME ),
+                Core.Gdx.Files.Internal( FONT_NAME ),
                 flip ) => _fileType = FileType.Internal;
 
     /// <summary>
@@ -174,8 +187,8 @@ public class BitmapFont
             for ( var i = 0; i < n; i++ )
             {
                 FileInfo file = data.FontFile == null
-                    ? Gdx.Files.Internal( data.ImagePaths[ i ] )
-                    : Gdx.Files.GetFileHandle( data.ImagePaths[ i ], _fileType );
+                    ? Core.Gdx.Files.Internal( data.ImagePaths[ i ] )
+                    : Core.Gdx.Files.GetFileHandle( data.ImagePaths[ i ], _fileType );
 
                 _regions.Add( new TextureRegion( new Texture( file, false ) ) );
             }
@@ -193,8 +206,6 @@ public class BitmapFont
         InitialLoad( data );
     }
 
-    private void InitialLoad( BitmapFontData data ) => Load( data );
-
     public bool Flipped     { get; set; }
     public bool OwnsTexture { get; set; }
 
@@ -211,6 +222,8 @@ public class BitmapFont
             _cache.UseIntegerPositions = value;
         }
     }
+
+    private void InitialLoad( BitmapFontData data ) => Load( data );
 
     protected virtual void Load( BitmapFontData data )
     {
@@ -372,12 +385,12 @@ public class BitmapFont
     public float GetLineHeight() => _data.LineHeight;
 
     /// <summary>
-    /// Returns the x-advance of the space character.
+    ///     Returns the x-advance of the space character.
     /// </summary>
     public float GetSpaceXadvance() => _data.SpaceXadvance;
 
     /// <summary>
-    /// Returns the x-height, which is the distance from the top of most lowercase characters to the baseline.
+    ///     Returns the x-height, which is the distance from the top of most lowercase characters to the baseline.
     /// </summary>
     public float GetXHeight() => _data.XHeight;
 
@@ -545,6 +558,11 @@ public class BitmapFont
     /// </summary>
     public class BitmapFontData
     {
+        /// <summary>
+        ///     Additional characters besides whitespace where text is wrapped.
+        ///     Eg, a hypen (-).
+        /// </summary>
+        internal readonly char[]? breakChars = null;
         internal readonly char[] capChars =
         {
             'M', 'N', 'B', 'D', 'C', 'E', 'F', 'K', 'A', 'G', 'H', 'I', 'J',
@@ -555,12 +573,6 @@ public class BitmapFont
         {
             'x', 'e', 'a', 'o', 'n', 's', 'r', 'c', 'u', 'm', 'v', 'w', 'z'
         };
-
-        /// <summary>
-        ///     Additional characters besides whitespace where text is wrapped.
-        ///     Eg, a hypen (-).
-        /// </summary>
-        internal readonly char[]? breakChars = null;
 
         /// <summary>
         ///     Creates an empty BitmapFontData for configuration before calling
@@ -738,9 +750,9 @@ public class BitmapFont
                     {
                         pageCount = Math.Max( 1, int.Parse( common[ 5 ].Substring( 6 ) ) );
                     }
-                    catch ( System.Exception e )
+                    catch ( Exception e )
                     {
-                        Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + e.Message );
+                        Core.Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + e.Message );
                     }
                 }
 
@@ -775,7 +787,7 @@ public class BitmapFont
                                 throw new GdxRuntimeException( "Page IDs must be indices starting at 0: " + id );
                             }
                         }
-                        catch ( System.Exception ex )
+                        catch ( Exception ex )
                         {
                             throw new GdxRuntimeException( "Invalid page id: " + id, ex );
                         }
@@ -883,9 +895,9 @@ public class BitmapFont
                         {
                             glyph.Page = int.Parse( tokens.NextToken() );
                         }
-                        catch ( System.Exception ignored )
+                        catch ( Exception ignored )
                         {
-                            Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + ignored.Message );
+                            Core.Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + ignored.Message );
                         }
                     }
 
@@ -1078,7 +1090,7 @@ public class BitmapFont
                     XHeight       = overrideXHeight;
                 }
             }
-            catch ( System.Exception ex )
+            catch ( Exception ex )
             {
                 throw new GdxRuntimeException( "Error loading font file: " + file, ex );
             }
@@ -1285,7 +1297,7 @@ public class BitmapFont
         public void GetGlyphs( GlyphLayout.GlyphRun? run, string str, int start, int end, Glyph? lastGlyph )
         {
             ArgumentNullException.ThrowIfNull( run );
-            
+
             var max = end - start;
 
             if ( max == 0 )

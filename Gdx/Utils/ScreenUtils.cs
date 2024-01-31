@@ -1,23 +1,34 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils.Buffers;
-using LibGDXSharp.Graphics.G2D;
 
-namespace LibGDXSharp.Utils;
+using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Graphics.G2D;
+using LibGDXSharp.Gdx.Maths;
+using LibGDXSharp.Gdx.Utils.Buffers;
+
+namespace LibGDXSharp.Gdx.Utils;
 
 /// <summary>
 ///     Class with static helper methods related to currently bound OpenGL
@@ -45,13 +56,13 @@ public class ScreenUtils
     {
         get
         {
-            if ( Gdx.Graphics == null )
+            if ( Core.Gdx.Graphics == null )
             {
                 throw new NullReferenceException();
             }
 
-            var w = Gdx.Graphics.BackBufferWidth;
-            var h = Gdx.Graphics.BackBufferHeight;
+            var w = Core.Gdx.Graphics.BackBufferWidth;
+            var h = Core.Gdx.Graphics.BackBufferHeight;
 
             return GetFrameBufferTexture( 0, 0, w, h );
         }
@@ -68,10 +79,7 @@ public class ScreenUtils
     /// </summary>
     /// <param name="color">Color to clear the color buffers with.</param>
     /// <param name="clearDepth">Clears the depth buffer if true.</param>
-    public static void Clear( Color color, bool clearDepth )
-    {
-        Clear( color.R, color.G, color.B, color.A, clearDepth );
-    }
+    public static void Clear( Color color, bool clearDepth ) => Clear( color.R, color.G, color.B, color.A, clearDepth );
 
     /// <summary>
     ///     Clears the color buffers and optionally the depth buffer.
@@ -83,7 +91,7 @@ public class ScreenUtils
     /// <param name="b"></param>
     public static void Clear( float r, float g, float b, float a, bool clearDepth = false )
     {
-        Gdx.GL.GLClearColor( r, g, b, a );
+        Core.Gdx.GL.GLClearColor( r, g, b, a );
 
         var mask = IGL20.GL_COLOR_BUFFER_BIT;
 
@@ -92,7 +100,7 @@ public class ScreenUtils
             mask |= IGL20.GL_DEPTH_BUFFER_BIT;
         }
 
-        Gdx.GL.GLClear( mask );
+        Core.Gdx.GL.GLClear( mask );
     }
 
     /// <summary>
@@ -148,13 +156,13 @@ public class ScreenUtils
     /// <param name="flipY"> whether to flip pixels along Y axis</param>
     public static byte[] GetFrameBufferPixels( bool flipY )
     {
-        if ( Gdx.Graphics == null )
+        if ( Core.Gdx.Graphics == null )
         {
             throw new NullReferenceException();
         }
 
-        var w = Gdx.Graphics.BackBufferWidth;
-        var h = Gdx.Graphics.BackBufferHeight;
+        var w = Core.Gdx.Graphics.BackBufferWidth;
+        var h = Core.Gdx.Graphics.BackBufferHeight;
 
         return GetFrameBufferPixels( 0, 0, w, h, flipY );
     }
@@ -180,11 +188,11 @@ public class ScreenUtils
     {
         var numBytes = w * h * 4;
 
-        Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
+        Core.Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
 
         ByteBuffer pixels = BufferUtils.NewByteBuffer( numBytes );
 
-        Gdx.GL.GLReadPixels( x, y, w, h, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixels );
+        Core.Gdx.GL.GLReadPixels( x, y, w, h, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixels );
 
         var lines = new byte[ numBytes ];
 

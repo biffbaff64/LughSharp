@@ -1,20 +1,29 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Maths.Collision;
+
+namespace LibGDXSharp.Gdx.Maths.Collision;
 
 /// <summary>
 ///     Encapsulates a 3D sphere with a center and a radius
@@ -22,10 +31,9 @@ namespace LibGDXSharp.Maths.Collision;
 [PublicAPI, Serializable]
 public class Sphere
 {
+    private const   float   PI43 = ( MathUtils.PI * 4f ) / 3f;
     public readonly Vector3 center; // the center of the sphere
     public readonly float   radius; // the radius of the sphere
-
-    private const float PI43 = ( MathUtils.PI * 4f ) / 3f;
 
     // ------------------------------------------------------------------------
 
@@ -44,10 +52,7 @@ public class Sphere
     /// </summary>
     /// <param name="sphere"> the other sphere </param>
     /// <returns> whether this and the other sphere overlap  </returns>
-    public virtual bool Overlaps( Sphere sphere )
-    {
-        return center.Dst2( sphere.center ) < ( ( radius + sphere.radius ) * ( radius + sphere.radius ) );
-    }
+    public virtual bool Overlaps( Sphere sphere ) => center.Dst2( sphere.center ) < ( ( radius + sphere.radius ) * ( radius + sphere.radius ) );
 
     /// <summary>
     /// </summary>
@@ -84,12 +89,12 @@ public class Sphere
     }
 
     /// <summary>
-    /// Returns the volume of this sphere.
+    ///     Returns the volume of this sphere.
     /// </summary>
     public virtual float Volume() => PI43 * radius * radius * radius;
 
     /// <summary>
-    /// Returns the surface area of this sphere.
+    ///     Returns the surface area of this sphere.
     /// </summary>
     public virtual float SurfaceArea() => 4 * MathUtils.PI * radius * radius;
 }

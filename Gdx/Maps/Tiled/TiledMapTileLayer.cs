@@ -1,20 +1,29 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Maps.Tiled;
+
+namespace LibGDXSharp.Gdx.Maps.Tiled;
 
 public class TiledMapTileLayer : MapLayer
 {
@@ -44,7 +53,7 @@ public class TiledMapTileLayer : MapLayer
     /// </summary>
     /// <param name="x"> X coordinate </param>
     /// <param name="y"> Y coordinate </param>
-    /// <returns> <see cref="Cell"/> at (x, y) </returns>
+    /// <returns> <see cref="Cell" /> at (x, y) </returns>
     public Cell? GetCell( int x, int y )
     {
         if ( ( x < 0 ) || ( x >= Width ) )
@@ -61,11 +70,11 @@ public class TiledMapTileLayer : MapLayer
     }
 
     /// <summary>
-    ///     Sets the <see cref="Cell"/> at the given coordinates.
+    ///     Sets the <see cref="Cell" /> at the given coordinates.
     /// </summary>
     /// <param name="x"> X coordinate </param>
     /// <param name="y"> Y coordinate </param>
-    /// <param name="cell"> the <see cref="Cell"/> to set at the given coordinates. </param>
+    /// <param name="cell"> the <see cref="Cell" /> to set at the given coordinates. </param>
     public void SetCell( int x, int y, Cell cell )
     {
         if ( ( x < 0 ) || ( x >= Width ) )
@@ -103,7 +112,7 @@ public class TiledMapTileLayer : MapLayer
         /// <summary>
         ///     Sets the tile to be used for this cell.
         /// </summary>
-        /// <param name="tile"> the <see cref="TiledMapTile"/> to use for this cell. </param>
+        /// <param name="tile"> the <see cref="TiledMapTile" /> to use for this cell. </param>
         /// <returns> this, for method chaining </returns>
         public Cell SetTile( ITiledMapTile tile )
         {

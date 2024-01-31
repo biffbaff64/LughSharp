@@ -1,27 +1,38 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
+
 
 using System.Text;
 
-using LibGDXSharp.Utils.Buffers;
+using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.Gdx.Utils.Buffers;
 
-using Buffer = LibGDXSharp.Utils.Buffers.Buffer;
+using Buffer = LibGDXSharp.Gdx.Utils.Buffers.Buffer;
 using ErrorCode = OpenGL.ErrorCode;
 
-namespace LibGDXSharp.Backends.Desktop.Graphics;
+namespace LibGDXSharp.Backends.DesktopGL.Graphics;
 
 [PublicAPI]
 public class DesktopGL20 : IGL20
@@ -80,6 +91,121 @@ public class DesktopGL20 : IGL20
     /// <inheritdoc cref="Gl.Viewport(int,int,int,int)" />
     public void GLViewport( int x, int y, int width, int height ) => Gl.Viewport( x, y, width, height );
 
+    /// <inheritdoc cref="Gl.ActiveTexture(TextureUnit)" />
+    public void GLActiveTexture( TextureUnit texture ) => Gl.ActiveTexture( texture );
+
+    /// <inheritdoc cref="Gl.AttachShader(uint,uint)" />
+    public void GLAttachShader( uint program, uint shader ) => Gl.AttachShader( program, shader );
+
+    /// <inheritdoc cref="Gl.BindTexture(TextureTarget,uint)" />
+    public void GLBindTexture( TextureTarget target, uint texture ) => Gl.BindTexture( target, texture );
+
+    /// <inheritdoc cref="Gl.BlendFunc(BlendingFactor,BlendingFactor)" />
+    public void GLBlendFunc( BlendingFactor sfactor, BlendingFactor dfactor ) => Gl.BlendFunc( sfactor, dfactor );
+
+    /// <inheritdoc cref="Gl.CreateProgram()" />
+    public uint GLCreateProgram() => Gl.CreateProgram();
+
+    /// <inheritdoc cref="Gl.DeleteBuffers(uint[])" />
+    public void GLDeleteBuffers( params uint[] buffers ) => Gl.DeleteBuffers( buffers );
+
+    //    public void GLDeleteFramebuffers( int n, IntBuffer framebuffers )
+//    {
+//        EXTFramebufferObject.glDeleteFramebuffersEXT( framebuffers );
+//    }
+
+//    public void GLDeleteFramebuffer( int framebuffer )
+//    {
+//        EXTFramebufferObject.glDeleteFramebuffersEXT( framebuffer );
+//    }
+
+    /// <inheritdoc cref="Gl.DeleteProgram(uint)" />
+    public void GLDeleteProgram( uint program ) => Gl.DeleteProgram( program );
+
+    /// <inheritdoc cref="Gl.DeleteTextures(uint[])" />
+    public void GLDeleteTextures( params uint[] textures ) => Gl.DeleteTextures( textures );
+
+    /// <inheritdoc cref="Gl.GenBuffer()" />
+    public uint GLGenBuffer() => Gl.GenBuffer();
+
+    /// <inheritdoc cref="Gl.GenTexture()" />
+    public uint GLGenTexture() => Gl.GenTexture();
+
+    /// <inheritdoc cref="Gl.GetAttribLocation(uint,string)" />
+    public int GLGetAttribLocation( uint program, string name ) => Gl.GetAttribLocation( program, name );
+
+    //    public void GLGetBooleanv( int pname, Buffer parameters )
+//    {
+//        Gl.GetBooleanv( pname, ( ByteBuffer )parameters );
+//    }
+
+//    public void GLGetBufferParameteriv( int target, int pname, IntBuffer parameters )
+//    {
+//        Gl.GetBufferParameteriv( target, pname, parameters );
+//    }
+
+    /// <inheritdoc cref="Gl.GetError()" />
+    public ErrorCode GLGetError() => Gl.GetError();
+
+    //    public void GLGetTexParameterfv( int target, int pname, FloatBuffer parameters )
+//    {
+//        Gl.GetTexParameterfv( target, pname, parameters );
+//    }
+
+//    public void GLGetTexParameteriv( int target, int pname, IntBuffer parameters )
+//    {
+//        Gl.GetTexParameteriv( target, pname, parameters );
+//    }
+
+    /// <inheritdoc cref="Gl.GetUniformLocation(uint,string)" />
+    public int GLGetUniformLocation( uint program, string name ) => Gl.GetUniformLocation( program, name );
+
+    /// <inheritdoc cref="Gl.LinkProgram(uint)" />
+    public void GLLinkProgram( uint program ) => Gl.LinkProgram( program );
+
+    //    public void GLUniform4Iv( int location, int count, IntBuffer v )
+//    {
+//        Gl.Uniform4iv( location, v );
+//    }
+
+//    public void GLUniform4Iv( int location, int count, int[] v, int offset )
+//    {
+//        Gl.Uniform4iv( location, toIntBuffer( v, offset, count << 2 ) );
+//    }
+
+//    public void GLUniformMatrix2Fv( int location, int count, bool transpose, FloatBuffer value )
+//    {
+//        Gl.UniformMatrix2fv( location, transpose, value );
+//    }
+
+//    public void GLUniformMatrix2Fv( int location, int count, bool transpose, float[] value, int offset )
+//    {
+//        Gl.UniformMatrix2fv( location, transpose, ToFloatBuffer( value, offset, count << 2 ) );
+//    }
+
+//    public void GLUniformMatrix3Fv( int location, int count, bool transpose, FloatBuffer value )
+//    {
+//        Gl.UniformMatrix3fv( location, transpose, value );
+//    }
+
+//    public void GLUniformMatrix3Fv( int location, int count, bool transpose, float[] value, int offset )
+//    {
+//        Gl.UniformMatrix3fv( location, transpose, ToFloatBuffer( value, offset, count * 9 ) );
+//    }
+
+//    public void GLUniformMatrix4Fv( int location, int count, bool transpose, FloatBuffer value )
+//    {
+//        Gl.UniformMatrix4fv( location, transpose, value );
+//    }
+
+//    public void GLUniformMatrix4Fv( int location, int count, bool transpose, float[] value, int offset )
+//    {
+//        Gl.UniformMatrix4fv( location, transpose, ToFloatBuffer( value, offset, count << 4 ) );
+//    }
+
+    /// <inheritdoc cref="Gl.UseProgram(uint)" />
+    public void GLUseProgram( uint program ) => Gl.UseProgram( program );
+
     private void EnsureBufferCapacity( int numBytes )
     {
         if ( ( _buffer == null ) || ( _buffer.Capacity < numBytes ) )
@@ -118,15 +244,6 @@ public class DesktopGL20 : IGL20
         return _intBuffer;
     }
 
-    /// <inheritdoc cref="Gl.ActiveTexture(TextureUnit)" />
-    public void GLActiveTexture( TextureUnit texture ) => Gl.ActiveTexture( texture );
-
-    /// <inheritdoc cref="Gl.AttachShader(uint,uint)" />
-    public void GLAttachShader( uint program, uint shader ) => Gl.AttachShader( program, shader );
-
-    /// <inheritdoc cref="Gl.BindTexture(TextureTarget,uint)" />
-    public void GLBindTexture( TextureTarget target, uint texture ) => Gl.BindTexture( target, texture );
-
     /// <inheritdoc cref="Gl.BindAttribLocation(uint,uint,string)" />
     public void GLBindAttribLocation( uint program, uint index, string name ) => Gl.BindAttribLocation( program, index, name );
 
@@ -145,9 +262,6 @@ public class DesktopGL20 : IGL20
     /// <inheritdoc cref="Gl.BlendFuncSeparate(BlendingFactor,BlendingFactor,BlendingFactor,BlendingFactor)" />
     public void GLBlendEquationSeparate( BlendEquationMode modeRGB, BlendEquationMode modeAlpha ) => Gl.BlendEquationSeparate( modeRGB, modeAlpha );
 
-    /// <inheritdoc cref="Gl.BlendFunc(BlendingFactor,BlendingFactor)" />
-    public void GLBlendFunc( BlendingFactor sfactor, BlendingFactor dfactor ) => Gl.BlendFunc( sfactor, dfactor );
-
     /// <inheritdoc cref="Gl.BlendFuncSeparate(BlendingFactor,BlendingFactor,BlendingFactor,BlendingFactor)" />
     public void GLBlendFuncSeparate( BlendingFactor srcRGB,
                                      BlendingFactor dstRGB,
@@ -157,7 +271,7 @@ public class DesktopGL20 : IGL20
     public void GLBufferData( BufferTarget target,
                               uint size,
                               Buffer? data,
-                              OpenGL.BufferUsage usage )
+                              BufferUsage usage )
     {
         switch ( data )
         {
@@ -283,30 +397,11 @@ public class DesktopGL20 : IGL20
     public void GLCopyTexSubImage2D( TextureTarget target, int level, int xoffset, int yoffset, int x, int y, int width, int height )
         => Gl.CopyTexSubImage2D( target, level, xoffset, yoffset, x, y, width, height );
 
-    /// <inheritdoc cref="Gl.CreateProgram()" />
-    public uint GLCreateProgram() => Gl.CreateProgram();
-
     /// <inheritdoc cref="Gl.CreateShader(ShaderType)" />
     public uint GLCreateShader( ShaderType type ) => Gl.CreateShader( type );
 
     /// <inheritdoc cref="Gl.CullFace(CullFaceMode)" />
     public void GLCullFace( CullFaceMode mode ) => Gl.CullFace( mode );
-
-    /// <inheritdoc cref="Gl.DeleteBuffers(uint[])" />
-    public void GLDeleteBuffers( params uint[] buffers ) => Gl.DeleteBuffers( buffers );
-
-    //    public void GLDeleteFramebuffers( int n, IntBuffer framebuffers )
-//    {
-//        EXTFramebufferObject.glDeleteFramebuffersEXT( framebuffers );
-//    }
-
-//    public void GLDeleteFramebuffer( int framebuffer )
-//    {
-//        EXTFramebufferObject.glDeleteFramebuffersEXT( framebuffer );
-//    }
-
-    /// <inheritdoc cref="Gl.DeleteProgram(uint)" />
-    public void GLDeleteProgram( uint program ) => Gl.DeleteProgram( program );
 
     //    public void GLDeleteRenderbuffers( int n, IntBuffer renderbuffers )
 //    {
@@ -320,9 +415,6 @@ public class DesktopGL20 : IGL20
 
     /// <inheritdoc cref="Gl.DeleteShader(uint)" />
     public void GLDeleteShader( uint shader ) => Gl.DeleteShader( shader );
-
-    /// <inheritdoc cref="Gl.DeleteTextures(uint[])" />
-    public void GLDeleteTextures( params uint[] textures ) => Gl.DeleteTextures( textures );
 
     /// <inheritdoc cref="Gl.DepthFunc(DepthFunction)" />
     public void GLDepthFunc( DepthFunction func ) => Gl.DepthFunc( func );
@@ -378,9 +470,6 @@ public class DesktopGL20 : IGL20
     /// <inheritdoc cref="Gl.GenBuffers(uint[])" />
     public void GLGenBuffers( uint[] buffers ) => Gl.GenBuffers( buffers );
 
-    /// <inheritdoc cref="Gl.GenBuffer()" />
-    public uint GLGenBuffer() => Gl.GenBuffer();
-
     //    public void GLGenFramebuffers( int n, IntBuffer framebuffers )
 //    {
 //        EXTFramebufferObject.glGenFramebuffersEXT( framebuffers );
@@ -403,9 +492,6 @@ public class DesktopGL20 : IGL20
 
     /// <inheritdoc cref="Gl.GenTextures(uint[])" />
     public void GLGenTextures( uint[] textures ) => Gl.GenTextures( textures );
-
-    /// <inheritdoc cref="Gl.GenTexture()" />
-    public uint GLGenTexture() => Gl.GenTexture();
 
     //    public void GLGenerateMipmap( int target )
 //    {
@@ -432,22 +518,6 @@ public class DesktopGL20 : IGL20
 
     /// <inheritdoc cref="Gl.GetAttachedShaders(uint,out int,uint[])" />
     public void GLGetAttachedShaders( uint program, out int buffer, uint[] shaders ) => Gl.GetAttachedShaders( program, out buffer, shaders );
-
-    /// <inheritdoc cref="Gl.GetAttribLocation(uint,string)" />
-    public int GLGetAttribLocation( uint program, string name ) => Gl.GetAttribLocation( program, name );
-
-    //    public void GLGetBooleanv( int pname, Buffer parameters )
-//    {
-//        Gl.GetBooleanv( pname, ( ByteBuffer )parameters );
-//    }
-
-//    public void GLGetBufferParameteriv( int target, int pname, IntBuffer parameters )
-//    {
-//        Gl.GetBufferParameteriv( target, pname, parameters );
-//    }
-
-    /// <inheritdoc cref="Gl.GetError()" />
-    public ErrorCode GLGetError() => Gl.GetError();
 
     public void GLGetFloatv<T>( GetPName pname, out T parameters ) where T : struct => Gl.GetFloat( pname, out parameters );
 
@@ -521,19 +591,6 @@ public class DesktopGL20 : IGL20
     /// <inheritdoc cref="Gl.GetString(StringName)" />
     public string GLGetString( StringName name ) => Gl.GetString( name );
 
-    //    public void GLGetTexParameterfv( int target, int pname, FloatBuffer parameters )
-//    {
-//        Gl.GetTexParameterfv( target, pname, parameters );
-//    }
-
-//    public void GLGetTexParameteriv( int target, int pname, IntBuffer parameters )
-//    {
-//        Gl.GetTexParameteriv( target, pname, parameters );
-//    }
-
-    /// <inheritdoc cref="Gl.GetUniformLocation(uint,string)" />
-    public int GLGetUniformLocation( uint program, string name ) => Gl.GetUniformLocation( program, name );
-
     //    public void GLGetUniformfv( int program, int location, FloatBuffer parameters )
 //    {
 //        Gl.GetUniformfv( program, location, parameters );
@@ -586,9 +643,6 @@ public class DesktopGL20 : IGL20
 
     /// <inheritdoc cref="Gl.IsTexture(uint)" />
     public bool GLIsTexture( uint texture ) => Gl.IsTexture( texture );
-
-    /// <inheritdoc cref="Gl.LinkProgram(uint)" />
-    public void GLLinkProgram( uint program ) => Gl.LinkProgram( program );
 
     public void GLPixelStorei( PixelStoreParameter pname, int param ) => Gl.PixelStore( pname, param );
 
@@ -801,49 +855,6 @@ public class DesktopGL20 : IGL20
 
     /// <inheritdoc cref="Gl.Uniform4i{T}(int,int,T)" />
     public void GLUniform4I<T>( int location, int count, T value ) where T : struct => Gl.Uniform4i( location, count, value );
-
-    //    public void GLUniform4Iv( int location, int count, IntBuffer v )
-//    {
-//        Gl.Uniform4iv( location, v );
-//    }
-
-//    public void GLUniform4Iv( int location, int count, int[] v, int offset )
-//    {
-//        Gl.Uniform4iv( location, toIntBuffer( v, offset, count << 2 ) );
-//    }
-
-//    public void GLUniformMatrix2Fv( int location, int count, bool transpose, FloatBuffer value )
-//    {
-//        Gl.UniformMatrix2fv( location, transpose, value );
-//    }
-
-//    public void GLUniformMatrix2Fv( int location, int count, bool transpose, float[] value, int offset )
-//    {
-//        Gl.UniformMatrix2fv( location, transpose, ToFloatBuffer( value, offset, count << 2 ) );
-//    }
-
-//    public void GLUniformMatrix3Fv( int location, int count, bool transpose, FloatBuffer value )
-//    {
-//        Gl.UniformMatrix3fv( location, transpose, value );
-//    }
-
-//    public void GLUniformMatrix3Fv( int location, int count, bool transpose, float[] value, int offset )
-//    {
-//        Gl.UniformMatrix3fv( location, transpose, ToFloatBuffer( value, offset, count * 9 ) );
-//    }
-
-//    public void GLUniformMatrix4Fv( int location, int count, bool transpose, FloatBuffer value )
-//    {
-//        Gl.UniformMatrix4fv( location, transpose, value );
-//    }
-
-//    public void GLUniformMatrix4Fv( int location, int count, bool transpose, float[] value, int offset )
-//    {
-//        Gl.UniformMatrix4fv( location, transpose, ToFloatBuffer( value, offset, count << 4 ) );
-//    }
-
-    /// <inheritdoc cref="Gl.UseProgram(uint)" />
-    public void GLUseProgram( uint program ) => Gl.UseProgram( program );
 
     /// <inheritdoc cref="Gl.ValidateProgram(uint)" />
     public void GLValidateProgram( uint program ) => Gl.ValidateProgram( program );

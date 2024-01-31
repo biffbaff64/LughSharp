@@ -1,28 +1,40 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
+
 
 using System.Text;
 
-using LibGDXSharp.Utils.Buffers;
-using LibGDXSharp.Maths.Collision;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Graphics.GLUtils;
+using LibGDXSharp.Gdx.Maths.Collision;
+using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.Gdx.Utils.Buffers;
 
-using Matrix3 = LibGDXSharp.Maths.Matrix3;
-using Matrix4 = LibGDXSharp.Maths.Matrix4;
+using Matrix3 = LibGDXSharp.Gdx.Maths.Matrix3;
+using Matrix4 = LibGDXSharp.Gdx.Maths.Matrix4;
 
-namespace LibGDXSharp.Graphics;
+namespace LibGDXSharp.Gdx.Graphics;
 
 public class Mesh
 {
@@ -39,7 +51,7 @@ public class Mesh
 
     private IVertexData MakeVertexBuffer( bool isStatic, int maxVertices, VertexAttributes vertexAttributes )
     {
-        if ( Gdx.GL30 != null! )
+        if ( Core.Gdx.GL30 != null! )
         {
             return new VertexBufferObjectWithVAO( isStatic, maxVertices, vertexAttributes );
         }
@@ -555,14 +567,14 @@ public class Mesh
                 buffer.Position = offset;
                 buffer.Limit    = offset + count;
 
-                Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, buffer );
+                Core.Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, buffer );
 
                 buffer.Position = oldPosition;
                 buffer.Limit    = oldLimit;
             }
             else
             {
-                Gdx.GL20.GLDrawArrays( primitiveType, offset, count );
+                Core.Gdx.GL20.GLDrawArrays( primitiveType, offset, count );
             }
         }
         else
@@ -585,26 +597,26 @@ public class Mesh
 
                 if ( IsInstanced && ( numInstances > 0 ) )
                 {
-                    Gdx.GL30?.GLDrawElementsInstanced( primitiveType,
-                                                       count,
-                                                       IGL20.GL_UNSIGNED_SHORT,
-                                                       offset * 2,
-                                                       numInstances );
+                    Core.Gdx.GL30?.GLDrawElementsInstanced( primitiveType,
+                                                            count,
+                                                            IGL20.GL_UNSIGNED_SHORT,
+                                                            offset * 2,
+                                                            numInstances );
                 }
                 else
                 {
-                    Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, offset * 2 );
+                    Core.Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, offset * 2 );
                 }
             }
             else
             {
                 if ( IsInstanced && ( numInstances > 0 ) )
                 {
-                    Gdx.GL30?.GLDrawArraysInstanced( primitiveType, offset, count, numInstances );
+                    Core.Gdx.GL30?.GLDrawArraysInstanced( primitiveType, offset, count, numInstances );
                 }
                 else
                 {
-                    Gdx.GL20.GLDrawArrays( primitiveType, offset, count );
+                    Core.Gdx.GL20.GLDrawArrays( primitiveType, offset, count );
                 }
             }
         }
@@ -1490,9 +1502,9 @@ public class Mesh
     /// </summary>
     public void Dispose()
     {
-        if ( Meshes[ Gdx.App ] != null )
+        if ( Meshes[ Core.Gdx.App ] != null )
         {
-            Meshes[ Gdx.App ]?.Remove( this );
+            Meshes[ Core.Gdx.App ]?.Remove( this );
         }
 
         _vertices.Dispose();
@@ -1586,7 +1598,7 @@ public class Mesh
         _indices       = indices;
         _isVertexArray = isVertexArray;
 
-        AddManagedMesh( Gdx.App, this );
+        AddManagedMesh( Core.Gdx.App, this );
     }
 
     /// <summary>
@@ -1605,7 +1617,7 @@ public class Mesh
         _indices       = new IndexBufferObject( isStatic, maxIndices );
         _isVertexArray = false;
 
-        AddManagedMesh( Gdx.App, this );
+        AddManagedMesh( Core.Gdx.App, this );
     }
 
     /// <summary>
@@ -1624,7 +1636,7 @@ public class Mesh
         _indices       = new IndexBufferObject( isStatic, maxIndices );
         _isVertexArray = false;
 
-        AddManagedMesh( Gdx.App, this );
+        AddManagedMesh( Core.Gdx.App, this );
     }
 
     /// <summary>
@@ -1653,7 +1665,7 @@ public class Mesh
         _indices       = new IndexBufferObject( staticIndices, maxIndices );
         _isVertexArray = false;
 
-        AddManagedMesh( Gdx.App, this );
+        AddManagedMesh( Core.Gdx.App, this );
     }
 
     /// <summary>
@@ -1720,7 +1732,7 @@ public class Mesh
                 break;
         }
 
-        AddManagedMesh( Gdx.App, this );
+        AddManagedMesh( Core.Gdx.App, this );
     }
 
     #endregion constructors

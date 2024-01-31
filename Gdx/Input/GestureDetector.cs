@@ -1,20 +1,31 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Input;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Utils;
+
+namespace LibGDXSharp.Gdx.Input;
 
 /// <summary>
 ///     <see cref="IInputProcessor" />" implementation that detects gestures
@@ -32,28 +43,28 @@ public class GestureDetector : InputAdapter
     private readonly Vector2           _pointer2 = new();
     private readonly VelocityTracker   _tracker  = new();
 
-    private bool  _inTapRectangle;
-    private int   _lastTapButton;
-    private int   _lastTapPointer;
-    private long  _lastTapTime;
-    private float _lastTapX;
-    private float _lastTapY;
-    private long  _maxFlingDelay;
-    private bool  _panning;
-    private bool  _pinching;
-    private int   _tapCount;
-    private long  _tapCountInterval;
-    private float _tapRectangleCenterX;
-    private float _tapRectangleCenterY;
-    private float _tapRectangleHeight;
-    private float _tapRectangleWidth;
-    private long  _touchDownTime;
-    private bool  _longPressFired;
-    private float _longPressSeconds;
+    private bool              _inTapRectangle;
+    private int               _lastTapButton;
+    private int               _lastTapPointer;
+    private long              _lastTapTime;
+    private float             _lastTapX;
+    private float             _lastTapY;
+    private CancellationToken _longPressCancellationToken;
+    private bool              _longPressFired;
+    private float             _longPressSeconds;
 
     private Task?                    _longPressTask;
-    private CancellationToken        _longPressCancellationToken;
     private CancellationTokenSource? _longPressTokenSource;
+    private long                     _maxFlingDelay;
+    private bool                     _panning;
+    private bool                     _pinching;
+    private int                      _tapCount;
+    private long                     _tapCountInterval;
+    private float                    _tapRectangleCenterX;
+    private float                    _tapRectangleCenterY;
+    private float                    _tapRectangleHeight;
+    private float                    _tapRectangleWidth;
+    private long                     _touchDownTime;
 
     /// <summary>
     ///     Creates a new GestureDetector with default values: halfTapSquareSize=20,
@@ -199,10 +210,10 @@ public class GestureDetector : InputAdapter
         if ( pointer == 0 )
         {
             _pointer1.Set( x, y );
-            _touchDownTime = Gdx.Input.GetCurrentEventTime();
+            _touchDownTime = Core.Gdx.Input.GetCurrentEventTime();
             _tracker.Start( x, y, _touchDownTime );
 
-            if ( Gdx.Input.IsTouched( 1 ) )
+            if ( Core.Gdx.Input.IsTouched( 1 ) )
             {
                 // Start pinch.
                 _inTapRectangle = false;
@@ -243,10 +254,7 @@ public class GestureDetector : InputAdapter
         return ( bool )_listener?.TouchDown( x, y, pointer, button );
     }
 
-    public override bool TouchDragged( int x, int y, int pointer )
-    {
-        return TouchDragged( x, y, pointer );
-    }
+    public override bool TouchDragged( int x, int y, int pointer ) => TouchDragged( x, y, pointer );
 
     public bool TouchDragged( float x, float y, int pointer )
     {
@@ -285,7 +293,7 @@ public class GestureDetector : InputAdapter
         }
 
         // update tracker
-        _tracker.Update( x, y, Gdx.Input.GetCurrentEventTime() );
+        _tracker.Update( x, y, Core.Gdx.Input.GetCurrentEventTime() );
 
         // check if we are still tapping.
         if ( _inTapRectangle && !IsWithinTapRectangle( x, y, _tapRectangleCenterX, _tapRectangleCenterY ) )
@@ -305,10 +313,7 @@ public class GestureDetector : InputAdapter
         return false;
     }
 
-    public override bool TouchUp( int x, int y, int pointer, int button )
-    {
-        return TouchUp( x, y, pointer, button );
-    }
+    public override bool TouchUp( int x, int y, int pointer, int button ) => TouchUp( x, y, pointer, button );
 
     public bool TouchUp( float x, float y, int pointer, int button )
     {
@@ -366,12 +371,12 @@ public class GestureDetector : InputAdapter
             if ( pointer == 0 )
             {
                 // first pointer has lifted off, set up panning to use the second pointer...
-                _tracker.Start( _pointer2.X, _pointer2.Y, Gdx.Input.GetCurrentEventTime() );
+                _tracker.Start( _pointer2.X, _pointer2.Y, Core.Gdx.Input.GetCurrentEventTime() );
             }
             else
             {
                 // second pointer has lifted off, set up panning to use the first pointer...
-                _tracker.Start( _pointer1.X, _pointer1.Y, Gdx.Input.GetCurrentEventTime() );
+                _tracker.Start( _pointer1.X, _pointer1.Y, Core.Gdx.Input.GetCurrentEventTime() );
             }
 
             return false;
@@ -386,7 +391,7 @@ public class GestureDetector : InputAdapter
         }
 
         // handle fling
-        var time = Gdx.Input.GetCurrentEventTime();
+        var time = Core.Gdx.Input.GetCurrentEventTime();
 
         if ( ( time - _touchDownTime ) <= _maxFlingDelay )
         {
@@ -568,7 +573,7 @@ public class GestureDetector : InputAdapter
         {
         }
     }
-    
+
     [PublicAPI]
     public class VelocityTracker
     {

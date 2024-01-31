@@ -1,20 +1,31 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Maths;
+
+using LibGDXSharp.Gdx.Utils;
+
+namespace LibGDXSharp.Gdx.Maths;
 
 [PublicAPI]
 public class Matrix4
@@ -1991,50 +2002,49 @@ public class Matrix4
     /// </summary>
     /// <param name="values"> the matrix values. </param>
     /// <returns> the determinante.  </returns>
-    public static float Det( float[] values )
-    {
+    public static float Det( float[] values ) =>
+
         //@formatter:off
         // BE VERY CAREFUL WITH EDITING THIS!!!!
-        return ( ( ( ( ( ( ( ( ( ( (
-              // --------------------------------------------------------------  
-                ( values[ M30 ] * values[ M21 ] * values[ M12 ] * values[ M03 ] )
-              - ( values[ M20 ] * values[ M31 ] * values[ M12 ] * values[ M03 ] )
-              - ( values[ M30 ] * values[ M11 ] * values[ M22 ] * values[ M03 ] ) )
-              // --------------------------------------------------------------  
-              + ( values[ M10 ] * values[ M31 ] * values[ M22 ] * values[ M03 ] )
-              + ( values[ M20 ] * values[ M11 ] * values[ M32 ] * values[ M03 ] ) )
-              // --------------------------------------------------------------  
-              - ( values[ M10 ] * values[ M21 ] * values[ M32 ] * values[ M03 ] )
-              - ( values[ M30 ] * values[ M21 ] * values[ M02 ] * values[ M13 ] ) )
-              // --------------------------------------------------------------  
-              + ( values[ M20 ] * values[ M31 ] * values[ M02 ] * values[ M13 ] )
-              + ( values[ M30 ] * values[ M01 ] * values[ M22 ] * values[ M13 ] ) )
-              // --------------------------------------------------------------  
-              - ( values[ M00 ] * values[ M31 ] * values[ M22 ] * values[ M13 ] )
-              - ( values[ M20 ] * values[ M01 ] * values[ M32 ] * values[ M13 ] ) )
-              // --------------------------------------------------------------  
-              + ( values[ M00 ] * values[ M21 ] * values[ M32 ] * values[ M13 ] )
-              + ( values[ M30 ] * values[ M11 ] * values[ M02 ] * values[ M23 ] ) )
-              // --------------------------------------------------------------  
-              - ( values[ M10 ] * values[ M31 ] * values[ M02 ] * values[ M23 ] )
-              - ( values[ M30 ] * values[ M01 ] * values[ M12 ] * values[ M23 ] ) )
-              // --------------------------------------------------------------  
+        ( ( ( ( ( ( ( ( ( ( (
+                            // --------------------------------------------------------------  
+                            ( values[ M30 ] * values[ M21 ] * values[ M12 ] * values[ M03 ] )
+                          - ( values[ M20 ] * values[ M31 ] * values[ M12 ] * values[ M03 ] )
+                          - ( values[ M30 ] * values[ M11 ] * values[ M22 ] * values[ M03 ] ) )
+                            // --------------------------------------------------------------  
+                          + ( values[ M10 ] * values[ M31 ] * values[ M22 ] * values[ M03 ] )
+                          + ( values[ M20 ] * values[ M11 ] * values[ M32 ] * values[ M03 ] ) )
+                          // --------------------------------------------------------------  
+                        - ( values[ M10 ] * values[ M21 ] * values[ M32 ] * values[ M03 ] )
+                        - ( values[ M30 ] * values[ M21 ] * values[ M02 ] * values[ M13 ] ) )
+                        // --------------------------------------------------------------  
+                      + ( values[ M20 ] * values[ M31 ] * values[ M02 ] * values[ M13 ] )
+                      + ( values[ M30 ] * values[ M01 ] * values[ M22 ] * values[ M13 ] ) )
+                      // --------------------------------------------------------------  
+                    - ( values[ M00 ] * values[ M31 ] * values[ M22 ] * values[ M13 ] )
+                    - ( values[ M20 ] * values[ M01 ] * values[ M32 ] * values[ M13 ] ) )
+                    // --------------------------------------------------------------  
+                  + ( values[ M00 ] * values[ M21 ] * values[ M32 ] * values[ M13 ] )
+                  + ( values[ M30 ] * values[ M11 ] * values[ M02 ] * values[ M23 ] ) )
+                  // --------------------------------------------------------------  
+                - ( values[ M10 ] * values[ M31 ] * values[ M02 ] * values[ M23 ] )
+                - ( values[ M30 ] * values[ M01 ] * values[ M12 ] * values[ M23 ] ) )
+                // --------------------------------------------------------------  
               + ( values[ M00 ] * values[ M31 ] * values[ M12 ] * values[ M23 ] )
               + ( values[ M10 ] * values[ M01 ] * values[ M32 ] * values[ M23 ] ) )
               // --------------------------------------------------------------  
-              - ( values[ M00 ] * values[ M11 ] * values[ M32 ] * values[ M23 ] )
-              - ( values[ M20 ] * values[ M11 ] * values[ M02 ] * values[ M33 ] ) )
-              // --------------------------------------------------------------  
-              + ( values[ M10 ] * values[ M21 ] * values[ M02 ] * values[ M33 ] )
-              + ( values[ M20 ] * values[ M01 ] * values[ M12 ] * values[ M33 ] ) )
-              // --------------------------------------------------------------  
-              - ( values[ M00 ] * values[ M21 ] * values[ M12 ] * values[ M33 ] )
-              - ( values[ M10 ] * values[ M01 ] * values[ M22 ] * values[ M33 ] ) )
-              // --------------------------------------------------------------  
-              + ( values[ M00 ] * values[ M11 ] * values[ M22 ] * values[ M33 ] );
-        //@formatter:on
-    }
+            - ( values[ M00 ] * values[ M11 ] * values[ M32 ] * values[ M23 ] )
+            - ( values[ M20 ] * values[ M11 ] * values[ M02 ] * values[ M33 ] ) )
+            // --------------------------------------------------------------  
+          + ( values[ M10 ] * values[ M21 ] * values[ M02 ] * values[ M33 ] )
+          + ( values[ M20 ] * values[ M01 ] * values[ M12 ] * values[ M33 ] ) )
+          // --------------------------------------------------------------  
+        - ( values[ M00 ] * values[ M21 ] * values[ M12 ] * values[ M33 ] )
+        - ( values[ M10 ] * values[ M01 ] * values[ M22 ] * values[ M33 ] ) )
+                                                 // --------------------------------------------------------------  
+                                               + ( values[ M00 ] * values[ M11 ] * values[ M22 ] * values[ M33 ] );
 
+    //@formatter:on
     /// <summary>
     ///     Postmultiplies this matrix by a translation matrix.
     ///     Postmultiplication is also used by OpenGL ES' glTranslate/glRotate/glScale

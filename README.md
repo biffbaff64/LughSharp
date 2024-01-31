@@ -44,17 +44,17 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - STEP 1: Complete all conversions so that the code will build.
-  - STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
-  -         Some classes can become structs / records instead.
-  -         Some/Most Get / Set method declarations in interfaces could become Properties.
-  -         switch expressions instead of switch statements where appropriate.
-  -         switch expressions instead of if..if/else..else where appropriate.
-  -         Check methods to see if they can be virtual.
-  -         Use [PublicApi] where necessary.
-  -         Use sealed classes only where strictly necessary. Users should be able to extend library classes.
-  -         Use of virtual for base classes/methods and classes that are likely to be extended is essential.
-  - STEP 3: Resolve ALL remaining TODOs.
-  - STEP 4: Ensure code is fully documented.
+    - STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
+    -         Some classes can become structs / records instead.
+    -         Some/Most Get / Set method declarations in interfaces could become Properties.
+    -         switch expressions instead of switch statements where appropriate.
+    -         switch expressions instead of if..if/else..else where appropriate.
+    -         Check methods to see if they can be virtual.
+    -         Use [PublicApi] where necessary.
+    -         Use sealed classes only where strictly necessary. Users should be able to extend library classes.
+    -         Use of virtual for base classes/methods and classes that are likely to be extended is essential.
+    - STEP 3: Resolve ALL remaining TODOs.
+    - STEP 4: Ensure code is fully documented.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -83,9 +83,9 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - Equivalents needed for:-
-  
-  - BufferedImage
-  - 
+
+    - BufferedImage
+    -
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -634,13 +634,13 @@ SCENES/SCENE2D
     - IP   - InputListener                  
 
 TODO: Use Lambdas for these...
-i.e.    AddListener( new ClickListener()
-        {
-            // Clicked needs to be a Func<>
-            Clicked = ( ev, x, y ) =>
-            {
-            }
-        } );
+i.e. AddListener( new ClickListener()
+{
+// Clicked needs to be a Func<>
+Clicked = ( ev, x, y ) =>
+{
+}
+} );
 
     SCENES/SCENE2D/UI
     -----------------

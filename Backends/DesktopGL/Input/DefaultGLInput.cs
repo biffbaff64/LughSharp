@@ -1,22 +1,34 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Backends.Desktop.Window;
 
-namespace LibGDXSharp.Backends.Desktop.Input;
+using LibGDXSharp.Backends.DesktopGL.Window;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Graphics.GLUtils;
+using LibGDXSharp.Gdx.Utils;
+
+namespace LibGDXSharp.Backends.DesktopGL.Input;
 
 public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
 {
@@ -86,28 +98,16 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     public override int GetMaxPointers() => 1;
 
     /// <inheritdoc />
-    public override int GetX( int pointer = 0 )
-    {
-        return ( pointer == 0 ) ? _mouseX : 0;
-    }
+    public override int GetX( int pointer = 0 ) => pointer == 0 ? _mouseX : 0;
 
     /// <inheritdoc />
-    public override int GetDeltaX( int pointer = 0 )
-    {
-        return ( pointer == 0 ) ? _deltaX : 0;
-    }
+    public override int GetDeltaX( int pointer = 0 ) => pointer == 0 ? _deltaX : 0;
 
     /// <inheritdoc />
-    public override int GetY( int pointer = 0 )
-    {
-        return ( pointer == 0 ) ? _mouseY : 0;
-    }
+    public override int GetY( int pointer = 0 ) => pointer == 0 ? _mouseY : 0;
 
     /// <inheritdoc />
-    public override int GetDeltaY( int pointer = 0 )
-    {
-        return ( pointer == 0 ) ? _deltaY : 0;
-    }
+    public override int GetDeltaY( int pointer = 0 ) => pointer == 0 ? _deltaY : 0;
 
     /// <inheritdoc />
     public override bool IsTouched( int pointer = 0 )
@@ -165,12 +165,9 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         _eventQueue.CurrentEventTime;
 
     /// <inheritdoc />
-    public override void SetCursorCaught( bool caught )
-    {
-        Glfw.SetInputMode( _window!.GlfwWindow,
-                           InputMode.Cursor,
-                           ( int )( caught ? CursorMode.Disabled : CursorMode.Normal ) );
-    }
+    public override void SetCursorCaught( bool caught ) => Glfw.SetInputMode( _window!.GlfwWindow,
+                                                                              InputMode.Cursor,
+                                                                              ( int )( caught ? CursorMode.Disabled : CursorMode.Normal ) );
 
     /// <inheritdoc />
     public override bool IsCursorCaught() => Glfw.GetInputMode( _window!.GlfwWindow, InputMode.Cursor )
@@ -218,8 +215,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     public override float GetGyroscopeY()     => 0;
     public override float GetGyroscopeZ()     => 0;
 
-    public override bool IsPeripheralAvailable( IInput.Peripheral peripheral )
-        => peripheral == IInput.Peripheral.HardwareKeyboard;
+    public override bool IsPeripheralAvailable( IInput.Peripheral peripheral ) => peripheral == IInput.Peripheral.HardwareKeyboard;
 
     public override IInput.Orientation GetNativeOrientation() => IInput.Orientation.Landscape;
 
@@ -247,162 +243,6 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     {
     }
 
-    private static MouseButton TranslateToMouseButton( int button )
-    {
-        return button switch
-               {
-                   0 => MouseButton.Button1,
-                   1 => MouseButton.Button2,
-                   2 => MouseButton.Button3,
-                   3 => MouseButton.Button4,
-                   4 => MouseButton.Button5,
-                   5 => MouseButton.Button6,
-                   6 => MouseButton.Button7,
-                   7 => MouseButton.Button8,
-                   _ => throw new GdxRuntimeException( $"Unknown MouseButton: {button}" )
-               };
-    }
-
-    protected static char CharacterForKeyCode( int key )
-    {
-        return key switch
-               {
-                   IInput.Keys.BACKSPACE    => ( char )8,
-                   IInput.Keys.TAB          => '\t',
-                   IInput.Keys.FORWARD_DEL  => ( char )127,
-                   IInput.Keys.NUMPAD_ENTER => '\n',
-                   IInput.Keys.ENTER        => '\n',
-                   _                        => ( char )0
-               };
-    }
-
-    public static int GetGdxKeycode( Keys glKeycode )
-    {
-        return glKeycode switch
-               {
-                   Keys.Space          => IInput.Keys.SPACE,
-                   Keys.Apostrophe     => IInput.Keys.APOSTROPHE,
-                   Keys.Comma          => IInput.Keys.COMMA,
-                   Keys.Minus          => IInput.Keys.MINUS,
-                   Keys.Period         => IInput.Keys.PERIOD,
-                   Keys.Slash          => IInput.Keys.SLASH,
-                   Keys.Alpha0         => IInput.Keys.NUM_0,
-                   Keys.Alpha1         => IInput.Keys.NUM_1,
-                   Keys.Alpha2         => IInput.Keys.NUM_2,
-                   Keys.Alpha3         => IInput.Keys.NUM_3,
-                   Keys.Alpha4         => IInput.Keys.NUM_4,
-                   Keys.Alpha5         => IInput.Keys.NUM_5,
-                   Keys.Alpha6         => IInput.Keys.NUM_6,
-                   Keys.Alpha7         => IInput.Keys.NUM_7,
-                   Keys.Alpha8         => IInput.Keys.NUM_8,
-                   Keys.Alpha9         => IInput.Keys.NUM_9,
-                   Keys.SemiColon      => IInput.Keys.SEMICOLON,
-                   Keys.Equal          => IInput.Keys.EQUALS_SIGN,
-                   Keys.A              => IInput.Keys.A,
-                   Keys.B              => IInput.Keys.B,
-                   Keys.C              => IInput.Keys.C,
-                   Keys.D              => IInput.Keys.D,
-                   Keys.E              => IInput.Keys.E,
-                   Keys.F              => IInput.Keys.F,
-                   Keys.G              => IInput.Keys.G,
-                   Keys.H              => IInput.Keys.H,
-                   Keys.I              => IInput.Keys.I,
-                   Keys.J              => IInput.Keys.J,
-                   Keys.K              => IInput.Keys.K,
-                   Keys.L              => IInput.Keys.L,
-                   Keys.M              => IInput.Keys.M,
-                   Keys.N              => IInput.Keys.N,
-                   Keys.O              => IInput.Keys.O,
-                   Keys.P              => IInput.Keys.P,
-                   Keys.Q              => IInput.Keys.Q,
-                   Keys.R              => IInput.Keys.R,
-                   Keys.S              => IInput.Keys.S,
-                   Keys.T              => IInput.Keys.T,
-                   Keys.U              => IInput.Keys.U,
-                   Keys.V              => IInput.Keys.V,
-                   Keys.W              => IInput.Keys.W,
-                   Keys.X              => IInput.Keys.X,
-                   Keys.Y              => IInput.Keys.Y,
-                   Keys.Z              => IInput.Keys.Z,
-                   Keys.LeftBracket    => IInput.Keys.LEFT_BRACKET,
-                   Keys.Backslash      => IInput.Keys.BACKSLASH,
-                   Keys.RightBracket   => IInput.Keys.RIGHT_BRACKET,
-                   Keys.GraveAccent    => IInput.Keys.GRAVE,
-                   Keys.Unknown        => IInput.Keys.UNKNOWN,
-                   Keys.Escape         => IInput.Keys.ESCAPE,
-                   Keys.Enter          => IInput.Keys.ENTER,
-                   Keys.Tab            => IInput.Keys.TAB,
-                   Keys.Backspace      => IInput.Keys.BACKSPACE,
-                   Keys.Insert         => IInput.Keys.INSERT,
-                   Keys.Delete         => IInput.Keys.FORWARD_DEL,
-                   Keys.Right          => IInput.Keys.RIGHT,
-                   Keys.Left           => IInput.Keys.LEFT,
-                   Keys.Down           => IInput.Keys.DOWN,
-                   Keys.Up             => IInput.Keys.UP,
-                   Keys.PageUp         => IInput.Keys.PAGE_UP,
-                   Keys.PageDown       => IInput.Keys.PAGE_DOWN,
-                   Keys.Home           => IInput.Keys.HOME,
-                   Keys.End            => IInput.Keys.END,
-                   Keys.CapsLock       => IInput.Keys.CAPS_LOCK,
-                   Keys.ScrollLock     => IInput.Keys.SCROLL_LOCK,
-                   Keys.PrintScreen    => IInput.Keys.PRINT_SCREEN,
-                   Keys.Pause          => IInput.Keys.PAUSE,
-                   Keys.F1             => IInput.Keys.F1,
-                   Keys.F2             => IInput.Keys.F2,
-                   Keys.F3             => IInput.Keys.F3,
-                   Keys.F4             => IInput.Keys.F4,
-                   Keys.F5             => IInput.Keys.F5,
-                   Keys.F6             => IInput.Keys.F6,
-                   Keys.F7             => IInput.Keys.F7,
-                   Keys.F8             => IInput.Keys.F8,
-                   Keys.F9             => IInput.Keys.F9,
-                   Keys.F10            => IInput.Keys.F10,
-                   Keys.F11            => IInput.Keys.F11,
-                   Keys.F12            => IInput.Keys.F12,
-                   Keys.F13            => IInput.Keys.F13,
-                   Keys.F14            => IInput.Keys.F14,
-                   Keys.F15            => IInput.Keys.F15,
-                   Keys.F16            => IInput.Keys.F16,
-                   Keys.F17            => IInput.Keys.F17,
-                   Keys.F18            => IInput.Keys.F18,
-                   Keys.F19            => IInput.Keys.F19,
-                   Keys.F20            => IInput.Keys.F20,
-                   Keys.F21            => IInput.Keys.F21,
-                   Keys.F22            => IInput.Keys.F22,
-                   Keys.F23            => IInput.Keys.F23,
-                   Keys.F24            => IInput.Keys.F24,
-                   Keys.F25            => IInput.Keys.UNKNOWN,
-                   Keys.NumLock        => IInput.Keys.NUM_LOCK,
-                   Keys.Numpad0        => IInput.Keys.NUMPAD_0,
-                   Keys.Numpad1        => IInput.Keys.NUMPAD_1,
-                   Keys.Numpad2        => IInput.Keys.NUMPAD_2,
-                   Keys.Numpad3        => IInput.Keys.NUMPAD_3,
-                   Keys.Numpad4        => IInput.Keys.NUMPAD_4,
-                   Keys.Numpad5        => IInput.Keys.NUMPAD_5,
-                   Keys.Numpad6        => IInput.Keys.NUMPAD_6,
-                   Keys.Numpad7        => IInput.Keys.NUMPAD_7,
-                   Keys.Numpad8        => IInput.Keys.NUMPAD_8,
-                   Keys.Numpad9        => IInput.Keys.NUMPAD_9,
-                   Keys.NumpadDecimal  => IInput.Keys.NUMPAD_DOT,
-                   Keys.NumpadDivide   => IInput.Keys.NUMPAD_DIVIDE,
-                   Keys.NumpadMultiply => IInput.Keys.NUMPAD_MULTIPLY,
-                   Keys.NumpadSubtract => IInput.Keys.NUMPAD_SUBTRACT,
-                   Keys.NumpadAdd      => IInput.Keys.NUMPAD_ADD,
-                   Keys.NumpadEnter    => IInput.Keys.NUMPAD_ENTER,
-                   Keys.NumpadEqual    => IInput.Keys.NUMPAD_EQUALS,
-                   Keys.LeftShift      => IInput.Keys.SHIFT_LEFT,
-                   Keys.LeftControl    => IInput.Keys.CONTROL_LEFT,
-                   Keys.LeftAlt        => IInput.Keys.ALT_LEFT,
-                   Keys.LeftSuper      => IInput.Keys.SYM,
-                   Keys.RightShift     => IInput.Keys.SHIFT_RIGHT,
-                   Keys.RightControl   => IInput.Keys.CONTROL_RIGHT,
-                   Keys.RightAlt       => IInput.Keys.ALT_RIGHT,
-                   Keys.RightSuper     => IInput.Keys.SYM,
-                   Keys.Menu           => IInput.Keys.MENU,
-                   _                   => IInput.Keys.UNKNOWN
-               };
-    }
-
     /// <summary>
     ///     Performs application-defined tasks associated with freeing, releasing,
     ///     or resetting unmanaged resources.
@@ -412,6 +252,153 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         Dispose( true );
         GC.SuppressFinalize( this );
     }
+
+    private static MouseButton TranslateToMouseButton( int button ) => button switch
+                                                                       {
+                                                                           0 => MouseButton.Button1,
+                                                                           1 => MouseButton.Button2,
+                                                                           2 => MouseButton.Button3,
+                                                                           3 => MouseButton.Button4,
+                                                                           4 => MouseButton.Button5,
+                                                                           5 => MouseButton.Button6,
+                                                                           6 => MouseButton.Button7,
+                                                                           7 => MouseButton.Button8,
+                                                                           _ => throw new GdxRuntimeException( $"Unknown MouseButton: {button}" )
+                                                                       };
+
+    protected static char CharacterForKeyCode( int key ) => key switch
+                                                            {
+                                                                IInput.Keys.BACKSPACE    => ( char )8,
+                                                                IInput.Keys.TAB          => '\t',
+                                                                IInput.Keys.FORWARD_DEL  => ( char )127,
+                                                                IInput.Keys.NUMPAD_ENTER => '\n',
+                                                                IInput.Keys.ENTER        => '\n',
+                                                                _                        => ( char )0
+                                                            };
+
+    public static int GetGdxKeycode( Keys glKeycode ) => glKeycode switch
+                                                         {
+                                                             Keys.Space          => IInput.Keys.SPACE,
+                                                             Keys.Apostrophe     => IInput.Keys.APOSTROPHE,
+                                                             Keys.Comma          => IInput.Keys.COMMA,
+                                                             Keys.Minus          => IInput.Keys.MINUS,
+                                                             Keys.Period         => IInput.Keys.PERIOD,
+                                                             Keys.Slash          => IInput.Keys.SLASH,
+                                                             Keys.Alpha0         => IInput.Keys.NUM_0,
+                                                             Keys.Alpha1         => IInput.Keys.NUM_1,
+                                                             Keys.Alpha2         => IInput.Keys.NUM_2,
+                                                             Keys.Alpha3         => IInput.Keys.NUM_3,
+                                                             Keys.Alpha4         => IInput.Keys.NUM_4,
+                                                             Keys.Alpha5         => IInput.Keys.NUM_5,
+                                                             Keys.Alpha6         => IInput.Keys.NUM_6,
+                                                             Keys.Alpha7         => IInput.Keys.NUM_7,
+                                                             Keys.Alpha8         => IInput.Keys.NUM_8,
+                                                             Keys.Alpha9         => IInput.Keys.NUM_9,
+                                                             Keys.SemiColon      => IInput.Keys.SEMICOLON,
+                                                             Keys.Equal          => IInput.Keys.EQUALS_SIGN,
+                                                             Keys.A              => IInput.Keys.A,
+                                                             Keys.B              => IInput.Keys.B,
+                                                             Keys.C              => IInput.Keys.C,
+                                                             Keys.D              => IInput.Keys.D,
+                                                             Keys.E              => IInput.Keys.E,
+                                                             Keys.F              => IInput.Keys.F,
+                                                             Keys.G              => IInput.Keys.G,
+                                                             Keys.H              => IInput.Keys.H,
+                                                             Keys.I              => IInput.Keys.I,
+                                                             Keys.J              => IInput.Keys.J,
+                                                             Keys.K              => IInput.Keys.K,
+                                                             Keys.L              => IInput.Keys.L,
+                                                             Keys.M              => IInput.Keys.M,
+                                                             Keys.N              => IInput.Keys.N,
+                                                             Keys.O              => IInput.Keys.O,
+                                                             Keys.P              => IInput.Keys.P,
+                                                             Keys.Q              => IInput.Keys.Q,
+                                                             Keys.R              => IInput.Keys.R,
+                                                             Keys.S              => IInput.Keys.S,
+                                                             Keys.T              => IInput.Keys.T,
+                                                             Keys.U              => IInput.Keys.U,
+                                                             Keys.V              => IInput.Keys.V,
+                                                             Keys.W              => IInput.Keys.W,
+                                                             Keys.X              => IInput.Keys.X,
+                                                             Keys.Y              => IInput.Keys.Y,
+                                                             Keys.Z              => IInput.Keys.Z,
+                                                             Keys.LeftBracket    => IInput.Keys.LEFT_BRACKET,
+                                                             Keys.Backslash      => IInput.Keys.BACKSLASH,
+                                                             Keys.RightBracket   => IInput.Keys.RIGHT_BRACKET,
+                                                             Keys.GraveAccent    => IInput.Keys.GRAVE,
+                                                             Keys.Unknown        => IInput.Keys.UNKNOWN,
+                                                             Keys.Escape         => IInput.Keys.ESCAPE,
+                                                             Keys.Enter          => IInput.Keys.ENTER,
+                                                             Keys.Tab            => IInput.Keys.TAB,
+                                                             Keys.Backspace      => IInput.Keys.BACKSPACE,
+                                                             Keys.Insert         => IInput.Keys.INSERT,
+                                                             Keys.Delete         => IInput.Keys.FORWARD_DEL,
+                                                             Keys.Right          => IInput.Keys.RIGHT,
+                                                             Keys.Left           => IInput.Keys.LEFT,
+                                                             Keys.Down           => IInput.Keys.DOWN,
+                                                             Keys.Up             => IInput.Keys.UP,
+                                                             Keys.PageUp         => IInput.Keys.PAGE_UP,
+                                                             Keys.PageDown       => IInput.Keys.PAGE_DOWN,
+                                                             Keys.Home           => IInput.Keys.HOME,
+                                                             Keys.End            => IInput.Keys.END,
+                                                             Keys.CapsLock       => IInput.Keys.CAPS_LOCK,
+                                                             Keys.ScrollLock     => IInput.Keys.SCROLL_LOCK,
+                                                             Keys.PrintScreen    => IInput.Keys.PRINT_SCREEN,
+                                                             Keys.Pause          => IInput.Keys.PAUSE,
+                                                             Keys.F1             => IInput.Keys.F1,
+                                                             Keys.F2             => IInput.Keys.F2,
+                                                             Keys.F3             => IInput.Keys.F3,
+                                                             Keys.F4             => IInput.Keys.F4,
+                                                             Keys.F5             => IInput.Keys.F5,
+                                                             Keys.F6             => IInput.Keys.F6,
+                                                             Keys.F7             => IInput.Keys.F7,
+                                                             Keys.F8             => IInput.Keys.F8,
+                                                             Keys.F9             => IInput.Keys.F9,
+                                                             Keys.F10            => IInput.Keys.F10,
+                                                             Keys.F11            => IInput.Keys.F11,
+                                                             Keys.F12            => IInput.Keys.F12,
+                                                             Keys.F13            => IInput.Keys.F13,
+                                                             Keys.F14            => IInput.Keys.F14,
+                                                             Keys.F15            => IInput.Keys.F15,
+                                                             Keys.F16            => IInput.Keys.F16,
+                                                             Keys.F17            => IInput.Keys.F17,
+                                                             Keys.F18            => IInput.Keys.F18,
+                                                             Keys.F19            => IInput.Keys.F19,
+                                                             Keys.F20            => IInput.Keys.F20,
+                                                             Keys.F21            => IInput.Keys.F21,
+                                                             Keys.F22            => IInput.Keys.F22,
+                                                             Keys.F23            => IInput.Keys.F23,
+                                                             Keys.F24            => IInput.Keys.F24,
+                                                             Keys.F25            => IInput.Keys.UNKNOWN,
+                                                             Keys.NumLock        => IInput.Keys.NUM_LOCK,
+                                                             Keys.Numpad0        => IInput.Keys.NUMPAD_0,
+                                                             Keys.Numpad1        => IInput.Keys.NUMPAD_1,
+                                                             Keys.Numpad2        => IInput.Keys.NUMPAD_2,
+                                                             Keys.Numpad3        => IInput.Keys.NUMPAD_3,
+                                                             Keys.Numpad4        => IInput.Keys.NUMPAD_4,
+                                                             Keys.Numpad5        => IInput.Keys.NUMPAD_5,
+                                                             Keys.Numpad6        => IInput.Keys.NUMPAD_6,
+                                                             Keys.Numpad7        => IInput.Keys.NUMPAD_7,
+                                                             Keys.Numpad8        => IInput.Keys.NUMPAD_8,
+                                                             Keys.Numpad9        => IInput.Keys.NUMPAD_9,
+                                                             Keys.NumpadDecimal  => IInput.Keys.NUMPAD_DOT,
+                                                             Keys.NumpadDivide   => IInput.Keys.NUMPAD_DIVIDE,
+                                                             Keys.NumpadMultiply => IInput.Keys.NUMPAD_MULTIPLY,
+                                                             Keys.NumpadSubtract => IInput.Keys.NUMPAD_SUBTRACT,
+                                                             Keys.NumpadAdd      => IInput.Keys.NUMPAD_ADD,
+                                                             Keys.NumpadEnter    => IInput.Keys.NUMPAD_ENTER,
+                                                             Keys.NumpadEqual    => IInput.Keys.NUMPAD_EQUALS,
+                                                             Keys.LeftShift      => IInput.Keys.SHIFT_LEFT,
+                                                             Keys.LeftControl    => IInput.Keys.CONTROL_LEFT,
+                                                             Keys.LeftAlt        => IInput.Keys.ALT_LEFT,
+                                                             Keys.LeftSuper      => IInput.Keys.SYM,
+                                                             Keys.RightShift     => IInput.Keys.SHIFT_RIGHT,
+                                                             Keys.RightControl   => IInput.Keys.CONTROL_RIGHT,
+                                                             Keys.RightAlt       => IInput.Keys.ALT_RIGHT,
+                                                             Keys.RightSuper     => IInput.Keys.SYM,
+                                                             Keys.Menu           => IInput.Keys.MENU,
+                                                             _                   => IInput.Keys.UNKNOWN
+                                                         };
 
     /// <summary>
     ///     Performs application-defined tasks associated with freeing, releasing,

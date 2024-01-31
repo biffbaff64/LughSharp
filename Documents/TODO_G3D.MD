@@ -1,5 +1,4 @@
-﻿
-    GRAPHICS/G3D
+﻿    GRAPHICS/G3D
     ------------
 
     - DONE - Attribute

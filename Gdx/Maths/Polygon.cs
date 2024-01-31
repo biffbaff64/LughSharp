@@ -1,20 +1,29 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Maths;
+
+namespace LibGDXSharp.Gdx.Maths;
 
 /// <summary>
 ///     Encapsulates a 2D polygon defined by it's vertices relative to an origin point (default of 0, 0).
@@ -22,14 +31,6 @@ namespace LibGDXSharp.Maths;
 [PublicAPI]
 public class Polygon : IShape2D
 {
-    public float X        { get; set; }
-    public float Y        { get; set; }
-    public float OriginX  { get; set; }
-    public float OriginY  { get; set; }
-    public float Rotation { get; set; }
-    public float ScaleX   { get; set; } = 1;
-    public float ScaleY   { get; set; } = 1;
-
     private RectangleShape? _bounds;
     private bool            _dirty = true;
     private float[]?        _localVertices;
@@ -60,6 +61,14 @@ public class Polygon : IShape2D
         _localVertices = vertices;
     }
 
+    public float X        { get; set; }
+    public float Y        { get; set; }
+    public float OriginX  { get; set; }
+    public float OriginY  { get; set; }
+    public float Rotation { get; set; }
+    public float ScaleX   { get; set; } = 1;
+    public float ScaleY   { get; set; } = 1;
+
     /// <summary>
     ///     Calculates and returns the vertices of the polygon after scaling, rotation,
     ///     and positional translations have been applied, as they are position within
@@ -82,7 +91,7 @@ public class Polygon : IShape2D
                 _worldVertices = new float[ _localVertices!.Length ];
             }
 
-            var scale = ( ScaleX is not 1 || ScaleY is not 1 );
+            var scale = ScaleX is not 1 || ScaleY is not 1;
             var cos   = MathUtils.CosDeg( Rotation );
             var sin   = MathUtils.SinDeg( Rotation );
 

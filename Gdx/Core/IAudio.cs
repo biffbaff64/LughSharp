@@ -1,20 +1,32 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Core;
+
+using LibGDXSharp.Gdx.Audio;
+using LibGDXSharp.Gdx.Utils;
+
+namespace LibGDXSharp.Gdx.Core;
 
 [PublicAPI]
 public interface IAudio
@@ -43,10 +55,10 @@ public interface IAudio
     /// <summary>
     ///     Creates a new <see cref="ISound" /> which is used to play back audio effects such as
     ///     gun shots or explosions. The Sound's audio data is retrieved from the file specified
-    ///     via the <see cref="FileInfo"/>. Note that the complete audio data is loaded into
+    ///     via the <see cref="FileInfo" />. Note that the complete audio data is loaded into
     ///     RAM. You should therefore not load big audio files with this methods. The current upper
     ///     limit for decoded audio is 1 MB. Currently supported formats are WAV, MP3 and OGG.
-    ///     The Sound has to be disposed if it is no longer used via the <see cref="IDisposable.Dispose()"/> method.
+    ///     The Sound has to be disposed if it is no longer used via the <see cref="IDisposable.Dispose()" /> method.
     /// </summary>
     /// <returns>The new sound.</returns>
     /// <exception cref="GdxRuntimeException">in case the sound could not be loaded.</exception>
@@ -55,9 +67,9 @@ public interface IAudio
     /// <summary>
     ///     Creates a new <see cref="IMusic" /> instance which is used to play back a music stream
     ///     from a file. Currently supported formats are WAV, MP3 and OGG. The Music instance has
-    ///     to be disposed if it is no longer used via the <see cref="IDisposable.Dispose()"/> method.
-    ///     Music instances are automatically paused when <see cref="IApplicationListener.Pause()"/> is
-    ///     called and resumed when <see cref="IApplicationListener.Resume()"/> is called.
+    ///     to be disposed if it is no longer used via the <see cref="IDisposable.Dispose()" /> method.
+    ///     Music instances are automatically paused when <see cref="IApplicationListener.Pause()" /> is
+    ///     called and resumed when <see cref="IApplicationListener.Resume()" /> is called.
     /// </summary>
     /// <param name="file">The filehandle.</param>
     /// <return>the new Music or null if the Music could not be loaded.</return>

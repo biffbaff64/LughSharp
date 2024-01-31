@@ -1,24 +1,38 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
+
 
 using System.Text;
 
-using LibGDXSharp.Utils.Collections;
+using LibGDXSharp.Gdx.Assets;
+using LibGDXSharp.Gdx.Assets.Loaders;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Graphics.GLUtils;
+using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.Gdx.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.Graphics;
+namespace LibGDXSharp.Gdx.Graphics;
 
 /// <summary>
 ///     Wraps a standard OpenGL ES Cubemap.
@@ -27,16 +41,6 @@ namespace LibGDXSharp.Graphics;
 [PublicAPI]
 public class Cubemap : GLTexture
 {
-    public static AssetManager? AssetManager { get; set; }
-
-    public ICubemapData Data { get; set; }
-
-    public override bool IsManaged => Data.Managed;
-
-    public override int Width  => Data.Width;
-    public override int Height => Data.Height;
-    public override int Depth  => 0;
-
     private readonly static Dictionary< IApplication, List< Cubemap >? > ManagedCubemaps = new();
 
     /// <summary>
@@ -47,12 +51,12 @@ public class Cubemap : GLTexture
         ArgumentNullException.ThrowIfNull( data );
 
         Data = data;
-        
+
         Load( data );
 
         if ( data.Managed )
         {
-            AddManagedCubemap( Gdx.App, this );
+            AddManagedCubemap( Core.Gdx.App, this );
         }
     }
 
@@ -122,10 +126,20 @@ public class Cubemap : GLTexture
     {
     }
 
+    public static AssetManager? AssetManager { get; set; }
+
+    public ICubemapData Data { get; set; }
+
+    public override bool IsManaged => Data.Managed;
+
+    public override int Width  => Data.Width;
+    public override int Height => Data.Height;
+    public override int Depth  => 0;
+
     /// <summary>
     ///     return the number of managed cubemaps currently loaded
     /// </summary>
-    public static int NumManagedCubemaps => ManagedCubemaps[ Gdx.App ]?.Count ?? 0;
+    public static int NumManagedCubemaps => ManagedCubemaps[ Core.Gdx.App ]?.Count ?? 0;
 
     /// <summary>
     ///     Sets the sides of this cubemap to the specified <see cref="ICubemapData" />.
@@ -145,7 +159,7 @@ public class Cubemap : GLTexture
 
         data.ConsumeCubemapData();
 
-        Gdx.GL.GLBindTexture( GLTarget, 0 );
+        Core.Gdx.GL.GLBindTexture( GLTarget, 0 );
     }
 
     protected override void Reload()
@@ -155,7 +169,7 @@ public class Cubemap : GLTexture
             throw new GdxRuntimeException( "Tried to reload an unmanaged Cubemap" );
         }
 
-        GLTextureHandle = Gdx.GL.GLGenTexture();
+        GLTextureHandle = Core.Gdx.GL.GLGenTexture();
 
         Load( Data );
     }
@@ -186,9 +200,9 @@ public class Cubemap : GLTexture
 
             if ( Data.Managed )
             {
-                if ( ManagedCubemaps[ Gdx.App ] != null )
+                if ( ManagedCubemaps[ Core.Gdx.App ] != null )
                 {
-                    ManagedCubemaps[ Gdx.App ]?.Remove( this );
+                    ManagedCubemaps[ Core.Gdx.App ]?.Remove( this );
                 }
             }
         }
@@ -279,7 +293,7 @@ public class Cubemap : GLTexture
 
                     // unload the c, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    cubemap.GLTextureHandle = Gdx.GL.GLGenTexture();
+                    cubemap.GLTextureHandle = Core.Gdx.GL.GLGenTexture();
                     AssetManager.Load( fileName, typeof( Cubemap ), parameter );
                 }
             }

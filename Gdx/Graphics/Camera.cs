@@ -1,26 +1,37 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Graphics.G2D;
-using LibGDXSharp.Maths.Collision;
 
-using Matrix4 = LibGDXSharp.Maths.Matrix4;
-using Quaternion = LibGDXSharp.Maths.Quaternion;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Graphics.G2D;
+using LibGDXSharp.Gdx.Maths;
+using LibGDXSharp.Gdx.Maths.Collision;
 
-namespace LibGDXSharp.Graphics;
+using Matrix4 = LibGDXSharp.Gdx.Maths.Matrix4;
+using Quaternion = LibGDXSharp.Gdx.Maths.Quaternion;
+
+namespace LibGDXSharp.Gdx.Graphics;
 
 /// <summary>
 ///     Base class for <see cref="OrthographicCamera" /> and <see cref="PerspectiveCamera" />.
@@ -28,6 +39,13 @@ namespace LibGDXSharp.Graphics;
 [PublicAPI]
 public abstract class Camera
 {
+    private readonly Ray _ray = new( new Vector3(), new Vector3() );
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    private readonly Vector3 _tmpVec = new();
+
     // the position of the camera
     public Vector3 Position { get; set; } = new();
 
@@ -51,12 +69,6 @@ public abstract class Camera
     public    float    ViewportWidth  { get; set; } = 0;
     public    float    ViewportHeight { get; set; } = 0;
     protected Frustrum Frustum        { get; set; } = new();
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    private readonly Vector3 _tmpVec = new();
-    private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -239,8 +251,8 @@ public abstract class Camera
                               float viewportHeight )
     {
         var x = screenCoords.X - viewportX;
-        var y = ( Gdx.Graphics.Height - screenCoords.Y ) - viewportY;
-        
+        var y = Core.Gdx.Graphics.Height - screenCoords.Y - viewportY;
+
         screenCoords.X = ( ( 2 * x ) / viewportWidth ) - 1;
         screenCoords.Y = ( ( 2 * y ) / viewportHeight ) - 1;
         screenCoords.Z = ( 2 * screenCoords.Z ) - 1;
@@ -263,7 +275,7 @@ public abstract class Camera
     /// <returns> the mutated and unprojected screenCoords <see cref="Vector3" /></returns>
     public Vector3 Unproject( Vector3 screenCoords )
     {
-        Unproject( screenCoords, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+        Unproject( screenCoords, 0, 0, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height );
 
         return screenCoords;
     }
@@ -279,7 +291,7 @@ public abstract class Camera
     /// <returns>The mutated and projected worldCoords <see cref="Vector3" />.</returns>
     public Vector3? Project( Vector3? worldCoords )
     {
-        Project( worldCoords, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+        Project( worldCoords, 0, 0, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height );
 
         return worldCoords;
     }
@@ -374,8 +386,5 @@ public abstract class Camera
     ///     instance but an internal member only accessible via this function.
     /// </summary>
     /// <returns>The picking Ray.</returns>
-    public Ray GetPickRay( float screenX, float screenY )
-    {
-        return GetPickRay( screenX, screenY, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
-    }
+    public Ray GetPickRay( float screenX, float screenY ) => GetPickRay( screenX, screenY, 0, 0, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height );
 }

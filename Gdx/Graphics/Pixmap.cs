@@ -1,23 +1,35 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Utils.Buffers;
-using LibGDXSharp.Graphics.G2D;
 
-namespace LibGDXSharp.Graphics;
+using LibGDXSharp.Gdx.Graphics.G2D;
+using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.Gdx.Utils.Buffers;
+
+using Exception = System.Exception;
+
+namespace LibGDXSharp.Gdx.Graphics;
 
 /// <summary>
 ///     A Pixmap represents an image in memory. It has a width and height expressed
@@ -105,7 +117,7 @@ public class Pixmap : IDisposable
 
             gdx2DPixmap = new Gdx2DPixmap( bytes, 0, bytes.Length, 0 );
         }
-        catch ( System.Exception e )
+        catch ( Exception e )
         {
             throw new GdxRuntimeException( $"Couldn't load file:  {file.Name}", e );
         }
@@ -192,10 +204,7 @@ public class Pixmap : IDisposable
     /// </summary>
     /// <param name="url">http url to download the image from.</param>
     /// <param name="responseListener">the listener to call once the image is available as a Pixmap</param>
-    public static void DownloadFromUrl( string url, IDownloadPixmapResponseListener responseListener )
-    {
-        throw new NotImplementedException();
-    }
+    public static void DownloadFromUrl( string url, IDownloadPixmapResponseListener responseListener ) => throw new NotImplementedException();
 
     /// <summary>
     ///     Sets the color for drawing operations.
@@ -288,18 +297,15 @@ public class Pixmap : IDisposable
                             int dstx,
                             int dsty,
                             int dstWidth,
-                            int dstHeight )
-    {
-        gdx2DPixmap.DrawPixmap( pixmap.gdx2DPixmap,
-                                srcx,
-                                srcy,
-                                srcWidth,
-                                srcHeight,
-                                dstx,
-                                dsty,
-                                dstWidth,
-                                dstHeight );
-    }
+                            int dstHeight ) => gdx2DPixmap.DrawPixmap( pixmap.gdx2DPixmap,
+                                                                       srcx,
+                                                                       srcy,
+                                                                       srcWidth,
+                                                                       srcHeight,
+                                                                       dstx,
+                                                                       dsty,
+                                                                       dstWidth,
+                                                                       dstHeight );
 
     /// <summary>
     ///     Fills a rectangle starting at x, y extending by width to the right and by
@@ -378,11 +384,11 @@ public class Pixmap : IDisposable
     /// <returns>The new Pixmap.</returns>
     public static Pixmap CreateFromFrameBuffer( int x, int y, int width, int height )
     {
-        Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
+        Core.Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
 
         Pixmap pixmap = new( width, height, Format.RGBA8888 );
 
-        Gdx.GL.GLReadPixels( x, y, width, height, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixmap.Pixels );
+        Core.Gdx.GL.GLReadPixels( x, y, width, height, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixmap.Pixels );
 
         return pixmap;
     }
@@ -487,19 +493,16 @@ public static class PixmapFormatExtensions
 
     public static int ToGLFormat( this Pixmap.Format format ) => Gdx2DPixmap.ToGLFormat( ToGdx2DPixmapFormat( format ) );
 
-    public static int ToGdx2DPixmapFormat( this Pixmap.Format format )
-    {
-        return format switch
-               {
-                   Pixmap.Format.Alpha          => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
-                   Pixmap.Format.Intensity      => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
-                   Pixmap.Format.LuminanceAlpha => Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA,
-                   Pixmap.Format.RGB565         => Gdx2DPixmap.GDX_2D_FORMAT_RGB565,
-                   Pixmap.Format.RGBA4444       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444,
-                   Pixmap.Format.RGB888         => Gdx2DPixmap.GDX_2D_FORMAT_RGB888,
-                   Pixmap.Format.RGBA8888       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888,
+    public static int ToGdx2DPixmapFormat( this Pixmap.Format format ) => format switch
+                                                                          {
+                                                                              Pixmap.Format.Alpha          => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
+                                                                              Pixmap.Format.Intensity      => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
+                                                                              Pixmap.Format.LuminanceAlpha => Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA,
+                                                                              Pixmap.Format.RGB565         => Gdx2DPixmap.GDX_2D_FORMAT_RGB565,
+                                                                              Pixmap.Format.RGBA4444       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444,
+                                                                              Pixmap.Format.RGB888         => Gdx2DPixmap.GDX_2D_FORMAT_RGB888,
+                                                                              Pixmap.Format.RGBA8888       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888,
 
-                   _ => throw new GdxRuntimeException( $"Unknown format: {format}" )
-               };
-    }
+                                                                              _ => throw new GdxRuntimeException( $"Unknown format: {format}" )
+                                                                          };
 }

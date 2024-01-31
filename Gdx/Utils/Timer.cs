@@ -1,22 +1,34 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+
+using LibGDXSharp.Gdx.Core;
+
+using Exception = System.Exception;
 using Monitor = System.Threading.Monitor;
 
-namespace LibGDXSharp.Utils;
+namespace LibGDXSharp.Gdx.Utils;
 
 /// <summary>
 ///     Executes tasks in the future on the main loop thread.
@@ -60,7 +72,7 @@ public class Timer
     {
         lock ( ThreadLock )
         {
-            if ( ( _thread != null ) && ( _thread.files == Gdx.Files ) )
+            if ( ( _thread != null ) && ( _thread.files == Core.Gdx.Files ) )
             {
                 return _thread;
             }
@@ -308,12 +320,12 @@ public class Timer
 
         protected Task()
         {
-            if ( Gdx.App == null )
+            if ( Core.Gdx.App == null )
             {
                 throw new GdxRuntimeException( "Gdx.App not available!" );
             }
 
-            app = Gdx.App;
+            app = Core.Gdx.App;
         }
 
         /// <summary>
@@ -388,9 +400,9 @@ public class Timer
 
         public TimerThread()
         {
-            files = Gdx.Files;
+            files = Core.Gdx.Files;
 
-            Gdx.App.AddLifecycleListener( this );
+            Core.Gdx.App.AddLifecycleListener( this );
 
             Resume();
 
@@ -429,11 +441,17 @@ public class Timer
             }
         }
 
+        public void Dispose()
+        {
+            Dispose( true );
+            GC.SuppressFinalize( this );
+        }
+
         public void Run()
         {
             lock ( ThreadLock )
             {
-                if ( ( _thread != this ) || ( files != Gdx.Files ) )
+                if ( ( _thread != this ) || ( files != Core.Gdx.Files ) )
                 {
                     goto exitlabel;
                 }
@@ -450,14 +468,14 @@ public class Timer
                         {
                             waitMillis = instances[ i ].Update( timeMillis, waitMillis );
                         }
-                        catch ( System.Exception ex )
+                        catch ( Exception ex )
                         {
                             throw new GdxRuntimeException( "Task failed: " + instances[ i ].GetType().Name, ex );
                         }
                     }
                 }
 
-                if ( ( _thread != this ) || ( files != Gdx.Files ) )
+                if ( ( _thread != this ) || ( files != Core.Gdx.Files ) )
                 {
                     goto exitlabel;
                 }
@@ -480,12 +498,6 @@ public class Timer
             Dispose();
         }
 
-        public void Dispose()
-        {
-            Dispose( true );
-            GC.SuppressFinalize( this );
-        }
-
         private void Dispose( bool disposing )
         {
             if ( disposing )
@@ -502,7 +514,7 @@ public class Timer
                     Monitor.PulseAll( ThreadLock );
                 }
 
-                Gdx.App.RemoveLifecycleListener( this );
+                Core.Gdx.App.RemoveLifecycleListener( this );
             }
         }
     }

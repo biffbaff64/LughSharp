@@ -1,48 +1,61 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Backends.Desktop.Audio;
-using LibGDXSharp.Backends.Desktop.Audio.Mock;
-using LibGDXSharp.Backends.Desktop.Files;
-using LibGDXSharp.Backends.Desktop.Input;
-using LibGDXSharp.Backends.Desktop.Utils;
-using LibGDXSharp.Backends.Desktop.Window;
-using LibGDXSharp.Utils.Collections;
+
+using LibGDXSharp.Backends.DesktopGL.Audio;
+using LibGDXSharp.Backends.DesktopGL.Audio.Mock;
+using LibGDXSharp.Backends.DesktopGL.Files;
+using LibGDXSharp.Backends.DesktopGL.Input;
+using LibGDXSharp.Backends.DesktopGL.Utils;
+using LibGDXSharp.Backends.DesktopGL.Window;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Graphics.GLUtils;
+using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.Gdx.Utils.Collections.Extensions;
 
 using Exception = System.Exception;
-using Monitor = System.Threading.Monitor;
+using Monitor = GLFW.Monitor;
 
-namespace LibGDXSharp.Backends.Desktop;
+namespace LibGDXSharp.Backends.DesktopGL;
 
 public class DesktopGLApplication : IDesktopGLApplicationBase
 {
     private const string TAG = "GLApplication";
 
-    private static   GLFW.ErrorCallback? _errorCallback = null;
-    private readonly Sync?               _sync          = null;
-    private volatile DesktopGLWindow?    _currentWindow = null;
-    private          bool                _running       = true;
+    private static   ErrorCallback?   _errorCallback = null;
+    private readonly Sync?            _sync          = null;
+    private volatile DesktopGLWindow? _currentWindow = null;
+    private          bool             _running       = true;
 
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Creates a new Desktop Gl Application.
+    ///     Creates a new Desktop Gl Application.
     /// </summary>
-    /// <param name="listener"> The <see cref="IApplicationListener"/> to use. </param>
-    /// <param name="config"> The <see cref="DesktopGLApplicationConfiguration"/> to use.</param>
+    /// <param name="listener"> The <see cref="IApplicationListener" /> to use. </param>
+    /// <param name="config"> The <see cref="DesktopGLApplicationConfiguration" /> to use.</param>
     public DesktopGLApplication( IApplicationListener listener,
                                  DesktopGLApplicationConfiguration config )
     {
@@ -54,7 +67,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         Config = config = DesktopGLApplicationConfiguration.Copy( config );
 
-        Gdx.App = this;
+        Gdx.Core.Gdx.App = this;
 
         if ( !config.DisableAudio )
         {
@@ -62,7 +75,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             {
                 Audio = CreateAudio( config );
             }
-            catch ( System.Exception e )
+            catch ( Exception e )
             {
                 Log( TAG, "Couldn't initialize audio, disabling audio", e );
 
@@ -79,9 +92,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Clipboard = new DesktopGLClipboard();
         _sync     = new Sync();
 
-        Gdx.Audio = Audio;
-        Gdx.Files = Files;
-        Gdx.Net   = Net;
+        Gdx.Core.Gdx.Audio = Audio;
+        Gdx.Core.Gdx.Files = Files;
+        Gdx.Core.Gdx.Net   = Net;
 
         Windows.Add( CreateWindow( config, listener, 0 ) );
 
@@ -90,7 +103,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Loop();
             CleanupWindows();
         }
-        catch ( System.Exception e )
+        catch ( Exception e )
         {
             if ( e is SystemException exception )
             {
@@ -129,17 +142,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
-    {
-        return new OpenALAudio( config.AudioDeviceSimultaneousSources,
-                                config.AudioDeviceBufferCount,
-                                config.AudioDeviceBufferSize );
-    }
+    public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config ) => new OpenALAudio( config.AudioDeviceSimultaneousSources,
+                                                                                                config.AudioDeviceBufferCount,
+                                                                                                config.AudioDeviceBufferSize );
 
-    public IDesktopGLInput CreateInput( DesktopGLWindow window )
-    {
-        return new DefaultDesktopGLInput( window );
-    }
+    public IDesktopGLInput CreateInput( DesktopGLWindow window ) => new DefaultDesktopGLInput( window );
 
     public int GetVersion() => 0;
 
@@ -439,7 +446,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             windowHandle = Glfw.CreateWindow( appConfig.WindowWidth,
                                               appConfig.WindowHeight,
                                               appConfig.Title ?? "",
-                                              GLFW.Monitor.None,
+                                              Monitor.None,
                                               GLFW.Window.None );
         }
 
@@ -470,7 +477,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                     windowHeight = Math.Min( windowHeight, appConfig.WindowMaxHeight );
                 }
 
-                GLFW.Monitor monitorHandle = Glfw.PrimaryMonitor;
+                Monitor monitorHandle = Glfw.PrimaryMonitor;
 
                 if ( appConfig is { WindowMaximized: true, MaximizedMonitor: not null } )
                 {
@@ -568,8 +575,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         GLVersion = new GLVersion( IApplication.ApplicationType.Desktop,
                                    $"{major}.{minor}.{revision}",
-                                   Gdx.GL20.GLGetString( IGL20.GL_VENDOR ),
-                                   Gdx.GL20.GLGetString( IGL20.GL_RENDERER ) );
+                                   Gdx.Core.Gdx.GL20.GLGetString( IGL20.GL_VENDOR ),
+                                   Gdx.Core.Gdx.GL20.GLGetString( IGL20.GL_RENDERER ) );
     }
 
     #region public properties
@@ -603,7 +610,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     #region debug logging
 
     //TODO: Can I get rid of these now I have Trace() ?
-    
+
     public void Debug( string tag, string message )
     {
         if ( LogLevel >= IApplication.LOG_DEBUG )
@@ -612,7 +619,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    public void Debug( string tag, string message, System.Exception exception )
+    public void Debug( string tag, string message, Exception exception )
     {
         if ( LogLevel >= IApplication.LOG_DEBUG )
         {
@@ -628,7 +635,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    public void Log( string tag, string message, System.Exception exception )
+    public void Log( string tag, string message, Exception exception )
     {
         if ( LogLevel >= IApplication.LOG_INFO )
         {
@@ -644,7 +651,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    public void Error( string tag, string message, System.Exception exception )
+    public void Error( string tag, string message, Exception exception )
     {
         if ( LogLevel >= IApplication.LOG_ERROR )
         {
@@ -709,7 +716,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// </summary>
     /// <seealso cref="DesktopGLApplicationConfiguration.EnableGLDebugOutput(bool, StreamWriter)" />
     public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled ) =>
-        
+
         //        GLCapabilities caps         = GL.GetCapabilities();
         //        const int      GL_DONT_CARE = 0x1100; // not defined anywhere yet
         //

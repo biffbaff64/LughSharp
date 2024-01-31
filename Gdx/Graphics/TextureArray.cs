@@ -1,22 +1,34 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
+
 
 using System.Text;
 
-namespace LibGDXSharp.Graphics;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Utils;
+
+namespace LibGDXSharp.Gdx.Graphics;
 
 /// <summary>
 ///     Open GLES wrapper for TextureArray.
@@ -53,7 +65,7 @@ public class TextureArray : GLTexture
     /// <summary>
     ///     Gets the number of managed TextureArrays currently loaded.
     /// </summary>
-    public int NumManagedTextureArrays => ManagedTextureArrays[ Gdx.App ].Count;
+    public int NumManagedTextureArrays => ManagedTextureArrays[ Core.Gdx.App ].Count;
 
     /// <summary>
     /// </summary>
@@ -65,7 +77,7 @@ public class TextureArray : GLTexture
 
         for ( var i = 0; i < internalPaths.Length; i++ )
         {
-            handles[ i ] = Gdx.Files.Internal( internalPaths[ i ] );
+            handles[ i ] = Core.Gdx.Files.Internal( internalPaths[ i ] );
         }
 
         return handles;
@@ -86,16 +98,16 @@ public class TextureArray : GLTexture
 
         Bind();
 
-        Gdx.GL30?.GLTexImage3D( IGL30.GL_TEXTURE_2D_ARRAY,
-                                0,
-                                data.InternalFormat,
-                                data.Width,
-                                data.Height,
-                                data.Depth,
-                                0,
-                                data.InternalFormat,
-                                data.GLType,
-                                0 );
+        Core.Gdx.GL30?.GLTexImage3D( IGL30.GL_TEXTURE_2D_ARRAY,
+                                     0,
+                                     data.InternalFormat,
+                                     data.Width,
+                                     data.Height,
+                                     data.Depth,
+                                     0,
+                                     data.InternalFormat,
+                                     data.GLType,
+                                     0 );
 
         if ( !data.Prepared )
         {
@@ -106,7 +118,7 @@ public class TextureArray : GLTexture
 
         SetFilter( MinFilter, MagFilter );
         SetWrap( UWrap, VWrap );
-        Gdx.GL.GLBindTexture( GLTarget, 0 );
+        Core.Gdx.GL.GLBindTexture( GLTarget, 0 );
     }
 
     /// <summary>
@@ -119,7 +131,7 @@ public class TextureArray : GLTexture
             throw new GdxRuntimeException( "Tried to reload an unmanaged TextureArray" );
         }
 
-        GLTextureHandle = Gdx.GL.GLGenTexture();
+        GLTextureHandle = Core.Gdx.GL.GLGenTexture();
 
         Load( _data );
     }
@@ -178,9 +190,9 @@ public class TextureArray : GLTexture
     /// <param name="data"></param>
     /// <exception cref="GdxRuntimeException"></exception>
     public TextureArray( ITextureArrayData data )
-        : base( TextureTarget.Texture2dArray, Gdx.GL.GLGenTexture() )
+        : base( TextureTarget.Texture2dArray, Core.Gdx.GL.GLGenTexture() )
     {
-        if ( Gdx.GL30 == null )
+        if ( Core.Gdx.GL30 == null )
         {
             throw new GdxRuntimeException( "TextureArray requires a device"
                                          + "running with GLES 3.0 compatibilty" );
@@ -192,7 +204,7 @@ public class TextureArray : GLTexture
 
         if ( data.Managed )
         {
-            AddManagedTexture( Gdx.App, this );
+            AddManagedTexture( Core.Gdx.App, this );
         }
     }
 

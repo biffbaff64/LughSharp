@@ -1,27 +1,40 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
+
 
 using System.Reflection;
 using System.Runtime.Serialization;
 
-using LibGDXSharp.Graphics.G2D;
-using LibGDXSharp.Scenes.Scene2D.Utils;
-using LibGDXSharp.Utils.Collections;
+using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Graphics.G2D;
+using LibGDXSharp.Gdx.Scenes.Scene2D.Utils;
+using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.Gdx.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.Scenes.Scene2D.UI;
+using Exception = System.Exception;
+
+namespace LibGDXSharp.Gdx.Scenes.Scene2D.UI;
 
 /// <summary>
 ///     A skin stores resources for UI widgets to use (texture regions, ninepatches,
@@ -73,7 +86,7 @@ public class Skin : IDisposable
     {
     }
 
-    /// <summary>///     ///     Creates a skin containing the resources in the specified skin JSON file.///     If a file in the same///     directory with a ".atlas" extension exists, it is///     loaded as a <see cref="TextureAtlas" /> and the texture///     regions added to///     the skin. The atlas is automatically disposed when the skin is disposed.////// </summary>
+    /// <summary>///     ///     ///     Creates a skin containing the resources in the specified skin JSON file.///     If a file in///     the same///     directory with a ".atlas" extension exists, it is///     loaded as a <see cref="TextureAtlas" />///     and the texture///     regions added to///     the skin. The atlas is automatically disposed when the skin is///     disposed.///////// </summary>
     public Skin( FileInfo skinFile )
     {
         var name      = Path.GetFileNameWithoutExtension( skinFile.Name );
@@ -88,7 +101,7 @@ public class Skin : IDisposable
         Load( skinFile );
     }
 
-    /// <summary>///     ///     Creates a skin containing the resources in the specified skin JSON file and///     the texture regions///     from the specified atlas.//////     <para>///         The atlas is automatically disposed when the skin is disposed.///     </para>///     ////// </summary>
+    /// <summary>///     ///     ///     Creates a skin containing the resources in the specified skin JSON file and///     the texture///     regions///     from the specified atlas./////////     <para>///         The atlas is automatically disposed when the skin is disposed.///     </para>///     ///     ///////// </summary>
     public Skin( FileInfo skinFile, TextureAtlas atlas )
     {
         Atlas = atlas;
@@ -97,7 +110,7 @@ public class Skin : IDisposable
         Load( skinFile );
     }
 
-    /// <summary>///     ///     Creates a skin containing the texture regions from the specified atlas.///     The atlas is///     automatically disposed when the skin is disposed.////// </summary>
+    /// <summary>///     ///     ///     Creates a skin containing the texture regions from the specified atlas.///     The atlas is//////     automatically disposed when the skin is disposed.///////// </summary>
     public Skin( TextureAtlas atlas )
     {
         Atlas = atlas;
@@ -711,7 +724,7 @@ public class Skin : IDisposable
         {
             style = method.Invoke( actor, null )!;
         }
-        catch ( System.Exception )
+        catch ( Exception )
         {
             return;
         }
@@ -738,7 +751,7 @@ public class Skin : IDisposable
         {
             method.Invoke( actor, ( object?[]? )style );
         }
-        catch ( System.Exception )
+        catch ( Exception )
         {
             // ignored
         }

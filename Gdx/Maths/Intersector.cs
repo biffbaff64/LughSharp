@@ -1,23 +1,33 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Maths.Collision;
-using LibGDXSharp.Utils.Collections;
 
-namespace LibGDXSharp.Maths;
+using LibGDXSharp.Gdx.Maths.Collision;
+using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.Gdx.Utils.Collections.Extensions;
+
+namespace LibGDXSharp.Gdx.Maths;
 
 /// <summary>
 ///     Class offering various static methods for intersection testing
@@ -508,7 +518,7 @@ public class Intersector
             return nearest.Set( startX, startY );
         }
 
-        return ( t > 1 )
+        return t > 1
             ? nearest.Set( endX, endY )
             : nearest.Set( startX + ( t * ( endX - startX ) ),
                            startY + ( t * ( endY - startY ) ) );
@@ -1037,10 +1047,7 @@ public class Intersector
     ///     Quick check whether the given <see cref="Ray" /> and <see cref="BoundingBox" /> intersect.
     /// </summary>
     /// <returns> Whether the ray and the bounding box intersect. </returns>
-    public static bool IntersectRayBoundsFast( Ray ray, BoundingBox box )
-    {
-        return IntersectRayBoundsFast( ray, box.GetCenter( Tmp1 ), box.GetDimensions( Tmp2 ) );
-    }
+    public static bool IntersectRayBoundsFast( Ray ray, BoundingBox box ) => IntersectRayBoundsFast( ray, box.GetCenter( Tmp1 ), box.GetDimensions( Tmp2 ) );
 
     /// <summary>
     ///     Quick check whether the given {@link Ray} and {@link BoundingBox} intersect.
@@ -1393,13 +1400,10 @@ public class Intersector
     ///     Quick check whether the given <see cref="BoundingBox" /> and <see cref="Maths.Plane" /> intersect.
     /// </summary>
     /// <returns> Whether the bounding box and the plane intersect. </returns>
-    public static bool IntersectBoundsPlaneFast( BoundingBox box, Plane plane )
-    {
-        return IntersectBoundsPlaneFast( box.GetCenter( Tmp1 ),
-                                         box.GetDimensions( Tmp2 ).Scl( 0.5f ),
-                                         plane.Normal,
-                                         plane.DistanceToOrigin );
-    }
+    public static bool IntersectBoundsPlaneFast( BoundingBox box, Plane plane ) => IntersectBoundsPlaneFast( box.GetCenter( Tmp1 ),
+                                                                                                             box.GetDimensions( Tmp2 ).Scl( 0.5f ),
+                                                                                                             plane.Normal,
+                                                                                                             plane.DistanceToOrigin );
 
     /// <summary>
     ///     Quick check whether the given bounding box and a plane intersect. Code adapted from Christer
@@ -2164,16 +2168,6 @@ public class Intersector
     [PublicAPI]
     public class SplitTriangle
     {
-        public int     NumBack      { get; set; }
-        public int     NumFront     { get; set; }
-        public int     Total        { get; set; }
-        public float[] Front        { get; set; }
-        public float[] Back         { get; set; }
-        public bool    FrontCurrent { get; set; } = false;
-        public float[] EdgeSplit    { get; set; }
-        public int     FrontOffset  { get; set; } = 0;
-        public int     BackOffset   { get; set; } = 0;
-
         /// <summary>
         ///     Creates a new instance, assuming numAttributes attributes
         ///     per triangle vertex.
@@ -2190,6 +2184,16 @@ public class Intersector
             Back      = new float[ numAttributes * 3 * 2 ];
             EdgeSplit = new float[ numAttributes ];
         }
+
+        public int     NumBack      { get; set; }
+        public int     NumFront     { get; set; }
+        public int     Total        { get; set; }
+        public float[] Front        { get; set; }
+        public float[] Back         { get; set; }
+        public bool    FrontCurrent { get; set; } = false;
+        public float[] EdgeSplit    { get; set; }
+        public int     FrontOffset  { get; set; } = 0;
+        public int     BackOffset   { get; set; } = 0;
 
         public void Add( float[] vertex, int offset, int stride )
         {

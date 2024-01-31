@@ -1,43 +1,52 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Graphics.G2D;
-using LibGDXSharp.Scenes.Listeners;
-using LibGDXSharp.Scenes.Scene2D.Utils;
-using LibGDXSharp.Utils.Pooling;
 
-namespace LibGDXSharp.Scenes.Scene2D.UI;
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Graphics.G2D;
+using LibGDXSharp.Gdx.Maths;
+using LibGDXSharp.Gdx.Scenes.Scene2D.Listeners;
+using LibGDXSharp.Gdx.Scenes.Scene2D.Utils;
+using LibGDXSharp.Gdx.Utils.Pooling;
+
+namespace LibGDXSharp.Gdx.Scenes.Scene2D.UI;
 
 /// <summary>
-/// A slider is a horizontal indicator that allows a user to set a value. The slider has
-/// a range (min, max) and a stepping between each value the slider represents.
-/// <para>
-/// <see cref="LibGDXSharp.Scenes.Listeners.ChangeListener.ChangeEvent"/> is fired when the
-/// slider knob is moved. Canceling the event will move the knob to where it was previously.
-/// </para>
-/// <para>
-/// For a horizontal progress bar, its preferred height is determined by the larger of the
-/// knob and background, and the preferred width is 140, a relatively arbitrary size. These
-/// parameters are reversed for a vertical progress bar.
-/// </para>
+///     A slider is a horizontal indicator that allows a user to set a value. The slider has
+///     a range (min, max) and a stepping between each value the slider represents.
+///     <para>
+///         <see cref="ChangeListener.ChangeEvent" /> is fired when the
+///         slider knob is moved. Canceling the event will move the knob to where it was previously.
+///     </para>
+///     <para>
+///         For a horizontal progress bar, its preferred height is determined by the larger of the
+///         knob and background, and the preferred width is 140, a relatively arbitrary size. These
+///         parameters are reversed for a vertical progress bar.
+///     </para>
 /// </summary>
 public class Slider : ProgressBar
 {
-    public bool MouseOver { get; set; }
-
     private int      _draggingPointer = -1;
     private float[]? _snapValues;
     private float    _threshold;
@@ -54,7 +63,11 @@ public class Slider : ProgressBar
 
     /// Creates a new slider. If horizontal, its width is determined by the prefWidth
     /// parameter, its height is determined by the maximum of the height of either the
-    /// slider <see cref="NinePatch"/> or slider handle <see cref="TextureRegion"/>.
+    /// slider
+    /// <see cref="NinePatch" />
+    /// or slider handle
+    /// <see cref="TextureRegion" />
+    /// .
     /// The min and max values determine the range the values of this slider can take on,
     /// the stepSize parameter specifies the distance between individual values. E.g. min
     /// could be 4, max could be 10 and stepSize could be 0.2, giving you a total of 30
@@ -63,18 +76,29 @@ public class Slider : ProgressBar
     /// <param name="max"> the maximum value </param>
     /// <param name="stepSize"> the step size between values </param>
     /// <param name="vertical"></param>
-    /// <param name="style"> the <see cref="SliderStyle"/> </param>
+    /// <param name="style"> the <see cref="SliderStyle" /> </param>
     public Slider( float min, float max, float stepSize, bool vertical, SliderStyle style )
-        : base( min, max, stepSize, vertical, style )
-    {
-        AddListener( new SliderInputListener( this ) );
-    }
+        : base( min, max, stepSize, vertical, style ) => AddListener( new SliderInputListener( this ) );
 
-    public SliderStyle GetStyle() => ( SliderStyle )base.Style;
+    public bool MouseOver { get; set; }
+
+    /// <summary>
+    ///     Sets the mouse button, which can trigger a change of the slider.
+    ///     Is set to -1, so every button, by default.
+    /// </summary>
+    public int MouseButton { get; set; } = -1;
+
+    /// <summary>
+    ///     Sets the inverse interpolation to use for display. This should perform the
+    ///     inverse of setting <see cref="ProgressBar.VisualInterpolation" />".
+    /// </summary>
+    public Interpolator VisualInterpolationInverse { get; set; } = Interpolation.linear;
+
+    public SliderStyle GetStyle() => ( SliderStyle )Style;
 
     protected IDrawable? GetBackgroundDrawable()
     {
-        var style = ( SliderStyle )base.Style;
+        var style = ( SliderStyle )Style;
 
         if ( IsDisabled && ( style.DisabledBackground != null ) )
         {
@@ -96,7 +120,7 @@ public class Slider : ProgressBar
 
     protected IDrawable? GetKnobDrawable()
     {
-        var style = ( SliderStyle )base.Style;
+        var style = ( SliderStyle )Style;
 
         if ( IsDisabled && ( style.DisabledKnob != null ) )
         {
@@ -118,7 +142,7 @@ public class Slider : ProgressBar
 
     protected IDrawable? GetKnobBeforeDrawable()
     {
-        var style = ( SliderStyle )base.Style;
+        var style = ( SliderStyle )Style;
 
         if ( IsDisabled && ( style.DisabledKnobBefore != null ) )
         {
@@ -140,7 +164,7 @@ public class Slider : ProgressBar
 
     protected IDrawable? GetKnobAfterDrawable()
     {
-        var style = ( SliderStyle )base.Style;
+        var style = ( SliderStyle )Style;
 
         if ( IsDisabled && ( style.DisabledKnobAfter != null ) )
         {
@@ -195,8 +219,8 @@ public class Slider : ProgressBar
 
         var oldValue = value;
 
-        if ( !Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_LEFT )
-          && !Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_RIGHT ) )
+        if ( !Core.Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_LEFT )
+          && !Core.Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_RIGHT ) )
         {
             value = GetSnapped( value );
         }
@@ -226,7 +250,7 @@ public class Slider : ProgressBar
 
             if ( diff <= _threshold )
             {
-                if ( ( bestDiff.Equals( -1 ) ) || ( diff < bestDiff ) )
+                if ( bestDiff.Equals( -1 ) || ( diff < bestDiff ) )
                 {
                     bestDiff  = diff;
                     bestValue = snapValue;
@@ -238,56 +262,32 @@ public class Slider : ProgressBar
     }
 
     /// <summary>
-    /// Will make this progress bar snap to the specified values, if the
-    /// knob is within the threshold.
+    ///     Will make this progress bar snap to the specified values, if the
+    ///     knob is within the threshold.
     /// </summary>
     /// <param name="values"> May be null. </param>
     /// <param name="threshld"></param>
     public void SetSnapToValues( float[] values, float threshld )
     {
-        this._snapValues = values;
-        this._threshold  = threshld;
+        _snapValues = values;
+        _threshold  = threshld;
     }
 
     /// <summary>
-    /// Returns true if the slider is being dragged.
+    ///     Returns true if the slider is being dragged.
     /// </summary>
     public bool IsDragging() => _draggingPointer != -1;
 
     /// <summary>
-    /// Sets the mouse button, which can trigger a change of the slider.
-    /// Is set to -1, so every button, by default.
+    ///     Sets the value using the specified visual percent.
     /// </summary>
-    public int MouseButton { get; set; } = -1;
-
-    /// <summary>
-    /// Sets the inverse interpolation to use for display. This should perform the
-    /// inverse of setting <see cref="ProgressBar.VisualInterpolation"/>".
-    /// </summary>
-    public Interpolator VisualInterpolationInverse { get; set; } = Interpolation.linear;
-
-    /// <summary>
-    /// Sets the value using the specified visual percent.
-    /// </summary>
-    public void SetVisualPercent( float percent )
-    {
-        base.Value = ( MinValue + ( ( MaxValue - MinValue ) * VisualInterpolationInverse.Apply( percent ) ) );
-    }
+    public void SetVisualPercent( float percent ) => Value = MinValue + ( ( MaxValue - MinValue ) * VisualInterpolationInverse.Apply( percent ) );
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     public class SliderStyle : ProgressBarStyle
     {
-        public IDrawable? BackgroundOver { get; set; }
-        public IDrawable? BackgroundDown { get; set; }
-        public IDrawable? KnobBeforeOver { get; set; }
-        public IDrawable? KnobOver       { get; set; }
-        public IDrawable? KnobAfterOver  { get; set; }
-        public IDrawable? KnobBeforeDown { get; set; }
-        public IDrawable? KnobDown       { get; set; }
-        public IDrawable? KnobAfterDown  { get; set; }
-
         public SliderStyle()
         {
         }
@@ -311,6 +311,15 @@ public class Slider : ProgressBar
             KnobAfterOver = style.KnobAfterOver;
             KnobAfterDown = style.KnobAfterDown;
         }
+
+        public IDrawable? BackgroundOver { get; set; }
+        public IDrawable? BackgroundDown { get; set; }
+        public IDrawable? KnobBeforeOver { get; set; }
+        public IDrawable? KnobOver       { get; set; }
+        public IDrawable? KnobAfterOver  { get; set; }
+        public IDrawable? KnobBeforeDown { get; set; }
+        public IDrawable? KnobDown       { get; set; }
+        public IDrawable? KnobAfterDown  { get; set; }
     }
 
     // ------------------------------------------------------------------------
@@ -320,10 +329,7 @@ public class Slider : ProgressBar
     {
         private readonly Slider _parent;
 
-        public SliderInputListener( Slider parent )
-        {
-            _parent = parent;
-        }
+        public SliderInputListener( Slider parent ) => _parent = parent;
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
@@ -367,10 +373,7 @@ public class Slider : ProgressBar
             }
         }
 
-        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
-        {
-            _parent.CalculatePositionAndValue( x, y );
-        }
+        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer ) => _parent.CalculatePositionAndValue( x, y );
 
         public override void Enter( InputEvent? ev, float x, float y, int pointer, Actor? from )
         {

@@ -1,24 +1,32 @@
 // ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Audio.MP3Sharp.Decoders.LayerIII;
-using LibGDXSharp.Audio.MP3Sharp.Decoding;
-using LibGDXSharp.Audio.MP3Sharp.Support;
 
-namespace LibGDXSharp.Audio.MP3Sharp.Decoders;
+using LibGDXSharp.Gdx.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
+using LibGDXSharp.Gdx.Audio.MP3Sharp.Support;
+
+namespace LibGDXSharp.Gdx.Audio.MP3Sharp.Decoding.Decoders;
 
 /// <summary>
 ///     Implements decoding of MPEG Audio Layer 3 frames.
@@ -158,7 +166,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         new[] { new[] { 8, 8, 5, 0 }, new[] { 15, 12, 9, 0 }, new[] { 6, 18, 9, 0 } }
     };
 
-    private readonly AudioBase?         _buffer;
+    private readonly AudioBase?       _buffer;
     private readonly int              _channels;
     private readonly SynthesisFilter? _filter1;
     private readonly SynthesisFilter? _filter2;
@@ -180,7 +188,12 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private readonly Layer3SideInfo    _sideInfo;
     private readonly Bitstream         _stream;
     private readonly int               _whichChannels;
-    private          BitReserve        _bitReserve;
+
+    public readonly int[]      v = { 0 };
+    public readonly int[]      w = { 0 };
+    public readonly int[]      x = { 0 };
+    public readonly int[]      y = { 0 };
+    private         BitReserve _bitReserve;
 
     private int _checkSumHuff;
     private int _frameStart;
@@ -201,11 +214,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     // MDM: tsOutCopy and rawout do not need initializing, so the arrays
     // can be reused.
     public float[] tsOutCopy = null!;
-
-    public readonly int[] v = { 0 };
-    public readonly int[] w = { 0 };
-    public readonly int[] x = { 0 };
-    public readonly int[] y = { 0 };
 
     static LayerIIIDecoder() => PowerTable = CreatePowerTable();
 

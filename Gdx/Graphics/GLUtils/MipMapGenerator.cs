@@ -1,20 +1,32 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Graphics.GLUtils;
+
+using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Utils;
+
+namespace LibGDXSharp.Gdx.Graphics.GLUtils;
 
 public class MipMapGenerator
 {
@@ -49,9 +61,9 @@ public class MipMapGenerator
             return;
         }
 
-        if ( ( Gdx.App.AppType == IApplication.ApplicationType.Android )
-          || ( Gdx.App.AppType == IApplication.ApplicationType.WebGL )
-          || ( Gdx.App.AppType == IApplication.ApplicationType.IOS ) )
+        if ( ( Core.Gdx.App.AppType == IApplication.ApplicationType.Android )
+          || ( Core.Gdx.App.AppType == IApplication.ApplicationType.WebGL )
+          || ( Core.Gdx.App.AppType == IApplication.ApplicationType.IOS ) )
         {
             GenerateMipMapGLES20( target, pixmap );
         }
@@ -63,7 +75,7 @@ public class MipMapGenerator
 
     private static void GenerateMipMapGLES20( int target, Pixmap pixmap )
     {
-        Gdx.GL.GLTexImage2D(
+        Core.Gdx.GL.GLTexImage2D(
             target,
             0,
             pixmap.GLInternalFormat,
@@ -75,16 +87,16 @@ public class MipMapGenerator
             pixmap.Pixels
             );
 
-        Gdx.GL20.GLGenerateMipmap( target );
+        Core.Gdx.GL20.GLGenerateMipmap( target );
     }
 
     private static void GenerateMipMapDesktop( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
-        if ( Gdx.Graphics.SupportsExtension( "GL_ARB_framebuffer_object" )
-          || Gdx.Graphics.SupportsExtension( "GL_EXT_framebuffer_object" )
-          || ( Gdx.GL30 != null ) )
+        if ( Core.Gdx.Graphics.SupportsExtension( "GL_ARB_framebuffer_object" )
+          || Core.Gdx.Graphics.SupportsExtension( "GL_EXT_framebuffer_object" )
+          || ( Core.Gdx.GL30 != null ) )
         {
-            Gdx.GL.GLTexImage2D(
+            Core.Gdx.GL.GLTexImage2D(
                 target,
                 0,
                 pixmap.GLInternalFormat,
@@ -96,7 +108,7 @@ public class MipMapGenerator
                 pixmap.Pixels
                 );
 
-            Gdx.GL20.GLGenerateMipmap( target );
+            Core.Gdx.GL20.GLGenerateMipmap( target );
         }
         else
         {
@@ -106,7 +118,7 @@ public class MipMapGenerator
 
     private static void GenerateMipMapCPU( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
-        Gdx.GL.GLTexImage2D(
+        Core.Gdx.GL.GLTexImage2D(
             target,
             0,
             pixmap.GLInternalFormat,
@@ -118,7 +130,7 @@ public class MipMapGenerator
             pixmap.Pixels
             );
 
-        if ( ( Gdx.GL20 == null ) && ( textureWidth != textureHeight ) )
+        if ( ( Core.Gdx.GL20 == null ) && ( textureWidth != textureHeight ) )
         {
             throw new GdxRuntimeException( "texture width and height must be square when using mipmapping." );
         }
@@ -141,7 +153,7 @@ public class MipMapGenerator
 
             pixmap = tmp;
 
-            Gdx.GL.GLTexImage2D(
+            Core.Gdx.GL.GLTexImage2D(
                 target,
                 level,
                 pixmap.GLInternalFormat,

@@ -1,20 +1,29 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Graphics.G3D;
+
+namespace LibGDXSharp.Gdx.Graphics.G3D;
 
 public class AttributesGroup : IComparer< Attribute >
 {
@@ -24,7 +33,18 @@ public class AttributesGroup : IComparer< Attribute >
     private bool _sorted = true;
 
     /// <summary>
-    /// Sort the attributes by their ID.
+    ///     Used for sorting attributes by type (not by value)
+    /// </summary>
+    public int Compare( Attribute? arg0, Attribute? arg1 )
+    {
+        ArgumentNullException.ThrowIfNull( arg0 );
+        ArgumentNullException.ThrowIfNull( arg1 );
+
+        return ( int )( arg0.type - arg1.type );
+    }
+
+    /// <summary>
+    ///     Sort the attributes by their ID.
     /// </summary>
     public void Sort()
     {
@@ -36,12 +56,9 @@ public class AttributesGroup : IComparer< Attribute >
     }
 
     /// <summary>
-    /// Return a bitwise mask of the ID's of all the containing attributes
+    ///     Return a bitwise mask of the ID's of all the containing attributes
     /// </summary>
-    public long GetMask()
-    {
-        return _mask;
-    }
+    public long GetMask() => _mask;
 
     public Attribute? Get( long type )
     {
@@ -59,10 +76,7 @@ public class AttributesGroup : IComparer< Attribute >
         return null;
     }
 
-    public T? Get<T>( long type ) where T : Attribute
-    {
-        return ( T? )Get( type );
-    }
+    public T? Get<T>( long type ) where T : Attribute => ( T? )Get( type );
 
     public List< Attribute > Get( List< Attribute > output, long type )
     {
@@ -83,24 +97,15 @@ public class AttributesGroup : IComparer< Attribute >
         _attributes.Clear();
     }
 
-    public int Size()
-    {
-        return _attributes.Count;
-    }
+    public int Size() => _attributes.Count;
 
-    private void Enable( long mask )
-    {
-        this._mask |= mask;
-    }
+    private void Enable( long mask ) => _mask |= mask;
 
-    private void Disable( long mask )
-    {
-        this._mask &= ~mask;
-    }
+    private void Disable( long mask ) => _mask &= ~mask;
 
     /// <summary>
-    /// Add a attribute to this material. If the material already contains an attribute
-    /// of the same type it is overwritten.
+    ///     Add a attribute to this material. If the material already contains an attribute
+    ///     of the same type it is overwritten.
     /// </summary>
     public void Set( Attribute attribute )
     {
@@ -109,7 +114,7 @@ public class AttributesGroup : IComparer< Attribute >
         if ( idx < 0 )
         {
             Enable( attribute.type );
-            
+
             _attributes.Add( attribute );
             _sorted = false;
         }
@@ -122,8 +127,8 @@ public class AttributesGroup : IComparer< Attribute >
     }
 
     /// <summary>
-    /// Add multiple attributes to this material. If the material already contains
-    /// an attribute of the same type it is overwritten.
+    ///     Add multiple attributes to this material. If the material already contains
+    ///     an attribute of the same type it is overwritten.
     /// </summary>
     [Obsolete( "Use Set( params Attribute[] attribs ) instead." )]
     public void Set( Attribute attribute1, Attribute attribute2 )
@@ -133,8 +138,8 @@ public class AttributesGroup : IComparer< Attribute >
     }
 
     /// <summary>
-    /// Add multiple attributes to this material. If the material already contains
-    /// an attribute of the same type it is overwritten.
+    ///     Add multiple attributes to this material. If the material already contains
+    ///     an attribute of the same type it is overwritten.
     /// </summary>
     [Obsolete( "Use Set( params Attribute[] attribs ) instead." )]
     public void Set( Attribute attribute1, Attribute attribute2, Attribute attribute3 )
@@ -145,8 +150,8 @@ public class AttributesGroup : IComparer< Attribute >
     }
 
     /// <summary>
-    /// Add multiple attributes to this material. If the material already contains
-    /// an attribute of the same type it is overwritten.
+    ///     Add multiple attributes to this material. If the material already contains
+    ///     an attribute of the same type it is overwritten.
     /// </summary>
     [Obsolete( "Use Set( params Attribute[] attribs ) instead." )]
     public void Set( Attribute attribute1,
@@ -161,8 +166,8 @@ public class AttributesGroup : IComparer< Attribute >
     }
 
     /// <summary>
-    /// Add multiple attributes to this material. If the material already contains
-    /// an attribute of the same type it is overwritten.
+    ///     Add multiple attributes to this material. If the material already contains
+    ///     an attribute of the same type it is overwritten.
     /// </summary>
     public void Set( params Attribute[] attribs )
     {
@@ -173,8 +178,8 @@ public class AttributesGroup : IComparer< Attribute >
     }
 
     /// <summary>
-    /// Add an array of attributes to this material. If the material already contains
-    /// an attribute of the same type it is overwritten.
+    ///     Add an array of attributes to this material. If the material already contains
+    ///     an attribute of the same type it is overwritten.
     /// </summary>
     public void Set( IEnumerable< Attribute > attribs )
     {
@@ -185,8 +190,8 @@ public class AttributesGroup : IComparer< Attribute >
     }
 
     /// <summary>
-    /// Removes the attribute from the material, i.e.: Remove(BlendingAttribute.ID);
-    /// Can also be used to remove multiple attributes also, i.e. Remove(AttributeA.ID | AttributeB.ID);
+    ///     Removes the attribute from the material, i.e.: Remove(BlendingAttribute.ID);
+    ///     Can also be used to remove multiple attributes also, i.e. Remove(AttributeA.ID | AttributeB.ID);
     /// </summary>
     public void Remove( long mask )
     {
@@ -206,20 +211,17 @@ public class AttributesGroup : IComparer< Attribute >
     }
 
     /// <summary>
-    /// True if this collection has the specified attribute, i.e. Has(ColorAttribute.Diffuse);
-    /// Or when multiple attribute types are specified, true if this collection has all specified
-    /// attributes;
-    /// <para>
-    /// i.e. Has(ColorAttribute.Diffuse | ColorAttribute.Specular | TextureAttribute.Diffuse);
-    /// </para>
+    ///     True if this collection has the specified attribute, i.e. Has(ColorAttribute.Diffuse);
+    ///     Or when multiple attribute types are specified, true if this collection has all specified
+    ///     attributes;
+    ///     <para>
+    ///         i.e. Has(ColorAttribute.Diffuse | ColorAttribute.Specular | TextureAttribute.Diffuse);
+    ///     </para>
     /// </summary>
-    public bool Has( long type )
-    {
-        return ( type != 0 ) && ( ( this._mask & type ) == type );
-    }
+    public bool Has( long type ) => ( type != 0 ) && ( ( _mask & type ) == type );
 
     /// <summary>
-    /// Returns the index of the attribute with the specified type or negative if not available.
+    ///     Returns the index of the attribute with the specified type or negative if not available.
     /// </summary>
     protected int IndexOf( long type )
     {
@@ -238,15 +240,15 @@ public class AttributesGroup : IComparer< Attribute >
     }
 
     /// <summary>
-    /// Check if this collection has the same attributes as the other collection. If
-    /// compareValues is true, it also compares the values of each attribute.
+    ///     Check if this collection has the same attributes as the other collection. If
+    ///     compareValues is true, it also compares the values of each attribute.
     /// </summary>
     /// <param name="other"></param>
     /// <param name="compareValues">
-    /// True to compare attribute values, false to only compare attribute types
+    ///     True to compare attribute values, false to only compare attribute types
     /// </param>
     /// <returns>
-    /// True if this collection contains the same attributes (and optionally attribute values) as the other.
+    ///     True if this collection contains the same attributes (and optionally attribute values) as the other.
     /// </returns>
     public bool Same( AttributesGroup? other, bool compareValues = false )
     {
@@ -265,7 +267,7 @@ public class AttributesGroup : IComparer< Attribute >
             return true;
         }
 
-        this.Sort();
+        Sort();
         other.Sort();
 
         for ( var i = 0; i < _attributes.Count; i++ )
@@ -280,20 +282,9 @@ public class AttributesGroup : IComparer< Attribute >
     }
 
     /// <summary>
-    /// Used for sorting attributes by type (not by value)
-    /// </summary>
-    public int Compare( Attribute? arg0, Attribute? arg1 )
-    {
-        ArgumentNullException.ThrowIfNull( arg0 );
-        ArgumentNullException.ThrowIfNull( arg1 );
-        
-        return ( int )( arg0.type - arg1.type );
-    }
-
-    /// <summary>
-    /// Returns a hash code based on only the attribute values, which might be different
-    /// compared to <see cref="GetHashCode()"/> because the latter might include other
-    /// properties as well, i.e. the material id.
+    ///     Returns a hash code based on only the attribute values, which might be different
+    ///     compared to <see cref="GetHashCode()" /> because the latter might include other
+    ///     properties as well, i.e. the material id.
     /// </summary>
     public int AttributesHash()
     {
@@ -311,10 +302,7 @@ public class AttributesGroup : IComparer< Attribute >
         return ( int )( result ^ ( result >> 32 ) );
     }
 
-    public override int GetHashCode()
-    {
-        return AttributesHash();
-    }
+    public override int GetHashCode() => AttributesHash();
 
     public override bool Equals( object? other )
     {

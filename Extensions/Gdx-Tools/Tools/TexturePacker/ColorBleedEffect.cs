@@ -1,20 +1,29 @@
 // ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.Extensions.Tools.TexturePacker;
+
+namespace LibGDXSharp.Extensions.Gdx_Tools.Tools.TexturePacker;
 
 [PublicAPI]
 public class ColorBleedEffect
@@ -102,10 +111,7 @@ public class ColorBleedEffect
         iterator.Reset();
     }
 
-    private static int GetPixelIndex( int width, int x, int y )
-    {
-        return ( y * width ) + x;
-    }
+    private static int GetPixelIndex( int width, int x, int y ) => ( y * width ) + x;
 
     private static int Red( int argb ) => ( argb >> 16 ) & 0xFF;
 
@@ -116,13 +122,13 @@ public class ColorBleedEffect
     private static int ARGB( int a, int r, int g, int b )
     {
         if ( ( a < 0 )
-             || ( a > 255 )
-             || ( r < 0 )
-             || ( r > 255 )
-             || ( g < 0 )
-             || ( g > 255 )
-             || ( b < 0 )
-             || ( b > 255 ) )
+          || ( a > 255 )
+          || ( r < 0 )
+          || ( r > 255 )
+          || ( g < 0 )
+          || ( g > 255 )
+          || ( b < 0 )
+          || ( b > 255 ) )
         {
             throw new ArgumentException( "Invalid RGBA: " + r + ", " + g + "," + b + "," + a );
         }
@@ -133,17 +139,17 @@ public class ColorBleedEffect
     private class Mask
     {
         private readonly bool[] _blank;
-        private readonly int[]  _pending;
         private readonly int[]  _changing;
+        private readonly int[]  _pending;
+        private          int    _changingSize;
 
         private int _pendingSize;
-        private int _changingSize;
 
         public Mask( IReadOnlyList< int > rgb )
         {
             var n = rgb.Count;
-            
-            _blank     = new bool[ n ];
+
+            _blank    = new bool[ n ];
             _pending  = new int[ n ];
             _changing = new int[ n ];
 
@@ -151,7 +157,7 @@ public class ColorBleedEffect
             {
                 if ( Alpha( rgb[ i ] ) == 0 )
                 {
-                    _blank[ i ]               = true;
+                    _blank[ i ]              = true;
                     _pending[ _pendingSize ] = i;
                     _pendingSize++;
                 }
@@ -166,23 +172,22 @@ public class ColorBleedEffect
             {
                 throw new IndexOutOfRangeException( index.ToString() );
             }
-            
+
             var value = _pending[ index ];
-            
+
             _pendingSize--;
             _pending[ index ] = _pending[ _pendingSize ];
 
             return value;
         }
 
+        private static int Alpha( int argb ) => ( argb >> 24 ) & 0xff;
+
         internal sealed class MaskIterator( Mask parent )
         {
             private int _index;
 
-            internal bool HasNext()
-            {
-                return _index < parent._pendingSize;
-            }
+            internal bool HasNext() => _index < parent._pendingSize;
 
             internal int Next()
             {
@@ -213,7 +218,5 @@ public class ColorBleedEffect
                 parent._changingSize = 0;
             }
         }
-
-        private static int Alpha( int argb ) => ( argb >> 24 ) & 0xff;
     }
 }

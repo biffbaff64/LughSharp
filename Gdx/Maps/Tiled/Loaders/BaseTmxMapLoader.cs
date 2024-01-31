@@ -1,32 +1,47 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
-// Copyright [2023] [Richard Ikin]
+// MIT License
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
 //
-// http: //www.apache.org/licenses/LICENSE-2.0
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
+
 
 using System.IO.Compression;
 using System.Runtime.Serialization;
 
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
-using LibGDXSharp.Graphics.G2D;
-using LibGDXSharp.Maps.Objects;
-using LibGDXSharp.Maps.Tiled.Objects;
-using LibGDXSharp.Maps.Tiled.Tiles;
+using LibGDXSharp.Gdx.Assets;
+using LibGDXSharp.Gdx.Assets.Loaders;
+using LibGDXSharp.Gdx.Assets.Loaders.Resolvers;
+using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Graphics.G2D;
+using LibGDXSharp.Gdx.Maps.Objects;
+using LibGDXSharp.Gdx.Maps.Tiled.Objects;
+using LibGDXSharp.Gdx.Maps.Tiled.Tiles;
+using LibGDXSharp.Gdx.Maths;
+using LibGDXSharp.Gdx.Utils;
 
-using XmlReader = LibGDXSharp.Utils.Xml.XmlReader;
+using XmlReader = LibGDXSharp.Gdx.Utils.Xml.XmlReader;
 
-namespace LibGDXSharp.Maps.Tiled;
+namespace LibGDXSharp.Gdx.Maps.Tiled.Loaders;
 
 public abstract class BaseTmxMapLoader<TP>
     : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.BaseTmxLoaderParameters
@@ -36,11 +51,11 @@ public abstract class BaseTmxMapLoader<TP>
     protected const uint FLAG_FLIP_DIAGONALLY   = 0x20000000;
     protected const uint MASK_CLEAR             = 0xE0000000;
 
+    protected readonly XmlReader? xml = new();
+
     protected bool               convertObjectToTileSpace;
     protected bool               flipY = true;
     protected XmlReader.Element? root;
-
-    protected readonly XmlReader? xml = new();
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -82,7 +97,8 @@ public abstract class BaseTmxMapLoader<TP>
     /// <param name="textureLoaderParameters"></param>
     /// <returns></returns>
     protected List< AssetDescriptor >? GetDependencyAssetDescriptors( FileInfo tmxFile,
-                                                                      TextureLoader.TextureLoaderParameters textureLoaderParameters ) => default( List< AssetDescriptor >? );
+                                                                      TextureLoader.TextureLoaderParameters textureLoaderParameters )
+        => default( List< AssetDescriptor >? );
 
     /// <summary>
     ///     Loads the map data, given the XML root element.
