@@ -49,7 +49,7 @@ public class IndexBufferObjectSubData : IIndexData
     private readonly ShortBuffer _buffer;
     private readonly ByteBuffer  _byteBuffer;
     private readonly int         _usage;
-    private          uint        _bufferHandle;
+    private          int         _bufferHandle;
     private          bool        _isBound = false;
     private          bool        _isDirect;
     private          bool        _isDirty = true;
@@ -224,12 +224,12 @@ public class IndexBufferObjectSubData : IIndexData
     public void Dispose()
     {
         Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
-        Core.Gdx.GL20.GLDeleteBuffers( _bufferHandle );
+        Core.Gdx.GL20.GLDeleteBuffer( _bufferHandle );
 
         _bufferHandle = 0;
     }
 
-    private uint CreateBufferObject()
+    private int CreateBufferObject()
     {
         var result = Core.Gdx.GL20.GLGenBuffer();
 

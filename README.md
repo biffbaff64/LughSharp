@@ -7,16 +7,6 @@ It is NOT a 100% conversion, some things may be different.
 
 TODO List is below.
 
-MAJOR OBSTACLES SO FAR:-
-
-    - File Handling / Differences with Java
-    - Listener / Observer pattern implementations
-
-DISCLAIMER:- THE CODE QUALITY IN THIS PROJECT WILL IMPROVE OVER TIME. C# IS NEW TO ME.
-
-The standard of the code here won't be great to start off with, but will hopefully improve as I
-learn more about C#.
-
 Project name is to change. Current candidates are:-
 
     - LughEngine
@@ -410,9 +400,11 @@ GRAPHICS
     GRAPHICS/PROFILING
     ------------------
 
+    These are profiling classes only. If adding GL/Glfw breaks these update them later on.
+
+    - DONE - BaseGLInterceptor
     - DONE - GL20Interceptor
     - DONE - GL30Interceptor
-    - DONE - GLInterceptor
     - DONE - GLProfiler
     - DONE - IGLErrorListener
 

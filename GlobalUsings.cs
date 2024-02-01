@@ -49,14 +49,13 @@ global using JetBrains.Annotations;
 
 // -----------------------------------------------------------------------
 // OpenGL support
-global using GLFW;
-global using GLFW.Game;
-
-global using OpenGL;
+//global using GLFW;
+//global using GLFW.Game;
+//global using OpenGL;
 
 // -----------------------------------------------------------------------
 // LibGDXSharp
-global using LibGDXSharp.Scenes;
+global using LibGDXSharp.Gdx.Scenes;
 
 global using Vector2 = LibGDXSharp.Gdx.Maths.Vector2;
 global using Vector3 = LibGDXSharp.Gdx.Maths.Vector3;

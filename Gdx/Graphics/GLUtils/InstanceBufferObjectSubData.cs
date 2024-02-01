@@ -78,7 +78,7 @@ public class InstanceBufferObjectSubData : IInstanceData
         _byteBuffer.Flip();
     }
 
-    public uint             BufferHandle { get; set; }
+    public int              BufferHandle { get; set; }
     public VertexAttributes Attributes   { get; set; }
 
     /// <summary>
@@ -330,11 +330,11 @@ public class InstanceBufferObjectSubData : IInstanceData
     public void Dispose()
     {
         Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Core.Gdx.GL20.GLDeleteBuffers( BufferHandle );
+        Core.Gdx.GL20.GLDeleteBuffer( BufferHandle );
         BufferHandle = 0;
     }
 
-    private uint CreateBufferObject()
+    private int CreateBufferObject()
     {
         var result = Core.Gdx.GL20.GLGenBuffer();
 

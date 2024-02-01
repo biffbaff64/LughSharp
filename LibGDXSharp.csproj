@@ -13,25 +13,49 @@
         <Description>A C# Conversion of the Java LibGDX 2D/3D Game development framework.</Description>
         <RepositoryUrl>https://github.com/biffbaff64/LibGDXSharp</RepositoryUrl>
         <LangVersion>12</LangVersion>
+
+        <IsWindows
+            Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">
+            true
+        </IsWindows>
+        <IsOSX
+            Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">
+            true
+        </IsOSX>
+        <IsLinux
+            Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+            true
+        </IsLinux>
+
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(IsWindows)'=='true'">
+        <DefineConstants>Windows</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(IsOSX)'=='true'">
+        <DefineConstants>OSX</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(IsLinux)'=='true'">
+        <DefineConstants>Linux</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <Optimize>True</Optimize>
     </PropertyGroup>
-
+    
     <ItemGroup>
-        <PackageReference Include="glfw-net" Version="3.3.1"/>
-        <PackageReference Include="JetBrains.Annotations" Version="2023.2.0"/>
-        <PackageReference Include="OpenGL.Net" Version="0.8.4"/>
-        <PackageReference Include="RestSharp" Version="110.2.0"/>
-        <PackageReference Include="SharpZipLib" Version="1.4.2"/>
-        <PackageReference Include="System.Drawing.Common" Version="7.0.0"/>
-        <PackageReference Include="System.IO.Hashing" Version="7.0.0"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
+        <PackageReference Include="RestSharp" Version="110.2.0" />
+        <PackageReference Include="SharpZipLib" Version="1.4.2" />
+        <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+        <PackageReference Include="System.IO.Hashing" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Gdx\Utils\Exceptions\"/>
-        <Folder Include="packages\"/>
+        <Folder Include="Gdx\Utils\Exceptions\" />
+        <Folder Include="LughGL\GLFW\" />
+        <Folder Include="LughGL\GL\" />
+        <Folder Include="packages\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -39,9 +63,9 @@
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>LocalResources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
-        <EmbeddedResource Remove="GDXExtensions\**"/>
-        <EmbeddedResource Remove="GDXBackends\**"/>
-        <EmbeddedResource Remove="DeleteCandidates\**"/>
+        <EmbeddedResource Remove="GDXExtensions\**" />
+        <EmbeddedResource Remove="GDXBackends\**" />
+        <EmbeddedResource Remove="DeleteCandidates\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -50,15 +74,16 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>LocalResources.resx</DependentUpon>
         </Compile>
-        <Compile Remove="GDXExtensions\**"/>
-        <Compile Remove="GDXBackends\**"/>
-        <Compile Remove="DeleteCandidates\**"/>
+        <Compile Remove="GDXExtensions\**" />
+        <Compile Remove="GDXBackends\**" />
+        <Compile Remove="DeleteCandidates\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="GDXExtensions\**"/>
-        <None Remove="GDXBackends\**"/>
-        <None Remove="DeleteCandidates\**"/>
+        <None Remove="GDXExtensions\**" />
+        <None Remove="GDXBackends\**" />
+        <None Remove="DeleteCandidates\**" />
     </ItemGroup>
 
 </Project>
+

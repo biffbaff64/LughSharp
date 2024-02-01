@@ -44,7 +44,7 @@ public class VertexBufferObjectSubData : IVertexData
     private readonly bool        _isDirect;
     private readonly int         _usage;
 
-    private uint _bufferHandle;
+    private int  _bufferHandle;
     private bool _isBound  = false;
     private bool _isDirty  = false;
     private bool _isStatic = false;
@@ -291,11 +291,11 @@ public class VertexBufferObjectSubData : IVertexData
     public void Dispose()
     {
         Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Core.Gdx.GL20.GLDeleteBuffers( _bufferHandle );
+        Core.Gdx.GL20.GLDeleteBuffer( _bufferHandle );
         _bufferHandle = 0;
     }
 
-    private uint CreateBufferObject()
+    private int CreateBufferObject()
     {
         var result = Core.Gdx.GL20.GLGenBuffer();
 

@@ -35,6 +35,7 @@ namespace LibGDXSharp.Gdx.Graphics.Profiling;
 /// </summary>
 /// <seealso cref="GL20Interceptor" />
 /// <seealso cref="GL30Interceptor" />
+[PublicAPI]
 public class GLProfiler
 {
     /// <summary>
@@ -61,7 +62,7 @@ public class GLProfiler
     public IGLErrorListener Listener    { get; set; }
     public bool             Enabled     { get; set; } = false;
     public IGraphics        Graphics    { get; set; }
-    public GLInterceptor    Interceptor { get; set; }
+    public BaseGLInterceptor    Interceptor { get; set; }
 
     /// <summary>
     ///     Returns the total gl calls made since the last reset

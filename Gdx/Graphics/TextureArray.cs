@@ -190,7 +190,7 @@ public class TextureArray : GLTexture
     /// <param name="data"></param>
     /// <exception cref="GdxRuntimeException"></exception>
     public TextureArray( ITextureArrayData data )
-        : base( TextureTarget.Texture2dArray, Core.Gdx.GL.GLGenTexture() )
+        : base( IGL30.GL_TEXTURE_2D_ARRAY, Core.Gdx.GL.GLGenTexture() )
     {
         if ( Core.Gdx.GL30 == null )
         {

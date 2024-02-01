@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-
 using LibGDXSharp.Gdx.Utils;
 using LibGDXSharp.Gdx.Utils.Buffers;
 
@@ -35,7 +34,7 @@ namespace LibGDXSharp.Gdx.Graphics.GLUtils;
 public class VertexBufferObject : IVertexData
 {
     private FloatBuffer _buffer;
-    private uint        _bufferHandle;
+    private int         _bufferHandle;
     private ByteBuffer? _byteBuffer;
     private bool        _isBound = false;
     private bool        _isDirty = false;
@@ -290,7 +289,7 @@ public class VertexBufferObject : IVertexData
         IGL20 gl = Core.Gdx.GL20;
 
         gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        gl.GLDeleteBuffers( _bufferHandle );
+        gl.GLDeleteBuffer( _bufferHandle );
 
         _bufferHandle = 0;
 

@@ -38,7 +38,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     private readonly bool        _ownsBuffer;
     private readonly int         _usage;
 
-    private uint _bufferHandle;
+    private int  _bufferHandle;
     private bool _isBound = false;
     private bool _isDirty = false;
     private bool _isStatic;
@@ -217,7 +217,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     public void Dispose()
     {
         Core.Gdx.GL30?.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Core.Gdx.GL30?.GLDeleteBuffers( _bufferHandle );
+        Core.Gdx.GL30?.GLDeleteBuffer( _bufferHandle );
 
         _bufferHandle = 0;
 

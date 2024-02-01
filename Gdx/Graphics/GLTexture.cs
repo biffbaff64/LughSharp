@@ -43,11 +43,11 @@ public abstract class GLTexture : IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    protected GLTexture( TextureTarget glTarget ) : this( glTarget, Core.Gdx.GL.GLGenTexture() )
+    protected GLTexture( int glTarget ) : this( glTarget, Core.Gdx.GL.GLGenTexture() )
     {
     }
 
-    protected GLTexture( TextureTarget glTarget, uint glTextureHandle )
+    protected GLTexture( int glTarget, int glTextureHandle )
     {
         GLTarget        = glTarget;
         GLTextureHandle = glTextureHandle;
@@ -57,9 +57,9 @@ public abstract class GLTexture : IDisposable
     public abstract int Height { get; }
     public abstract int Depth  { get; }
 
-    public uint          GLTextureHandle        { get; set; }
-    public TextureTarget GLTarget               { get; }
-    public float         AnisotropicFilterLevel { get; private set; } = 1.0f;
+    public int   GLTextureHandle        { get; set; }
+    public int   GLTarget               { get; }
+    public float AnisotropicFilterLevel { get; private set; } = 1.0f;
 
     /// <summary>
     ///     Returns the <see cref="TextureFilter" /> used for minification.
@@ -114,7 +114,7 @@ public abstract class GLTexture : IDisposable
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>
     public void Bind( int unit )
     {
-        Core.Gdx.GL.GLActiveTexture( TextureUnit.Texture0 + unit );
+        Core.Gdx.GL.GLActiveTexture( IGL20.GL_TEXTURE0 + unit );
         Core.Gdx.GL.GLBindTexture( GLTarget, GLTextureHandle );
     }
 
@@ -296,7 +296,7 @@ public abstract class GLTexture : IDisposable
     {
         if ( GLTextureHandle != 0 )
         {
-            Core.Gdx.GL.GLDeleteTextures( GLTextureHandle );
+            Core.Gdx.GL.GLDeleteTexture( GLTextureHandle );
             GLTextureHandle = 0;
         }
     }
@@ -380,7 +380,7 @@ public abstract class GLTexture : IDisposable
     /// <summary>
     ///     Convenience method for when 'GLHandle' isn't descriptive enough.
     /// </summary>
-    public uint GetTextureObjectHandle() => GLTextureHandle;
+    public int GetTextureObjectHandle() => GLTextureHandle;
 
     protected virtual void Dispose( bool disposing )
     {

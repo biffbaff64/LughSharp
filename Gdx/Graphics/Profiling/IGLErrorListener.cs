@@ -27,7 +27,6 @@ using System.Reflection;
 
 using LibGDXSharp.Gdx.Utils;
 
-using ErrorCode = OpenGL.ErrorCode;
 using Exception = System.Exception;
 
 namespace LibGDXSharp.Gdx.Graphics.Profiling;
@@ -41,8 +40,8 @@ public interface IGLErrorListener
     /// <summary>
     ///     Put your error logging code here.
     /// </summary>
-    /// <seealso cref="GLInterceptor.ResolveErrorNumber(ErrorCode) " />
-    void OnError( ErrorCode error );
+    /// <seealso cref="BaseGLInterceptor.ResolveErrorNumber(int) " />
+    void OnError( int error );
 }
 
 /// <summary>
@@ -50,7 +49,7 @@ public interface IGLErrorListener
 /// </summary>
 public class GLLoggingListener : IGLErrorListener
 {
-    public void OnError( ErrorCode error )
+    public void OnError( int error )
     {
         string? place = null;
 
@@ -80,10 +79,10 @@ public class GLLoggingListener : IGLErrorListener
 
         Core.Gdx.App.Error( "LoggingListener",
                             place != null
-                                ? $"Error {GLInterceptor.ResolveErrorNumber( error )} from {place}"
+                                ? $"Error {BaseGLInterceptor.ResolveErrorNumber( error )} from {place}"
 
                                 // This will capture current stack trace for logging, if possible
-                                : $"Error {GLInterceptor.ResolveErrorNumber( error )} at: {new Exception()}"
+                                : $"Error {BaseGLInterceptor.ResolveErrorNumber( error )} at: {new Exception()}"
             );
     }
 }
@@ -93,5 +92,8 @@ public class GLLoggingListener : IGLErrorListener
 /// </summary>
 public class ThrowingListener : IGLErrorListener
 {
-    public void OnError( ErrorCode error ) => throw new GdxRuntimeException( $"GLProfiler: Got GL error {GLInterceptor.ResolveErrorNumber( error )}" );
+    public void OnError( int error )
+    {
+        throw new GdxRuntimeException( $"GLProfiler: Got GL error {BaseGLInterceptor.ResolveErrorNumber( error )}" );
+    }
 }

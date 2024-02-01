@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-
 using LibGDXSharp.Gdx.Utils;
 using LibGDXSharp.Gdx.Utils.Buffers;
 
@@ -33,7 +32,7 @@ namespace LibGDXSharp.Gdx.Graphics.GLUtils;
 public class InstanceBufferObject : IInstanceData
 {
     private FloatBuffer _buffer = null!;
-    private uint        _bufferHandle;
+    private int         _bufferHandle;
     private ByteBuffer? _byteBuffer;
     private bool        _isBound = false;
     private bool        _isDirty = false;
@@ -297,7 +296,7 @@ public class InstanceBufferObject : IInstanceData
     public void Dispose()
     {
         Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Core.Gdx.GL20.GLDeleteBuffers( _bufferHandle );
+        Core.Gdx.GL20.GLDeleteBuffer( _bufferHandle );
 
         _bufferHandle = 0;
 

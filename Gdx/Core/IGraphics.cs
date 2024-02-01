@@ -26,8 +26,6 @@
 using LibGDXSharp.Gdx.Graphics;
 using LibGDXSharp.Gdx.Graphics.GLUtils;
 
-using Monitor = GLFW.Monitor;
-
 namespace LibGDXSharp.Gdx.Core;
 
 [PublicAPI]
@@ -70,11 +68,10 @@ public interface IGraphics
             Name     = name;
         }
 
-        public Monitor MonitorHandle { get; set; }
-
-        public int     VirtualX { get; set; }
-        public int     VirtualY { get; set; }
-        public string? Name     { get; set; }
+        public int     MonitorHandle { get; set; }
+        public int     VirtualX      { get; set; }
+        public int     VirtualY      { get; set; }
+        public string? Name          { get; set; }
     }
 
     /// <summary>
