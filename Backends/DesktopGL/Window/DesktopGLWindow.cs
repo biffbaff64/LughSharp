@@ -28,6 +28,7 @@ using LibGDXSharp.Backends.DesktopGL.Input;
 using LibGDXSharp.Backends.DesktopGL.Utils;
 using LibGDXSharp.Gdx.Core;
 using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Graphics.GL;
 using LibGDXSharp.Gdx.Utils;
 using LibGDXSharp.Gdx.Utils.Collections.Extensions;
 

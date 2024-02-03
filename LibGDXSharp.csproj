@@ -52,9 +52,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Gdx\Utils\Exceptions\" />
-        <Folder Include="LughGL\GLFW\" />
-        <Folder Include="LughGL\GL\" />
+        <Folder Include="DeleteCandidates\" />
         <Folder Include="packages\" />
     </ItemGroup>
 
@@ -65,7 +63,6 @@
         </EmbeddedResource>
         <EmbeddedResource Remove="GDXExtensions\**" />
         <EmbeddedResource Remove="GDXBackends\**" />
-        <EmbeddedResource Remove="DeleteCandidates\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -76,13 +73,11 @@
         </Compile>
         <Compile Remove="GDXExtensions\**" />
         <Compile Remove="GDXBackends\**" />
-        <Compile Remove="DeleteCandidates\**" />
     </ItemGroup>
 
     <ItemGroup>
         <None Remove="GDXExtensions\**" />
         <None Remove="GDXBackends\**" />
-        <None Remove="DeleteCandidates\**" />
     </ItemGroup>
 
 </Project>

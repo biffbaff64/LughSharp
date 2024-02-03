@@ -23,26 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Gdx.Graphics.G2D;
+namespace LibGDXSharp.Gdx.Maps.Tiled.Loaders.New;
 
-namespace LibGDXSharp.Gdx.Maps.Tiled;
-
-[PublicAPI]
-public interface ITiledMapTile
+public class TideMapLoader
 {
-    public enum Blendmode
-    {
-        None,
-        Alpha
-    }
-
-    int           ID            { get; set; }
-    Blendmode     BlendMode     { get; set; }
-    TextureRegion TextureRegion { get; set; }
-    float         OffsetX       { get; set; }
-    float         OffsetY       { get; set; }
-
-    public MapProperties GetProperties();
-
-    public MapObjects GetObjects();
 }

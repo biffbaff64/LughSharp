@@ -36,7 +36,7 @@ public class StaticTiledMapTile : ITiledMapTile
     /// <summary>
     ///     Creates a static tile with the given region
     /// </summary>
-    /// <param name="texture">The <see cref="G2D.TextureRegion" /> to use.</param>
+    /// <param name="texture">The <see cref="TextureRegion" /> to use.</param>
     public StaticTiledMapTile( TextureRegion texture ) => TextureRegion = texture;
 
     /// <summary>

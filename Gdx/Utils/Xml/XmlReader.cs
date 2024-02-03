@@ -44,7 +44,9 @@ namespace LibGDXSharp.Gdx.Utils.Xml;
 ///         methods will return null.
 ///     </para>
 /// </summary>
-[PublicAPI, SuppressMessage( "ReSharper", "RedundantAssignment" ), SuppressMessage( "ReSharper", "UnreachableSwitchCaseDueToIntegerAnalysis" ),
+[PublicAPI,
+ SuppressMessage( "ReSharper", "RedundantAssignment" ),
+ SuppressMessage( "ReSharper", "UnreachableSwitchCaseDueToIntegerAnalysis" ),
  SuppressMessage( "ReSharper", "ConditionIsAlwaysTrueOrFalse" )]
 public partial class XmlReader
 {
@@ -122,6 +124,13 @@ public partial class XmlReader
         }
     }
 
+    /// <summary>
+    /// Parse an Xml data array of length 'length', starting at offset, into an <see cref="Element"/>
+    /// </summary>
+    /// <param name="data"> The data to parse. </param>
+    /// <param name="offset"> The starting point in the array. </param>
+    /// <param name="length"> The length of data to parse. </param>
+    /// <returns> The created <see cref="Element"/> </returns>
     //TODO: When this library is at a stage when testing can be done, rewrite this method by testing, testing, testing!! 
     private Element? Parse( char[] data, int offset, int length )
     {
@@ -557,12 +566,16 @@ public partial class XmlReader
     }
 
     // --------------------------------------------------------------------
-    //
     // --------------------------------------------------------------------
 
     [PublicAPI]
     public class Element
     {
+        public string?                        Name       { get; }
+        public Dictionary< string, string? >? Attributes { get; set; }
+        public Element?                       Parent     { get; set; }
+        public string?                        Text       { get; set; }
+
         private List< Element >? _children;
 
         public Element( string name, Element? parent )
@@ -571,11 +584,6 @@ public partial class XmlReader
             Parent = parent;
             Text   = string.Empty;
         }
-
-        public string?                       Name       { get; }
-        public ObjectMap< string, string? >? Attributes { get; set; }
-        public Element?                      Parent     { get; set; }
-        public string?                       Text       { get; set; }
 
         /// <summary>
         /// </summary>
@@ -590,17 +598,11 @@ public partial class XmlReader
         {
             ArgumentNullException.ThrowIfNull( name );
 
-            if ( Attributes == null )
-            {
-                throw new GdxRuntimeException( $"Element {Name} doesn't have attribute: {name}" );
-            }
+            GdxRuntimeException.ThrowIfNull( Attributes );
 
             var value = Attributes.Get( name );
 
-            if ( value == null )
-            {
-                throw new GdxRuntimeException( $"Element {Name} doesn't have attribute: {name}" );
-            }
+            GdxRuntimeException.ThrowIfNull( value );
 
             return value;
         }
@@ -634,7 +636,7 @@ public partial class XmlReader
         /// <param name="value"></param>
         public void SetAttribute( string name, string value )
         {
-            Attributes ??= new ObjectMap< string, string? >( 8 );
+            Attributes ??= new Dictionary< string, string? >( 8 );
 
             Attributes.Put( name, value );
         }
@@ -661,68 +663,6 @@ public partial class XmlReader
         public void RemoveChild( Element child ) => _children?.Remove( child );
 
         public void Remove() => Parent?.RemoveChild( this );
-
-        /// <summary>
-        /// </summary>
-        /// <param name="indent"></param>
-        /// <returns></returns>
-        public string ToString( string indent = "" )
-        {
-            var buffer = new StringBuilder( 128 );
-
-            buffer.Append( indent );
-            buffer.Append( '<' );
-            buffer.Append( Name );
-
-            if ( Attributes != null )
-            {
-                List< string >  keys = Attributes.GetKeys().ToArray();
-                List< string? > vals = Attributes.GetValues().ToArray();
-
-                for ( var i = 0; i < Attributes.Size; i++ )
-                {
-                    buffer.Append( ' ' );
-                    buffer.Append( keys[ i ] );
-                    buffer.Append( "=\"" );
-                    buffer.Append( vals[ i ] );
-                    buffer.Append( '\"' );
-                }
-            }
-
-            if ( ( _children == null ) && string.IsNullOrEmpty( Text ) )
-            {
-                buffer.Append( "/>" );
-            }
-            else
-            {
-                buffer.Append( ">\n" );
-
-                var childIndent = indent + '\t';
-
-                if ( !string.IsNullOrEmpty( Text ) )
-                {
-                    buffer.Append( childIndent );
-                    buffer.Append( Text );
-                    buffer.Append( '\n' );
-                }
-
-                if ( _children != null )
-                {
-                    foreach ( Element child in _children )
-                    {
-                        buffer.Append( child.ToString( childIndent ) );
-                        buffer.Append( '\n' );
-                    }
-                }
-
-                buffer.Append( indent );
-                buffer.Append( "</" );
-                buffer.Append( Name );
-                buffer.Append( '>' );
-            }
-
-            return buffer.ToString();
-        }
 
         /// <summary>
         /// </summary>
@@ -1035,6 +975,68 @@ public partial class XmlReader
             var value = Get( name, null );
 
             return value == null ? defaultValue : bool.Parse( value );
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="indent"></param>
+        /// <returns></returns>
+        public string ToString( string indent = "" )
+        {
+            var buffer = new StringBuilder( 128 );
+
+            buffer.Append( indent );
+            buffer.Append( '<' );
+            buffer.Append( Name );
+
+            if ( Attributes != null )
+            {
+                List< string >  keys = Attributes.Keys.ToList();
+                List< string? > vals = Attributes.Values.ToList();
+
+                for ( var i = 0; i < Attributes.Count; i++ )
+                {
+                    buffer.Append( ' ' );
+                    buffer.Append( keys[ i ] );
+                    buffer.Append( "=\"" );
+                    buffer.Append( vals[ i ] );
+                    buffer.Append( '\"' );
+                }
+            }
+
+            if ( ( _children == null ) && string.IsNullOrEmpty( Text ) )
+            {
+                buffer.Append( "/>" );
+            }
+            else
+            {
+                buffer.Append( ">\n" );
+
+                var childIndent = indent + '\t';
+
+                if ( !string.IsNullOrEmpty( Text ) )
+                {
+                    buffer.Append( childIndent );
+                    buffer.Append( Text );
+                    buffer.Append( '\n' );
+                }
+
+                if ( _children != null )
+                {
+                    foreach ( Element child in _children )
+                    {
+                        buffer.Append( child.ToString( childIndent ) );
+                        buffer.Append( '\n' );
+                    }
+                }
+
+                buffer.Append( indent );
+                buffer.Append( "</" );
+                buffer.Append( Name );
+                buffer.Append( '>' );
+            }
+
+            return buffer.ToString();
         }
     }
 }

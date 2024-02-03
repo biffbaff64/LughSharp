@@ -27,6 +27,7 @@ using LibGDXSharp.Backends.DesktopGL.Utils;
 using LibGDXSharp.Backends.DesktopGL.Window;
 using LibGDXSharp.Gdx.Core;
 using LibGDXSharp.Gdx.Graphics;
+using LibGDXSharp.Gdx.Graphics.GL;
 using LibGDXSharp.Gdx.Graphics.GLUtils;
 using LibGDXSharp.Gdx.Utils;
 using LibGDXSharp.Gdx.Utils.Buffers;

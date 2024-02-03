@@ -31,16 +31,14 @@ namespace LibGDXSharp.Gdx.Maps;
 /// </summary>
 public class MapProperties
 {
+    // The properties map.
     private Dictionary< string, object? > _properties = new();
 
-    public bool ContainsKey( string key ) => _properties.ContainsKey( key );
-
-    public object? Get( string key ) => _properties[ key ];
-
     /// <summary>
+    ///     Gets the property matching the specified key.
     /// </summary>
-    /// <param name="key"></param>
-    /// <typeparam name="T"></typeparam>
+    /// <param name="key"> The Key. </param>
+    /// <typeparam name="T"> The Type of the required property. </typeparam>
     /// <returns></returns>
     public T? Get<T>( string key ) => ( T? )Get( key );
 
@@ -58,6 +56,15 @@ public class MapProperties
 
         return obj == null ? defaultValue : ( T )obj;
     }
+
+    public object? Get( string key ) => _properties[ key ];
+
+    /// <summary>
+    /// Returns true if the properties map contains the specified key.
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public bool ContainsKey( string key ) => _properties.ContainsKey( key );
 
     public void Put( string key, object? value ) => _properties[ key ] = value;
 

@@ -459,6 +459,8 @@ MAPS
     MAPS/TILED/LOADERS
     ------------------
 
+    Needs XML Resolution
+
     - IP   - AtlasTmxMapLoader 
     - IP   - BaseTmxMapLoader
     - IP   - TmxMapLoader
@@ -824,25 +826,6 @@ UTILS
     - **** - OrderedSet<T>                  Use SortedSet<T>
     - **** - ShortArray                     Use List< short >
 
-    UTILS/EXCEPTIONS
-    ----------------
-
-    These need more documentation!
-
-    - DONE - AssetNotLoadedException        - Remove
-    - DONE - BufferOverflowException        - Remove
-    - DONE - BufferUnderflowException       - Remove
-    - DONE - IllegalStateException          - Remove
-    - DONE - InvalidMarkException           - Remove
-    - DONE - InvalidTypeException           - Remove
-    - DONE - MemberNullException
-    - DONE - MissingResourceException       - Remove
-    - DONE - NoSuchElementException         
-    - DONE - NumberFormatException          
-    - DONE - ReadOnlyBufferException        
-    - DONE - UnsupportedEncodingException   
-    - DONE - UnsupportedOperationException  
-
     UTILS/POOLING
     -------------
 
@@ -868,9 +851,9 @@ UTILS
 
     - TODO: Switch to System.Xml
 
-    - IP   - XmlReader          Some 'unreachable code' fixes needed
-    - IP   - XmlReaderData
-    - IP   - XmlWriter
+    - **** - XmlReader
+    - **** - XmlReaderData
+    - **** - XmlWriter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

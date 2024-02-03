@@ -26,6 +26,7 @@
 using LibGDXSharp.Backends.DesktopGL.Graphics;
 using LibGDXSharp.Backends.DesktopGL.Window;
 using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.Gdx.Graphics.GL;
 using LibGDXSharp.Gdx.Graphics.GLUtils;
 
 using Monitor = GLFW.Monitor;

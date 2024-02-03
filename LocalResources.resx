@@ -127,4 +127,7 @@
     <data name="ETC1Data_warning__PowerVR_GPUs" xml:space="preserve">
         <value>ETC1Data warning: non-power-of-two ETC1textures may crash the driver of PowerVR GPUs</value>
     </data>
+    <data name="Map" xml:space="preserve">
+        <value>Map</value>
+    </data>
 </root>

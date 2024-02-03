@@ -29,9 +29,10 @@ using LibGDXSharp.Gdx.Graphics;
 using LibGDXSharp.Gdx.Graphics.G2D;
 using LibGDXSharp.Gdx.Utils;
 using LibGDXSharp.Gdx.Utils.Collections.Extensions;
-using LibGDXSharp.Gdx.Utils.Xml;
 
-namespace LibGDXSharp.Gdx.Maps.Tiled.Loaders;
+using XmlReader = System.Xml.XmlReader;
+
+namespace LibGDXSharp.Gdx.Maps.Tiled.Loaders.New;
 
 public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 {
