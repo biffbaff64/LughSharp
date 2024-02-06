@@ -40,8 +40,6 @@ using LibGDXSharp.Gdx.Maps.Tiled.Tiles;
 using LibGDXSharp.Gdx.Maths;
 using LibGDXSharp.Gdx.Utils;
 
-using XmlReader = System.Xml.XmlReader;
-
 namespace LibGDXSharp.Gdx.Maps.Tiled.Loaders.New;
 
 [PublicAPI]
@@ -64,16 +62,16 @@ public abstract class BaseTmxMapLoader<TP>
     protected bool convertObjectToTileSpace;
     protected bool flipY = true;
 
-    protected XmlDocument xmlDocument;
+    protected XmlDocument? xmlDocument;
 
-    private XmlNodeList?  propertiesList;
-    private XmlNodeList?  mapLayersList;
-    private XmlNodeList?  imageLayerList;
-    private XmlNodeList?  nodesObjectGroup;
-    private XmlNodeList?  tilesetList;
-    private XmlNodeList?  nodesGroup;
-    private XmlAttribute? attrParallaxOriginX;
-    private XmlAttribute? attrParallaxOriginY;
+    private XmlNodeList?  _propertiesList;
+    private XmlNodeList?  _mapLayersList;
+    private XmlNodeList?  _imageLayerList;
+    private XmlNodeList?  _nodesObjectGroup;
+    private XmlNodeList?  _tilesetList;
+    private XmlNodeList?  _nodesGroup;
+    private XmlAttribute? _attrParallaxOriginX;
+    private XmlAttribute? _attrParallaxOriginY;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -141,14 +139,14 @@ public abstract class BaseTmxMapLoader<TP>
             throw new GdxRuntimeException( "Tmx Map has no attributes!" );
         }
 
-        this.propertiesList      = mapNode.SelectNodes( "properties/property" );
-        this.mapLayersList       = mapNode.SelectNodes( "layer" );
-        this.imageLayerList      = mapNode.SelectNodes( "imagelayer" );
-        this.nodesObjectGroup    = mapNode.SelectNodes( "objectgroup" );
-        this.tilesetList         = mapNode.SelectNodes( "tileset" );
-        this.nodesGroup          = mapNode.SelectNodes( "group" );
-        this.attrParallaxOriginX = mapNode.Attributes?[ "parallaxoriginx" ];
-        this.attrParallaxOriginY = mapNode.Attributes?[ "parallaxoriginy" ];
+        this._propertiesList      = mapNode.SelectNodes( "properties/property" );
+        this._mapLayersList       = mapNode.SelectNodes( "layer" );
+        this._imageLayerList      = mapNode.SelectNodes( "imagelayer" );
+        this._nodesObjectGroup    = mapNode.SelectNodes( "objectgroup" );
+        this._tilesetList         = mapNode.SelectNodes( "tileset" );
+        this._nodesGroup          = mapNode.SelectNodes( "group" );
+        this._attrParallaxOriginX = mapNode.Attributes?[ "parallaxoriginx" ];
+        this._attrParallaxOriginY = mapNode.Attributes?[ "parallaxoriginy" ];
 
         // ----------------------------
 
@@ -168,21 +166,21 @@ public abstract class BaseTmxMapLoader<TP>
         // ----------------------------
 
         //@formatter:off
-        var mapVersion         = mapNode.Attributes?[ "version" ]?.Value;
-        var tiledVersion       = mapNode.Attributes?[ "tiledversion" ]?.Value;
-        var mapOrientation     = mapNode.Attributes?[ "orientation" ]?.Value;
-        var renderOrder        = mapNode.Attributes?[ "renderorder" ]?.Value;
-        var mapWidth           = int.Parse( mapNode.Attributes?[ "width" ]?.Value! );
-        var mapHeight          = int.Parse( mapNode.Attributes?[ "height" ]?.Value! );
-        var tileWidth          = int.Parse( mapNode.Attributes?[ "tilewidth" ]?.Value! );
-        var tileHeight         = int.Parse( mapNode.Attributes?[ "tileheight" ]?.Value! );
-        var isInfinite         = mapNode.Attributes?[ "infinite" ]?.Value == "1";
-        var nextLayerID        = mapNode.Attributes?[ "nextlayerid" ]?.Value;
-        var nextObjectID       = mapNode.Attributes?[ "nextobjectid" ]?.Value;
-        var hexSideLength      = mapNode.Attributes?[ "hexsidelength" ]?.Value;
-        var staggerAxis        = mapNode.Attributes?[ "staggeraxis" ]?.Value;
-        var staggerIndex       = mapNode.Attributes?[ "staggerindex" ]?.Value;
-        var mapBackgroundColor = mapNode.Attributes?[ "backgroundcolor" ]?.Value;
+        var mapVersion          = mapNode.Attributes?["version"]?.Value;
+        var tiledVersion        = mapNode.Attributes?["tiledversion"]?.Value;
+        var mapOrientation      = mapNode.Attributes?["orientation"]?.Value;
+        var renderOrder         = mapNode.Attributes?["renderorder"]?.Value;
+        var mapWidth            = int.Parse(mapNode.Attributes?["width"]?.Value!);
+        var mapHeight           = int.Parse(mapNode.Attributes?["height"]?.Value!);
+        var tileWidth           = int.Parse(mapNode.Attributes?["tilewidth"]?.Value!);
+        var tileHeight          = int.Parse(mapNode.Attributes?["tileheight"]?.Value!);
+        var isInfinite          = mapNode.Attributes?["infinite"]?.Value == "1";
+        var nextLayerID         = mapNode.Attributes?["nextlayerid"]?.Value;
+        var nextObjectID        = mapNode.Attributes?["nextobjectid"]?.Value;
+        var hexSideLength       = mapNode.Attributes?["hexsidelength"]?.Value;
+        var staggerAxis         = mapNode.Attributes?["staggeraxis"]?.Value;
+        var staggerIndex        = mapNode.Attributes?["staggerindex"]?.Value;
+        var mapBackgroundColor  = mapNode.Attributes?["backgroundcolor"]?.Value;
         //@formatter:on
 
         // ----------------------------
@@ -250,9 +248,9 @@ public abstract class BaseTmxMapLoader<TP>
         // ----------------------------
         // Load all tilesets used in this map
 
-        if ( tilesetList != null )
+        if ( _tilesetList != null )
         {
-            foreach ( XmlNode tset in tilesetList )
+            foreach ( XmlNode tset in _tilesetList )
             {
                 LoadTileSet( tset, tmxFile, imageResolver );
             }
@@ -261,9 +259,9 @@ public abstract class BaseTmxMapLoader<TP>
         // ----------------------------
         // Load all layers used in this map
 
-        if ( mapLayersList != null )
+        if ( _mapLayersList != null )
         {
-            foreach ( XmlNode layer in mapLayersList )
+            foreach ( XmlNode layer in _mapLayersList )
             {
                 LoadLayer( Map, Map.Layers, layer, tmxFile, imageResolver );
             }
@@ -353,8 +351,9 @@ public abstract class BaseTmxMapLoader<TP>
 
         if ( mapLayer.Name.Equals( "layer" ) )
         {
-            var width      = int.Parse( mapLayer.Attributes?[ "width" ]?.Value ?? "0" );
-            var height     = int.Parse( mapLayer.Attributes?[ "height" ]?.Value ?? "0" );
+            var width  = NumberUtils.ParseInt( mapLayer.Attributes?[ "width" ]?.Value ) ?? 0;
+            var height = NumberUtils.ParseInt( mapLayer.Attributes?[ "height" ]?.Value ) ?? 0;
+
             var tileWidth  = map.Properties.Get< int >( "tilewidth" );
             var tileHeight = map.Properties.Get< int >( "tileheight" );
 
@@ -362,7 +361,8 @@ public abstract class BaseTmxMapLoader<TP>
 
             LoadBasicLayerInfo( layer, mapLayer );
 
-            var              ids      = GetTileIDs( mapLayer, width, height );
+            var ids = GetTileIDs( mapLayer, width, height );
+
             TiledMapTileSets tilesets = map.Tilesets;
 
             for ( var y = 0; y < height; y++ )
@@ -378,9 +378,7 @@ public abstract class BaseTmxMapLoader<TP>
 
                     if ( tile != null )
                     {
-                        TiledMapTileLayer.Cell cell = CreateTileLayerCell( flipHorizontally,
-                                                                           flipVertically,
-                                                                           flipDiagonally );
+                        TiledMapTileLayer.Cell cell = CreateTileLayerCell( flipHorizontally, flipVertically, flipDiagonally );
 
                         cell.SetTile( tile );
                         layer.SetCell( x, flipY ? height - 1 - y : y, cell );
@@ -412,7 +410,7 @@ public abstract class BaseTmxMapLoader<TP>
 
             LoadBasicLayerInfo( layer, element );
 
-            var properties = element.SelectSingleNode( "properties" );
+            XmlNode? properties = element.SelectSingleNode( "properties" );
 
             if ( properties != null )
             {
@@ -461,13 +459,13 @@ public abstract class BaseTmxMapLoader<TP>
 
         if ( node.Name.Equals( "imagelayer" ) )
         {
-            var x = float.Parse( node.HasAttribute( "offsetx" )
-                                     ? node.GetAttribute( "offsetx", "0" )!
-                                     : node.GetAttribute( "x", "0" )! );
+            var x = float.Parse( ( node.SelectSingleNode( "offsetx" )?.Value
+                                ?? node.SelectSingleNode( "x" )?.Value
+                                ?? "0" ) );
 
-            var y = float.Parse( node.HasAttribute( "offsety" )
-                                     ? node.GetAttribute( "offsety", "0" )!
-                                     : node.GetAttribute( "y", "0" )! );
+            var y = float.Parse( ( node.SelectSingleNode( "offsety" )?.Value
+                                ?? node.SelectSingleNode( "y" )?.Value
+                                ?? "0" ) );
 
             if ( flipY )
             {
@@ -476,11 +474,11 @@ public abstract class BaseTmxMapLoader<TP>
 
             TextureRegion? texture = null;
 
-            XmlNode? image = node.GetChildByName( "image" );
+            XmlNode? image = node.SelectSingleNode( "image" );
 
             if ( image != null )
             {
-                var       source = image.GetAttribute( "source" );
+                var       source = image.SelectSingleNode( "source" )?.Value;
                 FileInfo? handle = GetRelativeFileHandle( tmxFile, source );
 
                 texture = imageResolver.GetImage( handle!.FullName );
@@ -497,7 +495,7 @@ public abstract class BaseTmxMapLoader<TP>
 
             LoadBasicLayerInfo( layer, node );
 
-            XmlNode? properties = node.GetChildByName( "properties" );
+            XmlNode? properties = node.SelectSingleNode( "properties" );
 
             if ( properties != null )
             {
@@ -516,8 +514,8 @@ public abstract class BaseTmxMapLoader<TP>
         layer.Name    = name;
         layer.Opacity = float.Parse( opacityText );
         layer.Visible = element.Attributes?[ "visible" ]?.Value == "1";
-        layer.OffsetX = int.Parse( element.Attributes?[ "offsetx" ]?.Value ?? "0" );
-        layer.OffsetY = int.Parse( element.Attributes?[ "offsety" ]?.Value ?? "0" );
+        layer.OffsetX = NumberUtils.ParseInt( element.Attributes?[ "offsetx" ]?.Value ) ?? 0;
+        layer.OffsetY = NumberUtils.ParseInt( element.Attributes?[ "offsety" ]?.Value ) ?? 0;
     }
 
     protected void LoadObject( TiledMap map, MapLayer layer, XmlNode element ) => LoadObject( map, layer.Objects, element, MapHeightInPixels );
@@ -525,38 +523,44 @@ public abstract class BaseTmxMapLoader<TP>
     protected void LoadObject( TiledMap map, ITiledMapTile tile, XmlNode element )
         => LoadObject( map, tile.GetObjects(), element, tile.TextureRegion.RegionHeight );
 
-    protected void LoadObject( TiledMap map, MapObjects objects, XmlNode element, float heightInPixels )
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="map"></param>
+    /// <param name="objects"></param>
+    /// <param name="node"></param>
+    /// <param name="heightInPixels"></param>
+    /// <exception cref="ArgumentException"></exception>
+    protected void LoadObject( TiledMap map, MapObjects objects, XmlNode node, float heightInPixels )
     {
-        if ( element.Name == null )
+        if ( node.Name == null )
         {
             throw new ArgumentException( "element cannot by null!" );
         }
 
-        if ( element.Name.Equals( "object" ) )
+        if ( node.Name.Equals( "object" ) )
         {
             MapObject? mapObject = null;
 
             var scaleX = convertObjectToTileSpace ? 1.0f / MapTileWidth : 1.0f;
             var scaleY = convertObjectToTileSpace ? 1.0f / MapTileHeight : 1.0f;
 
-            var x = element.GetFloatAttribute( "x", 0 ) * scaleX;
+            var x = ( NumberUtils.ParseFloat( node.Attributes?[ "x" ]?.Value ) * scaleX ) ?? 0;
 
-            var y = ( flipY
-                        ? heightInPixels - element.GetFloatAttribute( "y", 0 )
-                        : element.GetFloatAttribute( "y", 0 ) )
-                  * scaleY;
+            var parsedY = NumberUtils.ParseFloat( node.Attributes?[ "y" ]?.Value ) ?? 0;
+            var y       = ( flipY ? ( heightInPixels - parsedY ) : parsedY ) * scaleY;
 
-            var width  = element.GetFloatAttribute( "width", 0 ) * scaleX;
-            var height = element.GetFloatAttribute( "height", 0 ) * scaleY;
+            var width  = ( NumberUtils.ParseFloat( node.Attributes?[ "width" ]?.Value ) * scaleX ) ?? 0;
+            var height = ( NumberUtils.ParseFloat( node.Attributes?[ "height" ]?.Value ) * scaleY ) ?? 0;
 
-            if ( element.ChildCount > 0 )
+            if ( node.ChildNodes.Count > 0 )
             {
                 XmlNode? child;
 
-                if ( ( child = element.GetChildByName( "polygon" ) ) != null )
+                if ( ( child = node.SelectSingleNode( "polygon" ) ) != null )
                 {
-                    var points   = child.GetAttribute( "points" ).Split( " " );
-                    var vertices = new float[ points.Length * 2 ];
+                    var points   = child.Attributes?[ "points" ]?.Value.Split( " " );
+                    var vertices = new float[ points!.Length * 2 ];
 
                     for ( var i = 0; i < points.Length; i++ )
                     {
@@ -569,10 +573,10 @@ public abstract class BaseTmxMapLoader<TP>
                     polygon.SetPosition( x, y );
                     mapObject = new PolygonMapObject( polygon );
                 }
-                else if ( ( child = element.GetChildByName( "polyline" ) ) != null )
+                else if ( ( child = node.SelectSingleNode( "polyline" ) ) != null )
                 {
-                    var points   = child.GetAttribute( "points" ).Split( " " );
-                    var vertices = new float[ points.Length * 2 ];
+                    var points   = child.Attributes?[ "points" ]?.Value.Split( " " );
+                    var vertices = new float[ points!.Length * 2 ];
 
                     for ( var i = 0; i < points.Length; i++ )
                     {
@@ -585,7 +589,7 @@ public abstract class BaseTmxMapLoader<TP>
                     polyline.SetPosition( x, y );
                     mapObject = new PolylineMapObject( polyline );
                 }
-                else if ( element.GetChildByName( "ellipse" ) != null )
+                else if ( node.SelectSingleNode( "ellipse" ) != null )
                 {
                     mapObject = new EllipseMapObject( x, flipY ? y - height : y, width, height );
                 }
@@ -597,7 +601,7 @@ public abstract class BaseTmxMapLoader<TP>
             {
                 string? gid;
 
-                if ( ( gid = element.GetAttribute( "gid", null ) ) != null )
+                if ( ( gid = node.Attributes?[ "gid" ]?.Value ) != null )
                 {
                     id = ( int )long.Parse( gid );
 
@@ -614,12 +618,12 @@ public abstract class BaseTmxMapLoader<TP>
                     tiledMapTileMapObject.X = x;
                     tiledMapTileMapObject.Y = flipY ? y : y - height;
 
-                    var objectWidth  = element.GetFloatAttribute( "width", textureRegion.RegionWidth );
-                    var objectHeight = element.GetFloatAttribute( "height", textureRegion.RegionHeight );
+                    var objectWidth  = NumberUtils.ParseFloat( node.Attributes?[ "width " ]?.Value ) ?? textureRegion.RegionWidth;
+                    var objectHeight = NumberUtils.ParseFloat( node.Attributes?[ "height " ]?.Value ) ?? textureRegion.RegionHeight;
 
                     tiledMapTileMapObject.ScaleX   = scaleX * ( objectWidth / textureRegion.RegionWidth );
                     tiledMapTileMapObject.ScaleY   = scaleY * ( objectHeight / textureRegion.RegionHeight );
-                    tiledMapTileMapObject.Rotation = element.GetFloatAttribute( "rotation", 0 );
+                    tiledMapTileMapObject.Rotation = NumberUtils.ParseFloat( node.Attributes?[ "rotation" ]?.Value ) ?? 0;
 
                     mapObject = tiledMapTileMapObject;
                 }
@@ -629,22 +633,23 @@ public abstract class BaseTmxMapLoader<TP>
                 }
             }
 
-            mapObject.Name = element.GetAttribute( "name", null )!;
-            var rotation = element.GetAttribute( "rotation", null );
+            mapObject.Name = node.Attributes?[ "name" ]?.Value!;
+
+            var rotation = node.Attributes?[ "rotation" ]?.Value;
 
             if ( rotation != null )
             {
                 mapObject.Properties.Put( "rotation", float.Parse( rotation ) );
             }
 
-            var type = element.GetAttribute( "type", null );
+            var type = node.Attributes?[ "type" ]?.Value;
 
             if ( type != null )
             {
                 mapObject.Properties.Put( "type", type );
             }
 
-            id = element.GetIntAttribute( "id", 0 );
+            id = NumberUtils.ParseInt( node.Attributes?[ "id" ]?.Value ) ?? 0;
 
             if ( id != 0 )
             {
@@ -664,9 +669,9 @@ public abstract class BaseTmxMapLoader<TP>
 
             mapObject.Properties.Put( "width", width );
             mapObject.Properties.Put( "height", height );
-            mapObject.Visible = element.GetIntAttribute( "visible", 1 ) == 1;
+            mapObject.Visible = ( NumberUtils.ParseInt( node.Attributes?[ "visible" ]?.Value ) ?? 1 ) == 1;
 
-            XmlNode? properties = element.GetChildByName( "properties" );
+            XmlNode? properties = node.SelectSingleNode( "properties" );
 
             if ( properties != null )
             {
@@ -686,16 +691,21 @@ public abstract class BaseTmxMapLoader<TP>
 
         if ( element.Name.Equals( "properties" ) )
         {
-            foreach ( XmlNode property in element.GetChildrenByName( "property" ) )
+            XmlNodeList? props = element.SelectNodes( "property" );
+
+            if ( props != null )
             {
-                var name  = property.GetAttribute( "name", null );
-                var value = property.GetAttribute( "value", null );
-                var type  = property.GetAttribute( "type", null );
+                foreach ( XmlNode property in props )
+                {
+                    var name  = property.Attributes?[ "name" ]?.Value;
+                    var value = property.Attributes?[ "value" ]?.Value;
+                    var type  = property.Attributes?[ "type" ]?.Value;
 
-                value ??= property.Text;
+                    value ??= property.InnerText;
 
-                var castValue = CastProperty( name, value, type );
-                properties.Put( name!, castValue );
+                    var castValue = CastProperty( name, value, type );
+                    properties.Put( name!, castValue );
+                }
             }
         }
     }
@@ -727,9 +737,8 @@ public abstract class BaseTmxMapLoader<TP>
             }
 
             default:
-                throw new GdxRuntimeException
-                    ( $"Wrong type given for property {name}, given : {type}, "
-                    + $"supported : string, bool, int, float, color" );
+                throw new GdxRuntimeException( $"Wrong type given for property {name}, given : {type}, "
+                                             + $"supported : string, bool, int, float, color ( or colour )" );
         }
     }
 
@@ -781,14 +790,14 @@ public abstract class BaseTmxMapLoader<TP>
 
     public int[] GetTileIDs( XmlNode element, int width, int height )
     {
-        XmlNode? data = element.GetChildByName( "data" );
+        XmlNode? data = element.SelectSingleNode( "data" );
 
         if ( data == null )
         {
             throw new GdxRuntimeException( "data is missing" );
         }
 
-        var encoding = data.GetAttribute( "encoding", null );
+        var encoding = data.Attributes?[ "encoding" ]?.Value;
 
         if ( encoding == null )
         {
@@ -800,7 +809,7 @@ public abstract class BaseTmxMapLoader<TP>
 
         if ( encoding.Equals( "csv" ) )
         {
-            var array = data.Text?.Split( "," );
+            var array = data.InnerText?.Split( "," );
 
             for ( var i = 0; i < array?.Length; i++ )
             {
@@ -817,8 +826,8 @@ public abstract class BaseTmxMapLoader<TP>
 
                     try
                     {
-                        var compression = data.GetAttribute( "compression", null );
-                        var bytes       = Convert.FromBase64String( data.ToString() );
+                        var compression = data.Attributes?[ "compression" ]?.Value;
+                        var bytes       = Convert.FromBase64String( data.ToString() ?? "" );
 
                         switch ( compression )
                         {
@@ -834,8 +843,7 @@ public abstract class BaseTmxMapLoader<TP>
                                 break;
 
                             case "zlib":
-                                inputStream = new BufferedStream
-                                    ( new InflaterInputStream( new MemoryStream( bytes ) ) );
+                                inputStream = new BufferedStream( new InflaterInputStream( new MemoryStream( bytes ) ) );
 
                                 break;
 
@@ -916,14 +924,14 @@ public abstract class BaseTmxMapLoader<TP>
     {
         if ( ( bool )element.Name?.Equals( "tileset" ) )
         {
-            var firstgid    = element.GetIntAttribute( "firstgid", 1 );
+            var firstgid    = NumberUtils.ParseInt( element.Attributes?[ "firstgid" ]?.Value ) ?? 1;
             var imageSource = "";
             var imageWidth  = 0;
             var imageHeight = 0;
 
             FileInfo? image = null;
 
-            var source = element.GetAttribute( "source", null );
+            var source = element.Attributes?[ "source" ]?.Value;
 
             if ( source != null )
             {
@@ -983,7 +991,7 @@ public abstract class BaseTmxMapLoader<TP>
             };
 
             MapProperties tileSetProperties = tileSet.Properties;
-            XmlNode?      properties        = element.GetChildByName( "properties" );
+            XmlNode?      properties        = element.SelectSingleNode( "properties" );
 
             if ( properties != null )
             {
@@ -993,7 +1001,7 @@ public abstract class BaseTmxMapLoader<TP>
             tileSetProperties.Put( "firstgid", firstgid );
 
             // Tiles
-            List< XmlNode > tileElements = element.GetChildrenByName( "tile" );
+            XmlNodeList? tileElements = element.SelectNodes( "tile" );
 
             //TODO: IMPROVE THIS FORMATTING
             AddStaticTiles( tmxFile,
@@ -1019,7 +1027,7 @@ public abstract class BaseTmxMapLoader<TP>
 
             foreach ( XmlNode tileElement in tileElements )
             {
-                var            localtid = tileElement.GetIntAttribute( "id", 0 );
+                var            localtid = NumberUtils.ParseInt( tileElement.Attributes?[ "id" ]?.Value ) ?? 0;
                 ITiledMapTile? tile     = tileSet.GetTile( firstgid + localtid );
 
                 if ( tile != null )
@@ -1051,7 +1059,7 @@ public abstract class BaseTmxMapLoader<TP>
                                             IImageResolver imageResolver,
                                             TiledMapTileSet tileset,
                                             XmlNode element,
-                                            List< XmlNode > tileElements,
+                                            XmlNodeList? tileElements,
                                             string? name,
                                             int firstgid,
                                             int tilewidth,
@@ -1070,19 +1078,19 @@ public abstract class BaseTmxMapLoader<TP>
     {
         string? terrain;
 
-        if ( ( terrain = tileElement.GetAttribute( "terrain", null ) ) != string.Empty )
+        if ( ( terrain = tileElement.Attributes![ "terrain" ]!.Value ) != string.Empty )
         {
             tile.GetProperties().Put( "terrain", terrain );
         }
 
         string? probability;
 
-        if ( ( probability = tileElement.GetAttribute( "probability", null ) ) != string.Empty )
+        if ( ( probability = tileElement.Attributes![ "probability" ]!.Value ) != string.Empty )
         {
             tile.GetProperties().Put( "probability", probability );
         }
 
-        XmlNode? properties = tileElement.GetChildByName( "properties" );
+        XmlNode? properties = tileElement.SelectSingleNode( "properties" );
 
         if ( properties != null )
         {
@@ -1092,17 +1100,20 @@ public abstract class BaseTmxMapLoader<TP>
 
     protected void AddTileObjectGroup( ITiledMapTile tile, XmlNode tileElement )
     {
-        if ( tileElement.HasAttribute( "objectgroup" ) )
+        if ( tileElement.SelectSingleNode( "objectgroup" ) != null )
         {
-            XmlNode? objectgroupElement = tileElement.GetChildByName( "objectgroup" );
+            XmlNode? objectgroupElement = tileElement.SelectSingleNode( "objectgroup" );
 
             if ( objectgroupElement != null )
             {
-                List< XmlNode > children = objectgroupElement.GetChildrenByName( "object" );
+                XmlNodeList? children = objectgroupElement.SelectNodes( "object" );
 
-                foreach ( XmlNode objectElement in children )
+                if ( children != null )
                 {
-                    LoadObject( Map, tile, objectElement );
+                    foreach ( XmlNode objectElement in children )
+                    {
+                        LoadObject( Map, tile, objectElement );
+                    }
                 }
             }
         }
@@ -1113,40 +1124,44 @@ public abstract class BaseTmxMapLoader<TP>
                                                         XmlNode tileElement,
                                                         int firstgid )
     {
-        XmlNode? animationElement = tileElement.GetChildByName( "animation" );
+        XmlNode? animationElement = tileElement.SelectSingleNode( "animation" );
 
-        if ( animationElement != null )
+        if ( animationElement == null )
         {
-            var             staticTiles = new List< StaticTiledMapTile >();
-            var             intervals   = new List< int >();
-            List< XmlNode > frames      = animationElement.GetChildrenByName( "frame" );
-
-            foreach ( XmlNode frameElement in frames )
-            {
-                staticTiles.Add
-                    (
-                    ( StaticTiledMapTile )tileSet.GetTile
-                        ( firstgid + int.Parse( frameElement.GetAttribute( "tileid" ) ) )!
-                    );
-
-                intervals.Add( int.Parse( frameElement.GetAttribute( "duration" ) ) );
-            }
-
-            var animatedTile = new AnimatedTiledMapTile( intervals, staticTiles )
-            {
-                ID = tile.ID
-            };
-
-            return animatedTile;
+            return null;
         }
 
-        return null;
+        var staticTiles = new List< StaticTiledMapTile? >();
+        var intervals   = new List< int >();
+
+        XmlNodeList? frames;
+
+        if ( ( frames = animationElement.SelectNodes( "frame" ) ) == null )
+        {
+            return null;
+        }
+
+        foreach ( XmlNode frameElement in frames )
+        {
+            staticTiles.Add( ( StaticTiledMapTile )tileSet
+                                .GetTile( firstgid + int.Parse( frameElement.Attributes![ "tileid" ]!.Value ) )! );
+
+            intervals.Add( int.Parse( frameElement.Attributes[ "duration" ]!.Value ) );
+        }
+
+        var animatedTile = new AnimatedTiledMapTile( intervals, staticTiles! )
+        {
+            ID = tile.ID
+        };
+
+        return animatedTile;
     }
 
     /// <summary>
+    /// Add a standard, non-animating, static tile to the map.
     /// </summary>
     /// <param name="tileSet"></param>
-    /// <param name="textureRegion"></param>
+    /// <param name="textureRegion"> The tile image </param>
     /// <param name="tileId"></param>
     /// <param name="offsetX"></param>
     /// <param name="offsetY"></param>
@@ -1167,6 +1182,9 @@ public abstract class BaseTmxMapLoader<TP>
 
         tileSet.PutTile( tileId, tile );
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     [PublicAPI]
     public class BaseTmxLoaderParameters : AssetLoaderParameters

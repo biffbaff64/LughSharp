@@ -86,4 +86,32 @@ public class NumberUtils
     /// <param name="value"></param>
     /// <returns></returns>
     public static double LongBitsToDouble( long value ) => BitConverter.Int64BitsToDouble( value );
+
+    /// <summary>
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    public static int? ParseInt( string? str )
+    {
+        if ( int.TryParse( str, out var p ) )
+        {
+            return p;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    public static float? ParseFloat( string? str )
+    {
+        if ( float.TryParse( str, out var p ) )
+        {
+            return p;
+        }
+
+        return null;
+    }
 }
