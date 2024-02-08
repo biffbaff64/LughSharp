@@ -36,6 +36,7 @@ using XmlReader = System.Xml.XmlReader;
 
 namespace LibGDXSharp.Gdx.Maps.Tiled.Loaders;
 
+[PublicAPI]
 public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 {
     /// <summary>
@@ -76,8 +77,6 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         GdxRuntimeException.ThrowIfNull( xmlDocument );
 
         FileInfo tmxFile = Resolve( fileName );
-
-        xmlElement = xmlReader.Parse( tmxFile );
 
         var textures = new Dictionary< string, Texture >();
 

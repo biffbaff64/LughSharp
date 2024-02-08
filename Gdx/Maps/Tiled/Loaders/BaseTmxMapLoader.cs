@@ -1215,16 +1215,13 @@ public abstract class BaseTmxMapLoader<TP>
         {
             XmlNode? objectgroupElement = node.SelectSingleNode( "objectgroup" );
 
-            if ( objectgroupElement != null )
-            {
-                XmlNodeList? children = objectgroupElement.SelectNodes( "object" );
+            XmlNodeList? children = objectgroupElement?.SelectNodes( "object" );
 
-                if ( children != null )
+            if ( children != null )
+            {
+                foreach ( XmlNode objectElement in children )
                 {
-                    foreach ( XmlNode objectElement in children )
-                    {
-                        LoadObject( Map, tile, objectElement );
-                    }
+                    LoadObject( Map, tile, objectElement );
                 }
             }
         }

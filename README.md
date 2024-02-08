@@ -14,12 +14,6 @@ It is NOT a 100% conversion, some things may be different.
 
 TODO List is below.
 
-Project name is to change. Current candidates are:-
-
-    - LughEngine
-    - Lugh
-    - LughGDX
-    - SharpGDX
 
 As far as I can see, I do not need to convert:-
 
@@ -41,25 +35,23 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - STEP 1: Complete all conversions so that the code will build.
-    - STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
-    -         Some classes can become structs / records instead.
-    -         Some/Most Get / Set method declarations in interfaces could become Properties.
-    -         switch expressions instead of switch statements where appropriate.
-    -         switch expressions instead of if..if/else..else where appropriate.
-    -         Check methods to see if they can be virtual.
-    -         Use [PublicApi] where necessary.
-    -         Use sealed classes only where strictly necessary. Users should be able to extend library classes.
-    -         Use of virtual for base classes/methods and classes that are likely to be extended is essential.
-    - STEP 3: Resolve ALL remaining TODOs.
-    - STEP 4: Ensure code is fully documented.
+- STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
+  -         Some classes can become structs / records instead.
+  -         Some/Most Get / Set method declarations in interfaces could become Properties.
+  -         switch expressions instead of switch statements where appropriate.
+  -         switch expressions instead of if..if/else..else where appropriate.
+  -         Check methods to see if they can be virtual.
+  -         Use [PublicApi] where necessary.
+  -         Use sealed classes only where strictly necessary. Users should be able to extend library classes.
+  -         Use of virtual for base classes/methods and classes that are likely to be extended is essential.
+- STEP 3: Resolve ALL remaining TODOs.
+- STEP 4: Ensure code is fully documented.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - NO MAGIC NUMBERS!!!
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 - SORT OUT VERSIONING!!!
+- PRIORITY is 2D classes first
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -68,22 +60,11 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-- PRIORITY is 2D classes first
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 - Constantly look for opportunities to improve this code.
 - There seems to be different namings for width/height etc properties and methods. Make it more uniform
 - Make more use of <inheritdoc cref=""/>> or just <inheritdoc/>
--
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-- Equivalents needed for:-
-
-    - BufferedImage
-    -
-
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ASSETS
