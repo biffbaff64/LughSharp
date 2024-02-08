@@ -23,13 +23,16 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Xml;
+
 using LibGDXSharp.Gdx.Assets;
 using LibGDXSharp.Gdx.Assets.Loaders;
 using LibGDXSharp.Gdx.Assets.Loaders.Resolvers;
 using LibGDXSharp.Gdx.Graphics;
 using LibGDXSharp.Gdx.Graphics.G2D;
 using LibGDXSharp.Gdx.Utils;
-using LibGDXSharp.Gdx.Utils.Xml;
+
+using XmlReader = System.Xml.XmlReader;
 
 namespace LibGDXSharp.Gdx.Maps.Tiled.Loaders;
 
@@ -111,8 +114,8 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     protected override void AddStaticTiles( FileInfo tmxFile,
                                             IImageResolver imageResolver,
                                             TiledMapTileSet tileSet,
-                                            XmlReader.Element element,
-                                            List< XmlReader.Element > tileElements,
+                                            XmlNode node,
+                                            XmlNodeList? tileElements,
                                             string? name,
                                             int firstgid,
                                             int tilewidth,
@@ -122,7 +125,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
                                             string? source,
                                             int offsetX,
                                             int offsetY,
-                                            string imageSource,
+                                            string? imageSource,
                                             int imageWidth,
                                             int imageHeight,
                                             FileInfo? image )

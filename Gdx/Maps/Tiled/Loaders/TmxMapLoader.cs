@@ -23,13 +23,16 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Xml;
+
 using LibGDXSharp.Gdx.Assets;
 using LibGDXSharp.Gdx.Assets.Loaders.Resolvers;
 using LibGDXSharp.Gdx.Graphics;
 using LibGDXSharp.Gdx.Graphics.G2D;
 using LibGDXSharp.Gdx.Utils;
 using LibGDXSharp.Gdx.Utils.Collections.Extensions;
-using LibGDXSharp.Gdx.Utils.Xml;
+
+using XmlReader = System.Xml.XmlReader;
 
 namespace LibGDXSharp.Gdx.Maps.Tiled.Loaders;
 
@@ -70,7 +73,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     /// <returns> the TiledMap </returns>
     public TiledMap Load( string fileName, LoaderParameters parameter )
     {
-        GdxRuntimeException.ThrowIfNull( xmlReader );
+        GdxRuntimeException.ThrowIfNull( xmlDocument );
 
         FileInfo tmxFile = Resolve( fileName );
 
@@ -201,7 +204,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     /// <param name="tmxFile"></param>
     /// <param name="imageResolver"></param>
     /// <param name="tileSet"></param>
-    /// <param name="element"></param>
+    /// <param name="node"></param>
     /// <param name="tileElements"></param>
     /// <param name="name"></param>
     /// <param name="firstgid"></param>
@@ -219,8 +222,8 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     protected override void AddStaticTiles( FileInfo tmxFile,
                                             IImageResolver imageResolver,
                                             TiledMapTileSet tileSet,
-                                            XmlReader.Element element,
-                                            List< XmlReader.Element > tileElements,
+                                            XmlNode node,
+                                            XmlNodeList? tileElements,
                                             string? name,
                                             int firstgid,
                                             int tilewidth,
@@ -230,7 +233,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
                                             string? source,
                                             int offsetX,
                                             int offsetY,
-                                            string imageSource,
+                                            string? imageSource,
                                             int imageWidth,
                                             int imageHeight,
                                             FileInfo? image )

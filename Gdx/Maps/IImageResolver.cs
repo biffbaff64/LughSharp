@@ -30,7 +30,7 @@ using LibGDXSharp.Gdx.Graphics.G2D;
 namespace LibGDXSharp.Gdx.Maps;
 
 /// <summary>
-///     esolves an image by a string, wrapper around a Map or AssetManager to load
+///     Resolves an image by a string, wrapper around a Map or AssetManager to load
 ///     maps either directly or via AssetManager.
 /// </summary>
 public interface IImageResolver
