@@ -23,10 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Gdx.Audio;
-using LibGDXSharp.Gdx.Audio.OpenAL;
-using LibGDXSharp.Gdx.Utils;
-using LibGDXSharp.Gdx.Utils.Buffers;
+using LibGDXSharp.LibCore.Audio;
+using LibGDXSharp.LibCore.Audio.OpenAL;
+using LibGDXSharp.LibCore.Utils;
+using LibGDXSharp.LibCore.Utils.Buffers;
 
 namespace LibGDXSharp.Backends.DesktopGL.Audio;
 

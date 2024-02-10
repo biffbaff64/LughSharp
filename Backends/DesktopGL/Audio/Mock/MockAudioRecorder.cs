@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Gdx.Audio;
+using LibGDXSharp.LibCore.Audio;
 
 namespace LibGDXSharp.Backends.DesktopGL.Audio.Mock;
 

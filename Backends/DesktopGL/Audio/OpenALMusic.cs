@@ -23,12 +23,12 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Gdx.Audio;
-using LibGDXSharp.Gdx.Audio.OpenAL;
-using LibGDXSharp.Gdx.Maths;
-using LibGDXSharp.Gdx.Utils;
-using LibGDXSharp.Gdx.Utils.Buffers;
-using LibGDXSharp.Gdx.Utils.Collections.Extensions;
+using LibGDXSharp.LibCore.Audio;
+using LibGDXSharp.LibCore.Audio.OpenAL;
+using LibGDXSharp.LibCore.Maths;
+using LibGDXSharp.LibCore.Utils;
+using LibGDXSharp.LibCore.Utils.Buffers;
+using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Backends.DesktopGL.Audio;
 

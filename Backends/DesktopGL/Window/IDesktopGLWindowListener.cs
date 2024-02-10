@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.LibCore.Core;
 
 namespace LibGDXSharp.Backends.DesktopGL.Window;
 
@@ -35,7 +35,7 @@ public interface IDesktopGLWindowListener
     ///     involve calling GLFW functions.
     ///     <para>
     ///         For the main window, this is an immediate callback from inside
-    ///         <see cref="DesktopGLApplication(LibGDXSharp.Gdx.Core.IApplicationListener,LibGDXSharp.Backends.DesktopGL.DesktopGLApplicationConfiguration)" />
+    ///         <see cref="DesktopGLApplication(LibGDXSharp.LibCore.Core.IApplicationListener,LibGDXSharp.Backends.DesktopGL.DesktopGLApplicationConfiguration)" />
     ///     </para>
     /// </summary>
     /// <param name="window">the window instance.</param>

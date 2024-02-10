@@ -23,8 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Gdx.Audio.MP3Sharp.Decoding;
-using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
+using LibGDXSharp.LibCore.Utils;
 
 using Exception = System.Exception;
 

@@ -1,0 +1,85 @@
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// MIT License
+//
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// ///////////////////////////////////////////////////////////////////////////////
+
+
+namespace LibGDXSharp.LibCore.Graphics;
+
+/// <summary>
+/// </summary>
+public class TextureWrap
+{
+    public enum InnerEnum
+    {
+        MirroredRepeat,
+        ClampToEdge,
+        Repeat
+    }
+
+    public readonly static TextureWrap MirroredRepeat = new( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL20.GL_MIRRORED_REPEAT );
+    public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_CLAMP_TO_EDGE );
+    public readonly static TextureWrap Repeat         = new( "Repeat", InnerEnum.Repeat, IGL20.GL_REPEAT );
+
+    private readonly static List< TextureWrap > ValueList = new();
+
+    private static   int    _nextOrdinal = 0;
+    private readonly string _nameValue;
+
+    public readonly InnerEnum innerEnumValue;
+
+    static TextureWrap()
+    {
+        ValueList.Add( MirroredRepeat );
+        ValueList.Add( ClampToEdge );
+        ValueList.Add( Repeat );
+    }
+
+    public TextureWrap( string name, InnerEnum innerEnum, int glEnum )
+    {
+        GLEnum = glEnum;
+
+        _nameValue     = name;
+        OrdinalValue   = _nextOrdinal++;
+        innerEnumValue = innerEnum;
+    }
+
+    public int GLEnum       { get; }
+    public int OrdinalValue { get; set; }
+
+    public static TextureWrap[] Values() => ValueList.ToArray();
+
+    public static TextureWrap ValueOf( string name )
+    {
+        foreach ( TextureWrap enumInstance in ValueList )
+        {
+            if ( enumInstance._nameValue == name )
+            {
+                return enumInstance;
+            }
+        }
+
+        throw new ArgumentException( name );
+    }
+
+    public override string ToString() => _nameValue;
+}

@@ -239,14 +239,6 @@ CORE
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-FILES
------
-
-    See Documents/TODO_FILES.MD
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 GRAPHICS
 --------
 
@@ -514,27 +506,6 @@ MATHS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-NETWORK - DELETE CANDIDATE
--------
-
-    Note:- All this is probably already supported by C# System
-
-    - **** - HttpParametersUtils
-    - **** - HttpRequestBuilder
-    - **** - HttpStatus
-    - **** - IHttpRequestHeader
-    - **** - IHttpResponseHeader
-    - **** - IServerSocket
-    - **** - ISocket
-    - **** - NetJavaImpl
-    - **** - NetJavaServerSocketImpl
-    - **** - NetJavaSocketImpl
-    - **** - ServerSocketHints
-    - **** - SocketHints
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 SCENES/SCENE2D
 --------------
 
@@ -724,14 +695,6 @@ UTILS
     - **** - StringBuilder                  Use System.Text.StringBuilder
     - **** - TextFormatter
 
-    UTILS/ASYNC - DELETE CANDIDATE
-    ------------------------------
-
-    - **** - AsyncExecutor
-    - **** - ASyncResult
-    - **** - IAsyncTask
-    - **** - ThreadUtils
-
     UTILS/BUFFERS
     -------------
 
@@ -818,15 +781,6 @@ UTILS
     - DONE - StretchViewport                
     - DONE - Viewport                       
 
-    UTILS/XML - DELETE CANDIDATE
-    ----------------------------
-
-    - TODO: Switch to System.Xml
-
-    - **** - XmlReader
-    - **** - XmlReaderData
-    - **** - XmlWriter
-
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -834,18 +788,18 @@ BACKENDS/DESKTOPGL
 ------------------
 
     - IP   - DesktopGLApplication
-    - DONE - DesktopGLApplicationConfiguration
+    - IP   - DesktopGLApplicationConfiguration
     - IP   - DesktopGLNativesLoader
     - IP   - DesktopGLNet
     - IP   - DesktopWindowCallbacks
-    - DONE - IDesktopGLApplicationBase
+    - IP   - IDesktopGLApplicationBase
     - IP   - Sync
 
     BACKENDS/DESKTOPGL/FILES
     ------------------------
 
-    - DONE - DesktopGLFileHandle
-    - DONE - DesktopGLFiles
+    - IP   - DesktopGLFileHandle
+    - IP   - DesktopGLFiles
 
     BACKENDS/DESKTOPGL/GRAPHICS
     ---------------------------
@@ -859,24 +813,24 @@ BACKENDS/DESKTOPGL
     BACKENDS/DESKTOPGL/INPUT
     ------------------------
 
-    - DONE - DefaultGLInput
-    - DONE - IDesktopGLInput
+    - IP   - DefaultGLInput
+    - IP   - IDesktopGLInput
 
     BACKENDS/DESKTOPGL/UTILS
     ------------------------
 
     - IP   - DesktopGLApplicationLogger
     - IP   - DesktopGLClipboard
-    - DONE - DesktopGLCursor
+    - IP   - DesktopGLCursor
     - IP   - DesktopGLPreferences
 
     BACKENDS/DESKTOPGL/WINDOW
     -------------------------
 
     - IP   - DesktopGLWindow
-    - DONE - DesktopGLWindowConfiguration
-    - DONE - DesktopGLWindowAdapter
-    - DONE - IDesktopGLWindowListener
+    - IP   - DesktopGLWindowConfiguration
+    - IP   - DesktopGLWindowAdapter
+    - IP   - IDesktopGLWindowListener
 
     BACKENDS/DESKTOPGL/AUDIO
     ------------------------

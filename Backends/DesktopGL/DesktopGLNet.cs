@@ -23,8 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Gdx.Core;
-using LibGDXSharp.Gdx.Network;
+using LibGDXSharp.LibCore.Core;
+using LibGDXSharp.LibCore.Network;
 
 namespace LibGDXSharp.Backends.DesktopGL;
 

@@ -25,11 +25,11 @@
 
 using System.Text;
 
-using LibGDXSharp.Gdx.Graphics;
-using LibGDXSharp.Gdx.Utils;
-using LibGDXSharp.Gdx.Utils.Buffers;
+using LibGDXSharp.LibCore.Graphics;
+using LibGDXSharp.LibCore.Utils;
+using LibGDXSharp.LibCore.Utils.Buffers;
 
-using Buffer = LibGDXSharp.Gdx.Utils.Buffers.Buffer;
+using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
 using ErrorCode = OpenGL.ErrorCode;
 
 namespace LibGDXSharp.Backends.DesktopGL.Graphics;

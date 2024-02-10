@@ -24,9 +24,9 @@
 
 
 using LibGDXSharp.Backends.DesktopGL.Window;
-using LibGDXSharp.Gdx.Graphics;
-using LibGDXSharp.Gdx.Graphics.GL;
-using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.LibCore.Graphics;
+using LibGDXSharp.LibCore.Graphics.GL;
+using LibGDXSharp.LibCore.Utils;
 
 namespace LibGDXSharp.Backends.DesktopGL.Utils;
 

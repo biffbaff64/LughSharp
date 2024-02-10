@@ -52,10 +52,10 @@ global using JetBrains.Annotations;
 
 // -----------------------------------------------------------------------
 // LibGDXSharp
-global using LibGDXSharp.Gdx.Scenes;
+global using LibGDXSharp.LibCore.Scenes;
 
-global using Vector2 = LibGDXSharp.Gdx.Maths.Vector2;
-global using Vector3 = LibGDXSharp.Gdx.Maths.Vector3;
+global using Vector2 = LibGDXSharp.LibCore.Maths.Vector2;
+global using Vector3 = LibGDXSharp.LibCore.Maths.Vector3;
 
 // -----------------------------------------------------------------------
 //

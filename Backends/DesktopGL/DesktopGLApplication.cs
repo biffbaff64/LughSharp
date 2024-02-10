@@ -29,12 +29,12 @@ using LibGDXSharp.Backends.DesktopGL.Files;
 using LibGDXSharp.Backends.DesktopGL.Input;
 using LibGDXSharp.Backends.DesktopGL.Utils;
 using LibGDXSharp.Backends.DesktopGL.Window;
-using LibGDXSharp.Gdx.Core;
-using LibGDXSharp.Gdx.Graphics;
-using LibGDXSharp.Gdx.Graphics.GL;
-using LibGDXSharp.Gdx.Graphics.GLUtils;
-using LibGDXSharp.Gdx.Utils;
-using LibGDXSharp.Gdx.Utils.Collections.Extensions;
+using LibGDXSharp.LibCore.Core;
+using LibGDXSharp.LibCore.Graphics;
+using LibGDXSharp.LibCore.Graphics.GL;
+using LibGDXSharp.LibCore.Graphics.GLUtils;
+using LibGDXSharp.LibCore.Utils;
+using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 using Exception = System.Exception;
 using Monitor = GLFW.Monitor;

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.LibCore.Core;
 
 namespace LibGDXSharp.Backends.DesktopGL.Input;
 

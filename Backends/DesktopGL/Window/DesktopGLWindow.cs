@@ -26,11 +26,11 @@
 using LibGDXSharp.Backends.DesktopGL.Graphics;
 using LibGDXSharp.Backends.DesktopGL.Input;
 using LibGDXSharp.Backends.DesktopGL.Utils;
-using LibGDXSharp.Gdx.Core;
-using LibGDXSharp.Gdx.Graphics;
-using LibGDXSharp.Gdx.Graphics.GL;
-using LibGDXSharp.Gdx.Utils;
-using LibGDXSharp.Gdx.Utils.Collections.Extensions;
+using LibGDXSharp.LibCore.Core;
+using LibGDXSharp.LibCore.Graphics;
+using LibGDXSharp.LibCore.Graphics.GL;
+using LibGDXSharp.LibCore.Utils;
+using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Backends.DesktopGL.Window;
 

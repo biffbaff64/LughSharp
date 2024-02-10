@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Gdx.Core;
+using LibGDXSharp.LibCore.Core;
 
 using Exception = System.Exception;
 

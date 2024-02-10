@@ -1,0 +1,150 @@
+﻿// ///////////////////////////////////////////////////////////////////////////////
+// MIT License
+//
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// ///////////////////////////////////////////////////////////////////////////////
+
+
+using LibGDXSharp.LibCore.Utils;
+
+namespace LibGDXSharp.LibCore.Graphics.GLUtils;
+
+public class FileTextureData : ITextureData
+{
+    private Pixmap.Format? _format;
+    private int            _height     = 0;
+    private bool           _isPrepared = false;
+    private Pixmap?        _pixmap;
+    private int            _width = 0;
+
+    public FileTextureData( FileInfo file, Pixmap preloadedPixmap, Pixmap.Format? format, bool useMipMaps )
+    {
+        File       = file;
+        _pixmap    = preloadedPixmap;
+        _format    = format;
+        UseMipMaps = useMipMaps;
+
+        if ( _pixmap != null )
+        {
+            _width  = _pixmap.Width;
+            _height = _pixmap.Height;
+
+            _format ??= _pixmap.GetFormat();
+        }
+    }
+
+    public FileInfo? File { get; set; }
+
+    /// <summary>
+    ///     Prepares the TextureData for a call to <see cref="ITextureData.ConsumePixmap" /> or
+    ///     <see cref="ITextureData.ConsumeCustomData" />. This method can be called from a non
+    ///     OpenGL thread and should thus not interact with OpenGL.
+    /// </summary>
+    public void Prepare()
+    {
+        if ( IsPrepared )
+        {
+            throw new GdxRuntimeException( "Already prepared" );
+        }
+
+        if ( _pixmap == null )
+        {
+            if ( ( bool )File?.Extension.Equals( "cim" ) )
+            {
+                _pixmap = PixmapIO.ReadCIM( File );
+            }
+            else
+            {
+                _pixmap = new Pixmap( File );
+            }
+
+            _width  = _pixmap.Width;
+            _height = _pixmap.Height;
+
+            _format ??= _pixmap.GetFormat();
+        }
+
+        IsPrepared = true;
+    }
+
+    /// <summary>
+    ///     Returns the <see cref="Pixmap" /> for upload by Texture.
+    ///     <para>
+    ///         A call to <see cref="ITextureData.Prepare" /> must precede a call to this method. Any
+    ///         internal data structures created in <see cref="ITextureData.Prepare" /> should be
+    ///         disposed of here.
+    ///     </para>
+    /// </summary>
+    /// <returns> the pixmap.</returns>
+    public Pixmap? ConsumePixmap()
+    {
+        if ( !IsPrepared )
+        {
+            throw new GdxRuntimeException( "Call prepare() before calling ConsumePixmap()" );
+        }
+
+        IsPrepared = false;
+
+        Pixmap? pixmap = _pixmap;
+        _pixmap = null;
+
+        return pixmap;
+    }
+
+    /// <returns>
+    ///     whether the caller of <see cref="ITextureData.ConsumePixmap" /> should dispose the
+    ///     Pixmap returned by <see cref="ITextureData.ConsumePixmap" />
+    /// </returns>
+    public bool DisposePixmap() => true;
+
+    /// <summary>
+    ///     Uploads the pixel data to the OpenGL ES texture. The caller must bind an
+    ///     OpenGL ES texture. A call to <see cref="ITextureData.Prepare" /> must preceed a call
+    ///     to this method.
+    ///     <para>
+    ///         Any internal data structures created in <see cref="ITextureData.Prepare" /> should be
+    ///         disposed of here.
+    ///     </para>
+    /// </summary>
+    public void ConsumeCustomData( int target ) => throw new GdxRuntimeException
+        ( "This TextureData implementation does not upload data itself" );
+
+    /// <returns> the width of the pixel data </returns>
+    public int Width { get; set; }
+
+    /// <returns> the height of the pixel data </returns>
+    public int Height { get; set; }
+
+    /// <returns> whether the TextureData is prepared or not.</returns>
+    public bool IsPrepared { get; set; }
+
+    /// <returns> whether to generate mipmaps or not. </returns>
+    public bool UseMipMaps { get; set; }
+
+    /// <returns> the <see cref="Pixmap.Format" /> of the pixel data </returns>
+    public Pixmap.Format GetFormat() => Pixmap.Format.Alpha;
+
+    /// <returns> whether this implementation can cope with a EGL context loss. </returns>
+    public bool IsManaged() => true;
+
+    /// <returns> the <see cref="ITextureData.TextureDataType" /></returns>
+    public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Pixmap;
+}

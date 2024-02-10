@@ -25,12 +25,12 @@
 
 using LibGDXSharp.Backends.DesktopGL.Utils;
 using LibGDXSharp.Backends.DesktopGL.Window;
-using LibGDXSharp.Gdx.Core;
-using LibGDXSharp.Gdx.Graphics;
-using LibGDXSharp.Gdx.Graphics.GL;
-using LibGDXSharp.Gdx.Graphics.GLUtils;
-using LibGDXSharp.Gdx.Utils;
-using LibGDXSharp.Gdx.Utils.Buffers;
+using LibGDXSharp.LibCore.Core;
+using LibGDXSharp.LibCore.Graphics;
+using LibGDXSharp.LibCore.Graphics.GL;
+using LibGDXSharp.LibCore.Graphics.GLUtils;
+using LibGDXSharp.LibCore.Utils;
+using LibGDXSharp.LibCore.Utils.Buffers;
 
 using Monitor = GLFW.Monitor;
 
@@ -347,7 +347,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     ///     and maximum one time per frame.
     /// </summary>
     /// <param name="cursor">
-    ///     The mouse cursor as a <see cref="T:LibGDXSharp.Gdx.Graphics.ICursor" />
+    ///     The mouse cursor as a <see cref="T:LibGDXSharp.LibCore.Graphics.ICursor" />
     /// </param>
     public override void SetCursor( ICursor cursor )
     {
@@ -357,7 +357,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     /// <summary>
-    ///     Sets one of the predefined <see cref="T:LibGDXSharp.Gdx.Graphics.ICursor.SystemCursor" />s.
+    ///     Sets one of the predefined <see cref="T:LibGDXSharp.LibCore.Graphics.ICursor.SystemCursor" />s.
     /// </summary>
     /// <param name="systemCursor">The system cursor to use.</param>
     public override void SetSystemCursor( ICursor.SystemCursor systemCursor )

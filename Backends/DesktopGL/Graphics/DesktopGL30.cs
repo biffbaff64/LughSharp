@@ -23,8 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Gdx.Graphics;
-using LibGDXSharp.Gdx.Utils.Buffers;
+using LibGDXSharp.LibCore.Graphics;
+using LibGDXSharp.LibCore.Utils.Buffers;
 
 using Buffer = LibGDXSharp.Files.Buffers.Buffer;
 

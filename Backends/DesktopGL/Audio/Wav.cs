@@ -25,7 +25,7 @@
 
 using ICSharpCode.SharpZipLib.Core;
 
-using LibGDXSharp.Gdx.Utils;
+using LibGDXSharp.LibCore.Utils;
 
 using Exception = System.Exception;
 
