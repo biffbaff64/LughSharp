@@ -573,10 +573,10 @@ SCENES/SCENE2D
 TODO: Use Lambdas for these...
 i.e. AddListener( new ClickListener()
 {
-// Clicked needs to be a Func<>
-Clicked = ( ev, x, y ) =>
-{
-}
+    // Clicked needs to be a Func<>
+    Clicked = ( ev, x, y ) =>
+    {
+    }
 } );
 
     SCENES/SCENE2D/UI
@@ -603,7 +603,7 @@ Clicked = ( ev, x, y ) =>
     - DONE - ParticleEffectActor            
     - DONE - ProgressBar
     - DONE - ScrollPane
-    - IP   - ScrollPaneListeners
+    - DONE - ScrollPaneListeners
     - DONE - SelectBox
     - DONE - Skin                           
     - DONE - Slider                         
@@ -612,7 +612,7 @@ Clicked = ( ev, x, y ) =>
     - DONE - Table                          
     - DONE - TextArea                       
     - DONE - TextButton
-    - IP   - TextField      Check that _blinkTask and _keyRepeatTask are disposed of properly                      
+    - DONE - TextField                      
     - DONE - Tooltip
     - DONE - TextTooltip
     - DONE - TooltipManager                 
@@ -673,8 +673,8 @@ UTILS
     - DONE - Scaling
     - DONE - ScreenUtils
     - DONE - Select                         Renamed Selector (See SortedSetExtensions.cs)
-    - IP   - SharedLibraryLoader
-    - IP   - SharedLibraryLoader.SystemHelpers
+    - DONE - SharedLibraryLoader
+    - DONE - SharedLibraryLoader.SystemHelpers
     - DONE - SortUtils
     - DONE - StringTokenizer
     - DONE - Timer                          

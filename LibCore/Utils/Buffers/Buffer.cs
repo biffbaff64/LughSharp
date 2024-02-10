@@ -190,7 +190,7 @@ public abstract class Buffer
     {
         if ( cap < 0 )
         {
-            throw new ArgumentException( "Negative capacity: " + cap );
+            throw new ArgumentException( $"Negative capacity: {cap}" );
         }
 
         Capacity = cap;
@@ -202,7 +202,7 @@ public abstract class Buffer
         {
             if ( mark > pos )
             {
-                throw new ArgumentException( "mark > position: (" + mark + " > " + pos + ")" );
+                throw new ArgumentException( $"mark > position: ({mark} > {pos})" );
             }
 
             _mark = mark;

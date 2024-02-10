@@ -37,7 +37,7 @@ public partial class ScrollPane
         public ScrollPaneScrollListener( ScrollPane parent ) => _parent = parent;
 
         /// <inheritdoc />
-        public override bool Scrolled( InputEvent inputEvent, float x, float y, float scrollAmountX, float scrollAmountY )
+        public override bool Scrolled( InputEvent? inputEvent, float x, float y, float scrollAmountX, float scrollAmountY )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
 
@@ -80,7 +80,7 @@ public partial class ScrollPane
         public ScrollPaneCaptureListener( ScrollPane parent ) => _parent = parent;
 
         /// <inheritdoc />
-        public override bool TouchDown( InputEvent inputEvent, float x, float y, int pointer, int button )
+        public override bool TouchDown( InputEvent? inputEvent, float x, float y, int pointer, int button )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
 
@@ -113,7 +113,7 @@ public partial class ScrollPane
               && _parent!.ScrollX
               && _parent!._hScrollBounds.Contains( x, y ) )
             {
-                inputEvent.Stop();
+                inputEvent?.Stop();
                 _parent!.SetScrollbarsVisible( true );
 
                 if ( _parent!._hKnobBounds.Contains( x, y ) )
@@ -135,7 +135,7 @@ public partial class ScrollPane
               && _parent!.ScrollY
               && _parent!._vScrollBounds.Contains( x, y ) )
             {
-                inputEvent.Stop();
+                inputEvent?.Stop();
                 _parent!.SetScrollbarsVisible( true );
 
                 if ( _parent!._vKnobBounds.Contains( x, y ) )
@@ -157,7 +157,7 @@ public partial class ScrollPane
         }
 
         /// <inheritdoc />
-        public override void TouchUp( InputEvent inputEvent, float x, float y, int pointer, int button )
+        public override void TouchUp( InputEvent? inputEvent, float x, float y, int pointer, int button )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
 
@@ -170,7 +170,7 @@ public partial class ScrollPane
         }
 
         /// <inheritdoc />
-        public override void TouchDragged( InputEvent inputEvent, float x, float y, int pointer )
+        public override void TouchDragged( InputEvent? inputEvent, float x, float y, int pointer )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
 
@@ -224,7 +224,7 @@ public partial class ScrollPane
         }
 
         /// <inheritdoc />
-        public override bool MouseMoved( InputEvent inputEvent, float x, float y )
+        public override bool MouseMoved( InputEvent? inputEvent, float x, float y )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
 

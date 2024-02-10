@@ -622,8 +622,8 @@ public partial class ScrollPane : WidgetGroup
         UpdateWidgetPosition();
 
         // Draw the background ninepatch.
-        Color? color = Color;
-        var    alpha = color!.A * parentAlpha;
+        Color color = Color;
+        var   alpha = color.A * parentAlpha;
 
         if ( Style.Background != null )
         {

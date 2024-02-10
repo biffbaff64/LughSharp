@@ -30,14 +30,10 @@ namespace LibGDXSharp.LibCore.Utils.Buffers;
 ///     buffer and direct buffer/direct buffer transfers
 /// </summary>
 [PublicAPI]
-public class BufferUtils
+public static class BufferUtils
 {
     private static List< ByteBuffer > _unsafeBuffers   = new();
     private static int                _allocatedUnsafe = 0;
-
-    private BufferUtils()
-    {
-    }
 
     public static FloatBuffer NewFloatBuffer( int numFloats )
     {
@@ -171,27 +167,15 @@ public class BufferUtils
     /// <exception cref="GdxRuntimeException"></exception>
     private static int PositionInBytes( Buffer dst )
     {
-        if ( dst is ByteBuffer )
-        {
-            return dst.Position;
-        }
-
-        if ( dst is ShortBuffer or CharBuffer )
-        {
-            return dst.Position << 1;
-        }
-
-        if ( dst is IntBuffer or FloatBuffer )
-        {
-            return dst.Position << 2;
-        }
-
-        if ( dst is LongBuffer or DoubleBuffer )
-        {
-            return dst.Position << 3;
-        }
-
-        throw new GdxRuntimeException( $"Can't get position for {dst.GetType().Name} instance" );
+        return dst switch
+               {
+                   ByteBuffer                 => dst.Position,
+                   ShortBuffer or CharBuffer  => dst.Position << 1,
+                   IntBuffer or FloatBuffer   => dst.Position << 2,
+                   LongBuffer or DoubleBuffer => dst.Position << 3,
+                   _                          => throw new GdxRuntimeException
+                       ( $"Can't get position for {dst.GetType().Name} instance" )
+               };
     }
 
     /// <summary>
@@ -202,27 +186,15 @@ public class BufferUtils
     /// <exception cref="GdxRuntimeException"></exception>
     private static int BytesToElements( Buffer dst, int bytes )
     {
-        if ( dst is ByteBuffer )
-        {
-            return bytes;
-        }
-
-        if ( dst is ShortBuffer or CharBuffer )
-        {
-            return bytes >>> 1;
-        }
-
-        if ( dst is IntBuffer or FloatBuffer )
-        {
-            return bytes >>> 2;
-        }
-
-        if ( dst is LongBuffer or DoubleBuffer )
-        {
-            return bytes >>> 3;
-        }
-
-        throw new GdxRuntimeException( $"Can't copy to a {dst.GetType().Name} instance" );
+        return dst switch
+               {
+                   ByteBuffer                 => bytes,
+                   ShortBuffer or CharBuffer  => bytes >>> 1,
+                   IntBuffer or FloatBuffer   => bytes >>> 2,
+                   LongBuffer or DoubleBuffer => bytes >>> 3,
+                   _                          => throw new GdxRuntimeException
+                       ( $"Can't copy to a {dst.GetType().Name} instance" )
+               };
     }
 
     /// <summary>
@@ -233,27 +205,15 @@ public class BufferUtils
     /// <exception cref="GdxRuntimeException"></exception>
     private static int ElementsToBytes( Buffer dst, int elements )
     {
-        if ( dst is ByteBuffer )
-        {
-            return elements;
-        }
-
-        if ( dst is ShortBuffer or CharBuffer )
-        {
-            return elements << 1;
-        }
-
-        if ( dst is IntBuffer or FloatBuffer )
-        {
-            return elements << 2;
-        }
-
-        if ( dst is LongBuffer or DoubleBuffer )
-        {
-            return elements << 3;
-        }
-
-        throw new GdxRuntimeException( $"Can't copy to a {dst.GetType().Name} instance" );
+        return dst switch
+               {
+                   ByteBuffer                 => elements,
+                   ShortBuffer or CharBuffer  => elements << 1,
+                   IntBuffer or FloatBuffer   => elements << 2,
+                   LongBuffer or DoubleBuffer => elements << 3,
+                   _                          => throw new GdxRuntimeException
+                       ( $"Can't copy to a {dst.GetType().Name} instance" )
+               };
     }
 
     public static void DisposeUnsafeByteBuffer( ByteBuffer byteBuffer )

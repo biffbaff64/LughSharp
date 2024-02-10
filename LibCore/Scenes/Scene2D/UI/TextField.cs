@@ -92,9 +92,9 @@ public class TextField : Widget
     private CancellationTokenSource? _keyRepeatTokenSource;
     private InputListener?           _inputListener;
     private ITextFieldListener?      _listener;
-    private IOnscreenKeyboard        _keyboard  = new DefaultOnscreenKeyboard();
-    private KeyRepeatTaskManager     _keyRepeat = new();
-    private BlinkTaskManager         _blink     = new();
+    private IOnscreenKeyboard        _keyboard = new DefaultOnscreenKeyboard();
+    private KeyRepeatTaskManager     _keyRepeat;
+    private BlinkTaskManager         _blink;
 
     private long              _lastChangeTime;
     private bool              _cursorOn;
@@ -115,7 +115,7 @@ public class TextField : Widget
     private int               _visibleTextStart;
 
     // ------------------------------------------------------------------------
-    
+
     public TextField( string? text, Skin skin )
         : this( text, skin.Get< TextFieldStyle >() )
     {
@@ -129,6 +129,8 @@ public class TextField : Widget
     public TextField( string? text, TextFieldStyle style )
     {
         _clipboard = Core.Gdx.App.Clipboard!;
+        _blink     = new BlinkTaskManager( this );
+        _keyRepeat = new KeyRepeatTaskManager( this );
 
         NonVirtualInitialise( text, style );
     }
@@ -229,8 +231,8 @@ public class TextField : Widget
     {
         _inputListener = CreateInputListener();
 
-        _blink.Create( this );
-        _keyRepeat.Create( this );
+        _blink.Create();
+        _keyRepeat.Create();
     }
 
     protected virtual InputListener CreateInputListener() => new TextFieldClickListener( this );
@@ -493,21 +495,24 @@ public class TextField : Widget
 
         BitmapFont font = Style.Font!;
 
+        //@formatter:off
         Color? fontColor = _disabled && ( Style.DisabledFontColor != null )
-            ? Style.DisabledFontColor
-            : focused && ( Style.FocusedFontColor != null )
-                ? Style.FocusedFontColor
-                : Style.FontColor;
+                        ? Style.DisabledFontColor
+                        : focused && ( Style.FocusedFontColor != null )
+                                ? Style.FocusedFontColor
+                                : Style.FontColor;
+        //@formatter:on
 
         IDrawable? selection   = Style.Selection;
         IDrawable? cursorPatch = Style.Cursor;
         IDrawable? background  = GetBackgroundDrawable();
 
-        Color color  = Color;
-        var   x      = X;
-        var   y      = Y;
-        var   width  = Width;
-        var   height = Height;
+        Color color = Color;
+
+        var x      = X;
+        var y      = Y;
+        var width  = Width;
+        var height = Height;
 
         batch.SetColor( color.R, color.G, color.B, color.A * parentAlpha );
         float bgLeftWidth = 0, bgRightWidth = 0;
@@ -587,11 +592,14 @@ public class TextField : Widget
         return textY;
     }
 
-    protected virtual void DrawSelection( IDrawable selection, IBatch batch, BitmapFont font, float x, float y ) => selection.Draw( batch,
-        x + TextOffset + _selectionX + FontOffset,
-        y - TextHeight - font.GetDescent(),
-        _selectionWidth,
-        TextHeight );
+    protected virtual void DrawSelection( IDrawable selection, IBatch batch, BitmapFont font, float x, float y )
+    {
+        selection.Draw( batch,
+                        x + TextOffset + _selectionX + FontOffset,
+                        y - TextHeight - font.GetDescent(),
+                        _selectionWidth,
+                        TextHeight );
+    }
 
     protected virtual void DrawText( IBatch batch, BitmapFont font, float x, float y )
     {
@@ -609,11 +617,17 @@ public class TextField : Widget
         }
     }
 
-    protected virtual void DrawCursor( IDrawable cursorPatch, IBatch batch, BitmapFont font, float x, float y ) => cursorPatch.Draw( batch,
-        ( ( x + TextOffset + GlyphPositions[ Cursor ] ) - GlyphPositions[ _visibleTextStart ] ) + FontOffset + font.GetData().CursorX,
-        y - TextHeight - font.GetDescent(),
-        cursorPatch.MinWidth,
-        TextHeight );
+    protected virtual void DrawCursor( IDrawable cursorPatch, IBatch batch, BitmapFont font, float x, float y )
+    {
+        cursorPatch.Draw( batch,
+                          ( ( x + TextOffset + GlyphPositions[ Cursor ] )
+                          - GlyphPositions[ _visibleTextStart ] )
+                        + FontOffset
+                        + font.GetData().CursorX,
+                          y - TextHeight - font.GetDescent(),
+                          cursorPatch.MinWidth,
+                          TextHeight );
+    }
 
     public virtual void UpdateDisplayText()
     {
@@ -1087,15 +1101,23 @@ public class TextField : Widget
     [PublicAPI]
     private sealed class BlinkTaskManager
     {
-        private TextField? _tf;
+        private TextField _tf;
 
-        public void Create( TextField tf )
+        public BlinkTaskManager( TextField tf )
         {
             _tf = tf;
+        }
 
+        public void Create()
+        {
             _tf._blinkTokenSource       = new CancellationTokenSource();
             _tf._blinkCancellationToken = _tf._blinkTokenSource.Token;
 
+            CreateBlinkTask();
+        }
+
+        public void CreateBlinkTask()
+        {
             //@formatter:off
             _tf._blinkTask = new Task( () =>
                {
@@ -1118,7 +1140,7 @@ public class TextField : Widget
 
         public void Cancel()
         {
-            if ( _tf?._blinkTask is { Status: TaskStatus.Running } )
+            if ( _tf._blinkTask is { Status: TaskStatus.Running } )
             {
                 _tf._blinkTokenSource?.Cancel();
             }
@@ -1133,12 +1155,15 @@ public class TextField : Widget
     {
         public int KeyCode { get; set; }
 
-        private TextField? _tf;
+        private TextField _tf;
 
-        public void Create( TextField tf )
+        public KeyRepeatTaskManager( TextField tf )
         {
-            _tf = tf;
+            this._tf = tf;
+        }
 
+        public void Create()
+        {
             _tf._keyRepeatTokenSource       = new CancellationTokenSource();
             _tf._keyRepeatCancellationToken = _tf._keyRepeatTokenSource.Token;
 
@@ -1146,6 +1171,11 @@ public class TextField : Widget
             _tf._keyRepeatTask = new Task( () =>
             {
                 _tf._inputListener?.KeyDown( null, KeyCode );
+                
+                if ( _tf._keyRepeatTokenSource.IsCancellationRequested )
+                {
+                    _tf._keyRepeatCancellationToken.ThrowIfCancellationRequested();
+                }
             },
             _tf._keyRepeatCancellationToken );
             //@formatter:on
@@ -1163,7 +1193,7 @@ public class TextField : Widget
 
         public void Cancel()
         {
-            if ( _tf?._keyRepeatTask is { Status: TaskStatus.Running } )
+            if ( _tf._keyRepeatTask is { Status: TaskStatus.Running } )
             {
                 _tf._keyRepeatTokenSource?.Cancel();
             }
@@ -1254,7 +1284,7 @@ public class TextField : Widget
         {
             this._tf = new TextField( "", new Skin() );
         }
-        
+
         protected internal TextFieldClickListener( TextField tf )
         {
             this._tf = tf;
@@ -1269,7 +1299,8 @@ public class TextField : Widget
 
             if ( _tf._focused )
             {
-                Timer.Schedule( _tf._blinkTask, _tf._blinkTime, _tf._blinkTime );
+//TODO:
+//                Timer.Schedule( _tf._blinkTask, _tf._blinkTime, _tf._blinkTime );
             }
         }
 

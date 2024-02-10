@@ -97,13 +97,6 @@ public class Timer
         => ScheduleTask( task, delaySeconds, 0, 0 );
 
     /// <summary>
-    ///     Schedules a task to occur once after the specified delay and then repeatedly
-    ///     at the specified interval until cancelled.
-    /// </summary>
-    public Task ScheduleTask( Task task, float delaySeconds, float intervalSeconds )
-        => ScheduleTask( task, delaySeconds, intervalSeconds, -1 );
-
-    /// <summary>
     ///     Schedules a task to occur once after the specified delay and then a
     ///     number of additional times at the specified interval.
     /// </summary>
@@ -111,7 +104,7 @@ public class Timer
     /// <param name="delaySeconds"></param>
     /// <param name="intervalSeconds"></param>
     /// <param name="repeatCount"> If negative, the task will repeat forever.</param>
-    protected virtual Task ScheduleTask( Task task, float delaySeconds, float intervalSeconds, int repeatCount )
+    protected virtual Task ScheduleTask( Task task, float delaySeconds, float intervalSeconds, int repeatCount = -1 )
     {
         lock ( _threadLock )
         {

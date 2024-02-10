@@ -235,7 +235,7 @@ public class CircularByteBuffer
             ret += t + " ";
         }
 
-        ret += "\n index = " + _index + " numValid = " + NumValid;
+        ret += $"\n index = {_index} numValid = {NumValid}";
 
         return ret;
     }

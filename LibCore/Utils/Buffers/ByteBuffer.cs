@@ -75,7 +75,7 @@ public abstract class ByteBuffer : Buffer
     {
         if ( capacity < 0 )
         {
-            throw new ArgumentException( "capacity should not be less than zero!" );
+            throw new ArgumentException( $"capacity should not be less than zero! : {capacity}" );
         }
 
         return new HeapByteBuffer( capacity, capacity );

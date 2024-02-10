@@ -290,11 +290,11 @@ public abstract class CharBuffer : Buffer
     ///         In other words, an invocation of this method of the form <tt>src.get(dst, off, len)</tt>
     ///         has exactly the same effect as the loop
     ///         <code>
-    ///     for (int i = off; i &lt; off + len; i++)
-    ///     {
-    ///         dst[i] = src.get():
-    ///     }
-    /// </code>
+    ///         for (int i = off; i &lt; off + len; i++)
+    ///         {
+    ///             dst[i] = src.get():
+    ///         }
+    ///         </code>
     ///         except that it first checks that there are sufficient chars in this buffer and it
     ///         is potentially much more efficient.
     ///     </para>
@@ -438,11 +438,11 @@ public abstract class CharBuffer : Buffer
     ///         In other words, an invocation of this method of the form <tt>dst.put(src, off, len)</tt>
     ///         has exactly the same effect as the loop
     ///         <code>
-    ///     for (int i = off; i &lt; off + len; i++)
-    ///     {
-    ///         dst.put(a[i]);
-    ///     }
-    /// </code>
+    ///         for (int i = off; i &lt; off + len; i++)
+    ///         {
+    ///             dst.put(a[i]);
+    ///         }
+    ///         </code>
     ///         except that it first checks that there is sufficient space in this buffer and it is
     ///         potentially much more efficient.
     ///     </para>

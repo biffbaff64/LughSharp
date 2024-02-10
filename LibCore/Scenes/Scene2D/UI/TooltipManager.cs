@@ -100,39 +100,36 @@ public class TooltipManager<T> where T : Actor
     /// </summary>
     public bool Animations { get; set; } = true;
 
-    private void Create() =>
+    //@formatter:off
+    private void Create() => _showTask = new Task( () =>
+    {
+        Stage? stage = _showTooltip.TargetActor?.Stage;
 
-        //@formatter:off
-        _showTask = new Task( () =>
-                              {
-                                  Stage? stage = _showTooltip.TargetActor?.Stage;
+        if ( stage == null )
+        {
+           return;
+        }
 
-                                  if ( stage == null )
-                                  {
-                                      return;
-                                  }
+        stage.AddActor( _showTooltip.Container );
 
-                                  stage.AddActor( _showTooltip.Container );
+        _showTooltip.Container.ToFront();
+        _activeTooltips.Add( _showTooltip );
+        _showTooltip.Container.ClearActions();
 
-                                  _showTooltip.Container.ToFront();
-                                  _activeTooltips.Add( _showTooltip );
-                                  _showTooltip.Container.ClearActions();
+        ShowAction( _showTooltip );
 
-                                  ShowAction( _showTooltip );
+        if ( !_showTooltip.Instant )
+        {
+           _time = SubsequentTime;
+        }
 
-                                  if ( !_showTooltip.Instant )
-                                  {
-                                      _time = SubsequentTime;
-                                  }
-
-                                  if ( _showTaskCancellationToken.IsCancellationRequested )
-                                  {
-                                      _showTaskCancellationToken.ThrowIfCancellationRequested();
-                                  }
-                              },
-                              _showTaskCancellationToken );
-
+        if ( _showTaskCancellationToken.IsCancellationRequested )
+        {
+           _showTaskCancellationToken.ThrowIfCancellationRequested();
+        }
+    },_showTaskCancellationToken );
     //@formatter:on
+
     public void TouchDown( Tooltip< T > tooltip )
     {
         CancelTask();
