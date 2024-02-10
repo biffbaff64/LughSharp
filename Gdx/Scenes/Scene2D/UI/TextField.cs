@@ -36,6 +36,7 @@ using LibGDXSharp.Gdx.Utils.Collections;
 using LibGDXSharp.Gdx.Utils.Pooling;
 
 using Color = LibGDXSharp.Gdx.Graphics.Color;
+using Timer = LibGDXSharp.Gdx.Utils.Timer;
 
 namespace LibGDXSharp.Gdx.Scenes.Scene2D.UI;
 
@@ -57,6 +58,7 @@ namespace LibGDXSharp.Gdx.Scenes.Scene2D.UI;
 ///     The desktop keyboard is a stub, as a softkeyboard is not needed on the desktop. The
 ///     Android <see cref="IOnScreenKeyboard" /> implementation will bring up the default IME.
 /// </para>
+[PublicAPI]
 public class TextField : Widget
 {
     protected const char CARRIAGE_RETURN = '\r';
@@ -71,7 +73,7 @@ public class TextField : Widget
     private readonly IClipboard _clipboard;
 
     private readonly bool _onlyFontChars = true;
-    private readonly int  _textHAlign    = Align.LEFT;
+    private readonly int  _textAlign     = Align.LEFT;
 
     private readonly Vector2           _tmp1 = new();
     private readonly Vector2           _tmp2 = new();
@@ -85,36 +87,35 @@ public class TextField : Widget
 
     private float                    _blinkTime = 0.32f;
     private CancellationTokenSource? _blinkTokenSource;
-    private bool                     _cursorOn;
-    private bool                     _disabled;
-    private ITextFieldFilter?        _filter;
-
-    private bool                     _focused;
-    private InputListener?           _inputListener;
-    private IOnscreenKeyboard        _keyboard = new DefaultOnscreenKeyboard();
     private CancellationToken        _keyRepeatCancellationToken;
     private Task?                    _keyRepeatTask;
     private CancellationTokenSource? _keyRepeatTokenSource;
-    private long                     _lastChangeTime;
+    private InputListener?           _inputListener;
+    private ITextFieldListener?      _listener;
+    private IOnscreenKeyboard        _keyboard  = new DefaultOnscreenKeyboard();
+    private KeyRepeatTaskManager     _keyRepeat = new();
+    private BlinkTaskManager         _blink     = new();
 
-    private ITextFieldListener? _listener;
-    private int                 _maxLength;
+    private long              _lastChangeTime;
+    private bool              _cursorOn;
+    private bool              _disabled;
+    private ITextFieldFilter? _filter;
+    private bool              _focused;
+    private int               _maxLength;
+    private string?           _messageText;
+    private StringBuilder?    _passwordBuffer;
+    private char              _passwordCharacter = BULLET;
+    private bool              _passwordMode;
+    private bool              _programmaticChangeEvents;
+    private float             _renderOffset;
+    private float             _selectionWidth;
+    private float             _selectionX;
+    private string?           _undoText = "";
+    private int               _visibleTextEnd;
+    private int               _visibleTextStart;
 
-    private string?        _messageText;
-    private StringBuilder? _passwordBuffer;
-    private char           _passwordCharacter = BULLET;
-    private bool           _passwordMode;
-
-    private bool _programmaticChangeEvents;
-
-    private float _renderOffset;
-    private float _selectionWidth;
-    private float _selectionX;
-
-    private string? _undoText = "";
-    private int     _visibleTextEnd;
-    private int     _visibleTextStart;
-
+    // ------------------------------------------------------------------------
+    
     public TextField( string? text, Skin skin )
         : this( text, skin.Get< TextFieldStyle >() )
     {
@@ -132,6 +133,8 @@ public class TextField : Widget
         NonVirtualInitialise( text, style );
     }
 
+    // ------------------------------------------------------------------------
+
     public TextFieldStyle? Style          { get; set; }
     public string?         Text           { get; set; }
     public int             Cursor         { get; set; }
@@ -145,6 +148,9 @@ public class TextField : Widget
     public float           TextHeight     { get; set; }
     public float           TextOffset     { get; set; }
     public bool            FocusTraversal { get; set; } = true;
+
+    public virtual float GetPrefWidth()  => 150;
+    public virtual float GetPrefHeight() => PrefHeight;
 
     public override float PrefHeight
     {
@@ -206,6 +212,8 @@ public class TextField : Widget
         }
     }
 
+    // ------------------------------------------------------------------------
+
     /// <summary>
     ///     Not a good idea to call virtual methods from a constructor, so...
     /// </summary>
@@ -221,11 +229,11 @@ public class TextField : Widget
     {
         _inputListener = CreateInputListener();
 
-        BlinkTask.Create( this );
-        KeyRepeatTask.Create( this );
+        _blink.Create( this );
+        _keyRepeat.Create( this );
     }
 
-    protected virtual InputListener CreateInputListener() => new TextFieldClickListener();
+    protected virtual InputListener CreateInputListener() => new TextFieldClickListener( this );
 
     public virtual void SetStyle( TextFieldStyle style )
     {
@@ -244,6 +252,8 @@ public class TextField : Widget
         InvalidateHierarchy();
     }
 
+    /// <summary>
+    /// </summary>
     public virtual void CalculateOffsets()
     {
         var        visibleWidth = Width;
@@ -258,7 +268,7 @@ public class TextField : Widget
         var glyphPositions = GlyphPositions.ToArray();
 
         // Check if the cursor has gone out the left or right side of
-        // the visible area and adjust renderOffset.
+        // the visible area and adjust renderOffset if necessary.
         var distance = glyphPositions[ Math.Max( 0, Cursor - 1 ) ] + _renderOffset;
 
         if ( distance <= 0 )
@@ -327,11 +337,11 @@ public class TextField : Widget
 
         _visibleTextEnd = Math.Max( 0, end - 1 );
 
-        if ( ( _textHAlign & Align.LEFT ) == 0 )
+        if ( ( _textAlign & Align.LEFT ) == 0 )
         {
             TextOffset = ( visibleWidth - glyphPositions[ _visibleTextEnd ] - FontOffset ) + startX;
 
-            if ( ( _textHAlign & Align.CENTER ) != 0 )
+            if ( ( _textAlign & Align.CENTER ) != 0 )
             {
                 TextOffset = ( float )Math.Round( TextOffset * 0.5f );
             }
@@ -353,9 +363,6 @@ public class TextField : Widget
             _selectionWidth = maxX - minX - Style!.Font!.GetData().CursorX;
         }
     }
-
-    public virtual float GetPrefWidth()  => 150;
-    public virtual float GetPrefHeight() => PrefHeight;
 
     protected virtual int LetterUnderCursor( float x )
     {
@@ -467,16 +474,16 @@ public class TextField : Widget
         if ( ( focused != _focused ) || ( focused && ( _blinkTask?.Status != TaskStatus.Running ) ) )
         {
             _focused = focused;
-            BlinkTask.Cancel();
+            _blink.Cancel();
             _cursorOn = focused;
 
             if ( focused )
             {
-                BlinkTask.Start();
+                _blink.Start();
             }
             else
             {
-                KeyRepeatTask.Cancel();
+                _keyRepeat.Cancel();
             }
         }
         else if ( !focused )
@@ -496,7 +503,7 @@ public class TextField : Widget
         IDrawable? cursorPatch = Style.Cursor;
         IDrawable? background  = GetBackgroundDrawable();
 
-        Color color  = Color!;
+        Color color  = Color;
         var   x      = X;
         var   y      = Y;
         var   width  = Width;
@@ -598,7 +605,7 @@ public class TextField : Widget
     {
         if ( _messageText != null )
         {
-            font.Draw( batch, _messageText, x, y, 0, _messageText.Length, maxWidth, _textHAlign, false, "..." );
+            font.Draw( batch, _messageText, x, y, 0, _messageText.Length, maxWidth, _textAlign, false, "..." );
         }
     }
 
@@ -1074,12 +1081,15 @@ public class TextField : Widget
         Cursor = Math.Min( cursorPosition, Text!.Length );
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-    private sealed class BlinkTask
+    [PublicAPI]
+    private sealed class BlinkTaskManager
     {
-        private static TextField? _tf;
+        private TextField? _tf;
 
-        public static void Create( TextField tf )
+        public void Create( TextField tf )
         {
             _tf = tf;
 
@@ -1096,9 +1106,9 @@ public class TextField : Widget
             //@formatter:on
         }
 
-        public static void Start()
+        public void Start()
         {
-            if ( ( _tf == null ) || ( _tf._blinkTask == null ) )
+            if ( _tf is not { _blinkTask: not null } )
             {
                 throw new GdxRuntimeException( "Unable to start BlinkTask" );
             }
@@ -1106,7 +1116,7 @@ public class TextField : Widget
             _tf._blinkTask.Start();
         }
 
-        public static void Cancel()
+        public void Cancel()
         {
             if ( _tf?._blinkTask is { Status: TaskStatus.Running } )
             {
@@ -1115,13 +1125,17 @@ public class TextField : Widget
         }
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-    private sealed class KeyRepeatTask
+    [PublicAPI]
+    public sealed class KeyRepeatTaskManager
     {
-        private static TextField? _tf;
-        private static int        _keycode;
+        public int KeyCode { get; set; }
 
-        public static void Create( TextField tf )
+        private TextField? _tf;
+
+        public void Create( TextField tf )
         {
             _tf = tf;
 
@@ -1129,17 +1143,17 @@ public class TextField : Widget
             _tf._keyRepeatCancellationToken = _tf._keyRepeatTokenSource.Token;
 
             //@formatter:off
-                _tf._keyRepeatTask = new Task( () =>
-                {
-                    _tf._inputListener?.KeyDown( null, _keycode );
-                },
-                _tf._keyRepeatCancellationToken );
+            _tf._keyRepeatTask = new Task( () =>
+            {
+                _tf._inputListener?.KeyDown( null, KeyCode );
+            },
+            _tf._keyRepeatCancellationToken );
             //@formatter:on
         }
 
-        public static void Start()
+        public void Start()
         {
-            if ( ( _tf == null ) || ( _tf._keyRepeatTask == null ) )
+            if ( _tf is not { _keyRepeatTask: not null } )
             {
                 throw new GdxRuntimeException( "Unable to start KeyRepeatTask" );
             }
@@ -1147,7 +1161,7 @@ public class TextField : Widget
             _tf._keyRepeatTask.Start();
         }
 
-        public static void Cancel()
+        public void Cancel()
         {
             if ( _tf?._keyRepeatTask is { Status: TaskStatus.Running } )
             {
@@ -1156,12 +1170,13 @@ public class TextField : Widget
         }
     }
 
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     The style for a <see cref="TextField" />.
     /// </summary>
+    [PublicAPI]
     public class TextFieldStyle
     {
         public TextFieldStyle()
@@ -1227,59 +1242,97 @@ public class TextField : Widget
         public Color?      MessageFontColor   { get; set; }
     }
 
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class TextFieldClickListener : ClickListener
     {
-        protected virtual void SetCursorPosition( float f, float f1 )
+        private readonly TextField _tf;
+
+        protected TextFieldClickListener()
         {
+            this._tf = new TextField( "", new Skin() );
+        }
+        
+        protected internal TextFieldClickListener( TextField tf )
+        {
+            this._tf = tf;
+        }
+
+        protected virtual void SetCursorPosition( float x, float y )
+        {
+            _tf.Cursor    = _tf.LetterUnderCursor( x );
+            _tf._cursorOn = _tf._focused;
+
+            _tf._blink.Cancel();
+
+            if ( _tf._focused )
+            {
+                Timer.Schedule( _tf._blinkTask, _tf._blinkTime, _tf._blinkTime );
+            }
         }
 
         protected virtual void ScheduleKeyRepeatTask( int keycode )
         {
+            if ( _tf._keyRepeat.KeyCode != keycode )
+            {
+                _tf._keyRepeat.KeyCode = keycode;
+            }
         }
     }
 
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Interface for listening to typed characters.
     /// </summary>
+    [PublicAPI]
     public interface ITextFieldListener
     {
-        public void KeyTyped( TextField textField, char c );
+        void KeyTyped( TextField textField, char c );
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Interface for filtering characters entered into the text field.
     /// </summary>
+    [PublicAPI]
     public interface ITextFieldFilter
     {
-        public bool AcceptChar( TextField textField, char c );
+        bool AcceptChar( TextField textField, char c );
 
-        public class DigitsOnlyFilter : ITextFieldFilter
+        class DigitsOnlyFilter : ITextFieldFilter
         {
             public bool AcceptChar( TextField textField, char c ) => char.IsDigit( c );
         }
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     ///     An interface for onscreen keyboards.
     ///     Can invoke the default keyboard or render your own keyboard!
     /// </summary>
+    [PublicAPI]
     public interface IOnscreenKeyboard
     {
-        public void Show( bool visible );
+        void Show( bool visible );
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     The default <see cref="IOnscreenKeyboard" /> used by all {@link TextField} instances.
     ///     Just uses <see cref="IInput.SetOnscreenKeyboardVisible(bool)" /> as appropriate. Might
     ///     overlap your actual rendering, so use with care!
     /// </summary>
+    [PublicAPI]
     public class DefaultOnscreenKeyboard : IOnscreenKeyboard
     {
         public void Show( bool visible ) => Core.Gdx.Input.SetOnscreenKeyboardVisible( visible );

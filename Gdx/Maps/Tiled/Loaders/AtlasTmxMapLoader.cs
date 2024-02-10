@@ -30,9 +30,8 @@ using LibGDXSharp.Gdx.Assets.Loaders;
 using LibGDXSharp.Gdx.Assets.Loaders.Resolvers;
 using LibGDXSharp.Gdx.Graphics;
 using LibGDXSharp.Gdx.Graphics.G2D;
+using LibGDXSharp.Gdx.Maths;
 using LibGDXSharp.Gdx.Utils;
-
-using XmlReader = System.Xml.XmlReader;
 
 namespace LibGDXSharp.Gdx.Maps.Tiled.Loaders;
 
@@ -46,6 +45,7 @@ namespace LibGDXSharp.Gdx.Maps.Tiled.Loaders;
 ///         rotation should not be used when creating the atlas.
 ///     </p>
 /// </summary>
+[PublicAPI]
 public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledMapLoaderParameters >
 {
     protected readonly List< Texture > trackedTextures = new();
@@ -67,7 +67,12 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     {
         FileInfo tmxFile = Resolve( fileName );
 
-        xmlElement = xmlReader?.Parse( tmxFile );
+        // ----------------------------------------
+
+        xmlDocument.LoadXml( tmxFile.Name );
+        xmlRootNode = xmlDocument.SelectSingleNode( "map" );
+
+        // ----------------------------------------
 
         FileInfo atlasFileHandle = GetAtlasFileHandle( tmxFile );
 
@@ -83,6 +88,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return map;
     }
 
+    /// <inheritdoc/>
     public override void Load( AssetManager? manager,
                                string? fileName,
                                FileInfo? tmxFile,
@@ -97,20 +103,23 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         Map = LoadTiledMap( tmxFile, parameter, atlasResolver );
     }
 
-    [PublicAPI]
-    public new List< AssetDescriptor > GetDependencyAssetDescriptors( FileInfo tmxFile, TextureLoader.TextureLoaderParameters textureLoaderParameters )
+    /// <summary>
+    /// </summary>
+    /// <param name="tmxFile"></param>
+    /// <param name="textureLoaderParameters"></param>
+    /// <returns></returns>
+    public override List< AssetDescriptor > GetDependencyAssetDescriptors( FileInfo tmxFile,
+                                                                   TextureLoader.TextureLoaderParameters textureLoaderParameters )
     {
         var descriptors = new List< AssetDescriptor >
         {
-            new( GetAtlasFileHandle( tmxFile ),
-                 typeof( TextureAtlas ),
-                 textureLoaderParameters )
+            new( GetAtlasFileHandle( tmxFile ), typeof( TextureAtlas ), textureLoaderParameters )
         };
 
         return descriptors;
     }
 
-    //TODO: Add documentation for these parameters
+    /// <inheritdoc/>
     protected override void AddStaticTiles( FileInfo tmxFile,
                                             IImageResolver imageResolver,
                                             TiledMapTileSet tileSet,
@@ -166,50 +175,60 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
             }
         }
 
-        // Add tiles with individual image sources
-        foreach ( XmlReader.Element tileElement in tileElements )
+        if ( tileElements != null )
         {
-            var            tileId = firstgid + tileElement.GetIntAttribute( "id", 0 );
-            ITiledMapTile? tile   = tileSet.GetTile( tileId );
-
-            if ( tile == null )
+            // Add tiles with individual image sources
+            foreach ( XmlNode? tileElement in tileElements )
             {
-                XmlReader.Element? imageElement = tileElement.GetChildByName( "image" );
+                var            tileId = ( firstgid + NumberUtils.ParseInt( tileElement?.Attributes?[ "id" ]?.Value ) ) ?? 0;
+                ITiledMapTile? tile   = tileSet.GetTile( tileId );
 
-                if ( imageElement != null )
+                if ( tile == null )
                 {
-                    var regionName = imageElement.GetAttribute( "source" );
+                    XmlNode? imageElement = tileElement?.SelectSingleNode( "image" );
 
-                    regionName = regionName.Substring( 0, regionName.LastIndexOf( '.' ) );
-
-                    AtlasRegion? region = atlas.FindRegion( regionName );
-
-                    if ( region == null )
+                    if ( imageElement != null )
                     {
-                        throw new GdxRuntimeException( $"Tileset atlasRegion not found: {regionName}" );
-                    }
+                        var regionName = imageElement.Attributes?[ "source" ]?.Value;
 
-                    AddStaticTiledMapTile( tileSet, region, tileId, offsetX, offsetY );
+                        regionName = regionName?.Substring( 0, regionName.LastIndexOf( '.' ) );
+
+                        AtlasRegion? region = atlas.FindRegion( regionName );
+
+                        if ( region == null )
+                        {
+                            throw new GdxRuntimeException( $"Tileset atlasRegion not found: {regionName}" );
+                        }
+
+                        AddStaticTiledMapTile( tileSet, region, tileId, offsetX, offsetY );
+                    }
                 }
             }
         }
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="tmxFile"></param>
+    /// <returns></returns>
+    /// <exception cref="GdxRuntimeException"></exception>
     protected FileInfo GetAtlasFileHandle( FileInfo tmxFile )
     {
-        XmlReader.Element? properties = xmlElement?.GetChildByName( "properties" );
+        XmlNode? properties = xmlDocument.SelectSingleNode( "properties" );
 
         string? atlasFilePath = null;
 
-        if ( properties != null )
-        {
-            foreach ( XmlReader.Element property in properties.GetChildrenByName( "property" ) )
-            {
-                var name = property.GetAttribute( "name" );
+        XmlNodeList? propertyList = properties?.SelectNodes( "property" );
 
-                if ( name.StartsWith( "atlas" ) )
+        if ( propertyList != null )
+        {
+            foreach ( XmlNode? property in propertyList )
+            {
+                var name = property?.Attributes?[ "name" ]?.Value;
+
+                if ( ( bool )name?.StartsWith( "atlas" ) )
                 {
-                    atlasFilePath = property.GetAttribute( "value" );
+                    atlasFilePath = property?.Attributes?[ "value" ]?.Value;
 
                     break;
                 }
@@ -248,6 +267,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class AtlasTiledMapLoaderParameters : BaseTmxLoaderParameters
     {
         public bool ForceTextureFilters { get; set; } = false;
@@ -256,10 +276,12 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     protected interface IAtlasResolver : IImageResolver
     {
         public TextureAtlas GetAtlas();
 
+        [PublicAPI]
         public class DirectAtlasResolver : IAtlasResolver
         {
             private readonly TextureAtlas _atlas;
@@ -271,6 +293,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
             public TextureRegion? GetImage( string name ) => _atlas.FindRegion( name );
         }
 
+        [PublicAPI]
         public class AssetManagerAtlasResolver : IAtlasResolver
         {
             private readonly AssetManager _assetManager;

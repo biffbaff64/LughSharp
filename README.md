@@ -2,27 +2,14 @@
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 C# 2D Game Framework heavily inspired by the Java LibGDX Game Framework.
-This is an OpenSource project, enabled, with thanks, by Jetbrains Community Support OpenSource Licensing https://jb.gg/OpenSourceSupport
+This is an OpenSource project, enabled, with thanks, by Jetbrains Community
+Support OpenSource Licensing https://jb.gg/OpenSourceSupport
 
 It is NOT a 100% conversion, some things may be different.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ![red7logo_small.png](Resources%2Fred7logo_small.png)   ![jb_beam.png](Resources%2Fjb_beam_small.png)  ![OSI_Standard_Logo_100X130.png](Resources%2FOSI_Standard_Logo_100X130.png)
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-TODO List is below.
-
-
-As far as I can see, I do not need to convert:-
-
-    - Regex
-    - Reflection
-    - Concurrent ( AtomicInteger, AtomicQueue etc )
-    - Async?
-    - Network
-    - Compression?
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -36,14 +23,15 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 
 - STEP 1: Complete all conversions so that the code will build.
 - STEP 2: Refactor, where possible and necessary, to take advantage of C# language features.
-  -         Some classes can become structs / records instead.
-  -         Some/Most Get / Set method declarations in interfaces could become Properties.
-  -         switch expressions instead of switch statements where appropriate.
-  -         switch expressions instead of if..if/else..else where appropriate.
-  -         Check methods to see if they can be virtual.
-  -         Use [PublicApi] where necessary.
-  -         Use sealed classes only where strictly necessary. Users should be able to extend library classes.
-  -         Use of virtual for base classes/methods and classes that are likely to be extended is essential.
+    - Some classes can become structs / records instead.
+    - Some/Most Get / Set method declarations in interfaces could become Properties.
+    - switch expressions instead of switch statements where appropriate.
+    - switch expressions instead of if..if/else..else where appropriate.
+    - Check methods to see if they can be virtual.
+    - Use [PublicApi] where necessary.
+    - Use sealed classes only where strictly necessary. Users should be able to extend library classes.
+    - Use of virtual for base classes/methods and classes that are likely to be extended is essential.
+    - Constantly look for opportunities to improve this code.
 - STEP 3: Resolve ALL remaining TODOs.
 - STEP 4: Ensure code is fully documented.
 
@@ -55,16 +43,15 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-- IP = Conversion In Progress.
-- DONE = Class finished but may not be fully 'CSHARP-ified'
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-- Constantly look for opportunities to improve this code.
 - There seems to be different namings for width/height etc properties and methods. Make it more uniform
 - Make more use of <inheritdoc cref=""/>> or just <inheritdoc/>
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+- IP = Conversion In Progress.
+- DONE = Class finished but may not be fully 'CSHARP-ified'
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ASSETS
@@ -83,8 +70,8 @@ ASSETS
     - IP   - IAssetErrorListener
     - IP   - RefCountedContainer
 
-    LOADERS
-    -------
+    ASSETS/LOADERS
+    --------------
 
     TODO:   I think most, if not all, of these classes could be modified or rewritten.
             As I've learned more about C# I've also learned more about Tasks and Delegates,
@@ -105,8 +92,8 @@ ASSETS
     - IP   - TextureAtlasLoader
     - IP   - TextureLoader
 
-    LOADERS/RESOLVERS
-    -----------------
+    ASSETS/LOADERS/RESOLVERS
+    ------------------------
 
     - IP   - AbsoluteFileHandleResolver
     - IP   - ClasspathFileHandleResolver
@@ -447,12 +434,9 @@ MAPS
     MAPS/TILED/LOADERS
     ------------------
 
-    Needs XML Resolution
-
-    - IP   - AtlasTmxMapLoader 
-    - IP   - BaseTmxMapLoader
-    - IP   - TmxMapLoader
-    - **** - TideMapLoader
+    - DONE - AtlasTmxMapLoader 
+    - DONE - BaseTmxMapLoader
+    - DONE - TmxMapLoader
 
     MAPS/TILED/OBJECTS
     ------------------
@@ -530,7 +514,7 @@ MATHS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-NETWORK
+NETWORK - DELETE CANDIDATE
 -------
 
     Note:- All this is probably already supported by C# System
@@ -846,16 +830,6 @@ UTILS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-TESTS
------
-
-    - IP   - Core/Graphics/CameraTest
-    -      - Core/Graphics/SpriteTest
-    - IP   - Core/Scene/Scene2D/StageTest
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 BACKENDS/DESKTOPGL
 ------------------
 
@@ -936,6 +910,12 @@ EXTENSIONS/BOX2D
     - It's most likely best to recommend the use of an already available C# port.
     - ( It really depends on how much of a glutton for punishment you are!!!! )
 
+    eg:
+    - Box2DSharp
+    - Box2DX
+    - Box2D.Net
+    - Box2D.CSharp
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -965,6 +945,16 @@ EXTENSIONS/GDX-TOOLS
 
     - IP   - ColorBleedEffect
     -      - TexturePacker
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+TESTS
+-----
+
+    - IP   - Core/Graphics/CameraTest
+    -      - Core/Graphics/SpriteTest
+    - IP   - Core/Scene/Scene2D/StageTest
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

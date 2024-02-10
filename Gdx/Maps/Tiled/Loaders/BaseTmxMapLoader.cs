@@ -46,11 +46,11 @@ namespace LibGDXSharp.Gdx.Maps.Tiled.Loaders;
 public abstract class BaseTmxMapLoader<TP>
     : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.BaseTmxLoaderParameters
 {
-    public int       MapTileWidth      { get; set; }
-    public int       MapTileHeight     { get; set; }
-    public int       MapWidthInPixels  { get; set; }
-    public int       MapHeightInPixels { get; set; }
-    public TiledMap  Map               { get; set; } = null!;
+    public int      MapTileWidth      { get; set; }
+    public int      MapTileHeight     { get; set; }
+    public int      MapWidthInPixels  { get; set; }
+    public int      MapHeightInPixels { get; set; }
+    public TiledMap Map               { get; set; } = null!;
 
     // ------------------------------------------------------------------------
 
@@ -64,7 +64,8 @@ public abstract class BaseTmxMapLoader<TP>
     protected bool convertObjectToTileSpace;
     protected bool flipY = true;
 
-    protected XmlDocument? xmlDocument;
+    protected XmlDocument xmlDocument = new();
+    protected XmlNode?    xmlRootNode;
 
     private XmlNodeList? _mapLayersList;
     private XmlNodeList? _tilesetList;
@@ -81,35 +82,6 @@ public abstract class BaseTmxMapLoader<TP>
     }
 
     /// <summary>
-    /// </summary>
-    /// <param name="fileName"></param>
-    /// <param name="tmxFile"></param>
-    /// <param name="parameter"></param>
-    /// <returns></returns>
-    public List< AssetDescriptor >? GetDependencies( string fileName, FileInfo tmxFile, TP? parameter )
-    {
-        var textureParameter = new TextureLoader.TextureLoaderParameters();
-
-        if ( parameter != null )
-        {
-            textureParameter.GenMipMaps = parameter.GenerateMipMaps;
-            textureParameter.MinFilter  = parameter.TextureMinFilter;
-            textureParameter.MagFilter  = parameter.TextureMagFilter;
-        }
-
-        return GetDependencyAssetDescriptors( tmxFile, textureParameter );
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="tmxFile"></param>
-    /// <param name="textureLoaderParameters"></param>
-    /// <returns></returns>
-    protected List< AssetDescriptor >? GetDependencyAssetDescriptors( FileInfo tmxFile,
-                                                                      TextureLoader.TextureLoaderParameters textureLoaderParameters )
-        => default( List< AssetDescriptor >? );
-
-    /// <summary>
     ///     Loads the map data, given the XML root element.
     /// </summary>
     /// <param name="tmxFile">The Filehandle of the tmx file </param>
@@ -120,29 +92,31 @@ public abstract class BaseTmxMapLoader<TP>
     {
         // ----------------------------
 
-        xmlDocument = new XmlDocument();
-        xmlDocument.LoadXml( tmxFile.Name );
+        if ( !xmlDocument.HasChildNodes )
+        {
+            xmlDocument.LoadXml( tmxFile.Name );
+        }
 
         // ----------------------------
 
         // Extract the main Map node. Everything else is a child of this node.
-        XmlNode? mapNode = xmlDocument.SelectSingleNode( "map" );
+        xmlRootNode = xmlDocument.SelectSingleNode( "map" );
 
-        if ( mapNode == null )
+        if ( xmlRootNode == null )
         {
             throw new GdxRuntimeException( "TMXFile does not contain a 'map' node!" );
         }
 
-        if ( mapNode.Attributes == null )
+        if ( xmlRootNode.Attributes == null )
         {
             throw new GdxRuntimeException( "Tmx Map has no attributes!" );
         }
 
-        this._tilesetList     = mapNode.SelectNodes( "tileset" );
-        this._mapLayersList   = mapNode.SelectNodes( "layer" );
-        this._imageLayerList  = mapNode.SelectNodes( "imagelayer" );
-        this._objectGroupList = mapNode.SelectNodes( "objectgroup" );
-        this._groupList       = mapNode.SelectNodes( "group" );
+        this._tilesetList     = xmlRootNode.SelectNodes( "tileset" );
+        this._mapLayersList   = xmlRootNode.SelectNodes( "layer" );
+        this._imageLayerList  = xmlRootNode.SelectNodes( "imagelayer" );
+        this._objectGroupList = xmlRootNode.SelectNodes( "objectgroup" );
+        this._groupList       = xmlRootNode.SelectNodes( "group" );
 
         // ----------------------------
 
@@ -161,7 +135,7 @@ public abstract class BaseTmxMapLoader<TP>
 
         // ----------------------------
 
-        var mapData = new MapData( mapNode );
+        var mapData = new MapData( xmlRootNode );
 
         // ----------------------------
         // Fetch the existing MapProperties object from the newly created map,
@@ -190,7 +164,7 @@ public abstract class BaseTmxMapLoader<TP>
         //@formatter:on
 
         //TODO: Check the TiledMap documentation to see if these have defaults.
-        
+
         if ( mapData.StaggerAxis != string.Empty )
         {
             mapProperties.Put( "staggeraxis", mapData.StaggerAxis );
@@ -272,6 +246,36 @@ public abstract class BaseTmxMapLoader<TP>
         return Map;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="fileName"></param>
+    /// <param name="tmxFile"></param>
+    /// <param name="parameter"></param>
+    /// <returns></returns>
+    public List< AssetDescriptor >? GetDependencies( string fileName, FileInfo tmxFile, TP? parameter )
+    {
+        var textureParameter = new TextureLoader.TextureLoaderParameters();
+
+        if ( parameter != null )
+        {
+            textureParameter.GenMipMaps = parameter.GenerateMipMaps;
+            textureParameter.MinFilter  = parameter.TextureMinFilter;
+            textureParameter.MagFilter  = parameter.TextureMagFilter;
+        }
+
+        return GetDependencyAssetDescriptors( tmxFile, textureParameter );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="tmxFile"></param>
+    /// <param name="textureLoaderParameters"></param>
+    /// <returns></returns>
+    public virtual List< AssetDescriptor >? GetDependencyAssetDescriptors( FileInfo tmxFile,
+                                                                           TextureLoader.TextureLoaderParameters textureLoaderParameters )
+        => default( List< AssetDescriptor >? );
+
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
     // Load map components - layers, tilesets, groups etc
@@ -296,14 +300,14 @@ public abstract class BaseTmxMapLoader<TP>
             var groupLayer = new MapGroupLayer();
 
             LoadBasicLayerInfo( groupLayer, node );
-            
+
             XmlNode? properties;
 
             if ( ( properties = node.SelectSingleNode( "properties" ) ) != null )
             {
                 LoadProperties( groupLayer.Properties, properties );
             }
-            
+
             for ( int i = 0, j = node.ChildNodes.Count; i < j; i++ )
             {
                 XmlNode? child = node.ChildNodes[ i ];
@@ -540,16 +544,14 @@ public abstract class BaseTmxMapLoader<TP>
     /// <param name="map"></param>
     /// <param name="layer"></param>
     /// <param name="node"></param>
-    protected void LoadObject( TiledMap map, MapLayer layer, XmlNode node )
-        => LoadObject( map, layer.Objects, node, MapHeightInPixels );
+    protected void LoadObject( TiledMap map, MapLayer layer, XmlNode node ) => LoadObject( map, layer.Objects, node, MapHeightInPixels );
 
     /// <summary>
     /// </summary>
     /// <param name="map"></param>
     /// <param name="tile"></param>
     /// <param name="node"></param>
-    protected void LoadObject( TiledMap map, ITiledMapTile tile, XmlNode node )
-        => LoadObject( map, tile.GetObjects(), node, tile.TextureRegion.RegionHeight );
+    protected void LoadObject( TiledMap map, ITiledMapTile tile, XmlNode node ) => LoadObject( map, tile.GetObjects(), node, tile.TextureRegion.RegionHeight );
 
     /// <summary>
     /// </summary>
@@ -1143,12 +1145,12 @@ public abstract class BaseTmxMapLoader<TP>
     /// <param name="tmxFile"></param>
     /// <param name="imageResolver"></param>
     /// <param name="tileset"></param>
-    /// <param name="node"></param>
+    /// <param name="node"> The XmlNode holding these tiles. </param>
     /// <param name="tileElements"></param>
     /// <param name="name"></param>
     /// <param name="firstgid"> The ID of the first tile to be added. </param>
-    /// <param name="tilewidth"></param>
-    /// <param name="tileheight"></param>
+    /// <param name="tilewidth"> Width of a tile in pixels. </param>
+    /// <param name="tileheight"> Height of a tile in pixels. </param>
     /// <param name="spacing"></param>
     /// <param name="margin"></param>
     /// <param name="source"></param>
