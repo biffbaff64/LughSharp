@@ -33,7 +33,7 @@ namespace LibGDXSharp.LibCore.Utils.Pooling;
 [PublicAPI]
 public static class Pools<T>
 {
-    private readonly static Dictionary< Type, Pool< T >? > TypePools = new();
+    private readonly static Dictionary< Type, Pool< T >? > _typePools = new();
 
     /// <summary>
     ///     Returns a new or existing pool for the specified type, stored in a Class
@@ -42,13 +42,13 @@ public static class Pools<T>
     /// </summary>
     public static Pool< T > Get( int max = 100 )
     {
-        Pool< T >? pool = TypePools[ typeof( T ) ];
+        Pool< T >? pool = _typePools[ typeof( T ) ];
 
         if ( pool == null )
         {
             pool = new Pool< T >( 4, max );
 
-            TypePools.Put( typeof( T ), pool );
+            _typePools.Put( typeof( T ), pool );
         }
 
         return pool;
@@ -58,7 +58,7 @@ public static class Pools<T>
     ///     Sets an existing pool for the specified type, stored in a Class
     ///     to <see cref="Pool{T}" /> map.
     /// </summary>
-    public static void Set( Type type, Pool< T > pool ) => TypePools[ type ] = pool;
+    public static void Set( Type type, Pool< T > pool ) => _typePools[ type ] = pool;
 
     /// <inheritdoc cref="Pool{T}.Obtain()" />
     public static T? Obtain() => Get().Obtain();
@@ -68,7 +68,7 @@ public static class Pools<T>
     {
         ArgumentNullException.ThrowIfNull( obj );
 
-        TypePools[ typeof( T ) ]?.Free( obj );
+        _typePools[ typeof( T ) ]?.Free( obj );
     }
 
     /// <summary>
@@ -88,16 +88,16 @@ public static class Pools<T>
         {
             T obj = objects[ i ];
 
-            if ( ( obj == null ) || ( TypePools[ typeof( T ) ] == null ) )
+            if ( ( obj == null ) || ( _typePools[ typeof( T ) ] == null ) )
             {
                 continue;
             }
 
-            TypePools[ typeof( T ) ]?.Free( obj );
+            _typePools[ typeof( T ) ]?.Free( obj );
 
             if ( !samePool )
             {
-                TypePools[ typeof( T ) ] = null;
+                _typePools[ typeof( T ) ] = null;
             }
         }
     }

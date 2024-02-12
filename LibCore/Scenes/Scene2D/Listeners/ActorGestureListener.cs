@@ -46,18 +46,21 @@ public class ActorGestureListener : IEventListener
     public ActorGestureListener( float halfTapSquareSize,
                                  float tapCountInterval,
                                  float longPressDuration,
-                                 float maxFlingDelay ) => Detector = new ActorGestureDetector( halfTapSquareSize,
-                                                                                               tapCountInterval,
-                                                                                               longPressDuration,
-                                                                                               maxFlingDelay,
-                                                                                               this );
+                                 float maxFlingDelay )
+    {
+        Detector = new ActorGestureDetector( halfTapSquareSize,
+                                             tapCountInterval,
+                                             longPressDuration,
+                                             maxFlingDelay,
+                                             this );
+    }
 
     public ActorGestureDetector Detector        { get; set; }
     public Actor?               TouchDownTarget { get; set; }
 
     public virtual bool Handle( Event e )
     {
-        if ( !( e is InputEvent ev ) )
+        if ( e is not InputEvent ev )
         {
             return false;
         }

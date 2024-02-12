@@ -29,7 +29,7 @@ using LibGDXSharp.LibCore.Graphics;
 namespace LibGDXSharp.LibCore.Assets.Loaders;
 
 /// <summary>
-///     <see cref="AssetLoader" /> for <see cref="Texture" /> instances.
+///     <see cref="AssetLoaderBase" /> for <see cref="Texture" /> instances.
 ///     The pixel data is loaded asynchronously. The texture is then created on the
 ///     rendering thread, synchronously. Passing a <see cref="TextureLoaderParameters" />
 ///     to <see cref="AssetManager" />.Load() allows one to specify parameters as

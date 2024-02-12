@@ -26,8 +26,10 @@
 namespace LibGDXSharp.LibCore.Utils.Buffers;
 
 [PublicAPI]
-public class DirectByteBuffer : ByteBuffer
+public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
 {
+    public object AttachedObject { get; set; }
+
     public DirectByteBuffer( int capacity )
         : base( -1, 0, capacity, capacity )
     {
@@ -37,7 +39,10 @@ public class DirectByteBuffer : ByteBuffer
     ///     Tells whether or not this buffer is <i>direct</i>.
     /// </summary>
     /// <returns> <tt>true</tt> if, and only if, this buffer is direct </returns>
-    public override bool IsDirect() => true;
+    public override bool IsDirect()
+    {
+        return true;
+    }
 
     /// <summary>
     ///     Creates a new byte buffer whose content is a shared subsequence of
@@ -57,7 +62,10 @@ public class DirectByteBuffer : ByteBuffer
     ///     </p>
     /// </summary>
     /// <returns> The new byte buffer </returns>
-    public override ByteBuffer Slice() => null;
+    public override ByteBuffer Slice()
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Creates a new byte buffer that shares this buffer's content.
@@ -75,7 +83,10 @@ public class DirectByteBuffer : ByteBuffer
     ///     </p>
     /// </summary>
     /// <returns> The new byte buffer. </returns>
-    public override ByteBuffer Duplicate() => null;
+    public override ByteBuffer Duplicate()
+    {
+        return null;
+    }
 
     /**
      * Creates a new, read-only byte buffer that shares this buffer's
@@ -95,20 +106,26 @@ public class DirectByteBuffer : ByteBuffer
      *         </p>
      *         @return  The new, read-only byte buffer
      */
-    public override ByteBuffer AsReadOnlyBuffer() => null;
+    public override ByteBuffer AsReadOnlyBuffer()
+    {
+        return null;
+    }
 
     /**
      * Relative
      * <i>get</i>
      * method.  Reads the byte at this buffer's
      * current position, and then increments the position.
-     * 
+     *
      * @return  The byte at the buffer's current position
-     * 
+     *
      * @throws  BufferUnderflowException
      * If the buffer's current position is not smaller than its limit
      */
-    public override byte Get() => 0;
+    public override byte Get()
+    {
+        return 0;
+    }
 
     /**
      * Relative
@@ -122,35 +139,41 @@ public class DirectByteBuffer : ByteBuffer
      * </p>
      * @param  b
      * The byte to be written
-     * 
+     *
      * @return  This buffer
-     * 
+     *
      * @throws  BufferOverflowException
      * If this buffer's current position is not smaller than its limit
-     * 
+     *
      * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      * If this buffer is read-only
      */
-    public override ByteBuffer Put( byte b ) => null;
+    public override ByteBuffer Put( byte b )
+    {
+        return null;
+    }
 
     /**
      * Absolute
      * <i>get</i>
      * method.  Reads the byte at the given
      * index.
-     * 
+     *
      * @param  index
      * The index from which the byte will be read
-     * 
+     *
      * @return  The byte at the given index
-     * 
+     *
      * @throws  IndexOutOfBoundsException
      * If
      * <tt>index</tt>
      * is negative
      * or not smaller than the buffer's limit
      */
-    public override byte Get( int index ) => 0;
+    public override byte Get( int index )
+    {
+        return 0;
+    }
 
     /**
      * Absolute
@@ -164,22 +187,25 @@ public class DirectByteBuffer : ByteBuffer
      * </p>
      * @param  index
      * The index at which the byte will be written
-     * 
+     *
      * @param  b
      * The byte value to be written
-     * 
+     *
      * @return  This buffer
-     * 
+     *
      * @throws  IndexOutOfBoundsException
      * If
      * <tt>index</tt>
      * is negative
      * or not smaller than the buffer's limit
-     * 
+     *
      * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      * If this buffer is read-only
      */
-    public override ByteBuffer Put( int index, byte b ) => null;
+    public override ByteBuffer Put( int index, byte b )
+    {
+        return null;
+    }
 
     /**
      * * Compacts this buffer
@@ -233,57 +259,135 @@ public class DirectByteBuffer : ByteBuffer
      *         * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      *         *          If this buffer is read-only
      */
-    public override ByteBuffer Compact() => null;
+    public override ByteBuffer Compact()
+    {
+        return null;
+    }
 
-    public override char GetChar() => '\0';
+    public override char GetChar()
+    {
+        return '\0';
+    }
 
-    public override char GetChar( int index ) => '\0';
+    public override char GetChar( int index )
+    {
+        return '\0';
+    }
 
-    public override ByteBuffer PutChar( char value ) => null;
+    public override ByteBuffer PutChar( char value )
+    {
+        return null;
+    }
 
-    public override ByteBuffer PutChar( int index, char value ) => null;
+    public override ByteBuffer PutChar( int index, char value )
+    {
+        return null;
+    }
 
-    public override CharBuffer AsCharBuffer() => null;
+    public override CharBuffer AsCharBuffer()
+    {
+        return null;
+    }
 
-    public override short GetShort() => 0;
+    public override short GetShort()
+    {
+        return 0;
+    }
 
-    public override short GetShort( int index ) => 0;
+    public override short GetShort( int index )
+    {
+        return 0;
+    }
 
-    public override ByteBuffer PutShort( short value ) => null;
+    public override ByteBuffer PutShort( short value )
+    {
+        return null;
+    }
 
-    public override ByteBuffer PutShort( int index, short value ) => null;
+    public override ByteBuffer PutShort( int index, short value )
+    {
+        return null;
+    }
 
-    public override ShortBuffer AsShortBuffer() => null;
+    public override ShortBuffer AsShortBuffer()
+    {
+        return null;
+    }
 
-    public override int GetInt() => 0;
+    public override int GetInt()
+    {
+        return 0;
+    }
 
-    public override int GetInt( int index ) => 0;
+    public override int GetInt( int index )
+    {
+        return 0;
+    }
 
-    public override ByteBuffer PutInt( int value ) => null;
+    public override ByteBuffer PutInt( int value )
+    {
+        return null;
+    }
 
-    public override ByteBuffer PutInt( int index, int value ) => null;
+    public override ByteBuffer PutInt( int index, int value )
+    {
+        return null;
+    }
 
-    public override IntBuffer AsIntBuffer() => null;
+    public override IntBuffer AsIntBuffer()
+    {
+        return null;
+    }
 
-    public override long GetLong() => 0;
+    public override long GetLong()
+    {
+        return 0;
+    }
 
-    public override long GetLong( int index ) => 0;
+    public override long GetLong( int index )
+    {
+        return 0;
+    }
 
-    public override ByteBuffer PutLong( long value ) => null;
+    public override ByteBuffer PutLong( long value )
+    {
+        return null;
+    }
 
-    public override ByteBuffer PutLong( int index, long value ) => null;
+    public override ByteBuffer PutLong( int index, long value )
+    {
+        return null;
+    }
 
-    public override LongBuffer AsLongBuffer() => null;
+    public override LongBuffer AsLongBuffer()
+    {
+        return null;
+    }
 
-    public override float GetFloat() => 0;
+    public override float GetFloat()
+    {
+        return 0;
+    }
 
-    public override float GetFloat( int index ) => 0;
+    public override float GetFloat( int index )
+    {
+        return 0;
+    }
 
-    public override ByteBuffer PutFloat( float value ) => null;
+    public override ByteBuffer PutFloat( float value )
+    {
+        return null;
+    }
 
-    public override ByteBuffer PutFloat( int index, float value ) => null;
+    public override ByteBuffer PutFloat( int index, float value )
+    {
+        return null;
+    }
 
-    public override FloatBuffer AsFloatBuffer() => null;
+    public override FloatBuffer AsFloatBuffer()
+    {
+        return null;
+    }
 
     /**
      * Relative
@@ -295,12 +399,15 @@ public class DirectByteBuffer : ByteBuffer
      *     and then increments the position by eight.
      * </p>
      * @return  The double value at the buffer's current position
-     * 
+     *
      * @throws  BufferUnderflowException
      * If there are fewer than eight bytes
      * remaining in this buffer
      */
-    public override double GetDouble() => 0;
+    public override double GetDouble()
+    {
+        return 0;
+    }
 
     /**
      * Absolute
@@ -312,9 +419,9 @@ public class DirectByteBuffer : ByteBuffer
      * </p>
      * @param  index
      * The index from which the bytes will be read
-     * 
+     *
      * @return  The double value at the given index
-     * 
+     *
      * @throws  IndexOutOfBoundsException
      * If
      * <tt>index</tt>
@@ -322,7 +429,10 @@ public class DirectByteBuffer : ByteBuffer
      * or not smaller than the buffer's limit,
      * minus seven
      */
-    public override double GetDouble( int index ) => 0;
+    public override double GetDouble( int index )
+    {
+        return 0;
+    }
 
     /**
      * Relative
@@ -338,17 +448,20 @@ public class DirectByteBuffer : ByteBuffer
      * </p>
      * @param  value
      * The double value to be written
-     * 
+     *
      * @return  This buffer
-     * 
+     *
      * @throws  BufferOverflowException
      * If there are fewer than eight bytes
      * remaining in this buffer
-     * 
+     *
      * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      * If this buffer is read-only
      */
-    public override ByteBuffer PutDouble( double value ) => null;
+    public override ByteBuffer PutDouble( double value )
+    {
+        return null;
+    }
 
     /**
      * Absolute
@@ -363,23 +476,26 @@ public class DirectByteBuffer : ByteBuffer
      * </p>
      * @param  index
      * The index at which the bytes will be written
-     * 
+     *
      * @param  value
      * The double value to be written
-     * 
+     *
      * @return  This buffer
-     * 
+     *
      * @throws  IndexOutOfBoundsException
      * If
      * <tt>index</tt>
      * is negative
      * or not smaller than the buffer's limit,
      * minus seven
-     * 
+     *
      * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      * If this buffer is read-only
      */
-    public override ByteBuffer PutDouble( int index, double value ) => null;
+    public override ByteBuffer PutDouble( int index, double value )
+    {
+        return null;
+    }
 
     /**
      * Creates a view of this byte buffer as a double buffer.
@@ -398,5 +514,45 @@ public class DirectByteBuffer : ByteBuffer
      * </p>
      * @return  A new double buffer
      */
-    public override DoubleBuffer AsDoubleBuffer() => null;
+    public override DoubleBuffer AsDoubleBuffer()
+    {
+        return null;
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    internal class Deallocator
+    {
+        private long _address;
+        private long _size;
+        private int  _capacity;
+
+        private Deallocator( long address, long size, int capacity )
+        {
+            Debug.Assert( address != 0 );
+            
+            this._address  = address;
+            this._size     = size;
+            this._capacity = capacity;
+        }
+
+        public void Run()
+        {
+            if ( _address == 0 )
+            {
+                return;
+            }
+
+//            unsafe.freeMemory( address );
+            _address = 0;
+//            Bits.unreserveMemory( size, capacity );
+        }
+    }
+
+    /// <inheritdoc />
+    public long Address() => 0;
+
+    /// <inheritdoc />
+    public object Attachment() => null;
 }

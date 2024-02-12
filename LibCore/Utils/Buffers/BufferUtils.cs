@@ -216,8 +216,24 @@ public static class BufferUtils
                };
     }
 
-    public static void DisposeUnsafeByteBuffer( ByteBuffer byteBuffer )
+    /// <summary>
+    /// </summary>
+    /// <param name="buffer"></param>
+    /// <exception cref="ArgumentException"></exception>
+    public static void DisposeUnsafeByteBuffer( ByteBuffer buffer )
     {
-        // TODO:
+        var size = buffer.Capacity;
+        
+        lock ( _unsafeBuffers )
+        {
+            if ( !_unsafeBuffers.Remove( buffer ) )
+            {
+                throw new ArgumentException( "buffer not allocated with newUnsafeByteBuffer or already disposed" );
+            }
+        }
+        
+        _allocatedUnsafe -= size;
+
+//        buffer = null!;
     }
 }

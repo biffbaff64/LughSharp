@@ -361,13 +361,16 @@ public class ETC1
         /// <summary>
         ///     Releases the native resources of the ETC1Data instance.
         /// </summary>
-        public void Dispose() => BufferUtils.DisposeUnsafeByteBuffer( CompressedData );
+        public void Dispose()
+        {
+            BufferUtils.DisposeUnsafeByteBuffer( CompressedData );
+        }
 
         private void CheckNPOT()
         {
             if ( !MathUtils.IsPowerOfTwo( Width ) || !MathUtils.IsPowerOfTwo( Height ) )
             {
-                Console.WriteLine( LocalResources.ETC1Data_warning__PowerVR_GPUs );
+                Console.WriteLine( @"ETC1Data warning: non-power-of-two ETC1textures may crash the driver of PowerVR GPUs" );
             }
         }
 

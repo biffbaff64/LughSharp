@@ -28,7 +28,13 @@ namespace LibGDXSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class ByteBuffer : Buffer
 {
-    private bool _nativeByteOrder = Bits.ByteOrder == ByteOrder.BigEndian;
+    protected byte[]? Hb        { get; set; }
+    protected int     Offset    { get; set; }
+    protected bool    BigEndian { get; set; } = true;
+
+    // ------------------------------------------------------------------------
+
+    private bool _nativeByteOrder = ( Bits.ByteOrder == ByteOrder.BigEndian );
 
     // ------------------------------------------------------------------------
 
@@ -38,10 +44,6 @@ public abstract class ByteBuffer : Buffer
         Hb     = hb;
         Offset = offset;
     }
-
-    protected byte[]? Hb        { get; set; }
-    protected int     Offset    { get; set; }
-    protected bool    BigEndian { get; set; } = true;
 
     /// <summary>
     ///     Allocates a new direct byte buffer.
@@ -187,9 +189,8 @@ public abstract class ByteBuffer : Buffer
     ///     invocation of this method with the destination array <paramref name="dst" />
     ///     behaves in exactly the same way as invoking
     ///     <code>
-    /// src.Get(dst, 0, dst.Length);
-    /// </code>
-    ///     .
+    ///     src.Get(dst, 0, dst.Length);
+    ///     </code>
     /// </summary>
     /// <param name="dst">The destination array.</param>
     /// <returns>This buffer.</returns>
@@ -455,20 +456,12 @@ public abstract class ByteBuffer : Buffer
     ///     <para>
     ///         Two byte buffers are equal if, and only if,
     ///     </para>
-    ///     <li>
-    ///         <para> They have the same element type,  </para>
-    ///     </li>
-    ///     <li>
-    ///         <para>
-    ///             They have the same number of remaining elements, and
-    ///         </para>
-    ///     </li>
-    ///     <li>
-    ///         <para>
-    ///             The two sequences of remaining elements, considered independently of
-    ///             their starting positions, are pointwise equal.
-    ///         </para>
-    ///     </li>
+    ///     <para>1. They have the same element type,</para>
+    ///     <para>2. They have the same number of remaining elements, and,</para>
+    ///     <para>
+    ///           3. The two sequences of remaining elements, considered independently
+    ///              of their starting positions, are pointwise equal.
+    ///     </para>
     ///     <para> A byte buffer is not equal to any other type of object. </para>
     /// </summary>
     /// <param name="ob"> The object to which this buffer is to be compared </param>
@@ -568,8 +561,7 @@ public abstract class ByteBuffer : Buffer
     /// <returns> This buffer </returns>
     public ByteBuffer Order( ByteOrder order )
     {
-        BigEndian = order == ByteOrder.BigEndian;
-
+        BigEndian        = ( order == ByteOrder.BigEndian );
         _nativeByteOrder = BigEndian == ( Bits.ByteOrder == ByteOrder.BigEndian );
 
         return this;

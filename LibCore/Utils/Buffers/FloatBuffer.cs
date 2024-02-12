@@ -75,6 +75,11 @@ namespace LibGDXSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class FloatBuffer : Buffer
 {
+    protected float[]? Hb     { get; set; }
+    protected int      Offset { get; set; }
+
+    // ------------------------------------------------------------------------
+    
     protected FloatBuffer( int mark, int pos, int lim, int cap, float[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
@@ -84,9 +89,6 @@ public abstract class FloatBuffer : Buffer
 
     protected FloatBuffer( int mark, int pos, int lim, int cap )
         : this( mark, pos, lim, cap, null ) => Offset = 0;
-
-    protected float[]? Hb     { get; set; }
-    protected int      Offset { get; set; }
 
     /// <summary>
     ///     Allocates a new float buffer.
@@ -303,11 +305,11 @@ public abstract class FloatBuffer : Buffer
     ///         <tt>src.Get(dst, off, len)</tt> has exactly the same effect as
     ///         the loop:
     ///         <code>
-    ///     for (int i = off; i &lt; off + len; i++)
-    ///     {
-    ///         dst[i] = src.Get():
-    ///     }
-    /// </code>
+    ///         for (int i = off; i &lt; off + len; i++)
+    ///         {
+    ///             dst[i] = src.Get():
+    ///         }
+    ///         </code>
     ///     </para>
     ///     <para>
     ///         except that it first checks that there are sufficient floats in
@@ -389,11 +391,11 @@ public abstract class FloatBuffer : Buffer
     ///         In other words, an invocation of this method of the form <c>dst.Put(src)</c>
     ///         has exactly the same effect as the loop:
     ///         <code>
-    /// while (src.HasRemaining)
-    /// {
-    ///     dst.Put(src.Get());
-    /// }
-    /// </code>
+    ///         while (src.HasRemaining)
+    ///         {
+    ///             dst.Put(src.Get());
+    ///         }
+    ///         </code>
     ///         except that it first checks that there is sufficient space in this buffer
     ///         and is potentially much more efficient.
     ///     </para>
@@ -453,11 +455,11 @@ public abstract class FloatBuffer : Buffer
     ///     In other words, an invocation of this method of the form <tt>dst.Put(src, off, len)</tt>
     ///     has exactly the same effect as the loop:
     ///     <code>
-    /// for (int i = off; i &lt; off + len; i++)
-    /// {
-    ///     dst.Put(a[i]);
-    /// }
-    /// </code>
+    ///     for (int i = off; i &lt; off + len; i++)
+    ///     {
+    ///         dst.Put(a[i]);
+    ///     }
+    ///     </code>
     ///     except that it first checks that there is sufficient space in this buffer
     ///     and is potentially much more efficient.
     /// </remarks>

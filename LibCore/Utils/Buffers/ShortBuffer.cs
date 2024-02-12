@@ -600,21 +600,11 @@ public abstract class ShortBuffer : Buffer
     ///     Tells whether or not this buffer is equal to another object.
     ///     <para>
     ///         Two short buffers are equal if, and only if,
+    ///         <li>They have the same element type,</li>
+    ///         <li>They have the same number of remaining elements, and</li>
     ///         <li>
-    ///             <para>
-    ///                 They have the same element type,
-    ///             </para>
-    ///         </li>
-    ///         <li>
-    ///             <para>
-    ///                 They have the same number of remaining elements, and
-    ///             </para>
-    ///         </li>
-    ///         <li>
-    ///             <para>
     ///                 The two sequences of remaining elements, considered
     ///                 independently of their starting positions, are pointwise equal.
-    ///             </para>
     ///         </li>
     ///     </para>
     ///     <para>

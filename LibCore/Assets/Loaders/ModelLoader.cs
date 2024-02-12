@@ -40,7 +40,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
 
     // Check this declaration.
     // Original Java was Array< ObjectMap.Entry< string, ModelData > > items...
-    protected readonly List< ObjectMap< string, ModelData >.Entry > items = [ ];
+    protected readonly List< ObjectMap< string, ModelData >.Entry > items = new();
 
     protected ModelLoader( IFileHandleResolver resolver ) : base( resolver )
     {
@@ -102,7 +102,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     {
         ArgumentNullException.ThrowIfNull( file );
 
-        List< AssetDescriptor > deps = [ ];
+        List< AssetDescriptor > deps = new();
 
         ModelData? data = LoadModelData( file );
 

@@ -183,39 +183,45 @@ public class ColorBleedEffect
 
         private static int Alpha( int argb ) => ( argb >> 24 ) & 0xff;
 
-        internal sealed class MaskIterator( Mask parent )
+        internal sealed class MaskIterator
         {
-            private int _index;
+            private          int  _index;
+            private readonly Mask _parent;
 
-            internal bool HasNext() => _index < parent._pendingSize;
+            public MaskIterator( Mask parent )
+            {
+                _parent = parent;
+            }
+
+            internal bool HasNext() => _index < _parent._pendingSize;
 
             internal int Next()
             {
-                if ( _index >= parent._pendingSize )
+                if ( _index >= _parent._pendingSize )
                 {
                     throw new IndexOutOfRangeException( _index.ToString() );
                 }
 
-                return parent._pending[ _index++ ];
+                return _parent._pending[ _index++ ];
             }
 
             internal void MarkAsInProgress()
             {
                 _index--;
-                parent._changing[ parent._changingSize ] = parent.RemoveIndex( _index );
-                parent._changingSize++;
+                _parent._changing[ _parent._changingSize ] = _parent.RemoveIndex( _index );
+                _parent._changingSize++;
             }
 
             internal void Reset()
             {
                 _index = 0;
 
-                for ( int i = 0, n = parent._changingSize; i < n; i++ )
+                for ( int i = 0, n = _parent._changingSize; i < n; i++ )
                 {
-                    parent._blank[ parent._changing[ i ] ] = false;
+                    _parent._blank[ _parent._changing[ i ] ] = false;
                 }
 
-                parent._changingSize = 0;
+                _parent._changingSize = 0;
             }
         }
     }

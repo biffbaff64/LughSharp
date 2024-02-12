@@ -72,15 +72,15 @@ namespace LibGDXSharp.LibCore.Utils.Buffers;
 ///         to return the buffer upon which they are invoked. This allows method invocations
 ///         to be chained. The sequence of statements
 ///         <code>
-///     cb.Put( "text/" );
-///     cb.Put( subtype );
-///     cb.Put( "; charset=" );
-///     cb.Put( enc );
-/// </code>
+///             cb.Put( "text/" );
+///             cb.Put( subtype );
+///             cb.Put( "; charset=" );
+///             cb.Put( enc );
+///         </code>
 ///         can, for example, be replaced by the single statement
 ///         <code>
-///     cb.Put( "text/" ).Put( subtype ).Put( "; charset=" ).Put( Enc );
-/// </code>
+///             cb.Put( "text/" ).Put( subtype ).Put( "; charset=" ).Put( Enc );
+///         </code>
 ///     </para>
 /// </summary>
 [PublicAPI]
@@ -513,11 +513,11 @@ public abstract class CharBuffer : Buffer
     ///         In other words, an invocation of this method of the form <tt>dst.put(src, start, end)</tt>
     ///         has exactly the same effect as the loop
     ///         <code>
-    ///     for (int i = start; i &lt; end; i++)
-    ///     {
-    ///         dst.put(src.charAt(i));
-    ///     }
-    /// </code>
+    ///         for (int i = start; i &lt; end; i++)
+    ///         {
+    ///             dst.put(src.charAt(i));
+    ///         }
+    ///         </code>
     ///         except that it first checks that there is sufficient space in this
     ///         buffer and it is potentially much more efficient.
     ///     </para>

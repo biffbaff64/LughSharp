@@ -29,7 +29,7 @@ namespace LibGDXSharp.LibCore.Utils.Collections;
 
 public class DelayedRemovalArray<T> : List< T >
 {
-    private readonly List< int > _remove    = [ ];
+    private readonly List< int > _remove    = new();
     private          int         _clear     = 0;
     private          int         _iterating = 0;
 

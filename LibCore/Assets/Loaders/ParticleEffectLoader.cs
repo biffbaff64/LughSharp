@@ -29,7 +29,7 @@ using LibGDXSharp.LibCore.Graphics.G2D;
 namespace LibGDXSharp.LibCore.Assets.Loaders;
 
 /// <summary>
-///     <see cref="AssetLoader" /> to load <see cref="ParticleEffect" /> instances. Passing a
+///     <see cref="AssetLoaderBase" /> to load <see cref="ParticleEffect" /> instances. Passing a
 ///     <see cref="ParticleEffectParameter" /> to <see cref="AssetManager.Load(string, Type, AssetLoaderParameters)" />
 ///     allows to specify an atlas file or an image directory to be used for the effect's images.
 ///     Per default images are loaded from the directory in which the effect file is found.

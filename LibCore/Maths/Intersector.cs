@@ -39,8 +39,8 @@ public class Intersector
     private readonly static Vector3       V0          = new();
     private readonly static Vector3       V1          = new();
     private readonly static Vector3       V2          = new();
-    private readonly static List< float > FloatArray  = [ ];
-    private readonly static List< float > FloatArray2 = [ ];
+    private readonly static List< float > FloatArray  = new();
+    private readonly static List< float > FloatArray2 = new();
 
     private readonly static Vector2 Ip  = new();
     private readonly static Vector2 Ep1 = new();

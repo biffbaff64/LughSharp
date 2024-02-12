@@ -101,6 +101,7 @@ public class ClickListener : InputListener
 
             return false;
         }
+        // ----------
         set
         {
             if ( value )

@@ -38,9 +38,16 @@ public class AssetLoaderParameters : ILoaderParameters
 // ----------------------------------------------------------------------------
 
 [PublicAPI]
-public class DefaultLoadedCallback( int refCount ) : ILoadedCallback
+public class DefaultLoadedCallback : ILoadedCallback
 {
-    public void FinishedLoading( AssetManager assetManager, string fileName, Type type ) => assetManager.SetReferenceCount( fileName, refCount );
+    private readonly int _refCount;
+
+    public DefaultLoadedCallback( int refCount )
+    {
+        _refCount = refCount;
+    }
+
+    public void FinishedLoading( AssetManager assetManager, string fileName, Type type ) => assetManager.SetReferenceCount( fileName, _refCount );
 }
 
 // ----------------------------------------------------------------------------

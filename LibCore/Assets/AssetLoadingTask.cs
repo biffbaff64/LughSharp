@@ -1,29 +1,4 @@
-﻿// /////////////////////////////////////////////////////////////////////////////
-//  MIT License
-// 
-//  Copyright (c) 2024 Richard Ikin / Red 7 Projects
-// 
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-// 
-//  The above copyright notice and this permission notice shall be included in all
-//  copies or substantial portions of the Software.
-// 
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-//  SOFTWARE.
-// /////////////////////////////////////////////////////////////////////////////
-
-
-// ///////////////////////////////////////////////////////////////////////////////
+﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
 // Copyright (c) 2024 Richard Ikin / Red 7 Projects
@@ -54,18 +29,25 @@ using LibGDXSharp.LibCore.Utils;
 namespace LibGDXSharp.LibCore.Assets;
 
 /// <summary>
-///     Responsible for loading an asset through an <see cref="AssetLoader" /> based
+///     Responsible for loading an asset through an <see cref="AssetLoaderBase" /> based
 ///     on an <see cref="AssetDescriptor" />.
 /// </summary>
 [PublicAPI]
 public class AssetLoadingTask
 {
-    private readonly AssetLoader  _loader;
-    private readonly AssetManager _manager;
-    private volatile bool         _asyncDone = false;
-    private          long         _startTime;
+    public bool                     DependenciesLoaded { get; set; }
+    public AssetDescriptor          AssetDesc          { get; }
+    public bool                     Cancel             { get; set; }
+    public object?                  Asset              { get; set; }
+    public List< AssetDescriptor >? Dependencies       { get; set; }
 
-    public List< AssetDescriptor >? dependencies;
+    // ------------------------------------------------------------------------
+
+    private readonly AssetLoaderBase _loader;
+    private readonly AssetManager    _manager;
+    private volatile bool            _asyncDone = false;
+    private volatile object?         _asset;
+    private          long            _startTime;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -77,21 +59,15 @@ public class AssetLoadingTask
     /// <param name="loader"></param>
     public AssetLoadingTask( AssetManager manager,
                              AssetDescriptor assetDesc,
-                             AssetLoader loader )
+                             AssetLoaderBase loader )
     {
-        _manager   = manager;
-        AssetDesc  = assetDesc;
-        _loader    = loader;
-        _startTime = manager.Log.Level == Logger.LOG_DEBUG ? TimeUtils.NanoTime() : 0;
+        this._manager   = manager;
+        this.AssetDesc  = assetDesc;
+        this._loader    = loader;
+        this._startTime = manager.Log.Level == Logger.LOG_DEBUG ? TimeUtils.NanoTime() : 0;
     }
 
     // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public bool            DependenciesLoaded { get; set; }
-    public AssetDescriptor AssetDesc          { get; }
-    public bool            Cancel             { get; set; }
-    public object?         Asset              { get; set; }
 
     /// <summary>
     ///     Loads parts of the asset asynchronously if the loader is
@@ -108,15 +84,15 @@ public class AssetLoadingTask
 
         if ( !DependenciesLoaded )
         {
-            dependencies = asyncLoader?.GetDependencies( AssetDesc.Filepath,
+            Dependencies = asyncLoader?.GetDependencies( AssetDesc.Filepath,
                                                          Resolve( asyncLoader, AssetDesc ),
                                                          AssetDesc.Parameters );
 
-            if ( dependencies != null )
+            if ( Dependencies != null )
             {
-                RemoveDuplicates( ref dependencies );
+                RemoveDuplicates( Dependencies );
 
-                _manager.InjectDependencies( AssetDesc.Filepath, dependencies );
+                _manager.InjectDependencies( AssetDesc.Filepath, Dependencies );
             }
             else
             {
@@ -172,11 +148,13 @@ public class AssetLoadingTask
     }
 
     /// <summary>
+    ///     Resolve the file and path names for the asset described in
+    ///     the member <see cref="AssetDesc"/>
     /// </summary>
     /// <param name="loader"></param>
     /// <param name="assetDesc"></param>
     /// <returns></returns>
-    private static FileInfo? Resolve( AssetLoader? loader, AssetDescriptor? assetDesc )
+    private static FileInfo? Resolve( AssetLoaderBase? loader, AssetDescriptor? assetDesc )
     {
         if ( assetDesc is { File: null } descriptor )
         {
@@ -193,18 +171,18 @@ public class AssetLoadingTask
     /// </summary>
     private void HandleAsyncLoader()
     {
-        if ( AssetDesc == null )
-        {
-            throw new GdxRuntimeException( "Unable to load asset: AssetDesc is null" );
-        }
-
-        var asyncLoader = ( AsynchronousAssetLoader? )_loader;
-
-        if ( asyncLoader == null )
-        {
-            throw new GdxRuntimeException( "asyncLoader is null" );
-        }
-
+//        if ( AssetDesc == null )
+//        {
+//            throw new GdxRuntimeException( "Unable to load asset: AssetDesc is null" );
+//        }
+//
+//        var asyncLoader = ( AsynchronousAssetLoader? )_loader;
+//
+//        if ( asyncLoader == null )
+//        {
+//            throw new GdxRuntimeException( "asyncLoader is null" );
+//        }
+//
 //        if ( !DependenciesLoaded )
 //        {
 //            if ( _depsFuture == null )
@@ -263,9 +241,9 @@ public class AssetLoadingTask
     }
 
     /// <summary>
-    ///     Removes any duolicate assets from the referenced asset list.
+    ///     Removes any duplicate assets from the referenced asset list.
     /// </summary>
-    private static void RemoveDuplicates( ref List< AssetDescriptor > array )
+    private static void RemoveDuplicates( List< AssetDescriptor > array )
     {
         for ( var i = 0; i < array.Count; ++i )
         {

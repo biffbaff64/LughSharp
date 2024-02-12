@@ -53,11 +53,11 @@ public class AssetManager
     private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets            = new();
     private readonly Dictionary< string, Type? >                                    _assetTypes        = new();
 
-    private readonly List< string >                                          _injected  = [ ];
-    private readonly Dictionary< Type, Dictionary< string, AssetLoader? >? > _loaders   = [ ];
-    private readonly List< AssetDescriptor >                                 _loadQueue = [ ];
-    private readonly Stack< AssetLoadingTask >                               _tasks     = [ ];
-    private          IAssetErrorListener?                                    _listener;
+    private readonly List< string >                                              _injected  = new();
+    private readonly Dictionary< Type, Dictionary< string, AssetLoaderBase? >? > _loaders   = new();
+    private readonly List< AssetDescriptor >                                     _loadQueue = new();
+    private readonly Stack< AssetLoadingTask >                                   _tasks     = new();
+    private          IAssetErrorListener?                                        _listener;
 
     private int _loaded;
     private int _peakTasks;
@@ -474,7 +474,7 @@ public class AssetManager
     /// <returns>
     ///     The loader capable of loading the type and filename, or null if none exists.
     /// </returns>
-    public AssetLoader? GetLoader( Type? type, string? fileName = null )
+    public AssetLoaderBase? GetLoader( Type? type, string? fileName = null )
     {
         if ( ( type == null ) || ( _loaders[ type ] == null ) || ( _loaders[ type ]?.Count < 1 ) )
         {
@@ -486,11 +486,11 @@ public class AssetManager
             return _loaders[ type ]?[ "" ];
         }
 
-        AssetLoader? result = null;
+        AssetLoaderBase? result = null;
 
         var len = -1;
 
-        foreach ( KeyValuePair< string, AssetLoader? > entry in _loaders[ type ]! )
+        foreach ( KeyValuePair< string, AssetLoaderBase? > entry in _loaders[ type ]! )
         {
             if ( ( entry.Key.Length > len ) && fileName.EndsWith( entry.Key ) )
             {
@@ -507,7 +507,7 @@ public class AssetManager
     ///     Adds the given asset to the loading queue of the AssetManager.
     /// </summary>
     /// <param name="fileName">
-    ///     the file name (interpretation depends on <see cref="AssetLoader" />)
+    ///     the file name (interpretation depends on <see cref="AssetLoaderBase" />)
     /// </param>
     /// <param name="type">the type of the asset.</param>
     /// <param name="parameter"></param>
@@ -515,7 +515,7 @@ public class AssetManager
     {
         ArgumentNullException.ThrowIfNull( fileName, "Filename not specified!" );
 
-        AssetLoader? loader = GetLoader( type, fileName );
+        AssetLoaderBase? loader = GetLoader( type, fileName );
 
         if ( loader == null )
         {
@@ -680,7 +680,7 @@ public class AssetManager
     ///     Blocks until the specified asset is loaded.
     /// </summary>
     /// <param name="fileName">
-    ///     the file name (interpretation depends on <see cref="AssetLoader" />)
+    ///     the file name (interpretation depends on <see cref="AssetLoaderBase" />)
     /// </param>
     public T FinishLoadingAsset<T>( string? fileName )
     {
@@ -834,7 +834,7 @@ public class AssetManager
     /// </summary>
     public void AddTask( AssetDescriptor assetDesc )
     {
-        AssetLoader? loader = GetLoader( assetDesc.AssetType, assetDesc.Filepath );
+        AssetLoaderBase? loader = GetLoader( assetDesc.AssetType, assetDesc.Filepath );
 
         if ( loader == null )
         {
@@ -977,9 +977,9 @@ public class AssetManager
 
         // remove all dependencies if dependences are loaded and
         // those dependencies actually exist...
-        if ( task is { DependenciesLoaded: true, dependencies: not null } )
+        if ( task is { DependenciesLoaded: true, Dependencies: not null } )
         {
-            foreach ( AssetDescriptor desc in task.dependencies )
+            foreach ( AssetDescriptor desc in task.Dependencies )
             {
                 Unload( desc.Filepath );
             }
@@ -1000,11 +1000,11 @@ public class AssetManager
     }
 
     /// <summary>
-    ///     Sets a new <see cref="AssetLoader" /> for the given type.
+    ///     Sets a new <see cref="AssetLoaderBase" /> for the given type.
     /// </summary>
     /// <param name="type"> the type of the asset </param>
     /// <param name="loader"> the loader  </param>
-    public void SetLoader( Type type, AssetLoader loader )
+    public void SetLoader( Type type, AssetLoaderBase loader )
     {
         lock ( this )
         {
@@ -1013,7 +1013,7 @@ public class AssetManager
     }
 
     /// <summary>
-    ///     Sets a new <see cref="AssetLoader" /> for the given type.
+    ///     Sets a new <see cref="AssetLoaderBase" /> for the given type.
     /// </summary>
     /// <param name="type"> the type of the asset </param>
     /// <param name="suffix">
@@ -1021,7 +1021,7 @@ public class AssetManager
     ///     to specify the default loader.
     /// </param>
     /// <param name="loader"> the loader</param>
-    public void SetLoader( Type type, string? suffix, AssetLoader loader )
+    public void SetLoader( Type type, string? suffix, AssetLoaderBase loader )
     {
         lock ( this )
         {
@@ -1030,7 +1030,7 @@ public class AssetManager
 
             if ( _loaders[ type ] == null )
             {
-                _loaders.Put( type, new Dictionary< string, AssetLoader? >() );
+                _loaders.Put( type, new Dictionary< string, AssetLoaderBase? >() );
             }
 
             _loaders[ type ]?.Put( suffix ?? "", loader );

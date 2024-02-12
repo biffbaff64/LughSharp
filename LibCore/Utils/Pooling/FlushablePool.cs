@@ -33,7 +33,7 @@ namespace LibGDXSharp.LibCore.Utils.Pooling;
 [PublicAPI]
 public abstract class FlushablePool<T> : Pool< T >
 {
-    private readonly List< T > _obtained = [ ];
+    private readonly List< T > _obtained = new();
 
     /// <inheritdoc />
     protected FlushablePool()

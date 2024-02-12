@@ -30,8 +30,11 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 /// <summary>
 ///     Abstract base class for asset loaders.
 /// </summary>
-public abstract class AssetLoader
+public abstract class AssetLoaderBase
 {
+    public IFileHandleResolver Resolver      { get; }
+    public bool                IsSynchronous { get; protected init; } = false;
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -39,10 +42,7 @@ public abstract class AssetLoader
     ///     Constructor, sets the FileHandleResolver to use to resolve the file
     ///     associated with the asset name.
     /// </summary>
-    protected AssetLoader( IFileHandleResolver resolver ) => Resolver = resolver;
-
-    public IFileHandleResolver Resolver      { get; }
-    public bool                IsSynchronous { get; protected init; } = false;
+    protected AssetLoaderBase( IFileHandleResolver resolver ) => Resolver = resolver;
 
     /// <summary>
     /// </summary>

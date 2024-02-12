@@ -29,7 +29,7 @@ using LibGDXSharp.LibCore.Audio;
 namespace LibGDXSharp.LibCore.Assets.Loaders;
 
 /// <summary>
-///     <see cref="AssetLoader" /> to load <see cref="ISound" /> instances.
+///     <see cref="AssetLoaderBase" /> to load <see cref="ISound" /> instances.
 /// </summary>
 public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoaderParameters >, IDisposable
 {

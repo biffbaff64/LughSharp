@@ -40,10 +40,10 @@ public class DelaunayTriangulator
     private const    int          INCOMPLETE       = 2;
     private readonly Vector2      _centroid        = new();
     private readonly List< bool > _complete        = new( 16 );
-    private readonly List< int >  _edges           = [ ];
+    private readonly List< int >  _edges           = new();
     private readonly List< int >  _originalIndices = new( 0 );
 
-    private readonly List< int > _quicksortStack = [ ];
+    private readonly List< int > _quicksortStack = new();
     private readonly float[]     _superTriangle  = new float[ 6 ];
     private readonly List< int > _triangles      = new( 16 );
 

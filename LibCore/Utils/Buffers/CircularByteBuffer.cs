@@ -226,6 +226,7 @@ public class CircularByteBuffer
         return outByte;
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         var ret = "";

@@ -95,14 +95,14 @@ ASSETS
     ASSETS/LOADERS/RESOLVERS
     ------------------------
 
-    - IP   - AbsoluteFileHandleResolver
-    - IP   - ClasspathFileHandleResolver
-    - IP   - ExternalFileHandleResolver
-    - IP   - IFileHandleResolver
-    - IP   - InternalFileHandleResolver
-    - IP   - LocalFileHandleResolver
-    - IP   - PrefixFileHandleResolver
-    - IP   - ResolutionFileResolver
+    - DONE - AbsoluteFileHandleResolver
+    - DONE - ClasspathFileHandleResolver
+    - DONE - ExternalFileHandleResolver
+    - DONE - IFileHandleResolver
+    - DONE - InternalFileHandleResolver
+    - DONE - LocalFileHandleResolver
+    - DONE - PrefixFileHandleResolver
+    - DONE - ResolutionFileResolver
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -698,14 +698,14 @@ UTILS
     UTILS/BUFFERS
     -------------
 
-    - IP   - Buffer
+    - DONE - Buffer
     - IP   - BufferUtils
-    - IP   - ByteBuffer
-    - IP   - CharBuffer
-    - IP   - CircularByteBuffer
+    - DONE - ByteBuffer
+    - DONE - CharBuffer
+    - DONE - CircularByteBuffer
     - IP   - DirectByteBuffer
     - IP   - DoubleBuffer
-    - IP   - FloatBuffer
+    - DONE - FloatBuffer
     - IP   - HeapByteBuffer
     - IP   - HeapCharBuffer
     - IP   - HeapFloatBuffer
@@ -714,7 +714,7 @@ UTILS
     - IP   - IntBuffer
     - IP   - LongBuffer
     - IP   - MappedByteBuffer
-    - IP   - ShortBuffer
+    - DONE - ShortBuffer
     - IP   - StringCharBuffer
 
     UTILS/COLLECTIONS

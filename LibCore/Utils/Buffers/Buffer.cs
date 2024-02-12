@@ -188,6 +188,11 @@ public abstract class Buffer
     /// </summary>
     protected Buffer( int mark, int pos, int lim, int cap )
     {
+        Setup( mark, pos, lim, cap );
+    }
+    
+    private void Setup( int mark, int pos, int lim, int cap )
+    {
         if ( cap < 0 )
         {
             throw new ArgumentException( $"Negative capacity: {cap}" );
@@ -212,22 +217,22 @@ public abstract class Buffer
     /// <summary>
     ///     Used only by DirectBuffers
     /// </summary>
-    public long Address { get; set; }
+    public virtual long Address { get; set; }
 
     /// <summary>
     ///     Returns this buffers capacity
     /// </summary>
-    public int Capacity { get; set; }
+    public virtual int Capacity { get; set; }
 
     /// <summary>
     ///     Returns this buffer's limit.
     /// </summary>
-    public int Limit { get; set; }
+    public virtual int Limit { get; set; }
 
     /// <summary>
     ///     Returns this buffers position
     /// </summary>
-    public int Position { get; set; } = 0;
+    public virtual int Position { get; set; } = 0;
 
     /// <summary>
     ///     Returns <tt>true</tt> if, and only if, this buffer is read-only
@@ -245,7 +250,7 @@ public abstract class Buffer
     /// <exception cref="ArgumentException">
     ///     If the preconditions on <tt>newPosition</tt> do not hold
     /// </exception>
-    public Buffer SetPosition( int newPosition )
+    public virtual Buffer SetPosition( int newPosition )
     {
         if ( ( newPosition > Limit ) || ( newPosition < 0 ) )
         {
@@ -274,7 +279,7 @@ public abstract class Buffer
     /// <exception cref="ArgumentException">
     ///     If the preconditions on <tt>newLimit</tt> do not hold
     /// </exception>
-    public Buffer SetLimit( int newLimit )
+    public virtual Buffer SetLimit( int newLimit )
     {
         if ( ( newLimit > Capacity ) || ( newLimit < 0 ) )
         {
@@ -300,7 +305,7 @@ public abstract class Buffer
     ///     Sets this buffer's mark at its position.
     /// </summary>
     /// <returns> This buffer </returns>
-    public Buffer Mark()
+    public virtual Buffer Mark()
     {
         _mark = Position;
 
@@ -315,7 +320,7 @@ public abstract class Buffer
     /// </summary>
     /// <returns> This buffer </returns>
     /// <exception cref="GdxRuntimeException">If the mark has not been set</exception>
-    public Buffer Reset()
+    public virtual Buffer Reset()
     {
         int m;
 
@@ -350,7 +355,7 @@ public abstract class Buffer
     ///     </para>
     /// </summary>
     /// <returns>  This buffer </returns>
-    public Buffer Clear()
+    public virtual Buffer Clear()
     {
         Position = 0;
         Limit    = Capacity;
@@ -382,7 +387,7 @@ public abstract class Buffer
     ///     </para>
     /// </summary>
     /// <returns>  This buffer </returns>
-    public Buffer Flip()
+    public virtual Buffer Flip()
     {
         Limit    = Position;
         Position = 0;
@@ -407,7 +412,7 @@ public abstract class Buffer
     ///     </para>
     /// </summary>
     /// <returns>  This buffer </returns>
-    public Buffer Rewind()
+    public virtual Buffer Rewind()
     {
         Position = 0;
         _mark    = -1;
@@ -418,13 +423,13 @@ public abstract class Buffer
     /// <summary>
     ///     Returns the number of elements between the current position and the limit.
     /// </summary>
-    public int Remaining() => Limit - Position;
+    public virtual int Remaining() => Limit - Position;
 
     /// <summary>
     ///     Returns <tt>true</tt> if, and only if, there is at least one element
     ///     remaining in this buffer
     /// </summary>
-    public bool HasRemaining() => Position < Limit;
+    public virtual bool HasRemaining() => Position < Limit;
 
     #region abstract methods
 
