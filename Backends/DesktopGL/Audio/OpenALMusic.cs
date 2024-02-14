@@ -86,11 +86,11 @@ public abstract class OpenALMusic : IMusic
 
                 AL.GenBuffers( 1, out _buffers );
 
-                var errorCode = AL.GetError();
+                var int = AL.GetError();
 
-                if ( errorCode != AL.NO_ERROR )
+                if ( int != AL.NO_ERROR )
                 {
-                    throw new GdxRuntimeException( $"Unable to allocate audio buffers. AL Error: {errorCode}" );
+                    throw new GdxRuntimeException( $"Unable to allocate audio buffers. AL Error: {int}" );
                 }
             }
 
@@ -449,14 +449,11 @@ public abstract class OpenALMusic : IMusic
 
         _tempBuffer.Put( _tempBytes, 0, length ).Flip();
 
-        unsafe
-        {
-            AL.BufferData( bufferID,
-                           _format,
-                           _tempBuffer,
-                           _tempBuffer.BackingArray().Length,
-                           _sampleRate );
-        }
+        AL.BufferData( bufferID,
+                       _format,
+                       _tempBuffer,
+                       _tempBuffer.BackingArray().Length,
+                       _sampleRate );
 
         return true;
     }

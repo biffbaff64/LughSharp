@@ -36,7 +36,7 @@ namespace LibGDXSharp.LibCore.Graphics;
 [PublicAPI]
 public class TextureArray : GLTexture
 {
-    private readonly static Dictionary< IApplication, List< TextureArray > > ManagedTextureArrays = new();
+    private readonly static Dictionary< IApplication, List< TextureArray > > _managedTextureArrays = new();
 
     private ITextureArrayData _data;
 
@@ -48,9 +48,9 @@ public class TextureArray : GLTexture
         {
             var builder = new StringBuilder( "Managed TextureArrays/app: { " );
 
-            foreach ( IApplication app in ManagedTextureArrays.Keys )
+            foreach ( IApplication app in _managedTextureArrays.Keys )
             {
-                builder.Append( ManagedTextureArrays[ app ].Count );
+                builder.Append( _managedTextureArrays[ app ].Count );
                 builder.Append( ' ' );
             }
 
@@ -65,7 +65,7 @@ public class TextureArray : GLTexture
     /// <summary>
     ///     Gets the number of managed TextureArrays currently loaded.
     /// </summary>
-    public int NumManagedTextureArrays => ManagedTextureArrays[ Core.Gdx.App ].Count;
+    public int NumManagedTextureArrays => _managedTextureArrays[ Core.Gdx.App ].Count;
 
     /// <summary>
     /// </summary>
@@ -142,10 +142,10 @@ public class TextureArray : GLTexture
     /// <param name="texture"></param>
     private static void AddManagedTexture( IApplication app, TextureArray texture )
     {
-        List< TextureArray > managedTextureArray = ManagedTextureArrays[ app ];
+        List< TextureArray > managedTextureArray = _managedTextureArrays[ app ];
 
-        ManagedTextureArrays[ app ].Add( texture );
-        ManagedTextureArrays[ app ] = managedTextureArray;
+        _managedTextureArrays[ app ].Add( texture );
+        _managedTextureArrays[ app ] = managedTextureArray;
     }
 
     #region constructors
@@ -226,14 +226,14 @@ public class TextureArray : GLTexture
     /// <summary>
     ///     Clears all managed TextureArrays.
     /// </summary>
-    internal static void ClearAllTextureArrays( IApplication app ) => ManagedTextureArrays.Remove( app );
+    internal static void ClearAllTextureArrays( IApplication app ) => _managedTextureArrays.Remove( app );
 
     /// <summary>
     ///     Invalidate all managed TextureArrays.
     /// </summary>
     internal static void InvalidateAllTextureArrays( IApplication app )
     {
-        foreach ( TextureArray textureArray in ManagedTextureArrays[ app ] )
+        foreach ( TextureArray textureArray in _managedTextureArrays[ app ] )
         {
             textureArray.Reload();
         }

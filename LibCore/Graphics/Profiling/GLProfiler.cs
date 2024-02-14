@@ -38,6 +38,13 @@ namespace LibGDXSharp.LibCore.Graphics.Profiling;
 [PublicAPI]
 public class GLProfiler
 {
+    public IGLErrorListener  Listener    { get; set; }
+    public bool              Enabled     { get; set; } = false;
+    public IGraphics         Graphics    { get; set; }
+    public BaseGLInterceptor Interceptor { get; set; }
+
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Create a new instance of GLProfiler to monitor a <see cref="IGraphics" />
     ///     instance's gl calls
@@ -59,10 +66,7 @@ public class GLProfiler
         Listener = new GLLoggingListener();
     }
 
-    public IGLErrorListener Listener    { get; set; }
-    public bool             Enabled     { get; set; } = false;
-    public IGraphics        Graphics    { get; set; }
-    public BaseGLInterceptor    Interceptor { get; set; }
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Returns the total gl calls made since the last reset
@@ -91,6 +95,15 @@ public class GLProfiler
     ///     vertices since the last reset.
     /// </summary>
     public FloatCounter VertexCount => Interceptor.VertexCount;
+
+    /// <summary>
+    ///     Will reset the statistical information which has been collected so far.
+    ///     This should be called after every frame.
+    ///     Error listener is kept as it is.
+    /// </summary>
+    public void Reset() => Interceptor.Reset();
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Enables profiling by replacing the <tt>GL20</tt> and <tt>GL30</tt>
@@ -137,11 +150,4 @@ public class GLProfiler
 
         Enabled = false;
     }
-
-    /// <summary>
-    ///     Will reset the statistical information which has been collected so far.
-    ///     This should be called after every frame.
-    ///     Error listener is kept as it is.
-    /// </summary>
-    public void Reset() => Interceptor.Reset();
 }

@@ -31,13 +31,11 @@ using LibGDXSharp.Backends.DesktopGL.Utils;
 using LibGDXSharp.Backends.DesktopGL.Window;
 using LibGDXSharp.LibCore.Core;
 using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.GL;
 using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 using Exception = System.Exception;
-using Monitor = GLFW.Monitor;
 
 namespace LibGDXSharp.Backends.DesktopGL;
 
@@ -45,10 +43,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 {
     private const string TAG = "GLApplication";
 
-    private static   ErrorCallback?   _errorCallback = null;
-    private readonly Sync?            _sync          = null;
-    private volatile DesktopGLWindow? _currentWindow = null;
-    private          bool             _running       = true;
+    private static   GLFWCallbacks.ErrorCallback? _errorCallback = null;
+    private readonly Sync?                        _sync          = null;
+    private volatile DesktopGLWindow?             _currentWindow = null;
+    private          bool                         _running       = true;
 
     // ------------------------------------------------------------------------
 
@@ -68,7 +66,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         Config = config = DesktopGLApplicationConfiguration.Copy( config );
 
-        Gdx.Core.Gdx.App = this;
+        Gdx.App = this;
 
         if ( !config.DisableAudio )
         {
@@ -93,9 +91,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Clipboard = new DesktopGLClipboard();
         _sync     = new Sync();
 
-        Gdx.Core.Gdx.Audio = Audio;
-        Gdx.Core.Gdx.Files = Files;
-        Gdx.Core.Gdx.Net   = Net;
+        Gdx.Audio = Audio;
+        Gdx.Files = Files;
+        Gdx.Net   = Net;
 
         Windows.Add( CreateWindow( config, listener, 0 ) );
 
@@ -121,6 +119,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
+    /// <summary>
+    /// Gets the Desktop Preferences object.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public IPreferences GetPreferences( string name )
     {
         if ( Preferences!.ContainsKey( name ) )
@@ -143,9 +146,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config ) => new OpenALAudio( config.AudioDeviceSimultaneousSources,
-                                                                                                config.AudioDeviceBufferCount,
-                                                                                                config.AudioDeviceBufferSize );
+    public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
+    {
+        return new OpenALAudio( config.AudioDeviceSimultaneousSources,
+                                config.AudioDeviceBufferCount,
+                                config.AudioDeviceBufferSize );
+    }
 
     public IDesktopGLInput CreateInput( DesktopGLWindow window ) => new DefaultDesktopGLInput( window );
 
@@ -207,7 +213,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                 }
             }
 
-            Glfw.PollEvents();
+            GLFW.PollEvents();
 
             bool shouldRequestRendering;
 
@@ -314,7 +320,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         _errorCallback = null;
 
-        Glfw.Terminate();
+        GLFW.Terminate();
     }
 
     /// <summary>
@@ -359,7 +365,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             } );
         }
 
-        Glfw.MakeContextCurrent( window.GlfwWindow );
+        GLFW.MakeContextCurrent( window.GlfwWindow );
 
         return window;
     }
@@ -380,7 +386,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                            config.InitialBackgroundColor.B,
                            config.InitialBackgroundColor.A );
 
-            Gl.Clear( ClearBufferMask.ColorBufferBit );
+            Gl.Clear( int.ColorBufferBit );
             Glfw.SwapBuffers( windowHandle );
         }
     }
@@ -447,7 +453,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             windowHandle = Glfw.CreateWindow( appConfig.WindowWidth,
                                               appConfig.WindowHeight,
                                               appConfig.Title ?? "",
-                                              Monitor.None,
+                                              System.Threading.Monitor.None,
                                               GLFW.Window.None );
         }
 
@@ -519,14 +525,14 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         if ( !GLVersion!.IsVersionEqualToOrHigher( 2, 0 ) )
         {
             throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is "
-                                         + $"required. OpenGL version: {Gl.GetString( StringName.Version )}"
+                                         + $"required. OpenGL version: {Gl.GetString( int.Version )}"
                                          + $"\n{GLVersion?.DebugVersionString()}" );
         }
 
         if ( !SupportsFBO() )
         {
             throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is "
-                                         + $"required. OpenGL version: {Gl.GetString( StringName.Version )}, "
+                                         + $"required. OpenGL version: {Gl.GetString( int.Version )}, "
                                          + $"FBO extension: false\n{GLVersion?.DebugVersionString()}" );
         }
 

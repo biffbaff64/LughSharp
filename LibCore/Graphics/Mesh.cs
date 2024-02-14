@@ -1078,12 +1078,12 @@ public class Mesh
 
     private static void AddManagedMesh( IApplication app, Mesh mesh )
     {
-        List< Mesh >? managedResources = Meshes[ app ];
+        List< Mesh >? managedResources = _meshes[ app ];
 
         managedResources ??= new List< Mesh >();
         managedResources.Add( mesh );
 
-        Meshes[ app ] = managedResources;
+        _meshes[ app ] = managedResources;
     }
 
     /// <summary>
@@ -1092,17 +1092,17 @@ public class Mesh
     /// <param name="app">  </param>
     public static void InvalidateAllMeshes( IApplication app )
     {
-        for ( var i = 0; i < Meshes.Count; i++ )
+        for ( var i = 0; i < _meshes.Count; i++ )
         {
-            Meshes[ app ]?[ i ]._vertices.Invalidate();
-            Meshes[ app ]?[ i ]._indices.Invalidate();
+            _meshes[ app ]?[ i ]._vertices.Invalidate();
+            _meshes[ app ]?[ i ]._indices.Invalidate();
         }
     }
 
     /// <summary>
     ///     Will clear the managed mesh cache. I wouldn't use this if i was you :)
     /// </summary>
-    public static void ClearAllMeshes( IApplication app ) => Meshes.Remove( app );
+    public static void ClearAllMeshes( IApplication app ) => _meshes.Remove( app );
 
     /// <summary>
     ///     Method to scale the positions in the mesh. Normals will be kept as is.
@@ -1502,9 +1502,9 @@ public class Mesh
     /// </summary>
     public void Dispose()
     {
-        if ( Meshes[ Core.Gdx.App ] != null )
+        if ( _meshes[ Core.Gdx.App ] != null )
         {
-            Meshes[ Core.Gdx.App ]?.Remove( this );
+            _meshes[ Core.Gdx.App ]?.Remove( this );
         }
 
         _vertices.Dispose();
@@ -1543,9 +1543,9 @@ public class Mesh
         {
             var builder = new StringBuilder( "Managed meshes/app: { " );
 
-            foreach ( IApplication app in Meshes.Keys )
+            foreach ( IApplication app in _meshes.Keys )
             {
-                builder.Append( Meshes[ app ]?.Count );
+                builder.Append( _meshes[ app ]?.Count );
                 builder.Append( ' ' );
             }
 
@@ -1573,7 +1573,7 @@ public class Mesh
 
     #region private variables
 
-    private readonly static Dictionary< IApplication, List< Mesh >? > Meshes = new();
+    private readonly static Dictionary< IApplication, List< Mesh >? > _meshes = new();
 
     private readonly ShortBuffer    _shortBuffer = BufferUtils.NewShortBuffer( 100 );
     private readonly Vector3        _tmpV        = new();

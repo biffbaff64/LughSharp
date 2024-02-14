@@ -42,7 +42,7 @@ public class DesktopGL30 : DesktopGL20, IGL30
 
     public void GLTexImage3D( int target,
                               int level,
-                              int internalformat,
+                              int int,
                               int width,
                               int height,
                               int depth,
@@ -156,7 +156,7 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    public void GLRenderbufferStorageMultisample( int target, int samples, int internalformat, int width, int height )
+    public void GLRenderbufferStorageMultisample( int target, int samples, int int, int width, int height )
     {
     }
 
@@ -410,7 +410,7 @@ public class DesktopGL30 : DesktopGL20, IGL30
 
     public void GLTexImage3D( int target,
                               int level,
-                              int internalformat,
+                              int int,
                               int width,
                               int height,
                               int depth,
