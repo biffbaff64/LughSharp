@@ -787,7 +787,7 @@ UTILS
 BACKENDS/DESKTOPGL
 ------------------
 
-    - IP   - DesktopGLApplication
+    - DONE - DesktopGLApplication
     - IP   - DesktopGLApplicationConfiguration
     - IP   - DesktopGLNativesLoader
     - IP   - DesktopGLNet

@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Runtime.CompilerServices;
+
 using LibGDXSharp.Backends.DesktopGL.Graphics;
 using LibGDXSharp.Backends.DesktopGL.Input;
 using LibGDXSharp.Backends.DesktopGL.Utils;
@@ -56,7 +58,7 @@ public class DesktopGLWindow : IDisposable
         _application   = application;
     }
 
-    public GLFWWindow GlfwWindow { get; set; }
+    public GLFW.Window GlfwWindow { get; set; }
 
     public IDesktopGLWindowListener?         WindowListener      { get; set; }
     public IApplicationListener              Listener            { get; set; }
@@ -83,7 +85,7 @@ public class DesktopGLWindow : IDisposable
     /// <summary>
     ///     Creates a new Window and sets up the various related callbacks.
     /// </summary>
-    public void Create( GLFWWindow window )
+    public void Create( GLFW.Window window )
     {
         GlfwWindow = window;
         Input      = _application.CreateInput( this );

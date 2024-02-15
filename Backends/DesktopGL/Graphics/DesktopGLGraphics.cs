@@ -25,14 +25,9 @@
 
 using LibGDXSharp.Backends.DesktopGL.Utils;
 using LibGDXSharp.Backends.DesktopGL.Window;
-using LibGDXSharp.LibCore.Core;
 using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.GL;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Buffers;
-
-using Monitor = GLFW.Monitor;
 
 namespace LibGDXSharp.Backends.DesktopGL.Graphics;
 
@@ -41,6 +36,11 @@ using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 [PublicAPI]
 public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
+    public DesktopGLWindow?       GLWindow               { get; set; }
+    public BufferFormatDescriptor BufferFormatDescriptor { get; set; } = null!;
+
+    // ------------------------------------------------------------------------
+
     private readonly IntBuffer                       _tmpBuffer                   = BufferUtils.NewIntBuffer( 1 );
     private readonly IntBuffer                       _tmpBuffer2                  = BufferUtils.NewIntBuffer( 1 );
     private          IGraphics.DisplayModeDescriptor _displayModeBeforeFullscreen = null!;
@@ -64,7 +64,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public DesktopGLGraphics( DesktopGLWindow glWindow )
     {
-        GLWindow = glWindow;
+        this.GLWindow = glWindow;
 
         if ( glWindow.Config.UseGL30 )
         {
@@ -80,41 +80,20 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         UpdateFramebufferInfo();
         InitiateGL();
 
-        Glfw.SetWindowSizeCallback( glWindow.GlfwWindow, ResizeCallback );
+        Glfw.SetWindowSizeCallback( this.GLWindow.GlfwWindow, ResizeCallback );
     }
 
-    public DesktopGLWindow?       GLWindow               { get; set; }
-    public BufferFormatDescriptor BufferFormatDescriptor { get; set; } = null!;
+    public new int Width => this.GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+        ? BackBufferWidth
+        : LogicalWidth;
 
-    public new int Width
-    {
-        get
-        {
-            if ( GLWindow?.Config.HdpiMode == HdpiMode.Pixels )
-            {
-                return BackBufferWidth;
-            }
-
-            return LogicalWidth;
-        }
-    }
-
-    public new int Height
-    {
-        get
-        {
-            if ( GLWindow?.Config.HdpiMode == HdpiMode.Pixels )
-            {
-                return BackBufferHeight;
-            }
-
-            return LogicalHeight;
-        }
-    }
+    public new int Height => this.GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+        ? BackBufferHeight
+        : LogicalHeight;
 
     // ------------------------------------------------------------------------
 
-    public void ResizeCallback( IntPtr windowHandle, int width, int height )
+    public void ResizeCallback( GLFWWindow windowHandle, int width, int height )
     {
         UpdateFramebufferInfo();
 
@@ -125,7 +104,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         GLWindow.MakeCurrent();
 
-        Gdx.Core.Gdx.GL20.GLViewport( 0, 0, width, height );
+        Gdx.GL20.GLViewport( 0, 0, width, height );
 
         GLWindow.Listener.Resize( Width, Height );
         GLWindow.Listener.Render();
@@ -186,11 +165,11 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     private void InitiateGL()
     {
-        var vendorString   = Gdx.Core.Gdx.GL20.GLGetString( IGL20.GL_VENDOR );
-        var rendererString = Gdx.Core.Gdx.GL20.GLGetString( IGL20.GL_RENDERER );
+        var vendorString   = Gdx.GL20.GLGetString( IGL20.GL_VENDOR );
+        var rendererString = Gdx.GL20.GLGetString( IGL20.GL_RENDERER );
 
         GLVersion = new GLVersion( IApplication.ApplicationType.Desktop,
-                                   Glfw.VersionString,
+                                   Glfw.GetVersionString(),
                                    vendorString,
                                    rendererString );
 
@@ -203,7 +182,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <summary>
     ///     Returns whether cubemap seamless feature is supported.
     /// </summary>
-    public bool SupportsCubeMapSeamless() => GLVersion.IsVersionEqualToOrHigher( 3, 2 ) || SupportsExtension( "GL_ARB_seamless_cube_map" );
+    public bool SupportsCubeMapSeamless() => GLVersion.IsVersionEqualToOrHigher( 3, 2 )
+                                          || SupportsExtension( "GL_ARB_seamless_cube_map" );
 
     /// <summary>
     ///     Enable or disable cubemap seamless feature. Default is true if supported.
@@ -213,18 +193,19 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <param name="enable"></param>
     public void EnableCubeMapSeamless( bool enable )
     {
-//TODO:
-//        if ( SupportsCubeMapSeamless() )
-//        {
-//            if ( enable )
-//            {
-//                Gdx.GL20.GLEnable( Gl.GL_TEXTURE_CUBE_MAP_SEAMLESS );
-//            }
-//            else
-//            {
-//                Gdx.GL20.GLDisable( GL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
-//            }
-//        }
+        if ( SupportsCubeMapSeamless() )
+        {
+            if ( enable )
+            {
+                GL.glEnable( GL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+                
+                Gdx.GL20.GLEnable( GL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+            }
+            else
+            {
+                Gdx.GL20.GLDisable( GL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+            }
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -519,7 +500,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public class DesktopGLDisplayMode : IGraphics.DisplayModeDescriptor
     {
-        public DesktopGLDisplayMode( Monitor monitor,
+        public DesktopGLDisplayMode( GLFWMonitor monitor,
                                      int width,
                                      int height,
                                      int refreshRate,
@@ -534,13 +515,13 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public class DesktopGLMonitor : IGraphics.MonitorDescriptor
     {
-        public DesktopGLMonitor( Monitor monitor,
+        public DesktopGLMonitor( GLFWMonitor monitor,
                                  int virtualX,
                                  int virtualY,
                                  string name )
             : base( virtualX, virtualY, name ) => MonitorHandle = monitor;
 
-        public Monitor MonitorHandle { get; private set; }
+        public GLFWMonitor MonitorHandle { get; private set; }
     }
 
     // ------------------------------------------------------------------------

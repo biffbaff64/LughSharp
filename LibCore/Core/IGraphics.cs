@@ -63,15 +63,14 @@ public interface IGraphics
     {
         public MonitorDescriptor( int x, int y, string name )
         {
-            VirtualX = x;
-            VirtualY = y;
-            Name     = name;
+            VirtualX      = x;
+            VirtualY      = y;
+            Name          = name;
         }
 
-        public int     MonitorHandle { get; set; }
-        public int     VirtualX      { get; set; }
-        public int     VirtualY      { get; set; }
-        public string? Name          { get; set; }
+        public int         VirtualX      { get; set; }
+        public int         VirtualY      { get; set; }
+        public string?     Name          { get; set; }
     }
 
     /// <summary>

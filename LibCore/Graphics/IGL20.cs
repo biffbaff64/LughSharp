@@ -348,7 +348,7 @@ public interface IGL20
 
     public void GLActiveTexture( int texture );
 
-    public void GLBindTexture( int target, int texture );
+    public void GLBindTexture( int target, uint texture );
 
     public void GLBlendFunc( int sfactor, int dfactor );
 
@@ -356,7 +356,7 @@ public interface IGL20
 
     public void GLClearColor( float red, float green, float blue, float alpha );
 
-    public void GLClearDepthf( float depth );
+    public void GLClearDepthf( double depth );
 
     public void GLClearStencil( int s );
 
@@ -401,7 +401,7 @@ public interface IGL20
 
     public void GLCullFace( int mode );
 
-    public void GLDeleteTextures( int n, IntBuffer textures );
+    public void GLDeleteTextures( params uint[] textures );
 
     public void GLDeleteTexture( int texture );
 
@@ -427,7 +427,7 @@ public interface IGL20
 
     public void GLGenTextures( int n, IntBuffer textures );
 
-    public int GLGenTexture();
+    public uint GLGenTexture();
 
     public int GLGetError();
 
@@ -477,7 +477,7 @@ public interface IGL20
 
     public void GLViewport( int x, int y, int width, int height );
 
-    public void GLAttachShader( int program, int shader );
+    public void GLAttachShader( uint program, uint shader );
 
     public void GLBindAttribLocation( int program, int index, string name );
 
@@ -503,19 +503,19 @@ public interface IGL20
 
     public void GLCompileShader( int shader );
 
-    public int GLCreateProgram();
+    public uint GLCreateProgram();
 
     public int GLCreateShader( int type );
 
     public void GLDeleteBuffer( int buffer );
 
-    public void GLDeleteBuffers( int n, IntBuffer buffers );
+    public void GLDeleteBuffers( params uint[] buffers );
 
     public void GLDeleteFramebuffer( int framebuffer );
 
     public void GLDeleteFramebuffers( int n, IntBuffer framebuffers );
 
-    public void GLDeleteProgram( int program );
+    public void GLDeleteProgram( uint program );
 
     public void GLDeleteRenderbuffer( int renderbuffer );
 
@@ -535,7 +535,7 @@ public interface IGL20
 
     public void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level );
 
-    public int GLGenBuffer();
+    public uint GLGenBuffer();
 
     public void GLGenBuffers( int n, IntBuffer buffers );
 
@@ -555,7 +555,7 @@ public interface IGL20
 
     public void GLGetAttachedShaders( int program, int maxcount, Buffer count, IntBuffer shaders );
 
-    public int GLGetAttribLocation( int program, string name );
+    public int GLGetAttribLocation( uint program, string name );
 
     public void GLGetBooleanv( int pname, Buffer buffer );
 
