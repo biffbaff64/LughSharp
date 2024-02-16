@@ -26,7 +26,6 @@
 using LibGDXSharp.Backends.DesktopGL.Audio;
 using LibGDXSharp.Backends.DesktopGL.Input;
 using LibGDXSharp.Backends.DesktopGL.Window;
-using LibGDXSharp.LibCore.Core;
 
 namespace LibGDXSharp.Backends.DesktopGL;
 

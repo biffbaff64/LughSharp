@@ -202,6 +202,11 @@ public unsafe static class GL
         return minor;
     }
 
+    public static ( int major, int minor ) GetProjectOpenGLVersion()
+    {
+        return GetProjectOpenGLVersionMajor(), GetProjectOpenGLVersionMinor();
+    }
+    
     /// <summary>
     /// Useful helper function for getting the OpenGL profile of the project as defined by the preprocessor.
     /// In cases where no profile is defined, a compile time error will be thrown to prevent the project from compiling.

@@ -29,9 +29,7 @@ using LibGDXSharp.Backends.DesktopGL.Files;
 using LibGDXSharp.Backends.DesktopGL.Input;
 using LibGDXSharp.Backends.DesktopGL.Utils;
 using LibGDXSharp.Backends.DesktopGL.Window;
-using LibGDXSharp.LibCore.Core;
 using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
@@ -48,7 +46,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     private readonly Sync?                   _sync          = null;
     private volatile DesktopGLWindow?        _currentWindow = null;
     private          bool                    _running       = true;
-
+        
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -527,10 +525,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         if ( !GLVersion!.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
         {
+            var (major, minor) = GL.GetProjectOpenGLVersion();
+            
             throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is required. "
-                                         + $"OpenGL version: "
-                                         + $"{GL.GetProjectOpenGLVersionMajor()}."
-                                         + $"{GL.GetProjectOpenGLVersionMinor()}"
+                                         + $"OpenGL version: {major}.{minor}"
                                          + $"\n{GLVersion?.DebugVersionString()}" );
         }
 
@@ -574,7 +572,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     /// <summary>
     /// </summary>
-    private void InitiateGL()
+    private unsafe void InitiateGL()
     {
         Glfw.GetVersion( out var major, out var minor, out var revision );
 

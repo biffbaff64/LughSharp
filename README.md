@@ -788,7 +788,7 @@ BACKENDS/DESKTOPGL
 ------------------
 
     - DONE - DesktopGLApplication
-    - IP   - DesktopGLApplicationConfiguration
+    - DONE - DesktopGLApplicationConfiguration
     - IP   - DesktopGLNativesLoader
     - IP   - DesktopGLNet
     - IP   - DesktopWindowCallbacks

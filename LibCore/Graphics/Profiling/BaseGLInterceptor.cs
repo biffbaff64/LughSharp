@@ -27,6 +27,7 @@ using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
+using GLuint = System.UInt32;
 
 namespace LibGDXSharp.LibCore.Graphics.Profiling;
 
@@ -192,7 +193,7 @@ public abstract class BaseGLInterceptor : IGL20
     public abstract void GLTexParameterf( int target, int pname, float param );
 
     /// <inheritdoc />
-    public abstract void GLTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, Buffer pixels );
+    public abstract unsafe void GLTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, void* pixels );
 
     /// <inheritdoc />
     public abstract void GLViewport( int x, int y, int width, int height );
@@ -294,10 +295,10 @@ public abstract class BaseGLInterceptor : IGL20
     public abstract void GLGenerateMipmap( int target );
 
     /// <inheritdoc />
-    public abstract int GLGenFramebuffer();
+    public abstract uint GLGenFramebuffer();
 
     /// <inheritdoc />
-    public abstract void GLGenFramebuffers( int n, IntBuffer framebuffers );
+    public abstract unsafe void GLGenFramebuffers( int n, GLuint* framebuffers );
 
     /// <inheritdoc />
     public abstract int GLGenRenderbuffer();
@@ -531,13 +532,13 @@ public abstract class BaseGLInterceptor : IGL20
     public abstract void GLVertexAttrib1Fv( int indx, FloatBuffer values );
 
     /// <inheritdoc />
-    public abstract void GLVertexAttrib2F( int indx, float x, float y );
+    public abstract void GLVertexAttrib2F( GLuint indx, float x, float y );
 
     /// <inheritdoc />
     public abstract void GLVertexAttrib2Fv( int indx, FloatBuffer values );
 
     /// <inheritdoc />
-    public abstract void GLVertexAttrib3F( int indx, float x, float y, float z );
+    public abstract void GLVertexAttrib3F( GLuint indx, float x, float y, float z );
 
     /// <inheritdoc />
     public abstract void GLVertexAttrib3Fv( int indx, FloatBuffer values );

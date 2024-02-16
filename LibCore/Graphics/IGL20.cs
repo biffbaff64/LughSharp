@@ -26,6 +26,7 @@
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
+using GLuint = System.UInt32;
 
 namespace LibGDXSharp.LibCore.Graphics;
 
@@ -348,11 +349,11 @@ public interface IGL20
 
     public void GLActiveTexture( int texture );
 
-    public void GLBindTexture( int target, uint texture );
+    public void GLBindTexture( int target, GLuint texture );
 
     public void GLBlendFunc( int sfactor, int dfactor );
 
-    public void GLClear( int mask );
+    public void GLClear( GLuint mask );
 
     public void GLClearColor( float red, float green, float blue, float alpha );
 
@@ -362,16 +363,16 @@ public interface IGL20
 
     public void GLColorMask( bool red, bool green, bool blue, bool alpha );
 
-    public void GLCompressedTexImage2D( int target,
+    public unsafe void GLCompressedTexImage2D( int target,
                                         int level,
                                         int internalformat,
                                         int width,
                                         int height,
                                         int border,
                                         int imageSize,
-                                        Buffer data );
+                                        void* data );
 
-    public void GLCompressedTexSubImage2D( int target,
+    public unsafe void GLCompressedTexSubImage2D( int target,
                                            int level,
                                            int xoffset,
                                            int yoffset,
@@ -379,7 +380,7 @@ public interface IGL20
                                            int height,
                                            int format,
                                            int imageSize,
-                                           Buffer data );
+                                           void* data );
 
     public void GLCopyTexImage2D( int target,
                                   int level,
@@ -401,7 +402,7 @@ public interface IGL20
 
     public void GLCullFace( int mode );
 
-    public void GLDeleteTextures( params uint[] textures );
+    public void GLDeleteTextures( params GLuint[] textures );
 
     public void GLDeleteTexture( int texture );
 
@@ -425,9 +426,9 @@ public interface IGL20
 
     public void GLFrontFace( int mode );
 
-    public void GLGenTextures( int n, IntBuffer textures );
+    public GLuint[] GLGenTextures( int n );
 
-    public uint GLGenTexture();
+    public GLuint GLGenTexture();
 
     public int GLGetError();
 
@@ -443,17 +444,17 @@ public interface IGL20
 
     public void GLPolygonOffset( float factor, float units );
 
-    public void GLReadPixels( int x, int y, int width, int height, int format, int type, Buffer pixels );
+    public unsafe void GLReadPixels( int x, int y, int width, int height, int format, int type, void* pixels );
 
     public void GLScissor( int x, int y, int width, int height );
 
-    public void GLStencilFunc( int func, int reference, int mask );
+    public void GLStencilFunc( int func, int reference, GLuint mask );
 
-    public void GLStencilMask( int mask );
+    public void GLStencilMask( GLuint mask );
 
     public void GLStencilOp( int fail, int zfail, int zpass );
 
-    public void GLTexImage2D( int target,
+    public unsafe void GLTexImage2D( int target,
                               int level,
                               int internalformat,
                               int width,
@@ -461,31 +462,31 @@ public interface IGL20
                               int border,
                               int format,
                               int type,
-                              Buffer pixels );
+                              void* pixels );
 
     public void GLTexParameterf( int target, int pname, float param );
 
-    public void GLTexSubImage2D( int target,
-                                 int level,
-                                 int xoffset,
-                                 int yoffset,
-                                 int width,
-                                 int height,
-                                 int format,
-                                 int type,
-                                 Buffer pixels );
+    public unsafe void GLTexSubImage2D( int target,
+                                        int level,
+                                        int xoffset,
+                                        int yoffset,
+                                        int width,
+                                        int height,
+                                        int format,
+                                        int type,
+                                        void* pixels );
 
     public void GLViewport( int x, int y, int width, int height );
 
-    public void GLAttachShader( uint program, uint shader );
+    public void GLAttachShader( GLuint program, GLuint shader );
 
-    public void GLBindAttribLocation( int program, int index, string name );
+    public void GLBindAttribLocation( GLuint program, GLuint index, string name );
 
-    public void GLBindBuffer( int target, int buffer );
+    public void GLBindBuffer( int target, GLuint buffer );
 
-    public void GLBindFramebuffer( int target, int framebuffer );
+    public void GLBindFramebuffer( int target, GLuint framebuffer );
 
-    public void GLBindRenderbuffer( int target, int renderbuffer );
+    public void GLBindRenderbuffer( int target, GLuint renderbuffer );
 
     public void GLBlendColor( float red, float green, float blue, float alpha );
 
@@ -495,67 +496,67 @@ public interface IGL20
 
     public void GLBlendFuncSeparate( int srcRGB, int dstRGB, int srcAlpha, int dstAlpha );
 
-    public void GLBufferData( int target, int size, Buffer data, int usage );
+    public unsafe void GLBufferData( int target, int size, void* data, int usage );
 
-    public void GLBufferSubData( int target, int offset, int size, Buffer data );
+    public unsafe void GLBufferSubData( int target, int offset, int size, void* data );
 
     public int GLCheckFramebufferStatus( int target );
 
-    public void GLCompileShader( int shader );
+    public void GLCompileShader( GLuint shader );
 
-    public uint GLCreateProgram();
+    public GLuint GLCreateProgram();
 
-    public int GLCreateShader( int type );
+    public GLuint GLCreateShader( int type );
 
-    public void GLDeleteBuffer( int buffer );
+    public unsafe void GLDeleteBuffer( int buffer, GLuint* buffers );
 
-    public void GLDeleteBuffers( params uint[] buffers );
+    public void GLDeleteBuffers( params GLuint[] buffers );
 
     public void GLDeleteFramebuffer( int framebuffer );
 
     public void GLDeleteFramebuffers( int n, IntBuffer framebuffers );
 
-    public void GLDeleteProgram( uint program );
+    public void GLDeleteProgram( GLuint program );
 
-    public void GLDeleteRenderbuffer( int renderbuffer );
+    public void GLDeleteRenderbuffer( GLuint renderbuffer );
 
-    public void GLDeleteRenderbuffers( int n, IntBuffer renderbuffers );
+    public unsafe void GLDeleteRenderbuffers( int n, GLuint* renderbuffers );
 
-    public void GLDeleteShader( int shader );
+    public void GLDeleteShader( GLuint shader );
 
-    public void GLDetachShader( int program, int shader );
+    public void GLDetachShader( GLuint program, GLuint shader );
 
-    public void GLDisableVertexAttribArray( int index );
+    public void GLDisableVertexAttribArray( GLuint index );
 
-    public void GLDrawElements( int mode, int count, int type, int indices );
+    public unsafe void GLDrawElements( int mode, int count, int type, void* indices );
 
-    public void GLEnableVertexAttribArray( int index );
+    public void GLEnableVertexAttribArray( GLuint index );
 
-    public void GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, int renderbuffer );
+    public void GLFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, GLuint renderbuffer );
 
-    public void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level );
+    public void GLFramebufferTexture2D( int target, int attachment, int textarget, GLuint texture, int level );
 
-    public uint GLGenBuffer();
+    public GLuint GLGenBuffer();
 
-    public void GLGenBuffers( int n, IntBuffer buffers );
+    public GLuint[] GLGenBuffers( int n );
 
     public void GLGenerateMipmap( int target );
 
-    public int GLGenFramebuffer();
+    public GLuint GLGenFramebuffer();
 
-    public void GLGenFramebuffers( int n, IntBuffer framebuffers );
+    public unsafe void GLGenFramebuffers( int n, GLuint* framebuffers );
 
     public int GLGenRenderbuffer();
 
     public void GLGenRenderbuffers( int n, IntBuffer renderbuffers );
 
-    public string GLGetActiveAttrib( int program, int index, IntBuffer size, IntBuffer type );
+    public unsafe void GLGetActiveAttrib( GLuint program, GLuint index, int bufSize, int* length, int* size, int* type, byte* name );
 
-    public string GLGetActiveUniform( int program, int index, IntBuffer size, IntBuffer type );
+    public unsafe void GLGetActiveUniform( GLuint program, GLuint index, int bufSize, int* length, int* size, int* type, byte* name );
 
-    public void GLGetAttachedShaders( int program, int maxcount, Buffer count, IntBuffer shaders );
+    public unsafe void GLGetAttachedShaders( GLuint program, int maxcount, int* count, GLuint* shaders );
 
-    public int GLGetAttribLocation( uint program, string name );
+    public int GLGetAttribLocation( GLuint program, string name );
 
     public void GLGetBooleanv( int pname, Buffer buffer );
 
@@ -567,7 +568,7 @@ public interface IGL20
 
     public void GLGetProgramiv( int program, int pname, IntBuffer buffer );
 
-    public string GLGetProgramInfoLog( int program );
+    public string GLGetProgramInfoLog( GLuint program, int bufsize );
 
     public void GLGetRenderbufferParameteriv( int target, int pname, IntBuffer buffer );
 
@@ -585,7 +586,7 @@ public interface IGL20
 
     public void GLGetUniformiv( int program, int location, IntBuffer buffer );
 
-    public int GLGetUniformLocation( int program, string name );
+    public int GLGetUniformLocation( GLuint program, string name );
 
     public void GLGetVertexAttribfv( int index, int pname, FloatBuffer buffer );
 
@@ -593,21 +594,21 @@ public interface IGL20
 
     public void GLGetVertexAttribPointerv( int index, int pname, Buffer pointer );
 
-    public bool GLIsBuffer( int buffer );
+    public bool GLIsBuffer( GLuint buffer );
 
     public bool GLIsEnabled( int cap );
 
     public bool GLIsFramebuffer( int framebuffer );
 
-    public bool GLIsProgram( int program );
+    public bool GLIsProgram( GLuint program );
 
     public bool GLIsRenderbuffer( int renderbuffer );
 
-    public bool GLIsShader( int shader );
+    public bool GLIsShader( GLuint shader );
 
-    public bool GLIsTexture( int texture );
+    public bool GLIsTexture( GLuint texture );
 
-    public void GLLinkProgram( int program );
+    public void GLLinkProgram( GLuint program );
 
     public void GLReleaseShaderCompiler();
 
@@ -617,11 +618,11 @@ public interface IGL20
 
     public void GLShaderBinary( int n, IntBuffer shaders, int binaryformat, Buffer binary, int length );
 
-    public void GLShaderSource( int shader, string str );
+    public void GLShaderSource( GLuint shader, params string[] str );
 
-    public void GLStencilFuncSeparate( int face, int func, int reference, int mask );
+    public void GLStencilFuncSeparate( int face, int func, int reference, GLuint mask );
 
-    public void GLStencilMaskSeparate( int face, int mask );
+    public void GLStencilMaskSeparate( int face, GLuint mask );
 
     public void GLStencilOpSeparate( int face, int fail, int zfail, int zpass );
 
@@ -643,7 +644,7 @@ public interface IGL20
 
     public void GLUniform1Iv( int location, int count, int[] v, int offset );
 
-    public void GLUniform2F( int location, float x, float y );
+    public void GLUniform2F( int location, float v0, float v1 );
 
     public void GLUniform2Fv( int location, int count, FloatBuffer v );
 
@@ -687,31 +688,31 @@ public interface IGL20
 
     public void GLUniformMatrix3Fv( int location, int count, bool transpose, float[] value, int offset );
 
-    public void GLUniformMatrix4Fv( int location, int count, bool transpose, FloatBuffer value );
+    public unsafe void GLUniformMatrix4Fv( int location, int count, bool transpose, float* value );
 
     public void GLUniformMatrix4Fv( int location, int count, bool transpose, float[] value, int offset );
 
-    public void GLUseProgram( int program );
+    public void GLUseProgram( GLuint program );
 
-    public void GLValidateProgram( int program );
+    public void GLValidateProgram( GLuint program );
 
-    public void GLVertexAttrib1F( int indx, float x );
+    public void GLVertexAttrib1F( GLuint indx, float x );
 
-    public void GLVertexAttrib1Fv( int indx, FloatBuffer values );
+    public void GLVertexAttrib1Fv( GLuint indx, float x );
 
-    public void GLVertexAttrib2F( int indx, float x, float y );
+    public void GLVertexAttrib2F( GLuint indx, float x, float y );
 
-    public void GLVertexAttrib2Fv( int indx, FloatBuffer values );
+    public void GLVertexAttrib2Fv( GLuint indx, float v0, float v1 );
 
-    public void GLVertexAttrib3F( int indx, float x, float y, float z );
+    public void GLVertexAttrib3F( GLuint indx, float x, float y, float z );
 
-    public void GLVertexAttrib3Fv( int indx, FloatBuffer values );
+    public void GLVertexAttrib3Fv( GLuint indx, float v0, float v1, float v2 );
 
-    public void GLVertexAttrib4F( int indx, float x, float y, float z, float w );
+    public void GLVertexAttrib4F( GLuint indx, float x, float y, float z, float w );
 
-    public void GLVertexAttrib4Fv( int indx, FloatBuffer values );
+    public void GLVertexAttrib4Fv( GLuint indx, float v0, float v1, float v2, float v3 );
 
-    public void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, Buffer ptr );
+    public void GLVertexAttribPointer( GLuint indx, int size, int type, bool normalized, int stride, uint ptr );
 
-    public void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, int ptr );
+    public unsafe void GLVertexAttribPointer( GLuint indx, int size, int type, bool normalized, int stride, void* ptr );
 }
