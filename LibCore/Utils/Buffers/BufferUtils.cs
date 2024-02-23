@@ -236,4 +236,42 @@ public static class BufferUtils
 
 //        buffer = null!;
     }
+
+//    private void EnsureBufferCapacity( int numBytes )
+//    {
+//        if ( ( _buffer == null ) || ( _buffer.Capacity < numBytes ) )
+//        {
+//            _buffer      = BufferUtils.NewByteBuffer( numBytes );
+//            _floatBuffer = _buffer.AsFloatBuffer();
+//            _intBuffer   = _buffer.AsIntBuffer();
+//        }
+//    }
+//
+//    private FloatBuffer ToFloatBuffer( float[] v, int offset, int count )
+//    {
+//        GdxRuntimeException.ThrowIfNull( _floatBuffer );
+//
+//        EnsureBufferCapacity( count << 2 );
+//
+//        _floatBuffer.Clear();
+//        _floatBuffer.Limit = count;
+//        _floatBuffer.Put( v, offset, count );
+//        _floatBuffer.Position = 0;
+//
+//        return _floatBuffer;
+//    }
+//
+//    private IntBuffer ToIntBuffer( int[] v, int offset, int count )
+//    {
+//        GdxRuntimeException.ThrowIfNull( _intBuffer );
+//
+//        EnsureBufferCapacity( count << 2 );
+//
+//        _intBuffer.Clear();
+//        _intBuffer.Limit = count;
+//        _intBuffer.Put( v, offset, count );
+//        _intBuffer.Position = 0;
+//
+//        return _intBuffer;
+//    }
 }

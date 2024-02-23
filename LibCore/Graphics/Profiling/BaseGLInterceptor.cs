@@ -27,6 +27,8 @@ using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
+using GLfloat = System.Single;
+using GLint = System.Int32;
 using GLuint = System.UInt32;
 
 namespace LibGDXSharp.LibCore.Graphics.Profiling;
@@ -325,10 +327,10 @@ public abstract class BaseGLInterceptor : IGL20
     public abstract void GLGetBufferParameteriv( int target, int pname, IntBuffer buffer );
 
     /// <inheritdoc />
-    public abstract void GLGetFloatv( int pname, FloatBuffer buffer );
+    public abstract unsafe void GLGetFloatv( int pname, GLfloat* buffer );
 
     /// <inheritdoc />
-    public abstract void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, IntBuffer buffer );
+    public abstract unsafe void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, GLint* buffer );
 
     /// <inheritdoc />
     public abstract void GLGetProgramiv( int program, int pname, IntBuffer buffer );

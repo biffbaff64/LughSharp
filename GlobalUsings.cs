@@ -30,6 +30,7 @@ global using System;
 global using System.Diagnostics;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
+global using System.IO;
 
 // -----------------------------------------------------------------------
 // Json
@@ -66,6 +67,7 @@ global using GLFWWindow     = DotGLFW.Window;
 // LibGDXSharp
 global using LibGDXSharp.LibCore.Core;
 global using LibGDXSharp.LibCore.Graphics.GLUtils;
+global using LibGDXSharp.LibCore.Utils;
 
 global using Vector2 = LibGDXSharp.LibCore.Maths.Vector2;
 global using Vector3 = LibGDXSharp.LibCore.Maths.Vector3;

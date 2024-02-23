@@ -25,9 +25,6 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Core;
-using LibGDXSharp.LibCore.Utils;
-
 namespace LibGDXSharp.LibCore.Graphics;
 
 /// <summary>
@@ -131,7 +128,7 @@ public class TextureArray : GLTexture
             throw new GdxRuntimeException( "Tried to reload an unmanaged TextureArray" );
         }
 
-        GLTextureHandle = Core.Gdx.GL.GLGenTexture();
+        GLTextureHandle = ( int )Core.Gdx.GL.GLGenTexture();
 
         Load( _data );
     }
@@ -190,7 +187,7 @@ public class TextureArray : GLTexture
     /// <param name="data"></param>
     /// <exception cref="GdxRuntimeException"></exception>
     public TextureArray( ITextureArrayData data )
-        : base( IGL30.GL_TEXTURE_2D_ARRAY, Core.Gdx.GL.GLGenTexture() )
+        : base( IGL30.GL_TEXTURE_2D_ARRAY, ( int )Core.Gdx.GL.GLGenTexture() )
     {
         if ( Core.Gdx.GL30 == null )
         {

@@ -26,6 +26,8 @@
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
+using GLfloat = System.Single;
+using GLint = System.Int32;
 using GLuint = System.UInt32;
 
 namespace LibGDXSharp.LibCore.Graphics.Profiling;
@@ -698,14 +700,14 @@ public class GL30Interceptor : BaseGLInterceptor, IGL30
         Check();
     }
 
-    public override void GLGetFloatv( int pname, FloatBuffer parameters )
+    public override unsafe void GLGetFloatv( int pname, GLfloat* parameters )
     {
         Calls++;
         GL30.GLGetFloatv( pname, parameters );
         Check();
     }
 
-    public override void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, IntBuffer parameters )
+    public override unsafe void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, GLint* parameters )
     {
         Calls++;
         GL30.GLGetFramebufferAttachmentParameteriv( target, attachment, pname, parameters );

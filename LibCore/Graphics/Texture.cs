@@ -27,9 +27,6 @@ using System.Text;
 
 using LibGDXSharp.LibCore.Assets;
 using LibGDXSharp.LibCore.Assets.Loaders;
-using LibGDXSharp.LibCore.Core;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.LibCore.Graphics;
@@ -109,7 +106,7 @@ public class Texture : GLTexture
     ///     Creates a new Texture using the supplied <see cref="ITextureData" />.
     /// </summary>
     public Texture( ITextureData? data )
-        : this( IGL20.GL_TEXTURE_2D, Core.Gdx.GL.GLGenTexture(), data )
+        : this( IGL20.GL_TEXTURE_2D, ( int )Core.Gdx.GL.GLGenTexture(), data )
     {
     }
 
@@ -182,7 +179,7 @@ public class Texture : GLTexture
             throw new GdxRuntimeException( "Tried to reload unmanaged Texture" );
         }
 
-        GLTextureHandle = Core.Gdx.GL.GLGenTexture();
+        GLTextureHandle = ( int )Core.Gdx.GL.GLGenTexture();
 
         Load( TextureData );
     }
@@ -195,7 +192,7 @@ public class Texture : GLTexture
     /// <param name="pixmap"> The Pixmap </param>
     /// <param name="x"> The x coordinate in pixels </param>
     /// <param name="y"> The y coordinate in pixels  </param>
-    public void Draw( Pixmap pixmap, int x, int y )
+    public unsafe void Draw( Pixmap pixmap, int x, int y )
     {
         if ( ( TextureData != null ) && TextureData.IsManaged() )
         {

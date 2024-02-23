@@ -160,7 +160,7 @@ public class ShaderProgram
     /// </summary>
     /// <param name="vertexShader"></param>
     /// <param name="fragmentShader"></param>
-    public ShaderProgram( FileInfo vertexShader, FileInfo fragmentShader )
+    public ShaderProgram( FileSystemInfo vertexShader, FileSystemInfo fragmentShader )
         : this( File.ReadAllText( vertexShader.Name ), File.ReadAllText( fragmentShader.Name ) )
     {
     }

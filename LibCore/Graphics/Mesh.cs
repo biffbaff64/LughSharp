@@ -25,10 +25,7 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Core;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Maths.Collision;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 using Matrix3 = LibGDXSharp.LibCore.Maths.Matrix3;
@@ -481,13 +478,10 @@ public class Mesh
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="primitiveType"> the primitive type  </param>
-    public void Render( ShaderProgram shader, int primitiveType ) => Render( shader,
-                                                                             primitiveType,
-                                                                             0,
-                                                                             _indices.NumMaxIndices > 0
-                                                                                 ? NumIndices
-                                                                                 : NumVertices,
-                                                                             AutoBind );
+    public void Render( ShaderProgram shader, int primitiveType )
+    {
+        Render( shader, primitiveType, 0, _indices.NumMaxIndices > 0 ? NumIndices : NumVertices, AutoBind );
+    }
 
     /// <summary>
     ///     <para>
