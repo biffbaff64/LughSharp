@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils;
-
 namespace LibGDXSharp.LibCore.Graphics.GLUtils;
 
 public class ETC1TextureData : ITextureData

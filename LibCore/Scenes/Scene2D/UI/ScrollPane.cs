@@ -24,7 +24,6 @@
 
 
 using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;

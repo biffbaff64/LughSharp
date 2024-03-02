@@ -23,9 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Core;
 using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Maths.Collision;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;

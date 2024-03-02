@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils;
-
 namespace LibGDXSharp.LibCore.Graphics.FrameBuffers;
 
 public class GLFrameBufferBuilder<TU> where TU : GLFrameBuffer< GLTexture >

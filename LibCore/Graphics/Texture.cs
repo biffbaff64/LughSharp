@@ -192,7 +192,7 @@ public class Texture : GLTexture
     /// <param name="pixmap"> The Pixmap </param>
     /// <param name="x"> The x coordinate in pixels </param>
     /// <param name="y"> The y coordinate in pixels  </param>
-    public unsafe void Draw( Pixmap pixmap, int x, int y )
+    public void Draw( Pixmap pixmap, int x, int y )
     {
         if ( ( TextureData != null ) && TextureData.IsManaged() )
         {
@@ -321,7 +321,7 @@ public class Texture : GLTexture
 
                     // unload the texture, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    texture.GLTextureHandle = Core.Gdx.GL.GLGenTexture();
+                    texture.GLTextureHandle = ( int )Core.Gdx.GL.GLGenTexture();
                     AssetManager.Load( fileName, typeof( Texture ), parameters );
                 }
             }

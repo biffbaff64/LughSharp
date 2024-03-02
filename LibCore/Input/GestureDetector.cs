@@ -22,9 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.LibCore.Core;
-using LibGDXSharp.LibCore.Utils;
-
 namespace LibGDXSharp.LibCore.Input;
 
 /// <summary>

@@ -26,7 +26,6 @@
 using System.Drawing;
 
 using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 

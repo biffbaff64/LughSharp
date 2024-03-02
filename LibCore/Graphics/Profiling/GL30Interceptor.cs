@@ -26,9 +26,6 @@
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
-using GLfloat = System.Single;
-using GLint = System.Int32;
-using GLuint = System.UInt32;
 
 namespace LibGDXSharp.LibCore.Graphics.Profiling;
 
@@ -360,15 +357,15 @@ public class GL30Interceptor : BaseGLInterceptor, IGL30
         Check();
     }
 
-    public override unsafe void GLTexSubImage2D( int target,
-                                                 int level,
-                                                 int xoffset,
-                                                 int yoffset,
-                                                 int width,
-                                                 int height,
-                                                 int format,
-                                                 int type,
-                                                 void* pixels )
+    public override void GLTexSubImage2D( int target,
+                                          int level,
+                                          int xoffset,
+                                          int yoffset,
+                                          int width,
+                                          int height,
+                                          int format,
+                                          int type,
+                                          Buffer pixels )
     {
         Calls++;
         GL30.GLTexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, pixels );
@@ -616,7 +613,7 @@ public class GL30Interceptor : BaseGLInterceptor, IGL30
         Check();
     }
 
-    public override uint GLGenFramebuffer()
+    public override int GLGenFramebuffer()
     {
         Calls++;
         var result = GL30.GLGenFramebuffer();
@@ -625,13 +622,12 @@ public class GL30Interceptor : BaseGLInterceptor, IGL30
         return result;
     }
 
-    public override unsafe void GLGenFramebuffers( int n, GLuint* framebuffers )
+    public override void GLGenFramebuffers( int n, IntBuffer framebuffers )
     {
         Calls++;
         GL30.GLGenFramebuffers( n, framebuffers );
         Check();
     }
-
 
     public override int GLGenRenderbuffer()
     {
@@ -642,14 +638,12 @@ public class GL30Interceptor : BaseGLInterceptor, IGL30
         return result;
     }
 
-
     public override void GLGenRenderbuffers( int n, IntBuffer renderbuffers )
     {
         Calls++;
         GL30.GLGenRenderbuffers( n, renderbuffers );
         Check();
     }
-
 
     public override string GLGetActiveAttrib( int program, int index, IntBuffer size, IntBuffer type )
     {
@@ -659,7 +653,6 @@ public class GL30Interceptor : BaseGLInterceptor, IGL30
 
         return result;
     }
-
 
     public override string GLGetActiveUniform( int program, int index, IntBuffer size, IntBuffer type )
     {
@@ -700,14 +693,14 @@ public class GL30Interceptor : BaseGLInterceptor, IGL30
         Check();
     }
 
-    public override unsafe void GLGetFloatv( int pname, GLfloat* parameters )
+    public override void GLGetFloatv( int pname, FloatBuffer parameters )
     {
         Calls++;
         GL30.GLGetFloatv( pname, parameters );
         Check();
     }
 
-    public override unsafe void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, GLint* parameters )
+    public override void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, IntBuffer parameters )
     {
         Calls++;
         GL30.GLGetFramebufferAttachmentParameteriv( target, attachment, pname, parameters );
@@ -1204,7 +1197,7 @@ public class GL30Interceptor : BaseGLInterceptor, IGL30
         Check();
     }
 
-    public override void GLVertexAttrib2F( GLuint indx, float x, float y )
+    public override void GLVertexAttrib2F( int indx, float x, float y )
     {
         Calls++;
         GL30.GLVertexAttrib2F( indx, x, y );
@@ -1218,7 +1211,7 @@ public class GL30Interceptor : BaseGLInterceptor, IGL30
         Check();
     }
 
-    public override void GLVertexAttrib3F( GLuint indx, float x, float y, float z )
+    public override void GLVertexAttrib3F( int indx, float x, float y, float z )
     {
         Calls++;
         GL30.GLVertexAttrib3F( indx, x, y, z );

@@ -738,9 +738,9 @@ public unsafe class DesktopGL20 : IGL20
         GL.glUniform1fv( location, count, v );
     }
 
-    public void GLUniform1Fv( int location, int count, float v, int offset )
+    public void GLUniform1Fv( int location, params float[] v )
     {
-        GL.glUniform1fv( location, count, v, offset );
+        GL.glUniform1fv( location, v );
     }
 
     /// <inheritdoc cref="GL.glUniform1i(int,int)" />
@@ -926,6 +926,7 @@ public unsafe class DesktopGL20 : IGL20
         GL.glVertexAttrib4f( indx, v0, v1, v2, v3 );
     }
 
+    /// <inheritdoc cref="GL.glVertexAttribPointer(uint,int,int,bool,int,uint)" />
     public void GLVertexAttribPointer( uint indx, int size, int type, bool normalized, int stride, uint ptr )
     {
         GL.glVertexAttribPointer( indx, size, type, normalized, stride, ptr );

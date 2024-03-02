@@ -29,7 +29,6 @@ using System.Runtime.Serialization;
 using LibGDXSharp.LibCore.Graphics;
 using LibGDXSharp.LibCore.Graphics.G2D;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 using Exception = System.Exception;

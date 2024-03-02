@@ -24,9 +24,7 @@
 
 
 using LibGDXSharp.LibCore.Audio;
-using LibGDXSharp.LibCore.Audio.OpenAL;
 using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Buffers;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 

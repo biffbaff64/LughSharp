@@ -23,9 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Core;
-using LibGDXSharp.LibCore.Utils;
-
 namespace LibGDXSharp.Backends.DesktopGL.Files;
 
 /// <summary>

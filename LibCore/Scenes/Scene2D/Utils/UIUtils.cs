@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Core;
-
 using Keys = LibGDXSharp.LibCore.Core.IInput.Keys;
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D.Utils;

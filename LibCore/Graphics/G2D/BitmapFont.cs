@@ -25,8 +25,6 @@
 
 using System.Text.RegularExpressions;
 
-using LibGDXSharp.LibCore.Core;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 using Exception = System.Exception;

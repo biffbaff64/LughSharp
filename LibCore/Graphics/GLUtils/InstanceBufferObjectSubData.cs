@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 namespace LibGDXSharp.LibCore.Graphics.GLUtils;
@@ -336,7 +335,7 @@ public class InstanceBufferObjectSubData : IInstanceData
 
     private int CreateBufferObject()
     {
-        var result = Core.Gdx.GL20.GLGenBuffer();
+        var result = ( int )Core.Gdx.GL20.GLGenBuffer();
 
         Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
         Core.Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );

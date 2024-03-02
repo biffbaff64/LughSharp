@@ -23,14 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Runtime.CompilerServices;
-
 using LibGDXSharp.Backends.DesktopGL.Graphics;
 using LibGDXSharp.Backends.DesktopGL.Input;
 using LibGDXSharp.Backends.DesktopGL.Utils;
-using LibGDXSharp.LibCore.Core;
 using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Backends.DesktopGL.Window;

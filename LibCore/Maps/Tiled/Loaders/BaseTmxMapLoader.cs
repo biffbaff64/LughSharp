@@ -25,7 +25,6 @@
 
 using System.IO.Compression;
 using System.Runtime.Serialization;
-using System.Xml;
 
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
@@ -38,7 +37,6 @@ using LibGDXSharp.LibCore.Maps.Objects;
 using LibGDXSharp.LibCore.Maps.Tiled.Objects;
 using LibGDXSharp.LibCore.Maps.Tiled.Tiles;
 using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils;
 
 namespace LibGDXSharp.LibCore.Maps.Tiled.Loaders;
 

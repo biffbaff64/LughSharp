@@ -25,9 +25,7 @@
 
 using System.Text.RegularExpressions;
 
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils;
 
 namespace LibGDXSharp.LibCore.Graphics.G2D;
 

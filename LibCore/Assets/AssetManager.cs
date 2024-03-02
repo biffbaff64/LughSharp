@@ -28,12 +28,9 @@ using System.Text;
 using LibGDXSharp.LibCore.Assets.Loaders;
 using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
 using LibGDXSharp.LibCore.Audio;
-using LibGDXSharp.LibCore.Core;
 using LibGDXSharp.LibCore.Graphics;
 using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Scenes.Scene2D.UI;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 using Exception = System.Exception;

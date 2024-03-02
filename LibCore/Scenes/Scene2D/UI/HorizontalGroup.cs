@@ -23,9 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections;
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;

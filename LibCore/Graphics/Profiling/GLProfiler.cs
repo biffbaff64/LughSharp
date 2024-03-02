@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Core;
 using LibGDXSharp.LibCore.Maths;
 
 namespace LibGDXSharp.LibCore.Graphics.Profiling;

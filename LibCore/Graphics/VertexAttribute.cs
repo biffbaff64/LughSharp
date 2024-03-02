@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.GLUtils;
-
 namespace LibGDXSharp.LibCore.Graphics;
 
 /// <summary>

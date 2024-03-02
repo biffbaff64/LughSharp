@@ -24,8 +24,6 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Core;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Buffers;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
@@ -88,7 +86,7 @@ public class ShaderProgram
     /// <summary>
     ///     the list of currently available shaders
     /// </summary>
-    private readonly static Dictionary< IApplication, List< ShaderProgram > > Shaders = new();
+    private readonly static Dictionary< IApplication, List< ShaderProgram > > _shaders = new();
 
     /// <summary>
     ///     attribute lookup
@@ -745,7 +743,7 @@ public class ShaderProgram
         Core.Gdx.GL20.GLDeleteShader( _fragmentShaderHandle );
         Core.Gdx.GL20.GLDeleteProgram( Handle );
 
-        Shaders.Get( Core.Gdx.App ).Remove( this );
+        _shaders.Get( Core.Gdx.App ).Remove( this );
     }
 
     /// <summary>
@@ -807,10 +805,10 @@ public class ShaderProgram
 
     private void AddManagedShader( IApplication app, ShaderProgram shaderProgram )
     {
-        List< ShaderProgram > managedResources = Shaders.Get( app );
+        List< ShaderProgram > managedResources = _shaders.Get( app );
 
         managedResources.Add( shaderProgram );
-        Shaders.Put( app, managedResources );
+        _shaders.Put( app, managedResources );
     }
 
     /// <summary>
@@ -820,7 +818,7 @@ public class ShaderProgram
     /// <param name="app">  </param>
     public static void InvalidateAllShaderPrograms( IApplication app )
     {
-        List< ShaderProgram > shaderArray = Shaders.Get( app );
+        List< ShaderProgram > shaderArray = _shaders.Get( app );
 
         foreach ( ShaderProgram sp in shaderArray )
         {
@@ -829,7 +827,7 @@ public class ShaderProgram
         }
     }
 
-    public static void ClearAllShaderPrograms( IApplication app ) => Shaders.Remove( app );
+    public static void ClearAllShaderPrograms( IApplication app ) => _shaders.Remove( app );
 
     /// <summary>
     ///     Sets the given attribute
@@ -962,9 +960,9 @@ public class ShaderProgram
         {
             var builder = new StringBuilder( "Managed shaders/app: { " );
 
-            foreach ( IApplication app in Shaders.Keys )
+            foreach ( IApplication app in _shaders.Keys )
             {
-                builder.Append( Shaders[ app ].Count );
+                builder.Append( _shaders[ app ].Count );
                 builder.Append( ' ' );
             }
 
@@ -976,7 +974,7 @@ public class ShaderProgram
 
     public bool IsCompiled { get; set; }
 
-    public static int NumManagedShaderPrograms => Shaders[ Core.Gdx.App ].Count;
+    public static int NumManagedShaderPrograms => _shaders[ Core.Gdx.App ].Count;
 
     public string[] Attributes { get; private set; } = null!;
 

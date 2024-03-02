@@ -24,7 +24,6 @@
 
 
 using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils;
 
 using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
 

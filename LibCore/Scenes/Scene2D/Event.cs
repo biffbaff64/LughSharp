@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Core;
 using LibGDXSharp.LibCore.Utils.Pooling;
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D;

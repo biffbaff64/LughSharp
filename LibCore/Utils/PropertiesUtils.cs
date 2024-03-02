@@ -25,7 +25,6 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Core;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.LibCore.Utils;

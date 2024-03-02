@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
@@ -52,7 +51,7 @@ public class InstanceBufferObject : IInstanceData
                 ( "InstanceBufferObject requires a device running with GLES 3.0 compatibilty" );
         }
 
-        _bufferHandle = Core.Gdx.GL20.GLGenBuffer();
+        _bufferHandle = ( int )Core.Gdx.GL20.GLGenBuffer();
 
         ByteBuffer data = BufferUtils.NewByteBuffer( instanceAttributes.VertexSize * numVertices );
 
@@ -286,7 +285,7 @@ public class InstanceBufferObject : IInstanceData
     /// </summary>
     public void Invalidate()
     {
-        _bufferHandle = Core.Gdx.GL20.GLGenBuffer();
+        _bufferHandle = ( int )Core.Gdx.GL20.GLGenBuffer();
         _isDirty      = true;
     }
 

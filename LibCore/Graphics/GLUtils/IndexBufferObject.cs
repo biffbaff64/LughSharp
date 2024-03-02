@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 namespace LibGDXSharp.LibCore.Graphics.GLUtils;
@@ -62,7 +61,7 @@ public class IndexBufferObject : IIndexData
         _buffer.Flip();
         _byteBuffer.Flip();
 
-        _bufferHandle = Core.Gdx.GL20.GLGenBuffer();
+        _bufferHandle = ( int )Core.Gdx.GL20.GLGenBuffer();
         _usage        = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
     }
 
@@ -190,7 +189,7 @@ public class IndexBufferObject : IIndexData
     /// <inheritdoc />
     public void Invalidate()
     {
-        _bufferHandle = Core.Gdx.GL20.GLGenBuffer();
+        _bufferHandle = ( int )Core.Gdx.GL20.GLGenBuffer();
         _isDirty      = true;
     }
 

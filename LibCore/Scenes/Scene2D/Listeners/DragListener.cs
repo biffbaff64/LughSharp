@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Core;
-
 namespace LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
 
 /**

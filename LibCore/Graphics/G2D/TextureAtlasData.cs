@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils;
-
 using Exception = System.Exception;
 
 namespace LibGDXSharp.LibCore.Graphics.G2D;

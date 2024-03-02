@@ -25,8 +25,6 @@
 
 using ICSharpCode.SharpZipLib.Core;
 
-using LibGDXSharp.LibCore.Utils;
-
 using Exception = System.Exception;
 
 namespace LibGDXSharp.Backends.DesktopGL.Audio;

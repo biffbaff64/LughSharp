@@ -30,7 +30,6 @@ using LibGDXSharp.Backends.DesktopGL.Input;
 using LibGDXSharp.Backends.DesktopGL.Utils;
 using LibGDXSharp.Backends.DesktopGL.Window;
 using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 using Exception = System.Exception;

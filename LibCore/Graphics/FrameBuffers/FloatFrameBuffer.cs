@@ -23,10 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Core;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
-using LibGDXSharp.LibCore.Utils;
-
 namespace LibGDXSharp.LibCore.Graphics.FrameBuffers;
 
 /// <summary>

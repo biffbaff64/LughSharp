@@ -23,15 +23,12 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Xml;
-
 using LibGDXSharp.LibCore.Assets;
 using LibGDXSharp.LibCore.Assets.Loaders;
 using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
 using LibGDXSharp.LibCore.Graphics;
 using LibGDXSharp.LibCore.Graphics.G2D;
 using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils;
 
 namespace LibGDXSharp.LibCore.Maps.Tiled.Loaders;
 

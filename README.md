@@ -787,8 +787,8 @@ UTILS
 BACKENDS/DESKTOPGL
 ------------------
 
-    - DONE - DesktopGLApplication
-    - DONE - DesktopGLApplicationConfiguration
+    - IP   - DesktopGLApplication
+    - IP   - DesktopGLApplicationConfiguration
     - IP   - DesktopGLNativesLoader
     - IP   - DesktopGLNet
     - IP   - DesktopWindowCallbacks
@@ -836,7 +836,7 @@ BACKENDS/DESKTOPGL
     ------------------------
 
     - IP   - GdxSoundAudioRecorder
-    - DONE - IGLAudio
+    - IP   - IGLAudio
     - IP   - Mp3
     - IP   - Ogg
     - IP   - OggInputStream

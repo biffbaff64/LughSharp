@@ -24,7 +24,6 @@
 
 
 using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Pooling;
 
 namespace LibGDXSharp.LibCore.Graphics.G2D;

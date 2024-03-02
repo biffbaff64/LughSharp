@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils;
-
 using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
 
 namespace LibGDXSharp.LibCore.Graphics.GLUtils;

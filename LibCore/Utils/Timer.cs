@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Core;
-
 using Exception = System.Exception;
 using Monitor = System.Threading.Monitor;
 

@@ -23,9 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Core;
-using LibGDXSharp.LibCore.Utils;
-
 namespace LibGDXSharp.LibCore.Graphics.G2D;
 
 public class TextureAtlas

@@ -24,7 +24,6 @@
 
 
 using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 
 namespace LibGDXSharp.LibCore.Core;
 

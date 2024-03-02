@@ -25,14 +25,11 @@
 
 using System.Reflection.Metadata;
 
-using LibGDXSharp.LibCore.Core;
 using LibGDXSharp.LibCore.Graphics;
 using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
 using LibGDXSharp.LibCore.Scenes.Scene2D.UI;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections;
 using LibGDXSharp.LibCore.Utils.Pooling;
 using LibGDXSharp.LibCore.Utils.Viewport;

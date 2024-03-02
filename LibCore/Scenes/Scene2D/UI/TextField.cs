@@ -26,17 +26,14 @@
 using System.Drawing;
 using System.Text;
 
-using LibGDXSharp.LibCore.Core;
 using LibGDXSharp.LibCore.Graphics.G2D;
 using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections;
 using LibGDXSharp.LibCore.Utils.Pooling;
 
 using Color = LibGDXSharp.LibCore.Graphics.Color;
-using Timer = LibGDXSharp.LibCore.Utils.Timer;
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
 

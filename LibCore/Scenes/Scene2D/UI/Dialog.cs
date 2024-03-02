@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Core;
 using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;

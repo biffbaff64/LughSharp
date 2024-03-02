@@ -24,7 +24,6 @@
 
 
 using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 
 using File = System.IO.File;
 

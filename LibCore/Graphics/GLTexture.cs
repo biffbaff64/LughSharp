@@ -23,9 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 namespace LibGDXSharp.LibCore.Graphics;
@@ -43,7 +41,7 @@ public abstract class GLTexture : IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    protected GLTexture( int glTarget ) : this( glTarget, Core.Gdx.GL.GLGenTexture() )
+    protected GLTexture( int glTarget ) : this( glTarget, ( int )Core.Gdx.GL.GLGenTexture() )
     {
     }
 

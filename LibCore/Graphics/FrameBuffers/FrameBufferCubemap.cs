@@ -23,9 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.GLUtils;
-using LibGDXSharp.LibCore.Utils;
-
 namespace LibGDXSharp.LibCore.Graphics.FrameBuffers;
 
 public class FrameBufferCubemap : GLFrameBuffer< Cubemap >

@@ -25,8 +25,6 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Core;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Buffers;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
@@ -176,7 +174,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
             }
         }
 
-        FramebufferHandle = Core.Gdx.GL20.GLGenFramebuffer();
+        FramebufferHandle = ( int )Core.Gdx.GL20.GLGenFramebuffer();
         Core.Gdx.GL20.GLBindFramebuffer( IGL20.GL_FRAMEBUFFER, FramebufferHandle );
 
         var width  = BufferBuilder.Width;
@@ -184,7 +182,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
         if ( BufferBuilder.HasDepthRenderBuffer )
         {
-            DepthbufferHandle = Core.Gdx.GL20.GLGenRenderbuffer();
+            DepthbufferHandle = ( int )Core.Gdx.GL20.GLGenRenderbuffer();
             Core.Gdx.GL20.GLBindRenderbuffer( IGL20.GL_RENDERBUFFER, DepthbufferHandle );
 
             if ( BufferBuilder.DepthRenderBufferSpec != null )
@@ -195,7 +193,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
         if ( BufferBuilder.HasStencilRenderBuffer )
         {
-            StencilbufferHandle = Core.Gdx.GL20.GLGenRenderbuffer();
+            StencilbufferHandle = ( int )Core.Gdx.GL20.GLGenRenderbuffer();
             Core.Gdx.GL20.GLBindRenderbuffer( IGL20.GL_RENDERBUFFER, StencilbufferHandle );
 
             if ( BufferBuilder.StencilRenderBufferSpec != null )
@@ -206,7 +204,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
         if ( BufferBuilder.HasPackedStencilDepthRenderBuffer )
         {
-            DepthStencilPackedBufferHandle = Core.Gdx.GL20.GLGenRenderbuffer();
+            DepthStencilPackedBufferHandle = ( int )Core.Gdx.GL20.GLGenRenderbuffer();
             Core.Gdx.GL20.GLBindRenderbuffer( IGL20.GL_RENDERBUFFER, DepthStencilPackedBufferHandle );
 
             if ( BufferBuilder.PackedStencilDepthRenderBufferSpec != null )
@@ -337,7 +335,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
                 DepthStencilPackedBufferHandle = 0;
             }
 
-            DepthStencilPackedBufferHandle = Core.Gdx.GL20.GLGenRenderbuffer();
+            DepthStencilPackedBufferHandle = ( int )Core.Gdx.GL20.GLGenRenderbuffer();
             HasDepthStencilPackedBuffer    = true;
 
             Core.Gdx.GL20.GLBindRenderbuffer( IGL20.GL_RENDERBUFFER, DepthStencilPackedBufferHandle );

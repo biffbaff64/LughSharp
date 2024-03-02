@@ -27,9 +27,6 @@ using System.Text;
 
 using LibGDXSharp.LibCore.Assets;
 using LibGDXSharp.LibCore.Assets.Loaders;
-using LibGDXSharp.LibCore.Core;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.LibCore.Graphics;
@@ -41,7 +38,7 @@ namespace LibGDXSharp.LibCore.Graphics;
 [PublicAPI]
 public class Cubemap : GLTexture
 {
-    private readonly static Dictionary< IApplication, List< Cubemap >? > ManagedCubemaps = new();
+    private readonly static Dictionary< IApplication, List< Cubemap >? > _managedCubemaps = new();
 
     /// <summary>
     ///     Construct a Cubemap based on the given CubemapData.
@@ -139,7 +136,7 @@ public class Cubemap : GLTexture
     /// <summary>
     ///     return the number of managed cubemaps currently loaded
     /// </summary>
-    public static int NumManagedCubemaps => ManagedCubemaps[ Core.Gdx.App ]?.Count ?? 0;
+    public static int NumManagedCubemaps => _managedCubemaps[ Core.Gdx.App ]?.Count ?? 0;
 
     /// <summary>
     ///     Sets the sides of this cubemap to the specified <see cref="ICubemapData" />.
@@ -169,7 +166,7 @@ public class Cubemap : GLTexture
             throw new GdxRuntimeException( "Tried to reload an unmanaged Cubemap" );
         }
 
-        GLTextureHandle = Core.Gdx.GL.GLGenTexture();
+        GLTextureHandle = ( int )Core.Gdx.GL.GLGenTexture();
 
         Load( Data );
     }
@@ -200,9 +197,9 @@ public class Cubemap : GLTexture
 
             if ( Data.Managed )
             {
-                if ( ManagedCubemaps[ Core.Gdx.App ] != null )
+                if ( _managedCubemaps[ Core.Gdx.App ] != null )
                 {
-                    ManagedCubemaps[ Core.Gdx.App ]?.Remove( this );
+                    _managedCubemaps[ Core.Gdx.App ]?.Remove( this );
                 }
             }
         }
@@ -215,23 +212,23 @@ public class Cubemap : GLTexture
     /// <param name="cubemap"></param>
     private static void AddManagedCubemap( IApplication app, Cubemap cubemap )
     {
-        List< Cubemap > managedCubemapArray = ManagedCubemaps[ app ] ?? new List< Cubemap >();
+        List< Cubemap > managedCubemapArray = _managedCubemaps[ app ] ?? new List< Cubemap >();
 
         managedCubemapArray.Add( cubemap );
-        ManagedCubemaps.Put( app, managedCubemapArray );
+        _managedCubemaps.Put( app, managedCubemapArray );
     }
 
     /// <summary>
     ///     Clears all managed cubemaps.
     /// </summary>
-    public static void ClearAllCubemaps( IApplication app ) => ManagedCubemaps.Remove( app );
+    public static void ClearAllCubemaps( IApplication app ) => _managedCubemaps.Remove( app );
 
     /// <summary>
     ///     Invalidate all managed cubemaps. This is an internal method. Do not use it!
     /// </summary>
     internal static void InvalidateAllCubemaps( IApplication app )
     {
-        List< Cubemap >? managedCubemapArray = ManagedCubemaps[ app ];
+        List< Cubemap >? managedCubemapArray = _managedCubemaps[ app ];
 
         if ( managedCubemapArray == null )
         {
@@ -293,7 +290,7 @@ public class Cubemap : GLTexture
 
                     // unload the c, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    cubemap.GLTextureHandle = Core.Gdx.GL.GLGenTexture();
+                    cubemap.GLTextureHandle = ( int )Core.Gdx.GL.GLGenTexture();
                     AssetManager.Load( fileName, typeof( Cubemap ), parameter );
                 }
             }
@@ -310,9 +307,9 @@ public class Cubemap : GLTexture
     {
         var builder = new StringBuilder( "Managed cubemap/app: { " );
 
-        foreach ( IApplication app in ManagedCubemaps.Keys )
+        foreach ( IApplication app in _managedCubemaps.Keys )
         {
-            builder.Append( ManagedCubemaps[ app ]!.Count );
+            builder.Append( _managedCubemaps[ app ]!.Count );
             builder.Append( ' ' );
         }
 

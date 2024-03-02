@@ -27,9 +27,6 @@ using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
-using GLfloat = System.Single;
-using GLint = System.Int32;
-using GLuint = System.UInt32;
 
 namespace LibGDXSharp.LibCore.Graphics.Profiling;
 
@@ -70,7 +67,7 @@ public abstract class BaseGLInterceptor : IGL20
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     /// <inheritdoc />
     public abstract void GLActiveTexture( int texture );
 
@@ -156,7 +153,7 @@ public abstract class BaseGLInterceptor : IGL20
     public abstract int GLGetError();
 
     /// <inheritdoc />
-    public abstract void GLGetIntegerv( int pname, IntBuffer buffer );
+    public abstract void GLGetIntegerv( int pname, IntBuffer parameters );
 
     /// <inheritdoc />
     public abstract string GLGetString( int name );
@@ -195,7 +192,7 @@ public abstract class BaseGLInterceptor : IGL20
     public abstract void GLTexParameterf( int target, int pname, float param );
 
     /// <inheritdoc />
-    public abstract unsafe void GLTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, void* pixels );
+    public abstract void GLTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, Buffer pixels );
 
     /// <inheritdoc />
     public abstract void GLViewport( int x, int y, int width, int height );
@@ -297,10 +294,10 @@ public abstract class BaseGLInterceptor : IGL20
     public abstract void GLGenerateMipmap( int target );
 
     /// <inheritdoc />
-    public abstract uint GLGenFramebuffer();
+    public abstract int GLGenFramebuffer();
 
     /// <inheritdoc />
-    public abstract unsafe void GLGenFramebuffers( int n, GLuint* framebuffers );
+    public abstract void GLGenFramebuffers( int n, IntBuffer framebuffers );
 
     /// <inheritdoc />
     public abstract int GLGenRenderbuffer();
@@ -321,28 +318,28 @@ public abstract class BaseGLInterceptor : IGL20
     public abstract int GLGetAttribLocation( int program, string name );
 
     /// <inheritdoc />
-    public abstract void GLGetBooleanv( int pname, Buffer buffer );
+    public abstract void GLGetBooleanv( int pname, Buffer parameters );
 
     /// <inheritdoc />
-    public abstract void GLGetBufferParameteriv( int target, int pname, IntBuffer buffer );
+    public abstract void GLGetBufferParameteriv( int target, int pname, IntBuffer parameters );
 
     /// <inheritdoc />
-    public abstract unsafe void GLGetFloatv( int pname, GLfloat* buffer );
+    public abstract void GLGetFloatv( int pname, FloatBuffer parameters );
 
     /// <inheritdoc />
-    public abstract unsafe void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, GLint* buffer );
+    public abstract void GLGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, IntBuffer parameters );
 
     /// <inheritdoc />
-    public abstract void GLGetProgramiv( int program, int pname, IntBuffer buffer );
+    public abstract void GLGetProgramiv( int program, int pname, IntBuffer parameters );
 
     /// <inheritdoc />
     public abstract string GLGetProgramInfoLog( int program );
 
     /// <inheritdoc />
-    public abstract void GLGetRenderbufferParameteriv( int target, int pname, IntBuffer buffer );
+    public abstract void GLGetRenderbufferParameteriv( int target, int pname, IntBuffer parameters );
 
     /// <inheritdoc />
-    public abstract void GLGetShaderiv( int shader, int pname, IntBuffer buffer );
+    public abstract void GLGetShaderiv( int shader, int pname, IntBuffer parameters );
 
     /// <inheritdoc />
     public abstract string GLGetShaderInfoLog( int shader );
@@ -351,25 +348,25 @@ public abstract class BaseGLInterceptor : IGL20
     public abstract void GLGetShaderPrecisionFormat( int shadertype, int precisiontype, IntBuffer range, IntBuffer precision );
 
     /// <inheritdoc />
-    public abstract void GLGetTexParameterfv( int target, int pname, FloatBuffer buffer );
+    public abstract void GLGetTexParameterfv( int target, int pname, FloatBuffer parameters );
 
     /// <inheritdoc />
-    public abstract void GLGetTexParameteriv( int target, int pname, IntBuffer buffer );
+    public abstract void GLGetTexParameteriv( int target, int pname, IntBuffer parameters );
 
     /// <inheritdoc />
-    public abstract void GLGetUniformfv( int program, int location, FloatBuffer buffer );
+    public abstract void GLGetUniformfv( int program, int location, FloatBuffer parameters );
 
     /// <inheritdoc />
-    public abstract void GLGetUniformiv( int program, int location, IntBuffer buffer );
+    public abstract void GLGetUniformiv( int program, int location, IntBuffer parameters );
 
     /// <inheritdoc />
     public abstract int GLGetUniformLocation( int program, string name );
 
     /// <inheritdoc />
-    public abstract void GLGetVertexAttribfv( int index, int pname, FloatBuffer buffer );
+    public abstract void GLGetVertexAttribfv( int index, int pname, FloatBuffer parameters );
 
     /// <inheritdoc />
-    public abstract void GLGetVertexAttribiv( int index, int pname, IntBuffer buffer );
+    public abstract void GLGetVertexAttribiv( int index, int pname, IntBuffer parameters );
 
     /// <inheritdoc />
     public abstract void GLGetVertexAttribPointerv( int index, int pname, Buffer pointer );
@@ -423,13 +420,13 @@ public abstract class BaseGLInterceptor : IGL20
     public abstract void GLStencilOpSeparate( int face, int fail, int zfail, int zpass );
 
     /// <inheritdoc />
-    public abstract void GLTexParameterfv( int target, int pname, FloatBuffer buffer );
+    public abstract void GLTexParameterfv( int target, int pname, FloatBuffer parameters );
 
     /// <inheritdoc />
     public abstract void GLTexParameteri( int target, int pname, int param );
 
     /// <inheritdoc />
-    public abstract void GLTexParameteriv( int target, int pname, IntBuffer buffer );
+    public abstract void GLTexParameteriv( int target, int pname, IntBuffer parameters );
 
     /// <inheritdoc />
     public abstract void GLUniform1F( int location, float x );
@@ -534,13 +531,13 @@ public abstract class BaseGLInterceptor : IGL20
     public abstract void GLVertexAttrib1Fv( int indx, FloatBuffer values );
 
     /// <inheritdoc />
-    public abstract void GLVertexAttrib2F( GLuint indx, float x, float y );
+    public abstract void GLVertexAttrib2F( int indx, float x, float y );
 
     /// <inheritdoc />
     public abstract void GLVertexAttrib2Fv( int indx, FloatBuffer values );
 
     /// <inheritdoc />
-    public abstract void GLVertexAttrib3F( GLuint indx, float x, float y, float z );
+    public abstract void GLVertexAttrib3F( int indx, float x, float y, float z );
 
     /// <inheritdoc />
     public abstract void GLVertexAttrib3Fv( int indx, FloatBuffer values );

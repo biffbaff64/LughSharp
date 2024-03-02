@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils;
-
 namespace LibGDXSharp.Backends.DesktopGL.Utils;
 
 public class DesktopGLClipboard : IClipboard

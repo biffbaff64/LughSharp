@@ -27,7 +27,6 @@ using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
 using LibGDXSharp.LibCore.Graphics;
 using LibGDXSharp.LibCore.Graphics.G2D;
 using LibGDXSharp.LibCore.Scenes.Scene2D.UI;
-using LibGDXSharp.LibCore.Utils;
 
 namespace LibGDXSharp.LibCore.Assets.Loaders;
 

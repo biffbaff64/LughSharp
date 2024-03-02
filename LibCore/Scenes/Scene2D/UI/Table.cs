@@ -26,10 +26,8 @@
 using LibGDXSharp.LibCore.Assets;
 using LibGDXSharp.LibCore.Graphics;
 using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Graphics.GLUtils;
 using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 using LibGDXSharp.LibCore.Utils.Pooling;
 

@@ -25,7 +25,6 @@
 
 using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Maths.Collision;
-using LibGDXSharp.LibCore.Utils;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 using Exception = System.Exception;
