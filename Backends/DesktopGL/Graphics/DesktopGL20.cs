@@ -141,14 +141,14 @@ public unsafe class DesktopGL20 : IGL20
         GL.glActiveTexture( texture );
     }
 
-    /// <inheritdoc cref="GL.glAttachShader(uint,uint)" />
-    public void GLAttachShader( uint program, uint shader )
+    /// <inheritdoc cref="GL.glAttachShader(int,int)" />
+    public void GLAttachShader( int program, int shader )
     {
         GL.glAttachShader( program, shader );
     }
 
-    /// <inheritdoc cref="GL.glBindTexture(int,uint)" />
-    public void GLBindTexture( int target, uint texture )
+    /// <inheritdoc cref="GL.glBindTexture(int,int)" />
+    public void GLBindTexture( int target, int texture )
     {
         GL.glBindTexture( target, texture );
     }
@@ -160,53 +160,53 @@ public unsafe class DesktopGL20 : IGL20
     }
 
     /// <inheritdoc cref="GL.glCreateProgram()" />
-    public uint GLCreateProgram()
+    public int GLCreateProgram()
     {
         return GL.glCreateProgram();
     }
 
-    public void GLDeleteBuffer( int buffer, uint* buffers )
+    public void GLDeleteBuffer( int buffer, int* buffers )
     {
         GL.glDeleteBuffers( buffer, buffers );
     }
 
-    /// <inheritdoc cref="GL.glDeleteBuffers(uint[])" />
-    public void GLDeleteBuffers( params uint[] buffers )
+    /// <inheritdoc cref="GL.glDeleteBuffers(int[])" />
+    public void GLDeleteBuffers( params int[] buffers )
     {
         GL.glDeleteBuffers( buffers );
     }
 
-    public void GLDeleteFramebuffers( int n, uint* framebuffers )
+    public void GLDeleteFramebuffers( int n, int* framebuffers )
     {
         GL.glDeleteFramebuffers( n, framebuffers );
     }
 
-    /// <inheritdoc cref="GL.glDeleteProgram(uint)" />
-    public void GLDeleteProgram( uint program )
+    /// <inheritdoc cref="GL.glDeleteProgram(int)" />
+    public void GLDeleteProgram( int program )
     {
         GL.glDeleteProgram( program );
     }
 
-    /// <inheritdoc cref="GL.glDeleteTextures(uint[])" />
-    public void GLDeleteTextures( params uint[] textures )
+    /// <inheritdoc cref="GL.glDeleteTextures(int[])" />
+    public void GLDeleteTextures( params int[] textures )
     {
         GL.glDeleteTextures( textures );
     }
 
     /// <inheritdoc cref="GL.glGenBuffer()" />
-    public uint GLGenBuffer()
+    public int GLGenBuffer()
     {
         return GL.glGenBuffer();
     }
 
     /// <inheritdoc cref="GL.glGenTexture()" />
-    public uint GLGenTexture()
+    public int GLGenTexture()
     {
         return GL.glGenTexture();
     }
 
-    /// <inheritdoc cref="GL.glGetAttribLocation(uint,string)" />
-    public int GLGetAttribLocation( uint program, string name )
+    /// <inheritdoc cref="GL.glGetAttribLocation(int,string)" />
+    public int GLGetAttribLocation( int program, string name )
     {
         return GL.glGetAttribLocation( program, name );
     }
@@ -231,12 +231,12 @@ public unsafe class DesktopGL20 : IGL20
         GL.glGetFramebufferAttachmentParameteriv( target, attachment, pname, buffer );
     }
 
-    public void GLGetProgramiv( uint program, int pname, int* buffer )
+    public void GLGetProgramiv( int program, int pname, int* buffer )
     {
         GL.glGetProgramiv( program, pname, buffer );
     }
 
-    public string GLGetProgramInfoLog( uint program, int bufsize )
+    public string GLGetProgramInfoLog( int program, int bufsize )
     {
         return GL.glGetProgramInfoLog( program, bufsize );
     }
@@ -246,12 +246,12 @@ public unsafe class DesktopGL20 : IGL20
         GL.glGetRenderbufferParameteriv( target, pname, buffer );
     }
 
-    public void GLGetShaderiv( uint shader, int pname, int* buffer )
+    public void GLGetShaderiv( int shader, int pname, int* buffer )
     {
         GL.glGetShaderiv( shader, pname, buffer );
     }
 
-    public string GLGetShaderInfoLog( uint shader, int size )
+    public string GLGetShaderInfoLog( int shader, int size )
     {
         return GL.glGetShaderInfoLog( shader, size );
     }
@@ -266,12 +266,12 @@ public unsafe class DesktopGL20 : IGL20
         GL.glGetTexParameteriv( target, pname, buffer );
     }
 
-    public void GLGetUniformfv( uint program, int location, float* buffer )
+    public void GLGetUniformfv( int program, int location, float* buffer )
     {
         GL.glGetUniformfv( program, location, buffer );
     }
 
-    public void GLGetUniformiv( uint program, int location, int* buffer )
+    public void GLGetUniformiv( int program, int location, int* buffer )
     {
         GL.glGetUniformiv( program, location, buffer );
     }
@@ -287,29 +287,29 @@ public unsafe class DesktopGL20 : IGL20
         GL.glGetIntegerv( pname, buffer );
     }
 
-    /// <inheritdoc cref="GL.glGetUniformLocation(uint,string)" />
-    public int GLGetUniformLocation( uint program, string name )
+    /// <inheritdoc cref="GL.glGetUniformLocation(int,string)" />
+    public int GLGetUniformLocation( int program, string name )
     {
         return GL.glGetUniformLocation( program, name );
     }
 
-    public void GLGetVertexAttribfv( uint index, int pname, float* buffer )
+    public void GLGetVertexAttribfv( int index, int pname, float* buffer )
     {
         GL.glGetVertexAttribfv( index, pname, buffer );
     }
 
-    public void GLGetVertexAttribiv( uint index, int pname, int* buffer )
+    public void GLGetVertexAttribiv( int index, int pname, int* buffer )
     {
         GL.glGetVertexAttribiv( index, pname, buffer );
     }
 
-    public void GLGetVertexAttribPointerv( uint index, int pname, void** pointer )
+    public void GLGetVertexAttribPointerv( int index, int pname, void** pointer )
     {
         GL.glGetVertexAttribPointerv( index, pname, pointer );
     }
 
-    /// <inheritdoc cref="GL.glLinkProgram(uint)" />
-    public void GLLinkProgram( uint program )
+    /// <inheritdoc cref="GL.glLinkProgram(int)" />
+    public void GLLinkProgram( int program )
     {
         GL.glLinkProgram( program );
     }
@@ -319,32 +319,32 @@ public unsafe class DesktopGL20 : IGL20
         GL.glUniformMatrix4fv( location, b, transpose, value, offset );
     }
 
-    /// <inheritdoc cref="GL.glUseProgram(uint)" />
-    public void GLUseProgram( uint program )
+    /// <inheritdoc cref="GL.glUseProgram(int)" />
+    public void GLUseProgram( int program )
     {
         GL.glUseProgram( program );
     }
 
-    /// <inheritdoc cref="GL.glBindAttribLocation(uint,uint,string)" />
-    public void GLBindAttribLocation( uint program, uint index, string name )
+    /// <inheritdoc cref="GL.glBindAttribLocation(int,int,string)" />
+    public void GLBindAttribLocation( int program, int index, string name )
     {
         GL.glBindAttribLocation( program, index, name );
     }
 
-    /// <inheritdoc cref="GL.glBindBuffer(int,uint)" />
-    public void GLBindBuffer( int target, uint buffer )
+    /// <inheritdoc cref="GL.glBindBuffer(int,int)" />
+    public void GLBindBuffer( int target, int buffer )
     {
         GL.glBindBuffer( target, buffer );
     }
 
-    /// <inheritdoc cref="GL.glBindFramebuffer(int,uint)" />
-    public void GLBindFramebuffer( int target, uint framebuffer )
+    /// <inheritdoc cref="GL.glBindFramebuffer(int,int)" />
+    public void GLBindFramebuffer( int target, int framebuffer )
     {
         GL.glBindFramebuffer( target, framebuffer );
     }
 
-    /// <inheritdoc cref="GL.glBindRenderbuffer(int,uint)" />
-    public void GLBindRenderbuffer( int target, uint renderbuffer )
+    /// <inheritdoc cref="GL.glBindRenderbuffer(int,int)" />
+    public void GLBindRenderbuffer( int target, int renderbuffer )
     {
         GL.glBindRenderbuffer( target, renderbuffer );
     }
@@ -380,14 +380,14 @@ public unsafe class DesktopGL20 : IGL20
         GL.glBufferSubData( target, offset, size, data );
     }
 
-    /// <inheritdoc cref="GL.glClear(uint)" />
-    public void GLClear( uint mask )
+    /// <inheritdoc cref="GL.glClear(int)" />
+    public void GLClear( int mask )
     {
         GL.glClear( mask );
     }
 
-    /// <inheritdoc cref="GL.glCompileShader(uint)" />
-    public void GLCompileShader( uint shader )
+    /// <inheritdoc cref="GL.glCompileShader(int)" />
+    public void GLCompileShader( int shader )
     {
         GL.glCompileShader( shader );
     }
@@ -437,7 +437,7 @@ public unsafe class DesktopGL20 : IGL20
     }
 
     /// <inheritdoc cref="GL.glCreateShader(int)" />
-    public uint GLCreateShader( int type )
+    public int GLCreateShader( int type )
     {
         return GL.glCreateShader( type );
     }
@@ -448,18 +448,18 @@ public unsafe class DesktopGL20 : IGL20
         GL.glCullFace( mode );
     }
 
-    public void GLDeleteRenderbuffers( int n, uint* renderbuffers )
+    public void GLDeleteRenderbuffers( int n, int* renderbuffers )
     {
         GL.glDeleteRenderbuffers( n, renderbuffers );
     }
 
-    public void GLDeleteRenderbuffer( uint renderbuffer )
+    public void GLDeleteRenderbuffer( int renderbuffer )
     {
         GL.glDeleteRenderbuffers( renderbuffer );
     }
 
-    /// <inheritdoc cref="GL.glDeleteShader(uint)" />
-    public void GLDeleteShader( uint shader )
+    /// <inheritdoc cref="GL.glDeleteShader(int)" />
+    public void GLDeleteShader( int shader )
     {
         GL.glDeleteShader( shader );
     }
@@ -470,7 +470,7 @@ public unsafe class DesktopGL20 : IGL20
         GL.glDepthFunc( func );
     }
 
-    public void GLDetachShader( uint program, uint shader )
+    public void GLDetachShader( int program, int shader )
     {
         GL.glDetachShader( program, shader );
     }
@@ -480,7 +480,7 @@ public unsafe class DesktopGL20 : IGL20
         GL.glDisable( cap );
     }
 
-    public void GLDisableVertexAttribArray( uint index )
+    public void GLDisableVertexAttribArray( int index )
     {
         GL.glDisableVertexAttribArray( index );
     }
@@ -501,18 +501,18 @@ public unsafe class DesktopGL20 : IGL20
         GL.glEnable( cap );
     }
 
-    /// <inheritdoc cref="GL.glEnableVertexAttribArray(uint)" />
-    public void GLEnableVertexAttribArray( uint index )
+    /// <inheritdoc cref="GL.glEnableVertexAttribArray(int)" />
+    public void GLEnableVertexAttribArray( int index )
     {
         GL.glEnableVertexAttribArray( index );
     }
 
-    public void GLFramebufferRenderbuffer( int target, int attachment, int renderBufferTarget, uint renderbuffer )
+    public void GLFramebufferRenderbuffer( int target, int attachment, int renderBufferTarget, int renderbuffer )
     {
         GL.glFramebufferRenderbuffer( target, attachment, renderBufferTarget, renderbuffer );
     }
 
-    public void GLFramebufferTexture2D( int target, int attachment, int textarget, uint texture, int level )
+    public void GLFramebufferTexture2D( int target, int attachment, int textarget, int texture, int level )
     {
         GL.glFramebufferTexture2D( target, attachment, textarget, texture, level );
     }
@@ -524,7 +524,7 @@ public unsafe class DesktopGL20 : IGL20
     }
 
     /// <inheritdoc cref="GL.glGenBuffers(int)" />
-    public uint[] GLGenBuffers( int n )
+    public int[] GLGenBuffers( int n )
     {
         return GL.glGenBuffers( n );
     }
@@ -534,35 +534,35 @@ public unsafe class DesktopGL20 : IGL20
         GL.glGenerateMipmap( target );
     }
 
-    public uint GLGenFramebuffer()
+    public int GLGenFramebuffer()
     {
         return GL.glGenFramebuffer();
     }
 
-    public void GLGenFramebuffers( int n, uint* framebuffers )
+    public void GLGenFramebuffers( int n, int* framebuffers )
     {
         GL.glGenFramebuffers( n, framebuffers );
     }
 
-    public uint GLGenRenderbuffer()
+    public int GLGenRenderbuffer()
     {
         return GL.glGenRenderbuffer();
     }
 
-    public void GLGenRenderbuffers( int n, uint* renderbuffers )
+    public void GLGenRenderbuffers( int n, int* renderbuffers )
     {
         GL.glGenRenderbuffers( n, renderbuffers );
     }
 
     /// <inheritdoc cref="GL.glGenTextures(int)" />
-    public uint[] GLGenTextures( int n )
+    public int[] GLGenTextures( int n )
     {
         return GL.glGenTextures( n );
     }
 
-    /// <inheritdoc cref="GL.glGetActiveAttrib(uint,uint,int,int*,int*,int*,byte*)" />
-    public void GLGetActiveAttrib( uint program,
-                                   uint index,
+    /// <inheritdoc cref="GL.glGetActiveAttrib(int,int,int,int*,int*,int*,byte*)" />
+    public void GLGetActiveAttrib( int program,
+                                   int index,
                                    int bufSize,
                                    int* length,
                                    int* size,
@@ -572,9 +572,9 @@ public unsafe class DesktopGL20 : IGL20
         GL.glGetActiveAttrib( program, index, bufSize, length, size, type, name );
     }
 
-    /// <inheritdoc cref="GL.glGetActiveUniform(uint,uint,int,int*,int*,int*,byte*)" />
-    public void GLGetActiveUniform( uint program,
-                                    uint index,
+    /// <inheritdoc cref="GL.glGetActiveUniform(int,int,int,int*,int*,int*,byte*)" />
+    public void GLGetActiveUniform( int program,
+                                    int index,
                                     int bufSize,
                                     int* length,
                                     int* size,
@@ -584,8 +584,8 @@ public unsafe class DesktopGL20 : IGL20
         GL.glGetActiveUniform( program, index, bufSize, length, size, type, name );
     }
 
-    /// <inheritdoc cref="GL.glGetAttachedShaders(uint,int,int*,uint*)" />
-    public void GLGetAttachedShaders( uint program, int maxCount, int* count, uint* shaders )
+    /// <inheritdoc cref="GL.glGetAttachedShaders(int,int,int*,int*)" />
+    public void GLGetAttachedShaders( int program, int maxCount, int* count, int* shaders )
     {
         GL.glGetAttachedShaders( program, maxCount, count, shaders );
     }
@@ -602,8 +602,8 @@ public unsafe class DesktopGL20 : IGL20
         GL.glHint( target, mode );
     }
 
-    /// <inheritdoc cref="GL.glIsBuffer(uint)" />
-    public bool GLIsBuffer( uint buffer )
+    /// <inheritdoc cref="GL.glIsBuffer(int)" />
+    public bool GLIsBuffer( int buffer )
     {
         return GL.glIsBuffer( buffer );
     }
@@ -619,8 +619,8 @@ public unsafe class DesktopGL20 : IGL20
         return false;
     }
 
-    /// <inheritdoc cref="GL.glIsProgram(uint)" />
-    public bool GLIsProgram( uint program )
+    /// <inheritdoc cref="GL.glIsProgram(int)" />
+    public bool GLIsProgram( int program )
     {
         return GL.glIsProgram( program );
     }
@@ -630,14 +630,14 @@ public unsafe class DesktopGL20 : IGL20
         return false;
     }
 
-    /// <inheritdoc cref="GL.glIsShader(uint)" />
-    public bool GLIsShader( uint shader )
+    /// <inheritdoc cref="GL.glIsShader(int)" />
+    public bool GLIsShader( int shader )
     {
         return GL.glIsShader( shader );
     }
 
-    /// <inheritdoc cref="GL.glIsTexture(uint)" />
-    public bool GLIsTexture( uint texture )
+    /// <inheritdoc cref="GL.glIsTexture(int)" />
+    public bool GLIsTexture( int texture )
     {
         return GL.glIsTexture( texture );
     }
@@ -652,26 +652,26 @@ public unsafe class DesktopGL20 : IGL20
         GL.glReadPixels( x, y, width, height, format, type, pixels );
     }
 
-    /// <inheritdoc cref="GL.glShaderSource(uint,string[])" />
-    public void GLShaderSource( uint shader, params string[] str )
+    /// <inheritdoc cref="GL.glShaderSource(int,string[])" />
+    public void GLShaderSource( int shader, params string[] str )
     {
         GL.glShaderSource( shader, str );
     }
 
-    /// <inheritdoc cref="GL.glStencilFunc(int,int,uint)" />
-    public void GLStencilFunc( int func, int reference, uint mask )
+    /// <inheritdoc cref="GL.glStencilFunc(int,int,int)" />
+    public void GLStencilFunc( int func, int reference, int mask )
     {
         GL.glStencilFunc( func, reference, mask );
     }
 
-    /// <inheritdoc cref="GL.glStencilFuncSeparate(int,int,int,uint)" />
-    public void GLStencilFuncSeparate( int face, int func, int reference, uint mask )
+    /// <inheritdoc cref="GL.glStencilFuncSeparate(int,int,int,int)" />
+    public void GLStencilFuncSeparate( int face, int func, int reference, int mask )
     {
         GL.glStencilFuncSeparate( face, func, reference, mask );
     }
 
-    /// <inheritdoc cref="GL.glStencilMask(uint)" />
-    public void GLStencilMask( uint mask )
+    /// <inheritdoc cref="GL.glStencilMask(int)" />
+    public void GLStencilMask( int mask )
     {
         GL.glStencilMask( mask );
     }
@@ -681,8 +681,8 @@ public unsafe class DesktopGL20 : IGL20
         GL.glStencilOp( fail, zfail, zpass );
     }
 
-    /// <inheritdoc cref="GL.glStencilMaskSeparate(int,uint)" />
-    public void GLStencilMaskSeparate( int face, uint mask )
+    /// <inheritdoc cref="GL.glStencilMaskSeparate(int,int)" />
+    public void GLStencilMaskSeparate( int face, int mask )
     {
         GL.glStencilMaskSeparate( face, mask );
     }
@@ -879,60 +879,60 @@ public unsafe class DesktopGL20 : IGL20
         GL.glUniformMatrix4fv( location, count, transpose, value );
     }
 
-    /// <inheritdoc cref="GL.glValidateProgram(uint)" />
-    public void GLValidateProgram( uint program )
+    /// <inheritdoc cref="GL.glValidateProgram(int)" />
+    public void GLValidateProgram( int program )
     {
         GL.glValidateProgram( program );
     }
 
-    /// <inheritdoc cref="GL.glVertexAttrib1f(uint,float)" />
-    public void GLVertexAttrib1F( uint indx, float x )
+    /// <inheritdoc cref="GL.glVertexAttrib1f(int,float)" />
+    public void GLVertexAttrib1F( int indx, float x )
     {
         GL.glVertexAttrib1f( indx, x );
     }
 
-    public void GLVertexAttrib1Fv( uint indx, float x )
+    public void GLVertexAttrib1Fv( int indx, float x )
     {
         GL.glVertexAttrib1f( indx, x );
     }
 
-    public void GLVertexAttrib2F( uint indx, float x, float y )
+    public void GLVertexAttrib2F( int indx, float x, float y )
     {
         GL.glVertexAttrib2f( indx, x, y );
     }
 
-    public void GLVertexAttrib2Fv( uint indx, float v0, float v1 )
+    public void GLVertexAttrib2Fv( int indx, float v0, float v1 )
     {
         GL.glVertexAttrib2f( indx, v0, v1 );
     }
 
-    public void GLVertexAttrib3F( uint indx, float x, float y, float z )
+    public void GLVertexAttrib3F( int indx, float x, float y, float z )
     {
         GL.glVertexAttrib3f( indx, x, y, z );
     }
 
-    public void GLVertexAttrib3Fv( uint indx, float v0, float v1, float v2 )
+    public void GLVertexAttrib3Fv( int indx, float v0, float v1, float v2 )
     {
         GL.glVertexAttrib3f( indx, v0, v1, v2 );
     }
 
-    public void GLVertexAttrib4F( uint indx, float x, float y, float z, float w )
+    public void GLVertexAttrib4F( int indx, float x, float y, float z, float w )
     {
         GL.glVertexAttrib4f( indx, x, y, z, w );
     }
 
-    public void GLVertexAttrib4Fv( uint indx, float v0, float v1, float v2, float v3 )
+    public void GLVertexAttrib4Fv( int indx, float v0, float v1, float v2, float v3 )
     {
         GL.glVertexAttrib4f( indx, v0, v1, v2, v3 );
     }
 
-    /// <inheritdoc cref="GL.glVertexAttribPointer(uint,int,int,bool,int,uint)" />
-    public void GLVertexAttribPointer( uint indx, int size, int type, bool normalized, int stride, uint ptr )
+    /// <inheritdoc cref="GL.glVertexAttribPointer(int,int,int,bool,int,int)" />
+    public void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, int ptr )
     {
         GL.glVertexAttribPointer( indx, size, type, normalized, stride, ptr );
     }
 
-    public void GLVertexAttribPointer( uint indx,
+    public void GLVertexAttribPointer( int indx,
                                        int size,
                                        int type,
                                        bool normalized,

@@ -666,7 +666,6 @@ public class OpenALAudio : IGLAudio
     public void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     #endregion IDisposable implementation

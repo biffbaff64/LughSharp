@@ -136,7 +136,6 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
     public void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     /// <summary>

@@ -58,7 +58,6 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
     public void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     /// <summary>

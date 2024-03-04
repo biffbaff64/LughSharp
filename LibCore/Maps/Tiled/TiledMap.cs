@@ -37,7 +37,6 @@ public class TiledMap : Map, IDisposable
     public void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     /// <summary>

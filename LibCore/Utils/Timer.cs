@@ -444,7 +444,6 @@ public class Timer
         public void Dispose()
         {
             Dispose( true );
-            GC.SuppressFinalize( this );
         }
 
         public void Run()

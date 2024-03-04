@@ -218,7 +218,6 @@ public class Texture : GLTexture
     public override void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     /// <inheritdoc />

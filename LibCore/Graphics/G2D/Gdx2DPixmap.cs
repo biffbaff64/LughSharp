@@ -140,7 +140,6 @@ public class Gdx2DPixmap : IDisposable
     public void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     /// <summary>

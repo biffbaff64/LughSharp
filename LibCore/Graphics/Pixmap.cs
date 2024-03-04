@@ -212,7 +212,6 @@ public class Pixmap : IDisposable
     public void Dispose()
     {
         Dispose( !isDisposed );
-        GC.SuppressFinalize( this );
     }
 
     /// <summary>

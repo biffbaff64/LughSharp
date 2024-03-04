@@ -88,7 +88,6 @@ public abstract class GLTexture : IDisposable
     public virtual void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     /// <summary>

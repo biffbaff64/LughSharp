@@ -197,7 +197,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
             if ( enable )
             {
                 GL.glEnable( GL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
-                
+
                 Gdx.GL20.GLEnable( GL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
             }
             else
@@ -213,14 +213,18 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    public override IGraphics.MonitorDescriptor GetPrimaryMonitor() => DesktopGLApplicationConfiguration.ToGLMonitor( Glfw.PrimaryMonitor );
+    public override IGraphics.MonitorDescriptor GetPrimaryMonitor()
+    {
+        //TODO:
+        return DesktopGLApplicationConfiguration.ToGLMonitor( Glfw.GetPrimaryMonitor() );
+    }
 
     public override IGraphics.MonitorDescriptor GetMonitor()
     {
         IGraphics.MonitorDescriptor[] monitors = GetMonitors();
         IGraphics.MonitorDescriptor   result   = monitors[ 0 ];
 
-        Glfw.GetWindowPosition( GLWindow!.GlfwWindow, out _tmpInt, out _tmpInt2 );
+        Glfw.GetWindowPos( GLWindow!.GlfwWindow, out _tmpInt, out _tmpInt2 );
 
         var windowX = _tmpBuffer.Get( 0 );
         var windowY = _tmpBuffer2.Get( 0 );
@@ -268,7 +272,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         GLWindow.Config.WindowDecorated = !undecorated;
 
-        Glfw.SetWindowAttribute( GLWindow.GlfwWindow, WindowAttribute.Decorated, undecorated );
+        Glfw.SetWindowAttrib( GLWindow.GlfwWindow, WindowAttrib.Decorated, undecorated );
     }
 
     public override void SetResizable( bool resizable )
@@ -277,7 +281,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         GLWindow.Config.WindowResizable = resizable;
 
-        Glfw.SetWindowAttribute( GLWindow.GlfwWindow, WindowAttribute.Resizable, resizable );
+        Glfw.SetWindowAttrib( GLWindow.GlfwWindow, WindowAttrib.Resizable, resizable );
     }
 
     public override void SetVSync( bool vsync )
@@ -296,19 +300,18 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         GLWindow.Config.ForegroundFPS = fps;
     }
 
-    public override bool SupportsExtension( string extension ) => Glfw.GetExtensionSupported( extension );
+    public override bool SupportsExtension( string extension ) => Glfw.ExtensionSupported( extension );
 
     public override void RequestRendering() => GLWindow?.RequestRendering();
 
     /// <summary>
     ///     Whether the app is full screen or not.
-    ///     #
     /// </summary>
     public override bool IsFullscreen()
     {
-        GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
+        GdxRuntimeException.ThrowIfNull( GLWindow );
 
-        return Glfw.GetWindowMonitor( GLWindow.GlfwWindow ) != Monitor.None;
+        return Glfw.GetWindowMonitor( GLWindow.GlfwWindow ) != GLFWMonitor.NULL;
     }
 
     /// <summary>
@@ -342,7 +345,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <param name="systemCursor">The system cursor to use.</param>
     public override void SetSystemCursor( ICursor.SystemCursor systemCursor )
     {
-        GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
+        GdxRuntimeException.ThrowIfNull( GLWindow?.GlfwWindow );
 
         DesktopGLCursor.SetSystemCursor( GLWindow.GlfwWindow, systemCursor );
     }
@@ -373,10 +376,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <inheritdoc />
     public override IGraphics.MonitorDescriptor[] GetMonitors()
     {
-        Monitor[] glfwMonitors = Glfw.Monitors;
-        var       monitors     = new IGraphics.MonitorDescriptor[ glfwMonitors.Length ];
+        GLFWMonitor[] glfwMonitors = Glfw.GetMonitors();
+        var           monitors     = new IGraphics.MonitorDescriptor[ glfwMonitors.Length ];
 
-        for ( var i = 0; i < Glfw.Monitors.Length; i++ )
+        for ( var i = 0; i < glfwMonitors.Length; i++ )
         {
             monitors[ i ] = DesktopGLApplicationConfiguration.ToGLMonitor( glfwMonitors[ i ] );
         }
@@ -460,23 +463,20 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public override GLVersion.GLType GetGraphicsType() => GLVersion.GLType.GL20;
 
-    public override float GetPpiX() => GetPpcX() * 2.54f;
+    public override float GetPpiX() => GetPpcXY().X * 2.54f;
 
-    public override float GetPpiY() => GetPpcY() * 2.54f;
+    public override float GetPpiY() => GetPpcXY().Y * 2.54f;
 
-    public override float GetPpcX()
+    public override (float X, float Y) GetPpcXY()
     {
         Glfw.GetMonitorPhysicalSize( GetMonitor().MonitorHandle, out var sizeX, out var sizeY ); //TODO:
 
-        return ( GetDisplayMode().Width / ( float )sizeX ) * 10;
+        return ( ( GetDisplayMode().Width / ( float )sizeX ) * 10,
+                 ( GetDisplayMode().Height / ( float )sizeY ) * 10 );
     }
 
-    public override float GetPpcY()
-    {
-        Glfw.GetMonitorPhysicalSize( GetMonitor().MonitorHandle, out var sizeX, out var sizeY ); //TODO:
-
-        return ( GetDisplayMode().Height / ( float )sizeY ) * 10;
-    }
+    public override float GetPpcX() => GetPpcXY().X;
+    public override float GetPpcY() => GetPpcXY().Y;
 
     // ------------------------------------------------------------------------
 
@@ -497,6 +497,9 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    ///     Describes a Display Mode.
+    /// </summary>
     public class DesktopGLDisplayMode : IGraphics.DisplayModeDescriptor
     {
         public DesktopGLDisplayMode( GLFWMonitor monitor,
@@ -506,7 +509,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
                                      int bitsPerPixel )
             : base( width, height, refreshRate, bitsPerPixel ) => MonitorHandle = monitor;
 
-        public Monitor MonitorHandle { get; set; }
+        public GLFWMonitor MonitorHandle { get; set; }
     }
 
     // ------------------------------------------------------------------------
@@ -538,7 +541,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     public void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     #endregion IDisposable implementation

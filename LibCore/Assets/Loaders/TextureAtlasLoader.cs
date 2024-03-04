@@ -52,7 +52,6 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
     public void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     /// <summary>

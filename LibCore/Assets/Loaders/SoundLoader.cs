@@ -44,7 +44,6 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
     public void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     /// <summary>

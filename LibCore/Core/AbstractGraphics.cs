@@ -123,6 +123,8 @@ public abstract class AbstractGraphics : IGraphics
 
     public abstract float GetPpiX();
 
+    public abstract (float X, float Y) GetPpcXY();
+    
     public abstract float GetPpiY();
 
     public abstract float GetPpcX();

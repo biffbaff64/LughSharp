@@ -43,7 +43,6 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
     public void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     /// <summary>

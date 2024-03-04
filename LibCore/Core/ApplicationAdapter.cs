@@ -78,5 +78,7 @@ public class ApplicationAdapter : IApplicationListener
     ///     Called when the <see cref="IApplication" /> is destroyed.
     ///     Preceded by a call to <see cref="IApplicationListener.Pause" />.
     /// </summary>
-    public virtual void Dispose() => GC.SuppressFinalize( this );
+    public virtual void Dispose()
+    {
+    }
 }

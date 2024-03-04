@@ -54,7 +54,6 @@ global using JetBrains.Annotations;
 // -----------------------------------------------------------------------
 // OpenGL / Glfw support
 global using DotGL;
-
 global using DotGLFW;
 
 //@formatter:off

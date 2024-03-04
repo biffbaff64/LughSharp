@@ -257,6 +257,11 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
         return result;
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region To Be Removed
+    
     //TODO: Refactor so that this can be removed
     [Obsolete]
     public static GLFWMonitor GetPrimaryMonitor()
@@ -292,4 +297,6 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
         return new IGraphics.MonitorDescriptor( virtualX, virtualY, name );
     }
+    
+    #endregion To Be Removed
 }

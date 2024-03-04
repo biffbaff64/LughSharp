@@ -34,13 +34,23 @@ namespace LibGDXSharp.Backends.DesktopGL.Window;
 [PublicAPI]
 public class DesktopGLWindow : IDisposable
 {
+    public GLFWWindow?                       GlfwWindow          { get; set; }
+    public IDesktopGLWindowListener?         WindowListener      { get; set; }
+    public IApplicationListener              Listener            { get; set; }
+    public IDesktopGLInput                   Input               { get; set; } = null!;
+    public DesktopGLGraphics                 Graphics            { get; set; } = null!;
+    public DesktopGLApplicationConfiguration Config              { get; set; }
+    public bool                              ListenerInitialised { get; set; } = false;
+
+    // ------------------------------------------------------------------------
+
     private readonly IDesktopGLApplicationBase _application;
     private readonly List< Runnable >          _executedRunnables = new();
+    private readonly bool                      _iconified         = false;
+    private readonly List< Runnable >          _runnables         = new();
+    private readonly Vector2                   _tmpV2             = new();
 
-    private readonly bool             _iconified        = false;
-    private readonly List< Runnable > _runnables        = new();
-    private readonly Vector2          _tmpV2            = new();
-    private          bool             _requestRendering = false;
+    private bool _requestRendering = false;
 
     // ------------------------------------------------------------------------
 
@@ -52,30 +62,6 @@ public class DesktopGLWindow : IDisposable
         WindowListener = config.WindowListener;
         Config         = config;
         _application   = application;
-    }
-
-    public GLFW.Window GlfwWindow { get; set; }
-
-    public IDesktopGLWindowListener?         WindowListener      { get; set; }
-    public IApplicationListener              Listener            { get; set; }
-    public IDesktopGLInput                   Input               { get; set; } = null!;
-    public DesktopGLGraphics                 Graphics            { get; set; } = null!;
-    public DesktopGLApplicationConfiguration Config              { get; set; }
-    public bool                              ListenerInitialised { get; set; } = false;
-
-    public void Dispose()
-    {
-        Listener.Pause();
-        Listener.Dispose();
-        DesktopGLCursor.Dispose( this );
-        Graphics.Dispose();
-        Input.Dispose();
-
-        GLFW.SetWindowFocusCallback( GlfwWindow, null );
-        GLFW.SetWindowIconifyCallback( GlfwWindow, null );
-        GLFW.SetWindowCloseCallback( GlfwWindow, null );
-        GLFW.SetDropCallback( GlfwWindow, null );
-        GLFW.DestroyWindow( GlfwWindow );
     }
 
     /// <summary>
@@ -172,7 +158,11 @@ public class DesktopGLWindow : IDisposable
     ///     to indicate an unrestricted dimension.
     /// </summary>
     public void SetSizeLimits( int minWidth, int minHeight, int maxWidth, int maxHeight )
-        => SetSizeLimits( GlfwWindow, minWidth, minHeight, maxWidth, maxHeight );
+    {
+        GdxRuntimeException.ThrowIfNull( GlfwWindow );
+        
+        SetSizeLimits( GlfwWindow, minWidth, minHeight, maxWidth, maxHeight );
+    }
 
     /// <summary>
     ///     Sets minimum and maximum size limits for the window. If the window
@@ -192,7 +182,13 @@ public class DesktopGLWindow : IDisposable
     ///     is preferred so the images will not have to be copied and converted. The chosen image
     ///     is copied, and the provided Pixmaps are not disposed.
     /// </param>
-    public void SetIcon( params Pixmap[] images ) => SetIcon( GlfwWindow, images );
+    public void SetIcon( params Pixmap[] images )
+    {
+        if ( GlfwWindow != null )
+        {
+            SetIcon( GlfwWindow, images );
+        }
+    }
 
     public void SetIcon( GLFWWindow window, String[] imagePaths, FileType imageFileType )
     {
@@ -369,4 +365,29 @@ public class DesktopGLWindow : IDisposable
     ///     already be visible and not iconified.
     /// </summary>
     public void FocusWindow() => Glfw.FocusWindow( GlfwWindow );
+    
+    // ------------------------------------------------------------------------
+
+    public void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            Listener.Pause();
+            Listener.Dispose();
+            DesktopGLCursor.Dispose( this );
+            Graphics.Dispose();
+            Input.Dispose();
+
+            GLFW.SetWindowFocusCallback( GlfwWindow, null );
+            GLFW.SetWindowIconifyCallback( GlfwWindow, null );
+            GLFW.SetWindowCloseCallback( GlfwWindow, null );
+            GLFW.SetDropCallback( GlfwWindow, null );
+            GLFW.DestroyWindow( GlfwWindow );
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose( true );
+    }
 }

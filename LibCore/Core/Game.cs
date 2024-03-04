@@ -99,6 +99,5 @@ public abstract class Game : IApplicationListener
     public virtual void Dispose()
     {
         Screen?.Hide();
-        GC.SuppressFinalize( this );
     }
 }

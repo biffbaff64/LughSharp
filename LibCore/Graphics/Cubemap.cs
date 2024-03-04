@@ -177,7 +177,6 @@ public class Cubemap : GLTexture
     public override void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     protected override void Dispose( bool disposing )

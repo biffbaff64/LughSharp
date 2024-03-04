@@ -247,7 +247,6 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     public void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     private static MouseButton TranslateToMouseButton( int button ) => button switch

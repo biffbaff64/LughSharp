@@ -54,7 +54,6 @@ public class ParticleEffect : IDisposable
     public void Dispose()
     {
         Dispose( true );
-        GC.SuppressFinalize( this );
     }
 
     public void Start()
