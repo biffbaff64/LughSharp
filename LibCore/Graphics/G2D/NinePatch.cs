@@ -184,7 +184,10 @@ public class NinePatch
     ///     Construct a degenerate "nine" patch with only a center component.
     /// </summary>
     public NinePatch( Texture texture, Color color )
-        : this( texture ) => Color = color;
+        : this( texture )
+    {
+        Color = color;
+    }
 
     /// Construct a degenerate "nine" patch with only a center component.
     public NinePatch( Texture texture )
@@ -196,13 +199,16 @@ public class NinePatch
     ///     Construct a degenerate "nine" patch with only a center component.
     /// </summary>
     public NinePatch( TextureRegion region, Color color )
-        : this( region ) => Color = color;
+        : this( region )
+    {
+        Color = color;
+    }
 
     /// <summary>
     ///     Construct a degenerate "nine" patch with only a center component.
     /// </summary>
-    public NinePatch( TextureRegion region ) =>
-
+    public NinePatch( TextureRegion region )
+    {
         //@formatter:off
         Load( new[]
         {
@@ -210,6 +216,7 @@ public class NinePatch
             null, region, null,
             null, null,   null 
         } );
+    }
 
     //@formatter:on
     /// <summary>

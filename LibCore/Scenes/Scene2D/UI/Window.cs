@@ -55,10 +55,16 @@ public class Window : Table
     // ------------------------------------------------------------------------
 
     public Window( string title, Skin skin )
-        : this( title, skin.Get< WindowStyle >() ) => Skin = skin;
+        : this( title, skin.Get< WindowStyle >() )
+    {
+        Skin = skin;
+    }
 
     public Window( string title, Skin skin, string styleName )
-        : this( title, skin.Get< WindowStyle >( styleName ) ) => Skin = skin;
+        : this( title, skin.Get< WindowStyle >( styleName ) )
+    {
+        Skin = skin;
+    }
 
     public Window( string title, WindowStyle style )
     {
@@ -284,7 +290,10 @@ public class Window : Table
         return hit;
     }
 
-    public new float GetPrefWidth() => Math.Max( base.GetPrefWidth(), _titleTable.PrefWidth + GetPadLeft() + GetPadRight() );
+    public new float GetPrefWidth()
+    {
+        return Math.Max( base.GetPrefWidth(), _titleTable.PrefWidth + GetPadLeft() + GetPadRight() );
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -293,7 +302,10 @@ public class Window : Table
     {
         private readonly Window _window;
 
-        public TitleTableClass( Window window ) => _window = window;
+        public TitleTableClass( Window window )
+        {
+            _window = window;
+        }
 
         public new void Draw( IBatch batch, float parentAlpha )
         {
@@ -308,7 +320,10 @@ public class Window : Table
     {
         private readonly Window _window;
 
-        internal WindowCaptureListener( Window window ) => _window = window;
+        internal WindowCaptureListener( Window window )
+        {
+            _window = window;
+        }
 
         internal new bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
         {
@@ -326,7 +341,10 @@ public class Window : Table
         private          float  _startX;
         private          float  _startY;
 
-        internal WindowInputListener( Window window ) => _window = window;
+        internal WindowInputListener( Window window )
+        {
+            _window = window;
+        }
 
         private void UpdateEdge( float x, float y )
         {
@@ -413,7 +431,10 @@ public class Window : Table
             return ( _window.edge != 0 ) || _window.IsModal;
         }
 
-        public override void TouchUp( InputEvent ev, float x, float y, int pointer, int button ) => _window.Dragging = false;
+        public override void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
+        {
+            _window.Dragging = false;
+        }
 
         public override void TouchDragged( InputEvent ev, float x, float y, int pointer )
         {
@@ -533,13 +554,25 @@ public class Window : Table
             return _window.IsModal;
         }
 
-        public bool Scrolled( InputEvent ev, float x, float y, int amount ) => _window.IsModal;
+        public bool Scrolled( InputEvent ev, float x, float y, int amount )
+        {
+            return _window.IsModal;
+        }
 
-        public new bool KeyDown( InputEvent ev, int keycode ) => _window.IsModal;
+        public new bool KeyDown( InputEvent ev, int keycode )
+        {
+            return _window.IsModal;
+        }
 
-        public new bool KeyUp( InputEvent ev, int keycode ) => _window.IsModal;
+        public new bool KeyUp( InputEvent ev, int keycode )
+        {
+            return _window.IsModal;
+        }
 
-        public new bool KeyTyped( InputEvent ev, char character ) => _window.IsModal;
+        public new bool KeyTyped( InputEvent ev, char character )
+        {
+            return _window.IsModal;
+        }
     }
 
     // ------------------------------------------------------------------------

@@ -92,9 +92,15 @@ public interface INet
         private readonly Dictionary< string, string >? _headers;
         private          bool                          _followRedirects = true;
 
-        public HttpRequest() => _headers = new Dictionary< string, string >();
+        public HttpRequest()
+        {
+            _headers = new Dictionary< string, string >();
+        }
 
-        public HttpRequest( string httpMethod ) : this() => HttpMethod = httpMethod;
+        public HttpRequest( string httpMethod ) : this()
+        {
+            HttpMethod = httpMethod;
+        }
 
         public string?       Url                { get; set; }
         public string?       HttpMethod         { get; set; }
@@ -135,7 +141,10 @@ public interface INet
             _followRedirects = true;
         }
 
-        public Dictionary< string, string >? GetHeaders() => _headers;
+        public Dictionary< string, string >? GetHeaders()
+        {
+            return _headers;
+        }
 
         /// <summary>
         /// </summary>

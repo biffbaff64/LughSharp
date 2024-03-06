@@ -120,7 +120,10 @@ public abstract class Attribute : IComparable< Attribute >
         return 1L << ( Types.Count - 1 );
     }
 
-    protected bool Equals( Attribute other ) => other.GetHashCode() == GetHashCode();
+    protected bool Equals( Attribute other )
+    {
+        return other.GetHashCode() == GetHashCode();
+    }
 
     /// <inheritdoc />
     public override bool Equals( object? obj )
@@ -144,8 +147,14 @@ public abstract class Attribute : IComparable< Attribute >
     }
 
     /// <inheritdoc />
-    public override string? ToString() => GetAttributeAlias( type );
+    public override string? ToString()
+    {
+        return GetAttributeAlias( type );
+    }
 
     /// <inheritdoc />
-    public override int GetHashCode() => 7489 * _typeBit;
+    public override int GetHashCode()
+    {
+        return 7489 * _typeBit;
+    }
 }

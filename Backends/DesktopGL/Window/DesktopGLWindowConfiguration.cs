@@ -154,7 +154,10 @@ public class DesktopGLWindowConfiguration
     ///     The one closest to the system's desired size will be scaled. Good
     ///     sizes include 16x16, 32x32 and 48x48.
     /// </param>
-    public void SetWindowIcon( params string[] filePaths ) => SetWindowIcon( FileType.Internal, filePaths );
+    public void SetWindowIcon( params string[] filePaths )
+    {
+        SetWindowIcon( FileType.Internal, filePaths );
+    }
 
     /// <summary>
     ///     Sets the app to use windowed mode.

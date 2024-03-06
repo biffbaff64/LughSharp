@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Core;
 
-[PublicAPI]
 public interface IInputProcessor
 {
     /// <summary>

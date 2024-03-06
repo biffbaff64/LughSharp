@@ -42,7 +42,10 @@ public class SubbandLayer2Stereo : SubbandLayer2
     protected          int     channel2Scfsi;
 
     public SubbandLayer2Stereo( int subbandnumber )
-        : base( subbandnumber ) => channel2Samples = new float[ 3 ];
+        : base( subbandnumber )
+    {
+        channel2Samples = new float[ 3 ];
+    }
 
     /// <summary>
     /// </summary>

@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Utils.Buffers;
 
-[PublicAPI]
 public class StringCharBuffer : CharBuffer
 {
     private readonly string _string;
@@ -44,7 +43,10 @@ public class StringCharBuffer : CharBuffer
     }
 
     private StringCharBuffer( string s, int mark, int pos, int limit, int cap, int offset )
-        : base( mark, pos, limit, cap, null, offset ) => _string = s;
+        : base( mark, pos, limit, cap, null, offset )
+    {
+        _string = s;
+    }
 
     /// <summary>
     ///     Returns <tt>true</tt> if, and only if, this buffer is read-only.
@@ -70,12 +72,15 @@ public class StringCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The new char buffer </returns>
-    public override CharBuffer Slice() => new StringCharBuffer( _string,
-                                                                -1,
-                                                                0,
-                                                                Remaining(),
-                                                                Remaining(),
-                                                                offset + Position );
+    public override CharBuffer Slice()
+    {
+        return new StringCharBuffer( _string,
+                                     -1,
+                                     0,
+                                     Remaining(),
+                                     Remaining(),
+                                     offset + Position );
+    }
 
     /// <summary>
     ///     Creates a new char buffer that shares this buffer's content.
@@ -93,7 +98,10 @@ public class StringCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The new char buffer </returns>
-    public override CharBuffer Duplicate() => new StringCharBuffer( _string, MarkValue(), Position, Limit, Capacity, offset );
+    public override CharBuffer Duplicate()
+    {
+        return new StringCharBuffer( _string, MarkValue(), Position, Limit, Capacity, offset );
+    }
 
     /// <summary>
     ///     Creates a new, read-only char buffer that shares this buffer's
@@ -115,7 +123,10 @@ public class StringCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The new, read-only char buffer </returns>
-    public override CharBuffer AsReadOnlyBuffer() => Duplicate();
+    public override CharBuffer AsReadOnlyBuffer()
+    {
+        return Duplicate();
+    }
 
     /// <summary>
     ///     Relative <i>get</i> method.  Reads the char at this buffer's
@@ -125,7 +136,10 @@ public class StringCharBuffer : CharBuffer
     /// <exception cref="GdxRuntimeException">
     ///     If the buffer's current position is not smaller than its limit
     /// </exception>
-    protected override char Get() => _string[ NextGetIndex() + offset ];
+    protected override char Get()
+    {
+        return _string[ NextGetIndex() + offset ];
+    }
 
     /// <summary>
     ///     Absolute <i>get</i> method.  Reads the char at the given index.
@@ -135,7 +149,10 @@ public class StringCharBuffer : CharBuffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
-    protected override char Get( int index ) => _string[ CheckIndex( index ) + offset ];
+    protected override char Get( int index )
+    {
+        return _string[ CheckIndex( index ) + offset ];
+    }
 
     /// <summary>
     ///     Absolute <i>get</i> method. Reads the char at the given index without
@@ -143,9 +160,15 @@ public class StringCharBuffer : CharBuffer
     /// </summary>
     /// <param name="index">The index from which the char will be read</param>
     /// <returns> The char at the given index </returns>
-    public override char GetUnchecked( int index ) => _string[ index + offset ];
+    public override char GetUnchecked( int index )
+    {
+        return _string[ index + offset ];
+    }
 
-    protected override string ToString( int start, int end ) => _string.Substring( start + offset, end + offset );
+    protected override string ToString( int start, int end )
+    {
+        return _string.Substring( start + offset, end + offset );
+    }
 
     /// <summary>
     ///     Creates a new character buffer that represents the specified subsequence
@@ -195,7 +218,10 @@ public class StringCharBuffer : CharBuffer
     ///     Tells whether or not this buffer is <i>direct</i>.
     /// </summary>
     /// <returns> <tt>true</tt> if, and only if, this buffer is direct </returns>
-    public override bool IsDirect() => false;
+    public override bool IsDirect()
+    {
+        return false;
+    }
 
     /// <summary>
     ///     Retrieves this buffer's byte order.
@@ -207,17 +233,29 @@ public class StringCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
-    public override ByteOrder Order() => ByteOrder.NativeOrder;
+    public override ByteOrder Order()
+    {
+        return ByteOrder.NativeOrder;
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <exception cref="GdxRuntimeException">As this buffer is read-only </exception>
-    protected override CharBuffer Put( char c ) => throw new GdxRuntimeException( "Buffer is Read Only!" );
+    protected override CharBuffer Put( char c )
+    {
+        throw new GdxRuntimeException( "Buffer is Read Only!" );
+    }
 
     /// <exception cref="GdxRuntimeException">As this buffer is read-only </exception>
-    public override CharBuffer Put( int index, char c ) => throw new GdxRuntimeException( "Buffer is Read Only!" );
+    public override CharBuffer Put( int index, char c )
+    {
+        throw new GdxRuntimeException( "Buffer is Read Only!" );
+    }
 
     /// <exception cref="GdxRuntimeException">As this buffer is read-only </exception>
-    public override CharBuffer Compact() => throw new GdxRuntimeException( "Buffer is Read Only!" );
+    public override CharBuffer Compact()
+    {
+        throw new GdxRuntimeException( "Buffer is Read Only!" );
+    }
 }

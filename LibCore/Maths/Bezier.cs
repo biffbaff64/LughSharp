@@ -45,21 +45,30 @@ public class Bezier<T> : IPath< T > where T : IVector< T >
     /// <summary>
     /// </summary>
     /// <param name="points"></param>
-    public Bezier( params T[] points ) => Set( points );
+    public Bezier( params T[] points )
+    {
+        Set( points );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="points"></param>
     /// <param name="offset"></param>
     /// <param name="length"></param>
-    public Bezier( in T[] points, in int offset, in int length ) => Set( points, offset, length );
+    public Bezier( in T[] points, in int offset, in int length )
+    {
+        Set( points, offset, length );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="points"></param>
     /// <param name="offset"></param>
     /// <param name="length"></param>
-    public Bezier( in List< T > points, in int offset, in int length ) => Set( points, offset, length );
+    public Bezier( in List< T > points, in int offset, in int length )
+    {
+        Set( points, offset, length );
+    }
 
     public List< T > Points { get; set; } = new();
 
@@ -138,10 +147,11 @@ public class Bezier<T> : IPath< T > where T : IVector< T >
     /// </summary>
     /// <param name="v"></param>
     /// <returns></returns>
-    public float Locate( T v ) =>
-
+    public float Locate( T v )
+    {
         // TODO implement a precise method
-        Approximate( v );
+        return Approximate( v );
+    }
 
     /// <summary>
     /// </summary>
@@ -185,10 +195,11 @@ public class Bezier<T> : IPath< T > where T : IVector< T >
     /// <param name="p1"> The end point.</param>
     /// <param name="tmp"> A temporary vector to be used by the calculation.</param>
     /// <returns> The value specified by out for chaining </returns>
-    public static T Linear( in T alist, in float t, in T p0, in T p1, in T? tmp ) =>
-
+    public static T Linear( in T alist, in float t, in T p0, in T p1, in T? tmp )
+    {
         // B1(t) = p0 + (p1 - p0) * t
-        alist.Set( p0 ).Scl( 1f - t ).Add( tmp!.Set( p1 ).Scl( t ) );
+        return alist.Set( p0 ).Scl( 1f - t ).Add( tmp!.Set( p1 ).Scl( t ) );
+    }
 
     /// <summary>
     ///     Simple linear interpolation derivative
@@ -199,10 +210,11 @@ public class Bezier<T> : IPath< T > where T : IVector< T >
     /// <param name="p1"> The end point.</param>
     /// <param name="tmp"> A temporary vector to be used by the calculation.</param>
     /// <returns> The value specified by out for chaining</returns>
-    public static T LinearDerivative( in T vec, in float t, in T p0, in T p1, in T? tmp ) =>
-
+    public static T LinearDerivative( in T vec, in float t, in T p0, in T p1, in T? tmp )
+    {
         // B1'(t) = p1 - p0
-        vec.Set( p1 ).Sub( p0 );
+        return vec.Set( p1 ).Sub( p0 );
+    }
 
     /// <summary>
     ///     Quadratic Bezier curve
@@ -234,12 +246,13 @@ public class Bezier<T> : IPath< T > where T : IVector< T >
     /// <param name="p2"> The third bezier point. </param>
     /// <param name="tmp"> A temporary vector to be used by the calculation. </param>
     /// <returns> The value specified by out for chaining  </returns>
-    public static T QuadraticDerivative( in T alist, in float t, in T p0, in T p1, in T p2, in T? tmp ) =>
-
+    public static T QuadraticDerivative( in T alist, in float t, in T p0, in T p1, in T p2, in T? tmp )
+    {
         // B2'(t) = 2 * (1 - t) * (p1 - p0) + 2 * t * (p2 - p1)
         //            var dt = 1f - t;
-        alist.Set( p1 ).Sub( p0 ).Scl( 2 ).Scl( 1 - t )
-             .Add( tmp!.Set( p2 ).Sub( p1 ).Scl( t ).Scl( 2 ) );
+        return alist.Set( p1 ).Sub( p0 ).Scl( 2 ).Scl( 1 - t )
+                    .Add( tmp!.Set( p2 ).Sub( p1 ).Scl( t ).Scl( 2 ) );
+    }
 
     /// <summary>
     ///     Cubic Bezier curve
@@ -292,7 +305,10 @@ public class Bezier<T> : IPath< T > where T : IVector< T >
     /// </summary>
     /// <param name="points"></param>
     /// <returns></returns>
-    public Bezier< T > Set( params T[] points ) => Set( points, 0, points.Length );
+    public Bezier< T > Set( params T[] points )
+    {
+        return Set( points, 0, points.Length );
+    }
 
     /// <summary>
     /// </summary>

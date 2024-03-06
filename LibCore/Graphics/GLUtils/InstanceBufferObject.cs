@@ -45,13 +45,13 @@ public class InstanceBufferObject : IInstanceData
 
     public InstanceBufferObject( bool isStatic, int numVertices, VertexAttributes instanceAttributes )
     {
-        if ( Core.Gdx.GL30 == null )
+        if ( Gdx.GL30 == null )
         {
             throw new GdxRuntimeException
                 ( "InstanceBufferObject requires a device running with GLES 3.0 compatibilty" );
         }
 
-        _bufferHandle = ( int )Core.Gdx.GL20.GLGenBuffer();
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
 
         ByteBuffer data = BufferUtils.NewByteBuffer( instanceAttributes.VertexSize * numVertices );
 
@@ -168,13 +168,13 @@ public class InstanceBufferObject : IInstanceData
     {
         Debug.Assert( _byteBuffer != null, "Bind(ShaderProgram, int[]) fail: _byteBuffer is NULL" );
 
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
 
         if ( _isDirty )
         {
             _byteBuffer.Limit = _buffer.Limit * 4;
 
-            Core.Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
+            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
 
             _isDirty = false;
         }
@@ -203,7 +203,7 @@ public class InstanceBufferObject : IInstanceData
                                            Attributes.VertexSize,
                                            attribute.Offset );
 
-                Core.Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
+                Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
             }
         }
         else
@@ -228,7 +228,7 @@ public class InstanceBufferObject : IInstanceData
                                            Attributes.VertexSize,
                                            attribute.Offset );
 
-                Core.Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
+                Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
             }
         }
 
@@ -275,7 +275,7 @@ public class InstanceBufferObject : IInstanceData
             }
         }
 
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
@@ -285,7 +285,7 @@ public class InstanceBufferObject : IInstanceData
     /// </summary>
     public void Invalidate()
     {
-        _bufferHandle = ( int )Core.Gdx.GL20.GLGenBuffer();
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
         _isDirty      = true;
     }
 
@@ -294,8 +294,8 @@ public class InstanceBufferObject : IInstanceData
     /// </summary>
     public void Dispose()
     {
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Core.Gdx.GL20.GLDeleteBuffer( _bufferHandle );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL20.GLDeleteBuffer( _bufferHandle );
 
         _bufferHandle = 0;
 
@@ -351,8 +351,8 @@ public class InstanceBufferObject : IInstanceData
 
         if ( _isBound )
         {
-            Core.Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, Usage );
-            Core.Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
+            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, Usage );
+            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
             _isDirty = false;
         }
     }

@@ -31,7 +31,6 @@ namespace LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
 ///     Executes a number of actions one at a time.
 ///     @author Nathan Sweet
 /// </summary>
-[PublicAPI]
 public class SequenceAction : ParallelAction
 {
     private int _index;

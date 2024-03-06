@@ -85,13 +85,25 @@ public class DesktopGLPreferences : IPreferences
         return this;
     }
 
-    public bool Getbool( string key ) => Getbool( key, false );
+    public bool Getbool( string key )
+    {
+        return Getbool( key, false );
+    }
 
-    public int GetInteger( string key ) => GetInteger( key, 0 );
+    public int GetInteger( string key )
+    {
+        return GetInteger( key, 0 );
+    }
 
-    public long GetLong( string key ) => GetLong( key, 0 );
+    public long GetLong( string key )
+    {
+        return GetLong( key, 0 );
+    }
 
-    public float GetFloat( string key ) => GetFloat( key, 0 );
+    public float GetFloat( string key )
+    {
+        return GetFloat( key, 0 );
+    }
 
     /// <summary>
     /// </summary>
@@ -179,13 +191,25 @@ public class DesktopGLPreferences : IPreferences
         return ( string )value;
     }
 
-    public Dictionary< string, object > Get() => _properties!;
+    public Dictionary< string, object > Get()
+    {
+        return _properties!;
+    }
 
-    public bool Contains( string key ) => ( _properties != null ) && _properties.ContainsKey( key );
+    public bool Contains( string key )
+    {
+        return ( _properties != null ) && _properties.ContainsKey( key );
+    }
 
-    public void Clear() => _properties?.Clear();
+    public void Clear()
+    {
+        _properties?.Clear();
+    }
 
-    public void Remove( string key ) => _properties?.Remove( key );
+    public void Remove( string key )
+    {
+        _properties?.Remove( key );
+    }
 
     /// <summary>
     /// </summary>

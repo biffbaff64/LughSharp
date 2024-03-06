@@ -83,7 +83,6 @@ public class DataOutput : BinaryWriter
     ///     Writes a length and then the string as UTF8.
     /// </summary>
     /// <param name="value"> May be null.  </param>
-    [PublicAPI]
     public void WriteString( string? value )
     {
         if ( value == null )

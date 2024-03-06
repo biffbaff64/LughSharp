@@ -35,10 +35,16 @@ public class TextButton : Button
     private TextButtonStyle? _style;
 
     public TextButton( string? text, Skin skin )
-        : this( text, skin.Get< TextButtonStyle >() ) => Skin = skin;
+        : this( text, skin.Get< TextButtonStyle >() )
+    {
+        Skin = skin;
+    }
 
     public TextButton( string? text, Skin skin, string styleName )
-        : this( text, skin.Get< TextButtonStyle >( styleName ) ) => Skin = skin;
+        : this( text, skin.Get< TextButtonStyle >( styleName ) )
+    {
+        Skin = skin;
+    }
 
     public TextButton( string? text, TextButtonStyle style )
     {
@@ -174,11 +180,20 @@ public class TextButton : Button
         }
     }
 
-    public Cell? GetLabelCell() => GetCell( _label! );
+    public Cell? GetLabelCell()
+    {
+        return GetCell( _label! );
+    }
 
-    public void SetText( string? text ) => _label?.SetText( text );
+    public void SetText( string? text )
+    {
+        _label?.SetText( text );
+    }
 
-    public string? GetText() => _label?.Text.ToString();
+    public string? GetText()
+    {
+        return _label?.Text.ToString();
+    }
 
     // ------------------------------------------------------------------------
 
@@ -213,7 +228,10 @@ public class TextButton : Button
         }
 
         public TextButtonStyle( IDrawable upImage, IDrawable downImage, IDrawable checkedImage, BitmapFont font )
-            : base( upImage, downImage, checkedImage ) => Font = font;
+            : base( upImage, downImage, checkedImage )
+        {
+            Font = font;
+        }
 
         protected TextButtonStyle( TextButtonStyle style ) : base( style )
         {

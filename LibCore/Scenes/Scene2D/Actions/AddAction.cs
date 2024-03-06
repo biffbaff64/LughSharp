@@ -39,7 +39,10 @@ public class AddAction : Action
         return true;
     }
 
-    public override void Restart() => Action?.Restart();
+    public override void Restart()
+    {
+        Action?.Restart();
+    }
 
     public override void Reset()
     {

@@ -43,5 +43,8 @@ public class RemoveActorAction : Action
         return true;
     }
 
-    public override void Restart() => _removed = false;
+    public override void Restart()
+    {
+        _removed = false;
+    }
 }

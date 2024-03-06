@@ -48,17 +48,26 @@ public class CumulativeDistribution<T>
 {
     private readonly List< CumulativeValue > _values;
 
-    public CumulativeDistribution() => _values = new List< CumulativeValue >( 10 );
+    public CumulativeDistribution()
+    {
+        _values = new List< CumulativeValue >( 10 );
+    }
 
     /// <summary>
     ///     Adds a value with a given interval size to the distribution
     /// </summary>
-    public virtual void Add( T value, float intervalSize ) => _values.Add( new CumulativeValue( value, 0, intervalSize ) );
+    public virtual void Add( T value, float intervalSize )
+    {
+        _values.Add( new CumulativeValue( value, 0, intervalSize ) );
+    }
 
     /// <summary>
     ///     Adds a value with interval size equal to zero to the distribution
     /// </summary>
-    public virtual void Add( T value ) => _values.Add( new CumulativeValue( value, 0, 0 ) );
+    public virtual void Add( T value )
+    {
+        _values.Add( new CumulativeValue( value, 0, 0 ) );
+    }
 
     /// <summary>
     ///     Generate the cumulative distribution
@@ -147,16 +156,28 @@ public class CumulativeDistribution<T>
     }
 
     /// <returns> the value whose interval contains a random probability in [0,1] </returns>
-    public virtual T Value() => Value( MathUtils.Random() );
+    public virtual T Value()
+    {
+        return Value( MathUtils.Random() );
+    }
 
     /// <returns> the amount of values </returns>
-    public virtual int Size() => _values.Count;
+    public virtual int Size()
+    {
+        return _values.Count;
+    }
 
     ///<returns> the interval size for the value at the given position </returns>
-    public virtual float GetInterval( int index ) => _values[ index ].interval;
+    public virtual float GetInterval( int index )
+    {
+        return _values[ index ].interval;
+    }
 
     ///<returns> the value at the given position </returns>
-    public virtual T GetValue( int index ) => _values[ index ].value;
+    public virtual T GetValue( int index )
+    {
+        return _values[ index ].value;
+    }
 
     /// <summary>
     ///     Set the interval size on the passed in object.
@@ -178,12 +199,18 @@ public class CumulativeDistribution<T>
     /// <summary>
     ///     Sets the interval size for the value at the given index
     /// </summary>
-    public virtual void SetInterval( int index, float intervalSize ) => _values[ index ].interval = intervalSize;
+    public virtual void SetInterval( int index, float intervalSize )
+    {
+        _values[ index ].interval = intervalSize;
+    }
 
     /// <summary>
     ///     Removes all the values from the distribution
     /// </summary>
-    public virtual void Clear() => _values.Clear();
+    public virtual void Clear()
+    {
+        _values.Clear();
+    }
 
     public class CumulativeValue
     {

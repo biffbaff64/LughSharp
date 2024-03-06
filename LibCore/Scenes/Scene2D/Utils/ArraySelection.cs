@@ -29,7 +29,6 @@ namespace LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
 ///     A selection that supports range selection by knowing about the
 ///     array of items being selected.
 /// </summary>
-[PublicAPI]
 public class ArraySelection<T> : Selection< T >
 {
     private readonly List< T >? _array;
@@ -116,7 +115,10 @@ public class ArraySelection<T> : Selection< T >
     /// <summary>
     ///     Called after the selection changes, clears the range start item.
     /// </summary>
-    protected new void Changed() => _rangeStart = default( T? );
+    protected new void Changed()
+    {
+        _rangeStart = default( T? );
+    }
 
     /// <summary>
     ///     Removes objects from the selection that are no longer in the items

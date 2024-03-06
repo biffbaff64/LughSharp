@@ -39,8 +39,10 @@ public class SupportClass
         return ( number >> bits ) + ( 2 << ~bits );
     }
 
-    [PublicAPI( "May be used externally" )]
-    public static int URShift( int number, long bits ) => URShift( number, ( int )bits );
+    public static int URShift( int number, long bits )
+    {
+        return URShift( number, ( int )bits );
+    }
 
     public static long URShift( long number, int bits )
     {
@@ -52,8 +54,10 @@ public class SupportClass
         return ( number >> bits ) + ( 2L << ~bits );
     }
 
-    [PublicAPI( "May be used externally" )]
-    public static long URShift( long number, long bits ) => URShift( number, ( int )bits );
+    public static long URShift( long number, long bits )
+    {
+        return URShift( number, ( int )bits );
+    }
 
     public static void WriteStackTrace( Exception throwable, TextWriter stream )
     {
@@ -66,31 +70,40 @@ public class SupportClass
     /// </summary>
     /// <param name="literal">The literal to return</param>
     /// <returns>The received value</returns>
-    public static long Identity( long literal ) => literal;
+    public static long Identity( long literal )
+    {
+        return literal;
+    }
 
     /// <summary>
     ///     This method is used as a dummy method to simulate VJ++ behavior
     /// </summary>
     /// <param name="literal">The literal to return</param>
     /// <returns>The received value</returns>
-    [PublicAPI( "May be used externally" )]
-    public static ulong Identity( ulong literal ) => literal;
+    public static ulong Identity( ulong literal )
+    {
+        return literal;
+    }
 
     /// <summary>
     ///     This method is used as a dummy method to simulate VJ++ behavior
     /// </summary>
     /// <param name="literal">The literal to return</param>
     /// <returns>The received value</returns>
-    [PublicAPI( "May be used externally" )]
-    public static float Identity( float literal ) => literal;
+    public static float Identity( float literal )
+    {
+        return literal;
+    }
 
     /// <summary>
     ///     This method is used as a dummy method to simulate VJ++ behavior
     /// </summary>
     /// <param name="literal">The literal to return</param>
     /// <returns>The received value</returns>
-    [PublicAPI( "May be used externally" )]
-    public static double Identity( double literal ) => literal;
+    public static double Identity( double literal )
+    {
+        return literal;
+    }
 
     /// <summary>
     ///     Reads a number of characters from the current source Stream and writes the data to the target array at the
@@ -104,7 +117,6 @@ public class SupportClass
     ///     The number of characters read. The number will be less than or equal to count depending on the data available
     ///     in the source Stream.
     /// </returns>
-    [PublicAPI( "May be used externally" )]
     public static int ReadInput( Stream sourceStream, ref sbyte[] target, int start, int count )
     {
         var receiver  = new byte[ target.Length ];
@@ -140,7 +152,6 @@ public class SupportClass
     /// </summary>
     /// <param name="sourceString">The string to be converted</param>
     /// <returns>The new array of bytes</returns>
-    [PublicAPI( "May be used externally" )]
     public static byte[] ToByteArray( string sourceString )
     {
         var byteArray = new byte[ sourceString.Length ];

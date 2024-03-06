@@ -42,7 +42,6 @@ namespace LibGDXSharp.LibCore.Graphics.GLUtils;
 ///         <see cref="Cubemap" />.
 ///     </para>
 /// </summary>
-[PublicAPI]
 public class KtxTextureData : ITextureData, ICubemapData
 {
     private const int GL_TEXTURE_1D           = 0x1234;
@@ -82,7 +81,10 @@ public class KtxTextureData : ITextureData, ICubemapData
     ///     must preceed a call to this method. Any internal data structures created
     ///     in <see cref="ICubemapData.Prepare" /> should be disposed of here.
     /// </summary>
-    public void ConsumeCubemapData() => ConsumeCustomData( IGL20.GL_TEXTURE_CUBE_MAP );
+    public void ConsumeCubemapData()
+    {
+        ConsumeCustomData( IGL20.GL_TEXTURE_CUBE_MAP );
+    }
 
     /// <summary>
     ///     Returns true if this implementation can cope with a EGL context loss.
@@ -242,13 +244,19 @@ public class KtxTextureData : ITextureData, ICubemapData
     ///     </para>
     /// </summary>
     /// <returns> the pixmap.</returns>
-    public Pixmap ConsumePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    public Pixmap ConsumePixmap()
+    {
+        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    }
 
     /// <returns>
     ///     whether the caller of <see cref="ITextureData.ConsumePixmap" /> should dispose the
     ///     Pixmap returned by <see cref="ITextureData.ConsumePixmap" />
     /// </returns>
-    public bool DisposePixmap() => false;
+    public bool DisposePixmap()
+    {
+        return false;
+    }
 
     /// <summary>
     ///     Uploads the pixel data to the OpenGL ES texture. The caller must bind an
@@ -371,13 +379,13 @@ public class KtxTextureData : ITextureData, ICubemapData
         }
 
         // KTX files require an unpack alignment of 4
-        Core.Gdx.GL.GLGetIntegerv( IGL20.GL_UNPACK_ALIGNMENT, buffer );
+        Gdx.GL.GLGetIntegerv( IGL20.GL_UNPACK_ALIGNMENT, buffer );
 
         var previousUnpackAlignment = buffer.Get( 0 );
 
         if ( previousUnpackAlignment != 4 )
         {
-            Core.Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 4 );
+            Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 4 );
         }
 
         var glInternalFormat = _glInternalFormat;
@@ -431,12 +439,12 @@ public class KtxTextureData : ITextureData, ICubemapData
                     {
                         if ( glInternalFormat == ETC1.ETC1_RGB8_OES )
                         {
-                            if ( !Core.Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
+                            if ( !Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
                             {
                                 var    etcData = new ETC1.ETC1Data( pixelWidth, pixelHeight, data, 0 );
                                 Pixmap pixmap  = ETC1.DecodeImage( etcData, Pixmap.Format.RGB888 );
 
-                                Core.Gdx.GL.GLTexImage2D(
+                                Gdx.GL.GLTexImage2D(
                                     target + face,
                                     level,
                                     pixmap.GLInternalFormat,
@@ -452,7 +460,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                             }
                             else
                             {
-                                Core.Gdx.GL.GLCompressedTexImage2D(
+                                Gdx.GL.GLCompressedTexImage2D(
                                     target + face,
                                     level,
                                     glInternalFormat,
@@ -467,7 +475,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                         else
                         {
                             // Try to load (no software unpacking fallback)
-                            Core.Gdx.GL.GLCompressedTexImage2D(
+                            Gdx.GL.GLCompressedTexImage2D(
                                 target + face,
                                 level,
                                 glInternalFormat,
@@ -481,7 +489,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                     }
                     else
                     {
-                        Core.Gdx.GL.GLTexImage2D(
+                        Gdx.GL.GLTexImage2D(
                             target + face,
                             level,
                             glInternalFormat,
@@ -513,12 +521,12 @@ public class KtxTextureData : ITextureData, ICubemapData
 
         if ( previousUnpackAlignment != 4 )
         {
-            Core.Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, previousUnpackAlignment );
+            Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, previousUnpackAlignment );
         }
 
         if ( UseMipMaps )
         {
-            Core.Gdx.GL.GLGenerateMipmap( target );
+            Gdx.GL.GLGenerateMipmap( target );
         }
 
         // dispose data once transfered to GPU
@@ -532,13 +540,19 @@ public class KtxTextureData : ITextureData, ICubemapData
     public int Height { get; set; }
 
     /// <returns> the <see cref="Pixmap.Format" /> of the pixel data </returns>
-    public Pixmap.Format GetFormat() => Pixmap.Format.Alpha;
+    public Pixmap.Format GetFormat()
+    {
+        return Pixmap.Format.Alpha;
+    }
 
     /// <returns> whether to generate mipmaps or not. </returns>
     public bool UseMipMaps { get; set; }
 
     /// <returns> whether this implementation can cope with a EGL context loss. </returns>
-    public bool IsManaged() => false;
+    public bool IsManaged()
+    {
+        return false;
+    }
 
     public void DisposePreparedData()
     {

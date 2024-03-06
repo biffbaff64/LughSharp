@@ -30,7 +30,10 @@ namespace LibGDXSharp.Backends.DesktopGL.Audio.Mock;
 public class MockAudioDevice : IAudioDevice
 {
     /// <inheritdoc />
-    public bool IsMono() => false;
+    public bool IsMono()
+    {
+        return false;
+    }
 
     /// <inheritdoc />
     public void WriteSamples( int[] samples, int offset, int numSamples )
@@ -43,7 +46,10 @@ public class MockAudioDevice : IAudioDevice
     }
 
     /// <inheritdoc />
-    public int GetLatency() => 0;
+    public int GetLatency()
+    {
+        return 0;
+    }
 
     /// <inheritdoc />
     public void SetVolume( float volume )

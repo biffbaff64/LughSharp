@@ -32,7 +32,6 @@ namespace LibGDXSharp.LibCore.Input;
 ///     a <see cref="RemoteInput" /> at the given ip/port. Instantiate
 ///     this and call SendUpdate() periodically.
 /// </summary>
-[PublicAPI]
 public class RemoteSender : IInputProcessor
 {
     public const int KEY_DOWN  = 0;
@@ -252,9 +251,15 @@ public class RemoteSender : IInputProcessor
         return false;
     }
 
-    public bool MouseMoved( int x, int y ) => false;
+    public bool MouseMoved( int x, int y )
+    {
+        return false;
+    }
 
-    public bool Scrolled( float amountX, float amountY ) => false;
+    public bool Scrolled( float amountX, float amountY )
+    {
+        return false;
+    }
 
     public void SendUpdate()
     {
@@ -271,20 +276,20 @@ public class RemoteSender : IInputProcessor
         try
         {
             _out.Write( ACCEL );
-            _out.Write( Core.Gdx.Input.GetAccelerometerX() );
-            _out.Write( Core.Gdx.Input.GetAccelerometerY() );
-            _out.Write( Core.Gdx.Input.GetAccelerometerZ() );
+            _out.Write( Gdx.Input.GetAccelerometerX() );
+            _out.Write( Gdx.Input.GetAccelerometerY() );
+            _out.Write( Gdx.Input.GetAccelerometerZ() );
             _out.Write( COMPASS );
-            _out.Write( Core.Gdx.Input.GetAzimuth() );
-            _out.Write( Core.Gdx.Input.GetPitch() );
-            _out.Write( Core.Gdx.Input.GetRoll() );
+            _out.Write( Gdx.Input.GetAzimuth() );
+            _out.Write( Gdx.Input.GetPitch() );
+            _out.Write( Gdx.Input.GetRoll() );
             _out.Write( SIZE );
-            _out.Write( Core.Gdx.Graphics.Width );
-            _out.Write( Core.Gdx.Graphics.Height );
+            _out.Write( Gdx.Graphics.Width );
+            _out.Write( Gdx.Graphics.Height );
             _out.Write( GYRO );
-            _out.Write( Core.Gdx.Input.GetGyroscopeX() );
-            _out.Write( Core.Gdx.Input.GetGyroscopeY() );
-            _out.Write( Core.Gdx.Input.GetGyroscopeZ() );
+            _out.Write( Gdx.Input.GetGyroscopeX() );
+            _out.Write( Gdx.Input.GetGyroscopeY() );
+            _out.Write( Gdx.Input.GetGyroscopeZ() );
         }
         catch ( Exception )
         {

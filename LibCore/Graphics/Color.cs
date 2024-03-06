@@ -32,7 +32,6 @@ namespace LibGDXSharp.LibCore.Graphics;
 ///     the range [0,1].
 ///     All methods perform clamping on the internal values after execution.
 /// </summary>
-[PublicAPI]
 public sealed class Color
 {
     public readonly static Color White      = new( 1, 1, 1, 1 );
@@ -99,7 +98,10 @@ public sealed class Color
     ///     the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
     /// </summary>
     /// <param name="rgba8888"> An uint color value in RGBA8888 format. </param>
-    public Color( uint rgba8888 ) => Set( rgba8888 );
+    public Color( uint rgba8888 )
+    {
+        Set( rgba8888 );
+    }
 
     /// <summary>
     ///     Constructor, sets the components of the color.
@@ -121,7 +123,10 @@ public sealed class Color
     /// <summary>
     ///     Constructs a new color using the components from the supplied color.
     /// </summary>
-    public Color( Color color ) => Set( color );
+    public Color( Color color )
+    {
+        Set( color );
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -469,7 +474,9 @@ public sealed class Color
     /// <param name="a"></param>
     /// <returns></returns>
     public int Rgba8888( float r, float g, float b, float a )
-        => ( ( int )( r * 255 ) << 24 ) | ( ( int )( g * 255 ) << 16 ) | ( ( int )( b * 255 ) << 8 ) | ( int )( a * 255 );
+    {
+        return ( ( int )( r * 255 ) << 24 ) | ( ( int )( g * 255 ) << 16 ) | ( ( int )( b * 255 ) << 8 ) | ( int )( a * 255 );
+    }
 
     /// <summary>
     ///     Sets the RGB Color components using the specified Hue-Saturation-Value.
@@ -544,7 +551,10 @@ public sealed class Color
     /// </summary>
     /// <param name="hsv"></param>
     /// <returns></returns>
-    public Color FromHsv( float[] hsv ) => FromHsv( hsv[ 0 ], hsv[ 1 ], hsv[ 2 ] );
+    public Color FromHsv( float[] hsv )
+    {
+        return FromHsv( hsv[ 0 ], hsv[ 1 ], hsv[ 2 ] );
+    }
 
     public float[] ToHsv( float[] hsv )
     {
@@ -636,10 +646,13 @@ public sealed class Color
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public int ToIntBits() => ( ( int )( 255 * A ) << 24 )
-                            | ( ( int )( 255 * B ) << 16 )
-                            | ( ( int )( 255 * G ) << 8 )
-                            | ( int )( 255 * R );
+    public int ToIntBits()
+    {
+        return ( ( int )( 255 * A ) << 24 )
+             | ( ( int )( 255 * B ) << 16 )
+             | ( ( int )( 255 * G ) << 8 )
+             | ( int )( 255 * R );
+    }
 
     /// <summary>
     /// </summary>
@@ -648,14 +661,20 @@ public sealed class Color
     /// <param name="b"></param>
     /// <param name="a"></param>
     /// <returns></returns>
-    public static int ToIntBits( int r, int g, int b, int a ) => ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
+    public static int ToIntBits( int r, int g, int b, int a )
+    {
+        return ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
+    }
 
     /// <summary>
     ///     Returns a new color from a hex string with the format RRGGBBAA.
     /// </summary>
     /// <param name="hex"></param>
     /// <returns></returns>
-    public static Color ValueOf( string hex ) => ValueOf( hex, new Color() );
+    public static Color ValueOf( string hex )
+    {
+        return ValueOf( hex, new Color() );
+    }
 
     /// <summary>
     /// </summary>
@@ -674,57 +693,96 @@ public sealed class Color
         return color;
     }
 
-    public static int Alpha( float alpha ) => ( int )( alpha * 255.0f );
+    public static int Alpha( float alpha )
+    {
+        return ( int )( alpha * 255.0f );
+    }
 
-    public static int LuminanceAlpha( float luminance, float alpha ) => ( ( int )( luminance * 255.0f ) << 8 ) | ( int )( alpha * 255 );
+    public static int LuminanceAlpha( float luminance, float alpha )
+    {
+        return ( ( int )( luminance * 255.0f ) << 8 ) | ( int )( alpha * 255 );
+    }
 
-    public static int RGB565( float r, float g, float b ) => ( ( int )( r * 31 ) << 11 ) | ( ( int )( g * 63 ) << 5 ) | ( int )( b * 31 );
+    public static int RGB565( float r, float g, float b )
+    {
+        return ( ( int )( r * 31 ) << 11 ) | ( ( int )( g * 63 ) << 5 ) | ( int )( b * 31 );
+    }
 
-    public static int RGBA4444( float r, float g, float b, float a ) => ( ( int )( r * 15 ) << 12 )
-                                                                      | ( ( int )( g * 15 ) << 8 )
-                                                                      | ( ( int )( b * 15 ) << 4 )
-                                                                      | ( int )( a * 15 );
+    public static int RGBA4444( float r, float g, float b, float a )
+    {
+        return ( ( int )( r * 15 ) << 12 )
+             | ( ( int )( g * 15 ) << 8 )
+             | ( ( int )( b * 15 ) << 4 )
+             | ( int )( a * 15 );
+    }
 
-    public static int RGB888( float r, float g, float b ) => ( ( int )( r * 255 ) << 16 ) | ( ( int )( g * 255 ) << 8 ) | ( int )( b * 255 );
+    public static int RGB888( float r, float g, float b )
+    {
+        return ( ( int )( r * 255 ) << 16 ) | ( ( int )( g * 255 ) << 8 ) | ( int )( b * 255 );
+    }
 
-    public static int RGBA8888( float r, float g, float b, float a ) => ( ( int )( r * 255 ) << 24 )
-                                                                      | ( ( int )( g * 255 ) << 16 )
-                                                                      | ( ( int )( b * 255 ) << 8 )
-                                                                      | ( int )( a * 255 );
+    public static int RGBA8888( float r, float g, float b, float a )
+    {
+        return ( ( int )( r * 255 ) << 24 )
+             | ( ( int )( g * 255 ) << 16 )
+             | ( ( int )( b * 255 ) << 8 )
+             | ( int )( a * 255 );
+    }
 
-    public static int ARGB8888( float a, float r, float g, float b ) => ( ( int )( a * 255 ) << 24 )
-                                                                      | ( ( int )( r * 255 ) << 16 )
-                                                                      | ( ( int )( g * 255 ) << 8 )
-                                                                      | ( int )( b * 255 );
+    public static int ARGB8888( float a, float r, float g, float b )
+    {
+        return ( ( int )( a * 255 ) << 24 )
+             | ( ( int )( r * 255 ) << 16 )
+             | ( ( int )( g * 255 ) << 8 )
+             | ( int )( b * 255 );
+    }
 
-    public static int RGB565( Color color ) => ( ( int )( color.R * 31 ) << 11 )
-                                             | ( ( int )( color.G * 63 ) << 5 )
-                                             | ( int )( color.B * 31 );
+    public static int RGB565( Color color )
+    {
+        return ( ( int )( color.R * 31 ) << 11 )
+             | ( ( int )( color.G * 63 ) << 5 )
+             | ( int )( color.B * 31 );
+    }
 
-    public static int RGBA4444( Color color ) => ( ( int )( color.R * 15 ) << 12 )
-                                               | ( ( int )( color.G * 15 ) << 8 )
-                                               | ( ( int )( color.B * 15 ) << 4 )
-                                               | ( int )( color.A * 15 );
+    public static int RGBA4444( Color color )
+    {
+        return ( ( int )( color.R * 15 ) << 12 )
+             | ( ( int )( color.G * 15 ) << 8 )
+             | ( ( int )( color.B * 15 ) << 4 )
+             | ( int )( color.A * 15 );
+    }
 
-    public static int RGB888( Color color ) => ( ( int )( color.R * 255 ) << 16 )
-                                             | ( ( int )( color.G * 255 ) << 8 )
-                                             | ( int )( color.B * 255 );
+    public static int RGB888( Color color )
+    {
+        return ( ( int )( color.R * 255 ) << 16 )
+             | ( ( int )( color.G * 255 ) << 8 )
+             | ( int )( color.B * 255 );
+    }
 
-    public static int RGBA8888( Color color ) => ( ( int )( color.R * 255 ) << 24 )
-                                               | ( ( int )( color.G * 255 ) << 16 )
-                                               | ( ( int )( color.B * 255 ) << 8 )
-                                               | ( int )( color.A * 255 );
+    public static int RGBA8888( Color color )
+    {
+        return ( ( int )( color.R * 255 ) << 24 )
+             | ( ( int )( color.G * 255 ) << 16 )
+             | ( ( int )( color.B * 255 ) << 8 )
+             | ( int )( color.A * 255 );
+    }
 
-    public static int ARGB8888( Color color ) => ( ( int )( color.A * 255 ) << 24 )
-                                               | ( ( int )( color.R * 255 ) << 16 )
-                                               | ( ( int )( color.G * 255 ) << 8 )
-                                               | ( int )( color.B * 255 );
+    public static int ARGB8888( Color color )
+    {
+        return ( ( int )( color.A * 255 ) << 24 )
+             | ( ( int )( color.R * 255 ) << 16 )
+             | ( ( int )( color.G * 255 ) << 8 )
+             | ( int )( color.B * 255 );
+    }
 
     /// <summary>
     ///     Creates a copy of this Color object.
     /// </summary>
     /// <returns></returns>
-    public Color Copy() => new( this );
+    public Color Copy()
+    {
+        return new Color( this );
+    }
 
     /// <inheritdoc />
     public override bool Equals( object? o )

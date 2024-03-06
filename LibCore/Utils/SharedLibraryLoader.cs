@@ -27,7 +27,6 @@ using System.Runtime.InteropServices;
 
 namespace LibGDXSharp.LibCore.Utils;
 
-[PublicAPI]
 public class SharedLibraryLoader
 {
     public static bool IsWindows { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Windows );
@@ -39,15 +38,20 @@ public class SharedLibraryLoader
     public static bool Is64Bit   { get; private set; } = Environment.Is64BitOperatingSystem;
 }
 
-[PublicAPI]
 public static class SystemHelpers
 {
-    public static bool IsArmArchitecture() => RuntimeInformation.OSArchitecture switch
-                                              {
-                                                  Architecture.Arm   => true,
-                                                  Architecture.Arm64 => true,
-                                                  _                  => false
-                                              };
+    public static bool IsArmArchitecture()
+    {
+        return RuntimeInformation.OSArchitecture switch
+               {
+                   Architecture.Arm   => true,
+                   Architecture.Arm64 => true,
+                   _                  => false
+               };
+    }
 
-    public static String RandomUUID() => Guid.NewGuid().ToString();
+    public static String RandomUUID()
+    {
+        return Guid.NewGuid().ToString();
+    }
 }

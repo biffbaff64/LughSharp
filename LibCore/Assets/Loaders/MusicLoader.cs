@@ -35,7 +35,10 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameters >, IDisposable
 {
     public MusicLoader( IFileHandleResolver resolver )
-        : base( resolver ) => LoadedMusic = null!;
+        : base( resolver )
+    {
+        LoadedMusic = null!;
+    }
 
     public IMusic LoadedMusic { get; set; }
 
@@ -54,7 +57,10 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters? parameter ) => null!;
+                                                             AssetLoaderParameters? parameter )
+    {
+        return null!;
+    }
 
     /// <summary>
     ///     Loads the non-OpenGL part of the asset and injects any dependencies of
@@ -67,7 +73,10 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
     public override void Load( AssetManager? manager,
                                string? fileName,
                                FileInfo? file,
-                               AssetLoaderParameters? parameter ) => LoadedMusic = Core.Gdx.Audio.NewMusic( file );
+                               AssetLoaderParameters? parameter )
+    {
+        LoadedMusic = Gdx.Audio.NewMusic( file );
+    }
 
     private void Dispose( bool disposing )
     {

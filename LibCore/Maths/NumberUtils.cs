@@ -46,13 +46,19 @@ public class NumberUtils
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static int FloatToRawIntBits( float value ) => BitConverter.SingleToInt32Bits( value );
+    public static int FloatToRawIntBits( float value )
+    {
+        return BitConverter.SingleToInt32Bits( value );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static float IntBitsToFloat( int value ) => BitConverter.Int32BitsToSingle( value );
+    public static float IntBitsToFloat( int value )
+    {
+        return BitConverter.Int32BitsToSingle( value );
+    }
 
     /// <summary>
     /// </summary>
@@ -71,19 +77,28 @@ public class NumberUtils
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static float IntToFloatColor( int value ) => BitConverter.Int32BitsToSingle( value );
+    public static float IntToFloatColor( int value )
+    {
+        return BitConverter.Int32BitsToSingle( value );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static long DoubleToLongBits( double value ) => BitConverter.DoubleToInt64Bits( value );
+    public static long DoubleToLongBits( double value )
+    {
+        return BitConverter.DoubleToInt64Bits( value );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static double LongBitsToDouble( long value ) => BitConverter.Int64BitsToDouble( value );
+    public static double LongBitsToDouble( long value )
+    {
+        return BitConverter.Int64BitsToDouble( value );
+    }
 
     /// <summary>
     /// </summary>

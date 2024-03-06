@@ -32,24 +32,26 @@ namespace LibGDXSharp.Backends.DesktopGL.Graphics;
 
 public class DesktopGL30 : DesktopGL20, IGL30
 {
+    private int border,
+    private int border,
+    private int depth,
+    private int depth,
+    private int format,
+    private int format,
+    private int height,
+    private int height,
+    private int type,
+    private int type,
+                Buffer
+    private int width,
+    private int width,
+    private int width,
+
     public void GLReadBuffer( int mode )
     {
     }
 
     public void GLDrawRangeElements( int mode, int start, int end, int count, int type, int offset )
-    {
-    }
-
-    public void GLTexImage3D( int target,
-                              int level,
-                              int int,
-                              int width,
-                              int height,
-                              int depth,
-                              int border,
-                              int format,
-                              int type,
-                              int offset )
     {
     }
 
@@ -95,7 +97,10 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    public bool GLIsQuery( int id ) => false;
+    public bool GLIsQuery( int id )
+    {
+        return false;
+    }
 
     public void GLBeginQuery( int target, int id )
     {
@@ -113,7 +118,10 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    public bool GLUnmapBuffer( int target ) => false;
+    public bool GLUnmapBuffer( int target )
+    {
+        return false;
+    }
 
     public void GLDrawBuffers( int n, IntBuffer bufs )
     {
@@ -156,10 +164,6 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    public void GLRenderbufferStorageMultisample( int target, int samples, int int, int width, int height )
-    {
-    }
-
     public void GLFramebufferTextureLayer( int target, int attachment, int texture, int level, int layer )
     {
     }
@@ -188,7 +192,10 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    public bool GLIsVertexArray( int array ) => false;
+    public bool GLIsVertexArray( int array )
+    {
+        return false;
+    }
 
     public void GLBeginTransformFeedback( int primitiveMode )
     {
@@ -234,7 +241,10 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    public int GLGetFragDataLocation( int program, string name ) => 0;
+    public int GLGetFragDataLocation( int program, string name )
+    {
+        return 0;
+    }
 
     public void GLUniform1Uiv( int location, int count, IntBuffer value )
     {
@@ -264,7 +274,10 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    public string GLGetStringi( int name, int index ) => null;
+    public string GLGetStringi( int name, int index )
+    {
+        return null;
+    }
 
     public void GLCopyBufferSubData( int readTarget, int writeTarget, int readOffset, int writeOffset, int size )
     {
@@ -278,13 +291,19 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    public int GLGetUniformBlockIndex( int program, string uniformBlockName ) => 0;
+    public int GLGetUniformBlockIndex( int program, string uniformBlockName )
+    {
+        return 0;
+    }
 
     public void GLGetActiveUniformBlockiv( int program, int uniformBlockIndex, int pname, IntBuffer parameters )
     {
     }
 
-    public string GLGetActiveUniformBlockName( int program, int uniformBlockIndex ) => null;
+    public string GLGetActiveUniformBlockName( int program, int uniformBlockIndex )
+    {
+        return null;
+    }
 
     public void GLUniformBlockBinding( int program, int uniformBlockIndex, int uniformBlockBinding )
     {
@@ -322,7 +341,10 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    public bool GLIsSampler( int sampler ) => false;
+    public bool GLIsSampler( int sampler )
+    {
+        return false;
+    }
 
     public void GLBindSampler( int unit, int sampler )
     {
@@ -376,7 +398,10 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    public bool GLIsTransformFeedback( int id ) => false;
+    public bool GLIsTransformFeedback( int id )
+    {
+        return false;
+    }
 
     public void GLPauseTransformFeedback()
     {
@@ -404,20 +429,25 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
+    public void GLTexImage3D( int target,
+                              int level,
+                              int int,
+    private int offset)
+    {
+    }
+
+    public  void GLRenderbufferStorageMultisample( int target, int samples, int int,
+    private int  height)
+    {
+    }
+
     public void GLDrawRangeElements( int mode, int start, int end, int count, int type, Buffer indices )
     {
     }
 
     public void GLTexImage3D( int target,
                               int level,
-                              int int,
-                              int width,
-                              int height,
-                              int depth,
-                              int border,
-                              int format,
-                              int type,
-                              Buffer pixels )
+                              int int,pixels)
     {
     }
 
@@ -435,9 +465,15 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    public Buffer GLGetBufferPointerv( int target, int pname ) => null;
+    public Buffer GLGetBufferPointerv( int target, int pname )
+    {
+        return null;
+    }
 
-    public Buffer GLMapBufferRange( int target, int offset, int length, int access ) => null;
+    public Buffer GLMapBufferRange( int target, int offset, int length, int access )
+    {
+        return null;
+    }
 
     public void GLGetActiveUniformBlockName( int program, int uniformBlockIndex, Buffer length, Buffer uniformBlockName )
     {

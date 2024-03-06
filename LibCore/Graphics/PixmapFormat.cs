@@ -66,7 +66,7 @@ public static class PixmapFormat
                    Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444        => Pixmap.Format.RGBA4444,
                    Gdx2DPixmap.GDX_2D_FORMAT_RGB888          => Pixmap.Format.RGB888,
                    Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888        => Pixmap.Format.RGBA8888,
-                       
+
                    _ => throw new GdxRuntimeException( "Unknown Gdx2DPixmap Format: " + format )
                };
     }
@@ -76,11 +76,17 @@ public static class PixmapFormat
     /// </summary>
     /// <param name="format"></param>
     /// <returns></returns>
-    public static int ToGLFormat( Pixmap.Format format ) => Gdx2DPixmap.ToGLFormat( ToGdx2DPixmapFormat( format ) );
+    public static int ToGLFormat( Pixmap.Format format )
+    {
+        return Gdx2DPixmap.ToGLFormat( ToGdx2DPixmapFormat( format ) );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="format"></param>
     /// <returns></returns>
-    public static int ToGLType( Pixmap.Format format ) => Gdx2DPixmap.ToGLType( ToGdx2DPixmapFormat( format ) );
+    public static int ToGLType( Pixmap.Format format )
+    {
+        return Gdx2DPixmap.ToGLType( ToGdx2DPixmapFormat( format ) );
+    }
 }

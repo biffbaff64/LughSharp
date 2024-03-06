@@ -42,7 +42,10 @@ public class DragScrollListener : DragListener
     private          long       _startTime;
     private          float      _tickSecs = 0.05f;
 
-    public DragScrollListener( ScrollPane scroll ) => _scroll = scroll;
+    public DragScrollListener( ScrollPane scroll )
+    {
+        _scroll = scroll;
+    }
 
     public void Setup( float minSpeedPixels, float maxSpeedPixels, float tickSecs, float rampSecs )
     {
@@ -52,9 +55,12 @@ public class DragScrollListener : DragListener
         _rampTime = ( long )( rampSecs * 1000 );
     }
 
-    private float GetScrollPixels() => _interpolation.Apply( _minSpeed,
-                                                             _maxSpeed,
-                                                             Math.Min( 1, ( TimeUtils.Millis() - _startTime ) / ( float )_rampTime ) );
+    private float GetScrollPixels()
+    {
+        return _interpolation.Apply( _minSpeed,
+                                     _maxSpeed,
+                                     Math.Min( 1, ( TimeUtils.Millis() - _startTime ) / ( float )_rampTime ) );
+    }
 
     public override void Drag( InputEvent ev, float x, float y, int pointer )
     {
@@ -74,11 +80,20 @@ public class DragScrollListener : DragListener
     {
     }
 
-    protected bool IsAbove( float y ) => y >= ( _scroll.Height - _padTop );
+    protected bool IsAbove( float y )
+    {
+        return y >= ( _scroll.Height - _padTop );
+    }
 
-    protected bool IsBelow( float y ) => y < _padBottom;
+    protected bool IsBelow( float y )
+    {
+        return y < _padBottom;
+    }
 
-    protected void Scroll( float y ) => _scroll.SetScrollY( y );
+    protected void Scroll( float y )
+    {
+        _scroll.SetScrollY( y );
+    }
 
     public void SetPadding( float padtop, float padbottom )
     {

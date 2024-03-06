@@ -29,7 +29,6 @@ using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.LibCore.Graphics;
 
-[PublicAPI]
 public interface IGL20
 {
     public const int GL_ES_VERSION_2_0                               = 1;

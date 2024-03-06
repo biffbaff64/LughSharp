@@ -31,21 +31,13 @@ namespace LibGDXSharp.LibCore.Assets;
 ///     Responsible for loading an asset through an <see cref="AssetLoaderBase" /> based
 ///     on an <see cref="AssetDescriptor" />.
 /// </summary>
-[PublicAPI]
 public class AssetLoadingTask
 {
-    public bool                     DependenciesLoaded { get; set; }
-    public AssetDescriptor          AssetDesc          { get; }
-    public bool                     Cancel             { get; set; }
-    public object?                  Asset              { get; set; }
-    public List< AssetDescriptor >? Dependencies       { get; set; }
-
     // ------------------------------------------------------------------------
 
     private readonly AssetLoaderBase _loader;
     private readonly AssetManager    _manager;
     private volatile bool            _asyncDone = false;
-    private volatile object?         _asset;
     private          long            _startTime;
 
     // ------------------------------------------------------------------------
@@ -60,11 +52,17 @@ public class AssetLoadingTask
                              AssetDescriptor assetDesc,
                              AssetLoaderBase loader )
     {
-        this._manager   = manager;
-        this.AssetDesc  = assetDesc;
-        this._loader    = loader;
-        this._startTime = manager.Log.Level == Logger.LOG_DEBUG ? TimeUtils.NanoTime() : 0;
+        _manager   = manager;
+        AssetDesc  = assetDesc;
+        _loader    = loader;
+        _startTime = manager.Log.Level == Logger.LOG_DEBUG ? TimeUtils.NanoTime() : 0;
     }
+
+    public bool                     DependenciesLoaded { get; set; }
+    public AssetDescriptor          AssetDesc          { get; }
+    public bool                     Cancel             { get; set; }
+    public object?                  Asset              { get; set; }
+    public List< AssetDescriptor >? Dependencies       { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -148,7 +146,7 @@ public class AssetLoadingTask
 
     /// <summary>
     ///     Resolve the file and path names for the asset described in
-    ///     the member <see cref="AssetDesc"/>
+    ///     the member <see cref="AssetDesc" />
     /// </summary>
     /// <param name="loader"></param>
     /// <param name="assetDesc"></param>

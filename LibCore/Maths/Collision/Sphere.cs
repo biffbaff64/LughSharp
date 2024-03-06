@@ -28,7 +28,6 @@ namespace LibGDXSharp.LibCore.Maths.Collision;
 /// <summary>
 ///     Encapsulates a 3D sphere with a center and a radius
 /// </summary>
-[PublicAPI, Serializable]
 public class Sphere
 {
     private const   float   PI43 = ( MathUtils.PI * 4f ) / 3f;
@@ -52,7 +51,10 @@ public class Sphere
     /// </summary>
     /// <param name="sphere"> the other sphere </param>
     /// <returns> whether this and the other sphere overlap  </returns>
-    public virtual bool Overlaps( Sphere sphere ) => center.Dst2( sphere.center ) < ( ( radius + sphere.radius ) * ( radius + sphere.radius ) );
+    public virtual bool Overlaps( Sphere sphere )
+    {
+        return center.Dst2( sphere.center ) < ( ( radius + sphere.radius ) * ( radius + sphere.radius ) );
+    }
 
     /// <summary>
     /// </summary>
@@ -91,10 +93,16 @@ public class Sphere
     /// <summary>
     ///     Returns the volume of this sphere.
     /// </summary>
-    public virtual float Volume() => PI43 * radius * radius * radius;
+    public virtual float Volume()
+    {
+        return PI43 * radius * radius * radius;
+    }
 
     /// <summary>
     ///     Returns the surface area of this sphere.
     /// </summary>
-    public virtual float SurfaceArea() => 4 * MathUtils.PI * radius * radius;
+    public virtual float SurfaceArea()
+    {
+        return 4 * MathUtils.PI * radius * radius;
+    }
 }

@@ -31,7 +31,6 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 /// <summary>
 ///     Implements decoding of MPEG Audio Layer 3 frames.
 /// </summary>
-[PublicAPI]
 public sealed class LayerIIIDecoder : IFrameDecoder
 {
     private const int SSLIMIT = 18;
@@ -215,7 +214,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     // can be reused.
     public float[] tsOutCopy = null!;
 
-    static LayerIIIDecoder() => PowerTable = CreatePowerTable();
+    static LayerIIIDecoder()
+    {
+        PowerTable = CreatePowerTable();
+    }
 
     /// <summary>
     ///     TODO: these ctor arguments should be moved to the decodeFrame() method.
@@ -443,7 +445,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     public float[] Rawout         { get; set; } = null!;
     public int[]   ScalefacBuffer { get; set; }
 
-    public void DecodeFrame() => Decode();
+    public void DecodeFrame()
+    {
+        Decode();
+    }
 
     private void InitBlock()
     {

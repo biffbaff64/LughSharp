@@ -93,18 +93,27 @@ public class DistanceFieldFont : BitmapFont
         }
     }
 
-    public new BitmapFontCache NewFontCache() => new DistanceFieldFontCache( this, UseIntegerPositions );
+    public new BitmapFontCache NewFontCache()
+    {
+        return new DistanceFieldFontCache( this, UseIntegerPositions );
+    }
 
     /// <summary>
     ///     Returns the distance field smoothing factor for this font.
     /// </summary>
-    public float GetDistanceFieldSmoothing() => _distanceFieldSmoothing;
+    public float GetDistanceFieldSmoothing()
+    {
+        return _distanceFieldSmoothing;
+    }
 
     /// <summary>
     ///     Set the distance field smoothing factor for this font. SpriteBatch needs
     ///     to have this shader set for rendering distance field fonts.
     /// </summary>
-    public void SetDistanceFieldSmoothing( float distanceFieldSmoothing ) => _distanceFieldSmoothing = distanceFieldSmoothing;
+    public void SetDistanceFieldSmoothing( float distanceFieldSmoothing )
+    {
+        _distanceFieldSmoothing = distanceFieldSmoothing;
+    }
 
     /// <summary>
     ///     Returns a new instance of the distance field shader, see

@@ -46,7 +46,10 @@ public class PixmapPackerIO
     /// </param>
     /// <param name="packer"> the PixmapPacker to be written </param>
     /// <exception cref="IOException"> if the atlas file can not be written </exception>
-    public void Save( FileInfo file, PixmapPacker packer ) => Save( file, packer, new SaveParameters() );
+    public void Save( FileInfo file, PixmapPacker packer )
+    {
+        Save( file, packer, new SaveParameters() );
+    }
 
     /// <summary>
     ///     Saves the provided PixmapPacker to the provided file. The resulting file will use the standard TextureAtlas file

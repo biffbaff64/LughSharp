@@ -28,7 +28,6 @@ namespace LibGDXSharp.LibCore.Maths;
 /// <summary>
 ///     A point in a 3D grid, with integer x and y coordinates
 /// </summary>
-[PublicAPI]
 public class GridPoint3
 {
     /// <summary>
@@ -219,7 +218,10 @@ public class GridPoint3
     /// <summary>
     /// </summary>
     /// <returns> a copy of this grid point </returns>
-    public virtual GridPoint3 Cpy() => new( this );
+    public virtual GridPoint3 Cpy()
+    {
+        return new GridPoint3( this );
+    }
 
     public override bool Equals( object? o )
     {
@@ -249,5 +251,8 @@ public class GridPoint3
         return result;
     }
 
-    public override string ToString() => $"({X}, {Y}, {Z})";
+    public override string ToString()
+    {
+        return $"({X}, {Y}, {Z})";
+    }
 }

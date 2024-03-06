@@ -29,14 +29,24 @@ namespace LibGDXSharp.LibCore.Core;
 
 using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 
-[PublicAPI]
 public abstract class AbstractGraphics : IGraphics
 {
     #region implemented methods
 
-    public float GetRawDeltaTime()    => DeltaTime;
-    public float GetDensity()         => GetPpiX() / 160f;
-    public float GetBackBufferScale() => BackBufferWidth / ( float )Width;
+    public float GetRawDeltaTime()
+    {
+        return DeltaTime;
+    }
+
+    public float GetDensity()
+    {
+        return GetPpiX() / 160f;
+    }
+
+    public float GetBackBufferScale()
+    {
+        return BackBufferWidth / ( float )Width;
+    }
 
     #endregion implemented methods
 
@@ -124,7 +134,7 @@ public abstract class AbstractGraphics : IGraphics
     public abstract float GetPpiX();
 
     public abstract (float X, float Y) GetPpcXY();
-    
+
     public abstract float GetPpiY();
 
     public abstract float GetPpcX();

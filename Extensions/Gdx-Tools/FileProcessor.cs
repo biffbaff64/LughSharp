@@ -35,8 +35,6 @@ namespace LibGDXSharp.Extensions.Gdx_Tools;
 ///// </summary>
 public class FileProcessor
 {
-    private bool _flattenOutput;
-
 //    FilenameFilter inputFilter;
 //
 ////    Comparator< File > comparator = new Comparator< File >()
@@ -49,6 +47,7 @@ public class FileProcessor
 
 //    private List< Pattern > inputRegex = new();
     private readonly List< Entry > _outputFiles = new();
+    private          bool          _flattenOutput;
     private          string        _outputSuffix;
     private          bool          _recursive;
 
@@ -351,7 +350,10 @@ public class FileProcessor
     ///     if the return value of <see cref="Process(File, File)" /> or <see cref="Process(File[], File)" /> should return
     ///     all the processed files.
     /// </summary>
-    protected void AddProcessedFile( Entry entry ) => _outputFiles.Add( entry );
+    protected void AddProcessedFile( Entry entry )
+    {
+        _outputFiles.Add( entry );
+    }
 
     public class Entry
     {

@@ -72,14 +72,10 @@ namespace LibGDXSharp.LibCore.Utils.Buffers;
 ///         to be chained.
 ///     </para>
 /// </summary>
-[PublicAPI]
 public abstract class FloatBuffer : Buffer
 {
-    protected float[]? Hb     { get; set; }
-    protected int      Offset { get; set; }
-
     // ------------------------------------------------------------------------
-    
+
     protected FloatBuffer( int mark, int pos, int lim, int cap, float[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
@@ -88,7 +84,13 @@ public abstract class FloatBuffer : Buffer
     }
 
     protected FloatBuffer( int mark, int pos, int lim, int cap )
-        : this( mark, pos, lim, cap, null ) => Offset = 0;
+        : this( mark, pos, lim, cap, null )
+    {
+        Offset = 0;
+    }
+
+    protected float[]? Hb     { get; set; }
+    protected int      Offset { get; set; }
 
     /// <summary>
     ///     Allocates a new float buffer.
@@ -165,7 +167,10 @@ public abstract class FloatBuffer : Buffer
     /// </summary>
     /// <param name="array"> The array that will back this buffer </param>
     /// <returns> The new float buffer </returns>
-    public static FloatBuffer Wrap( float[] array ) => Wrap( array, 0, array.Length );
+    public static FloatBuffer Wrap( float[] array )
+    {
+        return Wrap( array, 0, array.Length );
+    }
 
     /// <summary>
     ///     Creates a new float buffer whose content is a shared subsequence of
@@ -369,7 +374,10 @@ public abstract class FloatBuffer : Buffer
     /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than <tt>length</tt> floats remaining in this buffer
     /// </exception>
-    public FloatBuffer Get( float[] dst ) => Get( dst, 0, dst.Length );
+    public FloatBuffer Get( float[] dst )
+    {
+        return Get( dst, 0, dst.Length );
+    }
 
     // -- Bulk put operations --
 
@@ -515,7 +523,10 @@ public abstract class FloatBuffer : Buffer
     ///     If there is insufficient space in this buffer.
     /// </exception>
     /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
-    public FloatBuffer Put( float[] src ) => Put( src, 0, src.Length );
+    public FloatBuffer Put( float[] src )
+    {
+        return Put( src, 0, src.Length );
+    }
 
     // ------------------------------------------------------------------------
     // -- Other stuff --
@@ -530,7 +541,10 @@ public abstract class FloatBuffer : Buffer
     /// <returns>
     ///     <tt>true</tt> if, and only if, this buffer is backed by an array and is not read-only.
     /// </returns>
-    public override bool HasArray() => ( Hb != null ) && !IsReadOnly;
+    public override bool HasArray()
+    {
+        return ( Hb != null ) && !IsReadOnly;
+    }
 
     /// <summary>
     ///     Returns the float array that backs this buffer (optional operation).
@@ -626,7 +640,10 @@ public abstract class FloatBuffer : Buffer
     /// <summary>
     ///     Returns a string summarizing the state of this buffer.
     /// </summary>
-    public override string ToString() => $"{GetType().Name}[pos={Position} lim={Limit} cap={Capacity}]";
+    public override string ToString()
+    {
+        return $"{GetType().Name}[pos={Position} lim={Limit} cap={Capacity}]";
+    }
 
     /// <summary>
     ///     Returns the current hash code of this buffer.
@@ -713,7 +730,10 @@ public abstract class FloatBuffer : Buffer
         return true;
     }
 
-    private static bool Equals( float x, float y ) => x.Equals( y ) || ( float.IsNaN( x ) && float.IsNaN( y ) );
+    private static bool Equals( float x, float y )
+    {
+        return x.Equals( y ) || ( float.IsNaN( x ) && float.IsNaN( y ) );
+    }
 
     /// <summary>
     ///     Compares this buffer to another.
@@ -753,17 +773,20 @@ public abstract class FloatBuffer : Buffer
         return Remaining() - that.Remaining();
     }
 
-    private static int Compare( float x, float y ) => x < y
-        ? -1
-        : x > y
-            ? +1
-            : x.Equals( y )
-                ? 0
-                : float.IsNaN( x )
-                    ? float.IsNaN( y )
-                        ? 0
-                        : +1
-                    : -1;
+    private static int Compare( float x, float y )
+    {
+        return x < y
+            ? -1
+            : x > y
+                ? +1
+                : x.Equals( y )
+                    ? 0
+                    : float.IsNaN( x )
+                        ? float.IsNaN( y )
+                            ? 0
+                            : +1
+                        : -1;
+    }
 
     /// <summary>
     ///     Retrieves this buffer's byte order.

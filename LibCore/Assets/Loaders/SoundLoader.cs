@@ -33,7 +33,10 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 /// </summary>
 public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoaderParameters >, IDisposable
 {
-    public SoundLoader( IFileHandleResolver resolver ) : base( resolver ) => LoadedSound = null!;
+    public SoundLoader( IFileHandleResolver resolver ) : base( resolver )
+    {
+        LoadedSound = null!;
+    }
 
     /// <summary>
     ///     The <see cref="ISound" /> instance currently loaded by this <see cref="SoundLoader" />.
@@ -57,7 +60,10 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
     public override void Load( AssetManager? manager,
                                string? fileName,
                                FileInfo? file,
-                               SoundLoaderParameters? parameter ) => LoadedSound = Core.Gdx.Audio.NewSound( file );
+                               SoundLoaderParameters? parameter )
+    {
+        LoadedSound = Gdx.Audio.NewSound( file );
+    }
 
     private void Dispose( bool disposing )
     {

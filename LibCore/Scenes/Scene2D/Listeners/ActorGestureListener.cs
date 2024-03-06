@@ -130,7 +130,10 @@ public class ActorGestureListener : IEventListener
     ///     If true is returned, additional gestures will not be triggered. No ev is
     ///     provided because this ev is triggered by time passing, not by an InputEvent.
     /// </summary>
-    public virtual bool LongPress( Actor actor, float x, float y ) => false;
+    public virtual bool LongPress( Actor actor, float x, float y )
+    {
+        return false;
+    }
 
     public virtual void Fling( InputEvent ev, float velocityX, float velocityY, int button )
     {
@@ -176,7 +179,10 @@ public class ActorGestureListener : IEventListener
                     tapCountInterval,
                     longPressDuration,
                     maxFlingDelay,
-                    new GestureAdapter() ) => _parent = parent;
+                    new GestureAdapter() )
+        {
+            _parent = parent;
+        }
 
         public bool Tap( float stageX, float stageY, int count, int button )
         {

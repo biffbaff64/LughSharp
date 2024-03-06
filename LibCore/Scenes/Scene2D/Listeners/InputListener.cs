@@ -139,7 +139,10 @@ public class InputListener : IEventListener
     ///     over this actor, until touchUp is received. Also when true is returned,
     ///     the event is handled by <see cref="Event.Handle()" />.
     /// </summary>
-    public virtual bool TouchDown( InputEvent? ev, float x, float y, int ptr, int button ) => false;
+    public virtual bool TouchDown( InputEvent? ev, float x, float y, int ptr, int button )
+    {
+        return false;
+    }
 
     /// <summary>
     ///     Called when a mouse button or a finger touch goes up anywhere, but only
@@ -164,7 +167,10 @@ public class InputListener : IEventListener
     ///     only occurs on the desktop. When true is returned, the event is handled
     ///     by <see cref="Event.Handle()" />.
     /// </summary>
-    public virtual bool MouseMoved( InputEvent? inputEvent, float x, float y ) => false;
+    public virtual bool MouseMoved( InputEvent? inputEvent, float x, float y )
+    {
+        return false;
+    }
 
     /// <summary>
     ///     Called any time the mouse cursor or a finger touch is moved over an actor.
@@ -199,19 +205,28 @@ public class InputListener : IEventListener
     ///     Called when the mouse wheel has been scrolled. When true is returned,
     ///     the event is handled in <see cref="Event.Handle()" />.
     /// </summary>
-    public virtual bool Scrolled( InputEvent? inputEvent, float x, float y, float amountX, float amountY ) => false;
+    public virtual bool Scrolled( InputEvent? inputEvent, float x, float y, float amountX, float amountY )
+    {
+        return false;
+    }
 
     /// <summary>
     ///     Called when a key goes down. When true is returned, the event is
     ///     handled by <see cref="Event.Handle()" />.
     /// </summary>
-    public virtual bool KeyDown( InputEvent? inputEvent, int keycode ) => false;
+    public virtual bool KeyDown( InputEvent? inputEvent, int keycode )
+    {
+        return false;
+    }
 
     /// <summary>
     ///     Called when a key goes up. When true is returned, the event is
     ///     handled by <see cref="Event.Handle()" />.
     /// </summary>
-    public virtual bool KeyUp( InputEvent? inputEvent, int keycode ) => false;
+    public virtual bool KeyUp( InputEvent? inputEvent, int keycode )
+    {
+        return false;
+    }
 
     /// <summary>
     ///     Called when a key is typed. When true is returned, the event is
@@ -221,5 +236,8 @@ public class InputListener : IEventListener
     /// <param name="character">
     ///     May be 0 for key typed events that don't map to a character (ctrl, shift, etc).
     /// </param>
-    public virtual bool KeyTyped( InputEvent? inputEvent, char character ) => false;
+    public virtual bool KeyTyped( InputEvent? inputEvent, char character )
+    {
+        return false;
+    }
 }

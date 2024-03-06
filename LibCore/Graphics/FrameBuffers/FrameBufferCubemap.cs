@@ -110,7 +110,10 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
         return result;
     }
 
-    protected override void DisposeColorTexture( Cubemap colorTexture ) => colorTexture.Dispose();
+    protected override void DisposeColorTexture( Cubemap colorTexture )
+    {
+        colorTexture.Dispose();
+    }
 
     protected override void AttachFrameBufferColorTexture( Cubemap texture )
     {
@@ -120,7 +123,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 
         foreach ( Cubemap.CubemapSide side in sides )
         {
-            Core.Gdx.GL20.GLFramebufferTexture2D(
+            Gdx.GL20.GLFramebufferTexture2D(
                 IGL20.GL_FRAMEBUFFER,
                 IGL20.GL_COLOR_ATTACHMENT0,
                 side.GLEnum,
@@ -179,7 +182,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     {
         ArgumentNullException.ThrowIfNull( side );
 
-        Core.Gdx.GL20.GLFramebufferTexture2D(
+        Gdx.GL20.GLFramebufferTexture2D(
             IGL20.GL_FRAMEBUFFER,
             IGL20.GL_COLOR_ATTACHMENT0,
             side.GLEnum,
@@ -191,5 +194,8 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     /// <summary>
     ///     Get the currently bound side.
     /// </summary>
-    public Cubemap.CubemapSide? GetSide() => _currentSide < 0 ? null : CubemapSides[ _currentSide ];
+    public Cubemap.CubemapSide? GetSide()
+    {
+        return _currentSide < 0 ? null : CubemapSides[ _currentSide ];
+    }
 }

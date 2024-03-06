@@ -59,7 +59,10 @@ public class Mp3SharpException : Exception
     {
     }
 
-    public void PrintStackTrace() => SupportClass.WriteStackTrace( this, Console.Error );
+    public void PrintStackTrace()
+    {
+        SupportClass.WriteStackTrace( this, Console.Error );
+    }
 
     public void PrintStackTrace( StreamWriter ps )
     {

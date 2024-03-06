@@ -28,7 +28,6 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
 /// <summary>
 ///     Base Class for audio output.
 /// </summary>
-[PublicAPI]
 public abstract class AudioBase
 {
     public const int OBUFFERSIZE = 2 * 1152; // max. 2 * 1152 samples per frame
@@ -53,11 +52,14 @@ public abstract class AudioBase
     /// <summary>
     ///     Clip Sample to 16 Bits
     /// </summary>
-    private static short Clip( float sample ) => sample > 32767.0f
-        ? ( short )32767
-        : sample < -32768.0f
-            ? ( short )-32768
-            : ( short )sample;
+    private static short Clip( float sample )
+    {
+        return sample > 32767.0f
+            ? ( short )32767
+            : sample < -32768.0f
+                ? ( short )-32768
+                : ( short )sample;
+    }
 
     /// <summary>
     ///     Write the samples to the file or directly to the audio hardware.

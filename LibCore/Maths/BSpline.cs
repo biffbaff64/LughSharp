@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Maths;
 
-[PublicAPI]
 public class BSpline<T> : IPath< T > where T : IVector< T >
 {
     private const float D6 = 1f / 6f;
@@ -38,7 +37,10 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     {
     }
 
-    public BSpline( T[] controlPoints, int degree, bool continuous ) => Set( controlPoints, degree, continuous );
+    public BSpline( T[] controlPoints, int degree, bool continuous )
+    {
+        Set( controlPoints, degree, continuous );
+    }
 
     public T[]?       ControlPoints { get; set; }
     public List< T >? Knots         { get; set; }
@@ -68,12 +70,16 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
         return DerivativeAt( output, i, u );
     }
 
-    public virtual float Approximate( in T v ) => Approximate( v, Nearest( v ) );
+    public virtual float Approximate( in T v )
+    {
+        return Approximate( v, Nearest( v ) );
+    }
 
-    public float Locate( T v ) =>
-
+    public float Locate( T v )
+    {
         // TODO Add a precise method
-        Approximate( v );
+        return Approximate( v );
+    }
 
     public float ApproxLength( int samples )
     {
@@ -342,25 +348,34 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
     }
 
     /// <returns> The value of the spline at position u of the specified span </returns>
-    protected virtual T ValueAt( T output, int span, float u ) => Calculate( output,
-                                                                             Continuous ? span : span + ( int )( Degree * 0.5f ),
-                                                                             u,
-                                                                             ControlPoints!,
-                                                                             Degree,
-                                                                             Continuous,
-                                                                             _tmp! );
+    protected virtual T ValueAt( T output, int span, float u )
+    {
+        return Calculate( output,
+                          Continuous ? span : span + ( int )( Degree * 0.5f ),
+                          u,
+                          ControlPoints!,
+                          Degree,
+                          Continuous,
+                          _tmp! );
+    }
 
     /// <returns> The derivative of the spline at position u of the specified span </returns>
-    protected virtual T DerivativeAt( T output, int span, float u ) => Derivative( output,
-                                                                                   Continuous ? span : span + ( int )( Degree * 0.5f ),
-                                                                                   u,
-                                                                                   ControlPoints!,
-                                                                                   Degree,
-                                                                                   Continuous,
-                                                                                   _tmp! );
+    protected virtual T DerivativeAt( T output, int span, float u )
+    {
+        return Derivative( output,
+                           Continuous ? span : span + ( int )( Degree * 0.5f ),
+                           u,
+                           ControlPoints!,
+                           Degree,
+                           Continuous,
+                           _tmp! );
+    }
 
     /// <returns> The span closest to the specified value </returns>
-    protected virtual int Nearest( T input ) => Nearest( input, 0, SpanCount );
+    protected virtual int Nearest( T input )
+    {
+        return Nearest( input, 0, SpanCount );
+    }
 
     /// <returns> The span closest to the specified value, restricting to the specified spans. </returns>
     protected virtual int Nearest( T input, int start, int count )
@@ -388,7 +403,10 @@ public class BSpline<T> : IPath< T > where T : IVector< T >
         return result;
     }
 
-    public virtual float Approximate( T input, int start, int count ) => Approximate( input, Nearest( input, start, count ) );
+    public virtual float Approximate( T input, int start, int count )
+    {
+        return Approximate( input, Nearest( input, start, count ) );
+    }
 
     protected virtual float Approximate( T input, int near )
     {

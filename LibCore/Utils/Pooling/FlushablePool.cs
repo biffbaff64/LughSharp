@@ -30,7 +30,6 @@ namespace LibGDXSharp.LibCore.Utils.Pooling;
 ///     (see <see cref="Obtain()" />), which can be freed all at once using the
 ///     <see cref="Flush()" /> method.
 /// </summary>
-[PublicAPI]
 public abstract class FlushablePool<T> : Pool< T >
 {
     private readonly List< T > _obtained = new();

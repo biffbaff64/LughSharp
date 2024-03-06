@@ -71,7 +71,7 @@ public class ScissorStack
                 return false;
             }
 
-            Core.Gdx.GL.GLEnable( IGL20.GL_SCISSOR_TEST );
+            Gdx.GL.GLEnable( IGL20.GL_SCISSOR_TEST );
         }
         else
         {
@@ -124,7 +124,7 @@ public class ScissorStack
 
         if ( Scissors.Count == 0 )
         {
-            Core.Gdx.GL.GLDisable( IGL20.GL_SCISSOR_TEST );
+            Gdx.GL.GLDisable( IGL20.GL_SCISSOR_TEST );
         }
         else
         {
@@ -139,7 +139,10 @@ public class ScissorStack
         return old;
     }
 
-    public static RectangleShape? PeekScissors() => Scissors.Count == 0 ? null : Scissors.Peek();
+    public static RectangleShape? PeekScissors()
+    {
+        return Scissors.Count == 0 ? null : Scissors.Peek();
+    }
 
     private static void Fix( RectangleShape rect )
     {
@@ -169,7 +172,9 @@ public class ScissorStack
                                           Matrix4 batchTransform,
                                           RectangleShape area,
                                           RectangleShape scissor )
-        => CalculateScissors( camera, 0, 0, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height, batchTransform, area, scissor );
+    {
+        CalculateScissors( camera, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height, batchTransform, area, scissor );
+    }
 
     /// <summary>
     ///     Calculates a scissor rectangle in OpenGL ES window coordinates from a <see cref="Camera" />,
@@ -220,7 +225,7 @@ public class ScissorStack
     {
         if ( Scissors.Count == 0 )
         {
-            Viewport.Set( 0, 0, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height );
+            Viewport.Set( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
             return Viewport;
         }

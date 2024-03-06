@@ -55,7 +55,7 @@ public class ShapeRenderer : IDisposable
             ? new ImmediateModeRenderer20( maxVertices, false, true, 0 )
             : new ImmediateModeRenderer20( maxVertices, false, true, 0, defaultShader );
 
-        _projectionMatrix.SetToOrtho2D( 0, 0, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height );
+        _projectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
         _matrixDirty = true;
     }
 
@@ -96,9 +96,15 @@ public class ShapeRenderer : IDisposable
     /// <summary>
     ///     Sets the color to be used by the next shapes drawn.
     /// </summary>
-    public void SetColor( float r, float g, float b, float a ) => _color.Set( r, g, b, a );
+    public void SetColor( float r, float g, float b, float a )
+    {
+        _color.Set( r, g, b, a );
+    }
 
-    public void UpdateMatrices() => _matrixDirty = true;
+    public void UpdateMatrices()
+    {
+        _matrixDirty = true;
+    }
 
     /// <summary>
     ///     Sets the transformation matrix to identity.
@@ -142,7 +148,10 @@ public class ShapeRenderer : IDisposable
     ///     This can increase the number of batch flushes if care is not taken to draw
     ///     the same type of shapes together. Default is false.
     /// </summary>
-    public void SetAutoShapeType( bool type ) => _autoShapeType = type;
+    public void SetAutoShapeType( bool type )
+    {
+        _autoShapeType = type;
+    }
 
     /// <summary>
     ///     Begins a new batch without specifying a shape type.
@@ -259,15 +268,30 @@ public class ShapeRenderer : IDisposable
     /// <summary>
     ///     Draws a line using <see cref="ShapeTypes.Lines" /> or <see cref="ShapeTypes.Filled" />.
     /// </summary>
-    public void Line( float x, float y, float z, float x2, float y2, float z2 ) => Line( x, y, z, x2, y2, z2, _color, _color );
+    public void Line( float x, float y, float z, float x2, float y2, float z2 )
+    {
+        Line( x, y, z, x2, y2, z2, _color, _color );
+    }
 
-    public void Line( Vector3 v0, Vector3 v1 ) => Line( v0.X, v0.Y, v0.Z, v1.X, v1.Y, v1.Z, _color, _color );
+    public void Line( Vector3 v0, Vector3 v1 )
+    {
+        Line( v0.X, v0.Y, v0.Z, v1.X, v1.Y, v1.Z, _color, _color );
+    }
 
-    public void Line( float x, float y, float x2, float y2 ) => Line( x, y, 0.0f, x2, y2, 0.0f, _color, _color );
+    public void Line( float x, float y, float x2, float y2 )
+    {
+        Line( x, y, 0.0f, x2, y2, 0.0f, _color, _color );
+    }
 
-    public void Line( Vector2 v0, Vector2 v1 ) => Line( v0.X, v0.Y, 0.0f, v1.X, v1.Y, 0.0f, _color, _color );
+    public void Line( Vector2 v0, Vector2 v1 )
+    {
+        Line( v0.X, v0.Y, 0.0f, v1.X, v1.Y, 0.0f, _color, _color );
+    }
 
-    public void Line( float x, float y, float x2, float y2, Color c1, Color c2 ) => Line( x, y, 0.0f, x2, y2, 0.0f, c1, c2 );
+    public void Line( float x, float y, float x2, float y2, Color c1, Color c2 )
+    {
+        Line( x, y, 0.0f, x2, y2, 0.0f, c1, c2 );
+    }
 
     /// <summary>
     ///     Draws a line using <see cref="ShapeTypes.Lines" /> or <see cref="ShapeTypes.Filled" />.
@@ -564,7 +588,10 @@ public class ShapeRenderer : IDisposable
                       float height,
                       float scaleX,
                       float scaleY,
-                      float degrees ) => Rect( x, y, originX, originY, width, height, scaleX, scaleY, degrees, _color, _color, _color, _color );
+                      float degrees )
+    {
+        Rect( x, y, originX, originY, width, height, scaleX, scaleY, degrees, _color, _color, _color, _color );
+    }
 
     /// <summary>
     ///     Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines" />
@@ -786,7 +813,10 @@ public class ShapeRenderer : IDisposable
         }
     }
 
-    public void RectLine( Vector2 p1, Vector2 p2, float width ) => RectLine( p1.X, p1.Y, p2.X, p2.Y, width );
+    public void RectLine( Vector2 p1, Vector2 p2, float width )
+    {
+        RectLine( p1.X, p1.Y, p2.X, p2.Y, width );
+    }
 
     /// <summary>
     ///     Draws a cube using <see cref="ShapeTypes.Lines" /> or
@@ -968,21 +998,27 @@ public class ShapeRenderer : IDisposable
         Line( x - size, y + size, x + size, y - size );
     }
 
-    public void XShape( Vector2 p, float size ) => XShape( p.X, p.Y, size );
+    public void XShape( Vector2 p, float size )
+    {
+        XShape( p.X, p.Y, size );
+    }
 
     /// <summary>
     ///     Calls <see cref="Arc(float, float, float, float, float, int)" /> by
     ///     estimating the number of segments needed for a smooth arc.
     /// </summary>
-    public void Arc( float x, float y, float radius, float start, float degrees ) => Arc( x,
-                                                                                          y,
-                                                                                          radius,
-                                                                                          start,
-                                                                                          degrees,
-                                                                                          Math.Max( 1,
-                                                                                                    ( int )( 6
-                                                                                                           * ( float )Math.Cbrt( radius )
-                                                                                                           * ( degrees / 360.0f ) ) ) );
+    public void Arc( float x, float y, float radius, float start, float degrees )
+    {
+        Arc( x,
+             y,
+             radius,
+             start,
+             degrees,
+             Math.Max( 1,
+                       ( int )( 6
+                              * ( float )Math.Cbrt( radius )
+                              * ( degrees / 360.0f ) ) ) );
+    }
 
     /// <summary>
     ///     Draws an arc using <see cref="ShapeTypes.Lines" /> or <see cref="ShapeTypes.Filled" />.
@@ -1066,7 +1102,10 @@ public class ShapeRenderer : IDisposable
     ///     Calls <see cref="Circle(float, float, float, int)" /> by estimating the
     ///     number of segments needed for a smooth circle.
     /// </summary>
-    public void Circle( float x, float y, float radius ) => Circle( x, y, radius, Math.Max( 1, ( int )( 6 * ( float )Math.Cbrt( radius ) ) ) );
+    public void Circle( float x, float y, float radius )
+    {
+        Circle( x, y, radius, Math.Max( 1, ( int )( 6 * ( float )Math.Cbrt( radius ) ) ) );
+    }
 
     /// <summary>
     ///     Draws a circle using <see cref="ShapeTypes.Lines" /> or
@@ -1149,14 +1188,17 @@ public class ShapeRenderer : IDisposable
     ///     Calls <see cref="Ellipse(float, float, float, float, int)" /> by estimating
     ///     the number of segments needed for a smooth ellipse.
     /// </summary>
-    public void Ellipse( float x, float y, float width, float height ) => Ellipse( x,
-                                                                                   y,
-                                                                                   width,
-                                                                                   height,
-                                                                                   Math.Max( 1,
-                                                                                             ( int )( 12
-                                                                                                    * ( float )Math.Cbrt(
-                                                                                                          Math.Max( width * 0.5f, height * 0.5f ) ) ) ) );
+    public void Ellipse( float x, float y, float width, float height )
+    {
+        Ellipse( x,
+                 y,
+                 width,
+                 height,
+                 Math.Max( 1,
+                           ( int )( 12
+                                  * ( float )Math.Cbrt(
+                                        Math.Max( width * 0.5f, height * 0.5f ) ) ) ) );
+    }
 
     /// <summary>
     ///     Draws an ellipse using <see cref="ShapeTypes.Lines" /> or <see cref="ShapeTypes.Filled" />.
@@ -1217,15 +1259,18 @@ public class ShapeRenderer : IDisposable
     ///     Calls <see cref="Ellipse(float, float, float, float, float, int)" /> by
     ///     estimating the number of segments needed for a smooth ellipse.
     /// </summary>
-    public void Ellipse( float x, float y, float width, float height, float rotation ) => Ellipse( x,
-                                                                                                   y,
-                                                                                                   width,
-                                                                                                   height,
-                                                                                                   rotation,
-                                                                                                   Math.Max( 1,
-                                                                                                             ( int )( 12
-                                                                                                                    * ( float )Math.Cbrt(
-                                                                                                                          Math.Max( width * 0.5f, height * 0.5f ) ) ) ) );
+    public void Ellipse( float x, float y, float width, float height, float rotation )
+    {
+        Ellipse( x,
+                 y,
+                 width,
+                 height,
+                 rotation,
+                 Math.Max( 1,
+                           ( int )( 12
+                                  * ( float )Math.Cbrt(
+                                        Math.Max( width * 0.5f, height * 0.5f ) ) ) ) );
+    }
 
     /// <summary>
     ///     Draws an ellipse using <see cref="ShapeTypes.Lines" /> or <see cref="ShapeTypes.Filled" />.
@@ -1289,7 +1334,9 @@ public class ShapeRenderer : IDisposable
     ///     the number of segments needed for a smooth circular base.
     /// </summary>
     public void Cone( float x, float y, float z, float radius, float height )
-        => Cone( x, y, z, radius, height, Math.Max( 1, ( int )( 4 * ( float )Math.Sqrt( radius ) ) ) );
+    {
+        Cone( x, y, z, radius, height, Math.Max( 1, ( int )( 4 * ( float )Math.Sqrt( radius ) ) ) );
+    }
 
     /// <summary>
     ///     Draws a cone using <see cref="ShapeTypes.Lines" /> or <see cref="ShapeTypes.Filled" />.
@@ -1439,7 +1486,10 @@ public class ShapeRenderer : IDisposable
         }
     }
 
-    public void Polygon( float[] vertices ) => Polygon( vertices, 0, vertices.Length );
+    public void Polygon( float[] vertices )
+    {
+        Polygon( vertices, 0, vertices.Length );
+    }
 
     /// <summary>
     ///     Draws a polyline in the x/y plane using <see cref="ShapeTypes.Lines" />.
@@ -1475,7 +1525,10 @@ public class ShapeRenderer : IDisposable
         }
     }
 
-    public void Polyline( float[] vertices ) => Polyline( vertices, 0, vertices.Length );
+    public void Polyline( float[] vertices )
+    {
+        Polyline( vertices, 0, vertices.Length );
+    }
 
     /// <summary>
     /// </summary>
@@ -1537,7 +1590,10 @@ public class ShapeRenderer : IDisposable
     /// <summary>
     /// </summary>
     /// <returns> true if currently between begin and end.</returns>
-    public bool IsDrawing() => ShapeType != null;
+    public bool IsDrawing()
+    {
+        return ShapeType != null;
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

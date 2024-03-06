@@ -31,7 +31,6 @@ using Exception = System.Exception;
 
 namespace LibGDXSharp.LibCore.Graphics.G2D;
 
-[PublicAPI]
 public class ParticleEmitter
 {
     // ------------------------------------------------------------------------
@@ -105,7 +104,10 @@ public class ParticleEmitter
     public float duration = 1;
     public float durationTimer;
 
-    public ParticleEmitter() => Initialise();
+    public ParticleEmitter()
+    {
+        Initialise();
+    }
 
     public ParticleEmitter( StreamReader reader )
     {
@@ -1547,7 +1549,10 @@ public class ParticleEmitter
         }
     }
 
-    private static string ReadString( string line ) => line.Substring( line.IndexOf( ":", StringComparison.Ordinal ) + 1 ).Trim();
+    private static string ReadString( string line )
+    {
+        return line.Substring( line.IndexOf( ":", StringComparison.Ordinal ) + 1 ).Trim();
+    }
 
     private static string ReadString( StreamReader reader, string name )
     {
@@ -1561,13 +1566,25 @@ public class ParticleEmitter
         return ReadString( line );
     }
 
-    private static bool ReadBoolean( string line ) => bool.Parse( ReadString( line ) );
+    private static bool ReadBoolean( string line )
+    {
+        return bool.Parse( ReadString( line ) );
+    }
 
-    private static bool ReadBoolean( StreamReader reader, string name ) => bool.Parse( ReadString( reader, name ) );
+    private static bool ReadBoolean( StreamReader reader, string name )
+    {
+        return bool.Parse( ReadString( reader, name ) );
+    }
 
-    private static int ReadInt( StreamReader reader, string name ) => int.Parse( ReadString( reader, name ) );
+    private static int ReadInt( StreamReader reader, string name )
+    {
+        return int.Parse( ReadString( reader, name ) );
+    }
 
-    private static float ReadFloat( StreamReader reader, string name ) => float.Parse( ReadString( reader, name ) );
+    private static float ReadFloat( StreamReader reader, string name )
+    {
+        return float.Parse( ReadString( reader, name ) );
+    }
 
     // ------------------------------------------------------------------------
 
@@ -1609,7 +1626,10 @@ public class ParticleEmitter
         public bool Active       { get; set; }
         public bool AlwaysActive { get; set; }
 
-        public virtual bool IsActive() => AlwaysActive || Active;
+        public virtual bool IsActive()
+        {
+            return AlwaysActive || Active;
+        }
 
         public virtual void Save( StreamWriter output )
         {
@@ -1623,7 +1643,10 @@ public class ParticleEmitter
             }
         }
 
-        public virtual void Load( StreamReader reader ) => Active = AlwaysActive || ReadBoolean( reader, "active" );
+        public virtual void Load( StreamReader reader )
+        {
+            Active = AlwaysActive || ReadBoolean( reader, "active" );
+        }
 
         public virtual void Load( ParticleValue value )
         {
@@ -1678,7 +1701,10 @@ public class ParticleEmitter
         public float LowMin { get; set; }
         public float LowMax { get; set; }
 
-        public float NewLowValue() => LowMin + ( ( LowMax - LowMin ) * MathUtils.Random() );
+        public float NewLowValue()
+        {
+            return LowMin + ( ( LowMax - LowMin ) * MathUtils.Random() );
+        }
 
         public void SetLow( float value )
         {
@@ -1752,7 +1778,10 @@ public class ParticleEmitter
         public float   HighMax    { get; set; }
         public bool    IsRelative { get; set; }
 
-        public float NewHighValue() => HighMin + ( ( HighMax - HighMin ) * MathUtils.Random() );
+        public float NewHighValue()
+        {
+            return HighMin + ( ( HighMax - HighMin ) * MathUtils.Random() );
+        }
 
         public void SetHigh( float value )
         {
@@ -1990,7 +2019,7 @@ public class ParticleEmitter
                                  + "Please download the latest version of the Particle Editor tool and recreate the file by"
                                  + " loading and saving it again.";
 
-                Core.Gdx.App.Error( "ParticleEmitter", errorMessage );
+                Gdx.App.Error( "ParticleEmitter", errorMessage );
 
                 throw new IOException( errorMessage );
             }
@@ -2010,7 +2039,10 @@ public class ParticleEmitter
     {
         private readonly float[] _temp = new float[ 4 ];
 
-        public GradientColorValue() => AlwaysActive = true;
+        public GradientColorValue()
+        {
+            AlwaysActive = true;
+        }
 
         public float[] Timeline { get; set; } = { 0 };
         public float[] Colors   { get; set; } = { 1, 1, 1 };

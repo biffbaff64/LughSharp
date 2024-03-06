@@ -129,7 +129,10 @@ public class BitmapFontCache
     /// </summary>
     /// <param name="x"> The x coordinate </param>
     /// <param name="y"> The y coordinate </param>
-    public void SetPosition( float x, float y ) => Translate( x - X, y - Y );
+    public void SetPosition( float x, float y )
+    {
+        Translate( x - X, y - Y );
+    }
 
     /// <summary>
     ///     Sets the position of the text, relative to its current position.
@@ -270,7 +273,10 @@ public class BitmapFontCache
     ///     Sets the color of all text currently in the cache.
     ///     Does not affect subsequently added text.
     /// </summary>
-    public void SetColors( Color tint ) => SetColors( tint.ToFloatBits() );
+    public void SetColors( Color tint )
+    {
+        SetColors( tint.ToFloatBits() );
+    }
 
     /// <summary>
     ///     Sets the color of all text currently in the cache. Does not affect subsequently added text.
@@ -294,7 +300,10 @@ public class BitmapFontCache
     ///     after <see cref="SetText(string, float, float)" /> and is reset every
     ///     time setText is called.
     /// </summary>
-    public void SetColors( Color tint, int start, int end ) => SetColors( tint.ToFloatBits(), start, end );
+    public void SetColors( Color tint, int start, int end )
+    {
+        SetColors( tint.ToFloatBits(), start, end );
+    }
 
     /// <summary>
     ///     Sets the color of the specified characters. This may only be called
@@ -352,19 +361,28 @@ public class BitmapFontCache
     ///     affects text subsequently added to the cache, but does not affect existing
     ///     text currently in the cache.
     /// </summary>
-    public Color GetColor() => _color;
+    public Color GetColor()
+    {
+        return _color;
+    }
 
     /// <summary>
     ///     A convenience method for setting the cache color. The color can also
     ///     be set by modifying <see cref="GetColor()" />.
     /// </summary>
-    public void SetColor( Color col ) => _color.Set( col );
+    public void SetColor( Color col )
+    {
+        _color.Set( col );
+    }
 
     /// <summary>
     ///     A convenience method for setting the cache color. The color can
     ///     also be set by modifying {@link #getColor()}.
     /// </summary>
-    public void SetColor( float r, float g, float b, float a ) => _color.Set( r, g, b, a );
+    public void SetColor( float r, float g, float b, float a )
+    {
+        _color.Set( r, g, b, a );
+    }
 
     public virtual void Draw( IBatch spriteBatch )
     {
@@ -724,7 +742,9 @@ public class BitmapFontCache
     ///     Adds glyphs for the specified text.
     /// </summary>
     public GlyphLayout AddText( string str, float x, float y, float targetWidth, int halign, bool wrap )
-        => AddText( str, x, y, 0, str.Length, targetWidth, halign, wrap );
+    {
+        return AddText( str, x, y, 0, str.Length, targetWidth, halign, wrap );
+    }
 
     /// <summary>
     ///     Adds glyphs for the the specified text.
@@ -770,7 +790,10 @@ public class BitmapFontCache
     /// <summary>
     ///     Adds glyphs for the specified text.
     /// </summary>
-    public GlyphLayout AddText( string str, float x, float y ) => AddText( str, x, y, 0, str.Length, 0, Align.LEFT, false );
+    public GlyphLayout AddText( string str, float x, float y )
+    {
+        return AddText( str, x, y, 0, str.Length, 0, Align.LEFT, false );
+    }
 
     /// <summary>
     ///     Adds the specified glyphs.
@@ -783,9 +806,18 @@ public class BitmapFontCache
         }
     }
 
-    public float[]? GetVertices( int page = 0 ) => _pageVertices[ page ];
+    public float[]? GetVertices( int page = 0 )
+    {
+        return _pageVertices[ page ];
+    }
 
-    public int GetVertexCount( int page ) => _idx[ page ];
+    public int GetVertexCount( int page )
+    {
+        return _idx[ page ];
+    }
 
-    public List< GlyphLayout > GetLayouts() => _layouts;
+    public List< GlyphLayout > GetLayouts()
+    {
+        return _layouts;
+    }
 }

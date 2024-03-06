@@ -41,11 +41,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 {
     private const string TAG = "GLApplication";
 
-    private static   GLFW.GlfwErrorCallback? _errorCallback = null;
-    private readonly Sync?                   _sync          = null;
-    private volatile DesktopGLWindow?        _currentWindow = null;
-    private          bool                    _running       = true;
-        
+    private static   GlfwErrorCallback? _errorCallback = null;
+    private readonly Sync?              _sync          = null;
+    private volatile DesktopGLWindow?   _currentWindow = null;
+    private          bool               _running       = true;
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -118,7 +118,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    /// Gets the Desktop Preferences object.
+    ///     Gets the Desktop Preferences object.
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
@@ -151,11 +151,20 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                 config.AudioDeviceBufferSize );
     }
 
-    public IDesktopGLInput CreateInput( DesktopGLWindow window ) => new DefaultDesktopGLInput( window );
+    public IDesktopGLInput CreateInput( DesktopGLWindow window )
+    {
+        return new DefaultDesktopGLInput( window );
+    }
 
-    public int GetVersion() => 0;
+    public int GetVersion()
+    {
+        return 0;
+    }
 
-    public void Exit() => _running = false;
+    public void Exit()
+    {
+        _running = false;
+    }
 
     public void AddLifecycleListener( ILifecycleListener listener )
     {
@@ -380,16 +389,16 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         for ( var i = 0; i < 2; i++ )
         {
             GL.glClearColor( config.InitialBackgroundColor.R,
-                           config.InitialBackgroundColor.G,
-                           config.InitialBackgroundColor.B,
-                           config.InitialBackgroundColor.A );
+                             config.InitialBackgroundColor.G,
+                             config.InitialBackgroundColor.B,
+                             config.InitialBackgroundColor.A );
 
             GL.glClear( GL.GL_COLOR_BUFFER_BIT );
             Glfw.SwapBuffers( windowHandle );
         }
     }
 
-    private GLFWWindow CreateGLFWWindow( DesktopGLApplicationConfiguration appConfig, GLFW.Window sharedContextWindow )
+    private GLFWWindow CreateGLFWWindow( DesktopGLApplicationConfiguration appConfig, GLFWWindow sharedContextWindow )
     {
         Glfw.DefaultWindowHints();
 
@@ -432,7 +441,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Glfw.WindowHint( Hint.OpenGLDebugContext, true );
         }
 
-        GLFW.Window windowHandle;
+        GLFWWindow windowHandle;
 
         if ( appConfig.FullscreenMode != null )
         {
@@ -488,7 +497,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                 {
                     monitorHandle = appConfig.MaximizedMonitor.MonitorHandle;
                 }
-                
+
                 Glfw.GetMonitorWorkarea( monitorHandle,
                                          out var areaXPos,
                                          out var areaYPos,
@@ -525,7 +534,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         if ( !GLVersion!.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
         {
             var (major, minor) = GL.GetProjectOpenGLVersion();
-            
+
             throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is required. "
                                          + $"OpenGL version: {major}.{minor}"
                                          + $"\n{GLVersion?.DebugVersionString()}" );
@@ -558,7 +567,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             DesktopGLNativesLoader.Load();
 
             Glfw.SetErrorCallback( _errorCallback );
-            Glfw.InitHint( GLFW.InitHint.JoystickHatButtons, false );
+            Glfw.InitHint( InitHint.JoystickHatButtons, false );
 
             if ( !Glfw.Init() )
             {
@@ -567,11 +576,14 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    protected static IFiles CreateFiles() => new DesktopGLFiles();
+    protected static IFiles CreateFiles()
+    {
+        return new DesktopGLFiles();
+    }
 
     /// <summary>
     /// </summary>
-    private unsafe void InitiateGL()
+    private void InitiateGL()
     {
         Glfw.GetVersion( out var major, out var minor, out var revision );
 
@@ -670,7 +682,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     //TODO: Unfinished, see GLDebugMessageSeverity below
 
-    [PublicAPI]
+
     public struct Gldms
     {
         public int gl43;
@@ -687,7 +699,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    [PublicAPI]
+
     public record GLDebugMessageSeverity
     {
 //        public Gldms High = new( GL43.GL_DEBUG_SEVERITY_HIGH,
@@ -717,8 +729,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     ///     level is not supported by the ARB and AMD extensions).
     /// </summary>
     /// <seealso cref="DesktopGLApplicationConfiguration.EnableGLDebugOutput(bool, StreamWriter)" />
-    public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled ) =>
-
+    public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled )
+    {
         //        GLCapabilities caps         = GL.GetCapabilities();
         //        const int      GL_DONT_CARE = 0x1100; // not defined anywhere yet
         //
@@ -749,7 +761,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         //
         //            return true;
         //        }
-        false;
+        return false;
+    }
 
     #endregion GLDebug specific
 }

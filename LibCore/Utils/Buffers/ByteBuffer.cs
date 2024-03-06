@@ -25,16 +25,11 @@
 
 namespace LibGDXSharp.LibCore.Utils.Buffers;
 
-[PublicAPI]
 public abstract class ByteBuffer : Buffer
 {
-    protected byte[]? Hb        { get; set; }
-    protected int     Offset    { get; set; }
-    protected bool    BigEndian { get; set; } = true;
-
     // ------------------------------------------------------------------------
 
-    private bool _nativeByteOrder = ( Bits.ByteOrder == ByteOrder.BigEndian );
+    private bool _nativeByteOrder = Bits.ByteOrder == ByteOrder.BigEndian;
 
     // ------------------------------------------------------------------------
 
@@ -44,6 +39,10 @@ public abstract class ByteBuffer : Buffer
         Hb     = hb;
         Offset = offset;
     }
+
+    protected byte[]? Hb        { get; set; }
+    protected int     Offset    { get; set; }
+    protected bool    BigEndian { get; set; } = true;
 
     /// <summary>
     ///     Allocates a new direct byte buffer.
@@ -58,7 +57,10 @@ public abstract class ByteBuffer : Buffer
     /// <exception cref="ArgumentException">
     ///     If the <tt>capacity</tt> is a negative integer
     /// </exception>
-    public static ByteBuffer AllocateDirect( int capacity ) => new DirectByteBuffer( capacity );
+    public static ByteBuffer AllocateDirect( int capacity )
+    {
+        return new DirectByteBuffer( capacity );
+    }
 
     /// <summary>
     ///     Allocates a new byte buffer.
@@ -119,7 +121,10 @@ public abstract class ByteBuffer : Buffer
         }
     }
 
-    public static ByteBuffer Wrap( byte[] array ) => Wrap( array, 0, array.Length );
+    public static ByteBuffer Wrap( byte[] array )
+    {
+        return Wrap( array, 0, array.Length );
+    }
 
     // ------------------------------------------------------------------------
 
@@ -197,7 +202,10 @@ public abstract class ByteBuffer : Buffer
     /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than <tt> dst.Length </tt> bytes remaining in this buffer.
     /// </exception>
-    public ByteBuffer Get( byte[] dst ) => Get( dst, 0, dst.Length );
+    public ByteBuffer Get( byte[] dst )
+    {
+        return Get( dst, 0, dst.Length );
+    }
 
     /// <summary>
     ///     Transfers the bytes remaining in the given source buffer into this buffer.
@@ -295,7 +303,10 @@ public abstract class ByteBuffer : Buffer
     ///     If there is insufficient space in this buffer.
     /// </exception>
     /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
-    public ByteBuffer Put( byte[] src ) => Put( src, 0, src.Length );
+    public ByteBuffer Put( byte[] src )
+    {
+        return Put( src, 0, src.Length );
+    }
 
     // ------------------------------------------------------------------------
 
@@ -309,7 +320,10 @@ public abstract class ByteBuffer : Buffer
     /// <returns>
     ///     <tt>true</tt> if, and only if, this buffer is backed by an array and is not read-only
     /// </returns>
-    public override bool HasArray() => ( Hb != null ) && !IsReadOnly;
+    public override bool HasArray()
+    {
+        return ( Hb != null ) && !IsReadOnly;
+    }
 
     /// <summary>
     ///     Returns the byte array that backs this buffer <i>(optional operation)</i>.
@@ -422,7 +436,10 @@ public abstract class ByteBuffer : Buffer
     ///     Returns a string summarizing the state of this buffer.
     /// </summary>
     /// <returns> A summary string </returns>
-    public override string ToString() => $"{GetType().Name} [pos={Position} lim={Limit} cap={Capacity}]";
+    public override string ToString()
+    {
+        return $"{GetType().Name} [pos={Position} lim={Limit} cap={Capacity}]";
+    }
 
     /// <summary>
     ///     Returns the current hash code of this buffer.
@@ -459,8 +476,8 @@ public abstract class ByteBuffer : Buffer
     ///     <para>1. They have the same element type,</para>
     ///     <para>2. They have the same number of remaining elements, and,</para>
     ///     <para>
-    ///           3. The two sequences of remaining elements, considered independently
-    ///              of their starting positions, are pointwise equal.
+    ///         3. The two sequences of remaining elements, considered independently
+    ///         of their starting positions, are pointwise equal.
     ///     </para>
     ///     <para> A byte buffer is not equal to any other type of object. </para>
     /// </summary>
@@ -498,13 +515,19 @@ public abstract class ByteBuffer : Buffer
         return true;
     }
 
-    private static bool Equals( byte x, byte y ) => x == y;
+    private static bool Equals( byte x, byte y )
+    {
+        return x == y;
+    }
 
     /// <summary>
     ///     Serves as the default hash function.
     /// </summary>
     /// <returns>A hash code for the current object.</returns>
-    public override int GetHashCode() => HashCode();
+    public override int GetHashCode()
+    {
+        return HashCode();
+    }
 
     /// <summary>
     ///     Compares this buffer to another.
@@ -538,7 +561,10 @@ public abstract class ByteBuffer : Buffer
         return Remaining() - that.Remaining();
     }
 
-    private static int Compare( byte x, byte y ) => x - y;
+    private static int Compare( byte x, byte y )
+    {
+        return x - y;
+    }
 
     /// <summary>
     ///     Retrieves this buffer's byte order.
@@ -549,7 +575,10 @@ public abstract class ByteBuffer : Buffer
     ///     </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
-    public ByteOrder Order() => BigEndian ? ByteOrder.BigEndian : ByteOrder.LittleEndian;
+    public ByteOrder Order()
+    {
+        return BigEndian ? ByteOrder.BigEndian : ByteOrder.LittleEndian;
+    }
 
     /// <summary>
     ///     Modifies this buffer's byte order.
@@ -561,7 +590,7 @@ public abstract class ByteBuffer : Buffer
     /// <returns> This buffer </returns>
     public ByteBuffer Order( ByteOrder order )
     {
-        BigEndian        = ( order == ByteOrder.BigEndian );
+        BigEndian        = order == ByteOrder.BigEndian;
         _nativeByteOrder = BigEndian == ( Bits.ByteOrder == ByteOrder.BigEndian );
 
         return this;

@@ -101,33 +101,37 @@ public class TooltipManager<T> where T : Actor
     public bool Animations { get; set; } = true;
 
     //@formatter:off
-    private void Create() => _showTask = new Task( () =>
+    private void Create()
     {
-        Stage? stage = _showTooltip.TargetActor?.Stage;
-
-        if ( stage == null )
+        _showTask = new Task( () =>
         {
-           return;
-        }
+            Stage? stage = _showTooltip.TargetActor?.Stage;
 
-        stage.AddActor( _showTooltip.Container );
+            if ( stage == null )
+            {
+                return;
+            }
 
-        _showTooltip.Container.ToFront();
-        _activeTooltips.Add( _showTooltip );
-        _showTooltip.Container.ClearActions();
+            stage.AddActor( _showTooltip.Container );
 
-        ShowAction( _showTooltip );
+            _showTooltip.Container.ToFront();
+            _activeTooltips.Add( _showTooltip );
+            _showTooltip.Container.ClearActions();
 
-        if ( !_showTooltip.Instant )
-        {
-           _time = SubsequentTime;
-        }
+            ShowAction( _showTooltip );
 
-        if ( _showTaskCancellationToken.IsCancellationRequested )
-        {
-           _showTaskCancellationToken.ThrowIfCancellationRequested();
-        }
-    },_showTaskCancellationToken );
+            if ( !_showTooltip.Instant )
+            {
+                _time = SubsequentTime;
+            }
+
+            if ( _showTaskCancellationToken.IsCancellationRequested )
+            {
+                _showTaskCancellationToken.ThrowIfCancellationRequested();
+            }
+        },_showTaskCancellationToken );
+    }
+
     //@formatter:on
 
     public void TouchDown( Tooltip< T > tooltip )
@@ -194,15 +198,18 @@ public class TooltipManager<T> where T : Actor
     ///     and to remove the actor from the stage when the actions are complete. A subclass must
     ///     at least remove the actor.
     /// </summary>
-    protected static void HideAction( Tooltip< T > tooltip ) => tooltip.Container.AddAction( SceneActions.Sequence(
-                                                                                                 SceneActions.Parallel(
-                                                                                                     SceneActions.Alpha( 0.2f, 0.2f, Interpolation.fade ),
-                                                                                                     SceneActions.ScaleTo(
-                                                                                                         0.05f,
-                                                                                                         0.05f,
-                                                                                                         0.2f,
-                                                                                                         Interpolation.fade ) ),
-                                                                                                 SceneActions.RemoveActor() ) );
+    protected static void HideAction( Tooltip< T > tooltip )
+    {
+        tooltip.Container.AddAction( SceneActions.Sequence(
+                                         SceneActions.Parallel(
+                                             SceneActions.Alpha( 0.2f, 0.2f, Interpolation.fade ),
+                                             SceneActions.ScaleTo(
+                                                 0.05f,
+                                                 0.05f,
+                                                 0.2f,
+                                                 Interpolation.fade ) ),
+                                         SceneActions.RemoveActor() ) );
+    }
 
     public void HideAll()
     {

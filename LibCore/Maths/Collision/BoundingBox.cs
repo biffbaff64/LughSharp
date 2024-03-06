@@ -44,20 +44,29 @@ public class BoundingBox
     /// <summary>
     ///     Constructs a new bounding box with the minimum and maximum vector set to zeros.
     /// </summary>
-    public BoundingBox() => Clear();
+    public BoundingBox()
+    {
+        Clear();
+    }
 
     /// <summary>
     ///     Constructs a new bounding box from the given bounding box.
     /// </summary>
     /// <param name="bounds"> The bounding box to copy  </param>
-    public BoundingBox( BoundingBox bounds ) => Set( bounds );
+    public BoundingBox( BoundingBox bounds )
+    {
+        Set( bounds );
+    }
 
     /// <summary>
     ///     Constructs the new bounding box using the given minimum and maximum vector.
     /// </summary>
     /// <param name="minimum"> The minimum vector </param>
     /// <param name="maximum"> The maximum vector  </param>
-    public BoundingBox( Vector3 minimum, Vector3 maximum ) => Set( minimum, maximum );
+    public BoundingBox( Vector3 minimum, Vector3 maximum )
+    {
+        Set( minimum, maximum );
+    }
 
     public float CenterX => _cnt.X;
     public float CenterY => _cnt.Y;
@@ -79,7 +88,10 @@ public class BoundingBox
     /// </summary>
     /// <param name="bounds">The bounds.</param>
     /// <returns>This bounding box for chaining.</returns>
-    public BoundingBox Set( BoundingBox bounds ) => Set( bounds.min, bounds.max );
+    public BoundingBox Set( BoundingBox bounds )
+    {
+        return Set( bounds.min, bounds.max );
+    }
 
     /// <summary>
     ///     Sets the given minimum and maximum vector.
@@ -149,55 +161,82 @@ public class BoundingBox
     ///     The <see cref="Vector3" /> to receive the center of the bounding box.
     /// </param>
     /// <returns>The vector specified with the vec3 argument.</returns>
-    public Vector3 GetCenter( Vector3 vec3 ) => vec3.Set( _cnt );
+    public Vector3 GetCenter( Vector3 vec3 )
+    {
+        return vec3.Set( _cnt );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vec3"></param>
     /// <returns></returns>
-    public Vector3 GetCorner000( in Vector3 vec3 ) => vec3.Set( min.X, min.Y, min.Z );
+    public Vector3 GetCorner000( in Vector3 vec3 )
+    {
+        return vec3.Set( min.X, min.Y, min.Z );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vec3"></param>
     /// <returns></returns>
-    public Vector3 GetCorner001( in Vector3 vec3 ) => vec3.Set( min.X, min.Y, max.Z );
+    public Vector3 GetCorner001( in Vector3 vec3 )
+    {
+        return vec3.Set( min.X, min.Y, max.Z );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vec3"></param>
     /// <returns></returns>
-    public Vector3 GetCorner010( in Vector3 vec3 ) => vec3.Set( min.X, max.Y, min.Z );
+    public Vector3 GetCorner010( in Vector3 vec3 )
+    {
+        return vec3.Set( min.X, max.Y, min.Z );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vec3"></param>
     /// <returns></returns>
-    public Vector3 GetCorner011( in Vector3 vec3 ) => vec3.Set( min.X, max.Y, max.Z );
+    public Vector3 GetCorner011( in Vector3 vec3 )
+    {
+        return vec3.Set( min.X, max.Y, max.Z );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vec3"></param>
     /// <returns></returns>
-    public Vector3 GetCorner100( in Vector3 vec3 ) => vec3.Set( max.X, min.Y, min.Z );
+    public Vector3 GetCorner100( in Vector3 vec3 )
+    {
+        return vec3.Set( max.X, min.Y, min.Z );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vec3"></param>
     /// <returns></returns>
-    public Vector3 GetCorner101( in Vector3 vec3 ) => vec3.Set( max.X, min.Y, max.Z );
+    public Vector3 GetCorner101( in Vector3 vec3 )
+    {
+        return vec3.Set( max.X, min.Y, max.Z );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vec3"></param>
     /// <returns></returns>
-    public Vector3 GetCorner110( in Vector3 vec3 ) => vec3.Set( max.X, max.Y, min.Z );
+    public Vector3 GetCorner110( in Vector3 vec3 )
+    {
+        return vec3.Set( max.X, max.Y, min.Z );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vec3"></param>
     /// <returns></returns>
-    public Vector3 GetCorner111( in Vector3 vec3 ) => vec3.Set( max.X, max.Y, max.Z );
+    public Vector3 GetCorner111( in Vector3 vec3 )
+    {
+        return vec3.Set( max.X, max.Y, max.Z );
+    }
 
     /// <summary>
     /// </summary>
@@ -205,19 +244,28 @@ public class BoundingBox
     ///     The <see cref="Vector3" /> to receive the dimensions of this bounding box on all three axis.
     /// </param>
     /// <returns> The vector specified with the vec3 argument</returns>
-    public Vector3 GetDimensions( in Vector3 vec3 ) => vec3.Set( _dim );
+    public Vector3 GetDimensions( in Vector3 vec3 )
+    {
+        return vec3.Set( _dim );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vec3"> The <see cref="Vector3" /> to receive the minimum values.</param>
     /// <returns> The vector specified with the out argument</returns>
-    public Vector3 GetMin( in Vector3 vec3 ) => vec3.Set( min );
+    public Vector3 GetMin( in Vector3 vec3 )
+    {
+        return vec3.Set( min );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vec3">The <see cref="Vector3" /> to receive the maximum values.</param>
     /// <returns> The vector specified with the out argument</returns>
-    public Vector3 GetMax( in Vector3 vec3 ) => vec3.Set( max );
+    public Vector3 GetMax( in Vector3 vec3 )
+    {
+        return vec3.Set( max );
+    }
 
     /// <summary>
     ///     Sets the minimum and maximum vector to positive and negative infinity.
@@ -239,26 +287,35 @@ public class BoundingBox
     /// </summary>
     /// <param name="point"> The vector</param>
     /// <returns> This bounding box for chaining.</returns>
-    public BoundingBox Extend( Vector3 point ) => Set(
-        min.Set( Min( min.X, point.X ), Min( min.Y, point.Y ), Min( min.Z, point.Z ) ),
-        max.Set( Max( max.X, point.X ), Max( max.Y, point.Y ), Max( max.Z, point.Z ) )
-        );
+    public BoundingBox Extend( Vector3 point )
+    {
+        return Set(
+            min.Set( Min( min.X, point.X ), Min( min.Y, point.Y ), Min( min.Z, point.Z ) ),
+            max.Set( Max( max.X, point.X ), Max( max.Y, point.Y ), Max( max.Z, point.Z ) )
+            );
+    }
 
     /// <summary>
     ///     Sets the minimum and maximum vector to zeros.
     /// </summary>
     /// <returns>This bounding box for chaining.</returns>
-    public BoundingBox Clear() => Set( min.Set( 0, 0, 0 ), max.Set( 0, 0, 0 ) );
+    public BoundingBox Clear()
+    {
+        return Set( min.Set( 0, 0, 0 ), max.Set( 0, 0, 0 ) );
+    }
 
     /// <summary>
     ///     Extends this bounding box by the given bounding box.
     /// </summary>
     /// <param name="aBounds">The bounding box</param>
     /// <returns>This bounding box for chaining.</returns>
-    public BoundingBox Extend( BoundingBox aBounds ) => Set(
-        min.Set( Min( min.X, aBounds.min.X ), Min( min.Y, aBounds.min.Y ), Min( min.Z, aBounds.min.Z ) ),
-        max.Set( Max( max.X, aBounds.max.X ), Max( max.Y, aBounds.max.Y ), Max( max.Z, aBounds.max.Z ) )
-        );
+    public BoundingBox Extend( BoundingBox aBounds )
+    {
+        return Set(
+            min.Set( Min( min.X, aBounds.min.X ), Min( min.Y, aBounds.min.Y ), Min( min.Z, aBounds.min.Z ) ),
+            max.Set( Max( max.X, aBounds.max.X ), Max( max.Y, aBounds.max.Y ), Max( max.Z, aBounds.max.Z ) )
+            );
+    }
 
     /// <summary>
     ///     Extends this bounding box by the given sphere.
@@ -266,10 +323,13 @@ public class BoundingBox
     /// <param name="center">Sphere center</param>
     /// <param name="radius">Sphere radius</param>
     /// <returns> This bounding box for chaining.</returns>
-    public BoundingBox Extend( Vector3 center, float radius ) => Set(
-        min.Set( Min( min.X, center.X - radius ), Min( min.Y, center.Y - radius ), Min( min.Z, center.Z - radius ) ),
-        max.Set( Max( max.X, center.X + radius ), Max( max.Y, center.Y + radius ), Max( max.Z, center.Z + radius ) )
-        );
+    public BoundingBox Extend( Vector3 center, float radius )
+    {
+        return Set(
+            min.Set( Min( min.X, center.X - radius ), Min( min.Y, center.Y - radius ), Min( min.Z, center.Z - radius ) ),
+            max.Set( Max( max.X, center.X + radius ), Max( max.Y, center.Y + radius ), Max( max.Z, center.Z + radius ) )
+            );
+    }
 
     /// <summary>
     ///     Extends this bounding box by the given transformed bounding box.
@@ -329,13 +389,16 @@ public class BoundingBox
     /// </summary>
     /// <param name="b">The bounding box</param>
     /// <returns>Whether the given bounding box is contained</returns>
-    public bool Contains( BoundingBox b ) => !Valid
-                                          || ( ( min.X <= b.min.X )
-                                            && ( min.Y <= b.min.Y )
-                                            && ( min.Z <= b.min.Z )
-                                            && ( max.X >= b.max.X )
-                                            && ( max.Y >= b.max.Y )
-                                            && ( max.Z >= b.max.Z ) );
+    public bool Contains( BoundingBox b )
+    {
+        return !Valid
+            || ( ( min.X <= b.min.X )
+              && ( min.Y <= b.min.Y )
+              && ( min.Z <= b.min.Z )
+              && ( max.X >= b.max.X )
+              && ( max.Y >= b.max.Y )
+              && ( max.Z >= b.max.Z ) );
+    }
 
     /// <summary>
     ///     Returns whether the given bounding box is intersecting this
@@ -369,17 +432,23 @@ public class BoundingBox
     /// </summary>
     /// <param name="v"> The vector </param>
     /// <returns> Whether the vector is contained or not.  </returns>
-    public bool Contains( Vector3 v ) => ( min.X <= v.X )
-                                      && ( max.X >= v.X )
-                                      && ( min.Y <= v.Y )
-                                      && ( max.Y >= v.Y )
-                                      && ( min.Z <= v.Z )
-                                      && ( max.Z >= v.Z );
+    public bool Contains( Vector3 v )
+    {
+        return ( min.X <= v.X )
+            && ( max.X >= v.X )
+            && ( min.Y <= v.Y )
+            && ( max.Y >= v.Y )
+            && ( min.Z <= v.Z )
+            && ( max.Z >= v.Z );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public override string ToString() => $"[ {min} | {max} ]";
+    public override string ToString()
+    {
+        return $"[ {min} | {max} ]";
+    }
 
     /// <summary>
     ///     Extends the bounding box by the given vector.
@@ -388,22 +457,31 @@ public class BoundingBox
     /// <param name="y">The y-coordinate</param>
     /// <param name="z">The z-coordinate</param>
     /// <returns>This bounding box for chaining.</returns>
-    public BoundingBox Extend( float x, float y, float z ) => Set(
-        min.Set( Min( min.X, x ), Min( min.Y, y ), Min( min.Z, z ) ),
-        max.Set( Max( max.X, x ), Max( max.Y, y ), Max( max.Z, z ) )
-        );
+    public BoundingBox Extend( float x, float y, float z )
+    {
+        return Set(
+            min.Set( Min( min.X, x ), Min( min.Y, y ), Min( min.Z, z ) ),
+            max.Set( Max( max.X, x ), Max( max.Y, y ), Max( max.Z, z ) )
+            );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <returns></returns>
-    public static float Min( in float a, in float b ) => a > b ? b : a;
+    public static float Min( in float a, in float b )
+    {
+        return a > b ? b : a;
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <returns></returns>
-    public static float Max( in float a, in float b ) => a > b ? a : b;
+    public static float Max( in float a, in float b )
+    {
+        return a > b ? a : b;
+    }
 }

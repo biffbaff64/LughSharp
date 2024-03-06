@@ -48,7 +48,7 @@ public class Mesh
 
     private IVertexData MakeVertexBuffer( bool isStatic, int maxVertices, VertexAttributes vertexAttributes )
     {
-        if ( Core.Gdx.GL30 != null! )
+        if ( Gdx.GL30 != null! )
         {
             return new VertexBufferObjectWithVAO( isStatic, maxVertices, vertexAttributes );
         }
@@ -234,7 +234,10 @@ public class Mesh
     /// </summary>
     /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
     /// <param name="source"> the vertex data to update the mesh part with  </param>
-    public Mesh UpdateVertices( int targetOffset, float[] source ) => UpdateVertices( targetOffset, source, 0, source.Length );
+    public Mesh UpdateVertices( int targetOffset, float[] source )
+    {
+        return UpdateVertices( targetOffset, source, 0, source.Length );
+    }
 
     /// <summary>
     ///     Update (a portion of) the vertices. Does not resize the backing buffer.
@@ -255,7 +258,10 @@ public class Mesh
     ///     must be large enough to hold all the Mesh's vertices.
     /// </summary>
     /// <param name="vertices"> the array to copy the vertices to  </param>
-    public float[] GetVertices( float[] vertices ) => GetVertices( 0, -1, vertices );
+    public float[] GetVertices( float[] vertices )
+    {
+        return GetVertices( 0, -1, vertices );
+    }
 
     /// <summary>
     ///     Copies the the remaining vertices from the Mesh to the float array.
@@ -265,7 +271,10 @@ public class Mesh
     ///     the offset (in number of floats) of the vertices in the mesh to copy
     /// </param>
     /// <param name="vertices"> the array to copy the vertices to  </param>
-    public float[] GetVertices( int srcOffset, float[] vertices ) => GetVertices( srcOffset, -1, vertices );
+    public float[] GetVertices( int srcOffset, float[] vertices )
+    {
+        return GetVertices( srcOffset, -1, vertices );
+    }
 
     /// <summary>
     ///     Copies the specified vertices from the Mesh to the float array. The float
@@ -347,7 +356,10 @@ public class Mesh
     /// </summary>
     /// <param name="indices"> the array to copy the indices to </param>
     /// <param name="destOffset"> the offset in the indices array to start copying  </param>
-    public void GetIndices( short[] indices, int destOffset = 0 ) => GetIndices( 0, indices, destOffset );
+    public void GetIndices( short[] indices, int destOffset = 0 )
+    {
+        GetIndices( 0, indices, destOffset );
+    }
 
     /// <summary>
     ///     Copies the remaining indices from the Mesh to the short array. The short
@@ -356,7 +368,10 @@ public class Mesh
     /// <param name="srcOffset"> the zero-based offset of the first index to fetch </param>
     /// <param name="indices"> the array to copy the indices to </param>
     /// <param name="destOffset"> the offset in the indices array to start copying  </param>
-    public void GetIndices( int srcOffset, short[] indices, int destOffset ) => GetIndices( srcOffset, -1, indices, destOffset );
+    public void GetIndices( int srcOffset, short[] indices, int destOffset )
+    {
+        GetIndices( srcOffset, -1, indices, destOffset );
+    }
 
     /// <summary>
     ///     Copies the indices from the Mesh to the short array. The short array must
@@ -399,7 +414,10 @@ public class Mesh
     ///     <see cref="IndexBufferObject" /> if indices where given.
     ///     Use this with OpenGL ES 2.0 and when auto-bind is disabled.
     /// </summary>
-    public void Bind( in ShaderProgram shader ) => Bind( shader, null );
+    public void Bind( in ShaderProgram shader )
+    {
+        Bind( shader, null );
+    }
 
     /// <summary>
     ///     Binds the underlying <see cref="VertexBufferObject" /> and
@@ -428,7 +446,10 @@ public class Mesh
     ///     is indices were given. Use this with OpenGL ES 1.x and when auto-bind is disabled.
     /// </summary>
     /// <param name="shader"> the shader (does not unbind the shader)  </param>
-    public void Unbind( in ShaderProgram? shader ) => Unbind( shader, null! );
+    public void Unbind( in ShaderProgram? shader )
+    {
+        Unbind( shader, null! );
+    }
 
     /// <summary>
     ///     Unbinds the underlying <see cref="VertexBufferObject" /> and <see cref="IndexBufferObject" />
@@ -508,7 +529,10 @@ public class Mesh
     /// <param name="primitiveType"> the primitive type </param>
     /// <param name="offset"> the offset into the vertex or index buffer </param>
     /// <param name="count"> number of vertices or indices to use  </param>
-    public void Render( ShaderProgram? shader, int primitiveType, int offset, int count ) => Render( shader, primitiveType, offset, count, AutoBind );
+    public void Render( ShaderProgram? shader, int primitiveType, int offset, int count )
+    {
+        Render( shader, primitiveType, offset, count, AutoBind );
+    }
 
     /// <summary>
     ///     <para>
@@ -561,14 +585,14 @@ public class Mesh
                 buffer.Position = offset;
                 buffer.Limit    = offset + count;
 
-                Core.Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, buffer );
+                Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, buffer );
 
                 buffer.Position = oldPosition;
                 buffer.Limit    = oldLimit;
             }
             else
             {
-                Core.Gdx.GL20.GLDrawArrays( primitiveType, offset, count );
+                Gdx.GL20.GLDrawArrays( primitiveType, offset, count );
             }
         }
         else
@@ -591,26 +615,26 @@ public class Mesh
 
                 if ( IsInstanced && ( numInstances > 0 ) )
                 {
-                    Core.Gdx.GL30?.GLDrawElementsInstanced( primitiveType,
-                                                            count,
-                                                            IGL20.GL_UNSIGNED_SHORT,
-                                                            offset * 2,
-                                                            numInstances );
+                    Gdx.GL30?.GLDrawElementsInstanced( primitiveType,
+                                                       count,
+                                                       IGL20.GL_UNSIGNED_SHORT,
+                                                       offset * 2,
+                                                       numInstances );
                 }
                 else
                 {
-                    Core.Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, offset * 2 );
+                    Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, offset * 2 );
                 }
             }
             else
             {
                 if ( IsInstanced && ( numInstances > 0 ) )
                 {
-                    Core.Gdx.GL30?.GLDrawArraysInstanced( primitiveType, offset, count, numInstances );
+                    Gdx.GL30?.GLDrawArraysInstanced( primitiveType, offset, count, numInstances );
                 }
                 else
                 {
-                    Core.Gdx.GL20.GLDrawArrays( primitiveType, offset, count );
+                    Gdx.GL20.GLDrawArrays( primitiveType, offset, count );
                 }
             }
         }
@@ -647,7 +671,10 @@ public class Mesh
     ///     the backing FloatBuffer holding the vertices.
     ///     Does not have to be a direct buffer on Android!
     /// </returns>
-    public FloatBuffer GetVerticesBuffer() => _vertices.GetBuffer( false );
+    public FloatBuffer GetVerticesBuffer()
+    {
+        return _vertices.GetBuffer( false );
+    }
 
     /// <summary>
     ///     Calculates the <see cref="BoundingBox" /> of the vertices contained in this mesh.
@@ -731,7 +758,10 @@ public class Mesh
     /// <param name="offset"> the start index of the part. </param>
     /// <param name="count"> the amount of indices the part contains. </param>
     /// <returns> the value specified by out.  </returns>
-    public BoundingBox CalculateBoundingBox( in BoundingBox box, int offset, int count ) => ExtendBoundingBox( box.ToInfinity(), offset, count );
+    public BoundingBox CalculateBoundingBox( in BoundingBox box, int offset, int count )
+    {
+        return ExtendBoundingBox( box.ToInfinity(), offset, count );
+    }
 
     /// <summary>
     ///     Calculate the <see cref="BoundingBox" /> of the specified part.
@@ -742,7 +772,9 @@ public class Mesh
     /// <param name="transform"></param>
     /// <returns> the value specified by out.  </returns>
     public BoundingBox CalculateBoundingBox( in BoundingBox box, int offset, int count, in Matrix4 transform )
-        => ExtendBoundingBox( box.ToInfinity(), offset, count, transform );
+    {
+        return ExtendBoundingBox( box.ToInfinity(), offset, count, transform );
+    }
 
     /// <summary>
     ///     Extends the specified <see cref="BoundingBox" /> with the specified part.
@@ -751,7 +783,10 @@ public class Mesh
     /// <param name="offset"> the start index of the part. </param>
     /// <param name="count"> the amount of indices the part contains. </param>
     /// <returns> the value specified by out.  </returns>
-    public BoundingBox ExtendBoundingBox( in BoundingBox box, int offset, int count ) => ExtendBoundingBox( box, offset, count, null );
+    public BoundingBox ExtendBoundingBox( in BoundingBox box, int offset, int count )
+    {
+        return ExtendBoundingBox( box, offset, count, null );
+    }
 
     /// <summary>
     ///     Extends the specified <see cref="BoundingBox" /> with the specified part.
@@ -1019,7 +1054,9 @@ public class Mesh
                                   int offset,
                                   int count,
                                   in Matrix4? transform )
-        => ( float )Math.Sqrt( CalculateRadiusSquared( centerX, centerY, centerZ, offset, count, transform ) );
+    {
+        return ( float )Math.Sqrt( CalculateRadiusSquared( centerX, centerY, centerZ, offset, count, transform ) );
+    }
 
     /// <summary>
     ///     Calculates the squared radius of the bounding sphere around the specified center for the specified part.
@@ -1030,7 +1067,9 @@ public class Mesh
     /// <param name="transform"></param>
     /// <returns> the squared radius of the bounding sphere.  </returns>
     public float CalculateRadius( in Vector3 center, int offset, int count, in Matrix4 transform )
-        => CalculateRadius( center.X, center.Y, center.Z, offset, count, transform );
+    {
+        return CalculateRadius( center.X, center.Y, center.Z, offset, count, transform );
+    }
 
     /// <summary>
     ///     Calculates the squared radius of the bounding sphere around the specified center for the specified part.
@@ -1042,7 +1081,9 @@ public class Mesh
     /// <param name="count"> the amount of indices the part contains. </param>
     /// <returns> the squared radius of the bounding sphere.  </returns>
     public float CalculateRadius( in float centerX, in float centerY, in float centerZ, int offset, int count )
-        => CalculateRadius( centerX, centerY, centerZ, offset, count, null );
+    {
+        return CalculateRadius( centerX, centerY, centerZ, offset, count, null );
+    }
 
     /// <summary>
     ///     Calculates the squared radius of the bounding sphere around the specified center for the specified part.
@@ -1051,7 +1092,10 @@ public class Mesh
     /// <param name="offset"> the start index of the part. </param>
     /// <param name="count"> the amount of indices the part contains. </param>
     /// <returns> the squared radius of the bounding sphere.  </returns>
-    public float CalculateRadius( in Vector3 center, int offset, int count ) => CalculateRadius( center.X, center.Y, center.Z, offset, count, null );
+    public float CalculateRadius( in Vector3 center, int offset, int count )
+    {
+        return CalculateRadius( center.X, center.Y, center.Z, offset, count, null );
+    }
 
     /// <summary>
     ///     Calculates the squared radius of the bounding sphere around the specified center for the specified part.
@@ -1060,7 +1104,10 @@ public class Mesh
     /// <param name="centerY"> The Y coordinate of the center of the bounding sphere </param>
     /// <param name="centerZ"> The Z coordinate of the center of the bounding sphere </param>
     /// <returns> the squared radius of the bounding sphere.  </returns>
-    public float CalculateRadius( in float centerX, in float centerY, in float centerZ ) => CalculateRadius( centerX, centerY, centerZ, 0, NumIndices, null );
+    public float CalculateRadius( in float centerX, in float centerY, in float centerZ )
+    {
+        return CalculateRadius( centerX, centerY, centerZ, 0, NumIndices, null );
+    }
 
     /// <summary>
     ///     Calculates the squared radius of the bounding sphere around the specified
@@ -1068,7 +1115,10 @@ public class Mesh
     /// </summary>
     /// <param name="center"> The center of the bounding sphere </param>
     /// <returns> the squared radius of the bounding sphere.  </returns>
-    public float CalculateRadius( in Vector3 center ) => CalculateRadius( center.X, center.Y, center.Z, 0, NumIndices, null );
+    public float CalculateRadius( in Vector3 center )
+    {
+        return CalculateRadius( center.X, center.Y, center.Z, 0, NumIndices, null );
+    }
 
     private static void AddManagedMesh( IApplication app, Mesh mesh )
     {
@@ -1096,7 +1146,10 @@ public class Mesh
     /// <summary>
     ///     Will clear the managed mesh cache. I wouldn't use this if i was you :)
     /// </summary>
-    public static void ClearAllMeshes( IApplication app ) => _meshes.Remove( app );
+    public static void ClearAllMeshes( IApplication app )
+    {
+        _meshes.Remove( app );
+    }
 
     /// <summary>
     ///     Method to scale the positions in the mesh. Normals will be kept as is.
@@ -1161,7 +1214,10 @@ public class Mesh
     ///     temporary float[] which will be garbage collected.
     /// </summary>
     /// <param name="matrix"> the transformation matrix  </param>
-    public void Transform( in Matrix4 matrix ) => Transform( matrix, 0, NumVertices );
+    public void Transform( in Matrix4 matrix )
+    {
+        Transform( matrix, 0, NumVertices );
+    }
 
     protected void Transform( in Matrix4 matrix, in int start, in int count )
     {
@@ -1266,7 +1322,10 @@ public class Mesh
     ///     will be garbage collected.
     /// </summary>
     /// <param name="matrix"> the transformation matrix  </param>
-    public void TransformUV( in Matrix3 matrix ) => TransformUV( matrix, 0, NumVertices );
+    public void TransformUV( in Matrix3 matrix )
+    {
+        TransformUV( matrix, 0, NumVertices );
+    }
 
     protected void TransformUV( in Matrix3 matrix, in int start, in int count )
     {
@@ -1331,7 +1390,10 @@ public class Mesh
     ///     whether the new mesh is static or not. Allows for internal optimizations.
     /// </param>
     /// <returns> the copy of this mesh  </returns>
-    public Mesh Copy( bool isStatic ) => Copy( isStatic, false, null );
+    public Mesh Copy( bool isStatic )
+    {
+        return Copy( isStatic, false, null );
+    }
 
     /// <summary>
     ///     Copies this mesh optionally removing duplicate vertices and/or reducing
@@ -1496,9 +1558,9 @@ public class Mesh
     /// </summary>
     public void Dispose()
     {
-        if ( _meshes[ Core.Gdx.App ] != null )
+        if ( _meshes[ Gdx.App ] != null )
         {
-            _meshes[ Core.Gdx.App ]?.Remove( this );
+            _meshes[ Gdx.App ]?.Remove( this );
         }
 
         _vertices.Dispose();
@@ -1592,7 +1654,7 @@ public class Mesh
         _indices       = indices;
         _isVertexArray = isVertexArray;
 
-        AddManagedMesh( Core.Gdx.App, this );
+        AddManagedMesh( Gdx.App, this );
     }
 
     /// <summary>
@@ -1611,7 +1673,7 @@ public class Mesh
         _indices       = new IndexBufferObject( isStatic, maxIndices );
         _isVertexArray = false;
 
-        AddManagedMesh( Core.Gdx.App, this );
+        AddManagedMesh( Gdx.App, this );
     }
 
     /// <summary>
@@ -1630,7 +1692,7 @@ public class Mesh
         _indices       = new IndexBufferObject( isStatic, maxIndices );
         _isVertexArray = false;
 
-        AddManagedMesh( Core.Gdx.App, this );
+        AddManagedMesh( Gdx.App, this );
     }
 
     /// <summary>
@@ -1659,7 +1721,7 @@ public class Mesh
         _indices       = new IndexBufferObject( staticIndices, maxIndices );
         _isVertexArray = false;
 
-        AddManagedMesh( Core.Gdx.App, this );
+        AddManagedMesh( Gdx.App, this );
     }
 
     /// <summary>
@@ -1726,7 +1788,7 @@ public class Mesh
                 break;
         }
 
-        AddManagedMesh( Core.Gdx.App, this );
+        AddManagedMesh( Gdx.App, this );
     }
 
     #endregion constructors

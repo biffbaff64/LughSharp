@@ -197,12 +197,18 @@ public class PixmapPacker : IDisposable
     ///     Sorts the images to the optimal order they should be packed.
     ///     Some packing strategies rely heavily on the images being sorted.
     /// </summary>
-    public void Sort( List< Pixmap > images ) => _packStrategy.Sort( images );
+    public void Sort( List< Pixmap > images )
+    {
+        _packStrategy.Sort( images );
+    }
 
     /// <summary>
     ///     Inserts the pixmap without a name. It cannot be looked up by name.
     /// </summary>
-    public RectangleShape? Pack( Pixmap image ) => Pack( null, image );
+    public RectangleShape? Pack( Pixmap image )
+    {
+        return Pack( null, image );
+    }
 
     /// <summary>
     ///     Inserts the pixmap. If name was not null, you can later retrieve
@@ -381,7 +387,7 @@ public class PixmapPacker : IDisposable
         {
             page.Texture?.Bind();
 
-            Core.Gdx.GL.GLTexSubImage2D(
+            Gdx.GL.GLTexSubImage2D(
                 page.Texture!.GLTarget,
                 0,
                 rectX,
@@ -495,7 +501,10 @@ public class PixmapPacker : IDisposable
     public void UpdateTextureAtlas( TextureAtlas atlas,
                                     TextureFilter minFilter,
                                     TextureFilter magFilter,
-                                    bool useMipMaps ) => UpdateTextureAtlas( atlas, minFilter, magFilter, useMipMaps, true );
+                                    bool useMipMaps )
+    {
+        UpdateTextureAtlas( atlas, minFilter, magFilter, useMipMaps, true );
+    }
 
     /// <summary>
     ///     Updates the <see cref="TextureAtlas" />, adding any new <see cref="Pixmap" />
@@ -865,7 +874,10 @@ public class PixmapPacker : IDisposable
         ///     Returns the page the rectangle should be placed in and
         ///     modifies the specified rectangle position.
         /// </summary>
-        public Page Pack( PixmapPacker packer, string? name, RectangleShape rect ) => null!;
+        public Page Pack( PixmapPacker packer, string? name, RectangleShape rect )
+        {
+            return null!;
+        }
     }
 
     /// <summary>
@@ -882,7 +894,10 @@ public class PixmapPacker : IDisposable
         ///     Returns the page the rectangle should be placed in and
         ///     modifies the specified rectangle position.
         /// </summary>
-        public Page Pack( PixmapPacker packer, string? name, RectangleShape rect ) => null!;
+        public Page Pack( PixmapPacker packer, string? name, RectangleShape rect )
+        {
+            return null!;
+        }
     }
 
 

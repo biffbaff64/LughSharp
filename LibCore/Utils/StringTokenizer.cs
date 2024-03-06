@@ -408,7 +408,6 @@ public class StringTokenizer
     /// </summary>
     /// <param name="delim">the new delimiters.</param>
     /// <returns>the next token, after switching to the new delimiter set.</returns>
-    [PublicAPI]
     public string NextToken( string delim )
     {
         _delimiters = delim;
@@ -429,7 +428,6 @@ public class StringTokenizer
     /// <returns>
     ///     the number of tokens remaining in the string using the current delimiter set.
     /// </returns>
-    [PublicAPI]
     public int CountTokens()
     {
         var count   = 0;

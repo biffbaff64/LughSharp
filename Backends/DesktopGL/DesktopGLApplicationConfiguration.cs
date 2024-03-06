@@ -28,7 +28,6 @@ using LibGDXSharp.Backends.DesktopGL.Window;
 
 namespace LibGDXSharp.Backends.DesktopGL;
 
-[PublicAPI]
 public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 {
     public bool DisableAudio           { get; set; } = false;
@@ -261,7 +260,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     // ------------------------------------------------------------------------
 
     #region To Be Removed
-    
+
     //TODO: Refactor so that this can be removed
     [Obsolete]
     public static GLFWMonitor GetPrimaryMonitor()
@@ -297,6 +296,6 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
         return new IGraphics.MonitorDescriptor( virtualX, virtualY, name );
     }
-    
+
     #endregion To Be Removed
 }

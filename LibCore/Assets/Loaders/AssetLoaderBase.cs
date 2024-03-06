@@ -32,9 +32,6 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 /// </summary>
 public abstract class AssetLoaderBase
 {
-    public IFileHandleResolver Resolver      { get; }
-    public bool                IsSynchronous { get; protected init; } = false;
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -42,13 +39,22 @@ public abstract class AssetLoaderBase
     ///     Constructor, sets the FileHandleResolver to use to resolve the file
     ///     associated with the asset name.
     /// </summary>
-    protected AssetLoaderBase( IFileHandleResolver resolver ) => Resolver = resolver;
+    protected AssetLoaderBase( IFileHandleResolver resolver )
+    {
+        Resolver = resolver;
+    }
+
+    public IFileHandleResolver Resolver      { get; }
+    public bool                IsSynchronous { get; protected init; } = false;
 
     /// <summary>
     /// </summary>
     /// <param name="fileName"></param>
     /// <returns></returns>
-    public FileInfo Resolve( string fileName ) => Resolver.Resolve( fileName );
+    public FileInfo Resolve( string fileName )
+    {
+        return Resolver.Resolve( fileName );
+    }
 
     /// <summary>
     ///     Returns the assets this asset requires to be loaded first. This method may be
@@ -59,5 +65,8 @@ public abstract class AssetLoaderBase
     /// <param name="p">parameters for loading the asset</param>
     public virtual List< AssetDescriptor > GetDependencies( string? filename,
                                                             FileInfo? file,
-                                                            AssetLoaderParameters? p ) => null!;
+                                                            AssetLoaderParameters? p )
+    {
+        return null!;
+    }
 }

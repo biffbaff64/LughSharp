@@ -27,7 +27,6 @@ using Exception = System.Exception;
 
 namespace LibGDXSharp.LibCore.Utils.Buffers;
 
-[PublicAPI]
 public abstract class ShortBuffer : Buffer
 {
     private readonly short[]? _hb;
@@ -126,7 +125,10 @@ public abstract class ShortBuffer : Buffer
     /// </summary>
     /// <param name="array"> The array that will back this buffer </param>
     /// <returns> The new short buffer </returns>
-    public static ShortBuffer Wrap( short[] array ) => Wrap( array, 0, array.Length );
+    public static ShortBuffer Wrap( short[] array )
+    {
+        return Wrap( array, 0, array.Length );
+    }
 
     /// <summary>
     ///     Creates a new short buffer whose content is a shared subsequence of
@@ -299,7 +301,10 @@ public abstract class ShortBuffer : Buffer
     ///     If there are fewer than <paramref name="dst.length" /> shorts
     ///     remaining in this buffer.
     /// </exception>
-    public ShortBuffer Get( short[] dst ) => Get( dst, 0, dst.Length );
+    public ShortBuffer Get( short[] dst )
+    {
+        return Get( dst, 0, dst.Length );
+    }
 
     /// <summary>
     ///     Relative bulk <i>put</i> method <i>(optional operation)</i>.
@@ -454,7 +459,10 @@ public abstract class ShortBuffer : Buffer
     /// <exception crewf="GdxRuntimeException">
     ///     If this buffer is read-only
     /// </exception>
-    public ShortBuffer Put( short[] src ) => Put( src, 0, src.Length );
+    public ShortBuffer Put( short[] src )
+    {
+        return Put( src, 0, src.Length );
+    }
 
     /// <summary>
     ///     Tells whether or not this buffer is backed by an accessible short
@@ -467,7 +475,10 @@ public abstract class ShortBuffer : Buffer
     /// <returns>
     ///     <tt>true</tt> if, and only if, this buffer is backed by an array and is not read-only
     /// </returns>
-    public override bool HasArray() => ( _hb != null ) && !IsReadOnly;
+    public override bool HasArray()
+    {
+        return ( _hb != null ) && !IsReadOnly;
+    }
 
     /// <summary>
     ///     Returns the short array that backs this buffer <i>(optional operation)</i>.
@@ -567,7 +578,10 @@ public abstract class ShortBuffer : Buffer
     ///     Returns a string summarizing the state of this buffer.
     /// </summary>
     /// <returns> A summary string </returns>
-    public override String ToString() => $@"{GetType().Name}: [pos={Position} lim={Limit} cap={Capacity}]";
+    public override String ToString()
+    {
+        return $@"{GetType().Name}: [pos={Position} lim={Limit} cap={Capacity}]";
+    }
 
     /// <summary>
     ///     Returns the current hash code of this buffer.
@@ -603,8 +617,8 @@ public abstract class ShortBuffer : Buffer
     ///         <li>They have the same element type,</li>
     ///         <li>They have the same number of remaining elements, and</li>
     ///         <li>
-    ///                 The two sequences of remaining elements, considered
-    ///                 independently of their starting positions, are pointwise equal.
+    ///             The two sequences of remaining elements, considered
+    ///             independently of their starting positions, are pointwise equal.
     ///         </li>
     ///     </para>
     ///     <para>
@@ -645,7 +659,10 @@ public abstract class ShortBuffer : Buffer
         return true;
     }
 
-    private static bool Equals( short x, short y ) => x == y;
+    private static bool Equals( short x, short y )
+    {
+        return x == y;
+    }
 
     /// <summary>
     ///     Compares this buffer to another.
@@ -680,7 +697,10 @@ public abstract class ShortBuffer : Buffer
         return Remaining() - that.Remaining();
     }
 
-    private static int Compare( short x, short y ) => x - y;
+    private static int Compare( short x, short y )
+    {
+        return x - y;
+    }
 
     /// <summary>
     ///     Retrieves this buffer's byte order.

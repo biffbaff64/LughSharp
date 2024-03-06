@@ -32,7 +32,10 @@ namespace LibGDXSharp.LibCore.Graphics.Profiling;
 public class GL30Interceptor : BaseGLInterceptor, IGL30
 {
     public GL30Interceptor( GLProfiler glProfiler, IGL30 gl30 )
-        : base( glProfiler ) => GL30 = gl30;
+        : base( glProfiler )
+    {
+        GL30 = gl30;
+    }
 
     public IGL30 GL30 { get; set; }
 
@@ -250,7 +253,7 @@ public class GL30Interceptor : BaseGLInterceptor, IGL30
     public override int GLGetError()
     {
         Calls++;
-        int result = GL30.GLGetError();
+        var result = GL30.GLGetError();
         Check();
 
         return result;
@@ -2050,7 +2053,7 @@ public class GL30Interceptor : BaseGLInterceptor, IGL30
 
     private void Check()
     {
-        int error = GL30.GLGetError();
+        var error = GL30.GLGetError();
 
         while ( error != IGL20.GL_NO_ERROR )
         {

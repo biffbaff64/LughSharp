@@ -143,17 +143,26 @@ public class DragListener : InputListener
     /// <summary>
     ///     The distance from drag start to the current drag position.
     /// </summary>
-    public float GetDragDistance() => Vector2.Len( DragX - DragStartX, DragY - DragStartY );
+    public float GetDragDistance()
+    {
+        return Vector2.Len( DragX - DragStartX, DragY - DragStartY );
+    }
 
     /// <summary>
     ///     Returns the amount on the x axis that the touch has been
     ///     dragged since the last drag event.
     /// </summary>
-    public float GetDeltaX() => DragX - _dragLastX;
+    public float GetDeltaX()
+    {
+        return DragX - _dragLastX;
+    }
 
     /// <summary>
     ///     Returns the amount on the y axis that the touch has been
     ///     dragged since the last drag event.
     /// </summary>
-    public float GetDeltaY() => DragY - _dragLastY;
+    public float GetDeltaY()
+    {
+        return DragY - _dragLastY;
+    }
 }

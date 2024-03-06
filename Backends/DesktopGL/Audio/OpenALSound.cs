@@ -34,7 +34,10 @@ public class OpenALSound : ISound
 
     private int _bufferID = -1;
 
-    public OpenALSound( OpenALAudio audio ) => _audio = audio;
+    public OpenALSound( OpenALAudio audio )
+    {
+        _audio = audio;
+    }
 
     public float Duration { get; set; }
 

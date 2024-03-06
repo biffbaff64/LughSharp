@@ -164,7 +164,10 @@ public partial class ScrollPane : WidgetGroup
     ///     Returns the scroll pane's style. Modifying the returned style may
     ///     not have an effect until <see cref="SetStyle(ScrollPaneStyle)" /> is called.
     /// </summary>
-    public ScrollPaneStyle GetStyle() => Style;
+    public ScrollPaneStyle GetStyle()
+    {
+        return Style;
+    }
 
     public override void Act( float delta )
     {
@@ -353,7 +356,7 @@ public partial class ScrollPane : WidgetGroup
 //            if ( ( Stage != null ) && Stage.ActionsRequestRendering )
             if ( Stage is { ActionsRequestRendering: true } )
             {
-                Core.Gdx.Graphics.RequestRendering();
+                Gdx.Graphics.RequestRendering();
             }
         }
     }
@@ -909,12 +912,18 @@ public partial class ScrollPane : WidgetGroup
     /// <summary>
     ///     Returns the amount to scroll horizontally when the mouse wheel is scrolled.
     /// </summary>
-    protected float GetMouseWheelX() => Math.Min( _widgetArea.Width, Math.Max( _widgetArea.Width * 0.9f, MaxX * 0.1f ) / 4 );
+    protected float GetMouseWheelX()
+    {
+        return Math.Min( _widgetArea.Width, Math.Max( _widgetArea.Width * 0.9f, MaxX * 0.1f ) / 4 );
+    }
 
     /// <summary>
     ///     Returns the amount to scroll vertically when the mouse wheel is scrolled.
     /// </summary>
-    protected float GetMouseWheelY() => Math.Min( _widgetArea.Height, Math.Max( _widgetArea.Height * 0.9f, MaxY * 0.1f ) / 4 );
+    protected float GetMouseWheelY()
+    {
+        return Math.Min( _widgetArea.Height, Math.Max( _widgetArea.Height * 0.9f, MaxY * 0.1f ) / 4 );
+    }
 
     //
 //    /// <summary>
@@ -973,7 +982,10 @@ public partial class ScrollPane : WidgetGroup
         return MathUtils.Clamp( AmountX / MaxX, 0, 1 );
     }
 
-    public void SetScrollPercentX( float percentX ) => AmountX = MaxX * MathUtils.Clamp( percentX, 0, 1 );
+    public void SetScrollPercentX( float percentX )
+    {
+        AmountX = MaxX * MathUtils.Clamp( percentX, 0, 1 );
+    }
 
     public float GetScrollPercentY()
     {
@@ -985,7 +997,10 @@ public partial class ScrollPane : WidgetGroup
         return MathUtils.Clamp( AmountY / MaxY, 0, 1 );
     }
 
-    public void SetScrollPercentY( float percentY ) => AmountY = MaxY * MathUtils.Clamp( percentY, 0, 1 );
+    public void SetScrollPercentY( float percentY )
+    {
+        AmountY = MaxY * MathUtils.Clamp( percentY, 0, 1 );
+    }
 
     public void SetFlickScroll( bool flickScroll )
     {
@@ -1008,14 +1023,20 @@ public partial class ScrollPane : WidgetGroup
         Invalidate();
     }
 
-    public void SetFlickScrollTapSquareSize( float halfTapSquareSize ) => _flickScrollListener.Detector.SetTapSquareSize( halfTapSquareSize );
+    public void SetFlickScrollTapSquareSize( float halfTapSquareSize )
+    {
+        _flickScrollListener.Detector.SetTapSquareSize( halfTapSquareSize );
+    }
 
     /// <summary>
     ///     Sets the scroll offset so the specified rectangle is fully in view,
     ///     if possible. Coordinates are in the scroll pane widget's coordinate
     ///     system.
     /// </summary>
-    public void ScrollTo( float x, float y, float width, float height ) => ScrollTo( x, y, width, height, false, false );
+    public void ScrollTo( float x, float y, float width, float height )
+    {
+        ScrollTo( x, y, width, height, false, false );
+    }
 
     /// <summary>
     ///     Sets the scroll offset so the specified rectangle is fully in view, and
@@ -1125,7 +1146,10 @@ public partial class ScrollPane : WidgetGroup
         Invalidate();
     }
 
-    public bool IsPanning() => _flickScrollListener.Detector.IsPanning();
+    public bool IsPanning()
+    {
+        return _flickScrollListener.Detector.IsPanning();
+    }
 
     /// <summary>
     ///     For flick scroll, if true the widget can be scrolled slightly past its
@@ -1279,53 +1303,128 @@ public partial class ScrollPane : WidgetGroup
     /// <summary>
     ///     Called whenever the visual x scroll amount is changed.
     /// </summary>
-    protected void VisualScrollX( float pixelsX ) => _visualAmountX = pixelsX;
+    protected void VisualScrollX( float pixelsX )
+    {
+        _visualAmountX = pixelsX;
+    }
 
     /// <summary>
     ///     Called whenever the visual y scroll amount is changed.
     /// </summary>
-    protected void VisualScrollY( float pixelsY ) => _visualAmountY = pixelsY;
+    protected void VisualScrollY( float pixelsY )
+    {
+        _visualAmountY = pixelsY;
+    }
 
     /// <summary>
     ///     Returns the actor embedded in this scroll pane, or null.
     /// </summary>
-    public Actor? GetActor() => _widget;
+    public Actor? GetActor()
+    {
+        return _widget;
+    }
 
     /// <summary>
     ///     Returns the width of the scrolled viewport.
     /// </summary>
-    public float GetScrollWidth() => _widgetArea.Width;
+    public float GetScrollWidth()
+    {
+        return _widgetArea.Width;
+    }
 
     /// <summary>
     ///     Returns the height of the scrolled viewport.
     /// </summary>
-    public float GetScrollHeight() => _widgetArea.Height;
+    public float GetScrollHeight()
+    {
+        return _widgetArea.Height;
+    }
 
     /// <summary>
     ///     Returns true if the widget is larger than the scroll pane horizontally.
     /// </summary>
-    public bool ISScrollX() => ScrollX;
+    public bool ISScrollX()
+    {
+        return ScrollX;
+    }
 
     /// <summary>
     ///     Returns true if the widget is larger than the scroll pane vertically.
     /// </summary>
-    public bool ISScrollY() => ScrollY;
+    public bool ISScrollY()
+    {
+        return ScrollY;
+    }
 
-    public bool ISScrollingDisabledX() => DisableX;
-    public bool ISScrollingDisabledY() => DisableY;
-    public bool ISLeftEdge()           => !ScrollX || ( AmountX <= 0 );
-    public bool ISRightEdge()          => !ScrollX || ( AmountX >= MaxX );
-    public bool ISTopEdge()            => !ScrollY || ( AmountY <= 0 );
-    public bool ISBottomEdge()         => !ScrollY || ( AmountY >= MaxY );
-    public bool ISDragging()           => _draggingPointer != -1;
+    public bool ISScrollingDisabledX()
+    {
+        return DisableX;
+    }
 
-    public float GetVisualScrollX()         => !ScrollX ? 0 : _visualAmountX;
-    public float GetVisualScrollY()         => !ScrollY ? 0 : _visualAmountY;
-    public void  SetScrollX( float pixels ) => AmountX = MathUtils.Clamp( pixels, 0, MaxX );
-    public void  SetScrollY( float pixels ) => AmountY = MathUtils.Clamp( pixels, 0, MaxY );
-    public bool  ISFlinging()               => _flingTimer > 0;
-    public float GetMinWidth()              => 0;
-    public float GetMinHeight()             => 0;
+    public bool ISScrollingDisabledY()
+    {
+        return DisableY;
+    }
+
+    public bool ISLeftEdge()
+    {
+        return !ScrollX || ( AmountX <= 0 );
+    }
+
+    public bool ISRightEdge()
+    {
+        return !ScrollX || ( AmountX >= MaxX );
+    }
+
+    public bool ISTopEdge()
+    {
+        return !ScrollY || ( AmountY <= 0 );
+    }
+
+    public bool ISBottomEdge()
+    {
+        return !ScrollY || ( AmountY >= MaxY );
+    }
+
+    public bool ISDragging()
+    {
+        return _draggingPointer != -1;
+    }
+
+    public float GetVisualScrollX()
+    {
+        return !ScrollX ? 0 : _visualAmountX;
+    }
+
+    public float GetVisualScrollY()
+    {
+        return !ScrollY ? 0 : _visualAmountY;
+    }
+
+    public void SetScrollX( float pixels )
+    {
+        AmountX = MathUtils.Clamp( pixels, 0, MaxX );
+    }
+
+    public void SetScrollY( float pixels )
+    {
+        AmountY = MathUtils.Clamp( pixels, 0, MaxY );
+    }
+
+    public bool ISFlinging()
+    {
+        return _flingTimer > 0;
+    }
+
+    public float GetMinWidth()
+    {
+        return 0;
+    }
+
+    public float GetMinHeight()
+    {
+        return 0;
+    }
 
     #endregion expression bodies
 

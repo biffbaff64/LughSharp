@@ -228,7 +228,10 @@ public class Circle : IShape2D
     ///     Returns a <see cref="string" /> representation of this
     ///     <see cref="Circle" /> of the form <code>x,y,radius</code>.
     /// </summary>
-    public override string ToString() => X + "," + Y + "," + Radius;
+    public override string ToString()
+    {
+        return X + "," + Y + "," + Radius;
+    }
 
     /// <summary>
     /// </summary>
@@ -236,14 +239,20 @@ public class Circle : IShape2D
     ///     The circumference of this circle:-
     ///     (as 2 * <see cref="MathUtils.PI2" />) * <code>radius</code>
     /// </returns>
-    public float Circumference() => Radius * MathUtils.PI2;
+    public float Circumference()
+    {
+        return Radius * MathUtils.PI2;
+    }
 
     /// <summary>
     /// </summary>
     /// <returns>
     ///     The area of this circle (as <see cref="MathUtils.PI" /> * radius * radius).
     /// </returns>
-    public float Area() => Radius * Radius * MathUtils.PI;
+    public float Area()
+    {
+        return Radius * Radius * MathUtils.PI;
+    }
 
     /// <summary>
     /// </summary>

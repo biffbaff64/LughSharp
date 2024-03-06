@@ -120,7 +120,10 @@ public class IndexArray : IIndexData, IDisposable
     ///     If you need immediate uploading use <see cref="SetIndices(short[], int, int)" />.
     /// </summary>
     /// <returns> the underlying short buffer. </returns>
-    public ShortBuffer GetBuffer( bool forWriting ) => _buffer;
+    public ShortBuffer GetBuffer( bool forWriting )
+    {
+        return _buffer;
+    }
 
     /// <summary>
     ///     Binds this IndexArray for rendering with glDrawElements.

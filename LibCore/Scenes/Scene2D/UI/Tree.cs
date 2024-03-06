@@ -103,7 +103,10 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
         }
     }
 
-    public void Add( TNode node ) => Insert( RootNodes.Count, node );
+    public void Add( TNode node )
+    {
+        Insert( RootNodes.Count, node );
+    }
 
     public void Insert( int index, TNode node )
     {
@@ -424,14 +427,24 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     }
 
     protected void DrawSelection( TNode node, IDrawable selection, IBatch batch, float x, float y, float width, float height )
-        => selection.Draw( batch, x, y, width, height );
+    {
+        selection.Draw( batch, x, y, width, height );
+    }
 
-    protected void DrawOver( TNode node, IDrawable over, IBatch batch, float x, float y, float width, float height ) => over.Draw( batch, x, y, width, height );
+    protected void DrawOver( TNode node, IDrawable over, IBatch batch, float x, float y, float width, float height )
+    {
+        over.Draw( batch, x, y, width, height );
+    }
 
     protected void DrawExpandIcon( TNode node, IDrawable expandIcon, IBatch batch, float x, float y )
-        => expandIcon.Draw( batch, x, y, expandIcon.MinWidth, expandIcon.MinHeight );
+    {
+        expandIcon.Draw( batch, x, y, expandIcon.MinWidth, expandIcon.MinHeight );
+    }
 
-    protected void DrawIcon( TNode node, IDrawable icon, IBatch batch, float x, float y ) => icon.Draw( batch, x, y, icon.MinWidth, icon.MinHeight );
+    protected void DrawIcon( TNode node, IDrawable icon, IBatch batch, float x, float y )
+    {
+        icon.Draw( batch, x, y, icon.MinWidth, icon.MinHeight );
+    }
 
     /// <summary>
     ///     Returns the drawable for the expand icon. The default implementation returns
@@ -444,10 +457,10 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
         var over = false;
 
         if ( ( node == OverNode )
-          && ( Core.Gdx.App.AppType == IApplication.ApplicationType.Desktop )
+          && ( Gdx.App.AppType == IApplication.ApplicationType.Desktop )
           && ( !_selection.Multiple || ( !UIUtils.Ctrl() && !UIUtils.Shift() ) ) )
         {
-            var mouseX = ScreenToLocalCoordinates( _tmp.Set( Core.Gdx.Input.GetX(), 0 ) ).X;
+            var mouseX = ScreenToLocalCoordinates( _tmp.Set( Gdx.Input.GetX(), 0 ) ).X;
 
             if ( ( mouseX >= 0 ) && ( mouseX < iconX ) )
             {
@@ -541,17 +554,26 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
         }
     }
 
-    public Selection< TNode > GetSelection() => _selection;
+    public Selection< TNode > GetSelection()
+    {
+        return _selection;
+    }
 
     /// <summary>
     ///     Returns the first selected node, or null.
     /// </summary>
-    public TNode? GetSelectedNode() => _selection.First();
+    public TNode? GetSelectedNode()
+    {
+        return _selection.First();
+    }
 
     /// <summary>
     ///     Returns the first selected value, or null.
     /// </summary>
-    public TValue? GetSelectedValue() => default( TValue? );
+    public TValue? GetSelectedValue()
+    {
+        return default( TValue? );
+    }
 
     /// <summary>
     ///     Updates the order of the actors in the tree for all root nodes and all
@@ -577,7 +599,10 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
         }
     }
 
-    public void FindExpandedValues( List< TValue > values ) => FindExpandedValues( RootNodes, values );
+    public void FindExpandedValues( List< TValue > values )
+    {
+        FindExpandedValues( RootNodes, values );
+    }
 
     private static bool FindExpandedValues( List< TNode > nodes, List< TValue > values )
     {
@@ -646,7 +671,10 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
         return null;
     }
 
-    public void CollapseAll() => CollapseAll( RootNodes );
+    public void CollapseAll()
+    {
+        CollapseAll( RootNodes );
+    }
 
     private static void CollapseAll<T>( List< T > nodes ) where T : Node
     {
@@ -657,7 +685,10 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
         }
     }
 
-    public void ExpandAll() => ExpandAll( RootNodes );
+    public void ExpandAll()
+    {
+        ExpandAll( RootNodes );
+    }
 
     private static void ExpandAll<T>( List< T > nodes ) where T : Node
     {
@@ -731,7 +762,10 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     {
         private readonly Tree< TNode, TValue > _parent;
 
-        public TreeSelection( Tree< TNode, TValue > p ) => _parent = p;
+        public TreeSelection( Tree< TNode, TValue > p )
+        {
+            _parent = p;
+        }
 
         /// <inheritdoc />
         protected override void Changed()
@@ -1112,7 +1146,10 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
             return null;
         }
 
-        public bool HasChildren() => NodeChildren?.Count > 0;
+        public bool HasChildren()
+        {
+            return NodeChildren?.Count > 0;
+        }
 
         /// <summary>
         ///     Updates the order of the actors in the tree for this node and all child nodes.
@@ -1242,7 +1279,10 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
         ///     may override and increase the returned height to create a blank space
         ///     in the tree above the node, eg for a separator.
         /// </summary>
-        public virtual float GetHeight() => Height;
+        public virtual float GetHeight()
+        {
+            return Height;
+        }
 
         /// <summary>
         ///     Returns true if the specified node is this node or an ascendant of this node.

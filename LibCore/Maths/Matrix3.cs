@@ -40,9 +40,15 @@ public class Matrix3
 
     public readonly float[] val = new float[ 9 ];
 
-    public Matrix3() => Idt();
+    public Matrix3()
+    {
+        Idt();
+    }
 
-    public Matrix3( Matrix3 matrix ) => Set( matrix );
+    public Matrix3( Matrix3 matrix )
+    {
+        Set( matrix );
+    }
 
     /// <summary>
     ///     Constructs a matrix from the given float array. The array must have at
@@ -56,7 +62,10 @@ public class Matrix3
     ///     </a>
     ///     order. (The float array is not modified.)
     /// </param>
-    public Matrix3( float[] values ) => Set( values );
+    public Matrix3( float[] values )
+    {
+        Set( values );
+    }
 
     /// <summary>
     ///     Sets this matrix to the identity matrix
@@ -155,7 +164,10 @@ public class Matrix3
     /// </summary>
     /// <param name="degrees"> the angle in degrees.</param>
     /// <returns> This matrix for the purpose of chaining operations. </returns>
-    public Matrix3 SetToRotation( float degrees ) => SetToRotationRad( MathUtils.DEGREES_TO_RADIANS * degrees );
+    public Matrix3 SetToRotation( float degrees )
+    {
+        return SetToRotationRad( MathUtils.DEGREES_TO_RADIANS * degrees );
+    }
 
     /// <summary>
     ///     Sets this matrix to a rotation matrix that will rotate any vector in
@@ -183,7 +195,10 @@ public class Matrix3
         return this;
     }
 
-    public Matrix3 SetToRotation( Vector3 axis, float degrees ) => SetToRotation( axis, MathUtils.CosDeg( degrees ), MathUtils.SinDeg( degrees ) );
+    public Matrix3 SetToRotation( Vector3 axis, float degrees )
+    {
+        return SetToRotation( axis, MathUtils.CosDeg( degrees ), MathUtils.SinDeg( degrees ) );
+    }
 
     public Matrix3 SetToRotation( Vector3 axis, float cos, float sin )
     {
@@ -280,17 +295,23 @@ public class Matrix3
         return this;
     }
 
-    public override string ToString() => $"[{val[ M00 ]} | {val[ M01 ]} | {val[ M02 ]}]\n"
-                                       + $"[{val[ M10 ]} | {val[ M11 ]} | {val[ M12 ]}]\n"
-                                       + $"[{val[ M20 ]} | {val[ M21 ]} | {val[ M22 ]}]";
+    public override string ToString()
+    {
+        return $"[{val[ M00 ]} | {val[ M01 ]} | {val[ M02 ]}]\n"
+             + $"[{val[ M10 ]} | {val[ M11 ]} | {val[ M12 ]}]\n"
+             + $"[{val[ M20 ]} | {val[ M21 ]} | {val[ M22 ]}]";
+    }
 
     /// <returns> The determinant of this matrix </returns>
-    public float Det() => ( ( val[ M00 ] * val[ M11 ] * val[ M22 ] )
-                          + ( val[ M01 ] * val[ M12 ] * val[ M20 ] )
-                          + ( val[ M02 ] * val[ M10 ] * val[ M21 ] ) )
-                        - ( val[ M00 ] * val[ M12 ] * val[ M21 ] )
-                        - ( val[ M01 ] * val[ M10 ] * val[ M22 ] )
-                        - ( val[ M02 ] * val[ M11 ] * val[ M20 ] );
+    public float Det()
+    {
+        return ( ( val[ M00 ] * val[ M11 ] * val[ M22 ] )
+               + ( val[ M01 ] * val[ M12 ] * val[ M20 ] )
+               + ( val[ M02 ] * val[ M10 ] * val[ M21 ] ) )
+             - ( val[ M00 ] * val[ M12 ] * val[ M21 ] )
+             - ( val[ M01 ] * val[ M10 ] * val[ M22 ] )
+             - ( val[ M02 ] * val[ M11 ] * val[ M20 ] );
+    }
 
     /// <summary>
     ///     Inverts this matrix given that the determinant is != 0.
@@ -499,7 +520,10 @@ public class Matrix3
     /// </summary>
     /// <param name="degrees"> The angle in degrees </param>
     /// <returns> This matrix for the purpose of chaining. </returns>
-    public Matrix3 Rotate( float degrees ) => RotateRad( MathUtils.DEGREES_TO_RADIANS * degrees );
+    public Matrix3 Rotate( float degrees )
+    {
+        return RotateRad( MathUtils.DEGREES_TO_RADIANS * degrees );
+    }
 
     /// <summary>
     ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
@@ -585,7 +609,10 @@ public class Matrix3
     ///     Get the values in this matrix.
     /// </summary>
     /// <returns> The float values that make up this matrix in column-major order. </returns>
-    public float[] GetValues() => val;
+    public float[] GetValues()
+    {
+        return val;
+    }
 
     public Vector2 GetTranslation( Vector2 position )
     {
@@ -607,9 +634,15 @@ public class Matrix3
         return scale;
     }
 
-    public float GetRotation() => MathUtils.RADIANS_TO_DEGREES * ( float )Math.Atan2( val[ M10 ], val[ M00 ] );
+    public float GetRotation()
+    {
+        return MathUtils.RADIANS_TO_DEGREES * ( float )Math.Atan2( val[ M10 ], val[ M00 ] );
+    }
 
-    public float GetRotationRad() => ( float )Math.Atan2( val[ M10 ], val[ M00 ] );
+    public float GetRotationRad()
+    {
+        return ( float )Math.Atan2( val[ M10 ], val[ M00 ] );
+    }
 
     /// <summary>
     ///     Scale the matrix in the both the x and y components by the scalar value.

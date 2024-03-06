@@ -41,7 +41,10 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
 {
     private TextureLoaderInfo _loaderInfo;
 
-    public TextureLoader( IFileHandleResolver resolver ) : base( resolver ) => _loaderInfo = new TextureLoaderInfo();
+    public TextureLoader( IFileHandleResolver resolver ) : base( resolver )
+    {
+        _loaderInfo = new TextureLoaderInfo();
+    }
 
     /// <summary>
     /// </summary>

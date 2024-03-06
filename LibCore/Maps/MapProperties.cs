@@ -40,7 +40,10 @@ public class MapProperties
     /// <param name="key"> The Key. </param>
     /// <typeparam name="T"> The Type of the required property. </typeparam>
     /// <returns></returns>
-    public T? Get<T>( string key ) => ( T? )Get( key );
+    public T? Get<T>( string key )
+    {
+        return ( T? )Get( key );
+    }
 
     /// <summary>
     ///     Gets the property matching the specified key. If the fetched property
@@ -57,24 +60,48 @@ public class MapProperties
         return obj == null ? defaultValue : ( T )obj;
     }
 
-    public object? Get( string key ) => _properties[ key ];
+    public object? Get( string key )
+    {
+        return _properties[ key ];
+    }
 
     /// <summary>
-    /// Returns true if the properties map contains the specified key.
+    ///     Returns true if the properties map contains the specified key.
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public bool ContainsKey( string key ) => _properties.ContainsKey( key );
+    public bool ContainsKey( string key )
+    {
+        return _properties.ContainsKey( key );
+    }
 
-    public void Put( string key, object? value ) => _properties[ key ] = value;
+    public void Put( string key, object? value )
+    {
+        _properties[ key ] = value;
+    }
 
-    public void PutAll( MapProperties properties ) => _properties = new Dictionary< string, object? >( properties._properties );
+    public void PutAll( MapProperties properties )
+    {
+        _properties = new Dictionary< string, object? >( properties._properties );
+    }
 
-    public void Remove( string key ) => _properties.Remove( key );
+    public void Remove( string key )
+    {
+        _properties.Remove( key );
+    }
 
-    public void Clear() => _properties.Clear();
+    public void Clear()
+    {
+        _properties.Clear();
+    }
 
-    public Dictionary< string, object? >.KeyCollection GetKeys() => _properties.Keys;
+    public Dictionary< string, object? >.KeyCollection GetKeys()
+    {
+        return _properties.Keys;
+    }
 
-    public Dictionary< string, object? >.ValueCollection GetValues() => _properties.Values;
+    public Dictionary< string, object? >.ValueCollection GetValues()
+    {
+        return _properties.Values;
+    }
 }

@@ -81,7 +81,10 @@ public class Dialog : Window
     /// <param name="title"> A string holding the dialog name to display. </param>
     /// <param name="windowStyle"> The <see cref="Window.WindowStyle" /> to use. </param>
     public Dialog( string title, WindowStyle windowStyle )
-        : base( title, windowStyle ) => Initialise();
+        : base( title, windowStyle )
+    {
+        Initialise();
+    }
 
     public Actor? PreviousKeyboardFocus { get; set; }
     public Actor? PreviousScrollFocus   { get; set; }
@@ -159,7 +162,10 @@ public class Dialog : Window
     /// <summary>
     ///     Adds a label to the content table.
     /// </summary>
-    public Dialog Text( string? text, Label.LabelStyle labelStyle ) => Text( new Label( text, labelStyle ) );
+    public Dialog Text( string? text, Label.LabelStyle labelStyle )
+    {
+        return Text( new Label( text, labelStyle ) );
+    }
 
     /// <summary>
     ///     Adds the given Label to the content table
@@ -197,7 +203,10 @@ public class Dialog : Window
     ///     if this button is clicked. May be null.
     /// </param>
     /// <param name="buttonStyle"></param>
-    public Dialog Button( string text, object? obj, TextButton.TextButtonStyle buttonStyle ) => Button( new TextButton( text, buttonStyle ), obj );
+    public Dialog Button( string text, object? obj, TextButton.TextButtonStyle buttonStyle )
+    {
+        return Button( new TextButton( text, buttonStyle ), obj );
+    }
 
     /// <summary>
     ///     Adds the given button to the button table.
@@ -332,7 +341,10 @@ public class Dialog : Window
     ///     Hides the dialog. Called automatically when a button is clicked.
     ///     The default implementation fades out the dialog over 400 milliseconds.
     /// </summary>
-    public void Hide() => Hide( SceneActions.FadeOut( 0.4f, Interpolation.fade ) );
+    public void Hide()
+    {
+        Hide( SceneActions.FadeOut( 0.4f, Interpolation.fade ) );
+    }
 
     public void SetObject( Actor actor, object obj )
     {
@@ -346,8 +358,8 @@ public class Dialog : Window
     ///     called with the specified object.
     /// </summary>
     /// <seealso cref="IInput.Keys" />
-    public Dialog Key( int keycode, object obj ) =>
-
+    public Dialog Key( int keycode, object obj )
+    {
         //        AddListener
         //            ( new InputListener
         //                  (
@@ -379,7 +391,8 @@ public class Dialog : Window
         //                      }
         //                  }
         //                  );
-        this;
+        return this;
+    }
 
     /// <summary>
     ///     Called when a button is clicked. The dialog will be hidden after this
@@ -390,9 +403,12 @@ public class Dialog : Window
     {
     }
 
-    private void DefaultSkinProvided() => Core.Gdx.App.Debug( "Dialog",
-                                                              "This method may only be used if the dialog was constructed "
-                                                            + "with a Skin, a default Skin has been provided." );
+    private void DefaultSkinProvided()
+    {
+        Gdx.App.Debug( "Dialog",
+                       "This method may only be used if the dialog was constructed "
+                     + "with a Skin, a default Skin has been provided." );
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -401,7 +417,10 @@ public class Dialog : Window
     {
         private readonly Dialog _dialog;
 
-        public ButtonTableChangeListener( Dialog dialog ) => _dialog = dialog;
+        public ButtonTableChangeListener( Dialog dialog )
+        {
+            _dialog = dialog;
+        }
 
         public override void Changed( ChangeEvent ev, Actor? actor )
         {

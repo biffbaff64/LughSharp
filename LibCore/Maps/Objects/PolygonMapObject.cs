@@ -39,17 +39,26 @@ public class PolygonMapObject : MapObject
     /// <summary>
     /// </summary>
     /// <param name="vertices">polygon defining vertices (at least 3)</param>
-    public PolygonMapObject( float[]? vertices ) => Polygon = new Polygon( vertices );
+    public PolygonMapObject( float[]? vertices )
+    {
+        Polygon = new Polygon( vertices );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="polygon">the polygon</param>
-    public PolygonMapObject( Polygon polygon ) => Polygon = polygon;
+    public PolygonMapObject( Polygon polygon )
+    {
+        Polygon = polygon;
+    }
 
     public Polygon Polygon { get; set; }
 
     /// <summary>
     ///     <param name="polygon">new object's polygon shape</param>
     /// </summary>
-    public void SetPolygon( Polygon polygon ) => Polygon = polygon;
+    public void SetPolygon( Polygon polygon )
+    {
+        Polygon = polygon;
+    }
 }

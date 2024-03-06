@@ -35,7 +35,10 @@ public class ParticleEffect : IDisposable
     private          BoundingBox?            _bounds;
     private          bool                    _ownsTexture;
 
-    public ParticleEffect() => _emitters = new List< ParticleEmitter >( DEFAULT_EMITTERS_SIZE );
+    public ParticleEffect()
+    {
+        _emitters = new List< ParticleEmitter >( DEFAULT_EMITTERS_SIZE );
+    }
 
     public ParticleEffect( ParticleEffect effect )
     {
@@ -168,7 +171,10 @@ public class ParticleEffect : IDisposable
         }
     }
 
-    public List< ParticleEmitter > GetEmitters() => _emitters;
+    public List< ParticleEmitter > GetEmitters()
+    {
+        return _emitters;
+    }
 
     /// <summary>
     ///     Returns the emitter with the specified name, or null.
@@ -397,11 +403,20 @@ public class ParticleEffect : IDisposable
 
     // ------------------------------------------------------------------------
 
-    protected ParticleEmitter NewEmitter( StreamReader reader ) => new( reader );
+    protected ParticleEmitter NewEmitter( StreamReader reader )
+    {
+        return new ParticleEmitter( reader );
+    }
 
-    protected ParticleEmitter NewEmitter( ParticleEmitter emitter ) => new( emitter );
+    protected ParticleEmitter NewEmitter( ParticleEmitter emitter )
+    {
+        return new ParticleEmitter( emitter );
+    }
 
-    protected Texture LoadTexture( FileInfo file ) => new( file, false );
+    protected Texture LoadTexture( FileInfo file )
+    {
+        return new Texture( file, false );
+    }
 
     // ------------------------------------------------------------------------
 
@@ -455,7 +470,10 @@ public class ParticleEffect : IDisposable
     ///     the scale will be reset when it is returned to the pool.
     /// </summary>
     /// <param name="scaleFactor"></param>
-    public void ScaleEffect( float scaleFactor ) => ScaleEffect( scaleFactor, scaleFactor, scaleFactor );
+    public void ScaleEffect( float scaleFactor )
+    {
+        ScaleEffect( scaleFactor, scaleFactor, scaleFactor );
+    }
 
     /// <summary>
     ///     Permanently scales all the size and motion parameters of all the emitters
@@ -464,7 +482,10 @@ public class ParticleEffect : IDisposable
     /// </summary>
     /// <param name="scaleFactor"></param>
     /// <param name="motionScaleFactor"></param>
-    public void ScaleEffect( float scaleFactor, float motionScaleFactor ) => ScaleEffect( scaleFactor, scaleFactor, motionScaleFactor );
+    public void ScaleEffect( float scaleFactor, float motionScaleFactor )
+    {
+        ScaleEffect( scaleFactor, scaleFactor, motionScaleFactor );
+    }
 
     /// <summary>
     ///     Permanently scales all the size and motion parameters of all the emitters

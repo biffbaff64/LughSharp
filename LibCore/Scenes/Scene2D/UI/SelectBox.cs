@@ -215,7 +215,10 @@ public class SelectBox<T> : Widget, IDisableable
     /// <summary>
     ///     Returns the internal items array.
     /// </summary>
-    public List< T > GetItems() => _items;
+    public List< T > GetItems()
+    {
+        return _items;
+    }
 
     public void Layout()
     {
@@ -390,19 +393,28 @@ public class SelectBox<T> : Widget, IDisableable
     ///     select box is open.
     /// </summary>
     /// <param name="alignment"> See <see cref="Align" />. </param>
-    public void SetAlignment( int alignment ) => _alignment = alignment;
+    public void SetAlignment( int alignment )
+    {
+        _alignment = alignment;
+    }
 
     /// <summary>
     ///     Get the set of selected items, useful when multiple items are selected
     /// </summary>
     /// <returns> a Selection object containing the selected elements </returns>
-    public ArraySelection< T > GetSelection() => _selection;
+    public ArraySelection< T > GetSelection()
+    {
+        return _selection;
+    }
 
     /// <summary>
     ///     Returns the first selected item, or null. For multiple selections
     ///     use <see cref="GetSelection()" />.
     /// </summary>
-    public T? GetSelected() => _selection.First();
+    public T? GetSelected()
+    {
+        return _selection.First();
+    }
 
     /// <summary>
     ///     Sets the selection to only the passed item, if it is a possible
@@ -438,12 +450,18 @@ public class SelectBox<T> : Widget, IDisableable
     /// <summary>
     ///     Sets the selection to only the selected index.
     /// </summary>
-    public void SetSelectedIndex( int index ) => _selection.Set( _items[ index ] );
+    public void SetSelectedIndex( int index )
+    {
+        _selection.Set( _items[ index ] );
+    }
 
     /**
      * When true the pref width is based on the selected item.
      */
-    public void SetSelectedPrefWidth( bool selectedPrefWidth ) => _selectedPrefWidth = selectedPrefWidth;
+    public void SetSelectedPrefWidth( bool selectedPrefWidth )
+    {
+        _selectedPrefWidth = selectedPrefWidth;
+    }
 
     /// <summary>
     ///     Returns the pref width of the select box if the widest item was selected,
@@ -481,7 +499,10 @@ public class SelectBox<T> : Widget, IDisableable
         IsDisabled = disabled;
     }
 
-    protected string? ToString( T? item ) => item?.ToString();
+    protected string? ToString( T? item )
+    {
+        return item?.ToString();
+    }
 
     public void ShowList()
     {
@@ -491,12 +512,18 @@ public class SelectBox<T> : Widget, IDisableable
         }
     }
 
-    public void HideList() => _selectBoxList?.Hide();
+    public void HideList()
+    {
+        _selectBoxList?.Hide();
+    }
 
     /// <summary>
     ///     Returns the list shown when the select box is open.
     /// </summary>
-    public ListBox< T >? GetList() => _selectBoxList?.ListBox;
+    public ListBox< T >? GetList()
+    {
+        return _selectBoxList?.ListBox;
+    }
 
     /// <summary>
     ///     Disables scrolling of the list shown when the select box is open.
@@ -511,9 +538,15 @@ public class SelectBox<T> : Widget, IDisableable
     ///     Returns the scroll pane containing the list that is shown
     ///     when the select box is open.
     /// </summary>
-    public ScrollPane? GetScrollPane() => _selectBoxList;
+    public ScrollPane? GetScrollPane()
+    {
+        return _selectBoxList;
+    }
 
-    public bool IsOver() => ClickListener.Over;
+    public bool IsOver()
+    {
+        return ClickListener.Over;
+    }
 
     protected void OnShow( Actor selectBoxList )
     {
@@ -699,7 +732,7 @@ public class SelectBox<T> : Widget, IDisableable
             SelectBox.OnHide( this );
         }
 
-        [PublicAPI]
+
         public override void Draw( IBatch batch, float parentAlpha )
         {
             SelectBox.LocalToStageCoordinates( SelectBox._temp.Set( 0, 0 ) );
@@ -737,7 +770,10 @@ public class SelectBox<T> : Widget, IDisableable
     {
         private readonly SelectBox< T > _parent;
 
-        public SelectBoxArraySelection( SelectBox< T > parent ) => _parent = parent;
+        public SelectBoxArraySelection( SelectBox< T > parent )
+        {
+            _parent = parent;
+        }
 
         public override bool FireChangeEvent()
         {
@@ -757,7 +793,10 @@ public class SelectBox<T> : Widget, IDisableable
     {
         private readonly SelectBox< T > _parent;
 
-        public SelectBoxClickListener( SelectBox< T > parent ) => _parent = parent;
+        public SelectBoxClickListener( SelectBox< T > parent )
+        {
+            _parent = parent;
+        }
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
@@ -791,7 +830,10 @@ public class SelectBox<T> : Widget, IDisableable
     {
         private readonly SelectBoxList _parent;
 
-        public SelectBoxListClickListener( SelectBoxList parent ) => _parent = parent;
+        public SelectBoxListClickListener( SelectBoxList parent )
+        {
+            _parent = parent;
+        }
 
         public override void Clicked( InputEvent? ev, float x, float y )
         {
@@ -824,7 +866,10 @@ public class SelectBox<T> : Widget, IDisableable
     {
         private readonly SelectBoxList _parent;
 
-        public SelectBoxListInputListener( SelectBoxList parent ) => _parent = parent;
+        public SelectBoxListInputListener( SelectBoxList parent )
+        {
+            _parent = parent;
+        }
 
         public override void Exit( InputEvent? ev, float x, float y, int pointer, Actor? toActor )
         {
@@ -839,7 +884,10 @@ public class SelectBox<T> : Widget, IDisableable
     {
         private readonly SelectBoxList _parent;
 
-        public SblHideListener( SelectBoxList parent ) => _parent = parent;
+        public SblHideListener( SelectBoxList parent )
+        {
+            _parent = parent;
+        }
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {

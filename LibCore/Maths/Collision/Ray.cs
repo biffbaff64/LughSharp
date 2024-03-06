@@ -49,7 +49,10 @@ public class Ray
     /// <summary>
     /// </summary>
     /// <returns> a copy of this ray. </returns>
-    public virtual Ray Copy() => new( origin, direction );
+    public virtual Ray Copy()
+    {
+        return new Ray( origin, direction );
+    }
 
     /// <summary>
     ///     Returns the endpoint given the distance.
@@ -58,7 +61,10 @@ public class Ray
     /// <param name="result">The vector to set to the result</param>
     /// <param name="distance">The distance from the end point to the start point.</param>
     /// <returns> The out param  </returns>
-    public virtual Vector3 GetEndPoint( in Vector3 result, in float distance ) => result.Set( direction ).Scl( distance ).Add( origin );
+    public virtual Vector3 GetEndPoint( in Vector3 result, in float distance )
+    {
+        return result.Set( direction ).Scl( distance ).Add( origin );
+    }
 
     /// <summary>
     ///     Multiplies the ray by the given matrix.
@@ -80,7 +86,10 @@ public class Ray
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public override string ToString() => "ray [" + origin + ":" + direction + "]";
+    public override string ToString()
+    {
+        return "ray [" + origin + ":" + direction + "]";
+    }
 
     /// <summary>
     ///     Sets the starting position and the direction of this ray.

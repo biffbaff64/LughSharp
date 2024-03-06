@@ -27,7 +27,7 @@ using Exception = System.Exception;
 
 namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
 
-[PublicAPI, Serializable]
+[Serializable]
 public class CircularByteBuffer
 {
     private byte[] _buffer;
@@ -110,7 +110,10 @@ public class CircularByteBuffer
         }
     }
 
-    public CircularByteBuffer Copy() => new( this );
+    public CircularByteBuffer Copy()
+    {
+        return new CircularByteBuffer( this );
+    }
 
     public void Reset()
     {

@@ -29,7 +29,6 @@ using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
 
 namespace LibGDXSharp.LibCore.Graphics.G2D;
 
-[PublicAPI]
 public class SpriteBatch : IBatch
 {
     private const int MAX_VERTEX_INDEX = 32767;
@@ -103,7 +102,7 @@ public class SpriteBatch : IBatch
                                                2,
                                                ShaderProgram.TEXCOORD_ATTRIBUTE + "0" ) );
 
-        ProjectionMatrix.SetToOrtho2D( 0, 0, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height );
+        ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
         Vertices = new float[ size * Sprite.SpriteSize ];
 
@@ -163,7 +162,7 @@ public class SpriteBatch : IBatch
 
         RenderCalls = 0;
 
-        Core.Gdx.GL.GLDepthMask( false );
+        Gdx.GL.GLDepthMask( false );
 
         if ( _customShader != null )
         {
@@ -194,11 +193,11 @@ public class SpriteBatch : IBatch
         LastTexture = null;
         IsDrawing   = false;
 
-        Core.Gdx.GL20.GLDepthMask( true );
+        Gdx.GL20.GLDepthMask( true );
 
         if ( !BlendingDisabled )
         {
-            Core.Gdx.GL20.GLDisable( IGL20.GL_BLEND );
+            Gdx.GL20.GLDisable( IGL20.GL_BLEND );
         }
     }
 
@@ -562,7 +561,10 @@ public class SpriteBatch : IBatch
         idx = idx + 20;
     }
 
-    public virtual void Draw( Texture texture, float x, float y ) => Draw( texture, x, y, texture.Width, texture.Height );
+    public virtual void Draw( Texture texture, float x, float y )
+    {
+        Draw( texture, x, y, texture.Width, texture.Height );
+    }
 
     public virtual void Draw( Texture texture, float x, float y, float width, float height )
     {
@@ -675,7 +677,10 @@ public class SpriteBatch : IBatch
         }
     }
 
-    public virtual void Draw( TextureRegion region, float x, float y ) => Draw( region, x, y, region.RegionWidth, region.RegionHeight );
+    public virtual void Draw( TextureRegion region, float x, float y )
+    {
+        Draw( region, x, y, region.RegionWidth, region.RegionHeight );
+    }
 
     public virtual void Draw( TextureRegion region, float x, float y, float width, float height )
     {
@@ -1118,15 +1123,15 @@ public class SpriteBatch : IBatch
 
         if ( BlendingDisabled )
         {
-            Core.Gdx.GL.GLDisable( IGL20.GL_BLEND );
+            Gdx.GL.GLDisable( IGL20.GL_BLEND );
         }
         else
         {
-            Core.Gdx.GL.GLEnable( IGL20.GL_BLEND );
+            Gdx.GL.GLEnable( IGL20.GL_BLEND );
 
             if ( BlendSrcFunc != -1 )
             {
-                Core.Gdx.GL.GLBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
+                Gdx.GL.GLBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
             }
         }
 
@@ -1157,12 +1162,15 @@ public class SpriteBatch : IBatch
         BlendingDisabled = false;
     }
 
-    public void SetBlendFunction( int srcFunc, int dstFunc ) => SetBlendFunctionSeparate(
-        srcFunc,
-        dstFunc,
-        srcFunc,
-        dstFunc
-        );
+    public void SetBlendFunction( int srcFunc, int dstFunc )
+    {
+        SetBlendFunctionSeparate(
+            srcFunc,
+            dstFunc,
+            srcFunc,
+            dstFunc
+            );
+    }
 
     public void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha )
     {

@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Utils.Buffers;
 
-[PublicAPI]
 public class HeapCharBuffer : CharBuffer
 {
     public HeapCharBuffer( char[] array, int offset, int length )
@@ -42,7 +41,10 @@ public class HeapCharBuffer : CharBuffer
     ///     Tells whether or not this buffer is <i>direct</i>.
     /// </summary>
     /// <returns> <tt>true</tt> if, and only if, this buffer is direct </returns>
-    public override bool IsDirect() => false;
+    public override bool IsDirect()
+    {
+        return false;
+    }
 
     /// <summary>
     ///     Relative <i>get</i> method.  Reads the char at this buffer's
@@ -52,7 +54,10 @@ public class HeapCharBuffer : CharBuffer
     /// <exception cref="GdxRuntimeException">
     ///     If the buffer's current position is not smaller than its limit
     /// </exception>
-    protected override char Get() => '\0';
+    protected override char Get()
+    {
+        return '\0';
+    }
 
     /// <summary>
     ///     Relative <i>put</i> method  <i>(optional operation)</i>.
@@ -69,7 +74,10 @@ public class HeapCharBuffer : CharBuffer
     /// <exception cref="GdxRuntimeException">
     ///     If this buffer is read-only, which it shouldn't be!
     /// </exception>
-    protected override CharBuffer Put( char c ) => this;
+    protected override CharBuffer Put( char c )
+    {
+        return this;
+    }
 
     /// <summary>
     ///     Absolute <i>get</i> method.  Reads the char at the given index.
@@ -79,7 +87,10 @@ public class HeapCharBuffer : CharBuffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
-    protected override char Get( int index ) => '\0';
+    protected override char Get( int index )
+    {
+        return '\0';
+    }
 
     /// <summary>
     ///     Absolute <i>get</i> method. Reads the char at the given index without
@@ -87,7 +98,10 @@ public class HeapCharBuffer : CharBuffer
     /// </summary>
     /// <param name="index">The index from which the char will be read</param>
     /// <returns>  The char at the given index </returns>
-    public override char GetUnchecked( int index ) => '\0';
+    public override char GetUnchecked( int index )
+    {
+        return '\0';
+    }
 
     /// <summary>
     ///     Absolute <i>put</i> method  <i>(optional operation)</i>.
@@ -104,7 +118,10 @@ public class HeapCharBuffer : CharBuffer
     ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
     /// <exception cref="GdxRuntimeException">If this buffer is read-only </exception>
-    public override CharBuffer Put( int index, char c ) => this;
+    public override CharBuffer Put( int index, char c )
+    {
+        return this;
+    }
 
     /// <summary>
     ///     Compacts this buffer  <i>(optional operation)</i>.
@@ -121,7 +138,10 @@ public class HeapCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns> This Buffer </returns>
-    public override CharBuffer Compact() => this;
+    public override CharBuffer Compact()
+    {
+        return this;
+    }
 
     /// <summary>
     ///     Creates a new char buffer whose content is a shared subsequence of
@@ -141,7 +161,10 @@ public class HeapCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The new char buffer </returns>
-    public override CharBuffer Slice() => this;
+    public override CharBuffer Slice()
+    {
+        return this;
+    }
 
     /// <summary>
     ///     Creates a new char buffer that shares this buffer's content.
@@ -159,7 +182,10 @@ public class HeapCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The new char buffer </returns>
-    public override CharBuffer Duplicate() => this;
+    public override CharBuffer Duplicate()
+    {
+        return this;
+    }
 
     /// <summary>
     ///     Creates a new, read-only char buffer that shares this buffer's
@@ -181,9 +207,15 @@ public class HeapCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The new, read-only char buffer </returns>
-    public override CharBuffer AsReadOnlyBuffer() => this;
+    public override CharBuffer AsReadOnlyBuffer()
+    {
+        return this;
+    }
 
-    protected override string ToString( int start, int end ) => "";
+    protected override string ToString( int start, int end )
+    {
+        return "";
+    }
 
     /// <summary>
     ///     Retrieves this buffer's byte order.
@@ -195,7 +227,10 @@ public class HeapCharBuffer : CharBuffer
     ///     </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
-    public override ByteOrder Order() => ByteOrder.NativeOrder;
+    public override ByteOrder Order()
+    {
+        return ByteOrder.NativeOrder;
+    }
 
     /// <summary>
     ///     Creates a new character buffer that represents the specified subsequence
@@ -226,5 +261,8 @@ public class HeapCharBuffer : CharBuffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If the preconditions on <tt>start</tt> and <tt>end</tt> do not hold
     /// </exception>
-    public override CharBuffer SubSequence( int start, int end ) => this;
+    public override CharBuffer SubSequence( int start, int end )
+    {
+        return this;
+    }
 }

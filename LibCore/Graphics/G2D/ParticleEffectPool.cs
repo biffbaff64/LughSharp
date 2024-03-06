@@ -32,7 +32,10 @@ public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
     private readonly ParticleEffect _effect;
 
     public ParticleEffectPool( ParticleEffect effect, int initialCapacity, int max )
-        : base( initialCapacity, max ) => _effect = effect;
+        : base( initialCapacity, max )
+    {
+        _effect = effect;
+    }
 
     protected new PooledEffect NewObject()
     {
@@ -76,8 +79,14 @@ public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
         private readonly ParticleEffectPool _effectPool;
 
         public PooledEffect( ParticleEffect effect, ParticleEffectPool pep )
-            : base( effect ) => _effectPool = pep;
+            : base( effect )
+        {
+            _effectPool = pep;
+        }
 
-        public void Free() => _effectPool.Free( this );
+        public void Free()
+        {
+            _effectPool.Free( this );
+        }
     }
 }

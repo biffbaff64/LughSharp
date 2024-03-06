@@ -166,7 +166,7 @@ public class ProgressBar : Widget, IDisableable
 
             if ( Stage is { ActionsRequestRendering: true } )
             {
-                Core.Gdx.Graphics.RequestRendering();
+                Gdx.Graphics.RequestRendering();
             }
         }
     }
@@ -447,13 +447,19 @@ public class ProgressBar : Widget, IDisableable
     ///     Rounds the value using the progress bar's step size.
     ///     This can be overridden to customize or disable rounding.
     /// </summary>
-    private float Round( float value ) => ( float )( Math.Round( value / StepSize ) * StepSize );
+    private float Round( float value )
+    {
+        return ( float )( Math.Round( value / StepSize ) * StepSize );
+    }
 
     /// <summary>
     ///     Clamps the value to the progress bar's min/max range. This can be overridden
     ///     to allow a range different from the progress bar knob's range.
     /// </summary>
-    private float Clamp( float value ) => MathUtils.Clamp( value, MinValue, MaxValue );
+    private float Clamp( float value )
+    {
+        return MathUtils.Clamp( value, MinValue, MaxValue );
+    }
 
     /// <summary>
     ///     Sets the range of this progress bar. The progress bar's current value is clamped to the range.
@@ -509,7 +515,10 @@ public class ProgressBar : Widget, IDisableable
     ///     will happen over this duration in seconds.
     /// </summary>
     /// <param name="duration"></param>
-    public void SetAnimateDuration( float duration ) => _animateDuration = duration;
+    public void SetAnimateDuration( float duration )
+    {
+        _animateDuration = duration;
+    }
 
     /// <summary>
     ///     If <see cref="SetAnimateDuration(float)" /> animating the progress bar value,
@@ -529,7 +538,10 @@ public class ProgressBar : Widget, IDisableable
     ///     Sets the visual value equal to the actual value. This can be used
     ///     to set the value without animating.
     /// </summary>
-    public void UpdateVisualValue() => _animateTime = 0;
+    public void UpdateVisualValue()
+    {
+        _animateTime = 0;
+    }
 
     public float GetPercent()
     {

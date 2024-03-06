@@ -51,7 +51,10 @@ public class DesktopGLWindowAdapter : IDesktopGLWindowListener
     {
     }
 
-    public virtual bool CloseRequested() => false;
+    public virtual bool CloseRequested()
+    {
+        return false;
+    }
 
     public virtual void FilesDropped( string[] files )
     {

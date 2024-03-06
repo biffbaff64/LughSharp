@@ -72,7 +72,10 @@ public class RandomXS128 : Random
     /// </summary>
     /// <param name="seed0"> the first part of the initial seed </param>
     /// <param name="seed1"> the second part of the initial seed  </param>
-    public RandomXS128( long seed0, long seed1 ) => SetState( seed0, seed1 );
+    public RandomXS128( long seed0, long seed1 )
+    {
+        SetState( seed0, seed1 );
+    }
 
     /// <summary>
     ///     Sets the internal seed of this generator based on the given value.
@@ -118,7 +121,10 @@ public class RandomXS128 : Random
     ///     This protected method is final because, contrary to the superclass,
     ///     it's not used anymore by the other methods.
     /// </summary>
-    public override int Next( int bits ) => ( int )( NextLong() & ( ( 1L << bits ) - 1 ) );
+    public override int Next( int bits )
+    {
+        return ( int )( NextLong() & ( ( 1L << bits ) - 1 ) );
+    }
 
     /// <summary>
     ///     Returns the next pseudo-random, uniformly distributed int value from
@@ -127,7 +133,10 @@ public class RandomXS128 : Random
     ///         This implementation uses <see cref="NextLong()" /> internally.
     ///     </para>
     /// </summary>
-    public int NextInt() => ( int )NextLong();
+    public int NextInt()
+    {
+        return ( int )NextLong();
+    }
 
     /// <summary>
     ///     Returns a pseudo-random, uniformly distributed int value between 0
@@ -141,7 +150,10 @@ public class RandomXS128 : Random
     /// <returns>
     ///     the next pseudo-random int value between 0 (inclusive) and n (exclusive).
     /// </returns>
-    public int NextInt( in int n ) => ( int )NextLong( n );
+    public int NextInt( in int n )
+    {
+        return ( int )NextLong( n );
+    }
 
     /// <summary>
     ///     Returns a pseudo-random, uniformly distributed long value between 0
@@ -183,7 +195,10 @@ public class RandomXS128 : Random
     ///         This implementation uses <see cref="NextLong()" /> internally.
     ///     </para>
     /// </summary>
-    public override double NextDouble() => ( NextLong() >>> 11 ) * NORM_DOUBLE;
+    public override double NextDouble()
+    {
+        return ( NextLong() >>> 11 ) * NORM_DOUBLE;
+    }
 
     /// <summary>
     ///     Returns a pseudo-random, uniformly distributed {@code float} value
@@ -192,7 +207,10 @@ public class RandomXS128 : Random
     ///         This implementation uses <see cref="NextLong()" /> internally.
     ///     </para>
     /// </summary>
-    public float NextFloat() => ( float )( ( NextLong() >> 40 ) * NORM_FLOAT );
+    public float NextFloat()
+    {
+        return ( float )( ( NextLong() >> 40 ) * NORM_FLOAT );
+    }
 
     /// <summary>
     ///     Returns a pseudo-random, uniformly distributed bool value from
@@ -201,7 +219,10 @@ public class RandomXS128 : Random
     ///         This implementation uses <see cref="NextLong()" /> internally.
     ///     </para>
     /// </summary>
-    public bool Nextbool() => ( NextLong() & 1 ) != 0;
+    public bool Nextbool()
+    {
+        return ( NextLong() & 1 ) != 0;
+    }
 
     /// <summary>
     ///     Generates random bytes and places them into a user-supplied byte array.
@@ -242,7 +263,10 @@ public class RandomXS128 : Random
     /// </summary>
     /// <param name="seed">must be 0 or 1, designating which of the 2 long seeds to return</param>
     /// <returns> the internal seed that can be used in setState </returns>
-    public virtual long GetState( int seed ) => seed == 0 ? _seed0 : _seed1;
+    public virtual long GetState( int seed )
+    {
+        return seed == 0 ? _seed0 : _seed1;
+    }
 
     private static long MurmurHash3( long x )
     {

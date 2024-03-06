@@ -131,43 +131,28 @@ public class Pixmap : IDisposable
     }
 
     /// <returns> The width of the Pixmap in pixels. </returns>
-    public int Width
-    {
-        get { return gdx2DPixmap.Width; }
-    }
+    public int Width => gdx2DPixmap.Width;
 
     /// <returns> The height of the Pixmap in pixels. </returns>
-    public int Height
-    {
-        get { return gdx2DPixmap.Height; }
-    }
+    public int Height => gdx2DPixmap.Height;
 
     /// <summary>
     ///     Returns the OpenGL ES format of this Pixmap.
     /// </summary>
     /// <returns> one of GL_ALPHA, GL_RGB, GL_RGBA, GL_LUMINANCE, or GL_LUMINANCE_ALPHA.</returns>
-    public int GLFormat
-    {
-        get { return gdx2DPixmap.GLFormat; }
-    }
+    public int GLFormat => gdx2DPixmap.GLFormat;
 
     /// <summary>
     ///     Returns the OpenGL ES internal format of this Pixmap.
     /// </summary>
     /// <returns> one of GL_ALPHA, GL_RGB, GL_RGBA, GL_LUMINANCE, or GL_LUMINANCE_ALPHA.</returns>
-    public int GLInternalFormat
-    {
-        get { return gdx2DPixmap.GLInternalFormat; }
-    }
+    public int GLInternalFormat => gdx2DPixmap.GLInternalFormat;
 
     /// <summary>
     ///     Returns the OpenGL ES type of this Pixmap.
     /// </summary>
     /// <returns> one of GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT_5_6_5, GL_UNSIGNED_SHORT_4_4_4_4 </returns>
-    public int GLType
-    {
-        get { return gdx2DPixmap.GLType; }
-    }
+    public int GLType => gdx2DPixmap.GLType;
 
     /// <summary>
     ///     Returns the direct ByteBuffer holding the pixel data. For the format Alpha each
@@ -186,7 +171,7 @@ public class Pixmap : IDisposable
     ///     </para>
     /// </summary>
     /// <returns> the direct <see cref="ByteBuffer" /> holding the pixel data.  </returns>
-    public unsafe ByteBuffer Pixels
+    public ByteBuffer Pixels
     {
         get
         {
@@ -453,11 +438,11 @@ public class Pixmap : IDisposable
     /// <returns>The new Pixmap.</returns>
     public static Pixmap CreateFromFrameBuffer( int x, int y, int width, int height )
     {
-        Core.Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
+        Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
 
         Pixmap pixmap = new( width, height, Format.RGBA8888 );
 
-        Core.Gdx.GL.GLReadPixels( x, y, width, height, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixmap.Pixels );
+        Gdx.GL.GLReadPixels( x, y, width, height, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixmap.Pixels );
 
         return pixmap;
     }
@@ -519,7 +504,7 @@ public class Pixmap : IDisposable
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     #region PublicProperties
 
     private BlendTypes _blend  = BlendTypes.SourceOver;

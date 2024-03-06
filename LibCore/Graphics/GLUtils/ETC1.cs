@@ -376,7 +376,10 @@ public class ETC1
         /// <summary>
         ///     Returns whether this ETC1Data has a PKM header.
         /// </summary>
-        public bool HasPKMHeader() => DataOffset == 16;
+        public bool HasPKMHeader()
+        {
+            return DataOffset == 16;
+        }
 
         /// <summary>
         ///     Writes the ETC1Data with a PKM header to the given file.

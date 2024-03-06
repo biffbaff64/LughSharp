@@ -29,7 +29,6 @@ namespace LibGDXSharp.LibCore.Core;
 ///     Convenience implementation of <see cref="IApplicationListener" />.
 ///     Derive from this and only override what you need.
 /// </summary>
-[PublicAPI]
 public class ApplicationAdapter : IApplicationListener
 {
     /// <summary>

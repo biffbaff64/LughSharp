@@ -31,10 +31,12 @@ namespace LibGDXSharp.LibCore.Assets;
 ///     each time you start using the object, and decrement it after you're done
 ///     using it. AssetManager handles this automatically.
 /// </summary>
-[PublicAPI]
 public class RefCountedContainer : IRefCountedContainer
 {
-    public RefCountedContainer( object obj ) => Asset = obj ?? throw new ArgumentException( "Object must not be null" );
+    public RefCountedContainer( object obj )
+    {
+        Asset = obj ?? throw new ArgumentException( "Object must not be null" );
+    }
 
     public int     RefCount { get; set; } = 1;
     public object? Asset    { get; set; }

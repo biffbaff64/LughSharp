@@ -85,7 +85,7 @@ public class Skin : IDisposable
     {
     }
 
-    /// <summary>///     ///     ///     Creates a skin containing the resources in the specified skin JSON file.///     If a file in///     the same///     directory with a ".atlas" extension exists, it is///     loaded as a <see cref="TextureAtlas" />///     and the texture///     regions added to///     the skin. The atlas is automatically disposed when the skin is///     disposed.///////// </summary>
+    /// <summary>///     ///     ///     ///     Creates a skin containing the resources in the specified skin JSON file.///     If a///     file in///     the same///     directory with a ".atlas" extension exists, it is///     loaded as a///     <see cref="TextureAtlas" />///     and the texture///     regions added to///     the skin. The atlas is///     automatically disposed when the skin is///     disposed.//////////// </summary>
     public Skin( FileInfo skinFile )
     {
         var name      = Path.GetFileNameWithoutExtension( skinFile.Name );
@@ -100,7 +100,7 @@ public class Skin : IDisposable
         Load( skinFile );
     }
 
-    /// <summary>///     ///     ///     Creates a skin containing the resources in the specified skin JSON file and///     the texture///     regions///     from the specified atlas./////////     <para>///         The atlas is automatically disposed when the skin is disposed.///     </para>///     ///     ///////// </summary>
+    /// <summary>///     ///     ///     ///     Creates a skin containing the resources in the specified skin JSON file and///     the///     texture///     regions///     from the specified atlas.////////////     <para>///         The atlas is automatically disposed when the skin is disposed.///     </para>///     ///     ///     //////////// </summary>
     public Skin( FileInfo skinFile, TextureAtlas atlas )
     {
         Atlas = atlas;
@@ -109,7 +109,7 @@ public class Skin : IDisposable
         Load( skinFile );
     }
 
-    /// <summary>///     ///     ///     Creates a skin containing the texture regions from the specified atlas.///     The atlas is//////     automatically disposed when the skin is disposed.///////// </summary>
+    /// <summary>///     ///     ///     ///     Creates a skin containing the texture regions from the specified atlas.///     The///     atlas is//////     automatically disposed when the skin is disposed.//////////// </summary>
     public Skin( TextureAtlas atlas )
     {
         Atlas = atlas;
@@ -192,7 +192,10 @@ public class Skin : IDisposable
         }
     }
 
-    public void Add( string name, object resource ) => Add( name, resource, resource.GetType() );
+    public void Add( string name, object resource )
+    {
+        Add( name, resource, resource.GetType() );
+    }
 
     public void Add( string? name, object? resource, Type type )
     {
@@ -229,13 +232,19 @@ public class Skin : IDisposable
     ///     Returns a resource named "default" for the specified type.
     /// </summary>
     /// <exception cref="GdxRuntimeException">if the resource was not found.</exception>
-    public T Get<T>() => Get< T >( "default" );
+    public T Get<T>()
+    {
+        return Get< T >( "default" );
+    }
 
     /// <summary>
     ///     Returns a named resource of the specified type.
     /// </summary>
     /// <exception cref="GdxRuntimeException">if the resource was not found.</exception>
-    public T Get<T>( string name ) => ( T )Get( name, typeof( T ) );
+    public T Get<T>( string name )
+    {
+        return ( T )Get( name, typeof( T ) );
+    }
 
     /// <summary>
     ///     Returns a named resource of the specified type.
@@ -298,17 +307,29 @@ public class Skin : IDisposable
         return ( T? )Resources[ typeof( T ) ]?.Get( name );
     }
 
-    public bool Has( string name, Type type ) => Resources[ type ]!.ContainsKey( name );
+    public bool Has( string name, Type type )
+    {
+        return Resources[ type ]!.ContainsKey( name );
+    }
 
     /// <summary>
     ///     Returns the name to resource mapping for the specified type, or
     ///     null if no resources of that type exist.
     /// </summary>
-    public Dictionary< string, object >? GetAll( Type type ) => Resources[ type ];
+    public Dictionary< string, object >? GetAll( Type type )
+    {
+        return Resources[ type ];
+    }
 
-    public Color GetColor( string name ) => Get< Color >( name );
+    public Color GetColor( string name )
+    {
+        return Get< Color >( name );
+    }
 
-    public BitmapFont GetFont( string name ) => Get< BitmapFont >( name );
+    public BitmapFont GetFont( string name )
+    {
+        return Get< BitmapFont >( name );
+    }
 
     /// <summary>
     ///     Returns a registered texture region. If no region is found but a
@@ -594,17 +615,26 @@ public class Skin : IDisposable
     /// <summary>
     ///     Returns a copy of a drawable found in the skin via <see cref="GetDrawable(String)" />.
     /// </summary>
-    public IDrawable NewDrawable( string name ) => NewDrawable( GetDrawable( name ) );
+    public IDrawable NewDrawable( string name )
+    {
+        return NewDrawable( GetDrawable( name ) );
+    }
 
     /// <summary>
     ///     Returns a tinted copy of a drawable found in the skin via <see cref="GetDrawable(String)" />.
     /// </summary>
-    public IDrawable NewDrawable( string name, float r, float g, float b, float a ) => NewDrawable( GetDrawable( name ), new Color( r, g, b, a ) );
+    public IDrawable NewDrawable( string name, float r, float g, float b, float a )
+    {
+        return NewDrawable( GetDrawable( name ), new Color( r, g, b, a ) );
+    }
 
     /// <summary>
     ///     Returns a tinted copy of a drawable found in the skin via <see cref="GetDrawable(String)" />.
     /// </summary>
-    public IDrawable NewDrawable( string name, Color tint ) => NewDrawable( GetDrawable( name ), tint );
+    public IDrawable NewDrawable( string name, Color tint )
+    {
+        return NewDrawable( GetDrawable( name ), tint );
+    }
 
     /// <summary>
     ///     Returns a copy of the specified drawable.
@@ -637,7 +667,10 @@ public class Skin : IDisposable
     /// <summary>
     ///     Returns a tinted copy of a drawable found in the skin via <see cref="GetDrawable(String)" />.
     /// </summary>
-    public IDrawable NewDrawable( IDrawable drawable, float r, float g, float b, float a ) => NewDrawable( drawable, new Color( r, g, b, a ) );
+    public IDrawable NewDrawable( IDrawable drawable, float r, float g, float b, float a )
+    {
+        return NewDrawable( drawable, new Color( r, g, b, a ) );
+    }
 
     /// <summary>
     ///     Returns a tinted copy of a drawable found in the skin via <see cref="GetDrawable(String)" />.
@@ -756,7 +789,10 @@ public class Skin : IDisposable
         }
     }
 
-    private static MethodInfo? FindMethod( Type type, string name ) => type.GetMethod( name );
+    private static MethodInfo? FindMethod( Type type, string name )
+    {
+        return type.GetMethod( name );
+    }
 
     /// <summary>
     /// </summary>

@@ -64,7 +64,10 @@ public class Container<T> : WidgetGroup where T : Actor
         Transform = false;
     }
 
-    public Container( T? actor ) : this() => SetActor( actor );
+    public Container( T? actor ) : this()
+    {
+        SetActor( actor );
+    }
 
     public bool Rounding { get; set; } = true;
 
@@ -106,7 +109,10 @@ public class Container<T> : WidgetGroup where T : Actor
         return this;
     }
 
-    public IDrawable? GetBackground() => _background;
+    public IDrawable? GetBackground()
+    {
+        return _background;
+    }
 
     public void Layout()
     {
@@ -241,7 +247,10 @@ public class Container<T> : WidgetGroup where T : Actor
         }
     }
 
-    public T? GetActor() => _actor;
+    public T? GetActor()
+    {
+        return _actor;
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -401,9 +410,15 @@ public class Container<T> : WidgetGroup where T : Actor
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public float GetFillX() => _fillX;
+    public float GetFillX()
+    {
+        return _fillX;
+    }
 
-    public float GetFillY() => _fillY;
+    public float GetFillY()
+    {
+        return _fillY;
+    }
 
     public Container< T > Clip( bool enabled = true )
     {
@@ -424,7 +439,10 @@ public class Container<T> : WidgetGroup where T : Actor
         Invalidate();
     }
 
-    public bool GetClip() => _clip;
+    public bool GetClip()
+    {
+        return _clip;
+    }
 
     public new Actor? Hit( float x, float y, bool touchable )
     {
@@ -489,9 +507,15 @@ public class Container<T> : WidgetGroup where T : Actor
         return this;
     }
 
-    public float GetMinWidth() => _minWidth.Get( _actor ) + _padLeft.Get( this ) + _padRight.Get( this );
+    public float GetMinWidth()
+    {
+        return _minWidth.Get( _actor ) + _padLeft.Get( this ) + _padRight.Get( this );
+    }
 
-    public Value GetMinWidthValue() => _minWidth;
+    public Value GetMinWidthValue()
+    {
+        return _minWidth;
+    }
 
     public float GetMaxWidth()
     {
@@ -505,7 +529,10 @@ public class Container<T> : WidgetGroup where T : Actor
         return v;
     }
 
-    public Value GetMaxWidthValue() => _maxWidth;
+    public Value GetMaxWidthValue()
+    {
+        return _maxWidth;
+    }
 
     #endregion widths
 
@@ -554,9 +581,15 @@ public class Container<T> : WidgetGroup where T : Actor
         return this;
     }
 
-    public float GetMinHeight() => _minHeight.Get( _actor ) + _padTop.Get( this ) + _padBottom.Get( this );
+    public float GetMinHeight()
+    {
+        return _minHeight.Get( _actor ) + _padTop.Get( this ) + _padBottom.Get( this );
+    }
 
-    public Value GetMinHeightValue() => _minHeight;
+    public Value GetMinHeightValue()
+    {
+        return _minHeight;
+    }
 
     public float GetMaxHeight()
     {
@@ -570,7 +603,10 @@ public class Container<T> : WidgetGroup where T : Actor
         return v;
     }
 
-    public Value GetMaxHeightValue() => _maxHeight;
+    public Value GetMaxHeightValue()
+    {
+        return _maxHeight;
+    }
 
     #endregion heights
 
@@ -798,7 +834,10 @@ public class Container<T> : WidgetGroup where T : Actor
         return this;
     }
 
-    public Value GetPrefWidthValue() => _prefWidth;
+    public Value GetPrefWidthValue()
+    {
+        return _prefWidth;
+    }
 
     public float GetPrefWidth()
     {
@@ -812,7 +851,10 @@ public class Container<T> : WidgetGroup where T : Actor
         return Math.Max( GetMinWidth(), v + _padLeft.Get( this ) + _padRight.Get( this ) );
     }
 
-    public Value GetPrefHeightValue() => _prefHeight;
+    public Value GetPrefHeightValue()
+    {
+        return _prefHeight;
+    }
 
     public float GetPrefHeight()
     {
@@ -955,25 +997,55 @@ public class Container<T> : WidgetGroup where T : Actor
         return this;
     }
 
-    public Value GetPadTopValue() => _padTop;
+    public Value GetPadTopValue()
+    {
+        return _padTop;
+    }
 
-    public float GetPadTop() => _padTop.Get( this );
+    public float GetPadTop()
+    {
+        return _padTop.Get( this );
+    }
 
-    public Value GetPadLeftValue() => _padLeft;
+    public Value GetPadLeftValue()
+    {
+        return _padLeft;
+    }
 
-    public float GetPadLeft() => _padLeft.Get( this );
+    public float GetPadLeft()
+    {
+        return _padLeft.Get( this );
+    }
 
-    public Value GetPadBottomValue() => _padBottom;
+    public Value GetPadBottomValue()
+    {
+        return _padBottom;
+    }
 
-    public float GetPadBottom() => _padBottom.Get( this );
+    public float GetPadBottom()
+    {
+        return _padBottom.Get( this );
+    }
 
-    public Value GetPadRightValue() => _padRight;
+    public Value GetPadRightValue()
+    {
+        return _padRight;
+    }
 
-    public float GetPadRight() => _padRight.Get( this );
+    public float GetPadRight()
+    {
+        return _padRight.Get( this );
+    }
 
-    public float GetPadX() => _padLeft.Get( this ) + _padRight.Get( this );
+    public float GetPadX()
+    {
+        return _padLeft.Get( this ) + _padRight.Get( this );
+    }
 
-    public float GetPadY() => _padTop.Get( this ) + _padBottom.Get( this );
+    public float GetPadY()
+    {
+        return _padTop.Get( this ) + _padBottom.Get( this );
+    }
 
     #endregion padding
 
@@ -1054,7 +1126,10 @@ public class Container<T> : WidgetGroup where T : Actor
         return this;
     }
 
-    public int GetAlignment() => _align;
+    public int GetAlignment()
+    {
+        return _align;
+    }
 
     #endregion alignment
 
@@ -1173,16 +1248,28 @@ public class Container<T> : WidgetGroup where T : Actor
     #region deprecated methods
 
     [Obsolete]
-    public new void AddActor( Actor actor ) => throw new NotSupportedException( "Use Container#setActor." );
+    public new void AddActor( Actor actor )
+    {
+        throw new NotSupportedException( "Use Container#setActor." );
+    }
 
     [Obsolete]
-    public new void AddActorAt( int index, Actor actor ) => throw new NotSupportedException( "Use Container#setActor." );
+    public new void AddActorAt( int index, Actor actor )
+    {
+        throw new NotSupportedException( "Use Container#setActor." );
+    }
 
     [Obsolete]
-    public new void AddActorBefore( Actor actorBefore, Actor actor ) => throw new NotSupportedException( "Use Container#setActor." );
+    public new void AddActorBefore( Actor actorBefore, Actor actor )
+    {
+        throw new NotSupportedException( "Use Container#setActor." );
+    }
 
     [Obsolete]
-    public new void AddActorAfter( Actor actorAfter, Actor actor ) => throw new NotSupportedException( "Use Container#setActor." );
+    public new void AddActorAfter( Actor actorAfter, Actor actor )
+    {
+        throw new NotSupportedException( "Use Container#setActor." );
+    }
 
     #endregion deprecated methods
 

@@ -60,9 +60,15 @@ public class Segment
         vectorB.Set( bX, bY, bZ );
     }
 
-    public virtual float Len() => vectorA.Dst( vectorB );
+    public virtual float Len()
+    {
+        return vectorA.Dst( vectorB );
+    }
 
-    public virtual float Len2() => vectorA.Dst2( vectorB );
+    public virtual float Len2()
+    {
+        return vectorA.Dst2( vectorB );
+    }
 
     /// <summary>
     /// </summary>

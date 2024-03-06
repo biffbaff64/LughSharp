@@ -29,7 +29,10 @@ namespace LibGDXSharp.Backends.DesktopGL.Utils;
 
 public class DesktopGLApplicationLogger : IApplicationLogger
 {
-    public void Log( string tag, string message ) => Console.WriteLine( $@"[{tag}] {message}" );
+    public void Log( string tag, string message )
+    {
+        Console.WriteLine( $@"[{tag}] {message}" );
+    }
 
     public void Log( string tag, string message, Exception exception )
     {
@@ -37,7 +40,10 @@ public class DesktopGLApplicationLogger : IApplicationLogger
         Console.WriteLine( exception.StackTrace );
     }
 
-    public void Error( string tag, string message ) => Console.WriteLine( $@"[{tag}] {message}" );
+    public void Error( string tag, string message )
+    {
+        Console.WriteLine( $@"[{tag}] {message}" );
+    }
 
     public void Error( string tag, string message, Exception exception )
     {
@@ -45,7 +51,10 @@ public class DesktopGLApplicationLogger : IApplicationLogger
         Console.WriteLine( exception.StackTrace );
     }
 
-    public void Debug( string tag, string message ) => Console.WriteLine( $@"[{tag}] {message}" );
+    public void Debug( string tag, string message )
+    {
+        Console.WriteLine( $@"[{tag}] {message}" );
+    }
 
     public void Debug( string tag, string message, Exception exception )
     {

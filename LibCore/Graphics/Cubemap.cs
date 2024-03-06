@@ -35,7 +35,6 @@ namespace LibGDXSharp.LibCore.Graphics;
 ///     Wraps a standard OpenGL ES Cubemap.
 ///     Must be disposed when it is no longer used.
 /// </summary>
-[PublicAPI]
 public class Cubemap : GLTexture
 {
     private readonly static Dictionary< IApplication, List< Cubemap >? > _managedCubemaps = new();
@@ -53,7 +52,7 @@ public class Cubemap : GLTexture
 
         if ( data.Managed )
         {
-            AddManagedCubemap( Core.Gdx.App, this );
+            AddManagedCubemap( Gdx.App, this );
         }
     }
 
@@ -136,7 +135,7 @@ public class Cubemap : GLTexture
     /// <summary>
     ///     return the number of managed cubemaps currently loaded
     /// </summary>
-    public static int NumManagedCubemaps => _managedCubemaps[ Core.Gdx.App ]?.Count ?? 0;
+    public static int NumManagedCubemaps => _managedCubemaps[ Gdx.App ]?.Count ?? 0;
 
     /// <summary>
     ///     Sets the sides of this cubemap to the specified <see cref="ICubemapData" />.
@@ -156,7 +155,7 @@ public class Cubemap : GLTexture
 
         data.ConsumeCubemapData();
 
-        Core.Gdx.GL.GLBindTexture( GLTarget, 0 );
+        Gdx.GL.GLBindTexture( GLTarget, 0 );
     }
 
     protected override void Reload()
@@ -166,7 +165,7 @@ public class Cubemap : GLTexture
             throw new GdxRuntimeException( "Tried to reload an unmanaged Cubemap" );
         }
 
-        GLTextureHandle = ( int )Core.Gdx.GL.GLGenTexture();
+        GLTextureHandle = Gdx.GL.GLGenTexture();
 
         Load( Data );
     }
@@ -196,9 +195,9 @@ public class Cubemap : GLTexture
 
             if ( Data.Managed )
             {
-                if ( _managedCubemaps[ Core.Gdx.App ] != null )
+                if ( _managedCubemaps[ Gdx.App ] != null )
                 {
-                    _managedCubemaps[ Core.Gdx.App ]?.Remove( this );
+                    _managedCubemaps[ Gdx.App ]?.Remove( this );
                 }
             }
         }
@@ -220,7 +219,10 @@ public class Cubemap : GLTexture
     /// <summary>
     ///     Clears all managed cubemaps.
     /// </summary>
-    public static void ClearAllCubemaps( IApplication app ) => _managedCubemaps.Remove( app );
+    public static void ClearAllCubemaps( IApplication app )
+    {
+        _managedCubemaps.Remove( app );
+    }
 
     /// <summary>
     ///     Invalidate all managed cubemaps. This is an internal method. Do not use it!
@@ -289,7 +291,7 @@ public class Cubemap : GLTexture
 
                     // unload the c, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    cubemap.GLTextureHandle = ( int )Core.Gdx.GL.GLGenTexture();
+                    cubemap.GLTextureHandle = Gdx.GL.GLGenTexture();
                     AssetManager.Load( fileName, typeof( Cubemap ), parameter );
                 }
             }
@@ -420,17 +422,29 @@ public class Cubemap : GLTexture
         ///     Sets the supplied <see cref="Vector3" /> to the contents of <see cref="Up" />
         ///     and returns it to the caller.
         /// </summary>
-        public Vector3 GetUp( Vector3 vec3 ) => vec3.Set( Up );
+        public Vector3 GetUp( Vector3 vec3 )
+        {
+            return vec3.Set( Up );
+        }
 
         /// <summary>
         ///     Sets the supplied <see cref="Vector3" /> to the contents of <see cref="Direction" />
         ///     and returns it to the caller.
         /// </summary>
-        public Vector3 GetDirection( Vector3 vec3 ) => vec3.Set( Direction );
+        public Vector3 GetDirection( Vector3 vec3 )
+        {
+            return vec3.Set( Direction );
+        }
 
-        public static CubemapSide[] Values() => ValueList.ToArray();
+        public static CubemapSide[] Values()
+        {
+            return ValueList.ToArray();
+        }
 
-        public override string ToString() => _nameValue;
+        public override string ToString()
+        {
+            return _nameValue;
+        }
 
         public static CubemapSide ValueOf( string name )
         {

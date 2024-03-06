@@ -188,7 +188,10 @@ public class Stack : WidgetGroup
         }
     }
 
-    public void Add( Actor actor ) => AddActor( actor );
+    public void Add( Actor actor )
+    {
+        AddActor( actor );
+    }
 
     public void Layout()
     {

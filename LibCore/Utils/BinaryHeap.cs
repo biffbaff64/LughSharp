@@ -47,7 +47,6 @@ public record BinaryHeapNode
 ///         The <see cref="BinaryHeapNode" /> class can be extended to store additional information.
 ///     </para>
 /// </summary>
-[PublicAPI]
 public class BinaryHeap<T> where T : BinaryHeapNode
 {
     private const int DEFAULT_CAPACITY = 16;

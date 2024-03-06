@@ -133,7 +133,10 @@ public class WidgetGroup : Group, ILayout
         }
     }
 
-    public virtual void Invalidate() => NeedsLayout = true;
+    public virtual void Invalidate()
+    {
+        NeedsLayout = true;
+    }
 
     public virtual void InvalidateHierarchy()
     {
@@ -190,9 +193,15 @@ public class WidgetGroup : Group, ILayout
         }
     }
 
-    protected new void ChildrenChanged() => InvalidateHierarchy();
+    protected new void ChildrenChanged()
+    {
+        InvalidateHierarchy();
+    }
 
-    protected new void SizeChanged() => Invalidate();
+    protected new void SizeChanged()
+    {
+        Invalidate();
+    }
 
     /// <summary>
     ///     If this method is overridden, the super method or <see cref="Validate()" />

@@ -94,7 +94,10 @@ public class Event : IPoolable
     ///     methods to return true, which will consume the event so it is not passed
     ///     on to the application under the stage.
     /// </summary>
-    public void Handle() => IsHandled = true;
+    public void Handle()
+    {
+        IsHandled = true;
+    }
 
     /// <summary>
     ///     Marks this event cancelled. This handles the event and stops the event
@@ -117,5 +120,8 @@ public class Event : IPoolable
     ///     listeners on the <see cref="ListenerActor" /> are notified, but
     ///     after that no other listeners are notified.
     /// </summary>
-    public void Stop() => IsStopped = true;
+    public void Stop()
+    {
+        IsStopped = true;
+    }
 }

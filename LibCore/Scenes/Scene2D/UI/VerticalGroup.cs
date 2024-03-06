@@ -58,7 +58,10 @@ public class VerticalGroup : WidgetGroup
     private bool           _round       = true;
     private bool           _sizeInvalid = true;
 
-    public VerticalGroup() => Touchable = Touchable.ChildrenOnly;
+    public VerticalGroup()
+    {
+        Touchable = Touchable.ChildrenOnly;
+    }
 
     /// <summary>
     ///     Sets the vertical space between children.
@@ -568,7 +571,10 @@ public class VerticalGroup : WidgetGroup
     /// <summary>
     ///     If true (the default), positions and sizes are rounded to integers.
     /// </summary>
-    public void SetRound( bool round ) => _round = round;
+    public void SetRound( bool round )
+    {
+        _round = round;
+    }
 
     /// <summary>
     ///     If true, The children will be displayed last to first.
@@ -580,7 +586,10 @@ public class VerticalGroup : WidgetGroup
         return this;
     }
 
-    public bool GetReverse() => _reverse;
+    public bool GetReverse()
+    {
+        return _reverse;
+    }
 
     /// <summary>
     ///     Sets the padTop, padLeft, padBottom, and padRight to the specified value.

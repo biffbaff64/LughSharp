@@ -25,16 +25,21 @@
 
 namespace LibGDXSharp.LibCore.Utils.Buffers;
 
-[PublicAPI]
 public abstract class IntBuffer : Buffer
 {
     protected IntBuffer() : base( 0, 0, 0, 0 )
     {
     }
 
-    public int Get( int i ) => 0;
+    public int Get( int i )
+    {
+        return 0;
+    }
 
-    public int Get() => 0;
+    public int Get()
+    {
+        return 0;
+    }
 
     public abstract IntBuffer Put( int[] i, int i1, int i2 );
 

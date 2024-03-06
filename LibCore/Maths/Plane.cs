@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Maths;
 
-[PublicAPI]
 public class Plane
 {
     /// <summary>
@@ -77,7 +76,10 @@ public class Plane
     /// <param name="point1"> The first point </param>
     /// <param name="point2"> The second point </param>
     /// <param name="point3"> The third point  </param>
-    public Plane( Vector3 point1, Vector3 point2, Vector3 point3 ) => Set( point1, point2, point3 );
+    public Plane( Vector3 point1, Vector3 point2, Vector3 point3 )
+    {
+        Set( point1, point2, point3 );
+    }
 
     /// <returns> The normal </returns>
     public Vector3 Normal { get; } = new();
@@ -123,7 +125,10 @@ public class Plane
     /// </summary>
     /// <param name="point">The point</param>
     /// <returns>the shortest signed distance between the plane and the point</returns>
-    public float Distance( Vector3 point ) => Normal.Dot( point ) + DistanceToOrigin;
+    public float Distance( Vector3 point )
+    {
+        return Normal.Dot( point ) + DistanceToOrigin;
+    }
 
     /// <summary>
     ///     Returns on which side the given point lies relative to the plane and its
@@ -171,7 +176,10 @@ public class Plane
     /// </summary>
     /// <param name="direction"> the direction </param>
     /// <returns> whether the plane is front facing  </returns>
-    public bool IsFrontFacing( Vector3 direction ) => Normal.Dot( direction ) <= 0;
+    public bool IsFrontFacing( Vector3 direction )
+    {
+        return Normal.Dot( direction ) <= 0;
+    }
 
     /// <summary>
     ///     Sets the plane to the given point and normal.
@@ -208,5 +216,8 @@ public class Plane
         DistanceToOrigin = plane.DistanceToOrigin;
     }
 
-    public override string ToString() => $"{Normal}, {DistanceToOrigin}";
+    public override string ToString()
+    {
+        return $"{Normal}, {DistanceToOrigin}";
+    }
 }

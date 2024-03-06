@@ -130,7 +130,7 @@ public class Tooltip<T> : InputListener where T : Actor
 
     public override void Enter( InputEvent? ev, float x, float y, int pointer, Actor? fromActor )
     {
-        if ( ( pointer != -1 ) || Core.Gdx.Input.IsTouched() )
+        if ( ( pointer != -1 ) || Gdx.Input.IsTouched() )
         {
             return;
         }
@@ -157,7 +157,10 @@ public class Tooltip<T> : InputListener where T : Actor
         Hide();
     }
 
-    public void Hide() => Manager.Hide( this );
+    public void Hide()
+    {
+        Manager.Hide( this );
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -167,7 +170,10 @@ public class Tooltip<T> : InputListener where T : Actor
         private readonly Tooltip< T > _parent;
 
         public TooltipContainer( Tooltip< T > parent, T? contents )
-            : base( contents ) => _parent = parent;
+            : base( contents )
+        {
+            _parent = parent;
+        }
 
         public override void Act( float delta )
         {

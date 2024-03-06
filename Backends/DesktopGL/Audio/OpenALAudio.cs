@@ -206,8 +206,8 @@ public class OpenALAudio : IGLAudio
 
     // ------------------------------------------------------------------------
 
-    public IAudioDevice NewAudioDevice( int sampleRate, bool isMono ) =>
-
+    public IAudioDevice NewAudioDevice( int sampleRate, bool isMono )
+    {
         //        if ( NoDevice )
         //        {
         //            return new IAudioDevice()
@@ -234,10 +234,11 @@ public class OpenALAudio : IGLAudio
         //            {
         //            }
         //        }
-        new OpenALAudioDevice( this, sampleRate, isMono, _deviceBufferSize, _deviceBufferCount );
+        return new OpenALAudioDevice( this, sampleRate, isMono, _deviceBufferSize, _deviceBufferCount );
+    }
 
-    public IAudioRecorder NewAudioRecorder( int samplingRate, bool isMono ) =>
-
+    public IAudioRecorder NewAudioRecorder( int samplingRate, bool isMono )
+    {
         //        if ( NoDevice )
         //        {
         //            return new IAudioRecorder()
@@ -249,7 +250,8 @@ public class OpenALAudio : IGLAudio
         //            {
         //            }
         //        }
-        new GdxSoundAudioRecorder( samplingRate, isMono );
+        return new GdxSoundAudioRecorder( samplingRate, isMono );
+    }
 
     /// <summary>
     /// </summary>

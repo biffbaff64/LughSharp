@@ -31,7 +31,10 @@ public class DesktopGLClipboard : IClipboard
     ///     Check if the clipboard has contents.
     /// </summary>
     /// <returns> true, if the clipboard has contents</returns>
-    public bool HasContents() => false;
+    public bool HasContents()
+    {
+        return false;
+    }
 
     /// <summary>
     ///     The current content of the clipboard if it contains text

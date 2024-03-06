@@ -34,7 +34,6 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
 ///     TODO: much of the parsing currently occurs in the various decoders.
 ///     This should be moved into this class and associated inner classes.
 /// </summary>
-[PublicAPI]
 public sealed class Bitstream
 {
     /// <summary>

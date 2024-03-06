@@ -45,7 +45,10 @@ public class EllipseMapObject : MapObject
     /// <param name="y">Y coordinate</param>
     /// <param name="width">Width in pixels</param>
     /// <param name="height">Height in pixels</param>
-    public EllipseMapObject( float x, float y, float width, float height ) => Ellipse = new Ellipse( x, y, width, height );
+    public EllipseMapObject( float x, float y, float width, float height )
+    {
+        Ellipse = new Ellipse( x, y, width, height );
+    }
 
     public Ellipse Ellipse { get; set; }
 }

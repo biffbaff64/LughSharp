@@ -125,6 +125,9 @@ public class FloatCounter
         Mean?.Clear();
     }
 
-    public override string ToString() => $"FloatCounter: count={Count}, total={Total}, min={Min},"
-                                       + $"max={Max}, average={Average}, latest={Latest}, value={Value}";
+    public override string ToString()
+    {
+        return $"FloatCounter: count={Count}, total={Total}, min={Min},"
+             + $"max={Max}, average={Average}, latest={Latest}, value={Value}";
+    }
 }

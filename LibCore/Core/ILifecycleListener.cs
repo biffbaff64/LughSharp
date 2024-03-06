@@ -34,7 +34,6 @@ namespace LibGDXSharp.LibCore.Core;
 ///     interface. The methods will be invoked on the rendering thread. The methods
 ///     will be executed before the ApplicationListener methods are executed.
 /// </summary>
-[PublicAPI]
 public interface ILifecycleListener : IDisposable
 {
     /// <summary>

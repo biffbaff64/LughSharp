@@ -28,7 +28,6 @@ namespace LibGDXSharp.LibCore.Maths;
 /// <summary>
 ///     Encapsulates a 2D polygon defined by it's vertices relative to an origin point (default of 0, 0).
 /// </summary>
-[PublicAPI]
 public class Polygon : IShape2D
 {
     private RectangleShape? _bounds;
@@ -39,7 +38,10 @@ public class Polygon : IShape2D
     /// <summary>
     ///     Constructs a new polygon with no vertices.
     /// </summary>
-    public Polygon() => _localVertices = Array.Empty< float >();
+    public Polygon()
+    {
+        _localVertices = Array.Empty< float >();
+    }
 
     /// <summary>
     ///     Constructs a new polygon from a float array of parts of vertex points.
@@ -245,7 +247,10 @@ public class Polygon : IShape2D
     ///     Returns whether an x, y pair from the supplied Vector2 is
     ///     contained within the polygon.
     /// </summary>
-    public bool Contains( Vector2 point ) => Contains( point.X, point.Y );
+    public bool Contains( Vector2 point )
+    {
+        return Contains( point.X, point.Y );
+    }
 
     /// <summary>
     ///     Sets the origin point to which all of the polygon's local vertices are relative to.
@@ -309,5 +314,8 @@ public class Polygon : IShape2D
     /// <summary>
     ///     Returns the area contained within the polygon.
     /// </summary>
-    public float Area() => GeometryUtils.PolygonArea( TransformedVertices!, 0, TransformedVertices!.Length );
+    public float Area()
+    {
+        return GeometryUtils.PolygonArea( TransformedVertices!, 0, TransformedVertices!.Length );
+    }
 }

@@ -34,7 +34,6 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 /// </summary>
 /// <typeparam name="TAssetType"></typeparam>
 /// <typeparam name="TParameters"></typeparam>
-[PublicAPI]
 public abstract class AsynchronousAssetLoader<TAssetType, TParameters>
     : AssetLoaderBase where TParameters : AssetLoaderParameters
 {
@@ -42,7 +41,10 @@ public abstract class AsynchronousAssetLoader<TAssetType, TParameters>
     /// </summary>
     /// <param name="resolver"></param>
     protected AsynchronousAssetLoader( IFileHandleResolver resolver )
-        : base( resolver ) => IsSynchronous = false;
+        : base( resolver )
+    {
+        IsSynchronous = false;
+    }
 
     /// <summary>
     ///     Loads the non-OpenGL part of the asset and injects any dependencies of
@@ -75,11 +77,13 @@ public abstract class AsynchronousAssetLoader<TAssetType, TParameters>
     }
 }
 
-[PublicAPI]
 public abstract class AsynchronousAssetLoader : AssetLoaderBase
 {
     protected AsynchronousAssetLoader( IFileHandleResolver resolver )
-        : base( resolver ) => IsSynchronous = false;
+        : base( resolver )
+    {
+        IsSynchronous = false;
+    }
 
     public abstract void Load<T>( AssetManager manager,
                                   string? fileName,

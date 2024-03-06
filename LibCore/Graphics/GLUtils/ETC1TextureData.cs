@@ -77,10 +77,16 @@ public class ETC1TextureData : ITextureData
     }
 
     /// <inheritdoc />
-    public Pixmap ConsumePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    public Pixmap ConsumePixmap()
+    {
+        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    }
 
     /// <inheritdoc />
-    public bool DisposePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    public bool DisposePixmap()
+    {
+        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    }
 
     /// <inheritdoc />
     public void ConsumeCustomData( int target )
@@ -95,19 +101,19 @@ public class ETC1TextureData : ITextureData
             throw new GdxRuntimeException( "No data to consume!" );
         }
 
-        if ( !Core.Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
+        if ( !Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
         {
             Pixmap pixmap = ETC1.DecodeImage( _data, Pixmap.Format.RGB565 );
 
-            Core.Gdx.GL.GLTexImage2D( target,
-                                      0,
-                                      pixmap.GLInternalFormat,
-                                      pixmap.Width,
-                                      pixmap.Height,
-                                      0,
-                                      pixmap.GLFormat,
-                                      pixmap.GLType,
-                                      pixmap.Pixels );
+            Gdx.GL.GLTexImage2D( target,
+                                 0,
+                                 pixmap.GLInternalFormat,
+                                 pixmap.Width,
+                                 pixmap.Height,
+                                 0,
+                                 pixmap.GLFormat,
+                                 pixmap.GLType,
+                                 pixmap.Pixels );
 
             if ( UseMipMaps )
             {
@@ -119,18 +125,18 @@ public class ETC1TextureData : ITextureData
         }
         else
         {
-            Core.Gdx.GL.GLCompressedTexImage2D( target,
-                                                0,
-                                                ETC1.ETC1_RGB8_OES,
-                                                Width,
-                                                Height,
-                                                0,
-                                                _data.CompressedData.Capacity - _data.DataOffset,
-                                                _data.CompressedData );
+            Gdx.GL.GLCompressedTexImage2D( target,
+                                           0,
+                                           ETC1.ETC1_RGB8_OES,
+                                           Width,
+                                           Height,
+                                           0,
+                                           _data.CompressedData.Capacity - _data.DataOffset,
+                                           _data.CompressedData );
 
             if ( UseMipMaps )
             {
-                Core.Gdx.GL20.GLGenerateMipmap( IGL20.GL_TEXTURE_2D );
+                Gdx.GL20.GLGenerateMipmap( IGL20.GL_TEXTURE_2D );
             }
         }
 
@@ -150,8 +156,14 @@ public class ETC1TextureData : ITextureData
     public bool UseMipMaps { get; set; } = false;
 
     /// <inheritdoc />
-    public Pixmap.Format GetFormat() => Pixmap.Format.Alpha;
+    public Pixmap.Format GetFormat()
+    {
+        return Pixmap.Format.Alpha;
+    }
 
     /// <inheritdoc />
-    public bool IsManaged() => false;
+    public bool IsManaged()
+    {
+        return false;
+    }
 }

@@ -26,7 +26,6 @@
 using LibGDXSharp.LibCore.Graphics;
 using LibGDXSharp.LibCore.Graphics.G2D;
 
-using Trace = LibGDXSharp.LibCore.Utils.Trace;
 using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
 
 namespace LibGDXSharp.LibCore.Maps.Tiled.Renderers;
@@ -43,16 +42,28 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
     private          Matrix4? _isoTransform;
 
     public IsometricTiledMapRenderer( TiledMap map )
-        : base( map ) => Init();
+        : base( map )
+    {
+        Init();
+    }
 
     public IsometricTiledMapRenderer( TiledMap map, IBatch batch )
-        : base( map, batch ) => Init();
+        : base( map, batch )
+    {
+        Init();
+    }
 
     public IsometricTiledMapRenderer( TiledMap map, float unitScale )
-        : base( map, unitScale ) => Init();
+        : base( map, unitScale )
+    {
+        Init();
+    }
 
     public IsometricTiledMapRenderer( TiledMap map, float unitScale, IBatch batch )
-        : base( map, unitScale, batch ) => Init();
+        : base( map, unitScale, batch )
+    {
+        Init();
+    }
 
     private void Init()
     {
@@ -80,7 +91,7 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
 
         if ( _invIsotransform == null )
         {
-            Trace.Dbg( message: "_invIsotransform is null!" );
+            Logger.Dbg( message: "_invIsotransform is null!" );
         }
         else
         {

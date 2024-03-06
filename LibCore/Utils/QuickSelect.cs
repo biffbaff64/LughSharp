@@ -126,5 +126,8 @@ public class QuickSelect<T>
         return _comp.Compare( mid, right ) > 0 ? rightIdx : midIdx;
     }
 
-    private void Swap( int left, int right ) => ( _array[ left ], _array[ right ] ) = ( _array[ right ], _array[ left ] );
+    private void Swap( int left, int right )
+    {
+        ( _array[ left ], _array[ right ] ) = ( _array[ right ], _array[ left ] );
+    }
 }

@@ -63,7 +63,10 @@ public class BitReserve
     /// <summary>
     ///     Return totbit Field.
     /// </summary>
-    public int HssTell() => _totbit;
+    public int HssTell()
+    {
+        return _totbit;
+    }
 
     /// <summary>
     ///     Read a number bits from the bit stream.

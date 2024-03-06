@@ -27,7 +27,6 @@ using LibGDXSharp.LibCore.Maths;
 
 namespace LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
-[PublicAPI]
 public static class ListExtensions
 {
     public static T[] Resize<T>( this List< T > ts, int newSize )
@@ -46,15 +45,21 @@ public static class ListExtensions
     /// <param name="list"> This list </param>
     /// <typeparam name="T"> This list type </typeparam>
     /// <returns></returns>
-    public static T Random<T>( this List< T > list ) => list[ MathUtils.Random( list.Count - 1 ) ];
+    public static T Random<T>( this List< T > list )
+    {
+        return list[ MathUtils.Random( list.Count - 1 ) ];
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="t"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static List< T > With<T>( T t ) => new()
-        { t };
+    public static List< T > With<T>( T t )
+    {
+        return new List< T >
+            { t };
+    }
 
     public static void AddAll<T>( this List< T > ts, T[] array, int start, int count )
     {
@@ -145,7 +150,10 @@ public static class ListExtensions
     /// <param name="ts"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T Peek<T>( this List< T > ts ) => ts[ ^1 ];
+    public static T Peek<T>( this List< T > ts )
+    {
+        return ts[ ^1 ];
+    }
 
     /// <summary>
     ///     Removes and returns the item at the specified index.

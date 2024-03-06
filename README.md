@@ -44,7 +44,7 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - There seems to be different namings for width/height etc properties and methods. Make it more uniform
-- Make more use of <inheritdoc cref=""/>> or just <inheritdoc/>
+- Make more use of `<inheritdoc cref=""/>` or just `<inheritdoc/>`
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,6 +59,7 @@ ASSETS
 
     TODO:   Remove SynchronousAssetLoader and modify AssetLoader / AsynchronousAssetLoader
             to be just one loading system.
+
     FOR NOW: Just use basic file loading until the rest is working, then work on a proper
              asset loading and management system. This will allow testing of everything else.
              ( Don't forget Maps.Tiled.Loaders... )
@@ -573,10 +574,10 @@ SCENES/SCENE2D
 TODO: Use Lambdas for these...
 i.e. AddListener( new ClickListener()
 {
-    // Clicked needs to be a Func<>
-    Clicked = ( ev, x, y ) =>
-    {
-    }
+// Clicked needs to be a Func<>
+Clicked = ( ev, x, y ) =>
+{
+}
 } );
 
     SCENES/SCENE2D/UI
@@ -862,7 +863,7 @@ EXTENSIONS/BOX2D
 ----------------
 
     - It's most likely best to recommend the use of an already available C# port.
-    - ( It really depends on how much of a glutton for punishment you are!!!! )
+    - ( It really depends on how much of a glutton for punishment I am!!!! )
 
     eg:
     - Box2DSharp

@@ -36,7 +36,10 @@ public class Crc16
 
     private short _crc = ( short )SupportClass.Identity( 0xFFFF );
 
-    static Crc16() => Polynomial = ( short )SupportClass.Identity( 0x8005 );
+    static Crc16()
+    {
+        Polynomial = ( short )SupportClass.Identity( 0x8005 );
+    }
 
     /// <summary>
     ///     Feed a bitstring to the crc calculation (length between 0 and 32, not inclusive).

@@ -72,7 +72,10 @@ public class GeometryUtils
     /// <summary>
     ///     Returns true if the barycentric coordinates are inside the triangle.
     /// </summary>
-    public static bool BarycoordInsideTriangle( Vector2 barycentric ) => barycentric is { X: >= 0, Y: >= 0 } && ( ( barycentric.X + barycentric.Y ) <= 1 );
+    public static bool BarycoordInsideTriangle( Vector2 barycentric )
+    {
+        return barycentric is { X: >= 0, Y: >= 0 } && ( ( barycentric.X + barycentric.Y ) <= 1 );
+    }
 
     /// <summary>
     ///     Returns interpolated values given the barycentric coordinates of a point in a triangle and the values at each
@@ -240,7 +243,9 @@ public class GeometryUtils
     }
 
     public static float TriangleArea( float x1, float y1, float x2, float y2, float x3, float y3 )
-        => Math.Abs( ( ( x1 - x3 ) * ( y2 - y1 ) ) - ( ( x1 - x2 ) * ( y3 - y1 ) ) ) * 0.5f;
+    {
+        return Math.Abs( ( ( x1 - x3 ) * ( y2 - y1 ) ) - ( ( x1 - x2 ) * ( y3 - y1 ) ) ) * 0.5f;
+    }
 
     public static Vector2 QuadrilateralCentroid( float x1,
                                                  float y1,
@@ -325,7 +330,10 @@ public class GeometryUtils
         return area * 0.5f;
     }
 
-    public static void EnsureCcw( float[] polygon ) => EnsureCcw( polygon, 0, polygon.Length );
+    public static void EnsureCcw( float[] polygon )
+    {
+        EnsureCcw( polygon, 0, polygon.Length );
+    }
 
     public static void EnsureCcw( float[] polygon, int offset, int count )
     {

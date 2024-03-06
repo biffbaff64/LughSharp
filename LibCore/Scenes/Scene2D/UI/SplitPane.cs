@@ -31,7 +31,6 @@ using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
 
-[PublicAPI]
 public class SplitPane : WidgetGroup
 {
     private readonly RectangleShape _firstWidgetBounds  = new();
@@ -163,7 +162,10 @@ public class SplitPane : WidgetGroup
         }
     }
 
-    private void Initialise() => AddListener( new SplitPaneInputListener( this ) );
+    private void Initialise()
+    {
+        AddListener( new SplitPaneInputListener( this ) );
+    }
 
     public void SetStyle( SplitPaneStyle style )
     {
@@ -175,7 +177,10 @@ public class SplitPane : WidgetGroup
     ///     Returns the split pane's style. Modifying the returned style may not have
     ///     an effect until <see cref="SetStyle(SplitPaneStyle)" /> is called.
     /// </summary>
-    public SplitPaneStyle GetStyle() => _style;
+    public SplitPaneStyle GetStyle()
+    {
+        return _style;
+    }
 
     public void Layout()
     {
@@ -221,8 +226,15 @@ public class SplitPane : WidgetGroup
         }
     }
 
-    private float GetPrefWidth()  => PrefWidth;
-    private float GetPrefHeight() => PrefHeight;
+    private float GetPrefWidth()
+    {
+        return PrefWidth;
+    }
+
+    private float GetPrefHeight()
+    {
+        return PrefHeight;
+    }
 
     public void SetVertical( bool vertical )
     {
@@ -235,7 +247,10 @@ public class SplitPane : WidgetGroup
         InvalidateHierarchy();
     }
 
-    public bool ISVertical() => _vertical;
+    public bool ISVertical()
+    {
+        return _vertical;
+    }
 
     private void CalculateHorizBoundsAndPositions()
     {
@@ -331,7 +346,10 @@ public class SplitPane : WidgetGroup
         Invalidate();
     }
 
-    public float GetSplitAmount() => _splitAmount;
+    public float GetSplitAmount()
+    {
+        return _splitAmount;
+    }
 
     /// <summary>
     ///     Called during layout to clamp the <see cref="_splitAmount" /> within the set limits.
@@ -385,7 +403,10 @@ public class SplitPane : WidgetGroup
         }
     }
 
-    public float GetMinSplitAmount() => _minAmount;
+    public float GetMinSplitAmount()
+    {
+        return _minAmount;
+    }
 
     public void SetMinSplitAmount( float minAmount )
     {
@@ -397,7 +418,10 @@ public class SplitPane : WidgetGroup
         _minAmount = minAmount;
     }
 
-    public float GetMaxSplitAmount() => _maxAmount;
+    public float GetMaxSplitAmount()
+    {
+        return _maxAmount;
+    }
 
     public void SetMaxSplitAmount( float maxAmount )
     {
@@ -447,15 +471,22 @@ public class SplitPane : WidgetGroup
     // ------------------------------------------------------------------------
 
     [Obsolete( "SplitPane.AddActor is not supported, use SplitPane.SetWidget instead." )]
-    public override void AddActor( Actor actor ) => throw new GdxRuntimeException( "SplitPane.AddActor is not supported, use SplitPane.SetWidget instead." );
+    public override void AddActor( Actor actor )
+    {
+        throw new GdxRuntimeException( "SplitPane.AddActor is not supported, use SplitPane.SetWidget instead." );
+    }
 
     [Obsolete( "SplitPane.AddActorAt is not supported, use SplitPane.SetWidget instead." )]
     public override void AddActorAt( int index, Actor actor )
-        => throw new GdxRuntimeException( "SplitPane.AddActorAt is not supported, use SplitPane.SetWidget instead." );
+    {
+        throw new GdxRuntimeException( "SplitPane.AddActorAt is not supported, use SplitPane.SetWidget instead." );
+    }
 
     [Obsolete( "SplitPane.AddActorBefore is not supported, use SplitPane.SetWidget instead." )]
     public override void AddActorBefore( Actor actorBefore, Actor actor )
-        => throw new GdxRuntimeException( "SplitPane.AddActorBefore is not supported, use SplitPane.SetWidget instead." );
+    {
+        throw new GdxRuntimeException( "SplitPane.AddActorBefore is not supported, use SplitPane.SetWidget instead." );
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -532,7 +563,10 @@ public class SplitPane : WidgetGroup
         return actor;
     }
 
-    public bool ISCursorOverHandle() => _cursorOverHandle;
+    public bool ISCursorOverHandle()
+    {
+        return _cursorOverHandle;
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -542,7 +576,10 @@ public class SplitPane : WidgetGroup
         private readonly SplitPane _parent;
         private          int       _draggingPointer = -1;
 
-        public SplitPaneInputListener( SplitPane parent ) => _parent = parent;
+        public SplitPaneInputListener( SplitPane parent )
+        {
+            _parent = parent;
+        }
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
@@ -631,11 +668,20 @@ public class SplitPane : WidgetGroup
 
     public class SplitPaneStyle
     {
-        public SplitPaneStyle() => Handle = null!;
+        public SplitPaneStyle()
+        {
+            Handle = null!;
+        }
 
-        public SplitPaneStyle( IDrawable handle ) => Handle = handle;
+        public SplitPaneStyle( IDrawable handle )
+        {
+            Handle = handle;
+        }
 
-        public SplitPaneStyle( SplitPaneStyle style ) => Handle = style.Handle;
+        public SplitPaneStyle( SplitPaneStyle style )
+        {
+            Handle = style.Handle;
+        }
 
         public IDrawable Handle { get; }
     }

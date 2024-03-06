@@ -34,13 +34,22 @@ public class SpotLightsAttribute : Attribute
 
     // ------------------------------------------------------------------------
 
-    public SpotLightsAttribute() : base( Type ) => lights = new List< SpotLight >( 1 );
+    public SpotLightsAttribute() : base( Type )
+    {
+        lights = new List< SpotLight >( 1 );
+    }
 
-    public SpotLightsAttribute( SpotLightsAttribute copyFrom ) : this() => lights.AddAll( copyFrom.lights );
+    public SpotLightsAttribute( SpotLightsAttribute copyFrom ) : this()
+    {
+        lights.AddAll( copyFrom.lights );
+    }
 
     public static string Alias => "spotLights";
     public static long   Type  => Register( Alias );
 
     /// <inheritdoc />
-    public override Attribute Copy() => this;
+    public override Attribute Copy()
+    {
+        return this;
+    }
 }

@@ -50,7 +50,10 @@ public static class PixmapIO
     /// </summary>
     /// <param name="file">The file to write the Pixmap to.</param>
     /// <param name="pixmap"></param>
-    public static void WriteCIM( FileInfo file, Pixmap pixmap ) => CIM.Write( file, pixmap );
+    public static void WriteCIM( FileInfo file, Pixmap pixmap )
+    {
+        CIM.Write( file, pixmap );
+    }
 
     /// <summary>
     ///     Reads the <see cref="Pixmap" /> from the given file, assuming the Pixmap was
@@ -60,7 +63,10 @@ public static class PixmapIO
     ///     </para>
     /// </summary>
     /// <param name="file"> the file to read the Pixmap from  </param>
-    public static Pixmap ReadCIM( FileInfo file ) => CIM.Read( file );
+    public static Pixmap ReadCIM( FileInfo file )
+    {
+        return CIM.Read( file );
+    }
 
     /// <summary>
     ///     Writes the pixmap as a PNG. See <see cref="PNG" /> to write out multiple PNGs
@@ -244,13 +250,19 @@ public static class PixmapIO
         ///     Performs application-defined tasks associated with freeing,
         ///     releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose() => _deflater.Finish();
+        public void Dispose()
+        {
+            _deflater.Finish();
+        }
 
         /// <summary>
         ///     Sets the deflate compression level.
         ///     Default is <see cref="Deflater.DEFAULT_COMPRESSION" />.
         /// </summary>
-        public void SetCompression( int level ) => _deflater.SetLevel( level );
+        public void SetCompression( int level )
+        {
+            _deflater.SetLevel( level );
+        }
 
         /// <summary>
         /// </summary>

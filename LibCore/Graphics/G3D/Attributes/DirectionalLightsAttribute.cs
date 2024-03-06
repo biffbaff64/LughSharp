@@ -34,13 +34,22 @@ public class DirectionalLightsAttribute : Attribute
 
     // ------------------------------------------------------------------------
 
-    public DirectionalLightsAttribute() : base( Type ) => lights = new List< DirectionalLight >( 1 );
+    public DirectionalLightsAttribute() : base( Type )
+    {
+        lights = new List< DirectionalLight >( 1 );
+    }
 
-    public DirectionalLightsAttribute( DirectionalLightsAttribute copyFrom ) : this() => lights.AddAll( copyFrom.lights );
+    public DirectionalLightsAttribute( DirectionalLightsAttribute copyFrom ) : this()
+    {
+        lights.AddAll( copyFrom.lights );
+    }
 
     public static string Alias => "directionalLights";
     public static long   Type  => Register( Alias );
 
     /// <inheritdoc />
-    public override Attribute Copy() => this;
+    public override Attribute Copy()
+    {
+        return this;
+    }
 }

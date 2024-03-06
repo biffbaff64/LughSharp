@@ -50,16 +50,28 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
     /// </summary>
     private bool _staggerIndexEven = false;
 
-    public HexagonalTiledMapRenderer( TiledMap map ) : base( map ) => Init( map );
+    public HexagonalTiledMapRenderer( TiledMap map ) : base( map )
+    {
+        Init( map );
+    }
 
     public HexagonalTiledMapRenderer( TiledMap map, float unitScale )
-        : base( map, unitScale ) => Init( map );
+        : base( map, unitScale )
+    {
+        Init( map );
+    }
 
     public HexagonalTiledMapRenderer( TiledMap map, IBatch batch )
-        : base( map, batch ) => Init( map );
+        : base( map, batch )
+    {
+        Init( map );
+    }
 
     public HexagonalTiledMapRenderer( TiledMap map, float unitScale, IBatch batch )
-        : base( map, unitScale, batch ) => Init( map );
+        : base( map, unitScale, batch )
+    {
+        Init( map );
+    }
 
     private void Init( TiledMap map )
     {

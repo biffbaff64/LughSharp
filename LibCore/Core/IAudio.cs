@@ -27,7 +27,6 @@ using LibGDXSharp.LibCore.Audio;
 
 namespace LibGDXSharp.LibCore.Core;
 
-[PublicAPI]
 public interface IAudio
 {
     /// <summary>

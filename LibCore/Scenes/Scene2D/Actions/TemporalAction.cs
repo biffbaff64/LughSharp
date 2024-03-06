@@ -28,7 +28,6 @@ using LibGDXSharp.LibCore.Utils.Pooling;
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public abstract class TemporalAction : Action
 {
     private bool _began;
@@ -37,7 +36,10 @@ public abstract class TemporalAction : Action
     {
     }
 
-    protected TemporalAction( float duration ) => Duration = duration;
+    protected TemporalAction( float duration )
+    {
+        Duration = duration;
+    }
 
     protected TemporalAction( float duration, IInterpolation? interpolation )
     {
@@ -127,7 +129,10 @@ public abstract class TemporalAction : Action
     /// <summary>
     ///     Skips to the end of the transition.
     /// </summary>
-    public void Finish() => Time = Duration;
+    public void Finish()
+    {
+        Time = Duration;
+    }
 
     public override void Restart()
     {

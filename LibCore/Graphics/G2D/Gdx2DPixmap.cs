@@ -147,32 +147,38 @@ public class Gdx2DPixmap : IDisposable
     /// <param name="format"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public static int ToGLFormat( int format ) => format switch
-                                                  {
-                                                      GDX_2D_FORMAT_ALPHA           => IGL20.GL_ALPHA,
-                                                      GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL20.GL_LUMINANCE_ALPHA,
-                                                      GDX_2D_FORMAT_RGB888          => IGL20.GL_RGB,
-                                                      GDX_2D_FORMAT_RGB565          => IGL20.GL_RGB,
-                                                      GDX_2D_FORMAT_RGBA8888        => IGL20.GL_RGBA,
-                                                      GDX_2D_FORMAT_RGBA4444        => IGL20.GL_RGBA,
-                                                      _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
-                                                  };
+    public static int ToGLFormat( int format )
+    {
+        return format switch
+               {
+                   GDX_2D_FORMAT_ALPHA           => IGL20.GL_ALPHA,
+                   GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL20.GL_LUMINANCE_ALPHA,
+                   GDX_2D_FORMAT_RGB888          => IGL20.GL_RGB,
+                   GDX_2D_FORMAT_RGB565          => IGL20.GL_RGB,
+                   GDX_2D_FORMAT_RGBA8888        => IGL20.GL_RGBA,
+                   GDX_2D_FORMAT_RGBA4444        => IGL20.GL_RGBA,
+                   _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
+               };
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="format"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public static int ToGLType( int format ) => format switch
-                                                {
-                                                    GDX_2D_FORMAT_ALPHA           => IGL20.GL_UNSIGNED_BYTE,
-                                                    GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL20.GL_UNSIGNED_BYTE,
-                                                    GDX_2D_FORMAT_RGB888          => IGL20.GL_UNSIGNED_BYTE,
-                                                    GDX_2D_FORMAT_RGBA8888        => IGL20.GL_UNSIGNED_BYTE,
-                                                    GDX_2D_FORMAT_RGB565          => IGL20.GL_UNSIGNED_SHORT_5_6_5,
-                                                    GDX_2D_FORMAT_RGBA4444        => IGL20.GL_UNSIGNED_SHORT_4_4_4_4,
-                                                    _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
-                                                };
+    public static int ToGLType( int format )
+    {
+        return format switch
+               {
+                   GDX_2D_FORMAT_ALPHA           => IGL20.GL_UNSIGNED_BYTE,
+                   GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL20.GL_UNSIGNED_BYTE,
+                   GDX_2D_FORMAT_RGB888          => IGL20.GL_UNSIGNED_BYTE,
+                   GDX_2D_FORMAT_RGBA8888        => IGL20.GL_UNSIGNED_BYTE,
+                   GDX_2D_FORMAT_RGB565          => IGL20.GL_UNSIGNED_SHORT_5_6_5,
+                   GDX_2D_FORMAT_RGBA4444        => IGL20.GL_UNSIGNED_SHORT_4_4_4_4,
+                   _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
+               };
+    }
 
     /// <summary>
     /// </summary>
@@ -194,26 +200,55 @@ public class Gdx2DPixmap : IDisposable
         Width      = pixmap.Width;
     }
 
-    public void Clear( int color ) => Clear( basePtr, color );
+    public void Clear( int color )
+    {
+        Clear( basePtr, color );
+    }
 
-    public int GetPixel( int x, int y ) => GetPixel( basePtr, x, y );
+    public int GetPixel( int x, int y )
+    {
+        return GetPixel( basePtr, x, y );
+    }
 
-    public void SetPixel( int x, int y, int color ) => SetPixel( basePtr, x, y, color );
+    public void SetPixel( int x, int y, int color )
+    {
+        SetPixel( basePtr, x, y, color );
+    }
 
-    public void DrawLine( int x, int y, int x2, int y2, int color ) => DrawLine( basePtr, x, y, x2, y2, color );
+    public void DrawLine( int x, int y, int x2, int y2, int color )
+    {
+        DrawLine( basePtr, x, y, x2, y2, color );
+    }
 
-    public void DrawRect( int x, int y, int width, int height, int color ) => DrawRect( basePtr, x, y, width, height, color );
+    public void DrawRect( int x, int y, int width, int height, int color )
+    {
+        DrawRect( basePtr, x, y, width, height, color );
+    }
 
-    public void DrawCircle( int x, int y, int radius, int color ) => DrawCircle( basePtr, x, y, radius, color );
+    public void DrawCircle( int x, int y, int radius, int color )
+    {
+        DrawCircle( basePtr, x, y, radius, color );
+    }
 
-    public void FillRect( int x, int y, int width, int height, int color ) => FillRect( basePtr, x, y, width, height, color );
+    public void FillRect( int x, int y, int width, int height, int color )
+    {
+        FillRect( basePtr, x, y, width, height, color );
+    }
 
-    public void FillCircle( int x, int y, int radius, int color ) => FillCircle( basePtr, x, y, radius, color );
+    public void FillCircle( int x, int y, int radius, int color )
+    {
+        FillCircle( basePtr, x, y, radius, color );
+    }
 
-    public void FillTriangle( int x1, int y1, int x2, int y2, int x3, int y3, int color ) => FillTriangle( basePtr, x1, y1, x2, y2, x3, y3, color );
+    public void FillTriangle( int x1, int y1, int x2, int y2, int x3, int y3, int color )
+    {
+        FillTriangle( basePtr, x1, y1, x2, y2, x3, y3, color );
+    }
 
     public void DrawPixmap( Gdx2DPixmap src, int srcX, int srcY, int dstX, int dstY, int width, int height )
-        => DrawPixmap( src.basePtr, basePtr, srcX, srcY, width, height, dstX, dstY, width, height );
+    {
+        DrawPixmap( src.basePtr, basePtr, srcX, srcY, width, height, dstX, dstY, width, height );
+    }
 
     public void DrawPixmap( Gdx2DPixmap src,
                             int srcX,
@@ -223,7 +258,10 @@ public class Gdx2DPixmap : IDisposable
                             int dstX,
                             int dstY,
                             int dstWidth,
-                            int dstHeight ) => DrawPixmap( src.basePtr, basePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
+                            int dstHeight )
+    {
+        DrawPixmap( src.basePtr, basePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
+    }
 
     public static Gdx2DPixmap? NewPixmap( StreamReader inStream, int requestedFormat )
     {
@@ -233,7 +271,7 @@ public class Gdx2DPixmap : IDisposable
         }
         catch ( IOException e )
         {
-            Core.Gdx.App.Log( "Gdx2DPixmap", e.Message );
+            Gdx.App.Log( "Gdx2DPixmap", e.Message );
 
             return null;
         }
@@ -247,7 +285,7 @@ public class Gdx2DPixmap : IDisposable
         }
         catch ( ArgumentException e )
         {
-            Core.Gdx.App.Log( "Gdx2DPixmap", e.Message );
+            Gdx.App.Log( "Gdx2DPixmap", e.Message );
 
             return null;
         }
@@ -257,16 +295,19 @@ public class Gdx2DPixmap : IDisposable
     /// </summary>
     /// <param name="format"></param>
     /// <returns></returns>
-    private static string GetFormatString( int format ) => format switch
-                                                           {
-                                                               GDX_2D_FORMAT_ALPHA           => "Alpha",
-                                                               GDX_2D_FORMAT_LUMINANCE_ALPHA => "Luminance alpha",
-                                                               GDX_2D_FORMAT_RGB888          => "Rgb888",
-                                                               GDX_2D_FORMAT_RGBA8888        => "Rgba8888",
-                                                               GDX_2D_FORMAT_RGB565          => "Rgb565",
-                                                               GDX_2D_FORMAT_RGBA4444        => "Rgba4444",
-                                                               _                             => "Unknown"
-                                                           };
+    private static string GetFormatString( int format )
+    {
+        return format switch
+               {
+                   GDX_2D_FORMAT_ALPHA           => "Alpha",
+                   GDX_2D_FORMAT_LUMINANCE_ALPHA => "Luminance alpha",
+                   GDX_2D_FORMAT_RGB888          => "Rgb888",
+                   GDX_2D_FORMAT_RGBA8888        => "Rgba8888",
+                   GDX_2D_FORMAT_RGB565          => "Rgb565",
+                   GDX_2D_FORMAT_RGBA4444        => "Rgba4444",
+                   _                             => "Unknown"
+               };
+    }
 
     /// <summary>
     /// </summary>

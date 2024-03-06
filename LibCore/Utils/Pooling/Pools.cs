@@ -30,7 +30,6 @@ namespace LibGDXSharp.LibCore.Utils.Pooling;
 /// <summary>
 ///     Stores a map of <see cref="Pool{T}" />s by type for convenient static access.
 /// </summary>
-[PublicAPI]
 public static class Pools<T>
 {
     private readonly static Dictionary< Type, Pool< T >? > _typePools = new();
@@ -58,10 +57,16 @@ public static class Pools<T>
     ///     Sets an existing pool for the specified type, stored in a Class
     ///     to <see cref="Pool{T}" /> map.
     /// </summary>
-    public static void Set( Type type, Pool< T > pool ) => _typePools[ type ] = pool;
+    public static void Set( Type type, Pool< T > pool )
+    {
+        _typePools[ type ] = pool;
+    }
 
     /// <inheritdoc cref="Pool{T}.Obtain()" />
-    public static T? Obtain() => Get().Obtain();
+    public static T? Obtain()
+    {
+        return Get().Obtain();
+    }
 
     /// <inheritdoc cref="Pool{T}.Free(T)" />
     public static void Free( T? obj )

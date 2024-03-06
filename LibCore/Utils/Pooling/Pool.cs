@@ -28,7 +28,6 @@ namespace LibGDXSharp.LibCore.Utils.Pooling;
 /// <summary>
 ///     A pool of objects that can be reused to avoid allocation.
 /// </summary>
-[PublicAPI]
 public class Pool<T>
 {
     public delegate T? NewObjectHandler();
@@ -193,5 +192,8 @@ public class Pool<T>
     /// <summary>
     ///     The number of objects available to be obtained.
     /// </summary>
-    public virtual int GetFree() => _freeObjects.Count;
+    public virtual int GetFree()
+    {
+        return _freeObjects.Count;
+    }
 }

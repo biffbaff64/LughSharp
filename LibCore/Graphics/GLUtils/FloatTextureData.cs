@@ -65,7 +65,7 @@ public class FloatTextureData : ITextureData
         {
             var amountOfFloats = 4;
 
-            if ( Core.Gdx.Graphics.GLVersion.GLtype.Equals( GLVersion.GLType.OpenGL ) )
+            if ( Gdx.Graphics.GLVersion.GLtype.Equals( GLVersion.GLType.OpenGL ) )
             {
                 if ( ( _internalFormat == IGL30.GL_RGBA16_F ) || ( _internalFormat == IGL30.GL_RGBA32_F ) )
                 {
@@ -96,32 +96,32 @@ public class FloatTextureData : ITextureData
 
     public void ConsumeCustomData( int target )
     {
-        if ( ( Core.Gdx.App.AppType == IApplication.ApplicationType.Android )
-          || ( Core.Gdx.App.AppType == IApplication.ApplicationType.IOS )
-          || ( Core.Gdx.App.AppType == IApplication.ApplicationType.WebGL ) )
+        if ( ( Gdx.App.AppType == IApplication.ApplicationType.Android )
+          || ( Gdx.App.AppType == IApplication.ApplicationType.IOS )
+          || ( Gdx.App.AppType == IApplication.ApplicationType.WebGL ) )
         {
-            if ( !Core.Gdx.Graphics.SupportsExtension( "OES_texture_float" ) )
+            if ( !Gdx.Graphics.SupportsExtension( "OES_texture_float" ) )
             {
                 throw new GdxRuntimeException( "Extension OES_texture_float not supported!" );
             }
 
             // GLES and WebGL defines texture format by 3rd and 8th argument,
             // so to get a float texture one needs to supply GL_RGBA and GL_FLOAT there.
-            Core.Gdx.GL.GLTexImage2D( target,
-                                      0,
-                                      IGL20.GL_RGBA,
-                                      Width,
-                                      Height,
-                                      0,
-                                      IGL20.GL_RGBA,
-                                      IGL20.GL_FLOAT,
-                                      Buffer );
+            Gdx.GL.GLTexImage2D( target,
+                                 0,
+                                 IGL20.GL_RGBA,
+                                 Width,
+                                 Height,
+                                 0,
+                                 IGL20.GL_RGBA,
+                                 IGL20.GL_FLOAT,
+                                 Buffer );
         }
         else
         {
-            if ( !Core.Gdx.Graphics.IsGL30Available() )
+            if ( !Gdx.Graphics.IsGL30Available() )
             {
-                if ( !Core.Gdx.Graphics.SupportsExtension( "GL_ARB_texture_float" ) )
+                if ( !Gdx.Graphics.SupportsExtension( "GL_ARB_texture_float" ) )
                 {
                     throw new GdxRuntimeException( "Extension GL_ARB_texture_float not supported!" );
                 }
@@ -129,27 +129,39 @@ public class FloatTextureData : ITextureData
 
             // in desktop OpenGL the texture format is defined only by the third argument,
             // hence we need to use GL_RGBA32F there (this constant is unavailable in GLES/WebGL)
-            Core.Gdx.GL.GLTexImage2D( target,
-                                      0,
-                                      _internalFormat,
-                                      Width,
-                                      Height,
-                                      0,
-                                      _format,
-                                      IGL20.GL_FLOAT,
-                                      Buffer );
+            Gdx.GL.GLTexImage2D( target,
+                                 0,
+                                 _internalFormat,
+                                 Width,
+                                 Height,
+                                 0,
+                                 _format,
+                                 IGL20.GL_FLOAT,
+                                 Buffer );
         }
     }
 
-    public Pixmap ConsumePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    public Pixmap ConsumePixmap()
+    {
+        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    }
 
-    public bool DisposePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    public bool DisposePixmap()
+    {
+        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    }
 
-    public Pixmap.Format GetFormat() => throw new NotSupportedException();
+    public Pixmap.Format GetFormat()
+    {
+        throw new NotSupportedException();
+    }
 
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
     public bool UseMipMaps { get; set; }
 
-    public bool IsManaged() => true;
+    public bool IsManaged()
+    {
+        return true;
+    }
 }

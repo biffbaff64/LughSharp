@@ -28,7 +28,6 @@ using LibGDXSharp.LibCore.Graphics;
 
 namespace LibGDXSharp.LibCore.Assets.Loaders;
 
-[PublicAPI]
 public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
     private CubemapLoaderInfo _loaderInfo = new()
@@ -54,7 +53,10 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     /// <param name="parameter">parameters for loading the asset</param>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
-                                                             AssetLoaderParameters? parameter ) => default( List< AssetDescriptor > )!;
+                                                             AssetLoaderParameters? parameter )
+    {
+        return default( List< AssetDescriptor > )!;
+    }
 
     /// <summary>
     ///     Loads the non-OpenGL part of the asset and injects any dependencies of
@@ -102,7 +104,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         }
     }
 
-    [PublicAPI]
+
     public struct CubemapLoaderInfo
     {
         public string?       filename;
@@ -110,7 +112,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         public ICubemapData? cubemapData;
     }
 
-    [PublicAPI]
+
     public class CubemapParameter : AssetLoaderParameters
     {
         // The texture to put the TextureData in, optional.

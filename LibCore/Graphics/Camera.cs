@@ -35,7 +35,6 @@ namespace LibGDXSharp.LibCore.Graphics;
 /// <summary>
 ///     Base class for <see cref="OrthographicCamera" /> and <see cref="PerspectiveCamera" />.
 /// </summary>
-[PublicAPI]
 public abstract class Camera
 {
     private readonly Ray _ray = new( new Vector3(), new Vector3() );
@@ -84,7 +83,10 @@ public abstract class Camera
     ///     Recalculates the direction of the camera to look at the point (x, y, z).
     /// </summary>
     /// <param name="target">the point to look at.</param>
-    public void LookAt( Vector3 target ) => LookAt( target.X, target.Y, target.Z );
+    public void LookAt( Vector3 target )
+    {
+        LookAt( target.X, target.Y, target.Z );
+    }
 
     /// <summary>
     ///     Recalculates the direction of the camera to look at the point (x, y, z).
@@ -217,13 +219,19 @@ public abstract class Camera
     /// <param name="x"> the displacement on the x-axis</param>
     /// <param name="y"> the displacement on the y-axis</param>
     /// <param name="z"> the displacement on the z-axis</param>
-    protected void Translate( float x, float y, float z ) => Position.Add( x, y, z );
+    protected void Translate( float x, float y, float z )
+    {
+        Position.Add( x, y, z );
+    }
 
     /// <summary>
     ///     Moves the camera by the given vector.
     /// </summary>
     /// <param name="vec"> the displacement vector  </param>
-    protected void Translate( Vector3 vec ) => Position.Add( vec );
+    protected void Translate( Vector3 vec )
+    {
+        Position.Add( vec );
+    }
 
     /// <summary>
     ///     Function to translate a point given in screen coordinates to world space.
@@ -250,7 +258,7 @@ public abstract class Camera
                               float viewportHeight )
     {
         var x = screenCoords.X - viewportX;
-        var y = Core.Gdx.Graphics.Height - screenCoords.Y - viewportY;
+        var y = Gdx.Graphics.Height - screenCoords.Y - viewportY;
 
         screenCoords.X = ( ( 2 * x ) / viewportWidth ) - 1;
         screenCoords.Y = ( ( 2 * y ) / viewportHeight ) - 1;
@@ -274,7 +282,7 @@ public abstract class Camera
     /// <returns> the mutated and unprojected screenCoords <see cref="Vector3" /></returns>
     public Vector3 Unproject( Vector3 screenCoords )
     {
-        Unproject( screenCoords, 0, 0, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height );
+        Unproject( screenCoords, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
         return screenCoords;
     }
@@ -290,7 +298,7 @@ public abstract class Camera
     /// <returns>The mutated and projected worldCoords <see cref="Vector3" />.</returns>
     public Vector3? Project( Vector3? worldCoords )
     {
-        Project( worldCoords, 0, 0, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height );
+        Project( worldCoords, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
         return worldCoords;
     }
@@ -385,5 +393,8 @@ public abstract class Camera
     ///     instance but an internal member only accessible via this function.
     /// </summary>
     /// <returns>The picking Ray.</returns>
-    public Ray GetPickRay( float screenX, float screenY ) => GetPickRay( screenX, screenY, 0, 0, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height );
+    public Ray GetPickRay( float screenX, float screenY )
+    {
+        return GetPickRay( screenX, screenY, 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+    }
 }

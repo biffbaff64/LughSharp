@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Utils;
 
-[PublicAPI]
 public abstract class DataUtils
 {
     /// <summary>
@@ -37,11 +36,20 @@ public abstract class DataUtils
     ///     the value obtained by reversing (or, equivalently, swapping) the bytes
     ///     in the specified short value.
     /// </returns>
-    public static short ReverseBytes( short input ) => ( short )( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
+    public static short ReverseBytes( short input )
+    {
+        return ( short )( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
+    }
 
-    public static char ReverseBytes( char input ) => ( char )( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
+    public static char ReverseBytes( char input )
+    {
+        return ( char )( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
+    }
 
-    public static int ReverseBytes( int input ) => ( input >>> 24 ) | ( ( input >> 8 ) & 0xFF00 ) | ( ( input << 8 ) & 0xFF0000 ) | ( input << 24 );
+    public static int ReverseBytes( int input )
+    {
+        return ( input >>> 24 ) | ( ( input >> 8 ) & 0xFF00 ) | ( ( input << 8 ) & 0xFF0000 ) | ( input << 24 );
+    }
 
     public static long ReverseBytes( long input )
     {
@@ -68,7 +76,10 @@ public abstract class DataUtils
     ///     the argument converted to <tt>int</tt> by an unsigned
     ///     conversion
     /// </returns>
-    public static int ToUnsignedInt( short x ) => x & 0xffff;
+    public static int ToUnsignedInt( short x )
+    {
+        return x & 0xffff;
+    }
 
     /// <summary>
     ///     Converts the argument to a <tt>long</tt> by an unsigned
@@ -88,5 +99,8 @@ public abstract class DataUtils
     ///     the argument converted to <tt>long</tt> by an unsigned
     ///     conversion
     /// </returns>
-    public static long ToUnsignedLong( short x ) => x & 0xffffL;
+    public static long ToUnsignedLong( short x )
+    {
+        return x & 0xffffL;
+    }
 }

@@ -73,7 +73,10 @@ public class RunnableAction : Action
         }
     }
 
-    public override void Restart() => _ran = false;
+    public override void Restart()
+    {
+        _ran = false;
+    }
 
     public override void Reset()
     {

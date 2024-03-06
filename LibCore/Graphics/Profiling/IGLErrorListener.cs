@@ -33,7 +33,6 @@ namespace LibGDXSharp.LibCore.Graphics.Profiling;
 ///     Listener for GL errors detected by <see cref="GLProfiler" />.
 /// </summary>
 /// <seealso cref="GLProfiler" />
-[PublicAPI]
 public interface IGLErrorListener
 {
     /// <summary>
@@ -46,7 +45,6 @@ public interface IGLErrorListener
 /// <summary>
 ///     Listener that will log using Gdx.app.error GL error name and GL function.
 /// </summary>
-[PublicAPI]
 public class GLLoggingListener : IGLErrorListener
 {
     public void OnError( int error )
@@ -77,12 +75,12 @@ public class GLLoggingListener : IGLErrorListener
             // ignored
         }
 
-        Core.Gdx.App.Error( "LoggingListener",
-                            place != null
-                                ? $"Error {BaseGLInterceptor.ResolveErrorNumber( error )} from {place}"
+        Gdx.App.Error( "LoggingListener",
+                       place != null
+                           ? $"Error {BaseGLInterceptor.ResolveErrorNumber( error )} from {place}"
 
-                                // This will capture current stack trace for logging, if possible
-                                : $"Error {BaseGLInterceptor.ResolveErrorNumber( error )} at: {new Exception()}"
+                           // This will capture current stack trace for logging, if possible
+                           : $"Error {BaseGLInterceptor.ResolveErrorNumber( error )} at: {new Exception()}"
             );
     }
 }
@@ -90,7 +88,6 @@ public class GLLoggingListener : IGLErrorListener
 /// <summary>
 ///     Listener that will throw a GdxRuntimeException with error name.
 /// </summary>
-[PublicAPI]
 public class ThrowingListener : IGLErrorListener
 {
     public void OnError( int error )

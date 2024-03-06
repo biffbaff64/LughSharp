@@ -182,5 +182,8 @@ public class AtlasRegion : TextureRegion
         return null;
     }
 
-    public override string? ToString() => Name;
+    public override string? ToString()
+    {
+        return Name;
+    }
 }

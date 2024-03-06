@@ -424,7 +424,10 @@ public class Label : Widget
     ///     of text horizontally (default is left).
     /// </param>
     /// <see cref="Align" />
-    public void SetAlignment( int alignment ) => SetAlignment( alignment, alignment );
+    public void SetAlignment( int alignment )
+    {
+        SetAlignment( alignment, alignment );
+    }
 
     /// <summary>
     ///     <param name="labelAlign"> Aligns all the text within the label (default left center). </param>
@@ -451,7 +454,10 @@ public class Label : Widget
         Invalidate();
     }
 
-    public void SetFontScale( float fontScale ) => SetFontScale( fontScale, fontScale );
+    public void SetFontScale( float fontScale )
+    {
+        SetFontScale( fontScale, fontScale );
+    }
 
     public void SetFontScale( float fontScaleX, float fontScaleY )
     {
@@ -468,14 +474,20 @@ public class Label : Widget
     ///     the width of the label. Wrapping will not occur when ellipsis is enabled.
     ///     Default is false.
     /// </summary>
-    public void SetEllipsis( string? ellipsis ) => _ellipsis = ellipsis;
+    public void SetEllipsis( string? ellipsis )
+    {
+        _ellipsis = ellipsis;
+    }
 
     /// <summary>
     ///     When true the text will be truncated "..." if it does not fit within the
     ///     width of the label. Wrapping will not occur when ellipsis is true. Default
     ///     is false.
     /// </summary>
-    public void SetEllipsis( bool ellipsis ) => _ellipsis = ellipsis ? "..." : null;
+    public void SetEllipsis( bool ellipsis )
+    {
+        _ellipsis = ellipsis ? "..." : null;
+    }
 
     protected override string ToString()
     {

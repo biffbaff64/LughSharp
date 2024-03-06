@@ -66,7 +66,10 @@ public class MipMapTextureData : ITextureData
     ///     </para>
     /// </summary>
     /// <returns> the pixmap.</returns>
-    public Pixmap ConsumePixmap() => throw new GdxRuntimeException( "This Texture is compressed, use the compress method." );
+    public Pixmap ConsumePixmap()
+    {
+        throw new GdxRuntimeException( "This Texture is compressed, use the compress method." );
+    }
 
     /// <summary>
     ///     Uploads the pixel data to the OpenGL ES texture. The caller must bind an
@@ -85,8 +88,20 @@ public class MipMapTextureData : ITextureData
         }
     }
 
-    public bool                     DisposePixmap() => false;
+    public bool DisposePixmap()
+    {
+        return false;
+    }
+
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
-    public Pixmap.Format            GetFormat()     => Pixmap.Format.Alpha;
-    public bool                     IsManaged()     => false;
+
+    public Pixmap.Format GetFormat()
+    {
+        return Pixmap.Format.Alpha;
+    }
+
+    public bool IsManaged()
+    {
+        return false;
+    }
 }

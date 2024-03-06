@@ -35,7 +35,10 @@ namespace LibGDXSharp.LibCore.Graphics;
 /// </summary>
 public class Colors
 {
-    static Colors() => Reset();
+    static Colors()
+    {
+        Reset();
+    }
 
     private Colors()
     {
@@ -53,7 +56,10 @@ public class Colors
     ///     The Color to which the specified <code>name</code> is mapped,
     ///     or <code>null</code> if no mapping was found.
     /// </returns>
-    public static Color? Get( string name ) => Map[ name ];
+    public static Color? Get( string name )
+    {
+        return Map[ name ];
+    }
 
     /// <summary>
     ///     Convenience method to add a color with its <code>name</code>.
@@ -66,7 +72,10 @@ public class Colors
     ///     The previous Color associated with <code>name</code> or <code>null</code>
     ///     if no mapping was found.
     /// </returns>
-    public static Color Put( string name, Color color ) => Map[ name ] = color;
+    public static Color Put( string name, Color color )
+    {
+        return Map[ name ] = color;
+    }
 
     /// <summary>
     ///     Resets the color map to the predefined colors.

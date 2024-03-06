@@ -150,7 +150,7 @@ public class ShaderProgram
             FetchAttributes();
             FetchUniforms();
 
-            AddManagedShader( Core.Gdx.App, this );
+            AddManagedShader( Gdx.App, this );
         }
     }
 
@@ -178,7 +178,7 @@ public class ShaderProgram
                 // Gdx.gl20.glGetProgramiv(program, IGL20.GL_INFO_LOG_LENGTH, intbuf);
                 // int infoLogLength = intbuf.get(0);
                 // if (infoLogLength > 1) {
-                _log = Core.Gdx.GL20.GLGetProgramInfoLog( Handle );
+                _log = Gdx.GL20.GLGetProgramInfoLog( Handle );
 
                 // }
             }
@@ -220,16 +220,16 @@ public class ShaderProgram
     {
         IntBuffer intbuf = BufferUtils.NewIntBuffer( 1 );
 
-        var shader = Core.Gdx.GL20.GLCreateShader( type );
+        var shader = Gdx.GL20.GLCreateShader( type );
 
         if ( shader == 0 )
         {
             return -1;
         }
 
-        Core.Gdx.GL20.GLShaderSource( shader, source );
-        Core.Gdx.GL20.GLCompileShader( shader );
-        Core.Gdx.GL20.GLGetShaderiv( shader, IGL20.GL_COMPILE_STATUS, intbuf );
+        Gdx.GL20.GLShaderSource( shader, source );
+        Gdx.GL20.GLCompileShader( shader );
+        Gdx.GL20.GLGetShaderiv( shader, IGL20.GL_COMPILE_STATUS, intbuf );
 
         var compiled = intbuf.Get( 0 );
 
@@ -238,7 +238,7 @@ public class ShaderProgram
 // gl.glGetShaderiv(shader, IGL20.GL_INFO_LOG_LENGTH, intbuf);
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
-            var infoLog = Core.Gdx.GL20.GLGetShaderInfoLog( shader );
+            var infoLog = Gdx.GL20.GLGetShaderInfoLog( shader );
             _log += type == IGL20.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
             _log += infoLog;
 
@@ -254,7 +254,7 @@ public class ShaderProgram
     /// <returns></returns>
     protected static int CreateProgram()
     {
-        var program = Core.Gdx.GL20.GLCreateProgram();
+        var program = Gdx.GL20.GLCreateProgram();
 
         return program != 0 ? program : -1;
     }
@@ -266,15 +266,15 @@ public class ShaderProgram
             return -1;
         }
 
-        Core.Gdx.GL20.GLAttachShader( program, _vertexShaderHandle );
-        Core.Gdx.GL20.GLAttachShader( program, _fragmentShaderHandle );
-        Core.Gdx.GL20.GLLinkProgram( program );
+        Gdx.GL20.GLAttachShader( program, _vertexShaderHandle );
+        Gdx.GL20.GLAttachShader( program, _fragmentShaderHandle );
+        Gdx.GL20.GLLinkProgram( program );
 
         ByteBuffer tmp = ByteBuffer.Allocate( 4 );
         tmp.Order( ByteOrder.NativeOrder );
         IntBuffer intbuf = tmp.AsIntBuffer();
 
-        Core.Gdx.GL20.GLGetProgramiv( program, IGL20.GL_LINK_STATUS, intbuf );
+        Gdx.GL20.GLGetProgramiv( program, IGL20.GL_LINK_STATUS, intbuf );
 
         var linked = intbuf.Get( 0 );
 
@@ -283,7 +283,7 @@ public class ShaderProgram
 // Gdx.gl20.glGetProgramiv(program, IGL20.GL_INFO_LOG_LENGTH, intbuf);
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
-            _log = Core.Gdx.GL20.GLGetProgramInfoLog( program );
+            _log = Gdx.GL20.GLGetProgramInfoLog( program );
 
 // }
             return -1;
@@ -300,14 +300,17 @@ public class ShaderProgram
 
         if ( ( location = _attributes.Get( name, NOT_CACHED ) ) == NOT_CACHED )
         {
-            location            = Core.Gdx.GL20.GLGetAttribLocation( Handle, name );
+            location            = Gdx.GL20.GLGetAttribLocation( Handle, name );
             _attributes[ name ] = location;
         }
 
         return location;
     }
 
-    private int FetchUniformLocation( string name ) => FetchUniformLocation( name, Pedantic );
+    private int FetchUniformLocation( string name )
+    {
+        return FetchUniformLocation( name, Pedantic );
+    }
 
     public int FetchUniformLocation( string name, bool pedant )
     {
@@ -317,7 +320,7 @@ public class ShaderProgram
 
         if ( ( location = _uniforms.Get( name, NOT_CACHED ) ) == NOT_CACHED )
         {
-            location = Core.Gdx.GL20.GLGetUniformLocation( Handle, name );
+            location = Gdx.GL20.GLGetUniformLocation( Handle, name );
 
             if ( ( location == CACHED_NOT_FOUND ) && pedant )
             {
@@ -344,13 +347,13 @@ public class ShaderProgram
     public void SetUniformi( string name, int value )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform1I( FetchUniformLocation( name ), value );
+        Gdx.GL20.GLUniform1I( FetchUniformLocation( name ), value );
     }
 
     public void SetUniformi( int location, int value )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform1I( location, value );
+        Gdx.GL20.GLUniform1I( location, value );
     }
 
     /// <summary>
@@ -363,13 +366,13 @@ public class ShaderProgram
     public void SetUniformi( string name, int count, int value )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform2I( FetchUniformLocation( name ), count, value );
+        Gdx.GL20.GLUniform2I( FetchUniformLocation( name ), count, value );
     }
 
     public void SetUniformi( int location, int count, int value )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform2I( location, count, value );
+        Gdx.GL20.GLUniform2I( location, count, value );
     }
 
     /// <summary>
@@ -383,13 +386,13 @@ public class ShaderProgram
     public void SetUniformi( string name, int value1, int value2, int value3 )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform3I( FetchUniformLocation( name ), value1, value2, value3 );
+        Gdx.GL20.GLUniform3I( FetchUniformLocation( name ), value1, value2, value3 );
     }
 
     public void SetUniformi( int location, int x, int y, int z )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform3I( location, x, y, z );
+        Gdx.GL20.GLUniform3I( location, x, y, z );
     }
 
     /// <summary>
@@ -401,13 +404,13 @@ public class ShaderProgram
     public void SetUniformf( string name, float value )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform1F( FetchUniformLocation( name ), value );
+        Gdx.GL20.GLUniform1F( FetchUniformLocation( name ), value );
     }
 
     public void SetUniformf( int location, int value )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform1F( location, value );
+        Gdx.GL20.GLUniform1F( location, value );
     }
 
     /// <summary>
@@ -420,13 +423,13 @@ public class ShaderProgram
     public void SetUniformf( string name, float value1, float value2 )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform2F( FetchUniformLocation( name ), value1, value2 );
+        Gdx.GL20.GLUniform2F( FetchUniformLocation( name ), value1, value2 );
     }
 
     public void SetUniformf( int location, int value1, int value2 )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform2F( location, value1, value2 );
+        Gdx.GL20.GLUniform2F( location, value1, value2 );
     }
 
     /// <summary>
@@ -440,13 +443,13 @@ public class ShaderProgram
     public void SetUniformf( string name, float value1, float value2, float value3 )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform3F( FetchUniformLocation( name ), value1, value2, value3 );
+        Gdx.GL20.GLUniform3F( FetchUniformLocation( name ), value1, value2, value3 );
     }
 
     public void SetUniformf( int location, float value1, float value2, float value3 )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform3F( location, value1, value2, value3 );
+        Gdx.GL20.GLUniform3F( location, value1, value2, value3 );
     }
 
     /// <summary>
@@ -461,61 +464,61 @@ public class ShaderProgram
     public void SetUniformf( string name, float x, float y, float z, float w )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform4F( FetchUniformLocation( name ), x, y, z, w );
+        Gdx.GL20.GLUniform4F( FetchUniformLocation( name ), x, y, z, w );
     }
 
     public void SetUniformf( int location, float x, float y, float z, float w )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform4F( location, x, y, z, w );
+        Gdx.GL20.GLUniform4F( location, x, y, z, w );
     }
 
     public void SetUniform1Fv( string name, float[] values, int offset, int length )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform1Fv( FetchUniformLocation( name ), length, values, offset );
+        Gdx.GL20.GLUniform1Fv( FetchUniformLocation( name ), length, values, offset );
     }
 
     public void SetUniform1Fv( int location, float[] values, int offset, int length )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform1Fv( location, length, values, offset );
+        Gdx.GL20.GLUniform1Fv( location, length, values, offset );
     }
 
     public void SetUniform2Fv( string name, float[] values, int offset, int length )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform2Fv( FetchUniformLocation( name ), length / 2, values, offset );
+        Gdx.GL20.GLUniform2Fv( FetchUniformLocation( name ), length / 2, values, offset );
     }
 
     public void SetUniform2Fv( int location, float[] values, int offset, int length )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform2Fv( location, length / 2, values, offset );
+        Gdx.GL20.GLUniform2Fv( location, length / 2, values, offset );
     }
 
     public void SetUniform3Fv( string name, float[] values, int offset, int length )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform3Fv( FetchUniformLocation( name ), length / 3, values, offset );
+        Gdx.GL20.GLUniform3Fv( FetchUniformLocation( name ), length / 3, values, offset );
     }
 
     public void SetUniform3Fv( int location, float[] values, int offset, int length )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform3Fv( location, length / 3, values, offset );
+        Gdx.GL20.GLUniform3Fv( location, length / 3, values, offset );
     }
 
     public void SetUniform4Fv( string name, float[] values, int offset, int length )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform4Fv( FetchUniformLocation( name ), length / 4, values, offset );
+        Gdx.GL20.GLUniform4Fv( FetchUniformLocation( name ), length / 4, values, offset );
     }
 
     public void SetUniform4Fv( int location, float[] values, int offset, int length )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform4Fv( location, length / 4, values, offset );
+        Gdx.GL20.GLUniform4Fv( location, length / 4, values, offset );
     }
 
     /// <summary>
@@ -524,7 +527,10 @@ public class ShaderProgram
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="matrix"> the matrix  </param>
-    public void SetUniformMatrix( string name, Matrix4 matrix ) => SetUniformMatrix( name, matrix, false );
+    public void SetUniformMatrix( string name, Matrix4 matrix )
+    {
+        SetUniformMatrix( name, matrix, false );
+    }
 
     /// <summary>
     ///     Sets the uniform matrix with the given name. The <see cref="ShaderProgram" />
@@ -533,14 +539,20 @@ public class ShaderProgram
     /// <param name="name"> the name of the uniform </param>
     /// <param name="matrix"> the matrix </param>
     /// <param name="transpose"> whether the matrix should be transposed  </param>
-    public void SetUniformMatrix( string name, Matrix4 matrix, bool transpose ) => SetUniformMatrix( FetchUniformLocation( name ), matrix, transpose );
+    public void SetUniformMatrix( string name, Matrix4 matrix, bool transpose )
+    {
+        SetUniformMatrix( FetchUniformLocation( name ), matrix, transpose );
+    }
 
-    public void SetUniformMatrix( int location, Matrix4 matrix ) => SetUniformMatrix( location, matrix, false );
+    public void SetUniformMatrix( int location, Matrix4 matrix )
+    {
+        SetUniformMatrix( location, matrix, false );
+    }
 
     public void SetUniformMatrix( int location, Matrix4 matrix, bool transpose )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniformMatrix4Fv( location, 1, transpose, matrix.val, 0 );
+        Gdx.GL20.GLUniformMatrix4Fv( location, 1, transpose, matrix.val, 0 );
     }
 
     /// <summary>
@@ -549,7 +561,10 @@ public class ShaderProgram
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="matrix"> the matrix  </param>
-    public void SetUniformMatrix( string name, Matrix3 matrix ) => SetUniformMatrix( name, matrix, false );
+    public void SetUniformMatrix( string name, Matrix3 matrix )
+    {
+        SetUniformMatrix( name, matrix, false );
+    }
 
     /// <summary>
     ///     Sets the uniform matrix with the given name.
@@ -558,14 +573,20 @@ public class ShaderProgram
     /// <param name="name"> the name of the uniform </param>
     /// <param name="matrix"> the matrix </param>
     /// <param name="transpose"> whether the uniform matrix should be transposed  </param>
-    public void SetUniformMatrix( string name, Matrix3 matrix, bool transpose ) => SetUniformMatrix( FetchUniformLocation( name ), matrix, transpose );
+    public void SetUniformMatrix( string name, Matrix3 matrix, bool transpose )
+    {
+        SetUniformMatrix( FetchUniformLocation( name ), matrix, transpose );
+    }
 
-    public void SetUniformMatrix( int location, Matrix3 matrix ) => SetUniformMatrix( location, matrix, false );
+    public void SetUniformMatrix( int location, Matrix3 matrix )
+    {
+        SetUniformMatrix( location, matrix, false );
+    }
 
     public void SetUniformMatrix( int location, Matrix3 matrix, bool transpose )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniformMatrix3Fv( location, 1, transpose, matrix.val, 0 );
+        Gdx.GL20.GLUniformMatrix3Fv( location, 1, transpose, matrix.val, 0 );
     }
 
     /// <summary>
@@ -580,7 +601,7 @@ public class ShaderProgram
     {
         CheckManaged();
         buffer.Position = 0;
-        Core.Gdx.GL20.GLUniformMatrix3Fv( FetchUniformLocation( name ), count, transpose, buffer );
+        Gdx.GL20.GLUniformMatrix3Fv( FetchUniformLocation( name ), count, transpose, buffer );
     }
 
     /// <summary>
@@ -595,17 +616,19 @@ public class ShaderProgram
     {
         CheckManaged();
         buffer.Position = 0;
-        Core.Gdx.GL20.GLUniformMatrix4Fv( FetchUniformLocation( name ), count, transpose, buffer );
+        Gdx.GL20.GLUniformMatrix4Fv( FetchUniformLocation( name ), count, transpose, buffer );
     }
 
     public void SetUniformMatrix4Fv( int location, float[] values, int offset, int length )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniformMatrix4Fv( location, length / 16, false, values, offset );
+        Gdx.GL20.GLUniformMatrix4Fv( location, length / 16, false, values, offset );
     }
 
     public void SetUniformMatrix4Fv( string name, float[] values, int offset, int length )
-        => SetUniformMatrix4Fv( FetchUniformLocation( name ), values, offset, length );
+    {
+        SetUniformMatrix4Fv( FetchUniformLocation( name ), values, offset, length );
+    }
 
     /// <summary>
     ///     Sets the uniform with the given name. The <see cref="ShaderProgram" /> must be bound for this to work.
@@ -615,13 +638,13 @@ public class ShaderProgram
     public void SetUniformf( string name, Vector2 values )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform2F( FetchUniformLocation( name ), values.X, values.Y );
+        Gdx.GL20.GLUniform2F( FetchUniformLocation( name ), values.X, values.Y );
     }
 
     public void SetUniformf( int location, Vector2 values )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform2F( location, values.X, values.Y );
+        Gdx.GL20.GLUniform2F( location, values.X, values.Y );
     }
 
     /// <summary>
@@ -632,13 +655,13 @@ public class ShaderProgram
     public void SetUniformf( string name, Vector3 values )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform3F( FetchUniformLocation( name ), values.X, values.Y, values.Z );
+        Gdx.GL20.GLUniform3F( FetchUniformLocation( name ), values.X, values.Y, values.Z );
     }
 
     public void SetUniformf( int location, Vector3 values )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUniform3F( location, values.X, values.Y, values.Z );
+        Gdx.GL20.GLUniform3F( location, values.X, values.Y, values.Z );
     }
 
     /// <summary>
@@ -646,9 +669,15 @@ public class ShaderProgram
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="values"> r, g, b and a as the first through fourth values respectively  </param>
-    public void SetUniformf( string name, Color values ) => Core.Gdx.GL20.GLUniform4F( FetchUniformLocation( name ), values.R, values.G, values.B, values.A );
+    public void SetUniformf( string name, Color values )
+    {
+        Gdx.GL20.GLUniform4F( FetchUniformLocation( name ), values.R, values.G, values.B, values.A );
+    }
 
-    public void SetUniformf( int location, Color values ) => Core.Gdx.GL20.GLUniform4F( location, values.R, values.G, values.B, values.A );
+    public void SetUniformf( int location, Color values )
+    {
+        Gdx.GL20.GLUniform4F( location, values.R, values.G, values.B, values.A );
+    }
 
     /// <summary>
     ///     Sets the vertex attribute with the given name.
@@ -679,13 +708,13 @@ public class ShaderProgram
             return;
         }
 
-        Core.Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, buffer );
+        Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, buffer );
     }
 
     public void SetVertexAttribute( int location, int size, int type, bool normalize, int stride, Buffer buffer )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, buffer );
+        Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, buffer );
     }
 
     /// <summary>
@@ -717,19 +746,19 @@ public class ShaderProgram
             return;
         }
 
-        Core.Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, offset );
+        Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, offset );
     }
 
     public void SetVertexAttribute( int location, int size, int type, bool normalize, int stride, int offset )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, offset );
+        Gdx.GL20.GLVertexAttribPointer( location, size, type, normalize, stride, offset );
     }
 
     public void Bind()
     {
         CheckManaged();
-        Core.Gdx.GL20.GLUseProgram( Handle );
+        Gdx.GL20.GLUseProgram( Handle );
     }
 
     /// <summary>
@@ -738,12 +767,12 @@ public class ShaderProgram
     /// </summary>
     public void Dispose()
     {
-        Core.Gdx.GL20.GLUseProgram( 0 );
-        Core.Gdx.GL20.GLDeleteShader( _vertexShaderHandle );
-        Core.Gdx.GL20.GLDeleteShader( _fragmentShaderHandle );
-        Core.Gdx.GL20.GLDeleteProgram( Handle );
+        Gdx.GL20.GLUseProgram( 0 );
+        Gdx.GL20.GLDeleteShader( _vertexShaderHandle );
+        Gdx.GL20.GLDeleteShader( _fragmentShaderHandle );
+        Gdx.GL20.GLDeleteProgram( Handle );
 
-        _shaders.Get( Core.Gdx.App ).Remove( this );
+        _shaders.Get( Gdx.App ).Remove( this );
     }
 
     /// <summary>
@@ -761,13 +790,13 @@ public class ShaderProgram
             return;
         }
 
-        Core.Gdx.GL20.GLDisableVertexAttribArray( location );
+        Gdx.GL20.GLDisableVertexAttribArray( location );
     }
 
     public void DisableVertexAttribute( int location )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLDisableVertexAttribArray( location );
+        Gdx.GL20.GLDisableVertexAttribArray( location );
     }
 
     /// <summary>
@@ -785,13 +814,13 @@ public class ShaderProgram
             return;
         }
 
-        Core.Gdx.GL20.GLEnableVertexAttribArray( location );
+        Gdx.GL20.GLEnableVertexAttribArray( location );
     }
 
     public void EnableVertexAttribute( int location )
     {
         CheckManaged();
-        Core.Gdx.GL20.GLEnableVertexAttribArray( location );
+        Gdx.GL20.GLEnableVertexAttribArray( location );
     }
 
     private void CheckManaged()
@@ -827,7 +856,10 @@ public class ShaderProgram
         }
     }
 
-    public static void ClearAllShaderPrograms( IApplication app ) => _shaders.Remove( app );
+    public static void ClearAllShaderPrograms( IApplication app )
+    {
+        _shaders.Remove( app );
+    }
 
     /// <summary>
     ///     Sets the given attribute
@@ -838,7 +870,9 @@ public class ShaderProgram
     /// <param name="value3"> the third value </param>
     /// <param name="value4"> the fourth value  </param>
     public void SetAttributef( string name, float value1, float value2, float value3, float value4 )
-        => Core.Gdx.GL20.GLVertexAttrib4F( FetchAttributeLocation( name ), value1, value2, value3, value4 );
+    {
+        Gdx.GL20.GLVertexAttrib4F( FetchAttributeLocation( name ), value1, value2, value3, value4 );
+    }
 
     /// <summary>
     /// </summary>
@@ -846,7 +880,7 @@ public class ShaderProgram
     {
         _parameters.Clear();
 
-        Core.Gdx.GL20.GLGetProgramiv( Handle, IGL20.GL_ACTIVE_UNIFORMS, _parameters );
+        Gdx.GL20.GLGetProgramiv( Handle, IGL20.GL_ACTIVE_UNIFORMS, _parameters );
 
         var numUniforms = _parameters.Get( 0 );
 
@@ -859,9 +893,9 @@ public class ShaderProgram
 
             _progType.Clear();
 
-            var name = Core.Gdx.GL20.GLGetActiveUniform( Handle, i, _parameters, _progType );
+            var name = Gdx.GL20.GLGetActiveUniform( Handle, i, _parameters, _progType );
 
-            var location = Core.Gdx.GL20.GLGetUniformLocation( Handle, name );
+            var location = Gdx.GL20.GLGetUniformLocation( Handle, name );
 
             _uniforms[ name ]     = location;
             _uniformTypes[ name ] = _progType.Get( 0 );
@@ -876,7 +910,7 @@ public class ShaderProgram
     {
         _parameters.Clear();
 
-        Core.Gdx.GL20.GLGetProgramiv( Handle, IGL20.GL_ACTIVE_ATTRIBUTES, _parameters );
+        Gdx.GL20.GLGetProgramiv( Handle, IGL20.GL_ACTIVE_ATTRIBUTES, _parameters );
 
         var numAttributes = _parameters.Get( 0 );
 
@@ -889,8 +923,8 @@ public class ShaderProgram
 
             _progType.Clear();
 
-            var name     = Core.Gdx.GL20.GLGetActiveAttrib( Handle, i, _parameters, _progType );
-            var location = Core.Gdx.GL20.GLGetAttribLocation( Handle, name );
+            var name     = Gdx.GL20.GLGetActiveAttrib( Handle, i, _parameters, _progType );
+            var location = Gdx.GL20.GLGetAttribLocation( Handle, name );
 
             _attributes[ name ]     = location;
             _attributeTypes[ name ] = _progType.Get( 0 );
@@ -901,41 +935,65 @@ public class ShaderProgram
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns> whether the attribute is available in the shader  </returns>
-    public bool HasAttribute( string name ) => _attributes.ContainsKey( name );
+    public bool HasAttribute( string name )
+    {
+        return _attributes.ContainsKey( name );
+    }
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns>
     ///     the type of the attribute, one of <see cref="IGL20.GL_FLOAT" />,
     ///     <see cref="IGL20.GL_FLOAT_VEC2" /> etc.
     /// </returns>
-    public int GetAttributeType( string name ) => _attributeTypes.GetValueOrDefault( name, 0 );
+    public int GetAttributeType( string name )
+    {
+        return _attributeTypes.GetValueOrDefault( name, 0 );
+    }
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns> the location of the attribute or -1.  </returns>
-    public int GetAttributeLocation( string name ) => _attributes.GetValueOrDefault( name, 0 );
+    public int GetAttributeLocation( string name )
+    {
+        return _attributes.GetValueOrDefault( name, 0 );
+    }
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns> the size of the attribute or 0.</returns>
-    public int GetAttributeSize( string name ) => _attributeSizes.GetValueOrDefault( name, 0 );
+    public int GetAttributeSize( string name )
+    {
+        return _attributeSizes.GetValueOrDefault( name, 0 );
+    }
 
     /// <param name="name"> the name of the uniform.</param>
     /// <returns> whether the uniform is available in the shader.</returns>
-    public bool HasUniform( string name ) => _uniforms.ContainsKey( name );
+    public bool HasUniform( string name )
+    {
+        return _uniforms.ContainsKey( name );
+    }
 
     /// <param name="name"> the name of the uniform </param>
     /// <returns>
     ///     the type of the uniform, one of <see cref="IGL20.GL_FLOAT" />,
     ///     <see cref="IGL20.GL_FLOAT_VEC2" /> etc.
     /// </returns>
-    public int GetUniformType( string name ) => _uniformTypes.GetValueOrDefault( name, 0 );
+    public int GetUniformType( string name )
+    {
+        return _uniformTypes.GetValueOrDefault( name, 0 );
+    }
 
     /// <param name="name"> the name of the uniform </param>
     /// <returns> the location of the uniform or -1.</returns>
-    public int GetUniformLocation( string name ) => _uniforms.GetValueOrDefault( name, -1 );
+    public int GetUniformLocation( string name )
+    {
+        return _uniforms.GetValueOrDefault( name, -1 );
+    }
 
     /// <param name="name">The name of the uniform</param>
     /// <returns> the size of the uniform or 0.</returns>
-    public int GetUniformSize( string name ) => _uniformSizes.GetValueOrDefault( name, 0 );
+    public int GetUniformSize( string name )
+    {
+        return _uniformSizes.GetValueOrDefault( name, 0 );
+    }
 
     #region default attribute names
 
@@ -974,7 +1032,7 @@ public class ShaderProgram
 
     public bool IsCompiled { get; set; }
 
-    public static int NumManagedShaderPrograms => _shaders[ Core.Gdx.App ].Count;
+    public static int NumManagedShaderPrograms => _shaders[ Gdx.App ].Count;
 
     public string[] Attributes { get; private set; } = null!;
 

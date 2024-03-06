@@ -50,14 +50,23 @@ public class NinePatchDrawable : BaseDrawable, ITransformDrawable
     {
     }
 
-    public NinePatchDrawable( NinePatch patch ) => SetPatch( patch );
+    public NinePatchDrawable( NinePatch patch )
+    {
+        SetPatch( patch );
+    }
 
     public NinePatchDrawable( NinePatchDrawable drawable )
-        : base( drawable ) => Patch = drawable.Patch;
+        : base( drawable )
+    {
+        Patch = drawable.Patch;
+    }
 
     public NinePatch? Patch { get; set; }
 
-    public override void Draw( IBatch batch, float x, float y, float width, float height ) => Patch?.Draw( batch, x, y, width, height );
+    public override void Draw( IBatch batch, float x, float y, float width, float height )
+    {
+        Patch?.Draw( batch, x, y, width, height );
+    }
 
     public void Draw( IBatch batch,
                       float x,

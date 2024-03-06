@@ -25,13 +25,15 @@
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public class ScaleByAction : RelativeTemporalAction
 {
     public float AmountX { get; set; }
     public float AmountY { get; set; }
 
-    protected override void UpdateRelative( float percentDelta ) => Target?.ScaleBy( AmountX * percentDelta, AmountY * percentDelta );
+    protected override void UpdateRelative( float percentDelta )
+    {
+        Target?.ScaleBy( AmountX * percentDelta, AmountY * percentDelta );
+    }
 
     public void SetAmount( float x, float y )
     {

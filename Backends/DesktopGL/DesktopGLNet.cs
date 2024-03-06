@@ -45,19 +45,28 @@ public class DesktopGLNet : INet
     public IServerSocket? NewServerSocket( INet.Protocol protocol,
                                            string hostname,
                                            int port,
-                                           ServerSocketHints hints ) => null;
+                                           ServerSocketHints hints )
+    {
+        return null;
+    }
 
     public IServerSocket? NewServerSocket( INet.Protocol protocol,
                                            int port,
-                                           ServerSocketHints hints ) => null;
+                                           ServerSocketHints hints )
+    {
+        return null;
+    }
 
     public ISocket? NewClientSocket( INet.Protocol protocol,
                                      string host,
                                      int port,
-                                     SocketHints hints ) => null;
+                                     SocketHints hints )
+    {
+        return null;
+    }
 
-    public bool OpenUri( string uri ) =>
-
+    public bool OpenUri( string uri )
+    {
         //        if ( SharedLibraryLoader.IsMac )
         //        {
         //            try
@@ -84,5 +93,6 @@ public class DesktopGLNet : INet
         //                return false;
         //            }
         //        }
-        false;
+        return false;
+    }
 }

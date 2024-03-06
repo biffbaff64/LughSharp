@@ -54,7 +54,10 @@ public class Affine2 // : ISerializable
     ///     Constructs a matrix from the given affine matrix.
     /// </summary>
     /// <param name="other">The affine matrix to copy. This matrix will not be modified.</param>
-    public Affine2( Affine2 other ) => SetFrom( other );
+    public Affine2( Affine2 other )
+    {
+        SetFrom( other );
+    }
 
     /// <summary>
     ///     Sets this matrix to the identity matrix.
@@ -159,7 +162,10 @@ public class Affine2 // : ISerializable
     /// </summary>
     /// <param name="trn"> The translation vector. </param>
     /// <returns> This matrix for the purpose of chaining operations.</returns>
-    public Affine2 SetToTranslation( Vector2 trn ) => SetToTranslation( trn.X, trn.Y );
+    public Affine2 SetToTranslation( Vector2 trn )
+    {
+        return SetToTranslation( trn.X, trn.Y );
+    }
 
     /// <summary>
     ///     Sets this matrix to a scaling matrix.
@@ -184,7 +190,10 @@ public class Affine2 // : ISerializable
     /// </summary>
     /// <param name="scale">The scale vector.</param>
     /// <returns>This matrix for the purpose of chaining operations.</returns>
-    public Affine2 SetToScaling( Vector2 scale ) => SetToScaling( scale.X, scale.Y );
+    public Affine2 SetToScaling( Vector2 scale )
+    {
+        return SetToScaling( scale.X, scale.Y );
+    }
 
     /// <summary>
     ///     Sets this matrix to a rotation matrix that will rotate any vector in
@@ -270,7 +279,10 @@ public class Affine2 // : ISerializable
     /// </summary>
     /// <param name="shear"> The shear vector. </param>
     /// <returns> This matrix for the purpose of chaining operations.  </returns>
-    public Affine2 SetToShearing( Vector2 shear ) => SetToShearing( shear.X, shear.Y );
+    public Affine2 SetToShearing( Vector2 shear )
+    {
+        return SetToShearing( shear.X, shear.Y );
+    }
 
     /// <summary>
     ///     Sets this matrix to a concatenation of translation, rotation and scale.
@@ -318,7 +330,10 @@ public class Affine2 // : ISerializable
     /// <param name="degrees"> The angle in degrees. </param>
     /// <param name="scale"> The scale vector. </param>
     /// <returns> This matrix for the purpose of chaining operations.  </returns>
-    public Affine2 SetToTrnRotScl( Vector2 trn, float degrees, Vector2 scale ) => SetToTrnRotScl( trn.X, trn.Y, degrees, scale.X, scale.Y );
+    public Affine2 SetToTrnRotScl( Vector2 trn, float degrees, Vector2 scale )
+    {
+        return SetToTrnRotScl( trn.X, trn.Y, degrees, scale.X, scale.Y );
+    }
 
     /// <summary>
     ///     Sets this matrix to a concatenation of translation, rotation and scale.
@@ -365,7 +380,10 @@ public class Affine2 // : ISerializable
     /// <param name="radians"> The angle in radians. </param>
     /// <param name="scale"> The scale vector. </param>
     /// <returns> This matrix for the purpose of chaining operations.  </returns>
-    public Affine2 SetToTrnRotRadScl( Vector2 trn, float radians, Vector2 scale ) => SetToTrnRotRadScl( trn.X, trn.Y, radians, scale.X, scale.Y );
+    public Affine2 SetToTrnRotRadScl( Vector2 trn, float radians, Vector2 scale )
+    {
+        return SetToTrnRotRadScl( trn.X, trn.Y, radians, scale.X, scale.Y );
+    }
 
     /// <summary>
     ///     Sets this matrix to a concatenation of translation and scale. It is a more efficient form for:
@@ -395,7 +413,10 @@ public class Affine2 // : ISerializable
     /// <param name="trn"> The translation vector. </param>
     /// <param name="scale"> The scale vector. </param>
     /// <returns> This matrix for the purpose of chaining operations.  </returns>
-    public Affine2 SetToTrnScl( Vector2 trn, Vector2 scale ) => SetToTrnScl( trn.X, trn.Y, scale.X, scale.Y );
+    public Affine2 SetToTrnScl( Vector2 trn, Vector2 scale )
+    {
+        return SetToTrnScl( trn.X, trn.Y, scale.X, scale.Y );
+    }
 
     /// <summary>
     ///     Sets this matrix to the product of two matrices.
@@ -519,7 +540,10 @@ public class Affine2 // : ISerializable
     /// </summary>
     /// <param name="trn"> The translation vector. </param>
     /// <returns> This matrix for the purpose of chaining.  </returns>
-    public Affine2 Translate( Vector2 trn ) => Translate( trn.X, trn.Y );
+    public Affine2 Translate( Vector2 trn )
+    {
+        return Translate( trn.X, trn.Y );
+    }
 
     /// <summary>
     ///     Premultiplies this matrix by a translation matrix.
@@ -540,7 +564,10 @@ public class Affine2 // : ISerializable
     ///     <param name="trn">The translation vector.</param>
     ///     <returns>This matrix for the purpose of chaining.</returns>
     /// </summary>
-    public Affine2 PreTranslate( Vector2 trn ) => PreTranslate( trn.X, trn.Y );
+    public Affine2 PreTranslate( Vector2 trn )
+    {
+        return PreTranslate( trn.X, trn.Y );
+    }
 
     /// <summary>
     ///     Postmultiplies this matrix with a scale matrix.
@@ -563,7 +590,10 @@ public class Affine2 // : ISerializable
     /// </summary>
     /// <param name="scale"> The scale vector. </param>
     /// <returns> This matrix for the purpose of chaining.  </returns>
-    public Affine2 Scale( Vector2 scale ) => Scale( scale.X, scale.Y );
+    public Affine2 Scale( Vector2 scale )
+    {
+        return Scale( scale.X, scale.Y );
+    }
 
     /// <summary>
     ///     Premultiplies this matrix with a scale matrix.
@@ -588,7 +618,10 @@ public class Affine2 // : ISerializable
     /// </summary>
     /// <param name="scale"> The scale vector. </param>
     /// <returns> This matrix for the purpose of chaining.  </returns>
-    public Affine2 PreScale( Vector2 scale ) => PreScale( scale.X, scale.Y );
+    public Affine2 PreScale( Vector2 scale )
+    {
+        return PreScale( scale.X, scale.Y );
+    }
 
     /// <summary>
     ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
@@ -740,7 +773,10 @@ public class Affine2 // : ISerializable
     /// </summary>
     /// <param name="shear"> The shear vector. </param>
     /// <returns> This matrix for the purpose of chaining.  </returns>
-    public Affine2 Shear( Vector2 shear ) => Shear( shear.X, shear.Y );
+    public Affine2 Shear( Vector2 shear )
+    {
+        return Shear( shear.X, shear.Y );
+    }
 
     /// <summary>
     ///     Premultiplies this matrix by a shear matrix.
@@ -772,13 +808,19 @@ public class Affine2 // : ISerializable
     /// </summary>
     /// <param name="shear"> The shear vector. </param>
     /// <returns> This matrix for the purpose of chaining.  </returns>
-    public Affine2 PreShear( Vector2 shear ) => PreShear( shear.X, shear.Y );
+    public Affine2 PreShear( Vector2 shear )
+    {
+        return PreShear( shear.X, shear.Y );
+    }
 
     /// <summary>
     ///     Calculates the determinant of the matrix.
     /// </summary>
     /// <returns> The determinant of this matrix.</returns>
-    public float GetDeterminant() => ( m00 * m11 ) - ( m01 * m10 );
+    public float GetDeterminant()
+    {
+        return ( m00 * m11 ) - ( m01 * m10 );
+    }
 
     /// <summary>
     ///     Get the x-y translation component of the matrix.
@@ -797,18 +839,24 @@ public class Affine2 // : ISerializable
     ///     Check if the this is a plain translation matrix.
     /// </summary>
     /// <returns> True if scale is 1 and rotation is 0.</returns>
-    public bool IsTranslation() => ( m00 == 1 ) && ( m11 == 1 ) && ( m01 == 0 ) && ( m10 == 0 );
+    public bool IsTranslation()
+    {
+        return ( m00 == 1 ) && ( m11 == 1 ) && ( m01 == 0 ) && ( m10 == 0 );
+    }
 
     /// <summary>
     ///     Check if this is an indentity matrix.
     /// </summary>
     /// <returns> True if scale is 1 and rotation is 0.  </returns>
-    public bool IsIdentityMatrix() => m00 is 1
-                                   && m02 is 0
-                                   && m12 is 0
-                                   && m11 is 1
-                                   && m01 is 0
-                                   && m10 is 0;
+    public bool IsIdentityMatrix()
+    {
+        return m00 is 1
+            && m02 is 0
+            && m12 is 0
+            && m11 is 1
+            && m01 is 0
+            && m10 is 0;
+    }
 
     /// <summary>
     ///     Applies the affine transformation on a vector.
@@ -824,5 +872,8 @@ public class Affine2 // : ISerializable
 
     /// <summary>
     /// </summary>
-    public override string ToString() => "[" + m00 + "|" + m01 + "|" + m02 + "]\n[" + m10 + "|" + m11 + "|" + m12 + "]\n[0.0|0.0|0.1]";
+    public override string ToString()
+    {
+        return "[" + m00 + "|" + m01 + "|" + m02 + "]\n[" + m10 + "|" + m11 + "|" + m12 + "]\n[0.0|0.0|0.1]";
+    }
 }

@@ -101,7 +101,10 @@ public class TextureRegion
     /// <summary>
     /// </summary>
     /// <param name="region"></param>
-    public TextureRegion( TextureRegion region ) => SetRegion( region );
+    public TextureRegion( TextureRegion region )
+    {
+        SetRegion( region );
+    }
 
     /// <summary>
     /// </summary>
@@ -110,7 +113,10 @@ public class TextureRegion
     /// <param name="y"></param>
     /// <param name="width"></param>
     /// <param name="height"></param>
-    public TextureRegion( TextureRegion region, int x, int y, int width, int height ) => SetRegion( region, x, y, width, height );
+    public TextureRegion( TextureRegion region, int x, int y, int width, int height )
+    {
+        SetRegion( region, x, y, width, height );
+    }
 
     public Texture Texture { get; set; } = null!;
 
@@ -257,7 +263,10 @@ public class TextureRegion
     /// <summary>
     ///     Non-Virtual version of <see cref="SetRegion( float, float, float, float )" />
     /// </summary>
-    private void SetRegionNV( float u, float v, float u2, float v2 ) => SetRegion( u, v, u2, v2 );
+    private void SetRegionNV( float u, float v, float u2, float v2 )
+    {
+        SetRegion( u, v, u2, v2 );
+    }
 
     /// <summary>
     /// </summary>
@@ -339,8 +348,15 @@ public class TextureRegion
         }
     }
 
-    public bool IsFlipX() => U > U2;
-    public bool IsFlipY() => V > V2;
+    public bool IsFlipX()
+    {
+        return U > U2;
+    }
+
+    public bool IsFlipY()
+    {
+        return V > V2;
+    }
 
     /// <summary>
     ///     Offsets the region relative to the current region. Generally the region's

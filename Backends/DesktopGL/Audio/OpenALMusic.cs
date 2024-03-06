@@ -192,7 +192,10 @@ public abstract class OpenALMusic : IMusic
         }
     }
 
-    public float GetVolume() => _volume;
+    public float GetVolume()
+    {
+        return _volume;
+    }
 
     public void SetPan( float pan, float volume )
     {
@@ -345,11 +348,20 @@ public abstract class OpenALMusic : IMusic
     ///     By default, does just the same as reset().
     ///     Used to add special behaviour in Ogg.Music.
     /// </summary>
-    protected void Loop() => Reset();
+    protected void Loop()
+    {
+        Reset();
+    }
 
-    public int GetChannels() => _format == AL.FORMAT_STEREO16 ? 2 : 1;
+    public int GetChannels()
+    {
+        return _format == AL.FORMAT_STEREO16 ? 2 : 1;
+    }
 
-    public int GetRate() => _sampleRate;
+    public int GetRate()
+    {
+        return _sampleRate;
+    }
 
     public void Update()
     {

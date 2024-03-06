@@ -52,7 +52,10 @@ public class HdpiUtils
     /// <param name="mode">
     ///     set to HdpiMode.Pixels to ignore HDPI conversion for glViewport and glScissor functions
     /// </param>
-    public static void SetMode( HdpiMode mode ) => _mode = mode;
+    public static void SetMode( HdpiMode mode )
+    {
+        _mode = mode;
+    }
 
     /// <summary>
     ///     Calls <see cref="IGL20.GLScissor(int, int, int, int)" />, expecting the
@@ -62,17 +65,17 @@ public class HdpiUtils
     public static void GLScissor( int x, int y, int width, int height )
     {
         if ( ( _mode == HdpiMode.Logical )
-          && ( ( Core.Gdx.Graphics.Width != Core.Gdx.Graphics.BackBufferWidth )
-            || ( Core.Gdx.Graphics.Height != Core.Gdx.Graphics.BackBufferHeight ) ) )
+          && ( ( Gdx.Graphics.Width != Gdx.Graphics.BackBufferWidth )
+            || ( Gdx.Graphics.Height != Gdx.Graphics.BackBufferHeight ) ) )
         {
-            Core.Gdx.GL.GLScissor( ToBackBufferX( x ),
-                                   ToBackBufferY( y ),
-                                   ToBackBufferX( width ),
-                                   ToBackBufferY( height ) );
+            Gdx.GL.GLScissor( ToBackBufferX( x ),
+                              ToBackBufferY( y ),
+                              ToBackBufferX( width ),
+                              ToBackBufferY( height ) );
         }
         else
         {
-            Core.Gdx.GL.GLScissor( x, y, width, height );
+            Gdx.GL.GLScissor( x, y, width, height );
         }
     }
 
@@ -84,17 +87,17 @@ public class HdpiUtils
     public static void GLViewport( int x, int y, int width, int height )
     {
         if ( ( _mode == HdpiMode.Logical )
-          && ( ( Core.Gdx.Graphics.Width != Core.Gdx.Graphics.BackBufferWidth )
-            || ( Core.Gdx.Graphics.Height != Core.Gdx.Graphics.BackBufferHeight ) ) )
+          && ( ( Gdx.Graphics.Width != Gdx.Graphics.BackBufferWidth )
+            || ( Gdx.Graphics.Height != Gdx.Graphics.BackBufferHeight ) ) )
         {
-            Core.Gdx.GL.GLViewport( ToBackBufferX( x ),
-                                    ToBackBufferY( y ),
-                                    ToBackBufferX( width ),
-                                    ToBackBufferY( height ) );
+            Gdx.GL.GLViewport( ToBackBufferX( x ),
+                               ToBackBufferY( y ),
+                               ToBackBufferX( width ),
+                               ToBackBufferY( height ) );
         }
         else
         {
-            Core.Gdx.GL.GLViewport( x, y, width, height );
+            Gdx.GL.GLViewport( x, y, width, height );
         }
     }
 
@@ -102,23 +105,35 @@ public class HdpiUtils
     ///     Converts an x-coordinate given in backbuffer coordinates to
     ///     logical screen coordinates.
     /// </summary>
-    public static int ToLogicalX( int backBufferX ) => ( int )( ( backBufferX * Core.Gdx.Graphics.Width ) / ( float )Core.Gdx.Graphics.BackBufferWidth );
+    public static int ToLogicalX( int backBufferX )
+    {
+        return ( int )( ( backBufferX * Gdx.Graphics.Width ) / ( float )Gdx.Graphics.BackBufferWidth );
+    }
 
     /// <summary>
     ///     Convers an y-coordinate given in backbuffer coordinates to
     ///     logical screen coordinates
     /// </summary>
-    public static int ToLogicalY( int backBufferY ) => ( int )( ( backBufferY * Core.Gdx.Graphics.Height ) / ( float )Core.Gdx.Graphics.BackBufferHeight );
+    public static int ToLogicalY( int backBufferY )
+    {
+        return ( int )( ( backBufferY * Gdx.Graphics.Height ) / ( float )Gdx.Graphics.BackBufferHeight );
+    }
 
     /// <summary>
     ///     Converts an x-coordinate given in logical screen coordinates to
     ///     backbuffer coordinates.
     /// </summary>
-    public static int ToBackBufferX( int logicalX ) => ( int )( ( logicalX * Core.Gdx.Graphics.BackBufferWidth ) / ( float )Core.Gdx.Graphics.Width );
+    public static int ToBackBufferX( int logicalX )
+    {
+        return ( int )( ( logicalX * Gdx.Graphics.BackBufferWidth ) / ( float )Gdx.Graphics.Width );
+    }
 
     /// <summary>
     ///     Convers an y-coordinate given in backbuffer coordinates to
     ///     logical screen coordinates
     /// </summary>
-    public static int ToBackBufferY( int logicalY ) => ( int )( ( logicalY * Core.Gdx.Graphics.BackBufferHeight ) / ( float )Core.Gdx.Graphics.Height );
+    public static int ToBackBufferY( int logicalY )
+    {
+        return ( int )( ( logicalY * Gdx.Graphics.BackBufferHeight ) / ( float )Gdx.Graphics.Height );
+    }
 }

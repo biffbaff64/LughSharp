@@ -52,7 +52,6 @@ namespace LibGDXSharp.LibCore.Graphics;
 ///         A Texture must be disposed when it is no longer used
 ///     </para>
 /// </summary>
-[PublicAPI]
 public class Texture : GLTexture
 {
     // ------------------------------------------------------------------------
@@ -62,7 +61,7 @@ public class Texture : GLTexture
     // ------------------------------------------------------------------------
 
     public Texture( string internalPath )
-        : this( Core.Gdx.Files.Internal( internalPath ) )
+        : this( Gdx.Files.Internal( internalPath ) )
     {
     }
 
@@ -106,7 +105,7 @@ public class Texture : GLTexture
     ///     Creates a new Texture using the supplied <see cref="ITextureData" />.
     /// </summary>
     public Texture( ITextureData? data )
-        : this( IGL20.GL_TEXTURE_2D, ( int )Core.Gdx.GL.GLGenTexture(), data )
+        : this( IGL20.GL_TEXTURE_2D, Gdx.GL.GLGenTexture(), data )
     {
     }
 
@@ -119,7 +118,7 @@ public class Texture : GLTexture
 
         if ( data.IsManaged() )
         {
-            AddManagedTexture( Core.Gdx.App, this );
+            AddManagedTexture( Gdx.App, this );
         }
     }
 
@@ -133,7 +132,7 @@ public class Texture : GLTexture
     public override int  Depth     => 0;
     public override bool IsManaged => ( TextureData != null ) && TextureData.IsManaged();
 
-    public int NumManagedTextures => _managedTextures[ Core.Gdx.App ]?.Count ?? 0;
+    public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -165,7 +164,7 @@ public class Texture : GLTexture
         UnsafeSetWrap( UWrap, VWrap, true );
         UnsafeSetAnisotropicFilter( AnisotropicFilterLevel, true );
 
-        Core.Gdx.GL.GLBindTexture( GLTarget, 0 );
+        Gdx.GL.GLBindTexture( GLTarget, 0 );
     }
 
     /// <summary>
@@ -179,7 +178,7 @@ public class Texture : GLTexture
             throw new GdxRuntimeException( "Tried to reload unmanaged Texture" );
         }
 
-        GLTextureHandle = ( int )Core.Gdx.GL.GLGenTexture();
+        GLTextureHandle = Gdx.GL.GLGenTexture();
 
         Load( TextureData );
     }
@@ -201,15 +200,15 @@ public class Texture : GLTexture
 
         Bind();
 
-        Core.Gdx.GL.GLTexSubImage2D( GLTarget,
-                                     0,
-                                     x,
-                                     y,
-                                     pixmap.Width,
-                                     pixmap.Height,
-                                     pixmap.GLFormat,
-                                     pixmap.GLType,
-                                     pixmap.Pixels );
+        Gdx.GL.GLTexSubImage2D( GLTarget,
+                                0,
+                                x,
+                                y,
+                                pixmap.Width,
+                                pixmap.Height,
+                                pixmap.GLFormat,
+                                pixmap.GLType,
+                                pixmap.Pixels );
     }
 
     /// <summary>
@@ -238,9 +237,9 @@ public class Texture : GLTexture
 
             if ( ( TextureData != null ) && TextureData.IsManaged() )
             {
-                if ( _managedTextures[ Core.Gdx.App ] != null )
+                if ( _managedTextures[ Gdx.App ] != null )
                 {
-                    _managedTextures[ Core.Gdx.App ]?.Remove( this );
+                    _managedTextures[ Gdx.App ]?.Remove( this );
                 }
             }
         }
@@ -320,7 +319,7 @@ public class Texture : GLTexture
 
                     // unload the texture, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    texture.GLTextureHandle = ( int )Core.Gdx.GL.GLGenTexture();
+                    texture.GLTextureHandle = Gdx.GL.GLGenTexture();
                     AssetManager.Load( fileName, typeof( Texture ), parameters );
                 }
             }
@@ -348,14 +347,20 @@ public class Texture : GLTexture
         return builder.ToString();
     }
 
-    public override string? ToString() => TextureData is FileTextureData
-        ? TextureData.ToString()
-        : base.ToString();
+    public override string? ToString()
+    {
+        return TextureData is FileTextureData
+            ? TextureData.ToString()
+            : base.ToString();
+    }
 
     /// <summary>
     ///     Clears all managed textures.
     /// </summary>
-    internal void ClearAllTextures( IApplication app ) => _managedTextures.Remove( app );
+    internal void ClearAllTextures( IApplication app )
+    {
+        _managedTextures.Remove( app );
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -364,8 +369,14 @@ public class Texture : GLTexture
     {
         private readonly int _refCount;
 
-        public LoadedCallbackInnerClass( int refCount ) => _refCount = refCount;
+        public LoadedCallbackInnerClass( int refCount )
+        {
+            _refCount = refCount;
+        }
 
-        public void FinishedLoading( AssetManager assetManager, string? fileName, Type? type ) => assetManager.SetReferenceCount( fileName!, _refCount );
+        public void FinishedLoading( AssetManager assetManager, string? fileName, Type? type )
+        {
+            assetManager.SetReferenceCount( fileName!, _refCount );
+        }
     }
 }

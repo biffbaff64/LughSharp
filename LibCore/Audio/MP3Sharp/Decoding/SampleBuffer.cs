@@ -29,7 +29,6 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
 ///     The SampleBuffer class implements an output buffer that provides storage for a
 ///     fixed size block of samples.
 /// </summary>
-[PublicAPI]
 public class SampleBuffer : AudioBase
 {
     private readonly short[] _buffer;
@@ -56,7 +55,10 @@ public class SampleBuffer : AudioBase
     public virtual short[] Buffer       => _buffer;
     public virtual int     BufferLength => _bufferp[ 0 ];
 
-    private void Init( int sampleFrequency ) => SampleFrequency = sampleFrequency;
+    private void Init( int sampleFrequency )
+    {
+        SampleFrequency = sampleFrequency;
+    }
 
     /// <summary>
     ///     Takes a 16 Bit PCM sample.

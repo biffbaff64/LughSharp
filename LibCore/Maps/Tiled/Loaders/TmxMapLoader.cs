@@ -31,7 +31,6 @@ using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.LibCore.Maps.Tiled.Loaders;
 
-[PublicAPI]
 public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 {
     /// <summary>
@@ -57,7 +56,10 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     /// </summary>
     /// <param name="fileName"> the filename </param>
     /// <returns> the TiledMap </returns>
-    public TiledMap Load( string fileName ) => Load( fileName, new LoaderParameters() );
+    public TiledMap Load( string fileName )
+    {
+        return Load( fileName, new LoaderParameters() );
+    }
 
     /// <summary>
     ///     Loads the <see cref="TiledMap" /> from the given file. The file is resolved
@@ -246,7 +248,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         return fileHandles;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override void AddStaticTiles( FileInfo tmxFile,
                                             IImageResolver imageResolver,
                                             TiledMapTileSet tileset,

@@ -32,7 +32,6 @@ namespace LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
 ///     color. Note this action transitions from the color at the time the action
 ///     starts to the specified color.
 /// </summary>
-[PublicAPI]
 public class ColorAction : TemporalAction
 {
     private readonly Color _endColor = new();

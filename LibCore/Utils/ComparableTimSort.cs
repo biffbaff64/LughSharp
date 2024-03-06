@@ -204,8 +204,11 @@ public class ComparableTimSort<T>
         }
     }
 
-    [PublicAPI]
-    public static void Sort( T[] a ) => Sort( a, 0, a.Length );
+
+    public static void Sort( T[] a )
+    {
+        Sort( a, 0, a.Length );
+    }
 
     public static void Sort( T[] a, int lo, int hi )
     {

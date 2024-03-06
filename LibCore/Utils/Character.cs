@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Utils;
 
-[PublicAPI]
 public static class Character
 {
     /// <summary>
@@ -368,7 +367,10 @@ public static class Character
     /// </summary>
     /// <param name="codePoint"></param>
     /// <returns></returns>
-    public static int CharCount( int codePoint ) => codePoint >= 0x010000 ? 2 : 1;
+    public static int CharCount( int codePoint )
+    {
+        return codePoint >= 0x010000 ? 2 : 1;
+    }
 
     /// <summary>
     ///     Returns the code point at the given index in the supplied string.
@@ -376,7 +378,10 @@ public static class Character
     /// <param name="str">The string.</param>
     /// <param name="position">The position.</param>
     /// <returns></returns>
-    public static int CodePointAt( string str, int position ) => char.ConvertToUtf32( str, position );
+    public static int CodePointAt( string str, int position )
+    {
+        return char.ConvertToUtf32( str, position );
+    }
 
     /// <summary>
     ///     Compares two <tt>char</tt> values numerically.
@@ -391,5 +396,8 @@ public static class Character
     ///     the value <tt>0</tt> if <tt>x == y</tt>; a value less than <tt>0</tt> if <tt>x &lt; y</tt>;
     ///     and a value greater than <tt>0</tt> if <tt>x > y</tt>
     /// </returns>
-    public static int Compare( char x, char y ) => x - y;
+    public static int Compare( char x, char y )
+    {
+        return x - y;
+    }
 }

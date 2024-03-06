@@ -52,7 +52,10 @@ public class RotateToAction : TemporalAction
     /**
      * @param useShortestDirection Set to true to move directly to the closest angle
      */
-    public RotateToAction( bool useShortestDirection ) => UseShortestDirection = useShortestDirection;
+    public RotateToAction( bool useShortestDirection )
+    {
+        UseShortestDirection = useShortestDirection;
+    }
 
     public float Start                { get; set; }
     public float Rotation             { get; set; }

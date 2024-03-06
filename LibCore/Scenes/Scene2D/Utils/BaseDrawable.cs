@@ -27,7 +27,6 @@ using LibGDXSharp.LibCore.Graphics.G2D;
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
 
-[PublicAPI]
 public class BaseDrawable : IDrawable
 {
     protected BaseDrawable()

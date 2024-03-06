@@ -73,7 +73,10 @@ public class IntAction : TemporalAction
     public int EndValue { get; }
     public int Value    { get; set; }
 
-    protected override void Begin() => Value = Start;
+    protected override void Begin()
+    {
+        Value = Start;
+    }
 
     protected override void Update( float percent )
     {

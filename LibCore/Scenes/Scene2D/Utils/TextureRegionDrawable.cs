@@ -43,11 +43,20 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
     {
     }
 
-    public TextureRegionDrawable( Texture texture ) => Region = new TextureRegion( texture );
+    public TextureRegionDrawable( Texture texture )
+    {
+        Region = new TextureRegion( texture );
+    }
 
-    public TextureRegionDrawable( TextureRegion region ) => Region = region;
+    public TextureRegionDrawable( TextureRegion region )
+    {
+        Region = region;
+    }
 
-    public TextureRegionDrawable( TextureRegionDrawable drawable ) : base( drawable ) => Region = drawable.Region;
+    public TextureRegionDrawable( TextureRegionDrawable drawable ) : base( drawable )
+    {
+        Region = drawable.Region;
+    }
 
     protected TextureRegion? Region
     {

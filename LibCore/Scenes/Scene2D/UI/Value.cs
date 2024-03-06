@@ -52,8 +52,15 @@ public abstract class Value
 
     // ------------------------------------------------------------------------
 
-    public static Value PercentWidth( float percent )  => new ValuePercentWidth( percent );
-    public static Value PercentHeight( float percent ) => new ValuePercentHeight( percent );
+    public static Value PercentWidth( float percent )
+    {
+        return new ValuePercentWidth( percent );
+    }
+
+    public static Value PercentHeight( float percent )
+    {
+        return new ValuePercentHeight( percent );
+    }
 
     public static Value PercentWidth( float percent, Actor? actor )
     {
@@ -79,13 +86,22 @@ public abstract class Value
     {
         private readonly static Fixed?[] Cache = new Fixed[ 111 ];
 
-        public Fixed( float value ) => Value = value;
+        public Fixed( float value )
+        {
+            Value = value;
+        }
 
         public float Value { get; }
 
-        public override float Get( Actor? context = null ) => Value;
+        public override float Get( Actor? context = null )
+        {
+            return Value;
+        }
 
-        public override string ToString() => Value.ToString( CultureInfo.InvariantCulture );
+        public override string ToString()
+        {
+            return Value.ToString( CultureInfo.InvariantCulture );
+        }
 
         public static Fixed ValueOf( float value )
         {
@@ -127,7 +143,10 @@ public abstract class Value
             _actor   = actor;
         }
 
-        public override float Get( Actor? actor = null ) => ( _actor?.Width * _percent ) ?? 0;
+        public override float Get( Actor? actor = null )
+        {
+            return ( _actor?.Width * _percent ) ?? 0;
+        }
     }
 
     /// <summary>
@@ -144,7 +163,10 @@ public abstract class Value
             _actor   = actor;
         }
 
-        public override float Get( Actor? actor = null ) => ( _actor?.Height * _percent ) ?? 0;
+        public override float Get( Actor? actor = null )
+        {
+            return ( _actor?.Height * _percent ) ?? 0;
+        }
     }
 
     // ========================================================================

@@ -48,7 +48,7 @@ public class DialogInputListener : InputListener
         if ( keycode == _thisKey )
         {
             // Delay a frame to eat the keyTyped event.
-            Core.Gdx.App.PostRunnable( () =>
+            Gdx.App.PostRunnable( () =>
             {
                 void Run()
                 {

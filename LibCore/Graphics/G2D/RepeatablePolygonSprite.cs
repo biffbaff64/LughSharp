@@ -55,7 +55,10 @@ public class RepeatablePolygonSprite
     /// </summary>
     /// <param name="region"> region to repeat </param>
     /// <param name="vertices"> cw vertices of polygon </param>
-    public void SetPolygon( TextureRegion region, float[]? vertices ) => SetPolygon( region, vertices, -1 );
+    public void SetPolygon( TextureRegion region, float[]? vertices )
+    {
+        SetPolygon( region, vertices, -1 );
+    }
 
     /// <summary>
     ///     Sets polygon with repeating texture region, the size of repeating

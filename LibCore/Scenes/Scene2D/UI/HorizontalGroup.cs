@@ -59,7 +59,10 @@ public class HorizontalGroup : WidgetGroup
     private List< float >? _rowSizes; // row width, row height, ...
     private bool           _sizeInvalid = true;
 
-    public HorizontalGroup() => Touchable = Touchable.ChildrenOnly;
+    public HorizontalGroup()
+    {
+        Touchable = Touchable.ChildrenOnly;
+    }
 
     public bool  Wrap      { get; set; }
     public float Fill      { get; set; }

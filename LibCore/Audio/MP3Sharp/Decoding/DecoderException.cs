@@ -36,12 +36,21 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
 public class DecoderException : Mp3SharpException
 {
     public DecoderException( string message, Exception? inner )
-        : base( message, inner ) => ErrorCode = DecoderErrors.UNKNOWN_ERROR;
+        : base( message, inner )
+    {
+        ErrorCode = DecoderErrors.UNKNOWN_ERROR;
+    }
 
     public DecoderException( int errorcode, Exception? inner )
-        : this( GetErrorString( errorcode ), inner ) => ErrorCode = errorcode;
+        : this( GetErrorString( errorcode ), inner )
+    {
+        ErrorCode = errorcode;
+    }
 
-    protected DecoderException( SerializationInfo info, StreamingContext context ) : base( info, context ) => ErrorCode = info.GetInt32( "ErrorCode" );
+    protected DecoderException( SerializationInfo info, StreamingContext context ) : base( info, context )
+    {
+        ErrorCode = info.GetInt32( "ErrorCode" );
+    }
 
     public int ErrorCode { get; set; }
 
@@ -53,8 +62,9 @@ public class DecoderException : Mp3SharpException
         base.GetObjectData( info, context );
     }
 
-    public static string GetErrorString( int errorcode ) =>
-
+    public static string GetErrorString( int errorcode )
+    {
         // TODO: use resource file to map error codes to locale-sensitive strings. 
-        $"Decoder errorcode {Convert.ToString( errorcode, 16 )}";
+        return $"Decoder errorcode {Convert.ToString( errorcode, 16 )}";
+    }
 }

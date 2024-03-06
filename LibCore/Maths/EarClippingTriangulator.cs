@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Maths;
 
-[PublicAPI]
 public class EarClippingTriangulator
 {
     private const int CONCAVE = -1;
@@ -38,9 +37,15 @@ public class EarClippingTriangulator
     private          int           _vertexCount;
     private          float[]?      _vertices;
 
-    public List< short > ComputeTriangles( List< float > vertices ) => ComputeTriangles( vertices.ToArray(), 0, vertices.Count );
+    public List< short > ComputeTriangles( List< float > vertices )
+    {
+        return ComputeTriangles( vertices.ToArray(), 0, vertices.Count );
+    }
 
-    public List< short > ComputeTriangles( float[] vertices ) => ComputeTriangles( vertices, 0, vertices.Length );
+    public List< short > ComputeTriangles( float[] vertices )
+    {
+        return ComputeTriangles( vertices, 0, vertices.Length );
+    }
 
     /// <summary>
     ///     Triangulates the given (convex or concave) simple polygon to a
@@ -234,9 +239,15 @@ public class EarClippingTriangulator
         _vertexCount--;
     }
 
-    private int PreviousIndex( int index ) => ( index == 0 ? _vertexCount : index ) - 1;
+    private int PreviousIndex( int index )
+    {
+        return ( index == 0 ? _vertexCount : index ) - 1;
+    }
 
-    private int NextIndex( int index ) => ( index + 1 ) % _vertexCount;
+    private int NextIndex( int index )
+    {
+        return ( index + 1 ) % _vertexCount;
+    }
 
     private static int ComputeSpannedAreaSign( float p1X,
                                                float p1Y,

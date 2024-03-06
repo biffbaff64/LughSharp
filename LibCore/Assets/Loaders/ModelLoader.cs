@@ -32,7 +32,6 @@ using LibGDXSharp.LibCore.Utils.Collections;
 
 namespace LibGDXSharp.LibCore.Assets.Loaders;
 
-[PublicAPI]
 public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     where TP : ModelLoader< TP >.ModelLoaderParameters
 {
@@ -50,12 +49,18 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     ///     Directly load the raw model data on the calling thread.
     /// </summary>
     protected virtual ModelData? LoadModelData<T>( in FileInfo fileHandle, T? parameters )
-        where T : ModelLoaderParameters => default( ModelData );
+        where T : ModelLoaderParameters
+    {
+        return default( ModelData );
+    }
 
     /// <summary>
     ///     Directly load the raw model data on the calling thread.
     /// </summary>
-    public ModelData? LoadModelData( in FileInfo fileHandle ) => LoadModelData< ModelLoaderParameters >( fileHandle, null );
+    public ModelData? LoadModelData( in FileInfo fileHandle )
+    {
+        return LoadModelData< ModelLoaderParameters >( fileHandle, null );
+    }
 
     /// <summary>
     ///     Directly load the model on the calling thread.
@@ -74,20 +79,27 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     ///     The model with not be managed by an <see cref="AssetManager" />.
     /// </summary>
     public Model? LoadModel<T>( in FileInfo fileHandle, T parameters ) where T : ModelLoaderParameters
-        => LoadModel< ModelLoaderParameters >( fileHandle, new ITextureProvider.FileTextureProvider(), parameters );
+    {
+        return LoadModel< ModelLoaderParameters >( fileHandle, new ITextureProvider.FileTextureProvider(), parameters );
+    }
 
     /// <summary>
     ///     Directly load the model on the calling thread.
     ///     The model with not be managed by an <see cref="AssetManager" />.
     /// </summary>
     public Model? LoadModel( in FileInfo fileHandle, ITextureProvider textureProvider )
-        => LoadModel< ModelLoaderParameters >( fileHandle, textureProvider, null );
+    {
+        return LoadModel< ModelLoaderParameters >( fileHandle, textureProvider, null );
+    }
 
     /// <summary>
     ///     Directly load the model on the calling thread.
     ///     The model with not be managed by an <see cref="AssetManager" />.
     /// </summary>
-    public Model? LoadModel( in FileInfo fileHandle ) => LoadModel< ModelLoaderParameters >( fileHandle, new ITextureProvider.FileTextureProvider(), null );
+    public Model? LoadModel( in FileInfo fileHandle )
+    {
+        return LoadModel< ModelLoaderParameters >( fileHandle, new ITextureProvider.FileTextureProvider(), null );
+    }
 
     /// <summary>
     ///     Returns the assets this asset requires to be loaded first.
@@ -193,7 +205,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    [PublicAPI]
+
     public class ModelLoaderParameters : AssetLoaderParameters
     {
         public ModelLoaderParameters()

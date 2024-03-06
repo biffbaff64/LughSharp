@@ -31,14 +31,23 @@ public class MapLayers : IEnumerable< MapLayer >
 {
     private readonly List< MapLayer > _layers = new();
 
-    public IEnumerator< MapLayer > GetEnumerator() => _layers.GetEnumerator();
+    public IEnumerator< MapLayer > GetEnumerator()
+    {
+        return _layers.GetEnumerator();
+    }
 
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
     /// <summary>
     ///     Returns the <see cref="MapLayer" /> at the specified index.
     /// </summary>
-    public MapLayer Get( int index ) => _layers[ index ];
+    public MapLayer Get( int index )
+    {
+        return _layers[ index ];
+    }
 
     /// <summary>
     ///     Returns the first layer having the specified name, if one exists, otherwise null
@@ -74,26 +83,47 @@ public class MapLayers : IEnumerable< MapLayer >
     /// <summary>
     ///     Get the index of the layer in the collection, or -1 if no such layer exists.
     /// </summary>
-    public int GetIndex( MapLayer layer ) => _layers.IndexOf( layer );
+    public int GetIndex( MapLayer layer )
+    {
+        return _layers.IndexOf( layer );
+    }
 
     /// <summary>
     ///     Adds a layer to this collection
     /// </summary>
-    public void Add( MapLayer layer ) => _layers.Add( layer );
+    public void Add( MapLayer layer )
+    {
+        _layers.Add( layer );
+    }
 
-    public int GetCount() => _layers.Count;
+    public int GetCount()
+    {
+        return _layers.Count;
+    }
 
-    public void Remove( int index ) => _layers.RemoveAt( index );
+    public void Remove( int index )
+    {
+        _layers.RemoveAt( index );
+    }
 
-    public void Remove( MapLayer layer ) => _layers.Remove( layer );
+    public void Remove( MapLayer layer )
+    {
+        _layers.Remove( layer );
+    }
 
-    public int Size() => _layers.Count;
+    public int Size()
+    {
+        return _layers.Count;
+    }
 
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public List< T > GetByType<T>() where T : MapLayer => GetByType( new List< T >() );
+    public List< T > GetByType<T>() where T : MapLayer
+    {
+        return GetByType( new List< T >() );
+    }
 
     /// <summary>
     ///     Returns a list of layers which match the requested type in <b>T</b>

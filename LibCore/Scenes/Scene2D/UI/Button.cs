@@ -74,7 +74,10 @@ public class Button : Table, IDisableable
     }
 
     public Button( Actor child, Skin skin, string styleName )
-        : this( child, skin.Get< ButtonStyle >( styleName ) ) => Skin = skin;
+        : this( child, skin.Get< ButtonStyle >( styleName ) )
+    {
+        Skin = skin;
+    }
 
     public Button( Actor child, ButtonStyle style )
     {
@@ -95,7 +98,10 @@ public class Button : Table, IDisableable
     ///     Creates a button without setting the style or size.
     ///     At least a style must be set before using this button.
     /// </summary>
-    public Button() => Initialise();
+    public Button()
+    {
+        Initialise();
+    }
 
     public Button( IDrawable? up )
         : this( new ButtonStyle( up, null, null ) )
@@ -145,7 +151,10 @@ public class Button : Table, IDisableable
         AddListener( ClickListener! );
     }
 
-    public void SetChecked( bool isChecked ) => SetChecked( isChecked, _programmaticChangeEvents );
+    public void SetChecked( bool isChecked )
+    {
+        SetChecked( isChecked, _programmaticChangeEvents );
+    }
 
     public void SetChecked( bool isChecked, bool fireEvent )
     {
@@ -182,7 +191,10 @@ public class Button : Table, IDisableable
     ///     fire <see cref="ChangeListener.ChangeEvent()" />.
     ///     The event will only be fired when the user clicks the button
     /// </summary>
-    public void SetProgrammaticChangeEvents( bool programmaticChangeEvents ) => _programmaticChangeEvents = programmaticChangeEvents;
+    public void SetProgrammaticChangeEvents( bool programmaticChangeEvents )
+    {
+        _programmaticChangeEvents = programmaticChangeEvents;
+    }
 
     /// <summary>
     ///     Returns appropriate background drawable from the style based on the current button state.
@@ -303,16 +315,27 @@ public class Button : Table, IDisableable
         if ( Stage is { ActionsRequestRendering: true }
           && ( IsPressed() != ClickListener?.Pressed ) )
         {
-            Core.Gdx.Graphics.RequestRendering();
+            Gdx.Graphics.RequestRendering();
         }
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public void Toggle()    => SetChecked( !IsChecked );
-    public bool IsPressed() => ClickListener!.VisualPressed;
-    public bool IsOver()    => ClickListener!.Over;
+    public void Toggle()
+    {
+        SetChecked( !IsChecked );
+    }
+
+    public bool IsPressed()
+    {
+        return ClickListener!.VisualPressed;
+    }
+
+    public bool IsOver()
+    {
+        return ClickListener!.Over;
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -321,7 +344,10 @@ public class Button : Table, IDisableable
     {
         private readonly Button _button;
 
-        public ButtonClickListener( Button button ) => _button = button;
+        public ButtonClickListener( Button button )
+        {
+            _button = button;
+        }
 
         public override void Clicked( InputEvent inputEvent, float x, float y )
         {

@@ -53,7 +53,10 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     private int            _vertexIdx;
 
     public ImmediateModeRenderer20( bool hasNormals, bool hasColors, int numTexCoords )
-        : this( 5000, hasNormals, hasColors, numTexCoords, CreateDefaultShader( hasNormals, hasColors, numTexCoords ) ) => _ownsShader = true;
+        : this( 5000, hasNormals, hasColors, numTexCoords, CreateDefaultShader( hasNormals, hasColors, numTexCoords ) )
+    {
+        _ownsShader = true;
+    }
 
     public ImmediateModeRenderer20( int maxVertices, bool hasNormals, bool hasColors, int numTexCoords )
         : this(
@@ -62,7 +65,10 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
             hasColors,
             numTexCoords,
             CreateDefaultShader( hasNormals, hasColors, numTexCoords )
-            ) => _ownsShader = true;
+            )
+    {
+        _ownsShader = true;
+    }
 
     public ImmediateModeRenderer20( int maxVertices,
                                     bool hasNormals,
@@ -125,11 +131,20 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         _primitiveType = primitiveType;
     }
 
-    public void SetColor( Color color ) => _vertices[ _vertexIdx + _colorOffset ] = color.ToFloatBits();
+    public void SetColor( Color color )
+    {
+        _vertices[ _vertexIdx + _colorOffset ] = color.ToFloatBits();
+    }
 
-    public void SetColor( float r, float g, float b, float a ) => _vertices[ _vertexIdx + _colorOffset ] = Color.ToFloatBits( r, g, b, a );
+    public void SetColor( float r, float g, float b, float a )
+    {
+        _vertices[ _vertexIdx + _colorOffset ] = Color.ToFloatBits( r, g, b, a );
+    }
 
-    public void SetColor( float colorBits ) => _vertices[ _vertexIdx + _colorOffset ] = colorBits;
+    public void SetColor( float colorBits )
+    {
+        _vertices[ _vertexIdx + _colorOffset ] = colorBits;
+    }
 
     public void TexCoord( float u, float v )
     {
@@ -190,7 +205,10 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         NumVertices      = 0;
     }
 
-    public void End() => Flush();
+    public void End()
+    {
+        Flush();
+    }
 
     public void Dispose()
     {

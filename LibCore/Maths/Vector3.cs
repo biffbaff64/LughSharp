@@ -27,7 +27,6 @@ using Exception = System.Exception;
 
 namespace LibGDXSharp.LibCore.Maths;
 
-[PublicAPI]
 public class Vector3 : IVector< Vector3 >
 {
     public readonly static Vector3 XDefault = new( 1, 0, 0 );
@@ -50,29 +49,44 @@ public class Vector3 : IVector< Vector3 >
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="z"></param>
-    public Vector3( float x, float y, float z ) => Set( x, y, z );
+    public Vector3( float x, float y, float z )
+    {
+        Set( x, y, z );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vector"></param>
-    public Vector3( Vector3 vector ) => Set( vector );
+    public Vector3( Vector3 vector )
+    {
+        Set( vector );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="values"></param>
-    public Vector3( IReadOnlyList< float > values ) => Set( values[ 0 ], values[ 1 ], values[ 2 ] );
+    public Vector3( IReadOnlyList< float > values )
+    {
+        Set( values[ 0 ], values[ 1 ], values[ 2 ] );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vector"></param>
     /// <param name="z"></param>
-    public Vector3( Vector2 vector, float z ) => Set( vector.X, vector.Y, z );
+    public Vector3( Vector2 vector, float z )
+    {
+        Set( vector.X, vector.Y, z );
+    }
 
     public float X { get; set; }
     public float Y { get; set; }
     public float Z { get; set; }
 
-    public Vector3 Set( Vector3 vector ) => Set( vector.X, vector.Y, vector.Z );
+    public Vector3 Set( Vector3 vector )
+    {
+        return Set( vector.X, vector.Y, vector.Z );
+    }
 
     /// <summary>
     /// </summary>
@@ -91,19 +105,34 @@ public class Vector3 : IVector< Vector3 >
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public Vector3 Cpy() => new( this );
+    public Vector3 Cpy()
+    {
+        return new Vector3( this );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="vector"></param>
     /// <returns></returns>
-    public Vector3 Add( Vector3 vector ) => Add( vector.X, vector.Y, vector.Z );
+    public Vector3 Add( Vector3 vector )
+    {
+        return Add( vector.X, vector.Y, vector.Z );
+    }
 
-    public Vector3 Sub( Vector3 vec ) => Sub( vec.X, vec.Y, vec.Z );
+    public Vector3 Sub( Vector3 vec )
+    {
+        return Sub( vec.X, vec.Y, vec.Z );
+    }
 
-    public Vector3 Scl( float scalar ) => Set( X * scalar, Y * scalar, Z * scalar );
+    public Vector3 Scl( float scalar )
+    {
+        return Set( X * scalar, Y * scalar, Z * scalar );
+    }
 
-    public Vector3 Scl( Vector3 other ) => Set( X * other.X, Y * other.Y, Z * other.Z );
+    public Vector3 Scl( Vector3 other )
+    {
+        return Set( X * other.X, Y * other.Y, Z * other.Z );
+    }
 
     public Vector3 MulAdd( Vector3 vec, float scalar )
     {
@@ -123,9 +152,15 @@ public class Vector3 : IVector< Vector3 >
         return this;
     }
 
-    public float Len() => ( float )Math.Sqrt( ( X * X ) + ( Y * Y ) + ( Z * Z ) );
+    public float Len()
+    {
+        return ( float )Math.Sqrt( ( X * X ) + ( Y * Y ) + ( Z * Z ) );
+    }
 
-    public float Len2() => ( X * X ) + ( Y * Y ) + ( Z * Z );
+    public float Len2()
+    {
+        return ( X * X ) + ( Y * Y ) + ( Z * Z );
+    }
 
     public float Dst( Vector3 vector )
     {
@@ -157,37 +192,81 @@ public class Vector3 : IVector< Vector3 >
         return Scl( 1f / ( float )Math.Sqrt( len2 ) );
     }
 
-    public float Dot( Vector3 vector ) => ( X * vector.X ) + ( Y * vector.Y ) + ( Z * vector.Z );
+    public float Dot( Vector3 vector )
+    {
+        return ( X * vector.X ) + ( Y * vector.Y ) + ( Z * vector.Z );
+    }
 
-    public bool IsUnit() => IsUnit( 0.000000001f );
+    public bool IsUnit()
+    {
+        return IsUnit( 0.000000001f );
+    }
 
-    public bool IsUnit( float margin ) => Math.Abs( Len2() - 1f ) < margin;
+    public bool IsUnit( float margin )
+    {
+        return Math.Abs( Len2() - 1f ) < margin;
+    }
 
-    public bool IsZero() => ( X == 0 ) && ( Y == 0 ) && ( Z == 0 );
+    public bool IsZero()
+    {
+        return ( X == 0 ) && ( Y == 0 ) && ( Z == 0 );
+    }
 
-    public bool IsZero( float margin ) => Len2() < margin;
+    public bool IsZero( float margin )
+    {
+        return Len2() < margin;
+    }
 
     public bool IsOnLine( Vector3 other, float epsilon )
-        => Len2( ( Y * other.Z ) - ( Z * other.Y ), ( Z * other.X ) - ( X * other.Z ), ( X * other.Y ) - ( Y * other.X ) ) <= epsilon;
+    {
+        return Len2( ( Y * other.Z ) - ( Z * other.Y ), ( Z * other.X ) - ( X * other.Z ), ( X * other.Y ) - ( Y * other.X ) ) <= epsilon;
+    }
 
-    public bool IsOnLine( Vector3 other ) => Len2( ( Y * other.Z ) - ( Z * other.Y ), ( Z * other.X ) - ( X * other.Z ), ( X * other.Y ) - ( Y * other.X ) )
-                                          <= MathUtils.FLOAT_ROUNDING_ERROR;
+    public bool IsOnLine( Vector3 other )
+    {
+        return Len2( ( Y * other.Z ) - ( Z * other.Y ), ( Z * other.X ) - ( X * other.Z ), ( X * other.Y ) - ( Y * other.X ) )
+            <= MathUtils.FLOAT_ROUNDING_ERROR;
+    }
 
-    public bool IsCollinear( Vector3 other, float epsilon ) => IsOnLine( other, epsilon ) && HasSameDirection( other );
+    public bool IsCollinear( Vector3 other, float epsilon )
+    {
+        return IsOnLine( other, epsilon ) && HasSameDirection( other );
+    }
 
-    public bool IsCollinear( Vector3 other ) => IsOnLine( other ) && HasSameDirection( other );
+    public bool IsCollinear( Vector3 other )
+    {
+        return IsOnLine( other ) && HasSameDirection( other );
+    }
 
-    public bool IsCollinearOpposite( Vector3 other, float epsilon ) => IsOnLine( other, epsilon ) && HasOppositeDirection( other );
+    public bool IsCollinearOpposite( Vector3 other, float epsilon )
+    {
+        return IsOnLine( other, epsilon ) && HasOppositeDirection( other );
+    }
 
-    public bool IsCollinearOpposite( Vector3 other ) => IsOnLine( other ) && HasOppositeDirection( other );
+    public bool IsCollinearOpposite( Vector3 other )
+    {
+        return IsOnLine( other ) && HasOppositeDirection( other );
+    }
 
-    public bool IsPerpendicular( Vector3 vector ) => MathUtils.IsZero( Dot( vector ) );
+    public bool IsPerpendicular( Vector3 vector )
+    {
+        return MathUtils.IsZero( Dot( vector ) );
+    }
 
-    public bool IsPerpendicular( Vector3 vector, float epsilon ) => MathUtils.IsZero( Dot( vector ), epsilon );
+    public bool IsPerpendicular( Vector3 vector, float epsilon )
+    {
+        return MathUtils.IsZero( Dot( vector ), epsilon );
+    }
 
-    public bool HasSameDirection( Vector3 vector ) => Dot( vector ) > 0;
+    public bool HasSameDirection( Vector3 vector )
+    {
+        return Dot( vector ) > 0;
+    }
 
-    public bool HasOppositeDirection( Vector3 vector ) => Dot( vector ) < 0;
+    public bool HasOppositeDirection( Vector3 vector )
+    {
+        return Dot( vector ) < 0;
+    }
 
     public Vector3 Lerp( Vector3 target, float alpha )
     {
@@ -198,9 +277,15 @@ public class Vector3 : IVector< Vector3 >
         return this;
     }
 
-    public Vector3 Interpolate( Vector3 target, float alpha, IInterpolation interpolator ) => Lerp( target, interpolator.Apply( 0f, 1f, alpha ) );
+    public Vector3 Interpolate( Vector3 target, float alpha, IInterpolation interpolator )
+    {
+        return Lerp( target, interpolator.Apply( 0f, 1f, alpha ) );
+    }
 
-    public Vector3 Limit( float limit ) => Limit2( limit * limit );
+    public Vector3 Limit( float limit )
+    {
+        return Limit2( limit * limit );
+    }
 
     public Vector3 Limit2( float limit2 )
     {
@@ -214,7 +299,10 @@ public class Vector3 : IVector< Vector3 >
         return this;
     }
 
-    public Vector3 SetLength( float len ) => SetLength2( len * len );
+    public Vector3 SetLength( float len )
+    {
+        return SetLength2( len * len );
+    }
 
     public Vector3 SetLength2( float len2 )
     {
@@ -295,9 +383,15 @@ public class Vector3 : IVector< Vector3 >
         return this;
     }
 
-    public Vector3 Set( float[] values ) => Set( values[ 0 ], values[ 1 ], values[ 2 ] );
+    public Vector3 Set( float[] values )
+    {
+        return Set( values[ 0 ], values[ 1 ], values[ 2 ] );
+    }
 
-    public Vector3 Set( Vector2 vector, float z ) => Set( vector.X, vector.Y, z );
+    public Vector3 Set( Vector2 vector, float z )
+    {
+        return Set( vector.X, vector.Y, z );
+    }
 
     /// <summary>
     /// </summary>
@@ -321,23 +415,47 @@ public class Vector3 : IVector< Vector3 >
     /// <param name="y"></param>
     /// <param name="z"></param>
     /// <returns></returns>
-    public Vector3 Add( float x, float y, float z ) => Set( X + x, Y + y, Z + z );
+    public Vector3 Add( float x, float y, float z )
+    {
+        return Set( X + x, Y + y, Z + z );
+    }
 
-    public Vector3 Add( float values ) => Set( X + values, Y + values, Z + values );
+    public Vector3 Add( float values )
+    {
+        return Set( X + values, Y + values, Z + values );
+    }
 
-    public Vector3 Sub( float x, float y, float z ) => Set( X - x, Y - y, Z - z );
+    public Vector3 Sub( float x, float y, float z )
+    {
+        return Set( X - x, Y - y, Z - z );
+    }
 
-    public Vector3 Sub( float value ) => Set( X - value, Y - value, Z - value );
+    public Vector3 Sub( float value )
+    {
+        return Set( X - value, Y - value, Z - value );
+    }
 
-    public Vector3 Scl( float vx, float vy, float vz ) => Set( X * vx, Y * vy, Z * vz );
+    public Vector3 Scl( float vx, float vy, float vz )
+    {
+        return Set( X * vx, Y * vy, Z * vz );
+    }
 
-    public static float Len( float x, float y, float z ) => ( float )Math.Sqrt( ( x * x ) + ( y * y ) + ( z * z ) );
+    public static float Len( float x, float y, float z )
+    {
+        return ( float )Math.Sqrt( ( x * x ) + ( y * y ) + ( z * z ) );
+    }
 
-    public static float Len2( float x, float y, float z ) => ( x * x ) + ( y * y ) + ( z * z );
+    public static float Len2( float x, float y, float z )
+    {
+        return ( x * x ) + ( y * y ) + ( z * z );
+    }
 
-    public bool Idt( Vector3 vector ) => MathUtils.IsEqual( X, vector.X )
-                                      && MathUtils.IsEqual( Y, vector.Y )
-                                      && MathUtils.IsEqual( Z, vector.Z );
+    public bool Idt( Vector3 vector )
+    {
+        return MathUtils.IsEqual( X, vector.X )
+            && MathUtils.IsEqual( Y, vector.Y )
+            && MathUtils.IsEqual( Z, vector.Z );
+    }
 
     public static float Dst( float x1, float y1, float z1, float x2, float y2, float z2 )
     {
@@ -375,23 +493,37 @@ public class Vector3 : IVector< Vector3 >
         return ( a * a ) + ( b * b ) + ( c * c );
     }
 
-    public static float Dot( float x1, float y1, float z1, float x2, float y2, float z2 ) => ( x1 * x2 ) + ( y1 * y2 ) + ( z1 * z2 );
+    public static float Dot( float x1, float y1, float z1, float x2, float y2, float z2 )
+    {
+        return ( x1 * x2 ) + ( y1 * y2 ) + ( z1 * z2 );
+    }
 
-    public float Dot( float x, float y, float z ) => ( X * x ) + ( Y * y ) + ( Z * z );
+    public float Dot( float x, float y, float z )
+    {
+        return ( X * x ) + ( Y * y ) + ( Z * z );
+    }
 
     public Vector3 Crs( Vector3 vector )
-        => Set( ( Y * vector.Z ) - ( Z * vector.Y ), ( Z * vector.X ) - ( X * vector.Z ), ( X * vector.Y ) - ( Y * vector.X ) );
+    {
+        return Set( ( Y * vector.Z ) - ( Z * vector.Y ), ( Z * vector.X ) - ( X * vector.Z ), ( X * vector.Y ) - ( Y * vector.X ) );
+    }
 
-    public Vector3 Crs( float x, float y, float z ) => Set( ( Y * z ) - ( Z * y ), ( Z * x ) - ( X * z ), ( X * y ) - ( Y * x ) );
+    public Vector3 Crs( float x, float y, float z )
+    {
+        return Set( ( Y * z ) - ( Z * y ), ( Z * x ) - ( X * z ), ( X * y ) - ( Y * x ) );
+    }
 
-    public Vector3 Mul4X3( float[] matrix ) => Set(
-        ( X * matrix[ 0 ] ) + ( Y * matrix[ 3 ] ) + ( Z * matrix[ 6 ] ) + matrix[ 9 ],
-        ( X * matrix[ 1 ] )
-      + ( Y * matrix[ 4 ] )
-      + ( Z * matrix[ 7 ] )
-      + matrix[ 10 ],
-        ( X * matrix[ 2 ] ) + ( Y * matrix[ 5 ] ) + ( Z * matrix[ 8 ] ) + matrix[ 11 ]
-        );
+    public Vector3 Mul4X3( float[] matrix )
+    {
+        return Set(
+            ( X * matrix[ 0 ] ) + ( Y * matrix[ 3 ] ) + ( Z * matrix[ 6 ] ) + matrix[ 9 ],
+            ( X * matrix[ 1 ] )
+          + ( Y * matrix[ 4 ] )
+          + ( Z * matrix[ 7 ] )
+          + matrix[ 10 ],
+            ( X * matrix[ 2 ] ) + ( Y * matrix[ 5 ] ) + ( Z * matrix[ 8 ] ) + matrix[ 11 ]
+            );
+    }
 
     public Vector3 Mul( Matrix4 matrix )
     {
@@ -459,7 +591,10 @@ public class Vector3 : IVector< Vector3 >
             );
     }
 
-    public Vector3 Mul( Quaternion quat ) => quat.Transform( this );
+    public Vector3 Mul( Quaternion quat )
+    {
+        return quat.Transform( this );
+    }
 
     public Vector3 Prj( Matrix4 matrix )
     {
@@ -524,9 +659,15 @@ public class Vector3 : IVector< Vector3 >
             );
     }
 
-    public Vector3 Rotate( float degrees, float axisX, float axisY, float axisZ ) => Mul( TmpMat.SetToRotation( axisX, axisY, axisZ, degrees ) );
+    public Vector3 Rotate( float degrees, float axisX, float axisY, float axisZ )
+    {
+        return Mul( TmpMat.SetToRotation( axisX, axisY, axisZ, degrees ) );
+    }
 
-    public Vector3 RotateRad( float radians, float axisX, float axisY, float axisZ ) => Mul( TmpMat.SetToRotationRad( axisX, axisY, axisZ, radians ) );
+    public Vector3 RotateRad( float radians, float axisX, float axisY, float axisZ )
+    {
+        return Mul( TmpMat.SetToRotationRad( axisX, axisY, axisZ, radians ) );
+    }
 
     public Vector3 Rotate( Vector3 axis, float degrees )
     {
@@ -640,7 +781,10 @@ public class Vector3 : IVector< Vector3 >
         return !( Math.Abs( z - Z ) > epsilon );
     }
 
-    public override string ToString() => "(" + X + "," + Y + "," + Z + ")";
+    public override string ToString()
+    {
+        return "(" + X + "," + Y + "," + Z + ")";
+    }
 
     public Vector3 FromString( string v )
     {

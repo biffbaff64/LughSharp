@@ -27,5 +27,8 @@ namespace LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
 
 public class ExternalFileHandleResolver : IFileHandleResolver
 {
-    public FileInfo Resolve( string fileName ) => Core.Gdx.Files.External( fileName );
+    public FileInfo Resolve( string fileName )
+    {
+        return Gdx.Files.External( fileName );
+    }
 }

@@ -235,7 +235,7 @@ public class Actor : IActor
 
         if ( Stage is { ActionsRequestRendering: true } )
         {
-            Core.Gdx.Graphics.RequestRendering();
+            Gdx.Graphics.RequestRendering();
         }
 
         try
@@ -451,7 +451,10 @@ public class Actor : IActor
     ///     Removes this actor from its parent, if it has a parent.
     /// </summary>
     /// <returns>True if successful.</returns>
-    public bool Remove() => ( Parent != null ) && Parent.RemoveActor( this, true );
+    public bool Remove()
+    {
+        return ( Parent != null ) && Parent.RemoveActor( this, true );
+    }
 
     /// <summary>
     ///     Add a listener to receive events that hit this actor.
@@ -473,7 +476,10 @@ public class Actor : IActor
     /// <param name="listener"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public bool RemoveListener( IEventListener listener ) => Listeners.RemoveValue( listener );
+    public bool RemoveListener( IEventListener listener )
+    {
+        return Listeners.RemoveValue( listener );
+    }
 
     /// <summary>
     /// </summary>
@@ -495,7 +501,10 @@ public class Actor : IActor
     /// <param name="listener"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public bool RemoveCaptureListener( IEventListener listener ) => CaptureListeners.RemoveValue( listener );
+    public bool RemoveCaptureListener( IEventListener listener )
+    {
+        return CaptureListeners.RemoveValue( listener );
+    }
 
     /// <summary>
     /// </summary>
@@ -510,7 +519,7 @@ public class Actor : IActor
 
             if ( Stage is { ActionsRequestRendering: true } )
             {
-                Core.Gdx.Graphics.RequestRendering();
+                Gdx.Graphics.RequestRendering();
             }
         }
     }
@@ -529,7 +538,10 @@ public class Actor : IActor
     /// <summary>
     ///     Returns true if the actor has one or more actions.
     /// </summary>
-    public bool HasActions() => Actions.Count > 0;
+    public bool HasActions()
+    {
+        return Actions.Count > 0;
+    }
 
     /// <summary>
     ///     Removes all actions on this actor.
@@ -636,12 +648,18 @@ public class Actor : IActor
     /// <summary>
     ///     Returns true if the actor's parent is not null.
     /// </summary>
-    public bool HasParent() => Parent != null;
+    public bool HasParent()
+    {
+        return Parent != null;
+    }
 
     /// <summary>
     ///     Returns true if input events are processed by this actor.
     /// </summary>
-    public bool IsTouchable() => Touchable == Touchable.Enabled;
+    public bool IsTouchable()
+    {
+        return Touchable == Touchable.Enabled;
+    }
 
     /// <summary>
     ///     Returns true if this actor and all ascendants are visible.
@@ -667,12 +685,18 @@ public class Actor : IActor
     /// <summary>
     ///     Returns true if this actor is the <see cref="Stage.KeyboardFocus" /> keyboard focus actor.
     /// </summary>
-    public bool HasKeyboardFocus() => ( Stage != null ) && ( Stage.KeyboardFocus == this );
+    public bool HasKeyboardFocus()
+    {
+        return ( Stage != null ) && ( Stage.KeyboardFocus == this );
+    }
 
     /// <summary>
     ///     Returns true if this actor is the <see cref="Stage.ScrollFocus" /> actor.
     /// </summary>
-    public bool HasScrollFocus() => ( Stage != null ) && ( Stage.ScrollFocus == this );
+    public bool HasScrollFocus()
+    {
+        return ( Stage != null ) && ( Stage.ScrollFocus == this );
+    }
 
     /// <summary>
     ///     Returns true if this actor is a target actor for touch focus.
@@ -1061,17 +1085,26 @@ public class Actor : IActor
     /// <param name="g"></param>
     /// <param name="b"></param>
     /// <param name="a"></param>
-    public void SetColor( float r, float g, float b, float a ) => _color.Set( r, g, b, a );
+    public void SetColor( float r, float g, float b, float a )
+    {
+        _color.Set( r, g, b, a );
+    }
 
     /// <summary>
     ///     Changes the z-order for this actor so it is in front of all siblings.
     /// </summary>
-    public void ToFront() => SetZIndex( int.MaxValue );
+    public void ToFront()
+    {
+        SetZIndex( int.MaxValue );
+    }
 
     /// <summary>
     ///     Changes the z-order for this actor so it is in back of all siblings.
     /// </summary>
-    public void ToBack() => SetZIndex( 0 );
+    public void ToBack()
+    {
+        SetZIndex( 0 );
+    }
 
     /// <summary>
     ///     Sets the z-index of this actor. The z-index is the index into the parent's
@@ -1127,7 +1160,10 @@ public class Actor : IActor
     /// <summary>
     ///     Calls <see cref="ClipBegin(float, float, float, float)" /> to clip this actor's bounds.
     /// </summary>
-    public bool ClipBegin() => ClipBegin( _x, _y, _width, _height );
+    public bool ClipBegin()
+    {
+        return ClipBegin( _x, _y, _width, _height );
+    }
 
     /// <summary>
     ///     Clips the specified screen aligned rectangle, specified relative to the
@@ -1178,16 +1214,22 @@ public class Actor : IActor
     /// <summary>
     ///     Ends clipping begun by <see cref="ClipBegin(float, float, float, float)" />.
     /// </summary>
-    public void ClipEnd() => Pools< object >.Free( ScissorStack.PopScissors() );
+    public void ClipEnd()
+    {
+        Pools< object >.Free( ScissorStack.PopScissors() );
+    }
 
     /// <summary>
     ///     Transforms the specified point in screen coordinates to the actor's
     ///     local coordinate system.
     /// </summary>
     /// <see cref="Stage.ScreenToStageCoordinates(Vector2)" />
-    public Vector2 ScreenToLocalCoordinates( Vector2 screenCoords ) => Stage == null
-        ? screenCoords
-        : StageToLocalCoordinates( Stage.ScreenToStageCoordinates( screenCoords ) );
+    public Vector2 ScreenToLocalCoordinates( Vector2 screenCoords )
+    {
+        return Stage == null
+            ? screenCoords
+            : StageToLocalCoordinates( Stage.ScreenToStageCoordinates( screenCoords ) );
+    }
 
     /// <summary>
     ///     Transforms the specified point in the stage's coordinates to
@@ -1252,15 +1294,21 @@ public class Actor : IActor
     ///     Transforms the specified point in the actor's coordinates to be in screen coordinates.
     /// </summary>
     /// <see cref="Stage.StageToScreenCoordinates(Vector2)" />
-    public Vector2 LocalToScreenCoordinates( Vector2 localCoords ) => Stage == null
-        ? localCoords
-        : Stage.StageToScreenCoordinates( LocalToAscendantCoordinates( null, localCoords ) );
+    public Vector2 LocalToScreenCoordinates( Vector2 localCoords )
+    {
+        return Stage == null
+            ? localCoords
+            : Stage.StageToScreenCoordinates( LocalToAscendantCoordinates( null, localCoords ) );
+    }
 
     /// <system>
     ///     Transforms the specified point in the actor's coordinates
     ///     to be in the stage's coordinates.
     /// </system>
-    public Vector2 LocalToStageCoordinates( Vector2 localCoords ) => LocalToAscendantCoordinates( null, localCoords );
+    public Vector2 LocalToStageCoordinates( Vector2 localCoords )
+    {
+        return LocalToAscendantCoordinates( null, localCoords );
+    }
 
     /// <system>
     ///     Transforms the specified point in the actor's coordinates
@@ -1349,7 +1397,10 @@ public class Actor : IActor
     /// <summary>
     ///     Draws this actor's debug lines if <see cref="DebugActive" /> is true.
     /// </summary>
-    public void DrawDebug( ShapeRenderer shapes ) => DrawDebugBounds( shapes );
+    public void DrawDebug( ShapeRenderer shapes )
+    {
+        DrawDebugBounds( shapes );
+    }
 
     /// <summary>
     ///     Draws a rectangle for the bounds of this actor
@@ -1386,5 +1437,8 @@ public class Actor : IActor
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    protected virtual new string? ToString() => Name;
+    protected virtual new string? ToString()
+    {
+        return Name;
+    }
 }

@@ -61,7 +61,7 @@ public class IndexBufferObject : IIndexData
         _buffer.Flip();
         _byteBuffer.Flip();
 
-        _bufferHandle = ( int )Core.Gdx.GL20.GLGenBuffer();
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
         _usage        = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
     }
 
@@ -85,10 +85,10 @@ public class IndexBufferObject : IIndexData
 
         if ( _isBound )
         {
-            Core.Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
-                                        _byteBuffer.Limit,
-                                        _byteBuffer,
-                                        _usage );
+            Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+                                   _byteBuffer.Limit,
+                                   _byteBuffer,
+                                   _usage );
 
             _isDirty = false;
         }
@@ -112,10 +112,10 @@ public class IndexBufferObject : IIndexData
 
         if ( _isBound )
         {
-            Core.Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
-                                        _byteBuffer.Limit,
-                                        _byteBuffer,
-                                        _usage );
+            Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+                                   _byteBuffer.Limit,
+                                   _byteBuffer,
+                                   _usage );
 
             _isDirty = false;
         }
@@ -137,10 +137,10 @@ public class IndexBufferObject : IIndexData
 
         if ( _isBound )
         {
-            Core.Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
-                                        _byteBuffer.Limit,
-                                        _byteBuffer,
-                                        _usage );
+            Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+                                   _byteBuffer.Limit,
+                                   _byteBuffer,
+                                   _usage );
 
             _isDirty = false;
         }
@@ -162,16 +162,16 @@ public class IndexBufferObject : IIndexData
             throw new GdxRuntimeException( "No buffer allocated!" );
         }
 
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, _bufferHandle );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, _bufferHandle );
 
         if ( _isDirty )
         {
             _byteBuffer.Limit = _buffer.Limit * 2;
 
-            Core.Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
-                                        _byteBuffer.Limit,
-                                        _byteBuffer,
-                                        _usage );
+            Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+                                   _byteBuffer.Limit,
+                                   _byteBuffer,
+                                   _usage );
 
             _isDirty = false;
         }
@@ -182,22 +182,22 @@ public class IndexBufferObject : IIndexData
     /// <inheritdoc />
     public void Unbind()
     {
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
     /// <inheritdoc />
     public void Invalidate()
     {
-        _bufferHandle = ( int )Core.Gdx.GL20.GLGenBuffer();
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
         _isDirty      = true;
     }
 
     /// <inheritdoc />
     public void Dispose()
     {
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
-        Core.Gdx.GL20.GLDeleteBuffer( _bufferHandle );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
+        Gdx.GL20.GLDeleteBuffer( _bufferHandle );
 
         _bufferHandle = 0;
 

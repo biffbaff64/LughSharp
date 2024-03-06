@@ -46,7 +46,10 @@ public class PolygonSprite
     /// <summary>
     ///     Creates a sprite that is a copy in every way of the specified sprite.
     /// </summary>
-    public PolygonSprite( PolygonSprite sprite ) => Set( sprite );
+    public PolygonSprite( PolygonSprite sprite )
+    {
+        Set( sprite );
+    }
 
     public PolygonRegion? Region   { get; private set; }
     public float          Width    { get; set; }
@@ -144,7 +147,10 @@ public class PolygonSprite
     ///     after those operations. If both position and size are to be changed,
     ///     it is better to use <see cref="SetBounds(float, float, float, float)" />
     /// </summary>
-    public void SetPosition( float x, float y ) => Translate( x - _x, y - _y );
+    public void SetPosition( float x, float y )
+    {
+        Translate( x - _x, y - _y );
+    }
 
     /// <summary>
     ///     Sets the x position relative to the current position where the sprite

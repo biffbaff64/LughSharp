@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Utils.Buffers;
 
-[PublicAPI]
 public class HeapShortBuffer : ShortBuffer
 {
     public HeapShortBuffer( int capacity, int limit )
@@ -53,13 +52,19 @@ public class HeapShortBuffer : ShortBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
-    public override object BackingArray() => null;
+    public override object BackingArray()
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Tells whether or not this buffer is <i>direct</i>.
     /// </summary>
     /// <returns> <tt>true</tt> if, and only if, this buffer is direct </returns>
-    public override bool IsDirect() => false;
+    public override bool IsDirect()
+    {
+        return false;
+    }
 
     /// <summary>
     ///     Creates a new short buffer whose content is a shared subsequence of
@@ -79,7 +84,10 @@ public class HeapShortBuffer : ShortBuffer
     ///     </para>
     /// </summary>
     /// @return  The new short buffer
-    public override ShortBuffer Slice() => null;
+    public override ShortBuffer Slice()
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Creates a new short buffer that shares this buffer's content.
@@ -91,7 +99,10 @@ public class HeapShortBuffer : ShortBuffer
     ///     will be independent.
     /// </remarks>
     /// <returns>The new short buffer.</returns>
-    public override ShortBuffer Duplicate() => null;
+    public override ShortBuffer Duplicate()
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Creates a new, read-only short buffer that shares this buffer's content.
@@ -101,7 +112,10 @@ public class HeapShortBuffer : ShortBuffer
     ///     modified. The two buffers' position, limit, and mark values will be independent.
     /// </summary>
     /// <returns>The new, read-only short buffer.</returns>
-    public override ShortBuffer AsReadOnlyBuffer() => null;
+    public override ShortBuffer AsReadOnlyBuffer()
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Relative <i>get</i> method. Reads the short at this buffer's current position,
@@ -111,7 +125,10 @@ public class HeapShortBuffer : ShortBuffer
     /// <exception cref="GdxRuntimeException">
     ///     If the buffer's current position is not smaller than its limit.
     /// </exception>
-    public override short Get() => 0;
+    public override short Get()
+    {
+        return 0;
+    }
 
     /// <summary>
     ///     Relative <i>put</i> method <i>(optional operation)</i>.
@@ -122,7 +139,10 @@ public class HeapShortBuffer : ShortBuffer
     ///     If this buffer's current position is not smaller than its limit.
     /// </exception>
     /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
-    public override ShortBuffer Put( short s ) => null;
+    public override ShortBuffer Put( short s )
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Absolute <i>get</i> method. Reads the short at the given index.
@@ -132,7 +152,10 @@ public class HeapShortBuffer : ShortBuffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If <paramref name="index" /> is negative or not smaller than the buffer's limit.
     /// </exception>
-    public override short Get( int index ) => 0;
+    public override short Get( int index )
+    {
+        return 0;
+    }
 
     /// <summary>
     ///     Absolute <i>put</i> method <i>(optional operation)</i>.
@@ -147,7 +170,10 @@ public class HeapShortBuffer : ShortBuffer
     ///     If <paramref name="index" /> is negative or not smaller than the buffer's limit.
     /// </exception>
     /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
-    public override ShortBuffer Put( int index, short s ) => null;
+    public override ShortBuffer Put( int index, short s )
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Compacts this buffer  <i>(optional operation)</i>.
@@ -172,7 +198,10 @@ public class HeapShortBuffer : ShortBuffer
     /// </summary>
     /// <returns> This buffer </returns>
     /// <exception cref="GdxRuntimeException">If this buffer is read-only</exception>
-    public override ShortBuffer Compact() => null;
+    public override ShortBuffer Compact()
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Retrieves this buffer's byte order.
@@ -185,5 +214,8 @@ public class HeapShortBuffer : ShortBuffer
     ///     </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
-    public override ByteOrder Order() => null;
+    public override ByteOrder Order()
+    {
+        return null;
+    }
 }

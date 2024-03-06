@@ -37,17 +37,29 @@ public class MapObjects : IEnumerable< MapObject >
     /// <summary>
     ///     Creates an empty set of MapObjects
     /// </summary>
-    public MapObjects() => _objects = new List< MapObject >();
+    public MapObjects()
+    {
+        _objects = new List< MapObject >();
+    }
 
     /// <summary>
     ///     Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An <see cref="IEnumerator{T}" /> object.</returns>
-    public IEnumerator< MapObject > GetEnumerator() => _objects.GetEnumerator();
+    public IEnumerator< MapObject > GetEnumerator()
+    {
+        return _objects.GetEnumerator();
+    }
 
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
-    public MapObject Get( int index ) => _objects[ index ];
+    public MapObject Get( int index )
+    {
+        return _objects[ index ];
+    }
 
     public MapObject Get( string name )
     {
@@ -64,23 +76,44 @@ public class MapObjects : IEnumerable< MapObject >
         return null!;
     }
 
-    public int GetIndex( string name ) => GetIndex( Get( name ) );
+    public int GetIndex( string name )
+    {
+        return GetIndex( Get( name ) );
+    }
 
-    public int GetIndex( MapObject obj ) => _objects.IndexOf( obj );
+    public int GetIndex( MapObject obj )
+    {
+        return _objects.IndexOf( obj );
+    }
 
-    public int GetCount() => _objects.Count;
+    public int GetCount()
+    {
+        return _objects.Count;
+    }
 
-    public void Add( MapObject obj ) => _objects.Add( obj );
+    public void Add( MapObject obj )
+    {
+        _objects.Add( obj );
+    }
 
-    public void RemoveIndex( int index ) => _objects.RemoveAt( index );
+    public void RemoveIndex( int index )
+    {
+        _objects.RemoveAt( index );
+    }
 
-    public void Remove( MapObject obj ) => _objects.Remove( obj );
+    public void Remove( MapObject obj )
+    {
+        _objects.Remove( obj );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="type"> class of the objects we want to retrieve </param>
     /// <returns> array filled with all the objects in the collection matching type  </returns>
-    public List< T > GetByType<T>( T type ) where T : MapObject => GetByType( type, new List< T >() );
+    public List< T > GetByType<T>( T type ) where T : MapObject
+    {
+        return GetByType( type, new List< T >() );
+    }
 
     /// <summary>
     /// </summary>

@@ -81,7 +81,7 @@ public class DesktopGLCursor : ICursor
     public Image           GLFWImage  { get; set; }
     public Cursor          GLFWCursor { get; set; }
 
-    public static void SetSystemCursor( GLFW.Window window, ICursor.SystemCursor systemCursor )
+    public static void SetSystemCursor( GLFWWindow window, ICursor.SystemCursor systemCursor )
     {
         //@formatter:off
         Cursor glCursor = systemCursor switch

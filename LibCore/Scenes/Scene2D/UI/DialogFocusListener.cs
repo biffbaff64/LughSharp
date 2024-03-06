@@ -31,7 +31,10 @@ public class DialogFocusListener : FocusListener
 {
     private readonly Dialog _dialog;
 
-    public DialogFocusListener( Dialog dialog ) => _dialog = dialog;
+    public DialogFocusListener( Dialog dialog )
+    {
+        _dialog = dialog;
+    }
 
     public override void KeyboardFocusChanged( FocusEvent ev, Actor? actor, bool focused )
     {

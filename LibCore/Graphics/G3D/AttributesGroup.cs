@@ -58,7 +58,10 @@ public class AttributesGroup : IComparer< Attribute >
     /// <summary>
     ///     Return a bitwise mask of the ID's of all the containing attributes
     /// </summary>
-    public long GetMask() => _mask;
+    public long GetMask()
+    {
+        return _mask;
+    }
 
     public Attribute? Get( long type )
     {
@@ -76,7 +79,10 @@ public class AttributesGroup : IComparer< Attribute >
         return null;
     }
 
-    public T? Get<T>( long type ) where T : Attribute => ( T? )Get( type );
+    public T? Get<T>( long type ) where T : Attribute
+    {
+        return ( T? )Get( type );
+    }
 
     public List< Attribute > Get( List< Attribute > output, long type )
     {
@@ -97,11 +103,20 @@ public class AttributesGroup : IComparer< Attribute >
         _attributes.Clear();
     }
 
-    public int Size() => _attributes.Count;
+    public int Size()
+    {
+        return _attributes.Count;
+    }
 
-    private void Enable( long mask ) => _mask |= mask;
+    private void Enable( long mask )
+    {
+        _mask |= mask;
+    }
 
-    private void Disable( long mask ) => _mask &= ~mask;
+    private void Disable( long mask )
+    {
+        _mask &= ~mask;
+    }
 
     /// <summary>
     ///     Add a attribute to this material. If the material already contains an attribute
@@ -218,7 +233,10 @@ public class AttributesGroup : IComparer< Attribute >
     ///         i.e. Has(ColorAttribute.Diffuse | ColorAttribute.Specular | TextureAttribute.Diffuse);
     ///     </para>
     /// </summary>
-    public bool Has( long type ) => ( type != 0 ) && ( ( _mask & type ) == type );
+    public bool Has( long type )
+    {
+        return ( type != 0 ) && ( ( _mask & type ) == type );
+    }
 
     /// <summary>
     ///     Returns the index of the attribute with the specified type or negative if not available.
@@ -302,7 +320,10 @@ public class AttributesGroup : IComparer< Attribute >
         return ( int )( result ^ ( result >> 32 ) );
     }
 
-    public override int GetHashCode() => AttributesHash();
+    public override int GetHashCode()
+    {
+        return AttributesHash();
+    }
 
     public override bool Equals( object? other )
     {

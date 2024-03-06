@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Utils.Buffers;
 
-[PublicAPI]
 public abstract class DoubleBuffer : Buffer
 {
     protected DoubleBuffer( int mark, int pos, int lim, int cap, double[]? hb = null, int offset = 0 )

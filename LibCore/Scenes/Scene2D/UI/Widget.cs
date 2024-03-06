@@ -113,7 +113,10 @@ public class Widget : Actor, ILayout
     ///     preferred, maximum, or actual size of the actor (meaning it does not affect the
     ///     parent actor's layout).
     /// </summary>
-    public virtual void Invalidate() => NeedsLayout = true;
+    public virtual void Invalidate()
+    {
+        NeedsLayout = true;
+    }
 
     /// <summary>
     ///     Invalidates this actor and its ascendants, calling <see cref="ILayout.Invalidate" /> on each.
@@ -186,9 +189,15 @@ public class Widget : Actor, ILayout
     ///     If this method is overridden, the super method or <see cref="Validate" />
     ///     should be called to ensure the widget is laid out.
     /// </summary>
-    public override void Draw( IBatch batch, float parentAlpha ) => Validate();
+    public override void Draw( IBatch batch, float parentAlpha )
+    {
+        Validate();
+    }
 
-    protected virtual new void SizeChanged() => Invalidate();
+    protected virtual new void SizeChanged()
+    {
+        Invalidate();
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

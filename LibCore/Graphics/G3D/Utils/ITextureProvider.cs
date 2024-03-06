@@ -65,7 +65,7 @@ public interface ITextureProvider
 
         public Texture Load( string fileName )
         {
-            var result = new Texture( Core.Gdx.Files.Internal( fileName ), _useMipMaps );
+            var result = new Texture( Gdx.Files.Internal( fileName ), _useMipMaps );
             result.SetFilter( _minFilter, _magFilter );
             result.SetWrap( _uWrap, _vWrap );
 
@@ -75,7 +75,10 @@ public interface ITextureProvider
 
     public class AssetTextureProvider : ITextureProvider
     {
-        public AssetTextureProvider( AssetManager? assetManager ) => AssetManager = assetManager;
+        public AssetTextureProvider( AssetManager? assetManager )
+        {
+            AssetManager = assetManager;
+        }
 
         public AssetManager? AssetManager { get; }
 

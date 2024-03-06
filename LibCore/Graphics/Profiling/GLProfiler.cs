@@ -34,16 +34,10 @@ namespace LibGDXSharp.LibCore.Graphics.Profiling;
 /// </summary>
 /// <seealso cref="GL20Interceptor" />
 /// <seealso cref="GL30Interceptor" />
-[PublicAPI]
 public class GLProfiler
 {
-    public IGLErrorListener  Listener    { get; set; }
-    public bool              Enabled     { get; set; } = false;
-    public IGraphics         Graphics    { get; set; }
-    public BaseGLInterceptor Interceptor { get; set; }
-
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     ///     Create a new instance of GLProfiler to monitor a <see cref="IGraphics" />
     ///     instance's gl calls
@@ -64,6 +58,11 @@ public class GLProfiler
 
         Listener = new GLLoggingListener();
     }
+
+    public IGLErrorListener  Listener    { get; set; }
+    public bool              Enabled     { get; set; } = false;
+    public IGraphics         Graphics    { get; set; }
+    public BaseGLInterceptor Interceptor { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -100,7 +99,10 @@ public class GLProfiler
     ///     This should be called after every frame.
     ///     Error listener is kept as it is.
     /// </summary>
-    public void Reset() => Interceptor.Reset();
+    public void Reset()
+    {
+        Interceptor.Reset();
+    }
 
     // ------------------------------------------------------------------------
 

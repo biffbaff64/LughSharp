@@ -37,10 +37,16 @@ public class PolylineMapObject : MapObject
     }
 
     /// <param name="vertices"> polyline defining vertices </param>
-    public PolylineMapObject( float[] vertices ) => Polyline = new Polyline( vertices );
+    public PolylineMapObject( float[] vertices )
+    {
+        Polyline = new Polyline( vertices );
+    }
 
     /// <param name="polyline"> the polyline </param>
-    public PolylineMapObject( Polyline polyline ) => Polyline = polyline;
+    public PolylineMapObject( Polyline polyline )
+    {
+        Polyline = polyline;
+    }
 
     /// <returns> polyline shape </returns>
     public Polyline Polyline { get; set; }

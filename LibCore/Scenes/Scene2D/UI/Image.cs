@@ -181,7 +181,10 @@ public class Image : Widget
         }
     }
 
-    public void SetDrawable( Skin skin, string drawableName ) => SetDrawable( skin.GetDrawable( drawableName ) );
+    public void SetDrawable( Skin skin, string drawableName )
+    {
+        SetDrawable( skin.GetDrawable( drawableName ) );
+    }
 
     /// <summary>
     ///     Sets a new drawable for the image. The image's pref size is the
@@ -212,7 +215,10 @@ public class Image : Widget
         _drawable = drawable;
     }
 
-    public IDrawable? GetDrawable() => _drawable;
+    public IDrawable? GetDrawable()
+    {
+        return _drawable;
+    }
 
     public void SetScaling( Scaling scale )
     {
@@ -222,9 +228,15 @@ public class Image : Widget
         Invalidate();
     }
 
-    public float GetMinWidth() => 0;
+    public float GetMinWidth()
+    {
+        return 0;
+    }
 
-    public float GetMinHeight() => 0;
+    public float GetMinHeight()
+    {
+        return 0;
+    }
 
     public float GetPrefWidth()
     {

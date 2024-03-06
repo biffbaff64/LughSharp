@@ -31,7 +31,6 @@ namespace LibGDXSharp.LibCore.Maths;
 ///     Delaunay triangulation. Adapted from Paul Bourke's triangulate:
 ///     http://paulbourke.net/papers/triangulate/
 /// </summary>
-[PublicAPI]
 public class DelaunayTriangulator
 {
     private const    float        EPSILON          = 0.000001f;
@@ -49,9 +48,15 @@ public class DelaunayTriangulator
 
     private float[]? _sortedPoints;
 
-    public List< int > ComputeTriangles( List< float > points, bool sorted ) => ComputeTriangles( points.ToArray(), 0, points.Count, sorted );
+    public List< int > ComputeTriangles( List< float > points, bool sorted )
+    {
+        return ComputeTriangles( points.ToArray(), 0, points.Count, sorted );
+    }
 
-    public List< int > ComputeTriangles( float[] polygon, bool sorted ) => ComputeTriangles( polygon, 0, polygon.Length, sorted );
+    public List< int > ComputeTriangles( float[] polygon, bool sorted )
+    {
+        return ComputeTriangles( polygon, 0, polygon.Length, sorted );
+    }
 
     /// <summary>
     ///     Triangulates the given point cloud to a list of triangle indices that

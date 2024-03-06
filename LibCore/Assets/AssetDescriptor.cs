@@ -84,5 +84,8 @@ public class AssetDescriptor
     public FileInfo               File       { get; set; }
 
     /// <inheritdoc />
-    public override string ToString() => $"{Filepath}, {AssetType.FullName}";
+    public override string ToString()
+    {
+        return $"{Filepath}, {AssetType.FullName}";
+    }
 }

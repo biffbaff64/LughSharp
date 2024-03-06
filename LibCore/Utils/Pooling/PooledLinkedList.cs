@@ -28,7 +28,6 @@ namespace LibGDXSharp.LibCore.Utils.Pooling;
 /// <summary>
 ///     A simple linked list that pools its nodes.
 /// </summary>
-[PublicAPI]
 public class PooledLinkedList<T>
 {
     private readonly Pool< Item< T > > _pool;
@@ -41,14 +40,20 @@ public class PooledLinkedList<T>
     /// <summary>
     /// </summary>
     /// <param name="maxPoolSize"></param>
-    public PooledLinkedList( int maxPoolSize ) => _pool = new Pool< Item< T > >( 16, maxPoolSize )
+    public PooledLinkedList( int maxPoolSize )
     {
-        NewObject = GetNewObject
-    };
+        _pool = new Pool< Item< T > >( 16, maxPoolSize )
+        {
+            NewObject = GetNewObject
+        };
+    }
 
     public int Size { get; set; } = 0;
 
-    public Item< T > GetNewObject() => new();
+    public Item< T > GetNewObject()
+    {
+        return new Item< T >();
+    }
 
     /// <summary>
     ///     Adds the specified object to the end of the list regardless of iteration status
@@ -117,12 +122,18 @@ public class PooledLinkedList<T>
     /// <summary>
     ///     Starts iterating over the list's items from the head of the list
     /// </summary>
-    protected void Iter() => _iter = _head;
+    protected void Iter()
+    {
+        _iter = _head;
+    }
 
     /// <summary>
     ///     Starts iterating over the list's items from the tail of the list
     /// </summary>
-    public void IterReverse() => _iter = _tail;
+    public void IterReverse()
+    {
+        _iter = _tail;
+    }
 
     /// <summary>
     ///     Gets the next item in the list

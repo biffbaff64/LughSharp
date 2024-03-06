@@ -61,7 +61,10 @@ public class MockMusic : IMusic
     }
 
     /// <inheritdoc />
-    public float GetVolume() => 0;
+    public float GetVolume()
+    {
+        return 0;
+    }
 
     /// <inheritdoc />
     public void SetPan( float pan, float volume )
@@ -74,7 +77,10 @@ public class MockMusic : IMusic
     }
 
     /// <inheritdoc />
-    public float GetPosition() => 0;
+    public float GetPosition()
+    {
+        return 0;
+    }
 
     /// <inheritdoc />
     public void setOnCompletionListener( IMusic.IOnCompletionListener listener )

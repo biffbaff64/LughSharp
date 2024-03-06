@@ -96,7 +96,10 @@ public class OrthographicCamera : Camera
     ///     with the y-axis pointing up or down.
     /// </summary>
     /// <param name="yDown">whether y should be pointing down.</param>
-    public void SetToOrtho( bool yDown ) => SetToOrtho( yDown, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height );
+    public void SetToOrtho( bool yDown )
+    {
+        SetToOrtho( yDown, Gdx.Graphics.Width, Gdx.Graphics.Height );
+    }
 
     /// <summary>
     ///     Sets this camera to an orthographic projection, centered at
@@ -130,7 +133,10 @@ public class OrthographicCamera : Camera
     ///     The direction and up vector will not be orthogonalized.
     /// </summary>
     /// <param name="angle"></param>
-    public void Rotate( float angle ) => Rotate( Direction, angle );
+    public void Rotate( float angle )
+    {
+        Rotate( Direction, angle );
+    }
 
     /// <summary>
     ///     Moves the camera by the given amount on each axis.
@@ -139,11 +145,17 @@ public class OrthographicCamera : Camera
     /// the displacement on the x-axis
     /// <param name="y" />
     /// the displacement on the y-axis
-    public void Translate( float x, float y ) => Translate( x, y, 0 );
+    public void Translate( float x, float y )
+    {
+        Translate( x, y, 0 );
+    }
 
     /// <summary>
     ///     Moves the camera by the given vector.
     /// </summary>
     /// <param name="vec">the displacement vector</param>
-    public void Translate( Vector2 vec ) => Translate( vec.X, vec.Y, 0 );
+    public void Translate( Vector2 vec )
+    {
+        Translate( vec.X, vec.Y, 0 );
+    }
 }

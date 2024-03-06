@@ -154,45 +154,72 @@ public class VertexAttribute
     ///     as is typically done by the <see cref="VertexAttributes" /> that
     ///     owns the VertexAttribute.
     /// </returns>
-    public VertexAttribute Copy() => new( usage, numComponents, type, normalized, alias, unit );
+    public VertexAttribute Copy()
+    {
+        return new VertexAttribute( usage, numComponents, type, normalized, alias, unit );
+    }
 
-    public static VertexAttribute Position() => new( VertexAttributes.Usage.POSITION,
-                                                     3,
-                                                     ShaderProgram.POSITION_ATTRIBUTE );
+    public static VertexAttribute Position()
+    {
+        return new VertexAttribute( VertexAttributes.Usage.POSITION,
+                                    3,
+                                    ShaderProgram.POSITION_ATTRIBUTE );
+    }
 
-    public static VertexAttribute TexCoords( int unit ) => new( VertexAttributes.Usage.TEXTURE_COORDINATES,
-                                                                2,
-                                                                ShaderProgram.TEXCOORD_ATTRIBUTE + unit,
-                                                                unit );
+    public static VertexAttribute TexCoords( int unit )
+    {
+        return new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES,
+                                    2,
+                                    ShaderProgram.TEXCOORD_ATTRIBUTE + unit,
+                                    unit );
+    }
 
-    public static VertexAttribute Normal() => new( VertexAttributes.Usage.NORMAL,
-                                                   3,
-                                                   ShaderProgram.NORMAL_ATTRIBUTE );
+    public static VertexAttribute Normal()
+    {
+        return new VertexAttribute( VertexAttributes.Usage.NORMAL,
+                                    3,
+                                    ShaderProgram.NORMAL_ATTRIBUTE );
+    }
 
-    public static VertexAttribute ColorPacked() => new( VertexAttributes.Usage.COLOR_PACKED,
-                                                        4,
-                                                        IGL20.GL_UNSIGNED_BYTE,
-                                                        true,
-                                                        ShaderProgram.COLOR_ATTRIBUTE );
+    public static VertexAttribute ColorPacked()
+    {
+        return new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED,
+                                    4,
+                                    IGL20.GL_UNSIGNED_BYTE,
+                                    true,
+                                    ShaderProgram.COLOR_ATTRIBUTE );
+    }
 
-    public static VertexAttribute ColorUnpacked() => new( VertexAttributes.Usage.COLOR_UNPACKED,
-                                                          4,
-                                                          IGL20.GL_FLOAT,
-                                                          false,
-                                                          ShaderProgram.COLOR_ATTRIBUTE );
+    public static VertexAttribute ColorUnpacked()
+    {
+        return new VertexAttribute( VertexAttributes.Usage.COLOR_UNPACKED,
+                                    4,
+                                    IGL20.GL_FLOAT,
+                                    false,
+                                    ShaderProgram.COLOR_ATTRIBUTE );
+    }
 
-    public static VertexAttribute Tangent() => new( VertexAttributes.Usage.TANGENT,
-                                                    3,
-                                                    ShaderProgram.TANGENT_ATTRIBUTE );
+    public static VertexAttribute Tangent()
+    {
+        return new VertexAttribute( VertexAttributes.Usage.TANGENT,
+                                    3,
+                                    ShaderProgram.TANGENT_ATTRIBUTE );
+    }
 
-    public static VertexAttribute Binormal() => new( VertexAttributes.Usage.BI_NORMAL,
-                                                     3,
-                                                     ShaderProgram.BINORMAL_ATTRIBUTE );
+    public static VertexAttribute Binormal()
+    {
+        return new VertexAttribute( VertexAttributes.Usage.BI_NORMAL,
+                                    3,
+                                    ShaderProgram.BINORMAL_ATTRIBUTE );
+    }
 
-    public static VertexAttribute BoneWeight( int unit ) => new( VertexAttributes.Usage.BONE_WEIGHT,
-                                                                 2,
-                                                                 ShaderProgram.BONEWEIGHT_ATTRIBUTE + unit,
-                                                                 unit );
+    public static VertexAttribute BoneWeight( int unit )
+    {
+        return new VertexAttribute( VertexAttributes.Usage.BONE_WEIGHT,
+                                    2,
+                                    ShaderProgram.BONEWEIGHT_ATTRIBUTE + unit,
+                                    unit );
+    }
 
     /// <summary>
     ///     Tests to determine if the passed object was created with the same parameters
@@ -207,32 +234,41 @@ public class VertexAttribute
         return Equals( attribute );
     }
 
-    public bool Equals( VertexAttribute? other ) => ( other != null )
-                                                 && ( usage == other.usage )
-                                                 && ( numComponents == other.numComponents )
-                                                 && ( type == other.type )
-                                                 && ( normalized == other.normalized )
-                                                 && alias.Equals( other.alias )
-                                                 && ( unit == other.unit );
+    public bool Equals( VertexAttribute? other )
+    {
+        return ( other != null )
+            && ( usage == other.usage )
+            && ( numComponents == other.numComponents )
+            && ( type == other.type )
+            && ( normalized == other.normalized )
+            && alias.Equals( other.alias )
+            && ( unit == other.unit );
+    }
 
     /// <returns>
     ///     A unique number specifying the usage index (3 MSB) and unit (1 LSB).
     /// </returns>
-    public int GetKey() => ( _usageIndex << 8 ) + ( unit & 0xFF );
+    public int GetKey()
+    {
+        return ( _usageIndex << 8 ) + ( unit & 0xFF );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns>How many bytes this attribute uses.</returns>
-    public int GetSizeInBytes() => type switch
-                                   {
-                                       IGL20.GL_FLOAT          => 4 * numComponents,
-                                       IGL20.GL_FIXED          => 4 * numComponents,
-                                       IGL20.GL_UNSIGNED_SHORT => 2 * numComponents,
-                                       IGL20.GL_SHORT          => 2 * numComponents,
-                                       IGL20.GL_UNSIGNED_BYTE  => numComponents,
-                                       IGL20.GL_BYTE           => numComponents,
-                                       _                       => 0
-                                   };
+    public int GetSizeInBytes()
+    {
+        return type switch
+               {
+                   IGL20.GL_FLOAT          => 4 * numComponents,
+                   IGL20.GL_FIXED          => 4 * numComponents,
+                   IGL20.GL_UNSIGNED_SHORT => 2 * numComponents,
+                   IGL20.GL_SHORT          => 2 * numComponents,
+                   IGL20.GL_UNSIGNED_BYTE  => numComponents,
+                   IGL20.GL_BYTE           => numComponents,
+                   _                       => 0
+               };
+    }
 
     public int HashCode()
     {

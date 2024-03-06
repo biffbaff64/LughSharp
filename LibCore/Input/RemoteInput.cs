@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Input;
 
-[PublicAPI]
 public class RemoteInput
 {
     public RemoteInput()

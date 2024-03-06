@@ -147,7 +147,10 @@ public class TextArea : TextField
     ///     Sets the preferred number of rows (lines) for this text area.
     ///     Used to calculate preferred height
     /// </summary>
-    public void SetPrefRows( float prefRows ) => _prefRows = prefRows;
+    public void SetPrefRows( float prefRows )
+    {
+        _prefRows = prefRows;
+    }
 
     public override float GetPrefHeight()
     {
@@ -178,7 +181,10 @@ public class TextArea : TextField
     /// <summary>
     ///     Returns total number of lines that the text occupies
     /// </summary>
-    public int GetLines() => ( LinesBreak!.Count / 2 ) + ( NewLineAtEnd() ? 1 : 0 );
+    public int GetLines()
+    {
+        return ( LinesBreak!.Count / 2 ) + ( NewLineAtEnd() ? 1 : 0 );
+    }
 
     /// <summary>
     ///     Returns if there's a new line at then end of the text
@@ -432,7 +438,9 @@ public class TextArea : TextField
     }
 
     protected override void DrawCursor( IDrawable cursorPatch, IBatch batch, BitmapFont font, float x, float y )
-        => cursorPatch.Draw( batch, x + GetCursorX(), y + GetCursorY(), cursorPatch.MinWidth, font.GetLineHeight() );
+    {
+        cursorPatch.Draw( batch, x + GetCursorX(), y + GetCursorY(), cursorPatch.MinWidth, font.GetLineHeight() );
+    }
 
     public override void CalculateOffsets()
     {
@@ -502,7 +510,10 @@ public class TextArea : TextField
         }
     }
 
-    protected override InputListener CreateInputListener() => new TextAreaListener( this );
+    protected override InputListener CreateInputListener()
+    {
+        return new TextAreaListener( this );
+    }
 
     public override void SetSelection( int selectionStart, int selectionEnd )
     {
@@ -578,7 +589,10 @@ public class TextArea : TextField
         return textOffset + fontData!.CursorX;
     }
 
-    public float GetCursorY() => -( ( CursorLine - FirstLineShowing ) + 1 ) * Style!.Font!.GetLineHeight();
+    public float GetCursorY()
+    {
+        return -( ( CursorLine - FirstLineShowing ) + 1 ) * Style!.Font!.GetLineHeight();
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -591,7 +605,10 @@ public class TextArea : TextField
     {
         private readonly TextArea _parent;
 
-        public TextAreaListener( TextArea ta ) => _parent = ta;
+        public TextAreaListener( TextArea ta )
+        {
+            _parent = ta;
+        }
 
         protected override void SetCursorPosition( float x, float y )
         {
@@ -630,8 +647,8 @@ public class TextArea : TextField
             {
                 var repeat = false;
 
-                var shift = Core.Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_LEFT )
-                         || Core.Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_RIGHT );
+                var shift = Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_LEFT )
+                         || Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_RIGHT );
 
                 if ( keycode == IInput.Keys.DOWN )
                 {
@@ -688,7 +705,10 @@ public class TextArea : TextField
             return result;
         }
 
-        protected bool CheckFocusTraversal( char character ) => _parent.FocusTraversal && ( character == TAB );
+        protected bool CheckFocusTraversal( char character )
+        {
+            return _parent.FocusTraversal && ( character == TAB );
+        }
 
         public override bool KeyTyped( InputEvent? ev, char character )
         {

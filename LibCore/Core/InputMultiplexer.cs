@@ -236,7 +236,10 @@ public class InputMultiplexer : IInputProcessor
         _processors.Insert( index, processor );
     }
 
-    public void RemoveProcessor( int index ) => _processors.RemoveAt( index );
+    public void RemoveProcessor( int index )
+    {
+        _processors.RemoveAt( index );
+    }
 
     public void AddProcessor( IInputProcessor processor )
     {
@@ -248,11 +251,20 @@ public class InputMultiplexer : IInputProcessor
         _processors.Add( processor );
     }
 
-    public void RemoveProcessor( IInputProcessor processor ) => _processors.Remove( processor );
+    public void RemoveProcessor( IInputProcessor processor )
+    {
+        _processors.Remove( processor );
+    }
 
-    public int Size() => _processors.Size;
+    public int Size()
+    {
+        return _processors.Size;
+    }
 
-    public void Clear() => _processors.Clear();
+    public void Clear()
+    {
+        _processors.Clear();
+    }
 
     public void SetProcessors( params IInputProcessor[] processorList )
     {
@@ -274,5 +286,8 @@ public class InputMultiplexer : IInputProcessor
         }
     }
 
-    public SnapshotArray< IInputProcessor > GetProcessors() => _processors;
+    public SnapshotArray< IInputProcessor > GetProcessors()
+    {
+        return _processors;
+    }
 }

@@ -33,7 +33,6 @@ namespace LibGDXSharp.LibCore.Utils;
 /// <summary>
 ///     Typed runtime exception used throughout LibGDXSharp.
 /// </summary>
-[PublicAPI]
 public class GdxRuntimeException : Exception
 {
     public GdxRuntimeException( string? message = "" )
@@ -62,5 +61,8 @@ public class GdxRuntimeException : Exception
     }
 
     [DoesNotReturn]
-    internal static void Throw( string? message ) => throw new GdxRuntimeException( message );
+    internal static void Throw( string? message )
+    {
+        throw new GdxRuntimeException( message );
+    }
 }

@@ -64,7 +64,6 @@ namespace LibGDXSharp.LibCore.Graphics.G2D;
 ///         A PolygonSpriteBatch has to be disposed if it is no longer used.
 ///     </p>
 /// </summary>
-[PublicAPI]
 public class PolygonSpriteBatch : IPolygonBatch
 {
     private readonly Color          _color          = new( 1, 1, 1, 1 );
@@ -148,7 +147,7 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         var vertexDataType = Mesh.VertexDataType.VertexArray;
 
-        if ( Core.Gdx.Graphics.IsGL30Available() )
+        if ( Gdx.Graphics.IsGL30Available() )
         {
             vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
         }
@@ -174,7 +173,7 @@ public class PolygonSpriteBatch : IPolygonBatch
             _shader = defaultShader;
         }
 
-        ProjectionMatrix.SetToOrtho2D( 0, 0, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height );
+        ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
     }
 
     public void Begin()
@@ -186,7 +185,7 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         renderCalls = 0;
 
-        Core.Gdx.GL.GLDepthMask( false );
+        Gdx.GL.GLDepthMask( false );
 
         if ( _customShader != null )
         {
@@ -217,11 +216,11 @@ public class PolygonSpriteBatch : IPolygonBatch
         _lastTexture = null;
         IsDrawing    = false;
 
-        Core.Gdx.GL.GLDepthMask( true );
+        Gdx.GL.GLDepthMask( true );
 
         if ( ISBlendingEnabled() )
         {
-            Core.Gdx.GL.GLDisable( IGL20.GL_BLEND );
+            Gdx.GL.GLDisable( IGL20.GL_BLEND );
         }
     }
 
@@ -765,7 +764,10 @@ public class PolygonSpriteBatch : IPolygonBatch
         _vertices[ _vertexIndex++ ] = v;
     }
 
-    public void Draw( Texture texture, float x, float y ) => Draw( texture, x, y, texture.Width, texture.Height );
+    public void Draw( Texture texture, float x, float y )
+    {
+        Draw( texture, x, y, texture.Width, texture.Height );
+    }
 
     public void Draw( Texture texture, float x, float y, float width, float height )
     {
@@ -892,7 +894,10 @@ public class PolygonSpriteBatch : IPolygonBatch
         }
     }
 
-    public void Draw( TextureRegion region, float x, float y ) => Draw( region, x, y, region.RegionWidth, region.RegionHeight );
+    public void Draw( TextureRegion region, float x, float y )
+    {
+        Draw( region, x, y, region.RegionWidth, region.RegionHeight );
+    }
 
     public void Draw( TextureRegion region, float x, float y, float width, float height )
     {
@@ -1351,15 +1356,15 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         if ( _blendingDisabled )
         {
-            Core.Gdx.GL.GLDisable( IGL20.GL_BLEND );
+            Gdx.GL.GLDisable( IGL20.GL_BLEND );
         }
         else
         {
-            Core.Gdx.GL.GLEnable( IGL20.GL_BLEND );
+            Gdx.GL.GLEnable( IGL20.GL_BLEND );
 
             if ( BlendSrcFunc != -1 )
             {
-                Core.Gdx.GL.GLBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
+                Gdx.GL.GLBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
             }
         }
 
@@ -1381,7 +1386,10 @@ public class PolygonSpriteBatch : IPolygonBatch
         _blendingDisabled = false;
     }
 
-    public void SetBlendFunction( int srcFunc, int dstFunc ) => SetBlendFunctionSeparate( srcFunc, dstFunc, srcFunc, dstFunc );
+    public void SetBlendFunction( int srcFunc, int dstFunc )
+    {
+        SetBlendFunctionSeparate( srcFunc, dstFunc, srcFunc, dstFunc );
+    }
 
     public void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha )
     {
@@ -1507,5 +1515,8 @@ public class PolygonSpriteBatch : IPolygonBatch
         _invTexHeight = 1.0f / texture.Height;
     }
 
-    public bool ISBlendingEnabled() => !_blendingDisabled;
+    public bool ISBlendingEnabled()
+    {
+        return !_blendingDisabled;
+    }
 }

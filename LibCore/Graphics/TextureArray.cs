@@ -30,7 +30,6 @@ namespace LibGDXSharp.LibCore.Graphics;
 /// <summary>
 ///     Open GLES wrapper for TextureArray.
 /// </summary>
-[PublicAPI]
 public class TextureArray : GLTexture
 {
     private readonly static Dictionary< IApplication, List< TextureArray > > _managedTextureArrays = new();
@@ -62,7 +61,7 @@ public class TextureArray : GLTexture
     /// <summary>
     ///     Gets the number of managed TextureArrays currently loaded.
     /// </summary>
-    public int NumManagedTextureArrays => _managedTextureArrays[ Core.Gdx.App ].Count;
+    public int NumManagedTextureArrays => _managedTextureArrays[ Gdx.App ].Count;
 
     /// <summary>
     /// </summary>
@@ -74,7 +73,7 @@ public class TextureArray : GLTexture
 
         for ( var i = 0; i < internalPaths.Length; i++ )
         {
-            handles[ i ] = Core.Gdx.Files.Internal( internalPaths[ i ] );
+            handles[ i ] = Gdx.Files.Internal( internalPaths[ i ] );
         }
 
         return handles;
@@ -95,16 +94,16 @@ public class TextureArray : GLTexture
 
         Bind();
 
-        Core.Gdx.GL30?.GLTexImage3D( IGL30.GL_TEXTURE_2D_ARRAY,
-                                     0,
-                                     data.InternalFormat,
-                                     data.Width,
-                                     data.Height,
-                                     data.Depth,
-                                     0,
-                                     data.InternalFormat,
-                                     data.GLType,
-                                     0 );
+        Gdx.GL30?.GLTexImage3D( IGL30.GL_TEXTURE_2D_ARRAY,
+                                0,
+                                data.InternalFormat,
+                                data.Width,
+                                data.Height,
+                                data.Depth,
+                                0,
+                                data.InternalFormat,
+                                data.GLType,
+                                0 );
 
         if ( !data.Prepared )
         {
@@ -115,7 +114,7 @@ public class TextureArray : GLTexture
 
         SetFilter( MinFilter, MagFilter );
         SetWrap( UWrap, VWrap );
-        Core.Gdx.GL.GLBindTexture( GLTarget, 0 );
+        Gdx.GL.GLBindTexture( GLTarget, 0 );
     }
 
     /// <summary>
@@ -128,7 +127,7 @@ public class TextureArray : GLTexture
             throw new GdxRuntimeException( "Tried to reload an unmanaged TextureArray" );
         }
 
-        GLTextureHandle = ( int )Core.Gdx.GL.GLGenTexture();
+        GLTextureHandle = Gdx.GL.GLGenTexture();
 
         Load( _data );
     }
@@ -187,9 +186,9 @@ public class TextureArray : GLTexture
     /// <param name="data"></param>
     /// <exception cref="GdxRuntimeException"></exception>
     public TextureArray( ITextureArrayData data )
-        : base( IGL30.GL_TEXTURE_2D_ARRAY, ( int )Core.Gdx.GL.GLGenTexture() )
+        : base( IGL30.GL_TEXTURE_2D_ARRAY, Gdx.GL.GLGenTexture() )
     {
-        if ( Core.Gdx.GL30 == null )
+        if ( Gdx.GL30 == null )
         {
             throw new GdxRuntimeException( "TextureArray requires a device"
                                          + "running with GLES 3.0 compatibilty" );
@@ -201,7 +200,7 @@ public class TextureArray : GLTexture
 
         if ( data.Managed )
         {
-            AddManagedTexture( Core.Gdx.App, this );
+            AddManagedTexture( Gdx.App, this );
         }
     }
 
@@ -223,7 +222,10 @@ public class TextureArray : GLTexture
     /// <summary>
     ///     Clears all managed TextureArrays.
     /// </summary>
-    internal static void ClearAllTextureArrays( IApplication app ) => _managedTextureArrays.Remove( app );
+    internal static void ClearAllTextureArrays( IApplication app )
+    {
+        _managedTextureArrays.Remove( app );
+    }
 
     /// <summary>
     ///     Invalidate all managed TextureArrays.

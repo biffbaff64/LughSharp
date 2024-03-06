@@ -31,10 +31,9 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.IO;
 ///     public class to manage RIFF files.
 /// </summary>
 /// <remarks>
-///     This class is marked as [PublicAPI] to indicate to ReSharper that
+///     This class is marked as  to indicate to ReSharper that
 ///     methods and members etc may be called externally.
 /// </remarks>
-[PublicAPI]
 public class RiffFile
 {
     protected const int DDC_SUCCESS       = 0; // The operation succeded
@@ -67,7 +66,10 @@ public class RiffFile
     /// <summary>
     ///     Return File Mode.
     /// </summary>
-    public int CurrentFileMode() => _fmode;
+    public int CurrentFileMode()
+    {
+        return _fmode;
+    }
 
     /// <summary>
     ///     Open a RIFF file.
@@ -649,13 +651,19 @@ public class RiffFile
     public class RiffChunkHeader
     {
         // Length of data in chunk
-        public RiffChunkHeader( RiffFile enclosingInstance ) => InitBlock( enclosingInstance );
+        public RiffChunkHeader( RiffFile enclosingInstance )
+        {
+            InitBlock( enclosingInstance );
+        }
 
         public int CkId   { get; set; } // Four-character chunk ID
         public int CkSize { get; set; }
 
         public RiffFile EnclosingInstance { get; private set; } = null!;
 
-        private void InitBlock( RiffFile instance ) => EnclosingInstance = instance;
+        private void InitBlock( RiffFile instance )
+        {
+            EnclosingInstance = instance;
+        }
     }
 }

@@ -38,7 +38,10 @@ public class ParallelAction : Action
     {
     }
 
-    public ParallelAction( Action action1 ) => AddAction( action1 );
+    public ParallelAction( Action action1 )
+    {
+        AddAction( action1 );
+    }
 
     public ParallelAction( Action action1, Action action2 )
     {
@@ -145,7 +148,10 @@ public class ParallelAction : Action
         base.Actor = actor;
     }
 
-    public List< Action > GetActions() => _actions;
+    public List< Action > GetActions()
+    {
+        return _actions;
+    }
 
     public override string ToString()
     {

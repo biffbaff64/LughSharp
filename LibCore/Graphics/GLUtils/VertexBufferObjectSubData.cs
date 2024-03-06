@@ -180,12 +180,12 @@ public class VertexBufferObjectSubData : IVertexData
     /// <param name="locations"> array containing the attribute locations.</param>
     public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
 
         if ( _isDirty )
         {
             ByteBuffer.Limit = _buffer.Limit * 4;
-            Core.Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, ByteBuffer.Limit, ByteBuffer, _usage );
+            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, ByteBuffer.Limit, ByteBuffer, _usage );
             _isDirty = false;
         }
 
@@ -270,7 +270,7 @@ public class VertexBufferObjectSubData : IVertexData
             }
         }
 
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
@@ -289,18 +289,18 @@ public class VertexBufferObjectSubData : IVertexData
     /// </summary>
     public void Dispose()
     {
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Core.Gdx.GL20.GLDeleteBuffer( _bufferHandle );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL20.GLDeleteBuffer( _bufferHandle );
         _bufferHandle = 0;
     }
 
     private int CreateBufferObject()
     {
-        var result = Core.Gdx.GL20.GLGenBuffer();
+        var result = Gdx.GL20.GLGenBuffer();
 
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
-        Core.Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, ByteBuffer.Capacity, null!, _usage );
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
+        Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, ByteBuffer.Capacity, null!, _usage );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
 
         return result;
     }
@@ -309,7 +309,7 @@ public class VertexBufferObjectSubData : IVertexData
     {
         if ( _isBound )
         {
-            Core.Gdx.GL20.GLBufferSubData( IGL20.GL_ARRAY_BUFFER, 0, ByteBuffer.Limit, ByteBuffer );
+            Gdx.GL20.GLBufferSubData( IGL20.GL_ARRAY_BUFFER, 0, ByteBuffer.Limit, ByteBuffer );
             _isDirty = false;
         }
     }

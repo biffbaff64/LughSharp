@@ -30,7 +30,6 @@ namespace LibGDXSharp.LibCore.Maths;
 /// <summary>
 ///     A convenient 2D ellipse class, based on the circle class
 /// </summary>
-[PublicAPI]
 public class Ellipse : ISerializable, IShape2D
 {
     /// <summary>
@@ -149,7 +148,10 @@ public class Ellipse : ISerializable, IShape2D
     ///     Position vector
     /// </param>
     /// <returns> true if this ellipse contains the given point; false otherwise.  </returns>
-    public bool Contains( Vector2 point ) => Contains( point.X, point.Y );
+    public bool Contains( Vector2 point )
+    {
+        return Contains( point.X, point.Y );
+    }
 
     /// <summary>
     ///     Sets a new position and size for this ellipse.
@@ -239,7 +241,10 @@ public class Ellipse : ISerializable, IShape2D
     ///     The area of this <see cref="Ellipse" /> as <see cref="MathUtils.PI" />
     ///     <see cref="Ellipse.Width" /> * <see cref="Ellipse.Height" />
     /// </returns>
-    public float Area() => ( MathUtils.PI * ( Width * Height ) ) / 4;
+    public float Area()
+    {
+        return ( MathUtils.PI * ( Width * Height ) ) / 4;
+    }
 
     /// <summary>
     ///     Approximates the circumference of this <see cref="Ellipse" />. Oddly enough,

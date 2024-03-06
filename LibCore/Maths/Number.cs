@@ -39,7 +39,6 @@ namespace LibGDXSharp.LibCore.Maths;
 ///     See the documentation of a given Number implementation for conversion details.
 /// </summary>
 /// <remarks>This class is taken directly from java.lang.Number</remarks>
-[PublicAPI]
 public abstract class Number
 {
     /// <summary>
@@ -94,7 +93,10 @@ public abstract class Number
     ///     the numeric value represented by this object after conversion
     ///     to type <code>byte</code>.
     /// </returns>
-    public sbyte ByteValue() => ( sbyte )IntValue();
+    public sbyte ByteValue()
+    {
+        return ( sbyte )IntValue();
+    }
 
     /// <summary>
     ///     Returns the value of the specified number as a <code>short</code>
@@ -108,5 +110,8 @@ public abstract class Number
     ///     the numeric value represented by this object after conversion
     ///     to type <code>short</code>.
     /// </returns>
-    public short ShortValue() => ( short )IntValue();
+    public short ShortValue()
+    {
+        return ( short )IntValue();
+    }
 }

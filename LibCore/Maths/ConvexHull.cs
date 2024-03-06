@@ -40,9 +40,15 @@ public class ConvexHull
 
     private float[]? _sortedPoints;
 
-    public List< float > ComputePolygon( List< float > points, bool sorted ) => ComputePolygon( points.ToArray(), 0, points.Count, sorted );
+    public List< float > ComputePolygon( List< float > points, bool sorted )
+    {
+        return ComputePolygon( points.ToArray(), 0, points.Count, sorted );
+    }
 
-    public List< float > ComputePolygon( float[] polygon, bool sorted ) => ComputePolygon( polygon, 0, polygon.Length, sorted );
+    public List< float > ComputePolygon( float[] polygon, bool sorted )
+    {
+        return ComputePolygon( polygon, 0, polygon.Length, sorted );
+    }
 
     /// <summary>
     ///     Returns the convex hull polygon for the given point cloud.
@@ -115,9 +121,15 @@ public class ConvexHull
         return hull;
     }
 
-    public List< int > ComputeIndices( List< float > points, bool sorted, bool yDown ) => ComputeIndices( points.ToArray(), 0, points.Count, sorted, yDown );
+    public List< int > ComputeIndices( List< float > points, bool sorted, bool yDown )
+    {
+        return ComputeIndices( points.ToArray(), 0, points.Count, sorted, yDown );
+    }
 
-    public List< int > ComputeIndices( float[] polygon, bool sorted, bool yDown ) => ComputeIndices( polygon, 0, polygon.Length, sorted, yDown );
+    public List< int > ComputeIndices( float[] polygon, bool sorted, bool yDown )
+    {
+        return ComputeIndices( polygon, 0, polygon.Length, sorted, yDown );
+    }
 
     /// <summary>
     ///     Computes a hull the same as <see cref="ComputePolygon(float[], int, int, bool)" />

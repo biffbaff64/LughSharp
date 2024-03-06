@@ -33,7 +33,6 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
 ///     public class for extracting information from a frame header.
 ///     TODO: move strings into resources.
 /// </summary>
-[PublicAPI]
 public class Header
 {
     public const int MPEG2_LSF  = 0;
@@ -403,68 +402,107 @@ public class Header
     /// <summary>
     ///     Returns version.
     /// </summary>
-    public int Version() => _version;
+    public int Version()
+    {
+        return _version;
+    }
 
     /// <summary>
     ///     Returns Layer ID.
     /// </summary>
-    public int Layer() => _layer;
+    public int Layer()
+    {
+        return _layer;
+    }
 
     /// <summary>
     ///     Returns bitrate index.
     /// </summary>
-    public int bitrate_index() => _bitrateIndex;
+    public int bitrate_index()
+    {
+        return _bitrateIndex;
+    }
 
     /// <summary>
     ///     Returns Sample Frequency.
     /// </summary>
-    public int GetSampleFrequency() => _sampleFrequency;
+    public int GetSampleFrequency()
+    {
+        return _sampleFrequency;
+    }
 
     /// <summary>
     ///     Returns Frequency.
     /// </summary>
-    public int Frequency() => Frequencies[ _version ][ _sampleFrequency ];
+    public int Frequency()
+    {
+        return Frequencies[ _version ][ _sampleFrequency ];
+    }
 
     /// <summary>
     ///     Returns Mode.
     /// </summary>
-    public int Mode() => _mode;
+    public int Mode()
+    {
+        return _mode;
+    }
 
     /// <summary>
     ///     Returns Protection bit.
     /// </summary>
-    public bool IsProtection() => _protectionBit == 0;
+    public bool IsProtection()
+    {
+        return _protectionBit == 0;
+    }
 
     /// <summary>
     ///     Returns Copyright.
     /// </summary>
-    public bool IsCopyright() => _copyright;
+    public bool IsCopyright()
+    {
+        return _copyright;
+    }
 
     /// <summary>
     ///     Returns Original.
     /// </summary>
-    public bool IsOriginal() => _original;
+    public bool IsOriginal()
+    {
+        return _original;
+    }
 
     /// <summary>
     ///     Returns Checksum flag.
     ///     Compares computed checksum with stream checksum.
     /// </summary>
-    public bool IsChecksumOk() => Checksum == _crc?.Checksum();
+    public bool IsChecksumOk()
+    {
+        return Checksum == _crc?.Checksum();
+    }
 
     /// <summary>
     ///     Returns Layer III Padding bit.
     /// </summary>
-    public bool IsPadding() => _paddingBit != 0;
+    public bool IsPadding()
+    {
+        return _paddingBit != 0;
+    }
 
     /// <summary>
     ///     Returns Slots.
     /// </summary>
-    public int Slots() => NSlots;
+    public int Slots()
+    {
+        return NSlots;
+    }
 
     /// <summary>
     ///     Returns Mode Extension.
     /// </summary>
-    public int ModeExtension() => _modeExtension;
+    public int ModeExtension()
+    {
+        return _modeExtension;
+    }
 
     /// <summary>
     ///     Calculate Frame size.
@@ -566,24 +604,33 @@ public class Header
     /// <summary>
     ///     Returns total ms.
     /// </summary>
-    public float TotalMS( int streamsize ) => MaxNumberOfFrame( streamsize ) * MsPerFrame();
+    public float TotalMS( int streamsize )
+    {
+        return MaxNumberOfFrame( streamsize ) * MsPerFrame();
+    }
 
     // functions which return header informations as strings:
     /// <summary>
     ///     Return Layer version.
     /// </summary>
-    public string? LayerAsString() => _layer switch
-                                      {
-                                          1 => "I",
-                                          2 => "II",
-                                          3 => "III",
-                                          _ => null
-                                      };
+    public string? LayerAsString()
+    {
+        return _layer switch
+               {
+                   1 => "I",
+                   2 => "II",
+                   3 => "III",
+                   _ => null
+               };
+    }
 
     /// <summary>
     ///     Returns Bitrate.
     /// </summary>
-    public string BitrateAsString() => BitrateStr[ _version ][ _layer - 1 ][ _bitrateIndex ];
+    public string BitrateAsString()
+    {
+        return BitrateStr[ _version ][ _layer - 1 ][ _bitrateIndex ];
+    }
 
     /// <summary>
     ///     Returns Frequency
@@ -666,7 +713,10 @@ public class Header
     /// <summary>
     ///     Returns the number of subbands in the current frame.
     /// </summary>
-    public int NumberSubbands() => _numberOfSubbands;
+    public int NumberSubbands()
+    {
+        return _numberOfSubbands;
+    }
 
     /// <summary>
     ///     Returns Intensity Stereo.
@@ -674,5 +724,8 @@ public class Header
     ///     Returns the number of subbands which are in stereo mode,
     ///     subbands above that limit are in intensity stereo mode.
     /// </summary>
-    public int IntensityStereoBound() => _intensityStereoBound;
+    public int IntensityStereoBound()
+    {
+        return _intensityStereoBound;
+    }
 }

@@ -208,12 +208,18 @@ public class Sprite : TextureRegion
     /// <summary>
     ///     Sets the position where the sprite will be drawn, relative to its current origin.
     /// </summary>
-    public void SetOriginBasedPosition( float x, float y ) => SetPosition( x - OriginX, y - OriginY );
+    public void SetOriginBasedPosition( float x, float y )
+    {
+        SetPosition( x - OriginX, y - OriginY );
+    }
 
     /// <summary>
     ///     Sets the position so that the sprite is centered on (x, y)
     /// </summary>
-    public void SetCenter( float x, float y ) => SetPosition( x - ( Width / 2 ), y - ( Height / 2 ) );
+    public void SetCenter( float x, float y )
+    {
+        SetPosition( x - ( Width / 2 ), y - ( Height / 2 ) );
+    }
 
     /// <summary>
     ///     Sets the x position relative to the current position where the sprite will
@@ -532,7 +538,10 @@ public class Sprite : TextureRegion
         return Vertices;
     }
 
-    public void Draw( IBatch batch ) => batch.Draw( Texture, Vertices, 0, SpriteSize );
+    public void Draw( IBatch batch )
+    {
+        batch.Draw( Texture, Vertices, 0, SpriteSize );
+    }
 
     public void Draw( IBatch batch, float alphaModulation )
     {
@@ -720,7 +729,10 @@ public class Sprite : TextureRegion
     ///         The sprite will need a texture region and bounds set before it can be drawn.
     ///     </para>
     /// </summary>
-    public Sprite() => SetColor( 1, 1, 1, 1 );
+    public Sprite()
+    {
+        SetColor( 1, 1, 1, 1 );
+    }
 
     /// <summary>
     ///     Creates a sprite with width, height, and texture region
@@ -814,7 +826,10 @@ public class Sprite : TextureRegion
     /// <summary>
     ///     Creates a sprite that is a copy in every way of the specified sprite.
     /// </summary>
-    public Sprite( Sprite sprite ) => Set( sprite );
+    public Sprite( Sprite sprite )
+    {
+        Set( sprite );
+    }
 
     #endregion
 
@@ -1042,12 +1057,18 @@ public class Sprite : TextureRegion
     /// <summary>
     ///     Sets the x position so that it is centered on the given x parameter
     /// </summary>
-    public void SetCenterX( float value ) => X = value - ( Width / 2 );
+    public void SetCenterX( float value )
+    {
+        X = value - ( Width / 2 );
+    }
 
     /// <summary>
     ///     Sets the y position so that it is centered on the given y parameter
     /// </summary>
-    public void SetCenterY( float value ) => Y = value - ( Height / 2 );
+    public void SetCenterY( float value )
+    {
+        Y = value - ( Height / 2 );
+    }
 
     #endregion
 }

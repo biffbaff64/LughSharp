@@ -152,7 +152,7 @@ public class FileTextureArrayData : ITextureArrayData
                     disposePixmap = true;
                 }
 
-                Core.Gdx.GL30.GLTexSubImage3D(
+                Gdx.GL30.GLTexSubImage3D(
                     IGL30.GL_TEXTURE_2D_ARRAY,
                     0,
                     0,
@@ -168,7 +168,7 @@ public class FileTextureArrayData : ITextureArrayData
 
                 if ( _useMipMaps )
                 {
-                    Core.Gdx.GL20.GLGenerateMipmap( IGL30.GL_TEXTURE_2D_ARRAY );
+                    Gdx.GL20.GLGenerateMipmap( IGL30.GL_TEXTURE_2D_ARRAY );
                 }
 
                 if ( disposePixmap )

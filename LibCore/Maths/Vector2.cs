@@ -55,16 +55,28 @@ public class Vector2 : IVector< Vector2 >
     ///     Constructs a vector from the given vector
     /// </summary>
     /// <param name="v">The Vector</param>
-    public Vector2( Vector2 v ) => Set( v );
+    public Vector2( Vector2 v )
+    {
+        Set( v );
+    }
 
     public float X { get; set; } // the x-component of this vector.
     public float Y { get; set; } // the y-component of this vector.
 
-    public Vector2 Cpy() => new( this );
+    public Vector2 Cpy()
+    {
+        return new Vector2( this );
+    }
 
-    public float Len() => ( float )Math.Sqrt( ( X * X ) + ( Y * Y ) );
+    public float Len()
+    {
+        return ( float )Math.Sqrt( ( X * X ) + ( Y * Y ) );
+    }
 
-    public float Len2() => ( X * X ) + ( Y * Y );
+    public float Len2()
+    {
+        return ( X * X ) + ( Y * Y );
+    }
 
     public Vector2 Set( Vector2 v )
     {
@@ -106,7 +118,10 @@ public class Vector2 : IVector< Vector2 >
         return this;
     }
 
-    public float Dot( Vector2 v ) => ( X * v.X ) + ( Y * v.Y );
+    public float Dot( Vector2 v )
+    {
+        return ( X * v.X ) + ( Y * v.Y );
+    }
 
     public Vector2 Scl( float scalar )
     {
@@ -156,7 +171,10 @@ public class Vector2 : IVector< Vector2 >
         return ( xD * xD ) + ( yD * yD );
     }
 
-    public Vector2 Limit( float limit ) => Limit2( limit * limit );
+    public Vector2 Limit( float limit )
+    {
+        return Limit2( limit * limit );
+    }
 
     public Vector2 Limit2( float limit2 )
     {
@@ -186,7 +204,10 @@ public class Vector2 : IVector< Vector2 >
         return len2 < min2 ? Scl( ( float )Math.Sqrt( min2 / len2 ) ) : this;
     }
 
-    public Vector2 SetLength( float len ) => SetLength2( len * len );
+    public Vector2 SetLength( float len )
+    {
+        return SetLength2( len * len );
+    }
 
     public Vector2 SetLength2( float len2 )
     {
@@ -204,7 +225,10 @@ public class Vector2 : IVector< Vector2 >
         return this;
     }
 
-    public Vector2 Interpolate( Vector2 target, float alpha, IInterpolation interpolation ) => Lerp( target, interpolation.Apply( alpha ) );
+    public Vector2 Interpolate( Vector2 target, float alpha, IInterpolation interpolation )
+    {
+        return Lerp( target, interpolation.Apply( alpha ) );
+    }
 
     public Vector2 SetToRandomDirection()
     {
@@ -228,33 +252,75 @@ public class Vector2 : IVector< Vector2 >
         return !( Math.Abs( other.Y - Y ) > epsilon );
     }
 
-    public bool IsUnit() => IsUnit( 0.000000001f );
+    public bool IsUnit()
+    {
+        return IsUnit( 0.000000001f );
+    }
 
-    public bool IsUnit( float margin ) => Math.Abs( Len2() - 1f ) < margin;
+    public bool IsUnit( float margin )
+    {
+        return Math.Abs( Len2() - 1f ) < margin;
+    }
 
-    public bool IsZero() => ( X == 0 ) && ( Y == 0 );
+    public bool IsZero()
+    {
+        return ( X == 0 ) && ( Y == 0 );
+    }
 
-    public bool IsZero( float margin ) => Len2() < margin;
+    public bool IsZero( float margin )
+    {
+        return Len2() < margin;
+    }
 
-    public bool IsOnLine( Vector2 other ) => MathUtils.IsZero( ( X * other.Y ) - ( Y * other.X ) );
+    public bool IsOnLine( Vector2 other )
+    {
+        return MathUtils.IsZero( ( X * other.Y ) - ( Y * other.X ) );
+    }
 
-    public bool IsOnLine( Vector2 other, float epsilon ) => MathUtils.IsZero( ( X * other.Y ) - ( Y * other.X ), epsilon );
+    public bool IsOnLine( Vector2 other, float epsilon )
+    {
+        return MathUtils.IsZero( ( X * other.Y ) - ( Y * other.X ), epsilon );
+    }
 
-    public bool IsCollinear( Vector2 other, float epsilon ) => IsOnLine( other, epsilon ) && ( Dot( other ) > 0f );
+    public bool IsCollinear( Vector2 other, float epsilon )
+    {
+        return IsOnLine( other, epsilon ) && ( Dot( other ) > 0f );
+    }
 
-    public bool IsCollinear( Vector2 other ) => IsOnLine( other ) && ( Dot( other ) > 0f );
+    public bool IsCollinear( Vector2 other )
+    {
+        return IsOnLine( other ) && ( Dot( other ) > 0f );
+    }
 
-    public bool IsCollinearOpposite( Vector2 other, float epsilon ) => IsOnLine( other, epsilon ) && ( Dot( other ) < 0f );
+    public bool IsCollinearOpposite( Vector2 other, float epsilon )
+    {
+        return IsOnLine( other, epsilon ) && ( Dot( other ) < 0f );
+    }
 
-    public bool IsCollinearOpposite( Vector2 other ) => IsOnLine( other ) && ( Dot( other ) < 0f );
+    public bool IsCollinearOpposite( Vector2 other )
+    {
+        return IsOnLine( other ) && ( Dot( other ) < 0f );
+    }
 
-    public bool IsPerpendicular( Vector2 vector ) => MathUtils.IsZero( Dot( vector ) );
+    public bool IsPerpendicular( Vector2 vector )
+    {
+        return MathUtils.IsZero( Dot( vector ) );
+    }
 
-    public bool IsPerpendicular( Vector2 vector, float epsilon ) => MathUtils.IsZero( Dot( vector ), epsilon );
+    public bool IsPerpendicular( Vector2 vector, float epsilon )
+    {
+        return MathUtils.IsZero( Dot( vector ), epsilon );
+    }
 
-    public bool HasSameDirection( Vector2 vector ) => Dot( vector ) > 0;
+    public bool HasSameDirection( Vector2 vector )
+    {
+        return Dot( vector ) > 0;
+    }
 
-    public bool HasOppositeDirection( Vector2 vector ) => Dot( vector ) < 0;
+    public bool HasOppositeDirection( Vector2 vector )
+    {
+        return Dot( vector ) < 0;
+    }
 
     public Vector2 SetZero()
     {
@@ -264,9 +330,15 @@ public class Vector2 : IVector< Vector2 >
         return this;
     }
 
-    public static float Len( float x, float y ) => ( float )Math.Sqrt( ( x * x ) + ( y * y ) );
+    public static float Len( float x, float y )
+    {
+        return ( float )Math.Sqrt( ( x * x ) + ( y * y ) );
+    }
 
-    public static float Len2( float x, float y ) => ( x * x ) + ( y * y );
+    public static float Len2( float x, float y )
+    {
+        return ( x * x ) + ( y * y );
+    }
 
     /// <summary>
     ///     Sets the components of this vector
@@ -310,9 +382,15 @@ public class Vector2 : IVector< Vector2 >
         return this;
     }
 
-    public static float Dot( float x1, float y1, float x2, float y2 ) => ( x1 * x2 ) + ( y1 * y2 );
+    public static float Dot( float x1, float y1, float x2, float y2 )
+    {
+        return ( x1 * x2 ) + ( y1 * y2 );
+    }
 
-    public float Dot( float ox, float oy ) => ( X * ox ) + ( Y * oy );
+    public float Dot( float ox, float oy )
+    {
+        return ( X * ox ) + ( Y * oy );
+    }
 
     public Vector2 Scl( float x, float y )
     {
@@ -354,7 +432,10 @@ public class Vector2 : IVector< Vector2 >
         return ( xD * xD ) + ( yD * yD );
     }
 
-    public override string ToString() => "(" + X + "," + Y + ")";
+    public override string ToString()
+    {
+        return "(" + X + "," + Y + ")";
+    }
 
     public Vector2 Fromstring( string v )
     {
@@ -390,9 +471,15 @@ public class Vector2 : IVector< Vector2 >
         return this;
     }
 
-    public float Crs( Vector2 v ) => ( X * v.Y ) - ( Y * v.X );
+    public float Crs( Vector2 v )
+    {
+        return ( X * v.Y ) - ( Y * v.X );
+    }
 
-    public float Crs( float x, float y ) => ( X * y ) - ( Y * x );
+    public float Crs( float x, float y )
+    {
+        return ( X * y ) - ( Y * x );
+    }
 
     public float Angle()
     {
@@ -406,7 +493,10 @@ public class Vector2 : IVector< Vector2 >
         return angle;
     }
 
-    public float Angle( Vector2 reference ) => ( float )Math.Atan2( Crs( reference ), Dot( reference ) ) * MathUtils.RADIANS_TO_DEGREES;
+    public float Angle( Vector2 reference )
+    {
+        return ( float )Math.Atan2( Crs( reference ), Dot( reference ) ) * MathUtils.RADIANS_TO_DEGREES;
+    }
 
     public float AngleDeg()
     {
@@ -432,13 +522,25 @@ public class Vector2 : IVector< Vector2 >
         return angle;
     }
 
-    public float AngleRad() => ( float )Math.Atan2( Y, X );
+    public float AngleRad()
+    {
+        return ( float )Math.Atan2( Y, X );
+    }
 
-    public float AngleRad( Vector2 reference ) => ( float )Math.Atan2( reference.Crs( this ), reference.Dot( this ) );
+    public float AngleRad( Vector2 reference )
+    {
+        return ( float )Math.Atan2( reference.Crs( this ), reference.Dot( this ) );
+    }
 
-    public Vector2 SetAngle( float degrees ) => SetAngleRad( degrees * MathUtils.DEGREES_TO_RADIANS );
+    public Vector2 SetAngle( float degrees )
+    {
+        return SetAngleRad( degrees * MathUtils.DEGREES_TO_RADIANS );
+    }
 
-    public Vector2 SetAngleDeg( float degrees ) => SetAngleRad( degrees * MathUtils.DEGREES_TO_RADIANS );
+    public Vector2 SetAngleDeg( float degrees )
+    {
+        return SetAngleRad( degrees * MathUtils.DEGREES_TO_RADIANS );
+    }
 
     public Vector2 SetAngleRad( float radians )
     {
@@ -448,11 +550,20 @@ public class Vector2 : IVector< Vector2 >
         return this;
     }
 
-    public Vector2 Rotate( float degrees ) => RotateRad( degrees * MathUtils.DEGREES_TO_RADIANS );
+    public Vector2 Rotate( float degrees )
+    {
+        return RotateRad( degrees * MathUtils.DEGREES_TO_RADIANS );
+    }
 
-    public Vector2 RotateAround( Vector2 reference, float degrees ) => Sub( reference ).RotateDeg( degrees ).Add( reference );
+    public Vector2 RotateAround( Vector2 reference, float degrees )
+    {
+        return Sub( reference ).RotateDeg( degrees ).Add( reference );
+    }
 
-    public Vector2 RotateDeg( float degrees ) => RotateRad( degrees * MathUtils.DEGREES_TO_RADIANS );
+    public Vector2 RotateDeg( float degrees )
+    {
+        return RotateRad( degrees * MathUtils.DEGREES_TO_RADIANS );
+    }
 
     public Vector2 RotateRad( float radians )
     {
@@ -468,9 +579,15 @@ public class Vector2 : IVector< Vector2 >
         return this;
     }
 
-    public Vector2 RotateAroundDeg( Vector2 reference, float degrees ) => Sub( reference ).RotateDeg( degrees ).Add( reference );
+    public Vector2 RotateAroundDeg( Vector2 reference, float degrees )
+    {
+        return Sub( reference ).RotateDeg( degrees ).Add( reference );
+    }
 
-    public Vector2 RotateAroundRad( Vector2 reference, float radians ) => Sub( reference ).RotateRad( radians ).Add( reference );
+    public Vector2 RotateAroundRad( Vector2 reference, float radians )
+    {
+        return Sub( reference ).RotateRad( radians ).Add( reference );
+    }
 
     public Vector2 Rotate90( int dir )
     {
@@ -537,5 +654,8 @@ public class Vector2 : IVector< Vector2 >
         return !( Math.Abs( y - Y ) > epsilon );
     }
 
-    public bool EpsilonEquals( float x, float y ) => EpsilonEquals( x, y, MathUtils.FLOAT_ROUNDING_ERROR );
+    public bool EpsilonEquals( float x, float y )
+    {
+        return EpsilonEquals( x, y, MathUtils.FLOAT_ROUNDING_ERROR );
+    }
 }

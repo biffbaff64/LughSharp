@@ -110,7 +110,10 @@ public class CircularByteBuffer
         }
     }
 
-    public CircularByteBuffer Copy() => new( this );
+    public CircularByteBuffer Copy()
+    {
+        return new CircularByteBuffer( this );
+    }
 
     public void Reset()
     {
@@ -226,7 +229,7 @@ public class CircularByteBuffer
         return outByte;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         var ret = "";

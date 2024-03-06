@@ -135,7 +135,10 @@ public class TiledDrawable : TextureRegionDrawable
                                float height,
                                float scaleX,
                                float scaleY,
-                               float rotation ) => throw new NotSupportedException();
+                               float rotation )
+    {
+        throw new NotSupportedException();
+    }
 
     public override TiledDrawable Tint( Color tint )
     {

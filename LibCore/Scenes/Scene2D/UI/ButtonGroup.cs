@@ -42,7 +42,10 @@ public class ButtonGroup<T> where T : Button
     private int  _minCheckCount;
     private bool _uncheckLast = true;
 
-    public ButtonGroup() => _minCheckCount = 1;
+    public ButtonGroup()
+    {
+        _minCheckCount = 1;
+    }
 
     public ButtonGroup( params T[] buttons )
     {
@@ -206,7 +209,10 @@ public class ButtonGroup<T> where T : Button
     }
 
     /// <returns> The first checked button, or null. </returns>
-    public T? GetChecked() => _checkedButtons.Count > 0 ? _checkedButtons[ 0 ] : null;
+    public T? GetChecked()
+    {
+        return _checkedButtons.Count > 0 ? _checkedButtons[ 0 ] : null;
+    }
 
     /// <returns> The first checked button index, or -1. </returns>
     public int GetCheckedIndex()
@@ -219,14 +225,23 @@ public class ButtonGroup<T> where T : Button
         return -1;
     }
 
-    public List< T > GetAllChecked() => _checkedButtons;
+    public List< T > GetAllChecked()
+    {
+        return _checkedButtons;
+    }
 
-    public List< T > GetButtons() => _buttons;
+    public List< T > GetButtons()
+    {
+        return _buttons;
+    }
 
     /// <summary>
     ///     Sets the minimum number of buttons that must be checked. Default is 1.
     /// </summary>
-    public void SetMinCheckCount( int minCheckCount ) => _minCheckCount = minCheckCount;
+    public void SetMinCheckCount( int minCheckCount )
+    {
+        _minCheckCount = minCheckCount;
+    }
 
     /// <summary>
     ///     Sets the maximum number of buttons that can be checked.
@@ -249,5 +264,8 @@ public class ButtonGroup<T> where T : Button
     ///     additional buttons beyond the maximum are not allowed to be
     ///     checked. Default is true.
     /// </summary>
-    public void SetUncheckLast( bool uncheckLast ) => _uncheckLast = uncheckLast;
+    public void SetUncheckLast( bool uncheckLast )
+    {
+        _uncheckLast = uncheckLast;
+    }
 }

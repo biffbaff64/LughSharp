@@ -34,7 +34,10 @@ public class Polyline : IShape2D
     private float    _scaledLength;
     private float[]? _worldVertices;
 
-    public Polyline() => LocalVertices = Array.Empty< float >();
+    public Polyline()
+    {
+        LocalVertices = Array.Empty< float >();
+    }
 
     public Polyline( float[] vertices )
     {
@@ -66,9 +69,15 @@ public class Polyline : IShape2D
 
     public float ScaleY { get; private set; } = 1;
 
-    public bool Contains( Vector2 point ) => false;
+    public bool Contains( Vector2 point )
+    {
+        return false;
+    }
 
-    public bool Contains( float x, float y ) => false;
+    public bool Contains( float x, float y )
+    {
+        return false;
+    }
 
     /// <summary>
     ///     Returns vertices scaled, rotated, and offset by the polygon position.
@@ -229,9 +238,20 @@ public class Polyline : IShape2D
         _calculateScaledLength =  true;
     }
 
-    public void SetCalculateLength()       => _calculateLength = true;
-    public void SetCalculateScaledLength() => _calculateScaledLength = true;
-    public void SetDirty()                 => _dirty = true;
+    public void SetCalculateLength()
+    {
+        _calculateLength = true;
+    }
+
+    public void SetCalculateScaledLength()
+    {
+        _calculateScaledLength = true;
+    }
+
+    public void SetDirty()
+    {
+        _dirty = true;
+    }
 
     public void Translate( float x, float y )
     {

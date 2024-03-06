@@ -107,7 +107,10 @@ public class TiledMapTileLayer : MapLayer
         /// <summary>
         ///     return The tile currently assigned to this cell.
         /// </summary>
-        public ITiledMapTile? GetTile() => _tile;
+        public ITiledMapTile? GetTile()
+        {
+            return _tile;
+        }
 
         /// <summary>
         ///     Sets the tile to be used for this cell.
@@ -124,7 +127,10 @@ public class TiledMapTileLayer : MapLayer
         /// <summary>
         ///     Returns whether the tile should be flipped horizontally.
         /// </summary>
-        public bool GetFlipHorizontally() => _flipHorizontally;
+        public bool GetFlipHorizontally()
+        {
+            return _flipHorizontally;
+        }
 
         /// <summary>
         ///     Sets whether to flip the tile horizontally.
@@ -141,7 +147,10 @@ public class TiledMapTileLayer : MapLayer
         /// <summary>
         ///     Returns whether the tile should be flipped vertically.
         /// </summary>
-        public bool GetFlipVertically() => _flipVertically;
+        public bool GetFlipVertically()
+        {
+            return _flipVertically;
+        }
 
         /// <summary>
         ///     Sets whether to flip the tile vertically.
@@ -158,7 +167,10 @@ public class TiledMapTileLayer : MapLayer
         /// <summary>
         ///     Returns the rotation of this cell, in 90 degree increments.
         /// </summary>
-        public int GetRotation() => _rotation;
+        public int GetRotation()
+        {
+            return _rotation;
+        }
 
         /// <summary>
         ///     Sets the rotation of this cell, in 90 degree increments.

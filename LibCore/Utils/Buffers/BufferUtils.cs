@@ -29,11 +29,10 @@ namespace LibGDXSharp.LibCore.Utils.Buffers;
 ///     Class with static helper methods to increase the speed of array/direct
 ///     buffer and direct buffer/direct buffer transfers
 /// </summary>
-[PublicAPI]
 public static class BufferUtils
 {
-    private static List< ByteBuffer > _unsafeBuffers   = new();
-    private static int                _allocatedUnsafe = 0;
+    private readonly static List< ByteBuffer > _unsafeBuffers   = new();
+    private static          int                _allocatedUnsafe = 0;
 
     public static FloatBuffer NewFloatBuffer( int numFloats )
     {
@@ -91,13 +90,25 @@ public static class BufferUtils
         return buffer.AsLongBuffer();
     }
 
-    public static byte Compare( byte x, byte y ) => ( byte )( x - y );
+    public static byte Compare( byte x, byte y )
+    {
+        return ( byte )( x - y );
+    }
 
-    public static char Compare( char x, char y ) => ( char )( x - y );
+    public static char Compare( char x, char y )
+    {
+        return ( char )( x - y );
+    }
 
-    public static int Compare( int x, int y ) => x - y;
+    public static int Compare( int x, int y )
+    {
+        return x - y;
+    }
 
-    public static float Compare( float x, float y ) => x - y;
+    public static float Compare( float x, float y )
+    {
+        return x - y;
+    }
 
     /// <summary>
     ///     Copies the contents of src to dst, starting from the current position of src,
@@ -173,7 +184,7 @@ public static class BufferUtils
                    ShortBuffer or CharBuffer  => dst.Position << 1,
                    IntBuffer or FloatBuffer   => dst.Position << 2,
                    LongBuffer or DoubleBuffer => dst.Position << 3,
-                   _                          => throw new GdxRuntimeException
+                   _ => throw new GdxRuntimeException
                        ( $"Can't get position for {dst.GetType().Name} instance" )
                };
     }
@@ -192,7 +203,7 @@ public static class BufferUtils
                    ShortBuffer or CharBuffer  => bytes >>> 1,
                    IntBuffer or FloatBuffer   => bytes >>> 2,
                    LongBuffer or DoubleBuffer => bytes >>> 3,
-                   _                          => throw new GdxRuntimeException
+                   _ => throw new GdxRuntimeException
                        ( $"Can't copy to a {dst.GetType().Name} instance" )
                };
     }
@@ -211,7 +222,7 @@ public static class BufferUtils
                    ShortBuffer or CharBuffer  => elements << 1,
                    IntBuffer or FloatBuffer   => elements << 2,
                    LongBuffer or DoubleBuffer => elements << 3,
-                   _                          => throw new GdxRuntimeException
+                   _ => throw new GdxRuntimeException
                        ( $"Can't copy to a {dst.GetType().Name} instance" )
                };
     }
@@ -223,7 +234,7 @@ public static class BufferUtils
     public static void DisposeUnsafeByteBuffer( ByteBuffer buffer )
     {
         var size = buffer.Capacity;
-        
+
         lock ( _unsafeBuffers )
         {
             if ( !_unsafeBuffers.Remove( buffer ) )
@@ -231,7 +242,7 @@ public static class BufferUtils
                 throw new ArgumentException( "buffer not allocated with newUnsafeByteBuffer or already disposed" );
             }
         }
-        
+
         _allocatedUnsafe -= size;
 
 //        buffer = null!;

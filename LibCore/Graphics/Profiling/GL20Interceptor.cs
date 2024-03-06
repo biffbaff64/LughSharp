@@ -29,11 +29,13 @@ using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.LibCore.Graphics.Profiling;
 
-[PublicAPI]
 public class GL20Interceptor : BaseGLInterceptor
 {
     public GL20Interceptor( GLProfiler glProfiler, IGL20 gl20 )
-        : base( glProfiler ) => GL20 = gl20;
+        : base( glProfiler )
+    {
+        GL20 = gl20;
+    }
 
     public IGL20 GL20 { get; set; }
 
@@ -367,14 +369,14 @@ public class GL20Interceptor : BaseGLInterceptor
     }
 
     public override void GLTexSubImage2D( int target,
-                                                 int level,
-                                                 int xoffset,
-                                                 int yoffset,
-                                                 int width,
-                                                 int height,
-                                                 int format,
-                                                 int type,
-                                                 Buffer pixels )
+                                          int level,
+                                          int xoffset,
+                                          int yoffset,
+                                          int width,
+                                          int height,
+                                          int format,
+                                          int type,
+                                          Buffer pixels )
     {
         Calls++;
         GL20.GLTexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, pixels );

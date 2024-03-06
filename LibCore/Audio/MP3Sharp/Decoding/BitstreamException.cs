@@ -51,7 +51,10 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
 public class BitstreamException : Mp3SharpException
 {
     public BitstreamException( string message, Exception? inner = null )
-        : base( message, inner ) => ErrorCode = BitstreamErrors.UNKNOWN_ERROR;
+        : base( message, inner )
+    {
+        ErrorCode = BitstreamErrors.UNKNOWN_ERROR;
+    }
 
     public BitstreamException( int errorcode, Exception? inner = null )
         : this( GetErrorString( errorcode ), inner )
@@ -61,7 +64,10 @@ public class BitstreamException : Mp3SharpException
     }
 
     protected BitstreamException( SerializationInfo info, StreamingContext context )
-        : base( info, context ) => ErrorCode = info.GetInt32( "ErrorCode" );
+        : base( info, context )
+    {
+        ErrorCode = info.GetInt32( "ErrorCode" );
+    }
 
     public int ErrorCode { get; set; }
 
@@ -73,5 +79,8 @@ public class BitstreamException : Mp3SharpException
         base.GetObjectData( info, context );
     }
 
-    public static string GetErrorString( int errorcode ) => $"Bitstream errorcode {Convert.ToString( errorcode, 16 )}";
+    public static string GetErrorString( int errorcode )
+    {
+        return $"Bitstream errorcode {Convert.ToString( errorcode, 16 )}";
+    }
 }

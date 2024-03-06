@@ -25,11 +25,9 @@
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
-using Trace = LibGDXSharp.LibCore.Utils.Trace;
 
 namespace LibGDXSharp.LibCore.Graphics.GLUtils;
 
-[PublicAPI]
 public class VertexBufferObject : IVertexData
 {
     private FloatBuffer _buffer;
@@ -62,7 +60,7 @@ public class VertexBufferObject : IVertexData
         _buffer    = default( FloatBuffer? )!;
         Attributes = default( VertexAttributes )!;
 
-        _bufferHandle = Core.Gdx.GL20.GLGenBuffer();
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
 
         ByteBuffer data = BufferUtils.NewByteBuffer( attributes.VertexSize * numVertices );
 
@@ -77,7 +75,7 @@ public class VertexBufferObject : IVertexData
         _buffer    = default( FloatBuffer? )!;
         Attributes = default( VertexAttributes )!;
 
-        _bufferHandle = Core.Gdx.GL20.GLGenBuffer();
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
 
         SetBuffer( data, ownsBuffer, attributes );
         Usage = usage;
@@ -166,7 +164,7 @@ public class VertexBufferObject : IVertexData
     {
         if ( _byteBuffer == null )
         {
-            Trace.Err( message: "_byteBuffer is NULL!" );
+            Logger.Err( message: "_byteBuffer is NULL!" );
 
             return;
         }
@@ -192,7 +190,7 @@ public class VertexBufferObject : IVertexData
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        IGL20 gl = Core.Gdx.GL20;
+        IGL20 gl = Gdx.GL20;
 
         gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
 
@@ -243,7 +241,7 @@ public class VertexBufferObject : IVertexData
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Unbind( ShaderProgram shader, int[]? locations = null )
     {
-        IGL20 gl            = Core.Gdx.GL20;
+        IGL20 gl            = Gdx.GL20;
         var   numAttributes = Attributes.Size;
 
         if ( locations == null )
@@ -275,7 +273,7 @@ public class VertexBufferObject : IVertexData
     /// </summary>
     public void Invalidate()
     {
-        _bufferHandle = Core.Gdx.GL20.GLGenBuffer();
+        _bufferHandle = Gdx.GL20.GLGenBuffer();
         _isDirty      = true;
     }
 
@@ -285,7 +283,7 @@ public class VertexBufferObject : IVertexData
     /// </summary>
     public void Dispose()
     {
-        IGL20 gl = Core.Gdx.GL20;
+        IGL20 gl = Gdx.GL20;
 
         gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
         gl.GLDeleteBuffer( _bufferHandle );
@@ -340,7 +338,7 @@ public class VertexBufferObject : IVertexData
     {
         if ( _isBound )
         {
-            Core.Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer!.Limit, _byteBuffer, Usage );
+            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer!.Limit, _byteBuffer, Usage );
             _isDirty = false;
         }
     }

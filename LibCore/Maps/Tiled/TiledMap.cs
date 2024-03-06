@@ -62,5 +62,8 @@ public class TiledMap : Map, IDisposable
     ///     Allows an object to try to free resources and perform other cleanup
     ///     operations before it is reclaimed by garbage collection.
     /// </summary>
-    ~TiledMap() => Dispose( true );
+    ~TiledMap()
+    {
+        Dispose( true );
+    }
 }

@@ -81,7 +81,10 @@ public class Animation<T>
     /// </param>
     /// <param name="playMode"></param>
     public Animation( float frameDuration, List< T > keyFrames, AnimMode playMode )
-        : this( frameDuration, keyFrames ) => PlayMode = playMode;
+        : this( frameDuration, keyFrames )
+    {
+        PlayMode = playMode;
+    }
 
     /// <summary>
     ///     Constructor, storing the frame duration and key frames.
@@ -231,7 +234,10 @@ public class Animation<T>
     ///     The keyframes[] field. This array is an object[] if the animation
     ///     was instantiated with an Array that was not type-aware.
     /// </returns>
-    public T[] GetKeyFrames() => _keyFrames;
+    public T[] GetKeyFrames()
+    {
+        return _keyFrames;
+    }
 
     protected void SetKeyFrames( T[] keyFrames )
     {
@@ -265,11 +271,17 @@ public class Animation<T>
     /// <summary>
     ///     the duration of a frame in seconds.
     /// </summary>
-    public float FrameDuration() => _frameDuration;
+    public float FrameDuration()
+    {
+        return _frameDuration;
+    }
 
     /// <summary>
     ///     the duration of the entire animation, (number of frames x frame duration),
     ///     in seconds.
     /// </summary>
-    public float GetAnimationDuration() => _animationDuration;
+    public float GetAnimationDuration()
+    {
+        return _animationDuration;
+    }
 }

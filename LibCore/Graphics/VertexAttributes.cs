@@ -129,7 +129,10 @@ public class VertexAttributes
     ///     Returns the offset for the first VertexAttribute with the specified usage.
     /// </summary>
     /// <param name="usage"> The usage of the VertexAttribute.  </param>
-    public int GetOffset( int usage ) => GetOffset( usage, 0 );
+    public int GetOffset( int usage )
+    {
+        return GetOffset( usage, 0 );
+    }
 
     /// <summary>
     ///     Returns the first VertexAttribute for the given usage.
@@ -167,7 +170,10 @@ public class VertexAttributes
     ///     Gets the VertexAttribute at the given index.
     /// </summary>
     /// <param name="index"> the index </param>
-    public VertexAttribute Get( int index ) => _attributes[ index ];
+    public VertexAttribute Get( int index )
+    {
+        return _attributes[ index ];
+    }
 
     public override string ToString()
     {

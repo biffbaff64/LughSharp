@@ -27,7 +27,6 @@ using Exception = System.Exception;
 
 namespace LibGDXSharp.LibCore.Graphics.G2D;
 
-[PublicAPI]
 public partial record TextureAtlasData
 {
     internal readonly static bool[] HasIndexes = { false };
@@ -279,7 +278,10 @@ public partial record TextureAtlasData
     /// <param name="packFile"></param>
     /// <param name="imagesDir"></param>
     /// <param name="flip"></param>
-    public TextureAtlasData( FileInfo packFile, DirectoryInfo? imagesDir, bool flip ) => Load( packFile, imagesDir, flip );
+    public TextureAtlasData( FileInfo packFile, DirectoryInfo? imagesDir, bool flip )
+    {
+        Load( packFile, imagesDir, flip );
+    }
 
     #endregion
 

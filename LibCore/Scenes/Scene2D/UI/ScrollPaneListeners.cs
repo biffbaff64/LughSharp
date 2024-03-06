@@ -33,7 +33,10 @@ public partial class ScrollPane
     {
         private readonly ScrollPane? _parent;
 
-        public ScrollPaneScrollListener( ScrollPane parent ) => _parent = parent;
+        public ScrollPaneScrollListener( ScrollPane parent )
+        {
+            _parent = parent;
+        }
 
         /// <inheritdoc />
         public override bool Scrolled( InputEvent? inputEvent, float x, float y, float scrollAmountX, float scrollAmountY )
@@ -76,7 +79,10 @@ public partial class ScrollPane
         private readonly ScrollPane? _parent;
         private          float       _handlePosition;
 
-        public ScrollPaneCaptureListener( ScrollPane parent ) => _parent = parent;
+        public ScrollPaneCaptureListener( ScrollPane parent )
+        {
+            _parent = parent;
+        }
 
         /// <inheritdoc />
         public override bool TouchDown( InputEvent? inputEvent, float x, float y, int pointer, int button )
@@ -240,7 +246,10 @@ public partial class ScrollPane
     {
         private readonly ScrollPane? _parent;
 
-        public ScrollPaneGestureListener( ScrollPane parent ) => _parent = parent;
+        public ScrollPaneGestureListener( ScrollPane parent )
+        {
+            _parent = parent;
+        }
 
         /// <inheritdoc />
         public override void Pan( InputEvent inputEvent, float x, float y, float deltaX, float deltaY )

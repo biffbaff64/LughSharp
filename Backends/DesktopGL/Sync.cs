@@ -117,7 +117,10 @@ public class Sync
         }
     }
 
-    private long GetTime() => DateTime.UtcNow.Ticks * 100;
+    private long GetTime()
+    {
+        return DateTime.UtcNow.Ticks * 100;
+    }
 
     private sealed class RunningAvg
     {

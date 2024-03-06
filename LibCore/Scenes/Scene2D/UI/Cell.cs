@@ -149,7 +149,10 @@ public class Cell : IPoolable
         return this;
     }
 
-    public bool HasActor() => Actor != null;
+    public bool HasActor()
+    {
+        return Actor != null;
+    }
 
     /// <summary>
     ///     Sets the MinWidth, PrefWidth, MaxWidth, MinHeight, PrefHeight,
@@ -1115,23 +1118,90 @@ public class Cell : IPoolable
         ActorHeight = height;
     }
 
-    public float GetMinWidth()    => MinWidth!.Get( Actor );
-    public float GetMinHeight()   => MinHeight!.Get( Actor );
-    public float GetPrefWidth()   => PrefWidth!.Get( Actor );
-    public float GetPrefHeight()  => PrefHeight!.Get( Actor );
-    public float GetMaxWidth()    => MaxWidth!.Get( Actor );
-    public float GetMaxHeight()   => MaxHeight!.Get( Actor );
-    public float GetSpaceTop()    => SpaceTop!.Get( Actor );
-    public float GetSpaceLeft()   => SpaceLeft!.Get( Actor );
-    public float GetSpaceBottom() => SpaceBottom!.Get( Actor );
-    public float GetSpaceRight()  => SpaceRight!.Get( Actor );
-    public float GetPadTop()      => PadTop!.Get( Actor );
-    public float GetPadLeft()     => PadLeft!.Get( Actor );
-    public float GetPadBottom()   => PadBottom!.Get( Actor );
-    public float GetPadRight()    => PadRight!.Get( Actor );
-    public float GetPadX()        => PadLeft!.Get( Actor ) + PadRight!.Get( Actor );
-    public float GetPadY()        => PadTop!.Get( Actor ) + PadBottom!.Get( Actor );
-    public void  AddRow()         => Table!.AddRow();
+    public float GetMinWidth()
+    {
+        return MinWidth!.Get( Actor );
+    }
+
+    public float GetMinHeight()
+    {
+        return MinHeight!.Get( Actor );
+    }
+
+    public float GetPrefWidth()
+    {
+        return PrefWidth!.Get( Actor );
+    }
+
+    public float GetPrefHeight()
+    {
+        return PrefHeight!.Get( Actor );
+    }
+
+    public float GetMaxWidth()
+    {
+        return MaxWidth!.Get( Actor );
+    }
+
+    public float GetMaxHeight()
+    {
+        return MaxHeight!.Get( Actor );
+    }
+
+    public float GetSpaceTop()
+    {
+        return SpaceTop!.Get( Actor );
+    }
+
+    public float GetSpaceLeft()
+    {
+        return SpaceLeft!.Get( Actor );
+    }
+
+    public float GetSpaceBottom()
+    {
+        return SpaceBottom!.Get( Actor );
+    }
+
+    public float GetSpaceRight()
+    {
+        return SpaceRight!.Get( Actor );
+    }
+
+    public float GetPadTop()
+    {
+        return PadTop!.Get( Actor );
+    }
+
+    public float GetPadLeft()
+    {
+        return PadLeft!.Get( Actor );
+    }
+
+    public float GetPadBottom()
+    {
+        return PadBottom!.Get( Actor );
+    }
+
+    public float GetPadRight()
+    {
+        return PadRight!.Get( Actor );
+    }
+
+    public float GetPadX()
+    {
+        return PadLeft!.Get( Actor ) + PadRight!.Get( Actor );
+    }
+
+    public float GetPadY()
+    {
+        return PadTop!.Get( Actor ) + PadBottom!.Get( Actor );
+    }
+
+    public void AddRow()
+    {
+        Table!.AddRow();
+    }
 
     /// <summary>
     ///     Sets all constraint fields to null. */
@@ -1306,7 +1376,10 @@ public class Cell : IPoolable
         //@formatter:on
     }
 
-    public override string? ToString() => Actor != null ? Actor.ToString() : base.ToString();
+    public override string? ToString()
+    {
+        return Actor != null ? Actor.ToString() : base.ToString();
+    }
 
     /// <summary>
     ///     Returns the defaults to use for all cells. This can be used to avoid
@@ -1314,9 +1387,9 @@ public class Cell : IPoolable
     /// </summary>
     public Cell? GetCellDefaults()
     {
-        if ( ( _files == null ) || ( _files != Core.Gdx.Files ) )
+        if ( ( _files == null ) || ( _files != Gdx.Files ) )
         {
-            _files = Core.Gdx.Files;
+            _files = Gdx.Files;
 
             _defaults = new Cell
             {

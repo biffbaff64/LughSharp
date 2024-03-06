@@ -111,7 +111,10 @@ public class FileTextureData : ITextureData
     ///     whether the caller of <see cref="ITextureData.ConsumePixmap" /> should dispose the
     ///     Pixmap returned by <see cref="ITextureData.ConsumePixmap" />
     /// </returns>
-    public bool DisposePixmap() => true;
+    public bool DisposePixmap()
+    {
+        return true;
+    }
 
     /// <summary>
     ///     Uploads the pixel data to the OpenGL ES texture. The caller must bind an
@@ -122,8 +125,11 @@ public class FileTextureData : ITextureData
     ///         disposed of here.
     ///     </para>
     /// </summary>
-    public void ConsumeCustomData( int target ) => throw new GdxRuntimeException
-        ( "This TextureData implementation does not upload data itself" );
+    public void ConsumeCustomData( int target )
+    {
+        throw new GdxRuntimeException
+            ( "This TextureData implementation does not upload data itself" );
+    }
 
     /// <returns> the width of the pixel data </returns>
     public int Width { get; set; }
@@ -138,10 +144,16 @@ public class FileTextureData : ITextureData
     public bool UseMipMaps { get; set; }
 
     /// <returns> the <see cref="Pixmap.Format" /> of the pixel data </returns>
-    public Pixmap.Format GetFormat() => Pixmap.Format.Alpha;
+    public Pixmap.Format GetFormat()
+    {
+        return Pixmap.Format.Alpha;
+    }
 
     /// <returns> whether this implementation can cope with a EGL context loss. </returns>
-    public bool IsManaged() => true;
+    public bool IsManaged()
+    {
+        return true;
+    }
 
     /// <returns> the <see cref="ITextureData.TextureDataType" /></returns>
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Pixmap;

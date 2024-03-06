@@ -36,7 +36,6 @@ namespace LibGDXSharp.LibCore.Utils;
 ///     These methods can be used to get the entire screen content or a
 ///     portion thereof.
 /// </summary>
-[PublicAPI]
 public class ScreenUtils
 {
     /// <summary>
@@ -56,13 +55,13 @@ public class ScreenUtils
     {
         get
         {
-            if ( Core.Gdx.Graphics == null )
+            if ( Gdx.Graphics == null )
             {
                 throw new NullReferenceException();
             }
 
-            var w = Core.Gdx.Graphics.BackBufferWidth;
-            var h = Core.Gdx.Graphics.BackBufferHeight;
+            var w = Gdx.Graphics.BackBufferWidth;
+            var h = Gdx.Graphics.BackBufferHeight;
 
             return GetFrameBufferTexture( 0, 0, w, h );
         }
@@ -72,14 +71,20 @@ public class ScreenUtils
     ///     Clears the color buffers with the specified Color.
     /// </summary>
     /// <param name="color">Color to clear the color buffers with.</param>
-    public static void Clear( Color color ) => Clear( color.R, color.G, color.B, color.A );
+    public static void Clear( Color color )
+    {
+        Clear( color.R, color.G, color.B, color.A );
+    }
 
     /// <summary>
     ///     Clears the color buffers and optionally the depth buffer.
     /// </summary>
     /// <param name="color">Color to clear the color buffers with.</param>
     /// <param name="clearDepth">Clears the depth buffer if true.</param>
-    public static void Clear( Color color, bool clearDepth ) => Clear( color.R, color.G, color.B, color.A, clearDepth );
+    public static void Clear( Color color, bool clearDepth )
+    {
+        Clear( color.R, color.G, color.B, color.A, clearDepth );
+    }
 
     /// <summary>
     ///     Clears the color buffers and optionally the depth buffer.
@@ -91,7 +96,7 @@ public class ScreenUtils
     /// <param name="b"></param>
     public static void Clear( float r, float g, float b, float a, bool clearDepth = false )
     {
-        Core.Gdx.GL.GLClearColor( r, g, b, a );
+        Gdx.GL.GLClearColor( r, g, b, a );
 
         var mask = IGL20.GL_COLOR_BUFFER_BIT;
 
@@ -100,7 +105,7 @@ public class ScreenUtils
             mask |= IGL20.GL_DEPTH_BUFFER_BIT;
         }
 
-        Core.Gdx.GL.GLClear( mask );
+        Gdx.GL.GLClear( mask );
     }
 
     /// <summary>
@@ -144,7 +149,10 @@ public class ScreenUtils
     }
 
     [Obsolete( "use <see cref=\"Pixmap.CreateFromFrameBuffer(int, int, int, int)\"/> instead." )]
-    public static Pixmap GetFrameBufferPixmap( int x, int y, int w, int h ) => Pixmap.CreateFromFrameBuffer( x, y, w, h );
+    public static Pixmap GetFrameBufferPixmap( int x, int y, int w, int h )
+    {
+        return Pixmap.CreateFromFrameBuffer( x, y, w, h );
+    }
 
     /// <summary>
     ///     Returns the current framebuffer contents as a byte[] array with a length equal
@@ -156,13 +164,13 @@ public class ScreenUtils
     /// <param name="flipY"> whether to flip pixels along Y axis</param>
     public static byte[] GetFrameBufferPixels( bool flipY )
     {
-        if ( Core.Gdx.Graphics == null )
+        if ( Gdx.Graphics == null )
         {
             throw new NullReferenceException();
         }
 
-        var w = Core.Gdx.Graphics.BackBufferWidth;
-        var h = Core.Gdx.Graphics.BackBufferHeight;
+        var w = Gdx.Graphics.BackBufferWidth;
+        var h = Gdx.Graphics.BackBufferHeight;
 
         return GetFrameBufferPixels( 0, 0, w, h, flipY );
     }
@@ -188,11 +196,11 @@ public class ScreenUtils
     {
         var numBytes = w * h * 4;
 
-        Core.Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
+        Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
 
         ByteBuffer pixels = BufferUtils.NewByteBuffer( numBytes );
 
-        Core.Gdx.GL.GLReadPixels( x, y, w, h, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixels );
+        Gdx.GL.GLReadPixels( x, y, w, h, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixels );
 
         var lines = new byte[ numBytes ];
 

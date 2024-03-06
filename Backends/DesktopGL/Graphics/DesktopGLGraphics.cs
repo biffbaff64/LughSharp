@@ -32,12 +32,8 @@ namespace LibGDXSharp.Backends.DesktopGL.Graphics;
 
 using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 
-[PublicAPI]
 public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
-    public DesktopGLWindow?       GLWindow               { get; set; }
-    public BufferFormatDescriptor BufferFormatDescriptor { get; set; } = null!;
-
     // ------------------------------------------------------------------------
 
     private readonly IntBuffer                       _tmpBuffer                   = BufferUtils.NewIntBuffer( 1 );
@@ -63,7 +59,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public DesktopGLGraphics( DesktopGLWindow glWindow )
     {
-        this.GLWindow = glWindow;
+        GLWindow = glWindow;
 
         if ( glWindow.Config.UseGL30 )
         {
@@ -79,14 +75,17 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         UpdateFramebufferInfo();
         InitiateGL();
 
-        Glfw.SetWindowSizeCallback( this.GLWindow.GlfwWindow, ResizeCallback );
+        Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
     }
 
-    public new int Width => this.GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+    public DesktopGLWindow?       GLWindow               { get; set; }
+    public BufferFormatDescriptor BufferFormatDescriptor { get; set; } = null!;
+
+    public new int Width => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
         ? BackBufferWidth
         : LogicalWidth;
 
-    public new int Height => this.GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+    public new int Height => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
         ? BackBufferHeight
         : LogicalHeight;
 
@@ -181,8 +180,11 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <summary>
     ///     Returns whether cubemap seamless feature is supported.
     /// </summary>
-    public bool SupportsCubeMapSeamless() => GLVersion.IsVersionEqualToOrHigher( 3, 2 )
-                                          || SupportsExtension( "GL_ARB_seamless_cube_map" );
+    public bool SupportsCubeMapSeamless()
+    {
+        return GLVersion.IsVersionEqualToOrHigher( 3, 2 )
+            || SupportsExtension( "GL_ARB_seamless_cube_map" );
+    }
 
     /// <summary>
     ///     Enable or disable cubemap seamless feature. Default is true if supported.
@@ -209,7 +211,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    public override bool SupportsDisplayModeChange() => true;
+    public override bool SupportsDisplayModeChange()
+    {
+        return true;
+    }
 
     // ------------------------------------------------------------------------
 
@@ -257,7 +262,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
 
     /// <inheritdoc />
-    public override bool SetWindowedMode( int width, int height ) => false;
+    public override bool SetWindowedMode( int width, int height )
+    {
+        return false;
+    }
 
     public override void SetTitle( string title )
     {
@@ -300,9 +308,15 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         GLWindow.Config.ForegroundFPS = fps;
     }
 
-    public override bool SupportsExtension( string extension ) => Glfw.ExtensionSupported( extension );
+    public override bool SupportsExtension( string extension )
+    {
+        return Glfw.ExtensionSupported( extension );
+    }
 
-    public override void RequestRendering() => GLWindow?.RequestRendering();
+    public override void RequestRendering()
+    {
+        GLWindow?.RequestRendering();
+    }
 
     /// <summary>
     ///     Whether the app is full screen or not.
@@ -320,7 +334,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <param name="xHotspot"></param>
     /// <param name="yHotspot"></param>
     /// <returns></returns>
-    public override ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot ) => new DesktopGLCursor( GLWindow!, pixmap, xHotspot, yHotspot );
+    public override ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot )
+    {
+        return new DesktopGLCursor( GLWindow!, pixmap, xHotspot, yHotspot );
+    }
 
     /// <summary>
     ///     Browsers that support cursor:url() and support the png format (the pixmap
@@ -359,17 +376,43 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// </summary>
     /// 3r
     /// <returns>TRUE if available.</returns>
-    public override bool IsGL30Available() => GL30 != null;
+    public override bool IsGL30Available()
+    {
+        return GL30 != null;
+    }
 
     // ------------------------------------------------------------------------
     //TODO:
 
-    public override int  GetSafeInsetLeft()   => 0;
-    public override int  GetSafeInsetTop()    => 0;
-    public override int  GetSafeInsetBottom() => 0;
-    public override int  GetSafeInsetRight()  => 0;
-    public override long GetFrameId()         => _frameId;
-    public override int  GetFramesPerSecond() => _fps;
+    public override int GetSafeInsetLeft()
+    {
+        return 0;
+    }
+
+    public override int GetSafeInsetTop()
+    {
+        return 0;
+    }
+
+    public override int GetSafeInsetBottom()
+    {
+        return 0;
+    }
+
+    public override int GetSafeInsetRight()
+    {
+        return 0;
+    }
+
+    public override long GetFrameId()
+    {
+        return _frameId;
+    }
+
+    public override int GetFramesPerSecond()
+    {
+        return _fps;
+    }
 
     // ------------------------------------------------------------------------
 
@@ -390,18 +433,28 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
 
     /// <inheritdoc />
-    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes() => DesktopGLApplicationConfiguration.GetDisplayModes();
+    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes()
+    {
+        return DesktopGLApplicationConfiguration.GetDisplayModes();
+    }
 
     /// <inheritdoc />
     public override IGraphics.DisplayModeDescriptor[] GetDisplayModes( IGraphics.MonitorDescriptor monitor )
-        => DesktopGLApplicationConfiguration.GetDisplayModes( monitor.MonitorHandle );
+    {
+        return DesktopGLApplicationConfiguration.GetDisplayModes( monitor.MonitorHandle );
+    }
 
     /// <inheritdoc />
-    public override IGraphics.DisplayModeDescriptor GetDisplayMode() => DesktopGLApplicationConfiguration.GetDisplayMode( GetMonitor().MonitorHandle );
+    public override IGraphics.DisplayModeDescriptor GetDisplayMode()
+    {
+        return DesktopGLApplicationConfiguration.GetDisplayMode( GetMonitor().MonitorHandle );
+    }
 
     /// <inheritdoc />
     public override IGraphics.DisplayModeDescriptor GetDisplayMode( IGraphics.MonitorDescriptor monitor )
-        => DesktopGLApplicationConfiguration.GetDisplayMode( monitor.MonitorHandle );
+    {
+        return DesktopGLApplicationConfiguration.GetDisplayMode( monitor.MonitorHandle );
+    }
 
     // ------------------------------------------------------------------------
 
@@ -461,11 +514,20 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    public override GLVersion.GLType GetGraphicsType() => GLVersion.GLType.GL20;
+    public override GLVersion.GLType GetGraphicsType()
+    {
+        return GLVersion.GLType.GL20;
+    }
 
-    public override float GetPpiX() => GetPpcXY().X * 2.54f;
+    public override float GetPpiX()
+    {
+        return GetPpcXY().X * 2.54f;
+    }
 
-    public override float GetPpiY() => GetPpcXY().Y * 2.54f;
+    public override float GetPpiY()
+    {
+        return GetPpcXY().Y * 2.54f;
+    }
 
     public override (float X, float Y) GetPpcXY()
     {
@@ -475,8 +537,15 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
                  ( GetDisplayMode().Height / ( float )sizeY ) * 10 );
     }
 
-    public override float GetPpcX() => GetPpcXY().X;
-    public override float GetPpcY() => GetPpcXY().Y;
+    public override float GetPpcX()
+    {
+        return GetPpcXY().X;
+    }
+
+    public override float GetPpcY()
+    {
+        return GetPpcXY().Y;
+    }
 
     // ------------------------------------------------------------------------
 
@@ -507,7 +576,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
                                      int height,
                                      int refreshRate,
                                      int bitsPerPixel )
-            : base( width, height, refreshRate, bitsPerPixel ) => MonitorHandle = monitor;
+            : base( width, height, refreshRate, bitsPerPixel )
+        {
+            MonitorHandle = monitor;
+        }
 
         public GLFWMonitor MonitorHandle { get; set; }
     }
@@ -521,7 +593,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
                                  int virtualX,
                                  int virtualY,
                                  string name )
-            : base( virtualX, virtualY, name ) => MonitorHandle = monitor;
+            : base( virtualX, virtualY, name )
+        {
+            MonitorHandle = monitor;
+        }
 
         public GLFWMonitor MonitorHandle { get; private set; }
     }

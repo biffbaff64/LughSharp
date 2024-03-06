@@ -77,7 +77,10 @@ public class Slider : ProgressBar
     /// <param name="vertical"></param>
     /// <param name="style"> the <see cref="SliderStyle" /> </param>
     public Slider( float min, float max, float stepSize, bool vertical, SliderStyle style )
-        : base( min, max, stepSize, vertical, style ) => AddListener( new SliderInputListener( this ) );
+        : base( min, max, stepSize, vertical, style )
+    {
+        AddListener( new SliderInputListener( this ) );
+    }
 
     public bool MouseOver { get; set; }
 
@@ -93,7 +96,10 @@ public class Slider : ProgressBar
     /// </summary>
     public Interpolator VisualInterpolationInverse { get; set; } = Interpolation.linear;
 
-    public SliderStyle GetStyle() => ( SliderStyle )Style;
+    public SliderStyle GetStyle()
+    {
+        return ( SliderStyle )Style;
+    }
 
     protected IDrawable? GetBackgroundDrawable()
     {
@@ -218,8 +224,8 @@ public class Slider : ProgressBar
 
         var oldValue = value;
 
-        if ( !Core.Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_LEFT )
-          && !Core.Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_RIGHT ) )
+        if ( !Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_LEFT )
+          && !Gdx.Input.IsKeyPressed( IInput.Keys.SHIFT_RIGHT ) )
         {
             value = GetSnapped( value );
         }
@@ -275,12 +281,18 @@ public class Slider : ProgressBar
     /// <summary>
     ///     Returns true if the slider is being dragged.
     /// </summary>
-    public bool IsDragging() => _draggingPointer != -1;
+    public bool IsDragging()
+    {
+        return _draggingPointer != -1;
+    }
 
     /// <summary>
     ///     Sets the value using the specified visual percent.
     /// </summary>
-    public void SetVisualPercent( float percent ) => Value = MinValue + ( ( MaxValue - MinValue ) * VisualInterpolationInverse.Apply( percent ) );
+    public void SetVisualPercent( float percent )
+    {
+        Value = MinValue + ( ( MaxValue - MinValue ) * VisualInterpolationInverse.Apply( percent ) );
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -328,7 +340,10 @@ public class Slider : ProgressBar
     {
         private readonly Slider _parent;
 
-        public SliderInputListener( Slider parent ) => _parent = parent;
+        public SliderInputListener( Slider parent )
+        {
+            _parent = parent;
+        }
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
@@ -372,7 +387,10 @@ public class Slider : ProgressBar
             }
         }
 
-        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer ) => _parent.CalculatePositionAndValue( x, y );
+        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
+        {
+            _parent.CalculatePositionAndValue( x, y );
+        }
 
         public override void Enter( InputEvent? ev, float x, float y, int pointer, Actor? from )
         {

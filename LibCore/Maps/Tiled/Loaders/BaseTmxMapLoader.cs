@@ -40,22 +40,21 @@ using LibGDXSharp.LibCore.Maths;
 
 namespace LibGDXSharp.LibCore.Maps.Tiled.Loaders;
 
-[PublicAPI]
 public abstract class BaseTmxMapLoader<TP>
     : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.BaseTmxLoaderParameters
 {
-    public int      MapTileWidth      { get; set; }
-    public int      MapTileHeight     { get; set; }
-    public int      MapWidthInPixels  { get; set; }
-    public int      MapHeightInPixels { get; set; }
-    public TiledMap Map               { get; set; } = null!;
-
     // ------------------------------------------------------------------------
 
-    protected const uint FLAG_FLIP_HORIZONTALLY = 0x80000000;
-    protected const uint FLAG_FLIP_VERTICALLY   = 0x40000000;
-    protected const uint FLAG_FLIP_DIAGONALLY   = 0x20000000;
-    protected const uint MASK_CLEAR             = 0xE0000000;
+    protected const uint         FLAG_FLIP_HORIZONTALLY = 0x80000000;
+    protected const uint         FLAG_FLIP_VERTICALLY   = 0x40000000;
+    protected const uint         FLAG_FLIP_DIAGONALLY   = 0x20000000;
+    protected const uint         MASK_CLEAR             = 0xE0000000;
+    private         XmlNodeList? _groupList;
+    private         XmlNodeList? _imageLayerList;
+
+    private XmlNodeList? _mapLayersList;
+    private XmlNodeList? _objectGroupList;
+    private XmlNodeList? _tilesetList;
 
     // ------------------------------------------------------------------------
 
@@ -65,12 +64,6 @@ public abstract class BaseTmxMapLoader<TP>
     protected XmlDocument xmlDocument = new();
     protected XmlNode?    xmlRootNode;
 
-    private XmlNodeList? _mapLayersList;
-    private XmlNodeList? _tilesetList;
-    private XmlNodeList? _imageLayerList;
-    private XmlNodeList? _objectGroupList;
-    private XmlNodeList? _groupList;
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -78,6 +71,12 @@ public abstract class BaseTmxMapLoader<TP>
         : base( resolver )
     {
     }
+
+    public int      MapTileWidth      { get; set; }
+    public int      MapTileHeight     { get; set; }
+    public int      MapWidthInPixels  { get; set; }
+    public int      MapHeightInPixels { get; set; }
+    public TiledMap Map               { get; set; } = null!;
 
     /// <summary>
     ///     Loads the map data, given the XML root element.
@@ -110,11 +109,11 @@ public abstract class BaseTmxMapLoader<TP>
             throw new GdxRuntimeException( "Tmx Map has no attributes!" );
         }
 
-        this._tilesetList     = xmlRootNode.SelectNodes( "tileset" );
-        this._mapLayersList   = xmlRootNode.SelectNodes( "layer" );
-        this._imageLayerList  = xmlRootNode.SelectNodes( "imagelayer" );
-        this._objectGroupList = xmlRootNode.SelectNodes( "objectgroup" );
-        this._groupList       = xmlRootNode.SelectNodes( "group" );
+        _tilesetList     = xmlRootNode.SelectNodes( "tileset" );
+        _mapLayersList   = xmlRootNode.SelectNodes( "layer" );
+        _imageLayerList  = xmlRootNode.SelectNodes( "imagelayer" );
+        _objectGroupList = xmlRootNode.SelectNodes( "objectgroup" );
+        _groupList       = xmlRootNode.SelectNodes( "group" );
 
         // ----------------------------
 
@@ -271,7 +270,9 @@ public abstract class BaseTmxMapLoader<TP>
     /// <returns></returns>
     public virtual List< AssetDescriptor >? GetDependencyAssetDescriptors( FileInfo tmxFile,
                                                                            TextureLoader.TextureLoaderParameters textureLoaderParameters )
-        => default( List< AssetDescriptor >? );
+    {
+        return default( List< AssetDescriptor >? );
+    }
 
 
     // ------------------------------------------------------------------------
@@ -449,14 +450,14 @@ public abstract class BaseTmxMapLoader<TP>
     }
 
     /// <summary>
-    /// From the official Tiled website:
-    /// "Image layers provide a way to quickly include a single image as foreground
-    /// or background of your map. They currently have limited functionality and you
-    /// may consider adding the image as a Tileset instead and place it as a Tile
-    /// Object. This way, you gain the ability to freely scale and rotate the image."
-    /// See https://doc.mapeditor.org/en/stable/manual/layers/
+    ///     From the official Tiled website:
+    ///     "Image layers provide a way to quickly include a single image as foreground
+    ///     or background of your map. They currently have limited functionality and you
+    ///     may consider adding the image as a Tileset instead and place it as a Tile
+    ///     Object. This way, you gain the ability to freely scale and rotate the image."
+    ///     See https://doc.mapeditor.org/en/stable/manual/layers/
     /// </summary>
-    /// <param name="map"> The parent <see cref="TiledMap"/>. </param>
+    /// <param name="map"> The parent <see cref="TiledMap" />. </param>
     /// <param name="parentLayers"> The actual layer group belonging to the map. </param>
     /// <param name="node"> The xml node being processed. </param>
     /// <param name="tmxFile"> The parent TMX map file. </param>
@@ -474,13 +475,13 @@ public abstract class BaseTmxMapLoader<TP>
 
         if ( node.Name.Equals( "imagelayer" ) )
         {
-            var x = float.Parse( ( node.SelectSingleNode( "offsetx" )?.Value
-                                ?? node.SelectSingleNode( "x" )?.Value
-                                ?? "0" ) );
+            var x = float.Parse( node.SelectSingleNode( "offsetx" )?.Value
+                              ?? node.SelectSingleNode( "x" )?.Value
+                              ?? "0" );
 
-            var y = float.Parse( ( node.SelectSingleNode( "offsety" )?.Value
-                                ?? node.SelectSingleNode( "y" )?.Value
-                                ?? "0" ) );
+            var y = float.Parse( node.SelectSingleNode( "offsety" )?.Value
+                              ?? node.SelectSingleNode( "y" )?.Value
+                              ?? "0" );
 
             if ( flipY )
             {
@@ -542,14 +543,20 @@ public abstract class BaseTmxMapLoader<TP>
     /// <param name="map"></param>
     /// <param name="layer"></param>
     /// <param name="node"></param>
-    protected void LoadObject( TiledMap map, MapLayer layer, XmlNode node ) => LoadObject( map, layer.Objects, node, MapHeightInPixels );
+    protected void LoadObject( TiledMap map, MapLayer layer, XmlNode node )
+    {
+        LoadObject( map, layer.Objects, node, MapHeightInPixels );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="map"></param>
     /// <param name="tile"></param>
     /// <param name="node"></param>
-    protected void LoadObject( TiledMap map, ITiledMapTile tile, XmlNode node ) => LoadObject( map, tile.GetObjects(), node, tile.TextureRegion.RegionHeight );
+    protected void LoadObject( TiledMap map, ITiledMapTile tile, XmlNode node )
+    {
+        LoadObject( map, tile.GetObjects(), node, tile.TextureRegion.RegionHeight );
+    }
 
     /// <summary>
     /// </summary>
@@ -575,7 +582,7 @@ public abstract class BaseTmxMapLoader<TP>
             var x = ( NumberUtils.ParseFloat( node.Attributes?[ "x" ]?.Value ) * scaleX ) ?? 0;
 
             var parsedY = NumberUtils.ParseFloat( node.Attributes?[ "y" ]?.Value ) ?? 0;
-            var y       = ( flipY ? ( heightInPixels - parsedY ) : parsedY ) * scaleY;
+            var y       = ( flipY ? heightInPixels - parsedY : parsedY ) * scaleY;
 
             var width  = ( NumberUtils.ParseFloat( node.Attributes?[ "width" ]?.Value ) * scaleX ) ?? 0;
             var height = ( NumberUtils.ParseFloat( node.Attributes?[ "height" ]?.Value ) * scaleY ) ?? 0;
@@ -977,14 +984,14 @@ public abstract class BaseTmxMapLoader<TP>
     }
 
     /// <summary>
-    /// Loads a Tileset as described in <paramref name="tilesetNode"/>.
-    /// The Node is laid ouit as follows:-
-    /// <code>
+    ///     Loads a Tileset as described in <paramref name="tilesetNode" />.
+    ///     The Node is laid ouit as follows:-
+    ///     <code>
     /// &lt;tileset firstgid="x" source="filename.tsx"/&gt;
     /// </code>
-    /// where 'x' is the id of the first tile in the tileset.
-    /// The width and height dimensions of the image used for the tiles are held in the TSX file, as are
-    /// the tile width/height, number of columns in the tile image, and total tile count.
+    ///     where 'x' is the id of the first tile in the tileset.
+    ///     The width and height dimensions of the image used for the tiles are held in the TSX file, as are
+    ///     the tile width/height, number of columns in the tile image, and total tile count.
     /// </summary>
     /// <param name="tilesetNode"> The node referencing the TSX tileset file. </param>
     /// <param name="tmxFile"> The current TMX file being processed. </param>
@@ -1273,7 +1280,7 @@ public abstract class BaseTmxMapLoader<TP>
     }
 
     /// <summary>
-    /// Add a standard, non-animating, static tile to the map.
+    ///     Add a standard, non-animating, static tile to the map.
     /// </summary>
     /// <param name="tileSet"></param>
     /// <param name="textureRegion"> The tile image </param>
@@ -1301,7 +1308,7 @@ public abstract class BaseTmxMapLoader<TP>
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    [PublicAPI]
+
     public class BaseTmxLoaderParameters : AssetLoaderParameters
     {
         // generate mipmaps?
@@ -1332,24 +1339,6 @@ public abstract class BaseTmxMapLoader<TP>
 
 internal class MapData
 {
-    internal string? MapVersion         { get; set; }
-    internal string? TiledVersion       { get; set; }
-    internal string? MapOrientation     { get; set; }
-    internal string? RenderOrder        { get; set; }
-    internal string? NextLayerID        { get; set; }
-    internal string? NextObjectID       { get; set; }
-    internal string? HexSideLength      { get; set; }
-    internal string? StaggerAxis        { get; set; }
-    internal string? StaggerIndex       { get; set; }
-    internal string? MapBackgroundColor { get; set; }
-
-    internal int MapWidth   { get; set; }
-    internal int MapHeight  { get; set; }
-    internal int TileWidth  { get; set; }
-    internal int TileHeight { get; set; }
-
-    internal bool IsInfinite { get; set; }
-
     internal MapData( XmlNode? node )
     {
         if ( node == null )
@@ -1375,4 +1364,22 @@ internal class MapData
         IsInfinite         = node.Attributes?[ "infinite" ]?.Value == "1";
         //@formatter:on
     }
+
+    internal string? MapVersion         { get; set; }
+    internal string? TiledVersion       { get; set; }
+    internal string? MapOrientation     { get; set; }
+    internal string? RenderOrder        { get; set; }
+    internal string? NextLayerID        { get; set; }
+    internal string? NextObjectID       { get; set; }
+    internal string? HexSideLength      { get; set; }
+    internal string? StaggerAxis        { get; set; }
+    internal string? StaggerIndex       { get; set; }
+    internal string? MapBackgroundColor { get; set; }
+
+    internal int MapWidth   { get; set; }
+    internal int MapHeight  { get; set; }
+    internal int TileWidth  { get; set; }
+    internal int TileHeight { get; set; }
+
+    internal bool IsInfinite { get; set; }
 }

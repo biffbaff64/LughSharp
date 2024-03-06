@@ -27,7 +27,6 @@ using System.Text;
 
 namespace LibGDXSharp.LibCore.Utils;
 
-[PublicAPI]
 public class PerformanceCounters
 {
     private const float NANO2_SECONDS = 1f / 1000000000.0f;

@@ -71,7 +71,10 @@ public class RepeatAction : DelegateAction
     /// <summary>
     ///     Causes the action to not repeat again.
     /// </summary>
-    public void Finish() => Finished = true;
+    public void Finish()
+    {
+        Finished = true;
+    }
 
     public new void Restart()
     {

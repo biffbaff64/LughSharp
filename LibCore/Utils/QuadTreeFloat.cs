@@ -30,7 +30,6 @@ namespace LibGDXSharp.LibCore.Utils;
 /// <summary>
 ///     A quad tree that stores a float for each point.
 /// </summary>
-[PublicAPI]
 public class QuadTreeFloat : IPoolable
 {
     public const int VALUE   = 0;
@@ -228,7 +227,10 @@ public class QuadTreeFloat : IPoolable
     ///     Returns a new length for <see cref="Values" /> when it is not enough to
     ///     hold all the entries after <see cref="MaxDepth" /> has been reached.
     /// </summary>
-    protected int GrowValues() => Count + ( 10 * 3 );
+    protected int GrowValues()
+    {
+        return Count + ( 10 * 3 );
+    }
 
     /// <summary>
     /// </summary>
@@ -239,15 +241,18 @@ public class QuadTreeFloat : IPoolable
     ///     For each entry found within the radius, if any, the value, x, y, and
     ///     square of the distance to the entry are added to this array.
     /// </param>
-    public void Query( float centerX, float centerY, float radius, List< float > results ) => Query(
-        centerX,
-        centerY,
-        radius * radius,
-        centerX - radius,
-        centerY - radius,
-        radius * 2,
-        results
-        );
+    public void Query( float centerX, float centerY, float radius, List< float > results )
+    {
+        Query(
+            centerX,
+            centerY,
+            radius * radius,
+            centerX - radius,
+            centerY - radius,
+            radius * 2,
+            results
+            );
+    }
 
     private void Query( float centerX,
                         float centerY,
@@ -415,5 +420,8 @@ public class QuadTreeFloat : IPoolable
         }
     }
 
-    public static QuadTreeFloat GetNewObject() => new();
+    public static QuadTreeFloat GetNewObject()
+    {
+        return new QuadTreeFloat();
+    }
 }

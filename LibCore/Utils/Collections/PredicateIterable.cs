@@ -30,14 +30,12 @@ namespace LibGDXSharp.LibCore.Utils.Collections;
 /// <summary>
 /// </summary>
 /// <typeparam name="T"></typeparam>
-[PublicAPI]
 public class PredicateIterable<T> : IEnumerable< T >
 {
     /// <summary>
     /// </summary>
     /// <param name="enumerable"></param>
     /// <param name="predicate"></param>
-    [PublicAPI]
     public PredicateIterable( IEnumerable< T > enumerable, IPredicate< T > predicate )
     {
         Enumerable = enumerable;
@@ -51,18 +49,23 @@ public class PredicateIterable<T> : IEnumerable< T >
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public IEnumerator< T > GetEnumerator() => Enumerable.GetEnumerator();
+    public IEnumerator< T > GetEnumerator()
+    {
+        return Enumerable.GetEnumerator();
+    }
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="enumerable"></param>
     /// <param name="predicate"></param>
-    [PublicAPI]
     public void Set( IEnumerable< T > enumerable, IPredicate< T > predicate )
     {
         Enumerable = enumerable;

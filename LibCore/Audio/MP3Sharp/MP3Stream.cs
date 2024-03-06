@@ -92,7 +92,6 @@ public class Mp3Stream : Stream
     /// <summary>
     ///     Gets the chunk size.
     /// </summary>
-    [PublicAPI( "May be used externally" )]
     public static int ChunkSize => BACK_STREAM_BYTE_COUNT_REP;
 
     /// <summary>
@@ -161,29 +160,40 @@ public class Mp3Stream : Stream
     /// <summary>
     ///     Clears all buffers for this stream and causes any buffered data to be written to the underlying device.
     /// </summary>
-    public override void Flush() => _sourceStream.Flush();
+    public override void Flush()
+    {
+        _sourceStream.Flush();
+    }
 
     /// <summary>
     ///     Sets the position of the source stream.
     /// </summary>
-    public override long Seek( long offset, SeekOrigin origin ) => _sourceStream.Seek( offset, origin );
+    public override long Seek( long offset, SeekOrigin origin )
+    {
+        return _sourceStream.Seek( offset, origin );
+    }
 
     /// <summary>
     ///     This method is not valid for an Mp3Stream.
     /// </summary>
-    public override void SetLength( long value ) => throw new InvalidOperationException();
+    public override void SetLength( long value )
+    {
+        throw new InvalidOperationException();
+    }
 
     /// <summary>
     ///     This method is not valid for an Mp3Stream.
     /// </summary>
-    public override void Write( byte[] buffer, int offset, int count ) => throw new InvalidOperationException();
+    public override void Write( byte[] buffer, int offset, int count )
+    {
+        throw new InvalidOperationException();
+    }
 
     /// <summary>
     ///     Decodes the requested number of frames from the MP3 stream and caches their PCM-encoded bytes.
     ///     These can subsequently be obtained using the Read method.
     ///     Returns the number of frames that were successfully decoded.
     /// </summary>
-    [PublicAPI( "May be used externally" )]
     public int DecodeFrames( int frameCount )
     {
         var framesDecoded = 0;
@@ -248,7 +258,12 @@ public class Mp3Stream : Stream
     ///     Closes the source stream and releases any associated resources.
     ///     If you don't call this, you may be leaking file descriptors.
     /// </summary>
-    public override void Close() => _bitStream.Close(); // This should close SourceStream as well.
+    public override void Close()
+    {
+        _bitStream.Close();
+
+        // This should close SourceStream as well.
+    }
 
     /// <summary>
     ///     Reads a frame from the MP3 stream.  Returns whether the operation was successful.  If it wasn't,

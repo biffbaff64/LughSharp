@@ -79,7 +79,10 @@ public class VertexArray : IVertexData
     ///     after* the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.</returns>
-    public FloatBuffer GetBuffer( bool forWriting ) => _buffer;
+    public FloatBuffer GetBuffer( bool forWriting )
+    {
+        return _buffer;
+    }
 
     /// <summary>
     ///     Sets the vertices of this VertexData, discarding the old vertex data. The
@@ -250,5 +253,8 @@ public class VertexArray : IVertexData
     ///     Performs application-defined tasks associated with freeing, releasing,
     ///     or resetting unmanaged resources.
     /// </summary>
-    public void Dispose() => BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+    public void Dispose()
+    {
+        BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+    }
 }

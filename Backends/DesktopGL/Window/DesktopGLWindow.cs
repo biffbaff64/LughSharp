@@ -31,17 +31,8 @@ using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.Backends.DesktopGL.Window;
 
-[PublicAPI]
 public class DesktopGLWindow : IDisposable
 {
-    public GLFWWindow?                       GlfwWindow          { get; set; }
-    public IDesktopGLWindowListener?         WindowListener      { get; set; }
-    public IApplicationListener              Listener            { get; set; }
-    public IDesktopGLInput                   Input               { get; set; } = null!;
-    public DesktopGLGraphics                 Graphics            { get; set; } = null!;
-    public DesktopGLApplicationConfiguration Config              { get; set; }
-    public bool                              ListenerInitialised { get; set; } = false;
-
     // ------------------------------------------------------------------------
 
     private readonly IDesktopGLApplicationBase _application;
@@ -64,10 +55,23 @@ public class DesktopGLWindow : IDisposable
         _application   = application;
     }
 
+    public GLFWWindow?                       GlfwWindow          { get; set; }
+    public IDesktopGLWindowListener?         WindowListener      { get; set; }
+    public IApplicationListener              Listener            { get; set; }
+    public IDesktopGLInput                   Input               { get; set; } = null!;
+    public DesktopGLGraphics                 Graphics            { get; set; } = null!;
+    public DesktopGLApplicationConfiguration Config              { get; set; }
+    public bool                              ListenerInitialised { get; set; } = false;
+
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
     /// <summary>
     ///     Creates a new Window and sets up the various related callbacks.
     /// </summary>
-    public void Create( GLFW.Window window )
+    public void Create( GLFWWindow window )
     {
         GlfwWindow = window;
         Input      = _application.CreateInput( this );
@@ -150,7 +154,10 @@ public class DesktopGLWindow : IDisposable
         return shouldRender;
     }
 
-    public void SetTitle( string title ) => GLFW.SetWindowTitle( GlfwWindow, title );
+    public void SetTitle( string title )
+    {
+        GLFW.SetWindowTitle( GlfwWindow, title );
+    }
 
     /// <summary>
     ///     Sets minimum and maximum size limits for the window. If the window
@@ -160,7 +167,7 @@ public class DesktopGLWindow : IDisposable
     public void SetSizeLimits( int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
         GdxRuntimeException.ThrowIfNull( GlfwWindow );
-        
+
         SetSizeLimits( GlfwWindow, minWidth, minHeight, maxWidth, maxHeight );
     }
 
@@ -170,7 +177,9 @@ public class DesktopGLWindow : IDisposable
     ///     to indicate an unrestricted dimension.
     /// </summary>
     public void SetSizeLimits( GLFWWindow windowHandle, int minWidth, int minHeight, int maxWidth, int maxHeight )
-        => GLFW.SetWindowSizeLimits( windowHandle, minWidth, minHeight, maxWidth, maxHeight );
+    {
+        GLFW.SetWindowSizeLimits( windowHandle, minWidth, minHeight, maxWidth, maxHeight );
+    }
 
     /// <summary>
     ///     Sets the icon that will be used in the window's title bar. Has no effect in macOS,
@@ -292,9 +301,15 @@ public class DesktopGLWindow : IDisposable
         }
     }
 
-    public bool ShouldClose() => false;
+    public bool ShouldClose()
+    {
+        return false;
+    }
 
-    public void SetPosition( int x, int y ) => GLFW.SetWindowPos( GlfwWindow, x, y );
+    public void SetPosition( int x, int y )
+    {
+        GLFW.SetWindowPos( GlfwWindow, x, y );
+    }
 
     /// <summary>
     ///     Gets the current window position in logical coordinates. All monitors span a
@@ -314,14 +329,20 @@ public class DesktopGLWindow : IDisposable
     ///     surface together. The coordinates are relative to the first monitor in the
     ///     virtual surface.
     /// </summary>
-    public int GetPositionX() => ( int )GetPosition().X;
+    public int GetPositionX()
+    {
+        return ( int )GetPosition().X;
+    }
 
     /// <summary>
     ///     Return the window Y position in logical coordinates. All monitors span a virtual
     ///     surface together. The coordinates are relative to the first monitor in the
     ///     virtual surface.
     /// </summary>
-    public int GetPositionY() => ( int )GetPosition().Y;
+    public int GetPositionY()
+    {
+        return ( int )GetPosition().Y;
+    }
 
     /// <summary>
     ///     Sets the visibility of the window.
@@ -342,30 +363,45 @@ public class DesktopGLWindow : IDisposable
     /// <summary>
     ///     Closes this window and pauses and disposes the associated <see cref="IApplicationListener" />.
     /// </summary>
-    public void CloseWindow() => Glfw.SetWindowShouldClose( GlfwWindow, true );
+    public void CloseWindow()
+    {
+        Glfw.SetWindowShouldClose( GlfwWindow, true );
+    }
 
     /// <summary>
     ///     Minimizes (iconifies) the window. Iconified windows do not call
     ///     their <see cref="IApplicationListener" /> until the window is restored.
     /// </summary>
-    public void IconifyWindow() => Glfw.IconifyWindow( GlfwWindow );
+    public void IconifyWindow()
+    {
+        Glfw.IconifyWindow( GlfwWindow );
+    }
 
     /// <summary>
     ///     De-minimizes (de-iconifies) and de-maximizes the window.
     /// </summary>
-    public void RestoreWindow() => Glfw.RestoreWindow( GlfwWindow );
+    public void RestoreWindow()
+    {
+        Glfw.RestoreWindow( GlfwWindow );
+    }
 
     /// <summary>
     ///     Maximizes the window.
     /// </summary>
-    public void MaximizeWindow() => Glfw.MaximizeWindow( GlfwWindow );
+    public void MaximizeWindow()
+    {
+        Glfw.MaximizeWindow( GlfwWindow );
+    }
 
     /// <summary>
     ///     Brings the window to front and sets input focus. The window should
     ///     already be visible and not iconified.
     /// </summary>
-    public void FocusWindow() => Glfw.FocusWindow( GlfwWindow );
-    
+    public void FocusWindow()
+    {
+        Glfw.FocusWindow( GlfwWindow );
+    }
+
     // ------------------------------------------------------------------------
 
     public void Dispose( bool disposing )
@@ -384,10 +420,5 @@ public class DesktopGLWindow : IDisposable
             GLFW.SetDropCallback( GlfwWindow, null );
             GLFW.DestroyWindow( GlfwWindow );
         }
-    }
-
-    public void Dispose()
-    {
-        Dispose( true );
     }
 }

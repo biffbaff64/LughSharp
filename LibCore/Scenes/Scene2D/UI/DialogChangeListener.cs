@@ -31,7 +31,10 @@ public class DialogChangeListener : ChangeListener
 {
     private readonly Dialog _dialog;
 
-    public DialogChangeListener( Dialog d ) => _dialog = d;
+    public DialogChangeListener( Dialog d )
+    {
+        _dialog = d;
+    }
 
     /// <inheritdoc cref="ChangeListener.Changed" />
     public override void Changed( ChangeEvent ev, Actor? actor )

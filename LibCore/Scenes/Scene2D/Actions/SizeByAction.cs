@@ -30,7 +30,10 @@ public class SizeByAction : RelativeTemporalAction
     public float AmountWidth  { get; set; }
     public float AmountHeight { get; set; }
 
-    protected override void UpdateRelative( float percentDelta ) => Target?.SizeBy( AmountWidth * percentDelta, AmountHeight * percentDelta );
+    protected override void UpdateRelative( float percentDelta )
+    {
+        Target?.SizeBy( AmountWidth * percentDelta, AmountHeight * percentDelta );
+    }
 
     public void SetAmount( float width, float height )
     {

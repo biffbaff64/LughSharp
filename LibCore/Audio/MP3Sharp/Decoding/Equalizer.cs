@@ -32,7 +32,6 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
 ///     At -1.0, the input signal is attenuated by 6dB, at +1.0 the signal is
 ///     amplified by 6dB.
 /// </summary>
-[PublicAPI]
 public class Equalizer
 {
     private const int BANDS = 32;
@@ -54,9 +53,15 @@ public class Equalizer
     {
     }
 
-    public Equalizer( float[] settings ) => FromFloatArray = settings;
+    public Equalizer( float[] settings )
+    {
+        FromFloatArray = settings;
+    }
 
-    public Equalizer( EQFunction eq ) => FromEQFunction = eq;
+    public Equalizer( EQFunction eq )
+    {
+        FromEQFunction = eq;
+    }
 
     public float[] FromFloatArray
     {
@@ -168,13 +173,16 @@ public class Equalizer
         return eq;
     }
 
-    private static float Limit( float eq ) => eq switch
-                                              {
-                                                  BAND_NOT_PRESENT => eq,
-                                                  > 1.0f           => 1.0f,
-                                                  < -1.0f          => -1.0f,
-                                                  _                => eq
-                                              };
+    private static float Limit( float eq )
+    {
+        return eq switch
+               {
+                   BAND_NOT_PRESENT => eq,
+                   > 1.0f           => 1.0f,
+                   < -1.0f          => -1.0f,
+                   _                => eq
+               };
+    }
 
     /// <summary>
     ///     Converts an equalizer band setting to a sample factor.
@@ -193,7 +201,7 @@ public class Equalizer
         return f;
     }
 
-    [PublicAPI]
+
     public abstract class EQFunction
     {
         /// <summary>
@@ -206,6 +214,9 @@ public class Equalizer
         ///     the setting of the specified band. This is a value between
         ///     -1 and +1.
         /// </returns>
-        public virtual float GetBand( int band ) => 0.0f;
+        public virtual float GetBand( int band )
+        {
+            return 0.0f;
+        }
     }
 }

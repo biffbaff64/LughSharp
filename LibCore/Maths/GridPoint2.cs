@@ -192,7 +192,10 @@ public class GridPoint2
     /// <summary>
     /// </summary>
     /// <returns> a copy of this grid point </returns>
-    public GridPoint2 Cpy() => new( this );
+    public GridPoint2 Cpy()
+    {
+        return new GridPoint2( this );
+    }
 
     public override bool Equals( object? o )
     {
@@ -222,5 +225,8 @@ public class GridPoint2
         return result;
     }
 
-    public override string ToString() => $"({X},{Y})";
+    public override string ToString()
+    {
+        return $"({X},{Y})";
+    }
 }

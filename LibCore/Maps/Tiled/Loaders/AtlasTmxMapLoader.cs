@@ -42,7 +42,6 @@ namespace LibGDXSharp.LibCore.Maps.Tiled.Loaders;
 ///         rotation should not be used when creating the atlas.
 ///     </p>
 /// </summary>
-[PublicAPI]
 public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledMapLoaderParameters >
 {
     protected readonly List< Texture > trackedTextures = new();
@@ -58,7 +57,10 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     {
     }
 
-    public TiledMap Load( string fileName ) => Load( fileName, new AtlasTiledMapLoaderParameters() );
+    public TiledMap Load( string fileName )
+    {
+        return Load( fileName, new AtlasTiledMapLoaderParameters() );
+    }
 
     public TiledMap Load( string fileName, AtlasTiledMapLoaderParameters parameter )
     {
@@ -85,7 +87,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return map;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Load( AssetManager? manager,
                                string? fileName,
                                FileInfo? tmxFile,
@@ -106,7 +108,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     /// <param name="textureLoaderParameters"></param>
     /// <returns></returns>
     public override List< AssetDescriptor > GetDependencyAssetDescriptors( FileInfo tmxFile,
-                                                                   TextureLoader.TextureLoaderParameters textureLoaderParameters )
+                                                                           TextureLoader.TextureLoaderParameters textureLoaderParameters )
     {
         var descriptors = new List< AssetDescriptor >
         {
@@ -116,7 +118,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return descriptors;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override void AddStaticTiles( FileInfo tmxFile,
                                             IImageResolver imageResolver,
                                             TiledMapTileSet tileSet,
@@ -264,7 +266,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    [PublicAPI]
+
     public class AtlasTiledMapLoaderParameters : BaseTmxLoaderParameters
     {
         public bool ForceTextureFilters { get; set; } = false;
@@ -273,24 +275,33 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    [PublicAPI]
+
     protected interface IAtlasResolver : IImageResolver
     {
         public TextureAtlas GetAtlas();
 
-        [PublicAPI]
+
         public class DirectAtlasResolver : IAtlasResolver
         {
             private readonly TextureAtlas _atlas;
 
-            public DirectAtlasResolver( TextureAtlas atlas ) => _atlas = atlas;
+            public DirectAtlasResolver( TextureAtlas atlas )
+            {
+                _atlas = atlas;
+            }
 
-            public TextureAtlas GetAtlas() => _atlas;
+            public TextureAtlas GetAtlas()
+            {
+                return _atlas;
+            }
 
-            public TextureRegion? GetImage( string name ) => _atlas.FindRegion( name );
+            public TextureRegion? GetImage( string name )
+            {
+                return _atlas.FindRegion( name );
+            }
         }
 
-        [PublicAPI]
+
         public class AssetManagerAtlasResolver : IAtlasResolver
         {
             private readonly AssetManager _assetManager;
@@ -302,9 +313,15 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
                 _atlasName    = atlasName;
             }
 
-            public TextureAtlas GetAtlas() => _assetManager.Get< TextureAtlas >( _atlasName );
+            public TextureAtlas GetAtlas()
+            {
+                return _assetManager.Get< TextureAtlas >( _atlasName );
+            }
 
-            public TextureRegion? GetImage( string name ) => GetAtlas().FindRegion( name );
+            public TextureRegion? GetImage( string name )
+            {
+                return GetAtlas().FindRegion( name );
+            }
         }
     }
 }

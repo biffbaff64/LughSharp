@@ -32,7 +32,6 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
 /// <summary>
 ///     Encapsulates the details of decoding an MPEG audio frame.
 /// </summary>
-[PublicAPI]
 public class Decoder
 {
     private const float DEFAULT_SCALE_FACTOR = 32700.0f;
@@ -77,7 +76,7 @@ public class Decoder
         }
     }
 
-    [PublicAPI]
+
     public virtual Equalizer? Equalizer
     {
         get => _equalizer;
@@ -110,7 +109,7 @@ public class Decoder
         set => _output = value;
     }
 
-    [PublicAPI]
+
     public float ScaleFactor { get; set; } = DEFAULT_SCALE_FACTOR;
 
     /// <summary>
@@ -118,7 +117,7 @@ public class Decoder
     ///     by this decoder. This typically corresponds to the sample
     ///     rate encoded in the MPEG audio stream.
     /// </summary>
-    [PublicAPI]
+
     public virtual int OutputFrequency => _outputFrequency;
 
     /// <summary>
@@ -126,7 +125,7 @@ public class Decoder
     ///     this decoder. This usually corresponds to the number of
     ///     channels in the MPEG audio stream.
     /// </summary>
-    [PublicAPI]
+
     public virtual int OutputChannels => _outputChannels;
 
     /// <summary>
@@ -137,7 +136,7 @@ public class Decoder
     ///     an upper bound and fewer samples may actually be written, depending
     ///     upon the sample rate and number of channels.
     /// </summary>
-    [PublicAPI]
+
     public virtual int OutputBlockSize => AudioBase.OBUFFERSIZE;
 
     public static Parameters DefaultParams => ( Parameters )DecoderDefaultParams.Clone();
@@ -173,9 +172,15 @@ public class Decoder
         return _output;
     }
 
-    protected virtual DecoderException NewDecoderException( int errorcode ) => new( errorcode, null );
+    protected virtual DecoderException NewDecoderException( int errorcode )
+    {
+        return new DecoderException( errorcode, null );
+    }
 
-    protected virtual DecoderException NewDecoderException( int errorcode, Exception? throwable ) => new( errorcode, throwable );
+    protected virtual DecoderException NewDecoderException( int errorcode, Exception? throwable )
+    {
+        return new DecoderException( errorcode, throwable );
+    }
 
     protected virtual IFrameDecoder RetrieveDecoder( Header header, Bitstream stream, int layer )
     {
@@ -272,7 +277,6 @@ public class Decoder
     ///     The Params class presents the customizable aspects of the decoder. Instances of
     ///     this class are not thread safe.
     /// </summary>
-    [PublicAPI]
     public class Parameters : ICloneable
     {
         public virtual OutputChannels? OutputChannels { get; set; }

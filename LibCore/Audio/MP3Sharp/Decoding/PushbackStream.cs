@@ -94,5 +94,8 @@ public class PushbackStream
         }
     }
 
-    public void Close() => _stream.Close();
+    public void Close()
+    {
+        _stream.Close();
+    }
 }

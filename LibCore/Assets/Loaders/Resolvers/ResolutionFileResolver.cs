@@ -119,8 +119,8 @@ public class ResolutionFileResolver : IFileHandleResolver
 
     public static Resolution Choose( params Resolution[] descs )
     {
-        var w = Core.Gdx.Graphics.BackBufferWidth;
-        var h = Core.Gdx.Graphics.BackBufferHeight;
+        var w = Gdx.Graphics.BackBufferWidth;
+        var h = Gdx.Graphics.BackBufferHeight;
 
         // Prefer the shortest side.
         Resolution best = descs[ 0 ];

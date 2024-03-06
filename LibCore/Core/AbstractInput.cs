@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Core;
 
-[PublicAPI]
 public abstract class AbstractInput : IInput
 {
     private readonly List< int > _keysToCatch;
@@ -93,27 +92,42 @@ public abstract class AbstractInput : IInput
     /// </summary>
     /// <param name="keycode"></param>
     /// <returns></returns>
-    public virtual bool IsCatchKey( int keycode ) => _keysToCatch.Contains( keycode );
+    public virtual bool IsCatchKey( int keycode )
+    {
+        return _keysToCatch.Contains( keycode );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public virtual bool IsCatchBackKey() => _keysToCatch.Contains( IInput.Keys.BACK );
+    public virtual bool IsCatchBackKey()
+    {
+        return _keysToCatch.Contains( IInput.Keys.BACK );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="catchBack"></param>
-    public virtual void SetCatchBackKey( bool catchBack ) => SetCatchKey( IInput.Keys.BACK, catchBack );
+    public virtual void SetCatchBackKey( bool catchBack )
+    {
+        SetCatchKey( IInput.Keys.BACK, catchBack );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public virtual bool IsCatchMenuKey() => _keysToCatch.Contains( IInput.Keys.MENU );
+    public virtual bool IsCatchMenuKey()
+    {
+        return _keysToCatch.Contains( IInput.Keys.MENU );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="catchMenu"></param>
-    public virtual void SetCatchMenuKey( bool catchMenu ) => SetCatchKey( IInput.Keys.MENU, catchMenu );
+    public virtual void SetCatchMenuKey( bool catchMenu )
+    {
+        SetCatchKey( IInput.Keys.MENU, catchMenu );
+    }
 
     // ------------------------------------------------------------------------
     // Abstract methods to be implemented by any inheriting classes.

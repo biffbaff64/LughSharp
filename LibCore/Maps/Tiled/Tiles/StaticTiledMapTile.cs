@@ -37,7 +37,10 @@ public class StaticTiledMapTile : ITiledMapTile
     ///     Creates a static tile with the given region
     /// </summary>
     /// <param name="texture">The <see cref="TextureRegion" /> to use.</param>
-    public StaticTiledMapTile( TextureRegion texture ) => TextureRegion = texture;
+    public StaticTiledMapTile( TextureRegion texture )
+    {
+        TextureRegion = texture;
+    }
 
     /// <summary>
     ///     Copy Constructor
@@ -61,7 +64,13 @@ public class StaticTiledMapTile : ITiledMapTile
     public TextureRegion           TextureRegion { get; set; }
     public ITiledMapTile.Blendmode BlendMode     { get; set; } = ITiledMapTile.Blendmode.Alpha;
 
-    public MapProperties GetProperties() => _properties ??= new MapProperties();
+    public MapProperties GetProperties()
+    {
+        return _properties ??= new MapProperties();
+    }
 
-    public MapObjects GetObjects() => _mapObjects ??= new MapObjects();
+    public MapObjects GetObjects()
+    {
+        return _mapObjects ??= new MapObjects();
+    }
 }

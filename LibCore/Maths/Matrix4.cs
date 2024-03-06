@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Maths;
 
-[PublicAPI]
 public class Matrix4
 {
     /// <summary>
@@ -145,7 +144,10 @@ public class Matrix4
     /// <param name="matrix">
     ///     The matrix to copy. (This matrix is not modified)
     /// </param>
-    public Matrix4( Matrix4 matrix ) => Set( matrix );
+    public Matrix4( Matrix4 matrix )
+    {
+        Set( matrix );
+    }
 
     /// <summary>
     ///     Constructs a matrix from the given float array. The array must have at
@@ -159,13 +161,19 @@ public class Matrix4
     ///         <a href="http://en.wikipedia.org/wiki/Row-major_order">wikipedia.org/wiki/Row-major_order</a>
     ///     </para>
     /// </param>
-    public Matrix4( float[] values ) => Set( values );
+    public Matrix4( float[] values )
+    {
+        Set( values );
+    }
 
     /// <summary>
     ///     Constructs a rotation matrix from the given <see cref="Quaternion" />.
     /// </summary>
     /// <param name="quaternion">The quaternion to be copied. (The quaternion is not modified)</param>
-    public Matrix4( Quaternion quaternion ) => Set( quaternion );
+    public Matrix4( Quaternion quaternion )
+    {
+        Set( quaternion );
+    }
 
     /// <summary>
     ///     Construct a matrix from the given translation, rotation and scale.
@@ -173,7 +181,10 @@ public class Matrix4
     /// <param name="position"> The translation </param>
     /// <param name="rotation"> The rotation, must be normalized </param>
     /// <param name="scale"> The scale</param>
-    public Matrix4( Vector3 position, Quaternion rotation, Vector3 scale ) => Set( position, rotation, scale );
+    public Matrix4( Vector3 position, Quaternion rotation, Vector3 scale )
+    {
+        Set( position, rotation, scale );
+    }
 
     /// <summary>
     /// </summary>
@@ -185,7 +196,10 @@ public class Matrix4
     /// </summary>
     /// <param name="matrix"> The matrix that is to be copied.(The given matrix is not modified)</param>
     /// <returns> This matrix for the purpose of chaining methods together.</returns>
-    public Matrix4 Set( Matrix4 matrix ) => Set( matrix.val );
+    public Matrix4 Set( Matrix4 matrix )
+    {
+        return Set( matrix.val );
+    }
 
     /// <summary>
     ///     Sets the matrix to the given matrix as a float array. The float array must
@@ -212,7 +226,10 @@ public class Matrix4
     /// </summary>
     /// <param name="quaternion"> The quaternion that is to be used to Set this matrix. </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
-    public Matrix4 Set( Quaternion quaternion ) => Set( quaternion.X, quaternion.Y, quaternion.Z, quaternion.W );
+    public Matrix4 Set( Quaternion quaternion )
+    {
+        return Set( quaternion.X, quaternion.Y, quaternion.Z, quaternion.W );
+    }
 
     /// <summary>
     ///     Sets the matrix to a rotation matrix representing the quaternion.
@@ -223,7 +240,9 @@ public class Matrix4
     /// <param name="quaternionW"> The W component of the quaternion that is to be used to Set this matrix. </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Set( float quaternionX, float quaternionY, float quaternionZ, float quaternionW )
-        => Set( 0f, 0f, 0f, quaternionX, quaternionY, quaternionZ, quaternionW );
+    {
+        return Set( 0f, 0f, 0f, quaternionX, quaternionY, quaternionZ, quaternionW );
+    }
 
     /// <summary>
     ///     Set this matrix to the specified translation and rotation.
@@ -232,7 +251,9 @@ public class Matrix4
     /// <param name="orientation"> The rotation, must be normalized </param>
     /// <returns> This matrix for chaining  </returns>
     public Matrix4 Set( Vector3 position, Quaternion orientation )
-        => Set( position.X, position.Y, position.Z, orientation.X, orientation.Y, orientation.Z, orientation.W );
+    {
+        return Set( position.X, position.Y, position.Z, orientation.X, orientation.Y, orientation.Z, orientation.W );
+    }
 
     /// <summary>
     ///     Sets the matrix to a rotation matrix representing the translation and quaternion.
@@ -288,18 +309,21 @@ public class Matrix4
     /// <param name="orientation"> The rotation, must be normalized </param>
     /// <param name="scale"> The scale </param>
     /// <returns> This matrix for chaining  </returns>
-    public Matrix4 Set( Vector3 position, Quaternion orientation, Vector3 scale ) => Set(
-        position.X,
-        position.Y,
-        position.Z,
-        orientation.X,
-        orientation.Y,
-        orientation.Z,
-        orientation.W,
-        scale.X,
-        scale.Y,
-        scale.Z
-        );
+    public Matrix4 Set( Vector3 position, Quaternion orientation, Vector3 scale )
+    {
+        return Set(
+            position.X,
+            position.Y,
+            position.Z,
+            orientation.X,
+            orientation.Y,
+            orientation.Z,
+            orientation.W,
+            scale.X,
+            scale.Y,
+            scale.Z
+            );
+    }
 
     /// <summary>
     ///     Sets the matrix to a rotation matrix representing the translation and quaternion.
@@ -386,7 +410,10 @@ public class Matrix4
     }
 
     /// <returns> a copy of this matrix </returns>
-    public Matrix4 Cpy() => new( this );
+    public Matrix4 Cpy()
+    {
+        return new Matrix4( this );
+    }
 
     /// <summary>
     ///     Adds a translational component to the matrix in the 4th column.
@@ -698,58 +725,64 @@ public class Matrix4
         return this;
     }
 
-    public float Det() => ( ( ( ( ( ( ( ( ( ( ( ( val[ M30 ] * val[ M21 ] * val[ M12 ] * val[ M03 ] )
-                                              - ( val[ M20 ] * val[ M31 ] * val[ M12 ] * val[ M03 ] )
-                                              - ( val[ M30 ]
-                                                * val[ M11 ]
-                                                * val[ M22 ]
-                                                * val[ M03 ] ) )
-                                            + ( val[ M10 ] * val[ M31 ] * val[ M22 ] * val[ M03 ] )
-                                            + ( val[ M20 ] * val[ M11 ] * val[ M32 ] * val[ M03 ] ) )
-                                          - ( val[ M10 ]
-                                            * val[ M21 ]
-                                            * val[ M32 ]
-                                            * val[ M03 ] )
-                                          - ( val[ M30 ] * val[ M21 ] * val[ M02 ] * val[ M13 ] ) )
-                                        + ( val[ M20 ] * val[ M31 ] * val[ M02 ] * val[ M13 ] )
-                                        + ( val[ M30 ] * val[ M01 ] * val[ M22 ] * val[ M13 ] ) )
-                                      - ( val[ M00 ] * val[ M31 ] * val[ M22 ] * val[ M13 ] )
-                                      - ( val[ M20 ]
-                                        * val[ M01 ]
-                                        * val[ M32 ]
-                                        * val[ M13 ] ) )
-                                    + ( val[ M00 ] * val[ M21 ] * val[ M32 ] * val[ M13 ] )
-                                    + ( val[ M30 ] * val[ M11 ] * val[ M02 ] * val[ M23 ] ) )
-                                  - ( val[ M10 ]
-                                    * val[ M31 ]
-                                    * val[ M02 ]
-                                    * val[ M23 ] )
-                                  - ( val[ M30 ] * val[ M01 ] * val[ M12 ] * val[ M23 ] ) )
-                                + ( val[ M00 ] * val[ M31 ] * val[ M12 ] * val[ M23 ] )
-                                + ( val[ M10 ]
-                                  * val[ M01 ]
-                                  * val[ M32 ]
-                                  * val[ M23 ] ) )
-                              - ( val[ M00 ] * val[ M11 ] * val[ M32 ] * val[ M23 ] )
-                              - ( val[ M20 ] * val[ M11 ] * val[ M02 ] * val[ M33 ] ) )
-                            + ( val[ M10 ] * val[ M21 ] * val[ M02 ] * val[ M33 ] )
-                            + ( val[ M20 ] * val[ M01 ] * val[ M12 ] * val[ M33 ] ) )
-                          - ( val[ M00 ]
-                            * val[ M21 ]
-                            * val[ M12 ]
-                            * val[ M33 ] )
-                          - ( val[ M10 ] * val[ M01 ] * val[ M22 ] * val[ M33 ] ) )
-                        + ( val[ M00 ] * val[ M11 ] * val[ M22 ] * val[ M33 ] );
+    public float Det()
+    {
+        return ( ( ( ( ( ( ( ( ( ( ( ( val[ M30 ] * val[ M21 ] * val[ M12 ] * val[ M03 ] )
+                                   - ( val[ M20 ] * val[ M31 ] * val[ M12 ] * val[ M03 ] )
+                                   - ( val[ M30 ]
+                                     * val[ M11 ]
+                                     * val[ M22 ]
+                                     * val[ M03 ] ) )
+                                 + ( val[ M10 ] * val[ M31 ] * val[ M22 ] * val[ M03 ] )
+                                 + ( val[ M20 ] * val[ M11 ] * val[ M32 ] * val[ M03 ] ) )
+                               - ( val[ M10 ]
+                                 * val[ M21 ]
+                                 * val[ M32 ]
+                                 * val[ M03 ] )
+                               - ( val[ M30 ] * val[ M21 ] * val[ M02 ] * val[ M13 ] ) )
+                             + ( val[ M20 ] * val[ M31 ] * val[ M02 ] * val[ M13 ] )
+                             + ( val[ M30 ] * val[ M01 ] * val[ M22 ] * val[ M13 ] ) )
+                           - ( val[ M00 ] * val[ M31 ] * val[ M22 ] * val[ M13 ] )
+                           - ( val[ M20 ]
+                             * val[ M01 ]
+                             * val[ M32 ]
+                             * val[ M13 ] ) )
+                         + ( val[ M00 ] * val[ M21 ] * val[ M32 ] * val[ M13 ] )
+                         + ( val[ M30 ] * val[ M11 ] * val[ M02 ] * val[ M23 ] ) )
+                       - ( val[ M10 ]
+                         * val[ M31 ]
+                         * val[ M02 ]
+                         * val[ M23 ] )
+                       - ( val[ M30 ] * val[ M01 ] * val[ M12 ] * val[ M23 ] ) )
+                     + ( val[ M00 ] * val[ M31 ] * val[ M12 ] * val[ M23 ] )
+                     + ( val[ M10 ]
+                       * val[ M01 ]
+                       * val[ M32 ]
+                       * val[ M23 ] ) )
+                   - ( val[ M00 ] * val[ M11 ] * val[ M32 ] * val[ M23 ] )
+                   - ( val[ M20 ] * val[ M11 ] * val[ M02 ] * val[ M33 ] ) )
+                 + ( val[ M10 ] * val[ M21 ] * val[ M02 ] * val[ M33 ] )
+                 + ( val[ M20 ] * val[ M01 ] * val[ M12 ] * val[ M33 ] ) )
+               - ( val[ M00 ]
+                 * val[ M21 ]
+                 * val[ M12 ]
+                 * val[ M33 ] )
+               - ( val[ M10 ] * val[ M01 ] * val[ M22 ] * val[ M33 ] ) )
+             + ( val[ M00 ] * val[ M11 ] * val[ M22 ] * val[ M33 ] );
+    }
 
     /// <returns> The determinant of the 3x3 upper left matrix </returns>
-    public float Det3X3() => ( ( val[ M00 ] * val[ M11 ] * val[ M22 ] )
-                             + ( val[ M01 ] * val[ M12 ] * val[ M20 ] )
-                             + ( val[ M02 ] * val[ M10 ] * val[ M21 ] ) )
-                           - ( val[ M00 ]
-                             * val[ M12 ]
-                             * val[ M21 ] )
-                           - ( val[ M01 ] * val[ M10 ] * val[ M22 ] )
-                           - ( val[ M02 ] * val[ M11 ] * val[ M20 ] );
+    public float Det3X3()
+    {
+        return ( ( val[ M00 ] * val[ M11 ] * val[ M22 ] )
+               + ( val[ M01 ] * val[ M12 ] * val[ M20 ] )
+               + ( val[ M02 ] * val[ M10 ] * val[ M21 ] ) )
+             - ( val[ M00 ]
+               * val[ M12 ]
+               * val[ M21 ] )
+             - ( val[ M01 ] * val[ M10 ] * val[ M22 ] )
+             - ( val[ M02 ] * val[ M11 ] * val[ M20 ] );
+    }
 
     /// <summary>
     ///     Sets the matrix to a projection matrix with a near- and far plane, a field
@@ -1111,7 +1144,10 @@ public class Matrix4
     /// <param name="v1"> The base vector </param>
     /// <param name="v2"> The target vector </param>
     /// <returns> This matrix for the purpose of chaining methods together  </returns>
-    public Matrix4 SetToRotation( Vector3 v1, Vector3 v2 ) => Set( Quat.SetFromCross( v1, v2 ) );
+    public Matrix4 SetToRotation( Vector3 v1, Vector3 v2 )
+    {
+        return Set( Quat.SetFromCross( v1, v2 ) );
+    }
 
     /// <summary>
     ///     Set the matrix to a rotation matrix between two vectors.
@@ -1123,7 +1159,10 @@ public class Matrix4
     /// <param name="y2"> The target vector y value </param>
     /// <param name="z2"> The target vector z value </param>
     /// <returns> This matrix for the purpose of chaining methods together  </returns>
-    public Matrix4 SetToRotation( float x1, float y1, float z1, float x2, float y2, float z2 ) => Set( Quat.SetFromCross( x1, y1, z1, x2, y2, z2 ) );
+    public Matrix4 SetToRotation( float x1, float y1, float z1, float x2, float y2, float z2 )
+    {
+        return Set( Quat.SetFromCross( x1, y1, z1, x2, y2, z2 ) );
+    }
 
     /// <summary>
     ///     Sets this matrix to a rotation matrix from the given euler angles.
@@ -1498,56 +1537,83 @@ public class Matrix4
     /// <param name="rotation"> The <see cref="Quaternion" /> to receive the rotation </param>
     /// <param name="normalizeAxes"> True to normalize the axes, necessary when the matrix might also include scaling. </param>
     /// <returns> The provided <see cref="Quaternion" /> for chaining.  </returns>
-    public Quaternion GetRotation( Quaternion rotation, bool normalizeAxes ) => rotation.SetFromMatrix( normalizeAxes, this );
+    public Quaternion GetRotation( Quaternion rotation, bool normalizeAxes )
+    {
+        return rotation.SetFromMatrix( normalizeAxes, this );
+    }
 
     /// <summary>
     ///     Gets the rotation of this matrix.
     /// </summary>
     /// <param name="rotation"> The <see cref="Quaternion" /> to receive the rotation </param>
     /// <returns> The provided <see cref="Quaternion" /> for chaining.  </returns>
-    public Quaternion GetRotation( Quaternion rotation ) => rotation.SetFromMatrix( this );
+    public Quaternion GetRotation( Quaternion rotation )
+    {
+        return rotation.SetFromMatrix( this );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> the squared scale factor on the X axis </returns>
-    public float GetScaleXSquared() => ( val[ M00 ] * val[ M00 ] ) + ( val[ M01 ] * val[ M01 ] ) + ( val[ M02 ] * val[ M02 ] );
+    public float GetScaleXSquared()
+    {
+        return ( val[ M00 ] * val[ M00 ] ) + ( val[ M01 ] * val[ M01 ] ) + ( val[ M02 ] * val[ M02 ] );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> the squared scale factor on the Y axis </returns>
-    public float GetScaleYSquared() => ( val[ M10 ] * val[ M10 ] ) + ( val[ M11 ] * val[ M11 ] ) + ( val[ M12 ] * val[ M12 ] );
+    public float GetScaleYSquared()
+    {
+        return ( val[ M10 ] * val[ M10 ] ) + ( val[ M11 ] * val[ M11 ] ) + ( val[ M12 ] * val[ M12 ] );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> the squared scale factor on the Z axis </returns>
-    public float GetScaleZSquared() => ( val[ M20 ] * val[ M20 ] ) + ( val[ M21 ] * val[ M21 ] ) + ( val[ M22 ] * val[ M22 ] );
+    public float GetScaleZSquared()
+    {
+        return ( val[ M20 ] * val[ M20 ] ) + ( val[ M21 ] * val[ M21 ] ) + ( val[ M22 ] * val[ M22 ] );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> the scale factor on the X axis (non-negative) </returns>
-    public float GetScaleX() => MathUtils.IsZero( val[ M01 ] ) && MathUtils.IsZero( val[ M02 ] )
-        ? Math.Abs( val[ M00 ] )
-        : ( float )Math.Sqrt( GetScaleXSquared() );
+    public float GetScaleX()
+    {
+        return MathUtils.IsZero( val[ M01 ] ) && MathUtils.IsZero( val[ M02 ] )
+            ? Math.Abs( val[ M00 ] )
+            : ( float )Math.Sqrt( GetScaleXSquared() );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> the scale factor on the Y axis (non-negative) </returns>
-    public float GetScaleY() => MathUtils.IsZero( val[ M10 ] ) && MathUtils.IsZero( val[ M12 ] )
-        ? Math.Abs( val[ M11 ] )
-        : ( float )Math.Sqrt( GetScaleYSquared() );
+    public float GetScaleY()
+    {
+        return MathUtils.IsZero( val[ M10 ] ) && MathUtils.IsZero( val[ M12 ] )
+            ? Math.Abs( val[ M11 ] )
+            : ( float )Math.Sqrt( GetScaleYSquared() );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> the scale factor on the Z axis (non-negative) </returns>
-    public float GetScaleZ() => MathUtils.IsZero( val[ M20 ] ) && MathUtils.IsZero( val[ M21 ] )
-        ? Math.Abs( val[ M22 ] )
-        : ( float )Math.Sqrt( GetScaleZSquared() );
+    public float GetScaleZ()
+    {
+        return MathUtils.IsZero( val[ M20 ] ) && MathUtils.IsZero( val[ M21 ] )
+            ? Math.Abs( val[ M22 ] )
+            : ( float )Math.Sqrt( GetScaleZSquared() );
+    }
 
     /// <summary>
     ///     <param name="scale"> The vector which will receive the (non-negative) scale components on each axis. </param>
     ///     <returns> The provided vector for chaining.  </returns>
     /// </summary>
-    public Vector3 GetScale( Vector3 scale ) => scale.Set( GetScaleX(), GetScaleY(), GetScaleZ() );
+    public Vector3 GetScale( Vector3 scale )
+    {
+        return scale.Set( GetScaleX(), GetScaleY(), GetScaleZ() );
+    }
 
     /// <summary>
     ///     removes the translational part and transposes the matrix.
@@ -1561,10 +1627,13 @@ public class Matrix4
         return Inv().Tra();
     }
 
-    public override string ToString() => $"[{val[ M00 ]}|{val[ M01 ]}|{val[ M02 ]}|{val[ M03 ]}]\n[{val[ M10 ]}"
-                                       + $"|{val[ M11 ]}|{val[ M12 ]}|{val[ M13 ]}]\n[{val[ M20 ]}|{val[ M21 ]}"
-                                       + $"|{val[ M22 ]}|{val[ M23 ]}]\n[{val[ M30 ]}|{val[ M31 ]}|{val[ M32 ]}"
-                                       + $"|{val[ M33 ]}]\n";
+    public override string ToString()
+    {
+        return $"[{val[ M00 ]}|{val[ M01 ]}|{val[ M02 ]}|{val[ M03 ]}]\n[{val[ M10 ]}"
+             + $"|{val[ M11 ]}|{val[ M12 ]}|{val[ M13 ]}]\n[{val[ M20 ]}|{val[ M21 ]}"
+             + $"|{val[ M22 ]}|{val[ M23 ]}]\n[{val[ M30 ]}|{val[ M31 ]}|{val[ M32 ]}"
+             + $"|{val[ M33 ]}]\n";
+    }
 
     /// <summary>
     ///     Multiplies the vectors with the given matrix. The matrix array is assumed to
@@ -2000,47 +2069,48 @@ public class Matrix4
     /// </summary>
     /// <param name="values"> the matrix values. </param>
     /// <returns> the determinante.  </returns>
-    public static float Det( float[] values ) =>
-
+    public static float Det( float[] values )
+    {
         //@formatter:off
         // BE VERY CAREFUL WITH EDITING THIS!!!!
-        ( ( ( ( ( ( ( ( ( ( (
-                            // --------------------------------------------------------------  
-                            ( values[ M30 ] * values[ M21 ] * values[ M12 ] * values[ M03 ] )
-                          - ( values[ M20 ] * values[ M31 ] * values[ M12 ] * values[ M03 ] )
-                          - ( values[ M30 ] * values[ M11 ] * values[ M22 ] * values[ M03 ] ) )
-                            // --------------------------------------------------------------  
-                          + ( values[ M10 ] * values[ M31 ] * values[ M22 ] * values[ M03 ] )
-                          + ( values[ M20 ] * values[ M11 ] * values[ M32 ] * values[ M03 ] ) )
-                          // --------------------------------------------------------------  
-                        - ( values[ M10 ] * values[ M21 ] * values[ M32 ] * values[ M03 ] )
-                        - ( values[ M30 ] * values[ M21 ] * values[ M02 ] * values[ M13 ] ) )
-                        // --------------------------------------------------------------  
-                      + ( values[ M20 ] * values[ M31 ] * values[ M02 ] * values[ M13 ] )
-                      + ( values[ M30 ] * values[ M01 ] * values[ M22 ] * values[ M13 ] ) )
-                      // --------------------------------------------------------------  
-                    - ( values[ M00 ] * values[ M31 ] * values[ M22 ] * values[ M13 ] )
-                    - ( values[ M20 ] * values[ M01 ] * values[ M32 ] * values[ M13 ] ) )
-                    // --------------------------------------------------------------  
-                  + ( values[ M00 ] * values[ M21 ] * values[ M32 ] * values[ M13 ] )
-                  + ( values[ M30 ] * values[ M11 ] * values[ M02 ] * values[ M23 ] ) )
-                  // --------------------------------------------------------------  
-                - ( values[ M10 ] * values[ M31 ] * values[ M02 ] * values[ M23 ] )
-                - ( values[ M30 ] * values[ M01 ] * values[ M12 ] * values[ M23 ] ) )
-                // --------------------------------------------------------------  
-              + ( values[ M00 ] * values[ M31 ] * values[ M12 ] * values[ M23 ] )
-              + ( values[ M10 ] * values[ M01 ] * values[ M32 ] * values[ M23 ] ) )
-              // --------------------------------------------------------------  
-            - ( values[ M00 ] * values[ M11 ] * values[ M32 ] * values[ M23 ] )
-            - ( values[ M20 ] * values[ M11 ] * values[ M02 ] * values[ M33 ] ) )
-            // --------------------------------------------------------------  
-          + ( values[ M10 ] * values[ M21 ] * values[ M02 ] * values[ M33 ] )
-          + ( values[ M20 ] * values[ M01 ] * values[ M12 ] * values[ M33 ] ) )
-          // --------------------------------------------------------------  
-        - ( values[ M00 ] * values[ M21 ] * values[ M12 ] * values[ M33 ] )
-        - ( values[ M10 ] * values[ M01 ] * values[ M22 ] * values[ M33 ] ) )
-                                                 // --------------------------------------------------------------  
-                                               + ( values[ M00 ] * values[ M11 ] * values[ M22 ] * values[ M33 ] );
+        return ( ( ( ( ( ( ( ( ( ( (
+                                   // --------------------------------------------------------------  
+                                   ( values[ M30 ] * values[ M21 ] * values[ M12 ] * values[ M03 ] )
+                                 - ( values[ M20 ] * values[ M31 ] * values[ M12 ] * values[ M03 ] )
+                                 - ( values[ M30 ] * values[ M11 ] * values[ M22 ] * values[ M03 ] ) )
+                                   // --------------------------------------------------------------  
+                                 + ( values[ M10 ] * values[ M31 ] * values[ M22 ] * values[ M03 ] )
+                                 + ( values[ M20 ] * values[ M11 ] * values[ M32 ] * values[ M03 ] ) )
+                                 // --------------------------------------------------------------  
+                               - ( values[ M10 ] * values[ M21 ] * values[ M32 ] * values[ M03 ] )
+                               - ( values[ M30 ] * values[ M21 ] * values[ M02 ] * values[ M13 ] ) )
+                               // --------------------------------------------------------------  
+                             + ( values[ M20 ] * values[ M31 ] * values[ M02 ] * values[ M13 ] )
+                             + ( values[ M30 ] * values[ M01 ] * values[ M22 ] * values[ M13 ] ) )
+                             // --------------------------------------------------------------  
+                           - ( values[ M00 ] * values[ M31 ] * values[ M22 ] * values[ M13 ] )
+                           - ( values[ M20 ] * values[ M01 ] * values[ M32 ] * values[ M13 ] ) )
+                           // --------------------------------------------------------------  
+                         + ( values[ M00 ] * values[ M21 ] * values[ M32 ] * values[ M13 ] )
+                         + ( values[ M30 ] * values[ M11 ] * values[ M02 ] * values[ M23 ] ) )
+                         // --------------------------------------------------------------  
+                       - ( values[ M10 ] * values[ M31 ] * values[ M02 ] * values[ M23 ] )
+                       - ( values[ M30 ] * values[ M01 ] * values[ M12 ] * values[ M23 ] ) )
+                       // --------------------------------------------------------------  
+                     + ( values[ M00 ] * values[ M31 ] * values[ M12 ] * values[ M23 ] )
+                     + ( values[ M10 ] * values[ M01 ] * values[ M32 ] * values[ M23 ] ) )
+                     // --------------------------------------------------------------  
+                   - ( values[ M00 ] * values[ M11 ] * values[ M32 ] * values[ M23 ] )
+                   - ( values[ M20 ] * values[ M11 ] * values[ M02 ] * values[ M33 ] ) )
+                   // --------------------------------------------------------------  
+                 + ( values[ M10 ] * values[ M21 ] * values[ M02 ] * values[ M33 ] )
+                 + ( values[ M20 ] * values[ M01 ] * values[ M12 ] * values[ M33 ] ) )
+                 // --------------------------------------------------------------  
+               - ( values[ M00 ] * values[ M21 ] * values[ M12 ] * values[ M33 ] )
+               - ( values[ M10 ] * values[ M01 ] * values[ M22 ] * values[ M33 ] ) )
+               // --------------------------------------------------------------  
+             + ( values[ M00 ] * values[ M11 ] * values[ M22 ] * values[ M33 ] );
+    }
 
     //@formatter:on
     /// <summary>
@@ -2049,7 +2119,10 @@ public class Matrix4
     /// </summary>
     /// <param name="translation"> </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
-    public Matrix4 Translate( Vector3 translation ) => Translate( translation.X, translation.Y, translation.Z );
+    public Matrix4 Translate( Vector3 translation )
+    {
+        return Translate( translation.X, translation.Y, translation.Z );
+    }
 
     /// <summary>
     ///     Postmultiplies this matrix by a translation matrix.
@@ -2212,7 +2285,10 @@ public class Matrix4
     /// <param name="v1"> The base vector </param>
     /// <param name="v2"> The target vector </param>
     /// <returns> This matrix for the purpose of chaining methods together  </returns>
-    public Matrix4 Rotate( Vector3 v1, Vector3 v2 ) => Rotate( Quat.SetFromCross( v1, v2 ) );
+    public Matrix4 Rotate( Vector3 v1, Vector3 v2 )
+    {
+        return Rotate( Quat.SetFromCross( v1, v2 ) );
+    }
 
     /// <summary>
     ///     Post-multiplies this matrix by a rotation toward a direction.
@@ -2318,13 +2394,16 @@ public class Matrix4
     /// <summary>
     /// </summary>
     /// <returns>True if this matrix has any rotation or scaling, false otherwise </returns>
-    public bool HasRotationOrScaling() => !( MathUtils.IsEqual( val[ M00 ], 1 )
-                                          && MathUtils.IsEqual( val[ M11 ], 1 )
-                                          && MathUtils.IsEqual( val[ M22 ], 1 )
-                                          && MathUtils.IsZero( val[ M01 ] )
-                                          && MathUtils.IsZero( val[ M02 ] )
-                                          && MathUtils.IsZero( val[ M10 ] )
-                                          && MathUtils.IsZero( val[ M12 ] )
-                                          && MathUtils.IsZero( val[ M20 ] )
-                                          && MathUtils.IsZero( val[ M21 ] ) );
+    public bool HasRotationOrScaling()
+    {
+        return !( MathUtils.IsEqual( val[ M00 ], 1 )
+               && MathUtils.IsEqual( val[ M11 ], 1 )
+               && MathUtils.IsEqual( val[ M22 ], 1 )
+               && MathUtils.IsZero( val[ M01 ] )
+               && MathUtils.IsZero( val[ M02 ] )
+               && MathUtils.IsZero( val[ M10 ] )
+               && MathUtils.IsZero( val[ M12 ] )
+               && MathUtils.IsZero( val[ M20 ] )
+               && MathUtils.IsZero( val[ M21 ] ) );
+    }
 }

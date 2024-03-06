@@ -40,7 +40,6 @@ namespace LibGDXSharp.LibCore.Assets;
 /// <summary>
 ///     Loads and stores assets like textures, bitmapfonts, tile maps, sounds, music and so on.
 /// </summary>
-[PublicAPI]
 public class AssetManager
 {
     // ------------------------------------------------------------------------
@@ -79,8 +78,8 @@ public class AssetManager
     /// <param name="defaultLoaders">Whether to add the default loaders (default is true).</param>
     public AssetManager( IFileHandleResolver resolver, bool defaultLoaders = true )
     {
-        Log = new Logger( "AssetManager", IApplication.LOG_NONE );
-
+        Log = new Logger( logLevel: Logger.LOG_DEBUG );
+        
         if ( defaultLoaders )
         {
             //@formatter:off
@@ -101,8 +100,8 @@ public class AssetManager
         FileHandleResolver = resolver;
     }
 
-    public Logger Log { get; set; }
-
+    public Logger Log { get; }
+    
     /// <summary>
     ///     Returns the <see cref="IFileHandleResolver" /> which this
     ///     AssetManager was loaded with.
@@ -452,14 +451,20 @@ public class AssetManager
     /// </summary>
     /// <param name="fileName">the file name of the asset</param>
     /// <returns>whether the asset is loaded</returns>
-    public bool IsLoaded( string? fileName ) => ( fileName != null ) && _assetTypes.ContainsKey( fileName );
+    public bool IsLoaded( string? fileName )
+    {
+        return ( fileName != null ) && _assetTypes.ContainsKey( fileName );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="fileName">the file name of the asset</param>
     /// <param name="type"></param>
     /// <returns>whether the asset is loaded</returns>
-    public bool IsLoaded( string fileName, Type type ) => _assets[ type ][ fileName ].Asset != null;
+    public bool IsLoaded( string fileName, Type type )
+    {
+        return _assets[ type ][ fileName ].Asset != null;
+    }
 
     /// <summary>
     ///     Returns the loader for the given type and the specified filename.
@@ -575,7 +580,7 @@ public class AssetManager
 
         _loadQueue.Add( assetDesc );
 
-        Log.Debug( "Queued: " + assetDesc );
+        Log.Dbg( message: "Queued: " + assetDesc );
     }
 
     /// <summary>
@@ -650,28 +655,34 @@ public class AssetManager
     ///     Returns true when all assets are loaded. Can be called from any thread but
     ///     note <see cref="Update()" /> or related methods must be called to process tasks.
     /// </summary>
-    public bool IsFinished() => ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
+    public bool IsFinished()
+    {
+        return ( _loadQueue.Count == 0 ) && ( _tasks.Count == 0 );
+    }
 
     /// <summary>
     ///     Blocks until all assets are loaded.
     /// </summary>
     public void FinishLoading()
     {
-        Log.Debug( "Waiting for loading to complete..." );
+        Log.Dbg( message: "Waiting for loading to complete..." );
 
         while ( !Update() )
         {
             //
         }
 
-        Log.Debug( "Loading complete." );
+        Log.Dbg( message: "Loading complete." );
     }
 
     /// <summary>
     ///     Blocks until the specified asset is loaded.
     /// </summary>
     /// <param name="assetDesc">the AssetDescriptor of the asset</param>
-    public T FinishLoadingAsset<T>( AssetDescriptor assetDesc ) => FinishLoadingAsset< T >( assetDesc.Filepath );
+    public T FinishLoadingAsset<T>( AssetDescriptor assetDesc )
+    {
+        return FinishLoadingAsset< T >( assetDesc.Filepath );
+    }
 
     /// <summary>
     ///     Blocks until the specified asset is loaded.
@@ -926,7 +937,10 @@ public class AssetManager
     ///     A subclass may supress the default implementation when loading assets where loading
     ///     failure is recoverable.
     /// </summary>
-    public virtual void TaskFailed( AssetDescriptor assetDesc, Exception ex ) => throw ex;
+    public virtual void TaskFailed( AssetDescriptor assetDesc, Exception ex )
+    {
+        throw ex;
+    }
 
     /// <summary>
     /// </summary>
@@ -1039,7 +1053,10 @@ public class AssetManager
     /// <summary>
     ///     Returns the number of currently queued assets.
     /// </summary>
-    public int GetQueuedAssets() => _loadQueue.Count + _tasks.Count;
+    public int GetQueuedAssets()
+    {
+        return _loadQueue.Count + _tasks.Count;
+    }
 
     /// <summary>
     ///     Returns the progress in percent of completion.
@@ -1064,12 +1081,18 @@ public class AssetManager
     /// <summary>
     ///     Sets an <see cref="IAssetErrorListener" /> to be invoked in case loading an asset failed.
     /// </summary>
-    public void SetErrorListener( IAssetErrorListener listener ) => _listener = listener;
+    public void SetErrorListener( IAssetErrorListener listener )
+    {
+        _listener = listener;
+    }
 
     /// <summary>
     ///     Disposes all assets in the manager and stops all asynchronous loading.
     /// </summary>
-    public void Dispose() => Dispose( true );
+    public void Dispose()
+    {
+        Dispose( true );
+    }
 
     private void Dispose( bool disposing )
     {

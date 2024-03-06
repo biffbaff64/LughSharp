@@ -27,7 +27,6 @@ using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D;
 
-[PublicAPI]
 public class TouchFocus
 {
     public int             button;

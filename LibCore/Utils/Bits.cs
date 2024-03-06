@@ -29,7 +29,6 @@ namespace LibGDXSharp.LibCore.Utils;
 ///     A bitset, without size limitation, allows comparison via
 ///     bitwise operators to other bitfields.
 /// </summary>
-[PublicAPI]
 public class Bits
 {
     private long[] _bits = { 0 };
@@ -39,7 +38,10 @@ public class Bits
     ///     represent bits with indices in the range 0 through nbits-1.
     /// </summary>
     /// <param name="nbits">the initial size of the bit set</param>
-    public Bits( int nbits ) => CheckCapacity( nbits >>> 6 );
+    public Bits( int nbits )
+    {
+        CheckCapacity( nbits >>> 6 );
+    }
 
     /// <summary>
     /// </summary>
@@ -177,12 +179,18 @@ public class Bits
     /// <summary>
     ///     Clears the entire bitset
     /// </summary>
-    public void Clear() => Array.Fill( _bits, 0 );
+    public void Clear()
+    {
+        Array.Fill( _bits, 0 );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> the number of bits currently stored, <b>not</b> the highset set bit!</returns>
-    public int NumBits() => _bits.Length << 6;
+    public int NumBits()
+    {
+        return _bits.Length << 6;
+    }
 
     /// <summary>
     ///     Returns the "logical size" of this bitset: the index of the highest set bit in the bitset plus one. Returns zero if
@@ -465,8 +473,8 @@ public class Bits
     {
         const int PRIME = 73;
 
-        var hash = PRIME + Core.Gdx.App.GetVersion().GetHashCode();
-        hash = ( PRIME * hash ) + Core.Gdx.App.GetHashCode();
+        var hash = PRIME + Gdx.App.GetVersion().GetHashCode();
+        hash = ( PRIME * hash ) + Gdx.App.GetHashCode();
 
         return hash;
     }

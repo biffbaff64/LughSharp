@@ -34,7 +34,10 @@ public class CountdownEventAction<T> : EventAction< T > where T : Event
     private          int _current;
 
     public CountdownEventAction( T eventClass, int count )
-        : base( eventClass ) => _count = count;
+        : base( eventClass )
+    {
+        _count = count;
+    }
 
     public override bool HandleDelegate( Event ev )
     {

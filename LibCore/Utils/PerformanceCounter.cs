@@ -40,7 +40,6 @@ namespace LibGDXSharp.LibCore.Utils;
 ///         the load value, which is the percentage of the total time.
 ///     </p>
 /// </summary>
-[PublicAPI]
 public class PerformanceCounter
 {
     private const float NANO2_SECONDS = 1f / 1000000000.0f;
@@ -112,7 +111,7 @@ public class PerformanceCounter
     {
         if ( !Valid )
         {
-            Core.Gdx.App.Error(
+            Gdx.App.Error(
                 "PerformanceCounter",
                 "Invalid data, check if you called PerformanceCounter#stop()"
                 );

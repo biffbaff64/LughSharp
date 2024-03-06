@@ -56,7 +56,6 @@ namespace LibGDXSharp.LibCore.Utils.Collections;
 ///         Linear probing continues to work even when all hashCodes collide, just more slowly.
 ///     </para>
 /// </summary>
-[PublicAPI]
 public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
 {
     private readonly ObjectIDGenerator _objectIDGenerator = new();

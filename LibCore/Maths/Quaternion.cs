@@ -28,7 +28,6 @@ namespace LibGDXSharp.LibCore.Maths;
 /// <summary>
 ///     A simple Quaternion class.
 /// </summary>
-[PublicAPI]
 public class Quaternion
 {
     private readonly static Quaternion Tmp1 = new( 0, 0, 0, 0 );
@@ -41,15 +40,24 @@ public class Quaternion
     /// <param name="y"> The y-component </param>
     /// <param name="z"> The z-component </param>
     /// <param name="w"> The w-component </param>
-    public Quaternion( float x, float y, float z, float w ) => Set( x, y, z, w );
+    public Quaternion( float x, float y, float z, float w )
+    {
+        Set( x, y, z, w );
+    }
 
-    public Quaternion() => Idt();
+    public Quaternion()
+    {
+        Idt();
+    }
 
     /// <summary>
     ///     Constructor, sets the quaternion components from the given quaternion.
     /// </summary>
     /// <param name="quaternion"> The quaternion to copy. </param>
-    public Quaternion( Quaternion quaternion ) => Set( quaternion );
+    public Quaternion( Quaternion quaternion )
+    {
+        Set( quaternion );
+    }
 
     /// <summary>
     ///     Constructor, sets the quaternion from the given axis vector and the
@@ -57,7 +65,10 @@ public class Quaternion
     /// </summary>
     /// <param name="axis"> The axis </param>
     /// <param name="angle"> The angle in degrees. </param>
-    public Quaternion( Vector3 axis, float angle ) => SetFromAxis( axis, angle );
+    public Quaternion( Vector3 axis, float angle )
+    {
+        SetFromAxis( axis, angle );
+    }
 
     public float X { get; set; }
     public float Y { get; set; }
@@ -87,7 +98,10 @@ public class Quaternion
     /// </summary>
     /// <param name="quaternion"> The quaternion. </param>
     /// <returns> This quaternion for chaining. </returns>
-    public Quaternion Set( Quaternion quaternion ) => Set( quaternion.X, quaternion.Y, quaternion.Z, quaternion.W );
+    public Quaternion Set( Quaternion quaternion )
+    {
+        return Set( quaternion.X, quaternion.Y, quaternion.Z, quaternion.W );
+    }
 
     /// <summary>
     ///     Sets the quaternion components from the given axis and angle around that axis.
@@ -96,24 +110,39 @@ public class Quaternion
     /// <param name="angle"> The angle in degrees </param>
     /// <returns> This quaternion for chaining. </returns>
     [Obsolete( "Use SetFromAxis(Vector3, float) instead" )]
-    public Quaternion Set( Vector3 axis, float angle ) => SetFromAxis( axis.X, axis.Y, axis.Z, angle );
+    public Quaternion Set( Vector3 axis, float angle )
+    {
+        return SetFromAxis( axis.X, axis.Y, axis.Z, angle );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> a copy of this quaternion </returns>
-    public Quaternion Cpy() => new( this );
+    public Quaternion Cpy()
+    {
+        return new Quaternion( this );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> the euclidean length of the specified quaternion </returns>
-    public static float Len( float x, float y, float z, float w ) => ( float )Math.Sqrt( ( x * x ) + ( y * y ) + ( z * z ) + ( w * w ) );
+    public static float Len( float x, float y, float z, float w )
+    {
+        return ( float )Math.Sqrt( ( x * x ) + ( y * y ) + ( z * z ) + ( w * w ) );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> the euclidean length of this quaternion </returns>
-    public float Len() => ( float )Math.Sqrt( ( X * X ) + ( Y * Y ) + ( Z * Z ) + ( W * W ) );
+    public float Len()
+    {
+        return ( float )Math.Sqrt( ( X * X ) + ( Y * Y ) + ( Z * Z ) + ( W * W ) );
+    }
 
-    public override string ToString() => "[" + X + "|" + Y + "|" + Z + "|" + W + "]";
+    public override string ToString()
+    {
+        return "[" + X + "|" + Y + "|" + Z + "|" + W + "]";
+    }
 
     /// <summary></summary>
     /// Sets the quaternion to the given euler angles in degrees.
@@ -121,11 +150,14 @@ public class Quaternion
     /// <param name="pitch"> the rotation around the x axis in degrees </param>
     /// <param name="roll"> the rotation around the z axis degrees </param>
     /// <returns> this quaternion </returns>
-    public Quaternion SetEulerAngles( float yaw, float pitch, float roll ) => SetEulerAnglesRad(
-        yaw * MathUtils.DEGREES_TO_RADIANS,
-        pitch * MathUtils.DEGREES_TO_RADIANS,
-        roll * MathUtils.DEGREES_TO_RADIANS
-        );
+    public Quaternion SetEulerAngles( float yaw, float pitch, float roll )
+    {
+        return SetEulerAnglesRad(
+            yaw * MathUtils.DEGREES_TO_RADIANS,
+            pitch * MathUtils.DEGREES_TO_RADIANS,
+            roll * MathUtils.DEGREES_TO_RADIANS
+            );
+    }
 
     /// <summary>
     ///     Sets the quaternion to the given euler angles in radians.
@@ -201,7 +233,10 @@ public class Quaternion
     /// <returns>
     ///     the rotation around the z axis in degrees (between -180 and +180)
     /// </returns>
-    public float GetRoll() => GetRollRad() * MathUtils.RADIANS_TO_DEGREES;
+    public float GetRoll()
+    {
+        return GetRollRad() * MathUtils.RADIANS_TO_DEGREES;
+    }
 
     /// <summary>
     ///     Get the pitch euler angle in radians, which is the rotation around the x axis.
@@ -226,30 +261,45 @@ public class Quaternion
     /// <returns>
     ///     the rotation around the x axis in degrees (between -90 and +90)
     /// </returns>
-    public float GetPitch() => GetPitchRad() * MathUtils.RADIANS_TO_DEGREES;
+    public float GetPitch()
+    {
+        return GetPitchRad() * MathUtils.RADIANS_TO_DEGREES;
+    }
 
     /// <summary>
     ///     Get the yaw euler angle in radians, which is the rotation around the y axis.
     ///     Requires that this quaternion is normalized.
     /// </summary>
     /// <returns> the rotation around the y axis in radians (between -PI and +PI) </returns>
-    public float GetYawRad() => GetGimbalPole() == 0
-        ? MathUtils.Atan2( 2f * ( ( Y * W ) + ( X * Z ) ), 1f - ( 2f * ( ( Y * Y ) + ( X * X ) ) ) )
-        : 0f;
+    public float GetYawRad()
+    {
+        return GetGimbalPole() == 0
+            ? MathUtils.Atan2( 2f * ( ( Y * W ) + ( X * Z ) ), 1f - ( 2f * ( ( Y * Y ) + ( X * X ) ) ) )
+            : 0f;
+    }
 
     /// <summary>
     ///     Get the yaw euler angle in degrees, which is the rotation around the y axis.
     ///     Requires that this quaternion is normalized.
     /// </summary>
     /// <returns> the rotation around the y axis in degrees (between -180 and +180) </returns>
-    public float GetYaw() => GetYawRad() * MathUtils.RADIANS_TO_DEGREES;
+    public float GetYaw()
+    {
+        return GetYawRad() * MathUtils.RADIANS_TO_DEGREES;
+    }
 
-    public static float Len2( float x, float y, float z, float w ) => ( x * x ) + ( y * y ) + ( z * z ) + ( w * w );
+    public static float Len2( float x, float y, float z, float w )
+    {
+        return ( x * x ) + ( y * y ) + ( z * z ) + ( w * w );
+    }
 
     /// <summary>
     ///     Returns the length of this quaternion without square root
     /// </summary>
-    public float Len2() => ( X * X ) + ( Y * Y ) + ( Z * Z ) + ( W * W );
+    public float Len2()
+    {
+        return ( X * X ) + ( Y * Y ) + ( Z * Z ) + ( W * W );
+    }
 
     /// <summary>
     ///     Normalizes this quaternion to unit length
@@ -457,23 +507,32 @@ public class Quaternion
     ///     Sets the quaternion to an identity Quaternion
     /// </summary>
     /// <returns> this quaternion for chaining </returns>
-    public Quaternion Idt() => Set( 0, 0, 0, 1 );
+    public Quaternion Idt()
+    {
+        return Set( 0, 0, 0, 1 );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> If this quaternion is an identity Quaternion </returns>
-    public bool ISIdentity() => MathUtils.IsZero( X )
-                             && MathUtils.IsZero( Y )
-                             && MathUtils.IsZero( Z )
-                             && MathUtils.IsEqual( W, 1f );
+    public bool ISIdentity()
+    {
+        return MathUtils.IsZero( X )
+            && MathUtils.IsZero( Y )
+            && MathUtils.IsZero( Z )
+            && MathUtils.IsEqual( W, 1f );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> If this quaternion is an identity Quaternion </returns>
-    public bool ISIdentity( float tolerance ) => MathUtils.IsZero( X, tolerance )
-                                              && MathUtils.IsZero( Y, tolerance )
-                                              && MathUtils.IsZero( Z, tolerance )
-                                              && MathUtils.IsEqual( W, 1f, tolerance );
+    public bool ISIdentity( float tolerance )
+    {
+        return MathUtils.IsZero( X, tolerance )
+            && MathUtils.IsZero( Y, tolerance )
+            && MathUtils.IsZero( Z, tolerance )
+            && MathUtils.IsEqual( W, 1f, tolerance );
+    }
 
     // todo : the setFromAxis(v3,float) method should replace the set(v3,float) method
     /// <summary>
@@ -482,7 +541,10 @@ public class Quaternion
     /// <param name="axis"> The axis </param>
     /// <param name="degrees"> The angle in degrees </param>
     /// <returns> This quaternion for chaining. </returns>
-    public Quaternion SetFromAxis( Vector3 axis, float degrees ) => SetFromAxis( axis.X, axis.Y, axis.Z, degrees );
+    public Quaternion SetFromAxis( Vector3 axis, float degrees )
+    {
+        return SetFromAxis( axis.X, axis.Y, axis.Z, degrees );
+    }
 
     /// <summary>
     ///     Sets the quaternion components from the given axis and angle around that axis.
@@ -490,7 +552,10 @@ public class Quaternion
     /// <param name="axis"> The axis </param>
     /// <param name="radians"> The angle in radians </param>
     /// <returns> This quaternion for chaining. </returns>
-    public Quaternion SetFromAxisRad( Vector3 axis, float radians ) => SetFromAxisRad( axis.X, axis.Y, axis.Z, radians );
+    public Quaternion SetFromAxisRad( Vector3 axis, float radians )
+    {
+        return SetFromAxisRad( axis.X, axis.Y, axis.Z, radians );
+    }
 
     /// <summary>
     ///     Sets the quaternion components from the given axis and angle around that axis.
@@ -500,7 +565,10 @@ public class Quaternion
     /// <param name="z"> Z direction of the axis </param>
     /// <param name="degrees"> The angle in degrees </param>
     /// <returns> This quaternion for chaining. </returns>
-    public Quaternion SetFromAxis( float x, float y, float z, float degrees ) => SetFromAxisRad( x, y, z, degrees * MathUtils.DEGREES_TO_RADIANS );
+    public Quaternion SetFromAxis( float x, float y, float z, float degrees )
+    {
+        return SetFromAxisRad( x, y, z, degrees * MathUtils.DEGREES_TO_RADIANS );
+    }
 
     /// <summary>
     ///     Sets the quaternion components from the given axis and angle around that axis.
@@ -531,44 +599,56 @@ public class Quaternion
     /// <summary>
     ///     Sets the Quaternion from the given matrix, optionally removing any scaling.
     /// </summary>
-    public Quaternion SetFromMatrix( bool normalizeAxes, Matrix4 matrix ) => SetFromAxes(
-        normalizeAxes,
-        matrix.val[ Matrix4.M00 ],
-        matrix.val[ Matrix4.M01 ],
-        matrix.val[ Matrix4.M02 ],
-        matrix.val[ Matrix4.M10 ],
-        matrix.val[ Matrix4.M11 ],
-        matrix.val[ Matrix4.M12 ],
-        matrix.val[ Matrix4.M20 ],
-        matrix.val[ Matrix4.M21 ],
-        matrix.val[ Matrix4.M22 ]
-        );
+    public Quaternion SetFromMatrix( bool normalizeAxes, Matrix4 matrix )
+    {
+        return SetFromAxes(
+            normalizeAxes,
+            matrix.val[ Matrix4.M00 ],
+            matrix.val[ Matrix4.M01 ],
+            matrix.val[ Matrix4.M02 ],
+            matrix.val[ Matrix4.M10 ],
+            matrix.val[ Matrix4.M11 ],
+            matrix.val[ Matrix4.M12 ],
+            matrix.val[ Matrix4.M20 ],
+            matrix.val[ Matrix4.M21 ],
+            matrix.val[ Matrix4.M22 ]
+            );
+    }
 
     /// <summary>
     ///     Sets the Quaternion from the given rotation matrix, which must not contain scaling.
     /// </summary>
-    public Quaternion SetFromMatrix( Matrix4 matrix ) => SetFromMatrix( false, matrix );
+    public Quaternion SetFromMatrix( Matrix4 matrix )
+    {
+        return SetFromMatrix( false, matrix );
+    }
 
     /// <summary>
     ///     Sets the Quaternion from the given matrix, optionally removing any scaling.
     /// </summary>
-    public Quaternion SetFromMatrix( bool normalizeAxes, Matrix3 matrix ) => SetFromAxes(
-        normalizeAxes,
-        matrix.val[ Matrix3.M00 ],
-        matrix.val[ Matrix3.M01 ],
-        matrix.val[ Matrix3.M02 ],
-        matrix.val[ Matrix3.M10 ],
-        matrix.val[ Matrix3.M11 ],
-        matrix.val[ Matrix3.M12 ],
-        matrix.val[ Matrix3.M20 ],
-        matrix.val[ Matrix3.M21 ],
-        matrix.val[ Matrix3.M22 ]
-        );
+    public Quaternion SetFromMatrix( bool normalizeAxes, Matrix3 matrix )
+    {
+        return SetFromAxes(
+            normalizeAxes,
+            matrix.val[ Matrix3.M00 ],
+            matrix.val[ Matrix3.M01 ],
+            matrix.val[ Matrix3.M02 ],
+            matrix.val[ Matrix3.M10 ],
+            matrix.val[ Matrix3.M11 ],
+            matrix.val[ Matrix3.M12 ],
+            matrix.val[ Matrix3.M20 ],
+            matrix.val[ Matrix3.M21 ],
+            matrix.val[ Matrix3.M22 ]
+            );
+    }
 
     /// <summary>
     ///     Sets the Quaternion from the given rotation matrix, which must not contain scaling.
     /// </summary>
-    public Quaternion SetFromMatrix( Matrix3 matrix ) => SetFromMatrix( false, matrix );
+    public Quaternion SetFromMatrix( Matrix3 matrix )
+    {
+        return SetFromMatrix( false, matrix );
+    }
 
     /// <summary>
     ///     Sets the Quaternion from the given x-, y- and z-axis which have to be orthonormal.
@@ -595,7 +675,10 @@ public class Quaternion
                                    float yz,
                                    float zx,
                                    float zy,
-                                   float zz ) => SetFromAxes( false, xx, xy, xz, yx, yy, yz, zx, zy, zz );
+                                   float zz )
+    {
+        return SetFromAxes( false, xx, xy, xz, yx, yy, yz, zx, zy, zz );
+    }
 
     /// <summary>
     ///     Sets the Quaternion from the given x-, y- and z-axis.
@@ -928,14 +1011,20 @@ public class Quaternion
                              float x2,
                              float y2,
                              float z2,
-                             float w2 ) => ( x1 * x2 ) + ( y1 * y2 ) + ( z1 * z2 ) + ( w1 * w2 );
+                             float w2 )
+    {
+        return ( x1 * x2 ) + ( y1 * y2 ) + ( z1 * z2 ) + ( w1 * w2 );
+    }
 
     /// <summary>
     ///     Get the dot product between this and the other quaternion (commutative).
     /// </summary>
     /// <param name="other"> the other quaternion. </param>
     /// <returns> the dot product of this and the other quaternion. </returns>
-    public float Dot( Quaternion other ) => ( X * other.X ) + ( Y * other.Y ) + ( Z * other.Z ) + ( W * other.W );
+    public float Dot( Quaternion other )
+    {
+        return ( X * other.X ) + ( Y * other.Y ) + ( Z * other.Z ) + ( W * other.W );
+    }
 
     /// <summary>
     ///     Get the dot product between this and the other quaternion (commutative).
@@ -945,7 +1034,10 @@ public class Quaternion
     /// <param name="z"> the z component of the other quaternion </param>
     /// <param name="w"> the w component of the other quaternion </param>
     /// <returns> the dot product of this and the other quaternion. </returns>
-    public float Dot( float x, float y, float z, float w ) => ( X * x ) + ( Y * y ) + ( Z * z ) + ( W * w );
+    public float Dot( float x, float y, float z, float w )
+    {
+        return ( X * x ) + ( Y * y ) + ( Z * z ) + ( W * w );
+    }
 
     /// <summary>
     ///     Multiplies the components of this quaternion with the given scalar.
@@ -975,7 +1067,10 @@ public class Quaternion
     /// </summary>
     /// <param name="axis"> vector which will receive the axis </param>
     /// <returns> the angle in degrees </returns>
-    public float GetAxisAngle( Vector3 axis ) => GetAxisAngleRad( axis ) * MathUtils.RADIANS_TO_DEGREES;
+    public float GetAxisAngle( Vector3 axis )
+    {
+        return GetAxisAngleRad( axis ) * MathUtils.RADIANS_TO_DEGREES;
+    }
 
     /// <summary>
     ///     Get the axis-angle representation of the rotation in radians. The supplied vector
@@ -1035,7 +1130,10 @@ public class Quaternion
     ///     </para>
     /// </summary>
     /// <returns> the angle in radians of the rotation </returns>
-    public float GetAngleRad() => ( float )( 2.0 * Math.Acos( W > 1 ? W / Len() : W ) );
+    public float GetAngleRad()
+    {
+        return ( float )( 2.0 * Math.Acos( W > 1 ? W / Len() : W ) );
+    }
 
     /// <summary>
     ///     Get the angle in degrees of the rotation this quaternion represents.
@@ -1046,7 +1144,10 @@ public class Quaternion
     ///     </para>
     /// </summary>
     /// <returns> the angle in degrees of the rotation </returns>
-    public float GetAngle() => GetAngleRad() * MathUtils.RADIANS_TO_DEGREES;
+    public float GetAngle()
+    {
+        return GetAngleRad() * MathUtils.RADIANS_TO_DEGREES;
+    }
 
     /// <summary>
     ///     Get the swing rotation and twist rotation for the specified axis. The twist
@@ -1108,7 +1209,10 @@ public class Quaternion
     /// <param name="twist">
     ///     will receive the twist rotation: the rotation around the specified axis
     /// </param>
-    public void GetSwingTwist( Vector3 axis, Quaternion swing, Quaternion twist ) => GetSwingTwist( axis.X, axis.Y, axis.Z, swing, twist );
+    public void GetSwingTwist( Vector3 axis, Quaternion swing, Quaternion twist )
+    {
+        GetSwingTwist( axis.X, axis.Y, axis.Z, swing, twist );
+    }
 
     /// <summary>
     ///     Get the angle in radians of the rotation around the specified axis.
@@ -1144,7 +1248,10 @@ public class Quaternion
     /// </summary>
     /// <param name="axis"> the normalized axis for which to get the angle </param>
     /// <returns> the angle in radians of the rotation around the specified axis </returns>
-    public float GetAngleAroundRad( Vector3 axis ) => GetAngleAroundRad( axis.X, axis.Y, axis.Z );
+    public float GetAngleAroundRad( Vector3 axis )
+    {
+        return GetAngleAroundRad( axis.X, axis.Y, axis.Z );
+    }
 
     /// <summary>
     ///     Get the angle in degrees of the rotation around the specified axis.
@@ -1154,12 +1261,18 @@ public class Quaternion
     /// <param name="axisY"> the y component of the normalized axis for which to get the angle </param>
     /// <param name="axisZ"> the z component of the normalized axis for which to get the angle </param>
     /// <returns> the angle in degrees of the rotation around the specified axis </returns>
-    public float GetAngleAround( float axisX, float axisY, float axisZ ) => GetAngleAroundRad( axisX, axisY, axisZ ) * MathUtils.RADIANS_TO_DEGREES;
+    public float GetAngleAround( float axisX, float axisY, float axisZ )
+    {
+        return GetAngleAroundRad( axisX, axisY, axisZ ) * MathUtils.RADIANS_TO_DEGREES;
+    }
 
     /// <summary>
     ///     Get the angle in degrees of the rotation around the specified axis. The axis must be normalized.
     /// </summary>
     /// <param name="axis"> the normalized axis for which to get the angle </param>
     /// <returns> the angle in degrees of the rotation around the specified axis </returns>
-    public float GetAngleAround( Vector3 axis ) => GetAngleAround( axis.X, axis.Y, axis.Z );
+    public float GetAngleAround( Vector3 axis )
+    {
+        return GetAngleAround( axis.X, axis.Y, axis.Z );
+    }
 }

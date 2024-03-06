@@ -41,7 +41,6 @@ namespace LibGDXSharp.LibCore.Utils.Collections;
 ///         during iteration.
 ///     </para>
 /// </summary>
-[PublicAPI]
 public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 {
     private T[]? _recycled;
@@ -81,10 +80,16 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     }
 
     /// <inheritdoc />
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
     /// <inheritdoc />
-    public IEnumerator< T > GetEnumerator() => new SnapshotEnumerator< T >( Items );
+    public IEnumerator< T > GetEnumerator()
+    {
+        return new SnapshotEnumerator< T >( Items );
+    }
 
     /// <summary>
     ///     Takes a snapshot of the current array state and then
@@ -501,7 +506,10 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     }
 
     /// <inheritdoc />
-    public override int GetHashCode() => base.GetHashCode();
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 
     public override bool Equals( object? obj )
     {
@@ -549,7 +557,10 @@ public class SnapshotEnumerator<T> : IEnumerator< T >
     private readonly T[] _array;
     private          int _position = -1;
 
-    public SnapshotEnumerator( T[] array ) => _array = array;
+    public SnapshotEnumerator( T[] array )
+    {
+        _array = array;
+    }
 
     /// <inheritdoc />
     public bool MoveNext()
@@ -579,7 +590,7 @@ public class SnapshotEnumerator<T> : IEnumerator< T >
             }
             catch ( NullReferenceException )
             {
-                Core.Gdx.App.Error( "SnapshotArrayEnumerator", "NullReference encountered!" );
+                Gdx.App.Error( "SnapshotArrayEnumerator", "NullReference encountered!" );
 
                 throw;
             }

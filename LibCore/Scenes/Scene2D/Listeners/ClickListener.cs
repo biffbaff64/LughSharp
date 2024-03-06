@@ -59,7 +59,10 @@ public class ClickListener : InputListener
 
     /// <summary>
     /// </summary>
-    public ClickListener( int button ) => Button = button;
+    public ClickListener( int button )
+    {
+        Button = button;
+    }
 
     public float TouchDownX     { get; set; } = -1;
     public float TouchDownY     { get; set; } = -1;
@@ -98,6 +101,7 @@ public class ClickListener : InputListener
 
             return false;
         }
+
         // ----------
         set
         {
@@ -224,7 +228,6 @@ public class ClickListener : InputListener
     ///     If a touch down is being monitored, the drag and touch up events are
     ///     ignored until the next touch up.
     /// </summary>
-    [PublicAPI]
     public virtual void Cancel()
     {
         if ( PressedPointer == -1 )
@@ -270,7 +273,10 @@ public class ClickListener : InputListener
     /// <summary>
     ///     Returns true if a touch is within the tap square.
     /// </summary>
-    public bool InTapSquare() => !TouchDownX.Equals( -1 );
+    public bool InTapSquare()
+    {
+        return !TouchDownX.Equals( -1 );
+    }
 
     /// <summary>
     ///     The tap square will no longer be used for the current touch.

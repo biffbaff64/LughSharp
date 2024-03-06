@@ -27,5 +27,8 @@ namespace LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
 
 public class InternalFileHandleResolver : IFileHandleResolver
 {
-    public FileInfo Resolve( string fileName ) => Core.Gdx.Files.Internal( fileName );
+    public FileInfo Resolve( string fileName )
+    {
+        return Gdx.Files.Internal( fileName );
+    }
 }

@@ -104,12 +104,15 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
         skin.Load( file );
     }
 
-    private static Skin NewSkin( TextureAtlas atlas ) => new( atlas );
+    private static Skin NewSkin( TextureAtlas atlas )
+    {
+        return new Skin( atlas );
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    [PublicAPI]
+
     public class SkinLoaderParameters : AssetLoaderParameters
     {
         public readonly Dictionary< string, object >? resources;

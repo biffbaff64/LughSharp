@@ -163,7 +163,6 @@ namespace LibGDXSharp.LibCore.Utils.Buffers;
 ///         </code>
 ///     </para>
 /// </summary>
-[PublicAPI]
 public abstract class Buffer
 {
     /// <summary>
@@ -190,7 +189,7 @@ public abstract class Buffer
     {
         Setup( mark, pos, lim, cap );
     }
-    
+
     private void Setup( int mark, int pos, int lim, int cap )
     {
         if ( cap < 0 )
@@ -423,13 +422,19 @@ public abstract class Buffer
     /// <summary>
     ///     Returns the number of elements between the current position and the limit.
     /// </summary>
-    public virtual int Remaining() => Limit - Position;
+    public virtual int Remaining()
+    {
+        return Limit - Position;
+    }
 
     /// <summary>
     ///     Returns <tt>true</tt> if, and only if, there is at least one element
     ///     remaining in this buffer
     /// </summary>
-    public virtual bool HasRemaining() => Position < Limit;
+    public virtual bool HasRemaining()
+    {
+        return Position < Limit;
+    }
 
     #region abstract methods
 
@@ -593,9 +598,15 @@ public abstract class Buffer
         Capacity = 0;
     }
 
-    internal int MarkValue() => _mark;
+    internal int MarkValue()
+    {
+        return _mark;
+    }
 
-    internal void DiscardMark() => _mark = -1;
+    internal void DiscardMark()
+    {
+        _mark = -1;
+    }
 
     internal static void CheckBounds( int off, int len, int size )
     {

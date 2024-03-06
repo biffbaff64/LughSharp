@@ -83,7 +83,6 @@ namespace LibGDXSharp.LibCore.Utils.Buffers;
 ///         </code>
 ///     </para>
 /// </summary>
-[PublicAPI]
 public abstract class CharBuffer : Buffer
 {
     protected readonly int offset;
@@ -168,7 +167,10 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     /// <param name="array"> The array that will back this buffer </param>
     /// <returns> The new char buffer </returns>
-    public static CharBuffer Wrap( char[] array ) => Wrap( array, 0, array.Length );
+    public static CharBuffer Wrap( char[] array )
+    {
+        return Wrap( array, 0, array.Length );
+    }
 
     /// <summary>
     ///     Attempts to read characters into the specified character buffer. The
@@ -268,7 +270,10 @@ public abstract class CharBuffer : Buffer
     ///     The character sequence from which the new character buffer is to be created
     /// </param>
     /// <returns> The new character buffer </returns>
-    public static CharBuffer Wrap( string csq ) => Wrap( csq, 0, csq.Length );
+    public static CharBuffer Wrap( string csq )
+    {
+        return Wrap( csq, 0, csq.Length );
+    }
 
     // ------------------------------------------------------------------------
 
@@ -350,7 +355,10 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="GdxRuntimeException">
     ///     If there are fewer than <tt>length</tt> chars remaining in this buffer
     /// </exception>
-    public CharBuffer Get( char[] dst ) => Get( dst, 0, dst.Length );
+    public CharBuffer Get( char[] dst )
+    {
+        return Get( dst, 0, dst.Length );
+    }
 
     #endregion Bulk get operations
 
@@ -496,7 +504,10 @@ public abstract class CharBuffer : Buffer
     /// <returns> This buffer </returns>
     /// <exception cref="GdxRuntimeException"> If there is insufficient space in this buffer </exception>
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
-    public CharBuffer Put( char[] src ) => Put( src, 0, src.Length );
+    public CharBuffer Put( char[] src )
+    {
+        return Put( src, 0, src.Length );
+    }
 
     /// <summary>
     ///     Relative bulk <i>put</i> method  <i>(optional operation)</i>.
@@ -581,7 +592,10 @@ public abstract class CharBuffer : Buffer
     ///     If there is insufficient space in this buffer
     /// </exception>
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
-    public CharBuffer Put( string src ) => Put( src, 0, src.Length );
+    public CharBuffer Put( string src )
+    {
+        return Put( src, 0, src.Length );
+    }
 
     #endregion Bulk put operations
 
@@ -758,7 +772,10 @@ public abstract class CharBuffer : Buffer
     ///     <tt>true</tt> if, and only if, this buffer is backed by an array and
     ///     is not read-only
     /// </returns>
-    public override bool HasArray() => ( _hb != null ) && !IsReadOnly;
+    public override bool HasArray()
+    {
+        return ( _hb != null ) && !IsReadOnly;
+    }
 
     /// <summary>
     ///     Returns the char array that backs this buffer <i>(optional operation)</i>.
@@ -902,7 +919,10 @@ public abstract class CharBuffer : Buffer
         return true;
     }
 
-    private static bool Equals( char x, char y ) => x == y;
+    private static bool Equals( char x, char y )
+    {
+        return x == y;
+    }
 
     /// <summary>
     ///     Compares this buffer to another.
@@ -946,7 +966,10 @@ public abstract class CharBuffer : Buffer
     ///     </para>
     /// </summary>
     /// <returns> The specified string </returns>
-    public override string ToString() => ToString( Position, Limit );
+    public override string ToString()
+    {
+        return ToString( Position, Limit );
+    }
 
     // ------------------------------------------------------------------------
 
@@ -974,7 +997,10 @@ public abstract class CharBuffer : Buffer
     ///     </para>
     /// </summary>
     /// <returns> The length of this character buffer </returns>
-    public int Length() => Remaining();
+    public int Length()
+    {
+        return Remaining();
+    }
 
     /// <summary>
     ///     Reads the character at the given index relative to the current position.
@@ -987,7 +1013,10 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If the preconditions on <tt>index</tt> do not hold
     /// </exception>
-    public char CharAt( int index ) => Get( Position + CheckIndex( index, 1 ) );
+    public char CharAt( int index )
+    {
+        return Get( Position + CheckIndex( index, 1 ) );
+    }
 
     /// <summary>
     ///     Creates a new character buffer that represents the specified subsequence
@@ -1045,7 +1074,10 @@ public abstract class CharBuffer : Buffer
     ///     If there is insufficient space in this buffer
     /// </exception>
     /// <exception cref="GdxRuntimeException">If this buffer is read-only</exception>
-    public CharBuffer Append( string? csq ) => csq == null ? Put( "null" ) : Put( csq );
+    public CharBuffer Append( string? csq )
+    {
+        return csq == null ? Put( "null" ) : Put( csq );
+    }
 
     /// <summary>
     ///     Appends a subsequence of the  specified character sequence  to this
@@ -1092,7 +1124,10 @@ public abstract class CharBuffer : Buffer
     ///     If there is insufficient space in this buffer
     /// </exception>
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
-    public CharBuffer Append( char c ) => Put( c );
+    public CharBuffer Append( char c )
+    {
+        return Put( c );
+    }
 
     #endregion Methods to support IAppendable
 }

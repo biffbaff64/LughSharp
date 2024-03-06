@@ -42,9 +42,15 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
     {
     }
 
-    public SpriteDrawable( Sprite sprite ) => Sprite = sprite;
+    public SpriteDrawable( Sprite sprite )
+    {
+        Sprite = sprite;
+    }
 
-    public SpriteDrawable( SpriteDrawable? drawable ) : base( drawable ) => Sprite = drawable?.Sprite;
+    public SpriteDrawable( SpriteDrawable? drawable ) : base( drawable )
+    {
+        Sprite = drawable?.Sprite;
+    }
 
     public Sprite? Sprite
     {

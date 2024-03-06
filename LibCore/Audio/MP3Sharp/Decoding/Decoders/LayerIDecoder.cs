@@ -30,7 +30,6 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 /// <summary>
 ///     Implements decoding of MPEG Audio Layer I frames.
 /// </summary>
-[PublicAPI]
 public class LayerIDecoder : IFrameDecoder
 {
     protected readonly Crc16? crc = new();

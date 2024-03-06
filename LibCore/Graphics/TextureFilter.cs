@@ -118,13 +118,25 @@ public class TextureFilter
 
     public int GLEnum { get; }
 
-    public bool IsMipMap() => ( GLEnum != IGL20.GL_NEAREST ) && ( GLEnum != IGL20.GL_LINEAR );
+    public bool IsMipMap()
+    {
+        return ( GLEnum != IGL20.GL_NEAREST ) && ( GLEnum != IGL20.GL_LINEAR );
+    }
 
-    public static TextureFilter[] Values() => ValueList.ToArray();
+    public static TextureFilter[] Values()
+    {
+        return ValueList.ToArray();
+    }
 
-    public int Ordinal() => _ordinalValue;
+    public int Ordinal()
+    {
+        return _ordinalValue;
+    }
 
-    public override string ToString() => _nameValue;
+    public override string ToString()
+    {
+        return _nameValue;
+    }
 
     public static TextureFilter ValueOf( string name )
     {

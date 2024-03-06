@@ -46,7 +46,10 @@ public class ByteOrder
     public readonly static ByteOrder LittleEndian = new( "LittleEndian" );
     private readonly string _name;
 
-    private ByteOrder( string name ) => _name = name;
+    private ByteOrder( string name )
+    {
+        _name = name;
+    }
 
     /// <summary>
     ///     Constructs a string describing this object.
@@ -56,5 +59,8 @@ public class ByteOrder
     ///     </para>
     /// </summary>
     /// <returns>The specified string</returns>
-    public override string ToString() => _name;
+    public override string ToString()
+    {
+        return _name;
+    }
 }

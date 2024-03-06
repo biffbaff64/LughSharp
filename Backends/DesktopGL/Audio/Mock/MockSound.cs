@@ -30,16 +30,28 @@ namespace LibGDXSharp.Backends.DesktopGL.Audio.Mock;
 public class MockSound : ISound
 {
     /// <inheritdoc />
-    public long Play( float volume ) => 0;
+    public long Play( float volume )
+    {
+        return 0;
+    }
 
     /// <inheritdoc />
-    public long Play( float volume, float pitch, float pan ) => 0;
+    public long Play( float volume, float pitch, float pan )
+    {
+        return 0;
+    }
 
     /// <inheritdoc />
-    public long Loop( float volume ) => 0;
+    public long Loop( float volume )
+    {
+        return 0;
+    }
 
     /// <inheritdoc />
-    public long Loop( float volume, float pitch, float pan ) => 0;
+    public long Loop( float volume, float pitch, float pan )
+    {
+        return 0;
+    }
 
     /// <inheritdoc />
     public void Stop()
@@ -92,8 +104,14 @@ public class MockSound : ISound
     }
 
     /// <inheritdoc />
-    public long Play() => 0;
+    public long Play()
+    {
+        return 0;
+    }
 
     /// <inheritdoc />
-    public long Loop() => 0;
+    public long Loop()
+    {
+        return 0;
+    }
 }

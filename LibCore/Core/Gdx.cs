@@ -31,7 +31,6 @@ namespace LibGDXSharp.LibCore.Core;
 ///     Environment class holding references to the Application,
 ///     Graphics, Audio, Files and Input instances.
 /// </summary>
-[PublicAPI]
 public static class Gdx
 {
     private static IApplication? _app      = null;
@@ -63,14 +62,14 @@ public static class Gdx
     ///     </para>
     /// </summary>
     /// <seealso cref="https://en.wiktionary.org/wiki/god_mode" />
-    [PublicAPI]
+
     public static bool GodMode { get; set; } = false;
 
     /// <summary>
     ///     Test mode flag which, when TRUE, means that all developer options are enabled.
     ///     This must, however, mean that software with this enabled cannot be published.
     /// </summary>
-    [PublicAPI]
+
     public static bool DevMode { get; set; } = false;
 
     // ------------------------------------------------------------------------

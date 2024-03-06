@@ -125,11 +125,23 @@ public class GLFrameBufferBuilder<TU> where TU : GLFrameBuffer< GLTexture >
         return this;
     }
 
-    public GLFrameBufferBuilder< TU > AddBasicDepthRenderBuffer() => AddDepthRenderBuffer( IGL20.GL_DEPTH_COMPONENT16 );
+    public GLFrameBufferBuilder< TU > AddBasicDepthRenderBuffer()
+    {
+        return AddDepthRenderBuffer( IGL20.GL_DEPTH_COMPONENT16 );
+    }
 
-    public GLFrameBufferBuilder< TU > AddBasicStencilRenderBuffer() => AddStencilRenderBuffer( IGL20.GL_STENCIL_INDEX8 );
+    public GLFrameBufferBuilder< TU > AddBasicStencilRenderBuffer()
+    {
+        return AddStencilRenderBuffer( IGL20.GL_STENCIL_INDEX8 );
+    }
 
-    public GLFrameBufferBuilder< TU > AddBasicStencilDepthPackedRenderBuffer() => AddStencilDepthPackedRenderBuffer( IGL30.GL_DEPTH24_STENCIL8 );
+    public GLFrameBufferBuilder< TU > AddBasicStencilDepthPackedRenderBuffer()
+    {
+        return AddStencilDepthPackedRenderBuffer( IGL30.GL_DEPTH24_STENCIL8 );
+    }
 
-    public virtual object Build() => throw new GdxRuntimeException( "This method must be overriden by derived class(es)" );
+    public virtual object Build()
+    {
+        throw new GdxRuntimeException( "This method must be overriden by derived class(es)" );
+    }
 }

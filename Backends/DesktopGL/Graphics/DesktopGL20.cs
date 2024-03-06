@@ -29,7 +29,6 @@ using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.Backends.DesktopGL.Graphics;
 
-[PublicAPI]
 public unsafe class DesktopGL20 : IGL20
 {
     /// <inheritdoc cref="GL.glBlendColor(float,float,float,float)" />

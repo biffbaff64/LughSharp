@@ -152,9 +152,9 @@ public class FacedCubemapData : ICubemapData
                     disposePixmap = true;
                 }
 
-                Core.Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 1 );
+                Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 1 );
 
-                Core.Gdx.GL.GLTexImage2D(
+                Gdx.GL.GLTexImage2D(
                     IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                     0,
                     pixmap.GLInternalFormat,
@@ -277,7 +277,10 @@ public class FacedCubemapData : ICubemapData
     ///     Returns The <see cref="ITextureData" /> for the specified side.
     ///     The return value can be null if the cubemap is incomplete.
     /// </summary>
-    public ITextureData? TextureData( Cubemap.CubemapSide side ) => _data?[ side.Index ];
+    public ITextureData? TextureData( Cubemap.CubemapSide side )
+    {
+        return _data?[ side.Index ];
+    }
 
     /// <summary>
     ///     Return True if all sides of this cubemap are set, false otherwise.

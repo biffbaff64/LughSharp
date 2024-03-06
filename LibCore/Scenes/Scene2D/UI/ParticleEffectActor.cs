@@ -111,7 +111,10 @@ public class ParticleEffectActor : Actor, IDisposable
         ParticleEffect.Start();
     }
 
-    public bool isResetOnStart() => _resetOnStart;
+    public bool isResetOnStart()
+    {
+        return _resetOnStart;
+    }
 
     public ParticleEffectActor setResetOnStart( bool resetOnStart )
     {
@@ -134,9 +137,15 @@ public class ParticleEffectActor : Actor, IDisposable
         ParticleEffect.ScaleEffect( ScaleX, ScaleY, ScaleY );
     }
 
-    public void Cancel() => IsRunning = true;
+    public void Cancel()
+    {
+        IsRunning = true;
+    }
 
-    public void AllowCompletion() => ParticleEffect.AllowCompletion();
+    public void AllowCompletion()
+    {
+        ParticleEffect.AllowCompletion();
+    }
 
     // ------------------------------------------------------------------------
 

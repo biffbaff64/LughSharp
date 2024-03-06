@@ -65,10 +65,15 @@ public class GlyphLayout : IPoolable
     {
     }
 
-    public GlyphLayout( BitmapFont font, string str ) => SetText( font, str );
+    public GlyphLayout( BitmapFont font, string str )
+    {
+        SetText( font, str );
+    }
 
     public GlyphLayout( BitmapFont font, string str, Color color, float targetWidth, int halign, bool wrap )
-        => SetText( font, str, color, targetWidth, halign, wrap );
+    {
+        SetText( font, str, color, targetWidth, halign, wrap );
+    }
 
     public GlyphLayout( BitmapFont font,
                         string str,
@@ -78,7 +83,10 @@ public class GlyphLayout : IPoolable
                         float targetWidth,
                         int halign,
                         bool wrap,
-                        string truncate ) => SetText( font, str, start, end, color, targetWidth, halign, wrap, truncate );
+                        string truncate )
+    {
+        SetText( font, str, start, end, color, targetWidth, halign, wrap, truncate );
+    }
 
     public List< GlyphRun > Runs   { get; set; } = new( 1 );
     public float            Width  { get; set; }
@@ -101,14 +109,19 @@ public class GlyphLayout : IPoolable
     ///     Calls <see cref="SetText(BitmapFont, string, int, int, Color, float, int, bool, string)" />
     ///     with the whole string, the font's current color, and no alignment or wrapping.
     /// </summary>
-    public void SetText( BitmapFont font, string str ) => SetText( font, str, 0, str.Length, font.GetColor(), 0, Align.LEFT, false, null );
+    public void SetText( BitmapFont font, string str )
+    {
+        SetText( font, str, 0, str.Length, font.GetColor(), 0, Align.LEFT, false, null );
+    }
 
     /// <summary>
     ///     Calls <see cref="SetText(BitmapFont, string, int, int, Color, float, int, bool, string)" />
     ///     with the whole string and no truncation.
     /// </summary>
     public void SetText( BitmapFont font, string str, Color color, float targetWidth, int halign, bool wrap )
-        => SetText( font, str, 0, str.Length, color, targetWidth, halign, wrap, null );
+    {
+        SetText( font, str, 0, str.Length, color, targetWidth, halign, wrap, null );
+    }
 
     /// <summary>
     /// </summary>

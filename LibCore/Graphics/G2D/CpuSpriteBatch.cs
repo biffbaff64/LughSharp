@@ -38,7 +38,6 @@ namespace LibGDXSharp.LibCore.Graphics.G2D;
 /// </summary>
 /// <see cref="SpriteBatch.RenderCalls" />
 /// <see cref="Group.Transform" />
-[PublicAPI]
 public class CpuSpriteBatch : SpriteBatch
 {
     private readonly Affine2 _adjustAffine  = new();
@@ -95,7 +94,10 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    public Matrix4 GetTransformMatrix() => _adjustNeeded ? _virtualMatrix : TransformMatrix;
+    public Matrix4 GetTransformMatrix()
+    {
+        return _adjustNeeded ? _virtualMatrix : TransformMatrix;
+    }
 
     /// <summary>
     ///     Sets the transform matrix to be used by this Batch. Even if this is called
@@ -497,8 +499,8 @@ public class CpuSpriteBatch : SpriteBatch
                                float height,
                                float scaleX,
                                float scaleY,
-                               float rotation ) =>
-
+                               float rotation )
+    {
         // v must be flipped
         DrawAdjustedUV(
             region.Texture,
@@ -518,6 +520,7 @@ public class CpuSpriteBatch : SpriteBatch
             false,
             false
             );
+    }
 
     private void DrawAdjusted( Texture texture,
                                float x,

@@ -48,7 +48,10 @@ public class WindowedMean
     ///     been added.
     /// </summary>
     /// <param name="windowSize">size of the sample window</param>
-    public WindowedMean( int windowSize ) => _values = new float[ windowSize ];
+    public WindowedMean( int windowSize )
+    {
+        _values = new float[ windowSize ];
+    }
 
     /// <summary>
     ///     returns the mean of the samples added to this instance.
@@ -166,7 +169,10 @@ public class WindowedMean
     /// <summary>
     /// </summary>
     /// <returns> whether the value returned will be meaningful</returns>
-    public virtual bool HasEnoughData() => _addedValues >= _values.Length;
+    public virtual bool HasEnoughData()
+    {
+        return _addedValues >= _values.Length;
+    }
 
     /// <summary>
     ///     clears this WindowedMean. The class will only return meaningful values

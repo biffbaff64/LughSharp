@@ -42,7 +42,10 @@ public class CircleMapObject : MapObject
     /// <param name="x">X coordinate</param>
     /// <param name="y">Y coordinate</param>
     /// <param name="radius">Radius of the circle object.</param>
-    public CircleMapObject( float x, float y, float radius ) => Circle = new Circle( x, y, radius );
+    public CircleMapObject( float x, float y, float radius )
+    {
+        Circle = new Circle( x, y, radius );
+    }
 
     public Circle Circle { get; set; }
 }

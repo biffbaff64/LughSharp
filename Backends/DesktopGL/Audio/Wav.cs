@@ -66,7 +66,10 @@ public class Wav
             }
         }
 
-        public override void Reset() => _input = null;
+        public override void Reset()
+        {
+            _input = null;
+        }
     }
 
     public class Sound : OpenALSound

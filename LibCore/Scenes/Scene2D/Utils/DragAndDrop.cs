@@ -92,9 +92,15 @@ public class DragAndDrop
         source.Actor.RemoveCaptureListener( dragListener! );
     }
 
-    public void AddTarget( DragTarget target ) => _targets.Add( target );
+    public void AddTarget( DragTarget target )
+    {
+        _targets.Add( target );
+    }
 
-    public void RemoveTarget( DragTarget target ) => _targets.Remove( target );
+    public void RemoveTarget( DragTarget target )
+    {
+        _targets.Remove( target );
+    }
 
     /// <summary>
     ///     Removes all targets and sources.
@@ -134,7 +140,10 @@ public class DragAndDrop
     /// <summary>
     ///     Sets the distance a touch must travel before being considered a drag.
     /// </summary>
-    public void SetTapSquareSize( float halfTapSquareSize ) => _tapSquareSize = halfTapSquareSize;
+    public void SetTapSquareSize( float halfTapSquareSize )
+    {
+        _tapSquareSize = halfTapSquareSize;
+    }
 
     public void SetDragActorPosition( float dragActorX, float dragActorY )
     {
@@ -154,13 +163,19 @@ public class DragAndDrop
         _touchOffsetY = touchOffsetY;
     }
 
-    public bool IsDragging() => DragPayload != null;
+    public bool IsDragging()
+    {
+        return DragPayload != null;
+    }
 
     /// <summary>
     ///     Returns true if a drag is in progress and the <see cref="DragTime" />"
     ///     has elapsed since the drag started.
     /// </summary>
-    public bool IsDragValid() => ( DragPayload != null ) && ( TimeUtils.Millis() >= _dragValidTime );
+    public bool IsDragValid()
+    {
+        return ( DragPayload != null ) && ( TimeUtils.Millis() >= _dragValidTime );
+    }
 
     // ------------------------------------------------------------------------
 
@@ -418,7 +433,10 @@ public class DragAndDrop
         ///     are in the source's local coordinate system.
         /// </summary>
         /// <returns> If null the drag will not affect any targets. </returns>
-        public virtual Payload? DragStart( InputEvent ev, float x, float y, int pointer ) => default( Payload? );
+        public virtual Payload? DragStart( InputEvent ev, float x, float y, int pointer )
+        {
+            return default( Payload? );
+        }
 
         /// <summary>
         ///     Called repeatedly during a drag which started on this source.

@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Utils;
 
-[PublicAPI]
 public class DataInput : BinaryReader
 {
     private char[] _chars = new char[ 32 ];

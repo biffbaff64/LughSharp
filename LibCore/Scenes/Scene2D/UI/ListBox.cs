@@ -61,7 +61,10 @@ public class ListBox<T> : Widget
     {
     }
 
-    public ListBox( ListStyle style ) => Create( style );
+    public ListBox( ListStyle style )
+    {
+        Create( style );
+    }
 
     public RectangleShape?      CullingArea  { get; set; }
     public InputListener?       KeyListener  { get; set; }
@@ -268,7 +271,10 @@ public class ListBox<T> : Widget
     /// <summary>
     ///     Returns the first selected item, or null.
     /// </summary>
-    public T? GetSelected() => Selection!.First();
+    public T? GetSelected()
+    {
+        return Selection!.First();
+    }
 
     /// <summary>
     ///     Sets the selection to only the passed item, if it is a possible choice.
@@ -322,9 +328,15 @@ public class ListBox<T> : Widget
         }
     }
 
-    public T? GetOverItem() => _overIndex == -1 ? default( T? ) : Items![ _overIndex ];
+    public T? GetOverItem()
+    {
+        return _overIndex == -1 ? default( T? ) : Items![ _overIndex ];
+    }
 
-    public T? GetPressedItem() => _pressedIndex == -1 ? default( T? ) : Items![ _pressedIndex ];
+    public T? GetPressedItem()
+    {
+        return _pressedIndex == -1 ? default( T? ) : Items![ _pressedIndex ];
+    }
 
     public T? GetItemAt( float y )
     {
@@ -427,7 +439,10 @@ public class ListBox<T> : Widget
         InvalidateHierarchy();
     }
 
-    public string ToString( T? obj ) => obj?.ToString() ?? string.Empty;
+    public string ToString( T? obj )
+    {
+        return obj?.ToString() ?? string.Empty;
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -551,7 +566,10 @@ public class ListBox<T> : Widget
     {
         private readonly ListBox< T > _parent;
 
-        public ListInputListener( ListBox< T > lb ) => _parent = lb;
+        public ListInputListener( ListBox< T > lb )
+        {
+            _parent = lb;
+        }
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
@@ -598,7 +616,10 @@ public class ListBox<T> : Widget
             _parent._pressedIndex = -1;
         }
 
-        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer ) => _parent._overIndex = _parent.GetItemIndexAt( y );
+        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
+        {
+            _parent._overIndex = _parent.GetItemIndexAt( y );
+        }
 
         public override bool MouseMoved( InputEvent? ev, float x, float y )
         {
@@ -629,7 +650,10 @@ public class ListBox<T> : Widget
     /// </summary>
     public class ListStyle
     {
-        public ListStyle() => Font = new BitmapFont();
+        public ListStyle()
+        {
+            Font = new BitmapFont();
+        }
 
         public ListStyle( BitmapFont font, Color fontColorSelected, Color fontColorUnselected, IDrawable selection )
         {

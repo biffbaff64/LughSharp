@@ -15,15 +15,15 @@
         <LangVersion>11</LangVersion>
 
         <IsWindows
-            Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">
+                Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">
             true
         </IsWindows>
         <IsOSX
-            Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">
+                Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">
             true
         </IsOSX>
         <IsLinux
-            Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+                Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
             true
         </IsLinux>
         <PackageProjectUrl>https://github.com/biffbaff64/LibGDXSharp</PackageProjectUrl>
@@ -68,21 +68,21 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     </PropertyGroup>
-    
+
     <ItemGroup>
-        <PackageReference Include="DotGLFW" Version="1.0.2" />
-        <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
-        <PackageReference Include="RestSharp" Version="110.2.0" />
-        <PackageReference Include="SharpZipLib" Version="1.4.2" />
-        <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-        <PackageReference Include="System.IO.Hashing" Version="7.0.0" />
-        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+        <PackageReference Include="DotGLFW" Version="1.0.2"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2023.2.0"/>
+        <PackageReference Include="RestSharp" Version="110.2.0"/>
+        <PackageReference Include="SharpZipLib" Version="1.4.2"/>
+        <PackageReference Include="System.Drawing.Common" Version="7.0.0"/>
+        <PackageReference Include="System.IO.Hashing" Version="7.0.0"/>
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="packages\" />
+        <Folder Include="packages\"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -90,9 +90,9 @@
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>LocalResources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
-        <EmbeddedResource Remove="GDXExtensions\**" />
-        <EmbeddedResource Remove="GDXBackends\**" />
-        <EmbeddedResource Remove="DeleteCandidates\**" />
+        <EmbeddedResource Remove="GDXExtensions\**"/>
+        <EmbeddedResource Remove="GDXBackends\**"/>
+        <EmbeddedResource Remove="DeleteCandidates\**"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -101,15 +101,15 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>LocalResources.resx</DependentUpon>
         </Compile>
-        <Compile Remove="GDXExtensions\**" />
-        <Compile Remove="GDXBackends\**" />
-        <Compile Remove="DeleteCandidates\**" />
+        <Compile Remove="GDXExtensions\**"/>
+        <Compile Remove="GDXBackends\**"/>
+        <Compile Remove="DeleteCandidates\**"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="GDXExtensions\**" />
-        <None Remove="GDXBackends\**" />
-        <None Remove="DeleteCandidates\**" />
+        <None Remove="GDXExtensions\**"/>
+        <None Remove="GDXBackends\**"/>
+        <None Remove="DeleteCandidates\**"/>
     </ItemGroup>
 
 </Project>

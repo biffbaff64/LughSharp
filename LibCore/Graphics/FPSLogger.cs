@@ -30,7 +30,6 @@ namespace LibGDXSharp.LibCore.Graphics;
 ///     Just invoke the Log() method in your rendering method. The output
 ///     will be logged once per second.
 /// </summary>
-[PublicAPI]
 public class FPSLogger
 {
     private readonly int  _bound;
@@ -51,11 +50,11 @@ public class FPSLogger
 
         if ( ( nanoTime - _startTime ) > 1000000000 ) // 1,000,000,000ns == one second
         {
-            var fps = Core.Gdx.Graphics.GetFramesPerSecond();
+            var fps = Gdx.Graphics.GetFramesPerSecond();
 
             if ( fps < _bound )
             {
-                Core.Gdx.App.Log( "FPSLogger", "fps: " + fps );
+                Gdx.App.Log( "FPSLogger", "fps: " + fps );
 
                 _startTime = nanoTime;
             }

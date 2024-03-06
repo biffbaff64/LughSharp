@@ -35,7 +35,10 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     {
     }
 
-    public CatmullRomSpline( T[] controlPoints, bool continuous ) => Set( controlPoints, continuous );
+    public CatmullRomSpline( T[] controlPoints, bool continuous )
+    {
+        Set( controlPoints, continuous );
+    }
 
     public T[]  ControlPoints { get; set; } = default( T[] )!;
     public bool Continuous    { get; set; }
@@ -61,9 +64,15 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         return DerivativeAt( outp, i, u );
     }
 
-    public float Approximate( in T v ) => Approximate( v, Nearest( v ) );
+    public float Approximate( in T v )
+    {
+        return Approximate( v, Nearest( v ) );
+    }
 
-    public float Locate( T v ) => Approximate( v );
+    public float Locate( T v )
+    {
+        return Approximate( v );
+    }
 
     public float ApproxLength( int samples )
     {
@@ -102,31 +111,40 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     /// <summary>
     /// </summary>
     /// <returns> The value of the spline at position u of the specified span. </returns>
-    public T ValueAt( T outp, int span, float u ) => Calculate(
-        outp,
-        Continuous ? span : span + 1,
-        u,
-        ControlPoints,
-        Continuous,
-        _tmp
-        );
+    public T ValueAt( T outp, int span, float u )
+    {
+        return Calculate(
+            outp,
+            Continuous ? span : span + 1,
+            u,
+            ControlPoints,
+            Continuous,
+            _tmp
+            );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> The derivative of the spline at position u of the specified span </returns>
-    public T DerivativeAt( T outp, int span, float u ) => Derivative(
-        outp,
-        Continuous ? span : span + 1,
-        u,
-        ControlPoints,
-        Continuous,
-        _tmp
-        );
+    public T DerivativeAt( T outp, int span, float u )
+    {
+        return Derivative(
+            outp,
+            Continuous ? span : span + 1,
+            u,
+            ControlPoints,
+            Continuous,
+            _tmp
+            );
+    }
 
     /// <summary>
     /// </summary>
     /// <returns> The span closest to the specified value. </returns>
-    public int Nearest( T inp ) => Nearest( inp, 0, SpanCount );
+    public int Nearest( T inp )
+    {
+        return Nearest( inp, 0, SpanCount );
+    }
 
     /// <summary>
     /// </summary>
@@ -158,7 +176,10 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         return result;
     }
 
-    public float Approximate( in T inp, int start, int count ) => Approximate( inp, Nearest( inp, start, count ) );
+    public float Approximate( in T inp, int start, int count )
+    {
+        return Approximate( inp, Nearest( inp, start, count ) );
+    }
 
     public float Approximate( in T inp, int near )
     {

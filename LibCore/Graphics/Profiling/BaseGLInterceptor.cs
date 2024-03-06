@@ -34,36 +34,16 @@ public abstract class BaseGLInterceptor : IGL20
 {
     protected readonly GLProfiler glProfiler;
 
-    protected BaseGLInterceptor( GLProfiler profiler ) => glProfiler = profiler;
+    protected BaseGLInterceptor( GLProfiler profiler )
+    {
+        glProfiler = profiler;
+    }
 
     public int          Calls           { get; set; }
     public int          TextureBindings { get; set; }
     public int          DrawCalls       { get; set; }
     public int          ShaderSwitches  { get; set; }
     public FloatCounter VertexCount     { get; set; } = new( 0 );
-
-    public static string ResolveErrorNumber( int error )
-    {
-        return error switch
-               {
-                   IGL20.GL_INVALID_VALUE                 => "InvalidValue",
-                   IGL20.GL_INVALID_OPERATION             => "InvalidOperation",
-                   IGL20.GL_INVALID_FRAMEBUFFER_OPERATION => "InvalidFramebufferOperation",
-                   IGL20.GL_INVALID_ENUM                  => "InvalidEnum",
-                   IGL20.GL_OUT_OF_MEMORY                 => "OutOfMemory",
-                   IGL20.GL_NO_ERROR                      => "NoError",
-                   _                                      => throw new ArgumentOutOfRangeException( nameof( error ), error, null )
-               };
-    }
-
-    public void Reset()
-    {
-        Calls           = 0;
-        TextureBindings = 0;
-        DrawCalls       = 0;
-        ShaderSwitches  = 0;
-        VertexCount.Reset();
-    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -96,7 +76,15 @@ public abstract class BaseGLInterceptor : IGL20
     public abstract void GLCompressedTexImage2D( int target, int level, int internalformat, int width, int height, int border, int imageSize, Buffer data );
 
     /// <inheritdoc />
-    public abstract void GLCompressedTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, Buffer data );
+    public abstract void GLCompressedTexSubImage2D( int target,
+                                                    int level,
+                                                    int xoffset,
+                                                    int yoffset,
+                                                    int width,
+                                                    int height,
+                                                    int format,
+                                                    int imageSize,
+                                                    Buffer data );
 
     /// <inheritdoc />
     public abstract void GLCopyTexImage2D( int target, int level, int internalformat, int x, int y, int width, int height, int border );
@@ -553,4 +541,27 @@ public abstract class BaseGLInterceptor : IGL20
 
     /// <inheritdoc />
     public abstract void GLVertexAttribPointer( int indx, int size, int type, bool normalized, int stride, int ptr );
+
+    public static string ResolveErrorNumber( int error )
+    {
+        return error switch
+               {
+                   IGL20.GL_INVALID_VALUE                 => "InvalidValue",
+                   IGL20.GL_INVALID_OPERATION             => "InvalidOperation",
+                   IGL20.GL_INVALID_FRAMEBUFFER_OPERATION => "InvalidFramebufferOperation",
+                   IGL20.GL_INVALID_ENUM                  => "InvalidEnum",
+                   IGL20.GL_OUT_OF_MEMORY                 => "OutOfMemory",
+                   IGL20.GL_NO_ERROR                      => "NoError",
+                   _                                      => throw new ArgumentOutOfRangeException( nameof( error ), error, null )
+               };
+    }
+
+    public void Reset()
+    {
+        Calls           = 0;
+        TextureBindings = 0;
+        DrawCalls       = 0;
+        ShaderSwitches  = 0;
+        VertexCount.Reset();
+    }
 }

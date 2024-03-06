@@ -32,7 +32,6 @@ namespace LibGDXSharp.LibCore.Maths;
 ///     Class offering various static methods for intersection testing
 ///     between different geometric objects.
 /// </summary>
-[PublicAPI]
 public class Intersector
 {
     private readonly static Vector3       V0          = new();
@@ -187,11 +186,14 @@ public class Intersector
     ///     direction
     ///     which is linePoint1 to linePoint2.
     /// </summary>
-    public static int PointLineSide( Vector2 linePoint1, Vector2 linePoint2, Vector2 point ) => Math.Sign
-        (
-        ( ( linePoint2.X - linePoint1.X ) * ( point.Y - linePoint1.Y ) )
-      - ( ( linePoint2.Y - linePoint1.Y ) * ( point.X - linePoint1.X ) )
-        );
+    public static int PointLineSide( Vector2 linePoint1, Vector2 linePoint2, Vector2 point )
+    {
+        return Math.Sign
+            (
+            ( ( linePoint2.X - linePoint1.X ) * ( point.Y - linePoint1.Y ) )
+          - ( ( linePoint2.Y - linePoint1.Y ) * ( point.X - linePoint1.X ) )
+            );
+    }
 
     /// <summary>
     /// </summary>
@@ -202,11 +204,14 @@ public class Intersector
     /// <param name="pointX"></param>
     /// <param name="pointY"></param>
     /// <returns></returns>
-    public static int PointLineSide( float linePoint1X, float linePoint1Y, float linePoint2X, float linePoint2Y, float pointX, float pointY ) => Math.Sign
-        (
-        ( ( linePoint2X - linePoint1X ) * ( pointY - linePoint1Y ) )
-      - ( ( linePoint2Y - linePoint1Y ) * ( pointX - linePoint1X ) )
-        );
+    public static int PointLineSide( float linePoint1X, float linePoint1Y, float linePoint2X, float linePoint2Y, float pointX, float pointY )
+    {
+        return Math.Sign
+            (
+            ( ( linePoint2X - linePoint1X ) * ( pointY - linePoint1Y ) )
+          - ( ( linePoint2Y - linePoint1Y ) * ( pointX - linePoint1X ) )
+            );
+    }
 
     /// <summary>
     ///     Checks whether the given point is in the polygon.
@@ -458,12 +463,17 @@ public class Intersector
     ///     Returns the distance between the given segment and point.
     /// </summary>
     public static float DistanceSegmentPoint( float startX, float startY, float endX, float endY, float pointX, float pointY )
-        => NearestSegmentPoint( startX, startY, endX, endY, pointX, pointY, V2A ).Dst( pointX, pointY );
+    {
+        return NearestSegmentPoint( startX, startY, endX, endY, pointX, pointY, V2A ).Dst( pointX, pointY );
+    }
 
     /// <summary>
     ///     Returns the distance between the given segment and point.
     /// </summary>
-    public static float DistanceSegmentPoint( Vector2 start, Vector2 end, Vector2 point ) => NearestSegmentPoint( start, end, point, V2A ).Dst( point );
+    public static float DistanceSegmentPoint( Vector2 start, Vector2 end, Vector2 point )
+    {
+        return NearestSegmentPoint( start, end, point, V2A ).Dst( point );
+    }
 
     /// <summary>
     ///     Returns a point on the segment nearest to the specified point.
@@ -1046,7 +1056,10 @@ public class Intersector
     ///     Quick check whether the given <see cref="Ray" /> and <see cref="BoundingBox" /> intersect.
     /// </summary>
     /// <returns> Whether the ray and the bounding box intersect. </returns>
-    public static bool IntersectRayBoundsFast( Ray ray, BoundingBox box ) => IntersectRayBoundsFast( ray, box.GetCenter( Tmp1 ), box.GetDimensions( Tmp2 ) );
+    public static bool IntersectRayBoundsFast( Ray ray, BoundingBox box )
+    {
+        return IntersectRayBoundsFast( ray, box.GetCenter( Tmp1 ), box.GetDimensions( Tmp2 ) );
+    }
 
     /// <summary>
     ///     Quick check whether the given {@link Ray} and {@link BoundingBox} intersect.
@@ -1399,10 +1412,13 @@ public class Intersector
     ///     Quick check whether the given <see cref="BoundingBox" /> and <see cref="Maths.Plane" /> intersect.
     /// </summary>
     /// <returns> Whether the bounding box and the plane intersect. </returns>
-    public static bool IntersectBoundsPlaneFast( BoundingBox box, Plane plane ) => IntersectBoundsPlaneFast( box.GetCenter( Tmp1 ),
-                                                                                                             box.GetDimensions( Tmp2 ).Scl( 0.5f ),
-                                                                                                             plane.Normal,
-                                                                                                             plane.DistanceToOrigin );
+    public static bool IntersectBoundsPlaneFast( BoundingBox box, Plane plane )
+    {
+        return IntersectBoundsPlaneFast( box.GetCenter( Tmp1 ),
+                                         box.GetDimensions( Tmp2 ).Scl( 0.5f ),
+                                         plane.Normal,
+                                         plane.DistanceToOrigin );
+    }
 
     /// <summary>
     ///     Quick check whether the given bounding box and a plane intersect. Code adapted from Christer
@@ -1591,7 +1607,9 @@ public class Intersector
     }
 
     public static bool IntersectSegmentRectangle( Vector2 startvec, Vector2 endvec, RectangleShape rectangle )
-        => IntersectSegmentRectangle( startvec.X, startvec.Y, endvec.X, endvec.Y, rectangle );
+    {
+        return IntersectSegmentRectangle( startvec.X, startvec.Y, endvec.X, endvec.Y, rectangle );
+    }
 
     /// <summary>
     ///     Check whether the given line segment and <see cref="Polygon" /> intersect.
@@ -1725,13 +1743,25 @@ public class Intersector
         return true;
     }
 
-    private static float Det( float a, float b, float c, float d ) => ( a * d ) - ( b * c );
+    private static float Det( float a, float b, float c, float d )
+    {
+        return ( a * d ) - ( b * c );
+    }
 
-    private static double Detd( double a, double b, double c, double d ) => ( a * d ) - ( b * c );
+    private static double Detd( double a, double b, double c, double d )
+    {
+        return ( a * d ) - ( b * c );
+    }
 
-    public static bool Overlaps( Circle c1, Circle c2 ) => c1.Overlaps( c2 );
+    public static bool Overlaps( Circle c1, Circle c2 )
+    {
+        return c1.Overlaps( c2 );
+    }
 
-    public static bool Overlaps( RectangleShape r1, RectangleShape r2 ) => r1.Overlaps( r2 );
+    public static bool Overlaps( RectangleShape r1, RectangleShape r2 )
+    {
+        return r1.Overlaps( r2 );
+    }
 
     public static bool Overlaps( Circle c, RectangleShape r )
     {
@@ -1771,7 +1801,10 @@ public class Intersector
     /// <param name="p1"> The first polygon. </param>
     /// <param name="p2"> The second polygon. </param>
     /// <returns> Whether polygons overlap. </returns>
-    public static bool OverlapConvexPolygons( Polygon p1, Polygon p2 ) => OverlapConvexPolygons( p1, p2, ref _dummyMinimumTranslationVector );
+    public static bool OverlapConvexPolygons( Polygon p1, Polygon p2 )
+    {
+        return OverlapConvexPolygons( p1, p2, ref _dummyMinimumTranslationVector );
+    }
 
     /// <summary>
     ///     Check whether convex polygons overlap (clockwise or counter-clockwise
@@ -1795,7 +1828,9 @@ public class Intersector
     }
 
     public static bool OverlapConvexPolygons( float[] verts1, float[] verts2, ref MinimumTranslationVector? mtv )
-        => OverlapConvexPolygons( verts1, 0, verts1.Length, verts2, 0, verts2.Length, ref mtv );
+    {
+        return OverlapConvexPolygons( verts1, 0, verts1.Length, verts2, 0, verts2.Length, ref mtv );
+    }
 
     /// <summary>
     ///     Check whether polygons defined by the given vertex arrays overlap
@@ -2164,7 +2199,7 @@ public class Intersector
         }
     }
 
-    [PublicAPI]
+
     public class SplitTriangle
     {
         /// <summary>
@@ -2218,14 +2253,16 @@ public class Intersector
             Total        = 0;
         }
 
-        public override string ToString() => $"SplitTriangle [front={Front}, back={Back}, "
-                                           + $"numFront={NumFront}, numBack={{numBack}}, total={{total}}]";
+        public override string ToString()
+        {
+            return $"SplitTriangle [front={Front}, back={Back}, "
+                 + $"numFront={NumFront}, numBack={{numBack}}, total={{total}}]";
+        }
     }
 
     /// <summary>
     ///     Minimum translation required to separate two polygons.
     /// </summary>
-    [PublicAPI]
     public record MinimumTranslationVector
     {
         // Distance of the translation required for the separation

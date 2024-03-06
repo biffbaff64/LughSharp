@@ -28,7 +28,6 @@ namespace LibGDXSharp.LibCore.Assets;
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
-[PublicAPI]
 public class AssetLoaderParameters : ILoaderParameters
 {
     public ILoadedCallback? LoadedCallback { get; set; }
@@ -37,7 +36,6 @@ public class AssetLoaderParameters : ILoaderParameters
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
-[PublicAPI]
 public class DefaultLoadedCallback : ILoadedCallback
 {
     private readonly int _refCount;
@@ -47,13 +45,15 @@ public class DefaultLoadedCallback : ILoadedCallback
         _refCount = refCount;
     }
 
-    public void FinishedLoading( AssetManager assetManager, string fileName, Type type ) => assetManager.SetReferenceCount( fileName, _refCount );
+    public void FinishedLoading( AssetManager assetManager, string fileName, Type type )
+    {
+        assetManager.SetReferenceCount( fileName, _refCount );
+    }
 }
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
-[PublicAPI]
 public interface ILoaderParameters
 {
     ILoadedCallback? LoadedCallback { get; set; }
@@ -65,7 +65,6 @@ public interface ILoaderParameters
 /// <summary>
 ///     Callback interface that will be invoked when the <see cref="AssetManager" /> loaded an asset.
 /// </summary>
-[PublicAPI]
 public interface ILoadedCallback
 {
     void FinishedLoading( AssetManager assetManager, string fileName, Type type );

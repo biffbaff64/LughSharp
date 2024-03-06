@@ -25,14 +25,25 @@
 
 namespace LibGDXSharp.LibCore.Utils.Buffers;
 
-[PublicAPI]
 public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
 {
-    public object AttachedObject { get; set; }
-
     public DirectByteBuffer( int capacity )
         : base( -1, 0, capacity, capacity )
     {
+    }
+
+    public object AttachedObject { get; set; }
+
+    /// <inheritdoc />
+    public long Address()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public object Attachment()
+    {
+        return null;
     }
 
     /// <summary>
@@ -116,9 +127,9 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
      * <i>get</i>
      * method.  Reads the byte at this buffer's
      * current position, and then increments the position.
-     *
+     * 
      * @return  The byte at the buffer's current position
-     *
+     * 
      * @throws  BufferUnderflowException
      * If the buffer's current position is not smaller than its limit
      */
@@ -139,12 +150,12 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
      * </p>
      * @param  b
      * The byte to be written
-     *
+     * 
      * @return  This buffer
-     *
+     * 
      * @throws  BufferOverflowException
      * If this buffer's current position is not smaller than its limit
-     *
+     * 
      * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      * If this buffer is read-only
      */
@@ -158,12 +169,12 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
      * <i>get</i>
      * method.  Reads the byte at the given
      * index.
-     *
+     * 
      * @param  index
      * The index from which the byte will be read
-     *
+     * 
      * @return  The byte at the given index
-     *
+     * 
      * @throws  IndexOutOfBoundsException
      * If
      * <tt>index</tt>
@@ -187,18 +198,18 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
      * </p>
      * @param  index
      * The index at which the byte will be written
-     *
+     * 
      * @param  b
      * The byte value to be written
-     *
+     * 
      * @return  This buffer
-     *
+     * 
      * @throws  IndexOutOfBoundsException
      * If
      * <tt>index</tt>
      * is negative
      * or not smaller than the buffer's limit
-     *
+     * 
      * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      * If this buffer is read-only
      */
@@ -399,7 +410,7 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
      *     and then increments the position by eight.
      * </p>
      * @return  The double value at the buffer's current position
-     *
+     * 
      * @throws  BufferUnderflowException
      * If there are fewer than eight bytes
      * remaining in this buffer
@@ -419,9 +430,9 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
      * </p>
      * @param  index
      * The index from which the bytes will be read
-     *
+     * 
      * @return  The double value at the given index
-     *
+     * 
      * @throws  IndexOutOfBoundsException
      * If
      * <tt>index</tt>
@@ -448,13 +459,13 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
      * </p>
      * @param  value
      * The double value to be written
-     *
+     * 
      * @return  This buffer
-     *
+     * 
      * @throws  BufferOverflowException
      * If there are fewer than eight bytes
      * remaining in this buffer
-     *
+     * 
      * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      * If this buffer is read-only
      */
@@ -476,19 +487,19 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
      * </p>
      * @param  index
      * The index at which the bytes will be written
-     *
+     * 
      * @param  value
      * The double value to be written
-     *
+     * 
      * @return  This buffer
-     *
+     * 
      * @throws  IndexOutOfBoundsException
      * If
      * <tt>index</tt>
      * is negative
      * or not smaller than the buffer's limit,
      * minus seven
-     *
+     * 
      * @throws  GdxRuntimeException( "Buffer is Read Only!" )
      * If this buffer is read-only
      */
@@ -525,16 +536,16 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     internal class Deallocator
     {
         private long _address;
-        private long _size;
         private int  _capacity;
+        private long _size;
 
         private Deallocator( long address, long size, int capacity )
         {
             Debug.Assert( address != 0 );
-            
-            this._address  = address;
-            this._size     = size;
-            this._capacity = capacity;
+
+            _address  = address;
+            _size     = size;
+            _capacity = capacity;
         }
 
         public void Run()
@@ -546,13 +557,8 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
 
 //            unsafe.freeMemory( address );
             _address = 0;
+
 //            Bits.unreserveMemory( size, capacity );
         }
     }
-
-    /// <inheritdoc />
-    public long Address() => 0;
-
-    /// <inheritdoc />
-    public object Attachment() => null;
 }

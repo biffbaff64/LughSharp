@@ -27,7 +27,7 @@ namespace LibGDXSharp.Backends.DesktopGL.Input;
 
 public interface IDesktopGLInput : IInput, IDisposable
 {
-    void WindowHandleChanged( GLFW.Window windowHandle );
+    void WindowHandleChanged( GLFWWindow windowHandle );
 
     void Update();
 

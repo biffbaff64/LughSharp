@@ -30,7 +30,6 @@ namespace LibGDXSharp.LibCore.Core;
 /// <summary>
 ///     The current LibGDXSharp Library version.
 /// </summary>
-[PublicAPI]
 public class GDXVersion
 {
     // the current version of LibGDXSharp as a string in the major.minor.revision format
@@ -65,7 +64,10 @@ public class GDXVersion
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>
     /// <param name="revision">The Revision version component.</param>
-    public static bool IsHigher( int major, int minor, int revision ) => IsHigherEqual( major, minor, revision + 1 );
+    public static bool IsHigher( int major, int minor, int revision )
+    {
+        return IsHigherEqual( major, minor, revision + 1 );
+    }
 
     /// <summary>
     ///     Checks the provided version components against the current
@@ -97,7 +99,10 @@ public class GDXVersion
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>
     /// <param name="revision">The Revision version component.</param>
-    public static bool IsLower( int major, int minor, int revision ) => IsLowerEqual( major, minor, revision - 1 );
+    public static bool IsLower( int major, int minor, int revision )
+    {
+        return IsLowerEqual( major, minor, revision - 1 );
+    }
 
     /// <summary>
     ///     Checks the provided version components against the current

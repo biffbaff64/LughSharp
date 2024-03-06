@@ -36,10 +36,16 @@ public class ImageTextButton : Button
     private          ImageTextButtonStyle? _style;
 
     public ImageTextButton( string text, Skin skin )
-        : this( text, skin.Get< ImageTextButtonStyle >() ) => Skin = skin;
+        : this( text, skin.Get< ImageTextButtonStyle >() )
+    {
+        Skin = skin;
+    }
 
     public ImageTextButton( string text, Skin skin, string styleName )
-        : this( text, skin.Get< ImageTextButtonStyle >( styleName ) ) => Skin = skin;
+        : this( text, skin.Get< ImageTextButtonStyle >( styleName ) )
+    {
+        Skin = skin;
+    }
 
     /// <summary>
     /// </summary>
@@ -153,7 +159,10 @@ public class ImageTextButton : Button
     ///     Sets the image drawable based on the current button state. The default
     ///     implementation sets the image drawable using <see cref="GetImageDrawable()" />.
     /// </summary>
-    protected void UpdateImage() => _image?.SetDrawable( GetImageDrawable() );
+    protected void UpdateImage()
+    {
+        _image?.SetDrawable( GetImageDrawable() );
+    }
 
     /// <summary>
     ///     Returns the appropriate label font color from the style based on the current button state.
@@ -236,11 +245,25 @@ public class ImageTextButton : Button
         base.Draw( batch, parentAlpha );
     }
 
-    public Image? GetImage() => _image;
-    public Label? GetLabel() => _label;
+    public Image? GetImage()
+    {
+        return _image;
+    }
 
-    public Cell? GetImageCell() => GetCell( _image! );
-    public Cell? GetLabelCell() => GetCell( _label! );
+    public Label? GetLabel()
+    {
+        return _label;
+    }
+
+    public Cell? GetImageCell()
+    {
+        return GetCell( _image! );
+    }
+
+    public Cell? GetLabelCell()
+    {
+        return GetCell( _label! );
+    }
 
     public void SetLabel( Label label )
     {
@@ -248,7 +271,10 @@ public class ImageTextButton : Button
         _label                = label;
     }
 
-    public string GetText() => _label?.Text.ToString() ?? "";
+    public string GetText()
+    {
+        return _label?.Text.ToString() ?? "";
+    }
 
     public void SetText( string text )
     {

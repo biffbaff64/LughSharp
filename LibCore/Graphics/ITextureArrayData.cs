@@ -89,5 +89,8 @@ public class TextureArrayDataFactory
 {
     public static ITextureArrayData LoadFromFiles( Pixmap.Format format,
                                                    bool useMipMaps,
-                                                   params FileInfo[] files ) => new FileTextureArrayData( format, useMipMaps, files );
+                                                   params FileInfo[] files )
+    {
+        return new FileTextureArrayData( format, useMipMaps, files );
+    }
 }

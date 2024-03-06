@@ -31,7 +31,6 @@ namespace LibGDXSharp.LibCore.Utils;
 /// <summary>
 ///     Executes tasks in the future on the main loop thread.
 /// </summary>
-[PublicAPI]
 public class Timer
 {
     private readonly static object _threadLock = new();
@@ -40,7 +39,10 @@ public class Timer
 
     protected readonly List< Task? > tasks = new( 8 );
 
-    public Timer() => Start();
+    public Timer()
+    {
+        Start();
+    }
 
     /// <summary>
     ///     Timer instance singleton for general application wide usage.
@@ -70,7 +72,7 @@ public class Timer
     {
         lock ( _threadLock )
         {
-            if ( ( _thread != null ) && ( _thread.files == Core.Gdx.Files ) )
+            if ( ( _thread != null ) && ( _thread.files == Gdx.Files ) )
             {
                 return _thread;
             }
@@ -86,13 +88,18 @@ public class Timer
     ///     Schedules a task to occur once as soon as possible, but not sooner
     ///     than the start of the next frame.
     /// </summary>
-    public Task PostTask( Task task ) => ScheduleTask( task, 0, 0, 0 );
+    public Task PostTask( Task task )
+    {
+        return ScheduleTask( task, 0, 0, 0 );
+    }
 
     /// <summary>
     ///     Schedules a task to occur once after the specified delay.
     /// </summary>
     public Task ScheduleTask( Task task, float delaySeconds )
-        => ScheduleTask( task, delaySeconds, 0, 0 );
+    {
+        return ScheduleTask( task, delaySeconds, 0, 0 );
+    }
 
     /// <summary>
     ///     Schedules a task to occur once after the specified delay and then a
@@ -279,25 +286,34 @@ public class Timer
     /// <summary>
     ///     Schedules a <see cref="Task" /> on <see cref="Instance" />
     /// </summary>
-    public static Task Post( Task task ) => Instance().PostTask( task );
+    public static Task Post( Task task )
+    {
+        return Instance().PostTask( task );
+    }
 
     /// <summary>
     ///     Schedules a <see cref="Task" /> on <see cref="Instance" />
     /// </summary>
     public static Task Schedule( Task task, float delaySeconds )
-        => Instance().ScheduleTask( task, delaySeconds );
+    {
+        return Instance().ScheduleTask( task, delaySeconds );
+    }
 
     /// <summary>
     ///     Schedules a <see cref="Task" /> on <see cref="Instance" />
     /// </summary>
     public static Task Schedule( Task task, float delaySeconds, float intervalSeconds )
-        => Instance().ScheduleTask( task, delaySeconds, intervalSeconds );
+    {
+        return Instance().ScheduleTask( task, delaySeconds, intervalSeconds );
+    }
 
     /// <summary>
     ///     Schedules a <see cref="Task" /> on <see cref="Instance" />
     /// </summary>
     public static Task Schedule( Task task, float delaySeconds, float intervalSeconds, int repeatCount )
-        => Instance().ScheduleTask( task, delaySeconds, intervalSeconds, repeatCount );
+    {
+        return Instance().ScheduleTask( task, delaySeconds, intervalSeconds, repeatCount );
+    }
 
     // ================================================================================
     //  Companion Classes
@@ -306,7 +322,6 @@ public class Timer
     /// <summary>
     ///     A <see cref="Runnable" /> that can be scheduled on a <see cref="Timer" />
     /// </summary>
-    [PublicAPI]
     public abstract class Task
     {
         internal readonly IApplication? app;
@@ -317,12 +332,12 @@ public class Timer
 
         protected Task()
         {
-            if ( Core.Gdx.App == null )
+            if ( Gdx.App == null )
             {
                 throw new GdxRuntimeException( "Gdx.App not available!" );
             }
 
-            app = Core.Gdx.App;
+            app = Gdx.App;
         }
 
         /// <summary>
@@ -379,18 +394,24 @@ public class Timer
         ///     </p>
         /// </summary>
         /// <returns></returns>
-        public bool IsScheduled() => timer != null;
+        public bool IsScheduled()
+        {
+            return timer != null;
+        }
 
         /// <summary>
         ///     Returns the time in milliseconds when this task will be executed next.
         /// </summary>
-        public long GetExecuteTimeMillis() => executeTimeMillis;
+        public long GetExecuteTimeMillis()
+        {
+            return executeTimeMillis;
+        }
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
-    [PublicAPI]
+
+
     public class TimerThread : ILifecycleListener
     {
         public readonly IFiles?       files;
@@ -400,9 +421,9 @@ public class Timer
 
         public TimerThread()
         {
-            files = Core.Gdx.Files;
+            files = Gdx.Files;
 
-            Core.Gdx.App.AddLifecycleListener( this );
+            Gdx.App.AddLifecycleListener( this );
 
             Resume();
 
@@ -450,7 +471,7 @@ public class Timer
         {
             lock ( _threadLock )
             {
-                if ( ( _thread != this ) || ( files != Core.Gdx.Files ) )
+                if ( ( _thread != this ) || ( files != Gdx.Files ) )
                 {
                     Dispose();
 
@@ -476,7 +497,7 @@ public class Timer
                     }
                 }
 
-                if ( ( _thread != this ) || ( files != Core.Gdx.Files ) )
+                if ( ( _thread != this ) || ( files != Gdx.Files ) )
                 {
                     Dispose();
 
@@ -515,7 +536,7 @@ public class Timer
                     Monitor.PulseAll( _threadLock );
                 }
 
-                Core.Gdx.App.RemoveLifecycleListener( this );
+                Gdx.App.RemoveLifecycleListener( this );
             }
         }
     }

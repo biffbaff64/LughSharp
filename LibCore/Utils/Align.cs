@@ -30,7 +30,6 @@ namespace LibGDXSharp.LibCore.Utils;
 /// <summary>
 ///     Provides bit flag constants for alignment.
 /// </summary>
-[PublicAPI]
 public static class Align
 {
     // ------------------------------------------------------------------------
@@ -49,12 +48,35 @@ public static class Align
 
     // ------------------------------------------------------------------------
 
-    public static bool IsLeft( int align )             => ( align & LEFT ) != 0;
-    public static bool IsRight( int align )            => ( align & RIGHT ) != 0;
-    public static bool IsTop( int align )              => ( align & TOP ) != 0;
-    public static bool IsBottom( int align )           => ( align & BOTTOM ) != 0;
-    public static bool IsCenterHorizontal( int align ) => ( ( align & LEFT ) == 0 ) && ( ( align & RIGHT ) == 0 );
-    public static bool IsCenterVertical( int align )   => ( ( align & TOP ) == 0 ) && ( ( align & BOTTOM ) == 0 );
+    public static bool IsLeft( int align )
+    {
+        return ( align & LEFT ) != 0;
+    }
+
+    public static bool IsRight( int align )
+    {
+        return ( align & RIGHT ) != 0;
+    }
+
+    public static bool IsTop( int align )
+    {
+        return ( align & TOP ) != 0;
+    }
+
+    public static bool IsBottom( int align )
+    {
+        return ( align & BOTTOM ) != 0;
+    }
+
+    public static bool IsCenterHorizontal( int align )
+    {
+        return ( ( align & LEFT ) == 0 ) && ( ( align & RIGHT ) == 0 );
+    }
+
+    public static bool IsCenterVertical( int align )
+    {
+        return ( ( align & TOP ) == 0 ) && ( ( align & BOTTOM ) == 0 );
+    }
 
     // ------------------------------------------------------------------------
 

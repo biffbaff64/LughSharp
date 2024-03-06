@@ -32,5 +32,8 @@ public class FrameBufferCubemapBuilder : GLFrameBufferBuilder< GLFrameBuffer< GL
     {
     }
 
-    public override FrameBufferCubemap Build() => new( this );
+    public override FrameBufferCubemap Build()
+    {
+        return new FrameBufferCubemap( this );
+    }
 }

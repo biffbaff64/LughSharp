@@ -31,10 +31,9 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.IO;
 ///     public class allowing WaveFormat Access
 /// </summary>
 /// <remarks>
-///     This class is marked as [PublicAPI] to indicate to ReSharper that
+///     This class is marked as  to indicate to ReSharper that
 ///     methods and members etc may be called externally.
 /// </remarks>
-[PublicAPI]
 public class WaveFile : RiffFile
 {
     public const int MAX_WAVE_CHANNELS = 2;
@@ -158,25 +157,39 @@ public class WaveFile : RiffFile
     }
 
     // [Hz]
-    public virtual int SamplingRate() => _waveFormat.Data.NumSamplesPerSec;
+    public virtual int SamplingRate()
+    {
+        return _waveFormat.Data.NumSamplesPerSec;
+    }
 
-    public virtual short BitsPerSample() => _waveFormat.Data.NumBitsPerSample;
+    public virtual short BitsPerSample()
+    {
+        return _waveFormat.Data.NumBitsPerSample;
+    }
 
-    public virtual short NumberOfChannels() => _waveFormat.Data.NumChannels;
+    public virtual short NumberOfChannels()
+    {
+        return _waveFormat.Data.NumChannels;
+    }
 
-    public virtual int NumSamples() => _numSamples;
+    public virtual int NumSamples()
+    {
+        return _numSamples;
+    }
 
     /// <summary>
     ///     Open for write using another wave file's parameters...
     /// </summary>
-    public virtual int OpenForWrite( string filename, WaveFile otherWave ) => OpenForWrite( filename,
-                                                                                            null,
-                                                                                            otherWave.SamplingRate(),
-                                                                                            otherWave.BitsPerSample(),
-                                                                                            otherWave.NumberOfChannels() );
+    public virtual int OpenForWrite( string filename, WaveFile otherWave )
+    {
+        return OpenForWrite( filename,
+                             null,
+                             otherWave.SamplingRate(),
+                             otherWave.BitsPerSample(),
+                             otherWave.NumberOfChannels() );
+    }
 }
 
-[PublicAPI]
 public class WaveFormatChunkData
 {
     public WaveFormatChunkData( WaveFile enclosingInstance )
@@ -206,7 +219,6 @@ public class WaveFormatChunkData
     }
 }
 
-[PublicAPI]
 public class WaveFormatChunk
 {
     public WaveFormatChunk( WaveFile enclosingInstance )
@@ -233,7 +245,6 @@ public class WaveFormatChunk
     }
 }
 
-[PublicAPI]
 public class WaveFileSample
 {
     public WaveFileSample( WaveFile enclosingInstance )

@@ -75,7 +75,10 @@ public partial record TextureAtlasData
 
     public class PageFieldFormat : IField< Page >
     {
-        public void Parse( Page page, params string[] entry ) => page.Format = Pixmap.FormatFromString( entry[ 1 ] );
+        public void Parse( Page page, params string[] entry )
+        {
+            page.Format = Pixmap.FormatFromString( entry[ 1 ] );
+        }
     }
 
     public class PageFieldFilter : IField< Page >
@@ -106,12 +109,13 @@ public partial record TextureAtlasData
 
     public class PageFieldPma : IField< Page >
     {
-        public void Parse( Page page, params string[] entry ) =>
-
+        public void Parse( Page page, params string[] entry )
+        {
             // Note: I'm not sure what 'Pma' stands for. It's called that
             // in Java LibGDX so it's been carried over. Once I've figured
             // it out I'll rename it to something more meaningful.
             page.Pma = entry[ 1 ].Equals( "true" );
+        }
     }
 
     public class RegionFieldXY : IField< Region >

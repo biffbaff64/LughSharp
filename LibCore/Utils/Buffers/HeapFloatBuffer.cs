@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Utils.Buffers;
 
-[PublicAPI]
 public class HeapFloatBuffer : FloatBuffer
 {
     public HeapFloatBuffer( int cap, int lim )
@@ -60,13 +59,19 @@ public class HeapFloatBuffer : FloatBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
-    public override object BackingArray() => null;
+    public override object BackingArray()
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Tells whether or not this buffer is <i>direct</i>.
     /// </summary>
     /// <returns> <tt>true</tt> if, and only if, this buffer is direct </returns>
-    public override bool IsDirect() => false;
+    public override bool IsDirect()
+    {
+        return false;
+    }
 
     /// <summary>
     ///     Creates a new float buffer whose content is a shared subsequence of
@@ -86,7 +91,10 @@ public class HeapFloatBuffer : FloatBuffer
     ///     </para>
     /// </summary>
     /// <returns> The new float buffer </returns>
-    public override FloatBuffer Slice() => null;
+    public override FloatBuffer Slice()
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Creates a new float buffer that shares this buffer's content.
@@ -104,7 +112,10 @@ public class HeapFloatBuffer : FloatBuffer
     ///     </para>
     /// </summary>
     /// <returns> The new float buffer </returns>
-    public override FloatBuffer Duplicate() => null;
+    public override FloatBuffer Duplicate()
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Creates a new, read-only float buffer that shares this buffer's
@@ -126,7 +137,10 @@ public class HeapFloatBuffer : FloatBuffer
     ///     </para>
     /// </summary>
     /// <returns> The new, read-only float buffer </returns>
-    public override FloatBuffer asReadOnlyBuffer() => null;
+    public override FloatBuffer asReadOnlyBuffer()
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Relative <tt>get</tt> method. Reads the float at this buffers
@@ -136,7 +150,10 @@ public class HeapFloatBuffer : FloatBuffer
     /// <exception cref="GdxRuntimeException">
     ///     If the buffer's current position is not smaller than its limit
     /// </exception>
-    public override float Get() => 0;
+    public override float Get()
+    {
+        return 0;
+    }
 
     /// <summary>
     ///     Relative <tt>put</tt> method; <tt>(optional operation)</tt>.
@@ -153,7 +170,10 @@ public class HeapFloatBuffer : FloatBuffer
     /// <exception cref="GdxRuntimeException">
     ///     If this buffer is read-only
     /// </exception>
-    public override FloatBuffer Put( float f ) => null;
+    public override FloatBuffer Put( float f )
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Absolute <tt>get</tt> method. Reads the float at the given index.
@@ -163,7 +183,10 @@ public class HeapFloatBuffer : FloatBuffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
-    public override float Get( int index ) => 0;
+    public override float Get( int index )
+    {
+        return 0;
+    }
 
     /// <summary>
     ///     Absolute <tt>put</tt> method  <tt>(optional operation)</tt>.
@@ -178,7 +201,10 @@ public class HeapFloatBuffer : FloatBuffer
     ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
     /// </exception>
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
-    public override FloatBuffer Put( int index, float f ) => null;
+    public override FloatBuffer Put( int index, float f )
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Compacts this buffer  <i>(optional operation)</i>.
@@ -201,7 +227,10 @@ public class HeapFloatBuffer : FloatBuffer
     /// </summary>
     /// <returns> This buffer </returns>
     /// <exception cref="GdxRuntimeException">If this buffer is read-only</exception>
-    public override FloatBuffer Compact() => null;
+    public override FloatBuffer Compact()
+    {
+        return null;
+    }
 
     /// <summary>
     ///     Retrieves this buffer's byte order.
@@ -212,5 +241,8 @@ public class HeapFloatBuffer : FloatBuffer
     ///     </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
-    public override ByteOrder Order() => null;
+    public override ByteOrder Order()
+    {
+        return null;
+    }
 }

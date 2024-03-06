@@ -59,7 +59,6 @@ public class PropertiesUtils
     /// <param name="reader"> the input character stream reader. </param>
     /// <exception cref="IOException"> if an error occurred when reading from the input stream. </exception>
     /// <exception cref="ArgumentException"> if a malformed Unicode escape appears in the input.  </exception>
-    [PublicAPI]
     public static void Load( Dictionary< string, string > properties, StreamReader reader )
     {
         ArgumentNullException.ThrowIfNull( properties );
@@ -401,7 +400,6 @@ public class PropertiesUtils
     ///     if writing this property list to the specified output stream throws an <tt>IOException</tt>.
     /// </exception>
     /// <exception cref="NullReferenceException"> if <code>writer</code> is null.</exception>
-    [PublicAPI]
     public static void Store( Dictionary< string, string > properties,
                               StreamWriter writer,
                               string? comment,

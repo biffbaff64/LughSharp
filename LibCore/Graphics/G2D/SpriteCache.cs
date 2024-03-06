@@ -78,7 +78,6 @@ namespace LibGDXSharp.LibCore.Graphics.G2D;
 ///         SpriteCache must be disposed once it is no longer needed.
 ///     </para>
 /// </summary>
-[PublicAPI]
 public class SpriteCache
 {
     // ------------------------------------------------------------------------
@@ -174,7 +173,7 @@ public class SpriteCache
             _mesh.SetIndices( indices );
         }
 
-        ProjectionMatrix.SetToOrtho2D( 0, 0, Core.Gdx.Graphics.Width, Core.Gdx.Graphics.Height );
+        ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
     }
 
     // ------------------------------------------------------------------------
@@ -847,7 +846,10 @@ public class SpriteCache
     /// <summary>
     ///     Adds the specified region to the cache.
     /// </summary>
-    public void Add( TextureRegion region, float x, float y ) => Add( region, x, y, region.RegionWidth, region.RegionHeight );
+    public void Add( TextureRegion region, float x, float y )
+    {
+        Add( region, x, y, region.RegionWidth, region.RegionHeight );
+    }
 
     /// <summary>
     ///     Adds the specified region to the cache.
@@ -1111,7 +1113,7 @@ public class SpriteCache
         RenderCallsSinceBegin = 0;
         _combinedMatrix.Set( ProjectionMatrix ).Mul( TransformMatrix );
 
-        Core.Gdx.GL20.GLDepthMask( false );
+        Gdx.GL20.GLDepthMask( false );
 
         if ( CustomShader != null )
         {
@@ -1149,7 +1151,7 @@ public class SpriteCache
 
         IsDrawing = false;
 
-        Core.Gdx.GL20.GLDepthMask( true );
+        Gdx.GL20.GLDepthMask( true );
 
         _mesh.Unbind( CustomShader ?? _shader );
     }

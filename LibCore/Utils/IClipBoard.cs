@@ -28,7 +28,6 @@ namespace LibGDXSharp.LibCore.Utils;
 /// <summary>
 ///     A very simple clipboard interface for text content.
 /// </summary>
-[PublicAPI]
 public interface IClipboard
 {
     /// <summary>

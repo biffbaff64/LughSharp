@@ -166,7 +166,6 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
     }
 }
 
-[PublicAPI]
 public class BitmapFontParameter : AssetLoaderParameters
 {
     /// <summary>

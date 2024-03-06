@@ -200,7 +200,7 @@ public class InstanceBufferObjectSubData : IInstanceData
     /// <param name="locations"></param>
     public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        IGL20 gl = Core.Gdx.GL20;
+        IGL20 gl = Gdx.GL20;
 
         gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, BufferHandle );
 
@@ -235,7 +235,7 @@ public class InstanceBufferObjectSubData : IInstanceData
                                            Attributes.VertexSize,
                                            attribute.Offset );
 
-                Core.Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
+                Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
             }
         }
         else
@@ -260,7 +260,7 @@ public class InstanceBufferObjectSubData : IInstanceData
                                            Attributes.VertexSize,
                                            attribute.Offset );
 
-                Core.Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
+                Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
             }
         }
 
@@ -309,7 +309,7 @@ public class InstanceBufferObjectSubData : IInstanceData
             }
         }
 
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
@@ -328,18 +328,18 @@ public class InstanceBufferObjectSubData : IInstanceData
     /// </summary>
     public void Dispose()
     {
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Core.Gdx.GL20.GLDeleteBuffer( BufferHandle );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL20.GLDeleteBuffer( BufferHandle );
         BufferHandle = 0;
     }
 
     private int CreateBufferObject()
     {
-        var result = ( int )Core.Gdx.GL20.GLGenBuffer();
+        var result = Gdx.GL20.GLGenBuffer();
 
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
-        Core.Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
-        Core.Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
+        Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
+        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
 
         return result;
     }
@@ -348,8 +348,8 @@ public class InstanceBufferObjectSubData : IInstanceData
     {
         if ( _isBound )
         {
-            Core.Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, _usage );
-            Core.Gdx.GL20.GLBufferSubData( IGL20.GL_ARRAY_BUFFER, 0, _byteBuffer.Limit, _byteBuffer );
+            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, _usage );
+            Gdx.GL20.GLBufferSubData( IGL20.GL_ARRAY_BUFFER, 0, _byteBuffer.Limit, _byteBuffer );
             _isDirty = false;
         }
     }

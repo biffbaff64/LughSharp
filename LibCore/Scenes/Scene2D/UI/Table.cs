@@ -33,7 +33,6 @@ using LibGDXSharp.LibCore.Utils.Pooling;
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
 
-[PublicAPI]
 public class Table : WidgetGroup
 {
     public enum DebugType
@@ -268,7 +267,10 @@ public class Table : WidgetGroup
         return this;
     }
 
-    public IDrawable? GetBackground() => _background;
+    public IDrawable? GetBackground()
+    {
+        return _background;
+    }
 
     public new Actor? Hit( float x, float y, bool touchable )
     {
@@ -304,7 +306,10 @@ public class Table : WidgetGroup
     /// <summary>
     ///     Adds a cell without an actor.
     /// </summary>
-    public Cell AddWithoutActor() => Add< Actor >( null! );
+    public Cell AddWithoutActor()
+    {
+        return Add< Actor >( null! );
+    }
 
     /// <summary>
     ///     Adds a new cell to the table with the specified actor.
@@ -683,7 +688,10 @@ public class Table : WidgetGroup
     ///     Returns the cells for this table.
     /// </summary>
     /// <returns></returns>
-    public List< Cell > GetCells() => _cells;
+    public List< Cell > GetCells()
+    {
+        return _cells;
+    }
 
     protected float GetPrefWidth()
     {
@@ -974,35 +982,68 @@ public class Table : WidgetGroup
         return this;
     }
 
-    public Value GetPadTopValue() => _padTop;
+    public Value GetPadTopValue()
+    {
+        return _padTop;
+    }
 
-    public float GetPadTop() => _padTop.Get( this );
+    public float GetPadTop()
+    {
+        return _padTop.Get( this );
+    }
 
-    public Value GetPadLeftValue() => _padLeft;
+    public Value GetPadLeftValue()
+    {
+        return _padLeft;
+    }
 
-    public float GetPadLeft() => _padLeft.Get( this );
+    public float GetPadLeft()
+    {
+        return _padLeft.Get( this );
+    }
 
-    public Value GetPadBottomValue() => _padBottom;
+    public Value GetPadBottomValue()
+    {
+        return _padBottom;
+    }
 
-    public float GetPadBottom() => _padBottom.Get( this );
+    public float GetPadBottom()
+    {
+        return _padBottom.Get( this );
+    }
 
-    public Value GetPadRightValue() => _padRight;
+    public Value GetPadRightValue()
+    {
+        return _padRight;
+    }
 
-    public float GetPadRight() => _padRight.Get( this );
+    public float GetPadRight()
+    {
+        return _padRight.Get( this );
+    }
 
     /// <summary>
     ///     Returns <see cref="_padLeft" /> plus <see cref="_padRight" />.
     /// </summary>
     /// <returns></returns>
-    public float GetPadX() => _padLeft.Get( this ) + _padRight.Get( this );
+    public float GetPadX()
+    {
+        return _padLeft.Get( this ) + _padRight.Get( this );
+    }
 
     /// <summary>
     ///     Returns <see cref="_padTop" /> plus <see cref="_padBottom" />.
     /// </summary>
     /// <returns></returns>
-    public float GetPadY() => _padTop.Get( this ) + _padBottom.Get( this );
+    public float GetPadY()
+    {
+        return _padTop.Get( this ) + _padBottom.Get( this );
+    }
 
-    public int GetAlign() => _alignment;
+    public int GetAlign()
+    {
+        return _alignment;
+    }
 
     /// <summary>
     ///     Returns the row index for the y coordinate, or -1 if not over a row.
@@ -1042,7 +1083,10 @@ public class Table : WidgetGroup
     /// <summary>
     ///     Returns the height of the specified row, or 0 if the table layout has not been validated.
     /// </summary>
-    public float GetRowHeight( int rowIndex ) => _rowHeight[ rowIndex ];
+    public float GetRowHeight( int rowIndex )
+    {
+        return _rowHeight[ rowIndex ];
+    }
 
     /// <summary>
     ///     Returns the min height of the specified row.
@@ -1077,7 +1121,10 @@ public class Table : WidgetGroup
     ///     table layout has not been validated.
     /// </summary>
     /// <param name="columnIndex">The column number</param>
-    public float GetColumnWidth( int columnIndex ) => _columnWidth[ columnIndex ];
+    public float GetColumnWidth( int columnIndex )
+    {
+        return _columnWidth[ columnIndex ];
+    }
 
     /// <summary>
     ///     Returns the min height of the specified column.
@@ -1795,7 +1842,10 @@ public class Table : WidgetGroup
         }
     }
 
-    public Cell GetNewObject() => new();
+    public Cell GetNewObject()
+    {
+        return new Cell();
+    }
 
     // ------------------------------------------------------------------------
 
@@ -1809,7 +1859,10 @@ public class Table : WidgetGroup
 
     #region Debugging
 
-    public void SetDebug( bool enabled ) => DebugLines( enabled ? DebugType.All : DebugType.None );
+    public void SetDebug( bool enabled )
+    {
+        DebugLines( enabled ? DebugType.All : DebugType.None );
+    }
 
     public new Table EnableDebug()
     {
@@ -2112,22 +2165,34 @@ public class Table : WidgetGroup
 
     private sealed class BackgroundTopDelegate : Value
     {
-        public override float Get( Actor? context = null ) => ( ( Table? )context )?.GetBackground()?.TopHeight ?? 0;
+        public override float Get( Actor? context = null )
+        {
+            return ( ( Table? )context )?.GetBackground()?.TopHeight ?? 0;
+        }
     }
 
     private sealed class BackgroundBottomDelegate : Value
     {
-        public override float Get( Actor? context = null ) => ( ( Table? )context )?.GetBackground()?.BottomHeight ?? 0;
+        public override float Get( Actor? context = null )
+        {
+            return ( ( Table? )context )?.GetBackground()?.BottomHeight ?? 0;
+        }
     }
 
     private sealed class BackgroundLeftDelegate : Value
     {
-        public override float Get( Actor? context = null ) => ( ( Table? )context )?.GetBackground()?.LeftWidth ?? 0;
+        public override float Get( Actor? context = null )
+        {
+            return ( ( Table? )context )?.GetBackground()?.LeftWidth ?? 0;
+        }
     }
 
     private sealed class BackgroundRightDelegate : Value
     {
-        public override float Get( Actor? context = null ) => ( ( Table? )context )?.GetBackground()?.RightWidth ?? 0;
+        public override float Get( Actor? context = null )
+        {
+            return ( ( Table? )context )?.GetBackground()?.RightWidth ?? 0;
+        }
     }
 
     #endregion

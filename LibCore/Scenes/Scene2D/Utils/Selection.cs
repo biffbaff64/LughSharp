@@ -129,18 +129,33 @@ public class Selection<T> : IDisableable, IDisposable
     /// <summary>
     ///     Returns TRUE if this set has items in it.
     /// </summary>
-    public bool NotEmpty() => !IsEmpty;
+    public bool NotEmpty()
+    {
+        return !IsEmpty;
+    }
 
-    public int Size() => Selected.Count;
+    public int Size()
+    {
+        return Selected.Count;
+    }
 
-    public bool HasItems() => Selected.Count > 0;
+    public bool HasItems()
+    {
+        return Selected.Count > 0;
+    }
 
-    public SortedSet< T > Items() => Selected;
+    public SortedSet< T > Items()
+    {
+        return Selected;
+    }
 
     /// <summary>
     ///     Returns the first selected item, or null.
     /// </summary>
-    public T? First() => Selected.Count == 0 ? default( T? ) : Selected.First();
+    public T? First()
+    {
+        return Selected.Count == 0 ? default( T? ) : Selected.First();
+    }
 
     public void Snapshot()
     {
@@ -162,7 +177,10 @@ public class Selection<T> : IDisableable, IDisposable
         }
     }
 
-    public void Cleanup() => _old.Clear();
+    public void Cleanup()
+    {
+        _old.Clear();
+    }
 
     /// <summary>
     ///     Sets the selection to only the specified item.
@@ -440,9 +458,12 @@ public class Selection<T> : IDisableable, IDisposable
 
 //    public IEnumerator< T >? Iterator() => Selected.GetEnumerator();
 
-    public List< T > ToArray() => Selected.ToList();
+    public List< T > ToArray()
+    {
+        return Selected.ToList();
+    }
 
-    [PublicAPI]
+
     public List< T > ToArray( List< T > array )
     {
         List< T > list = Selected.ToList();
@@ -452,14 +473,20 @@ public class Selection<T> : IDisableable, IDisposable
         return list;
     }
 
-    public override string? ToString() => Selected.ToString();
+    public override string? ToString()
+    {
+        return Selected.ToString();
+    }
 
     // ------------------------------------------------------------------------
 
     #region dispose pattern
 
     /// <inheritdoc />
-    public void Dispose() => Dispose( true );
+    public void Dispose()
+    {
+        Dispose( true );
+    }
 
     protected void Dispose( bool disposing )
     {

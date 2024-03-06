@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public class ScaleToAction : TemporalAction
 {
     private float _startX;

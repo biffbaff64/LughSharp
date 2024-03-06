@@ -45,7 +45,10 @@ public class PixmapTextureData : ITextureData
     public bool          DisposePixmap { get; set; }
     public bool          Managed       { get; set; }
 
-    public Pixmap ConsumePixmap() => Pixmap;
+    public Pixmap ConsumePixmap()
+    {
+        return Pixmap;
+    }
 
     public int Width
     {
@@ -71,19 +74,34 @@ public class PixmapTextureData : ITextureData
     ///     whether the caller of <see cref="ITextureData.ConsumePixmap" /> should dispose the
     ///     Pixmap returned by <see cref="ITextureData.ConsumePixmap" />
     /// </returns>
-    bool ITextureData.DisposePixmap() => DisposePixmap;
+    bool ITextureData.DisposePixmap()
+    {
+        return DisposePixmap;
+    }
 
     /// <returns> the <see cref="Pixmap.Format" /> of the pixel data </returns>
-    public Pixmap.Format GetFormat() => Format;
+    public Pixmap.Format GetFormat()
+    {
+        return Format;
+    }
 
     /// <returns> whether to generate mipmaps or not. </returns>
     public bool UseMipMaps { get; set; }
 
     /// <returns> whether this implementation can cope with a EGL context loss. </returns>
-    public bool IsManaged() => Managed;
+    public bool IsManaged()
+    {
+        return Managed;
+    }
 
-    public void ConsumeCustomData( int target ) => throw new GdxRuntimeException( "This TextureData implementation does not upload data itself" );
+    public void ConsumeCustomData( int target )
+    {
+        throw new GdxRuntimeException( "This TextureData implementation does not upload data itself" );
+    }
 
-    public void Prepare() => throw new GdxRuntimeException
-        ( "prepare() must not be called on a PixmapTextureData instance as it is already prepared." );
+    public void Prepare()
+    {
+        throw new GdxRuntimeException
+            ( "prepare() must not be called on a PixmapTextureData instance as it is already prepared." );
+    }
 }

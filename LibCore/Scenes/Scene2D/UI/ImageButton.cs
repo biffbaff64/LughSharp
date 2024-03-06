@@ -38,10 +38,16 @@ namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
 public class ImageButton : Button
 {
     public ImageButton( Skin skin )
-        : this( skin.Get< ImageButtonStyle >() ) => Skin = skin;
+        : this( skin.Get< ImageButtonStyle >() )
+    {
+        Skin = skin;
+    }
 
     public ImageButton( Skin skin, String styleName )
-        : this( skin.Get< ImageButtonStyle >( styleName ) ) => Skin = skin;
+        : this( skin.Get< ImageButtonStyle >( styleName ) )
+    {
+        Skin = skin;
+    }
 
     public ImageButton( ImageButtonStyle style )
         : base( style )
@@ -141,7 +147,10 @@ public class ImageButton : Button
     ///     Sets the image drawable based on the current button state. The default implementation
     ///     sets the image drawable using <see cref="GetImageDrawable()" />.
     /// </summary>
-    protected void UpdateImage() => Image.SetDrawable( GetImageDrawable() );
+    protected void UpdateImage()
+    {
+        Image.SetDrawable( GetImageDrawable() );
+    }
 
     public override void Draw( IBatch batch, float parentAlpha )
     {
@@ -149,7 +158,10 @@ public class ImageButton : Button
         base.Draw( batch, parentAlpha );
     }
 
-    public Cell? GetImageCell() => GetCell( Image );
+    public Cell? GetImageCell()
+    {
+        return GetCell( Image );
+    }
 
     protected override string ToString()
     {

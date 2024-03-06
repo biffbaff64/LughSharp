@@ -78,7 +78,7 @@ public class FloatFrameBuffer : FrameBuffer
 
         var result = new Texture( data );
 
-        if ( Core.Gdx.App.AppType == IApplication.ApplicationType.Desktop )
+        if ( Gdx.App.AppType == IApplication.ApplicationType.Desktop )
         {
             result.SetFilter( TextureFilter.Linear, TextureFilter.Linear );
         }

@@ -67,15 +67,30 @@ public class GLOnlyTextureData : ITextureData
         IsPrepared = true;
     }
 
-    public void ConsumeCustomData( int target ) => Core.Gdx.GL.GLTexImage2D( target, MipLevel, InternalFormat, Width, Height, 0, Format, Type, null! );
+    public void ConsumeCustomData( int target )
+    {
+        Gdx.GL.GLTexImage2D( target, MipLevel, InternalFormat, Width, Height, 0, Format, Type, null! );
+    }
 
-    public Pixmap ConsumePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    public Pixmap ConsumePixmap()
+    {
+        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    }
 
-    public bool DisposePixmap() => throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    public bool DisposePixmap()
+    {
+        throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
+    }
 
-    public Pixmap.Format GetFormat() => Pixmap.Format.RGBA8888;
+    public Pixmap.Format GetFormat()
+    {
+        return Pixmap.Format.RGBA8888;
+    }
 
     public bool UseMipMaps { get; set; }
 
-    public bool IsManaged() => false;
+    public bool IsManaged()
+    {
+        return false;
+    }
 }

@@ -29,7 +29,10 @@ public abstract class RelativeTemporalAction : TemporalAction
 {
     private float _lastPercent;
 
-    protected override void Begin() => _lastPercent = 0;
+    protected override void Begin()
+    {
+        _lastPercent = 0;
+    }
 
     protected override void Update( float percent )
     {

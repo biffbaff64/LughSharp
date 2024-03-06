@@ -177,5 +177,8 @@ public class InputEvent : Event
         return actorCoords;
     }
 
-    public override string? ToString() => Type != null ? Type.ToString() : string.Empty;
+    public override string? ToString()
+    {
+        return Type != null ? Type.ToString() : string.Empty;
+    }
 }

@@ -29,7 +29,6 @@ using LibGDXSharp.LibCore.Maths;
 
 namespace LibGDXSharp.LibCore.Utils.Collections;
 
-[PublicAPI]
 public class Array<T>
 {
     private PredicateIterable< T >? _predicateIEnumerable;
@@ -105,14 +104,20 @@ public class Array<T>
     ///     Adds all items in the supplied array to this array.
     /// </summary>
     /// <param name="array"></param>
-    public void AddAll( Array< T > array ) => AddAll( array, 0, array.Size );
+    public void AddAll( Array< T > array )
+    {
+        AddAll( array, 0, array.Size );
+    }
 
     /// <summary>
     ///     Copy items from the supplied array to this array,
     ///     starting from position 0.
     /// </summary>
     /// <param name="array">The array of items to add.</param>
-    public void AddAll( params T[] array ) => AddAll( array, 0, array.Length );
+    public void AddAll( params T[] array )
+    {
+        AddAll( array, 0, array.Length );
+    }
 
     /// <summary>
     ///     Copy 'count' items from the supplied array to this array,
@@ -284,7 +289,10 @@ public class Array<T>
     /// <summary>
     ///     Returns TRUE if this array contains the requested value.
     /// </summary>
-    public virtual bool Contains( T? value ) => ( Size != 0 ) && ( IndexOf( value ) >= 0 );
+    public virtual bool Contains( T? value )
+    {
+        return ( Size != 0 ) && ( IndexOf( value ) >= 0 );
+    }
 
     /// <summary>
     ///     Returns the index of the first occurance of the requested value in this array.
@@ -304,7 +312,10 @@ public class Array<T>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public int LastIndexOf( T? value ) => Array.LastIndexOf( Items, value );
+    public int LastIndexOf( T? value )
+    {
+        return Array.LastIndexOf( Items, value );
+    }
 
     /// <summary>
     ///     Removes the first occurance of the requested value from this array.
@@ -547,12 +558,18 @@ public class Array<T>
 
     /// <summary>
     /// </summary>
-    public void Sort() => SortUtils.Sort( Items, 0, Size );
+    public void Sort()
+    {
+        SortUtils.Sort( Items, 0, Size );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="comparator"></param>
-    public void Sort( IComparer< T > comparator ) => SortUtils.Sort( Items, comparator, 0, Size );
+    public void Sort( IComparer< T > comparator )
+    {
+        SortUtils.Sort( Items, comparator, 0, Size );
+    }
 
     /// <summary>
     /// </summary>
@@ -657,7 +674,10 @@ public class Array<T>
     ///     Returns a random element from the array.
     /// </summary>
     [MustUseReturnValue]
-    public T? Random() => Size == 0 ? default( T ) : Items[ MathUtils.Random( 0, Size - 1 ) ];
+    public T? Random()
+    {
+        return Size == 0 ? default( T ) : Items[ MathUtils.Random( 0, Size - 1 ) ];
+    }
 
     /// <summary>
     /// </summary>

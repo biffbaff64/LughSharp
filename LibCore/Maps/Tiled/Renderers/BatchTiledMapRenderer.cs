@@ -284,5 +284,8 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     /// <summary>
     ///     Called after the rendering of all layers ended.
     /// </summary>
-    protected void EndRender() => Batch.End();
+    protected void EndRender()
+    {
+        Batch.End();
+    }
 }

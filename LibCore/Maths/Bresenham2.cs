@@ -42,7 +42,10 @@ public class Bresenham2
     private readonly List< GridPoint2 > _points = new();
     private readonly Pool< GridPoint2 > _pool   = new();
 
-    public Bresenham2() => _pool.NewObject = GetNewObject;
+    public Bresenham2()
+    {
+        _pool.NewObject = GetNewObject;
+    }
 
     /// <summary>
     ///     Returns a list of <see cref="GridPoint2" /> instances along the given line,
@@ -51,7 +54,10 @@ public class Bresenham2
     /// <param name="start"> the start of the line </param>
     /// <param name="end"> the end of the line </param>
     /// <returns> the list of points on the line at integer coordinates  </returns>
-    public virtual List< GridPoint2 > Line( GridPoint2 start, GridPoint2 end ) => Line( start.X, start.Y, end.X, end.Y );
+    public virtual List< GridPoint2 > Line( GridPoint2 start, GridPoint2 end )
+    {
+        return Line( start.X, start.Y, end.X, end.Y );
+    }
 
     /// <summary>
     ///     Returns a list of <see cref="GridPoint2" /> instances along the given line,
@@ -164,5 +170,8 @@ public class Bresenham2
         return output;
     }
 
-    public static GridPoint2 GetNewObject() => new();
+    public static GridPoint2 GetNewObject()
+    {
+        return new GridPoint2();
+    }
 }

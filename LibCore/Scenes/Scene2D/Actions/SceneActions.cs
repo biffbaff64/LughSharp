@@ -30,7 +30,6 @@ using LibGDXSharp.LibCore.Utils.Pooling;
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public class SceneActions
 {
     /// <summary>
@@ -241,7 +240,10 @@ public class SceneActions
     /// <summary>
     ///     Transitions from the alpha at the time this action starts to an alpha of 0.
     /// </summary>
-    public static AlphaAction FadeOut( float duration ) => Alpha( 0, duration );
+    public static AlphaAction FadeOut( float duration )
+    {
+        return Alpha( 0, duration );
+    }
 
     /// <summary>
     ///     Transitions from the alpha at the time this action starts to an alpha of 0.
@@ -259,7 +261,10 @@ public class SceneActions
     /// <summary>
     ///     Transitions from the alpha at the time this action starts to an alpha of 1.
     /// </summary>
-    public static AlphaAction FadeIn( float duration ) => Alpha( 1, duration );
+    public static AlphaAction FadeIn( float duration )
+    {
+        return Alpha( 1, duration );
+    }
 
     /// <summary>
     ///     Transitions from the alpha at the time this action starts to an alpha of 1.
@@ -274,9 +279,15 @@ public class SceneActions
         return action;
     }
 
-    public static VisibleAction Show() => Visible( true );
+    public static VisibleAction Show()
+    {
+        return Visible( true );
+    }
 
-    public static VisibleAction Hide() => Visible( false );
+    public static VisibleAction Hide()
+    {
+        return Visible( false );
+    }
 
     public static VisibleAction Visible( bool visible )
     {
@@ -294,7 +305,10 @@ public class SceneActions
         return action;
     }
 
-    public static RemoveActorAction RemoveActor() => ( RemoveActorAction )Action( typeof( RemoveActorAction ) );
+    public static RemoveActorAction RemoveActor()
+    {
+        return ( RemoveActorAction )Action( typeof( RemoveActorAction ) );
+    }
 
     public static RemoveActorAction RemoveActor( Actor removeActor )
     {
@@ -392,7 +406,10 @@ public class SceneActions
         return action;
     }
 
-    public static SequenceAction Sequence() => ( SequenceAction )Action( typeof( SequenceAction ) );
+    public static SequenceAction Sequence()
+    {
+        return ( SequenceAction )Action( typeof( SequenceAction ) );
+    }
 
     public static ParallelAction Parallel( Action action1 )
     {
@@ -456,7 +473,10 @@ public class SceneActions
         return action;
     }
 
-    public static ParallelAction Parallel() => ( ParallelAction )Action( typeof( ParallelAction ) );
+    public static ParallelAction Parallel()
+    {
+        return ( ParallelAction )Action( typeof( ParallelAction ) );
+    }
 
     public static RepeatAction Repeat( int count, Action repeatedAction )
     {
@@ -476,7 +496,10 @@ public class SceneActions
         return action;
     }
 
-    public static RunnableAction Run( Runnable runnable ) => throw new NotImplementedException( "IMPLEMENTATION TO BE COMPLETED!" );
+    public static RunnableAction Run( Runnable runnable )
+    {
+        throw new NotImplementedException( "IMPLEMENTATION TO BE COMPLETED!" );
+    }
 
     //        var action = ( RunnableAction )Action( typeof( RunnableAction ) );
     //        action.Runnable = runnable;

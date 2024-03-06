@@ -287,7 +287,10 @@ public class Touchpad : Widget
     {
         private readonly Touchpad _pad;
 
-        public TouchpadInputListener( Touchpad pad ) => _pad = pad;
+        public TouchpadInputListener( Touchpad pad )
+        {
+            _pad = pad;
+        }
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
@@ -302,7 +305,10 @@ public class Touchpad : Widget
             return true;
         }
 
-        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer ) => _pad.CalculatePositionAndValue( x, y, false );
+        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
+        {
+            _pad.CalculatePositionAndValue( x, y, false );
+        }
 
         public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
         {

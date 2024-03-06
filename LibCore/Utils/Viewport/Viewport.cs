@@ -38,7 +38,6 @@ namespace LibGDXSharp.LibCore.Utils.Viewport;
 ///     Extending classes should initialise <see cref="Camera" /> to avoid
 ///     causing exceptions.
 /// </summary>
-[PublicAPI]
 public abstract class Viewport
 {
     private Vector3 _tmp = Vector3.Zero;
@@ -46,7 +45,10 @@ public abstract class Viewport
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    protected Viewport( Camera camera ) => Camera = camera;
+    protected Viewport( Camera camera )
+    {
+        Camera = camera;
+    }
 
     /// <summary>
     ///     Returns the left gutter (black bar) width in screen coordinates.
@@ -61,7 +63,7 @@ public abstract class Viewport
     /// <summary>
     ///     Returns the right gutter (black bar) width in screen coordinates.
     /// </summary>
-    public virtual int RightGutterWidth => Core.Gdx.Graphics.Width - ( ScreenX + ScreenWidth );
+    public virtual int RightGutterWidth => Gdx.Graphics.Width - ( ScreenX + ScreenWidth );
 
     /// <summary>
     ///     Returns the bottom gutter (black bar) height in screen coordinates.
@@ -76,7 +78,7 @@ public abstract class Viewport
     /// <summary>
     ///     Returns the top gutter (black bar) height in screen coordinates.
     /// </summary>
-    public virtual int TopGutterHeight => Core.Gdx.Graphics.Height - ( ScreenY + ScreenHeight );
+    public virtual int TopGutterHeight => Gdx.Graphics.Height - ( ScreenY + ScreenHeight );
 
     /// <summary>
     ///     Applies the viewport to the camera and sets the glViewport.
@@ -116,7 +118,10 @@ public abstract class Viewport
     /// <remarks>
     ///     The default implementation only calls <see cref="Apply(bool)" />.
     /// </remarks>
-    public virtual void Update( int screenWidth, int screenHeight, bool centerCamera = false ) => Apply( centerCamera );
+    public virtual void Update( int screenWidth, int screenHeight, bool centerCamera = false )
+    {
+        Apply( centerCamera );
+    }
 
     /// <summary>
     ///     Transforms the specified screen coordinate to world coordinates.
@@ -254,9 +259,9 @@ public abstract class Viewport
 
         Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
-        Debug.Assert( Core.Gdx.Graphics != null );
+        Debug.Assert( Gdx.Graphics != null );
 
-        _tmp.Y = Core.Gdx.Graphics.Height - _tmp.Y;
+        _tmp.Y = Gdx.Graphics.Height - _tmp.Y;
 
         worldCoords.X = _tmp.X;
         worldCoords.Y = _tmp.Y;

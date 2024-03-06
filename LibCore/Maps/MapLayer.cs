@@ -99,7 +99,10 @@ public class MapLayer
         }
     }
 
-    public virtual void InvalidateRenderOffset() => _renderOffsetDirty = true;
+    public virtual void InvalidateRenderOffset()
+    {
+        _renderOffsetDirty = true;
+    }
 
     protected void CalculateRenderOffsets()
     {

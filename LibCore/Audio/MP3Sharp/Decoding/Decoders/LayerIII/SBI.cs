@@ -27,7 +27,6 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
 
 public class SBI
 {
-    [PublicAPI( "May be used externally" )]
     public SBI()
     {
         L = new int[ 23 ];

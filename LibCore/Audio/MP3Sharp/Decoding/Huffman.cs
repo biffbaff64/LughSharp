@@ -30,7 +30,6 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
 /// <summary>
 ///     Implements a Huffman decoder.
 /// </summary>
-[PublicAPI]
 public class Huffman
 {
     private const           int     MXOFF   = 250;
@@ -942,5 +941,8 @@ public class Huffman
         _huffmanTable[ 33 ] = new Huffman( "33 ", 1, 16, 0, 0, -1, null!, null!, ValTab33, 31 );
     }
 
-    public static Huffman[] GetHuffmanTable() => _huffmanTable;
+    public static Huffman[] GetHuffmanTable()
+    {
+        return _huffmanTable;
+    }
 }

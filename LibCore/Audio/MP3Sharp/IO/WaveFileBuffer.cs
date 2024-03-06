@@ -88,10 +88,15 @@ public class WaveFileBuffer : AudioBase
         }
     }
 
-    [PublicAPI( "May be used externally" )]
-    public void Close( bool justWriteLengthBytes ) => _outWave.Close( justWriteLengthBytes );
+    public void Close( bool justWriteLengthBytes )
+    {
+        _outWave.Close( justWriteLengthBytes );
+    }
 
-    public override void Close() => _outWave.Close();
+    public override void Close()
+    {
+        _outWave.Close();
+    }
 
     /// <summary>
     /// </summary>

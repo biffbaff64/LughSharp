@@ -27,7 +27,6 @@ using LibGDXSharp.LibCore.Graphics;
 
 namespace LibGDXSharp.LibCore.Core;
 
-[PublicAPI]
 public interface IGraphics
 {
     #region nested classes
@@ -35,7 +34,6 @@ public interface IGraphics
     /// <summary>
     ///     Describes a fullscreen display mode.
     /// </summary>
-    [PublicAPI]
     public class DisplayModeDescriptor
     {
         public DisplayModeDescriptor( int width, int height, int refreshRate, int bitsPerPixel )
@@ -51,32 +49,33 @@ public interface IGraphics
         public int RefreshRate  { get; set; }
         public int BitsPerPixel { get; set; }
 
-        public override string ToString() => $"{Width}x{Height}, bpp: {BitsPerPixel}, hz: {RefreshRate}";
+        public override string ToString()
+        {
+            return $"{Width}x{Height}, bpp: {BitsPerPixel}, hz: {RefreshRate}";
+        }
     }
 
     /// <summary>
     ///     Describes a monitor, with X, Y, and Name properties.
     /// </summary>
-    [PublicAPI]
     public class MonitorDescriptor
     {
         public MonitorDescriptor( int x, int y, string name )
         {
-            VirtualX      = x;
-            VirtualY      = y;
-            Name          = name;
+            VirtualX = x;
+            VirtualY = y;
+            Name     = name;
         }
 
-        public int         VirtualX      { get; set; }
-        public int         VirtualY      { get; set; }
-        public string?     Name          { get; set; }
+        public int     VirtualX { get; set; }
+        public int     VirtualY { get; set; }
+        public string? Name     { get; set; }
     }
 
     /// <summary>
     ///     Class describing the bits per pixel, depth buffer precision,
     ///     stencil precision and number of MSAA samples.
     /// </summary>
-    [PublicAPI]
     public record BufferFormatDescriptor
     {
         public int R       { get; set; } // number of bits per color channel.
@@ -91,8 +90,11 @@ public interface IGraphics
         // If so, you have to clear the coverage buffer as well!
         public bool CoverageSampling { get; set; }
 
-        public override string ToString() => $"r - {R}, g - {G}, b - {B}, a - {A}, depth - {Depth}, stencil - "
-                                           + $"{Stencil}, num samples - {Samples}, coverage sampling - {CoverageSampling}";
+        public override string ToString()
+        {
+            return $"r - {R}, g - {G}, b - {B}, a - {A}, depth - {Depth}, stencil - "
+                 + $"{Stencil}, num samples - {Samples}, coverage sampling - {CoverageSampling}";
+        }
     }
 
     #endregion nested classes

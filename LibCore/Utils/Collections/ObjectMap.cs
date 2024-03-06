@@ -47,7 +47,6 @@ namespace LibGDXSharp.LibCore.Utils.Collections;
 ///         probing continues to work even when all hashCodes collide, just more slowly.
 ///     </para>
 /// </summary>
-[PublicAPI]
 public class ObjectMap<TK, TV>
 {
     // ------------------------------------------------------------------------
@@ -334,13 +333,19 @@ public class ObjectMap<TK, TV>
     ///     Helper method.
     /// </summary>
     /// <returns>TRUE if Size is greater than zero.</returns>
-    public bool NotEmpty() => Size > 0;
+    public bool NotEmpty()
+    {
+        return Size > 0;
+    }
 
     /// <summary>
     ///     Helper method.
     /// </summary>
     /// <returns>TRUE if Size is zero.</returns>
-    public bool IsEmpty() => Size == 0;
+    public bool IsEmpty()
+    {
+        return Size == 0;
+    }
 
     /// <summary>
     /// </summary>
@@ -430,7 +435,10 @@ public class ObjectMap<TK, TV>
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public bool ContainsKey( TK key ) => LocateKey( key ) >= 0;
+    public bool ContainsKey( TK key )
+    {
+        return LocateKey( key ) >= 0;
+    }
 
     /// <summary>
     ///     Returns the key for the specified value, or null if it is not in the map.
@@ -557,9 +565,15 @@ public class ObjectMap<TK, TV>
         return true;
     }
 
-    public string ToString( string separator ) => ToString( separator, false );
+    public string ToString( string separator )
+    {
+        return ToString( separator, false );
+    }
 
-    public override string ToString() => ToString( ", ", true );
+    public override string ToString()
+    {
+        return ToString( ", ", true );
+    }
 
     protected string ToString( string separator, bool braces )
     {
@@ -855,7 +869,10 @@ public class ObjectMap<TK, TV>
         return _keys2;
     }
 
-    protected Entries GetIterator() => GetEntries();
+    protected Entries GetIterator()
+    {
+        return GetEntries();
+    }
 
     /// <summary>
     /// </summary>
@@ -874,12 +891,14 @@ public class ObjectMap<TK, TV>
             value = v;
         }
 
-        public override string ToString() => key + " = " + value;
+        public override string ToString()
+        {
+            return key + " = " + value;
+        }
     }
 
     /// <summary>
     /// </summary>
-    [PublicAPI]
     public abstract class MapIterator
     {
         protected readonly ObjectMap< TK, TV > map;
@@ -962,7 +981,6 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// </summary>
-    [PublicAPI]
     public class Entries : MapIterator
     {
         private readonly Entry _entry = new();
@@ -998,12 +1016,14 @@ public class ObjectMap<TK, TV>
             return _entry;
         }
 
-        public Entries Iterator() => this;
+        public Entries Iterator()
+        {
+            return this;
+        }
     }
 
     /// <summary>
     /// </summary>
-    [PublicAPI]
     public class Values : MapIterator
     {
         /// <summary>
@@ -1035,12 +1055,18 @@ public class ObjectMap<TK, TV>
             return value;
         }
 
-        public Values Iterator() => this;
+        public Values Iterator()
+        {
+            return this;
+        }
 
         /// <summary>
         ///     Returns a new array containing the remaining values.
         /// </summary>
-        public List< TV > ToArray() => ToArray( new List< TV >( map.Size ) );
+        public List< TV > ToArray()
+        {
+            return ToArray( new List< TV >( map.Size ) );
+        }
 
         /// <summary>
         ///     Adds the remaining values to the array.
@@ -1058,7 +1084,6 @@ public class ObjectMap<TK, TV>
 
     /// <summary>
     /// </summary>
-    [PublicAPI]
     public class Keys : MapIterator
     {
         public Keys( ObjectMap< TK, TV > map )
@@ -1087,12 +1112,18 @@ public class ObjectMap<TK, TV>
             return key;
         }
 
-        public Keys Iterator() => this;
+        public Keys Iterator()
+        {
+            return this;
+        }
 
         /// <summary>
         ///     Returns a new array containing the remaining keys.
         /// </summary>
-        public List< TK > ToArray() => ToArray( new List< TK >( map.Size ) );
+        public List< TK > ToArray()
+        {
+            return ToArray( new List< TK >( map.Size ) );
+        }
 
         /// <summary>
         ///     Adds the remaining keys to the array.

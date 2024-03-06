@@ -27,7 +27,6 @@ using LibGDXSharp.LibCore.Graphics;
 
 namespace LibGDXSharp.LibCore.Maps;
 
-[PublicAPI]
 public class MapObject
 {
     public string        Name       { get; set; }         = "";

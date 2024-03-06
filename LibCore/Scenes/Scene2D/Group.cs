@@ -426,7 +426,10 @@ public class Group : Actor, ICullable
     ///     <see cref="ApplyTransform(IBatch, Matrix4)" />.
     ///     Note this causes the batch to be flushed.
     /// </summary>
-    protected void ResetTransform( IBatch batch ) => batch.SetTransformMatrix( _oldTransform );
+    protected void ResetTransform( IBatch batch )
+    {
+        batch.SetTransformMatrix( _oldTransform );
+    }
 
     /// <summary>
     ///     Set the shape renderer transformation matrix, often with the result of
@@ -450,7 +453,10 @@ public class Group : Actor, ICullable
     ///     <see cref="ApplyTransform(IBatch, Matrix4)" />.
     ///     Note this causes the shape renderer to be flushed.
     /// </summary>
-    protected void ResetTransform( ShapeRenderer shapes ) => shapes.TransformMatrix = _oldTransform;
+    protected void ResetTransform( ShapeRenderer shapes )
+    {
+        shapes.TransformMatrix = _oldTransform;
+    }
 
     public virtual new Actor? Hit( float x, float y, bool touchable )
     {
@@ -770,9 +776,15 @@ public class Group : Actor, ICullable
     /// <summary>
     ///     Returns the child at the specified index.
     /// </summary>
-    public Actor GetChild( int index ) => Children.GetAt( index );
+    public Actor GetChild( int index )
+    {
+        return Children.GetAt( index );
+    }
 
-    public bool HasChildren() => Children.Size > 0;
+    public bool HasChildren()
+    {
+        return Children.Size > 0;
+    }
 
     /// <summary>
     ///     Converts coordinates for this group to those of a descendant actor.

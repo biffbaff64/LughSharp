@@ -46,7 +46,6 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 ///         can also be used to prepend code to the programs.
 ///     </para>
 /// </summary>
-[PublicAPI]
 public class ShaderProgramLoader
     : AsynchronousAssetLoader< ShaderProgram, ShaderProgramLoader.ShaderProgramParameter >
 {
@@ -131,7 +130,7 @@ public class ShaderProgramLoader
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    [PublicAPI]
+
     public class ShaderProgramParameter : AssetLoaderParameters
     {
         /// <summary>

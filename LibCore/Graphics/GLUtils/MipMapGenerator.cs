@@ -42,7 +42,9 @@ public class MipMapGenerator
     /// <param name="textureWidth"></param>
     /// <param name="textureHeight"></param>
     public static void GenerateMipMap( Pixmap pixmap, int textureWidth, int textureHeight )
-        => GenerateMipMap( IGL20.GL_TEXTURE_2D, pixmap, textureWidth, textureHeight );
+    {
+        GenerateMipMap( IGL20.GL_TEXTURE_2D, pixmap, textureWidth, textureHeight );
+    }
 
     /// <summary>
     ///     Sets the image data of the <see cref="Texture" /> based on the <see cref="Pixmap" />.
@@ -58,9 +60,9 @@ public class MipMapGenerator
             return;
         }
 
-        if ( ( Core.Gdx.App.AppType == IApplication.ApplicationType.Android )
-          || ( Core.Gdx.App.AppType == IApplication.ApplicationType.WebGL )
-          || ( Core.Gdx.App.AppType == IApplication.ApplicationType.IOS ) )
+        if ( ( Gdx.App.AppType == IApplication.ApplicationType.Android )
+          || ( Gdx.App.AppType == IApplication.ApplicationType.WebGL )
+          || ( Gdx.App.AppType == IApplication.ApplicationType.IOS ) )
         {
             GenerateMipMapGLES20( target, pixmap );
         }
@@ -72,7 +74,7 @@ public class MipMapGenerator
 
     private static void GenerateMipMapGLES20( int target, Pixmap pixmap )
     {
-        Core.Gdx.GL.GLTexImage2D(
+        Gdx.GL.GLTexImage2D(
             target,
             0,
             pixmap.GLInternalFormat,
@@ -84,16 +86,16 @@ public class MipMapGenerator
             pixmap.Pixels
             );
 
-        Core.Gdx.GL20.GLGenerateMipmap( target );
+        Gdx.GL20.GLGenerateMipmap( target );
     }
 
     private static void GenerateMipMapDesktop( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
-        if ( Core.Gdx.Graphics.SupportsExtension( "GL_ARB_framebuffer_object" )
-          || Core.Gdx.Graphics.SupportsExtension( "GL_EXT_framebuffer_object" )
-          || ( Core.Gdx.GL30 != null ) )
+        if ( Gdx.Graphics.SupportsExtension( "GL_ARB_framebuffer_object" )
+          || Gdx.Graphics.SupportsExtension( "GL_EXT_framebuffer_object" )
+          || ( Gdx.GL30 != null ) )
         {
-            Core.Gdx.GL.GLTexImage2D(
+            Gdx.GL.GLTexImage2D(
                 target,
                 0,
                 pixmap.GLInternalFormat,
@@ -105,7 +107,7 @@ public class MipMapGenerator
                 pixmap.Pixels
                 );
 
-            Core.Gdx.GL20.GLGenerateMipmap( target );
+            Gdx.GL20.GLGenerateMipmap( target );
         }
         else
         {
@@ -115,7 +117,7 @@ public class MipMapGenerator
 
     private static void GenerateMipMapCPU( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
-        Core.Gdx.GL.GLTexImage2D(
+        Gdx.GL.GLTexImage2D(
             target,
             0,
             pixmap.GLInternalFormat,
@@ -127,7 +129,7 @@ public class MipMapGenerator
             pixmap.Pixels
             );
 
-        if ( ( Core.Gdx.GL20 == null ) && ( textureWidth != textureHeight ) )
+        if ( ( Gdx.GL20 == null ) && ( textureWidth != textureHeight ) )
         {
             throw new GdxRuntimeException( "texture width and height must be square when using mipmapping." );
         }
@@ -150,7 +152,7 @@ public class MipMapGenerator
 
             pixmap = tmp;
 
-            Core.Gdx.GL.GLTexImage2D(
+            Gdx.GL.GLTexImage2D(
                 target,
                 level,
                 pixmap.GLInternalFormat,

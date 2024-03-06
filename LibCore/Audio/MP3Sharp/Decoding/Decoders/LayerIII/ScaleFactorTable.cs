@@ -27,7 +27,6 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
 
 public class ScaleFactorTable
 {
-    [PublicAPI( "May be used externally" )]
     public ScaleFactorTable( LayerIIIDecoder enclosingInstance )
     {
         InitBlock( enclosingInstance );
@@ -49,5 +48,8 @@ public class ScaleFactorTable
 
     public LayerIIIDecoder EnclosingInstance { get; private set; } = null!;
 
-    private void InitBlock( LayerIIIDecoder enclosingInstance ) => EnclosingInstance = enclosingInstance;
+    private void InitBlock( LayerIIIDecoder enclosingInstance )
+    {
+        EnclosingInstance = enclosingInstance;
+    }
 }

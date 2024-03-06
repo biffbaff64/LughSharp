@@ -36,5 +36,8 @@ public class Model
     {
     }
 
-    public IEnumerable< IDisposable > GetManagedDisposables() => _disposables;
+    public IEnumerable< IDisposable > GetManagedDisposables()
+    {
+        return _disposables;
+    }
 }

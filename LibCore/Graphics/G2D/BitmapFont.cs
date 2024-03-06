@@ -31,7 +31,6 @@ using Exception = System.Exception;
 
 namespace LibGDXSharp.LibCore.Graphics.G2D;
 
-[PublicAPI]
 public class BitmapFont
 {
     private const    string          REGEX_PATTERN  = ".*id=(\\d+)";
@@ -53,9 +52,12 @@ public class BitmapFont
     ///     a bitmap font yourself.
     /// </summary>
     public BitmapFont()
-        : this( Core.Gdx.Files.Internal( FONT_NAME ),
-                Core.Gdx.Files.Internal( FONT_NAME ),
-                false ) => _fileType = FileType.Internal;
+        : this( Gdx.Files.Internal( FONT_NAME ),
+                Gdx.Files.Internal( FONT_NAME ),
+                false )
+    {
+        _fileType = FileType.Internal;
+    }
 
     /// <summary>
     ///     Creates a BitmapFont using the default 15pt Arial font included in the
@@ -70,9 +72,12 @@ public class BitmapFont
     ///     the upper left corner.
     /// </param>
     public BitmapFont( bool flip )
-        : this( Core.Gdx.Files.Internal( FONT_NAME ),
-                Core.Gdx.Files.Internal( FONT_NAME ),
-                flip ) => _fileType = FileType.Internal;
+        : this( Gdx.Files.Internal( FONT_NAME ),
+                Gdx.Files.Internal( FONT_NAME ),
+                flip )
+    {
+        _fileType = FileType.Internal;
+    }
 
     /// <summary>
     ///     Creates a BitmapFont with the glyphs relative to the specified region.
@@ -91,7 +96,10 @@ public class BitmapFont
     ///     is the upper left corner.
     /// </param>
     public BitmapFont( FileInfo fontFile, TextureRegion region, bool flip = false )
-        : this( new BitmapFontData( fontFile, flip ), region, true ) => _fileType = FileType.Local;
+        : this( new BitmapFontData( fontFile, flip ), region, true )
+    {
+        _fileType = FileType.Local;
+    }
 
     /// <summary>
     ///     Creates a BitmapFont from a BMFont file. The image file name is read from
@@ -103,7 +111,10 @@ public class BitmapFont
     ///     is the upper left corner.
     /// </param>
     public BitmapFont( FileInfo fontFile, bool flip = false )
-        : this( new BitmapFontData( fontFile, flip ), ( TextureRegion? )null, true ) => _fileType = FileType.Local;
+        : this( new BitmapFontData( fontFile, flip ), ( TextureRegion? )null, true )
+    {
+        _fileType = FileType.Local;
+    }
 
     /// <summary>
     ///     Creates a BitmapFont from a BMFont file, using the specified image for
@@ -149,7 +160,10 @@ public class BitmapFont
     public BitmapFont( BitmapFontData data, TextureRegion? region, bool integer )
         : this( data,
                 region != null ? ListExtensions.With( region ) : null,
-                integer ) => _fileType = FileType.Local;
+                integer )
+    {
+        _fileType = FileType.Local;
+    }
 
     /// <summary>
     ///     Constructs a new BitmapFont from the given <see cref="BitmapFontData" /> and array
@@ -185,8 +199,8 @@ public class BitmapFont
             for ( var i = 0; i < n; i++ )
             {
                 FileInfo file = data.FontFile == null
-                    ? Core.Gdx.Files.Internal( data.ImagePaths[ i ] )
-                    : Core.Gdx.Files.GetFileHandle( data.ImagePaths[ i ], _fileType );
+                    ? Gdx.Files.Internal( data.ImagePaths[ i ] )
+                    : Gdx.Files.GetFileHandle( data.ImagePaths[ i ], _fileType );
 
                 _regions.Add( new TextureRegion( new Texture( file, false ) ) );
             }
@@ -221,7 +235,10 @@ public class BitmapFont
         }
     }
 
-    private void InitialLoad( BitmapFontData data ) => Load( data );
+    private void InitialLoad( BitmapFontData data )
+    {
+        Load( data );
+    }
 
     protected virtual void Load( BitmapFontData data )
     {
@@ -338,20 +355,36 @@ public class BitmapFont
     /// <summary>
     ///     Returns the color of text drawn with this font.
     /// </summary>
-    public Color GetColor() => _cache.GetColor();
+    public Color GetColor()
+    {
+        return _cache.GetColor();
+    }
 
     /// <summary>
     ///     A convenience method for setting the font color.
     /// </summary>
-    public void SetColor( Color color ) => _cache.GetColor().Set( color );
+    public void SetColor( Color color )
+    {
+        _cache.GetColor().Set( color );
+    }
 
     /// <summary>
     ///     A convenience method for setting the font color.
     /// </summary>
-    public void SetColor( float r, float g, float b, float a ) => _cache.GetColor().Set( r, g, b, a );
+    public void SetColor( float r, float g, float b, float a )
+    {
+        _cache.GetColor().Set( r, g, b, a );
+    }
 
-    public float GetScaleX() => _data.ScaleX;
-    public float GetScaleY() => _data.ScaleY;
+    public float GetScaleX()
+    {
+        return _data.ScaleX;
+    }
+
+    public float GetScaleY()
+    {
+        return _data.ScaleY;
+    }
 
     /// <summary>
     ///     Returns the first texture region. This is included for backwards
@@ -362,7 +395,10 @@ public class BitmapFont
     ///     </para>
     /// </summary>
     /// <returns>the first texture region</returns>
-    public TextureRegion GetRegion() => _regions.First();
+    public TextureRegion GetRegion()
+    {
+        return _regions.First();
+    }
 
     /// <summary>
     ///     Returns the array of TextureRegions that represents each texture page of glyphs.
@@ -370,46 +406,70 @@ public class BitmapFont
     /// <returns>
     ///     the array of texture regions; modifying it may produce undesirable results
     /// </returns>
-    public List< TextureRegion > GetRegions() => _regions;
+    public List< TextureRegion > GetRegions()
+    {
+        return _regions;
+    }
 
     /// <summary>
     ///     Returns the texture page at the given index.
     /// </summary>
-    public TextureRegion GetRegion( int index ) => _regions[ index ];
+    public TextureRegion GetRegion( int index )
+    {
+        return _regions[ index ];
+    }
 
     /// <summary>
     ///     Returns the line height, which is the distance from one line of text to the next.
     /// </summary>
-    public float GetLineHeight() => _data.LineHeight;
+    public float GetLineHeight()
+    {
+        return _data.LineHeight;
+    }
 
     /// <summary>
     ///     Returns the x-advance of the space character.
     /// </summary>
-    public float GetSpaceXadvance() => _data.SpaceXadvance;
+    public float GetSpaceXadvance()
+    {
+        return _data.SpaceXadvance;
+    }
 
     /// <summary>
     ///     Returns the x-height, which is the distance from the top of most lowercase characters to the baseline.
     /// </summary>
-    public float GetXHeight() => _data.XHeight;
+    public float GetXHeight()
+    {
+        return _data.XHeight;
+    }
 
     /// <summary>
     ///     Returns the cap height, which is the distance from the top of most uppercase
     ///     characters to the baseline. Since the drawing position is the cap height of
     ///     the first line, the cap height can be used to get the location of the baseline.
     /// </summary>
-    public float GetCapHeight() => _data.CapHeight;
+    public float GetCapHeight()
+    {
+        return _data.CapHeight;
+    }
 
     /// <summary>
     ///     Returns the ascent, which is the distance from the cap height to the top of
     ///     the tallest glyph.
     /// </summary>
-    public float GetAscent() => _data.Ascent;
+    public float GetAscent()
+    {
+        return _data.Ascent;
+    }
 
     /// <summary>
     ///     Returns the descent, which is the distance from the bottom of the glyph that
     ///     extends the lowest to the baseline. This number is negative.
     /// </summary>
-    public float GetDescent() => _data.Descent;
+    public float GetDescent()
+    {
+        return _data.Descent;
+    }
 
     /// <summary>
     ///     Disposes the texture used by this BitmapFont's region IF this BitmapFont
@@ -468,12 +528,18 @@ public class BitmapFont
     ///     within a specific index.
     /// </summary>
     /// <returns> the bitmap font cache used by this font  </returns>
-    public BitmapFontCache GetCache() => _cache;
+    public BitmapFontCache GetCache()
+    {
+        return _cache;
+    }
 
     /// <summary>
     ///     Gets the underlying <see cref="BitmapFontData" /> for this BitmapFont.
     /// </summary>
-    public BitmapFontData GetData() => _data;
+    public BitmapFontData GetData()
+    {
+        return _data;
+    }
 
     /// <summary>
     ///     Creates a new BitmapFontCache for this font. Using this method allows the
@@ -483,9 +549,15 @@ public class BitmapFont
     ///     Note this method is called by the BitmapFont constructors. If a subclass
     ///     overrides this method, it will be called before the subclass constructors.
     /// </para>
-    public BitmapFontCache NewFontCache() => new( this, UseIntegerPositions );
+    public BitmapFontCache NewFontCache()
+    {
+        return new BitmapFontCache( this, UseIntegerPositions );
+    }
 
-    public override string? ToString() => _data.Name ?? base.ToString();
+    public override string? ToString()
+    {
+        return _data.Name ?? base.ToString();
+    }
 
     private static int IndexOf( string text, char ch, int start )
     {
@@ -548,7 +620,10 @@ public class BitmapFont
             page[ ch & ( PAGE_SIZE - 1 ) ] = ( byte )value;
         }
 
-        public override string ToString() => id.ToString();
+        public override string ToString()
+        {
+            return id.ToString();
+        }
     }
 
     /// <summary>
@@ -750,7 +825,7 @@ public class BitmapFont
                     }
                     catch ( Exception e )
                     {
-                        Core.Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + e.Message );
+                        Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + e.Message );
                     }
                 }
 
@@ -895,7 +970,7 @@ public class BitmapFont
                         }
                         catch ( Exception ignored )
                         {
-                            Core.Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + ignored.Message );
+                            Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + ignored.Message );
                         }
                     }
 
@@ -1275,7 +1350,10 @@ public class BitmapFont
         /// <see cref="GetGlyphs" />
         /// should be be used to shape a string
         /// of characters into a list of glyphs.
-        public Glyph? GetGlyph( char ch ) => Glyphs[ ch / PAGE_SIZE ]?[ ch & ( PAGE_SIZE - 1 ) ];
+        public Glyph? GetGlyph( char ch )
+        {
+            return Glyphs[ ch / PAGE_SIZE ]?[ ch & ( PAGE_SIZE - 1 ) ];
+        }
 
         /// <summary>
         ///     Using the specified string, populates the glyphs and positions of the
@@ -1487,7 +1565,10 @@ public class BitmapFont
         /// See also
         /// <see cref="SetScale(float, float)" />
         /// <exception cref="ArgumentException">if scaleX or scaleY is zero.</exception>
-        public void SetScale( float scaleXy ) => SetScale( scaleXy, scaleXy );
+        public void SetScale( float scaleXy )
+        {
+            SetScale( scaleXy, scaleXy );
+        }
 
         /// <summary>
         ///     Sets the font's scale relative to the current scale.
@@ -1495,8 +1576,14 @@ public class BitmapFont
         /// See also
         /// <see cref="SetScale(float, float)" />
         /// <exception cref="ArgumentException">if the resulting scale is zero.</exception>
-        public void Scale( float amount ) => SetScale( ScaleX + amount, ScaleY + amount );
+        public void Scale( float amount )
+        {
+            SetScale( ScaleX + amount, ScaleY + amount );
+        }
 
-        public override string? ToString() => Name ?? base.ToString();
+        public override string? ToString()
+        {
+            return Name ?? base.ToString();
+        }
     }
 }

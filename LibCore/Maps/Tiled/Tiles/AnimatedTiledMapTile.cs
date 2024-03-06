@@ -107,13 +107,25 @@ public class AnimatedTiledMapTile : ITiledMapTile
         set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
     }
 
-    public MapProperties GetProperties() => _properties ??= new MapProperties();
+    public MapProperties GetProperties()
+    {
+        return _properties ??= new MapProperties();
+    }
 
-    public MapObjects GetObjects() => _mapObjects ??= new MapObjects();
+    public MapObjects GetObjects()
+    {
+        return _mapObjects ??= new MapObjects();
+    }
 
-    public StaticTiledMapTile[] GetFrameTiles() => _frameTiles;
+    public StaticTiledMapTile[] GetFrameTiles()
+    {
+        return _frameTiles;
+    }
 
-    public ITiledMapTile GetCurrentFrame() => _frameTiles[ GetCurrentFrameIndex() ];
+    public ITiledMapTile GetCurrentFrame()
+    {
+        return _frameTiles[ GetCurrentFrameIndex() ];
+    }
 
     public int GetCurrentFrameIndex()
     {
@@ -137,5 +149,8 @@ public class AnimatedTiledMapTile : ITiledMapTile
             );
     }
 
-    public static void UpdateAnimationBaseTime() => _lastTiledMapRenderTime = DateTime.Now.Millisecond - InitialTimeOffset;
+    public static void UpdateAnimationBaseTime()
+    {
+        _lastTiledMapRenderTime = DateTime.Now.Millisecond - InitialTimeOffset;
+    }
 }

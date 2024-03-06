@@ -112,22 +112,31 @@ public class FrameBuffer : GLFrameBuffer< Texture >
     ///     Override this method in a derived class to dispose the
     ///     backing texture as you like.
     /// </summary>
-    protected override void DisposeColorTexture( Texture colorTexture ) => colorTexture.Dispose();
+    protected override void DisposeColorTexture( Texture colorTexture )
+    {
+        colorTexture.Dispose();
+    }
 
     /// <summary>
     ///     Override this method in a derived class to attach the backing
     ///     texture to the GL framebuffer object.
     /// </summary>
-    protected override void AttachFrameBufferColorTexture( Texture texture ) => Core.Gdx.GL20.GLFramebufferTexture2D(
-        IGL20.GL_FRAMEBUFFER,
-        IGL20.GL_COLOR_ATTACHMENT0,
-        IGL20.GL_TEXTURE_2D,
-        texture.GetTextureObjectHandle(),
-        0
-        );
+    protected override void AttachFrameBufferColorTexture( Texture texture )
+    {
+        Gdx.GL20.GLFramebufferTexture2D(
+            IGL20.GL_FRAMEBUFFER,
+            IGL20.GL_COLOR_ATTACHMENT0,
+            IGL20.GL_TEXTURE_2D,
+            texture.GetTextureObjectHandle(),
+            0
+            );
+    }
 
     /// <summary>
     ///     See <see cref="GLFrameBuffer{T}.Unbind()" />
     /// </summary>
-    public new void Unbind() => base.Unbind();
+    public new void Unbind()
+    {
+        base.Unbind();
+    }
 }

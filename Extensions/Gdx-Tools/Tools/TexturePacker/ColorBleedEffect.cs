@@ -25,7 +25,6 @@
 
 namespace LibGDXSharp.Extensions.Gdx_Tools.Tools.TexturePacker;
 
-[PublicAPI]
 public class ColorBleedEffect
 {
     private readonly static int[] Offsets = { -1, -1, 0, -1, 1, -1, -1, 0, 1, 0, -1, 1, 0, 1, 1, 1 };
@@ -111,13 +110,25 @@ public class ColorBleedEffect
         iterator.Reset();
     }
 
-    private static int GetPixelIndex( int width, int x, int y ) => ( y * width ) + x;
+    private static int GetPixelIndex( int width, int x, int y )
+    {
+        return ( y * width ) + x;
+    }
 
-    private static int Red( int argb ) => ( argb >> 16 ) & 0xFF;
+    private static int Red( int argb )
+    {
+        return ( argb >> 16 ) & 0xFF;
+    }
 
-    private static int Green( int argb ) => ( argb >> 8 ) & 0xFF;
+    private static int Green( int argb )
+    {
+        return ( argb >> 8 ) & 0xFF;
+    }
 
-    private static int Blue( int argb ) => ( argb >> 0 ) & 0xFF;
+    private static int Blue( int argb )
+    {
+        return ( argb >> 0 ) & 0xFF;
+    }
 
     private static int ARGB( int a, int r, int g, int b )
     {
@@ -164,7 +175,10 @@ public class ColorBleedEffect
             }
         }
 
-        public bool IsBlank( int index ) => _blank[ index ];
+        public bool IsBlank( int index )
+        {
+            return _blank[ index ];
+        }
 
         private int RemoveIndex( int index )
         {
@@ -181,19 +195,25 @@ public class ColorBleedEffect
             return value;
         }
 
-        private static int Alpha( int argb ) => ( argb >> 24 ) & 0xff;
+        private static int Alpha( int argb )
+        {
+            return ( argb >> 24 ) & 0xff;
+        }
 
         internal sealed class MaskIterator
         {
-            private          int  _index;
             private readonly Mask _parent;
+            private          int  _index;
 
             public MaskIterator( Mask parent )
             {
                 _parent = parent;
             }
 
-            internal bool HasNext() => _index < _parent._pendingSize;
+            internal bool HasNext()
+            {
+                return _index < _parent._pendingSize;
+            }
 
             internal int Next()
             {

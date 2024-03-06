@@ -87,7 +87,10 @@ public abstract class DelegateAction : Action
         }
     }
 
-    public override void Restart() => Action?.Restart();
+    public override void Restart()
+    {
+        Action?.Restart();
+    }
 
     public override void Reset()
     {
@@ -95,5 +98,8 @@ public abstract class DelegateAction : Action
         Action = null;
     }
 
-    public override string ToString() => base.ToString() + ( Action == null ? "" : $"({Action})" );
+    public override string ToString()
+    {
+        return base.ToString() + ( Action == null ? "" : $"({Action})" );
+    }
 }

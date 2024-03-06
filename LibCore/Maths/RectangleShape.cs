@@ -29,7 +29,6 @@ namespace LibGDXSharp.LibCore.Maths;
 ///     Rectangle class that is independent of any backends.
 ///     This has no drawing methods, just those that handle the shape.
 /// </summary>
-[PublicAPI]
 public class RectangleShape : IShape2D
 {
     public readonly static RectangleShape Tmp = new();
@@ -78,13 +77,19 @@ public class RectangleShape : IShape2D
     /// <param name="x"> point x coordinate </param>
     /// <param name="y"> point y coordinate </param>
     /// <returns> whether the point is contained in the rectangle</returns>
-    public bool Contains( float x, float y ) => ( X <= x ) && ( ( X + Width ) >= x ) && ( Y <= y ) && ( ( Y + Height ) >= y );
+    public bool Contains( float x, float y )
+    {
+        return ( X <= x ) && ( ( X + Width ) >= x ) && ( Y <= y ) && ( ( Y + Height ) >= y );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="point"> The coordinates vector </param>
     /// <returns> whether the point is contained in the rectangle  </returns>
-    public bool Contains( Vector2 point ) => Contains( point.X, point.Y );
+    public bool Contains( Vector2 point )
+    {
+        return Contains( point.X, point.Y );
+    }
 
     /// <summary>
     /// </summary>
@@ -106,7 +111,10 @@ public class RectangleShape : IShape2D
     /// <summary>
     ///     Return the current rectangle position.
     /// </summary>
-    public Vector2 GetPosition() => new( X, Y );
+    public Vector2 GetPosition()
+    {
+        return new Vector2( X, Y );
+    }
 
     /// <summary>
     ///     Set the x and y coordinates of the bottom left corner,
@@ -164,16 +172,22 @@ public class RectangleShape : IShape2D
     /// <summary>
     ///     Gets the current size of this rectangle.
     /// </summary>
-    public Vector2 GetSize() => new( Width, Height );
+    public Vector2 GetSize()
+    {
+        return new Vector2( Width, Height );
+    }
 
     /// <summary>
     /// </summary>
     /// <param name="circle"> the circle </param>
     /// <returns> whether the circle is contained in the rectangle  </returns>
-    public bool Contains( Circle circle ) => ( ( circle.X - circle.Radius ) >= X )
-                                          && ( ( circle.X + circle.Radius ) <= ( X + Width ) )
-                                          && ( ( circle.Y - circle.Radius ) >= Y )
-                                          && ( ( circle.Y + circle.Radius ) <= ( Y + Height ) );
+    public bool Contains( Circle circle )
+    {
+        return ( ( circle.X - circle.Radius ) >= X )
+            && ( ( circle.X + circle.Radius ) <= ( X + Width ) )
+            && ( ( circle.Y - circle.Radius ) >= Y )
+            && ( ( circle.Y + circle.Radius ) <= ( Y + Height ) );
+    }
 
     /// <summary>
     /// </summary>
@@ -202,7 +216,10 @@ public class RectangleShape : IShape2D
     /// </summary>
     /// <param name="r"> the other <see cref="RectangleShape" /> </param>
     /// <returns> whether this rectangle overlaps the other rectangle.  </returns>
-    public bool Overlaps( RectangleShape r ) => ( X < ( r.X + r.Width ) ) && ( ( X + Width ) > r.X ) && ( Y < ( r.Y + r.Height ) ) && ( ( Y + Height ) > r.Y );
+    public bool Overlaps( RectangleShape r )
+    {
+        return ( X < ( r.X + r.Width ) ) && ( ( X + Width ) > r.X ) && ( Y < ( r.Y + r.Height ) ) && ( ( Y + Height ) > r.Y );
+    }
 
     /// <summary>
     ///     Sets the values of the given rectangle to this rectangle.
@@ -272,7 +289,10 @@ public class RectangleShape : IShape2D
     /// </summary>
     /// <param name="vec"> the vector describing the point </param>
     /// <returns> this rectangle for chaining  </returns>
-    public RectangleShape Merge( Vector2 vec ) => Merge( vec.X, vec.Y );
+    public RectangleShape Merge( Vector2 vec )
+    {
+        return Merge( vec.X, vec.Y );
+    }
 
     /// <summary>
     ///     Merges this rectangle with a list of points.
@@ -310,7 +330,10 @@ public class RectangleShape : IShape2D
     ///     The aspect ratio of this rectangle.
     ///     Returns Float.NaN if height is 0 to avoid ArithmeticException.
     /// </returns>
-    public float GetAspectRatio() => Height == 0 ? float.NaN : Width / Height;
+    public float GetAspectRatio()
+    {
+        return Height == 0 ? float.NaN : Width / Height;
+    }
 
     /// <summary>
     ///     Calculates the center of the rectangle. Results are located in the given Vector2
@@ -411,7 +434,10 @@ public class RectangleShape : IShape2D
     ///     format <code>[x,y,width,height]</code>.
     /// </summary>
     /// <returns> a string representation of this object.</returns>
-    public override string ToString() => "[" + X + "," + Y + "," + Width + "," + Height + "]";
+    public override string ToString()
+    {
+        return "[" + X + "," + Y + "," + Width + "," + Height + "]";
+    }
 
     /// <summary>
     ///     Sets this {@code Rectangle} to the value represented by the
@@ -450,12 +476,18 @@ public class RectangleShape : IShape2D
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public float Area() => Width * Height;
+    public float Area()
+    {
+        return Width * Height;
+    }
 
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public float Perimeter() => 2 * ( Width + Height );
+    public float Perimeter()
+    {
+        return 2 * ( Width + Height );
+    }
 
     /// <summary>
     /// </summary>

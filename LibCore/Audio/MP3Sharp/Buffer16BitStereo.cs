@@ -48,7 +48,10 @@ public class Buffer16BitStereo : AudioBase
     // Read offset used to read from the stream, in bytes.
     private int _offset;
 
-    public Buffer16BitStereo() => OnStart();
+    public Buffer16BitStereo()
+    {
+        OnStart();
+    }
 
     public bool DoubleMonoToStereo { get; set; } = false;
 
@@ -57,10 +60,11 @@ public class Buffer16BitStereo : AudioBase
     /// </summary>
     public int BytesLeft => _end - _offset;
 
-    private void OnStart() =>
-
+    private void OnStart()
+    {
         // Initialize the buffer pointers
         ClearBuffer();
+    }
 
     /// <summary>
     ///     Reads a sequence of bytes from the buffer and advances the position of the

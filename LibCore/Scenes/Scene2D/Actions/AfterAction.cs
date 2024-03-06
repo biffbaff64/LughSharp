@@ -27,7 +27,6 @@ using LibGDXSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
 
-[PublicAPI]
 public class AfterAction : DelegateAction
 {
     private readonly List< Action > _waitForActions = new( 4 );
