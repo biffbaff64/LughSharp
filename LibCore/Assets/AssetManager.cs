@@ -78,8 +78,6 @@ public class AssetManager
     /// <param name="defaultLoaders">Whether to add the default loaders (default is true).</param>
     public AssetManager( IFileHandleResolver resolver, bool defaultLoaders = true )
     {
-        Log = new Logger( logLevel: Logger.LOG_DEBUG );
-        
         if ( defaultLoaders )
         {
             //@formatter:off
@@ -100,8 +98,6 @@ public class AssetManager
         FileHandleResolver = resolver;
     }
 
-    public Logger Log { get; }
-    
     /// <summary>
     ///     Returns the <see cref="IFileHandleResolver" /> which this
     ///     AssetManager was loaded with.
@@ -296,7 +292,7 @@ public class AssetManager
         {
             if ( _tasks.First().AssetDesc.Filepath == fileName )
             {
-                Log.Info( "Unload (from tasks): " + fileName );
+                Logger.Dbg( $"Unload (from tasks): {fileName}" );
 
                 _tasks.First().Cancel = true;
                 _tasks.First().Unload();
@@ -328,7 +324,7 @@ public class AssetManager
 
             _loadQueue.RemoveAt( foundIndex );
 
-            Log.Info( "Unload (from queue): " + fileName );
+            Logger.Dbg( $"Unload (from queue): {fileName}" );
 
             // if the queued asset was already loaded, let the callback know it is available.
             if ( ( type != null ) && desc.Parameters is { LoadedCallback: not null } )
@@ -341,7 +337,7 @@ public class AssetManager
 
         if ( type == null )
         {
-            throw new GdxRuntimeException( "Asset not loaded: " + fileName );
+            throw new GdxRuntimeException( $"Asset not loaded: {fileName}" );
         }
 
         _assets.TryGetValue( type, out Dictionary< string, IRefCountedContainer >? assetRef );
@@ -353,7 +349,7 @@ public class AssetManager
 
             if ( assetRef[ fileName ].RefCount <= 0 )
             {
-                Log.Info( "Unload (dispose): " + fileName );
+                Logger.Dbg( $"Unload (dispose): {fileName}" );
 
                 if ( assetRef[ fileName ].Asset is IDisposable disposable )
                 {
@@ -366,7 +362,7 @@ public class AssetManager
             }
             else
             {
-                Log.Info( "Unload (decrement): " + fileName );
+                Logger.Dbg( $"Unload (decrement): {fileName}" );
             }
 
             // remove any dependencies (or just decrement their ref count).
@@ -521,7 +517,7 @@ public class AssetManager
 
         if ( loader == null )
         {
-            throw new GdxRuntimeException( "No loader for type: " + type?.Name );
+            throw new GdxRuntimeException( $"No loader for type: {type?.Name}" );
         }
 
         if ( _loadQueue.Count == 0 )
@@ -541,8 +537,7 @@ public class AssetManager
             if ( ( desc.Filepath == fileName ) && ( desc.AssetType != type ) )
             {
                 throw new GdxRuntimeException
-                    ( $"Asset with name '{fileName}' already in preload queue, but has "
-                    + $"different type (expected: {type?.Name}, found: {desc.AssetType.Name})" );
+                    ( $"Asset with name '{fileName}' already in preload queue, but has different type (expected: {type?.Name}, found: {desc.AssetType.Name})" );
             }
         }
 
@@ -554,8 +549,7 @@ public class AssetManager
             if ( ( desc.Filepath == fileName ) && ( desc.AssetType != type ) )
             {
                 throw new GdxRuntimeException
-                    ( $"Asset with name '{fileName}' already in preload queue, but has "
-                    + $"different type (expected: {type?.Name}, found: {desc.AssetType.Name})" );
+                    ( $"Asset with name '{fileName}' already in preload queue, but has different type (expected: {type?.Name}, found: {desc.AssetType.Name})" );
             }
         }
 
@@ -565,8 +559,7 @@ public class AssetManager
         if ( ( otherType != null ) && ( otherType != type ) )
         {
             throw new GdxRuntimeException
-                ( $"Asset with name '{fileName}' already loaded, but has "
-                + $"different type (expected: {type?.Name}, found: {otherType.Name})" );
+                ( $"Asset with name '{fileName}' already loaded, but has different type (expected: {type?.Name}, found: {otherType.Name})" );
         }
 
         _toLoad++;
@@ -580,7 +573,7 @@ public class AssetManager
 
         _loadQueue.Add( assetDesc );
 
-        Log.Dbg( message: "Queued: " + assetDesc );
+        Logger.Dbg( $"Queued: {assetDesc}" );
     }
 
     /// <summary>
@@ -665,14 +658,14 @@ public class AssetManager
     /// </summary>
     public void FinishLoading()
     {
-        Log.Dbg( message: "Waiting for loading to complete..." );
+        Logger.Dbg( "Waiting for loading to complete..." );
 
         while ( !Update() )
         {
             //
         }
 
-        Log.Dbg( message: "Loading complete." );
+        Logger.Dbg( "Loading complete." );
     }
 
     /// <summary>
@@ -694,7 +687,7 @@ public class AssetManager
     {
         Debug.Assert( fileName != null, $"{nameof( fileName )} is null" );
 
-        Log.Debug( "Waiting for asset to be loaded: " + fileName );
+        Logger.Dbg( $"Waiting for asset to be loaded: {fileName}" );
 
         while ( true )
         {
@@ -712,7 +705,7 @@ public class AssetManager
 
                         if ( asset != null )
                         {
-                            Log.Debug( "Asset loaded: " + fileName );
+                            Logger.Dbg( $"Asset loaded: {fileName}" );
 
                             return asset;
                         }
@@ -773,7 +766,7 @@ public class AssetManager
         // if the asset is already loaded, increase its reference count.
         if ( IsLoaded( dependendAssetDesc.Filepath ) )
         {
-            Log.Debug( "Dependency already loaded: " + dependendAssetDesc );
+            Logger.Dbg( $"Dependency already loaded: {dependendAssetDesc}" );
 
             Type? type = _assetTypes[ dependendAssetDesc.Filepath ];
 
@@ -789,7 +782,7 @@ public class AssetManager
         else
         {
             // else add a new task for the asset.
-            Log.Info( $"Loading dependency: {dependendAssetDesc}" );
+            Logger.Dbg( $"Loading dependency: {dependendAssetDesc}" );
 
             AddTask( dependendAssetDesc );
         }
@@ -809,7 +802,7 @@ public class AssetManager
         // loaded, increase its reference count
         if ( IsLoaded( assetDesc.Filepath ) )
         {
-            Log.Debug( "Already loaded: " + assetDesc );
+            Logger.Dbg( $"Already loaded: {assetDesc}" );
 
             Type? type = _assetTypes[ assetDesc.Filepath ];
 
@@ -831,7 +824,7 @@ public class AssetManager
         else
         {
             // else add a new task for the asset.
-            Log.Info( "Loading: " + assetDesc );
+            Logger.Dbg( $"Loading: {assetDesc}" );
 
             AddTask( assetDesc );
         }
@@ -975,7 +968,7 @@ public class AssetManager
     /// <param name="t"></param>
     public void HandleTaskError( Exception t )
     {
-        Log.Error( $"Error loading asset: {t}" );
+        Logger.Err( $"Error loading asset: {t}" );
 
         if ( _tasks.Count == 0 )
         {
@@ -1046,7 +1039,7 @@ public class AssetManager
 
             _loaders[ type ]?.Put( suffix ?? "", loader );
 
-            Log.Debug( $"Loader set: {type.Name} -> {loader.GetType().Name}" );
+            Logger.Dbg( $"Loader set: {type.Name} -> {loader.GetType().Name}" );
         }
     }
 

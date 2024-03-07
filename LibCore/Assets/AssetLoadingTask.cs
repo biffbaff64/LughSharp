@@ -55,7 +55,7 @@ public class AssetLoadingTask
         _manager   = manager;
         AssetDesc  = assetDesc;
         _loader    = loader;
-        _startTime = manager.Log.Level == Logger.LOG_DEBUG ? TimeUtils.NanoTime() : 0;
+        _startTime = Logger.TraceLevel == Logger.LOG_DEBUG ? TimeUtils.NanoTime() : 0;
     }
 
     public bool                     DependenciesLoaded { get; set; }

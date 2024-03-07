@@ -37,7 +37,7 @@ namespace LibGDXSharp.LibCore.Utils;
 ///     To enable writing to file, <see cref="EnableWriteToFile" /> must be TRUE
 ///     and <see cref="OpenDebugFile" /> must be called.
 /// </summary>
-public class Logger
+public static class Logger
 {
     // ------------------------------------------------------------------------
 
@@ -59,27 +59,29 @@ public class Logger
 
     #region properties
 
-    public bool EnableWriteToFile { get; set; } = false;
-    public int  TraceLevel        { get; set; }
+    public static bool EnableWriteToFile { get; set; } = false;
+    public static int  TraceLevel        { get; set; }
 
     #endregion properties
 
     // ------------------------------------------------------------------------
 
-    private string _debugFilePath = "";
-    private string _debugFileName = "";
+    private static string _debugFilePath = "";
+    private static string _debugFileName = "";
 
     // ------------------------------------------------------------------------
 
+    #region public methods
+    
     /// <summary>
     ///     Default Constructor.
     /// </summary>
     /// <param name="logLevel"></param>
     /// <param name="enableWriteToFile"></param>
     /// <param name="filename"></param>
-    public Logger( int logLevel = LOG_DEBUG,
-                   bool enableWriteToFile = true,
-                   string filename = "trace.txt" )
+    public static void Initialise( int logLevel = LOG_DEBUG,
+                                   bool enableWriteToFile = true,
+                                   string filename = "trace.txt" )
     {
         TraceLevel        = logLevel;
         EnableWriteToFile = enableWriteToFile;
@@ -91,23 +93,158 @@ public class Logger
     }
 
     /// <summary>
-    ///     Write a debug string to console and logfile, if enabled.
-    ///     The string can contain format options.
+    /// 
     /// </summary>
-    /// <param name="message">The string to write.</param>
-    /// <param name="args">Optional extra argumnts for use in format strings.</param>
-    public void Dbg( string message = "", params object[] args )
-    {
-        //TODO: Intended to be a copy of Dbg() without the caller attributes, using StackTrace instead.
-        throw new NotImplementedException();
-    }
-
-    public void Dbg( LogInterpolatedStringHandler handler,
-                     [CallerFilePath] string callerFilePath = "",
-                     [CallerMemberName] string callerMethod = "",
-                     [CallerLineNumber] int callerLine = 0 )
+    /// <param name="message"></param>
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerMethod"></param>
+    /// <param name="callerLine"></param>
+    public static void Dbg( string message,
+                            [CallerFilePath] string callerFilePath = "",
+                            [CallerMemberName] string callerMethod = "",
+                            [CallerLineNumber] int callerLine = 0 )
     {
         if ( !IsEnabled( LOG_DEBUG ) )
+        {
+            return;
+        }
+
+        var callerID = new CallerID
+        {
+            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
+            methodName = callerMethod,
+            lineNumber = callerLine
+        };
+
+        var str = CreateMessage( $"{DEBUG_TAG}{message}", callerID );
+
+        Console.WriteLine( str );
+
+        WriteToFile( str );
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="handler"></param>
+    /// <param name="boxedDebug"></param>
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerMethod"></param>
+    /// <param name="callerLine"></param>
+    public static void Dbg( LogInterpolatedStringHandler handler,
+                            bool boxedDebug = false,
+                            [CallerFilePath] string callerFilePath = "",
+                            [CallerMemberName] string callerMethod = "",
+                            [CallerLineNumber] int callerLine = 0 )
+    {
+        if ( !IsEnabled( LOG_DEBUG ) )
+        {
+            return;
+        }
+
+        if ( boxedDebug )
+        {
+            Divider();
+        }
+
+        var callerID = new CallerID
+        {
+            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
+            methodName = callerMethod,
+            lineNumber = callerLine
+        };
+
+        var str = CreateMessage( $"{DEBUG_TAG}{handler.GetFormattedText()}", callerID );
+
+        Console.WriteLine( str );
+
+        WriteToFile( str );
+
+        if ( boxedDebug )
+        {
+            Divider();
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerMethod"></param>
+    /// <param name="callerLine"></param>
+    public static void Err( string message,
+                            [CallerFilePath] string callerFilePath = "",
+                            [CallerMemberName] string callerMethod = "",
+                            [CallerLineNumber] int callerLine = 0 )
+    {
+        if ( !IsEnabled( LOG_ERROR ) )
+        {
+            return;
+        }
+
+        var callerID = new CallerID
+        {
+            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
+            methodName = callerMethod,
+            lineNumber = callerLine
+        };
+
+        var str = CreateMessage( $"{ERROR_TAG}{message}", callerID );
+
+        Console.WriteLine( str );
+
+        WriteToFile( str );
+    }
+
+    /// <summary>
+    ///     Write an error string to console and logfile, if enabled.
+    /// </summary>
+    /// <param name="handler"></param>
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerMethod"></param>
+    /// <param name="callerLine"></param>
+    public static void Err( LogInterpolatedStringHandler handler,
+                            [CallerFilePath] string callerFilePath = "",
+                            [CallerMemberName] string callerMethod = "",
+                            [CallerLineNumber] int callerLine = 0 )
+    {
+        if ( !IsEnabled( LOG_ERROR ) )
+        {
+            return;
+        }
+
+        var message = string.Join( ERROR_TAG, handler.GetFormattedText() );
+
+        var callerID = new CallerID
+        {
+            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
+            methodName = callerMethod,
+            lineNumber = callerLine
+        };
+
+        var str = CreateMessage( message, callerID );
+
+        Console.WriteLine( str );
+
+        WriteToFile( str );
+    }
+
+    /// <summary>
+    ///     Write a message to console if the supplied condition is TRUE.
+    /// </summary>
+    /// <param name="handler"></param>
+    /// <param name="condition">The condition to evaluate.</param>
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerMethod"></param>
+    /// <param name="callerLine"></param>
+    public static void OnCondition( LogInterpolatedStringHandler handler,
+                                    bool condition = false,
+                                    [CallerFilePath] string callerFilePath = "",
+                                    [CallerMemberName] string callerMethod = "",
+                                    [CallerLineNumber] int callerLine = 0 )
+    {
+        if ( !IsEnabled( LOG_DEBUG ) || !condition )
         {
             return;
         }
@@ -129,187 +266,6 @@ public class Logger
     }
 
     /// <summary>
-    ///     Write a debug string to console and logfile, if enabled.
-    ///     The string can contain format options.
-    /// </summary>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerMethod"></param>
-    /// <param name="callerLine"></param>
-    /// <param name="message">The string to write.</param>
-    /// <param name="args">Optional extra argumnts for use in format strings.</param>
-    public void Dbg( [CallerFilePath] string callerFilePath = "",
-                     [CallerMemberName] string callerMethod = "",
-                     [CallerLineNumber] int callerLine = 0,
-                     string message = "",
-                     params object[] args )
-    {
-        if ( !IsEnabled( LOG_DEBUG ) )
-        {
-            return;
-        }
-
-        message = string.Join( DEBUG_TAG, message );
-
-        var callerID = new CallerID
-        {
-            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-            methodName = callerMethod,
-            lineNumber = callerLine
-        };
-
-        var str = CreateMessage( message, callerID, args );
-
-        Console.WriteLine( str );
-
-        WriteToFile( str );
-    }
-
-    /// <summary>
-    ///     Calls <see cref="Debug.Assert(bool, string?)" /> with the given message
-    ///     if LOG_ASSERT is enabled and the supplied condition is true.
-    ///     The supplied message will have the calling fgile, method and line details
-    ///     prepended to it.
-    /// </summary>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerMethod"></param>
-    /// <param name="callerLine"></param>
-    /// <param name="condition"></param>
-    /// <param name="message"></param>
-    public void Assert( [CallerFilePath] string callerFilePath = "",
-                        [CallerMemberName] string callerMethod = "",
-                        [CallerLineNumber] int callerLine = 0,
-                        bool condition = false,
-                        string message = "" )
-    {
-        if ( !IsEnabled( LOG_ASSERT ) || !condition )
-        {
-            return;
-        }
-
-        message = string.Join( DEBUG_TAG, message );
-
-        var callerID = new CallerID
-        {
-            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-            methodName = callerMethod,
-            lineNumber = callerLine
-        };
-
-        Debug.Assert( false, CreateMessage( message, callerID ) );
-    }
-
-    /// <summary>
-    ///     Writes a Debug message, but adds a divider line before and after the message.
-    /// </summary>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerMethod"></param>
-    /// <param name="callerLine"></param>
-    /// <param name="message">The string to write.</param>
-    /// <param name="args">Optional extra argumnts for use in format strings.</param>
-    public void BoxedDbg( [CallerFilePath] string callerFilePath = "",
-                          [CallerMemberName] string callerMethod = "",
-                          [CallerLineNumber] int callerLine = 0,
-                          string message = "",
-                          params object[] args )
-    {
-        if ( !IsEnabled( LOG_DEBUG ) )
-        {
-            return;
-        }
-
-        Divider();
-
-        message = string.Join( DEBUG_TAG, message );
-
-        var callerID = new CallerID
-        {
-            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-            methodName = callerMethod,
-            lineNumber = callerLine
-        };
-
-        var str = CreateMessage( message, callerID, args );
-
-        Console.WriteLine( str );
-
-        WriteToFile( str );
-
-        Divider();
-    }
-
-    /// <summary>
-    ///     Write an error string to console and logfile, if enabled.
-    /// </summary>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerMethod"></param>
-    /// <param name="callerLine"></param>
-    /// <param name="message">The string to write.</param>
-    /// <param name="args">Optional extra argumnts for use in format strings.</param>
-    public void Err( [CallerFilePath] string callerFilePath = "",
-                     [CallerMemberName] string callerMethod = "",
-                     [CallerLineNumber] int callerLine = 0,
-                     string message = "",
-                     params object[] args )
-    {
-        if ( !IsEnabled( LOG_ERROR ) )
-        {
-            return;
-        }
-
-        message = string.Join( ERROR_TAG, message );
-
-        var callerID = new CallerID
-        {
-            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-            methodName = callerMethod,
-            lineNumber = callerLine
-        };
-
-        var str = CreateMessage( message, callerID, args );
-
-        Console.WriteLine( str );
-
-        WriteToFile( str );
-    }
-
-    /// <summary>
-    ///     Write a message to console if the supplied condition is TRUE.
-    /// </summary>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerMethod"></param>
-    /// <param name="callerLine"></param>
-    /// <param name="condition">The condition to evaluate.</param>
-    /// <param name="message">The string to write.</param>
-    /// <param name="args">Optional extra argumnts for use in format strings.</param>
-    public void OnCondition( [CallerFilePath] string callerFilePath = "",
-                             [CallerMemberName] string callerMethod = "",
-                             [CallerLineNumber] int callerLine = 0,
-                             bool condition = false,
-                             string message = "",
-                             params object[] args )
-    {
-        if ( !IsEnabled( LOG_DEBUG ) || !condition )
-        {
-            return;
-        }
-
-        message = string.Join( DEBUG_TAG, message );
-
-        var callerID = new CallerID
-        {
-            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-            methodName = callerMethod,
-            lineNumber = callerLine
-        };
-
-        var str = CreateMessage( message, callerID, args );
-
-        Console.WriteLine( str );
-
-        WriteToFile( str );
-    }
-
-    /// <summary>
     ///     Writes a debug message consisting solely of the following:-
     ///     - Current time and date.
     ///     - Calling Class/method/line number information.
@@ -317,16 +273,14 @@ public class Logger
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
     /// <param name="callerLine"></param>
-    public void CheckPoint( [CallerFilePath] string callerFilePath = "",
-                            [CallerMemberName] string callerMethod = "",
-                            [CallerLineNumber] int callerLine = 0 )
+    public static void CheckPoint( [CallerFilePath] string callerFilePath = "",
+                                   [CallerMemberName] string callerMethod = "",
+                                   [CallerLineNumber] int callerLine = 0 )
     {
         if ( !IsEnabled( LOG_DEBUG ) )
         {
             return;
         }
-
-        var sb = new StringBuilder();
 
         var callerID = new CallerID
         {
@@ -335,42 +289,7 @@ public class Logger
             lineNumber = callerLine
         };
 
-        sb.Append( GetTimeStampInfo() );
-        sb.Append( " : " );
-        sb.Append( GetCallerInfo( callerID ) );
-
-        Console.WriteLine( sb.ToString() );
-
-        WriteToFile( sb.ToString() );
-    }
-
-    /// <summary>
-    ///     This method does the same as Trace#dbg(string, params object[] args)/>
-    ///     but does not output time and date information.
-    /// </summary>
-    /// <param name="message"></param>
-    /// <param name="args"></param>
-    public void Info( string message, params object[] args )
-    {
-        if ( !IsEnabled( LOG_DEBUG ) )
-        {
-            return;
-        }
-
-        message = string.Join( INFO_TAG, message );
-
-        var sb = new StringBuilder( message );
-
-        if ( args.Length > 0 )
-        {
-            foreach ( var arg in args )
-            {
-                sb.Append( ' ' );
-                sb.Append( arg );
-            }
-        }
-
-        message = string.Join( DEBUG_TAG, message );
+        var message = $"CP::{GetTimeStampInfo()}:{GetCallerInfo( callerID )}";
 
         Console.WriteLine( message );
 
@@ -378,42 +297,11 @@ public class Logger
     }
 
     /// <summary>
-    ///     Creates a debug/error/info message ready for dumping.
-    /// </summary>
-    /// <param name="formatString">The base message</param>
-    /// <param name="cid">Stack trace info from the calling method/file.</param>
-    /// <param name="args">Optional additions to the message</param>
-    /// <returns></returns>
-    private string CreateMessage( string formatString,
-                                  CallerID cid,
-                                  params object[] args )
-    {
-        var sb = new StringBuilder( GetTimeStampInfo() );
-
-        sb.Append( " : " );
-        sb.Append( GetCallerInfo( cid ) );
-        sb.Append( " : " );
-
-        if ( !string.IsNullOrEmpty( formatString ) )
-        {
-            sb.Append( formatString );
-        }
-
-        foreach ( var arg in args )
-        {
-            sb.Append( ' ' );
-            sb.Append( arg );
-        }
-
-        return sb.ToString();
-    }
-
-    /// <summary>
     ///     Adds a dividing line to text output.
     /// </summary>
     /// <param name="ch">The character to use, default is '-'</param>
     /// <param name="length">The line length, default is 80.</param>
-    public void Divider( char ch = '-', int length = 80 )
+    public static void Divider( char ch = '-', int length = 80 )
     {
         var sb = new StringBuilder( DEBUG_TAG );
 
@@ -436,7 +324,7 @@ public class Logger
     ///     True to delete existing copies of the file.
     ///     False to append to existing file.
     /// </param>
-    public void OpenDebugFile( string fileName, bool deleteExisting )
+    public static void OpenDebugFile( string fileName, bool deleteExisting )
     {
         if ( fileName.Equals( string.Empty ) )
         {
@@ -475,24 +363,46 @@ public class Logger
 
         fs.Close();
     }
+    
+    #endregion public methods
+
+    // ------------------------------------------------------------------------
+
+    #region private methods
+    
+    /// <summary>
+    ///     Creates a debug/error/info message ready for dumping.
+    /// </summary>
+    /// <param name="formatString">The base message</param>
+    /// <param name="cid">Stack trace info from the calling method/file.</param>
+    /// <returns></returns>
+    private static string CreateMessage( string formatString, CallerID cid )
+    {
+        var sb = new StringBuilder( GetTimeStampInfo() );
+
+        sb.Append( " : " );
+        sb.Append( GetCallerInfo( cid ) );
+        sb.Append( " : " );
+
+        if ( !string.IsNullOrEmpty( formatString ) )
+        {
+            sb.Append( formatString );
+        }
+
+        return sb.ToString();
+    }
 
     /// <summary>
     ///     Returns a string holding the current time.
     /// </summary>
     private static string GetTimeStampInfo()
     {
-        var c  = new GregorianCalendar();
-        var sb = new StringBuilder();
+        var c = new GregorianCalendar();
 
-        sb.Append( c.GetHour( DateTime.Now ) )
-          .Append( ':' )
-          .Append( c.GetMinute( DateTime.Now ) )
-          .Append( ':' )
-          .Append( c.GetSecond( DateTime.Now ) )
-          .Append( ':' )
-          .Append( c.GetMilliseconds( DateTime.Now ) );
-
-        return sb.ToString();
+        return $"{c.GetHour( DateTime.Now )}"
+             + $":{c.GetMinute( DateTime.Now )}"
+             + $":{c.GetSecond( DateTime.Now )}"
+             + $":{c.GetMilliseconds( DateTime.Now )}";
     }
 
     /// <summary>
@@ -500,22 +410,14 @@ public class Logger
     /// </summary>
     private static string GetCallerInfo( CallerID cid )
     {
-        var sb = new StringBuilder();
-
-        sb.Append( cid.fileName )
-          .Append( "::" )
-          .Append( cid.methodName )
-          .Append( "::" )
-          .Append( cid.lineNumber );
-
-        return sb.ToString();
+        return $"{cid.fileName}::{cid.methodName}::{cid.lineNumber}";
     }
 
     /// <summary>
     ///     Writes text to the logFile, if it exists.
     /// </summary>
     /// <param name="text">String holding the text to write.</param>
-    private void WriteToFile( string text )
+    private static void WriteToFile( string text )
     {
         if ( !File.Exists( _debugFilePath + _debugFileName ) )
         {
@@ -537,7 +439,7 @@ public class Logger
     ///     The trace level to check, either LOG_DEBUG, LOG_INFO, LOG_ERROR or LOG_ASSERT
     /// </param>
     /// <returns> True if the level is enabled. </returns>
-    private bool IsEnabled( int traceLevel )
+    private static bool IsEnabled( int traceLevel )
     {
         return traceLevel switch
                {
@@ -548,6 +450,8 @@ public class Logger
                    _ => false
                };
     }
+    
+    #endregion private methods
 }
 
 /// <summary>
@@ -560,17 +464,17 @@ public readonly ref struct LogInterpolatedStringHandler
     // Storage for the built-up string
     private readonly StringBuilder _builder;
 
-    public LogInterpolatedStringHandler( int literalLength, int formattedCount )
+    internal LogInterpolatedStringHandler( int literalLength, int formattedCount )
     {
         _builder = new StringBuilder( literalLength );
     }
 
-    public void AppendLiteral( string s )
+    internal void AppendLiteral( string s )
     {
         _builder.Append( s );
     }
 
-    public void AppendFormatted<T>( T t )
+    internal void AppendFormatted<T>( T t )
     {
         _builder.Append( t );
     }

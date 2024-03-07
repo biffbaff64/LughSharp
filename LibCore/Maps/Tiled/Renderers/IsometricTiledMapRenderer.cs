@@ -91,7 +91,7 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
 
         if ( _invIsotransform == null )
         {
-            Logger.Dbg( message: "_invIsotransform is null!" );
+            Logger.Dbg( "_invIsotransform is null!" );
         }
         else
         {

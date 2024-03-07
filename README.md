@@ -28,8 +28,8 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
     - switch expressions instead of switch statements where appropriate.
     - switch expressions instead of if..if/else..else where appropriate.
     - Check methods to see if they can be virtual.
-    - Use [PublicApi] where necessary.
-    - Use sealed classes only where strictly necessary. Users should be able to extend library classes.
+    - Check and/or correct visibility of classes/methods/properties etc.
+    - Use sealed classes only where strictly necessary.
     - Use of virtual for base classes/methods and classes that are likely to be extended is essential.
     - Constantly look for opportunities to improve this code.
 - STEP 3: Resolve ALL remaining TODOs.
@@ -269,6 +269,9 @@ GRAPHICS
     - DONE - TextureWrap                        
     - DONE - VertexAttribute                    
     - DONE - VertexAttributes
+
+    - GameWindow ??
+    - GraphicsDevice ??
 
     GRAPHICS/FRAMEBUFFERS
     ---------------------

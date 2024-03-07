@@ -164,7 +164,7 @@ public class VertexBufferObject : IVertexData
     {
         if ( _byteBuffer == null )
         {
-            Logger.Err( message: "_byteBuffer is NULL!" );
+            Logger.Err( "_byteBuffer is NULL!" );
 
             return;
         }
