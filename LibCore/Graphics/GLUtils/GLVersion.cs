@@ -29,6 +29,7 @@ namespace LibGDXSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
 /// </summary>
+[PublicAPI]
 public class GLVersion : GDXVersion
 {
     public enum GLType
@@ -70,17 +71,17 @@ public class GLVersion : GDXVersion
         if ( GLtype == GLType.GLES )
         {
             //OpenGL<space>ES<space><version number><space><vendor-specific information>.
-            ExtractVersion( "OpenGL ES (\\d(\\.\\d){0,2})", versionString );
+            ExtractVersion( @"OpenGL ES (\d(\.\d){0,2})", versionString );
         }
         else if ( GLtype == GLType.WebGL )
         {
             //WebGL<space><version number><space><vendor-specific information>
-            ExtractVersion( "WebGL (\\d(\\.\\d){0,2})", versionString );
+            ExtractVersion( @"WebGL (\d(\.\d){0,2})", versionString );
         }
         else if ( GLtype == GLType.OpenGL )
         {
             //<version number><space><vendor-specific information>
-            ExtractVersion( "(\\d(\\.\\d){0,2})", versionString );
+            ExtractVersion( @"(\d(\.\d){0,2})", versionString );
         }
         else
         {
@@ -119,7 +120,7 @@ public class GLVersion : GDXVersion
         }
         else
         {
-            Gdx.App.Log( TAG, "Invalid version string: " + versionString );
+            Logger.Err( $"Invalid version string: {versionString}" );
 
             MajorVersion    = 2;
             MinorVersion    = 0;
@@ -139,7 +140,7 @@ public class GLVersion : GDXVersion
         }
         catch ( FormatException )
         {
-            Gdx.App.Error( "LibGDXSharp GL", $"Error parsing number: {v}, assuming: {defaultValue}" );
+            Logger.Err( $"Error parsing number: {v}, assuming: {defaultValue}" );
 
             return defaultValue;
         }

@@ -34,6 +34,7 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 ///     allows to specify an atlas file or an image directory to be used for the effect's images.
 ///     Per default images are loaded from the directory in which the effect file is found.
 /// </summary>
+[PublicAPI]
 public class ParticleEffectLoader
     : AsynchronousAssetLoader< ParticleEffect, ParticleEffectLoader.ParticleEffectParameter >
 {
@@ -137,6 +138,7 @@ public class ParticleEffectLoader
     ///     Parameter to be passed to <see cref="AssetManager.Load(string, Type, AssetLoaderParameters)" />
     ///     if additional configuration is necessary for the <see cref="ParticleEffect" />.
     /// </summary>
+    [PublicAPI]
     public class ParticleEffectParameter : AssetLoaderParameters
     {
         /// <summary>

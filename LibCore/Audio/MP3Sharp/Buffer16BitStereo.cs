@@ -33,6 +33,7 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp;
 ///     public class used to queue samples that are being obtained from an Mp3 stream.
 ///     This class handles stereo 16-bit output, and can double 16-bit mono to stereo.
 /// </summary>
+[PublicAPI]
 public class Buffer16BitStereo : AudioBase
 {
     private const int OUTPUT_CHANNELS = 2;

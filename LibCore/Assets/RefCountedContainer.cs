@@ -31,6 +31,7 @@ namespace LibGDXSharp.LibCore.Assets;
 ///     each time you start using the object, and decrement it after you're done
 ///     using it. AssetManager handles this automatically.
 /// </summary>
+[PublicAPI]
 public class RefCountedContainer : IRefCountedContainer
 {
     public RefCountedContainer( object obj )

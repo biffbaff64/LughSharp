@@ -34,6 +34,7 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 /// </summary>
 /// <typeparam name="TAssetType"></typeparam>
 /// <typeparam name="TParameters"></typeparam>
+[PublicAPI]
 public abstract class AsynchronousAssetLoader<TAssetType, TParameters>
     : AssetLoaderBase where TParameters : AssetLoaderParameters
 {
@@ -77,6 +78,7 @@ public abstract class AsynchronousAssetLoader<TAssetType, TParameters>
     }
 }
 
+[PublicAPI]
 public abstract class AsynchronousAssetLoader : AssetLoaderBase
 {
     protected AsynchronousAssetLoader( IFileHandleResolver resolver )

@@ -37,10 +37,9 @@ using Monitor = DotGLFW.Monitor;
 
 namespace LibGDXSharp.Backends.DesktopGL;
 
+[PublicAPI]
 public class DesktopGLApplication : IDesktopGLApplicationBase
 {
-    private const string TAG = "GLApplication";
-
     private static   GlfwErrorCallback? _errorCallback = null;
     private readonly Sync?              _sync          = null;
     private volatile DesktopGLWindow?   _currentWindow = null;
@@ -50,6 +49,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     /// <summary>
     ///     Creates a new Desktop Gl Application.
+    /// <para>
+    ///     Uses the provided <see cref="DesktopGLApplicationConfiguration"/>.
+    /// </para> 
     /// </summary>
     /// <param name="listener"> The <see cref="IApplicationListener" /> to use. </param>
     /// <param name="config"> The <see cref="DesktopGLApplicationConfiguration" /> to use.</param>
@@ -57,8 +59,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                  DesktopGLApplicationConfiguration config )
     {
         InitialiseGL();
-
-        ApplicationLogger = new DesktopGLApplicationLogger();
 
         config.Title ??= listener.GetType().Name;
 
@@ -74,7 +74,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             }
             catch ( Exception e )
             {
-                Log( TAG, "Couldn't initialize audio, disabling audio", e );
+                Logger.Dbg( $"Couldn't initialize audio, disabling audio: {e}" );
 
                 Audio = new MockAudio();
             }
@@ -381,6 +381,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                               DesktopGLApplicationConfiguration config,
                               long sharedContext )
     {
+        ArgumentNullException.ThrowIfNull( window );
+        ArgumentNullException.ThrowIfNull( window.GlfwWindow );
+        
         GLFWWindow windowHandle = CreateGLFWWindow( config, window.GlfwWindow );
 
         window.Create( windowHandle );
@@ -601,7 +604,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public List< Runnable >                    Runnables          { get; set; } = new();
     public List< Runnable >                    ExecutedRunnables  { get; set; } = new();
     public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
-    public DesktopGLApplicationLogger?         ApplicationLogger  { get; set; }
     public int                                 LogLevel           { get; set; }
     public IClipboard?                         Clipboard          { get; set; }
     public GLVersion?                          GLVersion          { get; set; }
@@ -621,67 +623,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     #endregion public properties
 
-    #region debug logging
-
-    //TODO: Can I get rid of these now I have Trace() ?
-
-    public void Debug( string tag, string message )
-    {
-        if ( LogLevel >= IApplication.LOG_DEBUG )
-        {
-            ApplicationLogger?.Debug( tag, message );
-        }
-    }
-
-    public void Debug( string tag, string message, Exception exception )
-    {
-        if ( LogLevel >= IApplication.LOG_DEBUG )
-        {
-            ApplicationLogger?.Debug( tag, message, exception );
-        }
-    }
-
-    public void Log( string tag, string message )
-    {
-        if ( LogLevel >= IApplication.LOG_INFO )
-        {
-            ApplicationLogger?.Log( tag, message );
-        }
-    }
-
-    public void Log( string tag, string message, Exception exception )
-    {
-        if ( LogLevel >= IApplication.LOG_INFO )
-        {
-            ApplicationLogger?.Log( tag, message, exception );
-        }
-    }
-
-    public void Error( string tag, string message )
-    {
-        if ( LogLevel >= IApplication.LOG_ERROR )
-        {
-            ApplicationLogger?.Error( tag, message );
-        }
-    }
-
-    public void Error( string tag, string message, Exception exception )
-    {
-        if ( LogLevel >= IApplication.LOG_ERROR )
-        {
-            ApplicationLogger?.Error( tag, message, exception );
-        }
-    }
-
-    #endregion debug logging
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     #region GLDebug specific
 
     //TODO: Unfinished, see GLDebugMessageSeverity below
-
 
     public struct Gldms
     {

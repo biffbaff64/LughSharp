@@ -54,7 +54,7 @@ public class FPSLogger
 
             if ( fps < _bound )
             {
-                Gdx.App.Log( "FPSLogger", "fps: " + fps );
+                Logger.Sys( "fps: {fps}" );
 
                 _startTime = nanoTime;
             }

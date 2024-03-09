@@ -64,7 +64,7 @@ namespace LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
 ///         the resolution folder.
 ///     </p>
 /// </summary>
-public class ResolutionFileResolver : IFileHandleResolver
+internal class ResolutionFileResolver : IFileHandleResolver
 {
     protected readonly IFileHandleResolver baseResolver;
     protected readonly Resolution[]        descriptors;

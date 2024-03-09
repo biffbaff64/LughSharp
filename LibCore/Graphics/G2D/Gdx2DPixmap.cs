@@ -27,6 +27,7 @@ using LibGDXSharp.LibCore.Utils.Buffers;
 
 namespace LibGDXSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public class Gdx2DPixmap : IDisposable
 {
     // ------------------------------------------------------------------------
@@ -271,7 +272,7 @@ public class Gdx2DPixmap : IDisposable
         }
         catch ( IOException e )
         {
-            Gdx.App.Log( "Gdx2DPixmap", e.Message );
+            Logger.Err( e.Message );
 
             return null;
         }
@@ -285,7 +286,7 @@ public class Gdx2DPixmap : IDisposable
         }
         catch ( ArgumentException e )
         {
-            Gdx.App.Log( "Gdx2DPixmap", e.Message );
+            Logger.Err( e.Message );
 
             return null;
         }

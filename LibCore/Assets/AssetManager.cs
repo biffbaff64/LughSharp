@@ -40,6 +40,7 @@ namespace LibGDXSharp.LibCore.Assets;
 /// <summary>
 ///     Loads and stores assets like textures, bitmapfonts, tile maps, sounds, music and so on.
 /// </summary>
+[PublicAPI]
 public class AssetManager
 {
     // ------------------------------------------------------------------------

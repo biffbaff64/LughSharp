@@ -33,6 +33,7 @@ namespace LibGDXSharp.LibCore.Audio;
 ///     channel sample, right channel sample. The dispose() method must be
 ///     called when this AudioDevice is no longer needed.
 /// </summary>
+[PublicAPI]
 public interface IAudioDevice : IDisposable
 {
     /// <summary>

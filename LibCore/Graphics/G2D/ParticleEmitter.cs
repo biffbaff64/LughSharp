@@ -31,6 +31,7 @@ using Exception = System.Exception;
 
 namespace LibGDXSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public class ParticleEmitter
 {
     // ------------------------------------------------------------------------
@@ -1588,7 +1589,7 @@ public class ParticleEmitter
 
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class Particle : Sprite
     {
         public Particle( Sprite sprite ) : base( sprite )
@@ -1620,7 +1621,7 @@ public class ParticleEmitter
 
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class ParticleValue
     {
         public bool Active       { get; set; }
@@ -1657,7 +1658,7 @@ public class ParticleEmitter
 
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class NumericValue : ParticleValue
     {
         public float Value { get; set; }
@@ -1695,7 +1696,7 @@ public class ParticleEmitter
 
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class RangedNumericValue : ParticleValue
     {
         public float LowMin { get; set; }
@@ -1769,7 +1770,7 @@ public class ParticleEmitter
 
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class ScaledNumericValue : RangedNumericValue
     {
         public float[] Scaling    { get; set; } = { 1 };
@@ -1944,7 +1945,7 @@ public class ParticleEmitter
 
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class IndependentScaledNumericValue : ScaledNumericValue
     {
         public bool Independent { get; set; }
@@ -2015,13 +2016,13 @@ public class ParticleEmitter
             {
                 // BufferedReader.MarkSupported may return false in some platforms,
                 // in which case backwards commpatibility is not possible.
-                var errorMessage = "The loaded particle effect descriptor file uses an old invalid format. "
-                                 + "Please download the latest version of the Particle Editor tool and recreate the file by"
-                                 + " loading and saving it again.";
+                const string ERROR_MESSAGE = "The loaded particle effect descriptor file uses an old invalid format. "
+                                          + "Please download the latest version of the Particle Editor tool and "
+                                           + "recreate the file by loading and saving it again.";
 
-                Gdx.App.Error( "ParticleEmitter", errorMessage );
+                Logger.Err( ERROR_MESSAGE );
 
-                throw new IOException( errorMessage );
+                throw new IOException( ERROR_MESSAGE );
             }
         }
 
@@ -2034,7 +2035,7 @@ public class ParticleEmitter
 
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class GradientColorValue : ParticleValue
     {
         private readonly float[] _temp = new float[ 4 ];
@@ -2159,7 +2160,7 @@ public class ParticleEmitter
 
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class ParticleSpawnShapeValue : ParticleValue
     {
         public bool             Edges { get; set; }

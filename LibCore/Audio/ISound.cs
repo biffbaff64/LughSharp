@@ -25,6 +25,7 @@
 
 namespace LibGDXSharp.LibCore.Audio;
 
+[PublicAPI]
 public interface ISound : IDisposable
 {
     /// <summary>

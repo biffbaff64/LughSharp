@@ -30,18 +30,19 @@ namespace LibGDXSharp.LibCore.Core;
 /// <summary>
 ///     The current LibGDXSharp Library version.
 /// </summary>
+[PublicAPI]
 public class GDXVersion
 {
-    // the current version of LibGDXSharp as a string in the major.minor.revision format
+    // the current Library version as a string in the major.minor.revision format
     public const string LIBRARY_VERSION_STRING = "0.0.1";
 
-    private readonly static Version Version = new();
+    private readonly static Version _version = new();
 
     static GDXVersion()
     {
         try
         {
-            var v = Version.ToString().Split( "\\." );
+            var v = _version.ToString().Split( "\\." );
 
             MajorVersion    = v.Length < 1 ? 0 : int.Parse( v[ 0 ] );
             MinorVersion    = v.Length < 2 ? 0 : int.Parse( v[ 1 ] );

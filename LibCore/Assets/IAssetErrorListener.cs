@@ -27,6 +27,7 @@ using Exception = System.Exception;
 
 namespace LibGDXSharp.LibCore.Assets;
 
+[PublicAPI]
 public interface IAssetErrorListener
 {
     void Error( AssetDescriptor asset, Exception throwable );

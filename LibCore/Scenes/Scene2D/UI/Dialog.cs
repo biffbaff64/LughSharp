@@ -35,6 +35,7 @@ namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
 ///     but any widgets can be added. When a button is clicked, <see cref="Result(object)" /> is
 ///     called and the dialog is removed from the stage.
 /// </summary>
+[PublicAPI]
 public class Dialog : Window
 {
     private readonly IgnoreTouchDown _ignoreTouchDown = null!;
@@ -405,8 +406,7 @@ public class Dialog : Window
 
     private void DefaultSkinProvided()
     {
-        Gdx.App.Debug( "Dialog",
-                       "This method may only be used if the dialog was constructed "
+        Logger.Dbg( "This method may only be used if the dialog was constructed "
                      + "with a Skin, a default Skin has been provided." );
     }
 
@@ -452,9 +452,9 @@ public class Dialog : Window
 
     public class IgnoreTouchDown : InputListener
     {
-        public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
+        public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
-            ev.Cancel();
+            ev?.Cancel();
 
             return false;
         }

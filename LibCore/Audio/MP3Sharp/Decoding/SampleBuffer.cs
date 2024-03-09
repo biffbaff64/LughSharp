@@ -29,6 +29,7 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
 ///     The SampleBuffer class implements an output buffer that provides storage for a
 ///     fixed size block of samples.
 /// </summary>
+[PublicAPI]
 public class SampleBuffer : AudioBase
 {
     private readonly short[] _buffer;
@@ -90,7 +91,7 @@ public class SampleBuffer : AudioBase
     }
 
     /// <summary>
-    ///     Write the samples to the file (Random Acces).
+    ///     Write the samples to the file (Random Access).
     /// </summary>
     public override void WriteBuffer( int val )
     {

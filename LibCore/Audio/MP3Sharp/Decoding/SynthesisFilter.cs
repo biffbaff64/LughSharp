@@ -30,43 +30,44 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
 ///     44.1 or 48 kHz to 8 kHz, if ULAW is defined. Frequencies above 4 kHz are removed by
 ///     ignoring higher subbands.
 /// </summary>
+[PublicAPI]
 public class SynthesisFilter
 {
     private const double MY_PI = 3.14159265358979323846;
 
     // Note: These values are not in the same order
     // as in Annex 3-B.3 of the ISO/IEC DIS 11172-3 
-    private readonly static float Cos164  = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 64.0 ) ) );
-    private readonly static float Cos364  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 64.0 ) ) );
-    private readonly static float Cos564  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 5.0 ) / 64.0 ) ) );
-    private readonly static float Cos764  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 7.0 ) / 64.0 ) ) );
-    private readonly static float Cos964  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 9.0 ) / 64.0 ) ) );
-    private readonly static float Cos1164 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 11.0 ) / 64.0 ) ) );
-    private readonly static float Cos1364 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 13.0 ) / 64.0 ) ) );
-    private readonly static float Cos1564 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 15.0 ) / 64.0 ) ) );
-    private readonly static float Cos1764 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 17.0 ) / 64.0 ) ) );
-    private readonly static float Cos1964 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 19.0 ) / 64.0 ) ) );
-    private readonly static float Cos2164 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 21.0 ) / 64.0 ) ) );
-    private readonly static float Cos2364 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 23.0 ) / 64.0 ) ) );
-    private readonly static float Cos2564 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 25.0 ) / 64.0 ) ) );
-    private readonly static float Cos2764 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 27.0 ) / 64.0 ) ) );
-    private readonly static float Cos2964 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 29.0 ) / 64.0 ) ) );
-    private readonly static float Cos3164 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 31.0 ) / 64.0 ) ) );
-    private readonly static float Cos132  = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 32.0 ) ) );
-    private readonly static float Cos332  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 32.0 ) ) );
-    private readonly static float Cos532  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 5.0 ) / 32.0 ) ) );
-    private readonly static float Cos732  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 7.0 ) / 32.0 ) ) );
-    private readonly static float Cos932  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 9.0 ) / 32.0 ) ) );
-    private readonly static float Cos1132 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 11.0 ) / 32.0 ) ) );
-    private readonly static float Cos1332 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 13.0 ) / 32.0 ) ) );
-    private readonly static float Cos1532 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 15.0 ) / 32.0 ) ) );
-    private readonly static float Cos116  = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 16.0 ) ) );
-    private readonly static float Cos316  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 16.0 ) ) );
-    private readonly static float Cos516  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 5.0 ) / 16.0 ) ) );
-    private readonly static float Cos716  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 7.0 ) / 16.0 ) ) );
-    private readonly static float Cos18   = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 8.0 ) ) );
-    private readonly static float Cos38   = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 8.0 ) ) );
-    private readonly static float Cos14   = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 4.0 ) ) );
+    private readonly static float _cos164  = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 64.0 ) ) );
+    private readonly static float _cos364  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 64.0 ) ) );
+    private readonly static float _cos564  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 5.0 ) / 64.0 ) ) );
+    private readonly static float _cos764  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 7.0 ) / 64.0 ) ) );
+    private readonly static float _cos964  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 9.0 ) / 64.0 ) ) );
+    private readonly static float _cos1164 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 11.0 ) / 64.0 ) ) );
+    private readonly static float _cos1364 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 13.0 ) / 64.0 ) ) );
+    private readonly static float _cos1564 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 15.0 ) / 64.0 ) ) );
+    private readonly static float _cos1764 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 17.0 ) / 64.0 ) ) );
+    private readonly static float _cos1964 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 19.0 ) / 64.0 ) ) );
+    private readonly static float _cos2164 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 21.0 ) / 64.0 ) ) );
+    private readonly static float _cos2364 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 23.0 ) / 64.0 ) ) );
+    private readonly static float _cos2564 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 25.0 ) / 64.0 ) ) );
+    private readonly static float _cos2764 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 27.0 ) / 64.0 ) ) );
+    private readonly static float _cos2964 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 29.0 ) / 64.0 ) ) );
+    private readonly static float _cos3164 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 31.0 ) / 64.0 ) ) );
+    private readonly static float _cos132  = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 32.0 ) ) );
+    private readonly static float _cos332  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 32.0 ) ) );
+    private readonly static float _cos532  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 5.0 ) / 32.0 ) ) );
+    private readonly static float _cos732  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 7.0 ) / 32.0 ) ) );
+    private readonly static float _cos932  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 9.0 ) / 32.0 ) ) );
+    private readonly static float _cos1132 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 11.0 ) / 32.0 ) ) );
+    private readonly static float _cos1332 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 13.0 ) / 32.0 ) ) );
+    private readonly static float _cos1532 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 15.0 ) / 32.0 ) ) );
+    private readonly static float _cos116  = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 16.0 ) ) );
+    private readonly static float _cos316  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 16.0 ) ) );
+    private readonly static float _cos516  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 5.0 ) / 16.0 ) ) );
+    private readonly static float _cos716  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 7.0 ) / 16.0 ) ) );
+    private readonly static float _cos18   = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 8.0 ) ) );
+    private readonly static float _cos38   = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 8.0 ) ) );
+    private readonly static float _cos14   = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 4.0 ) ) );
 
     private static float[]? _d;
 
@@ -77,7 +78,7 @@ public class SynthesisFilter
 
     // The original data for d[]. This data (was) loaded from a file
     // to reduce the overall package size and to improve performance. 
-    private readonly static float[] DData =
+    private readonly static float[] _dData =
     {
         0.000000000f, -0.000442505f, 0.003250122f, -0.007003784f,
         0.031082153f, -0.078628540f, 0.100311279f, -0.572036743f,
@@ -235,7 +236,7 @@ public class SynthesisFilter
 
         if ( _d == null )
         {
-            _d   = DData; // load_d();
+            _d   = _dData; // load_d();
             _d16 = SplitArray( _d, 16 );
         }
 
@@ -385,65 +386,65 @@ public class SynthesisFilter
         var pp5  = p5 + p10;
         var pp6  = p6 + p9;
         var pp7  = p7 + p8;
-        var pp8  = ( p0 - p15 ) * Cos132;
-        var pp9  = ( p1 - p14 ) * Cos332;
-        var pp10 = ( p2 - p13 ) * Cos532;
-        var pp11 = ( p3 - p12 ) * Cos732;
-        var pp12 = ( p4 - p11 ) * Cos932;
-        var pp13 = ( p5 - p10 ) * Cos1132;
-        var pp14 = ( p6 - p9 ) * Cos1332;
-        var pp15 = ( p7 - p8 ) * Cos1532;
+        var pp8  = ( p0 - p15 ) * _cos132;
+        var pp9  = ( p1 - p14 ) * _cos332;
+        var pp10 = ( p2 - p13 ) * _cos532;
+        var pp11 = ( p3 - p12 ) * _cos732;
+        var pp12 = ( p4 - p11 ) * _cos932;
+        var pp13 = ( p5 - p10 ) * _cos1132;
+        var pp14 = ( p6 - p9 ) * _cos1332;
+        var pp15 = ( p7 - p8 ) * _cos1532;
 
         p0  = pp0 + pp7;
         p1  = pp1 + pp6;
         p2  = pp2 + pp5;
         p3  = pp3 + pp4;
-        p4  = ( pp0 - pp7 ) * Cos116;
-        p5  = ( pp1 - pp6 ) * Cos316;
-        p6  = ( pp2 - pp5 ) * Cos516;
-        p7  = ( pp3 - pp4 ) * Cos716;
+        p4  = ( pp0 - pp7 ) * _cos116;
+        p5  = ( pp1 - pp6 ) * _cos316;
+        p6  = ( pp2 - pp5 ) * _cos516;
+        p7  = ( pp3 - pp4 ) * _cos716;
         p8  = pp8 + pp15;
         p9  = pp9 + pp14;
         p10 = pp10 + pp13;
         p11 = pp11 + pp12;
-        p12 = ( pp8 - pp15 ) * Cos116;
-        p13 = ( pp9 - pp14 ) * Cos316;
-        p14 = ( pp10 - pp13 ) * Cos516;
-        p15 = ( pp11 - pp12 ) * Cos716;
+        p12 = ( pp8 - pp15 ) * _cos116;
+        p13 = ( pp9 - pp14 ) * _cos316;
+        p14 = ( pp10 - pp13 ) * _cos516;
+        p15 = ( pp11 - pp12 ) * _cos716;
 
         pp0  = p0 + p3;
         pp1  = p1 + p2;
-        pp2  = ( p0 - p3 ) * Cos18;
-        pp3  = ( p1 - p2 ) * Cos38;
+        pp2  = ( p0 - p3 ) * _cos18;
+        pp3  = ( p1 - p2 ) * _cos38;
         pp4  = p4 + p7;
         pp5  = p5 + p6;
-        pp6  = ( p4 - p7 ) * Cos18;
-        pp7  = ( p5 - p6 ) * Cos38;
+        pp6  = ( p4 - p7 ) * _cos18;
+        pp7  = ( p5 - p6 ) * _cos38;
         pp8  = p8 + p11;
         pp9  = p9 + p10;
-        pp10 = ( p8 - p11 ) * Cos18;
-        pp11 = ( p9 - p10 ) * Cos38;
+        pp10 = ( p8 - p11 ) * _cos18;
+        pp11 = ( p9 - p10 ) * _cos38;
         pp12 = p12 + p15;
         pp13 = p13 + p14;
-        pp14 = ( p12 - p15 ) * Cos18;
-        pp15 = ( p13 - p14 ) * Cos38;
+        pp14 = ( p12 - p15 ) * _cos18;
+        pp15 = ( p13 - p14 ) * _cos38;
 
         p0  = pp0 + pp1;
-        p1  = ( pp0 - pp1 ) * Cos14;
+        p1  = ( pp0 - pp1 ) * _cos14;
         p2  = pp2 + pp3;
-        p3  = ( pp2 - pp3 ) * Cos14;
+        p3  = ( pp2 - pp3 ) * _cos14;
         p4  = pp4 + pp5;
-        p5  = ( pp4 - pp5 ) * Cos14;
+        p5  = ( pp4 - pp5 ) * _cos14;
         p6  = pp6 + pp7;
-        p7  = ( pp6 - pp7 ) * Cos14;
+        p7  = ( pp6 - pp7 ) * _cos14;
         p8  = pp8 + pp9;
-        p9  = ( pp8 - pp9 ) * Cos14;
+        p9  = ( pp8 - pp9 ) * _cos14;
         p10 = pp10 + pp11;
-        p11 = ( pp10 - pp11 ) * Cos14;
+        p11 = ( pp10 - pp11 ) * _cos14;
         p12 = pp12 + pp13;
-        p13 = ( pp12 - pp13 ) * Cos14;
+        p13 = ( pp12 - pp13 ) * _cos14;
         p14 = pp14 + pp15;
-        p15 = ( pp14 - pp15 ) * Cos14;
+        p15 = ( pp14 - pp15 ) * _cos14;
 
         // this is pretty insane coding
         float tmp1;
@@ -461,22 +462,22 @@ public class SynthesisFilter
 
         var newV23 = -( newV8 = p3 ) - p2;
 
-        p0  = ( s0 - s31 ) * Cos164;
-        p1  = ( s1 - s30 ) * Cos364;
-        p2  = ( s2 - s29 ) * Cos564;
-        p3  = ( s3 - s28 ) * Cos764;
-        p4  = ( s4 - s27 ) * Cos964;
-        p5  = ( s5 - s26 ) * Cos1164;
-        p6  = ( s6 - s25 ) * Cos1364;
-        p7  = ( s7 - s24 ) * Cos1564;
-        p8  = ( s8 - s23 ) * Cos1764;
-        p9  = ( s9 - s22 ) * Cos1964;
-        p10 = ( s10 - s21 ) * Cos2164;
-        p11 = ( s11 - s20 ) * Cos2364;
-        p12 = ( s12 - s19 ) * Cos2564;
-        p13 = ( s13 - s18 ) * Cos2764;
-        p14 = ( s14 - s17 ) * Cos2964;
-        p15 = ( s15 - s16 ) * Cos3164;
+        p0  = ( s0 - s31 ) * _cos164;
+        p1  = ( s1 - s30 ) * _cos364;
+        p2  = ( s2 - s29 ) * _cos564;
+        p3  = ( s3 - s28 ) * _cos764;
+        p4  = ( s4 - s27 ) * _cos964;
+        p5  = ( s5 - s26 ) * _cos1164;
+        p6  = ( s6 - s25 ) * _cos1364;
+        p7  = ( s7 - s24 ) * _cos1564;
+        p8  = ( s8 - s23 ) * _cos1764;
+        p9  = ( s9 - s22 ) * _cos1964;
+        p10 = ( s10 - s21 ) * _cos2164;
+        p11 = ( s11 - s20 ) * _cos2364;
+        p12 = ( s12 - s19 ) * _cos2564;
+        p13 = ( s13 - s18 ) * _cos2764;
+        p14 = ( s14 - s17 ) * _cos2964;
+        p15 = ( s15 - s16 ) * _cos3164;
 
         pp0  = p0 + p15;
         pp1  = p1 + p14;
@@ -486,65 +487,65 @@ public class SynthesisFilter
         pp5  = p5 + p10;
         pp6  = p6 + p9;
         pp7  = p7 + p8;
-        pp8  = ( p0 - p15 ) * Cos132;
-        pp9  = ( p1 - p14 ) * Cos332;
-        pp10 = ( p2 - p13 ) * Cos532;
-        pp11 = ( p3 - p12 ) * Cos732;
-        pp12 = ( p4 - p11 ) * Cos932;
-        pp13 = ( p5 - p10 ) * Cos1132;
-        pp14 = ( p6 - p9 ) * Cos1332;
-        pp15 = ( p7 - p8 ) * Cos1532;
+        pp8  = ( p0 - p15 ) * _cos132;
+        pp9  = ( p1 - p14 ) * _cos332;
+        pp10 = ( p2 - p13 ) * _cos532;
+        pp11 = ( p3 - p12 ) * _cos732;
+        pp12 = ( p4 - p11 ) * _cos932;
+        pp13 = ( p5 - p10 ) * _cos1132;
+        pp14 = ( p6 - p9 ) * _cos1332;
+        pp15 = ( p7 - p8 ) * _cos1532;
 
         p0  = pp0 + pp7;
         p1  = pp1 + pp6;
         p2  = pp2 + pp5;
         p3  = pp3 + pp4;
-        p4  = ( pp0 - pp7 ) * Cos116;
-        p5  = ( pp1 - pp6 ) * Cos316;
-        p6  = ( pp2 - pp5 ) * Cos516;
-        p7  = ( pp3 - pp4 ) * Cos716;
+        p4  = ( pp0 - pp7 ) * _cos116;
+        p5  = ( pp1 - pp6 ) * _cos316;
+        p6  = ( pp2 - pp5 ) * _cos516;
+        p7  = ( pp3 - pp4 ) * _cos716;
         p8  = pp8 + pp15;
         p9  = pp9 + pp14;
         p10 = pp10 + pp13;
         p11 = pp11 + pp12;
-        p12 = ( pp8 - pp15 ) * Cos116;
-        p13 = ( pp9 - pp14 ) * Cos316;
-        p14 = ( pp10 - pp13 ) * Cos516;
-        p15 = ( pp11 - pp12 ) * Cos716;
+        p12 = ( pp8 - pp15 ) * _cos116;
+        p13 = ( pp9 - pp14 ) * _cos316;
+        p14 = ( pp10 - pp13 ) * _cos516;
+        p15 = ( pp11 - pp12 ) * _cos716;
 
         pp0  = p0 + p3;
         pp1  = p1 + p2;
-        pp2  = ( p0 - p3 ) * Cos18;
-        pp3  = ( p1 - p2 ) * Cos38;
+        pp2  = ( p0 - p3 ) * _cos18;
+        pp3  = ( p1 - p2 ) * _cos38;
         pp4  = p4 + p7;
         pp5  = p5 + p6;
-        pp6  = ( p4 - p7 ) * Cos18;
-        pp7  = ( p5 - p6 ) * Cos38;
+        pp6  = ( p4 - p7 ) * _cos18;
+        pp7  = ( p5 - p6 ) * _cos38;
         pp8  = p8 + p11;
         pp9  = p9 + p10;
-        pp10 = ( p8 - p11 ) * Cos18;
-        pp11 = ( p9 - p10 ) * Cos38;
+        pp10 = ( p8 - p11 ) * _cos18;
+        pp11 = ( p9 - p10 ) * _cos38;
         pp12 = p12 + p15;
         pp13 = p13 + p14;
-        pp14 = ( p12 - p15 ) * Cos18;
-        pp15 = ( p13 - p14 ) * Cos38;
+        pp14 = ( p12 - p15 ) * _cos18;
+        pp15 = ( p13 - p14 ) * _cos38;
 
         p0  = pp0 + pp1;
-        p1  = ( pp0 - pp1 ) * Cos14;
+        p1  = ( pp0 - pp1 ) * _cos14;
         p2  = pp2 + pp3;
-        p3  = ( pp2 - pp3 ) * Cos14;
+        p3  = ( pp2 - pp3 ) * _cos14;
         p4  = pp4 + pp5;
-        p5  = ( pp4 - pp5 ) * Cos14;
+        p5  = ( pp4 - pp5 ) * _cos14;
         p6  = pp6 + pp7;
-        p7  = ( pp6 - pp7 ) * Cos14;
+        p7  = ( pp6 - pp7 ) * _cos14;
         p8  = pp8 + pp9;
-        p9  = ( pp8 - pp9 ) * Cos14;
+        p9  = ( pp8 - pp9 ) * _cos14;
         p10 = pp10 + pp11;
-        p11 = ( pp10 - pp11 ) * Cos14;
+        p11 = ( pp10 - pp11 ) * _cos14;
         p12 = pp12 + pp13;
-        p13 = ( pp12 - pp13 ) * Cos14;
+        p13 = ( pp12 - pp13 ) * _cos14;
         p14 = pp14 + pp15;
-        p15 = ( pp14 - pp15 ) * Cos14;
+        p15 = ( pp14 - pp15 ) * _cos14;
 
         // manually doing something that a compiler should handle sucks
         // coding like this is hard to read

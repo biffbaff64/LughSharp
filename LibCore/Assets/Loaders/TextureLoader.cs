@@ -36,6 +36,7 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 ///     can be passed to the various Texture constructors, e.g. filtering, whether
 ///     to generate mipmaps and so on.
 /// </summary>
+[PublicAPI]
 public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.TextureLoaderParameters >,
                              IDisposable
 {
@@ -102,6 +103,7 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
 
     /// <summary>
     /// </summary>
+    [PublicAPI]
     public class TextureLoaderParameters : AssetLoaderParameters
     {
         /// <summary>

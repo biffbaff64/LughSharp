@@ -32,6 +32,7 @@ using LibGDXSharp.LibCore.Utils.Collections;
 
 namespace LibGDXSharp.LibCore.Assets.Loaders;
 
+[PublicAPI]
 public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     where TP : ModelLoader< TP >.ModelLoaderParameters
 {
@@ -205,7 +206,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class ModelLoaderParameters : AssetLoaderParameters
     {
         public ModelLoaderParameters()

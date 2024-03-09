@@ -29,6 +29,7 @@ namespace LibGDXSharp.LibCore.Core;
 
 using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 
+[PublicAPI]
 public abstract class AbstractGraphics : IGraphics
 {
     #region implemented methods

@@ -31,6 +31,7 @@ namespace LibGDXSharp.LibCore.Assets;
 ///     Responsible for loading an asset through an <see cref="AssetLoaderBase" /> based
 ///     on an <see cref="AssetDescriptor" />.
 /// </summary>
+[PublicAPI]
 public class AssetLoadingTask
 {
     // ------------------------------------------------------------------------

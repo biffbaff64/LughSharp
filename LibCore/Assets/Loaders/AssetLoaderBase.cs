@@ -30,6 +30,7 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 /// <summary>
 ///     Abstract base class for asset loaders.
 /// </summary>
+[PublicAPI]
 public abstract class AssetLoaderBase
 {
     // ------------------------------------------------------------------------

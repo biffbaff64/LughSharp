@@ -29,6 +29,7 @@ using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
 
 namespace LibGDXSharp.LibCore.Graphics.Profiling;
 
+[PublicAPI]
 public class GL20Interceptor : BaseGLInterceptor
 {
     public GL20Interceptor( GLProfiler glProfiler, IGL20 gl20 )

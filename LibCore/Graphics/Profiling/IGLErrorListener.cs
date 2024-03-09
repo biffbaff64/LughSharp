@@ -45,6 +45,7 @@ public interface IGLErrorListener
 /// <summary>
 ///     Listener that will log using Gdx.app.error GL error name and GL function.
 /// </summary>
+[PublicAPI]
 public class GLLoggingListener : IGLErrorListener
 {
     public void OnError( int error )
@@ -75,8 +76,7 @@ public class GLLoggingListener : IGLErrorListener
             // ignored
         }
 
-        Gdx.App.Error( "LoggingListener",
-                       place != null
+        Logger.Err( place != null
                            ? $"Error {BaseGLInterceptor.ResolveErrorNumber( error )} from {place}"
 
                            // This will capture current stack trace for logging, if possible

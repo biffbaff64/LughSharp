@@ -31,7 +31,7 @@ namespace LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
 ///     the base resolver. The prefix is added as is, you have to include any trailing
 ///     '/' character if needed.
 /// </summary>
-public class PrefixFileHandleResolver : IFileHandleResolver
+internal class PrefixFileHandleResolver : IFileHandleResolver
 {
     public PrefixFileHandleResolver( IFileHandleResolver baseResolver, string prefix )
     {

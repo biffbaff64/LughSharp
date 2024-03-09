@@ -71,6 +71,7 @@ namespace LibGDXSharp.LibCore.Core;
 ///     facilities.
 ///     The Application also has a simple logging method which will print to standard out on the desktop.
 /// </summary>
+[PublicAPI]
 public interface IApplication
 {
     /// <summary>
@@ -80,40 +81,15 @@ public interface IApplication
         IOS,
         Android,
         Desktop,
-        HeadlessDesktop,
-        WebGL
+        WebGL,
+        Linux
     }
-
-    const int LOG_NONE  = 0;
-    const int LOG_ERROR = 1;
-    const int LOG_INFO  = 2;
-    const int LOG_DEBUG = 3;
-
-    /// <summary>
-    ///     Getter and Setter for the log level.
-    ///     LogNone will mute all log output.
-    ///     LogError will only let error messages through.
-    ///     LogInfo will let all non-debug messages through.
-    ///     LogDebug will let all messages through.
-    /// </summary>
-    int LogLevel { get; set; }
-
-    ApplicationType AppType { get; set; }
-
-    IClipboard? Clipboard { get; set; }
 
     int GetVersion();
 
-    IPreferences GetPreferences( string name );
-
-    void Log( string tag, string message );
-    void Log( string tag, string message, Exception exception );
-
-    void Error( string tag, string message );
-    void Error( string tag, string message, Exception exception );
-
-    void Debug( string tag, string message );
-    void Debug( string tag, string message, Exception exception );
+    ApplicationType AppType   { get; set; }
+    IClipboard?     Clipboard { get; set; }
+    IPreferences    GetPreferences( string name );
 
     void AddLifecycleListener( ILifecycleListener listener );
     void RemoveLifecycleListener( ILifecycleListener listener );

@@ -37,17 +37,18 @@ namespace LibGDXSharp.LibCore.Utils;
 ///     To enable writing to file, <see cref="EnableWriteToFile" /> must be TRUE
 ///     and <see cref="OpenDebugFile" /> must be called.
 /// </summary>
+[PublicAPI]
 public static class Logger
 {
     // ------------------------------------------------------------------------
 
     #region constants
 
-    public const int LOG_NONE   = 0;
-    public const int LOG_DEBUG  = 1;
-    public const int LOG_INFO   = 2;
-    public const int LOG_ERROR  = 4;
-    public const int LOG_ASSERT = 8;
+    public const int LOG_NONE  = 0;
+    public const int LOG_SYS   = 1;
+    public const int LOG_DEBUG = 2;
+    public const int LOG_INFO  = 4;
+    public const int LOG_ERROR = 8;
 
     private const string DEBUG_TAG = "[Debug] ";
     private const string INFO_TAG  = "[Info ] ";
@@ -72,7 +73,7 @@ public static class Logger
     // ------------------------------------------------------------------------
 
     #region public methods
-    
+
     /// <summary>
     ///     Default Constructor.
     /// </summary>
@@ -99,39 +100,34 @@ public static class Logger
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
     /// <param name="callerLine"></param>
-    public static void Dbg( string message,
+    public static void Sys( string message = "",
                             [CallerFilePath] string callerFilePath = "",
                             [CallerMemberName] string callerMethod = "",
                             [CallerLineNumber] int callerLine = 0 )
     {
-        if ( !IsEnabled( LOG_DEBUG ) )
+        if ( message is "" )
         {
-            return;
+            message = "[[[ Empty Message ]]]";
         }
 
-        var callerID = new CallerID
-        {
-            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-            methodName = callerMethod,
-            lineNumber = callerLine
-        };
+        CallerID callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
-        var str = CreateMessage( $"{DEBUG_TAG}{message}", callerID );
+        var str = CreateMessage( $"SYSLOG: {message}", callerID );
 
         Console.WriteLine( str );
 
         WriteToFile( str );
     }
-
+    
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="handler"></param>
+    /// <param name="message"></param>
     /// <param name="boxedDebug"></param>
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
     /// <param name="callerLine"></param>
-    public static void Dbg( LogInterpolatedStringHandler handler,
+    public static void Dbg( string message,
                             bool boxedDebug = false,
                             [CallerFilePath] string callerFilePath = "",
                             [CallerMemberName] string callerMethod = "",
@@ -147,19 +143,14 @@ public static class Logger
             Divider();
         }
 
-        var callerID = new CallerID
-        {
-            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-            methodName = callerMethod,
-            lineNumber = callerLine
-        };
+        CallerID callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
-        var str = CreateMessage( $"{DEBUG_TAG}{handler.GetFormattedText()}", callerID );
+        var str = CreateMessage( $"{DEBUG_TAG}{message}", callerID );
 
         Console.WriteLine( str );
 
         WriteToFile( str );
-
+        
         if ( boxedDebug )
         {
             Divider();
@@ -183,12 +174,7 @@ public static class Logger
             return;
         }
 
-        var callerID = new CallerID
-        {
-            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-            methodName = callerMethod,
-            lineNumber = callerLine
-        };
+        CallerID callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
         var str = CreateMessage( $"{ERROR_TAG}{message}", callerID );
 
@@ -198,47 +184,14 @@ public static class Logger
     }
 
     /// <summary>
-    ///     Write an error string to console and logfile, if enabled.
-    /// </summary>
-    /// <param name="handler"></param>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerMethod"></param>
-    /// <param name="callerLine"></param>
-    public static void Err( LogInterpolatedStringHandler handler,
-                            [CallerFilePath] string callerFilePath = "",
-                            [CallerMemberName] string callerMethod = "",
-                            [CallerLineNumber] int callerLine = 0 )
-    {
-        if ( !IsEnabled( LOG_ERROR ) )
-        {
-            return;
-        }
-
-        var message = string.Join( ERROR_TAG, handler.GetFormattedText() );
-
-        var callerID = new CallerID
-        {
-            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-            methodName = callerMethod,
-            lineNumber = callerLine
-        };
-
-        var str = CreateMessage( message, callerID );
-
-        Console.WriteLine( str );
-
-        WriteToFile( str );
-    }
-
-    /// <summary>
     ///     Write a message to console if the supplied condition is TRUE.
     /// </summary>
-    /// <param name="handler"></param>
+    /// <param name="message"></param>
     /// <param name="condition">The condition to evaluate.</param>
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
     /// <param name="callerLine"></param>
-    public static void OnCondition( LogInterpolatedStringHandler handler,
+    public static void OnCondition( string message,
                                     bool condition = false,
                                     [CallerFilePath] string callerFilePath = "",
                                     [CallerMemberName] string callerMethod = "",
@@ -249,16 +202,9 @@ public static class Logger
             return;
         }
 
-        var message = string.Join( DEBUG_TAG, handler.GetFormattedText() );
+        CallerID callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
-        var callerID = new CallerID
-        {
-            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-            methodName = callerMethod,
-            lineNumber = callerLine
-        };
-
-        var str = CreateMessage( message, callerID );
+        var str = CreateMessage( $"{DEBUG_TAG}{message}", callerID );
 
         Console.WriteLine( str );
 
@@ -282,12 +228,7 @@ public static class Logger
             return;
         }
 
-        var callerID = new CallerID
-        {
-            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-            methodName = callerMethod,
-            lineNumber = callerLine
-        };
+        CallerID callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
         var message = $"CP::{GetTimeStampInfo()}:{GetCallerInfo( callerID )}";
 
@@ -363,13 +304,13 @@ public static class Logger
 
         fs.Close();
     }
-    
+
     #endregion public methods
 
     // ------------------------------------------------------------------------
 
     #region private methods
-    
+
     /// <summary>
     ///     Creates a debug/error/info message ready for dumping.
     /// </summary>
@@ -390,6 +331,23 @@ public static class Logger
         }
 
         return sb.ToString();
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerMethod"></param>
+    /// <param name="callerLine"></param>
+    /// <returns></returns>
+    private static CallerID MakeCallerID( string callerFilePath, string callerMethod, int callerLine )
+    {
+        return new CallerID
+        {
+            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
+            methodName = callerMethod,
+            lineNumber = callerLine
+        };
     }
 
     /// <summary>
@@ -443,14 +401,14 @@ public static class Logger
     {
         return traceLevel switch
                {
-                   LOG_DEBUG
+                   LOG_SYS
+                       or LOG_DEBUG
                        or LOG_INFO
-                       or LOG_ERROR
-                       or LOG_ASSERT => ( TraceLevel & traceLevel ) != 0,
+                       or LOG_ERROR => ( TraceLevel & traceLevel ) != 0,
                    _ => false
                };
     }
-    
+
     #endregion private methods
 }
 

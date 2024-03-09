@@ -25,6 +25,7 @@
 
 namespace LibGDXSharp.LibCore.Core;
 
+[PublicAPI]
 public interface IApplicationListener : IDisposable
 {
     /// <summary>

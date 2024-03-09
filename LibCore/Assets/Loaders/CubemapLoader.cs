@@ -28,6 +28,7 @@ using LibGDXSharp.LibCore.Graphics;
 
 namespace LibGDXSharp.LibCore.Assets.Loaders;
 
+[PublicAPI]
 public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
     private CubemapLoaderInfo _loaderInfo = new()
@@ -105,14 +106,14 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     }
 
 
-    public struct CubemapLoaderInfo
+    internal struct CubemapLoaderInfo
     {
         public string?       filename;
         public Cubemap?      cubemap;
         public ICubemapData? cubemapData;
     }
 
-
+    [PublicAPI]
     public class CubemapParameter : AssetLoaderParameters
     {
         // The texture to put the TextureData in, optional.

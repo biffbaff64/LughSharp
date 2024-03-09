@@ -29,6 +29,7 @@ using LibGDXSharp.LibCore.Scenes.Scene2D.UI;
 
 namespace LibGDXSharp.LibCore.Assets.Loaders;
 
+[PublicAPI]
 public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderParameters >
 {
     public SkinLoader( IFileHandleResolver resolver ) : base( resolver )
@@ -112,7 +113,7 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class SkinLoaderParameters : AssetLoaderParameters
     {
         public readonly Dictionary< string, object >? resources;

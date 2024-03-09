@@ -25,6 +25,7 @@
 
 namespace LibGDXSharp.LibCore.Assets;
 
+[PublicAPI]
 public class AssetDescriptor
 {
     // ------------------------------------------------------------------------

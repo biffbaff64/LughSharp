@@ -10,5 +10,3 @@ LibGDXSharp.Audio.MP3Sharp
     - Any necessary updates for more recent versions of C#
     - Any necessary changes arising from integrating the original with LibGDXSharp
 
-- Other than that, the original is a bloody good library!
-

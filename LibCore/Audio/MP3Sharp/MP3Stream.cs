@@ -31,6 +31,7 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp;
 ///     Provides a view of the sequence of bytes that are produced during the conversion of an MP3 stream
 ///     into a 16-bit PCM-encoded ("WAV" format) stream.
 /// </summary>
+[PublicAPI]
 public class Mp3Stream : Stream
 {
     private const int BACK_STREAM_BYTE_COUNT_REP = 0;

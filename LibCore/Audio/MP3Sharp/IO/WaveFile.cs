@@ -34,6 +34,7 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.IO;
 ///     This class is marked as  to indicate to ReSharper that
 ///     methods and members etc may be called externally.
 /// </remarks>
+[PublicAPI]
 public class WaveFile : RiffFile
 {
     public const int MAX_WAVE_CHANNELS = 2;

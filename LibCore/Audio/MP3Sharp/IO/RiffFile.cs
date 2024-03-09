@@ -34,6 +34,7 @@ namespace LibGDXSharp.LibCore.Audio.MP3Sharp.IO;
 ///     This class is marked as  to indicate to ReSharper that
 ///     methods and members etc may be called externally.
 /// </remarks>
+[PublicAPI]
 public class RiffFile
 {
     protected const int DDC_SUCCESS       = 0; // The operation succeded

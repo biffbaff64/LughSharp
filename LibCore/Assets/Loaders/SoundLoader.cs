@@ -31,6 +31,7 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 /// <summary>
 ///     <see cref="AssetLoaderBase" /> to load <see cref="ISound" /> instances.
 /// </summary>
+[PublicAPI]
 public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoaderParameters >, IDisposable
 {
     public SoundLoader( IFileHandleResolver resolver ) : base( resolver )
@@ -76,6 +77,7 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class SoundLoaderParameters : AssetLoaderParameters
     {
         public SoundLoaderParameters()

@@ -28,6 +28,7 @@ using LibGDXSharp.LibCore.Graphics;
 
 namespace LibGDXSharp.LibCore.Assets.Loaders;
 
+[PublicAPI]
 public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.PixmapLoaderParameter >
 {
     private Pixmap _pixmap;
@@ -69,7 +70,7 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class PixmapLoaderParameter : AssetLoaderParameters
     {
         public PixmapLoaderParameter()

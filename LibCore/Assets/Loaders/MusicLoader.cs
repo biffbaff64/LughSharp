@@ -32,6 +32,7 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 ///     <see cref="AssetLoaderBase" /> for <see cref="IMusic" /> instances.
 ///     The Music instance is loaded synchronously.
 /// </summary>
+[PublicAPI]
 public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameters >, IDisposable
 {
     public MusicLoader( IFileHandleResolver resolver )

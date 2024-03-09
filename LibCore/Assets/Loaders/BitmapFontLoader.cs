@@ -35,6 +35,7 @@ namespace LibGDXSharp.LibCore.Assets.Loaders;
 
 /// <summary>
 /// </summary>
+[PublicAPI]
 public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontParameter >, IDisposable
 {
     private BitmapFont.BitmapFontData? _data;
@@ -166,6 +167,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
     }
 }
 
+[PublicAPI]
 public class BitmapFontParameter : AssetLoaderParameters
 {
     /// <summary>

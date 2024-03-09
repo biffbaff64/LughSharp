@@ -31,6 +31,7 @@ using Exception = System.Exception;
 
 namespace LibGDXSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public class BitmapFont
 {
     private const    string          REGEX_PATTERN  = ".*id=(\\d+)";
@@ -629,6 +630,7 @@ public class BitmapFont
     /// <summary>
     ///     Backing data for a <see cref="BitmapFont" />.
     /// </summary>
+    [PublicAPI]
     public class BitmapFontData
     {
         /// <summary>
@@ -825,7 +827,7 @@ public class BitmapFont
                     }
                     catch ( Exception e )
                     {
-                        Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + e.Message );
+                        Logger.Err( $"IGNORED NumberFormatException: {e.Message}" );
                     }
                 }
 
@@ -857,12 +859,12 @@ public class BitmapFont
 
                             if ( pageID != p )
                             {
-                                throw new GdxRuntimeException( "Page IDs must be indices starting at 0: " + id );
+                                throw new GdxRuntimeException( $"Page IDs must be indices starting at 0: {id}" );
                             }
                         }
                         catch ( Exception ex )
                         {
-                            throw new GdxRuntimeException( "Invalid page id: " + id, ex );
+                            throw new GdxRuntimeException( $"Invalid page id: {id}", ex );
                         }
                     }
 
@@ -875,11 +877,8 @@ public class BitmapFont
                         throw new GdxRuntimeException( "Missing: file" );
                     }
 
-//                    matcher = Pattern.Compile( ".*file=\"?([^\"]+)\"?" ).Matcher( line );
-
-//                    if ( !matcher.Find() ) throw new GdxRuntimeException( "Missing: file" );
-
-//                    ImagePaths[ p ] = matcher.Group( 1 )!.Replace( "\\\\", "/" );
+                    //TODO: This line needs converting
+//                    imagePaths[p] = fontFile.parent().child(fileName).path().replaceAll("\\\\", "/");
                 }
 
                 Descent = 0;
@@ -970,7 +969,7 @@ public class BitmapFont
                         }
                         catch ( Exception ignored )
                         {
-                            Gdx.App.Log( "BitmapFont", "IGNORED NumberFormatException." + ignored.Message );
+                            Logger.Err( $"IGNORED NumberFormatException: {ignored.Message}" );
                         }
                     }
 

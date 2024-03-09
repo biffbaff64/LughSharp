@@ -27,6 +27,7 @@ using Exception = System.Exception;
 
 namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Support;
 
+[PublicAPI]
 public class SupportClass
 {
     public static int URShift( int number, int bits )

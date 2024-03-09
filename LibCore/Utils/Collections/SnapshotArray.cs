@@ -41,6 +41,7 @@ namespace LibGDXSharp.LibCore.Utils.Collections;
 ///         during iteration.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 {
     private T[]? _recycled;
@@ -552,6 +553,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     }
 }
 
+[PublicAPI]
 public class SnapshotEnumerator<T> : IEnumerator< T >
 {
     private readonly T[] _array;
@@ -590,7 +592,7 @@ public class SnapshotEnumerator<T> : IEnumerator< T >
             }
             catch ( NullReferenceException )
             {
-                Gdx.App.Error( "SnapshotArrayEnumerator", "NullReference encountered!" );
+                Logger.Err( "NullReference encountered!" );
 
                 throw;
             }

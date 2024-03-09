@@ -243,11 +243,18 @@ CORE
 GRAPHICS
 --------
 
+    - NOTE: I am not sure how to proceed with implementing OpenGL within this project
+    -       right now. Java LibGDX uses LWJGL3, there is not current C# OpenGL implementation
+    -       that does things in the same way ie. using ByterBuffer instead of byte*, that kind
+    -       of thing. It means a big rewrite of many of the graphics classes.
+    -       I might need some guidance, or a lightbulb moment to continue.
+
     - DONE - Camera
     - DONE - Color
     - DONE - Colors
     - DONE - Cubemap
     - DONE - FPSLogger
+    - IP   - GameWindow
     - DONE - GLTexture
     - DONE - GraphicsType
     - DONE - ICubemapData
@@ -295,7 +302,7 @@ GRAPHICS
     - DONE - Animation                      
     - DONE - AtlasRegion                    
     - DONE - AtlasSprite                    
-    - DONE - BitmapFont 
+    - IP   - BitmapFont 
     - DONE - BitmapFontCache                
     - DONE - CpuSpriteBatch                 
     - DONE - DistanceFieldFont              
@@ -306,7 +313,7 @@ GRAPHICS
     - DONE - NinePatch                      
     - DONE - ParticleEffect                 
     - DONE - ParticleEffectPool        
-    - DONE - ParticleEmitter           
+    - IP   - ParticleEmitter           
     - DONE - PixmapPacker
     - DONE - PixmapPacker10       
     - DONE - PolygonRegion                  
@@ -668,7 +675,7 @@ UTILS
     - DONE - ICloseable
     - DONE - IReadable
     - DONE - IRunnable                      Done, but is it needed?
-    - DONE - Logger                         
+    - DONE - Logger                         Needs documenting.
     - DONE - PerformanceCounter             Check
     - DONE - PerformanceCounters            Check
     - DONE - PropertiesUtils                Convert, but check if necessary first
