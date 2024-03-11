@@ -28,6 +28,7 @@ using LibGDXSharp.Backends.DesktopGL.Window;
 
 namespace LibGDXSharp.Backends.DesktopGL;
 
+[PublicAPI]
 public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 {
     public bool DisableAudio           { get; set; } = false;

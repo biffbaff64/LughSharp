@@ -25,6 +25,7 @@
 
 namespace LibGDXSharp.Backends.DesktopGL;
 
+[PublicAPI]
 public class DesktopWindowCallbacks
 {
     public static void GdxFocusCallback( GLFWWindow window, bool focusing )
@@ -43,7 +44,7 @@ public class DesktopWindowCallbacks
     {
     }
 
-    public static void GdxDropCallback( GLFWWindow window, int count, byte** paths )
+    public static void GdxDropCallback( GLFWWindow window, string[] paths )
     {
     }
 

@@ -249,6 +249,8 @@ GRAPHICS
     -       of thing. It means a big rewrite of many of the graphics classes.
     -       I might need some guidance, or a lightbulb moment to continue.
 
+    - What if I switched to DirectX or used SDL2?
+
     - DONE - Camera
     - DONE - Color
     - DONE - Colors

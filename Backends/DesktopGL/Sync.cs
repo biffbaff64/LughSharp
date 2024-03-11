@@ -25,6 +25,7 @@
 
 namespace LibGDXSharp.Backends.DesktopGL;
 
+[PublicAPI]
 public class Sync
 {
     private const long NANOS_IN_SECOND = 1000L * 1000L * 1000L;
@@ -95,9 +96,7 @@ public class Sync
 
         if ( osName.StartsWith( "Win" ) )
         {
-            var timerAccuracyThread = new Thread
-                (
-                () =>
+            var timerAccuracyThread = new Thread( () =>
                 {
                     try
                     {
@@ -106,8 +105,7 @@ public class Sync
                     catch ( ThreadInterruptedException )
                     {
                     }
-                }
-                )
+                } )
                 {
                     Name         = "C# Timer",
                     IsBackground = true

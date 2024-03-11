@@ -27,10 +27,7 @@
 // To enable them, uncomment this #define.
 // If you modify this class, please do test the asserts! 
 
-#define ALLOW_ASSERTS
-
-#if ALLOW_ASSERTS
-#endif
+//#define ALLOW_ASSERTS
 
 namespace LibGDXSharp.LibCore.Utils;
 
@@ -65,6 +62,7 @@ namespace LibGDXSharp.LibCore.Utils;
 ///         to warrant the full-blown TimSort. Small arrays are sorted in place, using a binary insertion sort.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class TimSort<T>
 {
     /// <summary>
@@ -195,7 +193,6 @@ public class TimSort<T>
         RangeCheck( a.Length, lo, hi );
 
         var remaining = hi - lo;
-
 
         switch ( remaining )
         {
@@ -670,14 +667,12 @@ public class TimSort<T>
 
         // Find where the last element of run1 goes in run2. Subsequent elements in run2
         // can be ignored (because they're already in place).
-        len2 = GallopLeft(
-            _sortingArray[ ( base1 + len1 ) - 1 ],
-            _sortingArray,
-            base2,
-            len2,
-            len2 - 1,
-            _sortComparator
-            );
+        len2 = GallopLeft( _sortingArray[ ( base1 + len1 ) - 1 ],
+                           _sortingArray,
+                           base2,
+                           len2,
+                           len2 - 1,
+                           _sortComparator );
 
         #if ALLOW_ASSERTS
         Debug.Assert( len2 >= 0 );

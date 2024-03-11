@@ -322,6 +322,7 @@ public class Timer
     /// <summary>
     ///     A <see cref="Runnable" /> that can be scheduled on a <see cref="Timer" />
     /// </summary>
+    [PublicAPI]
     public abstract class Task
     {
         internal readonly IApplication? app;
@@ -411,7 +412,7 @@ public class Timer
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class TimerThread : ILifecycleListener
     {
         public readonly IFiles?       files;
@@ -460,11 +461,6 @@ public class Timer
 
                 Monitor.PulseAll( _threadLock );
             }
-        }
-
-        public void Dispose()
-        {
-            Dispose( true );
         }
 
         public void Run()
@@ -518,6 +514,11 @@ public class Timer
             }
 
             Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose( true );
         }
 
         private void Dispose( bool disposing )

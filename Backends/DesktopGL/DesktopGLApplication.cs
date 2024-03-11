@@ -40,6 +40,35 @@ namespace LibGDXSharp.Backends.DesktopGL;
 [PublicAPI]
 public class DesktopGLApplication : IDesktopGLApplicationBase
 {
+    #region public properties
+
+    public DesktopGLApplicationConfiguration?  Config             { get; set; }
+    public List< DesktopGLWindow >             Windows            { get; set; } = new();
+    public Dictionary< string, IPreferences >? Preferences        { get; set; }
+    public List< Runnable >                    Runnables          { get; set; } = new();
+    public List< Runnable >                    ExecutedRunnables  { get; set; } = new();
+    public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
+    public int                                 LogLevel           { get; set; }
+    public IClipboard?                         Clipboard          { get; set; }
+    public GLVersion?                          GLVersion          { get; set; }
+
+    public IGraphics?            Graphics            => _currentWindow?.Graphics;
+    public IApplicationListener? ApplicationListener => _currentWindow?.Listener;
+    public IInput?               Input               => _currentWindow?.Input;
+    public IGLAudio?             Audio               { get; set; } = null;
+    public INet                  Network             { get; set; }
+    public IFiles                Files               { get; set; }
+
+    public IApplication.ApplicationType AppType
+    {
+        get => IApplication.ApplicationType.Desktop;
+        set { }
+    }
+
+    #endregion public properties
+
+    // ------------------------------------------------------------------------
+    
     private static   GlfwErrorCallback? _errorCallback = null;
     private readonly Sync?              _sync          = null;
     private volatile DesktopGLWindow?   _currentWindow = null;
@@ -85,13 +114,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
 
         Files     = CreateFiles();
-        Net       = new DesktopGLNet( config );
+        Network   = new DesktopGLNet( config );
         Clipboard = new DesktopGLClipboard();
         _sync     = new Sync();
 
         Gdx.Audio = Audio;
         Gdx.Files = Files;
-        Gdx.Net   = Net;
+        Gdx.Net   = Network;
 
         Windows.Add( CreateWindow( config, listener, 0 ) );
 
@@ -383,7 +412,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     {
         ArgumentNullException.ThrowIfNull( window );
         ArgumentNullException.ThrowIfNull( window.GlfwWindow );
-        
+
         GLFWWindow windowHandle = CreateGLFWWindow( config, window.GlfwWindow );
 
         window.Create( windowHandle );
@@ -595,33 +624,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                    Gdx.GL20.GLGetString( IGL20.GL_VENDOR ),
                                    Gdx.GL20.GLGetString( IGL20.GL_RENDERER ) );
     }
-
-    #region public properties
-
-    public DesktopGLApplicationConfiguration?  Config             { get; set; }
-    public List< DesktopGLWindow >             Windows            { get; set; } = new();
-    public Dictionary< string, IPreferences >? Preferences        { get; set; }
-    public List< Runnable >                    Runnables          { get; set; } = new();
-    public List< Runnable >                    ExecutedRunnables  { get; set; } = new();
-    public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
-    public int                                 LogLevel           { get; set; }
-    public IClipboard?                         Clipboard          { get; set; }
-    public GLVersion?                          GLVersion          { get; set; }
-
-    public IGraphics?            Graphics            => _currentWindow?.Graphics;
-    public IApplicationListener? ApplicationListener => _currentWindow?.Listener;
-    public IInput?               Input               => _currentWindow?.Input;
-    public IGLAudio?             Audio               { get; set; } = null;
-    public INet                  Net                 { get; set; }
-    public IFiles                Files               { get; set; }
-
-    public IApplication.ApplicationType AppType
-    {
-        get => IApplication.ApplicationType.Desktop;
-        set { }
-    }
-
-    #endregion public properties
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

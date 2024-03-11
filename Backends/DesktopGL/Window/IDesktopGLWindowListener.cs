@@ -23,8 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LibGDXSharp.Backends.DesktopGL.Graphics;
+
 namespace LibGDXSharp.Backends.DesktopGL.Window;
 
+[PublicAPI]
 public interface IDesktopGLWindowListener
 {
     /// <summary>

@@ -76,8 +76,10 @@ public abstract class AbstractGraphics : IGraphics
 
     public abstract IGraphics.MonitorDescriptor GetPrimaryMonitor();
 
+    [Obsolete]
     public abstract IGraphics.MonitorDescriptor GetMonitor();
 
+    [Obsolete]
     public abstract IGraphics.MonitorDescriptor[] GetMonitors();
 
     public abstract IGraphics.DisplayModeDescriptor[] GetDisplayModes();

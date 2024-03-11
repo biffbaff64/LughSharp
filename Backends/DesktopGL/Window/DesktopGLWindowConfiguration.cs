@@ -28,6 +28,7 @@ using LibGDXSharp.LibCore.Graphics;
 
 namespace LibGDXSharp.Backends.DesktopGL.Window;
 
+[PublicAPI]
 public class DesktopGLWindowConfiguration
 {
     public int       WindowX            { get; set; } = -1;

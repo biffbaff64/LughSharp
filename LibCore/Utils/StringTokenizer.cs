@@ -101,6 +101,7 @@ namespace LibGDXSharp.LibCore.Utils;
 /// </code>
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class StringTokenizer
 {
     private readonly int    _maxPosition = 0;

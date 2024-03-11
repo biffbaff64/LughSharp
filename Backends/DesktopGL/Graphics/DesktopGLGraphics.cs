@@ -32,6 +32,7 @@ namespace LibGDXSharp.Backends.DesktopGL.Graphics;
 
 using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 
+[PublicAPI]
 public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
     // ------------------------------------------------------------------------
@@ -218,12 +219,14 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
+    [Obsolete]
     public override IGraphics.MonitorDescriptor GetPrimaryMonitor()
     {
         //TODO:
-        return DesktopGLApplicationConfiguration.ToGLMonitor( Glfw.GetPrimaryMonitor() );
+        throw new NotImplementedException();
     }
 
+    [Obsolete]
     public override IGraphics.MonitorDescriptor GetMonitor()
     {
         IGraphics.MonitorDescriptor[] monitors = GetMonitors();
@@ -417,6 +420,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
 
     /// <inheritdoc />
+    [Obsolete]
     public override IGraphics.MonitorDescriptor[] GetMonitors()
     {
         GLFWMonitor[] glfwMonitors = Glfw.GetMonitors();
@@ -435,25 +439,29 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <inheritdoc />
     public override IGraphics.DisplayModeDescriptor[] GetDisplayModes()
     {
-        return DesktopGLApplicationConfiguration.GetDisplayModes();
+        //TODO:
+        throw new NotImplementedException();
     }
 
     /// <inheritdoc />
     public override IGraphics.DisplayModeDescriptor[] GetDisplayModes( IGraphics.MonitorDescriptor monitor )
     {
-        return DesktopGLApplicationConfiguration.GetDisplayModes( monitor.MonitorHandle );
+        //TODO:
+        throw new NotImplementedException();
     }
 
     /// <inheritdoc />
     public override IGraphics.DisplayModeDescriptor GetDisplayMode()
     {
-        return DesktopGLApplicationConfiguration.GetDisplayMode( GetMonitor().MonitorHandle );
+        //TODO:
+        throw new NotImplementedException();
     }
 
     /// <inheritdoc />
     public override IGraphics.DisplayModeDescriptor GetDisplayMode( IGraphics.MonitorDescriptor monitor )
     {
-        return DesktopGLApplicationConfiguration.GetDisplayMode( monitor.MonitorHandle );
+        //TODO:
+        throw new NotImplementedException();
     }
 
     // ------------------------------------------------------------------------
@@ -531,7 +539,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     public override (float X, float Y) GetPpcXY()
     {
-        Glfw.GetMonitorPhysicalSize( GetMonitor().MonitorHandle, out var sizeX, out var sizeY ); //TODO:
+        Glfw.GetMonitorPhysicalSize( Glfw.GetPrimaryMonitor(), out var sizeX, out var sizeY ); //TODO:
 
         return ( ( GetDisplayMode().Width / ( float )sizeX ) * 10,
                  ( GetDisplayMode().Height / ( float )sizeY ) * 10 );
@@ -564,11 +572,31 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     // ------------------------------------------------------------------------
+
+    #region IDisposable implementation
+
+    protected static void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            //TODO:
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
+    #endregion IDisposable implementation
+
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Describes a Display Mode.
     /// </summary>
+    [PublicAPI]
     public class DesktopGLDisplayMode : IGraphics.DisplayModeDescriptor
     {
         public DesktopGLDisplayMode( GLFWMonitor monitor,
@@ -587,12 +615,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class DesktopGLMonitor : IGraphics.MonitorDescriptor
     {
-        public DesktopGLMonitor( GLFWMonitor monitor,
-                                 int virtualX,
-                                 int virtualY,
-                                 string name )
+        public DesktopGLMonitor( GLFWMonitor monitor, int virtualX, int virtualY, string name )
             : base( virtualX, virtualY, name )
         {
             MonitorHandle = monitor;
@@ -600,23 +626,4 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         public GLFWMonitor MonitorHandle { get; private set; }
     }
-
-    // ------------------------------------------------------------------------
-
-    #region IDisposable implementation
-
-    protected void Dispose( bool disposing )
-    {
-        if ( disposing )
-        {
-            //TODO:
-        }
-    }
-
-    public void Dispose()
-    {
-        Dispose( true );
-    }
-
-    #endregion IDisposable implementation
 }
