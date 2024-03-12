@@ -45,11 +45,6 @@ public class MockMusic : IMusic
     }
 
     /// <inheritdoc />
-    public void SetLooping( bool isLooping )
-    {
-    }
-
-    /// <inheritdoc />
     public bool IsPlaying { get; set; } = false;
 
     /// <inheritdoc />
@@ -83,9 +78,7 @@ public class MockMusic : IMusic
     }
 
     /// <inheritdoc />
-    public void setOnCompletionListener( IMusic.IOnCompletionListener listener )
-    {
-    }
+    public IMusic.IOnCompletionListener? OnCompletionListener { get; set; }
 
     /// <inheritdoc />
     public void Dispose()

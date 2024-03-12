@@ -82,6 +82,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Bindings\" />
         <Folder Include="packages\"/>
     </ItemGroup>
 

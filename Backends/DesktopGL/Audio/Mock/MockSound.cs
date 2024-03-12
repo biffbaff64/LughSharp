@@ -27,6 +27,7 @@ using LibGDXSharp.LibCore.Audio;
 
 namespace LibGDXSharp.Backends.DesktopGL.Audio.Mock;
 
+[PublicAPI]
 public class MockSound : ISound
 {
     /// <inheritdoc />
@@ -103,15 +104,18 @@ public class MockSound : ISound
     {
     }
 
-    /// <inheritdoc />
     public long Play()
     {
         return 0;
     }
 
-    /// <inheritdoc />
     public long Loop()
     {
         return 0;
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
     }
 }

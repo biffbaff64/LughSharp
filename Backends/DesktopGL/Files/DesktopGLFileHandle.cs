@@ -25,17 +25,19 @@
 
 namespace LibGDXSharp.Backends.DesktopGL.Files;
 
+//TODO: This file can be removed
+
 /// <summary>
 /// </summary>
-public class DesktopGLFileHandle : FileInfo
+public class DesktopGLFileHandle // : FileInfo
 {
     public DesktopGLFileHandle( string fileName, FileType type )
-        : base( fileName, type )
+//        : base( fileName, type )
     {
     }
 
     public DesktopGLFileHandle( FileInfo file, FileType type )
-        : base( file.Name, type )
+//        : base( file.Name, type )
     {
     }
 
@@ -48,13 +50,15 @@ public class DesktopGLFileHandle : FileInfo
     /// </summary>
     public FileInfo Child( string name )
     {
-        if ( Path.GetFullPath( FileInfo.Name ).Length == 0 )
-        {
-            return new DesktopGLFileHandle( new FileInfo( FileInfo.Name ), FileType );
-        }
+//        if ( Path.GetFullPath( FileInfo.Name ).Length == 0 )
+//        {
+//            return new DesktopGLFileHandle( new FileInfo( FileInfo.Name ), FileType );
+//        }
 
-        return new DesktopGLFileHandle( new FileInfo( Path.GetDirectoryName( FileInfo.Name ) + name ),
-                                        FileType );
+//        return new DesktopGLFileHandle( new FileInfo( Path.GetDirectoryName( FileInfo.Name ) + name ),
+//                                        FileType );
+
+        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -62,12 +66,14 @@ public class DesktopGLFileHandle : FileInfo
     /// </summary>
     public FileInfo Sibling( string name )
     {
-        if ( Path.GetFullPath( name ).Length == 0 )
-        {
-            throw new GdxRuntimeException( "Cannot get the sibling of the root." );
-        }
+//        if ( Path.GetFullPath( name ).Length == 0 )
+//        {
+//            throw new GdxRuntimeException( "Cannot get the sibling of the root." );
+//        }
 
-        return new FileInfo( name, FileType );
+//        return new FileInfo( name, FileType );
+        
+        throw new NotImplementedException();
     }
 
     // ------------------------------------------------------------------------
@@ -84,20 +90,22 @@ public class DesktopGLFileHandle : FileInfo
     /// </summary>
     public DirectoryInfo ParentFolder()
     {
-        DirectoryInfo directoryInfo;
+//        DirectoryInfo directoryInfo;
 
-        if ( !Directory.Exists( base.Path() ) )
-        {
-            directoryInfo = FileType == FileType.Absolute
-                ? new DirectoryInfo( "/" )
-                : new DirectoryInfo( "" );
-        }
-        else
-        {
-            directoryInfo = new DirectoryInfo( Path.GetFullPath( base.Name() ) );
-        }
+//        if ( !Directory.Exists( base.Path() ) )
+//        {
+//            directoryInfo = FileType == FileType.Absolute
+//                ? new DirectoryInfo( "/" )
+//                : new DirectoryInfo( "" );
+//        }
+//        else
+//        {
+//            directoryInfo = new DirectoryInfo( Path.GetFullPath( base.Name() ) );
+//        }
 
-        return directoryInfo;
+//        return directoryInfo;
+
+        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -107,16 +115,18 @@ public class DesktopGLFileHandle : FileInfo
     /// </summary>
     public FileInfo File()
     {
-        if ( FileType == FileType.External )
-        {
-            return new FileInfo( DesktopGLFiles.UserHomePath + base.Name() );
-        }
+//        if ( FileType == FileType.External )
+//        {
+//            return new FileInfo( DesktopGLFiles.UserHomePath + base.Name() );
+//        }
 
-        if ( FileType == FileType.Local )
-        {
-            return new FileInfo( DesktopGLFiles.LocalPath + base.Name() );
-        }
+//        if ( FileType == FileType.Local )
+//        {
+//            return new FileInfo( DesktopGLFiles.LocalPath + base.Name() );
+//        }
 
-        return FileInfo;
+//        return FileInfo;
+        
+        throw new NotImplementedException();
     }
 }

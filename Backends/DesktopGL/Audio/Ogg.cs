@@ -25,14 +25,29 @@
 
 namespace LibGDXSharp.Backends.DesktopGL.Audio;
 
+[PublicAPI]
 public class Ogg
 {
     public class Music : OpenALMusic
     {
+        /// <inheritdoc />
+        public override int Read( byte[] buffer )
+        {
+            return 0;
+        }
+
+        /// <inheritdoc />
+        public override void Reset()
+        {
+        }
     }
 
     public class Sound : OpenALSound
     {
+        /// <inheritdoc />
+        public Sound( OpenALAudio audio ) : base( audio )
+        {
+        }
     }
 }
 

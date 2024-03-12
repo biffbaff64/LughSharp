@@ -24,6 +24,7 @@
 
 
 using LibGDXSharp.LibCore.Audio;
+using LibGDXSharp.LibCore.Audio.OpenAL;
 using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Utils.Buffers;
 using LibGDXSharp.LibCore.Utils.Collections;
@@ -33,6 +34,7 @@ using Exception = System.Exception;
 
 namespace LibGDXSharp.Backends.DesktopGL.Audio;
 
+[PublicAPI]
 public class OpenALAudio : IGLAudio
 {
     private readonly uint[]?                   _allSources;
@@ -208,49 +210,55 @@ public class OpenALAudio : IGLAudio
 
     public IAudioDevice NewAudioDevice( int sampleRate, bool isMono )
     {
-        //        if ( NoDevice )
-        //        {
-        //            return new IAudioDevice()
-        //            {
-        //                public void writeSamples (float[] samples, int offset, int numSamples)
-        //                {
-        //            }
-        //            }
-        //            public void WriteSamples( short[] samples, int offset, int numSamples )
-        //            {
-        //            }
-        //            public void SetVolume( float volume )
-        //            {
-        //            }
-        //            public bool ISMono()
-        //            {
-        //                return ISMono;
-        //            }
-        //            public int GetLatency()
-        //            {
-        //                return 0;
-        //            }
-        //            public void Dispose()
-        //            {
-        //            }
-        //        }
-        return new OpenALAudioDevice( this, sampleRate, isMono, _deviceBufferSize, _deviceBufferCount );
+//        if ( NoDevice )
+//        {
+//            return new IAudioDevice()
+//            {
+//                public void writeSamples (float[] samples, int offset, int numSamples)
+//                {
+//            }
+//            }
+//            public void WriteSamples( short[] samples, int offset, int numSamples )
+//            {
+//            }
+//            public void SetVolume( float volume )
+//            {
+//            }
+//            public bool ISMono()
+//            {
+//                return ISMono;
+//            }
+//            public int GetLatency()
+//            {
+//                return 0;
+//            }
+//            public void Dispose()
+//            {
+//            }
+//        }
+//        
+//        return new OpenALAudioDevice( this, sampleRate, isMono, _deviceBufferSize, _deviceBufferCount );
+
+        return null!;
     }
 
     public IAudioRecorder NewAudioRecorder( int samplingRate, bool isMono )
     {
-        //        if ( NoDevice )
-        //        {
-        //            return new IAudioRecorder()
-        //            {
-        //                public void read (short[] samples, int offset, int numSamples) {
-        //            }
-        //            }
-        //            public void Dispose()
-        //            {
-        //            }
-        //        }
-        return new GdxSoundAudioRecorder( samplingRate, isMono );
+//        if ( NoDevice )
+//        {
+//            return new IAudioRecorder()
+//            {
+//                public void read (short[] samples, int offset, int numSamples) {
+//            }
+//            }
+//            public void Dispose()
+//            {
+//            }
+//        }
+//        
+//        return new GdxSoundAudioRecorder( samplingRate, isMono );
+        
+        return null!;
     }
 
     /// <summary>

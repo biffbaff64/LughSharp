@@ -24,10 +24,12 @@
 
 
 using LibGDXSharp.LibCore.Audio;
+using LibGDXSharp.LibCore.Audio.OpenAL;
 using LibGDXSharp.LibCore.Utils.Buffers;
 
 namespace LibGDXSharp.Backends.DesktopGL.Audio;
 
+[PublicAPI]
 public class OpenALSound : ISound
 {
     private readonly OpenALAudio _audio;

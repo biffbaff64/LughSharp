@@ -27,6 +27,7 @@ using LibGDXSharp.LibCore.Audio;
 
 namespace LibGDXSharp.Backends.DesktopGL.Audio;
 
+[PublicAPI]
 public class GdxSoundAudioRecorder : IAudioRecorder
 {
     /// <inheritdoc />

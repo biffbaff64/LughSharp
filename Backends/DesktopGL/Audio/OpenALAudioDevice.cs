@@ -29,4 +29,35 @@ namespace LibGDXSharp.Backends.DesktopGL.Audio;
 
 public class OpenALAudioDevice : IAudioDevice
 {
+    /// <inheritdoc />
+    public void Dispose()
+    {
+    }
+
+    /// <inheritdoc />
+    public bool IsMono()
+    {
+        return false;
+    }
+
+    /// <inheritdoc />
+    public void WriteSamples( int[] samples, int offset, int numSamples )
+    {
+    }
+
+    /// <inheritdoc />
+    public void WriteSamples( float[] samples, int offset, int numSamples )
+    {
+    }
+
+    /// <inheritdoc />
+    public int GetLatency()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public void SetVolume( float volume )
+    {
+    }
 }

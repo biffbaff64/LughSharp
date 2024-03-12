@@ -28,10 +28,11 @@ using LibGDXSharp.LibCore.Graphics;
 
 namespace LibGDXSharp.Backends.DesktopGL.Utils;
 
+[PublicAPI]
 public class DesktopGLCursor : ICursor
 {
-    public static List< DesktopGLCursor >                    cursors       = new();
-    public static Dictionary< ICursor.SystemCursor, Cursor > systemCursors = new();
+    public readonly static List< DesktopGLCursor >                    Cursors       = new();
+    public readonly static Dictionary< ICursor.SystemCursor, Cursor > SystemCursors = new();
 
     public DesktopGLCursor( DesktopGLWindow window, Pixmap pixmap, int xHotspot, int yHotspot )
     {
@@ -70,10 +71,16 @@ public class DesktopGLCursor : ICursor
         PixmapCopy.Blending = Pixmap.BlendTypes.None;
         PixmapCopy.DrawPixmap( pixmap, 0, 0 );
 
-        GLFWImage  = new Image( PixmapCopy.Width, PixmapCopy.Height, ( IntPtr )PixmapCopy.gdx2DPixmap.basePtr );
+        GLFWImage = new Image
+        {
+            Pixels = PixmapCopy.Pixels.BackingArray(),
+            Width = PixmapCopy.Width,
+            Height = PixmapCopy.Height
+        };
+
         GLFWCursor = Glfw.CreateCursor( GLFWImage, xHotspot, yHotspot );
 
-        cursors.Add( this );
+        Cursors.Add( this );
     }
 
     public DesktopGLWindow Window     { get; set; }
@@ -86,16 +93,16 @@ public class DesktopGLCursor : ICursor
         //@formatter:off
         Cursor glCursor = systemCursor switch
         {
-            ICursor.SystemCursor.Ibeam            => Glfw.CreateStandardCursor( CursorType.Beam ),
-            ICursor.SystemCursor.Crosshair        => Glfw.CreateStandardCursor( CursorType.Crosshair ),
-            ICursor.SystemCursor.Hand             => Glfw.CreateStandardCursor( CursorType.Hand ),
-            ICursor.SystemCursor.HorizontalResize => Glfw.CreateStandardCursor( CursorType.ResizeHorizontal ),
-            ICursor.SystemCursor.VerticalResize   => Glfw.CreateStandardCursor( CursorType.ResizeVertical ),
-            _                                     => Glfw.CreateStandardCursor( CursorType.Arrow )
+            ICursor.SystemCursor.Ibeam            => Glfw.CreateStandardCursor( CursorShape.IBeam ),
+            ICursor.SystemCursor.Crosshair        => Glfw.CreateStandardCursor( CursorShape.Crosshair ),
+            ICursor.SystemCursor.Hand             => Glfw.CreateStandardCursor( CursorShape.Hand ),
+            ICursor.SystemCursor.HorizontalResize => Glfw.CreateStandardCursor( CursorShape.HResize ),
+            ICursor.SystemCursor.VerticalResize   => Glfw.CreateStandardCursor( CursorShape.VResize ),
+            _                                     => Glfw.CreateStandardCursor( CursorShape.Arrow )
         };
         //@formatter:on
 
-        systemCursors[ systemCursor ] = glCursor;
+        SystemCursors[ systemCursor ] = glCursor;
 
         Glfw.SetCursor( window, glCursor );
     }
@@ -107,33 +114,33 @@ public class DesktopGLCursor : ICursor
             throw new GdxRuntimeException( "Cursor already disposed" );
         }
 
-        cursors.Remove( this );
+        Cursors.Remove( this );
         PixmapCopy.Dispose();
         PixmapCopy = null!;
-        GLFWImage  = default( Image );
+        GLFWImage  = default( Image )!;
         Glfw.DestroyCursor( GLFWCursor );
     }
 
     public static void Dispose( DesktopGLWindow glWindow )
     {
-        for ( var i = cursors.Count - 1; i >= 0; i-- )
+        for ( var i = Cursors.Count - 1; i >= 0; i-- )
         {
-            DesktopGLCursor cursor = cursors[ i ];
+            DesktopGLCursor cursor = Cursors[ i ];
 
             if ( cursor.Window.Equals( glWindow ) )
             {
-                cursors.RemoveAt( i );
+                Cursors.RemoveAt( i );
             }
         }
     }
 
     public static void DisposeSystemCursors()
     {
-        foreach ( Cursor systemCursor in systemCursors.Values )
+        foreach ( Cursor systemCursor in SystemCursors.Values )
         {
             Glfw.DestroyCursor( systemCursor );
         }
 
-        systemCursors.Clear();
+        SystemCursors.Clear();
     }
 }

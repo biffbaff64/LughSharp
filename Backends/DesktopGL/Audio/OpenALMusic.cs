@@ -24,6 +24,7 @@
 
 
 using LibGDXSharp.LibCore.Audio;
+using LibGDXSharp.LibCore.Audio.OpenAL;
 using LibGDXSharp.LibCore.Maths;
 using LibGDXSharp.LibCore.Utils.Buffers;
 using LibGDXSharp.LibCore.Utils.Collections.Extensions;
@@ -32,7 +33,7 @@ namespace LibGDXSharp.Backends.DesktopGL.Audio;
 
 public abstract class OpenALMusic : IMusic
 {
-    public const int INVALID_SOURCE_ID = -1;
+    public const int INVALID_SOURCE_ID = AL.INVALID_VALUE;
 
     private readonly static int         _bufferSize     = 4096 * 10;
     private readonly static int         _bufferCount    = 3;
@@ -53,6 +54,13 @@ public abstract class OpenALMusic : IMusic
     private            int      _sampleRate;
     private            float    _volume = 1;
 
+    protected OpenALMusic()
+    {
+        _audio = null!;
+        this.file = null!;
+        OnCompletionListener = null;
+    }
+    
     protected OpenALMusic( OpenALAudio audio, FileInfo file )
     {
         _audio               = audio;
@@ -84,11 +92,11 @@ public abstract class OpenALMusic : IMusic
 
                 AL.GenBuffers( 1, out _buffers );
 
-                var int = AL.GetError();
+                var err = AL.GetError();
 
-                if ( int != AL.NO_ERROR )
+                if ( err != AL.NO_ERROR )
                 {
-                    throw new GdxRuntimeException( $"Unable to allocate audio buffers. AL Error: {int}" );
+                    throw new GdxRuntimeException( $"Unable to allocate audio buffers. AL Error: {err}" );
                 }
             }
 
@@ -164,32 +172,32 @@ public abstract class OpenALMusic : IMusic
 
     public void Pause()
     {
-        if ( _audio.NoDevice )
-        {
-            return;
-        }
-
-        if ( SourceId != INVALID_SOURCE_ID )
-        {
-            alSourcePause( SourceId );
-        }
-
-        _isPlaying = false;
+//        if ( _audio.NoDevice )
+//        {
+//            return;
+//        }
+//
+//        if ( SourceId != INVALID_SOURCE_ID )
+//        {
+//            AL.SourcePause( SourceId );
+//        }
+//
+//        _isPlaying = false;
     }
 
     public void SetVolume( float volume )
     {
-        _volume = volume;
-
-        if ( _audio.NoDevice )
-        {
-            return;
-        }
-
-        if ( SourceId != INVALID_SOURCE_ID )
-        {
-            AL.Sourcef( SourceId, AL.GAIN, volume );
-        }
+//        _volume = volume;
+//
+//        if ( _audio.NoDevice )
+//        {
+//            return;
+//        }
+//
+//        if ( SourceId != INVALID_SOURCE_ID )
+//        {
+//            AL.Sourcef( SourceId, AL.GAIN, volume );
+//        }
     }
 
     public float GetVolume()
@@ -199,101 +207,101 @@ public abstract class OpenALMusic : IMusic
 
     public void SetPan( float pan, float volume )
     {
-        _volume = volume;
-        _pan    = pan;
-
-        if ( _audio.NoDevice )
-        {
-            return;
-        }
-
-        if ( SourceId == INVALID_SOURCE_ID )
-        {
-            return;
-        }
-
-        alSource3f( SourceId,
-                    AL.POSITION,
-                    MathUtils.cos( ( pan - 1 ) * MathUtils.HALF_PI ),
-                    0,
-                    MathUtils.sin( ( pan + 1 ) * MathUtils.HALF_PI ) );
-
-        AL.Sourcef( SourceId, AL.GAIN, volume );
+//        _volume = volume;
+//        _pan    = pan;
+//
+//        if ( _audio.NoDevice )
+//        {
+//            return;
+//        }
+//
+//        if ( SourceId == INVALID_SOURCE_ID )
+//        {
+//            return;
+//        }
+//
+//        AL.Source3F( SourceId,
+//                    AL.POSITION,
+//                    MathUtils.Cos( ( pan - 1 ) * MathUtils.HALF_PI ),
+//                    0,
+//                    MathUtils.Sin( ( pan + 1 ) * MathUtils.HALF_PI ) );
+//
+//        AL.Sourcef( SourceId, AL.GAIN, volume );
     }
 
     public void SetPosition( float position )
     {
-        if ( _audio.NoDevice )
-        {
-            return;
-        }
-
-        if ( SourceId == INVALID_SOURCE_ID )
-        {
-            return;
-        }
-
-        var wasPlaying = IsPlaying;
-        IsPlaying = false;
-        alSourceStop( SourceId );
-        alSourceUnqueueBuffers( SourceId, _buffers );
-
-        while ( _renderedSecondsQueue.size > 0 )
-        {
-            _renderedSeconds = _renderedSecondsQueue.pop();
-        }
-
-        if ( position <= _renderedSeconds )
-        {
-            Reset();
-            _renderedSeconds = 0;
-        }
-
-        while ( _renderedSeconds < ( position - _maxSecondsPerBuffer ) )
-        {
-            if ( Read( _tempBytes ) <= 0 )
-            {
-                break;
-            }
-
-            _renderedSeconds += _maxSecondsPerBuffer;
-        }
-
-        _renderedSecondsQueue.add( _renderedSeconds );
-        var filled = false;
-
-        for ( var i = 0; i < _bufferCount; i++ )
-        {
-            int bufferID = _buffers.get( i );
-
-            if ( !Fill( bufferID ) )
-            {
-                break;
-            }
-
-            filled = true;
-            alSourceQueueBuffers( SourceId, bufferID );
-        }
-
-        _renderedSecondsQueue.pop();
-
-        if ( !filled )
-        {
-            Stop();
-
-            if ( OnCompletionListener != null )
-            {
-                OnCompletionListener.onCompletion( this );
-            }
-        }
-
-        AL.Sourcef( SourceId, AL11.Al.SEC_OFFSET, position - _renderedSeconds );
-
-        if ( wasPlaying )
-        {
-            AL.SourcePlay( SourceId );
-            IsPlaying = true;
-        }
+//        if ( _audio.NoDevice )
+//        {
+//            return;
+//        }
+//
+//        if ( SourceId == INVALID_SOURCE_ID )
+//        {
+//            return;
+//        }
+//
+//        var wasPlaying = IsPlaying;
+//        IsPlaying = false;
+//        alSourceStop( SourceId );
+//        alSourceUnqueueBuffers( SourceId, _buffers );
+//
+//        while ( _renderedSecondsQueue.size > 0 )
+//        {
+//            _renderedSeconds = _renderedSecondsQueue.pop();
+//        }
+//
+//        if ( position <= _renderedSeconds )
+//        {
+//            Reset();
+//            _renderedSeconds = 0;
+//        }
+//
+//        while ( _renderedSeconds < ( position - _maxSecondsPerBuffer ) )
+//        {
+//            if ( Read( _tempBytes ) <= 0 )
+//            {
+//                break;
+//            }
+//
+//            _renderedSeconds += _maxSecondsPerBuffer;
+//        }
+//
+//        _renderedSecondsQueue.add( _renderedSeconds );
+//        var filled = false;
+//
+//        for ( var i = 0; i < _bufferCount; i++ )
+//        {
+//            int bufferID = _buffers.get( i );
+//
+//            if ( !Fill( bufferID ) )
+//            {
+//                break;
+//            }
+//
+//            filled = true;
+//            alSourceQueueBuffers( SourceId, bufferID );
+//        }
+//
+//        _renderedSecondsQueue.pop();
+//
+//        if ( !filled )
+//        {
+//            Stop();
+//
+//            if ( OnCompletionListener != null )
+//            {
+//                OnCompletionListener.onCompletion( this );
+//            }
+//        }
+//
+//        AL.Sourcef( SourceId, AL11.Al.SEC_OFFSET, position - _renderedSeconds );
+//
+//        if ( wasPlaying )
+//        {
+//            AL.SourcePlay( SourceId );
+//            IsPlaying = true;
+//        }
     }
 
     public float GetPosition()
@@ -308,22 +316,24 @@ public abstract class OpenALMusic : IMusic
             return 0;
         }
 
-        return _renderedSeconds + AL.GetSourcef( SourceId, AL.SEC_OFFSET );
+        AL.GetSourcef( ( uint )SourceId, AL.SEC_OFFSET, out var value );
+
+        return _renderedSeconds + value;
     }
 
     public void Dispose()
     {
-        Stop();
-
-        if ( _audio.NoDevice || ( _buffers == null ) )
-        {
-            return;
-        }
-
-        AL.DeleteBuffers( _buffers );
-
-        _buffers             = null;
-        OnCompletionListener = null;
+//        Stop();
+//
+//        if ( _audio.NoDevice || ( _buffers == null ) )
+//        {
+//            return;
+//        }
+//
+//        AL.DeleteBuffers( _buffers );
+//
+//        _buffers             = null;
+//        OnCompletionListener = null;
     }
 
     protected void Setup( int channels, int sampleRate )
@@ -365,105 +375,105 @@ public abstract class OpenALMusic : IMusic
 
     public void Update()
     {
-        if ( _audio.NoDevice )
-        {
-            return;
-        }
-
-        if ( SourceId == INVALID_SOURCE_ID )
-        {
-            return;
-        }
-
-        var end     = false;
-        int buffers = AL.GetSourcei( SourceId, AL.BUFFERS_PROCESSED );
-
-        while ( buffers-- > 0 )
-        {
-            int bufferID = AL.SourceUnqueueBuffers( SourceId );
-
-            if ( bufferID == AL.INVALID_VALUE )
-            {
-                break;
-            }
-
-            if ( _renderedSecondsQueue.Count > 0 )
-            {
-                _renderedSeconds = _renderedSecondsQueue.Pop();
-            }
-
-            if ( end )
-            {
-                continue;
-            }
-
-            if ( Fill( bufferID ) )
-            {
-                AL.SourceQueueBuffers( SourceId, bufferID );
-            }
-            else
-            {
-                end = true;
-            }
-        }
-
-        if ( end && ( AL.GetSourcei( SourceId, AL.BUFFERS_QUEUED ) == 0 ) )
-        {
-            Stop();
-
-            if ( OnCompletionListener != null )
-            {
-                OnCompletionListener.OnCompletion( this );
-            }
-        }
-
-        // A buffer underflow will cause the source to stop.
-        if ( _isPlaying && ( AL.GetSourcei( SourceId, AL.SOURCE_STATE ) != AL.PLAYING ) )
-        {
-            AL.SourcePlay( SourceId );
-        }
+//        if ( _audio.NoDevice )
+//        {
+//            return;
+//        }
+//
+//        if ( SourceId == INVALID_SOURCE_ID )
+//        {
+//            return;
+//        }
+//
+//        var end     = false;
+//        int buffers = AL.GetSourcei( SourceId, AL.BUFFERS_PROCESSED );
+//
+//        while ( buffers-- > 0 )
+//        {
+//            int bufferID = AL.SourceUnqueueBuffers( SourceId );
+//
+//            if ( bufferID == AL.INVALID_VALUE )
+//            {
+//                break;
+//            }
+//
+//            if ( _renderedSecondsQueue.Count > 0 )
+//            {
+//                _renderedSeconds = _renderedSecondsQueue.Pop();
+//            }
+//
+//            if ( end )
+//            {
+//                continue;
+//            }
+//
+//            if ( Fill( bufferID ) )
+//            {
+//                AL.SourceQueueBuffers( SourceId, bufferID );
+//            }
+//            else
+//            {
+//                end = true;
+//            }
+//        }
+//
+//        if ( end && ( AL.GetSourcei( SourceId, AL.BUFFERS_QUEUED ) == 0 ) )
+//        {
+//            Stop();
+//
+//            if ( OnCompletionListener != null )
+//            {
+//                OnCompletionListener.OnCompletion( this );
+//            }
+//        }
+//
+//        // A buffer underflow will cause the source to stop.
+//        if ( _isPlaying && ( AL.GetSourcei( SourceId, AL.SOURCE_STATE ) != AL.PLAYING ) )
+//        {
+//            AL.SourcePlay( SourceId );
+//        }
     }
 
     private bool Fill( uint bufferID )
     {
-        _tempBuffer.Clear();
-
-        int length;
-
-        if ( ( length = Read( _tempBytes ) ) <= 0 )
-        {
-            if ( IsLooping )
-            {
-                Loop();
-
-                if ( ( length = Read( _tempBytes ) ) <= 0 )
-                {
-                    return false;
-                }
-
-                if ( _renderedSecondsQueue.Count > 0 )
-                {
-                    _renderedSecondsQueue[ 0 ] = 0;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        var previousLoadedSeconds = _renderedSecondsQueue.Count > 0 ? _renderedSecondsQueue.First() : 0;
-        var currentBufferSeconds  = ( _maxSecondsPerBuffer * length ) / _bufferSize;
-
-        _renderedSecondsQueue.Insert( 0, previousLoadedSeconds + currentBufferSeconds );
-
-        _tempBuffer.Put( _tempBytes, 0, length ).Flip();
-
-        AL.BufferData( bufferID,
-                       _format,
-                       _tempBuffer,
-                       _tempBuffer.BackingArray().Length,
-                       _sampleRate );
+//        _tempBuffer.Clear();
+//
+//        int length;
+//
+//        if ( ( length = Read( _tempBytes ) ) <= 0 )
+//        {
+//            if ( IsLooping )
+//            {
+//                Loop();
+//
+//                if ( ( length = Read( _tempBytes ) ) <= 0 )
+//                {
+//                    return false;
+//                }
+//
+//                if ( _renderedSecondsQueue.Count > 0 )
+//                {
+//                    _renderedSecondsQueue[ 0 ] = 0;
+//                }
+//            }
+//            else
+//            {
+//                return false;
+//            }
+//        }
+//
+//        var previousLoadedSeconds = _renderedSecondsQueue.Count > 0 ? _renderedSecondsQueue.First() : 0;
+//        var currentBufferSeconds  = ( _maxSecondsPerBuffer * length ) / _bufferSize;
+//
+//        _renderedSecondsQueue.Insert( 0, previousLoadedSeconds + currentBufferSeconds );
+//
+//        _tempBuffer.Put( _tempBytes, 0, length ).Flip();
+//
+//        AL.BufferData( bufferID,
+//                       _format,
+//                       _tempBuffer,
+//                       _tempBuffer.BackingArray().Length,
+//                       _sampleRate );
 
         return true;
     }
