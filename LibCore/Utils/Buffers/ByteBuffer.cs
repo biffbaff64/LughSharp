@@ -25,6 +25,7 @@
 
 namespace LibGDXSharp.LibCore.Utils.Buffers;
 
+[PublicAPI]
 public abstract class ByteBuffer : Buffer
 {
     // ------------------------------------------------------------------------
@@ -48,8 +49,8 @@ public abstract class ByteBuffer : Buffer
     ///     Allocates a new direct byte buffer.
     ///     <para>
     ///         The new buffer's position will be zero, its limit will be its capacity, its
-    ///         mark will be undefined, and each of its elements will be initialized to zero.
-    ///         Whether or not it has a backing array.
+    ///         mark will be undefined, and each of its elements will be initialized to zero,
+    ///         whether or not it has a backing array.
     ///     </para>
     /// </summary>
     /// <param name="capacity"> The new buffer's capacity, in bytes </param>
@@ -145,11 +146,11 @@ public abstract class ByteBuffer : Buffer
     ///         In other words, an invocation of this method of the form <tt>src.get(dst, off, len)</tt>
     ///         has exactly the same effect as the loop
     ///         <code>
-    ///     for ( int i = off; i &lt; off + len; i++ )
-    ///     {
-    ///         dst[i] = src.get():
-    ///     }
-    /// </code>
+    ///             for ( int i = off; i &lt; off + len; i++ )
+    ///             {
+    ///                 dst[i] = src.get():
+    ///             }
+    ///         </code>
     ///         except that it first checks that there are sufficient bytes in
     ///         this buffer and it is potentially much more efficient.
     ///     </para>

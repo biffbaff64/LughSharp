@@ -25,6 +25,7 @@
 
 namespace LibGDXSharp.LibCore.Utils.Buffers;
 
+[PublicAPI]
 public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
 {
     public DirectByteBuffer( int capacity )
@@ -32,19 +33,10 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     {
     }
 
-    public object AttachedObject { get; set; }
+    public object? AttachedObject { get; set; }
 
     /// <inheritdoc />
-    public long Address()
-    {
-        return 0;
-    }
-
-    /// <inheritdoc />
-    public object Attachment()
-    {
-        return null;
-    }
+    public override long Address => 0;
 
     /// <summary>
     ///     Tells whether or not this buffer is <i>direct</i>.
@@ -75,7 +67,7 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     /// <returns> The new byte buffer </returns>
     public override ByteBuffer Slice()
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -96,7 +88,7 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     /// <returns> The new byte buffer. </returns>
     public override ByteBuffer Duplicate()
     {
-        return null;
+        return null!;
     }
 
     /**
@@ -533,6 +525,7 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     internal class Deallocator
     {
         private long _address;

@@ -74,6 +74,7 @@ public abstract class AbstractGraphics : IGraphics
     // Abstract methods because C# insists this is done to fulfill the contract
     // between the class and interface, which just makes everything annoying tbh.
 
+    [Obsolete]
     public abstract IGraphics.MonitorDescriptor GetPrimaryMonitor();
 
     [Obsolete]

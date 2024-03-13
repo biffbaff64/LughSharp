@@ -41,19 +41,14 @@ public class Gdx2DPixmap : IDisposable
     /// <exception cref="IOException"></exception>
     public Gdx2DPixmap( byte[] encodedData, int offset, int len, int requestedFormat )
     {
-        pixelPtr = Load( nativeData, encodedData, offset, len );
+        PixelPtr = LoadData( NativeData, encodedData, offset, len );
 
-        if ( pixelPtr == null )
-        {
-            throw new IOException( $"Error loading pixmap: {GetFailureReason()}" );
-        }
+        BasePtr = NativeData[ 0 ];
+        Width   = ( int )NativeData[ 1 ];
+        Height  = ( int )NativeData[ 2 ];
+        Format  = ( int )NativeData[ 3 ];
 
-        basePtr = nativeData[ 0 ];
-        Width   = ( int )nativeData[ 1 ];
-        Height  = ( int )nativeData[ 2 ];
-        format  = ( int )nativeData[ 3 ];
-
-        if ( ( requestedFormat != 0 ) && ( requestedFormat != format ) )
+        if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
         {
             Convert( requestedFormat );
         }
@@ -78,24 +73,19 @@ public class Gdx2DPixmap : IDisposable
 
         var buffer = memoryStream.ToArray();
 
-        pixelPtr = Load( nativeData, buffer, 0, buffer.Length );
+        PixelPtr = LoadData( NativeData, buffer, 0, buffer.Length );
 
-        if ( pixelPtr == null )
-        {
-            throw new IOException( $"Error loading pixmap: {GetFailureReason()}" );
-        }
+        BasePtr = NativeData[ 0 ];
+        Width   = ( int )NativeData[ 1 ];
+        Height  = ( int )NativeData[ 2 ];
+        Format  = ( int )NativeData[ 3 ];
 
-        basePtr = nativeData[ 0 ];
-        Width   = ( int )nativeData[ 1 ];
-        Height  = ( int )nativeData[ 2 ];
-        format  = ( int )nativeData[ 3 ];
-
-        if ( ( requestedFormat != 0 ) && ( requestedFormat != format ) )
+        if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
         {
             Convert( requestedFormat );
         }
     }
-
+    
     /// <summary>
     /// </summary>
     /// <param name="width"></param>
@@ -104,21 +94,18 @@ public class Gdx2DPixmap : IDisposable
     /// <exception cref="GdxRuntimeException"></exception>
     public Gdx2DPixmap( int width, int height, int format )
     {
-        pixelPtr = NewPixmap( nativeData, width, height, format );
+        PixelPtr = GetNewPixmap( NativeData, width, height, format );
 
-        if ( pixelPtr == null )
+        if ( PixelPtr == null )
         {
-            throw new GdxRuntimeException
-                (
-                $"Unable to allocate memory for pixmap: "
-              + $"{width} x {height}: {GetFormatString( format )}"
-                );
+            throw new GdxRuntimeException( $"Unable to allocate memory for pixmap: "
+                                         + $"{width} x {height}: {GetFormatString( format )}" );
         }
 
-        basePtr     = nativeData[ 0 ];
-        Width       = ( int )nativeData[ 1 ];
-        Height      = ( int )nativeData[ 2 ];
-        this.format = ( int )nativeData[ 3 ];
+        BasePtr     = NativeData[ 0 ];
+        Width       = ( int )NativeData[ 1 ];
+        Height      = ( int )NativeData[ 2 ];
+        this.Format = ( int )NativeData[ 3 ];
     }
 
     /// <summary>
@@ -127,20 +114,28 @@ public class Gdx2DPixmap : IDisposable
     /// <param name="nativeData"></param>
     public Gdx2DPixmap( ByteBuffer pixelPtr, long[] nativeData )
     {
-        this.pixelPtr = pixelPtr;
-        basePtr       = nativeData[ 0 ];
+        this.PixelPtr = pixelPtr;
+        BasePtr       = nativeData[ 0 ];
         Width         = ( int )nativeData[ 1 ];
         Height        = ( int )nativeData[ 2 ];
-        format        = ( int )nativeData[ 3 ];
+        Format        = ( int )nativeData[ 3 ];
     }
 
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
+    private ByteBuffer GetNewPixmap( long[] nativeData, int width, int height, int format )
     {
-        Dispose( true );
+        return NewPixmap( nativeData, width, height, format );
+    }
+
+    private ByteBuffer LoadData( long[] nativeData, byte[] buffer, int offset, int len )
+    {
+        ByteBuffer ptr = Load( nativeData, buffer, offset, len );
+
+        if ( ptr == null )
+        {
+            throw new IOException( $"Error loading pixmap: {GetFailureReason()}" );
+        }
+
+        return ptr;
     }
 
     /// <summary>
@@ -193,62 +188,62 @@ public class Gdx2DPixmap : IDisposable
 
         Dispose();
 
-        basePtr    = pixmap.basePtr;
-        format     = pixmap.format;
+        BasePtr    = pixmap.BasePtr;
+        Format     = pixmap.Format;
         Height     = pixmap.Height;
-        nativeData = pixmap.nativeData;
-        pixelPtr   = pixmap.pixelPtr;
+        NativeData = pixmap.NativeData;
+        PixelPtr   = pixmap.PixelPtr;
         Width      = pixmap.Width;
     }
 
     public void Clear( int color )
     {
-        Clear( basePtr, color );
+        Clear( BasePtr, color );
     }
 
     public int GetPixel( int x, int y )
     {
-        return GetPixel( basePtr, x, y );
+        return GetPixel( BasePtr, x, y );
     }
 
     public void SetPixel( int x, int y, int color )
     {
-        SetPixel( basePtr, x, y, color );
+        SetPixel( BasePtr, x, y, color );
     }
 
     public void DrawLine( int x, int y, int x2, int y2, int color )
     {
-        DrawLine( basePtr, x, y, x2, y2, color );
+        DrawLine( BasePtr, x, y, x2, y2, color );
     }
 
     public void DrawRect( int x, int y, int width, int height, int color )
     {
-        DrawRect( basePtr, x, y, width, height, color );
+        DrawRect( BasePtr, x, y, width, height, color );
     }
 
     public void DrawCircle( int x, int y, int radius, int color )
     {
-        DrawCircle( basePtr, x, y, radius, color );
+        DrawCircle( BasePtr, x, y, radius, color );
     }
 
     public void FillRect( int x, int y, int width, int height, int color )
     {
-        FillRect( basePtr, x, y, width, height, color );
+        FillRect( BasePtr, x, y, width, height, color );
     }
 
     public void FillCircle( int x, int y, int radius, int color )
     {
-        FillCircle( basePtr, x, y, radius, color );
+        FillCircle( BasePtr, x, y, radius, color );
     }
 
     public void FillTriangle( int x1, int y1, int x2, int y2, int x3, int y3, int color )
     {
-        FillTriangle( basePtr, x1, y1, x2, y2, x3, y3, color );
+        FillTriangle( BasePtr, x1, y1, x2, y2, x3, y3, color );
     }
 
     public void DrawPixmap( Gdx2DPixmap src, int srcX, int srcY, int dstX, int dstY, int width, int height )
     {
-        DrawPixmap( src.basePtr, basePtr, srcX, srcY, width, height, dstX, dstY, width, height );
+        DrawPixmap( src.BasePtr, BasePtr, srcX, srcY, width, height, dstX, dstY, width, height );
     }
 
     public void DrawPixmap( Gdx2DPixmap src,
@@ -261,7 +256,7 @@ public class Gdx2DPixmap : IDisposable
                             int dstWidth,
                             int dstHeight )
     {
-        DrawPixmap( src.basePtr, basePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
+        DrawPixmap( src.BasePtr, BasePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
     }
 
     public static Gdx2DPixmap? NewPixmap( StreamReader inStream, int requestedFormat )
@@ -311,6 +306,15 @@ public class Gdx2DPixmap : IDisposable
     }
 
     /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
+    /// <summary>
     /// </summary>
     /// <param name="disposing"></param>
     protected virtual void Dispose( bool disposing )
@@ -321,38 +325,97 @@ public class Gdx2DPixmap : IDisposable
     }
 
     // ########################################################################
-    // Abstract Methods which will be implemented in Backend classes.
+    // Method stubs to be overridden in extending classes.
     // ########################################################################
 
-    private static extern ByteBuffer Load( long[] nativeData, byte[] buffer, int offset, int len );
-    private static extern ByteBuffer NewPixmap( long[] nativeData, int width, int height, int format );
+    public virtual ByteBuffer Load( long[] nativeData, byte[] buffer, int offset, int len )
+    {
+        throw new NotImplementedException();
+    }
 
-    private static extern void Free( long pixmap );
-    private static extern void Clear( long pixmap, int color );
-    private static extern void SetPixel( long pixmap, int x, int y, int color );
-    private static extern int  GetPixel( long pixmap, int x, int y );
-    private static extern void DrawLine( long pixmap, int x, int y, int x2, int y2, int color );
-    private static extern void DrawRect( long pixmap, int x, int y, int width, int height, int color );
-    private static extern void DrawCircle( long pixmap, int x, int y, int radius, int color );
-    private static extern void FillRect( long pixmap, int x, int y, int width, int height, int color );
-    private static extern void FillCircle( long pixmap, int x, int y, int radius, int color );
-    private static extern void FillTriangle( long pixmap, int x1, int y1, int x2, int y2, int x3, int y3, int color );
+    public virtual ByteBuffer NewPixmap( long[] nativeData, int width, int height, int format )
+    {
+        throw new NotImplementedException();
+    }
 
-    private static extern void DrawPixmap( long src,
-                                           long dst,
-                                           int srcX,
-                                           int srcY,
-                                           int srcWidth,
-                                           int srcHeight,
-                                           int dstX,
-                                           int dstY,
-                                           int dstWidth,
-                                           int dstHeight );
+    public virtual void Free( long pixmap )
+    {
+        throw new NotImplementedException();
+    }
 
-    private static extern void SetBlend( long src, int blend );
-    private static extern void SetScale( long src, int scale );
+    public virtual void Clear( long pixmap, int color )
+    {
+        throw new NotImplementedException();
+    }
 
-    private static extern string GetFailureReason();
+    public virtual void SetPixel( long pixmap, int x, int y, int color )
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual int GetPixel( long pixmap, int x, int y )
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void DrawLine( long pixmap, int x, int y, int x2, int y2, int color )
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void DrawRect( long pixmap, int x, int y, int width, int height, int color )
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void DrawCircle( long pixmap, int x, int y, int radius, int color )
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void FillRect( long pixmap, int x, int y, int width, int height, int color )
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void FillCircle( long pixmap, int x, int y, int radius, int color )
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void FillTriangle( long pixmap, int x1, int y1, int x2, int y2, int x3, int y3, int color )
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void DrawPixmap( long src,
+                                    long dst,
+                                    int srcX,
+                                    int srcY,
+                                    int srcWidth,
+                                    int srcHeight,
+                                    int dstX,
+                                    int dstY,
+                                    int dstWidth,
+                                    int dstHeight )
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void SetBlend( long src, int blend )
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void SetScale( long src, int scale )
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual string GetFailureReason()
+    {
+        throw new NotImplementedException();
+    }
 
     // ------------------------------------------------------------------------
 
@@ -378,31 +441,25 @@ public class Gdx2DPixmap : IDisposable
     public int Width  { get; set; }
     public int Height { get; set; }
 
-    public int    GLInternalFormat => ToGLFormat( format );
-    public int    GLFormat         => ToGLFormat( format );
-    public int    GLType           => ToGLType( format );
-    public string FormatString     => GetFormatString( format );
+    public int    GLInternalFormat => ToGLFormat( Format );
+    public int    GLFormat         => ToGLFormat( Format );
+    public int    GLType           => ToGLType( Format );
+    public string FormatString     => GetFormatString( Format );
 
     public int Blend
     {
-        set => SetBlend( basePtr, value );
+        set => SetBlend( BasePtr, value );
     }
 
     public int Scale
     {
-        set => SetScale( basePtr, value );
+        set => SetScale( BasePtr, value );
     }
 
     #endregion properties
 
-    // ------------------------------------------------------------------------
-
-    #region data
-
-    public long       basePtr;                    // 
-    public int        format;                     // The actual pixmap format.
-    public ByteBuffer pixelPtr;                   //
-    public long[]     nativeData = new long[ 4 ]; //
-
-    #endregion data
+    public long       BasePtr    { get; set; }                  // 
+    public int        Format     { get; set; }                  // The actual pixmap format.
+    public ByteBuffer PixelPtr   { get; set; }                  //
+    public long[]     NativeData { get; set; } = new long[ 4 ]; //
 }

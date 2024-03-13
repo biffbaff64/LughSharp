@@ -663,6 +663,8 @@ Clicked = ( ev, x, y ) =>
 UTILS
 -----
 
+    - Move Utils/Collections and Utils/Viewport out of Utils and into somewhere more appropriate.
+
     - DONE - Align
     - DONE - BinaryHeap
     - DONE - Bits

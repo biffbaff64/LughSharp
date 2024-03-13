@@ -36,6 +36,7 @@ namespace LibGDXSharp.LibCore.Graphics.GLUtils;
 ///     Class for encoding and decoding ETC1 compressed images.
 ///     Also provides methods to add a PKM header.
 /// </summary>
+[PublicAPI]
 public class ETC1
 {
     /// <summary>

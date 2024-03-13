@@ -203,7 +203,7 @@ public static unsafe class GL
 
     public static ( int major, int minor ) GetProjectOpenGLVersion()
     {
-        return GetProjectOpenGLVersionMajor(), GetProjectOpenGLVersionMinor();
+        return ( GetProjectOpenGLVersionMajor(), GetProjectOpenGLVersionMinor() );
     }
 
     /// <summary>

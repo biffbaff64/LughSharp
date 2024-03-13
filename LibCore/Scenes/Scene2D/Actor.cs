@@ -70,7 +70,7 @@ public class Actor : IActor
     protected float OriginX { get; set; }
     protected float OriginY { get; set; }
 
-    public Color Color
+    public Color? Color
     {
         get => _color;
         set => _color.Set( value );

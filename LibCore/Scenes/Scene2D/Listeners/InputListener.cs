@@ -30,6 +30,7 @@ namespace LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
 ///     and calls the appropriate method. By default the methods here do nothing with
 ///     the event. Users are expected to override the methods they are interested in.
 /// </summary>
+[PublicAPI]
 public class InputListener : IEventListener
 {
     private readonly static Vector2 _tmpCoords = new();

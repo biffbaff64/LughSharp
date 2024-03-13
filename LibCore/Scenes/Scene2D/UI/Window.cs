@@ -25,6 +25,7 @@
 
 using LibGDXSharp.LibCore.Graphics;
 using LibGDXSharp.LibCore.Graphics.G2D;
+using LibGDXSharp.LibCore.Graphics.G3D.Utils;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
 using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
 
@@ -36,21 +37,37 @@ namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
 ///     <p>
 ///         The preferred size of a window is the preferred size of the title text and
 ///         the children as laid out by the table. After adding children to the window,
-///         it can be convenient to call {@link #pack()} to size the window to the size
-///         of the children.
+///         it can be convenient to call <see cref="WidgetGroup.Pack"/> to size the
+///         window to the size of the children.
 ///     </p>
 /// </summary>
+[PublicAPI]
 public class Window : Table
 {
-    private const int MOVE = 1 << 5;
+    public bool   DrawTitleTable  { get; set; }
+    public Label? TitleLabel      { get; set; }
+    public bool   IsMovable       { get; set; } = true;
+    public bool   IsModal         { get; set; }
+    public bool   IsResizable     { get; set; }
+    public bool   Dragging        { get; set; }
+    public int    ResizeBorder    { get; set; } = 8;
+    public bool   KeepWithinStage { get; set; } = true;
 
-    private readonly static Vector2 TmpPosition = new();
-    private readonly static Vector2 TmpSize     = new();
-    private readonly        Table   _titleTable;
-
-    private WindowStyle _style;
+    // ------------------------------------------------------------------------
 
     protected int edge;
+
+    // ------------------------------------------------------------------------
+
+    private const int DEFAULT_WIDTH  = 150;
+    private const int DEFAULT_HEIGHT = 150;
+    private const int MOVE           = 1 << 5;
+
+    private readonly static Vector2 _tmpPosition = new();
+    private readonly static Vector2 _tmpSize     = new();
+
+    private Table?       _titleTable;
+    private WindowStyle? _style;
 
     // ------------------------------------------------------------------------
 
@@ -68,6 +85,18 @@ public class Window : Table
 
     public Window( string title, WindowStyle style )
     {
+        Setup( title, style );
+    }
+
+    /// <summary>
+    /// Private Setup method, code moved from constructor to allow
+    /// calling of virtual methods as they should not be called from
+    /// constructors.
+    /// </summary>
+    /// <param name="title"> Window title. </param>
+    /// <param name="style"> Window Style </param>
+    private void Setup( string title, WindowStyle style )
+    {
         Touchable = Touchable.Enabled;
         Clip      = true;
 
@@ -76,43 +105,34 @@ public class Window : Table
 
         _titleTable = new TitleTableClass( this );
 
-        _titleTable.Add( TitleLabel )
-                   .SetExpandX()
-                   .SetFillX()
-                   .SetMinWidth( 0 );
+        _titleTable.Add( TitleLabel ).SetExpandX().SetFillX().SetMinWidth( 0 );
 
         AddActor( _titleTable );
 
         Style = _style = style;
-        SetSize( 150, 150 );
+        SetSize( DEFAULT_WIDTH, DEFAULT_HEIGHT );
 
         AddCaptureListener( new WindowCaptureListener( this ) );
         AddListener( new WindowInputListener( this ) );
     }
 
-    public bool  DrawTitleTable  { get; set; }
-    public Label TitleLabel      { get; set; }
-    public bool  IsMovable       { get; set; } = true;
-    public bool  IsModal         { get; set; }
-    public bool  IsResizable     { get; set; }
-    public bool  Dragging        { get; set; }
-    public int   ResizeBorder    { get; set; } = 8;
-    public bool  KeepWithinStage { get; set; } = true;
-
-    public WindowStyle Style
+    /// <summary>
+    /// This windows <see cref="WindowStyle"/> property.
+    /// </summary>
+    public WindowStyle? Style
     {
         get => _style;
         set
         {
             _style = value;
 
-            SetBackground( _style.Background );
-            TitleLabel.Style = new Label.LabelStyle( _style.TitleFont!, _style.TitleFontColor! );
+            SetBackground( _style?.Background );
+            TitleLabel!.Style = new Label.LabelStyle( _style?.TitleFont!, _style?.TitleFontColor! );
             InvalidateHierarchy();
         }
     }
 
-    public void DoKeepWithinStage()
+    public void EnsureWithinStage()
     {
         if ( !KeepWithinStage || ( Stage == null ) )
         {
@@ -127,40 +147,32 @@ public class Window : Table
             if ( ( GetX( Align.RIGHT ) - Stage.Camera.Position.X )
                > ( parentWidth / 2 / orthographicCamera.Zoom ) )
             {
-                SetPosition(
-                    Stage.Camera.Position.X + ( parentWidth / 2 / orthographicCamera.Zoom ),
-                    GetY( Align.RIGHT ),
-                    Align.RIGHT
-                    );
+                SetPosition( Stage.Camera.Position.X + ( parentWidth / 2 / orthographicCamera.Zoom ),
+                             GetY( Align.RIGHT ),
+                             Align.RIGHT );
             }
 
             if ( ( GetX( Align.LEFT ) - Stage.Camera.Position.X )
                < ( -parentWidth / 2 / orthographicCamera.Zoom ) )
             {
-                SetPosition(
-                    Stage.Camera.Position.X - ( parentWidth / 2 / orthographicCamera.Zoom ),
-                    GetY( Align.LEFT ),
-                    Align.LEFT
-                    );
+                SetPosition( Stage.Camera.Position.X - ( parentWidth / 2 / orthographicCamera.Zoom ),
+                             GetY( Align.LEFT ),
+                             Align.LEFT );
             }
 
             if ( ( GetY( Align.TOP ) - Stage.Camera.Position.Y ) > ( parentHeight / 2 / orthographicCamera.Zoom ) )
             {
-                SetPosition(
-                    GetX( Align.TOP ),
-                    Stage.Camera.Position.Y + ( parentHeight / 2 / orthographicCamera.Zoom ),
-                    Align.TOP
-                    );
+                SetPosition( GetX( Align.TOP ),
+                             Stage.Camera.Position.Y + ( parentHeight / 2 / orthographicCamera.Zoom ),
+                             Align.TOP );
             }
 
             if ( ( GetY( Align.BOTTOM ) - Stage.Camera.Position.Y )
                < ( -parentHeight / 2 / orthographicCamera.Zoom ) )
             {
-                SetPosition(
-                    GetX( Align.BOTTOM ),
-                    Stage.Camera.Position.Y - ( parentHeight / 2 / orthographicCamera.Zoom ),
-                    Align.BOTTOM
-                    );
+                SetPosition( GetX( Align.BOTTOM ),
+                             Stage.Camera.Position.Y - ( parentHeight / 2 / orthographicCamera.Zoom ),
+                             Align.BOTTOM );
             }
         }
         else if ( Parent == Stage.Root )
@@ -196,21 +208,19 @@ public class Window : Table
         {
             Stage.KeyboardFocus ??= this;
 
-            DoKeepWithinStage();
+            EnsureWithinStage();
 
-            if ( Style.StageBackground != null )
+            if ( Style?.StageBackground != null )
             {
-                StageToLocalCoordinates( TmpPosition.Set( 0, 0 ) );
-                StageToLocalCoordinates( TmpSize.Set( Stage.Width, Stage.Height ) );
+                StageToLocalCoordinates( _tmpPosition.Set( 0, 0 ) );
+                StageToLocalCoordinates( _tmpSize.Set( Stage.Width, Stage.Height ) );
 
-                DrawStageBackground(
-                    batch,
-                    parentAlpha,
-                    X + TmpPosition.X,
-                    Y + TmpPosition.Y,
-                    X + TmpSize.X,
-                    Y + TmpSize.Y
-                    );
+                DrawStageBackground( batch,
+                                     parentAlpha,
+                                     X + _tmpPosition.X,
+                                     Y + _tmpPosition.Y,
+                                     X + _tmpSize.X,
+                                     Y + _tmpSize.Y );
             }
         }
 
@@ -224,7 +234,7 @@ public class Window : Table
             batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
         }
 
-        Style.StageBackground?.Draw( batch, x, y, width, height );
+        Style?.StageBackground?.Draw( batch, x, y, width, height );
     }
 
     protected new void DrawBackground( IBatch batch, float parentAlpha, float x, float y )
@@ -233,7 +243,7 @@ public class Window : Table
 
         // Manually draw the title table before clipping is done.
 
-        if ( _titleTable.Color != null )
+        if ( _titleTable?.Color != null )
         {
             _titleTable.Color.A = Color!.A;
         }
@@ -241,12 +251,12 @@ public class Window : Table
         var padTop  = GetPadTop();
         var padLeft = GetPadLeft();
 
-        _titleTable.SetSize( Width - padLeft - GetPadRight(), padTop );
-        _titleTable.SetPosition( padLeft, Height - padTop );
+        _titleTable?.SetSize( Width - padLeft - GetPadRight(), padTop );
+        _titleTable?.SetPosition( padLeft, Height - padTop );
 
         DrawTitleTable = true;
 
-        _titleTable.Draw( batch, parentAlpha );
+        _titleTable?.Draw( batch, parentAlpha );
 
         // Avoid drawing the title table again in drawChildren.
         DrawTitleTable = false;
@@ -290,9 +300,11 @@ public class Window : Table
         return hit;
     }
 
-    public new float GetPrefWidth()
+    protected override float GetPrefWidth()
     {
-        return Math.Max( base.GetPrefWidth(), _titleTable.PrefWidth + GetPadLeft() + GetPadRight() );
+        return _titleTable == null
+            ? base.GetPrefWidth()
+            : Math.Max( base.GetPrefWidth(), _titleTable.PrefWidth + GetPadLeft() + GetPadRight() );
     }
 
     // ------------------------------------------------------------------------
@@ -307,7 +319,7 @@ public class Window : Table
             _window = window;
         }
 
-        public new void Draw( IBatch batch, float parentAlpha )
+        public override void Draw( IBatch batch, float parentAlpha )
         {
             if ( _window.DrawTitleTable )
             {
@@ -315,6 +327,9 @@ public class Window : Table
             }
         }
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     internal class WindowCaptureListener : InputListener
     {
@@ -415,7 +430,7 @@ public class Window : Table
             }
         }
 
-        public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
+        public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
             if ( button == 0 )
             {
@@ -431,12 +446,12 @@ public class Window : Table
             return ( _window.edge != 0 ) || _window.IsModal;
         }
 
-        public override void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
+        public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
         {
             _window.Dragging = false;
         }
 
-        public override void TouchDragged( InputEvent ev, float x, float y, int pointer )
+        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
         {
             if ( !_window.Dragging )
             {
@@ -539,12 +554,10 @@ public class Window : Table
                 height += amountY;
             }
 
-            _window.SetBounds(
-                ( float )Math.Round( windowX ),
-                ( float )Math.Round( windowY ),
-                ( float )Math.Round( width ),
-                ( float )Math.Round( height )
-                );
+            _window.SetBounds( ( float )Math.Round( windowX ),
+                               ( float )Math.Round( windowY ),
+                               ( float )Math.Round( width ),
+                               ( float )Math.Round( height ) );
         }
 
         public new bool MouseMoved( InputEvent ev, float x, float y )
@@ -581,6 +594,7 @@ public class Window : Table
     /// <summary>
     ///     The style for a window, see <see cref="Window" />.
     /// </summary>
+    [PublicAPI]
     public class WindowStyle
     {
         public WindowStyle()

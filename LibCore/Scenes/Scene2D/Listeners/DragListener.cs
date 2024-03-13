@@ -30,6 +30,7 @@ namespace LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
  * outside the {@link #setTapSquareSize(float) tap square}. Any touch (not just the first) will trigger this listener. While
  * pressed, other touch downs are ignored.
  */
+[PublicAPI]
 public class DragListener : InputListener
 {
     private float _dragLastX;
@@ -52,8 +53,22 @@ public class DragListener : InputListener
     public float DragX           { get; private set; }
     public float DragY           { get; private set; }
 
-    public override bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="ev"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="pointer"></param>
+    /// <param name="button"></param>
+    /// <returns></returns>
+    public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
     {
+        if ( ev == null )
+        {
+            return false;
+        }
+        
         if ( _pressedPointer != -1 )
         {
             return false;
@@ -73,8 +88,13 @@ public class DragListener : InputListener
         return true;
     }
 
-    public override void TouchDragged( InputEvent ev, float x, float y, int pointer )
+    public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
     {
+        if ( ev == null )
+        {
+            return;
+        }
+        
         if ( pointer != _pressedPointer )
         {
             return;
@@ -105,8 +125,13 @@ public class DragListener : InputListener
         }
     }
 
-    public override void TouchUp( InputEvent ev, float x, float y, int pointer, int button )
+    public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
     {
+        if ( ev == null )
+        {
+            return;
+        }
+        
         if ( pointer == _pressedPointer )
         {
             if ( IsDragging )

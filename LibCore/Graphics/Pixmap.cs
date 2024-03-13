@@ -180,11 +180,11 @@ public class Pixmap : IDisposable
                 throw new GdxRuntimeException( "Pixmap already disposed" );
             }
 
-            return gdx2DPixmap.pixelPtr;
+            return gdx2DPixmap.PixelPtr;
         }
         set
         {
-            ByteBuffer dst = gdx2DPixmap.pixelPtr;
+            ByteBuffer dst = gdx2DPixmap.PixelPtr;
 
             BufferUtils.Copy( value, dst, dst.Limit );
         }
@@ -423,7 +423,7 @@ public class Pixmap : IDisposable
     /// <returns> the <see cref="Pixmap.Format" /> of this Pixmap. </returns>
     public Format GetFormat()
     {
-        return PixmapFormat.FromGdx2DPixmapFormat( gdx2DPixmap.format );
+        return PixmapFormat.FromGdx2DPixmapFormat( gdx2DPixmap.Format );
     }
 
     // #############################################################

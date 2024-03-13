@@ -470,19 +470,16 @@ public class SplitPane : WidgetGroup
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    [Obsolete( "SplitPane.AddActor is not supported, use SplitPane.SetWidget instead." )]
     public override void AddActor( Actor actor )
     {
         throw new GdxRuntimeException( "SplitPane.AddActor is not supported, use SplitPane.SetWidget instead." );
     }
 
-    [Obsolete( "SplitPane.AddActorAt is not supported, use SplitPane.SetWidget instead." )]
     public override void AddActorAt( int index, Actor actor )
     {
         throw new GdxRuntimeException( "SplitPane.AddActorAt is not supported, use SplitPane.SetWidget instead." );
     }
 
-    [Obsolete( "SplitPane.AddActorBefore is not supported, use SplitPane.SetWidget instead." )]
     public override void AddActorBefore( Actor actorBefore, Actor actor )
     {
         throw new GdxRuntimeException( "SplitPane.AddActorBefore is not supported, use SplitPane.SetWidget instead." );
@@ -571,6 +568,7 @@ public class SplitPane : WidgetGroup
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class SplitPaneInputListener : InputListener
     {
         private readonly SplitPane _parent;
@@ -666,6 +664,7 @@ public class SplitPane : WidgetGroup
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class SplitPaneStyle
     {
         public SplitPaneStyle()

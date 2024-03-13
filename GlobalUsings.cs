@@ -51,9 +51,11 @@ global using System.Xml.Xsl;
 global using JetBrains.Annotations;
 
 // -----------------------------------------------------------------------
+// OpenAL support
+
+// -----------------------------------------------------------------------
 // OpenGL / Glfw support
 global using DotGL;
-
 global using DotGLFW;
 
 //@formatter:off

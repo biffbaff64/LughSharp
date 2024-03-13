@@ -138,7 +138,7 @@ public class Table : WidgetGroup
         return cell;
     }
 
-    protected new void Draw( IBatch batch, float parentAlpha )
+    public override void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
 
@@ -693,7 +693,7 @@ public class Table : WidgetGroup
         return _cells;
     }
 
-    protected float GetPrefWidth()
+    protected virtual float GetPrefWidth()
     {
         if ( _sizeInvalid )
         {
@@ -705,7 +705,7 @@ public class Table : WidgetGroup
         return _background != null ? Math.Max( width, _background.MinWidth ) : width;
     }
 
-    protected float GetPrefHeight()
+    protected virtual float GetPrefHeight()
     {
         if ( _sizeInvalid )
         {

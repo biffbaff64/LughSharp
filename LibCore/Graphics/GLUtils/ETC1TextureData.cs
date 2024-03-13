@@ -25,6 +25,7 @@
 
 namespace LibGDXSharp.LibCore.Graphics.GLUtils;
 
+[PublicAPI]
 public class ETC1TextureData : ITextureData
 {
     private readonly FileInfo?      _file;
