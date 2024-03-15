@@ -23,15 +23,16 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils.Pooling;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Utils.Pooling;
 
-namespace LibGDXSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>
 ///     Caches glyph geometry for a BitmapFont, providing a fast way to render
 ///     static text. This saves needing to compute the glyph geometry each frame.
 /// </summary>
+[PublicAPI]
 public class BitmapFontCache
 {
     private readonly Color                _color         = new( 1, 1, 1, 1 );
@@ -777,7 +778,7 @@ public class BitmapFontCache
                                 bool wrap,
                                 string? truncate = null )
     {
-        GlyphLayout layout = Pools< GlyphLayout >.Obtain();
+        GlyphLayout layout = Pools< GlyphLayout >.Obtain() ?? throw new GdxRuntimeException( "Unable to obtain layout!" );
 
         _pooledLayouts.Add( layout );
 
@@ -806,18 +807,9 @@ public class BitmapFontCache
         }
     }
 
-    public float[]? GetVertices( int page = 0 )
-    {
-        return _pageVertices[ page ];
-    }
+    public float[]? GetVertices( int page = 0 ) => _pageVertices[ page ];
 
-    public int GetVertexCount( int page )
-    {
-        return _idx[ page ];
-    }
+    public int GetVertexCount( int page ) => _idx[ page ];
 
-    public List< GlyphLayout > GetLayouts()
-    {
-        return _layouts;
-    }
+    public List< GlyphLayout > GetLayouts() => _layouts;
 }

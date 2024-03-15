@@ -23,12 +23,12 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
-using LibGDXSharp.LibCore.Utils.Pooling;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Scenes.Scene2D.Listeners;
+using LughSharp.LibCore.Utils.Pooling;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
+namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 public class SceneActions
 {

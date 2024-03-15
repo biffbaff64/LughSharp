@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
 ///     A simple helper class to log the frames per seconds achieved.

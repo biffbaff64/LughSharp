@@ -25,9 +25,9 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Audio.MP3Sharp.Support;
+using LughSharp.LibCore.Audio.MP3Sharp.Support;
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
+namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
 ///     public class for extracting information from a frame header.

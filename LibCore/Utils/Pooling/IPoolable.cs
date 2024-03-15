@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Utils.Pooling;
+namespace LughSharp.LibCore.Utils.Pooling;
 
 public interface IPoolable
 {

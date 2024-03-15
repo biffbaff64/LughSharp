@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
+namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
 ///     The SampleBuffer class implements an output buffer that provides storage for a

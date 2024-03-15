@@ -25,7 +25,7 @@
 
 using System.Runtime.Serialization;
 
-namespace LibGDXSharp.LibCore.Utils.Collections;
+namespace LughSharp.LibCore.Utils.Collections;
 
 /// <summary>
 ///     An unordered map that uses identity comparison for the object keys.

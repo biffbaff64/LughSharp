@@ -23,10 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils.Pooling;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Utils.Pooling;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
+namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 public abstract class TemporalAction : Action
 {

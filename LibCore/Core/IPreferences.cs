@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Core;
+namespace LughSharp.LibCore.Core;
 
 /// <summary>
 ///     A Preference instance is a hash map holding different values. It is stored

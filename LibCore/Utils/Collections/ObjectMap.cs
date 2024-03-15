@@ -25,9 +25,9 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths;
 
-namespace LibGDXSharp.LibCore.Utils.Collections;
+namespace LughSharp.LibCore.Utils.Collections;
 
 /// <summary>
 ///     <para>An unordered map where the keys and values are objects.</para>

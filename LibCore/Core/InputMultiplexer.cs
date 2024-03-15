@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils.Collections;
+using LughSharp.LibCore.Utils.Collections;
 
-namespace LibGDXSharp.LibCore.Core;
+namespace LughSharp.LibCore.Core;
 
 public class InputMultiplexer : IInputProcessor
 {

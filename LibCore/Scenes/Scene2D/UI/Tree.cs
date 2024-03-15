@@ -23,12 +23,13 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Scenes.Scene2D.Listeners;
+using LughSharp.LibCore.Scenes.Scene2D.Utils;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
 ///     A tree widget where each node has an icon, actor, and child nodes.
@@ -280,10 +281,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
 
     public override void SetLayout()
     {
-        if ( _sizeInvalid )
-        {
-            ComputeSize();
-        }
+        if ( _sizeInvalid ) ComputeSize();
 
         Layout( RootNodes, _paddingLeft, Height - ( YSpacing / 2 ), PlusMinusWidth() );
     }
@@ -332,7 +330,10 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     {
         DrawBackground( batch, parentAlpha );
 
-        batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
+        if ( Color != null )
+        {
+            batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
+        }
 
         Draw( batch, RootNodes, _paddingLeft, PlusMinusWidth() );
 
@@ -348,7 +349,10 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     {
         if ( Style?.Background != null )
         {
-            batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
+            if ( Color != null )
+            {
+                batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
+            }
 
             Style.Background.Draw( batch, X, Y, Width, Height );
         }
@@ -401,7 +405,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
                 {
                     var iconY = y + actorY + Math.Round( ( height - node.Icon.MinHeight ) / 2 );
 
-                    batch.Color = actor.Color;
+                    batch.Color = actor.Color ?? Color.Black;
                     DrawIcon( node, node.Icon, batch, iconX, ( float )iconY );
                     batch.SetColor( 1, 1, 1, 1 );
                 }
@@ -421,6 +425,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
 
             if ( node is { IsExpanded: true, NodeChildren.Count: > 0 } )
             {
+                //TODO: Refactor to remove recursiveness 
                 Draw( batch, node.NodeChildren, indent + IndentSpacing, plusMinusWidth );
             }
         }
@@ -477,10 +482,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
         {
             IDrawable? icon = node.IsExpanded ? Style.MinusOver : Style.PlusOver;
 
-            if ( icon != null )
-            {
-                return icon;
-            }
+            if ( icon != null ) return icon;
         }
 
         return node.IsExpanded ? Style.Minus : Style.Plus;
@@ -514,6 +516,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
 
             if ( node.IsExpanded )
             {
+                //TODO: Refactor to remove recursiveness 
                 rowY = GetNodeAt( node.NodeChildren!, y, rowY );
 
                 if ( Math.Abs( rowY - -1 ) < 0.1f )
@@ -537,10 +540,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
                 break;
             }
 
-            if ( !node.Selectable )
-            {
-                continue;
-            }
+            if ( !node.Selectable ) continue;
 
             if ( node.Actor?.Y <= high )
             {
@@ -549,6 +549,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
 
             if ( node.IsExpanded )
             {
+                //TODO: Refactor to remove recursiveness 
                 SelectNodes( node.NodeChildren!, low, high );
             }
         }
@@ -614,9 +615,12 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
 
             if ( ( node.NodeChildren != null ) && ( node.Value != null ) )
             {
+                //TODO: Refactor to remove recursiveness 
                 if ( node.IsExpanded && !FindExpandedValues( node.NodeChildren, values ) )
                 {
                     values.Add( node.Value );
+
+                    expanded = true;
                 }
             }
         }
@@ -660,6 +664,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
 
         for ( int i = 0, n = nodes.Count; i < n; i++ )
         {
+            //TODO: Refactor to remove recursiveness 
             Node? found = FindNode( nodes[ i ].NodeChildren!, value );
 
             if ( found != null )
@@ -681,6 +686,8 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
         for ( int i = 0, n = nodes.Count; i < n; i++ )
         {
             nodes[ i ].SetExpanded( false );
+
+            //TODO: Refactor to remove recursiveness 
             CollapseAll( nodes[ i ].NodeChildren! );
         }
     }
@@ -702,12 +709,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
 
     public TValue? GetOverValue()
     {
-        if ( OverNode == null )
-        {
-            return default( TValue? );
-        }
-
-        return OverNode.Value;
+        return OverNode == null ? default( TValue? ) : OverNode.Value;
     }
 
     public void SetPadding( float padding )
@@ -758,6 +760,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     // ------------------------------------------------------------------------
 
     /// <inheritdoc />
+    [PublicAPI]
     public class TreeSelection : Selection< TNode >
     {
         private readonly Tree< TNode, TValue > _parent;
@@ -795,8 +798,17 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     /// <summary>
     ///     The style for a <see cref="Tree{TN,TV}" />.
     /// </summary>
+    [PublicAPI]
     public class TreeStyle
     {
+        public IDrawable  Plus       { get; set; }
+        public IDrawable  Minus      { get; set; }
+        public IDrawable? PlusOver   { get; set; } = null;
+        public IDrawable? MinusOver  { get; set; } = null;
+        public IDrawable? Over       { get; set; } = null;
+        public IDrawable? Selection  { get; set; } = null;
+        public IDrawable? Background { get; set; } = null;
+
         public TreeStyle( IDrawable plus, IDrawable minus, IDrawable? selection )
         {
             Plus      = plus;
@@ -816,14 +828,6 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
             Selection  = style.Selection;
             Background = style.Background;
         }
-
-        public IDrawable  Plus       { get; set; }
-        public IDrawable  Minus      { get; set; }
-        public IDrawable? PlusOver   { get; set; } = null;
-        public IDrawable? MinusOver  { get; set; } = null;
-        public IDrawable? Over       { get; set; } = null;
-        public IDrawable? Selection  { get; set; } = null;
-        public IDrawable? Background { get; set; } = null;
     }
 
     // ------------------------------------------------------------------------
@@ -836,8 +840,16 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     ///         to be specified repeatedly.
     ///     </para>
     /// </summary>
+    [PublicAPI]
     public class Node
     {
+        public TValue?    Value      { get; set; }
+        public TNode?     Parent     { get; set; }
+        public IDrawable? Icon       { get; set; }
+        public bool       Selectable { get; set; } = true;
+        public float      Height     { get; set; }
+        public bool       IsExpanded { get; private set; }
+
         private Actor? _actor;
 
         /// <summary>
@@ -854,13 +866,6 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
 
             _actor = actor;
         }
-
-        public TValue?    Value      { get; set; }
-        public TNode?     Parent     { get; set; }
-        public IDrawable? Icon       { get; set; }
-        public bool       Selectable { get; set; } = true;
-        public float      Height     { get; set; }
-        public bool       IsExpanded { get; private set; }
 
         public Actor? Actor
         {

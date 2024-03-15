@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.LibCore.Maths;
+namespace LughSharp.LibCore.Maths;
 
 /// <summary>
 ///     Delaunay triangulation. Adapted from Paul Bourke's triangulate:

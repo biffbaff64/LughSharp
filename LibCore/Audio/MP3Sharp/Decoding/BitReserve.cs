@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
+namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
 ///     Implementation of Bit Reservoir for Layer III.

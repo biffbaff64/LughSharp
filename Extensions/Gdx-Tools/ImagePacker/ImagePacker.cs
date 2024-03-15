@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Extensions.Gdx_Tools.ImagePacker;
+namespace LughSharp.Extensions.Gdx_Tools.ImagePacker;
 
 public class ImagePacker
 {

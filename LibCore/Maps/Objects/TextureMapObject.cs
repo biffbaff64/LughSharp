@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Graphics.G2D;
 
-namespace LibGDXSharp.LibCore.Maps.Objects;
+namespace LughSharp.LibCore.Maps.Objects;
 
 public class TextureMapObject : MapObject
 {

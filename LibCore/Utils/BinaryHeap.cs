@@ -25,9 +25,9 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths;
 
-namespace LibGDXSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Utils;
 
 /// <summary>
 ///     Node record holding a value and its index.

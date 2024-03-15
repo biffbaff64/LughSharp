@@ -27,7 +27,7 @@ using System.Reflection;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Graphics.Profiling;
+namespace LughSharp.LibCore.Graphics.Profiling;
 
 /// <summary>
 ///     Listener for GL errors detected by <see cref="GLProfiler" />.

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Utils;
 
 /// <summary>
 ///     A Closeable is a source or destination of data that can be closed.

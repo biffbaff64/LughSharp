@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics;
 
-namespace LibGDXSharp.LibCore.Maps;
+namespace LughSharp.LibCore.Maps;
 
 public class MapObject
 {

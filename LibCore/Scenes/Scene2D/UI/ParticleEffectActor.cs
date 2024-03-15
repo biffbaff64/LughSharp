@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Graphics.G2D;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
 ///     ParticleEffectActor holds an ParticleEffect to use in Scene2d applications.

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers;
 
 [PublicAPI]
 public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer

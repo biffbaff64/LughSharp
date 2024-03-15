@@ -23,19 +23,19 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Backends.DesktopGL.Audio;
-using LibGDXSharp.Backends.DesktopGL.Audio.Mock;
-using LibGDXSharp.Backends.DesktopGL.Files;
-using LibGDXSharp.Backends.DesktopGL.Input;
-using LibGDXSharp.Backends.DesktopGL.Utils;
-using LibGDXSharp.Backends.DesktopGL.Window;
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.Backends.DesktopGL.Audio;
+using LughSharp.Backends.DesktopGL.Audio.Mock;
+using LughSharp.Backends.DesktopGL.Files;
+using LughSharp.Backends.DesktopGL.Input;
+using LughSharp.Backends.DesktopGL.Utils;
+using LughSharp.Backends.DesktopGL.Window;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
 using Exception = System.Exception;
 using Monitor = DotGLFW.Monitor;
 
-namespace LibGDXSharp.Backends.DesktopGL;
+namespace LughSharp.Backends.DesktopGL;
 
 [PublicAPI]
 public class DesktopGLApplication : IDesktopGLApplicationBase

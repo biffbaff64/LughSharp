@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maths;
+namespace LughSharp.LibCore.Maths;
 
 /// <summary>
 ///     The abstract class Number is the superclass of platform classes representing

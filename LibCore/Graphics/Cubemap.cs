@@ -25,11 +25,11 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Assets;
-using LibGDXSharp.LibCore.Assets.Loaders;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Assets;
+using LughSharp.LibCore.Assets.Loaders;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
 ///     Wraps a standard OpenGL ES Cubemap.

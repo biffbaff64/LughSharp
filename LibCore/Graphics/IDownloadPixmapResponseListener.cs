@@ -25,7 +25,7 @@
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics;
 
 public interface IDownloadPixmapResponseListener
 {

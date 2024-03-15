@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Particles.Influencers;
+namespace LughSharp.LibCore.Graphics.G3D.Particles.Influencers;
 
 public class SpawnInfluencer
 {

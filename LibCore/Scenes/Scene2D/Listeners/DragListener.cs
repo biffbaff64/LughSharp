@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
+namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
 /**
  * Detects mouse or finger touch drags on an actor. A touch must go down over the actor and a drag won't start until it is moved

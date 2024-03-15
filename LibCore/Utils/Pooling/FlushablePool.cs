@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Utils.Pooling;
+namespace LughSharp.LibCore.Utils.Pooling;
 
 /// <summary>
 ///     A <see cref="Pool{T}" /> which keeps track of the obtained items

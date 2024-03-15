@@ -23,10 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Scenes.Scene2D.UI;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
+namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
 public class DragScrollListener : DragListener
 {

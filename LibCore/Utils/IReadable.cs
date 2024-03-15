@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Utils.Buffers;
 
-namespace LibGDXSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Utils;
 
 /// <summary>
 ///     A <tt>Readable</tt> is a source of characters. Characters from a <tt>Readable</tt>

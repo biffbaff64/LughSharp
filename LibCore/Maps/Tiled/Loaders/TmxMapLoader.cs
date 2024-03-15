@@ -23,13 +23,13 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Assets;
-using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Assets;
+using LughSharp.LibCore.Assets.Loaders.Resolvers;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.LibCore.Maps.Tiled.Loaders;
+namespace LughSharp.LibCore.Maps.Tiled.Loaders;
 
 public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 {

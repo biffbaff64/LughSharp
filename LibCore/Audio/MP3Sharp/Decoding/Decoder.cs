@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
+using LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
+namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
 ///     Encapsulates the details of decoding an MPEG audio frame.

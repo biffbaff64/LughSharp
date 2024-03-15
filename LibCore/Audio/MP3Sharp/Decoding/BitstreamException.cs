@@ -27,7 +27,7 @@ using System.Runtime.Serialization;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
+namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
 ///     Instances of BitstreamException are thrown

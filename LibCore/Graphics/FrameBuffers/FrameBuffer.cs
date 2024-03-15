@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.FrameBuffers;
+namespace LughSharp.LibCore.Graphics.FrameBuffers;
 
 /// <summary>
 ///     Encapsulates OpenGL ES 2.0 frame buffer objects. This is a simple helper

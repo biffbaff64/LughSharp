@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
+using LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp;
+namespace LughSharp.LibCore.Audio.MP3Sharp;
 
 /// <summary>
 ///     public class used to queue samples that are being obtained from an Mp3 stream.

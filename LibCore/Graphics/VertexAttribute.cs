@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
 ///     A single vertex attribute defined by its <see cref="usage" />, its number

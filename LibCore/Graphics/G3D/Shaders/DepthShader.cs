@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Shaders;
+namespace LughSharp.LibCore.Graphics.G3D.Shaders;
 
 public class DepthShader
 {

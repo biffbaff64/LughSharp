@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Graphics.G2D;
 
-namespace LibGDXSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics;
 
 public static class PixmapFormat
 {

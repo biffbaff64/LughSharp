@@ -23,15 +23,15 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Assets;
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
-using LibGDXSharp.LibCore.Utils.Pooling;
+using LughSharp.LibCore.Assets;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Scenes.Scene2D.Utils;
+using LughSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Utils.Pooling;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 public class Table : WidgetGroup
 {

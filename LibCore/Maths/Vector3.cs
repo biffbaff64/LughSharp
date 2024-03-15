@@ -25,7 +25,7 @@
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Maths;
+namespace LughSharp.LibCore.Maths;
 
 public class Vector3 : IVector< Vector3 >
 {

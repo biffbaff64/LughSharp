@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Extensions.Gdx_Tools.TiledMapPacker;
+namespace LughSharp.Extensions.Gdx_Tools.TiledMapPacker;
 
 public class TiledMapPacker
 {

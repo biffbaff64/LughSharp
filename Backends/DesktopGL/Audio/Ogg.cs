@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Backends.DesktopGL.Audio;
+namespace LughSharp.Backends.DesktopGL.Audio;
 
 [PublicAPI]
 public class Ogg

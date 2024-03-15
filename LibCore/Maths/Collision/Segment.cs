@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maths.Collision;
+namespace LughSharp.LibCore.Maths.Collision;
 
 /// <summary>
 ///     A Segment is a line in 3-space having a starting and an ending position.

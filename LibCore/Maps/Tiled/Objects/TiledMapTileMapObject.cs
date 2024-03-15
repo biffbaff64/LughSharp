@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Maps.Objects;
-using LibGDXSharp.LibCore.Maps.Tiled.Tiles;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Maps.Objects;
+using LughSharp.LibCore.Maps.Tiled.Tiles;
 
-namespace LibGDXSharp.LibCore.Maps.Tiled.Objects;
+namespace LughSharp.LibCore.Maps.Tiled.Objects;
 
 /// <summary>
 ///     A <see cref="MapObject" /> with a <see cref="ITiledMapTile" />.

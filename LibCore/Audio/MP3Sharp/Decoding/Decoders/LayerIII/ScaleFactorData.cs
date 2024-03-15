@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
+namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
 
 public class ScaleFactorData
 {

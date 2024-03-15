@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils.Pooling;
+using LughSharp.LibCore.Utils.Pooling;
 
-namespace LibGDXSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D;
 
 public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
 {

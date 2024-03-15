@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Decals;
+namespace LughSharp.LibCore.Graphics.G3D.Decals;
 
 public class DecalMaterial
 {

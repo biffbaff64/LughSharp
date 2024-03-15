@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Utils.Buffers;
 
-namespace LibGDXSharp.LibCore.Graphics.GLUtils;
+namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
 ///     IndexBufferObject wraps OpenGL's index buffer functionality to be

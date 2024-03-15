@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
+namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
 /// <summary>
 ///     Detects mouse over, mouse or finger touch presses, and clicks on an actor.

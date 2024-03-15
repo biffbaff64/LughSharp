@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
+using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 //TODO: I think I was drunk when writing this class. Rip it up and start again.
 

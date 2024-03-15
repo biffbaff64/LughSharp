@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maths;
+namespace LughSharp.LibCore.Maths;
 
 /// <summary>
 ///     Encapsulates a general vector. Allows chaining operations by returning

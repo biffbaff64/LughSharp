@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
+using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
 ///     A listener that shows a tooltip actor when the mouse is over another actor.

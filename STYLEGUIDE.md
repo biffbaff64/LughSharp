@@ -1,10 +1,10 @@
-﻿LIBGDXSHARP FRAMEWORK - NOT FINISHED!
+﻿LughSharp FRAMEWORK - NOT FINISHED!
 ==============
 
 Style Guide for contributors
 ----------------------------
 
-This style guide is for C# code developed for the LibGDXSharp Framework, and must be adhered to by contributors.
+This style guide is for C# code developed for the LughSharp Framework, and must be adhered to by contributors.
 It is heavily bases on the Google C# Style Guide.
 
 Formatting guidelines

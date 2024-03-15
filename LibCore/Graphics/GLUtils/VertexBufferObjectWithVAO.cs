@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Utils.Buffers;
 
-namespace LibGDXSharp.LibCore.Graphics.GLUtils;
+namespace LughSharp.LibCore.Graphics.GLUtils;
 
 public class VertexBufferObjectWithVAO : IVertexData
 {

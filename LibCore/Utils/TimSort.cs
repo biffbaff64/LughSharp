@@ -29,7 +29,7 @@
 
 //#define ALLOW_ASSERTS
 
-namespace LibGDXSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Utils;
 
 /// <summary>
 ///     A stable, adaptive, iterative mergesort that requires far fewer than n lg(n)

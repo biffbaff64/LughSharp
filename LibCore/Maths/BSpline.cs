@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maths;
+namespace LughSharp.LibCore.Maths;
 
 public class BSpline<T> : IPath< T > where T : IVector< T >
 {

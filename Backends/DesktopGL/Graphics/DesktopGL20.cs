@@ -23,12 +23,12 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Utils.Buffers;
 
-using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
+using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 
-namespace LibGDXSharp.Backends.DesktopGL.Graphics;
+namespace LughSharp.Backends.DesktopGL.Graphics;
 
 public class DesktopGL20 : IGL20
 {

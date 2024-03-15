@@ -23,14 +23,14 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Assets;
-using LibGDXSharp.LibCore.Assets.Loaders;
-using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Assets;
+using LughSharp.LibCore.Assets.Loaders;
+using LughSharp.LibCore.Assets.Loaders.Resolvers;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Maths;
 
-namespace LibGDXSharp.LibCore.Maps.Tiled.Loaders;
+namespace LughSharp.LibCore.Maps.Tiled.Loaders;
 
 /// <summary>
 ///     A TiledMap Loader which loads tiles from a TextureAtlas instead of separate images.
@@ -215,25 +215,33 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     {
         XmlNode? properties = xmlDocument.SelectSingleNode( "properties" );
 
+        if ( properties == null )
+        {
+            throw new GdxRuntimeException( "The map is missing a properties node." );
+        }
+        
         string? atlasFilePath = null;
 
-        XmlNodeList? propertyList = properties?.SelectNodes( "property" );
+        XmlNodeList? propertyList = properties.SelectNodes( "property" );
 
         if ( propertyList != null )
         {
             foreach ( XmlNode? property in propertyList )
             {
-                var name = property?.Attributes?[ "name" ]?.Value;
-
-                if ( ( bool )name?.StartsWith( "atlas" ) )
+                if ( property != null )
                 {
-                    atlasFilePath = property?.Attributes?[ "value" ]?.Value;
+                    var name = property.Attributes?[ "name" ]?.Value;
 
-                    break;
+                    if ( name!.StartsWith( "atlas" ) )
+                    {
+                        atlasFilePath = property.Attributes?[ "value" ]?.Value;
+
+                        break;
+                    }
                 }
             }
         }
-
+        
         if ( atlasFilePath == null )
         {
             throw new GdxRuntimeException( "The map is missing the 'atlas' property" );
@@ -266,7 +274,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class AtlasTiledMapLoaderParameters : BaseTmxLoaderParameters
     {
         public bool ForceTextureFilters { get; set; } = false;
@@ -279,7 +287,6 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     protected interface IAtlasResolver : IImageResolver
     {
         public TextureAtlas GetAtlas();
-
 
         public class DirectAtlasResolver : IAtlasResolver
         {
@@ -300,7 +307,6 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
                 return _atlas.FindRegion( name );
             }
         }
-
 
         public class AssetManagerAtlasResolver : IAtlasResolver
         {

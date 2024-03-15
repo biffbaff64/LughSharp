@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
+namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
 /// <summary>
 ///     Low level interface for receiving events.

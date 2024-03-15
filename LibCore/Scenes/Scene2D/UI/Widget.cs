@@ -23,10 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Scenes.Scene2D.Utils;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
 ///     An <see cref="Actor" /> that participates in layout and provides a minimum,

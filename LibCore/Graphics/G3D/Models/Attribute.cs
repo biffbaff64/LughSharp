@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Models;
+namespace LughSharp.LibCore.Graphics.G3D.Models;
 
 public class Attribute
 {

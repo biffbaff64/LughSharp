@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Utils;
 
 /// <summary>
 ///     Provides methods to sort arrays of objects.

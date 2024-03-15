@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
+namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 
 internal class LocalFileHandleResolver : IFileHandleResolver
 {

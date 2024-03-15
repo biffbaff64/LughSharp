@@ -25,14 +25,14 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
-using LibGDXSharp.LibCore.Utils.Collections;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Scenes.Scene2D.Utils;
+using LughSharp.LibCore.Utils.Collections;
 
-using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
+using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D;
+namespace LughSharp.LibCore.Scenes.Scene2D;
 
 /// <summary>
 ///     2D scene graph node that may contain other actors.

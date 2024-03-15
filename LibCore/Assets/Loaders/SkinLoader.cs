@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+using LughSharp.LibCore.Assets.Loaders.Resolvers;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Scenes.Scene2D.UI;
 
-namespace LibGDXSharp.LibCore.Assets.Loaders;
+namespace LughSharp.LibCore.Assets.Loaders;
 
 [PublicAPI]
 public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderParameters >

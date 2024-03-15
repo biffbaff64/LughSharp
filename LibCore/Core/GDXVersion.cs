@@ -25,10 +25,10 @@
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Core;
+namespace LughSharp.LibCore.Core;
 
 /// <summary>
-///     The current LibGDXSharp Library version.
+///     The current LughSharp Library version.
 /// </summary>
 [PublicAPI]
 public class GDXVersion

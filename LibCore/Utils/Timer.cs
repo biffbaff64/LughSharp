@@ -26,7 +26,7 @@
 using Exception = System.Exception;
 using Monitor = System.Threading.Monitor;
 
-namespace LibGDXSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Utils;
 
 /// <summary>
 ///     Executes tasks in the future on the main loop thread.

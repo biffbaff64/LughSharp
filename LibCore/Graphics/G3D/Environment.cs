@@ -23,10 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G3D.Attributes;
-using LibGDXSharp.LibCore.Graphics.G3D.Env;
+using LughSharp.LibCore.Graphics.G3D.Attributes;
+using LughSharp.LibCore.Graphics.G3D.Env;
 
-namespace LibGDXSharp.LibCore.Graphics.G3D;
+namespace LughSharp.LibCore.Graphics.G3D;
 
 public class Environment : AttributesGroup
 {

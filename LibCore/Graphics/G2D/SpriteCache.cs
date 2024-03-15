@@ -23,13 +23,13 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils.Buffers;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
-using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
+using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LibGDXSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>
 ///     Draws 2D images, optimized for geometry that does not change. Sprites and/or
@@ -215,7 +215,7 @@ public class SpriteCache
 
     /// <summary>
     /// </summary>
-    /// <see cref="SetColor(LibGDXSharp.LibCore.Graphics.Color)" />
+    /// <see cref="SetColor(LughSharp.LibCore.Graphics.Color)" />
     public void SetColor( float r, float g, float b, float a )
     {
         Color.Set( r, g, b, a );

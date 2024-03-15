@@ -22,9 +22,9 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.Backends.DesktopGL;
+using LughSharp.Backends.DesktopGL;
 
-namespace LibGDXSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics;
 
 [PublicAPI]
 public class GameWindow

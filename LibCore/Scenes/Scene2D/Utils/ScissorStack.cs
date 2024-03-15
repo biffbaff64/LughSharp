@@ -25,13 +25,13 @@
 
 using System.Drawing;
 
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
-using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
+using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
+namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
 ///     A stack of {@link Rectangle} objects to be used for clipping via

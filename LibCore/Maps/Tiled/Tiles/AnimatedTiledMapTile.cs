@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Graphics.G2D;
 
-using Blendmode = LibGDXSharp.LibCore.Maps.Tiled.ITiledMapTile.Blendmode;
+using Blendmode = LughSharp.LibCore.Maps.Tiled.ITiledMapTile.Blendmode;
 
-namespace LibGDXSharp.LibCore.Maps.Tiled.Tiles;
+namespace LughSharp.LibCore.Maps.Tiled.Tiles;
 
 public class AnimatedTiledMapTile : ITiledMapTile
 {

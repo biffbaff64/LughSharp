@@ -23,12 +23,12 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Network;
-using LibGDXSharp.LibCore.Utils.Pooling;
+using LughSharp.LibCore.Network;
+using LughSharp.LibCore.Utils.Pooling;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Core;
+namespace LughSharp.LibCore.Core;
 
 public interface INet
 {

@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths;
 
-namespace LibGDXSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>
 ///     Renders polygon filled with a repeating TextureRegion with specified

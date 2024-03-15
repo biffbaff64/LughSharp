@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using Keys = LibGDXSharp.LibCore.Core.IInput.Keys;
+using Keys = LughSharp.LibCore.Core.IInput.Keys;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
+namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 public static class UIUtils
 {

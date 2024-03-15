@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths.Collision;
+using LughSharp.LibCore.Maths.Collision;
 
-namespace LibGDXSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D;
 
 public class ParticleEffect : IDisposable
 {

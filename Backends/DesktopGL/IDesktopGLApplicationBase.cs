@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Backends.DesktopGL.Audio;
-using LibGDXSharp.Backends.DesktopGL.Input;
-using LibGDXSharp.Backends.DesktopGL.Window;
+using LughSharp.Backends.DesktopGL.Audio;
+using LughSharp.Backends.DesktopGL.Input;
+using LughSharp.Backends.DesktopGL.Window;
 
-namespace LibGDXSharp.Backends.DesktopGL;
+namespace LughSharp.Backends.DesktopGL;
 
 public interface IDesktopGLApplicationBase : IApplication
 {

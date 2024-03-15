@@ -27,7 +27,7 @@ using ICSharpCode.SharpZipLib.Core;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.Backends.DesktopGL.Audio;
+namespace LughSharp.Backends.DesktopGL.Audio;
 
 [PublicAPI]
 public class Wav

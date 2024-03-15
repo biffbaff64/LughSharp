@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// Manages a group of buttons to enforce a minimum and maximum number of checked
 /// buttons. This enables "radio button" functionality and more. A button may only

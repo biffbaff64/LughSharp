@@ -25,11 +25,11 @@
 
 using System.Runtime.Serialization;
 
-using LibGDXSharp.LibCore.Audio.MP3Sharp.Support;
+using LughSharp.LibCore.Audio.MP3Sharp.Support;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp;
+namespace LughSharp.LibCore.Audio.MP3Sharp;
 
 /// <summary>
 ///     MP3SharpException is the base class for all API-level

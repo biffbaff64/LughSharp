@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
+using LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.Backends.DesktopGL.Audio;
+namespace LughSharp.Backends.DesktopGL.Audio;
 
 [PublicAPI]
 public class Mp3

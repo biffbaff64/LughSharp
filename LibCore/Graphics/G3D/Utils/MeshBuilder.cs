@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Utils;
+namespace LughSharp.LibCore.Graphics.G3D.Utils;
 
 public class MeshBuilder
 {

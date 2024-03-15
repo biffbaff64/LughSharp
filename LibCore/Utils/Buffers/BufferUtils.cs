@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers;
 
 /// <summary>
 ///     Class with static helper methods to increase the speed of array/direct

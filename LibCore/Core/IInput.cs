@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Core;
+namespace LughSharp.LibCore.Core;
 
 /// <summary>
 ///     Interface to the input facilities. This allows polling the state of the

@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Maps.Tiled.Tiles;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Maps.Tiled.Tiles;
 
-namespace LibGDXSharp.LibCore.Maps.Tiled.Renderers;
+namespace LughSharp.LibCore.Maps.Tiled.Renderers;
 
 public class HexagonalTiledMapRenderer : BatchTileMapRenderer
 {

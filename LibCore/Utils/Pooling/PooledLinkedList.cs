@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Utils.Pooling;
+namespace LughSharp.LibCore.Utils.Pooling;
 
 /// <summary>
 ///     A simple linked list that pools its nodes.

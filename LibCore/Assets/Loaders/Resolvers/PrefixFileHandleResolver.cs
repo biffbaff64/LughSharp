@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
+namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 
 /// <summary>
 ///     A <see cref="IFileHandleResolver" /> that adds a prefix to the filename before

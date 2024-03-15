@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths;
 
-namespace LibGDXSharp.LibCore.Maps.Objects;
+namespace LughSharp.LibCore.Maps.Objects;
 
 public class PolygonMapObject : MapObject
 {

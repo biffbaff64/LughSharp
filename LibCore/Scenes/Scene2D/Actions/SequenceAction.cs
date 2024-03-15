@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils.Pooling;
+using LughSharp.LibCore.Utils.Pooling;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
+namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 /// <summary>
 ///     Executes a number of actions one at a time.

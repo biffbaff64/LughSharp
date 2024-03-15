@@ -25,13 +25,13 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Maths.Collision;
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Maths.Collision;
+using LughSharp.LibCore.Utils.Buffers;
 
-using Matrix3 = LibGDXSharp.LibCore.Maths.Matrix3;
-using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
+using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
+using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LibGDXSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics;
 
 public class Mesh
 {

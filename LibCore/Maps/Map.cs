@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maps;
+namespace LughSharp.LibCore.Maps;
 
 /// <summary>
 ///     This is a base type so cannot be a record or struct.

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Extensions.Box2D;
+namespace LughSharp.Extensions.Box2D;
 
 /// <summary>
 ///     A rigid body. These are created via World.CreateBody.

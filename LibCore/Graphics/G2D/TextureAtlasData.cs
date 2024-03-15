@@ -25,7 +25,7 @@
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D;
 
 public partial record TextureAtlasData
 {

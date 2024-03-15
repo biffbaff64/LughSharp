@@ -25,7 +25,7 @@
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers;
 
 [PublicAPI, Serializable]
 public class CircularByteBuffer

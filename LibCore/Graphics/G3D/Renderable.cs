@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D;
+namespace LughSharp.LibCore.Graphics.G3D;
 
 public class Renderable
 {

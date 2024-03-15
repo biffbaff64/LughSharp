@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maps.Tiled;
+namespace LughSharp.LibCore.Maps.Tiled;
 
 public class TiledMap : Map, IDisposable
 {

@@ -25,7 +25,7 @@
 
 using System.Collections;
 
-namespace LibGDXSharp.LibCore.Utils.Collections;
+namespace LughSharp.LibCore.Utils.Collections;
 
 /// <summary>
 /// </summary>

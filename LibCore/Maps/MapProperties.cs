@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maps;
+namespace LughSharp.LibCore.Maps;
 
 /// <summary>
 ///     Set of string indexed values representing map elements' properties, allowing

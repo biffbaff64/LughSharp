@@ -26,14 +26,14 @@
 using System.Reflection;
 using System.Runtime.Serialization;
 
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Scenes.Scene2D.Utils;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
 ///     A skin stores resources for UI widgets to use (texture regions, ninepatches,

@@ -25,18 +25,18 @@
 
 using System.Reflection.Metadata;
 
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
-using LibGDXSharp.LibCore.Scenes.Scene2D.UI;
-using LibGDXSharp.LibCore.Utils.Collections;
-using LibGDXSharp.LibCore.Utils.Pooling;
-using LibGDXSharp.LibCore.Utils.Viewport;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Scenes.Scene2D.Listeners;
+using LughSharp.LibCore.Scenes.Scene2D.UI;
+using LughSharp.LibCore.Utils.Collections;
+using LughSharp.LibCore.Utils.Pooling;
+using LughSharp.LibCore.Utils.Viewport;
 
-using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
+using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D;
+namespace LughSharp.LibCore.Scenes.Scene2D;
 
 /// <summary>
 ///     A 2D scene graph containing hierarchies of actors. Stage handles the viewport and

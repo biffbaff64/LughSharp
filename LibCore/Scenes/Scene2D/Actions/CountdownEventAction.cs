@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
+namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 /// <summary>
 ///     An EventAction that is complete once it receives X number of events.

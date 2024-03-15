@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
 ///     Used by a Texture to load the pixel data. A TextureData can either return a Pixmap or

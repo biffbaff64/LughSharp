@@ -25,11 +25,11 @@
 
 using System.Text.RegularExpressions;
 
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D;
 
 [PublicAPI]
 public class BitmapFont
@@ -62,7 +62,7 @@ public class BitmapFont
 
     /// <summary>
     ///     Creates a BitmapFont using the default 15pt Arial font included in the
-    ///     libGDXSharp project.
+    ///     LughSharp project.
     ///     <para>
     ///         This is convenient to easily display text without bothering without generating a
     ///         bitmap font yourself.

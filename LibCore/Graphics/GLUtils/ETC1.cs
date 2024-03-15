@@ -25,12 +25,12 @@
 
 using System.IO.Compression;
 
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Utils.Buffers;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Graphics.GLUtils;
+namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
 ///     Class for encoding and decoding ETC1 compressed images.

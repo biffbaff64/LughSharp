@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Particles;
+namespace LughSharp.LibCore.Graphics.G3D.Particles;
 
 public class ParticleChannels
 {

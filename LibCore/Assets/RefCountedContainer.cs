@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Assets;
+namespace LughSharp.LibCore.Assets;
 
 /// <summary>
 ///     A class that stores a reference to an object, as well as counts the number

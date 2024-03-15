@@ -25,9 +25,9 @@
 
 using System.Text.RegularExpressions;
 
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths;
 
-namespace LibGDXSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>
 ///     Packs <see cref="Pixmap" />s into one or more <see cref="Page" /> to generate

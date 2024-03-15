@@ -25,10 +25,10 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
-using LibGDXSharp.LibCore.Utils.Pooling;
+using LughSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Utils.Pooling;
 
-namespace LibGDXSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>
 ///     Stores <see cref="GlyphRun" /> runs of glyphs for a piece of text. The text

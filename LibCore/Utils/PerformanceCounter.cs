@@ -25,9 +25,9 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths;
 
-namespace LibGDXSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Utils;
 
 /// <summary>
 ///     Class to keep track of the time and load (percentage of total time) a

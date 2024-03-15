@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics;
 
-namespace LibGDXSharp.LibCore.Utils.Viewport;
+namespace LughSharp.LibCore.Utils.Viewport;
 
 public class ExtendViewport : Viewport
 {

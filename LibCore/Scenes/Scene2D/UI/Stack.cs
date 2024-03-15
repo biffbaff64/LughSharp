@@ -23,10 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
-using LibGDXSharp.LibCore.Utils.Collections;
+using LughSharp.LibCore.Scenes.Scene2D.Utils;
+using LughSharp.LibCore.Utils.Collections;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 public class Stack : WidgetGroup
 {

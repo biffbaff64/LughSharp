@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Backends.DesktopGL.Audio;
+namespace LughSharp.Backends.DesktopGL.Audio;
 
 public class OggInputStream
 {

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maps;
+namespace LughSharp.LibCore.Maps;
 
 /// <summary>
 ///     Container holding a set of MapLayers, objects and properties.

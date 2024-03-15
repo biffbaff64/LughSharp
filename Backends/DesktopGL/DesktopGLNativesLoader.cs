@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Backends.DesktopGL;
+namespace LughSharp.Backends.DesktopGL;
 
 [PublicAPI]
 public class DesktopGLNativesLoader

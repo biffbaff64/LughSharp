@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerII;
+using LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerII;
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
+namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 
 /// <summary>
 ///     Implements decoding of MPEG Audio Layer II frames.

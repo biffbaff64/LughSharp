@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Network;
+namespace LughSharp.LibCore.Network;
 
 public class NetJavaImpl
 {

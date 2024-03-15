@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
+namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 
 /// <summary>
 ///     This <see cref="IFileHandleResolver" /> uses a given list of <see cref="Resolution" />s to

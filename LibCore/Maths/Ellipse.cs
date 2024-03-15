@@ -25,7 +25,7 @@
 
 using System.Runtime.Serialization;
 
-namespace LibGDXSharp.LibCore.Maths;
+namespace LughSharp.LibCore.Maths;
 
 /// <summary>
 ///     A convenient 2D ellipse class, based on the circle class

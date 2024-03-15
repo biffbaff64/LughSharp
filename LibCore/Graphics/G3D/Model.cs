@@ -23,10 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G3D.Models.Data;
-using LibGDXSharp.LibCore.Graphics.G3D.Utils;
+using LughSharp.LibCore.Graphics.G3D.Models.Data;
+using LughSharp.LibCore.Graphics.G3D.Utils;
 
-namespace LibGDXSharp.LibCore.Graphics.G3D;
+namespace LughSharp.LibCore.Graphics.G3D;
 
 public class Model
 {

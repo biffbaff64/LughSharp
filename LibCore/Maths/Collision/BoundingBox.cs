@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maths.Collision;
+namespace LughSharp.LibCore.Maths.Collision;
 
 /// <summary>
 ///     Encapsulates an axis aligned bounding box represented by a minimum

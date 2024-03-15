@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Assets.Loaders;
+using LughSharp.LibCore.Assets.Loaders;
 
-namespace LibGDXSharp.LibCore.Assets;
+namespace LughSharp.LibCore.Assets;
 
 /// <summary>
 ///     Responsible for loading an asset through an <see cref="AssetLoaderBase" /> based

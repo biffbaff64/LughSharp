@@ -65,13 +65,13 @@ global using GLFWWindow     = DotGLFW.Window;
 //@formatter:on
 
 // -----------------------------------------------------------------------
-// LibGDXSharp
-global using LibGDXSharp.LibCore.Core;
-global using LibGDXSharp.LibCore.Graphics.GLUtils;
-global using LibGDXSharp.LibCore.Utils;
+// LughSharp
+global using LughSharp.LibCore.Core;
+global using LughSharp.LibCore.Graphics.GLUtils;
+global using LughSharp.LibCore.Utils;
 
-global using Vector2 = LibGDXSharp.LibCore.Maths.Vector2;
-global using Vector3 = LibGDXSharp.LibCore.Maths.Vector3;
+global using Vector2 = LughSharp.LibCore.Maths.Vector2;
+global using Vector3 = LughSharp.LibCore.Maths.Vector3;
 
 // -----------------------------------------------------------------------
 //

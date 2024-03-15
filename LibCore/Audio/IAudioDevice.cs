@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Audio;
+namespace LughSharp.LibCore.Audio;
 
 /// <summary>
 ///     Encapsulates an audio device in mono or stereo mode. Use the

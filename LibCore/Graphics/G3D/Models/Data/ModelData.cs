@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Models.Data;
+namespace LughSharp.LibCore.Graphics.G3D.Models.Data;
 
 /// <summary>
 ///     Returned by a <seealso cref="ModelLoader" />, contains meshes, materials, nodes and animations. OpenGL resources
@@ -42,9 +42,9 @@ public class ModelData
 
     public virtual void AddMesh( ModelMesh mesh )
     {
-        foreach ( ModelMesh? other in Meshes )
+        foreach ( ModelMesh other in Meshes )
         {
-            if ( other.ID.Equals( mesh.ID ) )
+            if ( ( other.ID != null ) && other.ID.Equals( mesh.ID ) )
             {
                 throw new GdxRuntimeException( "Mesh with id '" + other.ID + "' already in model" );
             }

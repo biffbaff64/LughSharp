@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Utils.Buffers;
 
-namespace LibGDXSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D;
 
 [PublicAPI]
 public class Gdx2DPixmap : IDisposable

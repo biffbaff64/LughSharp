@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Utils.Collections;
+namespace LughSharp.LibCore.Utils.Collections;
 
 public class CollectionsData
 {

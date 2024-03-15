@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Utils.Buffers;
 
-namespace LibGDXSharp.LibCore.Graphics.GLUtils;
+namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
 ///     A <see cref="ITextureData" /> implementation which should be used

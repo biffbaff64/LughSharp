@@ -26,7 +26,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace LibGDXSharp.LibCore.Audio.OpenAL;
+namespace LughSharp.LibCore.Audio.OpenAL;
 
 [PublicAPI]
 public class ALC

@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Network;
+using LughSharp.LibCore.Network;
 
-namespace LibGDXSharp.Backends.DesktopGL;
+namespace LughSharp.Backends.DesktopGL;
 
 [PublicAPI]
 public class DesktopGLNet : INet

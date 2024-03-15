@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerII;
+namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerII;
 
 /// <summary>
 ///     public class for layer II subbands in stereo mode.

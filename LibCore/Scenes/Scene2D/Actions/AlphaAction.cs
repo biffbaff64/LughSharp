@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
+namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 /// <summary>
 ///     Sets the alpha for an actor's color (or a specified color), from the

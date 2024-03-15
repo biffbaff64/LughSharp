@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Audio;
+namespace LughSharp.LibCore.Audio;
 
 [PublicAPI]
 public interface IMusic : IDisposable

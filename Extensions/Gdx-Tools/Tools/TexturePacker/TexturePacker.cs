@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Extensions.Gdx_Tools.Tools.TexturePacker;
+namespace LughSharp.Extensions.Gdx_Tools.Tools.TexturePacker;
 
 public class TexturePacker
 {

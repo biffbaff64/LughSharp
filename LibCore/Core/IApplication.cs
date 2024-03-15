@@ -25,7 +25,7 @@
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Core;
+namespace LughSharp.LibCore.Core;
 
 /// <summary>
 ///     An Application is the main entry point of your project. It sets up a window and

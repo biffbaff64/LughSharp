@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Attributes;
+namespace LughSharp.LibCore.Graphics.G3D.Attributes;
 
 public class BlendingAttribute
 {

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maps;
+namespace LughSharp.LibCore.Maps;
 
 public class MapLayer
 {

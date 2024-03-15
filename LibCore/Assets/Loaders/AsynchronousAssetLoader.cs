@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
+using LughSharp.LibCore.Assets.Loaders.Resolvers;
 
-namespace LibGDXSharp.LibCore.Assets.Loaders;
+namespace LughSharp.LibCore.Assets.Loaders;
 
 /// <summary>
 ///     Base class for asynchronous AssetLoader instances. Such loaders try to load parts

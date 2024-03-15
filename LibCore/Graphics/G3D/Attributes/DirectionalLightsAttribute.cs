@@ -23,10 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G3D.Env;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Graphics.G3D.Env;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Attributes;
+namespace LughSharp.LibCore.Graphics.G3D.Attributes;
 
 public class DirectionalLightsAttribute : Attribute
 {

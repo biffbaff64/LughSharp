@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
+namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
 ///     Allows a parent to set the area that is visible on a child actor to allow the

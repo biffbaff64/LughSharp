@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Audio;
+using LughSharp.LibCore.Audio;
 
-namespace LibGDXSharp.Backends.DesktopGL.Audio.Mock;
+namespace LughSharp.Backends.DesktopGL.Audio.Mock;
 
 [PublicAPI]
 public class MockSound : ISound

@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.LibCore.Utils.Pooling;
+namespace LughSharp.LibCore.Utils.Pooling;
 
 /// <summary>
 ///     Stores a map of <see cref="Pool{T}" />s by type for convenient static access.

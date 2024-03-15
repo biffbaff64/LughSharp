@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Input;
+namespace LughSharp.LibCore.Input;
 
 public class RemoteInput
 {

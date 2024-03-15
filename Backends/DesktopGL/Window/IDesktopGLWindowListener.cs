@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Backends.DesktopGL.Graphics;
+using LughSharp.Backends.DesktopGL.Graphics;
 
-namespace LibGDXSharp.Backends.DesktopGL.Window;
+namespace LughSharp.Backends.DesktopGL.Window;
 
 [PublicAPI]
 public interface IDesktopGLWindowListener
@@ -37,7 +37,7 @@ public interface IDesktopGLWindowListener
     ///     <para>
     ///         For the main window, this is an immediate callback from inside
     ///         <see
-    ///             cref="DesktopGLApplication(LibGDXSharp.LibCore.Core.IApplicationListener,LibGDXSharp.Backends.DesktopGL.DesktopGLApplicationConfiguration)" />
+    ///             cref="DesktopGLApplication(LughSharp.LibCore.Core.IApplicationListener,LughSharp.Backends.DesktopGL.DesktopGLApplicationConfiguration)" />
     ///     </para>
     /// </summary>
     /// <param name="window">the window instance.</param>

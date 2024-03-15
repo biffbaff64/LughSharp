@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Assets.Loaders.Resolvers;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G2D;
 
-namespace LibGDXSharp.LibCore.Assets.Loaders;
+namespace LughSharp.LibCore.Assets.Loaders;
 
 /// <summary>
 ///     AssetLoader to load TextureAtlas instances. Passing a <see cref="TextureAtlasParameter" /> to

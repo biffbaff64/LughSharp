@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
+namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
 ///     Provides methods for an actor to participate in layout and to provide

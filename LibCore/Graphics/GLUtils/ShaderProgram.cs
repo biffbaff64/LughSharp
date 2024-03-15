@@ -24,14 +24,14 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Utils.Buffers;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
-using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
-using Matrix3 = LibGDXSharp.LibCore.Maths.Matrix3;
-using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
+using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
+using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
+using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LibGDXSharp.LibCore.Graphics.GLUtils;
+namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
 ///     <para>

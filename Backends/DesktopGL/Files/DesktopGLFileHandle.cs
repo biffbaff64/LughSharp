@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Backends.DesktopGL.Files;
+namespace LughSharp.Backends.DesktopGL.Files;
 
 //TODO: This file can be removed
 

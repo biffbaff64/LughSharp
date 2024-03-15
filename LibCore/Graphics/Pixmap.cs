@@ -23,12 +23,12 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Utils.Buffers;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
 ///     A Pixmap represents an image in memory. It has a width and height expressed

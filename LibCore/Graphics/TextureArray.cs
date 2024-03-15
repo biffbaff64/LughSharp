@@ -25,7 +25,7 @@
 
 using System.Text;
 
-namespace LibGDXSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
 ///     Open GLES wrapper for TextureArray.

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Utils.ShapeBuilders;
+namespace LughSharp.LibCore.Graphics.G3D.Utils.ShapeBuilders;
 
 public class CylinderShapeBuilder
 {

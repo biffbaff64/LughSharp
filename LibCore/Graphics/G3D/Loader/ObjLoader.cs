@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Loader;
+namespace LughSharp.LibCore.Graphics.G3D.Loader;
 
 public class ObjLoader
 {

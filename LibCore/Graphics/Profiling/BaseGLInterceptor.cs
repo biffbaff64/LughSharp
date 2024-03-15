@@ -23,12 +23,12 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Utils.Buffers;
 
-using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
+using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 
-namespace LibGDXSharp.LibCore.Graphics.Profiling;
+namespace LughSharp.LibCore.Graphics.Profiling;
 
 public abstract class BaseGLInterceptor : IGL20
 {

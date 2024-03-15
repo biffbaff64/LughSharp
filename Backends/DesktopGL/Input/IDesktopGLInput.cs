@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Backends.DesktopGL.Input;
+namespace LughSharp.Backends.DesktopGL.Input;
 
 public interface IDesktopGLInput : IInput, IDisposable
 {

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Backends.DesktopGL.Window;
+namespace LughSharp.Backends.DesktopGL.Window;
 
 /// <summary>
 ///     Convenience implementation of <see cref="IDesktopGLWindowListener" />.

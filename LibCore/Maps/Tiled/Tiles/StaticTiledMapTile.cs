@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Graphics.G2D;
 
-namespace LibGDXSharp.LibCore.Maps.Tiled.Tiles;
+namespace LughSharp.LibCore.Maps.Tiled.Tiles;
 
 public class StaticTiledMapTile : ITiledMapTile
 {

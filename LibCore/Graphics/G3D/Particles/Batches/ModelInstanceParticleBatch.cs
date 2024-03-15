@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Particles.Batches;
+namespace LughSharp.LibCore.Graphics.G3D.Particles.Batches;
 
 public class ModelInstanceParticleBatch
 {

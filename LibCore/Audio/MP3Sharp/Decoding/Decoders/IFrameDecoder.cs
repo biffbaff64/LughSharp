@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
+namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 
 /// <summary>
 ///     Implementations of FrameDecoder are responsible for decoding

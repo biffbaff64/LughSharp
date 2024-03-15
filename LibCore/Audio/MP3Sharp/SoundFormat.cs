@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp;
+namespace LughSharp.LibCore.Audio.MP3Sharp;
 
 /// <summary>
 ///     Describes sound formats that can be produced by the Mp3Stream class.

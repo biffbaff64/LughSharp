@@ -25,10 +25,10 @@
 
 using System.Text;
 
-using LibGDXSharp.LibCore.Utils.Buffers;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.LibCore.Graphics.FrameBuffers;
+namespace LughSharp.LibCore.Graphics.FrameBuffers;
 
 /// <summary>
 ///     Encapsulates OpenGL ES 2.0 frame buffer objects. This is a simple helper

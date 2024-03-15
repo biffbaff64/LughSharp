@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Extensions.Gdx_Tools;
+namespace LughSharp.Extensions.Gdx_Tools;
 
 ///// <summary>
 /////     Collects files recursively, filtering by file name. Callbacks are provided to

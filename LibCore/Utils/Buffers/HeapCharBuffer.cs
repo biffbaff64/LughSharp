@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers;
 
 public class HeapCharBuffer : CharBuffer
 {

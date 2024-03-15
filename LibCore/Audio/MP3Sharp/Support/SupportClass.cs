@@ -25,7 +25,7 @@
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Support;
+namespace LughSharp.LibCore.Audio.MP3Sharp.Support;
 
 [PublicAPI]
 public class SupportClass

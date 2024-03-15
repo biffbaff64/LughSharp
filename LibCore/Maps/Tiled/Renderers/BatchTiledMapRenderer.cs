@@ -23,14 +23,14 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Maps.Tiled.Tiles;
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Maps.Tiled.Tiles;
+using LughSharp.LibCore.Maths;
 
-using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
+using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LibGDXSharp.LibCore.Maps.Tiled.Renderers;
+namespace LughSharp.LibCore.Maps.Tiled.Renderers;
 
 public class BatchTileMapRenderer : ITiledMapRenderer
 {

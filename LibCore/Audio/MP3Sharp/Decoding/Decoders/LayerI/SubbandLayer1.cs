@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerI;
+namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerI;
 
 /// <summary>
 ///     public class for layer I subbands in single channel mode. Used for single channel mode

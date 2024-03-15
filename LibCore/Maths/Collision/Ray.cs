@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maths.Collision;
+namespace LughSharp.LibCore.Maths.Collision;
 
 /// <summary>
 ///     Encapsulates a ray having a starting position and a unit length direction.

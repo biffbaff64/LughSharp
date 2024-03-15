@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
+using LughSharp.LibCore.Assets.Loaders.Resolvers;
 
 using File = System.IO.File;
 
-namespace LibGDXSharp.LibCore.Assets.Loaders;
+namespace LughSharp.LibCore.Assets.Loaders;
 
 /// <summary>
 ///     <see cref="AssetLoaderBase" /> for <see cref="ShaderProgram" /> instances loaded from

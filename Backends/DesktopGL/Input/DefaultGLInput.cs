@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Backends.DesktopGL.Window;
+using LughSharp.Backends.DesktopGL.Window;
 
-namespace LibGDXSharp.Backends.DesktopGL.Input;
+namespace LughSharp.Backends.DesktopGL.Input;
 
 [PublicAPI]
 public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers;
 
 /// <summary>
 ///     A container for data of a specific primitive type.

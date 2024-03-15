@@ -26,16 +26,16 @@
 using System.Drawing;
 using System.Text;
 
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
-using LibGDXSharp.LibCore.Utils.Collections;
-using LibGDXSharp.LibCore.Utils.Pooling;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Scenes.Scene2D.Listeners;
+using LughSharp.LibCore.Scenes.Scene2D.Utils;
+using LughSharp.LibCore.Utils.Collections;
+using LughSharp.LibCore.Utils.Pooling;
 
-using Color = LibGDXSharp.LibCore.Graphics.Color;
+using Color = LughSharp.LibCore.Graphics.Color;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// A single-line text input field.
 /// <para>
@@ -55,6 +55,7 @@ namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
 ///     The desktop keyboard is a stub, as a softkeyboard is not needed on the desktop. The
 ///     Android <see cref="IOnScreenKeyboard" /> implementation will bring up the default IME.
 /// </para>
+[PublicAPI]
 public class TextField : Widget
 {
     protected const char CARRIAGE_RETURN = '\r';
@@ -522,7 +523,7 @@ public class TextField : Widget
         IDrawable? cursorPatch = Style.Cursor;
         IDrawable? background  = GetBackgroundDrawable();
 
-        Color color = Color;
+        Color color = Color ?? Color.Black;
 
         var x      = X;
         var y      = Y;
@@ -804,10 +805,7 @@ public class TextField : Widget
 
             if ( !( WriteEnters && ( ( c == NEWLINE ) || ( c == CARRIAGE_RETURN ) ) ) )
             {
-                if ( ( c == '\r' ) || ( c == '\n' ) )
-                {
-                    continue;
-                }
+                if ( c is '\r' or '\n' ) continue;
 
                 if ( _onlyFontChars && !data.HasGlyph( c ) )
                 {
@@ -893,18 +891,14 @@ public class TextField : Widget
     /// </param>
     public void Next( bool up )
     {
-        if ( Stage == null )
-        {
-            return;
-        }
+        if ( Stage == null ) return;
 
         TextField current       = this;
         Vector2   currentCoords = current.Parent!.LocalToStageCoordinates( _tmp2.Set( current.X, current.Y ) );
-        Vector2   bestCoords    = _tmp1;
 
         while ( true )
         {
-            TextField? textField = current.FindNextTextField( Stage.Actors, null, bestCoords, currentCoords, up );
+            TextField? textField = current.FindNextTextField( Stage.Actors, null, _tmp1, currentCoords, up );
 
             if ( textField == null )
             {
@@ -918,7 +912,7 @@ public class TextField : Widget
                     currentCoords.Set( float.MaxValue, float.MaxValue );
                 }
 
-                textField = current.FindNextTextField( Stage.Actors, null, bestCoords, currentCoords, up );
+                textField = current.FindNextTextField( Stage.Actors, null, _tmp1, currentCoords, up );
             }
 
             if ( textField == null )
@@ -936,7 +930,7 @@ public class TextField : Widget
             }
 
             current = textField;
-            currentCoords.Set( bestCoords );
+            currentCoords.Set( _tmp1 );
         }
     }
 
@@ -952,10 +946,7 @@ public class TextField : Widget
 
             if ( actor is TextField textField )
             {
-                if ( textField == this )
-                {
-                    continue;
-                }
+                if ( textField == this ) continue;
 
                 if ( textField._disabled || !textField.FocusTraversal || !textField.AscendantsVisible() )
                 {
@@ -964,18 +955,12 @@ public class TextField : Widget
 
                 Vector2? actorCoords = textField.Parent?.LocalToStageCoordinates( _tmp3.Set( textField.X, textField.Y ) );
 
-                if ( actorCoords == null )
-                {
-                    continue;
-                }
+                if ( actorCoords == null ) continue;
 
                 var below = !actorCoords.Y.Equals( currentCoords.Y ) && ( ( actorCoords.Y < currentCoords.Y ) ^ up );
                 var right = actorCoords.Y.Equals( currentCoords.Y ) && ( ( actorCoords.X > currentCoords.X ) ^ up );
 
-                if ( !below && !right )
-                {
-                    continue;
-                }
+                if ( !below && !right ) continue;
 
                 var better = ( best == null )
                           || ( !actorCoords.Y.Equals( bestCoords.Y ) && ( ( actorCoords.Y > bestCoords.Y ) ^ up ) );
@@ -993,6 +978,7 @@ public class TextField : Widget
             }
             else if ( actor is Group group )
             {
+                //TODO: Refactor to remove recursiveness 
                 best = FindNextTextField( group.Children, best, bestCoords, currentCoords, up );
             }
         }
@@ -1028,12 +1014,7 @@ public class TextField : Widget
 
     protected virtual bool ContinueCursor( int index, int offset )
     {
-        if ( Text == null )
-        {
-            return false;
-        }
-
-        return IsWordCharacter( Text[ index + offset ] );
+        return ( Text != null ) && IsWordCharacter( Text[ index + offset ] );
     }
 
     protected virtual void MoveCursor( bool forward, bool jump )
@@ -1119,7 +1100,7 @@ public class TextField : Widget
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     private sealed class BlinkTaskManager
     {
         private readonly TextField _tf;
@@ -1171,7 +1152,7 @@ public class TextField : Widget
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public sealed class KeyRepeatTaskManager
     {
         private readonly TextField _tf;
@@ -1227,8 +1208,21 @@ public class TextField : Widget
     /// <summary>
     ///     The style for a <see cref="TextField" />.
     /// </summary>
+    [PublicAPI]
     public class TextFieldStyle
     {
+        public BitmapFont? Font               { get; set; }
+        public Color?      FontColor          { get; set; }
+        public Color?      FocusedFontColor   { get; set; }
+        public Color?      DisabledFontColor  { get; set; }
+        public IDrawable?  Background         { get; set; }
+        public IDrawable?  FocusedBackground  { get; set; }
+        public IDrawable?  DisabledBackground { get; set; }
+        public IDrawable?  Cursor             { get; set; }
+        public IDrawable?  Selection          { get; set; }
+        public BitmapFont? MessageFont        { get; set; }
+        public Color?      MessageFontColor   { get; set; }
+
         public TextFieldStyle()
         {
         }
@@ -1278,24 +1272,12 @@ public class TextField : Widget
                 MessageFontColor = new Color( style.MessageFontColor );
             }
         }
-
-        public BitmapFont? Font               { get; set; }
-        public Color?      FontColor          { get; set; }
-        public Color?      FocusedFontColor   { get; set; }
-        public Color?      DisabledFontColor  { get; set; }
-        public IDrawable?  Background         { get; set; }
-        public IDrawable?  FocusedBackground  { get; set; }
-        public IDrawable?  DisabledBackground { get; set; }
-        public IDrawable?  Cursor             { get; set; }
-        public IDrawable?  Selection          { get; set; }
-        public BitmapFont? MessageFont        { get; set; }
-        public Color?      MessageFontColor   { get; set; }
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class TextFieldClickListener : ClickListener
     {
         private readonly TextField _tf;
@@ -1308,6 +1290,409 @@ public class TextField : Widget
         protected internal TextFieldClickListener( TextField tf )
         {
             _tf = tf;
+        }
+
+        /// <inheritdoc />
+        public override void Clicked( InputEvent ev, float x, float y )
+        {
+            var count = TapCount % 4;
+
+            if ( count == 0 )
+            {
+                _tf.ClearSelection();
+            }
+
+            if ( count == 2 )
+            {
+                var array = _tf.WordUnderCursor( x );
+                _tf.SetSelection( array[ 0 ], array[ 1 ] );
+            }
+
+            if ( count == 3 )
+            {
+                _tf.SelectAll();
+            }
+        }
+
+        /// <inheritdoc />
+        public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
+        {
+            if ( !base.TouchDown( ev, x, y, pointer, button ) )
+            {
+                return false;
+            }
+
+            if ( ( pointer == 0 ) && ( button != 0 ) )
+            {
+                return false;
+            }
+
+            if ( _tf._disabled )
+            {
+                return true;
+            }
+
+            SetCursorPosition( x, y );
+            _tf.SelectionStart = _tf.Cursor;
+
+            if ( _tf.Stage != null )
+            {
+                _tf.Stage.KeyboardFocus = _tf;
+            }
+
+            _tf._keyboard.Show( true );
+            _tf.HasSelection = true;
+
+            return true;
+        }
+
+        /// <inheritdoc />
+        public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
+        {
+            base.TouchDragged(  event, x, y, pointer );
+            SetCursorPosition( x, y );
+        }
+
+        /// <inheritdoc />
+        public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
+        {
+            if ( _tf.SelectionStart == _tf.Cursor )
+            {
+                _tf.HasSelection = false;
+            }
+
+            base.TouchUp( ev, x, y, pointer, button );
+        }
+
+        protected void GoHome( bool jump )
+        {
+            _tf.Cursor = 0;
+        }
+
+        protected void GoEnd( bool jump )
+        {
+            _tf.Cursor = _tf.Text?.Length ?? 1;
+        }
+
+        public override bool KeyDown( InputEvent? ev, int keycode )
+        {
+            if ( _tf._disabled )
+            {
+                return false;
+            }
+
+            _tf._cursorOn = _tf._focused;
+            _tf._blinkTask.Cancel();
+
+            if ( _tf._focused )
+            {
+//                Timer.schedule( _tf._blinkTask, _tf._blinkTime, _tf._blinkTime );
+            }
+
+            if ( !_tf.HasKeyboardFocus() )
+            {
+                return false;
+            }
+
+            var  repeat  = false;
+            var  ctrl    = UIUtils.Ctrl();
+            var  jump    = ctrl && !_tf._passwordMode;
+            var  handled = true;
+
+            if ( ctrl )
+            {
+                switch ( keycode )
+                {
+                    case IInput.Keys.V:
+                        _tf.Paste( _tf._clipboard.Contents, true );
+                        repeat = true;
+
+                        break;
+
+                    case IInput.Keys.C:
+                    case IInput.Keys.INSERT:
+                        _tf.Copy();
+
+                        return true;
+
+                    case IInput.Keys.X:
+                        _tf.Cut( true );
+
+                        return true;
+
+                    case IInput.Keys.A:
+                        _tf.SelectAll();
+
+                        return true;
+
+                    case IInput.Keys.Z:
+                        var oldText = _tf.Text;
+
+                        _tf.SetText( _tf._undoText );
+                        _tf._undoText = oldText;
+                        _tf.UpdateDisplayText();
+
+                        return true;
+
+                    default:
+                        handled = false;
+
+                        break;
+                }
+            }
+
+            if ( UIUtils.Shift() )
+            {
+                switch ( keycode )
+                {
+                    case IInput.Keys.INSERT:
+                        _tf.Paste( _tf._clipboard.Contents, true );
+
+                        break;
+
+                    case IInput.Keys.FORWARD_DEL:
+                        _tf.Cut( true );
+
+                        break;
+                }
+
+                selection:
+
+                {
+                    var temp = _tf.Cursor;
+                    keys:
+
+                    {
+                        switch ( keycode )
+                        {
+                            case IInput.Keys.LEFT:
+                                _tf.MoveCursor( false, jump );
+                                repeat  = true;
+                                handled = true;
+
+                                break;
+
+                            case IInput.Keys.RIGHT:
+                                _tf.MoveCursor( true, jump );
+                                repeat  = true;
+                                handled = true;
+
+                                break;
+
+                            case IInput.Keys.HOME:
+                                GoHome( jump );
+                                handled = true;
+
+                                break;
+
+                            case IInput.Keys.END:
+                                GoEnd( jump );
+                                handled = true;
+
+                                break;
+                        }
+                    }
+
+                    if ( !_tf.HasSelection )
+                    {
+                        _tf.SelectionStart = temp;
+                        _tf.HasSelection   = true;
+                    }
+                }
+            }
+            else
+            {
+                // Cursor movement or other keys (kills selection).
+                switch ( keycode )
+                {
+                    case IInput.Keys.LEFT:
+                        _tf.MoveCursor( false, jump );
+                        _tf.ClearSelection();
+                        repeat  = true;
+                        handled = true;
+
+                        break;
+
+                    case IInput.Keys.RIGHT:
+                        _tf.MoveCursor( true, jump );
+                        _tf.ClearSelection();
+                        repeat  = true;
+                        handled = true;
+
+                        break;
+
+                    case IInput.Keys.HOME:
+                        GoHome( jump );
+                        _tf.ClearSelection();
+                        handled = true;
+
+                        break;
+
+                    case IInput.Keys.END:
+                        GoEnd( jump );
+                        _tf.ClearSelection();
+                        handled = true;
+
+                        break;
+                }
+            }
+
+            cursor = MathUtils.clamp( cursor, 0, text.length() );
+
+            if ( repeat )
+            {
+                scheduleKeyRepeatTask( keycode );
+            }
+
+            return handled;
+        }
+
+        public bool keyUp( InputEvent event, int keycode )
+        {
+            if ( disabled )
+            {
+                return false;
+            }
+
+            keyRepeatTask.cancel();
+
+            return true;
+        }
+
+        /**
+         * Checks if focus traversal should be triggered. The default implementation uses {@link TextField#focusTraversal} and the
+         * typed character, depending on the OS.
+         *
+         * @param character The character that triggered a possible focus traversal.
+         * @return true if the focus should change to the {@link TextField#next(bool) next} input field.
+         */
+        protected bool checkFocusTraversal( char character )
+        {
+            return focusTraversal
+                && ( character == TAB
+                  || ( ( character == CARRIAGE_RETURN || character == NEWLINE ) && ( UIUtils.isAndroid || UIUtils.isIos ) ) );
+        }
+
+        public bool keyTyped( InputEvent event, char character )
+        {
+            if ( disabled )
+            {
+                return false;
+            }
+
+            // Disallow "typing" most ASCII control characters, which would show up as a space when onlyFontChars is true.
+            switch ( character )
+            {
+                case BACKSPACE:
+                case TAB:
+                case NEWLINE:
+                case CARRIAGE_RETURN:
+                    break;
+
+                default:
+                    if ( character < 32 )
+                    {
+                        return false;
+                    }
+            }
+
+            if ( !hasKeyboardFocus() )
+            {
+                return false;
+            }
+
+            if ( UIUtils.isMac && Gdx.input.isKeyPressed( Keys.SYM ) )
+            {
+                return true;
+            }
+
+            if ( checkFocusTraversal( character ) )
+            {
+                next( UIUtils.shift() );
+            }
+            else
+            {
+                var  enter     = character == CARRIAGE_RETURN || character == NEWLINE;
+                bool delete    = character == DELETE;
+                bool backspace = character == BACKSPACE;
+                var  add       = enter ? writeEnters : ( !onlyFontChars || style.font.getData().hasGlyph( character ) );
+                var  remove    = backspace || delete;
+
+                if ( add || remove )
+                {
+                    String oldText   = text;
+                    int    oldCursor = cursor;
+
+                    if ( remove )
+                    {
+                        if ( hasSelection )
+                        {
+                            cursor = delete( false );
+                        }
+                        else
+                        {
+                            if ( backspace && cursor > 0 )
+                            {
+                                text         = text.substring( 0, cursor - 1 ) + text.substring( cursor-- );
+                                renderOffset = 0;
+                            }
+
+                            if ( delete && cursor < text.length() )
+                            {
+                                text = text.substring( 0, cursor ) + text.substring( cursor + 1 );
+                            }
+                        }
+                    }
+
+                    if ( add && !remove )
+                    {
+                        // Character may be added to the text.
+                        if ( !enter && filter != null && !filter.acceptChar( TextField.this, character ) )
+                        {
+                            return true;
+                        }
+
+                        if ( !withinMaxLength( text.length() - ( hasSelection ? Math.abs( cursor - selectionStart ) : 0 ) ) )
+                        {
+                            return true;
+                        }
+
+                        if ( hasSelection )
+                        {
+                            cursor = delete( false );
+                        }
+
+                        var insertion = enter ? "\n" : String.valueOf( character );
+                        text = insert( cursor++, insertion, text );
+                    }
+
+                    String tempUndoText = undoText;
+
+                    if ( changeText( oldText, text ) )
+                    {
+                        long time = System.currentTimeMillis();
+
+                        if ( time - 750 > lastChangeTime )
+                        {
+                            undoText = oldText;
+                        }
+
+                        lastChangeTime = time;
+                        updateDisplayText();
+                    }
+                    else
+                    {
+                        cursor = oldCursor;
+                    }
+                }
+            }
+
+            if ( listener != null )
+            {
+                listener.keyTyped( TextField.this, character );
+            }
+
+            return true;
         }
 
         protected virtual void SetCursorPosition( float x, float y )

@@ -23,10 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
-using LibGDXSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Assets.Loaders.Resolvers;
+using LughSharp.LibCore.Graphics.G2D;
 
-namespace LibGDXSharp.LibCore.Assets.Loaders;
+namespace LughSharp.LibCore.Assets.Loaders;
 
 /// <summary>
 ///     <see cref="AssetLoaderBase" /> to load <see cref="ParticleEffect" /> instances. Passing a

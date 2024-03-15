@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Particles.Emitters;
+namespace LughSharp.LibCore.Graphics.G3D.Particles.Emitters;
 
 public class RegularEmitter
 {

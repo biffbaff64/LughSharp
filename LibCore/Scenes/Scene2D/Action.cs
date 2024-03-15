@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Utils.Pooling;
+using LughSharp.LibCore.Utils.Pooling;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D;
+namespace LughSharp.LibCore.Scenes.Scene2D;
 
 public abstract class Action : IAction, IPoolable
 {

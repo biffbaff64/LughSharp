@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Actions;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Scenes.Scene2D.Actions;
+using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
 ///     Displays a dialog, which is a window with a title, a content table, and a button table.
@@ -273,7 +273,7 @@ public class Dialog : Window
 
     /// <summary>
     ///     Centers the dialog in the stage and calls <see cref="Show(Stage, Action)" />
-    ///     with a <see cref="SceneActions.FadeIn(float,LibGDXSharp.LibCore.Maths.IInterpolation)" /> action.
+    ///     with a <see cref="SceneActions.FadeIn(float,LughSharp.LibCore.Maths.IInterpolation)" /> action.
     /// </summary>
     public Dialog Show( Stage stage )
     {

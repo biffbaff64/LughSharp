@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.FrameBuffers;
+namespace LughSharp.LibCore.Graphics.FrameBuffers;
 
 /// <summary>
 ///     This is a <see cref="FrameBuffer" /> variant backed by a float texture.

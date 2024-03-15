@@ -25,7 +25,7 @@
 
 using System.Collections;
 
-namespace LibGDXSharp.LibCore.Maps;
+namespace LughSharp.LibCore.Maps;
 
 /// <summary>
 ///     A Collection of <see cref="MapObject" /> instances.

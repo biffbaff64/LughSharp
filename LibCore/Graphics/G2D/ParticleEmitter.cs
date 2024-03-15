@@ -23,13 +23,13 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Maths.Collision;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths.Collision;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D;
 
 [PublicAPI]
 public class ParticleEmitter

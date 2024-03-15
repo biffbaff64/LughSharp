@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
+namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
 ///     A selection that supports range selection by knowing about the

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Models.Data;
+namespace LughSharp.LibCore.Graphics.G3D.Models.Data;
 
 public class ModelMesh
 {

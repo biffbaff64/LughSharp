@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Env;
+namespace LughSharp.LibCore.Graphics.G3D.Env;
 
 public class DirectionalLight : BaseLight
 {

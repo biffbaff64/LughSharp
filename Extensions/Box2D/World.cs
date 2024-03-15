@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Extensions.Box2D;
+namespace LughSharp.Extensions.Box2D;
 
 public class World
 {

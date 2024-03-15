@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Backends.DesktopGL.Files;
+namespace LughSharp.Backends.DesktopGL.Files;
 
 public class DesktopGLFiles : IFiles
 {

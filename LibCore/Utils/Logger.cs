@@ -26,7 +26,7 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace LibGDXSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Utils;
 
 /// <summary>
 ///     A class to write debug messages to console and a text file.

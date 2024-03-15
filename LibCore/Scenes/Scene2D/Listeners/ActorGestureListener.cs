@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Input;
+using LughSharp.LibCore.Input;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
+namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
 /// <summary>
 ///     Detects tap, long press, fling, pan, zoom, and pinch gestures on an actor.

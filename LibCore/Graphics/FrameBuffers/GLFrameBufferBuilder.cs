@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.FrameBuffers;
+namespace LughSharp.LibCore.Graphics.FrameBuffers;
 
 public class GLFrameBufferBuilder<TU> where TU : GLFrameBuffer< GLTexture >
 {

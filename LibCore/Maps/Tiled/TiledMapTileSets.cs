@@ -25,7 +25,7 @@
 
 using System.Collections;
 
-namespace LibGDXSharp.LibCore.Maps.Tiled;
+namespace LughSharp.LibCore.Maps.Tiled;
 
 /// <summary>
 ///     A Collection of <see cref="TiledMapTileSet" /> objects.

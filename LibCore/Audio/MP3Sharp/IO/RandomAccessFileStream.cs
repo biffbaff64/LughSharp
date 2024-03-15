@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.IO;
+namespace LughSharp.LibCore.Audio.MP3Sharp.IO;
 
 [PublicAPI]
 public class RandomAccessFileStream

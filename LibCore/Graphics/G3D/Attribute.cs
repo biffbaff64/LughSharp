@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D;
+namespace LughSharp.LibCore.Graphics.G3D;
 
 /// <summary>
 ///     Extend this class to implement a material attribute. Register the attribute type by

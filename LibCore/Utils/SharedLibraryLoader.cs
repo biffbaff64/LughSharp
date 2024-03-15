@@ -25,7 +25,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace LibGDXSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Utils;
 
 public class SharedLibraryLoader
 {

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.Backends.DesktopGL.Utils;
+namespace LughSharp.Backends.DesktopGL.Utils;
 
 [PublicAPI]
 public class DesktopGLClipboard : IClipboard

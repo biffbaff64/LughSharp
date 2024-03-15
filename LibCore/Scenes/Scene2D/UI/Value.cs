@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
+using LughSharp.LibCore.Scenes.Scene2D.Utils;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.UI;
+namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
 ///     Value placeholder, allowing the value to be computed on request.

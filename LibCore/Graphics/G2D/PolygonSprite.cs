@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths;
 
-namespace LibGDXSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D;
 
 public class PolygonSprite
 {
@@ -86,7 +86,7 @@ public class PolygonSprite
 
     /// <summary>
     ///     Returns the color of this sprite. Modifying the returned color
-    ///     will have unexpected effects unless <see cref="SetColor(LibGDXSharp.LibCore.Graphics.Color)" /> or
+    ///     will have unexpected effects unless <see cref="SetColor(LughSharp.LibCore.Graphics.Color)" /> or
     ///     <see cref="SetColor(float, float, float, float)" /> is subsequently
     ///     called before drawing this sprite.
     /// </summary>
@@ -399,7 +399,7 @@ public class PolygonSprite
 
     /// <summary>
     ///     Returns the actual color used in the vertices of this sprite. Modifying the
-    ///     returned color will have unexpected effects unless <see cref="SetColor(LibGDXSharp.LibCore.Graphics.Color)" />
+    ///     returned color will have unexpected effects unless <see cref="SetColor(LughSharp.LibCore.Graphics.Color)" />
     ///     or <see cref="SetColor(float, float, float, float)" /> is subsequently called
     ///     before drawing this sprite.
     /// </summary>

@@ -23,14 +23,14 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Maths.Collision;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths.Collision;
 
-using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
-using Quaternion = LibGDXSharp.LibCore.Maths.Quaternion;
+using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
+using Quaternion = LughSharp.LibCore.Maths.Quaternion;
 
-namespace LibGDXSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
 ///     Base class for <see cref="OrthographicCamera" /> and <see cref="PerspectiveCamera" />.

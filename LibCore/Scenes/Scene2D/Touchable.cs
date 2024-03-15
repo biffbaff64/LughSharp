@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D;
+namespace LughSharp.LibCore.Scenes.Scene2D;
 
 public enum Touchable
 {

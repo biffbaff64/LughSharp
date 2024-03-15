@@ -25,7 +25,7 @@
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Input;
+namespace LughSharp.LibCore.Input;
 
 /// <summary>
 ///     Sends all inputs from touch, key, accelerometer and compass to

@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Audio.MP3Sharp.Decoding;
+using LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp;
+namespace LughSharp.LibCore.Audio.MP3Sharp;
 
 /// <summary>
 ///     Provides a view of the sequence of bytes that are produced during the conversion of an MP3 stream

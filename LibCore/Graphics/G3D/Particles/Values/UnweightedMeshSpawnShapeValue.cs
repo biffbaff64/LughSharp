@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Particles.Values;
+namespace LughSharp.LibCore.Graphics.G3D.Particles.Values;
 
 public class UnweightedMeshSpawnShapeValue
 {

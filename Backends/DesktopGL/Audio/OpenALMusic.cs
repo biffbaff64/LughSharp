@@ -23,13 +23,13 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Audio;
-using LibGDXSharp.LibCore.Audio.OpenAL;
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Utils.Buffers;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Audio;
+using LughSharp.LibCore.Audio.OpenAL;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.Backends.DesktopGL.Audio;
+namespace LughSharp.Backends.DesktopGL.Audio;
 
 public abstract class OpenALMusic : IMusic
 {

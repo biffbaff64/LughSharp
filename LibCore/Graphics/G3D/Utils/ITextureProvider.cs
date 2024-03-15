@@ -23,10 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Assets;
-using LibGDXSharp.LibCore.Graphics.G3D.Models.Data;
+using LughSharp.LibCore.Assets;
+using LughSharp.LibCore.Graphics.G3D.Models.Data;
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Utils;
+namespace LughSharp.LibCore.Graphics.G3D.Utils;
 
 /// <summary>
 ///     Used by <see cref="Model" /> to load textures from <see cref="ModelData" />.

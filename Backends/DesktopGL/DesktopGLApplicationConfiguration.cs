@@ -23,10 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Backends.DesktopGL.Graphics;
-using LibGDXSharp.Backends.DesktopGL.Window;
+using LughSharp.Backends.DesktopGL.Graphics;
+using LughSharp.Backends.DesktopGL.Window;
 
-namespace LibGDXSharp.Backends.DesktopGL;
+namespace LughSharp.Backends.DesktopGL;
 
 [PublicAPI]
 public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration

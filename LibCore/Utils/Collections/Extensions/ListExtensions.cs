@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths;
 
-namespace LibGDXSharp.LibCore.Utils.Collections.Extensions;
+namespace LughSharp.LibCore.Utils.Collections.Extensions;
 
 public static class ListExtensions
 {

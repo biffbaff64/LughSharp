@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Audio;
+using LughSharp.LibCore.Audio;
 
-namespace LibGDXSharp.Backends.DesktopGL.Audio;
+namespace LughSharp.Backends.DesktopGL.Audio;
 
 [PublicAPI]
 public class GdxSoundAudioRecorder : IAudioRecorder

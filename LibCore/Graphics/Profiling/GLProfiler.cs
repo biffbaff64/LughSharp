@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths;
 
-namespace LibGDXSharp.LibCore.Graphics.Profiling;
+namespace LughSharp.LibCore.Graphics.Profiling;
 
 /// <summary>
 ///     When enabled, collects statistics about GL calls and checks for GL errors.

@@ -23,10 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Backends.DesktopGL.Window;
-using LibGDXSharp.LibCore.Graphics;
+using LughSharp.Backends.DesktopGL.Window;
+using LughSharp.LibCore.Graphics;
 
-namespace LibGDXSharp.Backends.DesktopGL.Utils;
+namespace LughSharp.Backends.DesktopGL.Utils;
 
 [PublicAPI]
 public class DesktopGLCursor : ICursor

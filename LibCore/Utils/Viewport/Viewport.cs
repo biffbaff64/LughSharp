@@ -23,14 +23,14 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Maths;
-using LibGDXSharp.LibCore.Maths.Collision;
-using LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Maths.Collision;
+using LughSharp.LibCore.Scenes.Scene2D.Utils;
 
-using Matrix4 = LibGDXSharp.LibCore.Maths.Matrix4;
+using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LibGDXSharp.LibCore.Utils.Viewport;
+namespace LughSharp.LibCore.Utils.Viewport;
 
 /// <summary>
 ///     Manages a <see cref="Camera" /> and determines how world coordinates

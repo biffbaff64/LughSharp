@@ -25,11 +25,11 @@
 
 using System.IO.Compression;
 
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Utils.Buffers;
 
 using Exception = System.Exception;
 
-namespace LibGDXSharp.LibCore.Graphics.GLUtils;
+namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
 ///     A KTXTextureData holds the data from a KTX (or zipped KTX file, aka ZKTX).

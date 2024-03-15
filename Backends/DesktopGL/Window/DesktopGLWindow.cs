@@ -23,13 +23,13 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.Backends.DesktopGL.Graphics;
-using LibGDXSharp.Backends.DesktopGL.Input;
-using LibGDXSharp.Backends.DesktopGL.Utils;
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.Backends.DesktopGL.Graphics;
+using LughSharp.Backends.DesktopGL.Input;
+using LughSharp.Backends.DesktopGL.Utils;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 
-namespace LibGDXSharp.Backends.DesktopGL.Window;
+namespace LughSharp.Backends.DesktopGL.Window;
 
 [PublicAPI]
 public class DesktopGLWindow : IDisposable

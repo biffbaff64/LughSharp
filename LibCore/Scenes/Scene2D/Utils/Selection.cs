@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
-using LibGDXSharp.LibCore.Utils.Collections.Extensions;
-using LibGDXSharp.LibCore.Utils.Pooling;
+using LughSharp.LibCore.Scenes.Scene2D.Listeners;
+using LughSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Utils.Pooling;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D.Utils;
+namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
 ///     Manages selected objects. Optionally fires a <see cref="ChangeListener.ChangeEvent" />

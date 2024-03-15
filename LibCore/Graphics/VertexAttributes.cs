@@ -25,7 +25,7 @@
 
 using System.Text;
 
-namespace LibGDXSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics;
 
 public class VertexAttributes
 {

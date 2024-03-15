@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Scenes.Scene2D.Listeners;
+using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
-namespace LibGDXSharp.LibCore.Scenes.Scene2D;
+namespace LughSharp.LibCore.Scenes.Scene2D;
 
 public class TouchFocus
 {

@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maps.Tiled.Renderers;
+namespace LughSharp.LibCore.Maps.Tiled.Renderers;
 
 public class OrthoCachedTiledMapRenderer
 {

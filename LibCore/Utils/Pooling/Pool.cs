@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Utils.Pooling;
+namespace LughSharp.LibCore.Utils.Pooling;
 
 /// <summary>
 ///     A pool of objects that can be reused to avoid allocation.

@@ -23,14 +23,14 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.G3D;
-using LibGDXSharp.LibCore.Graphics.G3D.Models.Data;
-using LibGDXSharp.LibCore.Graphics.G3D.Utils;
-using LibGDXSharp.LibCore.Utils.Collections;
+using LughSharp.LibCore.Assets.Loaders.Resolvers;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G3D;
+using LughSharp.LibCore.Graphics.G3D.Models.Data;
+using LughSharp.LibCore.Graphics.G3D.Utils;
+using LughSharp.LibCore.Utils.Collections;
 
-namespace LibGDXSharp.LibCore.Assets.Loaders;
+namespace LughSharp.LibCore.Assets.Loaders;
 
 [PublicAPI]
 public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >

@@ -22,45 +22,46 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-namespace LibGDXSharp.LibCore.Input;
+namespace LughSharp.LibCore.Input;
 
 /// <summary>
 ///     <see cref="IInputProcessor" />" implementation that detects gestures
 ///     (tap, long press, fling, pan, zoom, pinch) and hands them to a
 ///     <see cref="IGestureListener" />.
 /// </summary>
+[PublicAPI]
 public class GestureDetector : InputAdapter
 {
     private readonly Vector2 _initialPointer1 = new();
     private readonly Vector2 _initialPointer2 = new();
 
-    private readonly IGestureListener? _listener = null;
-    private readonly Vector2           _pointer1 = new();
-    private readonly Vector2           _pointer2 = new();
-    private readonly VelocityTracker   _tracker  = new();
+    private readonly IGestureListener _listener;
+    private readonly Vector2          _pointer1 = new();
+    private readonly Vector2          _pointer2 = new();
+    private readonly VelocityTracker  _tracker  = new();
 
-    private bool              _inTapRectangle;
-    private int               _lastTapButton;
-    private int               _lastTapPointer;
-    private long              _lastTapTime;
-    private float             _lastTapX;
-    private float             _lastTapY;
-    private CancellationToken _longPressCancellationToken;
-    private bool              _longPressFired;
-    private float             _longPressSeconds;
-
-    private Task?                    _longPressTask;
+    private CancellationToken        _longPressCancellationToken;
     private CancellationTokenSource? _longPressTokenSource;
-    private long                     _maxFlingDelay;
-    private bool                     _panning;
-    private bool                     _pinching;
-    private int                      _tapCount;
-    private long                     _tapCountInterval;
-    private float                    _tapRectangleCenterX;
-    private float                    _tapRectangleCenterY;
-    private float                    _tapRectangleHeight;
-    private float                    _tapRectangleWidth;
-    private long                     _touchDownTime;
+
+    private bool  _inTapRectangle;
+    private int   _lastTapButton;
+    private int   _lastTapPointer;
+    private long  _lastTapTime;
+    private float _lastTapX;
+    private float _lastTapY;
+    private bool  _longPressFired;
+    private float _longPressSeconds;
+    private Task? _longPressTask;
+    private long  _maxFlingDelay;
+    private bool  _panning;
+    private bool  _pinching;
+    private int   _tapCount;
+    private long  _tapCountInterval;
+    private float _tapRectangleCenterX;
+    private float _tapRectangleCenterY;
+    private float _tapRectangleHeight;
+    private float _tapRectangleWidth;
+    private long  _touchDownTime;
 
     /// <summary>
     ///     Creates a new GestureDetector with default values: halfTapSquareSize=20,
@@ -152,13 +153,12 @@ public class GestureDetector : InputAdapter
         _longPressTokenSource       ??= new CancellationTokenSource();
         _longPressCancellationToken =   _longPressTokenSource.Token;
 
-        //TODO: AARGH!! Formatting! Sort it out!
         //@formatter:off
         _longPressTask = Task.Run( () =>
         {
             if ( !_longPressFired )
             {
-                _longPressFired = ( bool )_listener?.LongPress( _pointer1.X, _pointer1.Y );
+                _longPressFired = _listener.LongPress( _pointer1.X, _pointer1.Y );
             }
 
             if ( _longPressCancellationToken.IsCancellationRequested )
@@ -250,7 +250,7 @@ public class GestureDetector : InputAdapter
             CancelLongPressTask();
         }
 
-        return ( bool )_listener?.TouchDown( x, y, pointer, button );
+        return _listener.TouchDown( x, y, pointer, button );
     }
 
     public override bool TouchDragged( int x, int y, int pointer )
@@ -282,16 +282,11 @@ public class GestureDetector : InputAdapter
         // handle pinch zoom
         if ( _pinching )
         {
-            if ( _listener != null )
-            {
-                var result = _listener.Pinch( _initialPointer1, _initialPointer2, _pointer1, _pointer2 );
+            var result = _listener.Pinch( _initialPointer1, _initialPointer2, _pointer1, _pointer2 );
 
-                return _listener.Zoom( _initialPointer1.Dst( _initialPointer2 ),
-                                       _pointer1.Dst( _pointer2 ) )
-                    || result;
-            }
-
-            return false;
+            return _listener.Zoom( _initialPointer1.Dst( _initialPointer2 ),
+                                   _pointer1.Dst( _pointer2 ) )
+                || result;
         }
 
         // update tracker
@@ -309,7 +304,7 @@ public class GestureDetector : InputAdapter
         {
             _panning = true;
 
-            return ( bool )_listener?.Pan( x, y, _tracker.deltaX, _tracker.deltaY );
+            return _listener.Pan( x, y, _tracker.deltaX, _tracker.deltaY );
         }
 
         return false;
@@ -362,14 +357,14 @@ public class GestureDetector : InputAdapter
             _lastTapPointer = pointer;
             _touchDownTime  = 0;
 
-            return ( bool )_listener?.Tap( x, y, _tapCount, button );
+            return ( bool )_listener.Tap( x, y, _tapCount, button );
         }
 
         if ( _pinching )
         {
             // handle pinch end
             _pinching = false;
-            _listener?.PinchStop();
+            _listener.PinchStop();
             _panning = true;
 
             // we are in pan mode again, reset velocity tracker
@@ -392,7 +387,7 @@ public class GestureDetector : InputAdapter
 
         if ( wasPanning && !_panning )
         {
-            handled = ( bool )_listener?.PanStop( x, y, pointer, button );
+            handled = ( bool )_listener.PanStop( x, y, pointer, button );
         }
 
         // handle fling
@@ -402,7 +397,7 @@ public class GestureDetector : InputAdapter
         {
             _tracker.Update( x, y, time );
 
-            handled = ( bool )_listener?.Fling( _tracker.GetVelocityX(), _tracker.GetVelocityY(), button )
+            handled = ( bool )_listener.Fling( _tracker.GetVelocityX(), _tracker.GetVelocityY(), button )
                    || handled;
         }
 

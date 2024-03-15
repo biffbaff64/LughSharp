@@ -23,11 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Audio;
-using LibGDXSharp.LibCore.Audio.OpenAL;
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Audio;
+using LughSharp.LibCore.Audio.OpenAL;
+using LughSharp.LibCore.Utils.Buffers;
 
-namespace LibGDXSharp.Backends.DesktopGL.Audio;
+namespace LughSharp.Backends.DesktopGL.Audio;
 
 [PublicAPI]
 public class OpenALSound : ISound

@@ -1,5 +1,5 @@
 ﻿===========================================
-LibGDXSharp.Audio.MP3Sharp
+LughSharp.Audio.MP3Sharp
 ===========================================
 
 - This is an update of https://github.com/ZaneDubya/MP3Sharp
@@ -8,5 +8,5 @@ LibGDXSharp.Audio.MP3Sharp
 
     - Tidying
     - Any necessary updates for more recent versions of C#
-    - Any necessary changes arising from integrating the original with LibGDXSharp
+    - Any necessary changes arising from integrating the original with LughSharp
 

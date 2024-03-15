@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
+namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 
 /// <summary>
 ///     An interface for classes that can map a file name to a FileInfo.

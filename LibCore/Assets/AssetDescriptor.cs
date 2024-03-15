@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Assets;
+namespace LughSharp.LibCore.Assets;
 
 [PublicAPI]
 public class AssetDescriptor

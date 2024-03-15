@@ -22,11 +22,11 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LibGDXSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Utils.Buffers;
 
-using Buffer = LibGDXSharp.LibCore.Utils.Buffers.Buffer;
+using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 
-namespace LibGDXSharp.LibCore.Graphics.GLUtils;
+namespace LughSharp.LibCore.Graphics.GLUtils;
 
 public class InstanceBufferObject : IInstanceData
 {

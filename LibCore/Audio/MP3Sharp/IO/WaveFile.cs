@@ -23,9 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LibGDXSharp.LibCore.Audio.MP3Sharp.Support;
+using LughSharp.LibCore.Audio.MP3Sharp.Support;
 
-namespace LibGDXSharp.LibCore.Audio.MP3Sharp.IO;
+namespace LughSharp.LibCore.Audio.MP3Sharp.IO;
 
 /// <summary>
 ///     public class allowing WaveFormat Access

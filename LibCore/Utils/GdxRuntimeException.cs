@@ -28,10 +28,10 @@ using System.Runtime.CompilerServices;
 using Exception = System.Exception;
 using NotNull = System.Diagnostics.CodeAnalysis.NotNullAttribute;
 
-namespace LibGDXSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Utils;
 
 /// <summary>
-///     Typed runtime exception used throughout LibGDXSharp.
+///     Typed runtime exception used throughout LughSharp.
 /// </summary>
 public class GdxRuntimeException : Exception
 {

@@ -28,17 +28,17 @@ using System.Runtime.Serialization;
 
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
-using LibGDXSharp.LibCore.Assets;
-using LibGDXSharp.LibCore.Assets.Loaders;
-using LibGDXSharp.LibCore.Assets.Loaders.Resolvers;
-using LibGDXSharp.LibCore.Graphics;
-using LibGDXSharp.LibCore.Graphics.G2D;
-using LibGDXSharp.LibCore.Maps.Objects;
-using LibGDXSharp.LibCore.Maps.Tiled.Objects;
-using LibGDXSharp.LibCore.Maps.Tiled.Tiles;
-using LibGDXSharp.LibCore.Maths;
+using LughSharp.LibCore.Assets;
+using LughSharp.LibCore.Assets.Loaders;
+using LughSharp.LibCore.Assets.Loaders.Resolvers;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Maps.Objects;
+using LughSharp.LibCore.Maps.Tiled.Objects;
+using LughSharp.LibCore.Maps.Tiled.Tiles;
+using LughSharp.LibCore.Maths;
 
-namespace LibGDXSharp.LibCore.Maps.Tiled.Loaders;
+namespace LughSharp.LibCore.Maps.Tiled.Loaders;
 
 public abstract class BaseTmxMapLoader<TP>
     : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.BaseTmxLoaderParameters

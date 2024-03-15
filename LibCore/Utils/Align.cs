@@ -25,7 +25,7 @@
 
 using System.Text;
 
-namespace LibGDXSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Utils;
 
 /// <summary>
 ///     Provides bit flag constants for alignment.

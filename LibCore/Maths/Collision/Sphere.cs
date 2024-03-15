@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Maths.Collision;
+namespace LughSharp.LibCore.Maths.Collision;
 
 /// <summary>
 ///     Encapsulates a 3D sphere with a center and a radius

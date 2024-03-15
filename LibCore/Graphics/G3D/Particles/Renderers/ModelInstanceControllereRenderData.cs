@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LibGDXSharp.LibCore.Graphics.G3D.Particles.Renderers;
+namespace LughSharp.LibCore.Graphics.G3D.Particles.Renderers;
 
 public class ModelInstanceControllereRenderData
 {
