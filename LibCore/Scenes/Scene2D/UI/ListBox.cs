@@ -44,35 +44,56 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///         and the size of the <see cref="Selection{T}" />.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class ListBox<T> : Widget
 {
+    public RectangleShape?     CullingArea  { get; set; }
+    public InputListener?      KeyListener  { get; set; }
+    public ArraySelection< T > Selection    { get; set; } = null!;
+    public List< T >           Items        { get; set; } = new();
+    public float               ItemHeight   { get; set; }
+    public int                 Alignment    { get; set; } = Align.LEFT;
+    public bool                TypeToSelect { get; set; }
+
+    // ------------------------------------------------------------------------
+
     private int   _overIndex = -1;
     private float _prefHeight;
     private float _prefWidth;
     private int   _pressedIndex = -1;
 
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Creates a new ListBox, using the supplied <see cref="Skin"/>.
+    /// The <see cref="ListStyle"/> embedded in the Skin will be used.
+    /// </summary>
+    /// <param name="skin"> The Skin to use. </param>
     public ListBox( Skin skin )
         : this( skin.Get< ListStyle >() )
     {
     }
 
+    /// <summary>
+    /// Creates a new ListBox, using the supplied <see cref="Skin"/>. The
+    /// <see cref="ListStyle"/> to use will be extracted from the supplied
+    /// skin using the name provided.
+    /// </summary>
+    /// <param name="skin"> The Skin to use. </param>
+    /// <param name="styleName"> The name of the ListStyle to extract from the Skin. </param>
     public ListBox( Skin skin, string styleName )
         : this( skin.Get< ListStyle >( styleName ) )
     {
     }
 
+    /// <summary>
+    /// Creates a new ListBox, using the supplied <see cref="ListStyle"/>
+    /// </summary>
+    /// <param name="style"> The ListStyle to use. </param>
     public ListBox( ListStyle style )
     {
         Create( style );
     }
-
-    public RectangleShape?      CullingArea  { get; set; }
-    public InputListener?       KeyListener  { get; set; }
-    public ArraySelection< T >? Selection    { get; set; }
-    public List< T >?           Items        { get; set; } = new();
-    public float                ItemHeight   { get; set; }
-    public int                  Alignment    { get; set; } = Align.LEFT;
-    public bool                 TypeToSelect { get; set; }
 
     public override float PrefWidth
     {
@@ -149,9 +170,9 @@ public class ListBox<T> : Widget
         Pool< GlyphLayout > layoutPool = Pools< GlyphLayout >.Get();
         GlyphLayout?        layout     = layoutPool.Obtain();
 
-        for ( var i = 0; i < Items!.Count; i++ )
+        foreach ( T item in Items )
         {
-            layout?.SetText( font, ToString( Items[ i ] ) );
+            layout?.SetText( font, ToString( item ) );
             _prefWidth = Math.Max( layout!.Width, _prefWidth );
         }
 
@@ -204,13 +225,13 @@ public class ListBox<T> : Widget
 
         font.SetColor( fontColorUnselected!.R, fontColorUnselected.G, fontColorUnselected.B, fontColorUnselected.A * parentAlpha );
 
-        for ( var i = 0; i < Items!.Count; i++ )
+        for ( var i = 0; i < Items.Count; i++ )
         {
             if ( ( CullingArea == null )
               || ( ( ( itemY - ItemHeight ) <= ( CullingArea.Y + CullingArea.Height ) ) && ( itemY >= CullingArea.Y ) ) )
             {
                 T          item     = Items[ i ];
-                var        selected = Selection!.Contains( item );
+                var        selected = Selection.Contains( item );
                 IDrawable? drawable = null;
 
                 if ( ( _pressedIndex == i ) && ( Style?.Down != null ) )
@@ -273,7 +294,7 @@ public class ListBox<T> : Widget
     /// </summary>
     public T? GetSelected()
     {
-        return Selection!.First();
+        return Selection.First();
     }
 
     /// <summary>
@@ -282,17 +303,17 @@ public class ListBox<T> : Widget
     /// <param name="item"> May be null. </param>
     public void SetSelected( T item )
     {
-        if ( Items!.Contains( item ) )
+        if ( Items.Contains( item ) )
         {
-            Selection!.Set( item );
+            Selection.Set( item );
         }
-        else if ( Selection!.Required && ( Items.Count > 0 ) )
+        else if ( Selection.Required && ( Items.Count > 0 ) )
         {
-            Selection!.Set( Items.First() );
+            Selection.Set( Items.First() );
         }
         else
         {
-            Selection!.Clear();
+            Selection.Clear();
         }
     }
 
@@ -302,9 +323,9 @@ public class ListBox<T> : Widget
     /// </summary>
     public int GetSelectedIndex()
     {
-        List< T >? selected = Selection?.ToArray();
+        List< T > selected = Selection.ToArray();
 
-        return selected?.Count == 0 ? -1 : Items!.IndexOf( selected!.First() );
+        return selected.Count == 0 ? -1 : Items.IndexOf( selected.First() );
     }
 
     /// <summary>
@@ -313,36 +334,36 @@ public class ListBox<T> : Widget
     /// <param name="index"> -1 to clear the selection. </param>
     public void SetSelectedIndex( int index )
     {
-        if ( ( index < -1 ) || ( index >= Items?.Count ) )
+        if ( ( index < -1 ) || ( index >= Items.Count ) )
         {
-            throw new ArgumentException( $"index must be >= -1 and < {Items?.Count}: {index}" );
+            throw new ArgumentException( $"index must be >= -1 and < {Items.Count}: {index}" );
         }
 
         if ( index == -1 )
         {
-            Selection?.Clear();
+            Selection.Clear();
         }
         else
         {
-            Selection?.Set( Items![ index ] );
+            Selection.Set( Items[ index ] );
         }
     }
 
     public T? GetOverItem()
     {
-        return _overIndex == -1 ? default( T? ) : Items![ _overIndex ];
+        return _overIndex == -1 ? default( T? ) : Items[ _overIndex ];
     }
 
     public T? GetPressedItem()
     {
-        return _pressedIndex == -1 ? default( T? ) : Items![ _pressedIndex ];
+        return _pressedIndex == -1 ? default( T? ) : Items[ _pressedIndex ];
     }
 
     public T? GetItemAt( float y )
     {
         var index = GetItemIndexAt( y );
 
-        return index == -1 ? default( T? ) : Items![ index ];
+        return index == -1 ? default( T? ) : Items[ index ];
     }
 
     /// <summary>
@@ -361,7 +382,7 @@ public class ListBox<T> : Widget
 
         var index = ( int )( ( height - y ) / ItemHeight );
 
-        if ( ( index < 0 ) || ( index >= Items!.Count ) )
+        if ( ( index < 0 ) || ( index >= Items.Count ) )
         {
             return -1;
         }
@@ -376,13 +397,13 @@ public class ListBox<T> : Widget
         var oldPrefWidth  = PrefWidth;
         var oldPrefHeight = PrefHeight;
 
-        Items?.Clear();
-        Items?.AddAll( newItems );
+        Items.Clear();
+        Items.AddAll( newItems );
 
         _overIndex    = -1;
         _pressedIndex = -1;
 
-        Selection?.Validate();
+        Selection.Validate();
 
         Invalidate();
 
@@ -406,13 +427,13 @@ public class ListBox<T> : Widget
 
         if ( !newItems.Equals( Items ) )
         {
-            Items?.Clear();
-            Items?.AddAll( newItems );
+            Items.Clear();
+            Items.AddAll( newItems );
         }
 
         _overIndex    = -1;
         _pressedIndex = -1;
-        Selection?.Validate();
+        Selection.Validate();
 
         Invalidate();
 
@@ -424,17 +445,17 @@ public class ListBox<T> : Widget
 
     public void ClearItems()
     {
-        if ( Items?.Count == 0 )
+        if ( Items.Count == 0 )
         {
             return;
         }
 
-        Items?.Clear();
+        Items.Clear();
 
         _overIndex    = -1;
         _pressedIndex = -1;
 
-        Selection?.Clear();
+        Selection.Clear();
 
         InvalidateHierarchy();
     }
@@ -447,7 +468,7 @@ public class ListBox<T> : Widget
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public class ListKeyListener : InputListener
+    internal class ListKeyListener : InputListener
     {
         private readonly ListBox< T > _parent;
         private          string       _prefix;
@@ -461,7 +482,7 @@ public class ListBox<T> : Widget
 
         public override bool KeyDown( InputEvent? ev, int keycode )
         {
-            if ( _parent.Items?.Count == 0 )
+            if ( _parent.Items.Count == 0 )
             {
                 return false;
             }
@@ -471,10 +492,10 @@ public class ListBox<T> : Widget
             switch ( keycode )
             {
                 case IInput.Keys.A:
-                    if ( UIUtils.Ctrl() && ( bool )_parent.Selection?.Multiple )
+                    if ( UIUtils.Ctrl() && _parent.Selection.Multiple )
                     {
-                        _parent.Selection?.Clear();
-                        _parent.Selection?.AddAll( _parent.Items! );
+                        _parent.Selection.Clear();
+                        _parent.Selection.AddAll( _parent.Items );
 
                         return true;
                     }
@@ -487,12 +508,12 @@ public class ListBox<T> : Widget
                     return true;
 
                 case IInput.Keys.END:
-                    _parent.SetSelectedIndex( _parent.Items!.Count - 1 );
+                    _parent.SetSelectedIndex( _parent.Items.Count - 1 );
 
                     return true;
 
                 case IInput.Keys.DOWN:
-                    index = _parent.Items!.IndexOf( _parent.GetSelected()! ) + 1;
+                    index = _parent.Items.IndexOf( _parent.GetSelected()! ) + 1;
 
                     if ( index >= _parent.Items.Count )
                     {
@@ -504,7 +525,7 @@ public class ListBox<T> : Widget
                     return true;
 
                 case IInput.Keys.UP:
-                    index = _parent.Items!.IndexOf( _parent.GetSelected()! ) - 1;
+                    index = _parent.Items.IndexOf( _parent.GetSelected()! ) - 1;
 
                     if ( index < 0 )
                     {
@@ -544,7 +565,7 @@ public class ListBox<T> : Widget
             _typeTimeout =  time + 300;
             _prefix      += char.ToLower( character );
 
-            for ( int i = 0, n = _parent.Items!.Count; i < n; i++ )
+            for ( int i = 0, n = _parent.Items.Count; i < n; i++ )
             {
                 if ( _parent.ToString( _parent.Items[ i ] ).ToLower().StartsWith( _prefix ) )
                 {
@@ -578,7 +599,7 @@ public class ListBox<T> : Widget
                 return true;
             }
 
-            if ( ( bool )_parent.Selection?.IsDisabled )
+            if ( _parent.Selection.IsDisabled )
             {
                 return true;
             }
@@ -588,7 +609,7 @@ public class ListBox<T> : Widget
                 _parent.Stage.KeyboardFocus = _parent;
             }
 
-            if ( _parent.Items?.Count == 0 )
+            if ( _parent.Items.Count == 0 )
             {
                 return true;
             }
@@ -600,7 +621,7 @@ public class ListBox<T> : Widget
                 return true;
             }
 
-            _parent.Selection.Choose( _parent.Items![ index ] );
+            _parent.Selection.Choose( _parent.Items[ index ] );
             _parent._pressedIndex = index;
 
             return true;
@@ -648,6 +669,7 @@ public class ListBox<T> : Widget
     /// <summary>
     ///     The style for a list, see <see cref="ListBox{T}" />.
     /// </summary>
+    [PublicAPI]
     public class ListStyle
     {
         public ListStyle()

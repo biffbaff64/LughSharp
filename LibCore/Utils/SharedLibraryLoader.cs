@@ -23,35 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Runtime.InteropServices;
-
 namespace LughSharp.LibCore.Utils;
 
+[PublicAPI]
 public class SharedLibraryLoader
 {
-    public static bool IsWindows { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Windows );
-    public static bool IsLinux   { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Linux );
-    public static bool IsMac     { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.OSX );
-    public static bool IsIos     { get; private set; } = false; //TODO:
-    public static bool IsAndroid { get; private set; } = false; //TODO:
-    public static bool IsARM     { get; private set; } = SystemHelpers.IsArmArchitecture();
-    public static bool Is64Bit   { get; private set; } = Environment.Is64BitOperatingSystem;
-}
-
-public static class SystemHelpers
-{
-    public static bool IsArmArchitecture()
-    {
-        return RuntimeInformation.OSArchitecture switch
-               {
-                   Architecture.Arm   => true,
-                   Architecture.Arm64 => true,
-                   _                  => false
-               };
-    }
-
-    public static String RandomUUID()
-    {
-        return Guid.NewGuid().ToString();
-    }
 }

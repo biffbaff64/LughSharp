@@ -31,6 +31,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 /// <summary>
 ///     Keeps track of an application's tooltips.
 /// </summary>
+[PublicAPI]
 public class TooltipManager<T> where T : Actor
 {
     private readonly List< Tooltip< T > > _activeTooltips = new();
@@ -51,6 +52,10 @@ public class TooltipManager<T> where T : Actor
         Create();
     }
 
+    // ------------------------------------------------------------------------
+    
+    #region properties
+    
     /// <summary>
     ///     The X distance from the mouse position to offset the tooltip actor. Default is 15.
     /// </summary>
@@ -100,9 +105,13 @@ public class TooltipManager<T> where T : Actor
     /// </summary>
     public bool Animations { get; set; } = true;
 
-    //@formatter:off
+    #endregion properties
+
+    // ------------------------------------------------------------------------
+    
     private void Create()
     {
+        //@formatter:off
         _showTask = new Task( () =>
         {
             Stage? stage = _showTooltip.TargetActor?.Stage;
@@ -130,9 +139,8 @@ public class TooltipManager<T> where T : Actor
                 _showTaskCancellationToken.ThrowIfCancellationRequested();
             }
         },_showTaskCancellationToken );
+        //@formatter:on
     }
-
-    //@formatter:on
 
     public void TouchDown( Tooltip< T > tooltip )
     {

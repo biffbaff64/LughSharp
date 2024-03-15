@@ -675,6 +675,7 @@ UTILS
     - IP   - DataUtils                      Added Class
     - IP   - FloatConstants
     - IP   - GdxRuntimeException
+    - IP   - GdxSystem
     - IP   - IClipboard                     Convert - Interface, clipboard handled in backends.                 
     - IP   - ICloseable
     - IP   - IReadable

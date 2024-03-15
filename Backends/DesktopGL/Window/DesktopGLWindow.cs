@@ -197,7 +197,7 @@ public class DesktopGLWindow : IDisposable
 
     public void SetIcon( GLFWWindow window, String[] imagePaths, FileType imageFileType )
     {
-        if ( SharedLibraryLoader.IsMac )
+        if ( GdxSystem.IsMac )
         {
             return;
         }
@@ -220,7 +220,7 @@ public class DesktopGLWindow : IDisposable
     //TODO:
     private void SetIcon( GLFWWindow window, Pixmap[] images )
     {
-        if ( SharedLibraryLoader.IsMac )
+        if ( GdxSystem.IsMac )
         {
         }
 

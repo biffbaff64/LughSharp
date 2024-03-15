@@ -452,7 +452,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Glfw.WindowHint( Hint.ContextVersionMajor, appConfig.Gles30ContextMajorVersion );
             Glfw.WindowHint( Hint.ContextVersionMinor, appConfig.Gles30ContextMinorVersion );
 
-            if ( SharedLibraryLoader.IsMac )
+            if ( GdxSystem.IsMac )
             {
                 // hints mandatory on OS X for GL 3.2+ context creation, but fail on Windows if the
                 // WGL_ARB_create_context extension is not available

@@ -34,6 +34,7 @@ using LughSharp.LibCore.Utils.Pooling;
 
 namespace LughSharp.LibCore.Scenes.Scene2D;
 
+[PublicAPI]
 public class Actor : IActor
 {
     private readonly Color _color = new( 1, 1, 1, 1 );
@@ -70,7 +71,7 @@ public class Actor : IActor
     protected float OriginX { get; set; }
     protected float OriginY { get; set; }
 
-    public Color? Color
+    public Color Color
     {
         get => _color;
         set => _color.Set( value );

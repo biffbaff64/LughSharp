@@ -33,6 +33,7 @@ namespace LughSharp.Extensions.Gdx_Tools;
 /////     and the output file. If <see cref="SetFlattenOutput(bool)" /> is false, the output
 /////     will match the directory structure of the input.
 ///// </summary>
+[PublicAPI]
 public class FileProcessor
 {
 //    FilenameFilter inputFilter;
@@ -68,15 +69,15 @@ public class FileProcessor
     }
 
 //    /** Copy constructor. */
-//    public FileProcessor( FileProcessor processor )
-//    {
-//        inputFilter = processor.inputFilter;
-//        comparator  = processor.comparator;
-//        inputRegex.addAll( processor.inputRegex );
-//        outputSuffix  = processor.outputSuffix;
-//        recursive     = processor.recursive;
-//        flattenOutput = processor.flattenOutput;
-//    }
+    public FileProcessor( FileProcessor processor )
+    {
+//        _inputFilter = processor.inputFilter;
+//        _comparator  = processor.comparator;
+//        _inputRegex.addAll( processor.inputRegex );
+        _outputSuffix  = processor._outputSuffix;
+        _recursive     = processor._recursive;
+        _flattenOutput = processor._flattenOutput;
+    }
 //
 //    public FileProcessor setInputFilter( FilenameFilter inputFilter )
 //    {

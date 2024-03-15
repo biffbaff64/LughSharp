@@ -27,6 +27,7 @@ using Keys = LughSharp.LibCore.Core.IInput.Keys;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
+[PublicAPI]
 public static class UIUtils
 {
     public static bool Left()

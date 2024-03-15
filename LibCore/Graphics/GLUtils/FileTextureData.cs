@@ -25,11 +25,11 @@
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
+[PublicAPI]
 public class FileTextureData : ITextureData
 {
     private Pixmap.Format? _format;
-    private int            _height     = 0;
-    private bool           _isPrepared = false;
+    private int            _height = 0;
     private Pixmap?        _pixmap;
     private int            _width = 0;
 
@@ -48,8 +48,6 @@ public class FileTextureData : ITextureData
             _format ??= _pixmap.GetFormat();
         }
     }
-
-    public FileInfo? File { get; set; }
 
     /// <summary>
     ///     Prepares the TextureData for a call to <see cref="ITextureData.ConsumePixmap" /> or
@@ -92,7 +90,7 @@ public class FileTextureData : ITextureData
     ///     </para>
     /// </summary>
     /// <returns> the pixmap.</returns>
-    public Pixmap? ConsumePixmap()
+    public virtual Pixmap? ConsumePixmap()
     {
         if ( !IsPrepared )
         {
@@ -111,7 +109,7 @@ public class FileTextureData : ITextureData
     ///     whether the caller of <see cref="ITextureData.ConsumePixmap" /> should dispose the
     ///     Pixmap returned by <see cref="ITextureData.ConsumePixmap" />
     /// </returns>
-    public bool DisposePixmap()
+    public virtual bool DisposePixmap()
     {
         return true;
     }
@@ -125,11 +123,13 @@ public class FileTextureData : ITextureData
     ///         disposed of here.
     ///     </para>
     /// </summary>
-    public void ConsumeCustomData( int target )
+    public virtual void ConsumeCustomData( int target )
     {
         throw new GdxRuntimeException
             ( "This TextureData implementation does not upload data itself" );
     }
+
+    public FileInfo? File { get; set; }
 
     /// <returns> the width of the pixel data </returns>
     public int Width { get; set; }
@@ -150,7 +150,7 @@ public class FileTextureData : ITextureData
     }
 
     /// <returns> whether this implementation can cope with a EGL context loss. </returns>
-    public bool IsManaged()
+    public virtual bool IsManaged()
     {
         return true;
     }
