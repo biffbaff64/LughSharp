@@ -50,13 +50,22 @@ namespace LughSharp.LibCore.Graphics.G2D;
 ///         be used from the game thread.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class GlyphLayout : IPoolable
 {
-    private readonly static Pool< GlyphRun > GlyphRunPool = Pools< GlyphRun >.Get();
-    private readonly static Pool< Color >    ColorPool    = Pools< Color >.Get();
-    private readonly static List< Color >    ColorStack   = new( 4 );
+    public List< GlyphRun > Runs   { get; set; } = new( 1 );
+    public float            Width  { get; set; }
+    public float            Height { get; set; }
+
+    // ------------------------------------------------------------------------
+    
+    private readonly static Pool< GlyphRun > _glyphRunPool = Pools< GlyphRun >.Get();
+    private readonly static Pool< Color >    _colorPool    = Pools< Color >.Get();
+    private readonly static List< Color >    _colorStack   = new( 4 );
 
     private readonly static float _epsilon = 0.0001f;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Creates an empty GlyphLayout.
@@ -87,10 +96,6 @@ public class GlyphLayout : IPoolable
     {
         SetText( font, str, start, end, color, targetWidth, halign, wrap, truncate );
     }
-
-    public List< GlyphRun > Runs   { get; set; } = new( 1 );
-    public float            Width  { get; set; }
-    public float            Height { get; set; }
 
     /// <summary>
     ///     Resets the object for reuse. Object references should
@@ -159,7 +164,7 @@ public class GlyphLayout : IPoolable
                          bool wrap,
                          string? truncate )
     {
-        GlyphRunPool.FreeAll( Runs );
+        _glyphRunPool.FreeAll( Runs );
         Runs.Clear();
 
         BitmapFont.BitmapFontData fontData = font.GetData();
@@ -178,7 +183,7 @@ public class GlyphLayout : IPoolable
             // Ensures truncate code runs, doesn't actually cause wrapping.
             wrap = true;
         }
-        else if ( targetWidth <= ( fontData.SpaceXadvance * 3 ) ) //
+        else if ( targetWidth <= ( fontData.SpaceXadvance * 3 ) )
         {
             // Avoid one line per character, which is very inefficient.
             wrap = false;
@@ -189,13 +194,13 @@ public class GlyphLayout : IPoolable
 
         if ( markupEnabled )
         {
-            for ( int i = 1, n = ColorStack.Count; i < n; i++ )
+            for ( int i = 1, n = _colorStack.Count; i < n; i++ )
             {
-                ColorPool.Free( ColorStack[ i ] );
+                _colorPool.Free( _colorStack[ i ] );
             }
 
-            ColorStack.Clear();
-            ColorStack.Add( color );
+            _colorStack.Clear();
+            _colorStack.Add( color );
         }
 
         float             x         = 0;
@@ -206,6 +211,8 @@ public class GlyphLayout : IPoolable
 
         outer:
 
+        //TODO: Refactor this loop, I don't like the way this is done.
+        
         while ( true )
         {
             // Each run is delimited by newline or left square bracket.
@@ -236,13 +243,13 @@ public class GlyphLayout : IPoolable
                         // Possible color tag.
                         if ( markupEnabled )
                         {
-                            var length = ParseColorMarkup( str, start, end, ColorPool );
+                            var length = ParseColorMarkup( str, start, end, _colorPool );
 
                             if ( length >= 0 )
                             {
                                 runEnd    =  start - 1;
                                 start     += length + 1;
-                                nextColor =  ColorStack.Peek();
+                                nextColor =  _colorStack.Peek();
                             }
                             else if ( length == -2 )
                             {
@@ -263,7 +270,7 @@ public class GlyphLayout : IPoolable
                 {
                     // Eg, when a color tag is at text start or a line is "\n".
                     // Store the run that has ended.
-                    GlyphRun? run = GlyphRunPool.Obtain();
+                    GlyphRun? run = _glyphRunPool.Obtain();
 
                     GdxRuntimeException.ThrowIfNull( run, "run is null" );
 
@@ -272,7 +279,7 @@ public class GlyphLayout : IPoolable
 
                     if ( run.Glyphs.Count == 0 )
                     {
-                        GlyphRunPool.Free( run );
+                        _glyphRunPool.Free( run );
 
                         goto runEnded;
                     }
@@ -333,8 +340,7 @@ public class GlyphLayout : IPoolable
 
                         if ( truncate != null )
                         {
-                            // Truncate.
-                            Truncate( fontData, run, targetWidth, truncate, i, GlyphRunPool );
+                            Truncate( fontData, run, targetWidth, truncate, i, _glyphRunPool );
 
                             goto outer;
                         }
@@ -542,16 +548,14 @@ public class GlyphLayout : IPoolable
     /// <param name="targetWidth"></param>
     /// <param name="truncate"> May be empty string. </param>
     /// <param name="widthIndex"></param>
-    /// <param name="runPool"></param>
     private void Truncate( BitmapFont.BitmapFontData fontData,
                            GlyphRun run,
                            float targetWidth,
                            string truncate,
-                           int widthIndex,
-                           Pool< GlyphRun >? runPool )
+                           int widthIndex )
     {
         // Determine truncate string size.
-        GlyphRun? truncateRun = runPool?.Obtain();
+        GlyphRun? truncateRun = runPool.Obtain();
 
         fontData.GetGlyphs( truncateRun, truncate, 0, truncate.Length, null );
 
@@ -610,12 +614,12 @@ public class GlyphLayout : IPoolable
             // No run glyphs fit, use only truncate glyphs.
             run.Glyphs.Clear();
             run.XAdvances.Clear();
-            run.XAdvances.AddAll( truncateRun?.XAdvances );
+            run.XAdvances.AddAll( truncateRun.XAdvances );
         }
 
-        run.Glyphs.AddAll( truncateRun?.Glyphs );
+        run.Glyphs.AddAll( truncateRun.Glyphs );
 
-        runPool?.Free( truncateRun! );
+        runPool.Free( truncateRun );
     }
 
     /// <summary>
@@ -659,7 +663,7 @@ public class GlyphLayout : IPoolable
 
         if ( secondStart < glyphCount )
         {
-            second = GlyphRunPool.Obtain();
+            second = _glyphRunPool.Obtain();
             second?.Color.Set( first.Color );
 
             List< BitmapFont.Glyph >? glyphs1 = second?.Glyphs; // Starts empty.
@@ -688,7 +692,7 @@ public class GlyphLayout : IPoolable
         if ( firstEnd == 0 )
         {
             // If the first run is now empty, remove it.
-            GlyphRunPool.Free( first );
+            _glyphRunPool.Free( first );
             Runs.Pop();
         }
         else
@@ -753,7 +757,7 @@ public class GlyphLayout : IPoolable
                         }
 
                         Color? color = colorpool.Obtain();
-                        ColorStack.Add( color! );
+                        _colorStack.Add( color! );
                         Color.Rgba8888ToColor( ref color!, colorInt );
 
                         return i - start;
@@ -783,9 +787,9 @@ public class GlyphLayout : IPoolable
                 return -2;
 
             case ']': // "[]" is a "pop" color tag.
-                if ( ColorStack.Count > 1 )
+                if ( _colorStack.Count > 1 )
                 {
-                    colorpool.Free( ColorStack.Pop() );
+                    colorpool.Free( _colorStack.Pop() );
                 }
 
                 return 0;
@@ -812,7 +816,7 @@ public class GlyphLayout : IPoolable
 
             Color? color = colorpool.Obtain();
 
-            ColorStack.Add( color! );
+            _colorStack.Add( color! );
             color?.Set( namedColor );
 
             return i - start;
