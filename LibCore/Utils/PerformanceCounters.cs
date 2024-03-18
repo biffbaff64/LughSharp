@@ -74,21 +74,4 @@ public class PerformanceCounters
             t.Tick( deltaTime );
         }
     }
-
-    public StringBuilder ToString( in StringBuilder sb )
-    {
-        sb.Length = 0;
-
-        for ( var i = 0; i < counters.Count; i++ )
-        {
-            if ( i != 0 )
-            {
-                sb.Append( "; " );
-            }
-
-            counters[ i ].ToString( sb );
-        }
-
-        return sb;
-    }
 }

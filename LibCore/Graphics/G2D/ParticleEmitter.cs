@@ -1521,13 +1521,13 @@ public class ParticleEmitter
             // Backwards compatibility
             line = reader.ReadLine();
 
-            if ( ( bool )line?.StartsWith( "premultipliedAlpha" ) )
+            if ( line!.StartsWith( "premultipliedAlpha" ) )
             {
                 PremultipliedAlpha = ReadBoolean( line );
                 line               = reader.ReadLine();
             }
 
-            if ( ( bool )line?.StartsWith( "spriteMode" ) )
+            if ( line!.StartsWith( "spriteMode" ) )
             {
                 SpriteMode = Enum.Parse< SpriteModes >( ReadString( line ) );
 
@@ -2020,7 +2020,7 @@ public class ParticleEmitter
                                           + "Please download the latest version of the Particle Editor tool and "
                                            + "recreate the file by loading and saving it again.";
 
-                Logger.Err( ERROR_MESSAGE );
+                Logger.Error( ERROR_MESSAGE );
 
                 throw new IOException( ERROR_MESSAGE );
             }

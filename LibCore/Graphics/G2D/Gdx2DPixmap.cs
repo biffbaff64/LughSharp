@@ -267,7 +267,7 @@ public class Gdx2DPixmap : IDisposable
         }
         catch ( IOException e )
         {
-            Logger.Err( e.Message );
+            Logger.Error( e.Message );
 
             return null;
         }
@@ -281,7 +281,7 @@ public class Gdx2DPixmap : IDisposable
         }
         catch ( ArgumentException e )
         {
-            Logger.Err( e.Message );
+            Logger.Error( e.Message );
 
             return null;
         }

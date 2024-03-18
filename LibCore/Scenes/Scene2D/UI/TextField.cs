@@ -79,7 +79,7 @@ public class TextField : Widget
     private          CancellationToken _blinkCancellationToken;
     private          Task?             _blinkTask;
 
-    private          float                    _blinkTime = 0.32f;
+//    private          float                    _blinkTime = 0.32f;
     private          CancellationTokenSource? _blinkTokenSource;
     private          bool                     _cursorOn;
     private          bool                     _disabled;
@@ -95,7 +95,6 @@ public class TextField : Widget
     private long                _lastChangeTime;
     private ITextFieldListener? _listener;
     private int                 _maxLength;
-    private string?             _messageText;
     private StringBuilder?      _passwordBuffer;
     private char                _passwordCharacter = BULLET;
     private bool                _passwordMode;
@@ -132,6 +131,7 @@ public class TextField : Widget
 
     public TextFieldStyle? Style          { get; set; }
     public string?         Text           { get; set; }
+    public string?         MessageText    { get; set; }
     public int             Cursor         { get; set; }
     public int             SelectionStart { get; set; }
     public bool            HasSelection   { get; set; }
@@ -143,6 +143,8 @@ public class TextField : Widget
     public float           TextHeight     { get; set; }
     public float           TextOffset     { get; set; }
     public bool            FocusTraversal { get; set; } = true;
+
+    // ------------------------------------------------------------------------
 
     public override float PrefHeight
     {
@@ -549,7 +551,7 @@ public class TextField : Widget
 
         if ( DisplayText?.Length == 0 )
         {
-            if ( !focused && ( _messageText != null ) )
+            if ( !focused && ( MessageText != null ) )
             {
                 BitmapFont messageFont = Style?.MessageFont ?? font;
 
@@ -623,9 +625,9 @@ public class TextField : Widget
 
     protected virtual void DrawMessageText( IBatch batch, BitmapFont font, float x, float y, float maxWidth )
     {
-        if ( _messageText != null )
+        if ( MessageText != null )
         {
-            font.Draw( batch, _messageText, x, y, 0, _messageText.Length, maxWidth, _textAlign, false, "..." );
+            font.Draw( batch, MessageText, x, y, 0, MessageText.Length, maxWidth, _textAlign, false, "..." );
         }
     }
 
@@ -1365,12 +1367,12 @@ public class TextField : Widget
             base.TouchUp( ev, x, y, pointer, button );
         }
 
-        protected void GoHome( bool jump )
+        protected virtual void GoHome( bool jump )
         {
             _tf.Cursor = 0;
         }
 
-        protected void GoEnd( bool jump )
+        protected virtual void GoEnd( bool jump )
         {
             _tf.Cursor = _tf.Text?.Length ?? 1;
         }
@@ -1563,7 +1565,7 @@ public class TextField : Widget
         /// <returns>
         /// true if the focus should change to the <see cref="TextField.Next(bool)"/> input field.
         /// </returns>
-        protected bool CheckFocusTraversal( char character )
+        protected virtual bool CheckFocusTraversal( char character )
         {
             return _tf.FocusTraversal
                 && ( ( character == TAB )
@@ -1658,7 +1660,8 @@ public class TextField : Widget
                             return true;
                         }
 
-                        if ( !_tf.WithinMaxLength( _tf.Text!.Length - ( _tf.HasSelection
+                        if ( !_tf.WithinMaxLength( _tf.Text!.Length
+                                                 - ( _tf.HasSelection
                                                        ? Math.Abs( _tf.Cursor - _tf.SelectionStart )
                                                        : 0 ) ) )
                         {

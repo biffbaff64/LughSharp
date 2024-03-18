@@ -120,7 +120,7 @@ public class GLVersion : GDXVersion
         }
         else
         {
-            Logger.Err( $"Invalid version string: {versionString}" );
+            Logger.Error( $"Invalid version string: {versionString}" );
 
             MajorVersion    = 2;
             MinorVersion    = 0;
@@ -140,7 +140,7 @@ public class GLVersion : GDXVersion
         }
         catch ( FormatException )
         {
-            Logger.Err( $"Error parsing number: {v}, assuming: {defaultValue}" );
+            Logger.Error( $"Error parsing number: {v}, assuming: {defaultValue}" );
 
             return defaultValue;
         }

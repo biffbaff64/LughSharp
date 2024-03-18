@@ -34,6 +34,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 /// <summary>
 ///     A text input field with multiple lines.
 /// </summary>
+[PublicAPI]
 public class TextArea : TextField
 {
     // Last text processed. This attribute is used to avoid unnecessary
@@ -601,6 +602,7 @@ public class TextArea : TextField
     /// <summary>
     ///     Input listener for the text area.
     /// </summary>
+    [PublicAPI]
     public class TextAreaListener : TextFieldClickListener
     {
         private readonly TextArea _parent;
@@ -705,7 +707,7 @@ public class TextArea : TextField
             return result;
         }
 
-        protected bool CheckFocusTraversal( char character )
+        protected override bool CheckFocusTraversal( char character )
         {
             return _parent.FocusTraversal && ( character == TAB );
         }
@@ -719,7 +721,7 @@ public class TextArea : TextField
             return result;
         }
 
-        protected void GoHome( bool jump )
+        protected override void GoHome( bool jump )
         {
             if ( jump )
             {
@@ -731,7 +733,7 @@ public class TextArea : TextField
             }
         }
 
-        protected void GoEnd( bool jump )
+        protected override void GoEnd( bool jump )
         {
             if ( jump || ( _parent.CursorLine >= _parent.GetLines() ) )
             {

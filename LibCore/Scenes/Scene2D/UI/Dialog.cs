@@ -406,7 +406,7 @@ public class Dialog : Window
 
     private void DefaultSkinProvided()
     {
-        Logger.Dbg( "This method may only be used if the dialog was constructed "
+        Logger.Debug( "This method may only be used if the dialog was constructed "
                      + "with a Skin, a default Skin has been provided." );
     }
 

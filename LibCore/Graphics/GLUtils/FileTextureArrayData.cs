@@ -25,13 +25,13 @@
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
+[PublicAPI]
 public class FileTextureArrayData : ITextureArrayData
 {
     private readonly Pixmap.Format   _format;
     private readonly ITextureData?[] _textureData;
     private readonly bool            _useMipMaps;
     private          int             _depth;
-    private          bool            _prepared;
 
     public FileTextureArrayData( Pixmap.Format format, bool useMipMaps, FileInfo[] files )
     {
@@ -96,11 +96,8 @@ public class FileTextureArrayData : ITextureArrayData
 
             if ( ( width != data.Width ) || ( height != data.Height ) )
             {
-                throw new GdxRuntimeException
-                    (
-                    "Error whilst preparing TextureArray:"
-                  + "TextureArray Textures must have equal dimensions."
-                    );
+                throw new GdxRuntimeException( "Error whilst preparing TextureArray:"
+                                             + "TextureArray Textures must have equal dimensions." );
             }
         }
 
@@ -152,19 +149,17 @@ public class FileTextureArrayData : ITextureArrayData
                     disposePixmap = true;
                 }
 
-                Gdx.GL30.GLTexSubImage3D(
-                    IGL30.GL_TEXTURE_2D_ARRAY,
-                    0,
-                    0,
-                    0,
-                    i,
-                    pixmap.Width,
-                    pixmap.Height,
-                    1,
-                    pixmap.GLInternalFormat,
-                    pixmap.GLType,
-                    pixmap.Pixels
-                    );
+                Gdx.GL30?.GLTexSubImage3D( IGL30.GL_TEXTURE_2D_ARRAY,
+                                           0,
+                                           0,
+                                           0,
+                                           i,
+                                           pixmap.Width,
+                                           pixmap.Height,
+                                           1,
+                                           pixmap.GLInternalFormat,
+                                           pixmap.GLType,
+                                           pixmap.Pixels );
 
                 if ( _useMipMaps )
                 {

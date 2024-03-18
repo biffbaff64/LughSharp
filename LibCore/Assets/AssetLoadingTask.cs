@@ -38,7 +38,7 @@ public class AssetLoadingTask
 
     private readonly AssetLoaderBase _loader;
     private readonly AssetManager    _manager;
-    private volatile bool            _asyncDone = false;
+//    private volatile bool            _asyncDone = false;
     private          long            _startTime;
 
     // ------------------------------------------------------------------------
@@ -101,7 +101,7 @@ public class AssetLoadingTask
                                    Resolve( asyncLoader, AssetDesc ),
                                    AssetDesc.Parameters! );
 
-                _asyncDone = true;
+//                _asyncDone = true;
             }
         }
         else
@@ -111,7 +111,7 @@ public class AssetLoadingTask
                                Resolve( asyncLoader, AssetDesc ),
                                AssetDesc.Parameters! );
 
-            _asyncDone = true;
+//            _asyncDone = true;
         }
     }
 

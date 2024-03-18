@@ -592,7 +592,7 @@ public class SnapshotEnumerator<T> : IEnumerator< T >
             }
             catch ( NullReferenceException )
             {
-                Logger.Err( "NullReference encountered!" );
+                Logger.Error( "NullReference encountered!" );
 
                 throw;
             }

@@ -650,8 +650,8 @@ UTILS
 
     - Move Utils/Collections and Utils/Viewport out of Utils and into somewhere more appropriate.
 
-    - IP   - Align
-    - IP   - BinaryHeap
+    - DONE - Align
+    - DONE - BinaryHeap
     - IP   - Bits
     - IP   - Character
     - IP   - ComparableTimSort
@@ -672,16 +672,13 @@ UTILS
     - IP   - QuadTreeFloat
     - IP   - QuickSelect
     - IP   - Scaling
-    - IP   - ScreenUtils
-    - IP   - Select                         Renamed Selector (See SortedSetExtensions.cs)
-    - IP   - SharedLibraryLoader
-    - IP   - SharedLibraryLoader.SystemHelpers
-    - IP   - SortUtils
-    - IP   - StringTokenizer
-    - IP   - Timer                          
-    - IP   - TimeUtils
-    - IP   - TimSort
-    - IP   - Trace                          Addition
+    - DONE - ScreenUtils
+    - DONE - Select                         Renamed Selector (See SortedSetExtensions.cs)
+    - DONE - SortUtils
+    - DONE - StringTokenizer
+    - DONE - Timer                          
+    - DONE - TimeUtils
+    - DONE - TimSort
 
     - The following do not need converting
 
@@ -691,6 +688,7 @@ UTILS
     - **** - LittleEndianInputStream
     - **** - PauseableThread
     - **** - Queue                          Use system.collection.generics.Queue<T>?
+    - **** - SharedLibraryLoader
     - **** - SortedIntList                  Use SortedList<int>
     - **** - StreamUtils
     - **** - StringBuilder                  Use System.Text.StringBuilder

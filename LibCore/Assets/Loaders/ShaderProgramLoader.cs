@@ -124,7 +124,7 @@ public class ShaderProgramLoader
         if ( ( ( parameter == null ) || parameter.LogOnCompileFailure )
           && !shaderProgram.IsCompiled )
         {
-            Logger.Err( $"ShaderProgram {fileName} failed to compile:\n{shaderProgram.Log}" );
+            Logger.Error( $"ShaderProgram {fileName} failed to compile:\n{shaderProgram.Log}" );
         }
     }
 

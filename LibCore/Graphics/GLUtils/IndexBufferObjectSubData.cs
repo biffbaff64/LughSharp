@@ -43,6 +43,7 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 ///         when no longer needed.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class IndexBufferObjectSubData : IIndexData
 {
     private readonly ShortBuffer _buffer;
@@ -50,7 +51,6 @@ public class IndexBufferObjectSubData : IIndexData
     private readonly int         _usage;
     private          int         _bufferHandle;
     private          bool        _isBound = false;
-    private          bool        _isDirect;
     private          bool        _isDirty = true;
 
     /// <summary>
@@ -61,7 +61,6 @@ public class IndexBufferObjectSubData : IIndexData
     public IndexBufferObjectSubData( bool isStatic, int maxIndices )
     {
         _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
-        _isDirect   = true;
 
         _usage  = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
         _buffer = _byteBuffer.AsShortBuffer();
@@ -79,7 +78,6 @@ public class IndexBufferObjectSubData : IIndexData
     public IndexBufferObjectSubData( int maxIndices )
     {
         _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
-        _isDirect   = true;
 
         _usage  = IGL20.GL_STATIC_DRAW;
         _buffer = _byteBuffer.AsShortBuffer();

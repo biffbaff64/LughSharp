@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text;
-
 using LughSharp.LibCore.Maths;
 
 namespace LughSharp.LibCore.Utils;
@@ -44,8 +42,8 @@ namespace LughSharp.LibCore.Utils;
 public class PerformanceCounter
 {
     private const float NANO2_SECONDS = 1f / 1000000000.0f;
-    private       long  _lastTick     = 0L;
 
+    private long _lastTick  = 0L;
     private long _startTime = 0L;
 
     public PerformanceCounter( in string name ) : this( name, 5 )
@@ -112,7 +110,7 @@ public class PerformanceCounter
     {
         if ( !Valid )
         {
-            Logger.Err( "Invalid data, check if you called PerformanceCounter#stop()" );
+            Logger.Error( "Invalid data, check if you called PerformanceCounter#stop()" );
 
             return;
         }
@@ -166,27 +164,9 @@ public class PerformanceCounter
         Valid      = false;
     }
 
-    /// <summary>
-    /// </summary>
+    /// <inheritdoc />
     public override string ToString()
     {
-        var sb = new StringBuilder();
-
-        return ToString( sb ).ToString();
-    }
-
-    /// <summary>
-    ///     Creates a string in the form of "name [time: value, load: value]"
-    /// </summary>
-    public StringBuilder ToString( in StringBuilder sb )
-    {
-        sb.Append( Name )
-          .Append( ": [time: " )
-          .Append( Time.Value )
-          .Append( ", load: " )
-          .Append( Load.Value )
-          .Append( ']' );
-
-        return sb;
+        return $"{Name}: [time: {Time.Value}, load: {Load.Value}]";
     }
 }

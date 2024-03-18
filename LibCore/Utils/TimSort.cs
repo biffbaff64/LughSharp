@@ -98,6 +98,9 @@ public class TimSort<T>
     /// </summary>
     private const int INITIAL_TMP_STORAGE_LENGTH = 256;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     private readonly int[] _runBase;
     private readonly int[] _runLen;
 
@@ -139,6 +142,8 @@ public class TimSort<T>
     /// </summary>
     private T[] _tmp; // Actual runtime type will be Object[], regardless of T
     private int _tmpCount;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// </summary>
@@ -245,18 +250,17 @@ public class TimSort<T>
         }
         while ( remaining != 0 );
 
-        // Merge all remaining runs to complete sort
         #if ALLOW_ASSERTS
         Debug.Assert( lo == hi );
         #endif
 
+        // Merge all remaining runs to complete sort
         MergeForceCollapse();
 
         #if ALLOW_ASSERTS
         Debug.Assert( _stackSize == 1 );
         #endif
     }
-
 
     public static void Sort( T[] a, IComparer< T > c )
     {
@@ -322,11 +326,11 @@ public class TimSort<T>
         }
         while ( nRemaining != 0 );
 
-        // Merge all remaining runs to complete sort
         #if ALLOW_ASSERTS
         Debug.Assert( lo == hi );
         #endif
 
+        // Merge all remaining runs to complete sort
         ts.MergeForceCollapse();
 
         #if ALLOW_ASSERTS

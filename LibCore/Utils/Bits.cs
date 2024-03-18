@@ -29,6 +29,7 @@ namespace LughSharp.LibCore.Utils;
 ///     A bitset, without size limitation, allows comparison via
 ///     bitwise operators to other bitfields.
 /// </summary>
+[PublicAPI]
 public class Bits
 {
     private long[] _bits = { 0 };
@@ -44,13 +45,13 @@ public class Bits
     }
 
     /// <summary>
+    /// True if this bitset contains at least one bit set to true.
     /// </summary>
-    /// <value> true if this bitset contains at least one bit set to true </value>
     public bool NotEmpty => !Empty;
 
     /// <summary>
+    /// True if this bitset contains no bits that are set to true.
     /// </summary>
-    /// <returns> true if this bitset contains no bits that are set to true </returns>
     public bool Empty
     {
         get

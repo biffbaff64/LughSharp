@@ -36,6 +36,7 @@ namespace LughSharp.LibCore.Utils;
 ///     These methods can be used to get the entire screen content or a
 ///     portion thereof.
 /// </summary>
+[PublicAPI]
 public class ScreenUtils
 {
     /// <summary>
@@ -148,7 +149,7 @@ public class ScreenUtils
         return textureRegion;
     }
 
-    [Obsolete( "use <see cref=\"Pixmap.CreateFromFrameBuffer(int, int, int, int)\"/> instead." )]
+    // NB: This method is obsolete in Java LibGDX, but I've opted to reinstate it. 
     public static Pixmap GetFrameBufferPixmap( int x, int y, int w, int h )
     {
         return Pixmap.CreateFromFrameBuffer( x, y, w, h );

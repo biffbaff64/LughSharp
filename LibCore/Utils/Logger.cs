@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -32,10 +33,12 @@ namespace LughSharp.LibCore.Utils;
 ///     A class to write debug messages to console and a text file.
 ///     Primarily intended for flow tracing, messages will display calling
 ///     file/class/methods and any provided debug message.
-///     <see cref="TraceLevel" /> must be set to either <see cref="LOG_DEBUG" />,
-///     <see cref="LOG_INFO" />, or <see cref="LOG_ERROR" /> for messages to work.
-///     To enable writing to file, <see cref="EnableWriteToFile" /> must be TRUE
-///     and <see cref="OpenDebugFile" /> must be called.
+///     Debug messages will not work if (TraceLevel & LOG_DEBUG) is false.
+///     Error Debug messages will not work if (TraceLevel & LOG_ERROR) is false.
+///     <para>
+///         To enable writing to file, <see cref="EnableWriteToFile" /> must be TRUE
+///         and <see cref="OpenDebugFile" /> must be called.
+///     </para>
 /// </summary>
 [PublicAPI]
 public static class Logger
@@ -44,14 +47,12 @@ public static class Logger
 
     #region constants
 
+    // Enable / Disable flags.
     public const int LOG_NONE  = 0;
-    public const int LOG_SYS   = 1;
-    public const int LOG_DEBUG = 2;
-    public const int LOG_INFO  = 4;
-    public const int LOG_ERROR = 8;
+    public const int LOG_DEBUG = 1;
+    public const int LOG_ERROR = 2;
 
-    private const string DEBUG_TAG = "[Debug] ";
-    private const string INFO_TAG  = "[Info ] ";
+    private const string DEBUG_TAG = "[DEBUG] ";
     private const string ERROR_TAG = "[ERROR] ";
 
     #endregion constants
@@ -75,7 +76,7 @@ public static class Logger
     #region public methods
 
     /// <summary>
-    ///     Default Constructor.
+    /// Default Constructor.
     /// </summary>
     /// <param name="logLevel"></param>
     /// <param name="enableWriteToFile"></param>
@@ -94,44 +95,20 @@ public static class Logger
     }
 
     /// <summary>
-    /// 
+    /// Send a DEBUG message to output window/console.
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerMethod"></param>
-    /// <param name="callerLine"></param>
-    public static void Sys( string message = "",
-                            [CallerFilePath] string callerFilePath = "",
-                            [CallerMemberName] string callerMethod = "",
-                            [CallerLineNumber] int callerLine = 0 )
-    {
-        if ( message is "" )
-        {
-            message = "[[[ Empty Message ]]]";
-        }
-
-        CallerID callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
-
-        var str = CreateMessage( $"SYSLOG: {message}", callerID );
-
-        Console.WriteLine( str );
-
-        WriteToFile( str );
-    }
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="message"></param>
-    /// <param name="boxedDebug"></param>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerMethod"></param>
-    /// <param name="callerLine"></param>
-    public static void Dbg( string message,
-                            bool boxedDebug = false,
-                            [CallerFilePath] string callerFilePath = "",
-                            [CallerMemberName] string callerMethod = "",
-                            [CallerLineNumber] int callerLine = 0 )
+    /// <param name="message"> The message to send. </param>
+    /// <param name="boxedDebug">
+    /// If TRUE, a dividing line will be written before and after this debug message.    
+    /// </param>
+    /// <param name="callerFilePath"> The File this message was sent from. </param>
+    /// <param name="callerMethod"> The Method this message was sent from. </param>
+    /// <param name="callerLine"> The Line this message was sent from. </param>
+    public static void Debug( string message,
+                              bool boxedDebug = false,
+                              [CallerFilePath] string callerFilePath = "",
+                              [CallerMemberName] string callerMethod = "",
+                              [CallerLineNumber] int callerLine = 0 )
     {
         if ( !IsEnabled( LOG_DEBUG ) )
         {
@@ -150,7 +127,7 @@ public static class Logger
         Console.WriteLine( str );
 
         WriteToFile( str );
-        
+
         if ( boxedDebug )
         {
             Divider();
@@ -164,10 +141,10 @@ public static class Logger
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
     /// <param name="callerLine"></param>
-    public static void Err( string message,
-                            [CallerFilePath] string callerFilePath = "",
-                            [CallerMemberName] string callerMethod = "",
-                            [CallerLineNumber] int callerLine = 0 )
+    public static void Error( string message,
+                              [CallerFilePath] string callerFilePath = "",
+                              [CallerMemberName] string callerMethod = "",
+                              [CallerLineNumber] int callerLine = 0 )
     {
         if ( !IsEnabled( LOG_ERROR ) )
         {
@@ -191,11 +168,11 @@ public static class Logger
     /// <param name="callerFilePath"></param>
     /// <param name="callerMethod"></param>
     /// <param name="callerLine"></param>
-    public static void OnCondition( string message,
-                                    bool condition = false,
-                                    [CallerFilePath] string callerFilePath = "",
-                                    [CallerMemberName] string callerMethod = "",
-                                    [CallerLineNumber] int callerLine = 0 )
+    public static void DebugCondition( string message,
+                                       bool condition = false,
+                                       [CallerFilePath] string callerFilePath = "",
+                                       [CallerMemberName] string callerMethod = "",
+                                       [CallerLineNumber] int callerLine = 0 )
     {
         if ( !IsEnabled( LOG_DEBUG ) || !condition )
         {
@@ -305,6 +282,12 @@ public static class Logger
         fs.Close();
     }
 
+    public static void DisableLogDebug() => TraceLevel ^= ( 1 << LOG_DEBUG );
+    public static void DisableLogError() => TraceLevel ^= ( 1 << LOG_ERROR );
+
+    public static void EnableLogDebug() => TraceLevel |= LOG_DEBUG;
+    public static void EnableLogError() => TraceLevel |= LOG_ERROR;
+
     #endregion public methods
 
     // ------------------------------------------------------------------------
@@ -332,7 +315,7 @@ public static class Logger
 
         return sb.ToString();
     }
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -401,9 +384,7 @@ public static class Logger
     {
         return traceLevel switch
                {
-                   LOG_SYS
-                       or LOG_DEBUG
-                       or LOG_INFO
+                   LOG_DEBUG
                        or LOG_ERROR => ( TraceLevel & traceLevel ) != 0,
                    _ => false
                };

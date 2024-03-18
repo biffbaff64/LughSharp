@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Utils;
 
+[PublicAPI]
 public abstract class DataUtils
 {
     /// <summary>

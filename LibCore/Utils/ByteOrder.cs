@@ -29,6 +29,7 @@ namespace LughSharp.LibCore.Utils;
 ///     A typesafe enumeration for byte orders.
 /// </summary>
 /// <remarks>Not sure if this is still needed.</remarks>
+[PublicAPI]
 public class ByteOrder
 {
     public readonly static ByteOrder NativeOrder = new( "NativeOrder" );
@@ -59,8 +60,5 @@ public class ByteOrder
     ///     </para>
     /// </summary>
     /// <returns>The specified string</returns>
-    public override string ToString()
-    {
-        return _name;
-    }
+    public override string ToString() => _name;
 }

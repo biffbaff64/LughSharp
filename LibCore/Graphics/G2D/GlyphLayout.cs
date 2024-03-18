@@ -59,9 +59,9 @@ public class GlyphLayout : IPoolable
 
     // ------------------------------------------------------------------------
     
-    private readonly static Pool< GlyphRun > _glyphRunPool = Pools< GlyphRun >.Get();
-    private readonly static Pool< Color >    _colorPool    = Pools< Color >.Get();
-    private readonly static List< Color >    _colorStack   = new( 4 );
+    private readonly Pool< GlyphRun > _glyphRunPool = Pools< GlyphRun >.Get();
+    private readonly Pool< Color >    _colorPool    = Pools< Color >.Get();
+    private readonly List< Color >    _colorStack   = new( 4 );
 
     private readonly static float _epsilon = 0.0001f;
 
@@ -340,7 +340,7 @@ public class GlyphLayout : IPoolable
 
                         if ( truncate != null )
                         {
-                            Truncate( fontData, run, targetWidth, truncate, i, _glyphRunPool );
+                            Truncate( fontData, run, targetWidth, truncate, i );
 
                             goto outer;
                         }
@@ -555,14 +555,19 @@ public class GlyphLayout : IPoolable
                            int widthIndex )
     {
         // Determine truncate string size.
-        GlyphRun? truncateRun = runPool.Obtain();
+        GlyphRun? truncateRun = this._glyphRunPool.Obtain();
 
+        if ( truncateRun == null )
+        {
+            throw new GdxRuntimeException( "Null GlyphRub obtained!" );
+        }
+        
         fontData.GetGlyphs( truncateRun, truncate, 0, truncate.Length, null );
 
         float   truncateWidth = 0;
         float[] xAdvances;
 
-        if ( truncateRun?.XAdvances.Count > 0 )
+        if ( truncateRun.XAdvances.Count > 0 )
         {
             AdjustLastGlyph( fontData, truncateRun );
 
@@ -604,7 +609,7 @@ public class GlyphLayout : IPoolable
 
             AdjustLastGlyph( fontData, run );
 
-            if ( truncateRun?.XAdvances.Count > 0 )
+            if ( truncateRun.XAdvances.Count > 0 )
             {
                 run.XAdvances.AddAll( truncateRun.XAdvances, 1, truncateRun.XAdvances.Count - 1 );
             }
@@ -619,7 +624,7 @@ public class GlyphLayout : IPoolable
 
         run.Glyphs.AddAll( truncateRun.Glyphs );
 
-        runPool.Free( truncateRun );
+        this._glyphRunPool.Free( truncateRun );
     }
 
     /// <summary>
@@ -832,6 +837,7 @@ public class GlyphLayout : IPoolable
     ///     Stores glyphs and positions for a piece of text which is a single
     ///     color and does not span multiple lines.
     /// </summary>
+    [PublicAPI]
     public class GlyphRun : IPoolable
     {
         public List< BitmapFont.Glyph > Glyphs    { get; set; } = null!;

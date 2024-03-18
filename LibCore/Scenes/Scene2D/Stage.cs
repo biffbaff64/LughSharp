@@ -54,6 +54,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 ///     thread). Methods should be reentrant, so you can update Actors and Stages from within
 ///     callbacks and handlers.
 /// </summary>
+[PublicAPI]
 public class Stage : InputAdapter
 {
     private readonly bool _ownsBatch;
@@ -62,7 +63,7 @@ public class Stage : InputAdapter
     private readonly int[]                       _pointerScreenX    = new int[ 20 ];
     private readonly int[]                       _pointerScreenY    = new int[ 20 ];
     private readonly bool[]                      _pointerTouched    = new bool[ 20 ];
-    private readonly Group                       _root              = null;
+    private readonly Group                       _root              = null!;
     private readonly Vector2                     _tempCoords        = new();
     public readonly  SnapshotArray< TouchFocus > touchFocuses       = new( true, 4 );
 

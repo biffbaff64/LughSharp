@@ -27,6 +27,7 @@ using LughSharp.LibCore.Utils.Buffers;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
+[PublicAPI]
 public class IndexBufferObject : IIndexData
 {
     private readonly ShortBuffer _buffer;
@@ -36,7 +37,6 @@ public class IndexBufferObject : IIndexData
     private readonly int         _usage;
     private          int         _bufferHandle;
     private          bool        _isBound = false;
-    private          bool        _isDirect;
     private          bool        _isDirty = true;
 
     public IndexBufferObject( int maxIndices )
@@ -54,7 +54,6 @@ public class IndexBufferObject : IIndexData
         }
 
         _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
-        _isDirect   = true;
         _buffer     = _byteBuffer.AsShortBuffer();
         _ownsBuffer = true;
 

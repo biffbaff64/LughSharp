@@ -54,7 +54,7 @@ public class FPSLogger
 
             if ( fps < _bound )
             {
-                Logger.Sys( "fps: {fps}" );
+                Logger.Debug( "fps: {fps}" );
 
                 _startTime = nanoTime;
             }

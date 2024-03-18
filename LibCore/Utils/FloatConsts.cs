@@ -25,7 +25,8 @@
 
 namespace LughSharp.LibCore.Utils;
 
-public record FloatConsts
+[PublicAPI]
+public class FloatConsts
 {
     public const float POSITIVE_INFINITY = float.PositiveInfinity;
     public const float NEGATIVE_INFINITY = float.NegativeInfinity;

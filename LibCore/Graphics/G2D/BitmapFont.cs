@@ -827,7 +827,7 @@ public class BitmapFont
                     }
                     catch ( Exception e )
                     {
-                        Logger.Err( $"IGNORED NumberFormatException: {e.Message}" );
+                        Logger.Error( $"IGNORED NumberFormatException: {e.Message}" );
                     }
                 }
 
@@ -969,7 +969,7 @@ public class BitmapFont
                         }
                         catch ( Exception ignored )
                         {
-                            Logger.Err( $"IGNORED NumberFormatException: {ignored.Message}" );
+                            Logger.Error( $"IGNORED NumberFormatException: {ignored.Message}" );
                         }
                     }
 

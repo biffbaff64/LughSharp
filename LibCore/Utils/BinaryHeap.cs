@@ -34,6 +34,7 @@ namespace LughSharp.LibCore.Utils;
 ///     To change the contents of <see cref="Value" /> use <see cref="BinaryHeap{T}.Add(T, float)" />
 ///     if the node is NOT in the heap, otherwise use <see cref="BinaryHeap{T}.SetValue(T, float)" />.
 /// </summary>
+[PublicAPI]
 public record BinaryHeapNode
 {
     public float Value { get; set; }
@@ -47,6 +48,7 @@ public record BinaryHeapNode
 ///         The <see cref="BinaryHeapNode" /> class can be extended to store additional information.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class BinaryHeap<T> where T : BinaryHeapNode
 {
     private const int DEFAULT_CAPACITY = 16;

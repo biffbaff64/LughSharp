@@ -27,6 +27,7 @@ using LughSharp.LibCore.Graphics;
 
 namespace LughSharp.LibCore.Core;
 
+[PublicAPI]
 public interface IGraphics
 {
     #region nested classes
@@ -34,6 +35,7 @@ public interface IGraphics
     /// <summary>
     ///     Describes a fullscreen display mode.
     /// </summary>
+    [PublicAPI]
     public class DisplayModeDescriptor
     {
         public DisplayModeDescriptor( int width, int height, int refreshRate, int bitsPerPixel )
@@ -58,6 +60,7 @@ public interface IGraphics
     /// <summary>
     ///     Describes a monitor, with X, Y, and Name properties.
     /// </summary>
+    [PublicAPI]
     public class MonitorDescriptor
     {
         public MonitorDescriptor( int x, int y, string name )
@@ -76,7 +79,8 @@ public interface IGraphics
     ///     Class describing the bits per pixel, depth buffer precision,
     ///     stencil precision and number of MSAA samples.
     /// </summary>
-    public record BufferFormatDescriptor
+    [PublicAPI]
+    public class BufferFormatDescriptor
     {
         public int R       { get; set; } // number of bits per color channel.
         public int G       { get; set; } // ...

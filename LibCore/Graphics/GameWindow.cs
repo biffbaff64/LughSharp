@@ -22,8 +22,6 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using LughSharp.Backends.DesktopGL;
-
 namespace LughSharp.LibCore.Graphics;
 
 [PublicAPI]

@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class NumberUtils
 {
     public static int FloatToIntBits( float value )

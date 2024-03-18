@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Utils;
 
+[PublicAPI]
 public class DataInput : BinaryReader
 {
     private char[] _chars = new char[ 32 ];
@@ -75,14 +76,9 @@ public class DataInput : BinaryReader
     {
         var charCount = ReadInt( true );
 
-        switch ( charCount )
-        {
-            case 0:
-                return null;
+        if ( charCount == 0 ) return null;
 
-            case 1:
-                return "";
-        }
+        if ( charCount == 1 ) return "";
 
         charCount--;
 
@@ -145,6 +141,9 @@ public class DataInput : BinaryReader
 
                     break;
                 }
+
+                default:
+                    break;
             }
 
             if ( ++charIndex >= charCount )

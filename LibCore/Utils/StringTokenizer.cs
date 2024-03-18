@@ -84,21 +84,21 @@ namespace LughSharp.LibCore.Utils;
 ///         The following example illustrates how the <tt>String.split</tt>
 ///         method can be used to break up a string into its basic tokens:
 ///         <code>
-///     string[] result = "this is a test".split("\\s");
-///     for ( int x=0; x&lt;result.Length; x++ )
-///     {
-///         Console.WriteLine( result[ x ] );
-///     }
-/// </code>
+///         string[] result = "this is a test".split("\\s");
+///         for ( int x=0; x&lt;result.Length; x++ )
+///         {
+///             Console.WriteLine( result[ x ] );
+///         }
+///         </code>
 ///     </para>
 ///     <para>
 ///         prints the following output:
 ///         <code>
-///     this
-///     is
-///     a
-///     test
-/// </code>
+///         this
+///         is
+///         a
+///         test
+///         </code>
 ///     </para>
 /// </summary>
 [PublicAPI]
@@ -115,7 +115,7 @@ public class StringTokenizer
     ///     points and isDelimiter(int) is used to determine if the given
     ///     codepoint is a delimiter.
     /// </summary>
-    private int[]? _delimiterCodePoints;
+    private int[]?  _delimiterCodePoints;
     private string? _delimiters;
     private bool    _delimsChanged;
 

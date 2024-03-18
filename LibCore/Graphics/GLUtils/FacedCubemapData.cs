@@ -25,9 +25,10 @@
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
+[PublicAPI]
 public class FacedCubemapData : ICubemapData
 {
-    private readonly ITextureData?[]? _data = new ITextureData[ 6 ];
+    private readonly ITextureData?[] _data = new ITextureData[ 6 ];
 
     /// <summary>
     ///     Construct an empty Cubemap. Use the load(...) methods to set the texture
@@ -47,14 +48,12 @@ public class FacedCubemapData : ICubemapData
                              FileInfo positiveZ,
                              FileInfo negativeZ,
                              bool useMipMaps = false )
-        : this(
-            ITextureData.Factory.LoadFromFile( positiveX, useMipMaps ),
-            ITextureData.Factory.LoadFromFile( negativeX, useMipMaps ),
-            ITextureData.Factory.LoadFromFile( positiveY, useMipMaps ),
-            ITextureData.Factory.LoadFromFile( negativeY, useMipMaps ),
-            ITextureData.Factory.LoadFromFile( positiveZ, useMipMaps ),
-            ITextureData.Factory.LoadFromFile( negativeZ, useMipMaps )
-            )
+        : this( ITextureData.Factory.LoadFromFile( positiveX, useMipMaps ),
+                ITextureData.Factory.LoadFromFile( negativeX, useMipMaps ),
+                ITextureData.Factory.LoadFromFile( positiveY, useMipMaps ),
+                ITextureData.Factory.LoadFromFile( negativeY, useMipMaps ),
+                ITextureData.Factory.LoadFromFile( positiveZ, useMipMaps ),
+                ITextureData.Factory.LoadFromFile( negativeZ, useMipMaps ) )
     {
     }
 
@@ -68,14 +67,12 @@ public class FacedCubemapData : ICubemapData
                              Pixmap? positiveZ,
                              Pixmap? negativeZ,
                              bool useMipMaps = false )
-        : this(
-            positiveX == null ? null : new PixmapTextureData( positiveX, null, useMipMaps, false ),
-            negativeX == null ? null : new PixmapTextureData( negativeX, null, useMipMaps, false ),
-            positiveY == null ? null : new PixmapTextureData( positiveY, null, useMipMaps, false ),
-            negativeY == null ? null : new PixmapTextureData( negativeY, null, useMipMaps, false ),
-            positiveZ == null ? null : new PixmapTextureData( positiveZ, null, useMipMaps, false ),
-            negativeZ == null ? null : new PixmapTextureData( negativeZ, null, useMipMaps, false )
-            )
+        : this( positiveX == null ? null : new PixmapTextureData( positiveX, null, useMipMaps, false ),
+                negativeX == null ? null : new PixmapTextureData( negativeX, null, useMipMaps, false ),
+                positiveY == null ? null : new PixmapTextureData( positiveY, null, useMipMaps, false ),
+                negativeY == null ? null : new PixmapTextureData( negativeY, null, useMipMaps, false ),
+                positiveZ == null ? null : new PixmapTextureData( positiveZ, null, useMipMaps, false ),
+                negativeZ == null ? null : new PixmapTextureData( negativeZ, null, useMipMaps, false ) )
     {
     }
 
@@ -83,14 +80,12 @@ public class FacedCubemapData : ICubemapData
     ///     Construct a Cubemap with <see cref="Pixmap" />s for each side of the specified size.
     /// </summary>
     public FacedCubemapData( int width, int height, int depth, Pixmap.Format format )
-        : this(
-            new PixmapTextureData( new Pixmap( depth, height, format ), null, false, true ),
-            new PixmapTextureData( new Pixmap( depth, height, format ), null, false, true ),
-            new PixmapTextureData( new Pixmap( width, depth, format ), null, false, true ),
-            new PixmapTextureData( new Pixmap( width, depth, format ), null, false, true ),
-            new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ),
-            new PixmapTextureData( new Pixmap( width, height, format ), null, false, true )
-            )
+        : this( new PixmapTextureData( new Pixmap( depth, height, format ), null, false, true ),
+                new PixmapTextureData( new Pixmap( depth, height, format ), null, false, true ),
+                new PixmapTextureData( new Pixmap( width, depth, format ), null, false, true ),
+                new PixmapTextureData( new Pixmap( width, depth, format ), null, false, true ),
+                new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ),
+                new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ) )
     {
     }
 
@@ -127,13 +122,15 @@ public class FacedCubemapData : ICubemapData
 
         for ( var i = 0; i < _data.Length; i++ )
         {
+            if ( _data[ i ] == null ) continue;
+            
             if ( _data[ i ]!.TextureDataType == ITextureData.TextureType.Custom )
             {
                 _data[ i ]!.ConsumeCustomData( IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i );
             }
             else
             {
-                Pixmap pixmap        = _data[ i ]!.ConsumePixmap();
+                Pixmap pixmap        = _data[ i ]!.ConsumePixmap()!;
                 var    disposePixmap = _data[ i ]!.DisposePixmap();
 
                 if ( _data[ i ]!.GetFormat() != pixmap.GetFormat() )
@@ -154,17 +151,15 @@ public class FacedCubemapData : ICubemapData
 
                 Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 1 );
 
-                Gdx.GL.GLTexImage2D(
-                    IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                    0,
-                    pixmap.GLInternalFormat,
-                    pixmap.Width,
-                    pixmap.Height,
-                    0,
-                    pixmap.GLFormat,
-                    pixmap.GLType,
-                    pixmap.Pixels
-                    );
+                Gdx.GL.GLTexImage2D( IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                                     0,
+                                     pixmap.GLInternalFormat,
+                                     pixmap.Width,
+                                     pixmap.Height,
+                                     0,
+                                     pixmap.GLFormat,
+                                     pixmap.GLType,
+                                     pixmap.Pixels );
 
                 if ( disposePixmap )
                 {
@@ -173,6 +168,7 @@ public class FacedCubemapData : ICubemapData
             }
         }
     }
+    
 
     /// <summary>
     ///     The width of the pixel data.
@@ -225,14 +221,11 @@ public class FacedCubemapData : ICubemapData
             throw new GdxRuntimeException( "Cubemap data must be complete before use!" );
         }
 
-        if ( _data != null )
+        foreach ( ITextureData? data in _data )
         {
-            foreach ( ITextureData? data in _data )
+            if ( data is { IsPrepared: false } )
             {
-                if ( data is { IsPrepared: false } )
-                {
-                    data.Prepare();
-                }
+                data.Prepare();
             }
         }
     }
@@ -252,7 +245,8 @@ public class FacedCubemapData : ICubemapData
             throw new GdxRuntimeException( $"Cannot load {file.Name}, _data is null!" );
         }
 
-        _data[ side.Index ] = ITextureData.Factory.LoadFromFile( file, false );
+        _data[ side.Index ] = ITextureData.Factory.LoadFromFile( file, false )
+                           ?? throw new GdxRuntimeException( $"Error loading {file.Name}" );
     }
 
     /// <summary>
@@ -270,7 +264,8 @@ public class FacedCubemapData : ICubemapData
             throw new GdxRuntimeException( "Cannot load pixmap, _data is null!" );
         }
 
-        _data[ side.Index ] = pixmap == null ? null : new PixmapTextureData( pixmap, null, false, false );
+        _data[ side.Index ] = ( pixmap == null ? null : new PixmapTextureData( pixmap, null, false, false ) )
+                           ?? throw new GdxRuntimeException( $"Error loadin pixmap" );
     }
 
     /// <summary>
@@ -279,7 +274,7 @@ public class FacedCubemapData : ICubemapData
     /// </summary>
     public ITextureData? TextureData( Cubemap.CubemapSide side )
     {
-        return _data?[ side.Index ];
+        return _data[ side.Index ];
     }
 
     /// <summary>
@@ -287,11 +282,6 @@ public class FacedCubemapData : ICubemapData
     /// </summary>
     public bool IsComplete()
     {
-        if ( _data == null )
-        {
-            return false;
-        }
-
         foreach ( ITextureData? data in _data )
         {
             if ( data == null )

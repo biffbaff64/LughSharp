@@ -31,6 +31,7 @@ namespace LughSharp.LibCore.Utils;
 ///     to avoid allocation. The sorting is otherwise identical to the Arrays.sort
 ///     methods (uses timsort).
 /// </summary>
+[PublicAPI]
 public class SortUtils
 {
     public static void Sort<T>( List< T > a ) where T : IComparable< T >

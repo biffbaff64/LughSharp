@@ -68,7 +68,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     #endregion public properties
 
     // ------------------------------------------------------------------------
-    
+
     private static   GlfwErrorCallback? _errorCallback = null;
     private readonly Sync?              _sync          = null;
     private volatile DesktopGLWindow?   _currentWindow = null;
@@ -103,7 +103,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             }
             catch ( Exception e )
             {
-                Logger.Dbg( $"Couldn't initialize audio, disabling audio: {e}" );
+                Logger.Debug( $"Couldn't initialize audio, disabling audio: {e}" );
 
                 Audio = new MockAudio();
             }
@@ -123,7 +123,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Gdx.Net   = Network;
 
         Windows.Add( CreateWindow( config, listener, 0 ) );
+    }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public void Run()
+    {
         try
         {
             Loop();

@@ -34,7 +34,8 @@ namespace LughSharp.LibCore.Utils;
 ///     <see cref="Dictionary{TK,TV}" /> with the same line-oriented syntax supported
 ///     by <see cref="IPreferences" />
 /// </summary>
-public class PropertiesUtils
+[PublicAPI]
+public static class PropertiesUtils
 {
     private const int    NONE           = 0;
     private const int    SLASH          = 1;
@@ -43,10 +44,6 @@ public class PropertiesUtils
     private const int    KEY_DONE       = 4;
     private const int    IGNORE         = 5;
     private const string LINE_SEPARATOR = "\n";
-
-    private PropertiesUtils()
-    {
-    }
 
     /// <summary>
     ///     Adds to the specified <see cref="Dictionary{T,K}" /> the key/value pairs
@@ -71,8 +68,6 @@ public class PropertiesUtils
         var offset    = 0;
         var keyLength = -1;
         var firstChar = true;
-
-//        var br = new StreamReader( reader );
 
         while ( true )
         {

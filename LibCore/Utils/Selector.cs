@@ -37,6 +37,7 @@ namespace LughSharp.LibCore.Utils;
 ///     The underlying algorithms used are a naive single-pass for k = min and k =max, and
 ///     Hoare's quickselect for values in between.
 /// </summary>
+[PublicAPI]
 public class Selector<T>
 {
     private       QuickSelect< T >? _quickSelect;

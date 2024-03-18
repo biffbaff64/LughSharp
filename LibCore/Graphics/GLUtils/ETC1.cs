@@ -43,8 +43,7 @@ public class ETC1
     ///     The PKM header size in bytes
     /// </summary>
     public const int PKM_HEADER_SIZE = 16;
-    public const int ETC1_RGB8_OES = 0x00008d64;
-
+    public const int ETC1_RGB8_OES     = 0x00008d64;
     public const int RGB565_PIXEL_SIZE = 2;
     public const int RGB888_PIXEL_SIZE = 3;
 
@@ -283,6 +282,7 @@ public class ETC1
     /// <summary>
     ///     Class for storing ETC1 compressed image data.
     /// </summary>
+    [PublicAPI]
     public class ETC1Data : IDisposable
     {
         public ETC1Data( int width, int height, ByteBuffer compressedData, int dataOffset )

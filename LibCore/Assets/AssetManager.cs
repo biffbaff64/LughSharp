@@ -293,7 +293,7 @@ public class AssetManager
         {
             if ( _tasks.First().AssetDesc.Filepath == fileName )
             {
-                Logger.Dbg( $"Unload (from tasks): {fileName}" );
+                Logger.Debug( $"Unload (from tasks): {fileName}" );
 
                 _tasks.First().Cancel = true;
                 _tasks.First().Unload();
@@ -325,7 +325,7 @@ public class AssetManager
 
             _loadQueue.RemoveAt( foundIndex );
 
-            Logger.Dbg( $"Unload (from queue): {fileName}" );
+            Logger.Debug( $"Unload (from queue): {fileName}" );
 
             // if the queued asset was already loaded, let the callback know it is available.
             if ( ( type != null ) && desc.Parameters is { LoadedCallback: not null } )
@@ -350,7 +350,7 @@ public class AssetManager
 
             if ( assetRef[ fileName ].RefCount <= 0 )
             {
-                Logger.Dbg( $"Unload (dispose): {fileName}" );
+                Logger.Debug( $"Unload (dispose): {fileName}" );
 
                 if ( assetRef[ fileName ].Asset is IDisposable disposable )
                 {
@@ -363,7 +363,7 @@ public class AssetManager
             }
             else
             {
-                Logger.Dbg( $"Unload (decrement): {fileName}" );
+                Logger.Debug( $"Unload (decrement): {fileName}" );
             }
 
             // remove any dependencies (or just decrement their ref count).
@@ -574,7 +574,7 @@ public class AssetManager
 
         _loadQueue.Add( assetDesc );
 
-        Logger.Dbg( $"Queued: {assetDesc}" );
+        Logger.Debug( $"Queued: {assetDesc}" );
     }
 
     /// <summary>
@@ -659,14 +659,14 @@ public class AssetManager
     /// </summary>
     public void FinishLoading()
     {
-        Logger.Dbg( "Waiting for loading to complete..." );
+        Logger.Debug( "Waiting for loading to complete..." );
 
         while ( !Update() )
         {
             //
         }
 
-        Logger.Dbg( "Loading complete." );
+        Logger.Debug( "Loading complete." );
     }
 
     /// <summary>
@@ -688,7 +688,7 @@ public class AssetManager
     {
         Debug.Assert( fileName != null, $"{nameof( fileName )} is null" );
 
-        Logger.Dbg( $"Waiting for asset to be loaded: {fileName}" );
+        Logger.Debug( $"Waiting for asset to be loaded: {fileName}" );
 
         while ( true )
         {
@@ -706,7 +706,7 @@ public class AssetManager
 
                         if ( asset != null )
                         {
-                            Logger.Dbg( $"Asset loaded: {fileName}" );
+                            Logger.Debug( $"Asset loaded: {fileName}" );
 
                             return asset;
                         }
@@ -767,7 +767,7 @@ public class AssetManager
         // if the asset is already loaded, increase its reference count.
         if ( IsLoaded( dependendAssetDesc.Filepath ) )
         {
-            Logger.Dbg( $"Dependency already loaded: {dependendAssetDesc}" );
+            Logger.Debug( $"Dependency already loaded: {dependendAssetDesc}" );
 
             Type? type = _assetTypes[ dependendAssetDesc.Filepath ];
 
@@ -783,7 +783,7 @@ public class AssetManager
         else
         {
             // else add a new task for the asset.
-            Logger.Dbg( $"Loading dependency: {dependendAssetDesc}" );
+            Logger.Debug( $"Loading dependency: {dependendAssetDesc}" );
 
             AddTask( dependendAssetDesc );
         }
@@ -803,7 +803,7 @@ public class AssetManager
         // loaded, increase its reference count
         if ( IsLoaded( assetDesc.Filepath ) )
         {
-            Logger.Dbg( $"Already loaded: {assetDesc}" );
+            Logger.Debug( $"Already loaded: {assetDesc}" );
 
             Type? type = _assetTypes[ assetDesc.Filepath ];
 
@@ -825,7 +825,7 @@ public class AssetManager
         else
         {
             // else add a new task for the asset.
-            Logger.Dbg( $"Loading: {assetDesc}" );
+            Logger.Debug( $"Loading: {assetDesc}" );
 
             AddTask( assetDesc );
         }
@@ -969,7 +969,7 @@ public class AssetManager
     /// <param name="t"></param>
     public void HandleTaskError( Exception t )
     {
-        Logger.Err( $"Error loading asset: {t}" );
+        Logger.Error( $"Error loading asset: {t}" );
 
         if ( _tasks.Count == 0 )
         {
@@ -1040,7 +1040,7 @@ public class AssetManager
 
             _loaders[ type ]?.Put( suffix ?? "", loader );
 
-            Logger.Dbg( $"Loader set: {type.Name} -> {loader.GetType().Name}" );
+            Logger.Debug( $"Loader set: {type.Name} -> {loader.GetType().Name}" );
         }
     }
 

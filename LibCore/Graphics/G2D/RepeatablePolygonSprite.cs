@@ -39,7 +39,6 @@ public class RepeatablePolygonSprite
     private readonly List< float[] >  _vertices = new();
     private          Color            _color    = Color.White;
     private          int              _cols;
-    private          float            _density;
     private          bool             _dirty = true;
     private          float            _gridHeight;
     private          float            _gridWidth;
@@ -50,24 +49,13 @@ public class RepeatablePolygonSprite
     public  float          Y { get; set; } = 0;
 
     /// <summary>
-    ///     Sets polygon with repeating texture region, the size of
-    ///     repeating grid is equal to region size
-    /// </summary>
-    /// <param name="region"> region to repeat </param>
-    /// <param name="vertices"> cw vertices of polygon </param>
-    public void SetPolygon( TextureRegion region, float[]? vertices )
-    {
-        SetPolygon( region, vertices, -1 );
-    }
-
-    /// <summary>
     ///     Sets polygon with repeating texture region, the size of repeating
     ///     grid is equal to region size
     /// </summary>
     /// <param name="region"> region to repeat </param>
     /// <param name="vertices"> cw vertices of polygon </param>
     /// <param name="density"> number of regions per polygon width bound </param>
-    public void SetPolygon( TextureRegion region, float[]? vertices, float density )
+    public void SetPolygon( TextureRegion region, float[]? vertices, float density = -1 )
     {
         _region = region;
 

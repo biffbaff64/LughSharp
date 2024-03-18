@@ -76,7 +76,7 @@ public class GLLoggingListener : IGLErrorListener
             // ignored
         }
 
-        Logger.Err( place != null
+        Logger.Error( place != null
                            ? $"Error {BaseGLInterceptor.ResolveErrorNumber( error )} from {place}"
 
                            // This will capture current stack trace for logging, if possible
