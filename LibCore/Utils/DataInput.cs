@@ -112,6 +112,12 @@ public class DataInput : BinaryReader
         return new string( _chars, 0, charCount );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="charCount"></param>
+    /// <param name="charIndex"></param>
+    /// <param name="b"></param>
     private void ReadUtf8Slow( int charCount, int charIndex, int b )
     {
         while ( true )

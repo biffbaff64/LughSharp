@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Utils;
 
+[PublicAPI]
 public static class Character
 {
     /// <summary>

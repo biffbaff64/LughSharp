@@ -165,7 +165,7 @@ public class Bits
     /// <summary>
     /// </summary>
     /// <param name="index"> the index of the bit to clear </param>
-    public void Clear( int index )
+    public void ClearBit( int index )
     {
         var word = index >>> 6;
 
@@ -180,7 +180,7 @@ public class Bits
     /// <summary>
     ///     Clears the entire bitset
     /// </summary>
-    public void Clear()
+    public void ClearAll()
     {
         Array.Fill( _bits, 0 );
     }
@@ -194,9 +194,8 @@ public class Bits
     }
 
     /// <summary>
-    ///     Returns the "logical size" of this bitset: the index of the highest set bit in the bitset plus one. Returns zero if
-    ///     the
-    ///     bitset contains no set bits.
+    ///     Returns the "logical size" of this bitset: the index of the highest set
+    ///     bit in the bitset plus one. Returns zero if the bitset contains no set bits.
     /// </summary>
     /// <returns> the logical size of this bitset  </returns>
     public int Length()

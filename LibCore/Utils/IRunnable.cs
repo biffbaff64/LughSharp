@@ -25,4 +25,7 @@
 
 namespace LughSharp.LibCore.Utils;
 
-public delegate void Runnable();
+public interface IRunnable
+{
+    public delegate void Runnable();
+}

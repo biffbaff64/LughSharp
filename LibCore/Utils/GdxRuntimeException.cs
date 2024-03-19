@@ -33,6 +33,7 @@ namespace LughSharp.LibCore.Utils;
 /// <summary>
 ///     Typed runtime exception used throughout LughSharp.
 /// </summary>
+[PublicAPI]
 public class GdxRuntimeException : Exception
 {
     public GdxRuntimeException( string? message = "" )

@@ -45,6 +45,7 @@ public class ByteOrder
     ///     a multibyte value are ordered from least significant to most significant.
     /// </summary>
     public readonly static ByteOrder LittleEndian = new( "LittleEndian" );
+
     private readonly string _name;
 
     private ByteOrder( string name )

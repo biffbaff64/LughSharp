@@ -45,9 +45,9 @@ public class DesktopGLWindow : IDisposable
     // ------------------------------------------------------------------------
 
     private readonly IDesktopGLApplicationBase _application;
-    private readonly List< Runnable >          _executedRunnables = new();
+    private readonly List< IRunnable.Runnable >          _executedRunnables = new();
     private readonly bool                      _iconified         = false;
-    private readonly List< Runnable >          _runnables         = new();
+    private readonly List< IRunnable.Runnable >          _runnables         = new();
     private readonly Vector2                   _tmpV2             = new();
 
     private bool _requestRendering = false;
@@ -86,11 +86,11 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Post a <see cref="Runnable" /> to this window's event queue. Use this if
+    ///     Post a <see cref="IRunnable.Runnable" /> to this window's event queue. Use this if
     ///     you access statics like <see cref="Gdx.Graphics" /> in your runnable instead
-    ///     of <see cref="DesktopGLApplication.PostRunnable(Runnable)" />".
+    ///     of <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)" />".
     /// </summary>
-    public void PostRunnable( Runnable runnable )
+    public void PostRunnable( IRunnable.Runnable runnable )
     {
         lock ( _runnables )
         {
@@ -114,7 +114,7 @@ public class DesktopGLWindow : IDisposable
             _runnables.Clear();
         }
 
-        foreach ( Runnable runnable in _executedRunnables )
+        foreach ( IRunnable.Runnable runnable in _executedRunnables )
         {
             runnable();
         }

@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using Exception = System.Exception;
-
 namespace LughSharp.LibCore.Core;
 
 /// <summary>
@@ -93,7 +91,7 @@ public interface IApplication
 
     void AddLifecycleListener( ILifecycleListener listener );
     void RemoveLifecycleListener( ILifecycleListener listener );
-    void PostRunnable( Runnable runnable );
+    void PostRunnable( IRunnable.Runnable runnable );
 
     void Exit();
 }

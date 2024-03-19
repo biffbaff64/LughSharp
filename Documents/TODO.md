@@ -652,19 +652,20 @@ UTILS
 
     - DONE - Align
     - DONE - BinaryHeap
-    - IP   - Bits
-    - IP   - Character
-    - IP   - ComparableTimSort
-    - IP   - DataInput                      Check
-    - IP   - DataOutput                     Check
-    - IP   - DataUtils                      Added Class
-    - IP   - FloatConstants
-    - IP   - GdxRuntimeException
-    - IP   - GdxSystem
-    - IP   - IClipboard                     Convert - Interface, clipboard handled in backends.                 
-    - IP   - ICloseable
-    - IP   - IReadable
-    - IP   - IRunnable                      Done, but is it needed?
+    - DONE - Bits
+    - DONE - ByteOrder
+    - DONE - Character
+    - DONE - ComparableTimSort
+    - DONE - DataInput                      Check
+    - DONE - DataOutput                     Check
+    - DONE - DataUtils                      Added Class
+    - DONE - FloatConstants
+    - DONE - GdxRuntimeException
+    - DONE - GdxSystem
+    - DONE - IClipboard                     Convert - Interface, clipboard handled in backends.                 
+    - DONE - ICloseable
+    - DONE - IReadable
+    - DONE - IRunnable                      Done, but is it needed?
     - IP   - Logger                         Needs documenting.
     - IP   - PerformanceCounter             Check
     - IP   - PerformanceCounters            Check

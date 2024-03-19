@@ -45,8 +45,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public DesktopGLApplicationConfiguration?  Config             { get; set; }
     public List< DesktopGLWindow >             Windows            { get; set; } = new();
     public Dictionary< string, IPreferences >? Preferences        { get; set; }
-    public List< Runnable >                    Runnables          { get; set; } = new();
-    public List< Runnable >                    ExecutedRunnables  { get; set; } = new();
+    public List< IRunnable.Runnable >                    Runnables          { get; set; } = new();
+    public List< IRunnable.Runnable >                    ExecutedRunnables  { get; set; } = new();
     public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
     public int                                 LogLevel           { get; set; }
     public IClipboard?                         Clipboard          { get; set; }
@@ -171,7 +171,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         return prefs;
     }
 
-    public void PostRunnable( Runnable runnable )
+    public void PostRunnable( IRunnable.Runnable runnable )
     {
         lock ( Runnables )
         {
@@ -269,7 +269,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                 Runnables.Clear();
             }
 
-            foreach ( Runnable runnable in ExecutedRunnables )
+            foreach ( IRunnable.Runnable runnable in ExecutedRunnables )
             {
                 runnable();
             }
@@ -371,7 +371,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     ///     <para>
     ///         This function only just instantiates a <see cref="DesktopGLWindow" /> and
     ///         returns immediately. The actual window creation is postponed with
-    ///         <see cref="DesktopGLApplication.PostRunnable(Runnable)" /> until after all
+    ///         <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)" /> until after all
     ///         existing windows are updated.
     ///     </para>
     /// </summary>

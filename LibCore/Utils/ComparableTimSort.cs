@@ -36,6 +36,7 @@ namespace LughSharp.LibCore.Utils;
 ///         off deleting ComparableTimSort to eliminate the code duplication.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class ComparableTimSort<T>
 {
     /// <summary>
@@ -203,7 +204,6 @@ public class ComparableTimSort<T>
             _tmp[ i ] = default( T? );
         }
     }
-
 
     public static void Sort( T[] a )
     {

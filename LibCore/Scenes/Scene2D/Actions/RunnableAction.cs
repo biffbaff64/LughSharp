@@ -28,13 +28,13 @@ using LughSharp.LibCore.Utils.Pooling;
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 /// <summary>
-///     An action that runs a <see cref="Runnable" />. Alternatively, the <see cref="Run()" />
+///     An action that runs a <see cref="IRunnable.Runnable" />. Alternatively, the <see cref="Run()" />
 ///     method can be overridden instead of setting a runnable.
 /// </summary>
 public class RunnableAction : Action
 {
     private bool  _ran = false;
-    public  Task? Runnable { get; set; } = null!;
+    public  Task? RunnableTask { get; set; } = null!;
 
     public override bool Act( float delta )
     {
@@ -53,7 +53,7 @@ public class RunnableAction : Action
     /// </summary>
     public virtual void Run()
     {
-        if ( Runnable == null )
+        if ( RunnableTask == null )
         {
             throw new GdxRuntimeException( "Runnable is not initialised!" );
         }
@@ -65,7 +65,7 @@ public class RunnableAction : Action
 
         try
         {
-            Runnable.Start();
+            RunnableTask.Start();
         }
         finally
         {
@@ -81,6 +81,6 @@ public class RunnableAction : Action
     public override void Reset()
     {
         base.Reset();
-        Runnable = null;
+        RunnableTask = null;
     }
 }

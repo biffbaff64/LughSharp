@@ -31,6 +31,7 @@ namespace LughSharp.LibCore.Utils;
 ///     A <tt>Readable</tt> is a source of characters. Characters from a <tt>Readable</tt>
 ///     are made available to callers of the read method via a <see cref="CharBuffer" />.
 /// </summary>
+[PublicAPI]
 public interface IReadable
 {
     /// <summary>
@@ -41,7 +42,7 @@ public interface IReadable
     /// </summary>
     /// <param name="cb"> the buffer to read characters into </param>
     /// <returns>
-    ///     The number of {@code char} values added to the buffer,
+    ///     The number of <tt>char</tt> values added to the buffer,
     ///     or -1 if this source of characters is at its end
     /// </returns>
     int Read( CharBuffer cb );

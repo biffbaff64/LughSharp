@@ -28,6 +28,7 @@ namespace LughSharp.LibCore.Utils;
 /// <summary>
 ///     Extends <see cref="BinaryWriter" /> with additional convenience methods.
 /// </summary>
+[PublicAPI]
 public class DataOutput : BinaryWriter
 {
     public DataOutput( Stream output ) : base( output )
@@ -124,6 +125,12 @@ public class DataOutput : BinaryWriter
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="charCount"></param>
+    /// <param name="charIndex"></param>
     public void WriteStringSlow( string value, int charCount, int charIndex )
     {
         for ( ; charIndex < charCount; charIndex++ )
