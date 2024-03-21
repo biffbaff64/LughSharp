@@ -31,8 +31,8 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
 ///     public class for extracting information from a frame header.
-///     TODO: move strings into resources.
 /// </summary>
+[PublicAPI]
 public class Header
 {
     public const int MPEG2_LSF  = 0;

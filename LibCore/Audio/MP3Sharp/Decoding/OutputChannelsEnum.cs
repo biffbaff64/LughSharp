@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
+[PublicAPI]
 public enum OutputChannelsEnum
 {
     BothChannels    = 0,

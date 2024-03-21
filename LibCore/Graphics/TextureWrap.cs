@@ -27,6 +27,7 @@ namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
 /// </summary>
+[PublicAPI]
 public class TextureWrap
 {
     public enum InnerEnum
@@ -40,7 +41,7 @@ public class TextureWrap
     public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_CLAMP_TO_EDGE );
     public readonly static TextureWrap Repeat         = new( "Repeat", InnerEnum.Repeat, IGL20.GL_REPEAT );
 
-    private readonly static List< TextureWrap > ValueList = new();
+    private readonly static List< TextureWrap > _valueList = new();
 
     private static   int    _nextOrdinal = 0;
     private readonly string _nameValue;
@@ -49,9 +50,9 @@ public class TextureWrap
 
     static TextureWrap()
     {
-        ValueList.Add( MirroredRepeat );
-        ValueList.Add( ClampToEdge );
-        ValueList.Add( Repeat );
+        _valueList.Add( MirroredRepeat );
+        _valueList.Add( ClampToEdge );
+        _valueList.Add( Repeat );
     }
 
     public TextureWrap( string name, InnerEnum innerEnum, int glEnum )
@@ -66,14 +67,11 @@ public class TextureWrap
     public int GLEnum       { get; }
     public int OrdinalValue { get; set; }
 
-    public static TextureWrap[] Values()
-    {
-        return ValueList.ToArray();
-    }
+    public static TextureWrap[] Values() => _valueList.ToArray();
 
     public static TextureWrap ValueOf( string name )
     {
-        foreach ( TextureWrap enumInstance in ValueList )
+        foreach ( TextureWrap enumInstance in _valueList )
         {
             if ( enumInstance._nameValue == name )
             {
@@ -84,6 +82,7 @@ public class TextureWrap
         throw new ArgumentException( name );
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return _nameValue;

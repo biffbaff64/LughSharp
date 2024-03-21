@@ -30,6 +30,7 @@ using LughSharp.LibCore.Utils.Pooling;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class SceneActions
 {
     /// <summary>
@@ -496,15 +497,19 @@ public class SceneActions
         return action;
     }
 
-    public static RunnableAction Run( Runnable runnable )
+    public static RunnableAction Run( IRunnable.Runnable runnable )
     {
-        throw new NotImplementedException( "IMPLEMENTATION TO BE COMPLETED!" );
+        var action = ( RunnableAction )Action( typeof( RunnableAction ) );
+        action.RunnableTask = runnable;
+
+        return action;
     }
 
     //        var action = ( RunnableAction )Action( typeof( RunnableAction ) );
     //        action.Runnable = runnable;
     //
     //        return action;
+    
     public static LayoutAction Layout( bool enabled )
     {
         var action = ( LayoutAction )Action( typeof( LayoutAction ) );

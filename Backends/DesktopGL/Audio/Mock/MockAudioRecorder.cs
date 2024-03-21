@@ -27,6 +27,10 @@ using LughSharp.LibCore.Audio;
 
 namespace LughSharp.Backends.DesktopGL.Audio.Mock;
 
+/// <summary>
+/// Audio stubs for use when Audio is disabled, or when Audio failed to initialise.
+/// </summary>
+[PublicAPI]
 public class MockAudioRecorder : IAudioRecorder
 {
     /// <inheritdoc />

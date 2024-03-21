@@ -27,6 +27,7 @@ using LughSharp.LibCore.Audio;
 
 namespace LughSharp.LibCore.Core;
 
+[PublicAPI]
 public interface IAudio
 {
     /// <summary>

@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Utils;
 /// <summary>
 ///     A quad tree that stores a float for each point.
 /// </summary>
+[PublicAPI]
 public class QuadTreeFloat : IPoolable
 {
     public const int VALUE   = 0;
@@ -37,12 +38,12 @@ public class QuadTreeFloat : IPoolable
     public const int YPOS    = 2;
     public const int DISTSQR = 3;
 
-    private readonly Pool< QuadTreeFloat > _pool = new( 128, 4096 );
+    private readonly Pool< QuadTreeFloat > _pool = new( initialCapacity: 128, max: 4096 );
 
     /// <summary>
     ///     Creates a quad tree with 16 for maxValues and 8 for maxDepth.
     /// </summary>
-    public QuadTreeFloat() : this( 16, 8 )
+    public QuadTreeFloat() : this( maxValues: 16, maxDepth: 8 )
     {
     }
 
@@ -229,7 +230,7 @@ public class QuadTreeFloat : IPoolable
     /// </summary>
     protected int GrowValues()
     {
-        return Count + ( 10 * 3 );
+        return Count + ( 10 * 3 ); //TODO: No magic numbers!
     }
 
     /// <summary>

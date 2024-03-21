@@ -45,19 +45,20 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public DesktopGLApplicationConfiguration?  Config             { get; set; }
     public List< DesktopGLWindow >             Windows            { get; set; } = new();
     public Dictionary< string, IPreferences >? Preferences        { get; set; }
-    public List< IRunnable.Runnable >                    Runnables          { get; set; } = new();
-    public List< IRunnable.Runnable >                    ExecutedRunnables  { get; set; } = new();
+    public List< IRunnable.Runnable >          Runnables          { get; set; } = new();
+    public List< IRunnable.Runnable >          ExecutedRunnables  { get; set; } = new();
     public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
-    public int                                 LogLevel           { get; set; }
-    public IClipboard?                         Clipboard          { get; set; }
-    public GLVersion?                          GLVersion          { get; set; }
+
+    public int         LogLevel  { get; set; }
+    public IClipboard? Clipboard { get; set; }
+    public GLVersion?  GLVersion { get; set; }
+    public IGLAudio?   Audio     { get; set; } = null;
+    public INet        Network   { get; set; }
+    public IFiles      Files     { get; set; }
 
     public IGraphics?            Graphics            => _currentWindow?.Graphics;
     public IApplicationListener? ApplicationListener => _currentWindow?.Listener;
     public IInput?               Input               => _currentWindow?.Input;
-    public IGLAudio?             Audio               { get; set; } = null;
-    public INet                  Network             { get; set; }
-    public IFiles                Files               { get; set; }
 
     public IApplication.ApplicationType AppType
     {
@@ -126,7 +127,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public void Run()
     {
@@ -171,6 +171,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         return prefs;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="runnable"></param>
     public void PostRunnable( IRunnable.Runnable runnable )
     {
         lock ( Runnables )
@@ -179,6 +182,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="config"></param>
+    /// <returns></returns>
     public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
     {
         return new OpenALAudio( config.AudioDeviceSimultaneousSources,
@@ -186,21 +193,33 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                 config.AudioDeviceBufferSize );
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="window"></param>
+    /// <returns></returns>
     public IDesktopGLInput CreateInput( DesktopGLWindow window )
     {
         return new DefaultDesktopGLInput( window );
     }
 
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
     public int GetVersion()
     {
         return 0;
     }
 
+    /// <summary>
+    /// </summary>
     public void Exit()
     {
         _running = false;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="listener"></param>
     public void AddLifecycleListener( ILifecycleListener listener )
     {
         lock ( LifecycleListeners )
@@ -209,6 +228,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="listener"></param>
     public void RemoveLifecycleListener( ILifecycleListener listener )
     {
         lock ( LifecycleListeners )
@@ -354,6 +376,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Windows.Clear();
     }
 
+    /// <summary>
+    /// </summary>
     protected void Cleanup()
     {
         DesktopGLCursor.DisposeSystemCursors();
@@ -386,6 +410,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         return CreateWindow( appConfig, listener, 0 );
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="config"></param>
+    /// <param name="listener"></param>
+    /// <param name="sharedContext"></param>
+    /// <returns></returns>
     public DesktopGLWindow CreateWindow( DesktopGLApplicationConfiguration config,
                                          IApplicationListener listener,
                                          long sharedContext )
@@ -412,6 +442,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         return window;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="window"></param>
+    /// <param name="config"></param>
+    /// <param name="sharedContext"></param>
     public void CreateWindow( DesktopGLWindow window,
                               DesktopGLApplicationConfiguration config,
                               long sharedContext )
@@ -436,6 +471,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="appConfig"></param>
+    /// <param name="sharedContextWindow"></param>
+    /// <returns></returns>
+    /// <exception cref="GdxRuntimeException"></exception>
     private GLFWWindow CreateGLFWWindow( DesktopGLApplicationConfiguration appConfig, GLFWWindow sharedContextWindow )
     {
         Glfw.DefaultWindowHints();
@@ -587,6 +628,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         return windowHandle;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
     private bool SupportsFBO()
     {
         GdxRuntimeException.ThrowIfNull( GLVersion );
@@ -598,6 +642,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             || Glfw.ExtensionSupported( "GL_ARB_framebuffer_object" );
     }
 
+    /// <summary>
+    /// </summary>
+    /// <exception cref="GdxRuntimeException"></exception>
     public static void InitialiseGL()
     {
         if ( _errorCallback == null )
@@ -614,6 +661,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
     protected static IFiles CreateFiles()
     {
         return new DesktopGLFiles();
@@ -638,6 +688,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     //TODO: Unfinished, see GLDebugMessageSeverity below
 
+    [PublicAPI]
     public struct Gldms
     {
         public int gl43;

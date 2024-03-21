@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 /// <summary>
 ///     Implements decoding of MPEG Audio Layer II frames.
 /// </summary>
+[PublicAPI]
 public class LayerIIDecoder : LayerIDecoder
 {
     protected override void CreateSubbands()

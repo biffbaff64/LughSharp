@@ -28,6 +28,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerI;
 /// <summary>
 ///     public class for layer I subbands in stereo mode.
 /// </summary>
+[PublicAPI]
 public class SubbandLayer1Stereo : SubbandLayer1
 {
     protected int   channel2Allocation;

@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
 
+[PublicAPI]
 public class ChannelData
 {
     public readonly GranuleInfo[] granules;

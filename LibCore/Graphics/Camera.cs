@@ -35,27 +35,25 @@ namespace LughSharp.LibCore.Graphics;
 /// <summary>
 ///     Base class for <see cref="OrthographicCamera" /> and <see cref="PerspectiveCamera" />.
 /// </summary>
+[PublicAPI]
 public abstract class Camera
 {
-    private readonly Ray _ray = new( new Vector3(), new Vector3() );
-
     // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    private readonly Vector3 _tmpVec = new();
 
     // the position of the camera
     public Vector3 Position { get; set; } = new();
 
-    // the unit length direction vector of the camera
-    protected Vector3 Direction { get; set; } = new( 0, 0, -1 );
-
     // the unit length up vector of the camera
     public Vector3 Up { get; set; } = new( 0, 1, 0 );
 
+    public Matrix4 Combined       { get; set; } = new();
+    public float   ViewportWidth  { get; set; } = 0;
+    public float   ViewportHeight { get; set; } = 0;
+
+    // ------------------------------------------------------------------------
+
     protected Matrix4 Projection        { get; set; } = new();
     protected Matrix4 View              { get; set; } = new();
-    public    Matrix4 Combined          { get; set; } = new();
     protected Matrix4 InvProjectionView { get; set; } = new();
 
     // the near clipping plane distance, has to be positive
@@ -64,9 +62,15 @@ public abstract class Camera
     // the far clipping plane distance, has to be positive
     protected float Far { get; set; } = 100;
 
-    public    float    ViewportWidth  { get; set; } = 0;
-    public    float    ViewportHeight { get; set; } = 0;
-    protected Frustrum Frustum        { get; set; } = new();
+    // the unit length direction vector of the camera
+    protected Vector3 Direction { get; set; } = new( 0, 0, -1 );
+
+    protected Frustrum Frustum { get; set; } = new();
+
+    // ------------------------------------------------------------------------
+
+    private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
+    private readonly Vector3 _tmpVec = new();
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -74,6 +78,7 @@ public abstract class Camera
     /// <summary>
     ///     Recalculates the projection and view matrix of this camera and the Frustum
     ///     planes. Use this after you've manipulated any of the attributes of the camera.
+    ///     The default implementation does nothing.
     /// </summary>
     public virtual void Update( bool updateFrustrum = true )
     {

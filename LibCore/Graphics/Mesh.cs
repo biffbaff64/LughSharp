@@ -33,6 +33,7 @@ using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Graphics;
 
+[PublicAPI]
 public class Mesh
 {
     public enum VertexDataType

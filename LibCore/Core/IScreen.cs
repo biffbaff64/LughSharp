@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Core;
 ///     a settings menu, the game screen and so on.
 ///     Note that Dispose() is not called automatically.
 /// </summary>
+[PublicAPI]
 public interface IScreen
 {
     /// <summary>

@@ -30,15 +30,16 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 /// <summary>
 ///     16-Bit CRC checksum
 /// </summary>
+[PublicAPI]
 public class Crc16
 {
-    private readonly static short Polynomial;
+    private readonly static short _polynomial;
 
     private short _crc = ( short )SupportClass.Identity( 0xFFFF );
 
     static Crc16()
     {
-        Polynomial = ( short )SupportClass.Identity( 0x8005 );
+        _polynomial = ( short )SupportClass.Identity( 0x8005 );
     }
 
     /// <summary>
@@ -53,7 +54,7 @@ public class Crc16
             if ( ( ( _crc & 0x8000 ) == 0 ) ^ ( ( bitstring & bitmask ) == 0 ) )
             {
                 _crc <<= 1;
-                _crc ^=  Polynomial;
+                _crc ^=  _polynomial;
             }
             else
             {

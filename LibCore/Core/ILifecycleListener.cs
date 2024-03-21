@@ -30,10 +30,11 @@ namespace LughSharp.LibCore.Core;
 ///     Application.AddLifecycleListener(ILifecycleListener). It will receive
 ///     notification of Pause, Resume and Dispose events. This is mainly meant
 ///     to be used by extensions that need to manage resources based on the life-cycle.
-///     Normal, application level development should rely on the ApplicationListener
+///     Normally, application level development should rely on the ApplicationListener
 ///     interface. The methods will be invoked on the rendering thread. The methods
 ///     will be executed before the ApplicationListener methods are executed.
 /// </summary>
+[PublicAPI]
 public interface ILifecycleListener : IDisposable
 {
     /// <summary>

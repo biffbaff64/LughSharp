@@ -41,6 +41,7 @@ namespace LughSharp.LibCore.Graphics;
 ///     </para>
 ///     Look at <see cref="FileTextureArrayData" /> for example implementation of this interface.
 /// </summary>
+[PublicAPI]
 public interface ITextureArrayData
 {
     /// <returns> whether the TextureArrayData is prepared or not. </returns>
@@ -85,6 +86,7 @@ public interface ITextureArrayData
 /// <summary>
 ///     Provides static method to instantiate the right implementation.
 /// </summary>
+[PublicAPI]
 public class TextureArrayDataFactory
 {
     public static ITextureArrayData LoadFromFiles( Pixmap.Format format,

@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Core;
 
+[PublicAPI]
 public interface IFiles
 {
     /// <summary>
@@ -97,6 +98,7 @@ public interface IFiles
     bool IsLocalStorageAvailable();
 }
 
+[PublicAPI]
 public enum FileType
 {
     /// <summary>

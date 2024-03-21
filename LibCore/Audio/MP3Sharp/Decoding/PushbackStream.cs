@@ -34,6 +34,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 ///     byte, the code fragment can "unread" it, so that the next read operation on the input stream
 ///     will reread the byte that was pushed back.
 /// </summary>
+[PublicAPI]
 public class PushbackStream
 {
     private readonly int                _backBufferSize;

@@ -31,6 +31,8 @@ namespace LughSharp.LibCore.Audio.OpenAL;
 [PublicAPI]
 public class ALC
 {
+    // ------------------------------------------------------------------------
+
     public readonly static int[] AttrList =
     {
         FREQUENCY,
@@ -40,6 +42,8 @@ public class ALC
         STEREO_SOURCES
     };
 
+    // ------------------------------------------------------------------------
+    
     #region Dll Import Handling
 
     public const string OPEN_AL_DLL = "OpenAL";
@@ -73,9 +77,11 @@ public class ALC
         return libHandle;
     }
 
-    #endregion
+    #endregion Dll Import Handling
 
-    #region Enum
+    // ------------------------------------------------------------------------
+
+    #region Constants
 
     public const int FALSE                            = 0;
     public const int TRUE                             = 1;
@@ -103,7 +109,9 @@ public class ALC
     public const int CAPTURE_DEFAULT_DEVICE_SPECIFIER = 0x311;
     public const int ENUM_CAPTURE_SAMPLES             = 0x312;
 
-    #endregion
+    #endregion Constants
+
+    // ------------------------------------------------------------------------
 
     #region Context Management Functions
 
@@ -157,7 +165,9 @@ public class ALC
     [DllImport( OPEN_AL_DLL, EntryPoint = "alcGetEnumValue" )]
     public static extern int GetEnumValue( IntPtr device, string enumname );
 
-    #endregion
+    #endregion Context Management Functions
+
+    // ------------------------------------------------------------------------
 
     #region Query Functions
 
@@ -169,7 +179,9 @@ public class ALC
     [DllImport( OPEN_AL_DLL, EntryPoint = "alcGetIntegerv" )]
     public static extern void GetIntegerv( IntPtr device, int param, int size, IntPtr data );
 
-    #endregion
+    #endregion Query Functions
+
+    // ------------------------------------------------------------------------
 
     #region Capture Functions
 
@@ -188,5 +200,7 @@ public class ALC
     [DllImport( OPEN_AL_DLL, EntryPoint = "alcCaptureSamples" )]
     public static extern unsafe void CaptureSamples( IntPtr device, void* buffer, int samples );
 
-    #endregion
+    #endregion Capture Functions
+    
+    // ------------------------------------------------------------------------
 }

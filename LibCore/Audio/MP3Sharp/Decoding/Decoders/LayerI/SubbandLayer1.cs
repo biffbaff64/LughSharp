@@ -29,6 +29,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerI;
 ///     public class for layer I subbands in single channel mode. Used for single channel mode
 ///     and in derived class for intensity stereo mode
 /// </summary>
+[PublicAPI]
 public class SubbandLayer1 : ASubband
 {
     // Factors and offsets for sample requantization

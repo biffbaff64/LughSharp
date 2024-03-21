@@ -28,6 +28,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 /// <summary>
 ///     Base Class for audio output.
 /// </summary>
+[PublicAPI]
 public abstract class AudioBase
 {
     public const int OBUFFERSIZE = 2 * 1152; // max. 2 * 1152 samples per frame

@@ -30,19 +30,20 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 /// <summary>
 ///     Implements a Huffman decoder.
 /// </summary>
+[PublicAPI]
 public class Huffman
 {
-    private const           int     MXOFF   = 250;
-    private const           int     HTN     = 34;
-    private readonly static int[][] ValTab0 = { new[] { 0, 0 } };
+    private const           int     MXOFF    = 250;
+    private const           int     HTN      = 34;
+    private readonly static int[][] _valTab0 = { new[] { 0, 0 } };
 
-    private readonly static int[][] ValTab1 =
+    private readonly static int[][] _valTab1 =
     {
         new[] { 2, 1 }, new[] { 0, 0 }, new[] { 2, 1 },
         new[] { 0, 16 }, new[] { 2, 1 }, new[] { 0, 1 }, new[] { 0, 17 }
     };
 
-    private readonly static int[][] ValTab2 =
+    private readonly static int[][] _valTab2 =
     {
         new[] { 2, 1 }, new[] { 0, 0 }, new[] { 4, 1 },
         new[] { 2, 1 }, new[] { 0, 16 }, new[] { 0, 1 }, new[] { 2, 1 }, new[] { 0, 17 }, new[] { 4, 1 },
@@ -50,7 +51,7 @@ public class Huffman
         new[] { 2, 1 }, new[] { 0, 2 }, new[] { 0, 34 }
     };
 
-    private readonly static int[][] ValTab3 =
+    private readonly static int[][] _valTab3 =
     {
         new[] { 4, 1 }, new[] { 2, 1 }, new[] { 0, 0 },
         new[] { 0, 1 }, new[] { 2, 1 }, new[] { 0, 17 }, new[] { 2, 1 }, new[] { 0, 16 }, new[] { 4, 1 },
@@ -58,9 +59,9 @@ public class Huffman
         new[] { 2, 1 }, new[] { 0, 2 }, new[] { 0, 34 }
     };
 
-    private readonly static int[][] ValTab4 = { new[] { 0, 0 } }; // dummy
+    private readonly static int[][] _valTab4 = { new[] { 0, 0 } }; // dummy
 
-    private readonly static int[][] ValTab5 =
+    private readonly static int[][] _valTab5 =
     {
         new[] { 2, 1 }, new[] { 0, 0 }, new[] { 4, 1 },
         new[] { 2, 1 }, new[] { 0, 16 }, new[] { 0, 1 }, new[] { 2, 1 }, new[] { 0, 17 }, new[] { 8, 1 },
@@ -71,7 +72,7 @@ public class Huffman
         new[] { 0, 51 }
     };
 
-    private readonly static int[][] ValTab6 =
+    private readonly static int[][] _valTab6 =
     {
         new[] { 6, 1 }, new[] { 4, 1 }, new[] { 2, 1 },
         new[] { 0, 0 }, new[] { 0, 16 }, new[] { 0, 17 }, new[] { 6, 1 }, new[] { 2, 1 }, new[] { 0, 1 },
@@ -82,7 +83,7 @@ public class Huffman
         new[] { 0, 51 }
     };
 
-    private readonly static int[][] ValTab7 =
+    private readonly static int[][] _valTab7 =
     {
         new[] { 2, 1 }, new[] { 0, 0 }, new[] { 4, 1 },
         new[] { 2, 1 }, new[] { 0, 16 }, new[] { 0, 1 }, new[] { 8, 1 }, new[] { 2, 1 }, new[] { 0, 17 },
@@ -100,7 +101,7 @@ public class Huffman
         new[] { 0, 83 }, new[] { 0, 84 }, new[] { 2, 1 }, new[] { 0, 69 }, new[] { 0, 85 }
     };
 
-    private readonly static int[][] ValTab8 =
+    private readonly static int[][] _valTab8 =
     {
         new[] { 6, 1 }, new[] { 2, 1 }, new[] { 0, 0 },
         new[] { 2, 1 }, new[] { 0, 16 }, new[] { 0, 1 }, new[] { 2, 1 }, new[] { 0, 17 }, new[] { 4, 1 },
@@ -118,7 +119,7 @@ public class Huffman
         new[] { 2, 1 }, new[] { 0, 69 }, new[] { 2, 1 }, new[] { 0, 84 }, new[] { 0, 85 }
     };
 
-    private readonly static int[][] ValTab9 =
+    private readonly static int[][] _valTab9 =
     {
         new[] { 8, 1 }, new[] { 4, 1 }, new[] { 2, 1 },
         new[] { 0, 0 }, new[] { 0, 16 }, new[] { 2, 1 }, new[] { 0, 1 }, new[] { 0, 17 },
@@ -136,7 +137,7 @@ public class Huffman
         new[] { 2, 1 }, new[] { 0, 53 }, new[] { 2, 1 }, new[] { 0, 69 }, new[] { 0, 85 }
     };
 
-    private readonly static int[][] ValTab10 =
+    private readonly static int[][] _valTab10 =
     {
         new[] { 2, 1 }, new[] { 0, 0 }, new[] { 4, 1 }, new[] { 2, 1 }, new[] { 0, 16 }, new[] { 0, 1 },
         new[] { 10, 1 }, new[] { 2, 1 }, new[] { 0, 17 }, new[] { 4, 1 }, new[] { 2, 1 },
@@ -165,7 +166,7 @@ public class Huffman
         new[] { 2, 1 }, new[] { 0, 103 }, new[] { 0, 119 }
     };
 
-    private readonly static int[][] ValTab11 =
+    private readonly static int[][] _valTab11 =
     {
         new[] { 6, 1 }, new[] { 2, 1 }, new[] { 0, 0 }, new[] { 2, 1 }, new[] { 0, 16 }, new[] { 0, 1 },
         new[] { 8, 1 }, new[] { 2, 1 }, new[] { 0, 17 }, new[] { 4, 1 }, new[] { 2, 1 }, new[] { 0, 32 },
@@ -194,7 +195,7 @@ public class Huffman
         new[] { 2, 1 }, new[] { 0, 103 }, new[] { 0, 119 }
     };
 
-    private readonly static int[][] ValTab12 =
+    private readonly static int[][] _valTab12 =
     {
         new[] { 12, 1 }, new[] { 4, 1 }, new[] { 2, 1 }, new[] { 0, 16 }, new[] { 0, 1 }, new[] { 2, 1 },
         new[] { 0, 17 }, new[] { 2, 1 }, new[] { 0, 0 }, new[] { 2, 1 }, new[] { 0, 32 }, new[] { 0, 2 },
@@ -223,7 +224,7 @@ public class Huffman
         new[] { 2, 1 }, new[] { 0, 103 }, new[] { 0, 119 }
     };
 
-    private readonly static int[][] ValTab13 =
+    private readonly static int[][] _valTab13 =
     {
         new[] { 2, 1 }, new[] { 0, 0 }, new[] { 6, 1 }, new[] { 2, 1 }, new[] { 0, 16 }, new[] { 2, 1 },
         new[] { 0, 1 }, new[] { 0, 17 }, new[] { 28, 1 }, new[] { 8, 1 }, new[] { 4, 1 }, new[] { 2, 1 },
@@ -328,9 +329,9 @@ public class Huffman
         new[] { 0, 252 }, new[] { 0, 254 }
     };
 
-    private readonly static int[][] ValTab14 = { new[] { 0, 0 } };
+    private readonly static int[][] _valTab14 = { new[] { 0, 0 } };
 
-    private readonly static int[][] ValTab15 =
+    private readonly static int[][] _valTab15 =
     {
         new[] { 16, 1 }, new[] { 6, 1 }, new[] { 2, 1 }, new[] { 0, 0 }, new[] { 2, 1 }, new[] { 0, 16 },
         new[] { 0, 1 }, new[] { 2, 1 }, new[] { 0, 17 }, new[] { 4, 1 }, new[] { 2, 1 }, new[] { 0, 32 },
@@ -437,7 +438,7 @@ public class Huffman
         new[] { 0, 239 }, new[] { 0, 255 }
     };
 
-    private readonly static int[][] ValTab16 =
+    private readonly static int[][] _valTab16 =
     {
         new[] { 2, 1 }, new[] { 0, 0 }, new[] { 6, 1 }, new[] { 2, 1 }, new[] { 0, 16 }, new[] { 2, 1 },
         new[] { 0, 1 }, new[] { 0, 17 }, new[] { 42, 1 }, new[] { 8, 1 }, new[] { 4, 1 }, new[] { 2, 1 },
@@ -547,7 +548,7 @@ public class Huffman
         new[] { 0, 254 }, new[] { 0, 239 }
     };
 
-    private readonly static int[][] ValTab24 =
+    private readonly static int[][] _valTab24 =
     {
         new[] { 60, 1 }, new[] { 8, 1 }, new[] { 4, 1 }, new[] { 2, 1 }, new[] { 0, 0 }, new[] { 0, 16 },
         new[] { 2, 1 }, new[] { 0, 1 }, new[] { 0, 17 }, new[] { 14, 1 }, new[] { 6, 1 }, new[] { 4, 1 },
@@ -659,7 +660,7 @@ public class Huffman
         new[] { 2, 1 }, new[] { 0, 254 }, new[] { 0, 239 }
     };
 
-    private readonly static int[][] ValTab32 =
+    private readonly static int[][] _valTab32 =
     {
         new[] { 2, 1 }, new[] { 0, 0 }, new[] { 8, 1 },
         new[] { 4, 1 }, new[] { 2, 1 }, new[] { 0, 8 }, new[] { 0, 4 }, new[] { 2, 1 }, new[] { 0, 1 },
@@ -669,7 +670,7 @@ public class Huffman
         new[] { 0, 13 }, new[] { 2, 1 }, new[] { 0, 15 }, new[] { 0, 11 }
     };
 
-    private readonly static int[][] ValTab33 =
+    private readonly static int[][] _valTab33 =
     {
         new[] { 16, 1 }, new[] { 8, 1 }, new[] { 4, 1 },
         new[] { 2, 1 }, new[] { 0, 0 }, new[] { 0, 1 }, new[] { 2, 1 }, new[] { 0, 2 }, new[] { 0, 3 },
@@ -905,40 +906,40 @@ public class Huffman
         }
 
         _huffmanTable       = new Huffman[ HTN ];
-        _huffmanTable[ 0 ]  = new Huffman( "0  ", 0, 0, 0, 0, -1, null!, null!, ValTab0, 0 );
-        _huffmanTable[ 1 ]  = new Huffman( "1  ", 2, 2, 0, 0, -1, null!, null!, ValTab1, 7 );
-        _huffmanTable[ 2 ]  = new Huffman( "2  ", 3, 3, 0, 0, -1, null!, null!, ValTab2, 17 );
-        _huffmanTable[ 3 ]  = new Huffman( "3  ", 3, 3, 0, 0, -1, null!, null!, ValTab3, 17 );
-        _huffmanTable[ 4 ]  = new Huffman( "4  ", 0, 0, 0, 0, -1, null!, null!, ValTab4, 0 );
-        _huffmanTable[ 5 ]  = new Huffman( "5  ", 4, 4, 0, 0, -1, null!, null!, ValTab5, 31 );
-        _huffmanTable[ 6 ]  = new Huffman( "6  ", 4, 4, 0, 0, -1, null!, null!, ValTab6, 31 );
-        _huffmanTable[ 7 ]  = new Huffman( "7  ", 6, 6, 0, 0, -1, null!, null!, ValTab7, 71 );
-        _huffmanTable[ 8 ]  = new Huffman( "8  ", 6, 6, 0, 0, -1, null!, null!, ValTab8, 71 );
-        _huffmanTable[ 9 ]  = new Huffman( "9  ", 6, 6, 0, 0, -1, null!, null!, ValTab9, 71 );
-        _huffmanTable[ 10 ] = new Huffman( "10 ", 8, 8, 0, 0, -1, null!, null!, ValTab10, 127 );
-        _huffmanTable[ 11 ] = new Huffman( "11 ", 8, 8, 0, 0, -1, null!, null!, ValTab11, 127 );
-        _huffmanTable[ 12 ] = new Huffman( "12 ", 8, 8, 0, 0, -1, null!, null!, ValTab12, 127 );
-        _huffmanTable[ 13 ] = new Huffman( "13 ", 16, 16, 0, 0, -1, null!, null!, ValTab13, 511 );
-        _huffmanTable[ 14 ] = new Huffman( "14 ", 0, 0, 0, 0, -1, null!, null!, ValTab14, 0 );
-        _huffmanTable[ 15 ] = new Huffman( "15 ", 16, 16, 0, 0, -1, null!, null!, ValTab15, 511 );
-        _huffmanTable[ 16 ] = new Huffman( "16 ", 16, 16, 1, 1, -1, null!, null!, ValTab16, 511 );
-        _huffmanTable[ 17 ] = new Huffman( "17 ", 16, 16, 2, 3, 16, null!, null!, ValTab16, 511 );
-        _huffmanTable[ 18 ] = new Huffman( "18 ", 16, 16, 3, 7, 16, null!, null!, ValTab16, 511 );
-        _huffmanTable[ 19 ] = new Huffman( "19 ", 16, 16, 4, 15, 16, null!, null!, ValTab16, 511 );
-        _huffmanTable[ 20 ] = new Huffman( "20 ", 16, 16, 6, 63, 16, null!, null!, ValTab16, 511 );
-        _huffmanTable[ 21 ] = new Huffman( "21 ", 16, 16, 8, 255, 16, null!, null!, ValTab16, 511 );
-        _huffmanTable[ 22 ] = new Huffman( "22 ", 16, 16, 10, 1023, 16, null!, null!, ValTab16, 511 );
-        _huffmanTable[ 23 ] = new Huffman( "23 ", 16, 16, 13, 8191, 16, null!, null!, ValTab16, 511 );
-        _huffmanTable[ 24 ] = new Huffman( "24 ", 16, 16, 4, 15, -1, null!, null!, ValTab24, 512 );
-        _huffmanTable[ 25 ] = new Huffman( "25 ", 16, 16, 5, 31, 24, null!, null!, ValTab24, 512 );
-        _huffmanTable[ 26 ] = new Huffman( "26 ", 16, 16, 6, 63, 24, null!, null!, ValTab24, 512 );
-        _huffmanTable[ 27 ] = new Huffman( "27 ", 16, 16, 7, 127, 24, null!, null!, ValTab24, 512 );
-        _huffmanTable[ 28 ] = new Huffman( "28 ", 16, 16, 8, 255, 24, null!, null!, ValTab24, 512 );
-        _huffmanTable[ 29 ] = new Huffman( "29 ", 16, 16, 9, 511, 24, null!, null!, ValTab24, 512 );
-        _huffmanTable[ 30 ] = new Huffman( "30 ", 16, 16, 11, 2047, 24, null!, null!, ValTab24, 512 );
-        _huffmanTable[ 31 ] = new Huffman( "31 ", 16, 16, 13, 8191, 24, null!, null!, ValTab24, 512 );
-        _huffmanTable[ 32 ] = new Huffman( "32 ", 1, 16, 0, 0, -1, null!, null!, ValTab32, 31 );
-        _huffmanTable[ 33 ] = new Huffman( "33 ", 1, 16, 0, 0, -1, null!, null!, ValTab33, 31 );
+        _huffmanTable[ 0 ]  = new Huffman( "0  ", 0, 0, 0, 0, -1, null!, null!, _valTab0, 0 );
+        _huffmanTable[ 1 ]  = new Huffman( "1  ", 2, 2, 0, 0, -1, null!, null!, _valTab1, 7 );
+        _huffmanTable[ 2 ]  = new Huffman( "2  ", 3, 3, 0, 0, -1, null!, null!, _valTab2, 17 );
+        _huffmanTable[ 3 ]  = new Huffman( "3  ", 3, 3, 0, 0, -1, null!, null!, _valTab3, 17 );
+        _huffmanTable[ 4 ]  = new Huffman( "4  ", 0, 0, 0, 0, -1, null!, null!, _valTab4, 0 );
+        _huffmanTable[ 5 ]  = new Huffman( "5  ", 4, 4, 0, 0, -1, null!, null!, _valTab5, 31 );
+        _huffmanTable[ 6 ]  = new Huffman( "6  ", 4, 4, 0, 0, -1, null!, null!, _valTab6, 31 );
+        _huffmanTable[ 7 ]  = new Huffman( "7  ", 6, 6, 0, 0, -1, null!, null!, _valTab7, 71 );
+        _huffmanTable[ 8 ]  = new Huffman( "8  ", 6, 6, 0, 0, -1, null!, null!, _valTab8, 71 );
+        _huffmanTable[ 9 ]  = new Huffman( "9  ", 6, 6, 0, 0, -1, null!, null!, _valTab9, 71 );
+        _huffmanTable[ 10 ] = new Huffman( "10 ", 8, 8, 0, 0, -1, null!, null!, _valTab10, 127 );
+        _huffmanTable[ 11 ] = new Huffman( "11 ", 8, 8, 0, 0, -1, null!, null!, _valTab11, 127 );
+        _huffmanTable[ 12 ] = new Huffman( "12 ", 8, 8, 0, 0, -1, null!, null!, _valTab12, 127 );
+        _huffmanTable[ 13 ] = new Huffman( "13 ", 16, 16, 0, 0, -1, null!, null!, _valTab13, 511 );
+        _huffmanTable[ 14 ] = new Huffman( "14 ", 0, 0, 0, 0, -1, null!, null!, _valTab14, 0 );
+        _huffmanTable[ 15 ] = new Huffman( "15 ", 16, 16, 0, 0, -1, null!, null!, _valTab15, 511 );
+        _huffmanTable[ 16 ] = new Huffman( "16 ", 16, 16, 1, 1, -1, null!, null!, _valTab16, 511 );
+        _huffmanTable[ 17 ] = new Huffman( "17 ", 16, 16, 2, 3, 16, null!, null!, _valTab16, 511 );
+        _huffmanTable[ 18 ] = new Huffman( "18 ", 16, 16, 3, 7, 16, null!, null!, _valTab16, 511 );
+        _huffmanTable[ 19 ] = new Huffman( "19 ", 16, 16, 4, 15, 16, null!, null!, _valTab16, 511 );
+        _huffmanTable[ 20 ] = new Huffman( "20 ", 16, 16, 6, 63, 16, null!, null!, _valTab16, 511 );
+        _huffmanTable[ 21 ] = new Huffman( "21 ", 16, 16, 8, 255, 16, null!, null!, _valTab16, 511 );
+        _huffmanTable[ 22 ] = new Huffman( "22 ", 16, 16, 10, 1023, 16, null!, null!, _valTab16, 511 );
+        _huffmanTable[ 23 ] = new Huffman( "23 ", 16, 16, 13, 8191, 16, null!, null!, _valTab16, 511 );
+        _huffmanTable[ 24 ] = new Huffman( "24 ", 16, 16, 4, 15, -1, null!, null!, _valTab24, 512 );
+        _huffmanTable[ 25 ] = new Huffman( "25 ", 16, 16, 5, 31, 24, null!, null!, _valTab24, 512 );
+        _huffmanTable[ 26 ] = new Huffman( "26 ", 16, 16, 6, 63, 24, null!, null!, _valTab24, 512 );
+        _huffmanTable[ 27 ] = new Huffman( "27 ", 16, 16, 7, 127, 24, null!, null!, _valTab24, 512 );
+        _huffmanTable[ 28 ] = new Huffman( "28 ", 16, 16, 8, 255, 24, null!, null!, _valTab24, 512 );
+        _huffmanTable[ 29 ] = new Huffman( "29 ", 16, 16, 9, 511, 24, null!, null!, _valTab24, 512 );
+        _huffmanTable[ 30 ] = new Huffman( "30 ", 16, 16, 11, 2047, 24, null!, null!, _valTab24, 512 );
+        _huffmanTable[ 31 ] = new Huffman( "31 ", 16, 16, 13, 8191, 24, null!, null!, _valTab24, 512 );
+        _huffmanTable[ 32 ] = new Huffman( "32 ", 1, 16, 0, 0, -1, null!, null!, _valTab32, 31 );
+        _huffmanTable[ 33 ] = new Huffman( "33 ", 1, 16, 0, 0, -1, null!, null!, _valTab33, 31 );
     }
 
     public static Huffman[] GetHuffmanTable()

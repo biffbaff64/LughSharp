@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Graphics;
 /// <summary>
 ///     A Camera with Perspective Projection.
 /// </summary>
+[PublicAPI]
 public class PerspectiveCamera : Camera
 {
     private readonly Vector3 _tmp = new();

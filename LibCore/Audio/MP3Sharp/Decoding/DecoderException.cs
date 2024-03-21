@@ -32,7 +32,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 /// <summary>
 ///     The DecoderException represents the class of errors that can occur when decoding MPEG audio.
 /// </summary>
-[Serializable]
+[Serializable, PublicAPI]
 public class DecoderException : Mp3SharpException
 {
     public DecoderException( string message, Exception? inner )

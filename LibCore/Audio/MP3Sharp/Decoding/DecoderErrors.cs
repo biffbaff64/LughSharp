@@ -29,6 +29,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 ///     This interface provides constants describing the error
 ///     codes used by the Decoder to indicate errors.
 /// </summary>
+[PublicAPI]
 public struct DecoderErrors
 {
     public const int UNKNOWN_ERROR     = BitstreamErrors.DECODER_ERROR + 0;

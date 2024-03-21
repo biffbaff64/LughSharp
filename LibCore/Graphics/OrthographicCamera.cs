@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Graphics;
 /// <summary>
 ///     A Camera with Orthographic Projection.
 /// </summary>
+[PublicAPI]
 public class OrthographicCamera : Camera
 {
     private readonly Vector3 _tmp = new();

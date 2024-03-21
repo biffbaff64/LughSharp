@@ -27,6 +27,7 @@ using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Graphics;
 
+[PublicAPI]
 public interface IDownloadPixmapResponseListener
 {
     /// <summary>

@@ -31,6 +31,7 @@ namespace LughSharp.LibCore.Utils;
 ///     performance than a random pivot for partially sorted data.
 ///     http://en.wikipedia.org/wiki/Quickselect
 /// </summary>
+[PublicAPI]
 public class QuickSelect<T>
 {
     private T[]            _array = null!;

@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Core;
 
+[PublicAPI]
 public interface IInputProcessor
 {
     /// <summary>

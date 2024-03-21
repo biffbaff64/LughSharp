@@ -31,12 +31,13 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 /// <summary>
 ///     Implements decoding of MPEG Audio Layer 3 frames.
 /// </summary>
+[PublicAPI]
 public sealed class LayerIIIDecoder : IFrameDecoder
 {
     private const int SSLIMIT = 18;
     private const int SBLIMIT = 32;
 
-    private readonly static int[][] Slen =
+    private readonly static int[][] _slen =
     {
         new[] { 0, 0, 0, 0, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4 },
         new[] { 0, 1, 2, 3, 0, 1, 2, 3, 1, 2, 3, 1, 2, 3, 2, 3 }
@@ -95,13 +96,13 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
     private static int[][]? _reorderTable; // Generated on demand
 
-    private readonly static float[] Cs =
+    private readonly static float[] _cs =
     {
         0.857492925712f, 0.881741997318f, 0.949628649103f, 0.983314592492f, 0.995517816065f, 0.999160558175f,
         0.999899195243f, 0.999993155067f
     };
 
-    private readonly static float[] Ca =
+    private readonly static float[] _ca =
     {
         -0.5144957554270f, -0.4717319685650f, -0.3133774542040f, -0.1819131996110f, -0.0945741925262f,
         -0.0409655828852f, -0.0141985685725f, -0.00369997467375f
@@ -780,8 +781,8 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     {
         GranuleInfo grInfo    = _sideInfo.Channels[ ch ].granules[ gr ];
         var         scaleComp = grInfo.ScaleFacCompress;
-        var         length0   = Slen[ 0 ][ scaleComp ];
-        var         length1   = Slen[ 1 ][ scaleComp ];
+        var         length0   = _slen[ 0 ][ scaleComp ];
+        var         length1   = _slen[ 1 ][ scaleComp ];
 
         if ( ( grInfo.WindowSwitchingFlag != 0 ) && ( grInfo.BlockType == 2 ) )
         {
@@ -793,14 +794,14 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 // MIXED
                 for ( sfb = 0; sfb < 8; sfb++ )
                 {
-                    _scalefac[ ch ].L[ sfb ] = _bitReserve.ReadBits( Slen[ 0 ][ grInfo.ScaleFacCompress ] );
+                    _scalefac[ ch ].L[ sfb ] = _bitReserve.ReadBits( _slen[ 0 ][ grInfo.ScaleFacCompress ] );
                 }
 
                 for ( sfb = 3; sfb < 6; sfb++ )
                 {
                     for ( window = 0; window < 3; window++ )
                     {
-                        _scalefac[ ch ].S[ window ][ sfb ] = _bitReserve.ReadBits( Slen[ 0 ][ grInfo.ScaleFacCompress ] );
+                        _scalefac[ ch ].S[ window ][ sfb ] = _bitReserve.ReadBits( _slen[ 0 ][ grInfo.ScaleFacCompress ] );
                     }
                 }
 
@@ -808,7 +809,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 {
                     for ( window = 0; window < 3; window++ )
                     {
-                        _scalefac[ ch ].S[ window ][ sfb ] = _bitReserve.ReadBits( Slen[ 1 ][ grInfo.ScaleFacCompress ] );
+                        _scalefac[ ch ].S[ window ][ sfb ] = _bitReserve.ReadBits( _slen[ 1 ][ grInfo.ScaleFacCompress ] );
                     }
                 }
 
@@ -1994,8 +1995,8 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 var srcIdx2 = sb18 + 18 + ss;
                 var bu      = _out1D[ srcIdx1 ];
                 var bd      = _out1D[ srcIdx2 ];
-                _out1D[ srcIdx1 ] = ( bu * Cs[ ss ] ) - ( bd * Ca[ ss ] );
-                _out1D[ srcIdx2 ] = ( bd * Cs[ ss ] ) + ( bu * Ca[ ss ] );
+                _out1D[ srcIdx1 ] = ( bu * _cs[ ss ] ) - ( bd * _ca[ ss ] );
+                _out1D[ srcIdx2 ] = ( bd * _cs[ ss ] ) + ( bu * _ca[ ss ] );
             }
         }
     }

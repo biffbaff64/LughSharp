@@ -191,6 +191,7 @@ public class WaveFile : RiffFile
     }
 }
 
+[PublicAPI]
 public class WaveFormatChunkData
 {
     public WaveFormatChunkData( WaveFile enclosingInstance )
@@ -220,6 +221,7 @@ public class WaveFormatChunkData
     }
 }
 
+[PublicAPI]
 public class WaveFormatChunk
 {
     public WaveFormatChunk( WaveFile enclosingInstance )

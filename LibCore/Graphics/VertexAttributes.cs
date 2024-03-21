@@ -27,6 +27,7 @@ using System.Text;
 
 namespace LughSharp.LibCore.Graphics;
 
+[PublicAPI]
 public class VertexAttributes
 {
     /// <summary>

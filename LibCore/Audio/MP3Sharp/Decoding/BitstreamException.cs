@@ -47,7 +47,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 ///         </ol>
 ///     </p>
 /// </summary>
-[Serializable]
+[Serializable, PublicAPI]
 public class BitstreamException : Mp3SharpException
 {
     public BitstreamException( string message, Exception? inner = null )

@@ -34,6 +34,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 /// </summary>
 
 // TODO: there is no range checking, so buffer underflow or overflow can silently occur.
+[PublicAPI]
 public class BitReserve
 {
     /// <summary>
@@ -47,18 +48,10 @@ public class BitReserve
     /// </summary>
     private const int BUFSIZE_MASK = BUFSIZE - 1;
 
-    private readonly int[] _buffer;
-    private          int   _bufByteIdx;
-    private          int   _offset;
-    private          int   _totbit;
-
-    public BitReserve()
-    {
-        _buffer     = new int[ BUFSIZE ];
-        _offset     = 0;
-        _totbit     = 0;
-        _bufByteIdx = 0;
-    }
+    private readonly int[] _buffer     = new int[ BUFSIZE ];
+    private          int   _bufByteIdx = 0;
+    private          int   _offset     = 0;
+    private          int   _totbit     = 0;
 
     /// <summary>
     ///     Return totbit Field.

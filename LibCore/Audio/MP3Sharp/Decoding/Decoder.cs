@@ -32,11 +32,12 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 /// <summary>
 ///     Encapsulates the details of decoding an MPEG audio frame.
 /// </summary>
+[PublicAPI]
 public class Decoder
 {
     private const float DEFAULT_SCALE_FACTOR = 32700.0f;
 
-    private readonly static Parameters DecoderDefaultParams = new();
+    private readonly static Parameters _decoderDefaultParams = new();
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -66,7 +67,7 @@ public class Decoder
     {
         _equalizer = new Equalizer();
 
-        parameters ??= DecoderDefaultParams;
+        parameters ??= _decoderDefaultParams;
 
         Equalizer? eq = parameters.InitialEqualizerSettings;
 
@@ -139,7 +140,7 @@ public class Decoder
 
     public virtual int OutputBlockSize => AudioBase.OBUFFERSIZE;
 
-    public static Parameters DefaultParams => ( Parameters )DecoderDefaultParams.Clone();
+    public static Parameters DefaultParams => ( Parameters )_decoderDefaultParams.Clone();
 
     /// <summary>
     ///     Decodes one frame from an MPEG audio bitstream.

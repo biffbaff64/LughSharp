@@ -40,6 +40,7 @@ namespace LughSharp.LibCore.Graphics;
 ///         Look at FileTextureData and ETC1TextureData for example implementations of this interface.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public interface ITextureData
 {
     public enum TextureType
@@ -107,6 +108,7 @@ public interface ITextureData
     /// <summary>
     ///     Provides static methods to instantiate the right implementation (Pixmap, ETC1, KTX).
     /// </summary>
+    [PublicAPI]
     public static class Factory
     {
         /// <summary>

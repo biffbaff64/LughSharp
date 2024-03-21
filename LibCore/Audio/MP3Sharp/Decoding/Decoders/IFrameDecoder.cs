@@ -33,6 +33,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 //TODO: the interface currently is too thin. There should be
 // methods to specify the output buffer, the synthesis filters and
 // possibly other objects used by the decoder. 
+[PublicAPI]
 public interface IFrameDecoder
 {
     /// <summary>

@@ -28,6 +28,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerII;
 /// <summary>
 ///     public class for layer II subbands in joint stereo mode.
 /// </summary>
+[PublicAPI]
 public class SubbandLayer2IntensityStereo : SubbandLayer2
 {
     protected float channel2Scalefactor1;

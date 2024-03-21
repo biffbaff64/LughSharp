@@ -33,6 +33,7 @@ namespace LughSharp.LibCore.Core;
 ///         duplicate unnecessary code.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class ScreenAdapter : IScreen
 {
     /// <inheritdoc cref="IScreen.Show" />

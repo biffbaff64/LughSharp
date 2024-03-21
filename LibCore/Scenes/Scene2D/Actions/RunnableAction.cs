@@ -31,10 +31,12 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 ///     An action that runs a <see cref="IRunnable.Runnable" />. Alternatively, the <see cref="Run()" />
 ///     method can be overridden instead of setting a runnable.
 /// </summary>
+[PublicAPI]
 public class RunnableAction : Action
 {
-    private bool  _ran = false;
-    public  Task? RunnableTask { get; set; } = null!;
+    public  IRunnable.Runnable RunnableTask { get; set; } = null!;
+
+    private bool _ran = false;
 
     public override bool Act( float delta )
     {
@@ -65,7 +67,7 @@ public class RunnableAction : Action
 
         try
         {
-            RunnableTask.Start();
+            RunnableTask();
         }
         finally
         {
@@ -81,6 +83,6 @@ public class RunnableAction : Action
     public override void Reset()
     {
         base.Reset();
-        RunnableTask = null;
+        RunnableTask = null!;
     }
 }

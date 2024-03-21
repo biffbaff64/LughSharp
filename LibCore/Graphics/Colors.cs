@@ -33,15 +33,12 @@ namespace LughSharp.LibCore.Graphics;
 ///     For example, the markup language defined by the <see cref="BitmapFontCache" /> class
 ///     uses this class to retrieve colors and the user can define his own colors.
 /// </summary>
-public class Colors
+[PublicAPI]
+public static class Colors
 {
     static Colors()
     {
         Reset();
-    }
-
-    private Colors()
-    {
     }
 
     public static Dictionary< string, Color? > Map { get; set; } = new();

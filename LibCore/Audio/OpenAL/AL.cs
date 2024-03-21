@@ -30,6 +30,8 @@ namespace LughSharp.LibCore.Audio.OpenAL;
 [PublicAPI]
 public static class AL
 {
+    // ------------------------------------------------------------------------
+    
     #region Dll Import Handling
 
     public const string OPEN_AL_DLL = "OpenAL";
@@ -64,9 +66,11 @@ public static class AL
         return libHandle;
     }
 
-    #endregion
+    #endregion Dll Import Handling
 
-    #region Enum
+    // ------------------------------------------------------------------------
+
+    #region Constants
 
     public const int NONE                      = 0;
     public const int FALSE                     = 0;
@@ -135,8 +139,10 @@ public static class AL
     public const int EXPONENT_DISTANCE         = 0xD005;
     public const int EXPONENT_DISTANCE_CLAMPED = 0xD006;
 
-    #endregion
+    #endregion Constants
 
+    // ------------------------------------------------------------------------
+    
     #region Functions
 
     [DllImport( OPEN_AL_DLL, EntryPoint = "alEnable" )]
@@ -488,4 +494,6 @@ public static class AL
     public static extern void DistanceModel( int distanceModel );
 
     #endregion
+
+    // ------------------------------------------------------------------------
 }

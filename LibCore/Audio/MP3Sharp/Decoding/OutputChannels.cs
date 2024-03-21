@@ -29,6 +29,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 ///     A Type-safe representation of the the supported output channel constants.
 ///     This class is immutable and, hence, is thread safe.
 /// </summary>
+[PublicAPI]
 public class OutputChannels
 {
     /// <summary>

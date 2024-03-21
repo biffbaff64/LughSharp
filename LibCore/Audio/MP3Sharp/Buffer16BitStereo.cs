@@ -49,6 +49,8 @@ public class Buffer16BitStereo : AudioBase
     // Read offset used to read from the stream, in bytes.
     private int _offset;
 
+    // ------------------------------------------------------------------------
+    
     public Buffer16BitStereo()
     {
         OnStart();

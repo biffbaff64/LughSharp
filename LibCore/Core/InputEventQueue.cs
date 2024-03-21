@@ -27,17 +27,19 @@ using LughSharp.LibCore.Maths;
 
 namespace LughSharp.LibCore.Core;
 
+[PublicAPI]
 public class InputEventQueue
 {
-    private const    int         SKIP             = -1;
-    private const    int         KEY_DOWN         = 0;
-    private const    int         KEY_UP           = 1;
-    private const    int         KEY_TYPED        = 2;
-    private const    int         TOUCH_DOWN       = 3;
-    private const    int         TOUCH_UP         = 4;
-    private const    int         TOUCH_DRAGGED    = 5;
-    private const    int         MOUSE_MOVED      = 6;
-    private const    int         MOUSE_SCROLLED   = 7;
+    private const int SKIP           = -1;
+    private const int KEY_DOWN       = 0;
+    private const int KEY_UP         = 1;
+    private const int KEY_TYPED      = 2;
+    private const int TOUCH_DOWN     = 3;
+    private const int TOUCH_UP       = 4;
+    private const int TOUCH_DRAGGED  = 5;
+    private const int MOUSE_MOVED    = 6;
+    private const int MOUSE_SCROLLED = 7;
+
     private readonly List< int > _processingQueue = new();
 
     private readonly List< int > _queue = new();

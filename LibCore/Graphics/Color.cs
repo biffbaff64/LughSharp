@@ -32,6 +32,7 @@ namespace LughSharp.LibCore.Graphics;
 ///     the range [0,1].
 ///     All methods perform clamping on the internal values after execution.
 /// </summary>
+[PublicAPI]
 public sealed class Color
 {
     public readonly static Color White      = new( 1, 1, 1, 1 );
@@ -73,6 +74,18 @@ public sealed class Color
     ///     Convenience for frequently used <tt>White.ToFloatBits()</tt>
     /// </summary>
     public readonly static float WhiteFloatBits = White.ToFloatBits();
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region Colour Components
+    
+    public float R { get; set; }
+    public float G { get; set; }
+    public float B { get; set; }
+    public float A { get; set; }
+
+    #endregion Colour Components
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -127,14 +140,6 @@ public sealed class Color
     {
         Set( color );
     }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public float R { get; set; }
-    public float G { get; set; }
-    public float B { get; set; }
-    public float A { get; set; }
 
     /// <summary>
     ///     Sets this colors components using the components from the supplied colot.
@@ -191,6 +196,7 @@ public sealed class Color
     }
 
     /// <summary>
+    ///     Multiplies the colour components by the supplied value.
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
@@ -372,12 +378,7 @@ public sealed class Color
 
     public static bool operator ==( Color? c1, object? c2 )
     {
-        if ( c1 is null )
-        {
-            return false;
-        }
-
-        return c1.Equals( c2 );
+        return c1 is not null && c1.Equals( c2 );
     }
 
     public static bool operator !=( Color? c1, object? c2 )

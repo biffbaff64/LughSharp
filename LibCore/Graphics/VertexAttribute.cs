@@ -34,6 +34,7 @@ namespace LughSharp.LibCore.Graphics;
 ///     is used by a <see cref="Mesh" /> when drawing with a <see cref="ShaderProgram" />.
 ///     The alias can be changed at any time.
 /// </summary>
+[PublicAPI]
 public class VertexAttribute
 {
     private readonly int _usageIndex;

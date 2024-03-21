@@ -27,7 +27,7 @@ using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
-[Serializable]
+[Serializable, PublicAPI]
 public class CircularByteBuffer
 {
     private byte[] _buffer;

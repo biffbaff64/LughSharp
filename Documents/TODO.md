@@ -22,6 +22,10 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+- All uses of IRunnable.Runnable need checking and correcting.
+- 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 - NO MAGIC NUMBERS!!!
 - SORT OUT VERSIONING!!!
 - PRIORITY is 2D classes first
@@ -96,93 +100,93 @@ ASSETS
 AUDIO
 -----
 
-    - IP   - IAudioDevice
-    - IP   - IAudioRecorder
-    - IP   - IMusic
-    - IP   - ISound
+    - DONE - IAudioDevice
+    - DONE - IAudioRecorder
+    - DONE - IMusic
+    - DONE - ISound
 
     AUDIO/MP3SHARP
     --------------
 
-    - IP   - Buffer16BitSterso
-    - IP   - MP3SharpException
-    - IP   - MP3Stream
-    - IP   - SoundFormat
+    - DONE - Buffer16BitSterso
+    - DONE - MP3SharpException
+    - DONE - MP3Stream
+    - DONE - SoundFormat
 
     AUDIO/MP3SHARP/DECODING
     -----------------------
 
-    - IP   - AudioBase
-    - IP   - BitReserve
-    - IP   - Bitstream
-    - IP   - BitstreamErrors
-    - IP   - BitstreamException
-    - IP   - CircularByteBuffer
-    - IP   - Crc16
-    - IP   - Decoder
-    - IP   - Decode.Parameters
-    - IP   - DecoderErrors
-    - IP   - DecoderException
-    - IP   - Equalizer
-    - IP   - Header
-    - IP   - Huffman
-    - IP   - OuputChannels
-    - IP   - OutputChannelsEnum
-    - IP   - PushbackStream
-    - IP   - SampleBuffer
-    - IP   - SynthesisFilter
+    - DONE - AudioBase
+    - DONE - BitReserve
+    - DONE - Bitstream
+    - DONE - BitstreamErrors
+    - DONE - BitstreamException
+    - DONE - CircularByteBuffer
+    - DONE - Crc16
+    - DONE - Decoder
+    - DONE - Decode.Parameters
+    - DONE - DecoderErrors
+    - DONE - DecoderException
+    - DONE - Equalizer
+    - DONE - Header
+    - DONE - Huffman
+    - DONE - OuputChannels
+    - DONE - OutputChannelsEnum
+    - DONE - PushbackStream
+    - DONE - SampleBuffer
+    - DONE - SynthesisFilter
 
     AUDIO/MP3SHARP/DECODERS
     -----------------------
 
-    - IP   - ASubband
-    - IP   - IFrameDecoder
-    - IP   - LayerIDecoder
-    - IP   - LayerIIDecoder
-    - IP   - LayerIIIDecoder
+    - DONE - ASubband
+    - DONE - IFrameDecoder
+    - DONE - LayerIDecoder
+    - DONE - LayerIIDecoder
+    - DONE - LayerIIIDecoder
 
     AUDIO/MP3SHARP/DECODERS/LAYERI
     ------------------------------
 
-    - IP   - SubbandLayer1
-    - IP   - SubbandLayer1IntensityStereo
-    - IP   - SubbandLayer1Stereo
+    - DONE - SubbandLayer1
+    - DONE - SubbandLayer1IntensityStereo
+    - DONE - SubbandLayer1Stereo
 
     AUDIO/MP3SHARP/DECODERS/LAYERII
     -------------------------------
 
-    - IP   - SubbandLayer2
-    - IP   - SubbandLayer2IntensityStereo
-    - IP   - SubbandLayer2Stereo
+    - DONE - SubbandLayer2
+    - DONE - SubbandLayer2IntensityStereo
+    - DONE - SubbandLayer2Stereo
 
     AUDIO/MP3SHARP/DECODERS/LAYERIII
     --------------------------------
 
-    - IP   - ChannelData
-    - IP   - GranuleInfo
-    - IP   - Layer3SideInfo
-    - IP   - SBI
-    - IP   - ScaleFactorData
-    - IP   - ScaleFactorTable
+    - DONE - ChannelData
+    - DONE - GranuleInfo
+    - DONE - Layer3SideInfo
+    - DONE - SBI
+    - DONE - ScaleFactorData
+    - DONE - ScaleFactorTable
 
     AUDIO/MP3SHARP/IO
     -----------------
 
-    - IP   - RandomAccessFileStream
-    - IP   - RiffFile
-    - IP   - WaveFile
-    - IP   - WaveFileBuffer
+    - DONE - RandomAccessFileStream
+    - DONE - RiffFile
+    - DONE - WaveFile
+    - DONE - WaveFileBuffer
 
     AUDIO/MP3SHARP/SUPPORT
     ----------------------
 
-    - IP   - SupportClass
+    - DONE - SupportClass
 
     AUDIO/OPENAL
     ------------
 
-    -      - AL
-    -      - ALC
+    - DONE - AL
+    - DONE - ALC
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -192,35 +196,25 @@ CORE
 
     - IP   - AbstractGraphics
     - IP   - AbstractInput
-    - IP   - ApplicationAdapter
-    - IP   - Game
-    - IP   - Gdx
+    - DONE - ApplicationAdapter
+    - DONE - Game
+    - DONE - Gdx
     - IP   - GDXVersion
-    - IP   - IApplication
-    - IP   - IApplicationListener
-    - IP   - IApplicationLogger
-    - IP   - IAudio
-    - IP   - IFile
-    - IP   - IGraphics
-    - IP   - IGraphics.DisplayModeDescriptor
-    - IP   - IGraphics.MonitorDescriptor
-    - IP   - IGraphics.BufferFormatDescriptor
-    - IP   - IInput
-    - IP   - IInput.Buttons
-    - IP   - IInput.Keys
-    - IP   - IInput.ITextInputListener
-    - IP   - IInputProcessor
-    - IP   - ILifecycleListener
+    - DONE - IApplication
+    - DONE - IApplicationListener
+    - DONE - IAudio
+    - DONE - IFile
+    - DONE - IGraphics
+    - DONE - IInput
+    - DONE - IInputProcessor
+    - DONE - ILifecycleListener
     - IP   - INet
-    - IP   - INet.IHttpResponse
-    - IP   - INet.IHttpMethods
-    - IP   - INet.IHttpResponseListener
-    - IP   - INet.HttpRequest
-    - IP   - InputAdapter
-    - IP   - InputEventQueue
-    - IP   - IPreferences
-    - IP   - IScreen
-    - IP   - ScreenAdapter
+    - DONE - InputAdapter
+    - DONE - InputEventQueue
+    - IP   - InputMultiplexer
+    - DONE - IPreferences
+    - DONE - IScreen
+    - DONE - ScreenAdapter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -236,33 +230,31 @@ GRAPHICS
 
     - What if I switched to DirectX or used SDL2?
 
-    - IP   - Camera
-    - IP   - Color
-    - IP   - Colors
-    - IP   - Cubemap
-    - IP   - FPSLogger
-    - IP   - GameWindow
+    - DONE - Camera
+    - DONE - Color
+    - DONE - Colors
+    - DONE - Cubemap
+    - DONE - FPSLogger
     - IP   - GLTexture
-    - IP   - GraphicsType
-    - IP   - ICubemapData
-    - IP   - ICursor
-    - IP   - IDownloadPixmapResponseListener
+    - DONE - ICubemapData
+    - DONE - ICursor
+    - DONE - IDownloadPixmapResponseListener
     - IP   - IGL20
     - IP   - IGL30
-    - IP   - ITextureArrayData
-    - IP   - ITextureData
-    - IP   - Mesh
-    - IP   - OrthographicCamera
-    - IP   - PerspectiveCamera                  
+    - DONE - ITextureArrayData
+    - DONE - ITextureData
+    - DONE - Mesh
+    - DONE - OrthographicCamera
+    - DONE - PerspectiveCamera                  
     - IP   - Pixmap              
     - IP   - PixmapFormat                             
     - IP   - PixmapIO
     - IP   - Texture                            
     - IP   - TextureArray                       
     - IP   - TextureFilter                      
-    - IP   - TextureWrap                        
-    - IP   - VertexAttribute                    
-    - IP   - VertexAttributes
+    - DONE - TextureWrap                        
+    - DONE - VertexAttribute                    
+    - DONE - VertexAttributes
 
     - GameWindow ??
     - GraphicsDevice ??
@@ -361,6 +353,11 @@ GRAPHICS
 
     - **** - ETC1
     - **** - ETC1TextureData
+
+    GRAPHICS/OPENGL
+    ---------------
+
+    - IP   - GL
 
     GRAPHICS/PROFILING
     ------------------
@@ -670,8 +667,8 @@ UTILS
     - IP   - PerformanceCounter             Check
     - IP   - PerformanceCounters            Check
     - IP   - PropertiesUtils                Convert, but check if necessary first
-    - IP   - QuadTreeFloat
-    - IP   - QuickSelect
+    - DONE - QuadTreeFloat
+    - DONE - QuickSelect
     - IP   - Scaling
     - DONE - ScreenUtils
     - DONE - Select                         Renamed Selector (See SortedSetExtensions.cs)
@@ -795,6 +792,29 @@ BACKENDS/DESKTOPGL
     - IP   - IDesktopGLApplicationBase
     - IP   - Sync
 
+    BACKENDS/DESKTOPGL/AUDIO
+    ------------------------
+
+    - IP   - GdxSoundAudioRecorder
+    - IP   - IGLAudio
+    - IP   - Mp3
+    - IP   - Ogg
+    - IP   - OggInputStream
+    - IP   - OpenALAudio
+    - IP   - OpenALAudioDevice
+    - IP   - OpenALMusic
+    - IP   - OpenALSound
+    - IP   - Wav
+
+    BACKENDS/DESKTOPGL/AUDIO/MOCK
+    -----------------------------
+
+    - DONE - MockAudio
+    - DONE - MockAudioDevice
+    - DONE - MockAudioRecorder
+    - DONE - MockMusic
+    - DONE - MockSound
+
     BACKENDS/DESKTOPGL/FILES
     ------------------------
 
@@ -831,29 +851,6 @@ BACKENDS/DESKTOPGL
     - IP   - DesktopGLWindowConfiguration
     - IP   - DesktopGLWindowAdapter
     - IP   - IDesktopGLWindowListener
-
-    BACKENDS/DESKTOPGL/AUDIO
-    ------------------------
-
-    - IP   - GdxSoundAudioRecorder
-    - IP   - IGLAudio
-    - IP   - Mp3
-    - IP   - Ogg
-    - IP   - OggInputStream
-    - IP   - OpenALAudio
-    - IP   - OpenALAudioDevice
-    - IP   - OpenALMusic
-    - IP   - OpenALSound
-    - IP   - Wav
-
-    BACKENDS/DESKTOPGL/AUDIO/MOCK
-    -----------------------------
-
-    - IP   - MockAudio
-    - IP   - MockAudioDevice
-    - IP   - MockAudioRecorder
-    - IP   - MockMusic
-    - IP   - MockSound
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

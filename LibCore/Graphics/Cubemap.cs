@@ -35,6 +35,7 @@ namespace LughSharp.LibCore.Graphics;
 ///     Wraps a standard OpenGL ES Cubemap.
 ///     Must be disposed when it is no longer used.
 /// </summary>
+[PublicAPI]
 public class Cubemap : GLTexture
 {
     private readonly static Dictionary< IApplication, List< Cubemap >? > _managedCubemaps = new();
@@ -322,6 +323,7 @@ public class Cubemap : GLTexture
     /// <summary>
     ///     Enum to identify each side of a Cubemap
     /// </summary>
+    [PublicAPI]
     public class CubemapSide
     {
         public enum InnerEnum
@@ -359,19 +361,19 @@ public class Cubemap : GLTexture
         /// </summary>
         public readonly static CubemapSide NegativeZ = new( "NegativeZ", InnerEnum.NegativeZ, 5, IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, -1, 0, 0, 0, -1 );
 
-        private readonly static List< CubemapSide > ValueList    = new();
+        private readonly static List< CubemapSide > _valueList    = new();
         private static          int                 _nextOrdinal = 0;
 
         private readonly string _nameValue;
 
         static CubemapSide()
         {
-            ValueList.Add( PositiveX );
-            ValueList.Add( NegativeX );
-            ValueList.Add( PositiveY );
-            ValueList.Add( NegativeY );
-            ValueList.Add( PositiveZ );
-            ValueList.Add( NegativeZ );
+            _valueList.Add( PositiveX );
+            _valueList.Add( NegativeX );
+            _valueList.Add( PositiveY );
+            _valueList.Add( NegativeY );
+            _valueList.Add( PositiveZ );
+            _valueList.Add( NegativeZ );
         }
 
         public CubemapSide( string name,
@@ -438,7 +440,7 @@ public class Cubemap : GLTexture
 
         public static CubemapSide[] Values()
         {
-            return ValueList.ToArray();
+            return _valueList.ToArray();
         }
 
         public override string ToString()
@@ -449,7 +451,7 @@ public class Cubemap : GLTexture
         public static CubemapSide ValueOf( string name )
         {
             // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
-            foreach ( CubemapSide enumInstance in ValueList )
+            foreach ( CubemapSide enumInstance in _valueList )
             {
                 if ( enumInstance._nameValue == name )
                 {
