@@ -32,8 +32,11 @@ namespace LughSharp.LibCore.Utils.Viewport;
 ///     By default 1 world unit == 1 screen pixel, but this ratio can be
 ///     changed by modifying <see cref="UnitsPerPixel" />.
 /// </summary>
+[PublicAPI]
 public class ScreenViewport : Viewport
 {
+    public static float UnitsPerPixel => 1;
+
     /// <summary>
     ///     Creates a new viewport using a new <see cref="OrthographicCamera" />.
     /// </summary>
@@ -41,8 +44,12 @@ public class ScreenViewport : Viewport
     {
     }
 
-    public static float UnitsPerPixel => 1;
-
+    /// <summary>
+    ///     Configures this viewports screen bounds and applies it to the camera
+    /// </summary>
+    /// <param name="screenWidth"> Screen width in pixels. </param>
+    /// <param name="screenHeight"> Screen height in pixels. </param>
+    /// <param name="centerCamera"> True to center the camera in the middle of the screen. </param>
     public override void Update( int screenWidth, int screenHeight, bool centerCamera = false )
     {
         SetScreenBounds( 0, 0, screenWidth, screenHeight );

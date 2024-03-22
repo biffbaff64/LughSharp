@@ -33,8 +33,16 @@ public class Pool<T>
 {
     public delegate T? NewObjectHandler();
 
+    public int Max  { get; }      // The maximum number of objects that will be pooled.
+    public int Peak { get; set; } // The highest number of free objects. Can be reset any time.
+
+    public NewObjectHandler? NewObject { get; set; } = null;
+
     private readonly List< T? > _freeObjects;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Creates a new pool with a specified initial capacity,
     /// </summary>
@@ -51,11 +59,6 @@ public class Pool<T>
         _freeObjects = new List< T? >( initialCapacity );
         Max          = max;
     }
-
-    public int Max  { get; }      // The maximum number of objects that will be pooled.
-    public int Peak { get; set; } // The highest number of free objects. Can be reset any time.
-
-    public NewObjectHandler? NewObject { get; set; } = null;
 
     /// <summary>
     ///     Returns an object from this pool.

@@ -46,22 +46,29 @@ namespace LughSharp.LibCore.Utils.Viewport;
 ///         (the world may not fill the screen or some of the world may be off screen).
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class ScalingViewport : Viewport
 {
+    protected Scaling Scaling { get; }
+
     /// <summary>
     ///     Creates a new viewport using a new <see cref="OrthographicCamera" />.
     /// </summary>
+    /// <param name="scaling"> The <see cref="Scaling"/> to use. </param>
+    /// <param name="worldWidth"> The world width in pixels. </param>
+    /// <param name="worldHeight"> The world height in pixels. </param>
     protected ScalingViewport( Scaling scaling, float worldWidth, float worldHeight )
         : this( scaling, worldWidth, worldHeight, new OrthographicCamera() )
     {
     }
 
     /// <summary>
+    ///     Creates a new viewport using the supplied <see cref="OrthographicCamera"/>.
     /// </summary>
-    /// <param name="scaling"></param>
-    /// <param name="worldWidth"></param>
-    /// <param name="worldHeight"></param>
-    /// <param name="camera"></param>
+    /// <param name="scaling"> The <see cref="Scaling"/> to use. </param>
+    /// <param name="worldWidth"> The world width in pixels. </param>
+    /// <param name="worldHeight"> The world height in pixels. </param>
+    /// <param name="camera"> The camera to use. </param>
     public ScalingViewport( Scaling scaling, float worldWidth, float worldHeight, Camera camera )
         : base( camera )
     {
@@ -71,33 +78,24 @@ public class ScalingViewport : Viewport
         WorldHeight = worldHeight;
     }
 
-    protected Scaling Scaling { get; }
-
     /// <summary>
     ///     Configures this viewports screen bounds and applies it to the camera
     /// </summary>
-    /// <param name="screenWidth"></param>
-    /// <param name="screenHeight"></param>
-    /// <param name="centerCamera"></param>
+    /// <param name="screenWidth"> Screen width in pixels. </param>
+    /// <param name="screenHeight"> Screen height in pixels. </param>
+    /// <param name="centerCamera"> True to center the camera in the middle of the screen. </param>
     public override void Update( int screenWidth, int screenHeight, bool centerCamera = false )
     {
-        Vector2 scaled = Scaling.Apply(
-            WorldWidth,
-            WorldHeight,
-            screenWidth,
-            screenHeight
-            );
+        Vector2 scaled = Scaling.Apply( WorldWidth, WorldHeight, screenWidth, screenHeight );
 
         var viewportWidth  = ( int )Math.Round( scaled.X, MidpointRounding.AwayFromZero );
         var viewportHeight = ( int )Math.Round( scaled.Y, MidpointRounding.AwayFromZero );
 
         // Center
-        SetScreenBounds(
-            ( screenWidth - viewportWidth ) / 2,
-            ( screenHeight - viewportHeight ) / 2,
-            viewportWidth,
-            viewportHeight
-            );
+        SetScreenBounds( ( screenWidth - viewportWidth ) / 2,
+                         ( screenHeight - viewportHeight ) / 2,
+                         viewportWidth,
+                         viewportHeight );
 
         Apply( centerCamera );
     }

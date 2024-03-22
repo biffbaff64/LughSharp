@@ -29,6 +29,7 @@ using LughSharp.LibCore.Maths;
 
 namespace LughSharp.LibCore.Utils.Collections;
 
+[PublicAPI]
 public class Array<T>
 {
     private PredicateIterable< T >? _predicateIEnumerable;

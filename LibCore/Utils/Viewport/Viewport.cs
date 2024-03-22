@@ -38,13 +38,30 @@ namespace LughSharp.LibCore.Utils.Viewport;
 ///     Extending classes should initialise <see cref="Camera" /> to avoid
 ///     causing exceptions.
 /// </summary>
+[PublicAPI]
 public abstract class Viewport
 {
+    #region properties
+
+    public Camera? Camera       { get; set; }
+    public float   WorldWidth   { get; set; }
+    public float   WorldHeight  { get; set; }
+    public int     ScreenX      { get; set; }
+    public int     ScreenY      { get; set; }
+    public int     ScreenWidth  { get; set; }
+    public int     ScreenHeight { get; set; }
+
+    #endregion properties
+
     private Vector3 _tmp = Vector3.Zero;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Creates a new viewport using the supplied <see cref="OrthographicCamera"/>.
+    /// </summary>
+    /// <param name="camera"> The camera to use. </param>
     protected Viewport( Camera camera )
     {
         Camera = camera;
@@ -204,8 +221,9 @@ public abstract class Viewport
     }
 
     /// <summary>
+    /// Creates a picking Ray from the coordinates given in screen coordinates.
     /// </summary>
-    /// <see cref="Camera.GetPickRay(float, float, float, float, float, float) " />
+    /// <see cref="Camera.GetPickRay(float, float, float, float, float, float)" />
     public virtual Ray GetPickRay( float screenX, float screenY )
     {
         if ( Camera == null )
@@ -213,33 +231,18 @@ public abstract class Viewport
             throw new NullReferenceException();
         }
 
-        return Camera.GetPickRay(
-            screenX,
-            screenY,
-            ScreenX,
-            ScreenY,
-            ScreenWidth,
-            ScreenHeight
-            );
+        return Camera.GetPickRay( screenX, screenY, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
     }
 
     /// <summary>
+    /// Calculates a scissor rectangle in OpenGL window coordinates.
+    /// <see cref="ScissorStack"/>.CalculateScissors methods for more details.
     /// </summary>
     public virtual void CalculateScissors( Matrix4 batchTransform, RectangleShape area, RectangleShape scissor )
     {
-        if ( Camera == null )
-        {
-            return;
-        }
+        if ( Camera == null ) return;
 
-        ScissorStack.CalculateScissors( Camera,
-                                        ScreenX,
-                                        ScreenY,
-                                        ScreenWidth,
-                                        ScreenHeight,
-                                        batchTransform,
-                                        area,
-                                        scissor );
+        ScissorStack.CalculateScissors( Camera, ScreenX, ScreenY, ScreenWidth, ScreenHeight, batchTransform, area, scissor );
     }
 
     /// <summary>
@@ -270,9 +273,10 @@ public abstract class Viewport
     }
 
     /// <summary>
+    /// Sets the World Size to the supplied width and height.
     /// </summary>
-    /// <param name="worldWidth"></param>
-    /// <param name="worldHeight"></param>
+    /// <param name="worldWidth"> New World width in pixels. </param>
+    /// <param name="worldHeight"> New World height in pixels. </param>
     public virtual void SetWorldSize( float worldWidth, float worldHeight )
     {
         WorldWidth  = worldWidth;
@@ -310,18 +314,4 @@ public abstract class Viewport
         ScreenWidth  = screenWidth;
         ScreenHeight = screenHeight;
     }
-
-    // ------------------------------------------------------------------------
-
-    #region properties
-
-    public Camera? Camera       { get; set; }
-    public float   WorldWidth   { get; set; }
-    public float   WorldHeight  { get; set; }
-    public int     ScreenX      { get; set; }
-    public int     ScreenY      { get; set; }
-    public int     ScreenWidth  { get; set; }
-    public int     ScreenHeight { get; set; }
-
-    #endregion properties
 }

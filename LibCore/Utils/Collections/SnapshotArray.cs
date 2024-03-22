@@ -48,11 +48,19 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     private T[]? _snapshot;
     private int  _snapshotCount;
 
+    /// <summary>
+    /// Creates a new SnapshotArray with the specified initial capacity.
+    /// The created array will be Ordered.
+    /// </summary>
+    /// <param name="capacity"> Initial capacity, default is 0. </param>
     public SnapshotArray( int capacity = 0 )
         : this( true, capacity )
     {
     }
 
+    /// <summary>
+    /// Creates a new SnapshotArray from the supplied <see cref="Array{T}"/>
+    /// </summary>
     public SnapshotArray( Array< T > array )
     {
         ArgumentNullException.ThrowIfNull( array );
@@ -65,12 +73,24 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
         Array.Copy( array.Items, 0, Items, 0, Size );
     }
 
+    /// <summary>
+    /// Creates a new SnapshotArray, with <see cref="Array{T}.Ordered"/> set to the
+    /// supplied value, and ther array capacity set to the supplied capacity.
+    /// </summary>
+    /// <param name="ordered"> Default value is TRUE. </param>
+    /// <param name="capacity"> Default value is 16. </param>
     public SnapshotArray( bool ordered = true, int capacity = 16 )
     {
         Ordered = ordered;
         Items   = new T[ capacity ];
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="ordered"></param>
+    /// <param name="array"></param>
+    /// <param name="startIndex"></param>
+    /// <param name="count"></param>
     public SnapshotArray( bool ordered, T[] array, int startIndex, int count )
     {
         Ordered = ordered;
@@ -159,6 +179,9 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
         }
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="value"></param>
     public override void Add( T value )
     {
         Modified();
@@ -215,6 +238,11 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
         Size += count;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public override T GetAt( int index )
     {
         if ( index >= Size )
@@ -277,6 +305,10 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
         Items[ index ] = value;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="first"></param>
+    /// <param name="second"></param>
     public override void Swap( int first, int second )
     {
         Modified();

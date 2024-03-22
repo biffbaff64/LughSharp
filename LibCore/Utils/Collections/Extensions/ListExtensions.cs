@@ -27,6 +27,7 @@ using LughSharp.LibCore.Maths;
 
 namespace LughSharp.LibCore.Utils.Collections.Extensions;
 
+[PublicAPI]
 public static class ListExtensions
 {
     public static T[] Resize<T>( this List< T > ts, int newSize )
@@ -55,41 +56,54 @@ public static class ListExtensions
     /// <param name="t"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static List< T > With<T>( T t )
+    public static List< T > New<T>( T t )
     {
-        return new List< T >
-            { t };
+        return new List< T > { t };
     }
 
-    public static void AddAll<T>( this List< T > ts, T[] array, int start, int count )
-    {
-        for ( var i = start; i < count; i++ )
-        {
-            ts.Add( array[ i ] );
-        }
-    }
-
-    public static void AddAll<T>( this List< T > ts, List< T > array, int start, int count )
+    /// <summary>
+    /// Adds <paramref name="count"/> elements in the source Array, starting at position
+    /// <paramref name="start"/> to the target List.
+    /// </summary>
+    public static void AddAll<T>( this List< T > target, T[] source, int start, int count )
     {
         for ( var i = start; i < count; i++ )
         {
-            ts.Add( array[ i ] );
+            target.Add( source[ i ] );
         }
     }
 
-    public static void AddAll<T>( this List< T > ts, List< T > array )
+    /// <summary>
+    /// Adds <paramref name="count"/> elements in the source List, starting at position
+    /// <paramref name="start"/> to the target List.
+    /// </summary>
+    public static void AddAll<T>( this List< T > target, List< T > source, int start, int count )
     {
-        foreach ( T tex in array )
+        for ( var i = start; i < count; i++ )
         {
-            ts.Add( tex );
+            target.Add( source[ i ] );
         }
     }
 
-    public static void AddAll<T>( this List< T > ts, params T[] items )
+    /// <summary>
+    /// Adds all elements in the source List to the target List.
+    /// </summary>
+    public static void AddAll<T>( this List< T > target, List< T > source )
+    {
+        foreach ( T tex in source )
+        {
+            target.Add( tex );
+        }
+    }
+
+    /// <summary>
+    /// Adds all elements in the array 'items' to the target List.
+    /// </summary>
+    public static void AddAll<T>( this List< T > target, params T[] items )
     {
         foreach ( T item in items )
         {
-            ts.Add( item );
+            target.Add( item );
         }
     }
 
@@ -126,20 +140,20 @@ public static class ListExtensions
     /// <summary>
     ///     Removes and returns the last item in the list.
     /// </summary>
-    /// <param name="ts"></param>
+    /// <param name="list"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public static T Pop<T>( this List< T > ts )
+    public static T Pop<T>( this List< T > list )
     {
-        if ( ts.Count == 0 )
+        if ( list.Count == 0 )
         {
-            throw new GdxRuntimeException( "Array is empty." );
+            throw new GdxRuntimeException( "List is empty." );
         }
 
-        T item = ts[ ^1 ];
+        T item = list[ ^1 ];
 
-        ts.RemoveAt( ts.Count - 1 );
+        list.RemoveAt( list.Count - 1 );
 
         return item;
     }
@@ -147,31 +161,31 @@ public static class ListExtensions
     /// <summary>
     ///     Returns the last item in a list.
     /// </summary>
-    /// <param name="ts"></param>
+    /// <param name="list"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T Peek<T>( this List< T > ts )
+    public static T Peek<T>( this List< T > list )
     {
-        return ts[ ^1 ];
+        return list[ ^1 ];
     }
 
     /// <summary>
     ///     Removes and returns the item at the specified index.
     /// </summary>
-    /// <param name="ts"></param>
+    /// <param name="list"></param>
     /// <param name="index"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T RemoveIndex<T>( this List< T > ts, int index )
+    public static T RemoveIndex<T>( this List< T > list, int index )
     {
-        if ( index >= ts.Count )
+        if ( index >= list.Count )
         {
-            throw new IndexOutOfRangeException( "index can't be >= size: " + index + " >= " + ts.Count );
+            throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {list.Count}" );
         }
 
-        T value = ts[ index ];
+        T value = list[ index ];
 
-        ts.RemoveAt( index );
+        list.RemoveAt( index );
 
         return value;
     }

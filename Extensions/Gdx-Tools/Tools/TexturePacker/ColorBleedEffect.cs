@@ -25,9 +25,10 @@
 
 namespace LughSharp.Extensions.Gdx_Tools.Tools.TexturePacker;
 
+[PublicAPI]
 public class ColorBleedEffect
 {
-    private readonly static int[] Offsets = { -1, -1, 0, -1, 1, -1, -1, 0, 1, 0, -1, 1, 0, 1, 1, 1 };
+    private readonly static int[] _offsets = { -1, -1, 0, -1, 1, -1, -1, 0, 1, 0, -1, 1, 0, 1, 1, 1 };
 
 //    public BufferedImage ProcessImage( BufferedImage image, int maxIterations )
 //    {
@@ -75,10 +76,10 @@ public class ColorBleedEffect
             int r          = 0, g = 0, b = 0;
             var count      = 0;
 
-            for ( int i = 0, n = Offsets.Length; i < n; i += 2 )
+            for ( int i = 0, n = _offsets.Length; i < n; i += 2 )
             {
-                var column = x + Offsets[ i ];
-                var row    = y + Offsets[ i + 1 ];
+                var column = x + _offsets[ i ];
+                var row    = y + _offsets[ i + 1 ];
 
                 if ( ( column < 0 ) || ( column >= width ) || ( row < 0 ) || ( row >= height ) )
                 {
@@ -146,7 +147,7 @@ public class ColorBleedEffect
 
         return ( ( a & 0xFF ) << 24 ) | ( ( r & 0xFF ) << 16 ) | ( ( g & 0xFF ) << 8 ) | ( ( b & 0xFF ) << 0 );
     }
-
+    
     private class Mask
     {
         private readonly bool[] _blank;

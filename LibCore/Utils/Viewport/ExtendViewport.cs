@@ -27,8 +27,26 @@ using LughSharp.LibCore.Graphics;
 
 namespace LughSharp.LibCore.Utils.Viewport;
 
+/// <summary>
+/// A viewport that keeps the world aspect ratio by extending the world in one direction.
+/// The world is first scaled to fit within the viewport, then the shorter dimension is
+/// lengthened to fill the viewport. A maximum size can be specified to limit how much the
+/// world is extended and black bars (letterboxing) are used for any remaining space.
+/// </summary>
+[PublicAPI]
 public class ExtendViewport : Viewport
 {
+    #region Properties
+
+    public float MinWorldWidth  { get; }
+    public float MinWorldHeight { get; }
+    public float MaxWorldWidth  { get; }
+    public float MaxWorldHeight { get; }
+
+    #endregion
+
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Creates a new viewport using a new <seealso cref="OrthographicCamera" />
     ///     with no maximum world size.
@@ -146,13 +164,4 @@ public class ExtendViewport : Viewport
 
         Apply( centerCamera );
     }
-
-    #region Properties
-
-    public float MinWorldWidth  { get; }
-    public float MinWorldHeight { get; }
-    public float MaxWorldWidth  { get; }
-    public float MaxWorldHeight { get; }
-
-    #endregion
 }

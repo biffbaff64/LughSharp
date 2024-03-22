@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Utils.Pooling;
 
+[PublicAPI]
 public interface IPoolable
 {
     /// <summary>

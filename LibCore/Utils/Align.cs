@@ -49,51 +49,66 @@ public static class Align
 
     // ------------------------------------------------------------------------
 
-    public static bool IsLeft( int align )
+    /// <summary>
+    /// Returns TRUE if the supplied position is aligned to the LEFT.
+    /// </summary>
+    public static bool IsLeft( int position )
     {
-        return ( align & LEFT ) != 0;
+        return ( position & LEFT ) != 0;
     }
 
-    public static bool IsRight( int align )
+    /// <summary>
+    /// Returns TRUE if the supplied position is aligned to the RIGHT.
+    /// </summary>
+    public static bool IsRight( int position )
     {
-        return ( align & RIGHT ) != 0;
+        return ( position & RIGHT ) != 0;
     }
 
-    public static bool IsTop( int align )
+    /// <summary>
+    /// Returns TRUE if the supplied position is aligned to the TOP.
+    /// </summary>
+    public static bool IsTop( int position )
     {
-        return ( align & TOP ) != 0;
+        return ( position & TOP ) != 0;
     }
 
-    public static bool IsBottom( int align )
+    /// <summary>
+    /// Returns TRUE if the supplied position is aligned to the BOTTOM.
+    /// </summary>
+    public static bool IsBottom( int position )
     {
-        return ( align & BOTTOM ) != 0;
+        return ( position & BOTTOM ) != 0;
     }
 
-    public static bool IsCenterHorizontal( int align )
+    /// <summary>
+    /// Returns TRUE if the supplied position is aligned horizontally central.
+    /// </summary>
+    public static bool IsCenterHorizontal( int position )
     {
-        return ( ( align & LEFT ) == 0 ) && ( ( align & RIGHT ) == 0 );
+        return ( ( position & LEFT ) == 0 ) && ( ( position & RIGHT ) == 0 );
     }
 
-    public static bool IsCenterVertical( int align )
+    /// <summary>
+    /// Returns TRUE if the supplied position is aligned vertically central.
+    /// </summary>
+    public static bool IsCenterVertical( int position )
     {
-        return ( ( align & TOP ) == 0 ) && ( ( align & BOTTOM ) == 0 );
+        return ( ( position & TOP ) == 0 ) && ( ( position & BOTTOM ) == 0 );
     }
 
     // ------------------------------------------------------------------------
 
-    /// <summary>
-    /// </summary>
-    /// <param name="align"></param>
-    /// <returns></returns>
-    public static string ToString( int align )
+    /// <inheritdoc cref="Object.ToString"/>
+    public static string ToString( int position )
     {
         var buffer = new StringBuilder();
 
-        if ( ( align & TOP ) != 0 )
+        if ( ( position & TOP ) != 0 )
         {
             buffer.Append( "Top," );
         }
-        else if ( ( align & BOTTOM ) != 0 )
+        else if ( ( position & BOTTOM ) != 0 )
         {
             buffer.Append( "Bottom," );
         }
@@ -102,11 +117,11 @@ public static class Align
             buffer.Append( "Center," );
         }
 
-        if ( ( align & LEFT ) != 0 )
+        if ( ( position & LEFT ) != 0 )
         {
             buffer.Append( "Left" );
         }
-        else if ( ( align & RIGHT ) != 0 )
+        else if ( ( position & RIGHT ) != 0 )
         {
             buffer.Append( "Right" );
         }

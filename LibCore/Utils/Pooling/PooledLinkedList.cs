@@ -28,8 +28,11 @@ namespace LughSharp.LibCore.Utils.Pooling;
 /// <summary>
 ///     A simple linked list that pools its nodes.
 /// </summary>
+[PublicAPI]
 public class PooledLinkedList<T>
 {
+    public int Size { get; set; } = 0;
+
     private readonly Pool< Item< T > > _pool;
 
     private Item< T >? _curr;
@@ -38,18 +41,23 @@ public class PooledLinkedList<T>
     private Item< T >? _tail;
 
     /// <summary>
+    /// Creates a new PooledLinkedList with an initial capacity of 16 and the
+    /// supplied maximum pool size.
     /// </summary>
     /// <param name="maxPoolSize"></param>
-    public PooledLinkedList( int maxPoolSize )
+    /// <param name="initialCapacity"></param>
+    public PooledLinkedList( int maxPoolSize, int initialCapacity = 16 )
     {
-        _pool = new Pool< Item< T > >( 16, maxPoolSize )
+        _pool = new Pool< Item< T > >( initialCapacity, maxPoolSize )
         {
             NewObject = GetNewObject
         };
     }
 
-    public int Size { get; set; } = 0;
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public Item< T > GetNewObject()
     {
         return new Item< T >();
@@ -122,7 +130,7 @@ public class PooledLinkedList<T>
     /// <summary>
     ///     Starts iterating over the list's items from the head of the list
     /// </summary>
-    protected void Iter()
+    protected void Iterate()
     {
         _iter = _head;
     }
@@ -130,7 +138,7 @@ public class PooledLinkedList<T>
     /// <summary>
     ///     Starts iterating over the list's items from the tail of the list
     /// </summary>
-    public void IterReverse()
+    public void IterateReverse()
     {
         _iter = _tail;
     }
@@ -257,10 +265,11 @@ public class PooledLinkedList<T>
     }
 
     /// <summary>
+    ///     Clears this linked list.
     /// </summary>
     public void Clear()
     {
-        Iter();
+        Iterate();
 
         while ( Next() != null )
         {
@@ -271,7 +280,8 @@ public class PooledLinkedList<T>
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public record Item<TT>
+    [PublicAPI]
+    public class Item<TT>
     {
         internal TT?         Payload { get; set; }
         internal Item< TT >? Next    { get; set; }

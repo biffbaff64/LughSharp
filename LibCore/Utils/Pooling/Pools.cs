@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Utils.Pooling;
 /// <summary>
 ///     Stores a map of <see cref="Pool{T}" />s by type for convenient static access.
 /// </summary>
+[PublicAPI]
 public static class Pools<T>
 {
     private readonly static Dictionary< Type, Pool< T >? > _typePools = new();

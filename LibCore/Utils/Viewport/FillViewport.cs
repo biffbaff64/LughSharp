@@ -32,16 +32,25 @@ namespace LughSharp.LibCore.Utils.Viewport;
 ///     ratio by scaling the world up to take the whole screen (some of the world may
 ///     be off screen).
 /// </summary>
+[PublicAPI]
 public class FillViewport : ScalingViewport
 {
     /// <summary>
     ///     Creates a new viewport using a new <see cref="OrthographicCamera" />.
     /// </summary>
+    /// <param name="worldWidth"> World width in pixels. </param>
+    /// <param name="worldHeight"> World height in pixels. </param>
     public FillViewport( float worldWidth, float worldHeight )
         : base( Scaling.Fill, worldWidth, worldHeight )
     {
     }
 
+    /// <summary>
+    ///     Creates a new viewport using the supplied <see cref="OrthographicCamera"/>.
+    /// </summary>
+    /// <param name="worldWidth"> World width in pixels. </param>
+    /// <param name="worldHeight"> World height in pixels. </param>
+    /// <param name="camera"> The camera to use. </param>
     public FillViewport( float worldWidth, float worldHeight, Camera camera )
         : base( Scaling.Fill, worldWidth, worldHeight, camera )
     {

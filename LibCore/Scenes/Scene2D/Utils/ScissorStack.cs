@@ -39,6 +39,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 ///     pushed onto the stack, it will be merged with the current top of stack. The
 ///     minimum area of overlap is then set as the real top of the stack.
 /// </summary>
+[PublicAPI]
 public class ScissorStack
 {
     private readonly static List< RectangleShape > Scissors = new();

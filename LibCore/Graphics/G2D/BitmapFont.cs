@@ -160,7 +160,7 @@ public class BitmapFont
     /// </param>
     public BitmapFont( BitmapFontData data, TextureRegion? region, bool integer )
         : this( data,
-                region != null ? ListExtensions.With( region ) : null,
+                region != null ? ListExtensions.New( region ) : null,
                 integer )
     {
         _fileType = FileType.Local;
