@@ -28,7 +28,7 @@ namespace LughSharp.LibCore.Utils;
 /// <summary>
 ///     A typesafe enumeration for byte orders.
 /// </summary>
-/// <remarks>Not sure if this is still needed.</remarks>
+//TODO: Is this still needed?
 [PublicAPI]
 public class ByteOrder
 {

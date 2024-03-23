@@ -33,13 +33,17 @@ namespace LughSharp.LibCore.Maths.Collision;
 [Serializable, PublicAPI]
 public class BoundingBox
 {
-    private readonly static Vector3 TmpVector = new();
+    public readonly Vector3 max = new();
+    public readonly Vector3 min = new();
+
+    // ------------------------------------------------------------------------
+    
+    private readonly static Vector3 _tmpVector = new();
 
     private readonly Vector3 _cnt = new();
     private readonly Vector3 _dim = new();
-    public readonly  Vector3 max  = new();
 
-    public readonly Vector3 min = new();
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Constructs a new bounding box with the minimum and maximum vector set to zeros.
@@ -68,6 +72,8 @@ public class BoundingBox
         Set( minimum, maximum );
     }
 
+    // ------------------------------------------------------------------------
+
     public float CenterX => _cnt.X;
     public float CenterY => _cnt.Y;
     public float CenterZ => _cnt.Z;
@@ -75,6 +81,8 @@ public class BoundingBox
     public float Width  => _dim.X;
     public float Height => _dim.Y;
     public float Depth  => _dim.Z;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Returns whether this bounding box is valid.
@@ -101,17 +109,13 @@ public class BoundingBox
     /// <returns> This bounding box for chaining.  </returns>
     public BoundingBox Set( Vector3 minimum, Vector3 maximum )
     {
-        min.Set(
-            minimum.X < maximum.X ? minimum.X : maximum.X,
-            minimum.Y < maximum.Y ? minimum.Y : maximum.Y,
-            minimum.Z < maximum.Z ? minimum.Z : maximum.Z
-            );
+        min.Set( minimum.X < maximum.X ? minimum.X : maximum.X,
+                 minimum.Y < maximum.Y ? minimum.Y : maximum.Y,
+                 minimum.Z < maximum.Z ? minimum.Z : maximum.Z );
 
-        max.Set(
-            minimum.X > maximum.X ? minimum.X : maximum.X,
-            minimum.Y > maximum.Y ? minimum.Y : maximum.Y,
-            minimum.Z > maximum.Z ? minimum.Z : maximum.Z
-            );
+        max.Set( minimum.X > maximum.X ? minimum.X : maximum.X,
+                 minimum.Y > maximum.Y ? minimum.Y : maximum.Y,
+                 minimum.Z > maximum.Z ? minimum.Z : maximum.Z );
 
         _cnt.Set( min ).Add( max ).Scl( 0.5f );
         _dim.Set( max ).Sub( min );
@@ -250,6 +254,7 @@ public class BoundingBox
     }
 
     /// <summary>
+    /// Gets the minimum values into a <see cref="Vector3"/>.
     /// </summary>
     /// <param name="vec3"> The <see cref="Vector3" /> to receive the minimum values.</param>
     /// <returns> The vector specified with the out argument</returns>
@@ -259,6 +264,7 @@ public class BoundingBox
     }
 
     /// <summary>
+    /// Gets the maximum values into a <see cref="Vector3"/>.
     /// </summary>
     /// <param name="vec3">The <see cref="Vector3" /> to receive the maximum values.</param>
     /// <returns> The vector specified with the out argument</returns>
@@ -289,10 +295,8 @@ public class BoundingBox
     /// <returns> This bounding box for chaining.</returns>
     public BoundingBox Extend( Vector3 point )
     {
-        return Set(
-            min.Set( Min( min.X, point.X ), Min( min.Y, point.Y ), Min( min.Z, point.Z ) ),
-            max.Set( Max( max.X, point.X ), Max( max.Y, point.Y ), Max( max.Z, point.Z ) )
-            );
+        return Set( min.Set( Math.Min( min.X, point.X ), Math.Min( min.Y, point.Y ), Math.Min( min.Z, point.Z ) ),
+                    max.Set( Math.Max( max.X, point.X ), Math.Max( max.Y, point.Y ), Math.Max( max.Z, point.Z ) ) );
     }
 
     /// <summary>
@@ -311,10 +315,12 @@ public class BoundingBox
     /// <returns>This bounding box for chaining.</returns>
     public BoundingBox Extend( BoundingBox aBounds )
     {
-        return Set(
-            min.Set( Min( min.X, aBounds.min.X ), Min( min.Y, aBounds.min.Y ), Min( min.Z, aBounds.min.Z ) ),
-            max.Set( Max( max.X, aBounds.max.X ), Max( max.Y, aBounds.max.Y ), Max( max.Z, aBounds.max.Z ) )
-            );
+        return Set( min.Set( Math.Min( min.X, aBounds.min.X ),
+                             Math.Min( min.Y, aBounds.min.Y ),
+                             Math.Min( min.Z, aBounds.min.Z ) ),
+                    max.Set( Math.Max( max.X, aBounds.max.X ),
+                             Math.Max( max.Y, aBounds.max.Y ),
+                             Math.Max( max.Z, aBounds.max.Z ) ) );
     }
 
     /// <summary>
@@ -325,10 +331,12 @@ public class BoundingBox
     /// <returns> This bounding box for chaining.</returns>
     public BoundingBox Extend( Vector3 center, float radius )
     {
-        return Set(
-            min.Set( Min( min.X, center.X - radius ), Min( min.Y, center.Y - radius ), Min( min.Z, center.Z - radius ) ),
-            max.Set( Max( max.X, center.X + radius ), Max( max.Y, center.Y + radius ), Max( max.Z, center.Z + radius ) )
-            );
+        return Set( min.Set( Math.Min( min.X, center.X - radius ),
+                             Math.Min( min.Y, center.Y - radius ),
+                             Math.Min( min.Z, center.Z - radius ) ),
+                    max.Set( Math.Max( max.X, center.X + radius ),
+                             Math.Max( max.Y, center.Y + radius ),
+                             Math.Max( max.Z, center.Z + radius ) ) );
     }
 
     /// <summary>
@@ -342,14 +350,14 @@ public class BoundingBox
     /// <returns>This bounding box for chaining.</returns>
     public BoundingBox Extend( BoundingBox bounds, Matrix4 transform )
     {
-        Extend( TmpVector.Set( bounds.min.X, bounds.min.Y, bounds.min.Z ).Mul( transform ) );
-        Extend( TmpVector.Set( bounds.min.X, bounds.min.Y, bounds.max.Z ).Mul( transform ) );
-        Extend( TmpVector.Set( bounds.min.X, bounds.max.Y, bounds.min.Z ).Mul( transform ) );
-        Extend( TmpVector.Set( bounds.min.X, bounds.max.Y, bounds.max.Z ).Mul( transform ) );
-        Extend( TmpVector.Set( bounds.max.X, bounds.min.Y, bounds.min.Z ).Mul( transform ) );
-        Extend( TmpVector.Set( bounds.max.X, bounds.min.Y, bounds.max.Z ).Mul( transform ) );
-        Extend( TmpVector.Set( bounds.max.X, bounds.max.Y, bounds.min.Z ).Mul( transform ) );
-        Extend( TmpVector.Set( bounds.max.X, bounds.max.Y, bounds.max.Z ).Mul( transform ) );
+        Extend( _tmpVector.Set( bounds.min.X, bounds.min.Y, bounds.min.Z ).Mul( transform ) );
+        Extend( _tmpVector.Set( bounds.min.X, bounds.min.Y, bounds.max.Z ).Mul( transform ) );
+        Extend( _tmpVector.Set( bounds.min.X, bounds.max.Y, bounds.min.Z ).Mul( transform ) );
+        Extend( _tmpVector.Set( bounds.min.X, bounds.max.Y, bounds.max.Z ).Mul( transform ) );
+        Extend( _tmpVector.Set( bounds.max.X, bounds.min.Y, bounds.min.Z ).Mul( transform ) );
+        Extend( _tmpVector.Set( bounds.max.X, bounds.min.Y, bounds.max.Z ).Mul( transform ) );
+        Extend( _tmpVector.Set( bounds.max.X, bounds.max.Y, bounds.min.Z ).Mul( transform ) );
+        Extend( _tmpVector.Set( bounds.max.X, bounds.max.Y, bounds.max.Z ).Mul( transform ) );
 
         return this;
     }
@@ -363,23 +371,23 @@ public class BoundingBox
     /// <returns>This bounding box for chaining.</returns>
     public BoundingBox Multiply( Matrix4 transform )
     {
-        float x0 = min.X,
-              y0 = min.Y,
-              z0 = min.Z,
-              x1 = max.X,
-              y1 = max.Y,
-              z1 = max.Z;
+        var x0 = min.X;
+        var y0 = min.Y;
+        var z0 = min.Z;
+        var x1 = max.X;
+        var y1 = max.Y;
+        var z1 = max.Z;
 
         ToInfinity();
 
-        Extend( TmpVector.Set( x0, y0, z0 ).Mul( transform ) );
-        Extend( TmpVector.Set( x0, y0, z1 ).Mul( transform ) );
-        Extend( TmpVector.Set( x0, y1, z0 ).Mul( transform ) );
-        Extend( TmpVector.Set( x0, y1, z1 ).Mul( transform ) );
-        Extend( TmpVector.Set( x1, y0, z0 ).Mul( transform ) );
-        Extend( TmpVector.Set( x1, y0, z1 ).Mul( transform ) );
-        Extend( TmpVector.Set( x1, y1, z0 ).Mul( transform ) );
-        Extend( TmpVector.Set( x1, y1, z1 ).Mul( transform ) );
+        Extend( _tmpVector.Set( x0, y0, z0 ).Mul( transform ) );
+        Extend( _tmpVector.Set( x0, y0, z1 ).Mul( transform ) );
+        Extend( _tmpVector.Set( x0, y1, z0 ).Mul( transform ) );
+        Extend( _tmpVector.Set( x0, y1, z1 ).Mul( transform ) );
+        Extend( _tmpVector.Set( x1, y0, z0 ).Mul( transform ) );
+        Extend( _tmpVector.Set( x1, y0, z1 ).Mul( transform ) );
+        Extend( _tmpVector.Set( x1, y1, z0 ).Mul( transform ) );
+        Extend( _tmpVector.Set( x1, y1, z1 ).Mul( transform ) );
 
         return this;
     }
@@ -442,9 +450,7 @@ public class BoundingBox
             && ( max.Z >= v.Z );
     }
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $"[ {min} | {max} ]";
@@ -459,29 +465,7 @@ public class BoundingBox
     /// <returns>This bounding box for chaining.</returns>
     public BoundingBox Extend( float x, float y, float z )
     {
-        return Set(
-            min.Set( Min( min.X, x ), Min( min.Y, y ), Min( min.Z, z ) ),
-            max.Set( Max( max.X, x ), Max( max.Y, y ), Max( max.Z, z ) )
-            );
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    public static float Min( in float a, in float b )
-    {
-        return a > b ? b : a;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    public static float Max( in float a, in float b )
-    {
-        return a > b ? a : b;
+        return Set( min.Set( Math.Min( min.X, x ), Math.Min( min.Y, y ), Math.Min( min.Z, z ) ),
+                    max.Set( Math.Max( max.X, x ), Math.Max( max.Y, y ), Math.Max( max.Z, z ) ) );
     }
 }

@@ -25,8 +25,11 @@
 
 namespace LughSharp.LibCore.Utils;
 
+/// <summary>
+/// Various constants applicable to floats.
+/// </summary>
 [PublicAPI]
-public class FloatConsts
+public static class FloatConstants
 {
     public const float POSITIVE_INFINITY = float.PositiveInfinity;
     public const float NEGATIVE_INFINITY = float.NegativeInfinity;

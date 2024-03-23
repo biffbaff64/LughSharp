@@ -34,8 +34,8 @@ public class NumberUtils
 
         // Check for NaN based on values of bit fields, maximum
         // exponent and nonzero significand.
-        if ( ( ( result & FloatConsts.EXP_BIT_MASK ) == FloatConsts.EXP_BIT_MASK )
-          && ( ( result & FloatConsts.SIGNIF_BIT_MASK ) != 0 ) )
+        if ( ( ( result & FloatConstants.EXP_BIT_MASK ) == FloatConstants.EXP_BIT_MASK )
+          && ( ( result & FloatConstants.SIGNIF_BIT_MASK ) != 0 ) )
         {
             result = 0x7fc00000;
         }

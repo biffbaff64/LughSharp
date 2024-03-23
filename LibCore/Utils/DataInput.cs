@@ -133,8 +133,7 @@ public class DataInput : BinaryReader
 
                 case 12 or 13:
                 {
-                    _chars[ charIndex ] = ( char )( ( ( b & 0x1F ) << 6 )
-                                                  | ( Read() & 0x3F ) );
+                    _chars[ charIndex ] = ( char )( ( ( b & 0x1F ) << 6 ) | ( Read() & 0x3F ) );
 
                     break;
                 }

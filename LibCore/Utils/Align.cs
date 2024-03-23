@@ -31,7 +31,7 @@ namespace LughSharp.LibCore.Utils;
 ///     Provides bit flag constants for alignment.
 /// </summary>
 [PublicAPI]
-public static class Align
+public sealed class Align
 {
     // ------------------------------------------------------------------------
 
@@ -102,20 +102,22 @@ public static class Align
     /// <inheritdoc cref="Object.ToString"/>
     public static string ToString( int position )
     {
-        var buffer = new StringBuilder();
+        var buffer = new StringBuilder( "[" );
 
         if ( ( position & TOP ) != 0 )
         {
-            buffer.Append( "Top," );
+            buffer.Append( "Top" );
         }
         else if ( ( position & BOTTOM ) != 0 )
         {
-            buffer.Append( "Bottom," );
+            buffer.Append( "Bottom" );
         }
         else
         {
-            buffer.Append( "Center," );
+            buffer.Append( "Center" );
         }
+
+        buffer.Append( "] [" );
 
         if ( ( position & LEFT ) != 0 )
         {
@@ -130,6 +132,8 @@ public static class Align
             buffer.Append( "Center" );
         }
 
+        buffer.Append( "]" );
+        
         return buffer.ToString();
     }
 }

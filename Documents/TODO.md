@@ -553,7 +553,7 @@ MATH/COLLISION
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - BoundingBox
-    - IP   - IP   - Ray
+    - DONE - DONE - Ray
     - IP   - IP   - Segment
     - IP   - IP   - Sphere
 
@@ -720,29 +720,29 @@ UTILS
     ----   --------
     - DONE - DONE - Align
     - DONE - IP   - BinaryHeap
-    - DONE - IP   - Bits
-    - DONE - IP   - ByteOrder
-    - DONE - IP   - Character
+    - DONE - DONE - Bits
+    - DONE - IP   - ByteOrder                       Is this still needed?
+    - DONE - IP   - Character                       C# System MUST already have this???
     - DONE - IP   - ComparableTimSort
-    - DONE - IP   - DataInput                      Check
-    - DONE - IP   - DataOutput                     Check
-    - DONE - IP   - DataUtils                      Added Class
-    - DONE - IP   - FloatConstants
-    - DONE - IP   - GdxRuntimeException
+    - DONE - IP   - DataInput                       Check
+    - DONE - IP   - DataOutput                      Check
+    - DONE - IP   - DataUtils                       Added Class
+    - DONE - DONE - FloatConstants
+    - DONE - DONE - GdxRuntimeException
     - DONE - IP   - GdxSystem
-    - DONE - DONE - IClipboard                     Convert - Interface, clipboard handled in backends.                 
+    - DONE - DONE - IClipboard                      Convert - Interface, clipboard handled in backends.                 
     - DONE - DONE - ICloseable
     - DONE - DONE - IReadable
-    - DONE - IP   - IRunnable                      Done, but is it needed?
-    - IP   - IP   - Logger                         Needs documenting.
-    - IP   - IP   - PerformanceCounter             Check
-    - IP   - IP   - PerformanceCounters            Check
-    - IP   - IP   - PropertiesUtils                Convert, but check if necessary first
+    - DONE - IP   - IRunnable                       Done, but is it needed?
+    - IP   - IP   - Logger                          Needs documenting.
+    - IP   - IP   - PerformanceCounter              Check
+    - IP   - IP   - PerformanceCounters             Check
+    - IP   - IP   - PropertiesUtils                 Convert, but check if necessary first
     - DONE - IP   - QuadTreeFloat
     - DONE - IP   - QuickSelect
     - IP   - IP   - Scaling
     - DONE - IP   - ScreenUtils
-    - DONE - IP   - Select                         Renamed Selector (See SortedSetExtensions.cs)
+    - DONE - IP   - Select                          Renamed Selector (See SortedSetExtensions.cs)
     - DONE - IP   - SortUtils
     - DONE - IP   - StringTokenizer
     - DONE - IP   - Timer                          

@@ -51,7 +51,27 @@ public record BinaryHeapNode
 [PublicAPI]
 public class BinaryHeap<T> where T : BinaryHeapNode
 {
-    private const int DEFAULT_CAPACITY = 16;
+    #region properties
+
+    public int Size { get; set; }
+
+    /// <summary>
+    ///     Returns true if the heap has one or more items.
+    /// </summary>
+    public bool NotEmpty => Size > 0;
+
+    /// <summary>
+    ///     Returns true if the heap is empty.
+    /// </summary>
+    public bool IsEmpty => Size == 0;
+
+    #endregion properties
+
+    // ------------------------------------------------------------------------
+    
+    private const int DEFAULT_HEAP_CAPACITY = 16;
+
+    // ------------------------------------------------------------------------
 
     private readonly bool              _isMaxHeap;
     private          BinaryHeapNode[]? _nodes;
@@ -63,7 +83,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// </summary>
     /// <param name="capacity"> The capacity to use. Deafult is 16. </param>
     /// <param name="isMaxHeap"></param>
-    public BinaryHeap( int capacity = DEFAULT_CAPACITY, bool isMaxHeap = false )
+    public BinaryHeap( int capacity = DEFAULT_HEAP_CAPACITY, bool isMaxHeap = false )
     {
         _isMaxHeap = isMaxHeap;
         _nodes     = new BinaryHeapNode[ capacity ];
@@ -113,7 +133,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// <summary>
     ///     Returns true if the heap contains the specified node.
     /// </summary>
-    /// <param name="node">The <see cref="BinaryHeapNode" />to look for.</param>
+    /// <param name="node"> The <see cref="BinaryHeapNode"/> to look for. </param>
     /// <param name="identity">
     ///     If true, == comparison will be used. If false, .Equals() comparison will be used.
     /// </param>
@@ -180,7 +200,11 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         return ( T )removed;
     }
 
+    /// <summary>
+    /// Removes the specified node from the heap.
+    /// </summary>
     /// <returns> The specified node. </returns>
+    /// <exception cref="GdxRuntimeException"> If the heap is null. </exception>
     public virtual T Remove( T node )
     {
         GdxRuntimeException.ThrowIfNull( _nodes );
@@ -208,10 +232,17 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         return node;
     }
 
+    /// <summary>
+    /// Reset all elements in the heap to null.
+    /// <para>
+    ///     If the heap does not exist, it will be created first with capacity set
+    ///     to <see cref="DEFAULT_HEAP_CAPACITY"/>
+    /// </para>
+    /// </summary>
     public void Clear()
     {
         // If _nodes hasn't been created, fix that problem...
-        _nodes ??= new BinaryHeapNode[ DEFAULT_CAPACITY ];
+        _nodes ??= new BinaryHeapNode[ DEFAULT_HEAP_CAPACITY ];
 
         Array.Fill( _nodes, null, 0, Size );
         Size = 0;
@@ -336,6 +367,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         _nodes[ index ] = node;
     }
 
+    /// <inheritdoc/>
     public override bool Equals( object? obj )
     {
         if ( obj is not BinaryHeap< T > other )
@@ -362,6 +394,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         return true;
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         var hash = 37 + GetType().GetHashCode();
@@ -371,6 +404,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         return hash;
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         if ( ( Size == 0 ) || ( _nodes == null ) )
@@ -394,20 +428,4 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 
         return buffer.ToString();
     }
-
-    #region properties
-
-    public int Size { get; set; }
-
-    /// <summary>
-    ///     Returns true if the heap has one or more items.
-    /// </summary>
-    public bool NotEmpty => Size > 0;
-
-    /// <summary>
-    ///     Returns true if the heap is empty.
-    /// </summary>
-    public bool IsEmpty => Size == 0;
-
-    #endregion properties
 }

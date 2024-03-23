@@ -41,7 +41,7 @@ public class Bits
     /// <param name="nbits">the initial size of the bit set</param>
     public Bits( int nbits )
     {
-        CheckCapacity( nbits >>> 6 );
+        EnsureCapacity( nbits >>> 6 );
     }
 
     /// <summary>
@@ -69,10 +69,11 @@ public class Bits
     }
 
     /// <summary>
+    /// Returns whether or not the bit at the specified index is set.
     /// </summary>
     /// <param name="index"> the index of the bit </param>
     /// <returns> whether the bit is set </returns>
-    public bool Get( int index )
+    public bool IsSet( int index )
     {
         var word = index >>> 6;
 
@@ -114,7 +115,7 @@ public class Bits
     {
         var word = index >>> 6;
 
-        CheckCapacity( word );
+        EnsureCapacity( word );
 
         var oldBits = _bits[ word ];
 
@@ -124,33 +125,36 @@ public class Bits
     }
 
     /// <summary>
+    /// Set the bit at the specified index.
     /// </summary>
     /// <param name="index"> the index of the bit to set </param>
     public void Set( int index )
     {
         var word = index >>> 6;
 
-        CheckCapacity( word );
+        EnsureCapacity( word );
 
         _bits[ word ] |= 1L << ( index & 0x3F );
     }
 
     /// <summary>
+    /// Flip the bit value at the specified index.
     /// </summary>
     /// <param name="index"> the index of the bit to flip </param>
     public void Flip( int index )
     {
         var word = index >>> 6;
 
-        CheckCapacity( word );
+        EnsureCapacity( word );
 
         _bits[ word ] ^= 1L << ( index & 0x3F );
     }
 
     /// <summary>
+    /// Ensures that this bitset has room for the requested capacity.
     /// </summary>
     /// <param name="len"></param>
-    private void CheckCapacity( int len )
+    private void EnsureCapacity( int len )
     {
         if ( len >= _bits.Length )
         {
@@ -163,6 +167,7 @@ public class Bits
     }
 
     /// <summary>
+    /// Clears the bit at the specified index.
     /// </summary>
     /// <param name="index"> the index of the bit to clear </param>
     public void ClearBit( int index )
@@ -186,8 +191,8 @@ public class Bits
     }
 
     /// <summary>
+    /// Returns the number of bits currently stored, <b>not</b> the highset set bit!
     /// </summary>
-    /// <returns> the number of bits currently stored, <b>not</b> the highset set bit!</returns>
     public int NumBits()
     {
         return _bits.Length << 6;
@@ -368,7 +373,7 @@ public class Bits
 
         if ( commonWords < other._bits.Length )
         {
-            CheckCapacity( other._bits.Length );
+            EnsureCapacity( other._bits.Length );
 
             for ( int i = commonWords, s = other._bits.Length; s > i; i++ )
             {
@@ -404,7 +409,7 @@ public class Bits
 
         if ( commonWords < other._bits.Length )
         {
-            CheckCapacity( other._bits.Length );
+            EnsureCapacity( other._bits.Length );
 
             for ( int i = commonWords, s = other._bits.Length; s > i; i++ )
             {
@@ -469,6 +474,7 @@ public class Bits
         return true;
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         const int PRIME = 73;
@@ -479,10 +485,7 @@ public class Bits
         return hash;
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public override bool Equals( object? obj )
     {
         if ( this == obj )
