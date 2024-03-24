@@ -32,7 +32,8 @@ namespace LughSharp.LibCore.Maths;
 ///     Operations on affine matrices are faster because the last row can always be
 ///     assumed (0, 0, 1).
 /// </summary>
-public class Affine2 // : ISerializable
+[PublicAPI]
+public class Affine2
 {
     public float m00 = 1;
     public float m01 = 0;
@@ -841,7 +842,10 @@ public class Affine2 // : ISerializable
     /// <returns> True if scale is 1 and rotation is 0.</returns>
     public bool IsTranslation()
     {
-        return ( m00 == 1 ) && ( m11 == 1 ) && ( m01 == 0 ) && ( m10 == 0 );
+        return ( m00 is 1f )
+            && ( m11 is 1 )
+            && ( m01 is 0 )
+            && ( m10 is 0 );
     }
 
     /// <summary>
@@ -870,8 +874,7 @@ public class Affine2 // : ISerializable
         point.Y = ( m10 * x ) + ( m11 * y ) + m12;
     }
 
-    /// <summary>
-    /// </summary>
+    /// <inheritdoc/>
     public override string ToString()
     {
         return "[" + m00 + "|" + m01 + "|" + m02 + "]\n[" + m10 + "|" + m11 + "|" + m12 + "]\n[0.0|0.0|0.1]";

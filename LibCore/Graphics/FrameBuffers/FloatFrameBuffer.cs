@@ -28,6 +28,7 @@ namespace LughSharp.LibCore.Graphics.FrameBuffers;
 /// <summary>
 ///     This is a <see cref="FrameBuffer" /> variant backed by a float texture.
 /// </summary>
+[PublicAPI]
 public class FloatFrameBuffer : FrameBuffer
 {
     public FloatFrameBuffer()

@@ -109,10 +109,10 @@ AUDIO
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - IP   - IAudioDevice
-    - DONE - IP   - IAudioRecorder
-    - DONE - IP   - IMusic
-    - DONE - IP   - ISound
+    - DONE - DONE - IAudioDevice
+    - DONE - DONE - IAudioRecorder
+    - DONE - DONE - IMusic
+    - DONE - DONE - ISound
 
 AUDIO/MP3SHARP
 --------------
@@ -223,11 +223,11 @@ CORE
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - AbstractGraphics
-    - IP   - IP   - AbstractInput
-    - DONE - IP   - ApplicationAdapter
+    - DONE - IP   - AbstractGraphics
+    - DONE - IP   - AbstractInput
+    - DONE - DONE - ApplicationAdapter
     - DONE - IP   - Game
-    - DONE - IP   - Gdx
+    - DONE - DONE - Gdx
     - IP   - IP   - GDXVersion
     - DONE - IP   - IApplication
     - DONE - IP   - IApplicationListener
@@ -295,16 +295,16 @@ GRAPHICS/FRAMEBUFFERS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - FloatFrameBuffer
-    - IP   - IP   - FloatFrameBufferBuilder
-    - IP   - IP   - FrameBuffer
-    - IP   - IP   - FrameBufferBuilder
-    - IP   - IP   - FrameBufferCubemap
-    - IP   - IP   - FrameBufferCubemapBuilder
-    - IP   - IP   - FrameBufferRenderBufferAttachmentSpec
-    - IP   - IP   - FrameBufferTextureAttachmentSpec
-    - IP   - IP   - GLFrameBuffer
-    - IP   - IP   - GLFrameBufferBuilder
+    - DONE - IP   - FloatFrameBuffer
+    - DONE - IP   - FloatFrameBufferBuilder
+    - DONE - IP   - FrameBuffer
+    - DONE - IP   - FrameBufferBuilder
+    - DONE - IP   - FrameBufferCubemap
+    - DONE - IP   - FrameBufferCubemapBuilder
+    - DONE - IP   - FrameBufferRenderBufferAttachmentSpec
+    - DONE - IP   - FrameBufferTextureAttachmentSpec
+    - DONE - IP   - GLFrameBuffer
+    - DONE - IP   - GLFrameBufferBuilder
 
     ** Restructure GLFrameBuffer.Build(), this method is too long.
 
@@ -510,7 +510,7 @@ MATHS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - Affine2
+    - DONE - DONE - Affine2
     - IP   - IP   - Bezier
     - IP   - IP   - Bresenham2
     - IP   - IP   - BSpline
@@ -734,9 +734,9 @@ UTILS
     - DONE - DONE - ICloseable
     - DONE - DONE - IReadable
     - DONE - IP   - IRunnable                       Done, but is it needed?
-    - IP   - IP   - Logger                          Needs documenting.
-    - IP   - IP   - PerformanceCounter              Check
-    - IP   - IP   - PerformanceCounters             Check
+    - DONE - IP   - Logger                          Needs documenting.
+    - DONE - IP   - PerformanceCounter              Check
+    - DONE - IP   - PerformanceCounters             Check
     - IP   - IP   - PropertiesUtils                 Convert, but check if necessary first
     - DONE - IP   - QuadTreeFloat
     - DONE - IP   - QuickSelect
@@ -793,7 +793,7 @@ UTILS/COLLECTIONS
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - Array<T>                       Converted, but use List<T> for most cases.
-    - DONE - IP   - CollectionsData
+    - DONE - DONE - CollectionsData
     - IP   - IP   - DelayedRemovalArray            Convert / Extend List<>
     - IP   - IP   - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
     - IP   - IP   - IPredicate
@@ -801,18 +801,6 @@ UTILS/COLLECTIONS
     - IP   - IP   - PredicateIterable
     - IP   - IP   - PredicateIterator
     - IP   - IP   - SnapshotArray<T>
-
-    ----------------------------------------------------------------------------------
-
-UTILS/COLLECTIONS/EXTENSIONS
-----------------------------
-
-    CODE   DOCUMENT
-    ----   --------
-    - DONE - IP   - DictionaryExtensions
-    - DONE - IP   - ListExtensions
-
-    ----------------------------------------------------------------------------------
 
     - The following do not need converting
 
@@ -837,6 +825,16 @@ UTILS/COLLECTIONS/EXTENSIONS
     - **** - OrderedMap<K, V>               -> Use SortedDictionary<K, V> ?
     - **** - OrderedSet<T>                  -> Use SortedSet<T>
     - **** - ShortArray                     -> Use List< short >
+
+
+UTILS/COLLECTIONS/EXTENSIONS
+----------------------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - IP   - DictionaryExtensions
+    - DONE - IP   - ListExtensions
+
 
 UTILS/POOLING
 -------------

@@ -61,7 +61,7 @@ public class Buffer16BitStereo : AudioBase
     /// <summary>
     ///     Gets the number of bytes remaining from the current position on the buffer.
     /// </summary>
-    public int BytesLeft => _end - _offset;
+    public int BytesLeft => ( _end - _offset );
 
     private void OnStart()
     {
@@ -189,6 +189,7 @@ public class Buffer16BitStereo : AudioBase
         }
     }
 
+    /// <inheritdoc/>
     public override void SetStopFlag()
     {
     }

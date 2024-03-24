@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Graphics.FrameBuffers;
 
+[PublicAPI]
 public class FrameBufferRenderBufferAttachmentSpec
 {
     public FrameBufferRenderBufferAttachmentSpec( int internalFormat )

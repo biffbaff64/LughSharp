@@ -40,6 +40,7 @@ namespace LughSharp.LibCore.Graphics.FrameBuffers;
 ///         A FrameBuffer must be disposed if it is no longer needed.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class FrameBuffer : GLFrameBuffer< Texture >
 {
     public FrameBuffer()
@@ -91,14 +92,12 @@ public class FrameBuffer : GLFrameBuffer< Texture >
 
     protected override Texture CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
     {
-        var data = new GLOnlyTextureData(
-            BufferBuilder.Width,
-            BufferBuilder.Height,
-            0,
-            attachmentSpec.InternalFormat,
-            attachmentSpec.Format,
-            attachmentSpec.Type
-            );
+        var data = new GLOnlyTextureData( BufferBuilder.Width,
+                                          BufferBuilder.Height,
+                                          0,
+                                          attachmentSpec.InternalFormat,
+                                          attachmentSpec.Format,
+                                          attachmentSpec.Type );
 
         var result = new Texture( data );
 
@@ -123,13 +122,11 @@ public class FrameBuffer : GLFrameBuffer< Texture >
     /// </summary>
     protected override void AttachFrameBufferColorTexture( Texture texture )
     {
-        Gdx.GL20.GLFramebufferTexture2D(
-            IGL20.GL_FRAMEBUFFER,
-            IGL20.GL_COLOR_ATTACHMENT0,
-            IGL20.GL_TEXTURE_2D,
-            texture.GetTextureObjectHandle(),
-            0
-            );
+        Gdx.GL20.GLFramebufferTexture2D( IGL20.GL_FRAMEBUFFER,
+                                         IGL20.GL_COLOR_ATTACHMENT0,
+                                         IGL20.GL_TEXTURE_2D,
+                                         texture.GetTextureObjectHandle(),
+                                         0 );
     }
 
     /// <summary>

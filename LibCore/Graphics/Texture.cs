@@ -52,14 +52,31 @@ namespace LughSharp.LibCore.Graphics;
 ///         A Texture must be disposed when it is no longer used
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class Texture : GLTexture
 {
+    // ------------------------------------------------------------------------
+
+    public AssetManager? AssetManager { get; set; } = null;
+    public ITextureData? TextureData  { get; set; } = null;
+
+    public override int  Width     => TextureData?.Width ?? 0;
+    public override int  Height    => TextureData?.Height ?? 0;
+    public override int  Depth     => 0;
+    public override bool IsManaged => ( TextureData != null ) && TextureData.IsManaged();
+
+    public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
+
     // ------------------------------------------------------------------------
 
     private readonly Dictionary< IApplication, List< Texture >? > _managedTextures = new();
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Create a new Texture from the file at the given path.
+    /// </summary>
+    /// <param name="internalPath"></param>
     public Texture( string internalPath )
         : this( Gdx.Files.Internal( internalPath ) )
     {
@@ -75,16 +92,22 @@ public class Texture : GLTexture
     {
     }
 
-    public Texture( Pixmap pixmap )
-        : this( new PixmapTextureData( pixmap, null, false, false ) )
-    {
-    }
-
-    public Texture( Pixmap pixmap, bool useMipMaps )
+    /// <summary>
+    /// Creates a new Texture from the supplied <see cref="Pixmap"/>.
+    /// </summary>
+    /// <param name="pixmap"> The pixmap to use. </param>
+    /// <param name="useMipMaps"> Whether or nopt to generate MipMaps. Default is false. </param>
+    public Texture( Pixmap pixmap, bool useMipMaps = false )
         : this( new PixmapTextureData( pixmap, null, useMipMaps, false ) )
     {
     }
 
+    /// <summary>
+    /// Creates a new Texture from the supplied <see cref="Pixmap"/> and <see cref="Pixmap.Format"/>
+    /// </summary>
+    /// <param name="pixmap"> The pixmap to use. </param>
+    /// <param name="format"> The pixmap format to use. </param>
+    /// <param name="useMipMaps"> Whether or not to generate MipMaps. Default is false. </param>
     public Texture( Pixmap pixmap, Pixmap.Format format, bool useMipMaps ) : this
         ( new PixmapTextureData( pixmap, format, useMipMaps, false ) )
     {
@@ -121,18 +144,6 @@ public class Texture : GLTexture
             AddManagedTexture( Gdx.App, this );
         }
     }
-
-    // ------------------------------------------------------------------------
-
-    public AssetManager? AssetManager { get; set; } = null;
-    public ITextureData? TextureData  { get; set; } = null;
-
-    public override int  Width     => TextureData?.Width ?? 0;
-    public override int  Height    => TextureData?.Height ?? 0;
-    public override int  Depth     => 0;
-    public override bool IsManaged => ( TextureData != null ) && TextureData.IsManaged();
-
-    public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

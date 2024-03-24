@@ -25,12 +25,14 @@
 
 namespace LughSharp.LibCore.Graphics.FrameBuffers;
 
+[PublicAPI]
 public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 {
     /// <summary>
     ///     cubemap sides cache
     /// </summary>
-    private readonly static Cubemap.CubemapSide[] CubemapSides = Cubemap.CubemapSide.Values();
+    private readonly static Cubemap.CubemapSide[] _cubemapSides = Cubemap.CubemapSide.Values();
+    
     /// <summary>
     ///     the zero-based index of the active side
     /// </summary>
@@ -93,14 +95,12 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 
     protected override Cubemap CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
     {
-        GLOnlyTextureData data = new(
-            BufferBuilder.Width,
-            BufferBuilder.Height,
-            0,
-            attachmentSpec.InternalFormat,
-            attachmentSpec.Format,
-            attachmentSpec.Type
-            );
+        GLOnlyTextureData data = new( BufferBuilder.Width,
+                                      BufferBuilder.Height,
+                                      0,
+                                      attachmentSpec.InternalFormat,
+                                      attachmentSpec.Format,
+                                      attachmentSpec.Type );
 
         Cubemap result = new( data, data, data, data, data, data );
 
@@ -123,13 +123,11 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 
         foreach ( Cubemap.CubemapSide side in sides )
         {
-            Gdx.GL20.GLFramebufferTexture2D(
-                IGL20.GL_FRAMEBUFFER,
-                IGL20.GL_COLOR_ATTACHMENT0,
-                side.GLEnum,
-                glHandle,
-                0
-                );
+            Gdx.GL20.GLFramebufferTexture2D( IGL20.GL_FRAMEBUFFER,
+                                             IGL20.GL_COLOR_ATTACHMENT0,
+                                             side.GLEnum,
+                                             glHandle,
+                                             0 );
         }
     }
 
@@ -182,13 +180,11 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     {
         ArgumentNullException.ThrowIfNull( side );
 
-        Gdx.GL20.GLFramebufferTexture2D(
-            IGL20.GL_FRAMEBUFFER,
-            IGL20.GL_COLOR_ATTACHMENT0,
-            side.GLEnum,
-            GetColorBufferTexture().GetTextureObjectHandle(),
-            0
-            );
+        Gdx.GL20.GLFramebufferTexture2D( IGL20.GL_FRAMEBUFFER,
+                                         IGL20.GL_COLOR_ATTACHMENT0,
+                                         side.GLEnum,
+                                         GetColorBufferTexture().GetTextureObjectHandle(),
+                                         0 );
     }
 
     /// <summary>
@@ -196,6 +192,6 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     /// </summary>
     public Cubemap.CubemapSide? GetSide()
     {
-        return _currentSide < 0 ? null : CubemapSides[ _currentSide ];
+        return _currentSide < 0 ? null : _cubemapSides[ _currentSide ];
     }
 }

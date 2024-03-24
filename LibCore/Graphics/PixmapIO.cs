@@ -37,6 +37,7 @@ namespace LughSharp.LibCore.Graphics;
 /// <summary>
 ///     Write Pixmaps to various formats.
 /// </summary>
+[PublicAPI]
 public static class PixmapIO
 {
     /// <summary>
@@ -212,6 +213,7 @@ public static class PixmapIO
     /// <summary>
     ///     Paeth filter - a filtering algorithm used in the compression of PNG images
     /// </summary>
+    [PublicAPI]
     public class PNG : IDisposable
     {
         private const    int         IHDR                = 0x49484452;
@@ -422,6 +424,7 @@ public static class PixmapIO
 
         // --------------------------------------------------------------------
 
+        [PublicAPI]
         public class ChunkBuffer : BinaryWriter
         {
             private readonly MemoryStream _buffer;

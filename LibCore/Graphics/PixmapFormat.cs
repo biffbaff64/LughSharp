@@ -27,6 +27,7 @@ using LughSharp.LibCore.Graphics.G2D;
 
 namespace LughSharp.LibCore.Graphics;
 
+[PublicAPI]
 public static class PixmapFormat
 {
     /// <summary>

@@ -52,30 +52,30 @@ public class Array<T>
     }
 
     /// <summary>
-    ///     Creates a new Array object from the supplied Array.
+    ///     Creates a new Array object from the supplied Array{T} object.
     /// </summary>
-    /// <param name="array"> The array to copy. </param>
     public Array( Array< T > array )
         : this( array.Ordered, array.Items, 0, array.Size )
     {
     }
 
     /// <summary>
+    ///     Creates a new Array object from the supplied array[].
     /// </summary>
-    /// <param name="array"></param>
     public Array( T[] array ) : this( true, array, 0, array.Length )
     {
     }
 
     /// <summary>
+    ///     Creates a new Array object from the supplied array[].
     /// </summary>
     /// <param name="ordered">
     ///     If false, methods that remove elements may change the order of other
     ///     elements in the array, which avoids a memory copy.
     /// </param>
-    /// <param name="array"></param>
-    /// <param name="start"></param>
-    /// <param name="count"></param>
+    /// <param name="array"> The array[]  to use. </param>
+    /// <param name="start"> The start index to start copyiong from. </param>
+    /// <param name="count"> The number of elements to copy. </param>
     public Array( bool ordered, T[] array, int start, int count )
     {
         ArgumentNullException.ThrowIfNull( array );
@@ -90,7 +90,6 @@ public class Array<T>
     /// <summary>
     ///     Adds the specified value to this array.
     /// </summary>
-    /// <param name="value"></param>
     public virtual void Add( T value )
     {
         if ( Size == Items.Length )
@@ -104,7 +103,6 @@ public class Array<T>
     /// <summary>
     ///     Adds all items in the supplied array to this array.
     /// </summary>
-    /// <param name="array"></param>
     public void AddAll( Array< T > array )
     {
         AddAll( array, 0, array.Size );
@@ -127,7 +125,6 @@ public class Array<T>
     /// <param name="array">The array of items to add.</param>
     /// <param name="start">The start index.</param>
     /// <param name="count">The number of items to copy.</param>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public void AddAll( Array< T > array, int start, int count )
     {
         ArgumentNullException.ThrowIfNull( array );
@@ -167,27 +164,26 @@ public class Array<T>
     /// </summary>
     /// <param name="index"> The index into the array. Must be in the range 0 - Size-1. </param>
     /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public virtual T GetAt( int index )
     {
         if ( index >= Size )
         {
-            throw new ArgumentOutOfRangeException( nameof( index ), $@"index can't be >= size - {index} >= {Size}" );
+            throw new ArgumentOutOfRangeException( nameof( index ), $"index can't be >= size - {index} >= {Size}" );
         }
 
         if ( index < 0 )
         {
-            throw new ArgumentOutOfRangeException( nameof( index ), @"index cannot be less than 0." );
+            throw new ArgumentOutOfRangeException( nameof( index ), "index cannot be less than 0." );
         }
 
         return Items[ index ];
     }
 
     /// <summary>
+    ///     Sets the elementn at the specified index to the supplied value.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="value"></param>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <param name="index"> The index into the Array. </param>
+    /// <param name="value"> The new value. </param>
     public virtual void Set( int index, T value )
     {
         if ( index >= Size )
@@ -199,10 +195,10 @@ public class Array<T>
     }
 
     /// <summary>
+    ///     Inserts the supplied value into the array at the specified index.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="value"></param>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <param name="index"> The index to insert the value. </param>
+    /// <param name="value"> The value top insert. </param>
     public virtual void Insert( int index, T value )
     {
         if ( index > Size )
@@ -234,10 +230,9 @@ public class Array<T>
     }
 
     /// <summary>
+    ///     Inserts room for <paramref name="count"/> elements into the array
+    ///     starting at position <paramref name="index"/>.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="count"></param>
-    /// <exception cref="IndexOutOfRangeException"></exception>
     public void InsertRange( int index, int count )
     {
         if ( index > Size )
@@ -263,10 +258,11 @@ public class Array<T>
     }
 
     /// <summary>
+    ///     Swaps the elements at positions <paramref name="first"/> and
+    ///     <paramref name="second"/>
     /// </summary>
-    /// <param name="first"></param>
-    /// <param name="second"></param>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <param name="first"> Array index of the first element. </param>
+    /// <param name="second"> Array index of the second element. </param>
     public virtual void Swap( int first, int second )
     {
         if ( first >= Size )
@@ -410,8 +406,6 @@ public class Array<T>
     ///     Removes all items from this array that match items in the supplied
     ///     array at the same index.
     /// </summary>
-    /// <param name="array"></param>
-    /// <returns></returns>
     public bool RemoveAll( Array< T > array )
     {
         var size      = Size;
@@ -485,6 +479,7 @@ public class Array<T>
     }
 
     /// <summary>
+    ///     Clears this array.
     /// </summary>
     public virtual void Clear()
     {
@@ -509,9 +504,8 @@ public class Array<T>
     }
 
     /// <summary>
+    ///     Sets the size of this array to the new specified value.
     /// </summary>
-    /// <param name="newSize"></param>
-    /// <returns></returns>
     public T?[] SetSize( int newSize )
     {
         Truncate( newSize );
@@ -528,8 +522,6 @@ public class Array<T>
 
     /// <summary>
     /// </summary>
-    /// <param name="additionalCapacity"></param>
-    /// <returns></returns>
     public T?[] EnsureCapacity( int additionalCapacity )
     {
         var sizeNeeded = Size + additionalCapacity;

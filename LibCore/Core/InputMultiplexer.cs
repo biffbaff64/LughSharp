@@ -27,6 +27,7 @@ using LughSharp.LibCore.Utils.Collections;
 
 namespace LughSharp.LibCore.Core;
 
+[PublicAPI]
 public class InputMultiplexer : IInputProcessor
 {
     private readonly SnapshotArray< IInputProcessor > _processors = new( 4 );

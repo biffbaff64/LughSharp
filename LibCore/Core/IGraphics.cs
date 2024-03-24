@@ -129,6 +129,9 @@ public interface IGraphics
     /// <returns>TRUE if available.</returns>
     bool IsGL30Available();
 
+    /// <summary>
+    /// Returns the amount of pixels per logical pixel (point).
+    /// </summary>
     float GetBackBufferScale();
 
     int GetSafeInsetLeft();
@@ -143,6 +146,11 @@ public interface IGraphics
 
     int GetFramesPerSecond();
 
+    /// <summary>
+    /// Returns the time span between the current frame and the last frame in seconds, without smoothing.
+    /// </summary>
+    float GetRawDeltaTime();
+    
     GLVersion.GLType GetGraphicsType();
 
     float GetPpiX();

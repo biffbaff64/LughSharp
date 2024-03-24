@@ -34,16 +34,19 @@ public abstract class AbstractGraphics : IGraphics
 {
     #region implemented methods
 
+    /// <inheritdoc/>
     public float GetRawDeltaTime()
     {
         return DeltaTime;
     }
 
+    /// <inheritdoc/>
     public float GetDensity()
     {
         return GetPpiX() / 160f;
     }
 
+    /// <inheritdoc/>
     public float GetBackBufferScale()
     {
         return BackBufferWidth / ( float )Width;
@@ -117,6 +120,7 @@ public abstract class AbstractGraphics : IGraphics
 
     public abstract void SetCursor( ICursor cursor );
 
+    /// <inheritdoc/>
     public abstract void SetSystemCursor( ICursor.SystemCursor systemCursor );
 
     public abstract bool IsGL30Available();

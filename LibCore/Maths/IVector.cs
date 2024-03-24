@@ -176,11 +176,6 @@ public interface IVector<T> where T : IVector< T >
 
     /// <summary>
     /// </summary>
-    /// <returns> Whether this vector is a unit length vector </returns>
-    bool IsUnit();
-
-    /// <summary>
-    /// </summary>
     /// <returns> Whether this vector is a unit length vector within the given margin. </returns>
     bool IsUnit( float margin );
 

@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Graphics.FrameBuffers;
 
+[PublicAPI]
 public class FrameBufferBuilder : GLFrameBufferBuilder< GLFrameBuffer< GLTexture > >
 {
     public FrameBufferBuilder( int width, int height )
@@ -32,8 +33,5 @@ public class FrameBufferBuilder : GLFrameBufferBuilder< GLFrameBuffer< GLTexture
     {
     }
 
-    public override FrameBuffer Build()
-    {
-        return new FrameBuffer( this );
-    }
+    public override FrameBuffer Build() => new( this );
 }

@@ -28,10 +28,14 @@ namespace LughSharp.LibCore.Audio;
 [PublicAPI]
 public interface IMusic : IDisposable
 {
-    /// <returns> whether this music stream is playing </returns>
+    /// <summary>
+    /// Returns whether or not this music stream is playing.
+    /// </summary>
     bool IsPlaying { get; set; }
 
-    /// <returns> whether the music stream is set to loop. </returns>
+    /// <summary>
+    /// Returns whether or not the music stream is set to loop.
+    /// </summary>
     bool IsLooping { get; set; }
 
     /// <summary>
@@ -59,7 +63,9 @@ public interface IMusic : IDisposable
     /// </summary>
     void SetVolume( float volume );
 
-    /// <returns> the volume of this music stream.</returns>
+    /// <summary>
+    /// Returns the volume of this music stream.
+    /// </summary>
     float GetVolume();
 
     /// <summary>

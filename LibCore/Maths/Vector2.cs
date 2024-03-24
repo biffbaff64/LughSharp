@@ -27,6 +27,7 @@ using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class Vector2 : IVector< Vector2 >
 {
     public readonly static Vector2 XDefault = new( 1, 0 );
@@ -252,12 +253,7 @@ public class Vector2 : IVector< Vector2 >
         return !( Math.Abs( other.Y - Y ) > epsilon );
     }
 
-    public bool IsUnit()
-    {
-        return IsUnit( 0.000000001f );
-    }
-
-    public bool IsUnit( float margin )
+    public bool IsUnit( float margin = 0.000000001f )
     {
         return Math.Abs( Len2() - 1f ) < margin;
     }

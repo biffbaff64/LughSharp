@@ -78,9 +78,9 @@ public static class Logger
     /// <summary>
     /// Default Constructor.
     /// </summary>
-    /// <param name="logLevel"></param>
-    /// <param name="enableWriteToFile"></param>
-    /// <param name="filename"></param>
+    /// <param name="logLevel"> The initially enabled log level(s). </param>
+    /// <param name="enableWriteToFile"> TRUE to enable outputting messages to a file. </param>
+    /// <param name="filename"> The name of the file to write to. Default is trace.txt. </param>
     public static void Initialise( int logLevel = LOG_DEBUG,
                                    bool enableWriteToFile = true,
                                    string filename = "trace.txt" )
@@ -95,7 +95,7 @@ public static class Logger
     }
 
     /// <summary>
-    /// Send a DEBUG message to output window/console.
+    /// Send a DEBUG message to output window/console/File.
     /// </summary>
     /// <param name="message"> The message to send. </param>
     /// <param name="boxedDebug">
@@ -135,12 +135,12 @@ public static class Logger
     }
 
     /// <summary>
-    /// 
+    /// Send a DEBUG message to output window/console/File.
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerMethod"></param>
-    /// <param name="callerLine"></param>
+    /// <param name="message"> The message to send. </param>
+    /// <param name="callerFilePath"> The File this message was sent from. </param>
+    /// <param name="callerMethod"> The Method this message was sent from. </param>
+    /// <param name="callerLine"> The Line this message was sent from. </param>
     public static void Error( string message,
                               [CallerFilePath] string callerFilePath = "",
                               [CallerMemberName] string callerMethod = "",
@@ -163,11 +163,11 @@ public static class Logger
     /// <summary>
     ///     Write a message to console if the supplied condition is TRUE.
     /// </summary>
-    /// <param name="message"></param>
+    /// <param name="message"> The message to send. </param>
     /// <param name="condition">The condition to evaluate.</param>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerMethod"></param>
-    /// <param name="callerLine"></param>
+    /// <param name="callerFilePath"> The File this message was sent from. </param>
+    /// <param name="callerMethod"> The Method this message was sent from. </param>
+    /// <param name="callerLine"> The Line this message was sent from. </param>
     public static void DebugCondition( string message,
                                        bool condition = false,
                                        [CallerFilePath] string callerFilePath = "",
@@ -193,9 +193,9 @@ public static class Logger
     ///     - Current time and date.
     ///     - Calling Class/method/line number information.
     /// </summary>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerMethod"></param>
-    /// <param name="callerLine"></param>
+    /// <param name="callerFilePath"> The File this message was sent from. </param>
+    /// <param name="callerMethod"> The Method this message was sent from. </param>
+    /// <param name="callerLine"> The Line this message was sent from. </param>
     public static void CheckPoint( [CallerFilePath] string callerFilePath = "",
                                    [CallerMemberName] string callerMethod = "",
                                    [CallerLineNumber] int callerLine = 0 )
@@ -317,11 +317,11 @@ public static class Logger
     }
 
     /// <summary>
-    /// 
+    /// Creates a <see cref="CallerID"/> object from the supplied file path, method and line number.
     /// </summary>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerMethod"></param>
-    /// <param name="callerLine"></param>
+    /// <param name="callerFilePath"> The File this message was sent from. </param>
+    /// <param name="callerMethod"> The Method this message was sent from. </param>
+    /// <param name="callerLine"> The Line this message was sent from. </param>
     /// <returns></returns>
     private static CallerID MakeCallerID( string callerFilePath, string callerMethod, int callerLine )
     {

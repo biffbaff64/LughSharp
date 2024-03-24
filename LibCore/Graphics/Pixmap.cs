@@ -49,15 +49,16 @@ namespace LughSharp.LibCore.Graphics;
 ///         neighbour or bilinear filtering can be used.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class Pixmap : IDisposable
 {
     // ----------------------------------------------------------
 
     public readonly Gdx2DPixmap gdx2DPixmap;
 
-    private int _color = 0;
-
     public bool isDisposed = false;
+
+    private int _color = 0;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -130,10 +131,14 @@ public class Pixmap : IDisposable
         gdx2DPixmap = pixmap;
     }
 
-    /// <returns> The width of the Pixmap in pixels. </returns>
+    /// <summary>
+    /// Returns the width of the Pixmap in pixels.
+    /// </summary>
     public int Width => gdx2DPixmap.Width;
 
-    /// <returns> The height of the Pixmap in pixels. </returns>
+    /// <summary>
+    /// Returns the height of the Pixmap in pixels.
+    /// </summary>
     public int Height => gdx2DPixmap.Height;
 
     /// <summary>
@@ -188,15 +193,6 @@ public class Pixmap : IDisposable
 
             BufferUtils.Copy( value, dst, dst.Limit );
         }
-    }
-
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing, releasing,
-    ///     or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( !isDisposed );
     }
 
     /// <summary>
@@ -464,6 +460,15 @@ public class Pixmap : IDisposable
                };
     }
 
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing, releasing,
+    ///     or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( !isDisposed );
+    }
+
     private void Dispose( bool disposing )
     {
         if ( disposing )
@@ -547,6 +552,7 @@ public class Pixmap : IDisposable
 // ------------------------------------------------------------------------
 // ------------------------------------------------------------------------
 
+[PublicAPI]
 public static class PixmapFormatExtensions
 {
     public static int ToGLType( this Pixmap.Format format )

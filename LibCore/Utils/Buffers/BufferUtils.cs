@@ -29,6 +29,7 @@ namespace LughSharp.LibCore.Utils.Buffers;
 ///     Class with static helper methods to increase the speed of array/direct
 ///     buffer and direct buffer/direct buffer transfers
 /// </summary>
+[PublicAPI]
 public static class BufferUtils
 {
     private readonly static List< ByteBuffer > _unsafeBuffers   = new();

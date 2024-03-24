@@ -48,6 +48,7 @@ namespace LughSharp.LibCore.Graphics.FrameBuffers;
 /// <typeparam name="T">
 ///     Types which derive from GLTexture, such as Texture, Cubemap, TextureArray.
 /// </typeparam>
+[PublicAPI]
 public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 {
     public const int GL_DEPTH24_STENCIL8_OES = 0x88F0;
@@ -120,12 +121,9 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
         Gdx.GL20.GLDeleteFramebuffer( FramebufferHandle );
 
-        if ( Buffers != null )
+        if ( Buffers?[ Gdx.App ] != null )
         {
-            if ( Buffers[ Gdx.App ] != null )
-            {
-                Buffers[ Gdx.App ]?.Remove( this );
-            }
+            Buffers[ Gdx.App ]?.Remove( this );
         }
     }
 
@@ -355,19 +353,15 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
             Gdx.GL20.GLRenderbufferStorage( IGL20.GL_RENDERBUFFER, GL_DEPTH24_STENCIL8_OES, width, height );
             Gdx.GL20.GLBindRenderbuffer( IGL20.GL_RENDERBUFFER, 0 );
 
-            Gdx.GL20.GLFramebufferRenderbuffer(
-                IGL20.GL_FRAMEBUFFER,
-                IGL20.GL_DEPTH_ATTACHMENT,
-                IGL20.GL_RENDERBUFFER,
-                DepthStencilPackedBufferHandle
-                );
+            Gdx.GL20.GLFramebufferRenderbuffer( IGL20.GL_FRAMEBUFFER,
+                                                IGL20.GL_DEPTH_ATTACHMENT,
+                                                IGL20.GL_RENDERBUFFER,
+                                                DepthStencilPackedBufferHandle );
 
-            Gdx.GL20.GLFramebufferRenderbuffer(
-                IGL20.GL_FRAMEBUFFER,
-                IGL20.GL_STENCIL_ATTACHMENT,
-                IGL20.GL_RENDERBUFFER,
-                DepthStencilPackedBufferHandle
-                );
+            Gdx.GL20.GLFramebufferRenderbuffer( IGL20.GL_FRAMEBUFFER,
+                                                IGL20.GL_STENCIL_ATTACHMENT,
+                                                IGL20.GL_RENDERBUFFER,
+                                                DepthStencilPackedBufferHandle );
 
             result = Gdx.GL20.GLCheckFramebufferStatus( IGL20.GL_FRAMEBUFFER );
         }
