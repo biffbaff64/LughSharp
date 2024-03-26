@@ -1,5 +1,4 @@
-﻿
-LIBGDX CSHARP CONVERSION - ROUND 1
+﻿LIBGDX CSHARP CONVERSION - ROUND 1
 ----------------------------------
 
 ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
@@ -23,7 +22,8 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - All uses of IRunnable.Runnable need checking and correcting.
-- 
+-
+
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - NO MAGIC NUMBERS!!!
@@ -119,24 +119,24 @@ AUDIO/MP3SHARP
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - IP   - Buffer16BitSterso
-    - DONE - IP   - MP3SharpException
-    - DONE - IP   - MP3Stream
-    - DONE - IP   - SoundFormat
+    - DONE - DONE - Buffer16BitSterso
+    - DONE - DONE - MP3SharpException
+    - DONE - DONE - MP3Stream
+    - DONE - DONE - SoundFormat
 
 AUDIO/MP3SHARP/DECODING
 -----------------------
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - IP   - AudioBase
-    - DONE - IP   - BitReserve
-    - DONE - IP   - Bitstream
-    - DONE - IP   - BitstreamErrors
+    - DONE - DONE - AudioBase
+    - DONE - DONE - BitReserve
+    - DONE - DONE - Bitstream
+    - DONE - DONE - BitstreamErrors
     - DONE - IP   - BitstreamException
     - DONE - IP   - CircularByteBuffer
-    - DONE - IP   - Crc16
-    - DONE - IP   - Decoder
+    - DONE - DONE - Crc16
+    - DONE - DONE - Decoder
     - DONE - IP   - Decode.Parameters
     - DONE - IP   - DecoderErrors
     - DONE - IP   - DecoderException
@@ -223,15 +223,15 @@ CORE
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - IP   - AbstractGraphics
+    - DONE - DONE - AbstractGraphics
     - DONE - IP   - AbstractInput
     - DONE - DONE - ApplicationAdapter
-    - DONE - IP   - Game
+    - DONE - DONE - Game
     - DONE - DONE - Gdx
-    - IP   - IP   - GDXVersion
-    - DONE - IP   - IApplication
-    - DONE - IP   - IApplicationListener
-    - DONE - IP   - IAudio
+    - DONE - DONE - GDXVersion
+    - DONE - DONE - IApplication
+    - DONE - DONE - IApplicationListener
+    - DONE - DONE - IAudio
     - DONE - IP   - IFile
     - DONE - IP   - IGraphics
     - DONE - IP   - IInput
@@ -565,15 +565,15 @@ SCENES/SCENE2D
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - Action
-    - IP   - IP   - Actor
-    - IP   - IP   - Event
-    - IP   - IP   - Group
-    - IP   - IP   - IActor
-    - IP   - IP   - InputEvent
-    - IP   - IP   - Stage
-    - IP   - IP   - Touchable
-    - IP   - IP   - TouchFocus
+    - DONE - DONE - Action
+    - DONE - DONE - Actor
+    - DONE - DONE - Event
+    - DONE - DONE - Group
+    - DONE - DONE - IActor
+    - DONE - DONE - InputEvent
+    - DONE - DONE - Stage
+    - DONE - DONE - Touchable
+    - DONE - IP   - TouchFocus
 
 SCENES/SCENE2D/ACTIONS
 ----------------------
@@ -630,14 +630,16 @@ SCENES/SCENE2D/LISTENERS
     - IP   - IP   - IEventListener                 
     - IP   - IP   - InputListener                  
 
+```
 TODO: Use Lambdas for these...
 i.e. AddListener( new ClickListener()
 {
-// Clicked needs to be a Func<>
-Clicked = ( ev, x, y ) =>
-{
-}
+    // Clicked needs to be a Func<>
+    Clicked = ( ev, x, y ) =>
+    {
+    }
 } );
+```
 
 SCENES/SCENE2D/UI
 -----------------
@@ -826,7 +828,6 @@ UTILS/COLLECTIONS
     - **** - OrderedSet<T>                  -> Use SortedSet<T>
     - **** - ShortArray                     -> Use List< short >
 
-
 UTILS/COLLECTIONS/EXTENSIONS
 ----------------------------
 
@@ -834,7 +835,6 @@ UTILS/COLLECTIONS/EXTENSIONS
     ----   --------
     - DONE - IP   - DictionaryExtensions
     - DONE - IP   - ListExtensions
-
 
 UTILS/POOLING
 -------------

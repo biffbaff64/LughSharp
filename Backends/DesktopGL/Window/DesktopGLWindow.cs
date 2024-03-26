@@ -34,21 +34,13 @@ namespace LughSharp.Backends.DesktopGL.Window;
 [PublicAPI]
 public class DesktopGLWindow : IDisposable
 {
-    public GLFWWindow?                       GlfwWindow          { get; set; }
-    public IDesktopGLWindowListener?         WindowListener      { get; set; }
-    public IApplicationListener              Listener            { get; set; }
-    public IDesktopGLInput                   Input               { get; set; } = null!;
-    public DesktopGLGraphics                 Graphics            { get; set; } = null!;
-    public DesktopGLApplicationConfiguration Config              { get; set; }
-    public bool                              ListenerInitialised { get; set; } = false;
-
     // ------------------------------------------------------------------------
 
-    private readonly IDesktopGLApplicationBase _application;
-    private readonly List< IRunnable.Runnable >          _executedRunnables = new();
-    private readonly bool                      _iconified         = false;
-    private readonly List< IRunnable.Runnable >          _runnables         = new();
-    private readonly Vector2                   _tmpV2             = new();
+    private readonly IDesktopGLApplicationBase  _application;
+    private readonly List< IRunnable.Runnable > _executedRunnables = new();
+    private readonly bool                       _iconified         = false;
+    private readonly List< IRunnable.Runnable > _runnables         = new();
+    private readonly Vector2                    _tmpV2             = new();
 
     private bool _requestRendering = false;
 
@@ -62,6 +54,21 @@ public class DesktopGLWindow : IDisposable
         WindowListener = config.WindowListener;
         Config         = config;
         _application   = application;
+    }
+
+    public GLFWWindow?                       GlfwWindow          { get; set; }
+    public IDesktopGLWindowListener?         WindowListener      { get; set; }
+    public IApplicationListener              Listener            { get; set; }
+    public IDesktopGLInput                   Input               { get; set; } = null!;
+    public DesktopGLGraphics                 Graphics            { get; set; } = null!;
+    public DesktopGLApplicationConfiguration Config              { get; set; }
+    public bool                              ListenerInitialised { get; set; } = false;
+
+    // ------------------------------------------------------------------------
+
+    public void Dispose()
+    {
+        Dispose( true );
     }
 
     /// <summary>
@@ -326,14 +333,20 @@ public class DesktopGLWindow : IDisposable
     ///     surface together. The coordinates are relative to the first monitor in the
     ///     virtual surface.
     /// </summary>
-    public int GetPositionX() => ( int )GetPosition().X;
+    public int GetPositionX()
+    {
+        return ( int )GetPosition().X;
+    }
 
     /// <summary>
     ///     Return the window Y position in logical coordinates. All monitors span a virtual
     ///     surface together. The coordinates are relative to the first monitor in the
     ///     virtual surface.
     /// </summary>
-    public int GetPositionY() => ( int )GetPosition().Y;
+    public int GetPositionY()
+    {
+        return ( int )GetPosition().Y;
+    }
 
     /// <summary>
     ///     Sets the visibility of the window.
@@ -352,27 +365,39 @@ public class DesktopGLWindow : IDisposable
     }
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     ///     Closes this window and pauses and disposes the associated <see cref="IApplicationListener" />.
     /// </summary>
-    public void CloseWindow() => Glfw.SetWindowShouldClose( GlfwWindow, true );
+    public void CloseWindow()
+    {
+        Glfw.SetWindowShouldClose( GlfwWindow, true );
+    }
 
     /// <summary>
     ///     Minimizes (iconifies) the window. Iconified windows do not call
     ///     their <see cref="IApplicationListener" /> until the window is restored.
     /// </summary>
-    public void IconifyWindow() => Glfw.IconifyWindow( GlfwWindow );
+    public void IconifyWindow()
+    {
+        Glfw.IconifyWindow( GlfwWindow );
+    }
 
     /// <summary>
     ///     De-minimizes (de-iconifies) and de-maximizes the window.
     /// </summary>
-    public void RestoreWindow() => Glfw.RestoreWindow( GlfwWindow );
+    public void RestoreWindow()
+    {
+        Glfw.RestoreWindow( GlfwWindow );
+    }
 
     /// <summary>
     ///     Maximizes the window.
     /// </summary>
-    public void MaximizeWindow() => Glfw.MaximizeWindow( GlfwWindow );
+    public void MaximizeWindow()
+    {
+        Glfw.MaximizeWindow( GlfwWindow );
+    }
 
     /// <summary>
     ///     Brings the window to front and sets input focus. The window should
@@ -381,13 +406,6 @@ public class DesktopGLWindow : IDisposable
     public void FocusWindow()
     {
         Glfw.FocusWindow( GlfwWindow );
-    }
-
-    // ------------------------------------------------------------------------
-
-    public void Dispose()
-    {
-        Dispose( true );
     }
 
     public void Dispose( bool disposing )

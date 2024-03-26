@@ -462,7 +462,7 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
         var over = false;
 
         if ( ( node == OverNode )
-          && ( Gdx.App.AppType == IApplication.ApplicationType.Desktop )
+          && ( Gdx.App.AppType == IApplication.ApplicationType.DesktopGL )
           && ( !_selection.Multiple || ( !UIUtils.Ctrl() && !UIUtils.Shift() ) ) )
         {
             var mouseX = ScreenToLocalCoordinates( _tmp.Set( Gdx.Input.GetX(), 0 ) ).X;
@@ -801,14 +801,6 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     [PublicAPI]
     public class TreeStyle
     {
-        public IDrawable  Plus       { get; set; }
-        public IDrawable  Minus      { get; set; }
-        public IDrawable? PlusOver   { get; set; } = null;
-        public IDrawable? MinusOver  { get; set; } = null;
-        public IDrawable? Over       { get; set; } = null;
-        public IDrawable? Selection  { get; set; } = null;
-        public IDrawable? Background { get; set; } = null;
-
         public TreeStyle( IDrawable plus, IDrawable minus, IDrawable? selection )
         {
             Plus      = plus;
@@ -828,6 +820,14 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
             Selection  = style.Selection;
             Background = style.Background;
         }
+
+        public IDrawable  Plus       { get; set; }
+        public IDrawable  Minus      { get; set; }
+        public IDrawable? PlusOver   { get; set; } = null;
+        public IDrawable? MinusOver  { get; set; } = null;
+        public IDrawable? Over       { get; set; } = null;
+        public IDrawable? Selection  { get; set; } = null;
+        public IDrawable? Background { get; set; } = null;
     }
 
     // ------------------------------------------------------------------------
@@ -843,13 +843,6 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
     [PublicAPI]
     public class Node
     {
-        public TValue?    Value      { get; set; }
-        public TNode?     Parent     { get; set; }
-        public IDrawable? Icon       { get; set; }
-        public bool       Selectable { get; set; } = true;
-        public float      Height     { get; set; }
-        public bool       IsExpanded { get; private set; }
-
         private Actor? _actor;
 
         /// <summary>
@@ -866,6 +859,13 @@ public class Tree<TNode, TValue> : WidgetGroup where TNode : Tree< TNode, TValue
 
             _actor = actor;
         }
+
+        public TValue?    Value      { get; set; }
+        public TNode?     Parent     { get; set; }
+        public IDrawable? Icon       { get; set; }
+        public bool       Selectable { get; set; } = true;
+        public float      Height     { get; set; }
+        public bool       IsExpanded { get; private set; }
 
         public Actor? Actor
         {

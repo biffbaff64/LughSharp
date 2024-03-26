@@ -28,9 +28,8 @@ namespace LughSharp.LibCore.Utils;
 [PublicAPI]
 public class PerformanceCounters
 {
-    public readonly List< PerformanceCounter > counters = new();
-
-    private const float NANO2_SECONDS = 1f / 1000000000.0f;
+    private const   float                      NANO2_SECONDS = 1f / 1000000000.0f;
+    public readonly List< PerformanceCounter > counters      = new();
 
     private long _lastTick = 0L;
 

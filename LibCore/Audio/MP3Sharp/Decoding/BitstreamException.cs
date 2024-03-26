@@ -32,24 +32,25 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 /// <summary>
 ///     Instances of BitstreamException are thrown
 ///     when operations on a Bitstream fail.
-///     <p>
+///     <para>
 ///         The exception provides details of the exception condition
 ///         in two ways:
-///         <ol>
-///             <li>
-///                 as an error-code describing the nature of the error
-///             </li>
-///             <br></br>
-///             <li>
-///                 as the Throwable instance, if any, that was thrown
-///                 indicating that an exceptional condition has occurred.
-///             </li>
-///         </ol>
-///     </p>
+///         <li>
+///             as an error-code describing the nature of the error
+///         </li>
+///         <li>
+///             as the Throwable instance, if any, that was thrown
+///             indicating that an exceptional condition has occurred.
+///         </li>
+///     </para>
 /// </summary>
 [Serializable, PublicAPI]
 public class BitstreamException : Mp3SharpException
 {
+    public int ErrorCode { get; set; }
+
+    // ------------------------------------------------------------------------
+    
     public BitstreamException( string message, Exception? inner = null )
         : base( message, inner )
     {
@@ -68,8 +69,6 @@ public class BitstreamException : Mp3SharpException
     {
         ErrorCode = info.GetInt32( "ErrorCode" );
     }
-
-    public int ErrorCode { get; set; }
 
     public override void GetObjectData( SerializationInfo info, StreamingContext context )
     {

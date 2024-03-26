@@ -81,6 +81,9 @@ public class Stage : InputAdapter
     // True if any actor has ever had debug enabled.
     public bool debug;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Creates a stage with a <see cref="ScalingViewport" /> set to
     ///     <see cref="Scaling.Stretch" />. The stage will use its own <see cref="IBatch" />
@@ -250,9 +253,6 @@ public class Stage : InputAdapter
         }
     }
 
-    public Viewport Viewport { get; }
-    public IBatch   Batch    { get; }
-
     /// <summary>
     ///     The Stage's world width.
     /// </summary>
@@ -267,6 +267,9 @@ public class Stage : InputAdapter
     ///     The Stage's camera.
     /// </summary>
     public Camera? Camera { get; set; } = null!;
+
+    public Viewport Viewport { get; }
+    public IBatch   Batch    { get; }
 
     /// <summary>
     ///     Returns the root group which holds all actors in the stage.
@@ -390,8 +393,10 @@ public class Stage : InputAdapter
     }
 
     /// <summary>
+    ///     Draw the stage. If the Viewport camera has not been set, or the
+    ///     root <see cref="Group"/> is invisible, the stage will not draw.
     /// </summary>
-    public void Draw()
+    public virtual void Draw()
     {
         Camera = Viewport.Camera;
 
@@ -479,7 +484,7 @@ public class Stage : InputAdapter
         // Update over actor for the mouse on the desktop.
         IApplication.ApplicationType type = Gdx.App.AppType;
 
-        if ( type is IApplication.ApplicationType.Desktop
+        if ( type is IApplication.ApplicationType.DesktopGL
                      or IApplication.ApplicationType.WebGL )
         {
             _mouseOverActor = FireEnterAndExit( _mouseOverActor, _mouseScreenX, _mouseScreenY, -1 );
@@ -602,7 +607,7 @@ public class Stage : InputAdapter
 
     /// <summary>
     ///     Applies a touch moved event to the stage and returns true if an actor in
-    ///     the scene <see cref="Event.Handle()" /> handled the event.
+    ///     the scene <see cref="Event.SetHandled" /> handled the event.
     ///     Only <see cref="InputListener" /> listeners that returned true for
     ///     touchDown will receive this event.
     /// </summary>
@@ -655,7 +660,7 @@ public class Stage : InputAdapter
 
             if ( ( focus.listener != null ) && focus.listener.Handle( inputEvent ) )
             {
-                inputEvent.Handle();
+                inputEvent.SetHandled();
             }
         }
 
@@ -670,7 +675,7 @@ public class Stage : InputAdapter
 
     /// <summary>
     ///     Applies a touch up event to the stage and returns true if an actor in the
-    ///     scene <see cref="Event.Handle()" /> handled the event.
+    ///     scene <see cref="Event.SetHandled" /> handled the event.
     ///     Only <see cref="InputListener" /> listeners that returned true for
     ///     touchDown will receive this event.
     /// </summary>
@@ -723,7 +728,7 @@ public class Stage : InputAdapter
 
             if ( ( focus.listener != null ) && focus.listener.Handle( inputEvent ) )
             {
-                inputEvent.Handle();
+                inputEvent.SetHandled();
             }
 
             Pools< TouchFocus >.Free( focus );
@@ -739,7 +744,7 @@ public class Stage : InputAdapter
 
     /// <summary>
     ///     Applies a mouse moved event to the stage and returns true if an actor
-    ///     in the scene <see cref="Event.Handle()" /> the event. This event only
+    ///     in the scene <see cref="Event.SetHandled" /> the event. This event only
     ///     occurs on the desktop.
     /// </summary>
     public override bool MouseMoved( int screenX, int screenY )
@@ -783,7 +788,7 @@ public class Stage : InputAdapter
 
     /// <summary>
     ///     Applies a mouse scroll event to the stage and returns true if an actor
-    ///     in the scene <see cref="Event.Handle()" /> the event. This event only
+    ///     in the scene <see cref="Event.SetHandled" /> the event. This event only
     ///     occurs on the desktop.
     /// </summary>
     public override bool Scrolled( float amountX, float amountY )
@@ -816,7 +821,7 @@ public class Stage : InputAdapter
     /// <summary>
     ///     Applies a key down event to the actor that has
     ///     <see cref="Stage.KeyboardFocus" />, if any, and returns
-    ///     true if the event was handled in <see cref="Event.Handle()" />.
+    ///     true if the event was handled in <see cref="Event.SetHandled" />.
     /// </summary>
     public override bool KeyDown( int keyCode )
     {
@@ -841,7 +846,7 @@ public class Stage : InputAdapter
 
     /// <summary>
     ///     Applies a key up event to the actor that has <see cref="Stage.KeyboardFocus" />,
-    ///     if any, and returns true if the event was <see cref="Event.Handle()" />.
+    ///     if any, and returns true if the event was <see cref="Event.SetHandled" />.
     /// </summary>
     public override bool KeyUp( int keyCode )
     {
@@ -866,7 +871,7 @@ public class Stage : InputAdapter
 
     /// <summary>
     ///     Applies a key typed event to the actor that has <see cref="Stage.KeyboardFocus" />,
-    ///     if any, and returns true if the event was <see cref="Event.Handle()" />.
+    ///     if any, and returns true if the event was <see cref="Event.SetHandled" />.
     /// </summary>
     public override bool KeyTyped( char character )
     {
@@ -1169,8 +1174,8 @@ public class Stage : InputAdapter
     ///     inserted actors being tested first. To get stage coordinates from screen coordinates,
     ///     use <see cref="ScreenToStageCoordinates(Vector2)" />.
     /// </summary>
-    /// <param name="stageX"></param>
-    /// <param name="stageY"></param>
+    /// <param name="stageX"> X Coordinate of hit. </param>
+    /// <param name="stageY"> Y Coordinate of hit. </param>
     /// <param name="touchable">
     ///     If true, the hit detection will respect the <see cref="Actor.Touchable" />.
     /// </param>
@@ -1282,6 +1287,9 @@ public class Stage : InputAdapter
         SetDebugTableUnderMouse( debugTableUnderMouse ? Table.DebugType.All : Table.DebugType.None );
     }
 
+    /// <summary>
+    /// Draws the debug shapes for all actors on this stage.
+    /// </summary>
     private void DrawDebug()
     {
         if ( _debugShapes == null )

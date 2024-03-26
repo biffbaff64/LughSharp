@@ -77,7 +77,6 @@ public class Decoder
         }
     }
 
-
     public virtual Equalizer? Equalizer
     {
         get => _equalizer;
@@ -110,7 +109,6 @@ public class Decoder
         set => _output = value;
     }
 
-
     public float ScaleFactor { get; set; } = DEFAULT_SCALE_FACTOR;
 
     /// <summary>
@@ -118,15 +116,12 @@ public class Decoder
     ///     by this decoder. This typically corresponds to the sample
     ///     rate encoded in the MPEG audio stream.
     /// </summary>
-
     public virtual int OutputFrequency => _outputFrequency;
 
     /// <summary>
-    ///     Retrieves the number of channels of PCM samples output by
-    ///     this decoder. This usually corresponds to the number of
-    ///     channels in the MPEG audio stream.
+    ///     Retrieves the number of channels of PCM samples output by this decoder.
+    ///     This usually corresponds to the number of channels in the MPEG audio stream.
     /// </summary>
-
     public virtual int OutputChannels => _outputChannels;
 
     /// <summary>
@@ -137,7 +132,6 @@ public class Decoder
     ///     an upper bound and fewer samples may actually be written, depending
     ///     upon the sample rate and number of channels.
     /// </summary>
-
     public virtual int OutputBlockSize => AudioBase.OBUFFERSIZE;
 
     public static Parameters DefaultParams => ( Parameters )_decoderDefaultParams.Clone();
@@ -158,7 +152,7 @@ public class Decoder
     {
         if ( !_isInitialized )
         {
-            Initialize( header );
+            Initialise( header );
         }
 
         var layer = header.Layer();
@@ -252,7 +246,7 @@ public class Decoder
         return decoder;
     }
 
-    private void Initialize( Header header )
+    private void Initialise( Header header )
     {
         var channels = header.Mode() == Header.SINGLE_CHANNEL ? 1 : 2;
 
@@ -278,6 +272,7 @@ public class Decoder
     ///     The Params class presents the customizable aspects of the decoder. Instances of
     ///     this class are not thread safe.
     /// </summary>
+    [PublicAPI]
     public class Parameters : ICloneable
     {
         public virtual OutputChannels? OutputChannels { get; set; }

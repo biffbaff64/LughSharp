@@ -34,6 +34,10 @@ namespace LughSharp.LibCore.Audio.MP3Sharp;
 [PublicAPI]
 public class Mp3Stream : Stream
 {
+    public bool IsEof { get; protected set; }
+
+    // ------------------------------------------------------------------------
+    
     private const int BACK_STREAM_BYTE_COUNT_REP = 0;
 
     private readonly Bitstream         _bitStream;
@@ -87,8 +91,6 @@ public class Mp3Stream : Stream
             _buffer.DoubleMonoToStereo = true;
         }
     }
-
-    public bool IsEof { get; protected set; }
 
     /// <summary>
     ///     Gets the chunk size.

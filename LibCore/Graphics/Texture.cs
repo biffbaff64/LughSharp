@@ -57,24 +57,12 @@ public class Texture : GLTexture
 {
     // ------------------------------------------------------------------------
 
-    public AssetManager? AssetManager { get; set; } = null;
-    public ITextureData? TextureData  { get; set; } = null;
-
-    public override int  Width     => TextureData?.Width ?? 0;
-    public override int  Height    => TextureData?.Height ?? 0;
-    public override int  Depth     => 0;
-    public override bool IsManaged => ( TextureData != null ) && TextureData.IsManaged();
-
-    public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
-
-    // ------------------------------------------------------------------------
-
     private readonly Dictionary< IApplication, List< Texture >? > _managedTextures = new();
 
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Create a new Texture from the file at the given path.
+    ///     Create a new Texture from the file at the given path.
     /// </summary>
     /// <param name="internalPath"></param>
     public Texture( string internalPath )
@@ -93,7 +81,7 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    /// Creates a new Texture from the supplied <see cref="Pixmap"/>.
+    ///     Creates a new Texture from the supplied <see cref="Pixmap" />.
     /// </summary>
     /// <param name="pixmap"> The pixmap to use. </param>
     /// <param name="useMipMaps"> Whether or nopt to generate MipMaps. Default is false. </param>
@@ -103,7 +91,7 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    /// Creates a new Texture from the supplied <see cref="Pixmap"/> and <see cref="Pixmap.Format"/>
+    ///     Creates a new Texture from the supplied <see cref="Pixmap" /> and <see cref="Pixmap.Format" />
     /// </summary>
     /// <param name="pixmap"> The pixmap to use. </param>
     /// <param name="format"> The pixmap format to use. </param>
@@ -144,6 +132,18 @@ public class Texture : GLTexture
             AddManagedTexture( Gdx.App, this );
         }
     }
+
+    // ------------------------------------------------------------------------
+
+    public AssetManager? AssetManager { get; set; } = null;
+    public ITextureData? TextureData  { get; set; } = null;
+
+    public override int  Width     => TextureData?.Width ?? 0;
+    public override int  Height    => TextureData?.Height ?? 0;
+    public override int  Depth     => 0;
+    public override bool IsManaged => ( TextureData != null ) && TextureData.IsManaged();
+
+    public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

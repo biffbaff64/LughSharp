@@ -45,7 +45,7 @@ public class StretchViewport : ScalingViewport
     }
 
     /// <summary>
-    ///     Creates a new viewport using the supplied <see cref="OrthographicCamera"/>.
+    ///     Creates a new viewport using the supplied <see cref="OrthographicCamera" />.
     /// </summary>
     /// <param name="worldWidth"> The world width in pixels. </param>
     /// <param name="worldHeight"> The world height in pixels. </param>

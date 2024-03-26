@@ -49,8 +49,8 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     private int  _snapshotCount;
 
     /// <summary>
-    /// Creates a new SnapshotArray with the specified initial capacity.
-    /// The created array will be Ordered.
+    ///     Creates a new SnapshotArray with the specified initial capacity.
+    ///     The created array will be Ordered.
     /// </summary>
     /// <param name="capacity"> Initial capacity, default is 0. </param>
     public SnapshotArray( int capacity = 0 )
@@ -59,7 +59,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
-    /// Creates a new SnapshotArray from the supplied <see cref="Array{T}"/>
+    ///     Creates a new SnapshotArray from the supplied <see cref="Array{T}" />
     /// </summary>
     public SnapshotArray( Array< T > array )
     {
@@ -74,8 +74,8 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
-    /// Creates a new SnapshotArray, with <see cref="Array{T}.Ordered"/> set to the
-    /// supplied value, and ther array capacity set to the supplied capacity.
+    ///     Creates a new SnapshotArray, with <see cref="Array{T}.Ordered" /> set to the
+    ///     supplied value, and ther array capacity set to the supplied capacity.
     /// </summary>
     /// <param name="ordered"> Default value is TRUE. </param>
     /// <param name="capacity"> Default value is 16. </param>

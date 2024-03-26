@@ -230,8 +230,8 @@ public class Array<T>
     }
 
     /// <summary>
-    ///     Inserts room for <paramref name="count"/> elements into the array
-    ///     starting at position <paramref name="index"/>.
+    ///     Inserts room for <paramref name="count" /> elements into the array
+    ///     starting at position <paramref name="index" />.
     /// </summary>
     public void InsertRange( int index, int count )
     {
@@ -258,8 +258,8 @@ public class Array<T>
     }
 
     /// <summary>
-    ///     Swaps the elements at positions <paramref name="first"/> and
-    ///     <paramref name="second"/>
+    ///     Swaps the elements at positions <paramref name="first" /> and
+    ///     <paramref name="second" />
     /// </summary>
     /// <param name="first"> Array index of the first element. </param>
     /// <param name="second"> Array index of the second element. </param>

@@ -42,6 +42,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 ///         events that hit more than one actor are distributed to topmost actors first.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class Group : Actor, ICullable
 {
     private readonly Matrix4 _computedTransform = new();
@@ -67,7 +68,7 @@ public class Group : Actor, ICullable
     /// <summary>
     /// </summary>
     /// <param name="delta"></param>
-    public virtual new void Act( float delta )
+    public override void Act( float delta )
     {
         base.Act( delta );
 
@@ -91,7 +92,7 @@ public class Group : Actor, ICullable
     /// </summary>
     /// <param name="batch"></param>
     /// <param name="parentAlpha"></param>
-    public new void Draw( IBatch batch, float parentAlpha )
+    public override void Draw( IBatch batch, float parentAlpha )
     {
         if ( Transform )
         {
@@ -140,10 +141,7 @@ public class Group : Actor, ICullable
                 {
                     Actor? child = actors[ i ];
 
-                    if ( ( child == null ) || !child.IsVisible )
-                    {
-                        continue;
-                    }
+                    if ( child is not { IsVisible: true } ) continue;
 
                     var cx = child.X;
                     var cy = child.Y;
@@ -170,16 +168,8 @@ public class Group : Actor, ICullable
                 {
                     Actor? child = actors[ i ];
 
-                    if ( child == null )
-                    {
-                        continue;
-                    }
-
-                    if ( !child.IsVisible )
-                    {
-                        continue;
-                    }
-
+                    if ( child is not { IsVisible: true } ) continue;
+                    
                     var cx = child.X;
                     var cy = child.Y;
 
@@ -209,15 +199,7 @@ public class Group : Actor, ICullable
                 {
                     Actor? child = actors[ i ];
 
-                    if ( child == null )
-                    {
-                        continue;
-                    }
-
-                    if ( !child.IsVisible )
-                    {
-                        continue;
-                    }
+                    if ( child is not { IsVisible: true } ) continue;
 
                     child.Draw( batch, parentAlpha );
                 }
@@ -235,15 +217,7 @@ public class Group : Actor, ICullable
                 {
                     Actor? child = actors[ i ];
 
-                    if ( child == null )
-                    {
-                        continue;
-                    }
-
-                    if ( !child.IsVisible )
-                    {
-                        continue;
-                    }
+                    if ( child is not { IsVisible: true } ) continue;
 
                     var cx = child.X;
                     var cy = child.Y;
@@ -268,7 +242,7 @@ public class Group : Actor, ICullable
     ///     true and, regardless of <see cref="Actor.DebugActive" />, calls
     ///     <see cref="Actor.DrawDebug(ShapeRenderer)" /> on each child.
     /// </summary>
-    public virtual new void DrawDebug( ShapeRenderer shapes )
+    public override void DrawDebug( ShapeRenderer shapes )
     {
         DrawDebugBounds( shapes );
 
@@ -458,7 +432,7 @@ public class Group : Actor, ICullable
         shapes.TransformMatrix = _oldTransform;
     }
 
-    public virtual new Actor? Hit( float x, float y, bool touchable )
+    public override Actor? Hit( float x, float y, bool touchable )
     {
         if ( touchable && ( Touchable == Touchable.Disabled ) )
         {
@@ -490,7 +464,7 @@ public class Group : Actor, ICullable
     /// <summary>
     ///     Called when actors are added to or removed from the group.
     /// </summary>
-    protected void ChildrenChanged()
+    protected virtual void ChildrenChanged()
     {
     }
 
@@ -585,7 +559,7 @@ public class Group : Actor, ICullable
     ///     group, no changes are made. If <tt>actorAfter</tt> is not in this group, the
     ///     actor is added as the last child.
     /// </summary>
-    public void AddActorAfter( Actor actorAfter, Actor actor )
+    public virtual void AddActorAfter( Actor actorAfter, Actor actor )
     {
         if ( actor.Parent != null )
         {
@@ -683,7 +657,7 @@ public class Group : Actor, ICullable
     /// <summary>
     ///     Removes all children, actions, and listeners from this group.
     /// </summary>
-    public new void Clear()
+    public override void Clear()
     {
         base.Clear();
         ClearChildren();
@@ -781,10 +755,7 @@ public class Group : Actor, ICullable
         return Children.GetAt( index );
     }
 
-    public bool HasChildren()
-    {
-        return Children.Size > 0;
-    }
+    public bool HasChildren() => Children.Size > 0;
 
     /// <summary>
     ///     Converts coordinates for this group to those of a descendant actor.

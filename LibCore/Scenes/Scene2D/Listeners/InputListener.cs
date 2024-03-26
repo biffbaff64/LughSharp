@@ -138,7 +138,7 @@ public class InputListener : IEventListener
     ///     <see cref="Stage.AddTouchFocus(IEventListener, Actor, Actor, int, int)" />,
     ///     so it will receive all touchDragged and touchUp events, even those not
     ///     over this actor, until touchUp is received. Also when true is returned,
-    ///     the event is handled by <see cref="Event.Handle()" />.
+    ///     the event is handled by <see cref="Event.SetHandled" />.
     /// </summary>
     public virtual bool TouchDown( InputEvent? ev, float x, float y, int ptr, int button )
     {
@@ -148,7 +148,7 @@ public class InputListener : IEventListener
     /// <summary>
     ///     Called when a mouse button or a finger touch goes up anywhere, but only
     ///     if touchDown previously returned true for the mouse button or touch.
-    ///     The touchUp event is always handled by <see cref="Event.Handle()" />.
+    ///     The touchUp event is always handled by <see cref="Event.SetHandled" />.
     /// </summary>
     public virtual void TouchUp( InputEvent? ev, float x, float y, int ptr, int button )
     {
@@ -157,7 +157,7 @@ public class InputListener : IEventListener
     /// <summary>
     ///     Called when a mouse button or a finger touch is moved anywhere, but only
     ///     if touchDown previously returned true for the mouse button or touch.
-    ///     The touchDragged event is always handled by <see cref="Event.Handle()" />.
+    ///     The touchDragged event is always handled by <see cref="Event.SetHandled" />.
     /// </summary>
     public virtual void TouchDragged( InputEvent? inputEvent, float x, float y, int pointer )
     {
@@ -166,7 +166,7 @@ public class InputListener : IEventListener
     /// <summary>
     ///     Called any time the mouse is moved when a button is not down. This event
     ///     only occurs on the desktop. When true is returned, the event is handled
-    ///     by <see cref="Event.Handle()" />.
+    ///     by <see cref="Event.SetHandled" />.
     /// </summary>
     public virtual bool MouseMoved( InputEvent? inputEvent, float x, float y )
     {
@@ -204,7 +204,7 @@ public class InputListener : IEventListener
 
     /// <summary>
     ///     Called when the mouse wheel has been scrolled. When true is returned,
-    ///     the event is handled in <see cref="Event.Handle()" />.
+    ///     the event is handled in <see cref="Event.SetHandled" />.
     /// </summary>
     public virtual bool Scrolled( InputEvent? inputEvent, float x, float y, float amountX, float amountY )
     {
@@ -213,7 +213,7 @@ public class InputListener : IEventListener
 
     /// <summary>
     ///     Called when a key goes down. When true is returned, the event is
-    ///     handled by <see cref="Event.Handle()" />.
+    ///     handled by <see cref="Event.SetHandled" />.
     /// </summary>
     public virtual bool KeyDown( InputEvent? inputEvent, int keycode )
     {
@@ -222,7 +222,7 @@ public class InputListener : IEventListener
 
     /// <summary>
     ///     Called when a key goes up. When true is returned, the event is
-    ///     handled by <see cref="Event.Handle()" />.
+    ///     handled by <see cref="Event.SetHandled" />.
     /// </summary>
     public virtual bool KeyUp( InputEvent? inputEvent, int keycode )
     {
@@ -231,7 +231,7 @@ public class InputListener : IEventListener
 
     /// <summary>
     ///     Called when a key is typed. When true is returned, the event is
-    ///     handled by <see cref="Event.Handle()" />.
+    ///     handled by <see cref="Event.SetHandled" />.
     /// </summary>
     /// <param name="inputEvent"></param>
     /// <param name="character">

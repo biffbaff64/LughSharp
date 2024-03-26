@@ -32,7 +32,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     ///     cubemap sides cache
     /// </summary>
     private readonly static Cubemap.CubemapSide[] _cubemapSides = Cubemap.CubemapSide.Values();
-    
+
     /// <summary>
     ///     the zero-based index of the active side
     /// </summary>

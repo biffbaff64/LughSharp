@@ -43,12 +43,15 @@ public class ALC
     };
 
     // ------------------------------------------------------------------------
-    
+
     #region Dll Import Handling
 
     public const string OPEN_AL_DLL = "OpenAL";
 
-    static ALC() => NativeLibrary.SetDllImportResolver( typeof( AL ).Assembly, ImportResolver );
+    static ALC()
+    {
+        NativeLibrary.SetDllImportResolver( typeof( AL ).Assembly, ImportResolver );
+    }
 
     private static IntPtr ImportResolver( string libraryName, Assembly assembly, DllImportSearchPath? searchPath )
     {
@@ -174,7 +177,10 @@ public class ALC
     [DllImport( OPEN_AL_DLL, EntryPoint = "alcGetString" )]
     private static extern IntPtr _GetString( IntPtr device, int param );
 
-    public static string GetString( IntPtr device, int param ) => Marshal.PtrToStringAnsi( _GetString( device, param ) )!;
+    public static string GetString( IntPtr device, int param )
+    {
+        return Marshal.PtrToStringAnsi( _GetString( device, param ) )!;
+    }
 
     [DllImport( OPEN_AL_DLL, EntryPoint = "alcGetIntegerv" )]
     public static extern void GetIntegerv( IntPtr device, int param, int size, IntPtr data );
@@ -201,6 +207,6 @@ public class ALC
     public static extern unsafe void CaptureSamples( IntPtr device, void* buffer, int samples );
 
     #endregion Capture Functions
-    
+
     // ------------------------------------------------------------------------
 }

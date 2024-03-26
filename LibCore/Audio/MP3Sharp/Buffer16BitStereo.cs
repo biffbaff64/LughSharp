@@ -36,6 +36,10 @@ namespace LughSharp.LibCore.Audio.MP3Sharp;
 [PublicAPI]
 public class Buffer16BitStereo : AudioBase
 {
+    public bool DoubleMonoToStereo { get; set; } = false;
+
+    // ------------------------------------------------------------------------
+
     private const int OUTPUT_CHANNELS = 2;
 
     // Write offset used in append_bytes
@@ -50,24 +54,26 @@ public class Buffer16BitStereo : AudioBase
     private int _offset;
 
     // ------------------------------------------------------------------------
-    
+
     public Buffer16BitStereo()
     {
         OnStart();
     }
 
-    public bool DoubleMonoToStereo { get; set; } = false;
-
     /// <summary>
-    ///     Gets the number of bytes remaining from the current position on the buffer.
+    /// Initialisation method. Called from constructor as the method <see cref="ClearBuffer"/>
+    /// is virtual and cannot by called from constructors.
     /// </summary>
-    public int BytesLeft => ( _end - _offset );
-
     private void OnStart()
     {
         // Initialize the buffer pointers
         ClearBuffer();
     }
+
+    /// <summary>
+    ///     Gets the number of bytes remaining from the current position on the buffer.
+    /// </summary>
+    public int BytesLeft => _end - _offset;
 
     /// <summary>
     ///     Reads a sequence of bytes from the buffer and advances the position of the
@@ -189,7 +195,7 @@ public class Buffer16BitStereo : AudioBase
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetStopFlag()
     {
     }

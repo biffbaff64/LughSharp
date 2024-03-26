@@ -33,5 +33,8 @@ public class FrameBufferBuilder : GLFrameBufferBuilder< GLFrameBuffer< GLTexture
     {
     }
 
-    public override FrameBuffer Build() => new( this );
+    public override FrameBuffer Build()
+    {
+        return new FrameBuffer( this );
+    }
 }

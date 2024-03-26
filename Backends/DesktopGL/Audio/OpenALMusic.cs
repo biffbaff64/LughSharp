@@ -25,9 +25,7 @@
 
 using LughSharp.LibCore.Audio;
 using LughSharp.LibCore.Audio.OpenAL;
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Utils.Buffers;
-using LughSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LughSharp.Backends.DesktopGL.Audio;
 
@@ -49,18 +47,18 @@ public abstract class OpenALMusic : IMusic
     private            int      _format;
     private            bool     _isPlaying;
     private            float    _maxSecondsPerBuffer;
-    private            float    _pan = 0;
+    private readonly   float    _pan = 0;
     private            float    _renderedSeconds;
     private            int      _sampleRate;
-    private            float    _volume = 1;
+    private readonly   float    _volume = 1;
 
     protected OpenALMusic()
     {
-        _audio = null!;
-        this.file = null!;
+        _audio               = null!;
+        file                 = null!;
         OnCompletionListener = null;
     }
-    
+
     protected OpenALMusic( OpenALAudio audio, FileInfo file )
     {
         _audio               = audio;

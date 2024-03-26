@@ -126,7 +126,6 @@ public class DataOutput : BinaryWriter
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="value"></param>
     /// <param name="charCount"></param>

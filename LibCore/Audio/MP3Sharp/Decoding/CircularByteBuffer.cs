@@ -93,7 +93,7 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     How far back it is safe to look (read/write).  Write only to reduce NumValid.
+    ///     How far back it is safe to look (read/write). Write only to reduce NumValid.
     /// </summary>
     public int NumValid
     {
@@ -122,7 +122,7 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     Push a byte into the buffer.  Returns the value of whatever comes off.
+    ///     Push a byte into the buffer. Returns the value of whatever comes off.
     /// </summary>
     public byte Push( byte newValue )
     {
@@ -165,7 +165,8 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     Returns what would fall out of the buffer on a Push.  NOT the same as what you'd get with a Pop().
+    ///     Returns what would fall out of the buffer on a Push.
+    ///     NOT the same as what you'd get with a Pop().
     /// </summary>
     public byte Peek()
     {
@@ -229,6 +230,7 @@ public class CircularByteBuffer
         return outByte;
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         var ret = "";

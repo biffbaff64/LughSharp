@@ -33,5 +33,8 @@ public class FloatFrameBufferBuilder : GLFrameBufferBuilder< GLFrameBuffer< GLTe
     {
     }
 
-    public override FloatFrameBuffer Build() => new( this );
+    public override FloatFrameBuffer Build()
+    {
+        return new FloatFrameBuffer( this );
+    }
 }

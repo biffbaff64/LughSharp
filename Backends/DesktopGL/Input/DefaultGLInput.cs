@@ -98,19 +98,34 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     }
 
     /// <inheritdoc />
-    public override int GetMaxPointers() => DEFAULT_MAX_POINTERS;
+    public override int GetMaxPointers()
+    {
+        return DEFAULT_MAX_POINTERS;
+    }
 
     /// <inheritdoc />
-    public override int GetX( int pointer = 0 ) => pointer == 0 ? _mouseX : 0;
+    public override int GetX( int pointer = 0 )
+    {
+        return pointer == 0 ? _mouseX : 0;
+    }
 
     /// <inheritdoc />
-    public override int GetDeltaX( int pointer = 0 ) => pointer == 0 ? _deltaX : 0;
+    public override int GetDeltaX( int pointer = 0 )
+    {
+        return pointer == 0 ? _deltaX : 0;
+    }
 
     /// <inheritdoc />
-    public override int GetY( int pointer = 0 ) => pointer == 0 ? _mouseY : 0;
+    public override int GetY( int pointer = 0 )
+    {
+        return pointer == 0 ? _mouseY : 0;
+    }
 
     /// <inheritdoc />
-    public override int GetDeltaY( int pointer = 0 ) => pointer == 0 ? _deltaY : 0;
+    public override int GetDeltaY( int pointer = 0 )
+    {
+        return pointer == 0 ? _deltaY : 0;
+    }
 
     /// <inheritdoc />
     public override bool IsTouched( int pointer = 0 )

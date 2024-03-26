@@ -78,18 +78,6 @@ public sealed class Color
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    #region Colour Components
-    
-    public float R { get; set; }
-    public float G { get; set; }
-    public float B { get; set; }
-    public float A { get; set; }
-
-    #endregion Colour Components
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
     /// <summary>
     ///     Constructor, sets all the components to 0.
     /// </summary>
@@ -814,4 +802,16 @@ public sealed class Color
 
         return result;
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region Colour Components
+
+    public float R { get; set; }
+    public float G { get; set; }
+    public float B { get; set; }
+    public float A { get; set; }
+
+    #endregion Colour Components
 }

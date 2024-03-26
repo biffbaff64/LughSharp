@@ -2017,7 +2017,7 @@ public class ParticleEmitter
                 // BufferedReader.MarkSupported may return false in some platforms,
                 // in which case backwards commpatibility is not possible.
                 const string ERROR_MESSAGE = "The loaded particle effect descriptor file uses an old invalid format. "
-                                          + "Please download the latest version of the Particle Editor tool and "
+                                           + "Please download the latest version of the Particle Editor tool and "
                                            + "recreate the file by loading and saving it again.";
 
                 Logger.Error( ERROR_MESSAGE );

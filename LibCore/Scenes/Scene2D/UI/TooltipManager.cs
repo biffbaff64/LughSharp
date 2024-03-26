@@ -53,62 +53,7 @@ public class TooltipManager<T> where T : Actor
     }
 
     // ------------------------------------------------------------------------
-    
-    #region properties
-    
-    /// <summary>
-    ///     The X distance from the mouse position to offset the tooltip actor. Default is 15.
-    /// </summary>
-    public float OffsetX { get; set; } = 15;
 
-    /// <summary>
-    ///     The Y distance from the mouse position to offset the tooltip actor. Default is 19.
-    /// </summary>
-    public float OffsetY { get; set; } = 19;
-
-    /// <summary>
-    ///     The maximum width of a <see cref="TextTooltip" />. The label will wrap if needed.
-    ///     Default is <see cref="int.MaxValue" />.
-    /// </summary>
-    public float MaxWidth { get; set; } = int.MaxValue;
-
-    /// <summary>
-    ///     The distance from the tooltip actor position to the edge of the screen where the
-    ///     actor will be shown on the other side of the mouse cursor. Default is 7.
-    /// </summary>
-    public float EdgeDistance { get; set; } = 7;
-
-    /// <summary>
-    ///     Seconds from when an actor is hovered to when the tooltip is shown. Default is 2.
-    ///     Call <see cref="HideAll()" /> after changing to reset internal state.
-    /// </summary>
-    public float InitialTime { get; set; } = 2;
-
-    /// <summary>
-    ///     Once a tooltip is shown, this is used instead of <see cref="InitialTime" />.
-    ///     Default is 0.
-    /// </summary>
-    public float SubsequentTime { get; set; } = 0;
-
-    /// <summary>
-    ///     Seconds to use <see cref="SubsequentTime" />. Default is 1.5f.
-    /// </summary>
-    public float ResetTime { get; set; } = 1.5f;
-
-    /// <summary>
-    ///     If false, tooltips will not be shown. Default is true.
-    /// </summary>
-    public bool Enabled { get; set; } = true;
-
-    /// <summary>
-    ///     If false, tooltips will be shown without animations. Default is true.
-    /// </summary>
-    public bool Animations { get; set; } = true;
-
-    #endregion properties
-
-    // ------------------------------------------------------------------------
-    
     private void Create()
     {
         //@formatter:off
@@ -253,6 +198,61 @@ public class TooltipManager<T> where T : Actor
             _showTaskCancellationTokenSource.Cancel();
         }
     }
+
+    // ------------------------------------------------------------------------
+
+    #region properties
+
+    /// <summary>
+    ///     The X distance from the mouse position to offset the tooltip actor. Default is 15.
+    /// </summary>
+    public float OffsetX { get; set; } = 15;
+
+    /// <summary>
+    ///     The Y distance from the mouse position to offset the tooltip actor. Default is 19.
+    /// </summary>
+    public float OffsetY { get; set; } = 19;
+
+    /// <summary>
+    ///     The maximum width of a <see cref="TextTooltip" />. The label will wrap if needed.
+    ///     Default is <see cref="int.MaxValue" />.
+    /// </summary>
+    public float MaxWidth { get; set; } = int.MaxValue;
+
+    /// <summary>
+    ///     The distance from the tooltip actor position to the edge of the screen where the
+    ///     actor will be shown on the other side of the mouse cursor. Default is 7.
+    /// </summary>
+    public float EdgeDistance { get; set; } = 7;
+
+    /// <summary>
+    ///     Seconds from when an actor is hovered to when the tooltip is shown. Default is 2.
+    ///     Call <see cref="HideAll()" /> after changing to reset internal state.
+    /// </summary>
+    public float InitialTime { get; set; } = 2;
+
+    /// <summary>
+    ///     Once a tooltip is shown, this is used instead of <see cref="InitialTime" />.
+    ///     Default is 0.
+    /// </summary>
+    public float SubsequentTime { get; set; } = 0;
+
+    /// <summary>
+    ///     Seconds to use <see cref="SubsequentTime" />. Default is 1.5f.
+    /// </summary>
+    public float ResetTime { get; set; } = 1.5f;
+
+    /// <summary>
+    ///     If false, tooltips will not be shown. Default is true.
+    /// </summary>
+    public bool Enabled { get; set; } = true;
+
+    /// <summary>
+    ///     If false, tooltips will be shown without animations. Default is true.
+    /// </summary>
+    public bool Animations { get; set; } = true;
+
+    #endregion properties
 
     // ------------------------------------------------------------------------
 

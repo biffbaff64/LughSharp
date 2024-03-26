@@ -46,7 +46,7 @@ public abstract class EventAction<T> : Action, IEventListener where T : Event
     ///     Called when the specific type of event occurs on the actor.
     /// </summary>
     /// <returns>
-    ///     true if the event should be considered handled by <see cref="Event.Handle()" />
+    ///     true if the event should be considered handled by <see cref="Event.SetHandled" />
     ///     and this EventAction considered complete.
     /// </returns>
     public bool Handle( Event ev )

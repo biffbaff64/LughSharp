@@ -31,24 +31,24 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 ///     The base class for all events.
 ///     By default an event will "bubble" up through an actor's parent's handlers
 ///     (see <see cref="Bubbles" />).
-///     <p>
+///     <para>
 ///         An actor's capture listeners can stop() an event to prevent child actors
 ///         from seeing it.
-///     </p>
-///     <p>
+///     </para>
+///     <para>
 ///         An Event may be marked as "handled" which will end its propagation outside
 ///         of the Stage (see <see cref="IsHandled" />). The default Actor.fire(Event)
 ///         will mark events handled if an EventListener returns true.
 ///         A cancelled event will be stopped and handled. Additionally, many actors
 ///         will undo the side-effects of a canceled event. (See <see cref="IsCancelled" />)
-///     </p>
+///     </para>
 /// </summary>
 /// <remarks>
-///     The original getters and setters for 'cancelled', 'handled', 'bubbles',
-///     'stopped', 'stage', 'targetActor', 'listenerActor', and 'capture' have
-///     been removed and replaced with C# Properties.
-///     Therefore, Event.isHandled() is now Event.IsHandled etc.
+///     The original getters and setters for 'cancelled', 'handled', 'bubbles', 'stopped',
+///     'stage', 'targetActor', 'listenerActor', and 'capture' have been removed and replaced
+///     with C# Properties. Therefore, Event.isHandled() is now Event.IsHandled etc.
 /// </remarks>
+[PublicAPI]
 public class Event : IPoolable
 {
     // The Stage for the Actor the event was fired on.
@@ -94,7 +94,7 @@ public class Event : IPoolable
     ///     methods to return true, which will consume the event so it is not passed
     ///     on to the application under the stage.
     /// </summary>
-    public void Handle()
+    public virtual void SetHandled()
     {
         IsHandled = true;
     }

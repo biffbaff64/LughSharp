@@ -48,6 +48,17 @@ public static class Gdx
     // ------------------------------------------------------------------------
 
     /// <summary>
+    ///     Initialise the Framework.
+    /// </summary>
+    static Gdx()
+    {
+        Logger.Initialise();
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    /// <summary>
     ///     From Wiktionary...
     ///     <para>
     ///         "1. (video games) A game mode where the player character is invulnerable to damage,
@@ -73,17 +84,6 @@ public static class Gdx
 
     public static bool DevMode { get; set; } = false;
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    /// <summary>
-    /// Initialise the Framework.
-    /// </summary>
-    static Gdx()
-    {
-        Logger.Initialise();
-    }
-    
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 

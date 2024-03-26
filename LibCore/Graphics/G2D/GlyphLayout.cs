@@ -53,17 +53,13 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class GlyphLayout : IPoolable
 {
-    public List< GlyphRun > Runs   { get; set; } = new( 1 );
-    public float            Width  { get; set; }
-    public float            Height { get; set; }
+    private readonly static float         _epsilon    = 0.0001f;
+    private readonly        Pool< Color > _colorPool  = Pools< Color >.Get();
+    private readonly        List< Color > _colorStack = new( 4 );
 
     // ------------------------------------------------------------------------
-    
-    private readonly Pool< GlyphRun > _glyphRunPool = Pools< GlyphRun >.Get();
-    private readonly Pool< Color >    _colorPool    = Pools< Color >.Get();
-    private readonly List< Color >    _colorStack   = new( 4 );
 
-    private readonly static float _epsilon = 0.0001f;
+    private readonly Pool< GlyphRun > _glyphRunPool = Pools< GlyphRun >.Get();
 
     // ------------------------------------------------------------------------
 
@@ -96,6 +92,10 @@ public class GlyphLayout : IPoolable
     {
         SetText( font, str, start, end, color, targetWidth, halign, wrap, truncate );
     }
+
+    public List< GlyphRun > Runs   { get; set; } = new( 1 );
+    public float            Width  { get; set; }
+    public float            Height { get; set; }
 
     /// <summary>
     ///     Resets the object for reuse. Object references should
@@ -212,7 +212,7 @@ public class GlyphLayout : IPoolable
         outer:
 
         //TODO: Refactor this loop, I don't like the way this is done.
-        
+
         while ( true )
         {
             // Each run is delimited by newline or left square bracket.
@@ -555,13 +555,13 @@ public class GlyphLayout : IPoolable
                            int widthIndex )
     {
         // Determine truncate string size.
-        GlyphRun? truncateRun = this._glyphRunPool.Obtain();
+        GlyphRun? truncateRun = _glyphRunPool.Obtain();
 
         if ( truncateRun == null )
         {
             throw new GdxRuntimeException( "Null GlyphRub obtained!" );
         }
-        
+
         fontData.GetGlyphs( truncateRun, truncate, 0, truncate.Length, null );
 
         float   truncateWidth = 0;
@@ -624,7 +624,7 @@ public class GlyphLayout : IPoolable
 
         run.Glyphs.AddAll( truncateRun.Glyphs );
 
-        this._glyphRunPool.Free( truncateRun );
+        _glyphRunPool.Free( truncateRun );
     }
 
     /// <summary>

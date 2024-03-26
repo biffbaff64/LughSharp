@@ -33,7 +33,8 @@ public interface IGraphics
     #region nested classes
 
     /// <summary>
-    ///     Describes a fullscreen display mode.
+    ///     Describes a fullscreen display mode, having the properties <see cref="Width"/>,
+    ///     <see cref="Height"/>, <see cref="RefreshRate"/>, and <see cref="BitsPerPixel"/>.
     /// </summary>
     [PublicAPI]
     public class DisplayModeDescriptor
@@ -130,7 +131,7 @@ public interface IGraphics
     bool IsGL30Available();
 
     /// <summary>
-    /// Returns the amount of pixels per logical pixel (point).
+    ///     Returns the amount of pixels per logical pixel (point).
     /// </summary>
     float GetBackBufferScale();
 
@@ -147,16 +148,18 @@ public interface IGraphics
     int GetFramesPerSecond();
 
     /// <summary>
-    /// Returns the time span between the current frame and the last frame in seconds, without smoothing.
+    ///     Returns the time span between the current frame and the last frame in seconds, without smoothing.
     /// </summary>
     float GetRawDeltaTime();
-    
+
     GLVersion.GLType GetGraphicsType();
 
     float GetPpiX();
 
     float GetPpiY();
 
+    (float X, float Y) GetPpcXY();
+    
     float GetPpcX();
 
     float GetPpcY();

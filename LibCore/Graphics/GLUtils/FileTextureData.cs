@@ -49,6 +49,8 @@ public class FileTextureData : ITextureData
         }
     }
 
+    public FileInfo? File { get; set; }
+
     /// <summary>
     ///     Prepares the TextureData for a call to <see cref="ITextureData.ConsumePixmap" /> or
     ///     <see cref="ITextureData.ConsumeCustomData" />. This method can be called from a non
@@ -128,8 +130,6 @@ public class FileTextureData : ITextureData
         throw new GdxRuntimeException
             ( "This TextureData implementation does not upload data itself" );
     }
-
-    public FileInfo? File { get; set; }
 
     /// <returns> the width of the pixel data </returns>
     public int Width { get; set; }

@@ -31,12 +31,12 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
 ///     The Bistream class is responsible for parsing an MPEG audio bitstream.
-///     TODO: much of the parsing currently occurs in the various decoders.
-///     This should be moved into this class and associated inner classes.
 /// </summary>
 [PublicAPI]
 public sealed class Bitstream
 {
+//TODO: much of the parsing currently occurs in the various decoders. This should be moved into this class and associated inner classes.
+
     /// <summary>
     ///     Synchronization control constant for the initial
     ///     synchronization to the start of a frame.
@@ -235,11 +235,10 @@ public sealed class Bitstream
     }
 
     /// <summary>
-    ///     Get next 32 bits from bitstream.
-    ///     They are stored in the headerstring.
-    ///     syncmod allows Synchro flag ID
+    ///     Get next 32 bits from bitstream. which are stored in the headerstring.
     ///     The returned value is False at the end of stream.
     /// </summary>
+    /// <param name="syncmode"> allows Synchro flag ID </param>
     public int SyncHeader( sbyte syncmode )
     {
         var sync = false;

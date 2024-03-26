@@ -29,14 +29,19 @@ namespace LughSharp.LibCore.Audio;
 public interface IMusic : IDisposable
 {
     /// <summary>
-    /// Returns whether or not this music stream is playing.
+    ///     Returns whether or not this music stream is playing.
     /// </summary>
     bool IsPlaying { get; set; }
 
     /// <summary>
-    /// Returns whether or not the music stream is set to loop.
+    ///     Returns whether or not the music stream is set to loop.
     /// </summary>
     bool IsLooping { get; set; }
+
+    /// <summary>
+    ///     Register a callback to be invoked when the end of a music stream has been reached during playback.
+    /// </summary>
+    IOnCompletionListener? OnCompletionListener { get; set; }
 
     /// <summary>
     ///     Starts the play back of the music stream. In case the stream was paused
@@ -64,7 +69,7 @@ public interface IMusic : IDisposable
     void SetVolume( float volume );
 
     /// <summary>
-    /// Returns the volume of this music stream.
+    ///     Returns the volume of this music stream.
     /// </summary>
     float GetVolume();
 
@@ -84,11 +89,6 @@ public interface IMusic : IDisposable
     ///     Returns the playback position in seconds.
     /// </summary>
     float GetPosition();
-
-    /// <summary>
-    ///     Register a callback to be invoked when the end of a music stream has been reached during playback.
-    /// </summary>
-    IMusic.IOnCompletionListener? OnCompletionListener { get; set; }
 
     /// <summary>
     ///     Interface definition for a callback to be invoked when playback of a music stream has completed.

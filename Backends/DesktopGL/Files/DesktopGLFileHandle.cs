@@ -32,11 +32,13 @@ namespace LughSharp.Backends.DesktopGL.Files;
 public class DesktopGLFileHandle // : FileInfo
 {
     public DesktopGLFileHandle( string fileName, FileType type )
+
 //        : base( fileName, type )
     {
     }
 
     public DesktopGLFileHandle( FileInfo file, FileType type )
+
 //        : base( file.Name, type )
     {
     }
@@ -72,7 +74,7 @@ public class DesktopGLFileHandle // : FileInfo
 //        }
 
 //        return new FileInfo( name, FileType );
-        
+
         throw new NotImplementedException();
     }
 
@@ -126,7 +128,7 @@ public class DesktopGLFileHandle // : FileInfo
 //        }
 
 //        return FileInfo;
-        
+
         throw new NotImplementedException();
     }
 }

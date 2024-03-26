@@ -27,6 +27,7 @@ using LughSharp.LibCore.Maths;
 
 namespace LughSharp.LibCore.Scenes.Scene2D;
 
+[PublicAPI]
 public class InputEvent : Event
 {
     /// <summary>
@@ -149,7 +150,7 @@ public class InputEvent : Event
                                  || MathUtils.IsEqual( StageY, int.MinValue );
 
     /// <summary>
-    ///     If false, <see cref="Event.Handle()" /> will not add the listener
+    ///     If false, <see cref="Event.SetHandled" /> will not add the listener
     ///     to the stage's touch focus when a touch down event is handled.
     ///     Default is true.
     /// </summary>
@@ -177,6 +178,7 @@ public class InputEvent : Event
         return actorCoords;
     }
 
+    /// <inheritdoc/>
     public override string? ToString()
     {
         return Type != null ? Type.ToString() : string.Empty;

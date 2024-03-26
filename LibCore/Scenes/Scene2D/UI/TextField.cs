@@ -65,9 +65,11 @@ public class TextField : Widget
     protected const char DELETE          = '\u007f';
     protected const char BULLET          = '\u0095';
 
-    public static    float      keyRepeatInitialTime = 0.4f;
-    public static    float      keyRepeatTime        = 0.1f;
-    private readonly IClipboard _clipboard;
+    public static    float                keyRepeatInitialTime = 0.4f;
+    public static    float                keyRepeatTime        = 0.1f;
+    private readonly BlinkTaskManager     _blink;
+    private readonly IClipboard           _clipboard;
+    private readonly KeyRepeatTaskManager _keyRepeat;
 
     private readonly bool _onlyFontChars = true;
     private readonly int  _textAlign     = Align.LEFT;
@@ -75,22 +77,20 @@ public class TextField : Widget
     private readonly Vector2           _tmp1 = new();
     private readonly Vector2           _tmp2 = new();
     private readonly Vector2           _tmp3 = new();
-    private readonly BlinkTaskManager  _blink;
     private          CancellationToken _blinkCancellationToken;
     private          Task?             _blinkTask;
 
 //    private          float                    _blinkTime = 0.32f;
-    private          CancellationTokenSource? _blinkTokenSource;
-    private          bool                     _cursorOn;
-    private          bool                     _disabled;
-    private          ITextFieldFilter?        _filter;
-    private          bool                     _focused;
-    private          InputListener?           _inputListener;
-    private          IOnscreenKeyboard        _keyboard = new DefaultOnscreenKeyboard();
-    private readonly KeyRepeatTaskManager     _keyRepeat;
-    private          CancellationToken        _keyRepeatCancellationToken;
-    private          Task?                    _keyRepeatTask;
-    private          CancellationTokenSource? _keyRepeatTokenSource;
+    private CancellationTokenSource? _blinkTokenSource;
+    private bool                     _cursorOn;
+    private bool                     _disabled;
+    private ITextFieldFilter?        _filter;
+    private bool                     _focused;
+    private InputListener?           _inputListener;
+    private IOnscreenKeyboard        _keyboard = new DefaultOnscreenKeyboard();
+    private CancellationToken        _keyRepeatCancellationToken;
+    private Task?                    _keyRepeatTask;
+    private CancellationTokenSource? _keyRepeatTokenSource;
 
     private long                _lastChangeTime;
     private ITextFieldListener? _listener;
@@ -1214,18 +1214,6 @@ public class TextField : Widget
     [PublicAPI]
     public class TextFieldStyle
     {
-        public BitmapFont? Font               { get; set; }
-        public Color?      FontColor          { get; set; }
-        public Color?      FocusedFontColor   { get; set; }
-        public Color?      DisabledFontColor  { get; set; }
-        public IDrawable?  Background         { get; set; }
-        public IDrawable?  FocusedBackground  { get; set; }
-        public IDrawable?  DisabledBackground { get; set; }
-        public IDrawable?  Cursor             { get; set; }
-        public IDrawable?  Selection          { get; set; }
-        public BitmapFont? MessageFont        { get; set; }
-        public Color?      MessageFontColor   { get; set; }
-
         public TextFieldStyle()
         {
         }
@@ -1275,6 +1263,18 @@ public class TextField : Widget
                 MessageFontColor = new Color( style.MessageFontColor );
             }
         }
+
+        public BitmapFont? Font               { get; set; }
+        public Color?      FontColor          { get; set; }
+        public Color?      FocusedFontColor   { get; set; }
+        public Color?      DisabledFontColor  { get; set; }
+        public IDrawable?  Background         { get; set; }
+        public IDrawable?  FocusedBackground  { get; set; }
+        public IDrawable?  DisabledBackground { get; set; }
+        public IDrawable?  Cursor             { get; set; }
+        public IDrawable?  Selection          { get; set; }
+        public BitmapFont? MessageFont        { get; set; }
+        public Color?      MessageFontColor   { get; set; }
     }
 
     // ------------------------------------------------------------------------
@@ -1557,13 +1557,13 @@ public class TextField : Widget
         }
 
         /// <summary>
-        /// Checks if focus traversal should be triggered. The default implementation
-        /// uses <see cref="TextField.FocusTraversal"/> and the typed character,
-        /// depending on the OS.
+        ///     Checks if focus traversal should be triggered. The default implementation
+        ///     uses <see cref="TextField.FocusTraversal" /> and the typed character,
+        ///     depending on the OS.
         /// </summary>
         /// <param name="character"> The character that triggered a possible focus traversal. </param>
         /// <returns>
-        /// true if the focus should change to the <see cref="TextField.Next(bool)"/> input field.
+        ///     true if the focus should change to the <see cref="TextField.Next(bool)" /> input field.
         /// </returns>
         protected virtual bool CheckFocusTraversal( char character )
         {
@@ -1620,7 +1620,7 @@ public class TextField : Widget
 
                 var add = enter
                     ? _tf.WriteEnters
-                    : ( !_tf._onlyFontChars || _tf.Style!.Font!.GetData().HasGlyph( character ) );
+                    : !_tf._onlyFontChars || _tf.Style!.Font!.GetData().HasGlyph( character );
 
                 var remove = backspace || delete;
 
@@ -1682,7 +1682,7 @@ public class TextField : Widget
 
                     if ( _tf.ChangeText( oldText, _tf.Text ) )
                     {
-                        long time = TimeUtils.Millis();
+                        var time = TimeUtils.Millis();
 
                         if ( ( time - 750 ) > _tf._lastChangeTime )
                         {

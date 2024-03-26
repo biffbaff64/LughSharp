@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Reflection;
+
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Core;
@@ -30,16 +32,19 @@ namespace LughSharp.LibCore.Core;
 /// <summary>
 ///     The current LughSharp Library version.
 /// </summary>
+//TODO: Needs testing
 [PublicAPI]
 public class GDXVersion
 {
-    // the current Library version as a string in the major.minor.revision format
-    public const string LIBRARY_VERSION_STRING = "0.0.1";
-
-    private readonly static Version _version = new();
+    private readonly static Version? _version = Assembly.GetEntryAssembly()?.GetName().Version;
 
     static GDXVersion()
     {
+        if ( _version == null )
+        {
+            throw new NullReferenceException( "NULL Assembly Version!" );
+        }
+    
         try
         {
             var v = _version.ToString().Split( "\\." );
@@ -50,7 +55,7 @@ public class GDXVersion
         }
         catch ( Exception e )
         {
-            throw new GdxRuntimeException( $"Invalid version {LIBRARY_VERSION_STRING}", e );
+            throw new GdxRuntimeException( $"Invalid version {_version.ToString().Split( "\\." )}", e );
         }
     }
 

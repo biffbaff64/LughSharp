@@ -28,27 +28,17 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public abstract class AbstractInput : IInput
 {
-    private readonly List< int > _keysToCatch;
-
-    /// <summary>
-    /// </summary>
-    protected AbstractInput()
-    {
-        PressedKeys     = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
-        JustPressedKeys = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
-        _keysToCatch    = new List< int >();
-    }
-
-    protected bool[]           PressedKeys     { get; set; }
-    protected bool[]           JustPressedKeys { get; set; }
+    protected bool[]           PressedKeys     { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
+    protected bool[]           JustPressedKeys { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
     protected bool             KeyJustPressed  { get; set; }
     protected int              PressedKeyCount { get; set; }
     public    IInputProcessor? InputProcessor  { get; set; }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    private readonly List< int > _keysToCatch = new();
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     public virtual bool IsKeyPressed( int key )
     {
         if ( key == IInput.Keys.ANY_KEY )
@@ -59,10 +49,6 @@ public abstract class AbstractInput : IInput
         return key is >= 0 and <= IInput.Keys.MAX_KEYCODE && PressedKeys[ key ];
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
     public virtual bool IsKeyJustPressed( int key )
     {
         if ( key == IInput.Keys.ANY_KEY )
@@ -73,10 +59,6 @@ public abstract class AbstractInput : IInput
         return key is >= 0 and <= IInput.Keys.MAX_KEYCODE && JustPressedKeys[ key ];
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="keycode"></param>
-    /// <param name="catchKey"></param>
     public virtual void SetCatchKey( int keycode, bool catchKey )
     {
         if ( !catchKey )
@@ -89,42 +71,26 @@ public abstract class AbstractInput : IInput
         }
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="keycode"></param>
-    /// <returns></returns>
     public virtual bool IsCatchKey( int keycode )
     {
         return _keysToCatch.Contains( keycode );
     }
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
     public virtual bool IsCatchBackKey()
     {
         return _keysToCatch.Contains( IInput.Keys.BACK );
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="catchBack"></param>
     public virtual void SetCatchBackKey( bool catchBack )
     {
         SetCatchKey( IInput.Keys.BACK, catchBack );
     }
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
     public virtual bool IsCatchMenuKey()
     {
         return _keysToCatch.Contains( IInput.Keys.MENU );
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="catchMenu"></param>
     public virtual void SetCatchMenuKey( bool catchMenu )
     {
         SetCatchKey( IInput.Keys.MENU, catchMenu );

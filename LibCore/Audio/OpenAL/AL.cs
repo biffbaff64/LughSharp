@@ -31,12 +31,15 @@ namespace LughSharp.LibCore.Audio.OpenAL;
 public static class AL
 {
     // ------------------------------------------------------------------------
-    
+
     #region Dll Import Handling
 
     public const string OPEN_AL_DLL = "OpenAL";
 
-    static AL() => NativeLibrary.SetDllImportResolver( typeof( AL ).Assembly, ImportResolver );
+    static AL()
+    {
+        NativeLibrary.SetDllImportResolver( typeof( AL ).Assembly, ImportResolver );
+    }
 
     private static IntPtr ImportResolver( string libraryName, Assembly assembly, DllImportSearchPath? searchPath )
     {
@@ -142,7 +145,7 @@ public static class AL
     #endregion Constants
 
     // ------------------------------------------------------------------------
-    
+
     #region Functions
 
     [DllImport( OPEN_AL_DLL, EntryPoint = "alEnable" )]
@@ -157,7 +160,10 @@ public static class AL
     [DllImport( OPEN_AL_DLL, EntryPoint = "alGetString" )]
     private static extern IntPtr _GetString( int param );
 
-    public static string GetString( int param ) => Marshal.PtrToStringAnsi( _GetString( param ) )!;
+    public static string GetString( int param )
+    {
+        return Marshal.PtrToStringAnsi( _GetString( param ) )!;
+    }
 
     [DllImport( OPEN_AL_DLL, EntryPoint = "alGetBooleanv" )]
     public static extern void GetBooleanv( int param, out bool data );
@@ -277,7 +283,10 @@ public static class AL
     [DllImport( OPEN_AL_DLL, EntryPoint = "alDeleteSources" )]
     public static extern void DeleteSources( int n, uint[] sources );
 
-    public static void DeleteSource( uint source ) => DeleteSources( 1, new[] { source } );
+    public static void DeleteSource( uint source )
+    {
+        DeleteSources( 1, new[] { source } );
+    }
 
     [DllImport( OPEN_AL_DLL, EntryPoint = "alIsSource" )]
     public static extern bool IsSource( uint sid );
@@ -467,7 +476,10 @@ public static class AL
     [DllImport( OPEN_AL_DLL, EntryPoint = "alDeleteBuffers" )]
     public static extern void DeleteBuffers( int n, uint[] buffers );
 
-    public static void DeleteBuffer( uint buffer ) => DeleteBuffers( 1, new[] { buffer } );
+    public static void DeleteBuffer( uint buffer )
+    {
+        DeleteBuffers( 1, new[] { buffer } );
+    }
 
     [DllImport( OPEN_AL_DLL, EntryPoint = "alIsBuffer" )]
     public static extern bool IsBuffer( uint bid );

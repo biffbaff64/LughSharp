@@ -361,7 +361,7 @@ public class Cubemap : GLTexture
         /// </summary>
         public readonly static CubemapSide NegativeZ = new( "NegativeZ", InnerEnum.NegativeZ, 5, IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, -1, 0, 0, 0, -1 );
 
-        private readonly static List< CubemapSide > _valueList    = new();
+        private readonly static List< CubemapSide > _valueList   = new();
         private static          int                 _nextOrdinal = 0;
 
         private readonly string _nameValue;

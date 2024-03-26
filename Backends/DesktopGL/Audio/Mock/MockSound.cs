@@ -28,7 +28,7 @@ using LughSharp.LibCore.Audio;
 namespace LughSharp.Backends.DesktopGL.Audio.Mock;
 
 /// <summary>
-/// Audio stubs for use when Audio is disabled, or when Audio failed to initialise.
+///     Audio stubs for use when Audio is disabled, or when Audio failed to initialise.
 /// </summary>
 [PublicAPI]
 public class MockSound : ISound
@@ -107,6 +107,11 @@ public class MockSound : ISound
     {
     }
 
+    /// <inheritdoc />
+    public void Dispose()
+    {
+    }
+
     public long Play()
     {
         return 0;
@@ -115,10 +120,5 @@ public class MockSound : ISound
     public long Loop()
     {
         return 0;
-    }
-
-    /// <inheritdoc />
-    public void Dispose()
-    {
     }
 }

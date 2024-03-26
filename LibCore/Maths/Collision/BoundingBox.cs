@@ -33,15 +33,14 @@ namespace LughSharp.LibCore.Maths.Collision;
 [Serializable, PublicAPI]
 public class BoundingBox
 {
-    public readonly Vector3 max = new();
-    public readonly Vector3 min = new();
-
     // ------------------------------------------------------------------------
-    
+
     private readonly static Vector3 _tmpVector = new();
 
     private readonly Vector3 _cnt = new();
     private readonly Vector3 _dim = new();
+    public readonly  Vector3 max  = new();
+    public readonly  Vector3 min  = new();
 
     // ------------------------------------------------------------------------
 
@@ -254,7 +253,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    /// Gets the minimum values into a <see cref="Vector3"/>.
+    ///     Gets the minimum values into a <see cref="Vector3" />.
     /// </summary>
     /// <param name="vec3"> The <see cref="Vector3" /> to receive the minimum values.</param>
     /// <returns> The vector specified with the out argument</returns>
@@ -264,7 +263,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    /// Gets the maximum values into a <see cref="Vector3"/>.
+    ///     Gets the maximum values into a <see cref="Vector3" />.
     /// </summary>
     /// <param name="vec3">The <see cref="Vector3" /> to receive the maximum values.</param>
     /// <returns> The vector specified with the out argument</returns>
@@ -450,7 +449,7 @@ public class BoundingBox
             && ( max.Z >= v.Z );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         return $"[ {min} | {max} ]";

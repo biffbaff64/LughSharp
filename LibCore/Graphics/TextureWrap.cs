@@ -67,7 +67,10 @@ public class TextureWrap
     public int GLEnum       { get; }
     public int OrdinalValue { get; set; }
 
-    public static TextureWrap[] Values() => _valueList.ToArray();
+    public static TextureWrap[] Values()
+    {
+        return _valueList.ToArray();
+    }
 
     public static TextureWrap ValueOf( string name )
     {
@@ -82,7 +85,7 @@ public class TextureWrap
         throw new ArgumentException( name );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         return _nameValue;

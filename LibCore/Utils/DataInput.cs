@@ -113,7 +113,6 @@ public class DataInput : BinaryReader
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="charCount"></param>
     /// <param name="charIndex"></param>

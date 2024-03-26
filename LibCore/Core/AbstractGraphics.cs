@@ -34,19 +34,19 @@ public abstract class AbstractGraphics : IGraphics
 {
     #region implemented methods
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public float GetRawDeltaTime()
     {
         return DeltaTime;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public float GetDensity()
     {
         return GetPpiX() / 160f;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public float GetBackBufferScale()
     {
         return BackBufferWidth / ( float )Width;
@@ -86,67 +86,99 @@ public abstract class AbstractGraphics : IGraphics
     [Obsolete]
     public abstract IGraphics.MonitorDescriptor[] GetMonitors();
 
+    // ------------------------------------------------------------------------
+    
+    /// <inheritdoc />
     public abstract IGraphics.DisplayModeDescriptor[] GetDisplayModes();
 
+    /// <inheritdoc />
     public abstract IGraphics.DisplayModeDescriptor[] GetDisplayModes( IGraphics.MonitorDescriptor monitor );
 
+    /// <inheritdoc />
     public abstract IGraphics.DisplayModeDescriptor GetDisplayMode();
 
+    /// <inheritdoc />
     public abstract IGraphics.DisplayModeDescriptor GetDisplayMode( IGraphics.MonitorDescriptor monitor );
 
+    /// <inheritdoc />
     public abstract bool SetFullscreenMode( IGraphics.DisplayModeDescriptor displayMode );
 
+    /// <inheritdoc />
     public abstract bool SetWindowedMode( int width, int height );
 
+    /// <inheritdoc />
     public abstract void SetTitle( string title );
 
+    /// <inheritdoc />
     public abstract void SetUndecorated( bool undecorated );
 
+    /// <inheritdoc />
     public abstract void SetResizable( bool resizable );
 
+    /// <inheritdoc />
     public abstract void SetVSync( bool vsync );
 
+    /// <inheritdoc />
     public abstract void SetForegroundFps( int fps );
 
+    /// <inheritdoc />
     public abstract bool SupportsExtension( string extension );
 
+    /// <inheritdoc />
     public abstract bool SupportsDisplayModeChange();
 
+    /// <inheritdoc />
     public abstract void RequestRendering();
 
+    /// <inheritdoc />
     public abstract bool IsFullscreen();
 
+    /// <inheritdoc />
     public abstract ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot );
 
+    /// <inheritdoc />
     public abstract void SetCursor( ICursor cursor );
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public abstract void SetSystemCursor( ICursor.SystemCursor systemCursor );
 
+    /// <inheritdoc />
     public abstract bool IsGL30Available();
 
+    /// <inheritdoc />
     public abstract int GetSafeInsetLeft();
 
+    /// <inheritdoc />
     public abstract int GetSafeInsetTop();
 
+    /// <inheritdoc />
     public abstract int GetSafeInsetBottom();
 
+    /// <inheritdoc />
     public abstract int GetSafeInsetRight();
 
+    /// <inheritdoc />
     public abstract long GetFrameId();
 
+    /// <inheritdoc />
     public abstract int GetFramesPerSecond();
 
+    /// <inheritdoc />
     public abstract GLVersion.GLType GetGraphicsType();
 
+    /// <inheritdoc />
     public abstract float GetPpiX();
 
+    /// <inheritdoc />
     public abstract (float X, float Y) GetPpcXY();
 
+    /// <inheritdoc />
     public abstract float GetPpiY();
 
+    /// <inheritdoc />
     public abstract float GetPpcX();
 
+    /// <inheritdoc />
     public abstract float GetPpcY();
 
     #endregion abstract methods

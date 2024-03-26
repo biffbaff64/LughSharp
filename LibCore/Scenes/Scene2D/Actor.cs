@@ -569,7 +569,7 @@ public class Actor : IActor
     /// <summary>
     ///     Removes all actions and listeners on this actor.
     /// </summary>
-    protected void Clear()
+    public virtual void Clear()
     {
         ClearActions();
         ClearListeners();
@@ -1225,7 +1225,7 @@ public class Actor : IActor
     ///     local coordinate system.
     /// </summary>
     /// <see cref="Stage.ScreenToStageCoordinates(Vector2)" />
-    public Vector2 ScreenToLocalCoordinates( Vector2 screenCoords )
+    public virtual Vector2 ScreenToLocalCoordinates( Vector2 screenCoords )
     {
         return Stage == null
             ? screenCoords
@@ -1236,7 +1236,7 @@ public class Actor : IActor
     ///     Transforms the specified point in the stage's coordinates to
     ///     the actor's local coordinate system.
     /// </summary>
-    public Vector2 StageToLocalCoordinates( Vector2 stageCoords )
+    public virtual Vector2 StageToLocalCoordinates( Vector2 stageCoords )
     {
         Parent?.StageToLocalCoordinates( stageCoords );
 
@@ -1249,7 +1249,7 @@ public class Actor : IActor
     ///     Converts the coordinates given in the parent's coordinate system
     ///     to this actor's coordinate system.
     /// </summary>
-    public Vector2 ParentToLocalCoordinates( Vector2 parentCoords )
+    public virtual Vector2 ParentToLocalCoordinates( Vector2 parentCoords )
     {
         var rotation = Rotation;
         var scaleX   = ScaleX;
@@ -1295,7 +1295,7 @@ public class Actor : IActor
     ///     Transforms the specified point in the actor's coordinates to be in screen coordinates.
     /// </summary>
     /// <see cref="Stage.StageToScreenCoordinates(Vector2)" />
-    public Vector2 LocalToScreenCoordinates( Vector2 localCoords )
+    public virtual Vector2 LocalToScreenCoordinates( Vector2 localCoords )
     {
         return Stage == null
             ? localCoords
@@ -1306,7 +1306,7 @@ public class Actor : IActor
     ///     Transforms the specified point in the actor's coordinates
     ///     to be in the stage's coordinates.
     /// </system>
-    public Vector2 LocalToStageCoordinates( Vector2 localCoords )
+    public virtual Vector2 LocalToStageCoordinates( Vector2 localCoords )
     {
         return LocalToAscendantCoordinates( null, localCoords );
     }
@@ -1315,7 +1315,7 @@ public class Actor : IActor
     ///     Transforms the specified point in the actor's coordinates
     ///     to be in the parent's coordinates.
     /// </system>
-    public Vector2 LocalToParentCoordinates( Vector2 localCoords )
+    public virtual Vector2 LocalToParentCoordinates( Vector2 localCoords )
     {
         var rotation = -Rotation;
         var scaleX   = ScaleX;
@@ -1364,7 +1364,7 @@ public class Actor : IActor
     /// <param name="ascendant"></param>
     /// <param name="localCoords"></param>
     /// <returns></returns>
-    public Vector2 LocalToAscendantCoordinates( Actor? ascendant, Vector2 localCoords )
+    public virtual Vector2 LocalToAscendantCoordinates( Actor? ascendant, Vector2 localCoords )
     {
         Actor? actor = this;
 
@@ -1388,7 +1388,7 @@ public class Actor : IActor
     ///     Converts coordinates for this actor to those of another actor,
     ///     which can be anywhere in the stage.
     /// </summary>
-    public Vector2 LocalToActorCoordinates( Actor actor, Vector2 localCoords )
+    public virtual Vector2 LocalToActorCoordinates( Actor actor, Vector2 localCoords )
     {
         LocalToStageCoordinates( localCoords );
 
@@ -1398,7 +1398,7 @@ public class Actor : IActor
     /// <summary>
     ///     Draws this actor's debug lines if <see cref="DebugActive" /> is true.
     /// </summary>
-    public void DrawDebug( ShapeRenderer shapes )
+    public virtual void DrawDebug( ShapeRenderer shapes )
     {
         DrawDebugBounds( shapes );
     }

@@ -49,12 +49,10 @@ namespace LughSharp.LibCore.Utils.Viewport;
 [PublicAPI]
 public class ScalingViewport : Viewport
 {
-    protected Scaling Scaling { get; }
-
     /// <summary>
     ///     Creates a new viewport using a new <see cref="OrthographicCamera" />.
     /// </summary>
-    /// <param name="scaling"> The <see cref="Scaling"/> to use. </param>
+    /// <param name="scaling"> The <see cref="Scaling" /> to use. </param>
     /// <param name="worldWidth"> The world width in pixels. </param>
     /// <param name="worldHeight"> The world height in pixels. </param>
     protected ScalingViewport( Scaling scaling, float worldWidth, float worldHeight )
@@ -63,9 +61,9 @@ public class ScalingViewport : Viewport
     }
 
     /// <summary>
-    ///     Creates a new viewport using the supplied <see cref="OrthographicCamera"/>.
+    ///     Creates a new viewport using the supplied <see cref="OrthographicCamera" />.
     /// </summary>
-    /// <param name="scaling"> The <see cref="Scaling"/> to use. </param>
+    /// <param name="scaling"> The <see cref="Scaling" /> to use. </param>
     /// <param name="worldWidth"> The world width in pixels. </param>
     /// <param name="worldHeight"> The world height in pixels. </param>
     /// <param name="camera"> The camera to use. </param>
@@ -77,6 +75,8 @@ public class ScalingViewport : Viewport
         WorldWidth  = worldWidth;
         WorldHeight = worldHeight;
     }
+
+    protected Scaling Scaling { get; }
 
     /// <summary>
     ///     Configures this viewports screen bounds and applies it to the camera

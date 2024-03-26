@@ -9,16 +9,16 @@
         <projectUrl>https://github.com/biffbaff64/LughSharp</projectUrl>
         <tags>CSharp;2D;Framework;OpenGL</tags>
         <description>C# 2D/3D Game Framework based on the Java Framework LibGDX.</description>
-        <repository url="https://github.com/biffbaff64/LughSharp" />
+        <repository url="https://github.com/biffbaff64/LughSharp"/>
         <dependencies>
             <group targetFramework="net7.0">
-                <dependency id="DotGLFW" version="1.0.2" exclude="Build,Analyzers" />
-                <dependency id="JetBrains.Annotations" version="2023.2.0" exclude="Build,Analyzers" />
-                <dependency id="RestSharp" version="110.2.0" exclude="Build,Analyzers" />
-                <dependency id="SharpZipLib" version="1.4.2" exclude="Build,Analyzers" />
-                <dependency id="System.Drawing.Common" version="7.0.0" exclude="Build,Analyzers" />
-                <dependency id="System.IO.Hashing" version="7.0.0" exclude="Build,Analyzers" />
-                <dependency id="System.Runtime.CompilerServices.Unsafe" version="6.0.0" exclude="Build,Analyzers" />
+                <dependency id="DotGLFW" version="1.0.2" exclude="Build,Analyzers"/>
+                <dependency id="JetBrains.Annotations" version="2023.2.0" exclude="Build,Analyzers"/>
+                <dependency id="RestSharp" version="110.2.0" exclude="Build,Analyzers"/>
+                <dependency id="SharpZipLib" version="1.4.2" exclude="Build,Analyzers"/>
+                <dependency id="System.Drawing.Common" version="7.0.0" exclude="Build,Analyzers"/>
+                <dependency id="System.IO.Hashing" version="7.0.0" exclude="Build,Analyzers"/>
+                <dependency id="System.Runtime.CompilerServices.Unsafe" version="6.0.0" exclude="Build,Analyzers"/>
             </group>
         </dependencies>
     </metadata>

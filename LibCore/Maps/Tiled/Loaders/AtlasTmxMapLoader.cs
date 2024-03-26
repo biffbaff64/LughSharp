@@ -219,7 +219,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         {
             throw new GdxRuntimeException( "The map is missing a properties node." );
         }
-        
+
         string? atlasFilePath = null;
 
         XmlNodeList? propertyList = properties.SelectNodes( "property" );
@@ -241,7 +241,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
                 }
             }
         }
-        
+
         if ( atlasFilePath == null )
         {
             throw new GdxRuntimeException( "The map is missing the 'atlas' property" );

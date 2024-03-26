@@ -123,7 +123,7 @@ public class FacedCubemapData : ICubemapData
         for ( var i = 0; i < _data.Length; i++ )
         {
             if ( _data[ i ] == null ) continue;
-            
+
             if ( _data[ i ]!.TextureDataType == ITextureData.TextureType.Custom )
             {
                 _data[ i ]!.ConsumeCustomData( IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i );
@@ -168,7 +168,7 @@ public class FacedCubemapData : ICubemapData
             }
         }
     }
-    
+
 
     /// <summary>
     ///     The width of the pixel data.
@@ -265,7 +265,7 @@ public class FacedCubemapData : ICubemapData
         }
 
         _data[ side.Index ] = ( pixmap == null ? null : new PixmapTextureData( pixmap, null, false, false ) )
-                           ?? throw new GdxRuntimeException( $"Error loadin pixmap" );
+                           ?? throw new GdxRuntimeException( "Error loadin pixmap" );
     }
 
     /// <summary>

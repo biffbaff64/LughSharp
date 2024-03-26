@@ -67,27 +67,29 @@ namespace LughSharp.LibCore.Core;
 ///     as the operating system the application is currently running on and so forth. This allows you
 ///     to have operating system dependent code paths. It is however not recommended to use this
 ///     facilities.
-///     The Application also has a simple logging method which will print to standard out on the desktop.
 /// </summary>
 [PublicAPI]
 public interface IApplication
 {
     /// <summary>
+    ///     Target application backends.
     /// </summary>
     enum ApplicationType
     {
         IOS,
         Android,
-        Desktop,
+        DesktopGL,
         WebGL,
         Linux
     }
 
-    int GetVersion();
-
+    // ------------------------------------------------------------------------
+    
     ApplicationType AppType   { get; set; }
     IClipboard?     Clipboard { get; set; }
-    IPreferences    GetPreferences( string name );
+
+    int          GetVersion();
+    IPreferences GetPreferences( string name );
 
     void AddLifecycleListener( ILifecycleListener listener );
     void RemoveLifecycleListener( ILifecycleListener listener );

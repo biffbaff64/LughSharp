@@ -54,7 +54,6 @@ public class DragListener : InputListener
     public float DragY           { get; private set; }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="ev"></param>
     /// <param name="x"></param>
@@ -68,7 +67,7 @@ public class DragListener : InputListener
         {
             return false;
         }
-        
+
         if ( _pressedPointer != -1 )
         {
             return false;
@@ -94,7 +93,7 @@ public class DragListener : InputListener
         {
             return;
         }
-        
+
         if ( pointer != _pressedPointer )
         {
             return;
@@ -131,7 +130,7 @@ public class DragListener : InputListener
         {
             return;
         }
-        
+
         if ( pointer == _pressedPointer )
         {
             if ( IsDragging )

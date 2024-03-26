@@ -85,9 +85,10 @@ public interface IInputProcessor
     bool MouseMoved( int screenX, int screenY );
 
     /// <summary>
+    ///     Called when the mouse wheel is moved.
     /// </summary>
-    /// <param name="amountX"></param>
-    /// <param name="amountY"></param>
+    /// <param name="amountX"> The amount of horizontal moverment. </param>
+    /// <param name="amountY"> The amount of vertical movement. </param>
     /// <returns>TRUE if the input was processed.</returns>
     bool Scrolled( float amountX, float amountY );
 }

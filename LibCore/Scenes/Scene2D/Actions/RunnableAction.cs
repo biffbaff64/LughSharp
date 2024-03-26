@@ -34,9 +34,8 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 [PublicAPI]
 public class RunnableAction : Action
 {
+    private bool               _ran = false;
     public  IRunnable.Runnable RunnableTask { get; set; } = null!;
-
-    private bool _ran = false;
 
     public override bool Act( float delta )
     {

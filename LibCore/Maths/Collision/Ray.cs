@@ -47,7 +47,7 @@ public class Ray
     }
 
     /// <summary>
-    /// Returns a copy of this ray.
+    ///     Returns a copy of this ray.
     /// </summary>
     public virtual Ray Copy()
     {
@@ -83,7 +83,7 @@ public class Ray
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         return "ray [" + origin + ":" + direction + "]";
@@ -134,7 +134,7 @@ public class Ray
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool Equals( object? o )
     {
         if ( o == this )
@@ -152,7 +152,7 @@ public class Ray
         return direction.Equals( r.direction ) && origin.Equals( r.origin );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         const int PRIME = 73;

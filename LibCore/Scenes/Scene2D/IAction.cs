@@ -27,6 +27,7 @@ using LughSharp.LibCore.Utils.Pooling;
 
 namespace LughSharp.LibCore.Scenes.Scene2D;
 
+[PublicAPI]
 public interface IAction
 {
     /// <summary>

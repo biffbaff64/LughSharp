@@ -41,25 +41,13 @@ namespace LughSharp.LibCore.Utils.Viewport;
 [PublicAPI]
 public abstract class Viewport
 {
-    #region properties
-
-    public Camera? Camera       { get; set; }
-    public float   WorldWidth   { get; set; }
-    public float   WorldHeight  { get; set; }
-    public int     ScreenX      { get; set; }
-    public int     ScreenY      { get; set; }
-    public int     ScreenWidth  { get; set; }
-    public int     ScreenHeight { get; set; }
-
-    #endregion properties
-
     private Vector3 _tmp = Vector3.Zero;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Creates a new viewport using the supplied <see cref="OrthographicCamera"/>.
+    ///     Creates a new viewport using the supplied <see cref="OrthographicCamera" />.
     /// </summary>
     /// <param name="camera"> The camera to use. </param>
     protected Viewport( Camera camera )
@@ -221,7 +209,7 @@ public abstract class Viewport
     }
 
     /// <summary>
-    /// Creates a picking Ray from the coordinates given in screen coordinates.
+    ///     Creates a picking Ray from the coordinates given in screen coordinates.
     /// </summary>
     /// <see cref="Camera.GetPickRay(float, float, float, float, float, float)" />
     public virtual Ray GetPickRay( float screenX, float screenY )
@@ -235,8 +223,8 @@ public abstract class Viewport
     }
 
     /// <summary>
-    /// Calculates a scissor rectangle in OpenGL window coordinates.
-    /// <see cref="ScissorStack"/>.CalculateScissors methods for more details.
+    ///     Calculates a scissor rectangle in OpenGL window coordinates.
+    ///     <see cref="ScissorStack" />.CalculateScissors methods for more details.
     /// </summary>
     public virtual void CalculateScissors( Matrix4 batchTransform, RectangleShape area, RectangleShape scissor )
     {
@@ -273,7 +261,7 @@ public abstract class Viewport
     }
 
     /// <summary>
-    /// Sets the World Size to the supplied width and height.
+    ///     Sets the World Size to the supplied width and height.
     /// </summary>
     /// <param name="worldWidth"> New World width in pixels. </param>
     /// <param name="worldHeight"> New World height in pixels. </param>
@@ -314,4 +302,16 @@ public abstract class Viewport
         ScreenWidth  = screenWidth;
         ScreenHeight = screenHeight;
     }
+
+    #region properties
+
+    public Camera? Camera       { get; set; }
+    public float   WorldWidth   { get; set; }
+    public float   WorldHeight  { get; set; }
+    public int     ScreenX      { get; set; }
+    public int     ScreenY      { get; set; }
+    public int     ScreenWidth  { get; set; }
+    public int     ScreenHeight { get; set; }
+
+    #endregion properties
 }

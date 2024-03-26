@@ -85,7 +85,7 @@ public class Gdx2DPixmap : IDisposable
             Convert( requestedFormat );
         }
     }
-    
+
     /// <summary>
     /// </summary>
     /// <param name="width"></param>
@@ -102,10 +102,10 @@ public class Gdx2DPixmap : IDisposable
                                          + $"{width} x {height}: {GetFormatString( format )}" );
         }
 
-        BasePtr     = NativeData[ 0 ];
-        Width       = ( int )NativeData[ 1 ];
-        Height      = ( int )NativeData[ 2 ];
-        this.Format = ( int )NativeData[ 3 ];
+        BasePtr = NativeData[ 0 ];
+        Width   = ( int )NativeData[ 1 ];
+        Height  = ( int )NativeData[ 2 ];
+        Format  = ( int )NativeData[ 3 ];
     }
 
     /// <summary>
@@ -114,11 +114,25 @@ public class Gdx2DPixmap : IDisposable
     /// <param name="nativeData"></param>
     public Gdx2DPixmap( ByteBuffer pixelPtr, long[] nativeData )
     {
-        this.PixelPtr = pixelPtr;
-        BasePtr       = nativeData[ 0 ];
-        Width         = ( int )nativeData[ 1 ];
-        Height        = ( int )nativeData[ 2 ];
-        Format        = ( int )nativeData[ 3 ];
+        PixelPtr = pixelPtr;
+        BasePtr  = nativeData[ 0 ];
+        Width    = ( int )nativeData[ 1 ];
+        Height   = ( int )nativeData[ 2 ];
+        Format   = ( int )nativeData[ 3 ];
+    }
+
+    public long       BasePtr    { get; set; }                  // 
+    public int        Format     { get; set; }                  // The actual pixmap format.
+    public ByteBuffer PixelPtr   { get; set; }                  //
+    public long[]     NativeData { get; set; } = new long[ 4 ]; //
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
     }
 
     private ByteBuffer GetNewPixmap( long[] nativeData, int width, int height, int format )
@@ -306,15 +320,6 @@ public class Gdx2DPixmap : IDisposable
     }
 
     /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
-    }
-
-    /// <summary>
     /// </summary>
     /// <param name="disposing"></param>
     protected virtual void Dispose( bool disposing )
@@ -457,9 +462,4 @@ public class Gdx2DPixmap : IDisposable
     }
 
     #endregion properties
-
-    public long       BasePtr    { get; set; }                  // 
-    public int        Format     { get; set; }                  // The actual pixmap format.
-    public ByteBuffer PixelPtr   { get; set; }                  //
-    public long[]     NativeData { get; set; } = new long[ 4 ]; //
 }

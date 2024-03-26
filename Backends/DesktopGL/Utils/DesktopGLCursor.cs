@@ -74,7 +74,7 @@ public class DesktopGLCursor : ICursor
         GLFWImage = new Image
         {
             Pixels = PixmapCopy.Pixels.BackingArray(),
-            Width = PixmapCopy.Width,
+            Width  = PixmapCopy.Width,
             Height = PixmapCopy.Height
         };
 

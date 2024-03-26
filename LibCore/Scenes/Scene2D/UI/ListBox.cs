@@ -47,14 +47,6 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class ListBox<T> : Widget
 {
-    public RectangleShape?     CullingArea  { get; set; }
-    public InputListener?      KeyListener  { get; set; }
-    public ArraySelection< T > Selection    { get; set; } = null!;
-    public List< T >           Items        { get; set; } = new();
-    public float               ItemHeight   { get; set; }
-    public int                 Alignment    { get; set; } = Align.LEFT;
-    public bool                TypeToSelect { get; set; }
-
     // ------------------------------------------------------------------------
 
     private int   _overIndex = -1;
@@ -65,8 +57,8 @@ public class ListBox<T> : Widget
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Creates a new ListBox, using the supplied <see cref="Skin"/>.
-    /// The <see cref="ListStyle"/> embedded in the Skin will be used.
+    ///     Creates a new ListBox, using the supplied <see cref="Skin" />.
+    ///     The <see cref="ListStyle" /> embedded in the Skin will be used.
     /// </summary>
     /// <param name="skin"> The Skin to use. </param>
     public ListBox( Skin skin )
@@ -75,9 +67,9 @@ public class ListBox<T> : Widget
     }
 
     /// <summary>
-    /// Creates a new ListBox, using the supplied <see cref="Skin"/>. The
-    /// <see cref="ListStyle"/> to use will be extracted from the supplied
-    /// skin using the name provided.
+    ///     Creates a new ListBox, using the supplied <see cref="Skin" />. The
+    ///     <see cref="ListStyle" /> to use will be extracted from the supplied
+    ///     skin using the name provided.
     /// </summary>
     /// <param name="skin"> The Skin to use. </param>
     /// <param name="styleName"> The name of the ListStyle to extract from the Skin. </param>
@@ -87,13 +79,21 @@ public class ListBox<T> : Widget
     }
 
     /// <summary>
-    /// Creates a new ListBox, using the supplied <see cref="ListStyle"/>
+    ///     Creates a new ListBox, using the supplied <see cref="ListStyle" />
     /// </summary>
     /// <param name="style"> The ListStyle to use. </param>
     public ListBox( ListStyle style )
     {
         Create( style );
     }
+
+    public RectangleShape?     CullingArea  { get; set; }
+    public InputListener?      KeyListener  { get; set; }
+    public ArraySelection< T > Selection    { get; set; } = null!;
+    public List< T >           Items        { get; set; } = new();
+    public float               ItemHeight   { get; set; }
+    public int                 Alignment    { get; set; } = Align.LEFT;
+    public bool                TypeToSelect { get; set; }
 
     public override float PrefWidth
     {

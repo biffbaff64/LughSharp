@@ -807,9 +807,18 @@ public class BitmapFontCache
         }
     }
 
-    public float[]? GetVertices( int page = 0 ) => _pageVertices[ page ];
+    public float[]? GetVertices( int page = 0 )
+    {
+        return _pageVertices[ page ];
+    }
 
-    public int GetVertexCount( int page ) => _idx[ page ];
+    public int GetVertexCount( int page )
+    {
+        return _idx[ page ];
+    }
 
-    public List< GlyphLayout > GetLayouts() => _layouts;
+    public List< GlyphLayout > GetLayouts()
+    {
+        return _layouts;
+    }
 }

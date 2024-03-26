@@ -40,34 +40,6 @@ namespace LughSharp.Backends.DesktopGL;
 [PublicAPI]
 public class DesktopGLApplication : IDesktopGLApplicationBase
 {
-    #region public properties
-
-    public DesktopGLApplicationConfiguration?  Config             { get; set; }
-    public List< DesktopGLWindow >             Windows            { get; set; } = new();
-    public Dictionary< string, IPreferences >? Preferences        { get; set; }
-    public List< IRunnable.Runnable >          Runnables          { get; set; } = new();
-    public List< IRunnable.Runnable >          ExecutedRunnables  { get; set; } = new();
-    public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
-
-    public int         LogLevel  { get; set; }
-    public IClipboard? Clipboard { get; set; }
-    public GLVersion?  GLVersion { get; set; }
-    public IGLAudio?   Audio     { get; set; } = null;
-    public INet        Network   { get; set; }
-    public IFiles      Files     { get; set; }
-
-    public IGraphics?            Graphics            => _currentWindow?.Graphics;
-    public IApplicationListener? ApplicationListener => _currentWindow?.Listener;
-    public IInput?               Input               => _currentWindow?.Input;
-
-    public IApplication.ApplicationType AppType
-    {
-        get => IApplication.ApplicationType.Desktop;
-        set { }
-    }
-
-    #endregion public properties
-
     // ------------------------------------------------------------------------
 
     private static   GlfwErrorCallback? _errorCallback = null;
@@ -79,9 +51,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     /// <summary>
     ///     Creates a new Desktop Gl Application.
-    /// <para>
-    ///     Uses the provided <see cref="DesktopGLApplicationConfiguration"/>.
-    /// </para> 
+    ///     <para>
+    ///         Uses the provided <see cref="DesktopGLApplicationConfiguration" />.
+    ///     </para>
     /// </summary>
     /// <param name="listener"> The <see cref="IApplicationListener" /> to use. </param>
     /// <param name="config"> The <see cref="DesktopGLApplicationConfiguration" /> to use.</param>
@@ -124,32 +96,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Gdx.Net   = Network;
 
         Windows.Add( CreateWindow( config, listener, 0 ) );
-    }
-
-    /// <summary>
-    /// </summary>
-    public void Run()
-    {
-        try
-        {
-            Loop();
-            CleanupWindows();
-        }
-        catch ( Exception e )
-        {
-            if ( e is SystemException exception )
-            {
-                throw exception;
-            }
-            else
-            {
-                throw new GdxRuntimeException( e );
-            }
-        }
-        finally
-        {
-            Cleanup();
-        }
     }
 
     /// <summary>
@@ -236,6 +182,32 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         lock ( LifecycleListeners )
         {
             LifecycleListeners.Remove( listener );
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    public void Run()
+    {
+        try
+        {
+            Loop();
+            CleanupWindows();
+        }
+        catch ( Exception e )
+        {
+            if ( e is SystemException exception )
+            {
+                throw exception;
+            }
+            else
+            {
+                throw new GdxRuntimeException( e );
+            }
+        }
+        finally
+        {
+            Cleanup();
         }
     }
 
@@ -675,11 +647,39 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     {
         Glfw.GetVersion( out var major, out var minor, out var revision );
 
-        GLVersion = new GLVersion( IApplication.ApplicationType.Desktop,
+        GLVersion = new GLVersion( IApplication.ApplicationType.DesktopGL,
                                    $"{major}.{minor}.{revision}",
                                    Gdx.GL20.GLGetString( IGL20.GL_VENDOR ),
                                    Gdx.GL20.GLGetString( IGL20.GL_RENDERER ) );
     }
+
+    #region public properties
+
+    public DesktopGLApplicationConfiguration?  Config             { get; set; }
+    public List< DesktopGLWindow >             Windows            { get; set; } = new();
+    public Dictionary< string, IPreferences >? Preferences        { get; set; }
+    public List< IRunnable.Runnable >          Runnables          { get; set; } = new();
+    public List< IRunnable.Runnable >          ExecutedRunnables  { get; set; } = new();
+    public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
+
+    public int         LogLevel  { get; set; }
+    public IClipboard? Clipboard { get; set; }
+    public GLVersion?  GLVersion { get; set; }
+    public IGLAudio?   Audio     { get; set; } = null;
+    public INet        Network   { get; set; }
+    public IFiles      Files     { get; set; }
+
+    public IGraphics?            Graphics            => _currentWindow?.Graphics;
+    public IApplicationListener? ApplicationListener => _currentWindow?.Listener;
+    public IInput?               Input               => _currentWindow?.Input;
+
+    public IApplication.ApplicationType AppType
+    {
+        get => IApplication.ApplicationType.DesktopGL;
+        set { }
+    }
+
+    #endregion public properties
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

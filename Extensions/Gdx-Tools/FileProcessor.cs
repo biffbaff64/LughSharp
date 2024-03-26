@@ -78,6 +78,7 @@ public class FileProcessor
         _recursive     = processor._recursive;
         _flattenOutput = processor._flattenOutput;
     }
+
 //
 //    public FileProcessor setInputFilter( FilenameFilter inputFilter )
 //    {

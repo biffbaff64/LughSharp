@@ -40,6 +40,11 @@ public abstract class Camera
 {
     // ------------------------------------------------------------------------
 
+    private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
+    private readonly Vector3 _tmpVec = new();
+
+    // ------------------------------------------------------------------------
+
     // the position of the camera
     public Vector3 Position { get; set; } = new();
 
@@ -66,11 +71,6 @@ public abstract class Camera
     protected Vector3 Direction { get; set; } = new( 0, 0, -1 );
 
     protected Frustrum Frustum { get; set; } = new();
-
-    // ------------------------------------------------------------------------
-
-    private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
-    private readonly Vector3 _tmpVec = new();
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

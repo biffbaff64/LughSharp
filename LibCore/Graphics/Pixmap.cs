@@ -56,9 +56,9 @@ public class Pixmap : IDisposable
 
     public readonly Gdx2DPixmap gdx2DPixmap;
 
-    public bool isDisposed = false;
-
     private int _color = 0;
+
+    public bool isDisposed = false;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -132,12 +132,12 @@ public class Pixmap : IDisposable
     }
 
     /// <summary>
-    /// Returns the width of the Pixmap in pixels.
+    ///     Returns the width of the Pixmap in pixels.
     /// </summary>
     public int Width => gdx2DPixmap.Width;
 
     /// <summary>
-    /// Returns the height of the Pixmap in pixels.
+    ///     Returns the height of the Pixmap in pixels.
     /// </summary>
     public int Height => gdx2DPixmap.Height;
 
@@ -193,6 +193,15 @@ public class Pixmap : IDisposable
 
             BufferUtils.Copy( value, dst, dst.Limit );
         }
+    }
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing, releasing,
+    ///     or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( !isDisposed );
     }
 
     /// <summary>
@@ -458,15 +467,6 @@ public class Pixmap : IDisposable
                    "rgba8888"       => Format.RGBA8888,
                    _                => throw new GdxRuntimeException( $"Unknown Format: {str}" )
                };
-    }
-
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing, releasing,
-    ///     or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( !isDisposed );
     }
 
     private void Dispose( bool disposing )

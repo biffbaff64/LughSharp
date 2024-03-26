@@ -40,28 +40,28 @@ public class GestureDetector : InputAdapter
     private readonly Vector2          _pointer2 = new();
     private readonly VelocityTracker  _tracker  = new();
 
-    private CancellationToken        _longPressCancellationToken;
-    private CancellationTokenSource? _longPressTokenSource;
-
     private bool  _inTapRectangle;
     private int   _lastTapButton;
     private int   _lastTapPointer;
     private long  _lastTapTime;
     private float _lastTapX;
     private float _lastTapY;
-    private bool  _longPressFired;
-    private float _longPressSeconds;
-    private Task? _longPressTask;
-    private long  _maxFlingDelay;
-    private bool  _panning;
-    private bool  _pinching;
-    private int   _tapCount;
-    private long  _tapCountInterval;
-    private float _tapRectangleCenterX;
-    private float _tapRectangleCenterY;
-    private float _tapRectangleHeight;
-    private float _tapRectangleWidth;
-    private long  _touchDownTime;
+
+    private CancellationToken        _longPressCancellationToken;
+    private bool                     _longPressFired;
+    private float                    _longPressSeconds;
+    private Task?                    _longPressTask;
+    private CancellationTokenSource? _longPressTokenSource;
+    private long                     _maxFlingDelay;
+    private bool                     _panning;
+    private bool                     _pinching;
+    private int                      _tapCount;
+    private long                     _tapCountInterval;
+    private float                    _tapRectangleCenterX;
+    private float                    _tapRectangleCenterY;
+    private float                    _tapRectangleHeight;
+    private float                    _tapRectangleWidth;
+    private long                     _touchDownTime;
 
     /// <summary>
     ///     Creates a new GestureDetector with default values: halfTapSquareSize=20,
@@ -357,7 +357,7 @@ public class GestureDetector : InputAdapter
             _lastTapPointer = pointer;
             _touchDownTime  = 0;
 
-            return ( bool )_listener.Tap( x, y, _tapCount, button );
+            return _listener.Tap( x, y, _tapCount, button );
         }
 
         if ( _pinching )
@@ -387,7 +387,7 @@ public class GestureDetector : InputAdapter
 
         if ( wasPanning && !_panning )
         {
-            handled = ( bool )_listener.PanStop( x, y, pointer, button );
+            handled = _listener.PanStop( x, y, pointer, button );
         }
 
         // handle fling
@@ -397,7 +397,7 @@ public class GestureDetector : InputAdapter
         {
             _tracker.Update( x, y, time );
 
-            handled = ( bool )_listener.Fling( _tracker.GetVelocityX(), _tracker.GetVelocityY(), button )
+            handled = _listener.Fling( _tracker.GetVelocityX(), _tracker.GetVelocityY(), button )
                    || handled;
         }
 

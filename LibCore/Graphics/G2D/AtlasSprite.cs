@@ -29,8 +29,13 @@ namespace LughSharp.LibCore.Graphics.G2D;
 ///     A sprite that, if whitespace was stripped from the region when it was packed,
 ///     is automatically positioned as if whitespace had not been stripped. */
 /// </summary>
+[PublicAPI]
 public class AtlasSprite : Sprite
 {
+    /// <summary>
+    ///     Creates a new AtlasSprite using the atlas region from the
+    ///     supplied AtlasSprite.
+    /// </summary>
     public AtlasSprite( AtlasSprite sprite )
     {
         Region          = sprite.Region;
@@ -40,6 +45,9 @@ public class AtlasSprite : Sprite
         Set( sprite );
     }
 
+    /// <summary>
+    ///     Creates a new AtlasSprite using the supplied atlas region.
+    /// </summary>
     public AtlasSprite( AtlasRegion region )
     {
         Region = new AtlasRegion( region );
@@ -47,6 +55,11 @@ public class AtlasSprite : Sprite
         Init( region );
     }
 
+    /// <summary>
+    ///     Setup method implemented to be called from <see cref="AtlasSprite(AtlasRegion)"/>
+    ///     to get around the issue of calling virtual methods from a constructor.
+    /// </summary>
+    /// <param name="region"></param>
     private void Init( AtlasRegion region )
     {
         OriginalOffsetX = region.OffsetX;
@@ -72,15 +85,9 @@ public class AtlasSprite : Sprite
         SetColor( 1, 1, 1, 1 );
     }
 
-    public void SetX( float x )
-    {
-        X = x + Region.OffsetX;
-    }
+    public void SetX( float x ) => X = x + Region.OffsetX;
 
-    public void SetY( float y )
-    {
-        Y = y + Region.OffsetY;
-    }
+    public void SetY( float y ) => Y = y + Region.OffsetY;
 
     public override void SetBounds( float x, float y, float width, float height )
     {

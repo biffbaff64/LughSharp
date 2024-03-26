@@ -23,10 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Audio.MP3Sharp.Decoding;
-
-using Exception = System.Exception;
-
 namespace LughSharp.Backends.DesktopGL.Audio;
 
 [PublicAPI]

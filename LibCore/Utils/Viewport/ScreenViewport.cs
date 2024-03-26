@@ -35,14 +35,14 @@ namespace LughSharp.LibCore.Utils.Viewport;
 [PublicAPI]
 public class ScreenViewport : Viewport
 {
-    public static float UnitsPerPixel => 1;
-
     /// <summary>
     ///     Creates a new viewport using a new <see cref="OrthographicCamera" />.
     /// </summary>
     public ScreenViewport() : base( new OrthographicCamera() )
     {
     }
+
+    public static float UnitsPerPixel => 1;
 
     /// <summary>
     ///     Configures this viewports screen bounds and applies it to the camera

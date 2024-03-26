@@ -45,12 +45,12 @@ public class Bits
     }
 
     /// <summary>
-    /// True if this bitset contains at least one bit set to true.
+    ///     True if this bitset contains at least one bit set to true.
     /// </summary>
     public bool NotEmpty => !Empty;
 
     /// <summary>
-    /// True if this bitset contains no bits that are set to true.
+    ///     True if this bitset contains no bits that are set to true.
     /// </summary>
     public bool Empty
     {
@@ -69,7 +69,7 @@ public class Bits
     }
 
     /// <summary>
-    /// Returns whether or not the bit at the specified index is set.
+    ///     Returns whether or not the bit at the specified index is set.
     /// </summary>
     /// <param name="index"> the index of the bit </param>
     /// <returns> whether the bit is set </returns>
@@ -125,7 +125,7 @@ public class Bits
     }
 
     /// <summary>
-    /// Set the bit at the specified index.
+    ///     Set the bit at the specified index.
     /// </summary>
     /// <param name="index"> the index of the bit to set </param>
     public void Set( int index )
@@ -138,7 +138,7 @@ public class Bits
     }
 
     /// <summary>
-    /// Flip the bit value at the specified index.
+    ///     Flip the bit value at the specified index.
     /// </summary>
     /// <param name="index"> the index of the bit to flip </param>
     public void Flip( int index )
@@ -151,7 +151,7 @@ public class Bits
     }
 
     /// <summary>
-    /// Ensures that this bitset has room for the requested capacity.
+    ///     Ensures that this bitset has room for the requested capacity.
     /// </summary>
     /// <param name="len"></param>
     private void EnsureCapacity( int len )
@@ -167,7 +167,7 @@ public class Bits
     }
 
     /// <summary>
-    /// Clears the bit at the specified index.
+    ///     Clears the bit at the specified index.
     /// </summary>
     /// <param name="index"> the index of the bit to clear </param>
     public void ClearBit( int index )
@@ -191,7 +191,7 @@ public class Bits
     }
 
     /// <summary>
-    /// Returns the number of bits currently stored, <b>not</b> the highset set bit!
+    ///     Returns the number of bits currently stored, <b>not</b> the highset set bit!
     /// </summary>
     public int NumBits()
     {
@@ -474,7 +474,7 @@ public class Bits
         return true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         const int PRIME = 73;
@@ -485,7 +485,7 @@ public class Bits
         return hash;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool Equals( object? obj )
     {
         if ( this == obj )

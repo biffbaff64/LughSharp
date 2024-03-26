@@ -257,7 +257,7 @@ public class OpenALAudio : IGLAudio
 //        }
 //        
 //        return new GdxSoundAudioRecorder( samplingRate, isMono );
-        
+
         return null!;
     }
 

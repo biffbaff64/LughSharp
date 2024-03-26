@@ -115,7 +115,7 @@ public class StringTokenizer
     ///     points and isDelimiter(int) is used to determine if the given
     ///     codepoint is a delimiter.
     /// </summary>
-    private int[]?  _delimiterCodePoints;
+    private int[]? _delimiterCodePoints;
     private string? _delimiters;
     private bool    _delimsChanged;
 

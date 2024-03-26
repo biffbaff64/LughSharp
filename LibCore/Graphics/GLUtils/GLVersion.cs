@@ -63,7 +63,7 @@ public class GLVersion : GDXVersion
         GLtype = appType switch
                  {
                      IApplication.ApplicationType.Android => GLType.GLES,
-                     IApplication.ApplicationType.Desktop => GLType.OpenGL,
+                     IApplication.ApplicationType.DesktopGL => GLType.OpenGL,
                      IApplication.ApplicationType.WebGL   => GLType.WebGL,
                      _                                    => GLType.None
                  };

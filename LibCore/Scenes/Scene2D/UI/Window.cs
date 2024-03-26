@@ -36,37 +36,28 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///     <p>
 ///         The preferred size of a window is the preferred size of the title text and
 ///         the children as laid out by the table. After adding children to the window,
-///         it can be convenient to call <see cref="WidgetGroup.Pack"/> to size the
+///         it can be convenient to call <see cref="WidgetGroup.Pack" /> to size the
 ///         window to the size of the children.
 ///     </p>
 /// </summary>
 [PublicAPI]
 public class Window : Table
 {
-    public bool   DrawTitleTable  { get; set; }
-    public Label? TitleLabel      { get; set; }
-    public bool   IsMovable       { get; set; } = true;
-    public bool   IsModal         { get; set; }
-    public bool   IsResizable     { get; set; }
-    public bool   Dragging        { get; set; }
-    public int    ResizeBorder    { get; set; } = 8;
-    public bool   KeepWithinStage { get; set; } = true;
-
-    // ------------------------------------------------------------------------
-
-    protected int edge;
-
     // ------------------------------------------------------------------------
 
     private const int DEFAULT_WIDTH  = 150;
     private const int DEFAULT_HEIGHT = 150;
     private const int MOVE           = 1 << 5;
 
-    private readonly static Vector2 _tmpPosition = new();
-    private readonly static Vector2 _tmpSize     = new();
+    private readonly static Vector2      _tmpPosition = new();
+    private readonly static Vector2      _tmpSize     = new();
+    private                 WindowStyle? _style;
 
-    private Table?       _titleTable;
-    private WindowStyle? _style;
+    private Table? _titleTable;
+
+    // ------------------------------------------------------------------------
+
+    protected int edge;
 
     // ------------------------------------------------------------------------
 
@@ -87,10 +78,35 @@ public class Window : Table
         Setup( title, style );
     }
 
+    public bool   DrawTitleTable  { get; set; }
+    public Label? TitleLabel      { get; set; }
+    public bool   IsMovable       { get; set; } = true;
+    public bool   IsModal         { get; set; }
+    public bool   IsResizable     { get; set; }
+    public bool   Dragging        { get; set; }
+    public int    ResizeBorder    { get; set; } = 8;
+    public bool   KeepWithinStage { get; set; } = true;
+
     /// <summary>
-    /// Private Setup method, code moved from constructor to allow
-    /// calling of virtual methods as they should not be called from
-    /// constructors.
+    ///     This windows <see cref="WindowStyle" /> property.
+    /// </summary>
+    public WindowStyle? Style
+    {
+        get => _style;
+        set
+        {
+            _style = value;
+
+            SetBackground( _style?.Background );
+            TitleLabel!.Style = new Label.LabelStyle( _style?.TitleFont!, _style?.TitleFontColor! );
+            InvalidateHierarchy();
+        }
+    }
+
+    /// <summary>
+    ///     Private Setup method, code moved from constructor to allow
+    ///     calling of virtual methods as they should not be called from
+    ///     constructors.
     /// </summary>
     /// <param name="title"> Window title. </param>
     /// <param name="style"> Window Style </param>
@@ -113,22 +129,6 @@ public class Window : Table
 
         AddCaptureListener( new WindowCaptureListener( this ) );
         AddListener( new WindowInputListener( this ) );
-    }
-
-    /// <summary>
-    /// This windows <see cref="WindowStyle"/> property.
-    /// </summary>
-    public WindowStyle? Style
-    {
-        get => _style;
-        set
-        {
-            _style = value;
-
-            SetBackground( _style?.Background );
-            TitleLabel!.Style = new Label.LabelStyle( _style?.TitleFont!, _style?.TitleFontColor! );
-            InvalidateHierarchy();
-        }
     }
 
     public void EnsureWithinStage()

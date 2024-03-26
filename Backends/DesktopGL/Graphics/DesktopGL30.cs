@@ -59,12 +59,32 @@ public class DesktopGL30 : DesktopGL20, IGL30
     }
 
     /// <inheritdoc />
-    public void GLTexSubImage3D( int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, Buffer pixels )
+    public void GLTexSubImage3D( int target,
+                                 int level,
+                                 int xoffset,
+                                 int yoffset,
+                                 int zoffset,
+                                 int width,
+                                 int height,
+                                 int depth,
+                                 int format,
+                                 int type,
+                                 Buffer pixels )
     {
     }
 
     /// <inheritdoc />
-    public void GLTexSubImage3D( int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, int offset )
+    public void GLTexSubImage3D( int target,
+                                 int level,
+                                 int xoffset,
+                                 int yoffset,
+                                 int zoffset,
+                                 int width,
+                                 int height,
+                                 int depth,
+                                 int format,
+                                 int type,
+                                 int offset )
     {
     }
 

@@ -167,7 +167,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         var vendorString   = Gdx.GL20.GLGetString( IGL20.GL_VENDOR );
         var rendererString = Gdx.GL20.GLGetString( IGL20.GL_RENDERER );
 
-        GLVersion = new GLVersion( IApplication.ApplicationType.Desktop,
+        GLVersion = new GLVersion( IApplication.ApplicationType.DesktopGL,
                                    Glfw.GetVersionString(),
                                    vendorString,
                                    rendererString );
@@ -572,25 +572,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     // ------------------------------------------------------------------------
-
-    #region IDisposable implementation
-
-    protected static void Dispose( bool disposing )
-    {
-        if ( disposing )
-        {
-            //TODO:
-        }
-    }
-
-    public void Dispose()
-    {
-        Dispose( true );
-    }
-
-    #endregion IDisposable implementation
-
-    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -626,4 +607,23 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         public GLFWMonitor MonitorHandle { get; private set; }
     }
+
+    // ------------------------------------------------------------------------
+
+    #region IDisposable implementation
+
+    protected static void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            //TODO:
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
+    #endregion IDisposable implementation
 }

@@ -62,8 +62,8 @@ public static class ListExtensions
     }
 
     /// <summary>
-    /// Adds <paramref name="count"/> elements in the source Array, starting at position
-    /// <paramref name="start"/> to the target List.
+    ///     Adds <paramref name="count" /> elements in the source Array, starting at position
+    ///     <paramref name="start" /> to the target List.
     /// </summary>
     public static void AddAll<T>( this List< T > target, T[] source, int start, int count )
     {
@@ -74,8 +74,8 @@ public static class ListExtensions
     }
 
     /// <summary>
-    /// Adds <paramref name="count"/> elements in the source List, starting at position
-    /// <paramref name="start"/> to the target List.
+    ///     Adds <paramref name="count" /> elements in the source List, starting at position
+    ///     <paramref name="start" /> to the target List.
     /// </summary>
     public static void AddAll<T>( this List< T > target, List< T > source, int start, int count )
     {
@@ -86,7 +86,7 @@ public static class ListExtensions
     }
 
     /// <summary>
-    /// Adds all elements in the source List to the target List.
+    ///     Adds all elements in the source List to the target List.
     /// </summary>
     public static void AddAll<T>( this List< T > target, List< T > source )
     {
@@ -97,7 +97,7 @@ public static class ListExtensions
     }
 
     /// <summary>
-    /// Adds all elements in the array 'items' to the target List.
+    ///     Adds all elements in the array 'items' to the target List.
     /// </summary>
     public static void AddAll<T>( this List< T > target, params T[] items )
     {

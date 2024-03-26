@@ -46,7 +46,7 @@ public class FillViewport : ScalingViewport
     }
 
     /// <summary>
-    ///     Creates a new viewport using the supplied <see cref="OrthographicCamera"/>.
+    ///     Creates a new viewport using the supplied <see cref="OrthographicCamera" />.
     /// </summary>
     /// <param name="worldWidth"> World width in pixels. </param>
     /// <param name="worldHeight"> World height in pixels. </param>

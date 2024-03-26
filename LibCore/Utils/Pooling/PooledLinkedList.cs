@@ -31,8 +31,6 @@ namespace LughSharp.LibCore.Utils.Pooling;
 [PublicAPI]
 public class PooledLinkedList<T>
 {
-    public int Size { get; set; } = 0;
-
     private readonly Pool< Item< T > > _pool;
 
     private Item< T >? _curr;
@@ -41,8 +39,8 @@ public class PooledLinkedList<T>
     private Item< T >? _tail;
 
     /// <summary>
-    /// Creates a new PooledLinkedList with an initial capacity of 16 and the
-    /// supplied maximum pool size.
+    ///     Creates a new PooledLinkedList with an initial capacity of 16 and the
+    ///     supplied maximum pool size.
     /// </summary>
     /// <param name="maxPoolSize"></param>
     /// <param name="initialCapacity"></param>
@@ -54,8 +52,9 @@ public class PooledLinkedList<T>
         };
     }
 
+    public int Size { get; set; } = 0;
+
     /// <summary>
-    /// 
     /// </summary>
     /// <returns></returns>
     public Item< T > GetNewObject()

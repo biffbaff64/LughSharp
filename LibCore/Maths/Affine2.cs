@@ -842,10 +842,10 @@ public class Affine2
     /// <returns> True if scale is 1 and rotation is 0.</returns>
     public bool IsTranslation()
     {
-        return ( m00 is 1f )
-            && ( m11 is 1 )
-            && ( m01 is 0 )
-            && ( m10 is 0 );
+        return m00 is 1f
+            && m11 is 1
+            && m01 is 0
+            && m10 is 0;
     }
 
     /// <summary>
@@ -874,7 +874,7 @@ public class Affine2
         point.Y = ( m10 * x ) + ( m11 * y ) + m12;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         return "[" + m00 + "|" + m01 + "|" + m02 + "]\n[" + m10 + "|" + m11 + "|" + m12 + "]\n[0.0|0.0|0.1]";

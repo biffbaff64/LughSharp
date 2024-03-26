@@ -43,7 +43,7 @@ namespace LughSharp.LibCore.Core;
 public interface IInput
 {
     // --------------------------------------------------------------------
-    
+
     [PublicAPI]
     public enum OnscreenKeyboardType
     {
@@ -56,7 +56,7 @@ public interface IInput
     }
 
     // --------------------------------------------------------------------
-    
+
     [PublicAPI]
     public enum Orientation
     {
@@ -65,7 +65,7 @@ public interface IInput
     }
 
     // --------------------------------------------------------------------
-    
+
     [PublicAPI]
     public enum Peripheral
     {

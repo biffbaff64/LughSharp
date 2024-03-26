@@ -85,7 +85,7 @@ public class Skin : IDisposable
     {
     }
 
-    /// <summary>///     ///     ///     ///     Creates a skin containing the resources in the specified skin JSON file.///     If a///     file in///     the same///     directory with a ".atlas" extension exists, it is///     loaded as a///     <see cref="TextureAtlas" />///     and the texture///     regions added to///     the skin. The atlas is///     automatically disposed when the skin is///     disposed.//////////// </summary>
+    /// <summary>///     ///     ///     ///     ///     Creates a skin containing the resources in the specified skin JSON file.//////     If a///     file in///     the same///     directory with a ".atlas" extension exists, it is///     loaded as a//////     <see cref="TextureAtlas" />///     and the texture///     regions added to///     the skin. The atlas is//////     automatically disposed when the skin is///     disposed./////////////// </summary>
     public Skin( FileInfo skinFile )
     {
         var name      = Path.GetFileNameWithoutExtension( skinFile.Name );
@@ -100,7 +100,7 @@ public class Skin : IDisposable
         Load( skinFile );
     }
 
-    /// <summary>///     ///     ///     ///     Creates a skin containing the resources in the specified skin JSON file and///     the///     texture///     regions///     from the specified atlas.////////////     <para>///         The atlas is automatically disposed when the skin is disposed.///     </para>///     ///     ///     //////////// </summary>
+    /// <summary>///     ///     ///     ///     ///     Creates a skin containing the resources in the specified skin JSON file and//////     the///     texture///     regions///     from the specified atlas.///////////////     <para>///         The atlas is automatically disposed when the skin is disposed.///     </para>///     ///     ///     ///     /////////////// </summary>
     public Skin( FileInfo skinFile, TextureAtlas atlas )
     {
         Atlas = atlas;
@@ -109,7 +109,7 @@ public class Skin : IDisposable
         Load( skinFile );
     }
 
-    /// <summary>///     ///     ///     ///     Creates a skin containing the texture regions from the specified atlas.///     The///     atlas is//////     automatically disposed when the skin is disposed.//////////// </summary>
+    /// <summary>///     ///     ///     ///     ///     Creates a skin containing the texture regions from the specified atlas.//////     The///     atlas is//////     automatically disposed when the skin is disposed./////////////// </summary>
     public Skin( TextureAtlas atlas )
     {
         Atlas = atlas;

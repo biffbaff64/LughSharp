@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -43,6 +42,11 @@ namespace LughSharp.LibCore.Utils;
 [PublicAPI]
 public static class Logger
 {
+    // ------------------------------------------------------------------------
+
+    private static string _debugFilePath = "";
+    private static string _debugFileName = "";
+
     // ------------------------------------------------------------------------
 
     #region constants
@@ -68,15 +72,10 @@ public static class Logger
 
     // ------------------------------------------------------------------------
 
-    private static string _debugFilePath = "";
-    private static string _debugFileName = "";
-
-    // ------------------------------------------------------------------------
-
     #region public methods
 
     /// <summary>
-    /// Default Constructor.
+    ///     Default Constructor.
     /// </summary>
     /// <param name="logLevel"> The initially enabled log level(s). </param>
     /// <param name="enableWriteToFile"> TRUE to enable outputting messages to a file. </param>
@@ -95,11 +94,11 @@ public static class Logger
     }
 
     /// <summary>
-    /// Send a DEBUG message to output window/console/File.
+    ///     Send a DEBUG message to output window/console/File.
     /// </summary>
     /// <param name="message"> The message to send. </param>
     /// <param name="boxedDebug">
-    /// If TRUE, a dividing line will be written before and after this debug message.    
+    ///     If TRUE, a dividing line will be written before and after this debug message.
     /// </param>
     /// <param name="callerFilePath"> The File this message was sent from. </param>
     /// <param name="callerMethod"> The Method this message was sent from. </param>
@@ -135,7 +134,7 @@ public static class Logger
     }
 
     /// <summary>
-    /// Send a DEBUG message to output window/console/File.
+    ///     Send a DEBUG message to output window/console/File.
     /// </summary>
     /// <param name="message"> The message to send. </param>
     /// <param name="callerFilePath"> The File this message was sent from. </param>
@@ -282,11 +281,25 @@ public static class Logger
         fs.Close();
     }
 
-    public static void DisableLogDebug() => TraceLevel ^= ( 1 << LOG_DEBUG );
-    public static void DisableLogError() => TraceLevel ^= ( 1 << LOG_ERROR );
+    public static void DisableLogDebug()
+    {
+        TraceLevel ^= 1 << LOG_DEBUG;
+    }
 
-    public static void EnableLogDebug() => TraceLevel |= LOG_DEBUG;
-    public static void EnableLogError() => TraceLevel |= LOG_ERROR;
+    public static void DisableLogError()
+    {
+        TraceLevel ^= 1 << LOG_ERROR;
+    }
+
+    public static void EnableLogDebug()
+    {
+        TraceLevel |= LOG_DEBUG;
+    }
+
+    public static void EnableLogError()
+    {
+        TraceLevel |= LOG_ERROR;
+    }
 
     #endregion public methods
 
@@ -317,7 +330,7 @@ public static class Logger
     }
 
     /// <summary>
-    /// Creates a <see cref="CallerID"/> object from the supplied file path, method and line number.
+    ///     Creates a <see cref="CallerID" /> object from the supplied file path, method and line number.
     /// </summary>
     /// <param name="callerFilePath"> The File this message was sent from. </param>
     /// <param name="callerMethod"> The Method this message was sent from. </param>
@@ -394,10 +407,8 @@ public static class Logger
 }
 
 /// <summary>
-/// 
 /// </summary>
-[InterpolatedStringHandler]
-[SuppressMessage( "ReSharper", "UnusedMember.Global" )]
+[InterpolatedStringHandler, SuppressMessage( "ReSharper", "UnusedMember.Global" )]
 public readonly ref struct LogInterpolatedStringHandler
 {
     // Storage for the built-up string
@@ -423,7 +434,10 @@ public readonly ref struct LogInterpolatedStringHandler
         _builder.Append( t.ToString( format, null ) );
     }
 
-    internal string GetFormattedText() => _builder.ToString();
+    internal string GetFormattedText()
+    {
+        return _builder.ToString();
+    }
 }
 
 /// <summary>

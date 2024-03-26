@@ -38,8 +38,9 @@ public class AssetLoadingTask
 
     private readonly AssetLoaderBase _loader;
     private readonly AssetManager    _manager;
+
 //    private volatile bool            _asyncDone = false;
-    private          long            _startTime;
+    private long _startTime;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
