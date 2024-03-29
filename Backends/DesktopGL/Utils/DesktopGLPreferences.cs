@@ -85,9 +85,9 @@ public class DesktopGLPreferences : IPreferences
         return this;
     }
 
-    public bool Getbool( string key )
+    public bool GetBool( string key )
     {
-        return Getbool( key, false );
+        return GetBool( key, false );
     }
 
     public int GetInteger( string key )
@@ -110,7 +110,7 @@ public class DesktopGLPreferences : IPreferences
     /// <param name="key"></param>
     /// <param name="defValue"></param>
     /// <returns></returns>
-    public bool Getbool( string key, bool defValue )
+    public bool GetBool( string key, bool defValue )
     {
         var value = _properties?[ key ];
 

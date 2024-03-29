@@ -103,9 +103,9 @@ public class Array<T>
     /// <summary>
     ///     Adds all items in the supplied array to this array.
     /// </summary>
-    public void AddAll( Array< T > array )
+    public void AddAll( List< T > array )
     {
-        AddAll( array, 0, array.Size );
+        AddAll( array, 0, array.Count );
     }
 
     /// <summary>
@@ -125,17 +125,17 @@ public class Array<T>
     /// <param name="array">The array of items to add.</param>
     /// <param name="start">The start index.</param>
     /// <param name="count">The number of items to copy.</param>
-    public void AddAll( Array< T > array, int start, int count )
+    public void AddAll( List< T > array, int start, int count )
     {
         ArgumentNullException.ThrowIfNull( array );
 
-        if ( ( start + count ) > array.Size )
+        if ( ( start + count ) > array.Count )
         {
             throw new ArgumentOutOfRangeException
-                ( $"start + count must be <= size - {start} + {count} <= {array.Size}" );
+                ( $"start + count must be <= size - {start} + {count} <= {array.Count}" );
         }
 
-        AddAll( array.Items, start, count );
+        AddAll( array.ToArray(), start, count );
     }
 
     /// <summary>

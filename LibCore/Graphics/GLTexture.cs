@@ -33,8 +33,17 @@ namespace LughSharp.LibCore.Graphics;
 ///     its state like the TextureFilter and TextureWrap. Also provides some static
 ///     methods to create TextureData and upload image data.
 /// </summary>
+[PublicAPI]
 public abstract class GLTexture : IDisposable
 {
+    public virtual int Width  { get; }
+    public virtual int Height { get; }
+    public virtual int Depth  { get; }
+
+    public int   GLTextureHandle        { get; set; }
+    public int   GLTarget               { get; }
+    public float AnisotropicFilterLevel { get; private set; } = 1.0f;
+
     private static float _maxAnisotropicFilterLevel = 0;
 
     // ------------------------------------------------------------------------
@@ -49,14 +58,6 @@ public abstract class GLTexture : IDisposable
         GLTarget        = glTarget;
         GLTextureHandle = glTextureHandle;
     }
-
-    public abstract int Width  { get; }
-    public abstract int Height { get; }
-    public abstract int Depth  { get; }
-
-    public int   GLTextureHandle        { get; set; }
-    public int   GLTarget               { get; }
-    public float AnisotropicFilterLevel { get; private set; } = 1.0f;
 
     /// <summary>
     ///     Returns the <see cref="TextureFilter" /> used for minification.
@@ -82,12 +83,6 @@ public abstract class GLTexture : IDisposable
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-
-    /// <inheritdoc cref="IDisposable.Dispose" />
-    public virtual void Dispose()
-    {
-        Dispose( true );
-    }
 
     /// <summary>
     ///     Used internally to reload after context loss. Creates a new GL handle then
@@ -376,12 +371,18 @@ public abstract class GLTexture : IDisposable
         }
     }
 
-    /// <summary>
-    ///     Convenience method for when 'GLHandle' isn't descriptive enough.
-    /// </summary>
+    //TODO: Remove this
     public int GetTextureObjectHandle()
     {
         return GLTextureHandle;
+    }
+
+    // ------------------------------------------------------------------------
+    
+    /// <inheritdoc cref="IDisposable.Dispose" />
+    public virtual void Dispose()
+    {
+        Dispose( true );
     }
 
     protected virtual void Dispose( bool disposing )

@@ -236,14 +236,14 @@ CORE
     - DONE - IP   - IGraphics
     - DONE - IP   - IInput
     - DONE - IP   - IInputProcessor
-    - DONE - IP   - ILifecycleListener
+    - DONE - DONE - ILifecycleListener
     - IP   - IP   - INet
-    - DONE - IP   - InputAdapter
+    - DONE - DONE - InputAdapter
     - DONE - IP   - InputEventQueue
     - IP   - IP   - InputMultiplexer
-    - DONE - IP   - IPreferences
-    - DONE - IP   - IScreen
-    - DONE - IP   - ScreenAdapter
+    - DONE - DONE - IPreferences
+    - DONE - DONE - IScreen
+    - DONE - DONE - ScreenAdapter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

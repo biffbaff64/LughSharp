@@ -52,8 +52,8 @@ public interface IInputProcessor
     /// <summary>
     ///     Called when the screen was touched or a mouse button was pressed.
     /// </summary>
-    /// <param name="screenX"></param>
-    /// <param name="screenY"></param>
+    /// <param name="screenX"> Screen touch X coordinate. </param>
+    /// <param name="screenY"> Screen touch Y coordinate. </param>
     /// <param name="pointer"></param>
     /// <param name="button"></param>
     /// <returns>TRUE if the input was processed.</returns>

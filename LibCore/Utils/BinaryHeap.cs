@@ -251,6 +251,10 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
     private void Up( int index )
     {
         GdxRuntimeException.ThrowIfNull( _nodes );
@@ -279,6 +283,10 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         _nodes[ index ].Index = ix;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
     private void Down( int index )
     {
         GdxRuntimeException.ThrowIfNull( _nodes );
