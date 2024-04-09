@@ -396,7 +396,8 @@ GRAPHICS/OPENGL
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - GL
+    - DONE - DONE - GL
+    -      -      - IGL
 
 GRAPHICS/PROFILING
 ------------------

@@ -438,7 +438,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                              config.InitialBackgroundColor.B,
                              config.InitialBackgroundColor.A );
 
-            GL.glClear( GL.GL_COLOR_BUFFER_BIT );
+            GL.glClear( IGL20.GL_COLOR_BUFFER_BIT );
             Glfw.SwapBuffers( windowHandle );
         }
     }

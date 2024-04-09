@@ -49,7 +49,7 @@ public abstract class GLTexture : IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    protected GLTexture( int glTarget ) : this( glTarget, Gdx.GL.GLGenTexture() )
+    protected GLTexture( int glTarget ) : this( glTarget, ( int )GL.glGenTexture() )
     {
     }
 
@@ -92,24 +92,24 @@ public abstract class GLTexture : IDisposable
 
     /// <summary>
     ///     Binds this texture. The texture will be bound to the currently active
-    ///     texture unit specified via <see cref="IGL20.GLActiveTexture" />.
+    ///     texture unit specified via <see cref="GL.glActiveTexture" />.
     /// </summary>
     public void Bind()
     {
-        Gdx.GL.GLBindTexture( GLTarget, GLTextureHandle );
+        GL.glBindTexture( GLTarget, ( uint )GLTextureHandle );
     }
 
     /// <summary>
     ///     Binds the texture to the given texture unit.
     ///     <para>
-    ///         Sets the currently active texture unit via <see cref="IGL20.GLActiveTexture" />.
+    ///         Sets the currently active texture unit via <see cref="GL.glActiveTexture" />.
     ///     </para>
     /// </summary>
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>
     public void Bind( int unit )
     {
-        Gdx.GL.GLActiveTexture( IGL20.GL_TEXTURE0 + unit );
-        Gdx.GL.GLBindTexture( GLTarget, GLTextureHandle );
+        GL.glActiveTexture( IGL20.GL_TEXTURE0 + unit );
+        GL.glBindTexture( GLTarget, ( uint )GLTextureHandle );
     }
 
     /// <summary>
