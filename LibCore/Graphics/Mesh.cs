@@ -78,6 +78,7 @@ public class Mesh
         if ( IsInstanced )
         {
             IsInstanced = false;
+
             _instances?.Dispose();
             _instances = null;
         }
@@ -586,14 +587,17 @@ public class Mesh
                 buffer.Position = offset;
                 buffer.Limit    = offset + count;
 
-                Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, buffer );
+                unsafe
+                {
+                    GL.glDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, buffer );
+                }
 
                 buffer.Position = oldPosition;
                 buffer.Limit    = oldLimit;
             }
             else
             {
-                Gdx.GL20.GLDrawArrays( primitiveType, offset, count );
+                GL.glDrawArrays( primitiveType, offset, count );
             }
         }
         else
@@ -616,26 +620,32 @@ public class Mesh
 
                 if ( IsInstanced && ( numInstances > 0 ) )
                 {
-                    Gdx.GL30?.GLDrawElementsInstanced( primitiveType,
-                                                       count,
-                                                       IGL20.GL_UNSIGNED_SHORT,
-                                                       offset * 2,
-                                                       numInstances );
+                    unsafe
+                    {
+                        GL.glDrawElementsInstanced( primitiveType,
+                                                    count,
+                                                    IGL20.GL_UNSIGNED_SHORT,
+                                                    offset * 2,
+                                                    numInstances );
+                    }
                 }
                 else
                 {
-                    Gdx.GL20.GLDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, offset * 2 );
+                    unsafe
+                    {
+                        GL.glDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, offset * 2 );
+                    }
                 }
             }
             else
             {
                 if ( IsInstanced && ( numInstances > 0 ) )
                 {
-                    Gdx.GL30?.GLDrawArraysInstanced( primitiveType, offset, count, numInstances );
+                    GL.glDrawArraysInstanced( primitiveType, offset, count, numInstances );
                 }
                 else
                 {
-                    Gdx.GL20.GLDrawArrays( primitiveType, offset, count );
+                    GL.glDrawArrays( primitiveType, offset, count );
                 }
             }
         }

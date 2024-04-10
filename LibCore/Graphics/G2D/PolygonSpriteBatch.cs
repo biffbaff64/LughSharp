@@ -64,6 +64,7 @@ namespace LughSharp.LibCore.Graphics.G2D;
 ///         A PolygonSpriteBatch has to be disposed if it is no longer used.
 ///     </p>
 /// </summary>
+[PublicAPI]
 public class PolygonSpriteBatch : IPolygonBatch
 {
     private readonly Color          _color          = new( 1, 1, 1, 1 );
@@ -185,7 +186,7 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         renderCalls = 0;
 
-        Gdx.GL.GLDepthMask( false );
+        GL.glDepthMask( false );
 
         if ( _customShader != null )
         {
@@ -216,11 +217,11 @@ public class PolygonSpriteBatch : IPolygonBatch
         _lastTexture = null;
         IsDrawing    = false;
 
-        Gdx.GL.GLDepthMask( true );
+        GL.glDepthMask( true );
 
         if ( ISBlendingEnabled() )
         {
-            Gdx.GL.GLDisable( IGL20.GL_BLEND );
+            GL.glDisable( IGL20.GL_BLEND );
         }
     }
 
@@ -1356,15 +1357,15 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         if ( _blendingDisabled )
         {
-            Gdx.GL.GLDisable( IGL20.GL_BLEND );
+            GL.glDisable( IGL20.GL_BLEND );
         }
         else
         {
-            Gdx.GL.GLEnable( IGL20.GL_BLEND );
+            GL.glEnable( IGL20.GL_BLEND );
 
             if ( BlendSrcFunc != -1 )
             {
-                Gdx.GL.GLBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
+                GL.glBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
             }
         }
 

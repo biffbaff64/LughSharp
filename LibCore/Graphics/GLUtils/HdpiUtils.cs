@@ -33,6 +33,7 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 ///     class will ensure, that you pass the correct values to OpenGL for any function
 ///     that expects backbuffer coordinates instead of logical coordinates.
 /// </summary>
+[PublicAPI]
 public class HdpiUtils
 {
     private static HdpiMode _mode = HdpiMode.Logical;
@@ -58,7 +59,7 @@ public class HdpiUtils
     }
 
     /// <summary>
-    ///     Calls <see cref="IGL20.GLScissor(int, int, int, int)" />, expecting the
+    ///     Calls <see cref="GL.glScissor(int, int, int, int)" />, expecting the
     ///     coordinates and sizes given in logical coordinates and automatically
     ///     converts them to backbuffer coordinates, which may be bigger on HDPI screens.
     /// </summary>
@@ -68,19 +69,19 @@ public class HdpiUtils
           && ( ( Gdx.Graphics.Width != Gdx.Graphics.BackBufferWidth )
             || ( Gdx.Graphics.Height != Gdx.Graphics.BackBufferHeight ) ) )
         {
-            Gdx.GL.GLScissor( ToBackBufferX( x ),
+            GL.glScissor( ToBackBufferX( x ),
                               ToBackBufferY( y ),
                               ToBackBufferX( width ),
                               ToBackBufferY( height ) );
         }
         else
         {
-            Gdx.GL.GLScissor( x, y, width, height );
+            GL.glScissor( x, y, width, height );
         }
     }
 
     /// <summary>
-    ///     Calls <see cref="IGL20.GLViewport(int, int, int, int)" />, expecting
+    ///     Calls <see cref="GL.glViewport(int, int, int, int)" />, expecting
     ///     the coordinates and sizes given in logical coordinates and automatically
     ///     converts them to backbuffer coordinates, which may be bigger on HDPI screens.
     /// </summary>
@@ -90,14 +91,14 @@ public class HdpiUtils
           && ( ( Gdx.Graphics.Width != Gdx.Graphics.BackBufferWidth )
             || ( Gdx.Graphics.Height != Gdx.Graphics.BackBufferHeight ) ) )
         {
-            Gdx.GL.GLViewport( ToBackBufferX( x ),
+            GL.glViewport( ToBackBufferX( x ),
                                ToBackBufferY( y ),
                                ToBackBufferX( width ),
                                ToBackBufferY( height ) );
         }
         else
         {
-            Gdx.GL.GLViewport( x, y, width, height );
+            GL.glViewport( x, y, width, height );
         }
     }
 

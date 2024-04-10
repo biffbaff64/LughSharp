@@ -443,12 +443,15 @@ public class Pixmap : IDisposable
     /// <returns>The new Pixmap.</returns>
     public static Pixmap CreateFromFrameBuffer( int x, int y, int width, int height )
     {
-        Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
+        GL.glPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
 
         Pixmap pixmap = new( width, height, Format.RGBA8888 );
 
-        Gdx.GL.GLReadPixels( x, y, width, height, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixmap.Pixels );
-
+        unsafe
+        {
+            GL.glReadPixels( x, y, width, height, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixmap.Pixels );
+        }
+        
         return pixmap;
     }
 

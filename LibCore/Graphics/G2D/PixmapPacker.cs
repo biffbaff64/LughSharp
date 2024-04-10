@@ -74,8 +74,8 @@ namespace LughSharp.LibCore.Graphics.G2D;
 /// // ...
 /// atlas.Dispose();
 /// </code>
-///         Pixmap-only usage:
-///         <code>
+/// Pixmap-only usage:
+/// <code>
 /// PixmapPacker packer = new PixmapPacker(512, 512, Format.RGB565, 2, true);
 /// packer.Pack(&quot;First Pixmap&quot;, pixmap1);
 /// packer.Pack(&quot;Second Pixmap&quot;, pixmap2);
@@ -83,19 +83,29 @@ namespace LughSharp.LibCore.Graphics.G2D;
 /// // do something interesting with the resulting pages
 /// foreach (Page page in packer.GetPages())
 /// {
-/// 	// ...
+///     // ...
 /// }
 /// 
 /// packer.Dispose();
 /// </code>
-///     </para>
+/// </para>
 /// </summary>
+[PublicAPI]
 public class PixmapPacker : IDisposable
 {
+    public int           PageWidth        { get;         set; }
+    public int           PageHeight       { get;         set; }
+    public Pixmap.Format PageFormat       { get;         set; }
+    public Color         TransparentColor { get;         set; } = new( 0f, 0f, 0f, 0f );
+    public bool          PackToTexture    { get;         set; }
+    public bool          DuplicateBorder  { get;         set; }
+    public int           Padding          { get;         set; }
+    public List< Page >  Pages            { get;         set; } = new();
+    public int           AlphaThreshold   { private get; set; }
+
     private readonly IPackStrategy _packStrategy;
     private readonly bool          _stripWhitespaceX;
     private readonly bool          _stripWhitespaceY;
-    private          int           _alphaThreshold;
 
     private bool _disposed;
 
@@ -166,15 +176,6 @@ public class PixmapPacker : IDisposable
         _stripWhitespaceY = stripWhitespaceY;
         _packStrategy     = packStrategy;
     }
-
-    public int           PageWidth        { get; set; }
-    public int           PageHeight       { get; set; }
-    public Pixmap.Format PageFormat       { get; set; }
-    public Color         TransparentColor { get; set; } = new( 0f, 0f, 0f, 0f );
-    public bool          PackToTexture    { get; set; }
-    public bool          DuplicateBorder  { get; set; }
-    public int           Padding          { get; set; }
-    public List< Page >  Pages            { get; set; } = new();
 
     /// <summary>
     ///     Performs application-defined tasks associated with freeing,
@@ -273,7 +274,7 @@ public class PixmapPacker : IDisposable
                             var pixel = image.GetPixel( x, y );
                             var alpha = pixel & 0x000000ff;
 
-                            if ( alpha > _alphaThreshold )
+                            if ( alpha > AlphaThreshold )
                             {
                                 goto outer1;
                             }
@@ -291,7 +292,7 @@ public class PixmapPacker : IDisposable
                             var pixel = image.GetPixel( x, y );
                             var alpha = pixel & 0x000000ff;
 
-                            if ( alpha > _alphaThreshold )
+                            if ( alpha > AlphaThreshold )
                             {
                                 goto outer2;
                             }
@@ -315,7 +316,7 @@ public class PixmapPacker : IDisposable
                             var pixel = image.GetPixel( x, y );
                             var alpha = pixel & 0x000000ff;
 
-                            if ( alpha > _alphaThreshold )
+                            if ( alpha > AlphaThreshold )
                             {
                                 goto outer3;
                             }
@@ -333,7 +334,7 @@ public class PixmapPacker : IDisposable
                             var pixel = image.GetPixel( x, y );
                             var alpha = pixel & 0x000000ff;
 
-                            if ( alpha > _alphaThreshold )
+                            if ( alpha > AlphaThreshold )
                             {
                                 goto outer4;
                             }
@@ -387,17 +388,20 @@ public class PixmapPacker : IDisposable
         {
             page.Texture?.Bind();
 
-            Gdx.GL.GLTexSubImage2D(
-                page.Texture!.GLTarget,
-                0,
-                rectX,
-                rectY,
-                rectWidth,
-                rectHeight,
-                image.GLFormat,
-                image.GLType,
-                image.Pixels
-                );
+            unsafe
+            {
+                GL.glTexSubImage2D(
+                    page.Texture!.GLTarget,
+                    0,
+                    rectX,
+                    rectY,
+                    rectWidth,
+                    rectHeight,
+                    image.GLFormat,
+                    image.GLType,
+                    image.Pixels
+                    );
+            }
         }
         else
         {

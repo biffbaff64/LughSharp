@@ -125,13 +125,13 @@ public abstract class GLTexture : IDisposable
     {
         if ( ( u != null ) && ( force || ( UWrap != u ) ) )
         {
-            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_S, u.GLEnum );
+            GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_S, u.GLEnum );
             UWrap = u;
         }
 
         if ( ( v != null ) && ( force || ( VWrap != v ) ) )
         {
-            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_T, v.GLEnum );
+            GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_T, v.GLEnum );
             VWrap = v;
         }
     }
@@ -149,8 +149,8 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_S, u.GLEnum );
-        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_T, v.GLEnum );
+        GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_S, u.GLEnum );
+        GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_T, v.GLEnum );
     }
 
     /// <summary>
@@ -167,13 +167,13 @@ public abstract class GLTexture : IDisposable
     {
         if ( ( minFilter != null ) && ( force || ( MinFilter != minFilter ) ) )
         {
-            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_MIN_FILTER, minFilter.GLEnum );
+            GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_MIN_FILTER, minFilter.GLEnum );
             MinFilter = minFilter;
         }
 
         if ( ( magFilter != null ) && ( force || ( MagFilter != magFilter ) ) )
         {
-            Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_MAG_FILTER, magFilter.GLEnum );
+            GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_MAG_FILTER, magFilter.GLEnum );
             MagFilter = magFilter;
         }
     }
@@ -191,8 +191,8 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_MIN_FILTER, minFilter.GLEnum );
-        Gdx.GL.GLTexParameteri( GLTarget, IGL20.GL_TEXTURE_MAG_FILTER, magFilter.GLEnum );
+        GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_MIN_FILTER, minFilter.GLEnum );
+        GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_MAG_FILTER, magFilter.GLEnum );
     }
 
     /// <summary>
@@ -224,9 +224,9 @@ public abstract class GLTexture : IDisposable
             return AnisotropicFilterLevel;
         }
 
-        Gdx.GL20.GLTexParameterf( IGL20.GL_TEXTURE_2D,
-                                  IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
-                                  level );
+        GL.glTexParameterf( IGL20.GL_TEXTURE_2D,
+                            IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+                            level );
 
         return AnisotropicFilterLevel = level;
     }
@@ -253,9 +253,9 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        Gdx.GL20.GLTexParameterf( IGL20.GL_TEXTURE_2D,
-                                  IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
-                                  level );
+        GL.glTexParameterf( IGL20.GL_TEXTURE_2D,
+                            IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+                            level );
 
         return AnisotropicFilterLevel = level;
     }
@@ -276,7 +276,10 @@ public abstract class GLTexture : IDisposable
             buffer.SetPosition( 0 );
             buffer.SetLimit( buffer.Capacity );
 
-            Gdx.GL20.GLGetFloatv( IGL20.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer );
+            unsafe
+            {
+                GL.glGetFloatv( IGL20.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer );
+            }
 
             return _maxAnisotropicFilterLevel = buffer.Get( 0 );
         }
@@ -290,7 +293,7 @@ public abstract class GLTexture : IDisposable
     {
         if ( GLTextureHandle != 0 )
         {
-            Gdx.GL.GLDeleteTexture( GLTextureHandle );
+            GL.glDeleteTextures( ( uint )GLTextureHandle );
             GLTextureHandle = 0;
         }
     }
@@ -346,7 +349,7 @@ public abstract class GLTexture : IDisposable
             disposePixmap = true;
         }
 
-        Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 1 );
+        GL.glPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 1 );
 
         if ( data.UseMipMaps )
         {
@@ -354,7 +357,9 @@ public abstract class GLTexture : IDisposable
         }
         else
         {
-            Gdx.GL.GLTexImage2D( target,
+            unsafe
+            {
+                GL.glTexImage2D( target,
                                  miplevel,
                                  pixmap.GLInternalFormat,
                                  pixmap.Width,
@@ -363,6 +368,7 @@ public abstract class GLTexture : IDisposable
                                  pixmap.GLFormat,
                                  pixmap.GLType,
                                  pixmap.Pixels );
+            }
         }
 
         if ( disposePixmap )
@@ -378,7 +384,7 @@ public abstract class GLTexture : IDisposable
     }
 
     // ------------------------------------------------------------------------
-    
+
     /// <inheritdoc cref="IDisposable.Dispose" />
     public virtual void Dispose()
     {

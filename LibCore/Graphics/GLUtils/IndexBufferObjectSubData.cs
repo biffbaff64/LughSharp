@@ -95,7 +95,7 @@ public class IndexBufferObjectSubData : IIndexData
     public int NumMaxIndices => _buffer.Capacity;
 
     /// <inheritdoc />
-    public void SetIndices( short[] indices, int offset, int count )
+    public unsafe void SetIndices( short[] indices, int offset, int count )
     {
         _isDirty = true;
 
@@ -108,7 +108,7 @@ public class IndexBufferObjectSubData : IIndexData
 
         if ( _isBound )
         {
-            Gdx.GL20.GLBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+            GL.glBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
                                       0,
                                       _byteBuffer.Limit,
                                       _byteBuffer );
@@ -118,7 +118,7 @@ public class IndexBufferObjectSubData : IIndexData
     }
 
     /// <inheritdoc />
-    public void SetIndices( ShortBuffer indices )
+    public unsafe void SetIndices( ShortBuffer indices )
     {
         var pos = indices.Position;
 
@@ -135,7 +135,7 @@ public class IndexBufferObjectSubData : IIndexData
 
         if ( _isBound )
         {
-            Gdx.GL20.GLBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+            GL.glBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
                                       0,
                                       _byteBuffer.Limit,
                                       _byteBuffer );
@@ -145,7 +145,7 @@ public class IndexBufferObjectSubData : IIndexData
     }
 
     /// <inheritdoc />
-    public void UpdateIndices( int targetOffset, short[] indices, int offset, int count )
+    public unsafe void UpdateIndices( int targetOffset, short[] indices, int offset, int count )
     {
         _isDirty = true;
 
@@ -160,7 +160,7 @@ public class IndexBufferObjectSubData : IIndexData
 
         if ( _isBound )
         {
-            Gdx.GL20.GLBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+            GL.glBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
                                       0,
                                       _byteBuffer.Limit,
                                       _byteBuffer );
@@ -178,7 +178,7 @@ public class IndexBufferObjectSubData : IIndexData
     }
 
     /// <inheritdoc />
-    public void Bind()
+    public unsafe void Bind()
     {
         if ( _bufferHandle == 0 )
         {
@@ -186,13 +186,13 @@ public class IndexBufferObjectSubData : IIndexData
                 ( "IndexBufferObject cannot be used after it has been disposed." );
         }
 
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, _bufferHandle );
+        GL.glBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, ( uint )_bufferHandle );
 
         if ( _isDirty )
         {
             _byteBuffer.Limit = _buffer.Limit * 2;
 
-            Gdx.GL20.GLBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+            GL.glBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
                                       0,
                                       _byteBuffer.Limit,
                                       _byteBuffer );
@@ -206,7 +206,7 @@ public class IndexBufferObjectSubData : IIndexData
     /// <inheritdoc />
     public void Unbind()
     {
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
+        GL.glBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
@@ -220,20 +220,20 @@ public class IndexBufferObjectSubData : IIndexData
     /// <inheritdoc />
     public void Dispose()
     {
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
-        Gdx.GL20.GLDeleteBuffer( _bufferHandle );
+        GL.glBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
+        GL.glDeleteBuffers( ( uint )_bufferHandle );
 
         _bufferHandle = 0;
     }
 
-    private int CreateBufferObject()
+    private unsafe int CreateBufferObject()
     {
-        var result = Gdx.GL20.GLGenBuffer();
+        var result = GL.glGenBuffer();
 
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, result );
-        Gdx.GL20.GLBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
+        GL.glBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, result );
+        GL.glBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
+        GL.glBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
 
-        return result;
+        return ( int )result;
     }
 }

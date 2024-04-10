@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 ///     gl only textures. This TextureData fits perfectly for <see cref="FrameBuffer" />s.
 ///     The data is not managed.
 /// </summary>
+[PublicAPI]
 public class GLOnlyTextureData : ITextureData
 {
     public GLOnlyTextureData( int width,
@@ -67,9 +68,9 @@ public class GLOnlyTextureData : ITextureData
         IsPrepared = true;
     }
 
-    public void ConsumeCustomData( int target )
+    public unsafe void ConsumeCustomData( int target )
     {
-        Gdx.GL.GLTexImage2D( target, MipLevel, InternalFormat, Width, Height, 0, Format, Type, null! );
+        GL.glTexImage2D( target, MipLevel, InternalFormat, Width, Height, 0, Format, Type, null! );
     }
 
     public Pixmap ConsumePixmap()

@@ -32,6 +32,7 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 ///     Sets the glVertexAttribDivisor for every <see cref="VertexAttribute" />
 ///     automatically.
 /// </summary>
+[PublicAPI]
 public class InstanceBufferObjectSubData : IInstanceData
 {
     private readonly FloatBuffer _buffer;
@@ -200,14 +201,12 @@ public class InstanceBufferObjectSubData : IInstanceData
     /// <param name="locations"></param>
     public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        IGL20 gl = Gdx.GL20;
-
-        gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, BufferHandle );
+        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, ( uint )BufferHandle );
 
         if ( _isDirty )
         {
             _byteBuffer.Limit = _buffer.Limit * 4;
-            gl.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
+            GL.glBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
             _isDirty = false;
         }
 
@@ -235,7 +234,7 @@ public class InstanceBufferObjectSubData : IInstanceData
                                            Attributes.VertexSize,
                                            attribute.Offset );
 
-                Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
+                GL.glVertexAttribDivisor( ( uint )( location + unitOffset ), 1 );
             }
         }
         else
@@ -260,7 +259,7 @@ public class InstanceBufferObjectSubData : IInstanceData
                                            Attributes.VertexSize,
                                            attribute.Offset );
 
-                Gdx.GL30?.GLVertexAttribDivisor( location + unitOffset, 1 );
+                GL.glVertexAttribDivisor( ( uint )( location + unitOffset ), 1 );
             }
         }
 
@@ -309,7 +308,7 @@ public class InstanceBufferObjectSubData : IInstanceData
             }
         }
 
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
@@ -328,28 +327,28 @@ public class InstanceBufferObjectSubData : IInstanceData
     /// </summary>
     public void Dispose()
     {
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Gdx.GL20.GLDeleteBuffer( BufferHandle );
+        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        GL.glDeleteBuffers( ( uint )BufferHandle );
         BufferHandle = 0;
     }
 
-    private int CreateBufferObject()
+    private unsafe int CreateBufferObject()
     {
-        var result = Gdx.GL20.GLGenBuffer();
+        var result = GL.glGenBuffer();
 
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
-        Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
-        Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
+        GL.glBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
+        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
 
-        return result;
+        return ( int )result;
     }
 
-    private void BufferChanged()
+    private unsafe void BufferChanged()
     {
         if ( _isBound )
         {
-            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, _usage );
-            Gdx.GL20.GLBufferSubData( IGL20.GL_ARRAY_BUFFER, 0, _byteBuffer.Limit, _byteBuffer );
+            GL.glBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, _usage );
+            GL.glBufferSubData( IGL20.GL_ARRAY_BUFFER, 0, _byteBuffer.Limit, _byteBuffer );
             _isDirty = false;
         }
     }

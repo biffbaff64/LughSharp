@@ -149,9 +149,11 @@ public class FacedCubemapData : ICubemapData
                     disposePixmap = true;
                 }
 
-                Gdx.GL.GLPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 1 );
+                GL.glPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 1 );
 
-                Gdx.GL.GLTexImage2D( IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                unsafe
+                {
+                    GL.glTexImage2D( IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                                      0,
                                      pixmap.GLInternalFormat,
                                      pixmap.Width,
@@ -160,7 +162,8 @@ public class FacedCubemapData : ICubemapData
                                      pixmap.GLFormat,
                                      pixmap.GLType,
                                      pixmap.Pixels );
-
+                }
+                
                 if ( disposePixmap )
                 {
                     pixmap.Dispose();

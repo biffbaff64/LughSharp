@@ -106,7 +106,9 @@ public class ETC1TextureData : ITextureData
         {
             Pixmap pixmap = ETC1.DecodeImage( _data, Pixmap.Format.RGB565 );
 
-            Gdx.GL.GLTexImage2D( target,
+            unsafe
+            {
+                GL.glTexImage2D( target,
                                  0,
                                  pixmap.GLInternalFormat,
                                  pixmap.Width,
@@ -115,7 +117,8 @@ public class ETC1TextureData : ITextureData
                                  pixmap.GLFormat,
                                  pixmap.GLType,
                                  pixmap.Pixels );
-
+            }
+            
             if ( UseMipMaps )
             {
                 MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
@@ -126,7 +129,9 @@ public class ETC1TextureData : ITextureData
         }
         else
         {
-            Gdx.GL.GLCompressedTexImage2D( target,
+            unsafe
+            {
+                GL.glCompressedTexImage2D( target,
                                            0,
                                            ETC1.ETC1_RGB8_OES,
                                            Width,
@@ -134,10 +139,11 @@ public class ETC1TextureData : ITextureData
                                            0,
                                            _data.CompressedData.Capacity - _data.DataOffset,
                                            _data.CompressedData );
-
+            }
+            
             if ( UseMipMaps )
             {
-                Gdx.GL20.GLGenerateMipmap( IGL20.GL_TEXTURE_2D );
+                GL.glGenerateMipmap( IGL20.GL_TEXTURE_2D );
             }
         }
 

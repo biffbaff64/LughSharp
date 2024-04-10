@@ -149,21 +149,24 @@ public class FileTextureArrayData : ITextureArrayData
                     disposePixmap = true;
                 }
 
-                Gdx.GL30?.GLTexSubImage3D( IGL30.GL_TEXTURE_2D_ARRAY,
-                                           0,
-                                           0,
-                                           0,
-                                           i,
-                                           pixmap.Width,
-                                           pixmap.Height,
-                                           1,
-                                           pixmap.GLInternalFormat,
-                                           pixmap.GLType,
-                                           pixmap.Pixels );
+                unsafe
+                {
+                    GL.glTexSubImage3D( IGL30.GL_TEXTURE_2D_ARRAY,
+                                        0,
+                                        0,
+                                        0,
+                                        i,
+                                        pixmap.Width,
+                                        pixmap.Height,
+                                        1,
+                                        pixmap.GLInternalFormat,
+                                        pixmap.GLType,
+                                        pixmap.Pixels );
+                }
 
                 if ( _useMipMaps )
                 {
-                    Gdx.GL20.GLGenerateMipmap( IGL30.GL_TEXTURE_2D_ARRAY );
+                    GL.glGenerateMipmap( IGL30.GL_TEXTURE_2D_ARRAY );
                 }
 
                 if ( disposePixmap )

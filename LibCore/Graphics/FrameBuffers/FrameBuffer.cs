@@ -122,11 +122,11 @@ public class FrameBuffer : GLFrameBuffer< Texture >
     /// </summary>
     protected override void AttachFrameBufferColorTexture( Texture texture )
     {
-        Gdx.GL20.GLFramebufferTexture2D( IGL20.GL_FRAMEBUFFER,
-                                         IGL20.GL_COLOR_ATTACHMENT0,
-                                         IGL20.GL_TEXTURE_2D,
-                                         texture.GetTextureObjectHandle(),
-                                         0 );
+        GL.glFramebufferTexture2D( IGL20.GL_FRAMEBUFFER,
+                                   IGL20.GL_COLOR_ATTACHMENT0,
+                                   IGL20.GL_TEXTURE_2D,
+                                   ( uint )texture.GetTextureObjectHandle(),
+                                   0 );
     }
 
     /// <summary>

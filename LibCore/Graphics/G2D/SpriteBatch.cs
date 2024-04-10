@@ -29,8 +29,15 @@ using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public class SpriteBatch : IBatch
 {
+    public float invTexHeight = 0;
+    public float invTexWidth  = 0;
+
+    protected float colorPacked = Color.WhiteFloatBits;
+    protected int   idx         = 0;
+
     private const int MAX_VERTEX_INDEX = 32767;
     private const int MAX_SPRITES      = 8191;
 
@@ -40,12 +47,6 @@ public class SpriteBatch : IBatch
     private readonly bool           _ownsShader;
     private readonly ShaderProgram? _shader;
     private          ShaderProgram? _customShader;
-
-    protected float colorPacked = Color.WhiteFloatBits;
-    protected int   idx         = 0;
-
-    public float invTexHeight = 0;
-    public float invTexWidth  = 0;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -162,7 +163,7 @@ public class SpriteBatch : IBatch
 
         RenderCalls = 0;
 
-        Gdx.GL.GLDepthMask( false );
+        GL.glDepthMask( false );
 
         if ( _customShader != null )
         {
@@ -193,11 +194,11 @@ public class SpriteBatch : IBatch
         LastTexture = null;
         IsDrawing   = false;
 
-        Gdx.GL20.GLDepthMask( true );
+        GL.glDepthMask( true );
 
         if ( !BlendingDisabled )
         {
-            Gdx.GL20.GLDisable( IGL20.GL_BLEND );
+            GL.glDisable( IGL20.GL_BLEND );
         }
     }
 
@@ -1123,15 +1124,15 @@ public class SpriteBatch : IBatch
 
         if ( BlendingDisabled )
         {
-            Gdx.GL.GLDisable( IGL20.GL_BLEND );
+            GL.glDisable( IGL20.GL_BLEND );
         }
         else
         {
-            Gdx.GL.GLEnable( IGL20.GL_BLEND );
+            GL.glEnable( IGL20.GL_BLEND );
 
             if ( BlendSrcFunc != -1 )
             {
-                Gdx.GL.GLBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
+                GL.glBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
             }
         }
 

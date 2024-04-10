@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
+[PublicAPI]
 public class MipMapGenerator
 {
     private MipMapGenerator()
@@ -74,40 +75,39 @@ public class MipMapGenerator
 
     private static void GenerateMipMapGLES20( int target, Pixmap pixmap )
     {
-        Gdx.GL.GLTexImage2D(
-            target,
-            0,
-            pixmap.GLInternalFormat,
-            pixmap.Width,
-            pixmap.Height,
-            0,
-            pixmap.GLFormat,
-            pixmap.GLType,
-            pixmap.Pixels
-            );
+        unsafe
+        {
+            GL.glTexImage2D( target,
+                             0,
+                             pixmap.GLInternalFormat,
+                             pixmap.Width,
+                             pixmap.Height,
+                             0,
+                             pixmap.GLFormat,
+                             pixmap.GLType,
+                             pixmap.Pixels );
+        }
 
-        Gdx.GL20.GLGenerateMipmap( target );
+        GL.glGenerateMipmap( target );
     }
 
-    private static void GenerateMipMapDesktop( int target, Pixmap pixmap, int textureWidth, int textureHeight )
+    private static unsafe void GenerateMipMapDesktop( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
         if ( Gdx.Graphics.SupportsExtension( "GL_ARB_framebuffer_object" )
           || Gdx.Graphics.SupportsExtension( "GL_EXT_framebuffer_object" )
           || ( Gdx.GL30 != null ) )
         {
-            Gdx.GL.GLTexImage2D(
-                target,
-                0,
-                pixmap.GLInternalFormat,
-                pixmap.Width,
-                pixmap.Height,
-                0,
-                pixmap.GLFormat,
-                pixmap.GLType,
-                pixmap.Pixels
-                );
+            GL.glTexImage2D( target,
+                             0,
+                             pixmap.GLInternalFormat,
+                             pixmap.Width,
+                             pixmap.Height,
+                             0,
+                             pixmap.GLFormat,
+                             pixmap.GLType,
+                             pixmap.Pixels );
 
-            Gdx.GL20.GLGenerateMipmap( target );
+            GL.glGenerateMipmap( target );
         }
         else
         {
@@ -115,19 +115,17 @@ public class MipMapGenerator
         }
     }
 
-    private static void GenerateMipMapCPU( int target, Pixmap pixmap, int textureWidth, int textureHeight )
+    private static unsafe void GenerateMipMapCPU( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
-        Gdx.GL.GLTexImage2D(
-            target,
-            0,
-            pixmap.GLInternalFormat,
-            pixmap.Width,
-            pixmap.Height,
-            0,
-            pixmap.GLFormat,
-            pixmap.GLType,
-            pixmap.Pixels
-            );
+        GL.glTexImage2D( target,
+                         0,
+                         pixmap.GLInternalFormat,
+                         pixmap.Width,
+                         pixmap.Height,
+                         0,
+                         pixmap.GLFormat,
+                         pixmap.GLType,
+                         pixmap.Pixels );
 
         if ( ( Gdx.GL20 == null ) && ( textureWidth != textureHeight ) )
         {
@@ -152,17 +150,15 @@ public class MipMapGenerator
 
             pixmap = tmp;
 
-            Gdx.GL.GLTexImage2D(
-                target,
-                level,
-                pixmap.GLInternalFormat,
-                pixmap.Width,
-                pixmap.Height,
-                0,
-                pixmap.GLFormat,
-                pixmap.GLType,
-                pixmap.Pixels
-                );
+            GL.glTexImage2D( target,
+                             level,
+                             pixmap.GLInternalFormat,
+                             pixmap.Width,
+                             pixmap.Height,
+                             0,
+                             pixmap.GLFormat,
+                             pixmap.GLType,
+                             pixmap.Pixels );
 
             width  = pixmap.Width / 2;
             height = pixmap.Height / 2;

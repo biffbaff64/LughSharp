@@ -41,7 +41,7 @@ namespace LughSharp.LibCore.Graphics;
 ///     <para>
 ///         A Texture has to be bound via the <see cref="Texture.Bind()" /> method in order
 ///         for it to be applied to geometry. The texture will be bound to the currently
-///         active texture unit specified via <see cref="IGL20.GLActiveTexture" />.
+///         active texture unit specified via <see cref="GL.glActiveTexture" />.
 ///     </para>
 ///     <para>
 ///         You can draw <see cref="Pixmap" />s to a texture at any time. The changes will
@@ -116,7 +116,7 @@ public class Texture : GLTexture
     ///     Creates a new Texture using the supplied <see cref="ITextureData" />.
     /// </summary>
     public Texture( ITextureData? data )
-        : this( IGL20.GL_TEXTURE_2D, Gdx.GL.GLGenTexture(), data )
+        : this( IGL20.GL_TEXTURE_2D, ( int )GL.glGenTexture(), data )
     {
     }
 
@@ -175,7 +175,7 @@ public class Texture : GLTexture
         UnsafeSetWrap( UWrap, VWrap, true );
         UnsafeSetAnisotropicFilter( AnisotropicFilterLevel, true );
 
-        Gdx.GL.GLBindTexture( GLTarget, 0 );
+        GL.glBindTexture( GLTarget, 0 );
     }
 
     /// <summary>
@@ -189,7 +189,7 @@ public class Texture : GLTexture
             throw new GdxRuntimeException( "Tried to reload unmanaged Texture" );
         }
 
-        GLTextureHandle = Gdx.GL.GLGenTexture();
+        GLTextureHandle = ( int )GL.glGenTexture();
 
         Load( TextureData );
     }
@@ -211,7 +211,9 @@ public class Texture : GLTexture
 
         Bind();
 
-        Gdx.GL.GLTexSubImage2D( GLTarget,
+        unsafe
+        {
+            GL.glTexSubImage2D( GLTarget,
                                 0,
                                 x,
                                 y,
@@ -220,6 +222,7 @@ public class Texture : GLTexture
                                 pixmap.GLFormat,
                                 pixmap.GLType,
                                 pixmap.Pixels );
+        }
     }
 
     /// <summary>
@@ -330,7 +333,7 @@ public class Texture : GLTexture
 
                     // unload the texture, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    texture.GLTextureHandle = Gdx.GL.GLGenTexture();
+                    texture.GLTextureHandle = ( int )GL.glGenTexture();
                     AssetManager.Load( fileName, typeof( Texture ), parameters );
                 }
             }

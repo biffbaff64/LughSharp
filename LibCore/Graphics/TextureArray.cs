@@ -83,7 +83,7 @@ public class TextureArray : GLTexture
     /// </summary>
     /// <param name="data"></param>
     /// <exception cref="GdxRuntimeException"></exception>
-    private void Load( ITextureArrayData data )
+    private unsafe void Load( ITextureArrayData data )
     {
         if ( ( _data != null ) && ( data.Managed != _data.Managed ) )
         {
@@ -94,16 +94,16 @@ public class TextureArray : GLTexture
 
         Bind();
 
-        Gdx.GL30?.GLTexImage3D( IGL30.GL_TEXTURE_2D_ARRAY,
-                                0,
-                                data.InternalFormat,
-                                data.Width,
-                                data.Height,
-                                data.Depth,
-                                0,
-                                data.InternalFormat,
-                                data.GLType,
-                                0 );
+        GL.glTexImage3D( IGL30.GL_TEXTURE_2D_ARRAY,
+                         0,
+                         data.InternalFormat,
+                         data.Width,
+                         data.Height,
+                         data.Depth,
+                         0,
+                         data.InternalFormat,
+                         data.GLType,
+                         null );
 
         if ( !data.Prepared )
         {
@@ -114,7 +114,7 @@ public class TextureArray : GLTexture
 
         SetFilter( MinFilter, MagFilter );
         SetWrap( UWrap, VWrap );
-        Gdx.GL.GLBindTexture( GLTarget, 0 );
+        GL.glBindTexture( GLTarget, 0 );
     }
 
     /// <summary>
@@ -127,7 +127,7 @@ public class TextureArray : GLTexture
             throw new GdxRuntimeException( "Tried to reload an unmanaged TextureArray" );
         }
 
-        GLTextureHandle = Gdx.GL.GLGenTexture();
+        GLTextureHandle = ( int )GL.glGenTexture();
 
         Load( _data );
     }
@@ -186,7 +186,7 @@ public class TextureArray : GLTexture
     /// <param name="data"></param>
     /// <exception cref="GdxRuntimeException"></exception>
     public TextureArray( ITextureArrayData data )
-        : base( IGL30.GL_TEXTURE_2D_ARRAY, Gdx.GL.GLGenTexture() )
+        : base( IGL30.GL_TEXTURE_2D_ARRAY, ( int )GL.glGenTexture() )
     {
         if ( Gdx.GL30 == null )
         {

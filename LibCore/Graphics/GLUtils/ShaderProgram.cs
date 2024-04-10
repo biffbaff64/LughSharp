@@ -23,10 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Text;
-
 using LughSharp.LibCore.Utils.Buffers;
 using LughSharp.LibCore.Utils.Collections.Extensions;
-
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
@@ -58,10 +56,11 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 ///         have to do this manually.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class ShaderProgram
 {
     private const int CACHED_NOT_FOUND = -1;
-    private const int NOT_CACHED       = -2;
+    private const int NOT_CACHED = -2;
 
     /// <summary>
     ///     flag indicating whether attributes & uniforms must be present
@@ -92,22 +91,24 @@ public class ShaderProgram
     ///     attribute lookup
     /// </summary>
     private readonly Dictionary< string, int > _attributes = new();
+
     private readonly Dictionary< string, int > _attributeSizes = new();
     private readonly Dictionary< string, int > _attributeTypes = new();
 
     private readonly FloatBuffer _matrix;
 
     private readonly IntBuffer _parameters = BufferUtils.NewIntBuffer( 1 );
-    private readonly IntBuffer _progType   = BufferUtils.NewIntBuffer( 1 );
+    private readonly IntBuffer _progType = BufferUtils.NewIntBuffer( 1 );
 
     /// <summary>
     ///     uniform lookup
     /// </summary>
     private readonly Dictionary< string, int > _uniforms = new();
+
     private readonly Dictionary< string, int > _uniformSizes = new();
     private readonly Dictionary< string, int > _uniformTypes = new();
-    private          int                       _fragmentShaderHandle;
-    private          bool                      _invalidated;
+    private int _fragmentShaderHandle;
+    private bool _invalidated;
 
     /// <summary>
     ///     the log
@@ -178,7 +179,7 @@ public class ShaderProgram
                 // Gdx.gl20.glGetProgramiv(program, IGL20.GL_INFO_LOG_LENGTH, intbuf);
                 // int infoLogLength = intbuf.get(0);
                 // if (infoLogLength > 1) {
-                _log = Gdx.GL20.GLGetProgramInfoLog( Handle );
+                _log = GL.glGetProgramInfoLog( ( uint ) Handle, IGL20.GL_INFO_LOG_LENGTH );
 
                 // }
             }
@@ -218,18 +219,18 @@ public class ShaderProgram
 
     private int LoadShader( int type, string source )
     {
-        IntBuffer intbuf = BufferUtils.NewIntBuffer( 1 );
+        var intbuf = BufferUtils.NewIntBuffer( 1 );
 
-        var shader = Gdx.GL20.GLCreateShader( type );
+        var shader = GL.glCreateShader( type );
 
         if ( shader == 0 )
         {
             return -1;
         }
 
-        Gdx.GL20.GLShaderSource( shader, source );
-        Gdx.GL20.GLCompileShader( shader );
-        Gdx.GL20.GLGetShaderiv( shader, IGL20.GL_COMPILE_STATUS, intbuf );
+        GL.glShaderSource( shader, source );
+        GL.glCompileShader( shader );
+        GL.glGetShaderiv( shader, IGL20.GL_COMPILE_STATUS, intbuf );
 
         var compiled = intbuf.Get( 0 );
 
@@ -238,7 +239,7 @@ public class ShaderProgram
 // gl.glGetShaderiv(shader, IGL20.GL_INFO_LOG_LENGTH, intbuf);
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
-            var infoLog = Gdx.GL20.GLGetShaderInfoLog( shader );
+            var infoLog = GL.glGetShaderInfoLog( shader, IGL20.GL_INFO_LOG_LENGTH );
             _log += type == IGL20.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
             _log += infoLog;
 
@@ -246,7 +247,7 @@ public class ShaderProgram
             return -1;
         }
 
-        return shader;
+        return ( int ) shader;
     }
 
     /// <summary>
@@ -997,12 +998,12 @@ public class ShaderProgram
 
     #region default attribute names
 
-    public const string POSITION_ATTRIBUTE   = "a_position";
-    public const string NORMAL_ATTRIBUTE     = "a_normal";
-    public const string COLOR_ATTRIBUTE      = "a_color";
-    public const string TEXCOORD_ATTRIBUTE   = "a_texCoord";
-    public const string TANGENT_ATTRIBUTE    = "a_tangent";
-    public const string BINORMAL_ATTRIBUTE   = "a_binormal";
+    public const string POSITION_ATTRIBUTE = "a_position";
+    public const string NORMAL_ATTRIBUTE = "a_normal";
+    public const string COLOR_ATTRIBUTE = "a_color";
+    public const string TEXCOORD_ATTRIBUTE = "a_texCoord";
+    public const string TANGENT_ATTRIBUTE = "a_tangent";
+    public const string BINORMAL_ATTRIBUTE = "a_binormal";
     public const string BONEWEIGHT_ATTRIBUTE = "a_boneWeight";
 
     #endregion default attribute names

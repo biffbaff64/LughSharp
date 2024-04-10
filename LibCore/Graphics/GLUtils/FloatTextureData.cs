@@ -31,6 +31,7 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 ///     A <see cref="ITextureData" /> implementation which should be used
 ///     to create float textures.
 /// </summary>
+[PublicAPI]
 public class FloatTextureData : ITextureData
 {
     private readonly int _format;
@@ -67,22 +68,22 @@ public class FloatTextureData : ITextureData
 
             if ( Gdx.Graphics.GLVersion.GLtype.Equals( GLVersion.GLType.OpenGL ) )
             {
-                if ( ( _internalFormat == IGL30.GL_RGBA16_F ) || ( _internalFormat == IGL30.GL_RGBA32_F ) )
+                if ( _internalFormat is IGL30.GL_RGBA16_F or IGL30.GL_RGBA32_F )
                 {
                     amountOfFloats = 4;
                 }
 
-                if ( ( _internalFormat == IGL30.GL_RGB16_F ) || ( _internalFormat == IGL30.GL_RGB32_F ) )
+                if ( _internalFormat is IGL30.GL_RGB16_F or IGL30.GL_RGB32_F )
                 {
                     amountOfFloats = 3;
                 }
 
-                if ( ( _internalFormat == IGL30.GL_RG16_F ) || ( _internalFormat == IGL30.GL_RG32_F ) )
+                if ( _internalFormat is IGL30.GL_RG16_F or IGL30.GL_RG32_F )
                 {
                     amountOfFloats = 2;
                 }
 
-                if ( ( _internalFormat == IGL30.GL_R16_F ) || ( _internalFormat == IGL30.GL_R32_F ) )
+                if ( _internalFormat is IGL30.GL_R16_F or IGL30.GL_R32_F )
                 {
                     amountOfFloats = 1;
                 }
@@ -107,7 +108,9 @@ public class FloatTextureData : ITextureData
 
             // GLES and WebGL defines texture format by 3rd and 8th argument,
             // so to get a float texture one needs to supply GL_RGBA and GL_FLOAT there.
-            Gdx.GL.GLTexImage2D( target,
+            unsafe
+            {
+                GL.glTexImage2D( target,
                                  0,
                                  IGL20.GL_RGBA,
                                  Width,
@@ -116,6 +119,7 @@ public class FloatTextureData : ITextureData
                                  IGL20.GL_RGBA,
                                  IGL20.GL_FLOAT,
                                  Buffer );
+            }
         }
         else
         {
@@ -129,15 +133,18 @@ public class FloatTextureData : ITextureData
 
             // in desktop OpenGL the texture format is defined only by the third argument,
             // hence we need to use GL_RGBA32F there (this constant is unavailable in GLES/WebGL)
-            Gdx.GL.GLTexImage2D( target,
-                                 0,
-                                 _internalFormat,
-                                 Width,
-                                 Height,
-                                 0,
-                                 _format,
-                                 IGL20.GL_FLOAT,
-                                 Buffer );
+            unsafe
+            {
+                GL.glTexImage2D( target,
+                                     0,
+                                     _internalFormat,
+                                     Width,
+                                     Height,
+                                     0,
+                                     _format,
+                                     IGL20.GL_FLOAT,
+                                     Buffer );
+            }
         }
     }
 
