@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Utils.Buffers;
 
+[PublicAPI]
 public class StringCharBuffer : CharBuffer
 {
     private readonly string _string;
@@ -79,7 +80,7 @@ public class StringCharBuffer : CharBuffer
                                      0,
                                      Remaining(),
                                      Remaining(),
-                                     offset + Position );
+                                     Offset + Position );
     }
 
     /// <summary>
@@ -100,7 +101,7 @@ public class StringCharBuffer : CharBuffer
     /// <returns>  The new char buffer </returns>
     public override CharBuffer Duplicate()
     {
-        return new StringCharBuffer( _string, MarkValue(), Position, Limit, Capacity, offset );
+        return new StringCharBuffer( _string, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
     /// <summary>
@@ -138,7 +139,7 @@ public class StringCharBuffer : CharBuffer
     /// </exception>
     protected override char Get()
     {
-        return _string[ NextGetIndex() + offset ];
+        return _string[ NextGetIndex() + Offset ];
     }
 
     /// <summary>
@@ -151,7 +152,7 @@ public class StringCharBuffer : CharBuffer
     /// </exception>
     protected override char Get( int index )
     {
-        return _string[ CheckIndex( index ) + offset ];
+        return _string[ CheckIndex( index ) + Offset ];
     }
 
     /// <summary>
@@ -162,12 +163,12 @@ public class StringCharBuffer : CharBuffer
     /// <returns> The char at the given index </returns>
     public override char GetUnchecked( int index )
     {
-        return _string[ index + offset ];
+        return _string[ index + Offset ];
     }
 
     protected override string ToString( int start, int end )
     {
-        return _string.Substring( start + offset, end + offset );
+        return _string.Substring( start + Offset, end + Offset );
     }
 
     /// <summary>
@@ -206,7 +207,7 @@ public class StringCharBuffer : CharBuffer
                                          Position + CheckIndex( start, Position ),
                                          Position + CheckIndex( end, Position ),
                                          Capacity,
-                                         offset );
+                                         Offset );
         }
         catch ( ArgumentException )
         {

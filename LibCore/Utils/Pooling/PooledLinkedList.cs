@@ -29,14 +29,28 @@ namespace LughSharp.LibCore.Utils.Pooling;
 ///     A simple linked list that pools its nodes.
 /// </summary>
 [PublicAPI]
-public class PooledLinkedList<T>
+public class PooledLinkedList< T >
 {
+    [PublicAPI]
+    public class Item< TT >
+    {
+        internal TT?         Payload { get; set; }
+        internal Item< TT >? Next    { get; set; }
+        internal Item< TT >? Prev    { get; set; }
+    }
+
+    // ------------------------------------------------------------------------
+
+    public int Size { get; set; } = 0;
+
     private readonly Pool< Item< T > > _pool;
 
     private Item< T >? _curr;
     private Item< T >? _head;
     private Item< T >? _iter;
     private Item< T >? _tail;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Creates a new PooledLinkedList with an initial capacity of 16 and the
@@ -52,11 +66,9 @@ public class PooledLinkedList<T>
         };
     }
 
-    public int Size { get; set; } = 0;
-
     /// <summary>
+    ///     Creates, and returns, a new <see cref="Item{T}"/>
     /// </summary>
-    /// <returns></returns>
     public Item< T > GetNewObject()
     {
         return new Item< T >();
@@ -69,31 +81,29 @@ public class PooledLinkedList<T>
     {
         Item< T >? item;
 
-        if ( ( item = _pool.Obtain() ) == null )
+        if ( ( item = _pool.Obtain() ) != null )
         {
-            return;
-        }
+            item.Payload = obj;
+            item.Next    = null;
+            item.Prev    = null;
 
-        item.Payload = obj;
-        item.Next    = null;
-        item.Prev    = null;
+            if ( _head == null )
+            {
+                _head = item;
+                _tail = item;
 
-        if ( _head == null )
-        {
-            _head = item;
-            _tail = item;
+                Size++;
+
+                return;
+            }
+
+            item.Prev = _tail;
+
+            _tail      = item;
+            _tail.Next = item;
 
             Size++;
-
-            return;
         }
-
-        item.Prev = _tail;
-
-        _tail      = item;
-        _tail.Next = item;
-
-        Size++;
     }
 
     /// <summary>
@@ -103,27 +113,25 @@ public class PooledLinkedList<T>
     {
         Item< T >? item;
 
-        if ( ( item = _pool.Obtain() ) == null )
+        if ( ( item = _pool.Obtain() ) != null )
         {
-            return;
+            item.Payload = obj;
+            item.Next    = _head;
+            item.Prev    = null;
+
+            if ( _head != null )
+            {
+                _head.Prev = item;
+            }
+            else
+            {
+                _tail = item;
+            }
+
+            _head = item;
+
+            Size++;
         }
-
-        item.Payload = obj;
-        item.Next    = _head;
-        item.Prev    = null;
-
-        if ( _head != null )
-        {
-            _head.Prev = item;
-        }
-        else
-        {
-            _tail = item;
-        }
-
-        _head = item;
-
-        Size++;
     }
 
     /// <summary>
@@ -153,7 +161,7 @@ public class PooledLinkedList<T>
             return default( T? );
         }
 
-        T? payload = _iter.Payload;
+        var payload = _iter.Payload;
 
         _curr = _iter;
         _iter = _iter.Next;
@@ -172,7 +180,7 @@ public class PooledLinkedList<T>
             return default( T? );
         }
 
-        T? payload = _iter.Payload;
+        var payload = _iter.Payload;
 
         _curr = _iter;
         _iter = _iter.Prev;
@@ -237,7 +245,7 @@ public class PooledLinkedList<T>
             return default( T? );
         }
 
-        T? payload = _tail.Payload;
+        var payload = _tail.Payload;
 
         Size--;
 
@@ -274,16 +282,5 @@ public class PooledLinkedList<T>
         {
             Remove();
         }
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    [PublicAPI]
-    public class Item<TT>
-    {
-        internal TT?         Payload { get; set; }
-        internal Item< TT >? Next    { get; set; }
-        internal Item< TT >? Prev    { get; set; }
     }
 }

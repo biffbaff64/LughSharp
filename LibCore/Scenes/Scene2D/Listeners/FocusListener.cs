@@ -29,6 +29,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 ///     Fired when an actor gains or loses keyboard or scroll focus. Can be
 ///     cancelled to prevent losing or gaining focus.
 /// </summary>
+[PublicAPI]
 public class FocusListener : IEventListener
 {
     /// <summary>
@@ -39,22 +40,18 @@ public class FocusListener : IEventListener
     /// </returns>
     public virtual bool Handle( Event e )
     {
-        if ( !( e is FocusEvent focusEvent ) )
+        if ( e is not FocusEvent focusEvent )
         {
             return false;
         }
 
-        switch ( focusEvent.Type )
+        if ( focusEvent.Type == FocusEvent.FeType.Keyboard )
         {
-            case FocusEvent.FeType.Keyboard:
-                KeyboardFocusChanged( focusEvent, e.TargetActor, focusEvent.Focused );
-
-                break;
-
-            case FocusEvent.FeType.Scroll:
-                ScrollFocusChanged( focusEvent, e.TargetActor, focusEvent.Focused );
-
-                break;
+            KeyboardFocusChanged( focusEvent, e.TargetActor, focusEvent.Focused );
+        }
+        else if ( focusEvent.Type == FocusEvent.FeType.Scroll )
+        {
+            ScrollFocusChanged( focusEvent, e.TargetActor, focusEvent.Focused );
         }
 
         return false;
@@ -78,6 +75,7 @@ public class FocusListener : IEventListener
     {
     }
 
+    [PublicAPI]
     public class FocusEvent : Event
     {
         public enum FeType

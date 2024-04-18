@@ -31,15 +31,20 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 ///     Detects tap, long press, fling, pan, zoom, and pinch gestures on an actor.
 ///     If there is only a need to detect tap, use <see cref="ClickListener" />.
 /// </summary>
+[PublicAPI]
 public class ActorGestureListener : IEventListener
 {
+    public ActorGestureDetector Detector        { get; set; }
+    public Actor?               TouchDownTarget { get; set; }
+
     private readonly static Vector2 _tmpCoords  = new();
     private readonly static Vector2 _tmpCoords2 = new();
-    private                 Actor?  _actor;
 
+    private Actor?      _actor;
     private InputEvent? _inputEvent;
 
-    public ActorGestureListener() : this( 20, 0.4f, 1.1f, int.MaxValue )
+    public ActorGestureListener()
+        : this( 20, 0.4f, 1.1f, int.MaxValue )
     {
     }
 
@@ -54,9 +59,6 @@ public class ActorGestureListener : IEventListener
                                              maxFlingDelay,
                                              this );
     }
-
-    public ActorGestureDetector Detector        { get; set; }
-    public Actor?               TouchDownTarget { get; set; }
 
     public virtual bool Handle( Event e )
     {
@@ -162,6 +164,7 @@ public class ActorGestureListener : IEventListener
     {
     }
 
+    [PublicAPI]
     public class ActorGestureDetector : GestureDetector
     {
         private readonly Vector2              _initialPointer1 = new();

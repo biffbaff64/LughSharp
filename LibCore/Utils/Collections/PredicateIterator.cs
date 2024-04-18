@@ -27,8 +27,16 @@ using System.Collections;
 
 namespace LughSharp.LibCore.Utils.Collections;
 
-public class PredicateIterator<T> : IEnumerator< T >
+[PublicAPI]
+public class PredicateIterator< T > : IEnumerator< T >
 {
+    public IEnumerator< T? > Enumerator { get; set; }
+    public IPredicate< T >   Predicate  { get; set; }
+    public bool              End        { get; set; }
+    public bool              Peeked     { get; set; }
+    public T?                NextItem   { get; set; }
+    public T                 Current    { get; }
+
     /// <summary>
     /// </summary>
     /// <param name="enumerable"></param>
@@ -52,12 +60,6 @@ public class PredicateIterator<T> : IEnumerator< T >
         Current    = default( T? )!;
     }
 
-    public IEnumerator< T? > Enumerator { get; set; }
-    public IPredicate< T >   Predicate  { get; set; }
-    public bool              End        { get; set; } = false;
-    public bool              Peeked     { get; set; } = false;
-    public T?                NextItem   { get; set; } = default( T? );
-
     public virtual bool MoveNext()
     {
         throw new NotImplementedException();
@@ -69,13 +71,6 @@ public class PredicateIterator<T> : IEnumerator< T >
     }
 
     object? IEnumerator.Current => Current;
-
-    public T Current { get; }
-
-    public void Dispose()
-    {
-        Remove();
-    }
 
     /// <summary>
     /// </summary>
@@ -98,8 +93,7 @@ public class PredicateIterator<T> : IEnumerator< T >
         Peeked     = false;
         NextItem   = default( T? );
     }
-
-
+    
     public bool HasNext()
     {
         if ( End )
@@ -116,7 +110,7 @@ public class PredicateIterator<T> : IEnumerator< T >
 
         while ( Enumerator.MoveNext() )
         {
-            T? n = Enumerator.Current;
+            var n = Enumerator.Current;
 
             if ( Predicate.Evaluate( n ) )
             {
@@ -130,8 +124,7 @@ public class PredicateIterator<T> : IEnumerator< T >
 
         return false;
     }
-
-
+    
     public T? Next()
     {
         if ( ( NextItem == null ) && !HasNext() )
@@ -139,14 +132,13 @@ public class PredicateIterator<T> : IEnumerator< T >
             return default( T );
         }
 
-        T? result = NextItem;
+        var result = NextItem;
         NextItem = default( T );
         Peeked   = false;
 
         return result;
     }
-
-
+    
     public void Remove()
     {
         if ( Peeked )
@@ -155,5 +147,10 @@ public class PredicateIterator<T> : IEnumerator< T >
         }
 
         Enumerator.Dispose();
+    }
+
+    public void Dispose()
+    {
+        Remove();
     }
 }

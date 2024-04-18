@@ -24,33 +24,31 @@
 
 
 using System.Drawing;
-
 using LughSharp.LibCore.Graphics;
 using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Utils.Collections.Extensions;
-
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
 ///     A stack of {@link Rectangle} objects to be used for clipping via
-///     <see cref="IGL20.GLScissor(int, int, int, int)" />. When a new Rectangle is
+///     <see cref="GL.glScissor(int, int, int, int)" />. When a new Rectangle is
 ///     pushed onto the stack, it will be merged with the current top of stack. The
 ///     minimum area of overlap is then set as the real top of the stack.
 /// </summary>
 [PublicAPI]
 public class ScissorStack
 {
-    private readonly static List< RectangleShape > Scissors = new();
-    private readonly static Vector3                Tmp      = new();
-    private readonly static RectangleShape         Viewport = new();
+    private readonly static List< RectangleShape > _scissors = new();
+    private readonly static Vector3                _tmp      = new();
+    private readonly static RectangleShape         _viewport = new();
 
     /// <summary>
     ///     Pushes a new scissor <see cref="Rectangle" /> onto the stack, merging it with
     ///     the current top of the stack. The minimal area of overlap between the top of
     ///     stack rectangle and the provided rectangle is pushed onto the stack. This will
-    ///     invoke <see cref="IGL20.GLScissor(int, int, int, int)" /> with the final top of
+    ///     invoke <see cref="GL.glScissor(int, int, int, int)" /> with the final top of
     ///     stack rectangle. In case no scissor is yet on the stack this will also enable
     ///     <see cref="IGL20.GL_SCISSOR_TEST" /> automatically.
     ///     <para>
@@ -65,19 +63,19 @@ public class ScissorStack
     {
         Fix( scissor );
 
-        if ( Scissors.Count == 0 )
+        if ( _scissors.Count == 0 )
         {
             if ( ( scissor.Width < 1 ) || ( scissor.Height < 1 ) )
             {
                 return false;
             }
 
-            Gdx.GL.GLEnable( IGL20.GL_SCISSOR_TEST );
+            GL.glEnable( IGL20.GL_SCISSOR_TEST );
         }
         else
         {
             // merge scissors
-            RectangleShape parent = Scissors[ ^1 ];
+            var parent = _scissors[ ^1 ];
 
             var minX = Math.Max( parent.X, scissor.X );
             var maxX = Math.Min( parent.X + parent.Width, scissor.X + scissor.Width );
@@ -101,12 +99,12 @@ public class ScissorStack
             scissor.Height = Math.Max( 1, maxY - minY );
         }
 
-        Scissors.Add( scissor );
+        _scissors.Add( scissor );
 
-        HdpiUtils.GLScissor( ( int )scissor.X,
-                             ( int )scissor.Y,
-                             ( int )scissor.Width,
-                             ( int )scissor.Height );
+        HdpiUtils.GLScissor( ( int ) scissor.X,
+                             ( int ) scissor.Y,
+                             ( int ) scissor.Width,
+                             ( int ) scissor.Height );
 
         return true;
     }
@@ -121,20 +119,20 @@ public class ScissorStack
     /// </summary>
     public static RectangleShape PopScissors()
     {
-        RectangleShape old = Scissors.Pop();
+        var old = _scissors.Pop();
 
-        if ( Scissors.Count == 0 )
+        if ( _scissors.Count == 0 )
         {
-            Gdx.GL.GLDisable( IGL20.GL_SCISSOR_TEST );
+            GL.glDisable( IGL20.GL_SCISSOR_TEST );
         }
         else
         {
-            RectangleShape scissor = Scissors.Peek();
+            var scissor = _scissors.Peek();
 
-            HdpiUtils.GLScissor( ( int )scissor.X,
-                                 ( int )scissor.Y,
-                                 ( int )scissor.Width,
-                                 ( int )scissor.Height );
+            HdpiUtils.GLScissor( ( int ) scissor.X,
+                                 ( int ) scissor.Y,
+                                 ( int ) scissor.Width,
+                                 ( int ) scissor.Height );
         }
 
         return old;
@@ -142,15 +140,15 @@ public class ScissorStack
 
     public static RectangleShape? PeekScissors()
     {
-        return Scissors.Count == 0 ? null : Scissors.Peek();
+        return _scissors.Count == 0 ? null : _scissors.Peek();
     }
 
     private static void Fix( RectangleShape rect )
     {
-        rect.X      = ( float )Math.Round( rect.X );
-        rect.Y      = ( float )Math.Round( rect.Y );
-        rect.Width  = ( float )Math.Round( rect.Width );
-        rect.Height = ( float )Math.Round( rect.Height );
+        rect.X      = ( float ) Math.Round( rect.X );
+        rect.Y      = ( float ) Math.Round( rect.Y );
+        rect.Width  = ( float ) Math.Round( rect.Width );
+        rect.Height = ( float ) Math.Round( rect.Height );
 
         if ( rect.Width < 0 )
         {
@@ -183,7 +181,7 @@ public class ScissorStack
     ///     The rectangle will get transformed by the camera and transform matrices and is then
     ///     projected to screen coordinates. Note that only axis aligned rectangles will work with
     ///     this method. If either the Camera or the Matrix4 have rotational components, the output
-    ///     of this method will not be suitable for <see cref="IGL20.GLScissor(int, int, int, int)" />.
+    ///     of this method will not be suitable for <see cref="GL.glScissor(int, int, int, int)" />.
     /// </summary>
     /// <param name="viewportX"></param>
     /// <param name="viewportY"></param>
@@ -202,20 +200,20 @@ public class ScissorStack
                                           RectangleShape area,
                                           RectangleShape scissor )
     {
-        Tmp.Set( area.X, area.Y, 0 );
-        Tmp.Mul( batchTransform );
+        _tmp.Set( area.X, area.Y, 0 );
+        _tmp.Mul( batchTransform );
 
-        camera.Project( Tmp, viewportX, viewportY, viewportWidth, viewportHeight );
+        camera.Project( _tmp, viewportX, viewportY, viewportWidth, viewportHeight );
 
-        scissor.X = Tmp.X;
-        scissor.Y = Tmp.Y;
+        scissor.X = _tmp.X;
+        scissor.Y = _tmp.Y;
 
-        Tmp.Set( area.X + area.Width, area.Y + area.Height, 0 );
-        Tmp.Mul( batchTransform );
+        _tmp.Set( area.X + area.Width, area.Y + area.Height, 0 );
+        _tmp.Mul( batchTransform );
 
-        camera.Project( Tmp, viewportX, viewportY, viewportWidth, viewportHeight );
-        scissor.Width  = Tmp.X - scissor.X;
-        scissor.Height = Tmp.Y - scissor.Y;
+        camera.Project( _tmp, viewportX, viewportY, viewportWidth, viewportHeight );
+        scissor.Width  = _tmp.X - scissor.X;
+        scissor.Height = _tmp.Y - scissor.Y;
     }
 
     /// <summary>
@@ -224,16 +222,16 @@ public class ScissorStack
     /// </summary>
     public static RectangleShape GetViewport()
     {
-        if ( Scissors.Count == 0 )
+        if ( _scissors.Count == 0 )
         {
-            Viewport.Set( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+            _viewport.Set( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
-            return Viewport;
+            return _viewport;
         }
 
-        RectangleShape scissor = Scissors.Peek();
-        Viewport.Set( scissor );
+        var scissor = _scissors.Peek();
+        _viewport.Set( scissor );
 
-        return Viewport;
+        return _viewport;
     }
 }

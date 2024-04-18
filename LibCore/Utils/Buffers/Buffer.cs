@@ -178,6 +178,9 @@ public abstract class Buffer
     // Invariants: mark <= position <= limit <= capacity
     private int _mark = -1;
 
+    /// <summary>
+    ///     Default Constructor.
+    /// </summary>
     protected Buffer()
     {
     }
@@ -191,6 +194,11 @@ public abstract class Buffer
         Setup( mark, pos, lim, cap );
     }
 
+    /// <summary>
+    /// Setup method to be called from Constructor(s).
+    /// This is implemented because of the need to call virtual methods,
+    /// which is not wise to do from constructors.
+    /// </summary>
     private void Setup( int mark, int pos, int lim, int cap )
     {
         if ( cap < 0 )
@@ -217,6 +225,7 @@ public abstract class Buffer
     /// <summary>
     ///     Used only by DirectBuffers
     /// </summary>
+    //TODO: Would this be better moved elsewhere?
     public virtual long Address { get; set; }
 
     /// <summary>
@@ -232,7 +241,7 @@ public abstract class Buffer
     /// <summary>
     ///     Returns this buffers position
     /// </summary>
-    public virtual int Position { get; set; } = 0;
+    public virtual int Position { get; set; }
 
     /// <summary>
     ///     Returns <tt>true</tt> if, and only if, this buffer is read-only

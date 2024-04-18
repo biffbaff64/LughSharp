@@ -24,7 +24,6 @@
 
 
 using System.Text;
-
 using LughSharp.LibCore.Utils.Buffers;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 
@@ -49,7 +48,7 @@ namespace LughSharp.LibCore.Graphics.FrameBuffers;
 ///     Types which derive from GLTexture, such as Texture, Cubemap, TextureArray.
 /// </typeparam>
 [PublicAPI]
-public class GLFrameBuffer<T> : IDisposable where T : GLTexture
+public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 {
     public const int GL_DEPTH24_STENCIL8_OES = 0x88F0;
 
@@ -79,7 +78,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
     public int DefaultFramebufferHandle { get; set; }
 
     // true if we have polled for the default handle already.
-    public bool DefaultFramebufferHandleInitialized { get; set; } = false;
+    public bool DefaultFramebufferHandleInitialized { get; set; }
 
     public int  FramebufferHandle              { get; set; }
     public int  DepthbufferHandle              { get; set; }
@@ -104,22 +103,22 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
         if ( HasDepthStencilPackedBuffer )
         {
-            GL.glDeleteRenderbuffer( DepthStencilPackedBufferHandle );
+            GL.glDeleteRenderbuffers( ( uint ) DepthStencilPackedBufferHandle );
         }
         else
         {
             if ( BufferBuilder.HasDepthRenderBuffer )
             {
-                GL.glDeleteRenderbuffer( DepthbufferHandle );
+                GL.glDeleteRenderbuffers( ( uint ) DepthbufferHandle );
             }
 
             if ( BufferBuilder.HasStencilRenderBuffer )
             {
-                GL.glDeleteRenderbuffer( StencilbufferHandle );
+                GL.glDeleteRenderbuffers( ( uint ) StencilbufferHandle );
             }
         }
 
-        GL.glDeleteFramebuffer( FramebufferHandle );
+        GL.glDeleteFramebuffers( ( uint ) FramebufferHandle );
 
         if ( Buffers?[ Gdx.App ] != null )
         {
@@ -189,9 +188,9 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
             }
         }
 
-        FramebufferHandle = ( int )GL.glGenFramebuffer();
+        FramebufferHandle = ( int ) GL.glGenFramebuffer();
 
-        GL.glBindFramebuffer( IGL20.GL_FRAMEBUFFER, ( uint )FramebufferHandle );
+        GL.glBindFramebuffer( IGL20.GL_FRAMEBUFFER, ( uint ) FramebufferHandle );
 
         var width  = BufferBuilder.Width;
         var height = BufferBuilder.Height;
@@ -199,8 +198,8 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
         if ( BufferBuilder.HasDepthRenderBuffer )
         {
             //TODO: uint -> int -> uint ????
-            DepthbufferHandle = ( int )GL.glGenRenderbuffer();
-            GL.glBindRenderbuffer( IGL20.GL_RENDERBUFFER, ( uint )DepthbufferHandle );
+            DepthbufferHandle = ( int ) GL.glGenRenderbuffer();
+            GL.glBindRenderbuffer( IGL20.GL_RENDERBUFFER, ( uint ) DepthbufferHandle );
 
             if ( BufferBuilder.DepthRenderBufferSpec != null )
             {
@@ -210,8 +209,8 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
         if ( BufferBuilder.HasStencilRenderBuffer )
         {
-            StencilbufferHandle = ( int )GL.glGenRenderbuffer();
-            GL.glBindRenderbuffer( IGL20.GL_RENDERBUFFER, ( uint )StencilbufferHandle );
+            StencilbufferHandle = ( int ) GL.glGenRenderbuffer();
+            GL.glBindRenderbuffer( IGL20.GL_RENDERBUFFER, ( uint ) StencilbufferHandle );
 
             if ( BufferBuilder.StencilRenderBufferSpec != null )
             {
@@ -221,8 +220,8 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
         if ( BufferBuilder.HasPackedStencilDepthRenderBuffer )
         {
-            DepthStencilPackedBufferHandle = ( int )GL.glGenRenderbuffer();
-            GL.glBindRenderbuffer( IGL20.GL_RENDERBUFFER, ( uint )DepthStencilPackedBufferHandle );
+            DepthStencilPackedBufferHandle = ( int ) GL.glGenRenderbuffer();
+            GL.glBindRenderbuffer( IGL20.GL_RENDERBUFFER, ( uint ) DepthStencilPackedBufferHandle );
 
             if ( BufferBuilder.PackedStencilDepthRenderBufferSpec != null )
             {
@@ -244,7 +243,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
                 T texture = CreateTexture( attachmentSpec );
                 TextureAttachments.Add( texture );
 
-                var tempHandle = ( uint )texture.GetTextureObjectHandle();
+                var tempHandle = ( uint ) texture.GetTextureObjectHandle();
 
                 if ( attachmentSpec.IsColorTexture )
                 {
@@ -279,7 +278,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
             T texture = CreateTexture( BufferBuilder.TextureAttachmentSpecs.First() );
             TextureAttachments.Add( texture );
 
-            GL.glBindTexture( texture.GLTarget, ( uint )texture.GetTextureObjectHandle() );
+            GL.glBindTexture( texture.GLTarget, ( uint ) texture.GetTextureObjectHandle() );
         }
 
         if ( HasMultipleTexturesPresent )
@@ -305,12 +304,12 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
             GL.glFramebufferRenderbuffer( IGL20.GL_FRAMEBUFFER,
                                           IGL20.GL_DEPTH_ATTACHMENT,
                                           IGL20.GL_RENDERBUFFER,
-                                          ( uint )DepthbufferHandle );
+                                          ( uint ) DepthbufferHandle );
         }
 
         if ( BufferBuilder.HasStencilRenderBuffer )
         {
-            GL.glFramebufferRenderbuffer( IGL20.GL_FRAMEBUFFER, IGL20.GL_STENCIL_ATTACHMENT, IGL20.GL_RENDERBUFFER, ( uint )StencilbufferHandle );
+            GL.glFramebufferRenderbuffer( IGL20.GL_FRAMEBUFFER, IGL20.GL_STENCIL_ATTACHMENT, IGL20.GL_RENDERBUFFER, ( uint ) StencilbufferHandle );
         }
 
         if ( BufferBuilder.HasPackedStencilDepthRenderBuffer )
@@ -318,7 +317,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
             GL.glFramebufferRenderbuffer( IGL20.GL_FRAMEBUFFER,
                                           IGL30.GL_DEPTH_STENCIL_ATTACHMENT,
                                           IGL20.GL_RENDERBUFFER,
-                                          ( uint )DepthStencilPackedBufferHandle );
+                                          ( uint ) DepthStencilPackedBufferHandle );
         }
 
         GL.glBindRenderbuffer( IGL20.GL_RENDERBUFFER, 0 );
@@ -337,43 +336,43 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
         {
             if ( BufferBuilder.HasDepthRenderBuffer )
             {
-                GL.glDeleteRenderbuffers( ( uint )DepthbufferHandle );
+                GL.glDeleteRenderbuffers( ( uint ) DepthbufferHandle );
                 DepthbufferHandle = 0;
             }
 
             if ( BufferBuilder.HasStencilRenderBuffer )
             {
-                GL.glDeleteRenderbuffers( ( uint )StencilbufferHandle );
+                GL.glDeleteRenderbuffers( ( uint ) StencilbufferHandle );
                 StencilbufferHandle = 0;
             }
 
             if ( BufferBuilder.HasPackedStencilDepthRenderBuffer )
             {
-                GL.glDeleteRenderbuffers( ( uint )DepthStencilPackedBufferHandle );
+                GL.glDeleteRenderbuffers( ( uint ) DepthStencilPackedBufferHandle );
                 DepthStencilPackedBufferHandle = 0;
             }
 
-            DepthStencilPackedBufferHandle = ( int )GL.glGenRenderbuffer();
+            DepthStencilPackedBufferHandle = ( int ) GL.glGenRenderbuffer();
             HasDepthStencilPackedBuffer    = true;
 
-            GL.glBindRenderbuffer( IGL20.GL_RENDERBUFFER, ( uint )DepthStencilPackedBufferHandle );
+            GL.glBindRenderbuffer( IGL20.GL_RENDERBUFFER, ( uint ) DepthStencilPackedBufferHandle );
             GL.glRenderbufferStorage( IGL20.GL_RENDERBUFFER, GL_DEPTH24_STENCIL8_OES, width, height );
             GL.glBindRenderbuffer( IGL20.GL_RENDERBUFFER, 0 );
 
             GL.glFramebufferRenderbuffer( IGL20.GL_FRAMEBUFFER,
                                           IGL20.GL_DEPTH_ATTACHMENT,
                                           IGL20.GL_RENDERBUFFER,
-                                          ( uint )DepthStencilPackedBufferHandle );
+                                          ( uint ) DepthStencilPackedBufferHandle );
 
             GL.glFramebufferRenderbuffer( IGL20.GL_FRAMEBUFFER,
                                           IGL20.GL_STENCIL_ATTACHMENT,
                                           IGL20.GL_RENDERBUFFER,
-                                          ( uint )DepthStencilPackedBufferHandle );
+                                          ( uint ) DepthStencilPackedBufferHandle );
 
             result = GL.glCheckFramebufferStatus( IGL20.GL_FRAMEBUFFER );
         }
 
-        GL.glBindFramebuffer( IGL20.GL_FRAMEBUFFER, ( uint )DefaultFramebufferHandle );
+        GL.glBindFramebuffer( IGL20.GL_FRAMEBUFFER, ( uint ) DefaultFramebufferHandle );
 
         if ( result != IGL20.GL_FRAMEBUFFER_COMPLETE )
         {
@@ -384,22 +383,22 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
 
             if ( HasDepthStencilPackedBuffer )
             {
-                GL.glDeleteBuffers( ( uint )DepthStencilPackedBufferHandle );
+                GL.glDeleteBuffers( ( uint ) DepthStencilPackedBufferHandle );
             }
             else
             {
                 if ( BufferBuilder.HasDepthRenderBuffer )
                 {
-                    GL.glDeleteRenderbuffers( ( uint )DepthbufferHandle );
+                    GL.glDeleteRenderbuffers( ( uint ) DepthbufferHandle );
                 }
 
                 if ( BufferBuilder.HasStencilRenderBuffer )
                 {
-                    GL.glDeleteRenderbuffers( ( uint )StencilbufferHandle );
+                    GL.glDeleteRenderbuffers( ( uint ) StencilbufferHandle );
                 }
             }
 
-            GL.glDeleteFramebuffers( ( uint )FramebufferHandle );
+            GL.glDeleteFramebuffers( ( uint ) FramebufferHandle );
 
             if ( result == IGL20.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT )
             {
@@ -472,7 +471,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
     /// </summary>
     protected virtual void Bind()
     {
-        GL.glBindFramebuffer( IGL20.GL_FRAMEBUFFER, ( uint )FramebufferHandle );
+        GL.glBindFramebuffer( IGL20.GL_FRAMEBUFFER, ( uint ) FramebufferHandle );
     }
 
     /// <summary>
@@ -481,7 +480,7 @@ public class GLFrameBuffer<T> : IDisposable where T : GLTexture
     /// </summary>
     public void Unbind()
     {
-        GL.glBindFramebuffer( IGL20.GL_FRAMEBUFFER, ( uint )DefaultFramebufferHandle );
+        GL.glBindFramebuffer( IGL20.GL_FRAMEBUFFER, ( uint ) DefaultFramebufferHandle );
     }
 
     /// <summary>

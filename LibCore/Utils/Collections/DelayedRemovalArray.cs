@@ -27,12 +27,31 @@ using LughSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LughSharp.LibCore.Utils.Collections;
 
-public class DelayedRemovalArray<T> : List< T >
+/// <summary>
+/// An array that queues removal during iteration until the iteration has completed.
+/// Queues any removals done after <see cref="Begin()"/> is called to occur once
+/// <see cref="End()"/> is called. This can allow code out of your control to remove items
+/// without affecting iteration. Between begin and end, most mutator methods will throw
+/// IllegalStateException. Only <see cref="RemoveIndex(int)"/>, <see cref="RemoveValue"/>,
+/// <see cref="RemoveRange(int, int)"/>, <see cref="Clear()"/>, and add methods are allowed.
+/// <para>
+/// Note that DelayedRemovalArray is not for thread safety, only for removal during iteration.
+/// </para>
+/// <para>
+/// Code using this class must not rely on items being removed immediately. Consider using
+/// <see cref="SnapshotArray{T}"/> if this is a problem.
+/// </para>
+/// </summary>
+[PublicAPI]
+public class DelayedRemovalArray< T > : List< T >
 {
-    private readonly List< int > _remove    = new();
-    private          int         _clear     = 0;
-    private          int         _iterating = 0;
+    private readonly List< int > _remove = new();
 
+    private int _clear;
+    private int _iterating;
+
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// </summary>
     /// <param name="array"></param>

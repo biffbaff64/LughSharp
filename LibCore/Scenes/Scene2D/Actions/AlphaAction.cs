@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 ///     current alpha to the new alpha. Note this action transitions from the
 ///     alpha at the time the action starts to the specified alpha.
 /// </summary>
+[PublicAPI]
 public class AlphaAction : TemporalAction
 {
     private float _start;

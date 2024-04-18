@@ -28,6 +28,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 /// <summary>
 ///     Adds an action to an actor.
 /// </summary>
+[PublicAPI]
 public class AddAction : Action
 {
     public Action? Action { get; set; }

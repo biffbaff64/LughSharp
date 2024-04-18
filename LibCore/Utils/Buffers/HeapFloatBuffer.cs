@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Utils.Buffers;
 
+[PublicAPI]
 public class HeapFloatBuffer : FloatBuffer
 {
     public HeapFloatBuffer( int cap, int lim )
@@ -61,7 +62,7 @@ public class HeapFloatBuffer : FloatBuffer
     /// <returns>  The array that backs this buffer </returns>
     public override object BackingArray()
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -93,7 +94,7 @@ public class HeapFloatBuffer : FloatBuffer
     /// <returns> The new float buffer </returns>
     public override FloatBuffer Slice()
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -114,7 +115,7 @@ public class HeapFloatBuffer : FloatBuffer
     /// <returns> The new float buffer </returns>
     public override FloatBuffer Duplicate()
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -139,7 +140,7 @@ public class HeapFloatBuffer : FloatBuffer
     /// <returns> The new, read-only float buffer </returns>
     public override FloatBuffer asReadOnlyBuffer()
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -172,7 +173,7 @@ public class HeapFloatBuffer : FloatBuffer
     /// </exception>
     public override FloatBuffer Put( float f )
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -203,7 +204,7 @@ public class HeapFloatBuffer : FloatBuffer
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public override FloatBuffer Put( int index, float f )
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -229,7 +230,7 @@ public class HeapFloatBuffer : FloatBuffer
     /// <exception cref="GdxRuntimeException">If this buffer is read-only</exception>
     public override FloatBuffer Compact()
     {
-        return null;
+        return null!;
     }
 
     /// <summary>
@@ -243,6 +244,6 @@ public class HeapFloatBuffer : FloatBuffer
     /// <returns> This buffer's byte order </returns>
     public override ByteOrder Order()
     {
-        return null;
+        return null!;
     }
 }

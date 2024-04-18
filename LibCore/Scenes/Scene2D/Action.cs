@@ -27,13 +27,9 @@ using LughSharp.LibCore.Utils.Pooling;
 
 namespace LughSharp.LibCore.Scenes.Scene2D;
 
+[PublicAPI]
 public abstract class Action : IAction, IPoolable
 {
-    /// <summary>
-    ///     The actor this action is attached to, or null if it is not attached.
-    /// </summary>
-    private Actor? _actor;
-
     /// <inheritdoc />
     public Pool< Action >? Pool { get; set; }
 
@@ -71,6 +67,11 @@ public abstract class Action : IAction, IPoolable
             }
         }
     }
+
+    /// <summary>
+    ///     The actor this action is attached to, or null if it is not attached.
+    /// </summary>
+    private Actor? _actor;
 
     /// <inheritdoc cref="IAction.Reset()"/>
     public virtual void Reset()

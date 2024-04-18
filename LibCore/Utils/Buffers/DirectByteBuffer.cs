@@ -91,180 +91,115 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
         return null!;
     }
 
-    /**
-     * Creates a new, read-only byte buffer that shares this buffer's
-     * content.
-     * <p>
-     *     The content of the new buffer will be that of this buffer.  Changes
-     *     to this buffer's content will be visible in the new buffer; the new
-     *     buffer itself, however, will be read-only and will not allow the shared
-     *     content to be modified.  The two buffers' position, limit, and mark
-     *     values will be independent.
-     *     <p>
-     *         The new buffer's capacity, limit, position, and mark values will be
-     *         identical to those of this buffer.
-     *         <p>
-     *             If this buffer is itself read-only then this method behaves in
-     *             exactly the same way as the {@link #duplicate duplicate} method.
-     *         </p>
-     *         @return  The new, read-only byte buffer
-     */
+    /// <summary>
+    /// Creates a new, read-only byte buffer that shares this buffer's
+    /// content.
+    /// <para>
+    ///     The content of the new buffer will be that of this buffer.  Changes
+    ///     to this buffer's content will be visible in the new buffer; the new
+    ///     buffer itself, however, will be read-only and will not allow the shared
+    ///     content to be modified.  The two buffers' position, limit, and mark
+    ///     values will be independent.
+    ///     <para>
+    ///         The new buffer's capacity, limit, position, and mark values will be
+    ///         identical to those of this buffer.
+    ///         <para>
+    ///             If this buffer is itself read-only then this method behaves in
+    ///             exactly the same way as the {@link #duplicate duplicate} method.
+    ///         </para>
+    ///     </para>
+    /// </para>
+    /// </summary>
     public override ByteBuffer AsReadOnlyBuffer()
     {
-        return null;
+        return null!;
     }
 
-    /**
-     * Relative
-     * <i>get</i>
-     * method.  Reads the byte at this buffer's
-     * current position, and then increments the position.
-     * 
-     * @return  The byte at the buffer's current position
-     * 
-     * @throws  BufferUnderflowException
-     * If the buffer's current position is not smaller than its limit
-     */
+    /// <summary>
+    ///     Relative <i>get</i> method. Reads the byte at this buffer's current
+    ///     position, and then increments the position.
+    /// </summary>
+    /// <returns> The byte at the buffer's current position </returns>
     public override byte Get()
     {
         return 0;
     }
 
-    /**
-     * Relative
-     * <i>put</i>
-     * method
-     * <i>(optional operation)</i>
-     * .
-     * <p>
-     *     Writes the given byte into this buffer at the current
-     *     position, and then increments the position.
-     * </p>
-     * @param  b
-     * The byte to be written
-     * 
-     * @return  This buffer
-     * 
-     * @throws  BufferOverflowException
-     * If this buffer's current position is not smaller than its limit
-     * 
-     * @throws  GdxRuntimeException( "Buffer is Read Only!" )
-     * If this buffer is read-only
-     */
+    /// <summary>
+    /// Relative <i>put</i> method <i>(optional operation)</i>.
+    /// <para>
+    ///     Writes the given byte into this buffer at the current
+    ///     position, and then increments the position.
+    /// </para>
+    /// <param name="b"> The byte to be written </param>
+    /// </summary>
+    /// <returns> This buffer </returns>
     public override ByteBuffer Put( byte b )
     {
-        return null;
+        return this;
     }
 
-    /**
-     * Absolute
-     * <i>get</i>
-     * method.  Reads the byte at the given
-     * index.
-     * 
-     * @param  index
-     * The index from which the byte will be read
-     * 
-     * @return  The byte at the given index
-     * 
-     * @throws  IndexOutOfBoundsException
-     * If
-     * <tt>index</tt>
-     * is negative
-     * or not smaller than the buffer's limit
-     */
+    /// <summary>
+    /// Absolute <i>get</i> method. Reads the byte at the given index.
+    /// </summary>
+    /// <param name="index"> The index from which the byte will be read </param>
+    /// <returns> The byte at the given index </returns>
     public override byte Get( int index )
     {
         return 0;
     }
 
-    /**
-     * Absolute
-     * <i>put</i>
-     * method
-     * <i>(optional operation)</i>
-     * .
-     * <p>
-     *     Writes the given byte into this buffer at the given
-     *     index.
-     * </p>
-     * @param  index
-     * The index at which the byte will be written
-     * 
-     * @param  b
-     * The byte value to be written
-     * 
-     * @return  This buffer
-     * 
-     * @throws  IndexOutOfBoundsException
-     * If
-     * <tt>index</tt>
-     * is negative
-     * or not smaller than the buffer's limit
-     * 
-     * @throws  GdxRuntimeException( "Buffer is Read Only!" )
-     * If this buffer is read-only
-     */
+    /// <summary>
+    /// Absolute <i>put</i> method <i>(optional operation)</i>.
+    ///     <para>
+    ///         Writes the given byte into this buffer at the given index.
+    ///     </para>
+    /// </summary>
+    /// <param name="index">The index at which the byte will be written</param>
+    /// <param name="b"> The byte value to be written </param>
+    /// <returns> This buffer </returns>
     public override ByteBuffer Put( int index, byte b )
     {
-        return null;
+        return this;
     }
 
-    /**
-     * * Compacts this buffer
-     * <i>(optional operation)</i>
-     * .
-     * *
-     * *
-     * <p>
-     *     The bytes between the buffer's current position and its limit,
-     *     * if any, are copied to the beginning of the buffer.  That is, the
-     *     * byte at index <i>p</i> = <tt>position()</tt> is copied
-     *     * to index zero, the byte at index <i>p</i> + 1 is copied
-     *     * to index one, and so forth until the byte at index
-     *     * <tt>limit()</tt> - 1 is copied to index
-     *     * <i>n</i> = <tt>limit()</tt> - <tt>1</tt> - <i>p</i>.
-     *     * The buffer's position is then set to <i>n+1</i> and its limit is set to
-     *     * its capacity.  The mark, if defined, is discarded.
-     *     *
-     *     *
-     *     <p>
-     *         The buffer's position is set to the number of bytes copied,
-     *         * rather than to zero, so that an invocation of this method can be
-     *         * followed immediately by an invocation of another relative <i>put</i>
-     *         * method.
-     *     </p>
-     *     *
-     *     *
-     *     *
-     *     <p>
-     *         Invoke this method after writing data from a buffer in case the
-     *         * write was incomplete.  The following loop, for example, copies bytes
-     *         * from one channel to another via the buffer <tt>buf</tt>:
-     *         *
-     *         *
-     *         <blockquote>
-     *             <pre>
-     *                 {@code
-     *                 *   buf.clear();          // Prepare buffer for use
-     *                 *   while (in.read(buf) >= 0 || buf.position != 0) {
-     *                 *       buf.flip();
-     *                 *       out.write(buf);
-     *                 *       buf.compact();    // In case of partial write
-     *                 *   }
-     *                 * }
-     *             </pre>
-     *         </blockquote>
-     *         *
-     *         *
-     *         * @return  This buffer
-     *         *
-     *         * @throws  GdxRuntimeException( "Buffer is Read Only!" )
-     *         *          If this buffer is read-only
-     */
+    /// <summary>
+    /// Compacts this buffer <i>(optional operation)</i>.
+    /// <para>
+    ///     The bytes between the buffer's current position and its limit, if any,
+    ///     are copied to the beginning of the buffer. That is, the byte at index
+    ///     <i>p</i> = <tt>position()</tt> is copied to index zero, the byte at
+    ///     index <i>p</i> + 1 is copied to index one, and so forth until the byte
+    ///     at index <tt>limit()</tt> - 1 is copied to index
+    ///     <i>n</i> = <tt>limit()</tt> - <tt>1</tt> - <i>p</i>.
+    ///     The buffer's position is then set to <i>n+1</i> and its limit is set to
+    ///     its capacity.  The mark, if defined, is discarded.
+    ///     <para>
+    ///         The buffer's position is set to the number of bytes copied,
+    ///         * rather than to zero, so that an invocation of this method can be
+    ///         * followed immediately by an invocation of another relative <i>put</i>
+    ///         * method.
+    ///     </para>
+    ///     <para>
+    ///         Invoke this method after writing data from a buffer in case the
+    ///         write was incomplete.  The following loop, for example, copies bytes
+    ///         from one channel to another via the buffer <tt>buf</tt>:
+    ///         <code>
+    ///             buf.clear();          // Prepare buffer for use
+    ///             while (in.read(buf) >= 0 || buf.position != 0)
+    ///             {
+    ///                 buf.flip();
+    ///                 out.write(buf);
+    ///                 buf.compact();    // In case of partial write
+    ///             }
+    ///         </code>
+    ///     </para>
+    /// </para>
+    /// </summary>
+    /// <returns> This buffer </returns>
     public override ByteBuffer Compact()
     {
-        return null;
+        return null!;
     }
 
     public override char GetChar()
@@ -279,17 +214,17 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
 
     public override ByteBuffer PutChar( char value )
     {
-        return null;
+        return null!;
     }
 
     public override ByteBuffer PutChar( int index, char value )
     {
-        return null;
+        return null!;
     }
 
     public override CharBuffer AsCharBuffer()
     {
-        return null;
+        return null!;
     }
 
     public override short GetShort()
@@ -304,17 +239,17 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
 
     public override ByteBuffer PutShort( short value )
     {
-        return null;
+        return null!;
     }
 
     public override ByteBuffer PutShort( int index, short value )
     {
-        return null;
+        return null!;
     }
 
     public override ShortBuffer AsShortBuffer()
     {
-        return null;
+        return null!;
     }
 
     public override int GetInt()
@@ -329,17 +264,17 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
 
     public override ByteBuffer PutInt( int value )
     {
-        return null;
+        return null!;
     }
 
     public override ByteBuffer PutInt( int index, int value )
     {
-        return null;
+        return null!;
     }
 
     public override IntBuffer AsIntBuffer()
     {
-        return null;
+        return null!;
     }
 
     public override long GetLong()
@@ -354,17 +289,17 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
 
     public override ByteBuffer PutLong( long value )
     {
-        return null;
+        return null!;
     }
 
     public override ByteBuffer PutLong( int index, long value )
     {
-        return null;
+        return null!;
     }
 
     public override LongBuffer AsLongBuffer()
     {
-        return null;
+        return null!;
     }
 
     public override float GetFloat()
@@ -379,147 +314,98 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
 
     public override ByteBuffer PutFloat( float value )
     {
-        return null;
+        return null!;
     }
 
     public override ByteBuffer PutFloat( int index, float value )
     {
-        return null;
+        return null!;
     }
 
     public override FloatBuffer AsFloatBuffer()
     {
-        return null;
+        return null!;
     }
 
-    /**
-     * Relative
-     * <i>get</i>
-     * method for reading a double value.
-     * <p>
-     *     Reads the next eight bytes at this buffer's current position,
-     *     composing them into a double value according to the current byte order,
-     *     and then increments the position by eight.
-     * </p>
-     * @return  The double value at the buffer's current position
-     * 
-     * @throws  BufferUnderflowException
-     * If there are fewer than eight bytes
-     * remaining in this buffer
-     */
+    /// <summary>
+    /// Relative <i>get</i> method for reading a double value.
+    /// <para>
+    ///     Reads the next eight bytes at this buffer's current position,
+    ///     composing them into a double value according to the current byte order,
+    ///     and then increments the position by eight.
+    /// </para>
+    /// </summary>
+    /// <returns> The double value at the buffer's current position </returns>
     public override double GetDouble()
     {
         return 0;
     }
 
-    /**
-     * Absolute
-     * <i>get</i>
-     * method for reading a double value.
-     * <p>
-     *     Reads eight bytes at the given index, composing them into a
-     *     double value according to the current byte order.
-     * </p>
-     * @param  index
-     * The index from which the bytes will be read
-     * 
-     * @return  The double value at the given index
-     * 
-     * @throws  IndexOutOfBoundsException
-     * If
-     * <tt>index</tt>
-     * is negative
-     * or not smaller than the buffer's limit,
-     * minus seven
-     */
+    /// <summary>
+    /// Absolute <i>get</i> method for reading a double value.
+    /// <para>
+    ///     Reads eight bytes at the given index, composing them into a
+    ///     double value according to the current byte order.
+    /// </para>
+    /// </summary>
+    /// <param name="index"> The index from which the bytes will be read </param>
+    /// <returns> The double value at the given index </returns>
     public override double GetDouble( int index )
     {
         return 0;
     }
 
-    /**
-     * Relative
-     * <i>put</i>
-     * method for writing a double
-     * value
-     * <i>(optional operation)</i>
-     * .
-     * <p>
-     *     Writes eight bytes containing the given double value, in the
-     *     current byte order, into this buffer at the current position, and then
-     *     increments the position by eight.
-     * </p>
-     * @param  value
-     * The double value to be written
-     * 
-     * @return  This buffer
-     * 
-     * @throws  BufferOverflowException
-     * If there are fewer than eight bytes
-     * remaining in this buffer
-     * 
-     * @throws  GdxRuntimeException( "Buffer is Read Only!" )
-     * If this buffer is read-only
-     */
+    /// <summary>
+    /// Relative <i>put</i> method for writing a double value <i>(optional operation)</i>.
+    /// <para>
+    ///     Writes eight bytes containing the given double value, in the
+    ///     current byte order, into this buffer at the current position, and then
+    ///     increments the position by eight.
+    /// </para>
+    /// </summary>
+    /// <param name="value"> The double value to be written </param>
+    /// <returns> This buffer </returns>
     public override ByteBuffer PutDouble( double value )
     {
-        return null;
+        return this;
     }
 
-    /**
-     * Absolute
-     * <i>put</i>
-     * method for writing a double
-     * value
-     * <i>(optional operation)</i>
-     * .
-     * <p>
-     *     Writes eight bytes containing the given double value, in the
-     *     current byte order, into this buffer at the given index.
-     * </p>
-     * @param  index
-     * The index at which the bytes will be written
-     * 
-     * @param  value
-     * The double value to be written
-     * 
-     * @return  This buffer
-     * 
-     * @throws  IndexOutOfBoundsException
-     * If
-     * <tt>index</tt>
-     * is negative
-     * or not smaller than the buffer's limit,
-     * minus seven
-     * 
-     * @throws  GdxRuntimeException( "Buffer is Read Only!" )
-     * If this buffer is read-only
-     */
+    /// <summary>
+    /// Absolute <i>put</i> method for writing a double value
+    /// <i>(optional operation)</i>
+    /// <para>
+    ///     Writes eight bytes containing the given double value, in the
+    ///     current byte order, into this buffer at the given index.
+    /// </para>
+    /// </summary>
+    /// <param name="index"> The index at which the bytes will be written </param>
+    /// <param name="value"> The double value to be written </param>
+    /// <returns> This buffer </returns>
     public override ByteBuffer PutDouble( int index, double value )
     {
-        return null;
+        return this;
     }
 
-    /**
-     * Creates a view of this byte buffer as a double buffer.
-     * <p>
-     *     The content of the new buffer will start at this buffer's current
-     *     position.  Changes to this buffer's content will be visible in the new
-     *     buffer, and vice versa; the two buffers' position, limit, and mark
-     *     values will be independent.
-     * </p>
-     * <p>
-     *     The new buffer's position will be zero, its capacity and its limit
-     *     will be the number of bytes remaining in this buffer divided by
-     *     eight, and its mark will be undefined.  The new buffer will be direct
-     *     if, and only if, this buffer is direct, and it will be read-only if, and
-     *     only if, this buffer is read-only.
-     * </p>
-     * @return  A new double buffer
-     */
+    /// <summary>
+    /// Creates a view of this byte buffer as a double buffer.
+    /// <para>
+    ///     The content of the new buffer will start at this buffer's current
+    ///     position.  Changes to this buffer's content will be visible in the new
+    ///     buffer, and vice versa; the two buffers' position, limit, and mark
+    ///     values will be independent.
+    /// </para>
+    /// <para>
+    ///     The new buffer's position will be zero, its capacity and its limit
+    ///     will be the number of bytes remaining in this buffer divided by
+    ///     eight, and its mark will be undefined.  The new buffer will be direct
+    ///     if, and only if, this buffer is direct, and it will be read-only if, and
+    ///     only if, this buffer is read-only.
+    /// </para>
+    /// </summary>
+    /// <returns> A new double buffer </returns>
     public override DoubleBuffer AsDoubleBuffer()
     {
-        return null;
+        return null!;
     }
 
     // ------------------------------------------------------------------------
@@ -543,6 +429,7 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
 
         public void Run()
         {
+            // ReSharper disable once RedundantCheckBeforeAssignment
             if ( _address == 0 )
             {
                 return;

@@ -273,13 +273,13 @@ public class Dialog : Window
 
     /// <summary>
     ///     Centers the dialog in the stage and calls <see cref="Show(Stage, Action)" />
-    ///     with a <see cref="SceneActions.FadeIn(float,LughSharp.LibCore.Maths.IInterpolation)" /> action.
+    ///     with a <see cref="Actions.FadeIn(float,LughSharp.LibCore.Maths.IInterpolation)" /> action.
     /// </summary>
     public Dialog Show( Stage stage )
     {
         Show( stage,
-              SceneActions.Sequence( SceneActions.Alpha( 0 ),
-                                     SceneActions.FadeIn( 0.4f, Interpolation.fade ) ) );
+              Scene2D.Actions.Actions.Sequence( Scene2D.Actions.Actions.Alpha( 0 ),
+                                                Scene2D.Actions.Actions.FadeIn( 0.4f, Interpolation.fade ) ) );
 
         SetPosition( ( float )Math.Round( ( stage.Width - Width ) / 2 ),
                      ( float )Math.Round( ( stage.Height - Height ) / 2 ) );
@@ -328,9 +328,9 @@ public class Dialog : Window
         {
             AddCaptureListener( _ignoreTouchDown );
 
-            AddAction( SceneActions.Sequence( action,
-                                              SceneActions.RemoveListener( _ignoreTouchDown, true ),
-                                              SceneActions.RemoveActor() ) );
+            AddAction( Scene2D.Actions.Actions.Sequence( action,
+                                                         Scene2D.Actions.Actions.RemoveListener( _ignoreTouchDown, true ),
+                                                         Scene2D.Actions.Actions.RemoveActor() ) );
         }
         else
         {
@@ -344,7 +344,7 @@ public class Dialog : Window
     /// </summary>
     public void Hide()
     {
-        Hide( SceneActions.FadeOut( 0.4f, Interpolation.fade ) );
+        Hide( Scene2D.Actions.Actions.FadeOut( 0.4f, Interpolation.fade ) );
     }
 
     public void SetObject( Actor actor, object obj )

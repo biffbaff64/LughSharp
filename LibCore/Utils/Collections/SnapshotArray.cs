@@ -42,7 +42,7 @@ namespace LughSharp.LibCore.Utils.Collections;
 ///     </para>
 /// </summary>
 [PublicAPI]
-public class SnapshotArray<T> : Array< T >, IEnumerable< T >
+public class SnapshotArray< T > : Array< T >, IEnumerable< T >
 {
     private T[]? _recycled;
     private T[]? _snapshot;
@@ -188,7 +188,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 
         if ( Size == Items.Length )
         {
-            Items = Resize( Math.Max( 8, ( int )( Size * 1.75f ) ) );
+            Items = Resize( Math.Max( 8, ( int ) ( Size * 1.75f ) ) );
         }
 
         Items[ Size++ ] = value;
@@ -230,7 +230,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 
         if ( sizeNeeded > Items.Length )
         {
-            Items = Resize( Math.Max( 8, ( int )( sizeNeeded * 1.75f ) ) );
+            Items = Resize( Math.Max( 8, ( int ) ( sizeNeeded * 1.75f ) ) );
         }
 
         Array.Copy( array, start, Items, Size, count );
@@ -289,7 +289,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 
         if ( Size == Items.Length )
         {
-            Items = Resize( Math.Max( 8, ( int )( Size * 1.75f ) ) );
+            Items = Resize( Math.Max( 8, ( int ) ( Size * 1.75f ) ) );
         }
 
         if ( Ordered )
@@ -511,7 +511,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 
     protected override T[] Resize( int newSize )
     {
-        var newItems = ( T[] )Array.CreateInstance( Items.GetType(), newSize );
+        var newItems = ( T[] ) Array.CreateInstance( Items.GetType(), newSize );
 
         Array.Copy( Items, 0, newItems, 0, Math.Min( Size, newItems.Length ) );
 
@@ -525,13 +525,13 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
         Type? memberInfo = Items.GetType().BaseType;
 
         return memberInfo != null
-            ? ToArray( memberInfo )
-            : ( T[] )Array.CreateInstance( Items.GetType(), Size );
+                   ? ToArray( memberInfo )
+                   : ( T[] ) Array.CreateInstance( Items.GetType(), Size );
     }
 
     public override T[] ToArray( Type type )
     {
-        var result = ( T[] )Array.CreateInstance( type, Size );
+        var result = ( T[] ) Array.CreateInstance( type, Size );
 
         Array.Copy( Items, 0, result, 0, Size );
 
@@ -556,7 +556,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
             return false;
         }
 
-        var array = ( SnapshotArray< T >? )obj;
+        var array = ( SnapshotArray< T >? ) obj;
 
         if ( array is not { Ordered: true } )
         {
@@ -586,7 +586,7 @@ public class SnapshotArray<T> : Array< T >, IEnumerable< T >
 }
 
 [PublicAPI]
-public class SnapshotEnumerator<T> : IEnumerator< T >
+public class SnapshotEnumerator< T > : IEnumerator< T >
 {
     private readonly T[] _array;
     private          int _position = -1;

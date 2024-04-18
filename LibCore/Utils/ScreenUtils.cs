@@ -31,10 +31,9 @@ using LughSharp.LibCore.Utils.Buffers;
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>
-///     Class with static helper methods related to currently bound OpenGL
-///     frame buffer, including access to the current OpenGL FrameBuffer.
-///     These methods can be used to get the entire screen content or a
-///     portion thereof.
+///     Class with static helper methods related to currently bound OpenGL frame buffer,
+///     including access to the current OpenGL FrameBuffer. These methods can be used to
+///     get the entire screen content or a portion thereof.
 /// </summary>
 [PublicAPI]
 public class ScreenUtils
@@ -97,16 +96,16 @@ public class ScreenUtils
     /// <param name="b"></param>
     public static void Clear( float r, float g, float b, float a, bool clearDepth = false )
     {
-        Gdx.GL.GLClearColor( r, g, b, a );
+        GL.glClearColor( r, g, b, a );
 
-        var mask = IGL20.GL_COLOR_BUFFER_BIT;
+        var mask = ( uint ) IGL20.GL_COLOR_BUFFER_BIT;
 
         if ( clearDepth )
         {
             mask |= IGL20.GL_DEPTH_BUFFER_BIT;
         }
 
-        Gdx.GL.GLClear( mask );
+        GL.glClear( mask );
     }
 
     /// <summary>
@@ -193,15 +192,15 @@ public class ScreenUtils
     /// <param name="w"></param>
     /// <param name="h"></param>
     /// <param name="flipY"> whether to flip pixels along Y axis  </param>
-    public static byte[] GetFrameBufferPixels( int x, int y, int w, int h, bool flipY )
+    public static unsafe byte[] GetFrameBufferPixels( int x, int y, int w, int h, bool flipY )
     {
         var numBytes = w * h * 4;
 
-        Gdx.GL.GLPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
+        GL.glPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
 
-        ByteBuffer pixels = BufferUtils.NewByteBuffer( numBytes );
+        var pixels = BufferUtils.NewByteBuffer( numBytes );
 
-        Gdx.GL.GLReadPixels( x, y, w, h, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixels );
+        GL.glReadPixels( x, y, w, h, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixels );
 
         var lines = new byte[ numBytes ];
 

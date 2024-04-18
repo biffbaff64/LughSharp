@@ -56,7 +56,8 @@ namespace LughSharp.LibCore.Utils.Collections;
 ///         Linear probing continues to work even when all hashCodes collide, just more slowly.
 ///     </para>
 /// </summary>
-public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
+[PublicAPI]
+public class IdentityMap< TK, TV > : ObjectMap< TK, TV > where TK : notnull
 {
     private readonly ObjectIDGenerator _objectIDGenerator = new();
 
@@ -103,20 +104,20 @@ public class IdentityMap<TK, TV> : ObjectMap< TK, TV > where TK : notnull
 
     protected new int Place( TK item )
     {
-        var id = ( ulong )_objectIDGenerator.GetId( item, out _firstPlaceGen );
+        var id = ( ulong ) _objectIDGenerator.GetId( item, out _firstPlaceGen );
 
-        return ( int )( ( id * 0x9E3779B97F4A7C15L ) >>> Shift );
+        return ( int ) ( ( id * 0x9E3779B97F4A7C15L ) >>> Shift );
     }
 
     public int LocateKey( TK key )
     {
         ArgumentNullException.ThrowIfNull( key );
 
-        TK?[] keytab = keyTable;
+        TK?[] keytab = KeyTable;
 
         for ( var i = Place( key );; i = ( i + 1 ) & Mask )
         {
-            TK? other = keytab[ i ];
+            var other = keytab[ i ];
 
             if ( other == null )
             {

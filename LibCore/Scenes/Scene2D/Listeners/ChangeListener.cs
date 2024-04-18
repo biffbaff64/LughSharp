@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
+[PublicAPI]
 public class ChangeListener : IEventListener
 {
     public ChangeListener()

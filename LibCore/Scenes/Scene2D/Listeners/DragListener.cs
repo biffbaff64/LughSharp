@@ -33,10 +33,6 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 [PublicAPI]
 public class DragListener : InputListener
 {
-    private float _dragLastX;
-    private float _dragLastY;
-    private int   _pressedPointer = -1;
-
     /// Sets the button to listen for, all other buttons are ignored.
     public int Button { get; set; } = IInput.Buttons.LEFT;
 
@@ -52,6 +48,12 @@ public class DragListener : InputListener
     public float StageTouchDownY { get; private set; } = -1;
     public float DragX           { get; private set; }
     public float DragY           { get; private set; }
+
+    // ------------------------------------------------------------------------
+    
+    private float _dragLastX;
+    private float _dragLastY;
+    private int   _pressedPointer = -1;
 
     /// <summary>
     /// </summary>

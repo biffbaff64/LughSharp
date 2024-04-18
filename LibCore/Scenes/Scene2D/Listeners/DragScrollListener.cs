@@ -28,9 +28,10 @@ using LughSharp.LibCore.Scenes.Scene2D.UI;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
+[PublicAPI]
 public class DragScrollListener : DragListener
 {
-    private readonly static Vector2             TmpCoords      = new();
+    private readonly static Vector2             _tmpCoords      = new();
     private readonly        Interpolation.ExpIn _interpolation = Interpolation.Exp5In;
 
     private readonly ScrollPane _scroll;
@@ -64,13 +65,13 @@ public class DragScrollListener : DragListener
 
     public override void Drag( InputEvent ev, float x, float y, int pointer )
     {
-        ev.ListenerActor?.LocalToActorCoordinates( _scroll, TmpCoords.Set( x, y ) );
+        ev.ListenerActor?.LocalToActorCoordinates( _scroll, _tmpCoords.Set( x, y ) );
 
-        if ( IsAbove( TmpCoords.Y ) )
+        if ( IsAbove( _tmpCoords.Y ) )
         {
             // TODO: Add code for moving the scrollbar UP
         }
-        else if ( IsBelow( TmpCoords.Y ) )
+        else if ( IsBelow( _tmpCoords.Y ) )
         {
             // TODO: Add code for moving the scrollbar DOWN
         }

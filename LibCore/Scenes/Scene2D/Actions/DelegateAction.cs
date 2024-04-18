@@ -27,6 +27,7 @@ using LughSharp.LibCore.Utils.Pooling;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public abstract class DelegateAction : Action
 {
     public Action? Action { get; set; }

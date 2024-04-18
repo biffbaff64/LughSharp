@@ -83,17 +83,18 @@ namespace LughSharp.LibCore.Utils.Buffers;
 ///         </code>
 ///     </para>
 /// </summary>
+[PublicAPI]
 public abstract class CharBuffer : Buffer
 {
-    protected readonly int offset;
+    protected readonly int Offset;
 
     private readonly char[]? _hb; // Non-null only for heap buffers
 
     protected CharBuffer( int mark, int pos, int lim, int cap, char[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        _hb         = hb;
-        this.offset = offset;
+        _hb    = hb;
+        Offset = offset;
     }
 
     /// <summary>
@@ -843,7 +844,7 @@ public abstract class CharBuffer : Buffer
             throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
-        return offset;
+        return Offset;
     }
 
     /// <summary>
@@ -974,7 +975,7 @@ public abstract class CharBuffer : Buffer
     // ------------------------------------------------------------------------
 
     //TODO:
-    #if USING_INTSTREAM
+#if USING_INTSTREAM
     public virtual IntStream Chars()
     {
         return StreamSupport.IntStream
@@ -982,7 +983,7 @@ public abstract class CharBuffer : Buffer
               Buffer.SpliteratorCharacteristics,
               false );
     }
-    #endif
+#endif
 
     // ------------------------------------------------------------------------
 

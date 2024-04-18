@@ -27,6 +27,7 @@ using LughSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class AfterAction : DelegateAction
 {
     private readonly List< Action > _waitForActions = new( 4 );

@@ -126,8 +126,8 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
 
         var item = new ObjectMap< string, ModelData >.Entry
         {
-            key   = fileName,
-            value = data
+            Key   = fileName,
+            Value = data
         };
 
         lock ( items )
@@ -172,9 +172,9 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
         {
             for ( var i = 0; i < items.Count; i++ )
             {
-                if ( items[ i ].key!.Equals( fileName ) )
+                if ( items[ i ].Key!.Equals( fileName ) )
                 {
-                    data = items[ i ].value;
+                    data = items[ i ].Value;
                     items.RemoveAt( i );
                 }
             }

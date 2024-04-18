@@ -30,14 +30,15 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 /// <summary>
 ///     Adds a listener to an actor.
 /// </summary>
+[PublicAPI]
 public class AddListenerAction : Action
 {
-    public IEventListener? Listener { get; set; }
-    public bool            Capture  { get; set; }
+    public IEventListener? Listener  { get; set; }
+    public bool            IsCapture { get; set; }
 
     public override bool Act( float delta )
     {
-        if ( Capture )
+        if ( IsCapture )
         {
             Target?.AddCaptureListener( Listener! );
         }

@@ -32,18 +32,18 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 [PublicAPI]
 public class TouchFocus
 {
-    public int             button;
-    public IEventListener? listener;
-    public Actor?          listenerActor;
-    public int             pointer;
-    public Actor?          target;
+    public int             Button        { get; set; }
+    public IEventListener? Listener      { get; set; }
+    public Actor?          ListenerActor { get; set; }
+    public int             Pointer       { get; set; }
+    public Actor?          Target        { get; set; }
 
     public void Reset()
     {
-        listenerActor = null;
-        listener      = null;
-        target        = null;
-        pointer       = 0;
-        button        = 0;
+        ListenerActor = null;
+        Listener      = null;
+        Target        = null;
+        Pointer       = 0;
+        Button        = 0;
     }
 }

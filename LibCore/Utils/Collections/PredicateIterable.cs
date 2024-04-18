@@ -30,7 +30,8 @@ namespace LughSharp.LibCore.Utils.Collections;
 /// <summary>
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class PredicateIterable<T> : IEnumerable< T >
+[PublicAPI]
+public class PredicateIterable< T > : IEnumerable< T >
 {
     /// <summary>
     /// </summary>
@@ -44,7 +45,7 @@ public class PredicateIterable<T> : IEnumerable< T >
 
     public IEnumerable< T >        Enumerable { get; set; }
     public IPredicate< T >         Predicate  { get; set; }
-    public PredicateIterator< T >? Enumerator { get; set; } = null;
+    public PredicateIterator< T >? Enumerator { get; set; }
 
     /// <summary>
     /// </summary>

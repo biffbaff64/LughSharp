@@ -30,7 +30,7 @@ namespace LughSharp.LibCore.Utils.Collections.Extensions;
 [PublicAPI]
 public static class ListExtensions
 {
-    public static T[] Resize<T>( this List< T > ts, int newSize )
+    public static T[] Resize< T >( this List< T > ts, int newSize )
     {
         var newItems = new T[ newSize ];
 
@@ -46,17 +46,15 @@ public static class ListExtensions
     /// <param name="list"> This list </param>
     /// <typeparam name="T"> This list type </typeparam>
     /// <returns></returns>
-    public static T Random<T>( this List< T > list )
+    public static T Random< T >( this List< T > list )
     {
         return list[ MathUtils.Random( list.Count - 1 ) ];
     }
 
     /// <summary>
+    ///     Returns a new List of the required type.
     /// </summary>
-    /// <param name="t"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public static List< T > New<T>( T t )
+    public static List< T > New< T >( T t )
     {
         return new List< T > { t };
     }
@@ -65,7 +63,7 @@ public static class ListExtensions
     ///     Adds <paramref name="count" /> elements in the source Array, starting at position
     ///     <paramref name="start" /> to the target List.
     /// </summary>
-    public static void AddAll<T>( this List< T > target, T[] source, int start, int count )
+    public static void AddAll< T >( this List< T > target, T[] source, int start, int count )
     {
         for ( var i = start; i < count; i++ )
         {
@@ -77,7 +75,7 @@ public static class ListExtensions
     ///     Adds <paramref name="count" /> elements in the source List, starting at position
     ///     <paramref name="start" /> to the target List.
     /// </summary>
-    public static void AddAll<T>( this List< T > target, List< T > source, int start, int count )
+    public static void AddAll< T >( this List< T > target, List< T > source, int start, int count )
     {
         for ( var i = start; i < count; i++ )
         {
@@ -88,7 +86,7 @@ public static class ListExtensions
     /// <summary>
     ///     Adds all elements in the source List to the target List.
     /// </summary>
-    public static void AddAll<T>( this List< T > target, List< T > source )
+    public static void AddAll< T >( this List< T > target, List< T > source )
     {
         foreach ( T tex in source )
         {
@@ -99,7 +97,7 @@ public static class ListExtensions
     /// <summary>
     ///     Adds all elements in the array 'items' to the target List.
     /// </summary>
-    public static void AddAll<T>( this List< T > target, params T[] items )
+    public static void AddAll< T >( this List< T > target, params T[] items )
     {
         foreach ( T item in items )
         {
@@ -110,7 +108,7 @@ public static class ListExtensions
     /// <summary>
     ///     Shuffles the element order of the specified list.
     /// </summary>
-    public static void Shuffle<T>( this List< T > ts )
+    public static void Shuffle< T >( this List< T > ts )
     {
         var count = ts.Count;
         var last  = count - 1;
@@ -129,7 +127,7 @@ public static class ListExtensions
     ///     Reduces the size of the array to the specified size. If the array is
     ///     already smaller than the specified size, no action is taken.
     /// </summary>
-    public static void Truncate<T>( this List< T > ts, int newSize )
+    public static void Truncate< T >( this List< T > ts, int newSize )
     {
         if ( ts.Count > newSize )
         {
@@ -144,7 +142,7 @@ public static class ListExtensions
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public static T Pop<T>( this List< T > list )
+    public static T Pop< T >( this List< T > list )
     {
         if ( list.Count == 0 )
         {
@@ -164,7 +162,7 @@ public static class ListExtensions
     /// <param name="list"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T Peek<T>( this List< T > list )
+    public static T Peek< T >( this List< T > list )
     {
         return list[ ^1 ];
     }
@@ -176,7 +174,7 @@ public static class ListExtensions
     /// <param name="index"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static T RemoveIndex<T>( this List< T > list, int index )
+    public static T RemoveIndex< T >( this List< T > list, int index )
     {
         if ( index >= list.Count )
         {

@@ -30,8 +30,13 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 /// <summary>
 ///     An action that has a float, whose value is transitioned over time.
 /// </summary>
+[PublicAPI]
 public class FloatAction : TemporalAction
 {
+    public float Start    { get; }
+    public float EndValue { get; }
+    public float Value    { get; set; }
+
     /// <summary>
     ///     Creates a FloatAction that transitions from 0 to 1.
     /// </summary>
@@ -68,10 +73,6 @@ public class FloatAction : TemporalAction
         Start    = start;
         EndValue = end;
     }
-
-    public float Start    { get; }
-    public float EndValue { get; }
-    public float Value    { get; set; }
 
     protected override void Begin()
     {

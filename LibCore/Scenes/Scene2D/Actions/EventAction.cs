@@ -31,16 +31,17 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 ///     Adds a listener to the actor for a specific event type and does not complete
 ///     until <see cref="Handle" /> returns true.
 /// </summary>
-public abstract class EventAction<T> : Action, IEventListener where T : Event
+[PublicAPI]
+public abstract class EventAction< T > : Action, IEventListener where T : Event
 {
+    public bool Active     { get; set; }
+    public T    EventClass { get; set; }
+    public bool Result     { get; set; }
+
     protected EventAction( T eventClass )
     {
         EventClass = eventClass;
     }
-
-    public bool Active     { get; set; }
-    public T    EventClass { get; set; }
-    public bool Result     { get; set; }
 
     /// <summary>
     ///     Called when the specific type of event occurs on the actor.
@@ -70,9 +71,7 @@ public abstract class EventAction<T> : Action, IEventListener where T : Event
     public void SetTarget( Actor target )
     {
         base.Target?.RemoveListener( this );
-
         base.Target = target;
-
         base.Target?.AddListener( this );
     }
 

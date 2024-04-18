@@ -24,7 +24,6 @@
 
 
 using System.Reflection.Metadata;
-
 using LughSharp.LibCore.Graphics;
 using LughSharp.LibCore.Graphics.G2D;
 using LughSharp.LibCore.Maths;
@@ -33,7 +32,6 @@ using LughSharp.LibCore.Scenes.Scene2D.UI;
 using LughSharp.LibCore.Utils.Collections;
 using LughSharp.LibCore.Utils.Pooling;
 using LughSharp.LibCore.Utils.Viewport;
-
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Scenes.Scene2D;
@@ -57,15 +55,15 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 [PublicAPI]
 public class Stage : InputAdapter
 {
-    private readonly bool _ownsBatch;
+    public readonly SnapshotArray< TouchFocus > touchFocuses = new( true, 4 );
 
-    private readonly Actor?[]                    _pointerOverActors = new Actor?[ 20 ];
-    private readonly int[]                       _pointerScreenX    = new int[ 20 ];
-    private readonly int[]                       _pointerScreenY    = new int[ 20 ];
-    private readonly bool[]                      _pointerTouched    = new bool[ 20 ];
-    private readonly Group                       _root              = null!;
-    private readonly Vector2                     _tempCoords        = new();
-    public readonly  SnapshotArray< TouchFocus > touchFocuses       = new( true, 4 );
+    private readonly bool     _ownsBatch;
+    private readonly Actor?[] _pointerOverActors = new Actor?[ 20 ];
+    private readonly int[]    _pointerScreenX    = new int[ 20 ];
+    private readonly int[]    _pointerScreenY    = new int[ 20 ];
+    private readonly bool[]   _pointerTouched    = new bool[ 20 ];
+    private readonly Group    _root              = null!;
+    private readonly Vector2  _tempCoords        = new();
 
     private bool            _debugAll;
     private bool            _debugParentUnderMouse;
@@ -83,7 +81,7 @@ public class Stage : InputAdapter
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     ///     Creates a stage with a <see cref="ScalingViewport" /> set to
     ///     <see cref="Scaling.Stretch" />. The stage will use its own <see cref="IBatch" />
@@ -219,7 +217,7 @@ public class Stage : InputAdapter
             focusEvent.Stage = this;
             focusEvent.Type  = FocusListener.FocusEvent.FeType.Scroll;
 
-            Actor? oldScrollFocus = ScrollFocus;
+            var oldScrollFocus = ScrollFocus;
 
             if ( oldScrollFocus != null )
             {
@@ -644,7 +642,7 @@ public class Stage : InputAdapter
         {
             TouchFocus? focus = focuses[ i ];
 
-            if ( focus?.pointer != pointer )
+            if ( focus?.Pointer != pointer )
             {
                 continue;
             }
@@ -655,10 +653,10 @@ public class Stage : InputAdapter
                 continue;
             }
 
-            inputEvent.TargetActor   = focus.target;
-            inputEvent.ListenerActor = focus.listenerActor;
+            inputEvent.TargetActor   = focus.Target;
+            inputEvent.ListenerActor = focus.ListenerActor;
 
-            if ( ( focus.listener != null ) && focus.listener.Handle( inputEvent ) )
+            if ( ( focus.Listener != null ) && focus.Listener.Handle( inputEvent ) )
             {
                 inputEvent.SetHandled();
             }
@@ -712,7 +710,7 @@ public class Stage : InputAdapter
         {
             TouchFocus? focus = focuses[ i ];
 
-            if ( ( focus?.pointer != pointer ) || ( focus.button != button ) )
+            if ( ( focus?.Pointer != pointer ) || ( focus.Button != button ) )
             {
                 continue;
             }
@@ -723,10 +721,10 @@ public class Stage : InputAdapter
                 continue;
             }
 
-            inputEvent.TargetActor   = focus.target;
-            inputEvent.ListenerActor = focus.listenerActor;
+            inputEvent.TargetActor   = focus.Target;
+            inputEvent.ListenerActor = focus.ListenerActor;
 
-            if ( ( focus.listener != null ) && focus.listener.Handle( inputEvent ) )
+            if ( ( focus.Listener != null ) && focus.Listener.Handle( inputEvent ) )
             {
                 inputEvent.SetHandled();
             }
@@ -914,11 +912,11 @@ public class Stage : InputAdapter
             return;
         }
 
-        focus.listenerActor = listenerActor;
-        focus.target        = target;
-        focus.listener      = listener;
-        focus.pointer       = pointer;
-        focus.button        = button;
+        focus.ListenerActor = listenerActor;
+        focus.Target        = target;
+        focus.Listener      = listener;
+        focus.Pointer       = pointer;
+        focus.Button        = button;
 
         touchFocuses.Add( focus );
     }
@@ -938,11 +936,11 @@ public class Stage : InputAdapter
         {
             TouchFocus focus = touchFocuses.GetAt( i );
 
-            if ( ( focus.listener == listener )
-              && ( focus.listenerActor == listenerActor )
-              && ( focus.target == target )
-              && ( focus.pointer == pointer )
-              && ( focus.button == button ) )
+            if ( ( focus.Listener == listener )
+              && ( focus.ListenerActor == listenerActor )
+              && ( focus.Target == target )
+              && ( focus.Pointer == pointer )
+              && ( focus.Button == button ) )
             {
                 touchFocuses.RemoveAt( i );
                 Pools< TouchFocus >.Free( focus );
@@ -965,7 +963,7 @@ public class Stage : InputAdapter
         {
             TouchFocus? focus = items[ i ];
 
-            if ( focus?.listenerActor != listenerActor )
+            if ( focus?.ListenerActor != listenerActor )
             {
                 continue;
             }
@@ -990,12 +988,12 @@ public class Stage : InputAdapter
                 inputEvent.StageY = int.MinValue;
             }
 
-            inputEvent.TargetActor   = focus.target;
-            inputEvent.ListenerActor = focus.listenerActor;
-            inputEvent.Pointer       = focus.pointer;
-            inputEvent.Button        = focus.button;
+            inputEvent.TargetActor   = focus.Target;
+            inputEvent.ListenerActor = focus.ListenerActor;
+            inputEvent.Pointer       = focus.Pointer;
+            inputEvent.Button        = focus.Button;
 
-            focus.listener?.Handle( inputEvent );
+            focus.Listener?.Handle( inputEvent );
 
             // Cannot return TouchFocus to pool, as it may still be in use
             // (eg if cancelTouchFocus is called from touchDragged).
@@ -1046,8 +1044,8 @@ public class Stage : InputAdapter
         {
             TouchFocus? focus = items[ i ];
 
-            if ( ( focus?.listener == exceptListener )
-              && ( focus?.listenerActor == exceptActor ) )
+            if ( ( focus?.Listener == exceptListener )
+              && ( focus?.ListenerActor == exceptActor ) )
             {
                 continue;
             }
@@ -1060,12 +1058,12 @@ public class Stage : InputAdapter
                 }
             }
 
-            inputEvent.TargetActor   = focus?.target;
-            inputEvent.ListenerActor = focus?.listenerActor;
-            inputEvent.Pointer       = focus!.pointer;
-            inputEvent.Button        = focus.button;
+            inputEvent.TargetActor   = focus?.Target;
+            inputEvent.ListenerActor = focus?.ListenerActor;
+            inputEvent.Pointer       = focus!.Pointer;
+            inputEvent.Button        = focus.Button;
 
-            focus.listener?.Handle( inputEvent );
+            focus.Listener?.Handle( inputEvent );
 
             // Cannot return TouchFocus to pool, as it may still be in use
             // (eg if cancelTouchFocus is called from touchDragged).
@@ -1337,7 +1335,7 @@ public class Stage : InputAdapter
                     return;
                 }
 
-                ( ( Table )actor ).DebugLines( _debugTableUnderMouse );
+                ( ( Table ) actor ).DebugLines( _debugTableUnderMouse );
             }
 
             if ( _debugAll && actor is Group group )
@@ -1355,7 +1353,7 @@ public class Stage : InputAdapter
             }
         }
 
-        Gdx.GL.GLEnable( IGL20.GL_BLEND );
+        GL.glEnable( IGL20.GL_BLEND );
 
         _debugShapes.ProjectionMatrix = Camera!.Combined;
         _debugShapes.Begin();
@@ -1364,7 +1362,7 @@ public class Stage : InputAdapter
 
         _debugShapes.End();
 
-        Gdx.GL.GLDisable( IGL20.GL_BLEND );
+        GL.glDisable( IGL20.GL_BLEND );
     }
 
     /// <summary>

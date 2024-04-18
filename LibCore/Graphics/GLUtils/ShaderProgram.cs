@@ -217,7 +217,7 @@ public class ShaderProgram
         IsCompiled = true;
     }
 
-    private int LoadShader( int type, string source )
+    private unsafe int LoadShader( int type, string source )
     {
         var intbuf = BufferUtils.NewIntBuffer( 1 );
 
@@ -255,27 +255,27 @@ public class ShaderProgram
     /// <returns></returns>
     protected static int CreateProgram()
     {
-        var program = Gdx.GL20.GLCreateProgram();
+        var program = ( int ) GL.glCreateProgram();
 
         return program != 0 ? program : -1;
     }
 
-    private int LinkProgram( int program )
+    private unsafe int LinkProgram( int program )
     {
         if ( program == -1 )
         {
             return -1;
         }
 
-        Gdx.GL20.GLAttachShader( program, _vertexShaderHandle );
-        Gdx.GL20.GLAttachShader( program, _fragmentShaderHandle );
-        Gdx.GL20.GLLinkProgram( program );
+        GL.glAttachShader( ( uint ) program, ( uint ) _vertexShaderHandle );
+        GL.glAttachShader( ( uint ) program, ( uint ) _fragmentShaderHandle );
+        GL.glLinkProgram( ( uint ) program );
 
-        ByteBuffer tmp = ByteBuffer.Allocate( 4 );
+        var tmp = ByteBuffer.Allocate( 4 );
         tmp.Order( ByteOrder.NativeOrder );
-        IntBuffer intbuf = tmp.AsIntBuffer();
+        var intbuf = tmp.AsIntBuffer();
 
-        Gdx.GL20.GLGetProgramiv( program, IGL20.GL_LINK_STATUS, intbuf );
+        GL.glGetProgramiv( ( uint ) program, IGL20.GL_LINK_STATUS, intbuf );
 
         var linked = intbuf.Get( 0 );
 
@@ -284,7 +284,7 @@ public class ShaderProgram
 // Gdx.gl20.glGetProgramiv(program, IGL20.GL_INFO_LOG_LENGTH, intbuf);
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
-            _log = Gdx.GL20.GLGetProgramInfoLog( program );
+            _log = GL.glGetProgramInfoLog( ( uint ) program, IGL20.GL_INFO_LOG_LENGTH );
 
 // }
             return -1;
@@ -1031,18 +1031,13 @@ public class ShaderProgram
         }
     }
 
-    public bool IsCompiled { get; set; }
-
     public static int NumManagedShaderPrograms => _shaders[ Gdx.App ].Count;
 
+    public bool IsCompiled { get; set; }
     public string[] Attributes { get; private set; } = null!;
-
     public string[] Uniforms { get; private set; } = null!;
-
     public string VertexShaderSource { get; }
-
     public string FragmentShaderSource { get; }
-
     public int Handle { get; private set; }
 
     #endregion properties

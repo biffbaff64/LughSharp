@@ -24,16 +24,21 @@
 
 
 using System.Text;
-
 using LughSharp.LibCore.Maths;
 
 namespace LughSharp.LibCore.Utils.Collections;
 
 [PublicAPI]
-public class Array<T>
+public class Array< T >
 {
+    public T[]  Items   { get; set; }
+    public int  Size    { get; set; }
+    public bool Ordered { get; set; }
+
     private PredicateIterable< T >? _predicateIEnumerable;
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Creates a new Array with the specified initial capacity. Default is 16.
     /// </summary>
@@ -62,7 +67,8 @@ public class Array<T>
     /// <summary>
     ///     Creates a new Array object from the supplied array[].
     /// </summary>
-    public Array( T[] array ) : this( true, array, 0, array.Length )
+    public Array( T[] array )
+        : this( true, array, 0, array.Length )
     {
     }
 
@@ -94,7 +100,7 @@ public class Array<T>
     {
         if ( Size == Items.Length )
         {
-            Items = Resize( Math.Max( 8, ( int )( Size * 1.75f ) ) );
+            Items = Resize( Math.Max( 8, ( int ) ( Size * 1.75f ) ) );
         }
 
         Items[ Size++ ] = value;
@@ -103,7 +109,7 @@ public class Array<T>
     /// <summary>
     ///     Adds all items in the supplied array to this array.
     /// </summary>
-    public void AddAll( List< T > array )
+    public virtual void AddAll( List< T > array )
     {
         AddAll( array, 0, array.Count );
     }
@@ -113,7 +119,7 @@ public class Array<T>
     ///     starting from position 0.
     /// </summary>
     /// <param name="array">The array of items to add.</param>
-    public void AddAll( params T[] array )
+    public virtual void AddAll( params T[] array )
     {
         AddAll( array, 0, array.Length );
     }
@@ -125,7 +131,7 @@ public class Array<T>
     /// <param name="array">The array of items to add.</param>
     /// <param name="start">The start index.</param>
     /// <param name="count">The number of items to copy.</param>
-    public void AddAll( List< T > array, int start, int count )
+    public virtual void AddAll( List< T > array, int start, int count )
     {
         ArgumentNullException.ThrowIfNull( array );
 
@@ -151,7 +157,7 @@ public class Array<T>
 
         if ( sizeNeeded > Items.Length )
         {
-            Items = Resize( Math.Max( 8, ( int )( sizeNeeded * 1.75f ) ) );
+            Items = Resize( Math.Max( 8, ( int ) ( sizeNeeded * 1.75f ) ) );
         }
 
         Array.Copy( array, start, Items, Size, count );
@@ -213,7 +219,7 @@ public class Array<T>
 
         if ( Size == Items.Length )
         {
-            Items = Resize( Math.Max( 8, ( int )( Size * 1.75f ) ) );
+            Items = Resize( Math.Max( 8, ( int ) ( Size * 1.75f ) ) );
         }
 
         if ( Ordered )
@@ -233,7 +239,7 @@ public class Array<T>
     ///     Inserts room for <paramref name="count" /> elements into the array
     ///     starting at position <paramref name="index" />.
     /// </summary>
-    public void InsertRange( int index, int count )
+    public virtual void InsertRange( int index, int count )
     {
         if ( index > Size )
         {
@@ -249,7 +255,7 @@ public class Array<T>
 
         if ( sizeNeeded > Items.Length )
         {
-            Items = Resize( Math.Max( Math.Max( 8, sizeNeeded ), ( int )( Size * 1.75f ) ) );
+            Items = Resize( Math.Max( Math.Max( 8, sizeNeeded ), ( int ) ( Size * 1.75f ) ) );
         }
 
         Array.Copy( Items, index, Items, index + count, Size - index );
@@ -309,7 +315,7 @@ public class Array<T>
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public int LastIndexOf( T? value )
+    public virtual int LastIndexOf( T? value )
     {
         return Array.LastIndexOf( Items, value );
     }
@@ -319,7 +325,7 @@ public class Array<T>
     /// </summary>
     /// <param name="value"> The value to remove. </param>
     /// <returns> True if successful. </returns>
-    public bool RemoveValue( T value )
+    public virtual bool RemoveValue( T value )
     {
         for ( int i = 0, n = Size; i < n; i++ )
         {
@@ -340,7 +346,7 @@ public class Array<T>
     /// <param name="index"> The array index. </param>
     /// <returns> The item being removed. </returns>
     /// <exception cref="ArgumentOutOfRangeException"> If the supplied index is out of range. </exception>
-    public T RemoveIndex( int index )
+    public virtual T RemoveIndex( int index )
     {
         if ( index >= Size )
         {
@@ -406,7 +412,7 @@ public class Array<T>
     ///     Removes all items from this array that match items in the supplied
     ///     array at the same index.
     /// </summary>
-    public bool RemoveAll( Array< T > array )
+    public virtual bool RemoveAll( Array< T > array )
     {
         var size      = Size;
         var startSize = size;
@@ -493,7 +499,7 @@ public class Array<T>
     ///     All items beyond the new size are lost.
     /// </summary>
     /// <returns></returns>
-    public T?[] Shrink()
+    public virtual T?[] Shrink()
     {
         if ( Items.Length != Size )
         {
@@ -506,7 +512,7 @@ public class Array<T>
     /// <summary>
     ///     Sets the size of this array to the new specified value.
     /// </summary>
-    public T?[] SetSize( int newSize )
+    public virtual T?[] SetSize( int newSize )
     {
         Truncate( newSize );
 
@@ -522,7 +528,7 @@ public class Array<T>
 
     /// <summary>
     /// </summary>
-    public T?[] EnsureCapacity( int additionalCapacity )
+    public virtual T?[] EnsureCapacity( int additionalCapacity )
     {
         var sizeNeeded = Size + additionalCapacity;
 
@@ -540,7 +546,7 @@ public class Array<T>
     /// <returns></returns>
     protected virtual T[] Resize( int newSize )
     {
-        var newItems = ( T[] )Array.CreateInstance( Items.GetType(), newSize );
+        var newItems = ( T[] ) Array.CreateInstance( Items.GetType(), newSize );
 
         Array.Copy( Items, 0, newItems, 0, Math.Min( Size, newItems.Length ) );
 
@@ -551,7 +557,7 @@ public class Array<T>
 
     /// <summary>
     /// </summary>
-    public void Sort()
+    public virtual void Sort()
     {
         SortUtils.Sort( Items, 0, Size );
     }
@@ -559,7 +565,7 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <param name="comparator"></param>
-    public void Sort( IComparer< T > comparator )
+    public virtual void Sort( IComparer< T > comparator )
     {
         SortUtils.Sort( Items, comparator, 0, Size );
     }
@@ -570,7 +576,7 @@ public class Array<T>
     /// <param name="kthLowest"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public T SelectRanked( IComparer< T > comparator, int kthLowest )
+    public virtual T SelectRanked( IComparer< T > comparator, int kthLowest )
     {
         if ( kthLowest < 1 )
         {
@@ -586,7 +592,7 @@ public class Array<T>
     /// <param name="kthLowest"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public int SelectRankedIndex( IComparer< T > comparator, int kthLowest )
+    public virtual int SelectRankedIndex( IComparer< T > comparator, int kthLowest )
     {
         if ( kthLowest < 1 )
         {
@@ -599,7 +605,7 @@ public class Array<T>
     /// <summary>
     ///     Rearrange this array in reverse order.
     /// </summary>
-    public void Reverse()
+    public virtual void Reverse()
     {
         for ( int i = 0, lastIndex = Size - 1, n = Size / 2; i < n; i++ )
         {
@@ -612,7 +618,7 @@ public class Array<T>
     /// <summary>
     ///     Shuffle this array.
     /// </summary>
-    public void Shuffle()
+    public virtual void Shuffle()
     {
         for ( var i = Size - 1; i >= 0; i-- )
         {
@@ -626,7 +632,7 @@ public class Array<T>
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public IEnumerable< T > Select( IPredicate< T > predicate )
+    public virtual IEnumerable< T > Select( IPredicate< T > predicate )
     {
         if ( Items == null )
         {
@@ -648,7 +654,7 @@ public class Array<T>
     /// <summary>
     /// </summary>
     /// <param name="newSize"></param>
-    public void Truncate( int newSize )
+    public virtual void Truncate( int newSize )
     {
         if ( Size <= newSize )
         {
@@ -667,7 +673,7 @@ public class Array<T>
     ///     Returns a random element from the array.
     /// </summary>
     [MustUseReturnValue]
-    public T? Random()
+    public virtual T? Random()
     {
         return Size == 0 ? default( T ) : Items[ MathUtils.Random( 0, Size - 1 ) ];
     }
@@ -681,8 +687,8 @@ public class Array<T>
         Type? memberInfo = Items.GetType().BaseType;
 
         return memberInfo != null
-            ? ToArray( memberInfo )
-            : ( T[] )Array.CreateInstance( Items.GetType(), Size );
+                   ? ToArray( memberInfo )
+                   : ( T[] ) Array.CreateInstance( Items.GetType(), Size );
     }
 
     /// <summary>
@@ -692,7 +698,7 @@ public class Array<T>
     [MustUseReturnValue]
     public virtual T[] ToArray( Type type )
     {
-        var result = ( T[] )Array.CreateInstance( type, Size );
+        var result = ( T[] ) Array.CreateInstance( type, Size );
 
         Array.Copy( Items, 0, result, 0, Size );
 
@@ -726,7 +732,7 @@ public class Array<T>
             return false;
         }
 
-        var array = ( Array< T > )obj!;
+        var array = ( Array< T > ) obj!;
 
         if ( !array.Ordered )
         {
@@ -803,12 +809,4 @@ public class Array<T>
 
         return buffer.ToString();
     }
-
-    #region properties
-
-    public T[]  Items   { get; set; }
-    public int  Size    { get; set; }
-    public bool Ordered { get; set; }
-
-    #endregion properties
 }

@@ -245,7 +245,7 @@ public class Actor : IActor
             {
                 if ( Actions[ i ].Act( delta ) && ( i < Actions.Count ) )
                 {
-                    Action current     = Actions[ i ];
+                    var current     = Actions[ i ];
                     var    actionIndex = current == Actions[ i ] ? i : Actions.IndexOf( Actions[ i ] );
 
                     if ( actionIndex != -1 )
@@ -301,7 +301,7 @@ public class Actor : IActor
             return ev.IsCancelled;
         }
 
-        Group? parent = Parent;
+        var parent = Parent;
 
         while ( parent != null )
         {
@@ -317,7 +317,7 @@ public class Actor : IActor
 
             for ( var i = ascendants.Count - 1; i >= 0; i-- )
             {
-                Group currentTarget = ascendantsArray[ i ];
+                var currentTarget = ascendantsArray[ i ];
 
                 currentTarget.Notify( ev, true );
 
@@ -410,9 +410,9 @@ public class Actor : IActor
             if ( context != null )
             {
                 throw new SystemException(
-                    $"Actor - {context.AsSpan( 0, Math.Min( context.Length, 128 ) )}",
-                    ex
-                    );
+                                          $"Actor - {context.AsSpan( 0, Math.Min( context.Length, 128 ) )}",
+                                          ex
+                                         );
             }
         }
 
@@ -586,7 +586,7 @@ public class Actor : IActor
     {
         ArgumentNullException.ThrowIfNull( actor );
 
-        Actor? parent = this;
+        var parent = this;
 
         do
         {
@@ -596,8 +596,7 @@ public class Actor : IActor
             }
 
             parent = parent.Parent;
-        }
-        while ( parent != null );
+        } while ( parent != null );
 
         return false;
     }
@@ -618,8 +617,7 @@ public class Actor : IActor
             }
 
             actor = actor.Parent;
-        }
-        while ( actor != null );
+        } while ( actor != null );
 
         return false;
     }
@@ -628,20 +626,19 @@ public class Actor : IActor
     ///     Returns this actor or the first ascendant of this actor that is assignable
     ///     with the specified type, or null if none were found.
     /// </summary>
-    public T? FirstAscendant<T>( T type ) where T : Actor
+    public T? FirstAscendant< T >( T type ) where T : Actor
     {
-        Actor? actor = this;
+        var actor = this;
 
         do
         {
             if ( actor.GetType() == type.GetType() )
             {
-                return ( T )actor;
+                return ( T ) actor;
             }
 
             actor = actor.Parent;
-        }
-        while ( actor != null );
+        } while ( actor != null );
 
         return null;
     }
@@ -667,7 +664,7 @@ public class Actor : IActor
     /// </summary>
     public bool AscendantsVisible()
     {
-        Actor? actor = this;
+        var actor = this;
 
         do
         {
@@ -677,8 +674,7 @@ public class Actor : IActor
             }
 
             actor = actor.Parent;
-        }
-        while ( actor != null );
+        } while ( actor != null );
 
         return true;
     }
@@ -712,7 +708,7 @@ public class Actor : IActor
 
         for ( int i = 0, n = Stage.touchFocuses.Size; i < n; i++ )
         {
-            if ( Stage.touchFocuses.GetAt( i ).target == this )
+            if ( Stage.touchFocuses.GetAt( i ).Target == this )
             {
                 return true;
             }
@@ -734,7 +730,7 @@ public class Actor : IActor
 
         for ( int i = 0, n = Stage.touchFocuses.Size; i < n; i++ )
         {
-            if ( Stage.touchFocuses.GetAt( i ).listenerActor == this )
+            if ( Stage.touchFocuses.GetAt( i ).ListenerActor == this )
             {
                 return true;
             }
@@ -1186,14 +1182,14 @@ public class Actor : IActor
             return false;
         }
 
-        RectangleShape tableBounds = RectangleShape.Tmp;
+        var tableBounds = RectangleShape.Tmp;
 
         tableBounds.X      = x;
         tableBounds.Y      = y;
         tableBounds.Width  = width;
         tableBounds.Height = height;
 
-        RectangleShape? scissorBounds = Pools< RectangleShape >.Obtain();
+        var scissorBounds = Pools< RectangleShape >.Obtain();
 
         if ( scissorBounds == null )
         {
@@ -1228,8 +1224,8 @@ public class Actor : IActor
     public virtual Vector2 ScreenToLocalCoordinates( Vector2 screenCoords )
     {
         return Stage == null
-            ? screenCoords
-            : StageToLocalCoordinates( Stage.ScreenToStageCoordinates( screenCoords ) );
+                   ? screenCoords
+                   : StageToLocalCoordinates( Stage.ScreenToStageCoordinates( screenCoords ) );
     }
 
     /// <summary>
@@ -1276,8 +1272,8 @@ public class Actor : IActor
         }
         else
         {
-            var cos = ( float )Math.Cos( rotation * MathUtils.DEGREES_TO_RADIANS );
-            var sin = ( float )Math.Sin( rotation * MathUtils.DEGREES_TO_RADIANS );
+            var cos = ( float ) Math.Cos( rotation * MathUtils.DEGREES_TO_RADIANS );
+            var sin = ( float ) Math.Sin( rotation * MathUtils.DEGREES_TO_RADIANS );
 
             var originX = OriginX;
             var originY = OriginY;
@@ -1298,8 +1294,8 @@ public class Actor : IActor
     public virtual Vector2 LocalToScreenCoordinates( Vector2 localCoords )
     {
         return Stage == null
-            ? localCoords
-            : Stage.StageToScreenCoordinates( LocalToAscendantCoordinates( null, localCoords ) );
+                   ? localCoords
+                   : Stage.StageToScreenCoordinates( LocalToAscendantCoordinates( null, localCoords ) );
     }
 
     /// <system>
@@ -1342,8 +1338,8 @@ public class Actor : IActor
         }
         else
         {
-            var cos = ( float )Math.Cos( rotation * MathUtils.DEGREES_TO_RADIANS );
-            var sin = ( float )Math.Sin( rotation * MathUtils.DEGREES_TO_RADIANS );
+            var cos = ( float ) Math.Cos( rotation * MathUtils.DEGREES_TO_RADIANS );
+            var sin = ( float ) Math.Sin( rotation * MathUtils.DEGREES_TO_RADIANS );
 
             var originX = OriginX;
             var originY = OriginY;
@@ -1366,7 +1362,7 @@ public class Actor : IActor
     /// <returns></returns>
     public virtual Vector2 LocalToAscendantCoordinates( Actor? ascendant, Vector2 localCoords )
     {
-        Actor? actor = this;
+        var actor = this;
 
         do
         {
@@ -1378,8 +1374,7 @@ public class Actor : IActor
             {
                 break;
             }
-        }
-        while ( actor != null );
+        } while ( actor != null );
 
         return localCoords;
     }

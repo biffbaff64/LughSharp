@@ -50,6 +50,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///         button contents.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class Button : Table, IDisableable
 {
     private bool         _programmaticChangeEvents = true;
@@ -61,16 +62,16 @@ public class Button : Table, IDisableable
     public Button( Skin skin ) : base( skin )
     {
         Initialise();
-        Style = skin.Get< ButtonStyle >();
-        SetSize( GetPrefWidth(), GetPrefHeight() );
+        
+        ConstructorHelper( skin.Get< ButtonStyle >() );
     }
 
     public Button( Skin skin, string styleName )
         : base( skin )
     {
         Initialise();
-        Style = skin.Get< ButtonStyle >( styleName );
-        SetSize( GetPrefWidth(), GetPrefHeight() );
+
+        ConstructorHelper( skin.Get< ButtonStyle >( styleName ) );
     }
 
     public Button( Actor child, Skin skin, string styleName )
@@ -83,15 +84,15 @@ public class Button : Table, IDisableable
     {
         Initialise();
         Add( child );
-        Style = style;
-        SetSize( GetPrefWidth(), GetPrefHeight() );
+        
+        ConstructorHelper( style );
     }
 
     public Button( ButtonStyle style )
     {
         Initialise();
-        Style = style;
-        SetSize( GetPrefWidth(), GetPrefHeight() );
+        
+        ConstructorHelper( style );
     }
 
     /// <summary>
@@ -123,6 +124,16 @@ public class Button : Table, IDisableable
     {
     }
 
+    /// <summary>
+    ///     Somewhere to call virtual methods that used to be called
+    ///     from constructors. 
+    /// </summary>
+    private void ConstructorHelper( ButtonStyle style )
+    {
+        Style = style;
+        SetSize( GetPrefWidth(), GetPrefHeight() );
+    }
+    
     /// <summary>
     ///     Returns the button's style. Modifying the returned style may not have an
     ///     effect until <see cref="Style" /> set() is called.
@@ -340,6 +351,7 @@ public class Button : Table, IDisableable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class ButtonClickListener : ClickListener
     {
         private readonly Button _button;
@@ -359,12 +371,32 @@ public class Button : Table, IDisableable
             _button.SetChecked( !_button.IsChecked, true );
         }
     }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     The style for a button, see <see cref="Button" />.
     /// </summary>
+    [PublicAPI]
     public class ButtonStyle
     {
+        public IDrawable? Up               { get; set; }
+        public IDrawable? Down             { get; set; }
+        public IDrawable? Over             { get; set; }
+        public IDrawable? Focused          { get; set; }
+        public IDrawable? Disabled         { get; set; }
+        public IDrawable? Checked          { get; set; }
+        public IDrawable? CheckedOver      { get; set; }
+        public IDrawable? CheckedDown      { get; set; }
+        public IDrawable? CheckedFocused   { get; set; }
+        public float      PressedOffsetX   { get; set; }
+        public float      PressedOffsetY   { get; set; }
+        public float      UnpressedOffsetX { get; set; }
+        public float      UnpressedOffsetY { get; set; }
+        public float      CheckedOffsetX   { get; set; }
+        public float      CheckedOffsetY   { get; set; }
+
         public ButtonStyle()
         {
         }
@@ -398,22 +430,6 @@ public class Button : Table, IDisableable
             CheckedOffsetX   = style.CheckedOffsetX;
             CheckedOffsetY   = style.CheckedOffsetY;
         }
-
-        public IDrawable? Up               { get; set; }
-        public IDrawable? Down             { get; set; }
-        public IDrawable? Over             { get; set; }
-        public IDrawable? Focused          { get; set; }
-        public IDrawable? Disabled         { get; set; }
-        public IDrawable? Checked          { get; set; }
-        public IDrawable? CheckedOver      { get; set; }
-        public IDrawable? CheckedDown      { get; set; }
-        public IDrawable? CheckedFocused   { get; set; }
-        public float      PressedOffsetX   { get; set; }
-        public float      PressedOffsetY   { get; set; }
-        public float      UnpressedOffsetX { get; set; }
-        public float      UnpressedOffsetY { get; set; }
-        public float      CheckedOffsetX   { get; set; }
-        public float      CheckedOffsetY   { get; set; }
     }
 
     // ------------------------------------------------------------------------

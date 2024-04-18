@@ -35,6 +35,10 @@ public static class BufferUtils
     private readonly static List< ByteBuffer > _unsafeBuffers   = new();
     private static          int                _allocatedUnsafe = 0;
 
+    /// <summary>
+    ///     Creates a new <see cref="FloatBuffer"/> with the specified capacity.
+    ///     All elements will be initialised to zero. 
+    /// </summary>
     public static FloatBuffer NewFloatBuffer( int numFloats )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numFloats * 4 );
@@ -43,6 +47,10 @@ public static class BufferUtils
         return buffer.AsFloatBuffer();
     }
 
+    /// <summary>
+    ///     Creates a new <see cref="DoubleBuffer"/> with the specified capacity.
+    ///     All elements will be initialised to zero. 
+    /// </summary>
     public static DoubleBuffer NewDoubleBuffer( int numFloats )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numFloats * 4 );
@@ -51,6 +59,10 @@ public static class BufferUtils
         return buffer.AsDoubleBuffer();
     }
 
+    /// <summary>
+    ///     Creates a new <see cref="ByteBuffer"/> with the specified capacity.
+    ///     All elements will be initialised to zero. 
+    /// </summary>
     public static ByteBuffer NewByteBuffer( int numBytes )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
@@ -59,6 +71,10 @@ public static class BufferUtils
         return buffer;
     }
 
+    /// <summary>
+    ///     Creates a new <see cref="ShortBuffer"/> with the specified capacity.
+    ///     All elements will be initialised to zero. 
+    /// </summary>
     public static ShortBuffer NewShortBuffer( int numBytes )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
@@ -67,6 +83,10 @@ public static class BufferUtils
         return buffer.AsShortBuffer();
     }
 
+    /// <summary>
+    ///     Creates a new <see cref="CharBuffer"/> with the specified capacity.
+    ///     All elements will be initialised to zero. 
+    /// </summary>
     public static CharBuffer NewCharBuffer( int numBytes )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
@@ -75,6 +95,10 @@ public static class BufferUtils
         return buffer.AsCharBuffer();
     }
 
+    /// <summary>
+    ///     Creates a new <see cref="IntBuffer"/> with the specified capacity.
+    ///     All elements will be initialised to zero. 
+    /// </summary>
     public static IntBuffer NewIntBuffer( int numBytes )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
@@ -83,6 +107,10 @@ public static class BufferUtils
         return buffer.AsIntBuffer();
     }
 
+    /// <summary>
+    ///     Creates a new <see cref="LongBuffer"/> with the specified capacity.
+    ///     All elements will be initialised to zero. 
+    /// </summary>
     public static LongBuffer NewLongBuffer( int numBytes )
     {
         ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
@@ -93,12 +121,12 @@ public static class BufferUtils
 
     public static byte Compare( byte x, byte y )
     {
-        return ( byte )( x - y );
+        return ( byte ) ( x - y );
     }
 
     public static char Compare( char x, char y )
     {
-        return ( char )( x - y );
+        return ( char ) ( x - y );
     }
 
     public static int Compare( int x, int y )
@@ -180,14 +208,14 @@ public static class BufferUtils
     private static int PositionInBytes( Buffer dst )
     {
         return dst switch
-               {
-                   ByteBuffer                 => dst.Position,
-                   ShortBuffer or CharBuffer  => dst.Position << 1,
-                   IntBuffer or FloatBuffer   => dst.Position << 2,
-                   LongBuffer or DoubleBuffer => dst.Position << 3,
-                   _ => throw new GdxRuntimeException
-                       ( $"Can't get position for {dst.GetType().Name} instance" )
-               };
+        {
+            ByteBuffer                 => dst.Position,
+            ShortBuffer or CharBuffer  => dst.Position << 1,
+            IntBuffer or FloatBuffer   => dst.Position << 2,
+            LongBuffer or DoubleBuffer => dst.Position << 3,
+            _ => throw new GdxRuntimeException
+                     ( $"Can't get position for {dst.GetType().Name} instance" )
+        };
     }
 
     /// <summary>
@@ -199,14 +227,14 @@ public static class BufferUtils
     private static int BytesToElements( Buffer dst, int bytes )
     {
         return dst switch
-               {
-                   ByteBuffer                 => bytes,
-                   ShortBuffer or CharBuffer  => bytes >>> 1,
-                   IntBuffer or FloatBuffer   => bytes >>> 2,
-                   LongBuffer or DoubleBuffer => bytes >>> 3,
-                   _ => throw new GdxRuntimeException
-                       ( $"Can't copy to a {dst.GetType().Name} instance" )
-               };
+        {
+            ByteBuffer                 => bytes,
+            ShortBuffer or CharBuffer  => bytes >>> 1,
+            IntBuffer or FloatBuffer   => bytes >>> 2,
+            LongBuffer or DoubleBuffer => bytes >>> 3,
+            _ => throw new GdxRuntimeException
+                     ( $"Can't copy to a {dst.GetType().Name} instance" )
+        };
     }
 
     /// <summary>
@@ -218,14 +246,14 @@ public static class BufferUtils
     private static int ElementsToBytes( Buffer dst, int elements )
     {
         return dst switch
-               {
-                   ByteBuffer                 => elements,
-                   ShortBuffer or CharBuffer  => elements << 1,
-                   IntBuffer or FloatBuffer   => elements << 2,
-                   LongBuffer or DoubleBuffer => elements << 3,
-                   _ => throw new GdxRuntimeException
-                       ( $"Can't copy to a {dst.GetType().Name} instance" )
-               };
+        {
+            ByteBuffer                 => elements,
+            ShortBuffer or CharBuffer  => elements << 1,
+            IntBuffer or FloatBuffer   => elements << 2,
+            LongBuffer or DoubleBuffer => elements << 3,
+            _ => throw new GdxRuntimeException
+                     ( $"Can't copy to a {dst.GetType().Name} instance" )
+        };
     }
 
     /// <summary>

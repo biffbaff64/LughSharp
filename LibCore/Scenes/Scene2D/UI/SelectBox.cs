@@ -551,15 +551,15 @@ public class SelectBox<T> : Widget, IDisableable
     protected void OnShow( Actor selectBoxList )
     {
         selectBoxList.Color.A = 0;
-        selectBoxList.AddAction( SceneActions.FadeIn( 0.3f, Interpolation.fade ) );
+        selectBoxList.AddAction( Scene2D.Actions.Actions.FadeIn( 0.3f, Interpolation.fade ) );
     }
 
     protected void OnHide( Actor selectBoxList )
     {
         selectBoxList.Color.A = 1;
 
-        selectBoxList.AddAction( SceneActions.Sequence( SceneActions.FadeOut( 0.15f, Interpolation.fade ),
-                                                        SceneActions.RemoveActor() ) );
+        selectBoxList.AddAction( Scene2D.Actions.Actions.Sequence( Scene2D.Actions.Actions.FadeOut( 0.15f, Interpolation.fade ),
+                                                                   Scene2D.Actions.Actions.RemoveActor() ) );
     }
 
     public class SelectBoxList : ScrollPane

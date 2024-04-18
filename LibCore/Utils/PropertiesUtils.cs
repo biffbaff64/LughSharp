@@ -240,14 +240,14 @@ public static class PropertiesUtils
                                 case 0 when keyLength == 0:
                                 {
                                     keyLength = keyLength switch
-                                                {
-                                                    -1 => offset,
-                                                    _  => keyLength
-                                                };
+                                    {
+                                        -1 => offset,
+                                        _  => keyLength
+                                    };
 
                                     var temp = new string( buf, 0, offset );
 
-                                    properties.Put( temp.Substring( 0, keyLength ), temp.Substring( keyLength ) );
+                                    properties.Put( temp[ ..keyLength ], temp[ keyLength.. ] );
 
                                     break;
                                 }
@@ -261,10 +261,10 @@ public static class PropertiesUtils
 
                         case '\\':
                             keyLength = mode switch
-                                        {
-                                            KEY_DONE => offset,
-                                            _        => keyLength
-                                        };
+                            {
+                                KEY_DONE => offset,
+                                _        => keyLength
+                            };
 
                             mode = SLASH;
 
@@ -288,10 +288,10 @@ public static class PropertiesUtils
                     if ( char.IsWhiteSpace( nextChar ) )
                     {
                         mode = mode switch
-                               {
-                                   CONTINUE => IGNORE,
-                                   _        => mode
-                               };
+                        {
+                            CONTINUE => IGNORE,
+                            _        => mode
+                        };
 
                         if ( ( offset == 0 ) || ( offset == keyLength ) || ( mode == IGNORE ) )
                         {
@@ -341,10 +341,10 @@ public static class PropertiesUtils
         }
 
         keyLength = keyLength switch
-                    {
-                        -1 when offset > 0 => offset,
-                        _                  => keyLength
-                    };
+        {
+            -1 when offset > 0 => offset,
+            _                  => keyLength
+        };
 
         switch ( keyLength )
         {
@@ -435,7 +435,7 @@ public static class PropertiesUtils
             // Handle common case first
             if ( ( ch > 61 ) && ( ch < 127 ) )
             {
-                outBuffer.Append( ch == '\\' ? "\\\\" : ch );
+                outBuffer.Append( ch == '\\' ? @"\\" : ch );
 
                 continue;
             }
@@ -487,7 +487,7 @@ public static class PropertiesUtils
                     {
                         case true:
                         {
-                            var hex = ( ( int )ch ).ToString( "X" );
+                            var hex = ( ( int ) ch ).ToString( "X" );
 
                             outBuffer.Append( "\\u" );
 
@@ -539,7 +539,7 @@ public static class PropertiesUtils
                     {
                         case > '\u00ff':
                         {
-                            var hex = ( ( int )c ).ToString( "X" );
+                            var hex = ( ( int ) c ).ToString( "X" );
 
                             writer.Write( "\\u" );
 
