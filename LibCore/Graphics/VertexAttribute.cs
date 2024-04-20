@@ -56,8 +56,8 @@ public class VertexAttribute
     public readonly int numComponents;
 
     /// <summary>
-    ///     the OpenGL type of each component, e.g. <see cref="IGL20.GL_FLOAT" />
-    ///     or <see cref="IGL20.GL_UNSIGNED_BYTE" />
+    ///     the OpenGL type of each component, e.g. <see cref="IGL.GL_FLOAT" />
+    ///     or <see cref="IGL.GL_UNSIGNED_BYTE" />
     /// </summary>
     public readonly int type;
 
@@ -95,7 +95,7 @@ public class VertexAttribute
     public VertexAttribute( int usage, int numComponents, string alias, int unit = 0 )
         : this( usage,
                 numComponents,
-                usage == VertexAttributes.Usage.COLOR_PACKED ? IGL20.GL_UNSIGNED_BYTE : IGL20.GL_FLOAT,
+                usage == VertexAttributes.Usage.COLOR_PACKED ? IGL.GL_UNSIGNED_BYTE : IGL.GL_FLOAT,
                 usage == VertexAttributes.Usage.COLOR_PACKED,
                 alias,
                 unit )
@@ -112,8 +112,8 @@ public class VertexAttribute
     ///     The number of components of this attribute, must be between 1 and 4.
     /// </param>
     /// <param name="type">
-    ///     The OpenGL type of each component, e.g. <see cref="IGL20.GL_FLOAT" />
-    ///     or <see cref="IGL20.GL_UNSIGNED_BYTE" />. Since <see cref="Mesh" />
+    ///     The OpenGL type of each component, e.g. <see cref="IGL.GL_FLOAT" />
+    ///     or <see cref="IGL.GL_UNSIGNED_BYTE" />. Since <see cref="Mesh" />
     ///     stores vertex data in 32bit floats, the total size of this attribute
     ///     (type size times number of components) must be a multiple of four bytes.
     /// </param>
@@ -186,7 +186,7 @@ public class VertexAttribute
     {
         return new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED,
                                     4,
-                                    IGL20.GL_UNSIGNED_BYTE,
+                                    IGL.GL_UNSIGNED_BYTE,
                                     true,
                                     ShaderProgram.COLOR_ATTRIBUTE );
     }
@@ -195,7 +195,7 @@ public class VertexAttribute
     {
         return new VertexAttribute( VertexAttributes.Usage.COLOR_UNPACKED,
                                     4,
-                                    IGL20.GL_FLOAT,
+                                    IGL.GL_FLOAT,
                                     false,
                                     ShaderProgram.COLOR_ATTRIBUTE );
     }
@@ -261,12 +261,12 @@ public class VertexAttribute
     {
         return type switch
                {
-                   IGL20.GL_FLOAT          => 4 * numComponents,
-                   IGL20.GL_FIXED          => 4 * numComponents,
-                   IGL20.GL_UNSIGNED_SHORT => 2 * numComponents,
-                   IGL20.GL_SHORT          => 2 * numComponents,
-                   IGL20.GL_UNSIGNED_BYTE  => numComponents,
-                   IGL20.GL_BYTE           => numComponents,
+                   IGL.GL_FLOAT          => 4 * numComponents,
+                   IGL.GL_FIXED          => 4 * numComponents,
+                   IGL.GL_UNSIGNED_SHORT => 2 * numComponents,
+                   IGL.GL_SHORT          => 2 * numComponents,
+                   IGL.GL_UNSIGNED_BYTE  => numComponents,
+                   IGL.GL_BYTE           => numComponents,
                    _                       => 0
                };
     }

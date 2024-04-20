@@ -25,8 +25,6 @@
 
 using System.Text.RegularExpressions;
 
-using LughSharp.LibCore.Maths;
-
 namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>

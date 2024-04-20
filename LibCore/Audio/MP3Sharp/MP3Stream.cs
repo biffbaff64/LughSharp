@@ -37,7 +37,7 @@ public class Mp3Stream : Stream
     public bool IsEof { get; protected set; }
 
     // ------------------------------------------------------------------------
-    
+
     private const int BACK_STREAM_BYTE_COUNT_REP = 0;
 
     private readonly Bitstream         _bitStream;
@@ -46,7 +46,8 @@ public class Mp3Stream : Stream
     private readonly Stream            _sourceStream;
 
     /// <summary>
-    ///     Creates a new stream instance using the provided filename, and the default chunk size of 4096 bytes.
+    ///     Creates a new stream instance using the provided filename, and the default
+    ///     chunk size of 4096 bytes.
     /// </summary>
     public Mp3Stream( string fileName )
         : this( new FileStream( fileName, FileMode.Open, FileAccess.Read ) )
@@ -78,13 +79,13 @@ public class Mp3Stream : Stream
         IsEof |= !ReadFrame();
 
         Format = ChannelCount switch
-                 {
-                     1 => SoundFormat.Pcm16BitMono,
-                     2 => SoundFormat.Pcm16BitStereo,
-                     _ => throw new Mp3SharpException
-                         ( $"Unhandled channel count rep: {ChannelCount} "
-                         + $"(allowed values are 1-mono and 2-stereo)." )
-                 };
+        {
+            1 => SoundFormat.Pcm16BitMono,
+            2 => SoundFormat.Pcm16BitStereo,
+            _ => throw new Mp3SharpException
+                     ( $"Unhandled channel count rep: {ChannelCount} "
+                     + $"(allowed values are 1-mono and 2-stereo)." )
+        };
 
         if ( Format == SoundFormat.Pcm16BitMono )
         {
@@ -118,8 +119,9 @@ public class Mp3Stream : Stream
     public override long Length => _sourceStream.Length;
 
     /// <summary>
-    ///     Gets or sets the position of the source stream.  This is relative to the number of bytes in the MP3 file, rather
-    ///     than the total number of PCM bytes (typically signicantly greater) contained in the Mp3Stream's output.
+    ///     Gets or sets the position of the source stream.  This is relative to the
+    ///     number of bytes in the MP3 file, rather than the total number of PCM bytes
+    ///     (typically signicantly greater) contained in the Mp3Stream's output.
     /// </summary>
     public override long Position
     {
@@ -143,8 +145,9 @@ public class Mp3Stream : Stream
     }
 
     /// <summary>
-    ///     Gets the frequency of the audio being decoded. Updated every call to Read() or DecodeFrames(),
-    ///     to reflect the most recent header information from the MP3 Stream.
+    ///     Gets the frequency of the audio being decoded. Updated every call to
+    ///     Read() or DecodeFrames(), to reflect the most recent header information
+    ///     from the MP3 Stream.
     /// </summary>
     public int Frequency { get; private set; } = -1;
 
@@ -161,7 +164,8 @@ public class Mp3Stream : Stream
     public SoundFormat Format { get; }
 
     /// <summary>
-    ///     Clears all buffers for this stream and causes any buffered data to be written to the underlying device.
+    ///     Clears all buffers for this stream and causes any buffered data to be
+    ///     written to the underlying device.
     /// </summary>
     public override void Flush()
     {
@@ -195,8 +199,8 @@ public class Mp3Stream : Stream
     /// <summary>
     ///     Decodes the requested number of frames from the MP3 stream and caches their PCM-encoded bytes.
     ///     These can subsequently be obtained using the Read method.
-    ///     Returns the number of frames that were successfully decoded.
     /// </summary>
+    /// <returns> the number of frames that were successfully decoded. </returns>
     public int DecodeFrames( int frameCount )
     {
         var framesDecoded = 0;
@@ -216,9 +220,10 @@ public class Mp3Stream : Stream
     }
 
     /// <summary>
-    ///     Reads the MP3 stream as PCM-encoded bytes.  Decodes a portion of the stream if necessary.
-    ///     Returns the number of bytes read.
+    ///     Reads the MP3 stream as PCM-encoded bytes. Decodes a portion of the
+    ///     stream if necessary.
     /// </summary>
+    /// <returns> The number of bytes read. </returns>
     public override int Read( byte[] buffer, int offset, int count )
     {
         // Copy from queue buffers, reading new ones as necessary,
@@ -275,7 +280,7 @@ public class Mp3Stream : Stream
     private bool ReadFrame()
     {
         // Read a frame from the bitstream.
-        Header? header = _bitStream.ReadFrame();
+        var header = _bitStream.ReadFrame();
 
         if ( header == null )
         {
@@ -285,11 +290,11 @@ public class Mp3Stream : Stream
         try
         {
             // Set the channel count and frequency values for the stream.
-            ChannelCount = header.Mode() == Header.SINGLE_CHANNEL ? ( short )1 : ( short )2;
+            ChannelCount = header.Mode() == Header.SINGLE_CHANNEL ? ( short ) 1 : ( short ) 2;
             Frequency    = header.Frequency();
 
             // Decode the frame.
-            AudioBase? decoderOutput = _decoder.DecodeFrame( header, _bitStream );
+            var decoderOutput = _decoder.DecodeFrame( header, _bitStream );
 
             if ( decoderOutput != _buffer )
             {

@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics;
-
 namespace LughSharp.LibCore.Core;
 
 /// <summary>
@@ -159,19 +157,20 @@ public static class Gdx
         set => _net = value;
     }
 
-    /// <inheritdoc cref="IGL20" />
-    public static IGL20 GL
+    private static GLBindings? _igl;
+
+    public static GLBindings GL
     {
         get
         {
-            GdxRuntimeException.ThrowIfNull( _gl );
+            GdxRuntimeException.ThrowIfNull( _igl );
 
-            return _gl;
+            return _igl;
         }
-        set => _gl = value;
+        set => _igl = value;
     }
 
-    /// <inheritdoc cref="IGL20" />
+    //TODO: To be removed
     public static IGL20 GL20
     {
         get
@@ -183,7 +182,7 @@ public static class Gdx
         set => _gl20 = value;
     }
 
-    /// <inheritdoc cref="IGL30" />
+    //TODO: To be removed
     public static IGL30? GL30
     {
         get

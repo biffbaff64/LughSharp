@@ -24,10 +24,6 @@
 
 
 using System.IO.Compression;
-
-using LughSharp.LibCore.Maths;
-using LughSharp.LibCore.Utils.Buffers;
-
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;

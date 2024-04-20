@@ -24,7 +24,6 @@
 
 
 using LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
-
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
@@ -33,7 +32,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 ///     Encapsulates the details of decoding an MPEG audio frame.
 /// </summary>
 [PublicAPI]
-public class Decoder
+public partial class Decoder
 {
     private const float DEFAULT_SCALE_FACTOR = 32700.0f;
 
@@ -134,7 +133,7 @@ public class Decoder
     /// </summary>
     public virtual int OutputBlockSize => AudioBase.OBUFFERSIZE;
 
-    public static Parameters DefaultParams => ( Parameters )_decoderDefaultParams.Clone();
+    public static Parameters DefaultParams => ( Parameters ) _decoderDefaultParams.Clone();
 
     /// <summary>
     ///     Decodes one frame from an MPEG audio bitstream.
@@ -192,7 +191,7 @@ public class Decoder
                                                     _leftChannelFilter,
                                                     _rightChannelFilter,
                                                     _output,
-                                                    ( int )OutputChannelsEnum.BothChannels );
+                                                    ( int ) OutputChannelsEnum.BothChannels );
 
                 decoder = _l3Decoder;
 
@@ -210,7 +209,7 @@ public class Decoder
                                        _leftChannelFilter,
                                        _rightChannelFilter,
                                        _output,
-                                       ( int )OutputChannelsEnum.BothChannels );
+                                       ( int ) OutputChannelsEnum.BothChannels );
                 }
 
                 decoder = _l2Decoder;
@@ -229,7 +228,7 @@ public class Decoder
                                        _leftChannelFilter,
                                        _rightChannelFilter,
                                        _output,
-                                       ( int )OutputChannelsEnum.BothChannels );
+                                       ( int ) OutputChannelsEnum.BothChannels );
                 }
 
                 decoder = _l1Decoder;
@@ -266,38 +265,5 @@ public class Decoder
         _outputFrequency = header.Frequency();
 
         _isInitialized = true;
-    }
-
-    /// <summary>
-    ///     The Params class presents the customizable aspects of the decoder. Instances of
-    ///     this class are not thread safe.
-    /// </summary>
-    [PublicAPI]
-    public class Parameters : ICloneable
-    {
-        public virtual OutputChannels? OutputChannels { get; set; }
-
-        /// <summary>
-        ///     Retrieves the equalizer settings that the decoder's equalizer will be initialized from.
-        ///     The Equalizer instance returned cannot be changed in real time to affect the decoder output
-        ///     as it is used only to initialize the decoders EQ settings. To affect the decoder's output
-        ///     in realtime, use the Equalizer returned from the getEqualizer() method on the decoder.
-        /// </summary>
-        /// <returns>
-        ///     The Equalizer used to initialize the EQ settings of the decoder.
-        /// </returns>
-        public virtual Equalizer? InitialEqualizerSettings => null;
-
-        public object Clone()
-        {
-            try
-            {
-                return MemberwiseClone();
-            }
-            catch ( Exception ex )
-            {
-                throw new ApplicationException( this + ": " + ex );
-            }
-        }
     }
 }

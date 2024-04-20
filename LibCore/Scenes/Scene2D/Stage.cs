@@ -24,14 +24,8 @@
 
 
 using System.Reflection.Metadata;
-using LughSharp.LibCore.Graphics;
-using LughSharp.LibCore.Graphics.G2D;
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 using LughSharp.LibCore.Scenes.Scene2D.UI;
-using LughSharp.LibCore.Utils.Collections;
-using LughSharp.LibCore.Utils.Pooling;
-using LughSharp.LibCore.Utils.Viewport;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Scenes.Scene2D;
@@ -1353,7 +1347,7 @@ public class Stage : InputAdapter
             }
         }
 
-        GL.glEnable( IGL20.GL_BLEND );
+        GL.glEnable( IGL.GL_BLEND );
 
         _debugShapes.ProjectionMatrix = Camera!.Combined;
         _debugShapes.Begin();
@@ -1362,7 +1356,7 @@ public class Stage : InputAdapter
 
         _debugShapes.End();
 
-        GL.glDisable( IGL20.GL_BLEND );
+        GL.glDisable( IGL.GL_BLEND );
     }
 
     /// <summary>

@@ -37,9 +37,9 @@ public class TextureWrap
         Repeat
     }
 
-    public readonly static TextureWrap MirroredRepeat = new( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL20.GL_MIRRORED_REPEAT );
-    public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL20.GL_CLAMP_TO_EDGE );
-    public readonly static TextureWrap Repeat         = new( "Repeat", InnerEnum.Repeat, IGL20.GL_REPEAT );
+    public readonly static TextureWrap MirroredRepeat = new( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL.GL_MIRRORED_REPEAT );
+    public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL.GL_CLAMP_TO_EDGE );
+    public readonly static TextureWrap Repeat         = new( "Repeat", InnerEnum.Repeat, IGL.GL_REPEAT );
 
     private readonly static List< TextureWrap > _valueList = new();
 

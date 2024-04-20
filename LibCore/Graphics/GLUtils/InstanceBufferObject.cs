@@ -22,8 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LughSharp.LibCore.Utils.Buffers;
-
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
@@ -60,11 +58,11 @@ public class InstanceBufferObject : IInstanceData
 
         SetBuffer( data, true, instanceAttributes );
 
-        Usage = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
+        Usage = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
     }
 
     /// <summary>
-    ///     The GL enum used in the call to <see cref="IGL20.GLBufferData(int, int, Buffer, int)" />",
+    ///     The GL enum used in the call to <see cref="IGL.GLBufferData(int, int, Buffer, int)" />",
     ///     e.g. GL_STATIC_DRAW or GL_DYNAMIC_DRAW. It can only be called when the VBO is not bound.
     /// </summary>
     public int Usage
@@ -169,13 +167,13 @@ public class InstanceBufferObject : IInstanceData
     {
         Debug.Assert( _byteBuffer != null, "Bind(ShaderProgram, int[]) fail: _byteBuffer is NULL" );
 
-        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, ( uint )_bufferHandle );
+        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint )_bufferHandle );
 
         if ( _isDirty )
         {
             _byteBuffer.Limit = _buffer.Limit * 4;
 
-            GL.glBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
+            GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
 
             _isDirty = false;
         }
@@ -277,7 +275,7 @@ public class InstanceBufferObject : IInstanceData
             }
         }
 
-        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
@@ -296,7 +294,7 @@ public class InstanceBufferObject : IInstanceData
     /// </summary>
     public void Dispose()
     {
-        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
         GL.glDeleteBuffers( ( uint )_bufferHandle );
 
         _bufferHandle = 0;
@@ -353,8 +351,8 @@ public class InstanceBufferObject : IInstanceData
 
         if ( _isBound )
         {
-            GL.glBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, Usage );
-            GL.glBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
+            GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, Usage );
+            GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
             _isDirty = false;
         }
     }

@@ -29,7 +29,6 @@ using LughSharp.Backends.DesktopGL.Files;
 using LughSharp.Backends.DesktopGL.Input;
 using LughSharp.Backends.DesktopGL.Utils;
 using LughSharp.Backends.DesktopGL.Window;
-using LughSharp.LibCore.Graphics;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 
 using Exception = System.Exception;
@@ -438,7 +437,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                              config.InitialBackgroundColor.B,
                              config.InitialBackgroundColor.A );
 
-            GL.glClear( IGL20.GL_COLOR_BUFFER_BIT );
+            GL.glClear( IGL.GL_COLOR_BUFFER_BIT );
             Glfw.SwapBuffers( windowHandle );
         }
     }
@@ -649,8 +648,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         GLVersion = new GLVersion( IApplication.ApplicationType.DesktopGL,
                                    $"{major}.{minor}.{revision}",
-                                   Gdx.GL20.GLGetString( IGL20.GL_VENDOR ),
-                                   Gdx.GL20.GLGetString( IGL20.GL_RENDERER ) );
+                                   Gdx.GL20.GLGetString( IGL.GL_VENDOR ),
+                                   Gdx.GL20.GLGetString( IGL.GL_RENDERER ) );
     }
 
     #region public properties

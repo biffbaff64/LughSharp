@@ -23,13 +23,12 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Utils.Buffers;
-
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
+[PublicAPI]
 public class VertexBufferObjectWithVAO : IVertexData
 {
-    private readonly static IntBuffer TmpHandle = BufferUtils.NewIntBuffer( 1 );
+    private readonly static IntBuffer _tmpHandle = BufferUtils.NewIntBuffer( 1 );
 
     private readonly FloatBuffer _buffer;
 
@@ -73,8 +72,8 @@ public class VertexBufferObjectWithVAO : IVertexData
         _buffer.Flip();
         _byteBuffer.Flip();
 
-        _bufferHandle = Gdx.GL20.GLGenBuffer();
-        _usage        = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
+        _bufferHandle = ( int ) GL.glGenBuffer();
+        _usage        = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
 
         CreateVAO();
     }
@@ -91,8 +90,8 @@ public class VertexBufferObjectWithVAO : IVertexData
         _buffer.Flip();
         _byteBuffer.Flip();
 
-        _bufferHandle = Gdx.GL20.GLGenBuffer();
-        _usage        = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
+        _bufferHandle = ( int ) GL.glGenBuffer();
+        _usage        = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
 
         CreateVAO();
     }
@@ -177,12 +176,12 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        Gdx.GL30?.GLBindVertexArray( _vaoHandle );
+        GL.glBindVertexArray( ( uint ) _vaoHandle );
 
         BindAttributes( shader, locations );
 
-        //if our data has changed upload it:
-        BindData( Gdx.GL30 );
+        // if our data has changed upload it:
+        BindData();
 
         _isBound = true;
     }
@@ -194,7 +193,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Unbind( ShaderProgram? shader, int[]? locations = null )
     {
-        Gdx.GL30?.GLBindVertexArray( 0 );
+        GL.glBindVertexArray( 0 );
         _isBound = false;
     }
 
@@ -203,7 +202,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     public void Invalidate()
     {
-        _bufferHandle = Gdx.GL30!.GLGenBuffer();
+        _bufferHandle = ( int ) GL.glGenBuffer();
 
         CreateVAO();
 
@@ -216,8 +215,8 @@ public class VertexBufferObjectWithVAO : IVertexData
     /// </summary>
     public void Dispose()
     {
-        Gdx.GL30?.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
-        Gdx.GL30?.GLDeleteBuffer( _bufferHandle );
+        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
+        GL.glDeleteBuffers( ( uint ) _bufferHandle );
 
         _bufferHandle = 0;
 
@@ -229,12 +228,12 @@ public class VertexBufferObjectWithVAO : IVertexData
         DeleteVAO();
     }
 
-    private void BufferChanged()
+    private unsafe void BufferChanged()
     {
         if ( _isBound )
         {
-            Gdx.GL20.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
-            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
+            GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
+            GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
             _isDirty = false;
         }
     }
@@ -270,7 +269,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
         if ( !stillValid )
         {
-            Gdx.GL.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+            GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
 
             UnbindAttributes( shader );
 
@@ -325,39 +324,39 @@ public class VertexBufferObjectWithVAO : IVertexData
         }
     }
 
-    private void BindData( IGL20? gl )
+    private void BindData()
     {
         if ( _isDirty )
         {
-            gl?.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+            GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
 
             _byteBuffer.Limit = _buffer.Limit * 4;
 
-            gl?.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
+            GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
 
             _isDirty = false;
         }
     }
 
-    private void CreateVAO()
+    private unsafe void CreateVAO()
     {
-        TmpHandle.Clear();
+        _tmpHandle.Clear();
 
-        Gdx.GL30?.GLGenVertexArrays( 1, TmpHandle );
+        GL.glGenVertexArrays( 1, _tmpHandle );
 
-        _vaoHandle = TmpHandle.Get();
+        _vaoHandle = _tmpHandle.Get();
     }
 
-    private void DeleteVAO()
+    private unsafe void DeleteVAO()
     {
         if ( _vaoHandle != -1 )
         {
-            TmpHandle.Clear();
-            TmpHandle.Put( _vaoHandle );
+            _tmpHandle.Clear();
+            _tmpHandle.Put( _vaoHandle );
 
-            TmpHandle.Flip();
+            _tmpHandle.Flip();
 
-            Gdx.GL30?.GLDeleteVertexArrays( 1, TmpHandle );
+            GL.glDeleteVertexArrays( 1, _tmpHandle );
 
             _vaoHandle = -1;
         }

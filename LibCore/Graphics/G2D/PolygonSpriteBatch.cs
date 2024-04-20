@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Maths;
-
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Graphics.G2D;
@@ -221,7 +219,7 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         if ( ISBlendingEnabled() )
         {
-            GL.glDisable( IGL20.GL_BLEND );
+            GL.glDisable( IGL.GL_BLEND );
         }
     }
 
@@ -1357,11 +1355,11 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         if ( _blendingDisabled )
         {
-            GL.glDisable( IGL20.GL_BLEND );
+            GL.glDisable( IGL.GL_BLEND );
         }
         else
         {
-            GL.glEnable( IGL20.GL_BLEND );
+            GL.glEnable( IGL.GL_BLEND );
 
             if ( BlendSrcFunc != -1 )
             {
@@ -1369,7 +1367,7 @@ public class PolygonSpriteBatch : IPolygonBatch
             }
         }
 
-        mesh.Render( _customShader ?? _shader, IGL20.GL_TRIANGLES, 0, trianglesInBatch );
+        mesh.Render( _customShader ?? _shader, IGL.GL_TRIANGLES, 0, trianglesInBatch );
 
         _vertexIndex   = 0;
         _triangleIndex = 0;
@@ -1478,13 +1476,13 @@ public class PolygonSpriteBatch : IPolygonBatch
         }
     }
 
-    public int BlendSrcFunc { get; private set; } = IGL20.GL_SRC_ALPHA;
+    public int BlendSrcFunc { get; private set; } = IGL.GL_SRC_ALPHA;
 
-    public int BlendDstFunc { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
+    public int BlendDstFunc { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
 
-    public int BlendSrcFuncAlpha { get; private set; } = IGL20.GL_SRC_ALPHA;
+    public int BlendSrcFuncAlpha { get; private set; } = IGL.GL_SRC_ALPHA;
 
-    public int BlendDstFuncAlpha { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
+    public int BlendDstFuncAlpha { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
 
     public Matrix4 ProjectionMatrix { get; set; } = new();
 

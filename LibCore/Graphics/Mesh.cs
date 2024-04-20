@@ -26,7 +26,6 @@
 using System.Text;
 
 using LughSharp.LibCore.Maths.Collision;
-using LughSharp.LibCore.Utils.Buffers;
 
 using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
@@ -589,7 +588,7 @@ public class Mesh
 
                 unsafe
                 {
-                    GL.glDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, buffer );
+                    GL.glDrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, buffer );
                 }
 
                 buffer.Position = oldPosition;
@@ -624,7 +623,7 @@ public class Mesh
                     {
                         GL.glDrawElementsInstanced( primitiveType,
                                                     count,
-                                                    IGL20.GL_UNSIGNED_SHORT,
+                                                    IGL.GL_UNSIGNED_SHORT,
                                                     offset * 2,
                                                     numInstances );
                     }
@@ -633,7 +632,7 @@ public class Mesh
                 {
                     unsafe
                     {
-                        GL.glDrawElements( primitiveType, count, IGL20.GL_UNSIGNED_SHORT, offset * 2 );
+                        GL.glDrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, offset * 2 );
                     }
                 }
             }

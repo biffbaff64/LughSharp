@@ -22,8 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LughSharp.LibCore.Utils.Buffers;
-
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
@@ -67,7 +65,7 @@ public class VertexBufferObject : IVertexData
         data.Limit = 0;
 
         SetBuffer( data, true, attributes );
-        Usage = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
+        Usage = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
     }
 
     public VertexBufferObject( int usage, ByteBuffer data, bool ownsBuffer, VertexAttributes attributes )
@@ -192,7 +190,7 @@ public class VertexBufferObject : IVertexData
     {
         IGL20 gl = Gdx.GL20;
 
-        gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, _bufferHandle );
+        gl.GLBindBuffer( IGL.GL_ARRAY_BUFFER, _bufferHandle );
 
         if ( _isDirty )
         {
@@ -202,7 +200,7 @@ public class VertexBufferObject : IVertexData
             }
 
             _byteBuffer.Limit = _buffer.Limit * 4;
-            gl.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
+            gl.GLBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
             _isDirty = false;
         }
 
@@ -264,7 +262,7 @@ public class VertexBufferObject : IVertexData
             }
         }
 
-        gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        gl.GLBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
@@ -285,7 +283,7 @@ public class VertexBufferObject : IVertexData
     {
         IGL20 gl = Gdx.GL20;
 
-        gl.GLBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        gl.GLBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
         gl.GLDeleteBuffer( _bufferHandle );
 
         _bufferHandle = 0;
@@ -338,7 +336,7 @@ public class VertexBufferObject : IVertexData
     {
         if ( _isBound )
         {
-            Gdx.GL20.GLBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer!.Limit, _byteBuffer, Usage );
+            Gdx.GL20.GLBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer!.Limit, _byteBuffer, Usage );
             _isDirty = false;
         }
     }

@@ -136,14 +136,14 @@ AUDIO/MP3SHARP/DECODING
     - DONE - IP   - BitstreamException
     - DONE - IP   - CircularByteBuffer
     - DONE - DONE - Crc16
-    - DONE - DONE - Decoder
-    - DONE - IP   - Decode.Parameters
+    - DONE - IP   - Decoder
+    - DONE - IP   - DecoderParameters
     - DONE - IP   - DecoderErrors
     - DONE - IP   - DecoderException
     - DONE - IP   - Equalizer
     - DONE - IP   - Header
     - DONE - IP   - Huffman
-    - DONE - IP   - OuputChannels
+    - DONE - IP   - OutputChannels
     - DONE - IP   - OutputChannelsEnum
     - DONE - IP   - PushbackStream
     - DONE - IP   - SampleBuffer
@@ -237,10 +237,10 @@ CORE
     - DONE - IP   - IInput
     - DONE - IP   - IInputProcessor
     - DONE - DONE - ILifecycleListener
-    - IP   - IP   - INet
+    - DONE - IP   - INet
     - DONE - DONE - InputAdapter
     - DONE - IP   - InputEventQueue
-    - IP   - IP   - InputMultiplexer
+    - DONE - IP   - InputMultiplexer
     - DONE - DONE - IPreferences
     - DONE - DONE - IScreen
     - DONE - DONE - ScreenAdapter
@@ -252,7 +252,7 @@ GRAPHICS
 --------
 
     - NOTE: I am not sure how to proceed with implementing OpenGL within this project
-    -       right now. Java LibGDX uses LWJGL3, there is not current C# OpenGL implementation
+    -       right now. Java LibGDX uses LWJGL3, there is no current C# OpenGL implementation
     -       that does things in the same way ie. using ByterBuffer instead of byte*, that kind
     -       of thing. It means a big rewrite of many of the graphics classes.
     -       I might need some guidance, or a lightbulb moment to continue.
@@ -276,15 +276,15 @@ GRAPHICS
     - DONE - IP   - ITextureData
     - DONE - IP   - Mesh
     - DONE - IP   - OrthographicCamera
-    - DONE - IP   - PerspectiveCamera                  
-    - IP   - IP   - Pixmap              
-    - IP   - IP   - PixmapFormat                             
+    - DONE - IP   - PerspectiveCamera
+    - IP   - IP   - Pixmap
+    - IP   - IP   - PixmapFormat
     - IP   - IP   - PixmapIO
-    - IP   - IP   - Texture                            
-    - IP   - IP   - TextureArray                       
-    - IP   - IP   - TextureFilter                      
-    - DONE - IP   - TextureWrap                        
-    - DONE - IP   - VertexAttribute                    
+    - IP   - IP   - Texture
+    - IP   - IP   - TextureArray
+    - IP   - IP   - TextureFilter
+    - DONE - IP   - TextureWrap
+    - DONE - IP   - VertexAttribute
     - DONE - IP   - VertexAttributes
 
     - GameWindow ??
@@ -313,35 +313,35 @@ GRAPHICS/G2D
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - Animation                      
-    - IP   - IP   - AtlasRegion                    
-    - IP   - IP   - AtlasSprite                    
-    - IP   - IP   - BitmapFont 
-    - IP   - IP   - BitmapFontCache                
-    - IP   - IP   - CpuSpriteBatch                 
-    - IP   - IP   - DistanceFieldFont              
-    - IP   - IP   - Gdx2DPixmap                    
-    - IP   - IP   - GlyphLayout                    
-    - IP   - IP   - IBatch                         
-    - IP   - IP   - IPolygonBatch                  
-    - IP   - IP   - NinePatch                      
-    - IP   - IP   - ParticleEffect                 
-    - IP   - IP   - ParticleEffectPool        
-    - IP   - IP   - ParticleEmitter           
+    - IP   - IP   - Animation
+    - IP   - IP   - AtlasRegion
+    - IP   - IP   - AtlasSprite
+    - IP   - IP   - BitmapFont
+    - IP   - IP   - BitmapFontCache
+    - IP   - IP   - CpuSpriteBatch
+    - IP   - IP   - DistanceFieldFont
+    - IP   - IP   - Gdx2DPixmap
+    - IP   - IP   - GlyphLayout
+    - IP   - IP   - IBatch
+    - IP   - IP   - IPolygonBatch
+    - IP   - IP   - NinePatch
+    - IP   - IP   - ParticleEffect
+    - IP   - IP   - ParticleEffectPool
+    - IP   - IP   - ParticleEmitter
     - IP   - IP   - PixmapPacker
-    - IP   - IP   - PixmapPacker10       
-    - IP   - IP   - PolygonRegion                  
+    - IP   - IP   - PixmapPacker10
+    - IP   - IP   - PolygonRegion
     - IP   - IP   - PolygonRegionLoader
-    - IP   - IP   - PolygonSprite                  
-    - IP   - IP   - PolygonSpriteBatch             
-    - IP   - IP   - RepeatablePolygonSprite        
-    - IP   - IP   - Sprite                         
-    - IP   - IP   - SpriteBatch                    
+    - IP   - IP   - PolygonSprite
+    - IP   - IP   - PolygonSpriteBatch
+    - IP   - IP   - RepeatablePolygonSprite
+    - IP   - IP   - Sprite
+    - IP   - IP   - SpriteBatch
     - IP   - IP   - SpriteCache
-    - IP   - IP   - TextureAtlas                   
-    - IP   - IP   - TextureAtlasData   
+    - IP   - IP   - TextureAtlas
+    - IP   - IP   - TextureAtlasData
     - IP   - IP   - TextureAtlasDataExtensions
-    - IP   - IP   - TextureRegion                  
+    - IP   - IP   - TextureRegion
 
 GRAPHICS/G3D
 ------------
@@ -432,46 +432,46 @@ MAPS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - IImageResolver                         
-    - IP   - IP   - IMapRenderer                           
-    - IP   - IP   - Map                                    
-    - IP   - IP   - MapGroupLayer                          
-    - IP   - IP   - MapLayer                               
-    - IP   - IP   - MapLayers                              
-    - IP   - IP   - MapObject                              
-    - IP   - IP   - MapObjects                             
-    - IP   - IP   - MapProperties                          
+    - IP   - IP   - IImageResolver
+    - IP   - IP   - IMapRenderer
+    - IP   - IP   - Map
+    - IP   - IP   - MapGroupLayer
+    - IP   - IP   - MapLayer
+    - IP   - IP   - MapLayers
+    - IP   - IP   - MapObject
+    - IP   - IP   - MapObjects
+    - IP   - IP   - MapProperties
 
 MAPS/OBJECTS
 ------------
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - CircleMapObject                        
-    - IP   - IP   - EllipseMapObject                       
-    - IP   - IP   - PolygonMapObject                       
-    - IP   - IP   - PolylineMapObject                      
-    - IP   - IP   - RectangleMapObject                     
-    - IP   - IP   - TextureMapObject                       
+    - IP   - IP   - CircleMapObject
+    - IP   - IP   - EllipseMapObject
+    - IP   - IP   - PolygonMapObject
+    - IP   - IP   - PolylineMapObject
+    - IP   - IP   - RectangleMapObject
+    - IP   - IP   - TextureMapObject
 
 MAPS/TILED
 ----------
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - ITiledMapTile                          
-    - IP   - IP   - TiledMap                               
-    - IP   - IP   - TiledMapImageLayer                     
-    - IP   - IP   - TiledMapTileLayer                      
-    - IP   - IP   - TiledMapTileSet                        
-    - IP   - IP   - TiledMapTileSets                       
+    - IP   - IP   - ITiledMapTile
+    - IP   - IP   - TiledMap
+    - IP   - IP   - TiledMapImageLayer
+    - IP   - IP   - TiledMapTileLayer
+    - IP   - IP   - TiledMapTileSet
+    - IP   - IP   - TiledMapTileSets
 
 MAPS/TILED/LOADERS
 ------------------
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - AtlasTmxMapLoader 
+    - IP   - IP   - AtlasTmxMapLoader
     - IP   - IP   - BaseTmxMapLoader
     - IP   - IP   - TmxMapLoader
 
@@ -480,28 +480,28 @@ MAPS/TILED/OBJECTS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - TiledMapTileMapObject                  
+    - IP   - IP   - TiledMapTileMapObject
 
 MAPS/TILED/RENDERERS
 --------------------
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - BatchTiledMapRenderer                  
-    - IP   - IP   - HexagonalTiledMapRenderer              
-    - IP   - IP   - IsometricStaggeredTiledMapRenderer     
-    - IP   - IP   - IsometricTiledMapRenderer              
-    - IP   - IP   - ITiledMapRenderer                      
-    - IP   - IP   - OrthoCachedTiledMapRenderer            
-    - IP   - IP   - OrthogonalTiledMapRenderer             
+    - IP   - IP   - BatchTiledMapRenderer
+    - IP   - IP   - HexagonalTiledMapRenderer
+    - IP   - IP   - IsometricStaggeredTiledMapRenderer
+    - IP   - IP   - IsometricTiledMapRenderer
+    - IP   - IP   - ITiledMapRenderer
+    - IP   - IP   - OrthoCachedTiledMapRenderer
+    - IP   - IP   - OrthogonalTiledMapRenderer
 
 MAPS/TILED/TILES
 ----------------
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - AnimatedTileMapTile                    
-    - IP   - IP   - StaticTiledMapTile                     
+    - IP   - IP   - AnimatedTileMapTile
+    - IP   - IP   - StaticTiledMapTile
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -534,10 +534,10 @@ MATHS
     - IP   - IP   - IShape2D
     - IP   - IP   - IVector
     - IP   - IP   - MathUtils
-    - IP   - IP   - Matrix3                        
-    - IP   - IP   - Matrix4                        
+    - IP   - IP   - Matrix3
+    - IP   - IP   - Matrix4
     - IP   - IP   - Number
-    - IP   - IP   - NumberUtils                    
+    - IP   - IP   - NumberUtils
     - IP   - IP   - Plane
     - IP   - IP   - Polygon
     - IP   - IP   - Polyline
@@ -581,39 +581,39 @@ SCENES/SCENE2D/ACTIONS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - Actions                        
-    - IP   - IP   - AddAction                      
-    - IP   - IP   - AddListenerAction              
-    - IP   - IP   - AfterAction                    
-    - IP   - IP   - AlphaAction                    
-    - IP   - IP   - ColorAction                    
-    - IP   - IP   - CountdownEventAction           
-    - IP   - IP   - DelayAction                    
-    - IP   - IP   - DelegateAction                 
-    - IP   - IP   - EventAction                    
-    - IP   - IP   - FloatAction                    
-    - IP   - IP   - IntAction                      
-    - IP   - IP   - LayoutAction                   
-    - IP   - IP   - MoveByAction                   
-    - IP   - IP   - MoveToAction                   
-    - IP   - IP   - ParallelAction                 
-    - IP   - IP   - RelativeTemporalAction         
-    - IP   - IP   - RemoveAction                   
-    - IP   - IP   - RemoveActorAction              
-    - IP   - IP   - RemoveListenerAction           
-    - IP   - IP   - RepeatAction                   
-    - IP   - IP   - RotateByAction                 
-    - IP   - IP   - RotateToAction                 
-    - IP   - IP   - RunnableAction                 
-    - IP   - IP   - ScaleByAction                  
-    - IP   - IP   - ScaleToAction                  
-    - IP   - IP   - SequenceAction                 
-    - IP   - IP   - SizeByAction                   
-    - IP   - IP   - SizeToAction                   
-    - IP   - IP   - TemporalAction                 
-    - IP   - IP   - TimeScaleAction                
-    - IP   - IP   - TouchableAction                
-    - IP   - IP   - VisibleAction                  
+    - IP   - IP   - Actions
+    - IP   - IP   - AddAction
+    - IP   - IP   - AddListenerAction
+    - IP   - IP   - AfterAction
+    - IP   - IP   - AlphaAction
+    - IP   - IP   - ColorAction
+    - IP   - IP   - CountdownEventAction
+    - IP   - IP   - DelayAction
+    - IP   - IP   - DelegateAction
+    - IP   - IP   - EventAction
+    - IP   - IP   - FloatAction
+    - IP   - IP   - IntAction
+    - IP   - IP   - LayoutAction
+    - IP   - IP   - MoveByAction
+    - IP   - IP   - MoveToAction
+    - IP   - IP   - ParallelAction
+    - IP   - IP   - RelativeTemporalAction
+    - IP   - IP   - RemoveAction
+    - IP   - IP   - RemoveActorAction
+    - IP   - IP   - RemoveListenerAction
+    - IP   - IP   - RepeatAction
+    - IP   - IP   - RotateByAction
+    - IP   - IP   - RotateToAction
+    - IP   - IP   - RunnableAction
+    - IP   - IP   - ScaleByAction
+    - IP   - IP   - ScaleToAction
+    - IP   - IP   - SequenceAction
+    - IP   - IP   - SizeByAction
+    - IP   - IP   - SizeToAction
+    - IP   - IP   - TemporalAction
+    - IP   - IP   - TimeScaleAction
+    - IP   - IP   - TouchableAction
+    - IP   - IP   - VisibleAction
 
 SCENES/SCENE2D/LISTENERS
 ------------------------
@@ -622,14 +622,14 @@ SCENES/SCENE2D/LISTENERS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - ActorGestureListener           
-    - IP   - IP   - ChangeListener                 
-    - IP   - IP   - ClickListener                  
-    - IP   - IP   - DragListener                   
-    - IP   - IP   - DragScrollListener             
-    - IP   - IP   - FocusListener                  
-    - IP   - IP   - IEventListener                 
-    - IP   - IP   - InputListener                  
+    - IP   - IP   - ActorGestureListener
+    - IP   - IP   - ChangeListener
+    - IP   - IP   - ClickListener
+    - IP   - IP   - DragListener
+    - IP   - IP   - DragScrollListener
+    - IP   - IP   - FocusListener
+    - IP   - IP   - IEventListener
+    - IP   - IP   - InputListener
 
 ```
 TODO: Use Lambdas for these...
@@ -665,30 +665,30 @@ SCENES/SCENE2D/UI
     - IP   - IP   - ImageTextButton
     - IP   - IP   - Label
     - IP   - IP   - ListBox
-    - IP   - IP   - ParticleEffectActor            
+    - IP   - IP   - ParticleEffectActor
     - IP   - IP   - ProgressBar
     - IP   - IP   - ScrollPane
     - IP   - IP   - ScrollPaneListeners
     - IP   - IP   - SelectBox
-    - IP   - IP   - Skin                           
-    - IP   - IP   - Slider                         
-    - IP   - IP   - SplitPane                      
-    - IP   - IP   - Stack                          
-    - IP   - IP   - Table                          
-    - IP   - IP   - TextArea                       
+    - IP   - IP   - Skin
+    - IP   - IP   - Slider
+    - IP   - IP   - SplitPane
+    - IP   - IP   - Stack
+    - IP   - IP   - Table
+    - IP   - IP   - TextArea
     - IP   - IP   - TextButton
-    - IP   - IP   - TextField                      
+    - IP   - IP   - TextField
     - IP   - IP   - Tooltip
     - IP   - IP   - TextTooltip
-    - IP   - IP   - TooltipManager                 
-    - IP   - IP   - Touchpad                       
+    - IP   - IP   - TooltipManager
+    - IP   - IP   - Touchpad
     - IP   - IP   - Tree
-    - IP   - IP   - Value                          
+    - IP   - IP   - Value
     - IP   - IP   - ValueExtensions
-    - IP   - IP   - VerticalGroup                  
-    - IP   - IP   - Widget                         
-    - IP   - IP   - WidgetGroup                    
-    - IP   - IP   - Window                         
+    - IP   - IP   - VerticalGroup
+    - IP   - IP   - Widget
+    - IP   - IP   - WidgetGroup
+    - IP   - IP   - Window
 
 SCENES/SCENE2D/UTILS
 --------------------
@@ -748,7 +748,7 @@ UTILS
     - DONE - IP   - Select                          Renamed Selector (See SortedSetExtensions.cs)
     - DONE - IP   - SortUtils
     - DONE - IP   - StringTokenizer
-    - DONE - IP   - Timer                          
+    - DONE - IP   - Timer
     - DONE - IP   - TimeUtils
     - DONE - IP   - TimSort
 
@@ -842,24 +842,24 @@ UTILS/POOLING
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - DONE - FlushablePool                  
-    - DONE - DONE - IPoolable                      
-    - DONE - DONE - Pool                           
-    - DONE - DONE - PooledLinkedList               
-    - DONE - DONE - Pools                          
+    - DONE - DONE - FlushablePool
+    - DONE - DONE - IPoolable
+    - DONE - DONE - Pool
+    - DONE - DONE - PooledLinkedList
+    - DONE - DONE - Pools
 
 UTILS/VIEWPORT
 --------------
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - DONE - ExtendedViewport               
-    - DONE - DONE - FillViewport                   
-    - DONE - DONE - FitViewport                    
-    - DONE - DONE - ScalingViewport                
-    - DONE - DONE - ScreenViewport                 
-    - DONE - DONE - StretchViewport                
-    - DONE - DONE - Viewport                       
+    - DONE - DONE - ExtendedViewport
+    - DONE - DONE - FillViewport
+    - DONE - DONE - FitViewport
+    - DONE - DONE - ScalingViewport
+    - DONE - DONE - ScreenViewport
+    - DONE - DONE - StretchViewport
+    - DONE - DONE - Viewport
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

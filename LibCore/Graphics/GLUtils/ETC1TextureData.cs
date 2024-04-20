@@ -143,7 +143,7 @@ public class ETC1TextureData : ITextureData
             
             if ( UseMipMaps )
             {
-                GL.glGenerateMipmap( IGL20.GL_TEXTURE_2D );
+                GL.glGenerateMipmap( IGL.GL_TEXTURE_2D );
             }
         }
 

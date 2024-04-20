@@ -23,9 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics.G2D;
-using LughSharp.LibCore.Utils.Buffers;
-
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Graphics;
@@ -443,13 +440,13 @@ public class Pixmap : IDisposable
     /// <returns>The new Pixmap.</returns>
     public static Pixmap CreateFromFrameBuffer( int x, int y, int width, int height )
     {
-        GL.glPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
+        GL.glPixelStorei( IGL.GL_PACK_ALIGNMENT, 1 );
 
         Pixmap pixmap = new( width, height, Format.RGBA8888 );
 
         unsafe
         {
-            GL.glReadPixels( x, y, width, height, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixmap.Pixels );
+            GL.glReadPixels( x, y, width, height, IGL.GL_RGBA, IGL.GL_UNSIGNED_BYTE, pixmap.Pixels );
         }
         
         return pixmap;

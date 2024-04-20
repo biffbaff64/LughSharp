@@ -24,7 +24,6 @@
 
 
 using System.IO.Compression;
-using LughSharp.LibCore.Utils.Buffers;
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
@@ -82,7 +81,7 @@ public class KtxTextureData : ITextureData, ICubemapData
     /// </summary>
     public void ConsumeCubemapData()
     {
-        ConsumeCustomData( IGL20.GL_TEXTURE_CUBE_MAP );
+        ConsumeCustomData( IGL.GL_TEXTURE_CUBE_MAP );
     }
 
     /// <summary>
@@ -292,7 +291,7 @@ public class KtxTextureData : ITextureData, ICubemapData
         if ( _pixelHeight > 0 )
         {
             textureDimensions = 2;
-            glTarget = IGL20.GL_TEXTURE_2D;
+            glTarget = IGL.GL_TEXTURE_2D;
         }
 
         if ( _pixelDepth > 0 )
@@ -305,7 +304,7 @@ public class KtxTextureData : ITextureData, ICubemapData
         {
             if ( textureDimensions == 2 )
             {
-                glTarget = IGL20.GL_TEXTURE_CUBE_MAP;
+                glTarget = IGL.GL_TEXTURE_CUBE_MAP;
             }
             else
             {
@@ -323,7 +322,7 @@ public class KtxTextureData : ITextureData, ICubemapData
             {
                 glTarget = GL_TEXTURE_1D_ARRAY_EXT;
             }
-            else if ( glTarget == IGL20.GL_TEXTURE_2D )
+            else if ( glTarget == IGL.GL_TEXTURE_2D )
             {
                 glTarget = GL_TEXTURE_2D_ARRAY_EXT;
             }
@@ -343,11 +342,11 @@ public class KtxTextureData : ITextureData, ICubemapData
 
         var singleFace = -1;
 
-        if ( ( _numberOfFaces == 6 ) && ( target != IGL20.GL_TEXTURE_CUBE_MAP ) )
+        if ( ( _numberOfFaces == 6 ) && ( target != IGL.GL_TEXTURE_CUBE_MAP ) )
         {
             // Load a single face of the cube (should be avoided since the data is unloaded afterwards)
-            if ( !( target is >= IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X
-                    and <= IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ) )
+            if ( !( target is >= IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X
+                    and <= IGL.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ) )
             {
                 throw new GdxRuntimeException
                     (
@@ -356,19 +355,19 @@ public class KtxTextureData : ITextureData, ICubemapData
                     );
             }
 
-            singleFace = target - IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
-            target = IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+            singleFace = target - IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+            target = IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
         }
-        else if ( ( _numberOfFaces == 6 ) && ( target == IGL20.GL_TEXTURE_CUBE_MAP ) )
+        else if ( ( _numberOfFaces == 6 ) && ( target == IGL.GL_TEXTURE_CUBE_MAP ) )
         {
             // Load the 6 faces
-            target = IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+            target = IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
         }
         else
         {
             // Load normal texture
             if ( ( target != glTarget )
-              && !( target is >= IGL20.GL_TEXTURE_CUBE_MAP_POSITIVE_X and <= IGL20.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ) )
+              && !( target is >= IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X and <= IGL.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ) )
             {
                 throw new GdxRuntimeException( $"Invalid target requested : 0x{target:X}, expecting : 0x{glTarget:X}" );
             }
@@ -377,14 +376,14 @@ public class KtxTextureData : ITextureData, ICubemapData
         // KTX files require an unpack alignment of 4
         unsafe
         {
-            GL.glGetIntegerv( IGL20.GL_UNPACK_ALIGNMENT, buffer );
+            GL.glGetIntegerv( IGL.GL_UNPACK_ALIGNMENT, buffer );
         }
 
         var previousUnpackAlignment = buffer.Get( 0 );
 
         if ( previousUnpackAlignment != 4 )
         {
-            GL.glPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 4 );
+            GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 4 );
         }
 
         var glInternalFormat = _glInternalFormat;
@@ -521,7 +520,7 @@ public class KtxTextureData : ITextureData, ICubemapData
 
         if ( previousUnpackAlignment != 4 )
         {
-            GL.glPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, previousUnpackAlignment );
+            GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, previousUnpackAlignment );
         }
 
         if ( UseMipMaps )

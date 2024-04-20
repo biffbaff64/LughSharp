@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Maths;
-
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Graphics.G2D;
@@ -198,7 +196,7 @@ public class SpriteBatch : IBatch
 
         if ( !BlendingDisabled )
         {
-            GL.glDisable( IGL20.GL_BLEND );
+            GL.glDisable( IGL.GL_BLEND );
         }
     }
 
@@ -1124,11 +1122,11 @@ public class SpriteBatch : IBatch
 
         if ( BlendingDisabled )
         {
-            GL.glDisable( IGL20.GL_BLEND );
+            GL.glDisable( IGL.GL_BLEND );
         }
         else
         {
-            GL.glEnable( IGL20.GL_BLEND );
+            GL.glEnable( IGL.GL_BLEND );
 
             if ( BlendSrcFunc != -1 )
             {
@@ -1136,7 +1134,7 @@ public class SpriteBatch : IBatch
             }
         }
 
-        _mesh.Render( _customShader ?? _shader, IGL20.GL_TRIANGLES, 0, count );
+        _mesh.Render( _customShader ?? _shader, IGL.GL_TRIANGLES, 0, count );
 
         idx = 0;
     }
@@ -1191,10 +1189,10 @@ public class SpriteBatch : IBatch
         BlendDstFuncAlpha = dstFuncAlpha;
     }
 
-    public int BlendSrcFunc      { get; private set; } = IGL20.GL_SRC_ALPHA;
-    public int BlendDstFunc      { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
-    public int BlendSrcFuncAlpha { get; private set; } = IGL20.GL_SRC_ALPHA;
-    public int BlendDstFuncAlpha { get; private set; } = IGL20.GL_ONE_MINUS_SRC_ALPHA;
+    public int BlendSrcFunc      { get; private set; } = IGL.GL_SRC_ALPHA;
+    public int BlendDstFunc      { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
+    public int BlendSrcFuncAlpha { get; private set; } = IGL.GL_SRC_ALPHA;
+    public int BlendDstFuncAlpha { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
 
     public void Dispose()
     {

@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Utils.Buffers;
-
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
@@ -68,22 +66,22 @@ public class FloatTextureData : ITextureData
 
             if ( Gdx.Graphics.GLVersion.GLtype.Equals( GLVersion.GLType.OpenGL ) )
             {
-                if ( _internalFormat is IGL30.GL_RGBA16_F or IGL30.GL_RGBA32_F )
+                if ( _internalFormat is IGL.GL_RGBA16_F or IGL.GL_RGBA32_F )
                 {
                     amountOfFloats = 4;
                 }
 
-                if ( _internalFormat is IGL30.GL_RGB16_F or IGL30.GL_RGB32_F )
+                if ( _internalFormat is IGL.GL_RGB16_F or IGL.GL_RGB32_F )
                 {
                     amountOfFloats = 3;
                 }
 
-                if ( _internalFormat is IGL30.GL_RG16_F or IGL30.GL_RG32_F )
+                if ( _internalFormat is IGL.GL_RG16_F or IGL.GL_RG32_F )
                 {
                     amountOfFloats = 2;
                 }
 
-                if ( _internalFormat is IGL30.GL_R16_F or IGL30.GL_R32_F )
+                if ( _internalFormat is IGL.GL_R16_F or IGL.GL_R32_F )
                 {
                     amountOfFloats = 1;
                 }
@@ -112,12 +110,12 @@ public class FloatTextureData : ITextureData
             {
                 GL.glTexImage2D( target,
                                  0,
-                                 IGL20.GL_RGBA,
+                                 IGL.GL_RGBA,
                                  Width,
                                  Height,
                                  0,
-                                 IGL20.GL_RGBA,
-                                 IGL20.GL_FLOAT,
+                                 IGL.GL_RGBA,
+                                 IGL.GL_FLOAT,
                                  Buffer );
             }
         }
@@ -142,7 +140,7 @@ public class FloatTextureData : ITextureData
                                      Height,
                                      0,
                                      _format,
-                                     IGL20.GL_FLOAT,
+                                     IGL.GL_FLOAT,
                                      Buffer );
             }
         }

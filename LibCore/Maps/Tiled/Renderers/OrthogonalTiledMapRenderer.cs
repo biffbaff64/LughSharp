@@ -23,9 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics;
-using LughSharp.LibCore.Graphics.G2D;
-
 namespace LughSharp.LibCore.Maps.Tiled.Renderers;
 
 public class OrthogonalTiledMapRenderer : BatchTileMapRenderer

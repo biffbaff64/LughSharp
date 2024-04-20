@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Utils.Buffers;
-
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
 public class VertexArray : IVertexData
@@ -148,7 +146,7 @@ public class VertexArray : IVertexData
 
                 shader.EnableVertexAttribute( location );
 
-                if ( attribute.type == IGL20.GL_FLOAT )
+                if ( attribute.type == IGL.GL_FLOAT )
                 {
                     _buffer.Position = attribute.Offset / 4;
 
@@ -186,7 +184,7 @@ public class VertexArray : IVertexData
 
                 shader.EnableVertexAttribute( location );
 
-                if ( attribute.type == IGL20.GL_FLOAT )
+                if ( attribute.type == IGL.GL_FLOAT )
                 {
                     _buffer.Position = attribute.Offset / 4;
 

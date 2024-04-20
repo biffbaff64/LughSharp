@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Utils.Buffers;
-
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
@@ -70,7 +68,7 @@ public class InstanceBufferObjectSubData : IInstanceData
         _byteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numInstances );
         _isDirect   = true;
 
-        _usage       = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
+        _usage       = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
         _buffer      = _byteBuffer.AsFloatBuffer();
         BufferHandle = CreateBufferObject();
 
@@ -201,12 +199,12 @@ public class InstanceBufferObjectSubData : IInstanceData
     /// <param name="locations"></param>
     public void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, ( uint )BufferHandle );
+        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint )BufferHandle );
 
         if ( _isDirty )
         {
             _byteBuffer.Limit = _buffer.Limit * 4;
-            GL.glBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
+            GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, _usage );
             _isDirty = false;
         }
 
@@ -308,7 +306,7 @@ public class InstanceBufferObjectSubData : IInstanceData
             }
         }
 
-        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
@@ -327,7 +325,7 @@ public class InstanceBufferObjectSubData : IInstanceData
     /// </summary>
     public void Dispose()
     {
-        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
         GL.glDeleteBuffers( ( uint )BufferHandle );
         BufferHandle = 0;
     }
@@ -336,9 +334,9 @@ public class InstanceBufferObjectSubData : IInstanceData
     {
         var result = GL.glGenBuffer();
 
-        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, result );
-        GL.glBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
-        GL.glBindBuffer( IGL20.GL_ARRAY_BUFFER, 0 );
+        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, result );
+        GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
+        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
 
         return ( int )result;
     }
@@ -347,8 +345,8 @@ public class InstanceBufferObjectSubData : IInstanceData
     {
         if ( _isBound )
         {
-            GL.glBufferData( IGL20.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, _usage );
-            GL.glBufferSubData( IGL20.GL_ARRAY_BUFFER, 0, _byteBuffer.Limit, _byteBuffer );
+            GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, _usage );
+            GL.glBufferSubData( IGL.GL_ARRAY_BUFFER, 0, _byteBuffer.Limit, _byteBuffer );
             _isDirty = false;
         }
     }

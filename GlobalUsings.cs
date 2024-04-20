@@ -67,9 +67,24 @@ global using GLFWWindow     = DotGLFW.Window;
 
 // -----------------------------------------------------------------------
 // LughSharp
+global using LughSharp.LibCore.Assets;
+global using LughSharp.LibCore.Audio;
 global using LughSharp.LibCore.Core;
+global using LughSharp.LibCore.Graphics;
+global using LughSharp.LibCore.Graphics.FrameBuffers;
+global using LughSharp.LibCore.Graphics.G2D;
+global using LughSharp.LibCore.Graphics.G3D;
 global using LughSharp.LibCore.Graphics.GLUtils;
+global using LughSharp.LibCore.Graphics.OpenGL;
+global using LughSharp.LibCore.Graphics.Profiling;
+global using LughSharp.LibCore.Maps;
+global using LughSharp.LibCore.Maths;
+global using LughSharp.LibCore.Scenes.Scene2D;
 global using LughSharp.LibCore.Utils;
+global using LughSharp.LibCore.Utils.Buffers;
+global using LughSharp.LibCore.Utils.Collections;
+global using LughSharp.LibCore.Utils.Pooling;
+global using LughSharp.LibCore.Utils.Viewport;
 
 global using Vector2 = LughSharp.LibCore.Maths.Vector2;
 global using Vector3 = LughSharp.LibCore.Maths.Vector3;

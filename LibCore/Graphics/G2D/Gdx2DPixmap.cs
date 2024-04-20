@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Utils.Buffers;
-
 namespace LughSharp.LibCore.Graphics.G2D;
 
 [PublicAPI]
@@ -161,12 +159,12 @@ public class Gdx2DPixmap : IDisposable
     {
         return format switch
                {
-                   GDX_2D_FORMAT_ALPHA           => IGL20.GL_ALPHA,
-                   GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL20.GL_LUMINANCE_ALPHA,
-                   GDX_2D_FORMAT_RGB888          => IGL20.GL_RGB,
-                   GDX_2D_FORMAT_RGB565          => IGL20.GL_RGB,
-                   GDX_2D_FORMAT_RGBA8888        => IGL20.GL_RGBA,
-                   GDX_2D_FORMAT_RGBA4444        => IGL20.GL_RGBA,
+                   GDX_2D_FORMAT_ALPHA           => IGL.GL_ALPHA,
+                   GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL.GL_LUMINANCE_ALPHA,
+                   GDX_2D_FORMAT_RGB888          => IGL.GL_RGB,
+                   GDX_2D_FORMAT_RGB565          => IGL.GL_RGB,
+                   GDX_2D_FORMAT_RGBA8888        => IGL.GL_RGBA,
+                   GDX_2D_FORMAT_RGBA4444        => IGL.GL_RGBA,
                    _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
                };
     }
@@ -180,12 +178,12 @@ public class Gdx2DPixmap : IDisposable
     {
         return format switch
                {
-                   GDX_2D_FORMAT_ALPHA           => IGL20.GL_UNSIGNED_BYTE,
-                   GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL20.GL_UNSIGNED_BYTE,
-                   GDX_2D_FORMAT_RGB888          => IGL20.GL_UNSIGNED_BYTE,
-                   GDX_2D_FORMAT_RGBA8888        => IGL20.GL_UNSIGNED_BYTE,
-                   GDX_2D_FORMAT_RGB565          => IGL20.GL_UNSIGNED_SHORT_5_6_5,
-                   GDX_2D_FORMAT_RGBA4444        => IGL20.GL_UNSIGNED_SHORT_4_4_4_4,
+                   GDX_2D_FORMAT_ALPHA           => IGL.GL_UNSIGNED_BYTE,
+                   GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL.GL_UNSIGNED_BYTE,
+                   GDX_2D_FORMAT_RGB888          => IGL.GL_UNSIGNED_BYTE,
+                   GDX_2D_FORMAT_RGBA8888        => IGL.GL_UNSIGNED_BYTE,
+                   GDX_2D_FORMAT_RGB565          => IGL.GL_UNSIGNED_SHORT_5_6_5,
+                   GDX_2D_FORMAT_RGBA4444        => IGL.GL_UNSIGNED_SHORT_4_4_4_4,
                    _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
                };
     }

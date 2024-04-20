@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics;
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Maths.Collision;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
 

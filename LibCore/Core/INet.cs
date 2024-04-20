@@ -24,12 +24,11 @@
 
 
 using LughSharp.LibCore.Network;
-using LughSharp.LibCore.Utils.Pooling;
-
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Core;
 
+[PublicAPI]
 public interface INet
 {
     public enum Protocol
@@ -49,6 +48,7 @@ public interface INet
 
     public ISocket? NewClientSocket( Protocol protocol, string host, int port, SocketHints hints );
 
+    [PublicAPI]
     public interface IHttpResponse
     {
         byte[] GetResult();
@@ -66,6 +66,7 @@ public interface INet
 
     /// <summary>
     /// </summary>
+    [PublicAPI]
     public interface IHttpMethods
     {
         public const string HEAD   = "HEAD";
@@ -76,7 +77,7 @@ public interface INet
         public const string DELETE = "DELETE";
     }
 
-
+    [PublicAPI]
     public interface IHttpResponseListener
     {
         void HandleHttpResponse( IHttpResponse httpResponse );
@@ -86,9 +87,17 @@ public interface INet
         void Cancelled();
     }
 
-
+    [PublicAPI]
     public class HttpRequest : IPoolable
     {
+        public string?       Url                { get; set; }
+        public string?       HttpMethod         { get; set; }
+        public int           TimeOut            { get; set; } = 0;
+        public bool          IncludeCredentials { get; set; } = false;
+        public StreamReader? ContentStream      { get; private set; }
+        public long          ContentLength      { get; private set; }
+        public string?       Content            { get; set; }
+
         private readonly Dictionary< string, string >? _headers;
         private          bool                          _followRedirects = true;
 
@@ -101,14 +110,6 @@ public interface INet
         {
             HttpMethod = httpMethod;
         }
-
-        public string?       Url                { get; set; }
-        public string?       HttpMethod         { get; set; }
-        public int           TimeOut            { get; set; } = 0;
-        public bool          IncludeCredentials { get; set; } = false;
-        public StreamReader? ContentStream      { get; private set; }
-        public long          ContentLength      { get; private set; }
-        public string?       Content            { get; set; }
 
         public bool FollowRedirects
         {
@@ -146,10 +147,6 @@ public interface INet
             return _headers;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
         public void SetHeader( string name, string value )
         {
             if ( _headers != null )

@@ -23,11 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics;
-using LughSharp.LibCore.Graphics.G2D;
 using LughSharp.LibCore.Maps.Tiled.Tiles;
-using LughSharp.LibCore.Maths;
-
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Maps.Tiled.Renderers;

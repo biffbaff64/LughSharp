@@ -23,10 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Utils.Buffers;
-
-using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
-
 namespace LughSharp.LibCore.Graphics;
 
 public interface IGL20

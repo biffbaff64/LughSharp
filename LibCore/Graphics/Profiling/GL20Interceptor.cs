@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Utils.Buffers;
-
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 
 namespace LughSharp.LibCore.Graphics.Profiling;
@@ -44,7 +42,7 @@ public class GL20Interceptor : BaseGLInterceptor
     {
         var error = GL20.GLGetError();
 
-        while ( error != IGL20.GL_NO_ERROR )
+        while ( error != IGL.GL_NO_ERROR )
         {
             glProfiler.Listener.OnError( error );
             error = GL20.GLGetError();

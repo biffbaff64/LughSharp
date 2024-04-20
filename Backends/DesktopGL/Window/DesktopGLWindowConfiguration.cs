@@ -24,7 +24,6 @@
 
 
 using LughSharp.Backends.DesktopGL.Graphics;
-using LughSharp.LibCore.Graphics;
 
 namespace LughSharp.Backends.DesktopGL.Window;
 

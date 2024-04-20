@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics.G2D;
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Maths.Collision;
 
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
@@ -247,7 +245,7 @@ public abstract class Camera
     ///     point on the near plane, a z-coordinate of 1 will return a point on the far
     ///     plane.
     ///     This method allows you to specify the viewport position and dimensions in the
-    ///     coordinate system expected by <see cref="IGL20.GLViewport(int, int, int, int)" />,
+    ///     coordinate system expected by <see cref="IGL.GLViewport(int, int, int, int)" />,
     ///     with the origin in the bottom left corner of the screen.
     /// </summary>
     /// <param name="screenCoords">The point in screen coordinates (origin top left)</param>
@@ -316,7 +314,7 @@ public abstract class Camera
     ///     to the right. This makes it easily useable in conjunction with <see cref="IBatch" />
     ///     and similar classes.
     ///     This method allows you to specify the viewport position and dimensions in the coordinate
-    ///     system expected by <see cref="IGL20.GLViewport(int, int, int, int)" />, with the origin
+    ///     system expected by <see cref="IGL.GLViewport(int, int, int, int)" />, with the origin
     ///     in the bottom left corner of the screen.
     /// </summary>
     /// <param name="worldCoords"></param>

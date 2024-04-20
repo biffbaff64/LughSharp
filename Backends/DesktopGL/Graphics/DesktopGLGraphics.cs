@@ -25,8 +25,6 @@
 
 using LughSharp.Backends.DesktopGL.Utils;
 using LughSharp.Backends.DesktopGL.Window;
-using LughSharp.LibCore.Graphics;
-using LughSharp.LibCore.Utils.Buffers;
 
 namespace LughSharp.Backends.DesktopGL.Graphics;
 
@@ -164,8 +162,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     private void InitiateGL()
     {
-        var vendorString   = Gdx.GL20.GLGetString( IGL20.GL_VENDOR );
-        var rendererString = Gdx.GL20.GLGetString( IGL20.GL_RENDERER );
+        var vendorString   = Gdx.GL20.GLGetString( IGL.GL_VENDOR );
+        var rendererString = Gdx.GL20.GLGetString( IGL.GL_RENDERER );
 
         GLVersion = new GLVersion( IApplication.ApplicationType.DesktopGL,
                                    Glfw.GetVersionString(),

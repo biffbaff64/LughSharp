@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Maths;
-
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
@@ -33,9 +31,9 @@ public class ShapeRenderer : IDisposable
 {
     public enum ShapeTypes
     {
-        Points = IGL20.GL_POINTS,
-        Lines  = IGL20.GL_LINES,
-        Filled = IGL20.GL_TRIANGLES
+        Points = IGL.GL_POINTS,
+        Lines  = IGL.GL_LINES,
+        Filled = IGL.GL_TRIANGLES
     }
 
     private readonly Color _color = new( 1, 1, 1, 1 );

@@ -25,8 +25,6 @@
 
 using System.Text;
 
-using LughSharp.LibCore.Maths;
-
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>

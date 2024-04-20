@@ -23,6 +23,7 @@
 // /////////////////////////////////////////////////////////////////////////////
 
 using System.Runtime.InteropServices;
+using Environment = System.Environment;
 
 namespace LughSharp.LibCore.Utils;
 
@@ -40,14 +41,14 @@ public static class GdxSystem
     public static bool IsArmArchitecture()
     {
         return RuntimeInformation.OSArchitecture switch
-               {
-                   Architecture.Arm   => true,
-                   Architecture.Arm64 => true,
-                   _                  => false
-               };
+        {
+            Architecture.Arm   => true,
+            Architecture.Arm64 => true,
+            _                  => false
+        };
     }
 
-    public static String RandomUUID()
+    public static string RandomUUID()
     {
         return Guid.NewGuid().ToString();
     }

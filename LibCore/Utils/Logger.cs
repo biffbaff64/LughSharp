@@ -25,6 +25,7 @@
 
 using System.Runtime.CompilerServices;
 using System.Text;
+using Environment = System.Environment;
 
 namespace LughSharp.LibCore.Utils;
 
@@ -340,9 +341,9 @@ public static class Logger
     {
         return new CallerID
         {
-            fileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
-            methodName = callerMethod,
-            lineNumber = callerLine
+            FileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
+            MethodName = callerMethod,
+            LineNumber = callerLine
         };
     }
 
@@ -364,7 +365,7 @@ public static class Logger
     /// </summary>
     private static string GetCallerInfo( CallerID cid )
     {
-        return $"{cid.fileName}::{cid.methodName}::{cid.lineNumber}";
+        return $"{cid.FileName}::{cid.MethodName}::{cid.LineNumber}";
     }
 
     /// <summary>
@@ -396,11 +397,11 @@ public static class Logger
     private static bool IsEnabled( int traceLevel )
     {
         return traceLevel switch
-               {
-                   LOG_DEBUG
-                       or LOG_ERROR => ( TraceLevel & traceLevel ) != 0,
-                   _ => false
-               };
+        {
+            LOG_DEBUG
+                or LOG_ERROR => ( TraceLevel & traceLevel ) != 0,
+            _ => false
+        };
     }
 
     #endregion private methods
@@ -424,12 +425,12 @@ public readonly ref struct LogInterpolatedStringHandler
         _builder.Append( s );
     }
 
-    internal void AppendFormatted<T>( T t )
+    internal void AppendFormatted< T >( T t )
     {
         _builder.Append( t );
     }
 
-    public void AppendFormatted<T>( T t, string format ) where T : IFormattable
+    public void AppendFormatted< T >( T t, string format ) where T : IFormattable
     {
         _builder.Append( t.ToString( format, null ) );
     }
@@ -446,7 +447,7 @@ public readonly ref struct LogInterpolatedStringHandler
 /// </summary>
 internal struct CallerID
 {
-    public string fileName;
-    public string methodName;
-    public int    lineNumber;
+    public string FileName;
+    public string MethodName;
+    public int    LineNumber;
 }

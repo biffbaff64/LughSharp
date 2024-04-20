@@ -35,6 +35,13 @@ public class CircularByteBuffer
     private int    _length;
     private int    _numValid;
 
+	// ------------------------------------------------------------------------
+
+	/// <summary>
+	/// 	Creates a new CircularByteBuffer with size set to the
+	/// 	provided value.
+	/// </summary>
+	/// <param name="size"></param>
     public CircularByteBuffer( int size )
     {
         _buffer = new byte[ size ];
@@ -103,7 +110,7 @@ public class CircularByteBuffer
             if ( value > _numValid )
             {
                 throw new Exception( $"Can't set NumValid to {value} which is greater "
-                                   + $"than the current numValid value of {_numValid}" );
+									 + $"than the current numValid value of {_numValid}" );
             }
 
             _numValid = value;
@@ -215,8 +222,9 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     Returns a range (in terms of Offsets) in an int array in chronological (oldest-to-newest)
-    ///     order. e.g. (3, 0) returns the last four ints pushed, with result[3] being the most recent.
+    ///     Returns a range (in terms of Offsets) in an int array in chronological
+	///     (oldest-to-newest) order. e.g. (3, 0) returns the last four ints pushed,
+	///     with result[3] being the most recent.
     /// </summary>
     public byte[] GetRange( int str, int stp )
     {

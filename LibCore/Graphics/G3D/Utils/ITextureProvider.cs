@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Assets;
 using LughSharp.LibCore.Graphics.G3D.Models.Data;
 
 namespace LughSharp.LibCore.Graphics.G3D.Utils;

@@ -44,7 +44,7 @@ public class MipMapGenerator
     /// <param name="textureHeight"></param>
     public static void GenerateMipMap( Pixmap pixmap, int textureWidth, int textureHeight )
     {
-        GenerateMipMap( IGL20.GL_TEXTURE_2D, pixmap, textureWidth, textureHeight );
+        GenerateMipMap( IGL.GL_TEXTURE_2D, pixmap, textureWidth, textureHeight );
     }
 
     /// <summary>

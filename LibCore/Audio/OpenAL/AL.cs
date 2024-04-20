@@ -47,7 +47,7 @@ public static class AL
 
         if ( libraryName == OPEN_AL_DLL )
         {
-            if ( Environment.OSVersion.Platform == PlatformID.Unix )
+            if ( System.Environment.OSVersion.Platform == PlatformID.Unix )
             {
                 const string OSX   = "OpenAL.framework/OpenAL";
                 const string LINUX = "libopenal.so.1";

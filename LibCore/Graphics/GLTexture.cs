@@ -23,9 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Maths;
-using LughSharp.LibCore.Utils.Buffers;
-
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
@@ -108,7 +105,7 @@ public abstract class GLTexture : IDisposable
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>
     public void Bind( int unit )
     {
-        GL.glActiveTexture( IGL20.GL_TEXTURE0 + unit );
+        GL.glActiveTexture( IGL.GL_TEXTURE0 + unit );
         GL.glBindTexture( GLTarget, ( uint )GLTextureHandle );
     }
 
@@ -125,13 +122,13 @@ public abstract class GLTexture : IDisposable
     {
         if ( ( u != null ) && ( force || ( UWrap != u ) ) )
         {
-            GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_S, u.GLEnum );
+            GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_WRAP_S, u.GLEnum );
             UWrap = u;
         }
 
         if ( ( v != null ) && ( force || ( VWrap != v ) ) )
         {
-            GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_T, v.GLEnum );
+            GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_WRAP_T, v.GLEnum );
             VWrap = v;
         }
     }
@@ -149,8 +146,8 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_S, u.GLEnum );
-        GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_WRAP_T, v.GLEnum );
+        GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_WRAP_S, u.GLEnum );
+        GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_WRAP_T, v.GLEnum );
     }
 
     /// <summary>
@@ -167,13 +164,13 @@ public abstract class GLTexture : IDisposable
     {
         if ( ( minFilter != null ) && ( force || ( MinFilter != minFilter ) ) )
         {
-            GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_MIN_FILTER, minFilter.GLEnum );
+            GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_MIN_FILTER, minFilter.GLEnum );
             MinFilter = minFilter;
         }
 
         if ( ( magFilter != null ) && ( force || ( MagFilter != magFilter ) ) )
         {
-            GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_MAG_FILTER, magFilter.GLEnum );
+            GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_MAG_FILTER, magFilter.GLEnum );
             MagFilter = magFilter;
         }
     }
@@ -191,8 +188,8 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_MIN_FILTER, minFilter.GLEnum );
-        GL.glTexParameteri( GLTarget, IGL20.GL_TEXTURE_MAG_FILTER, magFilter.GLEnum );
+        GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_MIN_FILTER, minFilter.GLEnum );
+        GL.glTexParameteri( GLTarget, IGL.GL_TEXTURE_MAG_FILTER, magFilter.GLEnum );
     }
 
     /// <summary>
@@ -224,8 +221,8 @@ public abstract class GLTexture : IDisposable
             return AnisotropicFilterLevel;
         }
 
-        GL.glTexParameterf( IGL20.GL_TEXTURE_2D,
-                            IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+        GL.glTexParameterf( IGL.GL_TEXTURE_2D,
+                            IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT,
                             level );
 
         return AnisotropicFilterLevel = level;
@@ -253,8 +250,8 @@ public abstract class GLTexture : IDisposable
 
         Bind();
 
-        GL.glTexParameterf( IGL20.GL_TEXTURE_2D,
-                            IGL20.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+        GL.glTexParameterf( IGL.GL_TEXTURE_2D,
+                            IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT,
                             level );
 
         return AnisotropicFilterLevel = level;
@@ -278,7 +275,7 @@ public abstract class GLTexture : IDisposable
 
             unsafe
             {
-                GL.glGetFloatv( IGL20.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer );
+                GL.glGetFloatv( IGL.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer );
             }
 
             return _maxAnisotropicFilterLevel = buffer.Get( 0 );
@@ -349,7 +346,7 @@ public abstract class GLTexture : IDisposable
             disposePixmap = true;
         }
 
-        GL.glPixelStorei( IGL20.GL_UNPACK_ALIGNMENT, 1 );
+        GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 1 );
 
         if ( data.UseMipMaps )
         {

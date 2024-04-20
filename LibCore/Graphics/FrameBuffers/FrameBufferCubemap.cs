@@ -123,8 +123,8 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 
         foreach ( Cubemap.CubemapSide side in sides )
         {
-            GL.glFramebufferTexture2D( IGL20.GL_FRAMEBUFFER,
-                                       IGL20.GL_COLOR_ATTACHMENT0,
+            GL.glFramebufferTexture2D( IGL.GL_FRAMEBUFFER,
+                                       IGL.GL_COLOR_ATTACHMENT0,
                                        side.GLEnum,
                                        glHandle,
                                        0 );
@@ -180,8 +180,8 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     {
         ArgumentNullException.ThrowIfNull( side );
 
-        GL.glFramebufferTexture2D( IGL20.GL_FRAMEBUFFER,
-                                   IGL20.GL_COLOR_ATTACHMENT0,
+        GL.glFramebufferTexture2D( IGL.GL_FRAMEBUFFER,
+                                   IGL.GL_COLOR_ATTACHMENT0,
                                    side.GLEnum,
                                    ( uint )GetColorBufferTexture().GetTextureObjectHandle(),
                                    0 );

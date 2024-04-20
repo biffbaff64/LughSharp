@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Maths;
-using LughSharp.LibCore.Utils.Buffers;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
@@ -59,7 +57,7 @@ namespace LughSharp.LibCore.Graphics.G2D;
 /// </code>
 ///     <para>
 ///         Note that SpriteCache does not manage blending. You will need to enable blending
-///         (<tt>Gdx.GL.GLEnable(IGL20.GL_Blend);</tt>) and set the blend func as needed before
+///         (<tt>Gdx.GL.GLEnable(IGL.GL_Blend);</tt>) and set the blend func as needed before
 ///         or between calls to <see cref="Draw(int)" />.
 ///     </para>
 ///     <para>
@@ -1180,7 +1178,7 @@ public class SpriteCache
         {
             textures?[ i ].Bind();
 
-            _mesh.Render( CustomShader ?? _shader, IGL20.GL_TRIANGLES, offset, counts![ i ] );
+            _mesh.Render( CustomShader ?? _shader, IGL.GL_TRIANGLES, offset, counts![ i ] );
 
             offset += counts[ i ];
         }
@@ -1231,7 +1229,7 @@ public class SpriteCache
                 length -= count;
             }
 
-            _mesh.Render( CustomShader ?? _shader, IGL20.GL_TRIANGLES, offset, count );
+            _mesh.Render( CustomShader ?? _shader, IGL.GL_TRIANGLES, offset, count );
 
             offset += count;
         }

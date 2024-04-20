@@ -41,15 +41,15 @@ public class TextureFilter
     /// <summary>
     ///     Fetch the nearest texel that best maps to the pixel on screen.
     /// </summary>
-    public readonly static TextureFilter Nearest = new( "Nearest", InnerEnum.Nearest, IGL20.GL_NEAREST );
+    public readonly static TextureFilter Nearest = new( "Nearest", InnerEnum.Nearest, IGL.GL_NEAREST );
 
     /// <summary>
     ///     Fetch four nearest texels that best maps to the pixel on screen.
     /// </summary>
-    public readonly static TextureFilter Linear = new( "Linear", InnerEnum.Linear, IGL20.GL_LINEAR );
+    public readonly static TextureFilter Linear = new( "Linear", InnerEnum.Linear, IGL.GL_LINEAR );
 
     /// <see cref="MipMapLinearLinear " />
-    public readonly static TextureFilter MipMap = new( "MipMap", InnerEnum.MipMap, IGL20.GL_LINEAR_MIPMAP_LINEAR );
+    public readonly static TextureFilter MipMap = new( "MipMap", InnerEnum.MipMap, IGL.GL_LINEAR_MIPMAP_LINEAR );
 
     /// <summary>
     ///     Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and then sample the texels with
@@ -58,7 +58,7 @@ public class TextureFilter
     /// </summary>
     public readonly static TextureFilter MipMapNearestNearest = new( "MipMapNearestNearest",
                                                                      InnerEnum.MipMapNearestNearest,
-                                                                     IGL20.GL_NEAREST_MIPMAP_NEAREST );
+                                                                     IGL.GL_NEAREST_MIPMAP_NEAREST );
 
     /// <summary>
     ///     Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and then sample the texels with
@@ -67,7 +67,7 @@ public class TextureFilter
     /// </summary>
     public readonly static TextureFilter MipMapLinearNearest = new( "MipMapLinearNearest",
                                                                     InnerEnum.MipMapLinearNearest,
-                                                                    IGL20.GL_LINEAR_MIPMAP_NEAREST );
+                                                                    IGL.GL_LINEAR_MIPMAP_NEAREST );
 
     /// <summary>
     ///     Fetch the two best fitting images from the mip map chain and then sample the nearest texel from each of the two
@@ -76,7 +76,7 @@ public class TextureFilter
     /// </summary>
     public readonly static TextureFilter MipMapNearestLinear = new( "MipMapNearestLinear",
                                                                     InnerEnum.MipMapNearestLinear,
-                                                                    IGL20.GL_NEAREST_MIPMAP_LINEAR );
+                                                                    IGL.GL_NEAREST_MIPMAP_LINEAR );
 
     /// <summary>
     ///     Fetch the two best fitting images from the mip map chain and then sample the four nearest texels from each of the
@@ -85,7 +85,7 @@ public class TextureFilter
     /// </summary>
     public readonly static TextureFilter MipMapLinearLinear = new( "MipMapLinearLinear",
                                                                    InnerEnum.MipMapLinearLinear,
-                                                                   IGL20.GL_LINEAR_MIPMAP_LINEAR );
+                                                                   IGL.GL_LINEAR_MIPMAP_LINEAR );
 
     private readonly static List< TextureFilter > ValueList = new();
 
@@ -120,7 +120,7 @@ public class TextureFilter
 
     public bool IsMipMap()
     {
-        return ( GLEnum != IGL20.GL_NEAREST ) && ( GLEnum != IGL20.GL_LINEAR );
+        return ( GLEnum != IGL.GL_NEAREST ) && ( GLEnum != IGL.GL_LINEAR );
     }
 
     public static TextureFilter[] Values()

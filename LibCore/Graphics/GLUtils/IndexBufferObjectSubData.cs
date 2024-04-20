@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Utils.Buffers;
-
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
@@ -62,7 +60,7 @@ public class IndexBufferObjectSubData : IIndexData
     {
         _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
 
-        _usage  = isStatic ? IGL20.GL_STATIC_DRAW : IGL20.GL_DYNAMIC_DRAW;
+        _usage  = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
         _buffer = _byteBuffer.AsShortBuffer();
 
         _buffer.Flip();
@@ -79,7 +77,7 @@ public class IndexBufferObjectSubData : IIndexData
     {
         _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
 
-        _usage  = IGL20.GL_STATIC_DRAW;
+        _usage  = IGL.GL_STATIC_DRAW;
         _buffer = _byteBuffer.AsShortBuffer();
 
         _buffer.Flip();
@@ -108,7 +106,7 @@ public class IndexBufferObjectSubData : IIndexData
 
         if ( _isBound )
         {
-            GL.glBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+            GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER,
                                       0,
                                       _byteBuffer.Limit,
                                       _byteBuffer );
@@ -135,7 +133,7 @@ public class IndexBufferObjectSubData : IIndexData
 
         if ( _isBound )
         {
-            GL.glBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+            GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER,
                                       0,
                                       _byteBuffer.Limit,
                                       _byteBuffer );
@@ -160,7 +158,7 @@ public class IndexBufferObjectSubData : IIndexData
 
         if ( _isBound )
         {
-            GL.glBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+            GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER,
                                       0,
                                       _byteBuffer.Limit,
                                       _byteBuffer );
@@ -186,13 +184,13 @@ public class IndexBufferObjectSubData : IIndexData
                 ( "IndexBufferObject cannot be used after it has been disposed." );
         }
 
-        GL.glBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, ( uint )_bufferHandle );
+        GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, ( uint )_bufferHandle );
 
         if ( _isDirty )
         {
             _byteBuffer.Limit = _buffer.Limit * 2;
 
-            GL.glBufferSubData( IGL20.GL_ELEMENT_ARRAY_BUFFER,
+            GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER,
                                       0,
                                       _byteBuffer.Limit,
                                       _byteBuffer );
@@ -206,7 +204,7 @@ public class IndexBufferObjectSubData : IIndexData
     /// <inheritdoc />
     public void Unbind()
     {
-        GL.glBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
+        GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
@@ -220,7 +218,7 @@ public class IndexBufferObjectSubData : IIndexData
     /// <inheritdoc />
     public void Dispose()
     {
-        GL.glBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
+        GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, 0 );
         GL.glDeleteBuffers( ( uint )_bufferHandle );
 
         _bufferHandle = 0;
@@ -230,9 +228,9 @@ public class IndexBufferObjectSubData : IIndexData
     {
         var result = GL.glGenBuffer();
 
-        GL.glBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, result );
-        GL.glBufferData( IGL20.GL_ELEMENT_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
-        GL.glBindBuffer( IGL20.GL_ELEMENT_ARRAY_BUFFER, 0 );
+        GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, result );
+        GL.glBufferData( IGL.GL_ELEMENT_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
+        GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, 0 );
 
         return ( int )result;
     }

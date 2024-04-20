@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Maths;
-
 namespace LughSharp.LibCore.Maps.Objects;
 
 public class EllipseMapObject : MapObject

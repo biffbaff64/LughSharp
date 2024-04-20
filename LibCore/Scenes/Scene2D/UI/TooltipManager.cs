@@ -23,9 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Maths;
-using LughSharp.LibCore.Scenes.Scene2D.Actions;
-
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>

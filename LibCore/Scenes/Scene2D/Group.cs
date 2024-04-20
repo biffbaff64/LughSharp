@@ -24,12 +24,7 @@
 
 
 using System.Text;
-
-using LughSharp.LibCore.Graphics.G2D;
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
-using LughSharp.LibCore.Utils.Collections;
-
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Scenes.Scene2D;

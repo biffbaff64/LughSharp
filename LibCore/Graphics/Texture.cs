@@ -24,8 +24,6 @@
 
 
 using System.Text;
-
-using LughSharp.LibCore.Assets;
 using LughSharp.LibCore.Assets.Loaders;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 
@@ -116,7 +114,7 @@ public class Texture : GLTexture
     ///     Creates a new Texture using the supplied <see cref="ITextureData" />.
     /// </summary>
     public Texture( ITextureData? data )
-        : this( IGL20.GL_TEXTURE_2D, ( int )GL.glGenTexture(), data )
+        : this( IGL.GL_TEXTURE_2D, ( int )GL.glGenTexture(), data )
     {
     }
 
@@ -169,7 +167,7 @@ public class Texture : GLTexture
 
         Bind();
 
-        UploadImageData( IGL20.GL_TEXTURE_2D, data );
+        UploadImageData( IGL.GL_TEXTURE_2D, data );
 
         UnsafeSetFilter( MinFilter, MagFilter, true );
         UnsafeSetWrap( UWrap, VWrap, true );

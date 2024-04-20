@@ -24,8 +24,6 @@
 
 
 using System.Drawing;
-using LughSharp.LibCore.Graphics;
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
@@ -50,7 +48,7 @@ public class ScissorStack
     ///     stack rectangle and the provided rectangle is pushed onto the stack. This will
     ///     invoke <see cref="GL.glScissor(int, int, int, int)" /> with the final top of
     ///     stack rectangle. In case no scissor is yet on the stack this will also enable
-    ///     <see cref="IGL20.GL_SCISSOR_TEST" /> automatically.
+    ///     <see cref="IGL.GL_SCISSOR_TEST" /> automatically.
     ///     <para>
     ///         Any drawing should be flushed before pushing scissors.
     ///     </para>
@@ -70,7 +68,7 @@ public class ScissorStack
                 return false;
             }
 
-            GL.glEnable( IGL20.GL_SCISSOR_TEST );
+            GL.glEnable( IGL.GL_SCISSOR_TEST );
         }
         else
         {
@@ -112,7 +110,7 @@ public class ScissorStack
     /// <summary>
     ///     Pops the current scissor rectangle from the stack and sets the new scissor
     ///     area to the new top of stack rectangle. In case no more rectangles are on
-    ///     the stack, <see cref="IGL20.GL_SCISSOR_TEST" /> is disabled.
+    ///     the stack, <see cref="IGL.GL_SCISSOR_TEST" /> is disabled.
     ///     <para>
     ///         Any drawing should be flushed before popping scissors.
     ///     </para>
@@ -123,7 +121,7 @@ public class ScissorStack
 
         if ( _scissors.Count == 0 )
         {
-            GL.glDisable( IGL20.GL_SCISSOR_TEST );
+            GL.glDisable( IGL.GL_SCISSOR_TEST );
         }
         else
         {

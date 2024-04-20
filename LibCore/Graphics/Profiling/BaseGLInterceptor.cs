@@ -23,9 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Maths;
-using LughSharp.LibCore.Utils.Buffers;
-
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 
 namespace LughSharp.LibCore.Graphics.Profiling;
@@ -546,12 +543,12 @@ public abstract class BaseGLInterceptor : IGL20
     {
         return error switch
                {
-                   IGL20.GL_INVALID_VALUE                 => "InvalidValue",
-                   IGL20.GL_INVALID_OPERATION             => "InvalidOperation",
-                   IGL20.GL_INVALID_FRAMEBUFFER_OPERATION => "InvalidFramebufferOperation",
-                   IGL20.GL_INVALID_ENUM                  => "InvalidEnum",
-                   IGL20.GL_OUT_OF_MEMORY                 => "OutOfMemory",
-                   IGL20.GL_NO_ERROR                      => "NoError",
+                   IGL.GL_INVALID_VALUE                 => "InvalidValue",
+                   IGL.GL_INVALID_OPERATION             => "InvalidOperation",
+                   IGL.GL_INVALID_FRAMEBUFFER_OPERATION => "InvalidFramebufferOperation",
+                   IGL.GL_INVALID_ENUM                  => "InvalidEnum",
+                   IGL.GL_OUT_OF_MEMORY                 => "OutOfMemory",
+                   IGL.GL_NO_ERROR                      => "NoError",
                    _                                      => throw new ArgumentOutOfRangeException( nameof( error ), error, null )
                };
     }

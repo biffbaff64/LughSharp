@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Text;
-using LughSharp.LibCore.Utils.Buffers;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
@@ -176,10 +175,10 @@ public class ShaderProgram
         {
             if ( IsCompiled )
             {
-                // Gdx.gl20.glGetProgramiv(program, IGL20.GL_INFO_LOG_LENGTH, intbuf);
+                // Gdx.gl20.glGetProgramiv(program, IGL.GL_INFO_LOG_LENGTH, intbuf);
                 // int infoLogLength = intbuf.get(0);
                 // if (infoLogLength > 1) {
-                _log = GL.glGetProgramInfoLog( ( uint ) Handle, IGL20.GL_INFO_LOG_LENGTH );
+                _log = GL.glGetProgramInfoLog( ( uint ) Handle, IGL.GL_INFO_LOG_LENGTH );
 
                 // }
             }
@@ -195,8 +194,8 @@ public class ShaderProgram
     /// <param name="fragmentShader">  </param>
     private void CompileShaders( string vertexShader, string fragmentShader )
     {
-        _vertexShaderHandle   = LoadShader( IGL20.GL_VERTEX_SHADER, vertexShader );
-        _fragmentShaderHandle = LoadShader( IGL20.GL_FRAGMENT_SHADER, fragmentShader );
+        _vertexShaderHandle   = LoadShader( IGL.GL_VERTEX_SHADER, vertexShader );
+        _fragmentShaderHandle = LoadShader( IGL.GL_FRAGMENT_SHADER, fragmentShader );
 
         if ( ( _vertexShaderHandle == -1 ) || ( _fragmentShaderHandle == -1 ) )
         {
@@ -230,17 +229,17 @@ public class ShaderProgram
 
         GL.glShaderSource( shader, source );
         GL.glCompileShader( shader );
-        GL.glGetShaderiv( shader, IGL20.GL_COMPILE_STATUS, intbuf );
+        GL.glGetShaderiv( shader, IGL.GL_COMPILE_STATUS, intbuf );
 
         var compiled = intbuf.Get( 0 );
 
         if ( compiled == 0 )
         {
-// gl.glGetShaderiv(shader, IGL20.GL_INFO_LOG_LENGTH, intbuf);
+// gl.glGetShaderiv(shader, IGL.GL_INFO_LOG_LENGTH, intbuf);
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
-            var infoLog = GL.glGetShaderInfoLog( shader, IGL20.GL_INFO_LOG_LENGTH );
-            _log += type == IGL20.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
+            var infoLog = GL.glGetShaderInfoLog( shader, IGL.GL_INFO_LOG_LENGTH );
+            _log += type == IGL.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
             _log += infoLog;
 
 // }
@@ -275,16 +274,16 @@ public class ShaderProgram
         tmp.Order( ByteOrder.NativeOrder );
         var intbuf = tmp.AsIntBuffer();
 
-        GL.glGetProgramiv( ( uint ) program, IGL20.GL_LINK_STATUS, intbuf );
+        GL.glGetProgramiv( ( uint ) program, IGL.GL_LINK_STATUS, intbuf );
 
         var linked = intbuf.Get( 0 );
 
         if ( linked == 0 )
         {
-// Gdx.gl20.glGetProgramiv(program, IGL20.GL_INFO_LOG_LENGTH, intbuf);
+// Gdx.gl20.glGetProgramiv(program, IGL.GL_INFO_LOG_LENGTH, intbuf);
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
-            _log = GL.glGetProgramInfoLog( ( uint ) program, IGL20.GL_INFO_LOG_LENGTH );
+            _log = GL.glGetProgramInfoLog( ( uint ) program, IGL.GL_INFO_LOG_LENGTH );
 
 // }
             return -1;
@@ -689,8 +688,8 @@ public class ShaderProgram
     ///     The number of components, must be >= 1 and &lt;= 4.
     /// </param>
     /// <param name="type">
-    ///     The type, must be one of IGL20.GL_Byte, IGL20.GL_Unsigned_Byte, IGL20.GL_Short,
-    ///     IGL20.GL_Unsigned_Short, IGL20.GL_Fixed, or IGL20.GL_Float.
+    ///     The type, must be one of IGL.GL_Byte, IGL.GL_Unsigned_Byte, IGL.GL_Short,
+    ///     IGL.GL_Unsigned_Short, IGL.GL_Fixed, or IGL.GL_Float.
     ///     <para>GL_F will not work on the desktop.</para>
     /// </param>
     /// <param name="normalize">
@@ -725,8 +724,8 @@ public class ShaderProgram
     /// <param name="name">The attribute name.</param>
     /// <param name="size">The number of components, must be >= 1 and &lt;= 4.</param>
     /// <param name="type">
-    ///     The type, must be one of IGL20.GL_Byte, IGL20.GL_Unsigned_Byte, IGL20.GL_Short,
-    ///     IGL20.GL_Unsigned_Short, IGL20.GL_Fixed, or IGL20.GL_Float.
+    ///     The type, must be one of IGL.GL_Byte, IGL.GL_Unsigned_Byte, IGL.GL_Short,
+    ///     IGL.GL_Unsigned_Short, IGL.GL_Fixed, or IGL.GL_Float.
     ///     <para>GL_Fixed will not work on the desktop.</para>
     /// </param>
     /// <param name="normalize">
@@ -734,7 +733,7 @@ public class ShaderProgram
     /// </param>
     /// <param name="stride">The stride in bytes between successive attributes.</param>
     /// <param name="offset">
-    ///     Byte offset into the vertex buffer object bound to IGL20.GL_Array_Buffer.
+    ///     Byte offset into the vertex buffer object bound to IGL.GL_Array_Buffer.
     /// </param>
     public void SetVertexAttribute( string name, int size, int type, bool normalize, int stride, int offset )
     {
@@ -881,7 +880,7 @@ public class ShaderProgram
     {
         _parameters.Clear();
 
-        Gdx.GL20.GLGetProgramiv( Handle, IGL20.GL_ACTIVE_UNIFORMS, _parameters );
+        Gdx.GL20.GLGetProgramiv( Handle, IGL.GL_ACTIVE_UNIFORMS, _parameters );
 
         var numUniforms = _parameters.Get( 0 );
 
@@ -911,7 +910,7 @@ public class ShaderProgram
     {
         _parameters.Clear();
 
-        Gdx.GL20.GLGetProgramiv( Handle, IGL20.GL_ACTIVE_ATTRIBUTES, _parameters );
+        Gdx.GL20.GLGetProgramiv( Handle, IGL.GL_ACTIVE_ATTRIBUTES, _parameters );
 
         var numAttributes = _parameters.Get( 0 );
 
@@ -943,8 +942,8 @@ public class ShaderProgram
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns>
-    ///     the type of the attribute, one of <see cref="IGL20.GL_FLOAT" />,
-    ///     <see cref="IGL20.GL_FLOAT_VEC2" /> etc.
+    ///     the type of the attribute, one of <see cref="IGL.GL_FLOAT" />,
+    ///     <see cref="IGL.GL_FLOAT_VEC2" /> etc.
     /// </returns>
     public int GetAttributeType( string name )
     {
@@ -974,8 +973,8 @@ public class ShaderProgram
 
     /// <param name="name"> the name of the uniform </param>
     /// <returns>
-    ///     the type of the uniform, one of <see cref="IGL20.GL_FLOAT" />,
-    ///     <see cref="IGL20.GL_FLOAT_VEC2" /> etc.
+    ///     the type of the uniform, one of <see cref="IGL.GL_FLOAT" />,
+    ///     <see cref="IGL.GL_FLOAT_VEC2" /> etc.
     /// </returns>
     public int GetUniformType( string name )
     {

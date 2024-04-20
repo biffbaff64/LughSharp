@@ -23,10 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Assets;
 using LughSharp.LibCore.Assets.Loaders;
 using LughSharp.LibCore.Assets.Loaders.Resolvers;
-using LughSharp.LibCore.Maths;
 
 namespace LughSharp.LibCore.Graphics.G2D;
 

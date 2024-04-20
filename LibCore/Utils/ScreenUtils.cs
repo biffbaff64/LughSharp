@@ -23,11 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics;
-using LughSharp.LibCore.Graphics.G2D;
-using LughSharp.LibCore.Maths;
-using LughSharp.LibCore.Utils.Buffers;
-
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>
@@ -98,11 +93,11 @@ public class ScreenUtils
     {
         GL.glClearColor( r, g, b, a );
 
-        var mask = ( uint ) IGL20.GL_COLOR_BUFFER_BIT;
+        var mask = ( uint ) IGL.GL_COLOR_BUFFER_BIT;
 
         if ( clearDepth )
         {
-            mask |= IGL20.GL_DEPTH_BUFFER_BIT;
+            mask |= IGL.GL_DEPTH_BUFFER_BIT;
         }
 
         GL.glClear( mask );
@@ -192,15 +187,15 @@ public class ScreenUtils
     /// <param name="w"></param>
     /// <param name="h"></param>
     /// <param name="flipY"> whether to flip pixels along Y axis  </param>
-    public static unsafe byte[] GetFrameBufferPixels( int x, int y, int w, int h, bool flipY )
+    public static byte[] GetFrameBufferPixels( int x, int y, int w, int h, bool flipY )
     {
         var numBytes = w * h * 4;
 
-        GL.glPixelStorei( IGL20.GL_PACK_ALIGNMENT, 1 );
+        GL.glPixelStorei( IGL.GL_PACK_ALIGNMENT, 1 );
 
         var pixels = BufferUtils.NewByteBuffer( numBytes );
 
-        GL.glReadPixels( x, y, w, h, IGL20.GL_RGBA, IGL20.GL_UNSIGNED_BYTE, pixels );
+        GL.glReadPixels( x, y, w, h, IGL.GL_RGBA, IGL.GL_UNSIGNED_BYTE, pixels );
 
         var lines = new byte[ numBytes ];
 

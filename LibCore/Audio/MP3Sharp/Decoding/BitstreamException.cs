@@ -60,7 +60,6 @@ public class BitstreamException : Mp3SharpException
     public BitstreamException( int errorcode, Exception? inner = null )
         : this( GetErrorString( errorcode ), inner )
     {
-        ErrorCode = BitstreamErrors.UNKNOWN_ERROR;
         ErrorCode = errorcode;
     }
 
@@ -78,6 +77,11 @@ public class BitstreamException : Mp3SharpException
         base.GetObjectData( info, context );
     }
 
+	/// <summary>
+	/// 	Returns the error code as a string.
+	/// </summary>
+	/// <param name="errorcode"> The errorcode. </param>
+	/// <returns></returns>
     public static string GetErrorString( int errorcode )
     {
         return $"Bitstream errorcode {Convert.ToString( errorcode, 16 )}";

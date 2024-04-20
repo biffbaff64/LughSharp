@@ -33,8 +33,6 @@
 #error You must define one of OGL_WRAPPER_API_BOTH, OGL_WRAPPER_API_UNSAFE, or OGL_WRAPPER_API_SAFE
 #endif
 
-using LughSharp.LibCore.Graphics;
-
 #if OGL_P_CORE
 #if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
 using System.Numerics;
@@ -91,12 +89,12 @@ namespace DotGL;
 ///     efficient as possible, in terms of both performance and memory usage.
 /// </summary>
 [SuppressUnmanagedCodeSecurity]
-public static unsafe class GL
+public unsafe class GLBindings
 {
     /// <summary>
     ///     The null pointer, just like in C/C++.
     /// </summary>
-    public readonly static void* NULL = ( void* )0;
+    public readonly void* NULL = ( void* )0;
 
     /// <summary>
     ///     Useful helper function for getting the major OpenGL version of the project as defined
@@ -105,7 +103,7 @@ public static unsafe class GL
     ///     GLFW where you need to specify the major and minor version the OpenGL context that you
     ///     want to create.
     /// </summary>
-    public static int GetProjectOpenGLVersionMajor()
+    public int GetProjectOpenGLVersionMajor()
     {
         var major = -1;
 #if OGL_V_4_6
@@ -159,7 +157,7 @@ public static unsafe class GL
     ///     used as input to e.g. GLFW where you need to specify the major and minor version
     ///     the OpenGL context that you want to create.
     /// </summary>
-    public static int GetProjectOpenGLVersionMinor()
+    public int GetProjectOpenGLVersionMinor()
     {
         var minor = -1;
 #if OGL_V_4_6
@@ -206,7 +204,7 @@ public static unsafe class GL
         return minor;
     }
 
-    public static ( int major, int minor ) GetProjectOpenGLVersion()
+    public ( int major, int minor ) GetProjectOpenGLVersion()
     {
         return ( GetProjectOpenGLVersionMajor(), GetProjectOpenGLVersionMinor() );
     }
@@ -220,7 +218,7 @@ public static unsafe class GL
     ///     The string "CORE" or "COMPAT", allowing the developer to further convert this
     ///     into a proper value for their context creation API.
     /// </returns>
-    public static string GetProjectOpenGLProfile()
+    public string GetProjectOpenGLProfile()
     {
         var profile = "";
 #if OGL_P_CORE
@@ -249,7 +247,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCULLFACEPROC( GLenum mode );
 
-    private static PFNGLCULLFACEPROC _glCullFace;
+    private PFNGLCULLFACEPROC _glCullFace;
 
     /// <summary>
     ///     Specify whether front- or back-facing facets can be culled
@@ -259,7 +257,7 @@ public static unsafe class GL
     ///     <see cref="GL_FRONT" />, <see cref="GL_BACK" />, and <see cref="GL_FRONT_AND_BACK" /> are accepted.
     ///     The initial value is <see cref="GL_BACK" />.
     /// </param>
-    public static void glCullFace( GLenum mode )
+    public void glCullFace( GLenum mode )
     {
         _glCullFace( mode );
     }
@@ -267,7 +265,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLFRONTFACEPROC( GLenum mode );
 
-    private static PFNGLFRONTFACEPROC _glFrontFace;
+    private PFNGLFRONTFACEPROC _glFrontFace;
 
     /// <summary>
     ///     Define front- and back-facing polygons
@@ -276,7 +274,7 @@ public static unsafe class GL
     ///     Specifies the orientation of front-facing polygons. Symbolic constants <see cref="GL_CW" /> and
     ///     <see cref="GL_CCW" /> are accepted. The initial value is <see cref="GL_CCW" />.
     /// </param>
-    public static void glFrontFace( GLenum mode )
+    public void glFrontFace( GLenum mode )
     {
         _glFrontFace( mode );
     }
@@ -284,7 +282,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLHINTPROC( GLenum target, GLenum mode );
 
-    private static PFNGLHINTPROC _glHint;
+    private PFNGLHINTPROC _glHint;
 
     /// <summary>
     ///     Specify implementation-specific hints
@@ -298,7 +296,7 @@ public static unsafe class GL
     ///     Specifies a symbolic constant indicating the desired behavior. <see cref="GL_FASTEST" />,
     ///     <see cref="GL_NICEST" />, and <see cref="GL_DONT_CARE" /> are accepted.
     /// </param>
-    public static void glHint( GLenum target, GLenum mode )
+    public void glHint( GLenum target, GLenum mode )
     {
         _glHint( target, mode );
     }
@@ -306,13 +304,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLLINEWIDTHPROC( GLfloat width );
 
-    private static PFNGLLINEWIDTHPROC _glLineWidth;
+    private PFNGLLINEWIDTHPROC _glLineWidth;
 
     /// <summary>
     ///     Specify the width of rasterized lines
     /// </summary>
     /// <param name="width">Specifies the width of rasterized lines. The initial value is 1.0.</param>
-    public static void glLineWidth( GLfloat width )
+    public void glLineWidth( GLfloat width )
     {
         _glLineWidth( width );
     }
@@ -320,13 +318,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLPOINTSIZEPROC( GLfloat size );
 
-    private static PFNGLPOINTSIZEPROC _glPointSize;
+    private PFNGLPOINTSIZEPROC _glPointSize;
 
     /// <summary>
     ///     Specify the diameter of rasterized points
     /// </summary>
     /// <param name="size">Specifies the diameter of rasterized points. The initial value is 1.0.</param>
-    public static void glPointSize( GLfloat size )
+    public void glPointSize( GLfloat size )
     {
         _glPointSize( size );
     }
@@ -334,7 +332,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLPOLYGONMODEPROC( GLenum face, GLenum mode );
 
-    private static PFNGLPOLYGONMODEPROC _glPolygonMode;
+    private PFNGLPOLYGONMODEPROC _glPolygonMode;
 
     /// <summary>
     ///     Select a polygon rasterization mode
@@ -348,7 +346,7 @@ public static unsafe class GL
     ///     <see cref="GL_LINE" />, and <see cref="GL_FILL" />. The initial value is <see cref="GL_FILL" /> for both front- and
     ///     back-facing polygons.
     /// </param>
-    public static void glPolygonMode( GLenum face, GLenum mode )
+    public void glPolygonMode( GLenum face, GLenum mode )
     {
         _glPolygonMode( face, mode );
     }
@@ -356,7 +354,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSCISSORPROC( GLint x, GLint y, GLsizei width, GLsizei height );
 
-    private static PFNGLSCISSORPROC _glScissor;
+    private PFNGLSCISSORPROC _glScissor;
 
     /// <summary>
     ///     Define the scissor box
@@ -365,7 +363,7 @@ public static unsafe class GL
     /// <param name="y">Specify the lower left corner of the scissor box. Initially (0, 0).</param>
     /// <param name="width">Specify the width of the scissor box.</param>
     /// <param name="height">Specify the height of the scissor box.</param>
-    public static void glScissor( GLint x, GLint y, GLsizei width, GLsizei height )
+    public void glScissor( GLint x, GLint y, GLsizei width, GLsizei height )
     {
         _glScissor( x, y, width, height );
     }
@@ -373,7 +371,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLTEXPARAMETERFPROC( GLenum target, GLenum pname, GLfloat param );
 
-    private static PFNGLTEXPARAMETERFPROC _glTexParameterf;
+    private PFNGLTEXPARAMETERFPROC _glTexParameterf;
 
     /// <summary>
     ///     Set texture parameters
@@ -397,7 +395,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_SWIZZLE_RGBA" /> is also acceptable.
     /// </param>
     /// <param name="param">Specifies the value of pname.</param>
-    public static void glTexParameterf( GLenum target, GLenum pname, GLfloat param )
+    public void glTexParameterf( GLenum target, GLenum pname, GLfloat param )
     {
         _glTexParameterf( target, pname, param );
     }
@@ -405,7 +403,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLTEXPARAMETERFVPROC( GLenum target, GLenum pname, GLfloat* @params );
 
-    private static PFNGLTEXPARAMETERFVPROC _glTexParameterfv;
+    private PFNGLTEXPARAMETERFVPROC _glTexParameterfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Set texture parameters
@@ -429,7 +427,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_SWIZZLE_RGBA" /> is also acceptable.
     /// </param>
     /// <param name="params">Specifies the values of pname.</param>
-    public static void glTexParameterfv( GLenum target, GLenum pname, GLfloat* @params )
+    public void glTexParameterfv( GLenum target, GLenum pname, GLfloat* @params )
     {
         _glTexParameterfv( target, pname, @params );
     }
@@ -457,7 +455,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_SWIZZLE_RGBA" /> is also acceptable.
     /// </param>
     /// <param name="params">Specifies the values of pname.</param>
-    public static void glTexParameterfv( GLenum target, GLenum pname, GLfloat[] @params )
+    public void glTexParameterfv( GLenum target, GLenum pname, GLfloat[] @params )
     {
         fixed ( GLfloat* p =
                    &@params[ 0 ] )
@@ -470,7 +468,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLTEXPARAMETERIPROC( GLenum target, GLenum pname, GLint param );
 
-    private static PFNGLTEXPARAMETERIPROC _glTexParameteri;
+    private PFNGLTEXPARAMETERIPROC _glTexParameteri;
 
     /// <summary>
     ///     Set texture parameters
@@ -494,7 +492,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_SWIZZLE_RGBA" /> is also acceptable.
     /// </param>
     /// <param name="param">Specifies the value of pname.</param>
-    public static void glTexParameteri( GLenum target, GLenum pname, GLint param )
+    public void glTexParameteri( GLenum target, GLenum pname, GLint param )
     {
         _glTexParameteri( target, pname, param );
     }
@@ -502,7 +500,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLTEXPARAMETERIVPROC( GLenum target, GLenum pname, GLint* @params );
 
-    private static PFNGLTEXPARAMETERIVPROC _glTexParameteriv;
+    private PFNGLTEXPARAMETERIVPROC _glTexParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Set texture parameters
@@ -526,7 +524,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_SWIZZLE_RGBA" /> is also acceptable.
     /// </param>
     /// <param name="params">Specifies the values of pname.</param>
-    public static void glTexParameteriv( GLenum target, GLenum pname, GLint* @params )
+    public void glTexParameteriv( GLenum target, GLenum pname, GLint* @params )
     {
         _glTexParameteriv( target, pname, @params );
     }
@@ -554,7 +552,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_SWIZZLE_RGBA" /> is also acceptable.
     /// </param>
     /// <param name="params">Specifies the values of pname.</param>
-    public static void glTexParameteriv( GLenum target, GLenum pname, GLint[] @params )
+    public void glTexParameteriv( GLenum target, GLenum pname, GLint[] @params )
     {
         fixed ( GLint* p = &@params[ 0 ] )
         {
@@ -573,7 +571,7 @@ public static unsafe class GL
                                                GLenum type,
                                                void* pixels );
 
-    private static PFNGLTEXIMAGE1DPROC _glTexImage1D;
+    private PFNGLTEXIMAGE1DPROC _glTexImage1D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a one-dimensional texture image
@@ -614,7 +612,7 @@ public static unsafe class GL
     ///     <see cref="GL_UNSIGNED_INT_10_10_10_2" />, and <see cref="GL_UNSIGNED_INT_2_10_10_10_REV" />.
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    public static void glTexImage1D( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLenum format, GLenum type, void* pixels )
+    public void glTexImage1D( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLenum format, GLenum type, void* pixels )
     {
         _glTexImage1D( target, level, internalformat, width, border, format, type, pixels );
     }
@@ -662,7 +660,7 @@ public static unsafe class GL
     ///     Specifies the pixel data as an array of values. Make sure to match the generic type with the
     ///     <paramref name="type" /> parameter.
     /// </param>
-    public static void glTexImage1D<T>( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLenum format, GLenum type, T[] pixels )
+    public void glTexImage1D<T>( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLenum format, GLenum type, T[] pixels )
         where T : unmanaged
     {
         fixed ( void* p
@@ -684,7 +682,7 @@ public static unsafe class GL
                                                GLenum type,
                                                void* pixels );
 
-    private static PFNGLTEXIMAGE2DPROC _glTexImage2D;
+    private PFNGLTEXIMAGE2DPROC _glTexImage2D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a two-dimensional texture image
@@ -741,7 +739,7 @@ public static unsafe class GL
     ///     <see cref="GL_UNSIGNED_INT_10_10_10_2" />, and <see cref="GL_UNSIGNED_INT_2_10_10_10_REV" />.
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    public static void glTexImage2D( GLenum target,
+    public void glTexImage2D( GLenum target,
                                      GLint level,
                                      GLenum internalformat,
                                      GLsizei width,
@@ -813,7 +811,7 @@ public static unsafe class GL
     ///     Specifies the pixel data as an array of values. Make sure to match the <paramref name="format" />
     ///     and <paramref name="type" /> parameters.
     /// </param>
-    public static void glTexImage2D<T>( GLenum target,
+    public void glTexImage2D<T>( GLenum target,
                                         GLint level,
                                         GLenum internalformat,
                                         GLsizei width,
@@ -834,7 +832,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDRAWBUFFERPROC( GLenum buf );
 
-    private static PFNGLDRAWBUFFERPROC _glDrawBuffer;
+    private PFNGLDRAWBUFFERPROC _glDrawBuffer;
 
     /// <summary>
     ///     Specify which color buffers are to be drawn into.
@@ -846,7 +844,7 @@ public static unsafe class GL
     ///     <see cref="GL_RIGHT" />, <see cref="GL_FRONT_AND_BACK" />. The initial value is <see cref="GL_FRONT" /> for single
     ///     buffered contexts, and <see cref="GL_BACK" /> for double buffered contexts.
     /// </param>
-    public static void glDrawBuffer( GLenum buf )
+    public void glDrawBuffer( GLenum buf )
     {
         _glDrawBuffer( buf );
     }
@@ -854,7 +852,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCLEARPROC( GLbitfield mask );
 
-    private static PFNGLCLEARPROC _glClear;
+    private PFNGLCLEARPROC _glClear;
 
     /// <summary>
     ///     Clear buffers to preset values.
@@ -863,7 +861,7 @@ public static unsafe class GL
     ///     Bitwise OR of masks that indicate the buffers to be cleared. The three masks are
     ///     <see cref="GL_COLOR_BUFFER_BIT" />, <see cref="GL_DEPTH_BUFFER_BIT" />, and <see cref="GL_STENCIL_BUFFER_BIT" />.
     /// </param>
-    public static void glClear( GLbitfield mask )
+    public void glClear( GLbitfield mask )
     {
         _glClear( mask );
     }
@@ -871,7 +869,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCLEARCOLORPROC( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha );
 
-    private static PFNGLCLEARCOLORPROC _glClearColor;
+    private PFNGLCLEARCOLORPROC _glClearColor;
 
     /// <summary>
     ///     Specify clear values for the color buffers.
@@ -880,7 +878,7 @@ public static unsafe class GL
     /// <param name="green">Specifies the green value used when the color buffers are cleared. The initial value is 0.</param>
     /// <param name="blue">Specifies the blue value used when the color buffers are cleared. The initial value is 0.</param>
     /// <param name="alpha">Specifies the alpha value used when the color buffers are cleared. The initial value is 0.</param>
-    public static void glClearColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha )
+    public void glClearColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha )
     {
         _glClearColor( red, green, blue, alpha );
     }
@@ -888,13 +886,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCLEARSTENCILPROC( GLint s );
 
-    private static PFNGLCLEARSTENCILPROC _glClearStencil;
+    private PFNGLCLEARSTENCILPROC _glClearStencil;
 
     /// <summary>
     ///     Specify the clear value for the stencil buffer.
     /// </summary>
     /// <param name="s">Specifies the index used when the stencil buffer is cleared. The initial value is 0.</param>
-    public static void glClearStencil( GLint s )
+    public void glClearStencil( GLint s )
     {
         _glClearStencil( s );
     }
@@ -902,13 +900,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCLEARDEPTHPROC( GLdouble depth );
 
-    private static PFNGLCLEARDEPTHPROC _glClearDepth;
+    private PFNGLCLEARDEPTHPROC _glClearDepth;
 
     /// <summary>
     ///     Specify the clear value for the depth buffer.
     /// </summary>
     /// <param name="depth">Specifies the depth value used when the depth buffer is cleared. The initial value is 1.</param>
-    public static void glClearDepth( GLdouble depth )
+    public void glClearDepth( GLdouble depth )
     {
         _glClearDepth( depth );
     }
@@ -916,7 +914,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSTENCILMASKPROC( GLuint mask );
 
-    private static PFNGLSTENCILMASKPROC _glStencilMask;
+    private PFNGLSTENCILMASKPROC _glStencilMask;
 
     /// <summary>
     ///     Control the front and back writing of individual bits in the stencil planes.
@@ -925,7 +923,7 @@ public static unsafe class GL
     ///     Specifies a bit mask to enable and disable writing of individual bits in the stencil planes.
     ///     Initially, the mask is all 1's.
     /// </param>
-    public static void glStencilMask( GLuint mask )
+    public void glStencilMask( GLuint mask )
     {
         _glStencilMask( mask );
     }
@@ -933,7 +931,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCOLORMASKPROC( GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha );
 
-    private static PFNGLCOLORMASKPROC _glColorMask;
+    private PFNGLCOLORMASKPROC _glColorMask;
 
     /// <summary>
     ///     Enable and disable writing of frame buffer color components.
@@ -942,7 +940,7 @@ public static unsafe class GL
     /// <param name="green">Specifies whether green can or cannot be written into the frame buffer.</param>
     /// <param name="blue">Specifies whether blue can or cannot be written into the frame buffer.</param>
     /// <param name="alpha">Specifies whether alpha can or cannot be written into the frame buffer.</param>
-    public static void glColorMask( GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha )
+    public void glColorMask( GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha )
     {
         _glColorMask( red, green, blue, alpha );
     }
@@ -950,7 +948,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDEPTHMASKPROC( GLboolean flag );
 
-    private static PFNGLDEPTHMASKPROC _glDepthMask;
+    private PFNGLDEPTHMASKPROC _glDepthMask;
 
     /// <summary>
     ///     Enable or disable writing into the depth buffer.
@@ -959,7 +957,7 @@ public static unsafe class GL
     ///     Specifies whether depth buffer writing is enabled or disabled. If flag is <see langword="false" />,
     ///     depth buffer writing is disabled. Otherwise, it is enabled. Initially, depth buffer writing is enabled.
     /// </param>
-    public static void glDepthMask( GLboolean flag )
+    public void glDepthMask( GLboolean flag )
     {
         _glDepthMask( flag );
     }
@@ -967,7 +965,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDISABLEPROC( GLenum cap );
 
-    private static PFNGLDISABLEPROC _glDisable;
+    private PFNGLDISABLEPROC _glDisable;
 
     /// <summary>
     ///     Disable GL capabilities.
@@ -976,7 +974,7 @@ public static unsafe class GL
     ///     Specifies a symbolic constant indicating a GL capability to be disabled. Refer to
     ///     <see href="https://docs.gl/gl4/glEnable" /> for a list of possible values.
     /// </param>
-    public static void glDisable( GLenum cap )
+    public void glDisable( GLenum cap )
     {
         _glDisable( cap );
     }
@@ -984,7 +982,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLENABLEPROC( GLenum cap );
 
-    private static PFNGLENABLEPROC _glEnable;
+    private PFNGLENABLEPROC _glEnable;
 
     /// <summary>
     ///     Enable GL capabilities.
@@ -993,7 +991,7 @@ public static unsafe class GL
     ///     Specifies a symbolic constant indicating a GL capability to be enabled. Refer to
     ///     <see href="https://docs.gl/gl4/glEnable" /> for a list of possible values.
     /// </param>
-    public static void glEnable( GLenum cap )
+    public void glEnable( GLenum cap )
     {
         _glEnable( cap );
     }
@@ -1001,12 +999,12 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLFINISHPROC();
 
-    private static PFNGLFINISHPROC _glFinish;
+    private PFNGLFINISHPROC _glFinish;
 
     /// <summary>
     ///     Block until all GL execution is complete.
     /// </summary>
-    public static void glFinish()
+    public void glFinish()
     {
         _glFinish();
     }
@@ -1014,12 +1012,12 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLFLUSHPROC();
 
-    private static PFNGLFLUSHPROC _glFlush;
+    private PFNGLFLUSHPROC _glFlush;
 
     /// <summary>
     ///     Force execution of GL commands in finite time.
     /// </summary>
-    public static void glFlush()
+    public void glFlush()
     {
         _glFlush();
     }
@@ -1027,7 +1025,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBLENDFUNCPROC( GLenum sfactor, GLenum dfactor );
 
-    private static PFNGLBLENDFUNCPROC _glBlendFunc;
+    private PFNGLBLENDFUNCPROC _glBlendFunc;
 
     /// <summary>
     ///     Specify pixel arithmetic.
@@ -1050,7 +1048,7 @@ public static unsafe class GL
     ///     <see cref="GL_ONE_MINUS_CONSTANT_COLOR" />, <see cref="GL_CONSTANT_ALPHA" />, and
     ///     <see cref="GL_ONE_MINUS_CONSTANT_ALPHA" />.
     /// </param>
-    public static void glBlendFunc( GLenum sfactor, GLenum dfactor )
+    public void glBlendFunc( GLenum sfactor, GLenum dfactor )
     {
         _glBlendFunc( sfactor, dfactor );
     }
@@ -1058,7 +1056,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLLOGICOPPROC( GLenum opcode );
 
-    private static PFNGLLOGICOPPROC _glLogicOp;
+    private PFNGLLOGICOPPROC _glLogicOp;
 
     /// <summary>
     ///     Specify a logical pixel operation for rendering.
@@ -1071,7 +1069,7 @@ public static unsafe class GL
     ///     <see cref="GL_AND_REVERSE" />, <see cref="GL_AND_INVERTED" />, <see cref="GL_OR_REVERSE" />, and
     ///     <see cref="GL_OR_INVERTED" />. The initial value is <see cref="GL_COPY" />.
     /// </param>
-    public static void glLogicOp( GLenum opcode )
+    public void glLogicOp( GLenum opcode )
     {
         _glLogicOp( opcode );
     }
@@ -1079,7 +1077,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSTENCILFUNCPROC( GLenum func, GLint @ref, GLuint mask );
 
-    private static PFNGLSTENCILFUNCPROC _glStencilFunc;
+    private PFNGLSTENCILFUNCPROC _glStencilFunc;
 
     /// <summary>
     ///     Set front and back function and reference value for stencil testing.
@@ -1098,7 +1096,7 @@ public static unsafe class GL
     ///     Specifies a mask that is ANDed with both the reference value and the stored stencil value when the
     ///     test is done. The initial value is all 1's.
     /// </param>
-    public static void glStencilFunc( GLenum func, GLint @ref, GLuint mask )
+    public void glStencilFunc( GLenum func, GLint @ref, GLuint mask )
     {
         _glStencilFunc( func, @ref, mask );
     }
@@ -1106,7 +1104,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSTENCILOPPROC( GLenum fail, GLenum zfail, GLenum zpass );
 
-    private static PFNGLSTENCILOPPROC _glStencilOp;
+    private PFNGLSTENCILOPPROC _glStencilOp;
 
     /// <summary>
     ///     Set front and back stencil test actions.
@@ -1127,7 +1125,7 @@ public static unsafe class GL
     ///     stencil test passes and either there is no depth buffer or depth testing is not enabled. <paramref name="zpass" />
     ///     accepts the same symbolic constants as <paramref name="fail" />. The initial value is <see cref="GL_KEEP" />.
     /// </param>
-    public static void glStencilOp( GLenum fail, GLenum zfail, GLenum zpass )
+    public void glStencilOp( GLenum fail, GLenum zfail, GLenum zpass )
     {
         _glStencilOp( fail, zfail, zpass );
     }
@@ -1135,7 +1133,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDEPTHFUNCPROC( GLenum func );
 
-    private static PFNGLDEPTHFUNCPROC _glDepthFunc;
+    private PFNGLDEPTHFUNCPROC _glDepthFunc;
 
     /// <summary>
     ///     Specify the value used for depth buffer comparisons.
@@ -1146,7 +1144,7 @@ public static unsafe class GL
     ///     <see cref="GL_NOTEQUAL" />, <see cref="GL_GEQUAL" />, and <see cref="GL_ALWAYS" /> are accepted. The initial value
     ///     is <see cref="GL_LESS" />.
     /// </param>
-    public static void glDepthFunc( GLenum func )
+    public void glDepthFunc( GLenum func )
     {
         _glDepthFunc( func );
     }
@@ -1154,7 +1152,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLPIXELSTOREFPROC( GLenum pname, GLfloat param );
 
-    private static PFNGLPIXELSTOREFPROC _glPixelStoref;
+    private PFNGLPIXELSTOREFPROC _glPixelStoref;
 
     /// <summary>
     ///     Set pixel storage modes.
@@ -1170,7 +1168,7 @@ public static unsafe class GL
     ///     <see cref="GL_UNPACK_ALIGNMENT" />.
     /// </param>
     /// <param name="param">Specifies the value that <paramref name="pname" /> is set to.</param>
-    public static void glPixelStoref( GLenum pname, GLfloat param )
+    public void glPixelStoref( GLenum pname, GLfloat param )
     {
         _glPixelStoref( pname, param );
     }
@@ -1178,7 +1176,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLPIXELSTOREIPROC( GLenum pname, GLint param );
 
-    private static PFNGLPIXELSTOREIPROC _glPixelStorei;
+    private PFNGLPIXELSTOREIPROC _glPixelStorei;
 
     /// <summary>
     ///     Set pixel storage modes.
@@ -1194,7 +1192,7 @@ public static unsafe class GL
     ///     <see cref="GL_UNPACK_ALIGNMENT" />.
     /// </param>
     /// <param name="param">Specifies the value that <paramref name="pname" /> is set to.</param>
-    public static void glPixelStorei( GLenum pname, GLint param )
+    public void glPixelStorei( GLenum pname, GLint param )
     {
         _glPixelStorei( pname, param );
     }
@@ -1202,7 +1200,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLREADBUFFERPROC( GLenum src );
 
-    private static PFNGLREADBUFFERPROC _glReadBuffer;
+    private PFNGLREADBUFFERPROC _glReadBuffer;
 
     /// <summary>
     ///     Select a color buffer source for pixels.
@@ -1213,7 +1211,7 @@ public static unsafe class GL
     ///     <see cref="GL_BACK" />, <see cref="GL_LEFT" />, <see cref="GL_RIGHT" />, and the constants
     ///     <see cref="GL_COLOR_ATTACHMENT0" /> through <see cref="GL_COLOR_ATTACHMENT31" />.
     /// </param>
-    public static void glReadBuffer( GLenum src )
+    public void glReadBuffer( GLenum src )
     {
         _glReadBuffer( src );
     }
@@ -1221,7 +1219,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLREADPIXELSPROC( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, void* pixels );
 
-    private static PFNGLREADPIXELSPROC _glReadPixels;
+    private PFNGLREADPIXELSPROC _glReadPixels;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Read a block of pixels from the frame buffer.
@@ -1262,7 +1260,7 @@ public static unsafe class GL
     ///     <see cref="GL_UNSIGNED_INT_5_9_9_9_REV" />, and <see cref="GL_FLOAT_32_UNSIGNED_INT_24_8_REV" />.
     /// </param>
     /// <param name="pixels">A pointer to somewhere in memory where the pixel data will be returned.</param>
-    public static void glReadPixels( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, void* pixels )
+    public void glReadPixels( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, void* pixels )
     {
         _glReadPixels( x, y, width, height, format, type, pixels );
     }
@@ -1310,7 +1308,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an array of <typeparamref name="T" />s where the pixel data will be
     ///     returned. Make sure to match the type of the data with the type in <paramref name="type" />.
     /// </param>
-    public static void glReadPixels<T>( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, ref T[] pixels ) where T : unmanaged
+    public void glReadPixels<T>( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, ref T[] pixels ) where T : unmanaged
     {
         fixed ( void* p
                    = &pixels[ 0 ] )
@@ -1323,7 +1321,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETBOOLEANVPROC( GLenum pname, GLboolean* data );
 
-    private static PFNGLGETBOOLEANVPROC _glGetBooleanv;
+    private PFNGLGETBOOLEANVPROC _glGetBooleanv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the boolean value or values of a selected parameter.
@@ -1333,7 +1331,7 @@ public static unsafe class GL
     ///     a list of possible values.
     /// </param>
     /// <param name="data">A pointer to where the boolean value or values will be returned.</param>
-    public static void glGetBooleanv( GLenum pname, GLboolean* data )
+    public void glGetBooleanv( GLenum pname, GLboolean* data )
     {
         _glGetBooleanv( pname, data );
     }
@@ -1350,7 +1348,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an array of <see langword="bool" />s where the boolean value or values
     ///     will be returned.
     /// </param>
-    public static void glGetBooleanv( GLenum pname, ref GLboolean[] data )
+    public void glGetBooleanv( GLenum pname, ref GLboolean[] data )
     {
         fixed ( GLboolean* p = &data[ 0 ] )
         {
@@ -1362,7 +1360,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETDOUBLEVPROC( GLenum pname, GLdouble* data );
 
-    private static PFNGLGETDOUBLEVPROC _glGetDoublev;
+    private PFNGLGETDOUBLEVPROC _glGetDoublev;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the double value or values of a selected parameter.
@@ -1372,7 +1370,7 @@ public static unsafe class GL
     ///     a list of possible values.
     /// </param>
     /// <param name="data">A pointer to where the double value or values will be returned.</param>
-    public static void glGetDoublev( GLenum pname, GLdouble* data )
+    public void glGetDoublev( GLenum pname, GLdouble* data )
     {
         _glGetDoublev( pname, data );
     }
@@ -1389,7 +1387,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an array of <see langword="double" />s where the double value or values
     ///     will be returned.
     /// </param>
-    public static void glGetDoublev( GLenum pname, ref GLdouble[] data )
+    public void glGetDoublev( GLenum pname, ref GLdouble[] data )
     {
         fixed ( GLdouble* p = &data[ 0 ] )
         {
@@ -1401,7 +1399,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLenum PFNGLGETERRORPROC();
 
-    private static PFNGLGETERRORPROC _glGetError;
+    private PFNGLGETERRORPROC _glGetError;
 
     /// <summary>
     ///     Return error information.
@@ -1411,7 +1409,7 @@ public static unsafe class GL
     ///     <see cref="GL_INVALID_OPERATION" />, <see cref="GL_INVALID_FRAMEBUFFER_OPERATION" />,
     ///     <see cref="GL_OUT_OF_MEMORY" />, <see cref="GL_STACK_UNDERFLOW" />, or <see cref="GL_STACK_OVERFLOW" />.
     /// </returns>
-    public static GLenum glGetError()
+    public GLenum glGetError()
     {
         return _glGetError();
     }
@@ -1419,7 +1417,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETFLOATVPROC( GLenum pname, GLfloat* data );
 
-    private static PFNGLGETFLOATVPROC _glGetFloatv;
+    private PFNGLGETFLOATVPROC _glGetFloatv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the float value or values of a selected parameter.
@@ -1429,7 +1427,7 @@ public static unsafe class GL
     ///     a list of possible values.
     /// </param>
     /// <param name="data">A pointer to where the float value or values will be returned.</param>
-    public static void glGetFloatv( GLenum pname, GLfloat* data )
+    public void glGetFloatv( GLenum pname, GLfloat* data )
     {
         _glGetFloatv( pname, data );
     }
@@ -1442,7 +1440,7 @@ public static unsafe class GL
     ///     Specifies the parameter value to be returned. Refer to <see href="https://docs.gl/gl4/glGet" /> for
     ///     a list of possible values.
     /// </param>
-    public static void glGetFloatv( GLenum pname, ref GLfloat[] data )
+    public void glGetFloatv( GLenum pname, ref GLfloat[] data )
     {
         fixed ( GLfloat* p = &data[ 0 ] )
         {
@@ -1454,7 +1452,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETINTEGERVPROC( GLenum pname, GLint* data );
 
-    private static PFNGLGETINTEGERVPROC _glGetIntegerv;
+    private PFNGLGETINTEGERVPROC _glGetIntegerv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the integer value or values of a selected parameter.
@@ -1464,7 +1462,7 @@ public static unsafe class GL
     ///     a list of possible values.
     /// </param>
     /// <param name="data">A pointer to where the integer value or values will be returned.</param>
-    public static void glGetIntegerv( GLenum pname, GLint* data )
+    public void glGetIntegerv( GLenum pname, GLint* data )
     {
         _glGetIntegerv( pname, data );
     }
@@ -1481,7 +1479,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an array of <see langword="int" />s where the integer value or values
     ///     will be returned.
     /// </param>
-    public static void glGetIntegerv( GLenum pname, ref GLint[] data )
+    public void glGetIntegerv( GLenum pname, ref GLint[] data )
     {
         fixed ( GLint* p = &data[ 0 ] )
         {
@@ -1493,7 +1491,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLubyte* PFNGLGETSTRINGPROC( GLenum name );
 
-    private static PFNGLGETSTRINGPROC _glGetString;
+    private PFNGLGETSTRINGPROC _glGetString;
 #if OGL_WRAPPER_API_UNSAFE || OGL_WRAPPER_API_BOTH
     /// <summary>
     ///     Return a string describing the current GL connection.
@@ -1504,7 +1502,7 @@ public static unsafe class GL
     ///     accepts <see cref="GL_EXTENSIONS" />.
     /// </param>
     /// <returns>The requested string as a <see cref="GLubyte" /> pointer.</returns>
-    public static GLubyte* glGetString( GLenum name )
+    public GLubyte* glGetString( GLenum name )
     {
         return _glGetString( name );
     }
@@ -1519,7 +1517,7 @@ public static unsafe class GL
     ///     accepts <see cref="GL_EXTENSIONS" />.
     /// </param>
     /// <returns>The requested string as a managed string.</returns>
-    public static string glGetStringSafe( GLenum name )
+    public string glGetStringSafe( GLenum name )
     {
         var p = _glGetString( name );
 
@@ -1542,7 +1540,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETTEXIMAGEPROC( GLenum target, GLint level, GLenum format, GLenum type, void* pixels );
 
-    private static PFNGLGETTEXIMAGEPROC _glGetTexImage;
+    private PFNGLGETTEXIMAGEPROC _glGetTexImage;
 #if OGL_WRAPPER_API_UNSAFE || OGL_WRAPPER_API_BOTH
     /// <summary>
     ///     Return a texture image.
@@ -1583,7 +1581,7 @@ public static unsafe class GL
     ///     <see cref="GL_UNSIGNED_INT_5_9_9_9_REV" />, and <see cref="GL_FLOAT_32_UNSIGNED_INT_24_8_REV" />.
     /// </param>
     /// <param name="pixels">A pointer to a memory location where the pixel data will be returned.</param>
-    public static void glGetTexImage( GLenum target, GLint level, GLenum format, GLenum type, void* pixels )
+    public void glGetTexImage( GLenum target, GLint level, GLenum format, GLenum type, void* pixels )
     {
         _glGetTexImage( target, level, format, type, pixels );
     }
@@ -1631,7 +1629,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an array of <typeparamref name="T" />s where the pixel data will be
     ///     returned.
     /// </param>
-    public static void glGetTexImage<T>( GLenum target, GLint level, GLenum format, GLenum type, ref T[] pixels ) where T : unmanaged
+    public void glGetTexImage<T>( GLenum target, GLint level, GLenum format, GLenum type, ref T[] pixels ) where T : unmanaged
     {
         fixed ( void* p =
                    &pixels[ 0 ] )
@@ -1644,7 +1642,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETTEXPARAMETERFVPROC( GLenum target, GLenum pname, GLfloat* @params );
 
-    private static PFNGLGETTEXPARAMETERFVPROC _glGetTexParameterfv;
+    private PFNGLGETTEXPARAMETERFVPROC _glGetTexParameterfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return texture parameter (float) values.
@@ -1670,7 +1668,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_WRAP_T" /> are accepted.
     /// </param>
     /// <param name="params">A pointer to a float array where the values will be returned.</param>
-    public static void glGetTexParameterfv( GLenum target, GLenum pname, GLfloat* @params )
+    public void glGetTexParameterfv( GLenum target, GLenum pname, GLfloat* @params )
     {
         _glGetTexParameterfv( target, pname, @params );
     }
@@ -1700,7 +1698,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_WRAP_T" /> are accepted.
     /// </param>
     /// <param name="params">A <see langword="ref" /> to a float array where the values will be returned.</param>
-    public static void glGetTexParameterfv( GLenum target, GLenum pname, ref GLfloat[] @params )
+    public void glGetTexParameterfv( GLenum target, GLenum pname, ref GLfloat[] @params )
     {
         fixed ( GLfloat* p =
                    &@params[ 0 ] )
@@ -1713,7 +1711,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETTEXPARAMETERIVPROC( GLenum target, GLenum pname, GLint* @params );
 
-    private static PFNGLGETTEXPARAMETERIVPROC _glGetTexParameteriv;
+    private PFNGLGETTEXPARAMETERIVPROC _glGetTexParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return texture parameter (integer) values.
@@ -1739,7 +1737,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_WRAP_T" /> are accepted.
     /// </param>
     /// <param name="params">A pointer to an integer array where the values will be returned.</param>
-    public static void glGetTexParameteriv( GLenum target, GLenum pname, GLint* @params )
+    public void glGetTexParameteriv( GLenum target, GLenum pname, GLint* @params )
     {
         _glGetTexParameteriv( target, pname, @params );
     }
@@ -1769,7 +1767,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_WRAP_T" /> are accepted.
     /// </param>
     /// <param name="params">A <see langword="ref" /> to an integer array where the values will be returned.</param>
-    public static void glGetTexParameteriv( GLenum target, GLenum pname, ref GLint[] @params )
+    public void glGetTexParameteriv( GLenum target, GLenum pname, ref GLint[] @params )
     {
         fixed ( GLint* p =
                    &@params[ 0 ] )
@@ -1782,7 +1780,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETTEXLEVELPARAMETERFVPROC( GLenum target, GLint level, GLenum pname, GLfloat* @params );
 
-    private static PFNGLGETTEXLEVELPARAMETERFVPROC _glGetTexLevelParameterfv;
+    private PFNGLGETTEXLEVELPARAMETERFVPROC _glGetTexLevelParameterfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return texture parameter (float) values for a specific level of detail.
@@ -1805,7 +1803,7 @@ public static unsafe class GL
     ///     reduction image.
     /// </param>
     /// <param name="params">A pointer to a float array in which to place the returned parameter value(s).</param>
-    public static void glGetTexLevelParameterfv( GLenum target, GLint level, GLenum pname, GLfloat* @params )
+    public void glGetTexLevelParameterfv( GLenum target, GLint level, GLenum pname, GLfloat* @params )
     {
         _glGetTexLevelParameterfv( target, level, pname, @params );
     }
@@ -1832,7 +1830,7 @@ public static unsafe class GL
     ///     reduction image.
     /// </param>
     /// <param name="params">A <see langword="ref" /> to a float array where the values will be returned.</param>
-    public static void glGetTexLevelParameterfv( GLenum target, GLint level, GLenum pname, ref GLfloat[] @params )
+    public void glGetTexLevelParameterfv( GLenum target, GLint level, GLenum pname, ref GLfloat[] @params )
     {
         fixed ( GLfloat* p =
                    &@params[ 0 ] )
@@ -1845,7 +1843,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETTEXLEVELPARAMETERIVPROC( GLenum target, GLint level, GLenum pname, GLint* @params );
 
-    private static PFNGLGETTEXLEVELPARAMETERIVPROC _glGetTexLevelParameteriv;
+    private PFNGLGETTEXLEVELPARAMETERIVPROC _glGetTexLevelParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return texture parameter (integer) values for a specific level of detail.
@@ -1868,7 +1866,7 @@ public static unsafe class GL
     ///     reduction image.
     /// </param>
     /// <param name="params">A pointer to an integer array in which to place the returned parameter value(s).</param>
-    public static void glGetTexLevelParameteriv( GLenum target, GLint level, GLenum pname, GLint* @params )
+    public void glGetTexLevelParameteriv( GLenum target, GLint level, GLenum pname, GLint* @params )
     {
         _glGetTexLevelParameteriv( target, level, pname, @params );
     }
@@ -1895,7 +1893,7 @@ public static unsafe class GL
     ///     reduction image.
     /// </param>
     /// <param name="params">A <see langword="ref" /> to an integer array where the values will be returned.</param>
-    public static void glGetTexLevelParameteriv( GLenum target, GLint level, GLenum pname, ref GLint[] @params )
+    public void glGetTexLevelParameteriv( GLenum target, GLint level, GLenum pname, ref GLint[] @params )
     {
         fixed ( GLint* p =
                    &@params[ 0 ] )
@@ -1908,7 +1906,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLISENABLEDPROC( GLenum cap );
 
-    private static PFNGLISENABLEDPROC _glIsEnabled;
+    private PFNGLISENABLEDPROC _glIsEnabled;
 
     /// <summary>
     ///     Test whether a capability is enabled.
@@ -1917,7 +1915,7 @@ public static unsafe class GL
     ///     Specifies a symbolic constant indicating a GL capability. Refer to
     ///     <see href="https://docs.gl/gl4/glIsEnabled" /> for a list of possible capabilities.
     /// </param>
-    public static GLboolean glIsEnabled( GLenum cap )
+    public GLboolean glIsEnabled( GLenum cap )
     {
         return _glIsEnabled( cap );
     }
@@ -1925,14 +1923,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDEPTHRANGEPROC( GLdouble near, GLdouble far );
 
-    private static PFNGLDEPTHRANGEPROC _glDepthRange;
+    private PFNGLDEPTHRANGEPROC _glDepthRange;
 
     /// <summary>
     ///     Specify mapping of depth values from normalized device coordinates to window coordinates.
     /// </summary>
     /// <param name="near">Specifies the mapping of the near clipping plane to window coordinates. The initial value is 0.</param>
     /// <param name="far">Specifies the mapping of the far clipping plane to window coordinates. The initial value is 1.</param>
-    public static void glDepthRange( GLdouble near, GLdouble far )
+    public void glDepthRange( GLdouble near, GLdouble far )
     {
         _glDepthRange( near, far );
     }
@@ -1940,7 +1938,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVIEWPORTPROC( GLint x, GLint y, GLsizei width, GLsizei height );
 
-    private static PFNGLVIEWPORTPROC _glViewport;
+    private PFNGLVIEWPORTPROC _glViewport;
 
     /// <summary>
     ///     Set the viewport.
@@ -1955,7 +1953,7 @@ public static unsafe class GL
     ///     Specify the width and height of the viewport. When a GL context is first attached to a window,
     ///     width and height are set to the dimensions of that window.
     /// </param>
-    public static void glViewport( GLint x, GLint y, GLsizei width, GLsizei height )
+    public void glViewport( GLint x, GLint y, GLsizei width, GLsizei height )
     {
         _glViewport( x, y, width, height );
     }
@@ -1969,7 +1967,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDRAWARRAYSPROC( GLenum mode, GLint first, GLsizei count );
 
-    private static PFNGLDRAWARRAYSPROC _glDrawArrays;
+    private PFNGLDRAWARRAYSPROC _glDrawArrays;
 
     /// <summary>
     ///     Render primitives from array data.
@@ -1983,7 +1981,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="first">Specifies the starting index in the enabled arrays.</param>
     /// <param name="count">Specifies the number of indices to be rendered.</param>
-    public static void glDrawArrays( GLenum mode, GLint first, GLsizei count )
+    public void glDrawArrays( GLenum mode, GLint first, GLsizei count )
     {
         _glDrawArrays( mode, first, count );
     }
@@ -1991,7 +1989,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDRAWELEMENTSPROC( GLenum mode, GLsizei count, GLenum type, void* indices );
 
-    private static PFNGLDRAWELEMENTSPROC _glDrawElements;
+    private PFNGLDRAWELEMENTSPROC _glDrawElements;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Render primitives from array data.
@@ -2009,7 +2007,7 @@ public static unsafe class GL
     ///     <see cref="GL_UNSIGNED_SHORT" />, or <see cref="GL_UNSIGNED_INT" />.
     /// </param>
     /// <param name="indices">Specifies a pointer to the location where the indices are stored.</param>
-    public static void glDrawElements( GLenum mode, GLsizei count, GLenum type, void* indices )
+    public void glDrawElements( GLenum mode, GLsizei count, GLenum type, void* indices )
     {
         _glDrawElements( mode, count, type, indices );
     }
@@ -2034,7 +2032,7 @@ public static unsafe class GL
     ///     Specifies an array of indices to be rendererd. Make sure to match the type
     ///     <typeparamref name="T" /> with the type specified by <paramref name="type" />.
     /// </param>
-    public static void glDrawElements<T>( GLenum mode, GLsizei count, GLenum type, T[] indices ) where T : unmanaged, IUnsignedNumber< T >
+    public void glDrawElements<T>( GLenum mode, GLsizei count, GLenum type, T[] indices ) where T : unmanaged, IUnsignedNumber< T >
     {
         fixed ( T* p =
                    &indices[ 0 ] )
@@ -2047,7 +2045,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLPOLYGONOFFSETPROC( GLfloat factor, GLfloat units );
 
-    private static PFNGLPOLYGONOFFSETPROC _glPolygonOffset;
+    private PFNGLPOLYGONOFFSETPROC _glPolygonOffset;
 
     /// <summary>
     ///     Set the scale and units used to calculate depth values.
@@ -2060,7 +2058,7 @@ public static unsafe class GL
     ///     Is multiplied by an implementation-specific value to create a constant depth offset. The initial
     ///     value is 0.
     /// </param>
-    public static void glPolygonOffset( GLfloat factor, GLfloat units )
+    public void glPolygonOffset( GLfloat factor, GLfloat units )
     {
         _glPolygonOffset( factor, units );
     }
@@ -2068,7 +2066,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCOPYTEXIMAGE1DPROC( GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLint border );
 
-    private static PFNGLCOPYTEXIMAGE1DPROC _glCopyTexImage1D;
+    private PFNGLCOPYTEXIMAGE1DPROC _glCopyTexImage1D;
 
     /// <summary>
     ///     Copy pixels into a 1D texture image.
@@ -2092,7 +2090,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="width">Specifies the width of the texture image.</param>
     /// <param name="border">This value must be 0.</param>
-    public static void glCopyTexImage1D( GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLint border )
+    public void glCopyTexImage1D( GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLint border )
     {
         _glCopyTexImage1D( target, level, internalformat, x, y, width, border );
     }
@@ -2107,7 +2105,7 @@ public static unsafe class GL
                                                    GLsizei height,
                                                    GLint border );
 
-    private static PFNGLCOPYTEXIMAGE2DPROC _glCopyTexImage2D;
+    private PFNGLCOPYTEXIMAGE2DPROC _glCopyTexImage2D;
 
     /// <summary>
     ///     Copy pixels into a 2D texture image.
@@ -2137,7 +2135,7 @@ public static unsafe class GL
     /// <param name="width">Specifies the width of the texture image.</param>
     /// <param name="height">Specifies the height of the texture image.</param>
     /// <param name="border">This value must be 0.</param>
-    public static void glCopyTexImage2D( GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border )
+    public void glCopyTexImage2D( GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border )
     {
         _glCopyTexImage2D( target, level, internalformat, x, y, width, height, border );
     }
@@ -2145,7 +2143,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCOPYTEXSUBIMAGE1DPROC( GLenum target, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width );
 
-    private static PFNGLCOPYTEXSUBIMAGE1DPROC _glCopyTexSubImage1D;
+    private PFNGLCOPYTEXSUBIMAGE1DPROC _glCopyTexSubImage1D;
 
     /// <summary>
     ///     Copy a one-dimensional texture subimage.
@@ -2165,7 +2163,7 @@ public static unsafe class GL
     ///     copied.
     /// </param>
     /// <param name="width">Specifies the width of the texture subimage.</param>
-    public static void glCopyTexSubImage1D( GLenum target, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width )
+    public void glCopyTexSubImage1D( GLenum target, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width )
     {
         _glCopyTexSubImage1D( target, level, xoffset, x, y, width );
     }
@@ -2180,7 +2178,7 @@ public static unsafe class GL
                                                       GLsizei width,
                                                       GLsizei height );
 
-    private static PFNGLCOPYTEXSUBIMAGE2DPROC _glCopyTexSubImage2D;
+    private PFNGLCOPYTEXSUBIMAGE2DPROC _glCopyTexSubImage2D;
 
     /// <summary>
     ///     Copy a two-dimensional texture subimage.
@@ -2208,7 +2206,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="width">Specifies the width of the texture subimage.</param>
     /// <param name="height">Specifies the height of the texture subimage.</param>
-    public static void glCopyTexSubImage2D( GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height )
+    public void glCopyTexSubImage2D( GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height )
     {
         _glCopyTexSubImage2D( target, level, xoffset, yoffset, x, y, width, height );
     }
@@ -2216,7 +2214,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLTEXSUBIMAGE1DPROC( GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, void* pixels );
 
-    private static PFNGLTEXSUBIMAGE1DPROC _glTexSubImage1D;
+    private PFNGLTEXSUBIMAGE1DPROC _glTexSubImage1D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a one-dimensional texture subimage.
@@ -2245,7 +2243,7 @@ public static unsafe class GL
     ///     <see cref="GL_UNSIGNED_INT_10_10_10_2" /> and <see cref="GL_UNSIGNED_INT_2_10_10_10_REV" />.
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    public static void glTexSubImage1D( GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, void* pixels )
+    public void glTexSubImage1D( GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, void* pixels )
     {
         _glTexSubImage1D( target, level, xoffset, width, format, type, pixels );
     }
@@ -2281,7 +2279,7 @@ public static unsafe class GL
     ///     Specifies an array of <typeparamref name="T" />s containing the image data. Make sure to match
     ///     this with the type specified in <paramref name="type" />.
     /// </param>
-    public static void glTexSubImage1D<T>( GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, T[] pixels )
+    public void glTexSubImage1D<T>( GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, T[] pixels )
         where T : unmanaged
     {
         fixed ( void* p
@@ -2303,7 +2301,7 @@ public static unsafe class GL
                                                   GLenum type,
                                                   void* pixels );
 
-    private static PFNGLTEXSUBIMAGE2DPROC _glTexSubImage2D;
+    private PFNGLTEXSUBIMAGE2DPROC _glTexSubImage2D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a two-dimensional texture subimage.
@@ -2340,7 +2338,7 @@ public static unsafe class GL
     ///     <see cref="GL_UNSIGNED_INT_10_10_10_2" /> and <see cref="GL_UNSIGNED_INT_2_10_10_10_REV" />.
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    public static void glTexSubImage2D( GLenum target,
+    public void glTexSubImage2D( GLenum target,
                                         GLint level,
                                         GLint xoffset,
                                         GLint yoffset,
@@ -2392,7 +2390,7 @@ public static unsafe class GL
     ///     Specifies an array of <typeparamref name="T" />s containing the image data. Make sure to match
     ///     this with the type specified in <paramref name="type" />.
     /// </param>
-    public static void glTexSubImage2D<T>( GLenum target,
+    public void glTexSubImage2D<T>( GLenum target,
                                            GLint level,
                                            GLint xoffset,
                                            GLint yoffset,
@@ -2413,7 +2411,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBINDTEXTUREPROC( GLenum target, GLuint texture );
 
-    private static PFNGLBINDTEXTUREPROC _glBindTexture;
+    private PFNGLBINDTEXTUREPROC _glBindTexture;
 
     /// <summary>
     ///     Bind a named texture to a texturing target.
@@ -2426,7 +2424,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_2D_MULTISAMPLE" /> or <see cref="GL_TEXTURE_2D_MULTISAMPLE_ARRAY" />.
     /// </param>
     /// <param name="texture">Specifies the name of a texture.</param>
-    public static void glBindTexture( GLenum target, GLuint texture )
+    public void glBindTexture( GLenum target, GLuint texture )
     {
         _glBindTexture( target, texture );
     }
@@ -2434,14 +2432,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDELETETEXTURESPROC( GLsizei n, GLuint* textures );
 
-    private static PFNGLDELETETEXTURESPROC _glDeleteTextures;
+    private PFNGLDELETETEXTURESPROC _glDeleteTextures;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Delete named textures.
     /// </summary>
     /// <param name="n">Specifies the number of textures to be deleted.</param>
     /// <param name="textures">Specifies a pointer to an array of textures to be deleted.</param>
-    public static void glDeleteTextures( GLsizei n, GLuint* textures )
+    public void glDeleteTextures( GLsizei n, GLuint* textures )
     {
         _glDeleteTextures( n, textures );
     }
@@ -2451,7 +2449,7 @@ public static unsafe class GL
     ///     Delete named textures.
     /// </summary>
     /// <param name="textures">Specifies an array of textures to be deleted.</param>
-    public static void glDeleteTextures( params GLuint[] textures )
+    public void glDeleteTextures( params GLuint[] textures )
     {
         fixed ( void* p = &textures[ 0 ] )
         {
@@ -2463,14 +2461,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGENTEXTURESPROC( GLsizei n, GLuint* textures );
 
-    private static PFNGLGENTEXTURESPROC _glGenTextures;
+    private PFNGLGENTEXTURESPROC _glGenTextures;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Generate texture names.
     /// </summary>
     /// <param name="n">Specifies the number of texture names to be generated.</param>
     /// <param name="textures">Specifies an array in which the generated texture names are stored.</param>
-    public static void glGenTextures( GLsizei n, GLuint* textures )
+    public void glGenTextures( GLsizei n, GLuint* textures )
     {
         _glGenTextures( n, textures );
     }
@@ -2481,7 +2479,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of texture names to be generated.</param>
     /// <returns>An array containing the generated texture names.</returns>
-    public static GLuint[] glGenTextures( GLsizei n )
+    public GLuint[] glGenTextures( GLsizei n )
     {
         var textures = new GLuint[ n ];
 
@@ -2498,7 +2496,7 @@ public static unsafe class GL
     ///     Generate a single texture name.
     /// </summary>
     /// <returns>The generated texture name.</returns>
-    public static GLuint glGenTexture()
+    public GLuint glGenTexture()
     {
         return glGenTextures( 1 )[ 0 ];
     }
@@ -2507,7 +2505,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLISTEXTUREPROC( GLuint texture );
 
-    private static PFNGLISTEXTUREPROC _glIsTexture;
+    private PFNGLISTEXTUREPROC _glIsTexture;
 
     /// <summary>
     ///     Determine if a name corresponds to a texture.
@@ -2517,7 +2515,7 @@ public static unsafe class GL
     ///     <see langword="true" /> if <paramref name="texture" /> is currently the name of a texture. Otherwise,
     ///     <see langword="false" /> is returned.
     /// </returns>
-    public static GLboolean glIsTexture( GLuint texture )
+    public GLboolean glIsTexture( GLuint texture )
     {
         return _glIsTexture( texture );
     }
@@ -2531,7 +2529,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDRAWRANGEELEMENTSPROC( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, void* indices );
 
-    private static PFNGLDRAWRANGEELEMENTSPROC _glDrawRangeElements;
+    private PFNGLDRAWRANGEELEMENTSPROC _glDrawRangeElements;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Render primitives from array data.
@@ -2548,7 +2546,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements to be rendered.</param>
     /// <param name="type">Specifies the type of the values in <paramref name="indices" />.</param>
     /// <param name="indices">Specifies a pointer to the location where the indices are stored.</param>
-    public static void glDrawRangeElements( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, void* indices )
+    public void glDrawRangeElements( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, void* indices )
     {
         _glDrawRangeElements( mode, start, end, count, type, indices );
     }
@@ -2572,7 +2570,7 @@ public static unsafe class GL
     ///     An array of indices to render. Make sure to match the type <typeparamref name="T" /> with the
     ///     type specified for <paramref name="type" />.
     /// </param>
-    public static void glDrawRangeElements<T>( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, T[] indices )
+    public void glDrawRangeElements<T>( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, T[] indices )
         where T : unmanaged, IUnsignedNumber< T >
     {
         fixed ( T* p_indices
@@ -2595,7 +2593,7 @@ public static unsafe class GL
                                                GLenum type,
                                                void* pixels );
 
-    private static PFNGLTEXIMAGE3DPROC _glTexImage3D;
+    private PFNGLTEXIMAGE3DPROC _glTexImage3D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a three-dimensional texture image.
@@ -2645,7 +2643,7 @@ public static unsafe class GL
     ///     <see cref="GL_UNSIGNED_INT_10_10_10_2" />, and <see cref="GL_UNSIGNED_INT_2_10_10_10_REV" />.
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    public static void glTexImage3D( GLenum target,
+    public void glTexImage3D( GLenum target,
                                      GLint level,
                                      GLint internalformat,
                                      GLsizei width,
@@ -2711,7 +2709,7 @@ public static unsafe class GL
     ///     Specifies an array of <typeparamref name="T" /> containing the image data. Make sure to match the
     ///     <paramref name="type" /> parameter with <typeparamref name="T" />.
     /// </param>
-    public static void glTexImage3D<T>( GLenum target,
+    public void glTexImage3D<T>( GLenum target,
                                         GLint level,
                                         GLint internalformat,
                                         GLsizei width,
@@ -2743,7 +2741,7 @@ public static unsafe class GL
                                                   GLenum type,
                                                   void* pixels );
 
-    private static PFNGLTEXSUBIMAGE3DPROC _glTexSubImage3D;
+    private PFNGLTEXSUBIMAGE3DPROC _glTexSubImage3D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a three-dimensional texture subimage.
@@ -2779,7 +2777,7 @@ public static unsafe class GL
     ///     <see cref="GL_UNSIGNED_INT_10_10_10_2" />, and <see cref="GL_UNSIGNED_INT_2_10_10_10_REV" />.
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    public static void glTexSubImage3D( GLenum target,
+    public void glTexSubImage3D( GLenum target,
                                         GLint level,
                                         GLint xoffset,
                                         GLint yoffset,
@@ -2832,7 +2830,7 @@ public static unsafe class GL
     ///     Specifies an array of <typeparamref name="T" /> containing the image data. Make sure to match the
     ///     <paramref name="type" /> parameter with <typeparamref name="T" />.
     /// </param>
-    public static void glTexSubImage3D<T>( GLenum target,
+    public void glTexSubImage3D<T>( GLenum target,
                                            GLint level,
                                            GLint xoffset,
                                            GLint yoffset,
@@ -2863,7 +2861,7 @@ public static unsafe class GL
                                                       GLsizei width,
                                                       GLsizei height );
 
-    private static PFNGLCOPYTEXSUBIMAGE3DPROC _glCopyTexSubImage3D;
+    private PFNGLCOPYTEXSUBIMAGE3DPROC _glCopyTexSubImage3D;
 
     /// <summary>
     ///     Copy a three-dimensional texture subimage.
@@ -2889,7 +2887,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="width">Specifies the width of the texture subimage.</param>
     /// <param name="height">Specifies the height of the texture subimage.</param>
-    public static void glCopyTexSubImage3D( GLenum target,
+    public void glCopyTexSubImage3D( GLenum target,
                                             GLint level,
                                             GLint xoffset,
                                             GLint yoffset,
@@ -2911,7 +2909,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLACTIVETEXTUREPROC( GLenum texture );
 
-    private static PFNGLACTIVETEXTUREPROC _glActiveTexture;
+    private PFNGLACTIVETEXTUREPROC _glActiveTexture;
 
     /// <summary>
     ///     Select active texture unit
@@ -2922,7 +2920,7 @@ public static unsafe class GL
     ///     i ranges from 0 to the value of <see cref="GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS" /> minus one. The initial value is
     ///     <see cref="GL_TEXTURE0" />.
     /// </param>
-    public static void glActiveTexture( GLenum texture )
+    public void glActiveTexture( GLenum texture )
     {
         _glActiveTexture( texture );
     }
@@ -2930,7 +2928,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSAMPLECOVERAGEPROC( GLfloat value, GLboolean invert );
 
-    private static PFNGLSAMPLECOVERAGEPROC _glSampleCoverage;
+    private PFNGLSAMPLECOVERAGEPROC _glSampleCoverage;
 
     /// <summary>
     ///     Specify multisample coverage parameters
@@ -2943,7 +2941,7 @@ public static unsafe class GL
     ///     Specify a single boolean value representing if the coverage masks should be inverted. The intial
     ///     value is <see langword="false" />.
     /// </param>
-    public static void glSampleCoverage( GLfloat value, GLboolean invert )
+    public void glSampleCoverage( GLfloat value, GLboolean invert )
     {
         _glSampleCoverage( value, invert );
     }
@@ -2959,7 +2957,7 @@ public static unsafe class GL
                                                          GLsizei imageSize,
                                                          void* data );
 
-    private static PFNGLCOMPRESSEDTEXIMAGE3DPROC _glCompressedTexImage3D;
+    private PFNGLCOMPRESSEDTEXIMAGE3DPROC _glCompressedTexImage3D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a three-dimensional texture image in a compressed format
@@ -2995,7 +2993,7 @@ public static unsafe class GL
     ///     <paramref name="data" />.
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    public static void glCompressedTexImage3D( GLenum target,
+    public void glCompressedTexImage3D( GLenum target,
                                                GLint level,
                                                GLenum internalformat,
                                                GLsizei width,
@@ -3039,7 +3037,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="border">This value must be 0.</param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
-    public static void glCompressedTexImage3D( GLenum target,
+    public void glCompressedTexImage3D( GLenum target,
                                                GLint level,
                                                GLenum internalformat,
                                                GLsizei width,
@@ -3066,7 +3064,7 @@ public static unsafe class GL
                                                          GLsizei imageSize,
                                                          void* data );
 
-    private static PFNGLCOMPRESSEDTEXIMAGE2DPROC _glCompressedTexImage2D;
+    private PFNGLCOMPRESSEDTEXIMAGE2DPROC _glCompressedTexImage2D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a two-dimensional texture image in a compressed format
@@ -3102,7 +3100,7 @@ public static unsafe class GL
     ///     <paramref name="data" />.
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    public static void glCompressedTexImage2D( GLenum target,
+    public void glCompressedTexImage2D( GLenum target,
                                                GLint level,
                                                GLenum internalformat,
                                                GLsizei width,
@@ -3145,7 +3143,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="border">This value must be 0.</param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
-    public static void glCompressedTexImage2D( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, byte[] data )
+    public void glCompressedTexImage2D( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, byte[] data )
     {
         fixed ( byte* p
                    = &data[ 0 ] )
@@ -3164,7 +3162,7 @@ public static unsafe class GL
                                                          GLsizei imageSize,
                                                          void* data );
 
-    private static PFNGLCOMPRESSEDTEXIMAGE1DPROC _glCompressedTexImage1D;
+    private PFNGLCOMPRESSEDTEXIMAGE1DPROC _glCompressedTexImage1D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a one-dimensional texture image in a compressed format
@@ -3192,7 +3190,7 @@ public static unsafe class GL
     ///     <paramref name="data" />.
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    public static void glCompressedTexImage1D( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, void* data )
+    public void glCompressedTexImage1D( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, void* data )
     {
         _glCompressedTexImage1D( target, level, internalformat, width, border, imageSize, data );
     }
@@ -3220,7 +3218,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="border">This value must be 0.</param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
-    public static void glCompressedTexImage1D( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, byte[] data )
+    public void glCompressedTexImage1D( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, byte[] data )
     {
         fixed ( byte* p =
                    &data[ 0 ] )
@@ -3243,7 +3241,7 @@ public static unsafe class GL
                                                             GLsizei imageSize,
                                                             void* data );
 
-    private static PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC _glCompressedTexSubImage3D;
+    private PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC _glCompressedTexSubImage3D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a three-dimensional texture subimage in a compressed format
@@ -3281,7 +3279,7 @@ public static unsafe class GL
     ///     <paramref name="data" />.
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    public static void glCompressedTexSubImage3D( GLenum target,
+    public void glCompressedTexSubImage3D( GLenum target,
                                                   GLint level,
                                                   GLint xoffset,
                                                   GLint yoffset,
@@ -3329,7 +3327,7 @@ public static unsafe class GL
     ///     <see cref="GL_COMPRESSED_SRGB" />, <see cref="GL_COMPRESSED_SRGB_ALPHA" />.
     /// </param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
-    public static void glCompressedTexSubImage3D( GLenum target,
+    public void glCompressedTexSubImage3D( GLenum target,
                                                   GLint level,
                                                   GLint xoffset,
                                                   GLint yoffset,
@@ -3359,7 +3357,7 @@ public static unsafe class GL
                                                             GLsizei imageSize,
                                                             void* data );
 
-    private static PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC _glCompressedTexSubImage2D;
+    private PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC _glCompressedTexSubImage2D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a two-dimensional texture subimage in a compressed format
@@ -3395,7 +3393,7 @@ public static unsafe class GL
     ///     <paramref name="data" />.
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    public static void glCompressedTexSubImage2D( GLenum target,
+    public void glCompressedTexSubImage2D( GLenum target,
                                                   GLint level,
                                                   GLint xoffset,
                                                   GLint yoffset,
@@ -3439,7 +3437,7 @@ public static unsafe class GL
     ///     <see cref="GL_COMPRESSED_SRGB" />, <see cref="GL_COMPRESSED_SRGB_ALPHA" />.
     /// </param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
-    public static void glCompressedTexSubImage2D( GLenum target,
+    public void glCompressedTexSubImage2D( GLenum target,
                                                   GLint level,
                                                   GLint xoffset,
                                                   GLint yoffset,
@@ -3465,7 +3463,7 @@ public static unsafe class GL
                                                             GLsizei imageSize,
                                                             void* data );
 
-    private static PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC _glCompressedTexSubImage1D;
+    private PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC _glCompressedTexSubImage1D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a one-dimensional texture subimage in a compressed format
@@ -3490,7 +3488,7 @@ public static unsafe class GL
     ///     <paramref name="data" />.
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    public static void glCompressedTexSubImage1D( GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, void* data )
+    public void glCompressedTexSubImage1D( GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, void* data )
     {
         _glCompressedTexSubImage1D( target, level, xoffset, width, format, imageSize, data );
     }
@@ -3515,7 +3513,7 @@ public static unsafe class GL
     ///     <see cref="GL_COMPRESSED_SRGB" />, <see cref="GL_COMPRESSED_SRGB_ALPHA" />.
     /// </param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
-    public static void glCompressedTexSubImage1D( GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, byte[] data )
+    public void glCompressedTexSubImage1D( GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, byte[] data )
     {
         fixed ( byte* p =
                    &data[ 0 ] )
@@ -3528,7 +3526,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETCOMPRESSEDTEXIMAGEPROC( GLenum target, GLint level, void* img );
 
-    private static PFNGLGETCOMPRESSEDTEXIMAGEPROC _glGetCompressedTexImage;
+    private PFNGLGETCOMPRESSEDTEXIMAGEPROC _glGetCompressedTexImage;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return a compressed texture image
@@ -3547,7 +3545,7 @@ public static unsafe class GL
     ///     is the nth mipmap reduction image.
     /// </param>
     /// <param name="img">Specifies a pointer to a buffer into which the compressed image data will be placed.</param>
-    public static void glGetCompressedTexImage( GLenum target, GLint level, void* img )
+    public void glGetCompressedTexImage( GLenum target, GLint level, void* img )
     {
         _glGetCompressedTexImage( target, level, img );
     }
@@ -3570,7 +3568,7 @@ public static unsafe class GL
     ///     is the nth mipmap reduction image.
     /// </param>
     /// <param name="img">Specifies a <see langword="ref" /> byte array into which the compressed image data will be placed.</param>
-    public static void glGetCompressedTexImage( GLenum target, GLint level, ref byte[] img )
+    public void glGetCompressedTexImage( GLenum target, GLint level, ref byte[] img )
     {
         fixed ( byte* p =
                    &img[ 0 ] )
@@ -3589,7 +3587,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBLENDFUNCSEPARATEPROC( GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha );
 
-    private static PFNGLBLENDFUNCSEPARATEPROC _glBlendFuncSeparate;
+    private PFNGLBLENDFUNCSEPARATEPROC _glBlendFuncSeparate;
 
     /// <summary>
     ///     Specify pixel arithmetic for RGB and alpha components separately. Refer to
@@ -3611,7 +3609,7 @@ public static unsafe class GL
     ///     Specifies how the alpha destination blending factor is computed. The initial value is
     ///     <see cref="GL_ZERO" />.
     /// </param>
-    public static void glBlendFuncSeparate( GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha )
+    public void glBlendFuncSeparate( GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha )
     {
         _glBlendFuncSeparate( sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha );
     }
@@ -3619,7 +3617,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLMULTIDRAWARRAYSPROC( GLenum mode, GLint* first, GLsizei* count, GLsizei drawcount );
 
-    private static PFNGLMULTIDRAWARRAYSPROC _glMultiDrawArrays;
+    private PFNGLMULTIDRAWARRAYSPROC _glMultiDrawArrays;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Render multiple sets of primitives from array data.
@@ -3634,7 +3632,7 @@ public static unsafe class GL
     /// <param name="first">Specifies an array of starting indices in the enabled arrays.</param>
     /// <param name="count">Specifies an array of the number of indices to be rendered.</param>
     /// <param name="drawcount">Specifies the size of the <paramref name="first" /> and <paramref name="count" /> arrays.</param>
-    public static void glMultiDrawArrays( GLenum mode, GLint* first, GLsizei* count, GLsizei drawcount )
+    public void glMultiDrawArrays( GLenum mode, GLint* first, GLsizei* count, GLsizei drawcount )
     {
         _glMultiDrawArrays( mode, first, count, drawcount );
     }
@@ -3652,7 +3650,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="first">Specifies an array of starting indices in the enabled arrays.</param>
     /// <param name="count">Specifies an array of the number of indices to be rendered.</param>
-    public static void glMultiDrawArrays( GLenum mode, GLint[] first, GLsizei[] count )
+    public void glMultiDrawArrays( GLenum mode, GLint[] first, GLsizei[] count )
     {
         if ( first.Length != count.Length )
         {
@@ -3672,7 +3670,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLMULTIDRAWELEMENTSPROC( GLenum mode, GLsizei* count, GLenum type, void** indices, GLsizei drawcount );
 
-    private static PFNGLMULTIDRAWELEMENTSPROC _glMultiDrawElements;
+    private PFNGLMULTIDRAWELEMENTSPROC _glMultiDrawElements;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Render multiple sets of primitives by specifying indices of array data elements.
@@ -3691,7 +3689,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="indices">Specifies a pointer to the location where the indices are stored.</param>
     /// <param name="drawcount">Specifies the size of the <paramref name="count" /> and <paramref name="indices" /> arrays.</param>
-    public static void glMultiDrawElements( GLenum mode, GLsizei* count, GLenum type, void** indices, GLsizei drawcount )
+    public void glMultiDrawElements( GLenum mode, GLsizei* count, GLenum type, void** indices, GLsizei drawcount )
     {
         _glMultiDrawElements( mode, count, type, indices, drawcount );
     }
@@ -3713,7 +3711,7 @@ public static unsafe class GL
     ///     <see cref="GL_UNSIGNED_BYTE" />, <see cref="GL_UNSIGNED_SHORT" />, or <see cref="GL_UNSIGNED_INT" />.
     /// </param>
     /// <param name="indices">Specifies a two-dimensional array of indices of the vertices that are to be rendered.</param>
-    public static void glMultiDrawElements<T>( GLenum mode, GLsizei[] count, GLenum type, T[][] indices ) where T : unmanaged, IUnsignedNumber< T >
+    public void glMultiDrawElements<T>( GLenum mode, GLsizei[] count, GLenum type, T[][] indices ) where T : unmanaged, IUnsignedNumber< T >
     {
         var indexPtrs = new void*[ indices.Length ];
 
@@ -3738,7 +3736,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLPOINTPARAMETERFPROC( GLenum pname, GLfloat param );
 
-    private static PFNGLPOINTPARAMETERFPROC _glPointParameterf;
+    private PFNGLPOINTPARAMETERFPROC _glPointParameterf;
 
     /// <summary>
     ///     Specify point parameters.
@@ -3748,7 +3746,7 @@ public static unsafe class GL
     ///     and <see cref="GL_POINT_SPRITE_COORD_ORIGIN" /> are accepted.
     /// </param>
     /// <param name="param">Specifies the value that parameter <paramref name="pname" /> will be set to.</param>
-    public static void glPointParameterf( GLenum pname, GLfloat param )
+    public void glPointParameterf( GLenum pname, GLfloat param )
     {
         _glPointParameterf( pname, param );
     }
@@ -3756,7 +3754,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLPOINTPARAMETERFVPROC( GLenum pname, GLfloat* @params );
 
-    private static PFNGLPOINTPARAMETERFVPROC _glPointParameterfv;
+    private PFNGLPOINTPARAMETERFVPROC _glPointParameterfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify point parameters.
@@ -3769,7 +3767,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array where the value or values to be assigned to
     ///     <paramref name="pname" /> are currently stored.
     /// </param>
-    public static void glPointParameterfv( GLenum pname, GLfloat* @params )
+    public void glPointParameterfv( GLenum pname, GLfloat* @params )
     {
         _glPointParameterfv( pname, @params );
     }
@@ -3783,7 +3781,7 @@ public static unsafe class GL
     ///     and <see cref="GL_POINT_SPRITE_COORD_ORIGIN" /> are accepted.
     /// </param>
     /// <param name="params">Specifies an array of values that will be used to update the current point parameters.</param>
-    public static void glPointParameterfv( GLenum pname, GLfloat[] @params )
+    public void glPointParameterfv( GLenum pname, GLfloat[] @params )
     {
         fixed ( GLfloat* p = &@params[ 0 ] )
         {
@@ -3795,7 +3793,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLPOINTPARAMETERIPROC( GLenum pname, GLint param );
 
-    private static PFNGLPOINTPARAMETERIPROC _glPointParameteri;
+    private PFNGLPOINTPARAMETERIPROC _glPointParameteri;
 
     /// <summary>
     ///     Specify point parameters.
@@ -3805,7 +3803,7 @@ public static unsafe class GL
     ///     and <see cref="GL_POINT_SPRITE_COORD_ORIGIN" /> are accepted.
     /// </param>
     /// <param name="param">Specifies the value that parameter <paramref name="pname" /> will be set to.</param>
-    public static void glPointParameteri( GLenum pname, GLint param )
+    public void glPointParameteri( GLenum pname, GLint param )
     {
         _glPointParameteri( pname, param );
     }
@@ -3813,7 +3811,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLPOINTPARAMETERIVPROC( GLenum pname, GLint* @params );
 
-    private static PFNGLPOINTPARAMETERIVPROC _glPointParameteriv;
+    private PFNGLPOINTPARAMETERIVPROC _glPointParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify point parameters.
@@ -3826,7 +3824,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array where the value or values to be assigned to
     ///     <paramref name="pname" /> are currently stored.
     /// </param>
-    public static void glPointParameteriv( GLenum pname, GLint* @params )
+    public void glPointParameteriv( GLenum pname, GLint* @params )
     {
         _glPointParameteriv( pname, @params );
     }
@@ -3840,7 +3838,7 @@ public static unsafe class GL
     ///     and <see cref="GL_POINT_SPRITE_COORD_ORIGIN" /> are accepted.
     /// </param>
     /// <param name="params">Specifies an array of values that will be used to update the current point parameters.</param>
-    public static void glPointParameteriv( GLenum pname, GLint[] @params )
+    public void glPointParameteriv( GLenum pname, GLint[] @params )
     {
         fixed ( GLint* p = &@params[ 0 ] )
         {
@@ -3852,7 +3850,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBLENDCOLORPROC( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha );
 
-    private static PFNGLBLENDCOLORPROC _glBlendColor;
+    private PFNGLBLENDCOLORPROC _glBlendColor;
 
     /// <summary>
     ///     Set the blend color.
@@ -3861,7 +3859,7 @@ public static unsafe class GL
     /// <param name="green">Specify the green value to use as the blend color.</param>
     /// <param name="blue">Specify the blue value to use as the blend color.</param>
     /// <param name="alpha">Specify the alpha value to use as the blend color.</param>
-    public static void glBlendColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha )
+    public void glBlendColor( GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha )
     {
         _glBlendColor( red, green, blue, alpha );
     }
@@ -3869,7 +3867,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBLENDEQUATIONPROC( GLenum mode );
 
-    private static PFNGLBLENDEQUATIONPROC _glBlendEquation;
+    private PFNGLBLENDEQUATIONPROC _glBlendEquation;
 
     /// <summary>
     ///     Specify the equation used for both the RGB blend equation and the Alpha blend equation.
@@ -3879,7 +3877,7 @@ public static unsafe class GL
     ///     <see cref="GL_FUNC_SUBTRACT" />, <see cref="GL_FUNC_REVERSE_SUBTRACT" />, <see cref="GL_MIN" />,
     ///     <see cref="GL_MAX" />.
     /// </param>
-    public static void glBlendEquation( GLenum mode )
+    public void glBlendEquation( GLenum mode )
     {
         _glBlendEquation( mode );
     }
@@ -3893,14 +3891,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGENQUERIESPROC( GLsizei n, GLuint* ids );
 
-    private static PFNGLGENQUERIESPROC _glGenQueries;
+    private PFNGLGENQUERIESPROC _glGenQueries;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Generate query object names.
     /// </summary>
     /// <param name="n">Specifies the number of query object names to generate.</param>
     /// <param name="ids">Specifies an array in which the generated query object names are to be stored.</param>
-    public static void glGenQueries( GLsizei n, GLuint* ids )
+    public void glGenQueries( GLsizei n, GLuint* ids )
     {
         _glGenQueries( n, ids );
     }
@@ -3911,7 +3909,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of query object names to generate.</param>
     /// <returns>Array of generated query object names.</returns>
-    public static GLuint[] glGenQueries( GLsizei n )
+    public GLuint[] glGenQueries( GLsizei n )
     {
         var ret = new GLuint[ n ];
 
@@ -3927,7 +3925,7 @@ public static unsafe class GL
     ///     Generate a single query object name.
     /// </summary>
     /// <returns>Generated query object name.</returns>
-    public static GLuint glGenQuery()
+    public GLuint glGenQuery()
     {
         return glGenQueries( 1 )[ 0 ];
     }
@@ -3936,14 +3934,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDELETEQUERIESPROC( GLsizei n, GLuint* ids );
 
-    private static PFNGLDELETEQUERIESPROC _glDeleteQueries;
+    private PFNGLDELETEQUERIESPROC _glDeleteQueries;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Delete named query objects.
     /// </summary>
     /// <param name="n">Specifies the number of query objects to be deleted.</param>
     /// <param name="ids">Specifies an array of query objects to be deleted.</param>
-    public static void glDeleteQueries( GLsizei n, GLuint* ids )
+    public void glDeleteQueries( GLsizei n, GLuint* ids )
     {
         _glDeleteQueries( n, ids );
     }
@@ -3953,7 +3951,7 @@ public static unsafe class GL
     ///     Delete named query objects.
     /// </summary>
     /// <param name="ids">Specifies an array of query objects to be deleted.</param>
-    public static void glDeleteQueries( params GLuint[] ids )
+    public void glDeleteQueries( params GLuint[] ids )
     {
         fixed ( GLuint* p = &ids[ 0 ] )
         {
@@ -3965,14 +3963,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLISQUERYPROC( GLuint id );
 
-    private static PFNGLISQUERYPROC _glIsQuery;
+    private PFNGLISQUERYPROC _glIsQuery;
 
     /// <summary>
     ///     Determine if a name corresponds to a query object.
     /// </summary>
     /// <param name="id">Specifies a value that may be the name of a query object.</param>
     /// <returns><see langword="true" /> if <paramref name="id" /> is query object name, otherwise <see langword="false" />.</returns>
-    public static GLboolean glIsQuery( GLuint id )
+    public GLboolean glIsQuery( GLuint id )
     {
         return _glIsQuery( id );
     }
@@ -3980,7 +3978,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBEGINQUERYPROC( GLenum target, GLuint id );
 
-    private static PFNGLBEGINQUERYPROC _glBeginQuery;
+    private PFNGLBEGINQUERYPROC _glBeginQuery;
 
     /// <summary>
     ///     Delimit the boundaries of a query object.
@@ -3993,7 +3991,7 @@ public static unsafe class GL
     ///     <see cref="GL_TIME_ELAPSED" />.
     /// </param>
     /// <param name="id">Specifies the name of a query object.</param>
-    public static void glBeginQuery( GLenum target, GLuint id )
+    public void glBeginQuery( GLenum target, GLuint id )
     {
         _glBeginQuery( target, id );
     }
@@ -4001,7 +3999,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLENDQUERYPROC( GLenum target );
 
-    private static PFNGLENDQUERYPROC _glEndQuery;
+    private PFNGLENDQUERYPROC _glEndQuery;
 
     /// <summary>
     ///     Delimit the boundaries of a query object.
@@ -4013,7 +4011,7 @@ public static unsafe class GL
     ///     <see cref="GL_PRIMITIVES_GENERATED" />, <see cref="GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN" /> or
     ///     <see cref="GL_TIME_ELAPSED" />.
     /// </param>
-    public static void glEndQuery( GLenum target )
+    public void glEndQuery( GLenum target )
     {
         _glEndQuery( target );
     }
@@ -4021,7 +4019,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETQUERYIVPROC( GLenum target, GLenum pname, GLint* @params );
 
-    private static PFNGLGETQUERYIVPROC _glGetQueryiv;
+    private PFNGLGETQUERYIVPROC _glGetQueryiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return parameters of a query object target.
@@ -4038,7 +4036,7 @@ public static unsafe class GL
     ///     <see cref="GL_QUERY_COUNTER_BITS" /> are accepted.
     /// </param>
     /// <param name="params">A pointer to the location where the integer value or values are to be returned.</param>
-    public static void glGetQueryiv( GLenum target, GLenum pname, GLint* @params )
+    public void glGetQueryiv( GLenum target, GLenum pname, GLint* @params )
     {
         _glGetQueryiv( target, pname, @params );
     }
@@ -4059,7 +4057,7 @@ public static unsafe class GL
     ///     <see cref="GL_QUERY_COUNTER_BITS" /> are accepted.
     /// </param>
     /// <param name="params">A <see langword="ref" /> to an integer array where the integer value or values are to be returned.</param>
-    public static void glGetQueryiv( GLenum target, GLenum pname, ref GLint[] @params )
+    public void glGetQueryiv( GLenum target, GLenum pname, ref GLint[] @params )
     {
         fixed ( GLint* p =
                    &@params[ 0 ] )
@@ -4072,7 +4070,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETQUERYOBJECTIVPROC( GLuint id, GLenum pname, GLint* @params );
 
-    private static PFNGLGETQUERYOBJECTIVPROC _glGetQueryObjectiv;
+    private PFNGLGETQUERYOBJECTIVPROC _glGetQueryObjectiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return parameters of a query object.
@@ -4083,7 +4081,7 @@ public static unsafe class GL
     ///     <see cref="GL_QUERY_RESULT_NO_WAIT" /> or <see cref="GL_QUERY_RESULT_AVAILABLE" /> are accepted.
     /// </param>
     /// <param name="params">A pointer to the location where the integer value or values are to be returned.</param>
-    public static void glGetQueryObjectiv( GLuint id, GLenum pname, GLint* @params )
+    public void glGetQueryObjectiv( GLuint id, GLenum pname, GLint* @params )
     {
         _glGetQueryObjectiv( id, pname, @params );
     }
@@ -4098,7 +4096,7 @@ public static unsafe class GL
     ///     <see cref="GL_QUERY_RESULT_NO_WAIT" /> or <see cref="GL_QUERY_RESULT_AVAILABLE" /> are accepted.
     /// </param>
     /// <param name="params">A <see langword="ref" /> to an integer array where the integer value or values are to be returned.</param>
-    public static void glGetQueryObjectiv( GLuint id, GLenum pname, ref GLint[] @params )
+    public void glGetQueryObjectiv( GLuint id, GLenum pname, ref GLint[] @params )
     {
         fixed ( GLint* p =
                    &@params[ 0 ] )
@@ -4111,7 +4109,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETQUERYOBJECTUIVPROC( GLuint id, GLenum pname, GLuint* @params );
 
-    private static PFNGLGETQUERYOBJECTUIVPROC _glGetQueryObjectuiv;
+    private PFNGLGETQUERYOBJECTUIVPROC _glGetQueryObjectuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return parameters of a query object.
@@ -4122,7 +4120,7 @@ public static unsafe class GL
     ///     <see cref="GL_QUERY_RESULT_NO_WAIT" /> or <see cref="GL_QUERY_RESULT_AVAILABLE" /> are accepted.
     /// </param>
     /// <param name="params">A pointer to the location where the unsigned integer value or values are to be returned.</param>
-    public static void glGetQueryObjectuiv( GLuint id, GLenum pname, GLuint* @params )
+    public void glGetQueryObjectuiv( GLuint id, GLenum pname, GLuint* @params )
     {
         _glGetQueryObjectuiv( id, pname, @params );
     }
@@ -4140,7 +4138,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an unsigned integer array where the integer value or values are to be
     ///     returned.
     /// </param>
-    public static void glGetQueryObjectuiv( GLuint id, GLenum pname, ref GLuint[] @params )
+    public void glGetQueryObjectuiv( GLuint id, GLenum pname, ref GLuint[] @params )
     {
         fixed ( GLuint* p =
                    &@params[ 0 ] )
@@ -4153,7 +4151,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBINDBUFFERPROC( GLenum target, GLuint buffer );
 
-    private static PFNGLBINDBUFFERPROC _glBindBuffer;
+    private PFNGLBINDBUFFERPROC _glBindBuffer;
 
     /// <summary>
     ///     Bind a named buffer object.
@@ -4167,7 +4165,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_BUFFER" />, <see cref="GL_TRANSFORM_FEEDBACK_BUFFER" /> or <see cref="GL_UNIFORM_BUFFER" />.
     /// </param>
     /// <param name="buffer">Specifies the name of a buffer object.</param>
-    public static void glBindBuffer( GLenum target, GLuint buffer )
+    public void glBindBuffer( GLenum target, GLuint buffer )
     {
         _glBindBuffer( target, buffer );
     }
@@ -4175,14 +4173,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDELETEBUFFERSPROC( GLsizei n, GLuint* buffers );
 
-    private static PFNGLDELETEBUFFERSPROC _glDeleteBuffers;
+    private PFNGLDELETEBUFFERSPROC _glDeleteBuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Delete named buffer objects.
     /// </summary>
     /// <param name="n">Specifies the number of buffer objects to be deleted.</param>
     /// <param name="buffers">A pointer to an array of buffer objects to be deleted.</param>
-    public static void glDeleteBuffers( GLsizei n, GLuint* buffers )
+    public void glDeleteBuffers( GLsizei n, GLuint* buffers )
     {
         _glDeleteBuffers( n, buffers );
     }
@@ -4192,7 +4190,7 @@ public static unsafe class GL
     ///     Delete named buffer objects.
     /// </summary>
     /// <param name="buffers">An array of buffer objects to be deleted.</param>
-    public static void glDeleteBuffers( params GLuint[] buffers )
+    public void glDeleteBuffers( params GLuint[] buffers )
     {
         fixed ( GLuint* p = &buffers[ 0 ] )
         {
@@ -4204,14 +4202,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGENBUFFERSPROC( GLsizei n, GLuint* buffers );
 
-    private static PFNGLGENBUFFERSPROC _glGenBuffers;
+    private PFNGLGENBUFFERSPROC _glGenBuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Generate buffer object names.
     /// </summary>
     /// <param name="n">Specifies the number of buffer object names to generate.</param>
     /// <param name="buffers">A pointer to an array in which the generated buffer object names are to be stored.</param>
-    public static void glGenBuffers( GLsizei n, GLuint* buffers )
+    public void glGenBuffers( GLsizei n, GLuint* buffers )
     {
         _glGenBuffers( n, buffers );
     }
@@ -4222,7 +4220,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of buffer object names to generate.</param>
     /// <returns>An array of generated buffer object names.</returns>
-    public static GLuint[] glGenBuffers( GLsizei n )
+    public GLuint[] glGenBuffers( GLsizei n )
     {
         var ret = new GLuint[ n ];
 
@@ -4238,7 +4236,7 @@ public static unsafe class GL
     ///     Generate a single buffer object name.
     /// </summary>
     /// <returns>The generated buffer object name.</returns>
-    public static GLuint glGenBuffer()
+    public GLuint glGenBuffer()
     {
         return glGenBuffers( 1 )[ 0 ];
     }
@@ -4247,7 +4245,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLISBUFFERPROC( GLuint buffer );
 
-    private static PFNGLISBUFFERPROC _glIsBuffer;
+    private PFNGLISBUFFERPROC _glIsBuffer;
 
     /// <summary>
     ///     Determine if a name corresponds to a buffer object.
@@ -4257,7 +4255,7 @@ public static unsafe class GL
     ///     <see langword="true" /> if <paramref name="buffer" /> is a buffer object name. <see langword="false" />
     ///     otherwise.
     /// </returns>
-    public static GLboolean glIsBuffer( GLuint buffer )
+    public GLboolean glIsBuffer( GLuint buffer )
     {
         return _glIsBuffer( buffer );
     }
@@ -4265,7 +4263,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBUFFERDATAPROC( GLenum target, GLsizeiptr size, void* data, GLenum usage );
 
-    private static PFNGLBUFFERDATAPROC _glBufferData;
+    private PFNGLBUFFERDATAPROC _glBufferData;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Create and initialize a buffer object's data store.
@@ -4289,7 +4287,7 @@ public static unsafe class GL
     ///     <see cref="GL_STATIC_DRAW" />, <see cref="GL_STATIC_READ" />, <see cref="GL_STATIC_COPY" />,
     ///     <see cref="GL_DYNAMIC_DRAW" />, <see cref="GL_DYNAMIC_READ" /> or <see cref="GL_DYNAMIC_COPY" />.
     /// </param>
-    public static void glBufferData( GLenum target, GLsizeiptr size, void* data, GLenum usage )
+    public void glBufferData( GLenum target, GLsizeiptr size, void* data, GLenum usage )
     {
         _glBufferData( target, size, data, usage );
     }
@@ -4314,7 +4312,7 @@ public static unsafe class GL
     ///     <see cref="GL_STATIC_DRAW" />, <see cref="GL_STATIC_READ" />, <see cref="GL_STATIC_COPY" />,
     ///     <see cref="GL_DYNAMIC_DRAW" />, <see cref="GL_DYNAMIC_READ" /> or <see cref="GL_DYNAMIC_COPY" />.
     /// </param>
-    public static void glBufferData<T>( GLenum target, T[] data, GLenum usage ) where T : unmanaged
+    public void glBufferData<T>( GLenum target, T[] data, GLenum usage ) where T : unmanaged
     {
         fixed ( T* p =
                    &data[ 0 ] )
@@ -4327,7 +4325,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBUFFERSUBDATAPROC( GLenum target, GLintptr offset, GLsizeiptr size, void* data );
 
-    private static PFNGLBUFFERSUBDATAPROC _glBufferSubData;
+    private PFNGLBUFFERSUBDATAPROC _glBufferSubData;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Update a subset of a buffer object's data store.
@@ -4346,7 +4344,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="size">Specifies the size in bytes of the data store region being replaced.</param>
     /// <param name="data">Specifies a pointer to the new data that will be copied into the data store.</param>
-    public static void glBufferSubData( GLenum target, GLintptr offset, GLsizeiptr size, void* data )
+    public void glBufferSubData( GLenum target, GLintptr offset, GLsizeiptr size, void* data )
     {
         _glBufferSubData( target, offset, size, data );
     }
@@ -4366,7 +4364,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="offsetCount">Specifies the offset into the buffer object's data store where data replacement will begin.</param>
     /// <param name="data">An array of <typeparamref name="T" />s that will be copied into the data store for replacement.</param>
-    public static void glBufferSubData<T>( GLenum target, GLintptr offsetCount, T[] data ) where T : unmanaged
+    public void glBufferSubData<T>( GLenum target, GLintptr offsetCount, T[] data ) where T : unmanaged
     {
         fixed ( T* p =
                    &data[ 0 ] )
@@ -4379,7 +4377,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETBUFFERSUBDATAPROC( GLenum target, GLintptr offset, GLsizeiptr size, void* data );
 
-    private static PFNGLGETBUFFERSUBDATAPROC _glGetBufferSubData;
+    private PFNGLGETBUFFERSUBDATAPROC _glGetBufferSubData;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return a subset of a buffer object's data store.
@@ -4398,7 +4396,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="size">Specifies the size in bytes of the data store region being returned.</param>
     /// <param name="data">Specifies a pointer to the location where buffer object data is returned.</param>
-    public static void glGetBufferSubData( GLenum target, GLintptr offset, GLsizeiptr size, void* data )
+    public void glGetBufferSubData( GLenum target, GLintptr offset, GLsizeiptr size, void* data )
     {
         _glGetBufferSubData( target, offset, size, data );
     }
@@ -4419,7 +4417,7 @@ public static unsafe class GL
     /// <param name="offsetCount">Specifies the offset into the buffer object's data store from which data will be returned.</param>
     /// <param name="count">Specifies the number of <typeparamref name="T" />s to be returned.</param>
     /// <param name="data">An array of <typeparamref name="T" />s that will be filled with the data from the buffer object.</param>
-    public static void glGetBufferSubData<T>( GLenum target, GLintptr offsetCount, GLsizei count, ref T[] data ) where T : unmanaged
+    public void glGetBufferSubData<T>( GLenum target, GLintptr offsetCount, GLsizei count, ref T[] data ) where T : unmanaged
     {
         fixed ( T* p =
                    &data[ 0 ] )
@@ -4432,7 +4430,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void* PFNGLMAPBUFFERPROC( GLenum target, GLenum access );
 
-    private static PFNGLMAPBUFFERPROC _glMapBuffer;
+    private PFNGLMAPBUFFERPROC _glMapBuffer;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Map a buffer object's data store into the client's address space.
@@ -4451,7 +4449,7 @@ public static unsafe class GL
     ///     <see cref="GL_READ_WRITE" />.
     /// </param>
     /// <returns>Returns a pointer to the beginning of the mapped range.</returns>
-    public static void* glMapBuffer( GLenum target, GLenum access )
+    public void* glMapBuffer( GLenum target, GLenum access )
     {
         return _glMapBuffer( target, access );
     }
@@ -4474,7 +4472,7 @@ public static unsafe class GL
     ///     <see cref="GL_READ_WRITE" />.
     /// </param>
     /// <returns>Returns a type-safe and memory-safe <see cref="System.Span{T}" /> of the buffers data.</returns>
-    public static Span< T > glMapBuffer<T>( GLenum target, GLenum access ) where T : unmanaged
+    public Span< T > glMapBuffer<T>( GLenum target, GLenum access ) where T : unmanaged
     {
         GLint size;
         _glGetBufferParameteriv( target, GL_BUFFER_SIZE, &size );
@@ -4488,7 +4486,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLUNMAPBUFFERPROC( GLenum target );
 
-    private static PFNGLUNMAPBUFFERPROC _glUnmapBuffer;
+    private PFNGLUNMAPBUFFERPROC _glUnmapBuffer;
 
     /// <summary>
     ///     Release a mapped buffer object's data store.
@@ -4508,7 +4506,7 @@ public static unsafe class GL
     ///     the contents of the buffer have become corrupt and should be considered undefined. An application must detect this
     ///     rare condition and reinitialize the data store.
     /// </returns>
-    public static GLboolean glUnmapBuffer( GLenum target )
+    public GLboolean glUnmapBuffer( GLenum target )
     {
         return _glUnmapBuffer( target );
     }
@@ -4516,7 +4514,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETBUFFERPARAMETERIVPROC( GLenum target, GLenum pname, GLint* @params );
 
-    private static PFNGLGETBUFFERPARAMETERIVPROC _glGetBufferParameteriv;
+    private PFNGLGETBUFFERPARAMETERIVPROC _glGetBufferParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return parameters of a buffer object.
@@ -4531,7 +4529,7 @@ public static unsafe class GL
     ///     <see cref="GL_BUFFER_USAGE" />.
     /// </param>
     /// <param name="params">A pointer to a memory location where the returned data will be placed.</param>
-    public static void glGetBufferParameteriv( GLenum target, GLenum pname, GLint* @params )
+    public void glGetBufferParameteriv( GLenum target, GLenum pname, GLint* @params )
     {
         _glGetBufferParameteriv( target, pname, @params );
     }
@@ -4550,7 +4548,7 @@ public static unsafe class GL
     ///     <see cref="GL_BUFFER_USAGE" />.
     /// </param>
     /// <param name="params">A <see langword="ref" /> to an integer array where the returned data will be placed.</param>
-    public static void glGetBufferParameteriv( GLenum target, GLenum pname, ref GLint[] @params )
+    public void glGetBufferParameteriv( GLenum target, GLenum pname, ref GLint[] @params )
     {
         fixed ( GLint* p =
                    &@params[ 0 ] )
@@ -4563,7 +4561,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETBUFFERPOINTERVPROC( GLenum target, GLenum pname, void** @params );
 
-    private static PFNGLGETBUFFERPOINTERVPROC _glGetBufferPointerv;
+    private PFNGLGETBUFFERPOINTERVPROC _glGetBufferPointerv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the pointer to a mapped buffer object's data store.
@@ -4578,7 +4576,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="pname">Specifies the pointer to be returned. Accepted values are <see cref="GL_BUFFER_MAP_POINTER" />.</param>
     /// <param name="params">A pointer to a memory location where the returned data will be placed.</param>
-    public static void glGetBufferPointerv( GLenum target, GLenum pname, void** @params )
+    public void glGetBufferPointerv( GLenum target, GLenum pname, void** @params )
     {
         _glGetBufferPointerv( target, pname, @params );
     }
@@ -4600,7 +4598,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an array of <see cref="IntPtr" />s where the returned pointer(s) will
     ///     be placed.
     /// </param>
-    public static void glGetBufferPointerv( GLenum target, GLenum pname, ref IntPtr[] @params )
+    public void glGetBufferPointerv( GLenum target, GLenum pname, ref IntPtr[] @params )
     {
         fixed ( IntPtr* p =
                    &@params[ 0 ] )
@@ -4619,7 +4617,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBLENDEQUATIONSEPARATEPROC( GLenum modeRGB, GLenum modeAlpha );
 
-    private static PFNGLBLENDEQUATIONSEPARATEPROC _glBlendEquationSeparate;
+    private PFNGLBLENDEQUATIONSEPARATEPROC _glBlendEquationSeparate;
 
     /// <summary>
     ///     Set the RGB blend equation and alpha blend equation separately
@@ -4634,7 +4632,7 @@ public static unsafe class GL
     ///     colors are combined. Must be <see cref="GL_FUNC_ADD" />, <see cref="GL_FUNC_SUBTRACT" />,
     ///     <see cref="GL_FUNC_REVERSE_SUBTRACT" />, <see cref="GL_MIN" /> or <see cref="GL_MAX" />.
     /// </param>
-    public static void glBlendEquationSeparate( GLenum modeRGB, GLenum modeAlpha )
+    public void glBlendEquationSeparate( GLenum modeRGB, GLenum modeAlpha )
     {
         _glBlendEquationSeparate( modeRGB, modeAlpha );
     }
@@ -4642,7 +4640,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDRAWBUFFERSPROC( GLsizei n, GLenum* bufs );
 
-    private static PFNGLDRAWBUFFERSPROC _glDrawBuffers;
+    private PFNGLDRAWBUFFERSPROC _glDrawBuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify a list of color buffers to be drawn into
@@ -4654,7 +4652,7 @@ public static unsafe class GL
     ///     <see cref="GL_FRONT_LEFT" />, <see cref="GL_FRONT_RIGHT" />, <see cref="GL_BACK_LEFT" />,
     ///     <see cref="GL_BACK_RIGHT" />, <see cref="GL_COLOR_ATTACHMENT0" /> through <see cref="GL_COLOR_ATTACHMENT31" />.
     /// </param>
-    public static void glDrawBuffers( GLsizei n, GLenum* bufs )
+    public void glDrawBuffers( GLsizei n, GLenum* bufs )
     {
         _glDrawBuffers( n, bufs );
     }
@@ -4669,7 +4667,7 @@ public static unsafe class GL
     ///     <see cref="GL_FRONT_RIGHT" />, <see cref="GL_BACK_LEFT" />, <see cref="GL_BACK_RIGHT" />,
     ///     <see cref="GL_COLOR_ATTACHMENT0" /> through <see cref="GL_COLOR_ATTACHMENT31" />.
     /// </param>
-    public static void glDrawBuffers( params GLenum[] bufs )
+    public void glDrawBuffers( params GLenum[] bufs )
     {
         fixed ( GLenum* pbufs = &bufs[ 0 ] )
         {
@@ -4681,7 +4679,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSTENCILOPSEPARATEPROC( GLenum face, GLenum sfail, GLenum dpfail, GLenum dppass );
 
-    private static PFNGLSTENCILOPSEPARATEPROC _glStencilOpSeparate;
+    private PFNGLSTENCILOPSEPARATEPROC _glStencilOpSeparate;
 
     /// <summary>
     ///     Set front and back stencil test actions
@@ -4704,7 +4702,7 @@ public static unsafe class GL
     ///     stencil test passes and either there is no depth buffer or depth testing is not enabled. <paramref name="dppass" />
     ///     accepts the same symbolic constants as <paramref name="sfail" />.
     /// </param>
-    public static void glStencilOpSeparate( GLenum face, GLenum sfail, GLenum dpfail, GLenum dppass )
+    public void glStencilOpSeparate( GLenum face, GLenum sfail, GLenum dpfail, GLenum dppass )
     {
         _glStencilOpSeparate( face, sfail, dpfail, dppass );
     }
@@ -4712,7 +4710,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSTENCILFUNCSEPARATEPROC( GLenum face, GLenum func, GLint @ref, GLuint mask );
 
-    private static PFNGLSTENCILFUNCSEPARATEPROC _glStencilFuncSeparate;
+    private PFNGLSTENCILFUNCSEPARATEPROC _glStencilFuncSeparate;
 
     /// <summary>
     ///     Set front and/or back function and reference value for stencil testing
@@ -4735,7 +4733,7 @@ public static unsafe class GL
     ///     Specifies a mask that is ANDed with both the reference value and the stored stencil value when the
     ///     test is done. The initial value is all 1's.
     /// </param>
-    public static void glStencilFuncSeparate( GLenum face, GLenum func, GLint @ref, GLuint mask )
+    public void glStencilFuncSeparate( GLenum face, GLenum func, GLint @ref, GLuint mask )
     {
         _glStencilFuncSeparate( face, func, @ref, mask );
     }
@@ -4743,7 +4741,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSTENCILMASKSEPARATEPROC( GLenum face, GLuint mask );
 
-    private static PFNGLSTENCILMASKSEPARATEPROC _glStencilMaskSeparate;
+    private PFNGLSTENCILMASKSEPARATEPROC _glStencilMaskSeparate;
 
     /// <summary>
     ///     Control the front and back writing of individual bits in the stencil planes
@@ -4756,7 +4754,7 @@ public static unsafe class GL
     ///     Specifies a bit mask to enable and disable writing of individual bits in the stencil planes.
     ///     Initially, the mask is all 1's.
     /// </param>
-    public static void glStencilMaskSeparate( GLenum face, GLuint mask )
+    public void glStencilMaskSeparate( GLenum face, GLuint mask )
     {
         _glStencilMaskSeparate( face, mask );
     }
@@ -4764,14 +4762,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLATTACHSHADERPROC( GLuint program, GLuint shader );
 
-    private static PFNGLATTACHSHADERPROC _glAttachShader;
+    private PFNGLATTACHSHADERPROC _glAttachShader;
 
     /// <summary>
     ///     Attaches a shader object to a program object
     /// </summary>
     /// <param name="program">Specifies the program object to which a shader object will be attached.</param>
     /// <param name="shader">Specifies the shader object that is to be attached.</param>
-    public static void glAttachShader( GLuint program, GLuint shader )
+    public void glAttachShader( GLuint program, GLuint shader )
     {
         _glAttachShader( program, shader );
     }
@@ -4779,7 +4777,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBINDATTRIBLOCATIONPROC( GLuint program, GLuint index, GLchar* name );
 
-    private static PFNGLBINDATTRIBLOCATIONPROC _glBindAttribLocation;
+    private PFNGLBINDATTRIBLOCATIONPROC _glBindAttribLocation;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Associates a generic vertex attribute index with a named attribute variable. This is typically replaced with the
@@ -4791,7 +4789,7 @@ public static unsafe class GL
     ///     Specifies a null terminated string containing the name of the vertex shader attribute variable to
     ///     which index is to be bound.
     /// </param>
-    public static void glBindAttribLocation( GLuint program, GLuint index, GLchar* name )
+    public void glBindAttribLocation( GLuint program, GLuint index, GLchar* name )
     {
         _glBindAttribLocation( program, index, name );
     }
@@ -4807,7 +4805,7 @@ public static unsafe class GL
     ///     Specifies a string containing the name of the vertex shader attribute variable to which index is to
     ///     be bound.
     /// </param>
-    public static void glBindAttribLocation( GLuint program, GLuint index, string name )
+    public void glBindAttribLocation( GLuint program, GLuint index, string name )
     {
         var utf8 = Encoding.UTF8.GetBytes( name );
 
@@ -4821,13 +4819,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCOMPILESHADERPROC( GLuint shader );
 
-    private static PFNGLCOMPILESHADERPROC _glCompileShader;
+    private PFNGLCOMPILESHADERPROC _glCompileShader;
 
     /// <summary>
     ///     Compiles a shader object
     /// </summary>
     /// <param name="shader">Specifies the shader object to be compiled.</param>
-    public static void glCompileShader( GLuint shader )
+    public void glCompileShader( GLuint shader )
     {
         _glCompileShader( shader );
     }
@@ -4835,13 +4833,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLuint PFNGLCREATEPROGRAMPROC();
 
-    private static PFNGLCREATEPROGRAMPROC _glCreateProgram;
+    private PFNGLCREATEPROGRAMPROC _glCreateProgram;
 
     /// <summary>
     ///     Creates a program object
     /// </summary>
     /// <returns>The name of the program object created.</returns>
-    public static GLuint glCreateProgram()
+    public GLuint glCreateProgram()
     {
         return _glCreateProgram();
     }
@@ -4849,7 +4847,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLuint PFNGLCREATESHADERPROC( GLenum type );
 
-    private static PFNGLCREATESHADERPROC _glCreateShader;
+    private PFNGLCREATESHADERPROC _glCreateShader;
 
     /// <summary>
     ///     Creates a shader object
@@ -4860,7 +4858,7 @@ public static unsafe class GL
     ///     <see cref="GL_GEOMETRY_SHADER" /> or <see cref="GL_FRAGMENT_SHADER" />.
     /// </param>
     /// <returns>The name of the shader object created.</returns>
-    public static GLuint glCreateShader( GLenum type )
+    public GLuint glCreateShader( GLenum type )
     {
         return _glCreateShader( type );
     }
@@ -4868,13 +4866,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDELETEPROGRAMPROC( GLuint program );
 
-    private static PFNGLDELETEPROGRAMPROC _glDeleteProgram;
+    private PFNGLDELETEPROGRAMPROC _glDeleteProgram;
 
     /// <summary>
     ///     Deletes a program object
     /// </summary>
     /// <param name="program">Specifies the program object to be deleted.</param>
-    public static void glDeleteProgram( GLuint program )
+    public void glDeleteProgram( GLuint program )
     {
         _glDeleteProgram( program );
     }
@@ -4882,13 +4880,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDELETESHADERPROC( GLuint shader );
 
-    private static PFNGLDELETESHADERPROC _glDeleteShader;
+    private PFNGLDELETESHADERPROC _glDeleteShader;
 
     /// <summary>
     ///     Deletes a shader object
     /// </summary>
     /// <param name="shader">Specifies the shader object to be deleted.</param>
-    public static void glDeleteShader( GLuint shader )
+    public void glDeleteShader( GLuint shader )
     {
         _glDeleteShader( shader );
     }
@@ -4896,14 +4894,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDETACHSHADERPROC( GLuint program, GLuint shader );
 
-    private static PFNGLDETACHSHADERPROC _glDetachShader;
+    private PFNGLDETACHSHADERPROC _glDetachShader;
 
     /// <summary>
     ///     Detaches a shader object from a program object
     /// </summary>
     /// <param name="program">Specifies the program object from which to detach the shader object.</param>
     /// <param name="shader">Specifies the shader object to be detached.</param>
-    public static void glDetachShader( GLuint program, GLuint shader )
+    public void glDetachShader( GLuint program, GLuint shader )
     {
         _glDetachShader( program, shader );
     }
@@ -4911,13 +4909,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDISABLEVERTEXATTRIBARRAYPROC( GLuint index );
 
-    private static PFNGLDISABLEVERTEXATTRIBARRAYPROC _glDisableVertexAttribArray;
+    private PFNGLDISABLEVERTEXATTRIBARRAYPROC _glDisableVertexAttribArray;
 
     /// <summary>
     ///     Disables a generic vertex attribute array
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be disabled.</param>
-    public static void glDisableVertexAttribArray( GLuint index )
+    public void glDisableVertexAttribArray( GLuint index )
     {
         _glDisableVertexAttribArray( index );
     }
@@ -4925,13 +4923,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLENABLEVERTEXATTRIBARRAYPROC( GLuint index );
 
-    private static PFNGLENABLEVERTEXATTRIBARRAYPROC _glEnableVertexAttribArray;
+    private PFNGLENABLEVERTEXATTRIBARRAYPROC _glEnableVertexAttribArray;
 
     /// <summary>
     ///     Enables a generic vertex attribute array
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be enabled.</param>
-    public static void glEnableVertexAttribArray( GLuint index )
+    public void glEnableVertexAttribArray( GLuint index )
     {
         _glEnableVertexAttribArray( index );
     }
@@ -4939,7 +4937,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETACTIVEATTRIBPROC( GLuint program, GLuint index, GLsizei bufSize, GLsizei* length, GLint* size, GLenum* type, GLchar* name );
 
-    private static PFNGLGETACTIVEATTRIBPROC _glGetActiveAttrib;
+    private PFNGLGETACTIVEATTRIBPROC _glGetActiveAttrib;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns information about an active attribute variable for the specified program object
@@ -4963,7 +4961,7 @@ public static unsafe class GL
     ///     is passed.
     /// </param>
     /// <param name="name">Returns a null-terminated string containing the name of the attribute variable.</param>
-    public static void glGetActiveAttrib( GLuint program, GLuint index, GLsizei bufSize, GLsizei* length, GLint* size, GLenum* type, GLchar* name )
+    public void glGetActiveAttrib( GLuint program, GLuint index, GLsizei bufSize, GLsizei* length, GLint* size, GLenum* type, GLchar* name )
     {
         _glGetActiveAttrib( program, index, bufSize, length, size, type, name );
     }
@@ -4981,7 +4979,7 @@ public static unsafe class GL
     /// <param name="size">Returns the size of the attribute variable.</param>
     /// <param name="type">Returns the data type of the attribute variable.</param>
     /// <returns>Returns a managed string containing the name of the attribute variable.</returns>
-    public static string glGetActiveAttrib( GLuint program, GLuint index, GLsizei bufSize, out GLint size, out GLenum type )
+    public string glGetActiveAttrib( GLuint program, GLuint index, GLsizei bufSize, out GLint size, out GLenum type )
     {
         var     name = stackalloc GLchar[ bufSize ];
         GLsizei len;
@@ -5001,7 +4999,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETACTIVEUNIFORMPROC( GLuint program, GLuint index, GLsizei bufSize, GLsizei* length, GLint* size, GLenum* type, GLchar* name );
 
-    private static PFNGLGETACTIVEUNIFORMPROC _glGetActiveUniform;
+    private PFNGLGETACTIVEUNIFORMPROC _glGetActiveUniform;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns information about an active uniform variable for the specified program object
@@ -5025,7 +5023,7 @@ public static unsafe class GL
     ///     is passed.
     /// </param>
     /// <param name="name">Returns a null-terminated string containing the name of the uniform variable.</param>
-    public static void glGetActiveUniform( GLuint program, GLuint index, GLsizei bufSize, GLsizei* length, GLint* size, GLenum* type, GLchar* name )
+    public void glGetActiveUniform( GLuint program, GLuint index, GLsizei bufSize, GLsizei* length, GLint* size, GLenum* type, GLchar* name )
     {
         _glGetActiveUniform( program, index, bufSize, length, size, type, name );
     }
@@ -5043,7 +5041,7 @@ public static unsafe class GL
     /// <param name="size">Returns the size of the uniform variable.</param>
     /// <param name="type">Returns the data type of the uniform variable.</param>
     /// <returns>Returns a managed string containing the name of the uniform variable.</returns>
-    public static string glGetActiveUniform( GLuint program, GLuint index, GLsizei bufSize, out GLint size, out GLenum type )
+    public string glGetActiveUniform( GLuint program, GLuint index, GLsizei bufSize, out GLint size, out GLenum type )
     {
         var     name = stackalloc GLchar[ bufSize ];
         GLsizei len;
@@ -5063,7 +5061,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETATTACHEDSHADERSPROC( GLuint program, GLsizei maxCount, GLsizei* count, GLuint* shaders );
 
-    private static PFNGLGETATTACHEDSHADERSPROC _glGetAttachedShaders;
+    private PFNGLGETATTACHEDSHADERSPROC _glGetAttachedShaders;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the shader objects attached to program
@@ -5072,7 +5070,7 @@ public static unsafe class GL
     /// <param name="maxCount">Specifies the size of the array for storing object names.</param>
     /// <param name="count">Returns the number of names actually returned in shaders.</param>
     /// <param name="shaders">Returns the names of the shader objects attached to program.</param>
-    public static void glGetAttachedShaders( GLuint program, GLsizei maxCount, GLsizei* count, GLuint* shaders )
+    public void glGetAttachedShaders( GLuint program, GLsizei maxCount, GLsizei* count, GLuint* shaders )
     {
         _glGetAttachedShaders( program, maxCount, count, shaders );
     }
@@ -5084,7 +5082,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="maxCount">Specifies a maximum amount of shaders to return.</param>
     /// <returns>Returns an array of shader objects attached to program resized to the amount of shaders actually attached.</returns>
-    public static GLuint[] glGetAttachedShaders( GLuint program, GLsizei maxCount )
+    public GLuint[] glGetAttachedShaders( GLuint program, GLsizei maxCount )
     {
         var     shaders = new GLuint[ maxCount ];
         GLsizei count;
@@ -5103,7 +5101,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLint PFNGLGETATTRIBLOCATIONPROC( GLuint program, GLchar* name );
 
-    private static PFNGLGETATTRIBLOCATIONPROC _glGetAttribLocation;
+    private PFNGLGETATTRIBLOCATIONPROC _glGetAttribLocation;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the location of an attribute variable
@@ -5114,7 +5112,7 @@ public static unsafe class GL
     ///     Returns the location of the attribute variable name if it is found in program. If name starts with the
     ///     reserved prefix "gl_", a location of -1 is returned.
     /// </returns>
-    public static GLint glGetAttribLocation( GLuint program, GLchar* name )
+    public GLint glGetAttribLocation( GLuint program, GLchar* name )
     {
         return _glGetAttribLocation( program, name );
     }
@@ -5129,7 +5127,7 @@ public static unsafe class GL
     ///     Returns the location of the attribute variable name if it is found in program. If name starts with the
     ///     reserved prefix "gl_", a location of -1 is returned.
     /// </returns>
-    public static GLint glGetAttribLocation( GLuint program, string name )
+    public GLint glGetAttribLocation( GLuint program, string name )
     {
         fixed ( GLchar* pname = Encoding.UTF8.GetBytes( name ) )
         {
@@ -5141,7 +5139,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETPROGRAMIVPROC( GLuint program, GLenum pname, GLint* @params );
 
-    private static PFNGLGETPROGRAMIVPROC _glGetProgramiv;
+    private PFNGLGETPROGRAMIVPROC _glGetProgramiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns a parameter from a program object
@@ -5152,7 +5150,7 @@ public static unsafe class GL
     ///     for a list of possible values.
     /// </param>
     /// <param name="params">Returns the requested object parameter.</param>
-    public static void glGetProgramiv( GLuint program, GLenum pname, GLint* @params )
+    public void glGetProgramiv( GLuint program, GLenum pname, GLint* @params )
     {
         _glGetProgramiv( program, pname, @params );
     }
@@ -5167,7 +5165,7 @@ public static unsafe class GL
     ///     for a list of possible values.
     /// </param>
     /// <param name="params">A <see langword="ref" /> to an integer array where the returned value(s) will be placed.</param>
-    public static void glGetProgramiv( GLuint program, GLenum pname, ref GLint[] @params )
+    public void glGetProgramiv( GLuint program, GLenum pname, ref GLint[] @params )
     {
         fixed ( GLint* pparams =
                    &@params[ 0 ] )
@@ -5180,7 +5178,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETPROGRAMINFOLOGPROC( GLuint program, GLsizei bufSize, GLsizei* length, GLchar* infoLog );
 
-    private static PFNGLGETPROGRAMINFOLOGPROC _glGetProgramInfoLog;
+    private PFNGLGETPROGRAMINFOLOGPROC _glGetProgramInfoLog;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the information log for a program object
@@ -5189,7 +5187,7 @@ public static unsafe class GL
     /// <param name="bufSize">Specifies the size of the character buffer for storing the returned information log.</param>
     /// <param name="length">Returns the length of the string returned in infoLog (excluding the null terminator).</param>
     /// <param name="infoLog">Specifies an array of characters that is used to return the information log.</param>
-    public static void glGetProgramInfoLog( GLuint program, GLsizei bufSize, GLsizei* length, GLchar* infoLog )
+    public void glGetProgramInfoLog( GLuint program, GLsizei bufSize, GLsizei* length, GLchar* infoLog )
     {
         _glGetProgramInfoLog( program, bufSize, length, infoLog );
     }
@@ -5201,7 +5199,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object whose information log is to be queried.</param>
     /// <param name="bufSize">Specifies the size of the character buffer for storing the returned information log.</param>
     /// <returns>Returns the information log for <paramref name="program" />, resized to the correct length.</returns>
-    public static string glGetProgramInfoLog( GLuint program, GLsizei bufSize )
+    public string glGetProgramInfoLog( GLuint program, GLsizei bufSize )
     {
         var     infoLog = stackalloc GLchar[ bufSize ];
         GLsizei len;
@@ -5214,7 +5212,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETSHADERIVPROC( GLuint shader, GLenum pname, GLint* @params );
 
-    private static PFNGLGETSHADERIVPROC _glGetShaderiv;
+    private PFNGLGETSHADERIVPROC _glGetShaderiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns a parameter from a shader object
@@ -5226,7 +5224,7 @@ public static unsafe class GL
     ///     <see cref="GL_SHADER_SOURCE_LENGTH" />.
     /// </param>
     /// <param name="params">Returns the requested object parameter.</param>
-    public static void glGetShaderiv( GLuint shader, GLenum pname, GLint* @params )
+    public void glGetShaderiv( GLuint shader, GLenum pname, GLint* @params )
     {
         _glGetShaderiv( shader, pname, @params );
     }
@@ -5242,7 +5240,7 @@ public static unsafe class GL
     ///     <see cref="GL_SHADER_SOURCE_LENGTH" />.
     /// </param>
     /// <param name="params">A <see langword="ref" /> to an integer array where the returned value(s) will be placed.</param>
-    public static void glGetShaderiv( GLuint shader, GLenum pname, ref GLint[] @params )
+    public void glGetShaderiv( GLuint shader, GLenum pname, ref GLint[] @params )
     {
         fixed ( GLint* pparams =
                    &@params[ 0 ] )
@@ -5255,7 +5253,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETSHADERINFOLOGPROC( GLuint shader, GLsizei bufSize, GLsizei* length, GLchar* infoLog );
 
-    private static PFNGLGETSHADERINFOLOGPROC _glGetShaderInfoLog;
+    private PFNGLGETSHADERINFOLOGPROC _glGetShaderInfoLog;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the information log for a shader object
@@ -5264,7 +5262,7 @@ public static unsafe class GL
     /// <param name="bufSize">Specifies the size of the character buffer for storing the returned information log.</param>
     /// <param name="length">Returns the length of the string returned in infoLog (excluding the null terminator).</param>
     /// <param name="infoLog">Specifies an array of characters that is used to return the information log.</param>
-    public static void glGetShaderInfoLog( GLuint shader, GLsizei bufSize, GLsizei* length, GLchar* infoLog )
+    public void glGetShaderInfoLog( GLuint shader, GLsizei bufSize, GLsizei* length, GLchar* infoLog )
     {
         _glGetShaderInfoLog( shader, bufSize, length, infoLog );
     }
@@ -5276,7 +5274,7 @@ public static unsafe class GL
     /// <param name="shader">Specifies the shader object whose information log is to be queried.</param>
     /// <param name="bufSize">Specifies the size of the character buffer for storing the returned information log.</param>
     /// <returns>Returns the information log for <paramref name="shader" />, resized to the correct length.</returns>
-    public static string glGetShaderInfoLog( GLuint shader, GLsizei bufSize )
+    public string glGetShaderInfoLog( GLuint shader, GLsizei bufSize )
     {
         var     infoLog = stackalloc GLchar[ bufSize ];
         GLsizei len;
@@ -5289,7 +5287,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETSHADERSOURCEPROC( GLuint shader, GLsizei bufSize, GLsizei* length, GLchar* source );
 
-    private static PFNGLGETSHADERSOURCEPROC _glGetShaderSource;
+    private PFNGLGETSHADERSOURCEPROC _glGetShaderSource;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the source code string from a shader object
@@ -5298,7 +5296,7 @@ public static unsafe class GL
     /// <param name="bufSize">Specifies the size of the character buffer for storing the returned source code string.</param>
     /// <param name="length">Returns the length of the string returned in source (excluding the null terminator).</param>
     /// <param name="source">Specifies an array of characters that is used to return the source code string.</param>
-    public static void glGetShaderSource( GLuint shader, GLsizei bufSize, GLsizei* length, GLchar* source )
+    public void glGetShaderSource( GLuint shader, GLsizei bufSize, GLsizei* length, GLchar* source )
     {
         _glGetShaderSource( shader, bufSize, length, source );
     }
@@ -5310,7 +5308,7 @@ public static unsafe class GL
     /// <param name="shader">Specifies the shader object to be queried.</param>
     /// <param name="bufSize">Specifies the size of the character buffer for storing the returned source code string.</param>
     /// <returns>Returns the source code string for <paramref name="shader" />, resized to the correct length.</returns>
-    public static string glGetShaderSource( GLuint shader, GLsizei bufSize = 4096 )
+    public string glGetShaderSource( GLuint shader, GLsizei bufSize = 4096 )
     {
         var     source = stackalloc GLchar[ bufSize ];
         GLsizei len;
@@ -5323,7 +5321,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLint PFNGLGETUNIFORMLOCATIONPROC( GLuint program, GLchar* name );
 
-    private static PFNGLGETUNIFORMLOCATIONPROC _glGetUniformLocation;
+    private PFNGLGETUNIFORMLOCATIONPROC _glGetUniformLocation;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the location of a uniform variable
@@ -5333,7 +5331,7 @@ public static unsafe class GL
     ///     Points to a null terminated string containing the name of the uniform variable whose location is to
     ///     be queried.
     /// </param>
-    public static GLint glGetUniformLocation( GLuint program, GLchar* name )
+    public GLint glGetUniformLocation( GLuint program, GLchar* name )
     {
         return _glGetUniformLocation( program, name );
     }
@@ -5344,7 +5342,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="name">A string containing the name of the uniform variable whose location is to be queried.</param>
-    public static GLint glGetUniformLocation( GLuint program, string name )
+    public GLint glGetUniformLocation( GLuint program, string name )
     {
         fixed ( byte* pname = Encoding.UTF8.GetBytes( name ) )
         {
@@ -5356,7 +5354,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETUNIFORMFVPROC( GLuint program, GLint location, GLfloat* @params );
 
-    private static PFNGLGETUNIFORMFVPROC _glGetUniformfv;
+    private PFNGLGETUNIFORMFVPROC _glGetUniformfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the value of a uniform variable
@@ -5364,7 +5362,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="params">Returns the value of the uniform variable at the location specified by location.</param>
-    public static void glGetUniformfv( GLuint program, GLint location, GLfloat* @params )
+    public void glGetUniformfv( GLuint program, GLint location, GLfloat* @params )
     {
         _glGetUniformfv( program, location, @params );
     }
@@ -5379,7 +5377,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an array to receive the value of the uniform variable at the location
     ///     specified by location.
     /// </param>
-    public static void glGetUniformfv( GLuint program, GLint location, ref GLfloat[] @params )
+    public void glGetUniformfv( GLuint program, GLint location, ref GLfloat[] @params )
     {
         fixed ( GLfloat* pparams =
                    &@params[ 0 ] )
@@ -5392,7 +5390,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETUNIFORMIVPROC( GLuint program, GLint location, GLint* @params );
 
-    private static PFNGLGETUNIFORMIVPROC _glGetUniformiv;
+    private PFNGLGETUNIFORMIVPROC _glGetUniformiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the value of a uniform variable
@@ -5400,7 +5398,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="params">Returns the value of the uniform variable at the location specified by location.</param>
-    public static void glGetUniformiv( GLuint program, GLint location, GLint* @params )
+    public void glGetUniformiv( GLuint program, GLint location, GLint* @params )
     {
         _glGetUniformiv( program, location, @params );
     }
@@ -5415,7 +5413,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an array to receive the value of the uniform variable at the location
     ///     specified by location.
     /// </param>
-    public static void glGetUniformiv( GLuint program, GLint location, ref GLint[] @params )
+    public void glGetUniformiv( GLuint program, GLint location, ref GLint[] @params )
     {
         fixed ( GLint* pparams =
                    &@params[ 0 ] )
@@ -5428,7 +5426,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETVERTEXATTRIBDVPROC( GLuint index, GLenum pname, GLdouble* @params );
 
-    private static PFNGLGETVERTEXATTRIBDVPROC _glGetVertexAttribdv;
+    private PFNGLGETVERTEXATTRIBDVPROC _glGetVertexAttribdv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the value of a generic vertex attribute parameter
@@ -5446,7 +5444,7 @@ public static unsafe class GL
     ///     Returns the value of the generic vertex attribute parameter specified by pname for the vertex
     ///     attribute specified by index.
     /// </param>
-    public static void glGetVertexAttribdv( GLuint index, GLenum pname, GLdouble* @params )
+    public void glGetVertexAttribdv( GLuint index, GLenum pname, GLdouble* @params )
     {
         _glGetVertexAttribdv( index, pname, @params );
     }
@@ -5468,7 +5466,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an array to receive the value of the generic vertex attribute
     ///     parameter specified by pname for the vertex attribute specified by index.
     /// </param>
-    public static void glGetVertexAttribdv( GLuint index, GLenum pname, ref GLdouble[] @params )
+    public void glGetVertexAttribdv( GLuint index, GLenum pname, ref GLdouble[] @params )
     {
         fixed ( GLdouble* pparams =
                    &@params[ 0 ] )
@@ -5481,7 +5479,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETVERTEXATTRIBFVPROC( GLuint index, GLenum pname, GLfloat* @params );
 
-    private static PFNGLGETVERTEXATTRIBFVPROC _glGetVertexAttribfv;
+    private PFNGLGETVERTEXATTRIBFVPROC _glGetVertexAttribfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the value of a generic vertex attribute parameter
@@ -5499,7 +5497,7 @@ public static unsafe class GL
     ///     Returns the value of the generic vertex attribute parameter specified by pname for the vertex
     ///     attribute specified by index.
     /// </param>
-    public static void glGetVertexAttribfv( GLuint index, GLenum pname, GLfloat* @params )
+    public void glGetVertexAttribfv( GLuint index, GLenum pname, GLfloat* @params )
     {
         _glGetVertexAttribfv( index, pname, @params );
     }
@@ -5521,7 +5519,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an array to receive the value of the generic vertex attribute
     ///     parameter specified by pname for the vertex attribute specified by index.
     /// </param>
-    public static void glGetVertexAttribfv( GLuint index, GLenum pname, ref GLfloat[] @params )
+    public void glGetVertexAttribfv( GLuint index, GLenum pname, ref GLfloat[] @params )
     {
         fixed ( GLfloat* pparams =
                    &@params[ 0 ] )
@@ -5534,7 +5532,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETVERTEXATTRIBIVPROC( GLuint index, GLenum pname, GLint* @params );
 
-    private static PFNGLGETVERTEXATTRIBIVPROC _glGetVertexAttribiv;
+    private PFNGLGETVERTEXATTRIBIVPROC _glGetVertexAttribiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the value of a generic vertex attribute parameter
@@ -5552,7 +5550,7 @@ public static unsafe class GL
     ///     Returns the value of the generic vertex attribute parameter specified by pname for the vertex
     ///     attribute specified by index.
     /// </param>
-    public static void glGetVertexAttribiv( GLuint index, GLenum pname, GLint* @params )
+    public void glGetVertexAttribiv( GLuint index, GLenum pname, GLint* @params )
     {
         _glGetVertexAttribiv( index, pname, @params );
     }
@@ -5574,7 +5572,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an array to receive the value of the generic vertex attribute
     ///     parameter specified by pname for the vertex attribute specified by index.
     /// </param>
-    public static void glGetVertexAttribiv( GLuint index, GLenum pname, ref GLint[] @params )
+    public void glGetVertexAttribiv( GLuint index, GLenum pname, ref GLint[] @params )
     {
         fixed ( GLint* pparams =
                    &@params[ 0 ] )
@@ -5587,7 +5585,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETVERTEXATTRIBPOINTERVPROC( GLuint index, GLenum pname, void** pointer );
 
-    private static PFNGLGETVERTEXATTRIBPOINTERVPROC _glGetVertexAttribPointerv;
+    private PFNGLGETVERTEXATTRIBPOINTERVPROC _glGetVertexAttribPointerv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the address of the specified generic vertex attribute pointer
@@ -5598,7 +5596,7 @@ public static unsafe class GL
     ///     are: <see cref="GL_VERTEX_ATTRIB_ARRAY_POINTER" />
     /// </param>
     /// <param name="pointer">Returns the address of the specified generic vertex attribute pointer.</param>
-    public static void glGetVertexAttribPointerv( GLuint index, GLenum pname, void** pointer )
+    public void glGetVertexAttribPointerv( GLuint index, GLenum pname, void** pointer )
     {
         _glGetVertexAttribPointerv( index, pname, pointer );
     }
@@ -5616,7 +5614,7 @@ public static unsafe class GL
     ///     A <see langword="ref" /> to an array to receive the address of the specified generic vertex
     ///     attribute pointer.
     /// </param>
-    public static void glGetVertexAttribPointerv( GLuint index, GLenum pname, ref uint[] pointer )
+    public void glGetVertexAttribPointerv( GLuint index, GLenum pname, ref uint[] pointer )
     {
         var ptr = new void*[ pointer.Length ];
 
@@ -5635,7 +5633,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLISPROGRAMPROC( GLuint program );
 
-    private static PFNGLISPROGRAMPROC _glIsProgram;
+    private PFNGLISPROGRAMPROC _glIsProgram;
 
     /// <summary>
     ///     Determines if a name corresponds to a program object
@@ -5645,7 +5643,7 @@ public static unsafe class GL
     ///     <see langword="true" /> if program is currently the name of a program object. <see langword="false" />
     ///     otherwise.
     /// </returns>
-    public static GLboolean glIsProgram( GLuint program )
+    public GLboolean glIsProgram( GLuint program )
     {
         return _glIsProgram( program );
     }
@@ -5653,7 +5651,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLISSHADERPROC( GLuint shader );
 
-    private static PFNGLISSHADERPROC _glIsShader;
+    private PFNGLISSHADERPROC _glIsShader;
 
     /// <summary>
     ///     Determines if a name corresponds to a shader object
@@ -5663,7 +5661,7 @@ public static unsafe class GL
     ///     <see langword="true" /> if shader is currently the name of a shader object. <see langword="false" />
     ///     otherwise.
     /// </returns>
-    public static GLboolean glIsShader( GLuint shader )
+    public GLboolean glIsShader( GLuint shader )
     {
         return _glIsShader( shader );
     }
@@ -5671,13 +5669,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLLINKPROGRAMPROC( GLuint program );
 
-    private static PFNGLLINKPROGRAMPROC _glLinkProgram;
+    private PFNGLLINKPROGRAMPROC _glLinkProgram;
 
     /// <summary>
     ///     Links a program object
     /// </summary>
     /// <param name="program">Specifies the handle of the program object to be linked.</param>
-    public static void glLinkProgram( GLuint program )
+    public void glLinkProgram( GLuint program )
     {
         _glLinkProgram( program );
     }
@@ -5685,7 +5683,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSHADERSOURCEPROC( GLuint shader, GLsizei count, GLchar** @string, GLint* length );
 
-    private static PFNGLSHADERSOURCEPROC _glShaderSource;
+    private PFNGLSHADERSOURCEPROC _glShaderSource;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Replaces the source code in a shader object
@@ -5697,7 +5695,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="string">Specifies an array of pointers to strings containing the source code to be loaded into the shader.</param>
     /// <param name="length">Specifies an array of string lengths.</param>
-    public static void glShaderSource( GLuint shader, GLsizei count, GLchar** @string, GLint* length )
+    public void glShaderSource( GLuint shader, GLsizei count, GLchar** @string, GLint* length )
     {
         _glShaderSource( shader, count, @string, length );
     }
@@ -5708,7 +5706,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="shader">Specifies the handle of the shader object whose source code is to be replaced.</param>
     /// <param name="string">Specifies an array of strings containing the source code to be loaded into the shader.</param>
-    public static void glShaderSource( GLuint shader, params string[] @string )
+    public void glShaderSource( GLuint shader, params string[] @string )
     {
         var count   = @string.Length;
         var strings = new GLchar[ count ][];
@@ -5740,7 +5738,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUSEPROGRAMPROC( GLuint program );
 
-    private static PFNGLUSEPROGRAMPROC _glUseProgram;
+    private PFNGLUSEPROGRAMPROC _glUseProgram;
 
     /// <summary>
     ///     Installs a program object as part of current rendering state
@@ -5749,7 +5747,7 @@ public static unsafe class GL
     ///     Specifies the handle of the program object whose executables are to be used as part of current
     ///     rendering state.
     /// </param>
-    public static void glUseProgram( GLuint program )
+    public void glUseProgram( GLuint program )
     {
         _glUseProgram( program );
     }
@@ -5757,14 +5755,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM1FPROC( GLint location, GLfloat v0 );
 
-    private static PFNGLUNIFORM1FPROC _glUniform1f;
+    private PFNGLUNIFORM1FPROC _glUniform1f;
 
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="v0">Specifies the new value to be used for the uniform variable at location <paramref name="location" />.</param>
-    public static void glUniform1f( GLint location, GLfloat v0 )
+    public void glUniform1f( GLint location, GLfloat v0 )
     {
         _glUniform1f( location, v0 );
     }
@@ -5772,7 +5770,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM2FPROC( GLint location, GLfloat v0, GLfloat v1 );
 
-    private static PFNGLUNIFORM2FPROC _glUniform2f;
+    private PFNGLUNIFORM2FPROC _glUniform2f;
 
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -5786,7 +5784,7 @@ public static unsafe class GL
     ///     Specifies the second new value to be used for the uniform variable at location
     ///     <paramref name="location" />.
     /// </param>
-    public static void glUniform2f( GLint location, GLfloat v0, GLfloat v1 )
+    public void glUniform2f( GLint location, GLfloat v0, GLfloat v1 )
     {
         _glUniform2f( location, v0, v1 );
     }
@@ -5794,7 +5792,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM3FPROC( GLint location, GLfloat v0, GLfloat v1, GLfloat v2 );
 
-    private static PFNGLUNIFORM3FPROC _glUniform3f;
+    private PFNGLUNIFORM3FPROC _glUniform3f;
 
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -5812,7 +5810,7 @@ public static unsafe class GL
     ///     Specifies the third new value to be used for the uniform variable at location
     ///     <paramref name="location" />.
     /// </param>
-    public static void glUniform3f( GLint location, GLfloat v0, GLfloat v1, GLfloat v2 )
+    public void glUniform3f( GLint location, GLfloat v0, GLfloat v1, GLfloat v2 )
     {
         _glUniform3f( location, v0, v1, v2 );
     }
@@ -5820,7 +5818,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM4FPROC( GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3 );
 
-    private static PFNGLUNIFORM4FPROC _glUniform4f;
+    private PFNGLUNIFORM4FPROC _glUniform4f;
 
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -5842,7 +5840,7 @@ public static unsafe class GL
     ///     Specifies the fourth new value to be used for the uniform variable at location
     ///     <paramref name="location" />.
     /// </param>
-    public static void glUniform4f( GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3 )
+    public void glUniform4f( GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3 )
     {
         _glUniform4f( location, v0, v1, v2, v3 );
     }
@@ -5850,14 +5848,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM1IPROC( GLint location, GLint v0 );
 
-    private static PFNGLUNIFORM1IPROC _glUniform1i;
+    private PFNGLUNIFORM1IPROC _glUniform1i;
 
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="v0">Specifies the new value to be used for the uniform variable at location <paramref name="location" />.</param>
-    public static void glUniform1i( GLint location, GLint v0 )
+    public void glUniform1i( GLint location, GLint v0 )
     {
         _glUniform1i( location, v0 );
     }
@@ -5865,7 +5863,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM2IPROC( GLint location, GLint v0, GLint v1 );
 
-    private static PFNGLUNIFORM2IPROC _glUniform2i;
+    private PFNGLUNIFORM2IPROC _glUniform2i;
 
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -5879,7 +5877,7 @@ public static unsafe class GL
     ///     Specifies the second new value to be used for the uniform variable at location
     ///     <paramref name="location" />.
     /// </param>
-    public static void glUniform2i( GLint location, GLint v0, GLint v1 )
+    public void glUniform2i( GLint location, GLint v0, GLint v1 )
     {
         _glUniform2i( location, v0, v1 );
     }
@@ -5887,7 +5885,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM3IPROC( GLint location, GLint v0, GLint v1, GLint v2 );
 
-    private static PFNGLUNIFORM3IPROC _glUniform3i;
+    private PFNGLUNIFORM3IPROC _glUniform3i;
 
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -5905,7 +5903,7 @@ public static unsafe class GL
     ///     Specifies the third new value to be used for the uniform variable at location
     ///     <paramref name="location" />.
     /// </param>
-    public static void glUniform3i( GLint location, GLint v0, GLint v1, GLint v2 )
+    public void glUniform3i( GLint location, GLint v0, GLint v1, GLint v2 )
     {
         _glUniform3i( location, v0, v1, v2 );
     }
@@ -5913,7 +5911,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM4IPROC( GLint location, GLint v0, GLint v1, GLint v2, GLint v3 );
 
-    private static PFNGLUNIFORM4IPROC _glUniform4i;
+    private PFNGLUNIFORM4IPROC _glUniform4i;
 
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -5935,7 +5933,7 @@ public static unsafe class GL
     ///     Specifies the fourth new value to be used for the uniform variable at location
     ///     <paramref name="location" />.
     /// </param>
-    public static void glUniform4i( GLint location, GLint v0, GLint v1, GLint v2, GLint v3 )
+    public void glUniform4i( GLint location, GLint v0, GLint v1, GLint v2, GLint v3 )
     {
         _glUniform4i( location, v0, v1, v2, v3 );
     }
@@ -5943,7 +5941,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM1FVPROC( GLint location, GLsizei count, GLfloat* value );
 
-    private static PFNGLUNIFORM1FVPROC _glUniform1fv;
+    private PFNGLUNIFORM1FVPROC _glUniform1fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -5954,7 +5952,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniform1fv( GLint location, GLsizei count, GLfloat* value )
+    public void glUniform1fv( GLint location, GLsizei count, GLfloat* value )
     {
         _glUniform1fv( location, count, value );
     }
@@ -5965,7 +5963,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
-    public static void glUniform1fv( GLint location, params GLfloat[] value )
+    public void glUniform1fv( GLint location, params GLfloat[] value )
     {
         fixed ( GLfloat* p = &value[ 0 ] )
         {
@@ -5977,7 +5975,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM2FVPROC( GLint location, GLsizei count, GLfloat* value );
 
-    private static PFNGLUNIFORM2FVPROC _glUniform2fv;
+    private PFNGLUNIFORM2FVPROC _glUniform2fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -5988,7 +5986,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniform2fv( GLint location, GLsizei count, GLfloat* value )
+    public void glUniform2fv( GLint location, GLsizei count, GLfloat* value )
     {
         _glUniform2fv( location, count, value );
     }
@@ -5999,7 +5997,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform2fv( GLint location, params GLfloat[] value )
+    public void glUniform2fv( GLint location, params GLfloat[] value )
     {
         fixed ( GLfloat* p = &value[ 0 ] )
         {
@@ -6011,7 +6009,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM3FVPROC( GLint location, GLsizei count, GLfloat* value );
 
-    private static PFNGLUNIFORM3FVPROC _glUniform3fv;
+    private PFNGLUNIFORM3FVPROC _glUniform3fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -6022,7 +6020,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniform3fv( GLint location, GLsizei count, GLfloat* value )
+    public void glUniform3fv( GLint location, GLsizei count, GLfloat* value )
     {
         _glUniform3fv( location, count, value );
     }
@@ -6033,7 +6031,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform3fv( GLint location, params GLfloat[] value )
+    public void glUniform3fv( GLint location, params GLfloat[] value )
     {
         fixed ( GLfloat* p = &value[ 0 ] )
         {
@@ -6045,7 +6043,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM4FVPROC( GLint location, GLsizei count, GLfloat* value );
 
-    private static PFNGLUNIFORM4FVPROC _glUniform4fv;
+    private PFNGLUNIFORM4FVPROC _glUniform4fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -6056,7 +6054,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniform4fv( GLint location, GLsizei count, GLfloat* value )
+    public void glUniform4fv( GLint location, GLsizei count, GLfloat* value )
     {
         _glUniform4fv( location, count, value );
     }
@@ -6067,7 +6065,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform4fv( GLint location, params GLfloat[] value )
+    public void glUniform4fv( GLint location, params GLfloat[] value )
     {
         fixed ( GLfloat* p = &value[ 0 ] )
         {
@@ -6079,7 +6077,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM1IVPROC( GLint location, GLsizei count, GLint* value );
 
-    private static PFNGLUNIFORM1IVPROC _glUniform1iv;
+    private PFNGLUNIFORM1IVPROC _glUniform1iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -6090,7 +6088,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniform1iv( GLint location, GLsizei count, GLint* value )
+    public void glUniform1iv( GLint location, GLsizei count, GLint* value )
     {
         _glUniform1iv( location, count, value );
     }
@@ -6101,7 +6099,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform1iv( GLint location, params GLint[] value )
+    public void glUniform1iv( GLint location, params GLint[] value )
     {
         fixed ( GLint* p = &value[ 0 ] )
         {
@@ -6113,7 +6111,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM2IVPROC( GLint location, GLsizei count, GLint* value );
 
-    private static PFNGLUNIFORM2IVPROC _glUniform2iv;
+    private PFNGLUNIFORM2IVPROC _glUniform2iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -6124,7 +6122,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniform2iv( GLint location, GLsizei count, GLint* value )
+    public void glUniform2iv( GLint location, GLsizei count, GLint* value )
     {
         _glUniform2iv( location, count, value );
     }
@@ -6135,7 +6133,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform2iv( GLint location, params GLint[] value )
+    public void glUniform2iv( GLint location, params GLint[] value )
     {
         fixed ( GLint* p = &value[ 0 ] )
         {
@@ -6147,7 +6145,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM3IVPROC( GLint location, GLsizei count, GLint* value );
 
-    private static PFNGLUNIFORM3IVPROC _glUniform3iv;
+    private PFNGLUNIFORM3IVPROC _glUniform3iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -6158,7 +6156,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniform3iv( GLint location, GLsizei count, GLint* value )
+    public void glUniform3iv( GLint location, GLsizei count, GLint* value )
     {
         _glUniform3iv( location, count, value );
     }
@@ -6169,7 +6167,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform3iv( GLint location, params GLint[] value )
+    public void glUniform3iv( GLint location, params GLint[] value )
     {
         fixed ( GLint* p = &value[ 0 ] )
         {
@@ -6181,7 +6179,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM4IVPROC( GLint location, GLsizei count, GLint* value );
 
-    private static PFNGLUNIFORM4IVPROC _glUniform4iv;
+    private PFNGLUNIFORM4IVPROC _glUniform4iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -6192,7 +6190,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniform4iv( GLint location, GLsizei count, GLint* value )
+    public void glUniform4iv( GLint location, GLsizei count, GLint* value )
     {
         _glUniform4iv( location, count, value );
     }
@@ -6203,7 +6201,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform value to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform4iv( GLint location, params GLint[] value )
+    public void glUniform4iv( GLint location, params GLint[] value )
     {
         fixed ( GLint* p = &value[ 0 ] )
         {
@@ -6215,7 +6213,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORMMATRIX2FVPROC( GLint location, GLsizei count, GLboolean transpose, GLfloat* value );
 
-    private static PFNGLUNIFORMMATRIX2FVPROC _glUniformMatrix2fv;
+    private PFNGLUNIFORMMATRIX2FVPROC _glUniformMatrix2fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -6227,7 +6225,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniformMatrix2fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
+    public void glUniformMatrix2fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
     {
         _glUniformMatrix2fv( location, count, transpose, value );
     }
@@ -6242,7 +6240,7 @@ public static unsafe class GL
     ///     Specifies an array of values that will be used to update the specified uniform variable. Needs 4
     ///     values per matrix.
     /// </param>
-    public static void glUniformMatrix2fv( GLint location, GLboolean transpose, params GLfloat[] value )
+    public void glUniformMatrix2fv( GLint location, GLboolean transpose, params GLfloat[] value )
     {
         fixed ( GLfloat* p =
                    &value[ 0 ] )
@@ -6255,7 +6253,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORMMATRIX3FVPROC( GLint location, GLsizei count, GLboolean transpose, GLfloat* value );
 
-    private static PFNGLUNIFORMMATRIX3FVPROC _glUniformMatrix3fv;
+    private PFNGLUNIFORMMATRIX3FVPROC _glUniformMatrix3fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -6267,7 +6265,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniformMatrix3fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
+    public void glUniformMatrix3fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
     {
         _glUniformMatrix3fv( location, count, transpose, value );
     }
@@ -6282,7 +6280,7 @@ public static unsafe class GL
     ///     Specifies an array of values that will be used to update the specified uniform variable. Needs 9
     ///     values per matrix.
     /// </param>
-    public static void glUniformMatrix3fv( GLint location, GLboolean transpose, params GLfloat[] value )
+    public void glUniformMatrix3fv( GLint location, GLboolean transpose, params GLfloat[] value )
     {
         fixed ( GLfloat* p =
                    &value[ 0 ] )
@@ -6295,7 +6293,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORMMATRIX4FVPROC( GLint location, GLsizei count, GLboolean transpose, GLfloat* value );
 
-    private static PFNGLUNIFORMMATRIX4FVPROC _glUniformMatrix4fv;
+    private PFNGLUNIFORMMATRIX4FVPROC _glUniformMatrix4fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a uniform variable for the current program object
@@ -6307,7 +6305,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniformMatrix4fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
+    public void glUniformMatrix4fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
     {
         _glUniformMatrix4fv( location, count, transpose, value );
     }
@@ -6322,7 +6320,7 @@ public static unsafe class GL
     ///     Specifies an array of values that will be used to update the specified uniform variable. Needs 16
     ///     values per matrix.
     /// </param>
-    public static void glUniformMatrix4fv( GLint location, GLboolean transpose, params GLfloat[] value )
+    public void glUniformMatrix4fv( GLint location, GLboolean transpose, params GLfloat[] value )
     {
         fixed ( GLfloat* p =
                    &value[ 0 ] )
@@ -6335,14 +6333,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLVALIDATEPROGRAMPROC( GLuint program );
 
-    private static PFNGLVALIDATEPROGRAMPROC _glValidateProgram;
+    private PFNGLVALIDATEPROGRAMPROC _glValidateProgram;
 
     /// <summary>
     ///     Validates a program object
     /// </summary>
     /// <param name="program">Specifies the handle of the program object to be validated</param>
     /// <returns><c>true</c> if validation is successful, <c>false</c> otherwise</returns>
-    public static GLboolean glValidateProgram( GLuint program )
+    public GLboolean glValidateProgram( GLuint program )
     {
         return _glValidateProgram( program );
     }
@@ -6350,14 +6348,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB1DPROC( GLuint index, GLdouble x );
 
-    private static PFNGLVERTEXATTRIB1DPROC _glVertexAttrib1d;
+    private PFNGLVERTEXATTRIB1DPROC _glVertexAttrib1d;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="x">Specifies the new value for the generic vertex attribute</param>
-    public static void glVertexAttrib1d( GLuint index, GLdouble x )
+    public void glVertexAttrib1d( GLuint index, GLdouble x )
     {
         _glVertexAttrib1d( index, x );
     }
@@ -6365,14 +6363,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB1DVPROC( GLuint index, GLdouble* v );
 
-    private static PFNGLVERTEXATTRIB1DVPROC _glVertexAttrib1dv;
+    private PFNGLVERTEXATTRIB1DVPROC _glVertexAttrib1dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib1dv( GLuint index, GLdouble* v )
+    public void glVertexAttrib1dv( GLuint index, GLdouble* v )
     {
         _glVertexAttrib1dv( index, v );
     }
@@ -6383,7 +6381,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib1dv( GLuint index, params GLdouble[] v )
+    public void glVertexAttrib1dv( GLuint index, params GLdouble[] v )
     {
         fixed ( GLdouble* p = &v[ 0 ] )
         {
@@ -6395,14 +6393,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB1FPROC( GLuint index, GLfloat x );
 
-    private static PFNGLVERTEXATTRIB1FPROC _glVertexAttrib1f;
+    private PFNGLVERTEXATTRIB1FPROC _glVertexAttrib1f;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="x">Specifies the new value for the generic vertex attribute</param>
-    public static void glVertexAttrib1f( GLuint index, GLfloat x )
+    public void glVertexAttrib1f( GLuint index, GLfloat x )
     {
         _glVertexAttrib1f( index, x );
     }
@@ -6410,14 +6408,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB1FVPROC( GLuint index, GLfloat* v );
 
-    private static PFNGLVERTEXATTRIB1FVPROC _glVertexAttrib1fv;
+    private PFNGLVERTEXATTRIB1FVPROC _glVertexAttrib1fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib1fv( GLuint index, GLfloat* v )
+    public void glVertexAttrib1fv( GLuint index, GLfloat* v )
     {
         _glVertexAttrib1fv( index, v );
     }
@@ -6428,7 +6426,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib1fv( GLuint index, params GLfloat[] v )
+    public void glVertexAttrib1fv( GLuint index, params GLfloat[] v )
     {
         fixed ( GLfloat* p = &v[ 0 ] )
         {
@@ -6440,14 +6438,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB1SPROC( GLuint index, GLshort x );
 
-    private static PFNGLVERTEXATTRIB1SPROC _glVertexAttrib1s;
+    private PFNGLVERTEXATTRIB1SPROC _glVertexAttrib1s;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="x">Specifies the new value for the generic vertex attribute</param>
-    public static void glVertexAttrib1s( GLuint index, GLshort x )
+    public void glVertexAttrib1s( GLuint index, GLshort x )
     {
         _glVertexAttrib1s( index, x );
     }
@@ -6455,14 +6453,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB1SVPROC( GLuint index, GLshort* v );
 
-    private static PFNGLVERTEXATTRIB1SVPROC _glVertexAttrib1sv;
+    private PFNGLVERTEXATTRIB1SVPROC _glVertexAttrib1sv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib1sv( GLuint index, GLshort* v )
+    public void glVertexAttrib1sv( GLuint index, GLshort* v )
     {
         _glVertexAttrib1sv( index, v );
     }
@@ -6473,7 +6471,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib1sv( GLuint index, params GLshort[] v )
+    public void glVertexAttrib1sv( GLuint index, params GLshort[] v )
     {
         fixed ( GLshort* p = &v[ 0 ] )
         {
@@ -6485,7 +6483,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB2DPROC( GLuint index, GLdouble x, GLdouble y );
 
-    private static PFNGLVERTEXATTRIB2DPROC _glVertexAttrib2d;
+    private PFNGLVERTEXATTRIB2DPROC _glVertexAttrib2d;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
@@ -6493,7 +6491,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="x">Specifies the first component of the generic vertex attribute</param>
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
-    public static void glVertexAttrib2d( GLuint index, GLdouble x, GLdouble y )
+    public void glVertexAttrib2d( GLuint index, GLdouble x, GLdouble y )
     {
         _glVertexAttrib2d( index, x, y );
     }
@@ -6501,14 +6499,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB2DVPROC( GLuint index, GLdouble* v );
 
-    private static PFNGLVERTEXATTRIB2DVPROC _glVertexAttrib2dv;
+    private PFNGLVERTEXATTRIB2DVPROC _glVertexAttrib2dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib2dv( GLuint index, GLdouble* v )
+    public void glVertexAttrib2dv( GLuint index, GLdouble* v )
     {
         _glVertexAttrib2dv( index, v );
     }
@@ -6519,7 +6517,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib2dv( GLuint index, params GLdouble[] v )
+    public void glVertexAttrib2dv( GLuint index, params GLdouble[] v )
     {
         fixed ( GLdouble* p = &v[ 0 ] )
         {
@@ -6531,7 +6529,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB2FPROC( GLuint index, GLfloat x, GLfloat y );
 
-    private static PFNGLVERTEXATTRIB2FPROC _glVertexAttrib2f;
+    private PFNGLVERTEXATTRIB2FPROC _glVertexAttrib2f;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
@@ -6539,7 +6537,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="x">Specifies the first component of the generic vertex attribute</param>
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
-    public static void glVertexAttrib2f( GLuint index, GLfloat x, GLfloat y )
+    public void glVertexAttrib2f( GLuint index, GLfloat x, GLfloat y )
     {
         _glVertexAttrib2f( index, x, y );
     }
@@ -6547,14 +6545,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB2FVPROC( GLuint index, GLfloat* v );
 
-    private static PFNGLVERTEXATTRIB2FVPROC _glVertexAttrib2fv;
+    private PFNGLVERTEXATTRIB2FVPROC _glVertexAttrib2fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib2fv( GLuint index, GLfloat* v )
+    public void glVertexAttrib2fv( GLuint index, GLfloat* v )
     {
         _glVertexAttrib2fv( index, v );
     }
@@ -6565,7 +6563,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib2fv( GLuint index, params GLfloat[] v )
+    public void glVertexAttrib2fv( GLuint index, params GLfloat[] v )
     {
         fixed ( GLfloat* p = &v[ 0 ] )
         {
@@ -6577,7 +6575,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB2SPROC( GLuint index, GLshort x, GLshort y );
 
-    private static PFNGLVERTEXATTRIB2SPROC _glVertexAttrib2s;
+    private PFNGLVERTEXATTRIB2SPROC _glVertexAttrib2s;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
@@ -6585,7 +6583,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="x">Specifies the first component of the generic vertex attribute</param>
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
-    public static void glVertexAttrib2s( GLuint index, GLshort x, GLshort y )
+    public void glVertexAttrib2s( GLuint index, GLshort x, GLshort y )
     {
         _glVertexAttrib2s( index, x, y );
     }
@@ -6593,14 +6591,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB2SVPROC( GLuint index, GLshort* v );
 
-    private static PFNGLVERTEXATTRIB2SVPROC _glVertexAttrib2sv;
+    private PFNGLVERTEXATTRIB2SVPROC _glVertexAttrib2sv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib2sv( GLuint index, GLshort* v )
+    public void glVertexAttrib2sv( GLuint index, GLshort* v )
     {
         _glVertexAttrib2sv( index, v );
     }
@@ -6611,7 +6609,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib2sv( GLuint index, params GLshort[] v )
+    public void glVertexAttrib2sv( GLuint index, params GLshort[] v )
     {
         fixed ( GLshort* p = &v[ 0 ] )
         {
@@ -6623,7 +6621,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB3DPROC( GLuint index, GLdouble x, GLdouble y, GLdouble z );
 
-    private static PFNGLVERTEXATTRIB3DPROC _glVertexAttrib3d;
+    private PFNGLVERTEXATTRIB3DPROC _glVertexAttrib3d;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
@@ -6632,7 +6630,7 @@ public static unsafe class GL
     /// <param name="x">Specifies the first component of the generic vertex attribute</param>
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
     /// <param name="z">Specifies the third component of the generic vertex attribute</param>
-    public static void glVertexAttrib3d( GLuint index, GLdouble x, GLdouble y, GLdouble z )
+    public void glVertexAttrib3d( GLuint index, GLdouble x, GLdouble y, GLdouble z )
     {
         _glVertexAttrib3d( index, x, y, z );
     }
@@ -6640,14 +6638,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB3DVPROC( GLuint index, GLdouble* v );
 
-    private static PFNGLVERTEXATTRIB3DVPROC _glVertexAttrib3dv;
+    private PFNGLVERTEXATTRIB3DVPROC _glVertexAttrib3dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib3dv( GLuint index, GLdouble* v )
+    public void glVertexAttrib3dv( GLuint index, GLdouble* v )
     {
         _glVertexAttrib3dv( index, v );
     }
@@ -6658,7 +6656,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib3dv( GLuint index, params GLdouble[] v )
+    public void glVertexAttrib3dv( GLuint index, params GLdouble[] v )
     {
         fixed ( GLdouble* p = &v[ 0 ] )
         {
@@ -6670,7 +6668,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB3FPROC( GLuint index, GLfloat x, GLfloat y, GLfloat z );
 
-    private static PFNGLVERTEXATTRIB3FPROC _glVertexAttrib3f;
+    private PFNGLVERTEXATTRIB3FPROC _glVertexAttrib3f;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
@@ -6679,7 +6677,7 @@ public static unsafe class GL
     /// <param name="x">Specifies the first component of the generic vertex attribute</param>
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
     /// <param name="z">Specifies the third component of the generic vertex attribute</param>
-    public static void glVertexAttrib3f( GLuint index, GLfloat x, GLfloat y, GLfloat z )
+    public void glVertexAttrib3f( GLuint index, GLfloat x, GLfloat y, GLfloat z )
     {
         _glVertexAttrib3f( index, x, y, z );
     }
@@ -6687,14 +6685,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB3FVPROC( GLuint index, GLfloat* v );
 
-    private static PFNGLVERTEXATTRIB3FVPROC _glVertexAttrib3fv;
+    private PFNGLVERTEXATTRIB3FVPROC _glVertexAttrib3fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib3fv( GLuint index, GLfloat* v )
+    public void glVertexAttrib3fv( GLuint index, GLfloat* v )
     {
         _glVertexAttrib3fv( index, v );
     }
@@ -6705,7 +6703,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib3fv( GLuint index, params GLfloat[] v )
+    public void glVertexAttrib3fv( GLuint index, params GLfloat[] v )
     {
         fixed ( GLfloat* p = &v[ 0 ] )
         {
@@ -6717,7 +6715,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB3SPROC( GLuint index, GLshort x, GLshort y, GLshort z );
 
-    private static PFNGLVERTEXATTRIB3SPROC _glVertexAttrib3s;
+    private PFNGLVERTEXATTRIB3SPROC _glVertexAttrib3s;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
@@ -6726,7 +6724,7 @@ public static unsafe class GL
     /// <param name="x">Specifies the first component of the generic vertex attribute</param>
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
     /// <param name="z">Specifies the third component of the generic vertex attribute</param>
-    public static void glVertexAttrib3s( GLuint index, GLshort x, GLshort y, GLshort z )
+    public void glVertexAttrib3s( GLuint index, GLshort x, GLshort y, GLshort z )
     {
         _glVertexAttrib3s( index, x, y, z );
     }
@@ -6734,14 +6732,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB3SVPROC( GLuint index, GLshort* v );
 
-    private static PFNGLVERTEXATTRIB3SVPROC _glVertexAttrib3sv;
+    private PFNGLVERTEXATTRIB3SVPROC _glVertexAttrib3sv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib3sv( GLuint index, GLshort* v )
+    public void glVertexAttrib3sv( GLuint index, GLshort* v )
     {
         _glVertexAttrib3sv( index, v );
     }
@@ -6752,7 +6750,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib3sv( GLuint index, params GLshort[] v )
+    public void glVertexAttrib3sv( GLuint index, params GLshort[] v )
     {
         fixed ( GLshort* p = &v[ 0 ] )
         {
@@ -6764,14 +6762,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4NBVPROC( GLuint index, GLbyte* v );
 
-    private static PFNGLVERTEXATTRIB4NBVPROC _glVertexAttrib4Nbv;
+    private PFNGLVERTEXATTRIB4NBVPROC _glVertexAttrib4Nbv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4Nbv( GLuint index, GLbyte* v )
+    public void glVertexAttrib4Nbv( GLuint index, GLbyte* v )
     {
         _glVertexAttrib4Nbv( index, v );
     }
@@ -6782,7 +6780,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4Nbv( GLuint index, params GLbyte[] v )
+    public void glVertexAttrib4Nbv( GLuint index, params GLbyte[] v )
     {
         fixed ( GLbyte* p = &v[ 0 ] )
         {
@@ -6794,14 +6792,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4NIVPROC( GLuint index, GLint* v );
 
-    private static PFNGLVERTEXATTRIB4NIVPROC _glVertexAttrib4Niv;
+    private PFNGLVERTEXATTRIB4NIVPROC _glVertexAttrib4Niv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4Niv( GLuint index, GLint* v )
+    public void glVertexAttrib4Niv( GLuint index, GLint* v )
     {
         _glVertexAttrib4Niv( index, v );
     }
@@ -6812,7 +6810,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4Niv( GLuint index, params GLint[] v )
+    public void glVertexAttrib4Niv( GLuint index, params GLint[] v )
     {
         fixed ( GLint* p = &v[ 0 ] )
         {
@@ -6824,14 +6822,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4NSVPROC( GLuint index, GLshort* v );
 
-    private static PFNGLVERTEXATTRIB4NSVPROC _glVertexAttrib4Nsv;
+    private PFNGLVERTEXATTRIB4NSVPROC _glVertexAttrib4Nsv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4Nsv( GLuint index, GLshort* v )
+    public void glVertexAttrib4Nsv( GLuint index, GLshort* v )
     {
         _glVertexAttrib4Nsv( index, v );
     }
@@ -6842,7 +6840,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4Nsv( GLuint index, params GLshort[] v )
+    public void glVertexAttrib4Nsv( GLuint index, params GLshort[] v )
     {
         fixed ( GLshort* p = &v[ 0 ] )
         {
@@ -6854,7 +6852,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4NUBPROC( GLuint index, GLubyte x, GLubyte y, GLubyte z, GLubyte w );
 
-    private static PFNGLVERTEXATTRIB4NUBPROC _glVertexAttrib4Nub;
+    private PFNGLVERTEXATTRIB4NUBPROC _glVertexAttrib4Nub;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
@@ -6864,7 +6862,7 @@ public static unsafe class GL
     /// <param name="y">Specifies the second component of the generic vertex attribute</param>
     /// <param name="z">Specifies the third component of the generic vertex attribute</param>
     /// <param name="w">Specifies the fourth component of the generic vertex attribute</param>
-    public static void glVertexAttrib4Nub( GLuint index, GLubyte x, GLubyte y, GLubyte z, GLubyte w )
+    public void glVertexAttrib4Nub( GLuint index, GLubyte x, GLubyte y, GLubyte z, GLubyte w )
     {
         _glVertexAttrib4Nub( index, x, y, z, w );
     }
@@ -6872,14 +6870,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4NUBVPROC( GLuint index, GLubyte* v );
 
-    private static PFNGLVERTEXATTRIB4NUBVPROC _glVertexAttrib4Nubv;
+    private PFNGLVERTEXATTRIB4NUBVPROC _glVertexAttrib4Nubv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4Nubv( GLuint index, GLubyte* v )
+    public void glVertexAttrib4Nubv( GLuint index, GLubyte* v )
     {
         _glVertexAttrib4Nubv( index, v );
     }
@@ -6890,7 +6888,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4Nubv( GLuint index, params GLubyte[] v )
+    public void glVertexAttrib4Nubv( GLuint index, params GLubyte[] v )
     {
         fixed ( GLubyte* p = &v[ 0 ] )
         {
@@ -6902,14 +6900,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4NUIVPROC( GLuint index, GLuint* v );
 
-    private static PFNGLVERTEXATTRIB4NUIVPROC _glVertexAttrib4Nuiv;
+    private PFNGLVERTEXATTRIB4NUIVPROC _glVertexAttrib4Nuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4Nuiv( GLuint index, GLuint* v )
+    public void glVertexAttrib4Nuiv( GLuint index, GLuint* v )
     {
         _glVertexAttrib4Nuiv( index, v );
     }
@@ -6920,7 +6918,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4Nuiv( GLuint index, params GLuint[] v )
+    public void glVertexAttrib4Nuiv( GLuint index, params GLuint[] v )
     {
         fixed ( GLuint* p = &v[ 0 ] )
         {
@@ -6932,14 +6930,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4NUSVPROC( GLuint index, GLushort* v );
 
-    private static PFNGLVERTEXATTRIB4NUSVPROC _glVertexAttrib4Nusv;
+    private PFNGLVERTEXATTRIB4NUSVPROC _glVertexAttrib4Nusv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4Nusv( GLuint index, GLushort* v )
+    public void glVertexAttrib4Nusv( GLuint index, GLushort* v )
     {
         _glVertexAttrib4Nusv( index, v );
     }
@@ -6950,7 +6948,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4Nusv( GLuint index, params GLushort[] v )
+    public void glVertexAttrib4Nusv( GLuint index, params GLushort[] v )
     {
         fixed ( GLushort* p = &v[ 0 ] )
         {
@@ -6962,14 +6960,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4BVPROC( GLuint index, GLbyte* v );
 
-    private static PFNGLVERTEXATTRIB4BVPROC _glVertexAttrib4bv;
+    private PFNGLVERTEXATTRIB4BVPROC _glVertexAttrib4bv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4bv( GLuint index, GLbyte* v )
+    public void glVertexAttrib4bv( GLuint index, GLbyte* v )
     {
         _glVertexAttrib4bv( index, v );
     }
@@ -6980,7 +6978,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4bv( GLuint index, params GLbyte[] v )
+    public void glVertexAttrib4bv( GLuint index, params GLbyte[] v )
     {
         fixed ( GLbyte* p = &v[ 0 ] )
         {
@@ -6992,7 +6990,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4DPROC( GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w );
 
-    private static PFNGLVERTEXATTRIB4DPROC _glVertexAttrib4d;
+    private PFNGLVERTEXATTRIB4DPROC _glVertexAttrib4d;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
@@ -7014,7 +7012,7 @@ public static unsafe class GL
     ///     Specifies the fourth component of the vector to be used when updating the current value of the generic
     ///     vertex attribute
     /// </param>
-    public static void glVertexAttrib4d( GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w )
+    public void glVertexAttrib4d( GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w )
     {
         _glVertexAttrib4d( index, x, y, z, w );
     }
@@ -7022,14 +7020,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4DVPROC( GLuint index, GLdouble* v );
 
-    private static PFNGLVERTEXATTRIB4DVPROC _glVertexAttrib4dv;
+    private PFNGLVERTEXATTRIB4DVPROC _glVertexAttrib4dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4dv( GLuint index, GLdouble* v )
+    public void glVertexAttrib4dv( GLuint index, GLdouble* v )
     {
         _glVertexAttrib4dv( index, v );
     }
@@ -7040,7 +7038,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4dv( GLuint index, params GLdouble[] v )
+    public void glVertexAttrib4dv( GLuint index, params GLdouble[] v )
     {
         fixed ( GLdouble* p = &v[ 0 ] )
         {
@@ -7052,7 +7050,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4FPROC( GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w );
 
-    private static PFNGLVERTEXATTRIB4FPROC _glVertexAttrib4f;
+    private PFNGLVERTEXATTRIB4FPROC _glVertexAttrib4f;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
@@ -7074,7 +7072,7 @@ public static unsafe class GL
     ///     Specifies the fourth component of the vector to be used when updating the current value of the generic
     ///     vertex attribute
     /// </param>
-    public static void glVertexAttrib4f( GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w )
+    public void glVertexAttrib4f( GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w )
     {
         _glVertexAttrib4f( index, x, y, z, w );
     }
@@ -7082,14 +7080,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4FVPROC( GLuint index, GLfloat* v );
 
-    private static PFNGLVERTEXATTRIB4FVPROC _glVertexAttrib4fv;
+    private PFNGLVERTEXATTRIB4FVPROC _glVertexAttrib4fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4fv( GLuint index, GLfloat* v )
+    public void glVertexAttrib4fv( GLuint index, GLfloat* v )
     {
         _glVertexAttrib4fv( index, v );
     }
@@ -7100,7 +7098,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4fv( GLuint index, params GLfloat[] v )
+    public void glVertexAttrib4fv( GLuint index, params GLfloat[] v )
     {
         fixed ( GLfloat* p = &v[ 0 ] )
         {
@@ -7112,14 +7110,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4IVPROC( GLuint index, GLint* v );
 
-    private static PFNGLVERTEXATTRIB4IVPROC _glVertexAttrib4iv;
+    private PFNGLVERTEXATTRIB4IVPROC _glVertexAttrib4iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4iv( GLuint index, GLint* v )
+    public void glVertexAttrib4iv( GLuint index, GLint* v )
     {
         _glVertexAttrib4iv( index, v );
     }
@@ -7130,7 +7128,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4iv( GLuint index, params GLint[] v )
+    public void glVertexAttrib4iv( GLuint index, params GLint[] v )
     {
         fixed ( GLint* p = &v[ 0 ] )
         {
@@ -7142,7 +7140,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4SPROC( GLuint index, GLshort x, GLshort y, GLshort z, GLshort w );
 
-    private static PFNGLVERTEXATTRIB4SPROC _glVertexAttrib4s;
+    private PFNGLVERTEXATTRIB4SPROC _glVertexAttrib4s;
 
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
@@ -7164,7 +7162,7 @@ public static unsafe class GL
     ///     Specifies the fourth component of the vector to be used when updating the current value of the generic
     ///     vertex attribute
     /// </param>
-    public static void glVertexAttrib4s( GLuint index, GLshort x, GLshort y, GLshort z, GLshort w )
+    public void glVertexAttrib4s( GLuint index, GLshort x, GLshort y, GLshort z, GLshort w )
     {
         _glVertexAttrib4s( index, x, y, z, w );
     }
@@ -7172,14 +7170,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4SVPROC( GLuint index, GLshort* v );
 
-    private static PFNGLVERTEXATTRIB4SVPROC _glVertexAttrib4sv;
+    private PFNGLVERTEXATTRIB4SVPROC _glVertexAttrib4sv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4sv( GLuint index, GLshort* v )
+    public void glVertexAttrib4sv( GLuint index, GLshort* v )
     {
         _glVertexAttrib4sv( index, v );
     }
@@ -7190,7 +7188,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4sv( GLuint index, params GLshort[] v )
+    public void glVertexAttrib4sv( GLuint index, params GLshort[] v )
     {
         fixed ( GLshort* p = &v[ 0 ] )
         {
@@ -7202,14 +7200,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4UBVPROC( GLuint index, GLubyte* v );
 
-    private static PFNGLVERTEXATTRIB4UBVPROC _glVertexAttrib4ubv;
+    private PFNGLVERTEXATTRIB4UBVPROC _glVertexAttrib4ubv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4ubv( GLuint index, GLubyte* v )
+    public void glVertexAttrib4ubv( GLuint index, GLubyte* v )
     {
         _glVertexAttrib4ubv( index, v );
     }
@@ -7220,7 +7218,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4ubv( GLuint index, params GLubyte[] v )
+    public void glVertexAttrib4ubv( GLuint index, params GLubyte[] v )
     {
         fixed ( GLubyte* p = &v[ 0 ] )
         {
@@ -7232,14 +7230,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4UIVPROC( GLuint index, GLuint* v );
 
-    private static PFNGLVERTEXATTRIB4UIVPROC _glVertexAttrib4uiv;
+    private PFNGLVERTEXATTRIB4UIVPROC _glVertexAttrib4uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4uiv( GLuint index, GLuint* v )
+    public void glVertexAttrib4uiv( GLuint index, GLuint* v )
     {
         _glVertexAttrib4uiv( index, v );
     }
@@ -7250,7 +7248,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4uiv( GLuint index, params GLuint[] v )
+    public void glVertexAttrib4uiv( GLuint index, params GLuint[] v )
     {
         fixed ( GLuint* p = &v[ 0 ] )
         {
@@ -7262,14 +7260,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIB4USVPROC( GLuint index, GLushort* v );
 
-    private static PFNGLVERTEXATTRIB4USVPROC _glVertexAttrib4usv;
+    private PFNGLVERTEXATTRIB4USVPROC _glVertexAttrib4usv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specifies the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies a pointer to an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4usv( GLuint index, GLushort* v )
+    public void glVertexAttrib4usv( GLuint index, GLushort* v )
     {
         _glVertexAttrib4usv( index, v );
     }
@@ -7280,7 +7278,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified</param>
     /// <param name="v">Specifies an array that contains the new values for the generic vertex attribute</param>
-    public static void glVertexAttrib4usv( GLuint index, params GLushort[] v )
+    public void glVertexAttrib4usv( GLuint index, params GLushort[] v )
     {
         fixed ( GLushort* p = &v[ 0 ] )
         {
@@ -7292,7 +7290,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBPOINTERPROC( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, void* pointer );
 
-    private static PFNGLVERTEXATTRIBPOINTERPROC _glVertexAttribPointer;
+    private PFNGLVERTEXATTRIBPOINTERPROC _glVertexAttribPointer;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Define an array of generic vertex attribute data
@@ -7319,7 +7317,7 @@ public static unsafe class GL
     ///     Specifies an offset of the first component in the first generic vertex attribute in the array in
     ///     the data store of the buffer currently bound to the <see cref="GL_ARRAY_BUFFER" /> target. The initial value is 0.
     /// </param>
-    public static void glVertexAttribPointer( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, void* pointer )
+    public void glVertexAttribPointer( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, void* pointer )
     {
         _glVertexAttribPointer( index, size, type, normalized, stride, pointer );
     }
@@ -7350,7 +7348,7 @@ public static unsafe class GL
     ///     Specifies an offset of the first component in the first generic vertex attribute in the array in
     ///     the data store of the buffer currently bound to the <see cref="GL_ARRAY_BUFFER" /> target. The initial value is 0.
     /// </param>
-    public static void glVertexAttribPointer( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, uint pointer )
+    public void glVertexAttribPointer( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, uint pointer )
     {
         _glVertexAttribPointer( index, size, type, normalized, stride, ( void* )pointer );
     }
@@ -7365,7 +7363,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORMMATRIX2X3FVPROC( GLint location, GLsizei count, GLboolean transpose, GLfloat* value );
 
-    private static PFNGLUNIFORMMATRIX2X3FVPROC _glUniformMatrix2x3fv;
+    private PFNGLUNIFORMMATRIX2X3FVPROC _glUniformMatrix2x3fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a uniform variable for the current program object
@@ -7380,7 +7378,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of values that will be used to update the specified uniform
     ///     variable
     /// </param>
-    public static void glUniformMatrix2x3fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
+    public void glUniformMatrix2x3fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
     {
         _glUniformMatrix2x3fv( location, count, transpose, value );
     }
@@ -7395,7 +7393,7 @@ public static unsafe class GL
     ///     Specifies an array of values that will be used to update the specified uniform variable. 6 values
     ///     per matrix.
     /// </param>
-    public static void glUniformMatrix2x3fv( GLint location, GLboolean transpose, params GLfloat[] value )
+    public void glUniformMatrix2x3fv( GLint location, GLboolean transpose, params GLfloat[] value )
     {
         fixed ( GLfloat* p =
                    &value[ 0 ] )
@@ -7408,7 +7406,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORMMATRIX3X2FVPROC( GLint location, GLsizei count, GLboolean transpose, GLfloat* value );
 
-    private static PFNGLUNIFORMMATRIX3X2FVPROC _glUniformMatrix3x2fv;
+    private PFNGLUNIFORMMATRIX3X2FVPROC _glUniformMatrix3x2fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a uniform variable for the current program object
@@ -7423,7 +7421,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of values that will be used to update the specified uniform
     ///     variable
     /// </param>
-    public static void glUniformMatrix3x2fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
+    public void glUniformMatrix3x2fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
     {
         _glUniformMatrix3x2fv( location, count, transpose, value );
     }
@@ -7438,7 +7436,7 @@ public static unsafe class GL
     ///     Specifies an array of values that will be used to update the specified uniform variable. 6 values
     ///     per matrix.
     /// </param>
-    public static void glUniformMatrix3x2fv( GLint location, GLboolean transpose, params GLfloat[] value )
+    public void glUniformMatrix3x2fv( GLint location, GLboolean transpose, params GLfloat[] value )
     {
         fixed ( GLfloat* p =
                    &value[ 0 ] )
@@ -7451,7 +7449,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORMMATRIX2X4FVPROC( GLint location, GLsizei count, GLboolean transpose, GLfloat* value );
 
-    private static PFNGLUNIFORMMATRIX2X4FVPROC _glUniformMatrix2x4fv;
+    private PFNGLUNIFORMMATRIX2X4FVPROC _glUniformMatrix2x4fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a uniform variable for the current program object
@@ -7466,7 +7464,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of values that will be used to update the specified uniform
     ///     variable
     /// </param>
-    public static void glUniformMatrix2x4fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
+    public void glUniformMatrix2x4fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
     {
         _glUniformMatrix2x4fv( location, count, transpose, value );
     }
@@ -7481,7 +7479,7 @@ public static unsafe class GL
     ///     Specifies an array of values that will be used to update the specified uniform variable. 8 values
     ///     per matrix.
     /// </param>
-    public static void glUniformMatrix2x4fv( GLint location, GLboolean transpose, params GLfloat[] value )
+    public void glUniformMatrix2x4fv( GLint location, GLboolean transpose, params GLfloat[] value )
     {
         fixed ( GLfloat* p =
                    &value[ 0 ] )
@@ -7494,7 +7492,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORMMATRIX4X2FVPROC( GLint location, GLsizei count, GLboolean transpose, GLfloat* value );
 
-    private static PFNGLUNIFORMMATRIX4X2FVPROC _glUniformMatrix4x2fv;
+    private PFNGLUNIFORMMATRIX4X2FVPROC _glUniformMatrix4x2fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a uniform variable for the current program object
@@ -7509,7 +7507,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of values that will be used to update the specified uniform
     ///     variable
     /// </param>
-    public static void glUniformMatrix4x2fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
+    public void glUniformMatrix4x2fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
     {
         _glUniformMatrix4x2fv( location, count, transpose, value );
     }
@@ -7524,7 +7522,7 @@ public static unsafe class GL
     ///     Specifies an array of values that will be used to update the specified uniform variable. 8 values
     ///     per matrix.
     /// </param>
-    public static void glUniformMatrix4x2fv( GLint location, GLboolean transpose, params GLfloat[] value )
+    public void glUniformMatrix4x2fv( GLint location, GLboolean transpose, params GLfloat[] value )
     {
         fixed ( GLfloat* p =
                    &value[ 0 ] )
@@ -7537,7 +7535,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORMMATRIX3X4FVPROC( GLint location, GLsizei count, GLboolean transpose, GLfloat* value );
 
-    private static PFNGLUNIFORMMATRIX3X4FVPROC _glUniformMatrix3x4fv;
+    private PFNGLUNIFORMMATRIX3X4FVPROC _glUniformMatrix3x4fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a uniform variable for the current program object
@@ -7552,7 +7550,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of values that will be used to update the specified uniform
     ///     variable
     /// </param>
-    public static void glUniformMatrix3x4fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
+    public void glUniformMatrix3x4fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
     {
         _glUniformMatrix3x4fv( location, count, transpose, value );
     }
@@ -7567,7 +7565,7 @@ public static unsafe class GL
     ///     Specifies an array of values that will be used to update the specified uniform variable. 12 values
     ///     per matrix.
     /// </param>
-    public static void glUniformMatrix3x4fv( GLint location, GLboolean transpose, params GLfloat[] value )
+    public void glUniformMatrix3x4fv( GLint location, GLboolean transpose, params GLfloat[] value )
     {
         fixed ( GLfloat* p =
                    &value[ 0 ] )
@@ -7580,7 +7578,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORMMATRIX4X3FVPROC( GLint location, GLsizei count, GLboolean transpose, GLfloat* value );
 
-    private static PFNGLUNIFORMMATRIX4X3FVPROC _glUniformMatrix4x3fv;
+    private PFNGLUNIFORMMATRIX4X3FVPROC _glUniformMatrix4x3fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a uniform variable for the current program object
@@ -7595,7 +7593,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of values that will be used to update the specified uniform
     ///     variable
     /// </param>
-    public static void glUniformMatrix4x3fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
+    public void glUniformMatrix4x3fv( GLint location, GLsizei count, GLboolean transpose, GLfloat* value )
     {
         _glUniformMatrix4x3fv( location, count, transpose, value );
     }
@@ -7610,7 +7608,7 @@ public static unsafe class GL
     ///     Specifies an array of values that will be used to update the specified uniform variable. 12 values
     ///     per matrix.
     /// </param>
-    public static void glUniformMatrix4x3fv( GLint location, GLboolean transpose, params GLfloat[] value )
+    public void glUniformMatrix4x3fv( GLint location, GLboolean transpose, params GLfloat[] value )
     {
         fixed ( GLfloat* p =
                    &value[ 0 ] )
@@ -7629,7 +7627,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCOLORMASKIPROC( GLuint index, GLboolean r, GLboolean g, GLboolean b, GLboolean a );
 
-    private static PFNGLCOLORMASKIPROC _glColorMaski;
+    private PFNGLCOLORMASKIPROC _glColorMaski;
 
     /// <summary>
     ///     Enable and disable writing of frame buffer color components
@@ -7639,7 +7637,7 @@ public static unsafe class GL
     /// <param name="g">Specifies whether green can or cannot be written into the frame buffer.</param>
     /// <param name="b">Specifies whether blue can or cannot be written into the frame buffer.</param>
     /// <param name="a">Specifies whether alpha can or cannot be written into the frame buffer.</param>
-    public static void glColorMaski( GLuint index, GLboolean r, GLboolean g, GLboolean b, GLboolean a )
+    public void glColorMaski( GLuint index, GLboolean r, GLboolean g, GLboolean b, GLboolean a )
     {
         _glColorMaski( index, r, g, b, a );
     }
@@ -7647,7 +7645,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETBOOLEANI_VPROC( GLenum target, GLuint index, GLboolean* data );
 
-    private static PFNGLGETBOOLEANI_VPROC _glGetBooleani_v;
+    private PFNGLGETBOOLEANI_VPROC _glGetBooleani_v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the boolean value of a selected indexed state variable
@@ -7658,7 +7656,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="index">Specifies the index of the indexed state variable to be queried.</param>
     /// <param name="data">Returns the requested data.</param>
-    public static void glGetBooleani_v( GLenum target, GLuint index, GLboolean* data )
+    public void glGetBooleani_v( GLenum target, GLuint index, GLboolean* data )
     {
         _glGetBooleani_v( target, index, data );
     }
@@ -7673,7 +7671,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="index">Specifies the index of the indexed state variable to be queried.</param>
     /// <param name="data">A <see langword="ref" /> to an array to receive the data.</param>
-    public static void glGetBooleani_v( GLenum target, GLuint index, ref GLboolean[] data )
+    public void glGetBooleani_v( GLenum target, GLuint index, ref GLboolean[] data )
     {
         fixed ( GLboolean* p =
                    &data[ 0 ] )
@@ -7686,7 +7684,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETINTEGERI_VPROC( GLenum target, GLuint index, GLint* data );
 
-    private static PFNGLGETINTEGERI_VPROC _glGetIntegeri_v;
+    private PFNGLGETINTEGERI_VPROC _glGetIntegeri_v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the integer value of a selected indexed state variable
@@ -7697,7 +7695,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="index">Specifies the index of the indexed state variable to be queried.</param>
     /// <param name="data">Returns the requested data.</param>
-    public static void glGetIntegeri_v( GLenum target, GLuint index, GLint* data )
+    public void glGetIntegeri_v( GLenum target, GLuint index, GLint* data )
     {
         _glGetIntegeri_v( target, index, data );
     }
@@ -7712,7 +7710,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="index">Specifies the index of the indexed state variable to be queried.</param>
     /// <param name="data">A <see langword="ref" /> to an array to receive the data.</param>
-    public static void glGetIntegeri_v( GLenum target, GLuint index, ref GLint[] data )
+    public void glGetIntegeri_v( GLenum target, GLuint index, ref GLint[] data )
     {
         fixed ( GLint* p = &data[ 0 ] )
         {
@@ -7724,7 +7722,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLENABLEIPROC( GLenum target, GLuint index );
 
-    private static PFNGLENABLEIPROC _glEnablei;
+    private PFNGLENABLEIPROC _glEnablei;
 
     /// <summary>
     ///     Enable capabilities for a specific indexed target
@@ -7734,7 +7732,7 @@ public static unsafe class GL
     ///     <see href="https://docs.gl/gl4/glEnable" /> for a list of possible capabilities.
     /// </param>
     /// <param name="index">Specifies the index of the target to enable or disable.</param>
-    public static void glEnablei( GLenum target, GLuint index )
+    public void glEnablei( GLenum target, GLuint index )
     {
         _glEnablei( target, index );
     }
@@ -7742,7 +7740,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDISABLEIPROC( GLenum target, GLuint index );
 
-    private static PFNGLDISABLEIPROC _glDisablei;
+    private PFNGLDISABLEIPROC _glDisablei;
 
     /// <summary>
     ///     Disable capabilities for a specific indexed target
@@ -7752,7 +7750,7 @@ public static unsafe class GL
     ///     <see href="https://docs.gl/gl4/glEnable" /> for a list of possible capabilities.
     /// </param>
     /// <param name="index">Specifies the index of the target to enable or disable.</param>
-    public static void glDisablei( GLenum target, GLuint index )
+    public void glDisablei( GLenum target, GLuint index )
     {
         _glDisablei( target, index );
     }
@@ -7760,7 +7758,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLISENABLEDIPROC( GLenum target, GLuint index );
 
-    private static PFNGLISENABLEDIPROC _glIsEnabledi;
+    private PFNGLISENABLEDIPROC _glIsEnabledi;
 
     /// <summary>
     ///     Test whether a specific indexed capability is enabled
@@ -7770,7 +7768,7 @@ public static unsafe class GL
     ///     <see href="https://docs.gl/gl4/glEnable" /> for a list of possible capabilities.
     /// </param>
     /// <param name="index">Specifies the index of the target to enable or disable.</param>
-    public static GLboolean glIsEnabledi( GLenum target, GLuint index )
+    public GLboolean glIsEnabledi( GLenum target, GLuint index )
     {
         return _glIsEnabledi( target, index );
     }
@@ -7778,7 +7776,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBEGINTRANSFORMFEEDBACKPROC( GLenum primitiveMode );
 
-    private static PFNGLBEGINTRANSFORMFEEDBACKPROC _glBeginTransformFeedback;
+    private PFNGLBEGINTRANSFORMFEEDBACKPROC _glBeginTransformFeedback;
 
     /// <summary>
     ///     Start transform feedback operations
@@ -7791,7 +7789,7 @@ public static unsafe class GL
     ///     <see cref="GL_TRIANGLE_STRIP_ADJACENCY" /> are accepted. Refer to
     ///     <see href="https://docs.gl/gl4/glBeginTransformFeedback" /> for some quirks regarding this parameter.
     /// </param>
-    public static void glBeginTransformFeedback( GLenum primitiveMode )
+    public void glBeginTransformFeedback( GLenum primitiveMode )
     {
         _glBeginTransformFeedback( primitiveMode );
     }
@@ -7799,12 +7797,12 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLENDTRANSFORMFEEDBACKPROC();
 
-    private static PFNGLENDTRANSFORMFEEDBACKPROC _glEndTransformFeedback;
+    private PFNGLENDTRANSFORMFEEDBACKPROC _glEndTransformFeedback;
 
     /// <summary>
     ///     End transform feedback operations
     /// </summary>
-    public static void glEndTransformFeedback()
+    public void glEndTransformFeedback()
     {
         _glEndTransformFeedback();
     }
@@ -7812,7 +7810,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBINDBUFFERRANGEPROC( GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size );
 
-    private static PFNGLBINDBUFFERRANGEPROC _glBindBufferRange;
+    private PFNGLBINDBUFFERRANGEPROC _glBindBufferRange;
 
     /// <summary>
     ///     Bind a range of a buffer object to an indexed buffer target
@@ -7829,7 +7827,7 @@ public static unsafe class GL
     ///     Specifies the amount of data in bytes from the buffer object that is to be made available for
     ///     reading.
     /// </param>
-    public static void glBindBufferRange( GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size )
+    public void glBindBufferRange( GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size )
     {
         _glBindBufferRange( target, index, buffer, offset, size );
     }
@@ -7837,7 +7835,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBINDBUFFERBASEPROC( GLenum target, GLuint index, GLuint buffer );
 
-    private static PFNGLBINDBUFFERBASEPROC _glBindBufferBase;
+    private PFNGLBINDBUFFERBASEPROC _glBindBufferBase;
 
     /// <summary>
     ///     Bind a buffer object to an indexed buffer target
@@ -7849,7 +7847,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="index">Specifies the index of the binding point within the array specified by <paramref name="target" />.</param>
     /// <param name="buffer">Specifies the name of a buffer object whose storage to bind to the specified binding point.</param>
-    public static void glBindBufferBase( GLenum target, GLuint index, GLuint buffer )
+    public void glBindBufferBase( GLenum target, GLuint index, GLuint buffer )
     {
         _glBindBufferBase( target, index, buffer );
     }
@@ -7857,7 +7855,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLTRANSFORMFEEDBACKVARYINGSPROC( GLuint program, GLsizei count, GLchar** varyings, GLenum bufferMode );
 
-    private static PFNGLTRANSFORMFEEDBACKVARYINGSPROC _glTransformFeedbackVaryings;
+    private PFNGLTRANSFORMFEEDBACKVARYINGSPROC _glTransformFeedbackVaryings;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify values to record in transform feedback buffers
@@ -7876,7 +7874,7 @@ public static unsafe class GL
     ///     <paramref name="bufferMode" /> must be one of <see cref="GL_INTERLEAVED_ATTRIBS" /> or
     ///     <see cref="GL_SEPARATE_ATTRIBS" />.
     /// </param>
-    public static void glTransformFeedbackVaryings( GLuint program, GLsizei count, GLchar** varyings, GLenum bufferMode )
+    public void glTransformFeedbackVaryings( GLuint program, GLsizei count, GLchar** varyings, GLenum bufferMode )
     {
         _glTransformFeedbackVaryings( program, count, varyings, bufferMode );
     }
@@ -7892,7 +7890,7 @@ public static unsafe class GL
     ///     <paramref name="bufferMode" /> must be one of <see cref="GL_INTERLEAVED_ATTRIBS" /> or
     ///     <see cref="GL_SEPARATE_ATTRIBS" />.
     /// </param>
-    public static void glTransformFeedbackVaryings( GLuint program, string[] varyings, GLenum bufferMode )
+    public void glTransformFeedbackVaryings( GLuint program, string[] varyings, GLenum bufferMode )
     {
         var varyingsBytes = new GLchar[ varyings.Length ][];
 
@@ -7927,7 +7925,7 @@ public static unsafe class GL
                                                                 GLenum* type,
                                                                 GLchar* name );
 
-    private static PFNGLGETTRANSFORMFEEDBACKVARYINGPROC _glGetTransformFeedbackVarying;
+    private PFNGLGETTRANSFORMFEEDBACKVARYINGPROC _glGetTransformFeedbackVarying;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Retrieve information about a varying variable from a program object's active transform feedback varyings
@@ -7942,7 +7940,7 @@ public static unsafe class GL
     /// <param name="size">Returns the size of the requested varying variable.</param>
     /// <param name="type">Returns the data type of the requested varying variable.</param>
     /// <param name="name">Returns a null-terminated string containing the name of the requested varying variable.</param>
-    public static void glGetTransformFeedbackVarying( GLuint program,
+    public void glGetTransformFeedbackVarying( GLuint program,
                                                       GLuint index,
                                                       GLsizei bufSize,
                                                       GLsizei* length,
@@ -7966,7 +7964,7 @@ public static unsafe class GL
     /// <param name="size">Returns the size of the requested varying variable.</param>
     /// <param name="type">Returns the data type of the requested varying variable.</param>
     /// <returns>Returns a managed string containing the name of the requested varying variable.</returns>
-    public static string glGetTransformFeedbackVarying( GLuint program, GLuint index, GLsizei bufSize, out GLsizei size, out GLenum type )
+    public string glGetTransformFeedbackVarying( GLuint program, GLuint index, GLsizei bufSize, out GLsizei size, out GLenum type )
     {
         var     name = new GLchar[ bufSize ];
         GLsizei length;
@@ -7989,7 +7987,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCLAMPCOLORPROC( GLenum target, GLenum clamp );
 
-    private static PFNGLCLAMPCOLORPROC _glClampColor;
+    private PFNGLCLAMPCOLORPROC _glClampColor;
 
     /// <summary>
     ///     Specify whether data read via <see cref="glReadPixels" /> should be clamped.
@@ -7999,7 +7997,7 @@ public static unsafe class GL
     ///     Specifies whether to apply color clamping. <see langword="true" /> specifies that clamping is
     ///     enabled, <see langword="false" /> specifies that clamping is disabled.
     /// </param>
-    public static void glClampColor( GLenum target, GLboolean clamp )
+    public void glClampColor( GLenum target, GLboolean clamp )
     {
         _glClampColor( target, clamp ? GL_TRUE : GL_FALSE );
     }
@@ -8007,7 +8005,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBEGINCONDITIONALRENDERPROC( GLuint id, GLenum mode );
 
-    private static PFNGLBEGINCONDITIONALRENDERPROC _glBeginConditionalRender;
+    private PFNGLBEGINCONDITIONALRENDERPROC _glBeginConditionalRender;
 
     /// <summary>
     ///     Start conditional rendering
@@ -8020,7 +8018,7 @@ public static unsafe class GL
     ///     Specifies how <see cref="glglBeginConditionalRender" /> interprets the results of the occlusion
     ///     query.
     /// </param>
-    public static void glBeginConditionalRender( GLuint id, GLenum mode )
+    public void glBeginConditionalRender( GLuint id, GLenum mode )
     {
         _glBeginConditionalRender( id, mode );
     }
@@ -8028,12 +8026,12 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLENDCONDITIONALRENDERPROC();
 
-    private static PFNGLENDCONDITIONALRENDERPROC _glEndConditionalRender;
+    private PFNGLENDCONDITIONALRENDERPROC _glEndConditionalRender;
 
     /// <summary>
     ///     End conditional rendering
     /// </summary>
-    public static void glEndConditionalRender()
+    public void glEndConditionalRender()
     {
         _glEndConditionalRender();
     }
@@ -8041,7 +8039,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBIPOINTERPROC( GLuint index, GLint size, GLenum type, GLsizei stride, void* pointer );
 
-    private static PFNGLVERTEXATTRIBIPOINTERPROC _glVertexAttribIPointer;
+    private PFNGLVERTEXATTRIBIPOINTERPROC _glVertexAttribIPointer;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Define an array of generic vertex attribute data
@@ -8061,7 +8059,7 @@ public static unsafe class GL
     ///     Specifies an offset of the first component of the first generic vertex attribute in the array in
     ///     the data store of the buffer currently bound to the <see cref="GL_ARRAY_BUFFER" /> target. The initial value is 0.
     /// </param>
-    public static void glVertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, void* pointer )
+    public void glVertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, void* pointer )
     {
         _glVertexAttribIPointer( index, size, type, stride, pointer );
     }
@@ -8085,7 +8083,7 @@ public static unsafe class GL
     ///     Specifies an offset of the first component of the first generic vertex attribute in the array in
     ///     the data store of the buffer currently bound to the <see cref="GL_ARRAY_BUFFER" /> target. The initial value is 0.
     /// </param>
-    public static void glVertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, uint pointer )
+    public void glVertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, uint pointer )
     {
         _glVertexAttribIPointer( index, size, type, stride, ( void* )pointer );
     }
@@ -8094,7 +8092,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETVERTEXATTRIBIIVPROC( GLuint index, GLenum pname, GLint* parameters );
 
-    private static PFNGLGETVERTEXATTRIBIIVPROC _glGetVertexAttribIiv;
+    private PFNGLGETVERTEXATTRIBIIVPROC _glGetVertexAttribIiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the integer value of a generic vertex attribute parameter
@@ -8109,7 +8107,7 @@ public static unsafe class GL
     ///     <see cref="GL_CURRENT_VERTEX_ATTRIB" />.
     /// </param>
     /// <param name="parameters">Returns the requested parameter.</param>
-    public static void glGetVertexAttribIiv( GLuint index, GLenum pname, GLint* parameters )
+    public void glGetVertexAttribIiv( GLuint index, GLenum pname, GLint* parameters )
     {
         _glGetVertexAttribIiv( index, pname, parameters );
     }
@@ -8128,7 +8126,7 @@ public static unsafe class GL
     ///     <see cref="GL_CURRENT_VERTEX_ATTRIB" />.
     /// </param>
     /// <param name="parameters">A <see langword="ref" /> to an array into which the returned values will be placed.</param>
-    public static void glGetVertexAttribIiv( GLuint index, GLenum pname, ref GLint[] parameters )
+    public void glGetVertexAttribIiv( GLuint index, GLenum pname, ref GLint[] parameters )
     {
         fixed ( GLint* p =
                    &parameters[ 0 ] )
@@ -8141,7 +8139,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETVERTEXATTRIBIUIVPROC( GLuint index, GLenum pname, GLuint* parameters );
 
-    private static PFNGLGETVERTEXATTRIBIUIVPROC _glGetVertexAttribIuiv;
+    private PFNGLGETVERTEXATTRIBIUIVPROC _glGetVertexAttribIuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the unsigned integer value of a generic vertex attribute parameter
@@ -8156,7 +8154,7 @@ public static unsafe class GL
     ///     <see cref="GL_CURRENT_VERTEX_ATTRIB" />.
     /// </param>
     /// <param name="parameters">Returns the requested parameter.</param>
-    public static void glGetVertexAttribIuiv( GLuint index, GLenum pname, GLuint* parameters )
+    public void glGetVertexAttribIuiv( GLuint index, GLenum pname, GLuint* parameters )
     {
         _glGetVertexAttribIuiv( index, pname, parameters );
     }
@@ -8175,7 +8173,7 @@ public static unsafe class GL
     ///     <see cref="GL_CURRENT_VERTEX_ATTRIB" />.
     /// </param>
     /// <param name="parameters">A <see langword="ref" /> to an array into which the returned values will be placed.</param>
-    public static void glGetVertexAttribIuiv( GLuint index, GLenum pname, ref GLuint[] parameters )
+    public void glGetVertexAttribIuiv( GLuint index, GLenum pname, ref GLuint[] parameters )
     {
         fixed ( GLuint* p =
                    &parameters[ 0 ] )
@@ -8188,14 +8186,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI1IPROC( GLuint index, GLint x );
 
-    private static PFNGLVERTEXATTRIBI1IPROC _glVertexAttribI1i;
+    private PFNGLVERTEXATTRIBI1IPROC _glVertexAttribI1i;
 
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="x">Specifies the first component of the vertex attribute.</param>
-    public static void glVertexAttribI1i( GLuint index, GLint x )
+    public void glVertexAttribI1i( GLuint index, GLint x )
     {
         _glVertexAttribI1i( index, x );
     }
@@ -8203,7 +8201,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI2IPROC( GLuint index, GLint x, GLint y );
 
-    private static PFNGLVERTEXATTRIBI2IPROC _glVertexAttribI2i;
+    private PFNGLVERTEXATTRIBI2IPROC _glVertexAttribI2i;
 
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -8211,7 +8209,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="x">Specifies the first component of the vertex attribute.</param>
     /// <param name="y">Specifies the second component of the vertex attribute.</param>
-    public static void glVertexAttribI2i( GLuint index, GLint x, GLint y )
+    public void glVertexAttribI2i( GLuint index, GLint x, GLint y )
     {
         _glVertexAttribI2i( index, x, y );
     }
@@ -8219,7 +8217,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI3IPROC( GLuint index, GLint x, GLint y, GLint z );
 
-    private static PFNGLVERTEXATTRIBI3IPROC _glVertexAttribI3i;
+    private PFNGLVERTEXATTRIBI3IPROC _glVertexAttribI3i;
 
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -8228,7 +8226,7 @@ public static unsafe class GL
     /// <param name="x">Specifies the first component of the vertex attribute.</param>
     /// <param name="y">Specifies the second component of the vertex attribute.</param>
     /// <param name="z">Specifies the third component of the vertex attribute.</param>
-    public static void glVertexAttribI3i( GLuint index, GLint x, GLint y, GLint z )
+    public void glVertexAttribI3i( GLuint index, GLint x, GLint y, GLint z )
     {
         _glVertexAttribI3i( index, x, y, z );
     }
@@ -8236,7 +8234,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI4IPROC( GLuint index, GLint x, GLint y, GLint z, GLint w );
 
-    private static PFNGLVERTEXATTRIBI4IPROC _glVertexAttribI4i;
+    private PFNGLVERTEXATTRIBI4IPROC _glVertexAttribI4i;
 
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -8246,7 +8244,7 @@ public static unsafe class GL
     /// <param name="y">Specifies the second component of the vertex attribute.</param>
     /// <param name="z">Specifies the third component of the vertex attribute.</param>
     /// <param name="w">Specifies the fourth component of the vertex attribute.</param>
-    public static void glVertexAttribI4i( GLuint index, GLint x, GLint y, GLint z, GLint w )
+    public void glVertexAttribI4i( GLuint index, GLint x, GLint y, GLint z, GLint w )
     {
         _glVertexAttribI4i( index, x, y, z, w );
     }
@@ -8254,14 +8252,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI1UIPROC( GLuint index, GLuint x );
 
-    private static PFNGLVERTEXATTRIBI1UIPROC _glVertexAttribI1ui;
+    private PFNGLVERTEXATTRIBI1UIPROC _glVertexAttribI1ui;
 
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="x">Specifies the first component of the vertex attribute.</param>
-    public static void glVertexAttribI1ui( GLuint index, GLuint x )
+    public void glVertexAttribI1ui( GLuint index, GLuint x )
     {
         _glVertexAttribI1ui( index, x );
     }
@@ -8269,7 +8267,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI2UIPROC( GLuint index, GLuint x, GLuint y );
 
-    private static PFNGLVERTEXATTRIBI2UIPROC _glVertexAttribI2ui;
+    private PFNGLVERTEXATTRIBI2UIPROC _glVertexAttribI2ui;
 
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -8277,7 +8275,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="x">Specifies the first component of the vertex attribute.</param>
     /// <param name="y">Specifies the second component of the vertex attribute.</param>
-    public static void glVertexAttribI2ui( GLuint index, GLuint x, GLuint y )
+    public void glVertexAttribI2ui( GLuint index, GLuint x, GLuint y )
     {
         _glVertexAttribI2ui( index, x, y );
     }
@@ -8285,7 +8283,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI3UIPROC( GLuint index, GLuint x, GLuint y, GLuint z );
 
-    private static PFNGLVERTEXATTRIBI3UIPROC _glVertexAttribI3ui;
+    private PFNGLVERTEXATTRIBI3UIPROC _glVertexAttribI3ui;
 
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -8294,7 +8292,7 @@ public static unsafe class GL
     /// <param name="x">Specifies the first component of the vertex attribute.</param>
     /// <param name="y">Specifies the second component of the vertex attribute.</param>
     /// <param name="z">Specifies the third component of the vertex attribute.</param>
-    public static void glVertexAttribI3ui( GLuint index, GLuint x, GLuint y, GLuint z )
+    public void glVertexAttribI3ui( GLuint index, GLuint x, GLuint y, GLuint z )
     {
         _glVertexAttribI3ui( index, x, y, z );
     }
@@ -8302,7 +8300,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI4UIPROC( GLuint index, GLuint x, GLuint y, GLuint z, GLuint w );
 
-    private static PFNGLVERTEXATTRIBI4UIPROC _glVertexAttribI4ui;
+    private PFNGLVERTEXATTRIBI4UIPROC _glVertexAttribI4ui;
 
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -8312,7 +8310,7 @@ public static unsafe class GL
     /// <param name="y">Specifies the second component of the vertex attribute.</param>
     /// <param name="z">Specifies the third component of the vertex attribute.</param>
     /// <param name="w">Specifies the fourth component of the vertex attribute.</param>
-    public static void glVertexAttribI4ui( GLuint index, GLuint x, GLuint y, GLuint z, GLuint w )
+    public void glVertexAttribI4ui( GLuint index, GLuint x, GLuint y, GLuint z, GLuint w )
     {
         _glVertexAttribI4ui( index, x, y, z, w );
     }
@@ -8320,14 +8318,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI1IVPROC( GLuint index, GLint* v );
 
-    private static PFNGLVERTEXATTRIBI1IVPROC _glVertexAttribI1iv;
+    private PFNGLVERTEXATTRIBI1IVPROC _glVertexAttribI1iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI1iv( GLuint index, GLint* v )
+    public void glVertexAttribI1iv( GLuint index, GLint* v )
     {
         _glVertexAttribI1iv( index, v );
     }
@@ -8338,7 +8336,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI1iv( GLuint index, GLint[] v )
+    public void glVertexAttribI1iv( GLuint index, GLint[] v )
     {
         fixed ( GLint* p = &v[ 0 ] )
         {
@@ -8350,14 +8348,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI2IVPROC( GLuint index, GLint* v );
 
-    private static PFNGLVERTEXATTRIBI2IVPROC _glVertexAttribI2iv;
+    private PFNGLVERTEXATTRIBI2IVPROC _glVertexAttribI2iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI2iv( GLuint index, GLint* v )
+    public void glVertexAttribI2iv( GLuint index, GLint* v )
     {
         _glVertexAttribI2iv( index, v );
     }
@@ -8368,7 +8366,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI2iv( GLuint index, GLint[] v )
+    public void glVertexAttribI2iv( GLuint index, GLint[] v )
     {
         fixed ( GLint* p = &v[ 0 ] )
         {
@@ -8380,14 +8378,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI3IVPROC( GLuint index, GLint* v );
 
-    private static PFNGLVERTEXATTRIBI3IVPROC _glVertexAttribI3iv;
+    private PFNGLVERTEXATTRIBI3IVPROC _glVertexAttribI3iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI3iv( GLuint index, GLint* v )
+    public void glVertexAttribI3iv( GLuint index, GLint* v )
     {
         _glVertexAttribI3iv( index, v );
     }
@@ -8398,7 +8396,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI3iv( GLuint index, GLint[] v )
+    public void glVertexAttribI3iv( GLuint index, GLint[] v )
     {
         fixed ( GLint* p = &v[ 0 ] )
         {
@@ -8410,14 +8408,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI4IVPROC( GLuint index, GLint* v );
 
-    private static PFNGLVERTEXATTRIBI4IVPROC _glVertexAttribI4iv;
+    private PFNGLVERTEXATTRIBI4IVPROC _glVertexAttribI4iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI4iv( GLuint index, GLint* v )
+    public void glVertexAttribI4iv( GLuint index, GLint* v )
     {
         _glVertexAttribI4iv( index, v );
     }
@@ -8428,7 +8426,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI4iv( GLuint index, GLint[] v )
+    public void glVertexAttribI4iv( GLuint index, GLint[] v )
     {
         fixed ( GLint* p = &v[ 0 ] )
         {
@@ -8440,14 +8438,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI1UIVPROC( GLuint index, GLuint* v );
 
-    private static PFNGLVERTEXATTRIBI1UIVPROC _glVertexAttribI1uiv;
+    private PFNGLVERTEXATTRIBI1UIVPROC _glVertexAttribI1uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI1uiv( GLuint index, GLuint* v )
+    public void glVertexAttribI1uiv( GLuint index, GLuint* v )
     {
         _glVertexAttribI1uiv( index, v );
     }
@@ -8458,7 +8456,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI1uiv( GLuint index, GLuint[] v )
+    public void glVertexAttribI1uiv( GLuint index, GLuint[] v )
     {
         fixed ( GLuint* p = &v[ 0 ] )
         {
@@ -8470,14 +8468,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI2UIVPROC( GLuint index, GLuint* v );
 
-    private static PFNGLVERTEXATTRIBI2UIVPROC _glVertexAttribI2uiv;
+    private PFNGLVERTEXATTRIBI2UIVPROC _glVertexAttribI2uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI2uiv( GLuint index, GLuint* v )
+    public void glVertexAttribI2uiv( GLuint index, GLuint* v )
     {
         _glVertexAttribI2uiv( index, v );
     }
@@ -8488,7 +8486,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI2uiv( GLuint index, GLuint[] v )
+    public void glVertexAttribI2uiv( GLuint index, GLuint[] v )
     {
         fixed ( GLuint* p = &v[ 0 ] )
         {
@@ -8500,14 +8498,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI3UIVPROC( GLuint index, GLuint* v );
 
-    private static PFNGLVERTEXATTRIBI3UIVPROC _glVertexAttribI3uiv;
+    private PFNGLVERTEXATTRIBI3UIVPROC _glVertexAttribI3uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI3uiv( GLuint index, GLuint* v )
+    public void glVertexAttribI3uiv( GLuint index, GLuint* v )
     {
         _glVertexAttribI3uiv( index, v );
     }
@@ -8518,7 +8516,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI3uiv( GLuint index, GLuint[] v )
+    public void glVertexAttribI3uiv( GLuint index, GLuint[] v )
     {
         fixed ( GLuint* p = &v[ 0 ] )
         {
@@ -8530,14 +8528,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI4UIVPROC( GLuint index, GLuint* v );
 
-    private static PFNGLVERTEXATTRIBI4UIVPROC _glVertexAttribI4uiv;
+    private PFNGLVERTEXATTRIBI4UIVPROC _glVertexAttribI4uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI4uiv( GLuint index, GLuint* v )
+    public void glVertexAttribI4uiv( GLuint index, GLuint* v )
     {
         _glVertexAttribI4uiv( index, v );
     }
@@ -8548,7 +8546,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI4uiv( GLuint index, GLuint[] v )
+    public void glVertexAttribI4uiv( GLuint index, GLuint[] v )
     {
         fixed ( GLuint* p = &v[ 0 ] )
         {
@@ -8560,14 +8558,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI4BVPROC( GLuint index, GLbyte* v );
 
-    private static PFNGLVERTEXATTRIBI4BVPROC _glVertexAttribI4bv;
+    private PFNGLVERTEXATTRIBI4BVPROC _glVertexAttribI4bv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI4bv( GLuint index, GLbyte* v )
+    public void glVertexAttribI4bv( GLuint index, GLbyte* v )
     {
         _glVertexAttribI4bv( index, v );
     }
@@ -8578,7 +8576,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI4bv( GLuint index, GLbyte[] v )
+    public void glVertexAttribI4bv( GLuint index, GLbyte[] v )
     {
         fixed ( GLbyte* p = &v[ 0 ] )
         {
@@ -8590,14 +8588,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI4SVPROC( GLuint index, GLshort* v );
 
-    private static PFNGLVERTEXATTRIBI4SVPROC _glVertexAttribI4sv;
+    private PFNGLVERTEXATTRIBI4SVPROC _glVertexAttribI4sv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI4sv( GLuint index, GLshort* v )
+    public void glVertexAttribI4sv( GLuint index, GLshort* v )
     {
         _glVertexAttribI4sv( index, v );
     }
@@ -8608,7 +8606,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI4sv( GLuint index, GLshort[] v )
+    public void glVertexAttribI4sv( GLuint index, GLshort[] v )
     {
         fixed ( GLshort* p = &v[ 0 ] )
         {
@@ -8620,14 +8618,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI4UBVPROC( GLuint index, GLubyte* v );
 
-    private static PFNGLVERTEXATTRIBI4UBVPROC _glVertexAttribI4ubv;
+    private PFNGLVERTEXATTRIBI4UBVPROC _glVertexAttribI4ubv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI4ubv( GLuint index, GLubyte* v )
+    public void glVertexAttribI4ubv( GLuint index, GLubyte* v )
     {
         _glVertexAttribI4ubv( index, v );
     }
@@ -8638,7 +8636,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI4ubv( GLuint index, GLubyte[] v )
+    public void glVertexAttribI4ubv( GLuint index, GLubyte[] v )
     {
         fixed ( GLubyte* p = &v[ 0 ] )
         {
@@ -8650,14 +8648,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBI4USVPROC( GLuint index, GLushort* v );
 
-    private static PFNGLVERTEXATTRIBI4USVPROC _glVertexAttribI4usv;
+    private PFNGLVERTEXATTRIBI4USVPROC _glVertexAttribI4usv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI4usv( GLuint index, GLushort* v )
+    public void glVertexAttribI4usv( GLuint index, GLushort* v )
     {
         _glVertexAttribI4usv( index, v );
     }
@@ -8668,7 +8666,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that contains the new values for the vertex attribute.</param>
-    public static void glVertexAttribI4usv( GLuint index, GLushort[] v )
+    public void glVertexAttribI4usv( GLuint index, GLushort[] v )
     {
         fixed ( GLushort* p = &v[ 0 ] )
         {
@@ -8680,7 +8678,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETUNIFORMUIVPROC( GLuint program, GLint location, GLuint* @params );
 
-    private static PFNGLGETUNIFORMUIVPROC _glGetUniformuiv;
+    private PFNGLGETUNIFORMUIVPROC _glGetUniformuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the value of a uniform variable of type unsigned int
@@ -8688,7 +8686,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="params">Returns the value of the specified uniform variable.</param>
-    public static void glGetUniformuiv( GLuint program, GLint location, GLuint* @params )
+    public void glGetUniformuiv( GLuint program, GLint location, GLuint* @params )
     {
         _glGetUniformuiv( program, location, @params );
     }
@@ -8700,7 +8698,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="params">A <see langword="ref" /> to an array to receive the value of the specified uniform variable.</param>
-    public static void glGetUniformuiv( GLuint program, GLint location, ref GLuint[] @params )
+    public void glGetUniformuiv( GLuint program, GLint location, ref GLuint[] @params )
     {
         fixed ( GLuint* p =
                    &@params[ 0 ] )
@@ -8713,7 +8711,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBINDFRAGDATALOCATIONPROC( GLuint program, GLuint color, GLchar* name );
 
-    private static PFNGLBINDFRAGDATALOCATIONPROC _glBindFragDataLocation;
+    private PFNGLBINDFRAGDATALOCATIONPROC _glBindFragDataLocation;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Bind a user-defined varying out variable to a fragment shader color number
@@ -8721,7 +8719,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object in which the binding is to occur.</param>
     /// <param name="color">Specifies the color number to which the user-defined varying out variable is to be bound.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable to whose bound location to set.</param>
-    public static void glBindFragDataLocation( GLuint program, GLuint color, GLchar* name )
+    public void glBindFragDataLocation( GLuint program, GLuint color, GLchar* name )
     {
         _glBindFragDataLocation( program, color, name );
     }
@@ -8733,7 +8731,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object in which the binding is to occur.</param>
     /// <param name="color">Specifies the color number to which the user-defined varying out variable is to be bound.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable to whose bound location to set.</param>
-    public static void glBindFragDataLocation( GLuint program, GLuint color, string name )
+    public void glBindFragDataLocation( GLuint program, GLuint color, string name )
     {
         var narr = Encoding.UTF8.GetBytes( name );
 
@@ -8748,7 +8746,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLint PFNGLGETFRAGDATALOCATIONPROC( GLuint program, GLchar* name );
 
-    private static PFNGLGETFRAGDATALOCATIONPROC _glGetFragDataLocation;
+    private PFNGLGETFRAGDATALOCATIONPROC _glGetFragDataLocation;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the location of a user-defined varying out variable
@@ -8756,7 +8754,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable whose location is to be queried.</param>
     /// <returns>The location of the user-defined varying out variable specified by <paramref name="name" /> is returned.</returns>
-    public static GLint glGetFragDataLocation( GLuint program, GLchar* name )
+    public GLint glGetFragDataLocation( GLuint program, GLchar* name )
     {
         return _glGetFragDataLocation( program, name );
     }
@@ -8768,7 +8766,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable whose location is to be queried.</param>
     /// <returns>The location of the user-defined varying out variable specified by <paramref name="name" /> is returned.</returns>
-    public static GLint glGetFragDataLocation( GLuint program, string name )
+    public GLint glGetFragDataLocation( GLuint program, string name )
     {
         var narr = Encoding.UTF8.GetBytes( name );
 
@@ -8783,14 +8781,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM1UIPROC( GLint location, GLuint v0 );
 
-    private static PFNGLUNIFORM1UIPROC _glUniform1ui;
+    private PFNGLUNIFORM1UIPROC _glUniform1ui;
 
     /// <summary>
     ///     Specify the value of an unsigned int uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="v0">Specifies the new value to be used for the specified uniform variable.</param>
-    public static void glUniform1ui( GLint location, GLuint v0 )
+    public void glUniform1ui( GLint location, GLuint v0 )
     {
         _glUniform1ui( location, v0 );
     }
@@ -8798,7 +8796,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM2UIPROC( GLint location, GLuint v0, GLuint v1 );
 
-    private static PFNGLUNIFORM2UIPROC _glUniform2ui;
+    private PFNGLUNIFORM2UIPROC _glUniform2ui;
 
     /// <summary>
     ///     Specify the value of an unsigned int uniform variable for the current program object
@@ -8806,7 +8804,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="v0">Specifies the first value to be used for the specified uniform variable.</param>
     /// <param name="v1">Specifies the second value to be used for the specified uniform variable.</param>
-    public static void glUniform2ui( GLint location, GLuint v0, GLuint v1 )
+    public void glUniform2ui( GLint location, GLuint v0, GLuint v1 )
     {
         _glUniform2ui( location, v0, v1 );
     }
@@ -8814,7 +8812,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM3UIPROC( GLint location, GLuint v0, GLuint v1, GLuint v2 );
 
-    private static PFNGLUNIFORM3UIPROC _glUniform3ui;
+    private PFNGLUNIFORM3UIPROC _glUniform3ui;
 
     /// <summary>
     ///     Specify the value of an unsigned int uniform variable for the current program object
@@ -8823,7 +8821,7 @@ public static unsafe class GL
     /// <param name="v0">Specifies the first value to be used for the specified uniform variable.</param>
     /// <param name="v1">Specifies the second value to be used for the specified uniform variable.</param>
     /// <param name="v2">Specifies the third value to be used for the specified uniform variable.</param>
-    public static void glUniform3ui( GLint location, GLuint v0, GLuint v1, GLuint v2 )
+    public void glUniform3ui( GLint location, GLuint v0, GLuint v1, GLuint v2 )
     {
         _glUniform3ui( location, v0, v1, v2 );
     }
@@ -8831,7 +8829,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM4UIPROC( GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3 );
 
-    private static PFNGLUNIFORM4UIPROC _glUniform4ui;
+    private PFNGLUNIFORM4UIPROC _glUniform4ui;
 
     /// <summary>
     ///     Specify the value of an unsigned int uniform variable for the current program object
@@ -8841,7 +8839,7 @@ public static unsafe class GL
     /// <param name="v1">Specifies the second value to be used for the specified uniform variable.</param>
     /// <param name="v2">Specifies the third value to be used for the specified uniform variable.</param>
     /// <param name="v3">Specifies the fourth value to be used for the specified uniform variable.</param>
-    public static void glUniform4ui( GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3 )
+    public void glUniform4ui( GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3 )
     {
         _glUniform4ui( location, v0, v1, v2, v3 );
     }
@@ -8849,7 +8847,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM1UIVPROC( GLint location, GLsizei count, GLuint* value );
 
-    private static PFNGLUNIFORM1UIVPROC _glUniform1uiv;
+    private PFNGLUNIFORM1UIVPROC _glUniform1uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of an unsigned int uniform variable for the current program object
@@ -8860,7 +8858,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniform1uiv( GLint location, GLsizei count, GLuint* value )
+    public void glUniform1uiv( GLint location, GLsizei count, GLuint* value )
     {
         _glUniform1uiv( location, count, value );
     }
@@ -8871,7 +8869,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform1uiv( GLint location, GLuint[] value )
+    public void glUniform1uiv( GLint location, GLuint[] value )
     {
         fixed ( GLuint* p = &value[ 0 ] )
         {
@@ -8883,7 +8881,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM2UIVPROC( GLint location, GLsizei count, GLuint* value );
 
-    private static PFNGLUNIFORM2UIVPROC _glUniform2uiv;
+    private PFNGLUNIFORM2UIVPROC _glUniform2uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of an unsigned int uniform variable for the current program object
@@ -8894,7 +8892,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniform2uiv( GLint location, GLsizei count, GLuint* value )
+    public void glUniform2uiv( GLint location, GLsizei count, GLuint* value )
     {
         _glUniform2uiv( location, count, value );
     }
@@ -8905,7 +8903,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform2uiv( GLint location, GLuint[] value )
+    public void glUniform2uiv( GLint location, GLuint[] value )
     {
         fixed ( GLuint* p = &value[ 0 ] )
         {
@@ -8917,7 +8915,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM3UIVPROC( GLint location, GLsizei count, GLuint* value );
 
-    private static PFNGLUNIFORM3UIVPROC _glUniform3uiv;
+    private PFNGLUNIFORM3UIVPROC _glUniform3uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of an unsigned int uniform variable for the current program object
@@ -8928,7 +8926,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniform3uiv( GLint location, GLsizei count, GLuint* value )
+    public void glUniform3uiv( GLint location, GLsizei count, GLuint* value )
     {
         _glUniform3uiv( location, count, value );
     }
@@ -8939,7 +8937,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform3uiv( GLint location, GLuint[] value )
+    public void glUniform3uiv( GLint location, GLuint[] value )
     {
         fixed ( GLuint* p = &value[ 0 ] )
         {
@@ -8951,7 +8949,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORM4UIVPROC( GLint location, GLsizei count, GLuint* value );
 
-    private static PFNGLUNIFORM4UIVPROC _glUniform4uiv;
+    private PFNGLUNIFORM4UIVPROC _glUniform4uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of an unsigned int uniform variable for the current program object
@@ -8962,7 +8960,7 @@ public static unsafe class GL
     ///     Specifies a pointer to an array of <paramref name="count" /> values that will be used to update the
     ///     specified uniform variable.
     /// </param>
-    public static void glUniform4uiv( GLint location, GLsizei count, GLuint* value )
+    public void glUniform4uiv( GLint location, GLsizei count, GLuint* value )
     {
         _glUniform4uiv( location, count, value );
     }
@@ -8973,7 +8971,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform4uiv( GLint location, GLuint[] value )
+    public void glUniform4uiv( GLint location, GLuint[] value )
     {
         fixed ( GLuint* p = &value[ 0 ] )
         {
@@ -8985,7 +8983,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLTEXPARAMETERIIVPROC( GLenum target, GLenum pname, GLint* param );
 
-    private static PFNGLTEXPARAMETERIIVPROC _glTexParameterIiv;
+    private PFNGLTEXPARAMETERIIVPROC _glTexParameterIiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Set the value of a texture parameter for the current texture unit, with integer values
@@ -9007,7 +9005,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_WRAP_S" />, <see cref="GL_TEXTURE_WRAP_T" /> or <see cref="GL_TEXTURE_WRAP_R" />.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname" />.</param>
-    public static void glTexParameterIiv( GLenum target, GLenum pname, GLint* param )
+    public void glTexParameterIiv( GLenum target, GLenum pname, GLint* param )
     {
         _glTexParameterIiv( target, pname, param );
     }
@@ -9033,7 +9031,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_WRAP_S" />, <see cref="GL_TEXTURE_WRAP_T" /> or <see cref="GL_TEXTURE_WRAP_R" />.
     /// </param>
     /// <param name="param">Specifies an array of values that will be used to update the specified texture parameter.</param>
-    public static void glTexParameterIiv( GLenum target, GLenum pname, GLint[] param )
+    public void glTexParameterIiv( GLenum target, GLenum pname, GLint[] param )
     {
         fixed ( GLint* p = &param[ 0 ] )
         {
@@ -9045,7 +9043,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLTEXPARAMETERIUIVPROC( GLenum target, GLenum pname, GLuint* param );
 
-    private static PFNGLTEXPARAMETERIUIVPROC _glTexParameterIuiv;
+    private PFNGLTEXPARAMETERIUIVPROC _glTexParameterIuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Set the value of a texture parameter for the current texture unit, with unsigned integer values
@@ -9067,7 +9065,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_WRAP_S" />, <see cref="GL_TEXTURE_WRAP_T" /> or <see cref="GL_TEXTURE_WRAP_R" />.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname" />.</param>
-    public static void glTexParameterIuiv( GLenum target, GLenum pname, GLuint* param )
+    public void glTexParameterIuiv( GLenum target, GLenum pname, GLuint* param )
     {
         _glTexParameterIuiv( target, pname, param );
     }
@@ -9093,7 +9091,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_WRAP_S" />, <see cref="GL_TEXTURE_WRAP_T" /> or <see cref="GL_TEXTURE_WRAP_R" />.
     /// </param>
     /// <param name="param">Specifies an array of values that will be used to update the specified texture parameter.</param>
-    public static void glTexParameterIuiv( GLenum target, GLenum pname, GLuint[] param )
+    public void glTexParameterIuiv( GLenum target, GLenum pname, GLuint[] param )
     {
         fixed ( GLuint* p =
                    &param[ 0 ] )
@@ -9106,7 +9104,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETTEXPARAMETERIIVPROC( GLenum target, GLenum pname, GLint* parameters );
 
-    private static PFNGLGETTEXPARAMETERIIVPROC _glGetTexParameterIiv;
+    private PFNGLGETTEXPARAMETERIIVPROC _glGetTexParameterIiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Get the value of a texture parameter for the current texture unit, with signed integer values
@@ -9128,7 +9126,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_WRAP_S" />, <see cref="GL_TEXTURE_WRAP_T" /> or <see cref="GL_TEXTURE_WRAP_R" />.
     /// </param>
     /// <param name="parameters">Returns the texture parameter value.</param>
-    public static void glGetTexParameterIiv( GLenum target, GLenum pname, GLint* parameters )
+    public void glGetTexParameterIiv( GLenum target, GLenum pname, GLint* parameters )
     {
         _glGetTexParameterIiv( target, pname, parameters );
     }
@@ -9154,7 +9152,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_WRAP_S" />, <see cref="GL_TEXTURE_WRAP_T" /> or <see cref="GL_TEXTURE_WRAP_R" />.
     /// </param>
     /// <param name="parameters">A <see langword="ref" /> to an array to receive the texture parameter value.</param>
-    public static void glGetTexParameterIiv( GLenum target, GLenum pname, ref GLint[] parameters )
+    public void glGetTexParameterIiv( GLenum target, GLenum pname, ref GLint[] parameters )
     {
         fixed ( GLint* p =
                    &parameters[ 0 ] )
@@ -9167,7 +9165,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETTEXPARAMETERIUIVPROC( GLenum target, GLenum pname, GLuint* parameters );
 
-    private static PFNGLGETTEXPARAMETERIUIVPROC _glGetTexParameterIuiv;
+    private PFNGLGETTEXPARAMETERIUIVPROC _glGetTexParameterIuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Get the value of a texture parameter for the current texture unit, with unsigned integer values
@@ -9189,7 +9187,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_WRAP_S" />, <see cref="GL_TEXTURE_WRAP_T" /> or <see cref="GL_TEXTURE_WRAP_R" />.
     /// </param>
     /// <param name="parameters">Returns the texture parameter value.</param>
-    public static void glGetTexParameterIuiv( GLenum target, GLenum pname, GLuint* parameters )
+    public void glGetTexParameterIuiv( GLenum target, GLenum pname, GLuint* parameters )
     {
         _glGetTexParameterIuiv( target, pname, parameters );
     }
@@ -9215,7 +9213,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_WRAP_S" />, <see cref="GL_TEXTURE_WRAP_T" /> or <see cref="GL_TEXTURE_WRAP_R" />.
     /// </param>
     /// <param name="parameters">A <see langword="ref" /> to an array to receive the texture parameter value.</param>
-    public static void glGetTexParameterIuiv( GLenum target, GLenum pname, ref GLuint[] parameters )
+    public void glGetTexParameterIuiv( GLenum target, GLenum pname, ref GLuint[] parameters )
     {
         fixed ( GLuint* p =
                    &parameters[ 0 ] )
@@ -9228,7 +9226,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCLEARBUFFERIVPROC( GLenum buffer, GLint drawbuffer, GLint* value );
 
-    private static PFNGLCLEARBUFFERIVPROC _glClearBufferiv;
+    private PFNGLCLEARBUFFERIVPROC _glClearBufferiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Clear a buffer to an integer value. Refer to <see href="https://docs.gl/gl4/glClearBuffer" /> for details on how to
@@ -9240,7 +9238,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="drawbuffer">Specify a partical draw buffer to clear.</param>
     /// <param name="value">Specifies the value to clear the buffer to.</param>
-    public static void glClearBufferiv( GLenum buffer, GLint drawbuffer, GLint* value )
+    public void glClearBufferiv( GLenum buffer, GLint drawbuffer, GLint* value )
     {
         _glClearBufferiv( buffer, drawbuffer, value );
     }
@@ -9256,7 +9254,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="drawbuffer">Specify a partical draw buffer to clear.</param>
     /// <param name="value">Specifies the value to clear the buffer to.</param>
-    public static void glClearBufferiv( GLenum buffer, GLint drawbuffer, GLint[] value )
+    public void glClearBufferiv( GLenum buffer, GLint drawbuffer, GLint[] value )
     {
         fixed ( GLint* p =
                    &value[ 0 ] )
@@ -9269,7 +9267,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCLEARBUFFERUIVPROC( GLenum buffer, GLint drawbuffer, GLuint* value );
 
-    private static PFNGLCLEARBUFFERUIVPROC _glClearBufferuiv;
+    private PFNGLCLEARBUFFERUIVPROC _glClearBufferuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Clear a buffer to an unsigned integer value. Refer to <see href="https://docs.gl/gl4/glClearBuffer" /> for details
@@ -9281,7 +9279,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="drawbuffer">Specify a partical draw buffer to clear.</param>
     /// <param name="value">Specifies the value to clear the buffer to.</param>
-    public static void glClearBufferuiv( GLenum buffer, GLint drawbuffer, GLuint* value )
+    public void glClearBufferuiv( GLenum buffer, GLint drawbuffer, GLuint* value )
     {
         _glClearBufferuiv( buffer, drawbuffer, value );
     }
@@ -9297,7 +9295,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="drawbuffer">Specify a partical draw buffer to clear.</param>
     /// <param name="value">Specifies the value to clear the buffer to.</param>
-    public static void glClearBufferuiv( GLenum buffer, GLint drawbuffer, GLuint[] value )
+    public void glClearBufferuiv( GLenum buffer, GLint drawbuffer, GLuint[] value )
     {
         fixed ( GLuint* p =
                    &value[ 0 ] )
@@ -9310,7 +9308,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCLEARBUFFERFVPROC( GLenum buffer, GLint drawbuffer, GLfloat* value );
 
-    private static PFNGLCLEARBUFFERFVPROC _glClearBufferfv;
+    private PFNGLCLEARBUFFERFVPROC _glClearBufferfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Clear a buffer to a floating point value. Refer to <see href="https://docs.gl/gl4/glClearBuffer" /> for details on
@@ -9322,7 +9320,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="drawbuffer">Specify a partical draw buffer to clear.</param>
     /// <param name="value">Specifies the value to clear the buffer to.</param>
-    public static void glClearBufferfv( GLenum buffer, GLint drawbuffer, GLfloat* value )
+    public void glClearBufferfv( GLenum buffer, GLint drawbuffer, GLfloat* value )
     {
         _glClearBufferfv( buffer, drawbuffer, value );
     }
@@ -9338,7 +9336,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="drawbuffer">Specify a partical draw buffer to clear.</param>
     /// <param name="value">Specifies the value to clear the buffer to.</param>
-    public static void glClearBufferfv( GLenum buffer, GLint drawbuffer, GLfloat[] value )
+    public void glClearBufferfv( GLenum buffer, GLint drawbuffer, GLfloat[] value )
     {
         fixed ( GLfloat* p =
                    &value[ 0 ] )
@@ -9351,7 +9349,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCLEARBUFFERFIPROC( GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil );
 
-    private static PFNGLCLEARBUFFERFIPROC _glClearBufferfi;
+    private PFNGLCLEARBUFFERFIPROC _glClearBufferfi;
 
     /// <summary>
     ///     Clear a buffer to a floating point value. Refer to <see href="https://docs.gl/gl4/glClearBuffer" /> for details on
@@ -9364,7 +9362,7 @@ public static unsafe class GL
     /// <param name="drawbuffer">Must be zero.</param>
     /// <param name="depth">Specifies the value to clear the depth buffer to.</param>
     /// <param name="stencil">Specifies the value to clear the stencil buffer to.</param>
-    public static void glClearBufferfi( GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil )
+    public void glClearBufferfi( GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil )
     {
         _glClearBufferfi( buffer, drawbuffer, depth, stencil );
     }
@@ -9372,7 +9370,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLubyte* PFNGLGETSTRINGIPROC( GLenum name, GLuint index );
 
-    private static PFNGLGETSTRINGIPROC _glGetStringi;
+    private PFNGLGETSTRINGIPROC _glGetStringi;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns a string describing the current GL connection.
@@ -9383,7 +9381,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="index">Specifies the index of the string to return.</param>
     /// <returns>The requested string.</returns>
-    public static GLubyte* glGetStringi( GLenum name, GLuint index )
+    public GLubyte* glGetStringi( GLenum name, GLuint index )
     {
         return _glGetStringi( name, index );
     }
@@ -9398,7 +9396,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="index">Specifies the index of the string to return.</param>
     /// <returns>The requested string.</returns>
-    public static string glGetStringiSafe( GLenum name, GLuint index )
+    public string glGetStringiSafe( GLenum name, GLuint index )
     {
         var ptr = _glGetStringi( name, index );
 
@@ -9421,7 +9419,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLISRENDERBUFFERPROC( GLuint renderbuffer );
 
-    private static PFNGLISRENDERBUFFERPROC _glIsRenderbuffer;
+    private PFNGLISRENDERBUFFERPROC _glIsRenderbuffer;
 
     /// <summary>
     ///     Determine if a name corresponds to a renderbuffer object.
@@ -9431,7 +9429,7 @@ public static unsafe class GL
     ///     <see langword="true" /> if <paramref name="renderbuffer" /> is the name of a renderbuffer object.
     ///     <see langword="false" /> otherwise.
     /// </returns>
-    public static GLboolean glIsRenderbuffer( GLuint renderbuffer )
+    public GLboolean glIsRenderbuffer( GLuint renderbuffer )
     {
         return _glIsRenderbuffer( renderbuffer );
     }
@@ -9439,7 +9437,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBINDRENDERBUFFERPROC( GLenum target, GLuint renderbuffer );
 
-    private static PFNGLBINDRENDERBUFFERPROC _glBindRenderbuffer;
+    private PFNGLBINDRENDERBUFFERPROC _glBindRenderbuffer;
 
     /// <summary>
     ///     Bind a named renderbuffer object.
@@ -9449,7 +9447,7 @@ public static unsafe class GL
     ///     <see cref="GL_RENDERBUFFER" />.
     /// </param>
     /// <param name="renderbuffer">Specifies the name of the renderbuffer object to bind.</param>
-    public static void glBindRenderbuffer( GLenum target, GLuint renderbuffer )
+    public void glBindRenderbuffer( GLenum target, GLuint renderbuffer )
     {
         _glBindRenderbuffer( target, renderbuffer );
     }
@@ -9457,7 +9455,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDELETERENDERBUFFERSPROC( GLsizei n, GLuint* renderbuffers );
 
-    private static PFNGLDELETERENDERBUFFERSPROC _glDeleteRenderbuffers;
+    private PFNGLDELETERENDERBUFFERSPROC _glDeleteRenderbuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Delete named renderbuffer objects.
@@ -9467,7 +9465,7 @@ public static unsafe class GL
     ///     Specifies an array of <paramref name="n" /> values, each of which contains a renderbuffer
     ///     object name to be deleted.
     /// </param>
-    public static void glDeleteRenderbuffers( GLsizei n, GLuint* renderbuffers )
+    public void glDeleteRenderbuffers( GLsizei n, GLuint* renderbuffers )
     {
         _glDeleteRenderbuffers( n, renderbuffers );
     }
@@ -9477,7 +9475,7 @@ public static unsafe class GL
     ///     Delete named renderbuffer objects.
     /// </summary>
     /// <param name="renderbuffers">Specifies an array of renderbuffer object names to be deleted.</param>
-    public static void glDeleteRenderbuffers( params GLuint[] renderbuffers )
+    public void glDeleteRenderbuffers( params GLuint[] renderbuffers )
     {
         fixed ( GLuint* p =
                    &renderbuffers[ 0 ] )
@@ -9490,14 +9488,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGENRENDERBUFFERSPROC( GLsizei n, GLuint* renderbuffers );
 
-    private static PFNGLGENRENDERBUFFERSPROC _glGenRenderbuffers;
+    private PFNGLGENRENDERBUFFERSPROC _glGenRenderbuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Generate renderbuffer object names.
     /// </summary>
     /// <param name="n">Specifies the number of renderbuffer object names to generate.</param>
     /// <param name="renderbuffers">Specifies an array in which the generated renderbuffer object names are to be stored.</param>
-    public static void glGenRenderbuffers( GLsizei n, GLuint* renderbuffers )
+    public void glGenRenderbuffers( GLsizei n, GLuint* renderbuffers )
     {
         _glGenRenderbuffers( n, renderbuffers );
     }
@@ -9508,7 +9506,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of renderbuffer object names to generate.</param>
     /// <returns>Array of generated renderbuffer object names.</returns>
-    public static GLuint[] glGenRenderbuffers( GLsizei n )
+    public GLuint[] glGenRenderbuffers( GLsizei n )
     {
         var renderbuffers = new GLuint[ n ];
 
@@ -9525,7 +9523,7 @@ public static unsafe class GL
     ///     Generate a single renderbuffer object name.
     /// </summary>
     /// <returns>The generated renderbuffer object name.</returns>
-    public static GLuint glGenRenderbuffer()
+    public GLuint glGenRenderbuffer()
     {
         return glGenRenderbuffers( 1 )[ 0 ];
     }
@@ -9534,7 +9532,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLRENDERBUFFERSTORAGEPROC( GLenum target, GLenum internalformat, GLsizei width, GLsizei height );
 
-    private static PFNGLRENDERBUFFERSTORAGEPROC _glRenderbufferStorage;
+    private PFNGLRENDERBUFFERSTORAGEPROC _glRenderbufferStorage;
 
     /// <summary>
     ///     Establish data storage, format and dimensions of a renderbuffer object's image.
@@ -9546,7 +9544,7 @@ public static unsafe class GL
     /// <param name="internalformat">Specifies the internal format to use for the renderbuffer object's image.</param>
     /// <param name="width">Specifies the width of the renderbuffer, in pixels.</param>
     /// <param name="height">Specifies the height of the renderbuffer, in pixels.</param>
-    public static void glRenderbufferStorage( GLenum target, GLenum internalformat, GLsizei width, GLsizei height )
+    public void glRenderbufferStorage( GLenum target, GLenum internalformat, GLsizei width, GLsizei height )
     {
         _glRenderbufferStorage( target, internalformat, width, height );
     }
@@ -9554,7 +9552,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETRENDERBUFFERPARAMETERIVPROC( GLenum target, GLenum pname, GLint* parameters );
 
-    private static PFNGLGETRENDERBUFFERPARAMETERIVPROC _glGetRenderbufferParameteriv;
+    private PFNGLGETRENDERBUFFERPARAMETERIVPROC _glGetRenderbufferParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return renderbuffer object parameter values.
@@ -9572,7 +9570,7 @@ public static unsafe class GL
     ///     <see cref="GL_RENDERBUFFER_DEPTH_SIZE" />, or <see cref="GL_RENDERBUFFER_STENCIL_SIZE" />.
     /// </param>
     /// <param name="parameters">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    public static void glGetRenderbufferParameteriv( GLenum target, GLenum pname, GLint* parameters )
+    public void glGetRenderbufferParameteriv( GLenum target, GLenum pname, GLint* parameters )
     {
         _glGetRenderbufferParameteriv( target, pname, parameters );
     }
@@ -9594,7 +9592,7 @@ public static unsafe class GL
     ///     <see cref="GL_RENDERBUFFER_DEPTH_SIZE" />, or <see cref="GL_RENDERBUFFER_STENCIL_SIZE" />.
     /// </param>
     /// <param name="parameters">A <see langword="ref" /> to an array which will receive the value of the queried parameter.</param>
-    public static void glGetRenderbufferParameteriv( GLenum target, GLenum pname, ref GLint[] parameters )
+    public void glGetRenderbufferParameteriv( GLenum target, GLenum pname, ref GLint[] parameters )
     {
         fixed ( GLint* p =
                    &parameters[ 0 ] )
@@ -9607,7 +9605,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLISFRAMEBUFFERPROC( GLuint framebuffer );
 
-    private static PFNGLISFRAMEBUFFERPROC _glIsFramebuffer;
+    private PFNGLISFRAMEBUFFERPROC _glIsFramebuffer;
 
     /// <summary>
     ///     Determine if a name corresponds to a framebuffer object.
@@ -9617,7 +9615,7 @@ public static unsafe class GL
     ///     <see langword="true" /> if <paramref name="framebuffer" /> is the name of a framebuffer object.
     ///     <see langword="false" /> otherwise.
     /// </returns>
-    public static GLboolean glIsFramebuffer( GLuint framebuffer )
+    public GLboolean glIsFramebuffer( GLuint framebuffer )
     {
         return _glIsFramebuffer( framebuffer );
     }
@@ -9625,7 +9623,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBINDFRAMEBUFFERPROC( GLenum target, GLuint framebuffer );
 
-    private static PFNGLBINDFRAMEBUFFERPROC _glBindFramebuffer;
+    private PFNGLBINDFRAMEBUFFERPROC _glBindFramebuffer;
 
     /// <summary>
     ///     Bind a named framebuffer object.
@@ -9635,7 +9633,7 @@ public static unsafe class GL
     ///     <see cref="GL_FRAMEBUFFER" />, <see cref="GL_DRAW_FRAMEBUFFER" /> or <see cref="GL_READ_FRAMEBUFFER" />.
     /// </param>
     /// <param name="framebuffer">Specifies the name of a framebuffer object.</param>
-    public static void glBindFramebuffer( GLenum target, GLuint framebuffer )
+    public void glBindFramebuffer( GLenum target, GLuint framebuffer )
     {
         _glBindFramebuffer( target, framebuffer );
     }
@@ -9643,14 +9641,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDELETEFRAMEBUFFERSPROC( GLsizei n, GLuint* framebuffers );
 
-    private static PFNGLDELETEFRAMEBUFFERSPROC _glDeleteFramebuffers;
+    private PFNGLDELETEFRAMEBUFFERSPROC _glDeleteFramebuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Delete named framebuffer objects.
     /// </summary>
     /// <param name="n">Specifies the number of framebuffer objects to be deleted.</param>
     /// <param name="framebuffers">Specifies an array of framebuffer objects to be deleted.</param>
-    public static void glDeleteFramebuffers( GLsizei n, GLuint* framebuffers )
+    public void glDeleteFramebuffers( GLsizei n, GLuint* framebuffers )
     {
         _glDeleteFramebuffers( n, framebuffers );
     }
@@ -9660,7 +9658,7 @@ public static unsafe class GL
     ///     Delete named framebuffer objects.
     /// </summary>
     /// <param name="framebuffers">Specifies an array of framebuffer objects to be deleted.</param>
-    public static void glDeleteFramebuffers( params GLuint[] framebuffers )
+    public void glDeleteFramebuffers( params GLuint[] framebuffers )
     {
         fixed ( GLuint* p =
                    &framebuffers[ 0 ] )
@@ -9673,14 +9671,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGENFRAMEBUFFERSPROC( GLsizei n, GLuint* framebuffers );
 
-    private static PFNGLGENFRAMEBUFFERSPROC _glGenFramebuffers;
+    private PFNGLGENFRAMEBUFFERSPROC _glGenFramebuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Generate framebuffer object names.
     /// </summary>
     /// <param name="n">Specifies the number of framebuffer object names to generate.</param>
     /// <param name="framebuffers">Specifies an array in which the generated framebuffer object names are stored.</param>
-    public static void glGenFramebuffers( GLsizei n, GLuint* framebuffers )
+    public void glGenFramebuffers( GLsizei n, GLuint* framebuffers )
     {
         _glGenFramebuffers( n, framebuffers );
     }
@@ -9691,7 +9689,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of framebuffer object names to generate.</param>
     /// <returns>An array in which the generated framebuffer object names are stored.</returns>
-    public static GLuint[] glGenFramebuffers( GLsizei n )
+    public GLuint[] glGenFramebuffers( GLsizei n )
     {
         var framebuffers = new GLuint[ n ];
 
@@ -9708,7 +9706,7 @@ public static unsafe class GL
     ///     Generate a single framebuffer object name.
     /// </summary>
     /// <returns>The generated framebuffer object name.</returns>
-    public static GLuint glGenFramebuffer()
+    public GLuint glGenFramebuffer()
     {
         return glGenFramebuffers( 1 )[ 0 ];
     }
@@ -9717,7 +9715,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLenum PFNGLCHECKFRAMEBUFFERSTATUSPROC( GLenum target );
 
-    private static PFNGLCHECKFRAMEBUFFERSTATUSPROC _glCheckFramebufferStatus;
+    private PFNGLCHECKFRAMEBUFFERSTATUSPROC _glCheckFramebufferStatus;
 
     /// <summary>
     ///     Check the completeness status of a framebuffer object.
@@ -9730,7 +9728,7 @@ public static unsafe class GL
     ///     The framebuffer completeness status of <paramref name="target" />. Refer to
     ///     <see href="https://docs.gl/gl4/glCheckFramebufferStatus" /> for a list of all possible values.
     /// </returns>
-    public static GLenum glCheckFramebufferStatus( GLenum target )
+    public GLenum glCheckFramebufferStatus( GLenum target )
     {
         return _glCheckFramebufferStatus( target );
     }
@@ -9738,7 +9736,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLFRAMEBUFFERTEXTURE1DPROC( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level );
 
-    private static PFNGLFRAMEBUFFERTEXTURE1DPROC _glFramebufferTexture1D;
+    private PFNGLFRAMEBUFFERTEXTURE1DPROC _glFramebufferTexture1D;
 
     /// <summary>
     ///     Attach a level of a 1D texture object as a logical buffer to the currently bound framebuffer object.
@@ -9755,7 +9753,7 @@ public static unsafe class GL
     /// <param name="textarget">Specifies the type of texture.</param>
     /// <param name="texture">Specifies the name of an existing 1D texture object.</param>
     /// <param name="level">Specifies the mipmap level of the texture object to attach.</param>
-    public static void glFramebufferTexture1D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level )
+    public void glFramebufferTexture1D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level )
     {
         _glFramebufferTexture1D( target, attachment, textarget, texture, level );
     }
@@ -9763,7 +9761,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLFRAMEBUFFERTEXTURE2DPROC( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level );
 
-    private static PFNGLFRAMEBUFFERTEXTURE2DPROC _glFramebufferTexture2D;
+    private PFNGLFRAMEBUFFERTEXTURE2DPROC _glFramebufferTexture2D;
 
     /// <summary>
     ///     Attach a level of a 2D texture object as a logical buffer to the currently bound framebuffer object.
@@ -9780,7 +9778,7 @@ public static unsafe class GL
     /// <param name="textarget">Specifies the type of texture.</param>
     /// <param name="texture">Specifies the name of an existing 2D texture object.</param>
     /// <param name="level">Specifies the mipmap level of the texture object to attach.</param>
-    public static void glFramebufferTexture2D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level )
+    public void glFramebufferTexture2D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level )
     {
         _glFramebufferTexture2D( target, attachment, textarget, texture, level );
     }
@@ -9788,7 +9786,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLFRAMEBUFFERTEXTURE3DPROC( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset );
 
-    private static PFNGLFRAMEBUFFERTEXTURE3DPROC _glFramebufferTexture3D;
+    private PFNGLFRAMEBUFFERTEXTURE3DPROC _glFramebufferTexture3D;
 
     /// <summary>
     ///     Attach a level of a 3D texture object as a logical buffer to the currently bound framebuffer object.
@@ -9806,7 +9804,7 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of an existing 3D texture object.</param>
     /// <param name="level">Specifies the mipmap level of the texture object to attach.</param>
     /// <param name="zoffset">Specifies the zoffset texel to be used as the framebuffer attachment point.</param>
-    public static void glFramebufferTexture3D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset )
+    public void glFramebufferTexture3D( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset )
     {
         _glFramebufferTexture3D( target, attachment, textarget, texture, level, zoffset );
     }
@@ -9814,7 +9812,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLFRAMEBUFFERRENDERBUFFERPROC( GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer );
 
-    private static PFNGLFRAMEBUFFERRENDERBUFFERPROC _glFramebufferRenderbuffer;
+    private PFNGLFRAMEBUFFERRENDERBUFFERPROC _glFramebufferRenderbuffer;
 
     /// <summary>
     ///     Attach a renderbuffer as a logical buffer to the currently bound framebuffer object.
@@ -9836,7 +9834,7 @@ public static unsafe class GL
     ///     Specifies the name of an existing renderbuffer object of type
     ///     <paramref name="renderbuffertarget" />.
     /// </param>
-    public static void glFramebufferRenderbuffer( GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer )
+    public void glFramebufferRenderbuffer( GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer )
     {
         _glFramebufferRenderbuffer( target, attachment, renderbuffertarget, renderbuffer );
     }
@@ -9844,7 +9842,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC( GLenum target, GLenum attachment, GLenum pname, GLint* parameters );
 
-    private static PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC _glGetFramebufferAttachmentParameteriv;
+    private PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVPROC _glGetFramebufferAttachmentParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return parameters of a framebuffer attachment.
@@ -9863,7 +9861,7 @@ public static unsafe class GL
     ///     <see href="https://docs.gl/gl4/glGetFramebufferAttachmentParameter" /> for details.
     /// </param>
     /// <param name="parameters">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    public static void glGetFramebufferAttachmentParameteriv( GLenum target, GLenum attachment, GLenum pname, GLint* parameters )
+    public void glGetFramebufferAttachmentParameteriv( GLenum target, GLenum attachment, GLenum pname, GLint* parameters )
     {
         _glGetFramebufferAttachmentParameteriv( target, attachment, pname, parameters );
     }
@@ -9886,7 +9884,7 @@ public static unsafe class GL
     ///     <see href="https://docs.gl/gl4/glGetFramebufferAttachmentParameter" /> for details.
     /// </param>
     /// <param name="parameters">A <see langword="ref" /> to an array which will receive the returned value(s).</param>
-    public static void glGetFramebufferAttachmentParameteriv( GLenum target, GLenum attachment, GLenum pname, ref GLint[] parameters )
+    public void glGetFramebufferAttachmentParameteriv( GLenum target, GLenum attachment, GLenum pname, ref GLint[] parameters )
     {
         fixed ( GLint* p =
                    &parameters[ 0 ] )
@@ -9899,7 +9897,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGENERATEMIPMAPPROC( GLenum target );
 
-    private static PFNGLGENERATEMIPMAPPROC _glGenerateMipmap;
+    private PFNGLGENERATEMIPMAPPROC _glGenerateMipmap;
 
     /// <summary>
     ///     Generate mipmaps for a specified texture object.
@@ -9910,7 +9908,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_3D" />, <see cref="GL_TEXTURE_1D_ARRAY" />, <see cref="GL_TEXTURE_2D_ARRAY" />,
     ///     <see cref="GL_TEXTURE_CUBE_MAP" />, <see cref="GL_TEXTURE_CUBE_MAP_ARRAY" />.
     /// </param>
-    public static void glGenerateMipmap( GLenum target )
+    public void glGenerateMipmap( GLenum target )
     {
         _glGenerateMipmap( target );
     }
@@ -9927,7 +9925,7 @@ public static unsafe class GL
                                                     GLbitfield mask,
                                                     GLenum filter );
 
-    private static PFNGLBLITFRAMEBUFFERPROC _glBlitFramebuffer;
+    private PFNGLBLITFRAMEBUFFERPROC _glBlitFramebuffer;
 
     /// <summary>
     ///     Copy a block of pixels from the read framebuffer to the draw framebuffer.
@@ -9949,7 +9947,7 @@ public static unsafe class GL
     ///     Specifies the interpolation to be applied if the image is stretched. Must be one of
     ///     <see cref="GL_NEAREST" /> or <see cref="GL_LINEAR" />.
     /// </param>
-    public static void glBlitFramebuffer( GLint srcX0,
+    public void glBlitFramebuffer( GLint srcX0,
                                           GLint srcY0,
                                           GLint srcX1,
                                           GLint srcY1,
@@ -9966,7 +9964,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC( GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height );
 
-    private static PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC _glRenderbufferStorageMultisample;
+    private PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC _glRenderbufferStorageMultisample;
 
     /// <summary>
     ///     Establish data storage, format and dimensions of a renderbuffer object's image.
@@ -9979,7 +9977,7 @@ public static unsafe class GL
     /// <param name="internalformat">Specifies the internal format to be used for the renderbuffer object's image.</param>
     /// <param name="width">Specifies the width of the renderbuffer, in pixels.</param>
     /// <param name="height">Specifies the height of the renderbuffer, in pixels.</param>
-    public static void glRenderbufferStorageMultisample( GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height )
+    public void glRenderbufferStorageMultisample( GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height )
     {
         _glRenderbufferStorageMultisample( target, samples, internalformat, width, height );
     }
@@ -9987,7 +9985,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLFRAMEBUFFERTEXTURELAYERPROC( GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer );
 
-    private static PFNGLFRAMEBUFFERTEXTURELAYERPROC _glFramebufferTextureLayer;
+    private PFNGLFRAMEBUFFERTEXTURELAYERPROC _glFramebufferTextureLayer;
 
     /// <summary>
     ///     Attach a single layer of a texture object as a logical buffer to the currently bound framebuffer object.
@@ -10003,7 +10001,7 @@ public static unsafe class GL
     ///     Specifies the layer of a 3D texture that is to be attached, if any. Must be a number in the range 0
     ///     to the value of <see cref="GL_MAX_ARRAY_TEXTURE_LAYERS" /> minus 1.
     /// </param>
-    public static void glFramebufferTextureLayer( GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer )
+    public void glFramebufferTextureLayer( GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer )
     {
         _glFramebufferTextureLayer( target, attachment, texture, level, layer );
     }
@@ -10011,7 +10009,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void* PFNGLMAPBUFFERRANGEPROC( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access );
 
-    private static PFNGLMAPBUFFERRANGEPROC _glMapBufferRange;
+    private PFNGLMAPBUFFERRANGEPROC _glMapBufferRange;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Map all or part of a buffer object's data store into the client's address space.
@@ -10029,7 +10027,7 @@ public static unsafe class GL
     /// <param name="length">Specifies the length of the range to be mapped.</param>
     /// <param name="access">Specifies a combination of access flags indicating the desired access to the range.</param>
     /// <returns>Returns a pointer to the beginning of the mapped range.</returns>
-    public static void* glMapBufferRange( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access )
+    public void* glMapBufferRange( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access )
     {
         return _glMapBufferRange( target, offset, length, access );
     }
@@ -10051,7 +10049,7 @@ public static unsafe class GL
     /// <param name="length">Specifies the length of the range to be mapped.</param>
     /// <param name="access">Specifies a combination of access flags indicating the desired access to the range.</param>
     /// <returns>Returns a type-safe and memory-safe <see cref="System.Span{T}" /> of the entire mapped memory.</returns>
-    public static Span< T > glMapBufferRange<T>( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access ) where T : unmanaged
+    public Span< T > glMapBufferRange<T>( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access ) where T : unmanaged
     {
         void* ret = _glMapBufferRange( target, offset, length, access );
 
@@ -10062,7 +10060,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLFLUSHMAPPEDBUFFERRANGEPROC( GLenum target, GLintptr offset, GLsizeiptr length );
 
-    private static PFNGLFLUSHMAPPEDBUFFERRANGEPROC _glFlushMappedBufferRange;
+    private PFNGLFLUSHMAPPEDBUFFERRANGEPROC _glFlushMappedBufferRange;
 
     /// <summary>
     ///     Invalidate portions of the buffer object's data store.
@@ -10081,7 +10079,7 @@ public static unsafe class GL
     ///     invalidated.
     /// </param>
     /// <param name="length">Specifies the length of the range of bytes to be flushed and/or invalidated.</param>
-    public static void glFlushMappedBufferRange( GLenum target, GLintptr offset, GLsizeiptr length )
+    public void glFlushMappedBufferRange( GLenum target, GLintptr offset, GLsizeiptr length )
     {
         _glFlushMappedBufferRange( target, offset, length );
     }
@@ -10089,13 +10087,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBINDVERTEXARRAYPROC( GLuint array );
 
-    private static PFNGLBINDVERTEXARRAYPROC _glBindVertexArray;
+    private PFNGLBINDVERTEXARRAYPROC _glBindVertexArray;
 
     /// <summary>
     ///     Bind a vertex array object.
     /// </summary>
     /// <param name="array">Specifies the name of the vertex array to bind.</param>
-    public static void glBindVertexArray( GLuint array )
+    public void glBindVertexArray( GLuint array )
     {
         _glBindVertexArray( array );
     }
@@ -10103,14 +10101,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDELETEVERTEXARRAYSPROC( GLsizei n, GLuint* arrays );
 
-    private static PFNGLDELETEVERTEXARRAYSPROC _glDeleteVertexArrays;
+    private PFNGLDELETEVERTEXARRAYSPROC _glDeleteVertexArrays;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Delete vertex array objects.
     /// </summary>
     /// <param name="n">Specifies the number of vertex array objects to be deleted.</param>
     /// <param name="arrays">Specifies an array of <paramref name="n" /> names of vertex array objects to be deleted.</param>
-    public static void glDeleteVertexArrays( GLsizei n, GLuint* arrays )
+    public void glDeleteVertexArrays( GLsizei n, GLuint* arrays )
     {
         _glDeleteVertexArrays( n, arrays );
     }
@@ -10120,7 +10118,7 @@ public static unsafe class GL
     ///     Delete vertex array objects.
     /// </summary>
     /// <param name="arrays">Specifies an array of vertex array objects to be deleted.</param>
-    public static void glDeleteVertexArrays( params GLuint[] arrays )
+    public void glDeleteVertexArrays( params GLuint[] arrays )
     {
         fixed ( GLuint* p = &arrays[ 0 ] )
         {
@@ -10132,14 +10130,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGENVERTEXARRAYSPROC( GLsizei n, GLuint* arrays );
 
-    private static PFNGLGENVERTEXARRAYSPROC _glGenVertexArrays;
+    private PFNGLGENVERTEXARRAYSPROC _glGenVertexArrays;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Generate vertex array object names.
     /// </summary>
     /// <param name="n">Specifies the number of vertex array object names to generate.</param>
     /// <param name="arrays">Specifies an array in which the generated vertex array object names are stored.</param>
-    public static void glGenVertexArrays( GLsizei n, GLuint* arrays )
+    public void glGenVertexArrays( GLsizei n, GLuint* arrays )
     {
         _glGenVertexArrays( n, arrays );
     }
@@ -10150,7 +10148,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of vertex array object names to generate.</param>
     /// <returns>Returns an array of <paramref name="n" /> generated vertex array object names.</returns>
-    public static GLuint[] glGenVertexArrays( GLsizei n )
+    public GLuint[] glGenVertexArrays( GLsizei n )
     {
         var arrays = new GLuint[ n ];
 
@@ -10167,7 +10165,7 @@ public static unsafe class GL
     ///     Generate a single vertex array object name.
     /// </summary>
     /// <returns>Returns a generated vertex array object name.</returns>
-    public static GLuint glGenVertexArray()
+    public GLuint glGenVertexArray()
     {
         GLuint array = 0;
         _glGenVertexArrays( 1, &array );
@@ -10179,7 +10177,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLISVERTEXARRAYPROC( GLuint array );
 
-    private static PFNGLISVERTEXARRAYPROC _glIsVertexArray;
+    private PFNGLISVERTEXARRAYPROC _glIsVertexArray;
 
     /// <summary>
     ///     Determine if a name corresponds to a vertex array object.
@@ -10189,7 +10187,7 @@ public static unsafe class GL
     ///     Returns <see langword="true" /> if <paramref name="array" /> is the name of a vertex array object. Otherwise,
     ///     returns <see langword="false" />.
     /// </returns>
-    public static GLboolean glIsVertexArray( GLuint array )
+    public GLboolean glIsVertexArray( GLuint array )
     {
         return _glIsVertexArray( array );
     }
@@ -10204,7 +10202,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDRAWARRAYSINSTANCEDPROC( GLenum mode, GLint first, GLsizei count, GLsizei instancecount );
 
-    private static PFNGLDRAWARRAYSINSTANCEDPROC _glDrawArraysInstanced;
+    private PFNGLDRAWARRAYSINSTANCEDPROC _glDrawArraysInstanced;
 
     /// <summary>
     ///     Draw multiple instances of a range of elements
@@ -10222,7 +10220,7 @@ public static unsafe class GL
     ///     Specifies the number of instances of the specified range of indices to be
     ///     rendered.
     /// </param>
-    public static void glDrawArraysInstanced( GLenum mode, GLint first, GLsizei count, GLsizei instancecount )
+    public void glDrawArraysInstanced( GLenum mode, GLint first, GLsizei count, GLsizei instancecount )
     {
         _glDrawArraysInstanced( mode, first, count, instancecount );
     }
@@ -10230,7 +10228,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDRAWELEMENTSINSTANCEDPROC( GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount );
 
-    private static PFNGLDRAWELEMENTSINSTANCEDPROC _glDrawElementsInstanced;
+    private PFNGLDRAWELEMENTSINSTANCEDPROC _glDrawElementsInstanced;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Draw multiple instances of a set of elements
@@ -10252,7 +10250,7 @@ public static unsafe class GL
     ///     Specifies the number of instances of the specified range of indices to be
     ///     rendered.
     /// </param>
-    public static void glDrawElementsInstanced( GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount )
+    public void glDrawElementsInstanced( GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount )
     {
         _glDrawElementsInstanced( mode, count, type, indices, instancecount );
     }
@@ -10278,7 +10276,7 @@ public static unsafe class GL
     ///     type of the indices.
     /// </param>
     /// <param name="instancecount">Specifies the number of instances of the specified range of indices to be rendered.</param>
-    public static void glDrawElementsInstanced<T>( GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount )
+    public void glDrawElementsInstanced<T>( GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount )
         where T : unmanaged, IUnsignedNumber< T >
     {
         fixed ( T* p
@@ -10292,7 +10290,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLTEXBUFFERPROC( GLenum target, GLenum internalformat, GLuint buffer );
 
-    private static PFNGLTEXBUFFERPROC _glTexBuffer;
+    private PFNGLTEXBUFFERPROC _glTexBuffer;
 
     /// <summary>
     ///     Attach a buffer object's data store to a buffer texture object
@@ -10306,7 +10304,7 @@ public static unsafe class GL
     ///     Specifies the name of an existing buffer object whose storage to attach to the specified buffer
     ///     texture object.
     /// </param>
-    public static void glTexBuffer( GLenum target, GLenum internalformat, GLuint buffer )
+    public void glTexBuffer( GLenum target, GLenum internalformat, GLuint buffer )
     {
         _glTexBuffer( target, internalformat, buffer );
     }
@@ -10314,13 +10312,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLPRIMITIVERESTARTINDEXPROC( GLuint index );
 
-    private static PFNGLPRIMITIVERESTARTINDEXPROC _glPrimitiveRestartIndex;
+    private PFNGLPRIMITIVERESTARTINDEXPROC _glPrimitiveRestartIndex;
 
     /// <summary>
     ///     Specify the primitive restart index
     /// </summary>
     /// <param name="index">Specifies the value to be interpreted as the primitive restart index.</param>
-    public static void glPrimitiveRestartIndex( GLuint index )
+    public void glPrimitiveRestartIndex( GLuint index )
     {
         _glPrimitiveRestartIndex( index );
     }
@@ -10328,7 +10326,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLCOPYBUFFERSUBDATAPROC( GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size );
 
-    private static PFNGLCOPYBUFFERSUBDATAPROC _glCopyBufferSubData;
+    private PFNGLCOPYBUFFERSUBDATAPROC _glCopyBufferSubData;
 
     /// <summary>
     ///     Copy part of a buffer object's data store to the the data store of another buffer object.
@@ -10352,7 +10350,7 @@ public static unsafe class GL
     /// <param name="readOffset">Specifies the offset into the data store of the buffer object containing the data to copy.</param>
     /// <param name="writeOffset">Specifies the offset into the data store of the buffer object into which data will be copied.</param>
     /// <param name="size">Specifies the size in bytes of the data to be copied.</param>
-    public static void glCopyBufferSubData( GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size )
+    public void glCopyBufferSubData( GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size )
     {
         _glCopyBufferSubData( readTarget, writeTarget, readOffset, writeOffset, size );
     }
@@ -10360,7 +10358,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETUNIFORMINDICESPROC( GLuint program, GLsizei uniformCount, GLchar** uniformNames, GLuint* uniformIndices );
 
-    private static PFNGLGETUNIFORMINDICESPROC _glGetUniformIndices;
+    private PFNGLGETUNIFORMINDICESPROC _glGetUniformIndices;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Retrieve the indices of a number of uniforms within a program object
@@ -10369,7 +10367,7 @@ public static unsafe class GL
     /// <param name="uniformCount">Specifies the number of uniforms whose indices to retrieve.</param>
     /// <param name="uniformNames">Specifies an array of pointers to strings containing the names of the queried uniforms.</param>
     /// <param name="uniformIndices">Specifies an array to receive the indices of the uniforms specified in uniformNames.</param>
-    public static void glGetUniformIndices( GLuint program, GLsizei uniformCount, GLchar** uniformNames, GLuint* uniformIndices )
+    public void glGetUniformIndices( GLuint program, GLsizei uniformCount, GLchar** uniformNames, GLuint* uniformIndices )
     {
         _glGetUniformIndices( program, uniformCount, uniformNames, uniformIndices );
     }
@@ -10381,7 +10379,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the name of a program containing uniforms whose indices to retrieve.</param>
     /// <param name="uniformNames">Specifies an array of strings containing the names of the queried uniforms.</param>
     /// <returns>An array of indices of the uniforms specified in uniformNames.</returns>
-    public static GLuint[] glGetUniformIndices( GLuint program, params string[] uniformNames )
+    public GLuint[] glGetUniformIndices( GLuint program, params string[] uniformNames )
     {
         var uniformCount     = uniformNames.Length;
         var uniformNamesPtrs = new GLchar[ uniformCount ][];
@@ -10415,7 +10413,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETACTIVEUNIFORMSIVPROC( GLuint program, GLsizei uniformCount, GLuint* uniformIndices, GLenum pname, GLint* parameters );
 
-    private static PFNGLGETACTIVEUNIFORMSIVPROC _glGetActiveUniformsiv;
+    private PFNGLGETACTIVEUNIFORMSIVPROC _glGetActiveUniformsiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns information about several active uniform variables for the specified program object
@@ -10434,7 +10432,7 @@ public static unsafe class GL
     ///     Specifies an array of <paramref name="uniformCount" /> integers to receive the information
     ///     requested about each uniform variable specified in <paramref name="uniformIndices" />.
     /// </param>
-    public static void glGetActiveUniformsiv( GLuint program, GLsizei uniformCount, GLuint* uniformIndices, GLenum pname, GLint* parameters )
+    public void glGetActiveUniformsiv( GLuint program, GLsizei uniformCount, GLuint* uniformIndices, GLenum pname, GLint* parameters )
     {
         _glGetActiveUniformsiv( program, uniformCount, uniformIndices, pname, parameters );
     }
@@ -10456,7 +10454,7 @@ public static unsafe class GL
     ///     An array of integers to receive the information requested about each uniform variable specified in
     ///     <paramref name="uniformIndices" />.
     /// </returns>
-    public static GLint[] glGetActiveUniformsiv( GLuint program, GLenum pname, params GLuint[] uniformIndices )
+    public GLint[] glGetActiveUniformsiv( GLuint program, GLenum pname, params GLuint[] uniformIndices )
     {
         var uniformCount = uniformIndices.Length;
         var parameters   = new GLint[ uniformCount ];
@@ -10476,7 +10474,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETACTIVEUNIFORMNAMEPROC( GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei* length, GLchar* uniformName );
 
-    private static PFNGLGETACTIVEUNIFORMNAMEPROC _glGetActiveUniformName;
+    private PFNGLGETACTIVEUNIFORMNAMEPROC _glGetActiveUniformName;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the name of an active uniform variable at the specified index within a program object
@@ -10495,7 +10493,7 @@ public static unsafe class GL
     ///     Returns the name of the uniform variable at the specified index in the program object
     ///     specified by <paramref name="program" />.
     /// </param>
-    public static void glGetActiveUniformName( GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei* length, GLchar* uniformName )
+    public void glGetActiveUniformName( GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei* length, GLchar* uniformName )
     {
         _glGetActiveUniformName( program, uniformIndex, bufSize, length, uniformName );
     }
@@ -10514,7 +10512,7 @@ public static unsafe class GL
     ///     The name of the uniform variable at the specified index in the program object specified by
     ///     <paramref name="program" />, in the correct size.
     /// </returns>
-    public static string glGetActiveUniformName( GLuint program, GLuint uniformIndex, GLsizei bufSize )
+    public string glGetActiveUniformName( GLuint program, GLuint uniformIndex, GLsizei bufSize )
     {
         var     uniformName = stackalloc GLchar[ bufSize ];
         GLsizei length;
@@ -10527,7 +10525,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLuint PFNGLGETUNIFORMBLOCKINDEXPROC( GLuint program, GLchar* uniformBlockName );
 
-    private static PFNGLGETUNIFORMBLOCKINDEXPROC _glGetUniformBlockIndex;
+    private PFNGLGETUNIFORMBLOCKINDEXPROC _glGetUniformBlockIndex;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the index of a uniform block within a program
@@ -10541,7 +10539,7 @@ public static unsafe class GL
     ///     The index of the uniform block named <paramref name="uniformBlockName" /> within the program object
     ///     <paramref name="program" />.
     /// </returns>
-    public static GLuint glGetUniformBlockIndex( GLuint program, GLchar* uniformBlockName )
+    public GLuint glGetUniformBlockIndex( GLuint program, GLchar* uniformBlockName )
     {
         return _glGetUniformBlockIndex( program, uniformBlockName );
     }
@@ -10552,7 +10550,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="uniformBlockName">Contains the name of the uniform block whose index to query.</param>
-    public static GLuint glGetUniformBlockIndex( GLuint program, string uniformBlockName )
+    public GLuint glGetUniformBlockIndex( GLuint program, string uniformBlockName )
     {
         var uniformBlockNameBytes = Encoding.UTF8.GetBytes( uniformBlockName );
 
@@ -10566,7 +10564,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETACTIVEUNIFORMBLOCKIVPROC( GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint* parameters );
 
-    private static PFNGLGETACTIVEUNIFORMBLOCKIVPROC _glGetActiveUniformBlockiv;
+    private PFNGLGETACTIVEUNIFORMBLOCKIVPROC _glGetActiveUniformBlockiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns information about an active uniform block
@@ -10578,7 +10576,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="pname">Specifies the specific information to query about the active uniform block.</param>
     /// <param name="parameters">Returns the requested information about the uniform block.</param>
-    public static void glGetActiveUniformBlockiv( GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint* parameters )
+    public void glGetActiveUniformBlockiv( GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint* parameters )
     {
         _glGetActiveUniformBlockiv( program, uniformBlockIndex, pname, parameters );
     }
@@ -10594,7 +10592,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="pname">Specifies the specific information to query about the active uniform block.</param>
     /// <param name="parameters">Returns the requested information about the uniform block.</param>
-    public static void glGetActiveUniformBlockiv( GLuint program, GLuint uniformBlockIndex, GLenum pname, ref GLint[] parameters )
+    public void glGetActiveUniformBlockiv( GLuint program, GLuint uniformBlockIndex, GLenum pname, ref GLint[] parameters )
     {
         fixed ( GLint* p =
                    &parameters[ 0 ] )
@@ -10611,7 +10609,7 @@ public static unsafe class GL
                                                               GLsizei* length,
                                                               GLchar* uniformBlockName );
 
-    private static PFNGLGETACTIVEUNIFORMBLOCKNAMEPROC _glGetActiveUniformBlockName;
+    private PFNGLGETACTIVEUNIFORMBLOCKNAMEPROC _glGetActiveUniformBlockName;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the name of an active uniform block at the specified index within a program object
@@ -10630,7 +10628,7 @@ public static unsafe class GL
     ///     Returns the name of the uniform block at the specified index in the program object
     ///     specified by <paramref name="program" />.
     /// </param>
-    public static void glGetActiveUniformBlockName( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei* length, GLchar* uniformBlockName )
+    public void glGetActiveUniformBlockName( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei* length, GLchar* uniformBlockName )
     {
         _glGetActiveUniformBlockName( program, uniformBlockIndex, bufSize, length, uniformBlockName );
     }
@@ -10646,7 +10644,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="bufSize">Specifies a maximum amount of characters OpenGL is allowed to write in the character buffer.</param>
     /// <param name="length">Returns the length of the uniform block name.</param>
-    public static string glGetActiveUniformBlockName( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize )
+    public string glGetActiveUniformBlockName( GLuint program, GLuint uniformBlockIndex, GLsizei bufSize )
     {
         var     uniformBlockName = stackalloc GLchar[ bufSize ];
         GLsizei length;
@@ -10659,7 +10657,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLUNIFORMBLOCKBINDINGPROC( GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding );
 
-    private static PFNGLUNIFORMBLOCKBINDINGPROC _glUniformBlockBinding;
+    private PFNGLUNIFORMBLOCKBINDINGPROC _glUniformBlockBinding;
 
     /// <summary>
     ///     Assigns a binding point to an active uniform block
@@ -10673,7 +10671,7 @@ public static unsafe class GL
     ///     Specifies the binding point to which to bind the uniform block with index
     ///     <paramref name="uniformBlockIndex" /> within the program object <paramref name="program" />.
     /// </param>
-    public static void glUniformBlockBinding( GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding )
+    public void glUniformBlockBinding( GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding )
     {
         _glUniformBlockBinding( program, uniformBlockIndex, uniformBlockBinding );
     }
@@ -10688,7 +10686,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDRAWELEMENTSBASEVERTEXPROC( GLenum mode, GLsizei count, GLenum type, void* indices, GLint basevertex );
 
-    private static PFNGLDRAWELEMENTSBASEVERTEXPROC _glDrawElementsBaseVertex;
+    private PFNGLDRAWELEMENTSBASEVERTEXPROC _glDrawElementsBaseVertex;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Render primitives from array data with a per-element offset.
@@ -10710,7 +10708,7 @@ public static unsafe class GL
     ///     Specifies a constant that should be added to each element of <paramref name="indices" /> when
     ///     choosing elements from the enabled vertex arrays.
     /// </param>
-    public static void glDrawElementsBaseVertex( GLenum mode, GLsizei count, GLenum type, void* indices, GLint basevertex )
+    public void glDrawElementsBaseVertex( GLenum mode, GLsizei count, GLenum type, void* indices, GLint basevertex )
     {
         _glDrawElementsBaseVertex( mode, count, type, indices, basevertex );
     }
@@ -10739,7 +10737,7 @@ public static unsafe class GL
     ///     Specifies a constant that should be added to each element of <paramref name="indices" /> when
     ///     choosing elements from the enabled vertex arrays.
     /// </param>
-    public static void glDrawElementsBaseVertex<T>( GLenum mode, GLsizei count, GLenum type, T[] indices, GLint basevertex )
+    public void glDrawElementsBaseVertex<T>( GLenum mode, GLsizei count, GLenum type, T[] indices, GLint basevertex )
         where T : unmanaged, IUnsignedNumber< T >
     {
         fixed ( void* p
@@ -10759,7 +10757,7 @@ public static unsafe class GL
                                                                 void* indices,
                                                                 GLint basevertex );
 
-    private static PFNGLDRAWRANGEELEMENTSBASEVERTEXPROC _glDrawRangeElementsBaseVertex;
+    private PFNGLDRAWRANGEELEMENTSBASEVERTEXPROC _glDrawRangeElementsBaseVertex;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Render primitives from array data with a per-element offset.
@@ -10783,7 +10781,7 @@ public static unsafe class GL
     ///     Specifies a constant that should be added to each element of <paramref name="indices" /> when
     ///     choosing elements from the enabled vertex arrays.
     /// </param>
-    public static void glDrawRangeElementsBaseVertex( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, void* indices, GLint basevertex )
+    public void glDrawRangeElementsBaseVertex( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, void* indices, GLint basevertex )
     {
         _glDrawRangeElementsBaseVertex( mode, start, end, count, type, indices, basevertex );
     }
@@ -10814,7 +10812,7 @@ public static unsafe class GL
     ///     Specifies a constant that should be added to each element of <paramref name="indices" /> when
     ///     choosing elements from the enabled vertex arrays.
     /// </param>
-    public static void glDrawRangeElementsBaseVertex<T>( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, T[] indices, GLint basevertex )
+    public void glDrawRangeElementsBaseVertex<T>( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, T[] indices, GLint basevertex )
         where T : unmanaged, IUnsignedNumber< T >
     {
         fixed ( void* p
@@ -10833,7 +10831,7 @@ public static unsafe class GL
                                                                     GLsizei instancecount,
                                                                     GLint basevertex );
 
-    private static PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXPROC _glDrawElementsInstancedBaseVertex;
+    private PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXPROC _glDrawElementsInstancedBaseVertex;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Render multiple instances of a set of primitives from array data with a per-element offset.
@@ -10856,7 +10854,7 @@ public static unsafe class GL
     ///     Specifies a constant that should be added to each element of <paramref name="indices" /> when
     ///     choosing elements from the enabled vertex arrays.
     /// </param>
-    public static void glDrawElementsInstancedBaseVertex( GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount, GLint basevertex )
+    public void glDrawElementsInstancedBaseVertex( GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount, GLint basevertex )
     {
         _glDrawElementsInstancedBaseVertex( mode, count, type, indices, instancecount, basevertex );
     }
@@ -10886,7 +10884,7 @@ public static unsafe class GL
     ///     Specifies a constant that should be added to each element of <paramref name="indices" /> when
     ///     choosing elements from the enabled vertex arrays.
     /// </param>
-    public static void glDrawElementsInstancedBaseVertex<T>( GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount, GLint basevertex )
+    public void glDrawElementsInstancedBaseVertex<T>( GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount, GLint basevertex )
         where T : unmanaged, IUnsignedNumber< T >
     {
         fixed ( void* p
@@ -10905,7 +10903,7 @@ public static unsafe class GL
                                                                 GLsizei drawcount,
                                                                 GLint* basevertex );
 
-    private static PFNGLMULTIDRAWELEMENTSBASEVERTEXPROC _glMultiDrawElementsBaseVertex;
+    private PFNGLMULTIDRAWELEMENTSBASEVERTEXPROC _glMultiDrawElementsBaseVertex;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Render multiple sets of primitives from array data with a per-element offset.
@@ -10928,7 +10926,7 @@ public static unsafe class GL
     ///     Specifies an array of the constants that should be added to each element of
     ///     <paramref name="indices" /> when choosing elements from the enabled vertex arrays.
     /// </param>
-    public static void glMultiDrawElementsBaseVertex( GLenum mode, GLsizei* count, GLenum type, void** indices, GLsizei drawcount, GLint* basevertex )
+    public void glMultiDrawElementsBaseVertex( GLenum mode, GLsizei* count, GLenum type, void** indices, GLsizei drawcount, GLint* basevertex )
     {
         _glMultiDrawElementsBaseVertex( mode, count, type, indices, drawcount, basevertex );
     }
@@ -10956,7 +10954,7 @@ public static unsafe class GL
     ///     Specifies an array of the constants that should be added to each element of
     ///     <paramref name="indices" /> when choosing elements from the enabled vertex arrays.
     /// </param>
-    public static void glMultiDrawElementsBaseVertex<T>( GLenum mode, GLenum type, T[][] indices, GLint[] basevertex ) where T : unmanaged, IUnsignedNumber< T >
+    public void glMultiDrawElementsBaseVertex<T>( GLenum mode, GLenum type, T[][] indices, GLint[] basevertex ) where T : unmanaged, IUnsignedNumber< T >
     {
         if ( indices.Length != basevertex.Length )
         {
@@ -10992,7 +10990,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLPROVOKINGVERTEXPROC( GLenum mode );
 
-    private static PFNGLPROVOKINGVERTEXPROC _glProvokingVertex;
+    private PFNGLPROVOKINGVERTEXPROC _glProvokingVertex;
 
     /// <summary>
     ///     Specify the vertex to be used as the source of data for flat shaded varyings.
@@ -11001,7 +10999,7 @@ public static unsafe class GL
     ///     Specifies the vertex to be used as the source of data for flat shaded varyings. Must be
     ///     <see cref="GL_FIRST_VERTEX_CONVENTION" /> or <see cref="GL_LAST_VERTEX_CONVENTION" />.
     /// </param>
-    public static void glProvokingVertex( GLenum mode )
+    public void glProvokingVertex( GLenum mode )
     {
         _glProvokingVertex( mode );
     }
@@ -11009,7 +11007,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void* PFNGLFENCESYNCPROC( GLenum condition, GLbitfield flags );
 
-    private static PFNGLFENCESYNCPROC _glFenceSync;
+    private PFNGLFENCESYNCPROC _glFenceSync;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Creates a new sync object and inserts it into the GL command stream.
@@ -11023,7 +11021,7 @@ public static unsafe class GL
     ///     presently defined for this operation and <paramref name="flags" /> must be zero.
     /// </param>
     /// <returns>The sync object.</returns>
-    public static void* glFenceSync( GLenum condition, GLbitfield flags )
+    public void* glFenceSync( GLenum condition, GLbitfield flags )
     {
         return _glFenceSync( condition, flags );
     }
@@ -11041,7 +11039,7 @@ public static unsafe class GL
     ///     presently defined for this operation and <paramref name="flags" /> must be zero.
     /// </param>
     /// <returns>The sync object.</returns>
-    public static IntPtr glFenceSyncSafe( GLenum condition, GLbitfield flags )
+    public IntPtr glFenceSyncSafe( GLenum condition, GLbitfield flags )
     {
         return new IntPtr( _glFenceSync( condition, flags ) );
     }
@@ -11050,7 +11048,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLISSYNCPROC( void* sync );
 
-    private static PFNGLISSYNCPROC _glIsSync;
+    private PFNGLISSYNCPROC _glIsSync;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Determines if a name corresponds to a sync object.
@@ -11060,7 +11058,7 @@ public static unsafe class GL
     ///     <see langword="true" /> if <paramref name="sync" /> is a name of a sync object. Otherwise,
     ///     <see langword="false" />.
     /// </returns>
-    public static GLboolean glIsSync( void* sync )
+    public GLboolean glIsSync( void* sync )
     {
         return _glIsSync( sync );
     }
@@ -11074,7 +11072,7 @@ public static unsafe class GL
     ///     <see langword="true" /> if <paramref name="sync" /> is a name of a sync object. Otherwise,
     ///     <see langword="false" />.
     /// </returns>
-    public static GLboolean glIsSyncSafe( IntPtr sync )
+    public GLboolean glIsSyncSafe( IntPtr sync )
     {
         return _glIsSync( sync.ToPointer() );
     }
@@ -11083,13 +11081,13 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDELETESYNCPROC( void* sync );
 
-    private static PFNGLDELETESYNCPROC _glDeleteSync;
+    private PFNGLDELETESYNCPROC _glDeleteSync;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Deletes a sync object.
     /// </summary>
     /// <param name="sync">Specifies the sync object to be deleted.</param>
-    public static void glDeleteSync( void* sync )
+    public void glDeleteSync( void* sync )
     {
         _glDeleteSync( sync );
     }
@@ -11099,7 +11097,7 @@ public static unsafe class GL
     ///     Deletes a sync object.
     /// </summary>
     /// <param name="sync">Specifies the sync object to be deleted.</param>
-    public static void glDeleteSyncSafe( IntPtr sync )
+    public void glDeleteSyncSafe( IntPtr sync )
     {
         _glDeleteSync( sync.ToPointer() );
     }
@@ -11108,7 +11106,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLenum PFNGLCLIENTWAITSYNCPROC( void* sync, GLbitfield flags, GLuint64 timeout );
 
-    private static PFNGLCLIENTWAITSYNCPROC _glClientWaitSync;
+    private PFNGLCLIENTWAITSYNCPROC _glClientWaitSync;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Causes the client to block and wait for a sync object to become signaled.
@@ -11126,7 +11124,7 @@ public static unsafe class GL
     ///     One of <see cref="GL_ALREADY_SIGNALED" />, <see cref="GL_TIMEOUT_EXPIRED" />,
     ///     <see cref="GL_CONDITION_SATISFIED" />, or <see cref="GL_WAIT_FAILED" />.
     /// </returns>
-    public static GLenum glClientWaitSync( void* sync, GLbitfield flags, GLuint64 timeout )
+    public GLenum glClientWaitSync( void* sync, GLbitfield flags, GLuint64 timeout )
     {
         return _glClientWaitSync( sync, flags, timeout );
     }
@@ -11148,7 +11146,7 @@ public static unsafe class GL
     ///     One of <see cref="GL_ALREADY_SIGNALED" />, <see cref="GL_TIMEOUT_EXPIRED" />,
     ///     <see cref="GL_CONDITION_SATISFIED" />, or <see cref="GL_WAIT_FAILED" />.
     /// </returns>
-    public static GLenum glClientWaitSyncSafe( IntPtr sync, GLbitfield flags, GLuint64 timeout )
+    public GLenum glClientWaitSyncSafe( IntPtr sync, GLbitfield flags, GLuint64 timeout )
     {
         return _glClientWaitSync( sync.ToPointer(), flags, timeout );
     }
@@ -11157,7 +11155,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLWAITSYNCPROC( void* sync, GLbitfield flags, GLuint64 timeout );
 
-    private static PFNGLWAITSYNCPROC _glWaitSync;
+    private PFNGLWAITSYNCPROC _glWaitSync;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Causes the server to block and wait for a sync object to become signaled.
@@ -11168,7 +11166,7 @@ public static unsafe class GL
     ///     The timeout, specified in nanoseconds, for which the implementation should wait for
     ///     <paramref name="sync" /> to become signaled.
     /// </param>
-    public static void glWaitSync( void* sync, GLbitfield flags, GLuint64 timeout )
+    public void glWaitSync( void* sync, GLbitfield flags, GLuint64 timeout )
     {
         _glWaitSync( sync, flags, timeout );
     }
@@ -11183,7 +11181,7 @@ public static unsafe class GL
     ///     The timeout, specified in nanoseconds, for which the implementation should wait for
     ///     <paramref name="sync" /> to become signaled.
     /// </param>
-    public static void glWaitSyncSafe( IntPtr sync, GLbitfield flags, GLuint64 timeout )
+    public void glWaitSyncSafe( IntPtr sync, GLbitfield flags, GLuint64 timeout )
     {
         _glWaitSync( sync.ToPointer(), flags, timeout );
     }
@@ -11192,7 +11190,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETINTEGER64VPROC( GLenum pname, GLint64* data );
 
-    private static PFNGLGETINTEGER64VPROC _glGetInteger64v;
+    private PFNGLGETINTEGER64VPROC _glGetInteger64v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the 64bit integer value or values of a selected parameter.
@@ -11202,7 +11200,7 @@ public static unsafe class GL
     ///     a list of possible values.
     /// </param>
     /// <param name="data">Returns the value or values of the specified parameter.</param>
-    public static void glGetInteger64v( GLenum pname, GLint64* data )
+    public void glGetInteger64v( GLenum pname, GLint64* data )
     {
         _glGetInteger64v( pname, data );
     }
@@ -11216,7 +11214,7 @@ public static unsafe class GL
     ///     a list of possible values.
     /// </param>
     /// <param name="data">Returns the value or values of the specified parameter.</param>
-    public static void glGetInteger64v( GLenum pname, ref GLint64[] data )
+    public void glGetInteger64v( GLenum pname, ref GLint64[] data )
     {
         fixed ( GLint64* dp = &data[ 0 ] )
         {
@@ -11228,7 +11226,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETSYNCIVPROC( void* sync, GLenum pname, GLsizei bufSize, GLsizei* length, GLint* values );
 
-    private static PFNGLGETSYNCIVPROC _glGetSynciv;
+    private PFNGLGETSYNCIVPROC _glGetSynciv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Query the properties of a sync object.
@@ -11242,7 +11240,7 @@ public static unsafe class GL
     /// <param name="bufSize">Specifies the size of the buffer whose address is given by <paramref name="values" />.</param>
     /// <param name="length">Returns the number of integers placed in <paramref name="values" />.</param>
     /// <param name="values">Returns the requested parameter.</param>
-    public static void glGetSynciv( void* sync, GLenum pname, GLsizei bufSize, GLsizei* length, GLint* values )
+    public void glGetSynciv( void* sync, GLenum pname, GLsizei bufSize, GLsizei* length, GLint* values )
     {
         _glGetSynciv( sync, pname, bufSize, length, values );
     }
@@ -11259,7 +11257,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="bufSize">Specifies the size of the buffer whose address is given by <paramref name="values" />.</param>
     /// <returns>Returns the requested parameter(s).</returns>
-    public static GLint[] glGetSynciv( IntPtr sync, GLenum pname, GLsizei bufSize )
+    public GLint[] glGetSynciv( IntPtr sync, GLenum pname, GLsizei bufSize )
     {
         var ret = new GLint[ bufSize ];
 
@@ -11277,7 +11275,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETINTEGER64I_VPROC( GLenum target, GLuint index, GLint64* data );
 
-    private static PFNGLGETINTEGER64I_VPROC _glGetInteger64i_v;
+    private PFNGLGETINTEGER64I_VPROC _glGetInteger64i_v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the 64bit integer value or values of a selected parameter.
@@ -11288,7 +11286,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="index">Specifies the index of the value to be returned.</param>
     /// <param name="data">Returns the value or values of the specified parameter.</param>
-    public static void glGetInteger64i_v( GLenum target, GLuint index, GLint64* data )
+    public void glGetInteger64i_v( GLenum target, GLuint index, GLint64* data )
     {
         _glGetInteger64i_v( target, index, data );
     }
@@ -11303,7 +11301,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="index">Specifies the index of the value to be returned.</param>
     /// <param name="data">Returns the value or values of the specified parameter.</param>
-    public static void glGetInteger64i_v( GLenum target, GLuint index, ref GLint64[] data )
+    public void glGetInteger64i_v( GLenum target, GLuint index, ref GLint64[] data )
     {
         fixed ( GLint64* dp =
                    &data[ 0 ] )
@@ -11316,7 +11314,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETBUFFERPARAMETERI64VPROC( GLenum target, GLenum pname, GLint64* parameters );
 
-    private static PFNGLGETBUFFERPARAMETERI64VPROC _glGetBufferParameteri64v;
+    private PFNGLGETBUFFERPARAMETERI64VPROC _glGetBufferParameteri64v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the value or values of a selected parameter.
@@ -11336,7 +11334,7 @@ public static unsafe class GL
     ///     <see cref="GL_BUFFER_SIZE" />, <see cref="GL_BUFFER_STORAGE_FLAGS" />, <see cref="GL_BUFFER_USAGE" />.
     /// </param>
     /// <param name="parameters">Returns the requested parameter.</param>
-    public static void glGetBufferParameteri64v( GLenum target, GLenum pname, GLint64* parameters )
+    public void glGetBufferParameteri64v( GLenum target, GLenum pname, GLint64* parameters )
     {
         _glGetBufferParameteri64v( target, pname, parameters );
     }
@@ -11360,7 +11358,7 @@ public static unsafe class GL
     ///     <see cref="GL_BUFFER_SIZE" />, <see cref="GL_BUFFER_STORAGE_FLAGS" />, <see cref="GL_BUFFER_USAGE" />.
     /// </param>
     /// <param name="parameters">Returns the requested parameter.</param>
-    public static void glGetBufferParameteri64v( GLenum target, GLenum pname, ref GLint64[] parameters )
+    public void glGetBufferParameteri64v( GLenum target, GLenum pname, ref GLint64[] parameters )
     {
         fixed ( GLint64* dp =
                    &parameters[ 0 ] )
@@ -11373,7 +11371,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLFRAMEBUFFERTEXTUREPROC( GLenum target, GLenum attachment, GLuint texture, GLint level );
 
-    private static PFNGLFRAMEBUFFERTEXTUREPROC _glFramebufferTexture;
+    private PFNGLFRAMEBUFFERTEXTUREPROC _glFramebufferTexture;
 
     /// <summary>
     ///     Attaches a level of a texture object as a logical buffer to the currently bound framebuffer object.
@@ -11390,7 +11388,7 @@ public static unsafe class GL
     /// </param>
     /// <param name="texture">Specifies the texture object whose image is to be attached.</param>
     /// <param name="level">Specifies the mipmap level of the texture object to be attached.</param>
-    public static void glFramebufferTexture( GLenum target, GLenum attachment, GLuint texture, GLint level )
+    public void glFramebufferTexture( GLenum target, GLenum attachment, GLuint texture, GLint level )
     {
         _glFramebufferTexture( target, attachment, texture, level );
     }
@@ -11403,7 +11401,7 @@ public static unsafe class GL
                                                           GLsizei height,
                                                           GLboolean fixedsamplelocations );
 
-    private static PFNGLTEXIMAGE2DMULTISAMPLEPROC _glTexImage2DMultisample;
+    private PFNGLTEXIMAGE2DMULTISAMPLEPROC _glTexImage2DMultisample;
 
     /// <summary>
     ///     Establishes the data storage, format, dimensions, and number of samples of a multisample texture's image.
@@ -11421,7 +11419,7 @@ public static unsafe class GL
     ///     of samples for all texels in the image, and the sample locations will not depend on the internal format or size of
     ///     the image.
     /// </param>
-    public static void glTexImage2DMultisample( GLenum target,
+    public void glTexImage2DMultisample( GLenum target,
                                                 GLsizei samples,
                                                 GLenum internalformat,
                                                 GLsizei width,
@@ -11440,7 +11438,7 @@ public static unsafe class GL
                                                           GLsizei depth,
                                                           GLboolean fixedsamplelocations );
 
-    private static PFNGLTEXIMAGE3DMULTISAMPLEPROC _glTexImage3DMultisample;
+    private PFNGLTEXIMAGE3DMULTISAMPLEPROC _glTexImage3DMultisample;
 
     /// <summary>
     ///     Establishes the data storage, format, dimensions, and number of samples of a multisample texture's image.
@@ -11459,7 +11457,7 @@ public static unsafe class GL
     ///     of samples for all texels in the image, and the sample locations will not depend on the internal format or size of
     ///     the image.
     /// </param>
-    public static void glTexImage3DMultisample( GLenum target,
+    public void glTexImage3DMultisample( GLenum target,
                                                 GLsizei samples,
                                                 GLenum internalformat,
                                                 GLsizei width,
@@ -11473,7 +11471,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETMULTISAMPLEFVPROC( GLenum pname, GLuint index, GLfloat* val );
 
-    private static PFNGLGETMULTISAMPLEFVPROC _glGetMultisamplefv;
+    private PFNGLGETMULTISAMPLEFVPROC _glGetMultisamplefv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Returns the location of a sample.
@@ -11481,7 +11479,7 @@ public static unsafe class GL
     /// <param name="pname">Specifies the sample parameter to query. Must be <see cref="GL_SAMPLE_POSITION" />.</param>
     /// <param name="index">Specifies the index of the sample.</param>
     /// <param name="val">Specifies the address of an array to receive the location of the sample.</param>
-    public static void glGetMultisamplefv( GLenum pname, GLuint index, GLfloat* val )
+    public void glGetMultisamplefv( GLenum pname, GLuint index, GLfloat* val )
     {
         _glGetMultisamplefv( pname, index, val );
     }
@@ -11493,7 +11491,7 @@ public static unsafe class GL
     /// <param name="pname">Specifies the sample parameter to query. Must be <see cref="GL_SAMPLE_POSITION" />.</param>
     /// <param name="index">Specifies the index of the sample.</param>
     /// <param name="val">Specifies the address of an array to receive the location of the sample.</param>
-    public static void glGetMultisamplefvSafe( GLenum pname, GLuint index, ref GLfloat[] val )
+    public void glGetMultisamplefvSafe( GLenum pname, GLuint index, ref GLfloat[] val )
     {
         fixed ( GLfloat* dp =
                    &val[ 0 ] )
@@ -11506,14 +11504,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSAMPLEMASKIPROC( GLuint maskNumber, GLbitfield mask );
 
-    private static PFNGLSAMPLEMASKIPROC _glSampleMaski;
+    private PFNGLSAMPLEMASKIPROC _glSampleMaski;
 
     /// <summary>
     ///     Controls the writing of individual bits in a logical multisample color sample.
     /// </summary>
     /// <param name="maskNumber">Specifies which 32-bit sub-word of the sample mask to update.</param>
     /// <param name="mask">Specifies a mask to enable and disable sample coverage.</param>
-    public static void glSampleMaski( GLuint maskNumber, GLbitfield mask )
+    public void glSampleMaski( GLuint maskNumber, GLbitfield mask )
     {
         _glSampleMaski( maskNumber, mask );
     }
@@ -11528,7 +11526,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBINDFRAGDATALOCATIONINDEXEDPROC( GLuint program, GLuint colorNumber, GLuint index, GLchar* name );
 
-    private static PFNGLBINDFRAGDATALOCATIONINDEXEDPROC _glBindFragDataLocationIndexed;
+    private PFNGLBINDFRAGDATALOCATIONINDEXEDPROC _glBindFragDataLocationIndexed;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Bind a user-defined varying out variable to a fragment shader color number and index.
@@ -11537,7 +11535,7 @@ public static unsafe class GL
     /// <param name="colorNumber">Specifies the color number to bind the user-defined varying out variable to.</param>
     /// <param name="index">Specifies the index of the color number to bind the user-defined varying out variable to.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable whose binding to modify.</param>
-    public static void glBindFragDataLocationIndexed( GLuint program, GLuint colorNumber, GLuint index, GLchar* name )
+    public void glBindFragDataLocationIndexed( GLuint program, GLuint colorNumber, GLuint index, GLchar* name )
     {
         _glBindFragDataLocationIndexed( program, colorNumber, index, name );
     }
@@ -11550,7 +11548,7 @@ public static unsafe class GL
     /// <param name="colorNumber">Specifies the color number to bind the user-defined varying out variable to.</param>
     /// <param name="index">Specifies the index of the color number to bind the user-defined varying out variable to.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable whose binding to modify.</param>
-    public static void glBindFragDataLocationIndexed( GLuint program, GLuint colorNumber, GLuint index, string name )
+    public void glBindFragDataLocationIndexed( GLuint program, GLuint colorNumber, GLuint index, string name )
     {
         var nameBytes = Encoding.UTF8.GetBytes( name );
 
@@ -11564,7 +11562,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLint PFNGLGETFRAGDATAINDEXPROC( GLuint program, GLchar* name );
 
-    private static PFNGLGETFRAGDATAINDEXPROC _glGetFragDataIndex;
+    private PFNGLGETFRAGDATAINDEXPROC _glGetFragDataIndex;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the index of a user-defined varying out variable.
@@ -11572,7 +11570,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the name of the program containing varying out variable whose index to query.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable whose index to query.</param>
     /// <returns>The index of the user-defined varying out variable.</returns>
-    public static GLint glGetFragDataIndex( GLuint program, GLchar* name )
+    public GLint glGetFragDataIndex( GLuint program, GLchar* name )
     {
         return _glGetFragDataIndex( program, name );
     }
@@ -11584,7 +11582,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the name of the program containing varying out variable whose index to query.</param>
     /// <param name="name">Specifies the name of the user-defined varying out variable whose index to query.</param>
     /// <returns>The index of the user-defined varying out variable.</returns>
-    public static GLint glGetFragDataIndex( GLuint program, string name )
+    public GLint glGetFragDataIndex( GLuint program, string name )
     {
         var nameBytes = Encoding.UTF8.GetBytes( name );
 
@@ -11598,14 +11596,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGENSAMPLERSPROC( GLsizei count, GLuint* samplers );
 
-    private static PFNGLGENSAMPLERSPROC _glGenSamplers;
+    private PFNGLGENSAMPLERSPROC _glGenSamplers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Generate sampler object names.
     /// </summary>
     /// <param name="count">Specifies the number of sampler object names to generate.</param>
     /// <param name="samplers">Specifies an array in which the generated sampler object names are stored.</param>
-    public static void glGenSamplers( GLsizei count, GLuint* samplers )
+    public void glGenSamplers( GLsizei count, GLuint* samplers )
     {
         _glGenSamplers( count, samplers );
     }
@@ -11616,7 +11614,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="count">Specifies the number of sampler object names to generate.</param>
     /// <returns>An array in which the generated sampler object names are stored.</returns>
-    public static GLuint[] glGenSamplers( GLsizei count )
+    public GLuint[] glGenSamplers( GLsizei count )
     {
         var result = new GLuint[ count ];
 
@@ -11633,7 +11631,7 @@ public static unsafe class GL
     ///     Generate a single sampler object name.
     /// </summary>
     /// <returns>The generated sampler object name.</returns>
-    public static GLuint glGenSampler()
+    public GLuint glGenSampler()
     {
         return glGenSamplers( 1 )[ 0 ];
     }
@@ -11642,14 +11640,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLDELETESAMPLERSPROC( GLsizei count, GLuint* samplers );
 
-    private static PFNGLDELETESAMPLERSPROC _glDeleteSamplers;
+    private PFNGLDELETESAMPLERSPROC _glDeleteSamplers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Delete named sampler objects.
     /// </summary>
     /// <param name="count">Specifies the number of sampler objects to be deleted.</param>
     /// <param name="samplers">Specifies an array of sampler objects to be deleted.</param>
-    public static void glDeleteSamplers( GLsizei count, GLuint* samplers )
+    public void glDeleteSamplers( GLsizei count, GLuint* samplers )
     {
         _glDeleteSamplers( count, samplers );
     }
@@ -11659,7 +11657,7 @@ public static unsafe class GL
     ///     Delete named sampler objects.
     /// </summary>
     /// <param name="samplers">Specifies an array of sampler objects to be deleted.</param>
-    public static void glDeleteSamplers( params GLuint[] samplers )
+    public void glDeleteSamplers( params GLuint[] samplers )
     {
         fixed ( GLuint* dp = &samplers[ 0 ] )
         {
@@ -11671,7 +11669,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate GLboolean PFNGLISSAMPLERPROC( GLuint sampler );
 
-    private static PFNGLISSAMPLERPROC _glIsSampler;
+    private PFNGLISSAMPLERPROC _glIsSampler;
 
     /// <summary>
     ///     Determine if a name corresponds to a sampler object.
@@ -11681,7 +11679,7 @@ public static unsafe class GL
     ///     <see langword="true" /> if <paramref name="sampler" /> is a value generated by OpenGL; otherwise,
     ///     <see langword="false" />.
     /// </returns>
-    public static GLboolean glIsSampler( GLuint sampler )
+    public GLboolean glIsSampler( GLuint sampler )
     {
         return _glIsSampler( sampler );
     }
@@ -11689,14 +11687,14 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLBINDSAMPLERPROC( GLuint unit, GLuint sampler );
 
-    private static PFNGLBINDSAMPLERPROC _glBindSampler;
+    private PFNGLBINDSAMPLERPROC _glBindSampler;
 
     /// <summary>
     ///     Bind a named sampler to a texturing unit.
     /// </summary>
     /// <param name="unit">Specifies the index of the texture unit to which the sampler is bound.</param>
     /// <param name="sampler">Specifies the name of a sampler.</param>
-    public static void glBindSampler( GLuint unit, GLuint sampler )
+    public void glBindSampler( GLuint unit, GLuint sampler )
     {
         _glBindSampler( unit, sampler );
     }
@@ -11704,7 +11702,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSAMPLERPARAMETERIPROC( GLuint sampler, GLenum pname, GLint param );
 
-    private static PFNGLSAMPLERPARAMETERIPROC _glSamplerParameteri;
+    private PFNGLSAMPLERPARAMETERIPROC _glSamplerParameteri;
 
     /// <summary>
     ///     Set the integer value of a sampler parameter.
@@ -11718,7 +11716,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_COMPARE_MODE" />, <see cref="GL_TEXTURE_COMPARE_FUNC" />.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname" />.</param>
-    public static void glSamplerParameteri( GLuint sampler, GLenum pname, GLint param )
+    public void glSamplerParameteri( GLuint sampler, GLenum pname, GLint param )
     {
         _glSamplerParameteri( sampler, pname, param );
     }
@@ -11726,7 +11724,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSAMPLERPARAMETERIVPROC( GLuint sampler, GLenum pname, GLint* param );
 
-    private static PFNGLSAMPLERPARAMETERIVPROC _glSamplerParameteriv;
+    private PFNGLSAMPLERPARAMETERIVPROC _glSamplerParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Set the integer value of a sampler parameter.
@@ -11740,7 +11738,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_COMPARE_MODE" />, <see cref="GL_TEXTURE_COMPARE_FUNC" />.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname" />.</param>
-    public static void glSamplerParameteriv( GLuint sampler, GLenum pname, GLint* param )
+    public void glSamplerParameteriv( GLuint sampler, GLenum pname, GLint* param )
     {
         _glSamplerParameteriv( sampler, pname, param );
     }
@@ -11758,7 +11756,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_COMPARE_MODE" />, <see cref="GL_TEXTURE_COMPARE_FUNC" />.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname" />.</param>
-    public static void glSamplerParameteriv( GLuint sampler, GLenum pname, GLint[] param )
+    public void glSamplerParameteriv( GLuint sampler, GLenum pname, GLint[] param )
     {
         fixed ( GLint* dp =
                    &param[ 0 ] )
@@ -11771,7 +11769,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSAMPLERPARAMETERFPROC( GLuint sampler, GLenum pname, GLfloat param );
 
-    private static PFNGLSAMPLERPARAMETERFPROC _glSamplerParameterf;
+    private PFNGLSAMPLERPARAMETERFPROC _glSamplerParameterf;
 
     /// <summary>
     ///     Set the float value of a sampler parameter.
@@ -11785,7 +11783,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_COMPARE_MODE" />, <see cref="GL_TEXTURE_COMPARE_FUNC" />.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname" />.</param>
-    public static void glSamplerParameterf( GLuint sampler, GLenum pname, GLfloat param )
+    public void glSamplerParameterf( GLuint sampler, GLenum pname, GLfloat param )
     {
         _glSamplerParameterf( sampler, pname, param );
     }
@@ -11793,7 +11791,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSAMPLERPARAMETERFVPROC( GLuint sampler, GLenum pname, GLfloat* param );
 
-    private static PFNGLSAMPLERPARAMETERFVPROC _glSamplerParameterfv;
+    private PFNGLSAMPLERPARAMETERFVPROC _glSamplerParameterfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Set the float value of a sampler parameter.
@@ -11807,7 +11805,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_COMPARE_MODE" />, <see cref="GL_TEXTURE_COMPARE_FUNC" />.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname" />.</param>
-    public static void glSamplerParameterfv( GLuint sampler, GLenum pname, GLfloat* param )
+    public void glSamplerParameterfv( GLuint sampler, GLenum pname, GLfloat* param )
     {
         _glSamplerParameterfv( sampler, pname, param );
     }
@@ -11825,7 +11823,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_COMPARE_MODE" />, <see cref="GL_TEXTURE_COMPARE_FUNC" />.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname" />.</param>
-    public static void glSamplerParameterfv( GLuint sampler, GLenum pname, GLfloat[] param )
+    public void glSamplerParameterfv( GLuint sampler, GLenum pname, GLfloat[] param )
     {
         fixed ( GLfloat* dp =
                    &param[ 0 ] )
@@ -11838,7 +11836,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSAMPLERPARAMETERIIVPROC( GLuint sampler, GLenum pname, GLint* param );
 
-    private static PFNGLSAMPLERPARAMETERIIVPROC _glSamplerParameterIiv;
+    private PFNGLSAMPLERPARAMETERIIVPROC _glSamplerParameterIiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Set the integer value of a sampler parameter.
@@ -11852,7 +11850,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_COMPARE_MODE" />, <see cref="GL_TEXTURE_COMPARE_FUNC" />.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname" />.</param>
-    public static void glSamplerParameterIiv( GLuint sampler, GLenum pname, GLint* param )
+    public void glSamplerParameterIiv( GLuint sampler, GLenum pname, GLint* param )
     {
         _glSamplerParameterIiv( sampler, pname, param );
     }
@@ -11870,7 +11868,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_COMPARE_MODE" />, <see cref="GL_TEXTURE_COMPARE_FUNC" />.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname" />.</param>
-    public static void glSamplerParameterIiv( GLuint sampler, GLenum pname, GLint[] param )
+    public void glSamplerParameterIiv( GLuint sampler, GLenum pname, GLint[] param )
     {
         fixed ( GLint* dp =
                    &param[ 0 ] )
@@ -11883,7 +11881,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLSAMPLERPARAMETERIUIVPROC( GLuint sampler, GLenum pname, GLuint* param );
 
-    private static PFNGLSAMPLERPARAMETERIUIVPROC _glSamplerParameterIuiv;
+    private PFNGLSAMPLERPARAMETERIUIVPROC _glSamplerParameterIuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Set the unsigned integer value of a sampler parameter.
@@ -11897,7 +11895,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_COMPARE_MODE" />, <see cref="GL_TEXTURE_COMPARE_FUNC" />.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname" />.</param>
-    public static void glSamplerParameterIuiv( GLuint sampler, GLenum pname, GLuint* param )
+    public void glSamplerParameterIuiv( GLuint sampler, GLenum pname, GLuint* param )
     {
         _glSamplerParameterIuiv( sampler, pname, param );
     }
@@ -11915,7 +11913,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_COMPARE_MODE" />, <see cref="GL_TEXTURE_COMPARE_FUNC" />.
     /// </param>
     /// <param name="param">Specifies the value of <paramref name="pname" />.</param>
-    public static void glSamplerParameterIuiv( GLuint sampler, GLenum pname, GLuint[] param )
+    public void glSamplerParameterIuiv( GLuint sampler, GLenum pname, GLuint[] param )
     {
         fixed ( GLuint* dp =
                    &param[ 0 ] )
@@ -11928,7 +11926,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETSAMPLERPARAMETERIVPROC( GLuint sampler, GLenum pname, GLint* param );
 
-    private static PFNGLGETSAMPLERPARAMETERIVPROC _glGetSamplerParameteriv;
+    private PFNGLGETSAMPLERPARAMETERIVPROC _glGetSamplerParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the integer value of a sampler parameter.
@@ -11942,7 +11940,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_COMPARE_MODE" />, <see cref="GL_TEXTURE_COMPARE_FUNC" />.
     /// </param>
     /// <param name="param">Returns the value of <paramref name="pname" />.</param>
-    public static void glGetSamplerParameteriv( GLuint sampler, GLenum pname, GLint* param )
+    public void glGetSamplerParameteriv( GLuint sampler, GLenum pname, GLint* param )
     {
         _glGetSamplerParameteriv( sampler, pname, param );
     }
@@ -11960,7 +11958,7 @@ public static unsafe class GL
     ///     <see cref="GL_TEXTURE_COMPARE_MODE" />, <see cref="GL_TEXTURE_COMPARE_FUNC" />.
     /// </param>
     /// <param name="param">Returns the value of <paramref name="pname" />.</param>
-    public static void glGetSamplerParameteriv( GLuint sampler, GLenum pname, ref GLint[] param )
+    public void glGetSamplerParameteriv( GLuint sampler, GLenum pname, ref GLint[] param )
     {
         fixed ( GLint* dp =
                    &param[ 0 ] )
@@ -11973,17 +11971,17 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETSAMPLERPARAMETERIIVPROC( GLuint sampler, GLenum pname, GLint* param );
 
-    private static PFNGLGETSAMPLERPARAMETERIIVPROC _glGetSamplerParameterIiv;
+    private PFNGLGETSAMPLERPARAMETERIIVPROC _glGetSamplerParameterIiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <inheritdoc cref="glGetSamplerParameteriv(GLuint, GLenum, GLint*)" />
-    public static void glGetSamplerParameterIiv( GLuint sampler, GLenum pname, GLint* param )
+    public void glGetSamplerParameterIiv( GLuint sampler, GLenum pname, GLint* param )
     {
         _glGetSamplerParameterIiv( sampler, pname, param );
     }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <inheritdoc cref="glGetSamplerParameteriv(GLuint, GLenum, ref GLint[])" />
-    public static void glGetSamplerParameterIiv( GLuint sampler, GLenum pname, ref GLint[] param )
+    public void glGetSamplerParameterIiv( GLuint sampler, GLenum pname, ref GLint[] param )
     {
         fixed ( GLint* dp =
                    &param[ 0 ] )
@@ -11996,17 +11994,17 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETSAMPLERPARAMETERFVPROC( GLuint sampler, GLenum pname, GLfloat* param );
 
-    private static PFNGLGETSAMPLERPARAMETERFVPROC _glGetSamplerParameterfv;
+    private PFNGLGETSAMPLERPARAMETERFVPROC _glGetSamplerParameterfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <inheritdoc cref="glGetSamplerParameteriv(GLuint, GLenum, GLint*)" />
-    public static void glGetSamplerParameterfv( GLuint sampler, GLenum pname, GLfloat* param )
+    public void glGetSamplerParameterfv( GLuint sampler, GLenum pname, GLfloat* param )
     {
         _glGetSamplerParameterfv( sampler, pname, param );
     }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <inheritdoc cref="glGetSamplerParameteriv(GLuint, GLenum, ref GLint[])" />
-    public static void glGetSamplerParameterfv( GLuint sampler, GLenum pname, ref GLfloat[] param )
+    public void glGetSamplerParameterfv( GLuint sampler, GLenum pname, ref GLfloat[] param )
     {
         fixed ( GLfloat* dp =
                    &param[ 0 ] )
@@ -12019,17 +12017,17 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETSAMPLERPARAMETERIUIVPROC( GLuint sampler, GLenum pname, GLuint* param );
 
-    private static PFNGLGETSAMPLERPARAMETERIUIVPROC _glGetSamplerParameterIuiv;
+    private PFNGLGETSAMPLERPARAMETERIUIVPROC _glGetSamplerParameterIuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <inheritdoc cref="glGetSamplerParameteriv(GLuint, GLenum, GLint*)" />
-    public static void glGetSamplerParameterIuiv( GLuint sampler, GLenum pname, GLuint* param )
+    public void glGetSamplerParameterIuiv( GLuint sampler, GLenum pname, GLuint* param )
     {
         _glGetSamplerParameterIuiv( sampler, pname, param );
     }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <inheritdoc cref="glGetSamplerParameteriv(GLuint, GLenum, ref GLint[])" />
-    public static void glGetSamplerParameterIuiv( GLuint sampler, GLenum pname, ref GLuint[] param )
+    public void glGetSamplerParameterIuiv( GLuint sampler, GLenum pname, ref GLuint[] param )
     {
         fixed ( GLuint* dp =
                    &param[ 0 ] )
@@ -12042,7 +12040,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLQUERYCOUNTERPROC( GLuint id, GLenum target );
 
-    private static PFNGLQUERYCOUNTERPROC _glQueryCounter;
+    private PFNGLQUERYCOUNTERPROC _glQueryCounter;
 
     /// <summary>
     ///     Record the GL time into a query object after all previous commands have reached the GL server but have not yet
@@ -12050,7 +12048,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="id">Specifies the name of a query object into which to record the GL time.</param>
     /// <param name="target">Specifies the counter to use as the source of the time.</param>
-    public static void glQueryCounter( GLuint id, GLenum target )
+    public void glQueryCounter( GLuint id, GLenum target )
     {
         _glQueryCounter( id, target );
     }
@@ -12058,7 +12056,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETQUERYOBJECTI64VPROC( GLuint id, GLenum pname, GLint64* param );
 
-    private static PFNGLGETQUERYOBJECTI64VPROC _glGetQueryObjecti64v;
+    private PFNGLGETQUERYOBJECTI64VPROC _glGetQueryObjecti64v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the 64bit integer value of a query object parameter.
@@ -12069,14 +12067,14 @@ public static unsafe class GL
     ///     <see cref="GL_QUERY_RESULT_NO_WAIT" /> or <see cref="GL_QUERY_RESULT_AVAILABLE" />.
     /// </param>
     /// <param name="param">Returns the value of <paramref name="pname" />.</param>
-    public static void glGetQueryObjecti64v( GLuint id, GLenum pname, GLint64* param )
+    public void glGetQueryObjecti64v( GLuint id, GLenum pname, GLint64* param )
     {
         _glGetQueryObjecti64v( id, pname, param );
     }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <inheritdoc cref="glGetQueryObjecti64v(GLuint, GLenum, GLint64*)" />
-    public static void glGetQueryObjecti64v( GLuint id, GLenum pname, ref GLint64[] param )
+    public void glGetQueryObjecti64v( GLuint id, GLenum pname, ref GLint64[] param )
     {
         fixed ( GLint64* dp =
                    &param[ 0 ] )
@@ -12089,7 +12087,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLGETQUERYOBJECTUI64VPROC( GLuint id, GLenum pname, GLuint64* param );
 
-    private static PFNGLGETQUERYOBJECTUI64VPROC _glGetQueryObjectui64v;
+    private PFNGLGETQUERYOBJECTUI64VPROC _glGetQueryObjectui64v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Return the 64bit unsigned integer value of a query object parameter.
@@ -12100,14 +12098,14 @@ public static unsafe class GL
     ///     <see cref="GL_QUERY_RESULT_NO_WAIT" /> or <see cref="GL_QUERY_RESULT_AVAILABLE" />.
     /// </param>
     /// <param name="param">Returns the value of <paramref name="pname" />.</param>
-    public static void glGetQueryObjectui64v( GLuint id, GLenum pname, GLuint64* param )
+    public void glGetQueryObjectui64v( GLuint id, GLenum pname, GLuint64* param )
     {
         _glGetQueryObjectui64v( id, pname, param );
     }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <inheritdoc cref="glGetQueryObjectui64v(GLuint, GLenum, GLuint64*)" />
-    public static void glGetQueryObjectui64v( GLuint id, GLenum pname, ref GLuint64[] param )
+    public void glGetQueryObjectui64v( GLuint id, GLenum pname, ref GLuint64[] param )
     {
         fixed ( GLuint64* dp =
                    &param[ 0 ] )
@@ -12120,7 +12118,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBDIVISORPROC( GLuint index, GLuint divisor );
 
-    private static PFNGLVERTEXATTRIBDIVISORPROC _glVertexAttribDivisor;
+    private PFNGLVERTEXATTRIBDIVISORPROC _glVertexAttribDivisor;
 
     /// <summary>
     ///     Modify the reate at which generic vertex attributes advance during instanced rendering
@@ -12130,7 +12128,7 @@ public static unsafe class GL
     ///     Specifies the number of instances that will pass between updates of the generic attribute at slot
     ///     <paramref name="index" />.
     /// </param>
-    public static void glVertexAttribDivisor( GLuint index, GLuint divisor )
+    public void glVertexAttribDivisor( GLuint index, GLuint divisor )
     {
         _glVertexAttribDivisor( index, divisor );
     }
@@ -12138,7 +12136,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBP1UIPROC( GLuint index, GLenum type, GLboolean normalized, GLuint value );
 
-    private static PFNGLVERTEXATTRIBP1UIPROC _glVertexAttribP1ui;
+    private PFNGLVERTEXATTRIBP1UIPROC _glVertexAttribP1ui;
 
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -12150,7 +12148,7 @@ public static unsafe class GL
     ///     converted directly as fixed-point values (<see langword="false" />).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    public static void glVertexAttribP1ui( GLuint index, GLenum type, GLboolean normalized, GLuint value )
+    public void glVertexAttribP1ui( GLuint index, GLenum type, GLboolean normalized, GLuint value )
     {
         _glVertexAttribP1ui( index, type, normalized, value );
     }
@@ -12158,7 +12156,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBP1UIVPROC( GLuint index, GLenum type, GLboolean normalized, GLuint* value );
 
-    private static PFNGLVERTEXATTRIBP1UIVPROC _glVertexAttribP1uiv;
+    private PFNGLVERTEXATTRIBP1UIVPROC _glVertexAttribP1uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -12170,7 +12168,7 @@ public static unsafe class GL
     ///     converted directly as fixed-point values (<see langword="false" />).
     /// </param>
     /// <param name="value">Specifies a pointer to the value of the vertex attribute.</param>
-    public static void glVertexAttribP1uiv( GLuint index, GLenum type, GLboolean normalized, GLuint* value )
+    public void glVertexAttribP1uiv( GLuint index, GLenum type, GLboolean normalized, GLuint* value )
     {
         _glVertexAttribP1uiv( index, type, normalized, value );
     }
@@ -12186,7 +12184,7 @@ public static unsafe class GL
     ///     converted directly as fixed-point values (<see langword="false" />).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    public static void glVertexAttribP1uiv( GLuint index, GLenum type, GLboolean normalized, GLuint[] value )
+    public void glVertexAttribP1uiv( GLuint index, GLenum type, GLboolean normalized, GLuint[] value )
     {
         fixed ( GLuint* dp =
                    &value[ 0 ] )
@@ -12199,7 +12197,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBP2UIPROC( GLuint index, GLenum type, GLboolean normalized, GLuint value );
 
-    private static PFNGLVERTEXATTRIBP2UIPROC _glVertexAttribP2ui;
+    private PFNGLVERTEXATTRIBP2UIPROC _glVertexAttribP2ui;
 
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -12211,7 +12209,7 @@ public static unsafe class GL
     ///     converted directly as fixed-point values (<see langword="false" />).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    public static void glVertexAttribP2ui( GLuint index, GLenum type, GLboolean normalized, GLuint value )
+    public void glVertexAttribP2ui( GLuint index, GLenum type, GLboolean normalized, GLuint value )
     {
         _glVertexAttribP2ui( index, type, normalized, value );
     }
@@ -12219,7 +12217,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBP2UIVPROC( GLuint index, GLenum type, GLboolean normalized, GLuint* value );
 
-    private static PFNGLVERTEXATTRIBP2UIVPROC _glVertexAttribP2uiv;
+    private PFNGLVERTEXATTRIBP2UIVPROC _glVertexAttribP2uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -12231,7 +12229,7 @@ public static unsafe class GL
     ///     converted directly as fixed-point values (<see langword="false" />).
     /// </param>
     /// <param name="value">Specifies a pointer to the value of the vertex attribute.</param>
-    public static void glVertexAttribP2uiv( GLuint index, GLenum type, GLboolean normalized, GLuint* value )
+    public void glVertexAttribP2uiv( GLuint index, GLenum type, GLboolean normalized, GLuint* value )
     {
         _glVertexAttribP2uiv( index, type, normalized, value );
     }
@@ -12247,7 +12245,7 @@ public static unsafe class GL
     ///     converted directly as fixed-point values (<see langword="false" />).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    public static void glVertexAttribP2uiv( GLuint index, GLenum type, GLboolean normalized, GLuint[] value )
+    public void glVertexAttribP2uiv( GLuint index, GLenum type, GLboolean normalized, GLuint[] value )
     {
         fixed ( GLuint* dp =
                    &value[ 0 ] )
@@ -12260,7 +12258,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBP3UIPROC( GLuint index, GLenum type, GLboolean normalized, GLuint value );
 
-    private static PFNGLVERTEXATTRIBP3UIPROC _glVertexAttribP3ui;
+    private PFNGLVERTEXATTRIBP3UIPROC _glVertexAttribP3ui;
 
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -12272,7 +12270,7 @@ public static unsafe class GL
     ///     converted directly as fixed-point values (<see langword="false" />).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    public static void glVertexAttribP3ui( GLuint index, GLenum type, GLboolean normalized, GLuint value )
+    public void glVertexAttribP3ui( GLuint index, GLenum type, GLboolean normalized, GLuint value )
     {
         _glVertexAttribP3ui( index, type, normalized, value );
     }
@@ -12280,7 +12278,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBP3UIVPROC( GLuint index, GLenum type, GLboolean normalized, GLuint* value );
 
-    private static PFNGLVERTEXATTRIBP3UIVPROC _glVertexAttribP3uiv;
+    private PFNGLVERTEXATTRIBP3UIVPROC _glVertexAttribP3uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -12292,7 +12290,7 @@ public static unsafe class GL
     ///     converted directly as fixed-point values (<see langword="false" />).
     /// </param>
     /// <param name="value">Specifies a pointer to the value of the vertex attribute.</param>
-    public static void glVertexAttribP3uiv( GLuint index, GLenum type, GLboolean normalized, GLuint* value )
+    public void glVertexAttribP3uiv( GLuint index, GLenum type, GLboolean normalized, GLuint* value )
     {
         _glVertexAttribP3uiv( index, type, normalized, value );
     }
@@ -12308,7 +12306,7 @@ public static unsafe class GL
     ///     converted directly as fixed-point values (<see langword="false" />).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    public static void glVertexAttribP3uiv( GLuint index, GLenum type, GLboolean normalized, GLuint[] value )
+    public void glVertexAttribP3uiv( GLuint index, GLenum type, GLboolean normalized, GLuint[] value )
     {
         fixed ( GLuint* dp =
                    &value[ 0 ] )
@@ -12321,7 +12319,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBP4UIPROC( GLuint index, GLenum type, GLboolean normalized, GLuint value );
 
-    private static PFNGLVERTEXATTRIBP4UIPROC _glVertexAttribP4ui;
+    private PFNGLVERTEXATTRIBP4UIPROC _glVertexAttribP4ui;
 
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -12333,7 +12331,7 @@ public static unsafe class GL
     ///     converted directly as fixed-point values (<see langword="false" />).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    public static void glVertexAttribP4ui( GLuint index, GLenum type, GLboolean normalized, GLuint value )
+    public void glVertexAttribP4ui( GLuint index, GLenum type, GLboolean normalized, GLuint value )
     {
         _glVertexAttribP4ui( index, type, normalized, value );
     }
@@ -12341,7 +12339,7 @@ public static unsafe class GL
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
     private delegate void PFNGLVERTEXATTRIBP4UIVPROC( GLuint index, GLenum type, GLboolean normalized, GLuint* value );
 
-    private static PFNGLVERTEXATTRIBP4UIVPROC _glVertexAttribP4uiv;
+    private PFNGLVERTEXATTRIBP4UIVPROC _glVertexAttribP4uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     ///     Specify the value of a generic vertex attribute
@@ -12353,7 +12351,7 @@ public static unsafe class GL
     ///     converted directly as fixed-point values (<see langword="false" />).
     /// </param>
     /// <param name="value">Specifies a pointer to the value of the vertex attribute.</param>
-    public static void glVertexAttribP4uiv( GLuint index, GLenum type, GLboolean normalized, GLuint* value )
+    public void glVertexAttribP4uiv( GLuint index, GLenum type, GLboolean normalized, GLuint* value )
     {
         _glVertexAttribP4uiv( index, type, normalized, value );
     }
@@ -12369,7 +12367,7 @@ public static unsafe class GL
     ///     converted directly as fixed-point values (<see langword="false" />).
     /// </param>
     /// <param name="value">Specifies the value of the vertex attribute.</param>
-    public static void glVertexAttribP4uiv( GLuint index, GLenum type, GLboolean normalized, GLuint[] value )
+    public void glVertexAttribP4uiv( GLuint index, GLenum type, GLboolean normalized, GLuint[] value )
     {
         fixed ( GLuint* dp =
                    &value[ 0 ] )
@@ -12386,48 +12384,48 @@ public static unsafe class GL
 #if OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLMINSAMPLESHADINGPROC(GLfloat value);
-    private static PFNGLMINSAMPLESHADINGPROC _glMinSampleShading;
+    private PFNGLMINSAMPLESHADINGPROC _glMinSampleShading;
     /// <summary>
     /// Specifies minimum rate at which sample shading takes place.
     /// </summary>
     /// <param name="value">Minimum rate at which sample shading takes place.</param>
-    public static void glMinSampleShading(GLfloat value) { _glMinSampleShading(value); }
+    public void glMinSampleShading(GLfloat value) { _glMinSampleShading(value); }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBLENDEQUATIONIPROC(GLuint buf, GLenum mode);
-    private static PFNGLBLENDEQUATIONIPROC _glBlendEquationi;
+    private PFNGLBLENDEQUATIONIPROC _glBlendEquationi;
     /// <summary>
     /// Set the equation used for both the RGB blend equation and the Alpha blend equation.
     /// </summary>
     /// <param name="buf">Specifies the index of the draw buffer for which to set the blend equation.</param>
     /// <param name="mode">Specifies how source and destination colors are combined. It must be one of <see cref="GL_FUNC_ADD"/>, <see cref="GL_FUNC_SUBTRACT"/>, <see cref="GL_FUNC_REVERSE_SUBTRACT"/>, <see cref="GL_MIN"/> or <see cref="GL_MAX"/>.</param>
-    public static void glBlendEquationi(GLuint buf, GLenum mode) { _glBlendEquationi(buf, mode); }
+    public void glBlendEquationi(GLuint buf, GLenum mode) { _glBlendEquationi(buf, mode); }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBLENDEQUATIONSEPARATEIPROC(GLuint buf, GLenum modeRGB, GLenum modeAlpha);
-    private static PFNGLBLENDEQUATIONSEPARATEIPROC _glBlendEquationSeparatei;
+    private PFNGLBLENDEQUATIONSEPARATEIPROC _glBlendEquationSeparatei;
     /// <summary>
     /// Set the equation used for both the RGB blend equation and the Alpha blend equation.
     /// </summary>
     /// <param name="buf">Specifies the index of the draw buffer for which to set the blend equation.</param>
     /// <param name="modeRGB">Specifies how the red, green, and blue blending factors are computed. The following symbolic constants are accepted: <see cref="GL_FUNC_ADD"/>, <see cref="GL_FUNC_SUBTRACT"/>, <see cref="GL_FUNC_REVERSE_SUBTRACT"/>, <see cref="GL_MIN"/> or <see cref="GL_MAX"/>.</param>
     /// <param name="modeAlpha">Specifies how the alpha blending factor is computed. The following symbolic constants are accepted: <see cref="GL_FUNC_ADD"/>, <see cref="GL_FUNC_SUBTRACT"/>, <see cref="GL_FUNC_REVERSE_SUBTRACT"/>, <see cref="GL_MIN"/> or <see cref="GL_MAX"/>.</param>
-    public static void glBlendEquationSeparatei(GLuint buf, GLenum modeRGB, GLenum modeAlpha) { _glBlendEquationSeparatei(buf, modeRGB, modeAlpha); }
+    public void glBlendEquationSeparatei(GLuint buf, GLenum modeRGB, GLenum modeAlpha) { _glBlendEquationSeparatei(buf, modeRGB, modeAlpha); }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBLENDFUNCIPROC(GLuint buf, GLenum src, GLenum dst);
-    private static PFNGLBLENDFUNCIPROC _glBlendFunci;
+    private PFNGLBLENDFUNCIPROC _glBlendFunci;
     /// <summary>
     /// Specify pixel arithmetic
     /// </summary>
     /// <param name="buf">Specifies the index of the draw buffer for which to set the blend function.</param>
     /// <param name="src">Specifies how the red, green, blue, and alpha source blending factors are computed. The initial value is <see cref="GL_ONE"/>.</param>
     /// <param name="dst">Specifies how the red, green, blue, and alpha destination blending factors are computed. Allowed values are the same as for <see cref="glBlendFunc"/>.</param>
-    public static void glBlendFunci(GLuint buf, GLenum src, GLenum dst) { _glBlendFunci(buf, src, dst); }
+    public void glBlendFunci(GLuint buf, GLenum src, GLenum dst) { _glBlendFunci(buf, src, dst); }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBLENDFUNCSEPARATEIPROC(GLuint buf, GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha);
-    private static PFNGLBLENDFUNCSEPARATEIPROC _glBlendFuncSeparatei;
+    private PFNGLBLENDFUNCSEPARATEIPROC _glBlendFuncSeparatei;
     /// <summary>
     /// Specify pixel arithmetic for RGB and alpha components separately
     /// </summary>
@@ -12436,7 +12434,7 @@ public static unsafe class GL
     /// <param name="dstRGB">Specifies how the red, green, and blue destination blending factors are computed. The initial value is <see cref="GL_ZERO"/>.</param>
     /// <param name="srcAlpha">Specifies how the alpha source blending factor is computed. The initial value is <see cref="GL_ONE"/>.</param>
     /// <param name="dstAlpha">Specifies how the alpha destination blending factor is computed. The initial value is <see cref="GL_ZERO"/>.</param>
-    public static void glBlendFuncSeparatei(GLuint buf, GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha) { _glBlendFuncSeparatei(buf, srcRGB, dstRGB, srcAlpha, dstAlpha); }
+    public void glBlendFuncSeparatei(GLuint buf, GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha) { _glBlendFuncSeparatei(buf, srcRGB, dstRGB, srcAlpha, dstAlpha); }
 
 #if OGL_V_4_0 || OGL_V_4_1 
     public struct DrawArraysIndirectCommand
@@ -12459,14 +12457,14 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDRAWARRAYSINDIRECTPROC(GLenum mode, void* indirect);
-    private static PFNGLDRAWARRAYSINDIRECTPROC _glDrawArraysIndirect;
+    private PFNGLDRAWARRAYSINDIRECTPROC _glDrawArraysIndirect;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Render primitives from array data, taking parameters from memory
     /// </summary>
     /// <param name="mode">Specifies what kind of primitives to render. Symbolic constants <see cref="GL_POINTS"/>, <see cref="GL_LINE_STRIP"/>, <see cref="GL_LINE_LOOP"/>, <see cref="GL_LINES"/>, <see cref="GL_LINE_STRIP_ADJACENCY"/>, <see cref="GL_LINES_ADJACENCY"/>, <see cref="GL_TRIANGLE_STRIP"/>, <see cref="GL_TRIANGLE_FAN"/>, <see cref="GL_TRIANGLES"/>, <see cref="GL_TRIANGLE_STRIP_ADJACENCY"/>, <see cref="GL_TRIANGLES_ADJACENCY"/>, <see cref="GL_PATCHES"/> are accepted.</param>
     /// <param name="indirect">Specifies the address of an array of DrawArraysIndirectCommand structures.</param>
-    public static void glDrawArraysIndirect(GLenum mode, void* indirect) { _glDrawArraysIndirect(mode, indirect); }
+    public void glDrawArraysIndirect(GLenum mode, void* indirect) { _glDrawArraysIndirect(mode, indirect); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12474,7 +12472,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="mode">Specifies what kind of primitives to render. Symbolic constants <see cref="GL_POINTS"/>, <see cref="GL_LINE_STRIP"/>, <see cref="GL_LINE_LOOP"/>, <see cref="GL_LINES"/>, <see cref="GL_LINE_STRIP_ADJACENCY"/>, <see cref="GL_LINES_ADJACENCY"/>, <see cref="GL_TRIANGLE_STRIP"/>, <see cref="GL_TRIANGLE_FAN"/>, <see cref="GL_TRIANGLES"/>, <see cref="GL_TRIANGLE_STRIP_ADJACENCY"/>, <see cref="GL_TRIANGLES_ADJACENCY"/>, <see cref="GL_PATCHES"/> are accepted.</param>
     /// <param name="indirect">Specifies an instance of <see cref="DrawArraysIndirectCommand"/>.</param>
-    public static void glDrawArraysIndirect(GLenum mode, DrawArraysIndirectCommand indirect) { _glDrawArraysIndirect(mode, &indirect); }
+    public void glDrawArraysIndirect(GLenum mode, DrawArraysIndirectCommand indirect) { _glDrawArraysIndirect(mode, &indirect); }
 #endif
 
 #if (OGL_V_4_0 || OGL_V_4_1) && (OGL_WRAPPER_API_SAFE || OGL_WRAPPER_API_BOTH) 
@@ -12500,7 +12498,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDRAWELEMENTSINDIRECTPROC(GLenum mode, GLenum type, void* indirect);
-    private static PFNGLDRAWELEMENTSINDIRECTPROC _glDrawElementsIndirect;
+    private PFNGLDRAWELEMENTSINDIRECTPROC _glDrawElementsIndirect;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Render indexed primitives from array data, taking parameters from memory
@@ -12508,7 +12506,7 @@ public static unsafe class GL
     /// <param name="mode">Specifies what kind of primitives to render. Symbolic constants <see cref="GL_POINTS"/>, <see cref="GL_LINE_STRIP"/>, <see cref="GL_LINE_LOOP"/>, <see cref="GL_LINES"/>, <see cref="GL_LINE_STRIP_ADJACENCY"/>, <see cref="GL_LINES_ADJACENCY"/>, <see cref="GL_TRIANGLE_STRIP"/>, <see cref="GL_TRIANGLE_FAN"/>, <see cref="GL_TRIANGLES"/>, <see cref="GL_TRIANGLE_STRIP_ADJACENCY"/>, <see cref="GL_TRIANGLES_ADJACENCY"/>, <see cref="GL_PATCHES"/> are accepted.</param>
     /// <param name="type">Specifies the type of data in the buffer bound to the <see cref="GL_ELEMENT_ARRAY_BUFFER"/> binding.</param>
     /// <param name="indirect">Specifies the address of a DrawElementsIndirectCommand structure.</param>
-    public static void glDrawElementsIndirect(GLenum mode, GLenum type, void* indirect) { _glDrawElementsIndirect(mode, type, indirect); }
+    public void glDrawElementsIndirect(GLenum mode, GLenum type, void* indirect) { _glDrawElementsIndirect(mode, type, indirect); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12517,33 +12515,33 @@ public static unsafe class GL
     /// <param name="mode">Specifies what kind of primitives to render. Symbolic constants <see cref="GL_POINTS"/>, <see cref="GL_LINE_STRIP"/>, <see cref="GL_LINE_LOOP"/>, <see cref="GL_LINES"/>, <see cref="GL_LINE_STRIP_ADJACENCY"/>, <see cref="GL_LINES_ADJACENCY"/>, <see cref="GL_TRIANGLE_STRIP"/>, <see cref="GL_TRIANGLE_FAN"/>, <see cref="GL_TRIANGLES"/>, <see cref="GL_TRIANGLE_STRIP_ADJACENCY"/>, <see cref="GL_TRIANGLES_ADJACENCY"/>, <see cref="GL_PATCHES"/> are accepted.</param>
     /// <param name="type">Specifies the type of data in the buffer bound to the <see cref="GL_ELEMENT_ARRAY_BUFFER"/> binding.</param>
     /// <param name="indirect">Specifies an instance of <see cref="DrawElementsIndirectCommand"/>.</param>
-    public static void glDrawElementsIndirect(GLenum mode, GLenum type, DrawElementsIndirectCommand indirect) { _glDrawElementsIndirect(mode, type, &indirect); }
+    public void glDrawElementsIndirect(GLenum mode, GLenum type, DrawElementsIndirectCommand indirect) { _glDrawElementsIndirect(mode, type, &indirect); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORM1DPROC(GLint location, GLdouble x);
-    private static PFNGLUNIFORM1DPROC _glUniform1d;
+    private PFNGLUNIFORM1DPROC _glUniform1d;
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="x">Specifies the new value to be used for the specified uniform variable.</param>
-    public static void glUniform1d(GLint location, GLdouble x) { _glUniform1d(location, x); }
+    public void glUniform1d(GLint location, GLdouble x) { _glUniform1d(location, x); }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORM2DPROC(GLint location, GLdouble x, GLdouble y);
-    private static PFNGLUNIFORM2DPROC _glUniform2d;
+    private PFNGLUNIFORM2DPROC _glUniform2d;
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="x">Specifies the first value to be used for the specified uniform variable.</param>
     /// <param name="y">Specifies the second value to be used for the specified uniform variable.</param>
-    public static void glUniform2d(GLint location, GLdouble x, GLdouble y) { _glUniform2d(location, x, y); }
+    public void glUniform2d(GLint location, GLdouble x, GLdouble y) { _glUniform2d(location, x, y); }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORM3DPROC(GLint location, GLdouble x, GLdouble y, GLdouble z);
-    private static PFNGLUNIFORM3DPROC _glUniform3d;
+    private PFNGLUNIFORM3DPROC _glUniform3d;
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
     /// </summary>
@@ -12551,11 +12549,11 @@ public static unsafe class GL
     /// <param name="x">Specifies the first value to be used for the specified uniform variable.</param>
     /// <param name="y">Specifies the second value to be used for the specified uniform variable.</param>
     /// <param name="z">Specifies the third value to be used for the specified uniform variable.</param>
-    public static void glUniform3d(GLint location, GLdouble x, GLdouble y, GLdouble z) { _glUniform3d(location, x, y, z); }
+    public void glUniform3d(GLint location, GLdouble x, GLdouble y, GLdouble z) { _glUniform3d(location, x, y, z); }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORM4DPROC(GLint location, GLdouble x, GLdouble y, GLdouble z, GLdouble w);
-    private static PFNGLUNIFORM4DPROC _glUniform4d;
+    private PFNGLUNIFORM4DPROC _glUniform4d;
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
     /// </summary>
@@ -12563,11 +12561,11 @@ public static unsafe class GL
     /// <param name="x">Specifies the first value to be used for the specified uniform variable.</param>
     /// <param name="y">Specifies the second value to be used for the specified uniform variable.</param>
     /// <param name="z">Specifies the third value to be used for the specified uniform variable.</param>
-    public static void glUniform4d(GLint location, GLdouble x, GLdouble y, GLdouble z, GLdouble w) { _glUniform4d(location, x, y, z, w); }
+    public void glUniform4d(GLint location, GLdouble x, GLdouble y, GLdouble z, GLdouble w) { _glUniform4d(location, x, y, z, w); }
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORM1DVPROC(GLint location, GLsizei count, GLdouble* value);
-    private static PFNGLUNIFORM1DVPROC _glUniform1dv;
+    private PFNGLUNIFORM1DVPROC _glUniform1dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12575,7 +12573,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of values in the <paramref name="value"/> array.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniform1dv(GLint location, GLsizei count, GLdouble* value) { _glUniform1dv(location, count, value); }
+    public void glUniform1dv(GLint location, GLsizei count, GLdouble* value) { _glUniform1dv(location, count, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12583,12 +12581,12 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform1dv(GLint location, GLdouble[] value) { fixed (GLdouble* p = &value[0]) _glUniform1dv(location, value.Length, p); }
+    public void glUniform1dv(GLint location, GLdouble[] value) { fixed (GLdouble* p = &value[0]) _glUniform1dv(location, value.Length, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORM2DVPROC(GLint location, GLsizei count, GLdouble* value);
-    private static PFNGLUNIFORM2DVPROC _glUniform2dv;
+    private PFNGLUNIFORM2DVPROC _glUniform2dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12596,7 +12594,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of values in the <paramref name="value"/> array.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniform2dv(GLint location, GLsizei count, GLdouble* value) { _glUniform2dv(location, count, value); }
+    public void glUniform2dv(GLint location, GLsizei count, GLdouble* value) { _glUniform2dv(location, count, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12604,12 +12602,12 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform2dv(GLint location, GLdouble[] value) { fixed (GLdouble* p = &value[0]) _glUniform2dv(location, value.Length / 2, p); }
+    public void glUniform2dv(GLint location, GLdouble[] value) { fixed (GLdouble* p = &value[0]) _glUniform2dv(location, value.Length / 2, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORM3DVPROC(GLint location, GLsizei count, GLdouble* value);
-    private static PFNGLUNIFORM3DVPROC _glUniform3dv;
+    private PFNGLUNIFORM3DVPROC _glUniform3dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12617,7 +12615,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of values in the <paramref name="value"/> array.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniform3dv(GLint location, GLsizei count, GLdouble* value) { _glUniform3dv(location, count, value); }
+    public void glUniform3dv(GLint location, GLsizei count, GLdouble* value) { _glUniform3dv(location, count, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12625,12 +12623,12 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform3dv(GLint location, GLdouble[] value) { fixed (GLdouble* p = &value[0]) _glUniform3dv(location, value.Length / 3, p); }
+    public void glUniform3dv(GLint location, GLdouble[] value) { fixed (GLdouble* p = &value[0]) _glUniform3dv(location, value.Length / 3, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORM4DVPROC(GLint location, GLsizei count, GLdouble* value);
-    private static PFNGLUNIFORM4DVPROC _glUniform4dv;
+    private PFNGLUNIFORM4DVPROC _glUniform4dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12638,7 +12636,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of values in the <paramref name="value"/> array.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniform4dv(GLint location, GLsizei count, GLdouble* value) { _glUniform4dv(location, count, value); }
+    public void glUniform4dv(GLint location, GLsizei count, GLdouble* value) { _glUniform4dv(location, count, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12646,12 +12644,12 @@ public static unsafe class GL
     /// </summary>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glUniform4dv(GLint location, GLdouble[] value) { fixed (GLdouble* p = &value[0]) _glUniform4dv(location, value.Length / 4, p); }
+    public void glUniform4dv(GLint location, GLdouble[] value) { fixed (GLdouble* p = &value[0]) _glUniform4dv(location, value.Length / 4, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORMMATRIX2DVPROC(GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLUNIFORMMATRIX2DVPROC _glUniformMatrix2dv;
+    private PFNGLUNIFORMMATRIX2DVPROC _glUniformMatrix2dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12660,7 +12658,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of matrices that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniformMatrix2dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix2dv(location, count, transpose, value); }
+    public void glUniformMatrix2dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix2dv(location, count, transpose, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12669,13 +12667,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable. 4 values per matrix.</param>
-    public static void glUniformMatrix2dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
+    public void glUniformMatrix2dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
  &value[0]) _glUniformMatrix2dv(location, value.Length / 4, transpose, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORMMATRIX3DVPROC(GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLUNIFORMMATRIX3DVPROC _glUniformMatrix3dv;
+    private PFNGLUNIFORMMATRIX3DVPROC _glUniformMatrix3dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12684,7 +12682,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of matrices that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniformMatrix3dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix3dv(location, count, transpose, value); }
+    public void glUniformMatrix3dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix3dv(location, count, transpose, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12693,13 +12691,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable. 9 values per matrix.</param>
-    public static void glUniformMatrix3dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
+    public void glUniformMatrix3dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
  &value[0]) _glUniformMatrix3dv(location, value.Length / 9, transpose, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORMMATRIX4DVPROC(GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLUNIFORMMATRIX4DVPROC _glUniformMatrix4dv;
+    private PFNGLUNIFORMMATRIX4DVPROC _glUniformMatrix4dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12708,7 +12706,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of matrices that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniformMatrix4dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix4dv(location, count, transpose, value); }
+    public void glUniformMatrix4dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix4dv(location, count, transpose, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12717,13 +12715,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable. 16 values per matrix.</param>
-    public static void glUniformMatrix4dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
+    public void glUniformMatrix4dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
  &value[0]) _glUniformMatrix4dv(location, value.Length / 16, transpose, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORMMATRIX2X3DVPROC(GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLUNIFORMMATRIX2X3DVPROC _glUniformMatrix2x3dv;
+    private PFNGLUNIFORMMATRIX2X3DVPROC _glUniformMatrix2x3dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12732,7 +12730,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of matrices that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniformMatrix2x3dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix2x3dv(location, count, transpose, value); }
+    public void glUniformMatrix2x3dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix2x3dv(location, count, transpose, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12741,13 +12739,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable. 6 values per matrix.</param>
-    public static void glUniformMatrix2x3dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
+    public void glUniformMatrix2x3dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
  &value[0]) _glUniformMatrix2x3dv(location, value.Length / 6, transpose, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORMMATRIX2X4DVPROC(GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLUNIFORMMATRIX2X4DVPROC _glUniformMatrix2x4dv;
+    private PFNGLUNIFORMMATRIX2X4DVPROC _glUniformMatrix2x4dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12756,7 +12754,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of matrices that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniformMatrix2x4dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix2x4dv(location, count, transpose, value); }
+    public void glUniformMatrix2x4dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix2x4dv(location, count, transpose, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12765,13 +12763,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable. 8 values per matrix.</param>
-    public static void glUniformMatrix2x4dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
+    public void glUniformMatrix2x4dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
  &value[0]) _glUniformMatrix2x4dv(location, value.Length / 8, transpose, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORMMATRIX3X2DVPROC(GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLUNIFORMMATRIX3X2DVPROC _glUniformMatrix3x2dv;
+    private PFNGLUNIFORMMATRIX3X2DVPROC _glUniformMatrix3x2dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12780,7 +12778,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of matrices that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniformMatrix3x2dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix3x2dv(location, count, transpose, value); }
+    public void glUniformMatrix3x2dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix3x2dv(location, count, transpose, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12789,13 +12787,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable. 6 values per matrix.</param>
-    public static void glUniformMatrix3x2dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
+    public void glUniformMatrix3x2dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
  &value[0]) _glUniformMatrix3x2dv(location, value.Length / 6, transpose, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORMMATRIX3X4DVPROC(GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLUNIFORMMATRIX3X4DVPROC _glUniformMatrix3x4dv;
+    private PFNGLUNIFORMMATRIX3X4DVPROC _glUniformMatrix3x4dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12804,7 +12802,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of matrices that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniformMatrix3x4dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix3x4dv(location, count, transpose, value); }
+    public void glUniformMatrix3x4dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix3x4dv(location, count, transpose, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12813,13 +12811,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable. 12 values per matrix.</param>
-    public static void glUniformMatrix3x4dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
+    public void glUniformMatrix3x4dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
  &value[0]) _glUniformMatrix3x4dv(location, value.Length / 12, transpose, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORMMATRIX4X2DVPROC(GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLUNIFORMMATRIX4X2DVPROC _glUniformMatrix4x2dv;
+    private PFNGLUNIFORMMATRIX4X2DVPROC _glUniformMatrix4x2dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12828,7 +12826,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of matrices that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniformMatrix4x2dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix4x2dv(location, count, transpose, value); }
+    public void glUniformMatrix4x2dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix4x2dv(location, count, transpose, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12837,13 +12835,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable. 8 values per matrix.</param>
-    public static void glUniformMatrix4x2dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
+    public void glUniformMatrix4x2dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
  &value[0]) _glUniformMatrix4x2dv(location, value.Length / 8, transpose, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORMMATRIX4X3DVPROC(GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLUNIFORMMATRIX4X3DVPROC _glUniformMatrix4x3dv;
+    private PFNGLUNIFORMMATRIX4X3DVPROC _glUniformMatrix4x3dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a double uniform variable for the current program object
@@ -12852,7 +12850,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of matrices that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glUniformMatrix4x3dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix4x3dv(location, count, transpose, value); }
+    public void glUniformMatrix4x3dv(GLint location, GLsizei count, GLboolean transpose, GLdouble* value) { _glUniformMatrix4x3dv(location, count, transpose, value); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12861,13 +12859,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable. 12 values per matrix.</param>
-    public static void glUniformMatrix4x3dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
+    public void glUniformMatrix4x3dv(GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* p =
  &value[0]) _glUniformMatrix4x3dv(location, value.Length / 12, transpose, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETUNIFORMDVPROC(GLuint program, GLint location, GLdouble* parameters);
-    private static PFNGLGETUNIFORMDVPROC _glGetUniformdv;
+    private PFNGLGETUNIFORMDVPROC _glGetUniformdv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return the value or values of a double uniform variable
@@ -12875,7 +12873,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="parameters">Specifies the address of a variable to receive the value or values of the uniform variable.</param>
-    public static void glGetUniformdv(GLuint program, GLint location, GLdouble* parameters) { _glGetUniformdv(program, location, parameters); }
+    public void glGetUniformdv(GLuint program, GLint location, GLdouble* parameters) { _glGetUniformdv(program, location, parameters); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12884,13 +12882,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="parameters">Specifies an array to receive the value or values of the uniform variable.</param>
-    public static void glGetUniformdv(GLuint program, GLint location, ref GLdouble[] parameters) { fixed (GLdouble* p =
+    public void glGetUniformdv(GLuint program, GLint location, ref GLdouble[] parameters) { fixed (GLdouble* p =
  &parameters[0]) _glGetUniformdv(program, location, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLint PFNGLGETSUBROUTINEUNIFORMLOCATIONPROC(GLuint program, GLenum shadertype, GLchar* name);
-    private static PFNGLGETSUBROUTINEUNIFORMLOCATIONPROC _glGetSubroutineUniformLocation;
+    private PFNGLGETSUBROUTINEUNIFORMLOCATIONPROC _glGetSubroutineUniformLocation;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve the location of a subroutine uniform variable
@@ -12899,7 +12897,7 @@ public static unsafe class GL
     /// <param name="shadertype">Specifies the shader stage containing the subroutine uniform variable whose location to query. One of <see cref="GL_VERTEX_SHADER"/>, <see cref="GL_TESS_CONTROL_SHADER"/>, <see cref="GL_TESS_EVALUATION_SHADER"/>, <see cref="GL_GEOMETRY_SHADER"/>, <see cref="GL_FRAGMENT_SHADER"/>.</param>
     /// <param name="name">Specifies the name of the subroutine uniform variable whose location to query.</param>
     /// <returns>The location of the subroutine uniform variable.</returns>
-    public static GLint glGetSubroutineUniformLocation(GLuint program, GLenum shadertype, GLchar* name) { return _glGetSubroutineUniformLocation(program, shadertype, name); }
+    public GLint glGetSubroutineUniformLocation(GLuint program, GLenum shadertype, GLchar* name) { return _glGetSubroutineUniformLocation(program, shadertype, name); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12909,7 +12907,7 @@ public static unsafe class GL
     /// <param name="shadertype">Specifies the shader stage containing the subroutine uniform variable whose location to query. One of <see cref="GL_VERTEX_SHADER"/>, <see cref="GL_TESS_CONTROL_SHADER"/>, <see cref="GL_TESS_EVALUATION_SHADER"/>, <see cref="GL_GEOMETRY_SHADER"/>, <see cref="GL_FRAGMENT_SHADER"/>.</param>
     /// <param name="name">Specifies the name of the subroutine uniform variable whose location to query.</param>
     /// <returns>The location of the subroutine uniform variable.</returns>
-    public static GLint glGetSubroutineUniformLocation(GLuint program, GLenum shadertype, string name)
+    public GLint glGetSubroutineUniformLocation(GLuint program, GLenum shadertype, string name)
     {
         GLchar[] nameBytes = Encoding.UTF8.GetBytes(name);
         fixed (GLchar* p = &nameBytes[0])
@@ -12921,7 +12919,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLuint PFNGLGETSUBROUTINEINDEXPROC(GLuint program, GLenum shadertype, GLchar* name);
-    private static PFNGLGETSUBROUTINEINDEXPROC _glGetSubroutineIndex;
+    private PFNGLGETSUBROUTINEINDEXPROC _glGetSubroutineIndex;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve the index of a subroutine uniform of a given shader stage within a program.
@@ -12930,7 +12928,7 @@ public static unsafe class GL
     /// <param name="shadertype">Specifies the shader stage containing the subroutine uniform variable whose index to query. One of <see cref="GL_VERTEX_SHADER"/>, <see cref="GL_TESS_CONTROL_SHADER"/>, <see cref="GL_TESS_EVALUATION_SHADER"/>, <see cref="GL_GEOMETRY_SHADER"/>, <see cref="GL_FRAGMENT_SHADER"/>.</param>
     /// <param name="name">Specifies the name of the subroutine uniform variable whose index to query.</param>
     /// <returns>The index of the subroutine uniform variable.</returns>
-    public static GLuint glGetSubroutineIndex(GLuint program, GLenum shadertype, GLchar* name) { return _glGetSubroutineIndex(program, shadertype, name); }
+    public GLuint glGetSubroutineIndex(GLuint program, GLenum shadertype, GLchar* name) { return _glGetSubroutineIndex(program, shadertype, name); }
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12940,7 +12938,7 @@ public static unsafe class GL
     /// <param name="shadertype">Specifies the shader stage containing the subroutine uniform variable whose index to query. One of <see cref="GL_VERTEX_SHADER"/>, <see cref="GL_TESS_CONTROL_SHADER"/>, <see cref="GL_TESS_EVALUATION_SHADER"/>, <see cref="GL_GEOMETRY_SHADER"/>, <see cref="GL_FRAGMENT_SHADER"/>.</param>
     /// <param name="name">Specifies the name of the subroutine uniform variable whose index to query.</param>
     /// <returns>The index of the subroutine uniform variable.</returns>
-    public static GLuint glGetSubroutineIndex(GLuint program, GLenum shadertype, string name)
+    public GLuint glGetSubroutineIndex(GLuint program, GLenum shadertype, string name)
     {
         GLchar[] nameBytes = Encoding.UTF8.GetBytes(name);
         fixed (GLchar* p = &nameBytes[0])
@@ -12952,7 +12950,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETACTIVESUBROUTINEUNIFORMIVPROC(GLuint program, GLenum shadertype, GLuint index, GLenum pname, GLint* values);
-    private static PFNGLGETACTIVESUBROUTINEUNIFORMIVPROC _glGetActiveSubroutineUniformiv;
+    private PFNGLGETACTIVESUBROUTINEUNIFORMIVPROC _glGetActiveSubroutineUniformiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Query a property of an active shader subroutine uniform variable.
@@ -12962,7 +12960,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the subroutine uniform variable whose properties to query.</param>
     /// <param name="pname">Specifies the property of the subroutine uniform variable to query. One of <see cref="GL_NUM_COMPATIBLE_SUBROUTINES"/>, <see cref="GL_COMPATIBLE_SUBROUTINES"/>, <see cref="GL_UNIFORM_SIZE" />, or <see cref="GL_UNIFORM_NAME_LENGTH"/>.</param>
     /// <param name="values">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    public static void glGetActiveSubroutineUniformiv(GLuint program, GLenum shadertype, GLuint index, GLenum pname, GLint* values) => _glGetActiveSubroutineUniformiv(program, shadertype, index, pname, values);
+    public void glGetActiveSubroutineUniformiv(GLuint program, GLenum shadertype, GLuint index, GLenum pname, GLint* values) => _glGetActiveSubroutineUniformiv(program, shadertype, index, pname, values);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -12973,13 +12971,13 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the subroutine uniform variable whose properties to query.</param>
     /// <param name="pname">Specifies the property of the subroutine uniform variable to query. One of <see cref="GL_NUM_COMPATIBLE_SUBROUTINES"/>, <see cref="GL_COMPATIBLE_SUBROUTINES"/>, <see cref="GL_UNIFORM_SIZE" />, or <see cref="GL_UNIFORM_NAME_LENGTH"/>.</param>
     /// <param name="values">Specifies an array to receive the value of the queried parameter.</param>
-    public static void glGetActiveSubroutineUniformiv(GLuint program, GLenum shadertype, GLuint index, GLenum pname, ref GLint[] values) { fixed (GLint* p =
+    public void glGetActiveSubroutineUniformiv(GLuint program, GLenum shadertype, GLuint index, GLenum pname, ref GLint[] values) { fixed (GLint* p =
  &values[0]) _glGetActiveSubroutineUniformiv(program, shadertype, index, pname, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETACTIVESUBROUTINEUNIFORMNAMEPROC(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize, GLsizei* length, GLchar* name);
-    private static PFNGLGETACTIVESUBROUTINEUNIFORMNAMEPROC _glGetActiveSubroutineUniformName;
+    private PFNGLGETACTIVESUBROUTINEUNIFORMNAMEPROC _glGetActiveSubroutineUniformName;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve the name of an active shader subroutine uniform variable.
@@ -12990,7 +12988,7 @@ public static unsafe class GL
     /// <param name="bufsize">Specifies the max amount of characters that may be written into <paramref name="name"/>.</param>
     /// <param name="length">Specifies the address of a variable to receive the number of characters that were written.</param>
     /// <param name="name">Specifies the address of a buffer into which the name of the subroutine uniform variable will be written.</param>
-    public static void glGetActiveSubroutineUniformName(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize, GLsizei* length, GLchar* name) => _glGetActiveSubroutineUniformName(program, shadertype, index, bufsize, length, name);
+    public void glGetActiveSubroutineUniformName(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize, GLsizei* length, GLchar* name) => _glGetActiveSubroutineUniformName(program, shadertype, index, bufsize, length, name);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13001,7 +12999,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the subroutine uniform variable whose name to query.</param>
     /// <param name="bufsize">Specifies the max amount of characters that may be written into <paramref name="name"/>.</param>
     /// <returns>The name of the subroutine uniform variable, resized correctly.</returns>
-    public static string glGetActiveSubroutineUniformName(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize)
+    public string glGetActiveSubroutineUniformName(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize)
     {
         GLchar[] name = new GLchar[bufsize];
         GLsizei length;
@@ -13015,7 +13013,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETACTIVESUBROUTINENAMEPROC(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize, GLsizei* length, GLchar* name);
-    private static PFNGLGETACTIVESUBROUTINENAMEPROC _glGetActiveSubroutineName;
+    private PFNGLGETACTIVESUBROUTINENAMEPROC _glGetActiveSubroutineName;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve the name of an active shader subroutine.
@@ -13026,7 +13024,7 @@ public static unsafe class GL
     /// <param name="bufsize">Specifies the max amount of characters that may be written into <paramref name="name"/>.</param>
     /// <param name="length">Specifies the address of a variable to receive the number of characters that were written.</param>
     /// <param name="name">Specifies the address of a buffer into which the name of the subroutine will be written.</param>
-    public static void glGetActiveSubroutineName(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize, GLsizei* length, GLchar* name) => _glGetActiveSubroutineName(program, shadertype, index, bufsize, length, name);
+    public void glGetActiveSubroutineName(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize, GLsizei* length, GLchar* name) => _glGetActiveSubroutineName(program, shadertype, index, bufsize, length, name);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13037,7 +13035,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the subroutine whose name to query.</param>
     /// <param name="bufsize">Specifies the max amount of characters that may be written into <paramref name="name"/>.</param>
     /// <returns>The name of the subroutine, resized correctly.</returns>
-    public static string glGetActiveSubroutineName(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize)
+    public string glGetActiveSubroutineName(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize)
     {
         GLchar[] name = new GLchar[bufsize];
         GLsizei length;
@@ -13051,7 +13049,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUNIFORMSUBROUTINESUIVPROC(GLenum shadertype, GLsizei count, GLuint* indices);
-    private static PFNGLUNIFORMSUBROUTINESUIVPROC _glUniformSubroutinesuiv;
+    private PFNGLUNIFORMSUBROUTINESUIVPROC _glUniformSubroutinesuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Load active subroutine uniforms.
@@ -13059,7 +13057,7 @@ public static unsafe class GL
     /// <param name="shadertype">Specifies the shader stage containing the subroutine uniforms to load. One of <see cref="GL_VERTEX_SHADER"/>, <see cref="GL_TESS_CONTROL_SHADER"/>, <see cref="GL_TESS_EVALUATION_SHADER"/>, <see cref="GL_GEOMETRY_SHADER"/>, <see cref="GL_FRAGMENT_SHADER"/>.</param>
     /// <param name="count">Specifies the number of subroutine uniform incides in the array pointed to by <paramref name="indices"/>.</param>
     /// <param name="indices">Specifies an array containing the subroutine uniform indices to load.</param>
-    public static void glUniformSubroutinesuiv(GLenum shadertype, GLsizei count, GLuint* indices) => _glUniformSubroutinesuiv(shadertype, count, indices);
+    public void glUniformSubroutinesuiv(GLenum shadertype, GLsizei count, GLuint* indices) => _glUniformSubroutinesuiv(shadertype, count, indices);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13067,13 +13065,13 @@ public static unsafe class GL
     /// </summary>
     /// <param name="shadertype">Specifies the shader stage containing the subroutine uniforms to load. One of <see cref="GL_VERTEX_SHADER"/>, <see cref="GL_TESS_CONTROL_SHADER"/>, <see cref="GL_TESS_EVALUATION_SHADER"/>, <see cref="GL_GEOMETRY_SHADER"/>, <see cref="GL_FRAGMENT_SHADER"/>.</param>
     /// <param name="indices">Specifies an array containing the subroutine uniform indices to load.</param>
-    public static void glUniformSubroutinesuiv(GLenum shadertype, GLuint[] indices) { fixed (GLuint* p =
+    public void glUniformSubroutinesuiv(GLenum shadertype, GLuint[] indices) { fixed (GLuint* p =
  &indices[0]) _glUniformSubroutinesuiv(shadertype, indices.Length, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETUNIFORMSUBROUTINEUIVPROC(GLenum shadertype, GLint location, GLuint* @params);
-    private static PFNGLGETUNIFORMSUBROUTINEUIVPROC _glGetUniformSubroutineuiv;
+    private PFNGLGETUNIFORMSUBROUTINEUIVPROC _glGetUniformSubroutineuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve the value of a subroutine uniform of a given shader stage of the current program.
@@ -13081,7 +13079,7 @@ public static unsafe class GL
     /// <param name="shadertype">Specifies the shader stage containing the subroutine uniform whose value to query. One of <see cref="GL_VERTEX_SHADER"/>, <see cref="GL_TESS_CONTROL_SHADER"/>, <see cref="GL_TESS_EVALUATION_SHADER"/>, <see cref="GL_GEOMETRY_SHADER"/>, <see cref="GL_FRAGMENT_SHADER"/>.</param>
     /// <param name="location">Specifies the location of the subroutine uniform whose value to query.</param>
     /// <param name="params">Specifies the address of a variable to receive the value of the subroutine uniform.</param>
-    public static void glGetUniformSubroutineuiv(GLenum shadertype, GLint location, GLuint* @params) => _glGetUniformSubroutineuiv(shadertype, location, @params);
+    public void glGetUniformSubroutineuiv(GLenum shadertype, GLint location, GLuint* @params) => _glGetUniformSubroutineuiv(shadertype, location, @params);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13090,13 +13088,13 @@ public static unsafe class GL
     /// <param name="shadertype">Specifies the shader stage containing the subroutine uniform whose value to query. One of <see cref="GL_VERTEX_SHADER"/>, <see cref="GL_TESS_CONTROL_SHADER"/>, <see cref="GL_TESS_EVALUATION_SHADER"/>, <see cref="GL_GEOMETRY_SHADER"/>, <see cref="GL_FRAGMENT_SHADER"/>.</param>
     /// <param name="location">Specifies the location of the subroutine uniform whose value to query.</param>
     /// <param name="params">Specifies an array to receive the value of the subroutine uniform.</param>
-    public static void glGetUniformSubroutineuiv(GLenum shadertype, GLint location, ref GLuint[] @params) { fixed (GLuint* p =
+    public void glGetUniformSubroutineuiv(GLenum shadertype, GLint location, ref GLuint[] @params) { fixed (GLuint* p =
  &@params[0]) _glGetUniformSubroutineuiv(shadertype, location, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETPROGRAMSTAGEIVPROC(GLuint program, GLenum shadertype, GLenum pname, GLint* values);
-    private static PFNGLGETPROGRAMSTAGEIVPROC _glGetProgramStageiv;
+    private PFNGLGETPROGRAMSTAGEIVPROC _glGetProgramStageiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve a parameter from a shader stage of the current program.
@@ -13105,7 +13103,7 @@ public static unsafe class GL
     /// <param name="shadertype">Specifies the shader stage from which to query the parameter. One of <see cref="GL_VERTEX_SHADER"/>, <see cref="GL_TESS_CONTROL_SHADER"/>, <see cref="GL_TESS_EVALUATION_SHADER"/>, <see cref="GL_GEOMETRY_SHADER"/>, <see cref="GL_FRAGMENT_SHADER"/>.</param>
     /// <param name="pname">Specifies the parameter to query. One of <see cref="GL_ACTIVE_SUBROUTINE_UNIFORMS"/>, <see cref="GL_ACTIVE_SUBROUTINE_UNIFORM_LOCATIONS"/>, <see cref="GL_ACTIVE_SUBROUTINES"/>, <see cref="GL_ACTIVE_SUBROUTINE_UNIFORM_MAX_LENGTH"/>, <see cref="GL_ACTIVE_SUBROUTINE_MAX_LENGTH"/>.</param>
     /// <param name="values">Specifies the address of a variable to receive the value of the parameter.</param>
-    public static void glGetProgramStageiv(GLuint program, GLenum shadertype, GLenum pname, GLint* values) => _glGetProgramStageiv(program, shadertype, pname, values);
+    public void glGetProgramStageiv(GLuint program, GLenum shadertype, GLenum pname, GLint* values) => _glGetProgramStageiv(program, shadertype, pname, values);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13115,30 +13113,30 @@ public static unsafe class GL
     /// <param name="shadertype">Specifies the shader stage from which to query the parameter. One of <see cref="GL_VERTEX_SHADER"/>, <see cref="GL_TESS_CONTROL_SHADER"/>, <see cref="GL_TESS_EVALUATION_SHADER"/>, <see cref="GL_GEOMETRY_SHADER"/>, <see cref="GL_FRAGMENT_SHADER"/>.</param>
     /// <param name="pname">Specifies the parameter to query. One of <see cref="GL_ACTIVE_SUBROUTINE_UNIFORMS"/>, <see cref="GL_ACTIVE_SUBROUTINE_UNIFORM_LOCATIONS"/>, <see cref="GL_ACTIVE_SUBROUTINES"/>, <see cref="GL_ACTIVE_SUBROUTINE_UNIFORM_MAX_LENGTH"/>, <see cref="GL_ACTIVE_SUBROUTINE_MAX_LENGTH"/>.</param>
     /// <param name="values">Specifies an array to receive the value of the parameter.</param>
-    public static void glGetProgramStageiv(GLuint program, GLenum shadertype, GLenum pname, ref GLint[] values) { fixed (GLint* p =
+    public void glGetProgramStageiv(GLuint program, GLenum shadertype, GLenum pname, ref GLint[] values) { fixed (GLint* p =
  &values[0]) _glGetProgramStageiv(program, shadertype, pname, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPATCHPARAMETERIPROC(GLenum pname, GLint value);
-    private static PFNGLPATCHPARAMETERIPROC _glPatchParameteri;
+    private PFNGLPATCHPARAMETERIPROC _glPatchParameteri;
     /// <summary>
     /// Specifies the parameters for patch primitives.
     /// </summary>
     /// <param name="pname">Specifies the parameter to set. One of <see cref="GL_PATCH_VERTICES"/>, <see cref="GL_PATCH_DEFAULT_INNER_LEVEL"/>, <see cref="GL_PATCH_DEFAULT_OUTER_LEVEL"/>.</param>
     /// <param name="value">Specifies the value to set for <paramref name="pname"/>.</param>
-    public static void glPatchParameteri(GLenum pname, GLint value) => _glPatchParameteri(pname, value);
+    public void glPatchParameteri(GLenum pname, GLint value) => _glPatchParameteri(pname, value);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPATCHPARAMETERFVPROC(GLenum pname, GLfloat* values);
-    private static PFNGLPATCHPARAMETERFVPROC _glPatchParameterfv;
+    private PFNGLPATCHPARAMETERFVPROC _glPatchParameterfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specifies the parameters for patch primitives.
     /// </summary>
     /// <param name="pname">Specifies the parameter to set. One of <see cref="GL_PATCH_VERTICES"/>, <see cref="GL_PATCH_DEFAULT_INNER_LEVEL"/>, <see cref="GL_PATCH_DEFAULT_OUTER_LEVEL"/>.</param>
     /// <param name="values">Specifies the address of an array containing the value or values to set for <paramref name="pname"/>.</param>
-    public static void glPatchParameterfv(GLenum pname, GLfloat* values) => _glPatchParameterfv(pname, values);
+    public void glPatchParameterfv(GLenum pname, GLfloat* values) => _glPatchParameterfv(pname, values);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13146,48 +13144,48 @@ public static unsafe class GL
     /// </summary>
     /// <param name="pname">Specifies the parameter to set. One of <see cref="GL_PATCH_VERTICES"/>, <see cref="GL_PATCH_DEFAULT_INNER_LEVEL"/>, <see cref="GL_PATCH_DEFAULT_OUTER_LEVEL"/>.</param>
     /// <param name="values">Specifies an array containing the value or values to set for <paramref name="pname"/>.</param>
-    public static void glPatchParameterfv(GLenum pname, GLfloat[] values) { fixed (GLfloat* p = &values[0]) _glPatchParameterfv(pname, p); }
+    public void glPatchParameterfv(GLenum pname, GLfloat[] values) { fixed (GLfloat* p = &values[0]) _glPatchParameterfv(pname, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBINDTRANSFORMFEEDBACKPROC(GLenum target, GLuint id);
-    private static PFNGLBINDTRANSFORMFEEDBACKPROC _glBindTransformFeedback;
+    private PFNGLBINDTRANSFORMFEEDBACKPROC _glBindTransformFeedback;
     /// <summary>
     /// Bind a named transform feedback object.
     /// </summary>
     /// <param name="target">Specifies the target to which the transform feedback object is bound. Must be <see cref="GL_TRANSFORM_FEEDBACK"/>.</param>
     /// <param name="id">Specifies the name of a transform feedback object.</param>
-    public static void glBindTransformFeedback(GLenum target, GLuint id) => _glBindTransformFeedback(target, id);
+    public void glBindTransformFeedback(GLenum target, GLuint id) => _glBindTransformFeedback(target, id);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDELETETRANSFORMFEEDBACKSPROC(GLsizei n, GLuint* ids);
-    private static PFNGLDELETETRANSFORMFEEDBACKSPROC _glDeleteTransformFeedbacks;
+    private PFNGLDELETETRANSFORMFEEDBACKSPROC _glDeleteTransformFeedbacks;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Delete named transform feedback objects.
     /// </summary>
     /// <param name="n">Specifies the number of transform feedback objects to be deleted.</param>
     /// <param name="ids">Specifies the address of an array containing the n names of the objects to be deleted.</param>
-    public static void glDeleteTransformFeedbacks(GLsizei n, GLuint* ids) => _glDeleteTransformFeedbacks(n, ids);
+    public void glDeleteTransformFeedbacks(GLsizei n, GLuint* ids) => _glDeleteTransformFeedbacks(n, ids);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
     /// Delete named transform feedback objects.
     /// </summary>
     /// <param name="ids">Specifies the names of the objects to be deleted.</param>
-    public static void glDeleteTransformFeedbacks(params GLuint[] ids) { fixed (GLuint* p = &ids[0]) _glDeleteTransformFeedbacks(ids.Length, p); }
+    public void glDeleteTransformFeedbacks(params GLuint[] ids) { fixed (GLuint* p = &ids[0]) _glDeleteTransformFeedbacks(ids.Length, p); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGENTRANSFORMFEEDBACKSPROC(GLsizei n, GLuint* ids);
-    private static PFNGLGENTRANSFORMFEEDBACKSPROC _glGenTransformFeedbacks;
+    private PFNGLGENTRANSFORMFEEDBACKSPROC _glGenTransformFeedbacks;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Generate transform feedback object names.
     /// </summary>
     /// <param name="n">Specifies the number of transform feedback object names to generate.</param>
     /// <param name="ids">Specifies the address of an array in which to place the generated transform feedback object names.</param>
-    public static void glGenTransformFeedbacks(GLsizei n, GLuint* ids) => _glGenTransformFeedbacks(n, ids);
+    public void glGenTransformFeedbacks(GLsizei n, GLuint* ids) => _glGenTransformFeedbacks(n, ids);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13195,85 +13193,85 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of transform feedback object names to generate.</param>
     /// <returns>Array of generated transform feedback object names.</returns>
-    public static GLuint[] glGenTransformFeedbacks(GLsizei n) { var r = new GLuint[n]; fixed (GLuint* p = &r[0]) _glGenTransformFeedbacks(n, p); return r; }
+    public GLuint[] glGenTransformFeedbacks(GLsizei n) { var r = new GLuint[n]; fixed (GLuint* p = &r[0]) _glGenTransformFeedbacks(n, p); return r; }
     /// <summary>
     /// Generate a single transform feedback object name.
     /// </summary>
     /// <returns>Generated transform feedback object name.</returns>
-    public static GLuint glGenTransformFeedback() => glGenTransformFeedbacks(1)[0];
+    public GLuint glGenTransformFeedback() => glGenTransformFeedbacks(1)[0];
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLboolean PFNGLISTRANSFORMFEEDBACKPROC(GLuint id);
-    private static PFNGLISTRANSFORMFEEDBACKPROC _glIsTransformFeedback;
+    private PFNGLISTRANSFORMFEEDBACKPROC _glIsTransformFeedback;
     /// <summary>
     /// Determine if a name corresponds to a transform feedback object.
     /// </summary>
     /// <param name="id">Specifies a value that may be the name of a transform feedback object.</param>
     /// <returns><see langword="true" />, if <paramref name="id"/> corresponds to a transform feedback object; otherwise, <see langword="false" />.</returns>
-    public static GLboolean glIsTransformFeedback(GLuint id) => _glIsTransformFeedback(id);
+    public GLboolean glIsTransformFeedback(GLuint id) => _glIsTransformFeedback(id);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPAUSETRANSFORMFEEDBACKPROC();
-    private static PFNGLPAUSETRANSFORMFEEDBACKPROC _glPauseTransformFeedback;
+    private PFNGLPAUSETRANSFORMFEEDBACKPROC _glPauseTransformFeedback;
     /// <summary>
     /// Pause transform feedback operations.
     /// </summary>
-    public static void glPauseTransformFeedback() => _glPauseTransformFeedback();
+    public void glPauseTransformFeedback() => _glPauseTransformFeedback();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLRESUMETRANSFORMFEEDBACKPROC();
-    private static PFNGLRESUMETRANSFORMFEEDBACKPROC _glResumeTransformFeedback;
+    private PFNGLRESUMETRANSFORMFEEDBACKPROC _glResumeTransformFeedback;
     /// <summary>
     /// Resume transform feedback operations.
     /// </summary>
-    public static void glResumeTransformFeedback() => _glResumeTransformFeedback();
+    public void glResumeTransformFeedback() => _glResumeTransformFeedback();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDRAWTRANSFORMFEEDBACKPROC(GLenum mode, GLuint id);
-    private static PFNGLDRAWTRANSFORMFEEDBACKPROC _glDrawTransformFeedback;
+    private PFNGLDRAWTRANSFORMFEEDBACKPROC _glDrawTransformFeedback;
     /// <summary>
     /// Render primitives using a count derived from a transform feedback object.
     /// </summary>
     /// <param name="mode">Specifies what kind of primitives to render. Symbolic constants <see cref="GL_POINTS"/>, <see cref="GL_LINE_STRIP"/>, <see cref="GL_LINE_LOOP"/>, <see cref="GL_LINES"/>, <see cref="GL_LINE_STRIP_ADJACENCY" />, <see cref="GL_LINES_ADJACENCY" />, <see cref="GL_TRIANGLE_STRIP"/>, <see cref="GL_TRIANGLE_FAN"/>, <see cref="GL_TRIANGLES"/>, <see cref="GL_TRIANGLE_STRIP_ADJACENCY" />, <see cref="GL_TRIANGLES_ADJACENCY" />, and <see cref="GL_PATCHES"/> are accepted.</param>
     /// <param name="id">Specifies the name of a transform feedback object from which to retrieve a primitive count and a primitive mode.</param>
-    public static void glDrawTransformFeedback(GLenum mode, GLuint id) => _glDrawTransformFeedback(mode, id);
+    public void glDrawTransformFeedback(GLenum mode, GLuint id) => _glDrawTransformFeedback(mode, id);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDRAWTRANSFORMFEEDBACKSTREAMPROC(GLenum mode, GLuint id, GLuint stream);
-    private static PFNGLDRAWTRANSFORMFEEDBACKSTREAMPROC _glDrawTransformFeedbackStream;
+    private PFNGLDRAWTRANSFORMFEEDBACKSTREAMPROC _glDrawTransformFeedbackStream;
     /// <summary>
     /// Render primitives using a counter derived from a specified stream of a transform feedback object.
     /// </summary>
     /// <param name="mode">Specifies what kind of primitives to render. Symbolic constants <see cref="GL_POINTS"/>, <see cref="GL_LINE_STRIP"/>, <see cref="GL_LINE_LOOP"/>, <see cref="GL_LINES"/>, <see cref="GL_LINE_STRIP_ADJACENCY" />, <see cref="GL_LINES_ADJACENCY" />, <see cref="GL_TRIANGLE_STRIP"/>, <see cref="GL_TRIANGLE_FAN"/>, <see cref="GL_TRIANGLES"/>, <see cref="GL_TRIANGLE_STRIP_ADJACENCY" />, <see cref="GL_TRIANGLES_ADJACENCY" />, and <see cref="GL_PATCHES"/> are accepted.</param>
     /// <param name="id">Specifies the name of a transform feedback object from which to retrieve a primitive count and a primitive mode.</param>
     /// <param name="stream">Specifies the index of the stream from which to retrieve the primitive count and mode.</param>
-    public static void glDrawTransformFeedbackStream(GLenum mode, GLuint id, GLuint stream) => _glDrawTransformFeedbackStream(mode, id, stream);
+    public void glDrawTransformFeedbackStream(GLenum mode, GLuint id, GLuint stream) => _glDrawTransformFeedbackStream(mode, id, stream);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBEGINQUERYINDEXEDPROC(GLenum target, GLuint index, GLuint id);
-    private static PFNGLBEGINQUERYINDEXEDPROC _glBeginQueryIndexed;
+    private PFNGLBEGINQUERYINDEXEDPROC _glBeginQueryIndexed;
     /// <summary>
     /// Begin a query object target.
     /// </summary>
     /// <param name="target">Specifies the target of the query object. The symbolic constant must be <see cref="GL_SAMPLES_PASSED"/>, <see cref="GL_ANY_SAMPLES_PASSED"/>, <see cref="GL_PRIMITIVES_GENERATED" />, <see cref="GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN" />, <see cref="GL_TIME_ELAPSED" />.</param>
     /// <param name="index">Specifies the index of the query object target.</param>
     /// <param name="id">Specifies the name of a query object.</param>
-    public static void glBeginQueryIndexed(GLenum target, GLuint index, GLuint id) => _glBeginQueryIndexed(target, index, id);
+    public void glBeginQueryIndexed(GLenum target, GLuint index, GLuint id) => _glBeginQueryIndexed(target, index, id);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLENDQUERYINDEXEDPROC(GLenum target, GLuint index);
-    private static PFNGLENDQUERYINDEXEDPROC _glEndQueryIndexed;
+    private PFNGLENDQUERYINDEXEDPROC _glEndQueryIndexed;
     /// <summary>
     /// End a query object target.
     /// </summary>
     /// <param name="target">Specifies the target of the query object. The symbolic constant must be <see cref="GL_SAMPLES_PASSED"/>, <see cref="GL_ANY_SAMPLES_PASSED"/>, <see cref="GL_PRIMITIVES_GENERATED" />, <see cref="GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN" />, <see cref="GL_TIME_ELAPSED" />.</param>
     /// <param name="index">Specifies the index of the query object target.</param>
-    public static void glEndQueryIndexed(GLenum target, GLuint index) => _glEndQueryIndexed(target, index);
+    public void glEndQueryIndexed(GLenum target, GLuint index) => _glEndQueryIndexed(target, index);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETQUERYINDEXEDIVPROC(GLenum target, GLuint index, GLenum pname, GLint* parameters);
-    private static PFNGLGETQUERYINDEXEDIVPROC _glGetQueryIndexediv;
+    private PFNGLGETQUERYINDEXEDIVPROC _glGetQueryIndexediv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a query object target.
@@ -13282,7 +13280,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the query object target.</param>
     /// <param name="pname">Specifies the symbolic name of a query object target parameter. Accepted values are <see cref="GL_CURRENT_QUERY"/>, <see cref="GL_QUERY_COUNTER_BITS"/>.</param>
     /// <param name="parameters">Returns the requested data.</param>
-    public static void glGetQueryIndexediv(GLenum target, GLuint index, GLenum pname, GLint* parameters) => _glGetQueryIndexediv(target, index, pname, parameters);
+    public void glGetQueryIndexediv(GLenum target, GLuint index, GLenum pname, GLint* parameters) => _glGetQueryIndexediv(target, index, pname, parameters);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13292,7 +13290,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the query object target.</param>
     /// <param name="pname">Specifies the symbolic name of a query object target parameter. Accepted values are <see cref="GL_CURRENT_QUERY"/>, <see cref="GL_QUERY_COUNTER_BITS"/>.</param>
     /// <param name="parameters">Returns the requested data.</param>
-    public static void glGetQueryIndexediv(GLenum target, GLuint index, GLenum pname, ref GLint[] parameters) { fixed (GLint* p =
+    public void glGetQueryIndexediv(GLenum target, GLuint index, GLenum pname, ref GLint[] parameters) { fixed (GLint* p =
  &parameters[0]) _glGetQueryIndexediv(target, index, pname, p); }
 #endif
 
@@ -13303,15 +13301,15 @@ public static unsafe class GL
 #if OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLRELEASESHADERCOMPILERPROC();
-    private static PFNGLRELEASESHADERCOMPILERPROC _glReleaseShaderCompiler;
+    private PFNGLRELEASESHADERCOMPILERPROC _glReleaseShaderCompiler;
     /// <summary>
     /// Release resources consumed by the shader compiler.
     /// </summary>
-    public static void glReleaseShaderCompiler() => _glReleaseShaderCompiler();
+    public void glReleaseShaderCompiler() => _glReleaseShaderCompiler();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLSHADERBINARYPROC(GLsizei count, GLuint* shaders, GLenum binaryformat, void* binary, GLsizei length);
-    private static PFNGLSHADERBINARYPROC _glShaderBinary;
+    private PFNGLSHADERBINARYPROC _glShaderBinary;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Loads pre-compiled shader binaries.
@@ -13321,7 +13319,7 @@ public static unsafe class GL
     /// <param name="binaryformat">Specifies the format of the shader binary data contained in binary.</param>
     /// <param name="binary">Specifies an array of bytes containing pre-compiled shader binaries.</param>
     /// <param name="length">Specifies the number of bytes in the array of bytes pointed to by binary.</param>
-    public static void glShaderBinary(GLsizei count, GLuint* shaders, GLenum binaryformat, void* binary, GLsizei length) => _glShaderBinary(count, shaders, binaryformat, binary, length);
+    public void glShaderBinary(GLsizei count, GLuint* shaders, GLenum binaryformat, void* binary, GLsizei length) => _glShaderBinary(count, shaders, binaryformat, binary, length);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13330,7 +13328,7 @@ public static unsafe class GL
     /// <param name="shaders">Specifies an array of shader handles into which to load pre-compiled shader binaries.</param>
     /// <param name="binaryformat">Specifies the format of the shader binary data contained in binary.</param>
     /// <param name="binary">Specifies an array of bytes containing pre-compiled shader binaries.</param>
-    public static void glShaderBinary(GLuint[] shaders, GLenum binaryformat, byte[] binary)
+    public void glShaderBinary(GLuint[] shaders, GLenum binaryformat, byte[] binary)
     {
         GLsizei count = shaders.Length;
         fixed (GLuint* pShaders = &shaders[0])
@@ -13343,7 +13341,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETSHADERPRECISIONFORMATPROC(GLenum shadertype, GLenum precisiontype, GLint* range, GLint* precision);
-    private static PFNGLGETSHADERPRECISIONFORMATPROC _glGetShaderPrecisionFormat;
+    private PFNGLGETSHADERPRECISIONFORMATPROC _glGetShaderPrecisionFormat;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve the range and precision for numeric formats supported by the shader compiler.
@@ -13352,7 +13350,7 @@ public static unsafe class GL
     /// <param name="precisionType">Specifies the numeric format whose precision to query.</param>
     /// <param name="range">Returns the range of variable.</param>
     /// <param name="precision">Returns the precision of variable.</param>
-    public static void glGetShaderPrecisionFormat(GLenum shaderType, GLenum precisionType, GLint* range, GLint* precision) => _glGetShaderPrecisionFormat(shaderType, precisionType, range, precision);
+    public void glGetShaderPrecisionFormat(GLenum shaderType, GLenum precisionType, GLint* range, GLint* precision) => _glGetShaderPrecisionFormat(shaderType, precisionType, range, precision);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13362,7 +13360,7 @@ public static unsafe class GL
     /// <param name="precisionType">Specifies the numeric format whose precision to query.</param>
     /// <param name="range">Returns the range of variable.</param>
     /// <param name="precision">Returns the precision of variable.</param>
-    public static void glGetShaderPrecisionFormat(GLenum shaderType, GLenum precisionType, ref GLint[] range, ref GLint precision)
+    public void glGetShaderPrecisionFormat(GLenum shaderType, GLenum precisionType, ref GLint[] range, ref GLint precision)
     {
         range = new GLint[2];
         fixed (GLint* pRange = &range[0])
@@ -13375,26 +13373,26 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDEPTHRANGEFPROC(GLfloat n, GLfloat f);
-    private static PFNGLDEPTHRANGEFPROC _glDepthRangef;
+    private PFNGLDEPTHRANGEFPROC _glDepthRangef;
     /// <summary>
     /// Specify mapping of depth values from normalized device coordinates to window coordinates.
     /// </summary>
     /// <param name="n">Specifies the near value for the depth range.</param>
     /// <param name="f">Specifies the far value for the depth range.</param>
-    public static void glDepthRangef(GLfloat n, GLfloat f) => _glDepthRangef(n, f);
+    public void glDepthRangef(GLfloat n, GLfloat f) => _glDepthRangef(n, f);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCLEARDEPTHFPROC(GLfloat d);
-    private static PFNGLCLEARDEPTHFPROC _glClearDepthf;
+    private PFNGLCLEARDEPTHFPROC _glClearDepthf;
     /// <summary>
     /// Specify the clear value for the depth buffer.
     /// </summary>
     /// <param name="d">Specifies the depth value used when the depth buffer is cleared. The initial value is 1.</param>
-    public static void glClearDepthf(GLfloat d) => _glClearDepthf(d);
+    public void glClearDepthf(GLfloat d) => _glClearDepthf(d);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETPROGRAMBINARYPROC(GLuint program, GLsizei bufSize, GLsizei* length, GLenum* binaryFormat, void* binary);
-    private static PFNGLGETPROGRAMBINARYPROC _glGetProgramBinary;
+    private PFNGLGETPROGRAMBINARYPROC _glGetProgramBinary;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Returns a binary representation of the compiled and linked executable for a program object.
@@ -13404,7 +13402,7 @@ public static unsafe class GL
     /// <param name="length">Returns the number of bytes actually written into <paramref name="binary"/>.</param>
     /// <param name="binaryFormat">Returns the format of the program binary.</param>
     /// <param name="binary">Returns the program binary.</param>
-    public static void glGetProgramBinary(GLuint program, GLsizei bufSize, GLsizei* length, GLenum* binaryFormat, void* binary) => _glGetProgramBinary(program, bufSize, length, binaryFormat, binary);
+    public void glGetProgramBinary(GLuint program, GLsizei bufSize, GLsizei* length, GLenum* binaryFormat, void* binary) => _glGetProgramBinary(program, bufSize, length, binaryFormat, binary);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13414,7 +13412,7 @@ public static unsafe class GL
     /// <param name="bufSize">Specifies the maximum amount of bytes that may be returned.</param>
     /// <param name="binaryFormat">Returns the format of the program binary.</param>
     /// <returns>Returns the program binary as bytes.</returns>
-    public static byte[] glGetProgramBinary(GLuint program, GLsizei bufSize, out GLenum binaryFormat)
+    public byte[] glGetProgramBinary(GLuint program, GLsizei bufSize, out GLenum binaryFormat)
     {
         byte[] binary = new byte[bufSize];
         GLsizei length;
@@ -13430,7 +13428,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMBINARYPROC(GLuint program, GLenum binaryFormat, void* binary, GLsizei length);
-    private static PFNGLPROGRAMBINARYPROC _glProgramBinary;
+    private PFNGLPROGRAMBINARYPROC _glProgramBinary;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Loads a program binary.
@@ -13439,7 +13437,7 @@ public static unsafe class GL
     /// <param name="binaryFormat">Specifies the format of the binary data in <paramref name="binary"/>.</param>
     /// <param name="binary">Specifies a pointer to a buffer containing the executable binary data that will be loaded into <paramref name="program"/>.</param>
     /// <param name="length">Specifies the number of bytes contained in <paramref name="binary"/>.</param>
-    public static void glProgramBinary(GLuint program, GLenum binaryFormat, void* binary, GLsizei length) => _glProgramBinary(program, binaryFormat, binary, length);
+    public void glProgramBinary(GLuint program, GLenum binaryFormat, void* binary, GLsizei length) => _glProgramBinary(program, binaryFormat, binary, length);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13448,7 +13446,7 @@ public static unsafe class GL
     /// <param name="program">Specifies the name of a program object whose executable binary is to be replaced.</param>
     /// <param name="binaryFormat">Specifies the format of the binary data in <paramref name="binary"/>.</param>
     /// <param name="binary">Specifies a buffer containing the executable binary data that will be loaded into <paramref name="program"/>.</param>
-    public static void glProgramBinary(GLuint program, GLenum binaryFormat, byte[] binary)
+    public void glProgramBinary(GLuint program, GLenum binaryFormat, byte[] binary)
     {
         fixed (byte* pBinary = &binary[0])
         {
@@ -13459,39 +13457,39 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMPARAMETERIPROC(GLuint program, GLenum pname, GLint value);
-    private static PFNGLPROGRAMPARAMETERIPROC _glProgramParameteri;
+    private PFNGLPROGRAMPARAMETERIPROC _glProgramParameteri;
     /// <summary>
     /// Specify a parameter for a program object
     /// </summary>
     /// <param name="program">Specifies the program object to be modified.</param>
     /// <param name="pname">Specifies the name of the parameter to modify.</param>
     /// <param name="value">Specifies the new value for <paramref name="pname"/>.</param>
-    public static void glProgramParameteri(GLuint program, GLenum pname, GLint value) => _glProgramParameteri(program, pname, value);
+    public void glProgramParameteri(GLuint program, GLenum pname, GLint value) => _glProgramParameteri(program, pname, value);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLUSEPROGRAMSTAGESPROC(GLuint pipeline, GLbitfield stages, GLuint program);
-    private static PFNGLUSEPROGRAMSTAGESPROC _glUseProgramStages;
+    private PFNGLUSEPROGRAMSTAGESPROC _glUseProgramStages;
     /// <summary>
     /// Bind stages of a program object to a program pipeline.
     /// </summary>
     /// <param name="pipeline">Specifies the name of the program pipeline object to which to bind the program object.</param>
     /// <param name="stages">Specifies a set of program stages.</param>
     /// <param name="program">Specifies the name of a program object.</param>
-    public static void glUseProgramStages(GLuint pipeline, GLbitfield stages, GLuint program) => _glUseProgramStages(pipeline, stages, program);
+    public void glUseProgramStages(GLuint pipeline, GLbitfield stages, GLuint program) => _glUseProgramStages(pipeline, stages, program);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLACTIVESHADERPROGRAMPROC(GLuint pipeline, GLuint program);
-    private static PFNGLACTIVESHADERPROGRAMPROC _glActiveShaderProgram;
+    private PFNGLACTIVESHADERPROGRAMPROC _glActiveShaderProgram;
     /// <summary>
     /// Set the active program object for a program pipeline object.
     /// </summary>
     /// <param name="pipeline">Specifies the name of a program pipeline object whose active program object is to be set.</param>
     /// <param name="program">Specifies the name of a program object to set as the active program object of <paramref name="pipeline"/>.</param>
-    public static void glActiveShaderProgram(GLuint pipeline, GLuint program) => _glActiveShaderProgram(pipeline, program);
+    public void glActiveShaderProgram(GLuint pipeline, GLuint program) => _glActiveShaderProgram(pipeline, program);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLuint PFNGLCREATESHADERPROGRAMVPROC(GLenum type, GLsizei count, GLchar** strings);
-    private static PFNGLCREATESHADERPROGRAMVPROC _glCreateShaderProgramv;
+    private PFNGLCREATESHADERPROGRAMVPROC _glCreateShaderProgramv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Create a stand-alone program from an array of null-terminated source code strings.
@@ -13499,7 +13497,7 @@ public static unsafe class GL
     /// <param name="type">Specifies the type of shader to be created.</param>
     /// <param name="count">Specifies the number of elements in the array <paramref name="strings"/>.</param>
     /// <param name="strings">Specifies an array of pointers to strings containing the source code to be loaded into the shader.</param>
-    public static GLuint glCreateShaderProgramv(GLenum type, GLsizei count, GLchar** strings) => _glCreateShaderProgramv(type, count, strings);
+    public GLuint glCreateShaderProgramv(GLenum type, GLsizei count, GLchar** strings) => _glCreateShaderProgramv(type, count, strings);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13507,7 +13505,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="type">Specifies the type of shader to be created.</param>
     /// <param name="strings">Specifies an array of strings containing the source code to be loaded into the shader.</param>
-    public static GLuint glCreateShaderProgramv(GLenum type, string[] strings)
+    public GLuint glCreateShaderProgramv(GLenum type, string[] strings)
     {
         // https://stackoverflow.com/questions/27777226/how-to-use-glcreateshaderprogram
 
@@ -13535,43 +13533,43 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBINDPROGRAMPIPELINEPROC(GLuint pipeline);
-    private static PFNGLBINDPROGRAMPIPELINEPROC _glBindProgramPipeline;
+    private PFNGLBINDPROGRAMPIPELINEPROC _glBindProgramPipeline;
     /// <summary>
     /// Bind a program pipeline to the current context
     /// </summary>
     /// <param name="pipeline">Specifies the name of a program pipeline object to bind to the current context.</param>
-    public static void glBindProgramPipeline(GLuint pipeline) => _glBindProgramPipeline(pipeline);
+    public void glBindProgramPipeline(GLuint pipeline) => _glBindProgramPipeline(pipeline);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDELETEPROGRAMPIPELINESPROC(GLsizei n, GLuint* pipelines);
-    private static PFNGLDELETEPROGRAMPIPELINESPROC _glDeleteProgramPipelines;
+    private PFNGLDELETEPROGRAMPIPELINESPROC _glDeleteProgramPipelines;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Delete program pipelines
     /// </summary>
     /// <param name="n">Specifies the number of program pipeline objects to be deleted.</param>
     /// <param name="pipelines">Specifies an array of <paramref name="n"/> values, containing the names of the program pipeline objects to be deleted.</param>
-    public static void glDeleteProgramPipelines(GLsizei n, GLuint* pipelines) => _glDeleteProgramPipelines(n, pipelines);
+    public void glDeleteProgramPipelines(GLsizei n, GLuint* pipelines) => _glDeleteProgramPipelines(n, pipelines);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
     /// Delete program pipelines
     /// </summary>
     /// <param name="pipelines">Specifies an array of program pipeline objects to be deleted.</param>
-    public static void glDeleteProgramPipelines(params GLuint[] pipelines) { fixed (GLuint* pPipelines =
+    public void glDeleteProgramPipelines(params GLuint[] pipelines) { fixed (GLuint* pPipelines =
  &pipelines[0]) { _glDeleteProgramPipelines(pipelines.Length, pPipelines); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGENPROGRAMPIPELINESPROC(GLsizei n, GLuint* pipelines);
-    private static PFNGLGENPROGRAMPIPELINESPROC _glGenProgramPipelines;
+    private PFNGLGENPROGRAMPIPELINESPROC _glGenProgramPipelines;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Generate program pipeline object names
     /// </summary>
     /// <param name="n">Specifies the number of program pipeline object names to generate.</param>
     /// <param name="pipelines">Specifies an array in which the generated program pipeline object names are stored.</param>
-    public static void glGenProgramPipelines(GLsizei n, GLuint* pipelines) => _glGenProgramPipelines(n, pipelines);
+    public void glGenProgramPipelines(GLsizei n, GLuint* pipelines) => _glGenProgramPipelines(n, pipelines);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13579,28 +13577,28 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of program pipeline object names to generate.</param>
     /// <returns>Array of <paramref name="n"/> generated program pipeline object names.</returns>
-    public static GLuint[] glGenProgramPipelines(GLsizei n) { GLuint[] pipelines = new GLuint[n]; fixed (GLuint* pPipelines =
+    public GLuint[] glGenProgramPipelines(GLsizei n) { GLuint[] pipelines = new GLuint[n]; fixed (GLuint* pPipelines =
  &pipelines[0]) { _glGenProgramPipelines(n, pPipelines); } return pipelines; }
     /// <summary>
     /// Generate a single program pipeline object name
     /// </summary>
     /// <returns>Generated program pipeline object name.</returns>
-    public static GLuint glGenProgramPipeline() => glGenProgramPipelines(1)[0];
+    public GLuint glGenProgramPipeline() => glGenProgramPipelines(1)[0];
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLboolean PFNGLISPROGRAMPIPELINEPROC(GLuint pipeline);
-    private static PFNGLISPROGRAMPIPELINEPROC _glIsProgramPipeline;
+    private PFNGLISPROGRAMPIPELINEPROC _glIsProgramPipeline;
     /// <summary>
     /// Determine if a name corresponds to a program pipeline object
     /// </summary>
     /// <param name="pipeline">Specifies a value that may be the name of a program pipeline object.</param>
     /// <returns><see langword="true"/>, if <paramref name="pipeline"/> is the name of a program pipeline object. Otherwise, <see langword="false"/>.</returns>
-    public static GLboolean glIsProgramPipeline(GLuint pipeline) => _glIsProgramPipeline(pipeline);
+    public GLboolean glIsProgramPipeline(GLuint pipeline) => _glIsProgramPipeline(pipeline);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETPROGRAMPIPELINEIVPROC(GLuint pipeline, GLenum pname, GLint* param);
-    private static PFNGLGETPROGRAMPIPELINEIVPROC _glGetProgramPipelineiv;
+    private PFNGLGETPROGRAMPIPELINEIVPROC _glGetProgramPipelineiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return a parameter from a program pipeline object
@@ -13608,7 +13606,7 @@ public static unsafe class GL
     /// <param name="pipeline">Specifies the name of a program pipeline object from which to retrieve <paramref name="pname"/>.</param>
     /// <param name="pname">Specifies the parameter to retrieve from the program pipeline object named <paramref name="pipeline"/>.</param>
     /// <param name="param">Specifies the address of a variable to receive the value of the retrieved parameter.</param>
-    public static void glGetProgramPipelineiv(GLuint pipeline, GLenum pname, GLint* param) => _glGetProgramPipelineiv(pipeline, pname, param);
+    public void glGetProgramPipelineiv(GLuint pipeline, GLenum pname, GLint* param) => _glGetProgramPipelineiv(pipeline, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13617,24 +13615,24 @@ public static unsafe class GL
     /// <param name="pipeline">Specifies the name of a program pipeline object from which to retrieve <paramref name="pname"/>.</param>
     /// <param name="pname">Specifies the parameter to retrieve from the program pipeline object named <paramref name="pipeline"/>.</param>
     /// <param name="param">Specifies an array to receive the value of the retrieved parameter.</param>
-    public static void glGetProgramPipelineiv(GLuint pipeline, GLenum pname, ref GLint[] param) { fixed (GLint* pParam =
+    public void glGetProgramPipelineiv(GLuint pipeline, GLenum pname, ref GLint[] param) { fixed (GLint* pParam =
  &param[0]) { _glGetProgramPipelineiv(pipeline, pname, pParam); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM1IPROC(GLuint program, GLint location, GLint v0);
-    private static PFNGLPROGRAMUNIFORM1IPROC _glProgramUniform1i;
+    private PFNGLPROGRAMUNIFORM1IPROC _glProgramUniform1i;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="v0">Specifies the new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform1i(GLuint program, GLint location, GLint v0) => _glProgramUniform1i(program, location, v0);
+    public void glProgramUniform1i(GLuint program, GLint location, GLint v0) => _glProgramUniform1i(program, location, v0);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM1IVPROC(GLuint program, GLint location, GLsizei count, GLint* value);
-    private static PFNGLPROGRAMUNIFORM1IVPROC _glProgramUniform1iv;
+    private PFNGLPROGRAMUNIFORM1IVPROC _glProgramUniform1iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -13643,7 +13641,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform1iv(GLuint program, GLint location, GLsizei count, GLint* value) => _glProgramUniform1iv(program, location, count, value);
+    public void glProgramUniform1iv(GLuint program, GLint location, GLsizei count, GLint* value) => _glProgramUniform1iv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13652,24 +13650,24 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform1iv(GLuint program, GLint location, GLint[] value) { fixed (GLint* pValue =
+    public void glProgramUniform1iv(GLuint program, GLint location, GLint[] value) { fixed (GLint* pValue =
  &value[0]) { _glProgramUniform1iv(program, location, value.Length, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM1FPROC(GLuint program, GLint location, GLfloat v0);
-    private static PFNGLPROGRAMUNIFORM1FPROC _glProgramUniform1f;
+    private PFNGLPROGRAMUNIFORM1FPROC _glProgramUniform1f;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="v0">Specifies the new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform1f(GLuint program, GLint location, GLfloat v0) => _glProgramUniform1f(program, location, v0);
+    public void glProgramUniform1f(GLuint program, GLint location, GLfloat v0) => _glProgramUniform1f(program, location, v0);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM1FVPROC(GLuint program, GLint location, GLsizei count, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORM1FVPROC _glProgramUniform1fv;
+    private PFNGLPROGRAMUNIFORM1FVPROC _glProgramUniform1fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -13678,7 +13676,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform1fv(GLuint program, GLint location, GLsizei count, GLfloat* value) => _glProgramUniform1fv(program, location, count, value);
+    public void glProgramUniform1fv(GLuint program, GLint location, GLsizei count, GLfloat* value) => _glProgramUniform1fv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13687,24 +13685,24 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform1fv(GLuint program, GLint location, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniform1fv(GLuint program, GLint location, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniform1fv(program, location, value.Length, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM1DPROC(GLuint program, GLint location, GLdouble v0);
-    private static PFNGLPROGRAMUNIFORM1DPROC _glProgramUniform1d;
+    private PFNGLPROGRAMUNIFORM1DPROC _glProgramUniform1d;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="v0">Specifies the new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform1d(GLuint program, GLint location, GLdouble v0) => _glProgramUniform1d(program, location, v0);
+    public void glProgramUniform1d(GLuint program, GLint location, GLdouble v0) => _glProgramUniform1d(program, location, v0);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM1DVPROC(GLuint program, GLint location, GLsizei count, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORM1DVPROC _glProgramUniform1dv;
+    private PFNGLPROGRAMUNIFORM1DVPROC _glProgramUniform1dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -13713,7 +13711,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform1dv(GLuint program, GLint location, GLsizei count, GLdouble* value) => _glProgramUniform1dv(program, location, count, value);
+    public void glProgramUniform1dv(GLuint program, GLint location, GLsizei count, GLdouble* value) => _glProgramUniform1dv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13722,24 +13720,24 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform1dv(GLuint program, GLint location, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniform1dv(GLuint program, GLint location, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniform1dv(program, location, value.Length, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM1UIPROC(GLuint program, GLint location, GLuint v0);
-    private static PFNGLPROGRAMUNIFORM1UIPROC _glProgramUniform1ui;
+    private PFNGLPROGRAMUNIFORM1UIPROC _glProgramUniform1ui;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="v0">Specifies the new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform1ui(GLuint program, GLint location, GLuint v0) => _glProgramUniform1ui(program, location, v0);
+    public void glProgramUniform1ui(GLuint program, GLint location, GLuint v0) => _glProgramUniform1ui(program, location, v0);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM1UIVPROC(GLuint program, GLint location, GLsizei count, GLuint* value);
-    private static PFNGLPROGRAMUNIFORM1UIVPROC _glProgramUniform1uiv;
+    private PFNGLPROGRAMUNIFORM1UIVPROC _glProgramUniform1uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -13748,7 +13746,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform1uiv(GLuint program, GLint location, GLsizei count, GLuint* value) => _glProgramUniform1uiv(program, location, count, value);
+    public void glProgramUniform1uiv(GLuint program, GLint location, GLsizei count, GLuint* value) => _glProgramUniform1uiv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13757,13 +13755,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
 
-    public static void glProgramUniform1uiv(GLuint program, GLint location, GLuint[] value) { fixed (GLuint* pValue =
+    public void glProgramUniform1uiv(GLuint program, GLint location, GLuint[] value) { fixed (GLuint* pValue =
  &value[0]) { _glProgramUniform1uiv(program, location, value.Length, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM2IPROC(GLuint program, GLint location, GLint v0, GLint v1);
-    private static PFNGLPROGRAMUNIFORM2IPROC _glProgramUniform2i;
+    private PFNGLPROGRAMUNIFORM2IPROC _glProgramUniform2i;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
@@ -13771,11 +13769,11 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="v0">Specifies the first new value to be used for the specified uniform variable.</param>
     /// <param name="v1">Specifies the second new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform2i(GLuint program, GLint location, GLint v0, GLint v1) => _glProgramUniform2i(program, location, v0, v1);
+    public void glProgramUniform2i(GLuint program, GLint location, GLint v0, GLint v1) => _glProgramUniform2i(program, location, v0, v1);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM2IVPROC(GLuint program, GLint location, GLsizei count, GLint* value);
-    private static PFNGLPROGRAMUNIFORM2IVPROC _glProgramUniform2iv;
+    private PFNGLPROGRAMUNIFORM2IVPROC _glProgramUniform2iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -13784,7 +13782,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform2iv(GLuint program, GLint location, GLsizei count, GLint* value) => _glProgramUniform2iv(program, location, count, value);
+    public void glProgramUniform2iv(GLuint program, GLint location, GLsizei count, GLint* value) => _glProgramUniform2iv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13793,13 +13791,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform2iv(GLuint program, GLint location, GLint[] value) { fixed (GLint* pValue =
+    public void glProgramUniform2iv(GLuint program, GLint location, GLint[] value) { fixed (GLint* pValue =
  &value[0]) { _glProgramUniform2iv(program, location, value.Length / 2, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM2FPROC(GLuint program, GLint location, GLfloat v0, GLfloat v1);
-    private static PFNGLPROGRAMUNIFORM2FPROC _glProgramUniform2f;
+    private PFNGLPROGRAMUNIFORM2FPROC _glProgramUniform2f;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
@@ -13807,11 +13805,11 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="v0">Specifies the first new value to be used for the specified uniform variable.</param>
     /// <param name="v1">Specifies the second new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform2f(GLuint program, GLint location, GLfloat v0, GLfloat v1) => _glProgramUniform2f(program, location, v0, v1);
+    public void glProgramUniform2f(GLuint program, GLint location, GLfloat v0, GLfloat v1) => _glProgramUniform2f(program, location, v0, v1);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM2FVPROC(GLuint program, GLint location, GLsizei count, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORM2FVPROC _glProgramUniform2fv;
+    private PFNGLPROGRAMUNIFORM2FVPROC _glProgramUniform2fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -13820,7 +13818,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform2fv(GLuint program, GLint location, GLsizei count, GLfloat* value) => _glProgramUniform2fv(program, location, count, value);
+    public void glProgramUniform2fv(GLuint program, GLint location, GLsizei count, GLfloat* value) => _glProgramUniform2fv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13829,13 +13827,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform2fv(GLuint program, GLint location, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniform2fv(GLuint program, GLint location, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniform2fv(program, location, value.Length / 2, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM2DPROC(GLuint program, GLint location, GLdouble v0, GLdouble v1);
-    private static PFNGLPROGRAMUNIFORM2DPROC _glProgramUniform2d;
+    private PFNGLPROGRAMUNIFORM2DPROC _glProgramUniform2d;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
@@ -13843,11 +13841,11 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="v0">Specifies the first new value to be used for the specified uniform variable.</param>
     /// <param name="v1">Specifies the second new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform2d(GLuint program, GLint location, GLdouble v0, GLdouble v1) => _glProgramUniform2d(program, location, v0, v1);
+    public void glProgramUniform2d(GLuint program, GLint location, GLdouble v0, GLdouble v1) => _glProgramUniform2d(program, location, v0, v1);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM2DVPROC(GLuint program, GLint location, GLsizei count, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORM2DVPROC _glProgramUniform2dv;
+    private PFNGLPROGRAMUNIFORM2DVPROC _glProgramUniform2dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -13856,7 +13854,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform2dv(GLuint program, GLint location, GLsizei count, GLdouble* value) => _glProgramUniform2dv(program, location, count, value);
+    public void glProgramUniform2dv(GLuint program, GLint location, GLsizei count, GLdouble* value) => _glProgramUniform2dv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13865,13 +13863,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform2dv(GLuint program, GLint location, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniform2dv(GLuint program, GLint location, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniform2dv(program, location, value.Length / 2, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM2UIPROC(GLuint program, GLint location, GLuint v0, GLuint v1);
-    private static PFNGLPROGRAMUNIFORM2UIPROC _glProgramUniform2ui;
+    private PFNGLPROGRAMUNIFORM2UIPROC _glProgramUniform2ui;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
@@ -13879,11 +13877,11 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="v0">Specifies the first new value to be used for the specified uniform variable.</param>
     /// <param name="v1">Specifies the second new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform2ui(GLuint program, GLint location, GLuint v0, GLuint v1) => _glProgramUniform2ui(program, location, v0, v1);
+    public void glProgramUniform2ui(GLuint program, GLint location, GLuint v0, GLuint v1) => _glProgramUniform2ui(program, location, v0, v1);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM2UIVPROC(GLuint program, GLint location, GLsizei count, GLuint* value);
-    private static PFNGLPROGRAMUNIFORM2UIVPROC _glProgramUniform2uiv;
+    private PFNGLPROGRAMUNIFORM2UIVPROC _glProgramUniform2uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -13892,7 +13890,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform2uiv(GLuint program, GLint location, GLsizei count, GLuint* value) => _glProgramUniform2uiv(program, location, count, value);
+    public void glProgramUniform2uiv(GLuint program, GLint location, GLsizei count, GLuint* value) => _glProgramUniform2uiv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13901,13 +13899,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform2uiv(GLuint program, GLint location, GLuint[] value) { fixed (GLuint* pValue =
+    public void glProgramUniform2uiv(GLuint program, GLint location, GLuint[] value) { fixed (GLuint* pValue =
  &value[0]) { _glProgramUniform2uiv(program, location, value.Length / 2, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM3IPROC(GLuint program, GLint location, GLint v0, GLint v1, GLint v2);
-    private static PFNGLPROGRAMUNIFORM3IPROC _glProgramUniform3i;
+    private PFNGLPROGRAMUNIFORM3IPROC _glProgramUniform3i;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
@@ -13916,11 +13914,11 @@ public static unsafe class GL
     /// <param name="v0">Specifies the first new value to be used for the specified uniform variable.</param>
     /// <param name="v1">Specifies the second new value to be used for the specified uniform variable.</param>
     /// <param name="v2">Specifies the third new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform3i(GLuint program, GLint location, GLint v0, GLint v1, GLint v2) => _glProgramUniform3i(program, location, v0, v1, v2);
+    public void glProgramUniform3i(GLuint program, GLint location, GLint v0, GLint v1, GLint v2) => _glProgramUniform3i(program, location, v0, v1, v2);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM3IVPROC(GLuint program, GLint location, GLsizei count, GLint* value);
-    private static PFNGLPROGRAMUNIFORM3IVPROC _glProgramUniform3iv;
+    private PFNGLPROGRAMUNIFORM3IVPROC _glProgramUniform3iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -13929,7 +13927,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform3iv(GLuint program, GLint location, GLsizei count, GLint* value) => _glProgramUniform3iv(program, location, count, value);
+    public void glProgramUniform3iv(GLuint program, GLint location, GLsizei count, GLint* value) => _glProgramUniform3iv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13938,13 +13936,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform3iv(GLuint program, GLint location, GLint[] value) { fixed (GLint* pValue =
+    public void glProgramUniform3iv(GLuint program, GLint location, GLint[] value) { fixed (GLint* pValue =
  &value[0]) { _glProgramUniform3iv(program, location, value.Length / 3, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM3FPROC(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2);
-    private static PFNGLPROGRAMUNIFORM3FPROC _glProgramUniform3f;
+    private PFNGLPROGRAMUNIFORM3FPROC _glProgramUniform3f;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
@@ -13953,11 +13951,11 @@ public static unsafe class GL
     /// <param name="v0">Specifies the first new value to be used for the specified uniform variable.</param>
     /// <param name="v1">Specifies the second new value to be used for the specified uniform variable.</param>
     /// <param name="v2">Specifies the third new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform3f(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2) => _glProgramUniform3f(program, location, v0, v1, v2);
+    public void glProgramUniform3f(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2) => _glProgramUniform3f(program, location, v0, v1, v2);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM3FVPROC(GLuint program, GLint location, GLsizei count, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORM3FVPROC _glProgramUniform3fv;
+    private PFNGLPROGRAMUNIFORM3FVPROC _glProgramUniform3fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -13966,7 +13964,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform3fv(GLuint program, GLint location, GLsizei count, GLfloat* value) => _glProgramUniform3fv(program, location, count, value);
+    public void glProgramUniform3fv(GLuint program, GLint location, GLsizei count, GLfloat* value) => _glProgramUniform3fv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -13975,13 +13973,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform3fv(GLuint program, GLint location, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniform3fv(GLuint program, GLint location, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniform3fv(program, location, value.Length / 3, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM3DPROC(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2);
-    private static PFNGLPROGRAMUNIFORM3DPROC _glProgramUniform3d;
+    private PFNGLPROGRAMUNIFORM3DPROC _glProgramUniform3d;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
@@ -13990,11 +13988,11 @@ public static unsafe class GL
     /// <param name="v0">Specifies the first new value to be used for the specified uniform variable.</param>
     /// <param name="v1">Specifies the second new value to be used for the specified uniform variable.</param>
     /// <param name="v2">Specifies the third new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform3d(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2) => _glProgramUniform3d(program, location, v0, v1, v2);
+    public void glProgramUniform3d(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2) => _glProgramUniform3d(program, location, v0, v1, v2);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM3DVPROC(GLuint program, GLint location, GLsizei count, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORM3DVPROC _glProgramUniform3dv;
+    private PFNGLPROGRAMUNIFORM3DVPROC _glProgramUniform3dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14003,7 +14001,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform3dv(GLuint program, GLint location, GLsizei count, GLdouble* value) => _glProgramUniform3dv(program, location, count, value);
+    public void glProgramUniform3dv(GLuint program, GLint location, GLsizei count, GLdouble* value) => _glProgramUniform3dv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14012,13 +14010,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform3dv(GLuint program, GLint location, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniform3dv(GLuint program, GLint location, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniform3dv(program, location, value.Length / 3, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM3UIPROC(GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2);
-    private static PFNGLPROGRAMUNIFORM3UIPROC _glProgramUniform3ui;
+    private PFNGLPROGRAMUNIFORM3UIPROC _glProgramUniform3ui;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
@@ -14027,11 +14025,11 @@ public static unsafe class GL
     /// <param name="v0">Specifies the first new value to be used for the specified uniform variable.</param>
     /// <param name="v1">Specifies the second new value to be used for the specified uniform variable.</param>
     /// <param name="v2">Specifies the third new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform3ui(GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2) => _glProgramUniform3ui(program, location, v0, v1, v2);
+    public void glProgramUniform3ui(GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2) => _glProgramUniform3ui(program, location, v0, v1, v2);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM3UIVPROC(GLuint program, GLint location, GLsizei count, GLuint* value);
-    private static PFNGLPROGRAMUNIFORM3UIVPROC _glProgramUniform3uiv;
+    private PFNGLPROGRAMUNIFORM3UIVPROC _glProgramUniform3uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14040,7 +14038,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform3uiv(GLuint program, GLint location, GLsizei count, GLuint* value) => _glProgramUniform3uiv(program, location, count, value);
+    public void glProgramUniform3uiv(GLuint program, GLint location, GLsizei count, GLuint* value) => _glProgramUniform3uiv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14049,13 +14047,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform3uiv(GLuint program, GLint location, GLuint[] value) { fixed (GLuint* pValue =
+    public void glProgramUniform3uiv(GLuint program, GLint location, GLuint[] value) { fixed (GLuint* pValue =
  &value[0]) { _glProgramUniform3uiv(program, location, value.Length / 3, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM4IPROC(GLuint program, GLint location, GLint v0, GLint v1, GLint v2, GLint v3);
-    private static PFNGLPROGRAMUNIFORM4IPROC _glProgramUniform4i;
+    private PFNGLPROGRAMUNIFORM4IPROC _glProgramUniform4i;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
@@ -14065,11 +14063,11 @@ public static unsafe class GL
     /// <param name="v1">Specifies the second new value to be used for the specified uniform variable.</param>
     /// <param name="v2">Specifies the third new value to be used for the specified uniform variable.</param>
     /// <param name="v3">Specifies the fourth new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform4i(GLuint program, GLint location, GLint v0, GLint v1, GLint v2, GLint v3) => _glProgramUniform4i(program, location, v0, v1, v2, v3);
+    public void glProgramUniform4i(GLuint program, GLint location, GLint v0, GLint v1, GLint v2, GLint v3) => _glProgramUniform4i(program, location, v0, v1, v2, v3);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM4IVPROC(GLuint program, GLint location, GLsizei count, GLint* value);
-    private static PFNGLPROGRAMUNIFORM4IVPROC _glProgramUniform4iv;
+    private PFNGLPROGRAMUNIFORM4IVPROC _glProgramUniform4iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14078,7 +14076,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform4iv(GLuint program, GLint location, GLsizei count, GLint* value) => _glProgramUniform4iv(program, location, count, value);
+    public void glProgramUniform4iv(GLuint program, GLint location, GLsizei count, GLint* value) => _glProgramUniform4iv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14087,13 +14085,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform4iv(GLuint program, GLint location, GLint[] value) { fixed (GLint* pValue =
+    public void glProgramUniform4iv(GLuint program, GLint location, GLint[] value) { fixed (GLint* pValue =
  &value[0]) { _glProgramUniform4iv(program, location, value.Length / 4, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM4FPROC(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
-    private static PFNGLPROGRAMUNIFORM4FPROC _glProgramUniform4f;
+    private PFNGLPROGRAMUNIFORM4FPROC _glProgramUniform4f;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
@@ -14103,11 +14101,11 @@ public static unsafe class GL
     /// <param name="v1">Specifies the second new value to be used for the specified uniform variable.</param>
     /// <param name="v2">Specifies the third new value to be used for the specified uniform variable.</param>
     /// <param name="v3">Specifies the fourth new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform4f(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3) => _glProgramUniform4f(program, location, v0, v1, v2, v3);
+    public void glProgramUniform4f(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3) => _glProgramUniform4f(program, location, v0, v1, v2, v3);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM4FVPROC(GLuint program, GLint location, GLsizei count, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORM4FVPROC _glProgramUniform4fv;
+    private PFNGLPROGRAMUNIFORM4FVPROC _glProgramUniform4fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14116,7 +14114,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform4fv(GLuint program, GLint location, GLsizei count, GLfloat* value) => _glProgramUniform4fv(program, location, count, value);
+    public void glProgramUniform4fv(GLuint program, GLint location, GLsizei count, GLfloat* value) => _glProgramUniform4fv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14125,13 +14123,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform4fv(GLuint program, GLint location, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniform4fv(GLuint program, GLint location, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniform4fv(program, location, value.Length / 4, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM4DPROC(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2, GLdouble v3);
-    private static PFNGLPROGRAMUNIFORM4DPROC _glProgramUniform4d;
+    private PFNGLPROGRAMUNIFORM4DPROC _glProgramUniform4d;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
@@ -14141,11 +14139,11 @@ public static unsafe class GL
     /// <param name="v1">Specifies the second new value to be used for the specified uniform variable.</param>
     /// <param name="v2">Specifies the third new value to be used for the specified uniform variable.</param>
     /// <param name="v3">Specifies the fourth new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform4d(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2, GLdouble v3) => _glProgramUniform4d(program, location, v0, v1, v2, v3);
+    public void glProgramUniform4d(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2, GLdouble v3) => _glProgramUniform4d(program, location, v0, v1, v2, v3);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM4DVPROC(GLuint program, GLint location, GLsizei count, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORM4DVPROC _glProgramUniform4dv;
+    private PFNGLPROGRAMUNIFORM4DVPROC _glProgramUniform4dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14154,7 +14152,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform4dv(GLuint program, GLint location, GLsizei count, GLdouble* value) => _glProgramUniform4dv(program, location, count, value);
+    public void glProgramUniform4dv(GLuint program, GLint location, GLsizei count, GLdouble* value) => _glProgramUniform4dv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14163,13 +14161,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform4dv(GLuint program, GLint location, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniform4dv(GLuint program, GLint location, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniform4dv(program, location, value.Length / 4, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM4UIPROC(GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3);
-    private static PFNGLPROGRAMUNIFORM4UIPROC _glProgramUniform4ui;
+    private PFNGLPROGRAMUNIFORM4UIPROC _glProgramUniform4ui;
     /// <summary>
     /// Specify the value of a uniform variable for a specified program object.
     /// </summary>
@@ -14179,11 +14177,11 @@ public static unsafe class GL
     /// <param name="v1">Specifies the second new value to be used for the specified uniform variable.</param>
     /// <param name="v2">Specifies the third new value to be used for the specified uniform variable.</param>
     /// <param name="v3">Specifies the fourth new value to be used for the specified uniform variable.</param>
-    public static void glProgramUniform4ui(GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3) => _glProgramUniform4ui(program, location, v0, v1, v2, v3);
+    public void glProgramUniform4ui(GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3) => _glProgramUniform4ui(program, location, v0, v1, v2, v3);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORM4UIVPROC(GLuint program, GLint location, GLsizei count, GLuint* value);
-    private static PFNGLPROGRAMUNIFORM4UIVPROC _glProgramUniform4uiv;
+    private PFNGLPROGRAMUNIFORM4UIVPROC _glProgramUniform4uiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14192,7 +14190,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform4uiv(GLuint program, GLint location, GLsizei count, GLuint* value) => _glProgramUniform4uiv(program, location, count, value);
+    public void glProgramUniform4uiv(GLuint program, GLint location, GLsizei count, GLuint* value) => _glProgramUniform4uiv(program, location, count, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14201,13 +14199,13 @@ public static unsafe class GL
     /// <param name="program">Specifies the program object containing the uniform variable to be modified.</param>
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniform4uiv(GLuint program, GLint location, GLuint[] value) { fixed (GLuint* pValue =
+    public void glProgramUniform4uiv(GLuint program, GLint location, GLuint[] value) { fixed (GLuint* pValue =
  &value[0]) { _glProgramUniform4uiv(program, location, value.Length / 4, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX2FVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX2FVPROC _glProgramUniformMatrix2fv;
+    private PFNGLPROGRAMUNIFORMMATRIX2FVPROC _glProgramUniformMatrix2fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14217,7 +14215,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix2fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix2fv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix2fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix2fv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14227,13 +14225,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix2fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniformMatrix2fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniformMatrix2fv(program, location, value.Length / 4, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX3FVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX3FVPROC _glProgramUniformMatrix3fv;
+    private PFNGLPROGRAMUNIFORMMATRIX3FVPROC _glProgramUniformMatrix3fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14243,7 +14241,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix3fv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix3fv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14253,13 +14251,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix3fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniformMatrix3fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniformMatrix3fv(program, location, value.Length / 9, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX4FVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX4FVPROC _glProgramUniformMatrix4fv;
+    private PFNGLPROGRAMUNIFORMMATRIX4FVPROC _glProgramUniformMatrix4fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14269,7 +14267,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix4fv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix4fv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14279,13 +14277,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix4fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniformMatrix4fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniformMatrix4fv(program, location, value.Length / 16, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX2DVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX2DVPROC _glProgramUniformMatrix2dv;
+    private PFNGLPROGRAMUNIFORMMATRIX2DVPROC _glProgramUniformMatrix2dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14295,7 +14293,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix2dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix2dv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix2dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix2dv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14305,13 +14303,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix2dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniformMatrix2dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniformMatrix2dv(program, location, value.Length / 4, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX3DVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX3DVPROC _glProgramUniformMatrix3dv;
+    private PFNGLPROGRAMUNIFORMMATRIX3DVPROC _glProgramUniformMatrix3dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14321,7 +14319,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix3dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix3dv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix3dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix3dv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14331,13 +14329,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix3dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniformMatrix3dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniformMatrix3dv(program, location, value.Length / 9, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX4DVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX4DVPROC _glProgramUniformMatrix4dv;
+    private PFNGLPROGRAMUNIFORMMATRIX4DVPROC _glProgramUniformMatrix4dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14347,7 +14345,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix4dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix4dv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix4dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix4dv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14357,13 +14355,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix4dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniformMatrix4dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniformMatrix4dv(program, location, value.Length / 16, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX2X3FVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX2X3FVPROC _glProgramUniformMatrix2x3fv;
+    private PFNGLPROGRAMUNIFORMMATRIX2X3FVPROC _glProgramUniformMatrix2x3fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14373,7 +14371,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix2x3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix2x3fv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix2x3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix2x3fv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14383,13 +14381,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix2x3fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniformMatrix2x3fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniformMatrix2x3fv(program, location, value.Length / 6, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX3X2FVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX3X2FVPROC _glProgramUniformMatrix3x2fv;
+    private PFNGLPROGRAMUNIFORMMATRIX3X2FVPROC _glProgramUniformMatrix3x2fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14399,7 +14397,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix3x2fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix3x2fv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix3x2fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix3x2fv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14409,13 +14407,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix3x2fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniformMatrix3x2fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniformMatrix3x2fv(program, location, value.Length / 6, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX2X4FVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX2X4FVPROC _glProgramUniformMatrix2x4fv;
+    private PFNGLPROGRAMUNIFORMMATRIX2X4FVPROC _glProgramUniformMatrix2x4fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14425,7 +14423,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix2x4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix2x4fv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix2x4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix2x4fv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14435,13 +14433,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix2x4fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniformMatrix2x4fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniformMatrix2x4fv(program, location, value.Length / 8, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX4X2FVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX4X2FVPROC _glProgramUniformMatrix4x2fv;
+    private PFNGLPROGRAMUNIFORMMATRIX4X2FVPROC _glProgramUniformMatrix4x2fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14451,7 +14449,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix4x2fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix4x2fv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix4x2fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix4x2fv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14461,13 +14459,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix4x2fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniformMatrix4x2fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniformMatrix4x2fv(program, location, value.Length / 8, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX3X4FVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX3X4FVPROC _glProgramUniformMatrix3x4fv;
+    private PFNGLPROGRAMUNIFORMMATRIX3X4FVPROC _glProgramUniformMatrix3x4fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14477,7 +14475,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix3x4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix3x4fv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix3x4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix3x4fv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14487,13 +14485,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix3x4fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniformMatrix3x4fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniformMatrix3x4fv(program, location, value.Length / 12, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX4X3FVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX4X3FVPROC _glProgramUniformMatrix4x3fv;
+    private PFNGLPROGRAMUNIFORMMATRIX4X3FVPROC _glProgramUniformMatrix4x3fv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14503,7 +14501,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix4x3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix4x3fv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix4x3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat* value) => _glProgramUniformMatrix4x3fv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14513,13 +14511,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix4x3fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
+    public void glProgramUniformMatrix4x3fv(GLuint program, GLint location, GLboolean transpose, GLfloat[] value) { fixed (GLfloat* pValue =
  &value[0]) { _glProgramUniformMatrix4x3fv(program, location, value.Length / 12, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX2X3DVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX2X3DVPROC _glProgramUniformMatrix2x3dv;
+    private PFNGLPROGRAMUNIFORMMATRIX2X3DVPROC _glProgramUniformMatrix2x3dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14529,7 +14527,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix2x3dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix2x3dv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix2x3dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix2x3dv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14539,13 +14537,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix2x3dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniformMatrix2x3dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniformMatrix2x3dv(program, location, value.Length / 6, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX3X2DVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX3X2DVPROC _glProgramUniformMatrix3x2dv;
+    private PFNGLPROGRAMUNIFORMMATRIX3X2DVPROC _glProgramUniformMatrix3x2dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14555,7 +14553,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix3x2dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix3x2dv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix3x2dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix3x2dv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14565,13 +14563,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix3x2dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniformMatrix3x2dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniformMatrix3x2dv(program, location, value.Length / 6, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX2X4DVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX2X4DVPROC _glProgramUniformMatrix2x4dv;
+    private PFNGLPROGRAMUNIFORMMATRIX2X4DVPROC _glProgramUniformMatrix2x4dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14581,7 +14579,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix2x4dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix2x4dv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix2x4dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix2x4dv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14591,13 +14589,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix2x4dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniformMatrix2x4dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniformMatrix2x4dv(program, location, value.Length / 8, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX4X2DVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX4X2DVPROC _glProgramUniformMatrix4x2dv;
+    private PFNGLPROGRAMUNIFORMMATRIX4X2DVPROC _glProgramUniformMatrix4x2dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14607,7 +14605,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix4x2dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix4x2dv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix4x2dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix4x2dv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14617,13 +14615,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix4x2dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniformMatrix4x2dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniformMatrix4x2dv(program, location, value.Length / 8, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX3X4DVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX3X4DVPROC _glProgramUniformMatrix3x4dv;
+    private PFNGLPROGRAMUNIFORMMATRIX3X4DVPROC _glProgramUniformMatrix3x4dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14633,7 +14631,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix3x4dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix3x4dv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix3x4dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix3x4dv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14643,13 +14641,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix3x4dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniformMatrix3x4dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniformMatrix3x4dv(program, location, value.Length / 12, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPROGRAMUNIFORMMATRIX4X3DVPROC(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value);
-    private static PFNGLPROGRAMUNIFORMMATRIX4X3DVPROC _glProgramUniformMatrix4x3dv;
+    private PFNGLPROGRAMUNIFORMMATRIX4X3DVPROC _glProgramUniformMatrix4x3dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -14659,7 +14657,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of elements that are to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies a pointer to an array of <paramref name="count"/> values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix4x3dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix4x3dv(program, location, count, transpose, value);
+    public void glProgramUniformMatrix4x3dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble* value) => _glProgramUniformMatrix4x3dv(program, location, count, transpose, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14669,22 +14667,22 @@ public static unsafe class GL
     /// <param name="location">Specifies the location of the uniform variable to be modified.</param>
     /// <param name="transpose">Specifies whether to transpose the matrix as the values are loaded into the uniform variable.</param>
     /// <param name="value">Specifies an array of values that will be used to update the specified uniform variable.</param>
-    public static void glProgramUniformMatrix4x3dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
+    public void glProgramUniformMatrix4x3dv(GLuint program, GLint location, GLboolean transpose, GLdouble[] value) { fixed (GLdouble* pValue =
  &value[0]) { _glProgramUniformMatrix4x3dv(program, location, value.Length / 12, transpose, pValue); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVALIDATEPROGRAMPIPELINEPROC(GLuint pipeline);
-    private static PFNGLVALIDATEPROGRAMPIPELINEPROC _glValidateProgramPipeline;
+    private PFNGLVALIDATEPROGRAMPIPELINEPROC _glValidateProgramPipeline;
     /// <summary>
     /// Validate a program pipeline object
     /// </summary>
     /// <param name="pipeline">Specifies the name of a program pipeline object to validate.</param>
-    public static void glValidateProgramPipeline(GLuint pipeline) => _glValidateProgramPipeline(pipeline);
+    public void glValidateProgramPipeline(GLuint pipeline) => _glValidateProgramPipeline(pipeline);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETPROGRAMPIPELINEINFOLOGPROC(GLuint pipeline, GLsizei bufSize, GLsizei* length, GLchar* infoLog);
-    private static PFNGLGETPROGRAMPIPELINEINFOLOGPROC _glGetProgramPipelineInfoLog;
+    private PFNGLGETPROGRAMPIPELINEINFOLOGPROC _glGetProgramPipelineInfoLog;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return the information log for a program pipeline object
@@ -14693,7 +14691,7 @@ public static unsafe class GL
     /// <param name="bufSize">Specifies the size of the buffer whose address is given by <paramref name="infoLog"/>.</param>
     /// <param name="length">Returns the number of characters written into the buffer indicated by <paramref name="infoLog"/> (excluding the null terminator) if a value other than NULL is passed.</param>
     /// <param name="infoLog">Specifies an array of characters that is used to return the information log.</param>
-    public static void glGetProgramPipelineInfoLog(GLuint pipeline, GLsizei bufSize, GLsizei* length, GLchar* infoLog) => _glGetProgramPipelineInfoLog(pipeline, bufSize, length, infoLog);
+    public void glGetProgramPipelineInfoLog(GLuint pipeline, GLsizei bufSize, GLsizei* length, GLchar* infoLog) => _glGetProgramPipelineInfoLog(pipeline, bufSize, length, infoLog);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14702,7 +14700,7 @@ public static unsafe class GL
     /// <param name="pipeline">Specifies the name of a program pipeline object whose information log is to be queried.</param>
     /// <param name="bufSize">Specifies the size of the buffer whose address is given by <paramref name="infoLog"/>.</param>
     /// <returns>The information log for the specified program pipeline object.</returns>
-    public static string glGetProgramPipelineInfoLog(GLuint pipeline, GLsizei bufSize)
+    public string glGetProgramPipelineInfoLog(GLuint pipeline, GLsizei bufSize)
     {
         GLchar[] infoLog = new GLchar[bufSize];
         GLsizei length;
@@ -14716,28 +14714,28 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBL1DPROC(GLuint index, GLdouble x);
-    private static PFNGLVERTEXATTRIBL1DPROC _glVertexAttribL1d;
+    private PFNGLVERTEXATTRIBL1DPROC _glVertexAttribL1d;
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="x">Specifies the new value for the generic vertex attribute.</param>
-    public static void glVertexAttribL1d(GLuint index, GLdouble x) => _glVertexAttribL1d(index, x);
+    public void glVertexAttribL1d(GLuint index, GLdouble x) => _glVertexAttribL1d(index, x);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBL2DPROC(GLuint index, GLdouble x, GLdouble y);
-    private static PFNGLVERTEXATTRIBL2DPROC _glVertexAttribL2d;
+    private PFNGLVERTEXATTRIBL2DPROC _glVertexAttribL2d;
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="x">Specifies the first new value for the generic vertex attribute.</param>
     /// <param name="y">Specifies the second new value for the generic vertex attribute.</param>
-    public static void glVertexAttribL2d(GLuint index, GLdouble x, GLdouble y) => _glVertexAttribL2d(index, x, y);
+    public void glVertexAttribL2d(GLuint index, GLdouble x, GLdouble y) => _glVertexAttribL2d(index, x, y);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBL3DPROC(GLuint index, GLdouble x, GLdouble y, GLdouble z);
-    private static PFNGLVERTEXATTRIBL3DPROC _glVertexAttribL3d;
+    private PFNGLVERTEXATTRIBL3DPROC _glVertexAttribL3d;
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
@@ -14745,11 +14743,11 @@ public static unsafe class GL
     /// <param name="x">Specifies the first new value for the generic vertex attribute.</param>
     /// <param name="y">Specifies the second new value for the generic vertex attribute.</param>
     /// <param name="z">Specifies the third new value for the generic vertex attribute.</param>
-    public static void glVertexAttribL3d(GLuint index, GLdouble x, GLdouble y, GLdouble z) => _glVertexAttribL3d(index, x, y, z);
+    public void glVertexAttribL3d(GLuint index, GLdouble x, GLdouble y, GLdouble z) => _glVertexAttribL3d(index, x, y, z);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBL4DPROC(GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w);
-    private static PFNGLVERTEXATTRIBL4DPROC _glVertexAttribL4d;
+    private PFNGLVERTEXATTRIBL4DPROC _glVertexAttribL4d;
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
@@ -14758,18 +14756,18 @@ public static unsafe class GL
     /// <param name="y">Specifies the second new value for the generic vertex attribute.</param>
     /// <param name="z">Specifies the third new value for the generic vertex attribute.</param>
     /// <param name="w">Specifies the fourth new value for the generic vertex attribute.</param>
-    public static void glVertexAttribL4d(GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w) => _glVertexAttribL4d(index, x, y, z, w);
+    public void glVertexAttribL4d(GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w) => _glVertexAttribL4d(index, x, y, z, w);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBL1DVPROC(GLuint index, GLdouble* v);
-    private static PFNGLVERTEXATTRIBL1DVPROC _glVertexAttribL1dv;
+    private PFNGLVERTEXATTRIBL1DVPROC _glVertexAttribL1dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of a single double-precision floating-point value that will be used to update the generic vertex attribute.</param>
-    public static void glVertexAttribL1dv(GLuint index, GLdouble* v) => _glVertexAttribL1dv(index, v);
+    public void glVertexAttribL1dv(GLuint index, GLdouble* v) => _glVertexAttribL1dv(index, v);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14777,19 +14775,19 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array of a single double-precision floating-point value that will be used to update the generic vertex attribute.</param>
-    public static void glVertexAttribL1dv(GLuint index, GLdouble[] v) { fixed (GLdouble* pV = &v[0]) { _glVertexAttribL1dv(index, pV); } }
+    public void glVertexAttribL1dv(GLuint index, GLdouble[] v) { fixed (GLdouble* pV = &v[0]) { _glVertexAttribL1dv(index, pV); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBL2DVPROC(GLuint index, GLdouble* v);
-    private static PFNGLVERTEXATTRIBL2DVPROC _glVertexAttribL2dv;
+    private PFNGLVERTEXATTRIBL2DVPROC _glVertexAttribL2dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of a two-element array that will be used to update the generic vertex attribute.</param>
-    public static void glVertexAttribL2dv(GLuint index, GLdouble* v) => _glVertexAttribL2dv(index, v);
+    public void glVertexAttribL2dv(GLuint index, GLdouble* v) => _glVertexAttribL2dv(index, v);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14797,19 +14795,19 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that will be used to update the generic vertex attribute.</param>
-    public static void glVertexAttribL2dv(GLuint index, GLdouble[] v) { fixed (GLdouble* pV = &v[0]) { _glVertexAttribL2dv(index, pV); } }
+    public void glVertexAttribL2dv(GLuint index, GLdouble[] v) { fixed (GLdouble* pV = &v[0]) { _glVertexAttribL2dv(index, pV); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBL3DVPROC(GLuint index, GLdouble* v);
-    private static PFNGLVERTEXATTRIBL3DVPROC _glVertexAttribL3dv;
+    private PFNGLVERTEXATTRIBL3DVPROC _glVertexAttribL3dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of a three-element array that will be used to update the generic vertex attribute.</param>
-    public static void glVertexAttribL3dv(GLuint index, GLdouble* v) => _glVertexAttribL3dv(index, v);
+    public void glVertexAttribL3dv(GLuint index, GLdouble* v) => _glVertexAttribL3dv(index, v);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14817,19 +14815,19 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that will be used to update the generic vertex attribute.</param>
-    public static void glVertexAttribL3dv(GLuint index, GLdouble[] v) { fixed (GLdouble* pV = &v[0]) { _glVertexAttribL3dv(index, pV); } }
+    public void glVertexAttribL3dv(GLuint index, GLdouble[] v) { fixed (GLdouble* pV = &v[0]) { _glVertexAttribL3dv(index, pV); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBL4DVPROC(GLuint index, GLdouble* v);
-    private static PFNGLVERTEXATTRIBL4DVPROC _glVertexAttribL4dv;
+    private PFNGLVERTEXATTRIBL4DVPROC _glVertexAttribL4dv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the value of a generic vertex attribute
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies the address of a four-element array that will be used to update the generic vertex attribute.</param>
-    public static void glVertexAttribL4dv(GLuint index, GLdouble* v) => _glVertexAttribL4dv(index, v);
+    public void glVertexAttribL4dv(GLuint index, GLdouble* v) => _glVertexAttribL4dv(index, v);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14837,12 +14835,12 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="v">Specifies an array that will be used to update the generic vertex attribute.</param>
-    public static void glVertexAttribL4dv(GLuint index, GLdouble[] v) { fixed (GLdouble* pV = &v[0]) { _glVertexAttribL4dv(index, pV); } }
+    public void glVertexAttribL4dv(GLuint index, GLdouble[] v) { fixed (GLdouble* pV = &v[0]) { _glVertexAttribL4dv(index, pV); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBLPOINTERPROC(GLuint index, GLint size, GLenum type, GLsizei stride, void* pointer);
-    private static PFNGLVERTEXATTRIBLPOINTERPROC _glVertexAttribLPointer;
+    private PFNGLVERTEXATTRIBLPOINTERPROC _glVertexAttribLPointer;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Define an array of generic vertex attribute data
@@ -14852,7 +14850,7 @@ public static unsafe class GL
     /// <param name="type">Specifies the data type of each component in the array. The symbolic constants <see cref="GL_BYTE"/>, <see cref="GL_UNSIGNED_BYTE"/>, <see cref="GL_SHORT"/>, <see cref="GL_UNSIGNED_SHORT"/>, <see cref="GL_INT"/>, <see cref="GL_UNSIGNED_INT"/>, <see cref="GL_DOUBLE"/>.</param>
     /// <param name="stride">Specifies the byte offset between consecutive generic vertex attributes. If stride is 0, the generic vertex attributes are understood to be tightly packed in the array. The initial value is 0.</param>
     /// <param name="pointer">Specifies a pointer to the first component of the first generic vertex attribute in the array. The initial value is 0.</param>
-    public static void glVertexAttribLPointer(GLuint index, GLint size, GLenum type, GLsizei stride, void* pointer) => _glVertexAttribLPointer(index, size, type, stride, pointer);
+    public void glVertexAttribLPointer(GLuint index, GLint size, GLenum type, GLsizei stride, void* pointer) => _glVertexAttribLPointer(index, size, type, stride, pointer);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14863,12 +14861,12 @@ public static unsafe class GL
     /// <param name="type">Specifies the data type of each component in the array. The symbolic constants <see cref="GL_BYTE"/>, <see cref="GL_UNSIGNED_BYTE"/>, <see cref="GL_SHORT"/>, <see cref="GL_UNSIGNED_SHORT"/>, <see cref="GL_INT"/>, <see cref="GL_UNSIGNED_INT"/>, <see cref="GL_DOUBLE"/>.</param>
     /// <param name="stride">Specifies the byte offset between consecutive generic vertex attributes. If stride is 0, the generic vertex attributes are understood to be tightly packed in the array. The initial value is 0.</param>
     /// <param name="pointer">Specifies a pointer to the first component of the first generic vertex attribute in the array. The initial value is 0.</param>
-    public static void glVertexAttribLPointer(GLuint index, GLint size, GLenum type, GLsizei stride, GLsizei pointer) => _glVertexAttribLPointer(index, size, type, stride, (void*)pointer);
+    public void glVertexAttribLPointer(GLuint index, GLint size, GLenum type, GLsizei stride, GLsizei pointer) => _glVertexAttribLPointer(index, size, type, stride, (void*)pointer);
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETVERTEXATTRIBLDVPROC(GLuint index, GLenum pname, GLdouble* parameters);
-    private static PFNGLGETVERTEXATTRIBLDVPROC _glGetVertexAttribLdv;
+    private PFNGLGETVERTEXATTRIBLDVPROC _glGetVertexAttribLdv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return the value of a generic vertex attribute
@@ -14876,7 +14874,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the generic vertex attribute.</param>
     /// <param name="pname">Specifies the symbolic name of the generic vertex attribute parameter to be queried. The following symbolic names are accepted: <see cref="GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_ENABLED"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_SIZE"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_STRIDE"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_TYPE"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_NORMALIZED"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_INTEGER"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_DIVISOR"/>, <see cref="GL_CURRENT_VERTEX_ATTRIB"/>.</param>
     /// <param name="parameters">Returns the requested data.</param>
-    public static void glGetVertexAttribLdv(GLuint index, GLenum pname, GLdouble* parameters) => _glGetVertexAttribLdv(index, pname, parameters);
+    public void glGetVertexAttribLdv(GLuint index, GLenum pname, GLdouble* parameters) => _glGetVertexAttribLdv(index, pname, parameters);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14885,13 +14883,13 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the generic vertex attribute.</param>
     /// <param name="pname">Specifies the symbolic name of the generic vertex attribute parameter to be queried. The following symbolic names are accepted: <see cref="GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_ENABLED"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_SIZE"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_STRIDE"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_TYPE"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_NORMALIZED"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_INTEGER"/>, <see cref="GL_VERTEX_ATTRIB_ARRAY_DIVISOR"/>, <see cref="GL_CURRENT_VERTEX_ATTRIB"/>.</param>
     /// <param name="parameters">Returns the requested data.</param>
-    public static void glGetVertexAttribLdv(GLuint index, GLenum pname, ref GLdouble[] parameters) { fixed (GLdouble* pP =
+    public void glGetVertexAttribLdv(GLuint index, GLenum pname, ref GLdouble[] parameters) { fixed (GLdouble* pP =
  &parameters[0]) { _glGetVertexAttribLdv(index, pname, pP); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVIEWPORTARRAYVPROC(GLuint first, GLsizei count, GLfloat* v);
-    private static PFNGLVIEWPORTARRAYVPROC _glViewportArrayv;
+    private PFNGLVIEWPORTARRAYVPROC _glViewportArrayv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the viewport transformation parameters for multiple viewports
@@ -14899,7 +14897,7 @@ public static unsafe class GL
     /// <param name="first">Specifies the index of the first viewport to set.</param>
     /// <param name="count">Specifies the number of viewports to set.</param>
     /// <param name="v">Specifies the address of an array containing the left, bottom, width, and height of each viewport, respectively. The parameters of each viewport, left, bottom, width, and height, are stored in array order. The initial value is (0,0,0,0).</param>
-    public static void glViewportArrayv(GLuint first, GLsizei count, GLfloat* v) => _glViewportArrayv(first, count, v);
+    public void glViewportArrayv(GLuint first, GLsizei count, GLfloat* v) => _glViewportArrayv(first, count, v);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14908,13 +14906,13 @@ public static unsafe class GL
     /// <param name="first">Specifies the index of the first viewport to set.</param>
     /// <param name="count">Specifies the number of viewports to set.</param>
     /// <param name="v">Specifies the address of an array containing the left, bottom, width, and height of each viewport, respectively. The parameters of each viewport, left, bottom, width, and height, are stored in array order. The initial value is (0,0,0,0).</param>
-    public static void glViewportArrayv(GLuint first, GLsizei count, params GLfloat[] v) { fixed (GLfloat* pV =
+    public void glViewportArrayv(GLuint first, GLsizei count, params GLfloat[] v) { fixed (GLfloat* pV =
  &v[0]) { _glViewportArrayv(first, count, pV); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVIEWPORTINDEXEDFPROC(GLuint index, GLfloat x, GLfloat y, GLfloat w, GLfloat h);
-    private static PFNGLVIEWPORTINDEXEDFPROC _glViewportIndexedf;
+    private PFNGLVIEWPORTINDEXEDFPROC _glViewportIndexedf;
     /// <summary>
     /// Specify the viewport transformation parameters for a specified viewport
     /// </summary>
@@ -14923,18 +14921,18 @@ public static unsafe class GL
     /// <param name="y">Specify the bottom viewport coordinate.</param>
     /// <param name="w">Specify the viewport width.</param>
     /// <param name="h">Specify the viewport height.</param>
-    public static void glViewportIndexedf(GLuint index, GLfloat x, GLfloat y, GLfloat w, GLfloat h) => _glViewportIndexedf(index, x, y, w, h);
+    public void glViewportIndexedf(GLuint index, GLfloat x, GLfloat y, GLfloat w, GLfloat h) => _glViewportIndexedf(index, x, y, w, h);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVIEWPORTINDEXEDFVPROC(GLuint index, GLfloat* v);
-    private static PFNGLVIEWPORTINDEXEDFVPROC _glViewportIndexedfv;
+    private PFNGLVIEWPORTINDEXEDFVPROC _glViewportIndexedfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the viewport transformation parameters for a specified viewport
     /// </summary>
     /// <param name="index">Specifies the index of the viewport to be modified.</param>
     /// <param name="v">Specifies the address of an array containing the left, bottom, width, and height of the viewport rectangle, in that order. The initial value is (0,0,0,0).</param>
-    public static void glViewportIndexedfv(GLuint index, GLfloat* v) => _glViewportIndexedfv(index, v);
+    public void glViewportIndexedfv(GLuint index, GLfloat* v) => _glViewportIndexedfv(index, v);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14942,12 +14940,12 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the viewport to be modified.</param>
     /// <param name="v">Specifies the address of an array containing the left, bottom, width, and height of the viewport rectangle, in that order. The initial value is (0,0,0,0).</param>
-    public static void glViewportIndexedfv(GLuint index, params GLfloat[] v) { fixed (GLfloat* pV = &v[0]) { _glViewportIndexedfv(index, pV); } }
+    public void glViewportIndexedfv(GLuint index, params GLfloat[] v) { fixed (GLfloat* pV = &v[0]) { _glViewportIndexedfv(index, pV); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLSCISSORARRAYVPROC(GLuint first, GLsizei count, GLint* v);
-    private static PFNGLSCISSORARRAYVPROC _glScissorArrayv;
+    private PFNGLSCISSORARRAYVPROC _glScissorArrayv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Define the scissor box for multiple viewports
@@ -14955,7 +14953,7 @@ public static unsafe class GL
     /// <param name="first">Specifies the index of the first scissor box to set.</param>
     /// <param name="count">Specifies the number of scissor boxes to set.</param>
     /// <param name="v">Specifies the address of an array containing the left, bottom, width, and height of each scissor box, respectively. The parameters of each scissor box, left, bottom, width, and height, are stored in array order. The initial value is (0,0,0,0).</param>
-    public static void glScissorArrayv(GLuint first, GLsizei count, GLint* v) => _glScissorArrayv(first, count, v);
+    public void glScissorArrayv(GLuint first, GLsizei count, GLint* v) => _glScissorArrayv(first, count, v);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14964,12 +14962,12 @@ public static unsafe class GL
     /// <param name="first">Specifies the index of the first scissor box to set.</param>
     /// <param name="count">Specifies the number of scissor boxes to set.</param>
     /// <param name="v">Specifies the address of an array containing the left, bottom, width, and height of each scissor box, respectively. The parameters of each scissor box, left, bottom, width, and height, are stored in array order. The initial value is (0,0,0,0).</param>
-    public static void glScissorArrayv(GLuint first, GLsizei count, params GLint[] v) { fixed (GLint* pV = &v[0]) { _glScissorArrayv(first, count, pV); } }
+    public void glScissorArrayv(GLuint first, GLsizei count, params GLint[] v) { fixed (GLint* pV = &v[0]) { _glScissorArrayv(first, count, pV); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLSCISSORINDEXEDPROC(GLuint index, GLint left, GLint bottom, GLsizei width, GLsizei height);
-    private static PFNGLSCISSORINDEXEDPROC _glScissorIndexed;
+    private PFNGLSCISSORINDEXEDPROC _glScissorIndexed;
     /// <summary>
     /// Define the scissor box for a specified viewport
     /// </summary>
@@ -14978,18 +14976,18 @@ public static unsafe class GL
     /// <param name="bottom">Specify the bottom scissor box coordinate.</param>
     /// <param name="width">Specify the scissor box width.</param>
     /// <param name="height">Specify the scissor box height.</param>
-    public static void glScissorIndexed(GLuint index, GLint left, GLint bottom, GLsizei width, GLsizei height) => _glScissorIndexed(index, left, bottom, width, height);
+    public void glScissorIndexed(GLuint index, GLint left, GLint bottom, GLsizei width, GLsizei height) => _glScissorIndexed(index, left, bottom, width, height);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLSCISSORINDEXEDVPROC(GLuint index, GLint* v);
-    private static PFNGLSCISSORINDEXEDVPROC _glScissorIndexedv;
+    private PFNGLSCISSORINDEXEDVPROC _glScissorIndexedv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Define the scissor box for a specified viewport
     /// </summary>
     /// <param name="index">Specifies the index of the viewport whose scissor box to modify.</param>
     /// <param name="v">Specifies the address of an array containing the left, bottom, width, and height of the scissor box. The initial value is (0,0,0,0).</param>
-    public static void glScissorIndexedv(GLuint index, GLint* v) => _glScissorIndexedv(index, v);
+    public void glScissorIndexedv(GLuint index, GLint* v) => _glScissorIndexedv(index, v);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -14997,12 +14995,12 @@ public static unsafe class GL
     /// </summary>
     /// <param name="index">Specifies the index of the viewport whose scissor box to modify.</param>
     /// <param name="v">Specifies the address of an array containing the left, bottom, width, and height of the scissor box. The initial value is (0,0,0,0).</param>
-    public static void glScissorIndexedv(GLuint index, params GLint[] v) { fixed (GLint* pV = &v[0]) { _glScissorIndexedv(index, pV); } }
+    public void glScissorIndexedv(GLuint index, params GLint[] v) { fixed (GLint* pV = &v[0]) { _glScissorIndexedv(index, pV); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDEPTHRANGEARRAYVPROC(GLuint first, GLsizei count, GLdouble* v);
-    private static PFNGLDEPTHRANGEARRAYVPROC _glDepthRangeArrayv;
+    private PFNGLDEPTHRANGEARRAYVPROC _glDepthRangeArrayv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify mapping of depth values from normalized device coordinates to window coordinates for a specified set of viewports
@@ -15010,7 +15008,7 @@ public static unsafe class GL
     /// <param name="first">Specifies the index of the first viewport whose depth range to update.</param>
     /// <param name="count">Specifies the number of viewports whose depth range to update.</param>
     /// <param name="v">Specifies the address of an array containing the near and far values for each viewport, respectively. The parameters of each viewport, near and far, are stored in array order. The initial value is (0,1).</param>
-    public static void glDepthRangeArrayv(GLuint first, GLsizei count, GLdouble* v) => _glDepthRangeArrayv(first, count, v);
+    public void glDepthRangeArrayv(GLuint first, GLsizei count, GLdouble* v) => _glDepthRangeArrayv(first, count, v);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15019,24 +15017,24 @@ public static unsafe class GL
     /// <param name="first">Specifies the index of the first viewport whose depth range to update.</param>
     /// <param name="count">Specifies the number of viewports whose depth range to update.</param>
     /// <param name="v">Specifies an array containing the near and far values for each viewport, respectively. The parameters of each viewport, near and far, are stored in array order. The initial value is (0,1).</param>
-    public static void glDepthRangeArrayv(GLuint first, GLsizei count, params GLdouble[] v) { fixed (GLdouble* pV =
+    public void glDepthRangeArrayv(GLuint first, GLsizei count, params GLdouble[] v) { fixed (GLdouble* pV =
  &v[0]) { _glDepthRangeArrayv(first, count, pV); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDEPTHRANGEINDEXEDPROC(GLuint index, GLdouble n, GLdouble f);
-    private static PFNGLDEPTHRANGEINDEXEDPROC _glDepthRangeIndexed;
+    private PFNGLDEPTHRANGEINDEXEDPROC _glDepthRangeIndexed;
     /// <summary>
     /// Specify mapping of depth values from normalized device coordinates to window coordinates for a specified viewport
     /// </summary>
     /// <param name="index">Specifies the index of the viewport whose depth range to update.</param>
     /// <param name="n">Specifies the near value for the depth range for the specified viewport. n must be between 0.0 and 1.0, inclusive. The initial value is 0.0.</param>
     /// <param name="f">Specifies the far value for the depth range for the specified viewport. f must be between 0.0 and 1.0, inclusive. The initial value is 1.0.</param>
-    public static void glDepthRangeIndexed(GLuint index, GLdouble n, GLdouble f) => _glDepthRangeIndexed(index, n, f);
+    public void glDepthRangeIndexed(GLuint index, GLdouble n, GLdouble f) => _glDepthRangeIndexed(index, n, f);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETFLOATI_VPROC(GLenum target, GLuint index, GLfloat* data);
-    private static PFNGLGETFLOATI_VPROC _glGetFloati_v;
+    private PFNGLGETFLOATI_VPROC _glGetFloati_v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return the float value(s) of a selected state parameter for a specified indexed state target
@@ -15044,7 +15042,7 @@ public static unsafe class GL
     /// <param name="target">Specifies the state to query.</param>
     /// <param name="index">Specifies the index of the element being queried.</param>
     /// <param name="data">Returns the requested data.</param>
-    public static void glGetFloati_v(GLenum target, GLuint index, GLfloat* data) => _glGetFloati_v(target, index, data);
+    public void glGetFloati_v(GLenum target, GLuint index, GLfloat* data) => _glGetFloati_v(target, index, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15053,13 +15051,13 @@ public static unsafe class GL
     /// <param name="target">Specifies the state to query.</param>
     /// <param name="index">Specifies the index of the element being queried.</param>
     /// <param name="data">Returns the requested data.</param>
-    public static void glGetFloati_v(GLenum target, GLuint index, ref GLfloat[] data) { fixed (GLfloat* pData =
+    public void glGetFloati_v(GLenum target, GLuint index, ref GLfloat[] data) { fixed (GLfloat* pData =
  &data[0]) { _glGetFloati_v(target, index, pData); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETDOUBLEI_VPROC(GLenum target, GLuint index, GLdouble* data);
-    private static PFNGLGETDOUBLEI_VPROC _glGetDoublei_v;
+    private PFNGLGETDOUBLEI_VPROC _glGetDoublei_v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return the double value(s) of a selected state parameter for a specified indexed state target
@@ -15067,7 +15065,7 @@ public static unsafe class GL
     /// <param name="target">Specifies the state to query.</param>
     /// <param name="index">Specifies the index of the element being queried.</param>
     /// <param name="data">Returns the requested data.</param>
-    public static void glGetDoublei_v(GLenum target, GLuint index, GLdouble* data) => _glGetDoublei_v(target, index, data);
+    public void glGetDoublei_v(GLenum target, GLuint index, GLdouble* data) => _glGetDoublei_v(target, index, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15076,7 +15074,7 @@ public static unsafe class GL
     /// <param name="target">Specifies the state to query.</param>
     /// <param name="index">Specifies the index of the element being queried.</param>
     /// <param name="data">Returns the requested data.</param>
-    public static void glGetDoublei_v(GLenum target, GLuint index, ref GLdouble[] data) { fixed (GLdouble* pData =
+    public void glGetDoublei_v(GLenum target, GLuint index, ref GLdouble[] data) { fixed (GLdouble* pData =
  &data[0]) { _glGetDoublei_v(target, index, pData); } }
 #endif
 
@@ -15087,7 +15085,7 @@ public static unsafe class GL
 #if OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDRAWARRAYSINSTANCEDBASEINSTANCEPROC(GLenum mode, GLint first, GLsizei count, GLsizei instancecount, GLuint baseinstance);
-    private static PFNGLDRAWARRAYSINSTANCEDBASEINSTANCEPROC _glDrawArraysInstancedBaseInstance;
+    private PFNGLDRAWARRAYSINSTANCEDBASEINSTANCEPROC _glDrawArraysInstancedBaseInstance;
     /// <summary>
     /// Draw multiple instances of a range of elements with offset applied to instanced attributes
     /// </summary>
@@ -15096,11 +15094,11 @@ public static unsafe class GL
     /// <param name="count">Specifies the number of indices to be rendered.</param>
     /// <param name="instancecount">Specifies the number of instances of the specified range of indices to be rendered.</param>
     /// <param name="baseinstance">Specifies the base instance for use in fetching instanced vertex attributes.</param>
-    public static void glDrawArraysInstancedBaseInstance(GLenum mode, GLint first, GLsizei count, GLsizei instancecount, GLuint baseinstance) => _glDrawArraysInstancedBaseInstance(mode, first, count, instancecount, baseinstance);
+    public void glDrawArraysInstancedBaseInstance(GLenum mode, GLint first, GLsizei count, GLsizei instancecount, GLuint baseinstance) => _glDrawArraysInstancedBaseInstance(mode, first, count, instancecount, baseinstance);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDRAWELEMENTSINSTANCEDBASEINSTANCEPROC(GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount, GLuint baseinstance);
-    private static PFNGLDRAWELEMENTSINSTANCEDBASEINSTANCEPROC _glDrawElementsInstancedBaseInstance;
+    private PFNGLDRAWELEMENTSINSTANCEDBASEINSTANCEPROC _glDrawElementsInstancedBaseInstance;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Draw multiple instances of a set of elements with offset applied to instanced attributes
@@ -15111,7 +15109,7 @@ public static unsafe class GL
     /// <param name="indices">Specifies a pointer to the location where the indices are stored.</param>
     /// <param name="instancecount">Specifies the number of instances of the specified range of indices to be rendered.</param>
     /// <param name="baseinstance">Specifies the base instance for use in fetching instanced vertex attributes.</param>
-    public static void glDrawElementsInstancedBaseInstance(GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount, GLuint baseinstance) => _glDrawElementsInstancedBaseInstance(mode, count, type, indices, instancecount, baseinstance);
+    public void glDrawElementsInstancedBaseInstance(GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount, GLuint baseinstance) => _glDrawElementsInstancedBaseInstance(mode, count, type, indices, instancecount, baseinstance);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15123,13 +15121,13 @@ public static unsafe class GL
     /// <param name="indices">Specifies an array where the indices are stored.</param>
     /// <param name="instancecount">Specifies the number of instances of the specified range of indices to be rendered.</param>
     /// <param name="baseinstance">Specifies the base instance for use in fetching instanced vertex attributes.</param>
-    public static void glDrawElementsInstancedBaseInstance<T>(GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount, GLuint baseinstance) where T : unmanaged, IUnsignedNumber<T> { fixed (void* p
+    public void glDrawElementsInstancedBaseInstance<T>(GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount, GLuint baseinstance) where T : unmanaged, IUnsignedNumber<T> { fixed (void* p
  = &indices[0]) { _glDrawElementsInstancedBaseInstance(mode, count, type, p, instancecount, baseinstance); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXBASEINSTANCEPROC(GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount, GLint basevertex, GLuint baseinstance);
-    private static PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXBASEINSTANCEPROC _glDrawElementsInstancedBaseVertexBaseInstance;
+    private PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXBASEINSTANCEPROC _glDrawElementsInstancedBaseVertexBaseInstance;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Draw multiple instances of a set of elements with offset applied to instanced attributes and a per-element offset
@@ -15141,7 +15139,7 @@ public static unsafe class GL
     /// <param name="instancecount">Specifies the number of instances of the specified range of indices to be rendered.</param>
     /// <param name="basevertex">Specifies a constant that should be added to each element of indices when chosing elements from the enabled vertex arrays.</param>
     /// <param name="baseinstance">Specifies the base instance for use in fetching instanced vertex attributes.</param>
-    public static void glDrawElementsInstancedBaseVertexBaseInstance(GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount, GLint basevertex, GLuint baseinstance) => _glDrawElementsInstancedBaseVertexBaseInstance(mode, count, type, indices, instancecount, basevertex, baseinstance);
+    public void glDrawElementsInstancedBaseVertexBaseInstance(GLenum mode, GLsizei count, GLenum type, void* indices, GLsizei instancecount, GLint basevertex, GLuint baseinstance) => _glDrawElementsInstancedBaseVertexBaseInstance(mode, count, type, indices, instancecount, basevertex, baseinstance);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15154,13 +15152,13 @@ public static unsafe class GL
     /// <param name="instancecount">Specifies the number of instances of the specified range of indices to be rendered.</param>
     /// <param name="basevertex">Specifies a constant that should be added to each element of indices when chosing elements from the enabled vertex arrays.</param>
     /// <param name="baseinstance">Specifies the base instance for use in fetching instanced vertex attributes.</param>
-    public static void glDrawElementsInstancedBaseVertexBaseInstance<T>(GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount, GLint basevertex, GLuint baseinstance) where T : unmanaged, IUnsignedNumber<T> { fixed (void* p
+    public void glDrawElementsInstancedBaseVertexBaseInstance<T>(GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount, GLint basevertex, GLuint baseinstance) where T : unmanaged, IUnsignedNumber<T> { fixed (void* p
  = &indices[0]) { _glDrawElementsInstancedBaseVertexBaseInstance(mode, count, type, p, instancecount, basevertex, baseinstance); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETINTERNALFORMATIVPROC(GLenum target, GLenum internalformat, GLenum pname, GLsizei bufSize, GLint* @params);
-    private static PFNGLGETINTERNALFORMATIVPROC _glGetInternalformativ;
+    private PFNGLGETINTERNALFORMATIVPROC _glGetInternalformativ;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return information about implementation-dependent support for internal formats
@@ -15170,7 +15168,7 @@ public static unsafe class GL
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="bufSize">Specifies the size of the buffer whose address is given in params.</param>
     /// <param name="params">Specifies the address of a buffer into which to place the returned data.</param>
-    public static void glGetInternalformativ(GLenum target, GLenum internalformat, GLenum pname, GLsizei bufSize, GLint* @params) => _glGetInternalformativ(target, internalformat, pname, bufSize, @params);
+    public void glGetInternalformativ(GLenum target, GLenum internalformat, GLenum pname, GLsizei bufSize, GLint* @params) => _glGetInternalformativ(target, internalformat, pname, bufSize, @params);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15181,13 +15179,13 @@ public static unsafe class GL
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="bufSize">Specifies the size of the buffer whose address is given in params.</param>
     /// <param name="params">Specifies the address of a buffer into which to place the returned data.</param>
-    public static void glGetInternalformativ(GLenum target, GLenum internalformat, GLenum pname, GLsizei bufSize, ref GLint[] @params) { fixed (GLint* p =
+    public void glGetInternalformativ(GLenum target, GLenum internalformat, GLenum pname, GLsizei bufSize, ref GLint[] @params) { fixed (GLint* p =
  &@params[0]) { _glGetInternalformativ(target, internalformat, pname, bufSize, p); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETACTIVEATOMICCOUNTERBUFFERIVPROC(GLuint program, GLuint bufferIndex, GLenum pname, GLint* @params);
-    private static PFNGLGETACTIVEATOMICCOUNTERBUFFERIVPROC _glGetActiveAtomicCounterBufferiv;
+    private PFNGLGETACTIVEATOMICCOUNTERBUFFERIVPROC _glGetActiveAtomicCounterBufferiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Query the properties of an active atomic counter buffer
@@ -15196,7 +15194,7 @@ public static unsafe class GL
     /// <param name="bufferIndex">Specifies the index of the active atomic counter buffer whose properties to query.</param>
     /// <param name="pname">Specifies the property of the active atomic counter buffer to query.</param>
     /// <param name="params">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    public static void glGetActiveAtomicCounterBufferiv(GLuint program, GLuint bufferIndex, GLenum pname, GLint* @params) => _glGetActiveAtomicCounterBufferiv(program, bufferIndex, pname, @params);
+    public void glGetActiveAtomicCounterBufferiv(GLuint program, GLuint bufferIndex, GLenum pname, GLint* @params) => _glGetActiveAtomicCounterBufferiv(program, bufferIndex, pname, @params);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15206,13 +15204,13 @@ public static unsafe class GL
     /// <param name="bufferIndex">Specifies the index of the active atomic counter buffer whose properties to query.</param>
     /// <param name="pname">Specifies the property of the active atomic counter buffer to query.</param>
     /// <param name="params">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    public static void glGetActiveAtomicCounterBufferiv(GLuint program, GLuint bufferIndex, GLenum pname, ref GLint[] @params) { fixed (GLint* p =
+    public void glGetActiveAtomicCounterBufferiv(GLuint program, GLuint bufferIndex, GLenum pname, ref GLint[] @params) { fixed (GLint* p =
  &@params[0]) { _glGetActiveAtomicCounterBufferiv(program, bufferIndex, pname, p); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBINDIMAGETEXTUREPROC(GLuint unit, GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format);
-    private static PFNGLBINDIMAGETEXTUREPROC _glBindImageTexture;
+    private PFNGLBINDIMAGETEXTUREPROC _glBindImageTexture;
     /// <summary>
     /// Bind an image texture to an image unit
     /// </summary>
@@ -15223,20 +15221,20 @@ public static unsafe class GL
     /// <param name="layer">Specifies the layer of a layered texture to bind.</param>
     /// <param name="access">Specifies the type of access that will be performed on the image.</param>
     /// <param name="format">Specifies the format that the elements of the image will be treated as for the purposes of formatted stores.</param>
-    public static void glBindImageTexture(GLuint unit, GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format) => _glBindImageTexture(unit, texture, level, layered, layer, access, format);
+    public void glBindImageTexture(GLuint unit, GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format) => _glBindImageTexture(unit, texture, level, layered, layer, access, format);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLMEMORYBARRIERPROC(GLbitfield barriers);
-    private static PFNGLMEMORYBARRIERPROC _glMemoryBarrier;
+    private PFNGLMEMORYBARRIERPROC _glMemoryBarrier;
     /// <summary>
     /// Specify the memory access semantics to be enforced prior to executing a set of GL commands that includes shader writes
     /// </summary>
     /// <param name="barriers">Specifies the barriers that are to be applied.</param>
-    public static void glMemoryBarrier(GLbitfield barriers) => _glMemoryBarrier(barriers);
+    public void glMemoryBarrier(GLbitfield barriers) => _glMemoryBarrier(barriers);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXSTORAGE1DPROC(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width);
-    private static PFNGLTEXSTORAGE1DPROC _glTexStorage1D;
+    private PFNGLTEXSTORAGE1DPROC _glTexStorage1D;
     /// <summary>
     /// Specify storage for a one-dimensional texture
     /// </summary>
@@ -15244,11 +15242,11 @@ public static unsafe class GL
     /// <param name="levels">Specifies the number of levels of detail in the texture.</param>
     /// <param name="internalformat">Specifies the sized internal format to be used to store texture image data.</param>
     /// <param name="width">Specifies the width of the texture, in texels.</param>
-    public static void glTexStorage1D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width) => _glTexStorage1D(target, levels, internalformat, width);
+    public void glTexStorage1D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width) => _glTexStorage1D(target, levels, internalformat, width);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXSTORAGE2DPROC(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height);
-    private static PFNGLTEXSTORAGE2DPROC _glTexStorage2D;
+    private PFNGLTEXSTORAGE2DPROC _glTexStorage2D;
     /// <summary>
     /// Specify storage for a two-dimensional texture
     /// </summary>
@@ -15257,11 +15255,11 @@ public static unsafe class GL
     /// <param name="internalformat">Specifies the sized internal format to be used to store texture image data.</param>
     /// <param name="width">Specifies the width of the texture, in texels.</param>
     /// <param name="height">Specifies the height of the texture, in texels.</param>
-    public static void glTexStorage2D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height) => _glTexStorage2D(target, levels, internalformat, width, height);
+    public void glTexStorage2D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height) => _glTexStorage2D(target, levels, internalformat, width, height);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXSTORAGE3DPROC(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth);
-    private static PFNGLTEXSTORAGE3DPROC _glTexStorage3D;
+    private PFNGLTEXSTORAGE3DPROC _glTexStorage3D;
     /// <summary>
     /// Specify storage for a three-dimensional texture
     /// </summary>
@@ -15271,22 +15269,22 @@ public static unsafe class GL
     /// <param name="width">Specifies the width of the texture, in texels.</param>
     /// <param name="height">Specifies the height of the texture, in texels.</param>
     /// <param name="depth">Specifies the depth of the texture, in texels.</param>
-    public static void glTexStorage3D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth) => _glTexStorage3D(target, levels, internalformat, width, height, depth);
+    public void glTexStorage3D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth) => _glTexStorage3D(target, levels, internalformat, width, height, depth);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDRAWTRANSFORMFEEDBACKINSTANCEDPROC(GLenum mode, GLuint id, GLsizei instancecount);
-    private static PFNGLDRAWTRANSFORMFEEDBACKINSTANCEDPROC _glDrawTransformFeedbackInstanced;
+    private PFNGLDRAWTRANSFORMFEEDBACKINSTANCEDPROC _glDrawTransformFeedbackInstanced;
     /// <summary>
     /// Render primitives from array data previously placed in a transform feedback buffer
     /// </summary>
     /// <param name="mode">Specifies what kind of primitives to render.</param>
     /// <param name="id">Specifies the name of a transform feedback object from which to retrieve the vertex attributes.</param>
     /// <param name="instancecount">Specifies the number of instances of the specified range of vertices to render.</param>
-    public static void glDrawTransformFeedbackInstanced(GLenum mode, GLuint id, GLsizei instancecount) => _glDrawTransformFeedbackInstanced(mode, id, instancecount);
+    public void glDrawTransformFeedbackInstanced(GLenum mode, GLuint id, GLsizei instancecount) => _glDrawTransformFeedbackInstanced(mode, id, instancecount);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDRAWTRANSFORMFEEDBACKSTREAMINSTANCEDPROC(GLenum mode, GLuint id, GLuint stream, GLsizei instancecount);
-    private static PFNGLDRAWTRANSFORMFEEDBACKSTREAMINSTANCEDPROC _glDrawTransformFeedbackStreamInstanced;
+    private PFNGLDRAWTRANSFORMFEEDBACKSTREAMINSTANCEDPROC _glDrawTransformFeedbackStreamInstanced;
     /// <summary>
     /// Render primitives from array data previously placed in a transform feedback buffer
     /// </summary>
@@ -15294,7 +15292,7 @@ public static unsafe class GL
     /// <param name="id">Specifies the name of a transform feedback object from which to retrieve the vertex attributes.</param>
     /// <param name="stream">Specifies the transform feedback stream from which to retrieve the vertex attributes.</param>
     /// <param name="instancecount">Specifies the number of instances of the specified range of vertices to render.</param>
-    public static void glDrawTransformFeedbackStreamInstanced(GLenum mode, GLuint id, GLuint stream, GLsizei instancecount) => _glDrawTransformFeedbackStreamInstanced(mode, id, stream, instancecount);
+    public void glDrawTransformFeedbackStreamInstanced(GLenum mode, GLuint id, GLuint stream, GLsizei instancecount) => _glDrawTransformFeedbackStreamInstanced(mode, id, stream, instancecount);
 
 #endif
 
@@ -15303,14 +15301,14 @@ public static unsafe class GL
 #if OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETPOINTERVPROC(GLenum pname, void** @params);
-    private static PFNGLGETPOINTERVPROC _glGetPointerv;
+    private PFNGLGETPOINTERVPROC _glGetPointerv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return the address of the specified pointer.
     /// </summary>
     /// <param name="pname">Specifies the pointer to be returned. Must be one of <see cref="GL_DEBUG_CALLBACK_FUNCTION" /> or <see cref="GL_DEBUG_CALLBACK_USER_PARAM" />.</param>
     /// <param name="params">Returns the address of the specified pointer.</param>
-    public static void glGetPointerv(GLenum pname, void** @params) => _glGetPointerv(pname, @params);
+    public void glGetPointerv(GLenum pname, void** @params) => _glGetPointerv(pname, @params);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15318,7 +15316,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="pname">Specifies the pointer to be returned. Must be one of <see cref="GL_DEBUG_CALLBACK_FUNCTION" /> or <see cref="GL_DEBUG_CALLBACK_USER_PARAM" />.</param>
     /// <param name="params">A <see langword="ref" /> to an array of <see cref="IntPtr" />s to receive the address of the specified pointer.</param>
-    public static void glGetPointerv(GLenum pname, ref IntPtr[] @params)
+    public void glGetPointerv(GLenum pname, ref IntPtr[] @params)
     {
         int length = @params.Length;
 
@@ -15336,7 +15334,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCLEARBUFFERDATAPROC(GLenum target, GLenum internalformat, GLenum format, GLenum type, void* data);
-    private static PFNGLCLEARBUFFERDATAPROC _glClearBufferData;
+    private PFNGLCLEARBUFFERDATAPROC _glClearBufferData;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Clear a buffer object to a specified value.
@@ -15346,7 +15344,7 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the data in the buffer object.</param>
     /// <param name="type">Specifies the data type of the data in the buffer object.</param>
     /// <param name="data">Specifies a pointer to the location where the clear value is stored.</param>
-    public static void glClearBufferData(GLenum target, GLenum internalformat, GLenum format, GLenum type, void* data) => _glClearBufferData(target, internalformat, format, type, data);
+    public void glClearBufferData(GLenum target, GLenum internalformat, GLenum format, GLenum type, void* data) => _glClearBufferData(target, internalformat, format, type, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15358,13 +15356,13 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the data in the buffer object.</param>
     /// <param name="type">Specifies the data type of the data in the buffer object.</param>
     /// <param name="data">Specifies the value to clear the buffer with.</param>
-    public static void glClearBufferData<T>(GLenum target, GLenum internalformat, GLenum format, GLenum type, T[] data) where T : unmanaged { fixed (T* t =
+    public void glClearBufferData<T>(GLenum target, GLenum internalformat, GLenum format, GLenum type, T[] data) where T : unmanaged { fixed (T* t =
  &data[0]) _glClearBufferData(target, internalformat, format, type, t); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCLEARBUFFERSUBDATAPROC(GLenum target, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, void* data);
-    private static PFNGLCLEARBUFFERSUBDATAPROC _glClearBufferSubData;
+    private PFNGLCLEARBUFFERSUBDATAPROC _glClearBufferSubData;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Clear a region within a buffer object to a specified value.
@@ -15376,7 +15374,7 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the data in the buffer object.</param>
     /// <param name="type">Specifies the data type of the data in the buffer object.</param>
     /// <param name="data">Specifies a pointer to the location where the clear value is stored.</param>
-    public static void glClearBufferSubData(GLenum target, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, void* data) => _glClearBufferSubData(target, internalformat, offset, size, format, type, data);
+    public void glClearBufferSubData(GLenum target, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, void* data) => _glClearBufferSubData(target, internalformat, offset, size, format, type, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15390,30 +15388,30 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the data in the buffer object.</param>
     /// <param name="type">Specifies the data type of the data in the buffer object.</param>
     /// <param name="data">Specifies the value to clear the buffer with.</param>
-    public static void glClearBufferSubData<T>(GLenum target, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, T[] data) where T : unmanaged { fixed (T* t
+    public void glClearBufferSubData<T>(GLenum target, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, T[] data) where T : unmanaged { fixed (T* t
  = &data[0]) _glClearBufferSubData(target, internalformat, offset, size, format, type, t); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDISPATCHCOMPUTEPROC(GLuint num_groups_x, GLuint num_groups_y, GLuint num_groups_z);
-    private static PFNGLDISPATCHCOMPUTEPROC _glDispatchCompute;
+    private PFNGLDISPATCHCOMPUTEPROC _glDispatchCompute;
     /// <summary>
     /// Launch one or more compute work groups.
     /// </summary>
     /// <param name="num_groups_x">Specify the number of work groups to be launched in the X dimension.</param>
     /// <param name="num_groups_y">Specify the number of work groups to be launched in the Y dimension.</param>
     /// <param name="num_groups_z">Specify the number of work groups to be launched in the Z dimension.</param>
-    public static void glDispatchCompute(GLuint num_groups_x, GLuint num_groups_y, GLuint num_groups_z) => _glDispatchCompute(num_groups_x, num_groups_y, num_groups_z);
+    public void glDispatchCompute(GLuint num_groups_x, GLuint num_groups_y, GLuint num_groups_z) => _glDispatchCompute(num_groups_x, num_groups_y, num_groups_z);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDISPATCHCOMPUTEINDIRECTPROC(void* indirect);
-    private static PFNGLDISPATCHCOMPUTEINDIRECTPROC _glDispatchComputeIndirect;
+    private PFNGLDISPATCHCOMPUTEINDIRECTPROC _glDispatchComputeIndirect;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Launch one or more compute work groups using parameters stored in a buffer object.
     /// </summary>
     /// <param name="indirect">Specifies the offset into the buffer object bound to the <see cref="GL_DISPATCH_INDIRECT_BUFFER" /> target at which the dispatch parameters are stored.</param>
-    public static void glDispatchComputeIndirect(void* indirect) => _glDispatchComputeIndirect(indirect);
+    public void glDispatchComputeIndirect(void* indirect) => _glDispatchComputeIndirect(indirect);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     public struct DispatchIndirectCommand
@@ -15426,12 +15424,12 @@ public static unsafe class GL
     /// Launch one or more compute work groups using parameters stored in a buffer object.
     /// </summary>
     /// <param name="indirect">Specifies the offset into the buffer object bound to the <see cref="GL_DISPATCH_INDIRECT_BUFFER" /> target at which the dispatch parameters are stored.</param>
-    public static void glDispatchComputeIndirect(DispatchIndirectCommand indirect) => _glDispatchComputeIndirect(&indirect);
+    public void glDispatchComputeIndirect(DispatchIndirectCommand indirect) => _glDispatchComputeIndirect(&indirect);
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCOPYIMAGESUBDATAPROC(GLuint srcName, GLenum srcTarget, GLint srcLevel, GLint srcX, GLint srcY, GLint srcZ, GLuint dstName, GLenum dstTarget, GLint dstLevel, GLint dstX, GLint dstY, GLint dstZ, GLsizei srcWidth, GLsizei srcHeight, GLsizei srcDepth);
-    private static PFNGLCOPYIMAGESUBDATAPROC _glCopyImageSubData;
+    private PFNGLCOPYIMAGESUBDATAPROC _glCopyImageSubData;
     /// <summary>
     /// Copy a region of a source texture object to a region of a destination texture object.
     /// </summary>
@@ -15450,22 +15448,22 @@ public static unsafe class GL
     /// <param name="srcWidth">Specifies the width of the region to be copied.</param>
     /// <param name="srcHeight">Specifies the height of the region to be copied.</param>
     /// <param name="srcDepth">Specifies the depth of the region to be copied.</param>
-    public static void glCopyImageSubData(GLuint srcName, GLenum srcTarget, GLint srcLevel, GLint srcX, GLint srcY, GLint srcZ, GLuint dstName, GLenum dstTarget, GLint dstLevel, GLint dstX, GLint dstY, GLint dstZ, GLsizei srcWidth, GLsizei srcHeight, GLsizei srcDepth) => _glCopyImageSubData(srcName, srcTarget, srcLevel, srcX, srcY, srcZ, dstName, dstTarget, dstLevel, dstX, dstY, dstZ, srcWidth, srcHeight, srcDepth);
+    public void glCopyImageSubData(GLuint srcName, GLenum srcTarget, GLint srcLevel, GLint srcX, GLint srcY, GLint srcZ, GLuint dstName, GLenum dstTarget, GLint dstLevel, GLint dstX, GLint dstY, GLint dstZ, GLsizei srcWidth, GLsizei srcHeight, GLsizei srcDepth) => _glCopyImageSubData(srcName, srcTarget, srcLevel, srcX, srcY, srcZ, dstName, dstTarget, dstLevel, dstX, dstY, dstZ, srcWidth, srcHeight, srcDepth);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLFRAMEBUFFERPARAMETERIPROC(GLenum target, GLenum pname, GLint param);
-    private static PFNGLFRAMEBUFFERPARAMETERIPROC _glFramebufferParameteri;
+    private PFNGLFRAMEBUFFERPARAMETERIPROC _glFramebufferParameteri;
     /// <summary>
     /// Specify integer framebuffer parameter.
     /// </summary>
     /// <param name="target">Specifies the target of the operation. The symbolic constant must be <see cref="GL_DRAW_FRAMEBUFFER" />.</param>
     /// <param name="pname">Specifies the parameter to modify.</param>
     /// <param name="param">Specifies the new value for <paramref name="pname" />.</param>
-    public static void glFramebufferParameteri(GLenum target, GLenum pname, GLint param) => _glFramebufferParameteri(target, pname, param);
+    public void glFramebufferParameteri(GLenum target, GLenum pname, GLint param) => _glFramebufferParameteri(target, pname, param);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETFRAMEBUFFERPARAMETERIVPROC(GLenum target, GLenum pname, GLint* parameters);
-    private static PFNGLGETFRAMEBUFFERPARAMETERIVPROC _glGetFramebufferParameteriv;
+    private PFNGLGETFRAMEBUFFERPARAMETERIVPROC _glGetFramebufferParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a framebuffer object target.
@@ -15473,7 +15471,7 @@ public static unsafe class GL
     /// <param name="target">Specifies the framebuffer target. The symbolic constant must be <see cref="GL_DRAW_FRAMEBUFFER" />.</param>
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="parameters">Specifies the address of a variable to receive the value of <paramref name="pname" />.</param>
-    public static void glGetFramebufferParameteriv(GLenum target, GLenum pname, GLint* parameters) => _glGetFramebufferParameteriv(target, pname, parameters);
+    public void glGetFramebufferParameteriv(GLenum target, GLenum pname, GLint* parameters) => _glGetFramebufferParameteriv(target, pname, parameters);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15482,13 +15480,13 @@ public static unsafe class GL
     /// <param name="target">Specifies the framebuffer target. The symbolic constant must be <see cref="GL_DRAW_FRAMEBUFFER" />.</param>
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="parameters">Specifies the address of a variable to receive the value of <paramref name="pname" />.</param>
-    public static void glGetFramebufferParameteriv(GLenum target, GLenum pname, ref GLint[] parameters) { fixed (GLint* p_parameters =
+    public void glGetFramebufferParameteriv(GLenum target, GLenum pname, ref GLint[] parameters) { fixed (GLint* p_parameters =
  &parameters[0]) _glGetFramebufferParameteriv(target, pname, p_parameters); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETINTERNALFORMATI64VPROC(GLenum target, GLenum internalformat, GLenum pname, GLsizei count, GLint64* @params);
-    private static PFNGLGETINTERNALFORMATI64VPROC _glGetInternalformati64v;
+    private PFNGLGETINTERNALFORMATI64VPROC _glGetInternalformati64v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a framebuffer object target.
@@ -15498,7 +15496,7 @@ public static unsafe class GL
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="count">Specifies the number of parameters to query.</param>
     /// <param name="params">Specifies the address of a variable to receive the value of <paramref name="pname" />.</param>
-    public static void glGetInternalformati64v(GLenum target, GLenum internalformat, GLenum pname, GLsizei count, GLint64* @params) => _glGetInternalformati64v(target, internalformat, pname, count, @params);
+    public void glGetInternalformati64v(GLenum target, GLenum internalformat, GLenum pname, GLsizei count, GLint64* @params) => _glGetInternalformati64v(target, internalformat, pname, count, @params);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15509,13 +15507,13 @@ public static unsafe class GL
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="count">Specifies the number of parameters to query.</param>
     /// <param name="params">Specifies an array to receive the value of <paramref name="pname" />.</param>
-    public static void glGetInternalformati64v(GLenum target, GLenum internalformat, GLenum pname, GLsizei count, ref GLint64[] @params) { fixed (GLint64* p_params
+    public void glGetInternalformati64v(GLenum target, GLenum internalformat, GLenum pname, GLsizei count, ref GLint64[] @params) { fixed (GLint64* p_params
  = &@params[0]) _glGetInternalformati64v(target, internalformat, pname, count, p_params); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLINVALIDATETEXSUBIMAGEPROC(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth);
-    private static PFNGLINVALIDATETEXSUBIMAGEPROC _glInvalidateTexSubImage;
+    private PFNGLINVALIDATETEXSUBIMAGEPROC _glInvalidateTexSubImage;
     /// <summary>
     /// Invalidate the content of a texture image.
     /// </summary>
@@ -15527,41 +15525,41 @@ public static unsafe class GL
     /// <param name="width">Specifies the width of the texture subimage.</param>
     /// <param name="height">Specifies the height of the texture subimage.</param>
     /// <param name="depth">Specifies the depth of the texture subimage.</param>    
-    public static void glInvalidateTexSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth) => _glInvalidateTexSubImage(texture, level, xoffset, yoffset, zoffset, width, height, depth);
+    public void glInvalidateTexSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth) => _glInvalidateTexSubImage(texture, level, xoffset, yoffset, zoffset, width, height, depth);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLINVALIDATETEXIMAGEPROC(GLuint texture, GLint level);
-    private static PFNGLINVALIDATETEXIMAGEPROC _glInvalidateTexImage;
+    private PFNGLINVALIDATETEXIMAGEPROC _glInvalidateTexImage;
     /// <summary>
     /// Invalidate the content of a texture image.
     /// </summary>
     /// <param name="texture">Specifies the name of the texture.</param>
     /// <param name="level">Specifies the level of the texture image.</param>
-    public static void glInvalidateTexImage(GLuint texture, GLint level) => _glInvalidateTexImage(texture, level);
+    public void glInvalidateTexImage(GLuint texture, GLint level) => _glInvalidateTexImage(texture, level);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLINVALIDATEBUFFERSUBDATAPROC(GLuint buffer, GLintptr offset, GLsizeiptr length);
-    private static PFNGLINVALIDATEBUFFERSUBDATAPROC _glInvalidateBufferSubData;
+    private PFNGLINVALIDATEBUFFERSUBDATAPROC _glInvalidateBufferSubData;
     /// <summary>
     /// Invalidate the content of a buffer object's data store.
     /// </summary>
     /// <param name="buffer">Specifies the name of the buffer object whose data store to invalidate.</param>
     /// <param name="offset">Specifies the offset within the buffer of the start of the range to be invalidated.</param>
     /// <param name="length">Specifies the length of the range to be invalidated.</param>
-    public static void glInvalidateBufferSubData(GLuint buffer, GLintptr offset, GLsizeiptr length) => _glInvalidateBufferSubData(buffer, offset, length);
+    public void glInvalidateBufferSubData(GLuint buffer, GLintptr offset, GLsizeiptr length) => _glInvalidateBufferSubData(buffer, offset, length);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLINVALIDATEBUFFERDATAPROC(GLuint buffer);
-    private static PFNGLINVALIDATEBUFFERDATAPROC _glInvalidateBufferData;
+    private PFNGLINVALIDATEBUFFERDATAPROC _glInvalidateBufferData;
     /// <summary>
     /// Invalidate the content of a buffer object's data store.
     /// </summary>
     /// <param name="buffer">Specifies the name of the buffer object whose data store to invalidate.</param>
-    public static void glInvalidateBufferData(GLuint buffer) => _glInvalidateBufferData(buffer);
+    public void glInvalidateBufferData(GLuint buffer) => _glInvalidateBufferData(buffer);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLINVALIDATEFRAMEBUFFERPROC(GLenum target, GLsizei numAttachments, GLenum* attachments);
-    private static PFNGLINVALIDATEFRAMEBUFFERPROC _glInvalidateFramebuffer;
+    private PFNGLINVALIDATEFRAMEBUFFERPROC _glInvalidateFramebuffer;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Invalidate the content of a framebuffer's attachments.
@@ -15569,7 +15567,7 @@ public static unsafe class GL
     /// <param name="target">Specifies the target of the operation. The symbolic constant must be <see cref="GL_DRAW_FRAMEBUFFER" />.</param>
     /// <param name="numAttachments">Specifies the number of attachments to invalidate.</param>
     /// <param name="attachments">Specifies an array of attachment points.</param>
-    public static void glInvalidateFramebuffer(GLenum target, GLsizei numAttachments, GLenum* attachments) => _glInvalidateFramebuffer(target, numAttachments, attachments);
+    public void glInvalidateFramebuffer(GLenum target, GLsizei numAttachments, GLenum* attachments) => _glInvalidateFramebuffer(target, numAttachments, attachments);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15578,13 +15576,13 @@ public static unsafe class GL
     /// <param name="target">Specifies the target of the operation. The symbolic constant must be <see cref="GL_DRAW_FRAMEBUFFER" />.</param>
     /// <param name="numAttachments">Specifies the number of attachments to invalidate.</param>
     /// <param name="attachments">Specifies an array of attachment points.</param>
-    public static void glInvalidateFramebuffer(GLenum target, GLsizei numAttachments, GLenum[] attachments) { fixed (GLenum* p_attachments =
+    public void glInvalidateFramebuffer(GLenum target, GLsizei numAttachments, GLenum[] attachments) { fixed (GLenum* p_attachments =
  &attachments[0]) _glInvalidateFramebuffer(target, numAttachments, p_attachments); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLINVALIDATESUBFRAMEBUFFERPROC(GLenum target, GLsizei numAttachments, GLenum* attachments, GLint x, GLint y, GLsizei width, GLsizei height);
-    private static PFNGLINVALIDATESUBFRAMEBUFFERPROC _glInvalidateSubFramebuffer;
+    private PFNGLINVALIDATESUBFRAMEBUFFERPROC _glInvalidateSubFramebuffer;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Invalidate the content of a region of a framebuffer's attachments.
@@ -15596,7 +15594,7 @@ public static unsafe class GL
     /// <param name="y">Specifies the lower pixel coordinate of the region.</param>
     /// <param name="width">Specifies the width of the region.</param>
     /// <param name="height">Specifies the height of the region.</param>
-    public static void glInvalidateSubFramebuffer(GLenum target, GLsizei numAttachments, GLenum* attachments, GLint x, GLint y, GLsizei width, GLsizei height) => _glInvalidateSubFramebuffer(target, numAttachments, attachments, x, y, width, height);
+    public void glInvalidateSubFramebuffer(GLenum target, GLsizei numAttachments, GLenum* attachments, GLint x, GLint y, GLsizei width, GLsizei height) => _glInvalidateSubFramebuffer(target, numAttachments, attachments, x, y, width, height);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15609,13 +15607,13 @@ public static unsafe class GL
     /// <param name="y">Specifies the lower pixel coordinate of the region.</param>
     /// <param name="width">Specifies the width of the region.</param>
     /// <param name="height">Specifies the height of the region.</param>
-    public static void glInvalidateSubFramebuffer(GLenum target, GLsizei numAttachments, GLenum[] attachments, GLint x, GLint y, GLsizei width, GLsizei height) { fixed (GLenum* p_attachments
+    public void glInvalidateSubFramebuffer(GLenum target, GLsizei numAttachments, GLenum[] attachments, GLint x, GLint y, GLsizei width, GLsizei height) { fixed (GLenum* p_attachments
  = &attachments[0]) _glInvalidateSubFramebuffer(target, numAttachments, p_attachments, x, y, width, height); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLMULTIDRAWARRAYSINDIRECTPROC(GLenum mode, void* indirect, GLsizei drawcount, GLsizei stride);
-    private static PFNGLMULTIDRAWARRAYSINDIRECTPROC _glMultiDrawArraysIndirect;
+    private PFNGLMULTIDRAWARRAYSINDIRECTPROC _glMultiDrawArraysIndirect;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Render multiple sets of primitives from array data, taking parameters from memory.
@@ -15624,7 +15622,7 @@ public static unsafe class GL
     /// <param name="indirect">Specifies the address of an array of structures containing the draw parameters.</param>
     /// <param name="drawcount">Specifies the number of elements in the array of draw parameter structures.</param>
     /// <param name="stride">Specifies the distance in basic machine units between elements of the draw parameter array.</param>
-    public static void glMultiDrawArraysIndirect(GLenum mode, void* indirect, GLsizei drawcount, GLsizei stride) => _glMultiDrawArraysIndirect(mode, indirect, drawcount, stride);
+    public void glMultiDrawArraysIndirect(GLenum mode, void* indirect, GLsizei drawcount, GLsizei stride) => _glMultiDrawArraysIndirect(mode, indirect, drawcount, stride);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15634,12 +15632,12 @@ public static unsafe class GL
     /// <param name="indirect">Specifies the address of an array of structures containing the draw parameters.</param>
     /// <param name="drawcount">Specifies the number of elements in the array of draw parameter structures.</param>
     /// <param name="stride">Specifies the distance in basic machine units between elements of the draw parameter array.</param>
-    public static void glMultiDrawArraysIndirect(GLenum mode, DrawArraysIndirectCommand indirect, GLsizei drawcount, GLsizei stride) => _glMultiDrawArraysIndirect(mode, (void*)&indirect, drawcount, stride);
+    public void glMultiDrawArraysIndirect(GLenum mode, DrawArraysIndirectCommand indirect, GLsizei drawcount, GLsizei stride) => _glMultiDrawArraysIndirect(mode, (void*)&indirect, drawcount, stride);
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLMULTIDRAWELEMENTSINDIRECTPROC(GLenum mode, GLenum type, void* indirect, GLsizei drawcount, GLsizei stride);
-    private static PFNGLMULTIDRAWELEMENTSINDIRECTPROC _glMultiDrawElementsIndirect;
+    private PFNGLMULTIDRAWELEMENTSINDIRECTPROC _glMultiDrawElementsIndirect;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Render multiple sets of primitives by specifying indices of array data elements.
@@ -15649,7 +15647,7 @@ public static unsafe class GL
     /// <param name="indirect">Specifies the address of an array of structures containing the draw parameters.</param>
     /// <param name="drawcount">Specifies the number of elements in the array of draw parameter structures.</param>
     /// <param name="stride">Specifies the distance in basic machine units between elements of the draw parameter array.</param>
-    public static void glMultiDrawElementsIndirect(GLenum mode, GLenum type, void* indirect, GLsizei drawcount, GLsizei stride) => _glMultiDrawElementsIndirect(mode, type, indirect, drawcount, stride);
+    public void glMultiDrawElementsIndirect(GLenum mode, GLenum type, void* indirect, GLsizei drawcount, GLsizei stride) => _glMultiDrawElementsIndirect(mode, type, indirect, drawcount, stride);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15660,12 +15658,12 @@ public static unsafe class GL
     /// <param name="indirect">Specifies the address of an array of structures containing the draw parameters.</param>
     /// <param name="drawcount">Specifies the number of elements in the array of draw parameter structures.</param>
     /// <param name="stride">Specifies the distance in basic machine units between elements of the draw parameter array.</param>
-    public static void glMultiDrawElementsIndirect(GLenum mode, GLenum type, DrawElementsIndirectCommand indirect, GLsizei drawcount, GLsizei stride) => _glMultiDrawElementsIndirect(mode, type, (void*)&indirect, drawcount, stride);
+    public void glMultiDrawElementsIndirect(GLenum mode, GLenum type, DrawElementsIndirectCommand indirect, GLsizei drawcount, GLsizei stride) => _glMultiDrawElementsIndirect(mode, type, (void*)&indirect, drawcount, stride);
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETPROGRAMINTERFACEIVPROC(GLuint program, GLenum programInterface, GLenum pname, GLint* parameters);
-    private static PFNGLGETPROGRAMINTERFACEIVPROC _glGetProgramInterfaceiv;
+    private PFNGLGETPROGRAMINTERFACEIVPROC _glGetProgramInterfaceiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve properties of an interface in a program object.
@@ -15674,7 +15672,7 @@ public static unsafe class GL
     /// <param name="programInterface">Specifies the interface within program to query.</param>
     /// <param name="pname">Specifies the name of the parameter to query.</param>
     /// <param name="parameters">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    public static void glGetProgramInterfaceiv(GLuint program, GLenum programInterface, GLenum pname, GLint* parameters) => _glGetProgramInterfaceiv(program, programInterface, pname, parameters);
+    public void glGetProgramInterfaceiv(GLuint program, GLenum programInterface, GLenum pname, GLint* parameters) => _glGetProgramInterfaceiv(program, programInterface, pname, parameters);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15684,13 +15682,13 @@ public static unsafe class GL
     /// <param name="programInterface">Specifies the interface within program to query.</param>
     /// <param name="pname">Specifies the name of the parameter to query.</param>
     /// <param name="parameters">Specifies an array to receive the value of the queried parameter.</param>
-    public static void glGetProgramInterfaceiv(GLuint program, GLenum programInterface, GLenum pname, ref GLint[] parameters) { fixed (GLint* p_parameters =
+    public void glGetProgramInterfaceiv(GLuint program, GLenum programInterface, GLenum pname, ref GLint[] parameters) { fixed (GLint* p_parameters =
  &parameters[0]) _glGetProgramInterfaceiv(program, programInterface, pname, p_parameters); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLuint PFNGLGETPROGRAMRESOURCEINDEXPROC(GLuint program, GLenum programInterface, GLchar* name);
-    private static PFNGLGETPROGRAMRESOURCEINDEXPROC _glGetProgramResourceIndex;
+    private PFNGLGETPROGRAMRESOURCEINDEXPROC _glGetProgramResourceIndex;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve the index of a named resource within a program.
@@ -15699,7 +15697,7 @@ public static unsafe class GL
     /// <param name="programInterface">Specifies the interface within program that contains the named resource.</param>
     /// <param name="name">Specifies the name of the resource whose index to retrieve.</param>
     /// <returns>The index of the named resource within the specified program interface.</returns>
-    public static GLuint glGetProgramResourceIndex(GLuint program, GLenum programInterface, GLchar* name) => _glGetProgramResourceIndex(program, programInterface, name);
+    public GLuint glGetProgramResourceIndex(GLuint program, GLenum programInterface, GLchar* name) => _glGetProgramResourceIndex(program, programInterface, name);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15709,7 +15707,7 @@ public static unsafe class GL
     /// <param name="programInterface">Specifies the interface within program that contains the named resource.</param>
     /// <param name="name">Specifies the name of the resource whose index to retrieve.</param>
     /// <returns>The index of the named resource within the specified program interface.</returns>
-    public static GLuint glGetProgramResourceIndex(GLuint program, GLenum programInterface, string name)
+    public GLuint glGetProgramResourceIndex(GLuint program, GLenum programInterface, string name)
     {
         GLchar[] nameBytes = Encoding.UTF8.GetBytes(name);
         fixed (GLchar* p_name = &nameBytes[0])
@@ -15721,7 +15719,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETPROGRAMRESOURCENAMEPROC(GLuint program, GLenum programInterface, GLuint index, GLsizei bufSize, GLsizei* length, GLchar* name);
-    private static PFNGLGETPROGRAMRESOURCENAMEPROC _glGetProgramResourceName;
+    private PFNGLGETPROGRAMRESOURCENAMEPROC _glGetProgramResourceName;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve the name string of a named resource within a program.
@@ -15732,7 +15730,7 @@ public static unsafe class GL
     /// <param name="bufSize">Specifies the size of the buffer whose address is given by <paramref name="name" />.</param>
     /// <param name="length">Specifies the address of a variable to receive the number of characters that were or would have been written to the buffer addressed by <paramref name="name" />.</param>
     /// <param name="name">Specifies the address of a buffer into which to place the name string of the named resource.</param>
-    public static void glGetProgramResourceName(GLuint program, GLenum programInterface, GLuint index, GLsizei bufSize, GLsizei* length, GLchar* name) => _glGetProgramResourceName(program, programInterface, index, bufSize, length, name);
+    public void glGetProgramResourceName(GLuint program, GLenum programInterface, GLuint index, GLsizei bufSize, GLsizei* length, GLchar* name) => _glGetProgramResourceName(program, programInterface, index, bufSize, length, name);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15743,7 +15741,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the named resource within the specified program interface.</param>
     /// <param name="bufSize">Specifies the size of the buffer whose address is given by <paramref name="name" />.</param>
     /// <returns>The name string of the named resource.</returns>
-    public static string glGetProgramResourceName(GLuint program, GLenum programInterface, GLuint index, GLsizei bufSize)
+    public string glGetProgramResourceName(GLuint program, GLenum programInterface, GLuint index, GLsizei bufSize)
     {
         GLchar[] name = new GLchar[bufSize];
         GLsizei length;
@@ -15757,7 +15755,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETPROGRAMRESOURCEIVPROC(GLuint program, GLenum programInterface, GLuint index, GLsizei propCount, GLenum* props, GLsizei bufSize, GLsizei* length, GLint* @params);
-    private static PFNGLGETPROGRAMRESOURCEIVPROC _glGetProgramResourceiv;
+    private PFNGLGETPROGRAMRESOURCEIVPROC _glGetProgramResourceiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve properties of an active resource within a program object.
@@ -15770,7 +15768,7 @@ public static unsafe class GL
     /// <param name="bufSize">Specifies the size of the buffer whose address is given by <paramref name="length" />.</param>
     /// <param name="length">Specifies the address of a variable to receive the number of integers placed in <paramref name="params" />.</param>
     /// <param name="params">Specifies the address of an array into which to place the returned data.</param>
-    public static void glGetProgramResourceiv(GLuint program, GLenum programInterface, GLuint index, GLsizei propCount, GLenum* props, GLsizei bufSize, GLsizei* length, GLint* @params) => _glGetProgramResourceiv(program, programInterface, index, propCount, props, bufSize, length, @params);
+    public void glGetProgramResourceiv(GLuint program, GLenum programInterface, GLuint index, GLsizei propCount, GLenum* props, GLsizei bufSize, GLsizei* length, GLint* @params) => _glGetProgramResourceiv(program, programInterface, index, propCount, props, bufSize, length, @params);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15782,7 +15780,7 @@ public static unsafe class GL
     /// <param name="props">Specifies an array of properties to query.</param>
     /// <param name="bufSize">Specifies the size of the buffer whose address is given by <paramref name="length" />.</param>
     /// <param name="length">Specifies the address of a variable to receive the number of integers placed in <paramref name="params" />.</param>
-    public static void glGetProgramResourceiv(GLuint program, GLenum programInterface, GLuint index, GLenum[] props, GLsizei bufSize, ref GLint[] @params)
+    public void glGetProgramResourceiv(GLuint program, GLenum programInterface, GLuint index, GLenum[] props, GLsizei bufSize, ref GLint[] @params)
     {
         fixed (GLenum* p_props = &props[0])
         fixed (GLint* p_params = &@params[0])
@@ -15795,7 +15793,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLint PFNGLGETPROGRAMRESOURCELOCATIONPROC(GLuint program, GLenum programInterface, GLchar* name);
-    private static PFNGLGETPROGRAMRESOURCELOCATIONPROC _glGetProgramResourceLocation;
+    private PFNGLGETPROGRAMRESOURCELOCATIONPROC _glGetProgramResourceLocation;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve the location of a named resource within a program.
@@ -15804,7 +15802,7 @@ public static unsafe class GL
     /// <param name="programInterface">Specifies the interface within program that contains the named resource.</param>
     /// <param name="name">Specifies the name of the resource whose index to query.</param>
     /// <returns>The location of the named resource.</returns>
-    public static GLint glGetProgramResourceLocation(GLuint program, GLenum programInterface, GLchar* name) => _glGetProgramResourceLocation(program, programInterface, name);
+    public GLint glGetProgramResourceLocation(GLuint program, GLenum programInterface, GLchar* name) => _glGetProgramResourceLocation(program, programInterface, name);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15814,7 +15812,7 @@ public static unsafe class GL
     /// <param name="programInterface">Specifies the interface within program that contains the named resource.</param>
     /// <param name="name">Specifies the name of the resource whose index to query.</param>
     /// <returns>The location of the named resource.</returns>
-    public static GLint glGetProgramResourceLocation(GLuint program, GLenum programInterface, string name)
+    public GLint glGetProgramResourceLocation(GLuint program, GLenum programInterface, string name)
     {
         GLchar[] nameBytes = Encoding.UTF8.GetBytes(name);
         fixed (GLchar* p_name = &nameBytes[0])
@@ -15826,7 +15824,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLint PFNGLGETPROGRAMRESOURCELOCATIONINDEXPROC(GLuint program, GLenum programInterface, GLchar* name);
-    private static PFNGLGETPROGRAMRESOURCELOCATIONINDEXPROC _glGetProgramResourceLocationIndex;
+    private PFNGLGETPROGRAMRESOURCELOCATIONINDEXPROC _glGetProgramResourceLocationIndex;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve the index of a named resource within a program.
@@ -15835,7 +15833,7 @@ public static unsafe class GL
     /// <param name="programInterface">Specifies the interface within program that contains the named resource.</param>
     /// <param name="name">Specifies the name of the resource whose index to query.</param>
     /// <returns>The index of the named resource.</returns>
-    public static GLint glGetProgramResourceLocationIndex(GLuint program, GLenum programInterface, GLchar* name) => _glGetProgramResourceLocationIndex(program, programInterface, name);
+    public GLint glGetProgramResourceLocationIndex(GLuint program, GLenum programInterface, GLchar* name) => _glGetProgramResourceLocationIndex(program, programInterface, name);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -15845,7 +15843,7 @@ public static unsafe class GL
     /// <param name="programInterface">Specifies the interface within program that contains the named resource.</param>
     /// <param name="name">Specifies the name of the resource whose index to query.</param>
     /// <returns>The index of the named resource.</returns>
-    public static GLint glGetProgramResourceLocationIndex(GLuint program, GLenum programInterface, string name)
+    public GLint glGetProgramResourceLocationIndex(GLuint program, GLenum programInterface, string name)
     {
         GLchar[] nameBytes = Encoding.UTF8.GetBytes(name);
         fixed (GLchar* p_name = &nameBytes[0])
@@ -15857,18 +15855,18 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLSHADERSTORAGEBLOCKBINDINGPROC(GLuint program, GLuint storageBlockIndex, GLuint storageBlockBinding);
-    private static PFNGLSHADERSTORAGEBLOCKBINDINGPROC _glShaderStorageBlockBinding;
+    private PFNGLSHADERSTORAGEBLOCKBINDINGPROC _glShaderStorageBlockBinding;
     /// <summary>
     /// Bind a shader storage block to an indexed shader storage interface.
     /// </summary>
     /// <param name="program">Specifies the name of a program object containing the active shader storage block whose binding to assign.</param>
     /// <param name="storageBlockIndex">Specifies the index of the shader storage block within program whose binding to assign.</param>
     /// <param name="storageBlockBinding">Specifies the binding point to which to bind the shader storage block with index <paramref name="storageBlockIndex" /> within program.</param>
-    public static void glShaderStorageBlockBinding(GLuint program, GLuint storageBlockIndex, GLuint storageBlockBinding) => _glShaderStorageBlockBinding(program, storageBlockIndex, storageBlockBinding);
+    public void glShaderStorageBlockBinding(GLuint program, GLuint storageBlockIndex, GLuint storageBlockBinding) => _glShaderStorageBlockBinding(program, storageBlockIndex, storageBlockBinding);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXBUFFERRANGEPROC(GLenum target, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size);
-    private static PFNGLTEXBUFFERRANGEPROC _glTexBufferRange;
+    private PFNGLTEXBUFFERRANGEPROC _glTexBufferRange;
     /// <summary>
     /// Bind a range of a buffer's data store to a texture.
     /// </summary>
@@ -15877,11 +15875,11 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object whose storage to attach to the active buffer texture.</param>
     /// <param name="offset">Specifies the offset of the start of the range of the buffer's data store to attach.</param>
     /// <param name="size">Specifies the size of the range of the buffer's data store to attach.</param>
-    public static void glTexBufferRange(GLenum target, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size) => _glTexBufferRange(target, internalformat, buffer, offset, size);
+    public void glTexBufferRange(GLenum target, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size) => _glTexBufferRange(target, internalformat, buffer, offset, size);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXSTORAGE2DMULTISAMPLEPROC(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
-    private static PFNGLTEXSTORAGE2DMULTISAMPLEPROC _glTexStorage2DMultisample;
+    private PFNGLTEXSTORAGE2DMULTISAMPLEPROC _glTexStorage2DMultisample;
     /// <summary>
     /// Establish the data storage, format, dimensions, and number of samples of a multisample texture's image.
     /// </summary>
@@ -15891,11 +15889,11 @@ public static unsafe class GL
     /// <param name="width">Specifies the width of the multisample texture's image, in texels.</param>
     /// <param name="height">Specifies the height of the multisample texture's image, in texels.</param>
     /// <param name="fixedsamplelocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
-    public static void glTexStorage2DMultisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations) => _glTexStorage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
+    public void glTexStorage2DMultisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations) => _glTexStorage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXSTORAGE3DMULTISAMPLEPROC(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
-    private static PFNGLTEXSTORAGE3DMULTISAMPLEPROC _glTexStorage3DMultisample;
+    private PFNGLTEXSTORAGE3DMULTISAMPLEPROC _glTexStorage3DMultisample;
     /// <summary>
     /// Establish the data storage, format, dimensions, and number of samples of a multisample texture's image.
     /// </summary>
@@ -15906,11 +15904,11 @@ public static unsafe class GL
     /// <param name="height">Specifies the height of the multisample texture's image, in texels.</param>
     /// <param name="depth">Specifies the depth of the multisample texture's image, in layers.</param>
     /// <param name="fixedsamplelocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
-    public static void glTexStorage3DMultisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations) => _glTexStorage3DMultisample(target, samples, internalformat, width, height, depth, fixedsamplelocations);
+    public void glTexStorage3DMultisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations) => _glTexStorage3DMultisample(target, samples, internalformat, width, height, depth, fixedsamplelocations);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTUREVIEWPROC(GLuint texture, GLenum target, GLuint origtexture, GLenum internalformat, GLuint minlevel, GLuint numlevels, GLuint minlayer, GLuint numlayers);
-    private static PFNGLTEXTUREVIEWPROC _glTextureView;
+    private PFNGLTEXTUREVIEWPROC _glTextureView;
     /// <summary>
     /// Create a texture view.
     /// </summary>
@@ -15922,11 +15920,11 @@ public static unsafe class GL
     /// <param name="numlevels">Specifies the number of levels of detail to include in the view's image.</param>
     /// <param name="minlayer">Specifies the index of the first layer to include in the view's image.</param>
     /// <param name="numlayers">Specifies the number of layers to include in the view's image.</param>
-    public static void glTextureView(GLuint texture, GLenum target, GLuint origtexture, GLenum internalformat, GLuint minlevel, GLuint numlevels, GLuint minlayer, GLuint numlayers) => _glTextureView(texture, target, origtexture, internalformat, minlevel, numlevels, minlayer, numlayers);
+    public void glTextureView(GLuint texture, GLenum target, GLuint origtexture, GLenum internalformat, GLuint minlevel, GLuint numlevels, GLuint minlayer, GLuint numlayers) => _glTextureView(texture, target, origtexture, internalformat, minlevel, numlevels, minlayer, numlayers);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBINDVERTEXBUFFERPROC(GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride);
-    private static PFNGLBINDVERTEXBUFFERPROC _glBindVertexBuffer;
+    private PFNGLBINDVERTEXBUFFERPROC _glBindVertexBuffer;
     /// <summary>
     /// Bind a buffer to a vertex buffer bind point.
     /// </summary>
@@ -15934,11 +15932,11 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object to bind to the vertex buffer binding point.</param>
     /// <param name="offset">Specifies the offset of the first element of the buffer bound to the vertex buffer binding point.</param>
     /// <param name="stride">Specifies the distance between elements within the buffer.</param>
-    public static void glBindVertexBuffer(GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride) => _glBindVertexBuffer(bindingindex, buffer, offset, stride);
+    public void glBindVertexBuffer(GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride) => _glBindVertexBuffer(bindingindex, buffer, offset, stride);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBFORMATPROC(GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
-    private static PFNGLVERTEXATTRIBFORMATPROC _glVertexAttribFormat;
+    private PFNGLVERTEXATTRIBFORMATPROC _glVertexAttribFormat;
     /// <summary>
     /// Specify the organization of vertex arrays.
     /// </summary>
@@ -15947,11 +15945,11 @@ public static unsafe class GL
     /// <param name="type">Specifies the type of data stored in the array.</param>
     /// <param name="normalized">Specifies whether fixed-point data values should be normalized (<see langword="true"/>) or converted directly as fixed-point values (<see langword="false"/>) when they are accessed.</param>
     /// <param name="relativeoffset">Specifies the offset of the first component of the first generic vertex attribute in the array in the data store of the buffer currently bound to the <see cref="GL_ARRAY_BUFFER"/> target. The initial value is 0.</param>
-    public static void glVertexAttribFormat(GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset) => _glVertexAttribFormat(attribindex, size, type, normalized, relativeoffset);
+    public void glVertexAttribFormat(GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset) => _glVertexAttribFormat(attribindex, size, type, normalized, relativeoffset);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBIFORMATPROC(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
-    private static PFNGLVERTEXATTRIBIFORMATPROC _glVertexAttribIFormat;
+    private PFNGLVERTEXATTRIBIFORMATPROC _glVertexAttribIFormat;
     /// <summary>
     /// Specify the organization of vertex arrays.
     /// </summary>
@@ -15959,11 +15957,11 @@ public static unsafe class GL
     /// <param name="size">Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4.</param>
     /// <param name="type">Specifies the type of data stored in the array.</param>
     /// <param name="relativeoffset">Specifies the offset of the first component of the first generic vertex attribute in the array in the data store of the buffer currently bound to the <see cref="GL_ARRAY_BUFFER"/> target. The initial value is 0.</param>
-    public static void glVertexAttribIFormat(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset) => _glVertexAttribIFormat(attribindex, size, type, relativeoffset);
+    public void glVertexAttribIFormat(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset) => _glVertexAttribIFormat(attribindex, size, type, relativeoffset);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBLFORMATPROC(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
-    private static PFNGLVERTEXATTRIBLFORMATPROC _glVertexAttribLFormat;
+    private PFNGLVERTEXATTRIBLFORMATPROC _glVertexAttribLFormat;
     /// <summary>
     /// Specify the organization of vertex arrays.
     /// </summary>
@@ -15971,31 +15969,31 @@ public static unsafe class GL
     /// <param name="size">Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4.</param>
     /// <param name="type">Specifies the type of data stored in the array.</param>
     /// <param name="relativeoffset">Specifies the offset of the first component of the first generic vertex attribute in the array in the data store of the buffer currently bound to the <see cref="GL_ARRAY_BUFFER"/> target. The initial value is 0.</param>
-    public static void glVertexAttribLFormat(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset) => _glVertexAttribLFormat(attribindex, size, type, relativeoffset);
+    public void glVertexAttribLFormat(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset) => _glVertexAttribLFormat(attribindex, size, type, relativeoffset);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXATTRIBBINDINGPROC(GLuint attribindex, GLuint bindingindex);
-    private static PFNGLVERTEXATTRIBBINDINGPROC _glVertexAttribBinding;
+    private PFNGLVERTEXATTRIBBINDINGPROC _glVertexAttribBinding;
     /// <summary>
     /// Bind a generic vertex attribute to a buffer binding.
     /// </summary>
     /// <param name="attribindex">Specifies the index of the generic vertex attribute to be bound.</param>
     /// <param name="bindingindex">Specifies the index of the binding whose bound buffer object is to be used for attribute array.</param>
-    public static void glVertexAttribBinding(GLuint attribindex, GLuint bindingindex) => _glVertexAttribBinding(attribindex, bindingindex);
+    public void glVertexAttribBinding(GLuint attribindex, GLuint bindingindex) => _glVertexAttribBinding(attribindex, bindingindex);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXBINDINGDIVISORPROC(GLuint bindingindex, GLuint divisor);
-    private static PFNGLVERTEXBINDINGDIVISORPROC _glVertexBindingDivisor;
+    private PFNGLVERTEXBINDINGDIVISORPROC _glVertexBindingDivisor;
     /// <summary>
     /// Modify the rate at which generic vertex attributes advance during instanced rendering.
     /// </summary>
     /// <param name="bindingindex">Specifies the index of the vertex buffer binding whose divisor to modify.</param>
     /// <param name="divisor">Specifies the new value for the instance step rate.</param>
-    public static void glVertexBindingDivisor(GLuint bindingindex, GLuint divisor) => _glVertexBindingDivisor(bindingindex, divisor);
+    public void glVertexBindingDivisor(GLuint bindingindex, GLuint divisor) => _glVertexBindingDivisor(bindingindex, divisor);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDEBUGMESSAGECONTROLPROC(GLenum source, GLenum type, GLenum severity, GLsizei count, GLuint* ids, GLboolean enabled);
-    private static PFNGLDEBUGMESSAGECONTROLPROC _glDebugMessageControl;
+    private PFNGLDEBUGMESSAGECONTROLPROC _glDebugMessageControl;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Control the reporting of debug messages.
@@ -16006,7 +16004,7 @@ public static unsafe class GL
     /// <param name="count">Specifies the length of the array ids.</param>
     /// <param name="ids">Specifies an array containing the ids of the messages to enable or disable.</param>
     /// <param name="enabled">Specifies whether the selected debug messages are enabled or disabled.</param>
-    public static void glDebugMessageControl(GLenum source, GLenum type, GLenum severity, GLsizei count, GLuint* ids, GLboolean enabled) => _glDebugMessageControl(source, type, severity, count, ids, enabled);
+    public void glDebugMessageControl(GLenum source, GLenum type, GLenum severity, GLsizei count, GLuint* ids, GLboolean enabled) => _glDebugMessageControl(source, type, severity, count, ids, enabled);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16017,13 +16015,13 @@ public static unsafe class GL
     /// <param name="severity">Specifies the severity of debug messages to enable or disable.</param>
     /// <param name="ids">Specifies an array containing the ids of the messages to enable or disable.</param>
     /// <param name="enabled">Specifies whether the selected debug messages are enabled or disabled.</param>
-    public static void glDebugMessageControl(GLenum source, GLenum type, GLenum severity, GLuint[] ids, GLboolean enabled) { fixed (GLuint* p_ids =
+    public void glDebugMessageControl(GLenum source, GLenum type, GLenum severity, GLuint[] ids, GLboolean enabled) { fixed (GLuint* p_ids =
  ids) { _glDebugMessageControl(source, type, severity, ids.Length, p_ids, enabled); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDEBUGMESSAGEINSERTPROC(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar* buf);
-    private static PFNGLDEBUGMESSAGEINSERTPROC _glDebugMessageInsert;
+    private PFNGLDEBUGMESSAGEINSERTPROC _glDebugMessageInsert;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Inject an application-supplied message into the debug message queue.
@@ -16034,7 +16032,7 @@ public static unsafe class GL
     /// <param name="severity">Specifies the severity of the debug message.</param>
     /// <param name="length">Specifies the length of the character string whose address is given in <paramref name="buf"/>.</param>
     /// <param name="buf">Specifies an array containing the message to be inserted.</param>
-    public static void glDebugMessageInsert(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar* buf) => _glDebugMessageInsert(source, type, id, severity, length, buf);
+    public void glDebugMessageInsert(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar* buf) => _glDebugMessageInsert(source, type, id, severity, length, buf);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16045,7 +16043,7 @@ public static unsafe class GL
     /// <param name="id">Specifies the user-supplied identifier of the message to be inserted.</param>
     /// <param name="severity">Specifies the severity of the debug message.</param>
     /// <param name="buf">Specifies the message to be inserted.</param>
-    public static void glDebugMessageInsert(GLenum source, GLenum type, GLuint id, GLenum severity, string buf)
+    public void glDebugMessageInsert(GLenum source, GLenum type, GLuint id, GLenum severity, string buf)
     {
         GLchar[] bufBytes = Encoding.UTF8.GetBytes(buf);
         fixed (GLchar* p_bufBytes = bufBytes) { _glDebugMessageInsert(source, type, id, severity, bufBytes.Length, p_bufBytes); }
@@ -16057,14 +16055,14 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDEBUGMESSAGECALLBACKPROC(GLDEBUGPROC callback, void* userParam);
-    private static PFNGLDEBUGMESSAGECALLBACKPROC _glDebugMessageCallback;
+    private PFNGLDEBUGMESSAGECALLBACKPROC _glDebugMessageCallback;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify a callback to receive debugging messages from the GL.
     /// </summary>
     /// <param name="callback">Specifies the callback function that will be called when a debug message is generated.</param>
     /// <param name="userParam">Specifies a user-defined value that will be passed to the callback function when it is called.</param>
-    public static void glDebugMessageCallback(GLDEBUGPROC callback, void* userParam) => _glDebugMessageCallback(callback, userParam);
+    public void glDebugMessageCallback(GLDEBUGPROC callback, void* userParam) => _glDebugMessageCallback(callback, userParam);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     public delegate void GLDEBUGPROCSAFE(GLenum source, GLenum type, GLuint id, GLenum severity, string message, void* userParam);
@@ -16073,7 +16071,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="callback">Specifies the callback function that will be called when a debug message is generated.</param>
     /// <param name="userParam">Specifies a user-defined value that will be passed to the callback function when it is called.</param>
-    public static void glDebugMessageCallback(GLDEBUGPROCSAFE callback, void* userParam)
+    public void glDebugMessageCallback(GLDEBUGPROCSAFE callback, void* userParam)
     {
         GLDEBUGPROC callbackUnsafe = (GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar* message, void* userParam) =>
         {
@@ -16086,7 +16084,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLuint PFNGLGETDEBUGMESSAGELOGPROC(GLuint count, GLsizei bufsize, GLenum* sources, GLenum* types, GLuint* ids, GLenum* severities, GLsizei* lengths, GLchar* messageLog);
-    private static PFNGLGETDEBUGMESSAGELOGPROC _glGetDebugMessageLog;
+    private PFNGLGETDEBUGMESSAGELOGPROC _glGetDebugMessageLog;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve messages from the debug message log.
@@ -16099,7 +16097,7 @@ public static unsafe class GL
     /// <param name="severities">Specifies an array into which the severities of the retrieved messages will be written.</param>
     /// <param name="lengths">Specifies an array into which the lengths of the received messages will be written.</param>
     /// <param name="messageLog">Specifies an array into which the messages will be written.</param>
-    public static GLuint glGetDebugMessageLog(GLuint count, GLsizei bufsize, GLenum* sources, GLenum* types, GLuint* ids, GLenum* severities, GLsizei* lengths, GLchar* messageLog) => _glGetDebugMessageLog(count, bufsize, sources, types, ids, severities, lengths, messageLog);
+    public GLuint glGetDebugMessageLog(GLuint count, GLsizei bufsize, GLenum* sources, GLenum* types, GLuint* ids, GLenum* severities, GLsizei* lengths, GLchar* messageLog) => _glGetDebugMessageLog(count, bufsize, sources, types, ids, severities, lengths, messageLog);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16112,7 +16110,7 @@ public static unsafe class GL
     /// <param name="ids">Specifies an array into which the ids of the retrieved messages will be written.</param>
     /// <param name="severities">Specifies an array into which the severities of the retrieved messages will be written.</param>
     /// <param name="messageLog">Specifies an array into which the messages will be written.</param>
-    public static GLuint glGetDebugMessageLog(GLuint count, GLsizei bufSize, out GLenum[] sources, out GLenum[] types, out GLuint[] ids, out GLenum[] severities, out string[] messageLog)
+    public GLuint glGetDebugMessageLog(GLuint count, GLsizei bufSize, out GLenum[] sources, out GLenum[] types, out GLuint[] ids, out GLenum[] severities, out string[] messageLog)
     {
         sources = new GLenum[count];
         types = new GLenum[count];
@@ -16150,7 +16148,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPUSHDEBUGGROUPPROC(GLenum source, GLuint id, GLsizei length, GLchar* message);
-    private static PFNGLPUSHDEBUGGROUPPROC _glPushDebugGroup;
+    private PFNGLPUSHDEBUGGROUPPROC _glPushDebugGroup;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Push a named debug group into the debug message group stack.
@@ -16159,7 +16157,7 @@ public static unsafe class GL
     /// <param name="id">Specifies the user-supplied identifier of the message group.</param>
     /// <param name="length">Specifies the length of the message.</param>
     /// <param name="message">Specifies a string containing the message.</param>
-    public static void glPushDebugGroup(GLenum source, GLuint id, GLsizei length, GLchar* message) => _glPushDebugGroup(source, id, length, message);
+    public void glPushDebugGroup(GLenum source, GLuint id, GLsizei length, GLchar* message) => _glPushDebugGroup(source, id, length, message);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16168,7 +16166,7 @@ public static unsafe class GL
     /// <param name="source">Specifies the source of the debug message.</param>
     /// <param name="id">Specifies the user-supplied identifier of the message group.</param>
     /// <param name="message">Specifies a string containing the message.</param>
-    public static void glPushDebugGroup(GLenum source, GLuint id, string message)
+    public void glPushDebugGroup(GLenum source, GLuint id, string message)
     {
         GLchar[] messageBytes = Encoding.UTF8.GetBytes(message);
         fixed (GLchar* p_messageBytes = messageBytes) { _glPushDebugGroup(source, id, messageBytes.Length, p_messageBytes); }
@@ -16177,15 +16175,15 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPOPDEBUGGROUPPROC();
-    private static PFNGLPOPDEBUGGROUPPROC _glPopDebugGroup;
+    private PFNGLPOPDEBUGGROUPPROC _glPopDebugGroup;
     /// <summary>
     /// Pop the active debug group.
     /// </summary>
-    public static void glPopDebugGroup() => _glPopDebugGroup();
+    public void glPopDebugGroup() => _glPopDebugGroup();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLOBJECTLABELPROC(GLenum identifier, GLuint name, GLsizei length, GLchar* label);
-    private static PFNGLOBJECTLABELPROC _glObjectLabel;
+    private PFNGLOBJECTLABELPROC _glObjectLabel;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Set the label of an object.
@@ -16194,7 +16192,7 @@ public static unsafe class GL
     /// <param name="name">Specifies the name of the object whose label to set.</param>
     /// <param name="length">Specifies the length of the label to be used for the object.</param>
     /// <param name="label">Specifies a string containing the label to assign to the object.</param>
-    public static void glObjectLabel(GLenum identifier, GLuint name, GLsizei length, GLchar* label) => _glObjectLabel(identifier, name, length, label);
+    public void glObjectLabel(GLenum identifier, GLuint name, GLsizei length, GLchar* label) => _glObjectLabel(identifier, name, length, label);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16203,7 +16201,7 @@ public static unsafe class GL
     /// <param name="identifier">Specifies the type of object whose label to set.</param>
     /// <param name="name">Specifies the name of the object whose label to set.</param>
     /// <param name="label">Specifies a string containing the label to assign to the object.</param>
-    public static void glObjectLabel(GLenum identifier, GLuint name, string label)
+    public void glObjectLabel(GLenum identifier, GLuint name, string label)
     {
         GLchar[] labelBytes = Encoding.UTF8.GetBytes(label);
         fixed (GLchar* p_labelBytes = labelBytes) { _glObjectLabel(identifier, name, labelBytes.Length, p_labelBytes); }
@@ -16212,7 +16210,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETOBJECTLABELPROC(GLenum identifier, GLuint name, GLsizei bufSize, GLsizei* length, GLchar* label);
-    private static PFNGLGETOBJECTLABELPROC _glGetObjectLabel;
+    private PFNGLGETOBJECTLABELPROC _glGetObjectLabel;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve the label of an object.
@@ -16222,7 +16220,7 @@ public static unsafe class GL
     /// <param name="bufSize">Specifies the size of the buffer whose address is in label.</param>
     /// <param name="length">Specifies the address of a variable to receive the length of the object label.</param>
     /// <param name="label">Specifies the address of a buffer into which to place the object label.</param>
-    public static void glGetObjectLabel(GLenum identifier, GLuint name, GLsizei bufSize, GLsizei* length, GLchar* label) => _glGetObjectLabel(identifier, name, bufSize, length, label);
+    public void glGetObjectLabel(GLenum identifier, GLuint name, GLsizei bufSize, GLsizei* length, GLchar* label) => _glGetObjectLabel(identifier, name, bufSize, length, label);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16232,7 +16230,7 @@ public static unsafe class GL
     /// <param name="name">Specifies the name of the object whose label to retrieve.</param>
     /// <param name="bufSize">Specifies the size of the buffer whose address is in label.</param>
     /// <returns>The object label.</returns>
-    public static string glGetObjectLabel(GLenum identifier, GLuint name, GLsizei bufSize)
+    public string glGetObjectLabel(GLenum identifier, GLuint name, GLsizei bufSize)
     {
         GLchar[] labelBytes = new GLchar[bufSize];
         GLsizei length;
@@ -16246,7 +16244,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLOBJECTPTRLABELPROC(void* ptr, GLsizei length, GLchar* label);
-    private static PFNGLOBJECTPTRLABELPROC _glObjectPtrLabel;
+    private PFNGLOBJECTPTRLABELPROC _glObjectPtrLabel;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Set the label of an object pointer.
@@ -16254,7 +16252,7 @@ public static unsafe class GL
     /// <param name="ptr">Specifies the object pointer whose label to set.</param>
     /// <param name="length">Specifies the length of the label to be used for the object.</param>
     /// <param name="label">Specifies a string containing the label to assign to the object.</param>
-    public static void glObjectPtrLabel(void* ptr, GLsizei length, GLchar* label) => _glObjectPtrLabel(ptr, length, label);
+    public void glObjectPtrLabel(void* ptr, GLsizei length, GLchar* label) => _glObjectPtrLabel(ptr, length, label);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16262,7 +16260,7 @@ public static unsafe class GL
     /// </summary>
     /// <param name="ptr">Specifies the object pointer whose label to set.</param>
     /// <param name="label">Specifies a string containing the label to assign to the object.</param>
-    public static void glObjectPtrLabel(IntPtr ptr, string label)
+    public void glObjectPtrLabel(IntPtr ptr, string label)
     {
         GLchar[] labelBytes = Encoding.UTF8.GetBytes(label);
         fixed (GLchar* p_labelBytes = labelBytes) { _glObjectPtrLabel(ptr.ToPointer(), labelBytes.Length, p_labelBytes); }
@@ -16271,7 +16269,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETOBJECTPTRLABELPROC(void* ptr, GLsizei bufSize, GLsizei* length, GLchar* label);
-    private static PFNGLGETOBJECTPTRLABELPROC _glGetObjectPtrLabel;
+    private PFNGLGETOBJECTPTRLABELPROC _glGetObjectPtrLabel;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Retrieve the label of an object pointer.
@@ -16280,7 +16278,7 @@ public static unsafe class GL
     /// <param name="bufSize">Specifies the size of the buffer whose address is in label.</param>
     /// <param name="length">Specifies the address of a variable to receive the length of the object label.</param>
     /// <param name="label">Specifies the address of a buffer into which to place the object label.</param>
-    public static void glGetObjectPtrLabel(void* ptr, GLsizei bufSize, GLsizei* length, GLchar* label) => _glGetObjectPtrLabel(ptr, bufSize, length, label);
+    public void glGetObjectPtrLabel(void* ptr, GLsizei bufSize, GLsizei* length, GLchar* label) => _glGetObjectPtrLabel(ptr, bufSize, length, label);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16289,7 +16287,7 @@ public static unsafe class GL
     /// <param name="ptr">Specifies the object pointer whose label to retrieve.</param>
     /// <param name="bufSize">Specifies the size of the buffer whose address is in label.</param>
     /// <returns>The object label.</returns>
-    public static string glGetObjectPtrLabel(IntPtr ptr, GLsizei bufSize)
+    public string glGetObjectPtrLabel(IntPtr ptr, GLsizei bufSize)
     {
         GLchar[] labelBytes = new GLchar[bufSize];
         GLsizei length;
@@ -16308,7 +16306,7 @@ public static unsafe class GL
 #if OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBUFFERSTORAGEPROC(GLenum target, GLsizeiptr size, void* data, GLbitfield flags);
-    private static PFNGLBUFFERSTORAGEPROC _glBufferStorage;
+    private PFNGLBUFFERSTORAGEPROC _glBufferStorage;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Create and initialize a buffer object's data store.
@@ -16317,7 +16315,7 @@ public static unsafe class GL
     /// <param name="size">Specifies the size in bytes of the buffer object's new data store.</param>
     /// <param name="data">Specifies a pointer to data that will be copied into the data store for initialization, or NULL if no data is to be copied.</param>
     /// <param name="flags">Specifies flags indicating the intended usage of the buffer object's data store.</param>
-    public static void glBufferStorage(GLenum target, GLsizeiptr size, void* data, GLbitfield flags) => _glBufferStorage(target, size, data, flags);
+    public void glBufferStorage(GLenum target, GLsizeiptr size, void* data, GLbitfield flags) => _glBufferStorage(target, size, data, flags);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16327,13 +16325,13 @@ public static unsafe class GL
     /// <param name="target">Specifies the target to which the buffer object is bound.</param>
     /// <param name="data">Specifies data that will be copied into the data store for initialization.</param>
     /// <param name="flags">Specifies flags indicating the intended usage of the buffer object's data store.</param>
-    public static void glBufferStorage<T>(GLenum target, T[] data, GLbitfield flags) where T : unmanaged { fixed (void* p_data =
+    public void glBufferStorage<T>(GLenum target, T[] data, GLbitfield flags) where T : unmanaged { fixed (void* p_data =
  &data[0]) { _glBufferStorage(target, data.Length * sizeof(T), p_data, flags); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCLEARTEXIMAGEPROC(GLuint texture, GLint level, GLenum format, GLenum type, void* data);
-    private static PFNGLCLEARTEXIMAGEPROC _glClearTexImage;
+    private PFNGLCLEARTEXIMAGEPROC _glClearTexImage;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Clear image in a texture.
@@ -16343,7 +16341,7 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
-    public static void glClearTexImage(GLuint texture, GLint level, GLenum format, GLenum type, void* data) => _glClearTexImage(texture, level, format, type, data);
+    public void glClearTexImage(GLuint texture, GLint level, GLenum format, GLenum type, void* data) => _glClearTexImage(texture, level, format, type, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16355,13 +16353,13 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies the image data.</param>
-    public static void glClearTexImage<T>(GLuint texture, GLint level, GLenum format, GLenum type, T[] data) where T : unmanaged { fixed (T* t =
+    public void glClearTexImage<T>(GLuint texture, GLint level, GLenum format, GLenum type, T[] data) where T : unmanaged { fixed (T* t =
  &data[0]) _glClearTexImage(texture, level, format, type, t); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCLEARTEXSUBIMAGEPROC(GLuint texture, GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, void* data);
-    private static PFNGLCLEARTEXSUBIMAGEPROC _glClearTexSubImage;
+    private PFNGLCLEARTEXSUBIMAGEPROC _glClearTexSubImage;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Clear a region of a texture image.
@@ -16377,7 +16375,7 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies a pointer to the image data in memory.</param>
-    public static void glClearTexSubImage(GLuint texture, GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, void* data) => _glClearTexSubImage(texture, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
+    public void glClearTexSubImage(GLuint texture, GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, void* data) => _glClearTexSubImage(texture, level, xOffset, yOffset, zOffset, width, height, depth, format, type, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16395,13 +16393,13 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies the image data.</param>
-    public static void glClearTexSubImage<T>(GLuint texture, GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, T[] data) where T : unmanaged { fixed (T* t
+    public void glClearTexSubImage<T>(GLuint texture, GLint level, GLint xOffset, GLint yOffset, GLint zOffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, T[] data) where T : unmanaged { fixed (T* t
  = &data[0]) _glClearTexSubImage(texture, level, xOffset, yOffset, zOffset, width, height, depth, format, type, t); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBINDBUFFERSBASEPROC(GLenum target, GLuint first, GLsizei count, GLuint* buffers);
-    private static PFNGLBINDBUFFERSBASEPROC _glBindBuffersBase;
+    private PFNGLBINDBUFFERSBASEPROC _glBindBuffersBase;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Bind a range of buffer objects to a binding point.
@@ -16410,7 +16408,7 @@ public static unsafe class GL
     /// <param name="first">Specifies the index of the first binding point to which to bind buffers.</param>
     /// <param name="count">Specifies the number of buffers to bind.</param>
     /// <param name="buffers">Specifies an array of buffer objects whose names to bind.</param>
-    public static void glBindBuffersBase(GLenum target, GLuint first, GLsizei count, GLuint* buffers) => _glBindBuffersBase(target, first, count, buffers);
+    public void glBindBuffersBase(GLenum target, GLuint first, GLsizei count, GLuint* buffers) => _glBindBuffersBase(target, first, count, buffers);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16419,13 +16417,13 @@ public static unsafe class GL
     /// <param name="target">Specifies the target to which the buffers are bound.</param>
     /// <param name="first">Specifies the index of the first binding point to which to bind buffers.</param>
     /// <param name="buffers">Specifies an array of buffer objects whose names to bind.</param>
-    public static void glBindBuffersBase(GLenum target, GLuint first, GLuint[] buffers) { fixed (GLuint* p_buffers =
+    public void glBindBuffersBase(GLenum target, GLuint first, GLuint[] buffers) { fixed (GLuint* p_buffers =
  &buffers[0]) { _glBindBuffersBase(target, first, buffers.Length, p_buffers); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBINDBUFFERSRANGEPROC(GLenum target, GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizeiptr* sizes);
-    private static PFNGLBINDBUFFERSRANGEPROC _glBindBuffersRange;
+    private PFNGLBINDBUFFERSRANGEPROC _glBindBuffersRange;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Bind a range of buffer objects to a binding point.
@@ -16436,7 +16434,7 @@ public static unsafe class GL
     /// <param name="buffers">Specifies an array of buffer objects whose names to bind.</param>
     /// <param name="offsets">Specifies an array of offsets into the buffer objects.</param>
     /// <param name="sizes">Specifies an array of sizes of the buffer object regions.</param>
-    public static void glBindBuffersRange(GLenum target, GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizeiptr* sizes) => _glBindBuffersRange(target, first, count, buffers, offsets, sizes);
+    public void glBindBuffersRange(GLenum target, GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizeiptr* sizes) => _glBindBuffersRange(target, first, count, buffers, offsets, sizes);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16447,14 +16445,14 @@ public static unsafe class GL
     /// <param name="buffers">Specifies an array of buffer objects whose names to bind.</param>
     /// <param name="offsets">Specifies an array of offsets into the buffer objects.</param>
     /// <param name="sizes">Specifies an array of sizes of the buffer object regions.</param>
-    public static void glBindBuffersRange(GLenum target, GLuint first, GLuint[] buffers, GLintptr[] offsets, GLsizeiptr[] sizes) { fixed (GLuint* p_buffers =
+    public void glBindBuffersRange(GLenum target, GLuint first, GLuint[] buffers, GLintptr[] offsets, GLsizeiptr[] sizes) { fixed (GLuint* p_buffers =
  &buffers[0]) { fixed (GLintptr* p_offsets = &offsets[0]) { fixed (GLsizeiptr* p_sizes =
  &sizes[0]) { _glBindBuffersRange(target, first, buffers.Length, p_buffers, p_offsets, p_sizes); } } } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBINDTEXTURESPROC(GLuint first, GLsizei count, GLuint* textures);
-    private static PFNGLBINDTEXTURESPROC _glBindTextures;
+    private PFNGLBINDTEXTURESPROC _glBindTextures;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Bind an array of textures to a set of consecutive texture units.
@@ -16462,7 +16460,7 @@ public static unsafe class GL
     /// <param name="first">Specifies the index of the first texture unit to which to bind textures.</param>
     /// <param name="count">Specifies the number of textures to bind.</param>
     /// <param name="textures">Specifies an array of textures whose names to bind.</param>
-    public static void glBindTextures(GLuint first, GLsizei count, GLuint* textures) => _glBindTextures(first, count, textures);
+    public void glBindTextures(GLuint first, GLsizei count, GLuint* textures) => _glBindTextures(first, count, textures);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16470,13 +16468,13 @@ public static unsafe class GL
     /// </summary>
     /// <param name="first">Specifies the index of the first texture unit to which to bind textures.</param>
     /// <param name="textures">Specifies an array of textures whose names to bind.</param>
-    public static void glBindTextures(GLuint first, GLuint[] textures) { fixed (GLuint* p_textures =
+    public void glBindTextures(GLuint first, GLuint[] textures) { fixed (GLuint* p_textures =
  &textures[0]) { _glBindTextures(first, textures.Length, p_textures); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBINDSAMPLERSPROC(GLuint first, GLsizei count, GLuint* samplers);
-    private static PFNGLBINDSAMPLERSPROC _glBindSamplers;
+    private PFNGLBINDSAMPLERSPROC _glBindSamplers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Bind an array of samplers to a set of consecutive texture units.
@@ -16484,7 +16482,7 @@ public static unsafe class GL
     /// <param name="first">Specifies the index of the first texture unit to which to bind samplers.</param>
     /// <param name="count">Specifies the number of samplers to bind.</param>
     /// <param name="samplers">Specifies an array of samplers whose names to bind.</param>
-    public static void glBindSamplers(GLuint first, GLsizei count, GLuint* samplers) => _glBindSamplers(first, count, samplers);
+    public void glBindSamplers(GLuint first, GLsizei count, GLuint* samplers) => _glBindSamplers(first, count, samplers);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16492,13 +16490,13 @@ public static unsafe class GL
     /// </summary>
     /// <param name="first">Specifies the index of the first texture unit to which to bind samplers.</param>
     /// <param name="samplers">Specifies an array of samplers whose names to bind.</param>
-    public static void glBindSamplers(GLuint first, GLuint[] samplers) { fixed (GLuint* p_samplers =
+    public void glBindSamplers(GLuint first, GLuint[] samplers) { fixed (GLuint* p_samplers =
  &samplers[0]) { _glBindSamplers(first, samplers.Length, p_samplers); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBINDIMAGETEXTURESPROC(GLuint first, GLsizei count, GLuint* textures);
-    private static PFNGLBINDIMAGETEXTURESPROC _glBindImageTextures;
+    private PFNGLBINDIMAGETEXTURESPROC _glBindImageTextures;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Bind an array of textures to a set of consecutive image units.
@@ -16506,7 +16504,7 @@ public static unsafe class GL
     /// <param name="first">Specifies the index of the first image unit to which to bind textures.</param>
     /// <param name="count">Specifies the number of textures to bind.</param>
     /// <param name="textures">Specifies an array of textures whose names to bind.</param>
-    public static void glBindImageTextures(GLuint first, GLsizei count, GLuint* textures) => _glBindImageTextures(first, count, textures);
+    public void glBindImageTextures(GLuint first, GLsizei count, GLuint* textures) => _glBindImageTextures(first, count, textures);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16514,13 +16512,13 @@ public static unsafe class GL
     /// </summary>
     /// <param name="first">Specifies the index of the first image unit to which to bind textures.</param>
     /// <param name="textures">Specifies an array of textures whose names to bind.</param>
-    public static void glBindImageTextures(GLuint first, GLuint[] textures) { fixed (GLuint* p_textures =
+    public void glBindImageTextures(GLuint first, GLuint[] textures) { fixed (GLuint* p_textures =
  &textures[0]) { _glBindImageTextures(first, textures.Length, p_textures); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBINDVERTEXBUFFERSPROC(GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizei* strides);
-    private static PFNGLBINDVERTEXBUFFERSPROC _glBindVertexBuffers;
+    private PFNGLBINDVERTEXBUFFERSPROC _glBindVertexBuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Bind an array of buffer objects to a sequence of consecutive vertex buffer binding points.
@@ -16530,7 +16528,7 @@ public static unsafe class GL
     /// <param name="buffers">Specifies an array of buffer objects whose names to bind.</param>
     /// <param name="offsets">Specifies an array of offsets into each buffer object being bound.</param>
     /// <param name="strides">Specifies an array of stride values.</param>
-    public static void glBindVertexBuffers(GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizei* strides) => _glBindVertexBuffers(first, count, buffers, offsets, strides);
+    public void glBindVertexBuffers(GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizei* strides) => _glBindVertexBuffers(first, count, buffers, offsets, strides);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16540,7 +16538,7 @@ public static unsafe class GL
     /// <param name="buffers">Specifies an array of buffer objects whose names to bind.</param>
     /// <param name="offsets">Specifies an array of offsets into each buffer object being bound.</param>
     /// <param name="strides">Specifies an array of stride values.</param>
-    public static void glBindVertexBuffers(GLuint first, GLuint[] buffers, GLintptr[] offsets, GLsizei[] strides) { fixed (GLuint* p_buffers =
+    public void glBindVertexBuffers(GLuint first, GLuint[] buffers, GLintptr[] offsets, GLsizei[] strides) { fixed (GLuint* p_buffers =
  &buffers[0]) { fixed (GLintptr* p_offsets = &offsets[0]) { fixed (GLsizei* p_strides =
  &strides[0]) { _glBindVertexBuffers(first, buffers.Length, p_buffers, p_offsets, p_strides); } } } }
 #endif
@@ -16552,24 +16550,24 @@ public static unsafe class GL
 #if OGL_V_4_5 || OGL_V_4_6
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCLIPCONTROLPROC(GLenum origin, GLenum depth);
-    private static PFNGLCLIPCONTROLPROC _glClipControl;
+    private PFNGLCLIPCONTROLPROC _glClipControl;
     /// <summary>
     /// Controls the clipping behavior.
     /// </summary>
     /// <param name="origin">Specifies whether the clip volume's depth extent is given by the near and far clip distances stored in the depth range, or whether the clip volume's depth extent should be [-1, 1], regardless of the depth range.</param>
     /// <param name="depth">Specifies whether vertex post-clipping x, y, and z coordinates are clipped to the clip volume based on their w component.</param>
-    public static void glClipControl(GLenum origin, GLenum depth) => _glClipControl(origin, depth);
+    public void glClipControl(GLenum origin, GLenum depth) => _glClipControl(origin, depth);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCREATETRANSFORMFEEDBACKSPROC(GLsizei n, GLuint* ids);
-    private static PFNGLCREATETRANSFORMFEEDBACKSPROC _glCreateTransformFeedbacks;
+    private PFNGLCREATETRANSFORMFEEDBACKSPROC _glCreateTransformFeedbacks;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Generate transform feedback object names.
     /// </summary>
     /// <param name="n">Specifies the number of transform feedback object names to generate.</param>
     /// <param name="ids">Specifies an array in which the generated transform feedback object names are stored.</param>
-    public static void glCreateTransformFeedbacks(GLsizei n, GLuint* ids) => _glCreateTransformFeedbacks(n, ids);
+    public void glCreateTransformFeedbacks(GLsizei n, GLuint* ids) => _glCreateTransformFeedbacks(n, ids);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16577,29 +16575,29 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of transform feedback object names to generate.</param>
     /// <returns>An array in which the generated transform feedback object names are stored.</returns>
-    public static GLuint[] glCreateTransformFeedbacks(GLsizei n) { GLuint[] ids = new GLuint[n]; fixed (GLuint* p_ids =
+    public GLuint[] glCreateTransformFeedbacks(GLsizei n) { GLuint[] ids = new GLuint[n]; fixed (GLuint* p_ids =
  &ids[0]) { _glCreateTransformFeedbacks(n, p_ids); } return ids; }
     /// <summary>
     /// Generate a single transform feedback object name.
     /// </summary>
     /// <returns>The generated transform feedback object name.</returns>
-    public static GLuint glCreateTransformFeedbacks() => glCreateTransformFeedbacks(1)[0];
+    public GLuint glCreateTransformFeedbacks() => glCreateTransformFeedbacks(1)[0];
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTRANSFORMFEEDBACKBUFFERBASEPROC(GLuint xfb, GLuint index, GLuint buffer);
-    private static PFNGLTRANSFORMFEEDBACKBUFFERBASEPROC _glTransformFeedbackBufferBase;
+    private PFNGLTRANSFORMFEEDBACKBUFFERBASEPROC _glTransformFeedbackBufferBase;
     /// <summary>
     /// Bind a buffer object to an indexed transform feedback buffer target.
     /// </summary>
     /// <param name="xfb">Specifies the name of a transform feedback object.</param>
     /// <param name="index">Specifies the index of the transform feedback buffer object whose binding to modify.</param>
     /// <param name="buffer">Specifies the name of the buffer object to bind to the target.</param>
-    public static void glTransformFeedbackBufferBase(GLuint xfb, GLuint index, GLuint buffer) => _glTransformFeedbackBufferBase(xfb, index, buffer);
+    public void glTransformFeedbackBufferBase(GLuint xfb, GLuint index, GLuint buffer) => _glTransformFeedbackBufferBase(xfb, index, buffer);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTRANSFORMFEEDBACKBUFFERRANGEPROC(GLuint xfb, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size);
-    private static PFNGLTRANSFORMFEEDBACKBUFFERRANGEPROC _glTransformFeedbackBufferRange;
+    private PFNGLTRANSFORMFEEDBACKBUFFERRANGEPROC _glTransformFeedbackBufferRange;
     /// <summary>
     /// Bind a range of a buffer object to an indexed transform feedback buffer target.
     /// </summary>
@@ -16608,11 +16606,11 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object to bind to the target.</param>
     /// <param name="offset">Specifies the starting offset in basic machine units into the buffer object buffer.</param>
     /// <param name="size">Specifies the amount of data in machine units that can be read from the buffer object while used as an indexed transform feedback buffer.</param>
-    public static void glTransformFeedbackBufferRange(GLuint xfb, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size) => _glTransformFeedbackBufferRange(xfb, index, buffer, offset, size);
+    public void glTransformFeedbackBufferRange(GLuint xfb, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size) => _glTransformFeedbackBufferRange(xfb, index, buffer, offset, size);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETTRANSFORMFEEDBACKIVPROC(GLuint xfb, GLenum pname, GLint* param);
-    private static PFNGLGETTRANSFORMFEEDBACKIVPROC _glGetTransformFeedbackiv;
+    private PFNGLGETTRANSFORMFEEDBACKIVPROC _glGetTransformFeedbackiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a transform feedback object.
@@ -16620,7 +16618,7 @@ public static unsafe class GL
     /// <param name="xfb">Specifies the name of a transform feedback object.</param>
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="param">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    public static void glGetTransformFeedbackiv(GLuint xfb, GLenum pname, GLint* param) => _glGetTransformFeedbackiv(xfb, pname, param);
+    public void glGetTransformFeedbackiv(GLuint xfb, GLenum pname, GLint* param) => _glGetTransformFeedbackiv(xfb, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16629,13 +16627,13 @@ public static unsafe class GL
     /// <param name="xfb">Specifies the name of a transform feedback object.</param>
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="param">Specifies an array in which to place the returned data.</param>
-    public static void glGetTransformFeedbackiv(GLuint xfb, GLenum pname, ref GLint[] param) { fixed (GLint* p_param =
+    public void glGetTransformFeedbackiv(GLuint xfb, GLenum pname, ref GLint[] param) { fixed (GLint* p_param =
  &param[0]) { _glGetTransformFeedbackiv(xfb, pname, p_param); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETTRANSFORMFEEDBACKI_VPROC(GLuint xfb, GLenum pname, GLuint index, GLint* param);
-    private static PFNGLGETTRANSFORMFEEDBACKI_VPROC _glGetTransformFeedbacki_v;
+    private PFNGLGETTRANSFORMFEEDBACKI_VPROC _glGetTransformFeedbacki_v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a transform feedback object.
@@ -16644,7 +16642,7 @@ public static unsafe class GL
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="index">Specifies the index of the transform feedback buffer object whose binding to query.</param>
     /// <param name="param">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    public static void glGetTransformFeedbacki_v(GLuint xfb, GLenum pname, GLuint index, GLint* param) => _glGetTransformFeedbacki_v(xfb, pname, index, param);
+    public void glGetTransformFeedbacki_v(GLuint xfb, GLenum pname, GLuint index, GLint* param) => _glGetTransformFeedbacki_v(xfb, pname, index, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16654,13 +16652,13 @@ public static unsafe class GL
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="index">Specifies the index of the transform feedback buffer object whose binding to query.</param>
     /// <param name="param">Specifies an array in which to place the returned data.</param>
-    public static void glGetTransformFeedbacki_v(GLuint xfb, GLenum pname, GLuint index, ref GLint[] param) { fixed (GLint* p_param =
+    public void glGetTransformFeedbacki_v(GLuint xfb, GLenum pname, GLuint index, ref GLint[] param) { fixed (GLint* p_param =
  &param[0]) { _glGetTransformFeedbacki_v(xfb, pname, index, p_param); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETTRANSFORMFEEDBACKI64_VPROC(GLuint xfb, GLenum pname, GLuint index, GLint64* param);
-    private static PFNGLGETTRANSFORMFEEDBACKI64_VPROC _glGetTransformFeedbacki64_v;
+    private PFNGLGETTRANSFORMFEEDBACKI64_VPROC _glGetTransformFeedbacki64_v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a transform feedback object.
@@ -16669,7 +16667,7 @@ public static unsafe class GL
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="index">Specifies the index of the transform feedback buffer object whose binding to query.</param>
     /// <param name="param">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    public static void glGetTransformFeedbacki64_v(GLuint xfb, GLenum pname, GLuint index, GLint64* param) => _glGetTransformFeedbacki64_v(xfb, pname, index, param);
+    public void glGetTransformFeedbacki64_v(GLuint xfb, GLenum pname, GLuint index, GLint64* param) => _glGetTransformFeedbacki64_v(xfb, pname, index, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16679,20 +16677,20 @@ public static unsafe class GL
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="index">Specifies the index of the transform feedback buffer object whose binding to query.</param>
     /// <param name="param">Specifies an array in which to place the returned data.</param>
-    public static void glGetTransformFeedbacki64_v(GLuint xfb, GLenum pname, GLuint index, ref GLint64[] param) { fixed (GLint64* p_param =
+    public void glGetTransformFeedbacki64_v(GLuint xfb, GLenum pname, GLuint index, ref GLint64[] param) { fixed (GLint64* p_param =
  &param[0]) { _glGetTransformFeedbacki64_v(xfb, pname, index, p_param); } }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCREATEBUFFERSPROC(GLsizei n, GLuint* buffers);
-    private static PFNGLCREATEBUFFERSPROC _glCreateBuffers;
+    private PFNGLCREATEBUFFERSPROC _glCreateBuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Generate buffer object names.
     /// </summary>
     /// <param name="n">Specifies the number of buffer object names to generate.</param>
     /// <param name="buffers">Specifies an array in which to place the generated buffer object names.</param>
-    public static void glCreateBuffers(GLsizei n, GLuint* buffers) => _glCreateBuffers(n, buffers);
+    public void glCreateBuffers(GLsizei n, GLuint* buffers) => _glCreateBuffers(n, buffers);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16700,18 +16698,18 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of buffer object names to generate.</param>
     /// <returns>An array containing the generated buffer object names.</returns>
-    public static GLuint[] glCreateBuffers(GLsizei n) { GLuint[] buffers = new GLuint[n]; fixed (GLuint* p_buffers =
+    public GLuint[] glCreateBuffers(GLsizei n) { GLuint[] buffers = new GLuint[n]; fixed (GLuint* p_buffers =
  &buffers[0]) { _glCreateBuffers(n, p_buffers); } return buffers; }
     /// <summary>
     /// Generate a single buffer object name.
     /// </summary>
     /// <returns>The generated buffer object name.</returns>
-    public static GLuint glCreateBuffer() => glCreateBuffers(1)[0];
+    public GLuint glCreateBuffer() => glCreateBuffers(1)[0];
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDBUFFERSTORAGEPROC(GLuint buffer, GLsizeiptr size, void* data, GLbitfield flags);
-    private static PFNGLNAMEDBUFFERSTORAGEPROC _glNamedBufferStorage;
+    private PFNGLNAMEDBUFFERSTORAGEPROC _glNamedBufferStorage;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Create and initialize a buffer object's data store.
@@ -16720,7 +16718,7 @@ public static unsafe class GL
     /// <param name="size">Specifies the size in bytes of the buffer object's new data store.</param>
     /// <param name="data">Specifies a pointer to data that will be copied into the data store for initialization, or NULL if no data is to be copied.</param>
     /// <param name="flags">Specifies flags indicating the intended usage of the buffer's data store.</param>
-    public static void glNamedBufferStorage(GLuint buffer, GLsizeiptr size, void* data, GLbitfield flags) => _glNamedBufferStorage(buffer, size, data, flags);
+    public void glNamedBufferStorage(GLuint buffer, GLsizeiptr size, void* data, GLbitfield flags) => _glNamedBufferStorage(buffer, size, data, flags);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16731,7 +16729,7 @@ public static unsafe class GL
     /// <param name="size">Specifies the size in bytes of the buffer object's new data store.</param>
     /// <param name="data">Specifies an array containing the data to copy into the buffer.</param>
     /// <param name="flags">Specifies flags indicating the intended usage of the buffer's data store.</param>
-    public static void glNamedBufferStorage<T>(GLuint buffer, GLsizeiptr size, T[] data, GLbitfield flags) where T : unmanaged
+    public void glNamedBufferStorage<T>(GLuint buffer, GLsizeiptr size, T[] data, GLbitfield flags) where T : unmanaged
     {
         fixed (T* p_data = &data[0]) { _glNamedBufferStorage(buffer, size, p_data, flags); }
     }
@@ -16739,7 +16737,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDBUFFERDATAPROC(GLuint buffer, GLsizeiptr size, void* data, GLenum usage);
-    private static PFNGLNAMEDBUFFERDATAPROC _glNamedBufferData;
+    private PFNGLNAMEDBUFFERDATAPROC _glNamedBufferData;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Create and initialize a buffer object's data store.
@@ -16748,7 +16746,7 @@ public static unsafe class GL
     /// <param name="size">Specifies the size in bytes of the buffer object's new data store.</param>
     /// <param name="data">Specifies a pointer to data that will be copied into the data store for initialization, or NULL if no data is to be copied.</param>
     /// <param name="usage">Specifies the expected usage pattern of the data store.</param>
-    public static void glNamedBufferData(GLuint buffer, GLsizeiptr size, void* data, GLenum usage) => _glNamedBufferData(buffer, size, data, usage);
+    public void glNamedBufferData(GLuint buffer, GLsizeiptr size, void* data, GLenum usage) => _glNamedBufferData(buffer, size, data, usage);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16759,7 +16757,7 @@ public static unsafe class GL
     /// <param name="size">Specifies the size in bytes of the buffer object's new data store.</param>
     /// <param name="data">Specifies an array containing the data to copy into the buffer.</param>
     /// <param name="usage">Specifies the expected usage pattern of the data store.</param>
-    public static void glNamedBufferData<T>(GLuint buffer, GLsizeiptr size, T[] data, GLenum usage) where T : unmanaged
+    public void glNamedBufferData<T>(GLuint buffer, GLsizeiptr size, T[] data, GLenum usage) where T : unmanaged
     {
         fixed (T* p_data = &data[0]) { _glNamedBufferData(buffer, size, p_data, usage); }
     }
@@ -16767,7 +16765,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDBUFFERSUBDATAPROC(GLuint buffer, GLintptr offset, GLsizeiptr size, void* data);
-    private static PFNGLNAMEDBUFFERSUBDATAPROC _glNamedBufferSubData;
+    private PFNGLNAMEDBUFFERSUBDATAPROC _glNamedBufferSubData;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Update a subset of a buffer object's data store.
@@ -16776,7 +16774,7 @@ public static unsafe class GL
     /// <param name="offset">Specifies the offset into the buffer object's data store where data replacement will begin, measured in bytes.</param>
     /// <param name="size">Specifies the size in bytes of the data store region being replaced.</param>
     /// <param name="data">Specifies a pointer to the new data that will be copied into the data store.</param>
-    public static void glNamedBufferSubData(GLuint buffer, GLintptr offset, GLsizeiptr size, void* data) => _glNamedBufferSubData(buffer, offset, size, data);
+    public void glNamedBufferSubData(GLuint buffer, GLintptr offset, GLsizeiptr size, void* data) => _glNamedBufferSubData(buffer, offset, size, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16787,7 +16785,7 @@ public static unsafe class GL
     /// <param name="offset">Specifies the offset into the buffer object's data store where data replacement will begin, measured in bytes.</param>
     /// <param name="size">Specifies the size in bytes of the data store region being replaced.</param>
     /// <param name="data">Specifies an array containing the new data that will be copied into the data store.</param>
-    public static void glNamedBufferSubData<T>(GLuint buffer, GLintptr offset, GLsizeiptr size, T[] data) where T : unmanaged
+    public void glNamedBufferSubData<T>(GLuint buffer, GLintptr offset, GLsizeiptr size, T[] data) where T : unmanaged
     {
         fixed (T* p_data = &data[0]) { _glNamedBufferSubData(buffer, offset, size, p_data); }
     }
@@ -16795,7 +16793,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCOPYNAMEDBUFFERSUBDATAPROC(GLuint readBuffer, GLuint writeBuffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
-    private static PFNGLCOPYNAMEDBUFFERSUBDATAPROC _glCopyNamedBufferSubData;
+    private PFNGLCOPYNAMEDBUFFERSUBDATAPROC _glCopyNamedBufferSubData;
     /// <summary>
     /// Copy part of the data store of a buffer object to the data store of another buffer object.
     /// </summary>
@@ -16804,11 +16802,11 @@ public static unsafe class GL
     /// <param name="readOffset">Specifies the offset into the data store of readBuffer at which to start reading data, measured in bytes.</param>
     /// <param name="writeOffset">Specifies the offset into the data store of writeBuffer at which to start writing data, measured in bytes.</param>
     /// <param name="size">Specifies the size in bytes of the data to be copied from readBuffer to writeBuffer.</param>
-    public static void glCopyNamedBufferSubData(GLuint readBuffer, GLuint writeBuffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) => _glCopyNamedBufferSubData(readBuffer, writeBuffer, readOffset, writeOffset, size);
+    public void glCopyNamedBufferSubData(GLuint readBuffer, GLuint writeBuffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size) => _glCopyNamedBufferSubData(readBuffer, writeBuffer, readOffset, writeOffset, size);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCLEARNAMEDBUFFERDATAPROC(GLuint buffer, GLenum internalformat, GLenum format, GLenum type, void* data);
-    private static PFNGLCLEARNAMEDBUFFERDATAPROC _glClearNamedBufferData;
+    private PFNGLCLEARNAMEDBUFFERDATAPROC _glClearNamedBufferData;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Clear all or part of a buffer object's data store to the fixed value.
@@ -16818,7 +16816,7 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies a pointer to the data that will be used to clear the buffer's data store.</param>
-    public static void glClearNamedBufferData(GLuint buffer, GLenum internalformat, GLenum format, GLenum type, void* data) => _glClearNamedBufferData(buffer, internalformat, format, type, data);
+    public void glClearNamedBufferData(GLuint buffer, GLenum internalformat, GLenum format, GLenum type, void* data) => _glClearNamedBufferData(buffer, internalformat, format, type, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16830,13 +16828,13 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies an array containing the data that will be used to clear the buffer's data store.</param>
-    public static void glClearNamedBufferData<T>(GLuint buffer, GLenum internalformat, GLenum format, GLenum type, T[] data) where T : unmanaged { fixed (T* t =
+    public void glClearNamedBufferData<T>(GLuint buffer, GLenum internalformat, GLenum format, GLenum type, T[] data) where T : unmanaged { fixed (T* t =
  &data[0]) _glClearNamedBufferData(buffer, internalformat, format, type, t); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCLEARNAMEDBUFFERSUBDATAPROC(GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, void* data);
-    private static PFNGLCLEARNAMEDBUFFERSUBDATAPROC _glClearNamedBufferSubData;
+    private PFNGLCLEARNAMEDBUFFERSUBDATAPROC _glClearNamedBufferSubData;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Clear all or part of a buffer object's data store to the fixed value.
@@ -16848,7 +16846,7 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies a pointer to the data that will be used to clear the buffer's data store.</param>
-    public static void glClearNamedBufferSubData(GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, void* data) => _glClearNamedBufferSubData(buffer, internalformat, offset, size, format, type, data);
+    public void glClearNamedBufferSubData(GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, void* data) => _glClearNamedBufferSubData(buffer, internalformat, offset, size, format, type, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16862,13 +16860,13 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="data">Specifies an array containing the data that will be used to clear the buffer's data store.</param>
-    public static void glClearNamedBufferSubData<T>(GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, T[] data) where T : unmanaged { fixed (T* t
+    public void glClearNamedBufferSubData<T>(GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, T[] data) where T : unmanaged { fixed (T* t
  = &data[0]) _glClearNamedBufferSubData(buffer, internalformat, offset, size, format, type, t); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void* PFNGLMAPNAMEDBUFFERPROC(GLuint buffer, GLenum access);
-    private static PFNGLMAPNAMEDBUFFERPROC _glMapNamedBuffer;
+    private PFNGLMAPNAMEDBUFFERPROC _glMapNamedBuffer;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Map all or part of the data store of a buffer object into the client's address space.
@@ -16876,7 +16874,7 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object whose data store to map.</param>
     /// <param name="access">Specifies the access policy for the region of the buffer object's data store to be mapped.</param>
     /// <returns>Upon success, returns a pointer to the beginning of the mapped range. Otherwise, returns NULL.</returns>
-    public static void* glMapNamedBuffer(GLuint buffer, GLenum access) => _glMapNamedBuffer(buffer, access);
+    public void* glMapNamedBuffer(GLuint buffer, GLenum access) => _glMapNamedBuffer(buffer, access);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16886,7 +16884,7 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object whose data store to map.</param>
     /// <param name="access">Specifies the access policy for the region of the buffer object's data store to be mapped.</param>
     /// <returns>Upon success, returns a <see cref="System.Span{T}"/> to the beginning of the mapped range.</returns>
-    public static System.Span<T> glMapNamedBuffer<T>(GLuint buffer, GLenum access) where T : unmanaged
+    public System.Span<T> glMapNamedBuffer<T>(GLuint buffer, GLenum access) where T : unmanaged
     {
         GLint* size = stackalloc GLint[1];
         _glGetNamedBufferParameteriv(buffer, GL_BUFFER_SIZE, size);
@@ -16897,7 +16895,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void* PFNGLMAPNAMEDBUFFERRANGEPROC(GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access);
-    private static PFNGLMAPNAMEDBUFFERRANGEPROC _glMapNamedBufferRange;
+    private PFNGLMAPNAMEDBUFFERRANGEPROC _glMapNamedBufferRange;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Map all or part of the data store of a buffer object into the client's address space.
@@ -16907,7 +16905,7 @@ public static unsafe class GL
     /// <param name="length">Specifies the length of the buffer object's data store region being mapped, measured in bytes.</param>
     /// <param name="access">Specifies the access policy for the region of the buffer object's data store to be mapped.</param>
     /// <returns>Upon success, returns a pointer to the beginning of the mapped range. Otherwise, returns NULL.</returns>
-    public static void* glMapNamedBufferRange(GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access) => _glMapNamedBufferRange(buffer, offset, length, access);
+    public void* glMapNamedBufferRange(GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access) => _glMapNamedBufferRange(buffer, offset, length, access);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16919,7 +16917,7 @@ public static unsafe class GL
     /// <param name="length">Specifies the length of the buffer object's data store region being mapped, measured in bytes.</param>
     /// <param name="access">Specifies the access policy for the region of the buffer object's data store to be mapped.</param>
     /// <returns>Upon success, returns a <see cref="System.Span{T}"/> to the beginning of the mapped range.</returns>
-    public static System.Span<T> glMapNamedBufferRange<T>(GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access) where T : unmanaged
+    public System.Span<T> glMapNamedBufferRange<T>(GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access) where T : unmanaged
     {
         void* ptr = _glMapNamedBufferRange(buffer, offset, length, access);
         return new System.Span<T>(ptr, (int)length / sizeof(T));
@@ -16928,27 +16926,27 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLboolean PFNGLUNMAPNAMEDBUFFERPROC(GLuint buffer);
-    private static PFNGLUNMAPNAMEDBUFFERPROC _glUnmapNamedBuffer;
+    private PFNGLUNMAPNAMEDBUFFERPROC _glUnmapNamedBuffer;
     /// <summary>
     /// Invalidate all or part of a buffer object's data store.
     /// </summary>
     /// <param name="buffer">Specifies the name of the buffer object whose data store to unmap.</param>
-    public static GLboolean glUnmapNamedBuffer(GLuint buffer) => _glUnmapNamedBuffer(buffer);
+    public GLboolean glUnmapNamedBuffer(GLuint buffer) => _glUnmapNamedBuffer(buffer);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLFLUSHMAPPEDNAMEDBUFFERRANGEPROC(GLuint buffer, GLintptr offset, GLsizeiptr length);
-    private static PFNGLFLUSHMAPPEDNAMEDBUFFERRANGEPROC _glFlushMappedNamedBufferRange;
+    private PFNGLFLUSHMAPPEDNAMEDBUFFERRANGEPROC _glFlushMappedNamedBufferRange;
     /// <summary>
     /// Flush mapped buffer range.
     /// </summary>
     /// <param name="buffer">Specifies the name of the buffer object whose data store to flush.</param>
     /// <param name="offset">Specifies the offset within the buffer object's data store of the start of the range to flush, measured in bytes.</param>
     /// <param name="length">Specifies the length of the range within the buffer object's data store to flush, measured in bytes.</param>
-    public static void glFlushMappedNamedBufferRange(GLuint buffer, GLintptr offset, GLsizeiptr length) => _glFlushMappedNamedBufferRange(buffer, offset, length);
+    public void glFlushMappedNamedBufferRange(GLuint buffer, GLintptr offset, GLsizeiptr length) => _glFlushMappedNamedBufferRange(buffer, offset, length);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNAMEDBUFFERPARAMETERIVPROC(GLuint buffer, GLenum pname, GLint* parameters);
-    private static PFNGLGETNAMEDBUFFERPARAMETERIVPROC _glGetNamedBufferParameteriv;
+    private PFNGLGETNAMEDBUFFERPARAMETERIVPROC _glGetNamedBufferParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a buffer object target.
@@ -16956,7 +16954,7 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object whose parameter to query.</param>
     /// <param name="pname">Specifies the symbolic name of a buffer object parameter.</param>
     /// <param name="parameters">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    public static void glGetNamedBufferParameteriv(GLuint buffer, GLenum pname, GLint* parameters) => _glGetNamedBufferParameteriv(buffer, pname, parameters);
+    public void glGetNamedBufferParameteriv(GLuint buffer, GLenum pname, GLint* parameters) => _glGetNamedBufferParameteriv(buffer, pname, parameters);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16965,13 +16963,13 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object whose parameter to query.</param>
     /// <param name="pname">Specifies the symbolic name of a buffer object parameter.</param>
     /// <param name="parameters">Specifies an array to receive the value(s) of the queried parameter.</param>
-    public static void glGetNamedBufferParameteriv(GLuint buffer, GLenum pname, ref GLint[] parameters) { fixed (GLint* ptr_parameters =
+    public void glGetNamedBufferParameteriv(GLuint buffer, GLenum pname, ref GLint[] parameters) { fixed (GLint* ptr_parameters =
  &parameters[0]) _glGetNamedBufferParameteriv(buffer, pname, ptr_parameters); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNAMEDBUFFERPARAMETERI64VPROC(GLuint buffer, GLenum pname, GLint64* parameters);
-    private static PFNGLGETNAMEDBUFFERPARAMETERI64VPROC _glGetNamedBufferParameteri64v;
+    private PFNGLGETNAMEDBUFFERPARAMETERI64VPROC _glGetNamedBufferParameteri64v;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a buffer object target.
@@ -16979,7 +16977,7 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object whose parameter to query.</param>
     /// <param name="pname">Specifies the symbolic name of a buffer object parameter.</param>
     /// <param name="parameters">Specifies the address of a variable to receive the value of the queried parameter.</param>
-    public static void glGetNamedBufferParameteri64v(GLuint buffer, GLenum pname, GLint64* parameters) => _glGetNamedBufferParameteri64v(buffer, pname, parameters);
+    public void glGetNamedBufferParameteri64v(GLuint buffer, GLenum pname, GLint64* parameters) => _glGetNamedBufferParameteri64v(buffer, pname, parameters);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -16988,13 +16986,13 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object whose parameter to query.</param>
     /// <param name="pname">Specifies the symbolic name of a buffer object parameter.</param>
     /// <param name="parameters">Specifies an array to receive the value(s) of the queried parameter.</param>
-    public static void glGetNamedBufferParameteri64v(GLuint buffer, GLenum pname, ref GLint64[] parameters) { fixed (GLint64* ptr_parameters =
+    public void glGetNamedBufferParameteri64v(GLuint buffer, GLenum pname, ref GLint64[] parameters) { fixed (GLint64* ptr_parameters =
  &parameters[0]) _glGetNamedBufferParameteri64v(buffer, pname, ptr_parameters); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNAMEDBUFFERPOINTERVPROC(GLuint buffer, GLenum pname, void** parameters);
-    private static PFNGLGETNAMEDBUFFERPOINTERVPROC _glGetNamedBufferPointerv;
+    private PFNGLGETNAMEDBUFFERPOINTERVPROC _glGetNamedBufferPointerv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return the pointer to a mapped buffer object's data store.
@@ -17002,7 +17000,7 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object whose pointer to query.</param>
     /// <param name="pname">Specifies the pointer to be returned.</param>
     /// <param name="parameters">Specifies the address of a variable to receive the pointer to the buffer object's mapped data store.</param>
-    public static void glGetNamedBufferPointerv(GLuint buffer, GLenum pname, void** parameters) => _glGetNamedBufferPointerv(buffer, pname, parameters);
+    public void glGetNamedBufferPointerv(GLuint buffer, GLenum pname, void** parameters) => _glGetNamedBufferPointerv(buffer, pname, parameters);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17011,7 +17009,7 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object whose pointer to query.</param>
     /// <param name="pname">Specifies the pointer to be returned.</param>
     /// <param name="parameters">Specifies an array to receive the pointer to the buffer object's mapped data store.</param>
-    public static void glGetNamedBufferPointerv(GLuint buffer, GLenum pname, ref IntPtr[] parameters)
+    public void glGetNamedBufferPointerv(GLuint buffer, GLenum pname, ref IntPtr[] parameters)
     {
         void*[] ptr_parameters = new void*[parameters.Length];
         for (int i = 0; i < parameters.Length; i++)
@@ -17026,7 +17024,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNAMEDBUFFERSUBDATAPROC(GLuint buffer, GLintptr offset, GLsizeiptr size, void* data);
-    private static PFNGLGETNAMEDBUFFERSUBDATAPROC _glGetNamedBufferSubData;
+    private PFNGLGETNAMEDBUFFERSUBDATAPROC _glGetNamedBufferSubData;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return a subset of data from a buffer object's data store.
@@ -17035,7 +17033,7 @@ public static unsafe class GL
     /// <param name="offset">Specifies the offset into the buffer object's data store from which to retrieve data, measured in bytes.</param>
     /// <param name="size">Specifies the size in bytes of the data store region being returned.</param>
     /// <param name="data">Specifies the address of a buffer to receive the returned data.</param>
-    public static void glGetNamedBufferSubData(GLuint buffer, GLintptr offset, GLsizeiptr size, void* data) => _glGetNamedBufferSubData(buffer, offset, size, data);
+    public void glGetNamedBufferSubData(GLuint buffer, GLintptr offset, GLsizeiptr size, void* data) => _glGetNamedBufferSubData(buffer, offset, size, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17044,7 +17042,7 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object.</param>
     /// <param name="offset">Specifies the offset into the buffer object's data store from which to retrieve data, measured in bytes.</param>
     /// <param name="size">Specifies the size in bytes of the data store region being returned.</param>
-    public static T[] glGetNamedBufferSubData<T>(GLuint buffer, GLintptr offset, GLsizeiptr size) where T : unmanaged
+    public T[] glGetNamedBufferSubData<T>(GLuint buffer, GLintptr offset, GLsizeiptr size) where T : unmanaged
     {
         T[] data = new T[size / sizeof(T)];
         fixed (T* ptr_data = &data[0])
@@ -17055,14 +17053,14 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCREATEFRAMEBUFFERSPROC(GLsizei n, GLuint* framebuffers);
-    private static PFNGLCREATEFRAMEBUFFERSPROC _glCreateFramebuffers;
+    private PFNGLCREATEFRAMEBUFFERSPROC _glCreateFramebuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Generate framebuffer object names.
     /// </summary>
     /// <param name="n">Specifies the number of framebuffer object names to generate.</param>
     /// <param name="framebuffers">Specifies an array in which the generated framebuffer object names are stored.</param>
-    public static void glCreateFramebuffers(GLsizei n, GLuint* framebuffers) => _glCreateFramebuffers(n, framebuffers);
+    public void glCreateFramebuffers(GLsizei n, GLuint* framebuffers) => _glCreateFramebuffers(n, framebuffers);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17070,18 +17068,18 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of framebuffer object names to generate.</param>
     /// <returns>Array of framebuffer object names.</returns>
-    public static GLuint[] glCreateFramebuffers(GLsizei n) { GLuint[] framebuffers = new GLuint[n]; fixed (GLuint* ptr_framebuffers =
+    public GLuint[] glCreateFramebuffers(GLsizei n) { GLuint[] framebuffers = new GLuint[n]; fixed (GLuint* ptr_framebuffers =
  &framebuffers[0]) _glCreateFramebuffers(n, ptr_framebuffers); return framebuffers; }
     /// <summary>
     /// Generate a single framebuffer object name.
     /// </summary>
     /// <returns>Framebuffer object name.</returns>
-    public static GLuint glCreateFramebuffer() => glCreateFramebuffers(1)[0];
+    public GLuint glCreateFramebuffer() => glCreateFramebuffers(1)[0];
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDFRAMEBUFFERRENDERBUFFERPROC(GLuint framebuffer, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
-    private static PFNGLNAMEDFRAMEBUFFERRENDERBUFFERPROC _glNamedFramebufferRenderbuffer;
+    private PFNGLNAMEDFRAMEBUFFERRENDERBUFFERPROC _glNamedFramebufferRenderbuffer;
     /// <summary>
     /// Attach a renderbuffer as a logical buffer to the specified framebuffer object.
     /// </summary>
@@ -17089,22 +17087,22 @@ public static unsafe class GL
     /// <param name="attachment">Specifies the attachment point of the framebuffer.</param>
     /// <param name="renderbuffertarget">Specifies the renderbuffer target of the framebuffer attachment point named by attachment.</param>
     /// <param name="renderbuffer">Specifies the name of an existing renderbuffer object of type renderbuffertarget to attach.</param>
-    public static void glNamedFramebufferRenderbuffer(GLuint framebuffer, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer) => _glNamedFramebufferRenderbuffer(framebuffer, attachment, renderbuffertarget, renderbuffer);
+    public void glNamedFramebufferRenderbuffer(GLuint framebuffer, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer) => _glNamedFramebufferRenderbuffer(framebuffer, attachment, renderbuffertarget, renderbuffer);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDFRAMEBUFFERPARAMETERIPROC(GLuint framebuffer, GLenum pname, GLint param);
-    private static PFNGLNAMEDFRAMEBUFFERPARAMETERIPROC _glNamedFramebufferParameteri;
+    private PFNGLNAMEDFRAMEBUFFERPARAMETERIPROC _glNamedFramebufferParameteri;
     /// <summary>
     /// Set parameters for the specified framebuffer object.
     /// </summary>
     /// <param name="framebuffer">Specifies the name of the framebuffer object for which to set parameters.</param>
     /// <param name="pname">Specifies the parameter to set.</param>
     /// <param name="param">Specifies the new value for pname.</param>
-    public static void glNamedFramebufferParameteri(GLuint framebuffer, GLenum pname, GLint param) => _glNamedFramebufferParameteri(framebuffer, pname, param);
+    public void glNamedFramebufferParameteri(GLuint framebuffer, GLenum pname, GLint param) => _glNamedFramebufferParameteri(framebuffer, pname, param);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDFRAMEBUFFERTEXTUREPROC(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level);
-    private static PFNGLNAMEDFRAMEBUFFERTEXTUREPROC _glNamedFramebufferTexture;
+    private PFNGLNAMEDFRAMEBUFFERTEXTUREPROC _glNamedFramebufferTexture;
     /// <summary>
     /// Attach a level of a texture object as a logical buffer to the specified framebuffer object.
     /// </summary>
@@ -17112,11 +17110,11 @@ public static unsafe class GL
     /// <param name="attachment">Specifies the attachment point of the framebuffer.</param>
     /// <param name="texture">Specifies the name of an existing texture object of type target to attach.</param>
     /// <param name="level">Specifies the mipmap level of the texture object to attach.</param>
-    public static void glNamedFramebufferTexture(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level) => _glNamedFramebufferTexture(framebuffer, attachment, texture, level);
+    public void glNamedFramebufferTexture(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level) => _glNamedFramebufferTexture(framebuffer, attachment, texture, level);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDFRAMEBUFFERTEXTURELAYERPROC(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLint layer);
-    private static PFNGLNAMEDFRAMEBUFFERTEXTURELAYERPROC _glNamedFramebufferTextureLayer;
+    private PFNGLNAMEDFRAMEBUFFERTEXTURELAYERPROC _glNamedFramebufferTextureLayer;
     /// <summary>
     /// Attach a single layer of a texture object as a logical buffer to the specified framebuffer object.
     /// </summary>
@@ -17125,21 +17123,21 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of an existing texture object of type target to attach.</param>
     /// <param name="level">Specifies the mipmap level of the texture object to attach.</param>
     /// <param name="layer">Specifies the layer of a 3-dimensional texture or the layer of a cube map texture.</param>
-    public static void glNamedFramebufferTextureLayer(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLint layer) => _glNamedFramebufferTextureLayer(framebuffer, attachment, texture, level, layer);
+    public void glNamedFramebufferTextureLayer(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLint layer) => _glNamedFramebufferTextureLayer(framebuffer, attachment, texture, level, layer);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDFRAMEBUFFERDRAWBUFFERPROC(GLuint framebuffer, GLenum buf);
-    private static PFNGLNAMEDFRAMEBUFFERDRAWBUFFERPROC _glNamedFramebufferDrawBuffer;
+    private PFNGLNAMEDFRAMEBUFFERDRAWBUFFERPROC _glNamedFramebufferDrawBuffer;
     /// <summary>
     /// Specify the draw buffer for the specified framebuffer object.
     /// </summary>
     /// <param name="framebuffer">Specifies the name of the framebuffer object for which to set the draw buffer.</param>
     /// <param name="buf">Specifies the draw buffer.</param>
-    public static void glNamedFramebufferDrawBuffer(GLuint framebuffer, GLenum buf) => _glNamedFramebufferDrawBuffer(framebuffer, buf);
+    public void glNamedFramebufferDrawBuffer(GLuint framebuffer, GLenum buf) => _glNamedFramebufferDrawBuffer(framebuffer, buf);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDFRAMEBUFFERDRAWBUFFERSPROC(GLuint framebuffer, GLsizei n, GLenum* bufs);
-    private static PFNGLNAMEDFRAMEBUFFERDRAWBUFFERSPROC _glNamedFramebufferDrawBuffers;
+    private PFNGLNAMEDFRAMEBUFFERDRAWBUFFERSPROC _glNamedFramebufferDrawBuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify the draw buffers for the specified framebuffer object.
@@ -17147,7 +17145,7 @@ public static unsafe class GL
     /// <param name="framebuffer">Specifies the name of the framebuffer object for which to set the draw buffers.</param>
     /// <param name="n">Specifies the number of buffers in bufs.</param>
     /// <param name="bufs">Specifies an array of symbolic constants specifying the buffers to be drawn into.</param>
-    public static void glNamedFramebufferDrawBuffers(GLuint framebuffer, GLsizei n, GLenum* bufs) => _glNamedFramebufferDrawBuffers(framebuffer, n, bufs);
+    public void glNamedFramebufferDrawBuffers(GLuint framebuffer, GLsizei n, GLenum* bufs) => _glNamedFramebufferDrawBuffers(framebuffer, n, bufs);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17155,23 +17153,23 @@ public static unsafe class GL
     /// </summary>
     /// <param name="framebuffer">Specifies the name of the framebuffer object for which to set the draw buffers.</param>
     /// <param name="bufs">Specifies an array of symbolic constants specifying the buffers to be drawn into.</param>
-    public static void glNamedFramebufferDrawBuffers(GLuint framebuffer, GLenum[] bufs) { fixed (GLenum* ptr_bufs =
+    public void glNamedFramebufferDrawBuffers(GLuint framebuffer, GLenum[] bufs) { fixed (GLenum* ptr_bufs =
  &bufs[0]) _glNamedFramebufferDrawBuffers(framebuffer, bufs.Length, ptr_bufs); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDFRAMEBUFFERREADBUFFERPROC(GLuint framebuffer, GLenum src);
-    private static PFNGLNAMEDFRAMEBUFFERREADBUFFERPROC _glNamedFramebufferReadBuffer;
+    private PFNGLNAMEDFRAMEBUFFERREADBUFFERPROC _glNamedFramebufferReadBuffer;
     /// <summary>
     /// Specify the read buffer for the specified framebuffer object.
     /// </summary>
     /// <param name="framebuffer">Specifies the name of the framebuffer object for which to set the read buffer.</param>
     /// <param name="src">Specifies the read buffer.</param>
-    public static void glNamedFramebufferReadBuffer(GLuint framebuffer, GLenum src) => _glNamedFramebufferReadBuffer(framebuffer, src);
+    public void glNamedFramebufferReadBuffer(GLuint framebuffer, GLenum src) => _glNamedFramebufferReadBuffer(framebuffer, src);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLINVALIDATENAMEDFRAMEBUFFERDATAPROC(GLuint framebuffer, GLsizei numAttachments, GLenum* attachments);
-    private static PFNGLINVALIDATENAMEDFRAMEBUFFERDATAPROC _glInvalidateNamedFramebufferData;
+    private PFNGLINVALIDATENAMEDFRAMEBUFFERDATAPROC _glInvalidateNamedFramebufferData;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Invalidate the content of a named framebuffer attachment.
@@ -17179,7 +17177,7 @@ public static unsafe class GL
     /// <param name="framebuffer">Specifies the name of the framebuffer object.</param>
     /// <param name="numAttachments">Specifies the number of attachments.</param>
     /// <param name="attachments">Specifies an array of attachment points.</param>
-    public static void glInvalidateNamedFramebufferData(GLuint framebuffer, GLsizei numAttachments, GLenum* attachments) => _glInvalidateNamedFramebufferData(framebuffer, numAttachments, attachments);
+    public void glInvalidateNamedFramebufferData(GLuint framebuffer, GLsizei numAttachments, GLenum* attachments) => _glInvalidateNamedFramebufferData(framebuffer, numAttachments, attachments);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17187,13 +17185,13 @@ public static unsafe class GL
     /// </summary>
     /// <param name="framebuffer">Specifies the name of the framebuffer object.</param>
     /// <param name="attachments">Specifies an array of attachment points.</param>
-    public static void glInvalidateNamedFramebufferData(GLuint framebuffer, GLenum[] attachments) { fixed (GLenum* ptr_attachments =
+    public void glInvalidateNamedFramebufferData(GLuint framebuffer, GLenum[] attachments) { fixed (GLenum* ptr_attachments =
  &attachments[0]) _glInvalidateNamedFramebufferData(framebuffer, attachments.Length, ptr_attachments); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLINVALIDATENAMEDFRAMEBUFFERSUBDATAPROC(GLuint framebuffer, GLsizei numAttachments, GLenum* attachments, GLint x, GLint y, GLsizei width, GLsizei height);
-    private static PFNGLINVALIDATENAMEDFRAMEBUFFERSUBDATAPROC _glInvalidateNamedFramebufferSubData;
+    private PFNGLINVALIDATENAMEDFRAMEBUFFERSUBDATAPROC _glInvalidateNamedFramebufferSubData;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Invalidate the content of a region of a named framebuffer attachment.
@@ -17205,7 +17203,7 @@ public static unsafe class GL
     /// <param name="y">Specifies the lower pixel coordinate of the region.</param>
     /// <param name="width">Specifies the width of the region.</param>
     /// <param name="height">Specifies the height of the region.</param>
-    public static void glInvalidateNamedFramebufferSubData(GLuint framebuffer, GLsizei numAttachments, GLenum* attachments, GLint x, GLint y, GLsizei width, GLsizei height) => _glInvalidateNamedFramebufferSubData(framebuffer, numAttachments, attachments, x, y, width, height);
+    public void glInvalidateNamedFramebufferSubData(GLuint framebuffer, GLsizei numAttachments, GLenum* attachments, GLint x, GLint y, GLsizei width, GLsizei height) => _glInvalidateNamedFramebufferSubData(framebuffer, numAttachments, attachments, x, y, width, height);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17217,13 +17215,13 @@ public static unsafe class GL
     /// <param name="y">Specifies the lower pixel coordinate of the region.</param>
     /// <param name="width">Specifies the width of the region.</param>
     /// <param name="height">Specifies the height of the region.</param>
-    public static void glInvalidateNamedFramebufferSubData(GLuint framebuffer, GLenum[] attachments, GLint x, GLint y, GLsizei width, GLsizei height) { fixed (GLenum* ptr_attachments
+    public void glInvalidateNamedFramebufferSubData(GLuint framebuffer, GLenum[] attachments, GLint x, GLint y, GLsizei width, GLsizei height) { fixed (GLenum* ptr_attachments
  = &attachments[0]) _glInvalidateNamedFramebufferSubData(framebuffer, attachments.Length, ptr_attachments, x, y, width, height); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCLEARNAMEDFRAMEBUFFERIVPROC(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLint* value);
-    private static PFNGLCLEARNAMEDFRAMEBUFFERIVPROC _glClearNamedFramebufferiv;
+    private PFNGLCLEARNAMEDFRAMEBUFFERIVPROC _glClearNamedFramebufferiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Clear the specified buffer of a framebuffer to the specified value.
@@ -17232,7 +17230,7 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the buffer to clear.</param>
     /// <param name="drawbuffer">Specifies the index of the draw buffer within the framebuffer.</param>
     /// <param name="value">Specifies the address of a four-element vector specifying the R, G, B, and A values used to clear the buffer.</param>
-    public static void glClearNamedFramebufferiv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLint* value) => _glClearNamedFramebufferiv(framebuffer, buffer, drawbuffer, value);
+    public void glClearNamedFramebufferiv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLint* value) => _glClearNamedFramebufferiv(framebuffer, buffer, drawbuffer, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17242,13 +17240,13 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the buffer to clear.</param>
     /// <param name="drawbuffer">Specifies the index of the draw buffer within the framebuffer.</param>
     /// <param name="value">Specifies the address of a four-element vector specifying the R, G, B, and A values used to clear the buffer.</param>
-    public static void glClearNamedFramebufferiv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLint[] value) { fixed (GLint* ptr_value =
+    public void glClearNamedFramebufferiv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLint[] value) { fixed (GLint* ptr_value =
  &value[0]) _glClearNamedFramebufferiv(framebuffer, buffer, drawbuffer, ptr_value); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCLEARNAMEDFRAMEBUFFERUIVPROC(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLuint* value);
-    private static PFNGLCLEARNAMEDFRAMEBUFFERUIVPROC _glClearNamedFramebufferuiv;
+    private PFNGLCLEARNAMEDFRAMEBUFFERUIVPROC _glClearNamedFramebufferuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Clear the specified buffer of a framebuffer to the specified value.
@@ -17257,7 +17255,7 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the buffer to clear.</param>
     /// <param name="drawbuffer">Specifies the index of the draw buffer within the framebuffer.</param>
     /// <param name="value">Specifies the address of a four-element vector specifying the R, G, B, and A values used to clear the buffer.</param>
-    public static void glClearNamedFramebufferuiv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLuint* value) => _glClearNamedFramebufferuiv(framebuffer, buffer, drawbuffer, value);
+    public void glClearNamedFramebufferuiv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLuint* value) => _glClearNamedFramebufferuiv(framebuffer, buffer, drawbuffer, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17267,13 +17265,13 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the buffer to clear.</param>
     /// <param name="drawbuffer">Specifies the index of the draw buffer within the framebuffer.</param>
     /// <param name="value">Specifies the address of a four-element vector specifying the R, G, B, and A values used to clear the buffer.</param>
-    public static void glClearNamedFramebufferuiv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLuint[] value) { fixed (GLuint* ptr_value =
+    public void glClearNamedFramebufferuiv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLuint[] value) { fixed (GLuint* ptr_value =
  &value[0]) _glClearNamedFramebufferuiv(framebuffer, buffer, drawbuffer, ptr_value); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCLEARNAMEDFRAMEBUFFERFVPROC(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLfloat* value);
-    private static PFNGLCLEARNAMEDFRAMEBUFFERFVPROC _glClearNamedFramebufferfv;
+    private PFNGLCLEARNAMEDFRAMEBUFFERFVPROC _glClearNamedFramebufferfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Clear the specified buffer of a framebuffer to the specified value.
@@ -17282,7 +17280,7 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the buffer to clear.</param>
     /// <param name="drawbuffer">Specifies the index of the draw buffer within the framebuffer.</param>
     /// <param name="value">Specifies the address of a four-element vector specifying the R, G, B, and A values used to clear the buffer.</param>
-    public static void glClearNamedFramebufferfv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLfloat* value) => _glClearNamedFramebufferfv(framebuffer, buffer, drawbuffer, value);
+    public void glClearNamedFramebufferfv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLfloat* value) => _glClearNamedFramebufferfv(framebuffer, buffer, drawbuffer, value);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17292,13 +17290,13 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the buffer to clear.</param>
     /// <param name="drawbuffer">Specifies the index of the draw buffer within the framebuffer.</param>
     /// <param name="value">Specifies the address of a four-element vector specifying the R, G, B, and A values used to clear the buffer.</param>
-    public static void glClearNamedFramebufferfv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLfloat[] value) { fixed (GLfloat* ptr_value =
+    public void glClearNamedFramebufferfv(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLfloat[] value) { fixed (GLfloat* ptr_value =
  &value[0]) _glClearNamedFramebufferfv(framebuffer, buffer, drawbuffer, ptr_value); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCLEARNAMEDFRAMEBUFFERFIPROC(GLuint framebuffer, GLenum buffer, GLfloat depth, GLint stencil);
-    private static PFNGLCLEARNAMEDFRAMEBUFFERFIPROC _glClearNamedFramebufferfi;
+    private PFNGLCLEARNAMEDFRAMEBUFFERFIPROC _glClearNamedFramebufferfi;
     /// <summary>
     /// Clear the specified buffer of a framebuffer to the specified value.
     /// </summary>
@@ -17306,11 +17304,11 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the buffer to clear.</param>
     /// <param name="depth">Specifies the depth value used when the depth buffer is cleared. The initial value is 1.</param>
     /// <param name="stencil">Specifies the index used when the stencil buffer is cleared. The initial value is 0.</param>
-    public static void glClearNamedFramebufferfi(GLuint framebuffer, GLenum buffer, GLfloat depth, GLint stencil) => _glClearNamedFramebufferfi(framebuffer, buffer, depth, stencil);
+    public void glClearNamedFramebufferfi(GLuint framebuffer, GLenum buffer, GLfloat depth, GLint stencil) => _glClearNamedFramebufferfi(framebuffer, buffer, depth, stencil);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBLITNAMEDFRAMEBUFFERPROC(GLuint readFramebuffer, GLuint drawFramebuffer, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter);
-    private static PFNGLBLITNAMEDFRAMEBUFFERPROC _glBlitNamedFramebuffer;
+    private PFNGLBLITNAMEDFRAMEBUFFERPROC _glBlitNamedFramebuffer;
     /// <summary>
     /// Copy a block of pixels from the read framebuffer to the draw framebuffer.
     /// </summary>
@@ -17326,21 +17324,21 @@ public static unsafe class GL
     /// <param name="dstY1">Specifies the top destination rectangle y coordinate.</param>
     /// <param name="mask">Specifies the mask that indicates the buffers to be copied.</param>
     /// <param name="filter">Specifies the interpolation to be applied if the image is stretched.</param>
-    public static void glBlitNamedFramebuffer(GLuint readFramebuffer, GLuint drawFramebuffer, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter) => _glBlitNamedFramebuffer(readFramebuffer, drawFramebuffer, srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
+    public void glBlitNamedFramebuffer(GLuint readFramebuffer, GLuint drawFramebuffer, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter) => _glBlitNamedFramebuffer(readFramebuffer, drawFramebuffer, srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLenum PFNGLCHECKNAMEDFRAMEBUFFERSTATUSPROC(GLuint framebuffer, GLenum target);
-    private static PFNGLCHECKNAMEDFRAMEBUFFERSTATUSPROC _glCheckNamedFramebufferStatus;
+    private PFNGLCHECKNAMEDFRAMEBUFFERSTATUSPROC _glCheckNamedFramebufferStatus;
     /// <summary>
     /// Check the completeness status of a framebuffer.
     /// </summary>
     /// <param name="framebuffer">Specifies the name of the framebuffer object whose status to query.</param>
     /// <param name="target">Specifies the target to which the framebuffer is attached.</param>
-    public static GLenum glCheckNamedFramebufferStatus(GLuint framebuffer, GLenum target) => _glCheckNamedFramebufferStatus(framebuffer, target);
+    public GLenum glCheckNamedFramebufferStatus(GLuint framebuffer, GLenum target) => _glCheckNamedFramebufferStatus(framebuffer, target);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNAMEDFRAMEBUFFERPARAMETERIVPROC(GLuint framebuffer, GLenum pname, GLint* param);
-    private static PFNGLGETNAMEDFRAMEBUFFERPARAMETERIVPROC _glGetNamedFramebufferParameteriv;
+    private PFNGLGETNAMEDFRAMEBUFFERPARAMETERIVPROC _glGetNamedFramebufferParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a framebuffer object target.
@@ -17348,7 +17346,7 @@ public static unsafe class GL
     /// <param name="framebuffer">Specifies the name of the framebuffer object.</param>
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="param">Specifies the address of a variable to receive the value of pname.</param>
-    public static void glGetNamedFramebufferParameteriv(GLuint framebuffer, GLenum pname, GLint* param) => _glGetNamedFramebufferParameteriv(framebuffer, pname, param);
+    public void glGetNamedFramebufferParameteriv(GLuint framebuffer, GLenum pname, GLint* param) => _glGetNamedFramebufferParameteriv(framebuffer, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17357,13 +17355,13 @@ public static unsafe class GL
     /// <param name="framebuffer">Specifies the name of the framebuffer object.</param>
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="param">Specifies an array to receive the value of pname.</param>
-    public static void glGetNamedFramebufferParameteriv(GLuint framebuffer, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
+    public void glGetNamedFramebufferParameteriv(GLuint framebuffer, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
  &param[0]) _glGetNamedFramebufferParameteriv(framebuffer, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNAMEDFRAMEBUFFERATTACHMENTPARAMETERIVPROC(GLuint framebuffer, GLenum attachment, GLenum pname, GLint* params_);
-    private static PFNGLGETNAMEDFRAMEBUFFERATTACHMENTPARAMETERIVPROC _glGetNamedFramebufferAttachmentParameteriv;
+    private PFNGLGETNAMEDFRAMEBUFFERATTACHMENTPARAMETERIVPROC _glGetNamedFramebufferAttachmentParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a framebuffer attachment.
@@ -17372,7 +17370,7 @@ public static unsafe class GL
     /// <param name="attachment">Specifies the attachment within framebuffer.</param>
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="params_">Specifies the address of a variable to receive the value of pname.</param>
-    public static void glGetNamedFramebufferAttachmentParameteriv(GLuint framebuffer, GLenum attachment, GLenum pname, GLint* params_) => _glGetNamedFramebufferAttachmentParameteriv(framebuffer, attachment, pname, params_);
+    public void glGetNamedFramebufferAttachmentParameteriv(GLuint framebuffer, GLenum attachment, GLenum pname, GLint* params_) => _glGetNamedFramebufferAttachmentParameteriv(framebuffer, attachment, pname, params_);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17382,20 +17380,20 @@ public static unsafe class GL
     /// <param name="attachment">Specifies the attachment within framebuffer.</param>
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="params_">Specifies an array to receive the value of pname.</param>
-    public static void glGetNamedFramebufferAttachmentParameteriv(GLuint framebuffer, GLenum attachment, GLenum pname, ref GLint[] params_) { fixed (GLint* ptr_params_
+    public void glGetNamedFramebufferAttachmentParameteriv(GLuint framebuffer, GLenum attachment, GLenum pname, ref GLint[] params_) { fixed (GLint* ptr_params_
  = &params_[0]) _glGetNamedFramebufferAttachmentParameteriv(framebuffer, attachment, pname, ptr_params_); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCREATERENDERBUFFERSPROC(GLsizei n, GLuint* renderbuffers);
-    private static PFNGLCREATERENDERBUFFERSPROC _glCreateRenderbuffers;
+    private PFNGLCREATERENDERBUFFERSPROC _glCreateRenderbuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Generate renderbuffer object names.
     /// </summary>
     /// <param name="n">Specifies the number of renderbuffer object names to generate.</param>
     /// <param name="renderbuffers">Specifies an array in which the generated renderbuffer object names are stored.</param>
-    public static void glCreateRenderbuffers(GLsizei n, GLuint* renderbuffers) => _glCreateRenderbuffers(n, renderbuffers);
+    public void glCreateRenderbuffers(GLsizei n, GLuint* renderbuffers) => _glCreateRenderbuffers(n, renderbuffers);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17403,18 +17401,18 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of renderbuffer object names to generate.</param>
     /// <returns>Array of generated renderbuffer object names.</returns>
-    public static GLuint[] glCreateRenderbuffers(GLsizei n) { GLuint[] renderbuffers = new GLuint[n]; fixed (GLuint* ptr_renderbuffers =
+    public GLuint[] glCreateRenderbuffers(GLsizei n) { GLuint[] renderbuffers = new GLuint[n]; fixed (GLuint* ptr_renderbuffers =
  &renderbuffers[0]) _glCreateRenderbuffers(n, ptr_renderbuffers); return renderbuffers; }
     /// <summary>
     /// Generate a single renderbuffer object name.
     /// </summary>
     /// <returns>Generated renderbuffer object name.</returns>
-    public static GLuint glCreateRenderbuffer() => glCreateRenderbuffers(1)[0];
+    public GLuint glCreateRenderbuffer() => glCreateRenderbuffers(1)[0];
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDRENDERBUFFERSTORAGEPROC(GLuint renderbuffer, GLenum internalformat, GLsizei width, GLsizei height);
-    private static PFNGLNAMEDRENDERBUFFERSTORAGEPROC _glNamedRenderbufferStorage;
+    private PFNGLNAMEDRENDERBUFFERSTORAGEPROC _glNamedRenderbufferStorage;
     /// <summary>
     /// Establish data storage, format and dimensions of a renderbuffer object's image.
     /// </summary>
@@ -17422,11 +17420,11 @@ public static unsafe class GL
     /// <param name="internalformat">Specifies the internal format to be used for the renderbuffer object's image.</param>
     /// <param name="width">Specifies the width of the renderbuffer, in pixels.</param>
     /// <param name="height">Specifies the height of the renderbuffer, in pixels.</param>
-    public static void glNamedRenderbufferStorage(GLuint renderbuffer, GLenum internalformat, GLsizei width, GLsizei height) => _glNamedRenderbufferStorage(renderbuffer, internalformat, width, height);
+    public void glNamedRenderbufferStorage(GLuint renderbuffer, GLenum internalformat, GLsizei width, GLsizei height) => _glNamedRenderbufferStorage(renderbuffer, internalformat, width, height);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLNAMEDRENDERBUFFERSTORAGEMULTISAMPLEPROC(GLuint renderbuffer, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
-    private static PFNGLNAMEDRENDERBUFFERSTORAGEMULTISAMPLEPROC _glNamedRenderbufferStorageMultisample;
+    private PFNGLNAMEDRENDERBUFFERSTORAGEMULTISAMPLEPROC _glNamedRenderbufferStorageMultisample;
     /// <summary>
     /// Establish data storage, format, dimensions and number of samples of a renderbuffer object's image.
     /// </summary>
@@ -17435,11 +17433,11 @@ public static unsafe class GL
     /// <param name="internalformat">Specifies the internal format to be used for the renderbuffer object's image.</param>
     /// <param name="width">Specifies the width of the renderbuffer, in pixels.</param>
     /// <param name="height">Specifies the height of the renderbuffer, in pixels.</param>
-    public static void glNamedRenderbufferStorageMultisample(GLuint renderbuffer, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height) => _glNamedRenderbufferStorageMultisample(renderbuffer, samples, internalformat, width, height);
+    public void glNamedRenderbufferStorageMultisample(GLuint renderbuffer, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height) => _glNamedRenderbufferStorageMultisample(renderbuffer, samples, internalformat, width, height);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNAMEDRENDERBUFFERPARAMETERIVPROC(GLuint renderbuffer, GLenum pname, GLint* param);
-    private static PFNGLGETNAMEDRENDERBUFFERPARAMETERIVPROC _glGetNamedRenderbufferParameteriv;
+    private PFNGLGETNAMEDRENDERBUFFERPARAMETERIVPROC _glGetNamedRenderbufferParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a renderbuffer object.
@@ -17447,7 +17445,7 @@ public static unsafe class GL
     /// <param name="renderbuffer">Specifies the name of the renderbuffer object.</param>
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="param">Specifies the address of a variable to receive the value of pname.</param>
-    public static void glGetNamedRenderbufferParameteriv(GLuint renderbuffer, GLenum pname, GLint* param) => _glGetNamedRenderbufferParameteriv(renderbuffer, pname, param);
+    public void glGetNamedRenderbufferParameteriv(GLuint renderbuffer, GLenum pname, GLint* param) => _glGetNamedRenderbufferParameteriv(renderbuffer, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17456,13 +17454,13 @@ public static unsafe class GL
     /// <param name="renderbuffer">Specifies the name of the renderbuffer object.</param>
     /// <param name="pname">Specifies the parameter to query.</param>
     /// <param name="param">Specifies an array to receive the value of pname.</param>
-    public static void glGetNamedRenderbufferParameteriv(GLuint renderbuffer, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
+    public void glGetNamedRenderbufferParameteriv(GLuint renderbuffer, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
  &param[0]) _glGetNamedRenderbufferParameteriv(renderbuffer, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCREATETEXTURESPROC(GLenum target, GLsizei n, GLuint* textures);
-    private static PFNGLCREATETEXTURESPROC _glCreateTextures;
+    private PFNGLCREATETEXTURESPROC _glCreateTextures;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Generate texture names.
@@ -17470,7 +17468,7 @@ public static unsafe class GL
     /// <param name="target">Specifies the target of the texture.</param>
     /// <param name="n">Specifies the number of texture names to generate.</param>
     /// <param name="textures">Specifies an array in which the generated texture names are stored.</param>
-    public static void glCreateTextures(GLenum target, GLsizei n, GLuint* textures) => _glCreateTextures(target, n, textures);
+    public void glCreateTextures(GLenum target, GLsizei n, GLuint* textures) => _glCreateTextures(target, n, textures);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17479,30 +17477,30 @@ public static unsafe class GL
     /// <param name="target">Specifies the target of the texture.</param>
     /// <param name="n">Specifies the number of texture names to generate.</param>
     /// <returns>Array of generated texture names.</returns>
-    public static GLuint[] glCreateTextures(GLenum target, GLsizei n) { GLuint[] textures = new GLuint[n]; fixed (GLuint* ptr_textures =
+    public GLuint[] glCreateTextures(GLenum target, GLsizei n) { GLuint[] textures = new GLuint[n]; fixed (GLuint* ptr_textures =
  &textures[0]) _glCreateTextures(target, n, ptr_textures); return textures; }
     /// <summary>
     /// Generate a single texture name.
     /// </summary>
     /// <param name="target">Specifies the target of the texture.</param>
     /// <returns>Generated texture name.</returns>
-    public static GLuint glCreateTexture(GLenum target) => glCreateTextures(target, 1)[0];
+    public GLuint glCreateTexture(GLenum target) => glCreateTextures(target, 1)[0];
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTUREBUFFERPROC(GLuint texture, GLenum internalformat, GLuint buffer);
-    private static PFNGLTEXTUREBUFFERPROC _glTextureBuffer;
+    private PFNGLTEXTUREBUFFERPROC _glTextureBuffer;
     /// <summary>
     /// Attach a buffer object's data store to a buffer texture.
     /// </summary>
     /// <param name="texture">Specifies the name of the texture to which to attach the buffer object.</param>
     /// <param name="internalformat">Specifies the internal format of the data in the store belonging to buffer.</param>
     /// <param name="buffer">Specifies the name of the buffer object whose storage to attach to the active buffer texture.</param>
-    public static void glTextureBuffer(GLuint texture, GLenum internalformat, GLuint buffer) => _glTextureBuffer(texture, internalformat, buffer);
+    public void glTextureBuffer(GLuint texture, GLenum internalformat, GLuint buffer) => _glTextureBuffer(texture, internalformat, buffer);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTUREBUFFERRANGEPROC(GLuint texture, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size);
-    private static PFNGLTEXTUREBUFFERRANGEPROC _glTextureBufferRange;
+    private PFNGLTEXTUREBUFFERRANGEPROC _glTextureBufferRange;
     /// <summary>
     /// Attach a range of a buffer object's data store to a buffer texture.
     /// </summary>
@@ -17511,11 +17509,11 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of the buffer object whose storage to attach to the active buffer texture.</param>
     /// <param name="offset">Specifies the offset of the start of the range of the buffer's data store to attach.</param>
     /// <param name="size">Specifies the size of the range of the buffer's data store to attach.</param>
-    public static void glTextureBufferRange(GLuint texture, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size) => _glTextureBufferRange(texture, internalformat, buffer, offset, size);
+    public void glTextureBufferRange(GLuint texture, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size) => _glTextureBufferRange(texture, internalformat, buffer, offset, size);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTURESTORAGE1DPROC(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width);
-    private static PFNGLTEXTURESTORAGE1DPROC _glTextureStorage1D;
+    private PFNGLTEXTURESTORAGE1DPROC _glTextureStorage1D;
     /// <summary>
     /// Specify storage for a one-dimensional texture.
     /// </summary>
@@ -17523,11 +17521,11 @@ public static unsafe class GL
     /// <param name="levels">Specifies the number of levels of detail in the texture.</param>
     /// <param name="internalformat">Specifies the sized internal format to be used to store texture image data.</param>
     /// <param name="width">Specifies the width of the texture, in texels.</param>
-    public static void glTextureStorage1D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width) => _glTextureStorage1D(texture, levels, internalformat, width);
+    public void glTextureStorage1D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width) => _glTextureStorage1D(texture, levels, internalformat, width);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTURESTORAGE2DPROC(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height);
-    private static PFNGLTEXTURESTORAGE2DPROC _glTextureStorage2D;
+    private PFNGLTEXTURESTORAGE2DPROC _glTextureStorage2D;
     /// <summary>
     /// Specify storage for a two-dimensional texture.
     /// </summary>
@@ -17536,11 +17534,11 @@ public static unsafe class GL
     /// <param name="internalformat">Specifies the sized internal format to be used to store texture image data.</param>
     /// <param name="width">Specifies the width of the texture, in texels.</param>
     /// <param name="height">Specifies the height of the texture, in texels.</param>
-    public static void glTextureStorage2D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height) => _glTextureStorage2D(texture, levels, internalformat, width, height);
+    public void glTextureStorage2D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height) => _glTextureStorage2D(texture, levels, internalformat, width, height);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTURESTORAGE3DPROC(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth);
-    private static PFNGLTEXTURESTORAGE3DPROC _glTextureStorage3D;
+    private PFNGLTEXTURESTORAGE3DPROC _glTextureStorage3D;
     /// <summary>
     /// Specify storage for a three-dimensional texture.
     /// </summary>
@@ -17550,11 +17548,11 @@ public static unsafe class GL
     /// <param name="width">Specifies the width of the texture, in texels.</param>
     /// <param name="height">Specifies the height of the texture, in texels.</param>
     /// <param name="depth">Specifies the depth of the texture, in texels.</param>
-    public static void glTextureStorage3D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth) => _glTextureStorage3D(texture, levels, internalformat, width, height, depth);
+    public void glTextureStorage3D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth) => _glTextureStorage3D(texture, levels, internalformat, width, height, depth);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTURESTORAGE2DMULTISAMPLEPROC(GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
-    private static PFNGLTEXTURESTORAGE2DMULTISAMPLEPROC _glTextureStorage2DMultisample;
+    private PFNGLTEXTURESTORAGE2DMULTISAMPLEPROC _glTextureStorage2DMultisample;
     /// <summary>
     /// Specify storage for a two-dimensional multisample texture.
     /// </summary>
@@ -17564,11 +17562,11 @@ public static unsafe class GL
     /// <param name="width">Specifies the width of the texture, in texels.</param>
     /// <param name="height">Specifies the height of the texture, in texels.</param>
     /// <param name="fixedsamplelocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
-    public static void glTextureStorage2DMultisample(GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations) => _glTextureStorage2DMultisample(texture, samples, internalformat, width, height, fixedsamplelocations);
+    public void glTextureStorage2DMultisample(GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations) => _glTextureStorage2DMultisample(texture, samples, internalformat, width, height, fixedsamplelocations);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTURESTORAGE3DMULTISAMPLEPROC(GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
-    private static PFNGLTEXTURESTORAGE3DMULTISAMPLEPROC _glTextureStorage3DMultisample;
+    private PFNGLTEXTURESTORAGE3DMULTISAMPLEPROC _glTextureStorage3DMultisample;
     /// <summary>
     /// Specify storage for a three-dimensional multisample texture.
     /// </summary>
@@ -17579,11 +17577,11 @@ public static unsafe class GL
     /// <param name="height">Specifies the height of the texture, in texels.</param>
     /// <param name="depth">Specifies the depth of the texture, in texels.</param>
     /// <param name="fixedsamplelocations">Specifies whether the image will use identical sample locations and the same number of samples for all texels in the image, and the sample locations will not depend on the internal format or size of the image.</param>
-    public static void glTextureStorage3DMultisample(GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations) => _glTextureStorage3DMultisample(texture, samples, internalformat, width, height, depth, fixedsamplelocations);
+    public void glTextureStorage3DMultisample(GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations) => _glTextureStorage3DMultisample(texture, samples, internalformat, width, height, depth, fixedsamplelocations);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTURESUBIMAGE1DPROC(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, void* pixels);
-    private static PFNGLTEXTURESUBIMAGE1DPROC _glTextureSubImage1D;
+    private PFNGLTEXTURESUBIMAGE1DPROC _glTextureSubImage1D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify a one-dimensional texture subimage.
@@ -17595,7 +17593,7 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    public static void glTextureSubImage1D(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, void* pixels) => _glTextureSubImage1D(texture, level, xoffset, width, format, type, pixels);
+    public void glTextureSubImage1D(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, void* pixels) => _glTextureSubImage1D(texture, level, xoffset, width, format, type, pixels);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17608,13 +17606,13 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="pixels">Specifies an array containing the image data.</param>
-    public static void glTextureSubImage1D<T>(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, T[] pixels) where T : unmanaged { fixed (T* ptr_pixels
+    public void glTextureSubImage1D<T>(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, T[] pixels) where T : unmanaged { fixed (T* ptr_pixels
  = &pixels[0]) _glTextureSubImage1D(texture, level, xoffset, width, format, type, ptr_pixels); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTURESUBIMAGE2DPROC(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, void* pixels);
-    private static PFNGLTEXTURESUBIMAGE2DPROC _glTextureSubImage2D;
+    private PFNGLTEXTURESUBIMAGE2DPROC _glTextureSubImage2D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify a two-dimensional texture subimage.
@@ -17628,7 +17626,7 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    public static void glTextureSubImage2D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, void* pixels) => _glTextureSubImage2D(texture, level, xoffset, yoffset, width, height, format, type, pixels);
+    public void glTextureSubImage2D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, void* pixels) => _glTextureSubImage2D(texture, level, xoffset, yoffset, width, height, format, type, pixels);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17643,13 +17641,13 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="pixels">Specifies an array containing the image data.</param>
-    public static void glTextureSubImage2D<T>(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, T[] pixels) where T : unmanaged { fixed (T* ptr_pixels
+    public void glTextureSubImage2D<T>(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, T[] pixels) where T : unmanaged { fixed (T* ptr_pixels
  = &pixels[0]) _glTextureSubImage2D(texture, level, xoffset, yoffset, width, height, format, type, ptr_pixels); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTURESUBIMAGE3DPROC(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, void* pixels);
-    private static PFNGLTEXTURESUBIMAGE3DPROC _glTextureSubImage3D;
+    private PFNGLTEXTURESUBIMAGE3DPROC _glTextureSubImage3D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify a three-dimensional texture subimage.
@@ -17665,7 +17663,7 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-    public static void glTextureSubImage3D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, void* pixels) => _glTextureSubImage3D(texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+    public void glTextureSubImage3D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, void* pixels) => _glTextureSubImage3D(texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17682,13 +17680,13 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the pixel data.</param>
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="pixels">Specifies an array containing the image data.</param>
-    public static void glTextureSubImage3D<T>(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, T[] pixels) where T : unmanaged { fixed (T* ptr_pixels
+    public void glTextureSubImage3D<T>(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, T[] pixels) where T : unmanaged { fixed (T* ptr_pixels
  = &pixels[0]) _glTextureSubImage3D(texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, ptr_pixels); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCOMPRESSEDTEXTURESUBIMAGE1DPROC(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, void* data);
-    private static PFNGLCOMPRESSEDTEXTURESUBIMAGE1DPROC _glCompressedTextureSubImage1D;
+    private PFNGLCOMPRESSEDTEXTURESUBIMAGE1DPROC _glCompressedTextureSubImage1D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify a one-dimensional texture subimage in a compressed format.
@@ -17700,7 +17698,7 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the compressed image data stored at address data.</param>
     /// <param name="imageSize">Specifies the number of unsigned bytes of compressed texture data starting at address data.</param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    public static void glCompressedTextureSubImage1D(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, void* data) => _glCompressedTextureSubImage1D(texture, level, xoffset, width, format, imageSize, data);
+    public void glCompressedTextureSubImage1D(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, void* data) => _glCompressedTextureSubImage1D(texture, level, xoffset, width, format, imageSize, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17713,13 +17711,13 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the compressed image data stored at address data.</param>
     /// <param name="imageSize">Specifies the number of unsigned bytes of compressed texture data starting at address data.</param>
     /// <param name="data">Specifies an array containing the compressed image data.</param>
-    public static void glCompressedTextureSubImage1D(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, byte[] data) { fixed (byte* ptr_data
+    public void glCompressedTextureSubImage1D(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, byte[] data) { fixed (byte* ptr_data
  = &data[0]) _glCompressedTextureSubImage1D(texture, level, xoffset, width, format, imageSize, ptr_data); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCOMPRESSEDTEXTURESUBIMAGE2DPROC(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, void* data);
-    private static PFNGLCOMPRESSEDTEXTURESUBIMAGE2DPROC _glCompressedTextureSubImage2D;
+    private PFNGLCOMPRESSEDTEXTURESUBIMAGE2DPROC _glCompressedTextureSubImage2D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify a two-dimensional texture subimage in a compressed format.
@@ -17733,7 +17731,7 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the compressed image data stored at address data.</param>
     /// <param name="imageSize">Specifies the number of unsigned bytes of compressed texture data starting at address data.</param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    public static void glCompressedTextureSubImage2D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, void* data) => _glCompressedTextureSubImage2D(texture, level, xoffset, yoffset, width, height, format, imageSize, data);
+    public void glCompressedTextureSubImage2D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, void* data) => _glCompressedTextureSubImage2D(texture, level, xoffset, yoffset, width, height, format, imageSize, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17748,13 +17746,13 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the compressed image data stored at address data.</param>
     /// <param name="imageSize">Specifies the number of unsigned bytes of compressed texture data starting at address data.</param>
     /// <param name="data">Specifies an array containing the compressed image data.</param>
-    public static void glCompressedTextureSubImage2D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, byte[] data) { fixed (byte* ptr_data
+    public void glCompressedTextureSubImage2D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, byte[] data) { fixed (byte* ptr_data
  = &data[0]) _glCompressedTextureSubImage2D(texture, level, xoffset, yoffset, width, height, format, imageSize, ptr_data); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCOMPRESSEDTEXTURESUBIMAGE3DPROC(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, void* data);
-    private static PFNGLCOMPRESSEDTEXTURESUBIMAGE3DPROC _glCompressedTextureSubImage3D;
+    private PFNGLCOMPRESSEDTEXTURESUBIMAGE3DPROC _glCompressedTextureSubImage3D;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specify a three-dimensional texture subimage in a compressed format.
@@ -17770,7 +17768,7 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the compressed image data stored at address data.</param>
     /// <param name="imageSize">Specifies the number of unsigned bytes of compressed texture data starting at address data.</param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-    public static void glCompressedTextureSubImage3D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, void* data) => _glCompressedTextureSubImage3D(texture, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
+    public void glCompressedTextureSubImage3D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, void* data) => _glCompressedTextureSubImage3D(texture, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17787,13 +17785,13 @@ public static unsafe class GL
     /// <param name="format">Specifies the format of the compressed image data stored at address data.</param>
     /// <param name="imageSize">Specifies the number of unsigned bytes of compressed texture data starting at address data.</param>
     /// <param name="data">Specifies an array containing the compressed image data.</param>
-    public static void glCompressedTextureSubImage3D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, byte[] data) { fixed (byte* ptr_data
+    public void glCompressedTextureSubImage3D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, byte[] data) { fixed (byte* ptr_data
  = &data[0]) _glCompressedTextureSubImage3D(texture, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, ptr_data); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCOPYTEXTURESUBIMAGE1DPROC(GLuint texture, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width);
-    private static PFNGLCOPYTEXTURESUBIMAGE1DPROC _glCopyTextureSubImage1D;
+    private PFNGLCOPYTEXTURESUBIMAGE1DPROC _glCopyTextureSubImage1D;
     /// <summary>
     /// Copy a one-dimensional texture subimage from the framebuffer to a one-dimensional texture image.
     /// </summary>
@@ -17803,11 +17801,11 @@ public static unsafe class GL
     /// <param name="x">Specify the window coordinates of the left corners of the row of pixels to be copied.</param>
     /// <param name="y">Specify the window coordinates of the left corners of the row of pixels to be copied.</param>
     /// <param name="width">Specifies the width of the texture subimage.</param>
-    public static void glCopyTextureSubImage1D(GLuint texture, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width) => _glCopyTextureSubImage1D(texture, level, xoffset, x, y, width);
+    public void glCopyTextureSubImage1D(GLuint texture, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width) => _glCopyTextureSubImage1D(texture, level, xoffset, x, y, width);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCOPYTEXTURESUBIMAGE2DPROC(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
-    private static PFNGLCOPYTEXTURESUBIMAGE2DPROC _glCopyTextureSubImage2D;
+    private PFNGLCOPYTEXTURESUBIMAGE2DPROC _glCopyTextureSubImage2D;
     /// <summary>
     /// Copy a two-dimensional texture subimage from the framebuffer to a two-dimensional texture image.
     /// </summary>
@@ -17819,11 +17817,11 @@ public static unsafe class GL
     /// <param name="y">Specify the window coordinates of the left corners of the row of pixels to be copied.</param>
     /// <param name="width">Specifies the width of the texture subimage.</param>
     /// <param name="height">Specifies the height of the texture subimage.</param>
-    public static void glCopyTextureSubImage2D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height) => _glCopyTextureSubImage2D(texture, level, xoffset, yoffset, x, y, width, height);
+    public void glCopyTextureSubImage2D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height) => _glCopyTextureSubImage2D(texture, level, xoffset, yoffset, x, y, width, height);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCOPYTEXTURESUBIMAGE3DPROC(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height);
-    private static PFNGLCOPYTEXTURESUBIMAGE3DPROC _glCopyTextureSubImage3D;
+    private PFNGLCOPYTEXTURESUBIMAGE3DPROC _glCopyTextureSubImage3D;
     /// <summary>
     /// Copy a three-dimensional texture subimage from the framebuffer to a three-dimensional texture image.
     /// </summary>
@@ -17836,22 +17834,22 @@ public static unsafe class GL
     /// <param name="y">Specify the window coordinates of the left corners of the row of pixels to be copied.</param>
     /// <param name="width">Specifies the width of the texture subimage.</param>
     /// <param name="height">Specifies the height of the texture subimage.</param>
-    public static void glCopyTextureSubImage3D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height) => _glCopyTextureSubImage3D(texture, level, xoffset, yoffset, zoffset, x, y, width, height);
+    public void glCopyTextureSubImage3D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height) => _glCopyTextureSubImage3D(texture, level, xoffset, yoffset, zoffset, x, y, width, height);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTUREPARAMETERFPROC(GLuint texture, GLenum pname, GLfloat param);
-    private static PFNGLTEXTUREPARAMETERFPROC _glTextureParameterf;
+    private PFNGLTEXTUREPARAMETERFPROC _glTextureParameterf;
     /// <summary>
     /// Set texture parameter.
     /// </summary>
     /// <param name="texture">Specifies the name of the texture object.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
-    public static void glTextureParameterf(GLuint texture, GLenum pname, GLfloat param) => _glTextureParameterf(texture, pname, param);
+    public void glTextureParameterf(GLuint texture, GLenum pname, GLfloat param) => _glTextureParameterf(texture, pname, param);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTUREPARAMETERFVPROC(GLuint texture, GLenum pname, GLfloat* param);
-    private static PFNGLTEXTUREPARAMETERFVPROC _glTextureParameterfv;
+    private PFNGLTEXTUREPARAMETERFVPROC _glTextureParameterfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Set texture parameter.
@@ -17859,7 +17857,7 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
-    public static void glTextureParameterfv(GLuint texture, GLenum pname, GLfloat* param) => _glTextureParameterfv(texture, pname, param);
+    public void glTextureParameterfv(GLuint texture, GLenum pname, GLfloat* param) => _glTextureParameterfv(texture, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17868,24 +17866,24 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
-    public static void glTextureParameterfv(GLuint texture, GLenum pname, GLfloat[] param) { fixed (GLfloat* ptr_param =
+    public void glTextureParameterfv(GLuint texture, GLenum pname, GLfloat[] param) { fixed (GLfloat* ptr_param =
  &param[0]) _glTextureParameterfv(texture, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTUREPARAMETERIPROC(GLuint texture, GLenum pname, GLint param);
-    private static PFNGLTEXTUREPARAMETERIPROC _glTextureParameteri;
+    private PFNGLTEXTUREPARAMETERIPROC _glTextureParameteri;
     /// <summary>
     /// Set texture parameter.
     /// </summary>
     /// <param name="texture">Specifies the name of the texture object.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
-    public static void glTextureParameteri(GLuint texture, GLenum pname, GLint param) => _glTextureParameteri(texture, pname, param);
+    public void glTextureParameteri(GLuint texture, GLenum pname, GLint param) => _glTextureParameteri(texture, pname, param);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTUREPARAMETERIIVPROC(GLuint texture, GLenum pname, GLint* param);
-    private static PFNGLTEXTUREPARAMETERIIVPROC _glTextureParameterIiv;
+    private PFNGLTEXTUREPARAMETERIIVPROC _glTextureParameterIiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Set texture parameter.
@@ -17893,7 +17891,7 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
-    public static void glTextureParameterIiv(GLuint texture, GLenum pname, GLint* param) => _glTextureParameterIiv(texture, pname, param);
+    public void glTextureParameterIiv(GLuint texture, GLenum pname, GLint* param) => _glTextureParameterIiv(texture, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17902,13 +17900,13 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
-    public static void glTextureParameterIiv(GLuint texture, GLenum pname, GLint[] param) { fixed (GLint* ptr_param =
+    public void glTextureParameterIiv(GLuint texture, GLenum pname, GLint[] param) { fixed (GLint* ptr_param =
  &param[0]) _glTextureParameterIiv(texture, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTUREPARAMETERIUIVPROC(GLuint texture, GLenum pname, GLuint* param);
-    private static PFNGLTEXTUREPARAMETERIUIVPROC _glTextureParameterIuiv;
+    private PFNGLTEXTUREPARAMETERIUIVPROC _glTextureParameterIuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Set texture parameter.
@@ -17916,7 +17914,7 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
-    public static void glTextureParameterIuiv(GLuint texture, GLenum pname, GLuint* param) => _glTextureParameterIuiv(texture, pname, param);
+    public void glTextureParameterIuiv(GLuint texture, GLenum pname, GLuint* param) => _glTextureParameterIuiv(texture, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17925,13 +17923,13 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
-    public static void glTextureParameterIuiv(GLuint texture, GLenum pname, GLuint[] param) { fixed (GLuint* ptr_param =
+    public void glTextureParameterIuiv(GLuint texture, GLenum pname, GLuint[] param) { fixed (GLuint* ptr_param =
  &param[0]) _glTextureParameterIuiv(texture, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTUREPARAMETERIVPROC(GLuint texture, GLenum pname, GLint* param);
-    private static PFNGLTEXTUREPARAMETERIVPROC _glTextureParameteriv;
+    private PFNGLTEXTUREPARAMETERIVPROC _glTextureParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Set texture parameter.
@@ -17939,7 +17937,7 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
-    public static void glTextureParameteriv(GLuint texture, GLenum pname, GLint* param) => _glTextureParameteriv(texture, pname, param);
+    public void glTextureParameteriv(GLuint texture, GLenum pname, GLint* param) => _glTextureParameteriv(texture, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17948,32 +17946,32 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the value of pname.</param>
-    public static void glTextureParameteriv(GLuint texture, GLenum pname, GLint[] param) { fixed (GLint* ptr_param =
+    public void glTextureParameteriv(GLuint texture, GLenum pname, GLint[] param) { fixed (GLint* ptr_param =
  &param[0]) _glTextureParameteriv(texture, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGENERATETEXTUREMIPMAPPROC(GLuint texture);
-    private static PFNGLGENERATETEXTUREMIPMAPPROC _glGenerateTextureMipmap;
+    private PFNGLGENERATETEXTUREMIPMAPPROC _glGenerateTextureMipmap;
     /// <summary>
     /// Generate mipmaps for a specified texture object.
     /// </summary>
     /// <param name="texture">Specifies the texture object to which to generate mipmaps.</param>
-    public static void glGenerateTextureMipmap(GLuint texture) => _glGenerateTextureMipmap(texture);
+    public void glGenerateTextureMipmap(GLuint texture) => _glGenerateTextureMipmap(texture);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLBINDTEXTUREUNITPROC(GLuint unit, GLuint texture);
-    private static PFNGLBINDTEXTUREUNITPROC _glBindTextureUnit;
+    private PFNGLBINDTEXTUREUNITPROC _glBindTextureUnit;
     /// <summary>
     /// Bind a named texture to a texturing target.
     /// </summary>
     /// <param name="unit">Specifies the index of the texture unit to which to bind the texture.</param>
     /// <param name="texture">Specifies the name of a texture.</param>
-    public static void glBindTextureUnit(GLuint unit, GLuint texture) => _glBindTextureUnit(unit, texture);
+    public void glBindTextureUnit(GLuint unit, GLuint texture) => _glBindTextureUnit(unit, texture);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETTEXTUREIMAGEPROC(GLuint texture, GLint level, GLenum format, GLenum type, GLsizei bufSize, void* pixels);
-    private static PFNGLGETTEXTUREIMAGEPROC _glGetTextureImage;
+    private PFNGLGETTEXTUREIMAGEPROC _glGetTextureImage;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return texture image data.
@@ -17984,7 +17982,7 @@ public static unsafe class GL
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="bufSize">Specifies the size of the buffer whose address is given in pixels.</param>
     /// <param name="pixels">Specifies a pointer to the buffer into which to place the returned data.</param>
-    public static void glGetTextureImage(GLuint texture, GLint level, GLenum format, GLenum type, GLsizei bufSize, void* pixels) => _glGetTextureImage(texture, level, format, type, bufSize, pixels);
+    public void glGetTextureImage(GLuint texture, GLint level, GLenum format, GLenum type, GLsizei bufSize, void* pixels) => _glGetTextureImage(texture, level, format, type, bufSize, pixels);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -17996,13 +17994,13 @@ public static unsafe class GL
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="bufSize">Specifies the maximum number of values of type <typeparamref name="T"/> that can be returned.</param>
     /// <returns>The texture image data.</returns>
-    public static T[] glGetTextureImage<T>(GLuint texture, GLint level, GLenum format, GLenum type, GLsizei bufSize) where T : unmanaged { T[] pixels =
+    public T[] glGetTextureImage<T>(GLuint texture, GLint level, GLenum format, GLenum type, GLsizei bufSize) where T : unmanaged { T[] pixels =
  new T[bufSize]; fixed (T* ptr_pixels = &pixels[0]) _glGetTextureImage(texture, level, format, type, bufSize, ptr_pixels); return pixels; }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETCOMPRESSEDTEXTUREIMAGEPROC(GLuint texture, GLint level, GLsizei bufSize, void* pixels);
-    private static PFNGLGETCOMPRESSEDTEXTUREIMAGEPROC _glGetCompressedTextureImage;
+    private PFNGLGETCOMPRESSEDTEXTUREIMAGEPROC _glGetCompressedTextureImage;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return the compressed texture image data.
@@ -18011,7 +18009,7 @@ public static unsafe class GL
     /// <param name="level">Specifies the level-of-detail number of the desired image.</param>
     /// <param name="bufSize">Specifies the size of the buffer whose address is given in pixels.</param>
     /// <param name="pixels">Specifies a pointer to the buffer into which to place the returned data.</param>
-    public static void glGetCompressedTextureImage(GLuint texture, GLint level, GLsizei bufSize, void* pixels) => _glGetCompressedTextureImage(texture, level, bufSize, pixels);
+    public void glGetCompressedTextureImage(GLuint texture, GLint level, GLsizei bufSize, void* pixels) => _glGetCompressedTextureImage(texture, level, bufSize, pixels);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18020,13 +18018,13 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object from which to retrieve texture image data.</param>
     /// <param name="level">Specifies the level-of-detail number of the desired image.</param>
     /// <param name="bufSize">Specifies the maximum number of bytes of compressed texture image data that may be returned.</param>
-    public static byte[] glGetCompressedTextureImage(GLuint texture, GLint level, GLsizei bufSize) { byte[] pixels = new byte[bufSize]; fixed (byte* ptr_pixels
+    public byte[] glGetCompressedTextureImage(GLuint texture, GLint level, GLsizei bufSize) { byte[] pixels = new byte[bufSize]; fixed (byte* ptr_pixels
  = &pixels[0]) _glGetCompressedTextureImage(texture, level, bufSize, ptr_pixels); return pixels; }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETTEXTURELEVELPARAMETERFVPROC(GLuint texture, GLint level, GLenum pname, GLfloat* param);
-    private static PFNGLGETTEXTURELEVELPARAMETERFVPROC _glGetTextureLevelParameterfv;
+    private PFNGLGETTEXTURELEVELPARAMETERFVPROC _glGetTextureLevelParameterfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return texture parameter values for a specific level of detail.
@@ -18035,7 +18033,7 @@ public static unsafe class GL
     /// <param name="level">Specifies the level-of-detail number of the desired image.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the address of a variable to receive the value of the texture parameter specified by <paramref name="pname"/> at the level of detail specified by <paramref name="level"/>.</param>
-    public static void glGetTextureLevelParameterfv(GLuint texture, GLint level, GLenum pname, GLfloat* param) => _glGetTextureLevelParameterfv(texture, level, pname, param);
+    public void glGetTextureLevelParameterfv(GLuint texture, GLint level, GLenum pname, GLfloat* param) => _glGetTextureLevelParameterfv(texture, level, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18045,13 +18043,13 @@ public static unsafe class GL
     /// <param name="level">Specifies the level-of-detail number of the desired image.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies an array to receive the value of the texture parameter specified by <paramref name="pname"/> at the level of detail specified by <paramref name="level"/>.</param>
-    public static void glGetTextureLevelParameterfv(GLuint texture, GLint level, GLenum pname, ref GLfloat[] param) { fixed (GLfloat* ptr_param =
+    public void glGetTextureLevelParameterfv(GLuint texture, GLint level, GLenum pname, ref GLfloat[] param) { fixed (GLfloat* ptr_param =
  &param[0]) _glGetTextureLevelParameterfv(texture, level, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETTEXTURELEVELPARAMETERIVPROC(GLuint texture, GLint level, GLenum pname, GLint* param);
-    private static PFNGLGETTEXTURELEVELPARAMETERIVPROC _glGetTextureLevelParameteriv;
+    private PFNGLGETTEXTURELEVELPARAMETERIVPROC _glGetTextureLevelParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return texture parameter values for a specific level of detail.
@@ -18060,7 +18058,7 @@ public static unsafe class GL
     /// <param name="level">Specifies the level-of-detail number of the desired image.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the address of a variable to receive the value of the texture parameter specified by <paramref name="pname"/> at the level of detail specified by <paramref name="level"/>.</param>
-    public static void glGetTextureLevelParameteriv(GLuint texture, GLint level, GLenum pname, GLint* param) => _glGetTextureLevelParameteriv(texture, level, pname, param);
+    public void glGetTextureLevelParameteriv(GLuint texture, GLint level, GLenum pname, GLint* param) => _glGetTextureLevelParameteriv(texture, level, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18070,13 +18068,13 @@ public static unsafe class GL
     /// <param name="level">Specifies the level-of-detail number of the desired image.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies an array to receive the value of the texture parameter specified by <paramref name="pname"/> at the level of detail specified by <paramref name="level"/>.</param>
-    public static void glGetTextureLevelParameteriv(GLuint texture, GLint level, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
+    public void glGetTextureLevelParameteriv(GLuint texture, GLint level, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
  &param[0]) _glGetTextureLevelParameteriv(texture, level, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETTEXTUREPARAMETERFVPROC(GLuint texture, GLenum pname, GLfloat* param);
-    private static PFNGLGETTEXTUREPARAMETERFVPROC _glGetTextureParameterfv;
+    private PFNGLGETTEXTUREPARAMETERFVPROC _glGetTextureParameterfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return texture parameter values.
@@ -18084,7 +18082,7 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object from which to retrieve texture parameter values.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the address of a variable to receive the value of the texture parameter specified by <paramref name="pname"/>.</param>
-    public static void glGetTextureParameterfv(GLuint texture, GLenum pname, GLfloat* param) => _glGetTextureParameterfv(texture, pname, param);
+    public void glGetTextureParameterfv(GLuint texture, GLenum pname, GLfloat* param) => _glGetTextureParameterfv(texture, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18093,13 +18091,13 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object from which to retrieve texture parameter values.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies an array to receive the value of the texture parameter specified by <paramref name="pname"/>.</param>
-    public static void glGetTextureParameterfv(GLuint texture, GLenum pname, ref GLfloat[] param) { fixed (GLfloat* ptr_param =
+    public void glGetTextureParameterfv(GLuint texture, GLenum pname, ref GLfloat[] param) { fixed (GLfloat* ptr_param =
  &param[0]) _glGetTextureParameterfv(texture, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETTEXTUREPARAMETERIIVPROC(GLuint texture, GLenum pname, GLint* param);
-    private static PFNGLGETTEXTUREPARAMETERIIVPROC _glGetTextureParameterIiv;
+    private PFNGLGETTEXTUREPARAMETERIIVPROC _glGetTextureParameterIiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return texture parameter values.
@@ -18107,7 +18105,7 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object from which to retrieve texture parameter values.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the address of a variable to receive the value of the texture parameter specified by <paramref name="pname"/>.</param>
-    public static void glGetTextureParameterIiv(GLuint texture, GLenum pname, GLint* param) => _glGetTextureParameterIiv(texture, pname, param);
+    public void glGetTextureParameterIiv(GLuint texture, GLenum pname, GLint* param) => _glGetTextureParameterIiv(texture, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18116,13 +18114,13 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object from which to retrieve texture parameter values.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies an array to receive the value of the texture parameter specified by <paramref name="pname"/>.</param>
-    public static void glGetTextureParameterIiv(GLuint texture, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
+    public void glGetTextureParameterIiv(GLuint texture, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
  &param[0]) _glGetTextureParameterIiv(texture, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETTEXTUREPARAMETERIUIVPROC(GLuint texture, GLenum pname, GLuint* param);
-    private static PFNGLGETTEXTUREPARAMETERIUIVPROC _glGetTextureParameterIuiv;
+    private PFNGLGETTEXTUREPARAMETERIUIVPROC _glGetTextureParameterIuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return texture parameter values.
@@ -18130,7 +18128,7 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object from which to retrieve texture parameter values.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the address of a variable to receive the value of the texture parameter specified by <paramref name="pname"/>.</param>
-    public static void glGetTextureParameterIuiv(GLuint texture, GLenum pname, GLuint* param) => _glGetTextureParameterIuiv(texture, pname, param);
+    public void glGetTextureParameterIuiv(GLuint texture, GLenum pname, GLuint* param) => _glGetTextureParameterIuiv(texture, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18139,13 +18137,13 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object from which to retrieve texture parameter values.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies an array to receive the value of the texture parameter specified by <paramref name="pname"/>.</param>
-    public static void glGetTextureParameterIuiv(GLuint texture, GLenum pname, ref GLuint[] param) { fixed (GLuint* ptr_param =
+    public void glGetTextureParameterIuiv(GLuint texture, GLenum pname, ref GLuint[] param) { fixed (GLuint* ptr_param =
  &param[0]) _glGetTextureParameterIuiv(texture, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETTEXTUREPARAMETERIVPROC(GLuint texture, GLenum pname, GLint* param);
-    private static PFNGLGETTEXTUREPARAMETERIVPROC _glGetTextureParameteriv;
+    private PFNGLGETTEXTUREPARAMETERIVPROC _glGetTextureParameteriv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return texture parameter values.
@@ -18153,7 +18151,7 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object from which to retrieve texture parameter values.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies the address of a variable to receive the value of the texture parameter specified by <paramref name="pname"/>.</param>
-    public static void glGetTextureParameteriv(GLuint texture, GLenum pname, GLint* param) => _glGetTextureParameteriv(texture, pname, param);
+    public void glGetTextureParameteriv(GLuint texture, GLenum pname, GLint* param) => _glGetTextureParameteriv(texture, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18162,20 +18160,20 @@ public static unsafe class GL
     /// <param name="texture">Specifies the name of the texture object from which to retrieve texture parameter values.</param>
     /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
     /// <param name="param">Specifies an array to receive the value of the texture parameter specified by <paramref name="pname"/>.</param>
-    public static void glGetTextureParameteriv(GLuint texture, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
+    public void glGetTextureParameteriv(GLuint texture, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
  &param[0]) _glGetTextureParameteriv(texture, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCREATEVERTEXARRAYSPROC(GLsizei n, GLuint* arrays);
-    private static PFNGLCREATEVERTEXARRAYSPROC _glCreateVertexArrays;
+    private PFNGLCREATEVERTEXARRAYSPROC _glCreateVertexArrays;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Generate vertex array object names.
     /// </summary>
     /// <param name="n">Specifies the number of vertex array object names to generate.</param>
     /// <param name="arrays">Specifies an array in which to place the generated vertex array object names.</param>
-    public static void glCreateVertexArrays(GLsizei n, GLuint* arrays) => _glCreateVertexArrays(n, arrays);
+    public void glCreateVertexArrays(GLsizei n, GLuint* arrays) => _glCreateVertexArrays(n, arrays);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18183,48 +18181,48 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of vertex array object names to generate.</param>
     /// <returns>Array of generated vertex array object names.</returns>
-    public static GLuint[] glCreateVertexArrays(GLsizei n) { var arrays = new GLuint[n]; fixed (GLuint* ptr_arrays =
+    public GLuint[] glCreateVertexArrays(GLsizei n) { var arrays = new GLuint[n]; fixed (GLuint* ptr_arrays =
  &arrays[0]) _glCreateVertexArrays(n, ptr_arrays); return arrays; }
     /// <summary>
     /// Generate a single vertex array object name.
     /// </summary>
     /// <returns>Generated vertex array object name.</returns>
-    public static GLuint glCreateVertexArray() => glCreateVertexArrays(1)[0];
+    public GLuint glCreateVertexArray() => glCreateVertexArrays(1)[0];
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLDISABLEVERTEXARRAYATTRIBPROC(GLuint vaobj, GLuint index);
-    private static PFNGLDISABLEVERTEXARRAYATTRIBPROC _glDisableVertexArrayAttrib;
+    private PFNGLDISABLEVERTEXARRAYATTRIBPROC _glDisableVertexArrayAttrib;
     /// <summary>
     /// Disable a generic vertex attribute array.
     /// </summary>
     /// <param name="vaobj">Specifies the name of the vertex array object.</param>
     /// <param name="index">Specifies the index of the generic vertex attribute to be disabled.</param>
-    public static void glDisableVertexArrayAttrib(GLuint vaobj, GLuint index) => _glDisableVertexArrayAttrib(vaobj, index);
+    public void glDisableVertexArrayAttrib(GLuint vaobj, GLuint index) => _glDisableVertexArrayAttrib(vaobj, index);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLENABLEVERTEXARRAYATTRIBPROC(GLuint vaobj, GLuint index);
-    private static PFNGLENABLEVERTEXARRAYATTRIBPROC _glEnableVertexArrayAttrib;
+    private PFNGLENABLEVERTEXARRAYATTRIBPROC _glEnableVertexArrayAttrib;
     /// <summary>
     /// Enable a generic vertex attribute array.
     /// </summary>
     /// <param name="vaobj">Specifies the name of the vertex array object.</param>
     /// <param name="index">Specifies the index of the generic vertex attribute to be enabled.</param>
-    public static void glEnableVertexArrayAttrib(GLuint vaobj, GLuint index) => _glEnableVertexArrayAttrib(vaobj, index);
+    public void glEnableVertexArrayAttrib(GLuint vaobj, GLuint index) => _glEnableVertexArrayAttrib(vaobj, index);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXARRAYELEMENTBUFFERPROC(GLuint vaobj, GLuint buffer);
-    private static PFNGLVERTEXARRAYELEMENTBUFFERPROC _glVertexArrayElementBuffer;
+    private PFNGLVERTEXARRAYELEMENTBUFFERPROC _glVertexArrayElementBuffer;
     /// <summary>
     /// Bind a buffer object to an element array buffer binding point of a vertex array object.
     /// </summary>
     /// <param name="vaobj">Specifies the name of the vertex array object.</param>
     /// <param name="buffer">Specifies the name of an existing buffer object that contains the index array data.</param>
-    public static void glVertexArrayElementBuffer(GLuint vaobj, GLuint buffer) => _glVertexArrayElementBuffer(vaobj, buffer);
+    public void glVertexArrayElementBuffer(GLuint vaobj, GLuint buffer) => _glVertexArrayElementBuffer(vaobj, buffer);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXARRAYVERTEXBUFFERPROC(GLuint vaobj, GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride);
-    private static PFNGLVERTEXARRAYVERTEXBUFFERPROC _glVertexArrayVertexBuffer;
+    private PFNGLVERTEXARRAYVERTEXBUFFERPROC _glVertexArrayVertexBuffer;
     /// <summary>
     /// Bind a buffer object to a vertex buffer binding point of a vertex array object.
     /// </summary>
@@ -18233,11 +18231,11 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of an existing buffer object that contains the data store to be associated with the vertex array object.</param>
     /// <param name="offset">Specifies the offset of the first element of the buffer bound to the vertex buffer binding point.</param>
     /// <param name="stride">Specifies the distance between consecutive elements within the buffer.</param>
-    public static void glVertexArrayVertexBuffer(GLuint vaobj, GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride) => _glVertexArrayVertexBuffer(vaobj, bindingindex, buffer, offset, stride);
+    public void glVertexArrayVertexBuffer(GLuint vaobj, GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride) => _glVertexArrayVertexBuffer(vaobj, bindingindex, buffer, offset, stride);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXARRAYVERTEXBUFFERSPROC(GLuint vaobj, GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizei* strides);
-    private static PFNGLVERTEXARRAYVERTEXBUFFERSPROC _glVertexArrayVertexBuffers;
+    private PFNGLVERTEXARRAYVERTEXBUFFERSPROC _glVertexArrayVertexBuffers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Bind an array of buffer objects to vertex buffer binding points of a vertex array object.
@@ -18248,7 +18246,7 @@ public static unsafe class GL
     /// <param name="buffers">Specifies an array of names of existing buffer objects that contain the data stores to be associated with the vertex array object.</param>
     /// <param name="offsets">Specifies an array of offsets into the buffer objects.</param>
     /// <param name="strides">Specifies an array of stride values.</param>
-    public static void glVertexArrayVertexBuffers(GLuint vaobj, GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizei* strides) => _glVertexArrayVertexBuffers(vaobj, first, count, buffers, offsets, strides);
+    public void glVertexArrayVertexBuffers(GLuint vaobj, GLuint first, GLsizei count, GLuint* buffers, GLintptr* offsets, GLsizei* strides) => _glVertexArrayVertexBuffers(vaobj, first, count, buffers, offsets, strides);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18259,25 +18257,25 @@ public static unsafe class GL
     /// <param name="buffers">Specifies an array of names of existing buffer objects that contain the data stores to be associated with the vertex array object.</param>
     /// <param name="offsets">Specifies an array of offsets into the buffer objects.</param>
     /// <param name="strides">Specifies an array of stride values.</param>
-    public static void glVertexArrayVertexBuffers(GLuint vaobj, GLuint first, GLuint[] buffers, GLintptr[] offsets, GLsizei[] strides) { fixed (GLuint* ptr_buffers
+    public void glVertexArrayVertexBuffers(GLuint vaobj, GLuint first, GLuint[] buffers, GLintptr[] offsets, GLsizei[] strides) { fixed (GLuint* ptr_buffers
  = &buffers[0]) fixed (GLintptr* ptr_offsets = &offsets[0]) fixed (GLsizei* ptr_strides =
  &strides[0]) _glVertexArrayVertexBuffers(vaobj, first, (GLsizei)buffers.Length, ptr_buffers, ptr_offsets, ptr_strides); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXARRAYATTRIBBINDINGPROC(GLuint vaobj, GLuint attribindex, GLuint bindingindex);
-    private static PFNGLVERTEXARRAYATTRIBBINDINGPROC _glVertexArrayAttribBinding;
+    private PFNGLVERTEXARRAYATTRIBBINDINGPROC _glVertexArrayAttribBinding;
     /// <summary>
     /// Associate a vertex attribute and a vertex buffer binding.
     /// </summary>
     /// <param name="vaobj">Specifies the name of the vertex array object.</param>
     /// <param name="attribindex">Specifies the index of the generic vertex attribute to be modified.</param>
     /// <param name="bindingindex">Specifies the index of the binding whose vertex buffer data is to be used by the generic vertex attribute at index attribindex.</param>
-    public static void glVertexArrayAttribBinding(GLuint vaobj, GLuint attribindex, GLuint bindingindex) => _glVertexArrayAttribBinding(vaobj, attribindex, bindingindex);
+    public void glVertexArrayAttribBinding(GLuint vaobj, GLuint attribindex, GLuint bindingindex) => _glVertexArrayAttribBinding(vaobj, attribindex, bindingindex);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXARRAYATTRIBFORMATPROC(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
-    private static PFNGLVERTEXARRAYATTRIBFORMATPROC _glVertexArrayAttribFormat;
+    private PFNGLVERTEXARRAYATTRIBFORMATPROC _glVertexArrayAttribFormat;
     /// <summary>
     /// Specify the organization of vertex arrays.
     /// </summary>
@@ -18287,11 +18285,11 @@ public static unsafe class GL
     /// <param name="type">Specifies the data type of each component.</param>
     /// <param name="normalized">Specifies whether fixed-point data values should be normalized (GL_TRUE) or converted directly as fixed-point values (GL_FALSE) when they are accessed.</param>
     /// <param name="relativeoffset">Specifies the offset of the first component of the first generic vertex attribute in the array in the data store of the buffer currently bound to the binding point specified by bindingindex.</param>
-    public static void glVertexArrayAttribFormat(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset) => _glVertexArrayAttribFormat(vaobj, attribindex, size, type, normalized, relativeoffset);
+    public void glVertexArrayAttribFormat(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset) => _glVertexArrayAttribFormat(vaobj, attribindex, size, type, normalized, relativeoffset);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXARRAYATTRIBIFORMATPROC(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
-    private static PFNGLVERTEXARRAYATTRIBIFORMATPROC _glVertexArrayAttribIFormat;
+    private PFNGLVERTEXARRAYATTRIBIFORMATPROC _glVertexArrayAttribIFormat;
     /// <summary>
     /// Specify the organization of vertex arrays.
     /// </summary>
@@ -18300,11 +18298,11 @@ public static unsafe class GL
     /// <param name="size">Specifies the number of components per attribute. Must be 1, 2, 3, 4, or GL_BGRA.</param>
     /// <param name="type">Specifies the data type of each component.</param>
     /// <param name="relativeoffset">Specifies the offset of the first component of the first generic vertex attribute in the array in the data store of the buffer currently bound to the binding point specified by bindingindex.</param>
-    public static void glVertexArrayAttribIFormat(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset) => _glVertexArrayAttribIFormat(vaobj, attribindex, size, type, relativeoffset);
+    public void glVertexArrayAttribIFormat(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset) => _glVertexArrayAttribIFormat(vaobj, attribindex, size, type, relativeoffset);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXARRAYATTRIBLFORMATPROC(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
-    private static PFNGLVERTEXARRAYATTRIBLFORMATPROC _glVertexArrayAttribLFormat;
+    private PFNGLVERTEXARRAYATTRIBLFORMATPROC _glVertexArrayAttribLFormat;
     /// <summary>
     /// Specify the organization of vertex arrays.
     /// </summary>
@@ -18313,22 +18311,22 @@ public static unsafe class GL
     /// <param name="size">Specifies the number of components per attribute. Must be 1, 2, 3, 4, or GL_BGRA.</param>
     /// <param name="type">Specifies the data type of each component.</param>
     /// <param name="relativeoffset">Specifies the offset of the first component of the first generic vertex attribute in the array in the data store of the buffer currently bound to the binding point specified by bindingindex.</param>
-    public static void glVertexArrayAttribLFormat(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset) => _glVertexArrayAttribLFormat(vaobj, attribindex, size, type, relativeoffset);
+    public void glVertexArrayAttribLFormat(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset) => _glVertexArrayAttribLFormat(vaobj, attribindex, size, type, relativeoffset);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLVERTEXARRAYBINDINGDIVISORPROC(GLuint vaobj, GLuint bindingindex, GLuint divisor);
-    private static PFNGLVERTEXARRAYBINDINGDIVISORPROC _glVertexArrayBindingDivisor;
+    private PFNGLVERTEXARRAYBINDINGDIVISORPROC _glVertexArrayBindingDivisor;
     /// <summary>
     /// Modify the rate at which generic vertex attributes advance during instanced rendering.
     /// </summary>
     /// <param name="vaobj">Specifies the name of the vertex array object.</param>
     /// <param name="bindingindex">Specifies the index of the binding whose divisor to modify.</param>
     /// <param name="divisor">Specifies the new value for the instance step rate.</param>
-    public static void glVertexArrayBindingDivisor(GLuint vaobj, GLuint bindingindex, GLuint divisor) => _glVertexArrayBindingDivisor(vaobj, bindingindex, divisor);
+    public void glVertexArrayBindingDivisor(GLuint vaobj, GLuint bindingindex, GLuint divisor) => _glVertexArrayBindingDivisor(vaobj, bindingindex, divisor);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETVERTEXARRAYIVPROC(GLuint vaobj, GLenum pname, GLint* param);
-    private static PFNGLGETVERTEXARRAYIVPROC _glGetVertexArrayiv;
+    private PFNGLGETVERTEXARRAYIVPROC _glGetVertexArrayiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a vertex array object.
@@ -18336,7 +18334,7 @@ public static unsafe class GL
     /// <param name="vaobj">Specifies the name of the vertex array object.</param>
     /// <param name="pname">Specifies the parameter value to return.</param>
     /// <param name="param">Specifies the address of a variable to receive the parameter value.</param>
-    public static void glGetVertexArrayiv(GLuint vaobj, GLenum pname, GLint* param) => _glGetVertexArrayiv(vaobj, pname, param);
+    public void glGetVertexArrayiv(GLuint vaobj, GLenum pname, GLint* param) => _glGetVertexArrayiv(vaobj, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18345,13 +18343,13 @@ public static unsafe class GL
     /// <param name="vaobj">Specifies the name of the vertex array object.</param>
     /// <param name="pname">Specifies the parameter value to return.</param>
     /// <param name="param">Specifies an array to receive the parameter value.</param>
-    public static void glGetVertexArrayiv(GLuint vaobj, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
+    public void glGetVertexArrayiv(GLuint vaobj, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
  &param[0]) _glGetVertexArrayiv(vaobj, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETVERTEXARRAYINDEXEDIVPROC(GLuint vaobj, GLuint index, GLenum pname, GLint* param);
-    private static PFNGLGETVERTEXARRAYINDEXEDIVPROC _glGetVertexArrayIndexediv;
+    private PFNGLGETVERTEXARRAYINDEXEDIVPROC _glGetVertexArrayIndexediv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a vertex array object.
@@ -18360,7 +18358,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the vertex array object entry to be queried.</param>
     /// <param name="pname">Specifies the parameter value to return.</param>
     /// <param name="param">Specifies the address of a variable to receive the parameter value.</param>
-    public static void glGetVertexArrayIndexediv(GLuint vaobj, GLuint index, GLenum pname, GLint* param) => _glGetVertexArrayIndexediv(vaobj, index, pname, param);
+    public void glGetVertexArrayIndexediv(GLuint vaobj, GLuint index, GLenum pname, GLint* param) => _glGetVertexArrayIndexediv(vaobj, index, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18370,13 +18368,13 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the vertex array object entry to be queried.</param>
     /// <param name="pname">Specifies the parameter value to return.</param>
     /// <param name="param">Specifies an array to receive the parameter value.</param>
-    public static void glGetVertexArrayIndexediv(GLuint vaobj, GLuint index, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
+    public void glGetVertexArrayIndexediv(GLuint vaobj, GLuint index, GLenum pname, ref GLint[] param) { fixed (GLint* ptr_param =
  &param[0]) _glGetVertexArrayIndexediv(vaobj, index, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETVERTEXARRAYINDEXED64IVPROC(GLuint vaobj, GLuint index, GLenum pname, GLint64* param);
-    private static PFNGLGETVERTEXARRAYINDEXED64IVPROC _glGetVertexArrayIndexed64iv;
+    private PFNGLGETVERTEXARRAYINDEXED64IVPROC _glGetVertexArrayIndexed64iv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return parameters of a vertex array object.
@@ -18385,7 +18383,7 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the vertex array object entry to be queried.</param>
     /// <param name="pname">Specifies the parameter value to return.</param>
     /// <param name="param">Specifies the address of a variable to receive the parameter value.</param>
-    public static void glGetVertexArrayIndexed64iv(GLuint vaobj, GLuint index, GLenum pname, GLint64* param) => _glGetVertexArrayIndexed64iv(vaobj, index, pname, param);
+    public void glGetVertexArrayIndexed64iv(GLuint vaobj, GLuint index, GLenum pname, GLint64* param) => _glGetVertexArrayIndexed64iv(vaobj, index, pname, param);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18395,20 +18393,20 @@ public static unsafe class GL
     /// <param name="index">Specifies the index of the vertex array object entry to be queried.</param>
     /// <param name="pname">Specifies the parameter value to return.</param>
     /// <param name="param">Specifies an array to receive the parameter value.</param>
-    public static void glGetVertexArrayIndexed64iv(GLuint vaobj, GLuint index, GLenum pname, ref GLint64[] param) { fixed (GLint64* ptr_param =
+    public void glGetVertexArrayIndexed64iv(GLuint vaobj, GLuint index, GLenum pname, ref GLint64[] param) { fixed (GLint64* ptr_param =
  &param[0]) _glGetVertexArrayIndexed64iv(vaobj, index, pname, ptr_param); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCREATESAMPLERSPROC(GLsizei n, GLuint* samplers);
-    private static PFNGLCREATESAMPLERSPROC _glCreateSamplers;
+    private PFNGLCREATESAMPLERSPROC _glCreateSamplers;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Generate sampler object names.
     /// </summary>
     /// <param name="n">Specifies the number of sampler object names to generate.</param>
     /// <param name="samplers">Specifies an array in which the generated sampler object names are stored.</param>
-    public static void glCreateSamplers(GLsizei n, GLuint* samplers) => _glCreateSamplers(n, samplers);
+    public void glCreateSamplers(GLsizei n, GLuint* samplers) => _glCreateSamplers(n, samplers);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18416,25 +18414,25 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of sampler object names to generate.</param>
     /// <returns>Array of generated sampler object names.</returns>
-    public static GLuint[] glCreateSamplers(GLsizei n) { GLuint[] samplers = new GLuint[n]; fixed (GLuint* ptr_samplers =
+    public GLuint[] glCreateSamplers(GLsizei n) { GLuint[] samplers = new GLuint[n]; fixed (GLuint* ptr_samplers =
  &samplers[0]) _glCreateSamplers(n, ptr_samplers); return samplers; }
     /// <summary>
     /// Generate a single sampler object name.
     /// </summary>
     /// <returns>The generated sampler object name.</returns>
-    public static GLuint glCreateSamplers() => glCreateSamplers(1)[0];
+    public GLuint glCreateSamplers() => glCreateSamplers(1)[0];
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCREATEPROGRAMPIPELINESPROC(GLsizei n, GLuint* pipelines);
-    private static PFNGLCREATEPROGRAMPIPELINESPROC _glCreateProgramPipelines;
+    private PFNGLCREATEPROGRAMPIPELINESPROC _glCreateProgramPipelines;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Generate program pipeline object names.
     /// </summary>
     /// <param name="n">Specifies the number of program pipeline object names to generate.</param>
     /// <param name="pipelines">Specifies an array in which the generated program pipeline object names are stored.</param>
-    public static void glCreateProgramPipelines(GLsizei n, GLuint* pipelines) => _glCreateProgramPipelines(n, pipelines);
+    public void glCreateProgramPipelines(GLsizei n, GLuint* pipelines) => _glCreateProgramPipelines(n, pipelines);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18442,18 +18440,18 @@ public static unsafe class GL
     /// </summary>
     /// <param name="n">Specifies the number of program pipeline object names to generate.</param>
     /// <returns>Array of generated program pipeline object names.</returns>
-    public static GLuint[] glCreateProgramPipelines(GLsizei n) { GLuint[] pipelines = new GLuint[n]; fixed (GLuint* ptr_pipelines =
+    public GLuint[] glCreateProgramPipelines(GLsizei n) { GLuint[] pipelines = new GLuint[n]; fixed (GLuint* ptr_pipelines =
  &pipelines[0]) _glCreateProgramPipelines(n, ptr_pipelines); return pipelines; }
     /// <summary>
     /// Generate a single program pipeline object name.
     /// </summary>
     /// <returns>The generated program pipeline object name.</returns>
-    public static GLuint glCreateProgramPipeline() => glCreateProgramPipelines(1)[0];
+    public GLuint glCreateProgramPipeline() => glCreateProgramPipelines(1)[0];
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLCREATEQUERIESPROC(GLenum target, GLsizei n, GLuint* ids);
-    private static PFNGLCREATEQUERIESPROC _glCreateQueries;
+    private PFNGLCREATEQUERIESPROC _glCreateQueries;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Generate query object names.
@@ -18461,7 +18459,7 @@ public static unsafe class GL
     /// <param name="target">Specifies the target of the query object.</param>
     /// <param name="n">Specifies the number of query object names to generate.</param>
     /// <param name="ids">Specifies an array in which the generated query object names are stored.</param>
-    public static void glCreateQueries(GLenum target, GLsizei n, GLuint* ids) => _glCreateQueries(target, n, ids);
+    public void glCreateQueries(GLenum target, GLsizei n, GLuint* ids) => _glCreateQueries(target, n, ids);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18470,19 +18468,19 @@ public static unsafe class GL
     /// <param name="target">Specifies the target of the query object.</param>
     /// <param name="n">Specifies the number of query object names to generate.</param>
     /// <returns>Array of generated query object names.</returns>
-    public static GLuint[] glCreateQueries(GLenum target, GLsizei n) { GLuint[] ids = new GLuint[n]; fixed (GLuint* ptr_ids =
+    public GLuint[] glCreateQueries(GLenum target, GLsizei n) { GLuint[] ids = new GLuint[n]; fixed (GLuint* ptr_ids =
  &ids[0]) _glCreateQueries(target, n, ptr_ids); return ids; }
     /// <summary>
     /// Generate a single query object name.
     /// </summary>
     /// <param name="target">Specifies the target of the query object.</param>
     /// <returns>The generated query object name.</returns>
-    public static GLuint glCreateQuery(GLenum target) => glCreateQueries(target, 1)[0];
+    public GLuint glCreateQuery(GLenum target) => glCreateQueries(target, 1)[0];
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETQUERYBUFFEROBJECTI64VPROC(GLuint id, GLuint buffer, GLenum pname, GLintptr offset);
-    private static PFNGLGETQUERYBUFFEROBJECTI64VPROC _glGetQueryBufferObjecti64v;
+    private PFNGLGETQUERYBUFFEROBJECTI64VPROC _glGetQueryBufferObjecti64v;
     /// <summary>
     /// Retrieve the value of a query object parameter.
     /// </summary>
@@ -18490,11 +18488,11 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of a buffer object into which to place the returned data.</param>
     /// <param name="pname">Specifies the name of the query parameter to retrieve.</param>
     /// <param name="offset">Specifies the offset into the buffer object's data store where data will be placed.</param>
-    public static void glGetQueryBufferObjecti64v(GLuint id, GLuint buffer, GLenum pname, GLintptr offset) => _glGetQueryBufferObjecti64v(id, buffer, pname, offset);
+    public void glGetQueryBufferObjecti64v(GLuint id, GLuint buffer, GLenum pname, GLintptr offset) => _glGetQueryBufferObjecti64v(id, buffer, pname, offset);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETQUERYBUFFEROBJECTIVPROC(GLuint id, GLuint buffer, GLenum pname, GLintptr offset);
-    private static PFNGLGETQUERYBUFFEROBJECTIVPROC _glGetQueryBufferObjectiv;
+    private PFNGLGETQUERYBUFFEROBJECTIVPROC _glGetQueryBufferObjectiv;
     /// <summary>
     /// Retrieve the value of a query object parameter.
     /// </summary>
@@ -18502,11 +18500,11 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of a buffer object into which to place the returned data.</param>
     /// <param name="pname">Specifies the name of the query parameter to retrieve.</param>
     /// <param name="offset">Specifies the offset into the buffer object's data store where data will be placed.</param>
-    public static void glGetQueryBufferObjectiv(GLuint id, GLuint buffer, GLenum pname, GLintptr offset) => _glGetQueryBufferObjectiv(id, buffer, pname, offset);
+    public void glGetQueryBufferObjectiv(GLuint id, GLuint buffer, GLenum pname, GLintptr offset) => _glGetQueryBufferObjectiv(id, buffer, pname, offset);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETQUERYBUFFEROBJECTUI64VPROC(GLuint id, GLuint buffer, GLenum pname, GLintptr offset);
-    private static PFNGLGETQUERYBUFFEROBJECTUI64VPROC _glGetQueryBufferObjectui64v;
+    private PFNGLGETQUERYBUFFEROBJECTUI64VPROC _glGetQueryBufferObjectui64v;
     /// <summary>
     /// Retrieve the value of a query object parameter.
     /// </summary>
@@ -18514,11 +18512,11 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of a buffer object into which to place the returned data.</param>
     /// <param name="pname">Specifies the name of the query parameter to retrieve.</param>
     /// <param name="offset">Specifies the offset into the buffer object's data store where data will be placed.</param>
-    public static void glGetQueryBufferObjectui64v(GLuint id, GLuint buffer, GLenum pname, GLintptr offset) => _glGetQueryBufferObjectui64v(id, buffer, pname, offset);
+    public void glGetQueryBufferObjectui64v(GLuint id, GLuint buffer, GLenum pname, GLintptr offset) => _glGetQueryBufferObjectui64v(id, buffer, pname, offset);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETQUERYBUFFEROBJECTUIVPROC(GLuint id, GLuint buffer, GLenum pname, GLintptr offset);
-    private static PFNGLGETQUERYBUFFEROBJECTUIVPROC _glGetQueryBufferObjectuiv;
+    private PFNGLGETQUERYBUFFEROBJECTUIVPROC _glGetQueryBufferObjectuiv;
     /// <summary>
     /// Retrieve the value of a query object parameter.
     /// </summary>
@@ -18526,20 +18524,20 @@ public static unsafe class GL
     /// <param name="buffer">Specifies the name of a buffer object into which to place the returned data.</param>
     /// <param name="pname">Specifies the name of the query parameter to retrieve.</param>
     /// <param name="offset">Specifies the offset into the buffer object's data store where data will be placed.</param>
-    public static void glGetQueryBufferObjectuiv(GLuint id, GLuint buffer, GLenum pname, GLintptr offset) => _glGetQueryBufferObjectuiv(id, buffer, pname, offset);
+    public void glGetQueryBufferObjectuiv(GLuint id, GLuint buffer, GLenum pname, GLintptr offset) => _glGetQueryBufferObjectuiv(id, buffer, pname, offset);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLMEMORYBARRIERBYREGIONPROC(GLbitfield barriers);
-    private static PFNGLMEMORYBARRIERBYREGIONPROC _glMemoryBarrierByRegion;
+    private PFNGLMEMORYBARRIERBYREGIONPROC _glMemoryBarrierByRegion;
     /// <summary>
     /// Specify the execution memory barriers to be applied.
     /// </summary>
     /// <param name="barriers">Specifies the barriers to be applied.</param>
-    public static void glMemoryBarrierByRegion(GLbitfield barriers) => _glMemoryBarrierByRegion(barriers);
+    public void glMemoryBarrierByRegion(GLbitfield barriers) => _glMemoryBarrierByRegion(barriers);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETTEXTURESUBIMAGEPROC(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, GLsizei bufSize, void* pixels);
-    private static PFNGLGETTEXTURESUBIMAGEPROC _glGetTextureSubImage;
+    private PFNGLGETTEXTURESUBIMAGEPROC _glGetTextureSubImage;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return a subregion of a texture image.
@@ -18556,7 +18554,7 @@ public static unsafe class GL
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="bufSize">Specifies the size in basic machine units of the buffer addressed by pixels.</param>
     /// <param name="pixels">Specifies a pointer to the buffer into which to place the returned pixel data.</param>
-    public static void glGetTextureSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, GLsizei bufSize, void* pixels) => _glGetTextureSubImage(texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, bufSize, pixels);
+    public void glGetTextureSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, GLsizei bufSize, void* pixels) => _glGetTextureSubImage(texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, bufSize, pixels);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18574,14 +18572,14 @@ public static unsafe class GL
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="bufSize">Specifies the size in basic machine units of the buffer addressed by pixels.</param>
     /// <returns>The pixel data.</returns>
-    public static byte[] glGetTextureSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, GLsizei bufSize) { byte[] pixels
+    public byte[] glGetTextureSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, GLsizei bufSize) { byte[] pixels
  = new byte[bufSize]; fixed (void* ptr_pixels =
  &pixels[0]) _glGetTextureSubImage(texture, level, xoffset, yoffset, zoffset, width, height, depth, format, type, bufSize, ptr_pixels); return pixels; }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETCOMPRESSEDTEXTURESUBIMAGEPROC(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize, void* pixels);
-    private static PFNGLGETCOMPRESSEDTEXTURESUBIMAGEPROC _glGetCompressedTextureSubImage;
+    private PFNGLGETCOMPRESSEDTEXTURESUBIMAGEPROC _glGetCompressedTextureSubImage;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return a subregion of a compressed texture image.
@@ -18596,7 +18594,7 @@ public static unsafe class GL
     /// <param name="depth">Specifies the depth of the texture subimage.</param>
     /// <param name="bufSize">Specifies the size in basic machine units of the buffer addressed by pixels.</param>
     /// <param name="pixels">Specifies a pointer to the buffer into which to place the returned pixel data.</param>
-    public static void glGetCompressedTextureSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize, void* pixels) => _glGetCompressedTextureSubImage(texture, level, xoffset, yoffset, zoffset, width, height, depth, bufSize, pixels);
+    public void glGetCompressedTextureSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize, void* pixels) => _glGetCompressedTextureSubImage(texture, level, xoffset, yoffset, zoffset, width, height, depth, bufSize, pixels);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18612,23 +18610,23 @@ public static unsafe class GL
     /// <param name="depth">Specifies the depth of the texture subimage.</param>
     /// <param name="bufSize">Specifies the size in basic machine units of the buffer addressed by pixels.</param>
     /// <returns>The pixel data.</returns>
-    public static byte[] glGetCompressedTextureSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize) { byte[] pixels
+    public byte[] glGetCompressedTextureSubImage(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize) { byte[] pixels
  = new byte[bufSize]; fixed (void* ptr_pixels =
  &pixels[0]) _glGetCompressedTextureSubImage(texture, level, xoffset, yoffset, zoffset, width, height, depth, bufSize, ptr_pixels); return pixels; }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate GLenum PFNGLGETGRAPHICSRESETSTATUSPROC();
-    private static PFNGLGETGRAPHICSRESETSTATUSPROC _glGetGraphicsResetStatus;
+    private PFNGLGETGRAPHICSRESETSTATUSPROC _glGetGraphicsResetStatus;
     /// <summary>
     /// Return the reset status of the specified reset target.
     /// </summary>
     /// <returns>The reset status of the specified reset target.</returns>
-    public static GLenum glGetGraphicsResetStatus() => _glGetGraphicsResetStatus();
+    public GLenum glGetGraphicsResetStatus() => _glGetGraphicsResetStatus();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNCOMPRESSEDTEXIMAGEPROC(GLenum target, GLint lod, GLsizei bufSize, void* pixels);
-    private static PFNGLGETNCOMPRESSEDTEXIMAGEPROC _glGetnCompressedTexImage;
+    private PFNGLGETNCOMPRESSEDTEXIMAGEPROC _glGetnCompressedTexImage;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return a compressed texture image.
@@ -18637,7 +18635,7 @@ public static unsafe class GL
     /// <param name="lod">Specifies the level-of-detail number of the desired image.</param>
     /// <param name="bufSize">Specifies the size in basic machine units of the buffer addressed by pixels.</param>
     /// <param name="pixels">Specifies a pointer to the buffer into which to place the returned pixel data.</param>
-    public static void glGetnCompressedTexImage(GLenum target, GLint lod, GLsizei bufSize, void* pixels) => _glGetnCompressedTexImage(target, lod, bufSize, pixels);
+    public void glGetnCompressedTexImage(GLenum target, GLint lod, GLsizei bufSize, void* pixels) => _glGetnCompressedTexImage(target, lod, bufSize, pixels);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18647,13 +18645,13 @@ public static unsafe class GL
     /// <param name="lod">Specifies the level-of-detail number of the desired image.</param>
     /// <param name="bufSize">Specifies the maximum amount of bytes to return.</param>
     /// <returns>The pixel data.</returns>
-    public static byte[] glGetnCompressedTexImage(GLenum target, GLint lod, GLsizei bufSize) { byte[] pixels = new byte[bufSize]; fixed (void* ptr_pixels =
+    public byte[] glGetnCompressedTexImage(GLenum target, GLint lod, GLsizei bufSize) { byte[] pixels = new byte[bufSize]; fixed (void* ptr_pixels =
  &pixels[0]) _glGetnCompressedTexImage(target, lod, bufSize, ptr_pixels); return pixels; }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNTEXIMAGEPROC(GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize, void* pixels);
-    private static PFNGLGETNTEXIMAGEPROC _glGetnTexImage;
+    private PFNGLGETNTEXIMAGEPROC _glGetnTexImage;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return a texture image.
@@ -18664,7 +18662,7 @@ public static unsafe class GL
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="bufSize">Specifies the size in basic machine units of the buffer addressed by pixels.</param>
     /// <param name="pixels">Specifies a pointer to the buffer into which to place the returned pixel data.</param>
-    public static void glGetnTexImage(GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize, void* pixels) => _glGetnTexImage(target, level, format, type, bufSize, pixels);
+    public void glGetnTexImage(GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize, void* pixels) => _glGetnTexImage(target, level, format, type, bufSize, pixels);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18676,13 +18674,13 @@ public static unsafe class GL
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="bufSize">Specifies the maximum amount of bytes to return.</param>
     /// <returns>The pixel data.</returns>
-    public static byte[] glGetnTexImage(GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize) { byte[] pixels =
+    public byte[] glGetnTexImage(GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize) { byte[] pixels =
  new byte[bufSize]; fixed (void* ptr_pixels = &pixels[0]) _glGetnTexImage(target, level, format, type, bufSize, ptr_pixels); return pixels; }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNUNIFORMDVPROC(GLuint program, GLint location, GLsizei bufSize, GLdouble* parameters);
-    private static PFNGLGETNUNIFORMDVPROC _glGetnUniformdv;
+    private PFNGLGETNUNIFORMDVPROC _glGetnUniformdv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return a double-precision uniform variable from the specified program object.
@@ -18691,7 +18689,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the uniform variable location to be queried.</param>
     /// <param name="bufSize">Specifies the maximum number of double-precision floating-point values that may be written to params.</param>
     /// <param name="parameters">Specifies the address of a variable into which the double-precision floating-point values are written.</param>
-    public static void glGetnUniformdv(GLuint program, GLint location, GLsizei bufSize, GLdouble* parameters) => _glGetnUniformdv(program, location, bufSize, parameters);
+    public void glGetnUniformdv(GLuint program, GLint location, GLsizei bufSize, GLdouble* parameters) => _glGetnUniformdv(program, location, bufSize, parameters);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18701,13 +18699,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the uniform variable location to be queried.</param>
     /// <param name="bufSize">Specifies the maximum number of double-precision floating-point values that may be written to params.</param>
     /// <param name="parameters">Specifies an array into which the double-precision floating-point values are written.</param>
-    public static void glGetnUniformdv(GLuint program, GLint location, GLsizei bufSize, ref GLdouble[] parameters) { fixed (void* ptr_parameters =
+    public void glGetnUniformdv(GLuint program, GLint location, GLsizei bufSize, ref GLdouble[] parameters) { fixed (void* ptr_parameters =
  &parameters[0]) _glGetnUniformdv(program, location, bufSize, (GLdouble*)ptr_parameters); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNUNIFORMFVPROC(GLuint program, GLint location, GLsizei bufSize, GLfloat* parameters);
-    private static PFNGLGETNUNIFORMFVPROC _glGetnUniformfv;
+    private PFNGLGETNUNIFORMFVPROC _glGetnUniformfv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return a float uniform variable from the specified program object.
@@ -18716,7 +18714,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the uniform variable location to be queried.</param>
     /// <param name="bufSize">Specifies the maximum number of float values that may be written to params.</param>
     /// <param name="parameters">Specifies the address of a variable into which the float values are written.</param>
-    public static void glGetnUniformfv(GLuint program, GLint location, GLsizei bufSize, GLfloat* parameters) => _glGetnUniformfv(program, location, bufSize, parameters);
+    public void glGetnUniformfv(GLuint program, GLint location, GLsizei bufSize, GLfloat* parameters) => _glGetnUniformfv(program, location, bufSize, parameters);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18726,13 +18724,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the uniform variable location to be queried.</param>
     /// <param name="bufSize">Specifies the maximum number of float values that may be written to params.</param>
     /// <param name="parameters">Specifies an array into which the float values are written.</param>
-    public static void glGetnUniformfv(GLuint program, GLint location, GLsizei bufSize, ref GLfloat[] parameters) { fixed (void* ptr_parameters =
+    public void glGetnUniformfv(GLuint program, GLint location, GLsizei bufSize, ref GLfloat[] parameters) { fixed (void* ptr_parameters =
  &parameters[0]) _glGetnUniformfv(program, location, bufSize, (GLfloat*)ptr_parameters); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNUNIFORMIVPROC(GLuint program, GLint location, GLsizei bufSize, GLint* parameters);
-    private static PFNGLGETNUNIFORMIVPROC _glGetnUniformiv;
+    private PFNGLGETNUNIFORMIVPROC _glGetnUniformiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return an integer uniform variable from the specified program object.
@@ -18741,7 +18739,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the uniform variable location to be queried.</param>
     /// <param name="bufSize">Specifies the maximum number of integer values that may be written to params.</param>
     /// <param name="parameters">Specifies the address of a variable into which the integer values are written.</param>
-    public static void glGetnUniformiv(GLuint program, GLint location, GLsizei bufSize, GLint* parameters) => _glGetnUniformiv(program, location, bufSize, parameters);
+    public void glGetnUniformiv(GLuint program, GLint location, GLsizei bufSize, GLint* parameters) => _glGetnUniformiv(program, location, bufSize, parameters);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18751,13 +18749,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the uniform variable location to be queried.</param>
     /// <param name="bufSize">Specifies the maximum number of integer values that may be written to params.</param>
     /// <param name="parameters">Specifies an array into which the integer values are written.</param>
-    public static void glGetnUniformiv(GLuint program, GLint location, GLsizei bufSize, ref GLint[] parameters) { fixed (void* ptr_parameters =
+    public void glGetnUniformiv(GLuint program, GLint location, GLsizei bufSize, ref GLint[] parameters) { fixed (void* ptr_parameters =
  &parameters[0]) _glGetnUniformiv(program, location, bufSize, (GLint*)ptr_parameters); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLGETNUNIFORMUIVPROC(GLuint program, GLint location, GLsizei bufSize, GLuint* parameters);
-    private static PFNGLGETNUNIFORMUIVPROC _glGetnUniformuiv;
+    private PFNGLGETNUNIFORMUIVPROC _glGetnUniformuiv;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Return an unsigned integer uniform variable from the specified program object.
@@ -18766,7 +18764,7 @@ public static unsafe class GL
     /// <param name="location">Specifies the uniform variable location to be queried.</param>
     /// <param name="bufSize">Specifies the maximum number of unsigned integer values that may be written to params.</param>
     /// <param name="parameters">Specifies the address of a variable into which the unsigned integer values are written.</param>
-    public static void glGetnUniformuiv(GLuint program, GLint location, GLsizei bufSize, GLuint* parameters) => _glGetnUniformuiv(program, location, bufSize, parameters);
+    public void glGetnUniformuiv(GLuint program, GLint location, GLsizei bufSize, GLuint* parameters) => _glGetnUniformuiv(program, location, bufSize, parameters);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18776,13 +18774,13 @@ public static unsafe class GL
     /// <param name="location">Specifies the uniform variable location to be queried.</param>
     /// <param name="bufSize">Specifies the maximum number of unsigned integer values that may be written to params.</param>
     /// <param name="parameters">Specifies an array into which the unsigned integer values are written.</param>
-    public static void glGetnUniformuiv(GLuint program, GLint location, GLsizei bufSize, ref GLuint[] parameters) { fixed (void* ptr_parameters =
+    public void glGetnUniformuiv(GLuint program, GLint location, GLsizei bufSize, ref GLuint[] parameters) { fixed (void* ptr_parameters =
  &parameters[0]) _glGetnUniformuiv(program, location, bufSize, (GLuint*)ptr_parameters); }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLREADNPIXELSPROC(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void* data);
-    private static PFNGLREADNPIXELSPROC _glReadnPixels;
+    private PFNGLREADNPIXELSPROC _glReadnPixels;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Read a block of pixels from the frame buffer.
@@ -18795,7 +18793,7 @@ public static unsafe class GL
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="bufSize">Specifies the size in bytes of the buffer pointed to by data.</param>
     /// <param name="data">Returns the pixel data.</param>
-    public static void glReadnPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void* data) => _glReadnPixels(x, y, width, height, format, type, bufSize, data);
+    public void glReadnPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void* data) => _glReadnPixels(x, y, width, height, format, type, bufSize, data);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18809,17 +18807,17 @@ public static unsafe class GL
     /// <param name="type">Specifies the data type of the pixel data.</param>
     /// <param name="bufSize">Specifies the maximum amount of bytes to be returned.</param>
     /// <returns>Returns the pixel data.</returns>
-    public static byte[] glReadnPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize) { byte[] data =
+    public byte[] glReadnPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize) { byte[] data =
  new byte[bufSize]; fixed (void* ptr_data = &data[0]) _glReadnPixels(x, y, width, height, format, type, bufSize, ptr_data); return data; }
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLTEXTUREBARRIERPROC();
-    private static PFNGLTEXTUREBARRIERPROC _glTextureBarrier;
+    private PFNGLTEXTUREBARRIERPROC _glTextureBarrier;
     /// <summary>
     /// Insert a memory barrier to ensure that texture writes have completed.
     /// </summary>
-    public static void glTextureBarrier() => _glTextureBarrier();
+    public void glTextureBarrier() => _glTextureBarrier();
 
 #endif
 
@@ -18828,7 +18826,7 @@ public static unsafe class GL
 #if OGL_V_4_6
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLSPECIALIZESHADERPROC(GLuint shader, GLchar* pEntryPoint, GLuint numSpecializationConstants, GLuint* pConstantIndex, GLuint* pConstantValue);
-    private static PFNGLSPECIALIZESHADERPROC _glSpecializeShader;
+    private PFNGLSPECIALIZESHADERPROC _glSpecializeShader;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Specialize a shader.
@@ -18838,7 +18836,7 @@ public static unsafe class GL
     /// <param name="numSpecializationConstants">Specifies the number of elements in the pConstantIndex and pConstantValue arrays.</param>
     /// <param name="pConstantIndex">Specifies the index of each specialization constant to be set.</param>
     /// <param name="pConstantValue">Specifies the value of each specialization constant to be set.</param>
-    public static void glSpecializeShader(GLuint shader, GLchar* pEntryPoint, GLuint numSpecializationConstants, GLuint* pConstantIndex, GLuint* pConstantValue) => _glSpecializeShader(shader, pEntryPoint, numSpecializationConstants, pConstantIndex, pConstantValue);
+    public void glSpecializeShader(GLuint shader, GLchar* pEntryPoint, GLuint numSpecializationConstants, GLuint* pConstantIndex, GLuint* pConstantValue) => _glSpecializeShader(shader, pEntryPoint, numSpecializationConstants, pConstantIndex, pConstantValue);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18849,7 +18847,7 @@ public static unsafe class GL
     /// <param name="numSpecializationConstants">Specifies the number of elements in the pConstantIndex and pConstantValue arrays.</param>
     /// <param name="pConstantIndex">Specifies the index of each specialization constant to be set.</param>
     /// <param name="pConstantValue">Specifies the value of each specialization constant to be set.</param>
-    public static void glSpecializeShader(GLuint shader, string pEntryPoint, GLuint numSpecializationConstants, GLuint[] pConstantIndex, GLuint[] pConstantValue)
+    public void glSpecializeShader(GLuint shader, string pEntryPoint, GLuint numSpecializationConstants, GLuint[] pConstantIndex, GLuint[] pConstantValue)
     {
         GLchar[] pEntryPointBytes = Encoding.UTF8.GetBytes(pEntryPoint);
         fixed (GLchar* ptr_pEntryPoint = &pEntryPointBytes[0])
@@ -18861,7 +18859,7 @@ public static unsafe class GL
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLMULTIDRAWARRAYSINDIRECTCOUNTPROC(GLenum mode, void* indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride);
-    private static PFNGLMULTIDRAWARRAYSINDIRECTCOUNTPROC _glMultiDrawArraysIndirectCount;
+    private PFNGLMULTIDRAWARRAYSINDIRECTCOUNTPROC _glMultiDrawArraysIndirectCount;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Render multiple sets of primitives from array data, taking parameters from memory.
@@ -18871,7 +18869,7 @@ public static unsafe class GL
     /// <param name="drawcount">Specifies the address of an integer containing the maximum number of elements that will be written to the buffer.</param>
     /// <param name="maxdrawcount">Specifies the address of an integer containing the maximum number of elements that will be written to the buffer.</param>
     /// <param name="stride">Specifies the distance in basic machine units between elements of the array of indirect.</param>
-    public static void glMultiDrawArraysIndirectCount(GLenum mode, void* indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride) => _glMultiDrawArraysIndirectCount(mode, indirect, drawcount, maxdrawcount, stride);
+    public void glMultiDrawArraysIndirectCount(GLenum mode, void* indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride) => _glMultiDrawArraysIndirectCount(mode, indirect, drawcount, maxdrawcount, stride);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18882,12 +18880,12 @@ public static unsafe class GL
     /// <param name="drawcount">Specifies the address of an integer containing the maximum number of elements that will be written to the buffer.</param>
     /// <param name="maxdrawcount">Specifies the address of an integer containing the maximum number of elements that will be written to the buffer.</param>
     /// <param name="stride">Specifies the distance in basic machine units between elements of the array of indirect.</param>
-    public static void glMultiDrawArraysIndirectCount(GLenum mode, DrawArraysIndirectCommand indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride) => _glMultiDrawArraysIndirectCount(mode, &indirect, drawcount, maxdrawcount, stride);
+    public void glMultiDrawArraysIndirectCount(GLenum mode, DrawArraysIndirectCommand indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride) => _glMultiDrawArraysIndirectCount(mode, &indirect, drawcount, maxdrawcount, stride);
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLMULTIDRAWELEMENTSINDIRECTCOUNTPROC(GLenum mode, GLenum type, void* indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride);
-    private static PFNGLMULTIDRAWELEMENTSINDIRECTCOUNTPROC _glMultiDrawElementsIndirectCount;
+    private PFNGLMULTIDRAWELEMENTSINDIRECTCOUNTPROC _glMultiDrawElementsIndirectCount;
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_UNSAFE
     /// <summary>
     /// Render multiple sets of primitives by specifying indices of array data elements.
@@ -18898,7 +18896,7 @@ public static unsafe class GL
     /// <param name="drawcount">Specifies the address of an integer containing the maximum number of elements that will be written to the buffer.</param>
     /// <param name="maxdrawcount">Specifies the address of an integer containing the maximum number of elements that will be written to the buffer.</param>
     /// <param name="stride">Specifies the distance in basic machine units between elements of the array of indirect.</param>
-    public static void glMultiDrawElementsIndirectCount(GLenum mode, GLenum type, void* indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride) => _glMultiDrawElementsIndirectCount(mode, type, indirect, drawcount, maxdrawcount, stride);
+    public void glMultiDrawElementsIndirectCount(GLenum mode, GLenum type, void* indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride) => _glMultiDrawElementsIndirectCount(mode, type, indirect, drawcount, maxdrawcount, stride);
 #endif
 #if OGL_WRAPPER_API_BOTH || OGL_WRAPPER_API_SAFE
     /// <summary>
@@ -18910,26 +18908,26 @@ public static unsafe class GL
     /// <param name="drawcount">Specifies the address of an integer containing the maximum number of elements that will be written to the buffer.</param>
     /// <param name="maxdrawcount">Specifies the address of an integer containing the maximum number of elements that will be written to the buffer.</param>
     /// <param name="stride">Specifies the distance in basic machine units between elements of the array of indirect.</param>
-    public static void glMultiDrawElementsIndirectCount(GLenum mode, GLenum type, DrawElementsIndirectCommand indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride) => _glMultiDrawElementsIndirectCount(mode, type, &indirect, drawcount, maxdrawcount, stride);
+    public void glMultiDrawElementsIndirectCount(GLenum mode, GLenum type, DrawElementsIndirectCommand indirect, GLintptr drawcount, GLsizei maxdrawcount, GLsizei stride) => _glMultiDrawElementsIndirectCount(mode, type, &indirect, drawcount, maxdrawcount, stride);
 #endif
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PFNGLPOLYGONOFFSETCLAMPPROC(GLfloat factor, GLfloat units, GLfloat clamp);
-    private static PFNGLPOLYGONOFFSETCLAMPPROC _glPolygonOffsetClamp;
+    private PFNGLPOLYGONOFFSETCLAMPPROC _glPolygonOffsetClamp;
     /// <summary>
     /// Controls the parameters of polygon offset.
     /// </summary>
     /// <param name="factor">Specifies a scale factor that is used to create a variable depth offset for each polygon. The initial value is 0.</param>
     /// <param name="units">Is multiplied by an implementation-specific value to create a constant depth offset. The initial value is 0.</param>
     /// <param name="clamp">Specifies the maximum (or minimum) depth clamping value. The initial value is 0.</param>
-    public static void glPolygonOffsetClamp(GLfloat factor, GLfloat units, GLfloat clamp) => _glPolygonOffsetClamp(factor, units, clamp);
+    public void glPolygonOffsetClamp(GLfloat factor, GLfloat units, GLfloat clamp) => _glPolygonOffsetClamp(factor, units, clamp);
 
 #endif
 
     /// <summary>
     ///     Loads OpenGL functions using the specified loader delegate.
     /// </summary>
-    public static void Import( GetProcAddressHandler loader )
+    public void Import( GetProcAddressHandler loader )
     {
 #if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         _glCullFace               = Marshal.GetDelegateForFunctionPointer< PFNGLCULLFACEPROC >( loader.Invoke( "glCullFace" ) );
