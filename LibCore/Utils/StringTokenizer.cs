@@ -327,9 +327,8 @@ public class StringTokenizer
     }
 
     /// <summary>
+    ///     Returns TRUE if the supplied codepoint is a delimiter.
     /// </summary>
-    /// <param name="codePoint"></param>
-    /// <returns></returns>
     private bool IsDelimiter( int codePoint )
     {
         if ( _delimiterCodePoints == null )

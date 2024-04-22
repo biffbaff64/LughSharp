@@ -1112,7 +1112,7 @@ public class SpriteCache
         RenderCallsSinceBegin = 0;
         _combinedMatrix.Set( ProjectionMatrix ).Mul( TransformMatrix );
 
-        GL.glDepthMask( false );
+        Gdx.GL.glDepthMask( false );
 
         if ( CustomShader != null )
         {
@@ -1150,7 +1150,7 @@ public class SpriteCache
 
         IsDrawing = false;
 
-        GL.glDepthMask( true );
+        Gdx.GL.glDepthMask( true );
 
         _mesh.Unbind( CustomShader ?? _shader );
     }

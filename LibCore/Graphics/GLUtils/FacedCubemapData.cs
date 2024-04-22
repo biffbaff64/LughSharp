@@ -149,11 +149,11 @@ public class FacedCubemapData : ICubemapData
                     disposePixmap = true;
                 }
 
-                GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 1 );
+                Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 1 );
 
                 unsafe
                 {
-                    GL.glTexImage2D( IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                    Gdx.GL.glTexImage2D( IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                                      0,
                                      pixmap.GLInternalFormat,
                                      pixmap.Width,

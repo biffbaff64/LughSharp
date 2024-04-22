@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Utils.Buffers;
 
+[PublicAPI]
 public class HeapShortBuffer : ShortBuffer
 {
     public HeapShortBuffer( int capacity, int limit )

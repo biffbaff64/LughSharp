@@ -151,7 +151,7 @@ public class FileTextureArrayData : ITextureArrayData
 
                 unsafe
                 {
-                    GL.glTexSubImage3D( IGL.GL_TEXTURE_2D_ARRAY,
+                    Gdx.GL.glTexSubImage3D( IGL.GL_TEXTURE_2D_ARRAY,
                                         0,
                                         0,
                                         0,
@@ -166,7 +166,7 @@ public class FileTextureArrayData : ITextureArrayData
 
                 if ( _useMipMaps )
                 {
-                    GL.glGenerateMipmap( IGL.GL_TEXTURE_2D_ARRAY );
+                    Gdx.GL.glGenerateMipmap( IGL.GL_TEXTURE_2D_ARRAY );
                 }
 
                 if ( disposePixmap )

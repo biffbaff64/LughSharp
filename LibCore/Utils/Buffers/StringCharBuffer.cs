@@ -242,19 +242,16 @@ public class StringCharBuffer : CharBuffer
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    /// <exception cref="GdxRuntimeException">As this buffer is read-only </exception>
     protected override CharBuffer Put( char c )
     {
         throw new GdxRuntimeException( "Buffer is Read Only!" );
     }
 
-    /// <exception cref="GdxRuntimeException">As this buffer is read-only </exception>
     public override CharBuffer Put( int index, char c )
     {
         throw new GdxRuntimeException( "Buffer is Read Only!" );
     }
 
-    /// <exception cref="GdxRuntimeException">As this buffer is read-only </exception>
     public override CharBuffer Compact()
     {
         throw new GdxRuntimeException( "Buffer is Read Only!" );

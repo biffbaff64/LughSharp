@@ -388,7 +388,7 @@ public class PixmapPacker : IDisposable
 
             unsafe
             {
-                GL.glTexSubImage2D(
+                Gdx.GL.glTexSubImage2D(
                     page.Texture!.GLTarget,
                     0,
                     rectX,

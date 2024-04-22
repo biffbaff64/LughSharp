@@ -224,11 +224,11 @@ public partial class Decoder
                     _l1Decoder = new LayerIDecoder();
 
                     _l1Decoder.Create( stream,
-                                       header,
-                                       _leftChannelFilter,
-                                       _rightChannelFilter,
-                                       _output,
-                                       ( int ) OutputChannelsEnum.BothChannels );
+										header,
+										_leftChannelFilter,
+										_rightChannelFilter,
+										_output,
+										( int ) OutputChannelsEnum.BothChannels );
                 }
 
                 decoder = _l1Decoder;

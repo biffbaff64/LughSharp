@@ -477,7 +477,7 @@ public abstract class Buffer
     ///     </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
-    public abstract object BackingArray();
+    public abstract int[] BackingArray();
 
     /// <summary>
     ///     Returns the offset within this buffer's backing array of the first

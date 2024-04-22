@@ -432,12 +432,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         for ( var i = 0; i < 2; i++ )
         {
-            GL.glClearColor( config.InitialBackgroundColor.R,
+            Gdx.GL.glClearColor( config.InitialBackgroundColor.R,
                              config.InitialBackgroundColor.G,
                              config.InitialBackgroundColor.B,
                              config.InitialBackgroundColor.A );
 
-            GL.glClear( IGL.GL_COLOR_BUFFER_BIT );
+            Gdx.GL.glClear( IGL.GL_COLOR_BUFFER_BIT );
             Glfw.SwapBuffers( windowHandle );
         }
     }

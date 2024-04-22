@@ -38,6 +38,9 @@ public static class GdxSystem
     public static bool IsARM     { get; private set; } = IsArmArchitecture();
     public static bool Is64Bit   { get; private set; } = Environment.Is64BitOperatingSystem;
 
+    /// <summary>
+    ///     Returns TRUE if the OS architecture is ARM based.
+    /// </summary>
     public static bool IsArmArchitecture()
     {
         return RuntimeInformation.OSArchitecture switch
@@ -48,6 +51,9 @@ public static class GdxSystem
         };
     }
 
+    /// <summary>
+    ///     Returns a string representation of a new GUID structure.
+    /// </summary>
     public static string RandomUUID()
     {
         return Guid.NewGuid().ToString();

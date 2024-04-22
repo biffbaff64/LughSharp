@@ -178,7 +178,7 @@ public class ShaderProgram
                 // Gdx.gl20.glGetProgramiv(program, IGL.GL_INFO_LOG_LENGTH, intbuf);
                 // int infoLogLength = intbuf.get(0);
                 // if (infoLogLength > 1) {
-                _log = GL.glGetProgramInfoLog( ( uint ) Handle, IGL.GL_INFO_LOG_LENGTH );
+                _log = Gdx.GL.glGetProgramInfoLog( ( uint ) Handle, IGL.GL_INFO_LOG_LENGTH );
 
                 // }
             }
@@ -220,16 +220,16 @@ public class ShaderProgram
     {
         var intbuf = BufferUtils.NewIntBuffer( 1 );
 
-        var shader = GL.glCreateShader( type );
+        var shader = Gdx.GL.glCreateShader( type );
 
         if ( shader == 0 )
         {
             return -1;
         }
 
-        GL.glShaderSource( shader, source );
-        GL.glCompileShader( shader );
-        GL.glGetShaderiv( shader, IGL.GL_COMPILE_STATUS, intbuf );
+        Gdx.GL.glShaderSource( shader, source );
+        Gdx.GL.glCompileShader( shader );
+        Gdx.GL.glGetShaderiv( shader, IGL.GL_COMPILE_STATUS, intbuf );
 
         var compiled = intbuf.Get( 0 );
 
@@ -238,7 +238,7 @@ public class ShaderProgram
 // gl.glGetShaderiv(shader, IGL.GL_INFO_LOG_LENGTH, intbuf);
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
-            var infoLog = GL.glGetShaderInfoLog( shader, IGL.GL_INFO_LOG_LENGTH );
+            var infoLog = Gdx.GL.glGetShaderInfoLog( shader, IGL.GL_INFO_LOG_LENGTH );
             _log += type == IGL.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
             _log += infoLog;
 
@@ -254,7 +254,7 @@ public class ShaderProgram
     /// <returns></returns>
     protected static int CreateProgram()
     {
-        var program = ( int ) GL.glCreateProgram();
+        var program = ( int ) Gdx.GL.glCreateProgram();
 
         return program != 0 ? program : -1;
     }
@@ -266,15 +266,15 @@ public class ShaderProgram
             return -1;
         }
 
-        GL.glAttachShader( ( uint ) program, ( uint ) _vertexShaderHandle );
-        GL.glAttachShader( ( uint ) program, ( uint ) _fragmentShaderHandle );
-        GL.glLinkProgram( ( uint ) program );
+        Gdx.GL.glAttachShader( ( uint ) program, ( uint ) _vertexShaderHandle );
+        Gdx.GL.glAttachShader( ( uint ) program, ( uint ) _fragmentShaderHandle );
+        Gdx.GL.glLinkProgram( ( uint ) program );
 
         var tmp = ByteBuffer.Allocate( 4 );
         tmp.Order( ByteOrder.NativeOrder );
         var intbuf = tmp.AsIntBuffer();
 
-        GL.glGetProgramiv( ( uint ) program, IGL.GL_LINK_STATUS, intbuf );
+        Gdx.GL.glGetProgramiv( ( uint ) program, IGL.GL_LINK_STATUS, intbuf );
 
         var linked = intbuf.Get( 0 );
 
@@ -283,7 +283,7 @@ public class ShaderProgram
 // Gdx.gl20.glGetProgramiv(program, IGL.GL_INFO_LOG_LENGTH, intbuf);
 // int infoLogLength = intbuf.get(0);
 // if (infoLogLength > 1) {
-            _log = GL.glGetProgramInfoLog( ( uint ) program, IGL.GL_INFO_LOG_LENGTH );
+            _log = Gdx.GL.glGetProgramInfoLog( ( uint ) program, IGL.GL_INFO_LOG_LENGTH );
 
 // }
             return -1;

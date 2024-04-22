@@ -43,18 +43,57 @@ public interface IGL
     const int GL_ONE            = 1;
 
     // ------------------------------------------------------------------------
-    const int GL_DEPTH_BUFFER_BIT   = 0x00000100;
-    const int GL_STENCIL_BUFFER_BIT = 0x00000400;
-    const int GL_COLOR_BUFFER_BIT   = 0x00004000;
+    // GL_INVALID_INDEX is defined as 0xFFFFFFFFu in C.
+    const int GL_INVALID_INDEX = -1;
 
     // ------------------------------------------------------------------------
-    const int GL_POINTS         = 0x0000;
-    const int GL_LINES          = 0x0001;
-    const int GL_LINE_LOOP      = 0x0002;
-    const int GL_LINE_STRIP     = 0x0003;
-    const int GL_TRIANGLES      = 0x0004;
-    const int GL_TRIANGLE_STRIP = 0x0005;
-    const int GL_TRIANGLE_FAN   = 0x0006;
+    const int GL_CONTEXT_CORE_PROFILE_BIT          = 0x00000001;
+    const int GL_VERTEX_SHADER_BIT                 = 0x00000001;
+    const int GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT   = 0x00000001;
+    const int GL_SYNC_FLUSH_COMMANDS_BIT           = 0x00000001;
+    const int GL_CONTEXT_COMPATIBILITY_PROFILE_BIT = 0x00000002;
+    const int GL_FRAGMENT_SHADER_BIT               = 0x00000002;
+    const int GL_CONTEXT_FLAG_DEBUG_BIT            = 0x00000002;
+    const int GL_ELEMENT_ARRAY_BARRIER_BIT         = 0x00000002;
+    const int GL_GEOMETRY_SHADER_BIT               = 0x00000004;
+    const int GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT    = 0x00000004;
+    const int GL_UNIFORM_BARRIER_BIT               = 0x00000004;
+    const int GL_TESS_CONTROL_SHADER_BIT           = 0x00000008;
+    const int GL_CONTEXT_FLAG_NO_ERROR_BIT         = 0x00000008;
+    const int GL_TEXTURE_FETCH_BARRIER_BIT         = 0x00000008;
+    const int GL_TESS_EVALUATION_SHADER_BIT        = 0x00000010;
+    const int GL_SHADER_IMAGE_ACCESS_BARRIER_BIT   = 0x00000020;
+    const int GL_COMPUTE_SHADER_BIT                = 0x00000020;
+    const int GL_COMMAND_BARRIER_BIT               = 0x00000040;
+    const int GL_PIXEL_BUFFER_BARRIER_BIT          = 0x00000080;
+    const int GL_TEXTURE_UPDATE_BARRIER_BIT        = 0x00000100;
+    const int GL_DEPTH_BUFFER_BIT                  = 0x00000100;
+    const int GL_BUFFER_UPDATE_BARRIER_BIT         = 0x00000200;
+    const int GL_FRAMEBUFFER_BARRIER_BIT           = 0x00000400;
+    const int GL_STENCIL_BUFFER_BIT                = 0x00000400;
+    const int GL_TRANSFORM_FEEDBACK_BARRIER_BIT    = 0x00000800;
+    const int GL_ATOMIC_COUNTER_BARRIER_BIT        = 0x00001000;
+    const int GL_SHADER_STORAGE_BARRIER_BIT        = 0x00002000;
+    const int GL_CLIENT_MAPPED_BUFFER_BARRIER_BIT  = 0x00004000;
+    const int GL_COLOR_BUFFER_BIT                  = 0x00004000;
+    const int GL_QUERY_BUFFER_BARRIER_BIT          = 0x00008000;
+
+    // ------------------------------------------------------------------------
+    const int GL_POINTS                              = 0x0000;
+    const int GL_LINES                               = 0x0001;
+    const int GL_MAP_READ_BIT                        = 0x0001;
+    const int GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT = 0x0001;
+    const int GL_LINE_LOOP                           = 0x0002;
+    const int GL_MAP_WRITE_BIT                       = 0x0002;
+    const int GL_LINE_STRIP                          = 0x0003;
+    const int GL_TRIANGLES                           = 0x0004;
+    const int GL_MAP_INVALIDATE_RANGE_BIT            = 0x0004;
+    const int GL_TRIANGLE_STRIP                      = 0x0005;
+    const int GL_TRIANGLE_FAN                        = 0x0006;
+    const int GL_QUADS                               = 0x0007;
+    const int GL_MAP_INVALIDATE_BUFFER_BIT           = 0x0008;
+    const int GL_MAP_FLUSH_EXPLICIT_BIT              = 0x0010;
+    const int GL_MAP_UNSYNCHRONIZED_BIT              = 0x0020;
 
     // ------------------------------------------------------------------------
     const int GL_NEVER    = 0x0200;
@@ -117,13 +156,20 @@ public interface IGL
     const int GL_BLEND                   = 0x0BE2;
 
     // ------------------------------------------------------------------------
-    const int GL_SCISSOR_BOX       = 0x0C10;
-    const int GL_SCISSOR_TEST      = 0x0C11;
-    const int GL_COLOR_CLEAR_VALUE = 0x0C22;
-    const int GL_COLOR_WRITEMASK   = 0x0C23;
-    const int GL_UNPACK_ALIGNMENT  = 0x0CF5;
+    const int GL_READ_BUFFER        = 0x0C02;
+    const int GL_SCISSOR_BOX        = 0x0C10;
+    const int GL_SCISSOR_TEST       = 0x0C11;
+    const int GL_COLOR_CLEAR_VALUE  = 0x0C22;
+    const int GL_COLOR_WRITEMASK    = 0x0C23;
+    const int GL_UNPACK_ROW_LENGTH  = 0x0CF2;
+    const int GL_UNPACK_SKIP_ROWS   = 0x0CF3;
+    const int GL_UNPACK_SKIP_PIXELS = 0x0CF4;
+    const int GL_UNPACK_ALIGNMENT   = 0x0CF5;
 
     // ------------------------------------------------------------------------
+    const int GL_PACK_ROW_LENGTH   = 0x0D02;
+    const int GL_PACK_SKIP_ROWS    = 0x0D03;
+    const int GL_PACK_SKIP_PIXELS  = 0x0D04;
     const int GL_PACK_ALIGNMENT    = 0x0D05;
     const int GL_MAX_TEXTURE_SIZE  = 0x0D33;
     const int GL_MAX_VIEWPORT_DIMS = 0x0D3A;
@@ -149,6 +195,7 @@ public interface IGL
     const int GL_INT            = 0x1404;
     const int GL_UNSIGNED_INT   = 0x1405;
     const int GL_FLOAT          = 0x1406;
+    const int GL_HALF_FLOAT     = 0x140B;
     const int GL_FIXED          = 0x140C;
 
     // ------------------------------------------------------------------------
@@ -158,8 +205,14 @@ public interface IGL
     const int GL_TEXTURE = 0x1702;
 
     // ------------------------------------------------------------------------
+    const int GL_COLOR   = 0x1800;
+    const int GL_DEPTH   = 0x1801;
+    const int GL_STENCIL = 0x1802;
+
+    // ------------------------------------------------------------------------
     const int GL_STENCIL_INDEX   = 0x1901;
     const int GL_DEPTH_COMPONENT = 0x1902;
+    const int GL_RED             = 0x1903;
     const int GL_ALPHA           = 0x1906;
     const int GL_RGB             = 0x1907;
     const int GL_RGBA            = 0x1908;
@@ -293,6 +346,7 @@ public interface IGL
     const int GL_TEXTURE_CUBE_MAP_POSITIVE_Z = 0x8519;
     const int GL_TEXTURE_CUBE_MAP_NEGATIVE_Z = 0x851A;
     const int GL_MAX_CUBE_MAP_TEXTURE_SIZE   = 0x851C;
+    const int GL_VERTEX_ARRAY_BINDING        = 0x85B5;
 
     // ------------------------------------------------------------------------
     const int GL_VERTEX_ATTRIB_ARRAY_ENABLED    = 0x8622;
@@ -327,6 +381,37 @@ public interface IGL
     const int GL_DYNAMIC_DRAW                       = 0x88E8;
 
     // ------------------------------------------------------------------------
+    const int GL_UNIFORM_BUFFER                              = 0x8A11;
+    const int GL_UNIFORM_BUFFER_BINDING                      = 0x8A28;
+    const int GL_UNIFORM_BUFFER_START                        = 0x8A29;
+    const int GL_UNIFORM_BUFFER_SIZE                         = 0x8A2A;
+    const int GL_MAX_VERTEX_UNIFORM_BLOCKS                   = 0x8A2B;
+    const int GL_MAX_FRAGMENT_UNIFORM_BLOCKS                 = 0x8A2D;
+    const int GL_MAX_COMBINED_UNIFORM_BLOCKS                 = 0x8A2E;
+    const int GL_MAX_UNIFORM_BUFFER_BINDINGS                 = 0x8A2F;
+    const int GL_MAX_UNIFORM_BLOCK_SIZE                      = 0x8A30;
+    const int GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS      = 0x8A31;
+    const int GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS    = 0x8A33;
+    const int GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT             = 0x8A34;
+    const int GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH        = 0x8A35;
+    const int GL_ACTIVE_UNIFORM_BLOCKS                       = 0x8A36;
+    const int GL_UNIFORM_TYPE                                = 0x8A37;
+    const int GL_UNIFORM_SIZE                                = 0x8A38;
+    const int GL_UNIFORM_NAME_LENGTH                         = 0x8A39;
+    const int GL_UNIFORM_BLOCK_INDEX                         = 0x8A3A;
+    const int GL_UNIFORM_OFFSET                              = 0x8A3B;
+    const int GL_UNIFORM_ARRAY_STRIDE                        = 0x8A3C;
+    const int GL_UNIFORM_MATRIX_STRIDE                       = 0x8A3D;
+    const int GL_UNIFORM_IS_ROW_MAJOR                        = 0x8A3E;
+    const int GL_UNIFORM_BLOCK_BINDING                       = 0x8A3F;
+    const int GL_UNIFORM_BLOCK_DATA_SIZE                     = 0x8A40;
+    const int GL_UNIFORM_BLOCK_NAME_LENGTH                   = 0x8A41;
+    const int GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS               = 0x8A42;
+    const int GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES        = 0x8A43;
+    const int GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER   = 0x8A44;
+    const int GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER = 0x8A46;
+
+    // ------------------------------------------------------------------------
     const int GL_FRAGMENT_SHADER                  = 0x8B30;
     const int GL_VERTEX_SHADER                    = 0x8B31;
     const int GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS = 0x8B4D;
@@ -347,7 +432,6 @@ public interface IGL
     const int GL_SAMPLER_2D                       = 0x8B5E;
     const int GL_SAMPLER_CUBE                     = 0x8B60;
     const int GL_MAX_TEXTURE_IMAGE_UNITS          = 0x8872;
-    const int GL_MAX_FRAGMENT_UNIFORM_VECTORS     = 0x8DFD;
     const int GL_SHADER_TYPE                      = 0x8B4F;
     const int GL_DELETE_STATUS                    = 0x8B80;
     const int GL_COMPILE_STATUS                   = 0x8B81;
@@ -383,88 +467,67 @@ public interface IGL
     const int GL_COLOR_ATTACHMENT0                            = 0x8CE0;
 
     // ------------------------------------------------------------------------
-    const int GL_DEPTH_ATTACHMENT             = 0x8D00;
-    const int GL_STENCIL_ATTACHMENT           = 0x8D20;
-    const int GL_FRAMEBUFFER                  = 0x8D40;
-    const int GL_RENDERBUFFER                 = 0x8D41;
-    const int GL_STENCIL_INDEX8               = 0x8D48;
-    const int GL_RENDERBUFFER_WIDTH           = 0x8D42;
-    const int GL_RENDERBUFFER_HEIGHT          = 0x8D43;
-    const int GL_RENDERBUFFER_INTERNAL_FORMAT = 0x8D44;
-    const int GL_RENDERBUFFER_RED_SIZE        = 0x8D50;
-    const int GL_RENDERBUFFER_GREEN_SIZE      = 0x8D51;
-    const int GL_RENDERBUFFER_BLUE_SIZE       = 0x8D52;
-    const int GL_RENDERBUFFER_ALPHA_SIZE      = 0x8D53;
-    const int GL_RENDERBUFFER_DEPTH_SIZE      = 0x8D54;
-    const int GL_RENDERBUFFER_STENCIL_SIZE    = 0x8D55;
-    const int GL_RGB565                       = 0x8D62;
-    const int GL_LOW_FLOAT                    = 0x8DF0;
-    const int GL_MEDIUM_FLOAT                 = 0x8DF1;
-    const int GL_HIGH_FLOAT                   = 0x8DF2;
-    const int GL_LOW_INT                      = 0x8DF3;
-    const int GL_MEDIUM_INT                   = 0x8DF4;
-    const int GL_HIGH_INT                     = 0x8DF5;
-    const int GL_SHADER_BINARY_FORMATS        = 0x8DF8;
-    const int GL_NUM_SHADER_BINARY_FORMATS    = 0x8DF9;
-    const int GL_SHADER_COMPILER              = 0x8DFA;
-    const int GL_MAX_VERTEX_UNIFORM_VECTORS   = 0x8DFB;
-    const int GL_MAX_VARYING_VECTORS          = 0x8DFC;
+    const int GL_DEPTH_ATTACHMENT                   = 0x8D00;
+    const int GL_STENCIL_ATTACHMENT                 = 0x8D20;
+    const int GL_FRAMEBUFFER                        = 0x8D40;
+    const int GL_RENDERBUFFER                       = 0x8D41;
+    const int GL_STENCIL_INDEX8                     = 0x8D48;
+    const int GL_RENDERBUFFER_WIDTH                 = 0x8D42;
+    const int GL_RENDERBUFFER_HEIGHT                = 0x8D43;
+    const int GL_RENDERBUFFER_INTERNAL_FORMAT       = 0x8D44;
+    const int GL_RENDERBUFFER_RED_SIZE              = 0x8D50;
+    const int GL_RENDERBUFFER_GREEN_SIZE            = 0x8D51;
+    const int GL_RENDERBUFFER_BLUE_SIZE             = 0x8D52;
+    const int GL_RENDERBUFFER_ALPHA_SIZE            = 0x8D53;
+    const int GL_RENDERBUFFER_DEPTH_SIZE            = 0x8D54;
+    const int GL_RENDERBUFFER_STENCIL_SIZE          = 0x8D55;
+    const int GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE = 0x8D56;
+    const int GL_MAX_SAMPLES                        = 0x8D57;
+    const int GL_RGB565                             = 0x8D62;
+    const int GL_PRIMITIVE_RESTART_FIXED_INDEX      = 0x8D69;
+    const int GL_LOW_FLOAT                          = 0x8DF0;
+    const int GL_MEDIUM_FLOAT                       = 0x8DF1;
+    const int GL_HIGH_FLOAT                         = 0x8DF2;
+    const int GL_LOW_INT                            = 0x8DF3;
+    const int GL_MEDIUM_INT                         = 0x8DF4;
+    const int GL_HIGH_INT                           = 0x8DF5;
+    const int GL_SHADER_BINARY_FORMATS              = 0x8DF8;
+    const int GL_NUM_SHADER_BINARY_FORMATS          = 0x8DF9;
+    const int GL_SHADER_COMPILER                    = 0x8DFA;
+    const int GL_MAX_VERTEX_UNIFORM_VECTORS         = 0x8DFB;
+    const int GL_MAX_VARYING_VECTORS                = 0x8DFC;
+    const int GL_MAX_FRAGMENT_UNIFORM_VECTORS       = 0x8DFD;
 
     // ------------------------------------------------------------------------
-    const int GL_CONTEXT_CORE_PROFILE_BIT          = 0x00000001;
-    const int GL_VERTEX_SHADER_BIT                 = 0x00000001;
-    const int GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT   = 0x00000001;
-    const int GL_SYNC_FLUSH_COMMANDS_BIT           = 0x00000001;
-    const int GL_CONTEXT_COMPATIBILITY_PROFILE_BIT = 0x00000002;
-    const int GL_FRAGMENT_SHADER_BIT               = 0x00000002;
-    const int GL_CONTEXT_FLAG_DEBUG_BIT            = 0x00000002;
-    const int GL_ELEMENT_ARRAY_BARRIER_BIT         = 0x00000002;
-    const int GL_GEOMETRY_SHADER_BIT               = 0x00000004;
-    const int GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT    = 0x00000004;
-    const int GL_UNIFORM_BARRIER_BIT               = 0x00000004;
-    const int GL_TESS_CONTROL_SHADER_BIT           = 0x00000008;
-    const int GL_CONTEXT_FLAG_NO_ERROR_BIT         = 0x00000008;
-    const int GL_TEXTURE_FETCH_BARRIER_BIT         = 0x00000008;
-    const int GL_TESS_EVALUATION_SHADER_BIT        = 0x00000010;
-    const int GL_SHADER_IMAGE_ACCESS_BARRIER_BIT   = 0x00000020;
-    const int GL_COMPUTE_SHADER_BIT                = 0x00000020;
-    const int GL_COMMAND_BARRIER_BIT               = 0x00000040;
-    const int GL_PIXEL_BUFFER_BARRIER_BIT          = 0x00000080;
-    const int GL_TEXTURE_UPDATE_BARRIER_BIT        = 0x00000100;
-    const int GL_BUFFER_UPDATE_BARRIER_BIT         = 0x00000200;
-    const int GL_FRAMEBUFFER_BARRIER_BIT           = 0x00000400;
-    const int GL_TRANSFORM_FEEDBACK_BARRIER_BIT    = 0x00000800;
-    const int GL_ATOMIC_COUNTER_BARRIER_BIT        = 0x00001000;
-    const int GL_SHADER_STORAGE_BARRIER_BIT        = 0x00002000;
-    const int GL_CLIENT_MAPPED_BUFFER_BARRIER_BIT  = 0x00004000;
-    const int GL_QUERY_BUFFER_BARRIER_BIT          = 0x00008000;
+    const int GL_R8_SNORM                  = 0x8F94;
+    const int GL_RG8_SNORM                 = 0x8F95;
+    const int GL_RGB8_SNORM                = 0x8F96;
+    const int GL_RGBA8_SNORM               = 0x8F97;
+    const int GL_SIGNED_NORMALIZED         = 0x8F9C;
+    const int GL_COPY_READ_BUFFER          = 0x8F36;
+    const int GL_COPY_WRITE_BUFFER         = 0x8F37;
+    const int GL_COPY_READ_BUFFER_BINDING  = GL_COPY_READ_BUFFER;
+    const int GL_COPY_WRITE_BUFFER_BINDING = GL_COPY_WRITE_BUFFER;
 
     // ------------------------------------------------------------------------
-    const int GL_MAP_READ_BIT                        = 0x0001;
-    const int GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT = 0x0001;
-    const int GL_MAP_WRITE_BIT                       = 0x0002;
-    const int GL_MAP_INVALIDATE_RANGE_BIT            = 0x0004;
-    const int GL_QUADS                               = 0x0007;
-    const int GL_MAP_INVALIDATE_BUFFER_BIT           = 0x0008;
-    const int GL_MAP_FLUSH_EXPLICIT_BIT              = 0x0010;
-    const int GL_MAP_UNSYNCHRONIZED_BIT              = 0x0020;
-
-    // ------------------------------------------------------------------------
-    const int GL_READ_BUFFER        = 0x0C02;
-    const int GL_UNPACK_ROW_LENGTH  = 0x0CF2;
-    const int GL_UNPACK_SKIP_ROWS   = 0x0CF3;
-    const int GL_UNPACK_SKIP_PIXELS = 0x0CF4;
-
-    // ------------------------------------------------------------------------
-    const int GL_PACK_ROW_LENGTH  = 0x0D02;
-    const int GL_PACK_SKIP_ROWS   = 0x0D03;
-    const int GL_PACK_SKIP_PIXELS = 0x0D04;
-
-    // ------------------------------------------------------------------------
-    const int GL_COLOR   = 0x1800;
-    const int GL_DEPTH   = 0x1801;
-    const int GL_STENCIL = 0x1802;
-    const int GL_RED     = 0x1903;
+    const int GL_MAX_VERTEX_OUTPUT_COMPONENTS  = 0x9122;
+    const int GL_MAX_FRAGMENT_INPUT_COMPONENTS = 0x9125;
+    const int GL_MAX_SERVER_WAIT_TIMEOUT       = 0x9111;
+    const int GL_OBJECT_TYPE                   = 0x9112;
+    const int GL_SYNC_CONDITION                = 0x9113;
+    const int GL_SYNC_STATUS                   = 0x9114;
+    const int GL_SYNC_FLAGS                    = 0x9115;
+    const int GL_SYNC_FENCE                    = 0x9116;
+    const int GL_SYNC_GPU_COMMANDS_COMPLETE    = 0x9117;
+    const int GL_UNSIGNALED                    = 0x9118;
+    const int GL_SIGNALED                      = 0x9119;
+    const int GL_ALREADY_SIGNALED              = 0x911A;
+    const int GL_TIMEOUT_EXPIRED               = 0x911B;
+    const int GL_CONDITION_SATISFIED           = 0x911C;
+    const int GL_WAIT_FAILED                   = 0x911D;
+    const int GL_BUFFER_ACCESS_FLAGS           = 0x911F;
+    const int GL_BUFFER_MAP_LENGTH             = 0x9120;
+    const int GL_BUFFER_MAP_OFFSET             = 0x9121;
 
     // ------------------------------------------------------------------------
     const int GL_MIN                   = 0x8007;
@@ -677,78 +740,7 @@ public interface IGL
     const int GL_FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
 
     // ------------------------------------------------------------------------
-    const int GL_BUFFER_ACCESS_FLAGS = 0x911F;
-    const int GL_BUFFER_MAP_LENGTH   = 0x9120;
-    const int GL_BUFFER_MAP_OFFSET   = 0x9121;
 
-    // ------------------------------------------------------------------------
-    const int GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE = 0x8D56;
-    const int GL_MAX_SAMPLES                        = 0x8D57;
-
-    const int GL_HALF_FLOAT = 0x140B;
-
-
-    const int GL_VERTEX_ARRAY_BINDING          = 0x85B5;
-    const int GL_R8_SNORM                      = 0x8F94;
-    const int GL_RG8_SNORM                     = 0x8F95;
-    const int GL_RGB8_SNORM                    = 0x8F96;
-    const int GL_RGBA8_SNORM                   = 0x8F97;
-    const int GL_SIGNED_NORMALIZED             = 0x8F9C;
-    const int GL_PRIMITIVE_RESTART_FIXED_INDEX = 0x8D69;
-    const int GL_COPY_READ_BUFFER              = 0x8F36;
-    const int GL_COPY_WRITE_BUFFER             = 0x8F37;
-    const int GL_COPY_READ_BUFFER_BINDING      = GL_COPY_READ_BUFFER;
-    const int GL_COPY_WRITE_BUFFER_BINDING     = GL_COPY_WRITE_BUFFER;
-
-    // ------------------------------------------------------------------------
-    const int GL_UNIFORM_BUFFER                              = 0x8A11;
-    const int GL_UNIFORM_BUFFER_BINDING                      = 0x8A28;
-    const int GL_UNIFORM_BUFFER_START                        = 0x8A29;
-    const int GL_UNIFORM_BUFFER_SIZE                         = 0x8A2A;
-    const int GL_MAX_VERTEX_UNIFORM_BLOCKS                   = 0x8A2B;
-    const int GL_MAX_FRAGMENT_UNIFORM_BLOCKS                 = 0x8A2D;
-    const int GL_MAX_COMBINED_UNIFORM_BLOCKS                 = 0x8A2E;
-    const int GL_MAX_UNIFORM_BUFFER_BINDINGS                 = 0x8A2F;
-    const int GL_MAX_UNIFORM_BLOCK_SIZE                      = 0x8A30;
-    const int GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS      = 0x8A31;
-    const int GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS    = 0x8A33;
-    const int GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT             = 0x8A34;
-    const int GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH        = 0x8A35;
-    const int GL_ACTIVE_UNIFORM_BLOCKS                       = 0x8A36;
-    const int GL_UNIFORM_TYPE                                = 0x8A37;
-    const int GL_UNIFORM_SIZE                                = 0x8A38;
-    const int GL_UNIFORM_NAME_LENGTH                         = 0x8A39;
-    const int GL_UNIFORM_BLOCK_INDEX                         = 0x8A3A;
-    const int GL_UNIFORM_OFFSET                              = 0x8A3B;
-    const int GL_UNIFORM_ARRAY_STRIDE                        = 0x8A3C;
-    const int GL_UNIFORM_MATRIX_STRIDE                       = 0x8A3D;
-    const int GL_UNIFORM_IS_ROW_MAJOR                        = 0x8A3E;
-    const int GL_UNIFORM_BLOCK_BINDING                       = 0x8A3F;
-    const int GL_UNIFORM_BLOCK_DATA_SIZE                     = 0x8A40;
-    const int GL_UNIFORM_BLOCK_NAME_LENGTH                   = 0x8A41;
-    const int GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS               = 0x8A42;
-    const int GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES        = 0x8A43;
-    const int GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER   = 0x8A44;
-    const int GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER = 0x8A46;
-
-    // ------------------------------------------------------------------------
-    // GL_INVALID_INDEX is defined as 0xFFFFFFFFu in C.
-    const int GL_INVALID_INDEX                 = -1;
-    const int GL_MAX_VERTEX_OUTPUT_COMPONENTS  = 0x9122;
-    const int GL_MAX_FRAGMENT_INPUT_COMPONENTS = 0x9125;
-    const int GL_MAX_SERVER_WAIT_TIMEOUT       = 0x9111;
-    const int GL_OBJECT_TYPE                   = 0x9112;
-    const int GL_SYNC_CONDITION                = 0x9113;
-    const int GL_SYNC_STATUS                   = 0x9114;
-    const int GL_SYNC_FLAGS                    = 0x9115;
-    const int GL_SYNC_FENCE                    = 0x9116;
-    const int GL_SYNC_GPU_COMMANDS_COMPLETE    = 0x9117;
-    const int GL_UNSIGNALED                    = 0x9118;
-    const int GL_SIGNALED                      = 0x9119;
-    const int GL_ALREADY_SIGNALED              = 0x911A;
-    const int GL_TIMEOUT_EXPIRED               = 0x911B;
-    const int GL_CONDITION_SATISFIED           = 0x911C;
-    const int GL_WAIT_FAILED                   = 0x911D;
 
     // GL_TIMEOUT_IGNORED is defined as 0xFFFFFFFFFFFFFFFFull in C.
     const long GL_TIMEOUT_IGNORED                           = -1;
@@ -790,7 +782,7 @@ public interface IGL
     // ------------------------------------------------------------------------
     // Moved from IGL30
     // ------------------------------------------------------------------------
-    
+
     // ------------------------------------------------------------------------
     const int GL_FRONT_LEFT  = 0x0400;
     const int GL_FRONT_RIGHT = 0x0401;

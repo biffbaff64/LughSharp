@@ -60,16 +60,16 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GLWindow = glWindow;
 
-        if ( glWindow.Config.UseGL30 )
-        {
-            GL30 = new DesktopGL30();
-            GL20 = GL30;
-        }
-        else
-        {
-            GL20 = new DesktopGL20();
-            GL30 = null;
-        }
+//        if ( glWindow.Config.UseGL30 )
+//        {
+//            GL30 = new DesktopGL30();
+//            GL20 = GL30;
+//        }
+//        else
+//        {
+//            GL20 = new DesktopGL20();
+//            GL30 = null;
+//        }
 
         UpdateFramebufferInfo();
         InitiateGL();
@@ -80,13 +80,15 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     public DesktopGLWindow?       GLWindow               { get; set; }
     public BufferFormatDescriptor BufferFormatDescriptor { get; set; } = null!;
 
-    public new int Width => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
-        ? BackBufferWidth
-        : LogicalWidth;
+    public new int Width
+        => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+               ? BackBufferWidth
+               : LogicalWidth;
 
-    public new int Height => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
-        ? BackBufferHeight
-        : LogicalHeight;
+    public new int Height
+        => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+               ? BackBufferHeight
+               : LogicalHeight;
 
     // ------------------------------------------------------------------------
 
@@ -101,7 +103,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         GLWindow.MakeCurrent();
 
-        Gdx.GL20.GLViewport( 0, 0, width, height );
+        Gdx.GL.glViewport( 0, 0, width, height );
 
         GLWindow.Listener.Resize( Width, Height );
         GLWindow.Listener.Render();
@@ -162,13 +164,9 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     private void InitiateGL()
     {
-        var vendorString   = Gdx.GL20.GLGetString( IGL.GL_VENDOR );
-        var rendererString = Gdx.GL20.GLGetString( IGL.GL_RENDERER );
+        GLSetup.InitiateGL();
 
-        GLVersion = new GLVersion( IApplication.ApplicationType.DesktopGL,
-                                   Glfw.GetVersionString(),
-                                   vendorString,
-                                   rendererString );
+        GLVersion = GLSetup.GLVersion!;
 
         if ( SupportsCubeMapSeamless() )
         {
@@ -197,13 +195,12 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         {
             if ( enable )
             {
-                GL.glEnable( GL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
-
-                Gdx.GL20.GLEnable( GL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+                Gdx.GL.glEnable( IGL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+                Gdx.GL.glEnable( IGL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
             }
             else
             {
-                Gdx.GL20.GLDisable( GL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+                Gdx.GL.glDisable( IGL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
             }
         }
     }
@@ -354,7 +351,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
 
-        Glfw.SetCursor( GLWindow.GlfwWindow, ( ( DesktopGLCursor )cursor ).GLFWCursor );
+        Glfw.SetCursor( GLWindow.GlfwWindow, ( ( DesktopGLCursor ) cursor ).GLFWCursor );
     }
 
     /// <summary>
@@ -471,11 +468,11 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         GLWindow.Input.ResetPollingStates();
 
-        var newMode = ( DesktopGLDisplayMode )displayMode;
+        var newMode = ( DesktopGLDisplayMode ) displayMode;
 
         if ( IsFullscreen() )
         {
-            var currentMode = ( DesktopGLDisplayMode )GetDisplayMode();
+            var currentMode = ( DesktopGLDisplayMode ) GetDisplayMode();
 
             if ( ( currentMode.MonitorHandle == newMode.MonitorHandle )
               && ( currentMode.RefreshRate == newMode.RefreshRate ) )
@@ -539,8 +536,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         Glfw.GetMonitorPhysicalSize( Glfw.GetPrimaryMonitor(), out var sizeX, out var sizeY ); //TODO:
 
-        return ( ( GetDisplayMode().Width / ( float )sizeX ) * 10,
-                 ( GetDisplayMode().Height / ( float )sizeY ) * 10 );
+        return ( ( GetDisplayMode().Width / ( float ) sizeX ) * 10,
+                 ( GetDisplayMode().Height / ( float ) sizeY ) * 10 );
     }
 
     public override float GetPpcX()

@@ -376,14 +376,14 @@ public class KtxTextureData : ITextureData, ICubemapData
         // KTX files require an unpack alignment of 4
         unsafe
         {
-            GL.glGetIntegerv( IGL.GL_UNPACK_ALIGNMENT, buffer );
+            Gdx.GL.glGetIntegerv( IGL.GL_UNPACK_ALIGNMENT, buffer.BackingArray() );
         }
 
         var previousUnpackAlignment = buffer.Get( 0 );
 
         if ( previousUnpackAlignment != 4 )
         {
-            GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 4 );
+            Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 4 );
         }
 
         var glInternalFormat = _glInternalFormat;
@@ -444,7 +444,7 @@ public class KtxTextureData : ITextureData, ICubemapData
 
                                 unsafe
                                 {
-                                    GL.glTexImage2D( target + face,
+                                    Gdx.GL.glTexImage2D( target + face,
                                         level,
                                         pixmap.GLInternalFormat,
                                         pixmap.Width,
@@ -461,7 +461,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                             {
                                 unsafe
                                 {
-                                    GL.glCompressedTexImage2D( target + face,
+                                    Gdx.GL.glCompressedTexImage2D( target + face,
                                         level,
                                         glInternalFormat,
                                         pixelWidth,
@@ -477,7 +477,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                             // Try to load (no software unpacking fallback)
                             unsafe
                             {
-                                GL.glCompressedTexImage2D( target + face,
+                                Gdx.GL.glCompressedTexImage2D( target + face,
                                     level,
                                     glInternalFormat,
                                     pixelWidth,
@@ -490,7 +490,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                     }
                     else
                     {
-                        GL.glTexImage2D( target + face,
+                        Gdx.GL.glTexImage2D( target + face,
                             level,
                             glInternalFormat,
                             pixelWidth,
@@ -520,12 +520,12 @@ public class KtxTextureData : ITextureData, ICubemapData
 
         if ( previousUnpackAlignment != 4 )
         {
-            GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, previousUnpackAlignment );
+            Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, previousUnpackAlignment );
         }
 
         if ( UseMipMaps )
         {
-            GL.glGenerateMipmap( target );
+            Gdx.GL.glGenerateMipmap( target );
         }
 
         // dispose data once transfered to GPU

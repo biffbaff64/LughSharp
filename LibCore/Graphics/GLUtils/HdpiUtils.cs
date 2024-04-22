@@ -59,7 +59,7 @@ public class HdpiUtils
     }
 
     /// <summary>
-    ///     Calls <see cref="GL.glScissor(int, int, int, int)" />, expecting the
+    ///     Calls <see cref="Gdx.GL.glScissor(int, int, int, int)" />, expecting the
     ///     coordinates and sizes given in logical coordinates and automatically
     ///     converts them to backbuffer coordinates, which may be bigger on HDPI screens.
     /// </summary>
@@ -69,19 +69,19 @@ public class HdpiUtils
           && ( ( Gdx.Graphics.Width != Gdx.Graphics.BackBufferWidth )
             || ( Gdx.Graphics.Height != Gdx.Graphics.BackBufferHeight ) ) )
         {
-            GL.glScissor( ToBackBufferX( x ),
+            Gdx.GL.glScissor( ToBackBufferX( x ),
                               ToBackBufferY( y ),
                               ToBackBufferX( width ),
                               ToBackBufferY( height ) );
         }
         else
         {
-            GL.glScissor( x, y, width, height );
+            Gdx.GL.glScissor( x, y, width, height );
         }
     }
 
     /// <summary>
-    ///     Calls <see cref="GL.glViewport(int, int, int, int)" />, expecting
+    ///     Calls <see cref="Gdx.GL.glViewport(int, int, int, int)" />, expecting
     ///     the coordinates and sizes given in logical coordinates and automatically
     ///     converts them to backbuffer coordinates, which may be bigger on HDPI screens.
     /// </summary>
@@ -91,14 +91,14 @@ public class HdpiUtils
           && ( ( Gdx.Graphics.Width != Gdx.Graphics.BackBufferWidth )
             || ( Gdx.Graphics.Height != Gdx.Graphics.BackBufferHeight ) ) )
         {
-            GL.glViewport( ToBackBufferX( x ),
+            Gdx.GL.glViewport( ToBackBufferX( x ),
                                ToBackBufferY( y ),
                                ToBackBufferX( width ),
                                ToBackBufferY( height ) );
         }
         else
         {
-            GL.glViewport( x, y, width, height );
+            Gdx.GL.glViewport( x, y, width, height );
         }
     }
 

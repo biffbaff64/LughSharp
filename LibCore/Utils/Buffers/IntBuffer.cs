@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Utils.Buffers;
 
+[PublicAPI]
 public abstract class IntBuffer : Buffer
 {
     protected IntBuffer() : base( 0, 0, 0, 0 )

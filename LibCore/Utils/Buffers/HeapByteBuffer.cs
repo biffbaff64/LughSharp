@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Utils.Buffers;
 
+[PublicAPI]
 public class HeapByteBuffer : ByteBuffer
 {
     public HeapByteBuffer( int cap, int lim )

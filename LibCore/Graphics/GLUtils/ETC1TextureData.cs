@@ -104,21 +104,21 @@ public class ETC1TextureData : ITextureData
 
         if ( !Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
         {
-            Pixmap pixmap = ETC1.DecodeImage( _data, Pixmap.Format.RGB565 );
+            var pixmap = ETC1.DecodeImage( _data, Pixmap.Format.RGB565 );
 
             unsafe
             {
-                GL.glTexImage2D( target,
-                                 0,
-                                 pixmap.GLInternalFormat,
-                                 pixmap.Width,
-                                 pixmap.Height,
-                                 0,
-                                 pixmap.GLFormat,
-                                 pixmap.GLType,
-                                 pixmap.Pixels );
+                Gdx.GL.glTexImage2D( target,
+                                     0,
+                                     pixmap.GLInternalFormat,
+                                     pixmap.Width,
+                                     pixmap.Height,
+                                     0,
+                                     pixmap.GLFormat,
+                                     pixmap.GLType,
+                                     pixmap.Pixels.BackingArray() );
             }
-            
+
             if ( UseMipMaps )
             {
                 MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
@@ -131,19 +131,19 @@ public class ETC1TextureData : ITextureData
         {
             unsafe
             {
-                GL.glCompressedTexImage2D( target,
-                                           0,
-                                           ETC1.ETC1_RGB8_OES,
-                                           Width,
-                                           Height,
-                                           0,
-                                           _data.CompressedData.Capacity - _data.DataOffset,
-                                           _data.CompressedData );
+                Gdx.GL.glCompressedTexImage2D( target,
+                                               0,
+                                               ETC1.ETC1_RGB8_OES,
+                                               Width,
+                                               Height,
+                                               0,
+                                               _data.CompressedData.Capacity - _data.DataOffset,
+                                               _data.CompressedData.BackingArray() );
             }
-            
+
             if ( UseMipMaps )
             {
-                GL.glGenerateMipmap( IGL.GL_TEXTURE_2D );
+                Gdx.GL.glGenerateMipmap( IGL.GL_TEXTURE_2D );
             }
         }
 

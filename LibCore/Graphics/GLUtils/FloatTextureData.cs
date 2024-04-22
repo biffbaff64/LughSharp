@@ -108,7 +108,7 @@ public class FloatTextureData : ITextureData
             // so to get a float texture one needs to supply GL_RGBA and GL_FLOAT there.
             unsafe
             {
-                GL.glTexImage2D( target,
+                Gdx.GL.glTexImage2D( target,
                                  0,
                                  IGL.GL_RGBA,
                                  Width,
@@ -133,7 +133,7 @@ public class FloatTextureData : ITextureData
             // hence we need to use GL_RGBA32F there (this constant is unavailable in GLES/WebGL)
             unsafe
             {
-                GL.glTexImage2D( target,
+                Gdx.GL.glTexImage2D( target,
                                      0,
                                      _internalFormat,
                                      Width,

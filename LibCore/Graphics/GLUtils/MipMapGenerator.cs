@@ -77,7 +77,7 @@ public class MipMapGenerator
     {
         unsafe
         {
-            GL.glTexImage2D( target,
+            Gdx.GL.glTexImage2D( target,
                              0,
                              pixmap.GLInternalFormat,
                              pixmap.Width,
@@ -88,7 +88,7 @@ public class MipMapGenerator
                              pixmap.Pixels );
         }
 
-        GL.glGenerateMipmap( target );
+        Gdx.GL.glGenerateMipmap( target );
     }
 
     private static unsafe void GenerateMipMapDesktop( int target, Pixmap pixmap, int textureWidth, int textureHeight )
@@ -97,7 +97,7 @@ public class MipMapGenerator
           || Gdx.Graphics.SupportsExtension( "GL_EXT_framebuffer_object" )
           || ( Gdx.GL30 != null ) )
         {
-            GL.glTexImage2D( target,
+            Gdx.GL.glTexImage2D( target,
                              0,
                              pixmap.GLInternalFormat,
                              pixmap.Width,
@@ -107,7 +107,7 @@ public class MipMapGenerator
                              pixmap.GLType,
                              pixmap.Pixels );
 
-            GL.glGenerateMipmap( target );
+            Gdx.GL.glGenerateMipmap( target );
         }
         else
         {
@@ -117,7 +117,7 @@ public class MipMapGenerator
 
     private static unsafe void GenerateMipMapCPU( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
-        GL.glTexImage2D( target,
+        Gdx.GL.glTexImage2D( target,
                          0,
                          pixmap.GLInternalFormat,
                          pixmap.Width,
@@ -150,7 +150,7 @@ public class MipMapGenerator
 
             pixmap = tmp;
 
-            GL.glTexImage2D( target,
+            Gdx.GL.glTexImage2D( target,
                              level,
                              pixmap.GLInternalFormat,
                              pixmap.Width,

@@ -47,6 +47,10 @@ public class GLVersion : GDXVersion
         GL40
     }
 
+    public string? VendorString   { get; set; }
+    public string? RendererString { get; set; }
+    public GLType  GLtype         { get; set; }
+
     private const string TAG = "GLVersion";
 
     /// <summary>
@@ -61,12 +65,12 @@ public class GLVersion : GDXVersion
                       string rendererString )
     {
         GLtype = appType switch
-                 {
-                     IApplication.ApplicationType.Android => GLType.GLES,
-                     IApplication.ApplicationType.DesktopGL => GLType.OpenGL,
-                     IApplication.ApplicationType.WebGL   => GLType.WebGL,
-                     _                                    => GLType.None
-                 };
+        {
+            IApplication.ApplicationType.Android   => GLType.GLES,
+            IApplication.ApplicationType.DesktopGL => GLType.OpenGL,
+            IApplication.ApplicationType.WebGL     => GLType.WebGL,
+            _                                      => GLType.None
+        };
 
         if ( GLtype == GLType.GLES )
         {
@@ -96,10 +100,6 @@ public class GLVersion : GDXVersion
         RendererString = rendererString;
     }
 
-    public string? VendorString   { get; set; }
-    public string? RendererString { get; set; }
-    public GLType  GLtype         { get; set; }
-
     /// <summary>
     /// </summary>
     /// <param name="patternString"></param>
@@ -108,7 +108,7 @@ public class GLVersion : GDXVersion
     {
         var rx = new Regex( patternString );
 
-        MatchCollection matches = rx.Matches( versionString );
+        var matches = rx.Matches( versionString );
 
         if ( matches.Count > 0 )
         {

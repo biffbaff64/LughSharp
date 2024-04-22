@@ -70,7 +70,7 @@ public class GLOnlyTextureData : ITextureData
 
     public unsafe void ConsumeCustomData( int target )
     {
-        GL.glTexImage2D( target, MipLevel, InternalFormat, Width, Height, 0, Format, Type, null! );
+        Gdx.GL.glTexImage2D( target, MipLevel, InternalFormat, Width, Height, 0, Format, Type, null! );
     }
 
     public Pixmap ConsumePixmap()

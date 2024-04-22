@@ -31,13 +31,14 @@ namespace LughSharp.LibCore.Utils;
 /// <summary>
 ///     Executes tasks in the future on the main loop thread.
 /// </summary>
+[PublicAPI]
 public class Timer
 {
     private readonly static object _threadLock = new();
 
     private static TimerThread? _thread;
 
-    protected readonly List< Task? > tasks = new( 8 );
+    protected readonly List< Task? > Tasks = new( 8 );
 
     public Timer()
     {
@@ -54,14 +55,14 @@ public class Timer
     {
         lock ( _threadLock )
         {
-            TimerThread? thread = Thread();
+            var thread = Thread();
 
             if ( thread == null )
             {
                 throw new GdxRuntimeException( "Thread instance is null!" );
             }
 
-            return thread.instance ?? ( thread.instance = new Timer() );
+            return thread.ThreadInstance ?? ( thread.ThreadInstance = new Timer() );
         }
     }
 
@@ -72,7 +73,7 @@ public class Timer
     {
         lock ( _threadLock )
         {
-            if ( ( _thread != null ) && ( _thread.files == Gdx.Files ) )
+            if ( ( _thread != null ) && ( _thread.Files == Gdx.Files ) )
             {
                 return _thread;
             }
@@ -117,26 +118,26 @@ public class Timer
             {
                 lock ( task )
                 {
-                    if ( task.timer != null )
+                    if ( task.Timer != null )
                     {
                         throw new ArgumentException( "The same task may not be scheduled twice." );
                     }
 
-                    task.timer = this;
+                    task.Timer = this;
 
                     var timeMillis        = TimeUtils.NanoTime() / 1000000;
                     var executeTimeMillis = timeMillis + ( long )( delaySeconds * 1000 );
 
-                    if ( _thread?.pauseTimeMillis > 0 )
+                    if ( _thread?.PauseTimeMillis > 0 )
                     {
-                        executeTimeMillis -= timeMillis - _thread.pauseTimeMillis;
+                        executeTimeMillis -= timeMillis - _thread.PauseTimeMillis;
                     }
 
-                    task.executeTimeMillis = executeTimeMillis;
-                    task.intervalMillis    = ( long )( intervalSeconds * 1000 );
-                    task.repeatCount       = repeatCount;
+                    task.ExecuteTimeMillis = executeTimeMillis;
+                    task.IntervalMillis    = ( long )( intervalSeconds * 1000 );
+                    task.RepeatCount       = repeatCount;
 
-                    tasks.Add( task );
+                    Tasks.Add( task );
                 }
             }
 
@@ -153,12 +154,12 @@ public class Timer
     {
         lock ( _threadLock )
         {
-            if ( Thread().instances.Contains( this ) )
+            if ( Thread().Instances.Contains( this ) )
             {
                 return;
             }
 
-            Thread().instances.Add( this );
+            Thread().Instances.Add( this );
 
             Monitor.PulseAll( _threadLock );
         }
@@ -172,7 +173,7 @@ public class Timer
     {
         lock ( _threadLock )
         {
-            Thread().instances.Remove( this );
+            Thread().Instances.Remove( this );
         }
     }
 
@@ -181,21 +182,21 @@ public class Timer
     /// </summary>
     public void Clear()
     {
-        for ( int i = 0, n = tasks.Count; i < n; i++ )
+        for ( int i = 0, n = Tasks.Count; i < n; i++ )
         {
-            if ( tasks[ i ] == null )
+            if ( Tasks[ i ] == null )
             {
                 continue;
             }
 
-            lock ( tasks[ i ]! )
+            lock ( Tasks[ i ]! )
             {
-                tasks[ i ]!.executeTimeMillis = 0;
-                tasks[ i ]!.timer             = null;
+                Tasks[ i ]!.ExecuteTimeMillis = 0;
+                Tasks[ i ]!.Timer             = null;
             }
         }
 
-        tasks.Clear();
+        Tasks.Clear();
     }
 
     /// <summary>
@@ -208,7 +209,7 @@ public class Timer
     {
         lock ( _threadLock )
         {
-            return tasks.Count == 0;
+            return Tasks.Count == 0;
         }
     }
 
@@ -221,39 +222,39 @@ public class Timer
     {
         lock ( _threadLock )
         {
-            for ( int i = 0, n = tasks.Count; i < n; i++ )
+            for ( int i = 0, n = Tasks.Count; i < n; i++ )
             {
-                lock ( tasks[ i ]! )
+                lock ( Tasks[ i ]! )
                 {
-                    if ( tasks[ i ]?.executeTimeMillis > timeMillis )
+                    if ( Tasks[ i ]?.ExecuteTimeMillis > timeMillis )
                     {
-                        waitMillis = Math.Min( waitMillis, tasks[ i ]!.executeTimeMillis - timeMillis );
+                        waitMillis = Math.Min( waitMillis, Tasks[ i ]!.ExecuteTimeMillis - timeMillis );
 
                         continue;
                     }
 
-                    if ( tasks[ i ]!.repeatCount == 0 )
+                    if ( Tasks[ i ]!.RepeatCount == 0 )
                     {
-                        tasks[ i ]!.timer = null;
+                        Tasks[ i ]!.Timer = null;
 
-                        tasks.RemoveAt( i );
+                        Tasks.RemoveAt( i );
 
                         i--;
                         n--;
                     }
                     else
                     {
-                        tasks[ i ]!.executeTimeMillis = timeMillis + tasks[ i ]!.intervalMillis;
+                        Tasks[ i ]!.ExecuteTimeMillis = timeMillis + Tasks[ i ]!.IntervalMillis;
 
-                        waitMillis = Math.Min( waitMillis, tasks[ i ]!.intervalMillis );
+                        waitMillis = Math.Min( waitMillis, Tasks[ i ]!.IntervalMillis );
 
-                        if ( tasks[ i ]!.repeatCount > 0 )
+                        if ( Tasks[ i ]!.RepeatCount > 0 )
                         {
-                            tasks[ i ]!.repeatCount--;
+                            Tasks[ i ]!.RepeatCount--;
                         }
                     }
 
-                    tasks[ i ]!.app!.PostRunnable( tasks[ i ]!.Run );
+                    Tasks[ i ]!.App!.PostRunnable( Tasks[ i ]!.Run );
                 }
             }
 
@@ -269,13 +270,13 @@ public class Timer
     {
         lock ( _threadLock )
         {
-            for ( int i = 0, n = tasks.Count; i < n; i++ )
+            for ( int i = 0, n = Tasks.Count; i < n; i++ )
             {
-                Task task = tasks[ i ]!;
+                var task = Tasks[ i ]!;
 
                 lock ( task )
                 {
-                    task.executeTimeMillis += delayMillis;
+                    task.ExecuteTimeMillis += delayMillis;
                 }
             }
         }
@@ -320,16 +321,16 @@ public class Timer
     // ================================================================================
 
     /// <summary>
-    ///     A <see cref="Runnable" /> that can be scheduled on a <see cref="Timer" />
+    ///     A <see cref="IRunnable" /> that can be scheduled on a <see cref="Utils.Timer" />
     /// </summary>
     [PublicAPI]
     public abstract class Task
     {
-        internal readonly IApplication? app;
-        internal          long          executeTimeMillis;
-        internal          long          intervalMillis;
-        internal          int           repeatCount;
-        internal volatile Timer?        timer;
+        internal readonly IApplication? App;
+        internal          long          ExecuteTimeMillis;
+        internal          long          IntervalMillis;
+        internal          int           RepeatCount;
+        internal volatile Timer?        Timer;
 
         protected Task()
         {
@@ -338,7 +339,7 @@ public class Timer
                 throw new GdxRuntimeException( "Gdx.App not available!" );
             }
 
-            app = Gdx.App;
+            App = Gdx.App;
         }
 
         /// <summary>
@@ -354,16 +355,16 @@ public class Timer
         /// </summary>
         public void Cancel()
         {
-            if ( timer != null )
+            if ( Timer != null )
             {
-                lock ( timer )
+                lock ( Timer )
                 {
                     lock ( this )
                     {
-                        executeTimeMillis = 0;
-                        timer             = null;
+                        ExecuteTimeMillis = 0;
+                        Timer             = null;
 
-                        timer?.tasks.Remove( this );
+                        Timer?.Tasks.Remove( this );
                     }
                 }
             }
@@ -371,8 +372,8 @@ public class Timer
             {
                 lock ( this )
                 {
-                    executeTimeMillis = 0;
-                    timer             = null;
+                    ExecuteTimeMillis = 0;
+                    Timer             = null;
                 }
             }
         }
@@ -397,7 +398,7 @@ public class Timer
         /// <returns></returns>
         public bool IsScheduled()
         {
-            return timer != null;
+            return Timer != null;
         }
 
         /// <summary>
@@ -405,7 +406,7 @@ public class Timer
         /// </summary>
         public long GetExecuteTimeMillis()
         {
-            return executeTimeMillis;
+            return ExecuteTimeMillis;
         }
     }
 
@@ -415,14 +416,14 @@ public class Timer
     [PublicAPI]
     public class TimerThread : ILifecycleListener
     {
-        public readonly IFiles?       files;
-        public readonly List< Timer > instances = new( capacity: 1 );
-        public          Timer?        instance;
-        public          long          pauseTimeMillis;
+        public readonly IFiles?       Files;
+        public readonly List< Timer > Instances = new( capacity: 1 );
+        public          Timer?        ThreadInstance;
+        public          long          PauseTimeMillis;
 
         public TimerThread()
         {
-            files = Gdx.Files;
+            Files = Gdx.Files;
 
             Gdx.App.AddLifecycleListener( this );
 
@@ -440,7 +441,7 @@ public class Timer
         {
             lock ( _threadLock )
             {
-                pauseTimeMillis = TimeUtils.NanosToMillis();
+                PauseTimeMillis = TimeUtils.NanosToMillis();
 
                 Monitor.PulseAll( _threadLock );
             }
@@ -450,14 +451,14 @@ public class Timer
         {
             lock ( _threadLock )
             {
-                var delayMillis = TimeUtils.NanosToMillis() - pauseTimeMillis;
+                var delayMillis = TimeUtils.NanosToMillis() - PauseTimeMillis;
 
-                for ( int i = 0, n = instances.Count; i < n; i++ )
+                for ( int i = 0, n = Instances.Count; i < n; i++ )
                 {
-                    instances[ i ].Delay( delayMillis );
+                    Instances[ i ].Delay( delayMillis );
                 }
 
-                pauseTimeMillis = 0;
+                PauseTimeMillis = 0;
 
                 Monitor.PulseAll( _threadLock );
             }
@@ -472,7 +473,7 @@ public class Timer
         {
             lock ( _threadLock )
             {
-                if ( ( _thread != this ) || ( files != Gdx.Files ) )
+                if ( ( _thread != this ) || ( Files != Gdx.Files ) )
                 {
                     Dispose();
 
@@ -481,24 +482,24 @@ public class Timer
 
                 long waitMillis = 5000;
 
-                if ( pauseTimeMillis == 0 )
+                if ( PauseTimeMillis == 0 )
                 {
                     var timeMillis = TimeUtils.NanoTime() / 1000000;
 
-                    for ( int i = 0, n = instances.Count; i < n; i++ )
+                    for ( int i = 0, n = Instances.Count; i < n; i++ )
                     {
                         try
                         {
-                            waitMillis = instances[ i ].Update( timeMillis, waitMillis );
+                            waitMillis = Instances[ i ].Update( timeMillis, waitMillis );
                         }
                         catch ( Exception ex )
                         {
-                            throw new GdxRuntimeException( "Task failed: " + instances[ i ].GetType().Name, ex );
+                            throw new GdxRuntimeException( "Task failed: " + Instances[ i ].GetType().Name, ex );
                         }
                     }
                 }
 
-                if ( ( _thread != this ) || ( files != Gdx.Files ) )
+                if ( ( _thread != this ) || ( Files != Gdx.Files ) )
                 {
                     Dispose();
 
@@ -532,7 +533,7 @@ public class Timer
                         _thread = null;
                     }
 
-                    instances.Clear();
+                    Instances.Clear();
 
                     Monitor.PulseAll( _threadLock );
                 }

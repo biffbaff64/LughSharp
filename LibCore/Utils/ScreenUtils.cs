@@ -91,7 +91,7 @@ public class ScreenUtils
     /// <param name="b"></param>
     public static void Clear( float r, float g, float b, float a, bool clearDepth = false )
     {
-        GL.glClearColor( r, g, b, a );
+        Gdx.GL.glClearColor( r, g, b, a );
 
         var mask = ( uint ) IGL.GL_COLOR_BUFFER_BIT;
 
@@ -100,7 +100,7 @@ public class ScreenUtils
             mask |= IGL.GL_DEPTH_BUFFER_BIT;
         }
 
-        GL.glClear( mask );
+        Gdx.GL.glClear( mask );
     }
 
     /// <summary>
@@ -187,15 +187,17 @@ public class ScreenUtils
     /// <param name="w"></param>
     /// <param name="h"></param>
     /// <param name="flipY"> whether to flip pixels along Y axis  </param>
-    public static byte[] GetFrameBufferPixels( int x, int y, int w, int h, bool flipY )
+    public static unsafe byte[] GetFrameBufferPixels( int x, int y, int w, int h, bool flipY )
     {
         var numBytes = w * h * 4;
 
-        GL.glPixelStorei( IGL.GL_PACK_ALIGNMENT, 1 );
+        Gdx.GL.glPixelStorei( IGL.GL_PACK_ALIGNMENT, 1 );
 
-        var pixels = BufferUtils.NewByteBuffer( numBytes );
+        // var pixels = BufferUtils.NewByteBuffer( numBytes );
 
-        GL.glReadPixels( x, y, w, h, IGL.GL_RGBA, IGL.GL_UNSIGNED_BYTE, pixels );
+        var pixels = new byte[ numBytes ];
+        
+        Gdx.GL.glReadPixels( x, y, w, h, IGL.GL_RGBA, IGL.GL_UNSIGNED_BYTE, pixels );
 
         var lines = new byte[ numBytes ];
 

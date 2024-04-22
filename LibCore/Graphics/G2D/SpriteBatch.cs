@@ -161,7 +161,7 @@ public class SpriteBatch : IBatch
 
         RenderCalls = 0;
 
-        GL.glDepthMask( false );
+        Gdx.GL.glDepthMask( false );
 
         if ( _customShader != null )
         {
@@ -192,11 +192,11 @@ public class SpriteBatch : IBatch
         LastTexture = null;
         IsDrawing   = false;
 
-        GL.glDepthMask( true );
+        Gdx.GL.glDepthMask( true );
 
         if ( !BlendingDisabled )
         {
-            GL.glDisable( IGL.GL_BLEND );
+            Gdx.GL.glDisable( IGL.GL_BLEND );
         }
     }
 
@@ -1122,15 +1122,15 @@ public class SpriteBatch : IBatch
 
         if ( BlendingDisabled )
         {
-            GL.glDisable( IGL.GL_BLEND );
+            Gdx.GL.glDisable( IGL.GL_BLEND );
         }
         else
         {
-            GL.glEnable( IGL.GL_BLEND );
+            Gdx.GL.glEnable( IGL.GL_BLEND );
 
             if ( BlendSrcFunc != -1 )
             {
-                GL.glBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
+                Gdx.GL.glBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
             }
         }
 

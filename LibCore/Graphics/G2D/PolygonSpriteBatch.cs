@@ -184,7 +184,7 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         renderCalls = 0;
 
-        GL.glDepthMask( false );
+        Gdx.GL.glDepthMask( false );
 
         if ( _customShader != null )
         {
@@ -215,11 +215,11 @@ public class PolygonSpriteBatch : IPolygonBatch
         _lastTexture = null;
         IsDrawing    = false;
 
-        GL.glDepthMask( true );
+        Gdx.GL.glDepthMask( true );
 
         if ( ISBlendingEnabled() )
         {
-            GL.glDisable( IGL.GL_BLEND );
+            Gdx.GL.glDisable( IGL.GL_BLEND );
         }
     }
 
@@ -1355,15 +1355,15 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         if ( _blendingDisabled )
         {
-            GL.glDisable( IGL.GL_BLEND );
+            Gdx.GL.glDisable( IGL.GL_BLEND );
         }
         else
         {
-            GL.glEnable( IGL.GL_BLEND );
+            Gdx.GL.glEnable( IGL.GL_BLEND );
 
             if ( BlendSrcFunc != -1 )
             {
-                GL.glBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
+                Gdx.GL.glBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
             }
         }
 

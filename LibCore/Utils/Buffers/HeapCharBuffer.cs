@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Utils.Buffers;
 
+[PublicAPI]
 public class HeapCharBuffer : CharBuffer
 {
     public HeapCharBuffer( char[] array, int offset, int length )

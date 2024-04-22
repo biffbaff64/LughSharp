@@ -72,6 +72,7 @@ namespace LughSharp.LibCore.Utils.Buffers;
 ///         to be chained.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public abstract class FloatBuffer : Buffer
 {
     // ------------------------------------------------------------------------

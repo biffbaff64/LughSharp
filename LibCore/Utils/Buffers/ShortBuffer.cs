@@ -27,6 +27,7 @@ using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Utils.Buffers;
 
+[PublicAPI]
 public abstract class ShortBuffer : Buffer
 {
     private readonly short[]? _hb;
@@ -55,7 +56,7 @@ public abstract class ShortBuffer : Buffer
     ///     <para>
     ///         The new buffer's position will be zero, its limit will be its
     ///         capacity, its mark will be undefined, and each of its elements will be
-    ///         initialized to zero.  It will have a backing array (<see cref="List{T}" />),
+    ///         initialized to zero.  It will have a backing array (<see cref="List{T}"/>),
     ///         and its <see cref="ArrayOffset" /> will be zero.
     ///     </para>
     /// </summary>
@@ -115,12 +116,11 @@ public abstract class ShortBuffer : Buffer
     /// <summary>
     ///     Wraps a short array into a buffer.
     ///     <para>
-    ///         The new buffer will be backed by the given short array;
-    ///         that is, modifications to the buffer will cause the array to be modified
-    ///         and vice versa.  The new buffer's capacity and limit will be
-    ///         <tt>array.length</tt>, its position will be zero, and its mark will be
-    ///         undefined.  Its backing array will be the given array, and its array offset
-    ///         will be zero.
+    ///         The new buffer will be backed by the given short array; that is, modifications
+    ///         to the buffer will cause the array to be modified and vice versa. The new buffer's
+    ///         capacity and limit will be <tt>array.length</tt>, its position will be zero, and
+    ///         its mark will be undefined.  Its backing array will be the given array, and its
+    ///         array offset will be zero.
     ///     </para>
     /// </summary>
     /// <param name="array"> The array that will back this buffer </param>
@@ -186,7 +186,7 @@ public abstract class ShortBuffer : Buffer
     ///     Relative <i>put</i> method <i>(optional operation)</i>.
     /// </summary>
     /// <param name="s">The short to be written.</param>
-    /// <returns>This buffer.</returns>
+    /// <returns> This buffer.</returns>
     /// <exception cref="GdxRuntimeException">
     ///     If this buffer's current position is not smaller than its limit.
     /// </exception>
@@ -237,11 +237,11 @@ public abstract class ShortBuffer : Buffer
     ///         In other words, an invocation of this method of the form <tt>src.get(dst, off, len)</tt>
     ///         has exactly the same effect as the loop
     ///         <code>
-    ///     for (int i = off; i &lt; off + len; i++)
-    ///     {
-    ///         dst[i] = src.get();
-    ///     }
-    /// </code>
+    ///             for (int i = off; i &lt; off + len; i++)
+    ///             {
+    ///                 dst[i] = src.get();
+    ///             }
+    ///         </code>
     ///         except that it first checks that there are sufficient shorts in this buffer and it
     ///         is potentially much more efficient.
     ///     </para>
@@ -289,8 +289,8 @@ public abstract class ShortBuffer : Buffer
     ///         array. An invocation of this method of the form <tt>src.get(a)</tt> behaves
     ///         in exactly the same way as the invocation
     ///         <code>
-    ///     src.get(a, 0, a.Length);
-    /// </code>
+    ///             src.get(a, 0, a.Length);
+    ///         </code>
     ///     </para>
     /// </summary>
     /// <param name="dst">
@@ -324,11 +324,11 @@ public abstract class ShortBuffer : Buffer
     ///         exactly the same effect as the loop
     ///     </para>
     ///     <code>
-    ///     while (src.hasRemaining())
-    ///     {
-    ///         dst.put(src.get());
-    ///     }
-    /// </code>
+    ///         while (src.hasRemaining())
+    ///         {
+    ///             dst.put(src.get());
+    ///         }
+    ///     </code>
     ///     <para>
     ///         except that it first checks that there is sufficient space in this
     ///         buffer and it is potentially much more efficient.
@@ -392,11 +392,11 @@ public abstract class ShortBuffer : Buffer
     ///         <tt>dst.put(src, off, len)</tt> has exactly the same effect as
     ///         the loop
     ///         <code>
-    ///     for (int i = off; i &lt; off + len; i++)
-    ///     {
-    ///         dst.put( a[ i ] );
-    ///     }
-    /// </code>
+    ///             for (int i = off; i &lt; off + len; i++)
+    ///             {
+    ///                 dst.put( a[ i ] );
+    ///             }
+    ///         </code>
     ///         except that it first checks that there is sufficient space in this
     ///         buffer and it is potentially much more efficient.
     ///     </para>
@@ -578,7 +578,7 @@ public abstract class ShortBuffer : Buffer
     ///     Returns a string summarizing the state of this buffer.
     /// </summary>
     /// <returns> A summary string </returns>
-    public override String ToString()
+    public override string ToString()
     {
         return $@"{GetType().Name}: [pos={Position} lim={Limit} cap={Capacity}]";
     }
@@ -659,6 +659,9 @@ public abstract class ShortBuffer : Buffer
         return true;
     }
 
+    /// <summary>
+    /// Returns TRUE if <paramref name="x"/> is equal to <paramref name="y"/>.
+    /// </summary>
     private static bool Equals( short x, short y )
     {
         return x == y;
@@ -697,6 +700,12 @@ public abstract class ShortBuffer : Buffer
         return Remaining() - that.Remaining();
     }
 
+    /// <summary>
+    /// Compares two values.
+    /// If equal, will return 0.
+    /// If x is greater than y, will return &gt; 0.
+    /// If x is less than y, will return &lt; 0.
+    /// </summary>
     private static int Compare( short x, short y )
     {
         return x - y;

@@ -179,12 +179,12 @@ public class VertexBufferObjectSubData : IVertexData
     /// <param name="locations"> array containing the attribute locations.</param>
     public unsafe void Bind( ShaderProgram shader, int[]? locations = null )
     {
-        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
+        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
 
         if ( _isDirty )
         {
             ByteBuffer.Limit = _buffer.Limit * 4;
-            GL.glBufferData( IGL.GL_ARRAY_BUFFER, ByteBuffer.Limit, ByteBuffer, _usage );
+            Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, ByteBuffer.Limit, ByteBuffer, _usage );
             _isDirty = false;
         }
 
@@ -269,7 +269,7 @@ public class VertexBufferObjectSubData : IVertexData
             }
         }
 
-        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
@@ -288,18 +288,18 @@ public class VertexBufferObjectSubData : IVertexData
     /// </summary>
     public void Dispose()
     {
-        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
-        GL.glDeleteBuffers( ( uint ) _bufferHandle );
+        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL.glDeleteBuffers( ( uint ) _bufferHandle );
         _bufferHandle = 0;
     }
 
     private unsafe int CreateBufferObject()
     {
-        var result = GL.glGenBuffer();
+        var result = Gdx.GL.glGenBuffer();
 
-        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, result );
-        GL.glBufferData( IGL.GL_ARRAY_BUFFER, ByteBuffer.Capacity, null!, _usage );
-        GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
+        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, result );
+        Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, ByteBuffer.Capacity, null!, _usage );
+        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
 
         return ( int ) result;
     }
@@ -308,7 +308,7 @@ public class VertexBufferObjectSubData : IVertexData
     {
         if ( _isBound )
         {
-            GL.glBufferSubData( IGL.GL_ARRAY_BUFFER, 0, ByteBuffer.Limit, ByteBuffer );
+            Gdx.GL.glBufferSubData( IGL.GL_ARRAY_BUFFER, 0, ByteBuffer.Limit, ByteBuffer );
             _isDirty = false;
         }
     }
