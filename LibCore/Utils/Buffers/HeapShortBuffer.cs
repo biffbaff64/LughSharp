@@ -53,9 +53,9 @@ public class HeapShortBuffer : ShortBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
-    public override object BackingArray()
+    public new short[] BackingArray()
     {
-        return null;
+        return null!;
     }
 
     /// <summary>

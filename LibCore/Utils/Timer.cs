@@ -55,14 +55,9 @@ public class Timer
     {
         lock ( _threadLock )
         {
-            var thread = Thread();
+            var thread = Thread() ?? throw new GdxRuntimeException( "Thread instance is null!" );
 
-            if ( thread == null )
-            {
-                throw new GdxRuntimeException( "Thread instance is null!" );
-            }
-
-            return thread.ThreadInstance ?? ( thread.ThreadInstance = new Timer() );
+            return thread.ThreadInstance ??= new Timer();
         }
     }
 
@@ -126,7 +121,7 @@ public class Timer
                     task.Timer = this;
 
                     var timeMillis        = TimeUtils.NanoTime() / 1000000;
-                    var executeTimeMillis = timeMillis + ( long )( delaySeconds * 1000 );
+                    var executeTimeMillis = timeMillis + ( long ) ( delaySeconds * 1000 );
 
                     if ( _thread?.PauseTimeMillis > 0 )
                     {
@@ -134,7 +129,7 @@ public class Timer
                     }
 
                     task.ExecuteTimeMillis = executeTimeMillis;
-                    task.IntervalMillis    = ( long )( intervalSeconds * 1000 );
+                    task.IntervalMillis    = ( long ) ( intervalSeconds * 1000 );
                     task.RepeatCount       = repeatCount;
 
                     Tasks.Add( task );
@@ -510,7 +505,7 @@ public class Timer
                 {
                     if ( waitMillis > 0 )
                     {
-                        Monitor.Wait( _threadLock, ( int )waitMillis );
+                        Monitor.Wait( _threadLock, ( int ) waitMillis );
                     }
                 }
                 catch ( ThreadInterruptedException )

@@ -1427,7 +1427,7 @@ public unsafe class GLBindings
     ///     a list of possible values.
     /// </param>
     /// <param name="data">A pointer to where the float value or values will be returned.</param>
-    public void glGetFloatv( GLenum pname, GLfloat* data )
+    public void glGetFloatv( GLenum pname, float[] data )
     {
         _glGetFloatv( pname, data );
     }

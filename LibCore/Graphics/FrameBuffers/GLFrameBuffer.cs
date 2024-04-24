@@ -95,7 +95,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
     /// </summary>
     public void Dispose()
     {
-        foreach ( T texture in TextureAttachments )
+        foreach ( var texture in TextureAttachments )
         {
             DisposeColorTexture( texture );
         }
@@ -164,19 +164,21 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
     {
         CheckValidBuilder();
 
-        // iOS uses a different framebuffer handle! (not necessarily 0)
         if ( !DefaultFramebufferHandleInitialized )
         {
             DefaultFramebufferHandleInitialized = true;
 
             if ( Gdx.App.AppType == IApplication.ApplicationType.IOS )
             {
-                IntBuffer intbuf = ByteBuffer.AllocateDirect
+                var intbuf = ByteBuffer.AllocateDirect
                     ( ( 16 * sizeof( int ) ) / 8 ).Order( ByteOrder.NativeOrder ).AsIntBuffer();
 
                 unsafe
                 {
-                    Gdx.GL.glGetIntegerv( IGL.GL_FRAMEBUFFER_BINDING, intbuf );
+                    fixed ( int* ptr = &intbuf.BackingArray()[ 0 ] )
+                    {
+                        Gdx.GL.glGetIntegerv( IGL.GL_FRAMEBUFFER_BINDING, ptr );
+                    }
                 }
 
                 DefaultFramebufferHandle = intbuf.Get( 0 );
@@ -237,9 +239,9 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
         if ( HasMultipleTexturesPresent )
         {
-            foreach ( FrameBufferTextureAttachmentSpec attachmentSpec in BufferBuilder.TextureAttachmentSpecs )
+            foreach ( var attachmentSpec in BufferBuilder.TextureAttachmentSpecs )
             {
-                T texture = CreateTexture( attachmentSpec );
+                var texture = CreateTexture( attachmentSpec );
                 TextureAttachments.Add( texture );
 
                 var tempHandle = ( uint ) texture.GetTextureObjectHandle();
@@ -274,7 +276,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         }
         else
         {
-            T texture = CreateTexture( BufferBuilder.TextureAttachmentSpecs.First() );
+            var texture = CreateTexture( BufferBuilder.TextureAttachmentSpecs.First() );
             TextureAttachments.Add( texture );
 
             Gdx.GL.glBindTexture( texture.GLTarget, ( uint ) texture.GetTextureObjectHandle() );
@@ -282,7 +284,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
         if ( HasMultipleTexturesPresent )
         {
-            IntBuffer buffer = BufferUtils.NewIntBuffer( colorTextureCounter );
+            var buffer = BufferUtils.NewIntBuffer( colorTextureCounter );
 
             for ( var i = 0; i < colorTextureCounter; i++ )
             {
@@ -291,7 +293,13 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
             buffer.Position = 0;
 
-            Gdx.GL.glDrawBuffers( colorTextureCounter, buffer );
+            unsafe
+            {
+                fixed ( int* ptr = &buffer.BackingArray()[ 0 ] )
+                {
+                    Gdx.GL.glDrawBuffers( colorTextureCounter, ptr );
+                }
+            }
         }
         else
         {
@@ -321,7 +329,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
         Gdx.GL.glBindRenderbuffer( IGL.GL_RENDERBUFFER, 0 );
 
-        foreach ( T texture in TextureAttachments )
+        foreach ( var texture in TextureAttachments )
         {
             Gdx.GL.glBindTexture( texture.GLTarget, 0 );
         }
@@ -375,7 +383,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
         if ( result != IGL.GL_FRAMEBUFFER_COMPLETE )
         {
-            foreach ( T texture in TextureAttachments )
+            foreach ( var texture in TextureAttachments )
             {
                 DisposeColorTexture( texture );
             }
@@ -442,7 +450,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
                 throw new GdxRuntimeException( "Multiple render targets not available on GLES 2.0" );
             }
 
-            foreach ( FrameBufferTextureAttachmentSpec spec in BufferBuilder.TextureAttachmentSpecs )
+            foreach ( var spec in BufferBuilder.TextureAttachmentSpecs )
             {
                 if ( spec.IsDepth )
                 {
@@ -578,7 +586,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         {
             if ( Buffers?.Keys != null )
             {
-                foreach ( IApplication app in Buffers.Keys )
+                foreach ( var app in Buffers.Keys )
                 {
                     builder.Append( Buffers[ app ]?.Count );
                     builder.Append( ' ' );

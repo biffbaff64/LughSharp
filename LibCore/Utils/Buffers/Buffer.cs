@@ -477,7 +477,10 @@ public abstract class Buffer
     ///     </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
-    public abstract int[] BackingArray();
+    public object[] BackingArray()
+    {
+        throw new GdxRuntimeException( "This method should be implemented in inheriting classes." );
+    }
 
     /// <summary>
     ///     Returns the offset within this buffer's backing array of the first

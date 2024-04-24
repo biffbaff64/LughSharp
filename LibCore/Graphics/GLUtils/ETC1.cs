@@ -39,6 +39,7 @@ public class ETC1
     ///     The PKM header size in bytes
     /// </summary>
     public const int PKM_HEADER_SIZE = 16;
+
     public const int ETC1_RGB8_OES     = 0x00008d64;
     public const int RGB565_PIXEL_SIZE = 2;
     public const int RGB888_PIXEL_SIZE = 3;
@@ -66,8 +67,8 @@ public class ETC1
     /// <returns> the <see cref="ETC1Data" /> </returns>
     public static ETC1Data EncodeImage( Pixmap pixmap )
     {
-        var        pixelSize      = GetPixelSize( pixmap.GetFormat() );
-        ByteBuffer compressedData = EncodeImage( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
+        var    pixelSize      = GetPixelSize( pixmap.GetFormat() );
+        byte[] compressedData = EncodeImage( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
 
 //        BufferUtils.NewByteBuffer( compressedData );
 
@@ -240,7 +241,7 @@ public class ETC1
     /// <returns>
     ///     a new direct native order ByteBuffer containing the compressed image data
     /// </returns>
-    private static extern ByteBuffer EncodeImage( ByteBuffer imageData,
+    private static extern ByteBuffer EncodeImage( byte[] imageData,
                                                   int offset,
                                                   int width,
                                                   int height,
@@ -346,7 +347,7 @@ public class ETC1
         /// <summary>
         ///     the optional PKM header and compressed image data.
         /// </summary>
-        public ByteBuffer CompressedData { get; set; }
+        public byte[] CompressedData { get; set; }
 
         /// <summary>
         ///     the offset in bytes to the actual compressed data.
@@ -428,7 +429,7 @@ public class ETC1
                      + $"compressed: {CompressedData.Capacity - PKM_HEADER_SIZE}";
             }
 
-            return $"raw [{Width}x{Height}], compressed: {CompressedData.Capacity - PKM_HEADER_SIZE}";
+            return $"raw [{Width}x{Height}], compressed: {CompressedData.Length - PKM_HEADER_SIZE}";
         }
     }
 

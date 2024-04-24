@@ -615,6 +615,11 @@ public abstract class FloatBuffer : Buffer
         return Offset;
     }
 
+    public new float[] BackingArray()
+    {
+        return null!;
+    }
+
     /// <summary>
     ///     Compacts this buffer  <i>(optional operation)</i>.
     ///     <para>
@@ -662,10 +667,10 @@ public abstract class FloatBuffer : Buffer
     /// <returns> The current hash code of this buffer </returns>
     public override int GetHashCode()
     {
-        var h = 31 + ( int )Get( 0 );
-        h = ( 31 * h ) + ( int )Get( 1 );
-        h = ( 31 * h ) + ( int )Get( 2 );
-        h = ( 31 * h ) + ( int )Get( 3 );
+        var h = 31 + ( int ) Get( 0 );
+        h = ( 31 * h ) + ( int ) Get( 1 );
+        h = ( 31 * h ) + ( int ) Get( 2 );
+        h = ( 31 * h ) + ( int ) Get( 3 );
 
         return h;
     }
@@ -777,16 +782,16 @@ public abstract class FloatBuffer : Buffer
     private static int Compare( float x, float y )
     {
         return x < y
-            ? -1
-            : x > y
-                ? +1
-                : x.Equals( y )
-                    ? 0
-                    : float.IsNaN( x )
-                        ? float.IsNaN( y )
-                            ? 0
-                            : +1
-                        : -1;
+                   ? -1
+                   : x > y
+                       ? +1
+                       : x.Equals( y )
+                           ? 0
+                           : float.IsNaN( x )
+                               ? float.IsNaN( y )
+                                     ? 0
+                                     : +1
+                               : -1;
     }
 
     /// <summary>

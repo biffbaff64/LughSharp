@@ -796,7 +796,7 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="GdxRuntimeException">
     ///     If this buffer is not backed by an accessible array.
     /// </exception>
-    public override char[] BackingArray()
+    public new char[] BackingArray()
     {
         if ( _hb == null )
         {

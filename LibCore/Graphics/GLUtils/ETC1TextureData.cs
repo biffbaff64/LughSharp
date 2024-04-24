@@ -106,18 +106,15 @@ public class ETC1TextureData : ITextureData
         {
             var pixmap = ETC1.DecodeImage( _data, Pixmap.Format.RGB565 );
 
-            unsafe
-            {
-                Gdx.GL.glTexImage2D( target,
-                                     0,
-                                     pixmap.GLInternalFormat,
-                                     pixmap.Width,
-                                     pixmap.Height,
-                                     0,
-                                     pixmap.GLFormat,
-                                     pixmap.GLType,
-                                     pixmap.Pixels.BackingArray() );
-            }
+            Gdx.GL.glTexImage2D( target,
+                                 0,
+                                 pixmap.GLInternalFormat,
+                                 pixmap.Width,
+                                 pixmap.Height,
+                                 0,
+                                 pixmap.GLFormat,
+                                 pixmap.GLType,
+                                 pixmap.Pixels );
 
             if ( UseMipMaps )
             {
@@ -138,7 +135,7 @@ public class ETC1TextureData : ITextureData
                                                Height,
                                                0,
                                                _data.CompressedData.Capacity - _data.DataOffset,
-                                               _data.CompressedData.BackingArray() );
+                                               _data.CompressedData );
             }
 
             if ( UseMipMaps )

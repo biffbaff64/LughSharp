@@ -114,7 +114,7 @@ public class Texture : GLTexture
     ///     Creates a new Texture using the supplied <see cref="ITextureData" />.
     /// </summary>
     public Texture( ITextureData? data )
-        : this( IGL.GL_TEXTURE_2D, ( int )Gdx.GL.glGenTexture(), data )
+        : this( IGL.GL_TEXTURE_2D, ( int ) Gdx.GL.glGenTexture(), data )
     {
     }
 
@@ -187,7 +187,7 @@ public class Texture : GLTexture
             throw new GdxRuntimeException( "Tried to reload unmanaged Texture" );
         }
 
-        GLTextureHandle = ( int )Gdx.GL.glGenTexture();
+        GLTextureHandle = ( int ) Gdx.GL.glGenTexture();
 
         Load( TextureData );
     }
@@ -211,15 +211,18 @@ public class Texture : GLTexture
 
         unsafe
         {
-            Gdx.GL.glTexSubImage2D( GLTarget,
-                                0,
-                                x,
-                                y,
-                                pixmap.Width,
-                                pixmap.Height,
-                                pixmap.GLFormat,
-                                pixmap.GLType,
-                                pixmap.Pixels );
+            fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
+            {
+                Gdx.GL.glTexSubImage2D( GLTarget,
+                                        0,
+                                        x,
+                                        y,
+                                        pixmap.Width,
+                                        pixmap.Height,
+                                        pixmap.GLFormat,
+                                        pixmap.GLType,
+                                        ptr );
+            }
         }
     }
 
@@ -331,7 +334,7 @@ public class Texture : GLTexture
 
                     // unload the texture, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    texture.GLTextureHandle = ( int )Gdx.GL.glGenTexture();
+                    texture.GLTextureHandle = ( int ) Gdx.GL.glGenTexture();
                     AssetManager.Load( fileName, typeof( Texture ), parameters );
                 }
             }
@@ -362,8 +365,8 @@ public class Texture : GLTexture
     public override string? ToString()
     {
         return TextureData is FileTextureData
-            ? TextureData.ToString()
-            : base.ToString();
+                   ? TextureData.ToString()
+                   : base.ToString();
     }
 
     /// <summary>

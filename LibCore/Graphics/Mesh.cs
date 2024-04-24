@@ -24,9 +24,7 @@
 
 
 using System.Text;
-
 using LughSharp.LibCore.Maths.Collision;
-
 using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
@@ -588,7 +586,10 @@ public class Mesh
 
                 unsafe
                 {
-                    Gdx.GL.glDrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, buffer );
+                    fixed ( void* ptr = &buffer.BackingArray()[ 0 ] )
+                    {
+                        Gdx.GL.glDrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ptr );
+                    }
                 }
 
                 buffer.Position = oldPosition;
@@ -622,17 +623,17 @@ public class Mesh
                     unsafe
                     {
                         Gdx.GL.glDrawElementsInstanced( primitiveType,
-                                                    count,
-                                                    IGL.GL_UNSIGNED_SHORT,
-                                                    offset * 2,
-                                                    numInstances );
+                                                        count,
+                                                        IGL.GL_UNSIGNED_SHORT,
+                                                        ( void* ) ( offset * 2 ),
+                                                        numInstances );
                     }
                 }
                 else
                 {
                     unsafe
                     {
-                        Gdx.GL.glDrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, offset * 2 );
+                        Gdx.GL.glDrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ( void* ) ( offset * 2 ) );
                     }
                 }
             }
@@ -816,13 +817,13 @@ public class Mesh
         {
             throw new GdxRuntimeException
                 (
-                "Invalid part specified ( offset="
-              + offset
-              + ", count="
-              + count
-              + ", max="
-              + max
-              + " )"
+                 "Invalid part specified ( offset="
+               + offset
+               + ", count="
+               + count
+               + ", max="
+               + max
+               + " )"
                 );
         }
 
@@ -1065,7 +1066,7 @@ public class Mesh
                                   int count,
                                   in Matrix4? transform )
     {
-        return ( float )Math.Sqrt( CalculateRadiusSquared( centerX, centerY, centerZ, offset, count, transform ) );
+        return ( float ) Math.Sqrt( CalculateRadiusSquared( centerX, centerY, centerZ, offset, count, transform ) );
     }
 
     /// <summary>
@@ -1275,14 +1276,14 @@ public class Mesh
         {
             throw new IndexOutOfRangeException
                 (
-                "start = "
-              + start
-              + ", count = "
-              + count
-              + ", vertexSize = "
-              + vertexSize
-              + ", length = "
-              + vertices.Length
+                 "start = "
+               + start
+               + ", count = "
+               + count
+               + ", vertexSize = "
+               + vertexSize
+               + ", length = "
+               + vertices.Length
                 );
         }
 
@@ -1370,14 +1371,14 @@ public class Mesh
         {
             throw new IndexOutOfRangeException
                 (
-                "start = "
-              + start
-              + ", count = "
-              + count
-              + ", vertexSize = "
-              + vertexSize
-              + ", length = "
-              + vertices.Length
+                 "start = "
+               + start
+               + ", count = "
+               + count
+               + ", vertexSize = "
+               + vertexSize
+               + ", length = "
+               + vertices.Length
                 );
         }
 
@@ -1465,7 +1466,7 @@ public class Mesh
 
                     for ( var j = 0; j < a.numComponents; j++ )
                     {
-                        checks[ ++idx ] = ( short )( a.Offset + j );
+                        checks[ ++idx ] = ( short ) ( a.Offset + j );
                     }
 
                     attrs[ ++ai ] =  a.Copy();
@@ -1539,7 +1540,7 @@ public class Mesh
                             tmp[ idx + j ] = vertices[ idx1 + checks[ j ] ];
                         }
 
-                        indices[ i ] = ( short )size;
+                        indices[ i ] = ( short ) size;
                         size++;
                     }
                 }
@@ -1550,8 +1551,8 @@ public class Mesh
         }
 
         Mesh result = attrs == null
-            ? new Mesh( isStatic, numVertices, indices?.Length ?? 0, VertexAttributes )
-            : new Mesh( isStatic, numVertices, indices?.Length ?? 0, attrs );
+                          ? new Mesh( isStatic, numVertices, indices?.Length ?? 0, VertexAttributes )
+                          : new Mesh( isStatic, numVertices, indices?.Length ?? 0, attrs );
 
         result.SetVertices( vertices, 0, numVertices * newVertexSize );
 

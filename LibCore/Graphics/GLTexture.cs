@@ -46,7 +46,7 @@ public abstract class GLTexture : IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    protected GLTexture( int glTarget ) : this( glTarget, ( int )Gdx.GL.glGenTexture() )
+    protected GLTexture( int glTarget ) : this( glTarget, ( int ) Gdx.GL.glGenTexture() )
     {
     }
 
@@ -89,24 +89,22 @@ public abstract class GLTexture : IDisposable
 
     /// <summary>
     ///     Binds this texture. The texture will be bound to the currently active
-    ///     texture unit specified via <see cref="Gdx.GL.glActiveTexture" />.
+    ///     texture unit.
     /// </summary>
     public void Bind()
     {
-        Gdx.GL.glBindTexture( GLTarget, ( uint )GLTextureHandle );
+        Gdx.GL.glBindTexture( GLTarget, ( uint ) GLTextureHandle );
     }
 
     /// <summary>
     ///     Binds the texture to the given texture unit.
-    ///     <para>
-    ///         Sets the currently active texture unit via <see cref="Gdx.GL.glActiveTexture" />.
-    ///     </para>
+    ///     Sets the currently active texture unit.
     /// </summary>
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>
     public void Bind( int unit )
     {
         Gdx.GL.glActiveTexture( IGL.GL_TEXTURE0 + unit );
-        Gdx.GL.glBindTexture( GLTarget, ( uint )GLTextureHandle );
+        Gdx.GL.glBindTexture( GLTarget, ( uint ) GLTextureHandle );
     }
 
     /// <summary>
@@ -222,8 +220,8 @@ public abstract class GLTexture : IDisposable
         }
 
         Gdx.GL.glTexParameterf( IGL.GL_TEXTURE_2D,
-                            IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT,
-                            level );
+                                IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+                                level );
 
         return AnisotropicFilterLevel = level;
     }
@@ -251,8 +249,8 @@ public abstract class GLTexture : IDisposable
         Bind();
 
         Gdx.GL.glTexParameterf( IGL.GL_TEXTURE_2D,
-                            IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT,
-                            level );
+                                IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+                                level );
 
         return AnisotropicFilterLevel = level;
     }
@@ -269,16 +267,15 @@ public abstract class GLTexture : IDisposable
 
         if ( Gdx.Graphics.SupportsExtension( "GL_EXT_texture_filter_anisotropic" ) )
         {
-            FloatBuffer buffer = BufferUtils.NewFloatBuffer( 16 );
-            buffer.SetPosition( 0 );
-            buffer.SetLimit( buffer.Capacity );
+//            FloatBuffer buffer = BufferUtils.NewFloatBuffer( 16 );
+//            buffer.SetPosition( 0 );
+//            buffer.SetLimit( buffer.Capacity );
 
-            unsafe
-            {
-                Gdx.GL.glGetFloatv( IGL.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer );
-            }
+            var buffer = new float[ 16 ];
 
-            return _maxAnisotropicFilterLevel = buffer.Get( 0 );
+            Gdx.GL.glGetFloatv( IGL.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer );
+
+            return _maxAnisotropicFilterLevel = buffer[ 0 ];
         }
 
         return _maxAnisotropicFilterLevel = 1f;
@@ -290,7 +287,7 @@ public abstract class GLTexture : IDisposable
     {
         if ( GLTextureHandle != 0 )
         {
-            Gdx.GL.glDeleteTextures( ( uint )GLTextureHandle );
+            Gdx.GL.glDeleteTextures( ( uint ) GLTextureHandle );
             GLTextureHandle = 0;
         }
     }
@@ -356,15 +353,18 @@ public abstract class GLTexture : IDisposable
         {
             unsafe
             {
-                Gdx.GL.glTexImage2D( target,
-                                 miplevel,
-                                 pixmap.GLInternalFormat,
-                                 pixmap.Width,
-                                 pixmap.Height,
-                                 0,
-                                 pixmap.GLFormat,
-                                 pixmap.GLType,
-                                 pixmap.Pixels );
+                fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
+                {
+                    Gdx.GL.glTexImage2D( target,
+                                         miplevel,
+                                         pixmap.GLInternalFormat,
+                                         pixmap.Width,
+                                         pixmap.Height,
+                                         0,
+                                         pixmap.GLFormat,
+                                         pixmap.GLType,
+                                         ptr );
+                }
             }
         }
 

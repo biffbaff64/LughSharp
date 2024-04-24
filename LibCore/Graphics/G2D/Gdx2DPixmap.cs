@@ -28,6 +28,11 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class Gdx2DPixmap : IDisposable
 {
+    public long       BasePtr    { get; set; }                  // 
+    public int        Format     { get; set; }                  // The actual pixmap format.
+    public ByteBuffer PixelPtr   { get; set; }                  //
+    public long[]     NativeData { get; set; } = new long[ 4 ]; //
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -42,9 +47,9 @@ public class Gdx2DPixmap : IDisposable
         PixelPtr = LoadData( NativeData, encodedData, offset, len );
 
         BasePtr = NativeData[ 0 ];
-        Width   = ( int )NativeData[ 1 ];
-        Height  = ( int )NativeData[ 2 ];
-        Format  = ( int )NativeData[ 3 ];
+        Width   = ( int ) NativeData[ 1 ];
+        Height  = ( int ) NativeData[ 2 ];
+        Format  = ( int ) NativeData[ 3 ];
 
         if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
         {
@@ -74,9 +79,9 @@ public class Gdx2DPixmap : IDisposable
         PixelPtr = LoadData( NativeData, buffer, 0, buffer.Length );
 
         BasePtr = NativeData[ 0 ];
-        Width   = ( int )NativeData[ 1 ];
-        Height  = ( int )NativeData[ 2 ];
-        Format  = ( int )NativeData[ 3 ];
+        Width   = ( int ) NativeData[ 1 ];
+        Height  = ( int ) NativeData[ 2 ];
+        Format  = ( int ) NativeData[ 3 ];
 
         if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
         {
@@ -101,9 +106,9 @@ public class Gdx2DPixmap : IDisposable
         }
 
         BasePtr = NativeData[ 0 ];
-        Width   = ( int )NativeData[ 1 ];
-        Height  = ( int )NativeData[ 2 ];
-        Format  = ( int )NativeData[ 3 ];
+        Width   = ( int ) NativeData[ 1 ];
+        Height  = ( int ) NativeData[ 2 ];
+        Format  = ( int ) NativeData[ 3 ];
     }
 
     /// <summary>
@@ -114,23 +119,9 @@ public class Gdx2DPixmap : IDisposable
     {
         PixelPtr = pixelPtr;
         BasePtr  = nativeData[ 0 ];
-        Width    = ( int )nativeData[ 1 ];
-        Height   = ( int )nativeData[ 2 ];
-        Format   = ( int )nativeData[ 3 ];
-    }
-
-    public long       BasePtr    { get; set; }                  // 
-    public int        Format     { get; set; }                  // The actual pixmap format.
-    public ByteBuffer PixelPtr   { get; set; }                  //
-    public long[]     NativeData { get; set; } = new long[ 4 ]; //
-
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
+        Width    = ( int ) nativeData[ 1 ];
+        Height   = ( int ) nativeData[ 2 ];
+        Format   = ( int ) nativeData[ 3 ];
     }
 
     private ByteBuffer GetNewPixmap( long[] nativeData, int width, int height, int format )
@@ -158,15 +149,15 @@ public class Gdx2DPixmap : IDisposable
     public static int ToGLFormat( int format )
     {
         return format switch
-               {
-                   GDX_2D_FORMAT_ALPHA           => IGL.GL_ALPHA,
-                   GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL.GL_LUMINANCE_ALPHA,
-                   GDX_2D_FORMAT_RGB888          => IGL.GL_RGB,
-                   GDX_2D_FORMAT_RGB565          => IGL.GL_RGB,
-                   GDX_2D_FORMAT_RGBA8888        => IGL.GL_RGBA,
-                   GDX_2D_FORMAT_RGBA4444        => IGL.GL_RGBA,
-                   _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
-               };
+        {
+            GDX_2D_FORMAT_ALPHA           => IGL.GL_ALPHA,
+            GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL.GL_LUMINANCE_ALPHA,
+            GDX_2D_FORMAT_RGB888          => IGL.GL_RGB,
+            GDX_2D_FORMAT_RGB565          => IGL.GL_RGB,
+            GDX_2D_FORMAT_RGBA8888        => IGL.GL_RGBA,
+            GDX_2D_FORMAT_RGBA4444        => IGL.GL_RGBA,
+            _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
+        };
     }
 
     /// <summary>
@@ -177,15 +168,15 @@ public class Gdx2DPixmap : IDisposable
     public static int ToGLType( int format )
     {
         return format switch
-               {
-                   GDX_2D_FORMAT_ALPHA           => IGL.GL_UNSIGNED_BYTE,
-                   GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL.GL_UNSIGNED_BYTE,
-                   GDX_2D_FORMAT_RGB888          => IGL.GL_UNSIGNED_BYTE,
-                   GDX_2D_FORMAT_RGBA8888        => IGL.GL_UNSIGNED_BYTE,
-                   GDX_2D_FORMAT_RGB565          => IGL.GL_UNSIGNED_SHORT_5_6_5,
-                   GDX_2D_FORMAT_RGBA4444        => IGL.GL_UNSIGNED_SHORT_4_4_4_4,
-                   _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
-               };
+        {
+            GDX_2D_FORMAT_ALPHA           => IGL.GL_UNSIGNED_BYTE,
+            GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL.GL_UNSIGNED_BYTE,
+            GDX_2D_FORMAT_RGB888          => IGL.GL_UNSIGNED_BYTE,
+            GDX_2D_FORMAT_RGBA8888        => IGL.GL_UNSIGNED_BYTE,
+            GDX_2D_FORMAT_RGB565          => IGL.GL_UNSIGNED_SHORT_5_6_5,
+            GDX_2D_FORMAT_RGBA4444        => IGL.GL_UNSIGNED_SHORT_4_4_4_4,
+            _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
+        };
     }
 
     /// <summary>
@@ -306,15 +297,24 @@ public class Gdx2DPixmap : IDisposable
     private static string GetFormatString( int format )
     {
         return format switch
-               {
-                   GDX_2D_FORMAT_ALPHA           => "Alpha",
-                   GDX_2D_FORMAT_LUMINANCE_ALPHA => "Luminance alpha",
-                   GDX_2D_FORMAT_RGB888          => "Rgb888",
-                   GDX_2D_FORMAT_RGBA8888        => "Rgba8888",
-                   GDX_2D_FORMAT_RGB565          => "Rgb565",
-                   GDX_2D_FORMAT_RGBA4444        => "Rgba4444",
-                   _                             => "Unknown"
-               };
+        {
+            GDX_2D_FORMAT_ALPHA           => "Alpha",
+            GDX_2D_FORMAT_LUMINANCE_ALPHA => "Luminance alpha",
+            GDX_2D_FORMAT_RGB888          => "Rgb888",
+            GDX_2D_FORMAT_RGBA8888        => "Rgba8888",
+            GDX_2D_FORMAT_RGB565          => "Rgb565",
+            GDX_2D_FORMAT_RGBA4444        => "Rgba4444",
+            _                             => "Unknown"
+        };
+    }
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
     }
 
     /// <summary>
@@ -324,6 +324,7 @@ public class Gdx2DPixmap : IDisposable
     {
         if ( disposing )
         {
+            //TODO:
         }
     }
 

@@ -42,6 +42,11 @@ public abstract class IntBuffer : Buffer
         return 0;
     }
 
+    public new int[] BackingArray()
+    {
+        return null!;
+    }
+    
     public abstract IntBuffer Put( int[] i, int i1, int i2 );
 
     public abstract IntBuffer Put( int i, int i1 );

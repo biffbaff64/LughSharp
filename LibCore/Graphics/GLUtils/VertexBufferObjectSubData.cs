@@ -184,7 +184,12 @@ public class VertexBufferObjectSubData : IVertexData
         if ( _isDirty )
         {
             ByteBuffer.Limit = _buffer.Limit * 4;
-            Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, ByteBuffer.Limit, ByteBuffer, _usage );
+
+            fixed ( void* ptr = &ByteBuffer.BackingArray()[ 0 ] )
+            {
+                Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, ByteBuffer.Limit, ptr, _usage );
+            }
+            
             _isDirty = false;
         }
 
@@ -308,7 +313,11 @@ public class VertexBufferObjectSubData : IVertexData
     {
         if ( _isBound )
         {
-            Gdx.GL.glBufferSubData( IGL.GL_ARRAY_BUFFER, 0, ByteBuffer.Limit, ByteBuffer );
+            fixed ( void* ptr = &ByteBuffer.BackingArray()[ 0 ] )
+            {
+                Gdx.GL.glBufferSubData( IGL.GL_ARRAY_BUFFER, 0, ByteBuffer.Limit, ptr );
+            }
+            
             _isDirty = false;
         }
     }

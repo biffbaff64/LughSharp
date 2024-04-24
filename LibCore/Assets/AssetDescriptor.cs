@@ -28,16 +28,20 @@ namespace LughSharp.LibCore.Assets;
 [PublicAPI]
 public class AssetDescriptor
 {
-    // ------------------------------------------------------------------------
+    public Type                   AssetType  { get; set; }
+    public string                 Filepath   { get; set; }
+    public AssetLoaderParameters? Parameters { get; set; }
+    public FileInfo               File       { get; set; }
+
     // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Creates an empty AssetDescriptor object.
     ///     Information will need providing before this object can be used.
-    ///     - AssetType  - The Type of asset ( Texture, TextureAtlas, Sound, Pixmap etc. )
-    ///     - Filepath   - The full path, including filename, of the asset.
-    ///     - Parameters - The <see cref="AssetLoaderParameters" /> to use.
-    ///     - File       - A <see cref="FileInfo" /> object holding file/path information
+    ///     <li> AssetType  - The Type of asset ( Texture, TextureAtlas, Sound, Pixmap etc. ) </li>
+    ///     <li> Filepath   - The full path, including filename, of the asset. </li>
+    ///     <li> Parameters - The <see cref="AssetLoaderParameters" /> to use. </li>
+    ///     <li> File       - A <see cref="FileInfo" /> object holding file/path information </li>
     /// </summary>
     public AssetDescriptor()
     {
@@ -78,11 +82,6 @@ public class AssetDescriptor
         Parameters = parameters;
         File       = file;
     }
-
-    public Type                   AssetType  { get; set; }
-    public string                 Filepath   { get; set; }
-    public AssetLoaderParameters? Parameters { get; set; }
-    public FileInfo               File       { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

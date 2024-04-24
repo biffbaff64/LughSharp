@@ -24,7 +24,6 @@
 
 
 using System.IO.Hashing;
-
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using Exception = System.Exception;
@@ -85,7 +84,7 @@ public static class PixmapIO
         try
         {
             // Guess at deflated size.
-            var writer = new PNG( ( int )( pixmap.Width * pixmap.Height * 1.5f ) );
+            var writer = new PNG( ( int ) ( pixmap.Width * pixmap.Height * 1.5f ) );
 
             try
             {
@@ -351,17 +350,17 @@ public static class PixmapIO
                     {
                         var pixel = pixmap.GetPixel( px, py );
 
-                        curLine[ x++ ] = ( byte )( ( pixel >> 24 ) & 0xff );
-                        curLine[ x++ ] = ( byte )( ( pixel >> 16 ) & 0xff );
-                        curLine[ x++ ] = ( byte )( ( pixel >> 8 ) & 0xff );
-                        curLine[ x++ ] = ( byte )( pixel & 0xff );
+                        curLine[ x++ ] = ( byte ) ( ( pixel >> 24 ) & 0xff );
+                        curLine[ x++ ] = ( byte ) ( ( pixel >> 16 ) & 0xff );
+                        curLine[ x++ ] = ( byte ) ( ( pixel >> 8 ) & 0xff );
+                        curLine[ x++ ] = ( byte ) ( pixel & 0xff );
                     }
                 }
 
-                lineOut[ 0 ] = ( byte )( curLine[ 0 ] - prevLine[ 0 ] );
-                lineOut[ 1 ] = ( byte )( curLine[ 1 ] - prevLine[ 1 ] );
-                lineOut[ 2 ] = ( byte )( curLine[ 2 ] - prevLine[ 2 ] );
-                lineOut[ 3 ] = ( byte )( curLine[ 3 ] - prevLine[ 3 ] );
+                lineOut[ 0 ] = ( byte ) ( curLine[ 0 ] - prevLine[ 0 ] );
+                lineOut[ 1 ] = ( byte ) ( curLine[ 1 ] - prevLine[ 1 ] );
+                lineOut[ 2 ] = ( byte ) ( curLine[ 2 ] - prevLine[ 2 ] );
+                lineOut[ 3 ] = ( byte ) ( curLine[ 3 ] - prevLine[ 3 ] );
 
                 for ( var x = 4; x < lineLen; x++ )
                 {
@@ -399,7 +398,7 @@ public static class PixmapIO
                         c = b;
                     }
 
-                    lineOut[ x ] = ( byte )( curLine[ x ] - c );
+                    lineOut[ x ] = ( byte ) ( curLine[ x ] - c );
                 }
 
                 deflaterOutput.Write( new ReadOnlySpan< byte >( PAETH_FILTER ) );

@@ -195,9 +195,12 @@ public class ScreenUtils
 
         // var pixels = BufferUtils.NewByteBuffer( numBytes );
 
-        var pixels = new byte[ numBytes ];
-        
-        Gdx.GL.glReadPixels( x, y, w, h, IGL.GL_RGBA, IGL.GL_UNSIGNED_BYTE, pixels );
+        var pixels = BufferUtils.NewByteBuffer( numBytes );
+
+        fixed ( void* ptr = &pixels.BackingArray()[ 0 ] )
+        {
+            Gdx.GL.glReadPixels( x, y, w, h, IGL.GL_RGBA, IGL.GL_UNSIGNED_BYTE, ptr );
+        }
 
         var lines = new byte[ numBytes ];
 

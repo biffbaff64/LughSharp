@@ -107,20 +107,11 @@ public class PixmapPacker : IDisposable
 
     private bool _disposed;
 
-//    private Pattern       _indexPattern = Pattern.Compile( "(.+)_(\\d+)$" );
-
-    /// <summary>
-    ///     Uses <see cref="GuillotineStrategy" />.
-    ///     <see cref="PixmapPacker(int, int, Pixmap.Format, int, bool, bool, bool, IPackStrategy)" />
-    /// </summary>
     public PixmapPacker( int pageWidth, int pageHeight, Pixmap.Format pageFormat, int padding, bool duplicateBorder )
         : this( pageWidth, pageHeight, pageFormat, padding, duplicateBorder, false, false, new GuillotineStrategy() )
     {
     }
 
-    /// <summary>
-    ///     <see cref="PixmapPacker(int, int, Pixmap.Format, int, bool, bool, bool, IPackStrategy)" />
-    /// </summary>
     public PixmapPacker( int pageWidth,
                          int pageHeight,
                          Pixmap.Format pageFormat,
@@ -128,15 +119,15 @@ public class PixmapPacker : IDisposable
                          bool duplicateBorder,
                          IPackStrategy packStrategy )
         : this(
-            pageWidth,
-            pageHeight,
-            pageFormat,
-            padding,
-            duplicateBorder,
-            false,
-            false,
-            packStrategy
-            )
+               pageWidth,
+               pageHeight,
+               pageFormat,
+               padding,
+               duplicateBorder,
+               false,
+               false,
+               packStrategy
+              )
     {
     }
 
@@ -263,7 +254,7 @@ public class PixmapPacker : IDisposable
 
                 if ( _stripWhitespaceY )
                 {
-                    outer1:
+                outer1:
 
                     for ( var y = 0; y < image.Height; y++ )
                     {
@@ -281,7 +272,7 @@ public class PixmapPacker : IDisposable
                         top++;
                     }
 
-                    outer2:
+                outer2:
 
                     for ( var y = image.Height; --y >= top; )
                     {
@@ -305,7 +296,7 @@ public class PixmapPacker : IDisposable
 
                 if ( _stripWhitespaceX )
                 {
-                    outer3:
+                outer3:
 
                     for ( var x = 0; x < image.Width; x++ )
                     {
@@ -323,7 +314,7 @@ public class PixmapPacker : IDisposable
                         left++;
                     }
 
-                    outer4:
+                outer4:
 
                     for ( var x = image.Width; --x >= left; )
                     {
@@ -377,10 +368,10 @@ public class PixmapPacker : IDisposable
             page.AddedRects.Add( name );
         }
 
-        var rectX      = ( int )rect.X;
-        var rectY      = ( int )rect.Y;
-        var rectWidth  = ( int )rect.Width;
-        var rectHeight = ( int )rect.Height;
+        var rectX      = ( int ) rect.X;
+        var rectY      = ( int ) rect.Y;
+        var rectWidth  = ( int ) rect.Width;
+        var rectHeight = ( int ) rect.Height;
 
         if ( PackToTexture && !DuplicateBorder && page is { Texture: not null, Dirty: false } )
         {
@@ -388,17 +379,20 @@ public class PixmapPacker : IDisposable
 
             unsafe
             {
-                Gdx.GL.glTexSubImage2D(
-                    page.Texture!.GLTarget,
-                    0,
-                    rectX,
-                    rectY,
-                    rectWidth,
-                    rectHeight,
-                    image.GLFormat,
-                    image.GLType,
-                    image.Pixels
-                    );
+                fixed ( void* ptr = &image.Pixels.BackingArray()[ 0 ] )
+                {
+                    Gdx.GL.glTexSubImage2D(
+                                           page.Texture!.GLTarget,
+                                           0,
+                                           rectX,
+                                           rectY,
+                                           rectWidth,
+                                           rectHeight,
+                                           image.GLFormat,
+                                           image.GLType,
+                                           ptr
+                                          );
+                }
             }
         }
         else
@@ -537,7 +531,7 @@ public class PixmapPacker : IDisposable
                         continue;
                     }
 
-                    var region = new AtlasRegion( page.Texture, ( int )rect.X, ( int )rect.Y, ( int )rect.Width, ( int )rect.Height );
+                    var region = new AtlasRegion( page.Texture, ( int ) rect.X, ( int ) rect.Y, ( int ) rect.Width, ( int ) rect.Height );
 
                     if ( rect.Splits != null )
                     {
@@ -567,7 +561,7 @@ public class PixmapPacker : IDisposable
                     region.Name           = imageName;
                     region.Index          = imageIndex;
                     region.OffsetX        = rect.OffsetX;
-                    region.OffsetY        = ( int )( rect.OriginalHeight - rect.Height - rect.OffsetY );
+                    region.OffsetY        = ( int ) ( rect.OriginalHeight - rect.Height - rect.OffsetY );
                     region.OriginalWidth  = rect.OriginalWidth;
                     region.OriginalHeight = rect.OriginalHeight;
 
@@ -763,12 +757,12 @@ public class PixmapPacker : IDisposable
 
             Color c = new();
 
-            c.Set( ( uint )raster.GetPixel( x, y ) );
+            c.Set( ( uint ) raster.GetPixel( x, y ) );
 
-            rgba[ 0 ] = ( int )( c.R * 255 );
-            rgba[ 1 ] = ( int )( c.G * 255 );
-            rgba[ 2 ] = ( int )( c.B * 255 );
-            rgba[ 3 ] = ( int )( c.A * 255 );
+            rgba[ 0 ] = ( int ) ( c.R * 255 );
+            rgba[ 1 ] = ( int ) ( c.G * 255 );
+            rgba[ 2 ] = ( int ) ( c.B * 255 );
+            rgba[ 3 ] = ( int ) ( c.A * 255 );
 
             if ( rgba[ 3 ] == breakA )
             {
@@ -792,7 +786,7 @@ public class PixmapPacker : IDisposable
 
 // ========================================================================
 
-
+    [PublicAPI]
     public class Page
     {
         /// <summary>
@@ -835,13 +829,13 @@ public class PixmapPacker : IDisposable
             {
                 Texture = new Texture
                     (
-                    new PixmapTextureData(
-                        Image,
-                        Image.GetFormat(),
-                        useMipMaps,
-                        false,
-                        true
-                        )
+                     new PixmapTextureData(
+                                           Image,
+                                           Image.GetFormat(),
+                                           useMipMaps,
+                                           false,
+                                           true
+                                          )
                     );
 
 //                {
@@ -886,6 +880,7 @@ public class PixmapPacker : IDisposable
     ///     Does bin packing by inserting in rows. This is good at
     ///     packing images that have similar heights.
     /// </summary>
+    [PublicAPI]
     public class SkylineStrategy : IPackStrategy
     {
         public void Sort( List< Pixmap > images )
@@ -902,7 +897,7 @@ public class PixmapPacker : IDisposable
         }
     }
 
-
+    [PublicAPI]
     public class PixmapPackerRectangle : RectangleShape
     {
         public PixmapPackerRectangle( int x, int y, int width, int height )
@@ -941,6 +936,7 @@ public class PixmapPacker : IDisposable
     /// <summary>
     ///     Choose the page and location for each rectangle.
     /// </summary>
+    [PublicAPI]
     public interface IPackStrategy
     {
         void Sort( List< Pixmap > images );
