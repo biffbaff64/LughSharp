@@ -50,7 +50,7 @@ public class InstanceBufferObject : IInstanceData
                 ( "InstanceBufferObject requires a device running with GLES 3.0 compatibilty" );
         }
 
-        _bufferHandle = ( int )Gdx.GL.glGenBuffer();
+        _bufferHandle = ( int ) Gdx.GL.glGenBuffer();
 
         ByteBuffer data = BufferUtils.NewByteBuffer( instanceAttributes.VertexSize * numVertices );
 
@@ -62,7 +62,7 @@ public class InstanceBufferObject : IInstanceData
     }
 
     /// <summary>
-    ///     The GL enum used in the call to <see cref="IGL.GLBufferData(int, int, Buffer, int)" />",
+    ///     The GL enum used in the call to <see cref="Gdx.GL.GLBufferData(int, int, Buffer, int)" />",
     ///     e.g. GL_STATIC_DRAW or GL_DYNAMIC_DRAW. It can only be called when the VBO is not bound.
     /// </summary>
     public int Usage
@@ -167,13 +167,16 @@ public class InstanceBufferObject : IInstanceData
     {
         Debug.Assert( _byteBuffer != null, "Bind(ShaderProgram, int[]) fail: _byteBuffer is NULL" );
 
-        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint )_bufferHandle );
+        Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, ( uint ) _bufferHandle );
 
         if ( _isDirty )
         {
             _byteBuffer.Limit = _buffer.Limit * 4;
 
-            Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
+            fixed ( void* ptr = &_byteBuffer.BackingArray()[ 0 ] )
+            {
+                Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, ptr, Usage );
+            }
 
             _isDirty = false;
         }
@@ -203,7 +206,7 @@ public class InstanceBufferObject : IInstanceData
                                            Attributes.VertexSize,
                                            attribute.Offset );
 
-                Gdx.GL.glVertexAttribDivisor( ( uint )( location + unitOffset ), 1 );
+                Gdx.GL.glVertexAttribDivisor( ( uint ) ( location + unitOffset ), 1 );
             }
         }
         else
@@ -228,7 +231,7 @@ public class InstanceBufferObject : IInstanceData
                                            Attributes.VertexSize,
                                            attribute.Offset );
 
-                Gdx.GL.glVertexAttribDivisor( ( uint )( location + unitOffset ), 1 );
+                Gdx.GL.glVertexAttribDivisor( ( uint ) ( location + unitOffset ), 1 );
             }
         }
 
@@ -285,7 +288,7 @@ public class InstanceBufferObject : IInstanceData
     /// </summary>
     public void Invalidate()
     {
-        _bufferHandle = ( int )Gdx.GL.glGenBuffer();
+        _bufferHandle = ( int ) Gdx.GL.glGenBuffer();
         _isDirty      = true;
     }
 
@@ -295,7 +298,7 @@ public class InstanceBufferObject : IInstanceData
     public void Dispose()
     {
         Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
-        Gdx.GL.glDeleteBuffers( ( uint )_bufferHandle );
+        Gdx.GL.glDeleteBuffers( ( uint ) _bufferHandle );
 
         _bufferHandle = 0;
 
@@ -351,9 +354,12 @@ public class InstanceBufferObject : IInstanceData
 
         if ( _isBound )
         {
-            Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, Usage );
-            Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, _byteBuffer, Usage );
-            _isDirty = false;
+            fixed ( void* ptr = &_byteBuffer.BackingArray()[ 0 ] )
+            {
+                Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, null!, Usage );
+                Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, _byteBuffer.Limit, ptr, Usage );
+                _isDirty = false;
+            }
         }
     }
 }

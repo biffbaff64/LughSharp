@@ -151,17 +151,20 @@ public class FileTextureArrayData : ITextureArrayData
 
                 unsafe
                 {
-                    Gdx.GL.glTexSubImage3D( IGL.GL_TEXTURE_2D_ARRAY,
-                                        0,
-                                        0,
-                                        0,
-                                        i,
-                                        pixmap.Width,
-                                        pixmap.Height,
-                                        1,
-                                        pixmap.GLInternalFormat,
-                                        pixmap.GLType,
-                                        pixmap.Pixels );
+                    fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
+                    {
+                        Gdx.GL.glTexSubImage3D( IGL.GL_TEXTURE_2D_ARRAY,
+                                                0,
+                                                0,
+                                                0,
+                                                i,
+                                                pixmap.Width,
+                                                pixmap.Height,
+                                                1,
+                                                pixmap.GLInternalFormat,
+                                                pixmap.GLType,
+                                                ptr );
+                    }
                 }
 
                 if ( _useMipMaps )

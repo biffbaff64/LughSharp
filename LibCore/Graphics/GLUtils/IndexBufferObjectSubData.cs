@@ -106,10 +106,10 @@ public class IndexBufferObjectSubData : IIndexData
 
         if ( _isBound )
         {
-            Gdx.GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER,
-                                      0,
-                                      _byteBuffer.Limit,
-                                      _byteBuffer );
+            fixed ( void* ptr = &_byteBuffer.BackingArray()[ 0 ] )
+            {
+                Gdx.GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER, 0, _byteBuffer.Limit, ptr );
+            }
 
             _isDirty = false;
         }
@@ -133,11 +133,11 @@ public class IndexBufferObjectSubData : IIndexData
 
         if ( _isBound )
         {
-            Gdx.GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER,
-                                      0,
-                                      _byteBuffer.Limit,
-                                      _byteBuffer );
-
+            fixed ( void* ptr = &_byteBuffer.BackingArray()[ 0 ] )
+            {
+                Gdx.GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER, 0, _byteBuffer.Limit, ptr );
+            }
+            
             _isDirty = false;
         }
     }
@@ -158,11 +158,11 @@ public class IndexBufferObjectSubData : IIndexData
 
         if ( _isBound )
         {
-            Gdx.GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER,
-                                      0,
-                                      _byteBuffer.Limit,
-                                      _byteBuffer );
-
+            fixed ( void* ptr = &_byteBuffer.BackingArray()[ 0 ] )
+            {
+                Gdx.GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER, 0, _byteBuffer.Limit, ptr );
+            }
+            
             _isDirty = false;
         }
     }
@@ -184,17 +184,17 @@ public class IndexBufferObjectSubData : IIndexData
                 ( "IndexBufferObject cannot be used after it has been disposed." );
         }
 
-        Gdx.GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, ( uint )_bufferHandle );
+        Gdx.GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, ( uint ) _bufferHandle );
 
         if ( _isDirty )
         {
             _byteBuffer.Limit = _buffer.Limit * 2;
 
-            Gdx.GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER,
-                                      0,
-                                      _byteBuffer.Limit,
-                                      _byteBuffer );
-
+            fixed ( void* ptr = &_byteBuffer.BackingArray()[ 0 ] )
+            {
+                Gdx.GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER, 0, _byteBuffer.Limit, ptr );
+            }
+            
             _isDirty = false;
         }
 
@@ -219,7 +219,7 @@ public class IndexBufferObjectSubData : IIndexData
     public void Dispose()
     {
         Gdx.GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, 0 );
-        Gdx.GL.glDeleteBuffers( ( uint )_bufferHandle );
+        Gdx.GL.glDeleteBuffers( ( uint ) _bufferHandle );
 
         _bufferHandle = 0;
     }
@@ -232,6 +232,6 @@ public class IndexBufferObjectSubData : IIndexData
         Gdx.GL.glBufferData( IGL.GL_ELEMENT_ARRAY_BUFFER, _byteBuffer.Capacity, null!, _usage );
         Gdx.GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, 0 );
 
-        return ( int )result;
+        return ( int ) result;
     }
 }

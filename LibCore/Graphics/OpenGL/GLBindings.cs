@@ -34,6 +34,8 @@
 #endif
 
 #if OGL_P_CORE
+
+using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 #if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -88,7 +90,7 @@ namespace DotGL;
 ///     locations). Significant effort has been made to make sure that the overloads are as
 ///     efficient as possible, in terms of both performance and memory usage.
 /// </summary>
-[SuppressUnmanagedCodeSecurity]
+//[SuppressUnmanagedCodeSecurity]
 public unsafe class GLBindings
 {
     /// <summary>
@@ -19694,6 +19696,34 @@ public unsafe class GLBindings
 #endif
     }
 #endif
+    public unsafe void glGetProgramiv( GLuint program, GLenum pname, Buffer buffer )
+    {
+        fixed ( int* ptr = &buffer.BackingArray()[ 0 ] )
+        {
+            _glGetProgramiv( program, pname, ptr );
+        }
+    }
+
+    public unsafe void glUniformMatrix4fv( GLint location, GLsizei count, GLboolean transpose, Buffer buffer )
+    {
+        fixed ( float* ptr = &buffer.BackingArray()[ 0 ] )
+        {
+            _glUniformMatrix4fv( location, count, transpose, ptr );
+        }
+    }
+    
+    public unsafe void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer )
+    {
+        fixed ( void* ptr = &buffer.BackingArray()[ 0 ] )
+        {
+            _glVertexAttribPointer( index, size, type, normalized, stride, ptr );
+        }
+    }
+
+    public string glGetActiveUniform( int handle, int u, IntBuffer bufSize, Buffer buffer )
+    {
+        return null;
+    }
 }
 
 #pragma warning restore IDE0079 // Remove unnecessary suppression

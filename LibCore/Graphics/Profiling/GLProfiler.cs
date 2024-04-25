@@ -32,6 +32,7 @@ namespace LughSharp.LibCore.Graphics.Profiling;
 /// </summary>
 /// <seealso cref="GL20Interceptor" />
 /// <seealso cref="GL30Interceptor" />
+[PublicAPI]
 public class GLProfiler
 {
     // ------------------------------------------------------------------------
@@ -117,7 +118,7 @@ public class GLProfiler
 
         if ( Graphics.IsGL30Available() )
         {
-            Graphics.GL30 = ( IGL30 )Interceptor;
+            Graphics.GL30 = ( IGL30 ) Interceptor;
         }
         else
         {
@@ -140,11 +141,11 @@ public class GLProfiler
 
         if ( Graphics.GL30 != null )
         {
-            Graphics.GL30 = ( ( GL30Interceptor )Graphics.GL30! ).GL30;
+            Graphics.GL30 = ( ( GL30Interceptor ) Graphics.GL30! ).GL30;
         }
         else
         {
-            Graphics.GL20 = ( ( GL20Interceptor )Graphics.GL20! ).GL20;
+            Graphics.GL20 = ( ( GL20Interceptor ) Graphics.GL20! ).GL20;
         }
 
         Enabled = false;

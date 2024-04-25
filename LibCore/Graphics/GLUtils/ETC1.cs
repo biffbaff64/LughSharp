@@ -67,8 +67,8 @@ public class ETC1
     /// <returns> the <see cref="ETC1Data" /> </returns>
     public static ETC1Data EncodeImage( Pixmap pixmap )
     {
-        var    pixelSize      = GetPixelSize( pixmap.GetFormat() );
-        byte[] compressedData = EncodeImage( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
+        var pixelSize      = GetPixelSize( pixmap.GetFormat() );
+        var compressedData = EncodeImage( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
 
 //        BufferUtils.NewByteBuffer( compressedData );
 
@@ -241,7 +241,7 @@ public class ETC1
     /// <returns>
     ///     a new direct native order ByteBuffer containing the compressed image data
     /// </returns>
-    private static extern ByteBuffer EncodeImage( byte[] imageData,
+    private static extern ByteBuffer EncodeImage( ByteBuffer imageData,
                                                   int offset,
                                                   int width,
                                                   int height,
@@ -347,7 +347,7 @@ public class ETC1
         /// <summary>
         ///     the optional PKM header and compressed image data.
         /// </summary>
-        public byte[] CompressedData { get; set; }
+        public ByteBuffer CompressedData { get; set; }
 
         /// <summary>
         ///     the offset in bytes to the actual compressed data.
@@ -429,7 +429,7 @@ public class ETC1
                      + $"compressed: {CompressedData.Capacity - PKM_HEADER_SIZE}";
             }
 
-            return $"raw [{Width}x{Height}], compressed: {CompressedData.Length - PKM_HEADER_SIZE}";
+            return $"raw [{Width}x{Height}], compressed: {CompressedData.Capacity - PKM_HEADER_SIZE}";
         }
     }
 

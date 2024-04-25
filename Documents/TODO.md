@@ -394,6 +394,11 @@ GRAPHICS/GLUTILS
 GRAPHICS/OPENGL
 ---------------
 
+    Remove the need for so much use of fixed() in code by implementing method overrides,
+    and doing the work inside those methods instead.
+
+    Work on reducing the amount of casting to uint.
+
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - GLBindings
@@ -408,6 +413,7 @@ GRAPHICS/PROFILING
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - BaseGLInterceptor
+    -      -      - GLInterceptor       Replace GL20Interceptor & GL30Interceptor with this.
     - IP   - IP   - GL20Interceptor
     - IP   - IP   - GL30Interceptor
     - IP   - IP   - GLProfiler

@@ -104,38 +104,47 @@ public class ETC1TextureData : ITextureData
 
         if ( !Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
         {
-            var pixmap = ETC1.DecodeImage( _data, Pixmap.Format.RGB565 );
-
-            Gdx.GL.glTexImage2D( target,
-                                 0,
-                                 pixmap.GLInternalFormat,
-                                 pixmap.Width,
-                                 pixmap.Height,
-                                 0,
-                                 pixmap.GLFormat,
-                                 pixmap.GLType,
-                                 pixmap.Pixels );
-
-            if ( UseMipMaps )
+            unsafe
             {
-                MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
-            }
+                var pixmap = ETC1.DecodeImage( _data, Pixmap.Format.RGB565 );
 
-            pixmap.Dispose();
-            UseMipMaps = false;
+                fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
+                {
+                    Gdx.GL.glTexImage2D( target,
+                                         0,
+                                         pixmap.GLInternalFormat,
+                                         pixmap.Width,
+                                         pixmap.Height,
+                                         0,
+                                         pixmap.GLFormat,
+                                         pixmap.GLType,
+                                         ptr );
+                }
+
+                if ( UseMipMaps )
+                {
+                    MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
+                }
+
+                pixmap.Dispose();
+                UseMipMaps = false;
+            }
         }
         else
         {
             unsafe
             {
-                Gdx.GL.glCompressedTexImage2D( target,
-                                               0,
-                                               ETC1.ETC1_RGB8_OES,
-                                               Width,
-                                               Height,
-                                               0,
-                                               _data.CompressedData.Capacity - _data.DataOffset,
-                                               _data.CompressedData );
+                fixed ( void* ptr = &_data.CompressedData.BackingArray()[ 0 ] )
+                {
+                    Gdx.GL.glCompressedTexImage2D( target,
+                                                   0,
+                                                   ETC1.ETC1_RGB8_OES,
+                                                   Width,
+                                                   Height,
+                                                   0,
+                                                   _data.CompressedData.Capacity - _data.DataOffset,
+                                                   ptr );
+                }
             }
 
             if ( UseMipMaps )

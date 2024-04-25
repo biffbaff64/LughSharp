@@ -505,25 +505,25 @@ public class ShaderProgram
         Gdx.GL.glUniform2fv( location, values );
     }
 
-    public void SetUniform3fv( string name, params float[] values )
+    public void SetUniform3Fv( string name, params float[] values )
     {
         CheckManaged();
         Gdx.GL.glUniform3fv( FetchUniformLocation( name ), values );
     }
 
-    public void SetUniform3fv( int location, params float[] values )
+    public void SetUniform3Fv( int location, params float[] values )
     {
         CheckManaged();
         Gdx.GL.glUniform3fv( location, values );
     }
 
-    public void SetUniform4fv( string name, params float[] values )
+    public void SetUniform4Fv( string name, params float[] values )
     {
         CheckManaged();
         Gdx.GL.glUniform4fv( FetchUniformLocation( name ), values );
     }
 
-    public void SetUniform4fv( int location, params float[] values )
+    public void SetUniform4Fv( int location, params float[] values )
     {
         CheckManaged();
         Gdx.GL.glUniform4fv( location, values );
@@ -605,7 +605,7 @@ public class ShaderProgram
     /// <param name="buffer">buffer containing the matrix data </param>
     /// <param name="count"></param>
     /// <param name="transpose">whether the uniform matrix should be transposed  </param>
-    public void SetUniformMatrix3fv( string name, FloatBuffer buffer, int count, bool transpose )
+    public void SetUniformMatrix3Fv( string name, FloatBuffer buffer, int count, bool transpose )
     {
         CheckManaged();
         buffer.Position = 0;
@@ -627,29 +627,23 @@ public class ShaderProgram
     /// <param name="buffer"> buffer containing the matrix data </param>
     /// <param name="count"></param>
     /// <param name="transpose"> whether the uniform matrix should be transposed  </param>
-    public void SetUniformMatrix4fv( string name, FloatBuffer buffer, int count, bool transpose )
+    public void SetUniformMatrix4Fv( string name, FloatBuffer buffer, int count, bool transpose )
     {
         CheckManaged();
         buffer.Position = 0;
 
-        unsafe
-        {
-            fixed ( float* ptr = &buffer.BackingArray()[ 0 ] )
-            {
-                Gdx.GL.glUniformMatrix4fv( FetchUniformLocation( name ), count, transpose, ptr );
-            }
-        }
+        Gdx.GL.glUniformMatrix4fv( FetchUniformLocation( name ), count, transpose, buffer );
     }
 
-    public void SetUniformMatrix4fv( int location, float[] values, int offset, int length )
+    public void SetUniformMatrix4Fv( int location, params float[] values )
     {
         CheckManaged();
-        Gdx.GL.glUniformMatrix4fv( location, length / 16, false, values, offset );
+        Gdx.GL.glUniformMatrix4fv( location, false, values );
     }
 
-    public void SetUniformMatrix4fv( string name, float[] values, int offset, int length )
+    public void SetUniformMatrix4Fv( string name, params float[] values )
     {
-        SetUniformMatrix4fv( FetchUniformLocation( name ), values, offset, length );
+        SetUniformMatrix4Fv( FetchUniformLocation( name ), values );
     }
 
     /// <summary>
@@ -768,13 +762,13 @@ public class ShaderProgram
             return;
         }
 
-        Gdx.GL.glVertexAttribPointer( location, size, type, normalize, stride, offset );
+        Gdx.GL.glVertexAttribPointer( ( uint ) location, size, type, normalize, stride, ( uint ) offset );
     }
 
     public void SetVertexAttribute( int location, int size, int type, bool normalize, int stride, int offset )
     {
         CheckManaged();
-        Gdx.GL.glVertexAttribPointer( location, size, type, normalize, stride, offset );
+        Gdx.GL.glVertexAttribPointer( ( uint ) location, size, type, normalize, stride, ( uint ) offset );
     }
 
     public void Bind()
@@ -898,12 +892,12 @@ public class ShaderProgram
 
     /// <summary>
     /// </summary>
-    private void FetchUniforms()
+    private unsafe void FetchUniforms()
     {
         _parameters.Clear();
 
         Gdx.GL.glGetProgramiv( ( uint ) Handle, IGL.GL_ACTIVE_UNIFORMS, _parameters );
-
+    
         var numUniforms = _parameters.Get( 0 );
 
         Uniforms = new string[ numUniforms ];
@@ -915,7 +909,7 @@ public class ShaderProgram
 
             _progType.Clear();
 
-            var name = Gdx.GL.glGetActiveUniform( ( uint ) Handle, ( uint ) i, _parameters, _progType );
+            var name = Gdx.GL.glGetActiveUniform( Handle, i, _parameters, _progType );
 
             var location = Gdx.GL.glGetUniformLocation( ( uint ) Handle, name );
 
@@ -941,7 +935,7 @@ public class ShaderProgram
 
         Attributes = new string[ numAttributes ];
 
-        for ( var i = 0; i < numAttributes; i++ )
+        for ( var index = 0; index < numAttributes; index++ )
         {
             _parameters.Clear();
             _parameters.Put( 0, 1 );
@@ -951,13 +945,18 @@ public class ShaderProgram
 //    void glGetActiveAttrib( GLuint program, GLuint index, GLsizei bufSize,
 //                          GLsizei* length, GLint* size, GLenum* type, GLchar* name )
 
-            var name     = Gdx.GL.glGetActiveAttrib( ( uint ) Handle, i, _parameters, _progType );
-            var location = Gdx.GL.glGetAttribLocation( ( uint ) Handle, name );
+//            var name     = Gdx.GL.glGetActiveAttrib( ( uint ) Handle,
+//                                                     ( uint ) index,
+//                                                     IGL.GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
+//                                                     _parameters,
+//                                                     _progType );
 
-            _attributes[ name ]     = location;
-            _attributeTypes[ name ] = _progType.Get( 0 );
-            _attributeSizes[ name ] = _parameters.Get( 0 );
-            Attributes[ i ]         = name;
+//            var location = Gdx.GL.glGetAttribLocation( ( uint ) Handle, name );
+
+//            _attributes[ name ]     = location;
+//            _attributeTypes[ name ] = _progType.Get( 0 );
+//            _attributeSizes[ name ] = _parameters.Get( 0 );
+//            Attributes[ index ]     = name;
         }
     }
 

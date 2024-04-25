@@ -42,8 +42,8 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class KtxTextureData : ITextureData, ICubemapData
 {
-    private const int GL_TEXTURE_1D = 0x1234;
-    private const int GL_TEXTURE_3D = 0x1234;
+    private const int GL_TEXTURE_1D           = 0x1234;
+    private const int GL_TEXTURE_3D           = 0x1234;
     private const int GL_TEXTURE_1D_ARRAY_EXT = 0x1234;
     private const int GL_TEXTURE_2D_ARRAY_EXT = 0x1234;
 
@@ -52,9 +52,9 @@ public class KtxTextureData : ITextureData, ICubemapData
 
     // KTX image data (only available after preparing and before consuming)
     private ByteBuffer? _compressedData;
-    private int _glBaseInternalFormat;
-    private int _glFormat;
-    private int _glInternalFormat;
+    private int         _glBaseInternalFormat;
+    private int         _glFormat;
+    private int         _glInternalFormat;
 
     // KTX header (only available after preparing)
     private int _glType;
@@ -63,13 +63,13 @@ public class KtxTextureData : ITextureData, ICubemapData
     private int _numberOfArrayElements;
     private int _numberOfFaces;
     private int _numberOfMipmapLevels;
-    private int _pixelDepth = -1;
+    private int _pixelDepth  = -1;
     private int _pixelHeight = -1;
-    private int _pixelWidth = -1;
+    private int _pixelWidth  = -1;
 
     public KtxTextureData( FileInfo? file, bool useMipMaps )
     {
-        _file = file;
+        _file      = file;
         UseMipMaps = useMipMaps;
     }
 
@@ -120,7 +120,7 @@ public class KtxTextureData : ITextureData, ICubemapData
         // file with an int length at the beginning (like ETC1).
         if ( _file.Name.EndsWith( ".zktx" ) )
         {
-            var buffer = new byte[ 1024 * 10 ];
+            var           buffer          = new byte[ 1024 * 10 ];
             BinaryReader? dataInputStream = null;
 
             try
@@ -140,7 +140,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                 }
 
                 _compressedData.Position = 0;
-                _compressedData.Limit = _compressedData.Capacity;
+                _compressedData.Limit    = _compressedData.Capacity;
             }
             catch ( Exception e )
             {
@@ -180,28 +180,28 @@ public class KtxTextureData : ITextureData, ICubemapData
         {
             _compressedData.Order
                 (
-                _compressedData.Order() == ByteOrder.BigEndian
-                    ? ByteOrder.LittleEndian
-                    : ByteOrder.BigEndian
+                 _compressedData.Order() == ByteOrder.BigEndian
+                     ? ByteOrder.LittleEndian
+                     : ByteOrder.BigEndian
                 );
         }
 
-        _glType = _compressedData.GetInt();
-        _glTypeSize = _compressedData.GetInt();
-        _glFormat = _compressedData.GetInt();
-        _glInternalFormat = _compressedData.GetInt();
-        _glBaseInternalFormat = _compressedData.GetInt();
-        _pixelWidth = _compressedData.GetInt();
-        _pixelHeight = _compressedData.GetInt();
-        _pixelDepth = _compressedData.GetInt();
+        _glType                = _compressedData.GetInt();
+        _glTypeSize            = _compressedData.GetInt();
+        _glFormat              = _compressedData.GetInt();
+        _glInternalFormat      = _compressedData.GetInt();
+        _glBaseInternalFormat  = _compressedData.GetInt();
+        _pixelWidth            = _compressedData.GetInt();
+        _pixelHeight           = _compressedData.GetInt();
+        _pixelDepth            = _compressedData.GetInt();
         _numberOfArrayElements = _compressedData.GetInt();
-        _numberOfFaces = _compressedData.GetInt();
-        _numberOfMipmapLevels = _compressedData.GetInt();
+        _numberOfFaces         = _compressedData.GetInt();
+        _numberOfMipmapLevels  = _compressedData.GetInt();
 
         if ( _numberOfMipmapLevels == 0 )
         {
             _numberOfMipmapLevels = 1;
-            UseMipMaps = true;
+            UseMipMaps            = true;
         }
 
         var bytesOfKeyValueData = _compressedData.GetInt();
@@ -214,12 +214,12 @@ public class KtxTextureData : ITextureData, ICubemapData
 
             for ( var level = 0; level < _numberOfMipmapLevels; level++ )
             {
-                var faceLodSize = _compressedData.GetInt( pos );
+                var faceLodSize        = _compressedData.GetInt( pos );
                 var faceLodSizeRounded = ( faceLodSize + 3 ) & ~3;
                 pos += ( faceLodSizeRounded * _numberOfFaces ) + 4;
             }
 
-            _compressedData.Limit = pos;
+            _compressedData.Limit    = pos;
             _compressedData.Position = 0;
 
             ByteBuffer directBuffer = BufferUtils.NewByteBuffer( pos );
@@ -286,18 +286,18 @@ public class KtxTextureData : ITextureData, ICubemapData
 
         // find OpenGL texture target and dimensions
         var textureDimensions = 1;
-        var glTarget = GL_TEXTURE_1D;
+        var glTarget          = GL_TEXTURE_1D;
 
         if ( _pixelHeight > 0 )
         {
             textureDimensions = 2;
-            glTarget = IGL.GL_TEXTURE_2D;
+            glTarget          = IGL.GL_TEXTURE_2D;
         }
 
         if ( _pixelDepth > 0 )
         {
             textureDimensions = 3;
-            glTarget = GL_TEXTURE_3D;
+            glTarget          = GL_TEXTURE_3D;
         }
 
         if ( _numberOfFaces == 6 )
@@ -346,17 +346,17 @@ public class KtxTextureData : ITextureData, ICubemapData
         {
             // Load a single face of the cube (should be avoided since the data is unloaded afterwards)
             if ( !( target is >= IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X
-                    and <= IGL.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ) )
+                              and <= IGL.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ) )
             {
                 throw new GdxRuntimeException
                     (
-                    "You must specify either GL_TEXTURE_CUBE_MAP to bind all 6 faces of the"
-                  + "cube or the requested face GL_TEXTURE_CUBE_MAP_POSITIVE_X and followings."
+                     "You must specify either GL_TEXTURE_CUBE_MAP to bind all 6 faces of the"
+                   + "cube or the requested face GL_TEXTURE_CUBE_MAP_POSITIVE_X and followings."
                     );
             }
 
             singleFace = target - IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
-            target = IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+            target     = IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
         }
         else if ( ( _numberOfFaces == 6 ) && ( target == IGL.GL_TEXTURE_CUBE_MAP ) )
         {
@@ -376,7 +376,10 @@ public class KtxTextureData : ITextureData, ICubemapData
         // KTX files require an unpack alignment of 4
         unsafe
         {
-            Gdx.GL.glGetIntegerv( IGL.GL_UNPACK_ALIGNMENT, buffer.BackingArray() );
+            fixed ( int* ptr = &buffer.BackingArray()[ 0 ] )
+            {
+                Gdx.GL.glGetIntegerv( IGL.GL_UNPACK_ALIGNMENT, ptr );
+            }
         }
 
         var previousUnpackAlignment = buffer.Get( 0 );
@@ -387,19 +390,19 @@ public class KtxTextureData : ITextureData, ICubemapData
         }
 
         var glInternalFormat = _glInternalFormat;
-        var glFormat = _glFormat;
-        var pos = _imagePos;
+        var glFormat         = _glFormat;
+        var pos              = _imagePos;
 
         for ( var level = 0; level < _numberOfMipmapLevels; level++ )
         {
-            var pixelWidth = Math.Max( 1, _pixelWidth >> level );
+            var pixelWidth  = Math.Max( 1, _pixelWidth >> level );
             var pixelHeight = Math.Max( 1, _pixelHeight >> level );
 
 //            var pixelDepth  = Math.Max( 1, _pixelDepth >> level );
 
             _compressedData.Position = pos;
 
-            var faceLodSize = _compressedData.GetInt();
+            var faceLodSize        = _compressedData.GetInt();
             var faceLodSizeRounded = ( faceLodSize + 3 ) & ~3;
 
             pos += 4;
@@ -439,20 +442,23 @@ public class KtxTextureData : ITextureData, ICubemapData
                         {
                             if ( !Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
                             {
-                                var etcData = new ETC1.ETC1Data( pixelWidth, pixelHeight, data, 0 );
-                                Pixmap pixmap = ETC1.DecodeImage( etcData, Pixmap.Format.RGB888 );
+                                var    etcData = new ETC1.ETC1Data( pixelWidth, pixelHeight, data, 0 );
+                                Pixmap pixmap  = ETC1.DecodeImage( etcData, Pixmap.Format.RGB888 );
 
                                 unsafe
                                 {
-                                    Gdx.GL.glTexImage2D( target + face,
-                                        level,
-                                        pixmap.GLInternalFormat,
-                                        pixmap.Width,
-                                        pixmap.Height,
-                                        0,
-                                        pixmap.GLFormat,
-                                        pixmap.GLType,
-                                        pixmap.Pixels );
+                                    fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
+                                    {
+                                        Gdx.GL.glTexImage2D( target + face,
+                                                             level,
+                                                             pixmap.GLInternalFormat,
+                                                             pixmap.Width,
+                                                             pixmap.Height,
+                                                             0,
+                                                             pixmap.GLFormat,
+                                                             pixmap.GLType,
+                                                             ptr );
+                                    }
                                 }
 
                                 pixmap.Dispose();
@@ -461,14 +467,17 @@ public class KtxTextureData : ITextureData, ICubemapData
                             {
                                 unsafe
                                 {
-                                    Gdx.GL.glCompressedTexImage2D( target + face,
-                                        level,
-                                        glInternalFormat,
-                                        pixelWidth,
-                                        pixelHeight,
-                                        0,
-                                        faceLodSize,
-                                        data );
+                                    fixed ( void* dataptr = &data.BackingArray()[ 0 ] )
+                                    {
+                                        Gdx.GL.glCompressedTexImage2D( target + face,
+                                                                       level,
+                                                                       glInternalFormat,
+                                                                       pixelWidth,
+                                                                       pixelHeight,
+                                                                       0,
+                                                                       faceLodSize,
+                                                                       dataptr );
+                                    }
                                 }
                             }
                         }
@@ -477,28 +486,37 @@ public class KtxTextureData : ITextureData, ICubemapData
                             // Try to load (no software unpacking fallback)
                             unsafe
                             {
-                                Gdx.GL.glCompressedTexImage2D( target + face,
-                                    level,
-                                    glInternalFormat,
-                                    pixelWidth,
-                                    pixelHeight,
-                                    0,
-                                    faceLodSize,
-                                    data );
+                                fixed ( void* dataptr = &data.BackingArray()[ 0 ] )
+                                {
+                                    Gdx.GL.glCompressedTexImage2D( target + face,
+                                                                   level,
+                                                                   glInternalFormat,
+                                                                   pixelWidth,
+                                                                   pixelHeight,
+                                                                   0,
+                                                                   faceLodSize,
+                                                                   dataptr );
+                                }
                             }
                         }
                     }
                     else
                     {
-                        Gdx.GL.glTexImage2D( target + face,
-                            level,
-                            glInternalFormat,
-                            pixelWidth,
-                            pixelHeight,
-                            0,
-                            glFormat,
-                            _glType,
-                            data );
+                        unsafe
+                        {
+                            fixed ( void* dataptr = &data.BackingArray()[ 0 ] )
+                            {
+                                Gdx.GL.glTexImage2D( target + face,
+                                                     level,
+                                                     glInternalFormat,
+                                                     pixelWidth,
+                                                     pixelHeight,
+                                                     0,
+                                                     glFormat,
+                                                     _glType,
+                                                     dataptr );
+                            }
+                        }
                     }
                 }
                 else if ( textureDimensions == 3 )
