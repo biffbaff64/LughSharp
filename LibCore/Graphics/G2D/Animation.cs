@@ -119,7 +119,9 @@ public class Animation< T >
         if ( looping
           && ( ( PlayMode == AnimMode.Normal )
             || ( PlayMode == AnimMode.Reversed ) ) )
+        {
             PlayMode = PlayMode == AnimMode.Normal ? AnimMode.Loop : AnimMode.Loop_Reversed;
+        }
         else if ( !looping
                && !( ( PlayMode == AnimMode.Normal )
                   || ( PlayMode == AnimMode.Reversed ) ) )
@@ -155,7 +157,10 @@ public class Animation< T >
     /// </summary>
     public int GetKeyFrameIndex( float stateTime )
     {
-        if ( _keyFrames.Length == 1 ) return 0;
+        if ( _keyFrames.Length == 1 )
+        {
+            return 0;
+        }
 
         var frameNumber = ( int ) ( stateTime / _frameDuration );
 
@@ -179,7 +184,10 @@ public class Animation< T >
             {
                 frameNumber = frameNumber % ( ( _keyFrames.Length * 2 ) - 2 );
 
-                if ( frameNumber >= _keyFrames.Length ) frameNumber = _keyFrames.Length - 2 - ( frameNumber - _keyFrames.Length );
+                if ( frameNumber >= _keyFrames.Length )
+                {
+                    frameNumber = _keyFrames.Length - 2 - ( frameNumber - _keyFrames.Length );
+                }
 
                 break;
             }

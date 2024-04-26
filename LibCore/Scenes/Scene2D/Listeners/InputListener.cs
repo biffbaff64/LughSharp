@@ -53,7 +53,10 @@ public class InputListener : IEventListener
     /// </summary>
     public virtual bool Handle( Event e )
     {
-        if ( e is not InputEvent inputEvent ) return false;
+        if ( e is not InputEvent inputEvent )
+        {
+            return false;
+        }
 
         switch ( inputEvent.Type )
         {

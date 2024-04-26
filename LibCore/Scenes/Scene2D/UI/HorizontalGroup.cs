@@ -101,9 +101,15 @@ public class HorizontalGroup : WidgetGroup
     {
         get
         {
-            if ( Wrap ) return 0;
+            if ( Wrap )
+            {
+                return 0;
+            }
 
-            if ( _sizeInvalid ) ComputeSize();
+            if ( _sizeInvalid )
+            {
+                ComputeSize();
+            }
 
             return _prefWidth;
         }
@@ -114,7 +120,10 @@ public class HorizontalGroup : WidgetGroup
     {
         get
         {
-            if ( _sizeInvalid ) ComputeSize();
+            if ( _sizeInvalid )
+            {
+                ComputeSize();
+            }
 
             return _prefHeight;
         }
@@ -142,9 +151,13 @@ public class HorizontalGroup : WidgetGroup
             _prefWidth = 0;
 
             if ( _rowSizes == null )
+            {
                 _rowSizes = new List< float >();
+            }
             else
+            {
                 _rowSizes.Clear();
+            }
 
             List< float > rowSizes = _rowSizes;
 
@@ -176,7 +189,10 @@ public class HorizontalGroup : WidgetGroup
                 {
                     width = layout.PrefWidth;
 
-                    if ( width > groupWidth ) width = Math.Max( groupWidth, layout.MinWidth );
+                    if ( width > groupWidth )
+                    {
+                        width = Math.Max( groupWidth, layout.MinWidth );
+                    }
 
                     height = layout.PrefHeight;
                 }
@@ -195,7 +211,10 @@ public class HorizontalGroup : WidgetGroup
 
                     _prefWidth = Math.Max( _prefWidth, x + pad );
 
-                    if ( y > 0 ) y += wrapSpace;
+                    if ( y > 0 )
+                    {
+                        y += wrapSpace;
+                    }
 
                     y         += rowHeight;
                     rowHeight =  0;
@@ -212,7 +231,10 @@ public class HorizontalGroup : WidgetGroup
 
             _prefWidth = Math.Max( _prefWidth, x + pad );
 
-            if ( y > 0 ) y += wrapSpace;
+            if ( y > 0 )
+            {
+                y += wrapSpace;
+            }
 
             _prefHeight = Math.Max( _prefHeight, y + rowHeight );
         }
@@ -252,7 +274,10 @@ public class HorizontalGroup : WidgetGroup
     /// <inheritdoc />
     public override void SetLayout()
     {
-        if ( _sizeInvalid ) ComputeSize();
+        if ( _sizeInvalid )
+        {
+            ComputeSize();
+        }
 
         if ( Wrap )
         {
@@ -270,18 +295,28 @@ public class HorizontalGroup : WidgetGroup
         var x         = PadLeft;
 
         if ( ( align & Align.RIGHT ) != 0 )
+        {
             x += Width - _prefWidth;
+        }
         else if ( ( align & Align.LEFT ) == 0 ) // center
+        {
             x += ( Width - _prefWidth ) / 2;
+        }
 
         float startY;
 
         if ( ( align & Align.BOTTOM ) != 0 )
+        {
             startY = padBottom;
+        }
         else if ( ( align & Align.TOP ) != 0 )
+        {
             startY = Height - PadTop - rowHeight;
+        }
         else
+        {
             startY = padBottom + ( ( Height - padBottom - PadTop - rowHeight ) / 2 );
+        }
 
         align = _rowAlign;
 
@@ -319,7 +354,10 @@ public class HorizontalGroup : WidgetGroup
                 height = child.Height;
             }
 
-            if ( fill > 0 ) height = rowHeight * fill;
+            if ( fill > 0 )
+            {
+                height = rowHeight * fill;
+            }
 
             if ( layout != null )
             {
@@ -327,15 +365,22 @@ public class HorizontalGroup : WidgetGroup
 
                 var maxHeight = layout.MaxHeight;
 
-                if ( ( maxHeight > 0 ) && ( height > maxHeight ) ) height = maxHeight;
+                if ( ( maxHeight > 0 ) && ( height > maxHeight ) )
+                {
+                    height = maxHeight;
+                }
             }
 
             var y = startY;
 
             if ( ( align & Align.TOP ) != 0 )
+            {
                 y += rowHeight - height;
+            }
             else if ( ( align & Align.BOTTOM ) == 0 ) // center
+            {
                 y += ( rowHeight - height ) / 2;
+            }
 
             if ( round )
             {
@@ -347,11 +392,16 @@ public class HorizontalGroup : WidgetGroup
                                );
             }
             else
+            {
                 child.SetBounds( x, y, width, height );
+            }
 
             x += width + space;
 
-            if ( layout != null ) layout.Validate();
+            if ( layout != null )
+            {
+                layout.Validate();
+            }
         }
     }
 
@@ -378,12 +428,19 @@ public class HorizontalGroup : WidgetGroup
         float rowHeight  = 0;
         float rowDir     = -1;
 
-        if ( _rowSizes is null ) throw new GdxRuntimeException( "_rowSizes cannot be null!" );
+        if ( _rowSizes is null )
+        {
+            throw new GdxRuntimeException( "_rowSizes cannot be null!" );
+        }
 
         if ( ( align & Align.TOP ) != 0 )
+        {
             rowY += Height - prefHeight;
+        }
         else if ( ( align & Align.BOTTOM ) == 0 ) // center
+        {
             rowY += ( Height - prefHeight ) / 2;
+        }
 
         if ( WrapReverse )
         {
@@ -392,9 +449,13 @@ public class HorizontalGroup : WidgetGroup
         }
 
         if ( ( align & Align.RIGHT ) != 0 )
+        {
             xStart += groupWidth - _prefWidth;
+        }
         else if ( ( align & Align.LEFT ) == 0 ) // center
+        {
             xStart += ( groupWidth - _prefWidth ) / 2;
+        }
 
         groupWidth -= PadRight;
         align      =  _rowAlign;
@@ -427,7 +488,10 @@ public class HorizontalGroup : WidgetGroup
                 layout = ( ILayout ) child;
                 width  = layout.PrefWidth;
 
-                if ( width > groupWidth ) width = Math.Max( groupWidth, layout.MinWidth );
+                if ( width > groupWidth )
+                {
+                    width = Math.Max( groupWidth, layout.MinWidth );
+                }
 
                 height = layout.PrefHeight;
             }
@@ -443,19 +507,29 @@ public class HorizontalGroup : WidgetGroup
                 x = xStart;
 
                 if ( ( align & Align.RIGHT ) != 0 )
+                {
                     x += maxWidth - rowSizes[ r ];
+                }
                 else if ( ( align & Align.LEFT ) == 0 ) // center
+                {
                     x += ( maxWidth - rowSizes[ r ] ) / 2;
+                }
 
                 rowHeight = rowSizes[ r + 1 ];
 
-                if ( r > 0 ) rowY += wrapSpace * rowDir;
+                if ( r > 0 )
+                {
+                    rowY += wrapSpace * rowDir;
+                }
 
                 rowY += rowHeight * rowDir;
                 r    += 2;
             }
 
-            if ( fill > 0 ) height = rowHeight * fill;
+            if ( fill > 0 )
+            {
+                height = rowHeight * fill;
+            }
 
             if ( layout != null )
             {
@@ -463,15 +537,22 @@ public class HorizontalGroup : WidgetGroup
 
                 var maxHeight = layout.MaxHeight;
 
-                if ( ( maxHeight > 0 ) && ( height > maxHeight ) ) height = maxHeight;
+                if ( ( maxHeight > 0 ) && ( height > maxHeight ) )
+                {
+                    height = maxHeight;
+                }
             }
 
             var y = rowY;
 
             if ( ( align & Align.TOP ) != 0 )
+            {
                 y += rowHeight - height;
+            }
             else if ( ( align & Align.BOTTOM ) == 0 ) // center
+            {
                 y += ( rowHeight - height ) / 2;
+            }
 
             if ( round )
             {
@@ -483,11 +564,16 @@ public class HorizontalGroup : WidgetGroup
                                );
             }
             else
+            {
                 child.SetBounds( x, y, width, height );
+            }
 
             x += width + space;
 
-            if ( layout != null ) layout.Validate();
+            if ( layout != null )
+            {
+                layout.Validate();
+            }
         }
     }
 
@@ -554,11 +640,17 @@ public class HorizontalGroup : WidgetGroup
     {
         base.DrawDebugBounds( shapes );
 
-        if ( !DebugActive ) return;
+        if ( !DebugActive )
+        {
+            return;
+        }
 
         shapes.Set( ShapeRenderer.ShapeTypes.Lines );
 
-        if ( Stage != null ) shapes.Color = Stage.DebugColor;
+        if ( Stage != null )
+        {
+            shapes.Color = Stage.DebugColor;
+        }
 
         shapes.Rect( X + PadLeft,
                      Y + PadBottom,

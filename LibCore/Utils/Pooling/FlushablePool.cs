@@ -82,7 +82,10 @@ public abstract class FlushablePool< T > : Pool< T >
     /// <inheritdoc />
     public override void FreeAll( List< T > objects )
     {
-        foreach ( var obj in objects ) _obtained.Remove( obj );
+        foreach ( var obj in objects )
+        {
+            _obtained.Remove( obj );
+        }
 
         base.FreeAll( objects );
     }

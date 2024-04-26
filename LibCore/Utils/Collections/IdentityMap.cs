@@ -102,6 +102,12 @@ public class IdentityMap< TK, TV > : ObjectMap< TK, TV > where TK : notnull
     {
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    //TODO: I have a feeling this method is badly named. Once I've worked out what it does I'll rename it.
     protected new int Place( TK item )
     {
         var id = ( ulong ) _objectIDGenerator.GetId( item, out _firstPlaceGen );

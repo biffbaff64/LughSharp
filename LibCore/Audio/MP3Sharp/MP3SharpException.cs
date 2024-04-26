@@ -82,8 +82,12 @@ public class Mp3SharpException : Exception
     public void PrintStackTrace( StreamWriter ps )
     {
         if ( InnerException == null )
+        {
             SupportClass.WriteStackTrace( this, ps );
+        }
         else
+        {
             SupportClass.WriteStackTrace( InnerException, Console.Error );
+        }
     }
 }

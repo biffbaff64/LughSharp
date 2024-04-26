@@ -39,12 +39,18 @@ public class SequenceAction : ParallelAction
 
     public SequenceAction( params Action[] actions )
     {
-        foreach ( var action in actions ) AddAction( action );
+        foreach ( var action in actions )
+        {
+            AddAction( action );
+        }
     }
 
     public override bool Act( float delta )
     {
-        if ( _index >= GetActions().Count ) return true;
+        if ( _index >= GetActions().Count )
+        {
+            return true;
+        }
 
         Pool< Action >? pool = Pool;
 
@@ -55,11 +61,17 @@ public class SequenceAction : ParallelAction
         {
             if ( GetActions()[ _index ].Act( delta ) )
             {
-                if ( Actor == null ) return true; // This action was removed.
+                if ( Actor == null )
+                {
+                    return true; // This action was removed.
+                }
 
                 _index++;
 
-                if ( _index >= GetActions().Count ) return true;
+                if ( _index >= GetActions().Count )
+                {
+                    return true;
+                }
             }
 
             return false;

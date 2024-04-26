@@ -80,6 +80,9 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
 
     private void Dispose( bool disposing )
     {
-        if ( disposing ) LoadedMusic = null!;
+        if ( disposing )
+        {
+            LoadedMusic = null!;
+        }
     }
 }

@@ -78,7 +78,9 @@ public class AtlasSprite : Sprite
             base.SetBounds( region.OffsetX, region.OffsetY, height, width );
         }
         else
+        {
             base.SetBounds( region.OffsetX, region.OffsetY, width, height );
+        }
 
         SetColor( 1, 1, 1, 1 );
     }
@@ -131,9 +133,13 @@ public class AtlasSprite : Sprite
     {
         // Flip texture.
         if ( Region.Rotate )
+        {
             base.Flip( y, x );
+        }
         else
+        {
             base.Flip( x, y );
+        }
 
         var oldOriginX = GetOriginX();
         var oldOriginY = GetOriginY();

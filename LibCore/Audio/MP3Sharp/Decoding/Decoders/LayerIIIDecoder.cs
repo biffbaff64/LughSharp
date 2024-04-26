@@ -236,7 +236,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         {
             _ro[ i ] = new float[ SBLIMIT ][];
 
-            for ( var i2 = 0; i2 < SBLIMIT; i2++ ) _ro[ i ][ i2 ] = new float[ SSLIMIT ];
+            for ( var i2 = 0; i2 < SBLIMIT; i2++ )
+            {
+                _ro[ i ][ i2 ] = new float[ SSLIMIT ];
+            }
         }
 
         _lr = new float[ 2 ][][];
@@ -245,17 +248,26 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         {
             _lr[ i3 ] = new float[ SBLIMIT ][];
 
-            for ( var i4 = 0; i4 < SBLIMIT; i4++ ) _lr[ i3 ][ i4 ] = new float[ SSLIMIT ];
+            for ( var i4 = 0; i4 < SBLIMIT; i4++ )
+            {
+                _lr[ i3 ][ i4 ] = new float[ SSLIMIT ];
+            }
         }
 
         _out1D    = new float[ SBLIMIT * SSLIMIT ];
         _prevblck = new float[ 2 ][];
 
-        for ( var i5 = 0; i5 < 2; i5++ ) _prevblck[ i5 ] = new float[ SBLIMIT * SSLIMIT ];
+        for ( var i5 = 0; i5 < 2; i5++ )
+        {
+            _prevblck[ i5 ] = new float[ SBLIMIT * SSLIMIT ];
+        }
 
         _k = new float[ 2 ][];
 
-        for ( var i6 = 0; i6 < 2; i6++ ) _k[ i6 ] = new float[ SBLIMIT * SSLIMIT ];
+        for ( var i6 = 0; i6 < 2; i6++ )
+        {
+            _k[ i6 ] = new float[ SBLIMIT * SSLIMIT ];
+        }
 
         _nonzero = new int[ 2 ];
 
@@ -357,7 +369,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             // SZD: generate LUT
             _reorderTable = new int[ 9 ][];
 
-            for ( var i = 0; i < 9; i++ ) _reorderTable[ i ] = Reorder( _sfBandIndex[ i ].S );
+            for ( var i = 0; i < 9; i++ )
+            {
+                _reorderTable[ i ] = Reorder( _sfBandIndex[ i ].S );
+            }
         }
 
         // Sftable
@@ -408,11 +423,15 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             }
         }
         else
+        {
             _firstChannel = _lastChannel = 0;
+        }
 
         for ( var ch = 0; ch < 2; ch++ )
         for ( var j = 0; j < 576; j++ )
+        {
             _prevblck[ ch ][ j ] = 0.0f;
+        }
 
         _nonzero[ 0 ] = _nonzero[ 1 ] = 576;
 
@@ -450,7 +469,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
         for ( var ch = 0; ch < 2; ch++ )
         for ( var j = 0; j < 576; j++ )
+        {
             _prevblck[ ch ][ j ] = 0.0f;
+        }
 
         _bitReserve = new BitReserve();
     }
@@ -464,7 +485,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
         ReadSideInfo();
 
-        for ( i = 0; i < nSlots; i++ ) _bitReserve.PutBuffer( _stream.GetBitsFromBuffer( 8 ) );
+        for ( i = 0; i < nSlots; i++ )
+        {
+            _bitReserve.PutBuffer( _stream.GetBitsFromBuffer( 8 ) );
+        }
 
         var mainDataEnd = SupportClass.URShift( _bitReserve.HssTell(), 3 ); // of previous frame
 
@@ -478,7 +502,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
         _frameStart += nSlots;
 
-        if ( bytesToDiscard < 0 ) return;
+        if ( bytesToDiscard < 0 )
+        {
+            return;
+        }
 
         if ( mainDataEnd > 4096 )
         {
@@ -486,7 +513,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             _bitReserve.RewindStreamBytes( 4096 );
         }
 
-        for ( ; bytesToDiscard > 0; bytesToDiscard-- ) _bitReserve.ReadBits( 8 );
+        for ( ; bytesToDiscard > 0; bytesToDiscard-- )
+        {
+            _bitReserve.ReadBits( 8 );
+        }
 
         for ( gr = 0; gr < _maxGr; gr++ )
         {
@@ -497,11 +527,15 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 _part2Start = _bitReserve.HssTell();
 
                 if ( _header.Version() == Header.MPEG1 )
+                {
                     ReadScaleFactors( ch, gr );
+                }
 
                 // MPEG-2 LSF, SZD: MPEG-2.5 LSF
                 else
+                {
                     GlsfScaleFactors( ch, gr );
+                }
 
                 HuffmanDecode( ch, gr );
 
@@ -511,7 +545,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
             Stereo( gr );
 
-            if ( ( _whichChannels == OutputChannels.DOWNMIX_CHANNELS ) && ( _channels > 1 ) ) DoDownMix();
+            if ( ( _whichChannels == OutputChannels.DOWNMIX_CHANNELS ) && ( _channels > 1 ) )
+            {
+                DoDownMix();
+            }
 
             for ( ch = _firstChannel; ch <= _lastChannel; ch++ )
             {
@@ -534,7 +571,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
                     // Frequency inversion
                 for ( var ss = 1; ss < SSLIMIT; ss += 2 )
+                {
                     _out1D[ sb18 + ss ] = -_out1D[ sb18 + ss ];
+                }
 
                 if ( ( ch == 0 ) || ( _whichChannels == OutputChannels.RIGHT_CHANNEL ) )
                 {
@@ -639,9 +678,13 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     }
 
                     if ( ( _sideInfo.Channels[ ch ].granules[ gr ].BlockType == 2 ) && ( _sideInfo.Channels[ ch ].granules[ gr ].MixedBlockFlag == 0 ) )
+                    {
                         _sideInfo.Channels[ ch ].granules[ gr ].Region0Count = 8;
+                    }
                     else
+                    {
                         _sideInfo.Channels[ ch ].granules[ gr ].Region0Count = 7;
+                    }
 
                     _sideInfo.Channels[ ch ].granules[ gr ].Region1Count = 20 - _sideInfo.Channels[ ch ].granules[ gr ].Region0Count;
                 }
@@ -696,7 +739,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
                     if ( ( _sideInfo.Channels[ ch ].granules[ 0 ].BlockType == 2 )
                       && ( _sideInfo.Channels[ ch ].granules[ 0 ].MixedBlockFlag == 0 ) )
+                    {
                         _sideInfo.Channels[ ch ].granules[ 0 ].Region0Count = 8;
+                    }
                     else
                     {
                         _sideInfo.Channels[ ch ].granules[ 0 ].Region0Count = 7;
@@ -738,17 +783,27 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 int window;
 
                 // MIXED
-                for ( sfb = 0; sfb < 8; sfb++ ) _scalefac[ ch ].L[ sfb ] = _bitReserve.ReadBits( _slen[ 0 ][ grInfo.ScaleFacCompress ] );
+                for ( sfb = 0; sfb < 8; sfb++ )
+                {
+                    _scalefac[ ch ].L[ sfb ] = _bitReserve.ReadBits( _slen[ 0 ][ grInfo.ScaleFacCompress ] );
+                }
 
                 for ( sfb = 3; sfb < 6; sfb++ )
                 for ( window = 0; window < 3; window++ )
+                {
                     _scalefac[ ch ].S[ window ][ sfb ] = _bitReserve.ReadBits( _slen[ 0 ][ grInfo.ScaleFacCompress ] );
+                }
 
                 for ( sfb = 6; sfb < 12; sfb++ )
                 for ( window = 0; window < 3; window++ )
+                {
                     _scalefac[ ch ].S[ window ][ sfb ] = _bitReserve.ReadBits( _slen[ 1 ][ grInfo.ScaleFacCompress ] );
+                }
 
-                for ( sfb = 12, window = 0; window < 3; window++ ) _scalefac[ ch ].S[ window ][ sfb ] = 0;
+                for ( sfb = 12, window = 0; window < 3; window++ )
+                {
+                    _scalefac[ ch ].S[ window ][ sfb ] = 0;
+                }
             }
             else
             {
@@ -863,7 +918,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             };
         }
         else
+        {
             blocktypenumber = 0;
+        }
 
         if ( !( modeExt is 1 or 3 && ( ch == 1 ) ) )
         {
@@ -935,7 +992,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             }
         }
 
-        for ( var i = 0; i < 45; i++ ) ScalefacBuffer[ i ] = 0;
+        for ( var i = 0; i < 45; i++ )
+        {
+            ScalefacBuffer[ i ] = 0;
+        }
 
         var m = 0;
 
@@ -980,7 +1040,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     m++;
                 }
 
-                for ( window = 0; window < 3; window++ ) _scalefac[ ch ].S[ window ][ 12 ] = 0;
+                for ( window = 0; window < 3; window++ )
+                {
+                    _scalefac[ ch ].S[ window ][ 12 ] = 0;
+                }
             }
             else
             {
@@ -993,7 +1056,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     m++;
                 }
 
-                for ( window = 0; window < 3; window++ ) _scalefac[ ch ].S[ window ][ 12 ] = 0;
+                for ( window = 0; window < 3; window++ )
+                {
+                    _scalefac[ ch ].S[ window ][ 12 ] = 0;
+                }
             }
         }
         else
@@ -1042,7 +1108,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             var buf  = _sideInfo.Channels[ ch ].granules[ gr ].Region0Count + 1;
             var buf1 = buf + _sideInfo.Channels[ ch ].granules[ gr ].Region1Count + 1;
 
-            if ( buf1 > ( _sfBandIndex[ _sfreq ].L.Length - 1 ) ) buf1 = _sfBandIndex[ _sfreq ].L.Length - 1;
+            if ( buf1 > ( _sfBandIndex[ _sfreq ].L.Length - 1 ) )
+            {
+                buf1 = _sfBandIndex[ _sfreq ].L.Length - 1;
+            }
 
             region1Start = _sfBandIndex[ _sfreq ].L[ buf ];
             region2Start = _sfBandIndex[ _sfreq ].L[ buf1 ]; /* MI */
@@ -1054,11 +1123,17 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         for ( var i = 0; i < ( _sideInfo.Channels[ ch ].granules[ gr ].BigValues << 1 ); i += 2 )
         {
             if ( i < region1Start )
+            {
                 h = Huffman.GetHuffmanTable()[ _sideInfo.Channels[ ch ].granules[ gr ].TableSelect[ 0 ] ];
+            }
             else if ( i < region2Start )
+            {
                 h = Huffman.GetHuffmanTable()[ _sideInfo.Channels[ ch ].granules[ gr ].TableSelect[ 1 ] ];
+            }
             else
+            {
                 h = Huffman.GetHuffmanTable()[ _sideInfo.Channels[ ch ].granules[ gr ].TableSelect[ 2 ] ];
+            }
 
             Huffman.Decode( h, x, y, v, w, _bitReserve );
 
@@ -1097,19 +1172,32 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         nuBits = _bitReserve.HssTell();
 
         // Dismiss stuffing bits
-        if ( nuBits < part23End ) _bitReserve.ReadBits( part23End - nuBits );
+        if ( nuBits < part23End )
+        {
+            _bitReserve.ReadBits( part23End - nuBits );
+        }
 
         // Zero out rest
 
         if ( index < 576 )
+        {
             _nonzero[ ch ] = index;
+        }
         else
+        {
             _nonzero[ ch ] = 576;
+        }
 
-        if ( index < 0 ) index = 0;
+        if ( index < 0 )
+        {
+            index = 0;
+        }
 
         // may not be necessary
-        for ( ; index < 576; index++ ) _is1D[ index ] = 0;
+        for ( ; index < 576; index++ )
+        {
+            _is1D[ index ] = 0;
+        }
     }
 
     /// <summary>
@@ -1150,7 +1238,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         if ( ( grInfo.WindowSwitchingFlag != 0 ) && ( grInfo.BlockType == 2 ) )
         {
             if ( grInfo.MixedBlockFlag != 0 )
+            {
                 nextCbBoundary = _sfBandIndex[ _sfreq ].L[ 1 ];
+            }
 
             // LONG blocks: 0,1,3
             else
@@ -1161,7 +1251,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             }
         }
         else
+        {
             nextCbBoundary = _sfBandIndex[ _sfreq ].L[ 1 ]; // LONG blocks: 0,1,3
+        }
 
         // Compute overall (global) scaling.
 
@@ -1173,7 +1265,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             var quotien = ( j - reste ) / SSLIMIT;
 
             if ( _is1D[ j ] == 0 )
+            {
                 xr[ quotien ][ reste ] = 0.0f;
+            }
             else
             {
                 var abv = _is1D[ j ];
@@ -1190,16 +1284,26 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 if ( abv < PowerTable.Length )
                 {
                     if ( _is1D[ j ] > 0 )
+                    {
                         xr[ quotien ][ reste ] = gGain * PowerTable[ abv ];
+                    }
                     else if ( -abv < PowerTable.Length )
+                    {
                         xr[ quotien ][ reste ] = -gGain * PowerTable[ -abv ];
+                    }
                     else
+                    {
                         xr[ quotien ][ reste ] = -gGain * ( float ) Math.Pow( -abv, D43 );
+                    }
                 }
                 else if ( _is1D[ j ] > 0 )
+                {
                     xr[ quotien ][ reste ] = gGain * ( float ) Math.Pow( abv, D43 );
+                }
                 else
+                {
                     xr[ quotien ][ reste ] = -gGain * ( float ) Math.Pow( -abv, D43 );
+                }
 
                 // End Patch
             }
@@ -1229,7 +1333,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                             cbBegin = ( cbBegin << 2 ) - cbBegin;
                         }
                         else if ( index < _sfBandIndex[ _sfreq ].L[ 8 ] )
+                        {
                             nextCbBoundary = _sfBandIndex[ _sfreq ].L[ ++cb + 1 ];
+                        }
                         else
                         {
                             nextCbBoundary = _sfBandIndex[ _sfreq ].S[ ++cb + 1 ];
@@ -1282,7 +1388,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                  */
                 var idx = _scalefac[ ch ].L[ cb ];
 
-                if ( grInfo.Preflag != 0 ) idx += Pretab[ cb ];
+                if ( grInfo.Preflag != 0 )
+                {
+                    idx += Pretab[ cb ];
+                }
 
                 idx <<= grInfo.ScaleFacScale;
 
@@ -1297,9 +1406,15 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             var reste   = j % SSLIMIT;
             var quotien = ( j - reste ) / SSLIMIT;
 
-            if ( reste < 0 ) reste = 0;
+            if ( reste < 0 )
+            {
+                reste = 0;
+            }
 
-            if ( quotien < 0 ) quotien = 0;
+            if ( quotien < 0 )
+            {
+                quotien = 0;
+            }
 
             xr[ quotien ][ reste ] = 0.0f;
         }
@@ -1313,7 +1428,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
         if ( ( grInfo.WindowSwitchingFlag != 0 ) && ( grInfo.BlockType == 2 ) )
         {
-            for ( var index = 0; index < 576; index++ ) _out1D[ index ] = 0.0f;
+            for ( var index = 0; index < 576; index++ )
+            {
+                _out1D[ index ] = 0.0f;
+            }
 
             if ( grInfo.MixedBlockFlag != 0 )
             {
@@ -1466,7 +1584,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                             // for (sfb=12 ...
                             sfb = sfbcnt + 1;
 
-                            if ( sfb > maxSfb ) maxSfb = sfb;
+                            if ( sfb > maxSfb )
+                            {
+                                maxSfb = sfb;
+                            }
 
                             while ( sfb < 12 )
                             {
@@ -1481,9 +1602,13 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                                     if ( IsPos[ i ] != 7 )
                                     {
                                         if ( lsf )
+                                        {
                                             GetKStereoValues( IsPos[ i ], ioType, i );
+                                        }
                                         else
+                                        {
                                             IsRatio[ i ] = Tan12[ IsPos[ i ] ];
+                                        }
                                     }
 
                                     i++;
@@ -1510,7 +1635,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                                     _k[ 1 ][ i ] = _k[ 1 ][ sfb ];
                                 }
                                 else
+                                {
                                     IsRatio[ i ] = IsRatio[ sfb ];
+                                }
 
                                 i++;
                             }
@@ -1525,6 +1652,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                             sb = -1;
 
                             while ( i >= 0 )
+                            {
                                 if ( _ro[ 1 ][ i ][ ss ] != 0.0f )
                                 {
                                     sb = ( i << 4 ) + ( i << 1 ) + ss;
@@ -1540,12 +1668,16 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                                         ss = 17;
                                     }
                                 }
+                            }
 
                             // if (ro ...
                             // while (i>=0)
                             i = 0;
 
-                            while ( _sfBandIndex[ _sfreq ].L[ i ] <= sb ) i++;
+                            while ( _sfBandIndex[ _sfreq ].L[ i ] <= sb )
+                            {
+                                i++;
+                            }
 
                             sfb = i;
                             i   = _sfBandIndex[ _sfreq ].L[ i ];
@@ -1561,9 +1693,13 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                                     if ( IsPos[ i ] != 7 )
                                     {
                                         if ( lsf )
+                                        {
                                             GetKStereoValues( IsPos[ i ], ioType, i );
+                                        }
                                         else
+                                        {
                                             IsRatio[ i ] = Tan12[ IsPos[ i ] ];
+                                        }
                                     }
 
                                     i++;
@@ -1623,9 +1759,13 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                                     if ( IsPos[ i ] != 7 )
                                     {
                                         if ( lsf )
+                                        {
                                             GetKStereoValues( IsPos[ i ], ioType, i );
+                                        }
                                         else
+                                        {
                                             IsRatio[ i ] = Tan12[ IsPos[ i ] ];
+                                        }
                                     }
 
                                     i++;
@@ -1654,7 +1794,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                                     _k[ 1 ][ i ] = _k[ 1 ][ sfb ];
                                 }
                                 else
+                                {
                                     IsRatio[ i ] = IsRatio[ sfb ];
+                                }
 
                                 i++;
                             }
@@ -1675,6 +1817,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     sb = 0;
 
                     while ( i >= 0 )
+                    {
                         if ( _ro[ 1 ][ i ][ ss ] != 0.0f )
                         {
                             sb = ( i << 4 ) + ( i << 1 ) + ss;
@@ -1690,10 +1833,14 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                                 ss = 17;
                             }
                         }
+                    }
 
                     i = 0;
 
-                    while ( _sfBandIndex[ _sfreq ].L[ i ] <= sb ) i++;
+                    while ( _sfBandIndex[ _sfreq ].L[ i ] <= sb )
+                    {
+                        i++;
+                    }
 
                     sfb = i;
                     i   = _sfBandIndex[ _sfreq ].L[ i ];
@@ -1709,9 +1856,13 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                             if ( IsPos[ i ] != 7 )
                             {
                                 if ( lsf )
+                                {
                                     GetKStereoValues( IsPos[ i ], ioType, i );
+                                }
                                 else
+                                {
                                     IsRatio[ i ] = Tan12[ IsPos[ i ] ];
+                                }
                             }
 
                             i++;
@@ -1730,7 +1881,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                             _k[ 1 ][ i ] = _k[ 1 ][ sfb ];
                         }
                         else
+                        {
                             IsRatio[ i ] = IsRatio[ sfb ];
+                        }
 
                         i++;
                     }
@@ -1796,12 +1949,19 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         // 31 alias-reduction operations between each pair of sub-bands
         // with 8 butterflies between each pair
 
-        if ( ( grInfo.WindowSwitchingFlag != 0 ) && grInfo is { BlockType: 2, MixedBlockFlag: 0 } ) return;
+        if ( ( grInfo.WindowSwitchingFlag != 0 ) && grInfo is { BlockType: 2, MixedBlockFlag: 0 } )
+        {
+            return;
+        }
 
         if ( ( grInfo.WindowSwitchingFlag != 0 ) && ( grInfo.MixedBlockFlag != 0 ) && ( grInfo.BlockType == 2 ) )
+        {
             sb18Lim = 18;
+        }
         else
+        {
             sb18Lim = 558;
+        }
 
         for ( sb18 = 0; sb18 < sb18Lim; sb18 += 18 )
         for ( var ss = 0; ss < 8; ss++ )
@@ -1830,11 +1990,17 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
             var tsOut = _out1D;
 
-            for ( var cc = 0; cc < 18; cc++ ) tsOutCopy[ cc ] = tsOut[ cc + sb18 ];
+            for ( var cc = 0; cc < 18; cc++ )
+            {
+                tsOutCopy[ cc ] = tsOut[ cc + sb18 ];
+            }
 
             InverseMdct( tsOutCopy, Rawout, bt );
 
-            for ( var cc = 0; cc < 18; cc++ ) tsOut[ cc + sb18 ] = tsOutCopy[ cc ];
+            for ( var cc = 0; cc < 18; cc++ )
+            {
+                tsOut[ cc + sb18 ] = tsOutCopy[ cc ];
+            }
 
             // overlap addition
             var prvblk = _prevblck;
@@ -2237,7 +2403,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
         var powerTable = new float[ 8192 ];
 
-        for ( var i = 0; i < 8192; i++ ) powerTable[ i ] = ( float ) Math.Pow( i, D43 );
+        for ( var i = 0; i < 8192; i++ )
+        {
+            powerTable[ i ] = ( float ) Math.Pow( i, D43 );
+        }
 
         return powerTable;
     }
@@ -2254,7 +2423,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
             for ( var window = 0; window < 3; window++ )
             for ( var i = start; i < end; i++ )
+            {
                 ix[ ( 3 * i ) + window ] = j++;
+            }
         }
 
         return ix;

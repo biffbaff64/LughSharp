@@ -225,9 +225,15 @@ public class GridPoint3
 
     public override bool Equals( object? o )
     {
-        if ( this == o ) return true;
+        if ( this == o )
+        {
+            return true;
+        }
 
-        if ( ( o == null ) || ( o.GetType() != GetType() ) ) return false;
+        if ( ( o == null ) || ( o.GetType() != GetType() ) )
+        {
+            return false;
+        }
 
         var g = ( GridPoint3 ) o;
 

@@ -129,9 +129,15 @@ public class ShaderProgram
         ArgumentNullException.ThrowIfNull( vertexShader );
         ArgumentNullException.ThrowIfNull( fragmentShader );
 
-        if ( !string.IsNullOrEmpty( PrependVertexCode ) ) vertexShader = PrependVertexCode + vertexShader;
+        if ( !string.IsNullOrEmpty( PrependVertexCode ) )
+        {
+            vertexShader = PrependVertexCode + vertexShader;
+        }
 
-        if ( !string.IsNullOrEmpty( PrependFragmentCode ) ) fragmentShader = PrependFragmentCode + fragmentShader;
+        if ( !string.IsNullOrEmpty( PrependFragmentCode ) )
+        {
+            fragmentShader = PrependFragmentCode + fragmentShader;
+        }
 
         VertexShaderSource   = vertexShader;
         FragmentShaderSource = fragmentShader;
@@ -216,7 +222,10 @@ public class ShaderProgram
 
         var shader = Gdx.GL.glCreateShader( type );
 
-        if ( shader == 0 ) return -1;
+        if ( shader == 0 )
+        {
+            return -1;
+        }
 
         Gdx.GL.glShaderSource( shader, source );
         Gdx.GL.glCompileShader( shader );
@@ -256,7 +265,10 @@ public class ShaderProgram
 
     private unsafe int LinkProgram( int program )
     {
-        if ( program == -1 ) return -1;
+        if ( program == -1 )
+        {
+            return -1;
+        }
 
         Gdx.GL.glAttachShader( ( uint ) program, ( uint ) _vertexShaderHandle );
         Gdx.GL.glAttachShader( ( uint ) program, ( uint ) _fragmentShaderHandle );
@@ -319,7 +331,10 @@ public class ShaderProgram
 
             if ( ( location == CACHED_NOT_FOUND ) && pedant )
             {
-                if ( IsCompiled ) throw new ArgumentException( "No uniform with name '" + name + "' in shader" );
+                if ( IsCompiled )
+                {
+                    throw new ArgumentException( "No uniform with name '" + name + "' in shader" );
+                }
 
                 throw new InvalidOperationException( "An attempted fetch uniform from uncompiled shader \n" + Log );
             }
@@ -704,7 +719,10 @@ public class ShaderProgram
 
         var location = FetchAttributeLocation( name );
 
-        if ( location == -1 ) return;
+        if ( location == -1 )
+        {
+            return;
+        }
 
         Gdx.GL.glVertexAttribPointer( location, size, type, normalize, stride, buffer );
     }
@@ -739,7 +757,10 @@ public class ShaderProgram
 
         var location = FetchAttributeLocation( name );
 
-        if ( location == -1 ) return;
+        if ( location == -1 )
+        {
+            return;
+        }
 
         Gdx.GL.glVertexAttribPointer( ( uint ) location, size, type, normalize, stride, ( uint ) offset );
     }
@@ -780,7 +801,10 @@ public class ShaderProgram
 
         var location = FetchAttributeLocation( name );
 
-        if ( location == -1 ) return;
+        if ( location == -1 )
+        {
+            return;
+        }
 
         Gdx.GL.glDisableVertexAttribArray( ( uint ) location );
     }
@@ -801,7 +825,10 @@ public class ShaderProgram
 
         var location = FetchAttributeLocation( name );
 
-        if ( location == -1 ) return;
+        if ( location == -1 )
+        {
+            return;
+        }
 
         Gdx.GL.glEnableVertexAttribArray( ( uint ) location );
     }

@@ -68,8 +68,12 @@ public class AttributesGroup : IComparer< Attribute >
         if ( Has( type ) )
         {
             foreach ( var att in _attributes )
+            {
                 if ( att.type == type )
+                {
                     return att;
+                }
+            }
         }
 
         return null;
@@ -83,8 +87,12 @@ public class AttributesGroup : IComparer< Attribute >
     public List< Attribute > Get( List< Attribute > output, long type )
     {
         foreach ( var att in _attributes )
+        {
             if ( ( att.type & type ) != 0 )
+            {
                 output.Add( att );
+            }
+        }
 
         return output;
     }
@@ -126,7 +134,9 @@ public class AttributesGroup : IComparer< Attribute >
             _sorted = false;
         }
         else
+        {
             _attributes[ idx ] = attribute;
+        }
 
         Sort(); //FIXME: See #4186
     }
@@ -176,7 +186,10 @@ public class AttributesGroup : IComparer< Attribute >
     /// </summary>
     public void Set( params Attribute[] attribs )
     {
-        foreach ( var attr in attribs ) Set( attr );
+        foreach ( var attr in attribs )
+        {
+            Set( attr );
+        }
     }
 
     /// <summary>
@@ -185,7 +198,10 @@ public class AttributesGroup : IComparer< Attribute >
     /// </summary>
     public void Set( IEnumerable< Attribute > attribs )
     {
-        foreach ( var attr in attribs ) Set( attr );
+        foreach ( var attr in attribs )
+        {
+            Set( attr );
+        }
     }
 
     /// <summary>
@@ -230,8 +246,12 @@ public class AttributesGroup : IComparer< Attribute >
         if ( Has( type ) )
         {
             for ( var i = 0; i < _attributes.Count; i++ )
+            {
                 if ( _attributes[ i ].type == type )
+                {
                     return i;
+                }
+            }
         }
 
         return -1;
@@ -250,18 +270,31 @@ public class AttributesGroup : IComparer< Attribute >
     /// </returns>
     public bool Same( AttributesGroup? other, bool compareValues = false )
     {
-        if ( ( other == null ) || ( _mask != other._mask ) ) return false;
+        if ( ( other == null ) || ( _mask != other._mask ) )
+        {
+            return false;
+        }
 
-        if ( other.Equals( this ) ) return true;
+        if ( other.Equals( this ) )
+        {
+            return true;
+        }
 
-        if ( !compareValues ) return true;
+        if ( !compareValues )
+        {
+            return true;
+        }
 
         Sort();
         other.Sort();
 
         for ( var i = 0; i < _attributes.Count; i++ )
+        {
             if ( !_attributes[ i ].Equals( other._attributes[ i ] ) )
+            {
                 return false;
+            }
+        }
 
         return true;
     }
@@ -279,7 +312,10 @@ public class AttributesGroup : IComparer< Attribute >
         var result = 71 + _mask;
         var m      = 1;
 
-        for ( var i = 0; i < n; i++ ) result += _mask * _attributes[ i ].GetHashCode() * ( m = ( m * 7 ) & 0xFFFF );
+        for ( var i = 0; i < n; i++ )
+        {
+            result += _mask * _attributes[ i ].GetHashCode() * ( m = ( m * 7 ) & 0xFFFF );
+        }
 
         return ( int ) ( result ^ ( result >> 32 ) );
     }
@@ -291,16 +327,25 @@ public class AttributesGroup : IComparer< Attribute >
 
     public override bool Equals( object? other )
     {
-        if ( other is not AttributesGroup group ) return false;
+        if ( other is not AttributesGroup group )
+        {
+            return false;
+        }
 
         return ( group == this ) || Same( group, true );
     }
 
     public int CompareTo( AttributesGroup other )
     {
-        if ( other.Equals( this ) ) return 0;
+        if ( other.Equals( this ) )
+        {
+            return 0;
+        }
 
-        if ( _mask != other._mask ) return _mask < other._mask ? -1 : 1;
+        if ( _mask != other._mask )
+        {
+            return _mask < other._mask ? -1 : 1;
+        }
 
         Sort();
         other.Sort();
@@ -309,7 +354,10 @@ public class AttributesGroup : IComparer< Attribute >
         {
             var c = _attributes[ i ].CompareTo( other._attributes[ i ] );
 
-            if ( c != 0 ) return c < 0 ? -1 : 1;
+            if ( c != 0 )
+            {
+                return c < 0 ? -1 : 1;
+            }
         }
 
         return 0;

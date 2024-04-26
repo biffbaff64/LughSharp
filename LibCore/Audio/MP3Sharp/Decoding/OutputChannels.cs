@@ -63,7 +63,10 @@ public class OutputChannels
     {
         _outputChannels = channels;
 
-        if ( channels is < 0 or > 3 ) throw new ArgumentException( $"channels is wrong: {channels}" );
+        if ( channels is < 0 or > 3 )
+        {
+            throw new ArgumentException( $"channels is wrong: {channels}" );
+        }
     }
 
     /// <summary>
@@ -110,7 +113,10 @@ public class OutputChannels
     {
         var equals = false;
 
-        if ( obj is OutputChannels oc ) equals = oc._outputChannels == _outputChannels;
+        if ( obj is OutputChannels oc )
+        {
+            equals = oc._outputChannels == _outputChannels;
+        }
 
         return equals;
     }

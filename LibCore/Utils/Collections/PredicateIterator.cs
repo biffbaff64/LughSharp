@@ -101,9 +101,15 @@ public class PredicateIterator< T > : IEnumerator< T >
 
     public bool HasNext()
     {
-        if ( End ) return false;
+        if ( End )
+        {
+            return false;
+        }
 
-        if ( NextItem != null ) return true;
+        if ( NextItem != null )
+        {
+            return true;
+        }
 
         Peeked = true;
 
@@ -126,7 +132,10 @@ public class PredicateIterator< T > : IEnumerator< T >
 
     public T? Next()
     {
-        if ( ( NextItem == null ) && !HasNext() ) return default( T );
+        if ( ( NextItem == null ) && !HasNext() )
+        {
+            return default( T );
+        }
 
         var result = NextItem;
         NextItem = default( T );
@@ -137,7 +146,10 @@ public class PredicateIterator< T > : IEnumerator< T >
 
     public void Remove()
     {
-        if ( Peeked ) throw new GdxRuntimeException( "Cannot remove between a call to hasNext() and next()." );
+        if ( Peeked )
+        {
+            throw new GdxRuntimeException( "Cannot remove between a call to hasNext() and next()." );
+        }
 
         Enumerator.Dispose();
     }

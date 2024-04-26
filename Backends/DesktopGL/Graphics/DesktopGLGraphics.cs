@@ -96,7 +96,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         UpdateFramebufferInfo();
 
-        if ( !GLWindow!.ListenerInitialised ) return;
+        if ( !GLWindow!.ListenerInitialised )
+        {
+            return;
+        }
 
         GLWindow.MakeCurrent();
 
@@ -108,7 +111,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     private void UpdateFramebufferInfo()
     {
-        if ( GLWindow == null ) return;
+        if ( GLWindow == null )
+        {
+            return;
+        }
 
         Glfw.GetFramebufferSize( GLWindow.GlfwWindow, out var tmpWidth, out var tmpHeight );
 
@@ -137,7 +143,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         var time = TimeUtils.NanoTime();
 
-        if ( _lastFrameTime == -1 ) _lastFrameTime = time;
+        if ( _lastFrameTime == -1 )
+        {
+            _lastFrameTime = time;
+        }
 
         DeltaTime      = ( time - _lastFrameTime ) / 1000000000.0f;
         _lastFrameTime = time;
@@ -159,7 +168,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         GLVersion = GLSetup.GLVersion!;
 
-        if ( SupportsCubeMapSeamless() ) EnableCubeMapSeamless( true );
+        if ( SupportsCubeMapSeamless() )
+        {
+            EnableCubeMapSeamless( true );
+        }
     }
 
     /// <summary>
@@ -187,7 +199,9 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
                 Gdx.GL.glEnable( IGL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
             }
             else
+            {
                 Gdx.GL.glDisable( IGL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
+            }
         }
     }
 
@@ -407,7 +421,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         GLFWMonitor[] glfwMonitors = Glfw.GetMonitors();
         var           monitors     = new IGraphics.MonitorDescriptor[ glfwMonitors.Length ];
 
-        for ( var i = 0; i < glfwMonitors.Length; i++ ) monitors[ i ] = DesktopGLApplicationConfiguration.ToGLMonitor( glfwMonitors[ i ] );
+        for ( var i = 0; i < glfwMonitors.Length; i++ )
+        {
+            monitors[ i ] = DesktopGLApplicationConfiguration.ToGLMonitor( glfwMonitors[ i ] );
+        }
 
         return monitors;
     }
@@ -537,7 +554,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     private void StoreCurrentWindowPositionAndDisplayMode()
     {
-        if ( GLWindow == null ) return;
+        if ( GLWindow == null )
+        {
+            return;
+        }
 
         _windowPosXBeforeFullscreen   = GLWindow.GetPositionX();
         _windowPosYBeforeFullscreen   = GLWindow.GetPositionY();

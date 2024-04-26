@@ -44,7 +44,10 @@ public class SampleBuffer : AudioBase
 
         Init( sampleFrequency );
 
-        for ( var i = 0; i < numberOfChannels; ++i ) _bufferp[ i ] = ( short ) i;
+        for ( var i = 0; i < numberOfChannels; ++i )
+        {
+            _bufferp[ i ] = ( short ) i;
+        }
     }
 
     public virtual int SampleFrequency { get; set; }
@@ -104,7 +107,10 @@ public class SampleBuffer : AudioBase
     /// </summary>
     public override void ClearBuffer()
     {
-        for ( var i = 0; i < _channels; ++i ) _bufferp[ i ] = ( short ) i;
+        for ( var i = 0; i < _channels; ++i )
+        {
+            _bufferp[ i ] = ( short ) i;
+        }
     }
 
     /// <summary>

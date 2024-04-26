@@ -279,7 +279,10 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
         var monitors = new IGraphics.MonitorDescriptor[ Glfw.GetMonitors().Length ];
 
-        for ( var i = 0; i < Glfw.GetMonitors().Length; i++ ) monitors[ i ] = ToGLMonitor( Glfw.GetMonitors()[ i ] );
+        for ( var i = 0; i < Glfw.GetMonitors().Length; i++ )
+        {
+            monitors[ i ] = ToGLMonitor( Glfw.GetMonitors()[ i ] );
+        }
 
         return monitors;
     }

@@ -79,7 +79,10 @@ public class RiffFile
     {
         var retcode = DDC_SUCCESS;
 
-        if ( _fmode != RF_UNKNOWN ) retcode = Close();
+        if ( _fmode != RF_UNKNOWN )
+        {
+            retcode = Close();
+        }
 
         if ( retcode == DDC_SUCCESS )
         {
@@ -181,7 +184,10 @@ public class RiffFile
     {
         var retcode = DDC_SUCCESS;
 
-        if ( _fmode != RF_UNKNOWN ) retcode = Close();
+        if ( _fmode != RF_UNKNOWN )
+        {
+            retcode = Close();
+        }
 
         if ( retcode == DDC_SUCCESS )
         {
@@ -285,7 +291,10 @@ public class RiffFile
     /// </summary>
     public virtual int Write( sbyte[] data, int numBytes )
     {
-        if ( _fmode != RF_WRITE ) return DDC_INVALID_CALL;
+        if ( _fmode != RF_WRITE )
+        {
+            return DDC_INVALID_CALL;
+        }
 
         try
         {
@@ -316,7 +325,10 @@ public class RiffFile
             theData[ y + 1 ] = ( sbyte ) ( SupportClass.URShift( data[ yc++ ], 8 ) & 0x00FF );
         }
 
-        if ( _fmode != RF_WRITE ) return DDC_INVALID_CALL;
+        if ( _fmode != RF_WRITE )
+        {
+            return DDC_INVALID_CALL;
+        }
 
         try
         {
@@ -355,7 +367,10 @@ public class RiffFile
         br[ 6 ] = br5;
         br[ 7 ] = br4;
 
-        if ( _fmode != RF_WRITE ) return DDC_INVALID_CALL;
+        if ( _fmode != RF_WRITE )
+        {
+            return DDC_INVALID_CALL;
+        }
 
         try
         {
@@ -377,7 +392,10 @@ public class RiffFile
     /// </summary>
     public virtual int Write( short data, int numBytes )
     {
-        if ( _fmode != RF_WRITE ) return DDC_INVALID_CALL;
+        if ( _fmode != RF_WRITE )
+        {
+            return DDC_INVALID_CALL;
+        }
 
         try
         {
@@ -400,7 +418,10 @@ public class RiffFile
     /// </summary>
     public virtual int Write( int data, int numBytes )
     {
-        if ( _fmode != RF_WRITE ) return DDC_INVALID_CALL;
+        if ( _fmode != RF_WRITE )
+        {
+            return DDC_INVALID_CALL;
+        }
 
         try
         {
@@ -451,7 +472,10 @@ public class RiffFile
             {
                 var target = ( sbyte? ) _file?.ReadByte();
 
-                if ( target != data[ cnt++ ] ) return DDC_FILE_ERROR;
+                if ( target != data[ cnt++ ] )
+                {
+                    return DDC_FILE_ERROR;
+                }
             }
         }
         catch
@@ -551,7 +575,10 @@ public class RiffFile
     /// </summary>
     public virtual int Backpatch( long fileOffset, RiffChunkHeader data, int numBytes )
     {
-        if ( _file == null ) return DDC_INVALID_CALL;
+        if ( _file == null )
+        {
+            return DDC_INVALID_CALL;
+        }
 
         try
         {
@@ -567,7 +594,10 @@ public class RiffFile
 
     public virtual int Backpatch( long fileOffset, sbyte[] data, int numBytes )
     {
-        if ( _file == null ) return DDC_INVALID_CALL;
+        if ( _file == null )
+        {
+            return DDC_INVALID_CALL;
+        }
 
         try
         {

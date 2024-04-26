@@ -61,25 +61,39 @@ public class RotateToAction : TemporalAction
 
     protected new void Begin()
     {
-        if ( Target == null ) throw new GdxRuntimeException( "Cannot Begin with null Target Actor!" );
+        if ( Target == null )
+        {
+            throw new GdxRuntimeException( "Cannot Begin with null Target Actor!" );
+        }
 
         Start = Target.Rotation;
     }
 
     protected override void Update( float percent )
     {
-        if ( Target == null ) return;
+        if ( Target == null )
+        {
+            return;
+        }
 
         float rotation;
 
         if ( percent == 0 )
+        {
             rotation = Start;
+        }
         else if ( percent is 1.0f )
+        {
             rotation = Rotation;
+        }
         else if ( UseShortestDirection )
+        {
             rotation = MathUtils.LerpAngleDeg( Start, Rotation, percent );
+        }
         else
+        {
             rotation = Start + ( ( Rotation - Start ) * percent );
+        }
 
         Target.Rotation = rotation;
     }

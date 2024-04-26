@@ -53,7 +53,10 @@ public class WidgetGroup : Group, ILayout
     /// </summary>
     public WidgetGroup( params Actor[] actors )
     {
-        foreach ( var actor in actors ) AddActor( actor );
+        foreach ( var actor in actors )
+        {
+            AddActor( actor );
+        }
     }
 
     /// <summary>
@@ -65,7 +68,10 @@ public class WidgetGroup : Group, ILayout
 
     public virtual void Validate()
     {
-        if ( !LayoutEnabled ) return;
+        if ( !LayoutEnabled )
+        {
+            return;
+        }
 
         var parent = Parent;
 
@@ -93,7 +99,10 @@ public class WidgetGroup : Group, ILayout
             }
         }
 
-        if ( !NeedsLayout ) return;
+        if ( !NeedsLayout )
+        {
+            return;
+        }
 
         NeedsLayout = false;
 
@@ -103,7 +112,10 @@ public class WidgetGroup : Group, ILayout
         // The root-most widget group retries layout a reasonable number of times.
         if ( NeedsLayout )
         {
-            if ( parent is WidgetGroup ) return; // The parent widget will layout again.
+            if ( parent is WidgetGroup )
+            {
+                return; // The parent widget will layout again.
+            }
 
             for ( var i = 0; i < 5; i++ )
             {
@@ -111,7 +123,10 @@ public class WidgetGroup : Group, ILayout
 
                 SetLayout();
 
-                if ( !NeedsLayout ) break;
+                if ( !NeedsLayout )
+                {
+                    break;
+                }
             }
         }
     }
@@ -125,7 +140,10 @@ public class WidgetGroup : Group, ILayout
     {
         Invalidate();
 
-        if ( Parent is ILayout layout ) layout.InvalidateHierarchy();
+        if ( Parent is ILayout layout )
+        {
+            layout.InvalidateHierarchy();
+        }
     }
 
     public virtual void Pack()
@@ -163,8 +181,13 @@ public class WidgetGroup : Group, ILayout
             var actor = children.GetAt( i );
 
             if ( actor is ILayout layout )
+            {
                 layout.LayoutEnabled = enabled;
-            else if ( actor is Group group ) SetLayoutEnabled( group, enabled );
+            }
+            else if ( actor is Group group )
+            {
+                SetLayoutEnabled( group, enabled );
+            }
         }
     }
 

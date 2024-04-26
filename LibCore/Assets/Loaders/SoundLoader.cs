@@ -67,7 +67,10 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
 
     private void Dispose( bool disposing )
     {
-        if ( disposing ) LoadedSound = null!;
+        if ( disposing )
+        {
+            LoadedSound = null!;
+        }
     }
 
     // ------------------------------------------------------------------------

@@ -75,9 +75,15 @@ public class Sphere
     /// <returns></returns>
     public override bool Equals( object? o )
     {
-        if ( this == o ) return true;
+        if ( this == o )
+        {
+            return true;
+        }
 
-        if ( ( o == null ) || ( o.GetType() != GetType() ) ) return false;
+        if ( ( o == null ) || ( o.GetType() != GetType() ) )
+        {
+            return false;
+        }
 
         var s = ( Sphere ) o;
 

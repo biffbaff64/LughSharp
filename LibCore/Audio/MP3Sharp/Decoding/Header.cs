@@ -220,7 +220,10 @@ public class Header
         buffer.Append( ' ' );
         buffer.Append( VersionAsString() );
 
-        if ( !IsProtection() ) buffer.Append( " no" );
+        if ( !IsProtection() )
+        {
+            buffer.Append( " no" );
+        }
 
         buffer.Append( " checksums" );
         buffer.Append( ' ' );
@@ -255,12 +258,19 @@ public class Header
                     // SZD: MPEG2.5 detection
                 {
                     if ( _version == MPEG2_LSF )
+                    {
                         _version = MPEG25_LSF;
+                    }
                     else
+                    {
                         throw new BitstreamException( BitstreamErrors.UNKNOWN_ERROR );
+                    }
                 }
 
-                if ( ( _sampleFrequency = SupportClass.URShift( headerstring, 10 ) & 3 ) == 3 ) throw new BitstreamException( BitstreamErrors.UNKNOWN_ERROR );
+                if ( ( _sampleFrequency = SupportClass.URShift( headerstring, 10 ) & 3 ) == 3 )
+                {
+                    throw new BitstreamException( BitstreamErrors.UNKNOWN_ERROR );
+                }
             }
 
             _layer         = ( 4 - SupportClass.URShift( headerstring, 17 ) ) & 3;
@@ -271,9 +281,13 @@ public class Header
             _modeExtension = SupportClass.URShift( headerstring, 4 ) & 3;
 
             if ( _mode == JOINT_STEREO )
+            {
                 _intensityStereoBound = ( _modeExtension << 2 ) + 4;
+            }
             else
+            {
                 _intensityStereoBound = 0;
+            }
 
             // should never be used
             _copyright |= ( SupportClass.URShift( headerstring, 3 ) & 1 ) == 1;
@@ -281,7 +295,9 @@ public class Header
 
             // calculate number of subbands:
             if ( _layer == 1 )
+            {
                 _numberOfSubbands = 32;
+            }
             else
             {
                 var channelBitrate = _bitrateIndex;
@@ -290,20 +306,33 @@ public class Header
                 if ( _mode != SINGLE_CHANNEL )
                 {
                     if ( channelBitrate == 4 )
+                    {
                         channelBitrate = 1;
+                    }
                     else
+                    {
                         channelBitrate -= 4;
+                    }
                 }
 
                 if ( channelBitrate is 1 or 2 )
+                {
                     _numberOfSubbands = _sampleFrequency == THIRTYTWO ? 12 : 8;
+                }
                 else if ( ( _sampleFrequency == FOURTYEIGHT ) || channelBitrate is >= 3 and <= 5 )
+                {
                     _numberOfSubbands = 27;
+                }
                 else
+                {
                     _numberOfSubbands = 30;
+                }
             }
 
-            if ( _intensityStereoBound > _numberOfSubbands ) _intensityStereoBound = _numberOfSubbands;
+            if ( _intensityStereoBound > _numberOfSubbands )
+            {
+                _intensityStereoBound = _numberOfSubbands;
+            }
 
             // calculate framesize and nSlots
             CalculateFrameSize();
@@ -322,7 +351,9 @@ public class Header
                 sync = true;
             }
             else
+            {
                 stream.UnreadFrame();
+            }
         }
         while ( !sync );
 
@@ -339,7 +370,9 @@ public class Header
             crcp![ 0 ] = _crc;
         }
         else
+        {
             crcp![ 0 ] = null!;
+        }
 
         if ( _sampleFrequency == FOURTYFOUR_POINT_ONE )
         {
@@ -481,7 +514,10 @@ public class Header
         {
             framesize = ( 12 * Bitrates[ _version ][ 0 ][ _bitrateIndex ] ) / Frequencies[ _version ][ _sampleFrequency ];
 
-            if ( _paddingBit != 0 ) framesize++;
+            if ( _paddingBit != 0 )
+            {
+                framesize++;
+            }
 
             framesize <<= 2; // one slot is 4 bytes long
             NSlots    =   0;
@@ -490,16 +526,24 @@ public class Header
         {
             framesize = ( 144 * Bitrates[ _version ][ _layer - 1 ][ _bitrateIndex ] ) / Frequencies[ _version ][ _sampleFrequency ];
 
-            if ( _version is MPEG2_LSF or MPEG25_LSF ) framesize >>= 1;
+            if ( _version is MPEG2_LSF or MPEG25_LSF )
+            {
+                framesize >>= 1;
+            }
 
             // SZD
-            if ( _paddingBit != 0 ) framesize++;
+            if ( _paddingBit != 0 )
+            {
+                framesize++;
+            }
 
             // Layer III slots
             if ( _layer == 3 )
             {
                 if ( _version == MPEG1 )
+                {
                     NSlots = framesize - ( _mode == SINGLE_CHANNEL ? 17 : 32 ) - ( _protectionBit != 0 ? 0 : 2 ) - 4; // header size
+                }
                 else
                 {
                     // MPEG-2 LSF, SZD: MPEG-2.5 LSF
@@ -507,7 +551,9 @@ public class Header
                 }
             }
             else
+            {
                 NSlots = 0;
+            }
         }
 
         framesize -= 4; // subtract header size
@@ -520,7 +566,10 @@ public class Header
     /// </summary>
     public int MaxNumberOfFrame( int streamsize )
     {
-        if ( ( ( framesize + 4 ) - _paddingBit ) == 0 ) return 0;
+        if ( ( ( framesize + 4 ) - _paddingBit ) == 0 )
+        {
+            return 0;
+        }
 
         return streamsize / ( ( framesize + 4 ) - _paddingBit );
     }
@@ -530,7 +579,10 @@ public class Header
     /// </summary>
     public int MinNumberOfFrames( int streamsize )
     {
-        if ( ( ( framesize + 5 ) - _paddingBit ) == 0 ) return 0;
+        if ( ( ( framesize + 5 ) - _paddingBit ) == 0 )
+        {
+            return 0;
+        }
 
         return streamsize / ( ( framesize + 5 ) - _paddingBit );
     }
@@ -588,17 +640,26 @@ public class Header
         switch ( _sampleFrequency )
         {
             case THIRTYTWO:
-                if ( _version == MPEG1 ) return "32 kHz";
+                if ( _version == MPEG1 )
+                {
+                    return "32 kHz";
+                }
 
                 return _version == MPEG2_LSF ? "16 kHz" : "8 kHz";
 
             case FOURTYFOUR_POINT_ONE:
-                if ( _version == MPEG1 ) return "44.1 kHz";
+                if ( _version == MPEG1 )
+                {
+                    return "44.1 kHz";
+                }
 
                 return _version == MPEG2_LSF ? "22.05 kHz" : "11.025 kHz";
 
             case FOURTYEIGHT:
-                if ( _version == MPEG1 ) return "48 kHz";
+                if ( _version == MPEG1 )
+                {
+                    return "48 kHz";
+                }
 
                 return _version == MPEG2_LSF ? "24 kHz" : "12 kHz";
         }

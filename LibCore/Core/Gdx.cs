@@ -38,13 +38,8 @@ public static class Gdx
     private static IFiles?       _files    = null;
     private static IGraphics?    _graphics = null;
     private static INet?         _net      = null;
-    private static IGL20?        _gl       = null;
-    private static IGL20?        _gl20     = null;
-    private static IGL30?        _gl30     = null;
-
-    private static GLBindings? _igl;
-
-    // ------------------------------------------------------------------------
+    private static GLBindings?   _igl      = null;
+    
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -168,29 +163,5 @@ public static class Gdx
             return _igl;
         }
         set => _igl = value;
-    }
-
-    //TODO: To be removed
-    public static IGL20 GL20
-    {
-        get
-        {
-            GdxRuntimeException.ThrowIfNull( _gl20 );
-
-            return _gl20;
-        }
-        set => _gl20 = value;
-    }
-
-    //TODO: To be removed
-    public static IGL30? GL30
-    {
-        get
-        {
-            ArgumentNullException.ThrowIfNull( _gl30 );
-
-            return _gl30;
-        }
-        set => _gl30 = value;
     }
 }

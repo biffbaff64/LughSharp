@@ -52,7 +52,10 @@ public class Selector< T >
 
     public int SelectIndex( T[] items, IComparer< T > comp, int kthLowest, int size )
     {
-        if ( size < 1 ) throw new GdxRuntimeException( "cannot select from empty array (size < 1)" );
+        if ( size < 1 )
+        {
+            throw new GdxRuntimeException( "cannot select from empty array (size < 1)" );
+        }
 
         if ( kthLowest > size )
         {
@@ -96,7 +99,10 @@ public class Selector< T >
         {
             var comparison = comp.Compare( items[ i ], items[ lowestIdx ] );
 
-            if ( comparison < 0 ) lowestIdx = i;
+            if ( comparison < 0 )
+            {
+                lowestIdx = i;
+            }
         }
 
         return lowestIdx;
@@ -113,7 +119,10 @@ public class Selector< T >
         {
             var comparison = comp.Compare( items[ i ], items[ highestIdx ] );
 
-            if ( comparison > 0 ) highestIdx = i;
+            if ( comparison > 0 )
+            {
+                highestIdx = i;
+            }
         }
 
         return highestIdx;

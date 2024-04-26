@@ -50,7 +50,10 @@ public class ArraySelection< T > : Selection< T >
     {
         ArgumentNullException.ThrowIfNull( item );
 
-        if ( IsDisabled ) return;
+        if ( IsDisabled )
+        {
+            return;
+        }
 
         if ( !RangeSelect || !Multiple )
         {
@@ -72,16 +75,29 @@ public class ArraySelection< T > : Selection< T >
                 var start = rangeStartIndex;
                 var end   = _array!.IndexOf( item, 0 );
 
-                if ( start > end ) ( end, start ) = ( start, end );
+                if ( start > end )
+                {
+                    ( end, start ) = ( start, end );
+                }
 
-                if ( !UIUtils.Ctrl() ) Selected.Clear(); // Clear( 8 );
+                if ( !UIUtils.Ctrl() )
+                {
+                    Selected.Clear(); // Clear( 8 );
+                }
 
-                for ( var i = start; i <= end; i++ ) Selected.Add( _array[ i ] );
+                for ( var i = start; i <= end; i++ )
+                {
+                    Selected.Add( _array[ i ] );
+                }
 
                 if ( FireChangeEvent() )
+                {
                     Revert();
+                }
                 else
+                {
                     Changed();
+                }
 
                 _rangeStart = oldRangeStart;
 
@@ -121,14 +137,21 @@ public class ArraySelection< T > : Selection< T >
         var changed = false;
 
         foreach ( var item in Items() )
+        {
             if ( !_array!.Contains( item ) )
             {
                 Items().Remove( item );
                 changed = true;
             }
+        }
 
         if ( Required && ( Selected.Count == 0 ) )
+        {
             Set( _array!.First() );
-        else if ( changed ) Changed();
+        }
+        else if ( changed )
+        {
+            Changed();
+        }
     }
 }

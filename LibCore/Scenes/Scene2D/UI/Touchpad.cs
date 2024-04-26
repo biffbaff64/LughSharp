@@ -85,7 +85,10 @@ public class Touchpad : Widget
     /// <param name="style"></param>
     public Touchpad( float deadzoneRadius, TouchpadStyle style )
     {
-        if ( deadzoneRadius < 0 ) throw new ArgumentException( "deadzoneRadius must be > 0" );
+        if ( deadzoneRadius < 0 )
+        {
+            throw new ArgumentException( "deadzoneRadius must be > 0" );
+        }
 
         _deadzoneRadius = deadzoneRadius;
 
@@ -166,12 +169,19 @@ public class Touchpad : Widget
 
                 var length = _knobPercent.Len();
 
-                if ( length > 1 ) _knobPercent.Scl( 1 / length );
+                if ( length > 1 )
+                {
+                    _knobPercent.Scl( 1 / length );
+                }
 
                 if ( _knobBounds.Contains( x, y ) )
+                {
                     _knobPosition.Set( x, y );
+                }
                 else
+                {
                     _knobPosition.Set( _knobPercent ).Nor().Scl( _knobBounds.Radius ).Add( _knobBounds.X, _knobBounds.Y );
+                }
             }
         }
 
@@ -191,9 +201,15 @@ public class Touchpad : Widget
 
     public override Actor? Hit( float x, float y, bool touchable )
     {
-        if ( touchable && ( Touchable != Touchable.Enabled ) ) return null;
+        if ( touchable && ( Touchable != Touchable.Enabled ) )
+        {
+            return null;
+        }
 
-        if ( !IsVisible ) return null;
+        if ( !IsVisible )
+        {
+            return null;
+        }
 
         return _touchBounds.Contains( x, y ) ? this : null;
     }
@@ -207,7 +223,10 @@ public class Touchpad : Widget
 
         _touchBounds.Set( halfWidth, halfHeight, radius );
 
-        if ( _style.Knob != null ) radius -= Math.Max( _style.Knob.MinWidth, _style.Knob.MinHeight ) / 2;
+        if ( _style.Knob != null )
+        {
+            radius -= Math.Max( _style.Knob.MinWidth, _style.Knob.MinHeight ) / 2;
+        }
 
         _knobBounds.Set( halfWidth, halfHeight, radius );
         _deadzoneBounds.Set( halfWidth, halfHeight, _deadzoneRadius );
@@ -247,7 +266,10 @@ public class Touchpad : Widget
     /// </summary>
     public void SetDeadzone( float deadzoneRadius )
     {
-        if ( deadzoneRadius < 0 ) throw new ArgumentException( "deadzoneRadius must be > 0" );
+        if ( deadzoneRadius < 0 )
+        {
+            throw new ArgumentException( "deadzoneRadius must be > 0" );
+        }
 
         _deadzoneRadius = deadzoneRadius;
 
@@ -268,7 +290,10 @@ public class Touchpad : Widget
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
-            if ( _pad.IsTouched ) return false;
+            if ( _pad.IsTouched )
+            {
+                return false;
+            }
 
             _pad.IsTouched = true;
             _pad.CalculatePositionAndValue( x, y, false );

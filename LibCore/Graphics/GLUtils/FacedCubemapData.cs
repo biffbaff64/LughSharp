@@ -115,14 +115,22 @@ public class FacedCubemapData : ICubemapData
     /// </summary>
     public void ConsumeCubemapData()
     {
-        if ( _data == null ) throw new NullReferenceException();
+        if ( _data == null )
+        {
+            throw new NullReferenceException();
+        }
 
         for ( var i = 0; i < _data.Length; i++ )
         {
-            if ( _data[ i ] == null ) continue;
+            if ( _data[ i ] == null )
+            {
+                continue;
+            }
 
             if ( _data[ i ]!.TextureDataType == ITextureData.TextureType.Custom )
+            {
                 _data[ i ]!.ConsumeCustomData( IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i );
+            }
             else
             {
                 var pixmap        = _data[ i ]!.ConsumePixmap()!;
@@ -135,7 +143,10 @@ public class FacedCubemapData : ICubemapData
                     tmp.Blending = Pixmap.BlendTypes.None;
                     tmp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
 
-                    if ( _data[ i ]!.DisposePixmap() ) pixmap.Dispose();
+                    if ( _data[ i ]!.DisposePixmap() )
+                    {
+                        pixmap.Dispose();
+                    }
 
                     pixmap        = tmp;
                     disposePixmap = true;
@@ -159,7 +170,10 @@ public class FacedCubemapData : ICubemapData
                     }
                 }
 
-                if ( disposePixmap ) pixmap.Dispose();
+                if ( disposePixmap )
+                {
+                    pixmap.Dispose();
+                }
             }
         }
     }
@@ -182,11 +196,18 @@ public class FacedCubemapData : ICubemapData
     {
         get
         {
-            if ( _data == null ) throw new NullReferenceException();
+            if ( _data == null )
+            {
+                throw new NullReferenceException();
+            }
 
             foreach ( var data in _data )
+            {
                 if ( ( data != null ) && !data.IsManaged() )
+                {
                     return false;
+                }
+            }
 
             return true;
         }
@@ -204,11 +225,18 @@ public class FacedCubemapData : ICubemapData
     /// </summary>
     public void Prepare()
     {
-        if ( !IsComplete() ) throw new GdxRuntimeException( "Cubemap data must be complete before use!" );
+        if ( !IsComplete() )
+        {
+            throw new GdxRuntimeException( "Cubemap data must be complete before use!" );
+        }
 
         foreach ( var data in _data )
+        {
             if ( data is { IsPrepared: false } )
+            {
                 data.Prepare();
+            }
+        }
     }
 
     /// <summary>
@@ -221,7 +249,10 @@ public class FacedCubemapData : ICubemapData
     /// <param name="file"> The texture <see cref="FileInfo" /> </param>
     public void Load( Cubemap.CubemapSide side, FileInfo file )
     {
-        if ( _data == null ) throw new GdxRuntimeException( $"Cannot load {file.Name}, _data is null!" );
+        if ( _data == null )
+        {
+            throw new GdxRuntimeException( $"Cannot load {file.Name}, _data is null!" );
+        }
 
         _data[ side.Index ] = ITextureData.Factory.LoadFromFile( file, false )
                            ?? throw new GdxRuntimeException( $"Error loading {file.Name}" );
@@ -237,7 +268,10 @@ public class FacedCubemapData : ICubemapData
     /// <param name="pixmap"> The <see cref="Pixmap" /> </param>
     public void Load( Cubemap.CubemapSide side, Pixmap? pixmap )
     {
-        if ( _data == null ) throw new GdxRuntimeException( "Cannot load pixmap, _data is null!" );
+        if ( _data == null )
+        {
+            throw new GdxRuntimeException( "Cannot load pixmap, _data is null!" );
+        }
 
         _data[ side.Index ] = ( pixmap == null ? null : new PixmapTextureData( pixmap, null, false, false ) )
                            ?? throw new GdxRuntimeException( "Error loadin pixmap" );
@@ -258,8 +292,12 @@ public class FacedCubemapData : ICubemapData
     public bool IsComplete()
     {
         foreach ( var data in _data )
+        {
             if ( data == null )
+            {
                 return false;
+            }
+        }
 
         return true;
     }

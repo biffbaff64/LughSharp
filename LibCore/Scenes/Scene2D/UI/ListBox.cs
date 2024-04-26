@@ -148,9 +148,15 @@ public class ListBox< T > : Widget
         var font             = Style?.Font;
         var selectedDrawable = Style?.Selection;
 
-        if ( font == null ) throw new GdxRuntimeException( "Layout: supplied style has a null font!" );
+        if ( font == null )
+        {
+            throw new GdxRuntimeException( "Layout: supplied style has a null font!" );
+        }
 
-        if ( selectedDrawable == null ) throw new GdxRuntimeException( "Layout: supplied style has a null selected drawable!" );
+        if ( selectedDrawable == null )
+        {
+            throw new GdxRuntimeException( "Layout: supplied style has a null selected drawable!" );
+        }
 
         ItemHeight =  font.GetCapHeight() - ( font.GetDescent() * 2 );
         ItemHeight += selectedDrawable.TopHeight + selectedDrawable.BottomHeight;
@@ -225,13 +231,18 @@ public class ListBox< T > : Widget
                 IDrawable? drawable = null;
 
                 if ( ( _pressedIndex == i ) && ( Style?.Down != null ) )
+                {
                     drawable = Style.Down;
+                }
                 else if ( selected )
                 {
                     drawable = selectedDrawable;
                     font.SetColor( fontColorSelected!.R, fontColorSelected.G, fontColorSelected.B, fontColorSelected.A * parentAlpha );
                 }
-                else if ( ( _overIndex == i ) && ( Style?.Over != null ) ) drawable = Style.Over;
+                else if ( ( _overIndex == i ) && ( Style?.Over != null ) )
+                {
+                    drawable = Style.Over;
+                }
 
                 drawable?.Draw( batch, x, ( y + itemY ) - ItemHeight, width, ItemHeight );
 
@@ -245,7 +256,10 @@ public class ListBox< T > : Widget
                                    fontColorUnselected.A * parentAlpha );
                 }
             }
-            else if ( itemY < CullingArea.Y ) break;
+            else if ( itemY < CullingArea.Y )
+            {
+                break;
+            }
 
             itemY -= ItemHeight;
         }
@@ -286,11 +300,17 @@ public class ListBox< T > : Widget
     public void SetSelected( T item )
     {
         if ( Items.Contains( item ) )
+        {
             Selection.Set( item );
+        }
         else if ( Selection.Required && ( Items.Count > 0 ) )
+        {
             Selection.Set( Items.First() );
+        }
         else
+        {
             Selection.Clear();
+        }
     }
 
     /// <summary>
@@ -310,12 +330,19 @@ public class ListBox< T > : Widget
     /// <param name="index"> -1 to clear the selection. </param>
     public void SetSelectedIndex( int index )
     {
-        if ( ( index < -1 ) || ( index >= Items.Count ) ) throw new ArgumentException( $"index must be >= -1 and < {Items.Count}: {index}" );
+        if ( ( index < -1 ) || ( index >= Items.Count ) )
+        {
+            throw new ArgumentException( $"index must be >= -1 and < {Items.Count}: {index}" );
+        }
 
         if ( index == -1 )
+        {
             Selection.Clear();
+        }
         else
+        {
             Selection.Set( Items[ index ] );
+        }
     }
 
     public T? GetOverItem()
@@ -351,7 +378,10 @@ public class ListBox< T > : Widget
 
         var index = ( int ) ( ( height - y ) / ItemHeight );
 
-        if ( ( index < 0 ) || ( index >= Items.Count ) ) return -1;
+        if ( ( index < 0 ) || ( index >= Items.Count ) )
+        {
+            return -1;
+        }
 
         return index;
     }
@@ -373,7 +403,10 @@ public class ListBox< T > : Widget
 
         Invalidate();
 
-        if ( !oldPrefWidth.Equals( PrefWidth ) || !oldPrefHeight.Equals( PrefHeight ) ) InvalidateHierarchy();
+        if ( !oldPrefWidth.Equals( PrefWidth ) || !oldPrefHeight.Equals( PrefHeight ) )
+        {
+            InvalidateHierarchy();
+        }
     }
 
     /// <summary>
@@ -400,12 +433,18 @@ public class ListBox< T > : Widget
 
         Invalidate();
 
-        if ( !oldPrefWidth.Equals( PrefWidth ) || !oldPrefHeight.Equals( PrefHeight ) ) InvalidateHierarchy();
+        if ( !oldPrefWidth.Equals( PrefWidth ) || !oldPrefHeight.Equals( PrefHeight ) )
+        {
+            InvalidateHierarchy();
+        }
     }
 
     public void ClearItems()
     {
-        if ( Items.Count == 0 ) return;
+        if ( Items.Count == 0 )
+        {
+            return;
+        }
 
         Items.Clear();
 
@@ -439,7 +478,10 @@ public class ListBox< T > : Widget
 
         public override bool KeyDown( InputEvent? ev, int keycode )
         {
-            if ( _parent.Items.Count == 0 ) return false;
+            if ( _parent.Items.Count == 0 )
+            {
+                return false;
+            }
 
             int index;
 
@@ -469,7 +511,10 @@ public class ListBox< T > : Widget
                 case IInput.Keys.DOWN:
                     index = _parent.Items.IndexOf( _parent.GetSelected()! ) + 1;
 
-                    if ( index >= _parent.Items.Count ) index = 0;
+                    if ( index >= _parent.Items.Count )
+                    {
+                        index = 0;
+                    }
 
                     _parent.SetSelectedIndex( index );
 
@@ -478,14 +523,20 @@ public class ListBox< T > : Widget
                 case IInput.Keys.UP:
                     index = _parent.Items.IndexOf( _parent.GetSelected()! ) - 1;
 
-                    if ( index < 0 ) index = _parent.Items.Count - 1;
+                    if ( index < 0 )
+                    {
+                        index = _parent.Items.Count - 1;
+                    }
 
                     _parent.SetSelectedIndex( index );
 
                     return true;
 
                 case IInput.Keys.ESCAPE:
-                    if ( _parent.Stage != null ) _parent.Stage.KeyboardFocus = null;
+                    if ( _parent.Stage != null )
+                    {
+                        _parent.Stage.KeyboardFocus = null;
+                    }
 
                     return true;
             }
@@ -495,22 +546,30 @@ public class ListBox< T > : Widget
 
         public override bool KeyTyped( InputEvent? ev, char character )
         {
-            if ( !_parent.TypeToSelect ) return false;
+            if ( !_parent.TypeToSelect )
+            {
+                return false;
+            }
 
             var time = TimeUtils.Millis();
 
-            if ( time > _typeTimeout ) _prefix = "";
+            if ( time > _typeTimeout )
+            {
+                _prefix = "";
+            }
 
             _typeTimeout =  time + 300;
             _prefix      += char.ToLower( character );
 
             for ( int i = 0, n = _parent.Items.Count; i < n; i++ )
+            {
                 if ( _parent.ToString( _parent.Items[ i ] ).ToLower().StartsWith( _prefix ) )
                 {
                     _parent.SetSelectedIndex( i );
 
                     break;
                 }
+            }
 
             return false;
         }
@@ -531,17 +590,32 @@ public class ListBox< T > : Widget
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
-            if ( ( pointer != 0 ) || ( button != 0 ) ) return true;
+            if ( ( pointer != 0 ) || ( button != 0 ) )
+            {
+                return true;
+            }
 
-            if ( _parent.Selection.IsDisabled ) return true;
+            if ( _parent.Selection.IsDisabled )
+            {
+                return true;
+            }
 
-            if ( _parent.Stage != null ) _parent.Stage.KeyboardFocus = _parent;
+            if ( _parent.Stage != null )
+            {
+                _parent.Stage.KeyboardFocus = _parent;
+            }
 
-            if ( _parent.Items.Count == 0 ) return true;
+            if ( _parent.Items.Count == 0 )
+            {
+                return true;
+            }
 
             var index = _parent.GetItemIndexAt( y );
 
-            if ( index == -1 ) return true;
+            if ( index == -1 )
+            {
+                return true;
+            }
 
             _parent.Selection.Choose( _parent.Items[ index ] );
             _parent._pressedIndex = index;
@@ -551,7 +625,10 @@ public class ListBox< T > : Widget
 
         public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
         {
-            if ( ( pointer != 0 ) || ( button != 0 ) ) return;
+            if ( ( pointer != 0 ) || ( button != 0 ) )
+            {
+                return;
+            }
 
             _parent._pressedIndex = -1;
         }
@@ -570,9 +647,15 @@ public class ListBox< T > : Widget
 
         public override void Exit( InputEvent? ev, float x, float y, int pointer, Actor? toActor )
         {
-            if ( pointer == 0 ) _parent._pressedIndex = -1;
+            if ( pointer == 0 )
+            {
+                _parent._pressedIndex = -1;
+            }
 
-            if ( pointer == -1 ) _parent._overIndex = -1;
+            if ( pointer == -1 )
+            {
+                _parent._overIndex = -1;
+            }
         }
     }
 

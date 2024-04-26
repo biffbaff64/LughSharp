@@ -44,7 +44,10 @@ public class ParticleEffect : IDisposable
     {
         _emitters = new List< ParticleEmitter >( effect._emitters.Count );
 
-        for ( int i = 0, n = effect._emitters.Count; i < n; i++ ) _emitters.Add( NewEmitter( effect._emitters[ i ] ) );
+        for ( int i = 0, n = effect._emitters.Count; i < n; i++ )
+        {
+            _emitters.Add( NewEmitter( effect._emitters[ i ] ) );
+        }
     }
 
     public float XSizeScale  { get; set; } = 1f;
@@ -58,7 +61,10 @@ public class ParticleEffect : IDisposable
 
     public void Start()
     {
-        for ( int i = 0, n = _emitters.Count; i < n; i++ ) _emitters[ i ].Start();
+        for ( int i = 0, n = _emitters.Count; i < n; i++ )
+        {
+            _emitters[ i ].Start();
+        }
     }
 
     /// <summary>
@@ -70,7 +76,10 @@ public class ParticleEffect : IDisposable
     /// </param>
     public void Reset( bool resetScaling = true )
     {
-        for ( int i = 0, n = _emitters.Count; i < n; i++ ) _emitters[ i ].Reset();
+        for ( int i = 0, n = _emitters.Count; i < n; i++ )
+        {
+            _emitters[ i ].Reset();
+        }
 
         if ( resetScaling && ( XSizeScale is not 1f || YSizeScale is not 1f || MotionScale is not 1f ) )
         {
@@ -81,22 +90,34 @@ public class ParticleEffect : IDisposable
 
     public void Update( float delta )
     {
-        for ( int i = 0, n = _emitters.Count; i < n; i++ ) _emitters[ i ].Update( delta );
+        for ( int i = 0, n = _emitters.Count; i < n; i++ )
+        {
+            _emitters[ i ].Update( delta );
+        }
     }
 
     public void Draw( IBatch spriteBatch )
     {
-        for ( int i = 0, n = _emitters.Count; i < n; i++ ) _emitters[ i ].Draw( spriteBatch );
+        for ( int i = 0, n = _emitters.Count; i < n; i++ )
+        {
+            _emitters[ i ].Draw( spriteBatch );
+        }
     }
 
     public void Draw( IBatch spriteBatch, float delta )
     {
-        for ( int i = 0, n = _emitters.Count; i < n; i++ ) _emitters[ i ].Draw( spriteBatch, delta );
+        for ( int i = 0, n = _emitters.Count; i < n; i++ )
+        {
+            _emitters[ i ].Draw( spriteBatch, delta );
+        }
     }
 
     public void AllowCompletion()
     {
-        for ( int i = 0, n = _emitters.Count; i < n; i++ ) _emitters[ i ].AllowCompletion();
+        for ( int i = 0, n = _emitters.Count; i < n; i++ )
+        {
+            _emitters[ i ].AllowCompletion();
+        }
     }
 
     public bool IsComplete()
@@ -105,7 +126,10 @@ public class ParticleEffect : IDisposable
         {
             var emitter = _emitters[ i ];
 
-            if ( !emitter.IsComplete() ) return false;
+            if ( !emitter.IsComplete() )
+            {
+                return false;
+            }
         }
 
         return true;
@@ -125,17 +149,26 @@ public class ParticleEffect : IDisposable
 
     public void SetPosition( float x, float y )
     {
-        for ( int i = 0, n = _emitters.Count; i < n; i++ ) _emitters[ i ].SetPosition( x, y );
+        for ( int i = 0, n = _emitters.Count; i < n; i++ )
+        {
+            _emitters[ i ].SetPosition( x, y );
+        }
     }
 
     public void SetFlip( bool flipX, bool flipY )
     {
-        for ( int i = 0, n = _emitters.Count; i < n; i++ ) _emitters[ i ].SetFlip( flipX, flipY );
+        for ( int i = 0, n = _emitters.Count; i < n; i++ )
+        {
+            _emitters[ i ].SetFlip( flipX, flipY );
+        }
     }
 
     public void FlipY()
     {
-        for ( int i = 0, n = _emitters.Count; i < n; i++ ) _emitters[ i ].FlipY();
+        for ( int i = 0, n = _emitters.Count; i < n; i++ )
+        {
+            _emitters[ i ].FlipY();
+        }
     }
 
     public List< ParticleEmitter > GetEmitters()
@@ -152,7 +185,10 @@ public class ParticleEffect : IDisposable
         {
             var emitter = _emitters[ i ];
 
-            if ( emitter.Name.Equals( name ) ) return emitter;
+            if ( emitter.Name.Equals( name ) )
+            {
+                return emitter;
+            }
         }
 
         return null;
@@ -164,7 +200,10 @@ public class ParticleEffect : IDisposable
     /// </summary>
     public void PreAllocateParticles()
     {
-        foreach ( var emitter in _emitters ) emitter.PreAllocateParticles();
+        foreach ( var emitter in _emitters )
+        {
+            emitter.PreAllocateParticles();
+        }
     }
 
     public void Save( StreamWriter output )
@@ -175,7 +214,10 @@ public class ParticleEffect : IDisposable
         {
             var emitter = _emitters[ i ];
 
-            if ( index++ > 0 ) output.Write( "\n" );
+            if ( index++ > 0 )
+            {
+                output.Write( "\n" );
+            }
 
             emitter.Save( output );
         }
@@ -228,7 +270,10 @@ public class ParticleEffect : IDisposable
                 var emitter = NewEmitter( reader );
                 _emitters.Add( emitter );
 
-                if ( reader.ReadLine() == null ) break;
+                if ( reader.ReadLine() == null )
+                {
+                    break;
+                }
             }
         }
         catch ( IOException ex )
@@ -265,7 +310,10 @@ public class ParticleEffect : IDisposable
         {
             var emitter = _emitters[ i ];
 
-            if ( !emitter.ImagePaths.Any() ) continue;
+            if ( !emitter.ImagePaths.Any() )
+            {
+                continue;
+            }
 
             var sprites = new List< Sprite >();
 
@@ -274,13 +322,22 @@ public class ParticleEffect : IDisposable
                 var imageName    = Path.GetFileName( imagePath.Replace( '\\', '/' ) );
                 var lastDotIndex = imageName.LastIndexOf( '.' );
 
-                if ( lastDotIndex != -1 ) imageName = imageName.Substring( 0, lastDotIndex );
+                if ( lastDotIndex != -1 )
+                {
+                    imageName = imageName.Substring( 0, lastDotIndex );
+                }
 
-                if ( atlasPrefix != null ) imageName = atlasPrefix + imageName;
+                if ( atlasPrefix != null )
+                {
+                    imageName = atlasPrefix + imageName;
+                }
 
                 var sprite = atlas.CreateSprite( imageName );
 
-                if ( sprite == null ) throw new ArgumentException( "SpriteSheet missing image: " + imageName );
+                if ( sprite == null )
+                {
+                    throw new ArgumentException( "SpriteSheet missing image: " + imageName );
+                }
 
                 sprites.Add( sprite );
             }
@@ -317,7 +374,10 @@ public class ParticleEffect : IDisposable
 
         for ( int i = 0, n = _emitters.Count; i < n; i++ )
         {
-            if ( !_emitters[ i ].ImagePaths.Any() ) continue;
+            if ( !_emitters[ i ].ImagePaths.Any() )
+            {
+                continue;
+            }
 
             var sprites = new List< Sprite >();
 
@@ -367,13 +427,19 @@ public class ParticleEffect : IDisposable
     {
         if ( disposing )
         {
-            if ( !_ownsTexture ) return;
+            if ( !_ownsTexture )
+            {
+                return;
+            }
 
             for ( int i = 0, n = _emitters.Count; i < n; i++ )
             {
                 var emitter = _emitters[ i ];
 
-                foreach ( var sprite in emitter.Sprites ) sprite.Texture.Dispose();
+                foreach ( var sprite in emitter.Sprites )
+                {
+                    sprite.Texture.Dispose();
+                }
             }
         }
     }
@@ -390,7 +456,10 @@ public class ParticleEffect : IDisposable
         var box = _bounds;
         box.ToInfinity();
 
-        foreach ( var emitter in _emitters ) box.Extend( emitter.GetBoundingBox() );
+        foreach ( var emitter in _emitters )
+        {
+            box.Extend( emitter.GetBoundingBox() );
+        }
 
         return box;
     }
@@ -451,6 +520,9 @@ public class ParticleEffect : IDisposable
     /// <param name="cleanUpBlendFunction"></param>
     public void SetEmittersCleanUpBlendFunction( bool cleanUpBlendFunction )
     {
-        for ( int i = 0, n = _emitters.Count; i < n; i++ ) _emitters[ i ].CleansUpBlendFunction = cleanUpBlendFunction;
+        for ( int i = 0, n = _emitters.Count; i < n; i++ )
+        {
+            _emitters[ i ].CleansUpBlendFunction = cleanUpBlendFunction;
+        }
     }
 }

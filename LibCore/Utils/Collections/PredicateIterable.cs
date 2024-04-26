@@ -79,9 +79,13 @@ public class PredicateIterable< T > : IEnumerable< T >
     public IEnumerator< T > Iterator()
     {
         if ( Enumerator == null )
+        {
             Enumerator = new PredicateIterator< T >( Enumerable.GetEnumerator(), Predicate );
+        }
         else
+        {
             Enumerator.Set( Enumerable.GetEnumerator(), Predicate );
+        }
 
         return Enumerator;
     }

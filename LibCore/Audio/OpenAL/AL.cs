@@ -56,7 +56,9 @@ public static class AL
                 NativeLibrary.TryLoad( OSX, assembly, DllImportSearchPath.System32, out libHandle );
 
                 if ( libHandle == IntPtr.Zero ) //If OSX path didn't work
+                {
                     NativeLibrary.TryLoad( LINUX, assembly, DllImportSearchPath.System32, out libHandle );
+                }
             }
             else
             {

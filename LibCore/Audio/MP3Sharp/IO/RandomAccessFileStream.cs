@@ -33,11 +33,17 @@ public class RandomAccessFileStream
         FileStream newFile;
 
         if ( string.Compare( mode, "rw", StringComparison.Ordinal ) == 0 )
+        {
             newFile = new FileStream( fileName, FileMode.OpenOrCreate, FileAccess.ReadWrite );
+        }
         else if ( string.Compare( mode, "r", StringComparison.Ordinal ) == 0 )
+        {
             newFile = new FileStream( fileName, FileMode.Open, FileAccess.Read );
+        }
         else
+        {
             throw new ArgumentException( $"fileName: {fileName}, mode: {mode}" );
+        }
 
         return newFile;
     }

@@ -57,6 +57,7 @@ public class PushbackStream
         var canReadStream = true;
 
         while ( ( index < length ) && canReadStream )
+        {
             if ( _numForwardBytesInBuffer > 0 )
             {
                 // from memory
@@ -79,6 +80,7 @@ public class PushbackStream
 
                 index += countBytesRead;
             }
+        }
 
         return index;
     }
@@ -87,7 +89,10 @@ public class PushbackStream
     {
         _numForwardBytesInBuffer += length;
 
-        if ( _numForwardBytesInBuffer > _backBufferSize ) throw new Exception( "The backstream cannot unread the requested number of bytes." );
+        if ( _numForwardBytesInBuffer > _backBufferSize )
+        {
+            throw new Exception( "The backstream cannot unread the requested number of bytes." );
+        }
     }
 
     public void Close()

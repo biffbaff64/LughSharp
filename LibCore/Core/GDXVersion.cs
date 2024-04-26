@@ -40,7 +40,10 @@ public class GDXVersion
 
     static GDXVersion()
     {
-        if ( _version == null ) throw new NullReferenceException( "NULL Assembly Version!" );
+        if ( _version == null )
+        {
+            throw new NullReferenceException( "NULL Assembly Version!" );
+        }
 
         try
         {
@@ -82,9 +85,15 @@ public class GDXVersion
     /// <param name="revision">The Revision version component.</param>
     public static bool IsHigherEqual( int major, int minor, int revision )
     {
-        if ( MajorVersion != major ) return MajorVersion > major;
+        if ( MajorVersion != major )
+        {
+            return MajorVersion > major;
+        }
 
-        if ( MinorVersion != minor ) return MinorVersion > minor;
+        if ( MinorVersion != minor )
+        {
+            return MinorVersion > minor;
+        }
 
         return RevisionVersion >= revision;
     }
@@ -111,9 +120,15 @@ public class GDXVersion
     /// <param name="revision">The Revision version component.</param>
     public static bool IsLowerEqual( int major, int minor, int revision )
     {
-        if ( MajorVersion != major ) return MajorVersion < major;
+        if ( MajorVersion != major )
+        {
+            return MajorVersion < major;
+        }
 
-        if ( MinorVersion != minor ) return MinorVersion < minor;
+        if ( MinorVersion != minor )
+        {
+            return MinorVersion < minor;
+        }
 
         return RevisionVersion <= revision;
     }

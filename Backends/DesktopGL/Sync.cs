@@ -38,9 +38,15 @@ public class Sync
 
     public void SyncFrameRate( int fps )
     {
-        if ( fps <= 0 ) return;
+        if ( fps <= 0 )
+        {
+            return;
+        }
 
-        if ( !_initialised ) Initialise();
+        if ( !_initialised )
+        {
+            Initialise();
+        }
 
         try
         {
@@ -129,7 +135,10 @@ public class Sync
             {
                 long sum = 0;
 
-                foreach ( var t in _slots ) sum += t;
+                foreach ( var t in _slots )
+                {
+                    sum += t;
+                }
 
                 return sum / _slots.Length;
             }
@@ -137,7 +146,10 @@ public class Sync
 
         public void Init( long value )
         {
-            while ( _offset < _slots.Length ) _slots[ _offset++ ] = value;
+            while ( _offset < _slots.Length )
+            {
+                _slots[ _offset++ ] = value;
+            }
         }
 
         public void Add( long value )
@@ -150,7 +162,10 @@ public class Sync
         {
             if ( Average > DAMPEN_THRESHOLD )
             {
-                for ( var i = 0; i < _slots.Length; i++ ) _slots[ i ] = ( long ) ( _slots[ i ] * DAMPEN_FACTOR );
+                for ( var i = 0; i < _slots.Length; i++ )
+                {
+                    _slots[ i ] = ( long ) ( _slots[ i ] * DAMPEN_FACTOR );
+                }
             }
         }
     }

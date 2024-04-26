@@ -322,7 +322,10 @@ public class Matrix3
     {
         var det = Det();
 
-        if ( det == 0 ) throw new GdxRuntimeException( "Can't invert a singular matrix" );
+        if ( det == 0 )
+        {
+            throw new GdxRuntimeException( "Can't invert a singular matrix" );
+        }
 
         var invDet = 1.0f / det;
 
@@ -530,7 +533,10 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining. </returns>
     public Matrix3 RotateRad( float radians )
     {
-        if ( radians == 0 ) return this;
+        if ( radians == 0 )
+        {
+            return this;
+        }
 
         var cos = ( float ) Math.Cos( radians );
         var sin = ( float ) Math.Sin( radians );

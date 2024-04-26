@@ -54,11 +54,18 @@ public class MapLayers : IEnumerable< MapLayer >
     /// </summary>
     public MapLayer? Get( string name )
     {
-        if ( name.Equals( string.Empty ) ) return null;
+        if ( name.Equals( string.Empty ) )
+        {
+            return null;
+        }
 
         for ( int i = 0, n = _layers.Count; i < n; i++ )
+        {
             if ( name.Equals( _layers[ i ].Name ) )
+            {
                 return _layers[ i ];
+            }
+        }
 
         return null;
     }

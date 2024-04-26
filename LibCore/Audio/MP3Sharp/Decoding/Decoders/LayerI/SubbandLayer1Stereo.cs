@@ -49,7 +49,10 @@ public class SubbandLayer1Stereo : SubbandLayer1
     {
         allocation = stream.GetBitsFromBuffer( 4 );
 
-        if ( allocation > 14 ) return;
+        if ( allocation > 14 )
+        {
+            return;
+        }
 
         channel2Allocation = stream.GetBitsFromBuffer( 4 );
 
@@ -78,9 +81,15 @@ public class SubbandLayer1Stereo : SubbandLayer1
     /// </summary>
     public override void ReadScaleFactor( Bitstream stream, Header? header )
     {
-        if ( allocation != 0 ) scalefactor = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+        if ( allocation != 0 )
+        {
+            scalefactor = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+        }
 
-        if ( channel2Allocation != 0 ) channel2Scalefactor = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+        if ( channel2Allocation != 0 )
+        {
+            channel2Scalefactor = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
+        }
     }
 
     /// <summary>
@@ -89,7 +98,10 @@ public class SubbandLayer1Stereo : SubbandLayer1
     {
         var returnvalue = base.ReadSampleData( stream );
 
-        if ( channel2Allocation != 0 ) channel2Sample = stream.GetBitsFromBuffer( channel2Samplelength );
+        if ( channel2Allocation != 0 )
+        {
+            channel2Sample = stream.GetBitsFromBuffer( channel2Samplelength );
+        }
 
         return returnvalue;
     }
@@ -105,9 +117,13 @@ public class SubbandLayer1Stereo : SubbandLayer1
             var sample2 = ( ( channel2Sample * channel2Factor ) + channel2Offset ) * channel2Scalefactor;
 
             if ( channels == OutputChannels.BOTH_CHANNELS )
+            {
                 filter2?.AddSample( sample2, subbandnumber );
+            }
             else
+            {
                 filter1?.AddSample( sample2, subbandnumber );
+            }
         }
 
         return true;

@@ -196,7 +196,10 @@ public class SubbandLayer2Stereo : SubbandLayer2
         {
             var sample = channel2Samples[ samplenumber - 1 ];
 
-            if ( groupingtable[ 1 ] == null ) sample = ( sample + channel2D[ 0 ] ) * channel2C[ 0 ];
+            if ( groupingtable[ 1 ] == null )
+            {
+                sample = ( sample + channel2D[ 0 ] ) * channel2C[ 0 ];
+            }
 
             sample *= groupnumber switch
             {
@@ -206,9 +209,13 @@ public class SubbandLayer2Stereo : SubbandLayer2
             };
 
             if ( channels == OutputChannels.BOTH_CHANNELS )
+            {
                 filter2?.AddSample( sample, subbandnumber );
+            }
             else
+            {
                 filter1?.AddSample( sample, subbandnumber );
+            }
         }
 
         return returnvalue;

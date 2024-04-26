@@ -115,16 +115,25 @@ public class GeometryUtils
     {
         var det = ( b * b ) - ( 4 * a * c );
 
-        if ( det < 0 ) return float.NaN;
+        if ( det < 0 )
+        {
+            return float.NaN;
+        }
 
         var sqrtD = ( float ) Math.Sqrt( det );
         var invA  = 1 / ( 2 * a );
         var r1    = ( -b - sqrtD ) * invA;
         var r2    = ( -b + sqrtD ) * invA;
 
-        if ( r1 > r2 ) ( r2, r1 ) = ( r1, r2 );
+        if ( r1 > r2 )
+        {
+            ( r2, r1 ) = ( r1, r2 );
+        }
 
-        if ( r1 > 0 ) return r1;
+        if ( r1 > 0 )
+        {
+            return r1;
+        }
 
         return r2 > 0 ? r2 : float.NaN;
     }
@@ -168,7 +177,10 @@ public class GeometryUtils
         float dx13 = x1 - x3, dy13 = y1 - y3;
         var   det  = ( dx32 * dy21 ) - ( dx21 * dy32 );
 
-        if ( Math.Abs( det ) < MathUtils.FLOAT_ROUNDING_ERROR ) throw new ArgumentException( "Triangle points must not be colinear." );
+        if ( Math.Abs( det ) < MathUtils.FLOAT_ROUNDING_ERROR )
+        {
+            throw new ArgumentException( "Triangle points must not be colinear." );
+        }
 
         det *= 2;
         float sqr1 = ( x1 * x1 ) + ( y1 * y1 ), sqr2 = ( x2 * x2 ) + ( y2 * y2 ), sqr3 = ( x3 * x3 ) + ( y3 * y3 );
@@ -261,7 +273,10 @@ public class GeometryUtils
     /// </summary>
     public static Vector2 PolygonCentroid( float[] polygon, int offset, int count, Vector2 centroid )
     {
-        if ( count < 6 ) throw new ArgumentException( "A polygon must have 3 or more coordinate pairs." );
+        if ( count < 6 )
+        {
+            throw new ArgumentException( "A polygon must have 3 or more coordinate pairs." );
+        }
 
         float area = 0, x = 0, y = 0;
         var   last = ( offset + count ) - 2;
@@ -322,7 +337,10 @@ public class GeometryUtils
 
     public static void EnsureCcw( float[] polygon, int offset, int count )
     {
-        if ( !IsClockwise( polygon, offset, count ) ) return;
+        if ( !IsClockwise( polygon, offset, count ) )
+        {
+            return;
+        }
 
         var lastX = ( offset + count ) - 2;
 
@@ -341,7 +359,10 @@ public class GeometryUtils
 
     public static bool IsClockwise( float[] polygon, int offset, int count )
     {
-        if ( count <= 2 ) return false;
+        if ( count <= 2 )
+        {
+            return false;
+        }
 
         float area = 0;
 

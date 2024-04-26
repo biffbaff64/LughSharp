@@ -46,7 +46,10 @@ public class WaveFileBuffer : AudioBase
         _bufferp  = new short[ MAXCHANNELS ];
         _channels = numberOfChannels;
 
-        for ( var i = 0; i < numberOfChannels; ++i ) _bufferp[ i ] = ( short ) i;
+        for ( var i = 0; i < numberOfChannels; ++i )
+        {
+            _bufferp[ i ] = ( short ) i;
+        }
 
         _outWave = new WaveFile();
         _outWave.OpenForWrite( fileName, null, freq, 16, ( short ) _channels );
@@ -58,7 +61,10 @@ public class WaveFileBuffer : AudioBase
         _bufferp  = new short[ MAXCHANNELS ];
         _channels = numberOfChannels;
 
-        for ( var i = 0; i < numberOfChannels; ++i ) _bufferp[ i ] = ( short ) i;
+        for ( var i = 0; i < numberOfChannels; ++i )
+        {
+            _bufferp[ i ] = ( short ) i;
+        }
 
         _outWave = new WaveFile();
         _outWave.OpenForWrite( null!, stream, freq, 16, ( short ) _channels );
@@ -77,7 +83,10 @@ public class WaveFileBuffer : AudioBase
     {
         _outWave.WriteData( _buffer, _bufferp[ 0 ] );
 
-        for ( var i = 0; i < _channels; ++i ) _bufferp[ i ] = ( short ) i;
+        for ( var i = 0; i < _channels; ++i )
+        {
+            _bufferp[ i ] = ( short ) i;
+        }
     }
 
     public void Close( bool justWriteLengthBytes )

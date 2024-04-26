@@ -541,7 +541,10 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
     {
         ArgumentNullException.ThrowIfNull( app );
 
-        if ( Buffers?[ app ] == null ) return;
+        if ( Buffers?[ app ] == null )
+        {
+            return;
+        }
 
         for ( var i = 0; i < Buffers[ app ]?.Count; i++ )
         {
@@ -559,7 +562,9 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         builder.Append( "Managed buffers/app: { " );
 
         if ( Buffers == null )
+        {
             builder.Append( "null" );
+        }
         else
         {
             if ( Buffers?.Keys != null )

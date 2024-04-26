@@ -141,7 +141,10 @@ public class InputEventQueue
             {
                 var type = q[ i ];
 
-                if ( type == nextType ) return i;
+                if ( type == nextType )
+                {
+                    return i;
+                }
 
                 i += 3;
 
@@ -308,11 +311,13 @@ public class InputEventQueue
         {
             // Skip any queued touch dragged events for the same pointer.
             for ( var i = Next( TOUCH_DRAGGED, 0 ); i >= 0; i = Next( TOUCH_DRAGGED, i + 6 ) )
+            {
                 if ( _queue[ i + 5 ] == pointer )
                 {
                     _queue[ i ]     = SKIP;
                     _queue[ i + 3 ] = 3;
                 }
+            }
 
             _queue.Add( TOUCH_DRAGGED );
 

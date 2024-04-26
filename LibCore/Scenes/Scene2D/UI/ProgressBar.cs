@@ -90,9 +90,15 @@ public class ProgressBar : Widget, IDisableable
     /// <param name="style"> the <seealso cref="ProgressBarStyle" />  </param>
     public ProgressBar( float min, float max, float stepSize, bool vertical, ProgressBarStyle style )
     {
-        if ( min > max ) throw new ArgumentException( "max must be > min. min,max: " + min + ", " + max );
+        if ( min > max )
+        {
+            throw new ArgumentException( "max must be > min. min,max: " + min + ", " + max );
+        }
 
-        if ( stepSize <= 0 ) throw new ArgumentException( "stepSize must be > 0: " + stepSize );
+        if ( stepSize <= 0 )
+        {
+            throw new ArgumentException( "stepSize must be > 0: " + stepSize );
+        }
 
         Style = style;
 
@@ -124,7 +130,10 @@ public class ProgressBar : Widget, IDisableable
         get => _stepSize;
         init
         {
-            if ( _stepSize <= 0 ) throw new ArgumentException( "steps must be > 0: " + _stepSize );
+            if ( _stepSize <= 0 )
+            {
+                throw new ArgumentException( "steps must be > 0: " + _stepSize );
+            }
 
             _stepSize = value;
         }
@@ -152,7 +161,10 @@ public class ProgressBar : Widget, IDisableable
         {
             _animateTime -= delta;
 
-            if ( Stage is { ActionsRequestRendering: true } ) Gdx.Graphics.RequestRendering();
+            if ( Stage is { ActionsRequestRendering: true } )
+            {
+                Gdx.Graphics.RequestRendering();
+            }
         }
     }
 
@@ -191,7 +203,9 @@ public class ProgressBar : Widget, IDisableable
                              height );
                 }
                 else
+                {
                     bg.Draw( batch, x + ( ( width - bg.MinWidth ) * 0.5f ), y, bg.MinWidth, height );
+                }
 
                 bgTopHeight    =  bg.TopHeight;
                 bgBottomHeight =  bg.BottomHeight;
@@ -289,7 +303,9 @@ public class ProgressBar : Widget, IDisableable
                              ( float ) Math.Round( bg.MinHeight ) );
                 }
                 else
+                {
                     bg.Draw( batch, x, y + ( ( height - bg.MinHeight ) * 0.5f ), width, bg.MinHeight );
+                }
 
                 bgLeftWidth   =  bg.LeftWidth;
                 bgRightWidth  =  bg.RightWidth;
@@ -390,7 +406,10 @@ public class ProgressBar : Widget, IDisableable
 
         var oldValue = Value;
 
-        if ( value.Equals( oldValue ) ) return false;
+        if ( value.Equals( oldValue ) )
+        {
+            return false;
+        }
 
         var oldVisualValue = GetVisualValue();
 
@@ -444,14 +463,22 @@ public class ProgressBar : Widget, IDisableable
     /// </summary>
     public void SetRange( float min, float max )
     {
-        if ( min > max ) throw new ArgumentException( "min must be <= max: " + min + " <= " + max );
+        if ( min > max )
+        {
+            throw new ArgumentException( "min must be <= max: " + min + " <= " + max );
+        }
 
         MinValue = min;
         MaxValue = max;
 
         if ( Value < min )
+        {
             Value                     = min;
-        else if ( Value > max ) Value = max;
+        }
+        else if ( Value > max )
+        {
+            Value = max;
+        }
     }
 
     public float GetPrefWidth()
@@ -469,7 +496,10 @@ public class ProgressBar : Widget, IDisableable
 
     public float GetPrefHeight()
     {
-        if ( IsVertical ) return DEFAULT_PREF_HEIGHT;
+        if ( IsVertical )
+        {
+            return DEFAULT_PREF_HEIGHT;
+        }
 
         var knob = Style.Knob;
         var bg   = GetBackgroundDrawable();
@@ -493,7 +523,10 @@ public class ProgressBar : Widget, IDisableable
     /// </summary>
     public float GetVisualValue()
     {
-        if ( _animateTime > 0 ) return AnimateInterpolation.Apply( _animateFromValue, Value, 1 - ( _animateTime / _animateDuration ) );
+        if ( _animateTime > 0 )
+        {
+            return AnimateInterpolation.Apply( _animateFromValue, Value, 1 - ( _animateTime / _animateDuration ) );
+        }
 
         return Value;
     }
@@ -509,42 +542,60 @@ public class ProgressBar : Widget, IDisableable
 
     public float GetPercent()
     {
-        if ( MinValue.Equals( MaxValue ) ) return 0;
+        if ( MinValue.Equals( MaxValue ) )
+        {
+            return 0;
+        }
 
         return ( Value - MinValue ) / ( MaxValue - MinValue );
     }
 
     public float GetVisualPercent()
     {
-        if ( MinValue.Equals( MaxValue ) ) return 0;
+        if ( MinValue.Equals( MaxValue ) )
+        {
+            return 0;
+        }
 
         return VisualInterpolation.Apply( ( GetVisualValue() - MinValue ) / ( MaxValue - MinValue ) );
     }
 
     private IDrawable? GetBackgroundDrawable()
     {
-        if ( IsDisabled && ( Style.DisabledBackground != null ) ) return Style.DisabledBackground;
+        if ( IsDisabled && ( Style.DisabledBackground != null ) )
+        {
+            return Style.DisabledBackground;
+        }
 
         return Style.Background;
     }
 
     private IDrawable? GetKnobDrawable()
     {
-        if ( IsDisabled && ( Style.DisabledKnob != null ) ) return Style.DisabledKnob;
+        if ( IsDisabled && ( Style.DisabledKnob != null ) )
+        {
+            return Style.DisabledKnob;
+        }
 
         return Style.Knob;
     }
 
     private IDrawable? GetKnobBeforeDrawable()
     {
-        if ( IsDisabled && ( Style.DisabledKnobBefore != null ) ) return Style.DisabledKnobBefore;
+        if ( IsDisabled && ( Style.DisabledKnobBefore != null ) )
+        {
+            return Style.DisabledKnobBefore;
+        }
 
         return Style.KnobBefore;
     }
 
     private IDrawable? GetKnobAfterDrawable()
     {
-        if ( IsDisabled && ( Style.DisabledKnobAfter != null ) ) return Style.DisabledKnobAfter;
+        if ( IsDisabled && ( Style.DisabledKnobAfter != null ) )
+        {
+            return Style.DisabledKnobAfter;
+        }
 
         return Style.KnobAfter;
     }

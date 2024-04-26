@@ -81,12 +81,14 @@ public class PolygonRegionLoader
             var reader = new StreamReader( file.FullName );
 
             for ( var line = reader.ReadLine(); line != null; line = reader.ReadLine() )
+            {
                 if ( line.StartsWith( ( ( PolygonRegionParameters ) parameters ).texturePrefix! ) )
                 {
                     image = line.Substring( ( ( PolygonRegionParameters ) parameters ).texturePrefix!.Length );
 
                     break;
                 }
+            }
 
             reader.Close();
         }
@@ -106,7 +108,10 @@ public class PolygonRegionLoader
             {
                 siblingFilePath = Path.Combine( directory!, fileNoExt + extension );
 
-                if ( File.Exists( siblingFilePath ) ) image = siblingFilePath;
+                if ( File.Exists( siblingFilePath ) )
+                {
+                    image = siblingFilePath;
+                }
             }
         }
 
@@ -144,7 +149,10 @@ public class PolygonRegionLoader
             {
                 var line = reader.ReadLine();
 
-                if ( line == null ) break;
+                if ( line == null )
+                {
+                    break;
+                }
 
                 if ( line.StartsWith( "s" ) )
                 {
@@ -152,7 +160,10 @@ public class PolygonRegionLoader
                     var polygonStrings = line.Substring( 1 ).Trim().Split( "," );
                     var vertices       = new float[ polygonStrings.Length ];
 
-                    for ( int i = 0, n = vertices.Length; i < n; i++ ) vertices[ i ] = float.Parse( polygonStrings[ i ] );
+                    for ( int i = 0, n = vertices.Length; i < n; i++ )
+                    {
+                        vertices[ i ] = float.Parse( polygonStrings[ i ] );
+                    }
 
                     // It would probably be better if PSH stored the vertices
                     // and triangles, then we don't have to triangulate here.

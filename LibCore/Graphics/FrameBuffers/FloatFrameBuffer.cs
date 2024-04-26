@@ -58,7 +58,10 @@ public class FloatFrameBuffer : FrameBuffer
 
         bufferBuilder.AddFloatAttachment( IGL.GL_RGBA32_F, IGL.GL_RGBA, IGL.GL_FLOAT, false );
 
-        if ( hasDepth ) bufferBuilder.AddBasicDepthRenderBuffer();
+        if ( hasDepth )
+        {
+            bufferBuilder.AddBasicDepthRenderBuffer();
+        }
 
         BufferBuilder = bufferBuilder;
 
@@ -77,7 +80,9 @@ public class FloatFrameBuffer : FrameBuffer
         var result = new Texture( data );
 
         if ( Gdx.App.AppType == IApplication.ApplicationType.DesktopGL )
+        {
             result.SetFilter( TextureFilter.Linear, TextureFilter.Linear );
+        }
         else
         {
             // no filtering for float textures in OpenGL ES

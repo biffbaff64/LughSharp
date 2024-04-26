@@ -46,7 +46,10 @@ public class StaticTiledMapTile : ITiledMapTile
     /// <param name="copy">The StaticTiledMapTile to copy.</param>
     public StaticTiledMapTile( StaticTiledMapTile copy )
     {
-        if ( copy._properties != null ) GetProperties().PutAll( copy._properties );
+        if ( copy._properties != null )
+        {
+            GetProperties().PutAll( copy._properties );
+        }
 
         _mapObjects   = copy._mapObjects;
         TextureRegion = copy.TextureRegion;

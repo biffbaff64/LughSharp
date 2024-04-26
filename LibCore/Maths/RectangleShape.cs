@@ -511,19 +511,37 @@ public class RectangleShape : IShape2D
     /// <returns></returns>
     public override bool Equals( object? obj )
     {
-        if ( this == obj ) return true;
+        if ( this == obj )
+        {
+            return true;
+        }
 
-        if ( obj == null ) return false;
+        if ( obj == null )
+        {
+            return false;
+        }
 
-        if ( GetType() != obj.GetType() ) return false;
+        if ( GetType() != obj.GetType() )
+        {
+            return false;
+        }
 
         var other = ( RectangleShape ) obj;
 
-        if ( NumberUtils.FloatToRawIntBits( Height ) != NumberUtils.FloatToRawIntBits( other.Height ) ) return false;
+        if ( NumberUtils.FloatToRawIntBits( Height ) != NumberUtils.FloatToRawIntBits( other.Height ) )
+        {
+            return false;
+        }
 
-        if ( NumberUtils.FloatToRawIntBits( Width ) != NumberUtils.FloatToRawIntBits( other.Width ) ) return false;
+        if ( NumberUtils.FloatToRawIntBits( Width ) != NumberUtils.FloatToRawIntBits( other.Width ) )
+        {
+            return false;
+        }
 
-        if ( NumberUtils.FloatToRawIntBits( X ) != NumberUtils.FloatToRawIntBits( other.X ) ) return false;
+        if ( NumberUtils.FloatToRawIntBits( X ) != NumberUtils.FloatToRawIntBits( other.X ) )
+        {
+            return false;
+        }
 
         return NumberUtils.FloatToRawIntBits( Y ) == NumberUtils.FloatToRawIntBits( other.Y );
     }

@@ -63,9 +63,13 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
                                FileInfo? file,
                                TextureAtlasParameter? parameter )
     {
-        if ( _data == null ) throw new GdxRuntimeException( "TextureAtlasData cannot be null!" );
+        if ( _data == null )
+        {
+            throw new GdxRuntimeException( "TextureAtlasData cannot be null!" );
+        }
 
         foreach ( var page in _data.Pages )
+        {
             if ( page.textureFile != null )
             {
                 var name = page.textureFile.FullName.Replace( "\\\\", "/" );
@@ -74,6 +78,7 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
 
                 page.texture = texture;
             }
+        }
 
         //        var atlas = new TextureAtlas( _data );
 
@@ -105,7 +110,10 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
                 MagFilter  = page.MagFilter
             };
 
-            if ( page.textureFile != null ) dependencies.Add( new AssetDescriptor( page.textureFile, typeof( Texture ), tparams ) );
+            if ( page.textureFile != null )
+            {
+                dependencies.Add( new AssetDescriptor( page.textureFile, typeof( Texture ), tparams ) );
+            }
         }
 
         return dependencies;
@@ -116,7 +124,10 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
     /// <param name="disposing"></param>
     protected virtual void Dispose( bool disposing )
     {
-        if ( disposing ) _data = null;
+        if ( disposing )
+        {
+            _data = null;
+        }
     }
 
     // ------------------------------------------------------------------------

@@ -582,7 +582,10 @@ public class Quaternion
     {
         var d = Vector3.Len( x, y, z );
 
-        if ( d == 0f ) return Idt();
+        if ( d == 0f )
+        {
+            return Idt();
+        }
 
         d = 1f / d;
 
@@ -846,7 +849,10 @@ public class Quaternion
             scale1 = ( float ) Math.Sin( alpha * angle ) * invSinTheta;
         }
 
-        if ( d < 0.0f ) scale1 = -scale1;
+        if ( d < 0.0f )
+        {
+            scale1 = -scale1;
+        }
 
         // Calculate the x, y, z and w values for the quaternion by using a
         // special form of linear interpolation for quaternions.
@@ -876,7 +882,10 @@ public class Quaternion
 
         Set( q[ 0 ] ).Exp( w );
 
-        for ( var i = 1; i < q.Length; i++ ) Mul( Tmp1.Set( q[ i ] ).Exp( w ) );
+        for ( var i = 1; i < q.Length; i++ )
+        {
+            Mul( Tmp1.Set( q[ i ] ).Exp( w ) );
+        }
 
         Nor();
 
@@ -900,7 +909,10 @@ public class Quaternion
         // Calculate exponents and multiply everything from left to right
         Set( q[ 0 ] ).Exp( w[ 0 ] );
 
-        for ( var i = 1; i < q.Length; i++ ) Mul( Tmp1.Set( q[ i ] ).Exp( w[ i ] ) );
+        for ( var i = 1; i < q.Length; i++ )
+        {
+            Mul( Tmp1.Set( q[ i ] ).Exp( w[ i ] ) );
+        }
 
         Nor();
 
@@ -930,9 +942,13 @@ public class Quaternion
 
         // If theta is small enough, use the limit of Sin(alpha*theta) / Sin(theta) instead of actual value
         if ( Math.Abs( theta ) < 0.001 )
+        {
             coeff = ( normExp * alpha ) / norm;
+        }
         else
+        {
             coeff = ( float ) ( ( normExp * Math.Sin( alpha * theta ) ) / ( norm * Math.Sin( theta ) ) );
+        }
 
         // Write results
         W =  ( float ) ( normExp * Math.Cos( alpha * theta ) );
@@ -960,9 +976,15 @@ public class Quaternion
 
     public new bool Equals( object? obj )
     {
-        if ( this == obj ) return true;
+        if ( this == obj )
+        {
+            return true;
+        }
 
-        if ( obj is not Quaternion quaternion ) return false;
+        if ( obj is not Quaternion quaternion )
+        {
+            return false;
+        }
 
         return ( NumberUtils.FloatToRawIntBits( W ) == NumberUtils.FloatToRawIntBits( quaternion.W ) )
             && ( NumberUtils.FloatToRawIntBits( X ) == NumberUtils.FloatToRawIntBits( quaternion.X ) )
@@ -1066,7 +1088,10 @@ public class Quaternion
     public float GetAxisAngleRad( Vector3 axis )
     {
         // if w>1 Acos and Sqrt will produce errors, this cant happen if quaternion is normalised
-        if ( W > 1 ) Nor();
+        if ( W > 1 )
+        {
+            Nor();
+        }
 
         var angle = ( float ) ( 2.0 * Math.Acos( W ) );
 
@@ -1156,7 +1181,10 @@ public class Quaternion
 
         twist.Set( axisX * d, axisY * d, axisZ * d, W ).Nor();
 
-        if ( d < 0 ) twist.Mul( -1f );
+        if ( d < 0 )
+        {
+            twist.Mul( -1f );
+        }
 
         swing.Set( twist ).Conjugate().MulLeft( this );
     }

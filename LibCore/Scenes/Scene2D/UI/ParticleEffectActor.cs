@@ -91,14 +91,20 @@ public class ParticleEffectActor : Actor, IDisposable
         // here to update in draw()
         lastDelta += delta;
 
-        if ( AutoRemove && ParticleEffect.IsComplete() ) Remove();
+        if ( AutoRemove && ParticleEffect.IsComplete() )
+        {
+            Remove();
+        }
     }
 
     public void Start()
     {
         IsRunning = true;
 
-        if ( _resetOnStart ) ParticleEffect.Reset( false );
+        if ( _resetOnStart )
+        {
+            ParticleEffect.Reset( false );
+        }
 
         ParticleEffect.Start();
     }
@@ -152,7 +158,10 @@ public class ParticleEffectActor : Actor, IDisposable
     {
         if ( disposing )
         {
-            if ( ownsEffect ) ParticleEffect.Dispose();
+            if ( ownsEffect )
+            {
+                ParticleEffect.Dispose();
+            }
         }
     }
 

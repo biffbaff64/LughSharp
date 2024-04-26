@@ -71,7 +71,10 @@ public class Frustrum
 
     public Frustrum()
     {
-        for ( var i = 0; i < 6; i++ ) Planes[ i ] = new Plane( new Vector3(), 0 );
+        for ( var i = 0; i < 6; i++ )
+        {
+            Planes[ i ] = new Plane( new Vector3(), 0 );
+        }
     }
 
     /// <system>
@@ -119,7 +122,10 @@ public class Frustrum
         {
             var result = t.TestPoint( point );
 
-            if ( result == Plane.PlaneSide.Back ) return false;
+            if ( result == Plane.PlaneSide.Back )
+            {
+                return false;
+            }
         }
 
         return true;

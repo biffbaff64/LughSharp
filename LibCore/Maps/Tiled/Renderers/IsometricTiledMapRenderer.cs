@@ -87,9 +87,13 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
         _screenPos.Set( vec.X, vec.Y, 0 );
 
         if ( _invIsotransform == null )
+        {
             Logger.Debug( "_invIsotransform is null!" );
+        }
         else
+        {
             _screenPos.Mul( _invIsotransform );
+        }
 
         return _screenPos;
     }
@@ -142,7 +146,10 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
 
             var cell = layer.GetCell( col, row );
 
-            if ( cell == null ) return;
+            if ( cell == null )
+            {
+                return;
+            }
 
             var tile = cell.GetTile();
 

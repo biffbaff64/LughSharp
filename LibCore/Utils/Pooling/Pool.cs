@@ -103,7 +103,9 @@ public class Pool< T >
             Reset( obj );
         }
         else
+        {
             Discard( obj );
+        }
     }
 
     /// <summary>
@@ -115,8 +117,12 @@ public class Pool< T >
     public void Fill( int size )
     {
         for ( var i = 0; i < size; i++ )
+        {
             if ( _freeObjects.Count < Max )
+            {
                 _freeObjects.Add( NewObject!() );
+            }
+        }
 
         Peak = Math.Max( Peak, _freeObjects.Count );
     }
@@ -128,7 +134,10 @@ public class Pool< T >
     /// </summary>
     public virtual void Reset( T obj )
     {
-        if ( obj is IPoolable poolable ) poolable.Reset();
+        if ( obj is IPoolable poolable )
+        {
+            poolable.Reset();
+        }
     }
 
     /// <summary>
@@ -151,7 +160,10 @@ public class Pool< T >
 
         for ( int i = 0, n = objects.Count; i < n; i++ )
         {
-            if ( objects[ i ] == null ) continue;
+            if ( objects[ i ] == null )
+            {
+                continue;
+            }
 
             if ( _freeObjects.Count < Max )
             {
@@ -160,7 +172,9 @@ public class Pool< T >
                 Reset( objects[ i ] );
             }
             else
+            {
                 Discard( objects[ i ] );
+            }
         }
 
         Peak = Math.Max( Peak, _freeObjects.Count );

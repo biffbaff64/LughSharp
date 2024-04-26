@@ -54,7 +54,10 @@ public class DialogInputListener : InputListener
                 {
                     _dialog.Result( _object );
 
-                    if ( !_dialog.CancelHide ) _dialog.Hide();
+                    if ( !_dialog.CancelHide )
+                    {
+                        _dialog.Hide();
+                    }
 
                     _dialog.CancelHide = false;
                 }

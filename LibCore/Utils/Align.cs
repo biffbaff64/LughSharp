@@ -105,20 +105,32 @@ public sealed class Align
         var buffer = new StringBuilder( "[" );
 
         if ( ( position & TOP ) != 0 )
+        {
             buffer.Append( "Top" );
+        }
         else if ( ( position & BOTTOM ) != 0 )
+        {
             buffer.Append( "Bottom" );
+        }
         else
+        {
             buffer.Append( "Center" );
+        }
 
         buffer.Append( "] [" );
 
         if ( ( position & LEFT ) != 0 )
+        {
             buffer.Append( "Left" );
+        }
         else if ( ( position & RIGHT ) != 0 )
+        {
             buffer.Append( "Right" );
+        }
         else
+        {
             buffer.Append( "Center" );
+        }
 
         buffer.Append( "]" );
 

@@ -77,7 +77,10 @@ public class SpriteBatch : IBatch
     protected SpriteBatch( int size, ShaderProgram? defaultShader = null )
     {
         // 32767 is max vertex index, so 32767 / 4 vertices per sprite = 8191 sprites max.
-        if ( size > MAX_SPRITES ) throw new ArgumentException( "Can't have more than 8191 sprites per batch: " + size );
+        if ( size > MAX_SPRITES )
+        {
+            throw new ArgumentException( "Can't have more than 8191 sprites per batch: " + size );
+        }
 
         IsDrawing = false;
 
@@ -123,7 +126,9 @@ public class SpriteBatch : IBatch
             _ownsShader = true;
         }
         else
+        {
             _shader = defaultShader;
+        }
     }
 
     /// <summary>
@@ -148,16 +153,23 @@ public class SpriteBatch : IBatch
 
     public void Begin()
     {
-        if ( IsDrawing ) throw new InvalidOperationException( "SpriteBatch.end must be called before begin." );
+        if ( IsDrawing )
+        {
+            throw new InvalidOperationException( "SpriteBatch.end must be called before begin." );
+        }
 
         RenderCalls = 0;
 
         Gdx.GL.glDepthMask( false );
 
         if ( _customShader != null )
+        {
             _customShader.Bind();
+        }
         else
+        {
             _shader?.Bind();
+        }
 
         SetupMatrices();
 
@@ -166,16 +178,25 @@ public class SpriteBatch : IBatch
 
     public void End()
     {
-        if ( !IsDrawing ) throw new InvalidOperationException( "SpriteBatch.begin must be called before end." );
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before end." );
+        }
 
-        if ( idx > 0 ) Flush();
+        if ( idx > 0 )
+        {
+            Flush();
+        }
 
         LastTexture = null;
         IsDrawing   = false;
 
         Gdx.GL.glDepthMask( true );
 
-        if ( !BlendingDisabled ) Gdx.GL.glDisable( IGL.GL_BLEND );
+        if ( !BlendingDisabled )
+        {
+            Gdx.GL.glDisable( IGL.GL_BLEND );
+        }
     }
 
     public Color Color
@@ -225,11 +246,19 @@ public class SpriteBatch : IBatch
                               bool flipX,
                               bool flipY )
     {
-        if ( !IsDrawing ) throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        }
 
         if ( texture != LastTexture )
+        {
             SwitchTexture( texture );
-        else if ( idx == Vertices.Length ) Flush();
+        }
+        else if ( idx == Vertices.Length )
+        {
+            Flush();
+        }
 
         // bottom left and top right corner points relative to origin
         var worldOriginX = x + originX;
@@ -315,9 +344,15 @@ public class SpriteBatch : IBatch
         var v2    = srcY * invTexHeight;
         var color = colorPacked;
 
-        if ( flipX ) ( u, u2 ) = ( u2, u );
+        if ( flipX )
+        {
+            ( u, u2 ) = ( u2, u );
+        }
 
-        if ( flipY ) ( v, v2 ) = ( v2, v );
+        if ( flipY )
+        {
+            ( v, v2 ) = ( v2, v );
+        }
 
         Vertices[ idx ]     = x1;
         Vertices[ idx + 1 ] = y1;
@@ -358,11 +393,19 @@ public class SpriteBatch : IBatch
                               bool flipX,
                               bool flipY )
     {
-        if ( !IsDrawing ) throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        }
 
         if ( texture != LastTexture )
+        {
             SwitchTexture( texture );
-        else if ( idx == Vertices.Length ) Flush();
+        }
+        else if ( idx == Vertices.Length )
+        {
+            Flush();
+        }
 
         var u     = srcX * invTexWidth;
         var v     = ( srcY + srcHeight ) * invTexHeight;
@@ -372,9 +415,15 @@ public class SpriteBatch : IBatch
         var fy2   = y + height;
         var color = colorPacked;
 
-        if ( flipX ) ( u, u2 ) = ( u2, u );
+        if ( flipX )
+        {
+            ( u, u2 ) = ( u2, u );
+        }
 
-        if ( flipY ) ( v, v2 ) = ( v2, v );
+        if ( flipY )
+        {
+            ( v, v2 ) = ( v2, v );
+        }
 
         Vertices[ idx ]     = x;
         Vertices[ idx + 1 ] = y;
@@ -405,11 +454,19 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight )
     {
-        if ( !IsDrawing ) throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        }
 
         if ( texture != LastTexture )
+        {
             SwitchTexture( texture );
-        else if ( idx == Vertices.Length ) Flush();
+        }
+        else if ( idx == Vertices.Length )
+        {
+            Flush();
+        }
 
         var u   = srcX * invTexWidth;
         var v   = ( srcY + srcHeight ) * invTexHeight;
@@ -457,11 +514,19 @@ public class SpriteBatch : IBatch
                               float u2,
                               float v2 )
     {
-        if ( !IsDrawing ) throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        }
 
         if ( texture != LastTexture )
+        {
             SwitchTexture( texture );
-        else if ( idx == Vertices.Length ) Flush();
+        }
+        else if ( idx == Vertices.Length )
+        {
+            Flush();
+        }
 
         var fx2   = x + width;
         var fy2   = y + height;
@@ -501,11 +566,19 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( Texture texture, float x, float y, float width, float height )
     {
-        if ( !IsDrawing ) throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        }
 
         if ( texture != LastTexture )
+        {
             SwitchTexture( texture );
-        else if ( idx == Vertices.Length ) Flush();
+        }
+        else if ( idx == Vertices.Length )
+        {
+            Flush();
+        }
 
         var fx2   = x + width;
         var fy2   = y + height;
@@ -545,13 +618,18 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( Texture texture, float[] spriteVertices, int offset, int count )
     {
-        if ( !IsDrawing ) throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        }
 
         var verticesLength    = Vertices.Length;
         var remainingVertices = verticesLength;
 
         if ( texture != LastTexture )
+        {
             SwitchTexture( texture );
+        }
         else
         {
             remainingVertices -= idx;
@@ -604,13 +682,21 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( TextureRegion region, float x, float y, float width, float height )
     {
-        if ( !IsDrawing ) throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        }
 
         var texture = region.Texture;
 
         if ( texture != LastTexture )
+        {
             SwitchTexture( texture );
-        else if ( idx == Vertices.Length ) Flush();
+        }
+        else if ( idx == Vertices.Length )
+        {
+            Flush();
+        }
 
         var fx2 = x + width;
         var fy2 = y + height;
@@ -659,13 +745,21 @@ public class SpriteBatch : IBatch
                               float scaleY,
                               float rotation )
     {
-        if ( !IsDrawing ) throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        }
 
         var texture = region.Texture;
 
         if ( texture != LastTexture )
+        {
             SwitchTexture( texture );
-        else if ( idx == Vertices.Length ) Flush();
+        }
+        else if ( idx == Vertices.Length )
+        {
+            Flush();
+        }
 
         // bottom left and top right corner points relative to origin
         var worldOriginX = x + originX;
@@ -791,13 +885,21 @@ public class SpriteBatch : IBatch
                               float rotation,
                               bool clockwise )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "SpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "SpriteBatch.begin must be called before draw." );
+        }
 
         var texture = region.Texture;
 
         if ( texture != LastTexture )
+        {
             SwitchTexture( texture );
-        else if ( idx == Vertices.Length ) Flush();
+        }
+        else if ( idx == Vertices.Length )
+        {
+            Flush();
+        }
 
         // bottom left and top right corner points relative to origin
         var worldOriginX = x + originX;
@@ -933,11 +1035,19 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( TextureRegion region, float width, float height, Affine2 transform )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "SpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "SpriteBatch.begin must be called before draw." );
+        }
 
         if ( region.Texture != LastTexture )
+        {
             SwitchTexture( region.Texture );
-        else if ( idx == Vertices.Length ) Flush();
+        }
+        else if ( idx == Vertices.Length )
+        {
+            Flush();
+        }
 
         // construct corner points
         var x1 = transform.m02;
@@ -986,14 +1096,20 @@ public class SpriteBatch : IBatch
     /// </summary>
     public void Flush()
     {
-        if ( idx == 0 ) return;
+        if ( idx == 0 )
+        {
+            return;
+        }
 
         RenderCalls++;
         TotalRenderCalls++;
 
         var spritesInBatch = idx / 20;
 
-        if ( spritesInBatch > MaxSpritesInBatch ) MaxSpritesInBatch = spritesInBatch;
+        if ( spritesInBatch > MaxSpritesInBatch )
+        {
+            MaxSpritesInBatch = spritesInBatch;
+        }
 
         var count = spritesInBatch * 6;
 
@@ -1004,12 +1120,17 @@ public class SpriteBatch : IBatch
         _mesh.IndicesBuffer.Limit    = count;
 
         if ( BlendingDisabled )
+        {
             Gdx.GL.glDisable( IGL.GL_BLEND );
+        }
         else
         {
             Gdx.GL.glEnable( IGL.GL_BLEND );
 
-            if ( BlendSrcFunc != -1 ) Gdx.GL.glBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
+            if ( BlendSrcFunc != -1 )
+            {
+                Gdx.GL.glBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
+            }
         }
 
         _mesh.Render( _customShader ?? _shader, IGL.GL_TRIANGLES, 0, count );
@@ -1019,7 +1140,10 @@ public class SpriteBatch : IBatch
 
     public void DisableBlending()
     {
-        if ( BlendingDisabled ) return;
+        if ( BlendingDisabled )
+        {
+            return;
+        }
 
         Flush();
         BlendingDisabled = true;
@@ -1027,7 +1151,10 @@ public class SpriteBatch : IBatch
 
     public void EnableBlending()
     {
-        if ( !BlendingDisabled ) return;
+        if ( !BlendingDisabled )
+        {
+            return;
+        }
 
         Flush();
         BlendingDisabled = false;
@@ -1049,7 +1176,9 @@ public class SpriteBatch : IBatch
           && ( BlendDstFunc == dstFuncColor )
           && ( BlendSrcFuncAlpha == srcFuncAlpha )
           && ( BlendDstFuncAlpha == dstFuncAlpha ) )
+        {
             return;
+        }
 
         Flush();
 
@@ -1068,7 +1197,10 @@ public class SpriteBatch : IBatch
     {
         _mesh.Dispose();
 
-        if ( _ownsShader && ( _shader != null ) ) _shader.Dispose();
+        if ( _ownsShader && ( _shader != null ) )
+        {
+            _shader.Dispose();
+        }
     }
 
     public Matrix4 ProjectionMatrix { get; } = new();
@@ -1076,20 +1208,32 @@ public class SpriteBatch : IBatch
 
     public void SetProjectionMatrix( Matrix4 projection )
     {
-        if ( IsDrawing ) Flush();
+        if ( IsDrawing )
+        {
+            Flush();
+        }
 
         ProjectionMatrix.Set( projection );
 
-        if ( IsDrawing ) SetupMatrices();
+        if ( IsDrawing )
+        {
+            SetupMatrices();
+        }
     }
 
     public virtual void SetTransformMatrix( Matrix4 transform )
     {
-        if ( IsDrawing ) Flush();
+        if ( IsDrawing )
+        {
+            Flush();
+        }
 
         TransformMatrix.Set( transform );
 
-        if ( IsDrawing ) SetupMatrices();
+        if ( IsDrawing )
+        {
+            SetupMatrices();
+        }
     }
 
     public bool IsDrawing { get; set; }
@@ -1099,16 +1243,23 @@ public class SpriteBatch : IBatch
         get => _customShader ?? _shader;
         set
         {
-            if ( IsDrawing ) Flush();
+            if ( IsDrawing )
+            {
+                Flush();
+            }
 
             _customShader = value;
 
             if ( IsDrawing )
             {
                 if ( _customShader != null )
+                {
                     _customShader.Bind();
+                }
                 else
+                {
                     _shader?.Bind();
+                }
 
                 SetupMatrices();
             }
@@ -1164,7 +1315,10 @@ public class SpriteBatch : IBatch
 
         var shader = new ShaderProgram( vertexShader, fragmentShader );
 
-        if ( !shader.IsCompiled ) throw new ArgumentException( "Error compiling shader: " + shader.Log );
+        if ( !shader.IsCompiled )
+        {
+            throw new ArgumentException( "Error compiling shader: " + shader.Log );
+        }
 
         return shader;
     }

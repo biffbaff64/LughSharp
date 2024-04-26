@@ -266,7 +266,10 @@ public static class BufferUtils
 
         lock ( _unsafeBuffers )
         {
-            if ( !_unsafeBuffers.Remove( buffer ) ) throw new ArgumentException( "buffer not allocated with newUnsafeByteBuffer or already disposed" );
+            if ( !_unsafeBuffers.Remove( buffer ) )
+            {
+                throw new ArgumentException( "buffer not allocated with newUnsafeByteBuffer or already disposed" );
+            }
         }
 
         _allocatedUnsafe -= size;

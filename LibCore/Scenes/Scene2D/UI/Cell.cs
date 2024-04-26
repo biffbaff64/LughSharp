@@ -49,7 +49,10 @@ public class Cell : IPoolable
 
         var defaults = GetCellDefaults();
 
-        if ( defaults != null ) Set( defaults );
+        if ( defaults != null )
+        {
+            Set( defaults );
+        }
     }
 
     public Value? MinWidth    { get; set; }
@@ -117,11 +120,17 @@ public class Cell : IPoolable
     {
         if ( Actor != newActor )
         {
-            if ( Actor?.Parent == Table ) Actor?.Remove();
+            if ( Actor?.Parent == Table )
+            {
+                Actor?.Remove();
+            }
 
             Actor = newActor;
 
-            if ( Actor != null ) Table?.AddActor( Actor );
+            if ( Actor != null )
+            {
+                Table?.AddActor( Actor );
+            }
         }
 
         return this;
@@ -641,7 +650,10 @@ public class Cell : IPoolable
 
     public Cell Space( float space )
     {
-        if ( space < 0 ) throw new ArgumentException( "space cannot be < 0: " + space );
+        if ( space < 0 )
+        {
+            throw new ArgumentException( "space cannot be < 0: " + space );
+        }
 
         Space( Value.Fixed.ValueOf( space ) );
 
@@ -650,13 +662,25 @@ public class Cell : IPoolable
 
     public Cell Space( float top, float left, float bottom, float right )
     {
-        if ( top < 0 ) throw new ArgumentException( "top cannot be < 0: " + top );
+        if ( top < 0 )
+        {
+            throw new ArgumentException( "top cannot be < 0: " + top );
+        }
 
-        if ( left < 0 ) throw new ArgumentException( "left cannot be < 0: " + left );
+        if ( left < 0 )
+        {
+            throw new ArgumentException( "left cannot be < 0: " + left );
+        }
 
-        if ( bottom < 0 ) throw new ArgumentException( "bottom cannot be < 0: " + bottom );
+        if ( bottom < 0 )
+        {
+            throw new ArgumentException( "bottom cannot be < 0: " + bottom );
+        }
 
-        if ( right < 0 ) throw new ArgumentException( "right cannot be < 0: " + right );
+        if ( right < 0 )
+        {
+            throw new ArgumentException( "right cannot be < 0: " + right );
+        }
 
         Space(
               Value.Fixed.ValueOf( top ),
@@ -670,7 +694,10 @@ public class Cell : IPoolable
 
     public Cell SetSpaceTop( float spaceTop )
     {
-        if ( spaceTop < 0 ) throw new ArgumentException( "spaceTop cannot be < 0: " + spaceTop );
+        if ( spaceTop < 0 )
+        {
+            throw new ArgumentException( "spaceTop cannot be < 0: " + spaceTop );
+        }
 
         SpaceTop = Value.Fixed.ValueOf( spaceTop );
 
@@ -679,7 +706,10 @@ public class Cell : IPoolable
 
     public Cell SetSpaceLeft( float spaceLeft )
     {
-        if ( spaceLeft < 0 ) throw new ArgumentException( "spaceLeft cannot be < 0: " + spaceLeft );
+        if ( spaceLeft < 0 )
+        {
+            throw new ArgumentException( "spaceLeft cannot be < 0: " + spaceLeft );
+        }
 
         SpaceLeft = Value.Fixed.ValueOf( spaceLeft );
 
@@ -688,7 +718,10 @@ public class Cell : IPoolable
 
     public Cell SetSpaceBottom( float spaceBottom )
     {
-        if ( spaceBottom < 0 ) throw new ArgumentException( "spaceBottom cannot be < 0: " + spaceBottom );
+        if ( spaceBottom < 0 )
+        {
+            throw new ArgumentException( "spaceBottom cannot be < 0: " + spaceBottom );
+        }
 
         SpaceBottom = Value.Fixed.ValueOf( spaceBottom );
 
@@ -697,7 +730,10 @@ public class Cell : IPoolable
 
     public Cell SetSpaceRight( float spaceRight )
     {
-        if ( spaceRight < 0 ) throw new ArgumentException( "spaceRight cannot be < 0: " + spaceRight );
+        if ( spaceRight < 0 )
+        {
+            throw new ArgumentException( "spaceRight cannot be < 0: " + spaceRight );
+        }
 
         SpaceRight = Value.Fixed.ValueOf( spaceRight );
 
@@ -898,9 +934,13 @@ public class Cell : IPoolable
     public Cell Top()
     {
         if ( Alignment == Align.NONE )
+        {
             Alignment = TOPI;
+        }
         else
+        {
             Alignment = ( Alignment | Align.TOP ) & ~Align.BOTTOM;
+        }
 
         return this;
     }
@@ -912,9 +952,13 @@ public class Cell : IPoolable
     public Cell Left()
     {
         if ( Alignment == Align.NONE )
+        {
             Alignment = LEFTI;
+        }
         else
+        {
             Alignment = ( Alignment | Align.LEFT ) & ~Align.RIGHT;
+        }
 
         return this;
     }
@@ -926,9 +970,13 @@ public class Cell : IPoolable
     public Cell Bottom()
     {
         if ( Alignment == Align.NONE )
+        {
             Alignment = BOTTOMI;
+        }
         else
+        {
             Alignment = ( Alignment | Align.BOTTOM ) & ~Align.TOP;
+        }
 
         return this;
     }
@@ -940,9 +988,13 @@ public class Cell : IPoolable
     public Cell Right()
     {
         if ( Alignment == Align.NONE )
+        {
             Alignment = RIGHTI;
+        }
         else
+        {
             Alignment = ( Alignment | Align.RIGHT ) & ~Align.LEFT;
+        }
 
         return this;
     }
@@ -1180,7 +1232,10 @@ public class Cell : IPoolable
 
     public void Set( Cell? cell )
     {
-        if ( cell == null ) return;
+        if ( cell == null )
+        {
+            return;
+        }
 
         MinWidth    = cell.MinWidth;
         MinHeight   = cell.MinHeight;
@@ -1208,48 +1263,111 @@ public class Cell : IPoolable
 
     public void Merge( Cell? cell )
     {
-        if ( cell == null ) return;
+        if ( cell == null )
+        {
+            return;
+        }
 
         //@formatter:off
-        if ( cell.MinWidth != null ) MinWidth = cell.MinWidth;
+        if ( cell.MinWidth != null )
+        {
+            MinWidth = cell.MinWidth;
+        }
 
-        if ( cell.MinHeight != null ) MinHeight = cell.MinHeight;
+        if ( cell.MinHeight != null )
+        {
+            MinHeight = cell.MinHeight;
+        }
 
-        if ( cell.PrefWidth != null ) PrefWidth = cell.PrefWidth;
+        if ( cell.PrefWidth != null )
+        {
+            PrefWidth = cell.PrefWidth;
+        }
 
-        if ( cell.PrefHeight != null ) PrefHeight = cell.PrefHeight;
+        if ( cell.PrefHeight != null )
+        {
+            PrefHeight = cell.PrefHeight;
+        }
 
-        if ( cell.MaxWidth != null ) MaxWidth = cell.MaxWidth;
+        if ( cell.MaxWidth != null )
+        {
+            MaxWidth = cell.MaxWidth;
+        }
 
-        if ( cell.MaxHeight != null ) MaxHeight = cell.MaxHeight;
+        if ( cell.MaxHeight != null )
+        {
+            MaxHeight = cell.MaxHeight;
+        }
 
-        if ( cell.SpaceTop != null ) SpaceTop = cell.SpaceTop;
+        if ( cell.SpaceTop != null )
+        {
+            SpaceTop = cell.SpaceTop;
+        }
 
-        if ( cell.SpaceLeft != null ) SpaceLeft = cell.SpaceLeft;
+        if ( cell.SpaceLeft != null )
+        {
+            SpaceLeft = cell.SpaceLeft;
+        }
 
-        if ( cell.SpaceBottom != null ) SpaceBottom = cell.SpaceBottom;
+        if ( cell.SpaceBottom != null )
+        {
+            SpaceBottom = cell.SpaceBottom;
+        }
 
-        if ( cell.SpaceRight != null ) SpaceRight = cell.SpaceRight;
+        if ( cell.SpaceRight != null )
+        {
+            SpaceRight = cell.SpaceRight;
+        }
 
-        if ( cell.PadTop != null ) PadTop = cell.PadTop;
+        if ( cell.PadTop != null )
+        {
+            PadTop = cell.PadTop;
+        }
 
-        if ( cell.PadLeft != null ) PadLeft = cell.PadLeft;
+        if ( cell.PadLeft != null )
+        {
+            PadLeft = cell.PadLeft;
+        }
 
-        if ( cell.PadBottom != null ) PadBottom = cell.PadBottom;
+        if ( cell.PadBottom != null )
+        {
+            PadBottom = cell.PadBottom;
+        }
 
-        if ( cell.PadRight != null ) PadRight = cell.PadRight;
+        if ( cell.PadRight != null )
+        {
+            PadRight = cell.PadRight;
+        }
 
-        if ( cell.Alignment != default( int ) ) Alignment = cell.Alignment;
+        if ( cell.Alignment != default( int ) )
+        {
+            Alignment = cell.Alignment;
+        }
 
-        if ( cell.ExpandX != default( int ) ) ExpandX = cell.ExpandX;
+        if ( cell.ExpandX != default( int ) )
+        {
+            ExpandX = cell.ExpandX;
+        }
 
-        if ( cell.ExpandY != default( int ) ) ExpandY = cell.ExpandY;
+        if ( cell.ExpandY != default( int ) )
+        {
+            ExpandY = cell.ExpandY;
+        }
 
-        if ( cell.Colspan != default( int ) ) Colspan = cell.Colspan;
+        if ( cell.Colspan != default( int ) )
+        {
+            Colspan = cell.Colspan;
+        }
 
-        if ( cell.UniformX != default( bool ) ) UniformX = cell.UniformX;
+        if ( cell.UniformX != default( bool ) )
+        {
+            UniformX = cell.UniformX;
+        }
 
-        if ( cell.UniformY != default( bool ) ) UniformY = cell.UniformY;
+        if ( cell.UniformY != default( bool ) )
+        {
+            UniformY = cell.UniformY;
+        }
 
         FillX = cell.FillX;
         FillY = cell.FillY;

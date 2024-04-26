@@ -35,7 +35,10 @@ public abstract class DelegateAction : Action
         get => base.Actor;
         set
         {
-            if ( Action != null ) Action.Actor = value;
+            if ( Action != null )
+            {
+                Action.Actor = value;
+            }
 
             base.Actor = value;
         }
@@ -46,7 +49,10 @@ public abstract class DelegateAction : Action
         get => base.Target;
         set
         {
-            if ( Action != null ) Action.Target = value;
+            if ( Action != null )
+            {
+                Action.Target = value;
+            }
 
             base.Target = value;
         }

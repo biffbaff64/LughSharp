@@ -64,9 +64,13 @@ public class MipMapGenerator
         if ( ( Gdx.App.AppType == IApplication.ApplicationType.Android )
           || ( Gdx.App.AppType == IApplication.ApplicationType.WebGL )
           || ( Gdx.App.AppType == IApplication.ApplicationType.IOS ) )
+        {
             GenerateMipMapGLES20( target, pixmap );
+        }
         else
+        {
             GenerateMipMapDesktop( target, pixmap, textureWidth, textureHeight );
+        }
     }
 
     private static void GenerateMipMapGLES20( int target, Pixmap pixmap )
@@ -93,8 +97,7 @@ public class MipMapGenerator
     private static unsafe void GenerateMipMapDesktop( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
         if ( Gdx.Graphics.SupportsExtension( "GL_ARB_framebuffer_object" )
-          || Gdx.Graphics.SupportsExtension( "GL_EXT_framebuffer_object" )
-          || ( Gdx.GL30 != null ) )
+          || Gdx.Graphics.SupportsExtension( "GL_EXT_framebuffer_object" ) )
         {
             fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
             {
@@ -112,7 +115,9 @@ public class MipMapGenerator
             Gdx.GL.glGenerateMipmap( target );
         }
         else
+        {
             GenerateMipMapCPU( target, pixmap, textureWidth, textureHeight );
+        }
     }
 
     private static unsafe void GenerateMipMapCPU( int target, Pixmap pixmap, int textureWidth, int textureHeight )
@@ -130,8 +135,10 @@ public class MipMapGenerator
                                  ptr );
         }
 
-        if ( ( Gdx.GL20 == null ) && ( textureWidth != textureHeight ) )
+        if ( textureWidth != textureHeight )
+        {
             throw new GdxRuntimeException( "texture width and height must be square when using mipmapping." );
+        }
 
         var width  = pixmap.Width / 2;
         var height = pixmap.Height / 2;
@@ -144,7 +151,10 @@ public class MipMapGenerator
             tmp.Blending = Pixmap.BlendTypes.None;
             tmp.DrawPixmap( pixmap, 0, 0, pixmap.Width, pixmap.Height, 0, 0, width, height );
 
-            if ( level > 1 ) pixmap.Dispose();
+            if ( level > 1 )
+            {
+                pixmap.Dispose();
+            }
 
             pixmap = tmp;
 

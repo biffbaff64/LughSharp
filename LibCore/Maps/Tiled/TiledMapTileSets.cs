@@ -72,8 +72,12 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
     public virtual TiledMapTileSet? GetTileSet( string name )
     {
         foreach ( var tileset in _tilesets )
+        {
             if ( name.Equals( tileset.Name ) )
+            {
                 return tileset;
+            }
+        }
 
         return null;
     }
@@ -114,7 +118,10 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
             var tileset = _tilesets[ i ];
             var tile    = tileset.GetTile( id );
 
-            if ( tile != null ) return tile;
+            if ( tile != null )
+            {
+                return tile;
+            }
         }
 
         return null;

@@ -66,13 +66,19 @@ public abstract class OpenALMusic : IMusic
 
     public void Play()
     {
-        if ( _audio.NoDevice ) return;
+        if ( _audio.NoDevice )
+        {
+            return;
+        }
 
         if ( SourceId == INVALID_SOURCE_ID )
         {
             SourceId = _audio.ObtainSource( true );
 
-            if ( SourceId == INVALID_SOURCE_ID ) return;
+            if ( SourceId == INVALID_SOURCE_ID )
+            {
+                return;
+            }
 
             _audio.Music.Add( this );
 
@@ -84,7 +90,10 @@ public abstract class OpenALMusic : IMusic
 
                 var err = AL.GetError();
 
-                if ( err != AL.NO_ERROR ) throw new GdxRuntimeException( $"Unable to allocate audio buffers. AL Error: {err}" );
+                if ( err != AL.NO_ERROR )
+                {
+                    throw new GdxRuntimeException( $"Unable to allocate audio buffers. AL Error: {err}" );
+                }
             }
 
             AL.Sourcei( ( uint ) SourceId, AL.DIRECT_CHANNELS_SOFT, AL.TRUE );
@@ -133,9 +142,15 @@ public abstract class OpenALMusic : IMusic
 
     public void Stop()
     {
-        if ( _audio.NoDevice ) return;
+        if ( _audio.NoDevice )
+        {
+            return;
+        }
 
-        if ( SourceId == INVALID_SOURCE_ID ) return;
+        if ( SourceId == INVALID_SOURCE_ID )
+        {
+            return;
+        }
 
         _audio.Music.Remove( this );
 
@@ -287,9 +302,15 @@ public abstract class OpenALMusic : IMusic
 
     public float GetPosition()
     {
-        if ( _audio.NoDevice ) return 0;
+        if ( _audio.NoDevice )
+        {
+            return 0;
+        }
 
-        if ( SourceId == INVALID_SOURCE_ID ) return 0;
+        if ( SourceId == INVALID_SOURCE_ID )
+        {
+            return 0;
+        }
 
         AL.GetSourcef( ( uint ) SourceId, AL.SEC_OFFSET, out var value );
 
@@ -466,7 +487,10 @@ public abstract class OpenALMusic : IMusic
     {
         get
         {
-            if ( _audio.NoDevice ) return false;
+            if ( _audio.NoDevice )
+            {
+                return false;
+            }
 
             return ( SourceId != INVALID_SOURCE_ID ) && _isPlaying;
         }

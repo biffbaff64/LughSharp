@@ -81,7 +81,10 @@ internal class ResolutionFileResolver : IFileHandleResolver
     /// </param>
     public ResolutionFileResolver( IFileHandleResolver baseResolver, params Resolution[] descs )
     {
-        if ( descs.Length == 0 ) throw new ArgumentException( "At least one Resolution needs to be supplied." );
+        if ( descs.Length == 0 )
+        {
+            throw new ArgumentException( "At least one Resolution needs to be supplied." );
+        }
 
         this.baseResolver = baseResolver;
         descriptors       = descs;
@@ -93,7 +96,10 @@ internal class ResolutionFileResolver : IFileHandleResolver
         FileInfo originalHandle = new( fileName );
         var      handle         = baseResolver.Resolve( Resolve( originalHandle, bestResolution.Folder ) );
 
-        if ( !handle.Exists ) handle = baseResolver.Resolve( fileName );
+        if ( !handle.Exists )
+        {
+            handle = baseResolver.Resolve( fileName );
+        }
 
         return handle;
     }
@@ -103,7 +109,10 @@ internal class ResolutionFileResolver : IFileHandleResolver
         var parentstring = "";
         var parent       = originalHandle.Directory;
 
-        if ( ( parent != null ) && !parent.Name.Equals( "" ) ) parentstring = parent + "/";
+        if ( ( parent != null ) && !parent.Name.Equals( "" ) )
+        {
+            parentstring = parent + "/";
+        }
 
         return parentstring + suffix + "/" + originalHandle.Name;
     }
@@ -126,7 +135,9 @@ internal class ResolutionFileResolver : IFileHandleResolver
                   && ( other.PortraitWidth >= best.PortraitWidth )
                   && ( h >= other.PortraitHeight )
                   && ( other.PortraitHeight >= best.PortraitHeight ) )
+                {
                     best = descs[ i ];
+                }
             }
         }
         else
@@ -139,7 +150,9 @@ internal class ResolutionFileResolver : IFileHandleResolver
                   && ( other.PortraitHeight >= best.PortraitHeight )
                   && ( h >= other.PortraitWidth )
                   && ( other.PortraitWidth >= best.PortraitWidth ) )
+                {
                     best = descs[ i ];
+                }
             }
         }
 

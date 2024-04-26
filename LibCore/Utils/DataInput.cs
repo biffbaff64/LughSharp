@@ -76,13 +76,22 @@ public class DataInput : BinaryReader
     {
         var charCount = ReadInt( true );
 
-        if ( charCount == 0 ) return null;
+        if ( charCount == 0 )
+        {
+            return null;
+        }
 
-        if ( charCount == 1 ) return "";
+        if ( charCount == 1 )
+        {
+            return "";
+        }
 
         charCount--;
 
-        if ( _chars.Length < charCount ) _chars = new char[ charCount ];
+        if ( _chars.Length < charCount )
+        {
+            _chars = new char[ charCount ];
+        }
 
         // Try to read 7 bit ASCII chars.
         var charIndex = 0;
@@ -92,13 +101,19 @@ public class DataInput : BinaryReader
         {
             b = Read();
 
-            if ( b > 127 ) break;
+            if ( b > 127 )
+            {
+                break;
+            }
 
             _chars[ charIndex++ ] = ( char ) b;
         }
 
         // If a char was not ASCII, finish with slow path.
-        if ( charIndex < charCount ) ReadUtf8Slow( charCount, charIndex, b );
+        if ( charIndex < charCount )
+        {
+            ReadUtf8Slow( charCount, charIndex, b );
+        }
 
         return new string( _chars, 0, charCount );
     }
@@ -138,7 +153,10 @@ public class DataInput : BinaryReader
                 }
             }
 
-            if ( ++charIndex >= charCount ) break;
+            if ( ++charIndex >= charCount )
+            {
+                break;
+            }
 
             b = Read() & 0xFF;
         }

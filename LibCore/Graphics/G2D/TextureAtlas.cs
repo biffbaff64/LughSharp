@@ -122,7 +122,10 @@ public class TextureAtlas
                 values         = region.Values
             };
 
-            if ( region.Flip ) atlasRegion.Flip( false, true );
+            if ( region.Flip )
+            {
+                atlasRegion.Flip( false, true );
+            }
 
             Regions.Add( atlasRegion );
         }
@@ -152,7 +155,10 @@ public class TextureAtlas
     /// </summary>
     public AtlasRegion AddRegion( string name, TextureRegion textureRegion )
     {
-        if ( textureRegion.Texture == null ) throw new GdxRuntimeException( "cannot add null texture!" );
+        if ( textureRegion.Texture == null )
+        {
+            throw new GdxRuntimeException( "cannot add null texture!" );
+        }
 
         Textures.Add( textureRegion.Texture );
 
@@ -174,8 +180,12 @@ public class TextureAtlas
     public AtlasRegion? FindRegion( string? name )
     {
         for ( int i = 0, n = Regions.Count; i < n; i++ )
+        {
             if ( Regions[ i ]?.Name == name )
+            {
                 return Regions[ i ];
+            }
+        }
 
         return null;
     }
@@ -191,7 +201,10 @@ public class TextureAtlas
         {
             var region = Regions[ i ];
 
-            if ( ( region?.Name != name ) || ( region.Index != index ) ) continue;
+            if ( ( region?.Name != name ) || ( region.Index != index ) )
+            {
+                continue;
+            }
 
             return region;
         }
@@ -213,7 +226,10 @@ public class TextureAtlas
         {
             var region = Regions[ i ];
 
-            if ( region?.Name == name ) matched.Add( new AtlasRegion( region ) );
+            if ( region?.Name == name )
+            {
+                matched.Add( new AtlasRegion( region ) );
+            }
         }
 
         return matched;
@@ -228,7 +244,10 @@ public class TextureAtlas
     {
         var sprites = new List< Sprite >();
 
-        for ( int i = 0, n = Regions.Count; i < n; i++ ) sprites.Add( NewSprite( Regions[ i ] ) );
+        for ( int i = 0, n = Regions.Count; i < n; i++ )
+        {
+            sprites.Add( NewSprite( Regions[ i ] ) );
+        }
 
         return sprites;
     }
@@ -244,8 +263,12 @@ public class TextureAtlas
     public Sprite? CreateSprite( string name )
     {
         for ( int i = 0, n = Regions.Count; i < n; i++ )
+        {
             if ( Regions[ i ]?.Name == name )
+            {
                 return NewSprite( Regions[ i ] );
+            }
+        }
 
         return null;
     }
@@ -262,7 +285,10 @@ public class TextureAtlas
         {
             var region = Regions[ i ];
 
-            if ( ( region?.Index != index ) || ( region.Name != name ) ) continue;
+            if ( ( region?.Index != index ) || ( region.Name != name ) )
+            {
+                continue;
+            }
 
             return NewSprite( Regions[ i ] );
         }
@@ -287,7 +313,10 @@ public class TextureAtlas
         {
             var region = Regions[ i ];
 
-            if ( region?.Name == name ) matched.Add( NewSprite( region ) );
+            if ( region?.Name == name )
+            {
+                matched.Add( NewSprite( region ) );
+            }
         }
 
         return matched;
@@ -299,7 +328,10 @@ public class TextureAtlas
     /// <returns></returns>
     private static Sprite NewSprite( AtlasRegion? region )
     {
-        if ( region == null ) throw new GdxRuntimeException( "atlas region cannot be null!" );
+        if ( region == null )
+        {
+            throw new GdxRuntimeException( "atlas region cannot be null!" );
+        }
 
         if ( ( region.PackedWidth == region.OriginalWidth )
           && ( region.PackedHeight == region.OriginalHeight ) )
@@ -337,13 +369,19 @@ public class TextureAtlas
             {
                 var splits = region.FindValue( "split" );
 
-                if ( splits == null ) throw new ArgumentException( "Region does not have ninepatch splits: " + name );
+                if ( splits == null )
+                {
+                    throw new ArgumentException( "Region does not have ninepatch splits: " + name );
+                }
 
                 var patch = new NinePatch( region, splits[ 0 ], splits[ 1 ], splits[ 2 ], splits[ 3 ] );
 
                 var pads = region.FindValue( "pad" );
 
-                if ( pads != null ) patch.SetPadding( pads[ 0 ], pads[ 1 ], pads[ 2 ], pads[ 3 ] );
+                if ( pads != null )
+                {
+                    patch.SetPadding( pads[ 0 ], pads[ 1 ], pads[ 2 ], pads[ 3 ] );
+                }
 
                 return patch;
             }
@@ -359,7 +397,10 @@ public class TextureAtlas
     /// </summary>
     public void Dispose()
     {
-        foreach ( var texture in Textures ) texture.Dispose();
+        foreach ( var texture in Textures )
+        {
+            texture.Dispose();
+        }
 
         Textures.Clear();
     }

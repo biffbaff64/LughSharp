@@ -46,9 +46,15 @@ public class ETC1
 
     private static int GetPixelSize( Pixmap.Format format )
     {
-        if ( format == Pixmap.Format.RGB565 ) return RGB565_PIXEL_SIZE;
+        if ( format == Pixmap.Format.RGB565 )
+        {
+            return RGB565_PIXEL_SIZE;
+        }
 
-        if ( format == Pixmap.Format.RGB888 ) return RGB888_PIXEL_SIZE;
+        if ( format == Pixmap.Format.RGB888 )
+        {
+            return RGB888_PIXEL_SIZE;
+        }
 
         throw new GdxRuntimeException( "Can only handle RGB565 or RGB888 images" );
     }
@@ -303,7 +309,10 @@ public class ETC1
                 CompressedData = BufferUtils.NewByteBuffer( fileSize );
                 int readBytes;
 
-                while ( ( readBytes = input.Read( buffer ) ) != -1 ) CompressedData.Put( buffer, 0, readBytes );
+                while ( ( readBytes = input.Read( buffer ) ) != -1 )
+                {
+                    CompressedData.Put( buffer, 0, readBytes );
+                }
 
                 CompressedData.Position = 0;
                 CompressedData.Limit    = CompressedData.Capacity;
@@ -357,7 +366,9 @@ public class ETC1
         private void CheckNPOT()
         {
             if ( !MathUtils.IsPowerOfTwo( Width ) || !MathUtils.IsPowerOfTwo( Height ) )
+            {
                 Console.WriteLine( @"ETC1Data warning: non-power-of-two ETC1textures may crash the driver of PowerVR GPUs" );
+            }
         }
 
         /// <summary>

@@ -52,13 +52,25 @@ public class ETC1TextureData : ITextureData
     /// <inheritdoc />
     public void Prepare()
     {
-        if ( IsPrepared ) throw new GdxRuntimeException( "Already prepared" );
+        if ( IsPrepared )
+        {
+            throw new GdxRuntimeException( "Already prepared" );
+        }
 
-        if ( ( _file == null ) && ( _data == null ) ) throw new GdxRuntimeException( "Can only load once from ETC1Data" );
+        if ( ( _file == null ) && ( _data == null ) )
+        {
+            throw new GdxRuntimeException( "Can only load once from ETC1Data" );
+        }
 
-        if ( _file != null ) _data = new ETC1.ETC1Data( _file );
+        if ( _file != null )
+        {
+            _data = new ETC1.ETC1Data( _file );
+        }
 
-        if ( _data == null ) throw new GdxRuntimeException( "No data to prepare!" );
+        if ( _data == null )
+        {
+            throw new GdxRuntimeException( "No data to prepare!" );
+        }
 
         Width      = _data.Width;
         Height     = _data.Height;
@@ -80,9 +92,15 @@ public class ETC1TextureData : ITextureData
     /// <inheritdoc />
     public void ConsumeCustomData( int target )
     {
-        if ( !IsPrepared ) throw new GdxRuntimeException( "Call prepare() before calling consumeCompressedData()" );
+        if ( !IsPrepared )
+        {
+            throw new GdxRuntimeException( "Call prepare() before calling consumeCompressedData()" );
+        }
 
-        if ( _data is null ) throw new GdxRuntimeException( "No data to consume!" );
+        if ( _data is null )
+        {
+            throw new GdxRuntimeException( "No data to consume!" );
+        }
 
         if ( !Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
         {
@@ -103,7 +121,10 @@ public class ETC1TextureData : ITextureData
                                          ptr );
                 }
 
-                if ( UseMipMaps ) MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
+                if ( UseMipMaps )
+                {
+                    MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
+                }
 
                 pixmap.Dispose();
                 UseMipMaps = false;
@@ -126,7 +147,10 @@ public class ETC1TextureData : ITextureData
                 }
             }
 
-            if ( UseMipMaps ) Gdx.GL.glGenerateMipmap( IGL.GL_TEXTURE_2D );
+            if ( UseMipMaps )
+            {
+                Gdx.GL.glGenerateMipmap( IGL.GL_TEXTURE_2D );
+            }
         }
 
         _data.Dispose();

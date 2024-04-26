@@ -87,13 +87,18 @@ public class Buffer16BitStereo : AudioBase
     {
         ArgumentNullException.ThrowIfNull( bufferOut );
 
-        if ( ( count + offset ) > bufferOut.Length ) throw new ArgumentException( "The sum of offset and count is larger than the buffer length" );
+        if ( ( count + offset ) > bufferOut.Length )
+        {
+            throw new ArgumentException( "The sum of offset and count is larger than the buffer length" );
+        }
 
         var remaining = BytesLeft;
         int copySize;
 
         if ( count > remaining )
+        {
             copySize = remaining;
+        }
         else
         {
             // Copy an even number of sample frames
@@ -133,9 +138,15 @@ public class Buffer16BitStereo : AudioBase
         // samples is required.
         ArgumentNullException.ThrowIfNull( samples );
 
-        if ( samples.Length < 32 ) throw new ArgumentException( "samples must have 32 values" );
+        if ( samples.Length < 32 )
+        {
+            throw new ArgumentException( "samples must have 32 values" );
+        }
 
-        if ( ( _bufferChannelOffsets == null ) || ( channel >= _bufferChannelOffsets.Length ) ) throw new Exception( "Song is closing..." );
+        if ( ( _bufferChannelOffsets == null ) || ( channel >= _bufferChannelOffsets.Length ) )
+        {
+            throw new Exception( "Song is closing..." );
+        }
 
         var pos = _bufferChannelOffsets[ channel ];
 
@@ -177,7 +188,10 @@ public class Buffer16BitStereo : AudioBase
         _offset = 0;
         _end    = 0;
 
-        for ( var i = 0; i < OUTPUT_CHANNELS; i++ ) _bufferChannelOffsets[ i ] = i * 2; // two bytes per channel
+        for ( var i = 0; i < OUTPUT_CHANNELS; i++ )
+        {
+            _bufferChannelOffsets[ i ] = i * 2; // two bytes per channel
+        }
     }
 
     /// <inheritdoc />

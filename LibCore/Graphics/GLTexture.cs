@@ -215,11 +215,17 @@ public abstract class GLTexture : IDisposable
     {
         var max = GetMaxAnisotropicFilterLevel();
 
-        if ( Math.Abs( max - 1f ) < 0.1f ) return 1f;
+        if ( Math.Abs( max - 1f ) < 0.1f )
+        {
+            return 1f;
+        }
 
         level = Math.Min( level, max );
 
-        if ( !force && MathUtils.IsEqual( level, AnisotropicFilterLevel, 0.1f ) ) return AnisotropicFilterLevel;
+        if ( !force && MathUtils.IsEqual( level, AnisotropicFilterLevel, 0.1f ) )
+        {
+            return AnisotropicFilterLevel;
+        }
 
         Gdx.GL.glTexParameterf( IGL.GL_TEXTURE_2D,
                                 IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT,
@@ -236,11 +242,17 @@ public abstract class GLTexture : IDisposable
     {
         var max = GetMaxAnisotropicFilterLevel();
 
-        if ( Math.Abs( max - 1f ) < 0.1f ) return 1f;
+        if ( Math.Abs( max - 1f ) < 0.1f )
+        {
+            return 1f;
+        }
 
         level = Math.Min( level, max );
 
-        if ( MathUtils.IsEqual( level, AnisotropicFilterLevel, 0.1f ) ) return level;
+        if ( MathUtils.IsEqual( level, AnisotropicFilterLevel, 0.1f ) )
+        {
+            return level;
+        }
 
         Bind();
 
@@ -256,7 +268,10 @@ public abstract class GLTexture : IDisposable
     /// <returns></returns>
     public float GetMaxAnisotropicFilterLevel()
     {
-        if ( _maxAnisotropicFilterLevel > 0 ) return _maxAnisotropicFilterLevel;
+        if ( _maxAnisotropicFilterLevel > 0 )
+        {
+            return _maxAnisotropicFilterLevel;
+        }
 
         if ( Gdx.Graphics.SupportsExtension( "GL_EXT_texture_filter_anisotropic" ) )
         {
@@ -298,7 +313,10 @@ public abstract class GLTexture : IDisposable
             return;
         }
 
-        if ( !data.IsPrepared ) data.Prepare();
+        if ( !data.IsPrepared )
+        {
+            data.Prepare();
+        }
 
         var type = data.TextureDataType;
 
@@ -312,7 +330,10 @@ public abstract class GLTexture : IDisposable
         var pixmap        = data.ConsumePixmap();
         var disposePixmap = data.DisposePixmap();
 
-        if ( pixmap == null ) throw new GdxRuntimeException( "ConsumePixmap() resulted in a null Pixmap!" );
+        if ( pixmap == null )
+        {
+            throw new GdxRuntimeException( "ConsumePixmap() resulted in a null Pixmap!" );
+        }
 
         if ( data.GetFormat() != pixmap.GetFormat() )
         {
@@ -321,7 +342,10 @@ public abstract class GLTexture : IDisposable
             tmp.Blending = Pixmap.BlendTypes.None;
             tmp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
 
-            if ( data.DisposePixmap() ) pixmap.Dispose();
+            if ( data.DisposePixmap() )
+            {
+                pixmap.Dispose();
+            }
 
             pixmap        = tmp;
             disposePixmap = true;
@@ -330,7 +354,9 @@ public abstract class GLTexture : IDisposable
         Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 1 );
 
         if ( data.UseMipMaps )
+        {
             MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
+        }
         else
         {
             unsafe
@@ -350,11 +376,17 @@ public abstract class GLTexture : IDisposable
             }
         }
 
-        if ( disposePixmap ) pixmap.Dispose();
+        if ( disposePixmap )
+        {
+            pixmap.Dispose();
+        }
     }
 
     protected virtual void Dispose( bool disposing )
     {
-        if ( disposing ) Delete();
+        if ( disposing )
+        {
+            Delete();
+        }
     }
 }

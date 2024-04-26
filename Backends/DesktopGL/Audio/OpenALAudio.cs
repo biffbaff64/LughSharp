@@ -139,7 +139,10 @@ public class OpenALAudio : IGLAudio
 
         var soundClass = _extensionToSoundClass.Get( file.Extension.ToLower() );
 
-        if ( soundClass == null ) throw new GdxRuntimeException( $"Unknown file extension for sound: {file}" );
+        if ( soundClass == null )
+        {
+            throw new GdxRuntimeException( $"Unknown file extension for sound: {file}" );
+        }
 
         try
         {
@@ -166,7 +169,10 @@ public class OpenALAudio : IGLAudio
 
         var musicClass = _extensionToMusicClass.Get( file.Extension.ToLower() );
 
-        if ( musicClass == null ) throw new GdxRuntimeException( "Unknown file extension for music: " + file );
+        if ( musicClass == null )
+        {
+            throw new GdxRuntimeException( "Unknown file extension for music: " + file );
+        }
 
         try
         {
@@ -184,9 +190,15 @@ public class OpenALAudio : IGLAudio
     /// </summary>
     public void Update()
     {
-        if ( NoDevice ) return;
+        if ( NoDevice )
+        {
+            return;
+        }
 
-        foreach ( var alm in Music ) alm.Update();
+        foreach ( var alm in Music )
+        {
+            alm.Update();
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -274,7 +286,10 @@ public class OpenALAudio : IGLAudio
     /// <returns></returns>
     public int ObtainSource( bool isMusic )
     {
-        if ( NoDevice || ( _idleSources == null ) ) return 0;
+        if ( NoDevice || ( _idleSources == null ) )
+        {
+            return 0;
+        }
 
         for ( int i = 0, n = _idleSources.Count; i < n; i++ )
         {
@@ -285,12 +300,17 @@ public class OpenALAudio : IGLAudio
             if ( ( state != AL.PLAYING ) && ( state != AL.PAUSED ) )
             {
                 if ( isMusic )
+                {
                     _idleSources.RemoveAt( i );
+                }
                 else
                 {
                     var oldSoundId = _sourceToSoundId?[ ( int ) sourceId ];
 
-                    if ( oldSoundId != null ) _soundIdToSource?.Remove( ( long ) oldSoundId );
+                    if ( oldSoundId != null )
+                    {
+                        _soundIdToSource?.Remove( ( long ) oldSoundId );
+                    }
 
                     var soundId = _nextSoundId++;
 
@@ -316,7 +336,10 @@ public class OpenALAudio : IGLAudio
     /// <param name="sourceID"></param>
     public void FreeSource( int sourceID )
     {
-        if ( NoDevice ) return;
+        if ( NoDevice )
+        {
+            return;
+        }
 
         AL.SourceStop( ( uint ) sourceID );
         AL.Sourcei( ( uint ) sourceID, AL.BUFFER, 0 );
@@ -325,7 +348,10 @@ public class OpenALAudio : IGLAudio
 
         _sourceToSoundId?.Remove( sourceID );
 
-        if ( soundId != null ) _soundIdToSource?.Remove( ( long ) soundId );
+        if ( soundId != null )
+        {
+            _soundIdToSource?.Remove( ( long ) soundId );
+        }
 
         _idleSources?.Add( ( uint ) sourceID );
     }
@@ -335,13 +361,19 @@ public class OpenALAudio : IGLAudio
     /// <param name="bufferID"></param>
     public void FreeBuffer( int bufferID )
     {
-        if ( NoDevice || ( _idleSources == null ) ) return;
+        if ( NoDevice || ( _idleSources == null ) )
+        {
+            return;
+        }
 
         for ( int i = 0, n = _idleSources.Count; i < n; i++ )
         {
             var sourceID = _idleSources?[ i ];
 
-            if ( sourceID == null ) continue;
+            if ( sourceID == null )
+            {
+                continue;
+            }
 
             AL.GetSourcei( ( uint ) sourceID, AL.BUFFER, out var outval );
 
@@ -351,7 +383,10 @@ public class OpenALAudio : IGLAudio
 
                 _sourceToSoundId?.Remove( ( int ) sourceID );
 
-                if ( soundId != null ) _soundIdToSource?.Remove( ( int ) soundId );
+                if ( soundId != null )
+                {
+                    _soundIdToSource?.Remove( ( int ) soundId );
+                }
 
                 AL.SourceStop( ( uint ) sourceID );
                 AL.Sourcei( ( uint ) sourceID, AL.BUFFER, 0 );
@@ -364,7 +399,10 @@ public class OpenALAudio : IGLAudio
     /// <param name="bufferID"></param>
     public void StopSourcesWithBuffer( int bufferID )
     {
-        if ( NoDevice || ( _idleSources == null ) ) return;
+        if ( NoDevice || ( _idleSources == null ) )
+        {
+            return;
+        }
 
         for ( int i = 0, n = _idleSources.Count; i < n; i++ )
         {
@@ -378,7 +416,10 @@ public class OpenALAudio : IGLAudio
 
                 _sourceToSoundId?.Remove( ( int ) sourceID );
 
-                if ( soundId != null ) _soundIdToSource?.Remove( ( long ) soundId );
+                if ( soundId != null )
+                {
+                    _soundIdToSource?.Remove( ( long ) soundId );
+                }
 
                 AL.SourceStop( sourceID );
             }
@@ -390,7 +431,10 @@ public class OpenALAudio : IGLAudio
     /// <param name="bufferID"></param>
     public void PauseSourcesWithBuffer( int bufferID )
     {
-        if ( NoDevice || ( _idleSources == null ) ) return;
+        if ( NoDevice || ( _idleSources == null ) )
+        {
+            return;
+        }
 
         for ( int i = 0, n = _idleSources.Count; i < n; i++ )
         {
@@ -398,7 +442,10 @@ public class OpenALAudio : IGLAudio
 
             AL.GetSourcei( sourceID, AL.BUFFER, out var outval );
 
-            if ( outval == bufferID ) AL.SourcePause( sourceID );
+            if ( outval == bufferID )
+            {
+                AL.SourcePause( sourceID );
+            }
         }
     }
 
@@ -407,7 +454,10 @@ public class OpenALAudio : IGLAudio
     /// <param name="bufferID"></param>
     public void ResumeSourcesWithBuffer( int bufferID )
     {
-        if ( NoDevice || ( _idleSources == null ) ) return;
+        if ( NoDevice || ( _idleSources == null ) )
+        {
+            return;
+        }
 
         for ( int i = 0, n = _idleSources.Count; i < n; i++ )
         {
@@ -419,7 +469,10 @@ public class OpenALAudio : IGLAudio
             {
                 AL.GetSourcei( sourceID, AL.SOURCE_STATE, out var state );
 
-                if ( state == AL.PAUSED ) AL.SourcePlay( sourceID );
+                if ( state == AL.PAUSED )
+                {
+                    AL.SourcePlay( sourceID );
+                }
             }
         }
     }
@@ -453,7 +506,10 @@ public class OpenALAudio : IGLAudio
     {
         var sourceId = _soundIdToSource?.Get( soundId );
 
-        if ( sourceId != null ) AL.SourceStop( ( uint ) sourceId );
+        if ( sourceId != null )
+        {
+            AL.SourceStop( ( uint ) sourceId );
+        }
     }
 
     /// <summary>
@@ -463,7 +519,10 @@ public class OpenALAudio : IGLAudio
     {
         var sourceId = _soundIdToSource?.Get( soundId );
 
-        if ( sourceId != null ) AL.SourcePause( ( uint ) sourceId );
+        if ( sourceId != null )
+        {
+            AL.SourcePause( ( uint ) sourceId );
+        }
     }
 
     public void ResumeSound( long soundId )
@@ -474,7 +533,10 @@ public class OpenALAudio : IGLAudio
         {
             AL.GetSourcei( ( uint ) sourceId, AL.SOURCE_STATE, out var outval );
 
-            if ( outval == AL.PAUSED ) AL.SourcePlay( ( uint ) sourceId );
+            if ( outval == AL.PAUSED )
+            {
+                AL.SourcePlay( ( uint ) sourceId );
+            }
         }
     }
 
@@ -482,21 +544,30 @@ public class OpenALAudio : IGLAudio
     {
         var sourceId = _soundIdToSource?.Get( soundId );
 
-        if ( sourceId != null ) AL.Sourcef( ( uint ) sourceId, AL.GAIN, volume );
+        if ( sourceId != null )
+        {
+            AL.Sourcef( ( uint ) sourceId, AL.GAIN, volume );
+        }
     }
 
     public void SetSoundLooping( long soundId, bool looping )
     {
         var sourceId = _soundIdToSource?.Get( soundId );
 
-        if ( sourceId != null ) AL.Sourcei( ( uint ) sourceId, AL.LOOPING, looping ? AL.TRUE : AL.FALSE );
+        if ( sourceId != null )
+        {
+            AL.Sourcei( ( uint ) sourceId, AL.LOOPING, looping ? AL.TRUE : AL.FALSE );
+        }
     }
 
     public void SetSoundPitch( long soundId, float pitch )
     {
         var sourceId = _soundIdToSource?.Get( soundId );
 
-        if ( sourceId != null ) AL.Sourcef( ( uint ) sourceId, AL.PITCH, pitch );
+        if ( sourceId != null )
+        {
+            AL.Sourcef( ( uint ) sourceId, AL.PITCH, pitch );
+        }
     }
 
     public void SetSoundPan( long soundId, float pan, float volume )
@@ -521,7 +592,10 @@ public class OpenALAudio : IGLAudio
     /// </summary>
     public void Retain( OpenALSound sound, bool stop )
     {
-        if ( _recentSounds == null ) return;
+        if ( _recentSounds == null )
+        {
+            return;
+        }
 
         // Move the pointer ahead and wrap
         _mostRecentSound++;
@@ -530,10 +604,16 @@ public class OpenALAudio : IGLAudio
         if ( stop )
         {
             // Stop the least recent sound (the one we are about to bump off the buffer)
-            if ( _recentSounds[ _mostRecentSound ] != null ) _recentSounds?[ _mostRecentSound ]?.Stop();
+            if ( _recentSounds[ _mostRecentSound ] != null )
+            {
+                _recentSounds?[ _mostRecentSound ]?.Stop();
+            }
         }
 
-        if ( _recentSounds != null ) _recentSounds[ _mostRecentSound ] = sound;
+        if ( _recentSounds != null )
+        {
+            _recentSounds[ _mostRecentSound ] = sound;
+        }
     }
 
     /// <summary>
@@ -542,8 +622,12 @@ public class OpenALAudio : IGLAudio
     public void Forget( OpenALSound sound )
     {
         for ( var i = 0; i < _recentSounds?.Length; i++ )
+        {
             if ( _recentSounds[ i ] == sound )
+            {
                 _recentSounds[ i ] = null;
+            }
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -554,7 +638,10 @@ public class OpenALAudio : IGLAudio
     {
         if ( disposing )
         {
-            if ( NoDevice ) return;
+            if ( NoDevice )
+            {
+                return;
+            }
 
             if ( _allSources != null )
             {
@@ -564,7 +651,10 @@ public class OpenALAudio : IGLAudio
 
                     AL.GetSourcei( sourceID, AL.SOURCE_STATE, out var state );
 
-                    if ( state != AL.STOPPED ) AL.SourceStop( sourceID );
+                    if ( state != AL.STOPPED )
+                    {
+                        AL.SourceStop( sourceID );
+                    }
 
                     AL.DeleteSources( ( int ) sourceID, _allSources.ToArray() );
                 }

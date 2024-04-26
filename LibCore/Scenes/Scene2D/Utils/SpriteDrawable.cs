@@ -63,7 +63,10 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
 
     public override void Draw( IBatch batch, float x, float y, float width, float height )
     {
-        if ( Sprite == null ) return;
+        if ( Sprite == null )
+        {
+            return;
+        }
 
         var spriteColor = Sprite.Color;
         var oldColor    = spriteColor.ToFloatBits();
@@ -89,7 +92,10 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
                       float scaleY,
                       float rotation )
     {
-        if ( Sprite == null ) return;
+        if ( Sprite == null )
+        {
+            return;
+        }
 
         var spriteColor = Sprite.Color;
         var oldColor    = spriteColor.ToFloatBits();
@@ -113,9 +119,13 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
         Sprite newSprite;
 
         if ( _sprite is AtlasSprite sprite )
+        {
             newSprite = new AtlasSprite( sprite );
+        }
         else
+        {
             newSprite = new Sprite( _sprite! );
+        }
 
         newSprite.SetColor( tint );
         newSprite.SetSize( MinWidth, MinHeight );

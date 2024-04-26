@@ -220,7 +220,10 @@ public class VertexBufferObjectWithVAO : IVertexData
 
         _bufferHandle = 0;
 
-        if ( _ownsBuffer ) BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+        if ( _ownsBuffer )
+        {
+            BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+        }
 
         DeleteVAO();
     }
@@ -262,7 +265,10 @@ public class VertexBufferObjectWithVAO : IVertexData
             {
                 stillValid = locations.Length == _cachedLocations.Count;
 
-                for ( var i = 0; stillValid && ( i < numAttributes ); i++ ) stillValid = locations[ i ] == _cachedLocations[ i ];
+                for ( var i = 0; stillValid && ( i < numAttributes ); i++ )
+                {
+                    stillValid = locations[ i ] == _cachedLocations[ i ];
+                }
             }
         }
 
@@ -284,7 +290,10 @@ public class VertexBufferObjectWithVAO : IVertexData
 
                 var location = _cachedLocations[ i ];
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 shader.EnableVertexAttribute( location );
 
@@ -300,7 +309,10 @@ public class VertexBufferObjectWithVAO : IVertexData
 
     private void UnbindAttributes( ShaderProgram shaderProgram )
     {
-        if ( _cachedLocations.Count == 0 ) return;
+        if ( _cachedLocations.Count == 0 )
+        {
+            return;
+        }
 
         var numAttributes = Attributes.Size;
 
@@ -308,7 +320,10 @@ public class VertexBufferObjectWithVAO : IVertexData
         {
             var location = _cachedLocations[ i ];
 
-            if ( location < 0 ) continue;
+            if ( location < 0 )
+            {
+                continue;
+            }
 
             shaderProgram.DisableVertexAttribute( location );
         }

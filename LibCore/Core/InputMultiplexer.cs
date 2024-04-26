@@ -41,7 +41,10 @@ public class InputMultiplexer : IInputProcessor
     /// </summary>
     public InputMultiplexer( params IInputProcessor[] processors )
     {
-        foreach ( var inputProcessor in processors ) Processors.Add( inputProcessor );
+        foreach ( var inputProcessor in processors )
+        {
+            Processors.Add( inputProcessor );
+        }
     }
 
     public SnapshotArray< IInputProcessor > Processors { get; set; } = new( 4 );
@@ -54,8 +57,12 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
+            {
                 if ( items[ i ]!.KeyDown( keycode ) )
+                {
                     return true;
+                }
+            }
         }
         finally
         {
@@ -73,8 +80,12 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
+            {
                 if ( items[ i ]!.KeyUp( keycode ) )
+                {
                     return true;
+                }
+            }
         }
         finally
         {
@@ -92,8 +103,12 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
+            {
                 if ( items[ i ]!.KeyTyped( character ) )
+                {
                     return true;
+                }
+            }
         }
         finally
         {
@@ -111,8 +126,12 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
+            {
                 if ( items[ i ]!.TouchDown( screenX, screenY, pointer, button ) )
+                {
                     return true;
+                }
+            }
         }
         finally
         {
@@ -130,8 +149,12 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
+            {
                 if ( items[ i ]!.TouchUp( screenX, screenY, pointer, button ) )
+                {
                     return true;
+                }
+            }
         }
         finally
         {
@@ -149,8 +172,12 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
+            {
                 if ( items[ i ]!.TouchDragged( screenX, screenY, pointer ) )
+                {
                     return true;
+                }
+            }
         }
         finally
         {
@@ -168,8 +195,12 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
+            {
                 if ( items[ i ]!.MouseMoved( screenX, screenY ) )
+                {
                     return true;
+                }
+            }
         }
         finally
         {
@@ -187,8 +218,12 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
+            {
                 if ( items[ i ]!.Scrolled( amountX, amountY ) )
+                {
                     return true;
+                }
+            }
         }
         finally
         {
@@ -205,7 +240,10 @@ public class InputMultiplexer : IInputProcessor
     /// </summary>
     public void AddProcessor( int index, IInputProcessor processor )
     {
-        if ( processor == null ) throw new NullReferenceException( "processor cannot be null" );
+        if ( processor == null )
+        {
+            throw new NullReferenceException( "processor cannot be null" );
+        }
 
         Processors.Insert( index, processor );
     }
@@ -215,7 +253,10 @@ public class InputMultiplexer : IInputProcessor
     /// </summary>
     public void AddProcessor( IInputProcessor processor )
     {
-        if ( processor == null ) throw new NullReferenceException( "processor cannot be null" );
+        if ( processor == null )
+        {
+            throw new NullReferenceException( "processor cannot be null" );
+        }
 
         Processors.Add( processor );
     }

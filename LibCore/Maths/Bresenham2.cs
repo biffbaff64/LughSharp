@@ -111,8 +111,13 @@ public class Bresenham2
         }
 
         if ( h < 0 )
+        {
             dy1               = -1;
-        else if ( h > 0 ) dy1 = 1;
+        }
+        else if ( h > 0 )
+        {
+            dy1 = 1;
+        }
 
         var longest  = Math.Abs( w );
         var shortest = Math.Abs( h );
@@ -123,8 +128,13 @@ public class Bresenham2
             shortest = Math.Abs( w );
 
             if ( h < 0 )
+            {
                 dy2               = -1;
-            else if ( h > 0 ) dy2 = 1;
+            }
+            else if ( h > 0 )
+            {
+                dy2 = 1;
+            }
 
             dx2 = 0;
         }

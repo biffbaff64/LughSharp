@@ -124,7 +124,10 @@ public class SelectBox< T > : Widget, IDisableable
 
     protected void SetStage( Stage? stage )
     {
-        if ( stage == null ) _selectBoxList?.Hide();
+        if ( stage == null )
+        {
+            _selectBoxList?.Hide();
+        }
 
         Stage = stage;
     }
@@ -160,7 +163,10 @@ public class SelectBox< T > : Widget, IDisableable
 
         Invalidate();
 
-        if ( oldPrefWidth.Equals( PrefWidth ) ) InvalidateHierarchy();
+        if ( oldPrefWidth.Equals( PrefWidth ) )
+        {
+            InvalidateHierarchy();
+        }
     }
 
     /// <summary>
@@ -183,12 +189,18 @@ public class SelectBox< T > : Widget, IDisableable
 
         Invalidate();
 
-        if ( oldPrefWidth.Equals( PrefWidth ) ) InvalidateHierarchy();
+        if ( oldPrefWidth.Equals( PrefWidth ) )
+        {
+            InvalidateHierarchy();
+        }
     }
 
     public void ClearItems()
     {
-        if ( _items.Count == 0 ) return;
+        if ( _items.Count == 0 )
+        {
+            return;
+        }
 
         _items.Clear();
         _selection.Clear();
@@ -215,7 +227,9 @@ public class SelectBox< T > : Widget, IDisableable
                                     bg.MinHeight );
         }
         else
+        {
             _prefHeight = font.GetCapHeight() - ( font.GetDescent() * 2 );
+        }
 
         Pool< GlyphLayout > layoutPool = Pools< GlyphLayout >.Get();
         var                 layout     = layoutPool.Obtain();
@@ -224,7 +238,10 @@ public class SelectBox< T > : Widget, IDisableable
         {
             _prefWidth = 0;
 
-            if ( bg != null ) _prefWidth = bg.LeftWidth + bg.RightWidth;
+            if ( bg != null )
+            {
+                _prefWidth = bg.LeftWidth + bg.RightWidth;
+            }
 
             var selected = GetSelected();
 
@@ -246,7 +263,10 @@ public class SelectBox< T > : Widget, IDisableable
 
             _prefWidth = maxItemWidth;
 
-            if ( bg != null ) _prefWidth = Math.Max( _prefWidth + bg.LeftWidth + bg.RightWidth, bg.MinWidth );
+            if ( bg != null )
+            {
+                _prefWidth = Math.Max( _prefWidth + bg.LeftWidth + bg.RightWidth, bg.MinWidth );
+            }
 
             var listStyle   = BoxStyle.ListStyle;
             var scrollStyle = BoxStyle.ScrollStyle;
@@ -255,7 +275,10 @@ public class SelectBox< T > : Widget, IDisableable
 
             bg = scrollStyle.Background;
 
-            if ( bg != null ) listWidth = Math.Max( ( float ) ( listWidth + bg.LeftWidth + bg.RightWidth )!, bg.MinWidth );
+            if ( bg != null )
+            {
+                listWidth = Math.Max( ( float ) ( listWidth + bg.LeftWidth + bg.RightWidth )!, bg.MinWidth );
+            }
 
             if ( _selectBoxList is not { DisableY: true } )
             {
@@ -275,11 +298,20 @@ public class SelectBox< T > : Widget, IDisableable
     /// </summary>
     protected IDrawable? GetBackgroundIDrawable()
     {
-        if ( IsDisabled && ( BoxStyle.BackgroundDisabled != null ) ) return BoxStyle.BackgroundDisabled;
+        if ( IsDisabled && ( BoxStyle.BackgroundDisabled != null ) )
+        {
+            return BoxStyle.BackgroundDisabled;
+        }
 
-        if ( _selectBoxList!.HasParent() && ( BoxStyle.BackgroundOpen != null ) ) return BoxStyle.BackgroundOpen;
+        if ( _selectBoxList!.HasParent() && ( BoxStyle.BackgroundOpen != null ) )
+        {
+            return BoxStyle.BackgroundOpen;
+        }
 
-        if ( IsOver() && ( BoxStyle.BackgroundOver != null ) ) return BoxStyle.BackgroundOver;
+        if ( IsOver() && ( BoxStyle.BackgroundOver != null ) )
+        {
+            return BoxStyle.BackgroundOver;
+        }
 
         return BoxStyle.Background;
     }
@@ -289,9 +321,15 @@ public class SelectBox< T > : Widget, IDisableable
     /// </summary>
     protected Color GetFontColor()
     {
-        if ( IsDisabled && ( BoxStyle.DisabledFontColor != null ) ) return BoxStyle.DisabledFontColor;
+        if ( IsDisabled && ( BoxStyle.DisabledFontColor != null ) )
+        {
+            return BoxStyle.DisabledFontColor;
+        }
 
-        if ( ( BoxStyle.OverFontColor != null ) && ( IsOver() || _selectBoxList!.HasParent() ) ) return BoxStyle.OverFontColor;
+        if ( ( BoxStyle.OverFontColor != null ) && ( IsOver() || _selectBoxList!.HasParent() ) )
+        {
+            return BoxStyle.OverFontColor;
+        }
 
         return BoxStyle.FontColor;
     }
@@ -327,7 +365,9 @@ public class SelectBox< T > : Widget, IDisableable
                 y      += ( int ) ( ( height / 2 ) + background.BottomHeight + ( font.GetData().CapHeight / 2 ) );
             }
             else
+            {
                 y += ( int ) ( ( height / 2 ) + ( font.GetData().CapHeight / 2 ) );
+            }
 
             font.SetColor( fontColor.R, fontColor.G, fontColor.B, fontColor.A * parentAlpha );
 
@@ -378,11 +418,17 @@ public class SelectBox< T > : Widget, IDisableable
     public void SetSelected( T item )
     {
         if ( _items.Contains( item ) )
+        {
             _selection.Set( item );
+        }
         else if ( _items.Count > 0 )
+        {
             _selection.Set( _items.First() );
+        }
         else
+        {
             _selection.Clear();
+        }
     }
 
     /// <returns>
@@ -430,14 +476,20 @@ public class SelectBox< T > : Widget, IDisableable
 
         var bg = BoxStyle.Background;
 
-        if ( bg != null ) width = Math.Max( width + bg.LeftWidth + bg.RightWidth, bg.MinWidth );
+        if ( bg != null )
+        {
+            width = Math.Max( width + bg.LeftWidth + bg.RightWidth, bg.MinWidth );
+        }
 
         return width;
     }
 
     public void SetDisabled( bool disabled )
     {
-        if ( disabled && !IsDisabled ) HideList();
+        if ( disabled && !IsDisabled )
+        {
+            HideList();
+        }
 
         IsDisabled = disabled;
     }
@@ -449,7 +501,10 @@ public class SelectBox< T > : Widget, IDisableable
 
     public void ShowList()
     {
-        if ( ( _items.Count > 0 ) && ( Stage != null ) ) _selectBoxList?.Show( Stage );
+        if ( ( _items.Count > 0 ) && ( Stage != null ) )
+        {
+            _selectBoxList?.Show( Stage );
+        }
     }
 
     public void HideList()
@@ -538,7 +593,10 @@ public class SelectBox< T > : Widget, IDisableable
 
         public void Show( Stage stage )
         {
-            if ( ListBox.IsTouchable() ) return;
+            if ( ListBox.IsTouchable() )
+            {
+                return;
+            }
 
             stage.AddActor( this );
             stage.AddCaptureListener( _hideListener );
@@ -559,11 +617,17 @@ public class SelectBox< T > : Widget, IDisableable
 
             var scrollPaneBackground = GetStyle().Background;
 
-            if ( scrollPaneBackground != null ) height += scrollPaneBackground.TopHeight + scrollPaneBackground.BottomHeight;
+            if ( scrollPaneBackground != null )
+            {
+                height += scrollPaneBackground.TopHeight + scrollPaneBackground.BottomHeight;
+            }
 
             var listBackground = ListBox.Style?.Background;
 
-            if ( listBackground != null ) height += listBackground.TopHeight + listBackground.BottomHeight;
+            if ( listBackground != null )
+            {
+                height += listBackground.TopHeight + listBackground.BottomHeight;
+            }
 
             var heightBelow = _stagePosition.Y;
             var heightAbove = stage.Height - heightBelow - SelectBox.Height;
@@ -577,13 +641,19 @@ public class SelectBox< T > : Widget, IDisableable
                     height = Math.Min( height, heightAbove );
                 }
                 else
+                {
                     height = heightBelow;
+                }
             }
 
             if ( below )
+            {
                 Y = _stagePosition.Y - height;
+            }
             else
+            {
                 Y = _stagePosition.Y + SelectBox.Height;
+            }
 
             X      = _stagePosition.X;
             Height = height;
@@ -592,7 +662,10 @@ public class SelectBox< T > : Widget, IDisableable
 
             var width = Math.Max( PrefWidth, SelectBox.Width );
 
-            if ( ( PrefHeight > height ) && !DisableY ) width += GetScrollBarWidth();
+            if ( ( PrefHeight > height ) && !DisableY )
+            {
+                width += GetScrollBarWidth();
+            }
 
             Width = width;
 
@@ -610,7 +683,10 @@ public class SelectBox< T > : Widget, IDisableable
             _previousScrollFocus = null;
             var actor = stage.ScrollFocus;
 
-            if ( ( actor != null ) && !actor.IsDescendantOf( this ) ) _previousScrollFocus = actor;
+            if ( ( actor != null ) && !actor.IsDescendantOf( this ) )
+            {
+                _previousScrollFocus = actor;
+            }
 
             stage.ScrollFocus = this;
 
@@ -624,7 +700,10 @@ public class SelectBox< T > : Widget, IDisableable
 
         public void Hide()
         {
-            if ( !ListBox.IsTouchable() || !HasParent() ) return;
+            if ( !ListBox.IsTouchable() || !HasParent() )
+            {
+                return;
+            }
 
             ListBox.Touchable = Touchable.Disabled;
 
@@ -633,9 +712,15 @@ public class SelectBox< T > : Widget, IDisableable
                 Stage.RemoveCaptureListener( _hideListener );
                 Stage.RemoveListener( ListBox.KeyListener! );
 
-                if ( _previousScrollFocus is { Stage: null } ) _previousScrollFocus = null;
+                if ( _previousScrollFocus is { Stage: null } )
+                {
+                    _previousScrollFocus = null;
+                }
 
-                if ( ( Stage.ScrollFocus == null ) || IsAscendantOf( Stage.ScrollFocus ) ) Stage.ScrollFocus = _previousScrollFocus;
+                if ( ( Stage.ScrollFocus == null ) || IsAscendantOf( Stage.ScrollFocus ) )
+                {
+                    Stage.ScrollFocus = _previousScrollFocus;
+                }
             }
 
             ClearActions();
@@ -647,7 +732,10 @@ public class SelectBox< T > : Widget, IDisableable
         {
             SelectBox.LocalToStageCoordinates( SelectBox._temp.Set( 0, 0 ) );
 
-            if ( !SelectBox._temp.Equals( _stagePosition ) ) Hide();
+            if ( !SelectBox._temp.Equals( _stagePosition ) )
+            {
+                Hide();
+            }
 
             base.Draw( batch, parentAlpha );
         }
@@ -684,7 +772,10 @@ public class SelectBox< T > : Widget, IDisableable
 
         public override bool FireChangeEvent()
         {
-            if ( _parent._selectedPrefWidth ) _parent.InvalidateHierarchy();
+            if ( _parent._selectedPrefWidth )
+            {
+                _parent.InvalidateHierarchy();
+            }
 
             return base.FireChangeEvent();
         }
@@ -704,14 +795,24 @@ public class SelectBox< T > : Widget, IDisableable
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
-            if ( ( pointer == 0 ) && ( button != 0 ) ) return false;
+            if ( ( pointer == 0 ) && ( button != 0 ) )
+            {
+                return false;
+            }
 
-            if ( _parent.IsDisabled ) return false;
+            if ( _parent.IsDisabled )
+            {
+                return false;
+            }
 
             if ( _parent._selectBoxList!.HasParent() )
+            {
                 _parent.HideList();
+            }
             else
+            {
                 _parent.ShowList();
+            }
 
             return true;
         }
@@ -734,7 +835,10 @@ public class SelectBox< T > : Widget, IDisableable
             var selected = _parent.ListBox.GetSelected();
 
             // Force clicking the already selected item to trigger a change event.
-            if ( selected != null ) _parent.SelectBox._selection.Clear();
+            if ( selected != null )
+            {
+                _parent.SelectBox._selection.Clear();
+            }
 
             _parent.SelectBox._selection.Choose( selected! );
             _parent.Hide();
@@ -744,7 +848,10 @@ public class SelectBox< T > : Widget, IDisableable
         {
             var index = _parent.ListBox.GetItemIndexAt( y );
 
-            if ( index != -1 ) _parent.ListBox.SetSelectedIndex( index );
+            if ( index != -1 )
+            {
+                _parent.ListBox.SetSelectedIndex( index );
+            }
 
             return true;
         }
@@ -761,7 +868,10 @@ public class SelectBox< T > : Widget, IDisableable
 
         public override void Exit( InputEvent? ev, float x, float y, int pointer, Actor? toActor )
         {
-            if ( ( toActor == null ) || !_parent.IsAscendantOf( toActor ) ) _parent.ListBox.Selection?.Set( _parent.SelectBox.GetSelected() );
+            if ( ( toActor == null ) || !_parent.IsAscendantOf( toActor ) )
+            {
+                _parent.ListBox.Selection?.Set( _parent.SelectBox.GetSelected() );
+            }
         }
     }
 
@@ -778,7 +888,10 @@ public class SelectBox< T > : Widget, IDisableable
         {
             var target = ev?.TargetActor;
 
-            if ( _parent.IsAscendantOf( target ) ) return false;
+            if ( _parent.IsAscendantOf( target ) )
+            {
+                return false;
+            }
 
             _parent.ListBox.Selection?.Set( _parent.SelectBox.GetSelected() );
             _parent.Hide();
@@ -846,9 +959,15 @@ public class SelectBox< T > : Widget, IDisableable
             Font = style.Font;
             FontColor.Set( style.FontColor );
 
-            if ( style.OverFontColor != null ) OverFontColor = new Color( style.OverFontColor );
+            if ( style.OverFontColor != null )
+            {
+                OverFontColor = new Color( style.OverFontColor );
+            }
 
-            if ( style.DisabledFontColor != null ) DisabledFontColor = new Color( style.DisabledFontColor );
+            if ( style.DisabledFontColor != null )
+            {
+                DisabledFontColor = new Color( style.DisabledFontColor );
+            }
 
             Background  = style.Background;
             ScrollStyle = new ScrollPane.ScrollPaneStyle( style.ScrollStyle );

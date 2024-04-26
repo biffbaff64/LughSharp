@@ -228,7 +228,10 @@ public class VertexAttribute
     /// </summary>
     public new bool Equals( object obj )
     {
-        if ( obj is not VertexAttribute attribute ) return false;
+        if ( obj is not VertexAttribute attribute )
+        {
+            return false;
+        }
 
         return Equals( attribute );
     }

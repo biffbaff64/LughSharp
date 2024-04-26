@@ -136,7 +136,10 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     {
         var atlas = atlasResolver!.GetAtlas();
 
-        foreach ( var texture in atlas.Textures ) trackedTextures.Add( texture );
+        foreach ( var texture in atlas.Textures )
+        {
+            trackedTextures.Add( texture );
+        }
 
         var props = tileSet.Properties;
 
@@ -155,12 +158,17 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
             foreach ( var region in atlas.FindRegions( name! ) )
 
                 // Handle unused tileIds
+            {
                 if ( region != null )
                 {
                     var tileId = firstgid + region.Index;
 
-                    if ( ( tileId >= firstgid ) && ( tileId <= lastgid ) ) AddStaticTiledMapTile( tileSet, region, tileId, offsetX, offsetY );
+                    if ( ( tileId >= firstgid ) && ( tileId <= lastgid ) )
+                    {
+                        AddStaticTiledMapTile( tileSet, region, tileId, offsetX, offsetY );
+                    }
                 }
+            }
         }
 
         if ( tileElements != null )
@@ -183,7 +191,10 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
 
                         var region = atlas.FindRegion( regionName );
 
-                        if ( region == null ) throw new GdxRuntimeException( $"Tileset atlasRegion not found: {regionName}" );
+                        if ( region == null )
+                        {
+                            throw new GdxRuntimeException( $"Tileset atlasRegion not found: {regionName}" );
+                        }
 
                         AddStaticTiledMapTile( tileSet, region, tileId, offsetX, offsetY );
                     }
@@ -201,7 +212,10 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     {
         var properties = xmlDocument.SelectSingleNode( "properties" );
 
-        if ( properties == null ) throw new GdxRuntimeException( "The map is missing a properties node." );
+        if ( properties == null )
+        {
+            throw new GdxRuntimeException( "The map is missing a properties node." );
+        }
 
         string? atlasFilePath = null;
 
@@ -210,6 +224,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         if ( propertyList != null )
         {
             foreach ( XmlNode? property in propertyList )
+            {
                 if ( property != null )
                 {
                     var name = property.Attributes?[ "name" ]?.Value;
@@ -221,13 +236,20 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
                         break;
                     }
                 }
+            }
         }
 
-        if ( atlasFilePath == null ) throw new GdxRuntimeException( "The map is missing the 'atlas' property" );
+        if ( atlasFilePath == null )
+        {
+            throw new GdxRuntimeException( "The map is missing the 'atlas' property" );
+        }
 
         var fileHandle = GetRelativeFileHandle( tmxFile, atlasFilePath );
 
-        if ( fileHandle!.Exists ) return fileHandle;
+        if ( fileHandle!.Exists )
+        {
+            return fileHandle;
+        }
 
         throw new GdxRuntimeException( $"The 'atlas' file could not be found: '{atlasFilePath}'" );
     }
@@ -238,7 +260,10 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     /// <param name="mag"></param>
     protected void SetTextureFilters( TextureFilter min, TextureFilter mag )
     {
-        foreach ( var texture in trackedTextures ) texture.SetFilter( min, mag );
+        foreach ( var texture in trackedTextures )
+        {
+            texture.SetFilter( min, mag );
+        }
 
         trackedTextures.Clear();
     }

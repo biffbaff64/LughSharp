@@ -90,32 +90,53 @@ public class ImageButton : Button
     /// </summary>
     protected IDrawable? GetImageDrawable()
     {
-        if ( IsDisabled && ( Style.imageDisabled != null ) ) return Style.imageDisabled;
+        if ( IsDisabled && ( Style.imageDisabled != null ) )
+        {
+            return Style.imageDisabled;
+        }
 
         if ( IsPressed() )
         {
-            if ( IsChecked && ( Style.imageCheckedDown != null ) ) return Style.imageCheckedDown;
+            if ( IsChecked && ( Style.imageCheckedDown != null ) )
+            {
+                return Style.imageCheckedDown;
+            }
 
-            if ( Style.imageDown != null ) return Style.imageDown;
+            if ( Style.imageDown != null )
+            {
+                return Style.imageDown;
+            }
         }
 
         if ( IsOver() )
         {
             if ( IsChecked )
             {
-                if ( Style.imageCheckedOver != null ) return Style.imageCheckedOver;
+                if ( Style.imageCheckedOver != null )
+                {
+                    return Style.imageCheckedOver;
+                }
             }
             else
             {
-                if ( Style.imageOver != null ) return Style.imageOver;
+                if ( Style.imageOver != null )
+                {
+                    return Style.imageOver;
+                }
             }
         }
 
         if ( IsChecked )
         {
-            if ( Style.imageChecked != null ) return Style.imageChecked;
+            if ( Style.imageChecked != null )
+            {
+                return Style.imageChecked;
+            }
 
-            if ( IsOver() && ( Style.imageOver != null ) ) return Style.imageOver;
+            if ( IsOver() && ( Style.imageOver != null ) )
+            {
+                return Style.imageOver;
+            }
         }
 
         return Style.imageUp;
@@ -143,12 +164,18 @@ public class ImageButton : Button
 
     protected override string ToString()
     {
-        if ( Name != null ) return Name;
+        if ( Name != null )
+        {
+            return Name;
+        }
 
         var className = GetType().Name;
         var dotIndex  = className.LastIndexOf( '.' );
 
-        if ( dotIndex != -1 ) className = className.Substring( dotIndex + 1 );
+        if ( dotIndex != -1 )
+        {
+            className = className.Substring( dotIndex + 1 );
+        }
 
         return ( className.IndexOf( '$' ) != -1 ? "ImageButton " : "" ) + className + ": " + Image.GetDrawable();
     }

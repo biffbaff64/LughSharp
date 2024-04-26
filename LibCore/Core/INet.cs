@@ -117,7 +117,9 @@ public interface INet
             set
             {
                 if ( value || ( Gdx.App.AppType != IApplication.ApplicationType.WebGL ) )
+                {
                     _followRedirects = value;
+                }
                 else
                 {
                     throw new ArgumentException
@@ -147,7 +149,10 @@ public interface INet
 
         public void SetHeader( string name, string value )
         {
-            if ( _headers != null ) _headers[ name ] = value;
+            if ( _headers != null )
+            {
+                _headers[ name ] = value;
+            }
         }
 
         public void SetContent( StreamReader contentStream, long contentLength )

@@ -79,9 +79,15 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
 
         if ( parameter != null )
         {
-            if ( parameter.textureAtlasPath != null ) textureAtlasPath = parameter.textureAtlasPath;
+            if ( parameter.textureAtlasPath != null )
+            {
+                textureAtlasPath = parameter.textureAtlasPath;
+            }
 
-            if ( parameter.resources != null ) resources = parameter.resources;
+            if ( parameter.resources != null )
+            {
+                resources = parameter.resources;
+            }
         }
 
         var atlas = manager.Get< TextureAtlas >( textureAtlasPath! );
@@ -89,7 +95,10 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
 
         if ( resources != null )
         {
-            foreach ( KeyValuePair< string, object > entry in resources ) skin.Add( entry.Key, entry.Value );
+            foreach ( KeyValuePair< string, object > entry in resources )
+            {
+                skin.Add( entry.Key, entry.Value );
+            }
         }
 
         skin.Load( file );

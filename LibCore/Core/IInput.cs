@@ -369,15 +369,24 @@ public interface IInput
             {
                 var name = ToString( i );
 
-                if ( ( name != null ) && ( _keyNames != null ) ) _keyNames[ i ] = name;
+                if ( ( name != null ) && ( _keyNames != null ) )
+                {
+                    _keyNames[ i ] = name;
+                }
             }
         }
 
         public static string? ToString( int keycode )
         {
-            if ( keycode < 0 ) throw new ArgumentException( "keycode cannot be < 0 - " + keycode );
+            if ( keycode < 0 )
+            {
+                throw new ArgumentException( "keycode cannot be < 0 - " + keycode );
+            }
 
-            if ( keycode > MAX_KEYCODE ) throw new ArgumentException( "keycode cannot be > MaxKeycode - " + keycode );
+            if ( keycode > MAX_KEYCODE )
+            {
+                throw new ArgumentException( "keycode cannot be > MaxKeycode - " + keycode );
+            }
 
             var str = keycode switch
             {

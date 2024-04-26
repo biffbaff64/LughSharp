@@ -46,7 +46,10 @@ public class Gdx2DPixmap : IDisposable
         Height  = ( int ) NativeData[ 2 ];
         Format  = ( int ) NativeData[ 3 ];
 
-        if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) ) Convert( requestedFormat );
+        if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
+        {
+            Convert( requestedFormat );
+        }
     }
 
     /// <summary>
@@ -61,7 +64,10 @@ public class Gdx2DPixmap : IDisposable
 
         int readBytes;
 
-        while ( ( readBytes = inStream.Read() ) != -1 ) writer.Write( readBytes );
+        while ( ( readBytes = inStream.Read() ) != -1 )
+        {
+            writer.Write( readBytes );
+        }
 
         var buffer = memoryStream.ToArray();
 
@@ -72,7 +78,10 @@ public class Gdx2DPixmap : IDisposable
         Height  = ( int ) NativeData[ 2 ];
         Format  = ( int ) NativeData[ 3 ];
 
-        if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) ) Convert( requestedFormat );
+        if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
+        {
+            Convert( requestedFormat );
+        }
     }
 
     /// <summary>
@@ -133,7 +142,10 @@ public class Gdx2DPixmap : IDisposable
     {
         var ptr = Load( nativeData, buffer, offset, len );
 
-        if ( ptr == null ) throw new IOException( $"Error loading pixmap: {GetFailureReason()}" );
+        if ( ptr == null )
+        {
+            throw new IOException( $"Error loading pixmap: {GetFailureReason()}" );
+        }
 
         return ptr;
     }

@@ -91,7 +91,10 @@ public class CumulativeDistribution< T >
     {
         float sum = 0;
 
-        foreach ( var cv in _values ) sum += cv.interval;
+        foreach ( var cv in _values )
+        {
+            sum += cv.interval;
+        }
 
         float intervalSum = 0;
 
@@ -136,11 +139,17 @@ public class CumulativeDistribution< T >
             var value = _values[ imid ];
 
             if ( probability < value.frequency )
+            {
                 imax = imid - 1;
+            }
             else if ( probability > value.frequency )
+            {
                 imin = imid + 1;
+            }
             else
+            {
                 break;
+            }
         }
 
         return _values[ imin ].value;
@@ -177,12 +186,14 @@ public class CumulativeDistribution< T >
     public virtual void SetInterval( T obj, float intervalSize )
     {
         foreach ( var value in _values )
+        {
             if ( Equals( value.value, obj ) )
             {
                 value.interval = intervalSize;
 
                 return;
             }
+        }
     }
 
     /// <summary>

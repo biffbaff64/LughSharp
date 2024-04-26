@@ -35,7 +35,10 @@ public class StringCharBuffer : CharBuffer
     {
         var n = csq.Length;
 
-        if ( ( start < 0 ) || ( start > n ) || ( end < start ) || ( end > n ) ) throw new IndexOutOfRangeException();
+        if ( ( start < 0 ) || ( start > n ) || ( end < start ) || ( end > n ) )
+        {
+            throw new IndexOutOfRangeException();
+        }
 
         _string = csq;
     }

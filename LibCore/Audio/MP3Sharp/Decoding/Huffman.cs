@@ -740,7 +740,10 @@ public class Huffman
         var error = 1;
         var level = DMASK;
 
-        if ( h._val == null ) return 2;
+        if ( h._val == null )
+        {
+            return 2;
+        }
 
         /* table 0 needs no bits */
         if ( h._treelen == 0 )
@@ -781,13 +784,19 @@ public class Huffman
             //if (bits[bitIndex++]!=0)
             if ( br.ReadOneBit() != 0 )
             {
-                while ( h._val[ point ][ 1 ] >= MXOFF ) point += h._val[ point ][ 1 ];
+                while ( h._val[ point ][ 1 ] >= MXOFF )
+                {
+                    point += h._val[ point ][ 1 ];
+                }
 
                 point += h._val[ point ][ 1 ];
             }
             else
             {
-                while ( h._val[ point ][ 0 ] >= MXOFF ) point += h._val[ point ][ 0 ];
+                while ( h._val[ point ][ 0 ] >= MXOFF )
+                {
+                    point += h._val[ point ][ 0 ];
+                }
 
                 point += h._val[ point ][ 0 ];
             }
@@ -818,22 +827,34 @@ public class Huffman
 
             if ( v[ 0 ] != 0 )
             {
-                if ( br.ReadOneBit() != 0 ) v[ 0 ] = -v[ 0 ];
+                if ( br.ReadOneBit() != 0 )
+                {
+                    v[ 0 ] = -v[ 0 ];
+                }
             }
 
             if ( w[ 0 ] != 0 )
             {
-                if ( br.ReadOneBit() != 0 ) w[ 0 ] = -w[ 0 ];
+                if ( br.ReadOneBit() != 0 )
+                {
+                    w[ 0 ] = -w[ 0 ];
+                }
             }
 
             if ( x[ 0 ] != 0 )
             {
-                if ( br.ReadOneBit() != 0 ) x[ 0 ] = -x[ 0 ];
+                if ( br.ReadOneBit() != 0 )
+                {
+                    x[ 0 ] = -x[ 0 ];
+                }
             }
 
             if ( y[ 0 ] != 0 )
             {
-                if ( br.ReadOneBit() != 0 ) y[ 0 ] = -y[ 0 ];
+                if ( br.ReadOneBit() != 0 )
+                {
+                    y[ 0 ] = -y[ 0 ];
+                }
             }
         }
         else
@@ -844,22 +865,34 @@ public class Huffman
 
             if ( h._linbits != 0 )
             {
-                if ( ( h._xlen - 1 ) == x[ 0 ] ) x[ 0 ] += br.ReadBits( h._linbits );
+                if ( ( h._xlen - 1 ) == x[ 0 ] )
+                {
+                    x[ 0 ] += br.ReadBits( h._linbits );
+                }
             }
 
             if ( x[ 0 ] != 0 )
             {
-                if ( br.ReadOneBit() != 0 ) x[ 0 ] = -x[ 0 ];
+                if ( br.ReadOneBit() != 0 )
+                {
+                    x[ 0 ] = -x[ 0 ];
+                }
             }
 
             if ( h._linbits != 0 )
             {
-                if ( ( h._ylen - 1 ) == y[ 0 ] ) y[ 0 ] += br.ReadBits( h._linbits );
+                if ( ( h._ylen - 1 ) == y[ 0 ] )
+                {
+                    y[ 0 ] += br.ReadBits( h._linbits );
+                }
             }
 
             if ( y[ 0 ] != 0 )
             {
-                if ( br.ReadOneBit() != 0 ) y[ 0 ] = -y[ 0 ];
+                if ( br.ReadOneBit() != 0 )
+                {
+                    y[ 0 ] = -y[ 0 ];
+                }
             }
         }
 
@@ -868,7 +901,10 @@ public class Huffman
 
     public static void Initialize()
     {
-        if ( _huffmanTable != null! ) return;
+        if ( _huffmanTable != null! )
+        {
+            return;
+        }
 
         _huffmanTable       = new Huffman[ HTN ];
         _huffmanTable[ 0 ]  = new Huffman( "0  ", 0, 0, 0, 0, -1, null!, null!, _valTab0, 0 );

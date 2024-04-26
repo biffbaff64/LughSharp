@@ -69,7 +69,10 @@ public class Group : Actor, ICullable
 
         Actor?[] actors = Children.Begin();
 
-        for ( int i = 0, n = Children.Size; i < n; i++ ) actors[ i ]?.Act( delta );
+        for ( int i = 0, n = Children.Size; i < n; i++ )
+        {
+            actors[ i ]?.Act( delta );
+        }
 
         Children.End();
     }
@@ -86,11 +89,17 @@ public class Group : Actor, ICullable
     /// <param name="parentAlpha"></param>
     public override void Draw( IBatch batch, float parentAlpha )
     {
-        if ( Transform ) ApplyTransform( batch, ComputeTransform() );
+        if ( Transform )
+        {
+            ApplyTransform( batch, ComputeTransform() );
+        }
 
         DrawChildren( batch, parentAlpha );
 
-        if ( Transform ) ResetTransform( batch );
+        if ( Transform )
+        {
+            ResetTransform( batch );
+        }
     }
 
     /// <summary>
@@ -127,7 +136,10 @@ public class Group : Actor, ICullable
                 {
                     var child = actors[ i ];
 
-                    if ( child is not { IsVisible: true } ) continue;
+                    if ( child is not { IsVisible: true } )
+                    {
+                        continue;
+                    }
 
                     var cx = child.X;
                     var cy = child.Y;
@@ -136,7 +148,9 @@ public class Group : Actor, ICullable
                       && ( cy <= cullTop )
                       && ( ( cx + child.Width ) >= cullLeft )
                       && ( ( cy + child.Height ) >= cullBottom ) )
+                    {
                         child.Draw( batch, parentAlpha );
+                    }
                 }
             }
             else
@@ -152,7 +166,10 @@ public class Group : Actor, ICullable
                 {
                     var child = actors[ i ];
 
-                    if ( child is not { IsVisible: true } ) continue;
+                    if ( child is not { IsVisible: true } )
+                    {
+                        continue;
+                    }
 
                     var cx = child.X;
                     var cy = child.Y;
@@ -183,7 +200,10 @@ public class Group : Actor, ICullable
                 {
                     var child = actors[ i ];
 
-                    if ( child is not { IsVisible: true } ) continue;
+                    if ( child is not { IsVisible: true } )
+                    {
+                        continue;
+                    }
 
                     child.Draw( batch, parentAlpha );
                 }
@@ -201,7 +221,10 @@ public class Group : Actor, ICullable
                 {
                     var child = actors[ i ];
 
-                    if ( child is not { IsVisible: true } ) continue;
+                    if ( child is not { IsVisible: true } )
+                    {
+                        continue;
+                    }
 
                     var cx = child.X;
                     var cy = child.Y;
@@ -230,11 +253,17 @@ public class Group : Actor, ICullable
     {
         DrawDebugBounds( shapes );
 
-        if ( Transform ) ApplyTransform( shapes, ComputeTransform() );
+        if ( Transform )
+        {
+            ApplyTransform( shapes, ComputeTransform() );
+        }
 
         DrawDebugChildren( shapes );
 
-        if ( Transform ) ResetTransform( shapes );
+        if ( Transform )
+        {
+            ResetTransform( shapes );
+        }
     }
 
     /// <summary>
@@ -259,11 +288,20 @@ public class Group : Actor, ICullable
             {
                 var child = actors[ i ];
 
-                if ( child == null ) continue;
+                if ( child == null )
+                {
+                    continue;
+                }
 
-                if ( !child.IsVisible ) continue;
+                if ( !child.IsVisible )
+                {
+                    continue;
+                }
 
-                if ( !child.DebugActive && !( child is Group ) ) continue;
+                if ( !child.DebugActive && !( child is Group ) )
+                {
+                    continue;
+                }
 
                 child.DrawDebug( shapes );
             }
@@ -283,11 +321,20 @@ public class Group : Actor, ICullable
             {
                 var child = actors[ i ];
 
-                if ( child == null ) continue;
+                if ( child == null )
+                {
+                    continue;
+                }
 
-                if ( !child.IsVisible ) continue;
+                if ( !child.IsVisible )
+                {
+                    continue;
+                }
 
-                if ( !child.DebugActive && child is not Group ) continue;
+                if ( !child.DebugActive && child is not Group )
+                {
+                    continue;
+                }
 
                 var cx = child.X;
                 var cy = child.Y;
@@ -313,19 +360,28 @@ public class Group : Actor, ICullable
     {
         _worldTransform.SetToTrnRotScl( X + OriginX, Y + OriginY, Rotation, ScaleX, ScaleY );
 
-        if ( ( OriginX != 0 ) || ( OriginY != 0 ) ) _worldTransform.Translate( -OriginX, -OriginY );
+        if ( ( OriginX != 0 ) || ( OriginY != 0 ) )
+        {
+            _worldTransform.Translate( -OriginX, -OriginY );
+        }
 
         // Find the first parent that transforms.
         var parentGroup = Parent;
 
         while ( parentGroup != null )
         {
-            if ( parentGroup.Transform ) break;
+            if ( parentGroup.Transform )
+            {
+                break;
+            }
 
             parentGroup = parentGroup.Parent;
         }
 
-        if ( parentGroup != null ) _worldTransform.PreMul( parentGroup._worldTransform );
+        if ( parentGroup != null )
+        {
+            _worldTransform.PreMul( parentGroup._worldTransform );
+        }
 
         _computedTransform.Set( _worldTransform );
 
@@ -385,9 +441,15 @@ public class Group : Actor, ICullable
 
     public override Actor? Hit( float x, float y, bool touchable )
     {
-        if ( touchable && ( Touchable == Touchable.Disabled ) ) return null;
+        if ( touchable && ( Touchable == Touchable.Disabled ) )
+        {
+            return null;
+        }
 
-        if ( !IsVisible ) return null;
+        if ( !IsVisible )
+        {
+            return null;
+        }
 
         for ( var i = Children.Size - 1; i >= 0; i-- )
         {
@@ -397,7 +459,10 @@ public class Group : Actor, ICullable
 
             var hit = child.Hit( _tmp.X, _tmp.Y, touchable );
 
-            if ( hit != null ) return hit;
+            if ( hit != null )
+            {
+                return hit;
+            }
         }
 
         return base.Hit( x, y, touchable );
@@ -418,7 +483,10 @@ public class Group : Actor, ICullable
     {
         if ( actor.Parent != null )
         {
-            if ( actor.Parent == this ) return;
+            if ( actor.Parent == this )
+            {
+                return;
+            }
 
             actor.Parent.RemoveActor( actor, false );
         }
@@ -442,15 +510,22 @@ public class Group : Actor, ICullable
     {
         if ( actor.Parent != null )
         {
-            if ( actor.Parent == this ) return;
+            if ( actor.Parent == this )
+            {
+                return;
+            }
 
             actor.Parent.RemoveActor( actor, false );
         }
 
         if ( index >= Children.Size )
+        {
             Children.Add( actor );
+        }
         else
+        {
             Children.Insert( index, actor );
+        }
 
         actor.Parent = this;
         actor.Stage  = Stage;
@@ -467,7 +542,10 @@ public class Group : Actor, ICullable
     {
         if ( actor.Parent != null )
         {
-            if ( actor.Parent == this ) return;
+            if ( actor.Parent == this )
+            {
+                return;
+            }
 
             actor.Parent.RemoveActor( actor, false );
         }
@@ -492,7 +570,10 @@ public class Group : Actor, ICullable
     {
         if ( actor.Parent != null )
         {
-            if ( actor.Parent == this ) return;
+            if ( actor.Parent == this )
+            {
+                return;
+            }
 
             actor.Parent.RemoveActor( actor, false );
         }
@@ -500,9 +581,13 @@ public class Group : Actor, ICullable
         var index = Children.IndexOf( actorAfter );
 
         if ( ( index == Children.Size ) || ( index == -1 ) )
+        {
             Children.Add( actor );
+        }
         else
+        {
             Children.Insert( index + 1, actor );
+        }
 
         actor.Parent = this;
         actor.Stage  = Stage;
@@ -519,7 +604,10 @@ public class Group : Actor, ICullable
     {
         var index = Children.IndexOf( actor );
 
-        if ( index == -1 ) return false;
+        if ( index == -1 )
+        {
+            return false;
+        }
 
         RemoveActorAt( index, unfocus );
 
@@ -541,7 +629,10 @@ public class Group : Actor, ICullable
     {
         var actor = Children.RemoveAt( index );
 
-        if ( unfocus ) Stage?.Unfocus( actor );
+        if ( unfocus )
+        {
+            Stage?.Unfocus( actor );
+        }
 
         actor.Parent = null;
         actor.Stage  = null;
@@ -586,8 +677,12 @@ public class Group : Actor, ICullable
     public T? FindActor< T >( string name ) where T : Actor
     {
         for ( int i = 0, n = Children.Size; i < n; i++ )
+        {
             if ( name.Equals( Children.GetAt( i ).Name ) )
+            {
                 return ( T ) Children.GetAt( i );
+            }
+        }
 
         for ( int i = 0, n = Children.Size; i < n; i++ )
         {
@@ -597,7 +692,10 @@ public class Group : Actor, ICullable
             {
                 Actor? actor = group.FindActor< T >( name );
 
-                if ( actor != null ) return ( T ) actor;
+                if ( actor != null )
+                {
+                    return ( T ) actor;
+                }
             }
         }
 
@@ -608,7 +706,10 @@ public class Group : Actor, ICullable
     {
         Stage = stage;
 
-        for ( int i = 0, n = Children.Size; i < n; i++ ) Children.GetAt( i ).Stage = stage; // StackOverflowError here means the group is its own ascendant.
+        for ( int i = 0, n = Children.Size; i < n; i++ )
+        {
+            Children.GetAt( i ).Stage = stage; // StackOverflowError here means the group is its own ascendant.
+        }
     }
 
     /// <summary>
@@ -619,9 +720,15 @@ public class Group : Actor, ICullable
     {
         var maxIndex = Children.Size;
 
-        if ( ( first < 0 ) || ( first >= maxIndex ) ) return false;
+        if ( ( first < 0 ) || ( first >= maxIndex ) )
+        {
+            return false;
+        }
 
-        if ( ( second < 0 ) || ( second >= maxIndex ) ) return false;
+        if ( ( second < 0 ) || ( second >= maxIndex ) )
+        {
+            return false;
+        }
 
         Children.Swap( first, second );
 
@@ -637,7 +744,10 @@ public class Group : Actor, ICullable
         var firstIndex  = Children.IndexOf( first );
         var secondIndex = Children.IndexOf( second );
 
-        if ( ( firstIndex == -1 ) || ( secondIndex == -1 ) ) return false;
+        if ( ( firstIndex == -1 ) || ( secondIndex == -1 ) )
+        {
+            return false;
+        }
 
         Children.Swap( firstIndex, secondIndex );
 
@@ -668,10 +778,16 @@ public class Group : Actor, ICullable
     {
         var parent = descendant.Parent;
 
-        if ( parent == null ) throw new ArgumentException( $"Child is not a descendant: {descendant}" );
+        if ( parent == null )
+        {
+            throw new ArgumentException( $"Child is not a descendant: {descendant}" );
+        }
 
         // First convert to the actor's parent coordinates.
-        if ( parent != this ) LocalToDescendantCoordinates( parent, localCoords );
+        if ( parent != this )
+        {
+            LocalToDescendantCoordinates( parent, localCoords );
+        }
 
         // Then from each parent down to the descendant.
         descendant.ParentToLocalCoordinates( localCoords );
@@ -690,10 +806,16 @@ public class Group : Actor, ICullable
         if ( recursively )
         {
             foreach ( var child in Children )
+            {
                 if ( child is Group group )
+                {
                     group.SetDebug( enabled, recursively );
+                }
                 else
+                {
                     child.DebugActive = enabled;
+                }
+            }
         }
     }
 
@@ -732,10 +854,15 @@ public class Group : Actor, ICullable
 
         for ( int i = 0, n = Children.Size; i < n; i++ )
         {
-            for ( var ii = 0; ii < indent; ii++ ) buffer.Append( "|  " );
+            for ( var ii = 0; ii < indent; ii++ )
+            {
+                buffer.Append( "|  " );
+            }
 
             if ( actors[ i ] is Group group )
+            {
                 group.ToString( buffer, indent + 1 );
+            }
             else
             {
                 buffer.Append( actors[ i ] );

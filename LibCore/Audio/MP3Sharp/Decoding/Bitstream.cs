@@ -247,7 +247,10 @@ public sealed class Bitstream
         // read additional 2 bytes
         var bytesRead = ReadBytes( _syncBuffer, 0, 3 );
 
-        if ( bytesRead != 3 ) throw new BitstreamException( BitstreamErrors.STREAM_EOF );
+        if ( bytesRead != 3 )
+        {
+            throw new BitstreamException( BitstreamErrors.STREAM_EOF );
+        }
 
         var headerstring = ( ( _syncBuffer[ 0 ] << 16 ) & 0x00FF0000 )
                          | ( ( _syncBuffer[ 1 ] << 8 ) & 0x0000FF00 )
@@ -257,7 +260,10 @@ public sealed class Bitstream
         {
             headerstring <<= 8;
 
-            if ( ReadBytes( _syncBuffer, 3, 1 ) != 1 ) throw new BitstreamException( BitstreamErrors.STREAM_EOF );
+            if ( ReadBytes( _syncBuffer, 3, 1 ) != 1 )
+            {
+                throw new BitstreamException( BitstreamErrors.STREAM_EOF );
+            }
 
             headerstring |= _syncBuffer[ 3 ] & 0x000000FF;
 
@@ -265,7 +271,10 @@ public sealed class Bitstream
             {
                 bytesRead = ReadBytes( _syncBuffer, 0, 3 );
 
-                if ( bytesRead != 3 ) throw new BitstreamException( BitstreamErrors.STREAM_EOF );
+                if ( bytesRead != 3 )
+                {
+                    throw new BitstreamException( BitstreamErrors.STREAM_EOF );
+                }
 
                 headerstring = ( ( _syncBuffer[ 0 ] << 16 ) & 0x00FF0000 )
                              | ( ( _syncBuffer[ 1 ] << 8 ) & 0x0000FF00 )
@@ -296,7 +305,10 @@ public sealed class Bitstream
         {
             var id3Header = new sbyte[ 6 ];
 
-            if ( ReadBytes( id3Header, 0, 6 ) != 6 ) throw new BitstreamException( BitstreamErrors.STREAM_EOF );
+            if ( ReadBytes( id3Header, 0, 6 ) != 6 )
+            {
+                throw new BitstreamException( BitstreamErrors.STREAM_EOF );
+            }
 
             // id3 header uses 4 bytes to store the size of all tags,
             // but only the low 7 bits of each byte is used, to avoid
@@ -312,7 +324,10 @@ public sealed class Bitstream
 
             var id3Tag = new sbyte[ id3TagSize ];
 
-            if ( ReadBytes( id3Tag, 0, id3TagSize ) != id3TagSize ) throw new BitstreamException( BitstreamErrors.STREAM_EOF );
+            if ( ReadBytes( id3Tag, 0, id3TagSize ) != id3TagSize )
+            {
+                throw new BitstreamException( BitstreamErrors.STREAM_EOF );
+            }
         }
 
         return id3;
@@ -355,7 +370,10 @@ public sealed class Bitstream
         {
             sync = ( SupportClass.URShift( headerstring, 19 ) & 3 ) != 1;
 
-            if ( !sync ) Console.WriteLine( @"INVALID VERSION DETECTED" );
+            if ( !sync )
+            {
+                Console.WriteLine( @"INVALID VERSION DETECTED" );
+            }
         }
 
         return sync;
@@ -390,11 +408,20 @@ public sealed class Bitstream
             sbyte b2 = 0;
             sbyte b3 = 0;
 
-            if ( ( k + 1 ) < bytesize ) b1 = byteread[ k + 1 ];
+            if ( ( k + 1 ) < bytesize )
+            {
+                b1 = byteread[ k + 1 ];
+            }
 
-            if ( ( k + 2 ) < bytesize ) b2 = byteread[ k + 2 ];
+            if ( ( k + 2 ) < bytesize )
+            {
+                b2 = byteread[ k + 2 ];
+            }
 
-            if ( ( k + 3 ) < bytesize ) b3 = byteread[ k + 3 ];
+            if ( ( k + 3 ) < bytesize )
+            {
+                b3 = byteread[ k + 3 ];
+            }
 
             _frameBuffer[ b++ ] = ( ( b0 << 24 ) & ( int ) SupportClass.Identity( 0xFF000000 ) )
                                 | ( ( b1 << 16 ) & 0x00FF0000 )
@@ -416,7 +443,10 @@ public sealed class Bitstream
         int returnvalue;
         var sum = _bitIndex + countBits;
 
-        if ( _wordPointer < 0 ) _wordPointer = 0;
+        if ( _wordPointer < 0 )
+        {
+            _wordPointer = 0;
+        }
 
         if ( sum <= 32 )
         {
@@ -474,7 +504,10 @@ public sealed class Bitstream
                 {
                     // t/DD: this really SHOULD throw an exception here...
                     // Trace.WriteLine("readFully -- returning success at EOF? (" + bytesread + ")", "Bitstream");
-                    while ( len-- > 0 ) b[ offs++ ] = 0;
+                    while ( len-- > 0 )
+                    {
+                        b[ offs++ ] = 0;
+                    }
 
                     break;
 
@@ -505,7 +538,10 @@ public sealed class Bitstream
                 var bytesread = _sourceStream.Read( b, offs, len );
 
                 // for (int i = 0; i < len; i++) b[i] = (sbyte)Temp[i];
-                if ( bytesread is -1 or 0 ) break;
+                if ( bytesread is -1 or 0 )
+                {
+                    break;
+                }
 
                 totalBytesRead += bytesread;
                 offs           += bytesread;

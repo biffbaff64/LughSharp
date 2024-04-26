@@ -48,11 +48,17 @@ public class VertexAttributes
     /// </summary>
     public VertexAttributes( params VertexAttribute[] attributes )
     {
-        if ( attributes.Length == 0 ) throw new ArgumentException( "attributes must be >= 1" );
+        if ( attributes.Length == 0 )
+        {
+            throw new ArgumentException( "attributes must be >= 1" );
+        }
 
         var list = new VertexAttribute[ attributes.Length ];
 
-        for ( var i = 0; i < attributes.Length; i++ ) list[ i ] = attributes[ i ];
+        for ( var i = 0; i < attributes.Length; i++ )
+        {
+            list[ i ] = attributes[ i ];
+        }
 
         _attributes = list;
         VertexSize  = CalculateOffsets();
@@ -82,7 +88,10 @@ public class VertexAttributes
             {
                 long result = 0;
 
-                foreach ( var t in _attributes ) result |= ( uint ) t.usage;
+                foreach ( var t in _attributes )
+                {
+                    result |= ( uint ) t.usage;
+                }
 
                 _mask = result;
             }
@@ -109,7 +118,10 @@ public class VertexAttributes
     {
         var vertexAttribute = FindByUsage( usage );
 
-        if ( vertexAttribute == null ) return defaultIfNotFound;
+        if ( vertexAttribute == null )
+        {
+            return defaultIfNotFound;
+        }
 
         return vertexAttribute.Offset / 4;
     }
@@ -132,8 +144,12 @@ public class VertexAttributes
         var len = Size;
 
         for ( var i = 0; i < len; i++ )
+        {
             if ( Get( i ).usage == usage )
+            {
                 return Get( i );
+            }
+        }
 
         return null;
     }
@@ -190,15 +206,28 @@ public class VertexAttributes
     /// <returns></returns>
     public new bool Equals( object obj )
     {
-        if ( obj == this ) return true;
+        if ( obj == this )
+        {
+            return true;
+        }
 
-        if ( obj is not VertexAttributes other ) return false;
+        if ( obj is not VertexAttributes other )
+        {
+            return false;
+        }
 
-        if ( _attributes.Length != other._attributes.Length ) return false;
+        if ( _attributes.Length != other._attributes.Length )
+        {
+            return false;
+        }
 
         for ( var i = 0; i < _attributes.Length; i++ )
+        {
             if ( !_attributes[ i ].Equals( other._attributes[ i ] ) )
+            {
                 return false;
+            }
+        }
 
         return true;
     }
@@ -210,34 +239,58 @@ public class VertexAttributes
     {
         long result = 61 * _attributes.Length;
 
-        foreach ( var t in _attributes ) result = ( result * 61 ) + t.HashCode();
+        foreach ( var t in _attributes )
+        {
+            result = ( result * 61 ) + t.HashCode();
+        }
 
         return ( int ) ( result ^ ( result >> 32 ) );
     }
 
     public int CompareTo( VertexAttributes o )
     {
-        if ( _attributes.Length != o._attributes.Length ) return _attributes.Length - o._attributes.Length;
+        if ( _attributes.Length != o._attributes.Length )
+        {
+            return _attributes.Length - o._attributes.Length;
+        }
 
         var m1 = Mask;
         var m2 = o.Mask;
 
-        if ( m1 != m2 ) return m1 < m2 ? -1 : 1;
+        if ( m1 != m2 )
+        {
+            return m1 < m2 ? -1 : 1;
+        }
 
         for ( var i = _attributes.Length - 1; i >= 0; --i )
         {
             var va0 = _attributes[ i ];
             var va1 = o._attributes[ i ];
 
-            if ( va0.usage != va1.usage ) return va0.usage - va1.usage;
+            if ( va0.usage != va1.usage )
+            {
+                return va0.usage - va1.usage;
+            }
 
-            if ( va0.unit != va1.unit ) return va0.unit - va1.unit;
+            if ( va0.unit != va1.unit )
+            {
+                return va0.unit - va1.unit;
+            }
 
-            if ( va0.numComponents != va1.numComponents ) return va0.numComponents - va1.numComponents;
+            if ( va0.numComponents != va1.numComponents )
+            {
+                return va0.numComponents - va1.numComponents;
+            }
 
-            if ( va0.normalized != va1.normalized ) return va0.normalized ? 1 : -1;
+            if ( va0.normalized != va1.normalized )
+            {
+                return va0.normalized ? 1 : -1;
+            }
 
-            if ( va0.type != va1.type ) return va0.type - va1.type;
+            if ( va0.type != va1.type )
+            {
+                return va0.type - va1.type;
+            }
         }
 
         return 0;

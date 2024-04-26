@@ -44,7 +44,10 @@ public abstract class AudioBase
     /// </summary>
     public virtual void AppendSamples( int channel, float[] samples )
     {
-        for ( var i = 0; i < 32; i++ ) Append( channel, Clip( samples[ i ] ) );
+        for ( var i = 0; i < 32; i++ )
+        {
+            Append( channel, Clip( samples[ i ] ) );
+        }
     }
 
     /// <summary>

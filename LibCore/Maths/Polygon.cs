@@ -55,7 +55,10 @@ public class Polygon : IShape2D
     /// </exception>
     public Polygon( float[]? vertices )
     {
-        if ( vertices?.Length < 6 ) throw new ArgumentException( "polygons must contain at least 3 points." );
+        if ( vertices?.Length < 6 )
+        {
+            throw new ArgumentException( "polygons must contain at least 3 points." );
+        }
 
         _localVertices = vertices;
     }
@@ -78,11 +81,17 @@ public class Polygon : IShape2D
     {
         get
         {
-            if ( !_dirty ) return _worldVertices;
+            if ( !_dirty )
+            {
+                return _worldVertices;
+            }
 
             _dirty = false;
 
-            if ( ( _worldVertices == null ) || ( _worldVertices.Length != _localVertices?.Length ) ) _worldVertices = new float[ _localVertices!.Length ];
+            if ( ( _worldVertices == null ) || ( _worldVertices.Length != _localVertices?.Length ) )
+            {
+                _worldVertices = new float[ _localVertices!.Length ];
+            }
 
             var scale = ScaleX is not 1 || ScaleY is not 1;
             var cos   = MathUtils.CosDeg( Rotation );
@@ -137,7 +146,10 @@ public class Polygon : IShape2D
         get => _localVertices;
         set
         {
-            if ( value?.Length < 6 ) throw new ArgumentException( "polygons must contain at least 3 points." );
+            if ( value?.Length < 6 )
+            {
+                throw new ArgumentException( "polygons must contain at least 3 points." );
+            }
 
             _localVertices = value;
             _dirty         = true;
@@ -223,7 +235,9 @@ public class Polygon : IShape2D
 
             if ( ( ( ( y1 <= y ) && ( y < y2 ) ) || ( ( y2 <= y ) && ( y < y1 ) ) )
               && ( x < ( ( ( ( x2 - x1 ) / ( y2 - y1 ) ) * ( y - y1 ) ) + x1 ) ) )
+            {
                 intersects++;
+            }
         }
 
         return ( intersects & 1 ) == 1;

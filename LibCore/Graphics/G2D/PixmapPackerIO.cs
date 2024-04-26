@@ -68,6 +68,7 @@ public class PixmapPackerIO
         var index  = 0;
 
         foreach ( var page in packer.Pages )
+        {
             if ( page.Rects.Count > 0 )
             {
                 var pageFile = new FileInfo( $"{file.Name}_{++index}{parameters.Format.Extension}" );
@@ -153,6 +154,7 @@ public class PixmapPackerIO
                     }
                 }
             }
+        }
 
         writer.Close();
     }

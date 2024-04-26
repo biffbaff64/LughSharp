@@ -88,7 +88,10 @@ public static class Logger
         TraceLevel        = logLevel;
         EnableWriteToFile = enableWriteToFile;
 
-        if ( EnableWriteToFile ) OpenDebugFile( filename, true );
+        if ( EnableWriteToFile )
+        {
+            OpenDebugFile( filename, true );
+        }
     }
 
     /// <summary>
@@ -107,9 +110,15 @@ public static class Logger
                               [CallerMemberName] string callerMethod = "",
                               [CallerLineNumber] int callerLine = 0 )
     {
-        if ( !IsEnabled( LOG_DEBUG ) ) return;
+        if ( !IsEnabled( LOG_DEBUG ) )
+        {
+            return;
+        }
 
-        if ( boxedDebug ) Divider();
+        if ( boxedDebug )
+        {
+            Divider();
+        }
 
         var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
@@ -119,7 +128,10 @@ public static class Logger
 
         WriteToFile( str );
 
-        if ( boxedDebug ) Divider();
+        if ( boxedDebug )
+        {
+            Divider();
+        }
     }
 
     /// <summary>
@@ -134,7 +146,10 @@ public static class Logger
                               [CallerMemberName] string callerMethod = "",
                               [CallerLineNumber] int callerLine = 0 )
     {
-        if ( !IsEnabled( LOG_ERROR ) ) return;
+        if ( !IsEnabled( LOG_ERROR ) )
+        {
+            return;
+        }
 
         var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
@@ -159,7 +174,10 @@ public static class Logger
                                        [CallerMemberName] string callerMethod = "",
                                        [CallerLineNumber] int callerLine = 0 )
     {
-        if ( !IsEnabled( LOG_DEBUG ) || !condition ) return;
+        if ( !IsEnabled( LOG_DEBUG ) || !condition )
+        {
+            return;
+        }
 
         var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
@@ -182,7 +200,10 @@ public static class Logger
                                    [CallerMemberName] string callerMethod = "",
                                    [CallerLineNumber] int callerLine = 0 )
     {
-        if ( !IsEnabled( LOG_DEBUG ) ) return;
+        if ( !IsEnabled( LOG_DEBUG ) )
+        {
+            return;
+        }
 
         var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
@@ -202,7 +223,10 @@ public static class Logger
     {
         var sb = new StringBuilder( DEBUG_TAG );
 
-        for ( var i = 0; i < length; i++ ) sb.Append( ch );
+        for ( var i = 0; i < length; i++ )
+        {
+            sb.Append( ch );
+        }
 
         Console.WriteLine( sb.ToString() );
     }
@@ -220,12 +244,20 @@ public static class Logger
     /// </param>
     public static void OpenDebugFile( string fileName, bool deleteExisting )
     {
-        if ( fileName.Equals( string.Empty ) ) return;
+        if ( fileName.Equals( string.Empty ) )
+        {
+            return;
+        }
 
-        if ( File.Exists( fileName ) && deleteExisting ) File.Delete( fileName );
+        if ( File.Exists( fileName ) && deleteExisting )
+        {
+            File.Delete( fileName );
+        }
 
         if ( Gdx.DevMode )
+        {
             _debugFilePath = ".//";
+        }
         else
         {
             _debugFilePath = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile );
@@ -290,7 +322,10 @@ public static class Logger
         sb.Append( GetCallerInfo( cid ) );
         sb.Append( " : " );
 
-        if ( !string.IsNullOrEmpty( formatString ) ) sb.Append( formatString );
+        if ( !string.IsNullOrEmpty( formatString ) )
+        {
+            sb.Append( formatString );
+        }
 
         return sb.ToString();
     }
@@ -339,7 +374,10 @@ public static class Logger
     /// <param name="text">String holding the text to write.</param>
     private static void WriteToFile( string text )
     {
-        if ( !File.Exists( _debugFilePath + _debugFileName ) ) return;
+        if ( !File.Exists( _debugFilePath + _debugFileName ) )
+        {
+            return;
+        }
 
         using var fs = File.Open( _debugFilePath + _debugFileName, FileMode.Append );
 

@@ -171,14 +171,20 @@ public class RandomXS128 : Random
     /// </returns>
     public long NextLong( in long n )
     {
-        if ( n <= 0 ) throw new ArgumentException( "n must be positive" );
+        if ( n <= 0 )
+        {
+            throw new ArgumentException( "n must be positive" );
+        }
 
         for ( ;; )
         {
             var bits  = NextLong() >>> 1;
             var value = bits % n;
 
-            if ( ( ( bits - value ) + ( n - 1 ) ) >= 0 ) return value;
+            if ( ( ( bits - value ) + ( n - 1 ) ) >= 0 )
+            {
+                return value;
+            }
         }
     }
 
@@ -234,7 +240,10 @@ public class RandomXS128 : Random
         {
             var n = i < 8 ? i : 8;
 
-            for ( var bits = NextLong(); n-- != 0; bits >>= 8 ) bytes[ --i ] = ( sbyte ) bits;
+            for ( var bits = NextLong(); n-- != 0; bits >>= 8 )
+            {
+                bytes[ --i ] = ( sbyte ) bits;
+            }
         }
     }
 

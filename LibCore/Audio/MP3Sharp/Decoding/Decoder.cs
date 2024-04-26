@@ -70,7 +70,10 @@ public partial class Decoder
 
         var eq = parameters.InitialEqualizerSettings;
 
-        if ( eq != null ) _equalizer.FromEqualizer = eq;
+        if ( eq != null )
+        {
+            _equalizer.FromEqualizer = eq;
+        }
     }
 
     public virtual Equalizer? Equalizer
@@ -84,9 +87,15 @@ public partial class Decoder
 
             var factors = _equalizer.BandFactors;
 
-            if ( _leftChannelFilter != null ) _leftChannelFilter.Eq = factors;
+            if ( _leftChannelFilter != null )
+            {
+                _leftChannelFilter.Eq = factors;
+            }
 
-            if ( _rightChannelFilter != null ) _rightChannelFilter.Eq = factors;
+            if ( _rightChannelFilter != null )
+            {
+                _rightChannelFilter.Eq = factors;
+            }
         }
     }
 
@@ -140,7 +149,10 @@ public partial class Decoder
     /// </returns>
     public virtual AudioBase? DecodeFrame( Header header, Bitstream stream )
     {
-        if ( !_isInitialized ) Initialise( header );
+        if ( !_isInitialized )
+        {
+            Initialise( header );
+        }
 
         var layer = header.Layer();
 
@@ -225,7 +237,10 @@ public partial class Decoder
             }
         }
 
-        if ( decoder == null ) throw NewDecoderException( DecoderErrors.UNSUPPORTED_LAYER, null );
+        if ( decoder == null )
+        {
+            throw NewDecoderException( DecoderErrors.UNSUPPORTED_LAYER, null );
+        }
 
         return decoder;
     }
@@ -241,7 +256,10 @@ public partial class Decoder
 
         _leftChannelFilter = new SynthesisFilter( 0, ScaleFactor, factors );
 
-        if ( channels == 2 ) _rightChannelFilter = new SynthesisFilter( 1, ScaleFactor, factors );
+        if ( channels == 2 )
+        {
+            _rightChannelFilter = new SynthesisFilter( 1, ScaleFactor, factors );
+        }
 
         _outputChannels  = channels;
         _outputFrequency = header.Frequency();

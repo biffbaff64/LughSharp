@@ -788,6 +788,7 @@ UTILS/BUFFERS
     - IP   - IP   - FloatBuffer
     - IP   - IP   - HeapByteBuffer
     - IP   - IP   - HeapCharBuffer
+    - IP   - IP   - HeapDoubleBuffer
     - DONE - DONE - HeapFloatBuffer
     - IP   - IP   - HeapShortBuffer
     - IP   - IP   - IDirectBuffer
@@ -996,9 +997,9 @@ EXTENSIONS/GDX-TOOLS/TILEDMAPPACKER
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - TileMapPacker
-    -      - TiledMapPackerTest
-    -      - TiledMapPackerTestRender
-    -      - TileSetLayout
+    -      -      - TiledMapPackerTest
+    -      -      - TiledMapPackerTestRender
+    -      -      - TileSetLayout
 
 EXTENSIONS/GDX-TOOLS/TOOLS
 --------------------------
@@ -1009,7 +1010,7 @@ EXTENSIONS/GDX-TOOLS/TOOLS/TEXTUREPACKER
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - ColorBleedEffect
-    -      - TexturePacker
+    -      -      - TexturePacker
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1018,7 +1019,8 @@ TESTS
 -----
 
     - IP   - IP   - Core/Graphics/CameraTest
-    -      - Core/Graphics/SpriteTest
+    -      -      - Core/Graphics/PixmapIOTest
+    -      -      - Core/Graphics/SpriteTest
     - IP   - IP   - Core/Scene/Scene2D/StageTest
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

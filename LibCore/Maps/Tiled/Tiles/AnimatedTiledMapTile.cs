@@ -133,7 +133,10 @@ public class AnimatedTiledMapTile : ITiledMapTile
         {
             var animationInterval = _animationIntervals[ i ];
 
-            if ( currentTime <= animationInterval ) return i;
+            if ( currentTime <= animationInterval )
+            {
+                return i;
+            }
 
             currentTime -= animationInterval;
         }

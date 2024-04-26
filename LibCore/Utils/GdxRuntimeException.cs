@@ -83,7 +83,10 @@ public class GdxRuntimeException : Exception
                                     [CallerArgumentExpression( "argument" )]
                                     string? paramName = null )
     {
-        if ( argument is null ) Throw( paramName );
+        if ( argument is null )
+        {
+            Throw( paramName );
+        }
     }
 
     [DoesNotReturn]

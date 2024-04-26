@@ -75,7 +75,9 @@ public class HdpiUtils
                               ToBackBufferY( height ) );
         }
         else
+        {
             Gdx.GL.glScissor( x, y, width, height );
+        }
     }
 
     /// <summary>
@@ -95,7 +97,9 @@ public class HdpiUtils
                                ToBackBufferY( height ) );
         }
         else
+        {
             Gdx.GL.glViewport( x, y, width, height );
+        }
     }
 
     /// <summary>

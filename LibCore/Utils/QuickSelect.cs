@@ -54,11 +54,13 @@ public class QuickSelect< T >
         var storage = left;
 
         for ( var i = left; i < right; i++ )
+        {
             if ( _comp.Compare( _array[ i ], pivotValue ) < 0 )
             {
                 Swap( storage, i );
                 storage++;
             }
+        }
 
         Swap( right, storage );
 
@@ -67,7 +69,10 @@ public class QuickSelect< T >
 
     private int RecursiveSelect( int left, int right, int k )
     {
-        if ( left == right ) return left;
+        if ( left == right )
+        {
+            return left;
+        }
 
         var pivotIndex    = MedianOfThreePivot( left, right );
         var pivotNewIndex = Partition( left, right, pivotIndex );
@@ -76,11 +81,17 @@ public class QuickSelect< T >
         int result;
 
         if ( pivotDist == k )
+        {
             result = pivotNewIndex;
+        }
         else if ( k < pivotDist )
+        {
             result = RecursiveSelect( left, pivotNewIndex - 1, k );
+        }
         else
+        {
             result = RecursiveSelect( pivotNewIndex + 1, right, k - pivotDist );
+        }
 
         return result;
     }
@@ -100,12 +111,18 @@ public class QuickSelect< T >
         // does at most 3 comparisons
         if ( _comp.Compare( left, mid ) > 0 )
         {
-            if ( _comp.Compare( mid, right ) > 0 ) return midIdx;
+            if ( _comp.Compare( mid, right ) > 0 )
+            {
+                return midIdx;
+            }
 
             return _comp.Compare( left, right ) > 0 ? rightIdx : leftIdx;
         }
 
-        if ( _comp.Compare( left, right ) > 0 ) return leftIdx;
+        if ( _comp.Compare( left, right ) > 0 )
+        {
+            return leftIdx;
+        }
 
         return _comp.Compare( mid, right ) > 0 ? rightIdx : midIdx;
     }

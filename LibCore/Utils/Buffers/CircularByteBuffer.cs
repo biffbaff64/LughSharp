@@ -53,7 +53,10 @@ public class CircularByteBuffer
             _index    = cdb._index;
             _buffer   = new byte[ _length ];
 
-            for ( var c = 0; c < _length; c++ ) _buffer[ c ] = cdb._buffer[ c ];
+            for ( var c = 0; c < _length; c++ )
+            {
+                _buffer[ c ] = cdb._buffer[ c ];
+            }
         }
     }
 
@@ -69,7 +72,10 @@ public class CircularByteBuffer
 
             var minLength = _length > value ? value : _length;
 
-            for ( var i = 0; i < minLength; i++ ) newDataArray[ i ] = Get( ( i - _length ) + 1 );
+            for ( var i = 0; i < minLength; i++ )
+            {
+                newDataArray[ i ] = Get( ( i - _length ) + 1 );
+            }
 
             _buffer = newDataArray;
             _index  = minLength - 1;
@@ -129,7 +135,10 @@ public class CircularByteBuffer
             _buffer[ _index ] = newValue;
             _numValid++;
 
-            if ( _numValid > _length ) _numValid = _length;
+            if ( _numValid > _length )
+            {
+                _numValid = _length;
+            }
 
             _index++;
             _index %= _length;
@@ -146,7 +155,10 @@ public class CircularByteBuffer
     {
         lock ( this )
         {
-            if ( _numValid == 0 ) throw new Exception( "Can't pop off an empty CircularByteBuffer" );
+            if ( _numValid == 0 )
+            {
+                throw new Exception( "Can't pop off an empty CircularByteBuffer" );
+            }
 
             _numValid--;
 
@@ -209,7 +221,10 @@ public class CircularByteBuffer
     {
         var outByte = new byte[ ( str - stp ) + 1 ];
 
-        for ( int i = str, j = 0; i >= stp; i--, j++ ) outByte[ j ] = this[ i ];
+        for ( int i = str, j = 0; i >= stp; i--, j++ )
+        {
+            outByte[ j ] = this[ i ];
+        }
 
         return outByte;
     }
@@ -219,7 +234,10 @@ public class CircularByteBuffer
     {
         var ret = "";
 
-        foreach ( var t in _buffer ) ret += t + " ";
+        foreach ( var t in _buffer )
+        {
+            ret += t + " ";
+        }
 
         ret += $"\n index = {_index} numValid = {NumValid}";
 

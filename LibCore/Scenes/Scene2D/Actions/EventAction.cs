@@ -52,7 +52,10 @@ public abstract class EventAction< T > : Action, IEventListener where T : Event
     /// </returns>
     public bool Handle( Event ev )
     {
-        if ( !Active || ( ev.GetType() != EventClass.GetType() ) ) return false;
+        if ( !Active || ( ev.GetType() != EventClass.GetType() ) )
+        {
+            return false;
+        }
 
         Result = HandleDelegate( ev );
 

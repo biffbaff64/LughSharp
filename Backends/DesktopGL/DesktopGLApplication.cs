@@ -80,7 +80,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             }
         }
         else
+        {
             Audio = new MockAudio();
+        }
 
         Files     = CreateFiles();
         Network   = new DesktopGLNet( config );
@@ -101,7 +103,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// <returns></returns>
     public IPreferences GetPreferences( string name )
     {
-        if ( Preferences!.ContainsKey( name ) ) return Preferences.Get( name );
+        if ( Preferences!.ContainsKey( name ) )
+        {
+            return Preferences.Get( name );
+        }
 
         IPreferences prefs = new DesktopGLPreferences( name );
 
@@ -190,9 +195,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         catch ( Exception e )
         {
             if ( e is SystemException exception )
+            {
                 throw exception;
+            }
             else
+            {
                 throw new GdxRuntimeException( e );
+            }
         }
         finally
         {
@@ -222,14 +231,20 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
                 _currentWindow = window;
 
-                if ( targetFramerate == -2 ) targetFramerate = window.Config.ForegroundFPS;
+                if ( targetFramerate == -2 )
+                {
+                    targetFramerate = window.Config.ForegroundFPS;
+                }
 
                 lock ( LifecycleListeners )
                 {
                     haveWindowsRendered |= window.Update();
                 }
 
-                if ( window.ShouldClose() ) closedWindows.Add( window );
+                if ( window.ShouldClose() )
+                {
+                    closedWindows.Add( window );
+                }
             }
 
             Glfw.PollEvents();
@@ -246,15 +261,22 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                 Runnables.Clear();
             }
 
-            foreach ( var runnable in ExecutedRunnables ) runnable();
+            foreach ( var runnable in ExecutedRunnables )
+            {
+                runnable();
+            }
 
             if ( shouldRequestRendering )
             {
                 // Must follow Runnables execution so changes done by
                 // Runnables are reflected in the following render.
                 foreach ( var window in Windows )
+                {
                     if ( !window.Graphics.ContinuousRendering )
+                    {
                         window.RequestRendering();
+                    }
+                }
             }
 
             foreach ( var closedWindow in closedWindows )
@@ -316,7 +338,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             }
         }
 
-        foreach ( var window in Windows ) window.Dispose();
+        foreach ( var window in Windows )
+        {
+            window.Dispose();
+        }
 
         Windows.Clear();
     }
@@ -455,9 +480,15 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             }
         }
 
-        if ( appConfig.TransparentFramebuffer ) Glfw.WindowHint( Hint.TransparentFramebuffer, true );
+        if ( appConfig.TransparentFramebuffer )
+        {
+            Glfw.WindowHint( Hint.TransparentFramebuffer, true );
+        }
 
-        if ( appConfig.Debug ) Glfw.WindowHint( Hint.OpenGLDebugContext, true );
+        if ( appConfig.Debug )
+        {
+            Glfw.WindowHint( Hint.OpenGLDebugContext, true );
+        }
 
         GLFWWindow windowHandle;
 
@@ -482,7 +513,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                               GLFWWindow.NULL );
         }
 
-        if ( windowHandle == GLFWWindow.NULL ) throw new GdxRuntimeException( "Couldn't create window" );
+        if ( windowHandle == GLFWWindow.NULL )
+        {
+            throw new GdxRuntimeException( "Couldn't create window" );
+        }
 
         _currentWindow?.SetSizeLimits( appConfig.WindowMinWidth,
                                        appConfig.WindowMinHeight,
@@ -496,13 +530,22 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                 var windowWidth  = Math.Max( appConfig.WindowWidth, appConfig.WindowMinWidth );
                 var windowHeight = Math.Max( appConfig.WindowHeight, appConfig.WindowMinHeight );
 
-                if ( appConfig.WindowMaxWidth > -1 ) windowWidth = Math.Min( windowWidth, appConfig.WindowMaxWidth );
+                if ( appConfig.WindowMaxWidth > -1 )
+                {
+                    windowWidth = Math.Min( windowWidth, appConfig.WindowMaxWidth );
+                }
 
-                if ( appConfig.WindowMaxHeight > -1 ) windowHeight = Math.Min( windowHeight, appConfig.WindowMaxHeight );
+                if ( appConfig.WindowMaxHeight > -1 )
+                {
+                    windowHeight = Math.Min( windowHeight, appConfig.WindowMaxHeight );
+                }
 
                 var monitorHandle = Glfw.GetPrimaryMonitor();
 
-                if ( appConfig is { WindowMaximized: true, MaximizedMonitor: not null } ) monitorHandle = appConfig.MaximizedMonitor.MonitorHandle;
+                if ( appConfig is { WindowMaximized: true, MaximizedMonitor: not null } )
+                {
+                    monitorHandle = appConfig.MaximizedMonitor.MonitorHandle;
+                }
 
                 Glfw.GetMonitorWorkarea( monitorHandle,
                                          out var areaXPos,
@@ -515,9 +558,14 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                    ( areaYPos + ( areaHeight / 2 ) ) - ( windowHeight / 2 ) );
             }
             else
+            {
                 Glfw.SetWindowPos( windowHandle, appConfig.WindowX, appConfig.WindowY );
+            }
 
-            if ( appConfig.WindowMaximized ) Glfw.MaximizeWindow( windowHandle );
+            if ( appConfig.WindowMaximized )
+            {
+                Glfw.MaximizeWindow( windowHandle );
+            }
         }
 
         if ( appConfig.WindowIconPaths != null )
@@ -576,7 +624,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Glfw.SetErrorCallback( _errorCallback );
             Glfw.InitHint( InitHint.JoystickHatButtons, false );
 
-            if ( !Glfw.Init() ) throw new GdxRuntimeException( "Unable to initialise Glfw!" );
+            if ( !Glfw.Init() )
+            {
+                throw new GdxRuntimeException( "Unable to initialise Glfw!" );
+            }
         }
     }
 

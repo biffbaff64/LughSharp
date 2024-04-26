@@ -196,9 +196,13 @@ public class TextureRegion
         set
         {
             if ( IsFlipX() )
+            {
                 U = U2 + ( value / ( float ) Texture.Width );
+            }
             else
+            {
                 U2 = U + ( value / ( float ) Texture.Width );
+            }
 
             _regionWidth = value;
         }
@@ -212,9 +216,13 @@ public class TextureRegion
         set
         {
             if ( IsFlipY() )
+            {
                 V = V2 + ( value / ( float ) Texture.Height );
+            }
             else
+            {
                 V2 = V + ( value / ( float ) Texture.Height );
+            }
 
             _regionHeight = value;
         }
@@ -238,7 +246,10 @@ public class TextureRegion
     /// <exception cref="GdxRuntimeException"></exception>
     public void SetRegion( int x, int y, int width, int height )
     {
-        if ( Texture == null ) throw new GdxRuntimeException( "Texture cannot be null" );
+        if ( Texture == null )
+        {
+            throw new GdxRuntimeException( "Texture cannot be null" );
+        }
 
         var invTexWidth  = 1f / Texture.Width;
         var invTexHeight = 1f / Texture.Height;
@@ -266,7 +277,10 @@ public class TextureRegion
     /// <exception cref="GdxRuntimeException"></exception>
     public virtual void SetRegion( float u, float v, float u2, float v2 )
     {
-        if ( Texture == null ) throw new GdxRuntimeException( "Texture cannot be null" );
+        if ( Texture == null )
+        {
+            throw new GdxRuntimeException( "Texture cannot be null" );
+        }
 
         var texWidth  = Texture.Width;
         var texHeight = Texture.Height;
@@ -323,9 +337,15 @@ public class TextureRegion
     /// <param name="y"></param>
     public virtual void Flip( bool x, bool y )
     {
-        if ( x ) ( U, U2 ) = ( U2, U );
+        if ( x )
+        {
+            ( U, U2 ) = ( U2, U );
+        }
 
-        if ( y ) ( V, V2 ) = ( V2, V );
+        if ( y )
+        {
+            ( V, V2 ) = ( V2, V );
+        }
     }
 
     public bool IsFlipX()
@@ -395,7 +415,10 @@ public class TextureRegion
         {
             x = startX;
 
-            for ( var col = 0; col < cols; col++, x += tileWidth ) tiles[ row, col ] = new TextureRegion( Texture, x, y, tileWidth, tileHeight );
+            for ( var col = 0; col < cols; col++, x += tileWidth )
+            {
+                tiles[ row, col ] = new TextureRegion( Texture, x, y, tileWidth, tileHeight );
+            }
         }
 
         return tiles;

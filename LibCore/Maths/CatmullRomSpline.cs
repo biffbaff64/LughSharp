@@ -85,7 +85,10 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
                 _tmp2.Set( _tmp3 );
                 ValueAt( _tmp3, i / ( ( float ) samples - 1 ) );
 
-                if ( i > 0 ) tempLength += _tmp2.Dst( _tmp3 );
+                if ( i > 0 )
+                {
+                    tempLength += _tmp2.Dst( _tmp3 );
+                }
             }
         }
 
@@ -150,7 +153,10 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
     /// </returns>
     public int Nearest( T inp, int start, int count )
     {
-        while ( start < 0 ) start += SpanCount;
+        while ( start < 0 )
+        {
+            start += SpanCount;
+        }
 
         var result = start % SpanCount;
         var dst    = inp.Dst2( ControlPoints[ result ] );
@@ -255,12 +261,19 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
         outp.Set( points[ i ] ).Scl( ( ( 1.5f * u3 ) - ( 2.5f * u2 ) ) + 1.0f );
 
         if ( ( tmp != null ) && ( continuous || ( i > 0 ) ) )
+        {
             outp.Add( tmp.Set( points[ ( ( n + i ) - 1 ) % n ] ).Scl( ( ( -0.5f * u3 ) + u2 ) - ( 0.5f * u ) ) );
+        }
 
         if ( ( tmp != null ) && ( continuous || ( i < ( n - 1 ) ) ) )
+        {
             outp.Add( tmp.Set( points[ ( i + 1 ) % n ] ).Scl( ( -1.5f * u3 ) + ( 2f * u2 ) + ( 0.5f * u ) ) );
+        }
 
-        if ( ( tmp != null ) && ( continuous || ( i < ( n - 2 ) ) ) ) outp.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scl( ( 0.5f * u3 ) - ( 0.5f * u2 ) ) );
+        if ( ( tmp != null ) && ( continuous || ( i < ( n - 2 ) ) ) )
+        {
+            outp.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scl( ( 0.5f * u3 ) - ( 0.5f * u2 ) ) );
+        }
 
         return outp;
     }

@@ -485,13 +485,20 @@ public class SubbandLayer2 : ASubband
             if ( header.Mode() != Header.SINGLE_CHANNEL )
             {
                 if ( channelBitrate == 4 )
+                {
                     channelBitrate = 1;
+                }
                 else
+                {
                     channelBitrate -= 4;
+                }
             }
 
             // table 3-B.2c or 3-B.2d
-            if ( channelBitrate is 1 or 2 ) return subbandnumber <= 1 ? 4 : 3;
+            if ( channelBitrate is 1 or 2 )
+            {
+                return subbandnumber <= 1 ? 4 : 3;
+            }
 
             // tables 3-B.2a or 3-B.2b
             return subbandnumber <= 10 ? 4 : subbandnumber <= 22 ? 3 : 2;
@@ -500,7 +507,10 @@ public class SubbandLayer2 : ASubband
         // MPEG-2 LSF
 
         // table B.1 of ISO/IEC 13818-3
-        if ( subbandnumber <= 3 ) return 4;
+        if ( subbandnumber <= 3 )
+        {
+            return 4;
+        }
 
         return subbandnumber <= 10 ? 3 : 2;
     }
@@ -521,9 +531,13 @@ public class SubbandLayer2 : ASubband
         if ( header?.Mode() != Header.SINGLE_CHANNEL )
         {
             if ( channelBitrate == 4 )
+            {
                 channelBitrate = 1;
+            }
             else
+            {
                 channelBitrate -= 4;
+            }
         }
 
         if ( channelBitrate is 1 or 2 )
@@ -674,7 +688,10 @@ public class SubbandLayer2 : ASubband
                 var tmp  = 0;
                 var temp = samplecode;
 
-                if ( temp > ( source?.Length - 3 ) ) temp = source!.Length - 3;
+                if ( temp > ( source?.Length - 3 ) )
+                {
+                    temp = source!.Length - 3;
+                }
 
                 target[ tmp ] = source![ temp ];
                 temp++;
@@ -707,7 +724,10 @@ public class SubbandLayer2 : ASubband
         {
             var sample = samples[ samplenumber ];
 
-            if ( groupingtable[ 0 ] == null ) sample = ( sample + d[ 0 ] ) * cFactor[ 0 ];
+            if ( groupingtable[ 0 ] == null )
+            {
+                sample = ( sample + d[ 0 ] ) * cFactor[ 0 ];
+            }
 
             sample *= groupnumber switch
             {

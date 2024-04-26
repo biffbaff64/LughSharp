@@ -91,7 +91,10 @@ public class PerformanceCounter
     {
         var t = TimeUtils.NanoTime();
 
-        if ( _lastTick > 0L ) Tick( ( t - _lastTick ) * NANO2_SECONDS );
+        if ( _lastTick > 0L )
+        {
+            Tick( ( t - _lastTick ) * NANO2_SECONDS );
+        }
 
         _lastTick = t;
     }

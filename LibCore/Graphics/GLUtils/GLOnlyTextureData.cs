@@ -60,7 +60,10 @@ public class GLOnlyTextureData : ITextureData
 
     public void Prepare()
     {
-        if ( IsPrepared ) throw new GdxRuntimeException( "Already prepared" );
+        if ( IsPrepared )
+        {
+            throw new GdxRuntimeException( "Already prepared" );
+        }
 
         IsPrepared = true;
     }

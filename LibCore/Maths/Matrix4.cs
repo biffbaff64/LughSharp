@@ -601,7 +601,10 @@ public class Matrix4
                    - ( val[ M10 ] * val[ M01 ] * val[ M22 ] * val[ M33 ] ) )
                  + ( val[ M00 ] * val[ M11 ] * val[ M22 ] * val[ M33 ] );
 
-        if ( lDet == 0f ) throw new GdxRuntimeException( "non-invertible matrix" );
+        if ( lDet == 0f )
+        {
+            throw new GdxRuntimeException( "non-invertible matrix" );
+        }
 
         var m00 = ( ( ( ( val[ M12 ] * val[ M23 ] * val[ M31 ] )
                       - ( val[ M13 ] * val[ M22 ] * val[ M31 ] ) )
@@ -1303,7 +1306,10 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Lerp( Matrix4 matrix, float alpha )
     {
-        for ( var i = 0; i < 16; i++ ) val[ i ] = ( val[ i ] * ( 1 - alpha ) ) + ( matrix.val[ i ] * alpha );
+        for ( var i = 0; i < 16; i++ )
+        {
+            val[ i ] = ( val[ i ] * ( 1 - alpha ) ) + ( matrix.val[ i ] * alpha );
+        }
 
         return this;
     }
@@ -1934,7 +1940,10 @@ public class Matrix4
     {
         var lDet = Det( values );
 
-        if ( lDet == 0 ) return false;
+        if ( lDet == 0 )
+        {
+            return false;
+        }
 
         var m00 = ( ( ( ( values[ M12 ] * values[ M23 ] * values[ M31 ] )
                       - ( values[ M13 ] * values[ M22 ] * values[ M31 ] ) )
@@ -2157,7 +2166,10 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Rotate( Vector3 axis, float degrees )
     {
-        if ( degrees == 0 ) return this;
+        if ( degrees == 0 )
+        {
+            return this;
+        }
 
         Quat.SetFromAxis( axis, degrees );
 
@@ -2173,7 +2185,10 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 RotateRad( Vector3 axis, float radians )
     {
-        if ( radians == 0 ) return this;
+        if ( radians == 0 )
+        {
+            return this;
+        }
 
         Quat.SetFromAxisRad( axis, radians );
 
@@ -2191,7 +2206,10 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Rotate( float axisX, float axisY, float axisZ, float degrees )
     {
-        if ( degrees == 0 ) return this;
+        if ( degrees == 0 )
+        {
+            return this;
+        }
 
         Quat.SetFromAxis( axisX, axisY, axisZ, degrees );
 
@@ -2209,7 +2227,10 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 RotateRad( float axisX, float axisY, float axisZ, float radians )
     {
-        if ( radians == 0 ) return this;
+        if ( radians == 0 )
+        {
+            return this;
+        }
 
         Quat.SetFromAxisRad( axisX, axisY, axisZ, radians );
 

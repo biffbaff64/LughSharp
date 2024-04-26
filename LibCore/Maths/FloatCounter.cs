@@ -91,13 +91,21 @@ public class FloatCounter
             Value = Mean.Mean;
         }
         else
+        {
             Value = Latest;
+        }
 
         if ( ( Mean == null ) || Mean.HasEnoughData() )
         {
-            if ( Value < Min ) Min = Value;
+            if ( Value < Min )
+            {
+                Min = Value;
+            }
 
-            if ( Value > Max ) Max = Value;
+            if ( Value > Max )
+            {
+                Max = Value;
+            }
         }
     }
 

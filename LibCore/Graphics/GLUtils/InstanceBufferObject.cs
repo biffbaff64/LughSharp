@@ -44,12 +44,6 @@ public class InstanceBufferObject : IInstanceData
 
     public InstanceBufferObject( bool isStatic, int numVertices, VertexAttributes instanceAttributes )
     {
-        if ( Gdx.GL30 == null )
-        {
-            throw new GdxRuntimeException
-                ( "InstanceBufferObject requires a device running with GLES 3.0 compatibilty" );
-        }
-
         _bufferHandle = ( int ) Gdx.GL.glGenBuffer();
 
         var data = BufferUtils.NewByteBuffer( instanceAttributes.VertexSize * numVertices );
@@ -70,7 +64,10 @@ public class InstanceBufferObject : IInstanceData
         get => _usage;
         set
         {
-            if ( _isBound ) throw new GdxRuntimeException( "Cannot change _usage while VBO is bound" );
+            if ( _isBound )
+            {
+                throw new GdxRuntimeException( "Cannot change _usage while VBO is bound" );
+            }
 
             _usage = value;
         }
@@ -118,7 +115,10 @@ public class InstanceBufferObject : IInstanceData
 
     public void UpdateInstanceData( int targetOffset, float[] data, int sourceOffset, int count )
     {
-        if ( _byteBuffer == null ) throw new GdxRuntimeException( "_byteBuffer cannot be null" );
+        if ( _byteBuffer == null )
+        {
+            throw new GdxRuntimeException( "_byteBuffer cannot be null" );
+        }
 
         _isDirty = true;
 
@@ -185,7 +185,10 @@ public class InstanceBufferObject : IInstanceData
 
                 var location = shader.GetAttributeLocation( attribute.alias );
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 var unitOffset = +attribute.unit;
                 shader.EnableVertexAttribute( location + unitOffset );
@@ -207,7 +210,10 @@ public class InstanceBufferObject : IInstanceData
                 var attribute = Attributes.Get( i );
                 var location  = locations[ i ];
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 var unitOffset = +attribute.unit;
                 shader.EnableVertexAttribute( location + unitOffset );
@@ -240,7 +246,10 @@ public class InstanceBufferObject : IInstanceData
                 var attribute = Attributes.Get( i );
                 var location  = shader.GetAttributeLocation( attribute.alias );
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 var unitOffset = +attribute.unit;
                 shader.DisableVertexAttribute( location + unitOffset );
@@ -253,7 +262,10 @@ public class InstanceBufferObject : IInstanceData
                 var attribute = Attributes.Get( i );
                 var location  = locations[ i ];
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 var unitOffset = +attribute.unit;
                 shader.DisableVertexAttribute( location + unitOffset );
@@ -284,7 +296,10 @@ public class InstanceBufferObject : IInstanceData
 
         _bufferHandle = 0;
 
-        if ( _ownsBuffer && ( _byteBuffer != null ) ) BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+        if ( _ownsBuffer && ( _byteBuffer != null ) )
+        {
+            BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+        }
     }
 
     /// <summary>
@@ -293,16 +308,26 @@ public class InstanceBufferObject : IInstanceData
     /// </summary>
     protected void SetBuffer( Buffer data, bool ownsBuffer, VertexAttributes value )
     {
-        if ( _isBound ) throw new GdxRuntimeException( "Cannot change _attributes while VBO is bound" );
+        if ( _isBound )
+        {
+            throw new GdxRuntimeException( "Cannot change _attributes while VBO is bound" );
+        }
 
-        if ( _ownsBuffer && ( _byteBuffer != null ) ) BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+        if ( _ownsBuffer && ( _byteBuffer != null ) )
+        {
+            BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
+        }
 
         Attributes = value;
 
         if ( data is ByteBuffer buffer )
+        {
             _byteBuffer = buffer;
+        }
         else
+        {
             throw new GdxRuntimeException( "Only ByteBuffer is currently supported" );
+        }
 
         _ownsBuffer = ownsBuffer;
 
@@ -316,7 +341,10 @@ public class InstanceBufferObject : IInstanceData
 
     private unsafe void BufferChanged()
     {
-        if ( _byteBuffer == null ) throw new GdxRuntimeException( "NULL _byteBuffer not allowed" );
+        if ( _byteBuffer == null )
+        {
+            throw new GdxRuntimeException( "NULL _byteBuffer not allowed" );
+        }
 
         if ( _isBound )
         {

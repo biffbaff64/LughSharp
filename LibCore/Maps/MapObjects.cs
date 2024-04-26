@@ -67,7 +67,10 @@ public class MapObjects : IEnumerable< MapObject >
         {
             var obj = _objects[ i ];
 
-            if ( name.Equals( obj.Name ) ) return obj;
+            if ( name.Equals( obj.Name ) )
+            {
+                return obj;
+            }
         }
 
         return null!;
@@ -125,7 +128,10 @@ public class MapObjects : IEnumerable< MapObject >
         {
             var obj = _objects[ i ];
 
-            if ( obj.GetType() == typeof( T ) ) fill.Add( ( T ) obj );
+            if ( obj.GetType() == typeof( T ) )
+            {
+                fill.Add( ( T ) obj );
+            }
         }
 
         return fill;

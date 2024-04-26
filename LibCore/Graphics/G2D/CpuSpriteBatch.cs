@@ -81,7 +81,10 @@ public class CpuSpriteBatch : SpriteBatch
             // vertices flushed, safe now to replace matrix
             _haveIdentityRealMatrix = CheckIdt( _virtualMatrix );
 
-            if ( !_haveIdentityRealMatrix && ( _virtualMatrix.Det() == 0 ) ) throw new GdxRuntimeException( "Transform matrix is singular, can't sync" );
+            if ( !_haveIdentityRealMatrix && ( _virtualMatrix.Det() == 0 ) )
+            {
+                throw new GdxRuntimeException( "Transform matrix is singular, can't sync" );
+            }
 
             _adjustNeeded = false;
             base.SetTransformMatrix( _virtualMatrix );
@@ -107,7 +110,9 @@ public class CpuSpriteBatch : SpriteBatch
         var realMatrix = TransformMatrix;
 
         if ( CheckEqual( realMatrix, transform ) )
+        {
             _adjustNeeded = false;
+        }
         else
         {
             if ( IsDrawing )
@@ -119,7 +124,9 @@ public class CpuSpriteBatch : SpriteBatch
                 // real x adjust x vertex = virtual x vertex
 
                 if ( _haveIdentityRealMatrix )
+                {
                     _adjustAffine.SetFrom( transform );
+                }
                 else
                 {
                     _tmpAffine.SetFrom( transform );
@@ -151,7 +158,9 @@ public class CpuSpriteBatch : SpriteBatch
         var realMatrix = TransformMatrix;
 
         if ( CheckEqual( realMatrix, transform ) )
+        {
             _adjustNeeded = false;
+        }
         else
         {
             _virtualMatrix.SetAsAffine( transform );
@@ -164,9 +173,13 @@ public class CpuSpriteBatch : SpriteBatch
                 // real x adjust x vertex = virtual x vertex
 
                 if ( _haveIdentityRealMatrix )
+                {
                     _adjustAffine.SetFrom( transform );
+                }
                 else
+                {
                     _adjustAffine.SetFrom( realMatrix ).Invert().Mul( transform );
+                }
             }
             else
             {
@@ -250,7 +263,9 @@ public class CpuSpriteBatch : SpriteBatch
                                bool flipY )
     {
         if ( !_adjustNeeded )
+        {
             base.Draw( texture, x, y, width, height, srcX, srcY, srcWidth, srcHeight, flipX, flipY );
+        }
         else
         {
             DrawAdjusted(
@@ -277,7 +292,9 @@ public class CpuSpriteBatch : SpriteBatch
     public override void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight )
     {
         if ( !_adjustNeeded )
+        {
             base.Draw( texture, x, y, srcX, srcY, srcWidth, srcHeight );
+        }
         else
         {
             DrawAdjusted(
@@ -312,15 +329,21 @@ public class CpuSpriteBatch : SpriteBatch
                                float v2 )
     {
         if ( !_adjustNeeded )
+        {
             base.Draw( texture, x, y, width, height, u, v, u2, v2 );
+        }
         else
+        {
             DrawAdjustedUV( texture, x, y, 0, 0, width, height, 1, 1, 0, u, v, u2, v2, false, false );
+        }
     }
 
     public override void Draw( Texture texture, float x, float y )
     {
         if ( !_adjustNeeded )
+        {
             base.Draw( texture, x, y );
+        }
         else
         {
             DrawAdjusted(
@@ -347,25 +370,37 @@ public class CpuSpriteBatch : SpriteBatch
     public override void Draw( Texture texture, float x, float y, float width, float height )
     {
         if ( !_adjustNeeded )
+        {
             base.Draw( texture, x, y, width, height );
+        }
         else
+        {
             DrawAdjusted( texture, x, y, 0, 0, width, height, 1, 1, 0, 0, 1, 1, 0, false, false );
+        }
     }
 
     public override void Draw( TextureRegion region, float x, float y )
     {
         if ( !_adjustNeeded )
+        {
             base.Draw( region, x, y );
+        }
         else
+        {
             DrawAdjusted( region, x, y, 0, 0, region.RegionWidth, region.RegionHeight, 1, 1, 0 );
+        }
     }
 
     public override void Draw( TextureRegion region, float x, float y, float width, float height )
     {
         if ( !_adjustNeeded )
+        {
             base.Draw( region, x, y, width, height );
+        }
         else
+        {
             DrawAdjusted( region, x, y, 0, 0, width, height, 1, 1, 0 );
+        }
     }
 
     public override void Draw( TextureRegion region,
@@ -380,9 +415,13 @@ public class CpuSpriteBatch : SpriteBatch
                                float rotation )
     {
         if ( !_adjustNeeded )
+        {
             base.Draw( region, x, y, originX, originY, width, height, scaleX, scaleY, rotation );
+        }
         else
+        {
             DrawAdjusted( region, x, y, originX, originY, width, height, scaleX, scaleY, rotation );
+        }
     }
 
     public override void Draw( TextureRegion region,
@@ -398,7 +437,9 @@ public class CpuSpriteBatch : SpriteBatch
                                bool clockwise )
     {
         if ( !_adjustNeeded )
+        {
             base.Draw( region, x, y, originX, originY, width, height, scaleX, scaleY, rotation, clockwise );
+        }
         else
         {
             DrawAdjusted(
@@ -419,20 +460,31 @@ public class CpuSpriteBatch : SpriteBatch
 
     public override void Draw( Texture texture, float[] spriteVertices, int offset, int count )
     {
-        if ( ( count % Sprite.SpriteSize ) != 0 ) throw new GdxRuntimeException( "invalid vertex count" );
+        if ( ( count % Sprite.SpriteSize ) != 0 )
+        {
+            throw new GdxRuntimeException( "invalid vertex count" );
+        }
 
         if ( !_adjustNeeded )
+        {
             base.Draw( texture, spriteVertices, offset, count );
+        }
         else
+        {
             DrawAdjusted( texture, spriteVertices, offset, count );
+        }
     }
 
     public override void Draw( TextureRegion region, float width, float height, Affine2 transform )
     {
         if ( !_adjustNeeded )
+        {
             base.Draw( region, width, height, transform );
+        }
         else
+        {
             DrawAdjusted( region, width, height, transform );
+        }
     }
 
     private void DrawAdjusted( TextureRegion region,
@@ -529,11 +581,19 @@ public class CpuSpriteBatch : SpriteBatch
                                  bool flipX,
                                  bool flipY )
     {
-        if ( !IsDrawing ) throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
+        }
 
         if ( texture != LastTexture )
+        {
             SwitchTexture( texture );
-        else if ( idx == Vertices.Length ) Flush();
+        }
+        else if ( idx == Vertices.Length )
+        {
+            Flush();
+        }
 
         // bottom left and top right corner points relative to origin
         var worldOriginX = x + originX;
@@ -613,9 +673,15 @@ public class CpuSpriteBatch : SpriteBatch
         x4 += worldOriginX;
         y4 += worldOriginY;
 
-        if ( flipX ) ( u, u2 ) = ( u2, u );
+        if ( flipX )
+        {
+            ( u, u2 ) = ( u2, u );
+        }
 
-        if ( flipY ) ( v, v2 ) = ( v2, v );
+        if ( flipY )
+        {
+            ( v, v2 ) = ( v2, v );
+        }
 
         var t = _adjustAffine;
 
@@ -658,11 +724,19 @@ public class CpuSpriteBatch : SpriteBatch
                                float rotation,
                                bool clockwise )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "CpuSpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "CpuSpriteBatch.begin must be called before draw." );
+        }
 
         if ( region.Texture != LastTexture )
+        {
             SwitchTexture( region.Texture );
-        else if ( idx == Vertices.Length ) Flush();
+        }
+        else if ( idx == Vertices.Length )
+        {
+            Flush();
+        }
 
         // bottom left and top right corner points relative to origin
         var worldOriginX = x + originX;
@@ -796,11 +870,19 @@ public class CpuSpriteBatch : SpriteBatch
 
     private void DrawAdjusted( TextureRegion region, float width, float height, Affine2 transform )
     {
-        if ( !IsDrawing ) throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
+        }
 
         if ( region.Texture != LastTexture )
+        {
             SwitchTexture( region.Texture );
-        else if ( idx == Vertices.Length ) Flush();
+        }
+        else if ( idx == Vertices.Length )
+        {
+            Flush();
+        }
 
         // construct corner points
         var x1 = transform.m02;
@@ -847,9 +929,15 @@ public class CpuSpriteBatch : SpriteBatch
 
     private void DrawAdjusted( Texture texture, float[] spriteVertices, int offset, int count )
     {
-        if ( !IsDrawing ) throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
+        }
 
-        if ( texture != LastTexture ) SwitchTexture( texture );
+        if ( texture != LastTexture )
+        {
+            SwitchTexture( texture );
+        }
 
         var copyCount = Math.Min( Vertices.Length - idx, count );
 
@@ -884,7 +972,10 @@ public class CpuSpriteBatch : SpriteBatch
 
     private static bool CheckEqual( Matrix4 a, Matrix4 b )
     {
-        if ( a == b ) return true;
+        if ( a == b )
+        {
+            return true;
+        }
 
         // matrices are assumed to be 2D transformations
         return a.val[ Matrix4.M00 ].Equals( b.val[ Matrix4.M00 ] )

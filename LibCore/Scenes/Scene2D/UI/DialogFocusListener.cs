@@ -38,12 +38,18 @@ public class DialogFocusListener : FocusListener
 
     public override void KeyboardFocusChanged( FocusEvent ev, Actor? actor, bool focused )
     {
-        if ( !focused ) FocusChanged( ev );
+        if ( !focused )
+        {
+            FocusChanged( ev );
+        }
     }
 
     public override void ScrollFocusChanged( FocusEvent ev, Actor? actor, bool focused )
     {
-        if ( !focused ) FocusChanged( ev );
+        if ( !focused )
+        {
+            FocusChanged( ev );
+        }
     }
 
     private void FocusChanged( FocusEvent ev )
@@ -59,7 +65,9 @@ public class DialogFocusListener : FocusListener
               && !newFocusedActor.IsDescendantOf( _dialog )
               && !( newFocusedActor.Equals( _dialog.PreviousKeyboardFocus )
                  || newFocusedActor.Equals( _dialog.PreviousScrollFocus ) ) )
+            {
                 ev.Cancel();
+            }
         }
     }
 }

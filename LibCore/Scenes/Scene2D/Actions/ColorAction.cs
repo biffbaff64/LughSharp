@@ -47,7 +47,10 @@ public class ColorAction : TemporalAction
 
     protected override void Begin()
     {
-        if ( Target == null ) throw new GdxRuntimeException( "Cannot begin with a null Target!" );
+        if ( Target == null )
+        {
+            throw new GdxRuntimeException( "Cannot begin with a null Target!" );
+        }
 
         _startR = Target.Color.R;
         _startG = Target.Color.G;
@@ -58,9 +61,13 @@ public class ColorAction : TemporalAction
     protected override void Update( float percent )
     {
         if ( percent == 0 )
+        {
             Target?.Color.Set( _startR, _startG, _startB, _startA );
+        }
         else if ( percent is 1.0f )
+        {
             Target?.Color.Set( _endColor );
+        }
         else
         {
             var r = _startR + ( ( _endColor.R - _startR ) * percent );

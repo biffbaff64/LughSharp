@@ -38,7 +38,10 @@ public class BaseDrawable : IDrawable
     {
         ArgumentNullException.ThrowIfNull( drawable );
 
-        if ( drawable is BaseDrawable baseDrawable ) Name = baseDrawable.Name;
+        if ( drawable is BaseDrawable baseDrawable )
+        {
+            Name = baseDrawable.Name;
+        }
 
         LeftWidth    = drawable.LeftWidth;
         RightWidth   = drawable.RightWidth;

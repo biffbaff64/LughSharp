@@ -1524,11 +1524,17 @@ public unsafe class GLBindings
     {
         var p = _glGetString( name );
 
-        if ( p == null ) return null;
+        if ( p == null )
+        {
+            return null;
+        }
 
         var i = 0;
 
-        while ( p[ i ] != 0 ) i++;
+        while ( p[ i ] != 0 )
+        {
+            i++;
+        }
 
         return new string( ( sbyte* ) p, 0, i, Encoding.UTF8 );
     }
@@ -3649,7 +3655,10 @@ public unsafe class GLBindings
     /// <param name="count">Specifies an array of the number of indices to be rendered.</param>
     public void glMultiDrawArrays( GLenum mode, GLint[] first, GLsizei[] count )
     {
-        if ( first.Length != count.Length ) throw new ArgumentException( "first and count arrays must be of the same length" );
+        if ( first.Length != count.Length )
+        {
+            throw new ArgumentException( "first and count arrays must be of the same length" );
+        }
 
         fixed ( GLint* p1 = &first[ 0 ] )
         {
@@ -3710,10 +3719,12 @@ public unsafe class GLBindings
         var indexPtrs = new void*[ indices.Length ];
 
         for ( var i = 0; i < indices.Length; i++ )
+        {
             fixed ( void* p = &indices[ i ][ 0 ] )
             {
                 indexPtrs[ i ] = p;
             }
+        }
 
         fixed ( GLsizei* c = &count[ 0 ] )
         {
@@ -5615,7 +5626,10 @@ public unsafe class GLBindings
             _glGetVertexAttribPointerv( index, pname, p );
         }
 
-        for ( var i = 0; i < pointer.Length; i++ ) pointer[ i ] = ( uint ) ptr[ i ];
+        for ( var i = 0; i < pointer.Length; i++ )
+        {
+            pointer[ i ] = ( uint ) ptr[ i ];
+        }
     }
 #endif
 
@@ -7883,15 +7897,20 @@ public unsafe class GLBindings
     {
         var varyingsBytes = new GLchar[ varyings.Length ][];
 
-        for ( var i = 0; i < varyings.Length; i++ ) varyingsBytes[ i ] = Encoding.UTF8.GetBytes( varyings[ i ] );
+        for ( var i = 0; i < varyings.Length; i++ )
+        {
+            varyingsBytes[ i ] = Encoding.UTF8.GetBytes( varyings[ i ] );
+        }
 
         var varyingsPtrs = new GLchar*[ varyings.Length ];
 
         for ( var i = 0; i < varyings.Length; i++ )
+        {
             fixed ( GLchar* p = &varyingsBytes[ i ][ 0 ] )
             {
                 varyingsPtrs[ i ] = p;
             }
+        }
 
         fixed ( GLchar** p = &varyingsPtrs[ 0 ] )
         {
@@ -9384,11 +9403,17 @@ public unsafe class GLBindings
     {
         var ptr = _glGetStringi( name, index );
 
-        if ( ptr == null ) return null;
+        if ( ptr == null )
+        {
+            return null;
+        }
 
         var i = 0;
 
-        while ( ptr[ i ] != 0 ) i++;
+        while ( ptr[ i ] != 0 )
+        {
+            i++;
+        }
 
         return new string( ( sbyte* ) ptr, 0, i, Encoding.UTF8 );
     }
@@ -10362,15 +10387,20 @@ public unsafe class GLBindings
         var uniformCount     = uniformNames.Length;
         var uniformNamesPtrs = new GLchar[ uniformCount ][];
 
-        for ( var i = 0; i < uniformCount; i++ ) uniformNamesPtrs[ i ] = Encoding.UTF8.GetBytes( uniformNames[ i ] );
+        for ( var i = 0; i < uniformCount; i++ )
+        {
+            uniformNamesPtrs[ i ] = Encoding.UTF8.GetBytes( uniformNames[ i ] );
+        }
 
         var pUniformNames = stackalloc GLchar*[ uniformCount ];
 
         for ( var i = 0; i < uniformCount; i++ )
+        {
             fixed ( GLchar* p = &uniformNamesPtrs[ i ][ 0 ] )
             {
                 pUniformNames[ i ] = p;
             }
+        }
 
         var uniformIndices = new GLuint[ uniformCount ];
 
@@ -10929,7 +10959,10 @@ public unsafe class GLBindings
     /// </param>
     public void glMultiDrawElementsBaseVertex< T >( GLenum mode, GLenum type, T[][] indices, GLint[] basevertex ) where T : unmanaged, IUnsignedNumber< T >
     {
-        if ( indices.Length != basevertex.Length ) throw new ArgumentException( "indices and basevertex must have the same length" );
+        if ( indices.Length != basevertex.Length )
+        {
+            throw new ArgumentException( "indices and basevertex must have the same length" );
+        }
 
         var counts    = new GLsizei[ indices.Length ];
         var indexPtrs = new T*[ indices.Length ];

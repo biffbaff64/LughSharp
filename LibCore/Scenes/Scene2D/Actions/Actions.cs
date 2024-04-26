@@ -396,7 +396,10 @@ public class Actions
     {
         var action = ( SequenceAction ) Action( typeof( SequenceAction ) );
 
-        for ( int i = 0, n = actions.Length; i < n; i++ ) action.AddAction( actions[ i ] );
+        for ( int i = 0, n = actions.Length; i < n; i++ )
+        {
+            action.AddAction( actions[ i ] );
+        }
 
         return action;
     }
@@ -460,7 +463,10 @@ public class Actions
     {
         var action = ( ParallelAction ) Action( typeof( ParallelAction ) );
 
-        for ( int i = 0, n = actions.Length; i < n; i++ ) action.AddAction( actions[ i ] );
+        for ( int i = 0, n = actions.Length; i < n; i++ )
+        {
+            action.AddAction( actions[ i ] );
+        }
 
         return action;
     }

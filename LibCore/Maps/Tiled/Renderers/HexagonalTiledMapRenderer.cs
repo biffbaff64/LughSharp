@@ -76,16 +76,24 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
     {
         var axis = map.Properties.Get< string >( "staggeraxis" );
 
-        if ( axis != null ) _staggerAxisX = axis.Equals( "x" );
+        if ( axis != null )
+        {
+            _staggerAxisX = axis.Equals( "x" );
+        }
 
         var index = map.Properties.Get< string >( "staggerindex" );
 
-        if ( index != null ) _staggerIndexEven = index.Equals( "even" );
+        if ( index != null )
+        {
+            _staggerIndexEven = index.Equals( "even" );
+        }
 
         int? length = map.Properties.Get< int >( "hexsidelength" );
 
         if ( length != null )
+        {
             _hexSideLength = length.Value;
+        }
         else
         {
             if ( _staggerAxisX )
@@ -93,7 +101,9 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
                 length = map.Properties.Get< int >( "tilewidth" );
 
                 if ( length != null )
+                {
                     _hexSideLength = 0.5f * length.Value;
+                }
                 else
                 {
                     var tmtl = ( TiledMapTileLayer ) map.Layers.Get( 0 );
@@ -105,7 +115,9 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
                 length = map.Properties.Get< int >( "tileheight" );
 
                 if ( length != null )
+                {
                     _hexSideLength = 0.5f * length.Value;
+                }
                 else
                 {
                     var tmtl = ( TiledMapTileLayer ) map.Layers.Get( 0 );
@@ -160,20 +172,24 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
             for ( var row = row2 - 1; row >= row1; row-- )
             {
                 for ( var col = colA; col < col2; col += 2 )
+                {
                     RenderCell(
                                layer.GetCell( col, row ),
                                ( tileWidthUpperCorner * col ) + layerOffsetX,
                                layerTileHeight50 + ( layerTileHeight * row ) + layerOffsetY,
                                color
                               );
+                }
 
                 for ( var col = colB; col < col2; col += 2 )
+                {
                     RenderCell(
                                layer.GetCell( col, row ),
                                ( tileWidthUpperCorner * col ) + layerOffsetX,
                                ( layerTileHeight * row ) + layerOffsetY,
                                color
                               );
+                }
             }
         }
         else
@@ -203,12 +219,14 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
                 var shiftX = ( row % 2 ) == 0 == _staggerIndexEven ? layerTileWidth50 : 0;
 
                 for ( var col = col1; col < col2; col++ )
+                {
                     RenderCell(
                                layer.GetCell( col, row ),
                                ( layerTileWidth * col ) + shiftX + layerOffsetX,
                                ( tileHeightUpperCorner * row ) + layerOffsetY,
                                color
                               );
+                }
             }
         }
     }
@@ -221,7 +239,10 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
 
         if ( tile != null )
         {
-            if ( tile is AnimatedTiledMapTile ) return;
+            if ( tile is AnimatedTiledMapTile )
+            {
+                return;
+            }
 
             var flipX     = cell.GetFlipHorizontally();
             var flipY     = cell.GetFlipVertically();

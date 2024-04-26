@@ -86,14 +86,19 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
         float tempLength = 0;
 
         for ( var i = 0; i < samples; ++i )
+        {
             if ( _tmp3 != null )
             {
                 _tmp2?.Set( _tmp3 );
 
                 ValueAt( _tmp3, i / ( ( float ) samples - 1 ) );
 
-                if ( ( _tmp2 != null ) && ( i > 0 ) ) tempLength += _tmp2.Dst( _tmp3 );
+                if ( ( _tmp2 != null ) && ( i > 0 ) )
+                {
+                    tempLength += _tmp2.Dst( _tmp3 );
+                }
             }
+        }
 
         return tempLength;
     }
@@ -171,7 +176,10 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
                            .Scl( ( ( -3f * t3 ) + ( 3f * t2 ) + ( 3f * u ) + 1f ) * D6 ) );
         }
 
-        if ( continuous || ( i < ( n - 2 ) ) ) output.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scl( t3 * D6 ) );
+        if ( continuous || ( i < ( n - 2 ) ) )
+        {
+            output.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scl( t3 * D6 ) );
+        }
 
         return output;
     }
@@ -208,7 +216,10 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
                            .Scl( ( -1.5f * t2 ) + u + 0.5f ) );
         }
 
-        if ( continuous || ( i < ( n - 2 ) ) ) output.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scl( 0.5f * t2 ) );
+        if ( continuous || ( i < ( n - 2 ) ) )
+        {
+            output.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scl( 0.5f * t2 ) );
+        }
 
         return output;
     }
@@ -270,7 +281,10 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     /// <returns> The value of out  </returns>
     public static T Calculate( T output, int i, float u, T[] points, int degree, bool continuous, T tmp )
     {
-        if ( degree == 3 ) return Cubic( output, i, u, points, continuous, tmp );
+        if ( degree == 3 )
+        {
+            return Cubic( output, i, u, points, continuous, tmp );
+        }
 
         throw new ArgumentException();
     }
@@ -290,7 +304,10 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     /// <returns> The value of out  </returns>
     public static T Derivative( T output, int i, float u, T[] points, int degree, bool continuous, T tmp )
     {
-        if ( degree == 3 ) return CubicDerivative( output, i, u, points, continuous, tmp );
+        if ( degree == 3 )
+        {
+            return CubicDerivative( output, i, u, points, continuous, tmp );
+        }
 
         throw new ArgumentException();
     }
@@ -307,7 +324,9 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
         SpanCount     = continuous ? controlPoints.Length : controlPoints.Length - degree;
 
         if ( Knots == null )
+        {
             Knots = new List< T >( SpanCount );
+        }
         else
         {
             Knots.Clear();
@@ -315,6 +334,7 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
         }
 
         for ( var i = 0; i < SpanCount; i++ )
+        {
             Knots.Add( Calculate( controlPoints[ 0 ].Cpy(),
                                   continuous ? i : ( int ) ( i + ( 0.5f * degree ) ),
                                   0f,
@@ -322,6 +342,7 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
                                   degree,
                                   continuous,
                                   _tmp ) );
+        }
 
         return this;
     }
@@ -359,7 +380,10 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     /// <returns> The span closest to the specified value, restricting to the specified spans. </returns>
     protected virtual int Nearest( T input, int start, int count )
     {
-        while ( start < 0 ) start += SpanCount;
+        while ( start < 0 )
+        {
+            start += SpanCount;
+        }
 
         var result = start % SpanCount;
         var dst    = input.Dst2( Knots![ result ] );

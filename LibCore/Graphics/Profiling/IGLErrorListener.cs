@@ -56,6 +56,7 @@ public class GLLoggingListener : IGLErrorListener
             StackFrame[] frames     = stackTrace.GetFrames();
 
             for ( var i = 0; i < frames.Length; i++ )
+            {
                 if ( "check".Equals( frames[ i ].GetMethod()?.Name ) )
                 {
                     if ( ( i + 1 ) < frames.Length )
@@ -66,6 +67,7 @@ public class GLLoggingListener : IGLErrorListener
 
                     break;
                 }
+            }
         }
         catch ( Exception )
         {

@@ -141,7 +141,9 @@ public class ColorBleedEffect
           || ( g > 255 )
           || ( b < 0 )
           || ( b > 255 ) )
+        {
             throw new ArgumentException( "Invalid RGBA: " + r + ", " + g + "," + b + "," + a );
+        }
 
         return ( ( a & 0xFF ) << 24 ) | ( ( r & 0xFF ) << 16 ) | ( ( g & 0xFF ) << 8 ) | ( ( b & 0xFF ) << 0 );
     }
@@ -164,12 +166,14 @@ public class ColorBleedEffect
             _changing = new int[ n ];
 
             for ( var i = 0; i < n; i++ )
+            {
                 if ( Alpha( rgb[ i ] ) == 0 )
                 {
                     _blank[ i ]              = true;
                     _pending[ _pendingSize ] = i;
                     _pendingSize++;
                 }
+            }
         }
 
         public bool IsBlank( int index )
@@ -179,7 +183,10 @@ public class ColorBleedEffect
 
         private int RemoveIndex( int index )
         {
-            if ( index >= _pendingSize ) throw new IndexOutOfRangeException( index.ToString() );
+            if ( index >= _pendingSize )
+            {
+                throw new IndexOutOfRangeException( index.ToString() );
+            }
 
             var value = _pending[ index ];
 
@@ -211,7 +218,10 @@ public class ColorBleedEffect
 
             internal int Next()
             {
-                if ( _index >= _parent._pendingSize ) throw new IndexOutOfRangeException( _index.ToString() );
+                if ( _index >= _parent._pendingSize )
+                {
+                    throw new IndexOutOfRangeException( _index.ToString() );
+                }
 
                 return _parent._pending[ _index++ ];
             }
@@ -227,7 +237,10 @@ public class ColorBleedEffect
             {
                 _index = 0;
 
-                for ( int i = 0, n = _parent._changingSize; i < n; i++ ) _parent._blank[ _parent._changing[ i ] ] = false;
+                for ( int i = 0, n = _parent._changingSize; i < n; i++ )
+                {
+                    _parent._blank[ _parent._changing[ i ] ] = false;
+                }
 
                 _parent._changingSize = 0;
             }

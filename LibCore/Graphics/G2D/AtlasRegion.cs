@@ -155,9 +155,15 @@ public class AtlasRegion : TextureRegion
     {
         base.Flip( x, y );
 
-        if ( x ) OffsetX = OriginalWidth - OffsetX - RotatedPackedWidth;
+        if ( x )
+        {
+            OffsetX = OriginalWidth - OffsetX - RotatedPackedWidth;
+        }
 
-        if ( y ) OffsetY = OriginalHeight - OffsetY - RotatedPackedHeight;
+        if ( y )
+        {
+            OffsetY = OriginalHeight - OffsetY - RotatedPackedHeight;
+        }
     }
 
     public int[]? FindValue( string name )
@@ -165,8 +171,12 @@ public class AtlasRegion : TextureRegion
         if ( Names != null )
         {
             for ( int i = 0, n = Names.Length; i < n; i++ )
+            {
                 if ( name.Equals( Names[ i ] ) )
+                {
                     return values?[ i ];
+                }
+            }
         }
 
         return null;

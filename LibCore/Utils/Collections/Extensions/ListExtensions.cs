@@ -63,7 +63,10 @@ public static class ListExtensions
     /// </summary>
     public static void AddAll< T >( this List< T > target, T[] source, int start, int count )
     {
-        for ( var i = start; i < count; i++ ) target.Add( source[ i ] );
+        for ( var i = start; i < count; i++ )
+        {
+            target.Add( source[ i ] );
+        }
     }
 
     /// <summary>
@@ -72,7 +75,10 @@ public static class ListExtensions
     /// </summary>
     public static void AddAll< T >( this List< T > target, List< T > source, int start, int count )
     {
-        for ( var i = start; i < count; i++ ) target.Add( source[ i ] );
+        for ( var i = start; i < count; i++ )
+        {
+            target.Add( source[ i ] );
+        }
     }
 
     /// <summary>
@@ -80,7 +86,10 @@ public static class ListExtensions
     /// </summary>
     public static void AddAll< T >( this List< T > target, List< T > source )
     {
-        foreach ( var tex in source ) target.Add( tex );
+        foreach ( var tex in source )
+        {
+            target.Add( tex );
+        }
     }
 
     /// <summary>
@@ -88,7 +97,10 @@ public static class ListExtensions
     /// </summary>
     public static void AddAll< T >( this List< T > target, params T[] items )
     {
-        foreach ( var item in items ) target.Add( item );
+        foreach ( var item in items )
+        {
+            target.Add( item );
+        }
     }
 
     /// <summary>
@@ -115,7 +127,10 @@ public static class ListExtensions
     /// </summary>
     public static void Truncate< T >( this List< T > ts, int newSize )
     {
-        if ( ts.Count > newSize ) ts.RemoveRange( newSize, ts.Count - newSize );
+        if ( ts.Count > newSize )
+        {
+            ts.RemoveRange( newSize, ts.Count - newSize );
+        }
     }
 
     /// <summary>
@@ -127,7 +142,10 @@ public static class ListExtensions
     /// <exception cref="GdxRuntimeException"></exception>
     public static T Pop< T >( this List< T > list )
     {
-        if ( list.Count == 0 ) throw new GdxRuntimeException( "List is empty." );
+        if ( list.Count == 0 )
+        {
+            throw new GdxRuntimeException( "List is empty." );
+        }
 
         var item = list[ ^1 ];
 
@@ -156,7 +174,10 @@ public static class ListExtensions
     /// <returns></returns>
     public static T RemoveIndex< T >( this List< T > list, int index )
     {
-        if ( index >= list.Count ) throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {list.Count}" );
+        if ( index >= list.Count )
+        {
+            throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {list.Count}" );
+        }
 
         var value = list[ index ];
 

@@ -131,11 +131,20 @@ public interface ITextureData
         {
             ArgumentNullException.ThrowIfNull( file );
 
-            if ( file.Name.EndsWith( ".cim" ) ) return new FileTextureData( file, PixmapIO.ReadCIM( file ), format, useMipMaps );
+            if ( file.Name.EndsWith( ".cim" ) )
+            {
+                return new FileTextureData( file, PixmapIO.ReadCIM( file ), format, useMipMaps );
+            }
 
-            if ( file.Name.EndsWith( ".etc1" ) ) return new ETC1TextureData( file, useMipMaps );
+            if ( file.Name.EndsWith( ".etc1" ) )
+            {
+                return new ETC1TextureData( file, useMipMaps );
+            }
 
-            if ( file.Name.EndsWith( ".ktx" ) || file.Name.EndsWith( ".zktx" ) ) return new KtxTextureData( file, useMipMaps );
+            if ( file.Name.EndsWith( ".ktx" ) || file.Name.EndsWith( ".zktx" ) )
+            {
+                return new KtxTextureData( file, useMipMaps );
+            }
 
             return new FileTextureData( file, new Pixmap( file ), format, useMipMaps );
         }

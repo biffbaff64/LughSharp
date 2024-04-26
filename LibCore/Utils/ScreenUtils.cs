@@ -50,7 +50,10 @@ public class ScreenUtils
     {
         get
         {
-            if ( Gdx.Graphics == null ) throw new NullReferenceException();
+            if ( Gdx.Graphics == null )
+            {
+                throw new NullReferenceException();
+            }
 
             var w = Gdx.Graphics.BackBufferWidth;
             var h = Gdx.Graphics.BackBufferHeight;
@@ -92,7 +95,10 @@ public class ScreenUtils
 
         var mask = ( uint ) IGL.GL_COLOR_BUFFER_BIT;
 
-        if ( clearDepth ) mask |= IGL.GL_DEPTH_BUFFER_BIT;
+        if ( clearDepth )
+        {
+            mask |= IGL.GL_DEPTH_BUFFER_BIT;
+        }
 
         Gdx.GL.glClear( mask );
     }
@@ -153,7 +159,10 @@ public class ScreenUtils
     /// <param name="flipY"> whether to flip pixels along Y axis</param>
     public static byte[] GetFrameBufferPixels( bool flipY )
     {
-        if ( Gdx.Graphics == null ) throw new NullReferenceException();
+        if ( Gdx.Graphics == null )
+        {
+            throw new NullReferenceException();
+        }
 
         var w = Gdx.Graphics.BackBufferWidth;
         var h = Gdx.Graphics.BackBufferHeight;

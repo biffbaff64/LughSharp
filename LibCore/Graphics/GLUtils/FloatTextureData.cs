@@ -55,7 +55,10 @@ public class FloatTextureData : ITextureData
 
     public void Prepare()
     {
-        if ( IsPrepared ) throw new GdxRuntimeException( "Already prepared" );
+        if ( IsPrepared )
+        {
+            throw new GdxRuntimeException( "Already prepared" );
+        }
 
         if ( !_isGpuOnly )
         {
@@ -63,13 +66,25 @@ public class FloatTextureData : ITextureData
 
             if ( Gdx.Graphics.GLVersion.GLtype.Equals( GLVersion.GLType.OpenGL ) )
             {
-                if ( _internalFormat is IGL.GL_RGBA16_F or IGL.GL_RGBA32_F ) amountOfFloats = 4;
+                if ( _internalFormat is IGL.GL_RGBA16_F or IGL.GL_RGBA32_F )
+                {
+                    amountOfFloats = 4;
+                }
 
-                if ( _internalFormat is IGL.GL_RGB16_F or IGL.GL_RGB32_F ) amountOfFloats = 3;
+                if ( _internalFormat is IGL.GL_RGB16_F or IGL.GL_RGB32_F )
+                {
+                    amountOfFloats = 3;
+                }
 
-                if ( _internalFormat is IGL.GL_RG16_F or IGL.GL_RG32_F ) amountOfFloats = 2;
+                if ( _internalFormat is IGL.GL_RG16_F or IGL.GL_RG32_F )
+                {
+                    amountOfFloats = 2;
+                }
 
-                if ( _internalFormat is IGL.GL_R16_F or IGL.GL_R32_F ) amountOfFloats = 1;
+                if ( _internalFormat is IGL.GL_R16_F or IGL.GL_R32_F )
+                {
+                    amountOfFloats = 1;
+                }
             }
 
             Buffer = BufferUtils.NewFloatBuffer( Width * Height * amountOfFloats );
@@ -84,7 +99,10 @@ public class FloatTextureData : ITextureData
           || ( Gdx.App.AppType == IApplication.ApplicationType.IOS )
           || ( Gdx.App.AppType == IApplication.ApplicationType.WebGL ) )
         {
-            if ( !Gdx.Graphics.SupportsExtension( "OES_texture_float" ) ) throw new GdxRuntimeException( "Extension OES_texture_float not supported!" );
+            if ( !Gdx.Graphics.SupportsExtension( "OES_texture_float" ) )
+            {
+                throw new GdxRuntimeException( "Extension OES_texture_float not supported!" );
+            }
 
             // GLES and WebGL defines texture format by 3rd and 8th argument,
             // so to get a float texture one needs to supply GL_RGBA and GL_FLOAT there.
@@ -109,7 +127,9 @@ public class FloatTextureData : ITextureData
             if ( !Gdx.Graphics.IsGL30Available() )
             {
                 if ( !Gdx.Graphics.SupportsExtension( "GL_ARB_texture_float" ) )
+                {
                     throw new GdxRuntimeException( "Extension GL_ARB_texture_float not supported!" );
+                }
             }
 
             // in desktop OpenGL the texture format is defined only by the third argument,

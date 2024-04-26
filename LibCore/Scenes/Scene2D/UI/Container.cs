@@ -77,16 +77,23 @@ public class Container< T > : WidgetGroup where T : Actor
     /// <param name="adjustPadding"></param>
     public void SetBackground( IDrawable? background, bool adjustPadding = true )
     {
-        if ( _background == background ) return;
+        if ( _background == background )
+        {
+            return;
+        }
 
         _background = background;
 
         if ( adjustPadding )
         {
             if ( background == null )
+            {
                 SetPadding( Value.Zero );
+            }
             else
+            {
                 SetPadding( background.TopHeight, background.LeftWidth, background.BottomHeight, background.RightWidth );
+            }
 
             Invalidate();
         }
@@ -106,7 +113,10 @@ public class Container< T > : WidgetGroup where T : Actor
 
     public void Layout()
     {
-        if ( _actor == null ) return;
+        if ( _actor == null )
+        {
+            return;
+        }
 
         var padLeft         = _padLeft.Get( this );
         var padBottom       = _padBottom.Get( this );
@@ -122,36 +132,66 @@ public class Container< T > : WidgetGroup where T : Actor
         float width;
 
         if ( _fillX > 0 )
+        {
             width = containerWidth * _fillX;
+        }
         else
+        {
             width = Math.Min( prefWidth, containerWidth );
+        }
 
-        if ( width < minWidth ) width = minWidth;
+        if ( width < minWidth )
+        {
+            width = minWidth;
+        }
 
-        if ( ( maxWidth > 0 ) && ( width > maxWidth ) ) width = maxWidth;
+        if ( ( maxWidth > 0 ) && ( width > maxWidth ) )
+        {
+            width = maxWidth;
+        }
 
         float height;
 
         if ( _fillY > 0 )
+        {
             height = containerHeight * _fillY;
+        }
         else
+        {
             height = Math.Min( prefHeight, containerHeight );
+        }
 
-        if ( height < minHeight ) height = minHeight;
+        if ( height < minHeight )
+        {
+            height = minHeight;
+        }
 
-        if ( ( maxHeight > 0 ) && ( height > maxHeight ) ) height = maxHeight;
+        if ( ( maxHeight > 0 ) && ( height > maxHeight ) )
+        {
+            height = maxHeight;
+        }
 
         var x = padLeft;
 
         if ( ( _align & Align.RIGHT ) != 0 )
+        {
             x                                      += containerWidth - width;
-        else if ( ( _align & Align.LEFT ) == 0 ) x += ( containerWidth - width ) / 2;
+        }
+        else if ( ( _align & Align.LEFT ) == 0 )
+        {
+            x += ( containerWidth - width ) / 2;
+        }
 
         var y = padBottom;
 
         if ( ( _align & Align.TOP ) != 0 )
+        {
             y                                        += containerHeight - height;
-        else if ( ( _align & Align.BOTTOM ) == 0 ) y += ( containerHeight - height ) / 2;
+        }
+        else if ( ( _align & Align.BOTTOM ) == 0 )
+        {
+            y += ( containerHeight - height ) / 2;
+        }
 
         if ( Rounding )
         {
@@ -163,27 +203,45 @@ public class Container< T > : WidgetGroup where T : Actor
 
         _actor.SetBounds( x, y, width, height );
 
-        if ( _actor is ILayout layoutActor ) layoutActor.Validate();
+        if ( _actor is ILayout layoutActor )
+        {
+            layoutActor.Validate();
+        }
     }
 
     public void SetCullingArea( RectangleShape cullingArea )
     {
         CullingArea = cullingArea;
 
-        if ( _fillX is 1f && _fillY is 1f && _actor is ICullable cullableActor ) cullableActor.CullingArea = cullingArea;
+        if ( _fillX is 1f && _fillY is 1f && _actor is ICullable cullableActor )
+        {
+            cullableActor.CullingArea = cullingArea;
+        }
     }
 
     public void SetActor( T? actor )
     {
-        if ( actor == this ) throw new ArgumentException( "actor cannot be the Container." );
+        if ( actor == this )
+        {
+            throw new ArgumentException( "actor cannot be the Container." );
+        }
 
-        if ( actor == _actor ) return;
+        if ( actor == _actor )
+        {
+            return;
+        }
 
-        if ( _actor != null ) base.RemoveActor( _actor, true );
+        if ( _actor != null )
+        {
+            base.RemoveActor( _actor, true );
+        }
 
         _actor = actor;
 
-        if ( actor != null ) base.AddActor( actor );
+        if ( actor != null )
+        {
+            base.AddActor( actor );
+        }
     }
 
     public T? GetActor()
@@ -198,7 +256,10 @@ public class Container< T > : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( actor );
 
-        if ( actor != _actor ) return false;
+        if ( actor != _actor )
+        {
+            return false;
+        }
 
         SetActor( null );
 
@@ -209,7 +270,10 @@ public class Container< T > : WidgetGroup where T : Actor
     {
         ArgumentNullException.ThrowIfNull( actor );
 
-        if ( actor != _actor ) return false;
+        if ( actor != _actor )
+        {
+            return false;
+        }
 
         _actor = null;
 
@@ -220,7 +284,10 @@ public class Container< T > : WidgetGroup where T : Actor
     {
         var actor = base.RemoveActorAt( index, unfocus );
 
-        if ( actor == _actor ) _actor = null;
+        if ( actor == _actor )
+        {
+            _actor = null;
+        }
 
         return actor;
     }
@@ -378,9 +445,15 @@ public class Container< T > : WidgetGroup where T : Actor
     {
         if ( _clip )
         {
-            if ( touchable && ( Touchable == Touchable.Disabled ) ) return null;
+            if ( touchable && ( Touchable == Touchable.Disabled ) )
+            {
+                return null;
+            }
 
-            if ( ( x < 0 ) || ( x >= Width ) || ( y < 0 ) || ( y >= Height ) ) return null;
+            if ( ( x < 0 ) || ( x >= Width ) || ( y < 0 ) || ( y >= Height ) )
+            {
+                return null;
+            }
         }
 
         return base.Hit( x, y, touchable );
@@ -445,7 +518,10 @@ public class Container< T > : WidgetGroup where T : Actor
     {
         var v = _maxWidth.Get( _actor );
 
-        if ( v > 0 ) v += _padLeft.Get( this ) + _padRight.Get( this );
+        if ( v > 0 )
+        {
+            v += _padLeft.Get( this ) + _padRight.Get( this );
+        }
 
         return v;
     }
@@ -516,7 +592,10 @@ public class Container< T > : WidgetGroup where T : Actor
     {
         var v = _maxHeight.Get( _actor );
 
-        if ( v > 0 ) v += _padTop.Get( this ) + _padBottom.Get( this );
+        if ( v > 0 )
+        {
+            v += _padTop.Get( this ) + _padBottom.Get( this );
+        }
 
         return v;
     }
@@ -761,7 +840,10 @@ public class Container< T > : WidgetGroup where T : Actor
     {
         var v = _prefWidth.Get( _actor );
 
-        if ( _background != null ) v = Math.Max( v, _background.MinWidth );
+        if ( _background != null )
+        {
+            v = Math.Max( v, _background.MinWidth );
+        }
 
         return Math.Max( GetMinWidth(), v + _padLeft.Get( this ) + _padRight.Get( this ) );
     }
@@ -775,7 +857,10 @@ public class Container< T > : WidgetGroup where T : Actor
     {
         var v = _prefHeight.Get( _actor );
 
-        if ( _background != null ) v = Math.Max( v, _background.MinHeight );
+        if ( _background != null )
+        {
+            v = Math.Max( v, _background.MinHeight );
+        }
 
         return Math.Max( MinHeight, v + _padTop.Get( this ) + _padBottom.Get( this ) );
     }
@@ -1079,7 +1164,9 @@ public class Container< T > : WidgetGroup where T : Actor
                 }
             }
             else
+            {
                 DrawChildren( batch, parentAlpha );
+            }
 
             ResetTransform( batch );
         }
@@ -1096,7 +1183,10 @@ public class Container< T > : WidgetGroup where T : Actor
     /// </summary>
     protected void DrawBackground( IBatch batch, float parentAlpha, float x, float y )
     {
-        if ( _background == null ) return;
+        if ( _background == null )
+        {
+            return;
+        }
 
         var color = Color ?? Color.Black;
 
@@ -1135,12 +1225,16 @@ public class Container< T > : WidgetGroup where T : Actor
                 }
             }
             else
+            {
                 DrawDebugChildren( shapes );
+            }
 
             ResetTransform( shapes );
         }
         else
+        {
             base.DrawDebug( shapes );
+        }
     }
 
     #endregion drawing

@@ -63,7 +63,10 @@ public class MapLayer
     {
         get
         {
-            if ( _renderOffsetDirty ) CalculateRenderOffsets();
+            if ( _renderOffsetDirty )
+            {
+                CalculateRenderOffsets();
+            }
 
             return _renderOffsetX;
         }
@@ -73,7 +76,10 @@ public class MapLayer
     {
         get
         {
-            if ( _renderOffsetDirty ) CalculateRenderOffsets();
+            if ( _renderOffsetDirty )
+            {
+                CalculateRenderOffsets();
+            }
 
             return _renderOffsetY;
         }
@@ -84,7 +90,10 @@ public class MapLayer
         get => _parent;
         set
         {
-            if ( value == this ) throw new GdxRuntimeException( "Can't set self as the parent" );
+            if ( value == this )
+            {
+                throw new GdxRuntimeException( "Can't set self as the parent" );
+            }
 
             _parent = value;
         }

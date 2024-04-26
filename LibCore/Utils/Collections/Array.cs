@@ -97,7 +97,10 @@ public class Array< T >
     /// </summary>
     public virtual void Add( T value )
     {
-        if ( Size == Items.Length ) Items = Resize( Math.Max( 8, ( int ) ( Size * 1.75f ) ) );
+        if ( Size == Items.Length )
+        {
+            Items = Resize( Math.Max( 8, ( int ) ( Size * 1.75f ) ) );
+        }
 
         Items[ Size++ ] = value;
     }
@@ -151,7 +154,10 @@ public class Array< T >
     {
         var sizeNeeded = Size + count;
 
-        if ( sizeNeeded > Items.Length ) Items = Resize( Math.Max( 8, ( int ) ( sizeNeeded * 1.75f ) ) );
+        if ( sizeNeeded > Items.Length )
+        {
+            Items = Resize( Math.Max( 8, ( int ) ( sizeNeeded * 1.75f ) ) );
+        }
 
         Array.Copy( array, start, Items, Size, count );
 
@@ -165,9 +171,15 @@ public class Array< T >
     /// <returns></returns>
     public virtual T GetAt( int index )
     {
-        if ( index >= Size ) throw new ArgumentOutOfRangeException( nameof( index ), $"index can't be >= size - {index} >= {Size}" );
+        if ( index >= Size )
+        {
+            throw new ArgumentOutOfRangeException( nameof( index ), $"index can't be >= size - {index} >= {Size}" );
+        }
 
-        if ( index < 0 ) throw new ArgumentOutOfRangeException( nameof( index ), "index cannot be less than 0." );
+        if ( index < 0 )
+        {
+            throw new ArgumentOutOfRangeException( nameof( index ), "index cannot be less than 0." );
+        }
 
         return Items[ index ];
     }
@@ -179,7 +191,10 @@ public class Array< T >
     /// <param name="value"> The new value. </param>
     public virtual void Set( int index, T value )
     {
-        if ( index >= Size ) throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
+        if ( index >= Size )
+        {
+            throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
+        }
 
         Items[ index ] = value;
     }
@@ -191,16 +206,29 @@ public class Array< T >
     /// <param name="value"> The value top insert. </param>
     public virtual void Insert( int index, T value )
     {
-        if ( index > Size ) throw new ArgumentOutOfRangeException( "index can't be > size - " + index + " > " + Size );
+        if ( index > Size )
+        {
+            throw new ArgumentOutOfRangeException( "index can't be > size - " + index + " > " + Size );
+        }
 
-        if ( Items == null ) throw new GdxRuntimeException( "Items cannot be null!" );
+        if ( Items == null )
+        {
+            throw new GdxRuntimeException( "Items cannot be null!" );
+        }
 
-        if ( Size == Items.Length ) Items = Resize( Math.Max( 8, ( int ) ( Size * 1.75f ) ) );
+        if ( Size == Items.Length )
+        {
+            Items = Resize( Math.Max( 8, ( int ) ( Size * 1.75f ) ) );
+        }
 
         if ( Ordered )
+        {
             Array.Copy( Items, index, Items, index + 1, Size - index );
+        }
         else
+        {
             Items[ Size ] = Items[ index ];
+        }
 
         Size++;
         Items[ index ] = value;
@@ -212,13 +240,22 @@ public class Array< T >
     /// </summary>
     public virtual void InsertRange( int index, int count )
     {
-        if ( index > Size ) throw new IndexOutOfRangeException( "index can't be > size - " + index + " > " + Size );
+        if ( index > Size )
+        {
+            throw new IndexOutOfRangeException( "index can't be > size - " + index + " > " + Size );
+        }
 
-        if ( Items == null ) throw new GdxRuntimeException( "Items cannot be null!" );
+        if ( Items == null )
+        {
+            throw new GdxRuntimeException( "Items cannot be null!" );
+        }
 
         var sizeNeeded = Size + count;
 
-        if ( sizeNeeded > Items.Length ) Items = Resize( Math.Max( Math.Max( 8, sizeNeeded ), ( int ) ( Size * 1.75f ) ) );
+        if ( sizeNeeded > Items.Length )
+        {
+            Items = Resize( Math.Max( Math.Max( 8, sizeNeeded ), ( int ) ( Size * 1.75f ) ) );
+        }
 
         Array.Copy( Items, index, Items, index + count, Size - index );
 
@@ -233,11 +270,20 @@ public class Array< T >
     /// <param name="second"> Array index of the second element. </param>
     public virtual void Swap( int first, int second )
     {
-        if ( first >= Size ) throw new ArgumentOutOfRangeException( "first can't be >= size - " + first + " >= " + Size );
+        if ( first >= Size )
+        {
+            throw new ArgumentOutOfRangeException( "first can't be >= size - " + first + " >= " + Size );
+        }
 
-        if ( second >= Size ) throw new ArgumentOutOfRangeException( "second can't be >= size - " + second + " >= " + Size );
+        if ( second >= Size )
+        {
+            throw new ArgumentOutOfRangeException( "second can't be >= size - " + second + " >= " + Size );
+        }
 
-        if ( Items == null ) throw new GdxRuntimeException( "Items cannot be null!" );
+        if ( Items == null )
+        {
+            throw new GdxRuntimeException( "Items cannot be null!" );
+        }
 
         ( Items[ first ], Items[ second ] ) = ( Items[ second ], Items[ first ] );
     }
@@ -255,7 +301,10 @@ public class Array< T >
     /// </summary>
     public virtual int IndexOf( T? value )
     {
-        if ( Items == null ) throw new GdxRuntimeException( "Items cannot be null!" );
+        if ( Items == null )
+        {
+            throw new GdxRuntimeException( "Items cannot be null!" );
+        }
 
         return Array.IndexOf( Items, value, 0, Size );
     }
@@ -278,12 +327,14 @@ public class Array< T >
     public virtual bool RemoveValue( T value )
     {
         for ( int i = 0, n = Size; i < n; i++ )
+        {
             if ( value!.Equals( Items[ i ] ) )
             {
                 RemoveIndex( i );
 
                 return true;
             }
+        }
 
         return false;
     }
@@ -296,16 +347,23 @@ public class Array< T >
     /// <exception cref="ArgumentOutOfRangeException"> If the supplied index is out of range. </exception>
     public virtual T RemoveIndex( int index )
     {
-        if ( index >= Size ) throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
+        if ( index >= Size )
+        {
+            throw new ArgumentOutOfRangeException( "index can't be >= size - " + index + " >= " + Size );
+        }
 
         var value = Items[ index ];
 
         Size--;
 
         if ( Ordered )
+        {
             Array.Copy( Items, index + 1, Items, index, Size - index );
+        }
         else
+        {
             Items[ index ] = Items[ Size ];
+        }
 
         Items[ Size ] = default( T )!;
 
@@ -320,19 +378,30 @@ public class Array< T >
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public virtual void RemoveRange( int start, int end )
     {
-        if ( end >= Size ) throw new ArgumentOutOfRangeException( "end can't be >= size - " + end + " >= " + Size );
+        if ( end >= Size )
+        {
+            throw new ArgumentOutOfRangeException( "end can't be >= size - " + end + " >= " + Size );
+        }
 
-        if ( start > end ) throw new ArgumentOutOfRangeException( "start can't be > end - " + start + " > " + end );
+        if ( start > end )
+        {
+            throw new ArgumentOutOfRangeException( "start can't be > end - " + start + " > " + end );
+        }
 
         var count = ( end - start ) + 1;
 
         if ( Ordered )
+        {
             Array.Copy( Items, start + count, Items, start, Size - ( start + count ) );
+        }
         else
         {
             var lastIndex = Size - 1;
 
-            for ( var i = 0; i < count; i++ ) Items[ start + i ] = Items[ lastIndex - i ];
+            for ( var i = 0; i < count; i++ )
+            {
+                Items[ start + i ] = Items[ lastIndex - i ];
+            }
         }
 
         Size -= count;
@@ -352,6 +421,7 @@ public class Array< T >
             var item = array.GetAt( i );
 
             for ( var ii = 0; ii < size; ii++ )
+            {
                 if ( item!.Equals( Items[ ii ] ) )
                 {
                     RemoveIndex( ii );
@@ -359,6 +429,7 @@ public class Array< T >
 
                     break;
                 }
+            }
         }
 
         return size != startSize;
@@ -370,7 +441,10 @@ public class Array< T >
     /// <exception cref="NullReferenceException"> If the array size is zero. </exception>
     public virtual T Pop()
     {
-        if ( Size == 0 ) throw new IndexOutOfRangeException( "Array is empty." );
+        if ( Size == 0 )
+        {
+            throw new IndexOutOfRangeException( "Array is empty." );
+        }
 
         --Size;
 
@@ -387,7 +461,10 @@ public class Array< T >
     /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
     public virtual T Peek()
     {
-        if ( Size == 0 ) throw new NullReferenceException( "Array is empty." );
+        if ( Size == 0 )
+        {
+            throw new NullReferenceException( "Array is empty." );
+        }
 
         return Items[ Size - 1 ];
     }
@@ -398,7 +475,10 @@ public class Array< T >
     /// <exception cref="NullReferenceException">Thrown if the array size is zero.</exception>
     public T First()
     {
-        if ( Size == 0 ) throw new NullReferenceException( "Array is empty." );
+        if ( Size == 0 )
+        {
+            throw new NullReferenceException( "Array is empty." );
+        }
 
         return Items[ 0 ];
     }
@@ -420,7 +500,10 @@ public class Array< T >
     /// <returns></returns>
     public virtual T?[] Shrink()
     {
-        if ( Items.Length != Size ) Resize( Size );
+        if ( Items.Length != Size )
+        {
+            Resize( Size );
+        }
 
         return Items;
     }
@@ -432,7 +515,10 @@ public class Array< T >
     {
         Truncate( newSize );
 
-        if ( newSize > Items.Length ) Resize( Math.Max( 8, newSize ) );
+        if ( newSize > Items.Length )
+        {
+            Resize( Math.Max( 8, newSize ) );
+        }
 
         Size = newSize;
 
@@ -445,7 +531,10 @@ public class Array< T >
     {
         var sizeNeeded = Size + additionalCapacity;
 
-        if ( sizeNeeded > Items.Length ) Resize( Math.Max( 8, sizeNeeded ) );
+        if ( sizeNeeded > Items.Length )
+        {
+            Resize( Math.Max( 8, sizeNeeded ) );
+        }
 
         return Items;
     }
@@ -488,7 +577,10 @@ public class Array< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public virtual T SelectRanked( IComparer< T > comparator, int kthLowest )
     {
-        if ( kthLowest < 1 ) throw new GdxRuntimeException( "nth_lowest must be greater than 0, 1 = first, 2 = second..." );
+        if ( kthLowest < 1 )
+        {
+            throw new GdxRuntimeException( "nth_lowest must be greater than 0, 1 = first, 2 = second..." );
+        }
 
         return Selector< T >.Instance.Select( Items, comparator, kthLowest, Size );
     }
@@ -501,7 +593,10 @@ public class Array< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public virtual int SelectRankedIndex( IComparer< T > comparator, int kthLowest )
     {
-        if ( kthLowest < 1 ) throw new GdxRuntimeException( "nth_lowest must be greater than 0, 1 = first, 2 = second..." );
+        if ( kthLowest < 1 )
+        {
+            throw new GdxRuntimeException( "nth_lowest must be greater than 0, 1 = first, 2 = second..." );
+        }
 
         return Selector< T >.Instance.SelectIndex( Items, comparator, kthLowest, Size );
     }
@@ -538,12 +633,19 @@ public class Array< T >
     /// <returns></returns>
     public virtual IEnumerable< T > Select( IPredicate< T > predicate )
     {
-        if ( Items == null ) throw new NullReferenceException( "Items cannot be null at this point" );
+        if ( Items == null )
+        {
+            throw new NullReferenceException( "Items cannot be null at this point" );
+        }
 
         if ( _predicateIEnumerable == null )
+        {
             _predicateIEnumerable = new PredicateIterable< T >( Items, predicate );
+        }
         else
+        {
             _predicateIEnumerable.Set( Items, predicate );
+        }
 
         return _predicateIEnumerable;
     }
@@ -553,9 +655,15 @@ public class Array< T >
     /// <param name="newSize"></param>
     public virtual void Truncate( int newSize )
     {
-        if ( Size <= newSize ) return;
+        if ( Size <= newSize )
+        {
+            return;
+        }
 
-        for ( var i = newSize; i < Size; i++ ) Items[ i ] = default( T )!;
+        for ( var i = newSize; i < Size; i++ )
+        {
+            Items[ i ] = default( T )!;
+        }
 
         Size = newSize;
     }
@@ -613,24 +721,39 @@ public class Array< T >
     /// <returns></returns>
     public override bool Equals( object? obj )
     {
-        if ( obj == this ) return true;
+        if ( obj == this )
+        {
+            return true;
+        }
 
-        if ( !Ordered ) return false;
+        if ( !Ordered )
+        {
+            return false;
+        }
 
         var array = ( Array< T > ) obj!;
 
-        if ( !array.Ordered ) return false;
+        if ( !array.Ordered )
+        {
+            return false;
+        }
 
         var n = Size;
 
-        if ( n != array.Size ) return false;
+        if ( n != array.Size )
+        {
+            return false;
+        }
 
         for ( var i = 0; i < n; i++ )
         {
             var o1 = Items[ i ];
             var o2 = array.Items[ i ];
 
-            if ( !( o1?.Equals( o2 ) ?? ( o2 == null ) ) ) return false;
+            if ( !( o1?.Equals( o2 ) ?? ( o2 == null ) ) )
+            {
+                return false;
+            }
         }
 
         return true;
@@ -641,7 +764,10 @@ public class Array< T >
     /// <returns></returns>
     public override string ToString()
     {
-        if ( Size == 0 ) return "[]";
+        if ( Size == 0 )
+        {
+            return "[]";
+        }
 
         var buffer = new StringBuilder( 32 );
 
@@ -665,7 +791,10 @@ public class Array< T >
     /// <returns></returns>
     public virtual string ToString( string separator )
     {
-        if ( Size == 0 ) return "";
+        if ( Size == 0 )
+        {
+            return "";
+        }
 
         var buffer = new StringBuilder( 32 );
 

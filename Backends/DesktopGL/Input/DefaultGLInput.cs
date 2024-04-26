@@ -166,7 +166,10 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     /// <inheritdoc />
     public override bool IsButtonJustPressed( int button )
     {
-        if ( ( button < 0 ) || ( button >= _justPressedButtons.Length ) ) return false;
+        if ( ( button < 0 ) || ( button >= _justPressedButtons.Length ) )
+        {
+            return false;
+        }
 
         return _justPressedButtons[ button ];
     }
@@ -529,7 +532,10 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
 
                 var character = CharacterForKeyCode( gdxKey );
 
-                if ( character != 0 ) CharCallback( window, character );
+                if ( character != 0 )
+                {
+                    CharCallback( window, character );
+                }
 
                 break;
             }
@@ -564,7 +570,10 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
 
     internal void CharCallback( GLFWWindow window, uint codepoint )
     {
-        if ( ( codepoint & 0xff00 ) == 0xf700 ) return;
+        if ( ( codepoint & 0xff00 ) == 0xf700 )
+        {
+            return;
+        }
 
         _lastCharacter = ( char ) codepoint;
         _window?.Graphics.RequestRendering();
@@ -584,7 +593,10 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         };
 
 
-        if ( Enum.IsDefined( typeof( MouseButton ), button ) && ( gdxButton == -1 ) ) return;
+        if ( Enum.IsDefined( typeof( MouseButton ), button ) && ( gdxButton == -1 ) )
+        {
+            return;
+        }
 
         var time = TimeUtils.NanoTime();
 
@@ -634,8 +646,12 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         _window?.Graphics.RequestRendering();
 
         if ( _mousePressed > 0 )
+        {
             _eventQueue.TouchDragged( _mouseX, _mouseY, 0, TimeUtils.NanoTime() );
+        }
         else
+        {
             _eventQueue.MouseMoved( _mouseX, _mouseY, TimeUtils.NanoTime() );
+        }
     }
 }

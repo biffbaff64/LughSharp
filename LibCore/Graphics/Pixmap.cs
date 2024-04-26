@@ -101,7 +101,10 @@ public class Pixmap : IDisposable
         {
             var bytes = new byte[ fs.Length ];
 
-            if ( fs.Read( bytes, 0, bytes.Length ) == 0 ) throw new FileLoadException( $"Error reading from {file.Name}: No data found." );
+            if ( fs.Read( bytes, 0, bytes.Length ) == 0 )
+            {
+                throw new FileLoadException( $"Error reading from {file.Name}: No data found." );
+            }
 
             GDX2DPixmap = new Gdx2DPixmap( bytes, 0, bytes.Length, 0 );
         }
@@ -173,7 +176,10 @@ public class Pixmap : IDisposable
     {
         get
         {
-            if ( IsDisposed ) throw new GdxRuntimeException( "Pixmap already disposed" );
+            if ( IsDisposed )
+            {
+                throw new GdxRuntimeException( "Pixmap already disposed" );
+            }
 
             return GDX2DPixmap.PixelPtr;
         }

@@ -72,12 +72,18 @@ public class ImageTextButton : Button
 
     public void SetStyle( ButtonStyle style )
     {
-        if ( !( style is ImageTextButtonStyle textButtonStyle ) ) throw new ArgumentException( "style must be a ImageTextButtonStyle." );
+        if ( !( style is ImageTextButtonStyle textButtonStyle ) )
+        {
+            throw new ArgumentException( "style must be a ImageTextButtonStyle." );
+        }
 
         _style     = textButtonStyle;
         base.Style = textButtonStyle;
 
-        if ( _image != null ) UpdateImage();
+        if ( _image != null )
+        {
+            UpdateImage();
+        }
 
         if ( _label != null )
         {
@@ -95,32 +101,53 @@ public class ImageTextButton : Button
     /// </summary>
     protected IDrawable? GetImageDrawable()
     {
-        if ( IsDisabled && ( _style?.ImageDisabled != null ) ) return _style.ImageDisabled;
+        if ( IsDisabled && ( _style?.ImageDisabled != null ) )
+        {
+            return _style.ImageDisabled;
+        }
 
         if ( IsPressed() )
         {
-            if ( IsChecked && ( _style?.ImageCheckedDown != null ) ) return _style.ImageCheckedDown;
+            if ( IsChecked && ( _style?.ImageCheckedDown != null ) )
+            {
+                return _style.ImageCheckedDown;
+            }
 
-            if ( _style?.ImageDown != null ) return _style.ImageDown;
+            if ( _style?.ImageDown != null )
+            {
+                return _style.ImageDown;
+            }
         }
 
         if ( IsOver() )
         {
             if ( IsChecked )
             {
-                if ( _style?.ImageCheckedOver != null ) return _style.ImageCheckedOver;
+                if ( _style?.ImageCheckedOver != null )
+                {
+                    return _style.ImageCheckedOver;
+                }
             }
             else
             {
-                if ( _style?.ImageOver != null ) return _style.ImageOver;
+                if ( _style?.ImageOver != null )
+                {
+                    return _style.ImageOver;
+                }
             }
         }
 
         if ( IsChecked )
         {
-            if ( _style?.ImageChecked != null ) return _style.ImageChecked;
+            if ( _style?.ImageChecked != null )
+            {
+                return _style.ImageChecked;
+            }
 
-            if ( IsOver() && ( _style?.ImageOver != null ) ) return _style.ImageOver;
+            if ( IsOver() && ( _style?.ImageOver != null ) )
+            {
+                return _style.ImageOver;
+            }
         }
 
         return _style?.ImageUp;
@@ -140,24 +167,39 @@ public class ImageTextButton : Button
     /// </summary>
     protected Color? GetFontColor()
     {
-        if ( IsDisabled && ( _style?.DisabledFontColor != null ) ) return _style.DisabledFontColor;
+        if ( IsDisabled && ( _style?.DisabledFontColor != null ) )
+        {
+            return _style.DisabledFontColor;
+        }
 
         if ( IsPressed() )
         {
-            if ( IsChecked && ( _style?.CheckedDownFontColor != null ) ) return _style.CheckedDownFontColor;
+            if ( IsChecked && ( _style?.CheckedDownFontColor != null ) )
+            {
+                return _style.CheckedDownFontColor;
+            }
 
-            if ( _style?.DownFontColor != null ) return _style.DownFontColor;
+            if ( _style?.DownFontColor != null )
+            {
+                return _style.DownFontColor;
+            }
         }
 
         if ( IsOver() )
         {
             if ( IsChecked )
             {
-                if ( _style?.CheckedOverFontColor != null ) return _style.CheckedOverFontColor;
+                if ( _style?.CheckedOverFontColor != null )
+                {
+                    return _style.CheckedOverFontColor;
+                }
             }
             else
             {
-                if ( _style?.OverFontColor != null ) return _style.OverFontColor;
+                if ( _style?.OverFontColor != null )
+                {
+                    return _style.OverFontColor;
+                }
             }
         }
 
@@ -165,14 +207,26 @@ public class ImageTextButton : Button
 
         if ( IsChecked )
         {
-            if ( focused && ( _style?.CheckedFocusedFontColor != null ) ) return _style.CheckedFocusedFontColor;
+            if ( focused && ( _style?.CheckedFocusedFontColor != null ) )
+            {
+                return _style.CheckedFocusedFontColor;
+            }
 
-            if ( _style?.CheckedFontColor != null ) return _style.CheckedFontColor;
+            if ( _style?.CheckedFontColor != null )
+            {
+                return _style.CheckedFontColor;
+            }
 
-            if ( IsOver() && ( _style?.OverFontColor != null ) ) return _style.OverFontColor;
+            if ( IsOver() && ( _style?.OverFontColor != null ) )
+            {
+                return _style.OverFontColor;
+            }
         }
 
-        if ( focused && ( _style?.FocusedFontColor != null ) ) return _style.FocusedFontColor;
+        if ( focused && ( _style?.FocusedFontColor != null ) )
+        {
+            return _style.FocusedFontColor;
+        }
 
         return _style?.FontColor;
     }
@@ -181,7 +235,10 @@ public class ImageTextButton : Button
     {
         UpdateImage();
 
-        if ( _label != null ) _label.Style.FontColor = GetFontColor();
+        if ( _label != null )
+        {
+            _label.Style.FontColor = GetFontColor();
+        }
 
         base.Draw( batch, parentAlpha );
     }
@@ -228,12 +285,18 @@ public class ImageTextButton : Button
 
     public new string ToString()
     {
-        if ( Name != null ) return Name;
+        if ( Name != null )
+        {
+            return Name;
+        }
 
         var className = GetType().Name;
         var dotIndex  = className.LastIndexOf( '.' );
 
-        if ( dotIndex != -1 ) className = className.Substring( dotIndex + 1 );
+        if ( dotIndex != -1 )
+        {
+            className = className.Substring( dotIndex + 1 );
+        }
 
         return ( className.IndexOf( '$' ) != -1 ? "ImageTextButton " : "" )
              + className

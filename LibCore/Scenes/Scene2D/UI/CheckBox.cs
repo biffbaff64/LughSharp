@@ -63,7 +63,10 @@ public class CheckBox : TextButton
         get => _style;
         set
         {
-            if ( value is not CheckBoxStyle style ) throw new ArgumentException( "style must be a CheckBoxStyle." );
+            if ( value is not CheckBoxStyle style )
+            {
+                throw new ArgumentException( "style must be a CheckBoxStyle." );
+            }
 
             _style     = style;
             base.Style = style;
@@ -83,9 +86,13 @@ public class CheckBox : TextButton
         if ( IsDisabled )
         {
             if ( IsChecked && ( _style?.CheckboxOnDisabled != null ) )
+            {
                 checkbox = _style.CheckboxOnDisabled;
+            }
             else
+            {
                 checkbox = _style?.CheckboxOffDisabled;
+            }
         }
 
         if ( checkbox == null )
@@ -99,9 +106,13 @@ public class CheckBox : TextButton
                                : _style.CheckboxOn;
             }
             else if ( over && ( _style?.CheckboxOver != null ) )
+            {
                 checkbox = _style.CheckboxOver;
+            }
             else
+            {
                 checkbox = _style?.CheckboxOff;
+            }
         }
 
         Image?.SetDrawable( checkbox );

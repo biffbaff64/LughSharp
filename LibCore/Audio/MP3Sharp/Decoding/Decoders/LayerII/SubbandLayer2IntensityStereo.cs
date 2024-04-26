@@ -121,7 +121,10 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
         {
             var sample = samples[ samplenumber ];
 
-            if ( groupingtable[ 0 ] == null ) sample = ( sample + d[ 0 ] ) * cFactor[ 0 ];
+            if ( groupingtable[ 0 ] == null )
+            {
+                sample = ( sample + d[ 0 ] ) * cFactor[ 0 ];
+            }
 
             switch ( channels )
             {

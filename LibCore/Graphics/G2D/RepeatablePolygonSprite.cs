@@ -66,7 +66,10 @@ public class RepeatablePolygonSprite
 
         var boundRect = polygon.BoundingRectangle;
 
-        if ( density is -1 ) density = boundRect.Width / region.RegionWidth;
+        if ( density is -1 )
+        {
+            density = boundRect.Width / region.RegionWidth;
+        }
 
         var regionAspectRatio = region.RegionHeight / region.RegionWidth;
 
@@ -129,9 +132,15 @@ public class RepeatablePolygonSprite
             var numX = ( vertices[ i ] / _gridWidth ) % 1;
             var numY = ( vertices[ i + 1 ] / _gridHeight ) % 1;
 
-            if ( ( numX > 0.99f ) || ( numX < 0.01f ) ) vertices[ i ] = ( float ) ( _gridWidth * Math.Round( vertices[ i ] / _gridWidth ) );
+            if ( ( numX > 0.99f ) || ( numX < 0.01f ) )
+            {
+                vertices[ i ] = ( float ) ( _gridWidth * Math.Round( vertices[ i ] / _gridWidth ) );
+            }
 
-            if ( ( numY > 0.99f ) || ( numY < 0.01f ) ) vertices[ i + 1 ] = ( float ) ( _gridHeight * Math.Round( vertices[ i + 1 ] / _gridHeight ) );
+            if ( ( numY > 0.99f ) || ( numY < 0.01f ) )
+            {
+                vertices[ i + 1 ] = ( float ) ( _gridHeight * Math.Round( vertices[ i + 1 ] / _gridHeight ) );
+            }
         }
 
         return vertices;
@@ -151,9 +160,15 @@ public class RepeatablePolygonSprite
 
         for ( var i = 0; i < ( vertices.Length - 1 ); i += 2 )
         {
-            if ( _offset.X > vertices[ i ] ) _offset.X = vertices[ i ];
+            if ( _offset.X > vertices[ i ] )
+            {
+                _offset.X = vertices[ i ];
+            }
 
-            if ( _offset.Y > vertices[ i + 1 ] ) _offset.Y = vertices[ i + 1 ];
+            if ( _offset.Y > vertices[ i + 1 ] )
+            {
+                _offset.Y = vertices[ i + 1 ];
+            }
         }
 
         for ( var i = 0; i < vertices.Length; i += 2 )
@@ -179,7 +194,10 @@ public class RepeatablePolygonSprite
         {
             var verts = _parts[ i ];
 
-            if ( verts == null ) continue;
+            if ( verts == null )
+            {
+                continue;
+            }
 
             var fullVerts = new float[ ( 5 * verts.Length ) / 2 ];
             var idx       = 0;
@@ -197,13 +215,25 @@ public class RepeatablePolygonSprite
                 var u = ( verts[ j ] % _gridWidth ) / _gridWidth;
                 var v = ( verts[ j + 1 ] % _gridHeight ) / _gridHeight;
 
-                if ( verts[ j ].Equals( col * _gridWidth ) ) u = 0f;
+                if ( verts[ j ].Equals( col * _gridWidth ) )
+                {
+                    u = 0f;
+                }
 
-                if ( verts[ j ].Equals( ( col + 1 ) * _gridWidth ) ) u = 1f;
+                if ( verts[ j ].Equals( ( col + 1 ) * _gridWidth ) )
+                {
+                    u = 1f;
+                }
 
-                if ( verts[ j + 1 ].Equals( row * _gridHeight ) ) v = 0f;
+                if ( verts[ j + 1 ].Equals( row * _gridHeight ) )
+                {
+                    v = 0f;
+                }
 
-                if ( verts[ j + 1 ].Equals( ( row + 1 ) * _gridHeight ) ) v = 1f;
+                if ( verts[ j + 1 ].Equals( ( row + 1 ) * _gridHeight ) )
+                {
+                    v = 1f;
+                }
 
                 u = _region.U + ( ( _region.U2 - _region.U ) * u );
                 v = _region.V + ( ( _region.V2 - _region.V ) * v );
@@ -222,9 +252,13 @@ public class RepeatablePolygonSprite
     {
         GdxRuntimeException.ThrowIfNull( _region );
 
-        if ( _dirty ) BuildVertices();
+        if ( _dirty )
+        {
+            BuildVertices();
+        }
 
         for ( var i = 0; i < _vertices.Count; i++ )
+        {
             batch.Draw(
                        _region.Texture,
                        _vertices[ i ],
@@ -234,6 +268,7 @@ public class RepeatablePolygonSprite
                        0,
                        _indices[ i ].Length
                       );
+        }
     }
 
     /// <summary>

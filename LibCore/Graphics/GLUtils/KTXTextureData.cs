@@ -106,9 +106,15 @@ public class KtxTextureData : ITextureData, ICubemapData
     /// </summary>
     public void Prepare()
     {
-        if ( _compressedData != null ) throw new GdxRuntimeException( "Already prepared!" );
+        if ( _compressedData != null )
+        {
+            throw new GdxRuntimeException( "Already prepared!" );
+        }
 
-        if ( _file == null ) throw new GdxRuntimeException( "Source file not specified!" );
+        if ( _file == null )
+        {
+            throw new GdxRuntimeException( "Source file not specified!" );
+        }
 
         // We support normal ktx files as well as 'zktx' which are gzip ktx
         // file with an int length at the beginning (like ETC1).
@@ -128,7 +134,10 @@ public class KtxTextureData : ITextureData, ICubemapData
 
                 int readBytes;
 
-                while ( ( readBytes = dataInputStream.Read( buffer ) ) != -1 ) _compressedData.Put( buffer, 0, readBytes );
+                while ( ( readBytes = dataInputStream.Read( buffer ) ) != -1 )
+                {
+                    _compressedData.Put( buffer, 0, readBytes );
+                }
 
                 _compressedData.Position = 0;
                 _compressedData.Limit    = _compressedData.Capacity;
@@ -143,24 +152,76 @@ public class KtxTextureData : ITextureData, ICubemapData
             }
         }
         else
+        {
             _compressedData = ByteBuffer.Wrap( File.ReadAllBytes( _file.Name ) );
+        }
 
-        if ( _compressedData.Get() != 0x0AB ) throw new GdxRuntimeException( "Invalid KTX Header" );
-        if ( _compressedData.Get() != 0x04B ) throw new GdxRuntimeException( "Invalid KTX Header" );
-        if ( _compressedData.Get() != 0x054 ) throw new GdxRuntimeException( "Invalid KTX Header" );
-        if ( _compressedData.Get() != 0x058 ) throw new GdxRuntimeException( "Invalid KTX Header" );
-        if ( _compressedData.Get() != 0x020 ) throw new GdxRuntimeException( "Invalid KTX Header" );
-        if ( _compressedData.Get() != 0x031 ) throw new GdxRuntimeException( "Invalid KTX Header" );
-        if ( _compressedData.Get() != 0x031 ) throw new GdxRuntimeException( "Invalid KTX Header" );
-        if ( _compressedData.Get() != 0x0BB ) throw new GdxRuntimeException( "Invalid KTX Header" );
-        if ( _compressedData.Get() != 0x00D ) throw new GdxRuntimeException( "Invalid KTX Header" );
-        if ( _compressedData.Get() != 0x00A ) throw new GdxRuntimeException( "Invalid KTX Header" );
-        if ( _compressedData.Get() != 0x01A ) throw new GdxRuntimeException( "Invalid KTX Header" );
-        if ( _compressedData.Get() != 0x00A ) throw new GdxRuntimeException( "Invalid KTX Header" );
+        if ( _compressedData.Get() != 0x0AB )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
+
+        if ( _compressedData.Get() != 0x04B )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
+
+        if ( _compressedData.Get() != 0x054 )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
+
+        if ( _compressedData.Get() != 0x058 )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
+
+        if ( _compressedData.Get() != 0x020 )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
+
+        if ( _compressedData.Get() != 0x031 )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
+
+        if ( _compressedData.Get() != 0x031 )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
+
+        if ( _compressedData.Get() != 0x0BB )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
+
+        if ( _compressedData.Get() != 0x00D )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
+
+        if ( _compressedData.Get() != 0x00A )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
+
+        if ( _compressedData.Get() != 0x01A )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
+
+        if ( _compressedData.Get() != 0x00A )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
 
         var endianTag = _compressedData.GetInt();
 
-        if ( ( endianTag != 0x04030201 ) && ( endianTag != 0x01020304 ) ) throw new GdxRuntimeException( "Invalid KTX Header" );
+        if ( ( endianTag != 0x04030201 ) && ( endianTag != 0x01020304 ) )
+        {
+            throw new GdxRuntimeException( "Invalid KTX Header" );
+        }
 
         if ( endianTag != 0x04030201 )
         {
@@ -250,7 +311,10 @@ public class KtxTextureData : ITextureData, ICubemapData
     /// </summary>
     public void ConsumeCustomData( int target )
     {
-        if ( _compressedData == null ) throw new GdxRuntimeException( "Call prepare() before calling consumeCompressedData()" );
+        if ( _compressedData == null )
+        {
+            throw new GdxRuntimeException( "Call prepare() before calling consumeCompressedData()" );
+        }
 
         var buffer = BufferUtils.NewIntBuffer( 16 );
 
@@ -259,7 +323,10 @@ public class KtxTextureData : ITextureData, ICubemapData
 
         if ( ( _glType == 0 ) || ( _glFormat == 0 ) )
         {
-            if ( ( _glType + _glFormat ) != 0 ) throw new GdxRuntimeException( "either both or none of glType, glFormat must be zero" );
+            if ( ( _glType + _glFormat ) != 0 )
+            {
+                throw new GdxRuntimeException( "either both or none of glType, glFormat must be zero" );
+            }
 
             compressed = true;
         }
@@ -283,20 +350,33 @@ public class KtxTextureData : ITextureData, ICubemapData
         if ( _numberOfFaces == 6 )
         {
             if ( textureDimensions == 2 )
+            {
                 glTarget = IGL.GL_TEXTURE_CUBE_MAP;
+            }
             else
+            {
                 throw new GdxRuntimeException( "cube map needs 2D faces" );
+            }
         }
-        else if ( _numberOfFaces != 1 ) throw new GdxRuntimeException( "numberOfFaces must be either 1 or 6" );
+        else if ( _numberOfFaces != 1 )
+        {
+            throw new GdxRuntimeException( "numberOfFaces must be either 1 or 6" );
+        }
 
         if ( _numberOfArrayElements > 0 )
         {
             if ( glTarget == GL_TEXTURE_1D )
+            {
                 glTarget = GL_TEXTURE_1D_ARRAY_EXT;
+            }
             else if ( glTarget == IGL.GL_TEXTURE_2D )
+            {
                 glTarget = GL_TEXTURE_2D_ARRAY_EXT;
+            }
             else
+            {
                 throw new GdxRuntimeException( "No API for 3D and cube arrays yet" );
+            }
 
             textureDimensions++;
         }
@@ -335,7 +415,9 @@ public class KtxTextureData : ITextureData, ICubemapData
             // Load normal texture
             if ( ( target != glTarget )
               && !( target is >= IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X and <= IGL.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ) )
+            {
                 throw new GdxRuntimeException( $"Invalid target requested : 0x{target:X}, expecting : 0x{glTarget:X}" );
+            }
         }
 
         // KTX files require an unpack alignment of 4
@@ -349,7 +431,10 @@ public class KtxTextureData : ITextureData, ICubemapData
 
         var previousUnpackAlignment = buffer.Get( 0 );
 
-        if ( previousUnpackAlignment != 4 ) Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 4 );
+        if ( previousUnpackAlignment != 4 )
+        {
+            Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 4 );
+        }
 
         var glInternalFormat = _glInternalFormat;
         var glFormat         = _glFormat;
@@ -375,7 +460,10 @@ public class KtxTextureData : ITextureData, ICubemapData
 
                 pos += faceLodSizeRounded;
 
-                if ( ( singleFace != -1 ) && ( singleFace != face ) ) continue;
+                if ( ( singleFace != -1 ) && ( singleFace != face ) )
+                {
+                    continue;
+                }
 
                 var data = _compressedData.Slice();
                 data.Limit = faceLodSizeRounded;
@@ -390,7 +478,10 @@ public class KtxTextureData : ITextureData, ICubemapData
                 }
                 else if ( textureDimensions == 2 )
                 {
-                    if ( _numberOfArrayElements > 0 ) pixelHeight = _numberOfArrayElements;
+                    if ( _numberOfArrayElements > 0 )
+                    {
+                        pixelHeight = _numberOfArrayElements;
+                    }
 
                     if ( compressed )
                     {
@@ -492,9 +583,15 @@ public class KtxTextureData : ITextureData, ICubemapData
             }
         }
 
-        if ( previousUnpackAlignment != 4 ) Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, previousUnpackAlignment );
+        if ( previousUnpackAlignment != 4 )
+        {
+            Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, previousUnpackAlignment );
+        }
 
-        if ( UseMipMaps ) Gdx.GL.glGenerateMipmap( target );
+        if ( UseMipMaps )
+        {
+            Gdx.GL.glGenerateMipmap( target );
+        }
 
         // dispose data once transfered to GPU
         DisposePreparedData();
@@ -523,7 +620,10 @@ public class KtxTextureData : ITextureData, ICubemapData
 
     public void DisposePreparedData()
     {
-        if ( _compressedData != null ) BufferUtils.DisposeUnsafeByteBuffer( _compressedData );
+        if ( _compressedData != null )
+        {
+            BufferUtils.DisposeUnsafeByteBuffer( _compressedData );
+        }
 
         _compressedData = null;
     }

@@ -109,7 +109,10 @@ public abstract class FloatBuffer : Buffer
     /// </exception>
     public static FloatBuffer Allocate( int capacity )
     {
-        if ( capacity < 0 ) throw new ArgumentException( "Capacity should be >= 0" );
+        if ( capacity < 0 )
+        {
+            throw new ArgumentException( "Capacity should be >= 0" );
+        }
 
         return new HeapFloatBuffer( capacity, capacity );
     }
@@ -341,11 +344,17 @@ public abstract class FloatBuffer : Buffer
     {
         CheckBounds( offset, length, dst.Length );
 
-        if ( length > Remaining() ) throw new GdxRuntimeException( "Buffer Underflow!" );
+        if ( length > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Underflow!" );
+        }
 
         var end = offset + length;
 
-        for ( var i = offset; i < end; i++ ) dst[ i ] = Get();
+        for ( var i = offset; i < end; i++ )
+        {
+            dst[ i ] = Get();
+        }
 
         return this;
     }
@@ -412,15 +421,27 @@ public abstract class FloatBuffer : Buffer
     /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public FloatBuffer Put( FloatBuffer src )
     {
-        if ( src.Equals( this ) ) throw new ArgumentException( "src cannot be this buffer!" );
+        if ( src.Equals( this ) )
+        {
+            throw new ArgumentException( "src cannot be this buffer!" );
+        }
 
-        if ( IsReadOnly ) throw new GdxRuntimeException( "Buffer is Read Only!" );
+        if ( IsReadOnly )
+        {
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
+        }
 
         var n = src.Remaining();
 
-        if ( n > Remaining() ) throw new GdxRuntimeException( "Buffer Overflow!" );
+        if ( n > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Overflow!" );
+        }
 
-        for ( var i = 0; i < n; i++ ) Put( src.Get() );
+        for ( var i = 0; i < n; i++ )
+        {
+            Put( src.Get() );
+        }
 
         return this;
     }
@@ -473,11 +494,17 @@ public abstract class FloatBuffer : Buffer
     {
         CheckBounds( offset, length, src.Length );
 
-        if ( length > Remaining() ) throw new GdxRuntimeException( "Buffer Overflow!" );
+        if ( length > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Overflow!" );
+        }
 
         var end = offset + length;
 
-        for ( var i = offset; i < end; i++ ) Put( src[ i ] );
+        for ( var i = offset; i < end; i++ )
+        {
+            Put( src[ i ] );
+        }
 
         return this;
     }
@@ -538,9 +565,15 @@ public abstract class FloatBuffer : Buffer
     /// </exception>
     public float[] Array()
     {
-        if ( Hb == null ) throw new GdxRuntimeException( "Backing array os null." );
+        if ( Hb == null )
+        {
+            throw new GdxRuntimeException( "Backing array os null." );
+        }
 
-        if ( IsReadOnly ) throw new GdxRuntimeException( "Buffer is Read Only!" );
+        if ( IsReadOnly )
+        {
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
+        }
 
         return Hb;
     }
@@ -569,9 +602,15 @@ public abstract class FloatBuffer : Buffer
     /// </exception>
     public override int ArrayOffset()
     {
-        if ( Hb == null ) throw new GdxRuntimeException( "Backing array os null." );
+        if ( Hb == null )
+        {
+            throw new GdxRuntimeException( "Backing array os null." );
+        }
 
-        if ( IsReadOnly ) throw new GdxRuntimeException( "Buffer is Read Only!" );
+        if ( IsReadOnly )
+        {
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
+        }
 
         return Offset;
     }
@@ -669,17 +708,30 @@ public abstract class FloatBuffer : Buffer
     /// </returns>
     public override bool Equals( object? ob )
     {
-        if ( this == ob ) return true;
+        if ( this == ob )
+        {
+            return true;
+        }
 
-        if ( !( ob is FloatBuffer floatBuffer ) ) return false;
+        if ( !( ob is FloatBuffer floatBuffer ) )
+        {
+            return false;
+        }
 
-        if ( Remaining != floatBuffer.Remaining ) return false;
+        if ( Remaining != floatBuffer.Remaining )
+        {
+            return false;
+        }
 
         var p = Position;
 
         for ( int i = Limit - 1, j = floatBuffer.Limit - 1; i >= p; i--, j-- )
+        {
             if ( !Equals( Get( i ), floatBuffer.Get( j ) ) )
+            {
                 return false;
+            }
+        }
 
         return true;
     }
@@ -718,7 +770,10 @@ public abstract class FloatBuffer : Buffer
         {
             var cmp = Compare( Get( i ), that.Get( j ) );
 
-            if ( cmp != 0 ) return cmp;
+            if ( cmp != 0 )
+            {
+                return cmp;
+            }
         }
 
         return Remaining() - that.Remaining();

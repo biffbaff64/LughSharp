@@ -80,10 +80,16 @@ public class FloatAction : TemporalAction
     protected override void Update( float percent )
     {
         if ( percent == 0 )
+        {
             Value = Start;
+        }
         else if ( percent is 1.0f )
+        {
             Value = EndValue;
+        }
         else
+        {
             Value = Start + ( ( EndValue - Start ) * percent );
+        }
     }
 }

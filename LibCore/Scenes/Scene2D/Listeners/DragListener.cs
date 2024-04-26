@@ -65,11 +65,20 @@ public class DragListener : InputListener
     /// <returns></returns>
     public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
     {
-        if ( ev == null ) return false;
+        if ( ev == null )
+        {
+            return false;
+        }
 
-        if ( _pressedPointer != -1 ) return false;
+        if ( _pressedPointer != -1 )
+        {
+            return false;
+        }
 
-        if ( ( pointer == 0 ) && ( Button != -1 ) && ( button != Button ) ) return false;
+        if ( ( pointer == 0 ) && ( Button != -1 ) && ( button != Button ) )
+        {
+            return false;
+        }
 
         _pressedPointer = pointer;
         TouchDownX      = x;
@@ -82,9 +91,15 @@ public class DragListener : InputListener
 
     public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
     {
-        if ( ev == null ) return;
+        if ( ev == null )
+        {
+            return;
+        }
 
-        if ( pointer != _pressedPointer ) return;
+        if ( pointer != _pressedPointer )
+        {
+            return;
+        }
 
         if ( !IsDragging
           && ( ( Math.Abs( TouchDownX - x ) > TapSquareSize )
@@ -113,11 +128,17 @@ public class DragListener : InputListener
 
     public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
     {
-        if ( ev == null ) return;
+        if ( ev == null )
+        {
+            return;
+        }
 
         if ( pointer == _pressedPointer )
         {
-            if ( IsDragging ) DragStop( ev, x, y, pointer );
+            if ( IsDragging )
+            {
+                DragStop( ev, x, y, pointer );
+            }
 
             Cancel();
         }

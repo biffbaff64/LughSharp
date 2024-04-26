@@ -71,7 +71,10 @@ public class ObjectMap< TK, TV >
     /// <param name="loadFactor"></param>
     public ObjectMap( int initialCapacity = 51, float loadFactor = 0.8f )
     {
-        if ( loadFactor is <= 0f or >= 1f ) throw new ArgumentException( "loadFactor must be > 0 and < 1: " + loadFactor );
+        if ( loadFactor is <= 0f or >= 1f )
+        {
+            throw new ArgumentException( "loadFactor must be > 0 and < 1: " + loadFactor );
+        }
 
         LoadFactor = loadFactor;
 
@@ -185,15 +188,24 @@ public class ObjectMap< TK, TV >
     {
         ArgumentNullException.ThrowIfNull( key );
 
-        if ( KeyTable == null ) throw new NullReferenceException( "_keyTable is null" );
+        if ( KeyTable == null )
+        {
+            throw new NullReferenceException( "_keyTable is null" );
+        }
 
         for ( var i = Place( key ); /*..*/; i = ( i + 1 ) & Mask )
         {
             var other = KeyTable[ i ];
 
-            if ( other == null ) return -( i + 1 ); // Empty space is available.
+            if ( other == null )
+            {
+                return -( i + 1 ); // Empty space is available.
+            }
 
-            if ( other.Equals( key ) ) return i; // Same key was found.
+            if ( other.Equals( key ) )
+            {
+                return i; // Same key was found.
+            }
         }
     }
 
@@ -225,7 +237,10 @@ public class ObjectMap< TK, TV >
         KeyTable[ i ]   = key;
         ValueTable[ i ] = value;
 
-        if ( ++Size >= Threshold ) Resize( KeyTable.Length << 1 );
+        if ( ++Size >= Threshold )
+        {
+            Resize( KeyTable.Length << 1 );
+        }
 
         return default( TV? );
     }
@@ -255,7 +270,10 @@ public class ObjectMap< TK, TV >
         {
             var key = KeyTable[ i ];
 
-            if ( key != null ) Put( key, map.ValueTable[ i ] );
+            if ( key != null )
+            {
+                Put( key, map.ValueTable[ i ] );
+            }
         }
     }
 
@@ -334,11 +352,17 @@ public class ObjectMap< TK, TV >
     /// <param name="maximumCapacity"> The new maximum capacity. </param>
     public void Shrink( int maximumCapacity )
     {
-        if ( maximumCapacity < 0 ) throw new ArgumentException( "maximumCapacity must be >= 0: " + maximumCapacity );
+        if ( maximumCapacity < 0 )
+        {
+            throw new ArgumentException( "maximumCapacity must be >= 0: " + maximumCapacity );
+        }
 
         var tableSize = TableSize( maximumCapacity, LoadFactor );
 
-        if ( KeyTable.Length > tableSize ) Resize( tableSize );
+        if ( KeyTable.Length > tableSize )
+        {
+            Resize( tableSize );
+        }
     }
 
     /// <summary>
@@ -364,7 +388,10 @@ public class ObjectMap< TK, TV >
     /// </summary>
     public void Clear()
     {
-        if ( Size == 0 ) return;
+        if ( Size == 0 )
+        {
+            return;
+        }
 
         Size = 0;
 
@@ -382,14 +409,22 @@ public class ObjectMap< TK, TV >
         if ( value == null )
         {
             for ( var i = ValueTable.Length - 1; i >= 0; i-- )
+            {
                 if ( ( KeyTable[ i ] != null ) && ( ValueTable[ i ] == null ) )
+                {
                     return true;
+                }
+            }
         }
         else
         {
             for ( var i = ValueTable.Length - 1; i >= 0; i-- )
+            {
                 if ( value.Equals( ValueTable[ i ] ) )
+                {
                     return true;
+                }
+            }
         }
 
         return false;
@@ -414,14 +449,22 @@ public class ObjectMap< TK, TV >
         if ( value == null )
         {
             for ( var i = ValueTable.Length - 1; i >= 0; i-- )
+            {
                 if ( ( KeyTable[ i ] != null ) && ( ValueTable[ i ] == null ) )
+                {
                     return KeyTable[ i ];
+                }
+            }
         }
         else
         {
             for ( var i = ValueTable.Length - 1; i >= 0; i-- )
+            {
                 if ( value.Equals( ValueTable[ i ] ) )
+                {
                     return KeyTable[ i ];
+                }
+            }
         }
 
         return default( TK? );
@@ -436,7 +479,10 @@ public class ObjectMap< TK, TV >
     {
         var tableSize = TableSize( Size + additionalCapacity, LoadFactor );
 
-        if ( KeyTable.Length < tableSize ) Resize( tableSize );
+        if ( KeyTable.Length < tableSize )
+        {
+            Resize( tableSize );
+        }
     }
 
     /// <summary>
@@ -454,11 +500,17 @@ public class ObjectMap< TK, TV >
 
     public int TableSize( int capacity, float lf )
     {
-        if ( capacity < 0 ) throw new ArgumentException( "capacity must be >= 0: " + capacity );
+        if ( capacity < 0 )
+        {
+            throw new ArgumentException( "capacity must be >= 0: " + capacity );
+        }
 
         var tableSize = MathUtils.NextPowerOfTwo( Math.Max( 2, ( int ) Math.Ceiling( capacity / lf ) ) );
 
-        if ( tableSize > ( 1 << 30 ) ) throw new ArgumentException( "The required capacity is too large: " + capacity );
+        if ( tableSize > ( 1 << 30 ) )
+        {
+            throw new ArgumentException( "The required capacity is too large: " + capacity );
+        }
 
         return tableSize;
     }
@@ -469,11 +521,20 @@ public class ObjectMap< TK, TV >
     /// <returns></returns>
     public new bool Equals( object obj )
     {
-        if ( obj == this ) return true;
+        if ( obj == this )
+        {
+            return true;
+        }
 
-        if ( obj is not ObjectMap< TK, TV > other ) return false;
+        if ( obj is not ObjectMap< TK, TV > other )
+        {
+            return false;
+        }
 
-        if ( other.Size != Size ) return false;
+        if ( other.Size != Size )
+        {
+            return false;
+        }
 
         for ( int i = 0, n = KeyTable.Length; i < n; i++ )
         {
@@ -485,11 +546,17 @@ public class ObjectMap< TK, TV >
 
                 if ( value == null )
                 {
-                    if ( other.Get( key, ( TV? ) _dummy ) != null ) return false;
+                    if ( other.Get( key, ( TV? ) _dummy ) != null )
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
-                    if ( !value.Equals( other.Get( key ) ) ) return false;
+                    if ( !value.Equals( other.Get( key ) ) )
+                    {
+                        return false;
+                    }
                 }
             }
         }
@@ -509,11 +576,17 @@ public class ObjectMap< TK, TV >
 
     protected string ToString( string separator, bool braces )
     {
-        if ( Size == 0 ) return braces ? "{}" : "";
+        if ( Size == 0 )
+        {
+            return braces ? "{}" : "";
+        }
 
         var buffer = new StringBuilder( 32 );
 
-        if ( braces ) buffer.Append( '{' );
+        if ( braces )
+        {
+            buffer.Append( '{' );
+        }
 
         var i = KeyTable.Length;
 
@@ -521,7 +594,10 @@ public class ObjectMap< TK, TV >
         {
             var key = KeyTable[ i ];
 
-            if ( key == null ) continue;
+            if ( key == null )
+            {
+                continue;
+            }
 
             buffer.Append( key );
             buffer.Append( '=' );
@@ -537,7 +613,10 @@ public class ObjectMap< TK, TV >
         {
             var key = KeyTable[ i ];
 
-            if ( key == null ) continue;
+            if ( key == null )
+            {
+                continue;
+            }
 
             buffer.Append( separator );
             buffer.Append( key );
@@ -546,12 +625,19 @@ public class ObjectMap< TK, TV >
             var value = ValueTable[ i ];
 
             if ( Equals( value, this ) )
+            {
                 buffer.Append( "(this)" );
+            }
             else
+            {
                 buffer.Append( value );
+            }
         }
 
-        if ( braces ) buffer.Append( '}' );
+        if ( braces )
+        {
+            buffer.Append( '}' );
+        }
 
         return buffer.ToString();
     }
@@ -579,7 +665,10 @@ public class ObjectMap< TK, TV >
             {
                 var key = oldKeyTable[ i ];
 
-                if ( key != null ) PutResize( key, oldValueTable[ i ] );
+                if ( key != null )
+                {
+                    PutResize( key, oldValueTable[ i ] );
+                }
             }
         }
     }
@@ -596,6 +685,7 @@ public class ObjectMap< TK, TV >
     private void PutResize( TK key, TV? value )
     {
         for ( var i = Place( key );; i = ( i + 1 ) & Mask )
+        {
             if ( KeyTable[ i ] == null )
             {
                 KeyTable[ i ]   = key;
@@ -603,6 +693,7 @@ public class ObjectMap< TK, TV >
 
                 return;
             }
+        }
     }
 
     /// <summary>
@@ -611,13 +702,22 @@ public class ObjectMap< TK, TV >
     /// <returns></returns>
     public TV? Remove( TK key )
     {
-        if ( KeyTable == null ) throw new NullReferenceException( "Remove(): _keyTable is null" );
+        if ( KeyTable == null )
+        {
+            throw new NullReferenceException( "Remove(): _keyTable is null" );
+        }
 
-        if ( ValueTable == null ) throw new NullReferenceException( "Remove(): _valueTable is null" );
+        if ( ValueTable == null )
+        {
+            throw new NullReferenceException( "Remove(): _valueTable is null" );
+        }
 
         var i = LocateKey( key );
 
-        if ( i < 0 ) return default( TV? );
+        if ( i < 0 )
+        {
+            return default( TV? );
+        }
 
         var oldValue = ValueTable[ i ];
 
@@ -657,7 +757,10 @@ public class ObjectMap< TK, TV >
     /// <returns></returns>
     public Entries GetEntries()
     {
-        if ( CollectionsData.AllocateIterators ) return new Entries( this );
+        if ( CollectionsData.AllocateIterators )
+        {
+            return new Entries( this );
+        }
 
         if ( _entries1 == null )
         {
@@ -694,7 +797,10 @@ public class ObjectMap< TK, TV >
     /// <returns></returns>
     public Values GetValues()
     {
-        if ( CollectionsData.AllocateIterators ) return new Values( this );
+        if ( CollectionsData.AllocateIterators )
+        {
+            return new Values( this );
+        }
 
         if ( _values1 == null )
         {
@@ -732,7 +838,10 @@ public class ObjectMap< TK, TV >
     /// <returns></returns>
     public Keys GetKeys()
     {
-        if ( CollectionsData.AllocateIterators ) return new Keys( this );
+        if ( CollectionsData.AllocateIterators )
+        {
+            return new Keys( this );
+        }
 
         if ( _keys1 == null )
         {
@@ -819,12 +928,14 @@ public class ObjectMap< TK, TV >
         protected void FindNextIndex()
         {
             for ( var n = Map.KeyTable.Length; ++NextIndex < n; )
+            {
                 if ( Map.KeyTable[ NextIndex ] != null )
                 {
                     HasNext = true;
 
                     return;
                 }
+            }
 
             HasNext = false;
         }
@@ -833,7 +944,10 @@ public class ObjectMap< TK, TV >
         {
             var i = CurrentIndex;
 
-            if ( i < 0 ) throw new GdxRuntimeException( "Next() must be called before Remove()." );
+            if ( i < 0 )
+            {
+                throw new GdxRuntimeException( "Next() must be called before Remove()." );
+            }
 
             var mask = Map.Mask;
             var next = ( i + 1 ) & mask;
@@ -857,7 +971,10 @@ public class ObjectMap< TK, TV >
 
             Map.Size--;
 
-            if ( i != CurrentIndex ) --NextIndex;
+            if ( i != CurrentIndex )
+            {
+                --NextIndex;
+            }
 
             CurrentIndex = -1;
         }
@@ -882,9 +999,15 @@ public class ObjectMap< TK, TV >
         /// </summary>
         public Entry Next()
         {
-            if ( !HasNext ) throw new GdxRuntimeException( "HasNext : false!" );
+            if ( !HasNext )
+            {
+                throw new GdxRuntimeException( "HasNext : false!" );
+            }
 
-            if ( !Valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+            if ( !Valid )
+            {
+                throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+            }
 
             _entry.Key   = Map.KeyTable[ NextIndex ];
             _entry.Value = Map.ValueTable[ NextIndex ];
@@ -916,9 +1039,15 @@ public class ObjectMap< TK, TV >
 
         public TV? Next()
         {
-            if ( !HasNext ) throw new GdxRuntimeException( "HasNext : false!" );
+            if ( !HasNext )
+            {
+                throw new GdxRuntimeException( "HasNext : false!" );
+            }
 
-            if ( !Valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+            if ( !Valid )
+            {
+                throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+            }
 
             var value = Map.ValueTable[ NextIndex ];
 
@@ -947,7 +1076,10 @@ public class ObjectMap< TK, TV >
         /// </summary>
         public List< TV > ToArray( List< TV > array )
         {
-            while ( HasNext ) array.Add( Next()! );
+            while ( HasNext )
+            {
+                array.Add( Next()! );
+            }
 
             return array;
         }
@@ -965,9 +1097,15 @@ public class ObjectMap< TK, TV >
 
         public TK Next()
         {
-            if ( !HasNext ) throw new GdxRuntimeException( "HasNext : false!" );
+            if ( !HasNext )
+            {
+                throw new GdxRuntimeException( "HasNext : false!" );
+            }
 
-            if ( !Valid ) throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+            if ( !Valid )
+            {
+                throw new GdxRuntimeException( "#iterator() cannot be used nested." );
+            }
 
             var key = Map.KeyTable[ NextIndex ]!;
 
@@ -996,7 +1134,10 @@ public class ObjectMap< TK, TV >
         /// </summary>
         public List< TK > ToArray( List< TK > array )
         {
-            while ( HasNext ) array.Add( Next() );
+            while ( HasNext )
+            {
+                array.Add( Next() );
+            }
 
             return array;
         }

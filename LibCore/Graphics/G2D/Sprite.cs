@@ -48,7 +48,10 @@ public class Sprite : TextureRegion
     /// </summary>
     public void Set( Sprite sprite )
     {
-        if ( sprite == null ) throw new ArgumentException( "sprite cannot be null." );
+        if ( sprite == null )
+        {
+            throw new ArgumentException( "sprite cannot be null." );
+        }
 
         Array.Copy(
                    sprite.Vertices,
@@ -91,7 +94,10 @@ public class Sprite : TextureRegion
         Width  = width;
         Height = height;
 
-        if ( _dirty ) return;
+        if ( _dirty )
+        {
+            return;
+        }
 
         if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
         {
@@ -130,7 +136,10 @@ public class Sprite : TextureRegion
         Width  = width;
         Height = height;
 
-        if ( _dirty ) return;
+        if ( _dirty )
+        {
+            return;
+        }
 
         if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
         {
@@ -166,7 +175,10 @@ public class Sprite : TextureRegion
         _x = x;
         _y = y;
 
-        if ( _dirty ) return;
+        if ( _dirty )
+        {
+            return;
+        }
 
         if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
         {
@@ -216,7 +228,10 @@ public class Sprite : TextureRegion
     {
         X += xAmount;
 
-        if ( _dirty ) return;
+        if ( _dirty )
+        {
+            return;
+        }
 
         if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
         {
@@ -240,7 +255,10 @@ public class Sprite : TextureRegion
     {
         Y += yAmount;
 
-        if ( _dirty ) return;
+        if ( _dirty )
+        {
+            return;
+        }
 
         if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
         {
@@ -265,7 +283,10 @@ public class Sprite : TextureRegion
         X += xAmount;
         Y += yAmount;
 
-        if ( _dirty ) return;
+        if ( _dirty )
+        {
+            return;
+        }
 
         if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
         {
@@ -341,7 +362,10 @@ public class Sprite : TextureRegion
     /// </summary>
     public void Rotate( float degrees )
     {
-        if ( degrees == 0 ) return;
+        if ( degrees == 0 )
+        {
+            return;
+        }
 
         _rotation += degrees;
         _dirty    =  true;
@@ -599,9 +623,15 @@ public class Sprite : TextureRegion
         var performX = false;
         var performY = false;
 
-        if ( IsFlipX() != flipx ) performX = true;
+        if ( IsFlipX() != flipx )
+        {
+            performX = true;
+        }
 
-        if ( IsFlipY() != flipy ) performY = true;
+        if ( IsFlipY() != flipy )
+        {
+            performY = true;
+        }
 
         Flip( performX, performY );
     }
@@ -967,7 +997,10 @@ public class Sprite : TextureRegion
         {
             _x = value;
 
-            if ( _dirty ) return;
+            if ( _dirty )
+            {
+                return;
+            }
 
             if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
             {
@@ -998,7 +1031,10 @@ public class Sprite : TextureRegion
         {
             _y = value;
 
-            if ( _dirty ) return;
+            if ( _dirty )
+            {
+                return;
+            }
 
             if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
             {

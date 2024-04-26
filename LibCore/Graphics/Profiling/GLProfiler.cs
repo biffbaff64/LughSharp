@@ -111,9 +111,12 @@ public class GLProfiler
     /// </summary>
     public void Enable()
     {
-        if ( Enabled ) return;
+        if ( Enabled )
+        {
+            return;
+        }
 
-//        if ( Graphics.IsGL30Available() )
+        //        if ( Graphics.IsGL30Available() )
 //        {
 //            Graphics.GL30 = ( IGL30 ) Interceptor;
 //        }
@@ -131,9 +134,12 @@ public class GLProfiler
     /// </summary>
     public void Disable()
     {
-        if ( !Enabled ) return;
+        if ( !Enabled )
+        {
+            return;
+        }
 
-//        if ( Graphics.GL30 != null )
+        //        if ( Graphics.GL30 != null )
 //        {
 //            Graphics.GL30 = ( ( GL30Interceptor ) Graphics.GL30! ).GL30;
 //        }

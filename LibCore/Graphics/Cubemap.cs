@@ -49,7 +49,10 @@ public class Cubemap : GLTexture
 
         Load( data );
 
-        if ( data.Managed ) AddManagedCubemap( Gdx.App, this );
+        if ( data.Managed )
+        {
+            AddManagedCubemap( Gdx.App, this );
+        }
     }
 
     /// <summary>
@@ -138,7 +141,10 @@ public class Cubemap : GLTexture
     /// </summary>
     public void Load( ICubemapData data )
     {
-        if ( !data.IsPrepared ) data.Prepare();
+        if ( !data.IsPrepared )
+        {
+            data.Prepare();
+        }
 
         Bind();
 
@@ -153,7 +159,10 @@ public class Cubemap : GLTexture
 
     protected override void Reload()
     {
-        if ( !IsManaged ) throw new GdxRuntimeException( "Tried to reload an unmanaged Cubemap" );
+        if ( !IsManaged )
+        {
+            throw new GdxRuntimeException( "Tried to reload an unmanaged Cubemap" );
+        }
 
         GLTextureHandle = ( int ) Gdx.GL.glGenTexture();
 
@@ -176,13 +185,19 @@ public class Cubemap : GLTexture
             // reloaded through the asset manager as we first remove (and thus dispose) the texture
             // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
             // removal from the asset manager.
-            if ( GLTextureHandle == 0 ) return;
+            if ( GLTextureHandle == 0 )
+            {
+                return;
+            }
 
             Delete();
 
             if ( Data.Managed )
             {
-                if ( _managedCubemaps[ Gdx.App ] != null ) _managedCubemaps[ Gdx.App ]?.Remove( this );
+                if ( _managedCubemaps[ Gdx.App ] != null )
+                {
+                    _managedCubemaps[ Gdx.App ]?.Remove( this );
+                }
             }
         }
     }
@@ -215,11 +230,17 @@ public class Cubemap : GLTexture
     {
         List< Cubemap >? managedCubemapArray = _managedCubemaps[ app ];
 
-        if ( managedCubemapArray == null ) return;
+        if ( managedCubemapArray == null )
+        {
+            return;
+        }
 
         if ( AssetManager == null )
         {
-            foreach ( var cubemap in managedCubemapArray ) cubemap.Reload();
+            foreach ( var cubemap in managedCubemapArray )
+            {
+                cubemap.Reload();
+            }
         }
         else
         {
@@ -237,7 +258,9 @@ public class Cubemap : GLTexture
                 var fileName = AssetManager.GetAssetFileName( cubemap );
 
                 if ( fileName == null )
+                {
                     cubemap.Reload();
+                }
                 else
                 {
                     // get the ref count of the cubemap, then set it to 0 so we
@@ -481,8 +504,12 @@ public class Cubemap : GLTexture
         {
             // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
             foreach ( var enumInstance in _valueList )
+            {
                 if ( enumInstance._nameValue == name )
+                {
                     return enumInstance;
+                }
+            }
 
             throw new ArgumentException( name );
         }

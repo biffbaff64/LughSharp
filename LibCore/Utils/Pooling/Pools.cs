@@ -94,11 +94,17 @@ public static class Pools< T >
         {
             var obj = objects[ i ];
 
-            if ( ( obj == null ) || ( _typePools[ typeof( T ) ] == null ) ) continue;
+            if ( ( obj == null ) || ( _typePools[ typeof( T ) ] == null ) )
+            {
+                continue;
+            }
 
             _typePools[ typeof( T ) ]?.Free( obj );
 
-            if ( !samePool ) _typePools[ typeof( T ) ] = null;
+            if ( !samePool )
+            {
+                _typePools[ typeof( T ) ] = null;
+            }
         }
     }
 }

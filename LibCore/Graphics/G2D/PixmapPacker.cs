@@ -173,8 +173,12 @@ public class PixmapPacker : IDisposable
     public void Dispose()
     {
         foreach ( var page in Pages )
+        {
             if ( page.Texture == null )
+            {
                 page.Image.Dispose();
+            }
+        }
 
         _disposed = true;
     }
@@ -209,9 +213,15 @@ public class PixmapPacker : IDisposable
     /// </exception>
     public RectangleShape? Pack( string? name, Pixmap image )
     {
-        if ( _disposed ) return null;
+        if ( _disposed )
+        {
+            return null;
+        }
 
-        if ( ( name != null ) && ( GetRect( name ) != null ) ) throw new GdxRuntimeException( $"Pixmap has already been packed with name: {name}" );
+        if ( ( name != null ) && ( GetRect( name ) != null ) )
+        {
+            throw new GdxRuntimeException( $"Pixmap has already been packed with name: {name}" );
+        }
 
         PixmapPackerRectangle rect;
         Pixmap?               pixmapToDispose = null;
@@ -253,7 +263,10 @@ public class PixmapPacker : IDisposable
                             var pixel = image.GetPixel( x, y );
                             var alpha = pixel & 0x000000ff;
 
-                            if ( alpha > AlphaThreshold ) goto outer1;
+                            if ( alpha > AlphaThreshold )
+                            {
+                                goto outer1;
+                            }
                         }
 
                         top++;
@@ -268,7 +281,10 @@ public class PixmapPacker : IDisposable
                             var pixel = image.GetPixel( x, y );
                             var alpha = pixel & 0x000000ff;
 
-                            if ( alpha > AlphaThreshold ) goto outer2;
+                            if ( alpha > AlphaThreshold )
+                            {
+                                goto outer2;
+                            }
                         }
 
                         bottom--;
@@ -289,7 +305,10 @@ public class PixmapPacker : IDisposable
                             var pixel = image.GetPixel( x, y );
                             var alpha = pixel & 0x000000ff;
 
-                            if ( alpha > AlphaThreshold ) goto outer3;
+                            if ( alpha > AlphaThreshold )
+                            {
+                                goto outer3;
+                            }
                         }
 
                         left++;
@@ -304,7 +323,10 @@ public class PixmapPacker : IDisposable
                             var pixel = image.GetPixel( x, y );
                             var alpha = pixel & 0x000000ff;
 
-                            if ( alpha > AlphaThreshold ) goto outer4;
+                            if ( alpha > AlphaThreshold )
+                            {
+                                goto outer4;
+                            }
                         }
 
                         right--;
@@ -323,12 +345,17 @@ public class PixmapPacker : IDisposable
                 rect = new PixmapPackerRectangle( 0, 0, newWidth, newHeight, left, top, originalWidth, originalHeight );
             }
             else
+            {
                 rect = new PixmapPackerRectangle( 0, 0, image.Width, image.Height );
+            }
         }
 
         if ( ( rect.Width > PageWidth ) || ( rect.Height > PageHeight ) )
         {
-            if ( name == null ) throw new GdxRuntimeException( "Page size too small for pixmap." );
+            if ( name == null )
+            {
+                throw new GdxRuntimeException( "Page size too small for pixmap." );
+            }
 
             throw new GdxRuntimeException( "Page size too small for pixmap: " + name );
         }
@@ -369,7 +396,9 @@ public class PixmapPacker : IDisposable
             }
         }
         else
+        {
             page.Dirty = true;
+        }
 
         page.Image.DrawPixmap( image, rectX, rectY );
 
@@ -391,7 +420,10 @@ public class PixmapPacker : IDisposable
             page.Image.DrawPixmap( image, imageWidth - 1, 0, 1, imageHeight, rectX + rectWidth, rectY, 1, rectHeight );
         }
 
-        if ( pixmapToDispose != null ) pixmapToDispose.Dispose();
+        if ( pixmapToDispose != null )
+        {
+            pixmapToDispose.Dispose();
+        }
 
         return rect;
     }
@@ -402,7 +434,10 @@ public class PixmapPacker : IDisposable
         {
             RectangleShape? rect = page.Rects[ name ];
 
-            if ( rect != null ) return rect;
+            if ( rect != null )
+            {
+                return rect;
+            }
         }
 
         return null;
@@ -411,8 +446,12 @@ public class PixmapPacker : IDisposable
     public Page? GetPage( string name )
     {
         foreach ( var page in Pages )
+        {
             if ( page.Rects[ name ] != null )
+            {
                 return page;
+            }
+        }
 
         return null;
     }
@@ -425,8 +464,12 @@ public class PixmapPacker : IDisposable
     public int GetPageIndex( string name )
     {
         for ( var i = 0; i < Pages.Count; i++ )
+        {
             if ( Pages[ i ].Rects[ name ] != null )
+            {
                 return i;
+            }
+        }
 
         return -1;
     }
@@ -476,13 +519,17 @@ public class PixmapPacker : IDisposable
         UpdatePageTextures( minFilter, magFilter, useMipMaps );
 
         foreach ( var page in Pages )
+        {
             if ( page.AddedRects.Count > 0 )
             {
                 foreach ( var name in page.AddedRects )
                 {
                     var rect = page.Rects[ name ];
 
-                    if ( rect == null ) continue;
+                    if ( rect == null )
+                    {
+                        continue;
+                    }
 
                     var region = new AtlasRegion( page.Texture, ( int ) rect.X, ( int ) rect.Y, ( int ) rect.Width, ( int ) rect.Height );
 
@@ -524,6 +571,7 @@ public class PixmapPacker : IDisposable
                 page.AddedRects.Clear();
                 atlas.Textures.Add( page.Texture! );
             }
+        }
     }
 
     /// <summary>
@@ -541,7 +589,10 @@ public class PixmapPacker : IDisposable
         {
             var texture = Pages[ regions.Count ].Texture;
 
-            if ( texture != null ) regions.Add( new TextureRegion( texture ) );
+            if ( texture != null )
+            {
+                regions.Add( new TextureRegion( texture ) );
+            }
         }
     }
 
@@ -551,7 +602,10 @@ public class PixmapPacker : IDisposable
     /// </summary>
     public void UpdatePageTextures( TextureFilter minFilter, TextureFilter magFilter, bool useMipMaps )
     {
-        foreach ( var page in Pages ) page.UpdateTexture( minFilter, magFilter, useMipMaps );
+        foreach ( var page in Pages )
+        {
+            page.UpdateTexture( minFilter, magFilter, useMipMaps );
+        }
     }
 
     private int[]? GetSplits( Pixmap raster )
@@ -566,7 +620,10 @@ public class PixmapPacker : IDisposable
         GetSplitPoint( raster, 0, endY + 1, true, false );
 
         // No splits, or all splits.
-        if ( ( startX == 0 ) && ( endX == 0 ) && ( startY == 0 ) && ( endY == 0 ) ) return null;
+        if ( ( startX == 0 ) && ( endX == 0 ) && ( startY == 0 ) && ( endY == 0 ) )
+        {
+            return null;
+        }
 
         // Subtraction here is because the coordinates were computed
         // before the 1px border was stripped.
@@ -607,16 +664,25 @@ public class PixmapPacker : IDisposable
         var endX = 0;
         var endY = 0;
 
-        if ( startX != 0 ) endX = GetSplitPoint( raster, startX + 1, bottom, false, true );
+        if ( startX != 0 )
+        {
+            endX = GetSplitPoint( raster, startX + 1, bottom, false, true );
+        }
 
-        if ( startY != 0 ) endY = GetSplitPoint( raster, right, startY + 1, false, false );
+        if ( startY != 0 )
+        {
+            endY = GetSplitPoint( raster, right, startY + 1, false, false );
+        }
 
         // Ensure pixels after the end are not invalid.
         GetSplitPoint( raster, endX + 1, bottom, true, true );
         GetSplitPoint( raster, right, endY + 1, true, false );
 
         // No pads.
-        if ( ( startX == 0 ) && ( endX == 0 ) && ( startY == 0 ) && ( endY == 0 ) ) return null;
+        if ( ( startX == 0 ) && ( endX == 0 ) && ( startY == 0 ) && ( endY == 0 ) )
+        {
+            return null;
+        }
 
         // -2 here is because the coordinates were computed before the 1px border was stripped.
         if ( ( startX == 0 ) && ( endX == 0 ) )
@@ -659,7 +725,10 @@ public class PixmapPacker : IDisposable
 
         var pads = new[] { startX, endX, startY, endY };
 
-        if ( ( splits != null ) && splits.Equals( pads ) ) return null;
+        if ( ( splits != null ) && splits.Equals( pads ) )
+        {
+            return null;
+        }
 
         return pads;
     }
@@ -678,9 +747,13 @@ public class PixmapPacker : IDisposable
         while ( next != end )
         {
             if ( xAxis )
+            {
                 x = next;
+            }
             else
+            {
                 y = next;
+            }
 
             Color c = new();
 
@@ -691,14 +764,19 @@ public class PixmapPacker : IDisposable
             rgba[ 2 ] = ( int ) ( c.B * 255 );
             rgba[ 3 ] = ( int ) ( c.A * 255 );
 
-            if ( rgba[ 3 ] == breakA ) return next;
+            if ( rgba[ 3 ] == breakA )
+            {
+                return next;
+            }
 
             if ( !startPoint
               && ( ( rgba[ 0 ] != 0 )
                 || ( rgba[ 1 ] != 0 )
                 || ( rgba[ 2 ] != 0 )
                 || ( rgba[ 3 ] != 255 ) ) )
+            {
                 Console.WriteLine( $@"{x}  {y} {rgba}" );
+            }
 
             next++;
         }
@@ -740,7 +818,10 @@ public class PixmapPacker : IDisposable
         {
             if ( Texture != null )
             {
-                if ( !Dirty ) return false;
+                if ( !Dirty )
+                {
+                    return false;
+                }
 
                 Texture.Load( Texture.TextureData );
             }

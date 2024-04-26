@@ -79,18 +79,27 @@ public class DelaunayTriangulator
     /// </returns>
     public List< int > ComputeTriangles( float[] points, int offset, int count, bool sorted )
     {
-        if ( count > 32767 ) throw new ArgumentException( "count must be <= " + 32767 );
+        if ( count > 32767 )
+        {
+            throw new ArgumentException( "count must be <= " + 32767 );
+        }
 
         List< int > triangles = _triangles;
         triangles.Clear();
 
-        if ( count < 6 ) return triangles;
+        if ( count < 6 )
+        {
+            return triangles;
+        }
 
         triangles.EnsureCapacity( count );
 
         if ( !sorted )
         {
-            if ( ( _sortedPoints == null ) || ( _sortedPoints.Length < count ) ) _sortedPoints = new float[ count ];
+            if ( ( _sortedPoints == null ) || ( _sortedPoints.Length < count ) )
+            {
+                _sortedPoints = new float[ count ];
+            }
 
             Array.Copy( points, offset, _sortedPoints, 0, count );
 
@@ -110,16 +119,28 @@ public class DelaunayTriangulator
         {
             var value = points[ i ];
 
-            if ( value < xmin ) xmin = value;
+            if ( value < xmin )
+            {
+                xmin = value;
+            }
 
-            if ( value > xmax ) xmax = value;
+            if ( value > xmax )
+            {
+                xmax = value;
+            }
 
             i++;
             value = points[ i ];
 
-            if ( value < ymin ) ymin = value;
+            if ( value < ymin )
+            {
+                ymin = value;
+            }
 
-            if ( value > ymax ) ymax = value;
+            if ( value > ymax )
+            {
+                ymax = value;
+            }
         }
 
         float dx   = xmax - xmin, dy = ymax - ymin;
@@ -163,7 +184,10 @@ public class DelaunayTriangulator
             {
                 var completeIndex = triangleIndex / 3;
 
-                if ( completeArray[ completeIndex ] ) continue;
+                if ( completeArray[ completeIndex ] )
+                {
+                    continue;
+                }
 
                 var p1 = trianglesArray[ triangleIndex - 2 ];
                 var p2 = trianglesArray[ triangleIndex - 1 ];
@@ -238,19 +262,27 @@ public class DelaunayTriangulator
                 // all interior edges are opposite pointing in direction.
                 var p1 = edgesArray[ i ];
 
-                if ( p1 == -1 ) continue;
+                if ( p1 == -1 )
+                {
+                    continue;
+                }
 
                 var p2   = edgesArray[ i + 1 ];
                 var skip = false;
 
                 for ( var ii = i + 2; ii < n; ii += 2 )
+                {
                     if ( ( p1 == edgesArray[ ii + 1 ] ) && ( p2 == edgesArray[ ii ] ) )
                     {
                         skip             = true;
                         edgesArray[ ii ] = -1;
                     }
+                }
 
-                if ( skip ) continue;
+                if ( skip )
+                {
+                    continue;
+                }
 
                 // Form new triangles for the current point. Edges are
                 // arranged in clockwise order.
@@ -267,6 +299,7 @@ public class DelaunayTriangulator
         trianglesArray = triangles.ToArray();
 
         for ( var i = triangles.Count - 1; i >= 0; i -= 3 )
+        {
             if ( ( trianglesArray[ i ] >= end )
               || ( trianglesArray[ i - 1 ] >= end )
               || ( trianglesArray[ i - 2 ] >= end ) )
@@ -275,24 +308,34 @@ public class DelaunayTriangulator
                 triangles.RemoveAt( i - 1 );
                 triangles.RemoveAt( i - 2 );
             }
+        }
 
         // Convert sorted to unsorted indices.
         if ( !sorted )
         {
             var originalIndicesArray = _originalIndices.ToArray();
 
-            for ( int i = 0, n = triangles.Count; i < n; i++ ) trianglesArray[ i ] = ( short ) ( originalIndicesArray[ trianglesArray[ i ] / 2 ] * 2 );
+            for ( int i = 0, n = triangles.Count; i < n; i++ )
+            {
+                trianglesArray[ i ] = ( short ) ( originalIndicesArray[ trianglesArray[ i ] / 2 ] * 2 );
+            }
         }
 
         // Adjust triangles to start from zero and count by 1,
         // not by vertex x,y coordinate pairs.
         if ( offset == 0 )
         {
-            for ( int i = 0, n = triangles.Count; i < n; i++ ) trianglesArray[ i ] = ( short ) ( trianglesArray[ i ] / 2 );
+            for ( int i = 0, n = triangles.Count; i < n; i++ )
+            {
+                trianglesArray[ i ] = ( short ) ( trianglesArray[ i ] / 2 );
+            }
         }
         else
         {
-            for ( int i = 0, n = triangles.Count; i < n; i++ ) trianglesArray[ i ] = ( short ) ( ( trianglesArray[ i ] - offset ) / 2 );
+            for ( int i = 0, n = triangles.Count; i < n; i++ )
+            {
+                trianglesArray[ i ] = ( short ) ( ( trianglesArray[ i ] - offset ) / 2 );
+            }
         }
 
         return triangles;
@@ -323,7 +366,10 @@ public class DelaunayTriangulator
 
         if ( y1Y2 < EPSILON )
         {
-            if ( y2Y3 < EPSILON ) return INCOMPLETE;
+            if ( y2Y3 < EPSILON )
+            {
+                return INCOMPLETE;
+            }
 
             var m2  = -( x3 - x2 ) / ( y3 - y2 );
             var mx2 = ( x2 + x3 ) / 2f;
@@ -362,7 +408,10 @@ public class DelaunayTriangulator
         dx *= dx;
         dy =  yp - yc;
 
-        if ( ( ( dx + ( dy * dy ) ) - rsqr ) <= EPSILON ) return INSIDE;
+        if ( ( ( dx + ( dy * dy ) ) - rsqr ) <= EPSILON )
+        {
+            return INSIDE;
+        }
 
         return ( xp > xc ) && ( dx > rsqr ) ? COMPLETE : INCOMPLETE;
     }
@@ -381,7 +430,10 @@ public class DelaunayTriangulator
 
         var originalIndicesArray = _originalIndices.ToArray();
 
-        for ( short i = 0; i < pointCount; i++ ) originalIndicesArray[ i ] = i;
+        for ( short i = 0; i < pointCount; i++ )
+        {
+            originalIndicesArray[ i ] = i;
+        }
 
         var lower = 0;
         var upper = count - 1;
@@ -394,7 +446,10 @@ public class DelaunayTriangulator
             upper = _quicksortStack.Pop();
             lower = _quicksortStack.Pop();
 
-            if ( upper <= lower ) continue;
+            if ( upper <= lower )
+            {
+                continue;
+            }
 
             var i = QuicksortPartition( values, lower, upper, originalIndicesArray );
 
@@ -423,9 +478,15 @@ public class DelaunayTriangulator
 
         while ( down < up )
         {
-            while ( ( down < up ) && ( values[ down ] <= value ) ) down += 2;
+            while ( ( down < up ) && ( values[ down ] <= value ) )
+            {
+                down += 2;
+            }
 
-            while ( values[ up ] > value ) up -= 2;
+            while ( values[ up ] > value )
+            {
+                up -= 2;
+            }
 
             if ( down < up )
             {

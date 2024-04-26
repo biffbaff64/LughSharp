@@ -113,7 +113,10 @@ public class MathUtils
         {
             atan = z / ( 1f + ( 0.28f * z * z ) );
 
-            if ( x < 0f ) return atan + ( y < 0f ? -PI : PI );
+            if ( x < 0f )
+            {
+                return atan + ( y < 0f ? -PI : PI );
+            }
 
             return atan;
         }
@@ -255,7 +258,10 @@ public class MathUtils
         var u = ( float ) Rand.NextDouble();
         var d = max - min;
 
-        if ( u <= ( ( mode - min ) / d ) ) return min + ( float ) Math.Sqrt( u * d * ( mode - min ) );
+        if ( u <= ( ( mode - min ) / d ) )
+        {
+            return min + ( float ) Math.Sqrt( u * d * ( mode - min ) );
+        }
 
         return max - ( float ) Math.Sqrt( ( 1 - u ) * d * ( max - mode ) );
     }
@@ -265,7 +271,10 @@ public class MathUtils
     /// </summary>
     public static int NextPowerOfTwo( int value )
     {
-        if ( value == 0 ) return 1;
+        if ( value == 0 )
+        {
+            return 1;
+        }
 
         value--;
         value |= value >> 1;
@@ -294,7 +303,10 @@ public class MathUtils
     /// <returns></returns>
     public static short Clamp( short value, short min, short max )
     {
-        if ( value < min ) return min;
+        if ( value < min )
+        {
+            return min;
+        }
 
         return value > max ? max : value;
     }
@@ -307,7 +319,10 @@ public class MathUtils
     /// <returns></returns>
     public static int Clamp( int value, int min, int max )
     {
-        if ( value < min ) return min;
+        if ( value < min )
+        {
+            return min;
+        }
 
         return value > max ? max : value;
     }
@@ -320,7 +335,10 @@ public class MathUtils
     /// <returns></returns>
     public static long Clamp( long value, long min, long max )
     {
-        if ( value < min ) return min;
+        if ( value < min )
+        {
+            return min;
+        }
 
         return value > max ? max : value;
     }
@@ -333,7 +351,10 @@ public class MathUtils
     /// <returns></returns>
     public static float Clamp( float value, float min, float max )
     {
-        if ( value < min ) return min;
+        if ( value < min )
+        {
+            return min;
+        }
 
         return value > max ? max : value;
     }
@@ -346,7 +367,10 @@ public class MathUtils
     /// <returns></returns>
     public static double Clamp( double value, double min, double max )
     {
-        if ( value < min ) return min;
+        if ( value < min )
+        {
+            return min;
+        }
 
         return value > max ? max : value;
     }
@@ -506,9 +530,15 @@ public class MathUtils
 
         public SinClass()
         {
-            for ( var i = 0; i < SIN_COUNT; i++ ) Table[ i ] = ( float ) Math.Sin( ( ( i + 0.5f ) / SIN_COUNT ) * RAD_FULL );
+            for ( var i = 0; i < SIN_COUNT; i++ )
+            {
+                Table[ i ] = ( float ) Math.Sin( ( ( i + 0.5f ) / SIN_COUNT ) * RAD_FULL );
+            }
 
-            for ( var i = 0; i < 360; i += 90 ) Table[ ( int ) ( i * DEG_TO_INDEX ) & SIN_MASK ] = ( float ) Math.Sin( i * DEGREES_TO_RADIANS );
+            for ( var i = 0; i < 360; i += 90 )
+            {
+                Table[ ( int ) ( i * DEG_TO_INDEX ) & SIN_MASK ] = ( float ) Math.Sin( i * DEGREES_TO_RADIANS );
+            }
         }
     }
 }

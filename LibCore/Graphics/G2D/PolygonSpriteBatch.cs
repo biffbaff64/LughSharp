@@ -139,11 +139,17 @@ public class PolygonSpriteBatch : IPolygonBatch
     public PolygonSpriteBatch( int maxVertices, int maxTriangles, ShaderProgram? defaultShader )
     {
         // 32767 is max vertex index.
-        if ( maxVertices > 32767 ) throw new ArgumentException( "Can't have more than 32767 vertices per batch: " + maxVertices );
+        if ( maxVertices > 32767 )
+        {
+            throw new ArgumentException( "Can't have more than 32767 vertices per batch: " + maxVertices );
+        }
 
         var vertexDataType = Mesh.VertexDataType.VertexArray;
 
-        if ( Gdx.Graphics.IsGL30Available() ) vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
+        if ( Gdx.Graphics.IsGL30Available() )
+        {
+            vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
+        }
 
         _mesh = new Mesh( vertexDataType,
                           false,
@@ -162,23 +168,32 @@ public class PolygonSpriteBatch : IPolygonBatch
             _ownsShader = true;
         }
         else
+        {
             _shader = defaultShader;
+        }
 
         ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
     }
 
     public void Begin()
     {
-        if ( IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.end must be called before begin." );
+        if ( IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.end must be called before begin." );
+        }
 
         renderCalls = 0;
 
         Gdx.GL.glDepthMask( false );
 
         if ( _customShader != null )
+        {
             _customShader.Bind();
+        }
         else
+        {
             _shader?.Bind();
+        }
 
         SetupMatrices();
 
@@ -187,16 +202,25 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void End()
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before end." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before end." );
+        }
 
-        if ( _vertexIndex > 0 ) Flush();
+        if ( _vertexIndex > 0 )
+        {
+            Flush();
+        }
 
         _lastTexture = null;
         IsDrawing    = false;
 
         Gdx.GL.glDepthMask( true );
 
-        if ( ISBlendingEnabled() ) Gdx.GL.glDisable( IGL.GL_BLEND );
+        if ( ISBlendingEnabled() )
+        {
+            Gdx.GL.glDisable( IGL.GL_BLEND );
+        }
     }
 
     public Color Color
@@ -236,15 +260,25 @@ public class PolygonSpriteBatch : IPolygonBatch
     /// <exception cref="GdxRuntimeException"></exception>
     public void Draw( PolygonRegion region, float x, float y )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( region.Region.Texture != _lastTexture )
+        {
             SwitchTexture( region.Region.Texture );
+        }
         else if ( ( ( _triangleIndex + region.Triangles.Length ) > _triangles.Length )
                || ( ( _vertexIndex + ( ( region.Vertices?.Length * Sprite.VertexSize ) / 2 ) ) > _vertices.Length ) )
+        {
             Flush();
+        }
 
-        foreach ( var t in region.Triangles ) _triangles[ _triangleIndex++ ] = ( short ) ( t + ( _vertexIndex / Sprite.VertexSize ) );
+        foreach ( var t in region.Triangles )
+        {
+            _triangles[ _triangleIndex++ ] = ( short ) ( t + ( _vertexIndex / Sprite.VertexSize ) );
+        }
 
         for ( var i = 0; i < region.Vertices?.Length; i += 2 )
         {
@@ -258,17 +292,27 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void Draw( PolygonRegion region, float x, float y, float width, float height )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( region.Region.Texture != _lastTexture )
+        {
             SwitchTexture( region.Region.Texture );
+        }
         else if ( ( ( _triangleIndex + region.Triangles.Length ) > _triangles.Length )
                || ( ( _vertexIndex + ( ( region.Vertices?.Length * Sprite.VertexSize ) / 2 ) ) > _vertices.Length ) )
+        {
             Flush();
+        }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
-        for ( int i = 0, n = region.Triangles.Length; i < n; i++ ) _triangles[ _triangleIndex++ ] = ( short ) ( region.Triangles[ i ] + startVertex );
+        for ( int i = 0, n = region.Triangles.Length; i < n; i++ )
+        {
+            _triangles[ _triangleIndex++ ] = ( short ) ( region.Triangles[ i ] + startVertex );
+        }
 
         var sX = width / region.Region.RegionWidth;
         var sY = height / region.Region.RegionHeight;
@@ -294,17 +338,27 @@ public class PolygonSpriteBatch : IPolygonBatch
                       float scaleY,
                       float rotation )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( region.Region.Texture != _lastTexture )
+        {
             SwitchTexture( region.Region.Texture );
+        }
         else if ( ( ( _triangleIndex + region.Triangles.Length ) > _triangles.Length )
                || ( ( _vertexIndex + ( ( region.Vertices?.Length * Sprite.VertexSize ) / 2 ) ) > _vertices.Length ) )
+        {
             Flush();
+        }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
-        foreach ( var triangle in region.Triangles ) _triangles[ _triangleIndex++ ] = ( short ) ( triangle + startVertex );
+        foreach ( var triangle in region.Triangles )
+        {
+            _triangles[ _triangleIndex++ ] = ( short ) ( triangle + startVertex );
+        }
 
         var worldOriginX = x + originX;
         var worldOriginY = y + originY;
@@ -334,17 +388,27 @@ public class PolygonSpriteBatch : IPolygonBatch
                       int trianglesOffset,
                       int trianglesCount )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( texture != _lastTexture )
+        {
             SwitchTexture( texture );
+        }
         else if ( ( ( _triangleIndex + trianglesCount ) > _triangles.Length )
                || ( ( _vertexIndex + verticesCount ) > _vertices.Length ) )
+        {
             Flush();
+        }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
-        for ( int i = trianglesOffset, n = i + trianglesCount; i < n; i++ ) _triangles[ _triangleIndex++ ] = ( short ) ( polygonTriangles[ i ] + startVertex );
+        for ( int i = trianglesOffset, n = i + trianglesCount; i < n; i++ )
+        {
+            _triangles[ _triangleIndex++ ] = ( short ) ( polygonTriangles[ i ] + startVertex );
+        }
 
         Array.Copy( polygonVertices, verticesOffset, _vertices, _vertexIndex, verticesCount );
         _vertexIndex += verticesCount;
@@ -367,13 +431,20 @@ public class PolygonSpriteBatch : IPolygonBatch
                       bool flipX,
                       bool flipY )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( texture != _lastTexture )
+        {
             SwitchTexture( texture );
+        }
         else if ( ( ( _triangleIndex + 6 ) > _triangles.Length )
                || ( ( _vertexIndex + Sprite.SpriteSize ) > _vertices.Length ) )
+        {
             Flush();
+        }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
@@ -467,9 +538,15 @@ public class PolygonSpriteBatch : IPolygonBatch
         var u2 = ( srcX + srcWidth ) * _invTexWidth;
         var v2 = srcY * _invTexHeight;
 
-        if ( flipX ) ( u, u2 ) = ( u2, u );
+        if ( flipX )
+        {
+            ( u, u2 ) = ( u2, u );
+        }
 
-        if ( flipY ) ( v, v2 ) = ( v2, v );
+        if ( flipY )
+        {
+            ( v, v2 ) = ( v2, v );
+        }
 
         _vertices[ _vertexIndex++ ] = x1;
         _vertices[ _vertexIndex++ ] = y1;
@@ -508,13 +585,20 @@ public class PolygonSpriteBatch : IPolygonBatch
                       bool flipX,
                       bool flipY )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( texture != _lastTexture )
+        {
             SwitchTexture( texture );
+        }
         else if ( ( ( _triangleIndex + 6 ) > _triangles.Length )
                || ( ( _vertexIndex + Sprite.SpriteSize ) > _vertices.Length ) )
+        {
             Flush();
+        }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
@@ -532,9 +616,15 @@ public class PolygonSpriteBatch : IPolygonBatch
         var fx2 = x + width;
         var fy2 = y + height;
 
-        if ( flipX ) ( u, u2 ) = ( u2, u );
+        if ( flipX )
+        {
+            ( u, u2 ) = ( u2, u );
+        }
 
-        if ( flipY ) ( v, v2 ) = ( v2, v );
+        if ( flipY )
+        {
+            ( v, v2 ) = ( v2, v );
+        }
 
         _vertices[ _vertexIndex++ ] = x;
         _vertices[ _vertexIndex++ ] = y;
@@ -563,13 +653,20 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( texture != _lastTexture )
+        {
             SwitchTexture( texture );
+        }
         else if ( ( ( _triangleIndex + 6 ) > _triangles.Length )
                || ( ( _vertexIndex + Sprite.SpriteSize ) > _vertices.Length ) )
+        {
             Flush();
+        }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
@@ -614,13 +711,20 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void Draw( Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2 )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( texture != _lastTexture )
+        {
             SwitchTexture( texture );
+        }
         else if ( ( ( _triangleIndex + 6 ) > _triangles.Length )
                || ( ( _vertexIndex + Sprite.SpriteSize ) > _vertices.Length ) )
+        {
             Flush();
+        }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
@@ -666,13 +770,20 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void Draw( Texture texture, float x, float y, float width, float height )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( texture != _lastTexture )
+        {
             SwitchTexture( texture );
+        }
         else if ( ( ( _triangleIndex + 6 ) > _triangles.Length )
                || ( ( _vertexIndex + Sprite.SpriteSize ) > _vertices.Length ) )
+        {
             Flush();
+        }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
@@ -717,7 +828,10 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void Draw( Texture texture, float[] spriteVertices, int offset, int count )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         var triangleCount = ( count / Sprite.SpriteSize ) * 6;
         int batch;
@@ -736,7 +850,9 @@ public class PolygonSpriteBatch : IPolygonBatch
             triangleCount = ( batch / Sprite.SpriteSize ) * 6;
         }
         else
+        {
             batch = count;
+        }
 
         var vertex = ( short ) ( _vertexIndex / Sprite.VertexSize );
 
@@ -760,7 +876,10 @@ public class PolygonSpriteBatch : IPolygonBatch
             _triangleIndex =  triangleIndex;
             count          -= batch;
 
-            if ( count == 0 ) break;
+            if ( count == 0 )
+            {
+                break;
+            }
 
             offset += batch;
             Flush();
@@ -781,13 +900,20 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void Draw( TextureRegion region, float x, float y, float width, float height )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( region.Texture != _lastTexture )
+        {
             SwitchTexture( region.Texture );
+        }
         else if ( ( ( _triangleIndex + 6 ) > _triangles.Length )
                || ( ( _vertexIndex + Sprite.SpriteSize ) > _vertices.Length ) ) //
+        {
             Flush();
+        }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
@@ -841,13 +967,20 @@ public class PolygonSpriteBatch : IPolygonBatch
                       float scaleY,
                       float rotation )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( region.Texture != _lastTexture )
+        {
             SwitchTexture( region.Texture );
+        }
         else if ( ( ( _triangleIndex + 6 ) > _triangles.Length )
                || ( ( _vertexIndex + Sprite.SpriteSize ) > _vertices.Length ) ) //
+        {
             Flush();
+        }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
@@ -978,13 +1111,20 @@ public class PolygonSpriteBatch : IPolygonBatch
                       float rotation,
                       bool clockwise )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( region.Texture != _lastTexture )
+        {
             SwitchTexture( region.Texture );
+        }
         else if ( ( ( _triangleIndex + 6 ) > _triangles.Length )
                || ( ( _vertexIndex + Sprite.SpriteSize ) > _vertices.Length ) )
+        {
             Flush();
+        }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
@@ -1125,13 +1265,20 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void Draw( TextureRegion region, float width, float height, Affine2 transform )
     {
-        if ( !IsDrawing ) throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
+        }
 
         if ( region.Texture != _lastTexture )
+        {
             SwitchTexture( region.Texture );
+        }
         else if ( ( ( _triangleIndex + 6 ) > _triangles.Length )
                || ( ( _vertexIndex + Sprite.SpriteSize ) > _vertices.Length ) )
+        {
             Flush();
+        }
 
         var startVertex = _vertexIndex / Sprite.VertexSize;
 
@@ -1184,14 +1331,20 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void Flush()
     {
-        if ( _vertexIndex == 0 ) return;
+        if ( _vertexIndex == 0 )
+        {
+            return;
+        }
 
         renderCalls++;
         totalRenderCalls++;
 
         var trianglesInBatch = _triangleIndex;
 
-        if ( trianglesInBatch > maxTrianglesInBatch ) maxTrianglesInBatch = trianglesInBatch;
+        if ( trianglesInBatch > maxTrianglesInBatch )
+        {
+            maxTrianglesInBatch = trianglesInBatch;
+        }
 
         _lastTexture?.Bind();
 
@@ -1201,12 +1354,17 @@ public class PolygonSpriteBatch : IPolygonBatch
         mesh.SetIndices( _triangles, 0, trianglesInBatch );
 
         if ( _blendingDisabled )
+        {
             Gdx.GL.glDisable( IGL.GL_BLEND );
+        }
         else
         {
             Gdx.GL.glEnable( IGL.GL_BLEND );
 
-            if ( BlendSrcFunc != -1 ) Gdx.GL.glBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
+            if ( BlendSrcFunc != -1 )
+            {
+                Gdx.GL.glBlendFuncSeparate( BlendSrcFunc, BlendDstFunc, BlendSrcFuncAlpha, BlendDstFuncAlpha );
+            }
         }
 
         mesh.Render( _customShader ?? _shader, IGL.GL_TRIANGLES, 0, trianglesInBatch );
@@ -1238,7 +1396,9 @@ public class PolygonSpriteBatch : IPolygonBatch
           && ( BlendDstFunc == dstFuncColor )
           && ( BlendSrcFuncAlpha == srcFuncAlpha )
           && ( BlendDstFuncAlpha == dstFuncAlpha ) )
+        {
             return;
+        }
 
         Flush();
 
@@ -1252,25 +1412,40 @@ public class PolygonSpriteBatch : IPolygonBatch
     {
         _mesh.Dispose();
 
-        if ( _ownsShader && ( _shader != null ) ) _shader.Dispose();
+        if ( _ownsShader && ( _shader != null ) )
+        {
+            _shader.Dispose();
+        }
     }
 
     public void SetProjectionMatrix( Matrix4 projection )
     {
-        if ( IsDrawing ) Flush();
+        if ( IsDrawing )
+        {
+            Flush();
+        }
 
         ProjectionMatrix.Set( projection );
 
-        if ( IsDrawing ) SetupMatrices();
+        if ( IsDrawing )
+        {
+            SetupMatrices();
+        }
     }
 
     public void SetTransformMatrix( Matrix4 transform )
     {
-        if ( IsDrawing ) Flush();
+        if ( IsDrawing )
+        {
+            Flush();
+        }
 
         TransformMatrix.Set( transform );
 
-        if ( IsDrawing ) SetupMatrices();
+        if ( IsDrawing )
+        {
+            SetupMatrices();
+        }
     }
 
     public ShaderProgram? Shader
@@ -1278,16 +1453,23 @@ public class PolygonSpriteBatch : IPolygonBatch
         get => _customShader ?? _shader;
         set
         {
-            if ( IsDrawing ) Flush();
+            if ( IsDrawing )
+            {
+                Flush();
+            }
 
             _customShader = value;
 
             if ( IsDrawing )
             {
                 if ( _customShader != null )
+                {
                     _customShader.Bind();
+                }
                 else
+                {
                     _shader?.Bind();
+                }
 
                 SetupMatrices();
             }

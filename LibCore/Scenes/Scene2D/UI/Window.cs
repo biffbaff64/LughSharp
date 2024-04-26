@@ -131,7 +131,10 @@ public class Window : Table
 
     public void EnsureWithinStage()
     {
-        if ( !KeepWithinStage || ( Stage == null ) ) return;
+        if ( !KeepWithinStage || ( Stage == null ) )
+        {
+            return;
+        }
 
         if ( Stage.Camera is OrthographicCamera orthographicCamera )
         {
@@ -174,13 +177,25 @@ public class Window : Table
             var parentWidth  = Stage.Width;
             var parentHeight = Stage.Height;
 
-            if ( X < 0 ) X = 0;
+            if ( X < 0 )
+            {
+                X = 0;
+            }
 
-            if ( RightEdge > parentWidth ) X = parentWidth - Width;
+            if ( RightEdge > parentWidth )
+            {
+                X = parentWidth - Width;
+            }
 
-            if ( Y < 0 ) Y = 0;
+            if ( Y < 0 )
+            {
+                Y = 0;
+            }
 
-            if ( TopEdge > parentHeight ) Y = parentHeight - Height;
+            if ( TopEdge > parentHeight )
+            {
+                Y = parentHeight - Height;
+            }
         }
     }
 
@@ -211,7 +226,10 @@ public class Window : Table
 
     protected void DrawStageBackground( IBatch batch, float parentAlpha, float x, float y, float width, float height )
     {
-        if ( Color != null ) batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
+        if ( Color != null )
+        {
+            batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
+        }
 
         Style?.StageBackground?.Draw( batch, x, y, width, height );
     }
@@ -222,7 +240,10 @@ public class Window : Table
 
         // Manually draw the title table before clipping is done.
 
-        if ( _titleTable?.Color != null ) _titleTable.Color.A = Color!.A;
+        if ( _titleTable?.Color != null )
+        {
+            _titleTable.Color.A = Color!.A;
+        }
 
         var padTop  = GetPadTop();
         var padLeft = GetPadLeft();
@@ -240,22 +261,37 @@ public class Window : Table
 
     public new Actor? Hit( float x, float y, bool touchable )
     {
-        if ( !IsVisible ) return null;
+        if ( !IsVisible )
+        {
+            return null;
+        }
 
         var hit = base.Hit( x, y, touchable );
 
-        if ( ( hit == null ) && IsModal && ( !touchable || ( Touchable == Touchable.Enabled ) ) ) return this;
+        if ( ( hit == null ) && IsModal && ( !touchable || ( Touchable == Touchable.Enabled ) ) )
+        {
+            return this;
+        }
 
-        if ( ( hit == null ) || ( hit == this ) ) return hit;
+        if ( ( hit == null ) || ( hit == this ) )
+        {
+            return hit;
+        }
 
         if ( ( y <= Height ) && ( y >= ( Height - GetPadTop() ) ) && ( x >= 0 ) && ( x <= Width ) )
         {
             // Hit the title bar, don't use the hit child if it is in the Window's table.
             var current = hit;
 
-            while ( current?.Parent != this ) current = current?.Parent;
+            while ( current?.Parent != this )
+            {
+                current = current?.Parent;
+            }
 
-            if ( GetCell( current ) != null ) return this;
+            if ( GetCell( current ) != null )
+            {
+                return this;
+            }
         }
 
         return hit;
@@ -282,7 +318,10 @@ public class Window : Table
 
         public override void Draw( IBatch batch, float parentAlpha )
         {
-            if ( _window.DrawTitleTable ) base.Draw( batch, parentAlpha );
+            if ( _window.DrawTitleTable )
+            {
+                base.Draw( batch, parentAlpha );
+            }
         }
     }
 
@@ -341,19 +380,40 @@ public class Window : Table
               && ( x <= ( right + border ) )
               && ( y >= ( bottom - border ) ) )
             {
-                if ( x < ( left + border ) ) _window.edge |= Align.LEFT;
+                if ( x < ( left + border ) )
+                {
+                    _window.edge |= Align.LEFT;
+                }
 
-                if ( x > ( right - border ) ) _window.edge |= Align.RIGHT;
+                if ( x > ( right - border ) )
+                {
+                    _window.edge |= Align.RIGHT;
+                }
 
-                if ( y < ( bottom + border ) ) _window.edge |= Align.BOTTOM;
+                if ( y < ( bottom + border ) )
+                {
+                    _window.edge |= Align.BOTTOM;
+                }
 
-                if ( _window.edge != 0 ) border += 25;
+                if ( _window.edge != 0 )
+                {
+                    border += 25;
+                }
 
-                if ( x < ( left + border ) ) _window.edge |= Align.LEFT;
+                if ( x < ( left + border ) )
+                {
+                    _window.edge |= Align.LEFT;
+                }
 
-                if ( x > ( right - border ) ) _window.edge |= Align.RIGHT;
+                if ( x > ( right - border ) )
+                {
+                    _window.edge |= Align.RIGHT;
+                }
 
-                if ( y < ( bottom + border ) ) _window.edge |= Align.BOTTOM;
+                if ( y < ( bottom + border ) )
+                {
+                    _window.edge |= Align.BOTTOM;
+                }
             }
 
             if ( _window is { IsMovable: true, edge: 0 }
@@ -362,7 +422,9 @@ public class Window : Table
               && ( x >= left )
               && ( x <= right )
                )
+            {
                 _window.edge = MOVE;
+            }
         }
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
@@ -388,7 +450,10 @@ public class Window : Table
 
         public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
         {
-            if ( !_window.Dragging ) return;
+            if ( !_window.Dragging )
+            {
+                return;
+            }
 
             var width   = _window.Width;
             var height  = _window.Height;
@@ -420,9 +485,15 @@ public class Window : Table
             {
                 var amountX = x - _startX;
 
-                if ( ( width - amountX ) < minWidth ) amountX = -( minWidth - width );
+                if ( ( width - amountX ) < minWidth )
+                {
+                    amountX = -( minWidth - width );
+                }
 
-                if ( clampPosition && ( ( windowX + amountX ) < 0 ) ) amountX = -windowX;
+                if ( clampPosition && ( ( windowX + amountX ) < 0 ) )
+                {
+                    amountX = -windowX;
+                }
 
                 width   -= amountX;
                 windowX += amountX;
@@ -432,9 +503,15 @@ public class Window : Table
             {
                 var amountY = y - _startY;
 
-                if ( ( height - amountY ) < minHeight ) amountY = -( minHeight - height );
+                if ( ( height - amountY ) < minHeight )
+                {
+                    amountY = -( minHeight - height );
+                }
 
-                if ( clampPosition && ( ( windowY + amountY ) < 0 ) ) amountY = -windowY;
+                if ( clampPosition && ( ( windowY + amountY ) < 0 ) )
+                {
+                    amountY = -windowY;
+                }
 
                 height  -= amountY;
                 windowY += amountY;
@@ -444,9 +521,15 @@ public class Window : Table
             {
                 var amountX = x - _lastX - width;
 
-                if ( ( width + amountX ) < minWidth ) amountX = minWidth - width;
+                if ( ( width + amountX ) < minWidth )
+                {
+                    amountX = minWidth - width;
+                }
 
-                if ( clampPosition && ( ( windowX + width + amountX ) > stage?.Width ) ) amountX = stage.Width - windowX - width;
+                if ( clampPosition && ( ( windowX + width + amountX ) > stage?.Width ) )
+                {
+                    amountX = stage.Width - windowX - width;
+                }
 
                 width += amountX;
             }
@@ -455,9 +538,15 @@ public class Window : Table
             {
                 var amountY = y - _lastY - height;
 
-                if ( ( height + amountY ) < minHeight ) amountY = minHeight - height;
+                if ( ( height + amountY ) < minHeight )
+                {
+                    amountY = minHeight - height;
+                }
 
-                if ( clampPosition && ( ( windowY + height + amountY ) > stage?.Height ) ) amountY = stage.Height - windowY - height;
+                if ( clampPosition && ( ( windowY + height + amountY ) > stage?.Height ) )
+                {
+                    amountY = stage.Height - windowY - height;
+                }
 
                 height += amountY;
             }
@@ -522,7 +611,10 @@ public class Window : Table
             Background = style.Background;
             TitleFont  = style.TitleFont;
 
-            if ( style.TitleFontColor != null ) TitleFontColor = new Color( style.TitleFontColor );
+            if ( style.TitleFontColor != null )
+            {
+                TitleFontColor = new Color( style.TitleFontColor );
+            }
 
             Background = style.Background;
         }

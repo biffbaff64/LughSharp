@@ -430,7 +430,10 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
         public void Run()
         {
             // ReSharper disable once RedundantCheckBeforeAssignment
-            if ( _address == 0 ) return;
+            if ( _address == 0 )
+            {
+                return;
+            }
 
             //            unsafe.freeMemory( address );
             _address = 0;

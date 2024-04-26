@@ -109,7 +109,10 @@ public class DesktopGLWindow : IDisposable
     /// <returns></returns>
     public bool Update()
     {
-        if ( !ListenerInitialised ) InitialiseListener();
+        if ( !ListenerInitialised )
+        {
+            InitialiseListener();
+        }
 
         lock ( _runnables )
         {
@@ -117,13 +120,19 @@ public class DesktopGLWindow : IDisposable
             _runnables.Clear();
         }
 
-        foreach ( var runnable in _executedRunnables ) runnable();
+        foreach ( var runnable in _executedRunnables )
+        {
+            runnable();
+        }
 
         var shouldRender = ( _executedRunnables.Count > 0 ) || Graphics.ContinuousRendering;
 
         _executedRunnables.Clear();
 
-        if ( !_iconified ) Input.Update();
+        if ( !_iconified )
+        {
+            Input.Update();
+        }
 
         lock ( this )
         {
@@ -139,7 +148,10 @@ public class DesktopGLWindow : IDisposable
             Glfw.SwapBuffers( GlfwWindow );
         }
 
-        if ( !_iconified ) Input.PrepareNext();
+        if ( !_iconified )
+        {
+            Input.PrepareNext();
+        }
 
         return shouldRender;
     }
@@ -183,20 +195,32 @@ public class DesktopGLWindow : IDisposable
     /// </param>
     public void SetIcon( params Pixmap[] images )
     {
-        if ( GlfwWindow != null ) SetIcon( GlfwWindow, images );
+        if ( GlfwWindow != null )
+        {
+            SetIcon( GlfwWindow, images );
+        }
     }
 
     public void SetIcon( GLFWWindow window, string[] imagePaths, FileType imageFileType )
     {
-        if ( GdxSystem.IsMac ) return;
+        if ( GdxSystem.IsMac )
+        {
+            return;
+        }
 
         var pixmaps = new Pixmap[ imagePaths.Length ];
 
-        for ( var i = 0; i < imagePaths.Length; i++ ) pixmaps[ i ] = new Pixmap( Gdx.Files.GetFileHandle( imagePaths[ i ], imageFileType ) );
+        for ( var i = 0; i < imagePaths.Length; i++ )
+        {
+            pixmaps[ i ] = new Pixmap( Gdx.Files.GetFileHandle( imagePaths[ i ], imageFileType ) );
+        }
 
         SetIcon( window, pixmaps );
 
-        foreach ( var pixmap in pixmaps ) pixmap.Dispose();
+        foreach ( var pixmap in pixmaps )
+        {
+            pixmap.Dispose();
+        }
     }
 
     //TODO:
@@ -330,9 +354,13 @@ public class DesktopGLWindow : IDisposable
     public void SetVisible( bool visible )
     {
         if ( visible )
+        {
             Glfw.ShowWindow( GlfwWindow );
+        }
         else
+        {
             Glfw.HideWindow( GlfwWindow );
+        }
     }
 
     // ------------------------------------------------------------------------

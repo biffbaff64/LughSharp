@@ -161,7 +161,9 @@ public class InstanceBufferObjectSubData : IInstanceData
             _byteBuffer.Position = pos;
         }
         else
+        {
             throw new GdxRuntimeException( "Buffer must be allocated direct." ); // Should never happen
+        }
 
         BufferChanged();
     }
@@ -182,7 +184,9 @@ public class InstanceBufferObjectSubData : IInstanceData
             _byteBuffer.Position = pos;
         }
         else
+        {
             throw new GdxRuntimeException( "Buffer must be allocated direct." ); // Should never happen
+        }
 
         BufferChanged();
     }
@@ -219,7 +223,10 @@ public class InstanceBufferObjectSubData : IInstanceData
                 var attribute = Attributes.Get( i );
                 var location  = shader.GetAttributeLocation( attribute.alias );
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 var unitOffset = +attribute.unit;
                 shader.EnableVertexAttribute( location + unitOffset );
@@ -241,7 +248,10 @@ public class InstanceBufferObjectSubData : IInstanceData
                 var attribute = Attributes.Get( i );
                 var location  = locations[ i ];
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 var unitOffset = +attribute.unit;
                 shader.EnableVertexAttribute( location + unitOffset );
@@ -274,7 +284,10 @@ public class InstanceBufferObjectSubData : IInstanceData
                 var attribute = Attributes.Get( i );
                 var location  = shader.GetAttributeLocation( attribute.alias );
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 var unitOffset = +attribute.unit;
 
@@ -288,7 +301,10 @@ public class InstanceBufferObjectSubData : IInstanceData
                 var attribute = Attributes.Get( i );
                 var location  = locations[ i ];
 
-                if ( location < 0 ) continue;
+                if ( location < 0 )
+                {
+                    continue;
+                }
 
                 var unitOffset = +attribute.unit;
 

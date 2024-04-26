@@ -75,8 +75,12 @@ public class TextureWrap
     public static TextureWrap ValueOf( string name )
     {
         foreach ( var enumInstance in _valueList )
+        {
             if ( enumInstance._nameValue == name )
+            {
                 return enumInstance;
+            }
+        }
 
         throw new ArgumentException( name );
     }

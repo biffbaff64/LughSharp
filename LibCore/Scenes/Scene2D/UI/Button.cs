@@ -167,9 +167,15 @@ public class Button : Table, IDisableable
 
     public void SetChecked( bool isChecked, bool fireEvent )
     {
-        if ( IsChecked == isChecked ) return;
+        if ( IsChecked == isChecked )
+        {
+            return;
+        }
 
-        if ( ( ButtonGroup != null ) && !ButtonGroup.CanCheck( this, isChecked ) ) return;
+        if ( ( ButtonGroup != null ) && !ButtonGroup.CanCheck( this, isChecked ) )
+        {
+            return;
+        }
 
         IsChecked = isChecked;
 
@@ -179,7 +185,10 @@ public class Button : Table, IDisableable
 
             if ( changeEvent is not null )
             {
-                if ( Fire( changeEvent ) ) IsChecked = !isChecked;
+                if ( Fire( changeEvent ) )
+                {
+                    IsChecked = !isChecked;
+                }
 
                 Pools< ChangeListener.ChangeEvent >.Free( changeEvent );
             }
@@ -201,24 +210,39 @@ public class Button : Table, IDisableable
     /// </summary>
     public IDrawable? GetBackgroundDrawable()
     {
-        if ( IsDisabled && ( Style?.Disabled != null ) ) return Style.Disabled;
+        if ( IsDisabled && ( Style?.Disabled != null ) )
+        {
+            return Style.Disabled;
+        }
 
         if ( IsPressed() )
         {
-            if ( IsChecked && ( Style?.CheckedDown != null ) ) return Style.CheckedDown;
+            if ( IsChecked && ( Style?.CheckedDown != null ) )
+            {
+                return Style.CheckedDown;
+            }
 
-            if ( Style?.Down != null ) return Style.Down;
+            if ( Style?.Down != null )
+            {
+                return Style.Down;
+            }
         }
 
         if ( IsOver() )
         {
             if ( IsChecked )
             {
-                if ( Style?.CheckedOver != null ) return Style.CheckedOver;
+                if ( Style?.CheckedOver != null )
+                {
+                    return Style.CheckedOver;
+                }
             }
             else
             {
-                if ( Style?.Over != null ) return Style.Over;
+                if ( Style?.Over != null )
+                {
+                    return Style.Over;
+                }
             }
         }
 
@@ -226,14 +250,26 @@ public class Button : Table, IDisableable
 
         if ( IsChecked )
         {
-            if ( focused && ( Style?.CheckedFocused != null ) ) return Style.CheckedFocused;
+            if ( focused && ( Style?.CheckedFocused != null ) )
+            {
+                return Style.CheckedFocused;
+            }
 
-            if ( Style?.Checked != null ) return Style.Checked;
+            if ( Style?.Checked != null )
+            {
+                return Style.Checked;
+            }
 
-            if ( IsOver() && ( Style?.Over != null ) ) return Style.Over;
+            if ( IsOver() && ( Style?.Over != null ) )
+            {
+                return Style.Over;
+            }
         }
 
-        if ( focused && ( Style?.Focused != null ) ) return Style.Focused;
+        if ( focused && ( Style?.Focused != null ) )
+        {
+            return Style.Focused;
+        }
 
         return Style?.Up;
     }
@@ -269,19 +305,27 @@ public class Button : Table, IDisableable
 
         if ( offset )
         {
-            foreach ( var actor in Children ) actor.MoveBy( offsetX, offsetY );
+            foreach ( var actor in Children )
+            {
+                actor.MoveBy( offsetX, offsetY );
+            }
         }
 
         base.Draw( batch, parentAlpha );
 
         if ( offset )
         {
-            for ( var i = 0; i < Children.Size; i++ ) Children.GetAt( i ).MoveBy( -offsetX, -offsetY );
+            for ( var i = 0; i < Children.Size; i++ )
+            {
+                Children.GetAt( i ).MoveBy( -offsetX, -offsetY );
+            }
         }
 
         if ( Stage is { ActionsRequestRendering: true }
           && ( IsPressed() != ClickListener?.Pressed ) )
+        {
             Gdx.Graphics.RequestRendering();
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -317,7 +361,10 @@ public class Button : Table, IDisableable
 
         public override void Clicked( InputEvent inputEvent, float x, float y )
         {
-            if ( _button.IsDisabled ) return;
+            if ( _button.IsDisabled )
+            {
+                return;
+            }
 
             _button.SetChecked( !_button.IsChecked, true );
         }
@@ -394,11 +441,20 @@ public class Button : Table, IDisableable
         {
             var width = GetPrefWidth();
 
-            if ( Style?.Up != null ) width = Math.Max( width, Style.Up.MinWidth );
+            if ( Style?.Up != null )
+            {
+                width = Math.Max( width, Style.Up.MinWidth );
+            }
 
-            if ( Style?.Down != null ) width = Math.Max( width, Style.Down.MinWidth );
+            if ( Style?.Down != null )
+            {
+                width = Math.Max( width, Style.Down.MinWidth );
+            }
 
-            if ( Style?.Checked != null ) width = Math.Max( width, Style.Checked.MinWidth );
+            if ( Style?.Checked != null )
+            {
+                width = Math.Max( width, Style.Checked.MinWidth );
+            }
 
             return width;
         }
@@ -410,11 +466,20 @@ public class Button : Table, IDisableable
         {
             var height = GetPrefHeight();
 
-            if ( Style?.Up != null ) height = Math.Max( height, Style.Up.MinHeight );
+            if ( Style?.Up != null )
+            {
+                height = Math.Max( height, Style.Up.MinHeight );
+            }
 
-            if ( Style?.Down != null ) height = Math.Max( height, Style.Down.MinHeight );
+            if ( Style?.Down != null )
+            {
+                height = Math.Max( height, Style.Down.MinHeight );
+            }
 
-            if ( Style?.Checked != null ) height = Math.Max( height, Style.Checked!.MinHeight );
+            if ( Style?.Checked != null )
+            {
+                height = Math.Max( height, Style.Checked!.MinHeight );
+            }
 
             return height;
         }

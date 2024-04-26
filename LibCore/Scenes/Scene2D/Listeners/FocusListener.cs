@@ -40,11 +40,19 @@ public class FocusListener : IEventListener
     /// </returns>
     public virtual bool Handle( Event e )
     {
-        if ( e is not FocusEvent focusEvent ) return false;
+        if ( e is not FocusEvent focusEvent )
+        {
+            return false;
+        }
 
         if ( focusEvent.Type == FocusEvent.FeType.Keyboard )
+        {
             KeyboardFocusChanged( focusEvent, e.TargetActor, focusEvent.Focused );
-        else if ( focusEvent.Type == FocusEvent.FeType.Scroll ) ScrollFocusChanged( focusEvent, e.TargetActor, focusEvent.Focused );
+        }
+        else if ( focusEvent.Type == FocusEvent.FeType.Scroll )
+        {
+            ScrollFocusChanged( focusEvent, e.TargetActor, focusEvent.Focused );
+        }
 
         return false;
     }

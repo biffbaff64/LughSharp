@@ -52,7 +52,10 @@ public class RunnableAction : Action
     /// </summary>
     public virtual void Run()
     {
-        if ( RunnableTask == null ) throw new GdxRuntimeException( "Runnable is not initialised!" );
+        if ( RunnableTask == null )
+        {
+            throw new GdxRuntimeException( "Runnable is not initialised!" );
+        }
 
         Pool< Action >? pool = Pool;
 

@@ -141,8 +141,12 @@ public class TextureFilter
     public static TextureFilter ValueOf( string name )
     {
         foreach ( var enumInstance in ValueList )
+        {
             if ( enumInstance._nameValue == name )
+            {
                 return enumInstance;
+            }
+        }
 
         throw new ArgumentException( name );
     }

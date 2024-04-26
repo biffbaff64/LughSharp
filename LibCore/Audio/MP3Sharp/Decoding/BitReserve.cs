@@ -136,7 +136,10 @@ public class BitReserve
         _totbit     -= bitCount;
         _bufByteIdx -= bitCount;
 
-        if ( _bufByteIdx < 0 ) _bufByteIdx += BUFSIZE;
+        if ( _bufByteIdx < 0 )
+        {
+            _bufByteIdx += BUFSIZE;
+        }
     }
 
     /// <summary>
@@ -148,6 +151,9 @@ public class BitReserve
         _totbit     -= bits;
         _bufByteIdx -= bits;
 
-        if ( _bufByteIdx < 0 ) _bufByteIdx += BUFSIZE;
+        if ( _bufByteIdx < 0 )
+        {
+            _bufByteIdx += BUFSIZE;
+        }
     }
 }

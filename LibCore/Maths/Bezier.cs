@@ -82,10 +82,17 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
         var n = Points.Count;
 
         if ( n == 2 )
+        {
             Linear( o, t, Points[ 0 ], Points[ 1 ], _tmp );
+        }
         else if ( n == 3 )
+        {
             Quadratic( o, t, Points[ 0 ], Points[ 1 ], Points[ 2 ], _tmp );
-        else if ( n == 4 ) Cubic( o, t, Points[ 0 ], Points[ 1 ], Points[ 2 ], Points[ 3 ], _tmp );
+        }
+        else if ( n == 4 )
+        {
+            Cubic( o, t, Points[ 0 ], Points[ 1 ], Points[ 2 ], Points[ 3 ], _tmp );
+        }
 
         return o;
     }
@@ -100,10 +107,17 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
         var n = Points.Count;
 
         if ( n == 2 )
+        {
             LinearDerivative( o, t, Points[ 0 ], Points[ 1 ], _tmp );
+        }
         else if ( n == 3 )
+        {
             QuadraticDerivative( o, t, Points[ 0 ], Points[ 1 ], Points[ 2 ], _tmp );
-        else if ( n == 4 ) CubicDerivative( o, t, Points[ 0 ], Points[ 1 ], Points[ 2 ], Points[ 3 ], _tmp );
+        }
+        else if ( n == 4 )
+        {
+            CubicDerivative( o, t, Points[ 0 ], Points[ 1 ], Points[ 2 ], Points[ 3 ], _tmp );
+        }
 
         return o;
     }
@@ -147,9 +161,15 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     {
         float tempLength = 0;
 
-        if ( _tmp2 == null ) return tempLength;
+        if ( _tmp2 == null )
+        {
+            return tempLength;
+        }
 
-        if ( _tmp3 == null ) return tempLength;
+        if ( _tmp3 == null )
+        {
+            return tempLength;
+        }
 
         for ( var i = 0; i < samples; ++i )
         {
@@ -157,7 +177,10 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
 
             ValueAt( _tmp3, i / ( ( float ) samples - 1 ) );
 
-            if ( i > 0 ) tempLength += _tmp2.Dst( _tmp3 );
+            if ( i > 0 )
+            {
+                tempLength += _tmp2.Dst( _tmp3 );
+            }
         }
 
         return tempLength;
@@ -296,7 +319,10 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public Bezier< T > Set( in T[] points, in int offset, in int length )
     {
-        if ( length is < 2 or > 4 ) throw new GdxRuntimeException( "Only first, second and third degree Bezier curves are supported." );
+        if ( length is < 2 or > 4 )
+        {
+            throw new GdxRuntimeException( "Only first, second and third degree Bezier curves are supported." );
+        }
 
         _tmp  ??= points[ 0 ].Cpy();
         _tmp2 ??= points[ 0 ].Cpy();
@@ -318,7 +344,10 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public Bezier< T > Set( in List< T > points, in int offset, in int length )
     {
-        if ( length is < 2 or > 4 ) throw new GdxRuntimeException( "Only first, second and third degree Bezier curves are supported." );
+        if ( length is < 2 or > 4 )
+        {
+            throw new GdxRuntimeException( "Only first, second and third degree Bezier curves are supported." );
+        }
 
         _tmp  ??= points[ 0 ].Cpy();
         _tmp2 ??= points[ 0 ].Cpy();

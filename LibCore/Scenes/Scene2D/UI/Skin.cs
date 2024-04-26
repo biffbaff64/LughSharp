@@ -70,7 +70,10 @@ public class Skin : IDisposable
         Resources     = new Dictionary< Type, Dictionary< string, object >? >();
         JsonClassTags = new Dictionary< string, Type >( DefaultTagClasses.Length );
 
-        foreach ( var c in DefaultTagClasses ) JsonClassTags.Add( c.Name, c );
+        foreach ( var c in DefaultTagClasses )
+        {
+            JsonClassTags.Add( c.Name, c );
+        }
     }
 
     /// <summary>///     Creates an empty Skin./// </summary>
@@ -141,8 +144,12 @@ public class Skin : IDisposable
 
         foreach ( Dictionary< string, object >? entry in Resources.Values )
         foreach ( var resource in entry!.Values )
+        {
             if ( resource is IDisposable disposable )
+            {
                 disposable.Dispose();
+            }
+        }
     }
 
     /// <summary>
@@ -170,7 +177,10 @@ public class Skin : IDisposable
         {
             var name = atlas.Regions[ i ]?.Name;
 
-            if ( atlas.Regions[ i ]?.Index != -1 ) name += "_" + atlas.Regions[ i ]?.Index;
+            if ( atlas.Regions[ i ]?.Index != -1 )
+            {
+                name += "_" + atlas.Regions[ i ]?.Index;
+            }
 
             Add( name, atlas.Regions[ i ], typeof( TextureRegion ) );
         }
@@ -238,21 +248,39 @@ public class Skin : IDisposable
     {
         ArgumentNullException.ThrowIfNull( name );
 
-        if ( type == typeof( IDrawable ) ) return GetDrawable( name );
+        if ( type == typeof( IDrawable ) )
+        {
+            return GetDrawable( name );
+        }
 
-        if ( type == typeof( TextureRegion ) ) return GetRegion( name );
+        if ( type == typeof( TextureRegion ) )
+        {
+            return GetRegion( name );
+        }
 
-        if ( type == typeof( NinePatch ) ) return GetPatch( name );
+        if ( type == typeof( NinePatch ) )
+        {
+            return GetPatch( name );
+        }
 
-        if ( type == typeof( Sprite ) ) return GetSprite( name );
+        if ( type == typeof( Sprite ) )
+        {
+            return GetSprite( name );
+        }
 
         Dictionary< string, object >? typeResources = Resources[ type ];
 
-        if ( typeResources == null ) throw new GdxRuntimeException( $"No {type.FullName} registered with name: {name}" );
+        if ( typeResources == null )
+        {
+            throw new GdxRuntimeException( $"No {type.FullName} registered with name: {name}" );
+        }
 
         var resource = typeResources[ name ];
 
-        if ( resource == null ) throw new GdxRuntimeException( $"No {type.FullName} registered with name: {name}" );
+        if ( resource == null )
+        {
+            throw new GdxRuntimeException( $"No {type.FullName} registered with name: {name}" );
+        }
 
         return resource;
     }
@@ -265,7 +293,10 @@ public class Skin : IDisposable
     {
         ArgumentNullException.ThrowIfNull( name );
 
-        if ( typeof( T ) == null ) throw new ArgumentException( "type cannot be null." );
+        if ( typeof( T ) == null )
+        {
+            throw new ArgumentException( "type cannot be null." );
+        }
 
         return ( T? ) Resources[ typeof( T ) ]?.Get( name );
     }
@@ -303,11 +334,17 @@ public class Skin : IDisposable
     {
         var region = Optional< TextureRegion? >( name );
 
-        if ( region != null ) return region;
+        if ( region != null )
+        {
+            return region;
+        }
 
         var texture = Optional< Texture >( name );
 
-        if ( texture == null ) throw new GdxRuntimeException( "No TextureRegion or Texture registered with name: " + name );
+        if ( texture == null )
+        {
+            throw new GdxRuntimeException( "No TextureRegion or Texture registered with name: " + name );
+        }
 
         region = new TextureRegion( texture );
 
@@ -347,7 +384,10 @@ public class Skin : IDisposable
     {
         var tiled = Optional< TiledDrawable? >( name );
 
-        if ( tiled != null ) return tiled;
+        if ( tiled != null )
+        {
+            return tiled;
+        }
 
         tiled = new TiledDrawable( GetRegion( name ) )
         {
@@ -376,7 +416,10 @@ public class Skin : IDisposable
     {
         var patch = Optional< NinePatch? >( name );
 
-        if ( patch != null ) return patch;
+        if ( patch != null )
+        {
+            return patch;
+        }
 
         try
         {
@@ -392,13 +435,19 @@ public class Skin : IDisposable
 
                     var pads = atlasRegion.FindValue( "pad" );
 
-                    if ( pads != null ) patch.SetPadding( pads[ 0 ], pads[ 1 ], pads[ 2 ], pads[ 3 ] );
+                    if ( pads != null )
+                    {
+                        patch.SetPadding( pads[ 0 ], pads[ 1 ], pads[ 2 ], pads[ 3 ] );
+                    }
                 }
             }
 
             patch ??= new NinePatch( region );
 
-            if ( Scale is not 1.0f ) patch.Scale( Scale, Scale );
+            if ( Scale is not 1.0f )
+            {
+                patch.Scale( Scale, Scale );
+            }
 
             Add( name, patch, typeof( NinePatch ) );
 
@@ -420,7 +469,10 @@ public class Skin : IDisposable
     {
         Sprite? sprite;
 
-        if ( ( sprite = Optional< Sprite >( name ) ) != null ) return sprite;
+        if ( ( sprite = Optional< Sprite >( name ) ) != null )
+        {
+            return sprite;
+        }
 
         try
         {
@@ -431,12 +483,17 @@ public class Skin : IDisposable
                 if ( region.Rotate
                   || ( region.PackedWidth != region.OriginalWidth )
                   || ( region.PackedHeight != region.OriginalHeight ) )
+                {
                     sprite = new AtlasSprite( region );
+                }
             }
 
             sprite ??= new Sprite( textureRegion );
 
-            if ( Scale is not 1.0f ) sprite.SetSize( sprite.Width * Scale, sprite.Height * Scale );
+            if ( Scale is not 1.0f )
+            {
+                sprite.SetSize( sprite.Width * Scale, sprite.Height * Scale );
+            }
 
             Add( name, sprite, typeof( Sprite ) );
 
@@ -457,7 +514,10 @@ public class Skin : IDisposable
     {
         var drawable = Optional< IDrawable >( name );
 
-        if ( drawable != null ) return drawable;
+        if ( drawable != null )
+        {
+            return drawable;
+        }
 
         // Use texture or texture region. If it has splits, use ninepatch.
         // If it has rotation or whitespace stripping, use sprite.
@@ -468,18 +528,25 @@ public class Skin : IDisposable
             if ( textureRegion is AtlasRegion region )
             {
                 if ( region.FindValue( "split" ) != null )
+                {
                     drawable = new NinePatchDrawable( GetPatch( name ) );
+                }
                 else if ( region.Rotate
                        || ( region.PackedWidth != region.OriginalWidth )
                        || ( region.PackedHeight != region.OriginalHeight ) )
+                {
                     drawable = new SpriteDrawable( GetSprite( name ) );
+                }
             }
 
             if ( drawable == null )
             {
                 drawable = new TextureRegionDrawable( textureRegion );
 
-                if ( Scale is not 1.0f ) ScaleDrawable( drawable );
+                if ( Scale is not 1.0f )
+                {
+                    ScaleDrawable( drawable );
+                }
             }
         }
         catch ( GdxRuntimeException )
@@ -493,13 +560,17 @@ public class Skin : IDisposable
             var patch = Optional< NinePatch >( name );
 
             if ( patch != null )
+            {
                 drawable = new NinePatchDrawable( patch );
+            }
             else
             {
                 var sprite = Optional< Sprite >( name );
 
                 if ( sprite != null )
+                {
                     drawable = new SpriteDrawable( sprite );
+                }
                 else
                 {
                     throw new GdxRuntimeException
@@ -508,7 +579,10 @@ public class Skin : IDisposable
             }
         }
 
-        if ( drawable is BaseDrawable baseDrawable ) baseDrawable.Name = name;
+        if ( drawable is BaseDrawable baseDrawable )
+        {
+            baseDrawable.Name = name;
+        }
 
         Add( name, drawable, typeof( IDrawable ) );
 
@@ -522,7 +596,10 @@ public class Skin : IDisposable
     /// </summary>
     public string? Find( object resource )
     {
-        if ( resource == null ) throw new ArgumentException( "style cannot be null." );
+        if ( resource == null )
+        {
+            throw new ArgumentException( "style cannot be null." );
+        }
 
         Dictionary< string, object >? typeResources = Resources[ resource.GetType() ];
 
@@ -558,13 +635,25 @@ public class Skin : IDisposable
     /// </summary>
     public IDrawable NewDrawable( IDrawable drawable )
     {
-        if ( drawable is TiledDrawable tiledDrawable ) return new TiledDrawable( tiledDrawable );
+        if ( drawable is TiledDrawable tiledDrawable )
+        {
+            return new TiledDrawable( tiledDrawable );
+        }
 
-        if ( drawable is TextureRegionDrawable regionDrawable ) return new TextureRegionDrawable( regionDrawable );
+        if ( drawable is TextureRegionDrawable regionDrawable )
+        {
+            return new TextureRegionDrawable( regionDrawable );
+        }
 
-        if ( drawable is NinePatchDrawable patchDrawable ) return new NinePatchDrawable( patchDrawable );
+        if ( drawable is NinePatchDrawable patchDrawable )
+        {
+            return new NinePatchDrawable( patchDrawable );
+        }
 
-        if ( drawable is SpriteDrawable spriteDrawable ) return new SpriteDrawable( spriteDrawable );
+        if ( drawable is SpriteDrawable spriteDrawable )
+        {
+            return new SpriteDrawable( spriteDrawable );
+        }
 
         throw new GdxRuntimeException( "Unable to copy, unknown drawable type: " + drawable.GetType() );
     }
@@ -585,20 +674,32 @@ public class Skin : IDisposable
         IDrawable newDrawable;
 
         if ( drawable is TextureRegionDrawable regionDrawable )
+        {
             newDrawable = regionDrawable.Tint( tint );
+        }
         else if ( drawable is NinePatchDrawable patchDrawable )
+        {
             newDrawable = patchDrawable.Tint( tint );
+        }
         else if ( drawable is SpriteDrawable spriteDrawable )
+        {
             newDrawable = spriteDrawable.Tint( tint );
+        }
         else
+        {
             throw new GdxRuntimeException( $"Unable to copy, unknown drawable type: {drawable.GetType()}" );
+        }
 
         if ( newDrawable is BaseDrawable named )
         {
             if ( drawable is BaseDrawable baseDrawable )
+            {
                 named.Name = baseDrawable.Name + " (" + tint + ")";
+            }
             else
+            {
                 named.Name = " (" + tint + ")";
+            }
         }
 
         return newDrawable;
@@ -638,7 +739,10 @@ public class Skin : IDisposable
         // Get current style.
         var method = actor.GetType().GetMethod( "GetStyle" );
 
-        if ( method == null ) return;
+        if ( method == null )
+        {
+            return;
+        }
 
         object style;
 
@@ -654,14 +758,20 @@ public class Skin : IDisposable
         // Determine new style.
         var name = Find( style );
 
-        if ( name == null ) return;
+        if ( name == null )
+        {
+            return;
+        }
 
         name = name.Replace( "-disabled", "" ) + ( enabled ? "" : "-disabled" );
 
         style = Get( name, style.GetType() );
 
         // Set new style.
-        if ( ( method = FindMethod( actor.GetType(), "SetStyle" ) ) == null ) return;
+        if ( ( method = FindMethod( actor.GetType(), "SetStyle" ) ) == null )
+        {
+            return;
+        }
 
         try
         {

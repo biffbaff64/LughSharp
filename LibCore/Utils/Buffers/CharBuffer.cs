@@ -112,7 +112,10 @@ public abstract class CharBuffer : Buffer
     /// </summary>
     public static CharBuffer Allocate( int capacity )
     {
-        if ( capacity < 0 ) throw new ArgumentException( "capacity should not be less than 0!" );
+        if ( capacity < 0 )
+        {
+            throw new ArgumentException( "capacity should not be less than 0!" );
+        }
 
         return new HeapCharBuffer( capacity, capacity );
     }
@@ -190,17 +193,26 @@ public abstract class CharBuffer : Buffer
         var targetRemaining = target.Remaining();
         var remaining       = Remaining();
 
-        if ( remaining == 0 ) return -1;
+        if ( remaining == 0 )
+        {
+            return -1;
+        }
 
         var n     = Math.Min( remaining, targetRemaining );
         var limit = Limit;
 
         // Set source limit to prevent target overflow
-        if ( targetRemaining < remaining ) Limit = Position + n;
+        if ( targetRemaining < remaining )
+        {
+            Limit = Position + n;
+        }
 
         try
         {
-            if ( n > 0 ) target.Put( this );
+            if ( n > 0 )
+            {
+                target.Put( this );
+            }
         }
         finally
         {
@@ -313,11 +325,17 @@ public abstract class CharBuffer : Buffer
     {
         CheckBounds( off, length, dst.Length );
 
-        if ( length > Remaining() ) throw new GdxRuntimeException( "Buffer Underflow!" );
+        if ( length > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Underflow!" );
+        }
 
         var end = off + length;
 
-        for ( var i = off; i < end; i++ ) dst[ i ] = Get();
+        for ( var i = off; i < end; i++ )
+        {
+            dst[ i ] = Get();
+        }
 
         return this;
     }
@@ -386,15 +404,27 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public CharBuffer Put( CharBuffer src )
     {
-        if ( src == this ) throw new ArgumentException( "Source buffer should not be this buffer!" );
+        if ( src == this )
+        {
+            throw new ArgumentException( "Source buffer should not be this buffer!" );
+        }
 
-        if ( IsReadOnly ) throw new GdxRuntimeException( "Buffer is Read Only!" );
+        if ( IsReadOnly )
+        {
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
+        }
 
         var n = src.Remaining();
 
-        if ( n > Remaining() ) throw new GdxRuntimeException( "Buffer Overflow!" );
+        if ( n > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Overflow!" );
+        }
 
-        for ( var i = 0; i < n; i++ ) Put( src.Get() );
+        for ( var i = 0; i < n; i++ )
+        {
+            Put( src.Get() );
+        }
 
         return this;
     }
@@ -445,11 +475,17 @@ public abstract class CharBuffer : Buffer
     {
         CheckBounds( off, length, src.Length );
 
-        if ( length > Remaining() ) throw new GdxRuntimeException( "Buffer Overflow!" );
+        if ( length > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Overflow!" );
+        }
 
         var end = off + length;
 
-        for ( var i = off; i < end; i++ ) Put( src[ i ] );
+        for ( var i = off; i < end; i++ )
+        {
+            Put( src[ i ] );
+        }
 
         return this;
     }
@@ -519,11 +555,20 @@ public abstract class CharBuffer : Buffer
     {
         CheckBounds( start, end - start, src.Length );
 
-        if ( IsReadOnly ) throw new GdxRuntimeException( "Buffer is Read Only!" );
+        if ( IsReadOnly )
+        {
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
+        }
 
-        if ( ( end - start ) > Remaining() ) throw new GdxRuntimeException( "Buffer Overflow!" );
+        if ( ( end - start ) > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Overflow!" );
+        }
 
-        for ( var i = start; i < end; i++ ) Put( src[ i ] );
+        for ( var i = start; i < end; i++ )
+        {
+            Put( src[ i ] );
+        }
 
         return this;
     }
@@ -753,9 +798,15 @@ public abstract class CharBuffer : Buffer
     /// </exception>
     public new char[] BackingArray()
     {
-        if ( _hb == null ) throw new GdxRuntimeException( "Backing Array is null!" );
+        if ( _hb == null )
+        {
+            throw new GdxRuntimeException( "Backing Array is null!" );
+        }
 
-        if ( IsReadOnly ) throw new GdxRuntimeException( "Buffer is Read Only!" );
+        if ( IsReadOnly )
+        {
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
+        }
 
         return _hb;
     }
@@ -783,9 +834,15 @@ public abstract class CharBuffer : Buffer
     /// </exception>
     public override int ArrayOffset()
     {
-        if ( _hb == null ) throw new GdxRuntimeException( "Backing Array is null!" );
+        if ( _hb == null )
+        {
+            throw new GdxRuntimeException( "Backing Array is null!" );
+        }
 
-        if ( IsReadOnly ) throw new GdxRuntimeException( "Buffer is Read Only!" );
+        if ( IsReadOnly )
+        {
+            throw new GdxRuntimeException( "Buffer is Read Only!" );
+        }
 
         return Offset;
     }
@@ -809,7 +866,10 @@ public abstract class CharBuffer : Buffer
         var h = 1;
         var p = Position;
 
-        for ( var i = Limit - 1; i >= p; i-- ) h = ( 31 * h ) + Get( i );
+        for ( var i = Limit - 1; i >= p; i-- )
+        {
+            h = ( 31 * h ) + Get( i );
+        }
 
         return h;
     }
@@ -832,17 +892,30 @@ public abstract class CharBuffer : Buffer
     /// </returns>
     public new bool Equals( object ob )
     {
-        if ( this == ob ) return true;
+        if ( this == ob )
+        {
+            return true;
+        }
 
-        if ( ob is not CharBuffer that ) return false;
+        if ( ob is not CharBuffer that )
+        {
+            return false;
+        }
 
-        if ( Remaining() != that.Remaining() ) return false;
+        if ( Remaining() != that.Remaining() )
+        {
+            return false;
+        }
 
         var p = Position;
 
         for ( int i = Limit - 1, j = that.Limit - 1; i >= p; i--, j-- )
+        {
             if ( !Equals( Get( i ), that.Get( j ) ) )
+            {
                 return false;
+            }
+        }
 
         return true;
     }
@@ -875,7 +948,10 @@ public abstract class CharBuffer : Buffer
         {
             int cmp = BufferUtils.Compare( Get( i ), that.Get( j ) );
 
-            if ( cmp != 0 ) return cmp;
+            if ( cmp != 0 )
+            {
+                return cmp;
+            }
         }
 
         return Remaining() - that.Remaining();

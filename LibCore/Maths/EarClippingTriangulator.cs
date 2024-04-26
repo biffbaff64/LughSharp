@@ -73,11 +73,17 @@ public class EarClippingTriangulator
 
         if ( GeometryUtils.IsClockwise( vertices, offset, count ) )
         {
-            for ( short i = 0; i < vertexCount; i++ ) _indicesArray[ i ] = ( short ) ( vertexOffset + i );
+            for ( short i = 0; i < vertexCount; i++ )
+            {
+                _indicesArray[ i ] = ( short ) ( vertexOffset + i );
+            }
         }
         else
         {
-            for ( int i = 0, n = vertexCount - 1; i < vertexCount; i++ ) _indicesArray[ i ] = ( short ) ( ( vertexOffset + n ) - i ); // Reversed.
+            for ( int i = 0, n = vertexCount - 1; i < vertexCount; i++ )
+            {
+                _indicesArray[ i ] = ( short ) ( ( vertexOffset + n ) - i ); // Reversed.
+            }
         }
 
         _indices = _indicesArray.ToArray();
@@ -85,7 +91,10 @@ public class EarClippingTriangulator
         _vertexTypes.Clear();
         _vertexTypes.EnsureCapacity( vertexCount );
 
-        for ( var i = 0; i < vertexCount; ++i ) _vertexTypes.Add( ClassifyVertex( i ) );
+        for ( var i = 0; i < vertexCount; ++i )
+        {
+            _vertexTypes.Add( ClassifyVertex( i ) );
+        }
 
         // A polygon with n vertices has a triangulation of n-2 triangles.
         _triangles.Clear();
@@ -141,8 +150,12 @@ public class EarClippingTriangulator
     private int FindEarTip()
     {
         for ( var i = 0; i < _vertexCount; i++ )
+        {
             if ( IsEarTip( i ) )
+            {
                 return i;
+            }
+        }
 
         // Desperate mode: if no vertex is an ear tip, we are dealing with a degenerate
         // polygon (e.g. nearly collinear).
@@ -155,15 +168,22 @@ public class EarClippingTriangulator
 
         // Return a convex or tangential vertex if one exists.
         for ( var i = 0; i < _vertexCount; i++ )
+        {
             if ( _vertexTypes[ i ] != CONCAVE )
+            {
                 return i;
+            }
+        }
 
         return 0; // If all vertices are concave, just return the first one.
     }
 
     private bool IsEarTip( int earTipIndex )
     {
-        if ( _vertexTypes[ earTipIndex ] == CONCAVE ) return false;
+        if ( _vertexTypes[ earTipIndex ] == CONCAVE )
+        {
+            return false;
+        }
 
         var previousIndex = PreviousIndex( earTipIndex );
         var nextIndex     = NextIndex( earTipIndex );
@@ -183,6 +203,7 @@ public class EarClippingTriangulator
 
             // Concave vertices can obviously be inside the candidate ear, but so can tangential vertices
             // if they coincide with one of the triangle's vertices.
+        {
             if ( _vertexTypes[ i ] != CONVEX )
             {
                 var v  = _indices[ i ] * 2;
@@ -196,10 +217,14 @@ public class EarClippingTriangulator
                 {
                     if ( ComputeSpannedAreaSign( p1X, p1Y, p2X, p2Y, vx, vy ) >= 0 )
                     {
-                        if ( ComputeSpannedAreaSign( p2X, p2Y, p3X, p3Y, vx, vy ) >= 0 ) return false;
+                        if ( ComputeSpannedAreaSign( p2X, p2Y, p3X, p3Y, vx, vy ) >= 0 )
+                        {
+                            return false;
+                        }
                     }
                 }
             }
+        }
 
         return true;
     }

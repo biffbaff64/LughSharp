@@ -40,7 +40,10 @@ public class IndexArray : IIndexData, IDisposable
     {
         _empty = maxIndices == 0;
 
-        if ( _empty ) maxIndices = 1; // avoid allocating a zero-sized buffer because of a bug in Android's ART < Android 5.0
+        if ( _empty )
+        {
+            maxIndices = 1; // avoid allocating a zero-sized buffer because of a bug in Android's ART < Android 5.0
+        }
 
         _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
 

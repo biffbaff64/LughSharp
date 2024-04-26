@@ -203,7 +203,10 @@ public class StringTokenizer
                 _hasSurrogates = true;
             }
 
-            if ( m < c ) m = c;
+            if ( m < c )
+            {
+                m = c;
+            }
 
             count++;
         }
@@ -230,16 +233,23 @@ public class StringTokenizer
     /// </summary>
     private int SkipDelimiters( int startPos )
     {
-        if ( _delimiters == null ) throw new NullReferenceException();
+        if ( _delimiters == null )
+        {
+            throw new NullReferenceException();
+        }
 
         var position = startPos;
 
         while ( !_retDelims && ( position < _maxPosition ) )
+        {
             if ( !_hasSurrogates )
             {
                 var c = _str[ position ];
 
-                if ( ( c > _maxDelimCodePoint ) || ( _delimiters.IndexOf( c ) < 0 ) ) break;
+                if ( ( c > _maxDelimCodePoint ) || ( _delimiters.IndexOf( c ) < 0 ) )
+                {
+                    break;
+                }
 
                 position++;
             }
@@ -247,10 +257,14 @@ public class StringTokenizer
             {
                 var c = char.ConvertToUtf32( _str, position );
 
-                if ( ( c > _maxDelimCodePoint ) || !IsDelimiter( c ) ) break;
+                if ( ( c > _maxDelimCodePoint ) || !IsDelimiter( c ) )
+                {
+                    break;
+                }
 
                 position += Character.CharCount( c );
             }
+        }
 
         return position;
     }
@@ -264,11 +278,15 @@ public class StringTokenizer
         var position = startPos;
 
         while ( position < _maxPosition )
+        {
             if ( !_hasSurrogates )
             {
                 var c = _str[ position ];
 
-                if ( ( c <= _maxDelimCodePoint ) && ( _delimiters?.IndexOf( c ) >= 0 ) ) break;
+                if ( ( c <= _maxDelimCodePoint ) && ( _delimiters?.IndexOf( c ) >= 0 ) )
+                {
+                    break;
+                }
 
                 position++;
             }
@@ -276,10 +294,14 @@ public class StringTokenizer
             {
                 var c = char.ConvertToUtf32( _str, position );
 
-                if ( ( c <= _maxDelimCodePoint ) && IsDelimiter( c ) ) break;
+                if ( ( c <= _maxDelimCodePoint ) && IsDelimiter( c ) )
+                {
+                    break;
+                }
 
                 position += Character.CharCount( c );
             }
+        }
 
         if ( _retDelims && ( startPos == position ) )
         {
@@ -287,13 +309,19 @@ public class StringTokenizer
             {
                 var c = _str[ position ];
 
-                if ( ( c <= _maxDelimCodePoint ) && ( _delimiters?.IndexOf( c ) >= 0 ) ) position++;
+                if ( ( c <= _maxDelimCodePoint ) && ( _delimiters?.IndexOf( c ) >= 0 ) )
+                {
+                    position++;
+                }
             }
             else
             {
                 var c = char.ConvertToUtf32( _str, position );
 
-                if ( ( c <= _maxDelimCodePoint ) && IsDelimiter( c ) ) position += Character.CharCount( c );
+                if ( ( c <= _maxDelimCodePoint ) && IsDelimiter( c ) )
+                {
+                    position += Character.CharCount( c );
+                }
             }
         }
 
@@ -305,11 +333,18 @@ public class StringTokenizer
     /// </summary>
     private bool IsDelimiter( int codePoint )
     {
-        if ( _delimiterCodePoints == null ) return false;
+        if ( _delimiterCodePoints == null )
+        {
+            return false;
+        }
 
         foreach ( var t in _delimiterCodePoints )
+        {
             if ( t == codePoint )
+            {
                 return true;
+            }
+        }
 
         return false;
     }
@@ -352,7 +387,10 @@ public class StringTokenizer
         _delimsChanged = false;
         _newPosition   = -1;
 
-        if ( _currentPosition >= _maxPosition ) throw new IndexOutOfRangeException( $"{_currentPosition} > {_maxPosition}" );
+        if ( _currentPosition >= _maxPosition )
+        {
+            throw new IndexOutOfRangeException( $"{_currentPosition} > {_maxPosition}" );
+        }
 
         var start = _currentPosition;
 
@@ -401,7 +439,10 @@ public class StringTokenizer
         {
             currpos = SkipDelimiters( currpos );
 
-            if ( currpos >= _maxPosition ) break;
+            if ( currpos >= _maxPosition )
+            {
+                break;
+            }
 
             currpos = ScanToken( currpos );
             count++;

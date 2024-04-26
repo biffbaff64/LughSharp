@@ -83,7 +83,10 @@ public interface ITextureProvider
 
         public Texture Load( string fileName )
         {
-            if ( AssetManager == null ) throw new NullReferenceException();
+            if ( AssetManager == null )
+            {
+                throw new NullReferenceException();
+            }
 
             return AssetManager.Get< Texture >( fileName );
         }

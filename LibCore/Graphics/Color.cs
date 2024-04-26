@@ -369,7 +369,10 @@ public sealed class Color
 
     public static bool operator !=( Color? c1, object? c2 )
     {
-        if ( c1 is null ) return true;
+        if ( c1 is null )
+        {
+            return true;
+        }
 
         return !c1.Equals( c2 );
     }
@@ -547,18 +550,30 @@ public sealed class Color
         var range = max - min;
 
         if ( range == 0 )
+        {
             hsv[ 0 ] = 0;
+        }
         else if ( Math.Abs( max - R ) < 0.00001f )
+        {
             hsv[ 0 ] = ( ( ( 60 * ( G - B ) ) / range ) + 360 ) % 360;
+        }
         else if ( Math.Abs( max - G ) < 0.00001f )
+        {
             hsv[ 0 ] = ( ( 60 * ( B - R ) ) / range ) + 120;
+        }
         else
+        {
             hsv[ 0 ] = ( ( 60 * ( R - G ) ) / range ) + 240;
+        }
 
         if ( max > 0 )
+        {
             hsv[ 1 ] = 1 - ( min / max );
+        }
         else
+        {
             hsv[ 1 ] = 0;
+        }
 
         hsv[ 2 ] = max;
 
@@ -759,9 +774,15 @@ public sealed class Color
     /// <inheritdoc />
     public override bool Equals( object? o )
     {
-        if ( ( o == null ) || ( GetType() != o.GetType() ) ) return false;
+        if ( ( o == null ) || ( GetType() != o.GetType() ) )
+        {
+            return false;
+        }
 
-        if ( this == o ) return true;
+        if ( this == o )
+        {
+            return true;
+        }
 
         var color = ( Color ) o;
 

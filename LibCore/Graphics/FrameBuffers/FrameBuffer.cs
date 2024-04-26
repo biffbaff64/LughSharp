@@ -75,9 +75,15 @@ public class FrameBuffer : GLFrameBuffer< Texture >
 
         frameBufferBuilder.AddBasicColorTextureAttachment( format );
 
-        if ( hasDepth ) frameBufferBuilder.AddBasicDepthRenderBuffer();
+        if ( hasDepth )
+        {
+            frameBufferBuilder.AddBasicDepthRenderBuffer();
+        }
 
-        if ( hasStencil ) frameBufferBuilder.AddBasicStencilRenderBuffer();
+        if ( hasStencil )
+        {
+            frameBufferBuilder.AddBasicStencilRenderBuffer();
+        }
 
         BufferBuilder = frameBufferBuilder;
 
@@ -119,7 +125,7 @@ public class FrameBuffer : GLFrameBuffer< Texture >
         Gdx.GL.glFramebufferTexture2D( IGL.GL_FRAMEBUFFER,
                                        IGL.GL_COLOR_ATTACHMENT0,
                                        IGL.GL_TEXTURE_2D,
-                                       ( uint ) texture.GLTextureHandle(),
+                                       ( uint ) texture.GLTextureHandle,
                                        0 );
     }
 

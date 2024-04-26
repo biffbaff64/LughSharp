@@ -193,7 +193,10 @@ public class TextField : Widget
         {
             _passwordCharacter = value;
 
-            if ( PasswordMode ) UpdateDisplayText();
+            if ( PasswordMode )
+            {
+                UpdateDisplayText();
+            }
         }
     }
 
@@ -242,7 +245,10 @@ public class TextField : Widget
 
         TextHeight = style.Font.GetCapHeight() - ( style.Font.GetDescent() * 2 );
 
-        if ( Text != null ) UpdateDisplayText();
+        if ( Text != null )
+        {
+            UpdateDisplayText();
+        }
 
         InvalidateHierarchy();
     }
@@ -254,7 +260,10 @@ public class TextField : Widget
         var visibleWidth = Width;
         var background   = GetBackgroundDrawable();
 
-        if ( background != null ) visibleWidth -= background.LeftWidth + background.RightWidth;
+        if ( background != null )
+        {
+            visibleWidth -= background.LeftWidth + background.RightWidth;
+        }
 
         var glyphCount     = GlyphPositions.Count;
         var glyphPositions = GlyphPositions.ToArray();
@@ -264,13 +273,18 @@ public class TextField : Widget
         var distance = glyphPositions[ Math.Max( 0, Cursor - 1 ) ] + _renderOffset;
 
         if ( distance <= 0 )
+        {
             _renderOffset -= distance;
+        }
         else
         {
             var index = Math.Min( glyphCount - 1, Cursor + 1 );
             var minX  = glyphPositions[ index ] - visibleWidth;
 
-            if ( -_renderOffset < minX ) _renderOffset = -minX;
+            if ( -_renderOffset < minX )
+            {
+                _renderOffset = -minX;
+            }
         }
 
         // Prevent renderOffset from starting too close to the end, eg after text was deleted.
@@ -281,12 +295,18 @@ public class TextField : Widget
         {
             var x = glyphPositions[ i ];
 
-            if ( ( width - x ) > visibleWidth ) break;
+            if ( ( width - x ) > visibleWidth )
+            {
+                break;
+            }
 
             maxOffset = x;
         }
 
-        if ( -_renderOffset > maxOffset ) _renderOffset = -maxOffset;
+        if ( -_renderOffset > maxOffset )
+        {
+            _renderOffset = -maxOffset;
+        }
 
         // calculate first visible char based on render offset
         _visibleTextStart = 0;
@@ -294,6 +314,7 @@ public class TextField : Widget
         var startX = 0f;
 
         for ( var i = 0; i < glyphCount; i++ )
+        {
             if ( glyphPositions[ i ] >= -_renderOffset )
             {
                 _visibleTextStart = i;
@@ -301,14 +322,19 @@ public class TextField : Widget
 
                 break;
             }
+        }
 
         // calculate last visible char based on visible width and render offset
         var end  = _visibleTextStart + 1;
         var endX = visibleWidth - _renderOffset;
 
         for ( var n = Math.Min( DisplayText!.Length, glyphCount ); end <= n; end++ )
+        {
             if ( glyphPositions[ end ] > endX )
+            {
                 break;
+            }
+        }
 
         _visibleTextEnd = Math.Max( 0, end - 1 );
 
@@ -316,10 +342,15 @@ public class TextField : Widget
         {
             TextOffset = ( visibleWidth - glyphPositions[ _visibleTextEnd ] - FontOffset ) + startX;
 
-            if ( ( _textAlign & Align.CENTER ) != 0 ) TextOffset = ( float ) Math.Round( TextOffset * 0.5f );
+            if ( ( _textAlign & Align.CENTER ) != 0 )
+            {
+                TextOffset = ( float ) Math.Round( TextOffset * 0.5f );
+            }
         }
         else
+        {
             TextOffset = startX + _renderOffset;
+        }
 
         // calculate selection x position and width
         if ( HasSelection )
@@ -336,24 +367,35 @@ public class TextField : Widget
 
     protected virtual int LetterUnderCursor( float x )
     {
-        if ( Style == null ) return GlyphPositions.Count - 1;
+        if ( Style == null )
+        {
+            return GlyphPositions.Count - 1;
+        }
 
         x -= ( TextOffset + FontOffset ) - Style.Font!.GetData().CursorX - GlyphPositions[ _visibleTextStart ];
 
         var background = GetBackgroundDrawable();
 
-        if ( background != null ) x -= Style.Background!.LeftWidth;
+        if ( background != null )
+        {
+            x -= Style.Background!.LeftWidth;
+        }
 
         var n              = GlyphPositions.Count;
         var glyphPositions = GlyphPositions.ToArray();
 
         for ( var i = 1; i < n; i++ )
+        {
             if ( glyphPositions[ i ] > x )
             {
-                if ( ( glyphPositions[ i ] - x ) <= ( x - glyphPositions[ i - 1 ] ) ) return i;
+                if ( ( glyphPositions[ i ] - x ) <= ( x - glyphPositions[ i - 1 ] ) )
+                {
+                    return i;
+                }
 
                 return i - 1;
             }
+        }
 
         return n - 1;
     }
@@ -381,20 +423,24 @@ public class TextField : Widget
             if ( text != null )
             {
                 for ( ; index < right; index++ )
+                {
                     if ( !IsWordCharacter( text[ index ] ) )
                     {
                         right = index;
 
                         break;
                     }
+                }
 
                 for ( index = start - 1; index > -1; index-- )
+                {
                     if ( !IsWordCharacter( text[ index ] ) )
                     {
                         left = index + 1;
 
                         break;
                     }
+                }
             }
         }
 
@@ -413,16 +459,25 @@ public class TextField : Widget
 
     protected virtual IDrawable? GetBackgroundDrawable()
     {
-        if ( _disabled && ( Style?.DisabledBackground != null ) ) return Style.DisabledBackground;
+        if ( _disabled && ( Style?.DisabledBackground != null ) )
+        {
+            return Style.DisabledBackground;
+        }
 
-        if ( ( Style?.FocusedBackground != null ) && HasKeyboardFocus() ) return Style.FocusedBackground;
+        if ( ( Style?.FocusedBackground != null ) && HasKeyboardFocus() )
+        {
+            return Style.FocusedBackground;
+        }
 
         return Style?.Background;
     }
 
     public override void Draw( IBatch batch, float parentAlpha )
     {
-        if ( Style == null ) return;
+        if ( Style == null )
+        {
+            return;
+        }
 
         var focused = HasKeyboardFocus();
 
@@ -433,11 +488,18 @@ public class TextField : Widget
             _cursorOn = focused;
 
             if ( focused )
+            {
                 _blink.Start();
+            }
             else
+            {
                 _keyRepeat.Cancel();
+            }
         }
-        else if ( !focused ) _cursorOn = false;
+        else if ( !focused )
+        {
+            _cursorOn = false;
+        }
 
         var font = Style.Font!;
 
@@ -474,7 +536,10 @@ public class TextField : Widget
 
         CalculateOffsets();
 
-        if ( focused && HasSelection && ( selection != null ) ) DrawSelection( selection, batch, font, x + bgLeftWidth, y + textY );
+        if ( focused && HasSelection && ( selection != null ) )
+        {
+            DrawSelection( selection, batch, font, x + bgLeftWidth, y + textY );
+        }
 
         var yOffset = font.Flipped ? -TextHeight : 0;
 
@@ -492,7 +557,9 @@ public class TextField : Widget
                                           Style.MessageFontColor.A * color.A * parentAlpha );
                 }
                 else
+                {
                     messageFont.SetColor( 0.7f, 0.7f, 0.7f, color.A * parentAlpha );
+                }
 
                 DrawMessageText( batch, messageFont, x + bgLeftWidth, y + textY + yOffset, width - bgLeftWidth - bgRightWidth );
             }
@@ -503,7 +570,10 @@ public class TextField : Widget
             DrawText( batch, font, x + bgLeftWidth, y + textY + yOffset );
         }
 
-        if ( !_disabled && _cursorOn && ( cursorPatch != null ) ) DrawCursor( cursorPatch, batch, font, x + bgLeftWidth, y + textY );
+        if ( !_disabled && _cursorOn && ( cursorPatch != null ) )
+        {
+            DrawCursor( cursorPatch, batch, font, x + bgLeftWidth, y + textY );
+        }
     }
 
     protected virtual float GetTextY( BitmapFont font, IDrawable? background )
@@ -518,9 +588,14 @@ public class TextField : Widget
             textY = textY + ( ( height - background.TopHeight - bottom ) / 2 ) + bottom;
         }
         else
+        {
             textY = textY + ( height / 2 );
+        }
 
-        if ( font.UseIntegerPositions ) textY = ( int ) textY;
+        if ( font.UseIntegerPositions )
+        {
+            textY = ( int ) textY;
+        }
 
         return textY;
     }
@@ -536,12 +611,18 @@ public class TextField : Widget
 
     protected virtual void DrawText( IBatch batch, BitmapFont font, float x, float y )
     {
-        if ( DisplayText != null ) font.Draw( batch, DisplayText, x + TextOffset, y, _visibleTextStart, _visibleTextEnd, 0, Align.LEFT, false );
+        if ( DisplayText != null )
+        {
+            font.Draw( batch, DisplayText, x + TextOffset, y, _visibleTextStart, _visibleTextEnd, 0, Align.LEFT, false );
+        }
     }
 
     protected virtual void DrawMessageText( IBatch batch, BitmapFont font, float x, float y, float maxWidth )
     {
-        if ( MessageText != null ) font.Draw( batch, MessageText, x, y, 0, MessageText.Length, maxWidth, _textAlign, false, "..." );
+        if ( MessageText != null )
+        {
+            font.Draw( batch, MessageText, x, y, 0, MessageText.Length, maxWidth, _textAlign, false, "..." );
+        }
     }
 
     protected virtual void DrawCursor( IDrawable cursorPatch, IBatch batch, BitmapFont font, float x, float y )
@@ -578,16 +659,23 @@ public class TextField : Widget
             _passwordBuffer ??= new StringBuilder( newDisplayText.Length );
 
             if ( _passwordBuffer.Length > textLength )
+            {
                 _passwordBuffer.Length = textLength;
+            }
             else
             {
-                for ( var i = _passwordBuffer.Length; i < textLength; i++ ) _passwordBuffer.Append( _passwordCharacter );
+                for ( var i = _passwordBuffer.Length; i < textLength; i++ )
+                {
+                    _passwordBuffer.Append( _passwordCharacter );
+                }
             }
 
             DisplayText = _passwordBuffer?.ToString();
         }
         else
+        {
             DisplayText = newDisplayText;
+        }
 
         Layout.SetText( font, DisplayText?.Replace( '\r', ' ' ).Replace( '\n', ' ' )! );
         GlyphPositions.Clear();
@@ -608,21 +696,29 @@ public class TextField : Widget
             }
         }
         else
+        {
             FontOffset = 0;
+        }
 
         GlyphPositions.Add( x );
 
         _visibleTextStart = Math.Min( _visibleTextStart, GlyphPositions.Count - 1 );
         _visibleTextEnd   = MathUtils.Clamp( _visibleTextEnd, _visibleTextStart, GlyphPositions.Count - 1 );
 
-        if ( SelectionStart > newDisplayText.Length ) SelectionStart = textLength;
+        if ( SelectionStart > newDisplayText.Length )
+        {
+            SelectionStart = textLength;
+        }
     }
 
     public virtual void SetText( string? str )
     {
         str ??= string.Empty;
 
-        if ( str.Equals( Text ) ) return;
+        if ( str.Equals( Text ) )
+        {
+            return;
+        }
 
         ClearSelection();
 
@@ -631,7 +727,10 @@ public class TextField : Widget
 
         Paste( str, false );
 
-        if ( _programmaticChangeEvents ) ChangeText( oldText!, Text );
+        if ( _programmaticChangeEvents )
+        {
+            ChangeText( oldText!, Text );
+        }
 
         Cursor = 0;
     }
@@ -672,28 +771,46 @@ public class TextField : Widget
 
     public void Paste( string? content, bool fireChangeEvent )
     {
-        if ( ( content == null ) || ( Text == null ) ) return;
+        if ( ( content == null ) || ( Text == null ) )
+        {
+            return;
+        }
 
         var buffer     = new StringBuilder();
         var textLength = Text.Length;
 
-        if ( HasSelection ) textLength -= Math.Abs( Cursor - SelectionStart );
+        if ( HasSelection )
+        {
+            textLength -= Math.Abs( Cursor - SelectionStart );
+        }
 
         var data = Style!.Font!.GetData();
 
         for ( int i = 0, n = content.Length; i < n; i++ )
         {
-            if ( !WithinMaxLength( textLength + buffer.Length ) ) break;
+            if ( !WithinMaxLength( textLength + buffer.Length ) )
+            {
+                break;
+            }
 
             var c = content[ i ];
 
             if ( !( WriteEnters && ( ( c == NEWLINE ) || ( c == CARRIAGE_RETURN ) ) ) )
             {
-                if ( c is '\r' or '\n' ) continue;
+                if ( c is '\r' or '\n' )
+                {
+                    continue;
+                }
 
-                if ( _onlyFontChars && !data.HasGlyph( c ) ) continue;
+                if ( _onlyFontChars && !data.HasGlyph( c ) )
+                {
+                    continue;
+                }
 
-                if ( ( _filter != null ) && !_filter.AcceptChar( this, c ) ) continue;
+                if ( ( _filter != null ) && !_filter.AcceptChar( this, c ) )
+                {
+                    continue;
+                }
             }
 
             buffer.Append( c );
@@ -701,12 +818,19 @@ public class TextField : Widget
 
         content = buffer.ToString();
 
-        if ( HasSelection ) Cursor = Delete( fireChangeEvent );
+        if ( HasSelection )
+        {
+            Cursor = Delete( fireChangeEvent );
+        }
 
         if ( fireChangeEvent )
+        {
             ChangeText( Text, Insert( Cursor, content, Text ) );
+        }
         else
+        {
             Text = Insert( Cursor, content, Text );
+        }
 
         UpdateDisplayText();
         Cursor += content.Length;
@@ -714,14 +838,20 @@ public class TextField : Widget
 
     public string? Insert( int position, string? text, string? to )
     {
-        if ( to?.Length == 0 ) return text;
+        if ( to?.Length == 0 )
+        {
+            return text;
+        }
 
         return to?.Substring( 0, position ) + text + to?.Substring( position, to.Length );
     }
 
     public int Delete( bool fireChangeEvent )
     {
-        if ( Text == null ) return 0;
+        if ( Text == null )
+        {
+            return 0;
+        }
 
         var from     = SelectionStart;
         var to       = Cursor;
@@ -732,9 +862,13 @@ public class TextField : Widget
                     + ( maxIndex < Text.Length ? Text.Substring( maxIndex, Text.Length ) : "" );
 
         if ( fireChangeEvent )
+        {
             ChangeText( Text, newText );
+        }
         else
+        {
             Text = newText;
+        }
 
         ClearSelection();
 
@@ -752,7 +886,10 @@ public class TextField : Widget
     /// </param>
     public void Next( bool up )
     {
-        if ( Stage == null ) return;
+        if ( Stage == null )
+        {
+            return;
+        }
 
         var current       = this;
         var currentCoords = current.Parent!.LocalToStageCoordinates( _tmp2.Set( current.X, current.Y ) );
@@ -765,9 +902,13 @@ public class TextField : Widget
             {
                 // Try to wrap around.
                 if ( up )
+                {
                     currentCoords.Set( -float.MaxValue, -float.MaxValue );
+                }
                 else
+                {
                     currentCoords.Set( float.MaxValue, float.MaxValue );
+                }
 
                 textField = current.FindNextTextField( Stage.Actors, null, _tmp1, currentCoords, up );
             }
@@ -803,23 +944,38 @@ public class TextField : Widget
 
             if ( actor is TextField textField )
             {
-                if ( textField == this ) continue;
+                if ( textField == this )
+                {
+                    continue;
+                }
 
-                if ( textField._disabled || !textField.FocusTraversal || !textField.AscendantsVisible() ) continue;
+                if ( textField._disabled || !textField.FocusTraversal || !textField.AscendantsVisible() )
+                {
+                    continue;
+                }
 
                 var actorCoords = textField.Parent?.LocalToStageCoordinates( _tmp3.Set( textField.X, textField.Y ) );
 
-                if ( actorCoords == null ) continue;
+                if ( actorCoords == null )
+                {
+                    continue;
+                }
 
                 var below = !actorCoords.Y.Equals( currentCoords.Y ) && ( ( actorCoords.Y < currentCoords.Y ) ^ up );
                 var right = actorCoords.Y.Equals( currentCoords.Y ) && ( ( actorCoords.X > currentCoords.X ) ^ up );
 
-                if ( !below && !right ) continue;
+                if ( !below && !right )
+                {
+                    continue;
+                }
 
                 var better = ( best == null )
                           || ( !actorCoords.Y.Equals( bestCoords.Y ) && ( ( actorCoords.Y > bestCoords.Y ) ^ up ) );
 
-                if ( !better ) better = actorCoords.Y.Equals( bestCoords.Y ) && ( ( actorCoords.X < bestCoords.X ) ^ up );
+                if ( !better )
+                {
+                    better = actorCoords.Y.Equals( bestCoords.Y ) && ( ( actorCoords.X < bestCoords.X ) ^ up );
+                }
 
                 if ( better )
                 {
@@ -842,9 +998,15 @@ public class TextField : Widget
     /// </summary>
     private bool ChangeText( string? oldText, string? newText )
     {
-        if ( ( oldText == null ) || ( newText == null ) ) return false;
+        if ( ( oldText == null ) || ( newText == null ) )
+        {
+            return false;
+        }
 
-        if ( newText.Equals( oldText ) ) return false;
+        if ( newText.Equals( oldText ) )
+        {
+            return false;
+        }
 
         Text = newText;
 
@@ -852,7 +1014,10 @@ public class TextField : Widget
 
         var cancelled = Fire( changeEvent );
 
-        if ( cancelled ) Text = oldText;
+        if ( cancelled )
+        {
+            Text = oldText;
+        }
 
         Pools< ChangeListener.ChangeEvent >.Free( changeEvent );
 
@@ -870,8 +1035,12 @@ public class TextField : Widget
         var charOffset = forward ? 0 : -1;
 
         while ( ( forward ? ++Cursor < limit : --Cursor > limit ) && jump )
+        {
             if ( !ContinueCursor( Cursor, charOffset ) )
+            {
                 break;
+            }
+        }
     }
 
     /// <summary>
@@ -879,9 +1048,15 @@ public class TextField : Widget
     /// </summary>
     public virtual void SetSelection( int selectionStart, int selectionEnd )
     {
-        if ( selectionStart < 0 ) throw new ArgumentException( "SelectionStart must be >= 0" );
+        if ( selectionStart < 0 )
+        {
+            throw new ArgumentException( "SelectionStart must be >= 0" );
+        }
 
-        if ( selectionEnd < 0 ) throw new ArgumentException( "selectionEnd must be >= 0" );
+        if ( selectionEnd < 0 )
+        {
+            throw new ArgumentException( "selectionEnd must be >= 0" );
+        }
 
         if ( Text != null )
         {
@@ -895,7 +1070,10 @@ public class TextField : Widget
                 return;
             }
 
-            if ( selectionEnd < selectionStart ) ( selectionEnd, selectionStart ) = ( selectionStart, selectionEnd );
+            if ( selectionEnd < selectionStart )
+            {
+                ( selectionEnd, selectionStart ) = ( selectionStart, selectionEnd );
+            }
 
             HasSelection   = true;
             SelectionStart = selectionStart;
@@ -905,7 +1083,10 @@ public class TextField : Widget
 
     public void SelectAll()
     {
-        if ( Text != null ) SetSelection( 0, Text.Length );
+        if ( Text != null )
+        {
+            SetSelection( 0, Text.Length );
+        }
     }
 
     public void ClearSelection()
@@ -918,7 +1099,10 @@ public class TextField : Widget
     /// </summary>
     public void SetCursorPosition( int cursorPosition )
     {
-        if ( cursorPosition < 0 ) throw new ArgumentException( "cursorPosition must be >= 0" );
+        if ( cursorPosition < 0 )
+        {
+            throw new ArgumentException( "cursorPosition must be >= 0" );
+        }
 
         ClearSelection();
 
@@ -960,14 +1144,20 @@ public class TextField : Widget
 
         public void Start()
         {
-            if ( _tf is not { _blinkTask: not null } ) throw new GdxRuntimeException( "Unable to start BlinkTask" );
+            if ( _tf is not { _blinkTask: not null } )
+            {
+                throw new GdxRuntimeException( "Unable to start BlinkTask" );
+            }
 
             _tf._blinkTask.Start();
         }
 
         public void Cancel()
         {
-            if ( _tf._blinkTask is { Status: TaskStatus.Running } ) _tf._blinkTokenSource?.Cancel();
+            if ( _tf._blinkTask is { Status: TaskStatus.Running } )
+            {
+                _tf._blinkTokenSource?.Cancel();
+            }
         }
     }
 
@@ -996,7 +1186,10 @@ public class TextField : Widget
             {
                 _tf._inputListener?.KeyDown( null, KeyCode );
                 
-                if ( _tf._keyRepeatTokenSource.IsCancellationRequested ) _tf._keyRepeatCancellationToken.ThrowIfCancellationRequested();
+                if ( _tf._keyRepeatTokenSource.IsCancellationRequested )
+                {
+                    _tf._keyRepeatCancellationToken.ThrowIfCancellationRequested();
+                }
             },
             _tf._keyRepeatCancellationToken );
             //@formatter:on
@@ -1004,14 +1197,20 @@ public class TextField : Widget
 
         public void Start()
         {
-            if ( _tf is not { _keyRepeatTask: not null } ) throw new GdxRuntimeException( "Unable to start KeyRepeatTask" );
+            if ( _tf is not { _keyRepeatTask: not null } )
+            {
+                throw new GdxRuntimeException( "Unable to start KeyRepeatTask" );
+            }
 
             _tf._keyRepeatTask.Start();
         }
 
         public void Cancel()
         {
-            if ( _tf._keyRepeatTask is { Status: TaskStatus.Running } ) _tf._keyRepeatTokenSource?.Cancel();
+            if ( _tf._keyRepeatTask is { Status: TaskStatus.Running } )
+            {
+                _tf._keyRepeatTokenSource?.Cancel();
+            }
         }
     }
 
@@ -1045,11 +1244,20 @@ public class TextField : Widget
         {
             Font = style.Font;
 
-            if ( style.FontColor != null ) FontColor = new Color( style.FontColor );
+            if ( style.FontColor != null )
+            {
+                FontColor = new Color( style.FontColor );
+            }
 
-            if ( style.FocusedFontColor != null ) FocusedFontColor = new Color( style.FocusedFontColor );
+            if ( style.FocusedFontColor != null )
+            {
+                FocusedFontColor = new Color( style.FocusedFontColor );
+            }
 
-            if ( style.DisabledFontColor != null ) DisabledFontColor = new Color( style.DisabledFontColor );
+            if ( style.DisabledFontColor != null )
+            {
+                DisabledFontColor = new Color( style.DisabledFontColor );
+            }
 
             Background         = style.Background;
             FocusedBackground  = style.FocusedBackground;
@@ -1059,7 +1267,10 @@ public class TextField : Widget
 
             MessageFont = style.MessageFont;
 
-            if ( style.MessageFontColor != null ) MessageFontColor = new Color( style.MessageFontColor );
+            if ( style.MessageFontColor != null )
+            {
+                MessageFontColor = new Color( style.MessageFontColor );
+            }
         }
 
         public BitmapFont? Font               { get; set; }
@@ -1098,7 +1309,10 @@ public class TextField : Widget
         {
             var count = TapCount % 4;
 
-            if ( count == 0 ) _tf.ClearSelection();
+            if ( count == 0 )
+            {
+                _tf.ClearSelection();
+            }
 
             if ( count == 2 )
             {
@@ -1106,22 +1320,37 @@ public class TextField : Widget
                 _tf.SetSelection( array[ 0 ], array[ 1 ] );
             }
 
-            if ( count == 3 ) _tf.SelectAll();
+            if ( count == 3 )
+            {
+                _tf.SelectAll();
+            }
         }
 
         /// <inheritdoc />
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
-            if ( !base.TouchDown( ev, x, y, pointer, button ) ) return false;
+            if ( !base.TouchDown( ev, x, y, pointer, button ) )
+            {
+                return false;
+            }
 
-            if ( ( pointer == 0 ) && ( button != 0 ) ) return false;
+            if ( ( pointer == 0 ) && ( button != 0 ) )
+            {
+                return false;
+            }
 
-            if ( _tf._disabled ) return true;
+            if ( _tf._disabled )
+            {
+                return true;
+            }
 
             SetCursorPosition( x, y );
             _tf.SelectionStart = _tf.Cursor;
 
-            if ( _tf.Stage != null ) _tf.Stage.KeyboardFocus = _tf;
+            if ( _tf.Stage != null )
+            {
+                _tf.Stage.KeyboardFocus = _tf;
+            }
 
             _tf._keyboard.Show( true );
             _tf.HasSelection = true;
@@ -1139,7 +1368,10 @@ public class TextField : Widget
         /// <inheritdoc />
         public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
         {
-            if ( _tf.SelectionStart == _tf.Cursor ) _tf.HasSelection = false;
+            if ( _tf.SelectionStart == _tf.Cursor )
+            {
+                _tf.HasSelection = false;
+            }
 
             base.TouchUp( ev, x, y, pointer, button );
         }
@@ -1157,7 +1389,10 @@ public class TextField : Widget
         /// <inheritdoc />
         public override bool KeyDown( InputEvent? ev, int keycode )
         {
-            if ( _tf._disabled ) return false;
+            if ( _tf._disabled )
+            {
+                return false;
+            }
 
             _tf._cursorOn = _tf._focused;
             _tf._blink.Cancel();
@@ -1167,7 +1402,10 @@ public class TextField : Widget
 //                Timer.schedule( _tf._blinkTask, _tf._blinkTime, _tf._blinkTime );
             }
 
-            if ( !_tf.HasKeyboardFocus() ) return false;
+            if ( !_tf.HasKeyboardFocus() )
+            {
+                return false;
+            }
 
             var repeat  = false;
             var ctrl    = UIUtils.Ctrl();
@@ -1307,14 +1545,20 @@ public class TextField : Widget
 
             _tf.Cursor = MathUtils.Clamp( _tf.Cursor, 0, _tf.Text!.Length );
 
-            if ( repeat ) ScheduleKeyRepeatTask( keycode );
+            if ( repeat )
+            {
+                ScheduleKeyRepeatTask( keycode );
+            }
 
             return handled;
         }
 
         public override bool KeyUp( InputEvent? ev, int keycode )
         {
-            if ( _tf._disabled ) return false;
+            if ( _tf._disabled )
+            {
+                return false;
+            }
 
             _tf._keyRepeat.Cancel();
 
@@ -1339,7 +1583,10 @@ public class TextField : Widget
 
         public override bool KeyTyped( InputEvent? ev, char character )
         {
-            if ( _tf._disabled ) return false;
+            if ( _tf._disabled )
+            {
+                return false;
+            }
 
             // Disallow "typing" most ASCII control characters, which would
             // show up as a space when onlyFontChars is true.
@@ -1352,17 +1599,28 @@ public class TextField : Widget
                     break;
 
                 default:
-                    if ( character < 32 ) return false;
+                    if ( character < 32 )
+                    {
+                        return false;
+                    }
 
                     break;
             }
 
-            if ( !_tf.HasKeyboardFocus() ) return false;
+            if ( !_tf.HasKeyboardFocus() )
+            {
+                return false;
+            }
 
-            if ( GdxSystem.IsMac && Gdx.Input.IsKeyPressed( IInput.Keys.SYM ) ) return true;
+            if ( GdxSystem.IsMac && Gdx.Input.IsKeyPressed( IInput.Keys.SYM ) )
+            {
+                return true;
+            }
 
             if ( CheckFocusTraversal( character ) )
+            {
                 _tf.Next( UIUtils.Shift() );
+            }
             else
             {
                 var enter     = character is CARRIAGE_RETURN or NEWLINE;
@@ -1383,7 +1641,9 @@ public class TextField : Widget
                     if ( remove )
                     {
                         if ( _tf.HasSelection )
+                        {
                             _tf.Cursor = _tf.Delete( false );
+                        }
                         else
                         {
                             if ( backspace && ( _tf.Cursor > 0 ) )
@@ -1395,22 +1655,32 @@ public class TextField : Widget
                             }
 
                             if ( delete && ( _tf.Cursor < _tf.Text?.Length ) )
+                            {
                                 _tf.Text = _tf.Text?.Substring( 0, _tf.Cursor ) + _tf.Text?.Substring( _tf.Cursor + 1 );
+                            }
                         }
                     }
 
                     if ( add && !remove )
                     {
                         // Character may be added to the text.
-                        if ( !enter && ( _tf._filter != null ) && !_tf._filter.AcceptChar( _tf, character ) ) return true;
+                        if ( !enter && ( _tf._filter != null ) && !_tf._filter.AcceptChar( _tf, character ) )
+                        {
+                            return true;
+                        }
 
                         if ( !_tf.WithinMaxLength( _tf.Text!.Length
                                                  - ( _tf.HasSelection
                                                          ? Math.Abs( _tf.Cursor - _tf.SelectionStart )
                                                          : 0 ) ) )
+                        {
                             return true;
+                        }
 
-                        if ( _tf.HasSelection ) _tf.Cursor = _tf.Delete( false );
+                        if ( _tf.HasSelection )
+                        {
+                            _tf.Cursor = _tf.Delete( false );
+                        }
 
                         var insertion = enter ? "\n" : character.ToString();
 
@@ -1423,13 +1693,18 @@ public class TextField : Widget
                     {
                         var time = TimeUtils.Millis();
 
-                        if ( ( time - 750 ) > _tf._lastChangeTime ) _tf._undoText = oldText;
+                        if ( ( time - 750 ) > _tf._lastChangeTime )
+                        {
+                            _tf._undoText = oldText;
+                        }
 
                         _tf._lastChangeTime = time;
                         _tf.UpdateDisplayText();
                     }
                     else
+                    {
                         _tf.Cursor = oldCursor;
+                    }
                 }
             }
 
@@ -1454,7 +1729,10 @@ public class TextField : Widget
 
         protected virtual void ScheduleKeyRepeatTask( int keycode )
         {
-            if ( _tf._keyRepeat.KeyCode != keycode ) _tf._keyRepeat.KeyCode = keycode;
+            if ( _tf._keyRepeat.KeyCode != keycode )
+            {
+                _tf._keyRepeat.KeyCode = keycode;
+            }
         }
     }
 

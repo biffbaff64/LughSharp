@@ -118,7 +118,10 @@ public class ExtendViewport : Viewport
             var toWorldSpace    = worldHeight / viewportHeight;
             var lengthen        = ( screenWidth - viewportWidth ) * toWorldSpace;
 
-            if ( MaxWorldWidth > 0 ) lengthen = Math.Min( lengthen, MaxWorldWidth - MinWorldWidth );
+            if ( MaxWorldWidth > 0 )
+            {
+                lengthen = Math.Min( lengthen, MaxWorldWidth - MinWorldWidth );
+            }
 
             worldWidth    += lengthen;
             viewportWidth += ( int ) Math.Round( lengthen * toViewportSpace, MidpointRounding.AwayFromZero );
@@ -129,7 +132,10 @@ public class ExtendViewport : Viewport
             var toWorldSpace    = worldWidth / viewportWidth;
             var lengthen        = ( screenHeight - viewportHeight ) * toWorldSpace;
 
-            if ( MaxWorldHeight > 0 ) lengthen = Math.Min( lengthen, MaxWorldHeight - MinWorldHeight );
+            if ( MaxWorldHeight > 0 )
+            {
+                lengthen = Math.Min( lengthen, MaxWorldHeight - MinWorldHeight );
+            }
 
             worldHeight    += lengthen;
             viewportHeight += ( int ) Math.Round( lengthen * toViewportSpace, MidpointRounding.AwayFromZero );

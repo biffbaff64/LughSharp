@@ -39,9 +39,13 @@ public class AddListenerAction : Action
     public override bool Act( float delta )
     {
         if ( IsCapture )
+        {
             Target?.AddCaptureListener( Listener! );
+        }
         else
+        {
             Target?.AddListener( Listener! );
+        }
 
         return true;
     }

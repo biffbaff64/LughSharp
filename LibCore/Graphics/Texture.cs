@@ -135,7 +135,10 @@ public class Texture : GLTexture
 
         Load( data );
 
-        if ( data.IsManaged() ) AddManagedTexture( Gdx.App, this );
+        if ( data.IsManaged() )
+        {
+            AddManagedTexture( Gdx.App, this );
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -152,13 +155,22 @@ public class Texture : GLTexture
 
     public void Load( ITextureData? data )
     {
-        if ( ( TextureData == null ) || ( data == null ) ) throw new GdxRuntimeException( "Load failed!: null TextureData supplied" );
+        if ( ( TextureData == null ) || ( data == null ) )
+        {
+            throw new GdxRuntimeException( "Load failed!: null TextureData supplied" );
+        }
 
-        if ( data.IsManaged() != TextureData.IsManaged() ) throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
+        if ( data.IsManaged() != TextureData.IsManaged() )
+        {
+            throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
+        }
 
         TextureData = data;
 
-        if ( !data.IsPrepared ) data.Prepare();
+        if ( !data.IsPrepared )
+        {
+            data.Prepare();
+        }
 
         Bind();
 
@@ -177,7 +189,10 @@ public class Texture : GLTexture
     /// </summary>
     protected override void Reload()
     {
-        if ( !IsManaged ) throw new GdxRuntimeException( "Tried to reload unmanaged Texture" );
+        if ( !IsManaged )
+        {
+            throw new GdxRuntimeException( "Tried to reload unmanaged Texture" );
+        }
 
         GLTextureHandle = ( int ) Gdx.GL.glGenTexture();
 
@@ -194,7 +209,10 @@ public class Texture : GLTexture
     /// <param name="y"> The y coordinate in pixels  </param>
     public void Draw( Pixmap pixmap, int x, int y )
     {
-        if ( ( TextureData != null ) && TextureData.IsManaged() ) throw new GdxRuntimeException( "can't draw to a managed texture" );
+        if ( ( TextureData != null ) && TextureData.IsManaged() )
+        {
+            throw new GdxRuntimeException( "can't draw to a managed texture" );
+        }
 
         Bind();
 
@@ -232,13 +250,19 @@ public class Texture : GLTexture
             // reloaded through the asset manager as we first remove (and thus dispose) the texture
             // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
             // removal from the asset manager.
-            if ( GLTextureHandle == 0 ) return;
+            if ( GLTextureHandle == 0 )
+            {
+                return;
+            }
 
             Delete();
 
             if ( ( TextureData != null ) && TextureData.IsManaged() )
             {
-                if ( _managedTextures[ Gdx.App ] != null ) _managedTextures[ Gdx.App ]?.Remove( this );
+                if ( _managedTextures[ Gdx.App ] != null )
+                {
+                    _managedTextures[ Gdx.App ]?.Remove( this );
+                }
             }
         }
     }
@@ -259,11 +283,17 @@ public class Texture : GLTexture
     {
         List< Texture >? managedTextureArray = _managedTextures[ app ];
 
-        if ( managedTextureArray == null ) return;
+        if ( managedTextureArray == null )
+        {
+            return;
+        }
 
         if ( AssetManager == null )
         {
-            foreach ( var t in managedTextureArray ) t.Reload();
+            foreach ( var t in managedTextureArray )
+            {
+                t.Reload();
+            }
         }
         else
         {
@@ -281,7 +311,9 @@ public class Texture : GLTexture
                 var fileName = AssetManager.GetAssetFileName( texture );
 
                 if ( fileName == null )
+                {
                     texture.Reload();
+                }
                 else
                 {
                     // get the ref count of the texture, then set it to 0 so we
@@ -324,11 +356,13 @@ public class Texture : GLTexture
         var builder = new StringBuilder( "Managed textures/app: { " );
 
         foreach ( var app in _managedTextures.Keys )
+        {
             if ( _managedTextures[ app ] != null )
             {
                 builder.Append( _managedTextures[ app ]?.Count );
                 builder.Append( ' ' );
             }
+        }
 
         builder.Append( '}' );
 

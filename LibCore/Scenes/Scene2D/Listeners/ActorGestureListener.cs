@@ -62,7 +62,10 @@ public class ActorGestureListener : IEventListener
 
     public virtual bool Handle( Event e )
     {
-        if ( e is not InputEvent ev ) return false;
+        if ( e is not InputEvent ev )
+        {
+            return false;
+        }
 
         switch ( ev.Type )
         {

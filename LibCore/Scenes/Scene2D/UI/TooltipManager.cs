@@ -58,7 +58,10 @@ public class TooltipManager< T > where T : Actor
         {
             var stage = _showTooltip.TargetActor?.Stage;
 
-            if ( stage == null ) return;
+            if ( stage == null )
+            {
+                return;
+            }
 
             stage.AddActor( _showTooltip.Container );
 
@@ -68,9 +71,15 @@ public class TooltipManager< T > where T : Actor
 
             ShowAction( _showTooltip );
 
-            if ( !_showTooltip.Instant ) _time = SubsequentTime;
+            if ( !_showTooltip.Instant )
+            {
+                _time = SubsequentTime;
+            }
 
-            if ( _showTaskCancellationToken.IsCancellationRequested ) _showTaskCancellationToken.ThrowIfCancellationRequested();
+            if ( _showTaskCancellationToken.IsCancellationRequested )
+            {
+                _showTaskCancellationToken.ThrowIfCancellationRequested();
+            }
         },_showTaskCancellationToken );
         //@formatter:on
     }
@@ -99,7 +108,10 @@ public class TooltipManager< T > where T : Actor
 
         if ( Enabled || tooltip.Always )
         {
-            if ( ( _time == 0 ) || tooltip.Instant ) _showTask.Start();
+            if ( ( _time == 0 ) || tooltip.Instant )
+            {
+                _showTask.Start();
+            }
         }
     }
 
@@ -156,7 +168,10 @@ public class TooltipManager< T > where T : Actor
         _time        = InitialTime;
         _showTooltip = null!;
 
-        foreach ( Tooltip< T > tooltip in _activeTooltips ) tooltip.Hide();
+        foreach ( Tooltip< T > tooltip in _activeTooltips )
+        {
+            tooltip.Hide();
+        }
 
         _activeTooltips.Clear();
     }
@@ -175,7 +190,10 @@ public class TooltipManager< T > where T : Actor
     /// </summary>
     private void CancelTask()
     {
-        if ( _showTask is { Status: TaskStatus.Running } ) _showTaskCancellationTokenSource.Cancel();
+        if ( _showTask is { Status: TaskStatus.Running } )
+        {
+            _showTaskCancellationTokenSource.Cancel();
+        }
     }
 
     // ------------------------------------------------------------------------

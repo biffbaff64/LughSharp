@@ -133,9 +133,13 @@ public class VerticalGroup : WidgetGroup
             _prefHeight = 0;
 
             if ( _columnSizes == null )
+            {
                 _columnSizes = new List< float >();
+            }
             else
+            {
                 _columnSizes.Clear();
+            }
 
             List< float > columnSizes = _columnSizes;
 
@@ -169,7 +173,10 @@ public class VerticalGroup : WidgetGroup
                     width  = layoutChild.PrefWidth;
                     height = layoutChild.PrefHeight;
 
-                    if ( height > groupHeight ) height = Math.Max( groupHeight, layoutChild.MinHeight );
+                    if ( height > groupHeight )
+                    {
+                        height = Math.Max( groupHeight, layoutChild.MinHeight );
+                    }
                 }
                 else
                 {
@@ -186,7 +193,10 @@ public class VerticalGroup : WidgetGroup
 
                     _prefHeight = Math.Max( _prefHeight, y + pad );
 
-                    if ( x > 0 ) x += wrapSpace;
+                    if ( x > 0 )
+                    {
+                        x += wrapSpace;
+                    }
 
                     x           += columnWidth;
                     columnWidth =  0;
@@ -203,7 +213,10 @@ public class VerticalGroup : WidgetGroup
 
             _prefHeight = Math.Max( _prefHeight, y + pad );
 
-            if ( x > 0 ) x += wrapSpace;
+            if ( x > 0 )
+            {
+                x += wrapSpace;
+            }
 
             _prefWidth = Math.Max( _prefWidth, x + columnWidth );
         }
@@ -239,7 +252,10 @@ public class VerticalGroup : WidgetGroup
 
     public void Layout()
     {
-        if ( _sizeInvalid ) ComputeSize();
+        if ( _sizeInvalid )
+        {
+            ComputeSize();
+        }
 
         if ( Wrapping )
         {
@@ -257,18 +273,28 @@ public class VerticalGroup : WidgetGroup
         var y           = ( _prefHeight - PadTop ) + space;
 
         if ( ( align & Align.TOP ) != 0 )
+        {
             y += Height - _prefHeight;
+        }
         else if ( ( align & Align.BOTTOM ) == 0 ) // center
+        {
             y += ( Height - _prefHeight ) / 2;
+        }
 
         float startX;
 
         if ( ( align & Align.LEFT ) != 0 )
+        {
             startX = padLeft;
+        }
         else if ( ( align & Align.RIGHT ) != 0 )
+        {
             startX = Width - PadRight - columnWidth;
+        }
         else
+        {
             startX = padLeft + ( ( Width - padLeft - PadRight - columnWidth ) / 2 );
+        }
 
         align = _columnAlign;
 
@@ -305,7 +331,10 @@ public class VerticalGroup : WidgetGroup
                 height = child.Height;
             }
 
-            if ( fill > 0 ) width = columnWidth * fill;
+            if ( fill > 0 )
+            {
+                width = columnWidth * fill;
+            }
 
             if ( layout != null )
             {
@@ -313,15 +342,22 @@ public class VerticalGroup : WidgetGroup
 
                 var maxWidth = layout.MaxWidth;
 
-                if ( ( maxWidth > 0 ) && ( width > maxWidth ) ) width = maxWidth;
+                if ( ( maxWidth > 0 ) && ( width > maxWidth ) )
+                {
+                    width = maxWidth;
+                }
             }
 
             var x = startX;
 
             if ( ( align & Align.RIGHT ) != 0 )
+            {
                 x += columnWidth - width;
+            }
             else if ( ( align & Align.LEFT ) == 0 ) // center
+            {
                 x += ( columnWidth - width ) / 2;
+            }
 
             y -= height + space;
 
@@ -335,9 +371,14 @@ public class VerticalGroup : WidgetGroup
                                );
             }
             else
+            {
                 child.SetBounds( x, y, width, height );
+            }
 
-            if ( layout != null ) layout.Validate();
+            if ( layout != null )
+            {
+                layout.Validate();
+            }
         }
     }
 
@@ -365,14 +406,22 @@ public class VerticalGroup : WidgetGroup
         var columnWidth = 0f;
 
         if ( ( align & Align.RIGHT ) != 0 )
+        {
             columnX += Width - prefWidth;
+        }
         else if ( ( align & Align.LEFT ) == 0 ) // center
+        {
             columnX += ( Width - prefWidth ) / 2;
+        }
 
         if ( ( align & Align.TOP ) != 0 )
+        {
             yStart += groupHeight - _prefHeight;
+        }
         else if ( ( align & Align.BOTTOM ) == 0 ) // center
+        {
             yStart += ( groupHeight - _prefHeight ) / 2;
+        }
 
         groupHeight -= PadTop;
         align       =  _columnAlign;
@@ -405,7 +454,10 @@ public class VerticalGroup : WidgetGroup
                 width  = layout.PrefWidth;
                 height = layout.PrefHeight;
 
-                if ( height > groupHeight ) height = Math.Max( groupHeight, layout.MinHeight );
+                if ( height > groupHeight )
+                {
+                    height = Math.Max( groupHeight, layout.MinHeight );
+                }
             }
             else
             {
@@ -421,9 +473,13 @@ public class VerticalGroup : WidgetGroup
                 y = yStart;
 
                 if ( ( align & Align.BOTTOM ) != 0 )
+                {
                     y -= maxHeight - columnSizes[ r ];
+                }
                 else if ( ( align & Align.TOP ) == 0 ) // center
+                {
                     y -= ( maxHeight - columnSizes[ r ] ) / 2;
+                }
 
                 if ( r > 0 )
                 {
@@ -435,7 +491,10 @@ public class VerticalGroup : WidgetGroup
                 r           += 2;
             }
 
-            if ( fill > 0 ) width = columnWidth * fill;
+            if ( fill > 0 )
+            {
+                width = columnWidth * fill;
+            }
 
             if ( layout != null )
             {
@@ -443,15 +502,22 @@ public class VerticalGroup : WidgetGroup
 
                 var maxWidth = layout.MaxWidth;
 
-                if ( ( maxWidth > 0 ) && ( width > maxWidth ) ) width = maxWidth;
+                if ( ( maxWidth > 0 ) && ( width > maxWidth ) )
+                {
+                    width = maxWidth;
+                }
             }
 
             var x = columnX;
 
             if ( ( align & Align.RIGHT ) != 0 )
+            {
                 x += columnWidth - width;
+            }
             else if ( ( align & Align.LEFT ) == 0 ) // center
+            {
                 x += ( columnWidth - width ) / 2;
+            }
 
             y -= height + space;
 
@@ -465,24 +531,38 @@ public class VerticalGroup : WidgetGroup
                                );
             }
             else
+            {
                 child.SetBounds( x, y, width, height );
+            }
 
-            if ( layout != null ) layout.Validate();
+            if ( layout != null )
+            {
+                layout.Validate();
+            }
         }
     }
 
     public float GetPrefWidth()
     {
-        if ( _sizeInvalid ) ComputeSize();
+        if ( _sizeInvalid )
+        {
+            ComputeSize();
+        }
 
         return _prefWidth;
     }
 
     public float GetPrefHeight()
     {
-        if ( Wrapping ) return 0;
+        if ( Wrapping )
+        {
+            return 0;
+        }
 
-        if ( _sizeInvalid ) ComputeSize();
+        if ( _sizeInvalid )
+        {
+            ComputeSize();
+        }
 
         return _prefHeight;
     }
@@ -683,11 +763,17 @@ public class VerticalGroup : WidgetGroup
     {
         base.DrawDebugBounds( shapes );
 
-        if ( !DebugActive ) return;
+        if ( !DebugActive )
+        {
+            return;
+        }
 
         shapes.Set( ShapeRenderer.ShapeTypes.Lines );
 
-        if ( Stage != null ) shapes.Color = Stage.DebugColor;
+        if ( Stage != null )
+        {
+            shapes.Color = Stage.DebugColor;
+        }
 
         shapes.Rect(
                     X + PadLeft,

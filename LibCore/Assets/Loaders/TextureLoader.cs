@@ -81,7 +81,10 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
             _loaderInfo.Texture = parameter.Texture;
         }
 
-        if ( _loaderInfo.Data is { IsPrepared: false } ) _loaderInfo.Data.Prepare();
+        if ( _loaderInfo.Data is { IsPrepared: false } )
+        {
+            _loaderInfo.Data.Prepare();
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -144,7 +147,10 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
     /// <param name="disposing"></param>
     protected virtual void Dispose( bool disposing )
     {
-        if ( disposing ) _loaderInfo = null!;
+        if ( disposing )
+        {
+            _loaderInfo = null!;
+        }
     }
 
     #endregion dispose pattern
