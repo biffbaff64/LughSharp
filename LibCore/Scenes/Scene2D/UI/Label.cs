@@ -67,15 +67,9 @@ public class Label : Widget
         get => _style;
         set
         {
-            if ( value == null )
-            {
-                throw new ArgumentException( "style cannot be null." );
-            }
+            if ( value == null ) throw new ArgumentException( "style cannot be null." );
 
-            if ( value.Font == null )
-            {
-                throw new ArgumentException( "Missing LabelStyle font." );
-            }
+            if ( value.Font == null ) throw new ArgumentException( "Missing LabelStyle font." );
 
             _style = value;
 
@@ -133,10 +127,7 @@ public class Label : Widget
     /// <returns> true if the text was changed. </returns>
     public bool SetText( int value )
     {
-        if ( _intValue == value )
-        {
-            return false;
-        }
+        if ( _intValue == value ) return false;
 
         Text.Clear();
         Text.Append( value );
@@ -151,19 +142,13 @@ public class Label : Widget
     {
         if ( newText == null )
         {
-            if ( Text.Length == 0 )
-            {
-                return;
-            }
+            if ( Text.Length == 0 ) return;
 
             Text.Clear();
         }
         else
         {
-            if ( TextEquals( newText ) )
-            {
-                return;
-            }
+            if ( TextEquals( newText ) ) return;
 
             Text.Clear();
             Text.Append( newText );
@@ -176,18 +161,11 @@ public class Label : Widget
 
     public bool TextEquals( string other )
     {
-        if ( Text.Length != other.Length )
-        {
-            return false;
-        }
+        if ( Text.Length != other.Length ) return false;
 
         for ( var i = 0; i < Text.Length; i++ )
-        {
             if ( Text[ i ] != other[ i ] )
-            {
                 return false;
-            }
-        }
 
         return true;
     }
@@ -200,22 +178,16 @@ public class Label : Widget
 
     private void ScaleAndComputePrefSize()
     {
-        BitmapFont font = FontCache.Font;
+        var font = FontCache.Font;
 
         var oldScaleX = font.GetScaleX();
         var oldScaleY = font.GetScaleY();
 
-        if ( _fontScaleChanged )
-        {
-            font.GetData().SetScale( _fontScaleX, _fontScaleY );
-        }
+        if ( _fontScaleChanged ) font.GetData().SetScale( _fontScaleX, _fontScaleY );
 
         ComputePrefSize();
 
-        if ( _fontScaleChanged )
-        {
-            font.GetData().SetScale( oldScaleX, oldScaleY );
-        }
+        if ( _fontScaleChanged ) font.GetData().SetScale( oldScaleX, oldScaleY );
     }
 
     private void ComputePrefSize()
@@ -236,24 +208,19 @@ public class Label : Widget
             PrefSizeLayout.SetText( FontCache.Font, Text.ToString(), Color.White, width, Align.LEFT, true );
         }
         else
-        {
             PrefSizeLayout.SetText( FontCache.Font, Text.ToString() );
-        }
 
         _prefSize.Set( PrefSizeLayout.Width, PrefSizeLayout.Height );
     }
 
     public void Layout()
     {
-        BitmapFont font = FontCache.Font;
+        var font = FontCache.Font;
 
         var oldScaleX = font.GetScaleX();
         var oldScaleY = font.GetScaleY();
 
-        if ( _fontScaleChanged )
-        {
-            font.GetData().SetScale( _fontScaleX, _fontScaleY );
-        }
+        if ( _fontScaleChanged ) font.GetData().SetScale( _fontScaleX, _fontScaleY );
 
         var wrap = Wrap && ( _ellipsis == null );
 
@@ -281,8 +248,8 @@ public class Label : Widget
             height -= _style.Background.BottomHeight + _style.Background.TopHeight;
         }
 
-        GlyphLayout layout = GlyphLayout;
-        float       textWidth, textHeight;
+        var   layout = GlyphLayout;
+        float textWidth, textHeight;
 
         if ( wrap || ( Text.ToString().IndexOf( "\n", StringComparison.Ordinal ) != -1 ) )
         {
@@ -296,13 +263,9 @@ public class Label : Widget
             if ( ( LabelAlign & Align.LEFT ) == 0 )
             {
                 if ( ( LabelAlign & Align.RIGHT ) != 0 )
-                {
                     x += width - textWidth;
-                }
                 else
-                {
                     x += ( width - textWidth ) / 2;
-                }
             }
         }
         else
@@ -324,29 +287,21 @@ public class Label : Widget
             y -= Style.Font.GetDescent();
         }
         else
-        {
             y += ( height - textHeight ) / 2;
-        }
 
-        if ( !FontCache.Font.Flipped )
-        {
-            y += textHeight;
-        }
+        if ( !FontCache.Font.Flipped ) y += textHeight;
 
         layout.SetText( font, Text.ToString(), 0, Text.Length, Color.White, textWidth, LineAlign, wrap, _ellipsis );
         FontCache.SetText( layout, x, y );
 
-        if ( _fontScaleChanged )
-        {
-            font.GetData().SetScale( oldScaleX, oldScaleY );
-        }
+        if ( _fontScaleChanged ) font.GetData().SetScale( oldScaleX, oldScaleY );
     }
 
     public new void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
 
-        Color color = TempColor.Set( Color! );
+        var color = TempColor.Set( Color! );
         color.A *= parentAlpha;
 
         if ( Style.Background != null )
@@ -355,10 +310,7 @@ public class Label : Widget
             Style.Background.Draw( batch, X, Y, Width, Height );
         }
 
-        if ( Style.FontColor != null )
-        {
-            color.Mul( Style.FontColor );
-        }
+        if ( Style.FontColor != null ) color.Mul( Style.FontColor );
 
         FontCache.Tint( color );
         FontCache.SetPosition( X, Y );
@@ -367,24 +319,18 @@ public class Label : Widget
 
     public float GetPrefWidth()
     {
-        if ( Wrap )
-        {
-            return 0;
-        }
+        if ( Wrap ) return 0;
 
-        if ( _prefSizeInvalid )
-        {
-            ScaleAndComputePrefSize();
-        }
+        if ( _prefSizeInvalid ) ScaleAndComputePrefSize();
 
         var width = _prefSize.X;
 
         if ( Style.Background != null )
         {
             width = Math.Max(
-                width + Style.Background.LeftWidth + Style.Background.RightWidth,
-                Style.Background.MinWidth
-                );
+                             width + Style.Background.LeftWidth + Style.Background.RightWidth,
+                             Style.Background.MinWidth
+                            );
         }
 
         return width;
@@ -392,24 +338,15 @@ public class Label : Widget
 
     public float GetPrefHeight()
     {
-        if ( _prefSizeInvalid )
-        {
-            ScaleAndComputePrefSize();
-        }
+        if ( _prefSizeInvalid ) ScaleAndComputePrefSize();
 
         float descentScaleCorrection = 1;
 
-        if ( _fontScaleChanged )
-        {
-            descentScaleCorrection = _fontScaleY / Style.Font.GetScaleY();
-        }
+        if ( _fontScaleChanged ) descentScaleCorrection = _fontScaleY / Style.Font.GetScaleY();
 
         var height = _prefSize.Y - ( Style.Font.GetDescent() * descentScaleCorrection * 2 );
 
-        if ( Style.Background != null )
-        {
-            height = Math.Max( height + Style.Background.TopHeight + Style.Background.BottomHeight, Style.Background.MinHeight );
-        }
+        if ( Style.Background != null ) height = Math.Max( height + Style.Background.TopHeight + Style.Background.BottomHeight, Style.Background.MinHeight );
 
         return height;
     }
@@ -436,17 +373,11 @@ public class Label : Widget
         LabelAlign = labelAlign;
 
         if ( ( lineAlign & Align.LEFT ) != 0 )
-        {
             LineAlign = Align.LEFT;
-        }
         else if ( ( lineAlign & Align.RIGHT ) != 0 )
-        {
             LineAlign = Align.RIGHT;
-        }
         else
-        {
             LineAlign = Align.CENTER;
-        }
 
         Invalidate();
     }
@@ -490,18 +421,12 @@ public class Label : Widget
     {
         var name = Name;
 
-        if ( name != null )
-        {
-            return name;
-        }
+        if ( name != null ) return name;
 
         var className = GetType().Name;
         var dotIndex  = className.LastIndexOf( '.' );
 
-        if ( dotIndex != -1 )
-        {
-            className = className.Substring( dotIndex + 1 );
-        }
+        if ( dotIndex != -1 ) className = className.Substring( dotIndex + 1 );
 
         return ( className.IndexOf( '$' ) != -1 ? "Label " : "" ) + className + ": " + Text;
     }
@@ -533,10 +458,7 @@ public class Label : Widget
         {
             Font = style.Font;
 
-            if ( style.FontColor != null )
-            {
-                FontColor = new Color( style.FontColor );
-            }
+            if ( style.FontColor != null ) FontColor = new Color( style.FontColor );
 
             Background = style.Background;
         }
@@ -584,17 +506,11 @@ public class Label : Widget
 
     public Label( string? text, LabelStyle style )
     {
-        if ( text != null )
-        {
-            Text.Append( text );
-        }
+        if ( text != null ) Text.Append( text );
 
         Style = style;
 
-        if ( text is { Length: > 0 } )
-        {
-            SetSize( GetPrefWidth(), GetPrefHeight() );
-        }
+        if ( text is { Length: > 0 } ) SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
     #endregion constructors

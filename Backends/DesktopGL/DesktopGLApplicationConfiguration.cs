@@ -184,7 +184,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     {
         DesktopGLApplication.InitialiseGL();
 
-        VideoMode videoMode = Glfw.GetVideoMode( Glfw.GetPrimaryMonitor() );
+        var videoMode = Glfw.GetVideoMode( Glfw.GetPrimaryMonitor() );
 
         return new DesktopGLGraphics.DesktopGLDisplayMode( Glfw.GetPrimaryMonitor(),
                                                            videoMode.Width,
@@ -197,7 +197,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     {
         DesktopGLApplication.InitialiseGL();
 
-        VideoMode videoMode = Glfw.GetVideoMode( monitor );
+        var videoMode = Glfw.GetVideoMode( monitor );
 
         return new DesktopGLGraphics.DesktopGLDisplayMode( monitor,
                                                            videoMode.Width,
@@ -219,7 +219,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
         for ( var i = 0; i < result.Length; i++ )
         {
-            VideoMode videoMode = videoModes[ i ];
+            var videoMode = videoModes[ i ];
 
             result[ i ] = new DesktopGLGraphics.DesktopGLDisplayMode( Glfw.GetPrimaryMonitor(),
                                                                       videoMode.Width,
@@ -245,7 +245,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
         for ( var i = 0; i < result.Length; i++ )
         {
-            VideoMode videoMode = videoModes[ i ];
+            var videoMode = videoModes[ i ];
 
             result[ i ] = new DesktopGLGraphics.DesktopGLDisplayMode( monitor,
                                                                       videoMode.Width,
@@ -279,10 +279,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
         var monitors = new IGraphics.MonitorDescriptor[ Glfw.GetMonitors().Length ];
 
-        for ( var i = 0; i < Glfw.GetMonitors().Length; i++ )
-        {
-            monitors[ i ] = ToGLMonitor( Glfw.GetMonitors()[ i ] );
-        }
+        for ( var i = 0; i < Glfw.GetMonitors().Length; i++ ) monitors[ i ] = ToGLMonitor( Glfw.GetMonitors()[ i ] );
 
         return monitors;
     }

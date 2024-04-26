@@ -49,8 +49,8 @@ public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
 
     public override void RenderTileLayer( TiledMapTileLayer layer )
     {
-        Color batchColor = Batch.Color;
-        var   color      = Color.ToFloatBits( batchColor.R, batchColor.G, batchColor.B, batchColor.A * layer.Opacity );
+        var batchColor = Batch.Color;
+        var color      = Color.ToFloatBits( batchColor.R, batchColor.G, batchColor.B, batchColor.A * layer.Opacity );
 
         var layerWidth  = layer.Width;
         var layerHeight = layer.Height;
@@ -63,19 +63,19 @@ public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
         // offset in tiled is y down, so we flip it
         var layerOffsetY = -layer.RenderOffsetY * UnitScale;
 
-        var col1 = Math.Max( 0, ( int )( ( ViewBounds.X - layerOffsetX ) / layerTileWidth ) );
+        var col1 = Math.Max( 0, ( int ) ( ( ViewBounds.X - layerOffsetX ) / layerTileWidth ) );
 
         var col2 = Math.Min(
-            layerWidth,
-            ( int )( ( ( ViewBounds.X + ViewBounds.Width + layerTileWidth ) - layerOffsetX ) / layerTileWidth )
-            );
+                            layerWidth,
+                            ( int ) ( ( ( ViewBounds.X + ViewBounds.Width + layerTileWidth ) - layerOffsetX ) / layerTileWidth )
+                           );
 
-        var row1 = Math.Max( 0, ( int )( ( ViewBounds.Y - layerOffsetY ) / layerTileHeight ) );
+        var row1 = Math.Max( 0, ( int ) ( ( ViewBounds.Y - layerOffsetY ) / layerTileHeight ) );
 
         var row2 = Math.Min(
-            layerHeight,
-            ( int )( ( ( ViewBounds.Y + ViewBounds.Height + layerTileHeight ) - layerOffsetY ) / layerTileHeight )
-            );
+                            layerHeight,
+                            ( int ) ( ( ( ViewBounds.Y + ViewBounds.Height + layerTileHeight ) - layerOffsetY ) / layerTileHeight )
+                           );
 
         var y        = ( row2 * layerTileHeight ) + layerOffsetY;
         var xStart   = ( col1 * layerTileWidth ) + layerOffsetX;
@@ -87,7 +87,7 @@ public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
 
             for ( var col = col1; col < col2; col++ )
             {
-                TiledMapTileLayer.Cell? cell = layer?.GetCell( col, row );
+                var cell = layer?.GetCell( col, row );
 
                 if ( cell == null )
                 {
@@ -96,7 +96,7 @@ public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
                     continue;
                 }
 
-                ITiledMapTile? tile = cell.GetTile();
+                var tile = cell.GetTile();
 
                 if ( tile != null )
                 {
@@ -104,7 +104,7 @@ public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
                     var flipY     = cell.GetFlipVertically();
                     var rotations = cell.GetRotation();
 
-                    TextureRegion region = tile.TextureRegion;
+                    var region = tile.TextureRegion;
 
                     var x1 = x + ( tile.OffsetX * UnitScale );
                     var y1 = y + ( tile.OffsetY * UnitScale );

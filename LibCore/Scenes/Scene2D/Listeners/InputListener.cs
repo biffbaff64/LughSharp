@@ -53,10 +53,7 @@ public class InputListener : IEventListener
     /// </summary>
     public virtual bool Handle( Event e )
     {
-        if ( e is not InputEvent inputEvent )
-        {
-            return false;
-        }
+        if ( e is not InputEvent inputEvent ) return false;
 
         switch ( inputEvent.Type )
         {
@@ -68,9 +65,6 @@ public class InputListener : IEventListener
 
             case InputEvent.EventType.KeyTyped:
                 return KeyTyped( inputEvent, inputEvent.Character );
-
-            default:
-                break;
         }
 
         inputEvent.ToCoordinates( inputEvent.ListenerActor, _tmpCoords );
@@ -124,9 +118,6 @@ public class InputListener : IEventListener
                 Exit( inputEvent, _tmpCoords.X, _tmpCoords.Y, inputEvent.Pointer, inputEvent.RelatedActor );
 
                 return false;
-
-            default:
-                break;
         }
 
         return false;

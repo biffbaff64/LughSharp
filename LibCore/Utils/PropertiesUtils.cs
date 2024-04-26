@@ -24,7 +24,6 @@
 
 
 using System.Text;
-
 using LughSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LughSharp.LibCore.Utils;
@@ -73,12 +72,9 @@ public static class PropertiesUtils
         {
             var intVal = reader.Read();
 
-            if ( intVal == -1 )
-            {
-                break;
-            }
+            if ( intVal == -1 ) break;
 
-            var nextChar = ( char )intVal;
+            var nextChar = ( char ) intVal;
 
             if ( offset == buf.Length )
             {
@@ -94,7 +90,7 @@ public static class PropertiesUtils
                 case UNICODE:
                 {
                     var num   = char.GetNumericValue( nextChar.ToString(), 16 );
-                    var digit = ( int )num;
+                    var digit = ( int ) num;
 
                     switch ( digit )
                     {
@@ -102,32 +98,23 @@ public static class PropertiesUtils
                         {
                             unicode = ( unicode << 4 ) + digit;
 
-                            if ( ++count < 4 )
-                            {
-                                continue;
-                            }
+                            if ( ++count < 4 ) continue;
 
                             break;
                         }
 
                         default:
                         {
-                            if ( count <= 4 )
-                            {
-                                throw new ArgumentException( "Invalid Unicode sequence: illegal character" );
-                            }
+                            if ( count <= 4 ) throw new ArgumentException( "Invalid Unicode sequence: illegal character" );
 
                             break;
                         }
                     }
 
                     mode            = NONE;
-                    buf[ offset++ ] = ( char )unicode;
+                    buf[ offset++ ] = ( char ) unicode;
 
-                    if ( nextChar != '\n' )
-                    {
-                        continue;
-                    }
+                    if ( nextChar != '\n' ) continue;
 
                     break;
                 }
@@ -198,17 +185,11 @@ public static class PropertiesUtils
                                     {
                                         intVal = reader.Read();
 
-                                        if ( intVal == -1 )
-                                        {
-                                            break;
-                                        }
+                                        if ( intVal == -1 ) break;
 
-                                        nextChar = ( char )intVal;
+                                        nextChar = ( char ) intVal;
 
-                                        if ( nextChar is '\r' or '\n' )
-                                        {
-                                            break;
-                                        }
+                                        if ( nextChar is '\r' or '\n' ) break;
                                     }
 
                                     continue;
@@ -293,10 +274,7 @@ public static class PropertiesUtils
                             _        => mode
                         };
 
-                        if ( ( offset == 0 ) || ( offset == keyLength ) || ( mode == IGNORE ) )
-                        {
-                            continue;
-                        }
+                        if ( ( offset == 0 ) || ( offset == keyLength ) || ( mode == IGNORE ) ) continue;
 
                         switch ( keyLength )
                         {
@@ -335,10 +313,7 @@ public static class PropertiesUtils
             buf[ offset++ ] = nextChar;
         }
 
-        if ( ( mode == UNICODE ) && ( count <= 4 ) )
-        {
-            throw new ArgumentException( "Invalid Unicode sequence: expected format \\uxxxx" );
-        }
+        if ( ( mode == UNICODE ) && ( count <= 4 ) ) throw new ArgumentException( "Invalid Unicode sequence: expected format \\uxxxx" );
 
         keyLength = keyLength switch
         {
@@ -400,10 +375,7 @@ public static class PropertiesUtils
                               string? comment,
                               bool escapeUnicode = false )
     {
-        if ( comment != null )
-        {
-            WriteComment( writer, comment );
-        }
+        if ( comment != null ) WriteComment( writer, comment );
 
         writer.Write( "#" );
         writer.Write( DateTime.Now.ToString( "ddd MM/dd/yyyy h:mm tt" ) );
@@ -444,13 +416,9 @@ public static class PropertiesUtils
             {
                 case ' ':
                     if ( ( i == 0 ) || escapeSpace )
-                    {
                         outBuffer.Append( "\\ " );
-                    }
                     else
-                    {
                         outBuffer.Append( ch );
-                    }
 
                     break;
 
@@ -491,10 +459,7 @@ public static class PropertiesUtils
 
                             outBuffer.Append( "\\u" );
 
-                            for ( var j = 0; j < ( 4 - hex.Length ); j++ )
-                            {
-                                outBuffer.Append( '0' );
-                            }
+                            for ( var j = 0; j < ( 4 - hex.Length ); j++ ) outBuffer.Append( '0' );
 
                             outBuffer.Append( hex );
 
@@ -530,10 +495,7 @@ public static class PropertiesUtils
                 case '\n':
                 case '\r':
                 {
-                    if ( lastIndex != curIndex )
-                    {
-                        writer.Write( comment.Substring( lastIndex, curIndex ) );
-                    }
+                    if ( lastIndex != curIndex ) writer.Write( comment.Substring( lastIndex, curIndex ) );
 
                     switch ( c )
                     {
@@ -543,10 +505,7 @@ public static class PropertiesUtils
 
                             writer.Write( "\\u" );
 
-                            for ( var j = 0; j < ( 4 - hex.Length ); j++ )
-                            {
-                                writer.Write( '0' );
-                            }
+                            for ( var j = 0; j < ( 4 - hex.Length ); j++ ) writer.Write( '0' );
 
                             writer.Write( hex );
 
@@ -567,9 +526,7 @@ public static class PropertiesUtils
 
                             if ( ( curIndex == ( len - 1 ) )
                               || ( ( comment[ curIndex + 1 ] != '#' ) && ( comment[ curIndex + 1 ] != '!' ) ) )
-                            {
                                 writer.Write( "#" );
-                            }
 
                             break;
                         }
@@ -584,10 +541,7 @@ public static class PropertiesUtils
             curIndex++;
         }
 
-        if ( lastIndex != curIndex )
-        {
-            writer.Write( comment.Substring( lastIndex, curIndex ) );
-        }
+        if ( lastIndex != curIndex ) writer.Write( comment.Substring( lastIndex, curIndex ) );
 
         writer.Write( LINE_SEPARATOR );
     }

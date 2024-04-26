@@ -48,16 +48,16 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
     {
         List< AssetDescriptor > deps = new();
 
-        if ( ( ( SkinLoaderParameters? )parameter )?.textureAtlasPath == null )
+        if ( ( ( SkinLoaderParameters? ) parameter )?.textureAtlasPath == null )
         {
             var path = Path.ChangeExtension( file?.FullName, ".atlas" );
 
             deps.Add( new AssetDescriptor( path, typeof( TextureAtlas ), new SkinLoaderParameters() ) );
         }
 
-        else if ( ( ( SkinLoaderParameters? )parameter )?.textureAtlasPath != null )
+        else if ( ( ( SkinLoaderParameters? ) parameter )?.textureAtlasPath != null )
         {
-            deps.Add( new AssetDescriptor( ( ( SkinLoaderParameters? )parameter )?.textureAtlasPath,
+            deps.Add( new AssetDescriptor( ( ( SkinLoaderParameters? ) parameter )?.textureAtlasPath,
                                            typeof( TextureAtlas ),
                                            parameter ) );
         }
@@ -79,26 +79,17 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
 
         if ( parameter != null )
         {
-            if ( parameter.textureAtlasPath != null )
-            {
-                textureAtlasPath = parameter.textureAtlasPath;
-            }
+            if ( parameter.textureAtlasPath != null ) textureAtlasPath = parameter.textureAtlasPath;
 
-            if ( parameter.resources != null )
-            {
-                resources = parameter.resources;
-            }
+            if ( parameter.resources != null ) resources = parameter.resources;
         }
 
-        var  atlas = manager.Get< TextureAtlas >( textureAtlasPath! );
-        Skin skin  = NewSkin( atlas );
+        var atlas = manager.Get< TextureAtlas >( textureAtlasPath! );
+        var skin  = NewSkin( atlas );
 
         if ( resources != null )
         {
-            foreach ( KeyValuePair< string, object > entry in resources )
-            {
-                skin.Add( entry.Key, entry.Value );
-            }
+            foreach ( KeyValuePair< string, object > entry in resources ) skin.Add( entry.Key, entry.Value );
         }
 
         skin.Load( file );

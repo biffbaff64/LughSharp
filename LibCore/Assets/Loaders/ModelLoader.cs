@@ -30,7 +30,7 @@ using LughSharp.LibCore.Graphics.G3D.Utils;
 namespace LughSharp.LibCore.Assets.Loaders;
 
 [PublicAPI]
-public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
+public abstract class ModelLoader< TP > : AsynchronousAssetLoader< Model, TP >
     where TP : ModelLoader< TP >.ModelLoaderParameters
 {
     protected readonly ModelLoaderParameters defaultLoaderParameters = new();
@@ -46,7 +46,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     /// <summary>
     ///     Directly load the raw model data on the calling thread.
     /// </summary>
-    protected virtual ModelData? LoadModelData<T>( in FileInfo fileHandle, T? parameters )
+    protected virtual ModelData? LoadModelData< T >( in FileInfo fileHandle, T? parameters )
         where T : ModelLoaderParameters
     {
         return default( ModelData );
@@ -64,10 +64,10 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     ///     Directly load the model on the calling thread.
     ///     The model with not be managed by an <see cref="AssetManager" />.
     /// </summary>
-    public Model? LoadModel<T>( in FileInfo fileHandle, ITextureProvider textureProvider, T? parameters )
+    public Model? LoadModel< T >( in FileInfo fileHandle, ITextureProvider textureProvider, T? parameters )
         where T : ModelLoaderParameters
     {
-        ModelData? data = LoadModelData( fileHandle, parameters );
+        var data = LoadModelData( fileHandle, parameters );
 
         return data == null ? null : new Model( data, textureProvider );
     }
@@ -76,7 +76,7 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
     ///     Directly load the model on the calling thread.
     ///     The model with not be managed by an <see cref="AssetManager" />.
     /// </summary>
-    public Model? LoadModel<T>( in FileInfo fileHandle, T parameters ) where T : ModelLoaderParameters
+    public Model? LoadModel< T >( in FileInfo fileHandle, T parameters ) where T : ModelLoaderParameters
     {
         return LoadModel< ModelLoaderParameters >( fileHandle, new ITextureProvider.FileTextureProvider(), parameters );
     }
@@ -114,12 +114,9 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
 
         List< AssetDescriptor > deps = new();
 
-        ModelData? data = LoadModelData( file );
+        var data = LoadModelData( file );
 
-        if ( data == null )
-        {
-            return deps;
-        }
+        if ( data == null ) return deps;
 
         var item = new ObjectMap< string, ModelData >.Entry
         {
@@ -132,20 +129,16 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
             items.Add( item );
         }
 
-        TextureLoader.TextureLoaderParameters textureLoaderParameters = parameters != null
-            ? ( ( ModelLoaderParameters )parameters ).TextureLoaderParameters
-            : defaultLoaderParameters.TextureLoaderParameters;
+        var textureLoaderParameters = parameters != null
+                                          ? ( ( ModelLoaderParameters ) parameters ).TextureLoaderParameters
+                                          : defaultLoaderParameters.TextureLoaderParameters;
 
-        foreach ( ModelMaterial? modelMaterial in data.Materials! )
-        {
+        foreach ( var modelMaterial in data.Materials! )
             if ( modelMaterial.Textures != null )
             {
-                foreach ( ModelTexture modelTexture in modelMaterial.Textures )
-                {
+                foreach ( var modelTexture in modelMaterial.Textures )
                     deps.Add( new AssetDescriptor( modelTexture.FileName, typeof( Texture ), textureLoaderParameters ) );
-                }
             }
-        }
 
         return deps;
     }
@@ -168,19 +161,14 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
         lock ( items )
         {
             for ( var i = 0; i < items.Count; i++ )
-            {
                 if ( items[ i ].Key!.Equals( fileName ) )
                 {
                     data = items[ i ].Value;
                     items.RemoveAt( i );
                 }
-            }
         }
 
-        if ( data == null )
-        {
-            return;
-        }
+        if ( data == null ) return;
 
         Model result = new( data, new ITextureProvider.AssetTextureProvider( manager ) );
 
@@ -191,12 +179,9 @@ public abstract class ModelLoader<TP> : AsynchronousAssetLoader< Model, TP >
 
         while ( disposables.MoveNext() )
         {
-            IDisposable disposable = disposables.Current;
+            var disposable = disposables.Current;
 
-            if ( disposable is Texture )
-            {
-                disposables.Dispose();
-            }
+            if ( disposable is Texture ) disposables.Dispose();
         }
     }
 

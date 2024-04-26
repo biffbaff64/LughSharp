@@ -43,10 +43,7 @@ public class DesktopGLPreferences : IPreferences
         _filePath       = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile ) + "//.prefs//";
         _propertiesFile = filename;
 
-        if ( !Path.Exists( _filePath + _propertiesFile ) )
-        {
-            return;
-        }
+        if ( !Path.Exists( _filePath + _propertiesFile ) ) return;
 
         _properties = new Dictionary< string, object >();
         _xDocument  = new XDocument();
@@ -61,10 +58,7 @@ public class DesktopGLPreferences : IPreferences
     /// <exception cref="NullReferenceException"></exception>
     public IPreferences PutEntry( string key, object? val )
     {
-        if ( _properties == null )
-        {
-            throw new NullReferenceException();
-        }
+        if ( _properties == null ) throw new NullReferenceException();
 
         _properties[ key ] = val ?? throw new NullReferenceException();
 
@@ -77,10 +71,7 @@ public class DesktopGLPreferences : IPreferences
     /// <returns></returns>
     public IPreferences PutAll( Dictionary< string, object > vals )
     {
-        foreach ( KeyValuePair< string, object > entry in vals )
-        {
-            PutEntry( entry.Key, entry.Value );
-        }
+        foreach ( KeyValuePair< string, object > entry in vals ) PutEntry( entry.Key, entry.Value );
 
         return this;
     }
@@ -116,9 +107,7 @@ public class DesktopGLPreferences : IPreferences
 
         if ( ( value == null )
           || ( ( value.ToString() != "true" ) && ( value.ToString() != "false" ) ) )
-        {
             return defValue;
-        }
 
         return Convert.ToBoolean( value );
     }
@@ -132,10 +121,7 @@ public class DesktopGLPreferences : IPreferences
     {
         var value = _properties?[ key ];
 
-        if ( value == null )
-        {
-            return defValue;
-        }
+        if ( value == null ) return defValue;
 
         return Convert.ToInt16( value );
     }
@@ -149,10 +135,7 @@ public class DesktopGLPreferences : IPreferences
     {
         var value = _properties?[ key ];
 
-        if ( value == null )
-        {
-            return defValue;
-        }
+        if ( value == null ) return defValue;
 
         return Convert.ToInt32( value );
     }
@@ -166,10 +149,7 @@ public class DesktopGLPreferences : IPreferences
     {
         var value = _properties?[ key ];
 
-        if ( value == null )
-        {
-            return defValue;
-        }
+        if ( value == null ) return defValue;
 
         return Convert.ToSingle( value );
     }
@@ -183,12 +163,9 @@ public class DesktopGLPreferences : IPreferences
     {
         var value = _properties?[ key ];
 
-        if ( value == null )
-        {
-            return defValue;
-        }
+        if ( value == null ) return defValue;
 
-        return ( string )value;
+        return ( string ) value;
     }
 
     public Dictionary< string, object > Get()

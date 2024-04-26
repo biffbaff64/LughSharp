@@ -25,7 +25,7 @@
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
-public class Animation<T>
+public class Animation< T >
 {
     /// <summary>
     ///     Defines possible playback modes for an <see cref="Animation{T}" />.
@@ -49,6 +49,7 @@ public class Animation<T>
     ///     See <see cref="SetKeyFrames(T[])" />.
     /// </summary>
     private T[] _keyFrames = null!;
+
     private int   _lastFrameNumber;
     private float _lastStateTime;
 
@@ -113,24 +114,22 @@ public class Animation<T>
     {
         // we set the play mode by overriding the previous mode based on looping
         // parameter value
-        AnimMode oldPlayMode = PlayMode;
+        var oldPlayMode = PlayMode;
 
         if ( looping
           && ( ( PlayMode == AnimMode.Normal )
             || ( PlayMode == AnimMode.Reversed ) ) )
-        {
             PlayMode = PlayMode == AnimMode.Normal ? AnimMode.Loop : AnimMode.Loop_Reversed;
-        }
         else if ( !looping
                && !( ( PlayMode == AnimMode.Normal )
                   || ( PlayMode == AnimMode.Reversed ) ) )
         {
             PlayMode = PlayMode == AnimMode.Loop_Reversed
-                ? AnimMode.Reversed
-                : AnimMode.Loop;
+                           ? AnimMode.Reversed
+                           : AnimMode.Loop;
         }
 
-        T frame = GetKeyFrame( stateTime );
+        var frame = GetKeyFrame( stateTime );
         PlayMode = oldPlayMode;
 
         return frame;
@@ -156,12 +155,9 @@ public class Animation<T>
     /// </summary>
     public int GetKeyFrameIndex( float stateTime )
     {
-        if ( _keyFrames.Length == 1 )
-        {
-            return 0;
-        }
+        if ( _keyFrames.Length == 1 ) return 0;
 
-        var frameNumber = ( int )( stateTime / _frameDuration );
+        var frameNumber = ( int ) ( stateTime / _frameDuration );
 
         switch ( PlayMode )
         {
@@ -183,21 +179,18 @@ public class Animation<T>
             {
                 frameNumber = frameNumber % ( ( _keyFrames.Length * 2 ) - 2 );
 
-                if ( frameNumber >= _keyFrames.Length )
-                {
-                    frameNumber = _keyFrames.Length - 2 - ( frameNumber - _keyFrames.Length );
-                }
+                if ( frameNumber >= _keyFrames.Length ) frameNumber = _keyFrames.Length - 2 - ( frameNumber - _keyFrames.Length );
 
                 break;
             }
 
             case AnimMode.Loop_Random:
             {
-                var lastFrameNumber = ( int )( _lastStateTime / _frameDuration );
+                var lastFrameNumber = ( int ) ( _lastStateTime / _frameDuration );
 
                 frameNumber = lastFrameNumber != frameNumber
-                    ? MathUtils.Random( _keyFrames.Length - 1 )
-                    : _lastFrameNumber;
+                                  ? MathUtils.Random( _keyFrames.Length - 1 )
+                                  : _lastFrameNumber;
 
                 break;
             }
@@ -251,7 +244,7 @@ public class Animation<T>
     /// <returns> whether the animation is finished.</returns>
     public bool IsAnimationFinished( float stateTime )
     {
-        var frameNumber = ( int )( stateTime / _frameDuration );
+        var frameNumber = ( int ) ( stateTime / _frameDuration );
 
         return ( _keyFrames.Length - 1 ) < frameNumber;
     }

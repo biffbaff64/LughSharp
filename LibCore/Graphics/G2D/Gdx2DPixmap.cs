@@ -28,11 +28,6 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class Gdx2DPixmap : IDisposable
 {
-    public long       BasePtr    { get; set; }                  // 
-    public int        Format     { get; set; }                  // The actual pixmap format.
-    public ByteBuffer PixelPtr   { get; set; }                  //
-    public long[]     NativeData { get; set; } = new long[ 4 ]; //
-
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -51,10 +46,7 @@ public class Gdx2DPixmap : IDisposable
         Height  = ( int ) NativeData[ 2 ];
         Format  = ( int ) NativeData[ 3 ];
 
-        if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
-        {
-            Convert( requestedFormat );
-        }
+        if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) ) Convert( requestedFormat );
     }
 
     /// <summary>
@@ -69,10 +61,7 @@ public class Gdx2DPixmap : IDisposable
 
         int readBytes;
 
-        while ( ( readBytes = inStream.Read() ) != -1 )
-        {
-            writer.Write( readBytes );
-        }
+        while ( ( readBytes = inStream.Read() ) != -1 ) writer.Write( readBytes );
 
         var buffer = memoryStream.ToArray();
 
@@ -83,10 +72,7 @@ public class Gdx2DPixmap : IDisposable
         Height  = ( int ) NativeData[ 2 ];
         Format  = ( int ) NativeData[ 3 ];
 
-        if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
-        {
-            Convert( requestedFormat );
-        }
+        if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) ) Convert( requestedFormat );
     }
 
     /// <summary>
@@ -124,6 +110,20 @@ public class Gdx2DPixmap : IDisposable
         Format   = ( int ) nativeData[ 3 ];
     }
 
+    public long       BasePtr    { get; set; }                  // 
+    public int        Format     { get; set; }                  // The actual pixmap format.
+    public ByteBuffer PixelPtr   { get; set; }                  //
+    public long[]     NativeData { get; set; } = new long[ 4 ]; //
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
     private ByteBuffer GetNewPixmap( long[] nativeData, int width, int height, int format )
     {
         return NewPixmap( nativeData, width, height, format );
@@ -131,12 +131,9 @@ public class Gdx2DPixmap : IDisposable
 
     private ByteBuffer LoadData( long[] nativeData, byte[] buffer, int offset, int len )
     {
-        ByteBuffer ptr = Load( nativeData, buffer, offset, len );
+        var ptr = Load( nativeData, buffer, offset, len );
 
-        if ( ptr == null )
-        {
-            throw new IOException( $"Error loading pixmap: {GetFailureReason()}" );
-        }
+        if ( ptr == null ) throw new IOException( $"Error loading pixmap: {GetFailureReason()}" );
 
         return ptr;
     }
@@ -306,15 +303,6 @@ public class Gdx2DPixmap : IDisposable
             GDX_2D_FORMAT_RGBA4444        => "Rgba4444",
             _                             => "Unknown"
         };
-    }
-
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
     }
 
     /// <summary>

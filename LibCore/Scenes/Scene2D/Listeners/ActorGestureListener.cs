@@ -34,9 +34,6 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 [PublicAPI]
 public class ActorGestureListener : IEventListener
 {
-    public ActorGestureDetector Detector        { get; set; }
-    public Actor?               TouchDownTarget { get; set; }
-
     private readonly static Vector2 _tmpCoords  = new();
     private readonly static Vector2 _tmpCoords2 = new();
 
@@ -60,12 +57,12 @@ public class ActorGestureListener : IEventListener
                                              this );
     }
 
+    public ActorGestureDetector Detector        { get; set; }
+    public Actor?               TouchDownTarget { get; set; }
+
     public virtual bool Handle( Event e )
     {
-        if ( e is not InputEvent ev )
-        {
-            return false;
-        }
+        if ( e is not InputEvent ev ) return false;
 
         switch ( ev.Type )
         {

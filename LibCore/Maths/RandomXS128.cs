@@ -123,7 +123,7 @@ public class RandomXS128 : Random
     /// </summary>
     public override int Next( int bits )
     {
-        return ( int )( NextLong() & ( ( 1L << bits ) - 1 ) );
+        return ( int ) ( NextLong() & ( ( 1L << bits ) - 1 ) );
     }
 
     /// <summary>
@@ -135,7 +135,7 @@ public class RandomXS128 : Random
     /// </summary>
     public int NextInt()
     {
-        return ( int )NextLong();
+        return ( int ) NextLong();
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ public class RandomXS128 : Random
     /// </returns>
     public int NextInt( in int n )
     {
-        return ( int )NextLong( n );
+        return ( int ) NextLong( n );
     }
 
     /// <summary>
@@ -171,20 +171,14 @@ public class RandomXS128 : Random
     /// </returns>
     public long NextLong( in long n )
     {
-        if ( n <= 0 )
-        {
-            throw new ArgumentException( "n must be positive" );
-        }
+        if ( n <= 0 ) throw new ArgumentException( "n must be positive" );
 
         for ( ;; )
         {
             var bits  = NextLong() >>> 1;
             var value = bits % n;
 
-            if ( ( ( bits - value ) + ( n - 1 ) ) >= 0 )
-            {
-                return value;
-            }
+            if ( ( ( bits - value ) + ( n - 1 ) ) >= 0 ) return value;
         }
     }
 
@@ -209,7 +203,7 @@ public class RandomXS128 : Random
     /// </summary>
     public float NextFloat()
     {
-        return ( float )( ( NextLong() >> 40 ) * NORM_FLOAT );
+        return ( float ) ( ( NextLong() >> 40 ) * NORM_FLOAT );
     }
 
     /// <summary>
@@ -240,10 +234,7 @@ public class RandomXS128 : Random
         {
             var n = i < 8 ? i : 8;
 
-            for ( var bits = NextLong(); n-- != 0; bits >>= 8 )
-            {
-                bytes[ --i ] = ( sbyte )bits;
-            }
+            for ( var bits = NextLong(); n-- != 0; bits >>= 8 ) bytes[ --i ] = ( sbyte ) bits;
         }
     }
 
@@ -271,9 +262,9 @@ public class RandomXS128 : Random
     private static long MurmurHash3( long x )
     {
         x ^= x >>> 33;
-        x *= unchecked( ( long )0xff51afd7ed558ccdL );
+        x *= unchecked( ( long ) 0xff51afd7ed558ccdL );
         x ^= x >>> 33;
-        x *= unchecked( ( long )0xc4ceb9fe1a85ec53L );
+        x *= unchecked( ( long ) 0xc4ceb9fe1a85ec53L );
         x ^= x >>> 33;
 
         return x;

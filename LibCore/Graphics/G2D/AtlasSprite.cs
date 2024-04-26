@@ -56,7 +56,7 @@ public class AtlasSprite : Sprite
     }
 
     /// <summary>
-    ///     Setup method implemented to be called from <see cref="AtlasSprite(AtlasRegion)"/>
+    ///     Setup method implemented to be called from <see cref="AtlasSprite(AtlasRegion)" />
     ///     to get around the issue of calling virtual methods from a constructor.
     /// </summary>
     /// <param name="region"></param>
@@ -78,16 +78,20 @@ public class AtlasSprite : Sprite
             base.SetBounds( region.OffsetX, region.OffsetY, height, width );
         }
         else
-        {
             base.SetBounds( region.OffsetX, region.OffsetY, width, height );
-        }
 
         SetColor( 1, 1, 1, 1 );
     }
 
-    public void SetX( float x ) => X = x + Region.OffsetX;
+    public void SetX( float x )
+    {
+        X = x + Region.OffsetX;
+    }
 
-    public void SetY( float y ) => Y = y + Region.OffsetY;
+    public void SetY( float y )
+    {
+        Y = y + Region.OffsetY;
+    }
 
     public override void SetBounds( float x, float y, float width, float height )
     {
@@ -101,11 +105,11 @@ public class AtlasSprite : Sprite
         var packedHeight = Region.Rotate ? Region.PackedWidth : Region.PackedHeight;
 
         base.SetBounds(
-            x + Region.OffsetX,
-            y + Region.OffsetY,
-            packedWidth * widthRatio,
-            packedHeight * heightRatio
-            );
+                       x + Region.OffsetX,
+                       y + Region.OffsetY,
+                       packedWidth * widthRatio,
+                       packedHeight * heightRatio
+                      );
     }
 
     public override void SetSize( float width, float height )
@@ -127,13 +131,9 @@ public class AtlasSprite : Sprite
     {
         // Flip texture.
         if ( Region.Rotate )
-        {
             base.Flip( y, x );
-        }
         else
-        {
             base.Flip( x, y );
-        }
 
         var oldOriginX = GetOriginX();
         var oldOriginY = GetOriginY();

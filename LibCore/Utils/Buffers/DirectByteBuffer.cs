@@ -92,23 +92,23 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     }
 
     /// <summary>
-    /// Creates a new, read-only byte buffer that shares this buffer's
-    /// content.
-    /// <para>
-    ///     The content of the new buffer will be that of this buffer.  Changes
-    ///     to this buffer's content will be visible in the new buffer; the new
-    ///     buffer itself, however, will be read-only and will not allow the shared
-    ///     content to be modified.  The two buffers' position, limit, and mark
-    ///     values will be independent.
+    ///     Creates a new, read-only byte buffer that shares this buffer's
+    ///     content.
     ///     <para>
-    ///         The new buffer's capacity, limit, position, and mark values will be
-    ///         identical to those of this buffer.
+    ///         The content of the new buffer will be that of this buffer.  Changes
+    ///         to this buffer's content will be visible in the new buffer; the new
+    ///         buffer itself, however, will be read-only and will not allow the shared
+    ///         content to be modified.  The two buffers' position, limit, and mark
+    ///         values will be independent.
     ///         <para>
-    ///             If this buffer is itself read-only then this method behaves in
-    ///             exactly the same way as the {@link #duplicate duplicate} method.
+    ///             The new buffer's capacity, limit, position, and mark values will be
+    ///             identical to those of this buffer.
+    ///             <para>
+    ///                 If this buffer is itself read-only then this method behaves in
+    ///                 exactly the same way as the {@link #duplicate duplicate} method.
+    ///             </para>
     ///         </para>
     ///     </para>
-    /// </para>
     /// </summary>
     public override ByteBuffer AsReadOnlyBuffer()
     {
@@ -126,12 +126,12 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     }
 
     /// <summary>
-    /// Relative <i>put</i> method <i>(optional operation)</i>.
-    /// <para>
-    ///     Writes the given byte into this buffer at the current
-    ///     position, and then increments the position.
-    /// </para>
-    /// <param name="b"> The byte to be written </param>
+    ///     Relative <i>put</i> method <i>(optional operation)</i>.
+    ///     <para>
+    ///         Writes the given byte into this buffer at the current
+    ///         position, and then increments the position.
+    ///     </para>
+    ///     <param name="b"> The byte to be written </param>
     /// </summary>
     /// <returns> This buffer </returns>
     public override ByteBuffer Put( byte b )
@@ -140,7 +140,7 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     }
 
     /// <summary>
-    /// Absolute <i>get</i> method. Reads the byte at the given index.
+    ///     Absolute <i>get</i> method. Reads the byte at the given index.
     /// </summary>
     /// <param name="index"> The index from which the byte will be read </param>
     /// <returns> The byte at the given index </returns>
@@ -150,7 +150,7 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     }
 
     /// <summary>
-    /// Absolute <i>put</i> method <i>(optional operation)</i>.
+    ///     Absolute <i>put</i> method <i>(optional operation)</i>.
     ///     <para>
     ///         Writes the given byte into this buffer at the given index.
     ///     </para>
@@ -164,27 +164,27 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     }
 
     /// <summary>
-    /// Compacts this buffer <i>(optional operation)</i>.
-    /// <para>
-    ///     The bytes between the buffer's current position and its limit, if any,
-    ///     are copied to the beginning of the buffer. That is, the byte at index
-    ///     <i>p</i> = <tt>position()</tt> is copied to index zero, the byte at
-    ///     index <i>p</i> + 1 is copied to index one, and so forth until the byte
-    ///     at index <tt>limit()</tt> - 1 is copied to index
-    ///     <i>n</i> = <tt>limit()</tt> - <tt>1</tt> - <i>p</i>.
-    ///     The buffer's position is then set to <i>n+1</i> and its limit is set to
-    ///     its capacity.  The mark, if defined, is discarded.
+    ///     Compacts this buffer <i>(optional operation)</i>.
     ///     <para>
-    ///         The buffer's position is set to the number of bytes copied,
-    ///         * rather than to zero, so that an invocation of this method can be
-    ///         * followed immediately by an invocation of another relative <i>put</i>
-    ///         * method.
-    ///     </para>
-    ///     <para>
-    ///         Invoke this method after writing data from a buffer in case the
-    ///         write was incomplete.  The following loop, for example, copies bytes
-    ///         from one channel to another via the buffer <tt>buf</tt>:
-    ///         <code>
+    ///         The bytes between the buffer's current position and its limit, if any,
+    ///         are copied to the beginning of the buffer. That is, the byte at index
+    ///         <i>p</i> = <tt>position()</tt> is copied to index zero, the byte at
+    ///         index <i>p</i> + 1 is copied to index one, and so forth until the byte
+    ///         at index <tt>limit()</tt> - 1 is copied to index
+    ///         <i>n</i> = <tt>limit()</tt> - <tt>1</tt> - <i>p</i>.
+    ///         The buffer's position is then set to <i>n+1</i> and its limit is set to
+    ///         its capacity.  The mark, if defined, is discarded.
+    ///         <para>
+    ///             The buffer's position is set to the number of bytes copied,
+    ///             * rather than to zero, so that an invocation of this method can be
+    ///             * followed immediately by an invocation of another relative <i>put</i>
+    ///             * method.
+    ///         </para>
+    ///         <para>
+    ///             Invoke this method after writing data from a buffer in case the
+    ///             write was incomplete.  The following loop, for example, copies bytes
+    ///             from one channel to another via the buffer <tt>buf</tt>:
+    ///             <code>
     ///             buf.clear();          // Prepare buffer for use
     ///             while (in.read(buf) >= 0 || buf.position != 0)
     ///             {
@@ -193,8 +193,8 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     ///                 buf.compact();    // In case of partial write
     ///             }
     ///         </code>
+    ///         </para>
     ///     </para>
-    /// </para>
     /// </summary>
     /// <returns> This buffer </returns>
     public override ByteBuffer Compact()
@@ -328,12 +328,12 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     }
 
     /// <summary>
-    /// Relative <i>get</i> method for reading a double value.
-    /// <para>
-    ///     Reads the next eight bytes at this buffer's current position,
-    ///     composing them into a double value according to the current byte order,
-    ///     and then increments the position by eight.
-    /// </para>
+    ///     Relative <i>get</i> method for reading a double value.
+    ///     <para>
+    ///         Reads the next eight bytes at this buffer's current position,
+    ///         composing them into a double value according to the current byte order,
+    ///         and then increments the position by eight.
+    ///     </para>
     /// </summary>
     /// <returns> The double value at the buffer's current position </returns>
     public override double GetDouble()
@@ -342,11 +342,11 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     }
 
     /// <summary>
-    /// Absolute <i>get</i> method for reading a double value.
-    /// <para>
-    ///     Reads eight bytes at the given index, composing them into a
-    ///     double value according to the current byte order.
-    /// </para>
+    ///     Absolute <i>get</i> method for reading a double value.
+    ///     <para>
+    ///         Reads eight bytes at the given index, composing them into a
+    ///         double value according to the current byte order.
+    ///     </para>
     /// </summary>
     /// <param name="index"> The index from which the bytes will be read </param>
     /// <returns> The double value at the given index </returns>
@@ -356,12 +356,12 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     }
 
     /// <summary>
-    /// Relative <i>put</i> method for writing a double value <i>(optional operation)</i>.
-    /// <para>
-    ///     Writes eight bytes containing the given double value, in the
-    ///     current byte order, into this buffer at the current position, and then
-    ///     increments the position by eight.
-    /// </para>
+    ///     Relative <i>put</i> method for writing a double value <i>(optional operation)</i>.
+    ///     <para>
+    ///         Writes eight bytes containing the given double value, in the
+    ///         current byte order, into this buffer at the current position, and then
+    ///         increments the position by eight.
+    ///     </para>
     /// </summary>
     /// <param name="value"> The double value to be written </param>
     /// <returns> This buffer </returns>
@@ -371,12 +371,12 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     }
 
     /// <summary>
-    /// Absolute <i>put</i> method for writing a double value
-    /// <i>(optional operation)</i>
-    /// <para>
-    ///     Writes eight bytes containing the given double value, in the
-    ///     current byte order, into this buffer at the given index.
-    /// </para>
+    ///     Absolute <i>put</i> method for writing a double value
+    ///     <i>(optional operation)</i>
+    ///     <para>
+    ///         Writes eight bytes containing the given double value, in the
+    ///         current byte order, into this buffer at the given index.
+    ///     </para>
     /// </summary>
     /// <param name="index"> The index at which the bytes will be written </param>
     /// <param name="value"> The double value to be written </param>
@@ -387,20 +387,20 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
     }
 
     /// <summary>
-    /// Creates a view of this byte buffer as a double buffer.
-    /// <para>
-    ///     The content of the new buffer will start at this buffer's current
-    ///     position.  Changes to this buffer's content will be visible in the new
-    ///     buffer, and vice versa; the two buffers' position, limit, and mark
-    ///     values will be independent.
-    /// </para>
-    /// <para>
-    ///     The new buffer's position will be zero, its capacity and its limit
-    ///     will be the number of bytes remaining in this buffer divided by
-    ///     eight, and its mark will be undefined.  The new buffer will be direct
-    ///     if, and only if, this buffer is direct, and it will be read-only if, and
-    ///     only if, this buffer is read-only.
-    /// </para>
+    ///     Creates a view of this byte buffer as a double buffer.
+    ///     <para>
+    ///         The content of the new buffer will start at this buffer's current
+    ///         position.  Changes to this buffer's content will be visible in the new
+    ///         buffer, and vice versa; the two buffers' position, limit, and mark
+    ///         values will be independent.
+    ///     </para>
+    ///     <para>
+    ///         The new buffer's position will be zero, its capacity and its limit
+    ///         will be the number of bytes remaining in this buffer divided by
+    ///         eight, and its mark will be undefined.  The new buffer will be direct
+    ///         if, and only if, this buffer is direct, and it will be read-only if, and
+    ///         only if, this buffer is read-only.
+    ///     </para>
     /// </summary>
     /// <returns> A new double buffer </returns>
     public override DoubleBuffer AsDoubleBuffer()
@@ -430,12 +430,9 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
         public void Run()
         {
             // ReSharper disable once RedundantCheckBeforeAssignment
-            if ( _address == 0 )
-            {
-                return;
-            }
+            if ( _address == 0 ) return;
 
-//            unsafe.freeMemory( address );
+            //            unsafe.freeMemory( address );
             _address = 0;
 
 //            Bits.unreserveMemory( size, capacity );

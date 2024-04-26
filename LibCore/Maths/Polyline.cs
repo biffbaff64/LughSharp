@@ -41,10 +41,7 @@ public class Polyline : IShape2D
 
     public Polyline( float[] vertices )
     {
-        if ( vertices.Length < 4 )
-        {
-            throw new ArgumentException( "polylines must contain at least 2 points." );
-        }
+        if ( vertices.Length < 4 ) throw new ArgumentException( "polylines must contain at least 2 points." );
 
         LocalVertices = vertices;
     }
@@ -84,19 +81,13 @@ public class Polyline : IShape2D
     /// </summary>
     public float[]? GetTransformedVertices()
     {
-        if ( !_dirty )
-        {
-            return _worldVertices;
-        }
+        if ( !_dirty ) return _worldVertices;
 
         _dirty = false;
 
         var localVertices = LocalVertices;
 
-        if ( ( _worldVertices == null ) || ( _worldVertices.Length < localVertices.Length ) )
-        {
-            _worldVertices = new float[ localVertices.Length ];
-        }
+        if ( ( _worldVertices == null ) || ( _worldVertices.Length < localVertices.Length ) ) _worldVertices = new float[ localVertices.Length ];
 
         var worldVertices = _worldVertices;
         var positionX     = X;
@@ -142,10 +133,7 @@ public class Polyline : IShape2D
      */
     public float GetLength()
     {
-        if ( !_calculateLength )
-        {
-            return _length;
-        }
+        if ( !_calculateLength ) return _length;
 
         _calculateLength = false;
 
@@ -155,7 +143,7 @@ public class Polyline : IShape2D
         {
             var x = LocalVertices[ i + 2 ] - LocalVertices[ i ];
             var y = LocalVertices[ i + 1 ] - LocalVertices[ i + 3 ];
-            _length += ( float )Math.Sqrt( ( x * x ) + ( y * y ) );
+            _length += ( float ) Math.Sqrt( ( x * x ) + ( y * y ) );
         }
 
         return _length;
@@ -166,10 +154,7 @@ public class Polyline : IShape2D
      */
     public float GetScaledLength()
     {
-        if ( !_calculateScaledLength )
-        {
-            return _scaledLength;
-        }
+        if ( !_calculateScaledLength ) return _scaledLength;
 
         _calculateScaledLength = false;
 
@@ -179,7 +164,7 @@ public class Polyline : IShape2D
         {
             var x = ( LocalVertices[ i + 2 ] * ScaleX ) - ( LocalVertices[ i ] * ScaleX );
             var y = ( LocalVertices[ i + 1 ] * ScaleY ) - ( LocalVertices[ i + 3 ] * ScaleY );
-            _scaledLength += ( float )Math.Sqrt( ( x * x ) + ( y * y ) );
+            _scaledLength += ( float ) Math.Sqrt( ( x * x ) + ( y * y ) );
         }
 
         return _scaledLength;
@@ -201,10 +186,7 @@ public class Polyline : IShape2D
 
     public void SetVertices( float[] vertices )
     {
-        if ( vertices.Length < 4 )
-        {
-            throw new ArgumentException( "polylines must contain at least 2 points." );
-        }
+        if ( vertices.Length < 4 ) throw new ArgumentException( "polylines must contain at least 2 points." );
 
         LocalVertices = vertices;
         _dirty        = true;

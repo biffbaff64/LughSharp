@@ -30,13 +30,6 @@ namespace LughSharp.LibCore.Utils.Collections;
 [PublicAPI]
 public class PredicateIterator< T > : IEnumerator< T >
 {
-    public IEnumerator< T? > Enumerator { get; set; }
-    public IPredicate< T >   Predicate  { get; set; }
-    public bool              End        { get; set; }
-    public bool              Peeked     { get; set; }
-    public T?                NextItem   { get; set; }
-    public T                 Current    { get; }
-
     /// <summary>
     /// </summary>
     /// <param name="enumerable"></param>
@@ -60,6 +53,13 @@ public class PredicateIterator< T > : IEnumerator< T >
         Current    = default( T? )!;
     }
 
+    public IEnumerator< T? > Enumerator { get; set; }
+    public IPredicate< T >   Predicate  { get; set; }
+    public bool              End        { get; set; }
+    public bool              Peeked     { get; set; }
+    public T?                NextItem   { get; set; }
+    public T                 Current    { get; }
+
     public virtual bool MoveNext()
     {
         throw new NotImplementedException();
@@ -71,6 +71,11 @@ public class PredicateIterator< T > : IEnumerator< T >
     }
 
     object? IEnumerator.Current => Current;
+
+    public void Dispose()
+    {
+        Remove();
+    }
 
     /// <summary>
     /// </summary>
@@ -93,18 +98,12 @@ public class PredicateIterator< T > : IEnumerator< T >
         Peeked     = false;
         NextItem   = default( T? );
     }
-    
+
     public bool HasNext()
     {
-        if ( End )
-        {
-            return false;
-        }
+        if ( End ) return false;
 
-        if ( NextItem != null )
-        {
-            return true;
-        }
+        if ( NextItem != null ) return true;
 
         Peeked = true;
 
@@ -124,13 +123,10 @@ public class PredicateIterator< T > : IEnumerator< T >
 
         return false;
     }
-    
+
     public T? Next()
     {
-        if ( ( NextItem == null ) && !HasNext() )
-        {
-            return default( T );
-        }
+        if ( ( NextItem == null ) && !HasNext() ) return default( T );
 
         var result = NextItem;
         NextItem = default( T );
@@ -138,19 +134,11 @@ public class PredicateIterator< T > : IEnumerator< T >
 
         return result;
     }
-    
+
     public void Remove()
     {
-        if ( Peeked )
-        {
-            throw new GdxRuntimeException( "Cannot remove between a call to hasNext() and next()." );
-        }
+        if ( Peeked ) throw new GdxRuntimeException( "Cannot remove between a call to hasNext() and next()." );
 
         Enumerator.Dispose();
-    }
-
-    public void Dispose()
-    {
-        Remove();
     }
 }

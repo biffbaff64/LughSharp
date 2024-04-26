@@ -28,9 +28,6 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 [PublicAPI]
 public class DelayAction : DelegateAction
 {
-    public float Duration { get; set; }
-    public float Time     { get; set; }
-
     public DelayAction()
     {
     }
@@ -40,16 +37,16 @@ public class DelayAction : DelegateAction
         Duration = duration;
     }
 
+    public float Duration { get; set; }
+    public float Time     { get; set; }
+
     protected override bool Delegate( float delta )
     {
         if ( Time < Duration )
         {
             Time += delta;
 
-            if ( Time < Duration )
-            {
-                return false;
-            }
+            if ( Time < Duration ) return false;
 
             delta = Time - Duration;
         }

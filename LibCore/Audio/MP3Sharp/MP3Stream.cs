@@ -34,8 +34,6 @@ namespace LughSharp.LibCore.Audio.MP3Sharp;
 [PublicAPI]
 public class Mp3Stream : Stream
 {
-    public bool IsEof { get; protected set; }
-
     // ------------------------------------------------------------------------
 
     private const int BACK_STREAM_BYTE_COUNT_REP = 0;
@@ -87,11 +85,10 @@ public class Mp3Stream : Stream
                      + $"(allowed values are 1-mono and 2-stereo)." )
         };
 
-        if ( Format == SoundFormat.Pcm16BitMono )
-        {
-            _buffer.DoubleMonoToStereo = true;
-        }
+        if ( Format == SoundFormat.Pcm16BitMono ) _buffer.DoubleMonoToStereo = true;
     }
+
+    public bool IsEof { get; protected set; }
 
     /// <summary>
     ///     Gets the chunk size.
@@ -128,15 +125,9 @@ public class Mp3Stream : Stream
         get => _sourceStream.Position;
         set
         {
-            if ( value < 0 )
-            {
-                value = 0;
-            }
+            if ( value < 0 ) value = 0;
 
-            if ( value > _sourceStream.Length )
-            {
-                value = _sourceStream.Length;
-            }
+            if ( value > _sourceStream.Length ) value = _sourceStream.Length;
 
             _sourceStream.Position =  value;
             IsEof                  =  false;
@@ -210,10 +201,7 @@ public class Mp3Stream : Stream
         {
             aFrameWasRead = ReadFrame();
 
-            if ( aFrameWasRead )
-            {
-                framesDecoded++;
-            }
+            if ( aFrameWasRead ) framesDecoded++;
         }
 
         return framesDecoded;
@@ -228,10 +216,7 @@ public class Mp3Stream : Stream
     {
         // Copy from queue buffers, reading new ones as necessary,
         // until we can't read more or we have read "count" bytes
-        if ( IsEof )
-        {
-            return 0;
-        }
+        if ( IsEof ) return 0;
 
         var bytesRead = 0;
 
@@ -253,10 +238,7 @@ public class Mp3Stream : Stream
                                        offset + bytesRead,
                                        count - bytesRead );
 
-            if ( bytesRead >= count )
-            {
-                break;
-            }
+            if ( bytesRead >= count ) break;
         }
 
         return bytesRead;
@@ -282,10 +264,7 @@ public class Mp3Stream : Stream
         // Read a frame from the bitstream.
         var header = _bitStream.ReadFrame();
 
-        if ( header == null )
-        {
-            return false;
-        }
+        if ( header == null ) return false;
 
         try
         {
@@ -296,10 +275,7 @@ public class Mp3Stream : Stream
             // Decode the frame.
             var decoderOutput = _decoder.DecodeFrame( header, _bitStream );
 
-            if ( decoderOutput != _buffer )
-            {
-                throw new ApplicationException( "Output buffers are different." );
-            }
+            if ( decoderOutput != _buffer ) throw new ApplicationException( "Output buffers are different." );
         }
         finally
         {

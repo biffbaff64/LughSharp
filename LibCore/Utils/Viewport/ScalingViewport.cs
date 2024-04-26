@@ -84,10 +84,10 @@ public class ScalingViewport : Viewport
     /// <param name="centerCamera"> True to center the camera in the middle of the screen. </param>
     public override void Update( int screenWidth, int screenHeight, bool centerCamera = false )
     {
-        Vector2 scaled = Scaling.Apply( WorldWidth, WorldHeight, screenWidth, screenHeight );
+        var scaled = Scaling.Apply( WorldWidth, WorldHeight, screenWidth, screenHeight );
 
-        var viewportWidth  = ( int )Math.Round( scaled.X, MidpointRounding.AwayFromZero );
-        var viewportHeight = ( int )Math.Round( scaled.Y, MidpointRounding.AwayFromZero );
+        var viewportWidth  = ( int ) Math.Round( scaled.X, MidpointRounding.AwayFromZero );
+        var viewportHeight = ( int ) Math.Round( scaled.Y, MidpointRounding.AwayFromZero );
 
         // Center
         SetScreenBounds( ( screenWidth - viewportWidth ) / 2,

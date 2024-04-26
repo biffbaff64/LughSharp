@@ -129,7 +129,7 @@ public class TextureRegion
         {
             _u = value;
 
-            RegionWidth = ( int )Math.Round( Math.Abs( _u2 - _u ) * Texture.Width );
+            RegionWidth = ( int ) Math.Round( Math.Abs( _u2 - _u ) * Texture.Width );
         }
     }
 
@@ -142,7 +142,7 @@ public class TextureRegion
         {
             _u2 = value;
 
-            RegionWidth = ( int )Math.Round( Math.Abs( _u2 - _u ) * Texture.Width );
+            RegionWidth = ( int ) Math.Round( Math.Abs( _u2 - _u ) * Texture.Width );
         }
     }
 
@@ -155,7 +155,7 @@ public class TextureRegion
         {
             _v = value;
 
-            RegionHeight = ( int )Math.Round( Math.Abs( _v2 - _v ) * Texture.Height );
+            RegionHeight = ( int ) Math.Round( Math.Abs( _v2 - _v ) * Texture.Height );
         }
     }
 
@@ -168,7 +168,7 @@ public class TextureRegion
         {
             _v2 = value;
 
-            RegionHeight = ( int )Math.Round( Math.Abs( _v2 - _v ) * Texture.Height );
+            RegionHeight = ( int ) Math.Round( Math.Abs( _v2 - _v ) * Texture.Height );
         }
     }
 
@@ -176,16 +176,16 @@ public class TextureRegion
     /// </summary>
     public int RegionX
     {
-        get => ( int )Math.Round( U * Texture.Width );
-        set => U = value / ( float )Texture.Width;
+        get => ( int ) Math.Round( U * Texture.Width );
+        set => U = value / ( float ) Texture.Width;
     }
 
     /// <summary>
     /// </summary>
     public int RegionY
     {
-        get => ( int )Math.Round( V * Texture.Height );
-        set => V = value / ( float )Texture.Height;
+        get => ( int ) Math.Round( V * Texture.Height );
+        set => V = value / ( float ) Texture.Height;
     }
 
     /// <summary>
@@ -196,13 +196,9 @@ public class TextureRegion
         set
         {
             if ( IsFlipX() )
-            {
-                U = U2 + ( value / ( float )Texture.Width );
-            }
+                U = U2 + ( value / ( float ) Texture.Width );
             else
-            {
-                U2 = U + ( value / ( float )Texture.Width );
-            }
+                U2 = U + ( value / ( float ) Texture.Width );
 
             _regionWidth = value;
         }
@@ -216,13 +212,9 @@ public class TextureRegion
         set
         {
             if ( IsFlipY() )
-            {
-                V = V2 + ( value / ( float )Texture.Height );
-            }
+                V = V2 + ( value / ( float ) Texture.Height );
             else
-            {
-                V2 = V + ( value / ( float )Texture.Height );
-            }
+                V2 = V + ( value / ( float ) Texture.Height );
 
             _regionHeight = value;
         }
@@ -246,10 +238,7 @@ public class TextureRegion
     /// <exception cref="GdxRuntimeException"></exception>
     public void SetRegion( int x, int y, int width, int height )
     {
-        if ( Texture == null )
-        {
-            throw new GdxRuntimeException( "Texture cannot be null" );
-        }
+        if ( Texture == null ) throw new GdxRuntimeException( "Texture cannot be null" );
 
         var invTexWidth  = 1f / Texture.Width;
         var invTexHeight = 1f / Texture.Height;
@@ -277,16 +266,13 @@ public class TextureRegion
     /// <exception cref="GdxRuntimeException"></exception>
     public virtual void SetRegion( float u, float v, float u2, float v2 )
     {
-        if ( Texture == null )
-        {
-            throw new GdxRuntimeException( "Texture cannot be null" );
-        }
+        if ( Texture == null ) throw new GdxRuntimeException( "Texture cannot be null" );
 
         var texWidth  = Texture.Width;
         var texHeight = Texture.Height;
 
-        RegionWidth  = ( int )Math.Round( Math.Abs( u2 - u ) * texWidth );
-        RegionHeight = ( int )Math.Round( Math.Abs( v2 - v ) * texHeight );
+        RegionWidth  = ( int ) Math.Round( Math.Abs( u2 - u ) * texWidth );
+        RegionHeight = ( int ) Math.Round( Math.Abs( v2 - v ) * texHeight );
 
         // For a 1x1 region, adjust UVs toward pixel center to avoid filtering
         // artifacts on AMD GPUs when drawing very stretched.
@@ -337,15 +323,9 @@ public class TextureRegion
     /// <param name="y"></param>
     public virtual void Flip( bool x, bool y )
     {
-        if ( x )
-        {
-            ( U, U2 ) = ( U2, U );
-        }
+        if ( x ) ( U, U2 ) = ( U2, U );
 
-        if ( y )
-        {
-            ( V, V2 ) = ( V2, V );
-        }
+        if ( y ) ( V, V2 ) = ( V2, V );
     }
 
     public bool IsFlipX()
@@ -415,10 +395,7 @@ public class TextureRegion
         {
             x = startX;
 
-            for ( var col = 0; col < cols; col++, x += tileWidth )
-            {
-                tiles[ row, col ] = new TextureRegion( Texture, x, y, tileWidth, tileHeight );
-            }
+            for ( var col = 0; col < cols; col++, x += tileWidth ) tiles[ row, col ] = new TextureRegion( Texture, x, y, tileWidth, tileHeight );
         }
 
         return tiles;

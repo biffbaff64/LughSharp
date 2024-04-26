@@ -74,18 +74,18 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
 
         var deps = new List< AssetDescriptor >();
 
-        if ( ( ( BitmapFontParameter? )parameter )?.BitmapFontData != null )
+        if ( ( ( BitmapFontParameter? ) parameter )?.BitmapFontData != null )
         {
-            _data = ( ( BitmapFontParameter? )parameter )?.BitmapFontData;
+            _data = ( ( BitmapFontParameter? ) parameter )?.BitmapFontData;
 
             return deps;
         }
 
-        _data = new BitmapFont.BitmapFontData( file, ( ( BitmapFontParameter? )parameter )!.Flip );
+        _data = new BitmapFont.BitmapFontData( file, ( ( BitmapFontParameter? ) parameter )!.Flip );
 
-        if ( ( ( BitmapFontParameter? )parameter )?.AtlasName != null )
+        if ( ( ( BitmapFontParameter? ) parameter )?.AtlasName != null )
         {
-            deps.Add( new AssetDescriptor( ( ( BitmapFontParameter? )parameter )?.AtlasName,
+            deps.Add( new AssetDescriptor( ( ( BitmapFontParameter? ) parameter )?.AtlasName,
                                            typeof( TextureAtlas ),
                                            parameter ) );
         }
@@ -95,15 +95,15 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
             {
                 var path = _data.ImagePaths[ i ];
 
-                FileInfo resolved = Resolve( path );
+                var resolved = Resolve( path );
 
                 var textureParams = new TextureLoader.TextureLoaderParameters();
 
                 if ( parameter != null )
                 {
-                    textureParams.GenMipMaps = ( ( BitmapFontParameter? )parameter )!.GenMipMaps;
-                    textureParams.MinFilter  = ( ( BitmapFontParameter? )parameter )!.MinFilter;
-                    textureParams.MagFilter  = ( ( BitmapFontParameter? )parameter )!.MagFilter;
+                    textureParams.GenMipMaps = ( ( BitmapFontParameter? ) parameter )!.GenMipMaps;
+                    textureParams.MinFilter  = ( ( BitmapFontParameter? ) parameter )!.MinFilter;
+                    textureParams.MagFilter  = ( ( BitmapFontParameter? ) parameter )!.MagFilter;
                 }
 
                 deps.Add( new AssetDescriptor( resolved, typeof( Texture ), textureParams ) );
@@ -158,10 +158,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
 
     private void Dispose( bool disposing )
     {
-        if ( disposing )
-        {
-            _data = null;
-        }
+        if ( disposing ) _data = null;
     }
 }
 

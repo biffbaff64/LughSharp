@@ -36,84 +36,84 @@ public static class BufferUtils
     private static          int                _allocatedUnsafe = 0;
 
     /// <summary>
-    ///     Creates a new <see cref="FloatBuffer"/> with the specified capacity.
-    ///     All elements will be initialised to zero. 
+    ///     Creates a new <see cref="FloatBuffer" /> with the specified capacity.
+    ///     All elements will be initialised to zero.
     /// </summary>
     public static FloatBuffer NewFloatBuffer( int numFloats )
     {
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( numFloats * 4 );
+        var buffer = ByteBuffer.AllocateDirect( numFloats * 4 );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsFloatBuffer();
     }
 
     /// <summary>
-    ///     Creates a new <see cref="DoubleBuffer"/> with the specified capacity.
-    ///     All elements will be initialised to zero. 
+    ///     Creates a new <see cref="DoubleBuffer" /> with the specified capacity.
+    ///     All elements will be initialised to zero.
     /// </summary>
     public static DoubleBuffer NewDoubleBuffer( int numFloats )
     {
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( numFloats * 4 );
+        var buffer = ByteBuffer.AllocateDirect( numFloats * 4 );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsDoubleBuffer();
     }
 
     /// <summary>
-    ///     Creates a new <see cref="ByteBuffer"/> with the specified capacity.
-    ///     All elements will be initialised to zero. 
+    ///     Creates a new <see cref="ByteBuffer" /> with the specified capacity.
+    ///     All elements will be initialised to zero.
     /// </summary>
     public static ByteBuffer NewByteBuffer( int numBytes )
     {
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
+        var buffer = ByteBuffer.AllocateDirect( numBytes );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer;
     }
 
     /// <summary>
-    ///     Creates a new <see cref="ShortBuffer"/> with the specified capacity.
-    ///     All elements will be initialised to zero. 
+    ///     Creates a new <see cref="ShortBuffer" /> with the specified capacity.
+    ///     All elements will be initialised to zero.
     /// </summary>
     public static ShortBuffer NewShortBuffer( int numBytes )
     {
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
+        var buffer = ByteBuffer.AllocateDirect( numBytes );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsShortBuffer();
     }
 
     /// <summary>
-    ///     Creates a new <see cref="CharBuffer"/> with the specified capacity.
-    ///     All elements will be initialised to zero. 
+    ///     Creates a new <see cref="CharBuffer" /> with the specified capacity.
+    ///     All elements will be initialised to zero.
     /// </summary>
     public static CharBuffer NewCharBuffer( int numBytes )
     {
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
+        var buffer = ByteBuffer.AllocateDirect( numBytes );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsCharBuffer();
     }
 
     /// <summary>
-    ///     Creates a new <see cref="IntBuffer"/> with the specified capacity.
-    ///     All elements will be initialised to zero. 
+    ///     Creates a new <see cref="IntBuffer" /> with the specified capacity.
+    ///     All elements will be initialised to zero.
     /// </summary>
     public static IntBuffer NewIntBuffer( int numBytes )
     {
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
+        var buffer = ByteBuffer.AllocateDirect( numBytes );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsIntBuffer();
     }
 
     /// <summary>
-    ///     Creates a new <see cref="LongBuffer"/> with the specified capacity.
-    ///     All elements will be initialised to zero. 
+    ///     Creates a new <see cref="LongBuffer" /> with the specified capacity.
+    ///     All elements will be initialised to zero.
     /// </summary>
     public static LongBuffer NewLongBuffer( int numBytes )
     {
-        ByteBuffer buffer = ByteBuffer.AllocateDirect( numBytes );
+        var buffer = ByteBuffer.AllocateDirect( numBytes );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsLongBuffer();
@@ -266,10 +266,7 @@ public static class BufferUtils
 
         lock ( _unsafeBuffers )
         {
-            if ( !_unsafeBuffers.Remove( buffer ) )
-            {
-                throw new ArgumentException( "buffer not allocated with newUnsafeByteBuffer or already disposed" );
-            }
+            if ( !_unsafeBuffers.Remove( buffer ) ) throw new ArgumentException( "buffer not allocated with newUnsafeByteBuffer or already disposed" );
         }
 
         _allocatedUnsafe -= size;

@@ -36,6 +36,7 @@ public abstract class Attribute : IComparable< Attribute >
     ///     The registered type aliases
     /// </summary>
     private readonly static List< string > Types = new();
+
     private readonly int _typeBit;
 
     // The type of this attribute
@@ -44,16 +45,13 @@ public abstract class Attribute : IComparable< Attribute >
     protected Attribute( long type )
     {
         this.type = type;
-        _typeBit  = ( int )long.TrailingZeroCount( type );
+        _typeBit  = ( int ) long.TrailingZeroCount( type );
     }
 
     /// <inheritdoc />
     public int CompareTo( Attribute? other )
     {
-        if ( other == null )
-        {
-            return 1;
-        }
+        if ( other == null ) return 1;
 
         return _typeBit - other._typeBit;
     }
@@ -69,12 +67,8 @@ public abstract class Attribute : IComparable< Attribute >
     public static long GetAttributeType( string alias )
     {
         for ( var i = 0; i < Types.Count; i++ )
-        {
             if ( string.Compare( Types[ i ], alias, StringComparison.Ordinal ) == 0 )
-            {
                 return 1L << i;
-            }
-        }
 
         return 0;
     }
@@ -110,10 +104,7 @@ public abstract class Attribute : IComparable< Attribute >
     {
         var result = GetAttributeType( alias );
 
-        if ( result > 0 )
-        {
-            return result;
-        }
+        if ( result > 0 ) return result;
 
         Types.Add( alias );
 
@@ -128,20 +119,11 @@ public abstract class Attribute : IComparable< Attribute >
     /// <inheritdoc />
     public override bool Equals( object? obj )
     {
-        if ( obj == null )
-        {
-            return false;
-        }
+        if ( obj == null ) return false;
 
-        if ( obj == this )
-        {
-            return true;
-        }
+        if ( obj == this ) return true;
 
-        if ( obj is not Attribute other )
-        {
-            return false;
-        }
+        if ( obj is not Attribute other ) return false;
 
         return ( type == other.type ) && Equals( other );
     }

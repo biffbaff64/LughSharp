@@ -236,7 +236,7 @@ public static class Character
     /// <summary>
     ///     Error flag. Use int (code point) to avoid confusion with U+FFFF.
     /// </summary>
-    public const int ERROR = unchecked( ( int )0xFFFFFFFF );
+    public const int ERROR = unchecked( ( int ) 0xFFFFFFFF );
 
     /// <summary>
     ///     Undefined bidirectional character type. Undefined {@code char}

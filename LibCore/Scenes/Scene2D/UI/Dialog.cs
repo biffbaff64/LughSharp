@@ -131,13 +131,9 @@ public class Dialog : Window
     protected new void SetStage( Stage? stage )
     {
         if ( stage == null )
-        {
             AddListener( _dialogFocusListener );
-        }
         else
-        {
             RemoveListener( _dialogFocusListener );
-        }
 
         base.SetStage( stage );
     }
@@ -242,17 +238,11 @@ public class Dialog : Window
 
         PreviousKeyboardFocus = null;
 
-        if ( ( stage.KeyboardFocus != null ) && !stage.KeyboardFocus.IsDescendantOf( this ) )
-        {
-            PreviousKeyboardFocus = stage.KeyboardFocus;
-        }
+        if ( ( stage.KeyboardFocus != null ) && !stage.KeyboardFocus.IsDescendantOf( this ) ) PreviousKeyboardFocus = stage.KeyboardFocus;
 
         PreviousScrollFocus = null;
 
-        if ( ( stage.ScrollFocus != null ) && !stage.ScrollFocus.IsDescendantOf( this ) )
-        {
-            PreviousScrollFocus = stage.ScrollFocus;
-        }
+        if ( ( stage.ScrollFocus != null ) && !stage.ScrollFocus.IsDescendantOf( this ) ) PreviousScrollFocus = stage.ScrollFocus;
 
         stage.AddActor( this );
 
@@ -262,10 +252,7 @@ public class Dialog : Window
         stage.KeyboardFocus = this;
         stage.ScrollFocus   = this;
 
-        if ( action != null )
-        {
-            AddAction( action );
-        }
+        if ( action != null ) AddAction( action );
 
         return this;
     }
@@ -280,8 +267,8 @@ public class Dialog : Window
               Scene2D.Actions.Actions.Sequence( Scene2D.Actions.Actions.Alpha( 0 ),
                                                 Scene2D.Actions.Actions.FadeIn( 0.4f, Interpolation.fade ) ) );
 
-        SetPosition( ( float )Math.Round( ( stage.Width - Width ) / 2 ),
-                     ( float )Math.Round( ( stage.Height - Height ) / 2 ) );
+        SetPosition( ( float ) Math.Round( ( stage.Width - Width ) / 2 ),
+                     ( float ) Math.Round( ( stage.Height - Height ) / 2 ) );
 
         return this;
     }
@@ -296,31 +283,19 @@ public class Dialog : Window
     /// </param>
     public void Hide( Action? action )
     {
-        Stage? stage = Stage;
+        var stage = Stage;
 
         if ( stage != null )
         {
             RemoveListener( _dialogFocusListener );
 
-            if ( PreviousKeyboardFocus is { Stage: null } )
-            {
-                PreviousKeyboardFocus = null;
-            }
+            if ( PreviousKeyboardFocus is { Stage: null } ) PreviousKeyboardFocus = null;
 
-            if ( ( stage.KeyboardFocus == null ) || stage.KeyboardFocus.IsDescendantOf( this ) )
-            {
-                stage.KeyboardFocus = PreviousKeyboardFocus;
-            }
+            if ( ( stage.KeyboardFocus == null ) || stage.KeyboardFocus.IsDescendantOf( this ) ) stage.KeyboardFocus = PreviousKeyboardFocus;
 
-            if ( PreviousScrollFocus is { Stage: null } )
-            {
-                PreviousScrollFocus = null;
-            }
+            if ( PreviousScrollFocus is { Stage: null } ) PreviousScrollFocus = null;
 
-            if ( ( stage.ScrollFocus == null ) || stage.ScrollFocus.IsDescendantOf( this ) )
-            {
-                stage.ScrollFocus = PreviousScrollFocus;
-            }
+            if ( ( stage.ScrollFocus == null ) || stage.ScrollFocus.IsDescendantOf( this ) ) stage.ScrollFocus = PreviousScrollFocus;
         }
 
         if ( action != null )
@@ -332,9 +307,7 @@ public class Dialog : Window
                                                          Scene2D.Actions.Actions.RemoveActor() ) );
         }
         else
-        {
             Remove();
-        }
     }
 
     /// <summary>
@@ -423,27 +396,15 @@ public class Dialog : Window
 
         public override void Changed( ChangeEvent ev, Actor? actor )
         {
-            if ( ( _dialog.Values == null ) || ( actor == null ) )
-            {
-                return;
-            }
+            if ( ( _dialog.Values == null ) || ( actor == null ) ) return;
 
-            if ( !_dialog.Values.ContainsKey( actor ) )
-            {
-                return;
-            }
+            if ( !_dialog.Values.ContainsKey( actor ) ) return;
 
-            while ( actor?.Parent != _dialog.ButtonTable )
-            {
-                actor = actor?.Parent;
-            }
+            while ( actor?.Parent != _dialog.ButtonTable ) actor = actor?.Parent;
 
             _dialog.Result( _dialog.Values[ actor! ] );
 
-            if ( !_dialog.CancelHide )
-            {
-                _dialog.Hide();
-            }
+            if ( !_dialog.CancelHide ) _dialog.Hide();
 
             _dialog.CancelHide = false;
         }

@@ -82,10 +82,7 @@ public class DataInput : BinaryReader
 
         charCount--;
 
-        if ( _chars.Length < charCount )
-        {
-            _chars = new char[ charCount ];
-        }
+        if ( _chars.Length < charCount ) _chars = new char[ charCount ];
 
         // Try to read 7 bit ASCII chars.
         var charIndex = 0;
@@ -95,19 +92,13 @@ public class DataInput : BinaryReader
         {
             b = Read();
 
-            if ( b > 127 )
-            {
-                break;
-            }
+            if ( b > 127 ) break;
 
-            _chars[ charIndex++ ] = ( char )b;
+            _chars[ charIndex++ ] = ( char ) b;
         }
 
         // If a char was not ASCII, finish with slow path.
-        if ( charIndex < charCount )
-        {
-            ReadUtf8Slow( charCount, charIndex, b );
-        }
+        if ( charIndex < charCount ) ReadUtf8Slow( charCount, charIndex, b );
 
         return new string( _chars, 0, charCount );
     }
@@ -125,35 +116,29 @@ public class DataInput : BinaryReader
             {
                 case >= 0 and <= 7:
                 {
-                    _chars[ charIndex ] = ( char )b;
+                    _chars[ charIndex ] = ( char ) b;
 
                     break;
                 }
 
                 case 12 or 13:
                 {
-                    _chars[ charIndex ] = ( char )( ( ( b & 0x1F ) << 6 ) | ( Read() & 0x3F ) );
+                    _chars[ charIndex ] = ( char ) ( ( ( b & 0x1F ) << 6 ) | ( Read() & 0x3F ) );
 
                     break;
                 }
 
                 case 14:
                 {
-                    _chars[ charIndex ] = ( char )( ( ( b & 0x0F ) << 12 )
-                                                  | ( ( Read() & 0x3F ) << 6 )
-                                                  | ( Read() & 0x3F ) );
+                    _chars[ charIndex ] = ( char ) ( ( ( b & 0x0F ) << 12 )
+                                                   | ( ( Read() & 0x3F ) << 6 )
+                                                   | ( Read() & 0x3F ) );
 
                     break;
                 }
-
-                default:
-                    break;
             }
 
-            if ( ++charIndex >= charCount )
-            {
-                break;
-            }
+            if ( ++charIndex >= charCount ) break;
 
             b = Read() & 0xFF;
         }

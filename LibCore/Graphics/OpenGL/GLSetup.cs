@@ -30,7 +30,7 @@ public class GLSetup
     public static OpenGLProfile? OGLProfile    { get; set; }
     public static GLVersion?     GLVersion     { get; set; }
     public static bool           GLInitialised { get; private set; } = false;
-    
+
     public static unsafe void InitiateGL()
     {
         // Retrieve OpenGL version and profile from `.csproj` file

@@ -84,10 +84,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     {
         BeginRender();
 
-        foreach ( MapLayer layer in TiledMap.Layers )
-        {
-            RenderMapLayer( layer );
-        }
+        foreach ( var layer in TiledMap.Layers ) RenderMapLayer( layer );
 
         EndRender();
     }
@@ -101,7 +98,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
 
         foreach ( var layerIdx in layers )
         {
-            MapLayer layer = TiledMap.Layers.Get( layerIdx );
+            var layer = TiledMap.Layers.Get( layerIdx );
             RenderMapLayer( layer );
         }
 
@@ -142,10 +139,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     /// <param name="layer"></param>
     public void RenderObjects( MapLayer layer )
     {
-        foreach ( MapObject obj in layer.Objects )
-        {
-            RenderObject( obj );
-        }
+        foreach ( var obj in layer.Objects ) RenderObject( obj );
     }
 
     /// <summary>
@@ -167,19 +161,16 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     /// <param name="layer"></param>
     public void RenderImageLayer( TiledMapImageLayer layer )
     {
-        Color batchColor = Batch.Color;
+        var batchColor = Batch.Color;
 
         var color = Color.ToFloatBits( batchColor.R,
                                        batchColor.G,
                                        batchColor.B,
                                        batchColor.A * layer.Opacity );
 
-        TextureRegion? region = layer.Region;
+        var region = layer.Region;
 
-        if ( region == null )
-        {
-            return;
-        }
+        if ( region == null ) return;
 
         var x  = layer.X;
         var y  = layer.Y;
@@ -230,23 +221,17 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     /// <param name="layer"></param>
     protected void RenderMapLayer( MapLayer layer )
     {
-        if ( !layer.Visible )
-        {
-            return;
-        }
+        if ( !layer.Visible ) return;
 
         if ( layer is MapGroupLayer groupLayer )
         {
-            MapLayers childLayers = groupLayer.Layers;
+            var childLayers = groupLayer.Layers;
 
             for ( var i = 0; i < childLayers.Size(); i++ )
             {
-                MapLayer childLayer = childLayers.Get( i );
+                var childLayer = childLayers.Get( i );
 
-                if ( !childLayer.Visible )
-                {
-                    continue;
-                }
+                if ( !childLayer.Visible ) continue;
 
                 RenderMapLayer( childLayer );
             }
@@ -254,17 +239,11 @@ public class BatchTileMapRenderer : ITiledMapRenderer
         else
         {
             if ( layer is TiledMapTileLayer tileLayer )
-            {
                 RenderTileLayer( tileLayer );
-            }
             else if ( layer is TiledMapImageLayer imageLayer )
-            {
                 RenderImageLayer( imageLayer );
-            }
             else
-            {
                 RenderObjects( layer );
-            }
         }
     }
 

@@ -73,10 +73,7 @@ public class ParallelAction : Action
 
     public override bool Act( float delta )
     {
-        if ( _complete )
-        {
-            return true;
-        }
+        if ( _complete ) return true;
 
         _complete = true;
 
@@ -89,17 +86,11 @@ public class ParallelAction : Action
         {
             for ( int i = 0, n = _actions.Count; ( i < n ) && ( Actor != null ); i++ )
             {
-                Action currentAction = _actions[ i ];
+                var currentAction = _actions[ i ];
 
-                if ( ( currentAction.Actor != null ) && !currentAction.Act( delta ) )
-                {
-                    _complete = false;
-                }
+                if ( ( currentAction.Actor != null ) && !currentAction.Act( delta ) ) _complete = false;
 
-                if ( Actor == null )
-                {
-                    return true; // This action was removed.
-                }
+                if ( Actor == null ) return true; // This action was removed.
             }
 
             return _complete;
@@ -114,10 +105,7 @@ public class ParallelAction : Action
     {
         _complete = false;
 
-        for ( int i = 0, n = _actions.Count; i < n; i++ )
-        {
-            _actions[ i ].Restart();
-        }
+        for ( int i = 0, n = _actions.Count; i < n; i++ ) _actions[ i ].Restart();
     }
 
     public override void Reset()
@@ -130,18 +118,12 @@ public class ParallelAction : Action
     {
         _actions.Add( action );
 
-        if ( Actor != null )
-        {
-            action.Actor = Actor;
-        }
+        if ( Actor != null ) action.Actor = Actor;
     }
 
     public void SetActor( Actor actor )
     {
-        for ( int i = 0, n = _actions.Count; i < n; i++ )
-        {
-            _actions[ i ].Actor = actor;
-        }
+        for ( int i = 0, n = _actions.Count; i < n; i++ ) _actions[ i ].Actor = actor;
 
         base.Actor = actor;
     }
@@ -160,10 +142,7 @@ public class ParallelAction : Action
 
         for ( int i = 0, n = _actions.Count; i < n; i++ )
         {
-            if ( i > 0 )
-            {
-                buffer.Append( ", " );
-            }
+            if ( i > 0 ) buffer.Append( ", " );
 
             buffer.Append( _actions[ i ] );
         }

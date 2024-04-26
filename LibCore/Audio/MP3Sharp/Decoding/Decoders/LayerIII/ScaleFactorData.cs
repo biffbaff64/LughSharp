@@ -33,10 +33,7 @@ public class ScaleFactorData
         L = new int[ 23 ];
         S = new int[ 3 ][];
 
-        for ( var i = 0; i < 3; i++ )
-        {
-            S[ i ] = new int[ 13 ];
-        }
+        for ( var i = 0; i < 3; i++ ) S[ i ] = new int[ 13 ];
     }
 
     public int[]   L { get; } /* [cb] */

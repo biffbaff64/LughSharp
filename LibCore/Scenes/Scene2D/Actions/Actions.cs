@@ -396,10 +396,7 @@ public class Actions
     {
         var action = ( SequenceAction ) Action( typeof( SequenceAction ) );
 
-        for ( int i = 0, n = actions.Length; i < n; i++ )
-        {
-            action.AddAction( actions[ i ] );
-        }
+        for ( int i = 0, n = actions.Length; i < n; i++ ) action.AddAction( actions[ i ] );
 
         return action;
     }
@@ -463,10 +460,7 @@ public class Actions
     {
         var action = ( ParallelAction ) Action( typeof( ParallelAction ) );
 
-        for ( int i = 0, n = actions.Length; i < n; i++ )
-        {
-            action.AddAction( actions[ i ] );
-        }
+        for ( int i = 0, n = actions.Length; i < n; i++ ) action.AddAction( actions[ i ] );
 
         return action;
     }
@@ -526,8 +520,8 @@ public class Actions
     public static AddListenerAction AddListener( IEventListener listener, bool capture )
     {
         var addAction = ( AddListenerAction ) Action( typeof( AddListenerAction ) );
-        addAction.Listener = listener;
-        addAction.IsCapture  = capture;
+        addAction.Listener  = listener;
+        addAction.IsCapture = capture;
 
         return addAction;
     }
@@ -535,9 +529,9 @@ public class Actions
     public static AddListenerAction AddListener( IEventListener listener, bool capture, Actor targetActor )
     {
         var addAction = ( AddListenerAction ) Action( typeof( AddListenerAction ) );
-        addAction.Target   = targetActor;
-        addAction.Listener = listener;
-        addAction.IsCapture  = capture;
+        addAction.Target    = targetActor;
+        addAction.Listener  = listener;
+        addAction.IsCapture = capture;
 
         return addAction;
     }

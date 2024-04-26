@@ -82,10 +82,7 @@ public class MipMapTextureData : ITextureData
     /// </summary>
     public void ConsumeCustomData( int target )
     {
-        for ( var i = 0; i < _mips.Length; ++i )
-        {
-            GLTexture.UploadImageData( target, _mips[ i ], i );
-        }
+        for ( var i = 0; i < _mips.Length; ++i ) GLTexture.UploadImageData( target, _mips[ i ], i );
     }
 
     public bool DisposePixmap()

@@ -47,7 +47,7 @@ public record BinaryHeapNode
 ///     </para>
 /// </summary>
 [PublicAPI]
-public class BinaryHeap<T> where T : BinaryHeapNode
+public class BinaryHeap< T > where T : BinaryHeapNode
 {
     // ------------------------------------------------------------------------
 
@@ -123,19 +123,12 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     {
         ArgumentNullException.ThrowIfNull( node );
 
-        if ( _nodes == null )
-        {
-            return false;
-        }
+        if ( _nodes == null ) return false;
 
-        foreach ( BinaryHeapNode n in _nodes )
-        {
+        foreach ( var n in _nodes )
             if ( ( identity && ( n == node ) )
               || ( !identity && n.Equals( node ) ) )
-            {
                 return true;
-            }
-        }
 
         return false;
     }
@@ -148,12 +141,9 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     {
         GdxRuntimeException.ThrowIfNull( _nodes );
 
-        if ( Size == 0 )
-        {
-            throw new InvalidOperationException( "The heap is empty." );
-        }
+        if ( Size == 0 ) throw new InvalidOperationException( "The heap is empty." );
 
-        return ( T )_nodes[ 0 ];
+        return ( T ) _nodes[ 0 ];
     }
 
     /// <summary>
@@ -165,7 +155,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     {
         GdxRuntimeException.ThrowIfNull( _nodes );
 
-        BinaryHeapNode removed = _nodes[ 0 ];
+        var removed = _nodes[ 0 ];
 
         if ( --Size > 0 )
         {
@@ -175,11 +165,9 @@ public class BinaryHeap<T> where T : BinaryHeapNode
             Down( 0 );
         }
         else
-        {
             _nodes[ 0 ] = null!;
-        }
 
-        return ( T )removed;
+        return ( T ) removed;
     }
 
     /// <summary>
@@ -193,23 +181,17 @@ public class BinaryHeap<T> where T : BinaryHeapNode
 
         if ( --Size > 0 )
         {
-            BinaryHeapNode moved = _nodes[ Size ];
+            var moved = _nodes[ Size ];
             _nodes[ Size ]       = null!;
             _nodes[ node.Index ] = moved;
 
             if ( ( moved.Value < node.Value ) ^ _isMaxHeap )
-            {
                 Up( node.Index );
-            }
             else
-            {
                 Down( node.Index );
-            }
         }
         else
-        {
             _nodes[ 0 ] = null!;
-        }
 
         return node;
     }
@@ -240,17 +222,12 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         node.Value = value;
 
         if ( ( value < oldValue ) ^ _isMaxHeap )
-        {
             Up( node.Index );
-        }
         else
-        {
             Down( node.Index );
-        }
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="index"></param>
     private void Up( int index )
@@ -263,7 +240,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
         {
             var parentIndex = ( ix - 1 ) >> 1;
 
-            BinaryHeapNode parent = _nodes[ parentIndex ];
+            var parent = _nodes[ parentIndex ];
 
             if ( ( _nodes[ index ].Value < parent.Value ) ^ _isMaxHeap )
             {
@@ -272,9 +249,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
                 ix           = parentIndex;
             }
             else
-            {
                 break;
-            }
         }
 
         _nodes[ ix ]          = _nodes[ index ];
@@ -282,14 +257,13 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="index"></param>
     private void Down( int index )
     {
         GdxRuntimeException.ThrowIfNull( _nodes );
 
-        BinaryHeapNode node = _nodes[ index ];
+        var node = _nodes[ index ];
 
         var size  = Size;
         var value = node.Value;
@@ -299,14 +273,11 @@ public class BinaryHeap<T> where T : BinaryHeapNode
             var leftIndex  = 1 + ( index << 1 );
             var rightIndex = leftIndex + 1;
 
-            if ( leftIndex >= size )
-            {
-                break;
-            }
+            if ( leftIndex >= size ) break;
 
             // Always has a left child.
-            BinaryHeapNode leftNode  = _nodes[ leftIndex ];
-            var            leftValue = leftNode.Value;
+            var leftNode  = _nodes[ leftIndex ];
+            var leftValue = leftNode.Value;
 
             // May have a right child.
             BinaryHeapNode? rightNode;
@@ -326,10 +297,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
             // The smallest of the three values is the parent.
             if ( ( leftValue < rightValue ) ^ _isMaxHeap )
             {
-                if ( leftValue.Equals( value ) || ( ( leftValue > value ) ^ _isMaxHeap ) )
-                {
-                    break;
-                }
+                if ( leftValue.Equals( value ) || ( ( leftValue > value ) ^ _isMaxHeap ) ) break;
 
                 _nodes[ index ] = leftNode;
                 leftNode.Index  = index;
@@ -337,17 +305,11 @@ public class BinaryHeap<T> where T : BinaryHeapNode
             }
             else
             {
-                if ( rightValue.Equals( value ) || ( ( rightValue > value ) ^ _isMaxHeap ) )
-                {
-                    break;
-                }
+                if ( rightValue.Equals( value ) || ( ( rightValue > value ) ^ _isMaxHeap ) ) break;
 
                 _nodes[ index ] = rightNode!;
 
-                if ( rightNode != null )
-                {
-                    rightNode.Index = index;
-                }
+                if ( rightNode != null ) rightNode.Index = index;
 
                 index = rightIndex;
             }
@@ -360,26 +322,16 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// <inheritdoc />
     public override bool Equals( object? obj )
     {
-        if ( obj is not BinaryHeap< T > other )
-        {
-            return false;
-        }
+        if ( obj is not BinaryHeap< T > other ) return false;
 
-        if ( other.Size != Size )
-        {
-            return false;
-        }
+        if ( other.Size != Size ) return false;
 
         Debug.Assert( _nodes != null );
         Debug.Assert( other._nodes != null );
 
         for ( int i = 0, n = Size; i < n; i++ )
-        {
             if ( !_nodes[ i ].Value.Equals( other._nodes[ i ].Value ) )
-            {
                 return false;
-            }
-        }
 
         return true;
     }
@@ -397,10 +349,7 @@ public class BinaryHeap<T> where T : BinaryHeapNode
     /// <inheritdoc />
     public override string ToString()
     {
-        if ( ( Size == 0 ) || ( _nodes == null ) )
-        {
-            return "[]";
-        }
+        if ( ( Size == 0 ) || ( _nodes == null ) ) return "[]";
 
         BinaryHeapNode[] nodes  = _nodes;
         var              buffer = new StringBuilder( 32 );

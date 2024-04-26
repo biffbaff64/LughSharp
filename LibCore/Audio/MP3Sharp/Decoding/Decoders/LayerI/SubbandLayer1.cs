@@ -96,20 +96,14 @@ public class SubbandLayer1 : ASubband
     /// </summary>
     public override void ReadScaleFactor( Bitstream stream, Header? header )
     {
-        if ( allocation != 0 )
-        {
-            scalefactor = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
-        }
+        if ( allocation != 0 ) scalefactor = ScaleFactors[ stream.GetBitsFromBuffer( 6 ) ];
     }
 
     /// <summary>
     /// </summary>
     public override bool ReadSampleData( Bitstream stream )
     {
-        if ( allocation != 0 )
-        {
-            sample = stream.GetBitsFromBuffer( samplelength );
-        }
+        if ( allocation != 0 ) sample = stream.GetBitsFromBuffer( samplelength );
 
         if ( ++samplenumber == 12 )
         {

@@ -97,51 +97,27 @@ public class NinePatch
 
         if ( top > 0 )
         {
-            if ( left > 0 )
-            {
-                patches[ TOP_LEFT ] = new TextureRegion( region, 0, 0, left, top );
-            }
+            if ( left > 0 ) patches[ TOP_LEFT ] = new TextureRegion( region, 0, 0, left, top );
 
-            if ( middleWidth > 0 )
-            {
-                patches[ TOP_CENTER ] = new TextureRegion( region, left, 0, middleWidth, top );
-            }
+            if ( middleWidth > 0 ) patches[ TOP_CENTER ] = new TextureRegion( region, left, 0, middleWidth, top );
 
-            if ( right > 0 )
-            {
-                patches[ TOP_RIGHT ] = new TextureRegion( region, left + middleWidth, 0, right, top );
-            }
+            if ( right > 0 ) patches[ TOP_RIGHT ] = new TextureRegion( region, left + middleWidth, 0, right, top );
         }
 
         if ( middleHeight > 0 )
         {
-            if ( left > 0 )
-            {
-                patches[ MIDDLE_LEFT ] = new TextureRegion( region, 0, top, left, middleHeight );
-            }
+            if ( left > 0 ) patches[ MIDDLE_LEFT ] = new TextureRegion( region, 0, top, left, middleHeight );
 
-            if ( middleWidth > 0 )
-            {
-                patches[ MIDDLE_CENTER ] = new TextureRegion( region, left, top, middleWidth, middleHeight );
-            }
+            if ( middleWidth > 0 ) patches[ MIDDLE_CENTER ] = new TextureRegion( region, left, top, middleWidth, middleHeight );
 
-            if ( right > 0 )
-            {
-                patches[ MIDDLE_RIGHT ] = new TextureRegion( region, left + middleWidth, top, right, middleHeight );
-            }
+            if ( right > 0 ) patches[ MIDDLE_RIGHT ] = new TextureRegion( region, left + middleWidth, top, right, middleHeight );
         }
 
         if ( bottom > 0 )
         {
-            if ( left > 0 )
-            {
-                patches[ BOTTOM_LEFT ] = new TextureRegion( region, 0, top + middleHeight, left, bottom );
-            }
+            if ( left > 0 ) patches[ BOTTOM_LEFT ] = new TextureRegion( region, 0, top + middleHeight, left, bottom );
 
-            if ( middleWidth > 0 )
-            {
-                patches[ BOTTOM_CENTER ] = new TextureRegion( region, left, top + middleHeight, middleWidth, bottom );
-            }
+            if ( middleWidth > 0 ) patches[ BOTTOM_CENTER ] = new TextureRegion( region, left, top + middleHeight, middleWidth, bottom );
 
             if ( right > 0 )
             {
@@ -226,10 +202,7 @@ public class NinePatch
     /// </summary>
     public NinePatch( params TextureRegion[] patches )
     {
-        if ( patches is not { Length: 9 } )
-        {
-            throw new ArgumentException( "NinePatch needs nine TextureRegions" );
-        }
+        if ( patches is not { Length: 9 } ) throw new ArgumentException( "NinePatch needs nine TextureRegions" );
 
         Load( patches );
 
@@ -239,9 +212,7 @@ public class NinePatch
             && ( Math.Abs( patches[ MIDDLE_LEFT ].RegionWidth - LeftWidth ) > TOLERANCE ) )
           || ( ( patches[ BOTTOM_LEFT ] != null )
             && ( Math.Abs( patches[ BOTTOM_LEFT ].RegionWidth - LeftWidth ) > TOLERANCE ) ) )
-        {
             throw new GdxRuntimeException( "Left side patches must have the same width" );
-        }
 
         if ( ( ( patches[ TOP_RIGHT ] != null )
             && ( Math.Abs( patches[ TOP_RIGHT ].RegionWidth - RightWidth ) > TOLERANCE ) )
@@ -249,9 +220,7 @@ public class NinePatch
             && ( Math.Abs( patches[ MIDDLE_RIGHT ].RegionWidth - RightWidth ) > TOLERANCE ) )
           || ( ( patches[ BOTTOM_RIGHT ] != null )
             && ( Math.Abs( patches[ BOTTOM_RIGHT ].RegionWidth - RightWidth ) > TOLERANCE ) ) )
-        {
             throw new GdxRuntimeException( "Right side patches must have the same width" );
-        }
 
         if ( ( ( patches[ BOTTOM_LEFT ] != null )
             && ( Math.Abs( patches[ BOTTOM_LEFT ].RegionHeight - BottomHeight ) > TOLERANCE ) )
@@ -259,9 +228,7 @@ public class NinePatch
             && ( Math.Abs( patches[ BOTTOM_CENTER ].RegionHeight - BottomHeight ) > TOLERANCE ) )
           || ( ( patches[ BOTTOM_RIGHT ] != null )
             && ( Math.Abs( patches[ BOTTOM_RIGHT ].RegionHeight - BottomHeight ) > TOLERANCE ) ) )
-        {
             throw new GdxRuntimeException( "Bottom side patches must have the same height" );
-        }
 
         if ( ( ( patches[ TOP_LEFT ] != null )
             && ( Math.Abs( patches[ TOP_LEFT ].RegionHeight - TopHeight ) > TOLERANCE ) )
@@ -269,9 +236,7 @@ public class NinePatch
             && ( Math.Abs( patches[ TOP_CENTER ].RegionHeight - TopHeight ) > TOLERANCE ) )
           || ( ( patches[ TOP_RIGHT ] != null )
             && ( Math.Abs( patches[ TOP_RIGHT ].RegionHeight - TopHeight ) > TOLERANCE ) ) )
-        {
             throw new GdxRuntimeException( "Top side patches must have the same height" );
-        }
     }
 
     /// <summary>
@@ -388,9 +353,7 @@ public class NinePatch
             BottomHeight = patches[ BOTTOM_LEFT ]!.RegionHeight;
         }
         else
-        {
             BottomLeft = -1;
-        }
 
         if ( patches[ BOTTOM_CENTER ] != null )
         {
@@ -402,9 +365,7 @@ public class NinePatch
             BottomHeight = Math.Max( BottomHeight, patches[ BOTTOM_CENTER ]!.RegionHeight );
         }
         else
-        {
             BottomCenter = -1;
-        }
 
         if ( patches[ BOTTOM_RIGHT ] != null )
         {
@@ -413,9 +374,7 @@ public class NinePatch
             BottomHeight = Math.Max( BottomHeight, patches[ BOTTOM_RIGHT ]!.RegionHeight );
         }
         else
-        {
             BottomRight = -1;
-        }
 
         if ( patches[ MIDDLE_LEFT ] != null )
         {
@@ -427,9 +386,7 @@ public class NinePatch
             MiddleHeight = Math.Max( MiddleHeight, patches[ MIDDLE_LEFT ]!.RegionHeight );
         }
         else
-        {
             MiddleLeft = -1;
-        }
 
         if ( patches[ MIDDLE_CENTER ] != null )
         {
@@ -441,9 +398,7 @@ public class NinePatch
             MiddleHeight = Math.Max( MiddleHeight, patches[ MIDDLE_CENTER ]!.RegionHeight );
         }
         else
-        {
             MiddleCenter = -1;
-        }
 
         if ( patches[ MIDDLE_RIGHT ] != null )
         {
@@ -455,9 +410,7 @@ public class NinePatch
             MiddleHeight = Math.Max( MiddleHeight, patches[ MIDDLE_RIGHT ]!.RegionHeight );
         }
         else
-        {
             MiddleRight = -1;
-        }
 
         if ( patches[ TOP_LEFT ] != null )
         {
@@ -466,9 +419,7 @@ public class NinePatch
             TopHeight = Math.Max( TopHeight, patches[ TOP_LEFT ]!.RegionHeight );
         }
         else
-        {
             TopLeft = -1;
-        }
 
         if ( patches[ TOP_CENTER ] != null )
         {
@@ -481,9 +432,7 @@ public class NinePatch
             TopHeight   = Math.Max( TopHeight, patches[ TOP_CENTER ]!.RegionHeight );
         }
         else
-        {
             TopCenter = -1;
-        }
 
         if ( patches[ TOP_RIGHT ] != null )
         {
@@ -492,9 +441,7 @@ public class NinePatch
             TopHeight  = Math.Max( TopHeight, patches[ TOP_RIGHT ]!.RegionHeight );
         }
         else
-        {
             TopRight = -1;
-        }
 
         if ( Idx < Vertices.Length )
         {
@@ -515,13 +462,8 @@ public class NinePatch
         ArgumentNullException.ThrowIfNull( region );
 
         if ( Texture == null )
-        {
             Texture = region.Texture;
-        }
-        else if ( Texture != region.Texture )
-        {
-            throw new ArgumentException( "All regions must be from the same texture." );
-        }
+        else if ( Texture != region.Texture ) throw new ArgumentException( "All regions must be from the same texture." );
 
         // Add half pixel offsets on stretchable dimensions to avoid color bleeding when GL_LINEAR
         // filtering is used for the texture. This nudges the texture coordinate to the center
@@ -603,50 +545,23 @@ public class NinePatch
         var topY         = ( y + height ) - TopHeight;
         var c            = TmpDrawColor.Set( Color ).Mul( batch.Color ).ToFloatBits();
 
-        if ( BottomLeft != -1 )
-        {
-            Set( BottomLeft, x, y, LeftWidth, BottomHeight, c );
-        }
+        if ( BottomLeft != -1 ) Set( BottomLeft, x, y, LeftWidth, BottomHeight, c );
 
-        if ( BottomCenter != -1 )
-        {
-            Set( BottomCenter, centerX, y, centerWidth, BottomHeight, c );
-        }
+        if ( BottomCenter != -1 ) Set( BottomCenter, centerX, y, centerWidth, BottomHeight, c );
 
-        if ( BottomRight != -1 )
-        {
-            Set( BottomRight, rightX, y, RightWidth, BottomHeight, c );
-        }
+        if ( BottomRight != -1 ) Set( BottomRight, rightX, y, RightWidth, BottomHeight, c );
 
-        if ( MiddleLeft != -1 )
-        {
-            Set( MiddleLeft, x, centerY, LeftWidth, centerHeight, c );
-        }
+        if ( MiddleLeft != -1 ) Set( MiddleLeft, x, centerY, LeftWidth, centerHeight, c );
 
-        if ( MiddleCenter != -1 )
-        {
-            Set( MiddleCenter, centerX, centerY, centerWidth, centerHeight, c );
-        }
+        if ( MiddleCenter != -1 ) Set( MiddleCenter, centerX, centerY, centerWidth, centerHeight, c );
 
-        if ( MiddleRight != -1 )
-        {
-            Set( MiddleRight, rightX, centerY, RightWidth, centerHeight, c );
-        }
+        if ( MiddleRight != -1 ) Set( MiddleRight, rightX, centerY, RightWidth, centerHeight, c );
 
-        if ( TopLeft != -1 )
-        {
-            Set( TopLeft, x, topY, LeftWidth, TopHeight, c );
-        }
+        if ( TopLeft != -1 ) Set( TopLeft, x, topY, LeftWidth, TopHeight, c );
 
-        if ( TopCenter != -1 )
-        {
-            Set( TopCenter, centerX, topY, centerWidth, TopHeight, c );
-        }
+        if ( TopCenter != -1 ) Set( TopCenter, centerX, topY, centerWidth, TopHeight, c );
 
-        if ( TopRight != -1 )
-        {
-            Set( TopRight, rightX, topY, RightWidth, TopHeight, c );
-        }
+        if ( TopRight != -1 ) Set( TopRight, rightX, topY, RightWidth, TopHeight, c );
     }
 
     public void Draw( IBatch batch, float x, float y, float width, float height )
@@ -698,10 +613,7 @@ public class NinePatch
             }
         }
 
-        if ( Texture != null )
-        {
-            batch.Draw( Texture, vertices, 0, n );
-        }
+        if ( Texture != null ) batch.Draw( Texture, vertices, 0, n );
     }
 
     /// <summary>
@@ -729,24 +641,12 @@ public class NinePatch
         MiddleWidth  *= scaleX;
         MiddleHeight *= scaleY;
 
-        if ( PadLeft is not -1f )
-        {
-            PadLeft *= scaleX;
-        }
+        if ( PadLeft is not -1f ) PadLeft *= scaleX;
 
-        if ( PadRight is not -1 )
-        {
-            PadRight *= scaleX;
-        }
+        if ( PadRight is not -1 ) PadRight *= scaleX;
 
-        if ( PadTop is not -1 )
-        {
-            PadTop *= scaleY;
-        }
+        if ( PadTop is not -1 ) PadTop *= scaleY;
 
-        if ( PadBottom is not -1 )
-        {
-            PadBottom *= scaleY;
-        }
+        if ( PadBottom is not -1 ) PadBottom *= scaleY;
     }
 }

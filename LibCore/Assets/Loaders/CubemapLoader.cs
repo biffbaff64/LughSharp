@@ -79,17 +79,11 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         {
             _loaderInfo.cubemap = null;
 
-            if ( parameter != null )
-            {
-                _loaderInfo.cubemap = ( ( CubemapParameter? )parameter )?.cubemap;
-            }
+            if ( parameter != null ) _loaderInfo.cubemap = ( ( CubemapParameter? ) parameter )?.cubemap;
 
             if ( fileName != null )
             {
-                if ( fileName.Contains( ".ktx" ) || fileName.Contains( ".zktx" ) )
-                {
-                    _loaderInfo.cubemapData = new KtxTextureData( file, GEN_MIP_MAPS );
-                }
+                if ( fileName.Contains( ".ktx" ) || fileName.Contains( ".zktx" ) ) _loaderInfo.cubemapData = new KtxTextureData( file, GEN_MIP_MAPS );
             }
         }
         else
@@ -98,10 +92,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
             _loaderInfo.cubemap     = parameter.cubemap;
         }
 
-        if ( !_loaderInfo.cubemapData!.IsPrepared )
-        {
-            _loaderInfo.cubemapData.Prepare();
-        }
+        if ( !_loaderInfo.cubemapData!.IsPrepared ) _loaderInfo.cubemapData.Prepare();
     }
 
 

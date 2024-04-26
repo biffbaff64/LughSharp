@@ -56,15 +56,9 @@ public class TiledMapTileLayer : MapLayer
     /// <returns> <see cref="Cell" /> at (x, y) </returns>
     public Cell? GetCell( int x, int y )
     {
-        if ( ( x < 0 ) || ( x >= Width ) )
-        {
-            return null;
-        }
+        if ( ( x < 0 ) || ( x >= Width ) ) return null;
 
-        if ( ( y < 0 ) || ( y >= Height ) )
-        {
-            return null;
-        }
+        if ( ( y < 0 ) || ( y >= Height ) ) return null;
 
         return Cells[ x, y ];
     }
@@ -77,15 +71,9 @@ public class TiledMapTileLayer : MapLayer
     /// <param name="cell"> the <see cref="Cell" /> to set at the given coordinates. </param>
     public void SetCell( int x, int y, Cell cell )
     {
-        if ( ( x < 0 ) || ( x >= Width ) )
-        {
-            return;
-        }
+        if ( ( x < 0 ) || ( x >= Width ) ) return;
 
-        if ( ( y < 0 ) || ( y >= Height ) )
-        {
-            return;
-        }
+        if ( ( y < 0 ) || ( y >= Height ) ) return;
 
         Cells[ x, y ] = cell;
     }

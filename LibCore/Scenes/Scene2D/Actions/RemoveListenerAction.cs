@@ -37,13 +37,9 @@ public class RemoveListenerAction : Action
         Debug.Assert( Listener != null, nameof( Listener ) + " != null" );
 
         if ( Capture )
-        {
             Target?.RemoveCaptureListener( Listener );
-        }
         else
-        {
             Target?.RemoveListener( Listener );
-        }
 
         return true;
     }

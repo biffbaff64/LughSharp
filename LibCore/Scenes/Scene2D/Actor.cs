@@ -194,10 +194,7 @@ public class Actor : IActor
             {
                 _debug = value;
 
-                if ( value )
-                {
-                    Stage.debug = true;
-                }
+                if ( value ) Stage.debug = true;
             }
         }
     }
@@ -224,24 +221,17 @@ public class Actor : IActor
     /// <exception cref="SystemException"></exception>
     public virtual void Act( float delta )
     {
-        if ( Actions.Count == 0 )
-        {
-            return;
-        }
+        if ( Actions.Count == 0 ) return;
 
-        if ( Stage is { ActionsRequestRendering: true } )
-        {
-            Gdx.Graphics.RequestRendering();
-        }
+        if ( Stage is { ActionsRequestRendering: true } ) Gdx.Graphics.RequestRendering();
 
         try
         {
             for ( var i = 0; i < Actions.Count; i++ )
-            {
                 if ( Actions[ i ].Act( delta ) && ( i < Actions.Count ) )
                 {
                     var current     = Actions[ i ];
-                    var    actionIndex = current == Actions[ i ] ? i : Actions.IndexOf( Actions[ i ] );
+                    var actionIndex = current == Actions[ i ] ? i : Actions.IndexOf( Actions[ i ] );
 
                     if ( actionIndex != -1 )
                     {
@@ -251,16 +241,12 @@ public class Actor : IActor
                         i--;
                     }
                 }
-            }
         }
         catch ( SystemException ex )
         {
             var context = ToString();
 
-            if ( context != null )
-            {
-                throw new SystemException( $"Actor - {context.AsSpan( 0, Math.Min( context.Length, 128 ) )}", ex );
-            }
+            if ( context != null ) throw new SystemException( $"Actor - {context.AsSpan( 0, Math.Min( context.Length, 128 ) )}", ex );
         }
     }
 
@@ -291,10 +277,7 @@ public class Actor : IActor
         // hierarchy changes.
         List< Group >? ascendants = Pools< List< Group > >.Obtain();
 
-        if ( ascendants == null )
-        {
-            return ev.IsCancelled;
-        }
+        if ( ascendants == null ) return ev.IsCancelled;
 
         var parent = Parent;
 
@@ -316,32 +299,20 @@ public class Actor : IActor
 
                 currentTarget.Notify( ev, true );
 
-                if ( ev.IsStopped )
-                {
-                    return ev.IsCancelled;
-                }
+                if ( ev.IsStopped ) return ev.IsCancelled;
             }
 
             // Notify the target capture listeners.
             Notify( ev, true );
 
-            if ( ev.IsStopped )
-            {
-                return ev.IsCancelled;
-            }
+            if ( ev.IsStopped ) return ev.IsCancelled;
 
             // Notify the target listeners.
             Notify( ev, false );
 
-            if ( !ev.Bubbles )
-            {
-                return ev.IsCancelled;
-            }
+            if ( !ev.Bubbles ) return ev.IsCancelled;
 
-            if ( ev.IsStopped )
-            {
-                return ev.IsCancelled;
-            }
+            if ( ev.IsStopped ) return ev.IsCancelled;
 
             // Notify ascendants' actor listeners, starting at the target.
             // Children may stop an event before ascendants receive it.
@@ -349,10 +320,7 @@ public class Actor : IActor
             {
                 ascendantsArray[ i ].Notify( ev, false );
 
-                if ( ev.IsStopped )
-                {
-                    return ev.IsCancelled;
-                }
+                if ( ev.IsStopped ) return ev.IsCancelled;
             }
 
             return ev.IsCancelled;
@@ -367,17 +335,11 @@ public class Actor : IActor
 
     public virtual bool Notify( Event ev, bool capture )
     {
-        if ( ev.TargetActor == null )
-        {
-            throw new ArgumentException( "The event target cannot be null." );
-        }
+        if ( ev.TargetActor == null ) throw new ArgumentException( "The event target cannot be null." );
 
         DelayedRemovalArray< IEventListener > listeners = capture ? CaptureListeners : Listeners;
 
-        if ( listeners.Count == 0 )
-        {
-            return ev.IsCancelled;
-        }
+        if ( listeners.Count == 0 ) return ev.IsCancelled;
 
         ev.ListenerActor = this;
         ev.Capture       = capture;
@@ -389,12 +351,8 @@ public class Actor : IActor
             listeners.Begin();
 
             for ( int i = 0, n = listeners.Count; i < n; i++ )
-            {
                 if ( listeners[ i ].Handle( ev ) )
-                {
                     ev.IsHandled = true;
-                }
-            }
 
             listeners.End();
         }
@@ -430,15 +388,9 @@ public class Actor : IActor
     /// <returns></returns>
     public virtual Actor? Hit( float x, float y, bool touchable )
     {
-        if ( touchable && ( Touchable != Touchable.Enabled ) )
-        {
-            return null;
-        }
+        if ( touchable && ( Touchable != Touchable.Enabled ) ) return null;
 
-        if ( !IsVisible )
-        {
-            return null;
-        }
+        if ( !IsVisible ) return null;
 
         return ( x >= 0 ) && ( x < _width ) && ( y >= 0 ) && ( y < _height ) ? this : null;
     }
@@ -484,10 +436,7 @@ public class Actor : IActor
     /// <exception cref="ArgumentException"></exception>
     public bool AddCaptureListener( IEventListener listener )
     {
-        if ( !CaptureListeners.Contains( listener ) )
-        {
-            CaptureListeners.Add( listener );
-        }
+        if ( !CaptureListeners.Contains( listener ) ) CaptureListeners.Add( listener );
 
         return true;
     }
@@ -513,10 +462,7 @@ public class Actor : IActor
 
             Actions.Add( action );
 
-            if ( Stage is { ActionsRequestRendering: true } )
-            {
-                Gdx.Graphics.RequestRendering();
-            }
+            if ( Stage is { ActionsRequestRendering: true } ) Gdx.Graphics.RequestRendering();
         }
     }
 
@@ -525,10 +471,7 @@ public class Actor : IActor
     /// <param name="action"></param>
     public void RemoveAction( Action? action )
     {
-        if ( ( action != null ) && Actions.Remove( action ) )
-        {
-            action.Actor = null;
-        }
+        if ( ( action != null ) && Actions.Remove( action ) ) action.Actor = null;
     }
 
     /// <summary>
@@ -544,10 +487,7 @@ public class Actor : IActor
     /// </summary>
     public void ClearActions()
     {
-        for ( var i = Actions.Count - 1; i >= 0; i-- )
-        {
-            Actions[ i ].Actor = null;
-        }
+        for ( var i = Actions.Count - 1; i >= 0; i-- ) Actions[ i ].Actor = null;
 
         Actions.Clear();
     }
@@ -585,13 +525,11 @@ public class Actor : IActor
 
         do
         {
-            if ( parent == actor )
-            {
-                return true;
-            }
+            if ( parent == actor ) return true;
 
             parent = parent.Parent;
-        } while ( parent != null );
+        }
+        while ( parent != null );
 
         return false;
     }
@@ -606,13 +544,11 @@ public class Actor : IActor
 
         do
         {
-            if ( actor == this )
-            {
-                return true;
-            }
+            if ( actor == this ) return true;
 
             actor = actor.Parent;
-        } while ( actor != null );
+        }
+        while ( actor != null );
 
         return false;
     }
@@ -627,13 +563,11 @@ public class Actor : IActor
 
         do
         {
-            if ( actor.GetType() == type.GetType() )
-            {
-                return ( T ) actor;
-            }
+            if ( actor.GetType() == type.GetType() ) return ( T ) actor;
 
             actor = actor.Parent;
-        } while ( actor != null );
+        }
+        while ( actor != null );
 
         return null;
     }
@@ -663,13 +597,11 @@ public class Actor : IActor
 
         do
         {
-            if ( !actor.IsVisible )
-            {
-                return false;
-            }
+            if ( !actor.IsVisible ) return false;
 
             actor = actor.Parent;
-        } while ( actor != null );
+        }
+        while ( actor != null );
 
         return true;
     }
@@ -696,18 +628,11 @@ public class Actor : IActor
     /// </summary>
     public bool IsTouchFocusTarget()
     {
-        if ( Stage == null )
-        {
-            return false;
-        }
+        if ( Stage == null ) return false;
 
         for ( int i = 0, n = Stage.touchFocuses.Size; i < n; i++ )
-        {
             if ( Stage.touchFocuses.GetAt( i ).Target == this )
-            {
                 return true;
-            }
-        }
 
         return false;
     }
@@ -718,18 +643,11 @@ public class Actor : IActor
     /// </summary>
     public bool IsTouchFocusListener()
     {
-        if ( Stage == null )
-        {
-            return false;
-        }
+        if ( Stage == null ) return false;
 
         for ( int i = 0, n = Stage.touchFocuses.Size; i < n; i++ )
-        {
             if ( Stage.touchFocuses.GetAt( i ).ListenerActor == this )
-            {
                 return true;
-            }
-        }
 
         return false;
     }
@@ -742,13 +660,8 @@ public class Actor : IActor
         var x = _x;
 
         if ( ( alignment & Align.RIGHT ) != 0 )
-        {
-            x += _width;
-        }
-        else if ( ( alignment & Align.LEFT ) == 0 )
-        {
-            x += _width / 2;
-        }
+            x                                         += _width;
+        else if ( ( alignment & Align.LEFT ) == 0 ) x += _width / 2;
 
         return x;
     }
@@ -760,13 +673,8 @@ public class Actor : IActor
     public void SetXWithAlignment( float x, int alignment )
     {
         if ( ( alignment & Align.RIGHT ) != 0 )
-        {
-            x -= _width;
-        }
-        else if ( ( alignment & Align.LEFT ) == 0 )
-        {
-            x -= _width / 2;
-        }
+            x                                         -= _width;
+        else if ( ( alignment & Align.LEFT ) == 0 ) x -= _width / 2;
 
         if ( MathUtils.IsNotEqual( _x, x ) )
         {
@@ -783,13 +691,8 @@ public class Actor : IActor
     public void SetYWithAlignment( float y, int alignment )
     {
         if ( ( alignment & Align.TOP ) != 0 )
-        {
-            y -= _height;
-        }
-        else if ( ( alignment & Align.BOTTOM ) == 0 )
-        {
-            y -= _height / 2;
-        }
+            y                                           -= _height;
+        else if ( ( alignment & Align.BOTTOM ) == 0 ) y -= _height / 2;
 
         if ( MathUtils.IsNotEqual( _y, y ) )
         {
@@ -806,13 +709,8 @@ public class Actor : IActor
         var y = _y;
 
         if ( ( alignment & Align.TOP ) != 0 )
-        {
-            y += _height;
-        }
-        else if ( ( alignment & Align.BOTTOM ) == 0 )
-        {
-            y += _height / 2;
-        }
+            y                                           += _height;
+        else if ( ( alignment & Align.BOTTOM ) == 0 ) y += _height / 2;
 
         return y;
     }
@@ -837,22 +735,12 @@ public class Actor : IActor
     public void SetPosition( float x, float y, int alignment )
     {
         if ( ( alignment & Align.RIGHT ) != 0 )
-        {
-            x -= Width;
-        }
-        else if ( ( alignment & Align.LEFT ) == 0 )
-        {
-            x -= Width / 2;
-        }
+            x                                         -= Width;
+        else if ( ( alignment & Align.LEFT ) == 0 ) x -= Width / 2;
 
         if ( ( alignment & Align.TOP ) != 0 )
-        {
-            y -= Height;
-        }
-        else if ( ( alignment & Align.BOTTOM ) == 0 )
-        {
-            y -= Height / 2;
-        }
+            y                                           -= Height;
+        else if ( ( alignment & Align.BOTTOM ) == 0 ) y -= Height / 2;
 
         if ( !X.Equals( x ) || !Y.Equals( y ) )
         {
@@ -978,30 +866,18 @@ public class Actor : IActor
     public void SetOrigin( int alignment )
     {
         if ( ( alignment & Align.LEFT ) != 0 )
-        {
             OriginX = 0;
-        }
         else if ( ( alignment & Align.RIGHT ) != 0 )
-        {
             OriginX = Width;
-        }
         else
-        {
             OriginX = Width / 2;
-        }
 
         if ( ( alignment & Align.BOTTOM ) != 0 )
-        {
             OriginY = 0;
-        }
         else if ( ( alignment & Align.TOP ) != 0 )
-        {
             OriginY = Height;
-        }
         else
-        {
             OriginY = Height / 2;
-        }
     }
 
     /// <summary>
@@ -1107,27 +983,15 @@ public class Actor : IActor
     /// <returns>true if the z-index changed.</returns>
     public bool SetZIndex( int index )
     {
-        if ( index < 0 )
-        {
-            throw new ArgumentException( "ZIndex cannot be < 0." );
-        }
+        if ( index < 0 ) throw new ArgumentException( "ZIndex cannot be < 0." );
 
-        if ( ( Parent == null ) || ( Parent.Children.Size <= 1 ) )
-        {
-            return false;
-        }
+        if ( ( Parent == null ) || ( Parent.Children.Size <= 1 ) ) return false;
 
         index = Math.Min( index, Parent.Children.Size - 1 );
 
-        if ( Parent.Children.GetAt( index ) == this )
-        {
-            return false;
-        }
+        if ( Parent.Children.GetAt( index ) == this ) return false;
 
-        if ( !Parent.Children.Remove( this ) )
-        {
-            return false;
-        }
+        if ( !Parent.Children.Remove( this ) ) return false;
 
         Parent.Children.Insert( index, this );
 
@@ -1141,10 +1005,7 @@ public class Actor : IActor
     /// <returns></returns>
     public int GetZIndex()
     {
-        if ( Parent == null )
-        {
-            return -1;
-        }
+        if ( Parent == null ) return -1;
 
         return Parent.Children.IndexOf( this );
     }
@@ -1167,15 +1028,9 @@ public class Actor : IActor
     /// <see cref="ScissorStack" />
     public bool ClipBegin( float x, float y, float width, float height )
     {
-        if ( ( width <= 0 ) || ( height <= 0 ) )
-        {
-            return false;
-        }
+        if ( ( width <= 0 ) || ( height <= 0 ) ) return false;
 
-        if ( Stage == null )
-        {
-            return false;
-        }
+        if ( Stage == null ) return false;
 
         var tableBounds = RectangleShape.Tmp;
 
@@ -1186,17 +1041,11 @@ public class Actor : IActor
 
         var scissorBounds = Pools< RectangleShape >.Obtain();
 
-        if ( scissorBounds == null )
-        {
-            return false;
-        }
+        if ( scissorBounds == null ) return false;
 
         Stage.CalculateScissors( tableBounds, scissorBounds );
 
-        if ( ScissorStack.PushScissors( scissorBounds ) )
-        {
-            return true;
-        }
+        if ( ScissorStack.PushScissors( scissorBounds ) ) return true;
 
         Pools< RectangleShape >.Free( scissorBounds );
 
@@ -1365,11 +1214,9 @@ public class Actor : IActor
 
             actor = actor.Parent;
 
-            if ( actor == ascendant )
-            {
-                break;
-            }
-        } while ( actor != null );
+            if ( actor == ascendant ) break;
+        }
+        while ( actor != null );
 
         return localCoords;
     }
@@ -1399,17 +1246,11 @@ public class Actor : IActor
     /// </summary>
     protected virtual void DrawDebugBounds( ShapeRenderer shapes )
     {
-        if ( !DebugActive )
-        {
-            return;
-        }
+        if ( !DebugActive ) return;
 
         shapes.Set( ShapeRenderer.ShapeTypes.Lines );
 
-        if ( Stage != null )
-        {
-            shapes.Color = Stage.DebugColor;
-        }
+        if ( Stage != null ) shapes.Color = Stage.DebugColor;
 
         shapes.Rect( _x, _y, OriginX, OriginY, _width, _height, ScaleX, ScaleY, Rotation );
     }

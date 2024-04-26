@@ -24,7 +24,6 @@
 
 
 using System.Runtime.CompilerServices;
-
 using Exception = System.Exception;
 using NotNull = System.Diagnostics.CodeAnalysis.NotNullAttribute;
 
@@ -84,10 +83,7 @@ public class GdxRuntimeException : Exception
                                     [CallerArgumentExpression( "argument" )]
                                     string? paramName = null )
     {
-        if ( argument is null )
-        {
-            Throw( paramName );
-        }
+        if ( argument is null ) Throw( paramName );
     }
 
     [DoesNotReturn]

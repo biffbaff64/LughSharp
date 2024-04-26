@@ -47,10 +47,6 @@ public class GLVersion : GDXVersion
         GL40
     }
 
-    public string? VendorString   { get; set; }
-    public string? RendererString { get; set; }
-    public GLType  GLtype         { get; set; }
-
     private const string TAG = "GLVersion";
 
     /// <summary>
@@ -99,6 +95,10 @@ public class GLVersion : GDXVersion
         VendorString   = vendorString;
         RendererString = rendererString;
     }
+
+    public string? VendorString   { get; set; }
+    public string? RendererString { get; set; }
+    public GLType  GLtype         { get; set; }
 
     /// <summary>
     /// </summary>

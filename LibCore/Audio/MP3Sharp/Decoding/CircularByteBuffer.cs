@@ -35,13 +35,13 @@ public class CircularByteBuffer
     private int    _length;
     private int    _numValid;
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-	/// <summary>
-	/// 	Creates a new CircularByteBuffer with size set to the
-	/// 	provided value.
-	/// </summary>
-	/// <param name="size"></param>
+    /// <summary>
+    ///     Creates a new CircularByteBuffer with size set to the
+    ///     provided value.
+    /// </summary>
+    /// <param name="size"></param>
     public CircularByteBuffer( int size )
     {
         _buffer = new byte[ size ];
@@ -60,10 +60,7 @@ public class CircularByteBuffer
             _index    = cdb._index;
             _buffer   = new byte[ _length ];
 
-            for ( var c = 0; c < _length; c++ )
-            {
-                _buffer[ c ] = cdb._buffer[ c ];
-            }
+            for ( var c = 0; c < _length; c++ ) _buffer[ c ] = cdb._buffer[ c ];
         }
     }
 
@@ -79,10 +76,7 @@ public class CircularByteBuffer
 
             var minLength = _length > value ? value : _length;
 
-            for ( var i = 0; i < minLength; i++ )
-            {
-                newDataArray[ i ] = InternalGet( ( i - _length ) + 1 );
-            }
+            for ( var i = 0; i < minLength; i++ ) newDataArray[ i ] = InternalGet( ( i - _length ) + 1 );
 
             _buffer = newDataArray;
             _index  = minLength - 1;
@@ -110,7 +104,7 @@ public class CircularByteBuffer
             if ( value > _numValid )
             {
                 throw new Exception( $"Can't set NumValid to {value} which is greater "
-									 + $"than the current numValid value of {_numValid}" );
+                                   + $"than the current numValid value of {_numValid}" );
             }
 
             _numValid = value;
@@ -140,10 +134,7 @@ public class CircularByteBuffer
             _buffer[ _index ] = newValue;
             _numValid++;
 
-            if ( _numValid > _length )
-            {
-                _numValid = _length;
-            }
+            if ( _numValid > _length ) _numValid = _length;
 
             _index++;
             _index %= _length;
@@ -160,10 +151,7 @@ public class CircularByteBuffer
     {
         lock ( this )
         {
-            if ( _numValid == 0 )
-            {
-                throw new Exception( "Can't pop off an empty CircularByteBuffer" );
-            }
+            if ( _numValid == 0 ) throw new Exception( "Can't pop off an empty CircularByteBuffer" );
 
             _numValid--;
 
@@ -223,30 +211,24 @@ public class CircularByteBuffer
 
     /// <summary>
     ///     Returns a range (in terms of Offsets) in an int array in chronological
-	///     (oldest-to-newest) order. e.g. (3, 0) returns the last four ints pushed,
-	///     with result[3] being the most recent.
+    ///     (oldest-to-newest) order. e.g. (3, 0) returns the last four ints pushed,
+    ///     with result[3] being the most recent.
     /// </summary>
     public byte[] GetRange( int str, int stp )
     {
         var outByte = new byte[ ( str - stp ) + 1 ];
 
-        for ( int i = str, j = 0; i >= stp; i--, j++ )
-        {
-            outByte[ j ] = this[ i ];
-        }
+        for ( int i = str, j = 0; i >= stp; i--, j++ ) outByte[ j ] = this[ i ];
 
         return outByte;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         var ret = "";
 
-        foreach ( var t in _buffer )
-        {
-            ret += t + " ";
-        }
+        foreach ( var t in _buffer ) ret += t + " ";
 
         ret += $"\n index = {_index} numValid = {NumValid}";
 

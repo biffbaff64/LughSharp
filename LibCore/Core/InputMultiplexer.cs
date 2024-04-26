@@ -28,8 +28,6 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public class InputMultiplexer : IInputProcessor
 {
-    public SnapshotArray< IInputProcessor > Processors { get; set; } = new( 4 );
-
     /// <summary>
     ///     Constructor.
     ///     Creates a new InputMultiplexer. It will not contain any Input Processors,
@@ -40,17 +38,15 @@ public class InputMultiplexer : IInputProcessor
     }
 
     /// <summary>
-    /// 
     /// </summary>
     public InputMultiplexer( params IInputProcessor[] processors )
     {
-        foreach ( IInputProcessor inputProcessor in processors )
-        {
-            Processors.Add( inputProcessor );
-        }
+        foreach ( var inputProcessor in processors ) Processors.Add( inputProcessor );
     }
 
-    /// <inheritdoc/>
+    public SnapshotArray< IInputProcessor > Processors { get; set; } = new( 4 );
+
+    /// <inheritdoc />
     public bool KeyDown( int keycode )
     {
         IInputProcessor?[] items = Processors.Begin();
@@ -58,12 +54,8 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
-            {
                 if ( items[ i ]!.KeyDown( keycode ) )
-                {
                     return true;
-                }
-            }
         }
         finally
         {
@@ -81,12 +73,8 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
-            {
                 if ( items[ i ]!.KeyUp( keycode ) )
-                {
                     return true;
-                }
-            }
         }
         finally
         {
@@ -104,12 +92,8 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
-            {
                 if ( items[ i ]!.KeyTyped( character ) )
-                {
                     return true;
-                }
-            }
         }
         finally
         {
@@ -127,12 +111,8 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
-            {
                 if ( items[ i ]!.TouchDown( screenX, screenY, pointer, button ) )
-                {
                     return true;
-                }
-            }
         }
         finally
         {
@@ -150,12 +130,8 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
-            {
                 if ( items[ i ]!.TouchUp( screenX, screenY, pointer, button ) )
-                {
                     return true;
-                }
-            }
         }
         finally
         {
@@ -173,12 +149,8 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
-            {
                 if ( items[ i ]!.TouchDragged( screenX, screenY, pointer ) )
-                {
                     return true;
-                }
-            }
         }
         finally
         {
@@ -196,12 +168,8 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
-            {
                 if ( items[ i ]!.MouseMoved( screenX, screenY ) )
-                {
                     return true;
-                }
-            }
         }
         finally
         {
@@ -219,12 +187,8 @@ public class InputMultiplexer : IInputProcessor
         try
         {
             for ( int i = 0, n = Processors.Size; i < n; i++ )
-            {
                 if ( items[ i ]!.Scrolled( amountX, amountY ) )
-                {
                     return true;
-                }
-            }
         }
         finally
         {
@@ -235,29 +199,23 @@ public class InputMultiplexer : IInputProcessor
     }
 
     /// <summary>
-    ///     Inserts an <see cref="IInputProcessor"/> into the list of processors.
+    ///     Inserts an <see cref="IInputProcessor" /> into the list of processors.
     ///     This processor will be inserted at the position specified by
-    ///     <paramref name="index"/>
+    ///     <paramref name="index" />
     /// </summary>
     public void AddProcessor( int index, IInputProcessor processor )
     {
-        if ( processor == null )
-        {
-            throw new NullReferenceException( "processor cannot be null" );
-        }
+        if ( processor == null ) throw new NullReferenceException( "processor cannot be null" );
 
         Processors.Insert( index, processor );
     }
 
     /// <summary>
-    ///     Adds the specified <see cref="IInputProcessor"/> to the list of processors.
+    ///     Adds the specified <see cref="IInputProcessor" /> to the list of processors.
     /// </summary>
     public void AddProcessor( IInputProcessor processor )
     {
-        if ( processor == null )
-        {
-            throw new NullReferenceException( "processor cannot be null" );
-        }
+        if ( processor == null ) throw new NullReferenceException( "processor cannot be null" );
 
         Processors.Add( processor );
     }
@@ -273,13 +231,16 @@ public class InputMultiplexer : IInputProcessor
     }
 
     /// <summary>
-    ///     Returns the number of <see cref="IInputProcessor"/>s in the list.
+    ///     Returns the number of <see cref="IInputProcessor" />s in the list.
     /// </summary>
     /// <returns></returns>
-    public int Size() => Processors.Size;
+    public int Size()
+    {
+        return Processors.Size;
+    }
 
     /// <summary>
-    ///     Clears the list of Input Processors. 
+    ///     Clears the list of Input Processors.
     /// </summary>
     public void Clear()
     {

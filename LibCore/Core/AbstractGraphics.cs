@@ -30,30 +30,9 @@ using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
 [PublicAPI]
 public abstract class AbstractGraphics : IGraphics
 {
-    #region implemented methods
-
-    /// <inheritdoc />
-    public float GetRawDeltaTime()
-    {
-        return DeltaTime;
-    }
-
-    /// <inheritdoc />
-    public float GetDensity()
-    {
-        return GetPpiX() / 160f;
-    }
-
-    /// <inheritdoc />
-    public float GetBackBufferScale()
-    {
-        return BackBufferWidth / ( float )Width;
-    }
-
-    #endregion implemented methods
-
     #region properties
 
+    public IGL                    IGL                 { get; set; } = null!;
     public BufferFormatDescriptor BufferFormat        { get; set; } = null!;
     public int                    BackBufferWidth     { get; protected set; }
     public int                    BackBufferHeight    { get; protected set; }
@@ -61,13 +40,48 @@ public abstract class AbstractGraphics : IGraphics
     public int                    LogicalHeight       { get; set; }
     public int                    Width               { get; }
     public int                    Height              { get; }
-    public IGL20?                 GL20                { get; set; }
-    public IGL30?                 GL30                { get; set; }
     public float                  DeltaTime           { get; set; }
     public GLVersion              GLVersion           { get; set; } = null!;
     public bool                   ContinuousRendering { get; set; } = true;
 
     #endregion properties
+
+    // ------------------------------------------------------------------------
+    
+    #region implemented methods
+
+    /// <summary>
+    ///     Returns the time span between the current frame and the last frame
+    ///     in seconds, without smoothing.
+    /// </summary>
+    public float GetRawDeltaTime()
+    {
+        return DeltaTime;
+    }
+
+    /// <summary>
+    ///     This is a scaling factor for the Density Independent Pixel unit, following
+    ///     the convention where one DIP is one pixel on an approximately 160 dpi screen.
+    ///     Thus on a 160dpi screen this density value will be 1; on a 120 dpi screen it
+    ///     would be .75; etc.
+    /// </summary>
+    /// <returns>the Density Independent Pixel factor of the display.</returns>
+    public float GetDensity()
+    {
+        return GetPpiX() / 160f;
+    }
+
+    /// <summary>
+    ///     Returns the amount of pixels per logical pixel (point).
+    /// </summary>
+    public float GetBackBufferScale()
+    {
+        return BackBufferWidth / ( float ) Width;
+    }
+
+    #endregion implemented methods
+
+    // ------------------------------------------------------------------------
 
     #region abstract methods
 
@@ -75,108 +89,50 @@ public abstract class AbstractGraphics : IGraphics
     // Abstract methods because C# insists this is done to fulfill the contract
     // between the class and interface, which just makes everything annoying tbh.
 
+    //TODO:
     [Obsolete]
     public abstract IGraphics.MonitorDescriptor GetPrimaryMonitor();
 
+    //TODO:
     [Obsolete]
     public abstract IGraphics.MonitorDescriptor GetMonitor();
 
+    //TODO:
     [Obsolete]
     public abstract IGraphics.MonitorDescriptor[] GetMonitors();
 
     // ------------------------------------------------------------------------
-    
-    /// <inheritdoc />
+
     public abstract IGraphics.DisplayModeDescriptor[] GetDisplayModes();
-
-    /// <inheritdoc />
     public abstract IGraphics.DisplayModeDescriptor[] GetDisplayModes( IGraphics.MonitorDescriptor monitor );
-
-    /// <inheritdoc />
     public abstract IGraphics.DisplayModeDescriptor GetDisplayMode();
-
-    /// <inheritdoc />
     public abstract IGraphics.DisplayModeDescriptor GetDisplayMode( IGraphics.MonitorDescriptor monitor );
-
-    /// <inheritdoc />
     public abstract bool SetFullscreenMode( IGraphics.DisplayModeDescriptor displayMode );
-
-    /// <inheritdoc />
     public abstract bool SetWindowedMode( int width, int height );
-
-    /// <inheritdoc />
     public abstract void SetTitle( string title );
-
-    /// <inheritdoc />
     public abstract void SetUndecorated( bool undecorated );
-
-    /// <inheritdoc />
     public abstract void SetResizable( bool resizable );
-
-    /// <inheritdoc />
     public abstract void SetVSync( bool vsync );
-
-    /// <inheritdoc />
     public abstract void SetForegroundFps( int fps );
-
-    /// <inheritdoc />
     public abstract bool SupportsExtension( string extension );
-
-    /// <inheritdoc />
     public abstract bool SupportsDisplayModeChange();
-
-    /// <inheritdoc />
     public abstract void RequestRendering();
-
-    /// <inheritdoc />
     public abstract bool IsFullscreen();
-
-    /// <inheritdoc />
     public abstract ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot );
-
-    /// <inheritdoc />
     public abstract void SetCursor( ICursor cursor );
-
-    /// <inheritdoc />
     public abstract void SetSystemCursor( ICursor.SystemCursor systemCursor );
-
-    /// <inheritdoc />
     public abstract bool IsGL30Available();
-
-    /// <inheritdoc />
     public abstract int GetSafeInsetLeft();
-
-    /// <inheritdoc />
     public abstract int GetSafeInsetTop();
-
-    /// <inheritdoc />
     public abstract int GetSafeInsetBottom();
-
-    /// <inheritdoc />
     public abstract int GetSafeInsetRight();
-
-    /// <inheritdoc />
     public abstract long GetFrameId();
-
-    /// <inheritdoc />
     public abstract int GetFramesPerSecond();
-
-    /// <inheritdoc />
     public abstract GLVersion.GLType GetGraphicsType();
-
-    /// <inheritdoc />
     public abstract float GetPpiX();
-
-    /// <inheritdoc />
     public abstract (float X, float Y) GetPpcXY();
-
-    /// <inheritdoc />
     public abstract float GetPpiY();
-
-    /// <inheritdoc />
     public abstract float GetPpcX();
-
-    /// <inheritdoc />
     public abstract float GetPpcY();
 
     #endregion abstract methods

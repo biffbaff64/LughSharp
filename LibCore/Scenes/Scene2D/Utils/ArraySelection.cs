@@ -29,7 +29,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 ///     A selection that supports range selection by knowing about the
 ///     array of items being selected.
 /// </summary>
-public class ArraySelection<T> : Selection< T >
+public class ArraySelection< T > : Selection< T >
 {
     private readonly List< T >? _array;
     private          T?         _rangeStart;
@@ -50,10 +50,7 @@ public class ArraySelection<T> : Selection< T >
     {
         ArgumentNullException.ThrowIfNull( item );
 
-        if ( IsDisabled )
-        {
-            return;
-        }
+        if ( IsDisabled ) return;
 
         if ( !RangeSelect || !Multiple )
         {
@@ -68,36 +65,23 @@ public class ArraySelection<T> : Selection< T >
 
             if ( rangeStartIndex != -1 )
             {
-                T? oldRangeStart = _rangeStart;
+                var oldRangeStart = _rangeStart;
                 Snapshot();
 
                 // Select new range.
                 var start = rangeStartIndex;
                 var end   = _array!.IndexOf( item, 0 );
 
-                if ( start > end )
-                {
-                    ( end, start ) = ( start, end );
-                }
+                if ( start > end ) ( end, start ) = ( start, end );
 
-                if ( !UIUtils.Ctrl() )
-                {
-                    Selected.Clear(); // Clear( 8 );
-                }
+                if ( !UIUtils.Ctrl() ) Selected.Clear(); // Clear( 8 );
 
-                for ( var i = start; i <= end; i++ )
-                {
-                    Selected.Add( _array[ i ] );
-                }
+                for ( var i = start; i <= end; i++ ) Selected.Add( _array[ i ] );
 
                 if ( FireChangeEvent() )
-                {
                     Revert();
-                }
                 else
-                {
                     Changed();
-                }
 
                 _rangeStart = oldRangeStart;
 
@@ -136,22 +120,15 @@ public class ArraySelection<T> : Selection< T >
 
         var changed = false;
 
-        foreach ( T item in Items() )
-        {
+        foreach ( var item in Items() )
             if ( !_array!.Contains( item ) )
             {
                 Items().Remove( item );
                 changed = true;
             }
-        }
 
         if ( Required && ( Selected.Count == 0 ) )
-        {
             Set( _array!.First() );
-        }
-        else if ( changed )
-        {
-            Changed();
-        }
+        else if ( changed ) Changed();
     }
 }

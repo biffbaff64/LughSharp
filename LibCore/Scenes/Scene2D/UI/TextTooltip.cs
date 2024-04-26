@@ -75,10 +75,7 @@ public class TextTooltip : Tooltip< Label >
     {
         ArgumentNullException.ThrowIfNull( style );
 
-        if ( Container == null )
-        {
-            throw new NullReferenceException( "Container cannot be null" );
-        }
+        if ( Container == null ) throw new NullReferenceException( "Container cannot be null" );
 
         Container.GetActor()!.Style = style.Label;
         Container.SetBackground( style.Background );

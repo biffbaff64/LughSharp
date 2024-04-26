@@ -27,7 +27,4 @@ namespace LughSharp.LibCore.Input;
 
 public class RemoteInput
 {
-    public RemoteInput()
-    {
-    }
 }

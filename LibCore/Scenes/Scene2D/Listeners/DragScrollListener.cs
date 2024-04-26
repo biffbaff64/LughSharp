@@ -30,7 +30,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 [PublicAPI]
 public class DragScrollListener : DragListener
 {
-    private readonly static Vector2             _tmpCoords      = new();
+    private readonly static Vector2             _tmpCoords     = new();
     private readonly        Interpolation.ExpIn _interpolation = Interpolation.Exp5In;
 
     private readonly ScrollPane _scroll;
@@ -52,14 +52,14 @@ public class DragScrollListener : DragListener
         _minSpeed = minSpeedPixels;
         _maxSpeed = maxSpeedPixels;
         _tickSecs = tickSecs;
-        _rampTime = ( long )( rampSecs * 1000 );
+        _rampTime = ( long ) ( rampSecs * 1000 );
     }
 
     private float GetScrollPixels()
     {
         return _interpolation.Apply( _minSpeed,
                                      _maxSpeed,
-                                     Math.Min( 1, ( TimeUtils.Millis() - _startTime ) / ( float )_rampTime ) );
+                                     Math.Min( 1, ( TimeUtils.Millis() - _startTime ) / ( float ) _rampTime ) );
     }
 
     public override void Drag( InputEvent ev, float x, float y, int pointer )

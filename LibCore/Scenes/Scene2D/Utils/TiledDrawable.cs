@@ -47,7 +47,7 @@ public class TiledDrawable : TextureRegionDrawable
 
     public override void Draw( IBatch batch, float x, float y, float width, float height )
     {
-        TextureRegion? region = Region;
+        var region = Region;
 
         if ( region != null )
         {
@@ -57,8 +57,8 @@ public class TiledDrawable : TextureRegionDrawable
 
             var regionWidth  = region.RegionWidth * Scale;
             var regionHeight = region.RegionHeight * Scale;
-            var fullX        = ( int )( width / regionWidth );
-            var fullY        = ( int )( height / regionHeight );
+            var fullX        = ( int ) ( width / regionWidth );
+            var fullY        = ( int ) ( height / regionHeight );
             var remainingX   = width - ( regionWidth * fullX );
             var remainingY   = height - ( regionHeight * fullY );
             var startX       = x;
@@ -77,7 +77,7 @@ public class TiledDrawable : TextureRegionDrawable
                 x += regionWidth;
             }
 
-            Texture texture = region.Texture;
+            var texture = region.Texture;
 
             var u  = region.U;
             var v2 = region.V2;

@@ -34,14 +34,14 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 [PublicAPI]
 public abstract class EventAction< T > : Action, IEventListener where T : Event
 {
-    public bool Active     { get; set; }
-    public T    EventClass { get; set; }
-    public bool Result     { get; set; }
-
     protected EventAction( T eventClass )
     {
         EventClass = eventClass;
     }
+
+    public bool Active     { get; set; }
+    public T    EventClass { get; set; }
+    public bool Result     { get; set; }
 
     /// <summary>
     ///     Called when the specific type of event occurs on the actor.
@@ -52,10 +52,7 @@ public abstract class EventAction< T > : Action, IEventListener where T : Event
     /// </returns>
     public bool Handle( Event ev )
     {
-        if ( !Active || ( ev.GetType() != EventClass.GetType() ) )
-        {
-            return false;
-        }
+        if ( !Active || ( ev.GetType() != EventClass.GetType() ) ) return false;
 
         Result = HandleDelegate( ev );
 

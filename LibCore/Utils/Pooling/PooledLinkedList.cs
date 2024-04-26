@@ -31,18 +31,6 @@ namespace LughSharp.LibCore.Utils.Pooling;
 [PublicAPI]
 public class PooledLinkedList< T >
 {
-    [PublicAPI]
-    public class Item< TT >
-    {
-        internal TT?         Payload { get; set; }
-        internal Item< TT >? Next    { get; set; }
-        internal Item< TT >? Prev    { get; set; }
-    }
-
-    // ------------------------------------------------------------------------
-
-    public int Size { get; set; } = 0;
-
     private readonly Pool< Item< T > > _pool;
 
     private Item< T >? _curr;
@@ -66,8 +54,12 @@ public class PooledLinkedList< T >
         };
     }
 
+    // ------------------------------------------------------------------------
+
+    public int Size { get; set; } = 0;
+
     /// <summary>
-    ///     Creates, and returns, a new <see cref="Item{T}"/>
+    ///     Creates, and returns, a new <see cref="Item{T}" />
     /// </summary>
     public Item< T > GetNewObject()
     {
@@ -120,13 +112,9 @@ public class PooledLinkedList< T >
             item.Prev    = null;
 
             if ( _head != null )
-            {
                 _head.Prev = item;
-            }
             else
-            {
                 _tail = item;
-            }
 
             _head = item;
 
@@ -156,10 +144,7 @@ public class PooledLinkedList< T >
     /// <returns> the next item in the list or null if there are no more items</returns>
     protected T? Next()
     {
-        if ( _iter == null )
-        {
-            return default( T? );
-        }
+        if ( _iter == null ) return default( T? );
 
         var payload = _iter.Payload;
 
@@ -175,10 +160,7 @@ public class PooledLinkedList< T >
     /// <returns> the previous item in the list or null if there are no more items </returns>
     public T? Previous()
     {
-        if ( _iter == null )
-        {
-            return default( T? );
-        }
+        if ( _iter == null ) return default( T? );
 
         var payload = _iter.Payload;
 
@@ -193,10 +175,7 @@ public class PooledLinkedList< T >
     /// </summary>
     protected void Remove()
     {
-        if ( ( _curr?.Prev == null ) || ( _curr.Next == null ) )
-        {
-            return;
-        }
+        if ( ( _curr?.Prev == null ) || ( _curr.Next == null ) ) return;
 
         Size--;
 
@@ -240,10 +219,7 @@ public class PooledLinkedList< T >
     /// </summary>
     public T? RemoveLast()
     {
-        if ( _tail == null )
-        {
-            return default( T? );
-        }
+        if ( _tail == null ) return default( T? );
 
         var payload = _tail.Payload;
 
@@ -262,10 +238,7 @@ public class PooledLinkedList< T >
         {
             _tail = p;
 
-            if ( _tail != null )
-            {
-                _tail.Next = null;
-            }
+            if ( _tail != null ) _tail.Next = null;
         }
 
         return payload;
@@ -278,9 +251,14 @@ public class PooledLinkedList< T >
     {
         Iterate();
 
-        while ( Next() != null )
-        {
-            Remove();
-        }
+        while ( Next() != null ) Remove();
+    }
+
+    [PublicAPI]
+    public class Item< TT >
+    {
+        internal TT?         Payload { get; set; }
+        internal Item< TT >? Next    { get; set; }
+        internal Item< TT >? Prev    { get; set; }
     }
 }

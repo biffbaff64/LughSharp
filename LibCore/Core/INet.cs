@@ -90,14 +90,6 @@ public interface INet
     [PublicAPI]
     public class HttpRequest : IPoolable
     {
-        public string?       Url                { get; set; }
-        public string?       HttpMethod         { get; set; }
-        public int           TimeOut            { get; set; } = 0;
-        public bool          IncludeCredentials { get; set; } = false;
-        public StreamReader? ContentStream      { get; private set; }
-        public long          ContentLength      { get; private set; }
-        public string?       Content            { get; set; }
-
         private readonly Dictionary< string, string >? _headers;
         private          bool                          _followRedirects = true;
 
@@ -111,15 +103,21 @@ public interface INet
             HttpMethod = httpMethod;
         }
 
+        public string?       Url                { get; set; }
+        public string?       HttpMethod         { get; set; }
+        public int           TimeOut            { get; set; } = 0;
+        public bool          IncludeCredentials { get; set; } = false;
+        public StreamReader? ContentStream      { get; private set; }
+        public long          ContentLength      { get; private set; }
+        public string?       Content            { get; set; }
+
         public bool FollowRedirects
         {
             get => _followRedirects;
             set
             {
                 if ( value || ( Gdx.App.AppType != IApplication.ApplicationType.WebGL ) )
-                {
                     _followRedirects = value;
-                }
                 else
                 {
                     throw new ArgumentException
@@ -149,10 +147,7 @@ public interface INet
 
         public void SetHeader( string name, string value )
         {
-            if ( _headers != null )
-            {
-                _headers[ name ] = value;
-            }
+            if ( _headers != null ) _headers[ name ] = value;
         }
 
         public void SetContent( StreamReader contentStream, long contentLength )

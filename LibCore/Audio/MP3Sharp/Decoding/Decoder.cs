@@ -68,12 +68,9 @@ public partial class Decoder
 
         parameters ??= _decoderDefaultParams;
 
-        Equalizer? eq = parameters.InitialEqualizerSettings;
+        var eq = parameters.InitialEqualizerSettings;
 
-        if ( eq != null )
-        {
-            _equalizer.FromEqualizer = eq;
-        }
+        if ( eq != null ) _equalizer.FromEqualizer = eq;
     }
 
     public virtual Equalizer? Equalizer
@@ -87,15 +84,9 @@ public partial class Decoder
 
             var factors = _equalizer.BandFactors;
 
-            if ( _leftChannelFilter != null )
-            {
-                _leftChannelFilter.Eq = factors;
-            }
+            if ( _leftChannelFilter != null ) _leftChannelFilter.Eq = factors;
 
-            if ( _rightChannelFilter != null )
-            {
-                _rightChannelFilter.Eq = factors;
-            }
+            if ( _rightChannelFilter != null ) _rightChannelFilter.Eq = factors;
         }
     }
 
@@ -149,16 +140,13 @@ public partial class Decoder
     /// </returns>
     public virtual AudioBase? DecodeFrame( Header header, Bitstream stream )
     {
-        if ( !_isInitialized )
-        {
-            Initialise( header );
-        }
+        if ( !_isInitialized ) Initialise( header );
 
         var layer = header.Layer();
 
         _output?.ClearBuffer();
 
-        IFrameDecoder decoder = RetrieveDecoder( header, stream, layer );
+        var decoder = RetrieveDecoder( header, stream, layer );
 
         decoder.DecodeFrame();
         _output?.WriteBuffer( 1 );
@@ -224,11 +212,11 @@ public partial class Decoder
                     _l1Decoder = new LayerIDecoder();
 
                     _l1Decoder.Create( stream,
-										header,
-										_leftChannelFilter,
-										_rightChannelFilter,
-										_output,
-										( int ) OutputChannelsEnum.BothChannels );
+                                       header,
+                                       _leftChannelFilter,
+                                       _rightChannelFilter,
+                                       _output,
+                                       ( int ) OutputChannelsEnum.BothChannels );
                 }
 
                 decoder = _l1Decoder;
@@ -237,10 +225,7 @@ public partial class Decoder
             }
         }
 
-        if ( decoder == null )
-        {
-            throw NewDecoderException( DecoderErrors.UNSUPPORTED_LAYER, null );
-        }
+        if ( decoder == null ) throw NewDecoderException( DecoderErrors.UNSUPPORTED_LAYER, null );
 
         return decoder;
     }
@@ -256,10 +241,7 @@ public partial class Decoder
 
         _leftChannelFilter = new SynthesisFilter( 0, ScaleFactor, factors );
 
-        if ( channels == 2 )
-        {
-            _rightChannelFilter = new SynthesisFilter( 1, ScaleFactor, factors );
-        }
+        if ( channels == 2 ) _rightChannelFilter = new SynthesisFilter( 1, ScaleFactor, factors );
 
         _outputChannels  = channels;
         _outputFrequency = header.Frequency();

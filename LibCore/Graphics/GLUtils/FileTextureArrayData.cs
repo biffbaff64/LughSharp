@@ -40,10 +40,7 @@ public class FileTextureArrayData : ITextureArrayData
         _depth       = files.Length;
         _textureData = new ITextureData?[ files.Length ];
 
-        for ( var i = 0; i < files.Length; i++ )
-        {
-            _textureData[ i ] = ITextureData.Factory.LoadFromFile( files[ i ], format, useMipMaps );
-        }
+        for ( var i = 0; i < files.Length; i++ ) _textureData[ i ] = ITextureData.Factory.LoadFromFile( files[ i ], format, useMipMaps );
     }
 
     /// <returns> whether the TextureArrayData is prepared or not. </returns>
@@ -77,12 +74,9 @@ public class FileTextureArrayData : ITextureArrayData
         var width  = -1;
         var height = -1;
 
-        foreach ( ITextureData? data in _textureData )
+        foreach ( var data in _textureData )
         {
-            if ( data == null )
-            {
-                continue;
-            }
+            if ( data == null ) continue;
 
             data.Prepare();
 
@@ -119,16 +113,13 @@ public class FileTextureArrayData : ITextureArrayData
     public void ConsumeTextureArrayData()
     {
         for ( var i = 0; i < _textureData.Length; i++ )
-        {
             if ( _textureData[ i ]?.TextureDataType == ITextureData.TextureType.Custom )
-            {
                 _textureData[ i ]?.ConsumeCustomData( IGL.GL_TEXTURE_2D_ARRAY );
-            }
             else
             {
-                ITextureData? texData       = _textureData[ i ];
-                Pixmap?       pixmap        = texData?.ConsumePixmap();
-                var           disposePixmap = texData?.DisposePixmap() ?? false;
+                var texData       = _textureData[ i ];
+                var pixmap        = texData?.ConsumePixmap();
+                var disposePixmap = texData?.DisposePixmap() ?? false;
 
                 Debug.Assert( texData != null, nameof( texData ) + " != null" );
                 Debug.Assert( pixmap != null, nameof( pixmap ) + " != null" );
@@ -140,10 +131,7 @@ public class FileTextureArrayData : ITextureArrayData
                     temp.Blending = Pixmap.BlendTypes.None;
                     temp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
 
-                    if ( texData.DisposePixmap() )
-                    {
-                        pixmap.Dispose();
-                    }
+                    if ( texData.DisposePixmap() ) pixmap.Dispose();
 
                     pixmap        = temp;
                     disposePixmap = true;
@@ -167,28 +155,17 @@ public class FileTextureArrayData : ITextureArrayData
                     }
                 }
 
-                if ( _useMipMaps )
-                {
-                    Gdx.GL.glGenerateMipmap( IGL.GL_TEXTURE_2D_ARRAY );
-                }
+                if ( _useMipMaps ) Gdx.GL.glGenerateMipmap( IGL.GL_TEXTURE_2D_ARRAY );
 
-                if ( disposePixmap )
-                {
-                    pixmap.Dispose();
-                }
+                if ( disposePixmap ) pixmap.Dispose();
             }
-        }
     }
 
     public bool IsManaged()
     {
-        foreach ( ITextureData? data in _textureData )
-        {
+        foreach ( var data in _textureData )
             if ( ( data != null ) && !data.IsManaged() )
-            {
                 return false;
-            }
-        }
 
         return true;
     }

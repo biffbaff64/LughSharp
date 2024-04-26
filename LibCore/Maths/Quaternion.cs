@@ -128,7 +128,7 @@ public class Quaternion
     /// <returns> the euclidean length of the specified quaternion </returns>
     public static float Len( float x, float y, float z, float w )
     {
-        return ( float )Math.Sqrt( ( x * x ) + ( y * y ) + ( z * z ) + ( w * w ) );
+        return ( float ) Math.Sqrt( ( x * x ) + ( y * y ) + ( z * z ) + ( w * w ) );
     }
 
     /// <summary>
@@ -136,7 +136,7 @@ public class Quaternion
     /// <returns> the euclidean length of this quaternion </returns>
     public float Len()
     {
-        return ( float )Math.Sqrt( ( X * X ) + ( Y * Y ) + ( Z * Z ) + ( W * W ) );
+        return ( float ) Math.Sqrt( ( X * X ) + ( Y * Y ) + ( Z * Z ) + ( W * W ) );
     }
 
     public override string ToString()
@@ -153,10 +153,10 @@ public class Quaternion
     public Quaternion SetEulerAngles( float yaw, float pitch, float roll )
     {
         return SetEulerAnglesRad(
-            yaw * MathUtils.DEGREES_TO_RADIANS,
-            pitch * MathUtils.DEGREES_TO_RADIANS,
-            roll * MathUtils.DEGREES_TO_RADIANS
-            );
+                                 yaw * MathUtils.DEGREES_TO_RADIANS,
+                                 pitch * MathUtils.DEGREES_TO_RADIANS,
+                                 roll * MathUtils.DEGREES_TO_RADIANS
+                                );
     }
 
     /// <summary>
@@ -169,14 +169,14 @@ public class Quaternion
     public Quaternion SetEulerAnglesRad( float yaw, float pitch, float roll )
     {
         var hr     = roll * 0.5f;
-        var shr    = ( float )Math.Sin( hr );
-        var chr    = ( float )Math.Cos( hr );
+        var shr    = ( float ) Math.Sin( hr );
+        var chr    = ( float ) Math.Cos( hr );
         var hp     = pitch * 0.5f;
-        var shp    = ( float )Math.Sin( hp );
-        var chp    = ( float )Math.Cos( hp );
+        var shp    = ( float ) Math.Sin( hp );
+        var chp    = ( float ) Math.Cos( hp );
         var hy     = yaw * 0.5f;
-        var shy    = ( float )Math.Sin( hy );
-        var chy    = ( float )Math.Cos( hy );
+        var shy    = ( float ) Math.Sin( hy );
+        var chy    = ( float ) Math.Cos( hy );
         var chyShp = chy * shp;
         var shyChp = shy * chp;
         var chyChp = chy * chp;
@@ -222,8 +222,8 @@ public class Quaternion
         var pole = GetGimbalPole();
 
         return pole == 0
-            ? MathUtils.Atan2( 2f * ( ( W * Z ) + ( Y * X ) ), 1f - ( 2f * ( ( X * X ) + ( Z * Z ) ) ) )
-            : pole * 2f * MathUtils.Atan2( Y, W );
+                   ? MathUtils.Atan2( 2f * ( ( W * Z ) + ( Y * X ) ), 1f - ( 2f * ( ( X * X ) + ( Z * Z ) ) ) )
+                   : pole * 2f * MathUtils.Atan2( Y, W );
     }
 
     /// <summary>
@@ -250,8 +250,8 @@ public class Quaternion
         var pole = GetGimbalPole();
 
         return pole == 0
-            ? ( float )Math.Asin( MathUtils.Clamp( 2f * ( ( W * X ) - ( Z * Y ) ), -1f, 1f ) )
-            : pole * MathUtils.PI * 0.5f;
+                   ? ( float ) Math.Asin( MathUtils.Clamp( 2f * ( ( W * X ) - ( Z * Y ) ), -1f, 1f ) )
+                   : pole * MathUtils.PI * 0.5f;
     }
 
     /// <summary>
@@ -274,8 +274,8 @@ public class Quaternion
     public float GetYawRad()
     {
         return GetGimbalPole() == 0
-            ? MathUtils.Atan2( 2f * ( ( Y * W ) + ( X * Z ) ), 1f - ( 2f * ( ( Y * Y ) + ( X * X ) ) ) )
-            : 0f;
+                   ? MathUtils.Atan2( 2f * ( ( Y * W ) + ( X * Z ) ), 1f - ( 2f * ( ( Y * Y ) + ( X * X ) ) ) )
+                   : 0f;
     }
 
     /// <summary>
@@ -311,7 +311,7 @@ public class Quaternion
 
         if ( ( len != 0.0f ) && !MathUtils.IsEqual( len, 1f ) )
         {
-            len = ( float )Math.Sqrt( len );
+            len = ( float ) Math.Sqrt( len );
 
             W /= len;
             X /= len;
@@ -582,16 +582,13 @@ public class Quaternion
     {
         var d = Vector3.Len( x, y, z );
 
-        if ( d == 0f )
-        {
-            return Idt();
-        }
+        if ( d == 0f ) return Idt();
 
         d = 1f / d;
 
         var lAng = radians < 0 ? MathUtils.PI2 - ( -radians % MathUtils.PI2 ) : radians % MathUtils.PI2;
-        var lSin = ( float )Math.Sin( lAng / 2 );
-        var lCos = ( float )Math.Cos( lAng / 2 );
+        var lSin = ( float ) Math.Sin( lAng / 2 );
+        var lCos = ( float ) Math.Cos( lAng / 2 );
 
         return Set( d * x * lSin, d * y * lSin, d * z * lSin, lCos ).Nor();
     }
@@ -602,17 +599,17 @@ public class Quaternion
     public Quaternion SetFromMatrix( bool normalizeAxes, Matrix4 matrix )
     {
         return SetFromAxes(
-            normalizeAxes,
-            matrix.val[ Matrix4.M00 ],
-            matrix.val[ Matrix4.M01 ],
-            matrix.val[ Matrix4.M02 ],
-            matrix.val[ Matrix4.M10 ],
-            matrix.val[ Matrix4.M11 ],
-            matrix.val[ Matrix4.M12 ],
-            matrix.val[ Matrix4.M20 ],
-            matrix.val[ Matrix4.M21 ],
-            matrix.val[ Matrix4.M22 ]
-            );
+                           normalizeAxes,
+                           matrix.val[ Matrix4.M00 ],
+                           matrix.val[ Matrix4.M01 ],
+                           matrix.val[ Matrix4.M02 ],
+                           matrix.val[ Matrix4.M10 ],
+                           matrix.val[ Matrix4.M11 ],
+                           matrix.val[ Matrix4.M12 ],
+                           matrix.val[ Matrix4.M20 ],
+                           matrix.val[ Matrix4.M21 ],
+                           matrix.val[ Matrix4.M22 ]
+                          );
     }
 
     /// <summary>
@@ -629,17 +626,17 @@ public class Quaternion
     public Quaternion SetFromMatrix( bool normalizeAxes, Matrix3 matrix )
     {
         return SetFromAxes(
-            normalizeAxes,
-            matrix.val[ Matrix3.M00 ],
-            matrix.val[ Matrix3.M01 ],
-            matrix.val[ Matrix3.M02 ],
-            matrix.val[ Matrix3.M10 ],
-            matrix.val[ Matrix3.M11 ],
-            matrix.val[ Matrix3.M12 ],
-            matrix.val[ Matrix3.M20 ],
-            matrix.val[ Matrix3.M21 ],
-            matrix.val[ Matrix3.M22 ]
-            );
+                           normalizeAxes,
+                           matrix.val[ Matrix3.M00 ],
+                           matrix.val[ Matrix3.M01 ],
+                           matrix.val[ Matrix3.M02 ],
+                           matrix.val[ Matrix3.M10 ],
+                           matrix.val[ Matrix3.M11 ],
+                           matrix.val[ Matrix3.M12 ],
+                           matrix.val[ Matrix3.M20 ],
+                           matrix.val[ Matrix3.M21 ],
+                           matrix.val[ Matrix3.M22 ]
+                          );
     }
 
     /// <summary>
@@ -736,7 +733,7 @@ public class Quaternion
         if ( t >= 0 )
         {
             // |w| >= .5
-            var s = ( float )Math.Sqrt( t + 1 ); // |s|>=1 ...
+            var s = ( float ) Math.Sqrt( t + 1 ); // |s|>=1 ...
 
             W = 0.5f * s;
             s = 0.5f / s; // so this division isn't bad
@@ -746,7 +743,7 @@ public class Quaternion
         }
         else if ( ( xx > yy ) && ( xx > zz ) )
         {
-            var s = ( float )Math.Sqrt( ( 1.0f + xx ) - yy - zz ); // |s|>=1
+            var s = ( float ) Math.Sqrt( ( 1.0f + xx ) - yy - zz ); // |s|>=1
 
             X = s * 0.5f; // |x| >= .5
             s = 0.5f / s;
@@ -756,7 +753,7 @@ public class Quaternion
         }
         else if ( yy > zz )
         {
-            var s = ( float )Math.Sqrt( ( 1.0f + yy ) - xx - zz ); // |s|>=1
+            var s = ( float ) Math.Sqrt( ( 1.0f + yy ) - xx - zz ); // |s|>=1
 
             Y = s * 0.5f; // |y| >= .5
             s = 0.5f / s;
@@ -766,7 +763,7 @@ public class Quaternion
         }
         else
         {
-            var s = ( float )Math.Sqrt( ( 1.0 + zz ) - xx - yy ); // |s|>=1
+            var s = ( float ) Math.Sqrt( ( 1.0 + zz ) - xx - yy ); // |s|>=1
 
             Z = s * 0.5f; // |z| >= .5
             s = 0.5f / s;
@@ -787,14 +784,14 @@ public class Quaternion
     public Quaternion SetFromCross( Vector3 v1, Vector3 v2 )
     {
         var dot   = MathUtils.Clamp( v1.Dot( v2 ), -1f, 1f );
-        var angle = ( float )Math.Acos( dot );
+        var angle = ( float ) Math.Acos( dot );
 
         return SetFromAxisRad(
-            ( v1.Y * v2.Z ) - ( v1.Z * v2.Y ),
-            ( v1.Z * v2.X ) - ( v1.X * v2.Z ),
-            ( v1.X * v2.Y ) - ( v1.Y * v2.X ),
-            angle
-            );
+                              ( v1.Y * v2.Z ) - ( v1.Z * v2.Y ),
+                              ( v1.Z * v2.X ) - ( v1.X * v2.Z ),
+                              ( v1.X * v2.Y ) - ( v1.Y * v2.X ),
+                              angle
+                             );
     }
 
     /// <summary>
@@ -810,7 +807,7 @@ public class Quaternion
     public Quaternion SetFromCross( float x1, float y1, float z1, float x2, float y2, float z2 )
     {
         var dot   = MathUtils.Clamp( Vector3.Dot( x1, y1, z1, x2, y2, z2 ), -1f, 1f );
-        var angle = ( float )Math.Acos( dot );
+        var angle = ( float ) Math.Acos( dot );
 
         return SetFromAxisRad( ( y1 * z2 ) - ( z1 * y2 ), ( z1 * x2 ) - ( x1 * z2 ), ( x1 * y2 ) - ( y1 * x2 ), angle );
     }
@@ -840,19 +837,16 @@ public class Quaternion
         {
             // Get the angle between the 2 quaternions,
             // and then store the Sin() of that angle
-            var angle       = ( float )Math.Acos( absDot );
-            var invSinTheta = 1f / ( float )Math.Sin( angle );
+            var angle       = ( float ) Math.Acos( absDot );
+            var invSinTheta = 1f / ( float ) Math.Sin( angle );
 
             // Calculate the scale for q1 and q2, according to the angle and
             // it's sine value
-            scale0 = ( float )Math.Sin( ( 1f - alpha ) * angle ) * invSinTheta;
-            scale1 = ( float )Math.Sin( alpha * angle ) * invSinTheta;
+            scale0 = ( float ) Math.Sin( ( 1f - alpha ) * angle ) * invSinTheta;
+            scale1 = ( float ) Math.Sin( alpha * angle ) * invSinTheta;
         }
 
-        if ( d < 0.0f )
-        {
-            scale1 = -scale1;
-        }
+        if ( d < 0.0f ) scale1 = -scale1;
 
         // Calculate the x, y, z and w values for the quaternion by using a
         // special form of linear interpolation for quaternions.
@@ -882,10 +876,7 @@ public class Quaternion
 
         Set( q[ 0 ] ).Exp( w );
 
-        for ( var i = 1; i < q.Length; i++ )
-        {
-            Mul( Tmp1.Set( q[ i ] ).Exp( w ) );
-        }
+        for ( var i = 1; i < q.Length; i++ ) Mul( Tmp1.Set( q[ i ] ).Exp( w ) );
 
         Nor();
 
@@ -909,10 +900,7 @@ public class Quaternion
         // Calculate exponents and multiply everything from left to right
         Set( q[ 0 ] ).Exp( w[ 0 ] );
 
-        for ( var i = 1; i < q.Length; i++ )
-        {
-            Mul( Tmp1.Set( q[ i ] ).Exp( w[ i ] ) );
-        }
+        for ( var i = 1; i < q.Length; i++ ) Mul( Tmp1.Set( q[ i ] ).Exp( w[ i ] ) );
 
         Nor();
 
@@ -932,26 +920,22 @@ public class Quaternion
     {
         // Calculate |q|^alpha
         var norm    = Len();
-        var normExp = ( float )Math.Pow( norm, alpha );
+        var normExp = ( float ) Math.Pow( norm, alpha );
 
         // Calculate theta
-        var theta = ( float )Math.Acos( W / norm );
+        var theta = ( float ) Math.Acos( W / norm );
 
         // Calculate coefficient of basis elements
         float coeff;
 
         // If theta is small enough, use the limit of Sin(alpha*theta) / Sin(theta) instead of actual value
         if ( Math.Abs( theta ) < 0.001 )
-        {
             coeff = ( normExp * alpha ) / norm;
-        }
         else
-        {
-            coeff = ( float )( ( normExp * Math.Sin( alpha * theta ) ) / ( norm * Math.Sin( theta ) ) );
-        }
+            coeff = ( float ) ( ( normExp * Math.Sin( alpha * theta ) ) / ( norm * Math.Sin( theta ) ) );
 
         // Write results
-        W =  ( float )( normExp * Math.Cos( alpha * theta ) );
+        W =  ( float ) ( normExp * Math.Cos( alpha * theta ) );
         X *= coeff;
         Y *= coeff;
         Z *= coeff;
@@ -976,15 +960,9 @@ public class Quaternion
 
     public new bool Equals( object? obj )
     {
-        if ( this == obj )
-        {
-            return true;
-        }
+        if ( this == obj ) return true;
 
-        if ( obj is not Quaternion quaternion )
-        {
-            return false;
-        }
+        if ( obj is not Quaternion quaternion ) return false;
 
         return ( NumberUtils.FloatToRawIntBits( W ) == NumberUtils.FloatToRawIntBits( quaternion.W ) )
             && ( NumberUtils.FloatToRawIntBits( X ) == NumberUtils.FloatToRawIntBits( quaternion.X ) )
@@ -1088,12 +1066,9 @@ public class Quaternion
     public float GetAxisAngleRad( Vector3 axis )
     {
         // if w>1 Acos and Sqrt will produce errors, this cant happen if quaternion is normalised
-        if ( W > 1 )
-        {
-            Nor();
-        }
+        if ( W > 1 ) Nor();
 
-        var angle = ( float )( 2.0 * Math.Acos( W ) );
+        var angle = ( float ) ( 2.0 * Math.Acos( W ) );
 
         // assuming quaternion normalised then w is less than 1, so term always positive.
         var s = Math.Sqrt( 1 - ( W * W ) );
@@ -1109,9 +1084,9 @@ public class Quaternion
         }
         else
         {
-            axis.X = ( float )( X / s ); // normalise axis
-            axis.Y = ( float )( Y / s );
-            axis.Z = ( float )( Z / s );
+            axis.X = ( float ) ( X / s ); // normalise axis
+            axis.Y = ( float ) ( Y / s );
+            axis.Z = ( float ) ( Z / s );
         }
 
         return angle;
@@ -1132,7 +1107,7 @@ public class Quaternion
     /// <returns> the angle in radians of the rotation </returns>
     public float GetAngleRad()
     {
-        return ( float )( 2.0 * Math.Acos( W > 1 ? W / Len() : W ) );
+        return ( float ) ( 2.0 * Math.Acos( W > 1 ? W / Len() : W ) );
     }
 
     /// <summary>
@@ -1181,10 +1156,7 @@ public class Quaternion
 
         twist.Set( axisX * d, axisY * d, axisZ * d, W ).Nor();
 
-        if ( d < 0 )
-        {
-            twist.Mul( -1f );
-        }
+        if ( d < 0 ) twist.Mul( -1f );
 
         swing.Set( twist ).Conjugate().MulLeft( this );
     }
@@ -1230,16 +1202,16 @@ public class Quaternion
         var l2 = Len2( axisX * d, axisY * d, axisZ * d, W );
 
         return MathUtils.IsZero( l2 )
-            ? 0f
-            : ( float )( 2.0
-                       * Math.Acos
-                             (
-                             MathUtils.Clamp(
-                                 ( float )( ( d < 0 ? -W : W ) / Math.Sqrt( l2 ) ),
-                                 -1f,
-                                 1f
-                                 )
-                             ) );
+                   ? 0f
+                   : ( float ) ( 2.0
+                               * Math.Acos
+                                     (
+                                      MathUtils.Clamp(
+                                                      ( float ) ( ( d < 0 ? -W : W ) / Math.Sqrt( l2 ) ),
+                                                      -1f,
+                                                      1f
+                                                     )
+                                     ) );
     }
 
     /// <summary>

@@ -39,9 +39,7 @@ using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 #if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
 using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Security;
 using System.Text;
-
 using GLenum = System.Int32;
 using GLfloat = System.Single;
 using GLint = System.Int32;
@@ -83,20 +81,23 @@ namespace DotGL;
 ///     Blazing fast, low level, direct access to the OpenGL API for all versions of OpenGL,
 ///     using the new unmanaged delegates feature in C# 9.0,
 ///     <para>
-///     <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/function-pointers" />.
+///         <see
+///             href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/function-pointers" />
+///         .
 ///     </para>
 ///     Also includes a few overloads of many functions to make them a bit more C# friendly
 ///     (e.g. passing arrays of bytes or floats instead of passing pointers to fixed memory
 ///     locations). Significant effort has been made to make sure that the overloads are as
 ///     efficient as possible, in terms of both performance and memory usage.
 /// </summary>
+
 //[SuppressUnmanagedCodeSecurity]
 public unsafe class GLBindings
 {
     /// <summary>
     ///     The null pointer, just like in C/C++.
     /// </summary>
-    public readonly void* NULL = ( void* )0;
+    public readonly void* NULL = ( void* ) 0;
 
     /// <summary>
     ///     Useful helper function for getting the major OpenGL version of the project as defined
@@ -662,7 +663,7 @@ public unsafe class GLBindings
     ///     Specifies the pixel data as an array of values. Make sure to match the generic type with the
     ///     <paramref name="type" /> parameter.
     /// </param>
-    public void glTexImage1D<T>( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLenum format, GLenum type, T[] pixels )
+    public void glTexImage1D< T >( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLenum format, GLenum type, T[] pixels )
         where T : unmanaged
     {
         fixed ( void* p
@@ -742,14 +743,14 @@ public unsafe class GLBindings
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
     public void glTexImage2D( GLenum target,
-                                     GLint level,
-                                     GLenum internalformat,
-                                     GLsizei width,
-                                     GLsizei height,
-                                     GLint border,
-                                     GLenum format,
-                                     GLenum type,
-                                     void* pixels )
+                              GLint level,
+                              GLenum internalformat,
+                              GLsizei width,
+                              GLsizei height,
+                              GLint border,
+                              GLenum format,
+                              GLenum type,
+                              void* pixels )
     {
         _glTexImage2D( target, level, internalformat, width, height, border, format, type, pixels );
     }
@@ -813,15 +814,15 @@ public unsafe class GLBindings
     ///     Specifies the pixel data as an array of values. Make sure to match the <paramref name="format" />
     ///     and <paramref name="type" /> parameters.
     /// </param>
-    public void glTexImage2D<T>( GLenum target,
-                                        GLint level,
-                                        GLenum internalformat,
-                                        GLsizei width,
-                                        GLsizei height,
-                                        GLint border,
-                                        GLenum format,
-                                        GLenum type,
-                                        T[] pixels ) where T : unmanaged
+    public void glTexImage2D< T >( GLenum target,
+                                   GLint level,
+                                   GLenum internalformat,
+                                   GLsizei width,
+                                   GLsizei height,
+                                   GLint border,
+                                   GLenum format,
+                                   GLenum type,
+                                   T[] pixels ) where T : unmanaged
     {
         fixed ( void* p
                    = &pixels[ 0 ] )
@@ -1310,7 +1311,7 @@ public unsafe class GLBindings
     ///     A <see langword="ref" /> to an array of <typeparamref name="T" />s where the pixel data will be
     ///     returned. Make sure to match the type of the data with the type in <paramref name="type" />.
     /// </param>
-    public void glReadPixels<T>( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, ref T[] pixels ) where T : unmanaged
+    public void glReadPixels< T >( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, ref T[] pixels ) where T : unmanaged
     {
         fixed ( void* p
                    = &pixels[ 0 ] )
@@ -1523,19 +1524,13 @@ public unsafe class GLBindings
     {
         var p = _glGetString( name );
 
-        if ( p == null )
-        {
-            return null;
-        }
+        if ( p == null ) return null;
 
         var i = 0;
 
-        while ( p[ i ] != 0 )
-        {
-            i++;
-        }
+        while ( p[ i ] != 0 ) i++;
 
-        return new string( ( sbyte* )p, 0, i, Encoding.UTF8 );
+        return new string( ( sbyte* ) p, 0, i, Encoding.UTF8 );
     }
 #endif
 
@@ -1631,7 +1626,7 @@ public unsafe class GLBindings
     ///     A <see langword="ref" /> to an array of <typeparamref name="T" />s where the pixel data will be
     ///     returned.
     /// </param>
-    public void glGetTexImage<T>( GLenum target, GLint level, GLenum format, GLenum type, ref T[] pixels ) where T : unmanaged
+    public void glGetTexImage< T >( GLenum target, GLint level, GLenum format, GLenum type, ref T[] pixels ) where T : unmanaged
     {
         fixed ( void* p =
                    &pixels[ 0 ] )
@@ -2034,7 +2029,7 @@ public unsafe class GLBindings
     ///     Specifies an array of indices to be rendererd. Make sure to match the type
     ///     <typeparamref name="T" /> with the type specified by <paramref name="type" />.
     /// </param>
-    public void glDrawElements<T>( GLenum mode, GLsizei count, GLenum type, T[] indices ) where T : unmanaged, IUnsignedNumber< T >
+    public void glDrawElements< T >( GLenum mode, GLsizei count, GLenum type, T[] indices ) where T : unmanaged, IUnsignedNumber< T >
     {
         fixed ( T* p =
                    &indices[ 0 ] )
@@ -2281,7 +2276,7 @@ public unsafe class GLBindings
     ///     Specifies an array of <typeparamref name="T" />s containing the image data. Make sure to match
     ///     this with the type specified in <paramref name="type" />.
     /// </param>
-    public void glTexSubImage1D<T>( GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, T[] pixels )
+    public void glTexSubImage1D< T >( GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, T[] pixels )
         where T : unmanaged
     {
         fixed ( void* p
@@ -2341,14 +2336,14 @@ public unsafe class GLBindings
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
     public void glTexSubImage2D( GLenum target,
-                                        GLint level,
-                                        GLint xoffset,
-                                        GLint yoffset,
-                                        GLsizei width,
-                                        GLsizei height,
-                                        GLenum format,
-                                        GLenum type,
-                                        void* pixels )
+                                 GLint level,
+                                 GLint xoffset,
+                                 GLint yoffset,
+                                 GLsizei width,
+                                 GLsizei height,
+                                 GLenum format,
+                                 GLenum type,
+                                 void* pixels )
     {
         _glTexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, pixels );
     }
@@ -2392,15 +2387,15 @@ public unsafe class GLBindings
     ///     Specifies an array of <typeparamref name="T" />s containing the image data. Make sure to match
     ///     this with the type specified in <paramref name="type" />.
     /// </param>
-    public void glTexSubImage2D<T>( GLenum target,
-                                           GLint level,
-                                           GLint xoffset,
-                                           GLint yoffset,
-                                           GLsizei width,
-                                           GLsizei height,
-                                           GLenum format,
-                                           GLenum type,
-                                           T[] pixels ) where T : unmanaged
+    public void glTexSubImage2D< T >( GLenum target,
+                                      GLint level,
+                                      GLint xoffset,
+                                      GLint yoffset,
+                                      GLsizei width,
+                                      GLsizei height,
+                                      GLenum format,
+                                      GLenum type,
+                                      T[] pixels ) where T : unmanaged
     {
         fixed ( void* p
                    = &pixels[ 0 ] )
@@ -2455,7 +2450,7 @@ public unsafe class GLBindings
     {
         fixed ( void* p = &textures[ 0 ] )
         {
-            _glDeleteTextures( textures.Length, ( GLuint* )p );
+            _glDeleteTextures( textures.Length, ( GLuint* ) p );
         }
     }
 #endif
@@ -2488,7 +2483,7 @@ public unsafe class GLBindings
         fixed ( void* p =
                    &textures[ 0 ] )
         {
-            _glGenTextures( n, ( GLuint* )p );
+            _glGenTextures( n, ( GLuint* ) p );
         }
 
         return textures;
@@ -2572,7 +2567,7 @@ public unsafe class GLBindings
     ///     An array of indices to render. Make sure to match the type <typeparamref name="T" /> with the
     ///     type specified for <paramref name="type" />.
     /// </param>
-    public void glDrawRangeElements<T>( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, T[] indices )
+    public void glDrawRangeElements< T >( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, T[] indices )
         where T : unmanaged, IUnsignedNumber< T >
     {
         fixed ( T* p_indices
@@ -2646,15 +2641,15 @@ public unsafe class GLBindings
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
     public void glTexImage3D( GLenum target,
-                                     GLint level,
-                                     GLint internalformat,
-                                     GLsizei width,
-                                     GLsizei height,
-                                     GLsizei depth,
-                                     GLint border,
-                                     GLenum format,
-                                     GLenum type,
-                                     void* pixels )
+                              GLint level,
+                              GLint internalformat,
+                              GLsizei width,
+                              GLsizei height,
+                              GLsizei depth,
+                              GLint border,
+                              GLenum format,
+                              GLenum type,
+                              void* pixels )
     {
         _glTexImage3D( target, level, internalformat, width, height, depth, border, format, type, pixels );
     }
@@ -2711,16 +2706,16 @@ public unsafe class GLBindings
     ///     Specifies an array of <typeparamref name="T" /> containing the image data. Make sure to match the
     ///     <paramref name="type" /> parameter with <typeparamref name="T" />.
     /// </param>
-    public void glTexImage3D<T>( GLenum target,
-                                        GLint level,
-                                        GLint internalformat,
-                                        GLsizei width,
-                                        GLsizei height,
-                                        GLsizei depth,
-                                        GLint border,
-                                        GLenum format,
-                                        GLenum type,
-                                        T[] pixels ) where T : unmanaged
+    public void glTexImage3D< T >( GLenum target,
+                                   GLint level,
+                                   GLint internalformat,
+                                   GLsizei width,
+                                   GLsizei height,
+                                   GLsizei depth,
+                                   GLint border,
+                                   GLenum format,
+                                   GLenum type,
+                                   T[] pixels ) where T : unmanaged
     {
         fixed ( T* p_pixels
                    = &pixels[ 0 ] )
@@ -2780,16 +2775,16 @@ public unsafe class GLBindings
     /// </param>
     /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
     public void glTexSubImage3D( GLenum target,
-                                        GLint level,
-                                        GLint xoffset,
-                                        GLint yoffset,
-                                        GLint zoffset,
-                                        GLsizei width,
-                                        GLsizei height,
-                                        GLsizei depth,
-                                        GLenum format,
-                                        GLenum type,
-                                        void* pixels )
+                                 GLint level,
+                                 GLint xoffset,
+                                 GLint yoffset,
+                                 GLint zoffset,
+                                 GLsizei width,
+                                 GLsizei height,
+                                 GLsizei depth,
+                                 GLenum format,
+                                 GLenum type,
+                                 void* pixels )
     {
         _glTexSubImage3D( target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels );
     }
@@ -2832,17 +2827,17 @@ public unsafe class GLBindings
     ///     Specifies an array of <typeparamref name="T" /> containing the image data. Make sure to match the
     ///     <paramref name="type" /> parameter with <typeparamref name="T" />.
     /// </param>
-    public void glTexSubImage3D<T>( GLenum target,
-                                           GLint level,
-                                           GLint xoffset,
-                                           GLint yoffset,
-                                           GLint zoffset,
-                                           GLsizei width,
-                                           GLsizei height,
-                                           GLsizei depth,
-                                           GLenum format,
-                                           GLenum type,
-                                           T[] pixels ) where T : unmanaged
+    public void glTexSubImage3D< T >( GLenum target,
+                                      GLint level,
+                                      GLint xoffset,
+                                      GLint yoffset,
+                                      GLint zoffset,
+                                      GLsizei width,
+                                      GLsizei height,
+                                      GLsizei depth,
+                                      GLenum format,
+                                      GLenum type,
+                                      T[] pixels ) where T : unmanaged
     {
         fixed ( T* p_pixels
                    = &pixels[ 0 ] )
@@ -2890,14 +2885,14 @@ public unsafe class GLBindings
     /// <param name="width">Specifies the width of the texture subimage.</param>
     /// <param name="height">Specifies the height of the texture subimage.</param>
     public void glCopyTexSubImage3D( GLenum target,
-                                            GLint level,
-                                            GLint xoffset,
-                                            GLint yoffset,
-                                            GLint zoffset,
-                                            GLint x,
-                                            GLint y,
-                                            GLsizei width,
-                                            GLsizei height )
+                                     GLint level,
+                                     GLint xoffset,
+                                     GLint yoffset,
+                                     GLint zoffset,
+                                     GLint x,
+                                     GLint y,
+                                     GLsizei width,
+                                     GLsizei height )
     {
         _glCopyTexSubImage3D( target, level, xoffset, yoffset, zoffset, x, y, width, height );
     }
@@ -2996,14 +2991,14 @@ public unsafe class GLBindings
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
     public void glCompressedTexImage3D( GLenum target,
-                                               GLint level,
-                                               GLenum internalformat,
-                                               GLsizei width,
-                                               GLsizei height,
-                                               GLsizei depth,
-                                               GLint border,
-                                               GLsizei imageSize,
-                                               void* data )
+                                        GLint level,
+                                        GLenum internalformat,
+                                        GLsizei width,
+                                        GLsizei height,
+                                        GLsizei depth,
+                                        GLint border,
+                                        GLsizei imageSize,
+                                        void* data )
     {
         _glCompressedTexImage3D( target, level, internalformat, width, height, depth, border, imageSize, data );
     }
@@ -3040,13 +3035,13 @@ public unsafe class GLBindings
     /// <param name="border">This value must be 0.</param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
     public void glCompressedTexImage3D( GLenum target,
-                                               GLint level,
-                                               GLenum internalformat,
-                                               GLsizei width,
-                                               GLsizei height,
-                                               GLsizei depth,
-                                               GLint border,
-                                               byte[] data )
+                                        GLint level,
+                                        GLenum internalformat,
+                                        GLsizei width,
+                                        GLsizei height,
+                                        GLsizei depth,
+                                        GLint border,
+                                        byte[] data )
     {
         fixed ( byte* p
                    = &data[ 0 ] )
@@ -3103,13 +3098,13 @@ public unsafe class GLBindings
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
     public void glCompressedTexImage2D( GLenum target,
-                                               GLint level,
-                                               GLenum internalformat,
-                                               GLsizei width,
-                                               GLsizei height,
-                                               GLint border,
-                                               GLsizei imageSize,
-                                               void* data )
+                                        GLint level,
+                                        GLenum internalformat,
+                                        GLsizei width,
+                                        GLsizei height,
+                                        GLint border,
+                                        GLsizei imageSize,
+                                        void* data )
     {
         _glCompressedTexImage2D( target, level, internalformat, width, height, border, imageSize, data );
     }
@@ -3282,16 +3277,16 @@ public unsafe class GLBindings
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
     public void glCompressedTexSubImage3D( GLenum target,
-                                                  GLint level,
-                                                  GLint xoffset,
-                                                  GLint yoffset,
-                                                  GLint zoffset,
-                                                  GLsizei width,
-                                                  GLsizei height,
-                                                  GLsizei depth,
-                                                  GLenum format,
-                                                  GLsizei imageSize,
-                                                  void* data )
+                                           GLint level,
+                                           GLint xoffset,
+                                           GLint yoffset,
+                                           GLint zoffset,
+                                           GLsizei width,
+                                           GLsizei height,
+                                           GLsizei depth,
+                                           GLenum format,
+                                           GLsizei imageSize,
+                                           void* data )
     {
         _glCompressedTexSubImage3D( target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data );
     }
@@ -3330,15 +3325,15 @@ public unsafe class GLBindings
     /// </param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
     public void glCompressedTexSubImage3D( GLenum target,
-                                                  GLint level,
-                                                  GLint xoffset,
-                                                  GLint yoffset,
-                                                  GLint zoffset,
-                                                  GLsizei width,
-                                                  GLsizei height,
-                                                  GLsizei depth,
-                                                  GLenum format,
-                                                  byte[] data )
+                                           GLint level,
+                                           GLint xoffset,
+                                           GLint yoffset,
+                                           GLint zoffset,
+                                           GLsizei width,
+                                           GLsizei height,
+                                           GLsizei depth,
+                                           GLenum format,
+                                           byte[] data )
     {
         fixed ( byte* p
                    = &data[ 0 ] )
@@ -3396,14 +3391,14 @@ public unsafe class GLBindings
     /// </param>
     /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
     public void glCompressedTexSubImage2D( GLenum target,
-                                                  GLint level,
-                                                  GLint xoffset,
-                                                  GLint yoffset,
-                                                  GLsizei width,
-                                                  GLsizei height,
-                                                  GLenum format,
-                                                  GLsizei imageSize,
-                                                  void* data )
+                                           GLint level,
+                                           GLint xoffset,
+                                           GLint yoffset,
+                                           GLsizei width,
+                                           GLsizei height,
+                                           GLenum format,
+                                           GLsizei imageSize,
+                                           void* data )
     {
         _glCompressedTexSubImage2D( target, level, xoffset, yoffset, width, height, format, imageSize, data );
     }
@@ -3440,13 +3435,13 @@ public unsafe class GLBindings
     /// </param>
     /// <param name="data">Specifies an array of bytes containing the compressed image data.</param>
     public void glCompressedTexSubImage2D( GLenum target,
-                                                  GLint level,
-                                                  GLint xoffset,
-                                                  GLint yoffset,
-                                                  GLsizei width,
-                                                  GLsizei height,
-                                                  GLenum format,
-                                                  byte[] data )
+                                           GLint level,
+                                           GLint xoffset,
+                                           GLint yoffset,
+                                           GLsizei width,
+                                           GLsizei height,
+                                           GLenum format,
+                                           byte[] data )
     {
         fixed ( byte* p
                    = &data[ 0 ] )
@@ -3654,10 +3649,7 @@ public unsafe class GLBindings
     /// <param name="count">Specifies an array of the number of indices to be rendered.</param>
     public void glMultiDrawArrays( GLenum mode, GLint[] first, GLsizei[] count )
     {
-        if ( first.Length != count.Length )
-        {
-            throw new ArgumentException( "first and count arrays must be of the same length" );
-        }
+        if ( first.Length != count.Length ) throw new ArgumentException( "first and count arrays must be of the same length" );
 
         fixed ( GLint* p1 = &first[ 0 ] )
         {
@@ -3713,17 +3705,15 @@ public unsafe class GLBindings
     ///     <see cref="GL_UNSIGNED_BYTE" />, <see cref="GL_UNSIGNED_SHORT" />, or <see cref="GL_UNSIGNED_INT" />.
     /// </param>
     /// <param name="indices">Specifies a two-dimensional array of indices of the vertices that are to be rendered.</param>
-    public void glMultiDrawElements<T>( GLenum mode, GLsizei[] count, GLenum type, T[][] indices ) where T : unmanaged, IUnsignedNumber< T >
+    public void glMultiDrawElements< T >( GLenum mode, GLsizei[] count, GLenum type, T[][] indices ) where T : unmanaged, IUnsignedNumber< T >
     {
         var indexPtrs = new void*[ indices.Length ];
 
         for ( var i = 0; i < indices.Length; i++ )
-        {
             fixed ( void* p = &indices[ i ][ 0 ] )
             {
                 indexPtrs[ i ] = p;
             }
-        }
 
         fixed ( GLsizei* c = &count[ 0 ] )
         {
@@ -4314,7 +4304,7 @@ public unsafe class GLBindings
     ///     <see cref="GL_STATIC_DRAW" />, <see cref="GL_STATIC_READ" />, <see cref="GL_STATIC_COPY" />,
     ///     <see cref="GL_DYNAMIC_DRAW" />, <see cref="GL_DYNAMIC_READ" /> or <see cref="GL_DYNAMIC_COPY" />.
     /// </param>
-    public void glBufferData<T>( GLenum target, T[] data, GLenum usage ) where T : unmanaged
+    public void glBufferData< T >( GLenum target, T[] data, GLenum usage ) where T : unmanaged
     {
         fixed ( T* p =
                    &data[ 0 ] )
@@ -4366,7 +4356,7 @@ public unsafe class GLBindings
     /// </param>
     /// <param name="offsetCount">Specifies the offset into the buffer object's data store where data replacement will begin.</param>
     /// <param name="data">An array of <typeparamref name="T" />s that will be copied into the data store for replacement.</param>
-    public void glBufferSubData<T>( GLenum target, GLintptr offsetCount, T[] data ) where T : unmanaged
+    public void glBufferSubData< T >( GLenum target, GLintptr offsetCount, T[] data ) where T : unmanaged
     {
         fixed ( T* p =
                    &data[ 0 ] )
@@ -4419,7 +4409,7 @@ public unsafe class GLBindings
     /// <param name="offsetCount">Specifies the offset into the buffer object's data store from which data will be returned.</param>
     /// <param name="count">Specifies the number of <typeparamref name="T" />s to be returned.</param>
     /// <param name="data">An array of <typeparamref name="T" />s that will be filled with the data from the buffer object.</param>
-    public void glGetBufferSubData<T>( GLenum target, GLintptr offsetCount, GLsizei count, ref T[] data ) where T : unmanaged
+    public void glGetBufferSubData< T >( GLenum target, GLintptr offsetCount, GLsizei count, ref T[] data ) where T : unmanaged
     {
         fixed ( T* p =
                    &data[ 0 ] )
@@ -4474,7 +4464,7 @@ public unsafe class GLBindings
     ///     <see cref="GL_READ_WRITE" />.
     /// </param>
     /// <returns>Returns a type-safe and memory-safe <see cref="System.Span{T}" /> of the buffers data.</returns>
-    public Span< T > glMapBuffer<T>( GLenum target, GLenum access ) where T : unmanaged
+    public Span< T > glMapBuffer< T >( GLenum target, GLenum access ) where T : unmanaged
     {
         GLint size;
         _glGetBufferParameteriv( target, GL_BUFFER_SIZE, &size );
@@ -4605,7 +4595,7 @@ public unsafe class GLBindings
         fixed ( IntPtr* p =
                    &@params[ 0 ] )
         {
-            _glGetBufferPointerv( target, pname, ( void** )p );
+            _glGetBufferPointerv( target, pname, ( void** ) p );
         }
     }
 #endif
@@ -4994,7 +4984,7 @@ public unsafe class GLBindings
             }
         }
 
-        return new string( ( sbyte* )name, 0, len, Encoding.UTF8 );
+        return new string( ( sbyte* ) name, 0, len, Encoding.UTF8 );
     }
 #endif
 
@@ -5056,7 +5046,7 @@ public unsafe class GLBindings
             }
         }
 
-        return new string( ( sbyte* )name, 0, len, Encoding.UTF8 );
+        return new string( ( sbyte* ) name, 0, len, Encoding.UTF8 );
     }
 #endif
 
@@ -5207,7 +5197,7 @@ public unsafe class GLBindings
         GLsizei len;
         _glGetProgramInfoLog( program, bufSize, &len, infoLog );
 
-        return new string( ( sbyte* )infoLog, 0, len, Encoding.UTF8 );
+        return new string( ( sbyte* ) infoLog, 0, len, Encoding.UTF8 );
     }
 #endif
 
@@ -5282,7 +5272,7 @@ public unsafe class GLBindings
         GLsizei len;
         _glGetShaderInfoLog( shader, bufSize, &len, infoLog );
 
-        return new string( ( sbyte* )infoLog, 0, len, Encoding.UTF8 );
+        return new string( ( sbyte* ) infoLog, 0, len, Encoding.UTF8 );
     }
 #endif
 
@@ -5316,7 +5306,7 @@ public unsafe class GLBindings
         GLsizei len;
         _glGetShaderSource( shader, bufSize, &len, source );
 
-        return new string( ( sbyte* )source, 0, len, Encoding.UTF8 );
+        return new string( ( sbyte* ) source, 0, len, Encoding.UTF8 );
     }
 #endif
 
@@ -5625,10 +5615,7 @@ public unsafe class GLBindings
             _glGetVertexAttribPointerv( index, pname, p );
         }
 
-        for ( var i = 0; i < pointer.Length; i++ )
-        {
-            pointer[ i ] = ( uint )ptr[ i ];
-        }
+        for ( var i = 0; i < pointer.Length; i++ ) pointer[ i ] = ( uint ) ptr[ i ];
     }
 #endif
 
@@ -7352,7 +7339,7 @@ public unsafe class GLBindings
     /// </param>
     public void glVertexAttribPointer( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, uint pointer )
     {
-        _glVertexAttribPointer( index, size, type, normalized, stride, ( void* )pointer );
+        _glVertexAttribPointer( index, size, type, normalized, stride, ( void* ) pointer );
     }
 #endif
 
@@ -7896,20 +7883,15 @@ public unsafe class GLBindings
     {
         var varyingsBytes = new GLchar[ varyings.Length ][];
 
-        for ( var i = 0; i < varyings.Length; i++ )
-        {
-            varyingsBytes[ i ] = Encoding.UTF8.GetBytes( varyings[ i ] );
-        }
+        for ( var i = 0; i < varyings.Length; i++ ) varyingsBytes[ i ] = Encoding.UTF8.GetBytes( varyings[ i ] );
 
         var varyingsPtrs = new GLchar*[ varyings.Length ];
 
         for ( var i = 0; i < varyings.Length; i++ )
-        {
             fixed ( GLchar* p = &varyingsBytes[ i ][ 0 ] )
             {
                 varyingsPtrs[ i ] = p;
             }
-        }
 
         fixed ( GLchar** p = &varyingsPtrs[ 0 ] )
         {
@@ -7943,12 +7925,12 @@ public unsafe class GLBindings
     /// <param name="type">Returns the data type of the requested varying variable.</param>
     /// <param name="name">Returns a null-terminated string containing the name of the requested varying variable.</param>
     public void glGetTransformFeedbackVarying( GLuint program,
-                                                      GLuint index,
-                                                      GLsizei bufSize,
-                                                      GLsizei* length,
-                                                      GLsizei* size,
-                                                      GLenum* type,
-                                                      GLchar* name )
+                                               GLuint index,
+                                               GLsizei bufSize,
+                                               GLsizei* length,
+                                               GLsizei* size,
+                                               GLenum* type,
+                                               GLchar* name )
     {
         _glGetTransformFeedbackVarying( program, index, bufSize, length, size, type, name );
     }
@@ -7979,7 +7961,7 @@ public unsafe class GLBindings
                 {
                     _glGetTransformFeedbackVarying( program, index, bufSize, &length, pSize, pType, p );
 
-                    return new string( ( sbyte* )p, 0, length, Encoding.UTF8 );
+                    return new string( ( sbyte* ) p, 0, length, Encoding.UTF8 );
                 }
             }
         }
@@ -8087,7 +8069,7 @@ public unsafe class GLBindings
     /// </param>
     public void glVertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, uint pointer )
     {
-        _glVertexAttribIPointer( index, size, type, stride, ( void* )pointer );
+        _glVertexAttribIPointer( index, size, type, stride, ( void* ) pointer );
     }
 #endif
 
@@ -9402,19 +9384,13 @@ public unsafe class GLBindings
     {
         var ptr = _glGetStringi( name, index );
 
-        if ( ptr == null )
-        {
-            return null;
-        }
+        if ( ptr == null ) return null;
 
         var i = 0;
 
-        while ( ptr[ i ] != 0 )
-        {
-            i++;
-        }
+        while ( ptr[ i ] != 0 ) i++;
 
-        return new string( ( sbyte* )ptr, 0, i, Encoding.UTF8 );
+        return new string( ( sbyte* ) ptr, 0, i, Encoding.UTF8 );
     }
 #endif
 
@@ -9950,15 +9926,15 @@ public unsafe class GLBindings
     ///     <see cref="GL_NEAREST" /> or <see cref="GL_LINEAR" />.
     /// </param>
     public void glBlitFramebuffer( GLint srcX0,
-                                          GLint srcY0,
-                                          GLint srcX1,
-                                          GLint srcY1,
-                                          GLint dstX0,
-                                          GLint dstY0,
-                                          GLint dstX1,
-                                          GLint dstY1,
-                                          GLbitfield mask,
-                                          GLenum filter )
+                                   GLint srcY0,
+                                   GLint srcX1,
+                                   GLint srcY1,
+                                   GLint dstX0,
+                                   GLint dstY0,
+                                   GLint dstX1,
+                                   GLint dstY1,
+                                   GLbitfield mask,
+                                   GLenum filter )
     {
         _glBlitFramebuffer( srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter );
     }
@@ -10051,7 +10027,7 @@ public unsafe class GLBindings
     /// <param name="length">Specifies the length of the range to be mapped.</param>
     /// <param name="access">Specifies a combination of access flags indicating the desired access to the range.</param>
     /// <returns>Returns a type-safe and memory-safe <see cref="System.Span{T}" /> of the entire mapped memory.</returns>
-    public Span< T > glMapBufferRange<T>( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access ) where T : unmanaged
+    public Span< T > glMapBufferRange< T >( GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access ) where T : unmanaged
     {
         void* ret = _glMapBufferRange( target, offset, length, access );
 
@@ -10278,7 +10254,7 @@ public unsafe class GLBindings
     ///     type of the indices.
     /// </param>
     /// <param name="instancecount">Specifies the number of instances of the specified range of indices to be rendered.</param>
-    public void glDrawElementsInstanced<T>( GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount )
+    public void glDrawElementsInstanced< T >( GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount )
         where T : unmanaged, IUnsignedNumber< T >
     {
         fixed ( T* p
@@ -10386,20 +10362,15 @@ public unsafe class GLBindings
         var uniformCount     = uniformNames.Length;
         var uniformNamesPtrs = new GLchar[ uniformCount ][];
 
-        for ( var i = 0; i < uniformCount; i++ )
-        {
-            uniformNamesPtrs[ i ] = Encoding.UTF8.GetBytes( uniformNames[ i ] );
-        }
+        for ( var i = 0; i < uniformCount; i++ ) uniformNamesPtrs[ i ] = Encoding.UTF8.GetBytes( uniformNames[ i ] );
 
         var pUniformNames = stackalloc GLchar*[ uniformCount ];
 
         for ( var i = 0; i < uniformCount; i++ )
-        {
             fixed ( GLchar* p = &uniformNamesPtrs[ i ][ 0 ] )
             {
                 pUniformNames[ i ] = p;
             }
-        }
 
         var uniformIndices = new GLuint[ uniformCount ];
 
@@ -10520,7 +10491,7 @@ public unsafe class GLBindings
         GLsizei length;
         _glGetActiveUniformName( program, uniformIndex, bufSize, &length, uniformName );
 
-        return new string( ( sbyte* )uniformName, 0, length, Encoding.UTF8 );
+        return new string( ( sbyte* ) uniformName, 0, length, Encoding.UTF8 );
     }
 #endif
 
@@ -10652,7 +10623,7 @@ public unsafe class GLBindings
         GLsizei length;
         _glGetActiveUniformBlockName( program, uniformBlockIndex, bufSize, &length, uniformBlockName );
 
-        return new string( ( sbyte* )uniformBlockName, 0, length, Encoding.UTF8 );
+        return new string( ( sbyte* ) uniformBlockName, 0, length, Encoding.UTF8 );
     }
 #endif
 
@@ -10739,7 +10710,7 @@ public unsafe class GLBindings
     ///     Specifies a constant that should be added to each element of <paramref name="indices" /> when
     ///     choosing elements from the enabled vertex arrays.
     /// </param>
-    public void glDrawElementsBaseVertex<T>( GLenum mode, GLsizei count, GLenum type, T[] indices, GLint basevertex )
+    public void glDrawElementsBaseVertex< T >( GLenum mode, GLsizei count, GLenum type, T[] indices, GLint basevertex )
         where T : unmanaged, IUnsignedNumber< T >
     {
         fixed ( void* p
@@ -10814,7 +10785,7 @@ public unsafe class GLBindings
     ///     Specifies a constant that should be added to each element of <paramref name="indices" /> when
     ///     choosing elements from the enabled vertex arrays.
     /// </param>
-    public void glDrawRangeElementsBaseVertex<T>( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, T[] indices, GLint basevertex )
+    public void glDrawRangeElementsBaseVertex< T >( GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, T[] indices, GLint basevertex )
         where T : unmanaged, IUnsignedNumber< T >
     {
         fixed ( void* p
@@ -10886,7 +10857,7 @@ public unsafe class GLBindings
     ///     Specifies a constant that should be added to each element of <paramref name="indices" /> when
     ///     choosing elements from the enabled vertex arrays.
     /// </param>
-    public void glDrawElementsInstancedBaseVertex<T>( GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount, GLint basevertex )
+    public void glDrawElementsInstancedBaseVertex< T >( GLenum mode, GLsizei count, GLenum type, T[] indices, GLsizei instancecount, GLint basevertex )
         where T : unmanaged, IUnsignedNumber< T >
     {
         fixed ( void* p
@@ -10956,12 +10927,9 @@ public unsafe class GLBindings
     ///     Specifies an array of the constants that should be added to each element of
     ///     <paramref name="indices" /> when choosing elements from the enabled vertex arrays.
     /// </param>
-    public void glMultiDrawElementsBaseVertex<T>( GLenum mode, GLenum type, T[][] indices, GLint[] basevertex ) where T : unmanaged, IUnsignedNumber< T >
+    public void glMultiDrawElementsBaseVertex< T >( GLenum mode, GLenum type, T[][] indices, GLint[] basevertex ) where T : unmanaged, IUnsignedNumber< T >
     {
-        if ( indices.Length != basevertex.Length )
-        {
-            throw new ArgumentException( "indices and basevertex must have the same length" );
-        }
+        if ( indices.Length != basevertex.Length ) throw new ArgumentException( "indices and basevertex must have the same length" );
 
         var counts    = new GLsizei[ indices.Length ];
         var indexPtrs = new T*[ indices.Length ];
@@ -10982,7 +10950,7 @@ public unsafe class GLBindings
             {
                 fixed ( T** ip = &indexPtrs[ 0 ] )
                 {
-                    _glMultiDrawElementsBaseVertex( mode, cp, type, ( void** )ip, indices.Length, bvp );
+                    _glMultiDrawElementsBaseVertex( mode, cp, type, ( void** ) ip, indices.Length, bvp );
                 }
             }
         }
@@ -11422,11 +11390,11 @@ public unsafe class GLBindings
     ///     the image.
     /// </param>
     public void glTexImage2DMultisample( GLenum target,
-                                                GLsizei samples,
-                                                GLenum internalformat,
-                                                GLsizei width,
-                                                GLsizei height,
-                                                GLboolean fixedsamplelocations )
+                                         GLsizei samples,
+                                         GLenum internalformat,
+                                         GLsizei width,
+                                         GLsizei height,
+                                         GLboolean fixedsamplelocations )
     {
         _glTexImage2DMultisample( target, samples, internalformat, width, height, fixedsamplelocations );
     }
@@ -11460,12 +11428,12 @@ public unsafe class GLBindings
     ///     the image.
     /// </param>
     public void glTexImage3DMultisample( GLenum target,
-                                                GLsizei samples,
-                                                GLenum internalformat,
-                                                GLsizei width,
-                                                GLsizei height,
-                                                GLsizei depth,
-                                                GLboolean fixedsamplelocations )
+                                         GLsizei samples,
+                                         GLenum internalformat,
+                                         GLsizei width,
+                                         GLsizei height,
+                                         GLsizei depth,
+                                         GLboolean fixedsamplelocations )
     {
         _glTexImage3DMultisample( target, samples, internalformat, width, height, depth, fixedsamplelocations );
     }
@@ -19696,7 +19664,7 @@ public unsafe class GLBindings
 #endif
     }
 #endif
-    public unsafe void glGetProgramiv( GLuint program, GLenum pname, Buffer buffer )
+    public void glGetProgramiv( GLuint program, GLenum pname, Buffer buffer )
     {
         fixed ( int* ptr = &buffer.BackingArray()[ 0 ] )
         {
@@ -19704,15 +19672,15 @@ public unsafe class GLBindings
         }
     }
 
-    public unsafe void glUniformMatrix4fv( GLint location, GLsizei count, GLboolean transpose, Buffer buffer )
+    public void glUniformMatrix4fv( GLint location, GLsizei count, GLboolean transpose, Buffer buffer )
     {
         fixed ( float* ptr = &buffer.BackingArray()[ 0 ] )
         {
             _glUniformMatrix4fv( location, count, transpose, ptr );
         }
     }
-    
-    public unsafe void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer )
+
+    public void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer )
     {
         fixed ( void* ptr = &buffer.BackingArray()[ 0 ] )
         {

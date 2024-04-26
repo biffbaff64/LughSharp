@@ -27,7 +27,4 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class GameWindow
 {
-    public GameWindow()
-    {
-    }
 }

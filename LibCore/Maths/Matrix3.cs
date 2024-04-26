@@ -177,8 +177,8 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 SetToRotationRad( float radians )
     {
-        var cos = ( float )Math.Cos( radians );
-        var sin = ( float )Math.Sin( radians );
+        var cos = ( float ) Math.Cos( radians );
+        var sin = ( float ) Math.Sin( radians );
 
         val[ M00 ] = cos;
         val[ M10 ] = sin;
@@ -322,10 +322,7 @@ public class Matrix3
     {
         var det = Det();
 
-        if ( det == 0 )
-        {
-            throw new GdxRuntimeException( "Can't invert a singular matrix" );
-        }
+        if ( det == 0 ) throw new GdxRuntimeException( "Can't invert a singular matrix" );
 
         var invDet = 1.0f / det;
 
@@ -533,13 +530,10 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining. </returns>
     public Matrix3 RotateRad( float radians )
     {
-        if ( radians == 0 )
-        {
-            return this;
-        }
+        if ( radians == 0 ) return this;
 
-        var cos = ( float )Math.Cos( radians );
-        var sin = ( float )Math.Sin( radians );
+        var cos = ( float ) Math.Cos( radians );
+        var sin = ( float ) Math.Sin( radians );
 
         _tmp[ M00 ] = cos;
         _tmp[ M10 ] = sin;
@@ -628,20 +622,20 @@ public class Matrix3
     /// <returns> The provided vector for chaining. </returns>
     public Vector2 GetScale( Vector2 scale )
     {
-        scale.X = ( float )Math.Sqrt( ( val[ M00 ] * val[ M00 ] ) + ( val[ M01 ] * val[ M01 ] ) );
-        scale.Y = ( float )Math.Sqrt( ( val[ M10 ] * val[ M10 ] ) + ( val[ M11 ] * val[ M11 ] ) );
+        scale.X = ( float ) Math.Sqrt( ( val[ M00 ] * val[ M00 ] ) + ( val[ M01 ] * val[ M01 ] ) );
+        scale.Y = ( float ) Math.Sqrt( ( val[ M10 ] * val[ M10 ] ) + ( val[ M11 ] * val[ M11 ] ) );
 
         return scale;
     }
 
     public float GetRotation()
     {
-        return MathUtils.RADIANS_TO_DEGREES * ( float )Math.Atan2( val[ M10 ], val[ M00 ] );
+        return MathUtils.RADIANS_TO_DEGREES * ( float ) Math.Atan2( val[ M10 ], val[ M00 ] );
     }
 
     public float GetRotationRad()
     {
-        return ( float )Math.Atan2( val[ M10 ], val[ M00 ] );
+        return ( float ) Math.Atan2( val[ M10 ], val[ M00 ] );
     }
 
     /// <summary>

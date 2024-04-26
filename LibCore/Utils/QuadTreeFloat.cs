@@ -117,10 +117,7 @@ public class QuadTreeFloat : IPoolable
 
         Count = 0;
 
-        if ( Values.Count > MaxValues )
-        {
-            Values = new List< float >( MaxValues );
-        }
+        if ( Values.Count > MaxValues ) Values = new List< float >( MaxValues );
     }
 
     public void SetBounds( float x, float y, float width, float height )
@@ -151,10 +148,7 @@ public class QuadTreeFloat : IPoolable
                 return;
             }
         }
-        else if ( count == Values.Count )
-        {
-            Values.EnsureCapacity( GrowValues() );
-        }
+        else if ( count == Values.Count ) Values.EnsureCapacity( GrowValues() );
 
         Values[ count ]     = value;
         Values[ count + 1 ] = valueX;
@@ -165,10 +159,7 @@ public class QuadTreeFloat : IPoolable
 
     private void Split( float value, float valueX, float valueY )
     {
-        for ( var i = 0; i < MaxValues; i += 3 )
-        {
-            AddToChild( Values[ i ], Values[ i + 1 ], Values[ i + 2 ] );
-        }
+        for ( var i = 0; i < MaxValues; i += 3 ) AddToChild( Values[ i ], Values[ i + 1 ], Values[ i + 2 ] );
 
         // values isn't nulled because the trees are pooled.
         Count = -1;
@@ -185,24 +176,16 @@ public class QuadTreeFloat : IPoolable
         if ( valueX < ( X + halfWidth ) )
         {
             if ( valueY < ( Y + halfHeight ) )
-            {
                 child = Sw ??= ObtainChild( X, Y, halfWidth, halfHeight, Depth + 1 );
-            }
             else
-            {
                 child = Nw ??= ObtainChild( X, Y + halfHeight, halfWidth, halfHeight, Depth + 1 );
-            }
         }
         else
         {
             if ( valueY < ( Y + halfHeight ) )
-            {
                 child = Se ??= ObtainChild( X + halfWidth, Y, halfWidth, halfHeight, Depth + 1 );
-            }
             else
-            {
                 child = Ne ??= ObtainChild( X + halfWidth, Y + halfHeight, halfWidth, halfHeight, Depth + 1 );
-            }
         }
 
         child?.Add( value, valueX, valueY );
@@ -210,7 +193,7 @@ public class QuadTreeFloat : IPoolable
 
     private QuadTreeFloat? ObtainChild( float x, float y, float width, float height, int depth )
     {
-        QuadTreeFloat? child = _pool.Obtain();
+        var child = _pool.Obtain();
 
         if ( child != null )
         {
@@ -245,14 +228,14 @@ public class QuadTreeFloat : IPoolable
     public void Query( float centerX, float centerY, float radius, List< float > results )
     {
         Query(
-            centerX,
-            centerY,
-            radius * radius,
-            centerX - radius,
-            centerY - radius,
-            radius * 2,
-            results
-            );
+              centerX,
+              centerY,
+              radius * radius,
+              centerX - radius,
+              centerY - radius,
+              radius * 2,
+              results
+             );
     }
 
     private void Query( float centerX,
@@ -267,9 +250,7 @@ public class QuadTreeFloat : IPoolable
              && ( ( X + Width ) > rectX )
              && ( Y < ( rectY + rectSize ) )
              && ( ( Y + Height ) > rectY ) ) )
-        {
             return;
-        }
 
         var count = Count;
 
@@ -342,7 +323,7 @@ public class QuadTreeFloat : IPoolable
 
         // Check for a nearer value in a neighboring cell.
         result.Clear();
-        Query( x, y, ( float )Math.Sqrt( nearDist ), result );
+        Query( x, y, ( float ) Math.Sqrt( nearDist ), result );
 
         for ( int i = 3, n = result.Count; i < n; i += 4 )
         {
@@ -357,10 +338,7 @@ public class QuadTreeFloat : IPoolable
             }
         }
 
-        if ( !found && ( result.Count == 0 ) )
-        {
-            return false;
-        }
+        if ( !found && ( result.Count == 0 ) ) return false;
 
         result.Clear();
         result.Add( nearValue );
@@ -377,9 +355,7 @@ public class QuadTreeFloat : IPoolable
              && ( ( X + Width ) > x )
              && ( Y < y )
              && ( ( Y + Height ) > y ) ) )
-        {
             return;
-        }
 
         var count = Count;
 

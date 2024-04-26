@@ -36,9 +36,7 @@ public class NumberUtils
         // exponent and nonzero significand.
         if ( ( ( result & FloatConstants.EXP_BIT_MASK ) == FloatConstants.EXP_BIT_MASK )
           && ( ( result & FloatConstants.SIGNIF_BIT_MASK ) != 0 ) )
-        {
             result = 0x7fc00000;
-        }
 
         return result;
     }
@@ -69,7 +67,7 @@ public class NumberUtils
     {
         var intBits = FloatToRawIntBits( value );
 
-        intBits |= ( int )( ( intBits >>> 24 ) * ( 255f / 254f ) ) << 24;
+        intBits |= ( int ) ( ( intBits >>> 24 ) * ( 255f / 254f ) ) << 24;
 
         return intBits;
     }
@@ -107,10 +105,7 @@ public class NumberUtils
     /// <returns></returns>
     public static int? ParseInt( string? str )
     {
-        if ( int.TryParse( str, out var p ) )
-        {
-            return p;
-        }
+        if ( int.TryParse( str, out var p ) ) return p;
 
         return null;
     }
@@ -121,10 +116,7 @@ public class NumberUtils
     /// <returns></returns>
     public static float? ParseFloat( string? str )
     {
-        if ( float.TryParse( str, out var p ) )
-        {
-            return p;
-        }
+        if ( float.TryParse( str, out var p ) ) return p;
 
         return null;
     }

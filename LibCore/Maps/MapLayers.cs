@@ -54,18 +54,11 @@ public class MapLayers : IEnumerable< MapLayer >
     /// </summary>
     public MapLayer? Get( string name )
     {
-        if ( name.Equals( string.Empty ) )
-        {
-            return null;
-        }
+        if ( name.Equals( string.Empty ) ) return null;
 
         for ( int i = 0, n = _layers.Count; i < n; i++ )
-        {
             if ( name.Equals( _layers[ i ].Name ) )
-            {
                 return _layers[ i ];
-            }
-        }
 
         return null;
     }
@@ -75,7 +68,7 @@ public class MapLayers : IEnumerable< MapLayer >
     /// </summary>
     public int GetIndex( string name )
     {
-        MapLayer? layer = Get( name );
+        var layer = Get( name );
 
         return layer != null ? GetIndex( layer ) : -1;
     }
@@ -120,7 +113,7 @@ public class MapLayers : IEnumerable< MapLayer >
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public List< T > GetByType<T>() where T : MapLayer
+    public List< T > GetByType< T >() where T : MapLayer
     {
         return GetByType( new List< T >() );
     }
@@ -131,7 +124,7 @@ public class MapLayers : IEnumerable< MapLayer >
     /// <param name="fill">Ther list in which to store the results</param>
     /// <typeparam name="T">The requested type.</typeparam>
     /// <returns></returns>
-    public List< T > GetByType<T>( List< T > fill ) where T : MapLayer
+    public List< T > GetByType< T >( List< T > fill ) where T : MapLayer
     {
         fill.Clear();
         fill.AddRange( _layers.OfType< T >() );

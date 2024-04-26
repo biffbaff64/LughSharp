@@ -56,10 +56,7 @@ public abstract class TemporalAction : Action
 
     public override bool Act( float delta )
     {
-        if ( IsComplete )
-        {
-            return true;
-        }
+        if ( IsComplete ) return true;
 
         Pool< Action >? pool = Pool;
 
@@ -79,17 +76,11 @@ public abstract class TemporalAction : Action
 
             var percent = IsComplete ? 1 : Time / Duration;
 
-            if ( Interpolation != null )
-            {
-                percent = Interpolation.Apply( percent );
-            }
+            if ( Interpolation != null ) percent = Interpolation.Apply( percent );
 
             Update( Reverse ? 1 - percent : percent );
 
-            if ( IsComplete )
-            {
-                End();
-            }
+            if ( IsComplete ) End();
 
             return IsComplete;
         }

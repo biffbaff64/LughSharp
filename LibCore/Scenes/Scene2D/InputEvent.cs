@@ -144,8 +144,9 @@ public class InputEvent : Event
     /// <summary>
     ///     Returns true if this event is a touchUp triggered by <see cref="Stage.CancelTouchFocus()" />.
     /// </summary>
-    public bool TouchFocusCancel => MathUtils.IsEqual( StageX, int.MinValue )
-                                 || MathUtils.IsEqual( StageY, int.MinValue );
+    public bool TouchFocusCancel
+        => MathUtils.IsEqual( StageX, int.MinValue )
+        || MathUtils.IsEqual( StageY, int.MinValue );
 
     /// <summary>
     ///     If false, <see cref="Event.SetHandled" /> will not add the listener
@@ -176,7 +177,7 @@ public class InputEvent : Event
         return actorCoords;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string? ToString()
     {
         return Type != null ? Type.ToString() : string.Empty;

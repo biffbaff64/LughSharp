@@ -70,10 +70,10 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
 
         // isoTransform.translate(0, 32, 0);
         _isoTransform.Scale(
-            ( float )( Math.Sqrt( 2.0 ) / 2.0 ),
-            ( float )( Math.Sqrt( 2.0 ) / 4.0 ),
-            1.0f
-            );
+                            ( float ) ( Math.Sqrt( 2.0 ) / 2.0 ),
+                            ( float ) ( Math.Sqrt( 2.0 ) / 4.0 ),
+                            1.0f
+                           );
 
         _isoTransform.Rotate( 0.0f, 0.0f, 1.0f, -45 );
 
@@ -87,20 +87,16 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
         _screenPos.Set( vec.X, vec.Y, 0 );
 
         if ( _invIsotransform == null )
-        {
             Logger.Debug( "_invIsotransform is null!" );
-        }
         else
-        {
             _screenPos.Mul( _invIsotransform );
-        }
 
         return _screenPos;
     }
 
     public override void RenderTileLayer( TiledMapTileLayer layer )
     {
-        Color batchColor = Batch.Color;
+        var batchColor = Batch.Color;
 
         var color = Color.ToFloatBits( batchColor.R,
                                        batchColor.G,
@@ -132,155 +128,150 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
                           ( ViewBounds.Y + ViewBounds.Height ) - layerOffsetY );
 
         // transforming screen coordinates to iso coordinates
-        var row1 = ( int )( TranslateScreenToIso( _topLeft ).Y / tileWidth ) - 2;
-        var row2 = ( int )( TranslateScreenToIso( _bottomRight ).Y / tileWidth ) + 2;
+        var row1 = ( int ) ( TranslateScreenToIso( _topLeft ).Y / tileWidth ) - 2;
+        var row2 = ( int ) ( TranslateScreenToIso( _bottomRight ).Y / tileWidth ) + 2;
 
-        var col1 = ( int )( TranslateScreenToIso( _bottomLeft ).X / tileWidth ) - 2;
-        var col2 = ( int )( TranslateScreenToIso( _topRight ).X / tileWidth ) + 2;
+        var col1 = ( int ) ( TranslateScreenToIso( _bottomLeft ).X / tileWidth ) - 2;
+        var col2 = ( int ) ( TranslateScreenToIso( _topRight ).X / tileWidth ) + 2;
 
         for ( var row = row2; row >= row1; row-- )
+        for ( var col = col1; col <= col2; col++ )
         {
-            for ( var col = col1; col <= col2; col++ )
+            var x = ( col * halfTileWidth ) + ( row * halfTileWidth );
+            var y = ( row * halfTileHeight ) - ( col * halfTileHeight );
+
+            var cell = layer.GetCell( col, row );
+
+            if ( cell == null ) return;
+
+            var tile = cell.GetTile();
+
+            if ( tile != null )
             {
-                var x = ( col * halfTileWidth ) + ( row * halfTileWidth );
-                var y = ( row * halfTileHeight ) - ( col * halfTileHeight );
+                var flipX     = cell.GetFlipHorizontally();
+                var flipY     = cell.GetFlipVertically();
+                var rotations = cell.GetRotation();
 
-                TiledMapTileLayer.Cell? cell = layer.GetCell( col, row );
+                var region = tile.TextureRegion;
 
-                if ( cell == null )
+                var x1 = x + ( tile.OffsetX * UnitScale ) + layerOffsetX;
+                var y1 = y + ( tile.OffsetY * UnitScale ) + layerOffsetY;
+                var x2 = x1 + ( region.RegionWidth * UnitScale );
+                var y2 = y1 + ( region.RegionHeight * UnitScale );
+
+                var u1 = region.U;
+                var v1 = region.V2;
+                var u2 = region.U2;
+                var v2 = region.V;
+
+                Vertices[ IBatch.X1 ] = x1;
+                Vertices[ IBatch.Y1 ] = y1;
+                Vertices[ IBatch.C1 ] = color;
+                Vertices[ IBatch.U1 ] = u1;
+                Vertices[ IBatch.V1 ] = v1;
+
+                Vertices[ IBatch.X2 ] = x1;
+                Vertices[ IBatch.Y2 ] = y2;
+                Vertices[ IBatch.C2 ] = color;
+                Vertices[ IBatch.U2 ] = u1;
+                Vertices[ IBatch.V2 ] = v2;
+
+                Vertices[ IBatch.X3 ] = x2;
+                Vertices[ IBatch.Y3 ] = y2;
+                Vertices[ IBatch.C3 ] = color;
+                Vertices[ IBatch.U3 ] = u2;
+                Vertices[ IBatch.V3 ] = v2;
+
+                Vertices[ IBatch.X4 ] = x2;
+                Vertices[ IBatch.Y4 ] = y1;
+                Vertices[ IBatch.C4 ] = color;
+                Vertices[ IBatch.U4 ] = u2;
+                Vertices[ IBatch.V4 ] = v1;
+
+                if ( flipX )
                 {
-                    return;
+                    var temp = Vertices[ IBatch.U1 ];
+                    Vertices[ IBatch.U1 ] = Vertices[ IBatch.U3 ];
+                    Vertices[ IBatch.U3 ] = temp;
+
+                    temp                  = Vertices[ IBatch.U2 ];
+                    Vertices[ IBatch.U2 ] = Vertices[ IBatch.U4 ];
+                    Vertices[ IBatch.U4 ] = temp;
                 }
 
-                ITiledMapTile? tile = cell.GetTile();
-
-                if ( tile != null )
+                if ( flipY )
                 {
-                    var flipX     = cell.GetFlipHorizontally();
-                    var flipY     = cell.GetFlipVertically();
-                    var rotations = cell.GetRotation();
+                    var temp = Vertices[ IBatch.V1 ];
+                    Vertices[ IBatch.V1 ] = Vertices[ IBatch.V3 ];
+                    Vertices[ IBatch.V3 ] = temp;
 
-                    TextureRegion region = tile.TextureRegion;
+                    temp                  = Vertices[ IBatch.V2 ];
+                    Vertices[ IBatch.V2 ] = Vertices[ IBatch.V4 ];
+                    Vertices[ IBatch.V4 ] = temp;
+                }
 
-                    var x1 = x + ( tile.OffsetX * UnitScale ) + layerOffsetX;
-                    var y1 = y + ( tile.OffsetY * UnitScale ) + layerOffsetY;
-                    var x2 = x1 + ( region.RegionWidth * UnitScale );
-                    var y2 = y1 + ( region.RegionHeight * UnitScale );
-
-                    var u1 = region.U;
-                    var v1 = region.V2;
-                    var u2 = region.U2;
-                    var v2 = region.V;
-
-                    Vertices[ IBatch.X1 ] = x1;
-                    Vertices[ IBatch.Y1 ] = y1;
-                    Vertices[ IBatch.C1 ] = color;
-                    Vertices[ IBatch.U1 ] = u1;
-                    Vertices[ IBatch.V1 ] = v1;
-
-                    Vertices[ IBatch.X2 ] = x1;
-                    Vertices[ IBatch.Y2 ] = y2;
-                    Vertices[ IBatch.C2 ] = color;
-                    Vertices[ IBatch.U2 ] = u1;
-                    Vertices[ IBatch.V2 ] = v2;
-
-                    Vertices[ IBatch.X3 ] = x2;
-                    Vertices[ IBatch.Y3 ] = y2;
-                    Vertices[ IBatch.C3 ] = color;
-                    Vertices[ IBatch.U3 ] = u2;
-                    Vertices[ IBatch.V3 ] = v2;
-
-                    Vertices[ IBatch.X4 ] = x2;
-                    Vertices[ IBatch.Y4 ] = y1;
-                    Vertices[ IBatch.C4 ] = color;
-                    Vertices[ IBatch.U4 ] = u2;
-                    Vertices[ IBatch.V4 ] = v1;
-
-                    if ( flipX )
+                if ( rotations != 0 )
+                {
+                    switch ( rotations )
                     {
-                        var temp = Vertices[ IBatch.U1 ];
-                        Vertices[ IBatch.U1 ] = Vertices[ IBatch.U3 ];
-                        Vertices[ IBatch.U3 ] = temp;
-
-                        temp                  = Vertices[ IBatch.U2 ];
-                        Vertices[ IBatch.U2 ] = Vertices[ IBatch.U4 ];
-                        Vertices[ IBatch.U4 ] = temp;
-                    }
-
-                    if ( flipY )
-                    {
-                        var temp = Vertices[ IBatch.V1 ];
-                        Vertices[ IBatch.V1 ] = Vertices[ IBatch.V3 ];
-                        Vertices[ IBatch.V3 ] = temp;
-
-                        temp                  = Vertices[ IBatch.V2 ];
-                        Vertices[ IBatch.V2 ] = Vertices[ IBatch.V4 ];
-                        Vertices[ IBatch.V4 ] = temp;
-                    }
-
-                    if ( rotations != 0 )
-                    {
-                        switch ( rotations )
+                        case TiledMapTileLayer.Cell.ROTATE90:
                         {
-                            case TiledMapTileLayer.Cell.ROTATE90:
-                            {
-                                var tempV = Vertices[ IBatch.V1 ];
-                                Vertices[ IBatch.V1 ] = Vertices[ IBatch.V2 ];
-                                Vertices[ IBatch.V2 ] = Vertices[ IBatch.V3 ];
-                                Vertices[ IBatch.V3 ] = Vertices[ IBatch.V4 ];
-                                Vertices[ IBatch.V4 ] = tempV;
+                            var tempV = Vertices[ IBatch.V1 ];
+                            Vertices[ IBatch.V1 ] = Vertices[ IBatch.V2 ];
+                            Vertices[ IBatch.V2 ] = Vertices[ IBatch.V3 ];
+                            Vertices[ IBatch.V3 ] = Vertices[ IBatch.V4 ];
+                            Vertices[ IBatch.V4 ] = tempV;
 
-                                var tempU = Vertices[ IBatch.U1 ];
-                                Vertices[ IBatch.U1 ] = Vertices[ IBatch.U2 ];
-                                Vertices[ IBatch.U2 ] = Vertices[ IBatch.U3 ];
-                                Vertices[ IBatch.U3 ] = Vertices[ IBatch.U4 ];
-                                Vertices[ IBatch.U4 ] = tempU;
+                            var tempU = Vertices[ IBatch.U1 ];
+                            Vertices[ IBatch.U1 ] = Vertices[ IBatch.U2 ];
+                            Vertices[ IBatch.U2 ] = Vertices[ IBatch.U3 ];
+                            Vertices[ IBatch.U3 ] = Vertices[ IBatch.U4 ];
+                            Vertices[ IBatch.U4 ] = tempU;
 
-                                break;
-                            }
+                            break;
+                        }
 
-                            case TiledMapTileLayer.Cell.ROTATE180:
-                            {
-                                var tempU = Vertices[ IBatch.U1 ];
-                                Vertices[ IBatch.U1 ] = Vertices[ IBatch.U3 ];
-                                Vertices[ IBatch.U3 ] = tempU;
+                        case TiledMapTileLayer.Cell.ROTATE180:
+                        {
+                            var tempU = Vertices[ IBatch.U1 ];
+                            Vertices[ IBatch.U1 ] = Vertices[ IBatch.U3 ];
+                            Vertices[ IBatch.U3 ] = tempU;
 
-                                tempU                 = Vertices[ IBatch.U2 ];
-                                Vertices[ IBatch.U2 ] = Vertices[ IBatch.U4 ];
-                                Vertices[ IBatch.U4 ] = tempU;
+                            tempU                 = Vertices[ IBatch.U2 ];
+                            Vertices[ IBatch.U2 ] = Vertices[ IBatch.U4 ];
+                            Vertices[ IBatch.U4 ] = tempU;
 
-                                var tempV = Vertices[ IBatch.V1 ];
-                                Vertices[ IBatch.V1 ] = Vertices[ IBatch.V3 ];
-                                Vertices[ IBatch.V3 ] = tempV;
+                            var tempV = Vertices[ IBatch.V1 ];
+                            Vertices[ IBatch.V1 ] = Vertices[ IBatch.V3 ];
+                            Vertices[ IBatch.V3 ] = tempV;
 
-                                tempV                 = Vertices[ IBatch.V2 ];
-                                Vertices[ IBatch.V2 ] = Vertices[ IBatch.V4 ];
-                                Vertices[ IBatch.V4 ] = tempV;
+                            tempV                 = Vertices[ IBatch.V2 ];
+                            Vertices[ IBatch.V2 ] = Vertices[ IBatch.V4 ];
+                            Vertices[ IBatch.V4 ] = tempV;
 
-                                break;
-                            }
+                            break;
+                        }
 
-                            case TiledMapTileLayer.Cell.ROTATE270:
-                            {
-                                var tempV = Vertices[ IBatch.V1 ];
-                                Vertices[ IBatch.V1 ] = Vertices[ IBatch.V4 ];
-                                Vertices[ IBatch.V4 ] = Vertices[ IBatch.V3 ];
-                                Vertices[ IBatch.V3 ] = Vertices[ IBatch.V2 ];
-                                Vertices[ IBatch.V2 ] = tempV;
+                        case TiledMapTileLayer.Cell.ROTATE270:
+                        {
+                            var tempV = Vertices[ IBatch.V1 ];
+                            Vertices[ IBatch.V1 ] = Vertices[ IBatch.V4 ];
+                            Vertices[ IBatch.V4 ] = Vertices[ IBatch.V3 ];
+                            Vertices[ IBatch.V3 ] = Vertices[ IBatch.V2 ];
+                            Vertices[ IBatch.V2 ] = tempV;
 
-                                var tempU = Vertices[ IBatch.U1 ];
-                                Vertices[ IBatch.U1 ] = Vertices[ IBatch.U4 ];
-                                Vertices[ IBatch.U4 ] = Vertices[ IBatch.U3 ];
-                                Vertices[ IBatch.U3 ] = Vertices[ IBatch.U2 ];
-                                Vertices[ IBatch.U2 ] = tempU;
+                            var tempU = Vertices[ IBatch.U1 ];
+                            Vertices[ IBatch.U1 ] = Vertices[ IBatch.U4 ];
+                            Vertices[ IBatch.U4 ] = Vertices[ IBatch.U3 ];
+                            Vertices[ IBatch.U3 ] = Vertices[ IBatch.U2 ];
+                            Vertices[ IBatch.U2 ] = tempU;
 
-                                break;
-                            }
+                            break;
                         }
                     }
-
-                    Batch.Draw( region.Texture, Vertices, 0, NUM_VERTICES );
                 }
+
+                Batch.Draw( region.Texture, Vertices, 0, NUM_VERTICES );
             }
         }
     }

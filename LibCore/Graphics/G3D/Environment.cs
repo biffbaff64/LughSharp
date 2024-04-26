@@ -30,10 +30,6 @@ namespace LughSharp.LibCore.Graphics.G3D;
 
 public class Environment : AttributesGroup
 {
-    public Environment()
-    {
-    }
-
     /// <summary>
     ///     Shadow map used to render shadows
     /// </summary>
@@ -47,20 +43,14 @@ public class Environment : AttributesGroup
     /// <returns></returns>
     public Environment Add( params BaseLight[] lights )
     {
-        foreach ( BaseLight light in lights )
-        {
-            Add( light );
-        }
+        foreach ( var light in lights ) Add( light );
 
         return this;
     }
 
     public Environment Add( List< BaseLight > lights )
     {
-        foreach ( BaseLight light in lights )
-        {
-            Add( light );
-        }
+        foreach ( var light in lights ) Add( light );
 
         return this;
     }
@@ -68,33 +58,22 @@ public class Environment : AttributesGroup
     public Environment Add( BaseLight light )
     {
         if ( light is DirectionalLight directionalLight )
-        {
             Add( directionalLight );
-        }
         else if ( light is PointLight pointLight )
-        {
             Add( pointLight );
-        }
         else if ( light is SpotLight spotLight )
-        {
             Add( spotLight );
-        }
         else
-        {
             throw new GdxRuntimeException( "Unknown light type" );
-        }
 
         return this;
     }
 
     public Environment Add( DirectionalLight light )
     {
-        var dirLights = ( DirectionalLightsAttribute? )Get( DirectionalLightsAttribute.Type );
+        var dirLights = ( DirectionalLightsAttribute? ) Get( DirectionalLightsAttribute.Type );
 
-        if ( dirLights == null )
-        {
-            Set( dirLights = new DirectionalLightsAttribute() );
-        }
+        if ( dirLights == null ) Set( dirLights = new DirectionalLightsAttribute() );
 
         dirLights.lights.Add( light );
 
@@ -103,12 +82,9 @@ public class Environment : AttributesGroup
 
     public Environment Add( PointLight light )
     {
-        var pointLights = ( PointLightsAttribute? )Get( PointLightsAttribute.Type );
+        var pointLights = ( PointLightsAttribute? ) Get( PointLightsAttribute.Type );
 
-        if ( pointLights == null )
-        {
-            Set( pointLights = new PointLightsAttribute() );
-        }
+        if ( pointLights == null ) Set( pointLights = new PointLightsAttribute() );
 
         pointLights.lights.Add( light );
 
@@ -117,12 +93,9 @@ public class Environment : AttributesGroup
 
     public Environment Add( SpotLight light )
     {
-        var spotLights = ( SpotLightsAttribute? )Get( SpotLightsAttribute.Type );
+        var spotLights = ( SpotLightsAttribute? ) Get( SpotLightsAttribute.Type );
 
-        if ( spotLights == null )
-        {
-            Set( spotLights = new SpotLightsAttribute() );
-        }
+        if ( spotLights == null ) Set( spotLights = new SpotLightsAttribute() );
 
         spotLights.lights.Add( light );
 
@@ -131,20 +104,14 @@ public class Environment : AttributesGroup
 
     public Environment Remove( params BaseLight[] lights )
     {
-        foreach ( BaseLight light in lights )
-        {
-            Remove( light );
-        }
+        foreach ( var light in lights ) Remove( light );
 
         return this;
     }
 
     public Environment Remove( List< BaseLight > lights )
     {
-        foreach ( BaseLight light in lights )
-        {
-            Remove( light );
-        }
+        foreach ( var light in lights ) Remove( light );
 
         return this;
     }
@@ -152,21 +119,13 @@ public class Environment : AttributesGroup
     public Environment Remove( BaseLight light )
     {
         if ( light is DirectionalLight directionalLight )
-        {
             Remove( directionalLight );
-        }
         else if ( light is PointLight pointLight )
-        {
             Remove( pointLight );
-        }
         else if ( light is SpotLight spotLight )
-        {
             Remove( spotLight );
-        }
         else
-        {
             throw new GdxRuntimeException( "Unknown light type" );
-        }
 
         return this;
     }
@@ -175,14 +134,11 @@ public class Environment : AttributesGroup
     {
         if ( Has( DirectionalLightsAttribute.Type ) )
         {
-            var dirLights = ( DirectionalLightsAttribute? )Get( DirectionalLightsAttribute.Type );
+            var dirLights = ( DirectionalLightsAttribute? ) Get( DirectionalLightsAttribute.Type );
 
             dirLights?.lights.Remove( light );
 
-            if ( dirLights?.lights.Count == 0 )
-            {
-                Remove( DirectionalLightsAttribute.Type );
-            }
+            if ( dirLights?.lights.Count == 0 ) Remove( DirectionalLightsAttribute.Type );
         }
 
         return this;
@@ -192,14 +148,11 @@ public class Environment : AttributesGroup
     {
         if ( Has( PointLightsAttribute.Type ) )
         {
-            var pointLights = ( PointLightsAttribute? )Get( PointLightsAttribute.Type );
+            var pointLights = ( PointLightsAttribute? ) Get( PointLightsAttribute.Type );
 
             pointLights?.lights.Remove( light );
 
-            if ( pointLights?.lights.Count == 0 )
-            {
-                Remove( PointLightsAttribute.Type );
-            }
+            if ( pointLights?.lights.Count == 0 ) Remove( PointLightsAttribute.Type );
         }
 
         return this;
@@ -209,14 +162,11 @@ public class Environment : AttributesGroup
     {
         if ( Has( SpotLightsAttribute.Type ) )
         {
-            var spotLights = ( SpotLightsAttribute? )Get( SpotLightsAttribute.Type );
+            var spotLights = ( SpotLightsAttribute? ) Get( SpotLightsAttribute.Type );
 
             spotLights?.lights.Remove( light );
 
-            if ( spotLights?.lights.Count == 0 )
-            {
-                Remove( SpotLightsAttribute.Type );
-            }
+            if ( spotLights?.lights.Count == 0 ) Remove( SpotLightsAttribute.Type );
         }
 
         return this;

@@ -262,28 +262,22 @@ public class Ellipse : ISerializable, IShape2D
         if ( ( ( a * 3 ) > b ) || ( ( b * 3 ) > a ) )
         {
             // If one dimension is three times as long as the other...
-            return ( float )( MathUtils.PI
-                            * ( ( 3 * ( a + b ) )
-                              - Math.Sqrt( ( ( 3 * a ) + b ) * ( a + ( 3 * b ) ) ) ) );
+            return ( float ) ( MathUtils.PI
+                             * ( ( 3 * ( a + b ) )
+                               - Math.Sqrt( ( ( 3 * a ) + b ) * ( a + ( 3 * b ) ) ) ) );
         }
 
         // We can use the simpler approximation, then
-        return ( float )( MathUtils.PI2 * Math.Sqrt( ( ( a * a ) + ( b * b ) ) / 2 ) );
+        return ( float ) ( MathUtils.PI2 * Math.Sqrt( ( ( a * a ) + ( b * b ) ) / 2 ) );
     }
 
     public new bool Equals( object? o )
     {
-        if ( o == this )
-        {
-            return true;
-        }
+        if ( o == this ) return true;
 
-        if ( ( o == null ) || ( o.GetType() != GetType() ) )
-        {
-            return false;
-        }
+        if ( ( o == null ) || ( o.GetType() != GetType() ) ) return false;
 
-        var e = ( Ellipse )o;
+        var e = ( Ellipse ) o;
 
         return X.Equals( e.X )
             && Y.Equals( e.Y )

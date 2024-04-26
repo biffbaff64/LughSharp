@@ -72,8 +72,5 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
     [PublicAPI]
     public class PixmapLoaderParameter : AssetLoaderParameters
     {
-        public PixmapLoaderParameter()
-        {
-        }
     }
 }

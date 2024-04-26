@@ -87,7 +87,7 @@ public class DragAndDrop
 
     public void RemoveSource( DragSource source )
     {
-        _sourceListeners.Remove( source, out DragListener? dragListener );
+        _sourceListeners.Remove( source, out var dragListener );
 
         source.Actor.RemoveCaptureListener( dragListener! );
     }
@@ -109,10 +109,7 @@ public class DragAndDrop
     {
         _targets.Clear();
 
-        foreach ( KeyValuePair< DragSource, DragListener > entry in _sourceListeners )
-        {
-            entry.Key.Actor.RemoveCaptureListener( entry.Value );
-        }
+        foreach ( KeyValuePair< DragSource, DragListener > entry in _sourceListeners ) entry.Key.Actor.RemoveCaptureListener( entry.Value );
 
         _sourceListeners.Clear();
     }
@@ -124,17 +121,11 @@ public class DragAndDrop
     {
         DragListener listener;
 
-        if ( ( listener = _sourceListeners[ except ] ) == null )
-        {
-            return;
-        }
+        if ( ( listener = _sourceListeners[ except ] ) == null ) return;
 
-        Stage? stage = except.Actor.Stage;
+        var stage = except.Actor.Stage;
 
-        if ( stage != null )
-        {
-            stage.CancelTouchFocusExcept( listener, except.Actor );
-        }
+        if ( stage != null ) stage.CancelTouchFocusExcept( listener, except.Actor );
     }
 
     /// <summary>
@@ -208,30 +199,24 @@ public class DragAndDrop
 
             if ( _parent is { CancelTouchFocus: true, DragPayload: not null } )
             {
-                Stage? stage = _source.Actor.Stage;
+                var stage = _source.Actor.Stage;
 
-                if ( stage != null )
-                {
-                    stage.CancelTouchFocusExcept( this, _source.Actor );
-                }
+                if ( stage != null ) stage.CancelTouchFocusExcept( this, _source.Actor );
             }
         }
 
         public override void Drag( InputEvent ev, float x, float y, int pointer )
         {
-            if ( ( _parent.DragPayload == null ) || ( pointer != _parent.activePointer ) )
-            {
-                return;
-            }
+            if ( ( _parent.DragPayload == null ) || ( pointer != _parent.activePointer ) ) return;
 
             _source.Drag( ev, x, y, pointer );
 
-            Stage? stage = ev.Stage;
+            var stage = ev.Stage;
 
             // Move the drag actor away, so it cannot be hit.
-            Actor? oldDragActor  = _parent.DragActor;
-            float  oldDragActorX = 0;
-            float  oldDragActorY = 0;
+            var   oldDragActor  = _parent.DragActor;
+            float oldDragActorX = 0;
+            float oldDragActorY = 0;
 
             if ( oldDragActor != null )
             {
@@ -243,13 +228,10 @@ public class DragAndDrop
             var stageX = ev.StageX + _parent._touchOffsetX;
             var stageY = ev.StageY + _parent._touchOffsetY;
 
-            Actor? hit = ev.Stage?.Hit( stageX, stageY, true )
-                      ?? ev.Stage?.Hit( stageX, stageY, false );
+            var hit = ev.Stage?.Hit( stageX, stageY, true )
+                   ?? ev.Stage?.Hit( stageX, stageY, false );
 
-            if ( oldDragActor != null )
-            {
-                oldDragActor.SetPosition( oldDragActorX, oldDragActorY );
-            }
+            if ( oldDragActor != null ) oldDragActor.SetPosition( oldDragActorX, oldDragActorY );
 
             // Find target.
             DragTarget? newTarget = null;
@@ -260,12 +242,9 @@ public class DragAndDrop
             {
                 for ( int i = 0, n = _parent._targets.Count; i < n; i++ )
                 {
-                    DragTarget target = _parent._targets[ i ];
+                    var target = _parent._targets[ i ];
 
-                    if ( !target.Actor.IsAscendantOf( hit ) )
-                    {
-                        continue;
-                    }
+                    if ( !target.Actor.IsAscendantOf( hit ) ) continue;
 
                     newTarget = target;
                     target.Actor.StageToLocalCoordinates( TmpVector.Set( stageX, stageY ) );
@@ -277,10 +256,7 @@ public class DragAndDrop
             // If over a new target, notify the former target that it's being left behind.
             if ( newTarget != _parent.Target )
             {
-                if ( _parent.Target != null )
-                {
-                    _parent.Target.Reset( _source, _parent.DragPayload );
-                }
+                if ( _parent.Target != null ) _parent.Target.Reset( _source, _parent.DragPayload );
 
                 _parent.Target = newTarget;
             }
@@ -302,32 +278,23 @@ public class DragAndDrop
             if ( _parent.Target != null )
             {
                 actor = _parent._isValidTarget
-                    ? _parent.DragPayload.ValidDragActor
-                    : _parent.DragPayload.InvalidDragActor;
+                            ? _parent.DragPayload.ValidDragActor
+                            : _parent.DragPayload.InvalidDragActor;
             }
 
             actor ??= _parent.DragPayload.DragActor;
 
             if ( actor != oldDragActor )
             {
-                if ( ( oldDragActor != null ) && _parent._removeDragActor )
-                {
-                    oldDragActor.Remove();
-                }
+                if ( ( oldDragActor != null ) && _parent._removeDragActor ) oldDragActor.Remove();
 
                 _parent.DragActor        = actor;
                 _parent._removeDragActor = actor?.Stage == null; // Only remove later if not already in the stage now.
 
-                if ( _parent._removeDragActor )
-                {
-                    stage?.AddActor( actor ?? throw new NullReferenceException() );
-                }
+                if ( _parent._removeDragActor ) stage?.AddActor( actor ?? throw new NullReferenceException() );
             }
 
-            if ( actor == null )
-            {
-                return;
-            }
+            if ( actor == null ) return;
 
             // Position the drag actor.
             var actorX = ( ev.StageX - actor.Width ) + _parent._dragActorX;
@@ -335,25 +302,13 @@ public class DragAndDrop
 
             if ( _parent.KeepWithinStage )
             {
-                if ( actorX < 0 )
-                {
-                    actorX = 0;
-                }
+                if ( actorX < 0 ) actorX = 0;
 
-                if ( actorY < 0 )
-                {
-                    actorY = 0;
-                }
+                if ( actorY < 0 ) actorY = 0;
 
-                if ( ( actorX + actor.Width ) > stage?.Width )
-                {
-                    actorX = stage.Width - actor.Width;
-                }
+                if ( ( actorX + actor.Width ) > stage?.Width ) actorX = stage.Width - actor.Width;
 
-                if ( ( actorY + actor.Height ) > stage?.Height )
-                {
-                    actorY = stage.Height - actor.Height;
-                }
+                if ( ( actorY + actor.Height ) > stage?.Height ) actorY = stage.Height - actor.Height;
             }
 
             actor.SetPosition( actorX, actorY );
@@ -361,27 +316,15 @@ public class DragAndDrop
 
         public override void DragStop( InputEvent ev, float x, float y, int pointer )
         {
-            if ( pointer != _parent.activePointer )
-            {
-                return;
-            }
+            if ( pointer != _parent.activePointer ) return;
 
             _parent.activePointer = -1;
 
-            if ( _parent.DragPayload == null )
-            {
-                return;
-            }
+            if ( _parent.DragPayload == null ) return;
 
-            if ( TimeUtils.Millis() < _parent._dragValidTime )
-            {
-                _parent._isValidTarget = false;
-            }
+            if ( TimeUtils.Millis() < _parent._dragValidTime ) _parent._isValidTarget = false;
 
-            if ( _parent is { DragActor: not null, _removeDragActor: true } )
-            {
-                _parent.DragActor.Remove();
-            }
+            if ( _parent is { DragActor: not null, _removeDragActor: true } ) _parent.DragActor.Remove();
 
             if ( _parent._isValidTarget )
             {
@@ -401,10 +344,7 @@ public class DragAndDrop
                                           ? _parent.Target
                                           : null );
 
-            if ( _parent.Target != null )
-            {
-                _parent.Target.Reset( _parent.Source!, _parent.DragPayload );
-            }
+            if ( _parent.Target != null ) _parent.Target.Reset( _parent.Source!, _parent.DragPayload );
 
             _parent.Source         = null;
             _parent.DragPayload    = null;
@@ -480,12 +420,9 @@ public class DragAndDrop
             ArgumentNullException.ThrowIfNull( actor );
 
             Actor = actor;
-            Stage? stage = actor.Stage;
+            var stage = actor.Stage;
 
-            if ( ( stage != null ) && ( actor == stage.Root ) )
-            {
-                throw new ArgumentException( "The stage root cannot be a drag and drop target." );
-            }
+            if ( ( stage != null ) && ( actor == stage.Root ) ) throw new ArgumentException( "The stage root cannot be a drag and drop target." );
         }
 
         public Actor Actor { get; set; }

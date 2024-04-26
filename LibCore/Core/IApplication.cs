@@ -84,11 +84,11 @@ public interface IApplication
     }
 
     // ------------------------------------------------------------------------
-    
+
     ApplicationType AppType   { get; set; }
     IClipboard?     Clipboard { get; set; }
 
-    int          GetVersion();
+    int GetVersion();
     IPreferences GetPreferences( string name );
 
     void AddLifecycleListener( ILifecycleListener listener );

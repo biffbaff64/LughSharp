@@ -75,9 +75,7 @@ public class HdpiUtils
                               ToBackBufferY( height ) );
         }
         else
-        {
             Gdx.GL.glScissor( x, y, width, height );
-        }
     }
 
     /// <summary>
@@ -97,9 +95,7 @@ public class HdpiUtils
                                ToBackBufferY( height ) );
         }
         else
-        {
             Gdx.GL.glViewport( x, y, width, height );
-        }
     }
 
     /// <summary>
@@ -108,7 +104,7 @@ public class HdpiUtils
     /// </summary>
     public static int ToLogicalX( int backBufferX )
     {
-        return ( int )( ( backBufferX * Gdx.Graphics.Width ) / ( float )Gdx.Graphics.BackBufferWidth );
+        return ( int ) ( ( backBufferX * Gdx.Graphics.Width ) / ( float ) Gdx.Graphics.BackBufferWidth );
     }
 
     /// <summary>
@@ -117,7 +113,7 @@ public class HdpiUtils
     /// </summary>
     public static int ToLogicalY( int backBufferY )
     {
-        return ( int )( ( backBufferY * Gdx.Graphics.Height ) / ( float )Gdx.Graphics.BackBufferHeight );
+        return ( int ) ( ( backBufferY * Gdx.Graphics.Height ) / ( float ) Gdx.Graphics.BackBufferHeight );
     }
 
     /// <summary>
@@ -126,7 +122,7 @@ public class HdpiUtils
     /// </summary>
     public static int ToBackBufferX( int logicalX )
     {
-        return ( int )( ( logicalX * Gdx.Graphics.BackBufferWidth ) / ( float )Gdx.Graphics.Width );
+        return ( int ) ( ( logicalX * Gdx.Graphics.BackBufferWidth ) / ( float ) Gdx.Graphics.Width );
     }
 
     /// <summary>
@@ -135,6 +131,6 @@ public class HdpiUtils
     /// </summary>
     public static int ToBackBufferY( int logicalY )
     {
-        return ( int )( ( logicalY * Gdx.Graphics.BackBufferHeight ) / ( float )Gdx.Graphics.Height );
+        return ( int ) ( ( logicalY * Gdx.Graphics.BackBufferHeight ) / ( float ) Gdx.Graphics.Height );
     }
 }

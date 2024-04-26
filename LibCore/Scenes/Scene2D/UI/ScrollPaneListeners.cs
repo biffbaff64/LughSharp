@@ -49,26 +49,18 @@ public partial class ScrollPane
             {
                 if ( _parent!.ScrollY )
                 {
-                    if ( !_parent!.ScrollX && ( scrollAmountY == 0 ) )
-                    {
-                        scrollAmountY = scrollAmountX;
-                    }
+                    if ( !_parent!.ScrollX && ( scrollAmountY == 0 ) ) scrollAmountY = scrollAmountX;
                 }
                 else
                 {
-                    if ( _parent!.ScrollX && ( scrollAmountX == 0 ) )
-                    {
-                        scrollAmountX = scrollAmountY;
-                    }
+                    if ( _parent!.ScrollX && ( scrollAmountX == 0 ) ) scrollAmountX = scrollAmountY;
                 }
 
                 _parent!.AmountY += _parent!.GetMouseWheelY() * scrollAmountY;
                 _parent!.AmountX += _parent!.GetMouseWheelX() * scrollAmountX;
             }
             else
-            {
                 return false;
-            }
 
             return true;
         }
@@ -89,30 +81,15 @@ public partial class ScrollPane
         {
             GdxRuntimeException.ThrowIfNull( _parent );
 
-            if ( _parent!._draggingPointer != -1 )
-            {
-                return false;
-            }
+            if ( _parent!._draggingPointer != -1 ) return false;
 
-            if ( ( pointer == 0 ) && ( button != 0 ) )
-            {
-                return false;
-            }
+            if ( ( pointer == 0 ) && ( button != 0 ) ) return false;
 
-            if ( _parent!.Stage != null )
-            {
-                _parent!.Stage.ScrollFocus = _parent;
-            }
+            if ( _parent!.Stage != null ) _parent!.Stage.ScrollFocus = _parent;
 
-            if ( !_parent!._flickScroll )
-            {
-                _parent!.SetScrollbarsVisible( true );
-            }
+            if ( !_parent!._flickScroll ) _parent!.SetScrollbarsVisible( true );
 
-            if ( _parent!._fadeAlpha == 0 )
-            {
-                return false;
-            }
+            if ( _parent!._fadeAlpha == 0 ) return false;
 
             if ( _parent!.ScrollBarTouch
               && _parent!.ScrollX
@@ -166,10 +143,7 @@ public partial class ScrollPane
         {
             GdxRuntimeException.ThrowIfNull( _parent );
 
-            if ( pointer != _parent!._draggingPointer )
-            {
-                return;
-            }
+            if ( pointer != _parent!._draggingPointer ) return;
 
             _parent!.Cancel();
         }
@@ -179,10 +153,7 @@ public partial class ScrollPane
         {
             GdxRuntimeException.ThrowIfNull( _parent );
 
-            if ( pointer != _parent!._draggingPointer )
-            {
-                return;
-            }
+            if ( pointer != _parent!._draggingPointer ) return;
 
             if ( _parent!._touchScrollH )
             {
@@ -198,10 +169,7 @@ public partial class ScrollPane
 
                 var total = _parent!._hScrollBounds.Width - _parent!._hKnobBounds.Width;
 
-                if ( total != 0 )
-                {
-                    _parent!.SetScrollPercentX( ( scrollH - _parent!._hScrollBounds.X ) / total );
-                }
+                if ( total != 0 ) _parent!.SetScrollPercentX( ( scrollH - _parent!._hScrollBounds.X ) / total );
 
                 _parent!._lastPoint.Set( x, y );
             }
@@ -219,10 +187,7 @@ public partial class ScrollPane
 
                 var total = _parent!._vScrollBounds.Height - _parent!._vKnobBounds.Height;
 
-                if ( total != 0 )
-                {
-                    _parent!.SetScrollPercentY( 1 - ( ( scrollV - _parent!._vScrollBounds.Y ) / total ) );
-                }
+                if ( total != 0 ) _parent!.SetScrollPercentY( 1 - ( ( scrollV - _parent!._vScrollBounds.Y ) / total ) );
 
                 _parent!._lastPoint.Set( x, y );
             }
@@ -233,10 +198,7 @@ public partial class ScrollPane
         {
             GdxRuntimeException.ThrowIfNull( _parent );
 
-            if ( !_parent!._flickScroll )
-            {
-                _parent!.SetScrollbarsVisible( true );
-            }
+            if ( !_parent!._flickScroll ) _parent!.SetScrollbarsVisible( true );
 
             return false;
         }
@@ -264,9 +226,7 @@ public partial class ScrollPane
             _parent!.ClampPane();
 
             if ( _parent!.CancelTouchFocus && ( ( _parent!.ScrollX && ( deltaX != 0 ) ) || ( _parent!.ScrollY && ( deltaY != 0 ) ) ) )
-            {
                 _parent!.TouchFocusCancel();
-            }
         }
 
         /// <inheritdoc />
@@ -279,10 +239,7 @@ public partial class ScrollPane
                 _parent!._flingTimer = _parent!.FlingTime;
                 _parent!.VelocityX   = x;
 
-                if ( _parent!.CancelTouchFocus )
-                {
-                    _parent!.TouchFocusCancel();
-                }
+                if ( _parent!.CancelTouchFocus ) _parent!.TouchFocusCancel();
             }
 
             if ( ( Math.Abs( y ) > 150 ) && _parent!.ScrollY )
@@ -290,10 +247,7 @@ public partial class ScrollPane
                 _parent!._flingTimer = _parent!.FlingTime;
                 _parent!.VelocityY   = -y;
 
-                if ( _parent!.CancelTouchFocus )
-                {
-                    _parent!.TouchFocusCancel();
-                }
+                if ( _parent!.CancelTouchFocus ) _parent!.TouchFocusCancel();
             }
         }
 
@@ -304,18 +258,12 @@ public partial class ScrollPane
 
             if ( base.Handle( inputEvent ) )
             {
-                if ( ( ( InputEvent )inputEvent ).Type == InputEvent.EventType.TouchDown )
-                {
-                    _parent!._flingTimer = 0;
-                }
+                if ( ( ( InputEvent ) inputEvent ).Type == InputEvent.EventType.TouchDown ) _parent!._flingTimer = 0;
 
                 return true;
             }
 
-            if ( inputEvent is InputEvent { TouchFocusCancel: true } )
-            {
-                _parent!.Cancel();
-            }
+            if ( inputEvent is InputEvent { TouchFocusCancel: true } ) _parent!.Cancel();
 
             return false;
         }

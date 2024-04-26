@@ -25,7 +25,7 @@
 
 namespace LughSharp.LibCore.Graphics;
 
-public interface IGL20
+public interface IGL20_TBD
 {
     // ------------------------------------------------------------------------
     public const int GL_NO_ERROR = 0;

@@ -121,10 +121,7 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
         {
             var sample = samples[ samplenumber ];
 
-            if ( groupingtable[ 0 ] == null )
-            {
-                sample = ( sample + d[ 0 ] ) * cFactor[ 0 ];
-            }
+            if ( groupingtable[ 0 ] == null ) sample = ( sample + d[ 0 ] ) * cFactor[ 0 ];
 
             switch ( channels )
             {
@@ -161,11 +158,11 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
 
                 case OutputChannels.LEFT_CHANNEL:
                     sample *= groupnumber switch
-                              {
-                                  <= 4 => scalefactor1,
-                                  <= 8 => scalefactor2,
-                                  _    => scalefactor3
-                              };
+                    {
+                        <= 4 => scalefactor1,
+                        <= 8 => scalefactor2,
+                        _    => scalefactor3
+                    };
 
                     filter1?.AddSample( sample, subbandnumber );
 
@@ -173,11 +170,11 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
 
                 default:
                     sample *= groupnumber switch
-                              {
-                                  <= 4 => channel2Scalefactor1,
-                                  <= 8 => channel2Scalefactor2,
-                                  _    => channel2Scalefactor3
-                              };
+                    {
+                        <= 4 => channel2Scalefactor1,
+                        <= 8 => channel2Scalefactor2,
+                        _    => channel2Scalefactor3
+                    };
 
                     filter1?.AddSample( sample, subbandnumber );
 

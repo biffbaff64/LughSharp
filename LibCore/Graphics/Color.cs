@@ -88,7 +88,7 @@ public sealed class Color
     ///     the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
     /// </summary>
     /// <param name="rgba8888"> An integer color value in RGBA8888 format. </param>
-    public Color( int rgba8888 ) : this( ( uint )rgba8888 )
+    public Color( int rgba8888 ) : this( ( uint ) rgba8888 )
     {
     }
 
@@ -158,7 +158,7 @@ public sealed class Color
     /// <returns>This color for chaining.</returns>
     public Color Set( uint rgba )
     {
-        Color color = this;
+        var color = this;
 
         Rgba8888ToColor( ref color, rgba );
 
@@ -280,32 +280,32 @@ public sealed class Color
     private Color Clamp()
     {
         R = R switch
-            {
-                < 0 => 0, // If R < 0 R = 0
-                > 1 => 1, // If R > 1 R = 1
-                _   => R  // ( set R )
-            };
+        {
+            < 0 => 0, // If R < 0 R = 0
+            > 1 => 1, // If R > 1 R = 1
+            _   => R  // ( set R )
+        };
 
         G = G switch
-            {
-                < 0 => 0,
-                > 1 => 1,
-                _   => G
-            };
+        {
+            < 0 => 0,
+            > 1 => 1,
+            _   => G
+        };
 
         B = B switch
-            {
-                < 0 => 0,
-                > 1 => 1,
-                _   => B
-            };
+        {
+            < 0 => 0,
+            > 1 => 1,
+            _   => B
+        };
 
         A = A switch
-            {
-                < 0 => 0,
-                > 1 => 1,
-                _   => A
-            };
+        {
+            < 0 => 0,
+            > 1 => 1,
+            _   => A
+        };
 
         return this;
     }
@@ -369,10 +369,7 @@ public sealed class Color
 
     public static bool operator !=( Color? c1, object? c2 )
     {
-        if ( c1 is null )
-        {
-            return true;
-        }
+        if ( c1 is null ) return true;
 
         return !c1.Equals( c2 );
     }
@@ -462,7 +459,7 @@ public sealed class Color
     /// <returns></returns>
     public int Rgba8888( float r, float g, float b, float a )
     {
-        return ( ( int )( r * 255 ) << 24 ) | ( ( int )( g * 255 ) << 16 ) | ( ( int )( b * 255 ) << 8 ) | ( int )( a * 255 );
+        return ( ( int ) ( r * 255 ) << 24 ) | ( ( int ) ( g * 255 ) << 16 ) | ( ( int ) ( b * 255 ) << 8 ) | ( int ) ( a * 255 );
     }
 
     /// <summary>
@@ -477,7 +474,7 @@ public sealed class Color
     public Color FromHsv( float h, float s, float v )
     {
         var x = ( ( h / 60f ) + 6 ) % 6;
-        var i = ( int )x;
+        var i = ( int ) x;
         var f = x - i;
         var p = v * ( 1 - s );
         var q = v * ( 1 - ( s * f ) );
@@ -550,30 +547,18 @@ public sealed class Color
         var range = max - min;
 
         if ( range == 0 )
-        {
             hsv[ 0 ] = 0;
-        }
         else if ( Math.Abs( max - R ) < 0.00001f )
-        {
             hsv[ 0 ] = ( ( ( 60 * ( G - B ) ) / range ) + 360 ) % 360;
-        }
         else if ( Math.Abs( max - G ) < 0.00001f )
-        {
             hsv[ 0 ] = ( ( 60 * ( B - R ) ) / range ) + 120;
-        }
         else
-        {
             hsv[ 0 ] = ( ( 60 * ( R - G ) ) / range ) + 240;
-        }
 
         if ( max > 0 )
-        {
             hsv[ 1 ] = 1 - ( min / max );
-        }
         else
-        {
             hsv[ 1 ] = 0;
-        }
 
         hsv[ 2 ] = max;
 
@@ -590,10 +575,10 @@ public sealed class Color
     /// <returns></returns>
     public float ToFloatBits()
     {
-        var color = ( ( int )( 255 * A ) << 24 )
-                  | ( ( int )( 255 * B ) << 16 )
-                  | ( ( int )( 255 * G ) << 8 )
-                  | ( int )( 255 * R );
+        var color = ( ( int ) ( 255 * A ) << 24 )
+                  | ( ( int ) ( 255 * B ) << 16 )
+                  | ( ( int ) ( 255 * G ) << 8 )
+                  | ( int ) ( 255 * R );
 
         return NumberUtils.IntToFloatColor( color );
     }
@@ -622,10 +607,10 @@ public sealed class Color
     /// <returns></returns>
     public static float ToFloatBits( float r, float g, float b, float a )
     {
-        var color = ( ( int )( 255 * a ) << 24 )
-                  | ( ( int )( 255 * b ) << 16 )
-                  | ( ( int )( 255 * g ) << 8 )
-                  | ( int )( 255 * r );
+        var color = ( ( int ) ( 255 * a ) << 24 )
+                  | ( ( int ) ( 255 * b ) << 16 )
+                  | ( ( int ) ( 255 * g ) << 8 )
+                  | ( int ) ( 255 * r );
 
         return NumberUtils.IntToFloatColor( color );
     }
@@ -635,10 +620,10 @@ public sealed class Color
     /// <returns></returns>
     public int ToIntBits()
     {
-        return ( ( int )( 255 * A ) << 24 )
-             | ( ( int )( 255 * B ) << 16 )
-             | ( ( int )( 255 * G ) << 8 )
-             | ( int )( 255 * R );
+        return ( ( int ) ( 255 * A ) << 24 )
+             | ( ( int ) ( 255 * B ) << 16 )
+             | ( ( int ) ( 255 * G ) << 8 )
+             | ( int ) ( 255 * R );
     }
 
     /// <summary>
@@ -682,84 +667,84 @@ public sealed class Color
 
     public static int Alpha( float alpha )
     {
-        return ( int )( alpha * 255.0f );
+        return ( int ) ( alpha * 255.0f );
     }
 
     public static int LuminanceAlpha( float luminance, float alpha )
     {
-        return ( ( int )( luminance * 255.0f ) << 8 ) | ( int )( alpha * 255 );
+        return ( ( int ) ( luminance * 255.0f ) << 8 ) | ( int ) ( alpha * 255 );
     }
 
     public static int RGB565( float r, float g, float b )
     {
-        return ( ( int )( r * 31 ) << 11 ) | ( ( int )( g * 63 ) << 5 ) | ( int )( b * 31 );
+        return ( ( int ) ( r * 31 ) << 11 ) | ( ( int ) ( g * 63 ) << 5 ) | ( int ) ( b * 31 );
     }
 
     public static int RGBA4444( float r, float g, float b, float a )
     {
-        return ( ( int )( r * 15 ) << 12 )
-             | ( ( int )( g * 15 ) << 8 )
-             | ( ( int )( b * 15 ) << 4 )
-             | ( int )( a * 15 );
+        return ( ( int ) ( r * 15 ) << 12 )
+             | ( ( int ) ( g * 15 ) << 8 )
+             | ( ( int ) ( b * 15 ) << 4 )
+             | ( int ) ( a * 15 );
     }
 
     public static int RGB888( float r, float g, float b )
     {
-        return ( ( int )( r * 255 ) << 16 ) | ( ( int )( g * 255 ) << 8 ) | ( int )( b * 255 );
+        return ( ( int ) ( r * 255 ) << 16 ) | ( ( int ) ( g * 255 ) << 8 ) | ( int ) ( b * 255 );
     }
 
     public static int RGBA8888( float r, float g, float b, float a )
     {
-        return ( ( int )( r * 255 ) << 24 )
-             | ( ( int )( g * 255 ) << 16 )
-             | ( ( int )( b * 255 ) << 8 )
-             | ( int )( a * 255 );
+        return ( ( int ) ( r * 255 ) << 24 )
+             | ( ( int ) ( g * 255 ) << 16 )
+             | ( ( int ) ( b * 255 ) << 8 )
+             | ( int ) ( a * 255 );
     }
 
     public static int ARGB8888( float a, float r, float g, float b )
     {
-        return ( ( int )( a * 255 ) << 24 )
-             | ( ( int )( r * 255 ) << 16 )
-             | ( ( int )( g * 255 ) << 8 )
-             | ( int )( b * 255 );
+        return ( ( int ) ( a * 255 ) << 24 )
+             | ( ( int ) ( r * 255 ) << 16 )
+             | ( ( int ) ( g * 255 ) << 8 )
+             | ( int ) ( b * 255 );
     }
 
     public static int RGB565( Color color )
     {
-        return ( ( int )( color.R * 31 ) << 11 )
-             | ( ( int )( color.G * 63 ) << 5 )
-             | ( int )( color.B * 31 );
+        return ( ( int ) ( color.R * 31 ) << 11 )
+             | ( ( int ) ( color.G * 63 ) << 5 )
+             | ( int ) ( color.B * 31 );
     }
 
     public static int RGBA4444( Color color )
     {
-        return ( ( int )( color.R * 15 ) << 12 )
-             | ( ( int )( color.G * 15 ) << 8 )
-             | ( ( int )( color.B * 15 ) << 4 )
-             | ( int )( color.A * 15 );
+        return ( ( int ) ( color.R * 15 ) << 12 )
+             | ( ( int ) ( color.G * 15 ) << 8 )
+             | ( ( int ) ( color.B * 15 ) << 4 )
+             | ( int ) ( color.A * 15 );
     }
 
     public static int RGB888( Color color )
     {
-        return ( ( int )( color.R * 255 ) << 16 )
-             | ( ( int )( color.G * 255 ) << 8 )
-             | ( int )( color.B * 255 );
+        return ( ( int ) ( color.R * 255 ) << 16 )
+             | ( ( int ) ( color.G * 255 ) << 8 )
+             | ( int ) ( color.B * 255 );
     }
 
     public static int RGBA8888( Color color )
     {
-        return ( ( int )( color.R * 255 ) << 24 )
-             | ( ( int )( color.G * 255 ) << 16 )
-             | ( ( int )( color.B * 255 ) << 8 )
-             | ( int )( color.A * 255 );
+        return ( ( int ) ( color.R * 255 ) << 24 )
+             | ( ( int ) ( color.G * 255 ) << 16 )
+             | ( ( int ) ( color.B * 255 ) << 8 )
+             | ( int ) ( color.A * 255 );
     }
 
     public static int ARGB8888( Color color )
     {
-        return ( ( int )( color.A * 255 ) << 24 )
-             | ( ( int )( color.R * 255 ) << 16 )
-             | ( ( int )( color.G * 255 ) << 8 )
-             | ( int )( color.B * 255 );
+        return ( ( int ) ( color.A * 255 ) << 24 )
+             | ( ( int ) ( color.R * 255 ) << 16 )
+             | ( ( int ) ( color.G * 255 ) << 8 )
+             | ( int ) ( color.B * 255 );
     }
 
     /// <summary>
@@ -774,17 +759,11 @@ public sealed class Color
     /// <inheritdoc />
     public override bool Equals( object? o )
     {
-        if ( ( o == null ) || ( GetType() != o.GetType() ) )
-        {
-            return false;
-        }
+        if ( ( o == null ) || ( GetType() != o.GetType() ) ) return false;
 
-        if ( this == o )
-        {
-            return true;
-        }
+        if ( this == o ) return true;
 
-        var color = ( Color )o;
+        var color = ( Color ) o;
 
         return ToIntBits() == color.ToIntBits();
     }

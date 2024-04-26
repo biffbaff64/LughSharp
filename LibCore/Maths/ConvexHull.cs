@@ -73,10 +73,7 @@ public class ConvexHull
 
         if ( !sorted )
         {
-            if ( ( _sortedPoints == null ) || ( _sortedPoints.Length < count ) )
-            {
-                _sortedPoints = new float[ count ];
-            }
+            if ( ( _sortedPoints == null ) || ( _sortedPoints.Length < count ) ) _sortedPoints = new float[ count ];
 
             Array.Copy( points, offset, _sortedPoints, 0, count );
 
@@ -94,10 +91,7 @@ public class ConvexHull
             var x = points[ i ];
             var y = points[ i + 1 ];
 
-            while ( ( hull.Count >= 4 ) && ( Ccw( x, y ) <= 0 ) )
-            {
-                hull.RemoveRange( hull.Count - 2, 2 );
-            }
+            while ( ( hull.Count >= 4 ) && ( Ccw( x, y ) <= 0 ) ) hull.RemoveRange( hull.Count - 2, 2 );
 
             hull.Add( x );
             hull.Add( y );
@@ -109,10 +103,7 @@ public class ConvexHull
             var x = points[ i ];
             var y = points[ i + 1 ];
 
-            while ( ( hull.Count >= t ) && ( Ccw( x, y ) <= 0 ) )
-            {
-                hull.RemoveRange( hull.Count - 2, 2 );
-            }
+            while ( ( hull.Count >= t ) && ( Ccw( x, y ) <= 0 ) ) hull.RemoveRange( hull.Count - 2, 2 );
 
             hull.Add( x );
             hull.Add( y );
@@ -139,19 +130,13 @@ public class ConvexHull
     //TODO: This method needs debugging / testing to make sure it works as expected
     public List< int > ComputeIndices( float[] points, int offset, int count, bool sorted, bool yDown )
     {
-        if ( count > 32767 )
-        {
-            throw new ArgumentException( "count must be <= " + 32767 );
-        }
+        if ( count > 32767 ) throw new ArgumentException( "count must be <= " + 32767 );
 
         var end = offset + count;
 
         if ( !sorted )
         {
-            if ( ( _sortedPoints == null ) || ( _sortedPoints.Length < count ) )
-            {
-                _sortedPoints = new float[ count ];
-            }
+            if ( ( _sortedPoints == null ) || ( _sortedPoints.Length < count ) ) _sortedPoints = new float[ count ];
 
             Array.Copy( points, offset, _sortedPoints, 0, count );
 
@@ -204,10 +189,7 @@ public class ConvexHull
         // Convert sorted to unsorted indices.
         if ( !sorted )
         {
-            for ( int i = 0, n = indices.Count; i < n; i++ )
-            {
-                indices[ i ] = _originalIndices[ indices[ i ] ];
-            }
+            for ( int i = 0, n = indices.Count; i < n; i++ ) indices[ i ] = _originalIndices[ indices[ i ] ];
         }
 
         return indices;
@@ -250,10 +232,7 @@ public class ConvexHull
             upper = stack.Pop();
             lower = stack.Pop();
 
-            if ( upper <= lower )
-            {
-                continue;
-            }
+            if ( upper <= lower ) continue;
 
             var i = QuicksortPartition( values, lower, upper );
 
@@ -283,15 +262,9 @@ public class ConvexHull
 
         while ( down < up )
         {
-            while ( ( down < up ) && ( values[ down ] <= x ) )
-            {
-                down += 2;
-            }
+            while ( ( down < up ) && ( values[ down ] <= x ) ) down += 2;
 
-            while ( ( values[ up ] > x ) || ( values[ up ].Equals( x ) && ( values[ up + 1 ] < y ) ) )
-            {
-                up -= 2;
-            }
+            while ( ( values[ up ] > x ) || ( values[ up ].Equals( x ) && ( values[ up + 1 ] < y ) ) ) up -= 2;
 
             if ( down < up )
             {
@@ -325,10 +298,7 @@ public class ConvexHull
         _originalIndices.Clear();
         _originalIndices.EnsureCapacity( pointCount );
 
-        for ( short i = 0; i < pointCount; i++ )
-        {
-            _originalIndices[ i ] = i;
-        }
+        for ( short i = 0; i < pointCount; i++ ) _originalIndices[ i ] = i;
 
         var lower = 0;
         var upper = count - 1;
@@ -343,10 +313,7 @@ public class ConvexHull
             upper = stack.Pop();
             lower = stack.Pop();
 
-            if ( upper <= lower )
-            {
-                continue;
-            }
+            if ( upper <= lower ) continue;
 
             var i = QuicksortPartitionWithIndices( values, lower, upper, yDown, _originalIndices.ToArray() );
 
@@ -380,26 +347,19 @@ public class ConvexHull
 
         while ( down < up )
         {
-            while ( ( down < up ) && ( values[ down ] <= x ) )
-            {
-                down += 2;
-            }
+            while ( ( down < up ) && ( values[ down ] <= x ) ) down += 2;
 
             if ( yDown )
             {
                 while ( ( values[ up ] > x )
                      || ( values[ up ].Equals( x ) && ( values[ up + 1 ] < y ) ) )
-                {
                     up -= 2;
-                }
             }
             else
             {
                 while ( ( values[ up ] > x )
                      || ( values[ up ].Equals( x ) && ( values[ up + 1 ] > y ) ) )
-                {
                     up -= 2;
-                }
             }
 
             if ( down < up )

@@ -29,7 +29,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///     Keeps track of an application's tooltips.
 /// </summary>
 [PublicAPI]
-public class TooltipManager<T> where T : Actor
+public class TooltipManager< T > where T : Actor
 {
     private readonly List< Tooltip< T > > _activeTooltips = new();
 
@@ -56,12 +56,9 @@ public class TooltipManager<T> where T : Actor
         //@formatter:off
         _showTask = new Task( () =>
         {
-            Stage? stage = _showTooltip.TargetActor?.Stage;
+            var stage = _showTooltip.TargetActor?.Stage;
 
-            if ( stage == null )
-            {
-                return;
-            }
+            if ( stage == null ) return;
 
             stage.AddActor( _showTooltip.Container );
 
@@ -71,15 +68,9 @@ public class TooltipManager<T> where T : Actor
 
             ShowAction( _showTooltip );
 
-            if ( !_showTooltip.Instant )
-            {
-                _time = SubsequentTime;
-            }
+            if ( !_showTooltip.Instant ) _time = SubsequentTime;
 
-            if ( _showTaskCancellationToken.IsCancellationRequested )
-            {
-                _showTaskCancellationToken.ThrowIfCancellationRequested();
-            }
+            if ( _showTaskCancellationToken.IsCancellationRequested ) _showTaskCancellationToken.ThrowIfCancellationRequested();
         },_showTaskCancellationToken );
         //@formatter:on
     }
@@ -108,10 +99,7 @@ public class TooltipManager<T> where T : Actor
 
         if ( Enabled || tooltip.Always )
         {
-            if ( ( _time == 0 ) || tooltip.Instant )
-            {
-                _showTask.Start();
-            }
+            if ( ( _time == 0 ) || tooltip.Instant ) _showTask.Start();
         }
     }
 
@@ -154,10 +142,10 @@ public class TooltipManager<T> where T : Actor
                                                               Actions.Actions.Parallel(
                                                                                        Actions.Actions.Alpha( 0.2f, 0.2f, Interpolation.fade ),
                                                                                        Actions.Actions.ScaleTo(
-                                                                                        0.05f,
-                                                                                        0.05f,
-                                                                                        0.2f,
-                                                                                        Interpolation.fade ) ),
+                                                                                            0.05f,
+                                                                                            0.05f,
+                                                                                            0.2f,
+                                                                                            Interpolation.fade ) ),
                                                               Actions.Actions.RemoveActor() ) );
     }
 
@@ -168,10 +156,7 @@ public class TooltipManager<T> where T : Actor
         _time        = InitialTime;
         _showTooltip = null!;
 
-        foreach ( Tooltip< T > tooltip in _activeTooltips )
-        {
-            tooltip.Hide();
-        }
+        foreach ( Tooltip< T > tooltip in _activeTooltips ) tooltip.Hide();
 
         _activeTooltips.Clear();
     }
@@ -190,10 +175,7 @@ public class TooltipManager<T> where T : Actor
     /// </summary>
     private void CancelTask()
     {
-        if ( _showTask is { Status: TaskStatus.Running } )
-        {
-            _showTaskCancellationTokenSource.Cancel();
-        }
+        if ( _showTask is { Status: TaskStatus.Running } ) _showTaskCancellationTokenSource.Cancel();
     }
 
     // ------------------------------------------------------------------------

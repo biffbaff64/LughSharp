@@ -24,7 +24,6 @@
 
 
 using LughSharp.LibCore.Utils.Collections.Extensions;
-
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Graphics.G2D;
@@ -82,7 +81,7 @@ public class SpriteCache
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    private readonly static float[]       _tempVertices    = new float[ Sprite.VertexSize * 6 ];
+    private readonly static float[]       _tempVertices   = new float[ Sprite.VertexSize * 6 ];
     private readonly        List< Cache > _caches         = new();
     private readonly        Matrix4       _combinedMatrix = new();
     private readonly        List< int >   _counts         = new( 8 );
@@ -132,10 +131,7 @@ public class SpriteCache
     {
         _shader = shader;
 
-        if ( useIndices && ( size > 8191 ) )
-        {
-            throw new ArgumentException( $"Can't have more than 8191 sprites per batch: {size}" );
-        }
+        if ( useIndices && ( size > 8191 ) ) throw new ArgumentException( $"Can't have more than 8191 sprites per batch: {size}" );
 
         _mesh = new Mesh( true,
                           size * ( useIndices ? 4 : 6 ),
@@ -162,10 +158,10 @@ public class SpriteCache
             for ( var i = 0; i < length; i += 6, j += 4 )
             {
                 indices[ i + 0 ] = j;
-                indices[ i + 1 ] = ( short )( j + 1 );
-                indices[ i + 2 ] = ( short )( j + 2 );
-                indices[ i + 3 ] = ( short )( j + 2 );
-                indices[ i + 4 ] = ( short )( j + 3 );
+                indices[ i + 1 ] = ( short ) ( j + 1 );
+                indices[ i + 2 ] = ( short ) ( j + 2 );
+                indices[ i + 3 ] = ( short ) ( j + 2 );
+                indices[ i + 4 ] = ( short ) ( j + 3 );
                 indices[ i + 5 ] = j;
             }
 
@@ -193,7 +189,7 @@ public class SpriteCache
         get => _colorPacked;
         set
         {
-            Color color = Color;
+            var color = Color;
             Color.Abgr8888ToColor( ref color, value );
 
             _colorPacked = value;
@@ -227,15 +223,9 @@ public class SpriteCache
     /// </summary>
     public void BeginCache()
     {
-        if ( IsDrawing )
-        {
-            throw new GdxRuntimeException( "end must be called before beginCache" );
-        }
+        if ( IsDrawing ) throw new GdxRuntimeException( "end must be called before beginCache" );
 
-        if ( _currentCache != null )
-        {
-            throw new GdxRuntimeException( "endCache must be called before begin." );
-        }
+        if ( _currentCache != null ) throw new GdxRuntimeException( "endCache must be called before begin." );
 
         _currentCache = new Cache( _caches.Count, _mesh.GetVerticesBuffer().Limit );
         _caches.Add( _currentCache );
@@ -251,19 +241,13 @@ public class SpriteCache
     /// </summary>
     public void BeginCache( int cacheID )
     {
-        if ( IsDrawing )
-        {
-            throw new GdxRuntimeException( "end must be called before beginCache" );
-        }
+        if ( IsDrawing ) throw new GdxRuntimeException( "end must be called before beginCache" );
 
-        if ( _currentCache != null )
-        {
-            throw new GdxRuntimeException( "endCache must be called before begin." );
-        }
+        if ( _currentCache != null ) throw new GdxRuntimeException( "endCache must be called before begin." );
 
         if ( cacheID == ( _caches.Count - 1 ) )
         {
-            Cache oldCache = _caches.RemoveIndex( cacheID );
+            var oldCache = _caches.RemoveIndex( cacheID );
             _mesh.GetVerticesBuffer().Limit = oldCache.offset;
             BeginCache();
 
@@ -280,13 +264,10 @@ public class SpriteCache
     /// </summary>
     public int EndCache()
     {
-        if ( _currentCache == null )
-        {
-            throw new GdxRuntimeException( "beginCache must be called before endCache." );
-        }
+        if ( _currentCache == null ) throw new GdxRuntimeException( "beginCache must be called before endCache." );
 
-        Cache cache      = _currentCache;
-        var   cacheCount = _mesh.GetVerticesBuffer().Position - cache.offset;
+        var cache      = _currentCache;
+        var cacheCount = _mesh.GetVerticesBuffer().Position - cache.offset;
 
         if ( cache.textures == null )
         {
@@ -296,10 +277,7 @@ public class SpriteCache
             cache.textures     = _textures.ToArray();
             cache.counts       = new int[ cache.textureCount ];
 
-            for ( int i = 0, n = _counts.Count; i < n; i++ )
-            {
-                cache.counts[ i ] = _counts[ i ];
-            }
+            for ( int i = 0, n = _counts.Count; i < n; i++ ) cache.counts[ i ] = _counts[ i ];
 
             _mesh.GetVerticesBuffer().Flip();
         }
@@ -315,32 +293,20 @@ public class SpriteCache
 
             cache.textureCount = _textures.Count;
 
-            if ( cache.textures.Length < cache.textureCount )
-            {
-                cache.textures = new Texture[ cache.textureCount ];
-            }
+            if ( cache.textures.Length < cache.textureCount ) cache.textures = new Texture[ cache.textureCount ];
 
-            for ( int i = 0, n = cache.textureCount; i < n; i++ )
-            {
-                cache.textures[ i ] = _textures[ i ];
-            }
+            for ( int i = 0, n = cache.textureCount; i < n; i++ ) cache.textures[ i ] = _textures[ i ];
 
-            if ( cache.counts?.Length < cache.textureCount )
-            {
-                cache.counts = new int[ cache.textureCount ];
-            }
+            if ( cache.counts?.Length < cache.textureCount ) cache.counts = new int[ cache.textureCount ];
 
             if ( cache.counts != null )
             {
-                for ( int i = 0, n = cache.textureCount; i < n; i++ )
-                {
-                    cache.counts[ i ] = _counts[ i ];
-                }
+                for ( int i = 0, n = cache.textureCount; i < n; i++ ) cache.counts[ i ] = _counts[ i ];
             }
 
-            FloatBuffer vertices = _mesh.GetVerticesBuffer();
+            var vertices = _mesh.GetVerticesBuffer();
             vertices.Position = 0;
-            Cache lastCache = _caches[ _caches.Count - 1 ];
+            var lastCache = _caches[ _caches.Count - 1 ];
             vertices.Limit = lastCache.offset + lastCache.maxCount;
         }
 
@@ -368,10 +334,7 @@ public class SpriteCache
     /// </summary>
     public void Add( Texture texture, float[] vertices, int offset, int length )
     {
-        if ( _currentCache == null )
-        {
-            throw new GdxRuntimeException( "beginCache must be called before add." );
-        }
+        if ( _currentCache == null ) throw new GdxRuntimeException( "beginCache must be called before add." );
 
         var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
         var count            = ( length / ( verticesPerImage * Sprite.VertexSize ) ) * 6;
@@ -383,9 +346,7 @@ public class SpriteCache
             _counts.Add( count );
         }
         else
-        {
             _counts[ lastIndex ] += count;
-        }
 
         _mesh.GetVerticesBuffer().Put( vertices, offset, length );
     }
@@ -611,15 +572,9 @@ public class SpriteCache
         var fx2 = x + width;
         var fy2 = y + height;
 
-        if ( flipX )
-        {
-            ( u, u2 ) = ( u2, u );
-        }
+        if ( flipX ) ( u, u2 ) = ( u2, u );
 
-        if ( flipY )
-        {
-            ( v, v2 ) = ( v2, v );
-        }
+        if ( flipY ) ( v, v2 ) = ( v2, v );
 
         _tempVertices[ 0 ] = x;
         _tempVertices[ 1 ] = y;
@@ -780,15 +735,9 @@ public class SpriteCache
         var u2 = ( srcX + srcWidth ) * invTexWidth;
         var v2 = srcY * invTexHeight;
 
-        if ( flipX )
-        {
-            ( u, u2 ) = ( u2, u );
-        }
+        if ( flipX ) ( u, u2 ) = ( u2, u );
 
-        if ( flipY )
-        {
-            ( v, v2 ) = ( v2, v );
-        }
+        if ( flipY ) ( v, v2 ) = ( v2, v );
 
         _tempVertices[ 0 ] = x1;
         _tempVertices[ 1 ] = y1;
@@ -1099,15 +1048,9 @@ public class SpriteCache
     /// </summary>
     public void Begin()
     {
-        if ( IsDrawing )
-        {
-            throw new GdxRuntimeException( "end must be called before begin." );
-        }
+        if ( IsDrawing ) throw new GdxRuntimeException( "end must be called before begin." );
 
-        if ( _currentCache != null )
-        {
-            throw new GdxRuntimeException( "endCache must be called before begin" );
-        }
+        if ( _currentCache != null ) throw new GdxRuntimeException( "endCache must be called before begin" );
 
         RenderCallsSinceBegin = 0;
         _combinedMatrix.Set( ProjectionMatrix ).Mul( TransformMatrix );
@@ -1143,10 +1086,7 @@ public class SpriteCache
     /// </summary>
     public void End()
     {
-        if ( !IsDrawing )
-        {
-            throw new GdxRuntimeException( "begin must be called before end." );
-        }
+        if ( !IsDrawing ) throw new GdxRuntimeException( "begin must be called before end." );
 
         IsDrawing = false;
 
@@ -1160,12 +1100,9 @@ public class SpriteCache
     /// </summary>
     public void Draw( int cacheID )
     {
-        if ( !IsDrawing )
-        {
-            throw new GdxRuntimeException( "SpriteCache.begin must be called before draw." );
-        }
+        if ( !IsDrawing ) throw new GdxRuntimeException( "SpriteCache.begin must be called before draw." );
 
-        Cache cache = _caches[ cacheID ];
+        var cache = _caches[ cacheID ];
 
         var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
         var offset           = ( cache.offset / ( verticesPerImage * Sprite.VertexSize ) ) * 6;
@@ -1197,12 +1134,9 @@ public class SpriteCache
     /// </param>
     public void Draw( int cacheID, int offset, int length )
     {
-        if ( !IsDrawing )
-        {
-            throw new GdxRuntimeException( "SpriteCache.begin must be called before draw." );
-        }
+        if ( !IsDrawing ) throw new GdxRuntimeException( "SpriteCache.begin must be called before draw." );
 
-        Cache cache = _caches[ cacheID ];
+        var cache = _caches[ cacheID ];
 
         var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
 
@@ -1225,9 +1159,7 @@ public class SpriteCache
                 count = length;
             }
             else
-            {
                 length -= count;
-            }
 
             _mesh.Render( CustomShader ?? _shader, IGL.GL_TRIANGLES, offset, count );
 
@@ -1316,10 +1248,7 @@ public class SpriteCache
 
         var shader = new ShaderProgram( vertexShader, fragmentShader );
 
-        if ( !shader.IsCompiled )
-        {
-            throw new ArgumentException( "Error compiling shader: " + shader.Log );
-        }
+        if ( !shader.IsCompiled ) throw new ArgumentException( "Error compiling shader: " + shader.Log );
 
         return shader;
     }

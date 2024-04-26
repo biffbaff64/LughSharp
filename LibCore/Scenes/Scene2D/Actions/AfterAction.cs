@@ -34,10 +34,7 @@ public class AfterAction : DelegateAction
 
     public void SetTarget( Actor? target )
     {
-        if ( target != null )
-        {
-            _waitForActions.AddAll( target.Actions );
-        }
+        if ( target != null ) _waitForActions.AddAll( target.Actions );
 
         base.Target = target;
     }
@@ -53,19 +50,13 @@ public class AfterAction : DelegateAction
     {
         List< Action >? currentActions = Target?.Actions;
 
-        if ( currentActions?.Count == 1 )
-        {
-            _waitForActions.Clear();
-        }
+        if ( currentActions?.Count == 1 ) _waitForActions.Clear();
 
         for ( var i = _waitForActions.Count - 1; i >= 0; i-- )
         {
-            Action action = _waitForActions[ i ];
+            var action = _waitForActions[ i ];
 
-            if ( currentActions?.IndexOf( action ) == -1 )
-            {
-                _waitForActions.RemoveAt( i );
-            }
+            if ( currentActions?.IndexOf( action ) == -1 ) _waitForActions.RemoveAt( i );
         }
 
         return ( _waitForActions.Count <= 0 ) && Action!.Act( delta );

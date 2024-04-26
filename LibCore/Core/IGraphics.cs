@@ -31,8 +31,8 @@ public interface IGraphics
     #region nested classes
 
     /// <summary>
-    ///     Describes a fullscreen display mode, having the properties <see cref="Width"/>,
-    ///     <see cref="Height"/>, <see cref="RefreshRate"/>, and <see cref="BitsPerPixel"/>.
+    ///     Describes a fullscreen display mode, having the properties <see cref="Width" />,
+    ///     <see cref="Height" />, <see cref="RefreshRate" />, and <see cref="BitsPerPixel" />.
     /// </summary>
     [PublicAPI]
     public class DisplayModeDescriptor
@@ -104,8 +104,6 @@ public interface IGraphics
 
     #region properties
 
-    IGL20?                 GL20             { get; set; }
-    IGL30?                 GL30             { get; set; }
     float                  DeltaTime        { get; set; }
     GLVersion              GLVersion        { get; set; }
     int                    Width            { get; }
@@ -113,7 +111,8 @@ public interface IGraphics
     BufferFormatDescriptor BufferFormat     { get; set; }
     int                    BackBufferWidth  { get; }
     int                    BackBufferHeight { get; }
-
+    IGL                    IGL              { get; set; }
+    
     #endregion properties
 
     #region methods
@@ -157,7 +156,7 @@ public interface IGraphics
     float GetPpiY();
 
     (float X, float Y) GetPpcXY();
-    
+
     float GetPpcX();
 
     float GetPpcY();

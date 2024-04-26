@@ -131,10 +131,7 @@ public class BoundingBox
     {
         ToInfinity();
 
-        foreach ( Vector3 lPoint in points )
-        {
-            Extend( lPoint );
-        }
+        foreach ( var lPoint in points ) Extend( lPoint );
 
         return this;
     }
@@ -148,10 +145,7 @@ public class BoundingBox
     {
         ToInfinity();
 
-        foreach ( Vector3 lPoint in points )
-        {
-            Extend( lPoint );
-        }
+        foreach ( var lPoint in points ) Extend( lPoint );
 
         return this;
     }
@@ -415,10 +409,7 @@ public class BoundingBox
     /// <returns>Whether the given bounding box is intersected</returns>
     public bool Intersects( BoundingBox b )
     {
-        if ( !Valid )
-        {
-            return false;
-        }
+        if ( !Valid ) return false;
 
         // test using SAT (separating axis theorem)
 

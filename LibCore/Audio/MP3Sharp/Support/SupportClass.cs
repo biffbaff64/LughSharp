@@ -32,32 +32,26 @@ public class SupportClass
 {
     public static int URShift( int number, int bits )
     {
-        if ( number >= 0 )
-        {
-            return number >> bits;
-        }
+        if ( number >= 0 ) return number >> bits;
 
         return ( number >> bits ) + ( 2 << ~bits );
     }
 
     public static int URShift( int number, long bits )
     {
-        return URShift( number, ( int )bits );
+        return URShift( number, ( int ) bits );
     }
 
     public static long URShift( long number, int bits )
     {
-        if ( number >= 0 )
-        {
-            return number >> bits;
-        }
+        if ( number >= 0 ) return number >> bits;
 
         return ( number >> bits ) + ( 2L << ~bits );
     }
 
     public static long URShift( long number, long bits )
     {
-        return URShift( number, ( int )bits );
+        return URShift( number, ( int ) bits );
     }
 
     public static void WriteStackTrace( Exception throwable, TextWriter stream )
@@ -123,10 +117,7 @@ public class SupportClass
         var receiver  = new byte[ target.Length ];
         var bytesRead = sourceStream.Read( receiver, start, count );
 
-        for ( var i = start; i < ( start + bytesRead ); i++ )
-        {
-            target[ i ] = ( sbyte )receiver[ i ];
-        }
+        for ( var i = start; i < ( start + bytesRead ); i++ ) target[ i ] = ( sbyte ) receiver[ i ];
 
         return bytesRead;
     }
@@ -140,10 +131,7 @@ public class SupportClass
     {
         var byteArray = new byte[ sbyteArray.Length ];
 
-        for ( var index = 0; index < sbyteArray.Length; index++ )
-        {
-            byteArray[ index ] = ( byte )sbyteArray[ index ];
-        }
+        for ( var index = 0; index < sbyteArray.Length; index++ ) byteArray[ index ] = ( byte ) sbyteArray[ index ];
 
         return byteArray;
     }
@@ -157,10 +145,7 @@ public class SupportClass
     {
         var byteArray = new byte[ sourceString.Length ];
 
-        for ( var index = 0; index < sourceString.Length; index++ )
-        {
-            byteArray[ index ] = ( byte )sourceString[ index ];
-        }
+        for ( var index = 0; index < sourceString.Length; index++ ) byteArray[ index ] = ( byte ) sourceString[ index ];
 
         return byteArray;
     }
@@ -185,7 +170,7 @@ public class SupportClass
 
         while ( sourceCounter < sourceEnd )
         {
-            destinationArray[ destinationCounter ] = ( sbyte )sourceString[ sourceCounter ];
+            destinationArray[ destinationCounter ] = ( sbyte ) sourceString[ sourceCounter ];
             sourceCounter++;
             destinationCounter++;
         }

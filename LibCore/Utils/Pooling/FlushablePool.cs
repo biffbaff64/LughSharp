@@ -31,7 +31,7 @@ namespace LughSharp.LibCore.Utils.Pooling;
 ///     <see cref="Flush()" /> method.
 /// </summary>
 [PublicAPI]
-public abstract class FlushablePool<T> : Pool< T >
+public abstract class FlushablePool< T > : Pool< T >
 {
     private readonly List< T > _obtained = new();
 
@@ -55,7 +55,7 @@ public abstract class FlushablePool<T> : Pool< T >
     /// <inheritdoc />
     public override T? Obtain()
     {
-        T? result = base.Obtain();
+        var result = base.Obtain();
 
         _obtained.Add( result! );
 
@@ -82,10 +82,7 @@ public abstract class FlushablePool<T> : Pool< T >
     /// <inheritdoc />
     public override void FreeAll( List< T > objects )
     {
-        foreach ( T obj in objects )
-        {
-            _obtained.Remove( obj );
-        }
+        foreach ( var obj in objects ) _obtained.Remove( obj );
 
         base.FreeAll( objects );
     }

@@ -105,19 +105,13 @@ public abstract class Value
 
         public static Fixed ValueOf( float value )
         {
-            if ( value == 0 )
-            {
-                return Zero;
-            }
+            if ( value == 0 ) return Zero;
 
-            if ( value is >= -10 and <= 100 && value.Equals( ( int )value ) )
+            if ( value is >= -10 and <= 100 && value.Equals( ( int ) value ) )
             {
-                Fixed? f = Cache[ ( int )value + 10 ];
+                var f = Cache[ ( int ) value + 10 ];
 
-                if ( f == null )
-                {
-                    Cache[ ( int )value + 10 ] = f = new Fixed( value );
-                }
+                if ( f == null ) Cache[ ( int ) value + 10 ] = f = new Fixed( value );
 
                 return f;
             }
@@ -178,10 +172,7 @@ public abstract class Value
     {
         public override float Get( Actor? context = null )
         {
-            if ( context is ILayout layout )
-            {
-                return layout.MinWidth;
-            }
+            if ( context is ILayout layout ) return layout.MinWidth;
 
             return context?.Width ?? 0;
         }
@@ -196,10 +187,7 @@ public abstract class Value
     {
         public override float Get( Actor? context = null )
         {
-            if ( context is ILayout layout )
-            {
-                return layout.MinHeight;
-            }
+            if ( context is ILayout layout ) return layout.MinHeight;
 
             return context?.Height ?? 0;
         }
@@ -214,10 +202,7 @@ public abstract class Value
     {
         public override float Get( Actor? context = null )
         {
-            if ( context is ILayout layout )
-            {
-                return layout.PrefWidth;
-            }
+            if ( context is ILayout layout ) return layout.PrefWidth;
 
             return context?.Width ?? 0;
         }
@@ -232,10 +217,7 @@ public abstract class Value
     {
         public override float Get( Actor? context = null )
         {
-            if ( context is ILayout layout )
-            {
-                return layout.PrefHeight;
-            }
+            if ( context is ILayout layout ) return layout.PrefHeight;
 
             return context?.Height ?? 0;
         }
@@ -250,10 +232,7 @@ public abstract class Value
     {
         public override float Get( Actor? context = null )
         {
-            if ( context is ILayout layout )
-            {
-                return layout.MaxWidth;
-            }
+            if ( context is ILayout layout ) return layout.MaxWidth;
 
             return context?.Width ?? 0;
         }
@@ -268,10 +247,7 @@ public abstract class Value
     {
         public override float Get( Actor? context = null )
         {
-            if ( context is ILayout layout )
-            {
-                return layout.MaxHeight;
-            }
+            if ( context is ILayout layout ) return layout.MaxHeight;
 
             return context?.Height ?? 0;
         }

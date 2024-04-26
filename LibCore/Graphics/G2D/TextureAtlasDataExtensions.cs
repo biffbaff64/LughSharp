@@ -40,23 +40,14 @@ public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region 
     /// <returns></returns>
     public int Compare( TextureAtlasData.Region? region1, TextureAtlasData.Region? region2 )
     {
-        if ( ( region1 == null ) || ( region2 == null ) )
-        {
-            throw new GdxRuntimeException( "Cannot compare null region" );
-        }
+        if ( ( region1 == null ) || ( region2 == null ) ) throw new GdxRuntimeException( "Cannot compare null region" );
 
         var i1 = region1.Index;
         var i2 = region2.Index;
 
-        if ( i1 == -1 )
-        {
-            i1 = int.MaxValue;
-        }
+        if ( i1 == -1 ) i1 = int.MaxValue;
 
-        if ( i2 == -1 )
-        {
-            i2 = int.MaxValue;
-        }
+        if ( i2 == -1 ) i2 = int.MaxValue;
 
         return i1 - i2;
     }
@@ -95,15 +86,9 @@ public partial record TextureAtlasData
     {
         public void Parse( Page page, params string[] entry )
         {
-            if ( entry[ 1 ].IndexOf( 'x' ) != -1 )
-            {
-                page.UWrap = TextureWrap.Repeat;
-            }
+            if ( entry[ 1 ].IndexOf( 'x' ) != -1 ) page.UWrap = TextureWrap.Repeat;
 
-            if ( entry[ 1 ].IndexOf( 'y' ) != -1 )
-            {
-                page.VWrap = TextureWrap.Repeat;
-            }
+            if ( entry[ 1 ].IndexOf( 'y' ) != -1 ) page.VWrap = TextureWrap.Repeat;
         }
     }
 
@@ -183,13 +168,8 @@ public partial record TextureAtlasData
             var value = entry[ 1 ];
 
             if ( value.Equals( "true" ) )
-            {
-                region.Degrees = 90;
-            }
-            else if ( !value.Equals( "false" ) )
-            {
-                region.Degrees = int.Parse( value );
-            }
+                region.Degrees                                  = 90;
+            else if ( !value.Equals( "false" ) ) region.Degrees = int.Parse( value );
 
             region.Rotate = region.Degrees == 90;
         }
@@ -201,10 +181,7 @@ public partial record TextureAtlasData
         {
             region.Index = int.Parse( entry[ 1 ] );
 
-            if ( region.Index != -1 )
-            {
-                HasIndexes[ 0 ] = true;
-            }
+            if ( region.Index != -1 ) HasIndexes[ 0 ] = true;
         }
     }
 }

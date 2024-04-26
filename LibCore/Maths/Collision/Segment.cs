@@ -76,17 +76,11 @@ public class Segment
     /// <returns></returns>
     public override bool Equals( object? o )
     {
-        if ( o == this )
-        {
-            return true;
-        }
+        if ( o == this ) return true;
 
-        if ( ( o == null ) || ( o.GetType() != GetType() ) )
-        {
-            return false;
-        }
+        if ( ( o == null ) || ( o.GetType() != GetType() ) ) return false;
 
-        var s = ( Segment )o;
+        var s = ( Segment ) o;
 
         return vectorA.Equals( s.vectorA ) && vectorB.Equals( s.vectorB );
     }

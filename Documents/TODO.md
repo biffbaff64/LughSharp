@@ -266,7 +266,7 @@ GRAPHICS
     - DONE - IP   - Colors
     - DONE - IP   - Cubemap
     - DONE - IP   - FPSLogger
-    - IP   - IP   - GLTexture
+    - DONE - IP   - GLTexture
     - DONE - IP   - ICubemapData
     - DONE - IP   - ICursor
     - DONE - IP   - IDownloadPixmapResponseListener
@@ -277,10 +277,10 @@ GRAPHICS
     - DONE - IP   - Mesh
     - DONE - IP   - OrthographicCamera
     - DONE - IP   - PerspectiveCamera
-    - IP   - IP   - Pixmap
-    - IP   - IP   - PixmapFormat
-    - IP   - IP   - PixmapIO
-    - IP   - IP   - Texture
+    - DONE - IP   - Pixmap
+    - DONE - IP   - PixmapFormat
+    - DONE - IP   - PixmapIO                            Tests needed
+    - DONE - IP   - Texture
     - IP   - IP   - TextureArray
     - IP   - IP   - TextureFilter
     - DONE - IP   - TextureWrap

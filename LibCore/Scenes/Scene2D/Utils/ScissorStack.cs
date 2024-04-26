@@ -63,10 +63,7 @@ public class ScissorStack
 
         if ( _scissors.Count == 0 )
         {
-            if ( ( scissor.Width < 1 ) || ( scissor.Height < 1 ) )
-            {
-                return false;
-            }
+            if ( ( scissor.Width < 1 ) || ( scissor.Height < 1 ) ) return false;
 
             Gdx.GL.glEnable( IGL.GL_SCISSOR_TEST );
         }
@@ -78,18 +75,12 @@ public class ScissorStack
             var minX = Math.Max( parent.X, scissor.X );
             var maxX = Math.Min( parent.X + parent.Width, scissor.X + scissor.Width );
 
-            if ( ( maxX - minX ) < 1 )
-            {
-                return false;
-            }
+            if ( ( maxX - minX ) < 1 ) return false;
 
             var minY = Math.Max( parent.Y, scissor.Y );
             var maxY = Math.Min( parent.Y + parent.Height, scissor.Y + scissor.Height );
 
-            if ( ( maxY - minY ) < 1 )
-            {
-                return false;
-            }
+            if ( ( maxY - minY ) < 1 ) return false;
 
             scissor.X      = minX;
             scissor.Y      = minY;
@@ -120,9 +111,7 @@ public class ScissorStack
         var old = _scissors.Pop();
 
         if ( _scissors.Count == 0 )
-        {
             Gdx.GL.glDisable( IGL.GL_SCISSOR_TEST );
-        }
         else
         {
             var scissor = _scissors.Peek();

@@ -151,9 +151,7 @@ public class VertexBufferObjectSubData : IVertexData
             ByteBuffer.Position = pos;
         }
         else
-        {
             throw new GdxRuntimeException( "Buffer must be allocated direct." );
-        }
 
         BufferChanged();
     }
@@ -189,7 +187,7 @@ public class VertexBufferObjectSubData : IVertexData
             {
                 Gdx.GL.glBufferData( IGL.GL_ARRAY_BUFFER, ByteBuffer.Limit, ptr, _usage );
             }
-            
+
             _isDirty = false;
         }
 
@@ -202,10 +200,7 @@ public class VertexBufferObjectSubData : IVertexData
                 var attribute = Attributes.Get( i );
                 var location  = shader.GetAttributeLocation( attribute.alias );
 
-                if ( location < 0 )
-                {
-                    continue;
-                }
+                if ( location < 0 ) continue;
 
                 shader.EnableVertexAttribute( location );
 
@@ -224,10 +219,7 @@ public class VertexBufferObjectSubData : IVertexData
                 var attribute = Attributes.Get( i );
                 var location  = locations[ i ];
 
-                if ( location < 0 )
-                {
-                    continue;
-                }
+                if ( location < 0 ) continue;
 
                 shader.EnableVertexAttribute( location );
 
@@ -256,10 +248,7 @@ public class VertexBufferObjectSubData : IVertexData
 
         if ( locations == null )
         {
-            for ( var i = 0; i < numAttributes; i++ )
-            {
-                shader.DisableVertexAttribute( Attributes.Get( i ).alias );
-            }
+            for ( var i = 0; i < numAttributes; i++ ) shader.DisableVertexAttribute( Attributes.Get( i ).alias );
         }
         else
         {
@@ -267,10 +256,7 @@ public class VertexBufferObjectSubData : IVertexData
             {
                 var location = locations[ i ];
 
-                if ( location >= 0 )
-                {
-                    shader.DisableVertexAttribute( location );
-                }
+                if ( location >= 0 ) shader.DisableVertexAttribute( location );
             }
         }
 
@@ -317,7 +303,7 @@ public class VertexBufferObjectSubData : IVertexData
             {
                 Gdx.GL.glBufferSubData( IGL.GL_ARRAY_BUFFER, 0, ByteBuffer.Limit, ptr );
             }
-            
+
             _isDirty = false;
         }
     }

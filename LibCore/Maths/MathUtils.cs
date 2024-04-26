@@ -63,7 +63,7 @@ public class MathUtils
     /// </summary>
     public static float Sin( float radians )
     {
-        return SinClass.Table[ ( int )( radians * RAD_TO_INDEX ) & SIN_MASK ];
+        return SinClass.Table[ ( int ) ( radians * RAD_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public class MathUtils
     /// </summary>
     public static float Cos( float radians )
     {
-        return SinClass.Table[ ( int )( ( radians + ( PI / 2 ) ) * RAD_TO_INDEX ) & SIN_MASK ];
+        return SinClass.Table[ ( int ) ( ( radians + ( PI / 2 ) ) * RAD_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public class MathUtils
     /// </summary>
     public static float SinDeg( float degrees )
     {
-        return SinClass.Table[ ( int )( degrees * DEG_TO_INDEX ) & SIN_MASK ];
+        return SinClass.Table[ ( int ) ( degrees * DEG_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class MathUtils
     /// </summary>
     public static float CosDeg( float degrees )
     {
-        return SinClass.Table[ ( int )( ( degrees + 90 ) * DEG_TO_INDEX ) & SIN_MASK ];
+        return SinClass.Table[ ( int ) ( ( degrees + 90 ) * DEG_TO_INDEX ) & SIN_MASK ];
     }
 
     /// <summary>
@@ -100,11 +100,11 @@ public class MathUtils
         if ( x == 0f )
         {
             return y switch
-                   {
-                       > 0f => PI / 2,
-                       0f   => 0f,
-                       _    => -PI / 2
-                   };
+            {
+                > 0f => PI / 2,
+                0f   => 0f,
+                _    => -PI / 2
+            };
         }
 
         float atan, z = y / x;
@@ -113,10 +113,7 @@ public class MathUtils
         {
             atan = z / ( 1f + ( 0.28f * z * z ) );
 
-            if ( x < 0f )
-            {
-                return atan + ( y < 0f ? -PI : PI );
-            }
+            if ( x < 0f ) return atan + ( y < 0f ? -PI : PI );
 
             return atan;
         }
@@ -147,7 +144,7 @@ public class MathUtils
     /// </summary>
     public static long Random( long range )
     {
-        return ( long )( Rand.NextDouble() * range );
+        return ( long ) ( Rand.NextDouble() * range );
     }
 
     /// <summary>
@@ -155,7 +152,7 @@ public class MathUtils
     /// </summary>
     public static long Random( long start, long end )
     {
-        return start + ( long )( Rand.NextDouble() * ( end - start ) );
+        return start + ( long ) ( Rand.NextDouble() * ( end - start ) );
     }
 
     /// <summary>
@@ -163,7 +160,7 @@ public class MathUtils
     /// </summary>
     public static long RandomLong()
     {
-        return ( long )Rand.NextDouble();
+        return ( long ) Rand.NextDouble();
     }
 
     /// <summary>
@@ -187,7 +184,7 @@ public class MathUtils
     /// </summary>
     public static float Random()
     {
-        return ( float )Rand.NextDouble();
+        return ( float ) Rand.NextDouble();
     }
 
     /// <summary>
@@ -195,7 +192,7 @@ public class MathUtils
     /// </summary>
     public static float Random( float range )
     {
-        return ( float )Rand.NextDouble() * range;
+        return ( float ) Rand.NextDouble() * range;
     }
 
     /// <summary>
@@ -203,7 +200,7 @@ public class MathUtils
     /// </summary>
     public static float Random( float start, float end )
     {
-        return start + ( ( float )Rand.NextDouble() * ( end - start ) );
+        return start + ( ( float ) Rand.NextDouble() * ( end - start ) );
     }
 
     /// <summary>
@@ -220,7 +217,7 @@ public class MathUtils
     /// </summary>
     public static float RandomTriangular()
     {
-        return ( float )Rand.NextDouble() - ( float )Rand.NextDouble();
+        return ( float ) Rand.NextDouble() - ( float ) Rand.NextDouble();
     }
 
     /// <summary>
@@ -230,7 +227,7 @@ public class MathUtils
     /// <param name="max"> the upper limit  </param>
     public static float RandomTriangular( float max )
     {
-        return ( float )( Rand.NextDouble() - Rand.NextDouble() ) * max;
+        return ( float ) ( Rand.NextDouble() - Rand.NextDouble() ) * max;
     }
 
     /// <summary>
@@ -255,15 +252,12 @@ public class MathUtils
     /// <param name="mode"> the point around which the values are more likely  </param>
     public static float RandomTriangular( float min, float max, float mode )
     {
-        var u = ( float )Rand.NextDouble();
+        var u = ( float ) Rand.NextDouble();
         var d = max - min;
 
-        if ( u <= ( ( mode - min ) / d ) )
-        {
-            return min + ( float )Math.Sqrt( u * d * ( mode - min ) );
-        }
+        if ( u <= ( ( mode - min ) / d ) ) return min + ( float ) Math.Sqrt( u * d * ( mode - min ) );
 
-        return max - ( float )Math.Sqrt( ( 1 - u ) * d * ( max - mode ) );
+        return max - ( float ) Math.Sqrt( ( 1 - u ) * d * ( max - mode ) );
     }
 
     /// <summary>
@@ -271,10 +265,7 @@ public class MathUtils
     /// </summary>
     public static int NextPowerOfTwo( int value )
     {
-        if ( value == 0 )
-        {
-            return 1;
-        }
+        if ( value == 0 ) return 1;
 
         value--;
         value |= value >> 1;
@@ -303,10 +294,7 @@ public class MathUtils
     /// <returns></returns>
     public static short Clamp( short value, short min, short max )
     {
-        if ( value < min )
-        {
-            return min;
-        }
+        if ( value < min ) return min;
 
         return value > max ? max : value;
     }
@@ -319,10 +307,7 @@ public class MathUtils
     /// <returns></returns>
     public static int Clamp( int value, int min, int max )
     {
-        if ( value < min )
-        {
-            return min;
-        }
+        if ( value < min ) return min;
 
         return value > max ? max : value;
     }
@@ -335,10 +320,7 @@ public class MathUtils
     /// <returns></returns>
     public static long Clamp( long value, long min, long max )
     {
-        if ( value < min )
-        {
-            return min;
-        }
+        if ( value < min ) return min;
 
         return value > max ? max : value;
     }
@@ -351,10 +333,7 @@ public class MathUtils
     /// <returns></returns>
     public static float Clamp( float value, float min, float max )
     {
-        if ( value < min )
-        {
-            return min;
-        }
+        if ( value < min ) return min;
 
         return value > max ? max : value;
     }
@@ -367,10 +346,7 @@ public class MathUtils
     /// <returns></returns>
     public static double Clamp( double value, double min, double max )
     {
-        if ( value < min )
-        {
-            return min;
-        }
+        if ( value < min ) return min;
 
         return value > max ? max : value;
     }
@@ -421,7 +397,7 @@ public class MathUtils
     /// </summary>
     public static int Floor( float value )
     {
-        return ( int )( value + BIG_ENOUGH_FLOOR ) - BIG_ENOUGH_INT;
+        return ( int ) ( value + BIG_ENOUGH_FLOOR ) - BIG_ENOUGH_INT;
     }
 
     /// <summary>
@@ -431,7 +407,7 @@ public class MathUtils
     /// </summary>
     public static int FloorPositive( float value )
     {
-        return ( int )value;
+        return ( int ) value;
     }
 
     /// <summary>
@@ -440,7 +416,7 @@ public class MathUtils
     /// </summary>
     public static int Ceil( float value )
     {
-        return ( int )( value + BIG_ENOUGH_CEIL ) - BIG_ENOUGH_INT;
+        return ( int ) ( value + BIG_ENOUGH_CEIL ) - BIG_ENOUGH_INT;
     }
 
     /// <summary>
@@ -449,7 +425,7 @@ public class MathUtils
     /// </summary>
     public static int CeilPositive( float value )
     {
-        return ( int )( value + CEILING );
+        return ( int ) ( value + CEILING );
     }
 
     /// <summary>
@@ -458,7 +434,7 @@ public class MathUtils
     /// </summary>
     public static int Round( float value )
     {
-        return ( int )( value + BIG_ENOUGH_ROUND ) - BIG_ENOUGH_INT;
+        return ( int ) ( value + BIG_ENOUGH_ROUND ) - BIG_ENOUGH_INT;
     }
 
     /// <summary>
@@ -467,7 +443,7 @@ public class MathUtils
     /// </summary>
     public static int RoundPositive( float value )
     {
-        return ( int )( value + 0.5f );
+        return ( int ) ( value + 0.5f );
     }
 
     /// <summary>
@@ -501,7 +477,7 @@ public class MathUtils
     /// <returns> the logarithm of value with base a </returns>
     public static float Log( float a, float value )
     {
-        return ( float )( Math.Log( value ) / Math.Log( a ) );
+        return ( float ) ( Math.Log( value ) / Math.Log( a ) );
     }
 
     /// <summary>
@@ -530,15 +506,9 @@ public class MathUtils
 
         public SinClass()
         {
-            for ( var i = 0; i < SIN_COUNT; i++ )
-            {
-                Table[ i ] = ( float )Math.Sin( ( ( i + 0.5f ) / SIN_COUNT ) * RAD_FULL );
-            }
+            for ( var i = 0; i < SIN_COUNT; i++ ) Table[ i ] = ( float ) Math.Sin( ( ( i + 0.5f ) / SIN_COUNT ) * RAD_FULL );
 
-            for ( var i = 0; i < 360; i += 90 )
-            {
-                Table[ ( int )( i * DEG_TO_INDEX ) & SIN_MASK ] = ( float )Math.Sin( i * DEGREES_TO_RADIANS );
-            }
+            for ( var i = 0; i < 360; i += 90 ) Table[ ( int ) ( i * DEG_TO_INDEX ) & SIN_MASK ] = ( float ) Math.Sin( i * DEGREES_TO_RADIANS );
         }
     }
 }

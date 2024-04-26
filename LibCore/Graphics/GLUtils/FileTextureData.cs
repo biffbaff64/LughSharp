@@ -58,21 +58,14 @@ public class FileTextureData : ITextureData
     /// </summary>
     public void Prepare()
     {
-        if ( IsPrepared )
-        {
-            throw new GdxRuntimeException( "Already prepared" );
-        }
+        if ( IsPrepared ) throw new GdxRuntimeException( "Already prepared" );
 
         if ( _pixmap == null )
         {
-            if ( ( bool )File?.Extension.Equals( "cim" ) )
-            {
+            if ( ( bool ) File?.Extension.Equals( "cim" ) )
                 _pixmap = PixmapIO.ReadCIM( File );
-            }
             else
-            {
                 _pixmap = new Pixmap( File );
-            }
 
             _width  = _pixmap.Width;
             _height = _pixmap.Height;
@@ -94,14 +87,11 @@ public class FileTextureData : ITextureData
     /// <returns> the pixmap.</returns>
     public virtual Pixmap? ConsumePixmap()
     {
-        if ( !IsPrepared )
-        {
-            throw new GdxRuntimeException( "Call prepare() before calling ConsumePixmap()" );
-        }
+        if ( !IsPrepared ) throw new GdxRuntimeException( "Call prepare() before calling ConsumePixmap()" );
 
         IsPrepared = false;
 
-        Pixmap? pixmap = _pixmap;
+        var pixmap = _pixmap;
         _pixmap = null;
 
         return pixmap;

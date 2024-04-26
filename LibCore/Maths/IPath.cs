@@ -25,7 +25,7 @@
 
 namespace LughSharp.LibCore.Maths;
 
-public interface IPath<T>
+public interface IPath< T >
 {
     T DerivativeAt( in T outParam, in float t );
 

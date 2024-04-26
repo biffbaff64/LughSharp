@@ -49,15 +49,14 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 [PublicAPI]
 public class Stage : InputAdapter
 {
-    public readonly SnapshotArray< TouchFocus > touchFocuses = new( true, 4 );
-
-    private readonly bool     _ownsBatch;
-    private readonly Actor?[] _pointerOverActors = new Actor?[ 20 ];
-    private readonly int[]    _pointerScreenX    = new int[ 20 ];
-    private readonly int[]    _pointerScreenY    = new int[ 20 ];
-    private readonly bool[]   _pointerTouched    = new bool[ 20 ];
-    private readonly Group    _root              = null!;
-    private readonly Vector2  _tempCoords        = new();
+    private readonly bool                        _ownsBatch;
+    private readonly Actor?[]                    _pointerOverActors = new Actor?[ 20 ];
+    private readonly int[]                       _pointerScreenX    = new int[ 20 ];
+    private readonly int[]                       _pointerScreenY    = new int[ 20 ];
+    private readonly bool[]                      _pointerTouched    = new bool[ 20 ];
+    private readonly Group                       _root              = null!;
+    private readonly Vector2                     _tempCoords        = new();
+    public readonly  SnapshotArray< TouchFocus > touchFocuses       = new( true, 4 );
 
     private bool            _debugAll;
     private bool            _debugParentUnderMouse;
@@ -133,22 +132,16 @@ public class Stage : InputAdapter
         get => _keyboardFocus;
         set
         {
-            if ( _keyboardFocus == value )
-            {
-                return;
-            }
+            if ( _keyboardFocus == value ) return;
 
-            FocusListener.FocusEvent? focusEvent = Pools< FocusListener.FocusEvent >.Obtain();
+            var focusEvent = Pools< FocusListener.FocusEvent >.Obtain();
 
-            if ( focusEvent == null )
-            {
-                return;
-            }
+            if ( focusEvent == null ) return;
 
             focusEvent.Stage = this;
             focusEvent.Type  = FocusListener.FocusEvent.FeType.Keyboard;
 
-            Actor? oldKeyboardFocus = _keyboardFocus;
+            var oldKeyboardFocus = _keyboardFocus;
 
             if ( oldKeyboardFocus != null )
             {
@@ -172,10 +165,7 @@ public class Stage : InputAdapter
                     value.Fire( focusEvent );
                     success = !focusEvent.IsCancelled;
 
-                    if ( !success )
-                    {
-                        _keyboardFocus = oldKeyboardFocus;
-                    }
+                    if ( !success ) _keyboardFocus = oldKeyboardFocus;
                 }
             }
 
@@ -196,17 +186,11 @@ public class Stage : InputAdapter
         get => _scrollFocus;
         set
         {
-            if ( _scrollFocus == value )
-            {
-                return;
-            }
+            if ( _scrollFocus == value ) return;
 
-            FocusListener.FocusEvent? focusEvent = Pools< FocusListener.FocusEvent >.Obtain();
+            var focusEvent = Pools< FocusListener.FocusEvent >.Obtain();
 
-            if ( focusEvent == null )
-            {
-                return;
-            }
+            if ( focusEvent == null ) return;
 
             focusEvent.Stage = this;
             focusEvent.Type  = FocusListener.FocusEvent.FeType.Scroll;
@@ -234,10 +218,7 @@ public class Stage : InputAdapter
 
                     success = !focusEvent.IsCancelled;
 
-                    if ( !success )
-                    {
-                        _scrollFocus = oldScrollFocus;
-                    }
+                    if ( !success ) _scrollFocus = oldScrollFocus;
                 }
             }
 
@@ -314,21 +295,14 @@ public class Stage : InputAdapter
         get => _debugAll;
         set
         {
-            if ( _debugAll == value )
-            {
-                return;
-            }
+            if ( _debugAll == value ) return;
 
             _debugAll = value;
 
             if ( value )
-            {
                 debug = true;
-            }
             else
-            {
                 Root.SetDebug( false, true );
-            }
         }
     }
 
@@ -340,21 +314,14 @@ public class Stage : InputAdapter
     {
         set
         {
-            if ( _debugUnderMouse == value )
-            {
-                return;
-            }
+            if ( _debugUnderMouse == value ) return;
 
             _debugUnderMouse = value;
 
             if ( value )
-            {
                 debug = true;
-            }
             else
-            {
                 Root.SetDebug( false, true );
-            }
         }
     }
 
@@ -366,36 +333,26 @@ public class Stage : InputAdapter
     {
         set
         {
-            if ( _debugParentUnderMouse == value )
-            {
-                return;
-            }
+            if ( _debugParentUnderMouse == value ) return;
 
             _debugParentUnderMouse = value;
 
             if ( value )
-            {
                 debug = true;
-            }
             else
-            {
                 Root.SetDebug( false, true );
-            }
         }
     }
 
     /// <summary>
     ///     Draw the stage. If the Viewport camera has not been set, or the
-    ///     root <see cref="Group"/> is invisible, the stage will not draw.
+    ///     root <see cref="Group" /> is invisible, the stage will not draw.
     /// </summary>
     public virtual void Draw()
     {
         Camera = Viewport.Camera;
 
-        if ( ( Camera == null ) || !Root.IsVisible )
-        {
-            return;
-        }
+        if ( ( Camera == null ) || !Root.IsVisible ) return;
 
         Camera.Update();
 
@@ -404,10 +361,7 @@ public class Stage : InputAdapter
         Root.Draw( Batch, 1 );
         Batch.End();
 
-        if ( debug )
-        {
-            DrawDebug();
-        }
+        if ( debug ) DrawDebug();
     }
 
     /// <summary>
@@ -431,7 +385,7 @@ public class Stage : InputAdapter
         // which can fire enter/exit without an input event.
         for ( int pointer = 0, n = _pointerOverActors.Length; pointer < n; pointer++ )
         {
-            Actor? overLast = _pointerOverActors[ pointer ];
+            var overLast = _pointerOverActors[ pointer ];
 
             // Check if pointer is gone.
             if ( !_pointerTouched[ pointer ] )
@@ -444,12 +398,9 @@ public class Stage : InputAdapter
                                                                _pointerScreenY[ pointer ] ) );
 
                     // Exit over last.
-                    InputEvent? inputEvent = Pools< InputEvent >.Obtain();
+                    var inputEvent = Pools< InputEvent >.Obtain();
 
-                    if ( inputEvent == null )
-                    {
-                        continue;
-                    }
+                    if ( inputEvent == null ) continue;
 
                     inputEvent.Type         = InputEvent.EventType.Exit;
                     inputEvent.Stage        = this;
@@ -474,13 +425,11 @@ public class Stage : InputAdapter
         }
 
         // Update over actor for the mouse on the desktop.
-        IApplication.ApplicationType type = Gdx.App.AppType;
+        var type = Gdx.App.AppType;
 
         if ( type is IApplication.ApplicationType.DesktopGL
                      or IApplication.ApplicationType.WebGL )
-        {
             _mouseOverActor = FireEnterAndExit( _mouseOverActor, _mouseScreenX, _mouseScreenY, -1 );
-        }
 
         Root.Act( delta );
     }
@@ -497,17 +446,14 @@ public class Stage : InputAdapter
         // Find the actor under the point.
         ScreenToStageCoordinates( _tempCoords.Set( screenX, screenY ) );
 
-        Actor? over = Hit( _tempCoords.X, _tempCoords.Y, true );
+        var over = Hit( _tempCoords.X, _tempCoords.Y, true );
 
-        if ( over == overLast )
-        {
-            return overLast;
-        }
+        if ( over == overLast ) return overLast;
 
         // Exit overLast.
         if ( overLast != null )
         {
-            InputEvent? inputEvent = Pools< InputEvent >.Obtain();
+            var inputEvent = Pools< InputEvent >.Obtain();
 
             if ( inputEvent != null )
             {
@@ -526,7 +472,7 @@ public class Stage : InputAdapter
         // Enter over.
         if ( over != null )
         {
-            InputEvent? inputEvent = Pools< InputEvent >.Obtain();
+            var inputEvent = Pools< InputEvent >.Obtain();
 
             if ( inputEvent != null )
             {
@@ -551,10 +497,7 @@ public class Stage : InputAdapter
     /// </summary>
     public override bool TouchDown( int screenX, int screenY, int pointer, int button )
     {
-        if ( !IsInsideViewport( screenX, screenY ) )
-        {
-            return false;
-        }
+        if ( !IsInsideViewport( screenX, screenY ) ) return false;
 
         _pointerTouched[ pointer ] = true;
         _pointerScreenX[ pointer ] = screenX;
@@ -562,12 +505,9 @@ public class Stage : InputAdapter
 
         ScreenToStageCoordinates( _tempCoords.Set( screenX, screenY ) );
 
-        InputEvent? inputEvent = Pools< InputEvent >.Obtain();
+        var inputEvent = Pools< InputEvent >.Obtain();
 
-        if ( inputEvent == null )
-        {
-            throw new GdxRuntimeException( "Null InputEvent for TouchDown!" );
-        }
+        if ( inputEvent == null ) throw new GdxRuntimeException( "Null InputEvent for TouchDown!" );
 
         inputEvent.Type    = InputEvent.EventType.TouchDown;
         inputEvent.Stage   = this;
@@ -576,19 +516,14 @@ public class Stage : InputAdapter
         inputEvent.Pointer = pointer;
         inputEvent.Button  = button;
 
-        Actor? target = Hit( _tempCoords.X, _tempCoords.Y, true );
+        var target = Hit( _tempCoords.X, _tempCoords.Y, true );
 
         if ( target == null )
         {
-            if ( Root.Touchable == Touchable.Enabled )
-            {
-                Root.Fire( inputEvent );
-            }
+            if ( Root.Touchable == Touchable.Enabled ) Root.Fire( inputEvent );
         }
         else
-        {
             target.Fire( inputEvent );
-        }
 
         var handled = inputEvent.IsHandled;
 
@@ -610,19 +545,13 @@ public class Stage : InputAdapter
         _mouseScreenX              = screenX;
         _mouseScreenY              = screenY;
 
-        if ( touchFocuses.Size == 0 )
-        {
-            return false;
-        }
+        if ( touchFocuses.Size == 0 ) return false;
 
         ScreenToStageCoordinates( _tempCoords.Set( screenX, screenY ) );
 
-        InputEvent? inputEvent = Pools< InputEvent >.Obtain();
+        var inputEvent = Pools< InputEvent >.Obtain();
 
-        if ( inputEvent == null )
-        {
-            throw new GdxRuntimeException( "Null InputEvent for TouchDragged!" );
-        }
+        if ( inputEvent == null ) throw new GdxRuntimeException( "Null InputEvent for TouchDragged!" );
 
         inputEvent.Type    = InputEvent.EventType.TouchDragged;
         inputEvent.Stage   = this;
@@ -634,12 +563,9 @@ public class Stage : InputAdapter
 
         for ( int i = 0, n = touchFocuses.Size; i < n; i++ )
         {
-            TouchFocus? focus = focuses[ i ];
+            var focus = focuses[ i ];
 
-            if ( focus?.Pointer != pointer )
-            {
-                continue;
-            }
+            if ( focus?.Pointer != pointer ) continue;
 
             if ( !touchFocuses.Contains( focus ) )
             {
@@ -650,10 +576,7 @@ public class Stage : InputAdapter
             inputEvent.TargetActor   = focus.Target;
             inputEvent.ListenerActor = focus.ListenerActor;
 
-            if ( ( focus.Listener != null ) && focus.Listener.Handle( inputEvent ) )
-            {
-                inputEvent.SetHandled();
-            }
+            if ( ( focus.Listener != null ) && focus.Listener.Handle( inputEvent ) ) inputEvent.SetHandled();
         }
 
         touchFocuses.End();
@@ -677,19 +600,13 @@ public class Stage : InputAdapter
         _pointerScreenX[ pointer ] = screenX;
         _pointerScreenY[ pointer ] = screenY;
 
-        if ( touchFocuses.Size == 0 )
-        {
-            return false;
-        }
+        if ( touchFocuses.Size == 0 ) return false;
 
         ScreenToStageCoordinates( _tempCoords.Set( screenX, screenY ) );
 
-        InputEvent? inputEvent = Pools< InputEvent >.Obtain();
+        var inputEvent = Pools< InputEvent >.Obtain();
 
-        if ( inputEvent == null )
-        {
-            return false;
-        }
+        if ( inputEvent == null ) return false;
 
         inputEvent.Type    = InputEvent.EventType.TouchUp;
         inputEvent.Stage   = this;
@@ -702,12 +619,9 @@ public class Stage : InputAdapter
 
         for ( int i = 0, n = touchFocuses.Size; i < n; i++ )
         {
-            TouchFocus? focus = focuses[ i ];
+            var focus = focuses[ i ];
 
-            if ( ( focus?.Pointer != pointer ) || ( focus.Button != button ) )
-            {
-                continue;
-            }
+            if ( ( focus?.Pointer != pointer ) || ( focus.Button != button ) ) continue;
 
             if ( !touchFocuses.Remove( focus ) )
             {
@@ -718,10 +632,7 @@ public class Stage : InputAdapter
             inputEvent.TargetActor   = focus.Target;
             inputEvent.ListenerActor = focus.ListenerActor;
 
-            if ( ( focus.Listener != null ) && focus.Listener.Handle( inputEvent ) )
-            {
-                inputEvent.SetHandled();
-            }
+            if ( ( focus.Listener != null ) && focus.Listener.Handle( inputEvent ) ) inputEvent.SetHandled();
 
             Pools< TouchFocus >.Free( focus );
         }
@@ -744,19 +655,13 @@ public class Stage : InputAdapter
         _mouseScreenX = screenX;
         _mouseScreenY = screenY;
 
-        if ( !IsInsideViewport( screenX, screenY ) )
-        {
-            return false;
-        }
+        if ( !IsInsideViewport( screenX, screenY ) ) return false;
 
         ScreenToStageCoordinates( _tempCoords.Set( screenX, screenY ) );
 
-        InputEvent? inputEvent = Pools< InputEvent >.Obtain();
+        var inputEvent = Pools< InputEvent >.Obtain();
 
-        if ( inputEvent == null )
-        {
-            return false;
-        }
+        if ( inputEvent == null ) return false;
 
         inputEvent.Stage  = this;
         inputEvent.Type   = InputEvent.EventType.MouseMoved;
@@ -765,10 +670,7 @@ public class Stage : InputAdapter
 
         Actor? target;
 
-        if ( ( target = Hit( _tempCoords.X, _tempCoords.Y, true ) ) == null )
-        {
-            target = Root;
-        }
+        if ( ( target = Hit( _tempCoords.X, _tempCoords.Y, true ) ) == null ) target = Root;
 
         target.Fire( inputEvent );
         var handled = inputEvent.IsHandled;
@@ -785,16 +687,13 @@ public class Stage : InputAdapter
     /// </summary>
     public override bool Scrolled( float amountX, float amountY )
     {
-        Actor target = ScrollFocus ?? Root;
+        var target = ScrollFocus ?? Root;
 
         ScreenToStageCoordinates( _tempCoords.Set( _mouseScreenX, _mouseScreenY ) );
 
-        InputEvent? inputEvent = Pools< InputEvent >.Obtain();
+        var inputEvent = Pools< InputEvent >.Obtain();
 
-        if ( inputEvent == null )
-        {
-            return false;
-        }
+        if ( inputEvent == null ) return false;
 
         inputEvent.Stage         = this;
         inputEvent.Type          = InputEvent.EventType.Scrolled;
@@ -817,13 +716,10 @@ public class Stage : InputAdapter
     /// </summary>
     public override bool KeyDown( int keyCode )
     {
-        Actor       target     = _keyboardFocus ?? Root;
-        InputEvent? inputEvent = Pools< InputEvent >.Obtain();
+        var target     = _keyboardFocus ?? Root;
+        var inputEvent = Pools< InputEvent >.Obtain();
 
-        if ( inputEvent == null )
-        {
-            return false;
-        }
+        if ( inputEvent == null ) return false;
 
         inputEvent.Stage   = this;
         inputEvent.Type    = InputEvent.EventType.KeyDown;
@@ -842,13 +738,10 @@ public class Stage : InputAdapter
     /// </summary>
     public override bool KeyUp( int keyCode )
     {
-        Actor       target     = _keyboardFocus ?? Root;
-        InputEvent? inputEvent = Pools< InputEvent >.Obtain();
+        var target     = _keyboardFocus ?? Root;
+        var inputEvent = Pools< InputEvent >.Obtain();
 
-        if ( inputEvent == null )
-        {
-            return false;
-        }
+        if ( inputEvent == null ) return false;
 
         inputEvent.Stage   = this;
         inputEvent.Type    = InputEvent.EventType.KeyUp;
@@ -867,13 +760,10 @@ public class Stage : InputAdapter
     /// </summary>
     public override bool KeyTyped( char character )
     {
-        Actor       target     = _keyboardFocus ?? Root;
-        InputEvent? inputEvent = Pools< InputEvent >.Obtain();
+        var target     = _keyboardFocus ?? Root;
+        var inputEvent = Pools< InputEvent >.Obtain();
 
-        if ( inputEvent == null )
-        {
-            return false;
-        }
+        if ( inputEvent == null ) return false;
 
         inputEvent.Stage     = this;
         inputEvent.Type      = InputEvent.EventType.KeyTyped;
@@ -899,12 +789,9 @@ public class Stage : InputAdapter
                                int pointer,
                                int button )
     {
-        TouchFocus? focus = Pools< TouchFocus >.Obtain();
+        var focus = Pools< TouchFocus >.Obtain();
 
-        if ( focus == null )
-        {
-            return;
-        }
+        if ( focus == null ) return;
 
         focus.ListenerActor = listenerActor;
         focus.Target        = target;
@@ -928,7 +815,7 @@ public class Stage : InputAdapter
     {
         for ( var i = touchFocuses.Size - 1; i >= 0; i-- )
         {
-            TouchFocus focus = touchFocuses.GetAt( i );
+            var focus = touchFocuses.GetAt( i );
 
             if ( ( focus.Listener == listener )
               && ( focus.ListenerActor == listenerActor )
@@ -955,26 +842,17 @@ public class Stage : InputAdapter
 
         for ( int i = 0, n = touchFocuses.Size; i < n; i++ )
         {
-            TouchFocus? focus = items[ i ];
+            var focus = items[ i ];
 
-            if ( focus?.ListenerActor != listenerActor )
-            {
-                continue;
-            }
+            if ( focus?.ListenerActor != listenerActor ) continue;
 
-            if ( !touchFocuses.Remove( focus ) )
-            {
-                continue; // Touch focus already gone.
-            }
+            if ( !touchFocuses.Remove( focus ) ) continue; // Touch focus already gone.
 
             if ( inputEvent == null )
             {
                 inputEvent = Pools< InputEvent >.Obtain();
 
-                if ( inputEvent == null )
-                {
-                    continue;
-                }
+                if ( inputEvent == null ) continue;
 
                 inputEvent.Stage  = this;
                 inputEvent.Type   = InputEvent.EventType.TouchUp;
@@ -995,10 +873,7 @@ public class Stage : InputAdapter
 
         touchFocuses.End();
 
-        if ( inputEvent != null )
-        {
-            Pools< InputEvent >.Free( inputEvent );
-        }
+        if ( inputEvent != null ) Pools< InputEvent >.Free( inputEvent );
     }
 
     /// <summary>
@@ -1018,12 +893,9 @@ public class Stage : InputAdapter
     /// <see cref="CancelTouchFocus() " />
     public void CancelTouchFocusExcept( IEventListener? exceptListener, Actor? exceptActor )
     {
-        InputEvent? inputEvent = Pools< InputEvent >.Obtain();
+        var inputEvent = Pools< InputEvent >.Obtain();
 
-        if ( inputEvent == null )
-        {
-            return;
-        }
+        if ( inputEvent == null ) return;
 
         inputEvent.Stage  = this;
         inputEvent.Type   = InputEvent.EventType.TouchUp;
@@ -1036,21 +908,15 @@ public class Stage : InputAdapter
 
         for ( int i = 0, n = touchFocuses.Size; i < n; i++ )
         {
-            TouchFocus? focus = items[ i ];
+            var focus = items[ i ];
 
             if ( ( focus?.Listener == exceptListener )
               && ( focus?.ListenerActor == exceptActor ) )
-            {
                 continue;
-            }
 
             if ( focus != null )
-            {
                 if ( !touchFocuses.Remove( focus ) )
-                {
                     continue; // Touch focus already gone.
-                }
-            }
 
             inputEvent.TargetActor   = focus?.Target;
             inputEvent.ListenerActor = focus?.ListenerActor;
@@ -1149,15 +1015,9 @@ public class Stage : InputAdapter
     {
         CancelTouchFocus( actor );
 
-        if ( ( ScrollFocus != null ) && ScrollFocus.IsDescendantOf( actor ) )
-        {
-            ScrollFocus = null;
-        }
+        if ( ( ScrollFocus != null ) && ScrollFocus.IsDescendantOf( actor ) ) ScrollFocus = null;
 
-        if ( ( _keyboardFocus != null ) && _keyboardFocus.IsDescendantOf( actor ) )
-        {
-            KeyboardFocus = null;
-        }
+        if ( ( _keyboardFocus != null ) && _keyboardFocus.IsDescendantOf( actor ) ) KeyboardFocus = null;
     }
 
     /// <summary>
@@ -1228,13 +1088,9 @@ public class Stage : InputAdapter
         Matrix4 transformMatrix;
 
         if ( ( _debugShapes != null ) && _debugShapes.IsDrawing() )
-        {
             transformMatrix = _debugShapes.TransformMatrix;
-        }
         else
-        {
             transformMatrix = Batch.TransformMatrix;
-        }
 
         Viewport.CalculateScissors( transformMatrix, localRect, scissorRect );
     }
@@ -1247,26 +1103,16 @@ public class Stage : InputAdapter
     /// <param name="debugTableUnderMouse">May be null for <see cref="Table.DebugType.None" />.</param>
     public virtual void SetDebugTableUnderMouse( Table.DebugType debugTableUnderMouse )
     {
-        if ( Enum.IsDefined( typeof( Table.DebugType ), debugTableUnderMouse ) )
-        {
-            _debugTableUnderMouse = Table.DebugType.None;
-        }
+        if ( Enum.IsDefined( typeof( Table.DebugType ), debugTableUnderMouse ) ) _debugTableUnderMouse = Table.DebugType.None;
 
-        if ( _debugTableUnderMouse == debugTableUnderMouse )
-        {
-            return;
-        }
+        if ( _debugTableUnderMouse == debugTableUnderMouse ) return;
 
         _debugTableUnderMouse = debugTableUnderMouse;
 
         if ( debugTableUnderMouse != Table.DebugType.None )
-        {
             debug = true;
-        }
         else
-        {
             Root.SetDebug( false, true );
-        }
     }
 
     /// <summary>
@@ -1280,7 +1126,7 @@ public class Stage : InputAdapter
     }
 
     /// <summary>
-    /// Draws the debug shapes for all actors on this stage.
+    ///     Draws the debug shapes for all actors on this stage.
     /// </summary>
     private void DrawDebug()
     {
@@ -1296,55 +1142,35 @@ public class Stage : InputAdapter
         {
             ScreenToStageCoordinates( _tempCoords.Set( Gdx.Input.GetX(), Gdx.Input.GetY() ) );
 
-            Actor? actor = Hit( _tempCoords.X, _tempCoords.Y, true );
+            var actor = Hit( _tempCoords.X, _tempCoords.Y, true );
 
-            if ( actor == null )
-            {
-                return;
-            }
+            if ( actor == null ) return;
 
-            if ( _debugParentUnderMouse && ( actor.Parent != null ) )
-            {
-                actor = actor.Parent;
-            }
+            if ( _debugParentUnderMouse && ( actor.Parent != null ) ) actor = actor.Parent;
 
             if ( _debugTableUnderMouse == Table.DebugType.None )
-            {
                 actor.DebugActive = true;
-            }
             else
             {
                 while ( actor != null )
                 {
-                    if ( actor is Table )
-                    {
-                        break;
-                    }
+                    if ( actor is Table ) break;
 
                     actor = actor.Parent;
                 }
 
-                if ( actor == null )
-                {
-                    return;
-                }
+                if ( actor == null ) return;
 
                 ( ( Table ) actor ).DebugLines( _debugTableUnderMouse );
             }
 
-            if ( _debugAll && actor is Group group )
-            {
-                group.DebugAll();
-            }
+            if ( _debugAll && actor is Group group ) group.DebugAll();
 
             DisableDebug( Root, actor );
         }
         else
         {
-            if ( _debugAll )
-            {
-                Root.DebugAll();
-            }
+            if ( _debugAll ) Root.DebugAll();
         }
 
         Gdx.GL.glEnable( IGL.GL_BLEND );
@@ -1367,20 +1193,13 @@ public class Stage : InputAdapter
     // TODO: Refactor this to remove the recursiveness
     private void DisableDebug( Actor actor, Actor except )
     {
-        if ( actor == except )
-        {
-            return;
-        }
+        if ( actor == except ) return;
 
         actor.DebugActive = false;
 
         if ( actor is Group group )
-        {
             for ( int i = 0, n = group.Children.Size; i < n; i++ )
-            {
                 DisableDebug( group.Children.GetAt( i ), except );
-            }
-        }
     }
 
     /// <summary>
@@ -1389,10 +1208,7 @@ public class Stage : InputAdapter
     {
         Clear();
 
-        if ( _ownsBatch )
-        {
-            Batch.Dispose();
-        }
+        if ( _ownsBatch ) Batch.Dispose();
 
         _debugShapes?.Dispose();
     }

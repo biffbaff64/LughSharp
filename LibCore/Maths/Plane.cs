@@ -140,10 +140,7 @@ public class Plane
     {
         var dist = Normal.Dot( point ) + DistanceToOrigin;
 
-        if ( dist == 0 )
-        {
-            return PlaneSide.OnPlane;
-        }
+        if ( dist == 0 ) return PlaneSide.OnPlane;
 
         return dist < 0 ? PlaneSide.Back : PlaneSide.Front;
     }
@@ -160,10 +157,7 @@ public class Plane
     {
         var dist = Normal.Dot( x, y, z ) + DistanceToOrigin;
 
-        if ( dist == 0 )
-        {
-            return PlaneSide.OnPlane;
-        }
+        if ( dist == 0 ) return PlaneSide.OnPlane;
 
         return dist < 0 ? PlaneSide.Back : PlaneSide.Front;
     }

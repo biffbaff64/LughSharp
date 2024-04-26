@@ -170,10 +170,10 @@ public abstract class Buffer
     ///     The characteristics of Spliterators that traverse and split elements
     ///     maintained in Buffers.
     /// </summary>
-    #if USING_SPLITERATOR //TODO:
+#if USING_SPLITERATOR //TODO:
     internal readonly static int SpliteratorCharacteristics =
         Spliterator.SIZED | Spliterator.SUBSIZED | Spliterator.ORDERED;
-    #endif
+#endif
 
     // Invariants: mark <= position <= limit <= capacity
     private int _mark = -1;
@@ -195,16 +195,13 @@ public abstract class Buffer
     }
 
     /// <summary>
-    /// Setup method to be called from Constructor(s).
-    /// This is implemented because of the need to call virtual methods,
-    /// which is not wise to do from constructors.
+    ///     Setup method to be called from Constructor(s).
+    ///     This is implemented because of the need to call virtual methods,
+    ///     which is not wise to do from constructors.
     /// </summary>
     private void Setup( int mark, int pos, int lim, int cap )
     {
-        if ( cap < 0 )
-        {
-            throw new ArgumentException( $"Negative capacity: {cap}" );
-        }
+        if ( cap < 0 ) throw new ArgumentException( $"Negative capacity: {cap}" );
 
         Capacity = cap;
 
@@ -213,10 +210,7 @@ public abstract class Buffer
 
         if ( mark >= 0 )
         {
-            if ( mark > pos )
-            {
-                throw new ArgumentException( $"mark > position: ({mark} > {pos})" );
-            }
+            if ( mark > pos ) throw new ArgumentException( $"mark > position: ({mark} > {pos})" );
 
             _mark = mark;
         }
@@ -225,6 +219,7 @@ public abstract class Buffer
     /// <summary>
     ///     Used only by DirectBuffers
     /// </summary>
+
     //TODO: Would this be better moved elsewhere?
     public virtual long Address { get; set; }
 
@@ -261,17 +256,11 @@ public abstract class Buffer
     /// </exception>
     public virtual Buffer SetPosition( int newPosition )
     {
-        if ( ( newPosition > Limit ) || ( newPosition < 0 ) )
-        {
-            throw new ArgumentException( $"newPosition: {newPosition}, Limit: {Limit}" );
-        }
+        if ( ( newPosition > Limit ) || ( newPosition < 0 ) ) throw new ArgumentException( $"newPosition: {newPosition}, Limit: {Limit}" );
 
         Position = newPosition;
 
-        if ( _mark > Position )
-        {
-            _mark = -1;
-        }
+        if ( _mark > Position ) _mark = -1;
 
         return this;
     }
@@ -290,22 +279,13 @@ public abstract class Buffer
     /// </exception>
     public virtual Buffer SetLimit( int newLimit )
     {
-        if ( ( newLimit > Capacity ) || ( newLimit < 0 ) )
-        {
-            throw new ArgumentException( $"newLimit: {newLimit}, Capacity: {Capacity}" );
-        }
+        if ( ( newLimit > Capacity ) || ( newLimit < 0 ) ) throw new ArgumentException( $"newLimit: {newLimit}, Capacity: {Capacity}" );
 
         Limit = newLimit;
 
-        if ( Position > Limit )
-        {
-            Position = Limit;
-        }
+        if ( Position > Limit ) Position = Limit;
 
-        if ( _mark > Limit )
-        {
-            _mark = -1;
-        }
+        if ( _mark > Limit ) _mark = -1;
 
         return this;
     }
@@ -333,10 +313,7 @@ public abstract class Buffer
     {
         int m;
 
-        if ( ( m = _mark ) < 0 )
-        {
-            throw new GdxRuntimeException( "Mark has not been set" );
-        }
+        if ( ( m = _mark ) < 0 ) throw new GdxRuntimeException( "Mark has not been set" );
 
         Position = m;
 
@@ -526,20 +503,14 @@ public abstract class Buffer
     /// <returns> The current position value, before it is incremented </returns>
     internal int NextGetIndex()
     {
-        if ( Position >= Limit )
-        {
-            throw new GdxRuntimeException( "Buffer#NextGetIndex: Buffer Overflow!" );
-        }
+        if ( Position >= Limit ) throw new GdxRuntimeException( "Buffer#NextGetIndex: Buffer Overflow!" );
 
         return Position++;
     }
 
     internal int NextGetIndex( int nb )
     {
-        if ( ( Limit - Position ) < nb )
-        {
-            throw new GdxRuntimeException( "Buffer#NextGetIndex: Buffer Underflow!" );
-        }
+        if ( ( Limit - Position ) < nb ) throw new GdxRuntimeException( "Buffer#NextGetIndex: Buffer Underflow!" );
 
         var p = Position;
 
@@ -556,20 +527,14 @@ public abstract class Buffer
     /// <returns> The current position value, before it is incremented </returns>
     internal int NextPutIndex()
     {
-        if ( Position >= Limit )
-        {
-            throw new GdxRuntimeException( "Buffer#NextGetIndex: Buffer Overflow!" );
-        }
+        if ( Position >= Limit ) throw new GdxRuntimeException( "Buffer#NextGetIndex: Buffer Overflow!" );
 
         return Position++;
     }
 
     internal int NextPutIndex( int nb )
     {
-        if ( ( Limit - Position ) < nb )
-        {
-            throw new GdxRuntimeException( "Buffer#NextGetIndex: Buffer Overflow!" );
-        }
+        if ( ( Limit - Position ) < nb ) throw new GdxRuntimeException( "Buffer#NextGetIndex: Buffer Overflow!" );
 
         var p = Position;
 
@@ -585,20 +550,14 @@ public abstract class Buffer
     /// </summary>
     internal int CheckIndex( int i )
     {
-        if ( ( i < 0 ) || ( i >= Limit ) )
-        {
-            throw new IndexOutOfRangeException();
-        }
+        if ( ( i < 0 ) || ( i >= Limit ) ) throw new IndexOutOfRangeException();
 
         return i;
     }
 
     internal int CheckIndex( int i, int nb )
     {
-        if ( ( i < 0 ) || ( nb > ( Limit - i ) ) )
-        {
-            throw new IndexOutOfRangeException();
-        }
+        if ( ( i < 0 ) || ( nb > ( Limit - i ) ) ) throw new IndexOutOfRangeException();
 
         return i;
     }
@@ -623,9 +582,6 @@ public abstract class Buffer
 
     internal static void CheckBounds( int off, int len, int size )
     {
-        if ( ( off | len | ( off + len ) | ( size - ( off + len ) ) ) < 0 )
-        {
-            throw new IndexOutOfRangeException();
-        }
+        if ( ( off | len | ( off + len ) | ( size - ( off + len ) ) ) < 0 ) throw new IndexOutOfRangeException();
     }
 }

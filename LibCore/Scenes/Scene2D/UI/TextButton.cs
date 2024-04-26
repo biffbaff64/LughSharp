@@ -65,19 +65,16 @@ public class TextButton : Button
         {
             ArgumentNullException.ThrowIfNull( value );
 
-            if ( value.GetType() != typeof( TextButtonStyle ) )
-            {
-                throw new ArgumentException( "style must be a TextButtonStyle." );
-            }
+            if ( value.GetType() != typeof( TextButtonStyle ) ) throw new ArgumentException( "style must be a TextButtonStyle." );
 
             _style     = value;
             base.Style = value;
 
             if ( Label != null )
             {
-                TextButtonStyle textButtonStyle = value;
+                var textButtonStyle = value;
 
-                Label.LabelStyle labelStyle = Label.Style;
+                var labelStyle = Label.Style;
 
                 labelStyle.Font      = textButtonStyle.Font!;
                 labelStyle.FontColor = textButtonStyle.FontColor;
@@ -105,39 +102,24 @@ public class TextButton : Button
     {
         Debug.Assert( Style != null, "Style is null" );
 
-        if ( IsDisabled && ( Style.DisabledFontColor != null ) )
-        {
-            return Style.DisabledFontColor;
-        }
+        if ( IsDisabled && ( Style.DisabledFontColor != null ) ) return Style.DisabledFontColor;
 
         if ( IsPressed() )
         {
-            if ( IsChecked && ( Style.CheckedDownFontColor != null ) )
-            {
-                return Style.CheckedDownFontColor;
-            }
+            if ( IsChecked && ( Style.CheckedDownFontColor != null ) ) return Style.CheckedDownFontColor;
 
-            if ( Style.DownFontColor != null )
-            {
-                return Style.DownFontColor;
-            }
+            if ( Style.DownFontColor != null ) return Style.DownFontColor;
         }
 
         if ( IsOver() )
         {
             if ( IsChecked )
             {
-                if ( Style.CheckedOverFontColor != null )
-                {
-                    return Style.CheckedOverFontColor;
-                }
+                if ( Style.CheckedOverFontColor != null ) return Style.CheckedOverFontColor;
             }
             else
             {
-                if ( Style.OverFontColor != null )
-                {
-                    return Style.OverFontColor;
-                }
+                if ( Style.OverFontColor != null ) return Style.OverFontColor;
             }
         }
 
@@ -145,26 +127,14 @@ public class TextButton : Button
 
         if ( IsChecked )
         {
-            if ( focused && ( Style.CheckedFocusedFontColor != null ) )
-            {
-                return Style.CheckedFocusedFontColor;
-            }
+            if ( focused && ( Style.CheckedFocusedFontColor != null ) ) return Style.CheckedFocusedFontColor;
 
-            if ( Style.CheckedFontColor != null )
-            {
-                return Style.CheckedFontColor;
-            }
+            if ( Style.CheckedFontColor != null ) return Style.CheckedFontColor;
 
-            if ( IsOver() && ( Style.OverFontColor != null ) )
-            {
-                return Style.OverFontColor;
-            }
+            if ( IsOver() && ( Style.OverFontColor != null ) ) return Style.OverFontColor;
         }
 
-        if ( focused && ( Style?.FocusedFontColor != null ) )
-        {
-            return Style.FocusedFontColor;
-        }
+        if ( focused && ( Style?.FocusedFontColor != null ) ) return Style.FocusedFontColor;
 
         return Style?.FontColor;
     }
@@ -197,18 +167,12 @@ public class TextButton : Button
 
     protected override string ToString()
     {
-        if ( Name != null )
-        {
-            return Name;
-        }
+        if ( Name != null ) return Name;
 
         var className = GetType().Name;
         var dotIndex  = className.LastIndexOf( '.' );
 
-        if ( dotIndex != -1 )
-        {
-            className = className.Substring( dotIndex + 1 );
-        }
+        if ( dotIndex != -1 ) className = className.Substring( dotIndex + 1 );
 
         return ( className.IndexOf( '$' ) != -1 ? "TextButton " : "" ) + className + ": " + _label?.Text;
     }
@@ -235,50 +199,23 @@ public class TextButton : Button
         {
             Font = style.Font;
 
-            if ( style.FontColor != null )
-            {
-                FontColor = new Color( style.FontColor );
-            }
+            if ( style.FontColor != null ) FontColor = new Color( style.FontColor );
 
-            if ( style.DownFontColor != null )
-            {
-                DownFontColor = new Color( style.DownFontColor );
-            }
+            if ( style.DownFontColor != null ) DownFontColor = new Color( style.DownFontColor );
 
-            if ( style.OverFontColor != null )
-            {
-                OverFontColor = new Color( style.OverFontColor );
-            }
+            if ( style.OverFontColor != null ) OverFontColor = new Color( style.OverFontColor );
 
-            if ( style.FocusedFontColor != null )
-            {
-                FocusedFontColor = new Color( style.FocusedFontColor );
-            }
+            if ( style.FocusedFontColor != null ) FocusedFontColor = new Color( style.FocusedFontColor );
 
-            if ( style.DisabledFontColor != null )
-            {
-                DisabledFontColor = new Color( style.DisabledFontColor );
-            }
+            if ( style.DisabledFontColor != null ) DisabledFontColor = new Color( style.DisabledFontColor );
 
-            if ( style.CheckedFontColor != null )
-            {
-                CheckedFontColor = new Color( style.CheckedFontColor );
-            }
+            if ( style.CheckedFontColor != null ) CheckedFontColor = new Color( style.CheckedFontColor );
 
-            if ( style.CheckedDownFontColor != null )
-            {
-                CheckedDownFontColor = new Color( style.CheckedDownFontColor );
-            }
+            if ( style.CheckedDownFontColor != null ) CheckedDownFontColor = new Color( style.CheckedDownFontColor );
 
-            if ( style.CheckedOverFontColor != null )
-            {
-                CheckedOverFontColor = new Color( style.CheckedOverFontColor );
-            }
+            if ( style.CheckedOverFontColor != null ) CheckedOverFontColor = new Color( style.CheckedOverFontColor );
 
-            if ( style.CheckedFocusedFontColor != null )
-            {
-                CheckedFocusedFontColor = new Color( style.CheckedFocusedFontColor );
-            }
+            if ( style.CheckedFocusedFontColor != null ) CheckedFocusedFontColor = new Color( style.CheckedFocusedFontColor );
         }
 
         public BitmapFont? Font { get; protected init; }

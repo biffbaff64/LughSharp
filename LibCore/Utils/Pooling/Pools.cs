@@ -31,7 +31,7 @@ namespace LughSharp.LibCore.Utils.Pooling;
 ///     Stores a map of <see cref="Pool{T}" />s by type for convenient static access.
 /// </summary>
 [PublicAPI]
-public static class Pools<T>
+public static class Pools< T >
 {
     private readonly static Dictionary< Type, Pool< T >? > _typePools = new();
 
@@ -92,19 +92,13 @@ public static class Pools<T>
 
         for ( int i = 0, n = objects.Count; i < n; i++ )
         {
-            T obj = objects[ i ];
+            var obj = objects[ i ];
 
-            if ( ( obj == null ) || ( _typePools[ typeof( T ) ] == null ) )
-            {
-                continue;
-            }
+            if ( ( obj == null ) || ( _typePools[ typeof( T ) ] == null ) ) continue;
 
             _typePools[ typeof( T ) ]?.Free( obj );
 
-            if ( !samePool )
-            {
-                _typePools[ typeof( T ) ] = null;
-            }
+            if ( !samePool ) _typePools[ typeof( T ) ] = null;
         }
     }
 }

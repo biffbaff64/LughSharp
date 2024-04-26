@@ -56,7 +56,7 @@ public abstract class ShortBuffer : Buffer
     ///     <para>
     ///         The new buffer's position will be zero, its limit will be its
     ///         capacity, its mark will be undefined, and each of its elements will be
-    ///         initialized to zero.  It will have a backing array (<see cref="List{T}"/>),
+    ///         initialized to zero.  It will have a backing array (<see cref="List{T}" />),
     ///         and its <see cref="ArrayOffset" /> will be zero.
     ///     </para>
     /// </summary>
@@ -67,10 +67,7 @@ public abstract class ShortBuffer : Buffer
     /// </exception>
     public static ShortBuffer Allocate( int capacity )
     {
-        if ( capacity < 0 )
-        {
-            throw new ArgumentException();
-        }
+        if ( capacity < 0 ) throw new ArgumentException();
 
         return new HeapShortBuffer( capacity, capacity );
     }
@@ -267,17 +264,11 @@ public abstract class ShortBuffer : Buffer
     {
         CheckBounds( offset, length, dst.Length );
 
-        if ( length > Remaining() )
-        {
-            throw new GdxRuntimeException( "Buffer Underflow!" );
-        }
+        if ( length > Remaining() ) throw new GdxRuntimeException( "Buffer Underflow!" );
 
         var end = offset + length;
 
-        for ( var i = offset; i < end; i++ )
-        {
-            dst[ i ] = Get();
-        }
+        for ( var i = offset; i < end; i++ ) dst[ i ] = Get();
 
         return this;
     }
@@ -346,27 +337,15 @@ public abstract class ShortBuffer : Buffer
     /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public ShortBuffer Put( ShortBuffer src )
     {
-        if ( src == this )
-        {
-            throw new ArgumentException();
-        }
+        if ( src == this ) throw new ArgumentException();
 
-        if ( IsReadOnly )
-        {
-            throw new GdxRuntimeException( "Buffer is Read Only!" );
-        }
+        if ( IsReadOnly ) throw new GdxRuntimeException( "Buffer is Read Only!" );
 
         var n = src.Remaining();
 
-        if ( n > Remaining() )
-        {
-            throw new GdxRuntimeException( "Buffer Overflow!" );
-        }
+        if ( n > Remaining() ) throw new GdxRuntimeException( "Buffer Overflow!" );
 
-        for ( var i = 0; i < n; i++ )
-        {
-            Put( src.Get() );
-        }
+        for ( var i = 0; i < n; i++ ) Put( src.Get() );
 
         return this;
     }
@@ -426,17 +405,11 @@ public abstract class ShortBuffer : Buffer
     {
         CheckBounds( offset, length, src.Length );
 
-        if ( length > Remaining() )
-        {
-            throw new GdxRuntimeException( "Buffer Overflow!" );
-        }
+        if ( length > Remaining() ) throw new GdxRuntimeException( "Buffer Overflow!" );
 
         var end = offset + length;
 
-        for ( var i = offset; i < end; i++ )
-        {
-            Put( src[ i ] );
-        }
+        for ( var i = offset; i < end; i++ ) Put( src[ i ] );
 
         return this;
     }
@@ -501,15 +474,9 @@ public abstract class ShortBuffer : Buffer
     /// </exception>
     public short[] Array()
     {
-        if ( _hb == null )
-        {
-            throw new GdxRuntimeException( "Backing array os null." );
-        }
+        if ( _hb == null ) throw new GdxRuntimeException( "Backing array os null." );
 
-        if ( IsReadOnly )
-        {
-            throw new GdxRuntimeException( "Buffer is Read Only!" );
-        }
+        if ( IsReadOnly ) throw new GdxRuntimeException( "Buffer is Read Only!" );
 
         return _hb;
     }
@@ -537,15 +504,9 @@ public abstract class ShortBuffer : Buffer
     /// </exception>
     public override int ArrayOffset()
     {
-        if ( _hb == null )
-        {
-            throw new GdxRuntimeException( "Backing array os null." );
-        }
+        if ( _hb == null ) throw new GdxRuntimeException( "Backing array os null." );
 
-        if ( IsReadOnly )
-        {
-            throw new GdxRuntimeException( "Buffer is Read Only!" );
-        }
+        if ( IsReadOnly ) throw new GdxRuntimeException( "Buffer is Read Only!" );
 
         return _offset;
     }
@@ -602,10 +563,7 @@ public abstract class ShortBuffer : Buffer
         var h = 1;
         var p = Position;
 
-        for ( var i = Limit - 1; i >= p; i-- )
-        {
-            h = ( 31 * h ) + Get( i );
-        }
+        for ( var i = Limit - 1; i >= p; i-- ) h = ( 31 * h ) + Get( i );
 
         return h;
     }
@@ -631,36 +589,23 @@ public abstract class ShortBuffer : Buffer
     /// </returns>
     public new bool Equals( object ob )
     {
-        if ( this == ob )
-        {
-            return true;
-        }
+        if ( this == ob ) return true;
 
-        if ( ob is not ShortBuffer that )
-        {
-            return false;
-        }
+        if ( ob is not ShortBuffer that ) return false;
 
-        if ( Remaining() != that.Remaining() )
-        {
-            return false;
-        }
+        if ( Remaining() != that.Remaining() ) return false;
 
         var p = Position;
 
         for ( int i = Limit - 1, j = that.Limit - 1; i >= p; i--, j-- )
-        {
             if ( !Equals( Get( i ), that.Get( j ) ) )
-            {
                 return false;
-            }
-        }
 
         return true;
     }
 
     /// <summary>
-    /// Returns TRUE if <paramref name="x"/> is equal to <paramref name="y"/>.
+    ///     Returns TRUE if <paramref name="x" /> is equal to <paramref name="y" />.
     /// </summary>
     private static bool Equals( short x, short y )
     {
@@ -691,20 +636,17 @@ public abstract class ShortBuffer : Buffer
         {
             var cmp = Compare( Get( i ), that.Get( j ) );
 
-            if ( cmp != 0 )
-            {
-                return cmp;
-            }
+            if ( cmp != 0 ) return cmp;
         }
 
         return Remaining() - that.Remaining();
     }
 
     /// <summary>
-    /// Compares two values.
-    /// If equal, will return 0.
-    /// If x is greater than y, will return &gt; 0.
-    /// If x is less than y, will return &lt; 0.
+    ///     Compares two values.
+    ///     If equal, will return 0.
+    ///     If x is greater than y, will return &gt; 0.
+    ///     If x is less than y, will return &lt; 0.
     /// </summary>
     private static int Compare( short x, short y )
     {

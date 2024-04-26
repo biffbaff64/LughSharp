@@ -74,12 +74,9 @@ public class AssetLoadingTask
     /// </summary>
     public void Call()
     {
-        if ( Cancel )
-        {
-            return;
-        }
+        if ( Cancel ) return;
 
-        var asyncLoader = ( AsynchronousAssetLoader? )_loader;
+        var asyncLoader = ( AsynchronousAssetLoader? ) _loader;
 
         if ( !DependenciesLoaded )
         {
@@ -138,7 +135,7 @@ public class AssetLoadingTask
     {
         if ( !_loader.IsSynchronous )
         {
-            ( ( AsynchronousAssetLoader< Type, AssetLoaderParameters > )_loader )
+            ( ( AsynchronousAssetLoader< Type, AssetLoaderParameters > ) _loader )
                .Unload( _manager,
                         AssetDesc.Filepath,
                         Resolve( _loader, AssetDesc ),
@@ -157,10 +154,7 @@ public class AssetLoadingTask
     {
         if ( assetDesc is { File: null } descriptor )
         {
-            if ( loader != null )
-            {
-                descriptor.File = loader.Resolve( descriptor.Filepath );
-            }
+            if ( loader != null ) descriptor.File = loader.Resolve( descriptor.Filepath );
         }
 
         return assetDesc?.File;
@@ -246,16 +240,12 @@ public class AssetLoadingTask
     {
         for ( var i = 0; i < array.Count; ++i )
         {
-            var  fn   = array[ i ].Filepath;
-            Type type = array[ i ].AssetType;
+            var fn   = array[ i ].Filepath;
+            var type = array[ i ].AssetType;
 
             for ( var j = array.Count - 1; j > i; --j )
-            {
                 if ( ( type == array[ j ].AssetType ) && fn.Equals( array[ j ].Filepath ) )
-                {
                     array.RemoveAt( j );
-                }
-            }
         }
     }
 }

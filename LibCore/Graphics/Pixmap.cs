@@ -49,11 +49,6 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class Pixmap : IDisposable
 {
-    // ----------------------------------------------------------
-
-    public Gdx2DPixmap GDX2DPixmap { get; set; }
-    public bool        IsDisposed  { get; set; } = false;
-
     private int _color = 0;
 
     // ------------------------------------------------------------------------
@@ -100,16 +95,13 @@ public class Pixmap : IDisposable
     /// <exception cref="GdxRuntimeException"></exception>
     public Pixmap( FileInfo file )
     {
-        FileStream fs = file.Open( FileMode.Open );
+        var fs = file.Open( FileMode.Open );
 
         try
         {
             var bytes = new byte[ fs.Length ];
 
-            if ( fs.Read( bytes, 0, bytes.Length ) == 0 )
-            {
-                throw new FileLoadException( $"Error reading from {file.Name}: No data found." );
-            }
+            if ( fs.Read( bytes, 0, bytes.Length ) == 0 ) throw new FileLoadException( $"Error reading from {file.Name}: No data found." );
 
             GDX2DPixmap = new Gdx2DPixmap( bytes, 0, bytes.Length, 0 );
         }
@@ -126,6 +118,11 @@ public class Pixmap : IDisposable
     {
         GDX2DPixmap = pixmap;
     }
+
+    // ----------------------------------------------------------
+
+    public Gdx2DPixmap GDX2DPixmap { get; set; }
+    public bool        IsDisposed  { get; set; } = false;
 
     /// <summary>
     ///     Returns the width of the Pixmap in pixels.
@@ -176,10 +173,7 @@ public class Pixmap : IDisposable
     {
         get
         {
-            if ( IsDisposed )
-            {
-                throw new GdxRuntimeException( "Pixmap already disposed" );
-            }
+            if ( IsDisposed ) throw new GdxRuntimeException( "Pixmap already disposed" );
 
             return GDX2DPixmap.PixelPtr;
         }

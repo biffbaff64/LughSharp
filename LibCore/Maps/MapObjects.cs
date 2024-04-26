@@ -65,12 +65,9 @@ public class MapObjects : IEnumerable< MapObject >
     {
         for ( int i = 0, n = _objects.Count; i < n; i++ )
         {
-            MapObject obj = _objects[ i ];
+            var obj = _objects[ i ];
 
-            if ( name.Equals( obj.Name ) )
-            {
-                return obj;
-            }
+            if ( name.Equals( obj.Name ) ) return obj;
         }
 
         return null!;
@@ -110,7 +107,7 @@ public class MapObjects : IEnumerable< MapObject >
     /// </summary>
     /// <param name="type"> class of the objects we want to retrieve </param>
     /// <returns> array filled with all the objects in the collection matching type  </returns>
-    public List< T > GetByType<T>( T type ) where T : MapObject
+    public List< T > GetByType< T >( T type ) where T : MapObject
     {
         return GetByType( type, new List< T >() );
     }
@@ -120,18 +117,15 @@ public class MapObjects : IEnumerable< MapObject >
     /// <param name="type"> class of the objects we want to retrieve </param>
     /// <param name="fill"> collection to put the returned objects in </param>
     /// <returns> array filled with all the objects in the collection matching type  </returns>
-    public List< T > GetByType<T>( T type, List< T > fill ) where T : MapObject
+    public List< T > GetByType< T >( T type, List< T > fill ) where T : MapObject
     {
         fill.Clear();
 
         for ( int i = 0, n = _objects.Count; i < n; i++ )
         {
-            MapObject obj = _objects[ i ];
+            var obj = _objects[ i ];
 
-            if ( obj.GetType() == typeof( T ) )
-            {
-                fill.Add( ( T )obj );
-            }
+            if ( obj.GetType() == typeof( T ) ) fill.Add( ( T ) obj );
         }
 
         return fill;

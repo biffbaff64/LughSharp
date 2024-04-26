@@ -61,7 +61,7 @@ public class Frustrum
     {
         var j = 0;
 
-        foreach ( Vector3 v in ClipSpacePlanePoints )
+        foreach ( var v in ClipSpacePlanePoints )
         {
             ClipSpacePlanePointsArray[ j++ ] = v.X;
             ClipSpacePlanePointsArray[ j++ ] = v.Y;
@@ -71,10 +71,7 @@ public class Frustrum
 
     public Frustrum()
     {
-        for ( var i = 0; i < 6; i++ )
-        {
-            Planes[ i ] = new Plane( new Vector3(), 0 );
-        }
+        for ( var i = 0; i < 6; i++ ) Planes[ i ] = new Plane( new Vector3(), 0 );
     }
 
     /// <system>
@@ -96,7 +93,7 @@ public class Frustrum
 
         for ( int i = 0, j = 0; i < 8; i++ )
         {
-            Vector3 v = planePoints[ i ];
+            var v = planePoints[ i ];
 
             v.X = planePointsArray[ j++ ];
             v.Y = planePointsArray[ j++ ];
@@ -118,14 +115,11 @@ public class Frustrum
     /// <returns> Whether the point is in the frustum.  </returns>
     public virtual bool PointInFrustum( Vector3 point )
     {
-        foreach ( Plane t in Planes )
+        foreach ( var t in Planes )
         {
-            Plane.PlaneSide result = t.TestPoint( point );
+            var result = t.TestPoint( point );
 
-            if ( result == Plane.PlaneSide.Back )
-            {
-                return false;
-            }
+            if ( result == Plane.PlaneSide.Back ) return false;
         }
 
         return true;

@@ -63,10 +63,7 @@ public class OutputChannels
     {
         _outputChannels = channels;
 
-        if ( channels is < 0 or > 3 )
-        {
-            throw new ArgumentException( $"channels is wrong: {channels}" );
-        }
+        if ( channels is < 0 or > 3 ) throw new ArgumentException( $"channels is wrong: {channels}" );
     }
 
     /// <summary>
@@ -100,23 +97,20 @@ public class OutputChannels
     public static OutputChannels FromInt( int code )
     {
         return code switch
-               {
-                   ( int )OutputChannelsEnum.LeftChannel     => Left,
-                   ( int )OutputChannelsEnum.RightChannel    => Right,
-                   ( int )OutputChannelsEnum.BothChannels    => Both,
-                   ( int )OutputChannelsEnum.DownmixChannels => DownMix,
-                   _                                         => throw new ArgumentException( "Invalid channel code: " + code )
-               };
+        {
+            ( int ) OutputChannelsEnum.LeftChannel     => Left,
+            ( int ) OutputChannelsEnum.RightChannel    => Right,
+            ( int ) OutputChannelsEnum.BothChannels    => Both,
+            ( int ) OutputChannelsEnum.DownmixChannels => DownMix,
+            _                                          => throw new ArgumentException( "Invalid channel code: " + code )
+        };
     }
 
     public override bool Equals( object? obj )
     {
         var equals = false;
 
-        if ( obj is OutputChannels oc )
-        {
-            equals = oc._outputChannels == _outputChannels;
-        }
+        if ( obj is OutputChannels oc ) equals = oc._outputChannels == _outputChannels;
 
         return equals;
     }

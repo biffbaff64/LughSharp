@@ -197,10 +197,7 @@ public class Circle : IShape2D
     {
         var radiusDiff = Radius - c.Radius;
 
-        if ( radiusDiff < 0f )
-        {
-            return false; // Can't contain bigger circle
-        }
+        if ( radiusDiff < 0f ) return false; // Can't contain bigger circle
 
         var dx        = X - c.X;
         var dy        = Y - c.Y;
@@ -260,17 +257,11 @@ public class Circle : IShape2D
     /// <returns></returns>
     public override bool Equals( object? o )
     {
-        if ( o == this )
-        {
-            return true;
-        }
+        if ( o == this ) return true;
 
-        if ( ( o == null ) || ( o.GetType() != GetType() ) )
-        {
-            return false;
-        }
+        if ( ( o == null ) || ( o.GetType() != GetType() ) ) return false;
 
-        var c = ( Circle )o;
+        var c = ( Circle ) o;
 
         return MathUtils.IsEqual( X, c.X )
             || MathUtils.IsEqual( Y, c.Y )

@@ -24,7 +24,6 @@
 
 
 using LughSharp.LibCore.Audio.MP3Sharp.Decoding;
-
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Audio.MP3Sharp;
@@ -36,8 +35,6 @@ namespace LughSharp.LibCore.Audio.MP3Sharp;
 [PublicAPI]
 public class Buffer16BitStereo : AudioBase
 {
-    public bool DoubleMonoToStereo { get; set; } = false;
-
     // ------------------------------------------------------------------------
 
     private const int OUTPUT_CHANNELS = 2;
@@ -60,20 +57,22 @@ public class Buffer16BitStereo : AudioBase
         OnStart();
     }
 
+    public bool DoubleMonoToStereo { get; set; } = false;
+
     /// <summary>
-    /// Initialisation method. Called from constructor as the method <see cref="ClearBuffer"/>
-    /// is virtual and cannot by called from constructors.
+    ///     Gets the number of bytes remaining from the current position on the buffer.
+    /// </summary>
+    public int BytesLeft => _end - _offset;
+
+    /// <summary>
+    ///     Initialisation method. Called from constructor as the method <see cref="ClearBuffer" />
+    ///     is virtual and cannot by called from constructors.
     /// </summary>
     private void OnStart()
     {
         // Initialize the buffer pointers
         ClearBuffer();
     }
-
-    /// <summary>
-    ///     Gets the number of bytes remaining from the current position on the buffer.
-    /// </summary>
-    public int BytesLeft => _end - _offset;
 
     /// <summary>
     ///     Reads a sequence of bytes from the buffer and advances the position of the
@@ -88,18 +87,13 @@ public class Buffer16BitStereo : AudioBase
     {
         ArgumentNullException.ThrowIfNull( bufferOut );
 
-        if ( ( count + offset ) > bufferOut.Length )
-        {
-            throw new ArgumentException( "The sum of offset and count is larger than the buffer length" );
-        }
+        if ( ( count + offset ) > bufferOut.Length ) throw new ArgumentException( "The sum of offset and count is larger than the buffer length" );
 
         var remaining = BytesLeft;
         int copySize;
 
         if ( count > remaining )
-        {
             copySize = remaining;
-        }
         else
         {
             // Copy an even number of sample frames
@@ -120,8 +114,8 @@ public class Buffer16BitStereo : AudioBase
     /// <param name="sampleValue">The sample value.</param>
     protected override void Append( int channel, short sampleValue )
     {
-        _buffer[ _bufferChannelOffsets[ channel ] ]     =  ( byte )( sampleValue & 0xff );
-        _buffer[ _bufferChannelOffsets[ channel ] + 1 ] =  ( byte )( sampleValue >> 8 );
+        _buffer[ _bufferChannelOffsets[ channel ] ]     =  ( byte ) ( sampleValue & 0xff );
+        _buffer[ _bufferChannelOffsets[ channel ] + 1 ] =  ( byte ) ( sampleValue >> 8 );
         _bufferChannelOffsets[ channel ]                += OUTPUT_CHANNELS * 2;
     }
 
@@ -139,15 +133,9 @@ public class Buffer16BitStereo : AudioBase
         // samples is required.
         ArgumentNullException.ThrowIfNull( samples );
 
-        if ( samples.Length < 32 )
-        {
-            throw new ArgumentException( "samples must have 32 values" );
-        }
+        if ( samples.Length < 32 ) throw new ArgumentException( "samples must have 32 values" );
 
-        if ( ( _bufferChannelOffsets == null ) || ( channel >= _bufferChannelOffsets.Length ) )
-        {
-            throw new Exception( "Song is closing..." );
-        }
+        if ( ( _bufferChannelOffsets == null ) || ( channel >= _bufferChannelOffsets.Length ) ) throw new Exception( "Song is closing..." );
 
         var pos = _bufferChannelOffsets[ channel ];
 
@@ -157,22 +145,22 @@ public class Buffer16BitStereo : AudioBase
             var fs = samples[ i ];
 
             fs = fs switch
-                 {
-                     // clamp values
-                     > 32767.0f  => 32767.0f,
-                     < -32767.0f => -32767.0f,
-                     _           => fs
-                 };
+            {
+                // clamp values
+                > 32767.0f  => 32767.0f,
+                < -32767.0f => -32767.0f,
+                _           => fs
+            };
 
-            var sample = ( int )fs;
+            var sample = ( int ) fs;
 
-            _buffer[ pos ]     = ( byte )( sample & 0xff );
-            _buffer[ pos + 1 ] = ( byte )( sample >> 8 );
+            _buffer[ pos ]     = ( byte ) ( sample & 0xff );
+            _buffer[ pos + 1 ] = ( byte ) ( sample >> 8 );
 
             if ( DoubleMonoToStereo )
             {
-                _buffer[ pos + 2 ] = ( byte )( sample & 0xff );
-                _buffer[ pos + 3 ] = ( byte )( sample >> 8 );
+                _buffer[ pos + 2 ] = ( byte ) ( sample & 0xff );
+                _buffer[ pos + 3 ] = ( byte ) ( sample >> 8 );
             }
 
             pos += OUTPUT_CHANNELS * 2;
@@ -189,10 +177,7 @@ public class Buffer16BitStereo : AudioBase
         _offset = 0;
         _end    = 0;
 
-        for ( var i = 0; i < OUTPUT_CHANNELS; i++ )
-        {
-            _bufferChannelOffsets[ i ] = i * 2; // two bytes per channel
-        }
+        for ( var i = 0; i < OUTPUT_CHANNELS; i++ ) _bufferChannelOffsets[ i ] = i * 2; // two bytes per channel
     }
 
     /// <inheritdoc />

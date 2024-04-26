@@ -51,13 +51,13 @@ public class AnimatedTiledMapTile : ITiledMapTile
     {
         _frameTiles = new StaticTiledMapTile[ frameTiles.Count ];
 
-        _loopDuration       = frameTiles.Count * ( int )( interval * 1000f );
+        _loopDuration       = frameTiles.Count * ( int ) ( interval * 1000f );
         _animationIntervals = new int[ frameTiles.Count ];
 
         for ( var i = 0; i < frameTiles.Count; ++i )
         {
             _frameTiles[ i ]         = frameTiles[ i ];
-            _animationIntervals[ i ] = ( int )( interval * 1000f );
+            _animationIntervals[ i ] = ( int ) ( interval * 1000f );
         }
     }
 
@@ -127,23 +127,20 @@ public class AnimatedTiledMapTile : ITiledMapTile
 
     public int GetCurrentFrameIndex()
     {
-        var currentTime = ( int )( _lastTiledMapRenderTime % _loopDuration );
+        var currentTime = ( int ) ( _lastTiledMapRenderTime % _loopDuration );
 
         for ( var i = 0; i < _animationIntervals.Length; ++i )
         {
             var animationInterval = _animationIntervals[ i ];
 
-            if ( currentTime <= animationInterval )
-            {
-                return i;
-            }
+            if ( currentTime <= animationInterval ) return i;
 
             currentTime -= animationInterval;
         }
 
         throw new SystemException
             (
-            "Could not determine current animation frame in AnimatedTiledMapTile.  This should never happen."
+             "Could not determine current animation frame in AnimatedTiledMapTile.  This should never happen."
             );
     }
 

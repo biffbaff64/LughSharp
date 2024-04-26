@@ -28,33 +28,26 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public abstract class AbstractInput : IInput
 {
-    protected bool[]           PressedKeys     { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
-    protected bool[]           JustPressedKeys { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
-    protected bool             KeyJustPressed  { get; set; }
-    protected int              PressedKeyCount { get; set; }
-    public    IInputProcessor? InputProcessor  { get; set; }
-
-    private readonly List< int > _keysToCatch = new();
+    private readonly List< int >      _keysToCatch = new();
+    protected        bool[]           PressedKeys     { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
+    protected        bool[]           JustPressedKeys { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
+    protected        bool             KeyJustPressed  { get; set; }
+    protected        int              PressedKeyCount { get; set; }
+    public           IInputProcessor? InputProcessor  { get; set; }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     public virtual bool IsKeyPressed( int key )
     {
-        if ( key == IInput.Keys.ANY_KEY )
-        {
-            return PressedKeyCount > 0;
-        }
+        if ( key == IInput.Keys.ANY_KEY ) return PressedKeyCount > 0;
 
         return key is >= 0 and <= IInput.Keys.MAX_KEYCODE && PressedKeys[ key ];
     }
 
     public virtual bool IsKeyJustPressed( int key )
     {
-        if ( key == IInput.Keys.ANY_KEY )
-        {
-            return KeyJustPressed;
-        }
+        if ( key == IInput.Keys.ANY_KEY ) return KeyJustPressed;
 
         return key is >= 0 and <= IInput.Keys.MAX_KEYCODE && JustPressedKeys[ key ];
     }
@@ -62,13 +55,9 @@ public abstract class AbstractInput : IInput
     public virtual void SetCatchKey( int keycode, bool catchKey )
     {
         if ( !catchKey )
-        {
             _keysToCatch.Remove( keycode );
-        }
         else
-        {
             _keysToCatch.Add( keycode );
-        }
     }
 
     public virtual bool IsCatchKey( int keycode )

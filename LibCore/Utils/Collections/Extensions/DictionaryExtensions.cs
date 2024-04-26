@@ -41,22 +41,14 @@ public static class DictionaryExtension
         if ( value == null )
         {
             for ( var i = keyTable.Length - 1; i >= 0; i-- )
-            {
                 if ( valueTable[ i ] == null )
-                {
                     return keyTable[ i ];
-                }
-            }
         }
         else
         {
             for ( var i = valueTable.Length - 1; i >= 0; i-- )
-            {
                 if ( value.Equals( valueTable[ i ] ) )
-                {
                     return keyTable[ i ];
-                }
-            }
         }
 
         return default( TK? );
@@ -68,33 +60,24 @@ public static class DictionaryExtension
     /// </summary>
     public static TV Get< TK, TV >( this Dictionary< TK, TV > self, TK key, TV defaultValue ) where TK : notnull
     {
-        if ( key == null )
-        {
-            throw new GdxRuntimeException( "key is null" );
-        }
+        if ( key == null ) throw new GdxRuntimeException( "key is null" );
 
         return self.GetValueOrDefault( key, defaultValue );
     }
 
     /// <summary>
-    ///     Gets an entry from the Dictionary referenced by <paramref name="self"/>.
+    ///     Gets an entry from the Dictionary referenced by <paramref name="self" />.
     /// </summary>
     /// <param name="self"> This Dictionary. </param>
     /// <param name="key"> The key index to use to get the entry. </param>
     /// <typeparam name="TK"> The Dictionarys Key type. </typeparam>
     /// <typeparam name="TV"> The Dictionarys Value type. </typeparam>
-    /// <returns> The value associated with <paramref name="key"/>. </returns>
+    /// <returns> The value associated with <paramref name="key" />. </returns>
     public static TV Get< TK, TV >( this Dictionary< TK, TV > self, TK key ) where TK : notnull
     {
-        if ( key == null )
-        {
-            throw new GdxRuntimeException( "key is null" );
-        }
+        if ( key == null ) throw new GdxRuntimeException( "key is null" );
 
-        if ( self.TryGetValue( key, out var value ) )
-        {
-            return value;
-        }
+        if ( self.TryGetValue( key, out var value ) ) return value;
 
         throw new KeyNotFoundException( key.ToString() );
     }

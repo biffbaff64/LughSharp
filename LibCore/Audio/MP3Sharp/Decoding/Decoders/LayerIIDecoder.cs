@@ -39,10 +39,7 @@ public class LayerIIDecoder : LayerIDecoder
         {
             case Header.SINGLE_CHANNEL:
             {
-                for ( var i = 0; i < nuSubbands; ++i )
-                {
-                    subbands[ i ] = new SubbandLayer2( i );
-                }
+                for ( var i = 0; i < nuSubbands; ++i ) subbands[ i ] = new SubbandLayer2( i );
 
                 break;
             }
@@ -51,25 +48,16 @@ public class LayerIIDecoder : LayerIDecoder
             {
                 int i;
 
-                for ( i = 0; i < header?.IntensityStereoBound(); ++i )
-                {
-                    subbands[ i ] = new SubbandLayer2Stereo( i );
-                }
+                for ( i = 0; i < header?.IntensityStereoBound(); ++i ) subbands[ i ] = new SubbandLayer2Stereo( i );
 
-                for ( ; i < nuSubbands; ++i )
-                {
-                    subbands[ i ] = new SubbandLayer2IntensityStereo( i );
-                }
+                for ( ; i < nuSubbands; ++i ) subbands[ i ] = new SubbandLayer2IntensityStereo( i );
 
                 break;
             }
 
             default:
             {
-                for ( var i = 0; i < nuSubbands; ++i )
-                {
-                    subbands[ i ] = new SubbandLayer2Stereo( i );
-                }
+                for ( var i = 0; i < nuSubbands; ++i ) subbands[ i ] = new SubbandLayer2Stereo( i );
 
                 break;
             }
@@ -78,9 +66,6 @@ public class LayerIIDecoder : LayerIDecoder
 
     protected override void ReadScaleFactorSelection()
     {
-        for ( var i = 0; i < nuSubbands; ++i )
-        {
-            ( ( SubbandLayer2 )subbands[ i ] ).ReadScaleFactorSelection( stream, crc );
-        }
+        for ( var i = 0; i < nuSubbands; ++i ) ( ( SubbandLayer2 ) subbands[ i ] ).ReadScaleFactorSelection( stream, crc );
     }
 }

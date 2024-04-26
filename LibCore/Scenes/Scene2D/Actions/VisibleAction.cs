@@ -40,10 +40,7 @@ public class VisibleAction : Action
     /// </returns>
     public override bool Act( float delta )
     {
-        if ( Target == null )
-        {
-            return false;
-        }
+        if ( Target == null ) return false;
 
         Target.IsVisible = Visible;
 

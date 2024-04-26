@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Reflection;
-
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Graphics.Profiling;
@@ -58,18 +56,16 @@ public class GLLoggingListener : IGLErrorListener
             StackFrame[] frames     = stackTrace.GetFrames();
 
             for ( var i = 0; i < frames.Length; i++ )
-            {
                 if ( "check".Equals( frames[ i ].GetMethod()?.Name ) )
                 {
                     if ( ( i + 1 ) < frames.Length )
                     {
-                        MethodBase? glMethod = frames[ i + 1 ].GetMethod();
+                        var glMethod = frames[ i + 1 ].GetMethod();
                         place = glMethod?.Name;
                     }
 
                     break;
                 }
-            }
         }
         catch ( Exception )
         {
@@ -81,7 +77,7 @@ public class GLLoggingListener : IGLErrorListener
 
                           // This will capture current stack trace for logging, if possible
                           : $"Error {BaseGLInterceptor.ResolveErrorNumber( error )} at: {new Exception()}"
-            );
+                    );
     }
 }
 

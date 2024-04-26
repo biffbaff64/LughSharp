@@ -90,35 +90,23 @@ public class LayerIDecoder : IFrameDecoder
         {
             case Header.SINGLE_CHANNEL:
             {
-                for ( i = 0; i < nuSubbands; ++i )
-                {
-                    subbands[ i ] = new SubbandLayer1( i );
-                }
+                for ( i = 0; i < nuSubbands; ++i ) subbands[ i ] = new SubbandLayer1( i );
 
                 break;
             }
 
             case Header.JOINT_STEREO:
             {
-                for ( i = 0; i < header?.IntensityStereoBound(); ++i )
-                {
-                    subbands[ i ] = new SubbandLayer1Stereo( i );
-                }
+                for ( i = 0; i < header?.IntensityStereoBound(); ++i ) subbands[ i ] = new SubbandLayer1Stereo( i );
 
-                for ( ; i < nuSubbands; ++i )
-                {
-                    subbands[ i ] = new SubbandLayer1IntensityStereo( i );
-                }
+                for ( ; i < nuSubbands; ++i ) subbands[ i ] = new SubbandLayer1IntensityStereo( i );
 
                 break;
             }
 
             default:
             {
-                for ( i = 0; i < nuSubbands; ++i )
-                {
-                    subbands[ i ] = new SubbandLayer1Stereo( i );
-                }
+                for ( i = 0; i < nuSubbands; ++i ) subbands[ i ] = new SubbandLayer1Stereo( i );
 
                 break;
             }
@@ -128,10 +116,7 @@ public class LayerIDecoder : IFrameDecoder
     protected virtual void ReadAllocation()
     {
         // start to read audio data:
-        for ( var i = 0; i < nuSubbands; ++i )
-        {
-            subbands[ i ].ReadAllocation( stream, header, crc! );
-        }
+        for ( var i = 0; i < nuSubbands; ++i ) subbands[ i ].ReadAllocation( stream, header, crc! );
     }
 
     protected virtual void ReadScaleFactorSelection()
@@ -141,10 +126,7 @@ public class LayerIDecoder : IFrameDecoder
 
     protected virtual void ReadScaleFactors()
     {
-        for ( var i = 0; i < nuSubbands; ++i )
-        {
-            subbands[ i ].ReadScaleFactor( stream, header );
-        }
+        for ( var i = 0; i < nuSubbands; ++i ) subbands[ i ].ReadScaleFactor( stream, header );
     }
 
     protected virtual void ReadSampleData()
@@ -157,24 +139,15 @@ public class LayerIDecoder : IFrameDecoder
         {
             int i;
 
-            for ( i = 0; i < nuSubbands; ++i )
-            {
-                readReady = subbands[ i ].ReadSampleData( stream );
-            }
+            for ( i = 0; i < nuSubbands; ++i ) readReady = subbands[ i ].ReadSampleData( stream );
 
             do
             {
-                for ( i = 0; i < nuSubbands; ++i )
-                {
-                    writeReady = subbands[ i ].PutNextSample( whichChannels, filter1, filter2 );
-                }
+                for ( i = 0; i < nuSubbands; ++i ) writeReady = subbands[ i ].PutNextSample( whichChannels, filter1, filter2 );
 
                 filter1?.CalculatePcSamples( buffer );
 
-                if ( ( whichChannels == OutputChannels.BOTH_CHANNELS ) && ( hdrMode != Header.SINGLE_CHANNEL ) )
-                {
-                    filter2?.CalculatePcSamples( buffer );
-                }
+                if ( ( whichChannels == OutputChannels.BOTH_CHANNELS ) && ( hdrMode != Header.SINGLE_CHANNEL ) ) filter2?.CalculatePcSamples( buffer );
             }
             while ( !writeReady );
         }

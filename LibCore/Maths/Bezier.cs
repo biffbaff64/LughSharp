@@ -30,7 +30,7 @@ namespace LughSharp.LibCore.Maths;
 /// <summary>
 ///     Implementation of the Bezier curve.
 /// </summary>
-public class Bezier<T> : IPath< T > where T : IVector< T >
+public class Bezier< T > : IPath< T > where T : IVector< T >
 {
     private T? _tmp  = default( T );
     private T? _tmp2 = default( T );
@@ -82,17 +82,10 @@ public class Bezier<T> : IPath< T > where T : IVector< T >
         var n = Points.Count;
 
         if ( n == 2 )
-        {
             Linear( o, t, Points[ 0 ], Points[ 1 ], _tmp );
-        }
         else if ( n == 3 )
-        {
             Quadratic( o, t, Points[ 0 ], Points[ 1 ], Points[ 2 ], _tmp );
-        }
-        else if ( n == 4 )
-        {
-            Cubic( o, t, Points[ 0 ], Points[ 1 ], Points[ 2 ], Points[ 3 ], _tmp );
-        }
+        else if ( n == 4 ) Cubic( o, t, Points[ 0 ], Points[ 1 ], Points[ 2 ], Points[ 3 ], _tmp );
 
         return o;
     }
@@ -107,17 +100,10 @@ public class Bezier<T> : IPath< T > where T : IVector< T >
         var n = Points.Count;
 
         if ( n == 2 )
-        {
             LinearDerivative( o, t, Points[ 0 ], Points[ 1 ], _tmp );
-        }
         else if ( n == 3 )
-        {
             QuadraticDerivative( o, t, Points[ 0 ], Points[ 1 ], Points[ 2 ], _tmp );
-        }
-        else if ( n == 4 )
-        {
-            CubicDerivative( o, t, Points[ 0 ], Points[ 1 ], Points[ 2 ], Points[ 3 ], _tmp );
-        }
+        else if ( n == 4 ) CubicDerivative( o, t, Points[ 0 ], Points[ 1 ], Points[ 2 ], Points[ 3 ], _tmp );
 
         return o;
     }
@@ -129,15 +115,15 @@ public class Bezier<T> : IPath< T > where T : IVector< T >
     public float Approximate( in T v )
     {
         // TODO: make a real approximate method
-        T p1 = Points[ 0 ];
-        T p2 = Points[ Points.Count - 1 ];
-        T p3 = v;
+        var p1 = Points[ 0 ];
+        var p2 = Points[ Points.Count - 1 ];
+        var p3 = v;
 
         var l1Sqr = p1.Dst2( p2 );
         var l2Sqr = p3.Dst2( p2 );
         var l3Sqr = p3.Dst2( p1 );
 
-        var l1 = ( float )Math.Sqrt( l1Sqr );
+        var l1 = ( float ) Math.Sqrt( l1Sqr );
         var s  = ( ( l2Sqr + l1Sqr ) - l3Sqr ) / ( 2 * l1 );
 
         return MathUtils.Clamp( ( l1 - s ) / l1, 0f, 1f );
@@ -161,26 +147,17 @@ public class Bezier<T> : IPath< T > where T : IVector< T >
     {
         float tempLength = 0;
 
-        if ( _tmp2 == null )
-        {
-            return tempLength;
-        }
+        if ( _tmp2 == null ) return tempLength;
 
-        if ( _tmp3 == null )
-        {
-            return tempLength;
-        }
+        if ( _tmp3 == null ) return tempLength;
 
         for ( var i = 0; i < samples; ++i )
         {
             _tmp2.Set( _tmp3 );
 
-            ValueAt( _tmp3, i / ( ( float )samples - 1 ) );
+            ValueAt( _tmp3, i / ( ( float ) samples - 1 ) );
 
-            if ( i > 0 )
-            {
-                tempLength += _tmp2.Dst( _tmp3 );
-            }
+            if ( i > 0 ) tempLength += _tmp2.Dst( _tmp3 );
         }
 
         return tempLength;
@@ -319,10 +296,7 @@ public class Bezier<T> : IPath< T > where T : IVector< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public Bezier< T > Set( in T[] points, in int offset, in int length )
     {
-        if ( length is < 2 or > 4 )
-        {
-            throw new GdxRuntimeException( "Only first, second and third degree Bezier curves are supported." );
-        }
+        if ( length is < 2 or > 4 ) throw new GdxRuntimeException( "Only first, second and third degree Bezier curves are supported." );
 
         _tmp  ??= points[ 0 ].Cpy();
         _tmp2 ??= points[ 0 ].Cpy();
@@ -344,10 +318,7 @@ public class Bezier<T> : IPath< T > where T : IVector< T >
     /// <exception cref="GdxRuntimeException"></exception>
     public Bezier< T > Set( in List< T > points, in int offset, in int length )
     {
-        if ( length is < 2 or > 4 )
-        {
-            throw new GdxRuntimeException( "Only first, second and third degree Bezier curves are supported." );
-        }
+        if ( length is < 2 or > 4 ) throw new GdxRuntimeException( "Only first, second and third degree Bezier curves are supported." );
 
         _tmp  ??= points[ 0 ].Cpy();
         _tmp2 ??= points[ 0 ].Cpy();

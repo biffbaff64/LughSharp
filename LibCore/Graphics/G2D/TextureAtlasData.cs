@@ -67,18 +67,12 @@ public partial record TextureAtlasData
             var line = reader.ReadLine();
 
             // Ignore empty lines before first entry.
-            while ( ( line != null ) && ( line.Trim().Length == 0 ) )
-            {
-                line = reader.ReadLine();
-            }
+            while ( ( line != null ) && ( line.Trim().Length == 0 ) ) line = reader.ReadLine();
 
             // Header entries.
             while ( true )
             {
-                if ( ( line == null ) || ( line.Trim().Length == 0 ) )
-                {
-                    break;
-                }
+                if ( ( line == null ) || ( line.Trim().Length == 0 ) ) break;
 
                 if ( ReadEntry( line ) == 0 )
                 {
@@ -96,10 +90,7 @@ public partial record TextureAtlasData
 
             while ( true )
             {
-                if ( line == null )
-                {
-                    break;
-                }
+                if ( line == null ) break;
 
                 if ( line.Trim().Length == 0 )
                 {
@@ -115,10 +106,7 @@ public partial record TextureAtlasData
 
                     while ( true )
                     {
-                        if ( ReadEntry( line = reader.ReadLine() ) == 0 )
-                        {
-                            break;
-                        }
+                        if ( ReadEntry( line = reader.ReadLine() ) == 0 ) break;
 
                         pageFields?[ Entry[ 0 ] ].Parse( page );
                     }
@@ -133,24 +121,16 @@ public partial record TextureAtlasData
                         Name = line.Trim()
                     };
 
-                    if ( flip )
-                    {
-                        region.Flip = true;
-                    }
+                    if ( flip ) region.Flip = true;
 
                     while ( true )
                     {
                         var count = ReadEntry( line = reader.ReadLine() );
 
-                        if ( count == 0 )
-                        {
-                            break;
-                        }
+                        if ( count == 0 ) break;
 
                         if ( regionFields?[ Entry[ 0 ] ] != null )
-                        {
                             regionFields[ Entry[ 0 ] ].Parse( region );
-                        }
                         else
                         {
                             if ( names == null )
@@ -164,7 +144,6 @@ public partial record TextureAtlasData
                             var entryValues = new int[ count ];
 
                             for ( var i = 0; i < count; i++ )
-                            {
                                 try
                                 {
                                     entryValues[ i ] = int.Parse( Entry[ i + 1 ] );
@@ -173,7 +152,6 @@ public partial record TextureAtlasData
                                 {
                                     // Silently ignore non-integer values.
                                 }
-                            }
 
                             values?.Add( entryValues );
                         }
@@ -207,10 +185,7 @@ public partial record TextureAtlasData
             reader.Close();
         }
 
-        if ( HasIndexes[ 0 ] )
-        {
-            Regions.Sort( new ComparatorAnonymousInnerClass( this ) );
-        }
+        if ( HasIndexes[ 0 ] ) Regions.Sort( new ComparatorAnonymousInnerClass( this ) );
     }
 
     /// <summary>
@@ -219,24 +194,15 @@ public partial record TextureAtlasData
     /// <returns></returns>
     private int ReadEntry( string? line )
     {
-        if ( line == null )
-        {
-            return 0;
-        }
+        if ( line == null ) return 0;
 
         line = line.Trim();
 
-        if ( line.Length == 0 )
-        {
-            return 0;
-        }
+        if ( line.Length == 0 ) return 0;
 
         var colon = line.IndexOf( ':' );
 
-        if ( colon == -1 )
-        {
-            return 0;
-        }
+        if ( colon == -1 ) return 0;
 
         Entry[ 0 ] = line.Substring( 0, colon ).Trim();
 
@@ -255,14 +221,11 @@ public partial record TextureAtlasData
 
             lastMatch = comma + 1;
 
-            if ( i == 4 )
-            {
-                return 4;
-            }
+            if ( i == 4 ) return 4;
         }
     }
 
-    protected interface IField<in T>
+    protected interface IField< in T >
     {
         void Parse( T obj, params string[] entry );
     }
@@ -297,6 +260,7 @@ public partial record TextureAtlasData
         ///     May be null if the texture is not yet loaded.
         /// </summary>
         public Texture? texture;
+
         /// <summary>
         ///     May be null if this page isn't associated with a file. In that
         ///     case, <see cref="texture" /> must be set.
@@ -339,12 +303,8 @@ public partial record TextureAtlasData
             if ( Names != null )
             {
                 for ( int i = 0, n = Names.Length; i < n; i++ )
-                {
                     if ( name.Equals( Names[ i ] ) )
-                    {
                         return Values?[ i ];
-                    }
-                }
             }
 
             return null;

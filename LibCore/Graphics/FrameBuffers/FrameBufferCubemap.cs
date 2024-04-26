@@ -78,15 +78,9 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 
         frameBufferBuilder.AddBasicColorTextureAttachment( format );
 
-        if ( hasDepth )
-        {
-            frameBufferBuilder.AddBasicDepthRenderBuffer();
-        }
+        if ( hasDepth ) frameBufferBuilder.AddBasicDepthRenderBuffer();
 
-        if ( hasStencil )
-        {
-            frameBufferBuilder.AddBasicStencilRenderBuffer();
-        }
+        if ( hasStencil ) frameBufferBuilder.AddBasicStencilRenderBuffer();
 
         BufferBuilder = frameBufferBuilder;
 
@@ -117,18 +111,16 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 
     protected override void AttachFrameBufferColorTexture( Cubemap texture )
     {
-        var glHandle = ( uint )texture.GetTextureObjectHandle();
+        var glHandle = ( uint ) texture.GLTextureHandle();
 
         Cubemap.CubemapSide[] sides = Cubemap.CubemapSide.Values();
 
-        foreach ( Cubemap.CubemapSide side in sides )
-        {
+        foreach ( var side in sides )
             Gdx.GL.glFramebufferTexture2D( IGL.GL_FRAMEBUFFER,
-                                       IGL.GL_COLOR_ATTACHMENT0,
-                                       side.GLEnum,
-                                       glHandle,
-                                       0 );
-        }
+                                           IGL.GL_COLOR_ATTACHMENT0,
+                                           side.GLEnum,
+                                           glHandle,
+                                           0 );
     }
 
     /// <summary>
@@ -153,15 +145,9 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     /// cubemap to render on.
     public bool NextSide()
     {
-        if ( _currentSide > 5 )
-        {
-            throw new GdxRuntimeException( "No remaining sides." );
-        }
+        if ( _currentSide > 5 ) throw new GdxRuntimeException( "No remaining sides." );
 
-        if ( _currentSide == 5 )
-        {
-            return false;
-        }
+        if ( _currentSide == 5 ) return false;
 
         _currentSide++;
 
@@ -181,10 +167,10 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
         ArgumentNullException.ThrowIfNull( side );
 
         Gdx.GL.glFramebufferTexture2D( IGL.GL_FRAMEBUFFER,
-                                   IGL.GL_COLOR_ATTACHMENT0,
-                                   side.GLEnum,
-                                   ( uint )GetColorBufferTexture().GetTextureObjectHandle(),
-                                   0 );
+                                       IGL.GL_COLOR_ATTACHMENT0,
+                                       side.GLEnum,
+                                       ( uint ) GetColorBufferTexture().GLTextureHandle(),
+                                       0 );
     }
 
     /// <summary>

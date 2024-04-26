@@ -63,13 +63,9 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
                                FileInfo? file,
                                TextureAtlasParameter? parameter )
     {
-        if ( _data == null )
-        {
-            throw new GdxRuntimeException( "TextureAtlasData cannot be null!" );
-        }
+        if ( _data == null ) throw new GdxRuntimeException( "TextureAtlasData cannot be null!" );
 
-        foreach ( TextureAtlasData.Page page in _data.Pages )
-        {
+        foreach ( var page in _data.Pages )
             if ( page.textureFile != null )
             {
                 var name = page.textureFile.FullName.Replace( "\\\\", "/" );
@@ -78,9 +74,8 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
 
                 page.texture = texture;
             }
-        }
 
-//        var atlas = new TextureAtlas( _data );
+        //        var atlas = new TextureAtlas( _data );
 
         _data = null;
     }
@@ -92,15 +87,15 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
     {
         ArgumentNullException.ThrowIfNull( atlasFile );
 
-        DirectoryInfo? imgDir = atlasFile.Directory;
+        var imgDir = atlasFile.Directory;
 
         _data = parameter != null
-            ? new TextureAtlasData( atlasFile, imgDir, ( ( TextureAtlasParameter )parameter ).FlipVertically )
-            : new TextureAtlasData( atlasFile, imgDir, false );
+                    ? new TextureAtlasData( atlasFile, imgDir, ( ( TextureAtlasParameter ) parameter ).FlipVertically )
+                    : new TextureAtlasData( atlasFile, imgDir, false );
 
         var dependencies = new List< AssetDescriptor >();
 
-        foreach ( TextureAtlasData.Page page in _data.Pages )
+        foreach ( var page in _data.Pages )
         {
             var tparams = new TextureLoader.TextureLoaderParameters
             {
@@ -110,10 +105,7 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
                 MagFilter  = page.MagFilter
             };
 
-            if ( page.textureFile != null )
-            {
-                dependencies.Add( new AssetDescriptor( page.textureFile, typeof( Texture ), tparams ) );
-            }
+            if ( page.textureFile != null ) dependencies.Add( new AssetDescriptor( page.textureFile, typeof( Texture ), tparams ) );
         }
 
         return dependencies;
@@ -124,10 +116,7 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
     /// <param name="disposing"></param>
     protected virtual void Dispose( bool disposing )
     {
-        if ( disposing )
-        {
-            _data = null;
-        }
+        if ( disposing ) _data = null;
     }
 
     // ------------------------------------------------------------------------

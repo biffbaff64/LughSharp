@@ -68,7 +68,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     /// <returns> the TiledMap </returns>
     public TiledMap Load( string fileName, LoaderParameters parameter )
     {
-        FileInfo tmxFile = Resolve( fileName );
+        var tmxFile = Resolve( fileName );
 
         // ----------------------------------------
 
@@ -80,7 +80,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         var              textures     = new Dictionary< string, Texture >();
         List< FileInfo > textureFiles = GetDependencyFileHandles( tmxFile );
 
-        foreach ( FileInfo textureFile in textureFiles )
+        foreach ( var textureFile in textureFiles )
         {
             var texture = new Texture( textureFile, parameter.GenerateMipMaps );
 
@@ -91,7 +91,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         // ----------------------------------------
         // Load the TiledMap
 
-        TiledMap map = LoadTiledMap( tmxFile, parameter, new IImageResolver.DirectImageResolver( textures ) );
+        var map = LoadTiledMap( tmxFile, parameter, new IImageResolver.DirectImageResolver( textures ) );
 
         map.OwnedResources = new List< object >( textures.Values.ToList() );
 
@@ -128,10 +128,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 
         List< FileInfo > fileHandles = GetDependencyFileHandles( tmxFile );
 
-        foreach ( FileInfo handle in fileHandles )
-        {
-            descriptors.Add( new AssetDescriptor( handle, typeof( Texture ), textureParameter ) );
-        }
+        foreach ( var handle in fileHandles ) descriptors.Add( new AssetDescriptor( handle, typeof( Texture ), textureParameter ) );
 
         return descriptors;
     }
@@ -148,10 +145,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         // TileSet descriptors
         XmlNodeList? tilesetNodeList;
 
-        if ( ( tilesetNodeList = xmlDocument.SelectNodes( "tileset" ) ) == null )
-        {
-            throw new GdxRuntimeException( "Error: Map does not contain tileset nodes." );
-        }
+        if ( ( tilesetNodeList = xmlDocument.SelectNodes( "tileset" ) ) == null ) throw new GdxRuntimeException( "Error: Map does not contain tileset nodes." );
 
         foreach ( XmlNode? tileset in tilesetNodeList )
         {
@@ -159,33 +153,30 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 
             if ( source != null )
             {
-                FileInfo? tsxFile = GetRelativeFileHandle( tmxFile, source );
+                var tsxFile = GetRelativeFileHandle( tmxFile, source );
 
-                XmlNode? tset         = xmlDocument.SelectSingleNode( "tileset" );
-                XmlNode? imageElement = tset?.SelectSingleNode( "image" );
+                var tset         = xmlDocument.SelectSingleNode( "tileset" );
+                var imageElement = tset?.SelectSingleNode( "image" );
 
                 if ( imageElement != null )
                 {
-                    var       imageSource = imageElement.Attributes?[ "source" ]?.Value;
-                    FileInfo? image       = GetRelativeFileHandle( tsxFile, imageSource );
+                    var imageSource = imageElement.Attributes?[ "source" ]?.Value;
+                    var image       = GetRelativeFileHandle( tsxFile, imageSource );
 
                     fileHandles.Add( image! );
                 }
                 else
                 {
-                    if ( tset == null )
-                    {
-                        throw new GdxRuntimeException();
-                    }
+                    if ( tset == null ) throw new GdxRuntimeException();
 
-                    XmlNodeList? tileNodes = tset.SelectNodes( "tile" );
+                    var tileNodes = tset.SelectNodes( "tile" );
 
                     if ( tileNodes != null )
                     {
                         foreach ( XmlNode tile in tileNodes )
                         {
-                            var       imageSource = tile.SelectSingleNode( "image" )?.Attributes?[ "source" ]?.Value;
-                            FileInfo? image       = GetRelativeFileHandle( tsxFile, imageSource );
+                            var imageSource = tile.SelectSingleNode( "image" )?.Attributes?[ "source" ]?.Value;
+                            var image       = GetRelativeFileHandle( tsxFile, imageSource );
 
                             fileHandles.Add( image! );
                         }
@@ -194,21 +185,18 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
             }
             else
             {
-                XmlNode? imageElement = tileset?.SelectSingleNode( "image" );
+                var imageElement = tileset?.SelectSingleNode( "image" );
 
                 if ( imageElement != null )
                 {
-                    var       imageSource = imageElement.Attributes?[ "source" ]?.Value;
-                    FileInfo? image       = GetRelativeFileHandle( tmxFile, imageSource );
+                    var imageSource = imageElement.Attributes?[ "source" ]?.Value;
+                    var image       = GetRelativeFileHandle( tmxFile, imageSource );
 
-                    if ( image != null )
-                    {
-                        fileHandles.Add( image );
-                    }
+                    if ( image != null ) fileHandles.Add( image );
                 }
                 else
                 {
-                    XmlNodeList? tileList = tileset?.SelectNodes( "tile" );
+                    var tileList = tileset?.SelectNodes( "tile" );
 
                     if ( tileList != null )
                     {
@@ -216,7 +204,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
                         {
                             var imageSource = tile?.SelectSingleNode( "image" )?.Attributes?[ "source" ]?.Value;
 
-                            FileInfo? image = GetRelativeFileHandle( tmxFile, imageSource );
+                            var image = GetRelativeFileHandle( tmxFile, imageSource );
                             fileHandles.Add( image! );
                         }
                     }
@@ -225,18 +213,18 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         }
 
         // ImageLayer descriptors
-        XmlNodeList? imageLayerList = xmlDocument.SelectNodes( "imagelayer" );
+        var imageLayerList = xmlDocument.SelectNodes( "imagelayer" );
 
         if ( imageLayerList != null )
         {
             foreach ( XmlNode? imageLayer in imageLayerList )
             {
-                XmlNode? image  = imageLayer?.SelectSingleNode( "image" );
-                var      source = image?.Attributes?[ "source" ]?.Value;
+                var image  = imageLayer?.SelectSingleNode( "image" );
+                var source = image?.Attributes?[ "source" ]?.Value;
 
                 if ( source != null )
                 {
-                    FileInfo? handle = GetRelativeFileHandle( tmxFile, source );
+                    var handle = GetRelativeFileHandle( tmxFile, source );
                     fileHandles.Add( handle! );
                 }
             }
@@ -265,17 +253,14 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
                                             int imageHeight,
                                             FileInfo? image )
     {
-        MapProperties props = tileset.Properties;
+        var props = tileset.Properties;
 
         if ( image != null )
         {
             // One image for the whole tileSet
-            TextureRegion? texture = imageResolver.GetImage( Path.GetFullPath( image.Name ) );
+            var texture = imageResolver.GetImage( Path.GetFullPath( image.Name ) );
 
-            if ( texture == null )
-            {
-                throw new GdxRuntimeException( $"Tileset image not found: {image.Name}" );
-            }
+            if ( texture == null ) throw new GdxRuntimeException( $"Tileset image not found: {image.Name}" );
 
             props.Put( "imagesource", imageSource );
             props.Put( "imagewidth", imageWidth );
@@ -291,27 +276,22 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
             var id = firstgid;
 
             for ( var y = margin; y <= stopHeight; y += tileheight + spacing )
+            for ( var x = margin; x <= stopWidth; x += tilewidth + spacing )
             {
-                for ( var x = margin; x <= stopWidth; x += tilewidth + spacing )
-                {
-                    var tileRegion = new TextureRegion( texture, x, y, tilewidth, tileheight );
-                    var tileId     = id++;
+                var tileRegion = new TextureRegion( texture, x, y, tilewidth, tileheight );
+                var tileId     = id++;
 
-                    AddStaticTiledMapTile( tileset, tileRegion, tileId, offsetX, offsetY );
-                }
+                AddStaticTiledMapTile( tileset, tileRegion, tileId, offsetX, offsetY );
             }
         }
         else
         {
-            if ( tileElements == null )
-            {
-                throw new GdxRuntimeException( "Error: Tile Elements List is null!" );
-            }
+            if ( tileElements == null ) throw new GdxRuntimeException( "Error: Tile Elements List is null!" );
 
             // Every tile has its own image source
             foreach ( XmlNode? tileElement in tileElements )
             {
-                XmlNode? imageElement = tileElement?.SelectSingleNode( "image" );
+                var imageElement = tileElement?.SelectSingleNode( "image" );
 
                 if ( imageElement != null )
                 {
@@ -323,8 +303,8 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
                                                    imageSource );
                 }
 
-                TextureRegion? texture = imageResolver.GetImage( Path.GetFullPath( image?.Name! ) );
-                var            tileId  = firstgid + tileElement?.Attributes?[ "id" ]?.Value;
+                var texture = imageResolver.GetImage( Path.GetFullPath( image?.Name! ) );
+                var tileId  = firstgid + tileElement?.Attributes?[ "id" ]?.Value;
 
                 AddStaticTiledMapTile( tileset, texture, int.Parse( tileId ), offsetX, offsetY );
             }
@@ -336,8 +316,5 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 
     public class LoaderParameters : BaseTmxLoaderParameters
     {
-        public LoaderParameters()
-        {
-        }
     }
 }

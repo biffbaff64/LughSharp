@@ -24,9 +24,7 @@
 
 
 using System.Text.RegularExpressions;
-
 using LughSharp.LibCore.Utils.Collections.Extensions;
-
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Graphics.G2D;
@@ -112,7 +110,7 @@ public class BitmapFont
     ///     is the upper left corner.
     /// </param>
     public BitmapFont( FileInfo fontFile, bool flip = false )
-        : this( new BitmapFontData( fontFile, flip ), ( TextureRegion? )null, true )
+        : this( new BitmapFontData( fontFile, flip ), ( TextureRegion? ) null, true )
     {
         _fileType = FileType.Local;
     }
@@ -195,13 +193,13 @@ public class BitmapFont
             // Load each path.
             var n = data.ImagePaths.Length;
 
-            _regions = new List< TextureRegion >( capacity: n );
+            _regions = new List< TextureRegion >( n );
 
             for ( var i = 0; i < n; i++ )
             {
-                FileInfo file = data.FontFile == null
-                    ? Gdx.Files.Internal( data.ImagePaths[ i ] )
-                    : Gdx.Files.GetFileHandle( data.ImagePaths[ i ], _fileType );
+                var file = data.FontFile == null
+                               ? Gdx.Files.Internal( data.ImagePaths[ i ] )
+                               : Gdx.Files.GetFileHandle( data.ImagePaths[ i ], _fileType );
 
                 _regions.Add( new TextureRegion( new Texture( file, false ) ) );
             }
@@ -245,24 +243,14 @@ public class BitmapFont
     {
         foreach ( Glyph?[]? page in data.Glyphs )
         {
-            if ( page == null )
-            {
-                continue;
-            }
+            if ( page == null ) continue;
 
-            foreach ( Glyph? glyph in page )
-            {
+            foreach ( var glyph in page )
                 if ( glyph != null )
-                {
                     data.SetGlyphRegion( glyph, _regions[ glyph.Page ] );
-                }
-            }
         }
 
-        if ( data.MissingGlyph != null )
-        {
-            data.MissingGlyph = data.SetGlyphRegion( data.MissingGlyph, _regions[ data.MissingGlyph.Page ] );
-        }
+        if ( data.MissingGlyph != null ) data.MissingGlyph = data.SetGlyphRegion( data.MissingGlyph, _regions[ data.MissingGlyph.Page ] );
     }
 
     /// <summary>
@@ -277,7 +265,7 @@ public class BitmapFont
     {
         _cache.Clear();
 
-        GlyphLayout layout = _cache.AddText( str, x, y );
+        var layout = _cache.AddText( str, x, y );
 
         _cache.Draw( batch );
 
@@ -291,7 +279,7 @@ public class BitmapFont
     {
         _cache.Clear();
 
-        GlyphLayout layout = _cache.AddText( str, x, y, targetWidth, halign, wrap );
+        var layout = _cache.AddText( str, x, y, targetWidth, halign, wrap );
 
         _cache.Draw( batch );
 
@@ -313,7 +301,7 @@ public class BitmapFont
     {
         _cache.Clear();
 
-        GlyphLayout layout = _cache.AddText( str, x, y, start, end, targetWidth, halign, wrap );
+        var layout = _cache.AddText( str, x, y, start, end, targetWidth, halign, wrap );
 
         _cache.Draw( batch );
 
@@ -336,7 +324,7 @@ public class BitmapFont
     {
         _cache.Clear();
 
-        GlyphLayout layout = _cache.AddText( str, x, y, start, end, targetWidth, halign, wrap, truncate );
+        var layout = _cache.AddText( str, x, y, start, end, targetWidth, halign, wrap, truncate );
 
         _cache.Draw( batch );
 
@@ -480,10 +468,7 @@ public class BitmapFont
     {
         if ( OwnsTexture )
         {
-            foreach ( TextureRegion t in _regions )
-            {
-                t.Texture.Dispose();
-            }
+            foreach ( var t in _regions ) t.Texture.Dispose();
         }
     }
 
@@ -494,27 +479,21 @@ public class BitmapFont
     /// </summary>
     public void SetFixedWidthGlyphs( string glyphs )
     {
-        BitmapFontData data       = _data;
-        var            maxAdvance = 0;
+        var data       = _data;
+        var maxAdvance = 0;
 
         for ( int index = 0, end = glyphs.Length; index < end; index++ )
         {
-            Glyph? g = data.GetGlyph( glyphs[ index ] );
+            var g = data.GetGlyph( glyphs[ index ] );
 
-            if ( ( g != null ) && ( g.xadvance > maxAdvance ) )
-            {
-                maxAdvance = g.xadvance;
-            }
+            if ( ( g != null ) && ( g.xadvance > maxAdvance ) ) maxAdvance = g.xadvance;
         }
 
         for ( int index = 0, end = glyphs.Length; index < end; index++ )
         {
-            Glyph? g = data.GetGlyph( glyphs[ index ] );
+            var g = data.GetGlyph( glyphs[ index ] );
 
-            if ( g == null )
-            {
-                continue;
-            }
+            if ( g == null ) continue;
 
             g.xoffset    += ( maxAdvance - g.xadvance ) / 2;
             g.xadvance   =  maxAdvance;
@@ -565,12 +544,8 @@ public class BitmapFont
         var n = text.Length;
 
         for ( ; start < n; start++ )
-        {
             if ( text[ start ] == ch )
-            {
                 return start;
-            }
-        }
 
         return n;
     }
@@ -613,12 +588,9 @@ public class BitmapFont
 
             var page = kerning[ ch >>> LOG2_PAGE_SIZE ];
 
-            if ( page == null )
-            {
-                kerning[ ch >>> LOG2_PAGE_SIZE ] = page = new byte[ PAGE_SIZE ];
-            }
+            if ( page == null ) kerning[ ch >>> LOG2_PAGE_SIZE ] = page = new byte[ PAGE_SIZE ];
 
-            page[ ch & ( PAGE_SIZE - 1 ) ] = ( byte )value;
+            page[ ch & ( PAGE_SIZE - 1 ) ] = ( byte ) value;
         }
 
         public override string ToString()
@@ -638,6 +610,7 @@ public class BitmapFont
         ///     Eg, a hypen (-).
         /// </summary>
         internal readonly char[]? breakChars = null;
+
         internal readonly char[] capChars =
         {
             'M', 'N', 'B', 'D', 'C', 'E', 'F', 'K', 'A', 'G', 'H', 'I', 'J',
@@ -753,10 +726,7 @@ public class BitmapFont
         /// <exception cref="GdxRuntimeException"></exception>
         public void Load( FileInfo file, bool flip )
         {
-            if ( ImagePaths != null )
-            {
-                throw new InvalidOperationException( "Already loaded." );
-            }
+            if ( ImagePaths != null ) throw new InvalidOperationException( "Already loaded." );
 
             Name = file.Name;
 
@@ -766,19 +736,13 @@ public class BitmapFont
             {
                 var line = reader.ReadLine(); // info
 
-                if ( line == null )
-                {
-                    throw new GdxRuntimeException( "File is empty." );
-                }
+                if ( line == null ) throw new GdxRuntimeException( "File is empty." );
 
                 line = line.Substring( line.IndexOf( "padding=", StringComparison.Ordinal ) + 8 );
 
                 var padding = line.Substring( 0, line.IndexOf( ' ' ) ).Split( ",", 4 );
 
-                if ( padding.Length != 4 )
-                {
-                    throw new GdxRuntimeException( "Invalid padding." );
-                }
+                if ( padding.Length != 4 ) throw new GdxRuntimeException( "Invalid padding." );
 
                 PadTop    = int.Parse( padding[ 0 ] );
                 PadRight  = int.Parse( padding[ 1 ] );
@@ -789,30 +753,18 @@ public class BitmapFont
 
                 line = reader.ReadLine();
 
-                if ( line == null )
-                {
-                    throw new GdxRuntimeException( "Missing common header." );
-                }
+                if ( line == null ) throw new GdxRuntimeException( "Missing common header." );
 
                 var common = line.Split( " ", 9 ); // At most we want the 6th element; i.e. "page=N"
 
                 // At least lineHeight and base are required.
-                if ( common.Length < 3 )
-                {
-                    throw new GdxRuntimeException( "Invalid common header." );
-                }
+                if ( common.Length < 3 ) throw new GdxRuntimeException( "Invalid common header." );
 
-                if ( !common[ 1 ].StartsWith( "lineHeight=" ) )
-                {
-                    throw new GdxRuntimeException( "Missing: lineHeight" );
-                }
+                if ( !common[ 1 ].StartsWith( "lineHeight=" ) ) throw new GdxRuntimeException( "Missing: lineHeight" );
 
                 LineHeight = int.Parse( common[ 1 ].Substring( 11 ) );
 
-                if ( !common[ 2 ].StartsWith( "base=" ) )
-                {
-                    throw new GdxRuntimeException( "Missing: base" );
-                }
+                if ( !common[ 2 ].StartsWith( "base=" ) ) throw new GdxRuntimeException( "Missing: base" );
 
                 float baseLine = int.Parse( common[ 2 ].Substring( 5 ) );
 
@@ -839,28 +791,22 @@ public class BitmapFont
                     // Read each "page" info line.
                     line = reader.ReadLine();
 
-                    if ( line == null )
-                    {
-                        throw new GdxRuntimeException( "Missing additional page definitions." );
-                    }
+                    if ( line == null ) throw new GdxRuntimeException( "Missing additional page definitions." );
 
                     // Expect ID to mean "index".
                     var rx = new Regex( ".*id=(\\d+)" );
 
-                    MatchCollection matches = rx.Matches( line );
+                    var matches = rx.Matches( line );
 
                     if ( matches.Count > 0 )
                     {
-                        Match id = matches[ 0 ];
+                        var id = matches[ 0 ];
 
                         try
                         {
                             var pageID = int.Parse( id.Value );
 
-                            if ( pageID != p )
-                            {
-                                throw new GdxRuntimeException( $"Page IDs must be indices starting at 0: {id}" );
-                            }
+                            if ( pageID != p ) throw new GdxRuntimeException( $"Page IDs must be indices starting at 0: {id}" );
                         }
                         catch ( Exception ex )
                         {
@@ -872,10 +818,7 @@ public class BitmapFont
 
                     matches = rx.Matches( line );
 
-                    if ( matches.Count <= 0 )
-                    {
-                        throw new GdxRuntimeException( "Missing: file" );
-                    }
+                    if ( matches.Count <= 0 ) throw new GdxRuntimeException( "Missing: file" );
 
                     //TODO: This line needs converting
 //                    imagePaths[p] = fontFile.parent().child(fileName).path().replaceAll("\\\\", "/");
@@ -887,25 +830,13 @@ public class BitmapFont
                 {
                     line = reader.ReadLine();
 
-                    if ( line == null )
-                    {
-                        break; // EOF
-                    }
+                    if ( line == null ) break; // EOF
 
-                    if ( line.StartsWith( "kernings " ) )
-                    {
-                        break; // Starting kernings block.
-                    }
+                    if ( line.StartsWith( "kernings " ) ) break; // Starting kernings block.
 
-                    if ( line.StartsWith( "metrics " ) )
-                    {
-                        break; // Starting metrics block.
-                    }
+                    if ( line.StartsWith( "metrics " ) ) break; // Starting metrics block.
 
-                    if ( !line.StartsWith( "char " ) )
-                    {
-                        continue;
-                    }
+                    if ( !line.StartsWith( "char " ) ) continue;
 
                     var glyph = new Glyph();
 
@@ -917,17 +848,11 @@ public class BitmapFont
                     var ch = int.Parse( tokens.NextToken() );
 
                     if ( ch <= 0 )
-                    {
                         MissingGlyph = glyph;
-                    }
                     else if ( ch <= char.MaxValue )
-                    {
                         SetGlyph( ch, glyph );
-                    }
                     else
-                    {
                         continue;
-                    }
 
                     glyph.id = ch;
                     tokens.NextToken();
@@ -943,23 +868,16 @@ public class BitmapFont
                     tokens.NextToken();
 
                     if ( flip )
-                    {
                         glyph.yoffset = int.Parse( tokens.NextToken() );
-                    }
                     else
-                    {
                         glyph.yoffset = -( glyph.height + int.Parse( tokens.NextToken() ) );
-                    }
 
                     tokens.NextToken();
 
                     glyph.xadvance = int.Parse( tokens.NextToken() );
 
                     // Check for page safely, it could be omitted or invalid.
-                    if ( tokens.HasMoreTokens() )
-                    {
-                        tokens.NextToken();
-                    }
+                    if ( tokens.HasMoreTokens() ) tokens.NextToken();
 
                     if ( tokens.HasMoreTokens() )
                     {
@@ -973,10 +891,7 @@ public class BitmapFont
                         }
                     }
 
-                    if ( glyph is { width: > 0, height: > 0 } )
-                    {
-                        Descent = Math.Min( baseLine + glyph.yoffset, Descent );
-                    }
+                    if ( glyph is { width: > 0, height: > 0 } ) Descent = Math.Min( baseLine + glyph.yoffset, Descent );
                 }
 
                 Descent += PadBottom;
@@ -985,15 +900,9 @@ public class BitmapFont
                 {
                     line = reader.ReadLine();
 
-                    if ( line == null )
-                    {
-                        break;
-                    }
+                    if ( line == null ) break;
 
-                    if ( !line.StartsWith( "kerning " ) )
-                    {
-                        break;
-                    }
+                    if ( !line.StartsWith( "kerning " ) ) break;
 
                     var tokens = new StringTokenizer( line, " =" );
 
@@ -1010,11 +919,9 @@ public class BitmapFont
                       || ( first > Character.MAX_VALUE )
                       || ( second < 0 )
                       || ( second > Character.MAX_VALUE ) )
-                    {
                         continue;
-                    }
 
-                    Glyph? glyph = GetGlyph( ( char )first );
+                    var glyph = GetGlyph( ( char ) first );
                     tokens.NextToken();
 
                     var amount = int.Parse( tokens.NextToken() );
@@ -1064,13 +971,13 @@ public class BitmapFont
                     overrideXHeight = float.Parse( tokens.NextToken() );
                 }
 
-                Glyph? spaceGlyph = GetGlyph( ' ' );
+                var spaceGlyph = GetGlyph( ' ' );
 
                 if ( spaceGlyph == null )
                 {
                     spaceGlyph = new Glyph { id = ' ' };
 
-                    Glyph xadvanceGlyph = GetGlyph( 'l' ) ?? GetFirstGlyph();
+                    var xadvanceGlyph = GetGlyph( 'l' ) ?? GetFirstGlyph();
 
                     spaceGlyph.xadvance = xadvanceGlyph.xadvance;
 
@@ -1079,8 +986,8 @@ public class BitmapFont
 
                 if ( spaceGlyph.width == 0 )
                 {
-                    spaceGlyph.width   = ( int )( PadLeft + spaceGlyph.xadvance + PadRight );
-                    spaceGlyph.xoffset = ( int )-PadLeft;
+                    spaceGlyph.width   = ( int ) ( PadLeft + spaceGlyph.xadvance + PadRight );
+                    spaceGlyph.xoffset = ( int ) -PadLeft;
                 }
 
                 SpaceXadvance = spaceGlyph.xadvance;
@@ -1091,10 +998,7 @@ public class BitmapFont
                 {
                     xGlyph = GetGlyph( xChar );
 
-                    if ( xGlyph != null )
-                    {
-                        break;
-                    }
+                    if ( xGlyph != null ) break;
                 }
 
                 xGlyph ??= GetFirstGlyph();
@@ -1107,38 +1011,28 @@ public class BitmapFont
                 {
                     capGlyph = GetGlyph( capChar );
 
-                    if ( capGlyph != null )
-                    {
-                        break;
-                    }
+                    if ( capGlyph != null ) break;
                 }
 
                 if ( capGlyph == null )
                 {
                     foreach ( Glyph?[]? page in Glyphs )
                     {
-                        if ( page == null )
-                        {
-                            continue;
-                        }
+                        if ( page == null ) continue;
 
-                        foreach ( Glyph? glyph in page )
+                        foreach ( var glyph in page )
                         {
                             if ( ( glyph == null )
                               || ( glyph.height == 0 )
                               || ( glyph.width == 0 ) )
-                            {
                                 continue;
-                            }
 
                             CapHeight = Math.Max( CapHeight, glyph.height );
                         }
                     }
                 }
                 else
-                {
                     CapHeight = capGlyph.height;
-                }
 
                 CapHeight -= padY;
 
@@ -1193,11 +1087,11 @@ public class BitmapFont
             if ( region is AtlasRegion atlasRegion )
             {
                 // Compensate for whitespace stripped from left and top edges.
-                offsetX = ( int )atlasRegion.OffsetX;
+                offsetX = ( int ) atlasRegion.OffsetX;
 
-                offsetY = ( int )( atlasRegion.OriginalHeight
-                                 - atlasRegion.PackedHeight
-                                 - atlasRegion.OffsetY );
+                offsetY = ( int ) ( atlasRegion.OriginalHeight
+                                  - atlasRegion.PackedHeight
+                                  - atlasRegion.OffsetY );
             }
 
             var x  = glyph.srcX;
@@ -1238,10 +1132,7 @@ public class BitmapFont
                 {
                     glyph.height += y;
 
-                    if ( glyph.height < 0 )
-                    {
-                        glyph.height = 0;
-                    }
+                    if ( glyph.height < 0 ) glyph.height = 0;
 
                     y = 0;
                 }
@@ -1310,20 +1201,15 @@ public class BitmapFont
         public Glyph GetFirstGlyph()
         {
             foreach ( Glyph?[]? page in Glyphs )
-            {
                 if ( page != null )
                 {
-                    foreach ( Glyph? glyph in page )
+                    foreach ( var glyph in page )
                     {
-                        if ( ( glyph == null ) || ( glyph.height == 0 ) || ( glyph.width == 0 ) )
-                        {
-                            continue;
-                        }
+                        if ( ( glyph == null ) || ( glyph.height == 0 ) || ( glyph.width == 0 ) ) continue;
 
                         return glyph;
                     }
                 }
-            }
 
             throw new GdxRuntimeException( "No glyphs found." );
         }
@@ -1333,10 +1219,7 @@ public class BitmapFont
         /// </summary>
         public bool HasGlyph( char ch )
         {
-            if ( MissingGlyph != null )
-            {
-                return true;
-            }
+            if ( MissingGlyph != null ) return true;
 
             return GetGlyph( ch ) != null;
         }
@@ -1375,10 +1258,7 @@ public class BitmapFont
 
             var max = end - start;
 
-            if ( max == 0 )
-            {
-                return;
-            }
+            if ( max == 0 ) return;
 
             var markupEnabled = MarkupEnabled;
             var scaleX        = ScaleX;
@@ -1394,19 +1274,13 @@ public class BitmapFont
             {
                 var ch = str[ start++ ];
 
-                if ( ch == '\r' )
-                {
-                    continue; // Ignore.
-                }
+                if ( ch == '\r' ) continue; // Ignore.
 
-                Glyph? glyph = GetGlyph( ch );
+                var glyph = GetGlyph( ch );
 
                 if ( glyph == null )
                 {
-                    if ( MissingGlyph == null )
-                    {
-                        continue;
-                    }
+                    if ( MissingGlyph == null ) continue;
 
                     glyph = MissingGlyph;
                 }
@@ -1415,9 +1289,9 @@ public class BitmapFont
 
                 xAdvances.Add
                     (
-                    lastGlyph == null // First glyph on line, adjust the position so it isn't drawn left of 0.
-                        ? glyph.fixedWidth ? 0 : ( -glyph.xoffset * scaleX ) - PadLeft
-                        : ( lastGlyph.xadvance + lastGlyph.GetKerning( ch ) ) * scaleX
+                     lastGlyph == null // First glyph on line, adjust the position so it isn't drawn left of 0.
+                         ? glyph.fixedWidth ? 0 : ( -glyph.xoffset * scaleX ) - PadLeft
+                         : ( lastGlyph.xadvance + lastGlyph.GetKerning( ch ) ) * scaleX
                     );
 
                 lastGlyph = glyph;
@@ -1427,17 +1301,15 @@ public class BitmapFont
                   && ( ch == '[' )
                   && ( start < end )
                   && ( str[ start ] == '[' ) )
-                {
                     start++;
-                }
             }
             while ( start < end );
 
             if ( lastGlyph != null )
             {
                 var lastGlyphWidth = lastGlyph.fixedWidth
-                    ? lastGlyph.xadvance * scaleX
-                    : ( ( lastGlyph.width + lastGlyph.xoffset ) * scaleX ) - PadRight;
+                                         ? lastGlyph.xadvance * scaleX
+                                         : ( ( lastGlyph.width + lastGlyph.xoffset ) * scaleX ) - PadRight;
 
                 xAdvances.Add( lastGlyphWidth );
             }
@@ -1451,26 +1323,17 @@ public class BitmapFont
         public int GetWrapIndex( List< Glyph > glyphList, int start )
         {
             var i  = start - 1;
-            var ch = ( char )glyphList[ i ].id;
+            var ch = ( char ) glyphList[ i ].id;
 
-            if ( IsWhitespace( ch ) )
-            {
-                return i;
-            }
+            if ( IsWhitespace( ch ) ) return i;
 
-            if ( IsBreakChar( ch ) )
-            {
-                i--;
-            }
+            if ( IsBreakChar( ch ) ) i--;
 
             for ( ; i > 0; i-- )
             {
-                ch = ( char )glyphList[ i ].id;
+                ch = ( char ) glyphList[ i ].id;
 
-                if ( IsWhitespace( ch ) || IsBreakChar( ch ) )
-                {
-                    return i + 1;
-                }
+                if ( IsWhitespace( ch ) || IsBreakChar( ch ) ) return i + 1;
             }
 
             return 0;
@@ -1482,18 +1345,11 @@ public class BitmapFont
         /// <returns></returns>
         public bool IsBreakChar( char c )
         {
-            if ( breakChars == null )
-            {
-                return false;
-            }
+            if ( breakChars == null ) return false;
 
             foreach ( var br in breakChars )
-            {
                 if ( c == br )
-                {
                     return true;
-                }
-            }
 
             return false;
         }
@@ -1529,15 +1385,9 @@ public class BitmapFont
         /// <exception cref="ArgumentException">if scaleX or scaleY is zero.</exception>
         public void SetScale( float scalex, float scaley )
         {
-            if ( scalex == 0 )
-            {
-                throw new ArgumentException( "scaleX cannot be 0." );
-            }
+            if ( scalex == 0 ) throw new ArgumentException( "scaleX cannot be 0." );
 
-            if ( scaley == 0 )
-            {
-                throw new ArgumentException( "scaleY cannot be 0." );
-            }
+            if ( scaley == 0 ) throw new ArgumentException( "scaleY cannot be 0." );
 
             var x = scalex / ScaleX;
             var y = scaley / ScaleY;

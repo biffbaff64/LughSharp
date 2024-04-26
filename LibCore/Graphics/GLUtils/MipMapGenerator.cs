@@ -64,13 +64,9 @@ public class MipMapGenerator
         if ( ( Gdx.App.AppType == IApplication.ApplicationType.Android )
           || ( Gdx.App.AppType == IApplication.ApplicationType.WebGL )
           || ( Gdx.App.AppType == IApplication.ApplicationType.IOS ) )
-        {
             GenerateMipMapGLES20( target, pixmap );
-        }
         else
-        {
             GenerateMipMapDesktop( target, pixmap, textureWidth, textureHeight );
-        }
     }
 
     private static void GenerateMipMapGLES20( int target, Pixmap pixmap )
@@ -112,13 +108,11 @@ public class MipMapGenerator
                                      pixmap.GLType,
                                      ptr );
             }
-            
+
             Gdx.GL.glGenerateMipmap( target );
         }
         else
-        {
             GenerateMipMapCPU( target, pixmap, textureWidth, textureHeight );
-        }
     }
 
     private static unsafe void GenerateMipMapCPU( int target, Pixmap pixmap, int textureWidth, int textureHeight )
@@ -135,11 +129,9 @@ public class MipMapGenerator
                                  pixmap.GLType,
                                  ptr );
         }
-        
+
         if ( ( Gdx.GL20 == null ) && ( textureWidth != textureHeight ) )
-        {
             throw new GdxRuntimeException( "texture width and height must be square when using mipmapping." );
-        }
 
         var width  = pixmap.Width / 2;
         var height = pixmap.Height / 2;
@@ -152,10 +144,7 @@ public class MipMapGenerator
             tmp.Blending = Pixmap.BlendTypes.None;
             tmp.DrawPixmap( pixmap, 0, 0, pixmap.Width, pixmap.Height, 0, 0, width, height );
 
-            if ( level > 1 )
-            {
-                pixmap.Dispose();
-            }
+            if ( level > 1 ) pixmap.Dispose();
 
             pixmap = tmp;
 

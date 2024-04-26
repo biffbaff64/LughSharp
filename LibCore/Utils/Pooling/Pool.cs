@@ -29,7 +29,7 @@ namespace LughSharp.LibCore.Utils.Pooling;
 ///     A pool of objects that can be reused to avoid allocation.
 /// </summary>
 [PublicAPI]
-public class Pool<T>
+public class Pool< T >
 {
     public delegate T? NewObjectHandler();
 
@@ -74,7 +74,7 @@ public class Pool<T>
             return NewObject();
         }
 
-        T? item = _freeObjects[ ^1 ];
+        var item = _freeObjects[ ^1 ];
 
         _freeObjects[ ^1 ] = default( T? );
 
@@ -103,9 +103,7 @@ public class Pool<T>
             Reset( obj );
         }
         else
-        {
             Discard( obj );
-        }
     }
 
     /// <summary>
@@ -117,12 +115,8 @@ public class Pool<T>
     public void Fill( int size )
     {
         for ( var i = 0; i < size; i++ )
-        {
             if ( _freeObjects.Count < Max )
-            {
                 _freeObjects.Add( NewObject!() );
-            }
-        }
 
         Peak = Math.Max( Peak, _freeObjects.Count );
     }
@@ -134,10 +128,7 @@ public class Pool<T>
     /// </summary>
     public virtual void Reset( T obj )
     {
-        if ( obj is IPoolable poolable )
-        {
-            poolable.Reset();
-        }
+        if ( obj is IPoolable poolable ) poolable.Reset();
     }
 
     /// <summary>
@@ -160,10 +151,7 @@ public class Pool<T>
 
         for ( int i = 0, n = objects.Count; i < n; i++ )
         {
-            if ( objects[ i ] == null )
-            {
-                continue;
-            }
+            if ( objects[ i ] == null ) continue;
 
             if ( _freeObjects.Count < Max )
             {
@@ -172,9 +160,7 @@ public class Pool<T>
                 Reset( objects[ i ] );
             }
             else
-            {
                 Discard( objects[ i ] );
-            }
         }
 
         Peak = Math.Max( Peak, _freeObjects.Count );
@@ -187,7 +173,7 @@ public class Pool<T>
     {
         for ( var i = 0; i < _freeObjects.Count; i++ )
         {
-            T? obj = _freeObjects[ i ];
+            var obj = _freeObjects[ i ];
             _freeObjects.RemoveAt( i );
             Discard( obj );
         }

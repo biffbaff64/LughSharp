@@ -25,7 +25,7 @@
 
 namespace LughSharp.LibCore.Graphics;
 
-public interface IGL30 : IGL20
+public interface IGL30_TBD : IGL20_TBD
 {
     // ------------------------------------------------------------------------
     const int GL_CONTEXT_CORE_PROFILE_BIT          = 0x00000001;

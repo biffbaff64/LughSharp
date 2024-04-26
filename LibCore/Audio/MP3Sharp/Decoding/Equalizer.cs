@@ -72,10 +72,7 @@ public class Equalizer
 
             var max = value.Length > BANDS ? BANDS : value.Length;
 
-            for ( var i = 0; i < max; i++ )
-            {
-                _settings[ i ] = Limit( value[ i ] );
-            }
+            for ( var i = 0; i < max; i++ ) _settings[ i ] = Limit( value[ i ] );
         }
     }
 
@@ -87,10 +84,7 @@ public class Equalizer
     {
         set
         {
-            if ( value != this )
-            {
-                FromFloatArray = value._settings;
-            }
+            if ( value != this ) FromFloatArray = value._settings;
         }
     }
 
@@ -100,10 +94,7 @@ public class Equalizer
         {
             Reset();
 
-            for ( var i = 0; i < BANDS; i++ )
-            {
-                _settings[ i ] = Limit( value.GetBand( i ) );
-            }
+            for ( var i = 0; i < BANDS; i++ ) _settings[ i ] = Limit( value.GetBand( i ) );
         }
     }
 
@@ -126,10 +117,7 @@ public class Equalizer
         {
             var factors = new float[ BANDS ];
 
-            for ( var i = 0; i < BANDS; i++ )
-            {
-                factors[ i ] = GetBandFactor( _settings[ i ] );
-            }
+            for ( var i = 0; i < BANDS; i++ ) factors[ i ] = GetBandFactor( _settings[ i ] );
 
             return factors;
         }
@@ -140,10 +128,7 @@ public class Equalizer
     /// </summary>
     public void Reset()
     {
-        for ( var i = 0; i < BANDS; i++ )
-        {
-            _settings[ i ] = 0.0f;
-        }
+        for ( var i = 0; i < BANDS; i++ ) _settings[ i ] = 0.0f;
     }
 
     public float SetBand( int band, float neweq )
@@ -166,10 +151,7 @@ public class Equalizer
     {
         var eq = 0.0f;
 
-        if ( band is >= 0 and < BANDS )
-        {
-            eq = _settings[ band ];
-        }
+        if ( band is >= 0 and < BANDS ) eq = _settings[ band ];
 
         return eq;
     }
@@ -177,12 +159,12 @@ public class Equalizer
     private static float Limit( float eq )
     {
         return eq switch
-               {
-                   BAND_NOT_PRESENT => eq,
-                   > 1.0f           => 1.0f,
-                   < -1.0f          => -1.0f,
-                   _                => eq
-               };
+        {
+            BAND_NOT_PRESENT => eq,
+            > 1.0f           => 1.0f,
+            < -1.0f          => -1.0f,
+            _                => eq
+        };
     }
 
     /// <summary>
@@ -192,12 +174,9 @@ public class Equalizer
     /// </summary>
     public static float GetBandFactor( float eq )
     {
-        if ( eq.Equals( BAND_NOT_PRESENT ) )
-        {
-            return 0.0f;
-        }
+        if ( eq.Equals( BAND_NOT_PRESENT ) ) return 0.0f;
 
-        var f = ( float )Math.Pow( 2.0, eq );
+        var f = ( float ) Math.Pow( 2.0, eq );
 
         return f;
     }

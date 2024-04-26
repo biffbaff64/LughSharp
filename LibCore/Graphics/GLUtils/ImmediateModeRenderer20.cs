@@ -60,12 +60,12 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
 
     public ImmediateModeRenderer20( int maxVertices, bool hasNormals, bool hasColors, int numTexCoords )
         : this(
-            maxVertices,
-            hasNormals,
-            hasColors,
-            numTexCoords,
-            CreateDefaultShader( hasNormals, hasColors, numTexCoords )
-            )
+               maxVertices,
+               hasNormals,
+               hasColors,
+               numTexCoords,
+               CreateDefaultShader( hasNormals, hasColors, numTexCoords )
+              )
     {
         _ownsShader = true;
     }
@@ -86,7 +86,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         _vertices   = new float[ maxVertices * ( _mesh.VertexAttributes.VertexSize / 4 ) ];
         _vertexSize = _mesh.VertexAttributes.VertexSize / 4;
 
-        VertexAttribute? attribute = _mesh.GetVertexAttribute( VertexAttributes.Usage.NORMAL );
+        var attribute = _mesh.GetVertexAttribute( VertexAttributes.Usage.NORMAL );
 
         _normalOffset = attribute != null ? attribute.Offset / 4 : 0;
 
@@ -100,10 +100,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
 
         _shaderUniformNames = new string[ numTexCoords ];
 
-        for ( var i = 0; i < numTexCoords; i++ )
-        {
-            _shaderUniformNames[ i ] = "u_sampler" + i;
-        }
+        for ( var i = 0; i < numTexCoords; i++ ) _shaderUniformNames[ i ] = "u_sampler" + i;
     }
 
     public ShaderProgram? Shader
@@ -111,10 +108,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         get => _shader;
         set
         {
-            if ( _ownsShader )
-            {
-                _shader?.Dispose();
-            }
+            if ( _ownsShader ) _shader?.Dispose();
 
             _shader     = value;
             _ownsShader = false;
@@ -184,18 +178,12 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     /// </summary>
     public void Flush()
     {
-        if ( NumVertices == 0 )
-        {
-            return;
-        }
+        if ( NumVertices == 0 ) return;
 
         _shader?.Bind();
         _shader?.SetUniformMatrix( "u_projModelView", _projModelView );
 
-        for ( var i = 0; i < _numTexCoords; i++ )
-        {
-            _shader?.SetUniformi( _shaderUniformNames[ i ], i );
-        }
+        for ( var i = 0; i < _numTexCoords; i++ ) _shader?.SetUniformi( _shaderUniformNames[ i ], i );
 
         _mesh.SetVertices( _vertices, 0, _vertexIdx );
         _mesh.Render( _shader!, _primitiveType );
@@ -212,10 +200,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
 
     public void Dispose()
     {
-        if ( _ownsShader && ( _shader != null ) )
-        {
-            _shader.Dispose();
-        }
+        if ( _ownsShader && ( _shader != null ) ) _shader.Dispose();
 
         _mesh.Dispose();
     }
@@ -242,18 +227,13 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
 
         for ( var i = 0; i < numTexCoords; i++ )
-        {
             attribs.Add( new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES,
                                               2,
                                               ShaderProgram.TEXCOORD_ATTRIBUTE + i ) );
-        }
 
         var array = new VertexAttribute[ attribs.Count ];
 
-        for ( var i = 0; i < attribs.Count; i++ )
-        {
-            array[ i ] = attribs[ i ];
-        }
+        for ( var i = 0; i < attribs.Count; i++ ) array[ i ] = attribs[ i ];
 
         return array;
     }
@@ -272,18 +252,12 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
                    + ( hasNormals ? "attribute vec3 " + ShaderProgram.NORMAL_ATTRIBUTE + ";\n" : "" )
                    + ( hasColors ? "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" : "" );
 
-        for ( var i = 0; i < numTexCoords; i++ )
-        {
-            shader += "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + i + ";\n";
-        }
+        for ( var i = 0; i < numTexCoords; i++ ) shader += "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + i + ";\n";
 
         shader += "uniform mat4 u_projModelView;\n" //
                 + ( hasColors ? "varying vec4 v_col;\n" : "" );
 
-        for ( var i = 0; i < numTexCoords; i++ )
-        {
-            shader += "varying vec2 v_tex" + i + ";\n";
-        }
+        for ( var i = 0; i < numTexCoords; i++ ) shader += "varying vec2 v_tex" + i + ";\n";
 
         shader += "void main() {\n"
                 + "   gl_Position = u_projModelView * "
@@ -298,10 +272,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
                     + "   v_col.a *= 255.0 / 254.0;\n";
         }
 
-        for ( var i = 0; i < numTexCoords; i++ )
-        {
-            shader += "   v_tex" + i + " = " + ShaderProgram.TEXCOORD_ATTRIBUTE + i + ";\n";
-        }
+        for ( var i = 0; i < numTexCoords; i++ ) shader += "   v_tex" + i + " = " + ShaderProgram.TEXCOORD_ATTRIBUTE + i + ";\n";
 
         shader += "   gl_PointSize = 1.0;\n" + "}\n";
 
@@ -317,10 +288,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     {
         var shader = "#ifdef GL_ES\n" + "precision mediump float;\n" + "#endif\n";
 
-        if ( hasColors )
-        {
-            shader += "varying vec4 v_col;\n";
-        }
+        if ( hasColors ) shader += "varying vec4 v_col;\n";
 
         for ( var i = 0; i < numTexCoords; i++ )
         {
@@ -332,22 +300,13 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
                 + "   gl_FragColor = "
                 + ( hasColors ? "v_col" : "vec4(1, 1, 1, 1)" );
 
-        if ( numTexCoords > 0 )
-        {
-            shader += " * ";
-        }
+        if ( numTexCoords > 0 ) shader += " * ";
 
         for ( var i = 0; i < numTexCoords; i++ )
-        {
             if ( i == ( numTexCoords - 1 ) )
-            {
                 shader += " texture2D(u_sampler" + i + ",  v_tex" + i + ")";
-            }
             else
-            {
                 shader += " texture2D(u_sampler" + i + ",  v_tex" + i + ") *";
-            }
-        }
 
         shader += ";\n}";
 
@@ -364,10 +323,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         var fragmentShader = CreateFragmentShader( hasColors, numTexCoords );
         var program        = new ShaderProgram( vertexShader, fragmentShader );
 
-        if ( !program.IsCompiled )
-        {
-            throw new GdxRuntimeException( "Error compiling shader: " + program.Log );
-        }
+        if ( !program.IsCompiled ) throw new GdxRuntimeException( "Error compiling shader: " + program.Log );
 
         return program;
     }

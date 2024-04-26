@@ -42,13 +42,9 @@ public class ModelData
 
     public virtual void AddMesh( ModelMesh mesh )
     {
-        foreach ( ModelMesh other in Meshes )
-        {
+        foreach ( var other in Meshes )
             if ( ( other.ID != null ) && other.ID.Equals( mesh.ID ) )
-            {
                 throw new GdxRuntimeException( "Mesh with id '" + other.ID + "' already in model" );
-            }
-        }
 
         Meshes.Add( mesh );
     }

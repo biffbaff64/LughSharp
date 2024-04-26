@@ -136,13 +136,10 @@ public class VertexArray : IVertexData
         {
             for ( var i = 0; i < numAttributes; i++ )
             {
-                VertexAttribute attribute = Attributes.Get( i );
-                var             location  = shader.GetAttributeLocation( attribute.alias );
+                var attribute = Attributes.Get( i );
+                var location  = shader.GetAttributeLocation( attribute.alias );
 
-                if ( location < 0 )
-                {
-                    continue;
-                }
+                if ( location < 0 ) continue;
 
                 shader.EnableVertexAttribute( location );
 
@@ -174,13 +171,10 @@ public class VertexArray : IVertexData
         {
             for ( var i = 0; i < numAttributes; i++ )
             {
-                VertexAttribute attribute = Attributes.Get( i );
-                var             location  = locations[ i ];
+                var attribute = Attributes.Get( i );
+                var location  = locations[ i ];
 
-                if ( location < 0 )
-                {
-                    continue;
-                }
+                if ( location < 0 ) continue;
 
                 shader.EnableVertexAttribute( location );
 
@@ -221,10 +215,7 @@ public class VertexArray : IVertexData
 
         if ( locations == null )
         {
-            for ( var i = 0; i < numAttributes; i++ )
-            {
-                shader?.DisableVertexAttribute( Attributes.Get( i ).alias );
-            }
+            for ( var i = 0; i < numAttributes; i++ ) shader?.DisableVertexAttribute( Attributes.Get( i ).alias );
         }
         else
         {
@@ -232,10 +223,7 @@ public class VertexArray : IVertexData
             {
                 var location = locations[ i ];
 
-                if ( location >= 0 )
-                {
-                    shader?.DisableVertexAttribute( location );
-                }
+                if ( location >= 0 ) shader?.DisableVertexAttribute( location );
             }
         }
     }

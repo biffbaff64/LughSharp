@@ -32,7 +32,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///     The <see cref="CanCheck(T, bool)" /> method can be overridden to control
 ///     if a button check or uncheck is allowed.
 /// </para>
-public class ButtonGroup<T> where T : Button
+public class ButtonGroup< T > where T : Button
 {
     private readonly List< T > _buttons        = new();
     private readonly List< T > _checkedButtons = new( 1 );
@@ -74,23 +74,14 @@ public class ButtonGroup<T> where T : Button
 
     public void Add( params T[] buttons )
     {
-        if ( buttons == null )
-        {
-            throw new ArgumentException( "buttons cannot be null." );
-        }
+        if ( buttons == null ) throw new ArgumentException( "buttons cannot be null." );
 
-        for ( int i = 0, n = buttons.Length; i < n; i++ )
-        {
-            Add( buttons[ i ] );
-        }
+        for ( int i = 0, n = buttons.Length; i < n; i++ ) Add( buttons[ i ] );
     }
 
     public void Remove( T button )
     {
-        if ( button == null )
-        {
-            throw new ArgumentException( "button cannot be null." );
-        }
+        if ( button == null ) throw new ArgumentException( "button cannot be null." );
 
         button.ButtonGroup = null!;
 
@@ -100,15 +91,9 @@ public class ButtonGroup<T> where T : Button
 
     public void Remove( params T[] buttons )
     {
-        if ( buttons == null )
-        {
-            throw new ArgumentException( "buttons cannot be null." );
-        }
+        if ( buttons == null ) throw new ArgumentException( "buttons cannot be null." );
 
-        for ( int i = 0, n = buttons.Length; i < n; i++ )
-        {
-            Remove( buttons[ i ] );
-        }
+        for ( int i = 0, n = buttons.Length; i < n; i++ ) Remove( buttons[ i ] );
     }
 
     public void Clear()
@@ -122,17 +107,14 @@ public class ButtonGroup<T> where T : Button
     /// </summary>
     public void SetChecked( string text )
     {
-        if ( text == null )
-        {
-            throw new ArgumentException( "text cannot be null." );
-        }
+        if ( text == null ) throw new ArgumentException( "text cannot be null." );
 
         for ( int i = 0, n = _buttons.Count; i < n; i++ )
         {
             Button button = _buttons[ i ];
 
             if ( ( button.GetType() == typeof( TextButton ) )
-              && text.Equals( ( ( TextButton )button ).GetText() ) )
+              && text.Equals( ( ( TextButton ) button ).GetText() ) )
             {
                 button.SetChecked( true );
 
@@ -148,18 +130,12 @@ public class ButtonGroup<T> where T : Button
     /// <returns> True if the new state should be allowed. </returns>
     public bool CanCheck( T button, bool newState )
     {
-        if ( button.IsChecked == newState )
-        {
-            return false;
-        }
+        if ( button.IsChecked == newState ) return false;
 
         if ( !newState )
         {
             // Keep button checked to enforce minCheckCount.
-            if ( _checkedButtons.Count <= _minCheckCount )
-            {
-                return false;
-            }
+            if ( _checkedButtons.Count <= _minCheckCount ) return false;
 
             _checkedButtons.Remove( button );
         }
@@ -177,9 +153,7 @@ public class ButtonGroup<T> where T : Button
                     _minCheckCount = old;
                 }
                 else
-                {
                     return false;
-                }
             }
 
             _checkedButtons.Add( button );
@@ -201,7 +175,7 @@ public class ButtonGroup<T> where T : Button
 
         for ( int i = 0, n = _buttons.Count; i < n; i++ )
         {
-            T button = _buttons[ i ];
+            var button = _buttons[ i ];
             button.SetChecked( false );
         }
 
@@ -217,10 +191,7 @@ public class ButtonGroup<T> where T : Button
     /// <returns> The first checked button index, or -1. </returns>
     public int GetCheckedIndex()
     {
-        if ( _checkedButtons.Count > 0 )
-        {
-            return _buttons.IndexOf( _checkedButtons[ 0 ] );
-        }
+        if ( _checkedButtons.Count > 0 ) return _buttons.IndexOf( _checkedButtons[ 0 ] );
 
         return -1;
     }
@@ -249,10 +220,7 @@ public class ButtonGroup<T> where T : Button
     /// </summary>
     public void SetMaxCheckCount( int maxCheckCount )
     {
-        if ( maxCheckCount == 0 )
-        {
-            maxCheckCount = -1;
-        }
+        if ( maxCheckCount == 0 ) maxCheckCount = -1;
 
         _maxCheckCount = maxCheckCount;
     }

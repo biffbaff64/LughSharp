@@ -65,6 +65,7 @@ public class VertexAttribute
     ///     optional unit/index specifier, used for texture coordinates and bone weights.
     /// </summary>
     public readonly int unit;
+
     /// <summary>
     ///     The attribute <see cref="usage" />, used for identification.
     /// </summary>
@@ -227,10 +228,7 @@ public class VertexAttribute
     /// </summary>
     public new bool Equals( object obj )
     {
-        if ( obj is not VertexAttribute attribute )
-        {
-            return false;
-        }
+        if ( obj is not VertexAttribute attribute ) return false;
 
         return Equals( attribute );
     }
@@ -260,15 +258,15 @@ public class VertexAttribute
     public int GetSizeInBytes()
     {
         return type switch
-               {
-                   IGL.GL_FLOAT          => 4 * numComponents,
-                   IGL.GL_FIXED          => 4 * numComponents,
-                   IGL.GL_UNSIGNED_SHORT => 2 * numComponents,
-                   IGL.GL_SHORT          => 2 * numComponents,
-                   IGL.GL_UNSIGNED_BYTE  => numComponents,
-                   IGL.GL_BYTE           => numComponents,
-                   _                       => 0
-               };
+        {
+            IGL.GL_FLOAT          => 4 * numComponents,
+            IGL.GL_FIXED          => 4 * numComponents,
+            IGL.GL_UNSIGNED_SHORT => 2 * numComponents,
+            IGL.GL_SHORT          => 2 * numComponents,
+            IGL.GL_UNSIGNED_BYTE  => numComponents,
+            IGL.GL_BYTE           => numComponents,
+            _                     => 0
+        };
     }
 
     public int HashCode()

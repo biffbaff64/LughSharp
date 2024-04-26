@@ -137,17 +137,11 @@ public class Ray
     /// <inheritdoc />
     public override bool Equals( object? o )
     {
-        if ( o == this )
-        {
-            return true;
-        }
+        if ( o == this ) return true;
 
-        if ( ( o == null ) || ( o.GetType() != GetType() ) )
-        {
-            return false;
-        }
+        if ( ( o == null ) || ( o.GetType() != GetType() ) ) return false;
 
-        var r = ( Ray )o;
+        var r = ( Ray ) o;
 
         return direction.Equals( r.direction ) && origin.Equals( r.origin );
     }

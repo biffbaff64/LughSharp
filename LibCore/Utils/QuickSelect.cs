@@ -32,7 +32,7 @@ namespace LughSharp.LibCore.Utils;
 ///     http://en.wikipedia.org/wiki/Quickselect
 /// </summary>
 [PublicAPI]
-public class QuickSelect<T>
+public class QuickSelect< T >
 {
     private T[]            _array = null!;
     private IComparer< T > _comp  = null!;
@@ -47,20 +47,18 @@ public class QuickSelect<T>
 
     private int Partition( int left, int right, int pivot )
     {
-        T pivotValue = _array[ pivot ];
+        var pivotValue = _array[ pivot ];
 
         Swap( right, pivot );
 
         var storage = left;
 
         for ( var i = left; i < right; i++ )
-        {
             if ( _comp.Compare( _array[ i ], pivotValue ) < 0 )
             {
                 Swap( storage, i );
                 storage++;
             }
-        }
 
         Swap( right, storage );
 
@@ -69,10 +67,7 @@ public class QuickSelect<T>
 
     private int RecursiveSelect( int left, int right, int k )
     {
-        if ( left == right )
-        {
-            return left;
-        }
+        if ( left == right ) return left;
 
         var pivotIndex    = MedianOfThreePivot( left, right );
         var pivotNewIndex = Partition( left, right, pivotIndex );
@@ -81,17 +76,11 @@ public class QuickSelect<T>
         int result;
 
         if ( pivotDist == k )
-        {
             result = pivotNewIndex;
-        }
         else if ( k < pivotDist )
-        {
             result = RecursiveSelect( left, pivotNewIndex - 1, k );
-        }
         else
-        {
             result = RecursiveSelect( pivotNewIndex + 1, right, k - pivotDist );
-        }
 
         return result;
     }
@@ -102,27 +91,21 @@ public class QuickSelect<T>
     /// </summary>
     private int MedianOfThreePivot( int leftIdx, int rightIdx )
     {
-        T   left   = _array[ leftIdx ];
+        var left   = _array[ leftIdx ];
         var midIdx = ( leftIdx + rightIdx ) / 2;
-        T   mid    = _array[ midIdx ];
-        T   right  = _array[ rightIdx ];
+        var mid    = _array[ midIdx ];
+        var right  = _array[ rightIdx ];
 
         // spaghetti median of three algorithm
         // does at most 3 comparisons
         if ( _comp.Compare( left, mid ) > 0 )
         {
-            if ( _comp.Compare( mid, right ) > 0 )
-            {
-                return midIdx;
-            }
+            if ( _comp.Compare( mid, right ) > 0 ) return midIdx;
 
             return _comp.Compare( left, right ) > 0 ? rightIdx : leftIdx;
         }
 
-        if ( _comp.Compare( left, right ) > 0 )
-        {
-            return leftIdx;
-        }
+        if ( _comp.Compare( left, right ) > 0 ) return leftIdx;
 
         return _comp.Compare( mid, right ) > 0 ? rightIdx : midIdx;
     }

@@ -24,9 +24,7 @@
 
 
 using System.Runtime.Serialization;
-
 using LughSharp.LibCore.Audio.MP3Sharp.Support;
-
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Audio.MP3Sharp;
@@ -64,11 +62,11 @@ public class Mp3SharpException : Exception
     ///     Initializes a new MP3SharpException with serialized data.
     /// </summary>
     /// <param name="info">
-    ///     The <see cref="SerializationInfo"/> that holds the serialized object data about
+    ///     The <see cref="SerializationInfo" /> that holds the serialized object data about
     ///     the exception being thrown.
     /// </param>
     /// <param name="context">
-    ///     The <see cref="StreamingContext"/> that contains contextual information about
+    ///     The <see cref="StreamingContext" /> that contains contextual information about
     ///     the source or destination.
     /// </param>
     protected Mp3SharpException( SerializationInfo info, StreamingContext context )
@@ -84,12 +82,8 @@ public class Mp3SharpException : Exception
     public void PrintStackTrace( StreamWriter ps )
     {
         if ( InnerException == null )
-        {
             SupportClass.WriteStackTrace( this, ps );
-        }
         else
-        {
             SupportClass.WriteStackTrace( InnerException, Console.Error );
-        }
     }
 }

@@ -68,28 +68,21 @@ public class WaveFile : RiffFile
                                      short numChannels )
     {
         // Verify parameters...
-        if ( ( ( bitsPerSample != 8 ) && ( bitsPerSample != 16 ) ) || ( numChannels < 1 ) || ( numChannels > 2 ) )
-        {
-            return DDC_INVALID_CALL;
-        }
+        if ( ( ( bitsPerSample != 8 ) && ( bitsPerSample != 16 ) ) || ( numChannels < 1 ) || ( numChannels > 2 ) ) return DDC_INVALID_CALL;
 
         _waveFormat.Data.Config( samplingRate, bitsPerSample, numChannels );
 
         if ( stream != null )
-        {
             Open( stream, RF_WRITE );
-        }
         else
-        {
             Open( filename, RF_WRITE );
-        }
 
         sbyte[] theWave =
         {
-            ( sbyte )SupportClass.Identity( 'W' ),
-            ( sbyte )SupportClass.Identity( 'A' ),
-            ( sbyte )SupportClass.Identity( 'V' ),
-            ( sbyte )SupportClass.Identity( 'E' )
+            ( sbyte ) SupportClass.Identity( 'W' ),
+            ( sbyte ) SupportClass.Identity( 'A' ),
+            ( sbyte ) SupportClass.Identity( 'V' ),
+            ( sbyte ) SupportClass.Identity( 'E' )
         };
 
         var retcode = Write( theWave, 4 );
@@ -130,17 +123,11 @@ public class WaveFile : RiffFile
     {
         var rc = DDC_SUCCESS;
 
-        if ( CurrentFileMode() == RF_WRITE )
-        {
-            rc = Backpatch( _pcmDataOffset, _pcmData, 8 );
-        }
+        if ( CurrentFileMode() == RF_WRITE ) rc = Backpatch( _pcmDataOffset, _pcmData, 8 );
 
         if ( !_justWriteLengthBytes )
         {
-            if ( rc == DDC_SUCCESS )
-            {
-                rc = base.Close();
-            }
+            if ( rc == DDC_SUCCESS ) rc = base.Close();
         }
 
         return rc;
@@ -217,7 +204,7 @@ public class WaveFormatChunkData
         NumChannels       = newNumChannels;
         NumBitsPerSample  = newBitsPerSample;
         NumAvgBytesPerSec = ( NumChannels * NumSamplesPerSec * NumBitsPerSample ) / 8;
-        NumBlockAlign     = ( short )( ( NumChannels * NumBitsPerSample ) / 8 );
+        NumBlockAlign     = ( short ) ( ( NumChannels * NumBitsPerSample ) / 8 );
     }
 }
 

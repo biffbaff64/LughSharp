@@ -35,11 +35,11 @@ public class Crc16
 {
     private readonly static short _polynomial;
 
-    private short _crc = ( short )SupportClass.Identity( 0xFFFF );
+    private short _crc = ( short ) SupportClass.Identity( 0xFFFF );
 
     static Crc16()
     {
-        _polynomial = ( short )SupportClass.Identity( 0x8005 );
+        _polynomial = ( short ) SupportClass.Identity( 0x8005 );
     }
 
     /// <summary>
@@ -57,9 +57,7 @@ public class Crc16
                 _crc ^=  _polynomial;
             }
             else
-            {
                 _crc <<= 1;
-            }
         }
         while ( ( bitmask = SupportClass.URShift( bitmask, 1 ) ) != 0 );
     }
@@ -72,7 +70,7 @@ public class Crc16
     {
         var sum = _crc;
 
-        _crc = ( short )SupportClass.Identity( 0xFFFF );
+        _crc = ( short ) SupportClass.Identity( 0xFFFF );
 
         return sum;
     }

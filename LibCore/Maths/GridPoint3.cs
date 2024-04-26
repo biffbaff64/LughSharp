@@ -137,7 +137,7 @@ public class GridPoint3
         var yd = other.Y - Y;
         var zd = other.Z - Z;
 
-        return ( float )Math.Sqrt( ( xd * xd ) + ( yd * yd ) + ( zd * zd ) );
+        return ( float ) Math.Sqrt( ( xd * xd ) + ( yd * yd ) + ( zd * zd ) );
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ public class GridPoint3
         var yd = y - Y;
         var zd = z - Z;
 
-        return ( float )Math.Sqrt( ( xd * xd ) + ( yd * yd ) + ( zd * zd ) );
+        return ( float ) Math.Sqrt( ( xd * xd ) + ( yd * yd ) + ( zd * zd ) );
     }
 
     /// <summary>
@@ -225,17 +225,11 @@ public class GridPoint3
 
     public override bool Equals( object? o )
     {
-        if ( this == o )
-        {
-            return true;
-        }
+        if ( this == o ) return true;
 
-        if ( ( o == null ) || ( o.GetType() != GetType() ) )
-        {
-            return false;
-        }
+        if ( ( o == null ) || ( o.GetType() != GetType() ) ) return false;
 
-        var g = ( GridPoint3 )o;
+        var g = ( GridPoint3 ) o;
 
         return ( X == g.X ) && ( Y == g.Y ) && ( Z == g.Z );
     }

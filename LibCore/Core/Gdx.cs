@@ -42,6 +42,8 @@ public static class Gdx
     private static IGL20?        _gl20     = null;
     private static IGL30?        _gl30     = null;
 
+    private static GLBindings? _igl;
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -156,8 +158,6 @@ public static class Gdx
         }
         set => _net = value;
     }
-
-    private static GLBindings? _igl;
 
     public static GLBindings GL
     {

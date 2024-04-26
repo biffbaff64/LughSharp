@@ -24,7 +24,6 @@
 
 
 using LughSharp.LibCore.Maths.Collision;
-
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 using Quaternion = LughSharp.LibCore.Maths.Quaternion;
 
@@ -333,10 +332,7 @@ public abstract class Camera
                             float viewportWidth,
                             float viewportHeight )
     {
-        if ( worldCoords == null )
-        {
-            throw new NullReferenceException();
-        }
+        if ( worldCoords == null ) throw new NullReferenceException();
 
         worldCoords.Prj( Combined );
         worldCoords.X = ( ( viewportWidth * ( worldCoords.X + 1 ) ) / 2 ) + viewportX;

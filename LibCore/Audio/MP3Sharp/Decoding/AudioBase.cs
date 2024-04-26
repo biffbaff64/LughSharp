@@ -44,10 +44,7 @@ public abstract class AudioBase
     /// </summary>
     public virtual void AppendSamples( int channel, float[] samples )
     {
-        for ( var i = 0; i < 32; i++ )
-        {
-            Append( channel, Clip( samples[ i ] ) );
-        }
+        for ( var i = 0; i < 32; i++ ) Append( channel, Clip( samples[ i ] ) );
     }
 
     /// <summary>
@@ -56,10 +53,10 @@ public abstract class AudioBase
     private static short Clip( float sample )
     {
         return sample > 32767.0f
-            ? ( short )32767
-            : sample < -32768.0f
-                ? ( short )-32768
-                : ( short )sample;
+                   ? ( short ) 32767
+                   : sample < -32768.0f
+                       ? ( short ) -32768
+                       : ( short ) sample;
     }
 
     /// <summary>

@@ -44,10 +44,7 @@ public class SampleBuffer : AudioBase
 
         Init( sampleFrequency );
 
-        for ( var i = 0; i < numberOfChannels; ++i )
-        {
-            _bufferp[ i ] = ( short )i;
-        }
+        for ( var i = 0; i < numberOfChannels; ++i ) _bufferp[ i ] = ( short ) i;
     }
 
     public virtual int SampleFrequency { get; set; }
@@ -81,7 +78,7 @@ public class SampleBuffer : AudioBase
 
             //UPGRADE_WARNING: Narrowing conversions may produce unexpected results in C#.
             //'ms-help://MS.VSCC.2003/commoner/redir/redirect.htm?keyword="jlca1042"'
-            var s = ( short )fs;
+            var s = ( short ) fs;
 
             _buffer[ pos ] =  s;
             pos            += _channels;
@@ -107,10 +104,7 @@ public class SampleBuffer : AudioBase
     /// </summary>
     public override void ClearBuffer()
     {
-        for ( var i = 0; i < _channels; ++i )
-        {
-            _bufferp[ i ] = ( short )i;
-        }
+        for ( var i = 0; i < _channels; ++i ) _bufferp[ i ] = ( short ) i;
     }
 
     /// <summary>

@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Graphics.FrameBuffers;
 
 [PublicAPI]
-public class GLFrameBufferBuilder<TU> where TU : GLFrameBuffer< GLTexture >
+public class GLFrameBufferBuilder< TU > where TU : GLFrameBuffer< GLTexture >
 {
     public GLFrameBufferBuilder( int width, int height )
     {

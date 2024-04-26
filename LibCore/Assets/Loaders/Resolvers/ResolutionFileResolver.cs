@@ -81,10 +81,7 @@ internal class ResolutionFileResolver : IFileHandleResolver
     /// </param>
     public ResolutionFileResolver( IFileHandleResolver baseResolver, params Resolution[] descs )
     {
-        if ( descs.Length == 0 )
-        {
-            throw new ArgumentException( "At least one Resolution needs to be supplied." );
-        }
+        if ( descs.Length == 0 ) throw new ArgumentException( "At least one Resolution needs to be supplied." );
 
         this.baseResolver = baseResolver;
         descriptors       = descs;
@@ -92,27 +89,21 @@ internal class ResolutionFileResolver : IFileHandleResolver
 
     public FileInfo Resolve( string fileName )
     {
-        Resolution bestResolution = Choose( descriptors );
-        FileInfo   originalHandle = new( fileName );
-        FileInfo   handle         = baseResolver.Resolve( Resolve( originalHandle, bestResolution.Folder ) );
+        var      bestResolution = Choose( descriptors );
+        FileInfo originalHandle = new( fileName );
+        var      handle         = baseResolver.Resolve( Resolve( originalHandle, bestResolution.Folder ) );
 
-        if ( !handle.Exists )
-        {
-            handle = baseResolver.Resolve( fileName );
-        }
+        if ( !handle.Exists ) handle = baseResolver.Resolve( fileName );
 
         return handle;
     }
 
     protected static string Resolve( FileInfo originalHandle, string suffix )
     {
-        var            parentstring = "";
-        DirectoryInfo? parent       = originalHandle.Directory;
+        var parentstring = "";
+        var parent       = originalHandle.Directory;
 
-        if ( ( parent != null ) && !parent.Name.Equals( "" ) )
-        {
-            parentstring = parent + "/";
-        }
+        if ( ( parent != null ) && !parent.Name.Equals( "" ) ) parentstring = parent + "/";
 
         return parentstring + suffix + "/" + originalHandle.Name;
     }
@@ -123,36 +114,32 @@ internal class ResolutionFileResolver : IFileHandleResolver
         var h = Gdx.Graphics.BackBufferHeight;
 
         // Prefer the shortest side.
-        Resolution best = descs[ 0 ];
+        var best = descs[ 0 ];
 
         if ( w < h )
         {
             for ( int i = 0, n = descs.Length; i < n; i++ )
             {
-                Resolution other = descs[ i ];
+                var other = descs[ i ];
 
                 if ( ( w >= other.PortraitWidth )
                   && ( other.PortraitWidth >= best.PortraitWidth )
                   && ( h >= other.PortraitHeight )
                   && ( other.PortraitHeight >= best.PortraitHeight ) )
-                {
                     best = descs[ i ];
-                }
             }
         }
         else
         {
             for ( int i = 0, n = descs.Length; i < n; i++ )
             {
-                Resolution other = descs[ i ];
+                var other = descs[ i ];
 
                 if ( ( w >= other.PortraitHeight )
                   && ( other.PortraitHeight >= best.PortraitHeight )
                   && ( h >= other.PortraitWidth )
                   && ( other.PortraitWidth >= best.PortraitWidth ) )
-                {
                     best = descs[ i ];
-                }
             }
         }
 

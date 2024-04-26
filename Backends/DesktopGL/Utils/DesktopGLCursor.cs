@@ -37,10 +37,7 @@ public class DesktopGLCursor : ICursor
     {
         Window = window;
 
-        if ( pixmap.GetFormat() != Pixmap.Format.RGBA8888 )
-        {
-            throw new GdxRuntimeException( "Cursor image pixmap should be in RGBA8888 format." );
-        }
+        if ( pixmap.GetFormat() != Pixmap.Format.RGBA8888 ) throw new GdxRuntimeException( "Cursor image pixmap should be in RGBA8888 format." );
 
         if ( ( pixmap.Width & ( pixmap.Width - 1 ) ) != 0 )
         {
@@ -90,7 +87,7 @@ public class DesktopGLCursor : ICursor
     public static void SetSystemCursor( GLFWWindow window, ICursor.SystemCursor systemCursor )
     {
         //@formatter:off
-        Cursor glCursor = systemCursor switch
+        var glCursor = systemCursor switch
         {
             ICursor.SystemCursor.Ibeam            => Glfw.CreateStandardCursor( CursorShape.IBeam ),
             ICursor.SystemCursor.Crosshair        => Glfw.CreateStandardCursor( CursorShape.Crosshair ),
@@ -108,10 +105,7 @@ public class DesktopGLCursor : ICursor
 
     public void Dispose()
     {
-        if ( PixmapCopy == null )
-        {
-            throw new GdxRuntimeException( "Cursor already disposed" );
-        }
+        if ( PixmapCopy == null ) throw new GdxRuntimeException( "Cursor already disposed" );
 
         Cursors.Remove( this );
         PixmapCopy.Dispose();
@@ -124,21 +118,15 @@ public class DesktopGLCursor : ICursor
     {
         for ( var i = Cursors.Count - 1; i >= 0; i-- )
         {
-            DesktopGLCursor cursor = Cursors[ i ];
+            var cursor = Cursors[ i ];
 
-            if ( cursor.Window.Equals( glWindow ) )
-            {
-                Cursors.RemoveAt( i );
-            }
+            if ( cursor.Window.Equals( glWindow ) ) Cursors.RemoveAt( i );
         }
     }
 
     public static void DisposeSystemCursors()
     {
-        foreach ( Cursor systemCursor in SystemCursors.Values )
-        {
-            Glfw.DestroyCursor( systemCursor );
-        }
+        foreach ( var systemCursor in SystemCursors.Values ) Glfw.DestroyCursor( systemCursor );
 
         SystemCursors.Clear();
     }

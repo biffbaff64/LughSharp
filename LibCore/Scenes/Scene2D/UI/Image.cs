@@ -40,7 +40,7 @@ public class Image : Widget
 
     private Scaling _scaling;
 
-    public Image() : this( ( IDrawable )null! )
+    public Image() : this( ( IDrawable ) null! )
     {
     }
 
@@ -95,53 +95,38 @@ public class Image : Widget
 
     public override void SetLayout()
     {
-        if ( _drawable == null )
-        {
-            return;
-        }
+        if ( _drawable == null ) return;
 
         var regionWidth  = _drawable.MinWidth;
         var regionHeight = _drawable.MinHeight;
         var width        = Width;
         var height       = Height;
 
-        Vector2 size = _scaling.Apply( regionWidth, regionHeight, width, height );
+        var size = _scaling.Apply( regionWidth, regionHeight, width, height );
 
         ImageWidth  = size.X;
         ImageHeight = size.Y;
 
         if ( ( Alignment & Align.LEFT ) != 0 )
-        {
             ImageX = 0;
-        }
         else if ( ( Alignment & Align.RIGHT ) != 0 )
-        {
-            ImageX = ( int )( width - ImageWidth );
-        }
+            ImageX = ( int ) ( width - ImageWidth );
         else
-        {
-            ImageX = ( int )( ( width / 2 ) - ( ImageWidth / 2 ) );
-        }
+            ImageX = ( int ) ( ( width / 2 ) - ( ImageWidth / 2 ) );
 
         if ( ( Alignment & Align.TOP ) != 0 )
-        {
-            ImageY = ( int )( height - ImageHeight );
-        }
+            ImageY = ( int ) ( height - ImageHeight );
         else if ( ( Alignment & Align.BOTTOM ) != 0 )
-        {
             ImageY = 0;
-        }
         else
-        {
-            ImageY = ( int )( ( height / 2 ) - ( ImageHeight / 2 ) );
-        }
+            ImageY = ( int ) ( ( height / 2 ) - ( ImageHeight / 2 ) );
     }
 
     public new void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
 
-        Color color = Color ?? Color.Black;
+        var color = Color ?? Color.Black;
 
         batch.SetColor( color.R, color.G, color.B, color.A * parentAlpha );
 
@@ -157,26 +142,23 @@ public class Image : Widget
             if ( scaleX is not 1 || scaleY is not 1 || rotation is not 0 )
             {
                 drawable.Draw(
-                    batch,
-                    x + ImageX,
-                    y + ImageY,
-                    OriginX - ImageX,
-                    OriginY - ImageY,
-                    ImageWidth,
-                    ImageHeight,
-                    scaleX,
-                    scaleY,
-                    rotation
-                    );
+                              batch,
+                              x + ImageX,
+                              y + ImageY,
+                              OriginX - ImageX,
+                              OriginY - ImageY,
+                              ImageWidth,
+                              ImageHeight,
+                              scaleX,
+                              scaleY,
+                              rotation
+                             );
 
                 return;
             }
         }
 
-        if ( _drawable != null )
-        {
-            _drawable.Draw( batch, x + ImageX, y + ImageY, ImageWidth * scaleX, ImageHeight * scaleY );
-        }
+        if ( _drawable != null ) _drawable.Draw( batch, x + ImageX, y + ImageY, ImageWidth * scaleX, ImageHeight * scaleY );
     }
 
     public void SetDrawable( Skin skin, string drawableName )
@@ -193,22 +175,14 @@ public class Image : Widget
     /// <param name="drawable"> May be null. </param>
     public void SetDrawable( IDrawable? drawable )
     {
-        if ( _drawable == drawable )
-        {
-            return;
-        }
+        if ( _drawable == drawable ) return;
 
         if ( drawable != null )
         {
-            if ( !GetPrefWidth().Equals( drawable.MinWidth ) || !GetPrefHeight().Equals( drawable.MinHeight ) )
-            {
-                InvalidateHierarchy();
-            }
+            if ( !GetPrefWidth().Equals( drawable.MinWidth ) || !GetPrefHeight().Equals( drawable.MinHeight ) ) InvalidateHierarchy();
         }
         else
-        {
             InvalidateHierarchy();
-        }
 
         _drawable = drawable;
     }
@@ -238,20 +212,14 @@ public class Image : Widget
 
     public float GetPrefWidth()
     {
-        if ( _drawable != null )
-        {
-            return _drawable.MinWidth;
-        }
+        if ( _drawable != null ) return _drawable.MinWidth;
 
         return 0;
     }
 
     public float GetPrefHeight()
     {
-        if ( _drawable != null )
-        {
-            return _drawable.MinHeight;
-        }
+        if ( _drawable != null ) return _drawable.MinHeight;
 
         return 0;
     }
@@ -260,18 +228,12 @@ public class Image : Widget
     {
         var name = Name;
 
-        if ( name != null )
-        {
-            return name;
-        }
+        if ( name != null ) return name;
 
         var className = GetType().Name;
         var dotIndex  = className.LastIndexOf( '.' );
 
-        if ( dotIndex != -1 )
-        {
-            className = className.Substring( dotIndex + 1 );
-        }
+        if ( dotIndex != -1 ) className = className.Substring( dotIndex + 1 );
 
         return ( className.IndexOf( '$' ) != -1 ? "Image " : "" ) + className + ": " + _drawable;
     }

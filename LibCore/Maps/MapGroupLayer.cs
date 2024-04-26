@@ -38,7 +38,7 @@ public class MapGroupLayer : MapLayer
 
         for ( var i = 0; i < Layers.Size(); i++ )
         {
-            MapLayer child = Layers.Get( i );
+            var child = Layers.Get( i );
             child.InvalidateRenderOffset();
         }
     }

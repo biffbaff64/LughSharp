@@ -36,7 +36,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 ///     </para>
 /// </summary>
 /// <seealso cref="SortedSet{T}" />
-public class Selection<T> : IDisableable, IDisposable
+public class Selection< T > : IDisableable, IDisposable
 {
     private readonly SortedSet< T > _old = new();
     public           SortedSet< T > Selected                 { get; set; } = new();
@@ -68,10 +68,7 @@ public class Selection<T> : IDisableable, IDisposable
     {
         ArgumentNullException.ThrowIfNull( item );
 
-        if ( IsDisabled )
-        {
-            return;
-        }
+        if ( IsDisabled ) return;
 
         Snapshot();
 
@@ -79,10 +76,7 @@ public class Selection<T> : IDisableable, IDisposable
         {
             if ( ( Toggle || UIUtils.Ctrl() ) && Selected.Contains( item ) )
             {
-                if ( Required && ( Selected.Count == 1 ) )
-                {
-                    return;
-                }
+                if ( Required && ( Selected.Count == 1 ) ) return;
 
                 Selected.Remove( item );
                 LastSelected = default( T? );
@@ -93,31 +87,21 @@ public class Selection<T> : IDisableable, IDisposable
 
                 if ( !Multiple || ( !Toggle && !UIUtils.Ctrl() ) )
                 {
-                    if ( ( Selected.Count == 1 ) && Selected.Contains( item ) )
-                    {
-                        return;
-                    }
+                    if ( ( Selected.Count == 1 ) && Selected.Contains( item ) ) return;
 
                     modified = Selected.Count > 0;
                     Selected.Clear();
                 }
 
-                if ( !Selected.Add( item ) && !modified )
-                {
-                    return;
-                }
+                if ( !Selected.Add( item ) && !modified ) return;
 
                 LastSelected = item;
             }
 
             if ( FireChangeEvent() )
-            {
                 Revert();
-            }
             else
-            {
                 Changed();
-            }
         }
         finally
         {
@@ -160,20 +144,14 @@ public class Selection<T> : IDisableable, IDisposable
     {
         _old.Clear();
 
-        foreach ( T item in Selected )
-        {
-            _old.Add( item );
-        }
+        foreach ( var item in Selected ) _old.Add( item );
     }
 
     public void Revert()
     {
         Selected.Clear();
 
-        foreach ( T item in _old )
-        {
-            Selected.Add( item );
-        }
+        foreach ( var item in _old ) Selected.Add( item );
     }
 
     public void Cleanup()
@@ -188,19 +166,14 @@ public class Selection<T> : IDisableable, IDisposable
     {
         ArgumentNullException.ThrowIfNull( item );
 
-        if ( ( Selected.Count == 1 ) && Equals( Selected.First(), item ) )
-        {
-            return;
-        }
+        if ( ( Selected.Count == 1 ) && Equals( Selected.First(), item ) ) return;
 
         Snapshot();
         Selected.Clear();
         Selected.Add( item );
 
         if ( ProgrammaticChangeEvents && FireChangeEvent() )
-        {
             Revert();
-        }
         else
         {
             LastSelected = item;
@@ -222,25 +195,17 @@ public class Selection<T> : IDisableable, IDisposable
 
         for ( int i = 0, n = items.Count; i < n; i++ )
         {
-            T item = items[ i ];
+            var item = items[ i ];
 
-            if ( item == null )
-            {
-                throw new ArgumentException( "item cannot be null." );
-            }
+            if ( item == null ) throw new ArgumentException( "item cannot be null." );
 
-            if ( Selected.Add( item ) )
-            {
-                added = true;
-            }
+            if ( Selected.Add( item ) ) added = true;
         }
 
         if ( added )
         {
             if ( ProgrammaticChangeEvents && FireChangeEvent() )
-            {
                 Revert();
-            }
             else if ( items.Count > 0 )
             {
                 LastSelected = items.Peek();
@@ -258,15 +223,10 @@ public class Selection<T> : IDisableable, IDisposable
     {
         ArgumentNullException.ThrowIfNull( item );
 
-        if ( !Selected.Add( item ) )
-        {
-            return;
-        }
+        if ( !Selected.Add( item ) ) return;
 
         if ( ProgrammaticChangeEvents && FireChangeEvent() )
-        {
             Selected.Remove( item );
-        }
         else
         {
             LastSelected = item;
@@ -285,25 +245,17 @@ public class Selection<T> : IDisableable, IDisposable
 
         for ( int i = 0, n = items.Count; i < n; i++ )
         {
-            T item = items[ i ];
+            var item = items[ i ];
 
-            if ( item == null )
-            {
-                throw new ArgumentException( "item cannot be null." );
-            }
+            if ( item == null ) throw new ArgumentException( "item cannot be null." );
 
-            if ( Selected.Add( item ) )
-            {
-                added = true;
-            }
+            if ( Selected.Add( item ) ) added = true;
         }
 
         if ( added )
         {
             if ( ProgrammaticChangeEvents && FireChangeEvent() )
-            {
                 Revert();
-            }
             else
             {
                 LastSelected = items.Peek();
@@ -318,15 +270,10 @@ public class Selection<T> : IDisableable, IDisposable
     {
         ArgumentNullException.ThrowIfNull( item );
 
-        if ( !Selected.Remove( item ) )
-        {
-            return;
-        }
+        if ( !Selected.Remove( item ) ) return;
 
         if ( ProgrammaticChangeEvents && FireChangeEvent() )
-        {
             Selected.Add( item );
-        }
         else
         {
             LastSelected = default( T? );
@@ -342,25 +289,17 @@ public class Selection<T> : IDisableable, IDisposable
 
         for ( int i = 0, n = items.Count; i < n; i++ )
         {
-            T item = items[ i ];
+            var item = items[ i ];
 
-            if ( item == null )
-            {
-                throw new ArgumentException( "item cannot be null." );
-            }
+            if ( item == null ) throw new ArgumentException( "item cannot be null." );
 
-            if ( Selected.Remove( item ) )
-            {
-                removed = true;
-            }
+            if ( Selected.Remove( item ) ) removed = true;
         }
 
         if ( removed )
         {
             if ( ProgrammaticChangeEvents && FireChangeEvent() )
-            {
                 Revert();
-            }
             else
             {
                 LastSelected = default( T? );
@@ -373,19 +312,14 @@ public class Selection<T> : IDisableable, IDisposable
 
     public void Clear()
     {
-        if ( Selected.Count == 0 )
-        {
-            return;
-        }
+        if ( Selected.Count == 0 ) return;
 
         Snapshot();
 
         Selected.Clear();
 
         if ( ProgrammaticChangeEvents && FireChangeEvent() )
-        {
             Revert();
-        }
         else
         {
             LastSelected = default( T? );
@@ -409,17 +343,11 @@ public class Selection<T> : IDisableable, IDisposable
     /// <returns> true if the change should be undone. </returns>
     public virtual bool FireChangeEvent()
     {
-        if ( Actor == null )
-        {
-            return false;
-        }
+        if ( Actor == null ) return false;
 
-        ChangeListener.ChangeEvent? changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
+        var changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
 
-        if ( changeEvent == null )
-        {
-            return false;
-        }
+        if ( changeEvent == null ) return false;
 
         try
         {
@@ -433,10 +361,7 @@ public class Selection<T> : IDisableable, IDisposable
 
     public bool Contains( T? item )
     {
-        if ( item == null )
-        {
-            return false;
-        }
+        if ( item == null ) return false;
 
         return Selected.Contains( item );
     }
@@ -447,10 +372,7 @@ public class Selection<T> : IDisableable, IDisposable
     /// </summary>
     public T? GetLastSelected()
     {
-        if ( LastSelected != null )
-        {
-            return LastSelected;
-        }
+        if ( LastSelected != null ) return LastSelected;
 
         return Selected.Count > 0 ? Selected.First() : default( T? );
     }

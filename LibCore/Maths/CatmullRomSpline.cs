@@ -25,7 +25,7 @@
 
 namespace LughSharp.LibCore.Maths;
 
-public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
+public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
 {
     private T? _tmp;
     private T? _tmp2;
@@ -48,7 +48,7 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     {
         var n = SpanCount;
         var u = t * n;
-        var i = t >= 1f ? n - 1 : ( int )u;
+        var i = t >= 1f ? n - 1 : ( int ) u;
         u -= i;
 
         return ValueAt( outp, i, u );
@@ -58,7 +58,7 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     {
         var n = SpanCount;
         var u = t * n;
-        var i = t >= 1f ? n - 1 : ( int )u;
+        var i = t >= 1f ? n - 1 : ( int ) u;
         u -= i;
 
         return DerivativeAt( outp, i, u );
@@ -83,12 +83,9 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
             for ( var i = 0; i < samples; ++i )
             {
                 _tmp2.Set( _tmp3 );
-                ValueAt( _tmp3, i / ( ( float )samples - 1 ) );
+                ValueAt( _tmp3, i / ( ( float ) samples - 1 ) );
 
-                if ( i > 0 )
-                {
-                    tempLength += _tmp2.Dst( _tmp3 );
-                }
+                if ( i > 0 ) tempLength += _tmp2.Dst( _tmp3 );
             }
         }
 
@@ -114,13 +111,13 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     public T ValueAt( T outp, int span, float u )
     {
         return Calculate(
-            outp,
-            Continuous ? span : span + 1,
-            u,
-            ControlPoints,
-            Continuous,
-            _tmp
-            );
+                         outp,
+                         Continuous ? span : span + 1,
+                         u,
+                         ControlPoints,
+                         Continuous,
+                         _tmp
+                        );
     }
 
     /// <summary>
@@ -129,13 +126,13 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     public T DerivativeAt( T outp, int span, float u )
     {
         return Derivative(
-            outp,
-            Continuous ? span : span + 1,
-            u,
-            ControlPoints,
-            Continuous,
-            _tmp
-            );
+                          outp,
+                          Continuous ? span : span + 1,
+                          u,
+                          ControlPoints,
+                          Continuous,
+                          _tmp
+                         );
     }
 
     /// <summary>
@@ -153,10 +150,7 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     /// </returns>
     public int Nearest( T inp, int start, int count )
     {
-        while ( start < 0 )
-        {
-            start += SpanCount;
-        }
+        while ( start < 0 ) start += SpanCount;
 
         var result = start % SpanCount;
         var dst    = inp.Dst2( ControlPoints[ result ] );
@@ -184,9 +178,9 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     public float Approximate( in T inp, int near )
     {
         var n        = near;
-        T   nearest  = ControlPoints[ n ];
-        T   previous = ControlPoints[ n > 0 ? n - 1 : SpanCount - 1 ];
-        T   next     = ControlPoints[ ( n + 1 ) % SpanCount ];
+        var nearest  = ControlPoints[ n ];
+        var previous = ControlPoints[ n > 0 ? n - 1 : SpanCount - 1 ];
+        var next     = ControlPoints[ ( n + 1 ) % SpanCount ];
         var dstPrev2 = inp.Dst2( previous );
         var dstNext2 = inp.Dst2( next );
         T   p1, p2, p3;
@@ -208,7 +202,7 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         var l1Sqr = p1.Dst2( p2 );
         var l2Sqr = p3.Dst2( p2 );
         var l3Sqr = p3.Dst2( p1 );
-        var l1    = ( float )Math.Sqrt( l1Sqr );
+        var l1    = ( float ) Math.Sqrt( l1Sqr );
         var s     = ( ( l2Sqr + l1Sqr ) - l3Sqr ) / ( 2f * l1 );
         var u     = MathUtils.Clamp( ( l1 - s ) / l1, 0f, 1f );
 
@@ -228,7 +222,7 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     {
         var n = continuous ? points.Length : points.Length - 3;
         var u = t * n;
-        var i = t >= 1f ? n - 1 : ( int )u;
+        var i = t >= 1f ? n - 1 : ( int ) u;
 
         u -= i;
 
@@ -261,19 +255,12 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         outp.Set( points[ i ] ).Scl( ( ( 1.5f * u3 ) - ( 2.5f * u2 ) ) + 1.0f );
 
         if ( ( tmp != null ) && ( continuous || ( i > 0 ) ) )
-        {
             outp.Add( tmp.Set( points[ ( ( n + i ) - 1 ) % n ] ).Scl( ( ( -0.5f * u3 ) + u2 ) - ( 0.5f * u ) ) );
-        }
 
         if ( ( tmp != null ) && ( continuous || ( i < ( n - 1 ) ) ) )
-        {
             outp.Add( tmp.Set( points[ ( i + 1 ) % n ] ).Scl( ( -1.5f * u3 ) + ( 2f * u2 ) + ( 0.5f * u ) ) );
-        }
 
-        if ( ( tmp != null ) && ( continuous || ( i < ( n - 2 ) ) ) )
-        {
-            outp.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scl( ( 0.5f * u3 ) - ( 0.5f * u2 ) ) );
-        }
+        if ( ( tmp != null ) && ( continuous || ( i < ( n - 2 ) ) ) ) outp.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scl( ( 0.5f * u3 ) - ( 0.5f * u2 ) ) );
 
         return outp;
     }
@@ -295,7 +282,7 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
     {
         var n = continuous ? points.Length : points.Length - 3;
         var u = t * n;
-        var i = t >= 1f ? n - 1 : ( int )u;
+        var i = t >= 1f ? n - 1 : ( int ) u;
         u -= i;
 
         return Derivative( outp, i, u, points, continuous, tmp );
@@ -335,8 +322,8 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         {
             outp.Add
                 (
-                tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
-                   .Scl( ( -0.5f + ( u * 2 ) ) - ( u2 * 1.5f ) )
+                 tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
+                    .Scl( ( -0.5f + ( u * 2 ) ) - ( u2 * 1.5f ) )
                 );
         }
 
@@ -344,8 +331,8 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         {
             outp.Add
                 (
-                tmp.Set( points[ ( i + 1 ) % n ] )
-                   .Scl( ( 0.5f + ( u * 4 ) ) - ( u2 * 4.5f ) )
+                 tmp.Set( points[ ( i + 1 ) % n ] )
+                    .Scl( ( 0.5f + ( u * 4 ) ) - ( u2 * 4.5f ) )
                 );
         }
 
@@ -353,8 +340,8 @@ public class CatmullRomSpline<T> : IPath< T > where T : IVector< T >
         {
             outp.Add
                 (
-                tmp.Set( points[ ( i + 2 ) % n ] )
-                   .Scl( -u + ( u2 * 1.5f ) )
+                 tmp.Set( points[ ( i + 2 ) % n ] )
+                    .Scl( -u + ( u2 * 1.5f ) )
                 );
         }
 

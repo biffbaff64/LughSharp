@@ -48,18 +48,15 @@ public class Sprite : TextureRegion
     /// </summary>
     public void Set( Sprite sprite )
     {
-        if ( sprite == null )
-        {
-            throw new ArgumentException( "sprite cannot be null." );
-        }
+        if ( sprite == null ) throw new ArgumentException( "sprite cannot be null." );
 
         Array.Copy(
-            sprite.Vertices,
-            0,
-            Vertices,
-            0,
-            SpriteSize
-            );
+                   sprite.Vertices,
+                   0,
+                   Vertices,
+                   0,
+                   SpriteSize
+                  );
 
         Texture      = sprite.Texture;
         U            = sprite.U;
@@ -94,10 +91,7 @@ public class Sprite : TextureRegion
         Width  = width;
         Height = height;
 
-        if ( _dirty )
-        {
-            return;
-        }
+        if ( _dirty ) return;
 
         if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
         {
@@ -136,10 +130,7 @@ public class Sprite : TextureRegion
         Width  = width;
         Height = height;
 
-        if ( _dirty )
-        {
-            return;
-        }
+        if ( _dirty ) return;
 
         if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
         {
@@ -175,10 +166,7 @@ public class Sprite : TextureRegion
         _x = x;
         _y = y;
 
-        if ( _dirty )
-        {
-            return;
-        }
+        if ( _dirty ) return;
 
         if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
         {
@@ -228,10 +216,7 @@ public class Sprite : TextureRegion
     {
         X += xAmount;
 
-        if ( _dirty )
-        {
-            return;
-        }
+        if ( _dirty ) return;
 
         if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
         {
@@ -255,10 +240,7 @@ public class Sprite : TextureRegion
     {
         Y += yAmount;
 
-        if ( _dirty )
-        {
-            return;
-        }
+        if ( _dirty ) return;
 
         if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
         {
@@ -283,10 +265,7 @@ public class Sprite : TextureRegion
         X += xAmount;
         Y += yAmount;
 
-        if ( _dirty )
-        {
-            return;
-        }
+        if ( _dirty ) return;
 
         if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
         {
@@ -362,10 +341,7 @@ public class Sprite : TextureRegion
     /// </summary>
     public void Rotate( float degrees )
     {
-        if ( degrees == 0 )
-        {
-            return;
-        }
+        if ( degrees == 0 ) return;
 
         _rotation += degrees;
         _dirty    =  true;
@@ -623,15 +599,9 @@ public class Sprite : TextureRegion
         var performX = false;
         var performY = false;
 
-        if ( IsFlipX() != flipx )
-        {
-            performX = true;
-        }
+        if ( IsFlipX() != flipx ) performX = true;
 
-        if ( IsFlipY() != flipy )
-        {
-            performY = true;
-        }
+        if ( IsFlipY() != flipy ) performY = true;
 
         Flip( performX, performY );
     }
@@ -841,7 +811,7 @@ public class Sprite : TextureRegion
     {
         set
         {
-            Color color = Color;
+            var color = Color;
 
             Color.Abgr8888ToColor( ref color, value );
 
@@ -939,7 +909,7 @@ public class Sprite : TextureRegion
         {
             var intBits = NumberUtils.FloatToIntColor( Vertices[ IBatch.C1 ] );
 
-            Color color = _color;
+            var color = _color;
 
             color.R = ( intBits & 0xff ) / 255f;
             color.G = ( ( intBits >>> 8 ) & 0xff ) / 255f;
@@ -997,10 +967,7 @@ public class Sprite : TextureRegion
         {
             _x = value;
 
-            if ( _dirty )
-            {
-                return;
-            }
+            if ( _dirty ) return;
 
             if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
             {
@@ -1031,10 +998,7 @@ public class Sprite : TextureRegion
         {
             _y = value;
 
-            if ( _dirty )
-            {
-                return;
-            }
+            if ( _dirty ) return;
 
             if ( ( _rotation != 0 ) || ScaleX is not 1 || ScaleY is not 1 )
             {

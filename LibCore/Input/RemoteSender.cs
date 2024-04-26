@@ -85,10 +85,7 @@ public class RemoteSender : IInputProcessor
     {
         lock ( this )
         {
-            if ( !_connected )
-            {
-                return false;
-            }
+            if ( !_connected ) return false;
         }
 
         Debug.Assert( _out != null, nameof( _out ) + " is null" );
@@ -113,10 +110,7 @@ public class RemoteSender : IInputProcessor
     {
         lock ( this )
         {
-            if ( !_connected )
-            {
-                return false;
-            }
+            if ( !_connected ) return false;
         }
 
         try
@@ -139,10 +133,7 @@ public class RemoteSender : IInputProcessor
     {
         lock ( this )
         {
-            if ( !_connected )
-            {
-                return false;
-            }
+            if ( !_connected ) return false;
         }
 
         try
@@ -165,10 +156,7 @@ public class RemoteSender : IInputProcessor
     {
         lock ( this )
         {
-            if ( !_connected )
-            {
-                return false;
-            }
+            if ( !_connected ) return false;
         }
 
         Debug.Assert( _out != null, nameof( _out ) + " is null" );
@@ -195,10 +183,7 @@ public class RemoteSender : IInputProcessor
     {
         lock ( this )
         {
-            if ( !_connected )
-            {
-                return false;
-            }
+            if ( !_connected ) return false;
         }
 
         Debug.Assert( _out != null, nameof( _out ) + " is null" );
@@ -225,10 +210,7 @@ public class RemoteSender : IInputProcessor
     {
         lock ( this )
         {
-            if ( !_connected )
-            {
-                return false;
-            }
+            if ( !_connected ) return false;
         }
 
         Debug.Assert( _out != null, nameof( _out ) + " is null" );
@@ -265,10 +247,7 @@ public class RemoteSender : IInputProcessor
     {
         lock ( this )
         {
-            if ( !_connected )
-            {
-                return;
-            }
+            if ( !_connected ) return;
         }
 
         Debug.Assert( _out != null, nameof( _out ) + " is null" );

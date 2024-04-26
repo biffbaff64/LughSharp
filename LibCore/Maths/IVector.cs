@@ -30,7 +30,7 @@ namespace LughSharp.LibCore.Maths;
 ///     a reference to itself in all modification methods. See Vector2 and
 ///     Vector3 for specific implementations.
 /// </summary>
-public interface IVector<T> where T : IVector< T >
+public interface IVector< T > where T : IVector< T >
 {
     /// <returns> a copy of this vector </returns>
     T Cpy();

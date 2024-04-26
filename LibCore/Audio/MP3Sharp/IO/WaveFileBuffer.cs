@@ -46,13 +46,10 @@ public class WaveFileBuffer : AudioBase
         _bufferp  = new short[ MAXCHANNELS ];
         _channels = numberOfChannels;
 
-        for ( var i = 0; i < numberOfChannels; ++i )
-        {
-            _bufferp[ i ] = ( short )i;
-        }
+        for ( var i = 0; i < numberOfChannels; ++i ) _bufferp[ i ] = ( short ) i;
 
         _outWave = new WaveFile();
-        _outWave.OpenForWrite( fileName, null, freq, 16, ( short )_channels );
+        _outWave.OpenForWrite( fileName, null, freq, 16, ( short ) _channels );
     }
 
     public WaveFileBuffer( int numberOfChannels, int freq, Stream stream )
@@ -61,13 +58,10 @@ public class WaveFileBuffer : AudioBase
         _bufferp  = new short[ MAXCHANNELS ];
         _channels = numberOfChannels;
 
-        for ( var i = 0; i < numberOfChannels; ++i )
-        {
-            _bufferp[ i ] = ( short )i;
-        }
+        for ( var i = 0; i < numberOfChannels; ++i ) _bufferp[ i ] = ( short ) i;
 
         _outWave = new WaveFile();
-        _outWave.OpenForWrite( null!, stream, freq, 16, ( short )_channels );
+        _outWave.OpenForWrite( null!, stream, freq, 16, ( short ) _channels );
     }
 
     /// <summary>
@@ -76,17 +70,14 @@ public class WaveFileBuffer : AudioBase
     protected override void Append( int channel, short valueRenamed )
     {
         _buffer[ _bufferp[ channel ] ] = valueRenamed;
-        _bufferp[ channel ]            = ( short )( _bufferp[ channel ] + _channels );
+        _bufferp[ channel ]            = ( short ) ( _bufferp[ channel ] + _channels );
     }
 
     public override void WriteBuffer( int val )
     {
         _outWave.WriteData( _buffer, _bufferp[ 0 ] );
 
-        for ( var i = 0; i < _channels; ++i )
-        {
-            _bufferp[ i ] = ( short )i;
-        }
+        for ( var i = 0; i < _channels; ++i ) _bufferp[ i ] = ( short ) i;
     }
 
     public void Close( bool justWriteLengthBytes )

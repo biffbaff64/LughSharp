@@ -70,7 +70,7 @@ public class Touchpad : Widget
     /// </param>
     /// <param name="skin"></param>
     /// <param name="styleName"></param>
-    public Touchpad( float deadzoneRadius, Skin skin, String styleName )
+    public Touchpad( float deadzoneRadius, Skin skin, string styleName )
         : this( deadzoneRadius, skin.Get< TouchpadStyle >( styleName ) )
     {
     }
@@ -85,10 +85,7 @@ public class Touchpad : Widget
     /// <param name="style"></param>
     public Touchpad( float deadzoneRadius, TouchpadStyle style )
     {
-        if ( deadzoneRadius < 0 )
-        {
-            throw new ArgumentException( "deadzoneRadius must be > 0" );
-        }
+        if ( deadzoneRadius < 0 ) throw new ArgumentException( "deadzoneRadius must be > 0" );
 
         _deadzoneRadius = deadzoneRadius;
 
@@ -169,25 +166,18 @@ public class Touchpad : Widget
 
                 var length = _knobPercent.Len();
 
-                if ( length > 1 )
-                {
-                    _knobPercent.Scl( 1 / length );
-                }
+                if ( length > 1 ) _knobPercent.Scl( 1 / length );
 
                 if ( _knobBounds.Contains( x, y ) )
-                {
                     _knobPosition.Set( x, y );
-                }
                 else
-                {
                     _knobPosition.Set( _knobPercent ).Nor().Scl( _knobBounds.Radius ).Add( _knobBounds.X, _knobBounds.Y );
-                }
             }
         }
 
         if ( !oldPercentX.Equals( _knobPercent.X ) || !oldPercentY.Equals( _knobPercent.Y ) )
         {
-            ChangeListener.ChangeEvent? changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
+            var changeEvent = Pools< ChangeListener.ChangeEvent >.Obtain();
 
             if ( Fire( changeEvent ) )
             {
@@ -201,15 +191,9 @@ public class Touchpad : Widget
 
     public override Actor? Hit( float x, float y, bool touchable )
     {
-        if ( touchable && ( Touchable != Touchable.Enabled ) )
-        {
-            return null;
-        }
+        if ( touchable && ( Touchable != Touchable.Enabled ) ) return null;
 
-        if ( !IsVisible )
-        {
-            return null;
-        }
+        if ( !IsVisible ) return null;
 
         return _touchBounds.Contains( x, y ) ? this : null;
     }
@@ -223,10 +207,7 @@ public class Touchpad : Widget
 
         _touchBounds.Set( halfWidth, halfHeight, radius );
 
-        if ( _style.Knob != null )
-        {
-            radius -= Math.Max( _style.Knob.MinWidth, _style.Knob.MinHeight ) / 2;
-        }
+        if ( _style.Knob != null ) radius -= Math.Max( _style.Knob.MinWidth, _style.Knob.MinHeight ) / 2;
 
         _knobBounds.Set( halfWidth, halfHeight, radius );
         _deadzoneBounds.Set( halfWidth, halfHeight, _deadzoneRadius );
@@ -240,17 +221,17 @@ public class Touchpad : Widget
     {
         Validate();
 
-        Color c = Color;
+        var c = Color;
         batch.SetColor( c.R, c.G, c.B, c.A * parentAlpha );
 
         var x = X;
         var y = Y;
 
-        IDrawable? bg = _style.Background;
+        var bg = _style.Background;
 
         bg?.Draw( batch, x, y, Width, Height );
 
-        IDrawable? knob = _style.Knob;
+        var knob = _style.Knob;
 
         if ( knob != null )
         {
@@ -266,10 +247,7 @@ public class Touchpad : Widget
     /// </summary>
     public void SetDeadzone( float deadzoneRadius )
     {
-        if ( deadzoneRadius < 0 )
-        {
-            throw new ArgumentException( "deadzoneRadius must be > 0" );
-        }
+        if ( deadzoneRadius < 0 ) throw new ArgumentException( "deadzoneRadius must be > 0" );
 
         _deadzoneRadius = deadzoneRadius;
 
@@ -290,10 +268,7 @@ public class Touchpad : Widget
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
-            if ( _pad.IsTouched )
-            {
-                return false;
-            }
+            if ( _pad.IsTouched ) return false;
 
             _pad.IsTouched = true;
             _pad.CalculatePositionAndValue( x, y, false );

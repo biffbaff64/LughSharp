@@ -71,13 +71,9 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
     /// <returns> tileset with matching name, null if it doesn't exist  </returns>
     public virtual TiledMapTileSet? GetTileSet( string name )
     {
-        foreach ( TiledMapTileSet tileset in _tilesets )
-        {
+        foreach ( var tileset in _tilesets )
             if ( name.Equals( tileset.Name ) )
-            {
                 return tileset;
-            }
-        }
 
         return null;
     }
@@ -115,13 +111,10 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
         // See TiledMapModifiedExternalTilesetTest for example of this issue.
         for ( var i = _tilesets.Count - 1; i >= 0; i-- )
         {
-            TiledMapTileSet tileset = _tilesets[ i ];
-            ITiledMapTile?  tile    = tileset.GetTile( id );
+            var tileset = _tilesets[ i ];
+            var tile    = tileset.GetTile( id );
 
-            if ( tile != null )
-            {
-                return tile;
-            }
+            if ( tile != null ) return tile;
         }
 
         return null;

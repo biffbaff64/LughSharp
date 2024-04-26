@@ -25,10 +25,10 @@
 namespace LughSharp.LibCore.Graphics.Profiling;
 
 [PublicAPI]
-public class GLInterceptor
+public class GLInterceptor : BaseGLInterceptor
 {
     public GLInterceptor( GLProfiler profiler )
+        : base( profiler )
     {
     }
 }
-

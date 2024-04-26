@@ -48,10 +48,7 @@ public class TiledMap : Map, IDisposable
         {
             if ( OwnedResources != null )
             {
-                foreach ( IDisposable disposable in OwnedResources )
-                {
-                    disposable.Dispose();
-                }
+                foreach ( IDisposable disposable in OwnedResources ) disposable.Dispose();
 
                 OwnedResources = null;
             }

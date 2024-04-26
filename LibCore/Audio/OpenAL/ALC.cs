@@ -25,6 +25,7 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Environment = System.Environment;
 
 namespace LughSharp.LibCore.Audio.OpenAL;
 
@@ -59,16 +60,14 @@ public class ALC
 
         if ( libraryName == OPEN_AL_DLL )
         {
-            if ( System.Environment.OSVersion.Platform == PlatformID.Unix )
+            if ( Environment.OSVersion.Platform == PlatformID.Unix )
             {
                 const string OSX   = "OpenAL.framework/OpenAL";
                 const string LINUX = "libopenal.so.1";
                 NativeLibrary.TryLoad( OSX, assembly, DllImportSearchPath.System32, out libHandle );
 
                 if ( libHandle == IntPtr.Zero ) //If OSX path didn't work
-                {
                     NativeLibrary.TryLoad( LINUX, assembly, DllImportSearchPath.System32, out libHandle );
-                }
             }
             else
             {

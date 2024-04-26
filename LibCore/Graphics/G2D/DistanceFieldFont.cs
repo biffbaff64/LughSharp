@@ -87,10 +87,7 @@ public class DistanceFieldFont : BitmapFont
         // Distance field font rendering requires font texture to be filtered linear.
         List< TextureRegion > regions = GetRegions();
 
-        foreach ( TextureRegion region in regions )
-        {
-            region.Texture.SetFilter( TextureFilter.Linear, TextureFilter.Linear );
-        }
+        foreach ( var region in regions ) region.Texture.SetFilter( TextureFilter.Linear, TextureFilter.Linear );
     }
 
     public new BitmapFontCache NewFontCache()
@@ -171,10 +168,7 @@ public class DistanceFieldFont : BitmapFont
 
         var shader = new ShaderProgram( vertexShader, fragmentShader );
 
-        if ( !shader.IsCompiled )
-        {
-            throw new ArgumentException( $"Error compiling distance field shader: {shader.Log}" );
-        }
+        if ( !shader.IsCompiled ) throw new ArgumentException( $"Error compiling distance field shader: {shader.Log}" );
 
         return shader;
     }
@@ -198,7 +192,7 @@ public class DistanceFieldFont : BitmapFont
 
         private float GetSmoothingFactor()
         {
-            var font = ( DistanceFieldFont )Font;
+            var font = ( DistanceFieldFont ) Font;
 
             return font.GetDistanceFieldSmoothing() * font.GetScaleX();
         }

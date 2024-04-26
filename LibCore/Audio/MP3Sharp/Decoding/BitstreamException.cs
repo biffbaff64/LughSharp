@@ -24,7 +24,6 @@
 
 
 using System.Runtime.Serialization;
-
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
@@ -47,10 +46,8 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 [Serializable, PublicAPI]
 public class BitstreamException : Mp3SharpException
 {
-    public int ErrorCode { get; set; }
-
     // ------------------------------------------------------------------------
-    
+
     public BitstreamException( string message, Exception? inner = null )
         : base( message, inner )
     {
@@ -69,6 +66,8 @@ public class BitstreamException : Mp3SharpException
         ErrorCode = info.GetInt32( "ErrorCode" );
     }
 
+    public int ErrorCode { get; set; }
+
     public override void GetObjectData( SerializationInfo info, StreamingContext context )
     {
         ArgumentNullException.ThrowIfNull( info );
@@ -77,11 +76,11 @@ public class BitstreamException : Mp3SharpException
         base.GetObjectData( info, context );
     }
 
-	/// <summary>
-	/// 	Returns the error code as a string.
-	/// </summary>
-	/// <param name="errorcode"> The errorcode. </param>
-	/// <returns></returns>
+    /// <summary>
+    ///     Returns the error code as a string.
+    /// </summary>
+    /// <param name="errorcode"> The errorcode. </param>
+    /// <returns></returns>
     public static string GetErrorString( int errorcode )
     {
         return $"Bitstream errorcode {Convert.ToString( errorcode, 16 )}";

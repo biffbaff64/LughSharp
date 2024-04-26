@@ -139,9 +139,9 @@ public class GestureDetector : InputAdapter
     {
         _tapRectangleWidth  = halfTapRectangleWidth;
         _tapRectangleHeight = halfTapRectangleHeight;
-        _tapCountInterval   = ( long )( tapCountInterval * 1000000000L );
+        _tapCountInterval   = ( long ) ( tapCountInterval * 1000000000L );
         _longPressSeconds   = longPressDuration;
-        _maxFlingDelay      = ( long )( maxFlingDelay * 1000000000L );
+        _maxFlingDelay      = ( long ) ( maxFlingDelay * 1000000000L );
         _listener           = listener ?? throw new ArgumentException( "listener cannot be null." );
 
         _longPressTask        = null!;
@@ -156,15 +156,9 @@ public class GestureDetector : InputAdapter
         //@formatter:off
         _longPressTask = Task.Run( () =>
         {
-            if ( !_longPressFired )
-            {
-                _longPressFired = _listener.LongPress( _pointer1.X, _pointer1.Y );
-            }
+            if ( !_longPressFired ) _longPressFired = _listener.LongPress( _pointer1.X, _pointer1.Y );
 
-            if ( _longPressCancellationToken.IsCancellationRequested )
-            {
-                _longPressCancellationToken.ThrowIfCancellationRequested();
-            }
+            if ( _longPressCancellationToken.IsCancellationRequested ) _longPressCancellationToken.ThrowIfCancellationRequested();
         }, _longPressCancellationToken );
         //@formatter:on
 
@@ -188,10 +182,7 @@ public class GestureDetector : InputAdapter
     /// </summary>
     private void CancelLongPressTask()
     {
-        if ( _longPressTask is { Status: TaskStatus.Running } )
-        {
-            _longPressTokenSource?.Cancel();
-        }
+        if ( _longPressTask is { Status: TaskStatus.Running } ) _longPressTokenSource?.Cancel();
     }
 
     public override bool TouchDown( int x, int y, int pointer, int button )
@@ -201,10 +192,7 @@ public class GestureDetector : InputAdapter
 
     public bool TouchDown( float x, float y, int pointer, int button )
     {
-        if ( pointer > 1 )
-        {
-            return false;
-        }
+        if ( pointer > 1 ) return false;
 
         if ( pointer == 0 )
         {
@@ -260,24 +248,14 @@ public class GestureDetector : InputAdapter
 
     public bool TouchDragged( float x, float y, int pointer )
     {
-        if ( pointer > 1 )
-        {
-            return false;
-        }
+        if ( pointer > 1 ) return false;
 
-        if ( _longPressFired )
-        {
-            return false;
-        }
+        if ( _longPressFired ) return false;
 
         if ( pointer == 0 )
-        {
             _pointer1.Set( x, y );
-        }
         else
-        {
             _pointer2.Set( x, y );
-        }
 
         // handle pinch zoom
         if ( _pinching )
@@ -317,26 +295,17 @@ public class GestureDetector : InputAdapter
 
     public bool TouchUp( float x, float y, int pointer, int button )
     {
-        if ( pointer > 1 )
-        {
-            return false;
-        }
+        if ( pointer > 1 ) return false;
 
         // check if we are still tapping.
-        if ( _inTapRectangle && !IsWithinTapRectangle( x, y, _tapRectangleCenterX, _tapRectangleCenterY ) )
-        {
-            _inTapRectangle = false;
-        }
+        if ( _inTapRectangle && !IsWithinTapRectangle( x, y, _tapRectangleCenterX, _tapRectangleCenterY ) ) _inTapRectangle = false;
 
         var wasPanning = _panning;
         _panning = false;
 
         CancelLongPressTask();
 
-        if ( _longPressFired )
-        {
-            return false;
-        }
+        if ( _longPressFired ) return false;
 
         if ( _inTapRectangle )
         {
@@ -345,9 +314,7 @@ public class GestureDetector : InputAdapter
               || ( _lastTapPointer != pointer )
               || ( ( TimeUtils.NanoTime() - _lastTapTime ) > _tapCountInterval )
               || !IsWithinTapRectangle( x, y, _lastTapX, _lastTapY ) )
-            {
                 _tapCount = 0;
-            }
 
             _tapCount++;
             _lastTapTime    = TimeUtils.NanoTime();
@@ -385,10 +352,7 @@ public class GestureDetector : InputAdapter
         // handle no longer panning
         var handled = false;
 
-        if ( wasPanning && !_panning )
-        {
-            handled = _listener.PanStop( x, y, pointer, button );
-        }
+        if ( wasPanning && !_panning ) handled = _listener.PanStop( x, y, pointer, button );
 
         // handle fling
         var time = Gdx.Input.GetCurrentEventTime();
@@ -432,12 +396,9 @@ public class GestureDetector : InputAdapter
     /// </summary>
     public bool IsLongPressed( float duration )
     {
-        if ( _touchDownTime == 0 )
-        {
-            return false;
-        }
+        if ( _touchDownTime == 0 ) return false;
 
-        return ( TimeUtils.NanoTime() - _touchDownTime ) > ( long )( duration * 1000000000L );
+        return ( TimeUtils.NanoTime() - _touchDownTime ) > ( long ) ( duration * 1000000000L );
     }
 
     public bool IsPanning()
@@ -480,7 +441,7 @@ public class GestureDetector : InputAdapter
 
     public void SetTapCountInterval( float tapCountInterval )
     {
-        _tapCountInterval = ( long )( tapCountInterval * 1000000000L );
+        _tapCountInterval = ( long ) ( tapCountInterval * 1000000000L );
     }
 
     public void SetLongPressSeconds( float longPressSeconds )
@@ -686,10 +647,7 @@ public class GestureDetector : InputAdapter
             var meanX    = GetAverage( _meanX, _numSamples );
             var meanTime = GetAverage( _meanTime, _numSamples ) / 1000000000.0f;
 
-            if ( meanTime == 0 )
-            {
-                return 0;
-            }
+            if ( meanTime == 0 ) return 0;
 
             return meanX / meanTime;
         }
@@ -699,10 +657,7 @@ public class GestureDetector : InputAdapter
             var meanY    = GetAverage( _meanY, _numSamples );
             var meanTime = GetAverage( _meanTime, _numSamples ) / 1000000000.0f;
 
-            if ( meanTime == 0 )
-            {
-                return 0;
-            }
+            if ( meanTime == 0 ) return 0;
 
             return meanY / meanTime;
         }
@@ -712,10 +667,7 @@ public class GestureDetector : InputAdapter
             numSamples = Math.Min( _sampleSize, numSamples );
             float sum = 0;
 
-            for ( var i = 0; i < numSamples; i++ )
-            {
-                sum += values[ i ];
-            }
+            for ( var i = 0; i < numSamples; i++ ) sum += values[ i ];
 
             return sum / numSamples;
         }
@@ -725,15 +677,9 @@ public class GestureDetector : InputAdapter
             numSamples = Math.Min( _sampleSize, numSamples );
             long sum = 0;
 
-            for ( var i = 0; i < numSamples; i++ )
-            {
-                sum += values[ i ];
-            }
+            for ( var i = 0; i < numSamples; i++ ) sum += values[ i ];
 
-            if ( numSamples == 0 )
-            {
-                return 0;
-            }
+            if ( numSamples == 0 ) return 0;
 
             return sum / numSamples;
         }
@@ -743,15 +689,9 @@ public class GestureDetector : InputAdapter
             numSamples = Math.Min( _sampleSize, numSamples );
             float sum = 0;
 
-            for ( var i = 0; i < numSamples; i++ )
-            {
-                sum += values[ i ];
-            }
+            for ( var i = 0; i < numSamples; i++ ) sum += values[ i ];
 
-            if ( numSamples == 0 )
-            {
-                return 0;
-            }
+            if ( numSamples == 0 ) return 0;
 
             return sum;
         }

@@ -69,10 +69,7 @@ public class WindowedMean
                 {
                     float mean = 0;
 
-                    foreach ( var t in _values )
-                    {
-                        mean += t;
-                    }
+                    foreach ( var t in _values ) mean += t;
 
                     _mean  = mean / _values.Length;
                     _dirty = false;
@@ -103,10 +100,7 @@ public class WindowedMean
         {
             var lowest = float.MaxValue;
 
-            foreach ( var t in _values )
-            {
-                lowest = Math.Min( lowest, t );
-            }
+            foreach ( var t in _values ) lowest = Math.Min( lowest, t );
 
             return lowest;
         }
@@ -120,10 +114,7 @@ public class WindowedMean
         {
             var lowest = float.MinValue;
 
-            foreach ( var t in _values )
-            {
-                lowest = Math.Max( lowest, t );
-            }
+            foreach ( var t in _values ) lowest = Math.Max( lowest, t );
 
             return lowest;
         }
@@ -152,15 +143,10 @@ public class WindowedMean
 
             if ( HasEnoughData() )
             {
-                for ( var i = 0; i < windowValues.Length; i++ )
-                {
-                    windowValues[ i ] = _values[ ( i + _lastValue ) % _values.Length ];
-                }
+                for ( var i = 0; i < windowValues.Length; i++ ) windowValues[ i ] = _values[ ( i + _lastValue ) % _values.Length ];
             }
             else
-            {
                 Array.Copy( _values, 0, windowValues, 0, _addedValues );
-            }
 
             return windowValues;
         }
@@ -183,10 +169,7 @@ public class WindowedMean
         _addedValues = 0;
         _lastValue   = 0;
 
-        for ( var i = 0; i < _values.Length; i++ )
-        {
-            _values[ i ] = 0;
-        }
+        for ( var i = 0; i < _values.Length; i++ ) _values[ i ] = 0;
 
         _dirty = true;
     }
@@ -198,17 +181,11 @@ public class WindowedMean
     /// <param name="value"> The value to add  </param>
     public virtual void AddValue( float value )
     {
-        if ( _addedValues < _values.Length )
-        {
-            _addedValues++;
-        }
+        if ( _addedValues < _values.Length ) _addedValues++;
 
         _values[ _lastValue++ ] = value;
 
-        if ( _lastValue > ( _values.Length - 1 ) )
-        {
-            _lastValue = 0;
-        }
+        if ( _lastValue > ( _values.Length - 1 ) ) _lastValue = 0;
 
         _dirty = true;
     }
@@ -218,19 +195,13 @@ public class WindowedMean
     /// <returns> The standard deviation </returns>
     public virtual float StandardDeviation()
     {
-        if ( !HasEnoughData() )
-        {
-            return 0;
-        }
+        if ( !HasEnoughData() ) return 0;
 
         var   mean = Mean;
         float sum  = 0;
 
-        foreach ( var t in _values )
-        {
-            sum += ( t - mean ) * ( t - mean );
-        }
+        foreach ( var t in _values ) sum += ( t - mean ) * ( t - mean );
 
-        return ( float )Math.Sqrt( sum / _values.Length );
+        return ( float ) Math.Sqrt( sum / _values.Length );
     }
 }

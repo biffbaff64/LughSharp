@@ -39,12 +39,12 @@ public abstract class DataUtils
     /// </returns>
     public static short ReverseBytes( short input )
     {
-        return ( short )( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
+        return ( short ) ( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
     }
 
     public static char ReverseBytes( char input )
     {
-        return ( char )( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
+        return ( char ) ( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
     }
 
     public static int ReverseBytes( int input )

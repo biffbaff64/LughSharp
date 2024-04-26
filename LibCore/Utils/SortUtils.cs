@@ -34,7 +34,7 @@ namespace LughSharp.LibCore.Utils;
 [PublicAPI]
 public class SortUtils
 {
-    public static void Sort<T>( List< T > a ) where T : IComparable< T >
+    public static void Sort< T >( List< T > a ) where T : IComparable< T >
     {
         var comparableTimSort = new ComparableTimSort< T >();
         comparableTimSort.DoSort( a.ToArray(), 0, a.Count );
@@ -57,7 +57,7 @@ public class SortUtils
     /// <param name="a"></param>
     /// <param name="c"></param>
     /// <typeparam name="T"></typeparam>
-    public static void Sort<T>( List< T > a, IComparer< T > c )
+    public static void Sort< T >( List< T > a, IComparer< T > c )
     {
         var timSort = new TimSort< T >();
 
@@ -69,7 +69,7 @@ public class SortUtils
     /// <param name="a"></param>
     /// <param name="c"></param>
     /// <typeparam name="T"></typeparam>
-    public static void Sort<T>( T[] a, IComparer< T > c )
+    public static void Sort< T >( T[] a, IComparer< T > c )
     {
         var timSort = new TimSort< T >();
 
@@ -83,14 +83,14 @@ public class SortUtils
     /// <param name="fromIndex"></param>
     /// <param name="toIndex"></param>
     /// <typeparam name="T"></typeparam>
-    public static void Sort<T>( T[] a, IComparer< T > c, int fromIndex, int toIndex )
+    public static void Sort< T >( T[] a, IComparer< T > c, int fromIndex, int toIndex )
     {
         var timSort = new TimSort< T >();
 
         timSort.DoSort( a.ToArray(), c, fromIndex, toIndex );
     }
 
-    public static void Sort<T>( T[] a, int from, int to )
+    public static void Sort< T >( T[] a, int from, int to )
     {
         var comparableTimSort = new ComparableTimSort< T >();
 

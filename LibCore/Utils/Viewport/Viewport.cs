@@ -25,7 +25,6 @@
 
 using LughSharp.LibCore.Maths.Collision;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
-
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Utils.Viewport;
@@ -91,20 +90,14 @@ public abstract class Viewport
     /// </param>
     public virtual void Apply( bool centerCamera = false )
     {
-        if ( Camera == null )
-        {
-            throw new NullReferenceException();
-        }
+        if ( Camera == null ) throw new NullReferenceException();
 
         HdpiUtils.GLViewport( ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
         Camera.ViewportWidth  = WorldWidth;
         Camera.ViewportHeight = WorldHeight;
 
-        if ( centerCamera )
-        {
-            Camera.Position.Set( WorldWidth / 2, WorldHeight / 2, 0 );
-        }
+        if ( centerCamera ) Camera.Position.Set( WorldWidth / 2, WorldHeight / 2, 0 );
 
         Camera.Update();
     }
@@ -133,10 +126,7 @@ public abstract class Viewport
     /// <see cref="Camera.Unproject(Vector3)" />
     public virtual Vector2 Unproject( Vector2 screenCoords )
     {
-        if ( Camera == null )
-        {
-            throw new NullReferenceException();
-        }
+        if ( Camera == null ) throw new NullReferenceException();
 
         _tmp = new Vector3
         {
@@ -159,10 +149,7 @@ public abstract class Viewport
     /// <see cref="Camera.Project(Vector3) " />
     public virtual Vector2 Project( Vector2 worldCoords )
     {
-        if ( Camera == null )
-        {
-            throw new NullReferenceException();
-        }
+        if ( Camera == null ) throw new NullReferenceException();
 
         _tmp.Set( worldCoords.X, worldCoords.Y, 1 );
 
@@ -179,10 +166,7 @@ public abstract class Viewport
     /// <see cref="Camera.Unproject(Vector3)" />
     public virtual Vector3 Unproject( Vector3 screenCoords )
     {
-        if ( Camera == null )
-        {
-            throw new NullReferenceException();
-        }
+        if ( Camera == null ) throw new NullReferenceException();
 
         Camera.Unproject( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
@@ -196,10 +180,7 @@ public abstract class Viewport
     /// <see cref="Camera.Project(Vector3) " />
     public virtual Vector3 Project( Vector3 worldCoords )
     {
-        if ( Camera == null )
-        {
-            throw new NullReferenceException();
-        }
+        if ( Camera == null ) throw new NullReferenceException();
 
         Camera.Project( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
 
@@ -212,10 +193,7 @@ public abstract class Viewport
     /// <see cref="Camera.GetPickRay(float, float, float, float, float, float)" />
     public virtual Ray GetPickRay( float screenX, float screenY )
     {
-        if ( Camera == null )
-        {
-            throw new NullReferenceException();
-        }
+        if ( Camera == null ) throw new NullReferenceException();
 
         return Camera.GetPickRay( screenX, screenY, ScreenX, ScreenY, ScreenWidth, ScreenHeight );
     }
@@ -238,10 +216,7 @@ public abstract class Viewport
     /// </summary>
     public virtual Vector2 ToScreenCoordinates( Vector2 worldCoords, Matrix4 transformMatrix )
     {
-        if ( Camera == null )
-        {
-            throw new NullReferenceException();
-        }
+        if ( Camera == null ) throw new NullReferenceException();
 
         _tmp.Set( worldCoords.X, worldCoords.Y, 0 );
         _tmp.Mul( transformMatrix );

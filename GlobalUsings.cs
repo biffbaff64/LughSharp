@@ -56,7 +56,6 @@ global using JetBrains.Annotations;
 // -----------------------------------------------------------------------
 // OpenGL / Glfw support
 global using DotGL;
-
 global using DotGLFW;
 
 //@formatter:off
@@ -85,7 +84,6 @@ global using LughSharp.LibCore.Utils.Buffers;
 global using LughSharp.LibCore.Utils.Collections;
 global using LughSharp.LibCore.Utils.Pooling;
 global using LughSharp.LibCore.Utils.Viewport;
-
 global using Vector2 = LughSharp.LibCore.Maths.Vector2;
 global using Vector3 = LughSharp.LibCore.Maths.Vector3;
 

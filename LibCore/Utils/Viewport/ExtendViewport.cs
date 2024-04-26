@@ -104,13 +104,13 @@ public class ExtendViewport : Viewport
     public override void Update( int screenWidth, int screenHeight, bool centerCamera = false )
     {
         // Fit min size to the screen.
-        var     worldWidth  = MinWorldWidth;
-        var     worldHeight = MinWorldHeight;
-        Vector2 scaled      = Scaling.Fit.Apply( worldWidth, worldHeight, screenWidth, screenHeight );
+        var worldWidth  = MinWorldWidth;
+        var worldHeight = MinWorldHeight;
+        var scaled      = Scaling.Fit.Apply( worldWidth, worldHeight, screenWidth, screenHeight );
 
         // Extend in the short direction.
-        var viewportWidth  = ( int )Math.Round( scaled.X, MidpointRounding.AwayFromZero );
-        var viewportHeight = ( int )Math.Round( scaled.Y, MidpointRounding.AwayFromZero );
+        var viewportWidth  = ( int ) Math.Round( scaled.X, MidpointRounding.AwayFromZero );
+        var viewportHeight = ( int ) Math.Round( scaled.Y, MidpointRounding.AwayFromZero );
 
         if ( viewportWidth < screenWidth )
         {
@@ -118,13 +118,10 @@ public class ExtendViewport : Viewport
             var toWorldSpace    = worldHeight / viewportHeight;
             var lengthen        = ( screenWidth - viewportWidth ) * toWorldSpace;
 
-            if ( MaxWorldWidth > 0 )
-            {
-                lengthen = Math.Min( lengthen, MaxWorldWidth - MinWorldWidth );
-            }
+            if ( MaxWorldWidth > 0 ) lengthen = Math.Min( lengthen, MaxWorldWidth - MinWorldWidth );
 
             worldWidth    += lengthen;
-            viewportWidth += ( int )Math.Round( lengthen * toViewportSpace, MidpointRounding.AwayFromZero );
+            viewportWidth += ( int ) Math.Round( lengthen * toViewportSpace, MidpointRounding.AwayFromZero );
         }
         else if ( viewportHeight < screenHeight )
         {
@@ -132,24 +129,21 @@ public class ExtendViewport : Viewport
             var toWorldSpace    = worldWidth / viewportWidth;
             var lengthen        = ( screenHeight - viewportHeight ) * toWorldSpace;
 
-            if ( MaxWorldHeight > 0 )
-            {
-                lengthen = Math.Min( lengthen, MaxWorldHeight - MinWorldHeight );
-            }
+            if ( MaxWorldHeight > 0 ) lengthen = Math.Min( lengthen, MaxWorldHeight - MinWorldHeight );
 
             worldHeight    += lengthen;
-            viewportHeight += ( int )Math.Round( lengthen * toViewportSpace, MidpointRounding.AwayFromZero );
+            viewportHeight += ( int ) Math.Round( lengthen * toViewportSpace, MidpointRounding.AwayFromZero );
         }
 
         SetWorldSize( worldWidth, worldHeight );
 
         // Center.
         SetScreenBounds(
-            ( screenWidth - viewportWidth ) / 2,
-            ( screenHeight - viewportHeight ) / 2,
-            viewportWidth,
-            viewportHeight
-            );
+                        ( screenWidth - viewportWidth ) / 2,
+                        ( screenHeight - viewportHeight ) / 2,
+                        viewportWidth,
+                        viewportHeight
+                       );
 
         Apply( centerCamera );
     }

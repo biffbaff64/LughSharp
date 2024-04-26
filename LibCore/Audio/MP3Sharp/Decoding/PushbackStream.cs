@@ -57,12 +57,11 @@ public class PushbackStream
         var canReadStream = true;
 
         while ( ( index < length ) && canReadStream )
-        {
             if ( _numForwardBytesInBuffer > 0 )
             {
                 // from memory
                 _numForwardBytesInBuffer--;
-                readBuffer[ offset + index ] = ( sbyte )_circularByteBuffer[ _numForwardBytesInBuffer ];
+                readBuffer[ offset + index ] = ( sbyte ) _circularByteBuffer[ _numForwardBytesInBuffer ];
                 index++;
             }
             else
@@ -75,12 +74,11 @@ public class PushbackStream
                 for ( var i = 0; i < countBytesRead; i++ )
                 {
                     _circularByteBuffer.Push( _temporaryBuffer[ i ] );
-                    readBuffer[ offset + index + i ] = ( sbyte )_temporaryBuffer[ i ];
+                    readBuffer[ offset + index + i ] = ( sbyte ) _temporaryBuffer[ i ];
                 }
 
                 index += countBytesRead;
             }
-        }
 
         return index;
     }
@@ -89,10 +87,7 @@ public class PushbackStream
     {
         _numForwardBytesInBuffer += length;
 
-        if ( _numForwardBytesInBuffer > _backBufferSize )
-        {
-            throw new Exception( "The backstream cannot unread the requested number of bytes." );
-        }
+        if ( _numForwardBytesInBuffer > _backBufferSize ) throw new Exception( "The backstream cannot unread the requested number of bytes." );
     }
 
     public void Close()

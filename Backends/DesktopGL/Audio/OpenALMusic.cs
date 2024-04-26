@@ -37,18 +37,18 @@ public abstract class OpenALMusic : IMusic
     private readonly static byte[]      _tempBytes      = new byte[ _bufferSize ];
     private readonly static ByteBuffer  _tempBuffer     = BufferUtils.NewByteBuffer( _bufferSize );
     private readonly        OpenALAudio _audio;
+    private readonly        float       _pan = 0;
 
     private readonly List< float > _renderedSecondsQueue = new( _bufferCount );
+    private readonly float         _volume               = 1;
 
     protected readonly FileInfo file;
     private            uint[]?  _buffers;
     private            int      _format;
     private            bool     _isPlaying;
     private            float    _maxSecondsPerBuffer;
-    private readonly   float    _pan = 0;
     private            float    _renderedSeconds;
     private            int      _sampleRate;
-    private readonly   float    _volume = 1;
 
     protected OpenALMusic()
     {
@@ -66,19 +66,13 @@ public abstract class OpenALMusic : IMusic
 
     public void Play()
     {
-        if ( _audio.NoDevice )
-        {
-            return;
-        }
+        if ( _audio.NoDevice ) return;
 
         if ( SourceId == INVALID_SOURCE_ID )
         {
             SourceId = _audio.ObtainSource( true );
 
-            if ( SourceId == INVALID_SOURCE_ID )
-            {
-                return;
-            }
+            if ( SourceId == INVALID_SOURCE_ID ) return;
 
             _audio.Music.Add( this );
 
@@ -90,18 +84,15 @@ public abstract class OpenALMusic : IMusic
 
                 var err = AL.GetError();
 
-                if ( err != AL.NO_ERROR )
-                {
-                    throw new GdxRuntimeException( $"Unable to allocate audio buffers. AL Error: {err}" );
-                }
+                if ( err != AL.NO_ERROR ) throw new GdxRuntimeException( $"Unable to allocate audio buffers. AL Error: {err}" );
             }
 
-            AL.Sourcei( ( uint )SourceId, AL.DIRECT_CHANNELS_SOFT, AL.TRUE );
-            AL.Sourcei( ( uint )SourceId, AL.LOOPING, AL.FALSE );
+            AL.Sourcei( ( uint ) SourceId, AL.DIRECT_CHANNELS_SOFT, AL.TRUE );
+            AL.Sourcei( ( uint ) SourceId, AL.LOOPING, AL.FALSE );
 
             SetPan( _pan, _volume );
 
-            AL.SourceQueueBuffers( ( uint )SourceId, _bufferCount, _buffers );
+            AL.SourceQueueBuffers( ( uint ) SourceId, _bufferCount, _buffers );
 
             //TODO: 
 //            var filled = false; // Check if there's anything to actually play.
@@ -135,22 +126,16 @@ public abstract class OpenALMusic : IMusic
 
         if ( !IsPlaying )
         {
-            AL.SourcePlay( ( uint )SourceId );
+            AL.SourcePlay( ( uint ) SourceId );
             _isPlaying = true;
         }
     }
 
     public void Stop()
     {
-        if ( _audio.NoDevice )
-        {
-            return;
-        }
+        if ( _audio.NoDevice ) return;
 
-        if ( SourceId == INVALID_SOURCE_ID )
-        {
-            return;
-        }
+        if ( SourceId == INVALID_SOURCE_ID ) return;
 
         _audio.Music.Remove( this );
 
@@ -302,17 +287,11 @@ public abstract class OpenALMusic : IMusic
 
     public float GetPosition()
     {
-        if ( _audio.NoDevice )
-        {
-            return 0;
-        }
+        if ( _audio.NoDevice ) return 0;
 
-        if ( SourceId == INVALID_SOURCE_ID )
-        {
-            return 0;
-        }
+        if ( SourceId == INVALID_SOURCE_ID ) return 0;
 
-        AL.GetSourcef( ( uint )SourceId, AL.SEC_OFFSET, out var value );
+        AL.GetSourcef( ( uint ) SourceId, AL.SEC_OFFSET, out var value );
 
         return _renderedSeconds + value;
     }
@@ -336,7 +315,7 @@ public abstract class OpenALMusic : IMusic
     {
         _format              = channels > 1 ? AL.FORMAT_STEREO16 : AL.FORMAT_MONO16;
         _sampleRate          = sampleRate;
-        _maxSecondsPerBuffer = ( float )_bufferSize / ( _bytesPerSample * channels * sampleRate );
+        _maxSecondsPerBuffer = ( float ) _bufferSize / ( _bytesPerSample * channels * sampleRate );
     }
 
     /// <summary>
@@ -487,10 +466,7 @@ public abstract class OpenALMusic : IMusic
     {
         get
         {
-            if ( _audio.NoDevice )
-            {
-                return false;
-            }
+            if ( _audio.NoDevice ) return false;
 
             return ( SourceId != INVALID_SOURCE_ID ) && _isPlaying;
         }

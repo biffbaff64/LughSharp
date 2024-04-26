@@ -40,9 +40,9 @@ public class MapProperties
     /// <param name="key"> The Key. </param>
     /// <typeparam name="T"> The Type of the required property. </typeparam>
     /// <returns></returns>
-    public T? Get<T>( string key )
+    public T? Get< T >( string key )
     {
-        return ( T? )Get( key );
+        return ( T? ) Get( key );
     }
 
     /// <summary>
@@ -53,11 +53,11 @@ public class MapProperties
     /// <param name="defaultValue"> The default value. </param>
     /// <typeparam name="T"> The Type of the required property. </typeparam>
     /// <returns></returns>
-    public T Get<T>( string key, T defaultValue )
+    public T Get< T >( string key, T defaultValue )
     {
         var obj = Get( key );
 
-        return obj == null ? defaultValue : ( T )obj;
+        return obj == null ? defaultValue : ( T ) obj;
     }
 
     public object? Get( string key )

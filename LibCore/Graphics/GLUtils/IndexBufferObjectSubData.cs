@@ -137,7 +137,7 @@ public class IndexBufferObjectSubData : IIndexData
             {
                 Gdx.GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER, 0, _byteBuffer.Limit, ptr );
             }
-            
+
             _isDirty = false;
         }
     }
@@ -162,7 +162,7 @@ public class IndexBufferObjectSubData : IIndexData
             {
                 Gdx.GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER, 0, _byteBuffer.Limit, ptr );
             }
-            
+
             _isDirty = false;
         }
     }
@@ -194,7 +194,7 @@ public class IndexBufferObjectSubData : IIndexData
             {
                 Gdx.GL.glBufferSubData( IGL.GL_ELEMENT_ARRAY_BUFFER, 0, _byteBuffer.Limit, ptr );
             }
-            
+
             _isDirty = false;
         }
 

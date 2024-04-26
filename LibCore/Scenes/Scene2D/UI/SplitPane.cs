@@ -54,7 +54,7 @@ public class SplitPane : WidgetGroup
     {
     }
 
-    public SplitPane( Actor? firstWidget, Actor? secondWidget, bool vertical, Skin skin, String styleName )
+    public SplitPane( Actor? firstWidget, Actor? secondWidget, bool vertical, Skin skin, string styleName )
         : this( firstWidget,
                 secondWidget,
                 vertical,
@@ -78,23 +78,20 @@ public class SplitPane : WidgetGroup
         get
         {
             var first = _firstWidget switch
-                        {
-                            null           => 0,
-                            ILayout widget => widget.PrefWidth,
-                            _              => _firstWidget.Width
-                        };
+            {
+                null           => 0,
+                ILayout widget => widget.PrefWidth,
+                _              => _firstWidget.Width
+            };
 
             var second = _secondWidget switch
-                         {
-                             null           => 0,
-                             ILayout layout => layout.PrefWidth,
-                             _              => _secondWidget.Width
-                         };
-
-            if ( _vertical )
             {
-                return Math.Max( first, second );
-            }
+                null           => 0,
+                ILayout layout => layout.PrefWidth,
+                _              => _secondWidget.Width
+            };
+
+            if ( _vertical ) return Math.Max( first, second );
 
             return first + _style.Handle.MinWidth + second;
         }
@@ -105,23 +102,20 @@ public class SplitPane : WidgetGroup
         get
         {
             var first = _firstWidget switch
-                        {
-                            null           => 0,
-                            ILayout widget => widget.PrefHeight,
-                            _              => _firstWidget.Height
-                        };
+            {
+                null           => 0,
+                ILayout widget => widget.PrefHeight,
+                _              => _firstWidget.Height
+            };
 
             var second = _secondWidget switch
-                         {
-                             null           => 0,
-                             ILayout layout => layout.PrefHeight,
-                             _              => _secondWidget.Height
-                         };
-
-            if ( !_vertical )
             {
-                return Math.Max( first, second );
-            }
+                null           => 0,
+                ILayout layout => layout.PrefHeight,
+                _              => _secondWidget.Height
+            };
+
+            if ( !_vertical ) return Math.Max( first, second );
 
             return first + _style.Handle.MinHeight + second;
         }
@@ -134,10 +128,7 @@ public class SplitPane : WidgetGroup
             var first  = _firstWidget is ILayout layout ? layout.MinWidth : 0;
             var second = _secondWidget is ILayout widget ? widget.MinWidth : 0;
 
-            if ( _vertical )
-            {
-                return Math.Max( first, second );
-            }
+            if ( _vertical ) return Math.Max( first, second );
 
             return first + _style.Handle.MinWidth + second;
         }
@@ -150,10 +141,7 @@ public class SplitPane : WidgetGroup
             var first  = _firstWidget is ILayout layout ? layout.MinHeight : 0;
             var second = _secondWidget is ILayout widget ? widget.MinHeight : 0;
 
-            if ( !_vertical )
-            {
-                return Math.Max( first, second );
-            }
+            if ( !_vertical ) return Math.Max( first, second );
 
             return first + _style.Handle.MinHeight + second;
         }
@@ -184,15 +172,11 @@ public class SplitPane : WidgetGroup
         ClampSplitAmount();
 
         if ( !_vertical )
-        {
             CalculateHorizBoundsAndPositions();
-        }
         else
-        {
             CalculateVertBoundsAndPositions();
-        }
 
-        Actor? firstWidget = _firstWidget;
+        var firstWidget = _firstWidget;
 
         if ( firstWidget != null )
         {
@@ -201,13 +185,10 @@ public class SplitPane : WidgetGroup
                                    _firstWidgetBounds.Width,
                                    _firstWidgetBounds.Height );
 
-            if ( firstWidget is ILayout widget )
-            {
-                widget.Validate();
-            }
+            if ( firstWidget is ILayout widget ) widget.Validate();
         }
 
-        Actor? secondWidget = _secondWidget;
+        var secondWidget = _secondWidget;
 
         if ( secondWidget != null )
         {
@@ -216,10 +197,7 @@ public class SplitPane : WidgetGroup
                                     _secondWidgetBounds.Width,
                                     _secondWidgetBounds.Height );
 
-            if ( secondWidget is ILayout widget )
-            {
-                widget.Validate();
-            }
+            if ( secondWidget is ILayout widget ) widget.Validate();
         }
     }
 
@@ -235,10 +213,7 @@ public class SplitPane : WidgetGroup
 
     public void SetVertical( bool vertical )
     {
-        if ( _vertical == vertical )
-        {
-            return;
-        }
+        if ( _vertical == vertical ) return;
 
         _vertical = vertical;
         InvalidateHierarchy();
@@ -251,7 +226,7 @@ public class SplitPane : WidgetGroup
 
     private void CalculateHorizBoundsAndPositions()
     {
-        IDrawable handle = _style.Handle;
+        var handle = _style.Handle;
 
         var height         = Height;
         var availWidth     = Width - handle.MinWidth;
@@ -266,7 +241,7 @@ public class SplitPane : WidgetGroup
 
     private void CalculateVertBoundsAndPositions()
     {
-        IDrawable handle = _style.Handle;
+        var handle = _style.Handle;
 
         var width  = Width;
         var height = Height;
@@ -283,17 +258,14 @@ public class SplitPane : WidgetGroup
 
     public override void Draw( IBatch batch, float parentAlpha )
     {
-        Stage? stage = Stage;
+        var stage = Stage;
 
-        if ( stage == null )
-        {
-            return;
-        }
+        if ( stage == null ) return;
 
         Validate();
 
-        Color color = Color;
-        var   alpha = color.A * parentAlpha;
+        var color = Color;
+        var alpha = color.A * parentAlpha;
 
         ApplyTransform( batch, ComputeTransform() );
 
@@ -379,25 +351,15 @@ public class SplitPane : WidgetGroup
         {
             var availableWidth = Width - _style.Handle.MinWidth;
 
-            if ( _firstWidget is ILayout layout )
-            {
-                effectiveMinAmount = Math.Max( effectiveMinAmount, Math.Min( layout.MinWidth / availableWidth, 1 ) );
-            }
+            if ( _firstWidget is ILayout layout ) effectiveMinAmount = Math.Max( effectiveMinAmount, Math.Min( layout.MinWidth / availableWidth, 1 ) );
 
-            if ( _secondWidget is ILayout layout2 )
-            {
-                effectiveMaxAmount = Math.Min( effectiveMaxAmount, 1 - Math.Min( layout2.MinWidth / availableWidth, 1 ) );
-            }
+            if ( _secondWidget is ILayout layout2 ) effectiveMaxAmount = Math.Min( effectiveMaxAmount, 1 - Math.Min( layout2.MinWidth / availableWidth, 1 ) );
         }
 
         if ( effectiveMinAmount > effectiveMaxAmount ) // Locked handle. Average the position.
-        {
             _splitAmount = 0.5f * ( effectiveMinAmount + effectiveMaxAmount );
-        }
         else
-        {
             _splitAmount = Math.Max( Math.Min( _splitAmount, effectiveMaxAmount ), effectiveMinAmount );
-        }
     }
 
     public float GetMinSplitAmount()
@@ -407,10 +369,7 @@ public class SplitPane : WidgetGroup
 
     public void SetMinSplitAmount( float minAmount )
     {
-        if ( minAmount is < 0 or > 1 )
-        {
-            throw new GdxRuntimeException( "minAmount has to be >= 0 and <= 1" );
-        }
+        if ( minAmount is < 0 or > 1 ) throw new GdxRuntimeException( "minAmount has to be >= 0 and <= 1" );
 
         _minAmount = minAmount;
     }
@@ -422,44 +381,29 @@ public class SplitPane : WidgetGroup
 
     public void SetMaxSplitAmount( float maxAmount )
     {
-        if ( maxAmount is < 0 or > 1 )
-        {
-            throw new GdxRuntimeException( "maxAmount has to be >= 0 and <= 1" );
-        }
+        if ( maxAmount is < 0 or > 1 ) throw new GdxRuntimeException( "maxAmount has to be >= 0 and <= 1" );
 
         _maxAmount = maxAmount;
     }
 
     public void SetFirstWidget( Actor? widget )
     {
-        if ( _firstWidget != null )
-        {
-            base.RemoveActor( _firstWidget, true );
-        }
+        if ( _firstWidget != null ) base.RemoveActor( _firstWidget, true );
 
         _firstWidget = widget;
 
-        if ( widget != null )
-        {
-            base.AddActor( widget );
-        }
+        if ( widget != null ) base.AddActor( widget );
 
         Invalidate();
     }
 
     public void SetSecondWidget( Actor? widget )
     {
-        if ( _secondWidget != null )
-        {
-            base.RemoveActor( _secondWidget, true );
-        }
+        if ( _secondWidget != null ) base.RemoveActor( _secondWidget, true );
 
         _secondWidget = widget;
 
-        if ( widget != null )
-        {
-            base.AddActor( widget );
-        }
+        if ( widget != null ) base.AddActor( widget );
 
         Invalidate();
     }
@@ -487,10 +431,7 @@ public class SplitPane : WidgetGroup
 
     public bool RemoveActor( Actor actor )
     {
-        if ( actor == null )
-        {
-            throw new ArgumentException( "actor cannot be null." );
-        }
+        if ( actor == null ) throw new ArgumentException( "actor cannot be null." );
 
         if ( actor == _firstWidget )
         {
@@ -511,10 +452,7 @@ public class SplitPane : WidgetGroup
 
     public override bool RemoveActor( Actor actor, bool unfocus )
     {
-        if ( actor == null )
-        {
-            throw new ArgumentException( "actor cannot be null." );
-        }
+        if ( actor == null ) throw new ArgumentException( "actor cannot be null." );
 
         if ( actor == _firstWidget )
         {
@@ -539,7 +477,7 @@ public class SplitPane : WidgetGroup
 
     public override Actor RemoveActorAt( int index, bool unfocus )
     {
-        Actor actor = base.RemoveActorAt( index, unfocus );
+        var actor = base.RemoveActorAt( index, unfocus );
 
         if ( actor == _firstWidget )
         {
@@ -578,15 +516,9 @@ public class SplitPane : WidgetGroup
 
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
-            if ( _draggingPointer != -1 )
-            {
-                return false;
-            }
+            if ( _draggingPointer != -1 ) return false;
 
-            if ( ( pointer == 0 ) && ( button != 0 ) )
-            {
-                return false;
-            }
+            if ( ( pointer == 0 ) && ( button != 0 ) ) return false;
 
             if ( _parent._handleBounds.Contains( x, y ) )
             {
@@ -603,20 +535,14 @@ public class SplitPane : WidgetGroup
 
         public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
         {
-            if ( pointer == _draggingPointer )
-            {
-                _draggingPointer = -1;
-            }
+            if ( pointer == _draggingPointer ) _draggingPointer = -1;
         }
 
         public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
         {
-            if ( pointer != _draggingPointer )
-            {
-                return;
-            }
+            if ( pointer != _draggingPointer ) return;
 
-            IDrawable handle = _parent._style.Handle;
+            var handle = _parent._style.Handle;
 
             if ( !_parent._vertical )
             {

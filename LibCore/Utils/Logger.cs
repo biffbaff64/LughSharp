@@ -88,10 +88,7 @@ public static class Logger
         TraceLevel        = logLevel;
         EnableWriteToFile = enableWriteToFile;
 
-        if ( EnableWriteToFile )
-        {
-            OpenDebugFile( filename, true );
-        }
+        if ( EnableWriteToFile ) OpenDebugFile( filename, true );
     }
 
     /// <summary>
@@ -110,17 +107,11 @@ public static class Logger
                               [CallerMemberName] string callerMethod = "",
                               [CallerLineNumber] int callerLine = 0 )
     {
-        if ( !IsEnabled( LOG_DEBUG ) )
-        {
-            return;
-        }
+        if ( !IsEnabled( LOG_DEBUG ) ) return;
 
-        if ( boxedDebug )
-        {
-            Divider();
-        }
+        if ( boxedDebug ) Divider();
 
-        CallerID callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
+        var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
         var str = CreateMessage( $"{DEBUG_TAG}{message}", callerID );
 
@@ -128,10 +119,7 @@ public static class Logger
 
         WriteToFile( str );
 
-        if ( boxedDebug )
-        {
-            Divider();
-        }
+        if ( boxedDebug ) Divider();
     }
 
     /// <summary>
@@ -146,12 +134,9 @@ public static class Logger
                               [CallerMemberName] string callerMethod = "",
                               [CallerLineNumber] int callerLine = 0 )
     {
-        if ( !IsEnabled( LOG_ERROR ) )
-        {
-            return;
-        }
+        if ( !IsEnabled( LOG_ERROR ) ) return;
 
-        CallerID callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
+        var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
         var str = CreateMessage( $"{ERROR_TAG}{message}", callerID );
 
@@ -174,12 +159,9 @@ public static class Logger
                                        [CallerMemberName] string callerMethod = "",
                                        [CallerLineNumber] int callerLine = 0 )
     {
-        if ( !IsEnabled( LOG_DEBUG ) || !condition )
-        {
-            return;
-        }
+        if ( !IsEnabled( LOG_DEBUG ) || !condition ) return;
 
-        CallerID callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
+        var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
         var str = CreateMessage( $"{DEBUG_TAG}{message}", callerID );
 
@@ -200,12 +182,9 @@ public static class Logger
                                    [CallerMemberName] string callerMethod = "",
                                    [CallerLineNumber] int callerLine = 0 )
     {
-        if ( !IsEnabled( LOG_DEBUG ) )
-        {
-            return;
-        }
+        if ( !IsEnabled( LOG_DEBUG ) ) return;
 
-        CallerID callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
+        var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
         var message = $"CP::{GetTimeStampInfo()}:{GetCallerInfo( callerID )}";
 
@@ -223,10 +202,7 @@ public static class Logger
     {
         var sb = new StringBuilder( DEBUG_TAG );
 
-        for ( var i = 0; i < length; i++ )
-        {
-            sb.Append( ch );
-        }
+        for ( var i = 0; i < length; i++ ) sb.Append( ch );
 
         Console.WriteLine( sb.ToString() );
     }
@@ -244,20 +220,12 @@ public static class Logger
     /// </param>
     public static void OpenDebugFile( string fileName, bool deleteExisting )
     {
-        if ( fileName.Equals( string.Empty ) )
-        {
-            return;
-        }
+        if ( fileName.Equals( string.Empty ) ) return;
 
-        if ( File.Exists( fileName ) && deleteExisting )
-        {
-            File.Delete( fileName );
-        }
+        if ( File.Exists( fileName ) && deleteExisting ) File.Delete( fileName );
 
         if ( Gdx.DevMode )
-        {
             _debugFilePath = ".//";
-        }
         else
         {
             _debugFilePath = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile );
@@ -266,9 +234,9 @@ public static class Logger
 
         _debugFileName = fileName;
 
-        using FileStream fs = File.Create( _debugFilePath + _debugFileName );
+        using var fs = File.Create( _debugFilePath + _debugFileName );
 
-        DateTime dateTime = DateTime.Now;
+        var dateTime = DateTime.Now;
 
         var divider = new UTF8Encoding( true )
            .GetBytes( "-----------------------------------------------------" );
@@ -322,10 +290,7 @@ public static class Logger
         sb.Append( GetCallerInfo( cid ) );
         sb.Append( " : " );
 
-        if ( !string.IsNullOrEmpty( formatString ) )
-        {
-            sb.Append( formatString );
-        }
+        if ( !string.IsNullOrEmpty( formatString ) ) sb.Append( formatString );
 
         return sb.ToString();
     }
@@ -374,12 +339,9 @@ public static class Logger
     /// <param name="text">String holding the text to write.</param>
     private static void WriteToFile( string text )
     {
-        if ( !File.Exists( _debugFilePath + _debugFileName ) )
-        {
-            return;
-        }
+        if ( !File.Exists( _debugFilePath + _debugFileName ) ) return;
 
-        using FileStream fs = File.Open( _debugFilePath + _debugFileName, FileMode.Append );
+        using var fs = File.Open( _debugFilePath + _debugFileName, FileMode.Append );
 
         var debugLine = new UTF8Encoding( true ).GetBytes( text + "\n" );
 

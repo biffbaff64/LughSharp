@@ -95,7 +95,7 @@ public abstract class Number
     /// </returns>
     public sbyte ByteValue()
     {
-        return ( sbyte )IntValue();
+        return ( sbyte ) IntValue();
     }
 
     /// <summary>
@@ -112,6 +112,6 @@ public abstract class Number
     /// </returns>
     public short ShortValue()
     {
-        return ( short )IntValue();
+        return ( short ) IntValue();
     }
 }

@@ -37,37 +37,37 @@ public class SynthesisFilter
 
     // Note: These values are not in the same order
     // as in Annex 3-B.3 of the ISO/IEC DIS 11172-3 
-    private readonly static float _cos164  = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 64.0 ) ) );
-    private readonly static float _cos364  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 64.0 ) ) );
-    private readonly static float _cos564  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 5.0 ) / 64.0 ) ) );
-    private readonly static float _cos764  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 7.0 ) / 64.0 ) ) );
-    private readonly static float _cos964  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 9.0 ) / 64.0 ) ) );
-    private readonly static float _cos1164 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 11.0 ) / 64.0 ) ) );
-    private readonly static float _cos1364 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 13.0 ) / 64.0 ) ) );
-    private readonly static float _cos1564 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 15.0 ) / 64.0 ) ) );
-    private readonly static float _cos1764 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 17.0 ) / 64.0 ) ) );
-    private readonly static float _cos1964 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 19.0 ) / 64.0 ) ) );
-    private readonly static float _cos2164 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 21.0 ) / 64.0 ) ) );
-    private readonly static float _cos2364 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 23.0 ) / 64.0 ) ) );
-    private readonly static float _cos2564 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 25.0 ) / 64.0 ) ) );
-    private readonly static float _cos2764 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 27.0 ) / 64.0 ) ) );
-    private readonly static float _cos2964 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 29.0 ) / 64.0 ) ) );
-    private readonly static float _cos3164 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 31.0 ) / 64.0 ) ) );
-    private readonly static float _cos132  = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 32.0 ) ) );
-    private readonly static float _cos332  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 32.0 ) ) );
-    private readonly static float _cos532  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 5.0 ) / 32.0 ) ) );
-    private readonly static float _cos732  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 7.0 ) / 32.0 ) ) );
-    private readonly static float _cos932  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 9.0 ) / 32.0 ) ) );
-    private readonly static float _cos1132 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 11.0 ) / 32.0 ) ) );
-    private readonly static float _cos1332 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 13.0 ) / 32.0 ) ) );
-    private readonly static float _cos1532 = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 15.0 ) / 32.0 ) ) );
-    private readonly static float _cos116  = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 16.0 ) ) );
-    private readonly static float _cos316  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 16.0 ) ) );
-    private readonly static float _cos516  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 5.0 ) / 16.0 ) ) );
-    private readonly static float _cos716  = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 7.0 ) / 16.0 ) ) );
-    private readonly static float _cos18   = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 8.0 ) ) );
-    private readonly static float _cos38   = ( float )( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 8.0 ) ) );
-    private readonly static float _cos14   = ( float )( 1.0 / ( 2.0 * Math.Cos( MY_PI / 4.0 ) ) );
+    private readonly static float _cos164  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( MY_PI / 64.0 ) ) );
+    private readonly static float _cos364  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 64.0 ) ) );
+    private readonly static float _cos564  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 5.0 ) / 64.0 ) ) );
+    private readonly static float _cos764  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 7.0 ) / 64.0 ) ) );
+    private readonly static float _cos964  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 9.0 ) / 64.0 ) ) );
+    private readonly static float _cos1164 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 11.0 ) / 64.0 ) ) );
+    private readonly static float _cos1364 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 13.0 ) / 64.0 ) ) );
+    private readonly static float _cos1564 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 15.0 ) / 64.0 ) ) );
+    private readonly static float _cos1764 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 17.0 ) / 64.0 ) ) );
+    private readonly static float _cos1964 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 19.0 ) / 64.0 ) ) );
+    private readonly static float _cos2164 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 21.0 ) / 64.0 ) ) );
+    private readonly static float _cos2364 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 23.0 ) / 64.0 ) ) );
+    private readonly static float _cos2564 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 25.0 ) / 64.0 ) ) );
+    private readonly static float _cos2764 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 27.0 ) / 64.0 ) ) );
+    private readonly static float _cos2964 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 29.0 ) / 64.0 ) ) );
+    private readonly static float _cos3164 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 31.0 ) / 64.0 ) ) );
+    private readonly static float _cos132  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( MY_PI / 32.0 ) ) );
+    private readonly static float _cos332  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 32.0 ) ) );
+    private readonly static float _cos532  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 5.0 ) / 32.0 ) ) );
+    private readonly static float _cos732  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 7.0 ) / 32.0 ) ) );
+    private readonly static float _cos932  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 9.0 ) / 32.0 ) ) );
+    private readonly static float _cos1132 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 11.0 ) / 32.0 ) ) );
+    private readonly static float _cos1332 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 13.0 ) / 32.0 ) ) );
+    private readonly static float _cos1532 = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 15.0 ) / 32.0 ) ) );
+    private readonly static float _cos116  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( MY_PI / 16.0 ) ) );
+    private readonly static float _cos316  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 16.0 ) ) );
+    private readonly static float _cos516  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 5.0 ) / 16.0 ) ) );
+    private readonly static float _cos716  = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 7.0 ) / 16.0 ) ) );
+    private readonly static float _cos18   = ( float ) ( 1.0 / ( 2.0 * Math.Cos( MY_PI / 8.0 ) ) );
+    private readonly static float _cos38   = ( float ) ( 1.0 / ( 2.0 * Math.Cos( ( MY_PI * 3.0 ) / 8.0 ) ) );
+    private readonly static float _cos14   = ( float ) ( 1.0 / ( 2.0 * Math.Cos( MY_PI / 4.0 ) ) );
 
     private static float[]? _d;
 
@@ -260,16 +260,10 @@ public class SynthesisFilter
             {
                 _eq = new float[ 32 ];
 
-                for ( var i = 0; i < 32; i++ )
-                {
-                    _eq[ i ] = 1.0f;
-                }
+                for ( var i = 0; i < 32; i++ ) _eq[ i ] = 1.0f;
             }
 
-            if ( _eq.Length < 32 )
-            {
-                throw new GdxRuntimeException( "eq0" );
-            }
+            if ( _eq.Length < 32 ) throw new GdxRuntimeException( "eq0" );
         }
     }
 
@@ -284,16 +278,10 @@ public class SynthesisFilter
     public void Reset()
     {
         // initialize v1[] and v2[]:
-        for ( var p = 0; p < 512; p++ )
-        {
-            _v1[ p ] = _v2[ p ] = 0.0f;
-        }
+        for ( var p = 0; p < 512; p++ ) _v1[ p ] = _v2[ p ] = 0.0f;
 
         // initialize samples[]:
-        for ( var p2 = 0; p2 < 32; p2++ )
-        {
-            _samples[ p2 ] = 0.0f;
-        }
+        for ( var p2 = 0; p2 < 32; p2++ ) _samples[ p2 ] = 0.0f;
 
         _actualV        = _v1;
         _actualWritePos = 15;
@@ -301,20 +289,14 @@ public class SynthesisFilter
 
     public void AddSample( float sample, int subbandnumber )
     {
-        if ( _eq != null )
-        {
-            _samples[ subbandnumber ] = _eq[ subbandnumber ] * sample;
-        }
+        if ( _eq != null ) _samples[ subbandnumber ] = _eq[ subbandnumber ] * sample;
     }
 
     public void AddSamples( float[] s )
     {
         if ( _eq != null )
         {
-            for ( var i = 31; i >= 0; i-- )
-            {
-                _samples[ i ] = s[ i ] * _eq[ i ];
-            }
+            for ( var i = 31; i >= 0; i-- ) _samples[ i ] = s[ i ] * _eq[ i ];
         }
     }
 
@@ -1218,10 +1200,7 @@ public class SynthesisFilter
 
         // TODO: this may not be necessary. The Layer III decoder always
         // outputs 32 subband samples, but I haven't checked layer I & II.
-        for ( var p = 0; p < 32; p++ )
-        {
-            _samples[ p ] = 0.0f;
-        }
+        for ( var p = 0; p < 32; p++ ) _samples[ p ] = 0.0f;
     }
 
     /// <summary>
@@ -1242,32 +1221,20 @@ public class SynthesisFilter
         var size  = array.Length / blockSize;
         var split = new float[ size ][];
 
-        for ( var i = 0; i < size; i++ )
-        {
-            split[ i ] = SubArray( array, i * blockSize, blockSize );
-        }
+        for ( var i = 0; i < size; i++ ) split[ i ] = SubArray( array, i * blockSize, blockSize );
 
         return split;
     }
 
     private static float[] SubArray( float[] array, int offs, int len )
     {
-        if ( ( offs + len ) > array.Length )
-        {
-            len = array.Length - offs;
-        }
+        if ( ( offs + len ) > array.Length ) len = array.Length - offs;
 
-        if ( len < 0 )
-        {
-            len = 0;
-        }
+        if ( len < 0 ) len = 0;
 
         var subarray = new float[ len ];
 
-        for ( var i = 0; i < len; i++ )
-        {
-            subarray[ i ] = array[ offs + i ];
-        }
+        for ( var i = 0; i < len; i++ ) subarray[ i ] = array[ offs + i ];
 
         return subarray;
     }

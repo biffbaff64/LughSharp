@@ -48,10 +48,7 @@ public class IndexBufferObject : IIndexData
     {
         _empty = maxIndices == 0;
 
-        if ( _empty )
-        {
-            maxIndices = 1;
-        }
+        if ( _empty ) maxIndices = 1;
 
         _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
         _buffer     = _byteBuffer.AsShortBuffer();
@@ -156,10 +153,7 @@ public class IndexBufferObject : IIndexData
     /// <inheritdoc />
     public void Bind()
     {
-        if ( _bufferHandle == 0 )
-        {
-            throw new GdxRuntimeException( "No buffer allocated!" );
-        }
+        if ( _bufferHandle == 0 ) throw new GdxRuntimeException( "No buffer allocated!" );
 
         Gdx.GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, ( uint ) _bufferHandle );
 
@@ -203,9 +197,6 @@ public class IndexBufferObject : IIndexData
 
         _bufferHandle = 0;
 
-        if ( _ownsBuffer )
-        {
-            BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
-        }
+        if ( _ownsBuffer ) BufferUtils.DisposeUnsafeByteBuffer( _byteBuffer );
     }
 }

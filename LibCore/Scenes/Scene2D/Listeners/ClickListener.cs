@@ -41,11 +41,12 @@ public class ClickListener : InputListener
     ///     resulting in a click is released.
     /// </summary>
     public readonly static float VisualPressedDuration = 0.1f;
+
     private bool _cancelled;
     private long _lastTapTime;
 
     private bool _over;
-    private long _tapCountInterval = ( long )( 0.4f * 1000000000L );
+    private long _tapCountInterval = ( long ) ( 0.4f * 1000000000L );
     private long _visualPressedTime;
 
     /// <summary>
@@ -82,20 +83,11 @@ public class ClickListener : InputListener
     {
         get
         {
-            if ( Pressed )
-            {
-                return true;
-            }
+            if ( Pressed ) return true;
 
-            if ( _visualPressedTime <= 0 )
-            {
-                return false;
-            }
+            if ( _visualPressedTime <= 0 ) return false;
 
-            if ( _visualPressedTime > TimeUtils.Millis() )
-            {
-                return true;
-            }
+            if ( _visualPressedTime > TimeUtils.Millis() ) return true;
 
             _visualPressedTime = 0;
 
@@ -106,13 +98,9 @@ public class ClickListener : InputListener
         set
         {
             if ( value )
-            {
-                _visualPressedTime = TimeUtils.Millis() + ( long )( VisualPressedDuration * 1000 );
-            }
+                _visualPressedTime = TimeUtils.Millis() + ( long ) ( VisualPressedDuration * 1000 );
             else
-            {
                 _visualPressedTime = 0;
-            }
         }
     }
 
@@ -135,15 +123,9 @@ public class ClickListener : InputListener
 
     public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
     {
-        if ( Pressed )
-        {
-            return false;
-        }
+        if ( Pressed ) return false;
 
-        if ( ( pointer == 0 ) && ( Button != -1 ) && ( button != Button ) )
-        {
-            return false;
-        }
+        if ( ( pointer == 0 ) && ( Button != -1 ) && ( button != Button ) ) return false;
 
         Pressed        = true;
         PressedPointer = pointer;
@@ -157,10 +139,7 @@ public class ClickListener : InputListener
 
     public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
     {
-        if ( ( pointer != PressedPointer ) || _cancelled )
-        {
-            return;
-        }
+        if ( ( pointer != PressedPointer ) || _cancelled ) return;
 
         Pressed = IsOver( ev?.ListenerActor, x, y );
 
@@ -180,19 +159,13 @@ public class ClickListener : InputListener
                 var touchUpOver = IsOver( ev?.ListenerActor, x, y );
 
                 // Ignore touch up if the wrong mouse button.
-                if ( touchUpOver && ( pointer == 0 ) && ( Button != -1 ) && ( button != Button ) )
-                {
-                    touchUpOver = false;
-                }
+                if ( touchUpOver && ( pointer == 0 ) && ( Button != -1 ) && ( button != Button ) ) touchUpOver = false;
 
                 if ( touchUpOver )
                 {
                     var time = TimeUtils.NanoTime();
 
-                    if ( ( time - _lastTapTime ) > TapCountInterval )
-                    {
-                        TapCount = 0;
-                    }
+                    if ( ( time - _lastTapTime ) > TapCountInterval ) TapCount = 0;
 
                     TapCount++;
                     _lastTapTime = time;
@@ -210,18 +183,12 @@ public class ClickListener : InputListener
 
     public override void Enter( InputEvent? ev, float x, float y, int pointer, Actor? fromActor )
     {
-        if ( ( pointer == -1 ) && !_cancelled )
-        {
-            _over = true;
-        }
+        if ( ( pointer == -1 ) && !_cancelled ) _over = true;
     }
 
     public override void Exit( InputEvent? ev, float x, float y, int pointer, Actor? toActor )
     {
-        if ( ( pointer == -1 ) && !_cancelled )
-        {
-            _over = false;
-        }
+        if ( ( pointer == -1 ) && !_cancelled ) _over = false;
     }
 
     /// <summary>
@@ -230,10 +197,7 @@ public class ClickListener : InputListener
     /// </summary>
     public virtual void Cancel()
     {
-        if ( PressedPointer == -1 )
-        {
-            return;
-        }
+        if ( PressedPointer == -1 ) return;
 
         _cancelled = true;
         Pressed    = false;
@@ -249,22 +213,16 @@ public class ClickListener : InputListener
     /// </summary>
     public bool IsOver( Actor? actor, float x, float y )
     {
-        Actor? hit = actor?.Hit( x, y, true );
+        var hit = actor?.Hit( x, y, true );
 
-        if ( ( hit == null ) || !hit.IsDescendantOf( actor ) )
-        {
-            return InTapSquare( x, y );
-        }
+        if ( ( hit == null ) || !hit.IsDescendantOf( actor ) ) return InTapSquare( x, y );
 
         return true;
     }
 
     public bool InTapSquare( float x, float y )
     {
-        if ( TouchDownX.Equals( -1 ) && TouchDownY.Equals( -1 ) )
-        {
-            return false;
-        }
+        if ( TouchDownX.Equals( -1 ) && TouchDownY.Equals( -1 ) ) return false;
 
         return ( Math.Abs( x - TouchDownX ) < TapSquareSize )
             && ( Math.Abs( y - TouchDownY ) < TapSquareSize );

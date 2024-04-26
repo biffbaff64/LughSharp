@@ -39,27 +39,15 @@ public class DialogChangeListener : ChangeListener
     /// <inheritdoc cref="ChangeListener.Changed" />
     public override void Changed( ChangeEvent ev, Actor? actor )
     {
-        if ( ( _dialog.Values == null ) || ( actor == null ) )
-        {
-            return;
-        }
+        if ( ( _dialog.Values == null ) || ( actor == null ) ) return;
 
-        if ( !_dialog.Values!.ContainsKey( actor ) )
-        {
-            return;
-        }
+        if ( !_dialog.Values!.ContainsKey( actor ) ) return;
 
-        while ( actor!.Parent != _dialog.ButtonTable )
-        {
-            actor = actor.Parent;
-        }
+        while ( actor!.Parent != _dialog.ButtonTable ) actor = actor.Parent;
 
         _dialog.Result( _dialog.Values[ actor ] );
 
-        if ( !_dialog.CancelHide )
-        {
-            _dialog.Hide();
-        }
+        if ( !_dialog.CancelHide ) _dialog.Hide();
 
         _dialog.CancelHide = false;
     }

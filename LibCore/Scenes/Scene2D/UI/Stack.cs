@@ -47,20 +47,14 @@ public class Stack : WidgetGroup
 
     public Stack( params Actor[] actors ) : this()
     {
-        foreach ( Actor actor in actors )
-        {
-            AddActor( actor );
-        }
+        foreach ( var actor in actors ) AddActor( actor );
     }
 
     public new float PrefWidth
     {
         get
         {
-            if ( _sizeInvalid )
-            {
-                ComputeSize();
-            }
+            if ( _sizeInvalid ) ComputeSize();
 
             return _prefWidth;
         }
@@ -70,10 +64,7 @@ public class Stack : WidgetGroup
     {
         get
         {
-            if ( _sizeInvalid )
-            {
-                ComputeSize();
-            }
+            if ( _sizeInvalid ) ComputeSize();
 
             return _prefHeight;
         }
@@ -83,10 +74,7 @@ public class Stack : WidgetGroup
     {
         get
         {
-            if ( _sizeInvalid )
-            {
-                ComputeSize();
-            }
+            if ( _sizeInvalid ) ComputeSize();
 
             return _minWidth;
         }
@@ -96,10 +84,7 @@ public class Stack : WidgetGroup
     {
         get
         {
-            if ( _sizeInvalid )
-            {
-                ComputeSize();
-            }
+            if ( _sizeInvalid ) ComputeSize();
 
             return _minHeight;
         }
@@ -109,10 +94,7 @@ public class Stack : WidgetGroup
     {
         get
         {
-            if ( _sizeInvalid )
-            {
-                ComputeSize();
-            }
+            if ( _sizeInvalid ) ComputeSize();
 
             return _maxWidth;
         }
@@ -122,10 +104,7 @@ public class Stack : WidgetGroup
     {
         get
         {
-            if ( _sizeInvalid )
-            {
-                ComputeSize();
-            }
+            if ( _sizeInvalid ) ComputeSize();
 
             return _maxHeight;
         }
@@ -151,7 +130,7 @@ public class Stack : WidgetGroup
 
         for ( int i = 0, n = children.Size; i < n; i++ )
         {
-            Actor child = children.GetAt( i );
+            var   child = children.GetAt( i );
             float childMaxWidth, childMaxHeight;
 
             if ( child is ILayout layout )
@@ -175,15 +154,9 @@ public class Stack : WidgetGroup
                 childMaxHeight = 0;
             }
 
-            if ( childMaxWidth > 0 )
-            {
-                _maxWidth = _maxWidth == 0 ? childMaxWidth : Math.Min( _maxWidth, childMaxWidth );
-            }
+            if ( childMaxWidth > 0 ) _maxWidth = _maxWidth == 0 ? childMaxWidth : Math.Min( _maxWidth, childMaxWidth );
 
-            if ( childMaxHeight > 0 )
-            {
-                _maxHeight = _maxHeight == 0 ? childMaxHeight : Math.Min( _maxHeight, childMaxHeight );
-            }
+            if ( childMaxHeight > 0 ) _maxHeight = _maxHeight == 0 ? childMaxHeight : Math.Min( _maxHeight, childMaxHeight );
         }
     }
 
@@ -194,10 +167,7 @@ public class Stack : WidgetGroup
 
     public void Layout()
     {
-        if ( _sizeInvalid )
-        {
-            ComputeSize();
-        }
+        if ( _sizeInvalid ) ComputeSize();
 
         var width  = Width;
         var height = Height;
@@ -206,13 +176,10 @@ public class Stack : WidgetGroup
 
         for ( int i = 0, n = children.Size; i < n; i++ )
         {
-            Actor child = children.GetAt( i );
+            var child = children.GetAt( i );
             child.SetBounds( 0, 0, width, height );
 
-            if ( child is ILayout layout )
-            {
-                layout.Validate();
-            }
+            if ( child is ILayout layout ) layout.Validate();
         }
     }
 }

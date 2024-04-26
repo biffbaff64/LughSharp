@@ -71,7 +71,7 @@ public class Vector2 : IVector< Vector2 >
 
     public float Len()
     {
-        return ( float )Math.Sqrt( ( X * X ) + ( Y * Y ) );
+        return ( float ) Math.Sqrt( ( X * X ) + ( Y * Y ) );
     }
 
     public float Len2()
@@ -161,7 +161,7 @@ public class Vector2 : IVector< Vector2 >
         var xD = v.X - X;
         var yD = v.Y - Y;
 
-        return ( float )Math.Sqrt( ( xD * xD ) + ( yD * yD ) );
+        return ( float ) Math.Sqrt( ( xD * xD ) + ( yD * yD ) );
     }
 
     public float Dst2( Vector2 v )
@@ -181,28 +181,22 @@ public class Vector2 : IVector< Vector2 >
     {
         var len2 = Len2();
 
-        return len2 > limit2 ? Scl( ( float )Math.Sqrt( limit2 / len2 ) ) : this;
+        return len2 > limit2 ? Scl( ( float ) Math.Sqrt( limit2 / len2 ) ) : this;
     }
 
     public Vector2 Clamp( float min, float max )
     {
         var len2 = Len2();
 
-        if ( len2 == 0f )
-        {
-            return this;
-        }
+        if ( len2 == 0f ) return this;
 
         var max2 = max * max;
 
-        if ( len2 > max2 )
-        {
-            return Scl( ( float )Math.Sqrt( max2 / len2 ) );
-        }
+        if ( len2 > max2 ) return Scl( ( float ) Math.Sqrt( max2 / len2 ) );
 
         var min2 = min * min;
 
-        return len2 < min2 ? Scl( ( float )Math.Sqrt( min2 / len2 ) ) : this;
+        return len2 < min2 ? Scl( ( float ) Math.Sqrt( min2 / len2 ) ) : this;
     }
 
     public Vector2 SetLength( float len )
@@ -214,7 +208,7 @@ public class Vector2 : IVector< Vector2 >
     {
         var oldLen2 = Len2();
 
-        return ( oldLen2 == 0 ) || MathUtils.IsEqual( oldLen2, len2 ) ? this : Scl( ( float )Math.Sqrt( len2 / oldLen2 ) );
+        return ( oldLen2 == 0 ) || MathUtils.IsEqual( oldLen2, len2 ) ? this : Scl( ( float ) Math.Sqrt( len2 / oldLen2 ) );
     }
 
     public Vector2 Lerp( Vector2 target, float alpha )
@@ -240,15 +234,9 @@ public class Vector2 : IVector< Vector2 >
 
     public bool EpsilonEquals( Vector2? other, float epsilon = MathUtils.FLOAT_ROUNDING_ERROR )
     {
-        if ( other == null )
-        {
-            return false;
-        }
+        if ( other == null ) return false;
 
-        if ( Math.Abs( other.X - X ) > epsilon )
-        {
-            return false;
-        }
+        if ( Math.Abs( other.X - X ) > epsilon ) return false;
 
         return !( Math.Abs( other.Y - Y ) > epsilon );
     }
@@ -328,7 +316,7 @@ public class Vector2 : IVector< Vector2 >
 
     public static float Len( float x, float y )
     {
-        return ( float )Math.Sqrt( ( x * x ) + ( y * y ) );
+        return ( float ) Math.Sqrt( ( x * x ) + ( y * y ) );
     }
 
     public static float Len2( float x, float y )
@@ -401,7 +389,7 @@ public class Vector2 : IVector< Vector2 >
         var xD = x2 - x1;
         var yD = y2 - y1;
 
-        return ( float )Math.Sqrt( ( xD * xD ) + ( yD * yD ) );
+        return ( float ) Math.Sqrt( ( xD * xD ) + ( yD * yD ) );
     }
 
     public float Dst( float x, float y )
@@ -409,7 +397,7 @@ public class Vector2 : IVector< Vector2 >
         var xD = x - X;
         var yD = y - Y;
 
-        return ( float )Math.Sqrt( ( xD * xD ) + ( yD * yD ) );
+        return ( float ) Math.Sqrt( ( xD * xD ) + ( yD * yD ) );
     }
 
     public static float Dst2( float x1, float y1, float x2, float y2 )
@@ -479,53 +467,44 @@ public class Vector2 : IVector< Vector2 >
 
     public float Angle()
     {
-        var angle = ( float )Math.Atan2( Y, X ) * MathUtils.RADIANS_TO_DEGREES;
+        var angle = ( float ) Math.Atan2( Y, X ) * MathUtils.RADIANS_TO_DEGREES;
 
-        if ( angle < 0 )
-        {
-            angle += 360;
-        }
+        if ( angle < 0 ) angle += 360;
 
         return angle;
     }
 
     public float Angle( Vector2 reference )
     {
-        return ( float )Math.Atan2( Crs( reference ), Dot( reference ) ) * MathUtils.RADIANS_TO_DEGREES;
+        return ( float ) Math.Atan2( Crs( reference ), Dot( reference ) ) * MathUtils.RADIANS_TO_DEGREES;
     }
 
     public float AngleDeg()
     {
-        var angle = ( float )Math.Atan2( Y, X ) * MathUtils.RADIANS_TO_DEGREES;
+        var angle = ( float ) Math.Atan2( Y, X ) * MathUtils.RADIANS_TO_DEGREES;
 
-        if ( angle < 0 )
-        {
-            angle += 360;
-        }
+        if ( angle < 0 ) angle += 360;
 
         return angle;
     }
 
     public float AngleDeg( Vector2 reference )
     {
-        var angle = ( float )Math.Atan2( reference.Crs( this ), reference.Dot( this ) ) * MathUtils.RADIANS_TO_DEGREES;
+        var angle = ( float ) Math.Atan2( reference.Crs( this ), reference.Dot( this ) ) * MathUtils.RADIANS_TO_DEGREES;
 
-        if ( angle < 0 )
-        {
-            angle += 360;
-        }
+        if ( angle < 0 ) angle += 360;
 
         return angle;
     }
 
     public float AngleRad()
     {
-        return ( float )Math.Atan2( Y, X );
+        return ( float ) Math.Atan2( Y, X );
     }
 
     public float AngleRad( Vector2 reference )
     {
-        return ( float )Math.Atan2( reference.Crs( this ), reference.Dot( this ) );
+        return ( float ) Math.Atan2( reference.Crs( this ), reference.Dot( this ) );
     }
 
     public Vector2 SetAngle( float degrees )
@@ -563,8 +542,8 @@ public class Vector2 : IVector< Vector2 >
 
     public Vector2 RotateRad( float radians )
     {
-        var cos = ( float )Math.Cos( radians );
-        var sin = ( float )Math.Sin( radians );
+        var cos = ( float ) Math.Cos( radians );
+        var sin = ( float ) Math.Sin( radians );
 
         var newX = ( X * cos ) - ( Y * sin );
         var newY = ( X * sin ) + ( Y * cos );
@@ -615,37 +594,22 @@ public class Vector2 : IVector< Vector2 >
 
     public new bool Equals( object? obj )
     {
-        if ( this == obj )
-        {
-            return true;
-        }
+        if ( this == obj ) return true;
 
-        if ( obj == null )
-        {
-            return false;
-        }
+        if ( obj == null ) return false;
 
-        if ( GetType() != obj.GetType() )
-        {
-            return false;
-        }
+        if ( GetType() != obj.GetType() ) return false;
 
-        var other = ( Vector2 )obj;
+        var other = ( Vector2 ) obj;
 
-        if ( NumberUtils.FloatToIntBits( X ) != NumberUtils.FloatToIntBits( other.X ) )
-        {
-            return false;
-        }
+        if ( NumberUtils.FloatToIntBits( X ) != NumberUtils.FloatToIntBits( other.X ) ) return false;
 
         return NumberUtils.FloatToIntBits( Y ) == NumberUtils.FloatToIntBits( other.Y );
     }
 
     public bool EpsilonEquals( float x, float y, float epsilon )
     {
-        if ( Math.Abs( x - X ) > epsilon )
-        {
-            return false;
-        }
+        if ( Math.Abs( x - X ) > epsilon ) return false;
 
         return !( Math.Abs( y - Y ) > epsilon );
     }

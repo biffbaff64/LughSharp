@@ -72,10 +72,7 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
 
     public virtual new void Draw( IBatch batch, float x, float y, float width, float height )
     {
-        if ( Region != null )
-        {
-            batch.Draw( Region, x, y, width, height );
-        }
+        if ( Region != null ) batch.Draw( Region, x, y, width, height );
     }
 
     public virtual void Draw( IBatch batch,
@@ -89,10 +86,7 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
                               float scaleY,
                               float rotation )
     {
-        if ( Region != null )
-        {
-            batch.Draw( Region, x, y, originX, originY, width, height, scaleX, scaleY, rotation );
-        }
+        if ( Region != null ) batch.Draw( Region, x, y, originX, originY, width, height, scaleX, scaleY, rotation );
     }
 
     /// <summary>
@@ -101,21 +95,14 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
     /// </summary>
     public virtual IDrawable Tint( Color tint )
     {
-        if ( Region == null )
-        {
-            throw new NullReferenceException();
-        }
+        if ( Region == null ) throw new NullReferenceException();
 
         Sprite sprite;
 
         if ( Region is AtlasRegion region )
-        {
             sprite = new AtlasSprite( region );
-        }
         else
-        {
             sprite = new Sprite( Region! );
-        }
 
         sprite.SetColor( tint );
         sprite.SetSize( MinWidth, MinHeight );

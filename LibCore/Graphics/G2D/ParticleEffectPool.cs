@@ -58,8 +58,8 @@ public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
 
             for ( var i = 0; i < emitters.Count; i++ )
             {
-                ParticleEmitter emitter         = emitters[ i ];
-                ParticleEmitter templateEmitter = templateEmitters[ i ];
+                var emitter         = emitters[ i ];
+                var templateEmitter = templateEmitters[ i ];
 
                 emitter.MatchSize( templateEmitter );
                 emitter.MatchMotion( templateEmitter );

@@ -35,32 +35,17 @@ public class RepeatAction : DelegateAction
 
     protected override bool Delegate( float delta )
     {
-        if ( ExecutedCount == RepeatCount )
-        {
-            return true;
-        }
+        if ( ExecutedCount == RepeatCount ) return true;
 
-        if ( Action == null )
-        {
-            return false;
-        }
+        if ( Action == null ) return false;
 
         if ( Action.Act( delta ) )
         {
-            if ( Finished )
-            {
-                return true;
-            }
+            if ( Finished ) return true;
 
-            if ( RepeatCount > 0 )
-            {
-                ExecutedCount++;
-            }
+            if ( RepeatCount > 0 ) ExecutedCount++;
 
-            if ( ExecutedCount == RepeatCount )
-            {
-                return true;
-            }
+            if ( ExecutedCount == RepeatCount ) return true;
 
             Action?.Restart();
         }

@@ -44,7 +44,7 @@ namespace LughSharp.LibCore.Maths;
 ///         for a detailed explanation.
 ///     </para>
 /// </summary>
-public class CumulativeDistribution<T>
+public class CumulativeDistribution< T >
 {
     private readonly List< CumulativeValue > _values;
 
@@ -76,7 +76,7 @@ public class CumulativeDistribution<T>
     {
         float sum = 0;
 
-        foreach ( CumulativeValue cv in _values )
+        foreach ( var cv in _values )
         {
             sum          += cv.interval;
             cv.frequency =  sum;
@@ -91,14 +91,11 @@ public class CumulativeDistribution<T>
     {
         float sum = 0;
 
-        foreach ( CumulativeValue cv in _values )
-        {
-            sum += cv.interval;
-        }
+        foreach ( var cv in _values ) sum += cv.interval;
 
         float intervalSum = 0;
 
-        foreach ( CumulativeValue cv in _values )
+        foreach ( var cv in _values )
         {
             intervalSum  += cv.interval / sum;
             cv.frequency =  intervalSum;
@@ -135,21 +132,15 @@ public class CumulativeDistribution<T>
 
         while ( imin <= imax )
         {
-            var             imid  = imin + ( ( imax - imin ) / 2 );
-            CumulativeValue value = _values[ imid ];
+            var imid  = imin + ( ( imax - imin ) / 2 );
+            var value = _values[ imid ];
 
             if ( probability < value.frequency )
-            {
                 imax = imid - 1;
-            }
             else if ( probability > value.frequency )
-            {
                 imin = imid + 1;
-            }
             else
-            {
                 break;
-            }
         }
 
         return _values[ imin ].value;
@@ -185,15 +176,13 @@ public class CumulativeDistribution<T>
     /// </summary>
     public virtual void SetInterval( T obj, float intervalSize )
     {
-        foreach ( CumulativeValue value in _values )
-        {
+        foreach ( var value in _values )
             if ( Equals( value.value, obj ) )
             {
                 value.interval = intervalSize;
 
                 return;
             }
-        }
     }
 
     /// <summary>

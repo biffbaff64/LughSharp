@@ -33,10 +33,7 @@ public class LayoutAction : Action
 
     public void SetTarget( Actor actor )
     {
-        if ( ( actor != null ) && actor is not ILayout )
-        {
-            throw new GdxRuntimeException( "Actor must implement layout: " + actor );
-        }
+        if ( ( actor != null ) && actor is not ILayout ) throw new GdxRuntimeException( "Actor must implement layout: " + actor );
 
         base.Target = actor;
     }
@@ -52,12 +49,9 @@ public class LayoutAction : Action
     /// </returns>
     public override bool Act( float delta )
     {
-        if ( base.Target == null )
-        {
-            return false;
-        }
+        if ( base.Target == null ) return false;
 
-        ( ( ILayout )base.Target ).LayoutEnabled = Enabled;
+        ( ( ILayout ) base.Target ).LayoutEnabled = Enabled;
 
         return true;
     }

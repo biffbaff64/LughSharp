@@ -57,12 +57,8 @@ public class Bits
         get
         {
             foreach ( var t in _bits )
-            {
                 if ( t != 0L )
-                {
                     return false;
-                }
-            }
 
             return true;
         }
@@ -77,10 +73,7 @@ public class Bits
     {
         var word = index >>> 6;
 
-        if ( word >= _bits.Length )
-        {
-            return false;
-        }
+        if ( word >= _bits.Length ) return false;
 
         return ( _bits[ word ] & ( 1L << ( index & 0x3F ) ) ) != 0L;
     }
@@ -94,10 +87,7 @@ public class Bits
     {
         var word = index >>> 6;
 
-        if ( word >= _bits.Length )
-        {
-            return false;
-        }
+        if ( word >= _bits.Length ) return false;
 
         var oldBits = _bits[ word ];
 
@@ -174,10 +164,7 @@ public class Bits
     {
         var word = index >>> 6;
 
-        if ( word >= _bits.Length )
-        {
-            return;
-        }
+        if ( word >= _bits.Length ) return;
 
         _bits[ word ] &= ~( 1L << ( index & 0x3F ) );
     }
@@ -212,12 +199,8 @@ public class Bits
             if ( bitsAtWord != 0 )
             {
                 for ( var bit = 63; bit >= 0; --bit )
-                {
                     if ( ( bitsAtWord & ( 1L << ( bit & 0x3F ) ) ) != 0L )
-                    {
                         return ( word << 6 ) + bit + 1;
-                    }
-                }
             }
         }
 
@@ -233,26 +216,18 @@ public class Bits
     {
         var word = fromIndex >>> 6;
 
-        if ( word >= _bits.Length )
-        {
-            return -1;
-        }
+        if ( word >= _bits.Length ) return -1;
 
         var bitsAtWord = _bits[ word ];
 
         if ( bitsAtWord != 0 )
         {
             for ( var i = fromIndex & 0x3f; i < 64; i++ )
-            {
                 if ( ( bitsAtWord & ( 1L << ( i & 0x3F ) ) ) != 0L )
-                {
                     return ( word << 6 ) + i;
-                }
-            }
         }
 
         for ( word++; word < _bits.Length; word++ )
-        {
             if ( word != 0 )
             {
                 bitsAtWord = _bits[ word ];
@@ -260,15 +235,10 @@ public class Bits
                 if ( bitsAtWord != 0 )
                 {
                     for ( var i = 0; i < 64; i++ )
-                    {
                         if ( ( bitsAtWord & ( 1L << ( i & 0x3F ) ) ) != 0L )
-                        {
                             return ( word << 6 ) + i;
-                        }
-                    }
                 }
             }
-        }
 
         return -1;
     }
@@ -281,37 +251,23 @@ public class Bits
     {
         var word = fromIndex >>> 6;
 
-        if ( word >= _bits.Length )
-        {
-            return _bits.Length << 6;
-        }
+        if ( word >= _bits.Length ) return _bits.Length << 6;
 
         var bitsAtWord = _bits[ word ];
 
         for ( var i = fromIndex & 0x3f; i < 64; i++ )
-        {
             if ( ( bitsAtWord & ( 1L << ( i & 0x3F ) ) ) == 0L )
-            {
                 return ( word << 6 ) + i;
-            }
-        }
 
         for ( word++; word < _bits.Length; word++ )
         {
-            if ( word == 0 )
-            {
-                return word << 6;
-            }
+            if ( word == 0 ) return word << 6;
 
             bitsAtWord = _bits[ word ];
 
             for ( var i = 0; i < 64; i++ )
-            {
                 if ( ( bitsAtWord & ( 1L << ( i & 0x3F ) ) ) == 0L )
-                {
                     return ( word << 6 ) + i;
-                }
-            }
         }
 
         return _bits.Length << 6;
@@ -328,17 +284,11 @@ public class Bits
     {
         var commonWords = Math.Min( _bits.Length, other._bits.Length );
 
-        for ( var i = 0; commonWords > i; i++ )
-        {
-            _bits[ i ] &= other._bits[ i ];
-        }
+        for ( var i = 0; commonWords > i; i++ ) _bits[ i ] &= other._bits[ i ];
 
         if ( _bits.Length > commonWords )
         {
-            for ( int i = commonWords, s = _bits.Length; s > i; i++ )
-            {
-                _bits[ i ] = 0L;
-            }
+            for ( int i = commonWords, s = _bits.Length; s > i; i++ ) _bits[ i ] = 0L;
         }
     }
 
@@ -349,10 +299,7 @@ public class Bits
     /// <param name="other"> a bit set  </param>
     public void AndNot( Bits other )
     {
-        for ( int i = 0, j = _bits.Length, k = other._bits.Length; ( i < j ) && ( i < k ); i++ )
-        {
-            _bits[ i ] &= ~other._bits[ i ];
-        }
+        for ( int i = 0, j = _bits.Length, k = other._bits.Length; ( i < j ) && ( i < k ); i++ ) _bits[ i ] &= ~other._bits[ i ];
     }
 
     /// <summary>
@@ -366,19 +313,13 @@ public class Bits
     {
         var commonWords = Math.Min( _bits.Length, other._bits.Length );
 
-        for ( var i = 0; commonWords > i; i++ )
-        {
-            _bits[ i ] |= other._bits[ i ];
-        }
+        for ( var i = 0; commonWords > i; i++ ) _bits[ i ] |= other._bits[ i ];
 
         if ( commonWords < other._bits.Length )
         {
             EnsureCapacity( other._bits.Length );
 
-            for ( int i = commonWords, s = other._bits.Length; s > i; i++ )
-            {
-                _bits[ i ] = other._bits[ i ];
-            }
+            for ( int i = commonWords, s = other._bits.Length; s > i; i++ ) _bits[ i ] = other._bits[ i ];
         }
     }
 
@@ -402,19 +343,13 @@ public class Bits
     {
         var commonWords = Math.Min( _bits.Length, other._bits.Length );
 
-        for ( var i = 0; commonWords > i; i++ )
-        {
-            _bits[ i ] ^= other._bits[ i ];
-        }
+        for ( var i = 0; commonWords > i; i++ ) _bits[ i ] ^= other._bits[ i ];
 
         if ( commonWords < other._bits.Length )
         {
             EnsureCapacity( other._bits.Length );
 
-            for ( int i = commonWords, s = other._bits.Length; s > i; i++ )
-            {
-                _bits[ i ] = other._bits[ i ];
-            }
+            for ( int i = commonWords, s = other._bits.Length; s > i; i++ ) _bits[ i ] = other._bits[ i ];
         }
     }
 
@@ -430,12 +365,8 @@ public class Bits
         var otherBits = other._bits;
 
         for ( var i = Math.Min( bits.Length, otherBits.Length ) - 1; i >= 0; i-- )
-        {
             if ( ( bits[ i ] & otherBits[ i ] ) != 0 )
-            {
                 return true;
-            }
-        }
 
         return false;
     }
@@ -456,20 +387,12 @@ public class Bits
         var bitsLength      = bits.Length;
 
         for ( var i = bitsLength; i < otherBitsLength; i++ )
-        {
             if ( otherBits[ i ] != 0 )
-            {
                 return false;
-            }
-        }
 
         for ( var i = Math.Min( bitsLength, otherBitsLength ) - 1; i >= 0; i-- )
-        {
             if ( ( bits[ i ] & otherBits[ i ] ) != otherBits[ i ] )
-            {
                 return false;
-            }
-        }
 
         return true;
     }
@@ -488,38 +411,22 @@ public class Bits
     /// <inheritdoc />
     public override bool Equals( object? obj )
     {
-        if ( this == obj )
-        {
-            return true;
-        }
+        if ( this == obj ) return true;
 
-        if ( obj == null )
-        {
-            return false;
-        }
+        if ( obj == null ) return false;
 
-        if ( GetType() != obj.GetType() )
-        {
-            return false;
-        }
+        if ( GetType() != obj.GetType() ) return false;
 
-        var other     = ( Bits )obj;
+        var other     = ( Bits ) obj;
         var otherBits = other._bits;
 
         var commonWords = Math.Min( _bits.Length, otherBits.Length );
 
         for ( var i = 0; commonWords > i; i++ )
-        {
             if ( _bits[ i ] != otherBits[ i ] )
-            {
                 return false;
-            }
-        }
 
-        if ( _bits.Length == otherBits.Length )
-        {
-            return true;
-        }
+        if ( _bits.Length == otherBits.Length ) return true;
 
         return Length() == other.Length();
     }
@@ -535,10 +442,7 @@ public class Bits
     {
         get
         {
-            if ( _byteOrder == null )
-            {
-                throw new GdxRuntimeException( "Unknown Byte Order!" );
-            }
+            if ( _byteOrder == null ) throw new GdxRuntimeException( "Unknown Byte Order!" );
 
             return _byteOrder;
         }

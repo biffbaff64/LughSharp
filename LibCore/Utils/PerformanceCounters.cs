@@ -57,19 +57,13 @@ public class PerformanceCounters
     {
         var t = TimeUtils.NanoTime();
 
-        if ( _lastTick > 0L )
-        {
-            Tick( ( t - _lastTick ) * NANO2_SECONDS );
-        }
+        if ( _lastTick > 0L ) Tick( ( t - _lastTick ) * NANO2_SECONDS );
 
         _lastTick = t;
     }
 
     public void Tick( in float deltaTime )
     {
-        foreach ( PerformanceCounter t in counters )
-        {
-            t.Tick( deltaTime );
-        }
+        foreach ( var t in counters ) t.Tick( deltaTime );
     }
 }

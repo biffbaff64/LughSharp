@@ -70,12 +70,9 @@ public class Widget : Actor, ILayout
     /// </summary>
     public virtual void Validate()
     {
-        if ( !LayoutEnabled )
-        {
-            return;
-        }
+        if ( !LayoutEnabled ) return;
 
-        Group? parent = Parent;
+        var parent = Parent;
 
         if ( FillParent && ( parent != null ) )
         {
@@ -95,10 +92,7 @@ public class Widget : Actor, ILayout
             SetSize( parentWidth, parentHeight );
         }
 
-        if ( !NeedsLayout )
-        {
-            return;
-        }
+        if ( !NeedsLayout ) return;
 
         NeedsLayout = false;
 
@@ -125,17 +119,11 @@ public class Widget : Actor, ILayout
     /// </summary>
     public virtual void InvalidateHierarchy()
     {
-        if ( !LayoutEnabled )
-        {
-            return;
-        }
+        if ( !LayoutEnabled ) return;
 
         Invalidate();
 
-        if ( Parent is ILayout layout )
-        {
-            layout.InvalidateHierarchy();
-        }
+        if ( Parent is ILayout layout ) layout.InvalidateHierarchy();
     }
 
     /// <summary>
@@ -177,10 +165,7 @@ public class Widget : Actor, ILayout
         {
             _layoutEnabled = value;
 
-            if ( _layoutEnabled )
-            {
-                InvalidateHierarchy();
-            }
+            if ( _layoutEnabled ) InvalidateHierarchy();
         }
     }
 

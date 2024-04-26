@@ -159,15 +159,9 @@ public class PolygonSprite
     {
         _x += xAmount;
 
-        if ( _dirty )
-        {
-            return;
-        }
+        if ( _dirty ) return;
 
-        for ( var i = 0; i < _vertices?.Length; i += Sprite.VertexSize )
-        {
-            _vertices[ i ] += xAmount;
-        }
+        for ( var i = 0; i < _vertices?.Length; i += Sprite.VertexSize ) _vertices[ i ] += xAmount;
     }
 
     /// <summary>
@@ -179,15 +173,9 @@ public class PolygonSprite
     {
         _y += yAmount;
 
-        if ( _dirty )
-        {
-            return;
-        }
+        if ( _dirty ) return;
 
-        for ( var i = 1; i < _vertices?.Length; i += Sprite.VertexSize )
-        {
-            _vertices[ i ] += yAmount;
-        }
+        for ( var i = 1; i < _vertices?.Length; i += Sprite.VertexSize ) _vertices[ i ] += yAmount;
     }
 
     /// <summary>
@@ -200,10 +188,7 @@ public class PolygonSprite
         _x += xAmount;
         _y += yAmount;
 
-        if ( _dirty )
-        {
-            return;
-        }
+        if ( _dirty ) return;
 
         for ( var i = 0; i < _vertices?.Length; i += Sprite.VertexSize )
         {
@@ -218,20 +203,14 @@ public class PolygonSprite
 
         var color = tint.ToFloatBits();
 
-        for ( var i = 2; i < _vertices?.Length; i += Sprite.VertexSize )
-        {
-            _vertices[ i ] = color;
-        }
+        for ( var i = 2; i < _vertices?.Length; i += Sprite.VertexSize ) _vertices[ i ] = color;
     }
 
     public void SetColor( float r, float g, float b, float a )
     {
         Color.Set( r, g, b, a );
 
-        for ( var i = 2; i < _vertices?.Length; i += Sprite.VertexSize )
-        {
-            _vertices[ i ] = Color.ToFloatBits();
-        }
+        for ( var i = 2; i < _vertices?.Length; i += Sprite.VertexSize ) _vertices[ i ] = Color.ToFloatBits();
     }
 
     /// <summary>
@@ -288,10 +267,7 @@ public class PolygonSprite
     /// </summary>
     public float[]? GetVertices()
     {
-        if ( !_dirty || ( _vertices == null ) || ( Region == null ) )
-        {
-            return _vertices;
-        }
+        if ( !_dirty || ( _vertices == null ) || ( Region == null ) ) return _vertices;
 
         _dirty = false;
 
@@ -303,7 +279,7 @@ public class PolygonSprite
 
         var regionVertices = Region.Vertices;
 
-        PolygonRegion region = Region;
+        var region = Region;
 
         var worldOriginX = _x + originX;
         var worldOriginY = _y + originY;
@@ -334,10 +310,7 @@ public class PolygonSprite
     {
         var vertices = GetVertices();
 
-        if ( vertices == null )
-        {
-            throw new NullReferenceException();
-        }
+        if ( vertices == null ) throw new NullReferenceException();
 
         var minx = vertices[ 0 ];
         var miny = vertices[ 1 ];
@@ -365,26 +338,23 @@ public class PolygonSprite
 
     public void Draw( PolygonSpriteBatch spriteBatch )
     {
-        if ( Region == null )
-        {
-            return;
-        }
+        if ( Region == null ) return;
 
         spriteBatch.Draw(
-            Region.Region.Texture,
-            GetVertices()!,
-            0,
-            _vertices!.Length,
-            Region.Triangles,
-            0,
-            Region.Triangles.Length
-            );
+                         Region.Region.Texture,
+                         GetVertices()!,
+                         0,
+                         _vertices!.Length,
+                         Region.Triangles,
+                         0,
+                         Region.Triangles.Length
+                        );
     }
 
     public void Draw( PolygonSpriteBatch spriteBatch, float alphaModulation )
     {
-        Color color    = Color;
-        var   oldAlpha = color.A;
+        var color    = Color;
+        var oldAlpha = color.A;
 
         color.A *= alphaModulation;
         SetColor( color );
@@ -403,22 +373,16 @@ public class PolygonSprite
     /// </summary>
     public Color GetPackedColor()
     {
-        Color color = Color;
+        var color = Color;
 
-        if ( _vertices != null )
-        {
-            Color.Abgr8888ToColor( ref color, _vertices[ 2 ] );
-        }
+        if ( _vertices != null ) Color.Abgr8888ToColor( ref color, _vertices[ 2 ] );
 
         return color;
     }
 
     public void SetRegion( PolygonRegion? region )
     {
-        if ( region == null )
-        {
-            return;
-        }
+        if ( region == null ) return;
 
         Region = region;
 
@@ -427,10 +391,7 @@ public class PolygonSprite
 
         var verticesLength = ( regionVertices!.Length / 2 ) * 5;
 
-        if ( ( _vertices == null ) || ( _vertices.Length != verticesLength ) )
-        {
-            _vertices = new float[ verticesLength ];
-        }
+        if ( ( _vertices == null ) || ( _vertices.Length != verticesLength ) ) _vertices = new float[ verticesLength ];
 
         // Set the color and UVs in this sprite's vertices.
         for ( int i = 0, v = 2; v < verticesLength; i += 2, v += 5 )

@@ -34,81 +34,96 @@ public class Matrix4
     ///     target X component.
     /// </summary>
     public const int M00 = 0;
+
     /// <summary>
     ///     XY: Typically the negative sine of the angle when rotated on the Z axis.
     ///     On Vector3 multiplication this value is multiplied with the source Y
     ///     component and added to the target X component.
     /// </summary>
     public const int M01 = 4;
+
     /// <summary>
     ///     XZ: Typically the sine of the angle when rotated on the Y axis.
     ///     On Vector3 multiplication this value is multiplied with the
     ///     source Z component and added to the target X component.
     /// </summary>
     public const int M02 = 8;
+
     /// <summary>
     ///     XW: Typically the translation of the X component. On Vector3 multiplication
     ///     this value is added to the target X component.
     /// </summary>
     public const int M03 = 12;
+
     /// <summary>
     ///     YX: Typically the sine of the angle when rotated on the Z axis. On Vector3
     ///     multiplication this value is multiplied with the source X component and
     ///     added to the target Y component.
     /// </summary>
     public const int M10 = 1;
+
     /// <summary>
     ///     YY: Typically the unrotated Y component for scaling, also the cosine of the
     ///     angle when rotated on the X and/or Z axis. On Vector3 multiplication this value
     ///     is multiplied with the source Y component and added to the target Y component.
     /// </summary>
     public const int M11 = 5;
+
     /// <summary>
     ///     YZ: Typically the negative sine of the angle when rotated on the X axis.
     ///     On Vector3 multiplication this value is multiplied with the source Z component
     ///     and added to the target Y component.
     /// </summary>
     public const int M12 = 9;
+
     /// <summary>
     ///     YW: Typically the translation of the Y component.
     ///     On Vector3 multiplication this value is added to the target Y component.
     /// </summary>
     public const int M13 = 13;
+
     /// <summary>
     ///     ZX: Typically the negative sine of the angle when rotated on the Y axis.
     ///     On Vector3 multiplication this value is multiplied with the source X component
     ///     and added to the target Z component.
     /// </summary>
     public const int M20 = 2;
+
     /// <summary>
     ///     ZY: Typically the sine of the angle when rotated on the X axis.
     ///     On Vector3 multiplication this value is multiplied with the source Y component
     ///     and added to the target Z component.
     /// </summary>
     public const int M21 = 6;
+
     /// <summary>
     ///     ZZ: Typically the unrotated Z component for scaling, also the cosine of the angle
     ///     when rotated on the X and/or Y axis. On Vector3 multiplication this value is
     ///     multiplied with the source Z component and added to the target Z component.
     /// </summary>
     public const int M22 = 10;
+
     /// <summary>
     ///     ZW: Typically the translation of the Z component. On Vector3 multiplication
     ///     this value is added to the target Z component.
     /// </summary>
     public const int M23 = 14;
+
     /// <summary>
     ///     WX: Typically the value zero. On Vector3 multiplication this value is ignored.
     /// </summary>
     public const int M30 = 3;
+
     /// <summary>
     ///     WY: Typically the value zero. On Vector3 multiplication this value is ignored.
     /// </summary>
     public const int M31 = 7;
+
     /// <summary>
     ///     WZ: Typically the value zero. On Vector3 multiplication this value is ignored.
     /// </summary>
     public const int M32 = 11;
+
     /// <summary>
     ///     WW: Typically the value one. On Vector3 multiplication this value is ignored.
     /// </summary>
@@ -312,17 +327,17 @@ public class Matrix4
     public Matrix4 Set( Vector3 position, Quaternion orientation, Vector3 scale )
     {
         return Set(
-            position.X,
-            position.Y,
-            position.Z,
-            orientation.X,
-            orientation.Y,
-            orientation.Z,
-            orientation.W,
-            scale.X,
-            scale.Y,
-            scale.Z
-            );
+                   position.X,
+                   position.Y,
+                   position.Z,
+                   orientation.X,
+                   orientation.Y,
+                   orientation.Z,
+                   orientation.W,
+                   scale.X,
+                   scale.Y,
+                   scale.Z
+                  );
     }
 
     /// <summary>
@@ -586,10 +601,7 @@ public class Matrix4
                    - ( val[ M10 ] * val[ M01 ] * val[ M22 ] * val[ M33 ] ) )
                  + ( val[ M00 ] * val[ M11 ] * val[ M22 ] * val[ M33 ] );
 
-        if ( lDet == 0f )
-        {
-            throw new GdxRuntimeException( "non-invertible matrix" );
-        }
+        if ( lDet == 0f ) throw new GdxRuntimeException( "non-invertible matrix" );
 
         var m00 = ( ( ( ( val[ M12 ] * val[ M23 ] * val[ M31 ] )
                       - ( val[ M13 ] * val[ M22 ] * val[ M31 ] ) )
@@ -799,7 +811,7 @@ public class Matrix4
     {
         Idt();
 
-        var lFd = ( float )( 1.0 / Math.Tan( ( fovy * ( Math.PI / 180 ) ) / 2.0 ) );
+        var lFd = ( float ) ( 1.0 / Math.Tan( ( fovy * ( Math.PI / 180 ) ) / 2.0 ) );
         var lA1 = ( far + near ) / ( near - far );
         var lA2 = ( 2 * far * near ) / ( near - far );
 
@@ -1291,10 +1303,7 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Lerp( Matrix4 matrix, float alpha )
     {
-        for ( var i = 0; i < 16; i++ )
-        {
-            val[ i ] = ( val[ i ] * ( 1 - alpha ) ) + ( matrix.val[ i ] * alpha );
-        }
+        for ( var i = 0; i < 16; i++ ) val[ i ] = ( val[ i ] * ( 1 - alpha ) ) + ( matrix.val[ i ] * alpha );
 
         return this;
     }
@@ -1582,8 +1591,8 @@ public class Matrix4
     public float GetScaleX()
     {
         return MathUtils.IsZero( val[ M01 ] ) && MathUtils.IsZero( val[ M02 ] )
-            ? Math.Abs( val[ M00 ] )
-            : ( float )Math.Sqrt( GetScaleXSquared() );
+                   ? Math.Abs( val[ M00 ] )
+                   : ( float ) Math.Sqrt( GetScaleXSquared() );
     }
 
     /// <summary>
@@ -1592,8 +1601,8 @@ public class Matrix4
     public float GetScaleY()
     {
         return MathUtils.IsZero( val[ M10 ] ) && MathUtils.IsZero( val[ M12 ] )
-            ? Math.Abs( val[ M11 ] )
-            : ( float )Math.Sqrt( GetScaleYSquared() );
+                   ? Math.Abs( val[ M11 ] )
+                   : ( float ) Math.Sqrt( GetScaleYSquared() );
     }
 
     /// <summary>
@@ -1602,8 +1611,8 @@ public class Matrix4
     public float GetScaleZ()
     {
         return MathUtils.IsZero( val[ M20 ] ) && MathUtils.IsZero( val[ M21 ] )
-            ? Math.Abs( val[ M22 ] )
-            : ( float )Math.Sqrt( GetScaleZSquared() );
+                   ? Math.Abs( val[ M22 ] )
+                   : ( float ) Math.Sqrt( GetScaleZSquared() );
     }
 
     /// <summary>
@@ -1925,10 +1934,7 @@ public class Matrix4
     {
         var lDet = Det( values );
 
-        if ( lDet == 0 )
-        {
-            return false;
-        }
+        if ( lDet == 0 ) return false;
 
         var m00 = ( ( ( ( values[ M12 ] * values[ M23 ] * values[ M31 ] )
                       - ( values[ M13 ] * values[ M22 ] * values[ M31 ] ) )
@@ -2151,10 +2157,7 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Rotate( Vector3 axis, float degrees )
     {
-        if ( degrees == 0 )
-        {
-            return this;
-        }
+        if ( degrees == 0 ) return this;
 
         Quat.SetFromAxis( axis, degrees );
 
@@ -2170,10 +2173,7 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 RotateRad( Vector3 axis, float radians )
     {
-        if ( radians == 0 )
-        {
-            return this;
-        }
+        if ( radians == 0 ) return this;
 
         Quat.SetFromAxisRad( axis, radians );
 
@@ -2191,10 +2191,7 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Rotate( float axisX, float axisY, float axisZ, float degrees )
     {
-        if ( degrees == 0 )
-        {
-            return this;
-        }
+        if ( degrees == 0 ) return this;
 
         Quat.SetFromAxis( axisX, axisY, axisZ, degrees );
 
@@ -2212,10 +2209,7 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 RotateRad( float axisX, float axisY, float axisZ, float radians )
     {
-        if ( radians == 0 )
-        {
-            return this;
-        }
+        if ( radians == 0 ) return this;
 
         Quat.SetFromAxisRad( axisX, axisY, axisZ, radians );
 

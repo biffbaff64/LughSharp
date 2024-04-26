@@ -24,7 +24,6 @@
 
 
 using LughSharp.LibCore.Assets.Loaders.Resolvers;
-
 using File = System.IO.File;
 
 namespace LughSharp.LibCore.Assets.Loaders;
@@ -76,56 +75,38 @@ public class ShaderProgramLoader
 
         if ( parameter != null )
         {
-            if ( parameter.VertexFile != null )
-            {
-                vertFileName = parameter.VertexFile;
-            }
+            if ( parameter.VertexFile != null ) vertFileName = parameter.VertexFile;
 
-            if ( parameter.FragmentFile != null )
-            {
-                fragFileName = parameter.FragmentFile;
-            }
+            if ( parameter.FragmentFile != null ) fragFileName = parameter.FragmentFile;
         }
 
         if ( ( vertFileName == null ) && fileName.EndsWith( _fragmentFileSuffix, StringComparison.Ordinal ) )
-        {
             vertFileName = fileName[ ..^_fragmentFileSuffix.Length ] + _vertexFileSuffix;
-        }
 
         if ( ( fragFileName == null ) && fileName.EndsWith( _vertexFileSuffix, StringComparison.Ordinal ) )
-        {
             fragFileName = fileName[ ..^_vertexFileSuffix.Length ] + _fragmentFileSuffix;
-        }
 
-        FileInfo? vertexFile   = vertFileName == null ? file : Resolve( vertFileName );
-        FileInfo? fragmentFile = fragFileName == null ? file : Resolve( fragFileName );
+        var vertexFile   = vertFileName == null ? file : Resolve( vertFileName );
+        var fragmentFile = fragFileName == null ? file : Resolve( fragFileName );
 
         var vertexCode = File.ReadAllText( Path.GetFullPath( vertexFile!.Name ) );
 
         var fragmentCode = vertexFile.Equals( fragmentFile )
-            ? vertexCode
-            : File.ReadAllText( Path.GetFullPath( fragmentFile!.Name ) );
+                               ? vertexCode
+                               : File.ReadAllText( Path.GetFullPath( fragmentFile!.Name ) );
 
         if ( parameter != null )
         {
-            if ( parameter.PrependVertexCode != null )
-            {
-                vertexCode = parameter.PrependVertexCode + vertexCode;
-            }
+            if ( parameter.PrependVertexCode != null ) vertexCode = parameter.PrependVertexCode + vertexCode;
 
-            if ( parameter.PrependFragmentCode != null )
-            {
-                fragmentCode = parameter.PrependFragmentCode + fragmentCode;
-            }
+            if ( parameter.PrependFragmentCode != null ) fragmentCode = parameter.PrependFragmentCode + fragmentCode;
         }
 
         var shaderProgram = new ShaderProgram( vertexCode, fragmentCode );
 
         if ( ( ( parameter == null ) || parameter.LogOnCompileFailure )
           && !shaderProgram.IsCompiled )
-        {
             Logger.Error( $"ShaderProgram {fileName} failed to compile:\n{shaderProgram.Log}" );
-        }
     }
 
     // ------------------------------------------------------------------------

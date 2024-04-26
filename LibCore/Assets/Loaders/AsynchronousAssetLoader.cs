@@ -35,7 +35,7 @@ namespace LughSharp.LibCore.Assets.Loaders;
 /// <typeparam name="TAssetType"></typeparam>
 /// <typeparam name="TParameters"></typeparam>
 [PublicAPI]
-public abstract class AsynchronousAssetLoader<TAssetType, TParameters>
+public abstract class AsynchronousAssetLoader< TAssetType, TParameters >
     : AssetLoaderBase where TParameters : AssetLoaderParameters
 {
     /// <summary>
@@ -87,15 +87,15 @@ public abstract class AsynchronousAssetLoader : AssetLoaderBase
         IsSynchronous = false;
     }
 
-    public abstract void Load<T>( AssetManager manager,
-                                  string? fileName,
-                                  FileInfo? file,
-                                  T parameter ) where T : AssetLoaderParameters;
+    public abstract void Load< T >( AssetManager manager,
+                                    string? fileName,
+                                    FileInfo? file,
+                                    T parameter ) where T : AssetLoaderParameters;
 
-    public static void Unload<T>( AssetManager manager,
-                                  string fileName,
-                                  FileInfo file,
-                                  T parameter ) where T : AssetLoaderParameters
+    public static void Unload< T >( AssetManager manager,
+                                    string fileName,
+                                    FileInfo file,
+                                    T parameter ) where T : AssetLoaderParameters
 
     {
     }

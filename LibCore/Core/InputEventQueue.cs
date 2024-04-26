@@ -68,7 +68,7 @@ public class InputEventQueue
         for ( int i = 0, n = _processingQueue.Count; i < n; )
         {
             var type = q[ i++ ];
-            CurrentEventTime = ( ( long )q[ i++ ] << 32 ) | ( q[ i++ ] & 0xFFFFFFFFL );
+            CurrentEventTime = ( ( long ) q[ i++ ] << 32 ) | ( q[ i++ ] & 0xFFFFFFFFL );
 
             switch ( type )
             {
@@ -88,7 +88,7 @@ public class InputEventQueue
                     break;
 
                 case KEY_TYPED:
-                    processor.KeyTyped( ( char )q[ i++ ] );
+                    processor.KeyTyped( ( char ) q[ i++ ] );
 
                     break;
 
@@ -141,10 +141,7 @@ public class InputEventQueue
             {
                 var type = q[ i ];
 
-                if ( type == nextType )
-                {
-                    return i;
-                }
+                if ( type == nextType ) return i;
 
                 i += 3;
 
@@ -193,8 +190,8 @@ public class InputEventQueue
     /// <param name="time"></param>
     private void QueueTime( long time )
     {
-        _queue.Add( ( int )( time >> 32 ) );
-        _queue.Add( ( int )time );
+        _queue.Add( ( int ) ( time >> 32 ) );
+        _queue.Add( ( int ) time );
     }
 
     /// <summary>
@@ -311,13 +308,11 @@ public class InputEventQueue
         {
             // Skip any queued touch dragged events for the same pointer.
             for ( var i = Next( TOUCH_DRAGGED, 0 ); i >= 0; i = Next( TOUCH_DRAGGED, i + 6 ) )
-            {
                 if ( _queue[ i + 5 ] == pointer )
                 {
                     _queue[ i ]     = SKIP;
                     _queue[ i + 3 ] = 3;
                 }
-            }
 
             _queue.Add( TOUCH_DRAGGED );
 

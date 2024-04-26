@@ -29,7 +29,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 ///     An EventAction that is complete once it receives X number of events.
 /// </summary>
 [PublicAPI]
-public class CountdownEventAction<T> : EventAction< T > where T : Event
+public class CountdownEventAction< T > : EventAction< T > where T : Event
 {
     private readonly int _count;
     private          int _current;

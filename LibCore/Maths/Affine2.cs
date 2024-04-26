@@ -446,10 +446,7 @@ public class Affine2
     {
         var det = GetDeterminant();
 
-        if ( det == 0 )
-        {
-            throw new GdxRuntimeException( "Can't invert a singular affine matrix" );
-        }
+        if ( det == 0 ) throw new GdxRuntimeException( "Can't invert a singular affine matrix" );
 
         var invDet = 1.0f / det;
 
@@ -633,10 +630,7 @@ public class Affine2
     /// </returns>
     public Affine2 Rotate( float degrees )
     {
-        if ( degrees == 0 )
-        {
-            return this;
-        }
+        if ( degrees == 0 ) return this;
 
         var cos = MathUtils.CosDeg( degrees );
         var sin = MathUtils.SinDeg( degrees );
@@ -661,10 +655,7 @@ public class Affine2
     /// <returns> This matrix for the purpose of chaining.  </returns>
     public Affine2 RotateRad( float radians )
     {
-        if ( radians == 0 )
-        {
-            return this;
-        }
+        if ( radians == 0 ) return this;
 
         var cos = MathUtils.Cos( radians );
         var sin = MathUtils.Sin( radians );
@@ -689,10 +680,7 @@ public class Affine2
     /// <returns> This matrix for the purpose of chaining.  </returns>
     public Affine2 PreRotate( float degrees )
     {
-        if ( degrees == 0 )
-        {
-            return this;
-        }
+        if ( degrees == 0 ) return this;
 
         var cos = MathUtils.CosDeg( degrees );
         var sin = MathUtils.SinDeg( degrees );
@@ -721,10 +709,7 @@ public class Affine2
     /// <returns> This matrix for the purpose of chaining.  </returns>
     public Affine2 PreRotateRad( float radians )
     {
-        if ( radians == 0 )
-        {
-            return this;
-        }
+        if ( radians == 0 ) return this;
 
         var cos = MathUtils.Cos( radians );
         var sin = MathUtils.Sin( radians );

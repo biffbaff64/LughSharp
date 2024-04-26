@@ -78,23 +78,20 @@ public class Interpolation
     {
         Interp = a =>
         {
-            if ( a < MathUtils.FLOAT_ROUNDING_ERROR )
-            {
-                return 0;
-            }
+            if ( a < MathUtils.FLOAT_ROUNDING_ERROR ) return 0;
 
-            return 1 - ( float )Math.Sqrt( -( a - 1 ) );
+            return 1 - ( float ) Math.Sqrt( -( a - 1 ) );
         }
     };
 
     public static Interpolator pow3InInverse = new()
     {
-        Interp = a => ( float )Math.Cbrt( a )
+        Interp = a => ( float ) Math.Cbrt( a )
     };
 
     public static Interpolator pow3OutInverse = new()
     {
-        Interp = a => 1 - ( float )Math.Cbrt( -( a - 1 ) )
+        Interp = a => 1 - ( float ) Math.Cbrt( -( a - 1 ) )
     };
 
     public static Interpolator sine = new()
@@ -120,19 +117,19 @@ public class Interpolation
             {
                 a *= 2;
 
-                return ( 1 - ( float )Math.Sqrt( 1 - ( a * a ) ) ) / 2;
+                return ( 1 - ( float ) Math.Sqrt( 1 - ( a * a ) ) ) / 2;
             }
 
             a--;
             a *= 2;
 
-            return ( ( float )Math.Sqrt( 1 - ( a * a ) ) + 1 ) / 2;
+            return ( ( float ) Math.Sqrt( 1 - ( a * a ) ) + 1 ) / 2;
         }
     };
 
     public static Interpolator circleIn = new()
     {
-        Interp = a => 1 - ( float )Math.Sqrt( 1 - ( a * a ) )
+        Interp = a => 1 - ( float ) Math.Sqrt( 1 - ( a * a ) )
     };
 
     public static Interpolator circleOut = new()
@@ -141,7 +138,7 @@ public class Interpolation
         {
             a--;
 
-            return ( float )Math.Sqrt( 1 - ( a * a ) );
+            return ( float ) Math.Sqrt( 1 - ( a * a ) );
         }
     };
 
@@ -188,12 +185,9 @@ public class Interpolation
 
         public override float Apply( float start, float end, float a )
         {
-            if ( a <= 0.5f )
-            {
-                return ( float )Math.Pow( a * 2, power ) / 2;
-            }
+            if ( a <= 0.5f ) return ( float ) Math.Pow( a * 2, power ) / 2;
 
-            return ( ( float )Math.Pow( ( a - 1 ) * 2, power ) / ( ( power % 2 ) == 0 ? -2 : 2 ) ) + 1;
+            return ( ( float ) Math.Pow( ( a - 1 ) * 2, power ) / ( ( power % 2 ) == 0 ? -2 : 2 ) ) + 1;
         }
     }
 
@@ -206,7 +200,7 @@ public class Interpolation
 
         public override float Apply( float a )
         {
-            return ( float )Math.Pow( a, power );
+            return ( float ) Math.Pow( a, power );
         }
     }
 
@@ -219,7 +213,7 @@ public class Interpolation
 
         public override float Apply( float a )
         {
-            return ( ( float )Math.Pow( a - 1, power ) * ( ( power % 2 ) == 0 ? -1 : 1 ) ) + 1;
+            return ( ( float ) Math.Pow( a - 1, power ) * ( ( power % 2 ) == 0 ? -1 : 1 ) ) + 1;
         }
     }
 
@@ -238,18 +232,15 @@ public class Interpolation
         {
             this.value = value;
             this.power = power;
-            min        = ( float )Math.Pow( value, -power );
+            min        = ( float ) Math.Pow( value, -power );
             scale      = 1 / ( 1 - min );
         }
 
         public override float Apply( float a )
         {
-            if ( a <= 0.5f )
-            {
-                return ( ( ( float )Math.Pow( value, power * ( ( a * 2 ) - 1 ) ) - min ) * scale ) / 2;
-            }
+            if ( a <= 0.5f ) return ( ( ( float ) Math.Pow( value, power * ( ( a * 2 ) - 1 ) ) - min ) * scale ) / 2;
 
-            return ( 2 - ( ( ( float )Math.Pow( value, -power * ( ( a * 2 ) - 1 ) ) - min ) * scale ) ) / 2;
+            return ( 2 - ( ( ( float ) Math.Pow( value, -power * ( ( a * 2 ) - 1 ) ) - min ) * scale ) ) / 2;
         }
     }
 
@@ -263,7 +254,7 @@ public class Interpolation
 
         public new float Apply( float a )
         {
-            return ( ( float )Math.Pow( value, power * ( a - 1 ) ) - min ) * scale;
+            return ( ( float ) Math.Pow( value, power * ( a - 1 ) ) - min ) * scale;
         }
     }
 
@@ -277,7 +268,7 @@ public class Interpolation
 
         public new float Apply( float a )
         {
-            return 1 - ( ( ( float )Math.Pow( value, -power * a ) - min ) * scale );
+            return 1 - ( ( ( float ) Math.Pow( value, -power * a ) - min ) * scale );
         }
     }
 
@@ -303,13 +294,13 @@ public class Interpolation
             {
                 a *= 2;
 
-                return ( ( float )Math.Pow( value, power * ( a - 1 ) ) * MathUtils.Sin( a * bounces ) * scale ) / 2;
+                return ( ( float ) Math.Pow( value, power * ( a - 1 ) ) * MathUtils.Sin( a * bounces ) * scale ) / 2;
             }
 
             a =  1 - a;
             a *= 2;
 
-            return 1 - ( ( ( float )Math.Pow( value, power * ( a - 1 ) ) * MathUtils.Sin( a * bounces ) * scale ) / 2 );
+            return 1 - ( ( ( float ) Math.Pow( value, power * ( a - 1 ) ) * MathUtils.Sin( a * bounces ) * scale ) / 2 );
         }
     }
 
@@ -323,12 +314,9 @@ public class Interpolation
 
         public new float Apply( float a )
         {
-            if ( a >= 0.99 )
-            {
-                return 1;
-            }
+            if ( a >= 0.99 ) return 1;
 
-            return ( float )Math.Pow( value, power * ( a - 1 ) ) * MathUtils.Sin( a * bounces ) * scale;
+            return ( float ) Math.Pow( value, power * ( a - 1 ) ) * MathUtils.Sin( a * bounces ) * scale;
         }
     }
 
@@ -342,14 +330,11 @@ public class Interpolation
 
         public new float Apply( float a )
         {
-            if ( a == 0 )
-            {
-                return 0;
-            }
+            if ( a == 0 ) return 0;
 
             a = 1 - a;
 
-            return 1 - ( ( float )Math.Pow( value, power * ( a - 1 ) ) * MathUtils.Sin( a * bounces ) * scale );
+            return 1 - ( ( float ) Math.Pow( value, power * ( a - 1 ) ) * MathUtils.Sin( a * bounces ) * scale );
         }
     }
 
@@ -370,20 +355,14 @@ public class Interpolation
         {
             var test = a + ( widths[ 0 ] / 2 );
 
-            if ( test < widths[ 0 ] )
-            {
-                return ( test / ( widths[ 0 ] / 2 ) ) - 1;
-            }
+            if ( test < widths[ 0 ] ) return ( test / ( widths[ 0 ] / 2 ) ) - 1;
 
             return base.Apply( a );
         }
 
         public override float Apply( float a )
         {
-            if ( a <= 0.5f )
-            {
-                return ( 1 - Out( 1 - ( a * 2 ) ) ) / 2;
-            }
+            if ( a <= 0.5f ) return ( 1 - Out( 1 - ( a * 2 ) ) ) / 2;
 
             return ( Out( ( a * 2 ) - 1 ) / 2 ) + 0.5f;
         }
@@ -397,10 +376,7 @@ public class Interpolation
 
         public BounceOutImpl( float[] widths, float[] heights )
         {
-            if ( widths.Length != heights.Length )
-            {
-                throw new ArgumentException( "Must be the same number of widths and heights." );
-            }
+            if ( widths.Length != heights.Length ) throw new ArgumentException( "Must be the same number of widths and heights." );
 
             this.widths  = widths;
             this.heights = heights;
@@ -408,10 +384,7 @@ public class Interpolation
 
         public BounceOutImpl( int bounces )
         {
-            if ( bounces is < 2 or > 5 )
-            {
-                throw new ArgumentException( "bounces cannot be < 2 or > 5: " + bounces );
-            }
+            if ( bounces is < 2 or > 5 ) throw new ArgumentException( "bounces cannot be < 2 or > 5: " + bounces );
 
             widths       = new float[ bounces ];
             heights      = new float[ bounces ];
@@ -465,10 +438,7 @@ public class Interpolation
 
         public override float Apply( float a )
         {
-            if ( a is 1.0f )
-            {
-                return 1;
-            }
+            if ( a is 1.0f ) return 1;
 
             a += widths[ 0 ] / 2;
 

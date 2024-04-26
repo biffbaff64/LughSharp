@@ -45,39 +45,24 @@ public class DataOutput : BinaryWriter
     /// </param>
     public void WriteInt( int value, bool optimizePositive )
     {
-        if ( !optimizePositive )
-        {
-            value = ( value << 1 ) ^ ( value >> 31 );
-        }
+        if ( !optimizePositive ) value = ( value << 1 ) ^ ( value >> 31 );
 
-        if ( ( value >>> 7 ) == 0 )
-        {
-            Write( ( sbyte )value );
-        }
+        if ( ( value >>> 7 ) == 0 ) Write( ( sbyte ) value );
 
-        Write( unchecked( ( sbyte )( ( value & 0x7F ) | 0x80 ) ) );
+        Write( unchecked( ( sbyte ) ( ( value & 0x7F ) | 0x80 ) ) );
 
-        if ( ( value >>> 14 ) == 0 )
-        {
-            Write( ( sbyte )( value >>> 7 ) );
-        }
+        if ( ( value >>> 14 ) == 0 ) Write( ( sbyte ) ( value >>> 7 ) );
 
-        Write( unchecked( ( sbyte )( ( value >>> 7 ) | 0x80 ) ) );
+        Write( unchecked( ( sbyte ) ( ( value >>> 7 ) | 0x80 ) ) );
 
-        if ( ( value >>> 21 ) == 0 )
-        {
-            Write( ( sbyte )( value >>> 14 ) );
-        }
+        if ( ( value >>> 21 ) == 0 ) Write( ( sbyte ) ( value >>> 14 ) );
 
-        Write( unchecked( ( sbyte )( ( value >>> 14 ) | 0x80 ) ) );
+        Write( unchecked( ( sbyte ) ( ( value >>> 14 ) | 0x80 ) ) );
 
-        if ( ( value >>> 28 ) == 0 )
-        {
-            Write( ( sbyte )( value >>> 21 ) );
-        }
+        if ( ( value >>> 28 ) == 0 ) Write( ( sbyte ) ( value >>> 21 ) );
 
-        Write( unchecked( ( sbyte )( ( value >>> 21 ) | 0x80 ) ) );
-        Write( ( sbyte )( value >>> 28 ) );
+        Write( unchecked( ( sbyte ) ( ( value >>> 21 ) | 0x80 ) ) );
+        Write( ( sbyte ) ( value >>> 28 ) );
     }
 
     /// <summary>
@@ -97,7 +82,7 @@ public class DataOutput : BinaryWriter
 
         if ( charCount == 0 )
         {
-            Write( ( byte )1 );
+            Write( ( byte ) 1 );
 
             return;
         }
@@ -111,18 +96,12 @@ public class DataOutput : BinaryWriter
         {
             int c = value[ charIndex ];
 
-            if ( c > 127 )
-            {
-                break;
-            }
+            if ( c > 127 ) break;
 
-            Write( ( sbyte )c );
+            Write( ( sbyte ) c );
         }
 
-        if ( charIndex < charCount )
-        {
-            WriteStringSlow( value, charCount, charIndex );
-        }
+        if ( charIndex < charCount ) WriteStringSlow( value, charCount, charIndex );
     }
 
     /// <summary>
@@ -139,20 +118,20 @@ public class DataOutput : BinaryWriter
             switch ( c )
             {
                 case <= 0x007F:
-                    Write( ( sbyte )c );
+                    Write( ( sbyte ) c );
 
                     break;
 
                 case > 0x07FF:
-                    Write( unchecked( ( sbyte )( 0xE0 | ( ( c >> 12 ) & 0x0F ) ) ) );
-                    Write( unchecked( ( sbyte )( 0x80 | ( ( c >> 6 ) & 0x3F ) ) ) );
-                    Write( unchecked( ( sbyte )( 0x80 | ( c & 0x3F ) ) ) );
+                    Write( unchecked( ( sbyte ) ( 0xE0 | ( ( c >> 12 ) & 0x0F ) ) ) );
+                    Write( unchecked( ( sbyte ) ( 0x80 | ( ( c >> 6 ) & 0x3F ) ) ) );
+                    Write( unchecked( ( sbyte ) ( 0x80 | ( c & 0x3F ) ) ) );
 
                     break;
 
                 default:
-                    Write( unchecked( ( sbyte )( 0xC0 | ( ( c >> 6 ) & 0x1F ) ) ) );
-                    Write( unchecked( ( sbyte )( 0x80 | ( c & 0x3F ) ) ) );
+                    Write( unchecked( ( sbyte ) ( 0xC0 | ( ( c >> 6 ) & 0x1F ) ) ) );
+                    Write( unchecked( ( sbyte ) ( 0x80 | ( c & 0x3F ) ) ) );
 
                     break;
             }

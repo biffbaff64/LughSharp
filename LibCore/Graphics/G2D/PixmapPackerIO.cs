@@ -67,8 +67,7 @@ public class PixmapPackerIO
         var writer = new StreamWriter( file.FullName ); //= file.writer( false );
         var index  = 0;
 
-        foreach ( PixmapPacker.Page page in packer.Pages )
-        {
+        foreach ( var page in packer.Pages )
             if ( page.Rects.Count > 0 )
             {
                 var pageFile = new FileInfo( $"{file.Name}_{++index}{parameters.Format.Extension}" );
@@ -106,7 +105,7 @@ public class PixmapPackerIO
                     {
                         var rx = new Regex( "(.+)_(\\d+)$" );
 
-                        MatchCollection matches = rx.Matches( imageName );
+                        var matches = rx.Matches( imageName );
 
                         if ( matches.Count > 0 )
                         {
@@ -120,13 +119,13 @@ public class PixmapPackerIO
 
                     writer.Write( imageName + "\n" );
 
-                    PixmapPacker.PixmapPackerRectangle? rect = page.Rects[ name ];
+                    var rect = page.Rects[ name ];
 
                     if ( rect != null )
                     {
                         writer.Write( "  rotate: false\n" );
-                        writer.Write( $"  xy: {( int )rect.X}, {( int )rect.Y}\n" );
-                        writer.Write( $"  size: {( int )rect.Width}, {( int )rect.Height}\n" );
+                        writer.Write( $"  xy: {( int ) rect.X}, {( int ) rect.Y}\n" );
+                        writer.Write( $"  size: {( int ) rect.Width}, {( int ) rect.Height}\n" );
 
                         if ( rect.Splits != null )
                         {
@@ -147,14 +146,13 @@ public class PixmapPackerIO
                         writer.Write( $"  orig: {rect.OriginalWidth}, {rect.OriginalHeight}\n" );
 
                         writer.Write( $"  offset: {rect.OffsetX}, "
-                                    + $"{( int )( rect.OriginalHeight -
-                                                  rect.Height - rect.OffsetY )}\n" );
+                                    + $"{( int ) ( rect.OriginalHeight -
+                                                   rect.Height - rect.OffsetY )}\n" );
 
                         writer.Write( $"  index: {imageIndex}\n" );
                     }
                 }
             }
-        }
 
         writer.Close();
     }

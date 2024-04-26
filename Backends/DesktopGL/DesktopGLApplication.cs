@@ -30,7 +30,6 @@ using LughSharp.Backends.DesktopGL.Input;
 using LughSharp.Backends.DesktopGL.Utils;
 using LughSharp.Backends.DesktopGL.Window;
 using LughSharp.LibCore.Utils.Collections.Extensions;
-
 using Exception = System.Exception;
 using Monitor = DotGLFW.Monitor;
 
@@ -81,9 +80,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             }
         }
         else
-        {
             Audio = new MockAudio();
-        }
 
         Files     = CreateFiles();
         Network   = new DesktopGLNet( config );
@@ -104,10 +101,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// <returns></returns>
     public IPreferences GetPreferences( string name )
     {
-        if ( Preferences!.ContainsKey( name ) )
-        {
-            return Preferences.Get( name );
-        }
+        if ( Preferences!.ContainsKey( name ) ) return Preferences.Get( name );
 
         IPreferences prefs = new DesktopGLPreferences( name );
 
@@ -196,13 +190,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         catch ( Exception e )
         {
             if ( e is SystemException exception )
-            {
                 throw exception;
-            }
             else
-            {
                 throw new GdxRuntimeException( e );
-            }
         }
         finally
         {
@@ -226,26 +216,20 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
             closedWindows.Clear();
 
-            foreach ( DesktopGLWindow window in Windows )
+            foreach ( var window in Windows )
             {
                 window.MakeCurrent();
 
                 _currentWindow = window;
 
-                if ( targetFramerate == -2 )
-                {
-                    targetFramerate = window.Config.ForegroundFPS;
-                }
+                if ( targetFramerate == -2 ) targetFramerate = window.Config.ForegroundFPS;
 
                 lock ( LifecycleListeners )
                 {
                     haveWindowsRendered |= window.Update();
                 }
 
-                if ( window.ShouldClose() )
-                {
-                    closedWindows.Add( window );
-                }
+                if ( window.ShouldClose() ) closedWindows.Add( window );
             }
 
             Glfw.PollEvents();
@@ -262,25 +246,18 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                 Runnables.Clear();
             }
 
-            foreach ( IRunnable.Runnable runnable in ExecutedRunnables )
-            {
-                runnable();
-            }
+            foreach ( var runnable in ExecutedRunnables ) runnable();
 
             if ( shouldRequestRendering )
             {
                 // Must follow Runnables execution so changes done by
                 // Runnables are reflected in the following render.
-                foreach ( DesktopGLWindow window in Windows )
-                {
+                foreach ( var window in Windows )
                     if ( !window.Graphics.ContinuousRendering )
-                    {
                         window.RequestRendering();
-                    }
-                }
             }
 
-            foreach ( DesktopGLWindow closedWindow in closedWindows )
+            foreach ( var closedWindow in closedWindows )
             {
                 if ( Windows.Count == 1 )
                 {
@@ -290,7 +267,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                     // in the process of being disposed.
                     for ( var i = LifecycleListeners.Count - 1; i >= 0; i-- )
                     {
-                        ILifecycleListener l = LifecycleListeners[ i ];
+                        var l = LifecycleListeners[ i ];
 
                         l.Pause();
                         l.Dispose();
@@ -332,17 +309,14 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     {
         lock ( LifecycleListeners )
         {
-            foreach ( ILifecycleListener lifecycleListener in LifecycleListeners )
+            foreach ( var lifecycleListener in LifecycleListeners )
             {
                 lifecycleListener.Pause();
                 lifecycleListener.Dispose();
             }
         }
 
-        foreach ( DesktopGLWindow window in Windows )
-        {
-            window.Dispose();
-        }
+        foreach ( var window in Windows ) window.Dispose();
 
         Windows.Clear();
     }
@@ -374,7 +348,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     {
         GdxRuntimeException.ThrowIfNull( Config );
 
-        DesktopGLApplicationConfiguration appConfig = DesktopGLApplicationConfiguration.Copy( Config );
+        var appConfig = DesktopGLApplicationConfiguration.Copy( Config );
 
         appConfig.SetWindowConfiguration( config );
 
@@ -425,7 +399,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         ArgumentNullException.ThrowIfNull( window );
         ArgumentNullException.ThrowIfNull( window.GlfwWindow );
 
-        GLFWWindow windowHandle = CreateGLFWWindow( config, window.GlfwWindow );
+        var windowHandle = CreateGLFWWindow( config, window.GlfwWindow );
 
         window.Create( windowHandle );
         window.SetVisible( config.InitialVisible );
@@ -433,9 +407,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         for ( var i = 0; i < 2; i++ )
         {
             Gdx.GL.glClearColor( config.InitialBackgroundColor.R,
-                             config.InitialBackgroundColor.G,
-                             config.InitialBackgroundColor.B,
-                             config.InitialBackgroundColor.A );
+                                 config.InitialBackgroundColor.G,
+                                 config.InitialBackgroundColor.B,
+                                 config.InitialBackgroundColor.A );
 
             Gdx.GL.glClear( IGL.GL_COLOR_BUFFER_BIT );
             Glfw.SwapBuffers( windowHandle );
@@ -481,15 +455,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             }
         }
 
-        if ( appConfig.TransparentFramebuffer )
-        {
-            Glfw.WindowHint( Hint.TransparentFramebuffer, true );
-        }
+        if ( appConfig.TransparentFramebuffer ) Glfw.WindowHint( Hint.TransparentFramebuffer, true );
 
-        if ( appConfig.Debug )
-        {
-            Glfw.WindowHint( Hint.OpenGLDebugContext, true );
-        }
+        if ( appConfig.Debug ) Glfw.WindowHint( Hint.OpenGLDebugContext, true );
 
         GLFWWindow windowHandle;
 
@@ -514,10 +482,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                               GLFWWindow.NULL );
         }
 
-        if ( windowHandle == GLFWWindow.NULL )
-        {
-            throw new GdxRuntimeException( "Couldn't create window" );
-        }
+        if ( windowHandle == GLFWWindow.NULL ) throw new GdxRuntimeException( "Couldn't create window" );
 
         _currentWindow?.SetSizeLimits( appConfig.WindowMinWidth,
                                        appConfig.WindowMinHeight,
@@ -531,22 +496,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                 var windowWidth  = Math.Max( appConfig.WindowWidth, appConfig.WindowMinWidth );
                 var windowHeight = Math.Max( appConfig.WindowHeight, appConfig.WindowMinHeight );
 
-                if ( appConfig.WindowMaxWidth > -1 )
-                {
-                    windowWidth = Math.Min( windowWidth, appConfig.WindowMaxWidth );
-                }
+                if ( appConfig.WindowMaxWidth > -1 ) windowWidth = Math.Min( windowWidth, appConfig.WindowMaxWidth );
 
-                if ( appConfig.WindowMaxHeight > -1 )
-                {
-                    windowHeight = Math.Min( windowHeight, appConfig.WindowMaxHeight );
-                }
+                if ( appConfig.WindowMaxHeight > -1 ) windowHeight = Math.Min( windowHeight, appConfig.WindowMaxHeight );
 
-                GLFWMonitor monitorHandle = Glfw.GetPrimaryMonitor();
+                var monitorHandle = Glfw.GetPrimaryMonitor();
 
-                if ( appConfig is { WindowMaximized: true, MaximizedMonitor: not null } )
-                {
-                    monitorHandle = appConfig.MaximizedMonitor.MonitorHandle;
-                }
+                if ( appConfig is { WindowMaximized: true, MaximizedMonitor: not null } ) monitorHandle = appConfig.MaximizedMonitor.MonitorHandle;
 
                 Glfw.GetMonitorWorkarea( monitorHandle,
                                          out var areaXPos,
@@ -559,14 +515,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                    ( areaYPos + ( areaHeight / 2 ) ) - ( windowHeight / 2 ) );
             }
             else
-            {
                 Glfw.SetWindowPos( windowHandle, appConfig.WindowX, appConfig.WindowY );
-            }
 
-            if ( appConfig.WindowMaximized )
-            {
-                Glfw.MaximizeWindow( windowHandle );
-            }
+            if ( appConfig.WindowMaximized ) Glfw.MaximizeWindow( windowHandle );
         }
 
         if ( appConfig.WindowIconPaths != null )
@@ -625,10 +576,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Glfw.SetErrorCallback( _errorCallback );
             Glfw.InitHint( InitHint.JoystickHatButtons, false );
 
-            if ( !Glfw.Init() )
-            {
-                throw new GdxRuntimeException( "Unable to initialise Glfw!" );
-            }
+            if ( !Glfw.Init() ) throw new GdxRuntimeException( "Unable to initialise Glfw!" );
         }
     }
 

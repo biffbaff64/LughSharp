@@ -46,10 +46,7 @@ public class Mesh
 
     private IVertexData MakeVertexBuffer( bool isStatic, int maxVertices, VertexAttributes vertexAttributes )
     {
-        if ( Gdx.GL30 != null! )
-        {
-            return new VertexBufferObjectWithVAO( isStatic, maxVertices, vertexAttributes );
-        }
+        if ( Gdx.GL30 != null! ) return new VertexBufferObjectWithVAO( isStatic, maxVertices, vertexAttributes );
 
         return new VertexBufferObject( isStatic, maxVertices, vertexAttributes );
     }
@@ -168,10 +165,7 @@ public class Mesh
     /// </param>
     public Mesh UpdateInstanceData( int targetOffset, float[] source, int sourceOffset = 0, int count = 0 )
     {
-        if ( count == 0 )
-        {
-            count = source.Length;
-        }
+        if ( count == 0 ) count = source.Length;
 
         _instances?.UpdateInstanceData( targetOffset, source, sourceOffset, count );
 
@@ -192,10 +186,7 @@ public class Mesh
     /// </param>
     public Mesh UpdateInstanceData( int targetOffset, FloatBuffer source, int sourceOffset = 0, int count = 0 )
     {
-        if ( count == 0 )
-        {
-            count = source.Limit;
-        }
+        if ( count == 0 ) count = source.Limit;
 
         _instances?.UpdateInstanceData( targetOffset, source, sourceOffset, count );
 
@@ -291,10 +282,7 @@ public class Mesh
         {
             count = max - srcOffset;
 
-            if ( count > ( vertices.Length - destOffset ) )
-            {
-                count = vertices.Length - destOffset;
-            }
+            if ( count > ( vertices.Length - destOffset ) ) count = vertices.Length - destOffset;
         }
 
         if ( ( srcOffset < 0 )
@@ -302,9 +290,7 @@ public class Mesh
           || ( ( srcOffset + count ) > max )
           || ( destOffset < 0 )
           || ( destOffset >= vertices.Length ) )
-        {
             throw new IndexOutOfRangeException();
-        }
 
         if ( ( vertices.Length - destOffset ) < count )
         {
@@ -312,7 +298,7 @@ public class Mesh
                 ( $"not enough room in vertices array, has {vertices.Length} floats, needs {count}" );
         }
 
-        FloatBuffer verticesBuffer = GetVerticesBuffer();
+        var verticesBuffer = GetVerticesBuffer();
 
         var pos = verticesBuffer.Position;
 
@@ -384,10 +370,7 @@ public class Mesh
     {
         var max = NumIndices;
 
-        if ( count < 0 )
-        {
-            count = max - srcOffset;
-        }
+        if ( count < 0 ) count = max - srcOffset;
 
         if ( ( srcOffset < 0 ) || ( srcOffset >= max ) || ( ( srcOffset + count ) > max ) )
         {
@@ -429,15 +412,9 @@ public class Mesh
     {
         _vertices.Bind( shader, locations );
 
-        if ( _instances is { NumInstances: > 0 } )
-        {
-            _instances.Bind( shader, locations );
-        }
+        if ( _instances is { NumInstances: > 0 } ) _instances.Bind( shader, locations );
 
-        if ( _indices.NumIndices > 0 )
-        {
-            _indices.Bind();
-        }
+        if ( _indices.NumIndices > 0 ) _indices.Bind();
     }
 
     /// <summary>
@@ -458,22 +435,13 @@ public class Mesh
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Unbind( in ShaderProgram? shader, in int[] locations )
     {
-        if ( shader == null )
-        {
-            return;
-        }
+        if ( shader == null ) return;
 
         _vertices.Unbind( shader, locations );
 
-        if ( _instances is { NumInstances: > 0 } )
-        {
-            _instances.Unbind( shader, locations );
-        }
+        if ( _instances is { NumInstances: > 0 } ) _instances.Unbind( shader, locations );
 
-        if ( _indices.NumIndices > 0 )
-        {
-            _indices.Unbind();
-        }
+        if ( _indices.NumIndices > 0 ) _indices.Unbind();
     }
 
     /// <summary>
@@ -563,23 +531,17 @@ public class Mesh
     {
         ArgumentNullException.ThrowIfNull( shader );
 
-        if ( count == 0 )
-        {
-            return;
-        }
+        if ( count == 0 ) return;
 
-        if ( autoBind )
-        {
-            Bind( shader );
-        }
+        if ( autoBind ) Bind( shader );
 
         if ( _isVertexArray )
         {
             if ( _indices.NumIndices > 0 )
             {
-                ShortBuffer buffer      = _indices.GetBuffer( false );
-                var         oldPosition = buffer.Position;
-                var         oldLimit    = buffer.Limit;
+                var buffer      = _indices.GetBuffer( false );
+                var oldPosition = buffer.Position;
+                var oldLimit    = buffer.Limit;
 
                 buffer.Position = offset;
                 buffer.Limit    = offset + count;
@@ -596,18 +558,13 @@ public class Mesh
                 buffer.Limit    = oldLimit;
             }
             else
-            {
                 Gdx.GL.glDrawArrays( primitiveType, offset, count );
-            }
         }
         else
         {
             var numInstances = 0;
 
-            if ( IsInstanced )
-            {
-                numInstances = _instances!.NumInstances;
-            }
+            if ( IsInstanced ) numInstances = _instances!.NumInstances;
 
             if ( _indices.NumIndices > 0 )
             {
@@ -640,20 +597,13 @@ public class Mesh
             else
             {
                 if ( IsInstanced && ( numInstances > 0 ) )
-                {
                     Gdx.GL.glDrawArraysInstanced( primitiveType, offset, count, numInstances );
-                }
                 else
-                {
                     Gdx.GL.glDrawArrays( primitiveType, offset, count );
-                }
             }
         }
 
-        if ( autoBind )
-        {
-            Unbind( shader );
-        }
+        if ( autoBind ) Unbind( shader );
     }
 
     /// <summary>
@@ -663,17 +613,13 @@ public class Mesh
     /// <returns> the VertexAttribute or null if no attribute with that usage was found.  </returns>
     public VertexAttribute? GetVertexAttribute( int usage )
     {
-        VertexAttributes attributes = _vertices.Attributes;
+        var attributes = _vertices.Attributes;
 
         var len = attributes.Size;
 
         for ( var i = 0; i < len; i++ )
-        {
             if ( attributes.Get( i ).usage == usage )
-            {
                 return attributes.Get( i );
-            }
-        }
 
         return null;
     }
@@ -710,16 +656,13 @@ public class Mesh
     {
         var numVertices = NumVertices;
 
-        if ( numVertices == 0 )
-        {
-            throw new GdxRuntimeException( "No vertices defined" );
-        }
+        if ( numVertices == 0 ) throw new GdxRuntimeException( "No vertices defined" );
 
-        FloatBuffer verts = _vertices.GetBuffer( false );
+        var verts = _vertices.GetBuffer( false );
 
         bbox.ToInfinity();
 
-        VertexAttribute? posAttrib = GetVertexAttribute( VertexAttributes.Usage.POSITION );
+        var posAttrib = GetVertexAttribute( VertexAttributes.Usage.POSITION );
 
         var offset     = posAttrib!.Offset / 4;
         var vertexSize = _vertices.Attributes.VertexSize / 4;
@@ -827,12 +770,12 @@ public class Mesh
                 );
         }
 
-        FloatBuffer      verts      = _vertices.GetBuffer( false );
-        ShortBuffer      index      = _indices.GetBuffer( false );
-        VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.POSITION );
-        var              posoff     = posAttrib!.Offset / 4;
-        var              vertexSize = _vertices.Attributes.VertexSize / 4;
-        var              end        = offset + count;
+        var verts      = _vertices.GetBuffer( false );
+        var index      = _indices.GetBuffer( false );
+        var posAttrib  = GetVertexAttribute( VertexAttributes.Usage.POSITION );
+        var posoff     = posAttrib!.Offset / 4;
+        var vertexSize = _vertices.Attributes.VertexSize / 4;
+        var end        = offset + count;
 
         switch ( posAttrib.numComponents )
         {
@@ -845,10 +788,7 @@ public class Mesh
 
                         _tmpV.Set( verts.Get( idx ), 0, 0 );
 
-                        if ( transform != null )
-                        {
-                            _tmpV.Mul( transform );
-                        }
+                        if ( transform != null ) _tmpV.Mul( transform );
 
                         box.Extend( _tmpV );
                     }
@@ -861,10 +801,7 @@ public class Mesh
 
                         _tmpV.Set( verts.Get( idx ), 0, 0 );
 
-                        if ( transform != null )
-                        {
-                            _tmpV.Mul( transform );
-                        }
+                        if ( transform != null ) _tmpV.Mul( transform );
 
                         box.Extend( _tmpV );
                     }
@@ -881,10 +818,7 @@ public class Mesh
 
                         _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
 
-                        if ( transform != null )
-                        {
-                            _tmpV.Mul( transform );
-                        }
+                        if ( transform != null ) _tmpV.Mul( transform );
 
                         box.Extend( _tmpV );
                     }
@@ -897,10 +831,7 @@ public class Mesh
 
                         _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
 
-                        if ( transform != null )
-                        {
-                            _tmpV.Mul( transform );
-                        }
+                        if ( transform != null ) _tmpV.Mul( transform );
 
                         box.Extend( _tmpV );
                     }
@@ -916,10 +847,7 @@ public class Mesh
                         var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
                         _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), verts.Get( idx + 2 ) );
 
-                        if ( transform != null )
-                        {
-                            _tmpV.Mul( transform );
-                        }
+                        if ( transform != null ) _tmpV.Mul( transform );
 
                         box.Extend( _tmpV );
                     }
@@ -931,10 +859,7 @@ public class Mesh
                         var idx = ( i * vertexSize ) + posoff;
                         _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), verts.Get( idx + 2 ) );
 
-                        if ( transform != null )
-                        {
-                            _tmpV.Mul( transform );
-                        }
+                        if ( transform != null ) _tmpV.Mul( transform );
 
                         box.Extend( _tmpV );
                     }
@@ -966,17 +891,14 @@ public class Mesh
     {
         var numIndices = NumIndices;
 
-        if ( ( offset < 0 ) || ( count < 1 ) || ( ( offset + count ) > numIndices ) )
-        {
-            throw new GdxRuntimeException( "Not enough indices" );
-        }
+        if ( ( offset < 0 ) || ( count < 1 ) || ( ( offset + count ) > numIndices ) ) throw new GdxRuntimeException( "Not enough indices" );
 
-        FloatBuffer      verts      = _vertices.GetBuffer( false );
-        ShortBuffer      index      = _indices.GetBuffer( false );
-        VertexAttribute? posAttrib  = GetVertexAttribute( VertexAttributes.Usage.POSITION );
-        var              posoff     = posAttrib!.Offset / 4;
-        var              vertexSize = _vertices.Attributes.VertexSize / 4;
-        var              end        = offset + count;
+        var verts      = _vertices.GetBuffer( false );
+        var index      = _indices.GetBuffer( false );
+        var posAttrib  = GetVertexAttribute( VertexAttributes.Usage.POSITION );
+        var posoff     = posAttrib!.Offset / 4;
+        var vertexSize = _vertices.Attributes.VertexSize / 4;
+        var end        = offset + count;
 
         float result = 0;
 
@@ -988,17 +910,11 @@ public class Mesh
                     var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
                     _tmpV.Set( verts.Get( idx ), 0, 0 );
 
-                    if ( transform != null )
-                    {
-                        _tmpV.Mul( transform );
-                    }
+                    if ( transform != null ) _tmpV.Mul( transform );
 
                     var r = _tmpV.Sub( centerX, centerY, centerZ ).Len2();
 
-                    if ( r > result )
-                    {
-                        result = r;
-                    }
+                    if ( r > result ) result = r;
                 }
 
                 break;
@@ -1009,17 +925,11 @@ public class Mesh
                     var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
                     _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), 0 );
 
-                    if ( transform != null )
-                    {
-                        _tmpV.Mul( transform );
-                    }
+                    if ( transform != null ) _tmpV.Mul( transform );
 
                     var r = _tmpV.Sub( centerX, centerY, centerZ ).Len2();
 
-                    if ( r > result )
-                    {
-                        result = r;
-                    }
+                    if ( r > result ) result = r;
                 }
 
                 break;
@@ -1030,17 +940,11 @@ public class Mesh
                     var idx = ( ( index.Get( i ) & 0xFFFF ) * vertexSize ) + posoff;
                     _tmpV.Set( verts.Get( idx ), verts.Get( idx + 1 ), verts.Get( idx + 2 ) );
 
-                    if ( transform != null )
-                    {
-                        _tmpV.Mul( transform );
-                    }
+                    if ( transform != null ) _tmpV.Mul( transform );
 
                     var r = _tmpV.Sub( centerX, centerY, centerZ ).Len2();
 
-                    if ( r > result )
-                    {
-                        result = r;
-                    }
+                    if ( r > result ) result = r;
                 }
 
                 break;
@@ -1172,12 +1076,12 @@ public class Mesh
     /// <param name="scaleZ"> scale on z  </param>
     public void Scale( float scaleX, float scaleY, float scaleZ )
     {
-        VertexAttribute? posAttr       = GetVertexAttribute( VertexAttributes.Usage.POSITION );
-        var              offset        = posAttr!.Offset / 4;
-        var              numComponents = posAttr.numComponents;
-        var              numVertices   = NumVertices;
-        var              vertexSize    = VertexSize / 4;
-        var              vertices      = new float[ numVertices * vertexSize ];
+        var posAttr       = GetVertexAttribute( VertexAttributes.Usage.POSITION );
+        var offset        = posAttr!.Offset / 4;
+        var numComponents = posAttr.numComponents;
+        var numVertices   = NumVertices;
+        var vertexSize    = VertexSize / 4;
+        var vertices      = new float[ numVertices * vertexSize ];
 
         GetVertices( vertices );
 
@@ -1232,7 +1136,7 @@ public class Mesh
 
     protected void Transform( in Matrix4 matrix, in int start, in int count )
     {
-        VertexAttribute? posAttr = GetVertexAttribute( VertexAttributes.Usage.POSITION );
+        var posAttr = GetVertexAttribute( VertexAttributes.Usage.POSITION );
 
         var posOffset     = posAttr!.Offset / 4;
         var stride        = VertexSize / 4;
@@ -1267,10 +1171,7 @@ public class Mesh
                                   int start,
                                   int count )
     {
-        if ( ( offset < 0 ) || ( dimensions < 1 ) || ( ( offset + dimensions ) > vertexSize ) )
-        {
-            throw new IndexOutOfRangeException();
-        }
+        if ( ( offset < 0 ) || ( dimensions < 1 ) || ( ( offset + dimensions ) > vertexSize ) ) throw new IndexOutOfRangeException();
 
         if ( ( start < 0 ) || ( count < 1 ) || ( ( ( start + count ) * vertexSize ) > vertices.Length ) )
         {
@@ -1340,7 +1241,7 @@ public class Mesh
 
     protected void TransformUV( in Matrix3 matrix, in int start, in int count )
     {
-        VertexAttribute? posAttr = GetVertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES );
+        var posAttr = GetVertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES );
 
         var offset   = posAttr!.Offset / 4;
         var vertices = new float[ NumVertices * ( VertexSize / 4 ) ];
@@ -1438,13 +1339,11 @@ public class Mesh
 
             // ReSharper disable once LoopCanBePartlyConvertedToQuery
             foreach ( var t in usage )
-            {
                 if ( GetVertexAttribute( t ) != null )
                 {
                     size += GetVertexAttribute( t )!.numComponents;
                     asCount++;
                 }
-            }
 
             if ( size > 0 )
             {
@@ -1457,17 +1356,11 @@ public class Mesh
                 // ReSharper disable once LoopCanBePartlyConvertedToQuery
                 foreach ( var t in usage )
                 {
-                    VertexAttribute? a = GetVertexAttribute( t );
+                    var a = GetVertexAttribute( t );
 
-                    if ( a == null )
-                    {
-                        continue;
-                    }
+                    if ( a == null ) continue;
 
-                    for ( var j = 0; j < a.numComponents; j++ )
-                    {
-                        checks[ ++idx ] = ( short ) ( a.Offset + j );
-                    }
+                    for ( var j = 0; j < a.numComponents; j++ ) checks[ ++idx ] = ( short ) ( a.Offset + j );
 
                     attrs[ ++ai ] =  a.Copy();
                     newVertexSize += a.numComponents;
@@ -1479,10 +1372,7 @@ public class Mesh
         {
             checks = new short[ vertexSize ];
 
-            for ( short i = 0; i < vertexSize; i++ )
-            {
-                checks[ i ] = i;
-            }
+            for ( short i = 0; i < vertexSize; i++ ) checks[ i ] = i;
 
             newVertexSize = vertexSize;
         }
@@ -1513,32 +1403,20 @@ public class Mesh
                             var found = true;
 
                             for ( var k = 0; ( k < checks.Length ) && found; k++ )
-                            {
                                 if ( !tmp[ idx2 + k ].Equals( vertices[ idx1 + checks[ k ] ] ) )
-                                {
                                     found = false;
-                                }
-                            }
 
-                            if ( found )
-                            {
-                                newIndex = j;
-                            }
+                            if ( found ) newIndex = j;
                         }
                     }
 
                     if ( newIndex > 0 )
-                    {
                         indices[ i ] = newIndex;
-                    }
                     else
                     {
                         var idx = size * newVertexSize;
 
-                        for ( var j = 0; j < checks.Length; j++ )
-                        {
-                            tmp[ idx + j ] = vertices[ idx1 + checks[ j ] ];
-                        }
+                        for ( var j = 0; j < checks.Length; j++ ) tmp[ idx + j ] = vertices[ idx1 + checks[ j ] ];
 
                         indices[ i ] = ( short ) size;
                         size++;
@@ -1550,16 +1428,13 @@ public class Mesh
             }
         }
 
-        Mesh result = attrs == null
-                          ? new Mesh( isStatic, numVertices, indices?.Length ?? 0, VertexAttributes )
-                          : new Mesh( isStatic, numVertices, indices?.Length ?? 0, attrs );
+        var result = attrs == null
+                         ? new Mesh( isStatic, numVertices, indices?.Length ?? 0, VertexAttributes )
+                         : new Mesh( isStatic, numVertices, indices?.Length ?? 0, attrs );
 
         result.SetVertices( vertices, 0, numVertices * newVertexSize );
 
-        if ( indices != null )
-        {
-            result.SetIndices( indices );
-        }
+        if ( indices != null ) result.SetIndices( indices );
 
         return result;
     }
@@ -1569,10 +1444,7 @@ public class Mesh
     /// </summary>
     public void Dispose()
     {
-        if ( _meshes[ Gdx.App ] != null )
-        {
-            _meshes[ Gdx.App ]?.Remove( this );
-        }
+        if ( _meshes[ Gdx.App ] != null ) _meshes[ Gdx.App ]?.Remove( this );
 
         _vertices.Dispose();
         _instances?.Dispose();
@@ -1610,7 +1482,7 @@ public class Mesh
         {
             var builder = new StringBuilder( "Managed meshes/app: { " );
 
-            foreach ( IApplication app in _meshes.Keys )
+            foreach ( var app in _meshes.Keys )
             {
                 builder.Append( _meshes[ app ]?.Count );
                 builder.Append( ' ' );

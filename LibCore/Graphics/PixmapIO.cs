@@ -130,7 +130,7 @@ public static class PixmapIO
                 output.Write( pixmap.Height );
                 output.Write( PixmapFormat.ToGdx2DPixmapFormat( pixmap.GetFormat() ) );
 
-                ByteBuffer pixelBuf = pixmap.Pixels;
+                var pixelBuf = pixmap.Pixels;
 
                 pixelBuf.Position = 0;
                 pixelBuf.Limit    = pixelBuf.Capacity;
@@ -174,11 +174,11 @@ public static class PixmapIO
                 var width  = input.Read();
                 var height = input.Read();
 
-                Pixmap.Format format = PixmapFormat.FromGdx2DPixmapFormat( input.Read() );
+                var format = PixmapFormat.FromGdx2DPixmapFormat( input.Read() );
 
                 var pixmap = new Pixmap( width, height, format );
 
-                ByteBuffer pixelBuf = pixmap.Pixels;
+                var pixelBuf = pixmap.Pixels;
                 pixelBuf.Position = 0;
                 pixelBuf.Limit    = pixelBuf.Capacity;
 
@@ -186,10 +186,7 @@ public static class PixmapIO
                 {
                     int readBytes;
 
-                    while ( ( readBytes = input.Read( _readBuffer ) ) > 0 )
-                    {
-                        pixelBuf.Put( _readBuffer, 0, readBytes );
-                    }
+                    while ( ( readBytes = input.Read( _readBuffer ) ) > 0 ) pixelBuf.Put( _readBuffer, 0, readBytes );
                 }
 
                 pixelBuf.Position = 0;
@@ -324,10 +321,7 @@ public static class PixmapIO
                 curLine  = _curLineBytes.ToArray();
                 prevLine = _prevLineBytes.ToArray();
 
-                for ( int i = 0, n = _lastLineLen; i < n; i++ )
-                {
-                    prevLine[ i ] = 0;
-                }
+                for ( int i = 0, n = _lastLineLen; i < n; i++ ) prevLine[ i ] = 0;
             }
 
             _lastLineLen = lineLen;
@@ -370,33 +364,19 @@ public static class PixmapIO
                     var p  = ( a + b ) - c;
                     var pa = p - a;
 
-                    if ( pa < 0 )
-                    {
-                        pa = -pa;
-                    }
+                    if ( pa < 0 ) pa = -pa;
 
                     var pb = p - b;
 
-                    if ( pb < 0 )
-                    {
-                        pb = -pb;
-                    }
+                    if ( pb < 0 ) pb = -pb;
 
                     var pc = p - c;
 
-                    if ( pc < 0 )
-                    {
-                        pc = -pc;
-                    }
+                    if ( pc < 0 ) pc = -pc;
 
                     if ( ( pa <= pb ) && ( pa <= pc ) )
-                    {
-                        c = a;
-                    }
-                    else if ( pb <= pc )
-                    {
-                        c = b;
-                    }
+                        c                  = a;
+                    else if ( pb <= pc ) c = b;
 
                     lineOut[ x ] = ( byte ) ( curLine[ x ] - c );
                 }
