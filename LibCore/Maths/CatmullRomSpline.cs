@@ -25,11 +25,20 @@
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
 {
+    public T[]  ControlPoints { get; set; } = default( T[] )!;
+    public bool Continuous    { get; set; }
+    public int  SpanCount     { get; set; }
+
+    // ------------------------------------------------------------------------
+
     private T? _tmp;
     private T? _tmp2;
     private T? _tmp3;
+
+    // ------------------------------------------------------------------------
 
     public CatmullRomSpline()
     {
@@ -39,10 +48,6 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
     {
         Set( controlPoints, continuous );
     }
-
-    public T[]  ControlPoints { get; set; } = default( T[] )!;
-    public bool Continuous    { get; set; }
-    public int  SpanCount     { get; set; }
 
     public T ValueAt( in T outp, in float t )
     {
@@ -113,14 +118,12 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
     /// <returns> The value of the spline at position u of the specified span. </returns>
     public T ValueAt( T outp, int span, float u )
     {
-        return Calculate(
-                         outp,
-                         Continuous ? span : span + 1,
-                         u,
-                         ControlPoints,
-                         Continuous,
-                         _tmp
-                        );
+        return Calculate( outp,
+                          Continuous ? span : span + 1,
+                          u,
+                          ControlPoints,
+                          Continuous,
+                          _tmp );
     }
 
     /// <summary>
@@ -128,14 +131,12 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
     /// <returns> The derivative of the spline at position u of the specified span </returns>
     public T DerivativeAt( T outp, int span, float u )
     {
-        return Derivative(
-                          outp,
-                          Continuous ? span : span + 1,
-                          u,
-                          ControlPoints,
-                          Continuous,
-                          _tmp
-                         );
+        return Derivative( outp,
+                           Continuous ? span : span + 1,
+                           u,
+                           ControlPoints,
+                           Continuous,
+                           _tmp );
     }
 
     /// <summary>
@@ -189,7 +190,8 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
         var next     = ControlPoints[ ( n + 1 ) % SpanCount ];
         var dstPrev2 = inp.Dst2( previous );
         var dstNext2 = inp.Dst2( next );
-        T   p1, p2, p3;
+
+        T p1, p2, p3;
 
         if ( dstNext2 < dstPrev2 )
         {
@@ -333,29 +335,20 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
 
         if ( ( tmp != null ) && ( continuous || ( i > 0 ) ) )
         {
-            outp.Add
-                (
-                 tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
-                    .Scl( ( -0.5f + ( u * 2 ) ) - ( u2 * 1.5f ) )
-                );
+            outp.Add( tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
+                         .Scl( ( -0.5f + ( u * 2 ) ) - ( u2 * 1.5f ) ) );
         }
 
         if ( ( tmp != null ) && ( continuous || ( i < ( n - 1 ) ) ) )
         {
-            outp.Add
-                (
-                 tmp.Set( points[ ( i + 1 ) % n ] )
-                    .Scl( ( 0.5f + ( u * 4 ) ) - ( u2 * 4.5f ) )
-                );
+            outp.Add( tmp.Set( points[ ( i + 1 ) % n ] )
+                         .Scl( ( 0.5f + ( u * 4 ) ) - ( u2 * 4.5f ) ) );
         }
 
         if ( ( tmp != null ) && ( continuous || ( i < ( n - 2 ) ) ) )
         {
-            outp.Add
-                (
-                 tmp.Set( points[ ( i + 2 ) % n ] )
-                    .Scl( -u + ( u2 * 1.5f ) )
-                );
+            outp.Add( tmp.Set( points[ ( i + 2 ) % n ] )
+                         .Scl( -u + ( u2 * 1.5f ) ) );
         }
 
         return outp;

@@ -44,14 +44,10 @@ namespace LughSharp.LibCore.Maths;
 ///         for a detailed explanation.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class CumulativeDistribution< T >
 {
-    private readonly List< CumulativeValue > _values;
-
-    public CumulativeDistribution()
-    {
-        _values = new List< CumulativeValue >( 10 );
-    }
+    private readonly List< CumulativeValue > _values = new( 10 );
 
     /// <summary>
     ///     Adds a value with a given interval size to the distribution
@@ -78,8 +74,8 @@ public class CumulativeDistribution< T >
 
         foreach ( var cv in _values )
         {
-            sum          += cv.interval;
-            cv.frequency =  sum;
+            sum          += cv.Interval;
+            cv.Frequency =  sum;
         }
     }
 
@@ -93,15 +89,15 @@ public class CumulativeDistribution< T >
 
         foreach ( var cv in _values )
         {
-            sum += cv.interval;
+            sum += cv.Interval;
         }
 
         float intervalSum = 0;
 
         foreach ( var cv in _values )
         {
-            intervalSum  += cv.interval / sum;
-            cv.frequency =  intervalSum;
+            intervalSum  += cv.Interval / sum;
+            cv.Frequency =  intervalSum;
         }
     }
 
@@ -116,8 +112,8 @@ public class CumulativeDistribution< T >
         for ( var i = 0; i < _values.Count; ++i )
         {
             // reset the interval to the normalized frequency
-            _values[ i ].interval  = freq;
-            _values[ i ].frequency = ( i + 1 ) * freq;
+            _values[ i ].Interval  = freq;
+            _values[ i ].Frequency = ( i + 1 ) * freq;
         }
     }
 
@@ -138,11 +134,11 @@ public class CumulativeDistribution< T >
             var imid  = imin + ( ( imax - imin ) / 2 );
             var value = _values[ imid ];
 
-            if ( probability < value.frequency )
+            if ( probability < value.Frequency )
             {
                 imax = imid - 1;
             }
-            else if ( probability > value.frequency )
+            else if ( probability > value.Frequency )
             {
                 imin = imid + 1;
             }
@@ -152,32 +148,24 @@ public class CumulativeDistribution< T >
             }
         }
 
-        return _values[ imin ].value;
+        return _values[ imin ].Value;
     }
 
+    // ------------------------------------------------------------------------
+    
     /// <returns> the value whose interval contains a random probability in [0,1] </returns>
-    public virtual T Value()
-    {
-        return Value( MathUtils.Random() );
-    }
+    public virtual T Value() => Value( MathUtils.Random() );
 
     /// <returns> the amount of values </returns>
-    public virtual int Size()
-    {
-        return _values.Count;
-    }
+    public virtual int Size() => _values.Count;
 
     ///<returns> the interval size for the value at the given position </returns>
-    public virtual float GetInterval( int index )
-    {
-        return _values[ index ].interval;
-    }
+    public virtual float GetInterval( int index ) => _values[ index ].Interval;
 
     ///<returns> the value at the given position </returns>
-    public virtual T GetValue( int index )
-    {
-        return _values[ index ].value;
-    }
+    public virtual T GetValue( int index ) => _values[ index ].Value;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Set the interval size on the passed in object.
@@ -187,9 +175,9 @@ public class CumulativeDistribution< T >
     {
         foreach ( var value in _values )
         {
-            if ( Equals( value.value, obj ) )
+            if ( Equals( value.Value, obj ) )
             {
-                value.interval = intervalSize;
+                value.Interval = intervalSize;
 
                 return;
             }
@@ -201,7 +189,7 @@ public class CumulativeDistribution< T >
     /// </summary>
     public virtual void SetInterval( int index, float intervalSize )
     {
-        _values[ index ].interval = intervalSize;
+        _values[ index ].Interval = intervalSize;
     }
 
     /// <summary>
@@ -212,18 +200,19 @@ public class CumulativeDistribution< T >
         _values.Clear();
     }
 
+    [PublicAPI]
     public class CumulativeValue
     {
-        public readonly T value;
+        public readonly T Value;
 
-        public float frequency;
-        public float interval;
+        public float Frequency { get; set; }
+        public float Interval  { get; set; }
 
         public CumulativeValue( T value, float frequency, float interval )
         {
-            this.value     = value;
-            this.frequency = frequency;
-            this.interval  = interval;
+            this.Value     = value;
+            this.Frequency = frequency;
+            this.Interval  = interval;
         }
     }
 }

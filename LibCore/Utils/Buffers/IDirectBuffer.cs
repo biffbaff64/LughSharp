@@ -28,4 +28,9 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public interface IDirectBuffer
 {
+//    long address();
+
+//    Object attachment();
+
+//    Cleaner cleaner();
 }

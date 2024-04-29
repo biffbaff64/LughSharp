@@ -908,15 +908,15 @@ public class Intersector
         var   hit    = false;
 
         // min x
-        if ( ( ray.origin.X <= box.min.X ) && ( ray.direction.X > 0 ) )
+        if ( ( ray.origin.X <= box.Min.X ) && ( ray.direction.X > 0 ) )
         {
-            t = ( box.min.X - ray.origin.X ) / ray.direction.X;
+            t = ( box.Min.X - ray.origin.X ) / ray.direction.X;
 
             if ( t >= 0 )
             {
                 V2.Set( ray.direction ).Scl( t ).Add( ray.origin );
 
-                if ( ( V2.Y >= box.min.Y ) && ( V2.Y <= box.max.Y ) && ( V2.Z >= box.min.Z ) && ( V2.Z <= box.max.Z ) && ( !hit || ( t < lowest ) ) )
+                if ( ( V2.Y >= box.Min.Y ) && ( V2.Y <= box.Max.Y ) && ( V2.Z >= box.Min.Z ) && ( V2.Z <= box.Max.Z ) && ( !hit || ( t < lowest ) ) )
                 {
                     hit    = true;
                     lowest = t;
@@ -925,15 +925,15 @@ public class Intersector
         }
 
         // max x
-        if ( ( ray.origin.X >= box.max.X ) && ( ray.direction.X < 0 ) )
+        if ( ( ray.origin.X >= box.Max.X ) && ( ray.direction.X < 0 ) )
         {
-            t = ( box.max.X - ray.origin.X ) / ray.direction.X;
+            t = ( box.Max.X - ray.origin.X ) / ray.direction.X;
 
             if ( t >= 0 )
             {
                 V2.Set( ray.direction ).Scl( t ).Add( ray.origin );
 
-                if ( ( V2.Y >= box.min.Y ) && ( V2.Y <= box.max.Y ) && ( V2.Z >= box.min.Z ) && ( V2.Z <= box.max.Z ) && ( !hit || ( t < lowest ) ) )
+                if ( ( V2.Y >= box.Min.Y ) && ( V2.Y <= box.Max.Y ) && ( V2.Z >= box.Min.Z ) && ( V2.Z <= box.Max.Z ) && ( !hit || ( t < lowest ) ) )
                 {
                     hit    = true;
                     lowest = t;
@@ -942,15 +942,15 @@ public class Intersector
         }
 
         // min y
-        if ( ( ray.origin.Y <= box.min.Y ) && ( ray.direction.Y > 0 ) )
+        if ( ( ray.origin.Y <= box.Min.Y ) && ( ray.direction.Y > 0 ) )
         {
-            t = ( box.min.Y - ray.origin.Y ) / ray.direction.Y;
+            t = ( box.Min.Y - ray.origin.Y ) / ray.direction.Y;
 
             if ( t >= 0 )
             {
                 V2.Set( ray.direction ).Scl( t ).Add( ray.origin );
 
-                if ( ( V2.X >= box.min.X ) && ( V2.X <= box.max.X ) && ( V2.Z >= box.min.Z ) && ( V2.Z <= box.max.Z ) && ( !hit || ( t < lowest ) ) )
+                if ( ( V2.X >= box.Min.X ) && ( V2.X <= box.Max.X ) && ( V2.Z >= box.Min.Z ) && ( V2.Z <= box.Max.Z ) && ( !hit || ( t < lowest ) ) )
                 {
                     hit    = true;
                     lowest = t;
@@ -959,15 +959,15 @@ public class Intersector
         }
 
         // max y
-        if ( ( ray.origin.Y >= box.max.Y ) && ( ray.direction.Y < 0 ) )
+        if ( ( ray.origin.Y >= box.Max.Y ) && ( ray.direction.Y < 0 ) )
         {
-            t = ( box.max.Y - ray.origin.Y ) / ray.direction.Y;
+            t = ( box.Max.Y - ray.origin.Y ) / ray.direction.Y;
 
             if ( t >= 0 )
             {
                 V2.Set( ray.direction ).Scl( t ).Add( ray.origin );
 
-                if ( ( V2.X >= box.min.X ) && ( V2.X <= box.max.X ) && ( V2.Z >= box.min.Z ) && ( V2.Z <= box.max.Z ) && ( !hit || ( t < lowest ) ) )
+                if ( ( V2.X >= box.Min.X ) && ( V2.X <= box.Max.X ) && ( V2.Z >= box.Min.Z ) && ( V2.Z <= box.Max.Z ) && ( !hit || ( t < lowest ) ) )
                 {
                     hit    = true;
                     lowest = t;
@@ -976,18 +976,18 @@ public class Intersector
         }
 
         // min z
-        if ( ( ray.origin.Z <= box.min.Z ) && ( ray.direction.Z > 0 ) )
+        if ( ( ray.origin.Z <= box.Min.Z ) && ( ray.direction.Z > 0 ) )
         {
-            t = ( box.min.Z - ray.origin.Z ) / ray.direction.Z;
+            t = ( box.Min.Z - ray.origin.Z ) / ray.direction.Z;
 
             if ( t >= 0 )
             {
                 V2.Set( ray.direction ).Scl( t ).Add( ray.origin );
 
-                if ( ( V2.X >= box.min.X )
-                  && ( V2.X <= box.max.X )
-                  && ( V2.Y >= box.min.Y )
-                  && ( V2.Y <= box.max.Y )
+                if ( ( V2.X >= box.Min.X )
+                  && ( V2.X <= box.Max.X )
+                  && ( V2.Y >= box.Min.Y )
+                  && ( V2.Y <= box.Max.Y )
                   && ( !hit || ( t < lowest ) ) )
                 {
                     hit    = true;
@@ -997,18 +997,18 @@ public class Intersector
         }
 
         // max z
-        if ( ( ray.origin.Z >= box.max.Z ) && ( ray.direction.Z < 0 ) )
+        if ( ( ray.origin.Z >= box.Max.Z ) && ( ray.direction.Z < 0 ) )
         {
-            t = ( box.max.Z - ray.origin.Z ) / ray.direction.Z;
+            t = ( box.Max.Z - ray.origin.Z ) / ray.direction.Z;
 
             if ( t >= 0 )
             {
                 V2.Set( ray.direction ).Scl( t ).Add( ray.origin );
 
-                if ( ( V2.X >= box.min.X )
-                  && ( V2.X <= box.max.X )
-                  && ( V2.Y >= box.min.Y )
-                  && ( V2.Y <= box.max.Y )
+                if ( ( V2.X >= box.Min.X )
+                  && ( V2.X <= box.Max.X )
+                  && ( V2.Y >= box.Min.Y )
+                  && ( V2.Y <= box.Max.Y )
                   && ( !hit || ( t < lowest ) ) )
                 {
                     hit    = true;
@@ -1021,31 +1021,31 @@ public class Intersector
         {
             intersection.Set( ray.direction ).Scl( lowest ).Add( ray.origin );
 
-            if ( intersection.X < box.min.X )
+            if ( intersection.X < box.Min.X )
             {
-                intersection.X                                    = box.min.X;
+                intersection.X                                    = box.Min.X;
             }
-            else if ( intersection.X > box.max.X )
+            else if ( intersection.X > box.Max.X )
             {
-                intersection.X = box.max.X;
-            }
-
-            if ( intersection.Y < box.min.Y )
-            {
-                intersection.Y                                    = box.min.Y;
-            }
-            else if ( intersection.Y > box.max.Y )
-            {
-                intersection.Y = box.max.Y;
+                intersection.X = box.Max.X;
             }
 
-            if ( intersection.Z < box.min.Z )
+            if ( intersection.Y < box.Min.Y )
             {
-                intersection.Z                                    = box.min.Z;
+                intersection.Y                                    = box.Min.Y;
             }
-            else if ( intersection.Z > box.max.Z )
+            else if ( intersection.Y > box.Max.Y )
             {
-                intersection.Z = box.max.Z;
+                intersection.Y = box.Max.Y;
+            }
+
+            if ( intersection.Z < box.Min.Z )
+            {
+                intersection.Z                                    = box.Min.Z;
+            }
+            else if ( intersection.Z > box.Max.Z )
+            {
+                intersection.Z = box.Max.Z;
             }
         }
 
@@ -1132,8 +1132,8 @@ public class Intersector
         if ( Math.Abs( f ) > MathUtils.FLOAT_ROUNDING_ERROR )
         {
             // Standard case
-            t1 = ( e + bounds.min.X ) / f; // Intersection with the "left" plane
-            t2 = ( e + bounds.max.X ) / f; // Intersection with the "right" plane
+            t1 = ( e + bounds.Min.X ) / f; // Intersection with the "left" plane
+            t2 = ( e + bounds.Max.X ) / f; // Intersection with the "right" plane
 
             // t1 and t2 now contain distances betwen ray origin and ray-plane intersections
 
@@ -1166,7 +1166,7 @@ public class Intersector
 
             // Rare case : the ray is almost parallel to the planes, so they don't have any "intersection"
         }
-        else if ( ( ( -e + bounds.min.X ) > 0.0f ) || ( ( -e + bounds.max.X ) < 0.0f ) )
+        else if ( ( ( -e + bounds.Min.X ) > 0.0f ) || ( ( -e + bounds.Max.X ) < 0.0f ) )
         {
             return false;
         }
@@ -1181,8 +1181,8 @@ public class Intersector
 
         if ( Math.Abs( f ) > MathUtils.FLOAT_ROUNDING_ERROR )
         {
-            t1 = ( e + bounds.min.Y ) / f;
-            t2 = ( e + bounds.max.Y ) / f;
+            t1 = ( e + bounds.Min.Y ) / f;
+            t2 = ( e + bounds.Max.Y ) / f;
 
             if ( t1 > t2 )
             {
@@ -1204,7 +1204,7 @@ public class Intersector
                 return false;
             }
         }
-        else if ( ( ( -e + bounds.min.Y ) > 0.0f ) || ( ( -e + bounds.max.Y ) < 0.0f ) )
+        else if ( ( ( -e + bounds.Min.Y ) > 0.0f ) || ( ( -e + bounds.Max.Y ) < 0.0f ) )
         {
             return false;
         }
@@ -1219,8 +1219,8 @@ public class Intersector
 
         if ( Math.Abs( f ) > MathUtils.FLOAT_ROUNDING_ERROR )
         {
-            t1 = ( e + bounds.min.Z ) / f;
-            t2 = ( e + bounds.max.Z ) / f;
+            t1 = ( e + bounds.Min.Z ) / f;
+            t2 = ( e + bounds.Max.Z ) / f;
 
             if ( t1 > t2 )
             {
@@ -1242,7 +1242,7 @@ public class Intersector
                 return false;
             }
         }
-        else if ( ( ( -e + bounds.min.Z ) > 0.0f ) || ( ( -e + bounds.max.Z ) < 0.0f ) )
+        else if ( ( ( -e + bounds.Min.Z ) > 0.0f ) || ( ( -e + bounds.Max.Z ) < 0.0f ) )
         {
             return false;
         }

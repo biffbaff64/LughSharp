@@ -31,6 +31,7 @@ namespace LughSharp.LibCore.Maths;
 ///     Computes the convex hull of a set of points using the monotone
 ///     chain convex hull algorithm (aka Andrew's algorithm).
 /// </summary>
+[PublicAPI]
 public class ConvexHull
 {
     private readonly List< float > _hull            = new();
@@ -40,6 +41,8 @@ public class ConvexHull
 
     private float[]? _sortedPoints;
 
+    // ------------------------------------------------------------------------
+    
     public List< float > ComputePolygon( List< float > points, bool sorted )
     {
         return ComputePolygon( points.ToArray(), 0, points.Count, sorted );
@@ -49,6 +52,18 @@ public class ConvexHull
     {
         return ComputePolygon( polygon, 0, polygon.Length, sorted );
     }
+
+    public List< int > ComputeIndices( List< float > points, bool sorted, bool yDown )
+    {
+        return ComputeIndices( points.ToArray(), 0, points.Count, sorted, yDown );
+    }
+
+    public List< int > ComputeIndices( float[] polygon, bool sorted, bool yDown )
+    {
+        return ComputeIndices( polygon, 0, polygon.Length, sorted, yDown );
+    }
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Returns the convex hull polygon for the given point cloud.
@@ -85,8 +100,7 @@ public class ConvexHull
             Sort( points, count );
         }
 
-        List< float > hull = _hull;
-        hull.Clear();
+        _hull.Clear();
 
         // Lower hull.
         for ( var i = offset; i < end; i += 2 )
@@ -94,41 +108,31 @@ public class ConvexHull
             var x = points[ i ];
             var y = points[ i + 1 ];
 
-            while ( ( hull.Count >= 4 ) && ( Ccw( x, y ) <= 0 ) )
+            while ( ( _hull.Count >= 4 ) && ( Ccw( x, y ) <= 0 ) )
             {
-                hull.RemoveRange( hull.Count - 2, 2 );
+                _hull.RemoveRange( _hull.Count - 2, 2 );
             }
 
-            hull.Add( x );
-            hull.Add( y );
+            _hull.Add( x );
+            _hull.Add( y );
         }
 
         // Upper hull.
-        for ( int i = end - 4, t = hull.Count + 2; i >= offset; i -= 2 )
+        for ( int i = end - 4, t = _hull.Count + 2; i >= offset; i -= 2 )
         {
             var x = points[ i ];
             var y = points[ i + 1 ];
 
-            while ( ( hull.Count >= t ) && ( Ccw( x, y ) <= 0 ) )
+            while ( ( _hull.Count >= t ) && ( Ccw( x, y ) <= 0 ) )
             {
-                hull.RemoveRange( hull.Count - 2, 2 );
+                _hull.RemoveRange( _hull.Count - 2, 2 );
             }
 
-            hull.Add( x );
-            hull.Add( y );
+            _hull.Add( x );
+            _hull.Add( y );
         }
 
-        return hull;
-    }
-
-    public List< int > ComputeIndices( List< float > points, bool sorted, bool yDown )
-    {
-        return ComputeIndices( points.ToArray(), 0, points.Count, sorted, yDown );
-    }
-
-    public List< int > ComputeIndices( float[] polygon, bool sorted, bool yDown )
-    {
-        return ComputeIndices( polygon, 0, polygon.Length, sorted, yDown );
+        return _hull;
     }
 
     /// <summary>

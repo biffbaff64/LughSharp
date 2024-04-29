@@ -27,8 +27,15 @@ namespace LughSharp.LibCore.Maths;
 
 /// <summary>
 /// </summary>
+[PublicAPI]
 public class Circle : IShape2D
 {
+    public float X      { get; set; }
+    public float Y      { get; set; }
+    public float Radius { get; set; }
+
+    // ------------------------------------------------------------------------
+
     /// <summary>
     ///     Constructs a new circle with all values set to zero
     /// </summary>
@@ -50,8 +57,8 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Constructs a new circle using a given <see cref="Vector2" /> that contains the desired X and Y coordinates, and a
-    ///     given radius.
+    ///     Constructs a new circle using a given <see cref="Vector2" /> that contains
+    ///     the desired X and Y coordinates, and a given radius.
     /// </summary>
     /// <param name="position"> The position <see cref="Vector2" />. </param>
     /// <param name="radius"> The radius  </param>
@@ -84,10 +91,6 @@ public class Circle : IShape2D
         Y      = center.Y;
         Radius = Vector2.Len( center.X - edge.X, center.Y - edge.Y );
     }
-
-    public float X      { get; set; }
-    public float Y      { get; set; }
-    public float Radius { get; set; }
 
     /// <summary>
     ///     Checks whether or not this circle contains a given point.
@@ -230,7 +233,7 @@ public class Circle : IShape2D
     /// </summary>
     public override string ToString()
     {
-        return X + "," + Y + "," + Radius;
+        return $"{X},{Y},{Radius}";
     }
 
     /// <summary>
@@ -282,13 +285,11 @@ public class Circle : IShape2D
     /// <returns></returns>
     public override int GetHashCode()
     {
-        const int prime = 41;
+        const int PRIME = 41;
 
-        var result = 1;
-
-        result = prime + NumberUtils.FloatToRawIntBits( Radius );
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( X );
-        result = ( prime * result ) + NumberUtils.FloatToRawIntBits( Y );
+        var result = PRIME + NumberUtils.FloatToRawIntBits( Radius );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( X );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Y );
 
         return result;
     }

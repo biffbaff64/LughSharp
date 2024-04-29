@@ -29,194 +29,214 @@ namespace LughSharp.LibCore.Utils.Buffers;
 public class HeapShortBuffer : ShortBuffer
 {
     public HeapShortBuffer( int capacity, int limit )
+        : base( -1, 0, limit, capacity, new short[ capacity ] )
     {
     }
 
-    public HeapShortBuffer( short[] capacity, int offset, int length )
+    public HeapShortBuffer( short[] buffer, int offset, int length )
+        : base( -1, offset, offset + length, buffer.Length, buffer )
     {
     }
 
-    /// <summary>
-    ///     Returns the array that backs this buffer <i>(optional operation)</i>.
-    ///     <para>
-    ///         This method is intended to allow array-backed buffers to be passed to
-    ///         native code more efficiently. Concrete subclasses provide more strongly
-    ///         typed return values for this method.
-    ///     </para>
-    ///     <para>
-    ///         Modifications to this buffer's content will cause the returned array's
-    ///         content to be modified, and vice versa.
-    ///     </para>
-    ///     <para>
-    ///         Invoke the <see cref="Buffer.HasArray" /> method before invoking this method in
-    ///         order to ensure that this buffer has an accessible backing array.
-    ///     </para>
-    /// </summary>
-    /// <returns>  The array that backs this buffer </returns>
-    public new short[] BackingArray()
+    protected HeapShortBuffer( short[]? buffer, int mark, int pos, int limit, int capacity, int offset )
+        : base( mark, pos, limit, capacity, buffer, offset )
     {
-        return null!;
     }
 
-    /// <summary>
-    ///     Tells whether or not this buffer is <i>direct</i>.
-    /// </summary>
-    /// <returns> <tt>true</tt> if, and only if, this buffer is direct </returns>
-    public override bool IsDirect()
-    {
-        return false;
-    }
-
-    /// <summary>
-    ///     Creates a new short buffer whose content is a shared subsequence of
-    ///     this buffer's content.
-    ///     <para>
-    ///         The content of the new buffer will start at this buffer's current
-    ///         position.  Changes to this buffer's content will be visible in the new
-    ///         buffer, and vice versa; the two buffers' position, limit, and mark
-    ///         values will be independent.
-    ///     </para>
-    ///     <para>
-    ///         The new buffer's position will be zero, its capacity and its limit
-    ///         will be the number of shorts remaining in this buffer, and its mark
-    ///         will be undefined.  The new buffer will be direct if, and only if, this
-    ///         buffer is direct, and it will be read-only if, and only if, this buffer
-    ///         is read-only.
-    ///     </para>
-    /// </summary>
-    /// @return  The new short buffer
+    /// <inheritdoc/>
     public override ShortBuffer Slice()
     {
-        return null;
+        return new HeapShortBuffer( Hb,
+                                    -1,
+                                    0,
+                                    this.Remaining(),
+                                    this.Remaining(),
+                                    this.Position + Offset );
     }
 
-    /// <summary>
-    ///     Creates a new short buffer that shares this buffer's content.
-    /// </summary>
-    /// <remarks>
-    ///     The content of the new buffer will be that of this buffer.
-    ///     Changes to this buffer's content will be visible in the new buffer,
-    ///     and vice versa; the two buffers' position, limit, and mark values
-    ///     will be independent.
-    /// </remarks>
-    /// <returns>The new short buffer.</returns>
+    /// <inheritdoc/>
     public override ShortBuffer Duplicate()
     {
-        return null;
+        return new HeapShortBuffer( Hb,
+                                    this.MarkValue(),
+                                    this.Position,
+                                    this.Limit,
+                                    this.Capacity,
+                                    Offset );
     }
 
-    /// <summary>
-    ///     Creates a new, read-only short buffer that shares this buffer's content.
-    ///     The content of the new buffer will be that of this buffer. Changes to this
-    ///     buffer's content will be visible in the new buffer; the new buffer itself,
-    ///     however, will be read-only and will not allow the shared content to be
-    ///     modified. The two buffers' position, limit, and mark values will be independent.
-    /// </summary>
-    /// <returns>The new, read-only short buffer.</returns>
+    /// <inheritdoc/>
     public override ShortBuffer AsReadOnlyBuffer()
     {
-        return null;
+        return new HeapShortBuffer( Hb,
+                                    this.MarkValue(),
+                                    this.Position,
+                                    this.Limit,
+                                    this.Capacity,
+                                    Offset );
     }
 
-    /// <summary>
-    ///     Relative <i>get</i> method. Reads the short at this buffer's current position,
-    ///     and then increments the position.
-    /// </summary>
-    /// <returns>The short at the buffer's current position.</returns>
-    /// <exception cref="GdxRuntimeException">
-    ///     If the buffer's current position is not smaller than its limit.
-    /// </exception>
+    protected int Ix( int i )
+    {
+        return i + Offset;
+    }
+
+    /// <inheritdoc />
     public override short Get()
     {
-        return 0;
+        return Hb?[ Ix( NextGetIndex() ) ] ?? throw new NullReferenceException();
     }
 
-    /// <summary>
-    ///     Relative <i>put</i> method <i>(optional operation)</i>.
-    /// </summary>
-    /// <param name="s">The short to be written.</param>
-    /// <returns>This buffer.</returns>
-    /// <exception cref="GdxRuntimeException">
-    ///     If this buffer's current position is not smaller than its limit.
-    /// </exception>
-    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
-    public override ShortBuffer Put( short s )
-    {
-        return null;
-    }
-
-    /// <summary>
-    ///     Absolute <i>get</i> method. Reads the short at the given index.
-    /// </summary>
-    /// <param name="index">The index from which the short will be read.</param>
-    /// <returns>The short at the given index.</returns>
-    /// <exception cref="IndexOutOfRangeException">
-    ///     If <paramref name="index" /> is negative or not smaller than the buffer's limit.
-    /// </exception>
     public override short Get( int index )
     {
-        return 0;
+        return Hb?[ Ix( CheckIndex( index ) ) ] ?? throw new NullReferenceException();
     }
 
-    /// <summary>
-    ///     Absolute <i>put</i> method <i>(optional operation)</i>.
-    /// </summary>
-    /// <remarks>
-    ///     <para> Writes the given short into this buffer at the given index. </para>
-    /// </remarks>
-    /// <param name="index">The index at which the short will be written.</param>
-    /// <param name="s">The short value to be written.</param>
-    /// <returns>This buffer.</returns>
-    /// <exception cref="IndexOutOfRangeException">
-    ///     If <paramref name="index" /> is negative or not smaller than the buffer's limit.
-    /// </exception>
-    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
+    /// <inheritdoc />
+    public override ShortBuffer Get( short[] dst, int offset, int length )
+    {
+        if ( Hb == null )
+        {
+            throw new NullReferenceException();
+        }
+
+        CheckBounds( offset, length, dst.Length );
+
+        if ( length > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Underflow!" );
+        }
+
+        System.Array.Copy( Hb, Ix( Position ), dst, offset, length );
+        SetPosition( Position + length );
+
+        return this;
+    }
+
+    /// <inheritdoc />
+    public override bool IsDirect() => false;
+
+    /// <inheritdoc />
+    public override bool IsReadOnly => false;
+
+    /// <inheritdoc />
+    public override ShortBuffer Put( short s )
+    {
+        if ( Hb == null )
+        {
+            throw new NullReferenceException();
+        }
+
+        Hb[ Ix( NextPutIndex() ) ] = s;
+
+        return this;
+    }
+
+    /// <inheritdoc />
     public override ShortBuffer Put( int index, short s )
     {
-        return null;
+        if ( Hb == null )
+        {
+            throw new NullReferenceException();
+        }
+
+        Hb[ Ix( CheckIndex( index ) ) ] = s;
+
+        return this;
     }
 
-    /// <summary>
-    ///     Compacts this buffer  <i>(optional operation)</i>.
-    ///     <para>
-    ///         The shorts between the buffer's current position and its limit,
-    ///         if any, are copied to the beginning of the buffer. That is, the
-    ///         short at index <tt><i>p</i> = position()</tt> is copied to index
-    ///         zero, the short at index <i>p</i> + 1 is copied to index one, and
-    ///         so forth until the short at index <tt>limit()</tt> - 1 is copied to
-    ///         index <i>n</i> = <tt>limit()</tt> - <tt>1</tt> - <i>p</i>.
-    ///     </para>
-    ///     <para>
-    ///         The buffer's position is then set to <i>n+1</i> and its limit is set
-    ///         to its capacity. The mark, if defined, is discarded.
-    ///     </para>
-    ///     <para>
-    ///         The buffer's position is set to the number of shorts copied,
-    ///         rather than to zero, so that an invocation of this method can be
-    ///         followed immediately by an invocation of another relative <i>put</i>
-    ///         method
-    ///     </para>
-    /// </summary>
-    /// <returns> This buffer </returns>
-    /// <exception cref="GdxRuntimeException">If this buffer is read-only</exception>
+    /// <inheritdoc />
+    public override ShortBuffer Put( short[] src, int offset, int length )
+    {
+        if ( Hb == null )
+        {
+            throw new NullReferenceException();
+        }
+
+        CheckBounds( offset, length, src.Length );
+
+        if ( length > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Overflow!" );
+        }
+
+        System.Array.Copy( src, offset, Hb, Ix( Position ), length );
+        SetPosition( Position + length );
+
+        return this;
+    }
+
+    /// <inheritdoc />
+    public override ShortBuffer Put( ShortBuffer src )
+    {
+        if ( Hb == null )
+        {
+            throw new NullReferenceException();
+        }
+
+        if ( src is HeapShortBuffer sb )
+        {
+            if ( src == this )
+            {
+                throw new ArgumentException();
+            }
+
+            var n = sb.Remaining();
+
+            if ( n > Remaining() )
+            {
+                throw new GdxRuntimeException( "Buffer Overflow!" );
+            }
+
+            System.Array.Copy( sb.Hb!,
+                               sb.Ix( sb.Position ),
+                               Hb,
+                               Ix( Position ),
+                               n );
+
+            sb.SetPosition( sb.Position + n );
+            SetPosition( Position + n );
+        }
+        else if ( src.IsDirect() )
+        {
+            var n = src.Remaining();
+
+            if ( n > Remaining() )
+            {
+                throw new GdxRuntimeException( "Buffer Overflow!" );
+            }
+
+            src.Get( Hb, Ix( Position ), n );
+            SetPosition( Position + n );
+        }
+        else
+        {
+            base.Put( src );
+        }
+
+        return this;
+    }
+
+    /// <inheritdoc />
     public override ShortBuffer Compact()
     {
-        return null;
+        if ( Hb == null )
+        {
+            throw new NullReferenceException();
+        }
+
+        System.Array.Copy( Hb, Ix( Position ), Hb, Ix( 0 ), Remaining() );
+        
+        SetPosition( Remaining() );
+        SetLimit( Capacity );
+        DiscardMark();
+        
+        return this;
     }
 
-    /// <summary>
-    ///     Retrieves this buffer's byte order.
-    ///     <para>
-    ///         The byte order of a short buffer created by allocation or by wrapping an
-    ///         existing <tt>short</tt> array is the <see cref="ByteOrder.NativeOrder" />
-    ///         of the underlying hardware. The byte order of a short buffer created as a
-    ///         view of a byte buffer is that of the byte buffer at the moment that the
-    ///         view is created.
-    ///     </para>
-    /// </summary>
-    /// <returns> This buffer's byte order </returns>
+    /// <inheritdoc />
     public override ByteOrder Order()
     {
-        return null;
+        return ByteOrder.NativeOrder;
     }
 }

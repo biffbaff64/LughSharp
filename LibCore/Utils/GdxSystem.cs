@@ -33,10 +33,15 @@ public static class GdxSystem
     public static bool IsWindows { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Windows );
     public static bool IsLinux   { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Linux );
     public static bool IsMac     { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.OSX );
-    public static bool IsIos     { get; private set; } = false; //TODO:
-    public static bool IsAndroid { get; private set; } = false; //TODO:
     public static bool IsARM     { get; private set; } = IsArmArchitecture();
     public static bool Is64Bit   { get; private set; } = Environment.Is64BitOperatingSystem;
+
+    // ------------------------------------------------------------------------
+    
+    public static bool IsIos     { get; private set; } = false; //TODO: For the future, concentrating on desktop for now. 
+    public static bool IsAndroid { get; private set; } = false; //TODO: For the future, concentrating on desktop for now.
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Returns TRUE if the OS architecture is ARM based.

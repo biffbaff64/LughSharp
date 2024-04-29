@@ -30,13 +30,25 @@ namespace LughSharp.LibCore.Maths;
 /// <summary>
 ///     A convenient 2D ellipse class, based on the circle class
 /// </summary>
+[PublicAPI]
 public class Ellipse : ISerializable, IShape2D
 {
+    public float X      { get; set; }
+    public float Y      { get; set; }
+    public float Width  { get; set; }
+    public float Height { get; set; }
+
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Construct a new ellipse with all values set to zero
     /// </summary>
     public Ellipse()
     {
+        X      = 0;
+        Y      = 0;
+        Width  = 0;
+        Height = 0;
     }
 
     /// <summary>
@@ -66,7 +78,7 @@ public class Ellipse : ISerializable, IShape2D
     }
 
     /// <summary>
-    ///     Costructs a new ellipse
+    ///     Constructs a new ellipse
     /// </summary>
     /// <param name="position"> Position vector </param>
     /// <param name="width"> the width of the ellipse </param>
@@ -79,6 +91,11 @@ public class Ellipse : ISerializable, IShape2D
         Height = height;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="size"></param>
     public Ellipse( Vector2 position, Vector2 size )
     {
         X      = position.X;
@@ -99,11 +116,6 @@ public class Ellipse : ISerializable, IShape2D
         Width  = circle.Radius * 2f;
         Height = circle.Radius * 2f;
     }
-
-    public float X      { get; set; }
-    public float Y      { get; set; }
-    public float Width  { get; set; }
-    public float Height { get; set; }
 
     /// <summary>
     ///     Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" />
@@ -180,6 +192,10 @@ public class Ellipse : ISerializable, IShape2D
         Height = ellipse.Height;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="circle"></param>
     public void Set( Circle circle )
     {
         X      = circle.X;
@@ -188,6 +204,11 @@ public class Ellipse : ISerializable, IShape2D
         Height = circle.Radius * 2f;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="size"></param>
     public void Set( Vector2 position, Vector2 size )
     {
         X      = position.X;
@@ -271,7 +292,8 @@ public class Ellipse : ISerializable, IShape2D
         return ( float ) ( MathUtils.PI2 * Math.Sqrt( ( ( a * a ) + ( b * b ) ) / 2 ) );
     }
 
-    public new bool Equals( object? o )
+    /// <inheritdoc/>
+    public override bool Equals( object? o )
     {
         if ( o == this )
         {
@@ -291,6 +313,7 @@ public class Ellipse : ISerializable, IShape2D
             && Height.Equals( e.Height );
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         const int PRIME = 53;

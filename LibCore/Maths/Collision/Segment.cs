@@ -31,8 +31,15 @@ namespace LughSharp.LibCore.Maths.Collision;
 [Serializable]
 public class Segment
 {
-    public readonly Vector3 vectorA = new(); // the starting position
-    public readonly Vector3 vectorB = new(); // the ending position
+    public Vector3 VectorA { get; private set; } = new(); // the starting position
+    public Vector3 VectorB { get; private set; } = new(); // the ending position
+
+    // ------------------------------------------------------------------------
+
+    private readonly Vector3 _vecA = new();
+    private readonly Vector3 _vecB = new();
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Constructs a new Segment from the two points given.
@@ -41,8 +48,11 @@ public class Segment
     /// <param name="b">the second point</param>
     public Segment( Vector3 a, Vector3 b )
     {
-        vectorA.Set( a );
-        vectorB.Set( b );
+        VectorA.Set( a );
+        VectorB.Set( b );
+
+        _vecA.Set( a );
+        _vecB.Set( b );
     }
 
     /// <summary>
@@ -56,18 +66,18 @@ public class Segment
     /// <param name="bZ"> the z-coordinate of the second point  </param>
     public Segment( float aX, float aY, float aZ, float bX, float bY, float bZ )
     {
-        vectorA.Set( aX, aY, aZ );
-        vectorB.Set( bX, bY, bZ );
+        VectorA.Set( aX, aY, aZ );
+        VectorB.Set( bX, bY, bZ );
     }
 
     public virtual float Len()
     {
-        return vectorA.Dst( vectorB );
+        return VectorA.Dst( VectorB );
     }
 
     public virtual float Len2()
     {
-        return vectorA.Dst2( vectorB );
+        return VectorA.Dst2( VectorB );
     }
 
     /// <summary>
@@ -88,7 +98,7 @@ public class Segment
 
         var s = ( Segment ) o;
 
-        return vectorA.Equals( s.vectorA ) && vectorB.Equals( s.vectorB );
+        return VectorA.Equals( s.VectorA ) && VectorB.Equals( s.VectorB );
     }
 
     /// <summary>
@@ -98,8 +108,8 @@ public class Segment
     {
         const int PRIME = 71;
 
-        var result = PRIME + vectorA.GetHashCode();
-        result = ( PRIME * result ) + vectorB.GetHashCode();
+        var result = PRIME + _vecA.GetHashCode();
+        result = ( PRIME * result ) + _vecB.GetHashCode();
 
         return result;
     }

@@ -75,6 +75,9 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class FloatBuffer : Buffer
 {
+    protected float[]? Hb     { get; set; }
+    protected int      Offset { get; set; }
+
     // ------------------------------------------------------------------------
 
     protected FloatBuffer( int mark, int pos, int lim, int cap, float[]? hb = null, int offset = 0 )
@@ -89,9 +92,6 @@ public abstract class FloatBuffer : Buffer
     {
         Offset = 0;
     }
-
-    protected float[]? Hb     { get; set; }
-    protected int      Offset { get; set; }
 
     /// <summary>
     ///     Allocates a new float buffer.

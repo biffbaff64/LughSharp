@@ -35,6 +35,7 @@ namespace LughSharp.LibCore.Maths;
 ///         vectors.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class Bresenham2
 {
     private readonly List< GridPoint2 > _points = new();
@@ -112,7 +113,7 @@ public class Bresenham2
 
         if ( h < 0 )
         {
-            dy1               = -1;
+            dy1 = -1;
         }
         else if ( h > 0 )
         {
@@ -129,7 +130,7 @@ public class Bresenham2
 
             if ( h < 0 )
             {
-                dy2               = -1;
+                dy2 = -1;
             }
             else if ( h > 0 )
             {

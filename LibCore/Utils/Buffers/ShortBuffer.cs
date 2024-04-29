@@ -30,8 +30,8 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class ShortBuffer : Buffer
 {
-    private readonly short[]? _hb;
-    private readonly int      _offset;
+    protected readonly short[]? Hb;
+    protected readonly int      Offset;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -47,8 +47,8 @@ public abstract class ShortBuffer : Buffer
     protected ShortBuffer( int mark, int pos, int lim, int cap, short[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        _hb     = hb;
-        _offset = offset;
+        Hb     = hb;
+        Offset = offset;
     }
 
     /// <summary>
@@ -263,7 +263,7 @@ public abstract class ShortBuffer : Buffer
     ///     If the preconditions on the <paramref name="offset" /> and <paramref name="length" />
     ///     parameters do not hold.
     /// </exception>
-    public ShortBuffer Get( short[] dst, int offset, int length )
+    public virtual ShortBuffer Get( short[] dst, int offset, int length )
     {
         CheckBounds( offset, length, dst.Length );
 
@@ -301,7 +301,7 @@ public abstract class ShortBuffer : Buffer
     ///     If there are fewer than <paramref name="dst.length" /> shorts
     ///     remaining in this buffer.
     /// </exception>
-    public ShortBuffer Get( short[] dst )
+    public virtual ShortBuffer Get( short[] dst )
     {
         return Get( dst, 0, dst.Length );
     }
@@ -344,7 +344,7 @@ public abstract class ShortBuffer : Buffer
     /// </exception>
     /// <exception cref="ArgumentException">If the source buffer is this buffer.</exception>
     /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
-    public ShortBuffer Put( ShortBuffer src )
+    public virtual ShortBuffer Put( ShortBuffer src )
     {
         if ( src == this )
         {
@@ -422,7 +422,7 @@ public abstract class ShortBuffer : Buffer
     /// <exception cref="GdxRuntimeException">
     ///     If this buffer is read-only
     /// </exception>
-    public ShortBuffer Put( short[] src, int offset, int length )
+    public virtual ShortBuffer Put( short[] src, int offset, int length )
     {
         CheckBounds( offset, length, src.Length );
 
@@ -459,7 +459,7 @@ public abstract class ShortBuffer : Buffer
     /// <exception crewf="GdxRuntimeException">
     ///     If this buffer is read-only
     /// </exception>
-    public ShortBuffer Put( short[] src )
+    public virtual ShortBuffer Put( short[] src )
     {
         return Put( src, 0, src.Length );
     }
@@ -477,7 +477,7 @@ public abstract class ShortBuffer : Buffer
     /// </returns>
     public override bool HasArray()
     {
-        return ( _hb != null ) && !IsReadOnly;
+        return ( Hb != null ) && !IsReadOnly;
     }
 
     /// <summary>
@@ -501,7 +501,7 @@ public abstract class ShortBuffer : Buffer
     /// </exception>
     public short[] Array()
     {
-        if ( _hb == null )
+        if ( Hb == null )
         {
             throw new GdxRuntimeException( "Backing array os null." );
         }
@@ -511,7 +511,7 @@ public abstract class ShortBuffer : Buffer
             throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
-        return _hb;
+        return Hb;
     }
 
     /// <summary>
@@ -537,7 +537,7 @@ public abstract class ShortBuffer : Buffer
     /// </exception>
     public override int ArrayOffset()
     {
-        if ( _hb == null )
+        if ( Hb == null )
         {
             throw new GdxRuntimeException( "Backing array os null." );
         }
@@ -547,7 +547,7 @@ public abstract class ShortBuffer : Buffer
             throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
-        return _offset;
+        return Offset;
     }
 
     /// <summary>

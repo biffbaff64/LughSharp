@@ -25,13 +25,24 @@
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class BSpline< T > : IPath< T > where T : IVector< T >
 {
+    public T[]?       ControlPoints { get; set; }
+    public List< T >? Knots         { get; set; }
+    public int        Degree        { get; set; }
+    public bool       Continuous    { get; set; }
+    public int        SpanCount     { get; set; }
+
+    // ------------------------------------------------------------------------
+    
     private const float D6 = 1f / 6f;
 
     private T? _tmp;
     private T? _tmp2;
     private T? _tmp3;
+
+    // ------------------------------------------------------------------------
 
     public BSpline()
     {
@@ -41,12 +52,6 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     {
         Set( controlPoints, degree, continuous );
     }
-
-    public T[]?       ControlPoints { get; set; }
-    public List< T >? Knots         { get; set; }
-    public int        Degree        { get; set; }
-    public bool       Continuous    { get; set; }
-    public int        SpanCount     { get; set; }
 
     public T ValueAt( in T output, in float t )
     {

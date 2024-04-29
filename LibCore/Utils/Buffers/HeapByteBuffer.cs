@@ -61,7 +61,7 @@ public class HeapByteBuffer : ByteBuffer
 
     public override ByteBuffer AsReadOnlyBuffer()
     {
-        throw new NotImplementedException();
+        return new HeapByteBuffer( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
     //        return new HeapByteBufferR( Hb, this.MarkValue(), this.Position, this.Limit, this.Capacity, Offset );

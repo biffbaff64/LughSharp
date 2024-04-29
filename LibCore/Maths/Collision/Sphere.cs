@@ -30,9 +30,10 @@ namespace LughSharp.LibCore.Maths.Collision;
 /// </summary>
 public class Sphere
 {
-    private const   float   PI43 = ( MathUtils.PI * 4f ) / 3f;
-    public readonly Vector3 center; // the center of the sphere
-    public readonly float   radius; // the radius of the sphere
+    public readonly Vector3 Center; // the center of the sphere
+    public readonly float   Radius; // the radius of the sphere
+
+    private const float PI43 = ( MathUtils.PI * 4f ) / 3f;
 
     // ------------------------------------------------------------------------
 
@@ -43,8 +44,8 @@ public class Sphere
     /// <param name="radius"> The radius  </param>
     public Sphere( Vector3 center, float radius )
     {
-        this.center = new Vector3( center );
-        this.radius = radius;
+        this.Center = new Vector3( center );
+        this.Radius = radius;
     }
 
     /// <summary>
@@ -53,7 +54,7 @@ public class Sphere
     /// <returns> whether this and the other sphere overlap  </returns>
     public virtual bool Overlaps( Sphere sphere )
     {
-        return center.Dst2( sphere.center ) < ( ( radius + sphere.radius ) * ( radius + sphere.radius ) );
+        return Center.Dst2( sphere.Center ) < ( ( Radius + sphere.Radius ) * ( Radius + sphere.Radius ) );
     }
 
     /// <summary>
@@ -63,8 +64,8 @@ public class Sphere
     {
         const int PRIME = 71;
 
-        var result = PRIME + center.GetHashCode();
-        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( radius );
+        var result = PRIME + Center.GetHashCode();
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Radius );
 
         return result;
     }
@@ -87,7 +88,7 @@ public class Sphere
 
         var s = ( Sphere ) o;
 
-        return MathUtils.IsEqual( radius, radius ) && center.Equals( s.center );
+        return MathUtils.IsEqual( Radius, Radius ) && Center.Equals( s.Center );
     }
 
     /// <summary>
@@ -95,7 +96,7 @@ public class Sphere
     /// </summary>
     public virtual float Volume()
     {
-        return PI43 * radius * radius * radius;
+        return PI43 * Radius * Radius * Radius;
     }
 
     /// <summary>
@@ -103,6 +104,6 @@ public class Sphere
     /// </summary>
     public virtual float SurfaceArea()
     {
-        return 4 * MathUtils.PI * radius * radius;
+        return 4 * MathUtils.PI * Radius * Radius;
     }
 }

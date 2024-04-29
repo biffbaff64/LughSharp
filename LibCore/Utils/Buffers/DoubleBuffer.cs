@@ -28,15 +28,19 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
 {
-    private readonly double[]? _hb;
-    private readonly int       _offset;
-    private          bool      _isReadOnly;
+    protected readonly double[]? Hb;
+    protected readonly int       Offset;
 
+    // ------------------------------------------------------------------------
+    
+    /// <summary>
+    /// Creates a new DoubleBuffer.
+    /// </summary>
     protected DoubleBuffer( int mark, int pos, int lim, int cap, double[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        this._hb     = hb;
-        this._offset = offset;
+        this.Hb     = hb;
+        this.Offset = offset;
     }
 
     /// <summary>
@@ -68,8 +72,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     ///     to the buffer will cause the array to be modified and vice versa. =The new buffer's
     ///     capacity will be <tt>array.length</tt>, its position will be <tt>offset</tt>, its limit
     ///     will be <tt>offset + length</tt>, and its mark will be undefined. Its
-    ///     <see cref="#array backing array} will be the given array, and
-    ///     its <see cref="ArrayOffset"/> will be zero.
+    ///     <see cref="Array"/> will be the given array, and its <see cref="ArrayOffset"/> will be zero.
     ///     </para>
     /// </summary>
     /// <param name="array"> The array that will back the new buffer. </param>
@@ -262,7 +265,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     ///         <tt>dst.length - offset</tt>
     /// </param>
     /// <returns> This buffer </returns>
-    public DoubleBuffer Get( double[] dst, int offset, int length )
+    public virtual DoubleBuffer Get( double[] dst, int offset, int length )
     {
         CheckBounds( offset, length, dst.Length );
 
@@ -330,7 +333,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     ///         must not be this buffer
     /// </param>
     /// <returns> This buffer </returns>
-    public DoubleBuffer Put( DoubleBuffer src )
+    public virtual DoubleBuffer Put( DoubleBuffer src )
     {
         if ( src.Equals( this ) )
         {
@@ -397,7 +400,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     ///         <tt>array.length - offset</tt>
     /// </param>
     /// <returns> This buffer </returns>
-    public DoubleBuffer Put( double[] src, int offset, int length )
+    public virtual DoubleBuffer Put( double[] src, int offset, int length )
     {
         CheckBounds( offset, length, src.Length );
 
@@ -447,7 +450,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     /// </returns>
     public override bool HasArray()
     {
-        return ( _hb != null ) && !_isReadOnly;
+        return ( Hb != null ) && !IsReadOnly;
     }
 
     /// <summary>
@@ -464,17 +467,17 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     /// <returns>  The array that backs this buffer </returns>
     public double[] Array()
     {
-        if ( _hb == null )
+        if ( Hb == null )
         {
             throw new GdxRuntimeException( "Unsupported Operation!" );
         }
 
-        if ( _isReadOnly )
+        if ( IsReadOnly )
         {
             throw new GdxRuntimeException( "Readonly Buffer!" );
         }
 
-        return _hb;
+        return Hb;
     }
 
     /// <summary>
@@ -495,17 +498,17 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     /// </returns>
     public override int ArrayOffset()
     {
-        if ( _hb == null )
+        if ( Hb == null )
         {
             throw new GdxRuntimeException( "Unsupported Operation!" );
         }
 
-        if ( _isReadOnly )
+        if ( IsReadOnly )
         {
             throw new GdxRuntimeException( "Readonly Buffer!" );
         }
 
-        return _offset;
+        return Offset;
     }
 
     /// <summary>
@@ -530,12 +533,6 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     /// </summary>
     /// <returns> This buffer </returns>
     public abstract DoubleBuffer Compact();
-
-    /// <summary>
-    ///     Tells whether or not this double buffer is direct.
-    /// </summary>
-    /// <returns> TRUE if, and only if, this buffer is direct </returns>
-    public abstract bool ISDirect();
 
     /// <summary>
     ///     Returns a string summarizing the state of this buffer.
@@ -628,8 +625,8 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     {
         const int PRIME = 31;
 
-        var result = PRIME + NumberUtils.FloatToIntBits( _offset );
-        result = ( PRIME * result ) + NumberUtils.FloatToIntBits( _offset );
+        var result = PRIME + NumberUtils.FloatToIntBits( Offset );
+        result = ( PRIME * result ) + NumberUtils.FloatToIntBits( Offset );
 
         return result;
     }

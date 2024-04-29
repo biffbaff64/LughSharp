@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class EarClippingTriangulator
 {
     private const int CONCAVE = -1;
@@ -36,6 +37,8 @@ public class EarClippingTriangulator
     private          short[]?      _indices;
     private          int           _vertexCount;
     private          float[]?      _vertices;
+
+    // ------------------------------------------------------------------------
 
     public List< short > ComputeTriangles( List< float > vertices )
     {
@@ -130,9 +133,9 @@ public class EarClippingTriangulator
         }
     }
 
-    /**
-     * @return {@link #CONCAVE} or {@link #CONVEX}
-     */
+    /// <summary>
+    /// Returns <see cref="CONCAVE"/> or <see cref="CONVEX"/>.
+    /// </summary>
     private int ClassifyVertex( int index )
     {
         var previous = _indices![ PreviousIndex( index ) ] * 2;
@@ -197,22 +200,24 @@ public class EarClippingTriangulator
         var p3X           = _vertices[ p3 ];
         var p3Y           = _vertices[ p3 + 1 ];
 
-        // Check if any point is inside the triangle formed by previous, current and next vertices.
-        // Only consider vertices that are not part of this triangle, or else we'll always find one inside.
+        // Check if any point is inside the triangle formed by previous,
+        // current and next vertices. Only consider vertices that are not
+        // part of this triangle, or else we'll always find one inside.
         for ( var i = NextIndex( nextIndex ); i != previousIndex; i = NextIndex( i ) )
-
-            // Concave vertices can obviously be inside the candidate ear, but so can tangential vertices
-            // if they coincide with one of the triangle's vertices.
         {
+            // Concave vertices can obviously be inside the candidate ear, but so can
+            // tangential vertices if they coincide with one of the triangle's vertices.
             if ( _vertexTypes[ i ] != CONVEX )
             {
                 var v  = _indices[ i ] * 2;
                 var vx = _vertices[ v ];
                 var vy = _vertices[ v + 1 ];
 
-                // Because the polygon has clockwise winding order, the area sign will be positive if the point is strictly inside.
-                // It will be 0 on the edge, which we want to include as well.
-                // note: check the edge defined by p1->p3 first since this fails _far_ more then the other 2 checks.
+                // Because the polygon has clockwise winding order, the area sign will
+                // be positive if the point is strictly inside. It will be 0 on the edge,
+                // which we want to include as well.
+                // note: check the edge defined by p1->p3 first since this fails _far_
+                // more then the other 2 checks.
                 if ( ComputeSpannedAreaSign( p3X, p3Y, p1X, p1Y, vx, vy ) >= 0 )
                 {
                     if ( ComputeSpannedAreaSign( p1X, p1Y, p2X, p2Y, vx, vy ) >= 0 )

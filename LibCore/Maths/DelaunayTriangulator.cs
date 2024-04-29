@@ -31,22 +31,27 @@ namespace LughSharp.LibCore.Maths;
 ///     Delaunay triangulation. Adapted from Paul Bourke's triangulate:
 ///     http://paulbourke.net/papers/triangulate/
 /// </summary>
+[PublicAPI]
 public class DelaunayTriangulator
 {
     private const    float        EPSILON          = 0.000001f;
     private const    int          INSIDE           = 0;
     private const    int          COMPLETE         = 1;
     private const    int          INCOMPLETE       = 2;
+
+    // ------------------------------------------------------------------------
+    
     private readonly Vector2      _centroid        = new();
     private readonly List< bool > _complete        = new( 16 );
     private readonly List< int >  _edges           = new();
     private readonly List< int >  _originalIndices = new( 0 );
-
-    private readonly List< int > _quicksortStack = new();
-    private readonly float[]     _superTriangle  = new float[ 6 ];
-    private readonly List< int > _triangles      = new( 16 );
+    private readonly List< int >  _quicksortStack  = new();
+    private readonly float[]      _superTriangle   = new float[ 6 ];
+    private readonly List< int >  _triangles       = new( 16 );
 
     private float[]? _sortedPoints;
+
+    // ------------------------------------------------------------------------
 
     public List< int > ComputeTriangles( List< float > points, bool sorted )
     {
@@ -57,6 +62,8 @@ public class DelaunayTriangulator
     {
         return ComputeTriangles( polygon, 0, polygon.Length, sorted );
     }
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Triangulates the given point cloud to a list of triangle indices that

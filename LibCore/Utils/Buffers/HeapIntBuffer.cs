@@ -25,113 +25,128 @@
 namespace LughSharp.LibCore.Utils.Buffers;
 
 [PublicAPI]
-public class HeapDoubleBuffer : DoubleBuffer
+public class HeapIntBuffer : IntBuffer
 {
-    public HeapDoubleBuffer( int cap, int lim )
-        : base( -1, 0, lim, cap, new double[ cap ] )
+    public HeapIntBuffer( int cap, int lim )
+        : base( -1, 0, lim, cap, new int[ cap ] )
     {
     }
 
-    public HeapDoubleBuffer( double[] buf, int off, int len )
-        : base( -1, off, off + len, buf.Length, buf )
+    public HeapIntBuffer( int[] cap, int offset, int length )
+        : base( -1, offset, offset + length, cap.Length, cap )
     {
     }
 
-    /// <inheritdoc />
-    public HeapDoubleBuffer( double[]? hb, int mark, int pos, int lim, int cap, int offset = 0 )
-        : base( mark, pos, lim, cap, hb, offset )
+    public HeapIntBuffer( int[]? buf, int mark, int pos, int lim, int cap, int off )
+        : base( mark, pos, lim, cap, buf, off )
     {
-    }
-
-    /// <inheritdoc />
-    public override DoubleBuffer Slice()
-    {
-        return new HeapDoubleBuffer( Hb,
-                                     -1,
-                                     0,
-                                     this.Remaining(),
-                                     this.Remaining(),
-                                     this.Position + Offset );
     }
 
     /// <inheritdoc />
-    public override DoubleBuffer Duplicate()
+    public override IntBuffer Slice()
     {
-        return new HeapDoubleBuffer( Hb,
-                                     this.MarkValue(),
-                                     this.Position,
-                                     this.Limit,
-                                     this.Capacity,
-                                     Offset );
+        return new HeapIntBuffer( Hb,
+                                  -1,
+                                  0,
+                                  this.Remaining(),
+                                  this.Remaining(),
+                                  this.Position + Offset );
     }
 
     /// <inheritdoc />
-    public override DoubleBuffer asReadOnlyBuffer()
+    public override IntBuffer Duplicate()
     {
-        return new HeapDoubleBuffer( Hb,
-                                     this.MarkValue(),
-                                     this.Position,
-                                     this.Limit,
-                                     this.Capacity,
-                                     Offset );
+        return new HeapIntBuffer( Hb,
+                                  this.MarkValue(),
+                                  this.Position,
+                                  this.Limit,
+                                  this.Capacity,
+                                  Offset );
     }
 
     /// <inheritdoc />
-    public override double Get()
+    public override IntBuffer asReadOnlyBuffer()
     {
-        return Hb?[ Ix( NextGetIndex() ) ] ?? throw new GdxRuntimeException( "HB is null!" );
+        return new HeapIntBuffer( Hb,
+                                  this.MarkValue(),
+                                  this.Position,
+                                  this.Limit,
+                                  this.Capacity,
+                                  Offset );
     }
 
     /// <inheritdoc />
-    public override double Get( int index )
+    public override int Get()
     {
-        return Hb?[ Ix( CheckIndex( index ) ) ] ?? throw new GdxRuntimeException( "HB is null!" );
+        return Hb?[ Ix( NextGetIndex() ) ] ?? throw new NullReferenceException();
     }
 
     /// <inheritdoc />
-    public override DoubleBuffer Get( double[] dst, int offset, int length )
+    public override int Get( int index )
     {
+        return Hb?[ Ix( CheckIndex( index ) ) ] ?? throw new NullReferenceException();
+    }
+
+    public override IntBuffer Get( int[] dst, int offset, int length )
+    {
+        if ( Hb == null )
+        {
+            throw new NullReferenceException();
+        }
+
         CheckBounds( offset, length, dst.Length );
 
         if ( length > Remaining() )
         {
-            throw new GdxRuntimeException( "Buffer Underflow!" );
+            throw new GdxRuntimeException( "Buffer Underflow" );
         }
 
-        System.Array.Copy( Hb!, Ix( Position ), dst, offset, length );
-
+        System.Array.Copy( Hb, Ix( Position ), dst, offset, length );
         SetPosition( Position + length );
 
         return this;
     }
 
     /// <inheritdoc />
-    public override DoubleBuffer Put( double d )
+    public override bool IsDirect()
     {
-        Put( NextPutIndex(), d );
-
-        return this;
+        return false;
     }
 
+    public override bool IsReadOnly => false;
+
     /// <inheritdoc />
-    public override DoubleBuffer Put( int index, double d )
+    public override IntBuffer Put( int x )
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new NullReferenceException();
         }
 
-        Hb[ Ix( NextPutIndex() ) ] = d;
+        Hb[ Ix( NextPutIndex() ) ] = x;
 
         return this;
     }
 
     /// <inheritdoc />
-    public override DoubleBuffer Put( double[] src, int offset, int length )
+    public override IntBuffer Put( int index, int i )
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new NullReferenceException();
+        }
+
+        Hb[ Ix( CheckIndex( index ) ) ] = i;
+
+        return this;
+    }
+
+    /// <inheritdoc />
+    public override IntBuffer Put( int[] src, int offset, int length )
+    {
+        if ( Hb == null )
+        {
+            throw new NullReferenceException();
         }
 
         CheckBounds( offset, length, src.Length );
@@ -140,7 +155,7 @@ public class HeapDoubleBuffer : DoubleBuffer
         {
             throw new GdxRuntimeException( "Buffer Overflow!" );
         }
-        
+
         System.Array.Copy( src, offset, Hb, Ix( Position ), length );
         SetPosition( Position + length );
 
@@ -148,14 +163,14 @@ public class HeapDoubleBuffer : DoubleBuffer
     }
 
     /// <inheritdoc />
-    public override DoubleBuffer Put( DoubleBuffer src )
+    public override IntBuffer Put( IntBuffer src )
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new NullReferenceException();
         }
 
-        if ( src is HeapDoubleBuffer sb )
+        if ( src is HeapIntBuffer sb )
         {
             if ( Equals( sb, this ) )
             {
@@ -169,8 +184,12 @@ public class HeapDoubleBuffer : DoubleBuffer
                 throw new GdxRuntimeException( "Buffer Overflow!" );
             }
 
-            System.Array.Copy( sb.Hb!, sb.Ix( sb.Position ), Hb, Ix( Position ), n );
-
+            System.Array.Copy( sb.Hb!,
+                               sb.Ix( sb.Position ),
+                               Hb,
+                               Ix( Position ),
+                               n );
+            
             sb.SetPosition( sb.Position + n );
             SetPosition( Position + n );
         }
@@ -184,6 +203,7 @@ public class HeapDoubleBuffer : DoubleBuffer
             }
 
             src.Get( Hb, Ix( Position ), n );
+
             SetPosition( Position + n );
         }
         else
@@ -195,7 +215,7 @@ public class HeapDoubleBuffer : DoubleBuffer
     }
 
     /// <inheritdoc />
-    public override DoubleBuffer Compact()
+    public override IntBuffer Compact()
     {
         if ( Hb == null )
         {
@@ -212,10 +232,10 @@ public class HeapDoubleBuffer : DoubleBuffer
     }
 
     /// <inheritdoc />
-    public override bool IsDirect() => false;
-
-    /// <inheritdoc />
-    public override ByteOrder Order() => ByteOrder.NativeOrder;
+    public override ByteOrder Order()
+    {
+        return ByteOrder.NativeOrder;
+    }
 
     // ------------------------------------------------------------------------
 
