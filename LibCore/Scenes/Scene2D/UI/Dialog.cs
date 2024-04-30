@@ -278,7 +278,7 @@ public class Dialog : Window
     {
         Show( stage,
               Scene2D.Actions.Actions.Sequence( Scene2D.Actions.Actions.Alpha( 0 ),
-                                                Scene2D.Actions.Actions.FadeIn( 0.4f, Interpolation.fade ) ) );
+                                                Scene2D.Actions.Actions.FadeIn( 0.4f, Interpolation.Fade ) ) );
 
         SetPosition( ( float ) Math.Round( ( stage.Width - Width ) / 2 ),
                      ( float ) Math.Round( ( stage.Height - Height ) / 2 ) );
@@ -343,7 +343,7 @@ public class Dialog : Window
     /// </summary>
     public void Hide()
     {
-        Hide( Scene2D.Actions.Actions.FadeOut( 0.4f, Interpolation.fade ) );
+        Hide( Scene2D.Actions.Actions.FadeOut( 0.4f, Interpolation.Fade ) );
     }
 
     public void SetObject( Actor actor, object obj )

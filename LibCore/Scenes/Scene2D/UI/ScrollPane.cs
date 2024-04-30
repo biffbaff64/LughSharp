@@ -643,7 +643,7 @@ public partial class ScrollPane : WidgetGroup
 
         if ( FadeScrollBars )
         {
-            alpha *= Interpolation.fade.Apply( _fadeAlpha / _fadeAlphaSeconds );
+            alpha *= Interpolation.Fade.Apply( _fadeAlpha / _fadeAlphaSeconds );
         }
 
         DrawScrollBars( batch, color.R, color.G, color.B, alpha );

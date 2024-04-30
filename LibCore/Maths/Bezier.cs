@@ -133,9 +133,9 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
         var p2 = Points[ Points.Count - 1 ];
         var p3 = v;
 
-        var l1Sqr = p1.Dst2( p2 );
-        var l2Sqr = p3.Dst2( p2 );
-        var l3Sqr = p3.Dst2( p1 );
+        var l1Sqr = p1.Distance2( p2 );
+        var l2Sqr = p3.Distance2( p2 );
+        var l3Sqr = p3.Distance2( p1 );
 
         var l1 = ( float ) Math.Sqrt( l1Sqr );
         var s  = ( ( l2Sqr + l1Sqr ) - l3Sqr ) / ( 2 * l1 );
@@ -179,7 +179,7 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
 
             if ( i > 0 )
             {
-                tempLength += _tmp2.Dst( _tmp3 );
+                tempLength += _tmp2.Distance( _tmp3 );
             }
         }
 
@@ -198,7 +198,7 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     public static T Linear( in T alist, in float t, in T p0, in T p1, in T? tmp )
     {
         // B1(t) = p0 + (p1 - p0) * t
-        return alist.Set( p0 ).Scl( 1f - t ).Add( tmp!.Set( p1 ).Scl( t ) );
+        return alist.Set( p0 ).Scale( 1f - t ).Add( tmp!.Set( p1 ).Scale( t ) );
     }
 
     /// <summary>
@@ -231,9 +231,9 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
         // B2(t) = (1 - t) * (1 - t) * p0 + 2 * (1 - t) * t * p1 + t * t * p2
         var dt = 1f - t;
 
-        return list.Set( p0 ).Scl( dt * dt )
-                   .Add( tmp!.Set( p1 ).Scl( 2 * dt * t ) )
-                   .Add( tmp.Set( p2 ).Scl( t * t ) );
+        return list.Set( p0 ).Scale( dt * dt )
+                   .Add( tmp!.Set( p1 ).Scale( 2 * dt * t ) )
+                   .Add( tmp.Set( p2 ).Scale( t * t ) );
     }
 
     /// <summary>
@@ -250,8 +250,8 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     {
         // B2'(t) = 2 * (1 - t) * (p1 - p0) + 2 * t * (p2 - p1)
         //            var dt = 1f - t;
-        return alist.Set( p1 ).Sub( p0 ).Scl( 2 ).Scl( 1 - t )
-                    .Add( tmp!.Set( p2 ).Sub( p1 ).Scl( t ).Scl( 2 ) );
+        return alist.Set( p1 ).Sub( p0 ).Scale( 2 ).Scale( 1 - t )
+                    .Add( tmp!.Set( p2 ).Sub( p1 ).Scale( t ).Scale( 2 ) );
     }
 
     /// <summary>
@@ -272,10 +272,10 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
         var dt2 = dt * dt;
         var t2  = t * t;
 
-        return alist.Set( p0 ).Scl( dt2 * dt )
-                    .Add( tmp!.Set( p1 ).Scl( 3 * dt2 * t ) )
-                    .Add( tmp.Set( p2 ).Scl( 3 * dt * t2 ) )
-                    .Add( tmp.Set( p3 ).Scl( t2 * t ) );
+        return alist.Set( p0 ).Scale( dt2 * dt )
+                    .Add( tmp!.Set( p1 ).Scale( 3 * dt2 * t ) )
+                    .Add( tmp.Set( p2 ).Scale( 3 * dt * t2 ) )
+                    .Add( tmp.Set( p3 ).Scale( t2 * t ) );
     }
 
     /// <summary>
@@ -296,9 +296,9 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
         var dt2 = dt * dt;
         var t2  = t * t;
 
-        return alist.Set( p1 ).Sub( p0 ).Scl( dt2 * 3 )
-                    .Add( tmp!.Set( p2 ).Sub( p1 ).Scl( dt * t * 6 ) )
-                    .Add( tmp.Set( p3 ).Sub( p2 ).Scl( t2 * 3 ) );
+        return alist.Set( p1 ).Sub( p0 ).Scale( dt2 * 3 )
+                    .Add( tmp!.Set( p2 ).Sub( p1 ).Scale( dt * t * 6 ) )
+                    .Add( tmp.Set( p3 ).Sub( p2 ).Scale( t2 * 3 ) );
     }
 
     /// <summary>

@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class MathUtils
 {
     public const float NANO_TO_SEC          = 1 / 1000000000f;
@@ -56,7 +57,7 @@ public class MathUtils
     private const double BIG_ENOUGH_CEIL  = 16384.999999999996;
     private const double BIG_ENOUGH_ROUND = BIG_ENOUGH_INT + 0.5f;
 
-    private readonly static Random Rand = new();
+    private readonly static Random _rand = new();
 
     /// <summary>
     ///     Returns the sine in radians from a lookup table.
@@ -131,7 +132,7 @@ public class MathUtils
     /// </summary>
     public static int Random( int range )
     {
-        return Rand.Next( range + 1 );
+        return _rand.Next( range + 1 );
     }
 
     /// <summary>
@@ -139,7 +140,7 @@ public class MathUtils
     /// </summary>
     public static int Random( int start, int end )
     {
-        return start + Rand.Next( ( end - start ) + 1 );
+        return start + _rand.Next( ( end - start ) + 1 );
     }
 
     /// <summary>
@@ -147,7 +148,7 @@ public class MathUtils
     /// </summary>
     public static long Random( long range )
     {
-        return ( long ) ( Rand.NextDouble() * range );
+        return ( long ) ( _rand.NextDouble() * range );
     }
 
     /// <summary>
@@ -155,7 +156,7 @@ public class MathUtils
     /// </summary>
     public static long Random( long start, long end )
     {
-        return start + ( long ) ( Rand.NextDouble() * ( end - start ) );
+        return start + ( long ) ( _rand.NextDouble() * ( end - start ) );
     }
 
     /// <summary>
@@ -163,7 +164,7 @@ public class MathUtils
     /// </summary>
     public static long RandomLong()
     {
-        return ( long ) Rand.NextDouble();
+        return ( long ) _rand.NextDouble();
     }
 
     /// <summary>
@@ -171,7 +172,7 @@ public class MathUtils
     /// </summary>
     public static bool RandomBool()
     {
-        return Convert.ToBoolean( Rand.Next( 1 ) );
+        return Convert.ToBoolean( _rand.Next( 1 ) );
     }
 
     /// <summary>
@@ -187,7 +188,7 @@ public class MathUtils
     /// </summary>
     public static float Random()
     {
-        return ( float ) Rand.NextDouble();
+        return ( float ) _rand.NextDouble();
     }
 
     /// <summary>
@@ -195,7 +196,7 @@ public class MathUtils
     /// </summary>
     public static float Random( float range )
     {
-        return ( float ) Rand.NextDouble() * range;
+        return ( float ) _rand.NextDouble() * range;
     }
 
     /// <summary>
@@ -203,7 +204,7 @@ public class MathUtils
     /// </summary>
     public static float Random( float start, float end )
     {
-        return start + ( ( float ) Rand.NextDouble() * ( end - start ) );
+        return start + ( ( float ) _rand.NextDouble() * ( end - start ) );
     }
 
     /// <summary>
@@ -211,7 +212,7 @@ public class MathUtils
     /// </summary>
     public static int RandomSign()
     {
-        return 1 | ( Rand.Next() >> 31 );
+        return 1 | ( _rand.Next() >> 31 );
     }
 
     /// <summary>
@@ -220,23 +221,23 @@ public class MathUtils
     /// </summary>
     public static float RandomTriangular()
     {
-        return ( float ) Rand.NextDouble() - ( float ) Rand.NextDouble();
+        return ( float ) _rand.NextDouble() - ( float ) _rand.NextDouble();
     }
 
     /// <summary>
-    ///     Returns a triangularly distributed random number between {@code -max} (exclusive)
-    ///     and {@code max} (exclusive), where values around zero are more likely.
+    ///     Returns a triangularly distributed random number between <tt>-max</tt> (exclusive)
+    ///     and <tt>max</tt> (exclusive), where values around zero are more likely.
     /// </summary>
     /// <param name="max"> the upper limit  </param>
     public static float RandomTriangular( float max )
     {
-        return ( float ) ( Rand.NextDouble() - Rand.NextDouble() ) * max;
+        return ( float ) ( _rand.NextDouble() - _rand.NextDouble() ) * max;
     }
 
     /// <summary>
-    ///     Returns a triangularly distributed random number between {@code min} (inclusive) and {@code max} (exclusive), where
-    ///     the
-    ///     {@code mode} argument defaults to the midpoint between the bounds, giving a symmetric distribution.
+    ///     Returns a triangularly distributed random number between <tt>min</tt> (inclusive)
+    ///     and <tt>max</tt> (exclusive), where the <tt>mode</tt> argument defaults to the
+    ///     midpoint between the bounds, giving a symmetric distribution.
     /// </summary>
     /// <param name="min"> the lower limit </param>
     /// <param name="max"> the upper limit  </param>
@@ -246,16 +247,15 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns a triangularly distributed random number between <code>min</code>
-    ///     (inclusive) and <code>max</code> (exclusive), where values
-    ///     around <code>mode</code> are more likely.
+    ///     Returns a triangularly distributed random number between <tt>min</tt> (inclusive)
+    ///     and <tt>max</tt> (exclusive), where values around <tt>mode</tt> are more likely.
     /// </summary>
     /// <param name="min"> the lower limit </param>
     /// <param name="max"> the upper limit </param>
     /// <param name="mode"> the point around which the values are more likely  </param>
     public static float RandomTriangular( float min, float max, float mode )
     {
-        var u = ( float ) Rand.NextDouble();
+        var u = ( float ) _rand.NextDouble();
         var d = max - min;
 
         if ( u <= ( ( mode - min ) / d ) )
@@ -267,7 +267,8 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns the next power of two. Returns the specified value if the value is already a power of two.
+    ///     Returns the next power of two. Returns the specified value if the
+    ///     value is already a power of two.
     /// </summary>
     public static int NextPowerOfTwo( int value )
     {
@@ -474,7 +475,7 @@ public class MathUtils
     ///     Returns true if the value is zero.
     /// </summary>
     /// <param name="value">the value to test.</param>
-    /// <param name="tolerance"> represent an upper bound below which the value is considered zero.  </param>
+    /// <param name="tolerance"> represent an upper bound below which the value is considered zero.</param>
     public static bool IsZero( float value, float tolerance = FLOAT_ROUNDING_ERROR )
     {
         return Math.Abs( value ) <= tolerance;
@@ -490,7 +491,9 @@ public class MathUtils
     /// </summary>
     /// <param name="a"> the first value. </param>
     /// <param name="b"> the second value. </param>
-    /// <param name="tolerance">represent an upper bound below which the two values are considered equal.</param>
+    /// <param name="tolerance">
+    /// represent an upper bound below which the two values are considered equal.
+    /// </param>
     public static bool IsEqual( float a, float b, float tolerance = FLOAT_ROUNDING_ERROR )
     {
         return Math.Abs( a - b ) <= tolerance;
@@ -515,8 +518,7 @@ public class MathUtils
     /// <summary>
     ///     Helper method for convenience. Simply 'converts' a ubyte to an int.
     /// </summary>
-    /// <param name="b"></param>
-    /// <returns></returns>
+    /// <param name="b"> The 8-bit unsigned byte to convert. </param>
     public static int UnsignedByteToInt( byte b )
     {
         return b & 0xFF;

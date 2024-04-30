@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class FloatCounter
 {
     public FloatCounter( int windowSize )

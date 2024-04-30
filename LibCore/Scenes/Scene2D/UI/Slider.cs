@@ -91,7 +91,7 @@ public class Slider : ProgressBar
     ///     Sets the inverse interpolation to use for display. This should perform the
     ///     inverse of setting <see cref="ProgressBar.VisualInterpolation" />".
     /// </summary>
-    public Interpolator VisualInterpolationInverse { get; set; } = Interpolation.linear;
+    public Interpolator VisualInterpolationInverse { get; set; } = Interpolation.Linear;
 
     public SliderStyle GetStyle()
     {

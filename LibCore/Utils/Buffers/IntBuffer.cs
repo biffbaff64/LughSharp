@@ -31,6 +31,8 @@ public abstract class IntBuffer : Buffer
     protected readonly int[]? Hb;
     protected readonly int    Offset;
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Creates a new buffer with the given mark, position, limit, capacity,
     /// backing array, and array offset
@@ -118,6 +120,11 @@ public abstract class IntBuffer : Buffer
         return Wrap( array, 0, array.Length );
     }
 
+    public new int[] BackingArray()
+    {
+        return null!;
+    }
+    
     /// <summary>
     /// Creates a new int buffer whose content is a shared subsequence of
     /// this buffer's content.

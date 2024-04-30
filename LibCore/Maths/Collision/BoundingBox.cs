@@ -117,7 +117,7 @@ public class BoundingBox
                  minimum.Y > maximum.Y ? minimum.Y : maximum.Y,
                  minimum.Z > maximum.Z ? minimum.Z : maximum.Z );
 
-        _cnt.Set( Min ).Add( Max ).Scl( 0.5f );
+        _cnt.Set( Min ).Add( Max ).Scale( 0.5f );
         _dim.Set( Max ).Sub( Min );
 
         return this;

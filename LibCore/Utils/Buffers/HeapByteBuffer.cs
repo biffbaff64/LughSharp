@@ -43,48 +43,175 @@ public class HeapByteBuffer : ByteBuffer
     {
     }
 
-    /// <inheritdoc cref="ByteBuffer.IsDirect()" />
-    public override bool IsDirect()
-    {
-        return false;
-    }
+    // ------------------------------------------------------------------------
 
+    /// <inheritdoc/>
     public override ByteBuffer Slice()
     {
-        return new HeapByteBuffer( Hb, -1, 0, Remaining(), Remaining(), Position + Offset );
+        return new HeapByteBuffer( Hb,
+                                   -1,
+                                   0,
+                                   Remaining(),
+                                   Remaining(),
+                                   Position + Offset );
     }
 
+    /// <inheritdoc/>
     public override ByteBuffer Duplicate()
     {
-        return new HeapByteBuffer( Hb, MarkValue(), Position, Limit, Capacity, Offset );
+        return new HeapByteBuffer( Hb,
+                                   MarkValue(),
+                                   Position,
+                                   Limit,
+                                   Capacity,
+                                   Offset );
     }
 
+    /// <inheritdoc/>
     public override ByteBuffer AsReadOnlyBuffer()
     {
         return new HeapByteBuffer( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
-    //        return new HeapByteBufferR( Hb, this.MarkValue(), this.Position, this.Limit, this.Capacity, Offset );
-    // ------------------------------------------------------------------------
+    protected int Ix( int i )
+    {
+        return i + Offset;
+    }
 
+    /// <inheritdoc/>
     public override byte Get()
     {
-        throw new NotImplementedException();
+        return Hb?[ Ix( NextGetIndex() ) ] ?? throw new NullReferenceException();
     }
 
+    /// <inheritdoc/>
     public override byte Get( int index )
     {
-        throw new NotImplementedException();
+        return Hb?[ Ix( CheckIndex( index ) ) ] ?? throw new NullReferenceException();
     }
 
+    /// <inheritdoc/>
+    public override ByteBuffer Get( byte[] dst, int offset, int length )
+    {
+        if ( Hb == null )
+        {
+            throw new GdxRuntimeException( "HB is null!" );
+        }
+
+        CheckBounds( offset, length, dst.Length );
+
+        if ( length > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Underflow!" );
+        }
+
+        System.Array.Copy( Hb, Ix( Position ), dst, offset, length );
+        SetPosition( Position + length );
+
+        return this;
+    }
+
+    /// <inheritdoc/>
+    public override bool IsDirect() => false;
+
+    /// <inheritdoc/>
+    public override bool IsReadOnly => false;
+
+    /// <inheritdoc/>
     public override ByteBuffer Put( byte b )
     {
-        throw new NotImplementedException();
+        if ( Hb == null )
+        {
+            throw new GdxRuntimeException( "HB is null!" );
+        }
+
+        Hb[ Ix( NextPutIndex() ) ] = b;
+
+        return this;
     }
 
+    /// <inheritdoc/>
     public override ByteBuffer Put( int index, byte b )
     {
-        throw new NotImplementedException();
+        if ( Hb == null )
+        {
+            throw new GdxRuntimeException( "HB is null!" );
+        }
+
+        Hb[ Ix( CheckIndex( index ) ) ] = b;
+
+        return this;
+    }
+
+    /// <inheritdoc/>
+    public override ByteBuffer Put( byte[] src, int offset, int length )
+    {
+        if ( Hb == null )
+        {
+            throw new GdxRuntimeException( "HB is null!" );
+        }
+
+        CheckBounds( offset, length, src.Length );
+
+        if ( length > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Overflow!" );
+        }
+
+        System.Array.Copy( src, offset, Hb, Ix( Position ), length );
+        SetPosition( Position + length );
+
+        return this;
+    }
+
+    /// <inheritdoc/>
+    public override ByteBuffer Put( ByteBuffer src )
+    {
+        if ( Hb == null )
+        {
+            throw new GdxRuntimeException( "HB is null!" );
+        }
+
+        if ( src is HeapByteBuffer sb )
+        {
+            if ( Equals( src, this ) )
+            {
+                throw new ArgumentException();
+            }
+
+            var n = sb.Remaining();
+
+            if ( n > Remaining() )
+            {
+                throw new GdxRuntimeException( "Buffer Overflow!" );
+            }
+            
+            System.Array.Copy( sb.Hb!,
+                               sb.Ix( sb.Position ),
+                               Hb,
+                               Ix( Position ), n );
+            
+            sb.SetPosition( sb.Position + n );
+            SetPosition( Position + n );
+        }
+        else if ( src.IsDirect() )
+        {
+            var n = src.Remaining();
+
+            if ( n > Remaining() )
+            {
+                throw new GdxRuntimeException( "Buffer Overflow!" );
+            }
+            
+            src.Get( Hb, Ix( Position ), n );
+            SetPosition( Position + n );
+        }
+        else
+        {
+            base.Put( src );
+        }
+
+        return this;
     }
 
     /// <inheritdoc cref="ByteBuffer.Compact()" />
@@ -93,151 +220,181 @@ public class HeapByteBuffer : ByteBuffer
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override char GetChar()
     {
         throw new NotImplementedException();
     }
 
-    public override ByteBuffer PutChar( char value )
-    {
-        throw new NotImplementedException();
-    }
-
+    /// <inheritdoc/>
     public override char GetChar( int index )
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
+    public override ByteBuffer PutChar( char value )
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
     public override ByteBuffer PutChar( int index, char value )
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override CharBuffer AsCharBuffer()
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override short GetShort()
     {
         throw new NotImplementedException();
     }
 
-    public override ByteBuffer PutShort( short value )
-    {
-        throw new NotImplementedException();
-    }
-
+    /// <inheritdoc/>
     public override short GetShort( int index )
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
+    public override ByteBuffer PutShort( short value )
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
     public override ByteBuffer PutShort( int index, short value )
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override ShortBuffer AsShortBuffer()
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override int GetInt()
     {
         throw new NotImplementedException();
     }
 
-    public override ByteBuffer PutInt( int value )
-    {
-        throw new NotImplementedException();
-    }
-
+    /// <inheritdoc/>
     public override int GetInt( int index )
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
+    public override ByteBuffer PutInt( int value )
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
     public override ByteBuffer PutInt( int index, int value )
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override IntBuffer AsIntBuffer()
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override long GetLong()
     {
         throw new NotImplementedException();
     }
 
-    public override ByteBuffer PutLong( long value )
-    {
-        throw new NotImplementedException();
-    }
-
+    /// <inheritdoc/>
     public override long GetLong( int index )
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
+    public override ByteBuffer PutLong( long value )
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
     public override ByteBuffer PutLong( int index, long value )
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override LongBuffer AsLongBuffer()
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override float GetFloat()
     {
         throw new NotImplementedException();
     }
 
-    public override ByteBuffer PutFloat( float value )
-    {
-        throw new NotImplementedException();
-    }
-
+    /// <inheritdoc/>
     public override float GetFloat( int index )
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
+    public override ByteBuffer PutFloat( float value )
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
     public override ByteBuffer PutFloat( int index, float value )
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override FloatBuffer AsFloatBuffer()
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override double GetDouble()
     {
         throw new NotImplementedException();
     }
 
-    public override ByteBuffer PutDouble( double value )
-    {
-        throw new NotImplementedException();
-    }
-
+    /// <inheritdoc/>
     public override double GetDouble( int index )
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
+    public override ByteBuffer PutDouble( double value )
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
     public override ByteBuffer PutDouble( int index, double value )
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override DoubleBuffer AsDoubleBuffer()
     {
         throw new NotImplementedException();

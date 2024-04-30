@@ -560,7 +560,7 @@ public class ShaderProgram
     public void SetUniformMatrix( int location, Matrix4 matrix, bool transpose )
     {
         CheckManaged();
-        Gdx.GL.glUniformMatrix4fv( location, transpose, matrix.val );
+        Gdx.GL.glUniformMatrix4fv( location, transpose, matrix.Val );
     }
 
     /// <summary>
@@ -594,7 +594,7 @@ public class ShaderProgram
     public void SetUniformMatrix( int location, Matrix3 matrix, bool transpose )
     {
         CheckManaged();
-        Gdx.GL.glUniformMatrix3fv( location, transpose, matrix.val );
+        Gdx.GL.glUniformMatrix3fv( location, transpose, matrix.Val );
     }
 
     /// <summary>

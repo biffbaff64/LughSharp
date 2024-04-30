@@ -63,7 +63,7 @@ public class Ray
     /// <returns> The out param  </returns>
     public virtual Vector3 GetEndPoint( in Vector3 result, in float distance )
     {
-        return result.Set( direction ).Scl( distance ).Add( origin );
+        return result.Set( direction ).Scale( distance ).Add( origin );
     }
 
     /// <summary>

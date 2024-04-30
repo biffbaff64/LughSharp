@@ -171,7 +171,7 @@ public abstract class ByteBuffer : Buffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If the preconditions on the <tt>offset</tt> and <tt>length</tt> parameters do not hold.
     /// </exception>
-    public ByteBuffer Get( byte[] dst, int offset, int length )
+    public virtual ByteBuffer Get( byte[] dst, int offset, int length )
     {
         CheckBounds( offset, length, dst.Length );
 
@@ -222,7 +222,7 @@ public abstract class ByteBuffer : Buffer
     /// </exception>
     /// <exception cref="ArgumentException">If the source buffer is this buffer.</exception>
     /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
-    public ByteBuffer Put( ByteBuffer src )
+    public virtual ByteBuffer Put( ByteBuffer src )
     {
         if ( src.Equals( this ) )
         {
@@ -274,7 +274,7 @@ public abstract class ByteBuffer : Buffer
     /// <exception cref="GdxRuntimeException">
     ///     If this buffer is read-only. ( With appropriate message ).
     /// </exception>
-    public ByteBuffer Put( byte[] src, int offset, int length )
+    public virtual ByteBuffer Put( byte[] src, int offset, int length )
     {
         CheckBounds( offset, length, src.Length );
 

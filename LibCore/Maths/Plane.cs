@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class Plane
 {
     /// <summary>
@@ -216,6 +217,7 @@ public class Plane
         DistanceToOrigin = plane.DistanceToOrigin;
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $"{Normal}, {DistanceToOrigin}";

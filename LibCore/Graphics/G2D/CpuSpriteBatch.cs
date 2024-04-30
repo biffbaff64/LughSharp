@@ -978,12 +978,12 @@ public class CpuSpriteBatch : SpriteBatch
         }
 
         // matrices are assumed to be 2D transformations
-        return a.val[ Matrix4.M00 ].Equals( b.val[ Matrix4.M00 ] )
-            && a.val[ Matrix4.M10 ].Equals( b.val[ Matrix4.M10 ] )
-            && a.val[ Matrix4.M01 ].Equals( b.val[ Matrix4.M01 ] )
-            && a.val[ Matrix4.M11 ].Equals( b.val[ Matrix4.M11 ] )
-            && a.val[ Matrix4.M03 ].Equals( b.val[ Matrix4.M03 ] )
-            && a.val[ Matrix4.M13 ].Equals( b.val[ Matrix4.M13 ] );
+        return a.Val[ Matrix4.M00 ].Equals( b.Val[ Matrix4.M00 ] )
+            && a.Val[ Matrix4.M10 ].Equals( b.Val[ Matrix4.M10 ] )
+            && a.Val[ Matrix4.M01 ].Equals( b.Val[ Matrix4.M01 ] )
+            && a.Val[ Matrix4.M11 ].Equals( b.Val[ Matrix4.M11 ] )
+            && a.Val[ Matrix4.M03 ].Equals( b.Val[ Matrix4.M03 ] )
+            && a.Val[ Matrix4.M13 ].Equals( b.Val[ Matrix4.M13 ] );
     }
 
     private static bool CheckEqual( Matrix4 matrix, Affine2 affine )

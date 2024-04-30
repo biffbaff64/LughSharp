@@ -25,12 +25,16 @@
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class GridPoint2
 {
+    public int X { get; set; }
+    public int Y { get; set; }
+
     /// <summary>
-    ///     Constructs a new 2D grid point.
+    ///     Constructs a new 2D grid point, with x and y set to 0.
     /// </summary>
-    public GridPoint2()
+    public GridPoint2() : this( 0, 0 )
     {
     }
 
@@ -54,9 +58,6 @@ public class GridPoint2
         X = point.X;
         Y = point.Y;
     }
-
-    public int X { get; set; }
-    public int Y { get; set; }
 
     /// <summary>
     ///     Sets the coordinates of this 2D grid point to that of another.
@@ -89,7 +90,7 @@ public class GridPoint2
     /// </summary>
     /// <param name="other"> The other point</param>
     /// <returns> the squared distance between this point and the other point.</returns>
-    public float Dst2( GridPoint2 other )
+    public float Distance2( GridPoint2 other )
     {
         var xd = other.X - X;
         var yd = other.Y - Y;
@@ -102,7 +103,7 @@ public class GridPoint2
     /// <param name="x"> The x-coordinate of the other point </param>
     /// <param name="y"> The y-coordinate of the other point </param>
     /// <returns> the squared distance between this point and the other point.</returns>
-    public float Dst2( int x, int y )
+    public float Distance2( int x, int y )
     {
         var xd = x - X;
         var yd = y - Y;
@@ -114,7 +115,7 @@ public class GridPoint2
     /// </summary>
     /// <param name="other"> The other point </param>
     /// <returns> the distance between this point and the other vector. </returns>
-    public float Dst( GridPoint2 other )
+    public float Distance( GridPoint2 other )
     {
         var xd = other.X - X;
         var yd = other.Y - Y;
@@ -127,7 +128,7 @@ public class GridPoint2
     /// <param name="x"> The x-coordinate of the other point </param>
     /// <param name="y"> The y-coordinate of the other point </param>
     /// <returns> the distance between this point and the other point. </returns>
-    public float Dst( int x, int y )
+    public float Distance( int x, int y )
     {
         var xd = x - X;
         var yd = y - Y;
@@ -197,6 +198,7 @@ public class GridPoint2
         return new GridPoint2( this );
     }
 
+    /// <inheritdoc/>
     public override bool Equals( object? o )
     {
         if ( this == o )
@@ -214,7 +216,7 @@ public class GridPoint2
         return ( X == g.X ) && ( Y == g.Y );
     }
 
-    //TODO: 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         const int PRIME = 53;
@@ -225,6 +227,7 @@ public class GridPoint2
         return result;
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $"({X},{Y})";

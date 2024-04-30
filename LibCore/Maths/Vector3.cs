@@ -124,13 +124,13 @@ public class Vector3 : IVector< Vector3 >
     }
 
     /// <inheritdoc />
-    public Vector3 Scl( float scalar )
+    public Vector3 Scale( float scalar )
     {
         return Set( X * scalar, Y * scalar, Z * scalar );
     }
 
     /// <inheritdoc />
-    public Vector3 Scl( Vector3 other )
+    public Vector3 Scale( Vector3 other )
     {
         return Set( X * other.X, Y * other.Y, Z * other.Z );
     }
@@ -168,7 +168,7 @@ public class Vector3 : IVector< Vector3 >
     }
 
     /// <inheritdoc />
-    public float Dst( Vector3 vector )
+    public float Distance( Vector3 vector )
     {
         var a = vector.X - X;
         var b = vector.Y - Y;
@@ -178,7 +178,7 @@ public class Vector3 : IVector< Vector3 >
     }
 
     /// <inheritdoc />
-    public float Dst2( Vector3 point )
+    public float Distance2( Vector3 point )
     {
         var a = point.X - X;
         var b = point.Y - Y;
@@ -197,7 +197,7 @@ public class Vector3 : IVector< Vector3 >
             return this;
         }
 
-        return Scl( 1f / ( float ) Math.Sqrt( len2 ) );
+        return Scale( 1f / ( float ) Math.Sqrt( len2 ) );
     }
 
     /// <inheritdoc />
@@ -314,7 +314,7 @@ public class Vector3 : IVector< Vector3 >
 
         if ( len2 > limit2 )
         {
-            Scl( ( float ) Math.Sqrt( limit2 / len2 ) );
+            Scale( ( float ) Math.Sqrt( limit2 / len2 ) );
         }
 
         return this;
@@ -331,7 +331,7 @@ public class Vector3 : IVector< Vector3 >
     {
         var oldLen2 = Len2();
 
-        return ( oldLen2 == 0 ) || MathUtils.IsEqual( oldLen2, len2 ) ? this : Scl( ( float ) Math.Sqrt( len2 / oldLen2 ) );
+        return ( oldLen2 == 0 ) || MathUtils.IsEqual( oldLen2, len2 ) ? this : Scale( ( float ) Math.Sqrt( len2 / oldLen2 ) );
     }
 
     /// <inheritdoc />
@@ -348,12 +348,12 @@ public class Vector3 : IVector< Vector3 >
 
         if ( len2 > max2 )
         {
-            return Scl( ( float ) Math.Sqrt( max2 / len2 ) );
+            return Scale( ( float ) Math.Sqrt( max2 / len2 ) );
         }
 
         var min2 = min * min;
 
-        return len2 < min2 ? Scl( ( float ) Math.Sqrt( min2 / len2 ) ) : this;
+        return len2 < min2 ? Scale( ( float ) Math.Sqrt( min2 / len2 ) ) : this;
     }
 
     /// <inheritdoc />
@@ -540,7 +540,7 @@ public class Vector3 : IVector< Vector3 >
 
     public Vector3 Mul( Matrix4 matrix )
     {
-        var lMat = matrix.val;
+        var lMat = matrix.Val;
 
         return Set(
                    ( X * lMat[ Matrix4.M00 ] ) + ( Y * lMat[ Matrix4.M01 ] ) + ( Z * lMat[ Matrix4.M02 ] ) + lMat[ Matrix4.M03 ],
@@ -559,7 +559,7 @@ public class Vector3 : IVector< Vector3 >
 
     public Vector3 TraMul( Matrix4 matrix )
     {
-        var lMat = matrix.val;
+        var lMat = matrix.Val;
 
         return Set(
                    ( X * lMat[ Matrix4.M00 ] ) + ( Y * lMat[ Matrix4.M10 ] ) + ( Z * lMat[ Matrix4.M20 ] ) + lMat[ Matrix4.M30 ],
@@ -578,7 +578,7 @@ public class Vector3 : IVector< Vector3 >
 
     public Vector3 Mul( Matrix3 matrix )
     {
-        var lMat = matrix.val;
+        var lMat = matrix.Val;
 
         return Set(
                    ( X * lMat[ Matrix3.M00 ] ) + ( Y * lMat[ Matrix3.M01 ] ) + ( Z * lMat[ Matrix3.M02 ] ),
@@ -592,7 +592,7 @@ public class Vector3 : IVector< Vector3 >
 
     public Vector3 TraMul( Matrix3 matrix )
     {
-        var lMat = matrix.val;
+        var lMat = matrix.Val;
 
         return Set(
                    ( X * lMat[ Matrix3.M00 ] ) + ( Y * lMat[ Matrix3.M10 ] ) + ( Z * lMat[ Matrix3.M20 ] ),
@@ -611,7 +611,7 @@ public class Vector3 : IVector< Vector3 >
 
     public Vector3 Prj( Matrix4 matrix )
     {
-        var lMat = matrix.val;
+        var lMat = matrix.Val;
         var lW   = 1f / ( ( X * lMat[ Matrix4.M30 ] ) + ( Y * lMat[ Matrix4.M31 ] ) + ( Z * lMat[ Matrix4.M32 ] ) + lMat[ Matrix4.M33 ] );
 
         return Set(
@@ -628,7 +628,7 @@ public class Vector3 : IVector< Vector3 >
 
     public Vector3 Rot( Matrix4 matrix )
     {
-        var lMat = matrix.val;
+        var lMat = matrix.Val;
 
         return Set(
                    ( X * lMat[ Matrix4.M00 ] ) + ( Y * lMat[ Matrix4.M01 ] ) + ( Z * lMat[ Matrix4.M02 ] ),
@@ -642,7 +642,7 @@ public class Vector3 : IVector< Vector3 >
 
     public Vector3 Unrotate( Matrix4 matrix )
     {
-        var lMat = matrix.val;
+        var lMat = matrix.Val;
 
         return Set(
                    ( X * lMat[ Matrix4.M00 ] ) + ( Y * lMat[ Matrix4.M10 ] ) + ( Z * lMat[ Matrix4.M20 ] ),
@@ -656,7 +656,7 @@ public class Vector3 : IVector< Vector3 >
 
     public Vector3 Untransform( Matrix4 matrix )
     {
-        var lMat = matrix.val;
+        var lMat = matrix.Val;
 
         X -= lMat[ Matrix4.M03 ];
         Y -= lMat[ Matrix4.M03 ];
@@ -719,7 +719,7 @@ public class Vector3 : IVector< Vector3 >
         var l2 = ( tx * tx ) + ( ty * ty ) + ( tz * tz );
         var dl = st * ( l2 < 0.0001f ? 1f : 1f / ( float ) Math.Sqrt( l2 ) );
 
-        return Scl( ( float ) Math.Cos( theta ) ).Add( tx * dl, ty * dl, tz * dl ).Nor();
+        return Scale( ( float ) Math.Cos( theta ) ).Add( tx * dl, ty * dl, tz * dl ).Nor();
     }
 
     /// <summary>

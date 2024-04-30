@@ -92,7 +92,7 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
 
                 if ( i > 0 )
                 {
-                    tempLength += _tmp2.Dst( _tmp3 );
+                    tempLength += _tmp2.Distance( _tmp3 );
                 }
             }
         }
@@ -160,12 +160,12 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
         }
 
         var result = start % SpanCount;
-        var dst    = inp.Dst2( ControlPoints[ result ] );
+        var dst    = inp.Distance2( ControlPoints[ result ] );
 
         for ( var i = 1; i < count; i++ )
         {
             var idx = ( start + i ) % SpanCount;
-            var d   = inp.Dst2( ControlPoints[ idx ] );
+            var d   = inp.Distance2( ControlPoints[ idx ] );
 
             if ( d < dst )
             {
@@ -188,8 +188,8 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
         var nearest  = ControlPoints[ n ];
         var previous = ControlPoints[ n > 0 ? n - 1 : SpanCount - 1 ];
         var next     = ControlPoints[ ( n + 1 ) % SpanCount ];
-        var dstPrev2 = inp.Dst2( previous );
-        var dstNext2 = inp.Dst2( next );
+        var dstPrev2 = inp.Distance2( previous );
+        var dstNext2 = inp.Distance2( next );
 
         T p1, p2, p3;
 
@@ -207,9 +207,9 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
             n  = n > 0 ? n - 1 : SpanCount - 1;
         }
 
-        var l1Sqr = p1.Dst2( p2 );
-        var l2Sqr = p3.Dst2( p2 );
-        var l3Sqr = p3.Dst2( p1 );
+        var l1Sqr = p1.Distance2( p2 );
+        var l2Sqr = p3.Distance2( p2 );
+        var l3Sqr = p3.Distance2( p1 );
         var l1    = ( float ) Math.Sqrt( l1Sqr );
         var s     = ( ( l2Sqr + l1Sqr ) - l3Sqr ) / ( 2f * l1 );
         var u     = MathUtils.Clamp( ( l1 - s ) / l1, 0f, 1f );
@@ -260,21 +260,21 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
         var u2 = u * u;
 
         var u3 = u2 * u;
-        outp.Set( points[ i ] ).Scl( ( ( 1.5f * u3 ) - ( 2.5f * u2 ) ) + 1.0f );
+        outp.Set( points[ i ] ).Scale( ( ( 1.5f * u3 ) - ( 2.5f * u2 ) ) + 1.0f );
 
         if ( ( tmp != null ) && ( continuous || ( i > 0 ) ) )
         {
-            outp.Add( tmp.Set( points[ ( ( n + i ) - 1 ) % n ] ).Scl( ( ( -0.5f * u3 ) + u2 ) - ( 0.5f * u ) ) );
+            outp.Add( tmp.Set( points[ ( ( n + i ) - 1 ) % n ] ).Scale( ( ( -0.5f * u3 ) + u2 ) - ( 0.5f * u ) ) );
         }
 
         if ( ( tmp != null ) && ( continuous || ( i < ( n - 1 ) ) ) )
         {
-            outp.Add( tmp.Set( points[ ( i + 1 ) % n ] ).Scl( ( -1.5f * u3 ) + ( 2f * u2 ) + ( 0.5f * u ) ) );
+            outp.Add( tmp.Set( points[ ( i + 1 ) % n ] ).Scale( ( -1.5f * u3 ) + ( 2f * u2 ) + ( 0.5f * u ) ) );
         }
 
         if ( ( tmp != null ) && ( continuous || ( i < ( n - 2 ) ) ) )
         {
-            outp.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scl( ( 0.5f * u3 ) - ( 0.5f * u2 ) ) );
+            outp.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scale( ( 0.5f * u3 ) - ( 0.5f * u2 ) ) );
         }
 
         return outp;
@@ -331,24 +331,24 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
         var u2 = u * u;
 
         // float u3 = u2 * u;
-        outp.Set( points[ i ] ).Scl( ( -u * 5 ) + ( u2 * 4.5f ) );
+        outp.Set( points[ i ] ).Scale( ( -u * 5 ) + ( u2 * 4.5f ) );
 
         if ( ( tmp != null ) && ( continuous || ( i > 0 ) ) )
         {
             outp.Add( tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
-                         .Scl( ( -0.5f + ( u * 2 ) ) - ( u2 * 1.5f ) ) );
+                         .Scale( ( -0.5f + ( u * 2 ) ) - ( u2 * 1.5f ) ) );
         }
 
         if ( ( tmp != null ) && ( continuous || ( i < ( n - 1 ) ) ) )
         {
             outp.Add( tmp.Set( points[ ( i + 1 ) % n ] )
-                         .Scl( ( 0.5f + ( u * 4 ) ) - ( u2 * 4.5f ) ) );
+                         .Scale( ( 0.5f + ( u * 4 ) ) - ( u2 * 4.5f ) ) );
         }
 
         if ( ( tmp != null ) && ( continuous || ( i < ( n - 2 ) ) ) )
         {
             outp.Add( tmp.Set( points[ ( i + 2 ) % n ] )
-                         .Scl( -u + ( u2 * 1.5f ) ) );
+                         .Scale( -u + ( u2 * 1.5f ) ) );
         }
 
         return outp;

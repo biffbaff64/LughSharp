@@ -54,7 +54,7 @@ public class Sphere
     /// <returns> whether this and the other sphere overlap  </returns>
     public virtual bool Overlaps( Sphere sphere )
     {
-        return Center.Dst2( sphere.Center ) < ( ( Radius + sphere.Radius ) * ( Radius + sphere.Radius ) );
+        return Center.Distance2( sphere.Center ) < ( ( Radius + sphere.Radius ) * ( Radius + sphere.Radius ) );
     }
 
     /// <summary>

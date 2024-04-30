@@ -30,12 +30,17 @@ namespace LughSharp.LibCore.Maths;
 ///     a reference to itself in all modification methods. See Vector2 and
 ///     Vector3 for specific implementations.
 /// </summary>
+[PublicAPI]
 public interface IVector< T > where T : IVector< T >
 {
-    /// <returns> a copy of this vector </returns>
+    /// <summary>
+    /// Returns a copy of this vector
+    /// </summary>
     T Cpy();
 
-    /// <returns> The euclidean length </returns>
+    /// <summary>
+    /// Returns the euclidean length.
+    /// </summary>
     float Len();
 
     /// <summary>
@@ -114,9 +119,8 @@ public interface IVector< T > where T : IVector< T >
     T Add( T v );
 
     /// <summary>
+    ///     Returns the Dot product between this vector and the supplied vector.
     /// </summary>
-    /// <param name="v"> The other vector </param>
-    /// <returns> The dot product between this and the other vector  </returns>
     float Dot( T v );
 
     /// <summary>
@@ -124,29 +128,28 @@ public interface IVector< T > where T : IVector< T >
     /// </summary>
     /// <param name="scalar"> The scalar </param>
     /// <returns> This vector for chaining  </returns>
-    T Scl( float scalar );
+    T Scale( float scalar );
 
     /// <summary>
     ///     Scales this vector by another vector
     /// </summary>
     /// <returns> This vector for chaining  </returns>
-    T Scl( T v );
+    T Scale( T v );
 
     /// <summary>
+    ///     Returns the Distance between this vector and the supplied vector.
     /// </summary>
-    /// <param name="v"> The other vector </param>
-    /// <returns> the distance between this and the other vector  </returns>
-    float Dst( T v );
+    float Distance( T v );
 
     /// <summary>
-    ///     This method is faster than <see cref="Dst(T)" /> because it
+    ///     This method is faster than <see cref="Distance" /> because it
     ///     avoids calculating a square root. It is useful for comparisons, but not for
     ///     getting accurate distances, as the return value is the square of the actual
     ///     distance.
     /// </summary>
     /// <param name="v"> The other vector </param>
     /// <returns> the squared distance between this and the other vector  </returns>
-    float Dst2( T v );
+    float Distance2( T v );
 
     /// <summary>
     ///     Linearly interpolates between this vector and the target vector by alpha
@@ -221,39 +224,32 @@ public interface IVector< T > where T : IVector< T >
     bool IsCollinearOpposite( T other, float epsilon );
 
     /// <summary>
+    ///     Returns true if this vector is opposite collinear with the other vector.
     /// </summary>
-    /// <returns> true if this vector is opposite collinear with the other vector</returns>
     bool IsCollinearOpposite( T other );
 
     /// <summary>
-    /// </summary>
-    /// <returns>
-    ///     Whether this vector is perpendicular with the other vector.
+    ///     Returns whether this vector is perpendicular with the other vector.
     ///     True if the dot product is 0.
-    /// </returns>
+    /// </summary>
     bool IsPerpendicular( T other );
 
     /// <summary>
+    ///     Whether this vector is perpendicular with the other vector.
+    ///     True if the dot product is 0.
     /// </summary>
-    /// <param name="other"></param>
-    /// <param name="epsilon"> a positive small number close to zero  </param>
-    /// <returns> Whether this vector is perpendicular with the other vector. True if the dot product is 0. </returns>
     bool IsPerpendicular( T other, float epsilon );
 
     /// <summary>
-    /// </summary>
-    /// <returns>
-    ///     Whether this vector has similar direction compared to the other vector.
+    ///     Returns whether this vector has similar direction compared to the other vector.
     ///     True if the normalized dot product is > 0.
-    /// </returns>
+    /// </summary>
     bool HasSameDirection( T other );
 
     /// <summary>
+    ///     Returns whether this vector has opposite direction compared to the
+    ///     other vector. True if the normalized dot product is less than 0.
     /// </summary>
-    /// <returns>
-    ///     Whether this vector has opposite direction compared to the other vector.
-    ///     True if the normalized dot product is less than 0.
-    /// </returns>
     bool HasOppositeDirection( T other );
 
     /// <summary>

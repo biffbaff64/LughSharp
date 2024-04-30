@@ -546,14 +546,14 @@ public class SelectBox< T > : Widget, IDisableable
     protected void OnShow( Actor selectBoxList )
     {
         selectBoxList.Color.A = 0;
-        selectBoxList.AddAction( Scene2D.Actions.Actions.FadeIn( 0.3f, Interpolation.fade ) );
+        selectBoxList.AddAction( Scene2D.Actions.Actions.FadeIn( 0.3f, Interpolation.Fade ) );
     }
 
     protected void OnHide( Actor selectBoxList )
     {
         selectBoxList.Color.A = 1;
 
-        selectBoxList.AddAction( Scene2D.Actions.Actions.Sequence( Scene2D.Actions.Actions.FadeOut( 0.15f, Interpolation.fade ),
+        selectBoxList.AddAction( Scene2D.Actions.Actions.Sequence( Scene2D.Actions.Actions.FadeOut( 0.15f, Interpolation.Fade ),
                                                                    Scene2D.Actions.Actions.RemoveActor() ) );
     }
 

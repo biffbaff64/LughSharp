@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class RandomXS128 : Random
 {
     /// <summary>

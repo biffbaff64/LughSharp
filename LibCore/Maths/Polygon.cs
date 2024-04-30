@@ -28,12 +28,25 @@ namespace LughSharp.LibCore.Maths;
 /// <summary>
 ///     Encapsulates a 2D polygon defined by it's vertices relative to an origin point (default of 0, 0).
 /// </summary>
+[PublicAPI]
 public class Polygon : IShape2D
 {
+    public float X        { get; set; }
+    public float Y        { get; set; }
+    public float OriginX  { get; set; }
+    public float OriginY  { get; set; }
+    public float Rotation { get; set; }
+    public float ScaleX   { get; set; } = 1;
+    public float ScaleY   { get; set; } = 1;
+
+    // ------------------------------------------------------------------------
+    
     private RectangleShape? _bounds;
     private bool            _dirty = true;
     private float[]?        _localVertices;
     private float[]?        _worldVertices;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Constructs a new polygon with no vertices.
@@ -62,14 +75,6 @@ public class Polygon : IShape2D
 
         _localVertices = vertices;
     }
-
-    public float X        { get; set; }
-    public float Y        { get; set; }
-    public float OriginX  { get; set; }
-    public float OriginY  { get; set; }
-    public float Rotation { get; set; }
-    public float ScaleX   { get; set; } = 1;
-    public float ScaleY   { get; set; } = 1;
 
     /// <summary>
     ///     Calculates and returns the vertices of the polygon after scaling, rotation,

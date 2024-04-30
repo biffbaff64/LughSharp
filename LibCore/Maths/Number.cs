@@ -39,6 +39,7 @@ namespace LughSharp.LibCore.Maths;
 ///     See the documentation of a given Number implementation for conversion details.
 /// </summary>
 /// <remarks>This class is taken directly from java.lang.Number</remarks>
+[PublicAPI]
 public abstract class Number
 {
     /// <summary>

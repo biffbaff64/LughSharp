@@ -25,14 +25,33 @@
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class Polyline : IShape2D
 {
+    /// <summary>
+    ///     Returns vertices without scaling or rotation and without
+    ///     being offset by the polyline position.
+    /// </summary>
+    public float[] LocalVertices { get; private set; }
+
+    public float X { get; private set; }
+    public float Y { get; private set; }
+    public float OriginX { get; private set; }
+    public float OriginY { get; private set; }
+    public float Rotation { get; private set; }
+    public float ScaleX { get; private set; } = 1;
+    public float ScaleY { get; private set; } = 1;
+
+    // ------------------------------------------------------------------------
+    
     private bool     _calculateLength       = true;
     private bool     _calculateScaledLength = true;
     private bool     _dirty                 = true;
     private float    _length;
     private float    _scaledLength;
     private float[]? _worldVertices;
+
+    // ------------------------------------------------------------------------
 
     public Polyline()
     {
@@ -48,26 +67,6 @@ public class Polyline : IShape2D
 
         LocalVertices = vertices;
     }
-
-    /// <summary>
-    ///     Returns vertices without scaling or rotation and without
-    ///     being offset by the polyline position.
-    /// </summary>
-    public float[] LocalVertices { get; private set; }
-
-    public float X { get; private set; }
-
-    public float Y { get; private set; }
-
-    public float OriginX { get; private set; }
-
-    public float OriginY { get; private set; }
-
-    public float Rotation { get; private set; }
-
-    public float ScaleX { get; private set; } = 1;
-
-    public float ScaleY { get; private set; } = 1;
 
     public bool Contains( Vector2 point )
     {
@@ -137,9 +136,9 @@ public class Polyline : IShape2D
         return worldVertices;
     }
 
-    /**
-     * Returns the euclidean length of the polyline without scaling
-     */
+    /// <summary>
+    /// Returns the euclidean length of the polyline without scaling
+    /// </summary>
     public float GetLength()
     {
         if ( !_calculateLength )
@@ -161,9 +160,9 @@ public class Polyline : IShape2D
         return _length;
     }
 
-    /**
-     * Returns the euclidean length of the polyline
-     */
+    /// <summary>
+    /// Returns the euclidean length of the polyline
+    /// </summary>
     public float GetScaledLength()
     {
         if ( !_calculateScaledLength )

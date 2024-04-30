@@ -28,10 +28,20 @@ namespace LughSharp.LibCore.Maths;
 /// <summary>
 ///     A simple Quaternion class.
 /// </summary>
+[PublicAPI]
 public class Quaternion
 {
-    private readonly static Quaternion Tmp1 = new( 0, 0, 0, 0 );
-    private readonly static Quaternion Tmp2 = new( 0, 0, 0, 0 );
+    public float X { get; set; }
+    public float Y { get; set; }
+    public float Z { get; set; }
+    public float W { get; set; }
+
+    // ------------------------------------------------------------------------
+    
+    private readonly static Quaternion _tmp1 = new( 0, 0, 0, 0 );
+    private readonly static Quaternion _tmp2 = new( 0, 0, 0, 0 );
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Constructor, sets the four components of the quaternion.
@@ -69,11 +79,6 @@ public class Quaternion
     {
         SetFromAxis( axis, angle );
     }
-
-    public float X { get; set; }
-    public float Y { get; set; }
-    public float Z { get; set; }
-    public float W { get; set; }
 
     /// <summary>
     ///     Sets the components of the quaternion
@@ -139,6 +144,7 @@ public class Quaternion
         return ( float ) Math.Sqrt( ( X * X ) + ( Y * Y ) + ( Z * Z ) + ( W * W ) );
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return "[" + X + "|" + Y + "|" + Z + "|" + W + "]";
@@ -341,13 +347,13 @@ public class Quaternion
     /// <param name="v"> Vector to transform </param>
     public Vector3 Transform( Vector3 v )
     {
-        Tmp2.Set( this );
-        Tmp2.Conjugate();
-        Tmp2.MulLeft( Tmp1.Set( v.X, v.Y, v.Z, 0 ) ).MulLeft( this );
+        _tmp2.Set( this );
+        _tmp2.Conjugate();
+        _tmp2.MulLeft( _tmp1.Set( v.X, v.Y, v.Z, 0 ) ).MulLeft( this );
 
-        v.X = Tmp2.X;
-        v.Y = Tmp2.Y;
-        v.Z = Tmp2.Z;
+        v.X = _tmp2.X;
+        v.Y = _tmp2.Y;
+        v.Z = _tmp2.Z;
 
         return v;
     }
@@ -603,15 +609,15 @@ public class Quaternion
     {
         return SetFromAxes(
                            normalizeAxes,
-                           matrix.val[ Matrix4.M00 ],
-                           matrix.val[ Matrix4.M01 ],
-                           matrix.val[ Matrix4.M02 ],
-                           matrix.val[ Matrix4.M10 ],
-                           matrix.val[ Matrix4.M11 ],
-                           matrix.val[ Matrix4.M12 ],
-                           matrix.val[ Matrix4.M20 ],
-                           matrix.val[ Matrix4.M21 ],
-                           matrix.val[ Matrix4.M22 ]
+                           matrix.Val[ Matrix4.M00 ],
+                           matrix.Val[ Matrix4.M01 ],
+                           matrix.Val[ Matrix4.M02 ],
+                           matrix.Val[ Matrix4.M10 ],
+                           matrix.Val[ Matrix4.M11 ],
+                           matrix.Val[ Matrix4.M12 ],
+                           matrix.Val[ Matrix4.M20 ],
+                           matrix.Val[ Matrix4.M21 ],
+                           matrix.Val[ Matrix4.M22 ]
                           );
     }
 
@@ -630,15 +636,15 @@ public class Quaternion
     {
         return SetFromAxes(
                            normalizeAxes,
-                           matrix.val[ Matrix3.M00 ],
-                           matrix.val[ Matrix3.M01 ],
-                           matrix.val[ Matrix3.M02 ],
-                           matrix.val[ Matrix3.M10 ],
-                           matrix.val[ Matrix3.M11 ],
-                           matrix.val[ Matrix3.M12 ],
-                           matrix.val[ Matrix3.M20 ],
-                           matrix.val[ Matrix3.M21 ],
-                           matrix.val[ Matrix3.M22 ]
+                           matrix.Val[ Matrix3.M00 ],
+                           matrix.Val[ Matrix3.M01 ],
+                           matrix.Val[ Matrix3.M02 ],
+                           matrix.Val[ Matrix3.M10 ],
+                           matrix.Val[ Matrix3.M11 ],
+                           matrix.Val[ Matrix3.M12 ],
+                           matrix.Val[ Matrix3.M20 ],
+                           matrix.Val[ Matrix3.M21 ],
+                           matrix.Val[ Matrix3.M22 ]
                           );
     }
 
@@ -884,7 +890,7 @@ public class Quaternion
 
         for ( var i = 1; i < q.Length; i++ )
         {
-            Mul( Tmp1.Set( q[ i ] ).Exp( w ) );
+            Mul( _tmp1.Set( q[ i ] ).Exp( w ) );
         }
 
         Nor();
@@ -911,7 +917,7 @@ public class Quaternion
 
         for ( var i = 1; i < q.Length; i++ )
         {
-            Mul( Tmp1.Set( q[ i ] ).Exp( w[ i ] ) );
+            Mul( _tmp1.Set( q[ i ] ).Exp( w[ i ] ) );
         }
 
         Nor();

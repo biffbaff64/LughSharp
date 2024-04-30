@@ -73,12 +73,12 @@ public class PerspectiveCamera : Camera
 
         Combined.Set( Projection );
 
-        Matrix4.Mul( Combined.val, View.val );
+        Matrix4.Mul( Combined.Val, View.Val );
 
         if ( updateFrustum )
         {
             InvProjectionView.Set( Combined );
-            Matrix4.Inv( InvProjectionView.val );
+            Matrix4.Inv( InvProjectionView.Val );
             Frustum.Update( InvProjectionView );
         }
     }

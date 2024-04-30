@@ -109,7 +109,7 @@ public abstract class Camera
             if ( Math.Abs( dot - 1 ) < 0.000000001f )
             {
                 // Collinear
-                Up.Set( Direction ).Scl( -1 );
+                Up.Set( Direction ).Scale( -1 );
             }
             else if ( Math.Abs( dot + 1 ) < 0.000000001f )
             {

@@ -29,6 +29,7 @@ namespace LughSharp.LibCore.Maths;
 ///     Rectangle class that is independent of any backends.
 ///     This has no drawing methods, just those that handle the shape.
 /// </summary>
+[PublicAPI]
 public class RectangleShape : IShape2D
 {
     public readonly static RectangleShape Tmp = new();

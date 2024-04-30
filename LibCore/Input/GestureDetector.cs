@@ -284,8 +284,8 @@ public class GestureDetector : InputAdapter
         {
             var result = _listener.Pinch( _initialPointer1, _initialPointer2, _pointer1, _pointer2 );
 
-            return _listener.Zoom( _initialPointer1.Dst( _initialPointer2 ),
-                                   _pointer1.Dst( _pointer2 ) )
+            return _listener.Zoom( _initialPointer1.Distance( _initialPointer2 ),
+                                   _pointer1.Distance( _pointer2 ) )
                 || result;
         }
 

@@ -25,11 +25,12 @@
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class GeometryUtils
 {
-    private readonly static Vector2 Tmp1 = new();
-    private readonly static Vector2 Tmp2 = new();
-    private readonly static Vector2 Tmp3 = new();
+    private readonly static Vector2 _tmp1 = new();
+    private readonly static Vector2 _tmp2 = new();
+    private readonly static Vector2 _tmp3 = new();
 
     /// <summary>
     ///     Computes the barycentric coordinates v,w for the specified point in the triangle.
@@ -52,9 +53,9 @@ public class GeometryUtils
     /// <returns> barycentricOut </returns>
     public static Vector2 ToBarycoord( Vector2 p, Vector2 a, Vector2 b, Vector2 c, Vector2 barycentricOut )
     {
-        var v0 = Tmp1.Set( b ).Sub( a );
-        var v1 = Tmp2.Set( c ).Sub( a );
-        var v2 = Tmp3.Set( p ).Sub( a );
+        var v0 = _tmp1.Set( b ).Sub( a );
+        var v1 = _tmp2.Set( c ).Sub( a );
+        var v2 = _tmp3.Set( p ).Sub( a );
 
         var d00   = v0.Dot( v0 );
         var d01   = v0.Dot( v1 );
@@ -78,8 +79,8 @@ public class GeometryUtils
     }
 
     /// <summary>
-    ///     Returns interpolated values given the barycentric coordinates of a point in a triangle and the values at each
-    ///     vertex.
+    ///     Returns interpolated values given the barycentric coordinates of a point in
+    ///     a triangle and the values at each vertex.
     /// </summary>
     /// <returns> interpolatedOut  </returns>
     public static Vector2 FromBarycoord( Vector2 barycentric, Vector2 a, Vector2 b, Vector2 c, Vector2 interpolatedOut )
@@ -92,8 +93,8 @@ public class GeometryUtils
     }
 
     /// <summary>
-    ///     Returns an interpolated value given the barycentric coordinates of a point in a triangle and the values at each
-    ///     vertex.
+    ///     Returns an interpolated value given the barycentric coordinates of a point
+    ///     in a triangle and the values at each vertex.
     /// </summary>
     /// <returns> interpolatedOut  </returns>
     public static float FromBarycoord( Vector2 barycentric, float a, float b, float c )
@@ -104,8 +105,8 @@ public class GeometryUtils
     }
 
     /// <summary>
-    ///     Returns the lowest positive root of the quadric equation given by a* x * x + b * x + c = 0. If no solution is given
-    ///     Float.Nan is returned.
+    ///     Returns the lowest positive root of the quadric equation given by a* x * x + b * x + c = 0.
+    ///     If no solution is given Float.Nan is returned.
     /// </summary>
     /// <param name="a"> the first coefficient of the quadric equation </param>
     /// <param name="b"> the second coefficient of the quadric equation </param>

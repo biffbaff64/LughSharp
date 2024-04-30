@@ -78,12 +78,12 @@ public class OrthographicCamera : Camera
 
         Combined.Set( Projection );
 
-        Matrix4.Mul( Combined.val, View.val );
+        Matrix4.Mul( Combined.Val, View.Val );
 
         if ( updateFrustrum )
         {
             InvProjectionView.Set( Combined );
-            Matrix4.Inv( InvProjectionView.val );
+            Matrix4.Inv( InvProjectionView.Val );
             Frustum.Update( InvProjectionView );
         }
     }

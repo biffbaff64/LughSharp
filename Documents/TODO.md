@@ -529,31 +529,30 @@ MATHS
     - IP   - IP   - DelaunayTriangulator        Unsure about method ComputeTriangles()
     - IP   - IP   - EarClippingTriangulator     Needs some testing
     - IP   - IP   - Ellipse
-    - IP   - IP   - FloatConsts
-    - IP   - IP   - FloatCounter
-    - IP   - IP   - Frustrum
-    - IP   - IP   - GeometryUtils
-    - IP   - IP   - GridPoint2
-    - IP   - IP   - GridPoint3
-    - IP   - IP   - Interpolation
-    - IP   - IP   - Intersector
-    - IP   - IP   - IPath
-    - IP   - IP   - IShape2D
-    - IP   - IP   - IVector
-    - IP   - IP   - MathUtils
-    - IP   - IP   - Matrix3
-    - IP   - IP   - Matrix4
-    - IP   - IP   - Number
-    - IP   - IP   - NumberUtils
-    - IP   - IP   - Plane
-    - IP   - IP   - Polygon
-    - IP   - IP   - Polyline
-    - IP   - IP   - Quaternion
-    - IP   - IP   - RandomXS128
-    - IP   - IP   - RectangleShape
-    - IP   - IP   - Vector2                        Convert, I prefer the way the LibGDX class works.
-    - IP   - IP   - Vector3                        Convert, I prefer the way the LibGDX class works.
-    - IP   - IP   - WindowedMean
+    - DONE - IP   - FloatCounter
+    - DONE - IP   - Frustrum
+    - DONE - IP   - GeometryUtils
+    - DONE - IP   - GridPoint2
+    - DONE - IP   - GridPoint3
+    - DONE - IP   - Interpolation
+    - DONE - IP   - Intersector
+    - DONE - IP   - IPath
+    - DONE - DONE - IShape2D
+    - DONE - IP   - IVector
+    - DONE - IP   - MathUtils
+    - DONE - IP   - Matrix3
+    - DONE - IP   - Matrix4
+    - DONE - IP   - Number
+    - DONE - IP   - NumberUtils
+    - DONE - IP   - Plane
+    - DONE - IP   - Polygon
+    - DONE - IP   - Polyline
+    - DONE - IP   - Quaternion
+    - DONE - IP   - RandomXS128
+    - DONE - IP   - RectangleShape
+    - DONE - IP   - Vector2                        Convert, I prefer the way the LibGDX class works.
+    - DONE - IP   - Vector3                        Convert, I prefer the way the LibGDX class works.
+    - DONE - IP   - WindowedMean
 
 MATH/COLLISION
 --------------
@@ -790,7 +789,7 @@ UTILS/BUFFERS
     - IP   - IP   - HeapByteBuffer
     - IP   - IP   - HeapCharBuffer
     - DONE - DONE - HeapDoubleBuffer
-    - DONE - DONE - HeapFloatBuffer
+    - IP   - IP   - HeapFloatBuffer
     - DONE - IP   - HeapIntBuffer
     - DONE - IP   - HeapShortBuffer
     - IP   - IP   - IDirectBuffer

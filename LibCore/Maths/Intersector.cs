@@ -32,36 +32,37 @@ namespace LughSharp.LibCore.Maths;
 ///     Class offering various static methods for intersection testing
 ///     between different geometric objects.
 /// </summary>
+[PublicAPI]
 public class Intersector
 {
-    private readonly static Vector3       V0          = new();
-    private readonly static Vector3       V1          = new();
-    private readonly static Vector3       V2          = new();
-    private readonly static List< float > FloatArray  = new();
-    private readonly static List< float > FloatArray2 = new();
+    private readonly static Vector3       _v0          = new();
+    private readonly static Vector3       _v1          = new();
+    private readonly static Vector3       _v2          = new();
+    private readonly static List< float > _floatArray  = new();
+    private readonly static List< float > _floatArray2 = new();
 
-    private readonly static Vector2 Ip  = new();
-    private readonly static Vector2 Ep1 = new();
-    private readonly static Vector2 Ep2 = new();
-    private readonly static Vector2 S   = new();
-    private readonly static Vector2 E   = new();
+    private readonly static Vector2 _ip  = new();
+    private readonly static Vector2 _ep1 = new();
+    private readonly static Vector2 _ep2 = new();
+    private readonly static Vector2 _s   = new();
+    private readonly static Vector2 _e   = new();
 
-    private readonly static Vector2 V2A = new();
-    private readonly static Vector2 V2B = new();
-    private readonly static Vector2 V2C = new();
-    private readonly static Vector2 V2D = new();
+    private readonly static Vector2 _v2A = new();
+    private readonly static Vector2 _v2B = new();
+    private readonly static Vector2 _v2C = new();
+    private readonly static Vector2 _v2D = new();
 
-    private readonly static Plane   Plane = new( new Vector3(), 0 );
-    private readonly static Vector3 Vec3  = new();
+    private readonly static Plane   _plane = new( new Vector3(), 0 );
+    private readonly static Vector3 _vec3  = new();
 
     private static Vector3 _dir   = new();
     private static Vector3 _start = new();
 
-    private readonly static Vector3 Best = new();
-    private readonly static Vector3 Tmp  = new();
-    private readonly static Vector3 Tmp1 = new();
-    private readonly static Vector3 Tmp2 = new();
-    private readonly static Vector3 Tmp3 = new();
+    private readonly static Vector3 _best = new();
+    private readonly static Vector3 _tmp  = new();
+    private readonly static Vector3 _tmp1 = new();
+    private readonly static Vector3 _tmp2 = new();
+    private readonly static Vector3 _tmp3 = new();
 
     //TODO:
     // This is a temporary fix for a problem caused by the above method.
@@ -72,7 +73,7 @@ public class Intersector
     // there is a better solution then I will update.
     private static MinimumTranslationVector? _dummyMinimumTranslationVector = new();
 
-    private readonly static Vector3 Intersection = new();
+    private readonly static Vector3 _intersection = new();
 
     private Intersector()
     {
@@ -90,21 +91,21 @@ public class Intersector
     /// <returns> whether the point is in the triangle  </returns>
     public static bool IsPointInTriangle( Vector3 point, Vector3 t1, Vector3 t2, Vector3 t3 )
     {
-        V0.Set( t1 ).Sub( point );
-        V1.Set( t2 ).Sub( point );
-        V2.Set( t3 ).Sub( point );
+        _v0.Set( t1 ).Sub( point );
+        _v1.Set( t2 ).Sub( point );
+        _v2.Set( t3 ).Sub( point );
 
-        var ab = V0.Dot( V1 );
-        var ac = V0.Dot( V2 );
-        var bc = V1.Dot( V2 );
-        var cc = V2.Dot( V2 );
+        var ab = _v0.Dot( _v1 );
+        var ac = _v0.Dot( _v2 );
+        var bc = _v1.Dot( _v2 );
+        var cc = _v2.Dot( _v2 );
 
         if ( ( ( bc * ac ) - ( cc * ab ) ) < 0 )
         {
             return false;
         }
 
-        var bb = V1.Dot( V1 );
+        var bb = _v1.Dot( _v1 );
 
         return !( ( ( ab * bc ) - ( ac * bb ) ) < 0 );
     }
@@ -159,7 +160,7 @@ public class Intersector
     /// <returns></returns>
     public static bool IntersectSegmentPlane( Vector3 strt, Vector3 end, Plane plane, Vector3 intersection )
     {
-        var dir   = V0.Set( end ).Sub( strt );
+        var dir   = _v0.Set( end ).Sub( strt );
         var denom = dir.Dot( plane.Normal );
 
         if ( denom == 0f )
@@ -174,7 +175,7 @@ public class Intersector
             return false;
         }
 
-        intersection.Set( strt ).Add( dir.Scl( t ) );
+        intersection.Set( strt ).Add( dir.Scale( t ) );
 
         return true;
     }
@@ -303,84 +304,84 @@ public class Intersector
             return false;
         }
 
-        FloatArray.Clear();
-        FloatArray2.Clear();
-        FloatArray2.AddAll( p1.TransformedVertices!.ToList() );
+        _floatArray.Clear();
+        _floatArray2.Clear();
+        _floatArray2.AddAll( p1.TransformedVertices!.ToList() );
 
         var vertices2 = p2.TransformedVertices;
 
         for ( int i = 0, last = vertices2!.Length - 2; i <= last; i += 2 )
         {
-            Ep1.Set( vertices2[ i ], vertices2[ i + 1 ] );
+            _ep1.Set( vertices2[ i ], vertices2[ i + 1 ] );
 
             // wrap around to beginning of array if index points to end;
             if ( i < last )
             {
-                Ep2.Set( vertices2[ i + 2 ], vertices2[ i + 3 ] );
+                _ep2.Set( vertices2[ i + 2 ], vertices2[ i + 3 ] );
             }
             else
             {
-                Ep2.Set( vertices2[ 0 ], vertices2[ 1 ] );
+                _ep2.Set( vertices2[ 0 ], vertices2[ 1 ] );
             }
 
-            if ( FloatArray2.Count == 0 )
+            if ( _floatArray2.Count == 0 )
             {
                 return false;
             }
 
-            S.Set( FloatArray2[ ^2 ], FloatArray2[ ^1 ] );
+            _s.Set( _floatArray2[ ^2 ], _floatArray2[ ^1 ] );
 
-            for ( var j = 0; j < FloatArray2.Count; j += 2 )
+            for ( var j = 0; j < _floatArray2.Count; j += 2 )
             {
-                E.Set( FloatArray2[ j ], FloatArray2[ j + 1 ] );
+                _e.Set( _floatArray2[ j ], _floatArray2[ j + 1 ] );
 
                 // determine if point is inside clip edge
-                var side = PointLineSide( Ep2, Ep1, S ) > 0;
+                var side = PointLineSide( _ep2, _ep1, _s ) > 0;
 
-                if ( PointLineSide( Ep2, Ep1, E ) > 0 )
+                if ( PointLineSide( _ep2, _ep1, _e ) > 0 )
                 {
                     if ( !side )
                     {
-                        IntersectLines( S, E, Ep1, Ep2, Ip );
+                        IntersectLines( _s, _e, _ep1, _ep2, _ip );
 
-                        if ( ( FloatArray.Count < 2 )
-                          || !FloatArray[ ^2 ].Equals( Ip.X )
-                          || !FloatArray[ ^1 ].Equals( Ip.Y ) )
+                        if ( ( _floatArray.Count < 2 )
+                          || !_floatArray[ ^2 ].Equals( _ip.X )
+                          || !_floatArray[ ^1 ].Equals( _ip.Y ) )
                         {
-                            FloatArray.Add( Ip.X );
-                            FloatArray.Add( Ip.Y );
+                            _floatArray.Add( _ip.X );
+                            _floatArray.Add( _ip.Y );
                         }
                     }
 
-                    FloatArray.Add( E.X );
-                    FloatArray.Add( E.Y );
+                    _floatArray.Add( _e.X );
+                    _floatArray.Add( _e.Y );
                 }
                 else if ( side )
                 {
-                    IntersectLines( S, E, Ep1, Ep2, Ip );
-                    FloatArray.Add( Ip.X );
-                    FloatArray.Add( Ip.Y );
+                    IntersectLines( _s, _e, _ep1, _ep2, _ip );
+                    _floatArray.Add( _ip.X );
+                    _floatArray.Add( _ip.Y );
                 }
 
-                S.Set( E.X, E.Y );
+                _s.Set( _e.X, _e.Y );
             }
 
-            FloatArray2.Clear();
-            FloatArray2.AddAll( FloatArray );
-            FloatArray.Clear();
+            _floatArray2.Clear();
+            _floatArray2.AddAll( _floatArray );
+            _floatArray.Clear();
         }
 
-        if ( FloatArray2.Count != 0 )
+        if ( _floatArray2.Count != 0 )
         {
             if ( overlap != null )
             {
-                if ( overlap.Vertices?.Length == FloatArray2.Count )
+                if ( overlap.Vertices?.Length == _floatArray2.Count )
                 {
-                    Array.Copy( FloatArray2.ToArray(), 0, overlap.Vertices, 0, FloatArray2.Count );
+                    Array.Copy( _floatArray2.ToArray(), 0, overlap.Vertices, 0, _floatArray2.Count );
                 }
                 else
                 {
-                    overlap.Vertices = FloatArray2.ToArray();
+                    overlap.Vertices = _floatArray2.ToArray();
                 }
             }
 
@@ -464,7 +465,7 @@ public class Intersector
     /// </summary>
     public static float DistanceSegmentPoint( float startX, float startY, float endX, float endY, float pointX, float pointY )
     {
-        return NearestSegmentPoint( startX, startY, endX, endY, pointX, pointY, V2A ).Dst( pointX, pointY );
+        return NearestSegmentPoint( startX, startY, endX, endY, pointX, pointY, _v2A ).Dst( pointX, pointY );
     }
 
     /// <summary>
@@ -472,7 +473,7 @@ public class Intersector
     /// </summary>
     public static float DistanceSegmentPoint( Vector2 start, Vector2 end, Vector2 point )
     {
-        return NearestSegmentPoint( start, end, point, V2A ).Dst( point );
+        return NearestSegmentPoint( start, end, point, _v2A ).Distance( point );
     }
 
     /// <summary>
@@ -480,7 +481,7 @@ public class Intersector
     /// </summary>
     public static Vector2 NearestSegmentPoint( Vector2 start, Vector2 end, Vector2 point, Vector2 nearest )
     {
-        var length2 = start.Dst2( end );
+        var length2 = start.Distance2( end );
 
         if ( length2 == 0 )
         {
@@ -543,27 +544,27 @@ public class Intersector
     /// <returns> Whether the line segment and the circle intersect </returns>
     public static bool IntersectSegmentCircle( Vector2 start, Vector2 end, Vector2 center, float squareRadius )
     {
-        Tmp.Set( end.X - start.X, end.Y - start.Y, 0 );
-        Tmp1.Set( center.X - start.X, center.Y - start.Y, 0 );
-        var l = Tmp.Len();
-        var u = Tmp1.Dot( Tmp.Nor() );
+        _tmp.Set( end.X - start.X, end.Y - start.Y, 0 );
+        _tmp1.Set( center.X - start.X, center.Y - start.Y, 0 );
+        var l = _tmp.Len();
+        var u = _tmp1.Dot( _tmp.Nor() );
 
         if ( u <= 0 )
         {
-            Tmp2.Set( start.X, start.Y, 0 );
+            _tmp2.Set( start.X, start.Y, 0 );
         }
         else if ( u >= l )
         {
-            Tmp2.Set( end.X, end.Y, 0 );
+            _tmp2.Set( end.X, end.Y, 0 );
         }
         else
         {
-            Tmp3.Set( Tmp.Scl( u ) ); // remember tmp is already normalized
-            Tmp2.Set( Tmp3.X + start.X, Tmp3.Y + start.Y, 0 );
+            _tmp3.Set( _tmp.Scale( u ) ); // remember tmp is already normalized
+            _tmp2.Set( _tmp3.X + start.X, _tmp3.Y + start.Y, 0 );
         }
 
-        var x = center.X - Tmp2.X;
-        var y = center.Y - Tmp2.Y;
+        var x = center.X - _tmp2.X;
+        var y = center.Y - _tmp2.Y;
 
         return ( ( x * x ) + ( y * y ) ) <= squareRadius;
     }
@@ -580,45 +581,45 @@ public class Intersector
     /// <returns> Whether the line segment and the circle intersect </returns>
     public static bool IntersectSegmentCircle( Vector2 start, Vector2 end, Circle circle, MinimumTranslationVector? mtv )
     {
-        V2A.Set( end ).Sub( start );
-        V2B.Set( circle.X - start.X, circle.Y - start.Y );
+        _v2A.Set( end ).Sub( start );
+        _v2B.Set( circle.X - start.X, circle.Y - start.Y );
 
-        var len = V2A.Len();
-        var u   = V2B.Dot( V2A.Nor() );
+        var len = _v2A.Len();
+        var u   = _v2B.Dot( _v2A.Nor() );
 
         if ( u <= 0 )
         {
-            V2C.Set( start );
+            _v2C.Set( start );
         }
         else if ( u >= len )
         {
-            V2C.Set( end );
+            _v2C.Set( end );
         }
         else
         {
-            V2D.Set( V2A.Scl( u ) ); // remember v2a is already normalized
-            V2C.Set( V2D ).Add( start );
+            _v2D.Set( _v2A.Scale( u ) ); // remember v2a is already normalized
+            _v2C.Set( _v2D ).Add( start );
         }
 
-        V2A.Set( V2C.X - circle.X, V2C.Y - circle.Y );
+        _v2A.Set( _v2C.X - circle.X, _v2C.Y - circle.Y );
 
         if ( mtv != null )
         {
             // Handle special case of segment containing circle center
-            if ( V2A.Equals( Vector2.Zero ) )
+            if ( _v2A.Equals( Vector2.Zero ) )
             {
-                V2D.Set( end.Y - start.Y, start.X - end.X );
-                mtv.Normal.Set( V2D ).Nor();
+                _v2D.Set( end.Y - start.Y, start.X - end.X );
+                mtv.Normal.Set( _v2D ).Nor();
                 mtv.Depth = circle.Radius;
             }
             else
             {
-                mtv.Normal.Set( V2A ).Nor();
-                mtv.Depth = circle.Radius - V2A.Len();
+                mtv.Normal.Set( _v2A ).Nor();
+                mtv.Depth = circle.Radius - _v2A.Len();
             }
         }
 
-        return V2A.Len2() <= ( circle.Radius * circle.Radius );
+        return _v2A.Len2() <= ( circle.Radius * circle.Radius );
     }
 
     /// <summary>
@@ -680,7 +681,7 @@ public class Intersector
                 return false;
             }
 
-            intersection?.Set( ray.origin ).Add( V0.Set( ray.direction ).Scl( t ) );
+            intersection?.Set( ray.origin ).Add( _v0.Set( ray.direction ).Scale( t ) );
 
             return true;
         }
@@ -711,15 +712,15 @@ public class Intersector
                                             Plane plane,
                                             Vector3? intersection )
     {
-        var direction = Tmp.Set( x2, y2, z2 ).Sub( x, y, z );
-        var origin    = Tmp2.Set( x, y, z );
+        var direction = _tmp.Set( x2, y2, z2 ).Sub( x, y, z );
+        var origin    = _tmp2.Set( x, y, z );
         var denom     = direction.Dot( plane.Normal );
 
         if ( denom != 0 )
         {
             var t = -( origin.Dot( plane.Normal ) + plane.DistanceToOrigin ) / denom;
 
-            intersection?.Set( origin ).Add( direction.Scl( t ) );
+            intersection?.Set( origin ).Add( direction.Scale( t ) );
 
             return t;
         }
@@ -744,23 +745,23 @@ public class Intersector
     /// <param name="intersection"> The point where the three planes intersect </param>
     public static bool IntersectPlanes( Plane a, Plane b, Plane c, Vector3 intersection )
     {
-        Tmp1.Set( a.Normal ).Crs( b.Normal );
-        Tmp2.Set( b.Normal ).Crs( c.Normal );
-        Tmp3.Set( c.Normal ).Crs( a.Normal );
+        _tmp1.Set( a.Normal ).Crs( b.Normal );
+        _tmp2.Set( b.Normal ).Crs( c.Normal );
+        _tmp3.Set( c.Normal ).Crs( a.Normal );
 
-        var f = -a.Normal.Dot( Tmp2 );
+        var f = -a.Normal.Dot( _tmp2 );
 
         if ( Math.Abs( f ) < MathUtils.FLOAT_ROUNDING_ERROR )
         {
             return false;
         }
 
-        Tmp1.Scl( c.DistanceToOrigin );
-        Tmp2.Scl( a.DistanceToOrigin );
-        Tmp3.Scl( b.DistanceToOrigin );
+        _tmp1.Scale( c.DistanceToOrigin );
+        _tmp2.Scale( a.DistanceToOrigin );
+        _tmp3.Scale( b.DistanceToOrigin );
 
-        intersection.Set( Tmp1.X + Tmp2.X + Tmp3.X, Tmp1.Y + Tmp2.Y + Tmp3.Y, Tmp1.Z + Tmp2.Z + Tmp3.Z );
-        intersection.Scl( 1 / f );
+        intersection.Set( _tmp1.X + _tmp2.X + _tmp3.X, _tmp1.Y + _tmp2.Y + _tmp3.Y, _tmp1.Z + _tmp2.Z + _tmp3.Z );
+        intersection.Scale( 1 / f );
 
         return true;
     }
@@ -777,17 +778,17 @@ public class Intersector
     /// <returns> True in case an intersection is present. </returns>
     public static bool IntersectRayTriangle( Ray ray, Vector3 t1, Vector3 t2, Vector3 t3, Vector3? intersection )
     {
-        var edge1 = V0.Set( t2 ).Sub( t1 );
-        var edge2 = V1.Set( t3 ).Sub( t1 );
+        var edge1 = _v0.Set( t2 ).Sub( t1 );
+        var edge2 = _v1.Set( t3 ).Sub( t1 );
 
-        var pvec = V2.Set( ray.direction ).Crs( edge2 );
+        var pvec = _v2.Set( ray.direction ).Crs( edge2 );
         var det  = edge1.Dot( pvec );
 
         if ( MathUtils.IsZero( det ) )
         {
-            Plane.Set( t1, t2, t3 );
+            _plane.Set( t1, t2, t3 );
 
-            if ( ( Plane.TestPoint( ray.origin ) == Plane.PlaneSide.OnPlane )
+            if ( ( _plane.TestPoint( ray.origin ) == Plane.PlaneSide.OnPlane )
               && IsPointInTriangle( ray.origin, t1, t2, t3 ) )
             {
                 intersection?.Set( ray.origin );
@@ -800,7 +801,7 @@ public class Intersector
 
         det = 1.0f / det;
 
-        var tvec = Vec3.Set( ray.origin ).Sub( t1 );
+        var tvec = _vec3.Set( ray.origin ).Sub( t1 );
         var u    = tvec.Dot( pvec ) * det;
 
         if ( u is < 0.0f or > 1.0f )
@@ -868,7 +869,7 @@ public class Intersector
             return false;
         }
 
-        intersection?.Set( ray.direction ).Scl( len - ( float ) Math.Sqrt( r2 - dst2 ) ).Add( ray.origin );
+        intersection?.Set( ray.direction ).Scale( len - ( float ) Math.Sqrt( r2 - dst2 ) ).Add( ray.origin );
 
         return true;
     }
@@ -914,9 +915,9 @@ public class Intersector
 
             if ( t >= 0 )
             {
-                V2.Set( ray.direction ).Scl( t ).Add( ray.origin );
+                _v2.Set( ray.direction ).Scale( t ).Add( ray.origin );
 
-                if ( ( V2.Y >= box.Min.Y ) && ( V2.Y <= box.Max.Y ) && ( V2.Z >= box.Min.Z ) && ( V2.Z <= box.Max.Z ) && ( !hit || ( t < lowest ) ) )
+                if ( ( _v2.Y >= box.Min.Y ) && ( _v2.Y <= box.Max.Y ) && ( _v2.Z >= box.Min.Z ) && ( _v2.Z <= box.Max.Z ) && ( !hit || ( t < lowest ) ) )
                 {
                     hit    = true;
                     lowest = t;
@@ -931,9 +932,9 @@ public class Intersector
 
             if ( t >= 0 )
             {
-                V2.Set( ray.direction ).Scl( t ).Add( ray.origin );
+                _v2.Set( ray.direction ).Scale( t ).Add( ray.origin );
 
-                if ( ( V2.Y >= box.Min.Y ) && ( V2.Y <= box.Max.Y ) && ( V2.Z >= box.Min.Z ) && ( V2.Z <= box.Max.Z ) && ( !hit || ( t < lowest ) ) )
+                if ( ( _v2.Y >= box.Min.Y ) && ( _v2.Y <= box.Max.Y ) && ( _v2.Z >= box.Min.Z ) && ( _v2.Z <= box.Max.Z ) && ( !hit || ( t < lowest ) ) )
                 {
                     hit    = true;
                     lowest = t;
@@ -948,9 +949,9 @@ public class Intersector
 
             if ( t >= 0 )
             {
-                V2.Set( ray.direction ).Scl( t ).Add( ray.origin );
+                _v2.Set( ray.direction ).Scale( t ).Add( ray.origin );
 
-                if ( ( V2.X >= box.Min.X ) && ( V2.X <= box.Max.X ) && ( V2.Z >= box.Min.Z ) && ( V2.Z <= box.Max.Z ) && ( !hit || ( t < lowest ) ) )
+                if ( ( _v2.X >= box.Min.X ) && ( _v2.X <= box.Max.X ) && ( _v2.Z >= box.Min.Z ) && ( _v2.Z <= box.Max.Z ) && ( !hit || ( t < lowest ) ) )
                 {
                     hit    = true;
                     lowest = t;
@@ -965,9 +966,9 @@ public class Intersector
 
             if ( t >= 0 )
             {
-                V2.Set( ray.direction ).Scl( t ).Add( ray.origin );
+                _v2.Set( ray.direction ).Scale( t ).Add( ray.origin );
 
-                if ( ( V2.X >= box.Min.X ) && ( V2.X <= box.Max.X ) && ( V2.Z >= box.Min.Z ) && ( V2.Z <= box.Max.Z ) && ( !hit || ( t < lowest ) ) )
+                if ( ( _v2.X >= box.Min.X ) && ( _v2.X <= box.Max.X ) && ( _v2.Z >= box.Min.Z ) && ( _v2.Z <= box.Max.Z ) && ( !hit || ( t < lowest ) ) )
                 {
                     hit    = true;
                     lowest = t;
@@ -982,12 +983,12 @@ public class Intersector
 
             if ( t >= 0 )
             {
-                V2.Set( ray.direction ).Scl( t ).Add( ray.origin );
+                _v2.Set( ray.direction ).Scale( t ).Add( ray.origin );
 
-                if ( ( V2.X >= box.Min.X )
-                  && ( V2.X <= box.Max.X )
-                  && ( V2.Y >= box.Min.Y )
-                  && ( V2.Y <= box.Max.Y )
+                if ( ( _v2.X >= box.Min.X )
+                  && ( _v2.X <= box.Max.X )
+                  && ( _v2.Y >= box.Min.Y )
+                  && ( _v2.Y <= box.Max.Y )
                   && ( !hit || ( t < lowest ) ) )
                 {
                     hit    = true;
@@ -1003,12 +1004,12 @@ public class Intersector
 
             if ( t >= 0 )
             {
-                V2.Set( ray.direction ).Scl( t ).Add( ray.origin );
+                _v2.Set( ray.direction ).Scale( t ).Add( ray.origin );
 
-                if ( ( V2.X >= box.Min.X )
-                  && ( V2.X <= box.Max.X )
-                  && ( V2.Y >= box.Min.Y )
-                  && ( V2.Y <= box.Max.Y )
+                if ( ( _v2.X >= box.Min.X )
+                  && ( _v2.X <= box.Max.X )
+                  && ( _v2.Y >= box.Min.Y )
+                  && ( _v2.Y <= box.Max.Y )
                   && ( !hit || ( t < lowest ) ) )
                 {
                     hit    = true;
@@ -1019,11 +1020,11 @@ public class Intersector
 
         if ( hit && ( intersection != null ) )
         {
-            intersection.Set( ray.direction ).Scl( lowest ).Add( ray.origin );
+            intersection.Set( ray.direction ).Scale( lowest ).Add( ray.origin );
 
             if ( intersection.X < box.Min.X )
             {
-                intersection.X                                    = box.Min.X;
+                intersection.X = box.Min.X;
             }
             else if ( intersection.X > box.Max.X )
             {
@@ -1032,7 +1033,7 @@ public class Intersector
 
             if ( intersection.Y < box.Min.Y )
             {
-                intersection.Y                                    = box.Min.Y;
+                intersection.Y = box.Min.Y;
             }
             else if ( intersection.Y > box.Max.Y )
             {
@@ -1041,7 +1042,7 @@ public class Intersector
 
             if ( intersection.Z < box.Min.Z )
             {
-                intersection.Z                                    = box.Min.Z;
+                intersection.Z = box.Min.Z;
             }
             else if ( intersection.Z > box.Max.Z )
             {
@@ -1058,7 +1059,7 @@ public class Intersector
     /// <returns> Whether the ray and the bounding box intersect. </returns>
     public static bool IntersectRayBoundsFast( Ray ray, BoundingBox box )
     {
-        return IntersectRayBoundsFast( ray, box.GetCenter( Tmp1 ), box.GetDimensions( Tmp2 ) );
+        return IntersectRayBoundsFast( ray, box.GetCenter( _tmp1 ), box.GetDimensions( _tmp2 ) );
     }
 
     /// <summary>
@@ -1118,13 +1119,13 @@ public class Intersector
         var   tMax = float.MaxValue;
         float t1, t2;
 
-        var oBBposition = matrix.GetTranslation( Tmp );
+        var oBBposition = matrix.GetTranslation( _tmp );
         var delta       = oBBposition.Sub( ray.origin );
 
         // Test intersection with the 2 planes perpendicular to the OBB's X axis
-        var xaxis = Tmp1;
+        var xaxis = _tmp1;
 
-        Tmp1.Set( matrix.val[ Matrix4.M00 ], matrix.val[ Matrix4.M10 ], matrix.val[ Matrix4.M20 ] );
+        _tmp1.Set( matrix.Val[ Matrix4.M00 ], matrix.Val[ Matrix4.M10 ], matrix.Val[ Matrix4.M20 ] );
 
         var e = xaxis.Dot( delta );
         var f = ray.direction.Dot( xaxis );
@@ -1173,8 +1174,8 @@ public class Intersector
 
         // Test intersection with the 2 planes perpendicular to the OBB's Y axis
         // Exactly the same thing than above.
-        var yaxis = Tmp2;
-        Tmp2.Set( matrix.val[ Matrix4.M01 ], matrix.val[ Matrix4.M11 ], matrix.val[ Matrix4.M21 ] );
+        var yaxis = _tmp2;
+        _tmp2.Set( matrix.Val[ Matrix4.M01 ], matrix.Val[ Matrix4.M11 ], matrix.Val[ Matrix4.M21 ] );
 
         e = yaxis.Dot( delta );
         f = ray.direction.Dot( yaxis );
@@ -1211,8 +1212,8 @@ public class Intersector
 
         // Test intersection with the 2 planes perpendicular to the OBB's Z axis
         // Exactly the same thing than above.
-        var zaxis = Tmp3;
-        Tmp3.Set( matrix.val[ Matrix4.M02 ], matrix.val[ Matrix4.M12 ], matrix.val[ Matrix4.M22 ] );
+        var zaxis = _tmp3;
+        _tmp3.Set( matrix.Val[ Matrix4.M02 ], matrix.Val[ Matrix4.M12 ], matrix.Val[ Matrix4.M22 ] );
 
         e = zaxis.Dot( delta );
         f = ray.direction.Dot( zaxis );
@@ -1275,20 +1276,20 @@ public class Intersector
         {
             var result = IntersectRayTriangle(
                                               ray,
-                                              Tmp1.Set( triangles[ i ], triangles[ i + 1 ], triangles[ i + 2 ] ),
-                                              Tmp2.Set( triangles[ i + 3 ], triangles[ i + 4 ], triangles[ i + 5 ] ),
-                                              Tmp3.Set( triangles[ i + 6 ], triangles[ i + 7 ], triangles[ i + 8 ] ),
-                                              Tmp
+                                              _tmp1.Set( triangles[ i ], triangles[ i + 1 ], triangles[ i + 2 ] ),
+                                              _tmp2.Set( triangles[ i + 3 ], triangles[ i + 4 ], triangles[ i + 5 ] ),
+                                              _tmp3.Set( triangles[ i + 6 ], triangles[ i + 7 ], triangles[ i + 8 ] ),
+                                              _tmp
                                              );
 
             if ( result )
             {
-                var dist = ray.origin.Dst2( Tmp );
+                var dist = ray.origin.Distance2( _tmp );
 
                 if ( dist < minDist )
                 {
                     minDist = dist;
-                    Best.Set( Tmp );
+                    _best.Set( _tmp );
                     hit = true;
                 }
             }
@@ -1299,7 +1300,7 @@ public class Intersector
             return false;
         }
 
-        intersection?.Set( Best );
+        intersection?.Set( _best );
 
         return true;
     }
@@ -1335,20 +1336,20 @@ public class Intersector
 
             var result = IntersectRayTriangle(
                                               ray,
-                                              Tmp1.Set( vertices[ i1 ], vertices[ i1 + 1 ], vertices[ i1 + 2 ] ),
-                                              Tmp2.Set( vertices[ i2 ], vertices[ i2 + 1 ], vertices[ i2 + 2 ] ),
-                                              Tmp3.Set( vertices[ i3 ], vertices[ i3 + 1 ], vertices[ i3 + 2 ] ),
-                                              Tmp
+                                              _tmp1.Set( vertices[ i1 ], vertices[ i1 + 1 ], vertices[ i1 + 2 ] ),
+                                              _tmp2.Set( vertices[ i2 ], vertices[ i2 + 1 ], vertices[ i2 + 2 ] ),
+                                              _tmp3.Set( vertices[ i3 ], vertices[ i3 + 1 ], vertices[ i3 + 2 ] ),
+                                              _tmp
                                              );
 
             if ( result )
             {
-                var dist = ray.origin.Dst2( Tmp );
+                var dist = ray.origin.Distance2( _tmp );
 
                 if ( dist < minDist )
                 {
                     minDist = dist;
-                    Best.Set( Tmp );
+                    _best.Set( _tmp );
                     hit = true;
                 }
             }
@@ -1359,7 +1360,7 @@ public class Intersector
             return false;
         }
 
-        intersection?.Set( Best );
+        intersection?.Set( _best );
 
         return true;
     }
@@ -1383,16 +1384,16 @@ public class Intersector
 
         for ( var i = 0; i < triangles.Count; i += 3 )
         {
-            var result = IntersectRayTriangle( ray, triangles[ i ], triangles[ i + 1 ], triangles[ i + 2 ], Tmp );
+            var result = IntersectRayTriangle( ray, triangles[ i ], triangles[ i + 1 ], triangles[ i + 2 ], _tmp );
 
             if ( result )
             {
-                var dist = ray.origin.Dst2( Tmp );
+                var dist = ray.origin.Distance2( _tmp );
 
                 if ( dist < minDist )
                 {
                     minDist = dist;
-                    Best.Set( Tmp );
+                    _best.Set( _tmp );
                     hit = true;
                 }
             }
@@ -1403,7 +1404,7 @@ public class Intersector
             return false;
         }
 
-        intersection?.Set( Best );
+        intersection?.Set( _best );
 
         return true;
     }
@@ -1414,8 +1415,8 @@ public class Intersector
     /// <returns> Whether the bounding box and the plane intersect. </returns>
     public static bool IntersectBoundsPlaneFast( BoundingBox box, Plane plane )
     {
-        return IntersectBoundsPlaneFast( box.GetCenter( Tmp1 ),
-                                         box.GetDimensions( Tmp2 ).Scl( 0.5f ),
+        return IntersectBoundsPlaneFast( box.GetCenter( _tmp1 ),
+                                         box.GetDimensions( _tmp2 ).Scale( 0.5f ),
                                          plane.Normal,
                                          plane.DistanceToOrigin );
     }
@@ -1770,7 +1771,7 @@ public class Intersector
 
         if ( c.X < r.X )
         {
-            closestX                                 = r.X;
+            closestX = r.X;
         }
         else if ( c.X > ( r.X + r.Width ) )
         {
@@ -1779,7 +1780,7 @@ public class Intersector
 
         if ( c.Y < r.Y )
         {
-            closestY                                  = r.Y;
+            closestY = r.Y;
         }
         else if ( c.Y > ( r.Y + r.Height ) )
         {
@@ -2185,11 +2186,11 @@ public class Intersector
                                     vertices[ e + 1 ],
                                     vertices[ e + 2 ],
                                     plane,
-                                    Intersection );
+                                    _intersection );
 
-        split[ offset + 0 ] = Intersection.X;
-        split[ offset + 1 ] = Intersection.Y;
-        split[ offset + 2 ] = Intersection.Z;
+        split[ offset + 0 ] = _intersection.X;
+        split[ offset + 1 ] = _intersection.Y;
+        split[ offset + 2 ] = _intersection.Z;
 
         for ( var i = 3; i < stride; i++ )
         {

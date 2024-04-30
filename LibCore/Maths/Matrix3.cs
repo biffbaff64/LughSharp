@@ -25,21 +25,25 @@
 
 namespace LughSharp.LibCore.Maths;
 
+[PublicAPI]
 public class Matrix3
 {
-    public const     int     M00  = 0;
-    public const     int     M01  = 3;
-    public const     int     M02  = 6;
-    public const     int     M10  = 1;
-    public const     int     M11  = 4;
-    public const     int     M12  = 7;
-    public const     int     M20  = 2;
-    public const     int     M21  = 5;
-    public const     int     M22  = 8;
+    public const int M00 = 0;
+    public const int M01 = 3;
+    public const int M02 = 6;
+    public const int M10 = 1;
+    public const int M11 = 4;
+    public const int M12 = 7;
+    public const int M20 = 2;
+    public const int M21 = 5;
+    public const int M22 = 8;
+
+    public readonly float[] Val = new float[ 9 ];
+
     private readonly float[] _tmp = new float[ 9 ];
 
-    public readonly float[] val = new float[ 9 ];
-
+    // ------------------------------------------------------------------------
+    
     public Matrix3()
     {
         Idt();
@@ -73,15 +77,15 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 Idt()
     {
-        val[ M00 ] = 1;
-        val[ M10 ] = 0;
-        val[ M20 ] = 0;
-        val[ M01 ] = 0;
-        val[ M11 ] = 1;
-        val[ M21 ] = 0;
-        val[ M02 ] = 0;
-        val[ M12 ] = 0;
-        val[ M22 ] = 1;
+        Val[ M00 ] = 1;
+        Val[ M10 ] = 0;
+        Val[ M20 ] = 0;
+        Val[ M01 ] = 0;
+        Val[ M11 ] = 1;
+        Val[ M21 ] = 0;
+        Val[ M02 ] = 0;
+        Val[ M12 ] = 0;
+        Val[ M22 ] = 1;
 
         return this;
     }
@@ -97,27 +101,27 @@ public class Matrix3
     /// <returns> This matrix for chaining operations together. </returns>
     public Matrix3 Mul( Matrix3 m )
     {
-        var v00 = ( val[ M00 ] * m.val[ M00 ] ) + ( val[ M01 ] * m.val[ M10 ] ) + ( val[ M02 ] * m.val[ M20 ] );
-        var v01 = ( val[ M00 ] * m.val[ M01 ] ) + ( val[ M01 ] * m.val[ M11 ] ) + ( val[ M02 ] * m.val[ M21 ] );
-        var v02 = ( val[ M00 ] * m.val[ M02 ] ) + ( val[ M01 ] * m.val[ M12 ] ) + ( val[ M02 ] * m.val[ M22 ] );
+        var v00 = ( Val[ M00 ] * m.Val[ M00 ] ) + ( Val[ M01 ] * m.Val[ M10 ] ) + ( Val[ M02 ] * m.Val[ M20 ] );
+        var v01 = ( Val[ M00 ] * m.Val[ M01 ] ) + ( Val[ M01 ] * m.Val[ M11 ] ) + ( Val[ M02 ] * m.Val[ M21 ] );
+        var v02 = ( Val[ M00 ] * m.Val[ M02 ] ) + ( Val[ M01 ] * m.Val[ M12 ] ) + ( Val[ M02 ] * m.Val[ M22 ] );
 
-        var v10 = ( val[ M10 ] * m.val[ M00 ] ) + ( val[ M11 ] * m.val[ M10 ] ) + ( val[ M12 ] * m.val[ M20 ] );
-        var v11 = ( val[ M10 ] * m.val[ M01 ] ) + ( val[ M11 ] * m.val[ M11 ] ) + ( val[ M12 ] * m.val[ M21 ] );
-        var v12 = ( val[ M10 ] * m.val[ M02 ] ) + ( val[ M11 ] * m.val[ M12 ] ) + ( val[ M12 ] * m.val[ M22 ] );
+        var v10 = ( Val[ M10 ] * m.Val[ M00 ] ) + ( Val[ M11 ] * m.Val[ M10 ] ) + ( Val[ M12 ] * m.Val[ M20 ] );
+        var v11 = ( Val[ M10 ] * m.Val[ M01 ] ) + ( Val[ M11 ] * m.Val[ M11 ] ) + ( Val[ M12 ] * m.Val[ M21 ] );
+        var v12 = ( Val[ M10 ] * m.Val[ M02 ] ) + ( Val[ M11 ] * m.Val[ M12 ] ) + ( Val[ M12 ] * m.Val[ M22 ] );
 
-        var v20 = ( val[ M20 ] * m.val[ M00 ] ) + ( val[ M21 ] * m.val[ M10 ] ) + ( val[ M22 ] * m.val[ M20 ] );
-        var v21 = ( val[ M20 ] * m.val[ M01 ] ) + ( val[ M21 ] * m.val[ M11 ] ) + ( val[ M22 ] * m.val[ M21 ] );
-        var v22 = ( val[ M20 ] * m.val[ M02 ] ) + ( val[ M21 ] * m.val[ M12 ] ) + ( val[ M22 ] * m.val[ M22 ] );
+        var v20 = ( Val[ M20 ] * m.Val[ M00 ] ) + ( Val[ M21 ] * m.Val[ M10 ] ) + ( Val[ M22 ] * m.Val[ M20 ] );
+        var v21 = ( Val[ M20 ] * m.Val[ M01 ] ) + ( Val[ M21 ] * m.Val[ M11 ] ) + ( Val[ M22 ] * m.Val[ M21 ] );
+        var v22 = ( Val[ M20 ] * m.Val[ M02 ] ) + ( Val[ M21 ] * m.Val[ M12 ] ) + ( Val[ M22 ] * m.Val[ M22 ] );
 
-        val[ M00 ] = v00;
-        val[ M10 ] = v10;
-        val[ M20 ] = v20;
-        val[ M01 ] = v01;
-        val[ M11 ] = v11;
-        val[ M21 ] = v21;
-        val[ M02 ] = v02;
-        val[ M12 ] = v12;
-        val[ M22 ] = v22;
+        Val[ M00 ] = v00;
+        Val[ M10 ] = v10;
+        Val[ M20 ] = v20;
+        Val[ M01 ] = v01;
+        Val[ M11 ] = v11;
+        Val[ M21 ] = v21;
+        Val[ M02 ] = v02;
+        Val[ M12 ] = v12;
+        Val[ M22 ] = v22;
 
         return this;
     }
@@ -133,27 +137,27 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 MulLeft( Matrix3 m )
     {
-        var v00 = ( m.val[ M00 ] * val[ M00 ] ) + ( m.val[ M01 ] * val[ M10 ] ) + ( m.val[ M02 ] * val[ M20 ] );
-        var v01 = ( m.val[ M00 ] * val[ M01 ] ) + ( m.val[ M01 ] * val[ M11 ] ) + ( m.val[ M02 ] * val[ M21 ] );
-        var v02 = ( m.val[ M00 ] * val[ M02 ] ) + ( m.val[ M01 ] * val[ M12 ] ) + ( m.val[ M02 ] * val[ M22 ] );
+        var v00 = ( m.Val[ M00 ] * Val[ M00 ] ) + ( m.Val[ M01 ] * Val[ M10 ] ) + ( m.Val[ M02 ] * Val[ M20 ] );
+        var v01 = ( m.Val[ M00 ] * Val[ M01 ] ) + ( m.Val[ M01 ] * Val[ M11 ] ) + ( m.Val[ M02 ] * Val[ M21 ] );
+        var v02 = ( m.Val[ M00 ] * Val[ M02 ] ) + ( m.Val[ M01 ] * Val[ M12 ] ) + ( m.Val[ M02 ] * Val[ M22 ] );
 
-        var v10 = ( m.val[ M10 ] * val[ M00 ] ) + ( m.val[ M11 ] * val[ M10 ] ) + ( m.val[ M12 ] * val[ M20 ] );
-        var v11 = ( m.val[ M10 ] * val[ M01 ] ) + ( m.val[ M11 ] * val[ M11 ] ) + ( m.val[ M12 ] * val[ M21 ] );
-        var v12 = ( m.val[ M10 ] * val[ M02 ] ) + ( m.val[ M11 ] * val[ M12 ] ) + ( m.val[ M12 ] * val[ M22 ] );
+        var v10 = ( m.Val[ M10 ] * Val[ M00 ] ) + ( m.Val[ M11 ] * Val[ M10 ] ) + ( m.Val[ M12 ] * Val[ M20 ] );
+        var v11 = ( m.Val[ M10 ] * Val[ M01 ] ) + ( m.Val[ M11 ] * Val[ M11 ] ) + ( m.Val[ M12 ] * Val[ M21 ] );
+        var v12 = ( m.Val[ M10 ] * Val[ M02 ] ) + ( m.Val[ M11 ] * Val[ M12 ] ) + ( m.Val[ M12 ] * Val[ M22 ] );
 
-        var v20 = ( m.val[ M20 ] * val[ M00 ] ) + ( m.val[ M21 ] * val[ M10 ] ) + ( m.val[ M22 ] * val[ M20 ] );
-        var v21 = ( m.val[ M20 ] * val[ M01 ] ) + ( m.val[ M21 ] * val[ M11 ] ) + ( m.val[ M22 ] * val[ M21 ] );
-        var v22 = ( m.val[ M20 ] * val[ M02 ] ) + ( m.val[ M21 ] * val[ M12 ] ) + ( m.val[ M22 ] * val[ M22 ] );
+        var v20 = ( m.Val[ M20 ] * Val[ M00 ] ) + ( m.Val[ M21 ] * Val[ M10 ] ) + ( m.Val[ M22 ] * Val[ M20 ] );
+        var v21 = ( m.Val[ M20 ] * Val[ M01 ] ) + ( m.Val[ M21 ] * Val[ M11 ] ) + ( m.Val[ M22 ] * Val[ M21 ] );
+        var v22 = ( m.Val[ M20 ] * Val[ M02 ] ) + ( m.Val[ M21 ] * Val[ M12 ] ) + ( m.Val[ M22 ] * Val[ M22 ] );
 
-        val[ M00 ] = v00;
-        val[ M10 ] = v10;
-        val[ M20 ] = v20;
-        val[ M01 ] = v01;
-        val[ M11 ] = v11;
-        val[ M21 ] = v21;
-        val[ M02 ] = v02;
-        val[ M12 ] = v12;
-        val[ M22 ] = v22;
+        Val[ M00 ] = v00;
+        Val[ M10 ] = v10;
+        Val[ M20 ] = v20;
+        Val[ M01 ] = v01;
+        Val[ M11 ] = v11;
+        Val[ M21 ] = v21;
+        Val[ M02 ] = v02;
+        Val[ M12 ] = v12;
+        Val[ M22 ] = v22;
 
         return this;
     }
@@ -180,17 +184,17 @@ public class Matrix3
         var cos = ( float ) Math.Cos( radians );
         var sin = ( float ) Math.Sin( radians );
 
-        val[ M00 ] = cos;
-        val[ M10 ] = sin;
-        val[ M20 ] = 0;
+        Val[ M00 ] = cos;
+        Val[ M10 ] = sin;
+        Val[ M20 ] = 0;
 
-        val[ M01 ] = -sin;
-        val[ M11 ] = cos;
-        val[ M21 ] = 0;
+        Val[ M01 ] = -sin;
+        Val[ M11 ] = cos;
+        Val[ M21 ] = 0;
 
-        val[ M02 ] = 0;
-        val[ M12 ] = 0;
-        val[ M22 ] = 1;
+        Val[ M02 ] = 0;
+        Val[ M12 ] = 0;
+        Val[ M22 ] = 1;
 
         return this;
     }
@@ -204,15 +208,15 @@ public class Matrix3
     {
         var oc = 1.0f - cos;
 
-        val[ M00 ] = ( oc * axis.X * axis.X ) + cos;
-        val[ M01 ] = ( oc * axis.X * axis.Y ) - ( axis.Z * sin );
-        val[ M02 ] = ( oc * axis.Z * axis.X ) + ( axis.Y * sin );
-        val[ M10 ] = ( oc * axis.X * axis.Y ) + ( axis.Z * sin );
-        val[ M11 ] = ( oc * axis.Y * axis.Y ) + cos;
-        val[ M12 ] = ( oc * axis.Y * axis.Z ) - ( axis.X * sin );
-        val[ M20 ] = ( oc * axis.Z * axis.X ) - ( axis.Y * sin );
-        val[ M21 ] = ( oc * axis.Y * axis.Z ) + ( axis.X * sin );
-        val[ M22 ] = ( oc * axis.Z * axis.Z ) + cos;
+        Val[ M00 ] = ( oc * axis.X * axis.X ) + cos;
+        Val[ M01 ] = ( oc * axis.X * axis.Y ) - ( axis.Z * sin );
+        Val[ M02 ] = ( oc * axis.Z * axis.X ) + ( axis.Y * sin );
+        Val[ M10 ] = ( oc * axis.X * axis.Y ) + ( axis.Z * sin );
+        Val[ M11 ] = ( oc * axis.Y * axis.Y ) + cos;
+        Val[ M12 ] = ( oc * axis.Y * axis.Z ) - ( axis.X * sin );
+        Val[ M20 ] = ( oc * axis.Z * axis.X ) - ( axis.Y * sin );
+        Val[ M21 ] = ( oc * axis.Y * axis.Z ) + ( axis.X * sin );
+        Val[ M22 ] = ( oc * axis.Z * axis.Z ) + cos;
 
         return this;
     }
@@ -223,17 +227,17 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 SetToTranslation( float x, float y )
     {
-        val[ M00 ] = 1;
-        val[ M10 ] = 0;
-        val[ M20 ] = 0;
+        Val[ M00 ] = 1;
+        Val[ M10 ] = 0;
+        Val[ M20 ] = 0;
 
-        val[ M01 ] = 0;
-        val[ M11 ] = 1;
-        val[ M21 ] = 0;
+        Val[ M01 ] = 0;
+        Val[ M11 ] = 1;
+        Val[ M21 ] = 0;
 
-        val[ M02 ] = x;
-        val[ M12 ] = y;
-        val[ M22 ] = 1;
+        Val[ M02 ] = x;
+        Val[ M12 ] = y;
+        Val[ M22 ] = 1;
 
         return this;
     }
@@ -243,17 +247,17 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 SetToTranslation( Vector2 translation )
     {
-        val[ M00 ] = 1;
-        val[ M10 ] = 0;
-        val[ M20 ] = 0;
+        Val[ M00 ] = 1;
+        Val[ M10 ] = 0;
+        Val[ M20 ] = 0;
 
-        val[ M01 ] = 0;
-        val[ M11 ] = 1;
-        val[ M21 ] = 0;
+        Val[ M01 ] = 0;
+        Val[ M11 ] = 1;
+        Val[ M21 ] = 0;
 
-        val[ M02 ] = translation.X;
-        val[ M12 ] = translation.Y;
-        val[ M22 ] = 1;
+        Val[ M02 ] = translation.X;
+        Val[ M12 ] = translation.Y;
+        Val[ M22 ] = 1;
 
         return this;
     }
@@ -264,15 +268,15 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 SetToScaling( float scaleX, float scaleY )
     {
-        val[ M00 ] = scaleX;
-        val[ M10 ] = 0;
-        val[ M20 ] = 0;
-        val[ M01 ] = 0;
-        val[ M11 ] = scaleY;
-        val[ M21 ] = 0;
-        val[ M02 ] = 0;
-        val[ M12 ] = 0;
-        val[ M22 ] = 1;
+        Val[ M00 ] = scaleX;
+        Val[ M10 ] = 0;
+        Val[ M20 ] = 0;
+        Val[ M01 ] = 0;
+        Val[ M11 ] = scaleY;
+        Val[ M21 ] = 0;
+        Val[ M02 ] = 0;
+        Val[ M12 ] = 0;
+        Val[ M22 ] = 1;
 
         return this;
     }
@@ -282,35 +286,35 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 SetToScaling( Vector2 scale )
     {
-        val[ M00 ] = scale.X;
-        val[ M10 ] = 0;
-        val[ M20 ] = 0;
-        val[ M01 ] = 0;
-        val[ M11 ] = scale.Y;
-        val[ M21 ] = 0;
-        val[ M02 ] = 0;
-        val[ M12 ] = 0;
-        val[ M22 ] = 1;
+        Val[ M00 ] = scale.X;
+        Val[ M10 ] = 0;
+        Val[ M20 ] = 0;
+        Val[ M01 ] = 0;
+        Val[ M11 ] = scale.Y;
+        Val[ M21 ] = 0;
+        Val[ M02 ] = 0;
+        Val[ M12 ] = 0;
+        Val[ M22 ] = 1;
 
         return this;
     }
 
     public override string ToString()
     {
-        return $"[{val[ M00 ]} | {val[ M01 ]} | {val[ M02 ]}]\n"
-             + $"[{val[ M10 ]} | {val[ M11 ]} | {val[ M12 ]}]\n"
-             + $"[{val[ M20 ]} | {val[ M21 ]} | {val[ M22 ]}]";
+        return $"[{Val[ M00 ]} | {Val[ M01 ]} | {Val[ M02 ]}]\n"
+             + $"[{Val[ M10 ]} | {Val[ M11 ]} | {Val[ M12 ]}]\n"
+             + $"[{Val[ M20 ]} | {Val[ M21 ]} | {Val[ M22 ]}]";
     }
 
     /// <returns> The determinant of this matrix </returns>
     public float Det()
     {
-        return ( ( val[ M00 ] * val[ M11 ] * val[ M22 ] )
-               + ( val[ M01 ] * val[ M12 ] * val[ M20 ] )
-               + ( val[ M02 ] * val[ M10 ] * val[ M21 ] ) )
-             - ( val[ M00 ] * val[ M12 ] * val[ M21 ] )
-             - ( val[ M01 ] * val[ M10 ] * val[ M22 ] )
-             - ( val[ M02 ] * val[ M11 ] * val[ M20 ] );
+        return ( ( Val[ M00 ] * Val[ M11 ] * Val[ M22 ] )
+               + ( Val[ M01 ] * Val[ M12 ] * Val[ M20 ] )
+               + ( Val[ M02 ] * Val[ M10 ] * Val[ M21 ] ) )
+             - ( Val[ M00 ] * Val[ M12 ] * Val[ M21 ] )
+             - ( Val[ M01 ] * Val[ M10 ] * Val[ M22 ] )
+             - ( Val[ M02 ] * Val[ M11 ] * Val[ M20 ] );
     }
 
     /// <summary>
@@ -329,25 +333,25 @@ public class Matrix3
 
         var invDet = 1.0f / det;
 
-        _tmp[ M00 ] = ( val[ M11 ] * val[ M22 ] ) - ( val[ M21 ] * val[ M12 ] );
-        _tmp[ M10 ] = ( val[ M20 ] * val[ M12 ] ) - ( val[ M10 ] * val[ M22 ] );
-        _tmp[ M20 ] = ( val[ M10 ] * val[ M21 ] ) - ( val[ M20 ] * val[ M11 ] );
-        _tmp[ M01 ] = ( val[ M21 ] * val[ M02 ] ) - ( val[ M01 ] * val[ M22 ] );
-        _tmp[ M11 ] = ( val[ M00 ] * val[ M22 ] ) - ( val[ M20 ] * val[ M02 ] );
-        _tmp[ M21 ] = ( val[ M20 ] * val[ M01 ] ) - ( val[ M00 ] * val[ M21 ] );
-        _tmp[ M02 ] = ( val[ M01 ] * val[ M12 ] ) - ( val[ M11 ] * val[ M02 ] );
-        _tmp[ M12 ] = ( val[ M10 ] * val[ M02 ] ) - ( val[ M00 ] * val[ M12 ] );
-        _tmp[ M22 ] = ( val[ M00 ] * val[ M11 ] ) - ( val[ M10 ] * val[ M01 ] );
+        _tmp[ M00 ] = ( Val[ M11 ] * Val[ M22 ] ) - ( Val[ M21 ] * Val[ M12 ] );
+        _tmp[ M10 ] = ( Val[ M20 ] * Val[ M12 ] ) - ( Val[ M10 ] * Val[ M22 ] );
+        _tmp[ M20 ] = ( Val[ M10 ] * Val[ M21 ] ) - ( Val[ M20 ] * Val[ M11 ] );
+        _tmp[ M01 ] = ( Val[ M21 ] * Val[ M02 ] ) - ( Val[ M01 ] * Val[ M22 ] );
+        _tmp[ M11 ] = ( Val[ M00 ] * Val[ M22 ] ) - ( Val[ M20 ] * Val[ M02 ] );
+        _tmp[ M21 ] = ( Val[ M20 ] * Val[ M01 ] ) - ( Val[ M00 ] * Val[ M21 ] );
+        _tmp[ M02 ] = ( Val[ M01 ] * Val[ M12 ] ) - ( Val[ M11 ] * Val[ M02 ] );
+        _tmp[ M12 ] = ( Val[ M10 ] * Val[ M02 ] ) - ( Val[ M00 ] * Val[ M12 ] );
+        _tmp[ M22 ] = ( Val[ M00 ] * Val[ M11 ] ) - ( Val[ M10 ] * Val[ M01 ] );
 
-        val[ M00 ] = invDet * _tmp[ M00 ];
-        val[ M10 ] = invDet * _tmp[ M10 ];
-        val[ M20 ] = invDet * _tmp[ M20 ];
-        val[ M01 ] = invDet * _tmp[ M01 ];
-        val[ M11 ] = invDet * _tmp[ M11 ];
-        val[ M21 ] = invDet * _tmp[ M21 ];
-        val[ M02 ] = invDet * _tmp[ M02 ];
-        val[ M12 ] = invDet * _tmp[ M12 ];
-        val[ M22 ] = invDet * _tmp[ M22 ];
+        Val[ M00 ] = invDet * _tmp[ M00 ];
+        Val[ M10 ] = invDet * _tmp[ M10 ];
+        Val[ M20 ] = invDet * _tmp[ M20 ];
+        Val[ M01 ] = invDet * _tmp[ M01 ];
+        Val[ M11 ] = invDet * _tmp[ M11 ];
+        Val[ M21 ] = invDet * _tmp[ M21 ];
+        Val[ M02 ] = invDet * _tmp[ M02 ];
+        Val[ M12 ] = invDet * _tmp[ M12 ];
+        Val[ M22 ] = invDet * _tmp[ M22 ];
 
         return this;
     }
@@ -357,7 +361,7 @@ public class Matrix3
     /// <returns> This matrix for the purposes of chaining. </returns>
     public Matrix3 Set( Matrix3 mat )
     {
-        Array.Copy( mat.val, 0, val, 0, val.Length );
+        Array.Copy( mat.Val, 0, Val, 0, Val.Length );
 
         return this;
     }
@@ -370,15 +374,15 @@ public class Matrix3
     /// <returns> This matrix for the purposes of chaining. </returns>
     public Matrix3 Set( Affine2 affine )
     {
-        val[ M00 ] = affine.m00;
-        val[ M10 ] = affine.m10;
-        val[ M20 ] = 0;
-        val[ M01 ] = affine.m01;
-        val[ M11 ] = affine.m11;
-        val[ M21 ] = 0;
-        val[ M02 ] = affine.m02;
-        val[ M12 ] = affine.m12;
-        val[ M22 ] = 1;
+        Val[ M00 ] = affine.m00;
+        Val[ M10 ] = affine.m10;
+        Val[ M20 ] = 0;
+        Val[ M01 ] = affine.m01;
+        Val[ M11 ] = affine.m11;
+        Val[ M21 ] = 0;
+        Val[ M02 ] = affine.m02;
+        Val[ M12 ] = affine.m12;
+        Val[ M22 ] = 1;
 
         return this;
     }
@@ -390,15 +394,15 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining operations. </returns>
     public Matrix3 Set( Matrix4 mat )
     {
-        val[ M00 ] = mat.val[ Matrix4.M00 ];
-        val[ M10 ] = mat.val[ Matrix4.M10 ];
-        val[ M20 ] = mat.val[ Matrix4.M20 ];
-        val[ M01 ] = mat.val[ Matrix4.M01 ];
-        val[ M11 ] = mat.val[ Matrix4.M11 ];
-        val[ M21 ] = mat.val[ Matrix4.M21 ];
-        val[ M02 ] = mat.val[ Matrix4.M02 ];
-        val[ M12 ] = mat.val[ Matrix4.M12 ];
-        val[ M22 ] = mat.val[ Matrix4.M22 ];
+        Val[ M00 ] = mat.Val[ Matrix4.M00 ];
+        Val[ M10 ] = mat.Val[ Matrix4.M10 ];
+        Val[ M20 ] = mat.Val[ Matrix4.M20 ];
+        Val[ M01 ] = mat.Val[ Matrix4.M01 ];
+        Val[ M11 ] = mat.Val[ Matrix4.M11 ];
+        Val[ M21 ] = mat.Val[ Matrix4.M21 ];
+        Val[ M02 ] = mat.Val[ Matrix4.M02 ];
+        Val[ M12 ] = mat.Val[ Matrix4.M12 ];
+        Val[ M22 ] = mat.Val[ Matrix4.M22 ];
 
         return this;
     }
@@ -415,7 +419,7 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining methods together. </returns>
     public Matrix3 Set( float[] values )
     {
-        Array.Copy( values, 0, val, 0, val.Length );
+        Array.Copy( values, 0, Val, 0, Val.Length );
 
         return this;
     }
@@ -427,8 +431,8 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining. </returns>
     public Matrix3 Trn( Vector2 vector )
     {
-        val[ M02 ] += vector.X;
-        val[ M12 ] += vector.Y;
+        Val[ M02 ] += vector.X;
+        Val[ M12 ] += vector.Y;
 
         return this;
     }
@@ -441,8 +445,8 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining. </returns>
     public Matrix3 Trn( float x, float y )
     {
-        val[ M02 ] += x;
-        val[ M12 ] += y;
+        Val[ M02 ] += x;
+        Val[ M12 ] += y;
 
         return this;
     }
@@ -456,8 +460,8 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining. </returns>
     public Matrix3 Trn( Vector3 vector )
     {
-        val[ M02 ] += vector.X;
-        val[ M12 ] += vector.Y;
+        Val[ M02 ] += vector.X;
+        Val[ M12 ] += vector.Y;
 
         return this;
     }
@@ -483,7 +487,7 @@ public class Matrix3
         _tmp[ M12 ] = y;
         _tmp[ M22 ] = 1;
 
-        Mul( val, _tmp );
+        Mul( Val, _tmp );
 
         return this;
     }
@@ -508,7 +512,7 @@ public class Matrix3
         _tmp[ M12 ] = translation.Y;
         _tmp[ M22 ] = 1;
 
-        Mul( val, _tmp );
+        Mul( Val, _tmp );
 
         return this;
     }
@@ -553,7 +557,7 @@ public class Matrix3
         _tmp[ M12 ] = 0;
         _tmp[ M22 ] = 1;
 
-        Mul( val, _tmp );
+        Mul( Val, _tmp );
 
         return this;
     }
@@ -577,7 +581,7 @@ public class Matrix3
         _tmp[ M12 ] = 0;
         _tmp[ M22 ] = 1;
 
-        Mul( val, _tmp );
+        Mul( Val, _tmp );
 
         return this;
     }
@@ -600,7 +604,7 @@ public class Matrix3
         _tmp[ M12 ] = 0;
         _tmp[ M22 ] = 1;
 
-        Mul( val, _tmp );
+        Mul( Val, _tmp );
 
         return this;
     }
@@ -611,13 +615,13 @@ public class Matrix3
     /// <returns> The float values that make up this matrix in column-major order. </returns>
     public float[] GetValues()
     {
-        return val;
+        return Val;
     }
 
     public Vector2 GetTranslation( Vector2 position )
     {
-        position.X = val[ M02 ];
-        position.Y = val[ M12 ];
+        position.X = Val[ M02 ];
+        position.Y = Val[ M12 ];
 
         return position;
     }
@@ -628,20 +632,20 @@ public class Matrix3
     /// <returns> The provided vector for chaining. </returns>
     public Vector2 GetScale( Vector2 scale )
     {
-        scale.X = ( float ) Math.Sqrt( ( val[ M00 ] * val[ M00 ] ) + ( val[ M01 ] * val[ M01 ] ) );
-        scale.Y = ( float ) Math.Sqrt( ( val[ M10 ] * val[ M10 ] ) + ( val[ M11 ] * val[ M11 ] ) );
+        scale.X = ( float ) Math.Sqrt( ( Val[ M00 ] * Val[ M00 ] ) + ( Val[ M01 ] * Val[ M01 ] ) );
+        scale.Y = ( float ) Math.Sqrt( ( Val[ M10 ] * Val[ M10 ] ) + ( Val[ M11 ] * Val[ M11 ] ) );
 
         return scale;
     }
 
     public float GetRotation()
     {
-        return MathUtils.RADIANS_TO_DEGREES * ( float ) Math.Atan2( val[ M10 ], val[ M00 ] );
+        return MathUtils.RADIANS_TO_DEGREES * ( float ) Math.Atan2( Val[ M10 ], Val[ M00 ] );
     }
 
     public float GetRotationRad()
     {
-        return ( float ) Math.Atan2( val[ M10 ], val[ M00 ] );
+        return ( float ) Math.Atan2( Val[ M10 ], Val[ M00 ] );
     }
 
     /// <summary>
@@ -651,8 +655,8 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix3 Scl( float scale )
     {
-        val[ M00 ] *= scale;
-        val[ M11 ] *= scale;
+        Val[ M00 ] *= scale;
+        Val[ M11 ] *= scale;
 
         return this;
     }
@@ -665,8 +669,8 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining methods together. </returns>
     public Matrix3 Scl( Vector2 scale )
     {
-        val[ M00 ] *= scale.X;
-        val[ M11 ] *= scale.Y;
+        Val[ M00 ] *= scale.X;
+        Val[ M11 ] *= scale.Y;
 
         return this;
     }
@@ -682,8 +686,8 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining methods together. </returns>
     public Matrix3 Scl( Vector3 scale )
     {
-        val[ M00 ] *= scale.X;
-        val[ M11 ] *= scale.Y;
+        Val[ M00 ] *= scale.X;
+        Val[ M11 ] *= scale.Y;
 
         return this;
     }
@@ -694,9 +698,9 @@ public class Matrix3
     /// <returns> This matrix for the purpose of chaining methods together. </returns>
     public Matrix3 Transpose()
     {
-        ( val[ M01 ], val[ M10 ] ) = ( val[ M10 ], val[ M01 ] );
-        ( val[ M02 ], val[ M20 ] ) = ( val[ M20 ], val[ M02 ] );
-        ( val[ M12 ], val[ M21 ] ) = ( val[ M12 ], val[ M21 ] );
+        ( Val[ M01 ], Val[ M10 ] ) = ( Val[ M10 ], Val[ M01 ] );
+        ( Val[ M02 ], Val[ M20 ] ) = ( Val[ M20 ], Val[ M02 ] );
+        ( Val[ M12 ], Val[ M21 ] ) = ( Val[ M12 ], Val[ M21 ] );
 
         return this;
     }

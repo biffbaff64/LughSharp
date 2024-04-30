@@ -100,7 +100,7 @@ public class Affine2
     /// <returns> This matrix for the purposes of chaining.  </returns>
     public Affine2 SetFrom( Matrix3 matrix )
     {
-        var other = matrix.val;
+        var other = matrix.Val;
 
         m00 = other[ Matrix3.M00 ];
         m01 = other[ Matrix3.M01 ];
@@ -128,7 +128,7 @@ public class Affine2
     /// <returns>This matrix for the purpose of chaining operations.</returns>
     public Affine2 SetFrom( Matrix4 matrix )
     {
-        var other = matrix.val;
+        var other = matrix.Val;
 
         m00 = other[ Matrix4.M00 ];
         m01 = other[ Matrix4.M01 ];

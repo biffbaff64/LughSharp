@@ -100,7 +100,7 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
 
                 if ( ( _tmp2 != null ) && ( i > 0 ) )
                 {
-                    tempLength += _tmp2.Dst( _tmp3 );
+                    tempLength += _tmp2.Distance( _tmp3 );
                 }
             }
         }
@@ -167,23 +167,23 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
         var t2 = u * u;
         var t3 = t2 * u;
 
-        output.Set( points[ i ] ).Scl( ( ( ( 3f * t3 ) - ( 6f * t2 ) ) + 4f ) * D6 );
+        output.Set( points[ i ] ).Scale( ( ( ( 3f * t3 ) - ( 6f * t2 ) ) + 4f ) * D6 );
 
         if ( continuous || ( i > 0 ) )
         {
             output.Add( tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
-                           .Scl( dt * dt * dt * D6 ) );
+                           .Scale( dt * dt * dt * D6 ) );
         }
 
         if ( continuous || ( i < ( n - 1 ) ) )
         {
             output.Add( tmp.Set( points[ ( i + 1 ) % n ] )
-                           .Scl( ( ( -3f * t3 ) + ( 3f * t2 ) + ( 3f * u ) + 1f ) * D6 ) );
+                           .Scale( ( ( -3f * t3 ) + ( 3f * t2 ) + ( 3f * u ) + 1f ) * D6 ) );
         }
 
         if ( continuous || ( i < ( n - 2 ) ) )
         {
-            output.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scl( t3 * D6 ) );
+            output.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scale( t3 * D6 ) );
         }
 
         return output;
@@ -207,23 +207,23 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
         var dt = 1f - u;
         var t2 = u * u;
 
-        output.Set( points[ i ] ).Scl( ( 1.5f * t2 ) - ( 2 * u ) );
+        output.Set( points[ i ] ).Scale( ( 1.5f * t2 ) - ( 2 * u ) );
 
         if ( continuous || ( i > 0 ) )
         {
             output.Add( tmp.Set( points[ ( ( n + i ) - 1 ) % n ] )
-                           .Scl( -0.5f * dt * dt ) );
+                           .Scale( -0.5f * dt * dt ) );
         }
 
         if ( continuous || ( i < ( n - 1 ) ) )
         {
             output.Add( tmp.Set( points[ ( i + 1 ) % n ] )
-                           .Scl( ( -1.5f * t2 ) + u + 0.5f ) );
+                           .Scale( ( -1.5f * t2 ) + u + 0.5f ) );
         }
 
         if ( continuous || ( i < ( n - 2 ) ) )
         {
-            output.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scl( 0.5f * t2 ) );
+            output.Add( tmp.Set( points[ ( i + 2 ) % n ] ).Scale( 0.5f * t2 ) );
         }
 
         return output;
@@ -391,12 +391,12 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
         }
 
         var result = start % SpanCount;
-        var dst    = input.Dst2( Knots![ result ] );
+        var dst    = input.Distance2( Knots![ result ] );
 
         for ( var i = 1; i < count; i++ )
         {
             var idx = ( start + i ) % SpanCount;
-            var d   = input.Dst2( Knots[ idx ] );
+            var d   = input.Distance2( Knots[ idx ] );
 
             if ( d < dst )
             {
@@ -421,8 +421,8 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
         var previous = Knots[ n > 0 ? n - 1 : SpanCount - 1 ];
         var next     = Knots[ ( n + 1 ) % SpanCount ];
 
-        var dstPrev2 = input.Dst2( previous );
-        var dstNext2 = input.Dst2( next );
+        var dstPrev2 = input.Distance2( previous );
+        var dstNext2 = input.Distance2( next );
         T   p1;
         T   p2;
         T   p3;
@@ -441,9 +441,9 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
             n  = n > 0 ? n - 1 : SpanCount - 1;
         }
 
-        var l1Sqr = p1.Dst2( p2 );
-        var l2Sqr = p3.Dst2( p2 );
-        var l3Sqr = p3.Dst2( p1 );
+        var l1Sqr = p1.Distance2( p2 );
+        var l2Sqr = p3.Distance2( p2 );
+        var l3Sqr = p3.Distance2( p1 );
         var l1    = ( float ) Math.Sqrt( l1Sqr );
         var s     = ( ( l2Sqr + l1Sqr ) - l3Sqr ) / ( 2 * l1 );
         var u     = MathUtils.Clamp( ( l1 - s ) / l1, 0f, 1f );

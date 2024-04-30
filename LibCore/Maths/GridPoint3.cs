@@ -28,12 +28,17 @@ namespace LughSharp.LibCore.Maths;
 /// <summary>
 ///     A point in a 3D grid, with integer x and y coordinates
 /// </summary>
+[PublicAPI]
 public class GridPoint3
 {
-    /// <summary>
+     public int X { get; set; }
+     public int Y { get; set; }
+     public int Z { get; set; }
+ 
+   /// <summary>
     ///     Constructs a 3D grid point with all coordinates pointing to the origin (0, 0, 0).
     /// </summary>
-    public GridPoint3()
+    public GridPoint3() : this( 0, 0, 0 )
     {
     }
 
@@ -60,10 +65,6 @@ public class GridPoint3
         Y = point.Y;
         Z = point.Z;
     }
-
-    public int X { get; set; }
-    public int Y { get; set; }
-    public int Z { get; set; }
 
     /// <summary>
     ///     Sets the coordinates of this 3D grid point to that of another.
@@ -223,6 +224,7 @@ public class GridPoint3
         return new GridPoint3( this );
     }
 
+    /// <inheritdoc/>
     public override bool Equals( object? o )
     {
         if ( this == o )
@@ -240,17 +242,19 @@ public class GridPoint3
         return ( X == g.X ) && ( Y == g.Y ) && ( Z == g.Z );
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         const int PRIME = 17;
 
-        var result = PRIME + X;
-        result = ( PRIME * result ) + Y;
-        result = ( PRIME * result ) + Z;
+        var result = PRIME + 31;
+        result = ( PRIME * result ) + 33;
+        result = ( PRIME * result ) + 33;
 
         return result;
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $"({X}, {Y}, {Z})";

@@ -188,7 +188,7 @@ public class ShapeRenderer : IDisposable
         if ( _matrixDirty )
         {
             _combinedMatrix.Set( _projectionMatrix );
-            Matrix4.Mul( _combinedMatrix.val, _transformMatrix.val );
+            Matrix4.Mul( _combinedMatrix.Val, _transformMatrix.Val );
             _matrixDirty = false;
         }
 

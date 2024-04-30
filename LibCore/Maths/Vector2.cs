@@ -124,7 +124,7 @@ public class Vector2 : IVector< Vector2 >
         return ( X * v.X ) + ( Y * v.Y );
     }
 
-    public Vector2 Scl( float scalar )
+    public Vector2 Scale( float scalar )
     {
         X *= scalar;
         Y *= scalar;
@@ -132,7 +132,7 @@ public class Vector2 : IVector< Vector2 >
         return this;
     }
 
-    public Vector2 Scl( Vector2 v )
+    public Vector2 Scale( Vector2 v )
     {
         X *= v.X;
         Y *= v.Y;
@@ -156,7 +156,7 @@ public class Vector2 : IVector< Vector2 >
         return this;
     }
 
-    public float Dst( Vector2 v )
+    public float Distance( Vector2 v )
     {
         var xD = v.X - X;
         var yD = v.Y - Y;
@@ -164,7 +164,7 @@ public class Vector2 : IVector< Vector2 >
         return ( float ) Math.Sqrt( ( xD * xD ) + ( yD * yD ) );
     }
 
-    public float Dst2( Vector2 v )
+    public float Distance2( Vector2 v )
     {
         var xD = v.X - X;
         var yD = v.Y - Y;
@@ -181,7 +181,7 @@ public class Vector2 : IVector< Vector2 >
     {
         var len2 = Len2();
 
-        return len2 > limit2 ? Scl( ( float ) Math.Sqrt( limit2 / len2 ) ) : this;
+        return len2 > limit2 ? Scale( ( float ) Math.Sqrt( limit2 / len2 ) ) : this;
     }
 
     public Vector2 Clamp( float min, float max )
@@ -197,12 +197,12 @@ public class Vector2 : IVector< Vector2 >
 
         if ( len2 > max2 )
         {
-            return Scl( ( float ) Math.Sqrt( max2 / len2 ) );
+            return Scale( ( float ) Math.Sqrt( max2 / len2 ) );
         }
 
         var min2 = min * min;
 
-        return len2 < min2 ? Scl( ( float ) Math.Sqrt( min2 / len2 ) ) : this;
+        return len2 < min2 ? Scale( ( float ) Math.Sqrt( min2 / len2 ) ) : this;
     }
 
     public Vector2 SetLength( float len )
@@ -214,7 +214,7 @@ public class Vector2 : IVector< Vector2 >
     {
         var oldLen2 = Len2();
 
-        return ( oldLen2 == 0 ) || MathUtils.IsEqual( oldLen2, len2 ) ? this : Scl( ( float ) Math.Sqrt( len2 / oldLen2 ) );
+        return ( oldLen2 == 0 ) || MathUtils.IsEqual( oldLen2, len2 ) ? this : Scale( ( float ) Math.Sqrt( len2 / oldLen2 ) );
     }
 
     public Vector2 Lerp( Vector2 target, float alpha )
@@ -458,8 +458,8 @@ public class Vector2 : IVector< Vector2 >
 
     public Vector2 Mul( Matrix3 mat )
     {
-        var x = ( X * mat.val[ 0 ] ) + ( Y * mat.val[ 3 ] ) + mat.val[ 6 ];
-        var y = ( X * mat.val[ 1 ] ) + ( Y * mat.val[ 4 ] ) + mat.val[ 7 ];
+        var x = ( X * mat.Val[ 0 ] ) + ( Y * mat.Val[ 3 ] ) + mat.Val[ 6 ];
+        var y = ( X * mat.Val[ 1 ] ) + ( Y * mat.Val[ 4 ] ) + mat.Val[ 7 ];
 
         X = x;
         Y = y;

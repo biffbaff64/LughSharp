@@ -29,6 +29,7 @@ namespace LughSharp.LibCore.Maths;
 ///     A truncated rectangular pyramid. Used to define the viewable
 ///     region and its projection onto the screen.
 /// </summary>
+[PublicAPI]
 public class Frustrum
 {
     protected readonly static Vector3[] ClipSpacePlanePoints =
@@ -49,13 +50,13 @@ public class Frustrum
     ///     eight points making up the near and far clipping "rectangles".
     ///     Order is counter clockwise, starting at bottom left.
     /// </system>
-    public readonly Vector3[] planePoints =
+    public readonly Vector3[] PlanePoints =
     {
         new(), new(), new(), new(),
         new(), new(), new(), new()
     };
 
-    protected readonly float[] planePointsArray = new float[ 8 * 3 ];
+    protected readonly float[] PlanePointsArray = new float[ 8 * 3 ];
 
     static Frustrum()
     {
@@ -90,25 +91,25 @@ public class Frustrum
     /// <param name="inverseProjectionView">The combined projection and view matrices.</param>
     public virtual void Update( Matrix4 inverseProjectionView )
     {
-        Array.Copy( ClipSpacePlanePointsArray, 0, planePointsArray, 0, ClipSpacePlanePointsArray.Length );
+        Array.Copy( ClipSpacePlanePointsArray, 0, PlanePointsArray, 0, ClipSpacePlanePointsArray.Length );
 
-        Matrix4.Prj( inverseProjectionView.val, planePointsArray, 0, 8, 3 );
+        Matrix4.Prj( inverseProjectionView.Val, PlanePointsArray, 0, 8, 3 );
 
         for ( int i = 0, j = 0; i < 8; i++ )
         {
-            var v = planePoints[ i ];
+            var v = PlanePoints[ i ];
 
-            v.X = planePointsArray[ j++ ];
-            v.Y = planePointsArray[ j++ ];
-            v.Z = planePointsArray[ j++ ];
+            v.X = PlanePointsArray[ j++ ];
+            v.Y = PlanePointsArray[ j++ ];
+            v.Z = PlanePointsArray[ j++ ];
         }
 
-        Planes[ 0 ].Set( planePoints[ 1 ], planePoints[ 0 ], planePoints[ 2 ] );
-        Planes[ 1 ].Set( planePoints[ 4 ], planePoints[ 5 ], planePoints[ 7 ] );
-        Planes[ 2 ].Set( planePoints[ 0 ], planePoints[ 4 ], planePoints[ 3 ] );
-        Planes[ 3 ].Set( planePoints[ 5 ], planePoints[ 1 ], planePoints[ 6 ] );
-        Planes[ 4 ].Set( planePoints[ 2 ], planePoints[ 3 ], planePoints[ 6 ] );
-        Planes[ 5 ].Set( planePoints[ 4 ], planePoints[ 0 ], planePoints[ 1 ] );
+        Planes[ 0 ].Set( PlanePoints[ 1 ], PlanePoints[ 0 ], PlanePoints[ 2 ] );
+        Planes[ 1 ].Set( PlanePoints[ 4 ], PlanePoints[ 5 ], PlanePoints[ 7 ] );
+        Planes[ 2 ].Set( PlanePoints[ 0 ], PlanePoints[ 4 ], PlanePoints[ 3 ] );
+        Planes[ 3 ].Set( PlanePoints[ 5 ], PlanePoints[ 1 ], PlanePoints[ 6 ] );
+        Planes[ 4 ].Set( PlanePoints[ 2 ], PlanePoints[ 3 ], PlanePoints[ 6 ] );
+        Planes[ 5 ].Set( PlanePoints[ 4 ], PlanePoints[ 0 ], PlanePoints[ 1 ] );
     }
 
     /// <summary>

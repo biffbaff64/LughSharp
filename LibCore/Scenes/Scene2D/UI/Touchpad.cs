@@ -171,7 +171,7 @@ public class Touchpad : Widget
 
                 if ( length > 1 )
                 {
-                    _knobPercent.Scl( 1 / length );
+                    _knobPercent.Scale( 1 / length );
                 }
 
                 if ( _knobBounds.Contains( x, y ) )
@@ -180,7 +180,7 @@ public class Touchpad : Widget
                 }
                 else
                 {
-                    _knobPosition.Set( _knobPercent ).Nor().Scl( _knobBounds.Radius ).Add( _knobBounds.X, _knobBounds.Y );
+                    _knobPosition.Set( _knobPercent ).Nor().Scale( _knobBounds.Radius ).Add( _knobBounds.X, _knobBounds.Y );
                 }
             }
         }

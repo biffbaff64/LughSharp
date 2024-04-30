@@ -138,8 +138,8 @@ public class TooltipManager< T > where T : Actor
         tooltip.Container.Color.A   = 0.2f;
         tooltip.Container.SetScale( 0.05f );
 
-        tooltip.Container.AddAction( Actions.Actions.Parallel( Actions.Actions.FadeIn( actionTime, Interpolation.fade ),
-                                                               Actions.Actions.ScaleTo( 1, 1, actionTime, Interpolation.fade ) ) );
+        tooltip.Container.AddAction( Actions.Actions.Parallel( Actions.Actions.FadeIn( actionTime, Interpolation.Fade ),
+                                                               Actions.Actions.ScaleTo( 1, 1, actionTime, Interpolation.Fade ) ) );
     }
 
 
@@ -152,12 +152,12 @@ public class TooltipManager< T > where T : Actor
     {
         tooltip.Container.AddAction( Actions.Actions.Sequence(
                                                               Actions.Actions.Parallel(
-                                                                                       Actions.Actions.Alpha( 0.2f, 0.2f, Interpolation.fade ),
+                                                                                       Actions.Actions.Alpha( 0.2f, 0.2f, Interpolation.Fade ),
                                                                                        Actions.Actions.ScaleTo(
                                                                                             0.05f,
                                                                                             0.05f,
                                                                                             0.2f,
-                                                                                            Interpolation.fade ) ),
+                                                                                            Interpolation.Fade ) ),
                                                               Actions.Actions.RemoveActor() ) );
     }
 

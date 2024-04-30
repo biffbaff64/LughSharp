@@ -72,12 +72,12 @@ public class Segment
 
     public virtual float Len()
     {
-        return VectorA.Dst( VectorB );
+        return VectorA.Distance( VectorB );
     }
 
     public virtual float Len2()
     {
-        return VectorA.Dst2( VectorB );
+        return VectorA.Distance2( VectorB );
     }
 
     /// <summary>
