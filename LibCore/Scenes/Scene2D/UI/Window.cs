@@ -41,21 +41,30 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class Window : Table
 {
+    public bool   DrawTitleTable  { get; set; }
+    public Label? TitleLabel      { get; set; }
+    public bool   IsMovable       { get; set; } = true;
+    public bool   IsModal         { get; set; }
+    public bool   IsResizable     { get; set; }
+    public bool   Dragging        { get; set; }
+    public int    ResizeBorder    { get; set; } = 8;
+    public bool   KeepWithinStage { get; set; } = true;
+
+    // ------------------------------------------------------------------------
+
+    protected int Edge { get; set; }
+
     // ------------------------------------------------------------------------
 
     private const int DEFAULT_WIDTH  = 150;
     private const int DEFAULT_HEIGHT = 150;
     private const int MOVE           = 1 << 5;
 
-    private readonly static Vector2      _tmpPosition = new();
-    private readonly static Vector2      _tmpSize     = new();
-    private                 WindowStyle? _style;
+    private readonly static Vector2 _tmpPosition = new();
+    private readonly static Vector2 _tmpSize     = new();
 
-    private Table? _titleTable;
-
-    // ------------------------------------------------------------------------
-
-    protected int edge;
+    private WindowStyle? _style;
+    private Table?       _titleTable;
 
     // ------------------------------------------------------------------------
 
@@ -75,15 +84,6 @@ public class Window : Table
     {
         Setup( title, style );
     }
-
-    public bool   DrawTitleTable  { get; set; }
-    public Label? TitleLabel      { get; set; }
-    public bool   IsMovable       { get; set; } = true;
-    public bool   IsModal         { get; set; }
-    public bool   IsResizable     { get; set; }
-    public bool   Dragging        { get; set; }
-    public int    ResizeBorder    { get; set; } = 8;
-    public bool   KeepWithinStage { get; set; } = true;
 
     /// <summary>
     ///     This windows <see cref="WindowStyle" /> property.
@@ -129,6 +129,9 @@ public class Window : Table
         AddListener( new WindowInputListener( this ) );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void EnsureWithinStage()
     {
         if ( !KeepWithinStage || ( Stage == null ) )
@@ -199,7 +202,7 @@ public class Window : Table
         }
     }
 
-    public new void Draw( IBatch batch, float parentAlpha )
+    public override void Draw( IBatch batch, float parentAlpha )
     {
         if ( Stage != null )
         {
@@ -226,10 +229,7 @@ public class Window : Table
 
     protected void DrawStageBackground( IBatch batch, float parentAlpha, float x, float y, float width, float height )
     {
-        if ( Color != null )
-        {
-            batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
-        }
+        batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
 
         Style?.StageBackground?.Draw( batch, x, y, width, height );
     }
@@ -242,7 +242,7 @@ public class Window : Table
 
         if ( _titleTable?.Color != null )
         {
-            _titleTable.Color.A = Color!.A;
+            _titleTable.Color.A = Color.A;
         }
 
         var padTop  = GetPadTop();
@@ -344,7 +344,7 @@ public class Window : Table
             return false;
         }
     }
-
+    
     internal class WindowInputListener : InputListener
     {
         private readonly Window _window;
@@ -373,7 +373,7 @@ public class Window : Table
             var right  = width - padRight;
             var bottom = padBottom;
 
-            _window.edge = 0;
+            _window.Edge = 0;
 
             if ( _window.IsResizable
               && ( x >= ( left - border ) )
@@ -382,48 +382,48 @@ public class Window : Table
             {
                 if ( x < ( left + border ) )
                 {
-                    _window.edge |= Align.LEFT;
+                    _window.Edge |= Align.LEFT;
                 }
 
                 if ( x > ( right - border ) )
                 {
-                    _window.edge |= Align.RIGHT;
+                    _window.Edge |= Align.RIGHT;
                 }
 
                 if ( y < ( bottom + border ) )
                 {
-                    _window.edge |= Align.BOTTOM;
+                    _window.Edge |= Align.BOTTOM;
                 }
 
-                if ( _window.edge != 0 )
+                if ( _window.Edge != 0 )
                 {
                     border += 25;
                 }
 
                 if ( x < ( left + border ) )
                 {
-                    _window.edge |= Align.LEFT;
+                    _window.Edge |= Align.LEFT;
                 }
 
                 if ( x > ( right - border ) )
                 {
-                    _window.edge |= Align.RIGHT;
+                    _window.Edge |= Align.RIGHT;
                 }
 
                 if ( y < ( bottom + border ) )
                 {
-                    _window.edge |= Align.BOTTOM;
+                    _window.Edge |= Align.BOTTOM;
                 }
             }
 
-            if ( _window is { IsMovable: true, edge: 0 }
+            if ( _window is { IsMovable: true, Edge: 0 }
               && ( y <= height )
               && ( y >= ( height - padTop ) )
               && ( x >= left )
               && ( x <= right )
                )
             {
-                _window.edge = MOVE;
+                _window.Edge = MOVE;
             }
         }
 
@@ -433,14 +433,14 @@ public class Window : Table
             {
                 UpdateEdge( x, y );
 
-                _window.Dragging = _window.edge != 0;
+                _window.Dragging = _window.Edge != 0;
                 _startX          = x;
                 _startY          = y;
                 _lastX           = x - _window.Width;
                 _lastY           = y - _window.Height;
             }
 
-            return ( _window.edge != 0 ) || _window.IsModal;
+            return ( _window.Edge != 0 ) || _window.IsModal;
         }
 
         public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
@@ -472,7 +472,7 @@ public class Window : Table
                              && ( stage != null )
                              && ( _window.Parent == stage.Root );
 
-            if ( ( _window.edge & MOVE ) != 0 )
+            if ( ( _window.Edge & MOVE ) != 0 )
             {
                 var amountX = x - _startX;
                 var amountY = y - _startY;
@@ -481,7 +481,7 @@ public class Window : Table
                 windowY += amountY;
             }
 
-            if ( ( _window.edge & Align.LEFT ) != 0 )
+            if ( ( _window.Edge & Align.LEFT ) != 0 )
             {
                 var amountX = x - _startX;
 
@@ -499,7 +499,7 @@ public class Window : Table
                 windowX += amountX;
             }
 
-            if ( ( _window.edge & Align.BOTTOM ) != 0 )
+            if ( ( _window.Edge & Align.BOTTOM ) != 0 )
             {
                 var amountY = y - _startY;
 
@@ -517,7 +517,7 @@ public class Window : Table
                 windowY += amountY;
             }
 
-            if ( ( _window.edge & Align.RIGHT ) != 0 )
+            if ( ( _window.Edge & Align.RIGHT ) != 0 )
             {
                 var amountX = x - _lastX - width;
 
@@ -534,7 +534,7 @@ public class Window : Table
                 width += amountX;
             }
 
-            if ( ( _window.edge & Align.TOP ) != 0 )
+            if ( ( _window.Edge & Align.TOP ) != 0 )
             {
                 var amountY = y - _lastY - height;
 

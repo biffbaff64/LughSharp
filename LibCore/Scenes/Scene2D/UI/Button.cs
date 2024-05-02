@@ -208,7 +208,7 @@ public class Button : Table, IDisableable
     /// <summary>
     ///     Returns appropriate background drawable from the style based on the current button state.
     /// </summary>
-    public IDrawable? GetBackgroundDrawable()
+    public virtual IDrawable? GetBackgroundDrawable()
     {
         if ( IsDisabled && ( Style?.Disabled != null ) )
         {
@@ -331,20 +331,11 @@ public class Button : Table, IDisableable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public void Toggle()
-    {
-        SetChecked( !IsChecked );
-    }
+    public void Toggle() => SetChecked( !IsChecked );
 
-    public bool IsPressed()
-    {
-        return ClickListener!.VisualPressed;
-    }
+    public bool IsPressed() => ClickListener!.VisualPressed;
 
-    public bool IsOver()
-    {
-        return ClickListener!.Over;
-    }
+    public bool IsOver() => ClickListener!.Over;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -379,40 +370,6 @@ public class Button : Table, IDisableable
     [PublicAPI]
     public class ButtonStyle
     {
-        public ButtonStyle()
-        {
-        }
-
-        public ButtonStyle( IDrawable? up, IDrawable? down, IDrawable? ischecked )
-        {
-            Up   = up;
-            Down = down;
-
-            Checked = ischecked;
-        }
-
-        public ButtonStyle( ButtonStyle style )
-        {
-            Up       = style.Up;
-            Down     = style.Down;
-            Over     = style.Over;
-            Focused  = style.Focused;
-            Disabled = style.Disabled;
-
-            Checked = style.Checked;
-
-            CheckedOver    = style.CheckedOver;
-            CheckedDown    = style.CheckedDown;
-            CheckedFocused = style.CheckedFocused;
-
-            PressedOffsetX   = style.PressedOffsetX;
-            PressedOffsetY   = style.PressedOffsetY;
-            UnpressedOffsetX = style.UnpressedOffsetX;
-            UnpressedOffsetY = style.UnpressedOffsetY;
-            CheckedOffsetX   = style.CheckedOffsetX;
-            CheckedOffsetY   = style.CheckedOffsetY;
-        }
-
         public IDrawable? Up               { get; set; }
         public IDrawable? Down             { get; set; }
         public IDrawable? Over             { get; set; }
@@ -428,6 +385,37 @@ public class Button : Table, IDisableable
         public float      UnpressedOffsetY { get; set; }
         public float      CheckedOffsetX   { get; set; }
         public float      CheckedOffsetY   { get; set; }
+
+        public ButtonStyle()
+        {
+        }
+
+        public ButtonStyle( IDrawable? up, IDrawable? down, IDrawable? ischecked )
+        {
+            Up   = up;
+            Down = down;
+
+            Checked = ischecked;
+        }
+
+        public ButtonStyle( ButtonStyle style )
+        {
+            Up               = style.Up;
+            Down             = style.Down;
+            Over             = style.Over;
+            Focused          = style.Focused;
+            Disabled         = style.Disabled;
+            Checked          = style.Checked;
+            CheckedOver      = style.CheckedOver;
+            CheckedDown      = style.CheckedDown;
+            CheckedFocused   = style.CheckedFocused;
+            PressedOffsetX   = style.PressedOffsetX;
+            PressedOffsetY   = style.PressedOffsetY;
+            UnpressedOffsetX = style.UnpressedOffsetX;
+            UnpressedOffsetY = style.UnpressedOffsetY;
+            CheckedOffsetX   = style.CheckedOffsetX;
+            CheckedOffsetY   = style.CheckedOffsetY;
+        }
     }
 
     // ------------------------------------------------------------------------

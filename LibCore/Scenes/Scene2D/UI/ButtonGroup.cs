@@ -32,6 +32,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///     The <see cref="CanCheck(T, bool)" /> method can be overridden to control
 ///     if a button check or uncheck is allowed.
 /// </para>
+[PublicAPI]
 public class ButtonGroup< T > where T : Button
 {
     private readonly List< T > _buttons        = new();
@@ -42,6 +43,8 @@ public class ButtonGroup< T > where T : Button
     private int  _minCheckCount;
     private bool _uncheckLast = true;
 
+    // ------------------------------------------------------------------------
+    
     public ButtonGroup()
     {
         _minCheckCount = 1;
@@ -208,13 +211,17 @@ public class ButtonGroup< T > where T : Button
         _minCheckCount = old;
     }
 
-    /// <returns> The first checked button, or null. </returns>
+    /// <summary>
+    ///     Returns the first checked button, or null.
+    /// </summary>
     public T? GetChecked()
     {
         return _checkedButtons.Count > 0 ? _checkedButtons[ 0 ] : null;
     }
 
-    /// <returns> The first checked button index, or -1. </returns>
+    /// <summary>
+    ///     Returns the first checked button index, or -1.
+    /// </summary>
     public int GetCheckedIndex()
     {
         if ( _checkedButtons.Count > 0 )

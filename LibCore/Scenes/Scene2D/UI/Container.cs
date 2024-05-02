@@ -32,8 +32,11 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///     This provides layout similar to a <see cref="Table" /> with a single cell but is
 ///     more lightweight.
 /// </summary>
+[PublicAPI]
 public class Container< T > : WidgetGroup where T : Actor
 {
+    public bool Rounding { get; set; } = true;
+
     private T?         _actor;
     private int        _align;
     private IDrawable? _background;
@@ -52,6 +55,8 @@ public class Container< T > : WidgetGroup where T : Actor
     private Value _prefHeight = Value.PrefHeight;
     private Value _prefWidth  = Value.PrefWidth;
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Creates a container with no actor.
     /// </summary>
@@ -65,8 +70,6 @@ public class Container< T > : WidgetGroup where T : Actor
     {
         SetActor( actor );
     }
-
-    public bool Rounding { get; set; } = true;
 
     /// <summary>
     ///     Sets the background drawable and, if adjustPadding is true, sets the container's
@@ -1188,9 +1191,7 @@ public class Container< T > : WidgetGroup where T : Actor
             return;
         }
 
-        var color = Color ?? Color.Black;
-
-        batch.SetColor( color.R, color.G, color.B, color.A * parentAlpha );
+        batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
         _background.Draw( batch, x, y, Width, Height );
     }
 
@@ -1238,38 +1239,4 @@ public class Container< T > : WidgetGroup where T : Actor
     }
 
     #endregion drawing
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    #region deprecated methods
-
-    [Obsolete]
-    public new void AddActor( Actor actor )
-    {
-        throw new NotSupportedException( "Use Container#setActor." );
-    }
-
-    [Obsolete]
-    public new void AddActorAt( int index, Actor actor )
-    {
-        throw new NotSupportedException( "Use Container#setActor." );
-    }
-
-    [Obsolete]
-    public new void AddActorBefore( Actor actorBefore, Actor actor )
-    {
-        throw new NotSupportedException( "Use Container#setActor." );
-    }
-
-    [Obsolete]
-    public new void AddActorAfter( Actor actorAfter, Actor actor )
-    {
-        throw new NotSupportedException( "Use Container#setActor." );
-    }
-
-    #endregion deprecated methods
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
 }

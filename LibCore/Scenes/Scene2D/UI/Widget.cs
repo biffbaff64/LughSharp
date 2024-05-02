@@ -40,6 +40,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///     A widget's mutator methods should call <see cref="Invalidate" /> or
 ///     <see cref="InvalidateHierarchy" /> as needed.
 /// </summary>
+[PublicAPI]
 public class Widget : Actor, ILayout
 {
     private bool _layoutEnabled = true;
@@ -62,10 +63,11 @@ public class Widget : Actor, ILayout
     /// <summary>
     ///     Ensures the actor has been laid out.
     ///     <para>
-    ///         Calls <see cref="ILayout.SetLayout" /> if <see cref="ILayout.Invalidate" /> has been called since the
-    ///         last time <see cref="ILayout.Validate" /> was called, or if the actor otherwise needs to be
-    ///         laid out. This method is usually called in <see cref="Actor.Draw(IBatch, float)" /> by
-    ///         the actor itself before drawing is performed.
+    ///         Calls <see cref="ILayout.SetLayout" /> if <see cref="ILayout.Invalidate" /> has
+    ///         been called since the last time <see cref="ILayout.Validate" /> was called, or
+    ///         if the actor otherwise needs to be laid out. This method is usually called in
+    ///         <see cref="Actor.Draw(IBatch, float)" /> by the actor itself before drawing is
+    ///         performed.
     ///     </para>
     /// </summary>
     public virtual void Validate()
@@ -184,20 +186,15 @@ public class Widget : Actor, ILayout
         }
     }
 
-    /// <summary>
-    ///     If this method is overridden, the super method or <see cref="Validate" />
-    ///     should be called to ensure the widget is laid out.
-    /// </summary>
+    /// <inheritdoc/>
     public override void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
     }
 
-    protected virtual new void SizeChanged()
+    /// <inheritdoc/>
+    public override void SizeChanged()
     {
         Invalidate();
     }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
 }

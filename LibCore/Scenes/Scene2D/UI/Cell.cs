@@ -25,36 +25,9 @@
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
+[PublicAPI]
 public class Cell : IPoolable
 {
-    private const float ZEROF   = 0f;
-    private const float ONEF    = 1f;
-    private const int   ZEROI   = 0;
-    private const int   ONEI    = 1;
-    private const int   CENTERI = ONEI;
-    private const int   TOPI    = Align.TOP;
-    private const int   BOTTOMI = Align.BOTTOM;
-    private const int   LEFTI   = Align.LEFT;
-    private const int   RIGHTI  = Align.RIGHT;
-    private       Cell? _defaults;
-
-    private IFiles? _files;
-
-    /// <summary>
-    ///     Default constructor.
-    /// </summary>
-    public Cell()
-    {
-        CellAboveIndex = -1;
-
-        var defaults = GetCellDefaults();
-
-        if ( defaults != null )
-        {
-            Set( defaults );
-        }
-    }
-
     public Value? MinWidth    { get; set; }
     public Value? MinHeight   { get; set; }
     public Value? PrefWidth   { get; set; }
@@ -95,20 +68,36 @@ public class Cell : IPoolable
     public float  ComputedPadBottom { get; set; }
     public float  ComputedPadRight  { get; set; }
 
-    // -------------------- From IPoolable.cs --------------------
+    // ------------------------------------------------------------------------
+
+    private const float ZEROF   = 0f;
+    private const float ONEF    = 1f;
+    private const int   ZEROI   = 0;
+    private const int   ONEI    = 1;
+    private const int   CENTERI = ONEI;
+    private const int   TOPI    = Align.TOP;
+    private const int   BOTTOMI = Align.BOTTOM;
+    private const int   LEFTI   = Align.LEFT;
+    private const int   RIGHTI  = Align.RIGHT;
+
+    private Cell?   _defaults;
+    private IFiles? _files;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Reset state so the cell can be reused, setting all constraints to
-    ///     their <see cref="GetCellDefaults()" /> values.
+    ///     Default constructor.
     /// </summary>
-    public void Reset()
+    public Cell()
     {
-        Actor          = null;
-        Table          = null!;
-        EndRow         = false;
         CellAboveIndex = -1;
 
-        Set( GetCellDefaults() );
+        var defaults = GetCellDefaults();
+
+        if ( defaults != null )
+        {
+            Set( defaults );
+        }
     }
 
     /// <summary>
@@ -652,7 +641,7 @@ public class Cell : IPoolable
     {
         if ( space < 0 )
         {
-            throw new ArgumentException( "space cannot be < 0: " + space );
+            throw new ArgumentException( $"space cannot be < 0: {space}" );
         }
 
         Space( Value.Fixed.ValueOf( space ) );
@@ -664,30 +653,28 @@ public class Cell : IPoolable
     {
         if ( top < 0 )
         {
-            throw new ArgumentException( "top cannot be < 0: " + top );
+            throw new ArgumentException( $"top cannot be < 0: {top}" );
         }
 
         if ( left < 0 )
         {
-            throw new ArgumentException( "left cannot be < 0: " + left );
+            throw new ArgumentException( $"left cannot be < 0: {left}" );
         }
 
         if ( bottom < 0 )
         {
-            throw new ArgumentException( "bottom cannot be < 0: " + bottom );
+            throw new ArgumentException( $"bottom cannot be < 0: {bottom}" );
         }
 
         if ( right < 0 )
         {
-            throw new ArgumentException( "right cannot be < 0: " + right );
+            throw new ArgumentException( $"right cannot be < 0: {right}" );
         }
 
-        Space(
-              Value.Fixed.ValueOf( top ),
-              Value.Fixed.ValueOf( left ),
-              Value.Fixed.ValueOf( bottom ),
-              Value.Fixed.ValueOf( right )
-             );
+        Space( Value.Fixed.ValueOf( top ),
+               Value.Fixed.ValueOf( left ),
+               Value.Fixed.ValueOf( bottom ),
+               Value.Fixed.ValueOf( right ) );
 
         return this;
     }
@@ -696,7 +683,7 @@ public class Cell : IPoolable
     {
         if ( spaceTop < 0 )
         {
-            throw new ArgumentException( "spaceTop cannot be < 0: " + spaceTop );
+            throw new ArgumentException( $"spaceTop cannot be < 0: {spaceTop}" );
         }
 
         SpaceTop = Value.Fixed.ValueOf( spaceTop );
@@ -708,7 +695,7 @@ public class Cell : IPoolable
     {
         if ( spaceLeft < 0 )
         {
-            throw new ArgumentException( "spaceLeft cannot be < 0: " + spaceLeft );
+            throw new ArgumentException( $"spaceLeft cannot be < 0: {spaceLeft}" );
         }
 
         SpaceLeft = Value.Fixed.ValueOf( spaceLeft );
@@ -720,7 +707,7 @@ public class Cell : IPoolable
     {
         if ( spaceBottom < 0 )
         {
-            throw new ArgumentException( "spaceBottom cannot be < 0: " + spaceBottom );
+            throw new ArgumentException( $"spaceBottom cannot be < 0: {spaceBottom}" );
         }
 
         SpaceBottom = Value.Fixed.ValueOf( spaceBottom );
@@ -732,7 +719,7 @@ public class Cell : IPoolable
     {
         if ( spaceRight < 0 )
         {
-            throw new ArgumentException( "spaceRight cannot be < 0: " + spaceRight );
+            throw new ArgumentException( $"spaceRight cannot be < 0: {spaceRight}" );
         }
 
         SpaceRight = Value.Fixed.ValueOf( spaceRight );
@@ -806,12 +793,10 @@ public class Cell : IPoolable
 
     public Cell Pad( float top, float left, float bottom, float right )
     {
-        Pad(
-            Value.Fixed.ValueOf( top ),
-            Value.Fixed.ValueOf( left ),
-            Value.Fixed.ValueOf( bottom ),
-            Value.Fixed.ValueOf( right )
-           );
+        Pad( Value.Fixed.ValueOf( top ),
+             Value.Fixed.ValueOf( left ),
+             Value.Fixed.ValueOf( bottom ),
+             Value.Fixed.ValueOf( right ) );
 
         return this;
     }
@@ -1188,17 +1173,27 @@ public class Cell : IPoolable
 
     public float GetPadX()
     {
-        return PadLeft!.Get( Actor ) + PadRight!.Get( Actor );
+        if ( PadLeft == null || PadRight == null )
+        {
+            throw new GdxRuntimeException( "PadLeft / PadRight is cannot be null!" );
+        }
+
+        return PadLeft.Get( Actor ) + PadRight.Get( Actor );
     }
 
     public float GetPadY()
     {
-        return PadTop!.Get( Actor ) + PadBottom!.Get( Actor );
+        if ( PadTop == null || PadBottom == null )
+        {
+            throw new GdxRuntimeException( "PadTop / PadBottom is cannot be null!" );
+        }
+
+        return PadTop.Get( Actor ) + PadBottom.Get( Actor );
     }
 
     public void AddRow()
     {
-        Table!.AddRow();
+        Table?.AddRow();
     }
 
     /// <summary>
@@ -1268,7 +1263,6 @@ public class Cell : IPoolable
             return;
         }
 
-        //@formatter:off
         if ( cell.MinWidth != null )
         {
             MinWidth = cell.MinWidth;
@@ -1371,9 +1365,9 @@ public class Cell : IPoolable
 
         FillX = cell.FillX;
         FillY = cell.FillY;
-        //@formatter:on
     }
 
+    /// <inheritdoc/>
     public override string? ToString()
     {
         return Actor != null ? Actor.ToString() : base.ToString();
@@ -1417,5 +1411,21 @@ public class Cell : IPoolable
         }
 
         return _defaults;
+    }
+
+    // -------------------- From IPoolable.cs --------------------
+
+    /// <summary>
+    ///     Reset state so the cell can be reused, setting all constraints to
+    ///     their <see cref="GetCellDefaults()" /> values.
+    /// </summary>
+    public void Reset()
+    {
+        Actor          = null;
+        Table          = null!;
+        EndRow         = false;
+        CellAboveIndex = -1;
+
+        Set( GetCellDefaults() );
     }
 }

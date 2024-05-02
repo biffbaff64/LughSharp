@@ -46,29 +46,18 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///         0 as their preferred height will be given a height of 0.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class VerticalGroup : WidgetGroup
 {
-    private int            _columnAlign;
-    private List< float >? _columnSizes;
-    private float          _lastPrefWidth;
-    private float          _prefHeight;
-    private float          _prefWidth;
-    private bool           _reverse;
-    private bool           _round       = true;
-    private bool           _sizeInvalid = true;
-
-    public VerticalGroup()
-    {
-        Touchable = Touchable.ChildrenOnly;
-    }
-
+    #region properties
+    
     /// <summary>
-    ///     Sets the vertical space between children.
+    /// Sets the vertical space between children.
     /// </summary>
     public float Space { get; set; }
 
     /// <summary>
-    ///     Sets the horizontal space between columns when wrap is enabled.
+    /// Sets the horizontal space between columns when wrap is enabled.
     /// </summary>
     public float WrapSpace { get; set; }
 
@@ -111,6 +100,26 @@ public class VerticalGroup : WidgetGroup
     ///     </para>
     /// </summary>
     public bool Wrapping { get; set; }
+
+    #endregion properties
+    
+    // ------------------------------------------------------------------------
+    
+    private int            _columnAlign;
+    private List< float >? _columnSizes;
+    private float          _lastPrefWidth;
+    private float          _prefHeight;
+    private float          _prefWidth;
+    private bool           _reverse;
+    private bool           _round       = true;
+    private bool           _sizeInvalid = true;
+
+    // ------------------------------------------------------------------------
+
+    public VerticalGroup()
+    {
+        Touchable = Touchable.ChildrenOnly;
+    }
 
     public new void Invalidate()
     {
@@ -759,7 +768,8 @@ public class VerticalGroup : WidgetGroup
         return this;
     }
 
-    protected new void DrawDebugBounds( ShapeRenderer shapes )
+    /// <inheritdoc/>
+    protected override void DrawDebugBounds( ShapeRenderer shapes )
     {
         base.DrawDebugBounds( shapes );
 
@@ -775,16 +785,14 @@ public class VerticalGroup : WidgetGroup
             shapes.Color = Stage.DebugColor;
         }
 
-        shapes.Rect(
-                    X + PadLeft,
-                    Y + PadBottom,
-                    OriginX,
-                    OriginY,
-                    Width - PadLeft - PadRight,
-                    Height - PadBottom - PadTop,
-                    ScaleX,
-                    ScaleY,
-                    Rotation
-                   );
+        shapes.Rect( X + PadLeft,
+                     Y + PadBottom,
+                     OriginX,
+                     OriginY,
+                     Width - PadLeft - PadRight,
+                     Height - PadBottom - PadTop,
+                     ScaleX,
+                     ScaleY,
+                     Rotation );
     }
 }

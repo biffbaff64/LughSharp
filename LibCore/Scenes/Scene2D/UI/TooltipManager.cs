@@ -138,10 +138,15 @@ public class TooltipManager< T > where T : Actor
         tooltip.Container.Color.A   = 0.2f;
         tooltip.Container.SetScale( 0.05f );
 
-        tooltip.Container.AddAction( Actions.Actions.Parallel( Actions.Actions.FadeIn( actionTime, Interpolation.Fade ),
-                                                               Actions.Actions.ScaleTo( 1, 1, actionTime, Interpolation.Fade ) ) );
+        tooltip.Container.AddAction
+            (
+             Actions.Actions.Parallel
+                 (
+                  Actions.Actions.FadeIn( actionTime, Interpolation.Fade ),
+                  Actions.Actions.ScaleTo( 1, 1, actionTime, Interpolation.Fade )
+                 )
+            );
     }
-
 
     /// <summary>
     ///     Called when tooltip is hidden. Default implementation sets actions to animate hiding
@@ -150,15 +155,18 @@ public class TooltipManager< T > where T : Actor
     /// </summary>
     protected static void HideAction( Tooltip< T > tooltip )
     {
-        tooltip.Container.AddAction( Actions.Actions.Sequence(
-                                                              Actions.Actions.Parallel(
-                                                                                       Actions.Actions.Alpha( 0.2f, 0.2f, Interpolation.Fade ),
-                                                                                       Actions.Actions.ScaleTo(
-                                                                                            0.05f,
-                                                                                            0.05f,
-                                                                                            0.2f,
-                                                                                            Interpolation.Fade ) ),
-                                                              Actions.Actions.RemoveActor() ) );
+        tooltip.Container.AddAction
+            (
+             Actions.Actions.Sequence
+                 (
+                  Actions.Actions.Parallel
+                      (
+                       Actions.Actions.Alpha( 0.2f, 0.2f, Interpolation.Fade ),
+                       Actions.Actions.ScaleTo( 0.05f, 0.05f, 0.2f, Interpolation.Fade )
+                      ),
+                  Actions.Actions.RemoveActor()
+                 )
+            );
     }
 
     public void HideAll()
@@ -179,7 +187,7 @@ public class TooltipManager< T > where T : Actor
     /// <summary>
     ///     Shows all tooltips on hover without a delay for <see cref="ResetTime" /> seconds.
     /// </summary>
-    public void Instant()
+    public void ShowInstantly()
     {
         _time = 0;
         _showTask.Start();

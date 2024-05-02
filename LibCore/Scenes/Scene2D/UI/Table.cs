@@ -28,6 +28,7 @@ using LughSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
+[PublicAPI]
 public class Table : WidgetGroup
 {
     public enum DebugType
@@ -44,6 +45,9 @@ public class Table : WidgetGroup
     public readonly static Color DebugTableColor = new( 0, 0, 1, 1 );
     public readonly static Color DebugCellColor  = new( 1, 0, 0, 1 );
     public readonly static Color DebugActorColor = new( 0, 1, 0, 1 );
+
+    public Pool< Cell > CellPool     { get; } = new();
+    public Cell         CellDefaults { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -65,11 +69,11 @@ public class Table : WidgetGroup
     private float[]            _expandHeight;
     private float[]            _expandWidth;
     private bool               _implicitEndRow = false;
-    private Value              _padBottom      = BackgroundBottom;
-    private Value              _padLeft        = BackgroundLeft;
-    private Value              _padRight       = BackgroundRight;
 
-    private Value _padTop = BackgroundTop;
+    private Value _padBottom = BackgroundBottom;
+    private Value _padLeft   = BackgroundLeft;
+    private Value _padRight  = BackgroundRight;
+    private Value _padTop    = BackgroundTop;
 
     private Cell?   _rowDefaults;
     private float[] _rowMinHeight;
@@ -80,7 +84,8 @@ public class Table : WidgetGroup
     private float   _tablePrefHeight;
     private float   _tablePrefWidth;
 
-    // ReSharper disable once MemberCanBeProtected.Global
+    // ------------------------------------------------------------------------
+
     public Table() : this( null )
     {
     }
@@ -88,12 +93,8 @@ public class Table : WidgetGroup
     /// <summary>
     ///     Creates a table with a skin, which is required to use <see cref="AssetDescriptor" />
     /// </summary>
-
-    // ReSharper disable once MemberCanBeProtected.Global
     public Table( Skin? skin )
     {
-        // ----------------------------
-
         _columnWidth     = default( float[]? )!;
         _columnMinWidth  = default( float[]? )!;
         _columnPrefWidth = default( float[]? )!;
@@ -103,27 +104,14 @@ public class Table : WidgetGroup
         _expandWidth     = default( float[]? )!;
         _expandHeight    = default( float[]? )!;
 
-        // ----------------------------
-
-        Skin = skin;
-
-        CellDefaults = ObtainCell();
-
-        Transform = false;
-        Touchable = Touchable.ChildrenOnly;
-
+        Skin               = skin;
+        CellDefaults       = ObtainCell();
+        Transform          = false;
+        Touchable          = Touchable.ChildrenOnly;
         CellPool.NewObject = GetNewObject;
     }
 
     // ------------------------------------------------------------------------
-
-    public Pool< Cell > CellPool { get; } = new();
-
-    /// <summary>
-    ///     The cell values that will be used as the defaults for all cells.
-    /// </summary>
-    /// <value></value>
-    public Cell CellDefaults { get; set; }
 
     private Cell ObtainCell()
     {
@@ -149,13 +137,10 @@ public class Table : WidgetGroup
                 var padLeft   = _padLeft.Get( this );
                 var padBottom = _padBottom.Get( this );
 
-                if ( ClipBegin(
-                               padLeft,
-                               padBottom,
-                               Width - padLeft - _padRight.Get( this ),
-                               Height - padBottom - _padTop.Get( this )
-                              )
-                   )
+                if ( ClipBegin( padLeft,
+                                padBottom,
+                                Width - padLeft - _padRight.Get( this ),
+                                Height - padBottom - _padTop.Get( this ) ) )
                 {
                     DrawChildren( batch, parentAlpha );
                     batch.Flush();
@@ -344,7 +329,8 @@ public class Table : WidgetGroup
             if ( cell.Row > 0 )
             {
                 // TODO: This label is direct from the Java libgdx.
-                //       I don't like using them so this will be refactored at some point. 
+                //       I don't like using them so this will be refactored at some point.
+                //       I'm not even sure it's in the right place...should it be AFTER the loop?
             outer:
 
                 for ( var i = cellCount - 1; i >= 0; i-- )
@@ -653,10 +639,6 @@ public class Table : WidgetGroup
     /// <summary>
     ///     Returns the cell for the specified actor in this table, or null.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="actor"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
     public Cell? GetCell< T >( T actor ) where T : Actor
     {
         if ( actor == null )
@@ -682,7 +664,6 @@ public class Table : WidgetGroup
     /// <summary>
     ///     Returns the cells for this table.
     /// </summary>
-    /// <returns></returns>
     public List< Cell > GetCells()
     {
         return _cells;

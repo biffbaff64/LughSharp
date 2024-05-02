@@ -28,13 +28,14 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 [PublicAPI]
 public class DelayAction : DelegateAction
 {
-    public DelayAction()
+    public DelayAction() : this( 0 )
     {
     }
 
     public DelayAction( float duration )
     {
         Duration = duration;
+        Time     = 0;
     }
 
     public float Duration { get; set; }

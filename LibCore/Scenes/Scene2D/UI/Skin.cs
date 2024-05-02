@@ -46,42 +46,66 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///         The new* methods return a copy of an instance in the skin.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class Skin : IDisposable
 {
-//@formatter:off
-    private readonly static Type[] DefaultTagClasses =
+    private readonly static Type[] _defaultTagClasses =
     {
-        typeof( BitmapFont ),                           typeof( Color ),
-        typeof( TintedDrawable ),                       typeof( NinePatchDrawable ),
-        typeof( SpriteDrawable ),                       typeof( TextureRegionDrawable ),
-        typeof( TiledDrawable ),                        typeof( Button.ButtonStyle ),
-        typeof( TextButton.TextButtonStyle ),           typeof( CheckBox.CheckBoxStyle ),
-        typeof( Label.LabelStyle ),                     typeof( ProgressBar.ProgressBarStyle )
-        //        typeof( TextField.TextFieldStyle ),             typeof( ImageButton.ImageButtonStyle ),
-//        typeof( ImageTextButton.ImageTextButtonStyle ), typeof( List.ListStyle ),                       
-//        typeof( ScrollPane.ScrollPaneStyle ),           typeof( SelectBox.SelectBoxStyle ),
-//        typeof( Slider.SliderStyle ),                   typeof( SplitPane.SplitPaneStyle ),
-//        typeof( TextTooltip.TextTooltipStyle ),         typeof( Touchpad.TouchpadStyle ),
-//        typeof( Tree.TreeStyle ),                       typeof( Window.WindowStyle )
+        typeof( BitmapFont ),
+        typeof( Color ),
+        typeof( TintedDrawable ),
+        typeof( NinePatchDrawable ),
+        typeof( SpriteDrawable ),
+        typeof( TextureRegionDrawable ),
+        typeof( TiledDrawable ),
+        typeof( Button.ButtonStyle ),
+        typeof( TextButton.TextButtonStyle ),
+        typeof( CheckBox.CheckBoxStyle ),
+        typeof( Label.LabelStyle ),
+        typeof( ProgressBar.ProgressBarStyle ),
+        typeof( TextField.TextFieldStyle ),
+        typeof( ImageButton.ImageButtonStyle ),
+        typeof( ImageTextButton.ImageTextButtonStyle ),
+        typeof( ListBox<>.ListStyle ),
+        typeof( ScrollPane.ScrollPaneStyle ),
+        typeof( SelectBox<>.SelectBoxStyle ),
+        typeof( Slider.SliderStyle ),
+        typeof( SplitPane.SplitPaneStyle ),
+        typeof( TextTooltip.TextTooltipStyle ),
+        typeof( Touchpad.TouchpadStyle ),
+        typeof( Tree< , >.TreeStyle ),
+        typeof( Window.WindowStyle )
     };
+
+    // ------------------------------------------------------------------------
 
     static Skin()
     {
         Resources     = new Dictionary< Type, Dictionary< string, object >? >();
-        JsonClassTags = new Dictionary< string, Type >( DefaultTagClasses.Length );
+        JsonClassTags = new Dictionary< string, Type >( _defaultTagClasses.Length );
 
-        foreach ( var c in DefaultTagClasses )
+        foreach ( var c in _defaultTagClasses )
         {
             JsonClassTags.Add( c.Name, c );
         }
     }
 
-    /// <summary>///     Creates an empty Skin./// </summary>
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    ///     Creates an empty Skin.
+    /// </summary>
     public Skin()
     {
     }
 
-    /// <summary>///     ///     ///     ///     ///     ///     Creates a skin containing the resources in the specified skin JSON///     file.//////     If a///     file in///     the same///     directory with a ".atlas" extension exists, it is//////     loaded as a//////     <see cref="TextureAtlas" />///     and the texture///     regions added to///     the skin.///     The atlas is//////     automatically disposed when the skin is///     disposed.////////////////// </summary>
+    /// <summary>
+    ///     Creates a skin containing the resources in the specified skin JSON
+    ///     file. If a file in the same directory with a ".atlas" extension exists,
+    ///     it is loaded as a <see cref="TextureAtlas" /> and the texture regions
+    ///     added to the skin. The atlas is automatically disposed when the skin is
+    ///     disposed.
+    /// </summary>
     public Skin( FileInfo skinFile )
     {
         var name      = Path.GetFileNameWithoutExtension( skinFile.Name );
@@ -96,7 +120,13 @@ public class Skin : IDisposable
         Load( skinFile );
     }
 
-    /// <summary>///     ///     ///     ///     ///     ///     Creates a skin containing the resources in the specified skin JSON///     file and//////     the///     texture///     regions///     from the specified atlas.//////////////////     <para>///         The atlas is automatically disposed when the skin is disposed.///     </para>///     ///     ///     ///     ///     ////////////////// </summary>
+    /// <summary>
+    ///     Creates a skin containing the resources in the specified skin JSON
+    ///     file and the texture regions from the specified atlas.
+    ///     <para>
+    ///         The atlas is automatically disposed when the skin is disposed.
+    ///     </para>
+    /// </summary>
     public Skin( FileInfo skinFile, TextureAtlas atlas )
     {
         Atlas = atlas;
@@ -105,13 +135,15 @@ public class Skin : IDisposable
         Load( skinFile );
     }
 
-    /// <summary>///     ///     ///     ///     ///     ///     Creates a skin containing the texture regions from the specified///     atlas.//////     The///     atlas is//////     automatically disposed when the skin is disposed.////////////////// </summary>
+    /// <summary>
+    ///     Creates a skin containing the texture regions from the specified
+    ///     atlas. The atlas is automatically disposed when the skin is disposed.
+    /// </summary>
     public Skin( TextureAtlas atlas )
     {
         Atlas = atlas;
         AddRegions( atlas );
     }
-    //@formatter:on
 
     public static Dictionary< Type, Dictionary< string, object >? > Resources     { get; set; }
     public static Dictionary< string, Type >                        JsonClassTags { get; set; }
@@ -143,11 +175,13 @@ public class Skin : IDisposable
         Atlas?.Dispose();
 
         foreach ( Dictionary< string, object >? entry in Resources.Values )
-        foreach ( var resource in entry!.Values )
         {
-            if ( resource is IDisposable disposable )
+            foreach ( var resource in entry!.Values )
             {
-                disposable.Dispose();
+                if ( resource is IDisposable disposable )
+                {
+                    disposable.Dispose();
+                }
             }
         }
     }
@@ -159,7 +193,7 @@ public class Skin : IDisposable
     {
         try
         {
-//            GetJsonLoader( skinFile ).FromJson( typeof( Skin ), skinFile );
+            GetJsonLoader( skinFile ).FromJson( typeof( Skin ), skinFile );
         }
         catch ( SerializationException ex )
         {
@@ -796,7 +830,7 @@ public class Skin : IDisposable
         public Color  Color { get; set; }
     }
 
-//    public Json GetJsonLoader( in FileInfo skinFile )
-//    {
-//    }
+    public Json GetJsonLoader( in FileInfo skinFile )
+    {
+    }
 }

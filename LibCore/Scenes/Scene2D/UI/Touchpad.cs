@@ -39,6 +39,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///         Cancelling the event will move the knob to where it was previously.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class Touchpad : Widget
 {
     private readonly Circle  _deadzoneBounds = new( 0, 0, 0 );
@@ -50,6 +51,8 @@ public class Touchpad : Widget
 
     private TouchpadStyle _style = null!;
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Constructor
     /// </summary>
@@ -85,7 +88,7 @@ public class Touchpad : Widget
     /// <param name="style"></param>
     public Touchpad( float deadzoneRadius, TouchpadStyle style )
     {
-        if ( deadzoneRadius < 0 )
+        if ( deadzoneRadius <= 0 )
         {
             throw new ArgumentException( "deadzoneRadius must be > 0" );
         }
@@ -100,6 +103,10 @@ public class Touchpad : Widget
 
         AddListener( new TouchpadInputListener( this ) );
     }
+
+    // ------------------------------------------------------------------------
+
+    #region properties
 
     public TouchpadStyle Style
     {
@@ -125,6 +132,10 @@ public class Touchpad : Widget
     /// </summary>
     public bool ResetOnTouchUp { get; set; } = true;
 
+    #endregion properties
+    
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Returns the x-position of the knob relative to the center of the widget.
     ///     The positive direction is right.
@@ -148,6 +159,8 @@ public class Touchpad : Widget
     ///     to the edge of the circular movement area. The positive direction is up.
     /// </summary>
     public float KnobPercentY => _knobPercent.Y;
+
+    // ------------------------------------------------------------------------
 
     private void CalculatePositionAndValue( float x, float y, bool isTouchUp )
     {
@@ -316,6 +329,7 @@ public class Touchpad : Widget
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class TouchpadStyle
     {
         public TouchpadStyle()
@@ -334,9 +348,7 @@ public class Touchpad : Widget
             Knob       = style.Knob;
         }
 
-        /**
-         * Stretched in both directions.
-         */
+        // Stretched in both directions.
         public IDrawable? Background { get; set; }
 
         public IDrawable? Knob { get; set; }

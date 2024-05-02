@@ -27,8 +27,11 @@ using LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
+[PublicAPI]
 public class Stack : WidgetGroup
 {
+    #region Backing data for properties
+    
     private float _maxHeight;
     private float _maxWidth;
     private float _minHeight;
@@ -37,6 +40,10 @@ public class Stack : WidgetGroup
     private float _prefWidth;
     private bool  _sizeInvalid = true;
 
+    #endregion Backing data for properties
+
+    // ------------------------------------------------------------------------
+    
     public Stack()
     {
         Transform = false;
@@ -47,10 +54,7 @@ public class Stack : WidgetGroup
 
     public Stack( params Actor[] actors ) : this()
     {
-        foreach ( var actor in actors )
-        {
-            AddActor( actor );
-        }
+        LoadActors( actors );
     }
 
     public new float PrefWidth

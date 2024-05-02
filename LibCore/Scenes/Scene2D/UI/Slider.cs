@@ -41,6 +41,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///         parameters are reversed for a vertical progress bar.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class Slider : ProgressBar
 {
     private int      _draggingPointer = -1;
@@ -294,8 +295,18 @@ public class Slider : ProgressBar
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class SliderStyle : ProgressBarStyle
     {
+        public IDrawable? BackgroundOver { get; set; }
+        public IDrawable? BackgroundDown { get; set; }
+        public IDrawable? KnobBeforeOver { get; set; }
+        public IDrawable? KnobOver       { get; set; }
+        public IDrawable? KnobAfterOver  { get; set; }
+        public IDrawable? KnobBeforeDown { get; set; }
+        public IDrawable? KnobDown       { get; set; }
+        public IDrawable? KnobAfterDown  { get; set; }
+
         public SliderStyle()
         {
         }
@@ -319,20 +330,12 @@ public class Slider : ProgressBar
             KnobAfterOver = style.KnobAfterOver;
             KnobAfterDown = style.KnobAfterDown;
         }
-
-        public IDrawable? BackgroundOver { get; set; }
-        public IDrawable? BackgroundDown { get; set; }
-        public IDrawable? KnobBeforeOver { get; set; }
-        public IDrawable? KnobOver       { get; set; }
-        public IDrawable? KnobAfterOver  { get; set; }
-        public IDrawable? KnobBeforeDown { get; set; }
-        public IDrawable? KnobDown       { get; set; }
-        public IDrawable? KnobAfterDown  { get; set; }
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class SliderInputListener : InputListener
     {
         private readonly Slider _parent;

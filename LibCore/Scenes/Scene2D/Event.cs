@@ -41,11 +41,6 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 ///         will undo the side-effects of a canceled event. (See <see cref="IsCancelled" />)
 ///     </para>
 /// </summary>
-/// <remarks>
-///     The original getters and setters for 'cancelled', 'handled', 'bubbles', 'stopped',
-///     'stage', 'targetActor', 'listenerActor', and 'capture' have been removed and replaced
-///     with C# Properties. Therefore, Event.isHandled() is now Event.IsHandled etc.
-/// </remarks>
 [PublicAPI]
 public class Event : IPoolable
 {
@@ -71,7 +66,8 @@ public class Event : IPoolable
     // true means event propagation was stopped
     public bool IsStopped { get; set; }
 
-    // true means propagation was stopped and any action that this event would cause should not happen
+    // true means propagation was stopped and any action that this event
+    // would cause should not happen
     public bool IsCancelled { get; set; }
 
     public void Reset()

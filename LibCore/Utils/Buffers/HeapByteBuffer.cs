@@ -217,12 +217,24 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc cref="ByteBuffer.Compact()" />
     public override ByteBuffer Compact()
     {
-        throw new NotImplementedException();
+        if ( Hb == null )
+        {
+            throw new GdxRuntimeException( "HB is null!" );
+        }
+
+        System.Array.Copy( Hb, Ix( Position ), Hb, Ix( 0 ), Remaining() );
+
+        SetPosition( Remaining() );
+        SetLimit( Capacity );
+        DiscardMark();
+        
+        return this;
     }
 
     /// <inheritdoc/>
     public override char GetChar()
     {
+//        return Bits.GetChar( this, Ix( NextGetIndex( 2 ) ), BigEndian );
         throw new NotImplementedException();
     }
 

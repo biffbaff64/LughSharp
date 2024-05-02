@@ -27,8 +27,12 @@ using LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
+[PublicAPI]
 public class CheckBox : TextButton
 {
+    public Image? Image     { get; set; }
+    public Cell?  ImageCell { get; set; }
+
     private CheckBoxStyle? _style;
 
     public CheckBox( string text, Skin skin )
@@ -42,6 +46,13 @@ public class CheckBox : TextButton
     }
 
     public CheckBox( string text, CheckBoxStyle style ) : base( text, style )
+    {
+        Setup( style );
+    }
+
+    // Private setup method to allow calls to virtual methods that can't
+    // be called from constructors.
+    private void Setup( CheckBoxStyle style )
     {
         ClearChildren();
 
@@ -72,12 +83,6 @@ public class CheckBox : TextButton
             base.Style = style;
         }
     }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public Image? Image     { get; set; }
-    public Cell   ImageCell { get; set; }
 
     public new void Draw( IBatch batch, float parentAlpha )
     {
@@ -126,6 +131,7 @@ public class CheckBox : TextButton
     /// <summary>
     ///     The style for a select box, see <seealso cref="CheckBox" />.
     /// </summary>
+    [PublicAPI]
     public class CheckBoxStyle : TextButtonStyle
     {
         public CheckBoxStyle()

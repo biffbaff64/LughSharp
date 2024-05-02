@@ -28,18 +28,15 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 [PublicAPI]
 public abstract class Action : IAction, IPoolable
 {
-    /// <summary>
-    ///     The actor this action is attached to, or null if it is not attached.
-    /// </summary>
-    private Actor? _actor;
-
     /// <inheritdoc />
     public Pool< Action >? Pool { get; set; }
 
     /// <inheritdoc />
     public virtual Actor? Target { get; set; }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// The actor this action is attached to, or null if it is not attached.
+    /// </summary>
     public virtual Actor? Actor
     {
         // Returns null if the action is not attached to an actor.
@@ -71,6 +68,10 @@ public abstract class Action : IAction, IPoolable
         }
     }
 
+    private Actor? _actor;
+
+    // ------------------------------------------------------------------------
+    
     /// <inheritdoc cref="IAction.Reset()" />
     public virtual void Reset()
     {

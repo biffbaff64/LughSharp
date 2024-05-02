@@ -34,6 +34,20 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class TextArea : TextField
 {
+    // Current line for the cursor
+    public int CursorLine { get; set; }
+
+    // Index of the first line showed by the text area
+    public int FirstLineShowing { get; set; }
+
+    // Number of lines showed by the text area
+    public int LinesShowing { get; set; }
+
+    // Array storing lines breaks positions
+    public List< int >? LinesBreak { get; set; }
+
+    // ------------------------------------------------------------------------
+
     // Last text processed. This attribute is used to avoid unnecessary
     // computations while calculating offsets
     private string? _lastText;
@@ -43,6 +57,8 @@ public class TextArea : TextField
     private float _moveOffset;
 
     private float _prefRows;
+
+    // ------------------------------------------------------------------------
 
     public TextArea( string text, Skin skin )
         : base( text, skin )
@@ -58,18 +74,6 @@ public class TextArea : TextField
         : base( text, style )
     {
     }
-
-    // Current line for the cursor
-    public int CursorLine { get; set; }
-
-    // Index of the first line showed by the text area
-    public int FirstLineShowing { get; set; }
-
-    // Number of lines showed by the text area
-    public int LinesShowing { get; set; }
-
-    // Array storing lines breaks positions
-    public List< int >? LinesBreak { get; set; }
 
     /// <summary>
     ///     Initialise this TextArea.
@@ -124,8 +128,6 @@ public class TextArea : TextField
 
     public override void SetStyle( TextFieldStyle? style )
     {
-        // same as base(), just different textHeight. no base()
-        // so we don't do same work twice
         ArgumentNullException.ThrowIfNull( style );
 
         Style = style;
@@ -194,9 +196,8 @@ public class TextArea : TextField
             return false;
         }
 
-        return ( Text.Length != 0 )
-            && ( ( Text[ Text.Length - 1 ] == NEWLINE )
-              || ( Text[ Text.Length - 1 ] == CARRIAGE_RETURN ) );
+        return ( Text.Length != 0 ) && ( ( Text[ Text.Length - 1 ] == NEWLINE )
+                                      || ( Text[ Text.Length - 1 ] == CARRIAGE_RETURN ) );
     }
 
     /// <summary>
@@ -324,7 +325,7 @@ public class TextArea : TextField
         return index;
     }
 
-    protected override void SizeChanged()
+    public override void SizeChanged()
     {
         // Cause calculateOffsets to recalculate the line breaks.
         _lastText = null;
@@ -373,8 +374,14 @@ public class TextArea : TextField
             var lineStart = LinesBreak[ i ];
             var lineEnd   = LinesBreak[ i + 1 ];
 
-            if ( !( ( ( minIndex < lineStart ) && ( minIndex < lineEnd ) && ( maxIndex < lineStart ) && ( maxIndex < lineEnd ) )
-                 || ( ( minIndex > lineStart ) && ( minIndex > lineEnd ) && ( maxIndex > lineStart ) && ( maxIndex > lineEnd ) ) ) )
+            if ( !( ( ( minIndex < lineStart )
+                   && ( minIndex < lineEnd )
+                   && ( maxIndex < lineStart )
+                   && ( maxIndex < lineEnd ) )
+                 || ( ( minIndex > lineStart )
+                   && ( minIndex > lineEnd )
+                   && ( maxIndex > lineStart )
+                   && ( maxIndex > lineEnd ) ) ) )
             {
                 var start = Math.Max( lineStart, minIndex );
                 var end   = Math.Min( lineEnd, maxIndex );
@@ -428,7 +435,9 @@ public class TextArea : TextField
 
         var offsetY = -( Style.Font?.GetLineHeight() - TextHeight ) / 2;
 
-        for ( var i = FirstLineShowing * 2; ( i < ( ( FirstLineShowing + LinesShowing ) * 2 ) ) && ( i < LinesBreak.Count ); i += 2 )
+        for ( var i = FirstLineShowing * 2;
+              ( i < ( ( FirstLineShowing + LinesShowing ) * 2 ) ) && ( i < LinesBreak.Count );
+              i += 2 )
         {
             font.Draw( batch, DisplayText!, x, y + ( offsetY ?? 0 ), LinesBreak[ i ], LinesBreak[ i + 1 ], 0, Align.LEFT, false );
             offsetY -= font.GetLineHeight();
@@ -595,7 +604,6 @@ public class TextArea : TextField
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
     /// <summary>
     ///     Input listener for the text area.
     /// </summary>
@@ -722,7 +730,7 @@ public class TextArea : TextField
         {
             if ( jump )
             {
-                _parent.Cursor                                                                = 0;
+                _parent.Cursor = 0;
             }
             else if ( ( _parent.CursorLine * 2 ) < _parent.LinesBreak?.Count )
             {
@@ -734,7 +742,7 @@ public class TextArea : TextField
         {
             if ( jump || ( _parent.CursorLine >= _parent.GetLines() ) )
             {
-                _parent.Cursor                                                                        = _parent.Text!.Length;
+                _parent.Cursor = _parent.Text!.Length;
             }
             else if ( ( ( _parent.CursorLine * 2 ) + 1 ) < _parent.LinesBreak!.Count )
             {

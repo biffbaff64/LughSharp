@@ -42,8 +42,18 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///     or <see cref="InvalidateHierarchy()" /> as needed. By default, InvalidateHierarchy
 ///     is called when child widgets are added and removed.
 /// </summary>
+[PublicAPI]
 public class WidgetGroup : Group, ILayout
 {
+    // Returns true if the widget's layout has been invalidated.
+    public bool NeedsLayout { get; private set; } = true;
+
+    public bool LayoutEnabled { get; set; } = true;
+
+    public bool FillParent { get; set; }
+
+    // ------------------------------------------------------------------------
+    
     protected WidgetGroup()
     {
     }
@@ -53,19 +63,80 @@ public class WidgetGroup : Group, ILayout
     /// </summary>
     public WidgetGroup( params Actor[] actors )
     {
+        LoadActors( actors );
+    }
+
+    protected void LoadActors( params Actor[] actors )
+    {
         foreach ( var actor in actors )
         {
             AddActor( actor );
         }
     }
 
-    /// <summary>
-    ///     Returns true if the widget's layout has been invalidated.
-    /// </summary>
-    public bool NeedsLayout { get; private set; } = true;
+    public virtual void Pack()
+    {
+        SetSize( PrefWidth, PrefHeight );
 
-    public bool FillParent { get; set; }
+        Validate();
 
+        // Validating the layout may change the pref size. Eg, a wrapped label doesn't
+        // know its pref height until it knows its width, so it calls invalidateHierarchy()
+        // in layout() if its pref height has changed.
+        SetSize( PrefWidth, PrefHeight );
+
+        Validate();
+    }
+
+    public virtual void SetLayout()
+    {
+    }
+
+    public void SetLayoutEnabled( bool enabled )
+    {
+        LayoutEnabled = enabled;
+        SetLayoutEnabled( this, enabled );
+    }
+
+    private static void SetLayoutEnabled( Group parent, bool enabled )
+    {
+        SnapshotArray< Actor > children = parent.Children;
+
+        for ( int i = 0, n = children.Size; i < n; i++ )
+        {
+            var actor = children.GetAt( i );
+
+            if ( actor is ILayout layout )
+            {
+                layout.LayoutEnabled = enabled;
+            }
+            else if ( actor is Group group )
+            {
+                SetLayoutEnabled( group, enabled );
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void ChildrenChanged()
+    {
+        InvalidateHierarchy();
+    }
+
+    /// <inheritdoc/>
+    public override void SizeChanged()
+    {
+        Invalidate();
+    }
+
+    /// <inheritdoc/>
+    public override void Draw( IBatch batch, float parentAlpha )
+    {
+        Validate();
+        base.Draw( batch, parentAlpha );
+    }
+    
+    /// <inheritdoc/>
     public virtual void Validate()
     {
         if ( !LayoutEnabled )
@@ -144,70 +215,5 @@ public class WidgetGroup : Group, ILayout
         {
             layout.InvalidateHierarchy();
         }
-    }
-
-    public virtual void Pack()
-    {
-        SetSize( PrefWidth, PrefHeight );
-
-        Validate();
-
-        // Validating the layout may change the pref size. Eg, a wrapped label doesn't
-        // know its pref height until it knows its width, so it calls invalidateHierarchy()
-        // in layout() if its pref height has changed.
-        SetSize( PrefWidth, PrefHeight );
-
-        Validate();
-    }
-
-    public virtual void SetLayout()
-    {
-    }
-
-    public bool LayoutEnabled { get; set; } = true;
-
-    public void SetLayoutEnabled( bool enabled )
-    {
-        LayoutEnabled = enabled;
-        SetLayoutEnabled( this, enabled );
-    }
-
-    private static void SetLayoutEnabled( Group parent, bool enabled )
-    {
-        SnapshotArray< Actor > children = parent.Children;
-
-        for ( int i = 0, n = children.Size; i < n; i++ )
-        {
-            var actor = children.GetAt( i );
-
-            if ( actor is ILayout layout )
-            {
-                layout.LayoutEnabled = enabled;
-            }
-            else if ( actor is Group group )
-            {
-                SetLayoutEnabled( group, enabled );
-            }
-        }
-    }
-
-    protected new void ChildrenChanged()
-    {
-        InvalidateHierarchy();
-    }
-
-    protected new void SizeChanged()
-    {
-        Invalidate();
-    }
-
-    /// <summary>
-    ///     If this method is overridden, the super method or <see cref="Validate()" />
-    ///     should be called to ensure the widget group is laid out.
-    /// </summary>
-    public virtual new void Draw( IBatch batch, float parentAlpha )
-    {
-        Validate();
-        base.Draw( batch, parentAlpha );
     }
 }

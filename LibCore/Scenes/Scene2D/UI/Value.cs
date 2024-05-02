@@ -33,12 +33,9 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///     instances that need to be created and reduce verbosity in code that specifies
 ///     values.
 /// </summary>
+[PublicAPI]
 public abstract class Value
 {
-    public readonly static Fixed Zero = new( 0 );
-
-    // ------------------------------------------------------------------------
-
     public static Value MinWidth   { get; set; } = new ValueMinWidthInnerClass();
     public static Value MinHeight  { get; set; } = new ValueMinHeightInnerClass();
     public static Value MaxWidth   { get; set; } = new ValueMaxWidthInnerClass();
@@ -50,31 +47,14 @@ public abstract class Value
 
     public abstract float Get( Actor? context = null );
 
+    public readonly static Fixed Zero = new( 0 );
+
     // ------------------------------------------------------------------------
 
-    public static Value PercentWidth( float percent )
-    {
-        return new ValuePercentWidth( percent );
-    }
-
-    public static Value PercentHeight( float percent )
-    {
-        return new ValuePercentHeight( percent );
-    }
-
-    public static Value PercentWidth( float percent, Actor? actor )
-    {
-        ArgumentNullException.ThrowIfNull( actor );
-
-        return new ValuePercentWidth( percent, actor );
-    }
-
-    public static Value PercentHeight( float percent, Actor? actor )
-    {
-        ArgumentNullException.ThrowIfNull( actor );
-
-        return new ValuePercentHeight( percent, actor );
-    }
+    public static Value PercentWidth( float percent )                => new ValuePercentWidth( percent );
+    public static Value PercentHeight( float percent )               => new ValuePercentHeight( percent );
+    public static Value PercentWidth( float percent, Actor? actor )  => new ValuePercentWidth( percent, actor );
+    public static Value PercentHeight( float percent, Actor? actor ) => new ValuePercentHeight( percent, actor );
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -82,16 +62,17 @@ public abstract class Value
     /// <summary>
     ///     A fixed value that is not computed each time it is used.
     /// </summary>
+    [PublicAPI]
     public class Fixed : Value
     {
-        private readonly static Fixed?[] Cache = new Fixed[ 111 ];
+        public float Value { get; }
+
+        private readonly static Fixed?[] _cache = new Fixed[ 111 ];
 
         public Fixed( float value )
         {
             Value = value;
         }
-
-        public float Value { get; }
 
         public override float Get( Actor? context = null )
         {
@@ -112,11 +93,11 @@ public abstract class Value
 
             if ( value is >= -10 and <= 100 && value.Equals( ( int ) value ) )
             {
-                var f = Cache[ ( int ) value + 10 ];
+                var f = _cache[ ( int ) value + 10 ];
 
                 if ( f == null )
                 {
-                    Cache[ ( int ) value + 10 ] = f = new Fixed( value );
+                    _cache[ ( int ) value + 10 ] = f = new Fixed( value );
                 }
 
                 return f;
@@ -126,8 +107,7 @@ public abstract class Value
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    // ========================================================================
 
     /// <summary>
     ///     Returns a value that is a percentage of the actor's width.
@@ -148,6 +128,8 @@ public abstract class Value
             return ( _actor?.Width * _percent ) ?? 0;
         }
     }
+
+    // ========================================================================
 
     /// <summary>
     ///     Returns a value that is a percentage of the actor's height.

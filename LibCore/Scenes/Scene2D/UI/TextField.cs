@@ -52,6 +52,9 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class TextField : Widget
 {
+    public static float KeyRepeatInitialTime = 0.4f;
+    public static float KeyRepeatTime        = 0.1f;
+
     protected const char CARRIAGE_RETURN = '\r';
     protected const char NEWLINE         = '\n';
     protected const char TAB             = '\t';
@@ -59,46 +62,58 @@ public class TextField : Widget
     protected const char DELETE          = '\u007f';
     protected const char BULLET          = '\u0095';
 
-    public static    float                keyRepeatInitialTime = 0.4f;
-    public static    float                keyRepeatTime        = 0.1f;
     private readonly BlinkTaskManager     _blink;
     private readonly IClipboard           _clipboard;
     private readonly KeyRepeatTaskManager _keyRepeat;
+    private readonly bool                 _onlyFontChars = true;
+    private readonly int                  _textAlign     = Align.LEFT;
+    private readonly Vector2              _tmp1          = new();
+    private readonly Vector2              _tmp2          = new();
+    private readonly Vector2              _tmp3          = new();
 
-    private readonly bool _onlyFontChars = true;
-    private readonly int  _textAlign     = Align.LEFT;
-
-    private readonly Vector2           _tmp1 = new();
-    private readonly Vector2           _tmp2 = new();
-    private readonly Vector2           _tmp3 = new();
-    private          CancellationToken _blinkCancellationToken;
-    private          Task?             _blinkTask;
-
-//    private          float                    _blinkTime = 0.32f;
+    private CancellationToken        _blinkCancellationToken;
+    private Task?                    _blinkTask;
     private CancellationTokenSource? _blinkTokenSource;
-    private bool                     _cursorOn;
-    private bool                     _disabled;
+    private ITextFieldListener?      _listener;
+    private StringBuilder?           _passwordBuffer;
     private ITextFieldFilter?        _filter;
-    private bool                     _focused;
     private InputListener?           _inputListener;
     private IOnscreenKeyboard        _keyboard = new DefaultOnscreenKeyboard();
     private CancellationToken        _keyRepeatCancellationToken;
     private Task?                    _keyRepeatTask;
     private CancellationTokenSource? _keyRepeatTokenSource;
 
-    private long                _lastChangeTime;
-    private ITextFieldListener? _listener;
-    private int                 _maxLength;
-    private StringBuilder?      _passwordBuffer;
-    private char                _passwordCharacter = BULLET;
-    private bool                _passwordMode;
-    private bool                _programmaticChangeEvents;
-    private float               _renderOffset;
-    private float               _selectionWidth;
-    private float               _selectionX;
-    private string?             _undoText = "";
-    private int                 _visibleTextEnd;
-    private int                 _visibleTextStart;
+    private bool    _cursorOn;
+    private bool    _disabled;
+    private bool    _focused;
+    private long    _lastChangeTime;
+    private int     _maxLength;
+    private char    _passwordCharacter = BULLET;
+    private bool    _passwordMode;
+    private bool    _programmaticChangeEvents;
+    private float   _renderOffset;
+    private float   _selectionWidth;
+    private float   _selectionX;
+    private string? _undoText = "";
+    private int     _visibleTextEnd;
+    private int     _visibleTextStart;
+
+    // ------------------------------------------------------------------------
+
+    public TextFieldStyle? Style          { get; set; }
+    public string?         Text           { get; set; }
+    public string?         MessageText    { get; set; }
+    public int             Cursor         { get; set; }
+    public int             SelectionStart { get; set; }
+    public bool            HasSelection   { get; set; }
+    public bool            WriteEnters    { get; set; }
+    public GlyphLayout     Layout         { get; set; } = new();
+    public List< float >   GlyphPositions { get; set; } = new();
+    public string?         DisplayText    { get; set; }
+    public float           FontOffset     { get; set; }
+    public float           TextHeight     { get; set; }
+    public float           TextOffset     { get; set; }
+    public bool            FocusTraversal { get; set; } = true;
 
     // ------------------------------------------------------------------------
 
@@ -120,23 +135,6 @@ public class TextField : Widget
 
         NonVirtualInitialise( text, style );
     }
-
-    // ------------------------------------------------------------------------
-
-    public TextFieldStyle? Style          { get; set; }
-    public string?         Text           { get; set; }
-    public string?         MessageText    { get; set; }
-    public int             Cursor         { get; set; }
-    public int             SelectionStart { get; set; }
-    public bool            HasSelection   { get; set; }
-    public bool            WriteEnters    { get; set; }
-    public GlyphLayout     Layout         { get; set; } = new();
-    public List< float >   GlyphPositions { get; set; } = new();
-    public string?         DisplayText    { get; set; }
-    public float           FontOffset     { get; set; }
-    public float           TextHeight     { get; set; }
-    public float           TextOffset     { get; set; }
-    public bool            FocusTraversal { get; set; } = true;
 
     // ------------------------------------------------------------------------
 
@@ -408,10 +406,9 @@ public class TextField : Widget
     protected virtual int[] WordUnderCursor( int at )
     {
         var text  = Text;
-        var start = at;
         var right = Text!.Length;
         var left  = 0;
-        var index = start;
+        var index = at;
 
         if ( at >= text?.Length )
         {
@@ -432,7 +429,7 @@ public class TextField : Widget
                     }
                 }
 
-                for ( index = start - 1; index > -1; index-- )
+                for ( index = at - 1; index > -1; index-- )
                 {
                     if ( !IsWordCharacter( text[ index ] ) )
                     {
@@ -515,15 +512,14 @@ public class TextField : Widget
         var cursorPatch = Style.Cursor;
         var background  = GetBackgroundDrawable();
 
-        var color = Color ?? Color.Black;
+        var x            = X;
+        var y            = Y;
+        var width        = Width;
+        var height       = Height;
+        var bgLeftWidth  = 0f;
+        var bgRightWidth = 0f;
 
-        var x      = X;
-        var y      = Y;
-        var width  = Width;
-        var height = Height;
-
-        batch.SetColor( color.R, color.G, color.B, color.A * parentAlpha );
-        float bgLeftWidth = 0, bgRightWidth = 0;
+        batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
 
         if ( background != null )
         {
@@ -554,11 +550,11 @@ public class TextField : Widget
                     messageFont.SetColor( Style.MessageFontColor.R,
                                           Style.MessageFontColor.G,
                                           Style.MessageFontColor.B,
-                                          Style.MessageFontColor.A * color.A * parentAlpha );
+                                          Style.MessageFontColor.A * Color.A * parentAlpha );
                 }
                 else
                 {
-                    messageFont.SetColor( 0.7f, 0.7f, 0.7f, color.A * parentAlpha );
+                    messageFont.SetColor( 0.7f, 0.7f, 0.7f, Color.A * parentAlpha );
                 }
 
                 DrawMessageText( batch, messageFont, x + bgLeftWidth, y + textY + yOffset, width - bgLeftWidth - bgRightWidth );
@@ -566,7 +562,7 @@ public class TextField : Widget
         }
         else
         {
-            font.SetColor( fontColor!.R, fontColor.G, fontColor.B, fontColor.A * color.A * parentAlpha );
+            font.SetColor( fontColor!.R, fontColor.G, fontColor.B, fontColor.A * Color.A * parentAlpha );
             DrawText( batch, font, x + bgLeftWidth, y + textY + yOffset );
         }
 
@@ -589,7 +585,7 @@ public class TextField : Widget
         }
         else
         {
-            textY = textY + ( height / 2 );
+            textY += ( height / 2 );
         }
 
         if ( font.UseIntegerPositions )
@@ -639,9 +635,8 @@ public class TextField : Widget
 
     public virtual void UpdateDisplayText()
     {
-        var font = Style?.Font ?? new BitmapFont();
-        var data = font.GetData();
-
+        var font       = Style?.Font ?? new BitmapFont();
+        var data       = font.GetData();
         var text       = Text ?? string.Empty;
         var textLength = text.Length;
         var buffer     = new StringBuilder();
@@ -1111,8 +1106,7 @@ public class TextField : Widget
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-
-    [PublicAPI]
+    
     private sealed class BlinkTaskManager
     {
         private readonly TextField _tf;
@@ -1130,7 +1124,7 @@ public class TextField : Widget
             CreateBlinkTask();
         }
 
-        public void CreateBlinkTask()
+        private void CreateBlinkTask()
         {
             //@formatter:off
             _tf._blinkTask = new Task( () =>
@@ -1687,8 +1681,6 @@ public class TextField : Widget
                         _tf.Text = _tf.Insert( _tf.Cursor++, insertion, _tf.Text );
                     }
 
-                    var tempUndoText = _tf._undoText;
-
                     if ( _tf.ChangeText( oldText, _tf.Text ) )
                     {
                         var time = TimeUtils.Millis();
@@ -1742,6 +1734,7 @@ public class TextField : Widget
     /// <summary>
     ///     Interface for listening to typed characters.
     /// </summary>
+    [PublicAPI]
     public interface ITextFieldListener
     {
         void KeyTyped( TextField textField, char c );
@@ -1753,6 +1746,7 @@ public class TextField : Widget
     /// <summary>
     ///     Interface for filtering characters entered into the text field.
     /// </summary>
+    [PublicAPI]
     public interface ITextFieldFilter
     {
         bool AcceptChar( TextField textField, char c );
@@ -1773,6 +1767,7 @@ public class TextField : Widget
     ///     An interface for onscreen keyboards.
     ///     Can invoke the default keyboard or render your own keyboard!
     /// </summary>
+    [PublicAPI]
     public interface IOnscreenKeyboard
     {
         void Show( bool visible );
@@ -1786,6 +1781,7 @@ public class TextField : Widget
     ///     Just uses <see cref="IInput.SetOnscreenKeyboardVisible(bool)" /> as appropriate. Might
     ///     overlap your actual rendering, so use with care!
     /// </summary>
+    [PublicAPI]
     public class DefaultOnscreenKeyboard : IOnscreenKeyboard
     {
         public void Show( bool visible )

@@ -27,6 +27,7 @@ using LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
+[PublicAPI]
 public class TextButton : Button
 {
     private Label?           _label;
@@ -210,7 +211,7 @@ public class TextButton : Button
             className = className.Substring( dotIndex + 1 );
         }
 
-        return ( className.IndexOf( '$' ) != -1 ? "TextButton " : "" ) + className + ": " + _label?.Text;
+        return $"{( className.IndexOf( '$' ) != -1 ? "TextButton " : "" )}{className}: {_label?.Text}";
     }
 
     // ------------------------------------------------------------------------
@@ -219,8 +220,21 @@ public class TextButton : Button
     /// <summary>
     ///     The style for a text button, see <see cref="TextButton" />.
     /// </summary>
+    [PublicAPI]
     public class TextButtonStyle : ButtonStyle
     {
+        public BitmapFont? Font      { get; protected init; }
+        public Color?      FontColor { get; protected init; }
+
+        public Color? DownFontColor           { get; set; }
+        public Color? OverFontColor           { get; set; }
+        public Color? FocusedFontColor        { get; set; }
+        public Color? DisabledFontColor       { get; set; }
+        public Color? CheckedFontColor        { get; set; }
+        public Color? CheckedDownFontColor    { get; set; }
+        public Color? CheckedOverFontColor    { get; set; }
+        public Color? CheckedFocusedFontColor { get; set; }
+
         protected TextButtonStyle()
         {
         }
@@ -280,17 +294,5 @@ public class TextButton : Button
                 CheckedFocusedFontColor = new Color( style.CheckedFocusedFontColor );
             }
         }
-
-        public BitmapFont? Font { get; protected init; }
-
-        public Color? FontColor               { get; protected init; }
-        public Color? DownFontColor           { get; set; }
-        public Color? OverFontColor           { get; set; }
-        public Color? FocusedFontColor        { get; set; }
-        public Color? DisabledFontColor       { get; set; }
-        public Color? CheckedFontColor        { get; set; }
-        public Color? CheckedDownFontColor    { get; set; }
-        public Color? CheckedOverFontColor    { get; set; }
-        public Color? CheckedFocusedFontColor { get; set; }
     }
 }

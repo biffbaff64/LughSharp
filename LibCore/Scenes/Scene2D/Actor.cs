@@ -32,23 +32,6 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 [PublicAPI]
 public class Actor : IActor
 {
-    private readonly Color _color = new( 1, 1, 1, 1 );
-
-    private bool  _debug;
-    private float _height;
-    private float _rotation;
-    private float _scaleX;
-    private float _scaleY;
-    private float _width;
-    private float _x;
-    private float _y;
-
-    protected Actor()
-    {
-        Listeners        = new DelayedRemovalArray< IEventListener >( 0 );
-        CaptureListeners = new DelayedRemovalArray< IEventListener >( 0 );
-    }
-
     public Stage?    Stage      { get; set; }
     public Group?    Parent     { get; set; }
     public string?   Name       { get; set; }
@@ -63,9 +46,26 @@ public class Actor : IActor
     public virtual float PrefWidth  { get; set; } = 0;
     public virtual float PrefHeight { get; set; } = 0;
 
+    // ------------------------------------------------------------------------
+
     protected float OriginX { get; set; }
     protected float OriginY { get; set; }
 
+    // ------------------------------------------------------------------------
+    
+    private readonly Color _color = new( 1, 1, 1, 1 );
+
+    private bool  _debug;
+    private float _height;
+    private float _rotation;
+    private float _scaleX;
+    private float _scaleY;
+    private float _width;
+    private float _x;
+    private float _y;
+
+    // ------------------------------------------------------------------------
+    
     public Color Color
     {
         get => _color;
@@ -200,6 +200,15 @@ public class Actor : IActor
                 }
             }
         }
+    }
+
+    /// <summary>
+    ///     Default Constructor.
+    /// </summary>
+    protected Actor()
+    {
+        Listeners        = new DelayedRemovalArray< IEventListener >( 0 );
+        CaptureListeners = new DelayedRemovalArray< IEventListener >( 0 );
     }
 
     /// <summary>
@@ -447,7 +456,7 @@ public class Actor : IActor
     ///     Removes this actor from its parent, if it has a parent.
     /// </summary>
     /// <returns>True if successful.</returns>
-    public bool Remove()
+    public virtual bool Remove()
     {
         return ( Parent != null ) && Parent.RemoveActor( this, true );
     }

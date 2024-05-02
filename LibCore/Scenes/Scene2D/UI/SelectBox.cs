@@ -41,18 +41,24 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///         {@link SelectBoxStyle#background}.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class SelectBox< T > : Widget, IDisableable
 {
+    public ClickListener  ClickListener { get; set; }
+    public SelectBoxStyle BoxStyle      { get; set; }
+    public bool           IsDisabled    { get; set; }
+
     private readonly List< T >           _items;
     private readonly SelectBoxList?      _selectBoxList;
     private readonly ArraySelection< T > _selection;
+    private readonly Vector2             _temp = new();
 
-    private readonly Vector2 _temp = new();
-    private          int     _alignment;
-    private          float   _prefHeight;
-
+    private int   _alignment;
+    private float _prefHeight;
     private float _prefWidth;
     private bool  _selectedPrefWidth;
+
+    // ------------------------------------------------------------------------
 
     public SelectBox( Skin skin ) : this( skin.Get< SelectBoxStyle >() )
     {
@@ -80,8 +86,6 @@ public class SelectBox< T > : Widget, IDisableable
 
         Setup( style );
     }
-
-    public ClickListener ClickListener { get; set; }
 
     /// <summary>
     ///     Set the max number of items to display when the select box is opened. Set to
@@ -112,9 +116,6 @@ public class SelectBox< T > : Widget, IDisableable
             return _prefHeight;
         }
     }
-
-    public SelectBoxStyle BoxStyle   { get; set; }
-    public bool           IsDisabled { get; set; }
 
     private void Setup( SelectBoxStyle style )
     {
@@ -450,9 +451,9 @@ public class SelectBox< T > : Widget, IDisableable
         _selection.Set( _items[ index ] );
     }
 
-    /**
-     * When true the pref width is based on the selected item.
-     */
+    /// <summary>
+    /// When true the pref width is based on the selected item.
+    /// </summary>
     public void SetSelectedPrefWidth( bool selectedPrefWidth )
     {
         _selectedPrefWidth = selectedPrefWidth;
@@ -551,16 +552,28 @@ public class SelectBox< T > : Widget, IDisableable
 
     protected void OnHide( Actor selectBoxList )
     {
-        selectBoxList.Color.A = 1;
+        selectBoxList.Color.A = 1f;
 
-        selectBoxList.AddAction( Scene2D.Actions.Actions.Sequence( Scene2D.Actions.Actions.FadeOut( 0.15f, Interpolation.Fade ),
-                                                                   Scene2D.Actions.Actions.RemoveActor() ) );
+        selectBoxList.AddAction
+            (
+             Scene2D.Actions.Actions.Sequence
+                 (
+                  Scene2D.Actions.Actions.FadeOut( 0.15f, Interpolation.Fade ),
+                  Scene2D.Actions.Actions.RemoveActor()
+                 )
+            );
     }
 
+    // ------------------------------------------------------------------------
+    
+    [PublicAPI]
     public class SelectBoxList : ScrollPane
     {
-        private readonly InputListener _hideListener;
+        public int            MaxListCount { get; set; }
+        public ListBox< T >   ListBox      { get; set; }
+        public SelectBox< T > SelectBox    { get; set; }
 
+        private readonly InputListener _hideListener;
         private readonly Vector2 _stagePosition = new();
         private          Actor?  _previousScrollFocus;
 
@@ -586,10 +599,6 @@ public class SelectBox< T > : Widget, IDisableable
             AddListener( new SelectBoxListClickListener( this ) );
             AddListener( new SelectBoxListInputListener( this ) );
         }
-
-        public int            MaxListCount { get; set; }
-        public ListBox< T >   ListBox      { get; set; }
-        public SelectBox< T > SelectBox    { get; set; }
 
         public void Show( Stage stage )
         {
@@ -690,7 +699,7 @@ public class SelectBox< T > : Widget, IDisableable
 
             stage.ScrollFocus = this;
 
-            ListBox.Selection?.Set( SelectBox.GetSelected() );
+            ListBox.Selection.Set( SelectBox.GetSelected() );
             ListBox.Touchable = Touchable.Enabled;
 
             ClearActions();
@@ -726,8 +735,7 @@ public class SelectBox< T > : Widget, IDisableable
             ClearActions();
             SelectBox.OnHide( this );
         }
-
-
+        
         public override void Draw( IBatch batch, float parentAlpha )
         {
             SelectBox.LocalToStageCoordinates( SelectBox._temp.Set( 0, 0 ) );
@@ -761,6 +769,7 @@ public class SelectBox< T > : Widget, IDisableable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class SelectBoxArraySelection : ArraySelection< T >
     {
         private readonly SelectBox< T > _parent;
@@ -784,6 +793,7 @@ public class SelectBox< T > : Widget, IDisableable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class SelectBoxClickListener : ClickListener
     {
         private readonly SelectBox< T > _parent;
@@ -821,6 +831,7 @@ public class SelectBox< T > : Widget, IDisableable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class SelectBoxListClickListener : ClickListener
     {
         private readonly SelectBoxList _parent;
@@ -857,6 +868,7 @@ public class SelectBox< T > : Widget, IDisableable
         }
     }
 
+    [PublicAPI]
     public class SelectBoxListInputListener : InputListener
     {
         private readonly SelectBoxList _parent;
@@ -870,11 +882,12 @@ public class SelectBox< T > : Widget, IDisableable
         {
             if ( ( toActor == null ) || !_parent.IsAscendantOf( toActor ) )
             {
-                _parent.ListBox.Selection?.Set( _parent.SelectBox.GetSelected() );
+                _parent.ListBox.Selection.Set( _parent.SelectBox.GetSelected() );
             }
         }
     }
 
+    [PublicAPI]
     public class SblHideListener : InputListener
     {
         private readonly SelectBoxList _parent;
@@ -893,7 +906,7 @@ public class SelectBox< T > : Widget, IDisableable
                 return false;
             }
 
-            _parent.ListBox.Selection?.Set( _parent.SelectBox.GetSelected() );
+            _parent.ListBox.Selection.Set( _parent.SelectBox.GetSelected() );
             _parent.Hide();
 
             return false;
@@ -933,8 +946,20 @@ public class SelectBox< T > : Widget, IDisableable
     /// <summary>
     ///     The Style for a <see cref="SelectBox{T}" />.
     /// </summary>
+    [PublicAPI]
     public class SelectBoxStyle
     {
+        public BitmapFont                 Font               { get; } = null!;
+        public ScrollPane.ScrollPaneStyle ScrollStyle        { get; } = null!;
+        public ListBox< T >.ListStyle     ListStyle          { get; } = null!;
+        public Color                      FontColor          { get; } = new( 1, 1, 1, 1 );
+        public Color?                     OverFontColor      { get; }
+        public Color?                     DisabledFontColor  { get; }
+        public IDrawable?                 Background         { get; }
+        public IDrawable?                 BackgroundOver     { get; }
+        public IDrawable?                 BackgroundOpen     { get; }
+        public IDrawable?                 BackgroundDisabled { get; }
+
         public SelectBoxStyle()
         {
         }
@@ -977,16 +1002,5 @@ public class SelectBox< T > : Widget, IDisableable
             BackgroundOpen     = style.BackgroundOpen;
             BackgroundDisabled = style.BackgroundDisabled;
         }
-
-        public BitmapFont                 Font               { get; } = null!;
-        public ScrollPane.ScrollPaneStyle ScrollStyle        { get; } = null!;
-        public ListBox< T >.ListStyle     ListStyle          { get; } = null!;
-        public Color                      FontColor          { get; } = new( 1, 1, 1, 1 );
-        public Color?                     OverFontColor      { get; }
-        public Color?                     DisabledFontColor  { get; }
-        public IDrawable?                 Background         { get; }
-        public IDrawable?                 BackgroundOver     { get; }
-        public IDrawable?                 BackgroundOpen     { get; }
-        public IDrawable?                 BackgroundDisabled { get; }
     }
 }

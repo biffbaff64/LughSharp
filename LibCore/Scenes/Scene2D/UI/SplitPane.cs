@@ -28,6 +28,7 @@ using LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
+[PublicAPI]
 public class SplitPane : WidgetGroup
 {
     private readonly RectangleShape _firstWidgetBounds  = new();
@@ -36,14 +37,17 @@ public class SplitPane : WidgetGroup
     private readonly Vector2        _lastPoint          = new();
     private readonly RectangleShape _secondWidgetBounds = new();
     private readonly RectangleShape _tempScissors       = new();
-    private          bool           _cursorOverHandle;
-    private          Actor?         _firstWidget;
-    private          float          _maxAmount = 1;
-    private          float          _minAmount;
-    private          Actor?         _secondWidget;
-    private          float          _splitAmount = 0.5f;
-    private          SplitPaneStyle _style       = null!;
-    private          bool           _vertical;
+
+    private bool           _cursorOverHandle;
+    private Actor?         _firstWidget;
+    private float          _maxAmount = 1;
+    private float          _minAmount;
+    private Actor?         _secondWidget;
+    private float          _splitAmount = 0.5f;
+    private SplitPaneStyle _style       = null!;
+    private bool           _vertical;
+
+    // ------------------------------------------------------------------------
 
     public SplitPane( Actor? firstWidget, Actor? secondWidget, bool vertical, Skin skin )
         : this( firstWidget,
@@ -65,12 +69,19 @@ public class SplitPane : WidgetGroup
     public SplitPane( Actor? firstWidget, Actor? secondWidget, bool vertical, SplitPaneStyle style )
     {
         _vertical = vertical;
+        Style     = style;
 
-        SetStyle( style );
         SetFirstWidget( firstWidget );
         SetSecondWidget( secondWidget );
-        SetSize( GetPrefWidth(), GetPrefHeight() );
+
         Initialise();
+    }
+
+    private void Initialise()
+    {
+        SetSize( PrefWidth, PrefHeight );
+
+        AddListener( new SplitPaneInputListener( this ) );
     }
 
     public override float PrefWidth
@@ -159,24 +170,14 @@ public class SplitPane : WidgetGroup
         }
     }
 
-    private void Initialise()
+    public SplitPaneStyle Style
     {
-        AddListener( new SplitPaneInputListener( this ) );
-    }
-
-    public void SetStyle( SplitPaneStyle style )
-    {
-        _style = style;
-        InvalidateHierarchy();
-    }
-
-    /// <summary>
-    ///     Returns the split pane's style. Modifying the returned style may not have
-    ///     an effect until <see cref="SetStyle(SplitPaneStyle)" /> is called.
-    /// </summary>
-    public SplitPaneStyle GetStyle()
-    {
-        return _style;
+        get => _style;
+        set
+        {
+            _style = value;
+            InvalidateHierarchy();
+        }
     }
 
     public void Layout()
@@ -464,25 +465,6 @@ public class SplitPane : WidgetGroup
         Invalidate();
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public override void AddActor( Actor actor )
-    {
-        throw new GdxRuntimeException( "SplitPane.AddActor is not supported, use SplitPane.SetWidget instead." );
-    }
-
-    public override void AddActorAt( int index, Actor actor )
-    {
-        throw new GdxRuntimeException( "SplitPane.AddActorAt is not supported, use SplitPane.SetWidget instead." );
-    }
-
-    public override void AddActorBefore( Actor actorBefore, Actor actor )
-    {
-        throw new GdxRuntimeException( "SplitPane.AddActorBefore is not supported, use SplitPane.SetWidget instead." );
-    }
-
-    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     public bool RemoveActor( Actor actor )
