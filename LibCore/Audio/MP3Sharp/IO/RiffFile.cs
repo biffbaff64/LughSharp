@@ -24,6 +24,7 @@
 
 
 using LughSharp.LibCore.Audio.MP3Sharp.Support;
+using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Audio.MP3Sharp.IO;
 

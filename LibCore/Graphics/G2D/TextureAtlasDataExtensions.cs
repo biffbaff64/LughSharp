@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Utils.Exceptions;
+
 namespace LughSharp.LibCore.Graphics.G2D;
 
 public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region >

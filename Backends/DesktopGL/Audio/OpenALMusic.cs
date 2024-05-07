@@ -24,6 +24,7 @@
 
 
 using LughSharp.LibCore.Audio.OpenAL;
+using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.Backends.DesktopGL.Audio;
 

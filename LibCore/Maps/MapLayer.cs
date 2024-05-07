@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Utils.Exceptions;
+
 namespace LughSharp.LibCore.Maps;
 
 public class MapLayer

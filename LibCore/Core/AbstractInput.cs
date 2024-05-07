@@ -28,16 +28,21 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public abstract class AbstractInput : IInput
 {
-    private readonly List< int >      _keysToCatch = new();
-    protected        bool[]           PressedKeys     { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
-    protected        bool[]           JustPressedKeys { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
-    protected        bool             KeyJustPressed  { get; set; }
-    protected        int              PressedKeyCount { get; set; }
-    public           IInputProcessor? InputProcessor  { get; set; }
+    private readonly List< int > _keysToCatch = new();
+
+    public      IInputProcessor? InputProcessor  { get; set; }
+    protected	bool[]           PressedKeys     { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
+    protected   bool[]           JustPressedKeys { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
+    protected   bool             KeyJustPressed  { get; set; } = false;
+    protected   int              PressedKeyCount { get; set; } = 0;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    ///     Returns TRUE if the key identified by the supplied <see cref="IInput.Keys"/>
+    ///     key code is pressed.
+    /// </summary>
     public virtual bool IsKeyPressed( int key )
     {
         if ( key == IInput.Keys.ANY_KEY )
@@ -48,6 +53,10 @@ public abstract class AbstractInput : IInput
         return key is >= 0 and <= IInput.Keys.MAX_KEYCODE && PressedKeys[ key ];
     }
 
+    /// <summary>
+    ///     Returns TRUE if the key identified by the supplied <see cref="IInput.Keys"/>
+    ///     key code has <b>just</b> been pressed.
+    /// </summary>
     public virtual bool IsKeyJustPressed( int key )
     {
         if ( key == IInput.Keys.ANY_KEY )

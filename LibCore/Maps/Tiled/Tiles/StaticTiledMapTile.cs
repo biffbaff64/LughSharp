@@ -25,12 +25,20 @@
 
 namespace LughSharp.LibCore.Maps.Tiled.Tiles;
 
+[PublicAPI]
 public class StaticTiledMapTile : ITiledMapTile
 {
-    private MapObjects? _mapObjects;
+    public int                     ID            { get; set; }
+    public float                   OffsetX       { get; set; }
+    public float                   OffsetY       { get; set; }
+    public TextureRegion           TextureRegion { get; set; }
+    public ITiledMapTile.Blendmode BlendMode     { get; set; } = ITiledMapTile.Blendmode.Alpha;
 
+    private MapObjects? _mapObjects;
     private MapProperties? _properties;
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Creates a static tile with the given region
     /// </summary>
@@ -55,12 +63,6 @@ public class StaticTiledMapTile : ITiledMapTile
         TextureRegion = copy.TextureRegion;
         ID            = copy.ID;
     }
-
-    public int                     ID            { get; set; }
-    public float                   OffsetX       { get; set; }
-    public float                   OffsetY       { get; set; }
-    public TextureRegion           TextureRegion { get; set; }
-    public ITiledMapTile.Blendmode BlendMode     { get; set; } = ITiledMapTile.Blendmode.Alpha;
 
     public MapProperties GetProperties()
     {

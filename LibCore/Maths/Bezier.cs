@@ -24,6 +24,7 @@
 
 
 using LughSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Maths;
 

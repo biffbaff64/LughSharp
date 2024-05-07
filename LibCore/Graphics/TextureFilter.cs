@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Graphics;
 
+[PublicAPI]
 public class TextureFilter
 {
     public enum InnerEnum
@@ -38,73 +39,85 @@ public class TextureFilter
         MipMapLinearLinear
     }
 
+    // ------------------------------------------------------------------------
+
+    public int GLEnum  { get; }
+    public int Ordinal { get; set; }
+
+    // ------------------------------------------------------------------------
+
+    private readonly static List< TextureFilter > _valueList = new();
+    private readonly        string                _nameValue;
+
+    private static int _nextOrdinal = 0;
+
+    internal readonly InnerEnum InnerEnumValue;
+
+    // ------------------------------------------------------------------------
+
     /// <summary>
     ///     Fetch the nearest texel that best maps to the pixel on screen.
     /// </summary>
-    public readonly static TextureFilter Nearest = new( "Nearest", InnerEnum.Nearest, IGL.GL_NEAREST );
+    public readonly static TextureFilter Nearest = new( "Nearest",
+                                                        InnerEnum.Nearest,
+                                                        IGL.GL_NEAREST );
 
     /// <summary>
     ///     Fetch four nearest texels that best maps to the pixel on screen.
     /// </summary>
-    public readonly static TextureFilter Linear = new( "Linear", InnerEnum.Linear, IGL.GL_LINEAR );
+    public readonly static TextureFilter Linear = new( "Linear",
+                                                       InnerEnum.Linear,
+                                                       IGL.GL_LINEAR );
 
-    /// <see cref="MipMapLinearLinear " />
-    public readonly static TextureFilter MipMap = new( "MipMap", InnerEnum.MipMap, IGL.GL_LINEAR_MIPMAP_LINEAR );
+    public readonly static TextureFilter MipMap = new( "MipMap",
+                                                       InnerEnum.MipMap,
+                                                       IGL.GL_LINEAR_MIPMAP_LINEAR );
 
     /// <summary>
-    ///     Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and then sample the texels with
-    ///     a
-    ///     nearest filter.
+    ///     Fetch the best fitting image from the mip map chain based on the
+    ///     pixel/texel ratio and then sample the texels with a nearest filter.
     /// </summary>
     public readonly static TextureFilter MipMapNearestNearest = new( "MipMapNearestNearest",
                                                                      InnerEnum.MipMapNearestNearest,
                                                                      IGL.GL_NEAREST_MIPMAP_NEAREST );
 
     /// <summary>
-    ///     Fetch the best fitting image from the mip map chain based on the pixel/texel ratio and then sample the texels with
-    ///     a
-    ///     linear filter.
+    ///     Fetch the best fitting image from the mip map chain based on the
+    ///     pixel/texel ratio and then sample the texels with a linear filter.
     /// </summary>
     public readonly static TextureFilter MipMapLinearNearest = new( "MipMapLinearNearest",
                                                                     InnerEnum.MipMapLinearNearest,
                                                                     IGL.GL_LINEAR_MIPMAP_NEAREST );
 
     /// <summary>
-    ///     Fetch the two best fitting images from the mip map chain and then sample the nearest texel from each of the two
-    ///     images,
-    ///     combining them to the final output pixel.
+    ///     Fetch the two best fitting images from the mip map chain and then
+    ///     sample the nearest texel from each of the two images, combining them
+    ///     to the final output pixel.
     /// </summary>
     public readonly static TextureFilter MipMapNearestLinear = new( "MipMapNearestLinear",
                                                                     InnerEnum.MipMapNearestLinear,
                                                                     IGL.GL_NEAREST_MIPMAP_LINEAR );
 
     /// <summary>
-    ///     Fetch the two best fitting images from the mip map chain and then sample the four nearest texels from each of the
-    ///     two
-    ///     images, combining them to the final output pixel.
+    ///     Fetch the two best fitting images from the mip map chain and then
+    ///     sample the four nearest texels from each of the two images, combining
+    ///     them to the final output pixel.
     /// </summary>
     public readonly static TextureFilter MipMapLinearLinear = new( "MipMapLinearLinear",
                                                                    InnerEnum.MipMapLinearLinear,
                                                                    IGL.GL_LINEAR_MIPMAP_LINEAR );
 
-    private readonly static List< TextureFilter > ValueList = new();
-
-    private static int _nextOrdinal = 0;
-
-    private readonly string _nameValue;
-    private readonly int    _ordinalValue;
-
-    public readonly InnerEnum innerEnumValue;
+    // ------------------------------------------------------------------------
 
     static TextureFilter()
     {
-        ValueList.Add( Nearest );
-        ValueList.Add( Linear );
-        ValueList.Add( MipMap );
-        ValueList.Add( MipMapNearestNearest );
-        ValueList.Add( MipMapLinearNearest );
-        ValueList.Add( MipMapNearestLinear );
-        ValueList.Add( MipMapLinearLinear );
+        _valueList.Add( Nearest );
+        _valueList.Add( Linear );
+        _valueList.Add( MipMap );
+        _valueList.Add( MipMapNearestNearest );
+        _valueList.Add( MipMapLinearNearest );
+        _valueList.Add( MipMapNearestLinear );
+        _valueList.Add( MipMapLinearLinear );
     }
 
     private TextureFilter( string name, InnerEnum innerEnum, int glEnum )
@@ -112,11 +125,9 @@ public class TextureFilter
         GLEnum = glEnum;
 
         _nameValue     = name;
-        _ordinalValue  = _nextOrdinal++;
-        innerEnumValue = innerEnum;
+        Ordinal        = _nextOrdinal++;
+        InnerEnumValue = innerEnum;
     }
-
-    public int GLEnum { get; }
 
     public bool IsMipMap()
     {
@@ -125,14 +136,10 @@ public class TextureFilter
 
     public static TextureFilter[] Values()
     {
-        return ValueList.ToArray();
+        return _valueList.ToArray();
     }
 
-    public int Ordinal()
-    {
-        return _ordinalValue;
-    }
-
+    /// <inheritdoc/>
     public override string ToString()
     {
         return _nameValue;
@@ -140,7 +147,7 @@ public class TextureFilter
 
     public static TextureFilter ValueOf( string name )
     {
-        foreach ( var enumInstance in ValueList )
+        foreach ( var enumInstance in _valueList )
         {
             if ( enumInstance._nameValue == name )
             {

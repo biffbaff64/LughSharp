@@ -25,6 +25,7 @@
 
 using LughSharp.LibCore.Assets.Loaders.Resolvers;
 using LughSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Maps.Tiled.Loaders;
 

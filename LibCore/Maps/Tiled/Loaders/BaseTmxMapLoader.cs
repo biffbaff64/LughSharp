@@ -31,6 +31,7 @@ using LughSharp.LibCore.Assets.Loaders.Resolvers;
 using LughSharp.LibCore.Maps.Objects;
 using LughSharp.LibCore.Maps.Tiled.Objects;
 using LughSharp.LibCore.Maps.Tiled.Tiles;
+using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Maps.Tiled.Loaders;
 

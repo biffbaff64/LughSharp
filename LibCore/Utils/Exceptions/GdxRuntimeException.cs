@@ -27,13 +27,13 @@ using System.Runtime.CompilerServices;
 using Exception = System.Exception;
 using NotNull = System.Diagnostics.CodeAnalysis.NotNullAttribute;
 
-namespace LughSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Utils.Exceptions;
 
 /// <summary>
 ///     Typed runtime exception used throughout LughSharp.
 /// </summary>
 [PublicAPI]
-public class GdxRuntimeException : Exception
+public class GdxRuntimeException : ApplicationException
 {
     /// <summary>
     ///     Initializes a new GdxRuntimeException with a specified error message.

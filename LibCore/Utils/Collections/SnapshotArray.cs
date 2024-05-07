@@ -24,6 +24,7 @@
 
 
 using System.Collections;
+using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Utils.Collections;
 

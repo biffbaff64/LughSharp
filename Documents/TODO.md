@@ -232,7 +232,7 @@ CORE
     - DONE - DONE - IApplication
     - DONE - DONE - IApplicationListener
     - DONE - DONE - IAudio
-    - DONE - IP   - IFile
+    - DONE - DONE - IFiles
     - DONE - IP   - IGraphics
     - DONE - IP   - IInput
     - DONE - IP   - IInputProcessor
@@ -251,14 +251,6 @@ CORE
 GRAPHICS
 --------
 
-    - NOTE: I am not sure how to proceed with implementing OpenGL within this project
-    -       right now. Java LibGDX uses LWJGL3, there is no current C# OpenGL implementation
-    -       that does things in the same way ie. using ByterBuffer instead of byte*, that kind
-    -       of thing. It means a big rewrite of many of the graphics classes.
-    -       I might need some guidance, or a lightbulb moment to continue.
-
-    - What if I switched to DirectX or used SDL2?
-
     CODE   DOCUMENT
     ----   --------
     - DONE - IP   - Camera
@@ -270,8 +262,6 @@ GRAPHICS
     - DONE - IP   - ICubemapData
     - DONE - IP   - ICursor
     - DONE - IP   - IDownloadPixmapResponseListener
-    - IP   - IP   - IGL20
-    - IP   - IP   - IGL30
     - DONE - IP   - ITextureArrayData
     - DONE - IP   - ITextureData
     - DONE - IP   - Mesh
@@ -281,8 +271,8 @@ GRAPHICS
     - DONE - IP   - PixmapFormat
     - DONE - IP   - PixmapIO                            Tests needed
     - DONE - IP   - Texture
-    - IP   - IP   - TextureArray
-    - IP   - IP   - TextureFilter
+    - DONE - IP   - TextureArray
+    - DONE - IP   - TextureFilter
     - DONE - IP   - TextureWrap
     - DONE - IP   - VertexAttribute
     - DONE - IP   - VertexAttributes
@@ -507,8 +497,8 @@ MAPS/TILED/TILES
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - AnimatedTileMapTile
-    - IP   - IP   - StaticTiledMapTile
+    - DONE - IP   - AnimatedTileMapTile
+    - DONE - IP   - StaticTiledMapTile
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -523,12 +513,12 @@ MATHS
     - DONE - IP   - Bresenham2
     - DONE - IP   - BSpline
     - DONE - IP   - CatmullRomSpline
-    - IP   - IP   - Circle
+    - DONE - DONE - Circle
     - DONE - IP   - ConvexHull
     - DONE - IP   - CumulativeDistribution
     - IP   - IP   - DelaunayTriangulator        Unsure about method ComputeTriangles()
     - IP   - IP   - EarClippingTriangulator     Needs some testing
-    - IP   - IP   - Ellipse
+    - DONE - DONE - Ellipse
     - DONE - IP   - FloatCounter
     - DONE - IP   - Frustrum
     - DONE - IP   - GeometryUtils
@@ -783,7 +773,7 @@ UTILS/BUFFERS
     - DONE - DONE - ByteBuffer
     - DONE - IP   - CharBuffer
     - DONE - IP   - CircularByteBuffer
-    - DONE - IP   - DirectByteBuffer
+    - IP   - IP   - DirectByteBuffer
     - DONE - DONE - DoubleBuffer
     - DONE - IP   - FloatBuffer
     - IP   - IP   - IDirectBuffer
@@ -846,6 +836,17 @@ UTILS/COLLECTIONS/EXTENSIONS
     ----   --------
     - DONE - DONE - DictionaryExtensions
     - DONE - DONE - ListExtensions
+
+UTILS/JSON
+----------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - IP   - AbstractWriter
+    - IP   - IP   - Json
+    - IP   - IP   - JsonReader
+    - IP   - IP   - JsonValue               Iterator needs finishing
+    - DONE - IP   - JsonWriter
 
 UTILS/POOLING
 -------------

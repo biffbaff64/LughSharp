@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Utils.Exceptions;
+
 namespace LughSharp.Backends.DesktopGL.Files;
 
 public class DesktopGLFiles : IFiles

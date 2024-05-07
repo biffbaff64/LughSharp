@@ -26,6 +26,7 @@
 namespace LughSharp.LibCore.Maths;
 
 /// <summary>
+///     A convenient 2D Circle class
 /// </summary>
 [PublicAPI]
 public class Circle : IShape2D
@@ -72,7 +73,7 @@ public class Circle : IShape2D
     /// <summary>
     ///     Copy constructor
     /// </summary>
-    /// <param name="circle"> The circle to construct a copy of.  </param>
+    /// <param name="circle"> The circle to construct a copy of. </param>
     public Circle( Circle circle )
     {
         X      = circle.X;
@@ -84,7 +85,7 @@ public class Circle : IShape2D
     ///     Creates a new <see cref="Circle" /> in terms of its center and a point on its edge.
     /// </summary>
     /// <param name="center"> The center of the new circle </param>
-    /// <param name="edge"> Any point on the edge of the given circle  </param>
+    /// <param name="edge"> Any point on the edge of the given circle </param>
     public Circle( Vector2 center, Vector2 edge )
     {
         X      = center.X;
@@ -96,9 +97,7 @@ public class Circle : IShape2D
     ///     Checks whether or not this circle contains a given point.
     /// </summary>
     /// <param name="x"> X coordinate </param>
-    /// <param name="y">
-    ///     Y coordinate
-    /// </param>
+    /// <param name="y"> Y coordinate </param>
     /// <returns> true if this circle contains the given point.  </returns>
     public bool Contains( float x, float y )
     {
@@ -193,9 +192,9 @@ public class Circle : IShape2D
     }
 
     /// <summary>
+    ///     Returns TRUE if this circle contains the supplied reference circle.
     /// </summary>
     /// <param name="c"> the other <see cref="Circle" /> </param>
-    /// <returns> whether this circle contains the other circle.  </returns>
     public bool Contains( Circle c )
     {
         var radiusDiff = Radius - c.Radius;
@@ -214,9 +213,9 @@ public class Circle : IShape2D
     }
 
     /// <summary>
+    ///     Returns TRUE if this circle overlaps the supplied reference circle.
     /// </summary>
     /// <param name="c"> the other <see cref="Circle" /> </param>
-    /// <returns> whether this circle overlaps the other circle.  </returns>
     public bool Overlaps( Circle c )
     {
         var dx        = X - c.X;
@@ -229,7 +228,7 @@ public class Circle : IShape2D
 
     /// <summary>
     ///     Returns a <see cref="string" /> representation of this
-    ///     <see cref="Circle" /> of the form <code>x,y,radius</code>.
+    ///     <see cref="Circle" /> of the form <tt>x,y,radius</tt>.
     /// </summary>
     public override string ToString()
     {
@@ -237,30 +236,24 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    /// </summary>
-    /// <returns>
-    ///     The circumference of this circle:-
+    ///     Returns the circumference of this circle:-
     ///     (as 2 * <see cref="MathUtils.PI2" />) * <code>radius</code>
-    /// </returns>
+    /// </summary>
     public float Circumference()
     {
         return Radius * MathUtils.PI2;
     }
 
     /// <summary>
+    ///     Returns the area of this circle:-
+    ///     (as <see cref="MathUtils.PI" /> * radius * radius).
     /// </summary>
-    /// <returns>
-    ///     The area of this circle (as <see cref="MathUtils.PI" /> * radius * radius).
-    /// </returns>
     public float Area()
     {
         return Radius * Radius * MathUtils.PI;
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="o"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public override bool Equals( object? o )
     {
         if ( o == this )
@@ -280,16 +273,14 @@ public class Circle : IShape2D
             || MathUtils.IsEqual( Radius, c.Radius );
     }
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         const int PRIME = 41;
 
-        var result = PRIME + NumberUtils.FloatToRawIntBits( Radius );
-        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( X );
-        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Y );
+        var result = PRIME + 43;
+        result = ( PRIME * result ) + 45;
+        result = ( PRIME * result ) + 47;
 
         return result;
     }

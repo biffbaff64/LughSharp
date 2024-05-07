@@ -24,6 +24,7 @@
 
 
 using LughSharp.LibCore.Assets.Loaders.Resolvers;
+using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Assets.Loaders;
 

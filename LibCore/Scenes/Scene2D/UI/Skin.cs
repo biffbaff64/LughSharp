@@ -27,6 +27,8 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
 using LughSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Utils.Exceptions;
+
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
@@ -49,6 +51,16 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class Skin : IDisposable
 {
+    /// <summary>
+    /// </summary>
+    public struct TintedDrawable
+    {
+        public string Name  { get; set; }
+        public Color  Color { get; set; }
+    }
+
+    // ------------------------------------------------------------------------
+    
     private readonly static Type[] _defaultTagClasses =
     {
         typeof( BitmapFont ),
@@ -167,38 +179,22 @@ public class Skin : IDisposable
     public float Scale { get; set; }
 
     /// <summary>
-    ///     Disposes the <see cref="TextureAtlas" /> and all <see cref="IDisposable" />
-    ///     resources in the skin.
-    /// </summary>
-    public void Dispose()
-    {
-        Atlas?.Dispose();
-
-        foreach ( Dictionary< string, object >? entry in Resources.Values )
-        {
-            foreach ( var resource in entry!.Values )
-            {
-                if ( resource is IDisposable disposable )
-                {
-                    disposable.Dispose();
-                }
-            }
-        }
-    }
-
-    /// <summary>
     ///     Adds all resources in the specified skin JSON file.
     /// </summary>
     public void Load( FileInfo skinFile )
     {
-        try
-        {
-            GetJsonLoader( skinFile ).FromJson( typeof( Skin ), skinFile );
-        }
-        catch ( SerializationException ex )
-        {
-            throw new SerializationException( "Error reading file: " + skinFile, ex );
-        }
+//        using var fileStream = File.OpenRead( skinFile.Name );
+
+//        JsonDocument document = JsonSerializer.Deserialize<>( fileStream );
+
+//        try
+//        {
+//            GetJsonLoader( skinFile ).FromJson( typeof( Skin ), skinFile );
+//        }
+//        catch ( SerializationException ex )
+//        {
+//            throw new SerializationException( "Error reading file: " + skinFile, ex );
+//        }
     }
 
     /// <summary>
@@ -750,12 +746,12 @@ public class Skin : IDisposable
     /// </summary>
     public IDrawable ScaleDrawable( IDrawable drawable )
     {
-        drawable.LeftWidth    = drawable.LeftWidth * Scale;
-        drawable.RightWidth   = drawable.RightWidth * Scale;
-        drawable.BottomHeight = drawable.BottomHeight * Scale;
-        drawable.TopHeight    = drawable.TopHeight * Scale;
-        drawable.MinWidth     = drawable.MinWidth * Scale;
-        drawable.MinHeight    = drawable.MinHeight * Scale;
+        drawable.LeftWidth    *= Scale;
+        drawable.RightWidth   *= Scale;
+        drawable.BottomHeight *= Scale;
+        drawable.TopHeight    *= Scale;
+        drawable.MinWidth     *= Scale;
+        drawable.MinHeight    *= Scale;
 
         return drawable;
     }
@@ -822,15 +818,29 @@ public class Skin : IDisposable
         return type.GetMethod( name );
     }
 
-    /// <summary>
-    /// </summary>
-    public struct TintedDrawable
-    {
-        public string Name  { get; set; }
-        public Color  Color { get; set; }
-    }
+    //TODO:
+//    public Json GetJsonLoader( in FileInfo skinFile )
+//    {
+//        var skin = this;
+//    }
 
-    public Json GetJsonLoader( in FileInfo skinFile )
+    /// <summary>
+    ///     Disposes the <see cref="TextureAtlas" /> and all <see cref="IDisposable" />
+    ///     resources in the skin.
+    /// </summary>
+    public void Dispose()
     {
+        Atlas?.Dispose();
+
+        foreach ( Dictionary< string, object >? entry in Resources.Values )
+        {
+            foreach ( var resource in entry!.Values )
+            {
+                if ( resource is IDisposable disposable )
+                {
+                    disposable.Dispose();
+                }
+            }
+        }
     }
 }

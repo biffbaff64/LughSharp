@@ -25,6 +25,7 @@
 
 using System.Text;
 using LughSharp.LibCore.Maths.Collision;
+using LughSharp.LibCore.Utils.Exceptions;
 using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 

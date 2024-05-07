@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Utils.Exceptions;
+
 namespace LughSharp.LibCore.Utils.Buffers;
 
 /// <summary>
@@ -224,9 +226,8 @@ public abstract class Buffer
 
     /// <summary>
     ///     Used only by DirectBuffers
+    ///     TODO: Would this be better moved elsewhere?
     /// </summary>
-
-    //TODO: Would this be better moved elsewhere?
     public virtual long Address { get; set; }
 
     /// <summary>

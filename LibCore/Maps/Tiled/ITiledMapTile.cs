@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Maps.Tiled;
 
+[PublicAPI]
 public interface ITiledMapTile
 {
     public enum Blendmode

@@ -25,6 +25,7 @@
 
 using LughSharp.LibCore.Assets.Loaders.Resolvers;
 using LughSharp.LibCore.Scenes.Scene2D.UI;
+using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Assets.Loaders;
 

@@ -23,15 +23,13 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Runtime.Serialization;
-
 namespace LughSharp.LibCore.Maths;
 
 /// <summary>
 ///     A convenient 2D ellipse class, based on the circle class
 /// </summary>
 [PublicAPI]
-public class Ellipse : ISerializable, IShape2D
+public class Ellipse : IShape2D
 {
     public float X      { get; set; }
     public float Y      { get; set; }
@@ -92,10 +90,10 @@ public class Ellipse : ISerializable, IShape2D
     }
 
     /// <summary>
-    /// 
+    ///     Creates a new Ellipse using the supplied position and size vectors.
     /// </summary>
-    /// <param name="position"></param>
-    /// <param name="size"></param>
+    /// <param name="position"> Position Vector. </param>
+    /// <param name="size"> Size Vector. </param>
     public Ellipse( Vector2 position, Vector2 size )
     {
         X      = position.X;
@@ -118,31 +116,11 @@ public class Ellipse : ISerializable, IShape2D
     }
 
     /// <summary>
-    ///     Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" />
-    ///     with the data needed to serialize the target object.
-    /// </summary>
-    /// <param name="info">
-    ///     The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> to populate with data.
-    /// </param>
-    /// <param name="context">
-    ///     The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext" />)
-    ///     for this serialization.
-    /// </param>
-    /// <exception cref="T:System.Security.SecurityException">
-    ///     The caller does not have the required permission.
-    /// </exception>
-    public void GetObjectData( SerializationInfo info, StreamingContext context )
-    {
-    }
-
-    /// <summary>
     ///     Checks whether or not this ellipse contains the given point.
     /// </summary>
     /// <param name="x"> X coordinate </param>
-    /// <param name="y">
-    ///     Y coordinate
-    /// </param>
-    /// <returns> true if this ellipse contains the given point; false otherwise.  </returns>
+    /// <param name="y"> Y coordinate </param>
+    /// <returns> true if this ellipse contains the given point; false otherwise. </returns>
     public bool Contains( float x, float y )
     {
         x -= X;
@@ -156,10 +134,8 @@ public class Ellipse : ISerializable, IShape2D
     /// <summary>
     ///     Checks whether or not this ellipse contains the given point.
     /// </summary>
-    /// <param name="point">
-    ///     Position vector
-    /// </param>
-    /// <returns> true if this ellipse contains the given point; false otherwise.  </returns>
+    /// <param name="point"> Position vector </param>
+    /// <returns> true if this ellipse contains the given point; false otherwise. </returns>
     public bool Contains( Vector2 point )
     {
         return Contains( point.X, point.Y );
@@ -193,9 +169,10 @@ public class Ellipse : ISerializable, IShape2D
     }
 
     /// <summary>
-    /// 
+    ///     Sets the position and size of this ellipse, based on the supplied
+    ///     <see cref="Circle"/>.
     /// </summary>
-    /// <param name="circle"></param>
+    /// <param name="circle"> The Circle to copy position and size from. </param>
     public void Set( Circle circle )
     {
         X      = circle.X;
@@ -205,10 +182,10 @@ public class Ellipse : ISerializable, IShape2D
     }
 
     /// <summary>
-    /// 
+    ///     Sets the position and size of this ellipse.
     /// </summary>
-    /// <param name="position"></param>
-    /// <param name="size"></param>
+    /// <param name="position"> A Vector2 holding the new position. </param>
+    /// <param name="size"> A Vector2 holding the new width and height. </param>
     public void Set( Vector2 position, Vector2 size )
     {
         X      = position.X;
@@ -272,8 +249,9 @@ public class Ellipse : ISerializable, IShape2D
     ///     the circumference of an ellipse is actually difficult to compute exactly.
     /// </summary>
     /// <returns>
-    ///     The Ramanujan approximation to the circumference of an ellipse if one dimension
-    ///     is at least three times longer than the other, else the simpler approximation
+    ///     The <a href="https://www.johndcook.com/blog/2013/05/05/ramanujan-circumference-ellipse/">Ramanujan</a>
+    ///     approximation to the circumference of an ellipse if one dimension is at least three times
+    ///     longer than the other, else the simpler approximation
     /// </returns>
     public float Circumference()
     {
@@ -318,10 +296,10 @@ public class Ellipse : ISerializable, IShape2D
     {
         const int PRIME = 53;
 
-        var result = PRIME + NumberUtils.FloatToRawIntBits( Height );
-        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Width );
-        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( X );
-        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Y );
+        var result = PRIME + 31;
+        result = ( PRIME * result ) + 33;
+        result = ( PRIME * result ) + 35;
+        result = ( PRIME * result ) + 37;
 
         return result;
     }

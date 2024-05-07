@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Utils.Exceptions;
+
 namespace LughSharp.LibCore.Utils.Buffers;
 
 [PublicAPI]
@@ -30,7 +32,7 @@ public abstract class ByteBuffer : Buffer
 {
     // ------------------------------------------------------------------------
 
-    private bool _nativeByteOrder = Bits.ByteOrder == ByteOrder.BigEndian;
+    protected bool NativeByteOrder = ( Bits.ByteOrder == ByteOrder.BigEndian );
 
     // ------------------------------------------------------------------------
 
@@ -592,7 +594,7 @@ public abstract class ByteBuffer : Buffer
     public ByteBuffer Order( ByteOrder order )
     {
         BigEndian        = order == ByteOrder.BigEndian;
-        _nativeByteOrder = BigEndian == ( Bits.ByteOrder == ByteOrder.BigEndian );
+        NativeByteOrder = BigEndian == ( Bits.ByteOrder == ByteOrder.BigEndian );
 
         return this;
     }

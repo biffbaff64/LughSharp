@@ -386,6 +386,25 @@ public class DirectByteBuffer : MappedByteBuffer, IDirectBuffer
         return this;
     }
 
+    private ByteBuffer PutDouble( long index, double value )
+    {
+//        if ( unaligned )
+//        {
+//            var l = BitConverter.DoubleToInt64Bits( value );
+
+//            unsafe
+//            {
+//                PutLong( index, NativeByteOrder ? l : Bits.Swap( l ) );
+//            }
+//        }
+//        else
+//        {
+//            Bits.
+//        }
+
+        return this;
+    }
+    
     /// <summary>
     ///     Creates a view of this byte buffer as a double buffer.
     ///     <para>

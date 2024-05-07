@@ -23,29 +23,35 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Utils.Exceptions;
 using Blendmode = LughSharp.LibCore.Maps.Tiled.ITiledMapTile.Blendmode;
 
 namespace LughSharp.LibCore.Maps.Tiled.Tiles;
 
+[PublicAPI]
 public class AnimatedTiledMapTile : ITiledMapTile
 {
-    private readonly static long InitialTimeOffset = DateTime.Now.Millisecond;
+    public int       ID        { get; set; }
+    public Blendmode BlendMode { get; set; } = Blendmode.Alpha;
+
+    private readonly static long _initialTimeOffset = DateTime.Now.Millisecond;
 
     private static   long                 _lastTiledMapRenderTime = 0;
     private readonly int[]                _animationIntervals;
     private readonly StaticTiledMapTile[] _frameTiles;
+    private readonly int                  _loopDuration;
 
-    private readonly int         _loopDuration;
-    private          MapObjects? _mapObjects;
-
+    private MapObjects?    _mapObjects;
     private MapProperties? _properties;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Creates an animated tile with the given animation interval and frame tiles.
     /// </summary>
     /// <param name="interval">The interval between each individual frame tile.</param>
     /// <param name="frameTiles">
-    ///     An array of <see cref="StaticTiledMapTile" /> that make up the animation.
+    ///     An array of <see cref="StaticTiledMapTile" />s that make up the animation.
     /// </param>
     public AnimatedTiledMapTile( float interval, List< StaticTiledMapTile > frameTiles )
     {
@@ -68,7 +74,7 @@ public class AnimatedTiledMapTile : ITiledMapTile
     ///     The intervals between each individual frame tile in milliseconds.
     /// </param>
     /// <param name="frameTiles">
-    ///     An array of <see cref="StaticTiledMapTile" /> that make up the animation.
+    ///     An array of <see cref="StaticTiledMapTile"/> that make up the animation.
     /// </param>
     public AnimatedTiledMapTile( List< int > intervals, List< StaticTiledMapTile > frameTiles )
     {
@@ -84,46 +90,31 @@ public class AnimatedTiledMapTile : ITiledMapTile
         }
     }
 
-    public int       ID        { get; set; }
-    public Blendmode BlendMode { get; set; } = Blendmode.Alpha;
-
     public TextureRegion TextureRegion
     {
         get => GetCurrentFrame().TextureRegion;
-        set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
+        set { }
     }
 
     public float OffsetX
     {
         get => GetCurrentFrame().OffsetX;
-        set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
+        set { }
     }
 
     public float OffsetY
     {
         get => GetCurrentFrame().OffsetY;
-        set => throw new GdxRuntimeException( "Illegal action: Accessor only." );
+        set { }
     }
 
-    public MapProperties GetProperties()
-    {
-        return _properties ??= new MapProperties();
-    }
+    public MapProperties GetProperties() => _properties ??= new MapProperties();
 
-    public MapObjects GetObjects()
-    {
-        return _mapObjects ??= new MapObjects();
-    }
+    public MapObjects GetObjects() => _mapObjects ??= new MapObjects();
 
-    public StaticTiledMapTile[] GetFrameTiles()
-    {
-        return _frameTiles;
-    }
+    public StaticTiledMapTile[] GetFrameTiles() => _frameTiles;
 
-    public ITiledMapTile GetCurrentFrame()
-    {
-        return _frameTiles[ GetCurrentFrameIndex() ];
-    }
+    public ITiledMapTile GetCurrentFrame() => _frameTiles[ GetCurrentFrameIndex() ];
 
     public int GetCurrentFrameIndex()
     {
@@ -141,14 +132,12 @@ public class AnimatedTiledMapTile : ITiledMapTile
             currentTime -= animationInterval;
         }
 
-        throw new SystemException
-            (
-             "Could not determine current animation frame in AnimatedTiledMapTile.  This should never happen."
-            );
+        throw new GdxRuntimeException
+            ( "Could not determine current animation frame in AnimatedTiledMapTile. This should never happen." );
     }
 
     public static void UpdateAnimationBaseTime()
     {
-        _lastTiledMapRenderTime = DateTime.Now.Millisecond - InitialTimeOffset;
+        _lastTiledMapRenderTime = DateTime.Now.Millisecond - _initialTimeOffset;
     }
 }
