@@ -27,6 +27,7 @@ using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Maps.Tiled.Renderers;
 
+[PublicAPI]
 public class IsometricTiledMapRenderer : BatchTileMapRenderer
 {
     private readonly Vector2 _bottomLeft  = new();
@@ -82,7 +83,7 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
         _invIsotransform.Inv();
     }
 
-    private Vector3 TranslateScreenToIso( Vector2 vec )
+    private Vector3 TranslateScreenToIsometric( Vector2 vec )
     {
         _screenPos.Set( vec.X, vec.Y, 0 );
 
@@ -132,11 +133,11 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
                           ( ViewBounds.Y + ViewBounds.Height ) - layerOffsetY );
 
         // transforming screen coordinates to iso coordinates
-        var row1 = ( int ) ( TranslateScreenToIso( _topLeft ).Y / tileWidth ) - 2;
-        var row2 = ( int ) ( TranslateScreenToIso( _bottomRight ).Y / tileWidth ) + 2;
+        var row1 = ( int ) ( TranslateScreenToIsometric( _topLeft ).Y / tileWidth ) - 2;
+        var row2 = ( int ) ( TranslateScreenToIsometric( _bottomRight ).Y / tileWidth ) + 2;
 
-        var col1 = ( int ) ( TranslateScreenToIso( _bottomLeft ).X / tileWidth ) - 2;
-        var col2 = ( int ) ( TranslateScreenToIso( _topRight ).X / tileWidth ) + 2;
+        var col1 = ( int ) ( TranslateScreenToIsometric( _bottomLeft ).X / tileWidth ) - 2;
+        var col2 = ( int ) ( TranslateScreenToIsometric( _topRight ).X / tileWidth ) + 2;
 
         for ( var row = row2; row >= row1; row-- )
         for ( var col = col1; col <= col2; col++ )
@@ -197,24 +198,20 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
 
                 if ( flipX )
                 {
-                    var temp = Vertices[ IBatch.U1 ];
-                    Vertices[ IBatch.U1 ] = Vertices[ IBatch.U3 ];
-                    Vertices[ IBatch.U3 ] = temp;
-
-                    temp                  = Vertices[ IBatch.U2 ];
-                    Vertices[ IBatch.U2 ] = Vertices[ IBatch.U4 ];
-                    Vertices[ IBatch.U4 ] = temp;
+                    ( Vertices[ IBatch.U1 ], Vertices[ IBatch.U3 ] )
+                        = ( Vertices[ IBatch.U3 ], Vertices[ IBatch.U1 ] );
+                            
+                    ( Vertices[ IBatch.U2 ], Vertices[ IBatch.U4 ] )
+                        = ( Vertices[ IBatch.U4 ], Vertices[ IBatch.U2 ] );
                 }
 
                 if ( flipY )
                 {
-                    var temp = Vertices[ IBatch.V1 ];
-                    Vertices[ IBatch.V1 ] = Vertices[ IBatch.V3 ];
-                    Vertices[ IBatch.V3 ] = temp;
-
-                    temp                  = Vertices[ IBatch.V2 ];
-                    Vertices[ IBatch.V2 ] = Vertices[ IBatch.V4 ];
-                    Vertices[ IBatch.V4 ] = temp;
+                    ( Vertices[ IBatch.V1 ], Vertices[ IBatch.V3 ] )
+                        = ( Vertices[ IBatch.V3 ], Vertices[ IBatch.V1 ] );
+                            
+                    ( Vertices[ IBatch.V2 ], Vertices[ IBatch.V4 ] )
+                        = ( Vertices[ IBatch.V4 ], Vertices[ IBatch.V2 ] );
                 }
 
                 if ( rotations != 0 )
@@ -240,21 +237,17 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
 
                         case TiledMapTileLayer.Cell.ROTATE180:
                         {
-                            var tempU = Vertices[ IBatch.U1 ];
-                            Vertices[ IBatch.U1 ] = Vertices[ IBatch.U3 ];
-                            Vertices[ IBatch.U3 ] = tempU;
+                            ( Vertices[ IBatch.U1 ], Vertices[ IBatch.U3 ] )
+                                = ( Vertices[ IBatch.U3 ], Vertices[ IBatch.U1 ] );
+                            
+                            ( Vertices[ IBatch.U2 ], Vertices[ IBatch.U4 ] )
+                                = ( Vertices[ IBatch.U4 ], Vertices[ IBatch.U2 ] );
 
-                            tempU                 = Vertices[ IBatch.U2 ];
-                            Vertices[ IBatch.U2 ] = Vertices[ IBatch.U4 ];
-                            Vertices[ IBatch.U4 ] = tempU;
-
-                            var tempV = Vertices[ IBatch.V1 ];
-                            Vertices[ IBatch.V1 ] = Vertices[ IBatch.V3 ];
-                            Vertices[ IBatch.V3 ] = tempV;
-
-                            tempV                 = Vertices[ IBatch.V2 ];
-                            Vertices[ IBatch.V2 ] = Vertices[ IBatch.V4 ];
-                            Vertices[ IBatch.V4 ] = tempV;
+                            ( Vertices[ IBatch.V1 ], Vertices[ IBatch.V3 ] )
+                                = ( Vertices[ IBatch.V3 ], Vertices[ IBatch.V1 ] );
+                            
+                            ( Vertices[ IBatch.V2 ], Vertices[ IBatch.V4 ] )
+                                = ( Vertices[ IBatch.V4 ], Vertices[ IBatch.V2 ] );
 
                             break;
                         }

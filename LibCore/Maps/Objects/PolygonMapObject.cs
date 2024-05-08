@@ -25,21 +25,25 @@
 
 namespace LughSharp.LibCore.Maps.Objects;
 
+[PublicAPI]
 public class PolygonMapObject : MapObject
 {
+    public Polygon Polygon { get; set; }
+
     /// <summary>
     ///     Creates empty polygon map object
     /// </summary>
-    public PolygonMapObject() : this( Array.Empty< float >() )
+    public PolygonMapObject()
+        : this( Array.Empty< float >() )
     {
     }
 
     /// <summary>
     /// </summary>
-    /// <param name="vertices">polygon defining vertices (at least 3)</param>
+    /// <param name="vertices"> polygon defining vertices (at least 3) </param>
     public PolygonMapObject( float[]? vertices )
     {
-        Polygon = new Polygon( vertices );
+        this.Polygon = new Polygon( vertices );
     }
 
     /// <summary>
@@ -47,16 +51,6 @@ public class PolygonMapObject : MapObject
     /// <param name="polygon">the polygon</param>
     public PolygonMapObject( Polygon polygon )
     {
-        Polygon = polygon;
-    }
-
-    public Polygon Polygon { get; set; }
-
-    /// <summary>
-    ///     <param name="polygon">new object's polygon shape</param>
-    /// </summary>
-    public void SetPolygon( Polygon polygon )
-    {
-        Polygon = polygon;
+        this.Polygon = polygon;
     }
 }

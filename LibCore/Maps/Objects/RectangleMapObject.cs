@@ -25,13 +25,17 @@
 
 namespace LughSharp.LibCore.Maps.Objects;
 
+[PublicAPI]
 public class RectangleMapObject : MapObject
 {
+    public RectangleShape Rectangle { get; set; }
+
     /// <summary>
     ///     Creates a rectangle object whose lower left corner is at (0, 0)
     ///     with width=1 and height=1
     /// </summary>
-    public RectangleMapObject() : this( 0.0f, 0.0f, 1.0f, 1.0f )
+    public RectangleMapObject()
+        : this( 0.0f, 0.0f, 1.0f, 1.0f )
     {
     }
 
@@ -47,6 +51,4 @@ public class RectangleMapObject : MapObject
     {
         Rectangle = new RectangleShape( x, y, width, height );
     }
-
-    public RectangleShape Rectangle { get; set; }
 }

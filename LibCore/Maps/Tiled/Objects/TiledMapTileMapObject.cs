@@ -34,13 +34,19 @@ namespace LughSharp.LibCore.Maps.Tiled.Objects;
 ///     For compatibility reasons, this extends <see cref="TextureMapObject" />.
 ///     Use <see cref="ITiledMapTile.TextureRegion" /> instead of <see cref="TextureRegion" />.
 /// </summary>
+[PublicAPI]
 public class TiledMapTileMapObject : TextureMapObject
 {
+    public ITiledMapTile Tile             { get; set; }
+    public bool          FlipHorizontally { get; set; }
+    public bool          FlipVertically   { get; set; }
+
     /// <summary>
+    ///     Creates a new <see cref="MapObject"/> with an attached <see cref="ITiledMapTile"/>.
     /// </summary>
-    /// <param name="tile"></param>
-    /// <param name="flipHorizontally"></param>
-    /// <param name="flipVertically"></param>
+    /// <param name="tile"> The Tile to attach. </param>
+    /// <param name="flipHorizontally"> True to flip this mapobject horizontally. </param>
+    /// <param name="flipVertically"> True to flip this mapobject vertically. </param>
     public TiledMapTileMapObject( ITiledMapTile tile, bool flipHorizontally, bool flipVertically )
     {
         FlipHorizontally = flipHorizontally;
@@ -53,8 +59,4 @@ public class TiledMapTileMapObject : TextureMapObject
 
         TextureRegion = region;
     }
-
-    public ITiledMapTile Tile             { get; set; }
-    public bool          FlipHorizontally { get; set; }
-    public bool          FlipVertically   { get; set; }
 }

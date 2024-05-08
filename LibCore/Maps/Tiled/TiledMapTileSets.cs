@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Maps.Tiled;
 /// <summary>
 ///     A Collection of <see cref="TiledMapTileSet" /> objects.
 /// </summary>
+[PublicAPI]
 public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
 {
     private readonly List< TiledMapTileSet > _tilesets;
@@ -108,11 +109,10 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
     public virtual ITiledMapTile? GetTile( int id )
     {
         // The purpose of backward iteration here is to maintain backwards compatibility
-        // with maps created with earlier versions of a shared tileset.  The assumption
+        // with maps created with earlier versions of a shared tileset. The assumption
         // is that the tilesets are in order of ascending firstgid, and by backward
         // iterating precedence for conflicts is given to later tilesets in the list, 
         // which are likely to be the earlier version of any given gid.  
-        // See TiledMapModifiedExternalTilesetTest for example of this issue.
         for ( var i = _tilesets.Count - 1; i >= 0; i-- )
         {
             var tileset = _tilesets[ i ];

@@ -27,6 +27,7 @@ using System.Collections;
 
 namespace LughSharp.LibCore.Maps;
 
+[PublicAPI]
 public class MapLayers : IEnumerable< MapLayer >
 {
     private readonly List< MapLayer > _layers = new();
@@ -91,15 +92,7 @@ public class MapLayers : IEnumerable< MapLayer >
     /// <summary>
     ///     Adds a layer to this collection
     /// </summary>
-    public void Add( MapLayer layer )
-    {
-        _layers.Add( layer );
-    }
-
-    public int GetCount()
-    {
-        return _layers.Count;
-    }
+    public virtual void Add( MapLayer layer ) => _layers.Add( layer );
 
     public void Remove( int index )
     {
@@ -111,6 +104,9 @@ public class MapLayers : IEnumerable< MapLayer >
         _layers.Remove( layer );
     }
 
+    /// <summary>
+    ///     Returns the number of layers.
+    /// </summary>
     public int Size()
     {
         return _layers.Count;

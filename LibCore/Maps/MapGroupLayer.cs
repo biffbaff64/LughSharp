@@ -28,6 +28,7 @@ namespace LughSharp.LibCore.Maps;
 /// <summary>
 ///     Container holding a set of MapLayers, objects and properties.
 /// </summary>
+[PublicAPI]
 public class MapGroupLayer : MapLayer
 {
     public MapLayers Layers { get; set; } = new();
@@ -39,6 +40,7 @@ public class MapGroupLayer : MapLayer
         for ( var i = 0; i < Layers.Size(); i++ )
         {
             var child = Layers.Get( i );
+            
             child.InvalidateRenderOffset();
         }
     }

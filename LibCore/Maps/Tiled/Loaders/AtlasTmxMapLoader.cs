@@ -39,10 +39,11 @@ namespace LughSharp.LibCore.Maps.Tiled.Loaders;
 ///         rotation should not be used when creating the atlas.
 ///     </p>
 /// </summary>
+[PublicAPI]
 public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledMapLoaderParameters >
 {
-    protected readonly List< Texture > trackedTextures = new();
-    protected          IAtlasResolver? atlasResolver;
+    protected readonly List< Texture > TrackedTextures = new();
+    protected          IAtlasResolver? AtlasResolver;
 
     public AtlasTmxMapLoader()
         : base( new InternalFileHandleResolver() )
@@ -65,18 +66,18 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
 
         // ----------------------------------------
 
-        xmlDocument.LoadXml( tmxFile.Name );
-        xmlRootNode = xmlDocument.SelectSingleNode( "map" );
+        XmlDocument.LoadXml( tmxFile.Name );
+        XmlRootNode = XmlDocument.SelectSingleNode( "map" );
 
         // ----------------------------------------
 
         var atlasFileHandle = GetAtlasFileHandle( tmxFile );
-
         var atlas = new TextureAtlas( atlasFileHandle );
 
-        atlasResolver = new IAtlasResolver.DirectAtlasResolver( atlas );
+        AtlasResolver = new IAtlasResolver.DirectAtlasResolver( atlas );
 
-        var map = LoadTiledMap( tmxFile, parameter, atlasResolver );
+        var map = LoadTiledMap( tmxFile, parameter, AtlasResolver );
+        
         map.OwnedResources = new List< object >( new[] { atlas } );
 
         SetTextureFilters( parameter.TextureMinFilter, parameter.TextureMagFilter );
@@ -94,9 +95,10 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         ArgumentNullException.ThrowIfNull( tmxFile );
 
         var atlasHandle = GetAtlasFileHandle( tmxFile );
-        atlasResolver = new IAtlasResolver.AssetManagerAtlasResolver( manager, atlasHandle.Name );
+        
+        AtlasResolver = new IAtlasResolver.AssetManagerAtlasResolver( manager, atlasHandle.Name );
 
-        Map = LoadTiledMap( tmxFile, parameter, atlasResolver );
+        Map = LoadTiledMap( tmxFile, parameter, AtlasResolver );
     }
 
     /// <summary>
@@ -135,11 +137,11 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
                                             int imageHeight,
                                             FileInfo? image )
     {
-        var atlas = atlasResolver!.GetAtlas();
+        var atlas = AtlasResolver!.GetAtlas();
 
         foreach ( var texture in atlas.Textures )
         {
-            trackedTextures.Add( texture );
+            TrackedTextures.Add( texture );
         }
 
         var props = tileSet.Properties;
@@ -211,7 +213,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     /// <exception cref="GdxRuntimeException"></exception>
     protected FileInfo GetAtlasFileHandle( FileInfo tmxFile )
     {
-        var properties = xmlDocument.SelectSingleNode( "properties" );
+        var properties = XmlDocument.SelectSingleNode( "properties" );
 
         if ( properties == null )
         {
@@ -261,12 +263,12 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     /// <param name="mag"></param>
     protected void SetTextureFilters( TextureFilter min, TextureFilter mag )
     {
-        foreach ( var texture in trackedTextures )
+        foreach ( var texture in TrackedTextures )
         {
             texture.SetFilter( min, mag );
         }
 
-        trackedTextures.Clear();
+        TrackedTextures.Clear();
     }
 
     // ------------------------------------------------------------------------

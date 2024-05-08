@@ -429,68 +429,68 @@ MAPS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - IImageResolver
-    - IP   - IP   - IMapRenderer
-    - IP   - IP   - Map
-    - IP   - IP   - MapGroupLayer
-    - IP   - IP   - MapLayer
-    - IP   - IP   - MapLayers
-    - IP   - IP   - MapObject
-    - IP   - IP   - MapObjects
-    - IP   - IP   - MapProperties
+    - DONE - IP   - IImageResolver
+    - DONE - IP   - IMapRenderer
+    - DONE - IP   - Map
+    - DONE - IP   - MapGroupLayer
+    - DONE - IP   - MapLayer
+    - DONE - IP   - MapLayers
+    - DONE - IP   - MapObject
+    - DONE - IP   - MapObjects
+    - DONE - IP   - MapProperties
 
 MAPS/OBJECTS
 ------------
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - CircleMapObject
-    - IP   - IP   - EllipseMapObject
-    - IP   - IP   - PolygonMapObject
-    - IP   - IP   - PolylineMapObject
-    - IP   - IP   - RectangleMapObject
-    - IP   - IP   - TextureMapObject
+    - DONE - DONE - CircleMapObject
+    - DONE - DONE - EllipseMapObject
+    - DONE - IP   - PolygonMapObject
+    - DONE - DONE - PolylineMapObject
+    - DONE - DONE - RectangleMapObject
+    - DONE - IP   - TextureMapObject
 
 MAPS/TILED
 ----------
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - ITiledMapTile
-    - IP   - IP   - TiledMap
-    - IP   - IP   - TiledMapImageLayer
-    - IP   - IP   - TiledMapTileLayer
-    - IP   - IP   - TiledMapTileSet
-    - IP   - IP   - TiledMapTileSets
+    - DONE - IP   - ITiledMapTile
+    - DONE - IP   - TiledMap
+    - DONE - IP   - TiledMapImageLayer
+    - DONE - IP   - TiledMapTileLayer
+    - DONE - IP   - TiledMapTileSet
+    - DONE - IP   - TiledMapTileSets
 
 MAPS/TILED/LOADERS
 ------------------
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - AtlasTmxMapLoader
-    - IP   - IP   - BaseTmxMapLoader
-    - IP   - IP   - TmxMapLoader
+    - DONE - IP   - AtlasTmxMapLoader
+    - DONE - IP   - BaseTmxMapLoader
+    - DONE - IP   - TmxMapLoader
 
 MAPS/TILED/OBJECTS
 ------------------
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - TiledMapTileMapObject
+    - DONE - DONE - TiledMapTileMapObject
 
 MAPS/TILED/RENDERERS
 --------------------
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - BatchTiledMapRenderer
-    - IP   - IP   - HexagonalTiledMapRenderer
-    - IP   - IP   - IsometricStaggeredTiledMapRenderer
-    - IP   - IP   - IsometricTiledMapRenderer
-    - IP   - IP   - ITiledMapRenderer
-    - IP   - IP   - OrthoCachedTiledMapRenderer
-    - IP   - IP   - OrthogonalTiledMapRenderer
+    - DONE - IP   - BatchTiledMapRenderer
+    - DONE - IP   - HexagonalTiledMapRenderer
+    - DONE - IP   - IsometricStaggeredTiledMapRenderer
+    - DONE - IP   - IsometricTiledMapRenderer
+    - DONE - IP   - ITiledMapRenderer
+    - DONE - IP   - OrthoCachedTiledMapRenderer
+    - DONE - IP   - OrthogonalTiledMapRenderer
 
 MAPS/TILED/TILES
 ----------------

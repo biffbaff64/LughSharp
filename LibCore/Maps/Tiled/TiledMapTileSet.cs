@@ -27,8 +27,12 @@ using System.Collections;
 
 namespace LughSharp.LibCore.Maps.Tiled;
 
+[PublicAPI]
 public class TiledMapTileSet : IEnumerable< ITiledMapTile >
 {
+    public string?       Name       { get; set; }
+    public MapProperties Properties { get; private set; }
+
     private readonly Dictionary< int, ITiledMapTile > _tiles;
 
     /// <summary>
@@ -40,13 +44,6 @@ public class TiledMapTileSet : IEnumerable< ITiledMapTile >
         _tiles     = new Dictionary< int, ITiledMapTile >();
         Properties = new MapProperties();
     }
-
-    public string? Name { get; set; }
-
-    /// <summary>
-    /// </summary>
-    /// <returns>tileset's properties set.</returns>
-    public MapProperties Properties { get; private set; }
 
     /// <summary>
     /// </summary>

@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Maps;
 /// <summary>
 ///     A Collection of <see cref="MapObject" /> instances.
 /// </summary>
+[PublicAPI]
 public class MapObjects : IEnumerable< MapObject >
 {
     private readonly List< MapObject > _objects;
@@ -76,35 +77,17 @@ public class MapObjects : IEnumerable< MapObject >
         return null!;
     }
 
-    public int GetIndex( string name )
-    {
-        return GetIndex( Get( name ) );
-    }
+    public int GetIndex( string name ) =>  GetIndex( Get( name ) );
 
-    public int GetIndex( MapObject obj )
-    {
-        return _objects.IndexOf( obj );
-    }
+    public int GetIndex( MapObject obj ) => _objects.IndexOf( obj );
 
-    public int GetCount()
-    {
-        return _objects.Count;
-    }
+    public int GetCount() => _objects.Count;
 
-    public void Add( MapObject obj )
-    {
-        _objects.Add( obj );
-    }
+    public virtual void Add( MapObject obj ) => _objects.Add( obj );
 
-    public void RemoveIndex( int index )
-    {
-        _objects.RemoveAt( index );
-    }
+    public void RemoveIndex( int index ) => _objects.RemoveAt( index );
 
-    public void Remove( MapObject obj )
-    {
-        _objects.Remove( obj );
-    }
+    public void Remove( MapObject obj ) => _objects.Remove( obj );
 
     /// <summary>
     /// </summary>

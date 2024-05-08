@@ -29,17 +29,19 @@ using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Maps.Tiled.Loaders;
 
+[PublicAPI]
 public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 {
     /// <summary>
-    ///     Creates a new TmxMapLoader using a <see cref="InternalFileHandleResolver" />.
+    ///     Creates a new TmxMapLoader using a new <see cref="InternalFileHandleResolver" />.
     /// </summary>
-    public TmxMapLoader() : base( new InternalFileHandleResolver() )
+    public TmxMapLoader()
+        : this( new InternalFileHandleResolver() )
     {
     }
 
     /// <summary>
-    ///     Creates loader
+    ///     Creates a new TmxMapLoader using a supplied <see cref="IFileHandleResolver" />.
     /// </summary>
     /// <param name="resolver"></param>
     public TmxMapLoader( IFileHandleResolver resolver ) : base( resolver )
@@ -73,8 +75,8 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 
         // ----------------------------------------
 
-        xmlDocument.LoadXml( tmxFile.Name );
-        xmlRootNode = xmlDocument.SelectSingleNode( "map" );
+        XmlDocument.LoadXml( tmxFile.Name );
+        XmlRootNode = XmlDocument.SelectSingleNode( "map" );
 
         // ----------------------------------------
 
@@ -149,7 +151,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         // TileSet descriptors
         XmlNodeList? tilesetNodeList;
 
-        if ( ( tilesetNodeList = xmlDocument.SelectNodes( "tileset" ) ) == null )
+        if ( ( tilesetNodeList = XmlDocument.SelectNodes( "tileset" ) ) == null )
         {
             throw new GdxRuntimeException( "Error: Map does not contain tileset nodes." );
         }
@@ -160,9 +162,8 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 
             if ( source != null )
             {
-                var tsxFile = GetRelativeFileHandle( tmxFile, source );
-
-                var tset         = xmlDocument.SelectSingleNode( "tileset" );
+                var tsxFile      = GetRelativeFileHandle( tmxFile, source );
+                var tset         = XmlDocument.SelectSingleNode( "tileset" );
                 var imageElement = tset?.SelectSingleNode( "image" );
 
                 if ( imageElement != null )
@@ -216,8 +217,8 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
                         foreach ( XmlNode? tile in tileList )
                         {
                             var imageSource = tile?.SelectSingleNode( "image" )?.Attributes?[ "source" ]?.Value;
+                            var image       = GetRelativeFileHandle( tmxFile, imageSource );
 
-                            var image = GetRelativeFileHandle( tmxFile, imageSource );
                             fileHandles.Add( image! );
                         }
                     }
@@ -226,7 +227,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         }
 
         // ImageLayer descriptors
-        var imageLayerList = xmlDocument.SelectNodes( "imagelayer" );
+        var imageLayerList = XmlDocument.SelectNodes( "imagelayer" );
 
         if ( imageLayerList != null )
         {
@@ -238,6 +239,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
                 if ( source != null )
                 {
                     var handle = GetRelativeFileHandle( tmxFile, source );
+
                     fileHandles.Add( handle! );
                 }
             }
@@ -333,6 +335,11 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// The Loader parameters to use. Simply extends <see cref="BaseTmxLoaderParameters"/>
+    /// and doesn't add anything new.
+    /// </summary>
+    [PublicAPI]
     public class LoaderParameters : BaseTmxLoaderParameters
     {
     }

@@ -29,6 +29,7 @@ namespace LughSharp.LibCore.Maps;
 ///     Resolves an image by a string, wrapper around a Map or AssetManager to load
 ///     maps either directly or via AssetManager.
 /// </summary>
+[PublicAPI]
 public interface IImageResolver
 {
     /// <summary>
@@ -39,6 +40,7 @@ public interface IImageResolver
 
     /// <summary>
     /// </summary>
+    [PublicAPI]
     public class DirectImageResolver : IImageResolver
     {
         private readonly Dictionary< string, Texture > _images;
@@ -56,6 +58,7 @@ public interface IImageResolver
 
     /// <summary>
     /// </summary>
+    [PublicAPI]
     public class AssetManagerImageResolver : IImageResolver
     {
         private readonly AssetManager _assetManager;
@@ -73,6 +76,7 @@ public interface IImageResolver
 
     /// <summary>
     /// </summary>
+    [PublicAPI]
     public class TextureAtlasImageResolver : IImageResolver
     {
         private readonly TextureAtlas _atlas;

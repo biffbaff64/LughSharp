@@ -27,6 +27,7 @@ using LughSharp.LibCore.Maps.Tiled.Tiles;
 
 namespace LughSharp.LibCore.Maps.Tiled.Renderers;
 
+[PublicAPI]
 public class HexagonalTiledMapRenderer : BatchTileMapRenderer
 {
     /// <summary>
@@ -49,6 +50,8 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
     /// </summary>
     private bool _staggerIndexEven = false;
 
+    // ------------------------------------------------------------------------
+    
     public HexagonalTiledMapRenderer( TiledMap map ) : base( map )
     {
         Init( map );
@@ -72,6 +75,8 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
         Init( map );
     }
 
+    // ------------------------------------------------------------------------
+    
     private void Init( TiledMap map )
     {
         var axis = map.Properties.Get< string >( "staggeraxis" );

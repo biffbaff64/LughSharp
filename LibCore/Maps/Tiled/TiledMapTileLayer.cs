@@ -25,8 +25,17 @@
 
 namespace LughSharp.LibCore.Maps.Tiled;
 
+[PublicAPI]
 public class TiledMapTileLayer : MapLayer
 {
+    public int       Width      { get; }
+    public int       Height     { get; }
+    public int       TileWidth  { get; private set; }
+    public int       TileHeight { get; private set; }
+    public Cell[ , ] Cells      { get; }
+
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Creates TiledMap layer
     /// </summary>
@@ -42,12 +51,6 @@ public class TiledMapTileLayer : MapLayer
         TileHeight = tileHeight;
         Cells      = new Cell[ width, height ];
     }
-
-    public int       Width      { get; }
-    public int       Height     { get; }
-    public int       TileWidth  { get; private set; }
-    public int       TileHeight { get; private set; }
-    public Cell[ , ] Cells      { get; }
 
     /// <summary>
     /// </summary>
@@ -91,8 +94,9 @@ public class TiledMapTileLayer : MapLayer
     }
 
     /// <summary>
-    ///     represents a cell in a TiledLayer: TiledMapTile, flip and rotation properties.
+    ///     represents a cell in a TiledLayer: ITiledMapTile, flip and rotation properties.
     /// </summary>
+    [PublicAPI]
     public class Cell
     {
         public const int            ROTATE0   = 0;
@@ -115,7 +119,7 @@ public class TiledMapTileLayer : MapLayer
         /// <summary>
         ///     Sets the tile to be used for this cell.
         /// </summary>
-        /// <param name="tile"> the <see cref="TiledMapTile" /> to use for this cell. </param>
+        /// <param name="tile"> the <see cref="ITiledMapTile" /> to use for this cell. </param>
         /// <returns> this, for method chaining </returns>
         public Cell SetTile( ITiledMapTile tile )
         {

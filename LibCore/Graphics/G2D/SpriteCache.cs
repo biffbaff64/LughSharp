@@ -181,8 +181,8 @@ public class SpriteCache
     public int     RenderCallsSinceBegin { get; set; }  = 0;
     public int     TotalRenderCalls      { get; set; }  = 0;
     public Color   Color                 { get; set; }  = new( 1, 1, 1, 1 );
-    public Matrix4 ProjectionMatrix      { get; init; } = new();
-    public Matrix4 TransformMatrix       { get; init; } = new();
+    public Matrix4 ProjectionMatrix      { get; set; } = new();
+    public Matrix4 TransformMatrix       { get; set; } = new();
     public bool    IsDrawing             { get; private set; }
 
     /// <summary>

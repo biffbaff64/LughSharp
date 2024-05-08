@@ -25,12 +25,16 @@
 
 namespace LughSharp.LibCore.Maps.Objects;
 
+[PublicAPI]
 public class CircleMapObject : MapObject
 {
+    public Circle Circle { get; set; }
+
     /// <summary>
     ///     Creates a circle map object at (0,0) with radius of 1.0f
     /// </summary>
-    public CircleMapObject() : this( 0.0f, 0.0f, 1.0f )
+    public CircleMapObject()
+        : this( 0.0f, 0.0f, 1.0f )
     {
     }
 
@@ -42,8 +46,6 @@ public class CircleMapObject : MapObject
     /// <param name="radius">Radius of the circle object.</param>
     public CircleMapObject( float x, float y, float radius )
     {
-        Circle = new Circle( x, y, radius );
+        this.Circle = new Circle( x, y, radius );
     }
-
-    public Circle Circle { get; set; }
 }

@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Maps.Tiled.Renderers;
 
+[PublicAPI]
 public interface ITiledMapRenderer : IMapRenderer
 {
     void RenderObjects( MapLayer layer );

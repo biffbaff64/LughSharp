@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Maps.Tiled;
 
+[PublicAPI]
 public class TiledMap : Map, IDisposable
 {
     public TiledMapTileSets Tilesets       { get; set; } = new();
