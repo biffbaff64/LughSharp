@@ -286,9 +286,9 @@ public class GlyphLayout : IPoolable
                     if ( lastGlyph != null )
                     {
                         // Move back the width of the last glyph from the previous run.
-                        x -= lastGlyph.fixedWidth
-                                 ? lastGlyph.xadvance * fontData.ScaleX
-                                 : ( ( lastGlyph.width + lastGlyph.xoffset ) * fontData.ScaleX ) - fontData.PadRight;
+                        x -= lastGlyph.FixedWidth
+                                 ? lastGlyph.Xadvance * fontData.ScaleX
+                                 : ( ( lastGlyph.Width + lastGlyph.Xoffset ) * fontData.ScaleX ) - fontData.PadRight;
                     }
 
                     lastGlyph = run.Glyphs.Peek();
@@ -327,7 +327,7 @@ public class GlyphLayout : IPoolable
                     for ( var i = 2; i < n; i++ )
                     {
                         var glyph      = run.Glyphs[ i - 1 ];
-                        var glyphWidth = ( ( glyph.width + glyph.xoffset ) * fontData.ScaleX ) - fontData.PadRight;
+                        var glyphWidth = ( ( glyph.Width + glyph.Xoffset ) * fontData.ScaleX ) - fontData.PadRight;
 
                         if ( ( ( x + glyphWidth ) - _epsilon ) <= targetWidth )
                         {
@@ -368,7 +368,7 @@ public class GlyphLayout : IPoolable
                             // Remove leading whitespace.
                             for ( var glyphCount = run.Glyphs.Count; wrapIndex < glyphCount; wrapIndex++ )
                             {
-                                if ( !fontData.IsWhitespace( ( char ) run.Glyphs[ wrapIndex ].id ) )
+                                if ( !fontData.IsWhitespace( ( char ) run.Glyphs[ wrapIndex ].ID ) )
                                 {
                                     break;
                                 }
@@ -380,7 +380,7 @@ public class GlyphLayout : IPoolable
                                 run.XAdvances.RemoveRange( 1, wrapIndex );
                             }
 
-                            xAdvances[ 0 ] = ( -run.Glyphs.First().xoffset * fontData.ScaleX ) - fontData.PadLeft;
+                            xAdvances[ 0 ] = ( -run.Glyphs.First().Xoffset * fontData.ScaleX ) - fontData.PadLeft;
 
                             if ( Runs.Count > 1 )
                             {
@@ -391,7 +391,7 @@ public class GlyphLayout : IPoolable
 
                                 for ( ; lastIndex > 0; lastIndex-- )
                                 {
-                                    if ( !fontData.IsWhitespace( ( char ) previous.Glyphs[ lastIndex ].id ) )
+                                    if ( !fontData.IsWhitespace( ( char ) previous.Glyphs[ lastIndex ].ID ) )
                                     {
                                         break;
                                     }
@@ -476,7 +476,7 @@ public class GlyphLayout : IPoolable
             for ( int ii = 0, nn = run.Glyphs.Count; ii < nn; )
             {
                 var glyph      = glyphs[ ii ];
-                var glyphWidth = ( ( glyph.width + glyph.xoffset ) * fontData.ScaleX ) - fontData.PadRight;
+                var glyphWidth = ( ( glyph.Width + glyph.Xoffset ) * fontData.ScaleX ) - fontData.PadRight;
 
                 // A glyph can extend past the right edge of subsequent glyphs.
                 max = Math.Max( max, runWidth + glyphWidth );
@@ -644,7 +644,7 @@ public class GlyphLayout : IPoolable
 
         for ( ; firstEnd > 0; firstEnd-- )
         {
-            if ( !fontData.IsWhitespace( ( char ) glyphs2[ firstEnd - 1 ].id ) )
+            if ( !fontData.IsWhitespace( ( char ) glyphs2[ firstEnd - 1 ].ID ) )
             {
                 break;
             }
@@ -655,7 +655,7 @@ public class GlyphLayout : IPoolable
 
         for ( ; secondStart < glyphCount; secondStart++ )
         {
-            if ( !fontData.IsWhitespace( ( char ) glyphs2[ secondStart ].id ) )
+            if ( !fontData.IsWhitespace( ( char ) glyphs2[ secondStart ].ID ) )
             {
                 break;
             }
@@ -682,7 +682,7 @@ public class GlyphLayout : IPoolable
 
             xAdvances1.AddAll( xAdvances2, 0, firstEnd + 1 );
             xAdvances2.RemoveRange( 1, secondStart ); // Leave first entry to be overwritten by next line.
-            xAdvances2[ 0 ]  = ( -glyphs2.First().xoffset * fontData.ScaleX ) - fontData.PadLeft;
+            xAdvances2[ 0 ]  = ( -glyphs2.First().Xoffset * fontData.ScaleX ) - fontData.PadLeft;
             first.XAdvances  = xAdvances1;
             second.XAdvances = xAdvances2;
         }
@@ -714,12 +714,12 @@ public class GlyphLayout : IPoolable
     {
         var last = run.Glyphs.Peek();
 
-        if ( last.fixedWidth )
+        if ( last.FixedWidth )
         {
             return;
         }
 
-        var width = ( ( last.width + last.xoffset ) * fontData.ScaleX ) - fontData.PadRight;
+        var width = ( ( last.Width + last.Xoffset ) * fontData.ScaleX ) - fontData.PadRight;
 
         run.XAdvances.ToArray()[ run.XAdvances.Count - 1 ] = width;
     }
@@ -864,7 +864,7 @@ public class GlyphLayout : IPoolable
             for ( int i = 0, n = Glyphs.Count; i < n; i++ )
             {
                 var g = Glyphs[ i ];
-                buffer.Append( ( char ) g.id );
+                buffer.Append( ( char ) g.ID );
             }
 
             buffer.Append( ", #" );

@@ -121,7 +121,7 @@ public class TextureAtlas
                 Rotate         = region.Rotate,
                 Degrees        = region.Degrees,
                 Names          = region.Names,
-                values         = region.Values
+                Values         = region.Values
             };
 
             if ( region.Flip )

@@ -10,7 +10,7 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
     - Some classes can become structs / records instead.
     - Some/Most Get / Set method declarations in interfaces could become Properties.
     - switch expressions instead of switch statements where appropriate.
-    - switch expressions instead of if..if/else..else where appropriate.
+    - switch expressions instead of if...if/else...else where appropriate.
     - Check methods to see if they can be virtual.
     - Check and/or correct visibility of classes/methods/properties etc.
     - Use sealed classes only where strictly necessary.
@@ -32,7 +32,7 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-- There seems to be different namings for width/height etc properties and methods. Make it more uniform
+- There seems to be different namings for width/height etc. properties and methods. Make it more uniform
 - Make more use of `<inheritdoc cref=""/>` or just `<inheritdoc/>`
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -303,16 +303,16 @@ GRAPHICS/G2D
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - Animation
-    - IP   - IP   - AtlasRegion
-    - IP   - IP   - AtlasSprite
-    - IP   - IP   - BitmapFont
-    - IP   - IP   - BitmapFontCache
-    - IP   - IP   - CpuSpriteBatch
+    - DONE - DONE - Animation
+    - DONE - IP   - AtlasRegion
+    - DONE - IP   - AtlasSprite                     Done but I've spotted some possible updates
+    - IP   - IP   - BitmapFont                      Much work needed!
+    - IP   - IP   - BitmapFontCache                 Relies on the BitmapFont rewrite.
+    - IP   - IP   - CpuSpriteBatch                  Some methods have too many parameters
     - IP   - IP   - DistanceFieldFont
     - IP   - IP   - Gdx2DPixmap
     - IP   - IP   - GlyphLayout
-    - IP   - IP   - IBatch
+    - IP   - IP   - IBatch                          Some methods have too many parameters
     - IP   - IP   - IPolygonBatch
     - IP   - IP   - NinePatch
     - IP   - IP   - ParticleEffect
@@ -326,7 +326,7 @@ GRAPHICS/G2D
     - IP   - IP   - PolygonSpriteBatch
     - IP   - IP   - RepeatablePolygonSprite
     - IP   - IP   - Sprite
-    - IP   - IP   - SpriteBatch
+    - IP   - IP   - SpriteBatch                     Some methods have too many parameters
     - IP   - IP   - SpriteCache
     - IP   - IP   - TextureAtlas
     - IP   - IP   - TextureAtlasData

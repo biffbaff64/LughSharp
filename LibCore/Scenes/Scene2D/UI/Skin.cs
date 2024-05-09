@@ -439,7 +439,7 @@ public class Skin : IDisposable
     /// <summary>
     ///     Returns a registered ninepatch. If no ninepatch is found but a region exists with
     ///     the name, a ninepatch is created from the region and stored in the skin. If the
-    ///     region is an <see cref="AtlasRegion" /> then its split <see cref="AtlasRegion.values" />
+    ///     region is an <see cref="AtlasRegion" /> then its split <see cref="AtlasRegion.Values" />
     ///     are used, otherwise the ninepatch will have the region as the center patch.
     /// </summary>
     public NinePatch GetPatch( string name )

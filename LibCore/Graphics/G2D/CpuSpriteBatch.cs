@@ -36,6 +36,7 @@ namespace LughSharp.LibCore.Graphics.G2D;
 /// </summary>
 /// <see cref="SpriteBatch.RenderCalls" />
 /// <see cref="Group.Transform" />
+[PublicAPI]
 public class CpuSpriteBatch : SpriteBatch
 {
     private readonly Affine2 _adjustAffine  = new();
@@ -48,7 +49,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// <summary>
     ///     Constructs a CpuSpriteBatch with a size of 1000 and the default shader.
     /// </summary>
-    /// <para>See also: <see cref="SpriteBatch()" /></para>
+    /// <para>See also: <see cref="SpriteBatch" /></para>
     public CpuSpriteBatch() : this( 1000 )
     {
     }
@@ -56,7 +57,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// <summary>
     ///     Constructs a CpuSpriteBatch with a custom shader.
     /// </summary>
-    /// <para>See also: <see cref="SpriteBatch()" /></para>
+    /// <para>See also: <see cref="SpriteBatch" /></para>
     public CpuSpriteBatch( int size, ShaderProgram defaultShader = null! )
         : base( size, defaultShader )
     {
@@ -92,7 +93,10 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    public Matrix4 GetTransformMatrix()
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public virtual Matrix4 GetTransformMatrix()
     {
         return _adjustNeeded ? _virtualMatrix : TransformMatrix;
     }
@@ -108,9 +112,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// </summary>
     public override void SetTransformMatrix( Matrix4 transform )
     {
-        var realMatrix = TransformMatrix;
-
-        if ( CheckEqual( realMatrix, transform ) )
+        if ( CheckEqual( TransformMatrix, transform ) )
         {
             _adjustNeeded = false;
         }
@@ -131,13 +133,13 @@ public class CpuSpriteBatch : SpriteBatch
                 else
                 {
                     _tmpAffine.SetFrom( transform );
-                    _adjustAffine.SetFrom( realMatrix ).Invert().Mul( _tmpAffine );
+                    _adjustAffine.SetFrom( TransformMatrix ).Invert().Mul( _tmpAffine );
                 }
             }
             else
             {
-                realMatrix.SetAsAffine( transform );
-                _haveIdentityRealMatrix = CheckIdt( realMatrix );
+                TransformMatrix.SetAsAffine( transform );
+                _haveIdentityRealMatrix = CheckIdt( TransformMatrix );
             }
         }
     }
@@ -156,9 +158,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// </summary>
     public virtual void SetTransformMatrix( Affine2 transform )
     {
-        var realMatrix = TransformMatrix;
-
-        if ( CheckEqual( realMatrix, transform ) )
+        if ( CheckEqual( TransformMatrix, transform ) )
         {
             _adjustNeeded = false;
         }
@@ -179,13 +179,13 @@ public class CpuSpriteBatch : SpriteBatch
                 }
                 else
                 {
-                    _adjustAffine.SetFrom( realMatrix ).Invert().Mul( transform );
+                    _adjustAffine.SetFrom( TransformMatrix ).Invert().Mul( transform );
                 }
             }
             else
             {
-                realMatrix.SetAsAffine( transform );
-                _haveIdentityRealMatrix = CheckIdt( realMatrix );
+                TransformMatrix.SetAsAffine( transform );
+                _haveIdentityRealMatrix = CheckIdt( TransformMatrix );
             }
         }
     }
@@ -209,45 +209,41 @@ public class CpuSpriteBatch : SpriteBatch
     {
         if ( !_adjustNeeded )
         {
-            base.Draw(
-                      texture,
-                      x,
-                      y,
-                      originX,
-                      originY,
-                      width,
-                      height,
-                      scaleX,
-                      scaleY,
-                      rotation,
-                      srcX,
-                      srcY,
-                      srcWidth,
-                      srcHeight,
-                      flipX,
-                      flipY
-                     );
+            base.Draw( texture,
+                       x,
+                       y,
+                       originX,
+                       originY,
+                       width,
+                       height,
+                       scaleX,
+                       scaleY,
+                       rotation,
+                       srcX,
+                       srcY,
+                       srcWidth,
+                       srcHeight,
+                       flipX,
+                       flipY );
         }
         else
         {
-            DrawAdjusted(
-                         texture,
-                         x,
-                         y,
-                         originX,
-                         originY,
-                         width,
-                         height,
-                         scaleX,
-                         scaleY,
-                         rotation,
-                         srcX,
-                         srcY,
-                         srcWidth,
-                         srcHeight,
-                         flipX,
-                         flipY
-                        );
+            DrawAdjusted( texture,
+                          x,
+                          y,
+                          originX,
+                          originY,
+                          width,
+                          height,
+                          scaleX,
+                          scaleY,
+                          rotation,
+                          srcX,
+                          srcY,
+                          srcWidth,
+                          srcHeight,
+                          flipX,
+                          flipY );
         }
     }
 
@@ -269,24 +265,22 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else
         {
-            DrawAdjusted(
-                         texture,
-                         x,
-                         y,
-                         0,
-                         0,
-                         width,
-                         height,
-                         1,
-                         1,
-                         0,
-                         srcX,
-                         srcY,
-                         srcWidth,
-                         srcHeight,
-                         flipX,
-                         flipY
-                        );
+            DrawAdjusted( texture,
+                          x,
+                          y,
+                          0,
+                          0,
+                          width,
+                          height,
+                          1,
+                          1,
+                          0,
+                          srcX,
+                          srcY,
+                          srcWidth,
+                          srcHeight,
+                          flipX,
+                          flipY );
         }
     }
 
@@ -298,24 +292,22 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else
         {
-            DrawAdjusted(
-                         texture,
-                         x,
-                         y,
-                         0,
-                         0,
-                         srcWidth,
-                         srcHeight,
-                         1,
-                         1,
-                         0,
-                         srcX,
-                         srcY,
-                         srcWidth,
-                         srcHeight,
-                         false,
-                         false
-                        );
+            DrawAdjusted( texture,
+                          x,
+                          y,
+                          0,
+                          0,
+                          srcWidth,
+                          srcHeight,
+                          1,
+                          1,
+                          0,
+                          srcX,
+                          srcY,
+                          srcWidth,
+                          srcHeight,
+                          false,
+                          false );
         }
     }
 
@@ -347,24 +339,22 @@ public class CpuSpriteBatch : SpriteBatch
         }
         else
         {
-            DrawAdjusted(
-                         texture,
-                         x,
-                         y,
-                         0,
-                         0,
-                         texture.Width,
-                         texture.Height,
-                         1,
-                         1,
-                         0,
-                         0,
-                         1,
-                         1,
-                         0,
-                         false,
-                         false
-                        );
+            DrawAdjusted( texture,
+                          x,
+                          y,
+                          0,
+                          0,
+                          texture.Width,
+                          texture.Height,
+                          1,
+                          1,
+                          0,
+                          0,
+                          1,
+                          1,
+                          0,
+                          false,
+                          false );
         }
     }
 
@@ -591,7 +581,7 @@ public class CpuSpriteBatch : SpriteBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == Vertices.Length )
+        else if ( Idx == Vertices.Length )
         {
             Flush();
         }
@@ -686,31 +676,31 @@ public class CpuSpriteBatch : SpriteBatch
 
         var t = _adjustAffine;
 
-        Vertices[ idx + 0 ] = ( t.m00 * x1 ) + ( t.m01 * y1 ) + t.m02;
-        Vertices[ idx + 1 ] = ( t.m10 * x1 ) + ( t.m11 * y1 ) + t.m12;
-        Vertices[ idx + 2 ] = colorPacked;
-        Vertices[ idx + 3 ] = u;
-        Vertices[ idx + 4 ] = v;
+        Vertices[ Idx + 0 ] = ( t.m00 * x1 ) + ( t.m01 * y1 ) + t.m02;
+        Vertices[ Idx + 1 ] = ( t.m10 * x1 ) + ( t.m11 * y1 ) + t.m12;
+        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 3 ] = u;
+        Vertices[ Idx + 4 ] = v;
 
-        Vertices[ idx + 5 ] = ( t.m00 * x2 ) + ( t.m01 * y2 ) + t.m02;
-        Vertices[ idx + 6 ] = ( t.m10 * x2 ) + ( t.m11 * y2 ) + t.m12;
-        Vertices[ idx + 7 ] = colorPacked;
-        Vertices[ idx + 8 ] = u;
-        Vertices[ idx + 9 ] = v2;
+        Vertices[ Idx + 5 ] = ( t.m00 * x2 ) + ( t.m01 * y2 ) + t.m02;
+        Vertices[ Idx + 6 ] = ( t.m10 * x2 ) + ( t.m11 * y2 ) + t.m12;
+        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 8 ] = u;
+        Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ idx + 10 ] = ( t.m00 * x3 ) + ( t.m01 * y3 ) + t.m02;
-        Vertices[ idx + 11 ] = ( t.m10 * x3 ) + ( t.m11 * y3 ) + t.m12;
-        Vertices[ idx + 12 ] = colorPacked;
-        Vertices[ idx + 13 ] = u2;
-        Vertices[ idx + 14 ] = v2;
+        Vertices[ Idx + 10 ] = ( t.m00 * x3 ) + ( t.m01 * y3 ) + t.m02;
+        Vertices[ Idx + 11 ] = ( t.m10 * x3 ) + ( t.m11 * y3 ) + t.m12;
+        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 13 ] = u2;
+        Vertices[ Idx + 14 ] = v2;
 
-        Vertices[ idx + 15 ] = ( t.m00 * x4 ) + ( t.m01 * y4 ) + t.m02;
-        Vertices[ idx + 16 ] = ( t.m10 * x4 ) + ( t.m11 * y4 ) + t.m12;
-        Vertices[ idx + 17 ] = colorPacked;
-        Vertices[ idx + 18 ] = u2;
-        Vertices[ idx + 19 ] = v;
+        Vertices[ Idx + 15 ] = ( t.m00 * x4 ) + ( t.m01 * y4 ) + t.m02;
+        Vertices[ Idx + 16 ] = ( t.m10 * x4 ) + ( t.m11 * y4 ) + t.m12;
+        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 18 ] = u2;
+        Vertices[ Idx + 19 ] = v;
 
-        idx += Sprite.SpriteSize;
+        Idx += Sprite.SpriteSize;
     }
 
     private void DrawAdjusted( TextureRegion region,
@@ -734,7 +724,7 @@ public class CpuSpriteBatch : SpriteBatch
         {
             SwitchTexture( region.Texture );
         }
-        else if ( idx == Vertices.Length )
+        else if ( Idx == Vertices.Length )
         {
             Flush();
         }
@@ -842,31 +832,31 @@ public class CpuSpriteBatch : SpriteBatch
             v4 = region.V2;
         }
 
-        Vertices[ idx + 0 ] = ( _adjustAffine.m00 * x1 ) + ( _adjustAffine.m01 * y1 ) + _adjustAffine.m02;
-        Vertices[ idx + 1 ] = ( _adjustAffine.m10 * x1 ) + ( _adjustAffine.m11 * y1 ) + _adjustAffine.m12;
-        Vertices[ idx + 2 ] = colorPacked;
-        Vertices[ idx + 3 ] = u1;
-        Vertices[ idx + 4 ] = v1;
+        Vertices[ Idx + 0 ] = ( _adjustAffine.m00 * x1 ) + ( _adjustAffine.m01 * y1 ) + _adjustAffine.m02;
+        Vertices[ Idx + 1 ] = ( _adjustAffine.m10 * x1 ) + ( _adjustAffine.m11 * y1 ) + _adjustAffine.m12;
+        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 3 ] = u1;
+        Vertices[ Idx + 4 ] = v1;
 
-        Vertices[ idx + 5 ] = ( _adjustAffine.m00 * x2 ) + ( _adjustAffine.m01 * y2 ) + _adjustAffine.m02;
-        Vertices[ idx + 6 ] = ( _adjustAffine.m10 * x2 ) + ( _adjustAffine.m11 * y2 ) + _adjustAffine.m12;
-        Vertices[ idx + 7 ] = colorPacked;
-        Vertices[ idx + 8 ] = u2;
-        Vertices[ idx + 9 ] = v2;
+        Vertices[ Idx + 5 ] = ( _adjustAffine.m00 * x2 ) + ( _adjustAffine.m01 * y2 ) + _adjustAffine.m02;
+        Vertices[ Idx + 6 ] = ( _adjustAffine.m10 * x2 ) + ( _adjustAffine.m11 * y2 ) + _adjustAffine.m12;
+        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 8 ] = u2;
+        Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ idx + 10 ] = ( _adjustAffine.m00 * x3 ) + ( _adjustAffine.m01 * y3 ) + _adjustAffine.m02;
-        Vertices[ idx + 11 ] = ( _adjustAffine.m10 * x3 ) + ( _adjustAffine.m11 * y3 ) + _adjustAffine.m12;
-        Vertices[ idx + 12 ] = colorPacked;
-        Vertices[ idx + 13 ] = u3;
-        Vertices[ idx + 14 ] = v3;
+        Vertices[ Idx + 10 ] = ( _adjustAffine.m00 * x3 ) + ( _adjustAffine.m01 * y3 ) + _adjustAffine.m02;
+        Vertices[ Idx + 11 ] = ( _adjustAffine.m10 * x3 ) + ( _adjustAffine.m11 * y3 ) + _adjustAffine.m12;
+        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 13 ] = u3;
+        Vertices[ Idx + 14 ] = v3;
 
-        Vertices[ idx + 15 ] = ( _adjustAffine.m00 * x4 ) + ( _adjustAffine.m01 * y4 ) + _adjustAffine.m02;
-        Vertices[ idx + 16 ] = ( _adjustAffine.m10 * x4 ) + ( _adjustAffine.m11 * y4 ) + _adjustAffine.m12;
-        Vertices[ idx + 17 ] = colorPacked;
-        Vertices[ idx + 18 ] = u4;
-        Vertices[ idx + 19 ] = v4;
+        Vertices[ Idx + 15 ] = ( _adjustAffine.m00 * x4 ) + ( _adjustAffine.m01 * y4 ) + _adjustAffine.m02;
+        Vertices[ Idx + 16 ] = ( _adjustAffine.m10 * x4 ) + ( _adjustAffine.m11 * y4 ) + _adjustAffine.m12;
+        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 18 ] = u4;
+        Vertices[ Idx + 19 ] = v4;
 
-        idx += Sprite.SpriteSize;
+        Idx += Sprite.SpriteSize;
     }
 
     private void DrawAdjusted( TextureRegion region, float width, float height, Affine2 transform )
@@ -880,7 +870,7 @@ public class CpuSpriteBatch : SpriteBatch
         {
             SwitchTexture( region.Texture );
         }
-        else if ( idx == Vertices.Length )
+        else if ( Idx == Vertices.Length )
         {
             Flush();
         }
@@ -901,31 +891,31 @@ public class CpuSpriteBatch : SpriteBatch
         var u2 = region.U2;
         var v2 = region.V;
 
-        Vertices[ idx + 0 ] = ( _adjustAffine.m00 * x1 ) + ( _adjustAffine.m01 * y1 ) + _adjustAffine.m02;
-        Vertices[ idx + 1 ] = ( _adjustAffine.m10 * x1 ) + ( _adjustAffine.m11 * y1 ) + _adjustAffine.m12;
-        Vertices[ idx + 2 ] = colorPacked;
-        Vertices[ idx + 3 ] = u;
-        Vertices[ idx + 4 ] = v;
+        Vertices[ Idx + 0 ] = ( _adjustAffine.m00 * x1 ) + ( _adjustAffine.m01 * y1 ) + _adjustAffine.m02;
+        Vertices[ Idx + 1 ] = ( _adjustAffine.m10 * x1 ) + ( _adjustAffine.m11 * y1 ) + _adjustAffine.m12;
+        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 3 ] = u;
+        Vertices[ Idx + 4 ] = v;
 
-        Vertices[ idx + 5 ] = ( _adjustAffine.m00 * x2 ) + ( _adjustAffine.m01 * y2 ) + _adjustAffine.m02;
-        Vertices[ idx + 6 ] = ( _adjustAffine.m10 * x2 ) + ( _adjustAffine.m11 * y2 ) + _adjustAffine.m12;
-        Vertices[ idx + 7 ] = colorPacked;
-        Vertices[ idx + 8 ] = u;
-        Vertices[ idx + 9 ] = v2;
+        Vertices[ Idx + 5 ] = ( _adjustAffine.m00 * x2 ) + ( _adjustAffine.m01 * y2 ) + _adjustAffine.m02;
+        Vertices[ Idx + 6 ] = ( _adjustAffine.m10 * x2 ) + ( _adjustAffine.m11 * y2 ) + _adjustAffine.m12;
+        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 8 ] = u;
+        Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ idx + 10 ] = ( _adjustAffine.m00 * x3 ) + ( _adjustAffine.m01 * y3 ) + _adjustAffine.m02;
-        Vertices[ idx + 11 ] = ( _adjustAffine.m10 * x3 ) + ( _adjustAffine.m11 * y3 ) + _adjustAffine.m12;
-        Vertices[ idx + 12 ] = colorPacked;
-        Vertices[ idx + 13 ] = u2;
-        Vertices[ idx + 14 ] = v2;
+        Vertices[ Idx + 10 ] = ( _adjustAffine.m00 * x3 ) + ( _adjustAffine.m01 * y3 ) + _adjustAffine.m02;
+        Vertices[ Idx + 11 ] = ( _adjustAffine.m10 * x3 ) + ( _adjustAffine.m11 * y3 ) + _adjustAffine.m12;
+        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 13 ] = u2;
+        Vertices[ Idx + 14 ] = v2;
 
-        Vertices[ idx + 15 ] = ( _adjustAffine.m00 * x4 ) + ( _adjustAffine.m01 * y4 ) + _adjustAffine.m02;
-        Vertices[ idx + 16 ] = ( _adjustAffine.m10 * x4 ) + ( _adjustAffine.m11 * y4 ) + _adjustAffine.m12;
-        Vertices[ idx + 17 ] = colorPacked;
-        Vertices[ idx + 18 ] = u2;
-        Vertices[ idx + 19 ] = v;
+        Vertices[ Idx + 15 ] = ( _adjustAffine.m00 * x4 ) + ( _adjustAffine.m01 * y4 ) + _adjustAffine.m02;
+        Vertices[ Idx + 16 ] = ( _adjustAffine.m10 * x4 ) + ( _adjustAffine.m11 * y4 ) + _adjustAffine.m12;
+        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 18 ] = u2;
+        Vertices[ Idx + 19 ] = v;
 
-        idx += Sprite.SpriteSize;
+        Idx += Sprite.SpriteSize;
     }
 
     private void DrawAdjusted( Texture texture, float[] spriteVertices, int offset, int count )
@@ -940,7 +930,7 @@ public class CpuSpriteBatch : SpriteBatch
             SwitchTexture( texture );
         }
 
-        var copyCount = Math.Min( Vertices.Length - idx, count );
+        var copyCount = Math.Min( Vertices.Length - Idx, count );
 
         do
         {
@@ -951,13 +941,13 @@ public class CpuSpriteBatch : SpriteBatch
                 var x = spriteVertices[ offset ];
                 var y = spriteVertices[ offset + 1 ];
 
-                Vertices[ idx ]     = ( _adjustAffine.m00 * x ) + ( _adjustAffine.m01 * y ) + _adjustAffine.m02; // x
-                Vertices[ idx + 1 ] = ( _adjustAffine.m10 * x ) + ( _adjustAffine.m11 * y ) + _adjustAffine.m12; // y
-                Vertices[ idx + 2 ] = spriteVertices[ offset + 2 ];                                              // color
-                Vertices[ idx + 3 ] = spriteVertices[ offset + 3 ];                                              // u
-                Vertices[ idx + 4 ] = spriteVertices[ offset + 4 ];                                              // v
+                Vertices[ Idx ]     = ( _adjustAffine.m00 * x ) + ( _adjustAffine.m01 * y ) + _adjustAffine.m02; // x
+                Vertices[ Idx + 1 ] = ( _adjustAffine.m10 * x ) + ( _adjustAffine.m11 * y ) + _adjustAffine.m12; // y
+                Vertices[ Idx + 2 ] = spriteVertices[ offset + 2 ];                                              // color
+                Vertices[ Idx + 3 ] = spriteVertices[ offset + 3 ];                                              // u
+                Vertices[ Idx + 4 ] = spriteVertices[ offset + 4 ];                                              // v
 
-                idx       += Sprite.VertexSize;
+                Idx       += Sprite.VertexSize;
                 offset    += Sprite.VertexSize;
                 copyCount -= Sprite.VertexSize;
             }

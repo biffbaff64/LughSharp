@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public class Animation< T >
 {
     /// <summary>
@@ -35,23 +36,23 @@ public class Animation< T >
         Normal,
         Reversed,
         Loop,
-        Loop_Reversed,
-        Loop_Pingpong,
-        Loop_Random
+        LoopReversed,
+        LoopPingpong,
+        LoopRandom
     }
 
+    // ------------------------------------------------------------------------
+
     private float _animationDuration;
-
     private float _frameDuration;
-
-    /// <summary>
-    ///     Length must not be modified without updating <see cref="_animationDuration" />.
-    ///     See <see cref="SetKeyFrames(T[])" />.
-    /// </summary>
-    private T[] _keyFrames = null!;
-
     private int   _lastFrameNumber;
     private float _lastStateTime;
+
+    // IMPORTANT: KeyFrames array Length must not be modified without updating
+    // _animationDuration.
+    private T[] _keyFrames = null!;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Constructor, storing the frame duration and key frames.
@@ -59,14 +60,14 @@ public class Animation< T >
     /// <param name="frameDuration">the time between frames in seconds.</param>
     /// <param name="keyFrames">
     ///     The objects representing the frames.
-    ///     If this Array is type-aware, <see cref="GetKeyFrames()" /> can return the
+    ///     If this Array is type-aware, <see cref="KeyFrames" /> can return the
     ///     correct type of array. Otherwise, it returns an object[].
     /// </param>
     public Animation( float frameDuration, List< T > keyFrames )
     {
         _frameDuration = frameDuration;
 
-        SetKeyFrames( keyFrames.ToArray() );
+        KeyFrames = keyFrames.ToArray();
     }
 
     /// <summary>
@@ -75,10 +76,10 @@ public class Animation< T >
     /// <param name="frameDuration"> the time between frames in seconds.</param>
     /// <param name="keyFrames">
     ///     The objects representing the frames. If this Array is type-aware,
-    ///     <see cref="GetKeyFrames()" /> can return the correct type of array.
+    ///     <see cref="KeyFrames" /> can return the correct type of array.
     ///     Otherwise, it returns an object[].
     /// </param>
-    /// <param name="playMode"></param>
+    /// <param name="playMode"> The required animation playback mode. </param>
     public Animation( float frameDuration, List< T > keyFrames, AnimMode playMode )
         : this( frameDuration, keyFrames )
     {
@@ -93,7 +94,7 @@ public class Animation< T >
     public Animation( float frameDuration, T[] keyFrames )
     {
         _frameDuration = frameDuration;
-        SetKeyFrames( keyFrames );
+        KeyFrames      = keyFrames;
     }
 
     /// <summary>
@@ -112,21 +113,21 @@ public class Animation< T >
     /// <returns> the frame of animation for the given state time.</returns>
     public T GetKeyFrame( float stateTime, bool looping )
     {
-        // we set the play mode by overriding the previous mode based on looping
-        // parameter value
+        // we set the play mode by overriding the previous mode
+        // based on looping parameter value
         var oldPlayMode = PlayMode;
 
         if ( looping
           && ( ( PlayMode == AnimMode.Normal )
             || ( PlayMode == AnimMode.Reversed ) ) )
         {
-            PlayMode = PlayMode == AnimMode.Normal ? AnimMode.Loop : AnimMode.Loop_Reversed;
+            PlayMode = PlayMode == AnimMode.Normal ? AnimMode.Loop : AnimMode.LoopReversed;
         }
         else if ( !looping
                && !( ( PlayMode == AnimMode.Normal )
                   || ( PlayMode == AnimMode.Reversed ) ) )
         {
-            PlayMode = PlayMode == AnimMode.Loop_Reversed
+            PlayMode = PlayMode == AnimMode.LoopReversed
                            ? AnimMode.Reversed
                            : AnimMode.Loop;
         }
@@ -175,14 +176,14 @@ public class Animation< T >
 
             case AnimMode.Loop:
             {
-                frameNumber = frameNumber % _keyFrames.Length;
+                frameNumber %= _keyFrames.Length;
 
                 break;
             }
 
-            case AnimMode.Loop_Pingpong:
+            case AnimMode.LoopPingpong:
             {
-                frameNumber = frameNumber % ( ( _keyFrames.Length * 2 ) - 2 );
+                frameNumber %= ( ( _keyFrames.Length * 2 ) - 2 );
 
                 if ( frameNumber >= _keyFrames.Length )
                 {
@@ -192,7 +193,7 @@ public class Animation< T >
                 break;
             }
 
-            case AnimMode.Loop_Random:
+            case AnimMode.LoopRandom:
             {
                 var lastFrameNumber = ( int ) ( _lastStateTime / _frameDuration );
 
@@ -210,7 +211,7 @@ public class Animation< T >
                 break;
             }
 
-            case AnimMode.Loop_Reversed:
+            case AnimMode.LoopReversed:
             {
                 frameNumber %= _keyFrames.Length;
                 frameNumber =  _keyFrames.Length - frameNumber - 1;
@@ -226,22 +227,17 @@ public class Animation< T >
     }
 
     /// <summary>
-    ///     Returns the keyframes[] array where all the frames of the
+    ///     The keyframes[] array where all the frames of the
     ///     animation are stored.
     /// </summary>
-    /// <returns>
-    ///     The keyframes[] field. This array is an object[] if the animation
-    ///     was instantiated with an Array that was not type-aware.
-    /// </returns>
-    public T[] GetKeyFrames()
+    public T[] KeyFrames
     {
-        return _keyFrames;
-    }
-
-    protected void SetKeyFrames( T[] keyFrames )
-    {
-        _keyFrames         = keyFrames;
-        _animationDuration = _keyFrames.Length * _frameDuration;
+        get => this._keyFrames;
+        set
+        {
+            this._keyFrames         = value;
+            this._animationDuration = this._keyFrames.Length * this._frameDuration;
+        }
     }
 
     /// <summary>

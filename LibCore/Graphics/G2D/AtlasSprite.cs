@@ -56,10 +56,9 @@ public class AtlasSprite : Sprite
     }
 
     /// <summary>
-    ///     Setup method implemented to be called from <see cref="AtlasSprite(AtlasRegion)" />
+    ///     Setup method designed to be called from <tt>AtlasSprite(AtlasRegion)</tt>
     ///     to get around the issue of calling virtual methods from a constructor.
     /// </summary>
-    /// <param name="region"></param>
     private void Init( AtlasRegion region )
     {
         OriginalOffsetX = region.OffsetX;
@@ -85,14 +84,16 @@ public class AtlasSprite : Sprite
         SetColor( 1, 1, 1, 1 );
     }
 
-    public void SetX( float x )
+    public override float X
     {
-        X = x + Region.OffsetX;
+        get => base.X - Region.OffsetX;
+        set => base.X = value + Region.OffsetX;
     }
 
-    public void SetY( float y )
+    public override float Y
     {
-        Y = y + Region.OffsetY;
+        get => base.Y - Region.OffsetY;
+        set => base.Y = value + Region.OffsetY;
     }
 
     public override void SetBounds( float x, float y, float width, float height )
@@ -116,7 +117,7 @@ public class AtlasSprite : Sprite
 
     public override void SetSize( float width, float height )
     {
-        SetBounds( GetX(), GetY(), width, height );
+        SetBounds( X, Y, width, height );
     }
 
     public override void SetOrigin( float originX, float originY )
@@ -197,16 +198,6 @@ public class AtlasSprite : Sprite
         // Update position and origin with new offsets.
         Translate( Region.OffsetX - oldOffsetX, Region.OffsetY - oldOffsetY );
         SetOrigin( oldOriginX, oldOriginY );
-    }
-
-    public float GetX()
-    {
-        return X - Region.OffsetX;
-    }
-
-    public float GetY()
-    {
-        return Y - Region.OffsetY;
     }
 
     public float GetOriginX()

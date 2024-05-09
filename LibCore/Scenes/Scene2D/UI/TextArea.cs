@@ -400,15 +400,15 @@ public class TextArea : TextField
                     // if selection starts when line starts we want to offset width instead of moving the start as it looks better
                     if ( start == lineStart )
                     {
-                        fontLineOffsetWidth = lineFirst.fixedWidth
+                        fontLineOffsetWidth = lineFirst.FixedWidth
                                                   ? 0
-                                                  : ( -lineFirst.xoffset * fontData.ScaleX ) - fontData.PadLeft;
+                                                  : ( -lineFirst.Xoffset * fontData.ScaleX ) - fontData.PadLeft;
                     }
                     else
                     {
-                        fontLineOffsetX = lineFirst.fixedWidth
+                        fontLineOffsetX = lineFirst.FixedWidth
                                               ? 0
-                                              : ( -lineFirst.xoffset * fontData.ScaleX ) - fontData.PadLeft;
+                                              : ( -lineFirst.Xoffset * fontData.ScaleX ) - fontData.PadLeft;
                     }
                 }
 
@@ -587,7 +587,7 @@ public class TextArea : TextField
 
                 if ( lineFirst != null )
                 {
-                    glyphOffset = lineFirst.fixedWidth ? 0 : ( -lineFirst.xoffset * fontData!.ScaleX ) - fontData.PadLeft;
+                    glyphOffset = lineFirst.FixedWidth ? 0 : ( -lineFirst.Xoffset * fontData!.ScaleX ) - fontData.PadLeft;
                 }
 
                 textOffset = ( GlyphPositions[ Cursor ] - GlyphPositions[ lineStart ] ) + glyphOffset;

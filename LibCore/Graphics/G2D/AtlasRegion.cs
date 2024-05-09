@@ -25,14 +25,9 @@
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public class AtlasRegion : TextureRegion
 {
-    /// <summary>
-    ///     Values for name/value pairs other than the fields provided on this class,
-    ///     each entry corresponding to <see cref="Names" />.
-    /// </summary>
-    public int[]?[]? values;
-
     public AtlasRegion( Texture? texture, int x, int y, int width, int height )
         : base( texture!, x, y, width, height )
     {
@@ -57,7 +52,7 @@ public class AtlasRegion : TextureRegion
         Rotate         = region.Rotate;
         Degrees        = region.Degrees;
         Names          = region.Names;
-        values         = region.values;
+        Values         = region.Values;
     }
 
     public AtlasRegion( TextureRegion region )
@@ -69,6 +64,12 @@ public class AtlasRegion : TextureRegion
         OriginalWidth  = PackedWidth;
         OriginalHeight = PackedHeight;
     }
+
+    /// <summary>
+    ///     Values for name/value pairs other than the fields provided on this class,
+    ///     each entry corresponding to <see cref="Names" />.
+    /// </summary>
+    public int[]?[]? Values { get; set; }
 
     /// <summary>
     ///     The number at the end of the original image file name, or -1 if none.
@@ -133,7 +134,7 @@ public class AtlasRegion : TextureRegion
 
     /// <summary>
     ///     Names for name/value pairs other than the fields provided on this class,
-    ///     each entry corresponding to <see cref="values" />.
+    ///     each entry corresponding to <see cref="Values" />.
     /// </summary>
     public string?[]? Names { get; set; }
 
@@ -174,7 +175,7 @@ public class AtlasRegion : TextureRegion
             {
                 if ( name.Equals( Names[ i ] ) )
                 {
-                    return values?[ i ];
+                    return Values?[ i ];
                 }
             }
         }

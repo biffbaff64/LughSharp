@@ -62,6 +62,8 @@ public class BitmapFontCache
     /// </summary>
     private int[] _tempGlyphCount;
 
+    // ------------------------------------------------------------------------
+    
     public BitmapFontCache( BitmapFont font )
         : this( font, font.UseIntegerPositions )
     {
@@ -631,15 +633,15 @@ public class BitmapFontCache
         var scaleX = Font.GetData().ScaleX;
         var scaleY = Font.GetData().ScaleY;
 
-        x += glyph.xoffset * scaleX;
-        y += glyph.yoffset * scaleY;
+        x += glyph.Xoffset * scaleX;
+        y += glyph.Yoffset * scaleY;
 
-        var width  = glyph.width * scaleX;
-        var height = glyph.height * scaleY;
-        var u      = glyph.u;
-        var u2     = glyph.u2;
-        var v      = glyph.v;
-        var v2     = glyph.v2;
+        var width  = glyph.Width * scaleX;
+        var height = glyph.Height * scaleY;
+        var u      = glyph.U;
+        var u2     = glyph.U2;
+        var v      = glyph.V;
+        var v2     = glyph.V2;
 
         if ( UseIntegerPositions )
         {

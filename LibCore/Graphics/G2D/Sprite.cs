@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public class Sprite : TextureRegion
 {
     public readonly static int VertexSize = 2 + 1 + 2;
@@ -990,7 +991,7 @@ public class Sprite : TextureRegion
     ///     after those operations. If both position and size are to be changed, it
     ///     is better to use <see cref="SetBounds(float, float, float, float)" />.
     /// </summary>
-    public float X
+    public virtual float X
     {
         get => _x;
         set
@@ -1024,7 +1025,7 @@ public class Sprite : TextureRegion
     ///     after those operations. If both position and size are to be changed, it
     ///     is better to use <see cref="SetBounds(float, float, float, float)" />.
     /// </summary>
-    public float Y
+    public virtual float Y
     {
         get => _y;
         set

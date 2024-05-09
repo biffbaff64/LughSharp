@@ -31,6 +31,11 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class SpriteBatch : IBatch
 {
+    public float InvTexHeight { get; set; } = 0;
+    public float InvTexWidth  { get; set; } = 0;
+
+    // ------------------------------------------------------------------------
+
     private const int MAX_VERTEX_INDEX = 32767;
     private const int MAX_SPRITES      = 8191;
 
@@ -41,12 +46,9 @@ public class SpriteBatch : IBatch
     private readonly ShaderProgram? _shader;
     private          ShaderProgram? _customShader;
 
-    protected float colorPacked  = Color.WhiteFloatBits;
-    protected int   idx          = 0;
-    public    float invTexHeight = 0;
-    public    float invTexWidth  = 0;
+    protected float ColorPacked = Color.WhiteFloatBits;
+    protected int   Idx         = 0;
 
-    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -184,7 +186,7 @@ public class SpriteBatch : IBatch
             throw new InvalidOperationException( "SpriteBatch.begin must be called before end." );
         }
 
-        if ( idx > 0 )
+        if ( Idx > 0 )
         {
             Flush();
         }
@@ -206,14 +208,14 @@ public class SpriteBatch : IBatch
         set
         {
             _color.Set( value );
-            colorPacked = value.ToFloatBits();
+            ColorPacked = value.ToFloatBits();
         }
     }
 
     public void SetColor( float r, float g, float b, float a )
     {
         _color.Set( r, g, b, a );
-        colorPacked = _color.ToFloatBits();
+        ColorPacked = _color.ToFloatBits();
     }
 
     public float PackedColor
@@ -223,11 +225,11 @@ public class SpriteBatch : IBatch
             var color = Color;
 
             Color.Abgr8888ToColor( ref color, value );
-            colorPacked = value;
+            ColorPacked = value;
 
             Color = color;
         }
-        get => colorPacked;
+        get => ColorPacked;
     }
 
     public virtual void Draw( Texture texture,
@@ -256,7 +258,7 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == Vertices.Length )
+        else if ( Idx == Vertices.Length )
         {
             Flush();
         }
@@ -339,11 +341,11 @@ public class SpriteBatch : IBatch
         x4 += worldOriginX;
         y4 += worldOriginY;
 
-        var u     = srcX * invTexWidth;
-        var v     = ( srcY + srcHeight ) * invTexHeight;
-        var u2    = ( srcX + srcWidth ) * invTexWidth;
-        var v2    = srcY * invTexHeight;
-        var color = colorPacked;
+        var u     = srcX * InvTexWidth;
+        var v     = ( srcY + srcHeight ) * InvTexHeight;
+        var u2    = ( srcX + srcWidth ) * InvTexWidth;
+        var v2    = srcY * InvTexHeight;
+        var color = ColorPacked;
 
         if ( flipX )
         {
@@ -355,31 +357,31 @@ public class SpriteBatch : IBatch
             ( v, v2 ) = ( v2, v );
         }
 
-        Vertices[ idx ]     = x1;
-        Vertices[ idx + 1 ] = y1;
-        Vertices[ idx + 2 ] = color;
-        Vertices[ idx + 3 ] = u;
-        Vertices[ idx + 4 ] = v;
+        Vertices[ Idx ]     = x1;
+        Vertices[ Idx + 1 ] = y1;
+        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 3 ] = u;
+        Vertices[ Idx + 4 ] = v;
 
-        Vertices[ idx + 5 ] = x2;
-        Vertices[ idx + 6 ] = y2;
-        Vertices[ idx + 7 ] = color;
-        Vertices[ idx + 8 ] = u;
-        Vertices[ idx + 9 ] = v2;
+        Vertices[ Idx + 5 ] = x2;
+        Vertices[ Idx + 6 ] = y2;
+        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 8 ] = u;
+        Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ idx + 10 ] = x3;
-        Vertices[ idx + 11 ] = y3;
-        Vertices[ idx + 12 ] = color;
-        Vertices[ idx + 13 ] = u2;
-        Vertices[ idx + 14 ] = v2;
+        Vertices[ Idx + 10 ] = x3;
+        Vertices[ Idx + 11 ] = y3;
+        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 13 ] = u2;
+        Vertices[ Idx + 14 ] = v2;
 
-        Vertices[ idx + 15 ] = x4;
-        Vertices[ idx + 16 ] = y4;
-        Vertices[ idx + 17 ] = color;
-        Vertices[ idx + 18 ] = u2;
-        Vertices[ idx + 19 ] = v;
+        Vertices[ Idx + 15 ] = x4;
+        Vertices[ Idx + 16 ] = y4;
+        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 18 ] = u2;
+        Vertices[ Idx + 19 ] = v;
 
-        idx = idx + 20;
+        Idx = Idx + 20;
     }
 
     public virtual void Draw( Texture texture,
@@ -403,18 +405,18 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == Vertices.Length )
+        else if ( Idx == Vertices.Length )
         {
             Flush();
         }
 
-        var u     = srcX * invTexWidth;
-        var v     = ( srcY + srcHeight ) * invTexHeight;
-        var u2    = ( srcX + srcWidth ) * invTexWidth;
-        var v2    = srcY * invTexHeight;
+        var u     = srcX * InvTexWidth;
+        var v     = ( srcY + srcHeight ) * InvTexHeight;
+        var u2    = ( srcX + srcWidth ) * InvTexWidth;
+        var v2    = srcY * InvTexHeight;
         var fx2   = x + width;
         var fy2   = y + height;
-        var color = colorPacked;
+        var color = ColorPacked;
 
         if ( flipX )
         {
@@ -426,31 +428,31 @@ public class SpriteBatch : IBatch
             ( v, v2 ) = ( v2, v );
         }
 
-        Vertices[ idx ]     = x;
-        Vertices[ idx + 1 ] = y;
-        Vertices[ idx + 2 ] = color;
-        Vertices[ idx + 3 ] = u;
-        Vertices[ idx + 4 ] = v;
+        Vertices[ Idx ]     = x;
+        Vertices[ Idx + 1 ] = y;
+        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 3 ] = u;
+        Vertices[ Idx + 4 ] = v;
 
-        Vertices[ idx + 5 ] = x;
-        Vertices[ idx + 6 ] = fy2;
-        Vertices[ idx + 7 ] = color;
-        Vertices[ idx + 8 ] = u;
-        Vertices[ idx + 9 ] = v2;
+        Vertices[ Idx + 5 ] = x;
+        Vertices[ Idx + 6 ] = fy2;
+        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 8 ] = u;
+        Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ idx + 10 ] = fx2;
-        Vertices[ idx + 11 ] = fy2;
-        Vertices[ idx + 12 ] = color;
-        Vertices[ idx + 13 ] = u2;
-        Vertices[ idx + 14 ] = v2;
+        Vertices[ Idx + 10 ] = fx2;
+        Vertices[ Idx + 11 ] = fy2;
+        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 13 ] = u2;
+        Vertices[ Idx + 14 ] = v2;
 
-        Vertices[ idx + 15 ] = fx2;
-        Vertices[ idx + 16 ] = y;
-        Vertices[ idx + 17 ] = color;
-        Vertices[ idx + 18 ] = u2;
-        Vertices[ idx + 19 ] = v;
+        Vertices[ Idx + 15 ] = fx2;
+        Vertices[ Idx + 16 ] = y;
+        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 18 ] = u2;
+        Vertices[ Idx + 19 ] = v;
 
-        idx = idx + 20;
+        Idx = Idx + 20;
     }
 
     public virtual void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight )
@@ -464,45 +466,45 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == Vertices.Length )
+        else if ( Idx == Vertices.Length )
         {
             Flush();
         }
 
-        var u   = srcX * invTexWidth;
-        var v   = ( srcY + srcHeight ) * invTexHeight;
-        var u2  = ( srcX + srcWidth ) * invTexWidth;
-        var v2  = srcY * invTexHeight;
+        var u   = srcX * InvTexWidth;
+        var v   = ( srcY + srcHeight ) * InvTexHeight;
+        var u2  = ( srcX + srcWidth ) * InvTexWidth;
+        var v2  = srcY * InvTexHeight;
         var fx2 = x + srcWidth;
         var fy2 = y + srcHeight;
 
-        var color = colorPacked;
+        var color = ColorPacked;
 
-        Vertices[ idx ]     = x;
-        Vertices[ idx + 1 ] = y;
-        Vertices[ idx + 2 ] = color;
-        Vertices[ idx + 3 ] = u;
-        Vertices[ idx + 4 ] = v;
+        Vertices[ Idx ]     = x;
+        Vertices[ Idx + 1 ] = y;
+        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 3 ] = u;
+        Vertices[ Idx + 4 ] = v;
 
-        Vertices[ idx + 5 ] = x;
-        Vertices[ idx + 6 ] = fy2;
-        Vertices[ idx + 7 ] = color;
-        Vertices[ idx + 8 ] = u;
-        Vertices[ idx + 9 ] = v2;
+        Vertices[ Idx + 5 ] = x;
+        Vertices[ Idx + 6 ] = fy2;
+        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 8 ] = u;
+        Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ idx + 10 ] = fx2;
-        Vertices[ idx + 11 ] = fy2;
-        Vertices[ idx + 12 ] = color;
-        Vertices[ idx + 13 ] = u2;
-        Vertices[ idx + 14 ] = v2;
+        Vertices[ Idx + 10 ] = fx2;
+        Vertices[ Idx + 11 ] = fy2;
+        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 13 ] = u2;
+        Vertices[ Idx + 14 ] = v2;
 
-        Vertices[ idx + 15 ] = fx2;
-        Vertices[ idx + 16 ] = y;
-        Vertices[ idx + 17 ] = color;
-        Vertices[ idx + 18 ] = u2;
-        Vertices[ idx + 19 ] = v;
+        Vertices[ Idx + 15 ] = fx2;
+        Vertices[ Idx + 16 ] = y;
+        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 18 ] = u2;
+        Vertices[ Idx + 19 ] = v;
 
-        idx = idx + 20;
+        Idx = Idx + 20;
     }
 
     public virtual void Draw( Texture texture,
@@ -524,40 +526,40 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == Vertices.Length )
+        else if ( Idx == Vertices.Length )
         {
             Flush();
         }
 
         var fx2   = x + width;
         var fy2   = y + height;
-        var color = colorPacked;
+        var color = ColorPacked;
 
-        Vertices[ idx ]     = x;
-        Vertices[ idx + 1 ] = y;
-        Vertices[ idx + 2 ] = color;
-        Vertices[ idx + 3 ] = u;
-        Vertices[ idx + 4 ] = v;
+        Vertices[ Idx ]     = x;
+        Vertices[ Idx + 1 ] = y;
+        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 3 ] = u;
+        Vertices[ Idx + 4 ] = v;
 
-        Vertices[ idx + 5 ] = x;
-        Vertices[ idx + 6 ] = fy2;
-        Vertices[ idx + 7 ] = color;
-        Vertices[ idx + 8 ] = u;
-        Vertices[ idx + 9 ] = v2;
+        Vertices[ Idx + 5 ] = x;
+        Vertices[ Idx + 6 ] = fy2;
+        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 8 ] = u;
+        Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ idx + 10 ] = fx2;
-        Vertices[ idx + 11 ] = fy2;
-        Vertices[ idx + 12 ] = color;
-        Vertices[ idx + 13 ] = u2;
-        Vertices[ idx + 14 ] = v2;
+        Vertices[ Idx + 10 ] = fx2;
+        Vertices[ Idx + 11 ] = fy2;
+        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 13 ] = u2;
+        Vertices[ Idx + 14 ] = v2;
 
-        Vertices[ idx + 15 ] = fx2;
-        Vertices[ idx + 16 ] = y;
-        Vertices[ idx + 17 ] = color;
-        Vertices[ idx + 18 ] = u2;
-        Vertices[ idx + 19 ] = v;
+        Vertices[ Idx + 15 ] = fx2;
+        Vertices[ Idx + 16 ] = y;
+        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 18 ] = u2;
+        Vertices[ Idx + 19 ] = v;
 
-        idx = idx + 20;
+        Idx = Idx + 20;
     }
 
     public virtual void Draw( Texture texture, float x, float y )
@@ -576,45 +578,45 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == Vertices.Length )
+        else if ( Idx == Vertices.Length )
         {
             Flush();
         }
 
         var fx2   = x + width;
         var fy2   = y + height;
-        var color = colorPacked;
+        var color = ColorPacked;
 
         const float U  = 0;
         const float V  = 1;
         const float U2 = 1;
         const float V2 = 0;
 
-        Vertices[ idx ]     = x;
-        Vertices[ idx + 1 ] = y;
-        Vertices[ idx + 2 ] = color;
-        Vertices[ idx + 3 ] = U;
-        Vertices[ idx + 4 ] = V;
+        Vertices[ Idx ]     = x;
+        Vertices[ Idx + 1 ] = y;
+        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 3 ] = U;
+        Vertices[ Idx + 4 ] = V;
 
-        Vertices[ idx + 5 ] = x;
-        Vertices[ idx + 6 ] = fy2;
-        Vertices[ idx + 7 ] = color;
-        Vertices[ idx + 8 ] = U;
-        Vertices[ idx + 9 ] = V2;
+        Vertices[ Idx + 5 ] = x;
+        Vertices[ Idx + 6 ] = fy2;
+        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 8 ] = U;
+        Vertices[ Idx + 9 ] = V2;
 
-        Vertices[ idx + 10 ] = fx2;
-        Vertices[ idx + 11 ] = fy2;
-        Vertices[ idx + 12 ] = color;
-        Vertices[ idx + 13 ] = U2;
-        Vertices[ idx + 14 ] = V2;
+        Vertices[ Idx + 10 ] = fx2;
+        Vertices[ Idx + 11 ] = fy2;
+        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 13 ] = U2;
+        Vertices[ Idx + 14 ] = V2;
 
-        Vertices[ idx + 15 ] = fx2;
-        Vertices[ idx + 16 ] = y;
-        Vertices[ idx + 17 ] = color;
-        Vertices[ idx + 18 ] = U2;
-        Vertices[ idx + 19 ] = V;
+        Vertices[ Idx + 15 ] = fx2;
+        Vertices[ Idx + 16 ] = y;
+        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 18 ] = U2;
+        Vertices[ Idx + 19 ] = V;
 
-        idx = idx + 20;
+        Idx = Idx + 20;
     }
 
     public virtual void Draw( Texture texture, float[] spriteVertices, int offset, int count )
@@ -633,7 +635,7 @@ public class SpriteBatch : IBatch
         }
         else
         {
-            remainingVertices -= idx;
+            remainingVertices -= Idx;
 
             if ( remainingVertices == 0 )
             {
@@ -648,11 +650,11 @@ public class SpriteBatch : IBatch
                    spriteVertices,
                    offset,
                    Vertices,
-                   idx,
+                   Idx,
                    copyCount
                   );
 
-        idx   += copyCount;
+        Idx   += copyCount;
         count -= copyCount;
 
         while ( count > 0 )
@@ -671,7 +673,7 @@ public class SpriteBatch : IBatch
                        copyCount
                       );
 
-            idx   += copyCount;
+            Idx   += copyCount;
             count -= copyCount;
         }
     }
@@ -694,7 +696,7 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == Vertices.Length )
+        else if ( Idx == Vertices.Length )
         {
             Flush();
         }
@@ -706,33 +708,33 @@ public class SpriteBatch : IBatch
         var u2  = region.U2;
         var v2  = region.V;
 
-        var color = colorPacked;
+        var color = ColorPacked;
 
-        Vertices[ idx ]     = x;
-        Vertices[ idx + 1 ] = y;
-        Vertices[ idx + 2 ] = color;
-        Vertices[ idx + 3 ] = u;
-        Vertices[ idx + 4 ] = v;
+        Vertices[ Idx ]     = x;
+        Vertices[ Idx + 1 ] = y;
+        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 3 ] = u;
+        Vertices[ Idx + 4 ] = v;
 
-        Vertices[ idx + 5 ] = x;
-        Vertices[ idx + 6 ] = fy2;
-        Vertices[ idx + 7 ] = color;
-        Vertices[ idx + 8 ] = u;
-        Vertices[ idx + 9 ] = v2;
+        Vertices[ Idx + 5 ] = x;
+        Vertices[ Idx + 6 ] = fy2;
+        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 8 ] = u;
+        Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ idx + 10 ] = fx2;
-        Vertices[ idx + 11 ] = fy2;
-        Vertices[ idx + 12 ] = color;
-        Vertices[ idx + 13 ] = u2;
-        Vertices[ idx + 14 ] = v2;
+        Vertices[ Idx + 10 ] = fx2;
+        Vertices[ Idx + 11 ] = fy2;
+        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 13 ] = u2;
+        Vertices[ Idx + 14 ] = v2;
 
-        Vertices[ idx + 15 ] = fx2;
-        Vertices[ idx + 16 ] = y;
-        Vertices[ idx + 17 ] = color;
-        Vertices[ idx + 18 ] = u2;
-        Vertices[ idx + 19 ] = v;
+        Vertices[ Idx + 15 ] = fx2;
+        Vertices[ Idx + 16 ] = y;
+        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 18 ] = u2;
+        Vertices[ Idx + 19 ] = v;
 
-        idx = idx + 20;
+        Idx = Idx + 20;
     }
 
     public virtual void Draw( TextureRegion region,
@@ -757,7 +759,7 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == Vertices.Length )
+        else if ( Idx == Vertices.Length )
         {
             Flush();
         }
@@ -845,33 +847,33 @@ public class SpriteBatch : IBatch
         var u2 = region.U2;
         var v2 = region.V;
 
-        var color = colorPacked;
+        var color = ColorPacked;
 
-        Vertices[ idx ]     = x1;
-        Vertices[ idx + 1 ] = y1;
-        Vertices[ idx + 2 ] = color;
-        Vertices[ idx + 3 ] = u;
-        Vertices[ idx + 4 ] = v;
+        Vertices[ Idx ]     = x1;
+        Vertices[ Idx + 1 ] = y1;
+        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 3 ] = u;
+        Vertices[ Idx + 4 ] = v;
 
-        Vertices[ idx + 5 ] = x2;
-        Vertices[ idx + 6 ] = y2;
-        Vertices[ idx + 7 ] = color;
-        Vertices[ idx + 8 ] = u;
-        Vertices[ idx + 9 ] = v2;
+        Vertices[ Idx + 5 ] = x2;
+        Vertices[ Idx + 6 ] = y2;
+        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 8 ] = u;
+        Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ idx + 10 ] = x3;
-        Vertices[ idx + 11 ] = y3;
-        Vertices[ idx + 12 ] = color;
-        Vertices[ idx + 13 ] = u2;
-        Vertices[ idx + 14 ] = v2;
+        Vertices[ Idx + 10 ] = x3;
+        Vertices[ Idx + 11 ] = y3;
+        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 13 ] = u2;
+        Vertices[ Idx + 14 ] = v2;
 
-        Vertices[ idx + 15 ] = x4;
-        Vertices[ idx + 16 ] = y4;
-        Vertices[ idx + 17 ] = color;
-        Vertices[ idx + 18 ] = u2;
-        Vertices[ idx + 19 ] = v;
+        Vertices[ Idx + 15 ] = x4;
+        Vertices[ Idx + 16 ] = y4;
+        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 18 ] = u2;
+        Vertices[ Idx + 19 ] = v;
 
-        idx = idx + 20;
+        Idx = Idx + 20;
     }
 
     public virtual void Draw( TextureRegion region,
@@ -897,7 +899,7 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( texture );
         }
-        else if ( idx == Vertices.Length )
+        else if ( Idx == Vertices.Length )
         {
             Flush();
         }
@@ -1005,33 +1007,33 @@ public class SpriteBatch : IBatch
             v4 = region.V2;
         }
 
-        var color = colorPacked;
+        var color = ColorPacked;
 
-        Vertices[ idx ]     = x1;
-        Vertices[ idx + 1 ] = y1;
-        Vertices[ idx + 2 ] = color;
-        Vertices[ idx + 3 ] = u1;
-        Vertices[ idx + 4 ] = v1;
+        Vertices[ Idx ]     = x1;
+        Vertices[ Idx + 1 ] = y1;
+        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 3 ] = u1;
+        Vertices[ Idx + 4 ] = v1;
 
-        Vertices[ idx + 5 ] = x2;
-        Vertices[ idx + 6 ] = y2;
-        Vertices[ idx + 7 ] = color;
-        Vertices[ idx + 8 ] = u2;
-        Vertices[ idx + 9 ] = v2;
+        Vertices[ Idx + 5 ] = x2;
+        Vertices[ Idx + 6 ] = y2;
+        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 8 ] = u2;
+        Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ idx + 10 ] = x3;
-        Vertices[ idx + 11 ] = y3;
-        Vertices[ idx + 12 ] = color;
-        Vertices[ idx + 13 ] = u3;
-        Vertices[ idx + 14 ] = v3;
+        Vertices[ Idx + 10 ] = x3;
+        Vertices[ Idx + 11 ] = y3;
+        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 13 ] = u3;
+        Vertices[ Idx + 14 ] = v3;
 
-        Vertices[ idx + 15 ] = x4;
-        Vertices[ idx + 16 ] = y4;
-        Vertices[ idx + 17 ] = color;
-        Vertices[ idx + 18 ] = u4;
-        Vertices[ idx + 19 ] = v4;
+        Vertices[ Idx + 15 ] = x4;
+        Vertices[ Idx + 16 ] = y4;
+        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 18 ] = u4;
+        Vertices[ Idx + 19 ] = v4;
 
-        idx = idx + 20;
+        Idx = Idx + 20;
     }
 
     public virtual void Draw( TextureRegion region, float width, float height, Affine2 transform )
@@ -1045,7 +1047,7 @@ public class SpriteBatch : IBatch
         {
             SwitchTexture( region.Texture );
         }
-        else if ( idx == Vertices.Length )
+        else if ( Idx == Vertices.Length )
         {
             Flush();
         }
@@ -1064,40 +1066,40 @@ public class SpriteBatch : IBatch
         var v     = region.V2;
         var u2    = region.U2;
         var v2    = region.V;
-        var color = colorPacked;
+        var color = ColorPacked;
 
-        Vertices[ idx ]     = x1;
-        Vertices[ idx + 1 ] = y1;
-        Vertices[ idx + 2 ] = color;
-        Vertices[ idx + 3 ] = u;
-        Vertices[ idx + 4 ] = v;
+        Vertices[ Idx ]     = x1;
+        Vertices[ Idx + 1 ] = y1;
+        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 3 ] = u;
+        Vertices[ Idx + 4 ] = v;
 
-        Vertices[ idx + 5 ] = x2;
-        Vertices[ idx + 6 ] = y2;
-        Vertices[ idx + 7 ] = color;
-        Vertices[ idx + 8 ] = u;
-        Vertices[ idx + 9 ] = v2;
+        Vertices[ Idx + 5 ] = x2;
+        Vertices[ Idx + 6 ] = y2;
+        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 8 ] = u;
+        Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ idx + 10 ] = x3;
-        Vertices[ idx + 11 ] = y3;
-        Vertices[ idx + 12 ] = color;
-        Vertices[ idx + 13 ] = u2;
-        Vertices[ idx + 14 ] = v2;
+        Vertices[ Idx + 10 ] = x3;
+        Vertices[ Idx + 11 ] = y3;
+        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 13 ] = u2;
+        Vertices[ Idx + 14 ] = v2;
 
-        Vertices[ idx + 15 ] = x4;
-        Vertices[ idx + 16 ] = y4;
-        Vertices[ idx + 17 ] = color;
-        Vertices[ idx + 18 ] = u2;
-        Vertices[ idx + 19 ] = v;
+        Vertices[ Idx + 15 ] = x4;
+        Vertices[ Idx + 16 ] = y4;
+        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 18 ] = u2;
+        Vertices[ Idx + 19 ] = v;
 
-        idx = idx + 20;
+        Idx = Idx + 20;
     }
 
     /// <summary>
     /// </summary>
     public void Flush()
     {
-        if ( idx == 0 )
+        if ( Idx == 0 )
         {
             return;
         }
@@ -1105,7 +1107,7 @@ public class SpriteBatch : IBatch
         RenderCalls++;
         TotalRenderCalls++;
 
-        var spritesInBatch = idx / 20;
+        var spritesInBatch = Idx / 20;
 
         if ( spritesInBatch > MaxSpritesInBatch )
         {
@@ -1116,7 +1118,7 @@ public class SpriteBatch : IBatch
 
         LastTexture?.Bind();
 
-        _mesh.SetVertices( Vertices, 0, idx );
+        _mesh.SetVertices( Vertices, 0, Idx );
         _mesh.IndicesBuffer.Position = 0;
         _mesh.IndicesBuffer.Limit    = count;
 
@@ -1136,7 +1138,7 @@ public class SpriteBatch : IBatch
 
         _mesh.Render( _customShader ?? _shader, IGL.GL_TRIANGLES, 0, count );
 
-        idx = 0;
+        Idx = 0;
     }
 
     public void DisableBlending()
@@ -1344,7 +1346,7 @@ public class SpriteBatch : IBatch
     {
         Flush();
         LastTexture  = texture;
-        invTexWidth  = 1.0f / texture.Width;
-        invTexHeight = 1.0f / texture.Height;
+        InvTexWidth  = 1.0f / texture.Width;
+        InvTexHeight = 1.0f / texture.Height;
     }
 }

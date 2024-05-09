@@ -537,7 +537,7 @@ public class PixmapPacker : IDisposable
                     if ( rect.Splits != null )
                     {
                         region.Names  = new[] { "split", "pad" };
-                        region.values = new[] { rect.Splits, rect.Pads };
+                        region.Values = new[] { rect.Splits, rect.Pads };
                     }
 
                     var imageIndex = -1;
