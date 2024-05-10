@@ -76,7 +76,7 @@ public class RepeatAction : DelegateAction
         Finished = true;
     }
 
-    public new void Restart()
+    public override void Restart()
     {
         base.Restart();
 

@@ -143,8 +143,8 @@ public class ParticleEffect : IDisposable
             var emitter = _emitters[ i ];
 
             emitter.Continuous    = false;
-            emitter.duration      = duration;
-            emitter.durationTimer = 0;
+            emitter.Duration      = duration;
+            emitter.DurationTimer = 0;
         }
     }
 

@@ -234,7 +234,7 @@ public class Window : Table
         Style?.StageBackground?.Draw( batch, x, y, width, height );
     }
 
-    protected new void DrawBackground( IBatch batch, float parentAlpha, float x, float y )
+    protected override void DrawBackground( IBatch batch, float parentAlpha, float x, float y )
     {
         base.DrawBackground( batch, parentAlpha, x, y );
 
@@ -259,7 +259,7 @@ public class Window : Table
         DrawTitleTable = false;
     }
 
-    public new Actor? Hit( float x, float y, bool touchable )
+    public override Actor? Hit( float x, float y, bool touchable )
     {
         if ( !IsVisible )
         {
@@ -557,7 +557,7 @@ public class Window : Table
                                ( float ) Math.Round( height ) );
         }
 
-        public new bool MouseMoved( InputEvent ev, float x, float y )
+        public override bool MouseMoved( InputEvent ev, float x, float y )
         {
             UpdateEdge( x, y );
 
@@ -569,17 +569,17 @@ public class Window : Table
             return _window.IsModal;
         }
 
-        public new bool KeyDown( InputEvent ev, int keycode )
+        public override bool KeyDown( InputEvent ev, int keycode )
         {
             return _window.IsModal;
         }
 
-        public new bool KeyUp( InputEvent ev, int keycode )
+        public override bool KeyUp( InputEvent ev, int keycode )
         {
             return _window.IsModal;
         }
 
-        public new bool KeyTyped( InputEvent ev, char character )
+        public override bool KeyTyped( InputEvent ev, char character )
         {
             return _window.IsModal;
         }

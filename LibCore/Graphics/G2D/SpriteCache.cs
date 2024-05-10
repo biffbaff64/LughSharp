@@ -82,17 +82,16 @@ public class SpriteCache
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    private readonly static float[]       _tempVertices   = new float[ Sprite.VertexSize * 6 ];
-    private readonly        List< Cache > _caches         = new();
-    private readonly        Matrix4       _combinedMatrix = new();
-    private readonly        List< int >   _counts         = new( 8 );
+    private readonly static float[] _tempVertices = new float[ Sprite.VERTEX_SIZE * 6 ];
 
+    private readonly List< Cache >   _caches         = new();
+    private readonly Matrix4         _combinedMatrix = new();
+    private readonly List< int >     _counts         = new( 8 );
     private readonly Mesh            _mesh;
     private readonly ShaderProgram?  _shader;
     private readonly List< Texture > _textures = new( 8 );
 
-    private float _colorPacked = Color.WhiteFloatBits;
-
+    private float  _colorPacked = Color.WhiteFloatBits;
     private Cache? _currentCache;
 
     // ------------------------------------------------------------------------
@@ -178,9 +177,9 @@ public class SpriteCache
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public int     RenderCallsSinceBegin { get; set; }  = 0;
-    public int     TotalRenderCalls      { get; set; }  = 0;
-    public Color   Color                 { get; set; }  = new( 1, 1, 1, 1 );
+    public int     RenderCallsSinceBegin { get; set; } = 0;
+    public int     TotalRenderCalls      { get; set; } = 0;
+    public Color   Color                 { get; set; } = new( 1, 1, 1, 1 );
     public Matrix4 ProjectionMatrix      { get; set; } = new();
     public Matrix4 TransformMatrix       { get; set; } = new();
     public bool    IsDrawing             { get; private set; }
@@ -264,14 +263,14 @@ public class SpriteCache
         if ( cacheID == ( _caches.Count - 1 ) )
         {
             var oldCache = _caches.RemoveIndex( cacheID );
-            _mesh.GetVerticesBuffer().Limit = oldCache.offset;
+            _mesh.GetVerticesBuffer().Limit = oldCache.Offset;
             BeginCache();
 
             return;
         }
 
         _currentCache                      = _caches[ cacheID ];
-        _mesh.GetVerticesBuffer().Position = _currentCache.offset;
+        _mesh.GetVerticesBuffer().Position = _currentCache.Offset;
     }
 
     /// <summary>
@@ -286,19 +285,19 @@ public class SpriteCache
         }
 
         var cache      = _currentCache;
-        var cacheCount = _mesh.GetVerticesBuffer().Position - cache.offset;
+        var cacheCount = _mesh.GetVerticesBuffer().Position - cache.Offset;
 
-        if ( cache.textures == null )
+        if ( cache.Textures == null )
         {
             // New cache.
-            cache.maxCount     = cacheCount;
-            cache.textureCount = _textures.Count;
-            cache.textures     = _textures.ToArray();
-            cache.counts       = new int[ cache.textureCount ];
+            cache.MaxCount     = cacheCount;
+            cache.TextureCount = _textures.Count;
+            cache.Textures     = _textures.ToArray();
+            cache.Counts       = new int[ cache.TextureCount ];
 
             for ( int i = 0, n = _counts.Count; i < n; i++ )
             {
-                cache.counts[ i ] = _counts[ i ];
+                cache.Counts[ i ] = _counts[ i ];
             }
 
             _mesh.GetVerticesBuffer().Flip();
@@ -306,53 +305,53 @@ public class SpriteCache
         else
         {
             // Redefine existing cache.
-            if ( cacheCount > cache.maxCount )
+            if ( cacheCount > cache.MaxCount )
             {
                 throw new GdxRuntimeException( $"If a cache is not the last created, it cannot be redefined"
                                              + $"with more entries than when it was first created: "
-                                             + $"{cacheCount} ({cache.maxCount} max)" );
+                                             + $"{cacheCount} ({cache.MaxCount} max)" );
             }
 
-            cache.textureCount = _textures.Count;
+            cache.TextureCount = _textures.Count;
 
-            if ( cache.textures.Length < cache.textureCount )
+            if ( cache.Textures.Length < cache.TextureCount )
             {
-                cache.textures = new Texture[ cache.textureCount ];
+                cache.Textures = new Texture[ cache.TextureCount ];
             }
 
-            for ( int i = 0, n = cache.textureCount; i < n; i++ )
+            for ( int i = 0, n = cache.TextureCount; i < n; i++ )
             {
-                cache.textures[ i ] = _textures[ i ];
+                cache.Textures[ i ] = _textures[ i ];
             }
 
-            if ( cache.counts?.Length < cache.textureCount )
+            if ( cache.Counts?.Length < cache.TextureCount )
             {
-                cache.counts = new int[ cache.textureCount ];
+                cache.Counts = new int[ cache.TextureCount ];
             }
 
-            if ( cache.counts != null )
+            if ( cache.Counts != null )
             {
-                for ( int i = 0, n = cache.textureCount; i < n; i++ )
+                for ( int i = 0, n = cache.TextureCount; i < n; i++ )
                 {
-                    cache.counts[ i ] = _counts[ i ];
+                    cache.Counts[ i ] = _counts[ i ];
                 }
             }
 
             var vertices = _mesh.GetVerticesBuffer();
             vertices.Position = 0;
             var lastCache = _caches[ _caches.Count - 1 ];
-            vertices.Limit = lastCache.offset + lastCache.maxCount;
+            vertices.Limit = lastCache.Offset + lastCache.MaxCount;
         }
 
         _currentCache = null!;
         _textures.Clear();
         _counts.Clear();
 
-        return cache.id;
+        return cache.ID;
     }
 
     /// <summary>
-    ///     Invalidates all cache IDs and resets the SpriteCache so new _caches can be added.
+    ///     Invalidates all cache IDs and resets the SpriteCache so new caches can be added.
     /// </summary>
     public void Clear()
     {
@@ -374,7 +373,7 @@ public class SpriteCache
         }
 
         var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
-        var count            = ( length / ( verticesPerImage * Sprite.VertexSize ) ) * 6;
+        var count            = ( length / ( verticesPerImage * Sprite.VERTEX_SIZE ) ) * 6;
         var lastIndex        = _textures.Count - 1;
 
         if ( ( lastIndex < 0 ) || ( _textures[ lastIndex ] != texture ) )
@@ -1070,26 +1069,26 @@ public class SpriteCache
     {
         if ( _mesh.NumIndices > 0 )
         {
-            Add( sprite.Texture, sprite.Vertices, 0, Sprite.SpriteSize );
+            Add( sprite.Texture, sprite.Vertices, 0, Sprite.SPRITE_SIZE );
 
             return;
         }
 
-        Array.Copy( sprite.Vertices, 0, _tempVertices, 0, 3 * Sprite.VertexSize ); // temp0,1,2=sprite0,1,2
+        Array.Copy( sprite.Vertices, 0, _tempVertices, 0, 3 * Sprite.VERTEX_SIZE ); // temp0,1,2=sprite0,1,2
 
         Array.Copy( sprite.Vertices,
-                    2 * Sprite.VertexSize,
+                    2 * Sprite.VERTEX_SIZE,
                     _tempVertices,
-                    3 * Sprite.VertexSize,
-                    Sprite.VertexSize ); // temp3=sprite2
+                    3 * Sprite.VERTEX_SIZE,
+                    Sprite.VERTEX_SIZE ); // temp3=sprite2
 
         Array.Copy( sprite.Vertices,
-                    3 * Sprite.VertexSize,
+                    3 * Sprite.VERTEX_SIZE,
                     _tempVertices,
-                    4 * Sprite.VertexSize,
-                    Sprite.VertexSize ); // temp4=sprite3
+                    4 * Sprite.VERTEX_SIZE,
+                    Sprite.VERTEX_SIZE ); // temp4=sprite3
 
-        Array.Copy( sprite.Vertices, 0, _tempVertices, 5 * Sprite.VertexSize, Sprite.VertexSize ); // temp5=sprite0
+        Array.Copy( sprite.Vertices, 0, _tempVertices, 5 * Sprite.VERTEX_SIZE, Sprite.VERTEX_SIZE ); // temp5=sprite0
 
         Add( sprite.Texture, _tempVertices, 0, 30 );
     }
@@ -1168,11 +1167,11 @@ public class SpriteCache
         var cache = _caches[ cacheID ];
 
         var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
-        var offset           = ( cache.offset / ( verticesPerImage * Sprite.VertexSize ) ) * 6;
-        var counts           = cache.counts;
-        var textureCount     = cache.textureCount;
+        var offset           = ( cache.Offset / ( verticesPerImage * Sprite.VERTEX_SIZE ) ) * 6;
+        var counts           = cache.Counts;
+        var textureCount     = cache.TextureCount;
 
-        Texture[]? textures = cache.textures;
+        Texture[]? textures = cache.Textures;
 
         for ( var i = 0; i < textureCount; i++ )
         {
@@ -1206,13 +1205,13 @@ public class SpriteCache
 
         var verticesPerImage = _mesh.NumIndices > 0 ? 4 : 6;
 
-        offset =  ( ( cache.offset / ( verticesPerImage * Sprite.VertexSize ) ) * 6 ) + ( offset * 6 );
+        offset =  ( ( cache.Offset / ( verticesPerImage * Sprite.VERTEX_SIZE ) ) * 6 ) + ( offset * 6 );
         length *= 6;
 
-        Texture[]? textures = cache.textures;
+        Texture[]? textures = cache.Textures;
 
-        var counts       = cache.counts;
-        var textureCount = cache.textureCount;
+        var counts       = cache.Counts;
+        var textureCount = cache.TextureCount;
 
         for ( var i = 0; i < textureCount; i++ )
         {
@@ -1234,7 +1233,7 @@ public class SpriteCache
             offset += count;
         }
 
-        RenderCallsSinceBegin += cache.textureCount;
+        RenderCallsSinceBegin += cache.TextureCount;
         TotalRenderCalls      += textureCount;
     }
 
@@ -1252,18 +1251,18 @@ public class SpriteCache
 
     private sealed class Cache
     {
-        internal readonly int    id;
-        internal readonly int    offset;
-        internal          int[]? counts;
+        internal readonly int    ID;
+        internal readonly int    Offset;
+        internal          int[]? Counts;
 
-        internal int        maxCount;
-        internal int        textureCount;
-        internal Texture[]? textures;
+        internal int        MaxCount;
+        internal int        TextureCount;
+        internal Texture[]? Textures;
 
         internal Cache( int id, int offset )
         {
-            this.id     = id;
-            this.offset = offset;
+            this.ID     = id;
+            this.Offset = offset;
         }
     }
 
@@ -1274,47 +1273,45 @@ public class SpriteCache
 
     private static ShaderProgram CreateDefaultShader()
     {
-        var vertexShader =
-            "attribute vec4 "
-          + ShaderProgram.POSITION_ATTRIBUTE
-          + ";\n" //
-          + "attribute vec4 "
-          + ShaderProgram.COLOR_ATTRIBUTE
-          + ";\n" //
-          + "attribute vec2 "
-          + ShaderProgram.TEXCOORD_ATTRIBUTE
-          + "0;\n"                                   //
-          + "uniform mat4 u_projectionViewMatrix;\n" //
-          + "varying vec4 v_color;\n"                //
-          + "varying vec2 v_texCoords;\n"            //
-          + "\n"                                     //
-          + "void main()\n"                          //
-          + "{\n"                                    //
-          + "   v_color = "
-          + ShaderProgram.COLOR_ATTRIBUTE
-          + ";\n"                                         //
-          + "   v_color.a = v_color.a * (255.0/254.0);\n" //
-          + "   v_texCoords = "
-          + ShaderProgram.TEXCOORD_ATTRIBUTE
-          + "0;\n" //
-          + "   gl_Position =  u_projectionViewMatrix * "
-          + ShaderProgram.POSITION_ATTRIBUTE
-          + ";\n" //
-          + "}\n";
+        const string VERTEX_SHADER = "attribute vec4 "
+                                  + ShaderProgram.POSITION_ATTRIBUTE
+                                  + ";\n" //
+                                  + "attribute vec4 "
+                                  + ShaderProgram.COLOR_ATTRIBUTE
+                                  + ";\n" //
+                                  + "attribute vec2 "
+                                  + ShaderProgram.TEXCOORD_ATTRIBUTE
+                                  + "0;\n"                                   //
+                                  + "uniform mat4 u_projectionViewMatrix;\n" //
+                                  + "varying vec4 v_color;\n"                //
+                                  + "varying vec2 v_texCoords;\n"            //
+                                  + "\n"                                     //
+                                  + "void main()\n"                          //
+                                  + "{\n"                                    //
+                                  + "   v_color = "
+                                  + ShaderProgram.COLOR_ATTRIBUTE
+                                  + ";\n"                                         //
+                                  + "   v_color.a = v_color.a * (255.0/254.0);\n" //
+                                  + "   v_texCoords = "
+                                  + ShaderProgram.TEXCOORD_ATTRIBUTE
+                                  + "0;\n" //
+                                  + "   gl_Position =  u_projectionViewMatrix * "
+                                  + ShaderProgram.POSITION_ATTRIBUTE
+                                  + ";\n" //
+                                  + "}\n";
 
-        var fragmentShader =
-            "#ifdef GL_ES\n"                                                  //
-          + "precision mediump float;\n"                                      //
-          + "#endif\n"                                                        //
-          + "varying vec4 v_color;\n"                                         //
-          + "varying vec2 v_texCoords;\n"                                     //
-          + "uniform sampler2D u_texture;\n"                                  //
-          + "void main()\n"                                                   //
-          + "{\n"                                                             //
-          + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
-          + "}";
+        const string FRAGMENT_SHADER = "#ifdef GL_ES\n"                                                  //
+                                    + "precision mediump float;\n"                                      //
+                                    + "#endif\n"                                                        //
+                                    + "varying vec4 v_color;\n"                                         //
+                                    + "varying vec2 v_texCoords;\n"                                     //
+                                    + "uniform sampler2D u_texture;\n"                                  //
+                                    + "void main()\n"                                                   //
+                                    + "{\n"                                                             //
+                                    + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
+                                    + "}";
 
-        var shader = new ShaderProgram( vertexShader, fragmentShader );
+        var shader = new ShaderProgram( VERTEX_SHADER, FRAGMENT_SHADER );
 
         if ( !shader.IsCompiled )
         {

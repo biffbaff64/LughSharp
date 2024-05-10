@@ -37,10 +37,18 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public class GDXVersion
 {
-    private readonly static Version? _version = Assembly.GetEntryAssembly()?.GetName().Version;
+    protected static int MajorVersion    { get; set; }
+    protected static int MinorVersion    { get; set; }
+    protected static int RevisionVersion { get; set; }
 
+    private readonly static Version? _version;
+
+    // ------------------------------------------------------------------------
+    
     static GDXVersion()
     {
+        _version = Assembly.GetEntryAssembly()?.GetName().Version;
+        
         if ( _version == null )
         {
             throw new NullReferenceException( "NULL Assembly Version!" );
@@ -60,9 +68,7 @@ public class GDXVersion
         }
     }
 
-    protected static int MajorVersion    { get; set; }
-    protected static int MinorVersion    { get; set; }
-    protected static int RevisionVersion { get; set; }
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Checks the provided version components against the current and reports

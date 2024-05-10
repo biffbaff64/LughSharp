@@ -58,6 +58,7 @@ namespace LughSharp.LibCore.Graphics.G2D;
 ///         A Batch has to be disposed if it is no longer used.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public interface IBatch : IDisposable
 {
     public const int X1 = 0;
@@ -81,6 +82,9 @@ public interface IBatch : IDisposable
     public const int U4 = 18;
     public const int V4 = 19;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <returns>
     ///     The rendering color of this Batch.
     /// </returns>
@@ -136,6 +140,8 @@ public interface IBatch : IDisposable
 
     /// <returns> true if currently between begin and end. </returns>
     public bool IsDrawing { get; set; }
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Sets up the Batch for drawing. This will disable depth buffer writing. It enables

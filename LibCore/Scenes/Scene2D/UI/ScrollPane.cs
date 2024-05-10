@@ -853,7 +853,7 @@ public partial class ScrollPane : WidgetGroup
         return true;
     }
 
-    public new bool RemoveActor( Actor actor, bool unfocus )
+    public override bool RemoveActor( Actor actor, bool unfocus )
     {
         if ( actor == null )
         {
@@ -870,7 +870,7 @@ public partial class ScrollPane : WidgetGroup
         return base.RemoveActor( actor, unfocus );
     }
 
-    public new Actor RemoveActorAt( int index, bool unfocus )
+    public override Actor RemoveActorAt( int index, bool unfocus )
     {
         var actor = base.RemoveActorAt( index, unfocus );
 

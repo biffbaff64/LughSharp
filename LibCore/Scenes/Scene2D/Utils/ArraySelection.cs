@@ -115,7 +115,7 @@ public class ArraySelection< T > : Selection< T >
     /// <summary>
     ///     Called after the selection changes, clears the range start item.
     /// </summary>
-    protected new void Changed()
+    protected override void Changed()
     {
         _rangeStart = default( T? );
     }

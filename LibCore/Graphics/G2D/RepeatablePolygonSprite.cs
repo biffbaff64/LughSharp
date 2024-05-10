@@ -31,22 +31,27 @@ namespace LughSharp.LibCore.Graphics.G2D;
 ///     Renders polygon filled with a repeating TextureRegion with specified
 ///     density without causing an additional flush or render call
 /// </summary>
+[PublicAPI]
 public class RepeatablePolygonSprite
 {
+    public float X { get; set; } = 0;
+    public float Y { get; set; } = 0;
+
     private readonly List< short[] >  _indices  = new();
     private readonly Vector2          _offset   = new();
     private readonly List< float[]? > _parts    = new();
     private readonly List< float[] >  _vertices = new();
-    private          Color            _color    = Color.White;
-    private          int              _cols;
-    private          bool             _dirty = true;
-    private          float            _gridHeight;
-    private          float            _gridWidth;
 
+    private Color          _color = Color.White;
+    private int            _cols;
+    private bool           _dirty = true;
+    private float          _gridHeight;
+    private float          _gridWidth;
     private TextureRegion? _region;
     private int            _rows;
-    public  float          X { get; set; } = 0;
-    public  float          Y { get; set; } = 0;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Sets polygon with repeating texture region, the size of repeating
@@ -81,39 +86,41 @@ public class RepeatablePolygonSprite
         _rows       = ( int ) Math.Ceiling( boundRect.Height / _gridHeight );
 
         for ( var col = 0; col < _cols; col++ )
-        for ( var row = 0; row < _rows; row++ )
         {
-            var verts = new float[ 8 ];
-
-            var idx = 0;
-
-            verts[ idx++ ] = col * _gridWidth;
-            verts[ idx++ ] = row * _gridHeight;
-            verts[ idx++ ] = col * _gridWidth;
-            verts[ idx++ ] = ( row + 1 ) * _gridHeight;
-            verts[ idx++ ] = ( col + 1 ) * _gridWidth;
-            verts[ idx++ ] = ( row + 1 ) * _gridHeight;
-            verts[ idx++ ] = ( col + 1 ) * _gridWidth;
-            verts[ idx ]   = row * _gridHeight;
-
-            tmpPoly.Vertices = verts;
-
-            Intersector.IntersectPolygons( polygon, tmpPoly, intersectionPoly );
-            verts = intersectionPoly.Vertices;
-
-            if ( verts?.Length > 0 )
+            for ( var row = 0; row < _rows; row++ )
             {
-                _parts.Add( SnapToGrid( verts ) );
+                var verts = new float[ 8 ];
 
-                List< short > arr = triangulator.ComputeTriangles( verts );
+                var idx = 0;
 
-                _indices.Add( arr.ToArray() );
-            }
-            else
-            {
-                // adding null for key consistancy, needed to get col/row from key
-                // the other alternative is to make parts - IntMap<FloatArray>
-                _parts.Add( null );
+                verts[ idx++ ] = col * _gridWidth;
+                verts[ idx++ ] = row * _gridHeight;
+                verts[ idx++ ] = col * _gridWidth;
+                verts[ idx++ ] = ( row + 1 ) * _gridHeight;
+                verts[ idx++ ] = ( col + 1 ) * _gridWidth;
+                verts[ idx++ ] = ( row + 1 ) * _gridHeight;
+                verts[ idx++ ] = ( col + 1 ) * _gridWidth;
+                verts[ idx ]   = row * _gridHeight;
+
+                tmpPoly.Vertices = verts;
+
+                Intersector.IntersectPolygons( polygon, tmpPoly, intersectionPoly );
+                verts = intersectionPoly.Vertices;
+
+                if ( verts?.Length > 0 )
+                {
+                    _parts.Add( SnapToGrid( verts ) );
+
+                    List< short > arr = triangulator.ComputeTriangles( verts );
+
+                    _indices.Add( arr.ToArray() );
+                }
+                else
+                {
+                    // adding null for key consistancy, needed to get col/row from key
+                    // the other alternative is to make parts - IntMap<FloatArray>
+                    _parts.Add( null );
+                }
             }
         }
 
@@ -203,9 +210,8 @@ public class RepeatablePolygonSprite
 
             var fullVerts = new float[ ( 5 * verts.Length ) / 2 ];
             var idx       = 0;
-
-            var col = i / _rows;
-            var row = i % _rows;
+            var col       = i / _rows;
+            var row       = i % _rows;
 
             for ( var j = 0; j < verts.Length; j += 2 )
             {
@@ -261,15 +267,13 @@ public class RepeatablePolygonSprite
 
         for ( var i = 0; i < _vertices.Count; i++ )
         {
-            batch.Draw(
-                       _region.Texture,
-                       _vertices[ i ],
-                       0,
-                       _vertices[ i ].Length,
-                       _indices[ i ],
-                       0,
-                       _indices[ i ].Length
-                      );
+            batch.Draw( _region.Texture,
+                        _vertices[ i ],
+                        0,
+                        _vertices[ i ].Length,
+                        _indices[ i ],
+                        0,
+                        _indices[ i ].Length );
         }
     }
 

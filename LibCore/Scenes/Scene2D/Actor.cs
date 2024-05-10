@@ -1442,7 +1442,7 @@ public class Actor : IActor
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    protected virtual new string? ToString()
+    public override string? ToString()
     {
         return Name;
     }

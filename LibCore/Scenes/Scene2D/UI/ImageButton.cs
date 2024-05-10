@@ -75,7 +75,7 @@ public class ImageButton : Button
     }
 
     public     Image            Image { get; }
-    public new ImageButtonStyle Style { get; private set; } = null!;
+    public override ImageButtonStyle Style { get; private set; } = null!;
 
     public void SetStyle( ButtonStyle style )
     {

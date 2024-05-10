@@ -798,7 +798,7 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="GdxRuntimeException">
     ///     If this buffer is not backed by an accessible array.
     /// </exception>
-    public new char[] BackingArray()
+    public override char[] BackingArray()
     {
         if ( _hb == null )
         {
@@ -892,7 +892,7 @@ public abstract class CharBuffer : Buffer
     ///     A negative integer, zero, or a positive integer as this buffer is less than,
     ///     equal to, or greater than the given buffer
     /// </returns>
-    public new bool Equals( object ob )
+    public override bool Equals( object ob )
     {
         if ( this == ob )
         {

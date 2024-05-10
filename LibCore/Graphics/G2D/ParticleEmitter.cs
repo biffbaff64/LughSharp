@@ -63,56 +63,111 @@ public class ParticleEmitter
 
     private const int DEFAULT_MAX_PARTICLE_COUNT = 4;
 
-    private readonly static int UpdateScale    = 1 << 0;
-    private readonly static int UpdateAngle    = 1 << 1;
-    private readonly static int UpdateRotation = 1 << 2;
-    private readonly static int UpdateVelocity = 1 << 3;
-    private readonly static int UpdateWind     = 1 << 4;
-    private readonly static int UpdateGravity  = 1 << 5;
-    private readonly static int UpdateTint     = 1 << 6;
-    private readonly static int UpdateSprite   = 1 << 7;
+    private readonly static int _updateScale    = 1 << 0;
+    private readonly static int _updateAngle    = 1 << 1;
+    private readonly static int _updateRotation = 1 << 2;
+    private readonly static int _updateVelocity = 1 << 3;
+    private readonly static int _updateWind     = 1 << 4;
+    private readonly static int _updateGravity  = 1 << 5;
+    private readonly static int _updateTint     = 1 << 6;
+    private readonly static int _updateSprite   = 1 << 7;
 
-    private float        _accumulator;
-    private bool         _allowCompletion;
-    private BoundingBox? _bounds;
-    private float        _delay;
-    private float        _delayTimer;
-    private float        _emission;
-    private float        _emissionDelta;
-    private float        _emissionDiff;
+    private float _accumulator;
+    private bool  _allowCompletion;
+    private float _delay;
+    private float _delayTimer;
+    private float _emission;
+    private float _emissionDelta;
+    private float _emissionDiff;
+    private bool  _firstUpdate;
+    private bool  _flipX;
+    private bool  _flipY;
+    private int   _life;
+    private int   _lifeDiff;
+    private int   _lifeOffset;
+    private int   _lifeOffsetDiff;
+    private float _spawnHeight;
+    private float _spawnHeightDiff;
+    private float _spawnWidth;
+    private float _spawnWidthDiff;
+    private int   _updateFlags;
 
-    private bool                  _firstUpdate;
-    private bool                  _flipX;
-    private bool                  _flipY;
-    private int                   _life;
-    private int                   _lifeDiff;
-    private int                   _lifeOffset;
-    private int                   _lifeOffsetDiff;
+    private BoundingBox?          _bounds;
     private RangedNumericValue[]? _motionValues;
-
-    private Particle?[] _particles = new Particle[ 4 ];
-    private float       _spawnHeight;
-    private float       _spawnHeightDiff;
-    private float       _spawnWidth;
-    private float       _spawnWidthDiff;
-
-    private int _updateFlags;
-
+    private Particle?[]           _particles = new Particle[ 4 ];
     private RangedNumericValue[]? _xSizeValues;
     private RangedNumericValue[]? _ySizeValues;
 
-    public float duration = 1;
-    public float durationTimer;
+    // ------------------------------------------------------------------------
 
-    public ParticleEmitter()
+    #region properties
+
+    /// <summary>
+    ///     Set whether to automatically return the <see cref="IBatch" />'s blend
+    ///     function to the alpha-blending default (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+    ///     when done drawing. Is true by default. If set to false, the IBatch's blend
+    ///     function is left as it was for drawing this ParticleEmitter, which prevents
+    ///     the IBatch from being flushed repeatedly if consecutive ParticleEmitters
+    ///     with the same additive or pre-multiplied alpha state are drawn in a row.
+    ///     <para>
+    ///         IMPORTANT: If set to false and if the next object to use this IBatch expects
+    ///         alpha blending, you are responsible for setting the IBatch's blend function
+    ///         to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) before that next object is drawn.
+    ///     </para>
+    /// </summary>
+    public bool CleansUpBlendFunction { get; set; } = true;
+
+    public List< Sprite >                Sprites           { get; set; } = new();
+    public SpriteModes                   SpriteMode        { get; set; } = SpriteModes.Single;
+    public List< string >                ImagePaths        { get; set; } = new();
+    public ScaledNumericValue            XScaleValue       { get; set; } = new();
+    public ScaledNumericValue            YScaleValue       { get; set; } = new();
+    public RangedNumericValue            DelayValue        { get; set; } = new();
+    public IndependentScaledNumericValue LifeOffsetValue   { get; set; } = new();
+    public RangedNumericValue            DurationValue     { get; set; } = new();
+    public IndependentScaledNumericValue LifeValue         { get; set; } = new();
+    public ScaledNumericValue            EmissionValue     { get; set; } = new();
+    public ScaledNumericValue            RotationValue     { get; set; } = new();
+    public ScaledNumericValue            VelocityValue     { get; set; } = new();
+    public ScaledNumericValue            AngleValue        { get; set; } = new();
+    public ScaledNumericValue            WindValue         { get; set; } = new();
+    public ScaledNumericValue            GravityValue      { get; set; } = new();
+    public ScaledNumericValue            TransparencyValue { get; set; } = new();
+    public GradientColorValue            TintValue         { get; set; } = new();
+    public RangedNumericValue            XOffsetValue      { get; set; } = new ScaledNumericValue();
+    public RangedNumericValue            YOffsetValue      { get; set; } = new ScaledNumericValue();
+    public ScaledNumericValue            SpawnWidthValue   { get; set; } = new();
+    public ScaledNumericValue            SpawnHeightValue  { get; set; } = new();
+    public ParticleSpawnShapeValue       SpawnShapeValue   { get; set; } = new();
+
+    public bool[] IsActive           { get; set; } = { false };
+    public float  Duration           { get; set; } = 1;
+    public float  DurationTimer      { get; set; }
+    public bool   Behind             { get; set; }
+    public string Name               { get; set; } = "";
+    public bool   Attached           { get; set; }
+    public bool   Continuous         { get; set; }
+    public bool   Aligned            { get; set; }
+    public bool   Additive           { get; set; } = true;
+    public bool   PremultipliedAlpha { get; set; } = false;
+    public float  X                  { get; set; }
+    public float  Y                  { get; set; }
+    public int    ActiveCount        { get; set; }
+    public int    MinParticleCount   { get; set; }
+    public int    MaxParticleCount   { get; set; } = DEFAULT_MAX_PARTICLE_COUNT;
+
+    #endregion properties
+
+    // ------------------------------------------------------------------------
+
+    public ParticleEmitter( StreamReader? reader = null )
     {
         Initialise();
-    }
 
-    public ParticleEmitter( StreamReader reader )
-    {
-        Initialise();
-        Load( reader );
+        if ( reader != null )
+        {
+            Load( reader );
+        }
     }
 
     /// <summary>
@@ -161,58 +216,9 @@ public class ParticleEmitter
         SetPosition( emitter.X, emitter.Y );
     }
 
-    public bool   Behind             { get; set; }
-    public string Name               { get; set; } = "";
-    public bool   Attached           { get; set; }
-    public bool   Continuous         { get; set; }
-    public bool   Aligned            { get; set; }
-    public bool   Additive           { get; set; } = true;
-    public bool   PremultipliedAlpha { get; set; } = false;
-    public float  X                  { get; set; }
-    public float  Y                  { get; set; }
-    public int    ActiveCount        { get; set; }
-    public int    MinParticleCount   { get; set; }
-    public int    MaxParticleCount   { get; set; } = DEFAULT_MAX_PARTICLE_COUNT;
-
     /// <summary>
-    ///     Set whether to automatically return the <see cref="IBatch" />'s blend
-    ///     function to the alpha-blending default (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-    ///     when done drawing. Is true by default. If set to false, the IBatch's blend
-    ///     function is left as it was for drawing this ParticleEmitter, which prevents
-    ///     the IBatch from being flushed repeatedly if consecutive ParticleEmitters
-    ///     with the same additive or pre-multiplied alpha state are drawn in a row.
-    ///     <para>
-    ///         IMPORTANT: If set to false and if the next object to use this IBatch expects
-    ///         alpha blending, you are responsible for setting the IBatch's blend function
-    ///         to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) before that next object is drawn.
-    ///     </para>
+    ///     Common initialisation method for all constructors
     /// </summary>
-    public bool CleansUpBlendFunction { get; set; } = true;
-
-    public List< Sprite >                Sprites           { get; set; } = new();
-    public SpriteModes                   SpriteMode        { get; set; } = SpriteModes.Single;
-    public List< string >                ImagePaths        { get; set; } = new();
-    public ScaledNumericValue            XScaleValue       { get; set; } = new();
-    public ScaledNumericValue            YScaleValue       { get; set; } = new();
-    public RangedNumericValue            DelayValue        { get; set; } = new();
-    public IndependentScaledNumericValue LifeOffsetValue   { get; set; } = new();
-    public RangedNumericValue            DurationValue     { get; set; } = new();
-    public IndependentScaledNumericValue LifeValue         { get; set; } = new();
-    public ScaledNumericValue            EmissionValue     { get; set; } = new();
-    public ScaledNumericValue            RotationValue     { get; set; } = new();
-    public ScaledNumericValue            VelocityValue     { get; set; } = new();
-    public ScaledNumericValue            AngleValue        { get; set; } = new();
-    public ScaledNumericValue            WindValue         { get; set; } = new();
-    public ScaledNumericValue            GravityValue      { get; set; } = new();
-    public ScaledNumericValue            TransparencyValue { get; set; } = new();
-    public GradientColorValue            TintValue         { get; set; } = new();
-    public RangedNumericValue            XOffsetValue      { get; set; } = new ScaledNumericValue();
-    public RangedNumericValue            YOffsetValue      { get; set; } = new ScaledNumericValue();
-    public ScaledNumericValue            SpawnWidthValue   { get; set; } = new();
-    public ScaledNumericValue            SpawnHeightValue  { get; set; } = new();
-    public ParticleSpawnShapeValue       SpawnShapeValue   { get; set; } = new();
-    public bool[]                        IsActive          { get; set; } = { false };
-
     private void Initialise()
     {
         DurationValue.AlwaysActive     = true;
@@ -269,7 +275,7 @@ public class ParticleEmitter
         var active = IsActive;
         int index  = 0, n = active.Length;
 
-    outer:
+//    outer:
 
         for ( var i = 0; i < count; )
         {
@@ -280,7 +286,7 @@ public class ParticleEmitter
                     ActivateParticle( index );
                     active[ index++ ] = true;
 
-                    goto outer;
+//                    goto outer;
                 }
             }
 
@@ -316,9 +322,9 @@ public class ParticleEmitter
                 AddParticle();
             }
 
-            if ( durationTimer < duration )
+            if ( DurationTimer < Duration )
             {
-                durationTimer += deltaMillis;
+                DurationTimer += deltaMillis;
             }
             else
             {
@@ -336,7 +342,7 @@ public class ParticleEmitter
             {
                 _emissionDelta += deltaMillis;
 
-                var emissionTime = _emission + ( _emissionDiff * EmissionValue.GetScale( durationTimer / duration ) );
+                var emissionTime = _emission + ( _emissionDiff * EmissionValue.GetScale( DurationTimer / Duration ) );
 
                 if ( emissionTime > 0 )
                 {
@@ -474,9 +480,9 @@ public class ParticleEmitter
             AddParticle();
         }
 
-        if ( durationTimer < duration )
+        if ( DurationTimer < Duration )
         {
-            durationTimer += deltaMillis;
+            DurationTimer += deltaMillis;
         }
         else
         {
@@ -489,7 +495,7 @@ public class ParticleEmitter
         }
 
         _emissionDelta += deltaMillis;
-        var emissionTime = _emission + ( _emissionDiff * EmissionValue.GetScale( durationTimer / duration ) );
+        var emissionTime = _emission + ( _emissionDiff * EmissionValue.GetScale( DurationTimer / Duration ) );
 
         if ( emissionTime > 0 )
         {
@@ -523,7 +529,7 @@ public class ParticleEmitter
     public void Reset()
     {
         _emissionDelta = 0;
-        durationTimer  = duration;
+        DurationTimer  = Duration;
         var active = IsActive;
 
         for ( int i = 0, n = active.Length; i < n; i++ )
@@ -540,8 +546,8 @@ public class ParticleEmitter
         _delay      = DelayValue.Active ? DelayValue.NewLowValue() : 0;
         _delayTimer = 0;
 
-        durationTimer -= duration;
-        duration      =  DurationValue.NewLowValue();
+        DurationTimer -= Duration;
+        Duration      =  DurationValue.NewLowValue();
 
         _emission     = ( int ) EmissionValue.NewLowValue();
         _emissionDiff = ( int ) EmissionValue.NewHighValue();
@@ -581,47 +587,47 @@ public class ParticleEmitter
 
         if ( AngleValue is { Active: true, Timeline.Length: > 1 } )
         {
-            _updateFlags |= UpdateAngle;
+            _updateFlags |= _updateAngle;
         }
 
         if ( VelocityValue.Active )
         {
-            _updateFlags |= UpdateVelocity;
+            _updateFlags |= _updateVelocity;
         }
 
         if ( XScaleValue.Timeline.Length > 1 )
         {
-            _updateFlags |= UpdateScale;
+            _updateFlags |= _updateScale;
         }
 
         if ( YScaleValue is { Active: true, Timeline.Length: > 1 } )
         {
-            _updateFlags |= UpdateScale;
+            _updateFlags |= _updateScale;
         }
 
         if ( RotationValue is { Active: true, Timeline.Length: > 1 } )
         {
-            _updateFlags |= UpdateRotation;
+            _updateFlags |= _updateRotation;
         }
 
         if ( WindValue.Active )
         {
-            _updateFlags |= UpdateWind;
+            _updateFlags |= _updateWind;
         }
 
         if ( GravityValue.Active )
         {
-            _updateFlags |= UpdateGravity;
+            _updateFlags |= _updateGravity;
         }
 
         if ( TintValue.Timeline.Length > 1 )
         {
-            _updateFlags |= UpdateTint;
+            _updateFlags |= _updateTint;
         }
 
         if ( SpriteMode == SpriteModes.Animated )
         {
-            _updateFlags |= UpdateSprite;
+            _updateFlags |= _updateSprite;
         }
     }
 
@@ -654,7 +660,7 @@ public class ParticleEmitter
         // and we already know that _particles is not null. There may be compiler
         // warnings though so we can suppress those...
 
-        var percent     = durationTimer / duration;
+        var percent     = DurationTimer / Duration;
         var updateFlags = _updateFlags;
 
         if ( LifeValue.Independent )
@@ -690,7 +696,7 @@ public class ParticleEmitter
 
         float angle = 0;
 
-        if ( ( updateFlags & UpdateAngle ) == 0 )
+        if ( ( updateFlags & _updateAngle ) == 0 )
         {
             angle = _particles[ index ]!.Angle + ( _particles[ index ]!.AngleDiff * AngleValue.GetScale( 0 ) );
 
@@ -845,7 +851,7 @@ public class ParticleEmitter
                     x += cosDeg * radiusX;
                     y += ( sinDeg * radiusX ) / scaleY;
 
-                    if ( ( updateFlags & UpdateAngle ) == 0 )
+                    if ( ( updateFlags & _updateAngle ) == 0 )
                     {
                         _particles[ index ]!.Angle    = spawnAngle;
                         _particles[ index ]!.AngleCos = cosDeg;
@@ -925,7 +931,7 @@ public class ParticleEmitter
         var percent     = 1 - ( particle.CurrentLife / ( float ) particle.Life );
         var updateFlags = _updateFlags;
 
-        if ( ( updateFlags & UpdateScale ) != 0 )
+        if ( ( updateFlags & _updateScale ) != 0 )
         {
             if ( YScaleValue.Active )
             {
@@ -940,20 +946,20 @@ public class ParticleEmitter
             }
         }
 
-        if ( ( updateFlags & UpdateVelocity ) != 0 )
+        if ( ( updateFlags & _updateVelocity ) != 0 )
         {
             var velocity = ( particle.Velocity + ( particle.VelocityDiff * VelocityValue.GetScale( percent ) ) ) * delta;
 
             float velocityX, velocityY;
 
-            if ( ( updateFlags & UpdateAngle ) != 0 )
+            if ( ( updateFlags & _updateAngle ) != 0 )
             {
                 var angle = particle.Angle + ( particle.AngleDiff * AngleValue.GetScale( percent ) );
 
                 velocityX = velocity * MathUtils.CosDeg( angle );
                 velocityY = velocity * MathUtils.SinDeg( angle );
 
-                if ( ( updateFlags & UpdateRotation ) != 0 )
+                if ( ( updateFlags & _updateRotation ) != 0 )
                 {
                     var rotation = particle.Rotation + ( particle.RotationDiff * RotationValue.GetScale( percent ) );
 
@@ -970,7 +976,7 @@ public class ParticleEmitter
                 velocityX = velocity * particle.AngleCos;
                 velocityY = velocity * particle.AngleSin;
 
-                if ( Aligned || ( ( updateFlags & UpdateRotation ) != 0 ) )
+                if ( Aligned || ( ( updateFlags & _updateRotation ) != 0 ) )
                 {
                     var rotation = particle.Rotation + ( particle.RotationDiff * RotationValue.GetScale( percent ) );
 
@@ -983,12 +989,12 @@ public class ParticleEmitter
                 }
             }
 
-            if ( ( updateFlags & UpdateWind ) != 0 )
+            if ( ( updateFlags & _updateWind ) != 0 )
             {
                 velocityX += ( particle.Wind + ( particle.WindDiff * WindValue.GetScale( percent ) ) ) * delta;
             }
 
-            if ( ( updateFlags & UpdateGravity ) != 0 )
+            if ( ( updateFlags & _updateGravity ) != 0 )
             {
                 velocityY += ( particle.Gravity + ( particle.GravityDiff * GravityValue.GetScale( percent ) ) ) * delta;
             }
@@ -997,13 +1003,13 @@ public class ParticleEmitter
         }
         else
         {
-            if ( ( updateFlags & UpdateRotation ) != 0 )
+            if ( ( updateFlags & _updateRotation ) != 0 )
             {
                 particle.Rotation = particle.Rotation + ( particle.RotationDiff * RotationValue.GetScale( percent ) );
             }
         }
 
-        var color = ( updateFlags & UpdateTint ) != 0
+        var color = ( updateFlags & _updateTint ) != 0
                         ? TintValue.GetColor( percent )
                         : particle.Tint;
 
@@ -1023,7 +1029,7 @@ public class ParticleEmitter
                              );
         }
 
-        if ( ( updateFlags & UpdateSprite ) != 0 )
+        if ( ( updateFlags & _updateSprite ) != 0 )
         {
             var frame = Math.Min( ( int ) ( percent * Sprites.Count ), Sprites.Count - 1 );
 
@@ -1165,7 +1171,7 @@ public class ParticleEmitter
     public void AllowCompletion()
     {
         _allowCompletion = true;
-        durationTimer    = duration;
+        DurationTimer    = Duration;
     }
 
     public bool IsComplete()
@@ -1175,7 +1181,7 @@ public class ParticleEmitter
             return false;
         }
 
-        return ( durationTimer >= duration ) && ( ActiveCount == 0 );
+        return ( DurationTimer >= Duration ) && ( ActiveCount == 0 );
     }
 
     public float GetPercentComplete()
@@ -1185,7 +1191,7 @@ public class ParticleEmitter
             return 0;
         }
 
-        return Math.Min( 1, durationTimer / duration );
+        return Math.Min( 1, DurationTimer / Duration );
     }
 
     public void SetFlip( bool flipX, bool flipY )
@@ -1721,13 +1727,13 @@ public class ParticleEmitter
         /// <summary>
         ///     permanently scales the range by a scalar.
         /// </summary>
-        public void Scale( float scale )
+        public virtual void Scale( float scale )
         {
             LowMin *= scale;
             LowMax *= scale;
         }
 
-        public void Set( RangedNumericValue value )
+        public virtual void Set( RangedNumericValue value )
         {
             LowMin = value.LowMin;
             LowMax = value.LowMax;
@@ -1759,7 +1765,7 @@ public class ParticleEmitter
             LowMax = ReadFloat( reader, "lowMax" );
         }
 
-        public void Load( RangedNumericValue value )
+        public virtual void Load( RangedNumericValue value )
         {
             base.Load( value );
             LowMax = value.LowMax;
@@ -1795,7 +1801,7 @@ public class ParticleEmitter
             HighMax = max;
         }
 
-        protected new void Scale( float scale )
+        public override void Scale( float scale )
         {
             base.Scale( scale );
 
@@ -1803,7 +1809,7 @@ public class ParticleEmitter
             HighMax *= scale;
         }
 
-        protected new void Set( RangedNumericValue value )
+        public override void Set( RangedNumericValue value )
         {
             if ( value is ScaledNumericValue numericValue )
             {
@@ -1815,7 +1821,7 @@ public class ParticleEmitter
             }
         }
 
-        protected void Set( ScaledNumericValue value )
+        public virtual void Set( ScaledNumericValue value )
         {
             base.Set( value );
             HighMin = value.HighMin;
@@ -1873,7 +1879,7 @@ public class ParticleEmitter
             return startValue + ( ( scaling[ endIndex ] - startValue ) * ( ( percent - startTime ) / ( timeline[ endIndex ] - startTime ) ) );
         }
 
-        public new void Save( StreamWriter output )
+        public override void Save( StreamWriter output )
         {
             base.Save( output );
 
@@ -1949,7 +1955,7 @@ public class ParticleEmitter
     {
         public bool Independent { get; set; }
 
-        public new void Set( RangedNumericValue value )
+        public override void Set( RangedNumericValue value )
         {
             if ( value is IndependentScaledNumericValue numericValue )
             {
@@ -1961,7 +1967,7 @@ public class ParticleEmitter
             }
         }
 
-        public new void Set( ScaledNumericValue value )
+        public override void Set( ScaledNumericValue value )
         {
             if ( value is IndependentScaledNumericValue numericValue )
             {
@@ -1979,13 +1985,13 @@ public class ParticleEmitter
             Independent = value.Independent;
         }
 
-        public new void Save( StreamWriter output )
+        public override void Save( StreamWriter output )
         {
             base.Save( output );
             output.Write( "independent: " + Independent + "\n" );
         }
 
-        public new void Load( StreamReader reader )
+        public override void Load( StreamReader reader )
         {
             base.Load( reader );
 

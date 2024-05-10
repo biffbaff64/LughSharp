@@ -42,10 +42,9 @@ namespace LughSharp.LibCore.Graphics.G2D;
 ///         a postprocessed ninepatch texture regions from ".9.png" files.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class NinePatch
 {
-    private const float TOLERANCE = 0.1f;
-
     public const int TOP_LEFT      = 0;
     public const int TOP_CENTER    = 1;
     public const int TOP_RIGHT     = 2;
@@ -56,12 +55,16 @@ public class NinePatch
     public const int BOTTOM_CENTER = 7;
     public const int BOTTOM_RIGHT  = 8;
 
-    private readonly static Color TmpDrawColor = new();
-    private                 float _padBottom   = -1;
+    private const float TOLERANCE = 0.1f;
 
-    private float _padLeft  = -1;
-    private float _padRight = -1;
-    private float _padTop   = -1;
+    private readonly static Color _tmpDrawColor = new();
+
+    private float _padBottom = -1;
+    private float _padLeft   = -1;
+    private float _padRight  = -1;
+    private float _padTop    = -1;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Create a ninepatch by cutting up the given texture into nine patches.
@@ -94,8 +97,7 @@ public class NinePatch
 
         var middleWidth  = region.RegionWidth - left - right;
         var middleHeight = region.RegionHeight - top - bottom;
-
-        var patches = new TextureRegion?[ 9 ];
+        var patches      = new TextureRegion?[ 9 ];
 
         if ( top > 0 )
         {
@@ -209,16 +211,14 @@ public class NinePatch
     /// </summary>
     public NinePatch( TextureRegion region )
     {
-        //@formatter:off
         Load( new[]
         {
-            null, null,   null,
+            null, null, null,
             null, region, null,
-            null, null,   null 
+            null, null, null
         } );
     }
 
-    //@formatter:on
     /// <summary>
     ///     Construct a nine patch from the given nine texture regions. The provided
     ///     patches must be consistently sized (e.g., any left edge textures must have
@@ -327,55 +327,6 @@ public class NinePatch
 
         Idx = ninePatch.Idx;
         Color.Set( color );
-    }
-
-    public float[] Vertices { get; set; } = new float[ 9 * 4 * 5 ];
-    public Color   Color    { get; set; } = new( Color.White );
-
-    public Texture? Texture      { get; set; }
-    public int      Idx          { get; set; }
-    public int      BottomLeft   { get; set; }
-    public int      BottomCenter { get; set; }
-    public int      BottomRight  { get; set; }
-    public int      MiddleLeft   { get; set; }
-    public int      MiddleCenter { get; set; }
-    public int      MiddleRight  { get; set; }
-    public int      TopLeft      { get; set; }
-    public int      TopCenter    { get; set; }
-    public int      TopRight     { get; set; }
-    public float    LeftWidth    { get; set; }
-    public float    RightWidth   { get; set; }
-    public float    MiddleWidth  { get; set; }
-    public float    MiddleHeight { get; set; }
-    public float    TopHeight    { get; set; }
-    public float    BottomHeight { get; set; }
-
-    public float TotalWidth => LeftWidth + MiddleWidth + RightWidth;
-
-    public float TotalHeight => TopHeight + MiddleHeight + BottomHeight;
-
-    public float PadLeft
-    {
-        get => _padLeft <= 0.0001f ? LeftWidth : _padLeft;
-        set => _padLeft = value;
-    }
-
-    public float PadRight
-    {
-        get => _padRight <= 0.0001f ? RightWidth : _padRight;
-        set => _padRight = value;
-    }
-
-    public float PadTop
-    {
-        get => _padTop <= 0.0001f ? TopHeight : _padTop;
-        set => _padTop = value;
-    }
-
-    public float PadBottom
-    {
-        get => _padBottom <= 0.0001f ? BottomHeight : _padBottom;
-        set => _padBottom = value;
     }
 
     /// <summary>
@@ -603,7 +554,7 @@ public class NinePatch
         var centerHeight = height - TopHeight - BottomHeight;
         var rightX       = ( x + width ) - RightWidth;
         var topY         = ( y + height ) - TopHeight;
-        var c            = TmpDrawColor.Set( Color ).Mul( batch.Color ).ToFloatBits();
+        var c            = _tmpDrawColor.Set( Color ).Mul( batch.Color ).ToFloatBits();
 
         if ( BottomLeft != -1 )
         {
@@ -751,4 +702,59 @@ public class NinePatch
             PadBottom *= scaleY;
         }
     }
+
+    // ------------------------------------------------------------------------
+    
+    #region properties
+
+    public float[]  Vertices     { get; set; } = new float[ 9 * 4 * 5 ];
+    public Color    Color        { get; set; } = new( Color.White );
+    public Texture? Texture      { get; set; }
+    public int      Idx          { get; set; }
+    public int      BottomLeft   { get; set; }
+    public int      BottomCenter { get; set; }
+    public int      BottomRight  { get; set; }
+    public int      MiddleLeft   { get; set; }
+    public int      MiddleCenter { get; set; }
+    public int      MiddleRight  { get; set; }
+    public int      TopLeft      { get; set; }
+    public int      TopCenter    { get; set; }
+    public int      TopRight     { get; set; }
+    public float    LeftWidth    { get; set; }
+    public float    RightWidth   { get; set; }
+    public float    MiddleWidth  { get; set; }
+    public float    MiddleHeight { get; set; }
+    public float    TopHeight    { get; set; }
+    public float    BottomHeight { get; set; }
+
+    public float TotalWidth => LeftWidth + MiddleWidth + RightWidth;
+
+    public float TotalHeight => TopHeight + MiddleHeight + BottomHeight;
+
+    public float PadLeft
+    {
+        get => _padLeft <= 0.0001f ? LeftWidth : _padLeft;
+        set => _padLeft = value;
+    }
+
+    public float PadRight
+    {
+        get => _padRight <= 0.0001f ? RightWidth : _padRight;
+        set => _padRight = value;
+    }
+
+    public float PadTop
+    {
+        get => _padTop <= 0.0001f ? TopHeight : _padTop;
+        set => _padTop = value;
+    }
+
+    public float PadBottom
+    {
+        get => _padBottom <= 0.0001f ? BottomHeight : _padBottom;
+        set => _padBottom = value;
+    }
+    
+    #endregion properties
+    
 }

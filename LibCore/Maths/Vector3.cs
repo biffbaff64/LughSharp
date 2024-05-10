@@ -726,7 +726,7 @@ public class Vector3 : IVector< Vector3 >
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public new int GetHashCode()
+    public override int GetHashCode()
     {
         const int PRIME = 31;
 
@@ -741,7 +741,7 @@ public class Vector3 : IVector< Vector3 >
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public new bool Equals( object? obj )
+    public override bool Equals( object? obj )
     {
         if ( this == obj )
         {

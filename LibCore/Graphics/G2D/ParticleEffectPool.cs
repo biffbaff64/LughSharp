@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
 {
     private readonly ParticleEffect _effect;
@@ -35,7 +36,8 @@ public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
         _effect = effect;
     }
 
-    protected new PooledEffect NewObject()
+    //TODO: Tests needed for this method, check it's called properly
+    public new PooledEffect NewObject()
     {
         var pooledEffect = new PooledEffect( _effect, this );
         pooledEffect.Start();

@@ -32,14 +32,21 @@ namespace LughSharp.LibCore.Graphics.G2D;
 ///     its origin in the upper left corner with the x-axis pointing to the
 ///     right and the y axis pointing downwards.
 /// </summary>
+[PublicAPI]
 public class TextureRegion
 {
-    private int   _regionHeight;
-    private int   _regionWidth;
-    private float _u;
-    private float _u2;
-    private float _v;
-    private float _v2;
+    public  Texture Texture { get; set; } = null!;
+
+    // ------------------------------------------------------------------------
+    
+    private int     _regionHeight;
+    private int     _regionWidth;
+    private float   _u;
+    private float   _u2;
+    private float   _v;
+    private float   _v2;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Constructs a region that cannot be used until a texture
@@ -120,14 +127,12 @@ public class TextureRegion
         SetRegion( region, x, y, width, height );
     }
 
-    public Texture Texture { get; set; } = null!;
-
     /// <summary>
     /// </summary>
-    public float U
+    public virtual float U
     {
         get => _u;
-        protected set
+        set
         {
             _u = value;
 
@@ -137,7 +142,7 @@ public class TextureRegion
 
     /// <summary>
     /// </summary>
-    public float U2
+    public virtual float U2
     {
         get => _u2;
         set
@@ -150,7 +155,7 @@ public class TextureRegion
 
     /// <summary>
     /// </summary>
-    public float V
+    public virtual float V
     {
         get => _v;
         set
@@ -163,7 +168,7 @@ public class TextureRegion
 
     /// <summary>
     /// </summary>
-    public float V2
+    public virtual float V2
     {
         get => _v2;
         set
@@ -191,6 +196,7 @@ public class TextureRegion
     }
 
     /// <summary>
+    ///     This TextureRegions Width property.
     /// </summary>
     public int RegionWidth
     {
@@ -211,6 +217,7 @@ public class TextureRegion
     }
 
     /// <summary>
+    ///     This TextureRegions Height property.
     /// </summary>
     public int RegionHeight
     {
@@ -263,7 +270,8 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Non-Virtual version of <see cref="SetRegion( float, float, float, float )" />
+    ///     Non-Virtual version of <see cref="SetRegion( float, float, float, float )" />,
+    ///     enabling this to be called from constructors.
     /// </summary>
     private void SetRegionNV( float u, float v, float u2, float v2 )
     {
@@ -334,9 +342,10 @@ public class TextureRegion
     }
 
     /// <summary>
+    ///     Flips this TextureRegion horizontally, vertically, or both.
     /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
+    /// <param name="x"> TRUE to flip horizontally. </param>
+    /// <param name="y"> TRUE to flip vertically. </param>
     public virtual void Flip( bool x, bool y )
     {
         if ( x )
@@ -350,12 +359,18 @@ public class TextureRegion
         }
     }
 
-    public bool IsFlipX()
+    /// <summary>
+    ///     Returns true if this TextureRegion is flipped horizontally.
+    /// </summary>
+    public virtual bool IsFlipX()
     {
         return U > U2;
     }
 
-    public bool IsFlipY()
+    /// <summary>
+    ///     Returns true if this TextureRegion is flipped vertically.
+    /// </summary>
+    public virtual bool IsFlipY()
     {
         return V > V2;
     }

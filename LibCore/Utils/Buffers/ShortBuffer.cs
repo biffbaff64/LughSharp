@@ -630,7 +630,7 @@ public abstract class ShortBuffer : Buffer
     /// <returns>
     ///     <tt>true</tt> if, and only if, this buffer is equal to the given object
     /// </returns>
-    public new bool Equals( object ob )
+    public override bool Equals( object ob )
     {
         if ( this == ob )
         {

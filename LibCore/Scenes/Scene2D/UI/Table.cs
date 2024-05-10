@@ -253,7 +253,7 @@ public class Table : WidgetGroup
         return _background;
     }
 
-    public new Actor? Hit( float x, float y, bool touchable )
+    public override Actor? Hit( float x, float y, bool touchable )
     {
         if ( _clip )
         {
@@ -278,7 +278,7 @@ public class Table : WidgetGroup
         return this;
     }
 
-    public new void Invalidate()
+    public override void Invalidate()
     {
         _sizeInvalid = true;
         base.Invalidate();
@@ -462,7 +462,7 @@ public class Table : WidgetGroup
         return Add( stack );
     }
 
-    public new bool RemoveActor( Actor actor, bool unfocus = true )
+    public override bool RemoveActor( Actor actor, bool unfocus = true )
     {
         if ( !base.RemoveActor( actor, unfocus ) )
         {
@@ -477,7 +477,7 @@ public class Table : WidgetGroup
         return true;
     }
 
-    public new Actor RemoveActorAt( int index, bool unfocus )
+    public override Actor RemoveActorAt( int index, bool unfocus )
     {
         var actor = base.RemoveActorAt( index, unfocus );
 
@@ -489,7 +489,7 @@ public class Table : WidgetGroup
     /// <summary>
     ///     Removes all actors and cells from the table.
     /// </summary>
-    public new void ClearChildren()
+    public override void ClearChildren()
     {
         Cell[] cells = _cells.ToArray();
 
@@ -1841,14 +1841,14 @@ public class Table : WidgetGroup
         DebugLines( enabled ? DebugType.All : DebugType.None );
     }
 
-    public new Table EnableDebug()
+    public override Table EnableDebug()
     {
         base.EnableDebug();
 
         return this;
     }
 
-    public new Table DebugAll()
+    public override Table DebugAll()
     {
         base.DebugAll();
 
@@ -2002,7 +2002,7 @@ public class Table : WidgetGroup
         }
     }
 
-    public new void DrawDebug( ShapeRenderer shapes )
+    public override void DrawDebug( ShapeRenderer shapes )
     {
         if ( Transform )
         {

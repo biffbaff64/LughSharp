@@ -69,7 +69,7 @@ public class CheckBox : TextButton
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
-    public new ButtonStyle? Style
+    public override ButtonStyle? Style
     {
         get => _style;
         set
@@ -84,7 +84,7 @@ public class CheckBox : TextButton
         }
     }
 
-    public new void Draw( IBatch batch, float parentAlpha )
+    public override void Draw( IBatch batch, float parentAlpha )
     {
         IDrawable? checkbox = null;
 

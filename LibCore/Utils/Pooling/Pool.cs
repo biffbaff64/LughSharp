@@ -60,7 +60,7 @@ public class Pool< T >
     public int Max  { get; }      // The maximum number of objects that will be pooled.
     public int Peak { get; set; } // The highest number of free objects. Can be reset any time.
 
-    public NewObjectHandler? NewObject { get; set; } = null;
+    public virtual NewObjectHandler? NewObject { get; set; } = null;
 
     /// <summary>
     ///     Returns an object from this pool.

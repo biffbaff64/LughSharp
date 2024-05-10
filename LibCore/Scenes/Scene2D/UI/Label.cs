@@ -192,7 +192,7 @@ public class Label : Widget
         return true;
     }
 
-    public new void Invalidate()
+    public override void Invalidate()
     {
         base.Invalidate();
         _prefSizeInvalid = true;
@@ -342,7 +342,7 @@ public class Label : Widget
         }
     }
 
-    public new void Draw( IBatch batch, float parentAlpha )
+    public override void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
 

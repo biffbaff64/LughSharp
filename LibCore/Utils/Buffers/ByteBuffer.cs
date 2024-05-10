@@ -346,7 +346,7 @@ public abstract class ByteBuffer : Buffer
     /// <exception cref="GdxRuntimeException">
     ///     If this buffer is not backed by an accessible array
     /// </exception>
-    public new byte[] BackingArray()
+    public override byte[] BackingArray()
     {
         if ( Hb == null )
         {

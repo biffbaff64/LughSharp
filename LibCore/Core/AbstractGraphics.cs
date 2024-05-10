@@ -91,23 +91,23 @@ public abstract class AbstractGraphics : IGraphics
 
     //TODO:
     [Obsolete]
-    public abstract IGraphics.MonitorDescriptor GetPrimaryMonitor();
+    public abstract IGraphics.GdxMonitor GetPrimaryMonitor();
 
     //TODO:
     [Obsolete]
-    public abstract IGraphics.MonitorDescriptor GetMonitor();
+    public abstract IGraphics.GdxMonitor GetMonitor();
 
     //TODO:
     [Obsolete]
-    public abstract IGraphics.MonitorDescriptor[] GetMonitors();
+    public abstract IGraphics.GdxMonitor[] GetMonitors();
 
     // ------------------------------------------------------------------------
 
-    public abstract IGraphics.DisplayModeDescriptor[] GetDisplayModes();
-    public abstract IGraphics.DisplayModeDescriptor[] GetDisplayModes( IGraphics.MonitorDescriptor monitor );
-    public abstract IGraphics.DisplayModeDescriptor GetDisplayMode();
-    public abstract IGraphics.DisplayModeDescriptor GetDisplayMode( IGraphics.MonitorDescriptor monitor );
-    public abstract bool SetFullscreenMode( IGraphics.DisplayModeDescriptor displayMode );
+    public abstract IGraphics.DisplayMode[] GetDisplayModes();
+    public abstract IGraphics.DisplayMode[] GetDisplayModes( IGraphics.GdxMonitor gdxMonitor );
+    public abstract IGraphics.DisplayMode GetDisplayMode();
+    public abstract IGraphics.DisplayMode GetDisplayMode( IGraphics.GdxMonitor gdxMonitor );
+    public abstract bool SetFullscreenMode( IGraphics.DisplayMode displayMode );
     public abstract bool SetWindowedMode( int width, int height );
     public abstract void SetTitle( string title );
     public abstract void SetUndecorated( bool undecorated );

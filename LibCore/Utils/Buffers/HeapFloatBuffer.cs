@@ -62,7 +62,7 @@ public class HeapFloatBuffer : FloatBuffer
     ///     </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
-    public new float[] BackingArray()
+    public override float[] BackingArray()
     {
         return null!;
     }

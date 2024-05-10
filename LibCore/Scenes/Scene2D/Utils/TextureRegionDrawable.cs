@@ -70,7 +70,7 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
         }
     }
 
-    public virtual new void Draw( IBatch batch, float x, float y, float width, float height )
+    public override void Draw( IBatch batch, float x, float y, float width, float height )
     {
         if ( Region != null )
         {

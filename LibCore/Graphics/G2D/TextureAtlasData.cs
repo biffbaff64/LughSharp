@@ -28,6 +28,7 @@ using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public partial record TextureAtlasData
 {
     internal readonly static bool[] HasIndexes = { false };
@@ -36,7 +37,28 @@ public partial record TextureAtlasData
     public List< Region > Regions { get; set; } = new();
     public string[]       Entry   { get; set; } = new string[ 5 ];
 
-    private void Load( FileInfo packFile, DirectoryInfo? imagesDir, bool flip )
+    // ------------------------------------------------------------------------
+    
+    #region Constructors
+
+    /// <summary>
+    /// </summary>
+    /// <param name="packFile"></param>
+    /// <param name="imagesDir"></param>
+    /// <param name="flip"></param>
+    public TextureAtlasData( FileInfo? packFile = null, DirectoryInfo? imagesDir = null, bool flip = false )
+    {
+        if ( packFile != null )
+        {
+            Load( packFile, imagesDir, flip );
+        }
+    }
+
+    #endregion
+
+    // ------------------------------------------------------------------------
+    
+    private void Load( FileInfo? packFile, DirectoryInfo? imagesDir, bool flip )
     {
         //@formatter:off
         Dictionary< string, IField< Page > > pageFields = new( 15 )
@@ -111,7 +133,7 @@ public partial record TextureAtlasData
                 {
                     page = new Page
                     {
-                        textureFile = new FileInfo( line.Trim() )
+                        TextureFile = new FileInfo( line.Trim() )
                     };
 
                     while ( true )
@@ -263,28 +285,12 @@ public partial record TextureAtlasData
         }
     }
 
+    // ------------------------------------------------------------------------
+    
     protected interface IField< in T >
     {
         void Parse( T obj, params string[] entry );
     }
-
-    #region Constructors
-
-    public TextureAtlasData()
-    {
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="packFile"></param>
-    /// <param name="imagesDir"></param>
-    /// <param name="flip"></param>
-    public TextureAtlasData( FileInfo packFile, DirectoryInfo? imagesDir, bool flip )
-    {
-        Load( packFile, imagesDir, flip );
-    }
-
-    #endregion
 
     // ######################################################################
     //      Companions.
@@ -292,31 +298,32 @@ public partial record TextureAtlasData
 
     #region Companions
 
+    [PublicAPI]
     public record Page
     {
         /// <summary>
         ///     May be null if the texture is not yet loaded.
         /// </summary>
-        public Texture? texture;
+        public Texture? Texture { get; set; }
 
         /// <summary>
         ///     May be null if this page isn't associated with a file. In that
-        ///     case, <see cref="texture" /> must be set.
+        ///     case, <see cref="Texture" /> must be set.
         /// </summary>
-        public FileInfo? textureFile;
+        public FileInfo? TextureFile { get; set; }
 
-        public bool          UseMipMaps { get; set; }
-        public Pixmap.Format Format     { get; set; } = Pixmap.Format.RGBA8888;
-        public TextureFilter MinFilter  { get; set; } = TextureFilter.Nearest;
-        public TextureFilter MagFilter  { get; set; } = TextureFilter.Nearest;
-        public TextureWrap   UWrap      { get; set; } = TextureWrap.ClampToEdge;
-        public TextureWrap   VWrap      { get; set; } = TextureWrap.ClampToEdge;
-        public float         Width      { get; set; }
-        public float         Height     { get; set; }
-        public bool          Pma        { get; set; }
+        public bool          UseMipMaps         { get; set; }
+        public Pixmap.Format Format             { get; set; } = Pixmap.Format.RGBA8888;
+        public TextureFilter MinFilter          { get; set; } = TextureFilter.Nearest;
+        public TextureFilter MagFilter          { get; set; } = TextureFilter.Nearest;
+        public TextureWrap   UWrap              { get; set; } = TextureWrap.ClampToEdge;
+        public TextureWrap   VWrap              { get; set; } = TextureWrap.ClampToEdge;
+        public float         Width              { get; set; }
+        public float         Height             { get; set; }
+        public bool          PreMultipliedAlpha { get; set; }
     }
 
-
+    [PublicAPI]
     public class Region
     {
         public Page?     Page           { get; init; }

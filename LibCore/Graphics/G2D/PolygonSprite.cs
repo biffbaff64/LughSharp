@@ -25,14 +25,30 @@
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public class PolygonSprite
 {
-    private readonly RectangleShape _bounds = new();
-    private          bool           _dirty;
-    private          float[]?       _vertices;
+    public PolygonRegion? Region   { get; private set; }
+    public float          Width    { get; set; }
+    public float          Height   { get; set; }
+    public float          OriginX  { get; set; }
+    public float          OriginY  { get; set; }
+    public float          ScaleX   { get; set; } = 1f;
+    public float          ScaleY   { get; set; } = 1f;
+    public float          Rotation { get; set; }
 
-    private float _x;
-    private float _y;
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    private readonly RectangleShape _bounds = new();
+
+    private bool     _dirty;
+    private float[]? _vertices;
+    private float    _x;
+    private float    _y;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     public PolygonSprite( PolygonRegion region )
     {
@@ -48,15 +64,6 @@ public class PolygonSprite
     {
         Set( sprite );
     }
-
-    public PolygonRegion? Region   { get; private set; }
-    public float          Width    { get; set; }
-    public float          Height   { get; set; }
-    public float          OriginX  { get; set; }
-    public float          OriginY  { get; set; }
-    public float          ScaleX   { get; set; } = 1f;
-    public float          ScaleY   { get; set; } = 1f;
-    public float          Rotation { get; set; }
 
     /// <summary>
     ///     Sets the x position where the sprite will be drawn. If origin, rotation,
@@ -164,7 +171,7 @@ public class PolygonSprite
             return;
         }
 
-        for ( var i = 0; i < _vertices?.Length; i += Sprite.VertexSize )
+        for ( var i = 0; i < _vertices?.Length; i += Sprite.VERTEX_SIZE )
         {
             _vertices[ i ] += xAmount;
         }
@@ -184,7 +191,7 @@ public class PolygonSprite
             return;
         }
 
-        for ( var i = 1; i < _vertices?.Length; i += Sprite.VertexSize )
+        for ( var i = 1; i < _vertices?.Length; i += Sprite.VERTEX_SIZE )
         {
             _vertices[ i ] += yAmount;
         }
@@ -205,7 +212,7 @@ public class PolygonSprite
             return;
         }
 
-        for ( var i = 0; i < _vertices?.Length; i += Sprite.VertexSize )
+        for ( var i = 0; i < _vertices?.Length; i += Sprite.VERTEX_SIZE )
         {
             _vertices[ i ]     += xAmount;
             _vertices[ i + 1 ] += yAmount;
@@ -218,7 +225,7 @@ public class PolygonSprite
 
         var color = tint.ToFloatBits();
 
-        for ( var i = 2; i < _vertices?.Length; i += Sprite.VertexSize )
+        for ( var i = 2; i < _vertices?.Length; i += Sprite.VERTEX_SIZE )
         {
             _vertices[ i ] = color;
         }
@@ -228,7 +235,7 @@ public class PolygonSprite
     {
         Color.Set( r, g, b, a );
 
-        for ( var i = 2; i < _vertices?.Length; i += Sprite.VertexSize )
+        for ( var i = 2; i < _vertices?.Length; i += Sprite.VERTEX_SIZE )
         {
             _vertices[ i ] = Color.ToFloatBits();
         }

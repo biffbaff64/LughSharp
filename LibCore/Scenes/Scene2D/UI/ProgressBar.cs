@@ -153,7 +153,7 @@ public class ProgressBar : Widget, IDisableable
 
     public bool IsDisabled { get; set; }
 
-    public new void Act( float delta )
+    public override void Act( float delta )
     {
         base.Act( delta );
 
@@ -168,7 +168,7 @@ public class ProgressBar : Widget, IDisableable
         }
     }
 
-    public new void Draw( IBatch batch, float parentAlpha )
+    public override void Draw( IBatch batch, float parentAlpha )
     {
         var knob        = Style.Knob;
         var currentKnob = GetKnobDrawable();

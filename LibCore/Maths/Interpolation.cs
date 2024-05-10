@@ -267,7 +267,7 @@ public class Interpolation
         {
         }
 
-        public new float Apply( float a )
+        public override float Apply( float a )
         {
             return ( ( float ) Math.Pow( Value, Power * ( a - 1 ) ) - Min ) * Scale;
         }
@@ -281,7 +281,7 @@ public class Interpolation
         {
         }
 
-        public new float Apply( float a )
+        public override float Apply( float a )
         {
             return 1 - ( ( ( float ) Math.Pow( Value, -Power * a ) - Min ) * Scale );
         }
@@ -327,7 +327,7 @@ public class Interpolation
         {
         }
 
-        public new float Apply( float a )
+        public override float Apply( float a )
         {
             if ( a >= 0.99 )
             {
@@ -346,7 +346,7 @@ public class Interpolation
         {
         }
 
-        public new float Apply( float a )
+        public override float Apply( float a )
         {
             if ( a == 0 )
             {
@@ -515,7 +515,7 @@ public class Interpolation
         {
         }
 
-        public new float Apply( float a )
+        public override float Apply( float a )
         {
             return 1 - base.Apply( 1 - a );
         }

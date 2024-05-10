@@ -128,7 +128,7 @@ public class Dialog : Window
     /// <summary>
     ///     Sets the <see cref="Stage" /> which this Dialog will act on.
     /// </summary>
-    protected new void SetStage( Stage? stage )
+    protected override void SetStage( Stage? stage )
     {
         if ( stage == null )
         {

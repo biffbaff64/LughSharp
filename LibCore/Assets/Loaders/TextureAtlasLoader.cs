@@ -71,13 +71,13 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
 
         foreach ( var page in _data.Pages )
         {
-            if ( page.textureFile != null )
+            if ( page.TextureFile != null )
             {
-                var name = page.textureFile.FullName.Replace( "\\\\", "/" );
+                var name = page.TextureFile.FullName.Replace( "\\\\", "/" );
 
                 var texture = assetManager.Get< Texture >( name );
 
-                page.texture = texture;
+                page.Texture = texture;
             }
         }
 
@@ -111,9 +111,9 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
                 MagFilter  = page.MagFilter
             };
 
-            if ( page.textureFile != null )
+            if ( page.TextureFile != null )
             {
-                dependencies.Add( new AssetDescriptor( page.textureFile, typeof( Texture ), tparams ) );
+                dependencies.Add( new AssetDescriptor( page.TextureFile, typeof( Texture ), tparams ) );
             }
         }
 

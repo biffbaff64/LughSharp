@@ -28,13 +28,13 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public abstract class AbstractInput : IInput
 {
-    private readonly List< int > _keysToCatch = new();
-
     public      IInputProcessor? InputProcessor  { get; set; }
-    protected	bool[]           PressedKeys     { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
+    protected   bool[]           PressedKeys     { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
     protected   bool[]           JustPressedKeys { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
     protected   bool             KeyJustPressed  { get; set; } = false;
     protected   int              PressedKeyCount { get; set; } = 0;
+
+    private readonly List< int > _keysToCatch = new();
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -67,6 +67,11 @@ public abstract class AbstractInput : IInput
         return key is >= 0 and <= IInput.Keys.MAX_KEYCODE && JustPressedKeys[ key ];
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    //TODO: What are 'catch keys' in LibGDX???
+    //TODO: Do I need to keep these???
     public virtual void SetCatchKey( int keycode, bool catchKey )
     {
         if ( !catchKey )

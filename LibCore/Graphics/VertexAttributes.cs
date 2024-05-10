@@ -204,7 +204,7 @@ public class VertexAttributes
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public new bool Equals( object obj )
+    public override bool Equals( object obj )
     {
         if ( obj == this )
         {

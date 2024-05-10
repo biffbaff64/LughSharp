@@ -48,6 +48,8 @@ public interface INet
 
     public ISocket? NewClientSocket( Protocol protocol, string host, int port, SocketHints hints );
 
+    // ------------------------------------------------------------------------
+
     [PublicAPI]
     public interface IHttpResponse
     {
@@ -64,6 +66,8 @@ public interface INet
         Dictionary< string, List< string > > GetHeaders();
     }
 
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// </summary>
     [PublicAPI]
@@ -77,6 +81,8 @@ public interface INet
         public const string DELETE = "DELETE";
     }
 
+    // ------------------------------------------------------------------------
+
     [PublicAPI]
     public interface IHttpResponseListener
     {
@@ -87,22 +93,11 @@ public interface INet
         void Cancelled();
     }
 
+    // ------------------------------------------------------------------------
+
     [PublicAPI]
     public class HttpRequest : IPoolable
     {
-        private readonly Dictionary< string, string >? _headers;
-        private          bool                          _followRedirects = true;
-
-        public HttpRequest()
-        {
-            _headers = new Dictionary< string, string >();
-        }
-
-        public HttpRequest( string httpMethod ) : this()
-        {
-            HttpMethod = httpMethod;
-        }
-
         public string?       Url                { get; set; }
         public string?       HttpMethod         { get; set; }
         public int           TimeOut            { get; set; } = 0;
@@ -110,6 +105,17 @@ public interface INet
         public StreamReader? ContentStream      { get; private set; }
         public long          ContentLength      { get; private set; }
         public string?       Content            { get; set; }
+
+        private readonly Dictionary< string, string >? _headers;
+        private          bool                          _followRedirects = true;
+
+        // --------------------------------------------------------------------
+        
+        public HttpRequest( string? httpMethod = null )
+        {
+            _headers   = new Dictionary< string, string >();
+            HttpMethod = httpMethod;
+        }
 
         public bool FollowRedirects
         {
@@ -122,24 +128,11 @@ public interface INet
                 }
                 else
                 {
+                    //TODO: Is this true?
                     throw new ArgumentException
                         ( "Following redirects can't be disabled using the GWT/WebGL backend!" );
                 }
             }
-        }
-
-        public void Reset()
-        {
-            HttpMethod = null;
-            Url        = null;
-            _headers?.Clear();
-            TimeOut = 0;
-
-            Content       = null;
-            ContentStream = null;
-            ContentLength = 0;
-
-            _followRedirects = true;
         }
 
         public Dictionary< string, string >? GetHeaders()
@@ -155,10 +148,17 @@ public interface INet
             }
         }
 
-        public void SetContent( StreamReader contentStream, long contentLength )
+        public void Reset()
         {
-            ContentStream = contentStream;
-            ContentLength = contentLength;
+            HttpMethod       = null;
+            Url              = null;
+            TimeOut          = 0;
+            Content          = null;
+            ContentStream    = null;
+            ContentLength    = 0;
+            _followRedirects = true;
+
+            _headers?.Clear();
         }
     }
 }

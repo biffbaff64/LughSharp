@@ -309,29 +309,29 @@ GRAPHICS/G2D
     - IP   - IP   - BitmapFont                      Much work needed!
     - IP   - IP   - BitmapFontCache                 Relies on the BitmapFont rewrite.
     - IP   - IP   - CpuSpriteBatch                  Some methods have too many parameters
-    - IP   - IP   - DistanceFieldFont
-    - IP   - IP   - Gdx2DPixmap
-    - IP   - IP   - GlyphLayout
-    - IP   - IP   - IBatch                          Some methods have too many parameters
-    - IP   - IP   - IPolygonBatch
-    - IP   - IP   - NinePatch
-    - IP   - IP   - ParticleEffect
-    - IP   - IP   - ParticleEffectPool
-    - IP   - IP   - ParticleEmitter
+    - DONE - IP   - DistanceFieldFont
+    - DONE - IP   - Gdx2DPixmap
+    - IP   - IP   - GlyphLayout                     Method SetText() is too big.
+    - DONE - DONE - IBatch                          Some methods have too many parameters
+    - DONE - DONE - IPolygonBatch
+    - DONE - IP   - NinePatch
+    - DONE - IP   - ParticleEffect
+    - DONE - IP   - ParticleEffectPool
+    - DONE - IP   - ParticleEmitter
     - IP   - IP   - PixmapPacker
     - IP   - IP   - PixmapPacker10
-    - IP   - IP   - PolygonRegion
-    - IP   - IP   - PolygonRegionLoader
-    - IP   - IP   - PolygonSprite
-    - IP   - IP   - PolygonSpriteBatch
-    - IP   - IP   - RepeatablePolygonSprite
-    - IP   - IP   - Sprite
-    - IP   - IP   - SpriteBatch                     Some methods have too many parameters
-    - IP   - IP   - SpriteCache
-    - IP   - IP   - TextureAtlas
-    - IP   - IP   - TextureAtlasData
-    - IP   - IP   - TextureAtlasDataExtensions
-    - IP   - IP   - TextureRegion
+    - DONE - IP   - PolygonRegion
+    - DONE - IP   - PolygonRegionLoader
+    - DONE - IP   - PolygonSprite
+    - DONE - IP   - PolygonSpriteBatch
+    - DONE - IP   - RepeatablePolygonSprite
+    - DONE - IP   - Sprite
+    - DONE - IP   - SpriteBatch                     Some methods have too many parameters
+    - DONE - IP   - SpriteCache
+    - DONE - IP   - TextureAtlas
+    - DONE - IP   - TextureAtlasData
+    - DONE - IP   - TextureAtlasDataExtensions
+    - DONE - IP   - TextureRegion
 
 GRAPHICS/G3D
 ------------

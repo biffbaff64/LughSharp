@@ -275,7 +275,7 @@ public class Button : Table, IDisableable
         return Style?.Up;
     }
 
-    public virtual new void Draw( IBatch batch, float parentAlpha )
+    public override void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
 
@@ -424,7 +424,7 @@ public class Button : Table, IDisableable
 
     #region properties
 
-    public new float PrefWidth
+    public override float PrefWidth
     {
         get
         {
@@ -449,7 +449,7 @@ public class Button : Table, IDisableable
         }
     }
 
-    public new float PrefHeight
+    public override float PrefHeight
     {
         get
         {

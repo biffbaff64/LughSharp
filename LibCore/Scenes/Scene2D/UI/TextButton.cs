@@ -59,7 +59,7 @@ public class TextButton : Button
 
     // This method needs to be public...
     // ReSharper disable once MemberCanBeProtected.Global
-    public new TextButtonStyle? Style
+    public override TextButtonStyle? Style
     {
         get => _style;
         set
@@ -170,7 +170,7 @@ public class TextButton : Button
         return Style?.FontColor;
     }
 
-    public new void Draw( IBatch batch, float parentAlpha )
+    public override void Draw( IBatch batch, float parentAlpha )
     {
         if ( Label != null )
         {

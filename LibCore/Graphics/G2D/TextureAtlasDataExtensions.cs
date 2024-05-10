@@ -27,6 +27,7 @@ using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region >
 {
     public ComparatorAnonymousInnerClass( TextureAtlasData textureAtlasData )
@@ -113,10 +114,7 @@ public partial record TextureAtlasData
     {
         public void Parse( Page page, params string[] entry )
         {
-            // Note: I'm not sure what 'Pma' stands for. It's called that
-            // in Java LibGDX so it's been carried over. Once I've figured
-            // it out I'll rename it to something more meaningful.
-            page.Pma = entry[ 1 ].Equals( "true" );
+            page.PreMultipliedAlpha = entry[ 1 ].Equals( "true" );
         }
     }
 

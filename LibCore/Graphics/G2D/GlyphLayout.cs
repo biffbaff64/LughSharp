@@ -52,13 +52,14 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class GlyphLayout : IPoolable
 {
-    private readonly static float         _epsilon    = 0.0001f;
-    private readonly        Pool< Color > _colorPool  = Pools< Color >.Get();
-    private readonly        List< Color > _colorStack = new( 4 );
+    public List< GlyphRun > Runs   { get; set; } = new( 1 );
+    public float            Width  { get; set; }
+    public float            Height { get; set; }
 
-    // ------------------------------------------------------------------------
-
-    private readonly Pool< GlyphRun > _glyphRunPool = Pools< GlyphRun >.Get();
+    private readonly static float            _epsilon      = 0.0001f;
+    private readonly        Pool< Color >    _colorPool    = Pools< Color >.Get();
+    private readonly        List< Color >    _colorStack   = new( 4 );
+    private readonly        Pool< GlyphRun > _glyphRunPool = Pools< GlyphRun >.Get();
 
     // ------------------------------------------------------------------------
 
@@ -69,6 +70,12 @@ public class GlyphLayout : IPoolable
     {
     }
 
+    /// <summary>
+    ///     Creates a new GlyphLayout, using the supplied <see cref="BitmapFont"/>
+    ///     and text.
+    /// </summary>
+    /// <param name="font"></param>
+    /// <param name="str"></param>
     public GlyphLayout( BitmapFont font, string str )
     {
         SetText( font, str );
@@ -91,10 +98,6 @@ public class GlyphLayout : IPoolable
     {
         SetText( font, str, start, end, color, targetWidth, halign, wrap, truncate );
     }
-
-    public List< GlyphRun > Runs   { get; set; } = new( 1 );
-    public float            Width  { get; set; }
-    public float            Height { get; set; }
 
     /// <summary>
     ///     Resets the object for reuse. Object references should

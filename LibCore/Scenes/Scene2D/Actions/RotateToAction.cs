@@ -61,7 +61,7 @@ public class RotateToAction : TemporalAction
     public float Rotation             { get; set; }
     public bool  UseShortestDirection { get; set; } = false;
 
-    protected new void Begin()
+    protected override void Begin()
     {
         if ( Target == null )
         {

@@ -604,7 +604,7 @@ public class Vector2 : IVector< Vector2 >
         return this;
     }
 
-    public new int GetHashCode()
+    public override int GetHashCode()
     {
         const int PRIME = 31;
 
@@ -614,7 +614,7 @@ public class Vector2 : IVector< Vector2 >
         return result;
     }
 
-    public new bool Equals( object? obj )
+    public override bool Equals( object? obj )
     {
         if ( this == obj )
         {

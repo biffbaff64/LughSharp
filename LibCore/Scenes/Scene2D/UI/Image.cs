@@ -137,7 +137,7 @@ public class Image : Widget
         }
     }
 
-    public new void Draw( IBatch batch, float parentAlpha )
+    public override void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
 

@@ -226,7 +226,7 @@ public class VertexAttribute
     /// <summary>
     ///     Tests to determine if the passed object was created with the same parameters
     /// </summary>
-    public new bool Equals( object obj )
+    public override bool Equals( object obj )
     {
         if ( obj is not VertexAttribute attribute )
         {

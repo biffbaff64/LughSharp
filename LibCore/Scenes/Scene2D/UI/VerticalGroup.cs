@@ -121,7 +121,7 @@ public class VerticalGroup : WidgetGroup
         Touchable = Touchable.ChildrenOnly;
     }
 
-    public new void Invalidate()
+    public override void Invalidate()
     {
         base.Invalidate();
         _sizeInvalid = true;

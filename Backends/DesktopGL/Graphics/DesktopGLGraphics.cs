@@ -38,7 +38,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     private readonly IntBuffer                       _tmpBuffer                   = BufferUtils.NewIntBuffer( 1 );
     private readonly IntBuffer                       _tmpBuffer2                  = BufferUtils.NewIntBuffer( 1 );
-    private          IGraphics.DisplayModeDescriptor _displayModeBeforeFullscreen = null!;
+    private          IGraphics.DisplayMode _displayModeBeforeFullscreen = null!;
     private          int                             _fps;
     private          long                            _frameCounterStart = 0;
     private          long                            _frameId;
@@ -81,12 +81,12 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     public DesktopGLWindow?       GLWindow               { get; set; }
     public BufferFormatDescriptor BufferFormatDescriptor { get; set; } = null!;
 
-    public new int Width
+    public override int Width
         => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
                ? BackBufferWidth
                : LogicalWidth;
 
-    public new int Height
+    public override int Height
         => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
                ? BackBufferHeight
                : LogicalHeight;
@@ -216,16 +216,16 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
 
     [Obsolete]
-    public override IGraphics.MonitorDescriptor GetPrimaryMonitor()
+    public override IGraphics.GdxMonitor GetPrimaryMonitor()
     {
         //TODO:
         throw new NotImplementedException();
     }
 
     [Obsolete]
-    public override IGraphics.MonitorDescriptor GetMonitor()
+    public override IGraphics.GdxMonitor GetMonitor()
     {
-        IGraphics.MonitorDescriptor[] monitors = GetMonitors();
+        IGraphics.GdxMonitor[] monitors = GetMonitors();
         var                           result   = monitors[ 0 ];
 
         Glfw.GetWindowPos( GLWindow!.GlfwWindow, out _tmpInt, out _tmpInt2 );
@@ -373,11 +373,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     ///     only be available if you instructed the Application instance
     ///     to use OpenGL ES 3.0!
     /// </summary>
-    /// 3r
     /// <returns>TRUE if available.</returns>
     public override bool IsGL30Available()
     {
-        return GL30 != null;
+        return true;
     }
 
     // ------------------------------------------------------------------------
@@ -417,10 +416,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     /// <inheritdoc />
     [Obsolete]
-    public override IGraphics.MonitorDescriptor[] GetMonitors()
+    public override IGraphics.GdxMonitor[] GetMonitors()
     {
         GLFWMonitor[] glfwMonitors = Glfw.GetMonitors();
-        var           monitors     = new IGraphics.MonitorDescriptor[ glfwMonitors.Length ];
+        var           monitors     = new IGraphics.GdxMonitor[ glfwMonitors.Length ];
 
         for ( var i = 0; i < glfwMonitors.Length; i++ )
         {
@@ -433,28 +432,28 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
 
     /// <inheritdoc />
-    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes()
+    public override IGraphics.DisplayMode[] GetDisplayModes()
     {
         //TODO:
         throw new NotImplementedException();
     }
 
     /// <inheritdoc />
-    public override IGraphics.DisplayModeDescriptor[] GetDisplayModes( IGraphics.MonitorDescriptor monitor )
+    public override IGraphics.DisplayMode[] GetDisplayModes( IGraphics.GdxMonitor gdxMonitor )
     {
         //TODO:
         throw new NotImplementedException();
     }
 
     /// <inheritdoc />
-    public override IGraphics.DisplayModeDescriptor GetDisplayMode()
+    public override IGraphics.DisplayMode GetDisplayMode()
     {
         //TODO:
         throw new NotImplementedException();
     }
 
     /// <inheritdoc />
-    public override IGraphics.DisplayModeDescriptor GetDisplayMode( IGraphics.MonitorDescriptor monitor )
+    public override IGraphics.DisplayMode GetDisplayMode( IGraphics.GdxMonitor gdxMonitor )
     {
         //TODO:
         throw new NotImplementedException();
@@ -463,7 +462,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
 
     /// <inheritdoc />
-    public override bool SetFullscreenMode( IGraphics.DisplayModeDescriptor displayMode )
+    public override bool SetFullscreenMode( IGraphics.DisplayMode displayMode )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow );
 
@@ -574,7 +573,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     ///     Describes a Display Mode.
     /// </summary>
     [PublicAPI]
-    public class DesktopGLDisplayMode : IGraphics.DisplayModeDescriptor
+    public class DesktopGLDisplayMode : IGraphics.DisplayMode
     {
         public DesktopGLDisplayMode( GLFWMonitor monitor,
                                      int width,
@@ -593,7 +592,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
 
     [PublicAPI]
-    public class DesktopGLMonitor : IGraphics.MonitorDescriptor
+    public class DesktopGLMonitor : IGraphics.GdxMonitor
     {
         public DesktopGLMonitor( GLFWMonitor monitor, int virtualX, int virtualY, string name )
             : base( virtualX, virtualY, name )

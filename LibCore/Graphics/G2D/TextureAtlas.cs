@@ -27,8 +27,14 @@ using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public class TextureAtlas
 {
+    public List< AtlasRegion? > Regions  { get; set; } = new();
+    public List< Texture >      Textures { get; set; } = new( 4 );
+
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Creates an empty atlas to which regions can be added.
     /// </summary>
@@ -37,6 +43,7 @@ public class TextureAtlas
     }
 
     /// <summary>
+    ///     Creates a new TextureAtlas.
     ///     Loads the specified pack file using <see cref="FileType.Internal" />,
     ///     using the parent directory of the pack file to find the page images.
     /// </summary>
@@ -46,6 +53,7 @@ public class TextureAtlas
     }
 
     /// <summary>
+    ///     Creates a new TextureAtlas.
     ///     Loads the specified pack file, using the parent directory of the
     ///     pack file to find the page images.
     /// </summary>
@@ -54,6 +62,10 @@ public class TextureAtlas
     {
     }
 
+    /// <summary>
+    ///     Creates a new TextureAtlas.
+    /// </summary>
+    ///     Creates a new TextureAtlas.
     /// <param name="packFile"></param>
     /// <param name="flip">
     ///     If true, all regions loaded will be flipped for use with a perspective
@@ -64,6 +76,9 @@ public class TextureAtlas
     {
     }
 
+    /// <summary>
+    ///     Creates a new TextureAtlas.
+    /// </summary>
     /// <param name="packFile"></param>
     /// <param name="imagesDir"></param>
     /// <param name="flip">
@@ -75,13 +90,14 @@ public class TextureAtlas
     {
     }
 
+    /// <summary>
+    ///     Creates a new TextureAtlas.
+    /// </summary>
+    /// <param name="data"></param>
     public TextureAtlas( TextureAtlasData data )
     {
         Load( data );
     }
-
-    public List< AtlasRegion? > Regions  { get; set; } = new();
-    public List< Texture >      Textures { get; set; } = new( 4 );
 
     /// <summary>
     ///     Adds the textures and regions from the specified <see cref="TextureAtlasData" />
@@ -92,12 +108,12 @@ public class TextureAtlas
 
         foreach ( var page in data.Pages )
         {
-            page.texture ??= new Texture( page.textureFile, page.Format, page.UseMipMaps );
+            page.Texture ??= new Texture( page.TextureFile, page.Format, page.UseMipMaps );
 
-            page.texture.SetFilter( page.MinFilter, page.MagFilter );
-            page.texture.SetWrap( page.UWrap, page.VWrap );
+            page.Texture.SetFilter( page.MinFilter, page.MagFilter );
+            page.Texture.SetWrap( page.UWrap, page.VWrap );
 
-            Textures.Add( page.texture );
+            Textures.Add( page.Texture );
         }
 
         Regions.EnsureCapacity( data.Regions.Count );
@@ -105,7 +121,7 @@ public class TextureAtlas
         foreach ( var region in data.Regions )
         {
             var atlasRegion = new AtlasRegion(
-                                              region.Page?.texture,
+                                              region.Page?.Texture,
                                               region.Left,
                                               region.Top,
                                               region.Rotate ? region.Height : region.Width,

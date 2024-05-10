@@ -57,7 +57,7 @@ public class Stack : WidgetGroup
         LoadActors( actors );
     }
 
-    public new float PrefWidth
+    public override float PrefWidth
     {
         get
         {
@@ -70,7 +70,7 @@ public class Stack : WidgetGroup
         }
     }
 
-    public new float PrefHeight
+    public override float PrefHeight
     {
         get
         {
@@ -83,7 +83,7 @@ public class Stack : WidgetGroup
         }
     }
 
-    public new float MinWidth
+    public override float MinWidth
     {
         get
         {
@@ -96,7 +96,7 @@ public class Stack : WidgetGroup
         }
     }
 
-    public new float MinHeight
+    public override float MinHeight
     {
         get
         {
@@ -109,7 +109,7 @@ public class Stack : WidgetGroup
         }
     }
 
-    public new float MaxWidth
+    public override float MaxWidth
     {
         get
         {
@@ -122,7 +122,7 @@ public class Stack : WidgetGroup
         }
     }
 
-    public new float MaxHeight
+    public override float MaxHeight
     {
         get
         {
@@ -135,7 +135,7 @@ public class Stack : WidgetGroup
         }
     }
 
-    public new void Invalidate()
+    public override void Invalidate()
     {
         base.Invalidate();
         _sizeInvalid = true;

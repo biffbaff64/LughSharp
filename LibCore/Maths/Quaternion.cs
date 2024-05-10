@@ -980,7 +980,7 @@ public class Quaternion
         return result;
     }
 
-    public new bool Equals( object? obj )
+    public override bool Equals( object? obj )
     {
         if ( this == obj )
         {

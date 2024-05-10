@@ -25,8 +25,17 @@
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
+[PublicAPI]
 public class PolygonRegion
 {
+    public TextureRegion Region        { get; set; }
+    public float[]       TextureCoords { get; set; } // texture coordinates in atlas coordinates
+    public float[]?      Vertices      { get; set; } // pixel coordinates relative to source image.
+    public short[]       Triangles     { get; set; }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Creates a PolygonRegion by triangulating the polygon coordinates in vertices
     ///     and calculates uvs based on that. TextureRegion can come from an atlas.
@@ -41,7 +50,7 @@ public class PolygonRegion
         Region        = region;
         Vertices      = vertices;
         Triangles     = triangles;
-        TextureCoords = new float[ vertices.Length ];
+        TextureCoords = new float[ vertices!.Length ];
 
         var u        = region.U;
         var v        = region.V;
@@ -56,9 +65,4 @@ public class PolygonRegion
             TextureCoords[ i + 1 ] = v + ( uvHeight * ( 1 - ( vertices[ i + 1 ] / height ) ) );
         }
     }
-
-    public TextureRegion Region        { get; set; }
-    public float[]       TextureCoords { get; set; } // texture coordinates in atlas coordinates
-    public float[]?      Vertices      { get; set; } // pixel coordinates relative to source image.
-    public short[]       Triangles     { get; set; }
 }

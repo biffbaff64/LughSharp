@@ -31,8 +31,28 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class SpriteBatch : IBatch
 {
-    public float InvTexHeight { get; set; } = 0;
-    public float InvTexWidth  { get; set; } = 0;
+    // Number of render calls since the last call to Begin()
+    public int RenderCalls { get; set; } = 0;
+
+    // Number of rendering calls, ever. Will not be reset unless set manually.
+    public int TotalRenderCalls { get; set; } = 0;
+
+    // The maximum number of sprites rendered in one batch so far.
+    public int MaxSpritesInBatch { get; set; } = 0;
+
+    public bool    BlendingDisabled  { get; set; }         = false;
+    public float   InvTexHeight      { get; set; }         = 0;
+    public float   InvTexWidth       { get; set; }         = 0;
+    public int     BlendSrcFunc      { get; private set; } = IGL.GL_SRC_ALPHA;
+    public int     BlendDstFunc      { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
+    public int     BlendSrcFuncAlpha { get; private set; } = IGL.GL_SRC_ALPHA;
+    public int     BlendDstFuncAlpha { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
+    public Matrix4 ProjectionMatrix  { get; }              = new();
+    public Matrix4 TransformMatrix   { get; }              = new();
+    public bool    IsDrawing         { get; set; }
+
+    protected Texture? LastTexture { get; set; }
+    protected float[]  Vertices    { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -105,7 +125,7 @@ public class SpriteBatch : IBatch
 
         ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
-        Vertices = new float[ size * Sprite.SpriteSize ];
+        Vertices = new float[ size * Sprite.SPRITE_SIZE ];
 
         var   len     = size * 6;
         var   indices = new short[ len ];
@@ -134,31 +154,11 @@ public class SpriteBatch : IBatch
         }
     }
 
-    /// <summary>
-    ///     Number of render calls since the last <seealso cref="Begin()" />.
-    /// </summary>
-    public int RenderCalls { get; set; } = 0;
-
-    /// <summary>
-    ///     Number of rendering calls, ever. Will not be reset unless set manually.
-    /// </summary>
-    public int TotalRenderCalls { get; set; } = 0;
-
-    /// <summary>
-    ///     The maximum number of sprites rendered in one batch so far.
-    /// </summary>
-    public int MaxSpritesInBatch { get; set; } = 0;
-
-    public bool BlendingDisabled { get; set; } = false;
-
-    protected Texture? LastTexture { get; set; }
-    protected float[]  Vertices    { get; set; }
-
     public void Begin()
     {
         if ( IsDrawing )
         {
-            throw new InvalidOperationException( "SpriteBatch.end must be called before begin." );
+            throw new InvalidOperationException( "SpriteBatch.End() must be called before Begin()" );
         }
 
         RenderCalls = 0;
@@ -398,7 +398,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
         }
 
         if ( texture != LastTexture )
@@ -459,7 +459,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
         }
 
         if ( texture != LastTexture )
@@ -519,7 +519,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
         }
 
         if ( texture != LastTexture )
@@ -571,7 +571,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
         }
 
         if ( texture != LastTexture )
@@ -623,7 +623,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
         }
 
         var verticesLength    = Vertices.Length;
@@ -687,7 +687,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
         }
 
         var texture = region.Texture;
@@ -750,7 +750,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
         }
 
         var texture = region.Texture;
@@ -890,7 +890,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new GdxRuntimeException( "SpriteBatch.begin must be called before draw." );
+            throw new GdxRuntimeException( "SpriteBatch.Begin() must be called before Draw()" );
         }
 
         var texture = region.Texture;
@@ -1040,7 +1040,7 @@ public class SpriteBatch : IBatch
     {
         if ( !IsDrawing )
         {
-            throw new GdxRuntimeException( "SpriteBatch.begin must be called before draw." );
+            throw new GdxRuntimeException( "SpriteBatch.Begin() must be called before Draw()" );
         }
 
         if ( region.Texture != LastTexture )
@@ -1165,12 +1165,7 @@ public class SpriteBatch : IBatch
 
     public void SetBlendFunction( int srcFunc, int dstFunc )
     {
-        SetBlendFunctionSeparate(
-                                 srcFunc,
-                                 dstFunc,
-                                 srcFunc,
-                                 dstFunc
-                                );
+        SetBlendFunctionSeparate( srcFunc, dstFunc, srcFunc, dstFunc );
     }
 
     public void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha )
@@ -1191,11 +1186,6 @@ public class SpriteBatch : IBatch
         BlendDstFuncAlpha = dstFuncAlpha;
     }
 
-    public int BlendSrcFunc      { get; private set; } = IGL.GL_SRC_ALPHA;
-    public int BlendDstFunc      { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
-    public int BlendSrcFuncAlpha { get; private set; } = IGL.GL_SRC_ALPHA;
-    public int BlendDstFuncAlpha { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
-
     public void Dispose()
     {
         _mesh.Dispose();
@@ -1205,9 +1195,6 @@ public class SpriteBatch : IBatch
             _shader.Dispose();
         }
     }
-
-    public Matrix4 ProjectionMatrix { get; } = new();
-    public Matrix4 TransformMatrix  { get; } = new();
 
     public void SetProjectionMatrix( Matrix4 projection )
     {
@@ -1238,8 +1225,6 @@ public class SpriteBatch : IBatch
             SetupMatrices();
         }
     }
-
-    public bool IsDrawing { get; set; }
 
     public ShaderProgram? Shader
     {
@@ -1275,48 +1260,48 @@ public class SpriteBatch : IBatch
     /// </summary>
     public static ShaderProgram CreateDefaultShader()
     {
-        var vertexShader = "attribute vec4 "
-                         + ShaderProgram.POSITION_ATTRIBUTE
-                         + ";\n"
-                         + "attribute vec4 "
-                         + ShaderProgram.COLOR_ATTRIBUTE
-                         + ";\n"
-                         + "attribute vec2 "
-                         + ShaderProgram.TEXCOORD_ATTRIBUTE
-                         + "0;\n"
-                         + "uniform mat4 u_projTrans;\n"
-                         + "varying vec4 v_color;\n"
-                         + "varying vec2 v_texCoords;\n"
-                         + "\n"
-                         + "void main()\n"
-                         + "{\n"
-                         + "   v_color = "
-                         + ShaderProgram.COLOR_ATTRIBUTE
-                         + ";\n"
-                         + "   v_color.a = v_color.a * (255.0/254.0);\n"
-                         + "   v_texCoords = "
-                         + ShaderProgram.TEXCOORD_ATTRIBUTE
-                         + "0;\n"
-                         + "   gl_Position =  u_projTrans * "
-                         + ShaderProgram.POSITION_ATTRIBUTE
-                         + ";\n"
-                         + "}\n";
+        const string VERTEX_SHADER = "attribute vec4 "
+                                  + ShaderProgram.POSITION_ATTRIBUTE
+                                  + ";\n"
+                                  + "attribute vec4 "
+                                  + ShaderProgram.COLOR_ATTRIBUTE
+                                  + ";\n"
+                                  + "attribute vec2 "
+                                  + ShaderProgram.TEXCOORD_ATTRIBUTE
+                                  + "0;\n"
+                                  + "uniform mat4 u_projTrans;\n"
+                                  + "varying vec4 v_color;\n"
+                                  + "varying vec2 v_texCoords;\n"
+                                  + "\n"
+                                  + "void main()\n"
+                                  + "{\n"
+                                  + "   v_color = "
+                                  + ShaderProgram.COLOR_ATTRIBUTE
+                                  + ";\n"
+                                  + "   v_color.a = v_color.a * (255.0/254.0);\n"
+                                  + "   v_texCoords = "
+                                  + ShaderProgram.TEXCOORD_ATTRIBUTE
+                                  + "0;\n"
+                                  + "   gl_Position =  u_projTrans * "
+                                  + ShaderProgram.POSITION_ATTRIBUTE
+                                  + ";\n"
+                                  + "}\n";
 
-        var fragmentShader = "#ifdef GL_ES\n"
-                           + "#define LOWP lowp\n"
-                           + "precision mediump float;\n"
-                           + "#else\n"
-                           + "#define LOWP \n"
-                           + "#endif\n"
-                           + "varying LOWP vec4 v_color;\n"
-                           + "varying vec2 v_texCoords;\n"
-                           + "uniform sampler2D u_texture;\n"
-                           + "void main()\n"
-                           + "{\n"
-                           + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
-                           + "}";
+        const string FRAGMENT_SHADER = "#ifdef GL_ES\n"
+                                    + "#define LOWP lowp\n"
+                                    + "precision mediump float;\n"
+                                    + "#else\n"
+                                    + "#define LOWP \n"
+                                    + "#endif\n"
+                                    + "varying LOWP vec4 v_color;\n"
+                                    + "varying vec2 v_texCoords;\n"
+                                    + "uniform sampler2D u_texture;\n"
+                                    + "void main()\n"
+                                    + "{\n"
+                                    + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
+                                    + "}";
 
-        var shader = new ShaderProgram( vertexShader, fragmentShader );
+        var shader = new ShaderProgram( VERTEX_SHADER, FRAGMENT_SHADER );
 
         if ( !shader.IsCompiled )
         {

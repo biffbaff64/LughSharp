@@ -269,7 +269,7 @@ public class Container< T > : WidgetGroup where T : Actor
         return true;
     }
 
-    public new bool RemoveActor( Actor actor, bool unfocus )
+    public override bool RemoveActor( Actor actor, bool unfocus )
     {
         ArgumentNullException.ThrowIfNull( actor );
 
@@ -283,7 +283,7 @@ public class Container< T > : WidgetGroup where T : Actor
         return base.RemoveActor( actor, unfocus );
     }
 
-    public new Actor RemoveActorAt( int index, bool unfocus )
+    public override Actor RemoveActorAt( int index, bool unfocus )
     {
         var actor = base.RemoveActorAt( index, unfocus );
 
@@ -444,7 +444,7 @@ public class Container< T > : WidgetGroup where T : Actor
         return _clip;
     }
 
-    public new Actor? Hit( float x, float y, bool touchable )
+    public override Actor? Hit( float x, float y, bool touchable )
     {
         if ( _clip )
         {
@@ -1138,7 +1138,7 @@ public class Container< T > : WidgetGroup where T : Actor
 
     #region drawing
 
-    public new void Draw( IBatch batch, float parentAlpha )
+    public override void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
 
@@ -1195,7 +1195,7 @@ public class Container< T > : WidgetGroup where T : Actor
         _background.Draw( batch, x, y, Width, Height );
     }
 
-    public new void DrawDebug( ShapeRenderer shapes )
+    public override void DrawDebug( ShapeRenderer shapes )
     {
         Validate();
 

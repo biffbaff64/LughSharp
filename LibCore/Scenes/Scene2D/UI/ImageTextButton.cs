@@ -283,7 +283,7 @@ public class ImageTextButton : Button
         }
     }
 
-    public new string ToString()
+    public override string ToString()
     {
         if ( Name != null )
         {

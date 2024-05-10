@@ -43,50 +43,50 @@ namespace LughSharp.LibCore.Graphics.G2D;
 ///     <para>
 ///         One-off usage:
 ///         <code>
-/// // 512x512 pixel pages, RGB565 format, 2 pixels of padding, border duplication
-/// PixmapPacker packer = new PixmapPacker(512, 512, Format.RGB565, 2, true);
-/// packer.Pack(&quot;First Pixmap&quot;, pixmap1);
-/// packer.Pack(&quot;Second Pixmap&quot;, pixmap2);
-/// TextureAtlas atlas = packer.GenerateTextureAtlas(TextureFilter.Nearest, TextureFilter.Nearest, false);
-/// packer.Dispose();
-/// // ...
-/// atlas.Dispose();
-/// </code>
-///         With this usage pattern, disposing the packer will not dispose any pixmaps
-///         used by the texture atlas. The texture atlas must also be disposed when no
-///         longer needed.
-///         Incremental texture atlas usage:
+///         // 512x512 pixel pages, RGB565 format, 2 pixels of padding, border duplication
+///         PixmapPacker packer = new PixmapPacker(512, 512, Format.RGB565, 2, true);
+///         packer.Pack(&quot;First Pixmap&quot;, pixmap1);
+///         packer.Pack(&quot;Second Pixmap&quot;, pixmap2);
+///         TextureAtlas atlas = packer.GenerateTextureAtlas(TextureFilter.Nearest, TextureFilter.Nearest, false);
+///         packer.Dispose();
+///         // ...
+///         atlas.Dispose();
+///         </code>
+///     With this usage pattern, disposing the packer will not dispose any pixmaps
+///     used by the texture atlas. The texture atlas must also be disposed when no
+///     longer needed.
+///     Incremental texture atlas usage:
 ///         <code>
-/// // 512x512 pixel pages, RGB565 format, 2 pixels of padding, no border duplication
-/// PixmapPacker packer = new PixmapPacker(512, 512, Format.RGB565, 2, false);
-/// TextureAtlas atlas = new TextureAtlas();
-/// 
-/// // potentially on a separate thread, e.g. downloading thumbnails
-/// packer.Pack(&quot;thumbnail&quot;, thumbnail);
-/// 
-/// // on the rendering thread, every frame
-/// packer.UpdateTextureAtlas(atlas, TextureFilter.Linear, TextureFilter.Linear, false);
-/// 
-/// // once the atlas is no longer needed, make sure you get the final additions. This might
-/// // be more elaborate depending on your threading model.
-/// packer.UpdateTextureAtlas(atlas, TextureFilter.Linear, TextureFilter.Linear, false);
-/// // ...
-/// atlas.Dispose();
-/// </code>
-///         Pixmap-only usage:
+///         // 512x512 pixel pages, RGB565 format, 2 pixels of padding, no border duplication
+///         PixmapPacker packer = new PixmapPacker(512, 512, Format.RGB565, 2, false);
+///         TextureAtlas atlas = new TextureAtlas();
+///         
+///         // potentially on a separate thread, e.g. downloading thumbnails
+///         packer.Pack(&quot;thumbnail&quot;, thumbnail);
+///         
+///         // on the rendering thread, every frame
+///         packer.UpdateTextureAtlas(atlas, TextureFilter.Linear, TextureFilter.Linear, false);
+///         
+///         // once the atlas is no longer needed, make sure you get the final additions. This might
+///         // be more elaborate depending on your threading model.
+///         packer.UpdateTextureAtlas(atlas, TextureFilter.Linear, TextureFilter.Linear, false);
+///         // ...
+///         atlas.Dispose();
+///         </code>
+///     Pixmap-only usage:
 ///         <code>
-/// PixmapPacker packer = new PixmapPacker(512, 512, Format.RGB565, 2, true);
-/// packer.Pack(&quot;First Pixmap&quot;, pixmap1);
-/// packer.Pack(&quot;Second Pixmap&quot;, pixmap2);
-/// 
-/// // do something interesting with the resulting pages
-/// foreach (Page page in packer.GetPages())
-/// {
-///     // ...
-/// }
-/// 
-/// packer.Dispose();
-/// </code>
+///         PixmapPacker packer = new PixmapPacker(512, 512, Format.RGB565, 2, true);
+///         packer.Pack(&quot;First Pixmap&quot;, pixmap1);
+///         packer.Pack(&quot;Second Pixmap&quot;, pixmap2);
+///         
+///         // do something interesting with the resulting pages
+///         foreach (Page page in packer.GetPages())
+///         {
+///             // ...
+///         }
+///         
+///         packer.Dispose();
+///         </code>
 ///     </para>
 /// </summary>
 [PublicAPI]
@@ -97,6 +97,9 @@ public class PixmapPacker : IDisposable
     private readonly bool          _stripWhitespaceY;
 
     private bool _disposed;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     public PixmapPacker( int pageWidth, int pageHeight, Pixmap.Format pageFormat, int padding, bool duplicateBorder )
         : this( pageWidth, pageHeight, pageFormat, padding, duplicateBorder, false, false, new GuillotineStrategy() )
@@ -109,16 +112,7 @@ public class PixmapPacker : IDisposable
                          int padding,
                          bool duplicateBorder,
                          IPackStrategy packStrategy )
-        : this(
-               pageWidth,
-               pageHeight,
-               pageFormat,
-               padding,
-               duplicateBorder,
-               false,
-               false,
-               packStrategy
-              )
+        : this( pageWidth, pageHeight, pageFormat, padding, duplicateBorder, false, false, packStrategy )
     {
     }
 

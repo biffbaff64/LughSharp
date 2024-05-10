@@ -94,7 +94,7 @@ public class FocusListener : IEventListener
         /// </summary>
         public Actor? RelatedActor { get; set; }
 
-        public new void Reset()
+        public override void Reset()
         {
             base.Reset();
             RelatedActor = null;

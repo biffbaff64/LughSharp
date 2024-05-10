@@ -30,8 +30,6 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class Gdx2DPixmap : IDisposable
 {
-    // ------------------------------------------------------------------------
-
     /// <summary>
     /// </summary>
     /// <param name="encodedData"></param>
@@ -119,20 +117,6 @@ public class Gdx2DPixmap : IDisposable
         Width    = ( int ) nativeData[ 1 ];
         Height   = ( int ) nativeData[ 2 ];
         Format   = ( int ) nativeData[ 3 ];
-    }
-
-    public long       BasePtr    { get; set; }                  // 
-    public int        Format     { get; set; }                  // The actual pixmap format.
-    public ByteBuffer PixelPtr   { get; set; }                  //
-    public long[]     NativeData { get; set; } = new long[ 4 ]; //
-
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
     }
 
     private ByteBuffer GetNewPixmap( long[] nativeData, int width, int height, int format )
@@ -320,13 +304,21 @@ public class Gdx2DPixmap : IDisposable
     }
 
     /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
+    /// <summary>
     /// </summary>
     /// <param name="disposing"></param>
     protected virtual void Dispose( bool disposing )
     {
         if ( disposing )
         {
-            //TODO:
         }
     }
 
@@ -336,62 +328,62 @@ public class Gdx2DPixmap : IDisposable
 
     public virtual ByteBuffer Load( long[] nativeData, byte[] buffer, int offset, int len )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual ByteBuffer NewPixmap( long[] nativeData, int width, int height, int format )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual void Free( long pixmap )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual void Clear( long pixmap, int color )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual void SetPixel( long pixmap, int x, int y, int color )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual int GetPixel( long pixmap, int x, int y )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual void DrawLine( long pixmap, int x, int y, int x2, int y2, int color )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual void DrawRect( long pixmap, int x, int y, int width, int height, int color )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual void DrawCircle( long pixmap, int x, int y, int radius, int color )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual void FillRect( long pixmap, int x, int y, int width, int height, int color )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual void FillCircle( long pixmap, int x, int y, int radius, int color )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual void FillTriangle( long pixmap, int x1, int y1, int x2, int y2, int x3, int y3, int color )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual void DrawPixmap( long src,
@@ -405,22 +397,22 @@ public class Gdx2DPixmap : IDisposable
                                     int dstWidth,
                                     int dstHeight )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual void SetBlend( long src, int blend )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual void SetScale( long src, int scale )
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     public virtual string GetFailureReason()
     {
-        throw new NotImplementedException();
+        throw new GdxRuntimeException( "Not implemented in this class!" );
     }
 
     // ------------------------------------------------------------------------
@@ -443,6 +435,11 @@ public class Gdx2DPixmap : IDisposable
     // ------------------------------------------------------------------------
 
     #region properties
+
+    public long       BasePtr    { get; set; }                  // 
+    public int        Format     { get; set; }                  // The actual pixmap format.
+    public ByteBuffer PixelPtr   { get; set; }                  //
+    public long[]     NativeData { get; set; } = new long[ 4 ]; //
 
     public int Width  { get; set; }
     public int Height { get; set; }

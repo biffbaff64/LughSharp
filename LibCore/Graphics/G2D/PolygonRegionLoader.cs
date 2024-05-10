@@ -32,11 +32,15 @@ namespace LughSharp.LibCore.Graphics.G2D;
 /// <summary>
 ///     loads <see cref="PolygonRegion" />s.
 /// </summary>
+[PublicAPI]
 public class PolygonRegionLoader
     : AsynchronousAssetLoader< PolygonRegion, PolygonRegionLoader.PolygonRegionParameters >
 {
     private readonly PolygonRegionParameters _defaultParameters = new();
     private readonly EarClippingTriangulator _triangulator      = new();
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     public PolygonRegionLoader()
         : this( new InternalFileHandleResolver() )
@@ -61,10 +65,10 @@ public class PolygonRegionLoader
     }
 
     /// <summary>
-    ///     If the PSH file contains a line starting with <see cref="PolygonRegionParameters.texturePrefix" />,
+    ///     If the PSH file contains a line starting with <see cref="PolygonRegionParameters.TexturePrefix" />,
     ///     an <see cref="AssetDescriptor" /> for the file referenced on that line will be added to the returned
     ///     Array. Otherwise a sibling of the given file with the same name and the first found extension
-    ///     in <see cref="PolygonRegionParameters.textureExtensions" />" will be used. If no suitable file is
+    ///     in <see cref="PolygonRegionParameters.TextureExtensions" />" will be used. If no suitable file is
     ///     found, the returned Array will be empty.
     /// </summary>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
@@ -83,9 +87,9 @@ public class PolygonRegionLoader
 
             for ( var line = reader.ReadLine(); line != null; line = reader.ReadLine() )
             {
-                if ( line.StartsWith( ( ( PolygonRegionParameters ) parameters ).texturePrefix! ) )
+                if ( line.StartsWith( ( ( PolygonRegionParameters ) parameters ).TexturePrefix! ) )
                 {
-                    image = line.Substring( ( ( PolygonRegionParameters ) parameters ).texturePrefix!.Length );
+                    image = line.Substring( ( ( PolygonRegionParameters ) parameters ).TexturePrefix!.Length );
 
                     break;
                 }
@@ -105,7 +109,7 @@ public class PolygonRegionLoader
             var directory = Path.GetDirectoryName( fileName );
             var fileNoExt = Path.GetFileNameWithoutExtension( fileName );
 
-            foreach ( var extension in ( ( PolygonRegionParameters ) parameters ).textureExtensions )
+            foreach ( var extension in ( ( PolygonRegionParameters ) parameters ).TextureExtensions )
             {
                 siblingFilePath = Path.Combine( directory!, fileNoExt + extension );
 
@@ -188,12 +192,13 @@ public class PolygonRegionLoader
         throw new GdxRuntimeException( "Polygon shape not found: " + file );
     }
 
+    [PublicAPI]
     public class PolygonRegionParameters : AssetLoaderParameters
     {
         /// <summary>
         ///     the possible file name extensions of the texture file.
         /// </summary>
-        public readonly string[] textureExtensions =
+        public readonly string[] TextureExtensions =
         {
             "png", "PNG", "jpeg", "JPEG", "jpg", "JPG", "cim", "CIM",
             "etc1", "ETC1", "ktx", "KTX", "zktx", "ZKTX"
@@ -203,12 +208,12 @@ public class PolygonRegionLoader
         ///     what the line starts with that contains the file name of the
         ///     texture for this <tt>PolygonRegion</tt>.
         /// </summary>
-        public readonly string? texturePrefix = "i ";
+        public readonly string? TexturePrefix = "i ";
 
         /// <summary>
         ///     what buffer size of the reader should be used to read the
         ///     <tt>texturePrefix</tt> line.
         /// </summary>
-        public int readerBuffer = 1024;
+        public int ReaderBuffer { get; set; } = 1024;
     }
 }

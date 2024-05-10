@@ -1573,7 +1573,7 @@ public class TextField : Widget
         {
             return _tf.FocusTraversal
                 && ( ( character == TAB )
-                  || ( character is CARRIAGE_RETURN or NEWLINE && ( GdxSystem.IsAndroid || GdxSystem.IsIos ) ) );
+                  || ( character is CARRIAGE_RETURN or NEWLINE && ( Platform.IsAndroid || Platform.IsIos ) ) );
         }
 
         public override bool KeyTyped( InputEvent? ev, char character )
@@ -1607,7 +1607,7 @@ public class TextField : Widget
                 return false;
             }
 
-            if ( GdxSystem.IsMac && Gdx.Input.IsKeyPressed( IInput.Keys.SYM ) )
+            if ( Platform.IsMac && Gdx.Input.IsKeyPressed( IInput.Keys.SYM ) )
             {
                 return true;
             }

@@ -25,16 +25,16 @@
 using System.Runtime.InteropServices;
 using Environment = System.Environment;
 
-namespace LughSharp.LibCore.Utils;
+namespace LughSharp.LibCore.Core;
 
 [PublicAPI]
-public static class GdxSystem
+public static class Platform
 {
     public static bool IsWindows { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Windows );
+    public static bool Is64Bit   { get; private set; } = Environment.Is64BitOperatingSystem;
     public static bool IsLinux   { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Linux );
     public static bool IsMac     { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.OSX );
     public static bool IsARM     { get; private set; } = IsArmArchitecture();
-    public static bool Is64Bit   { get; private set; } = Environment.Is64BitOperatingSystem;
 
     // ------------------------------------------------------------------------
     

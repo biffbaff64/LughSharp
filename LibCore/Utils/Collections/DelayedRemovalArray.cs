@@ -234,7 +234,7 @@ public class DelayedRemovalArray< T > : List< T >
     /// </summary>
     /// <param name="start"></param>
     /// <param name="end"></param>
-    public new void RemoveRange( int start, int end )
+    public override void RemoveRange( int start, int end )
     {
         if ( _iterating > 0 )
         {
@@ -252,7 +252,7 @@ public class DelayedRemovalArray< T > : List< T >
     /// <summary>
     ///     Clear this array.
     /// </summary>
-    public new void Clear()
+    public override void Clear()
     {
         if ( _iterating > 0 )
         {
@@ -284,7 +284,7 @@ public class DelayedRemovalArray< T > : List< T >
     /// <param name="index"></param>
     /// <param name="value"></param>
     /// <exception cref="GdxRuntimeException"></exception>
-    public new void Insert( int index, T value )
+    public override void Insert( int index, T value )
     {
         if ( _iterating > 0 )
         {
@@ -353,7 +353,7 @@ public class DelayedRemovalArray< T > : List< T >
     /// <summary>
     /// </summary>
     /// <exception cref="GdxRuntimeException"></exception>
-    public new void Sort()
+    public override void Sort()
     {
         if ( _iterating > 0 )
         {
@@ -366,7 +366,7 @@ public class DelayedRemovalArray< T > : List< T >
     /// <summary>
     /// </summary>
     /// <param name="comparator"></param>
-    public new void Sort( IComparer< T > comparator )
+    public override void Sort( IComparer< T > comparator )
     {
         if ( _iterating > 0 )
         {
@@ -383,7 +383,7 @@ public class DelayedRemovalArray< T > : List< T >
     /// <exception cref="GdxRuntimeException">
     ///     If <see cref="Begin()"/> has not been called first.
     /// </exception>
-    public new void Reverse()
+    public override void Reverse()
     {
         if ( _iterating > 0 )
         {

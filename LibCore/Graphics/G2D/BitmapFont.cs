@@ -546,7 +546,7 @@ public class BitmapFont
     ///     Note this method is called by the BitmapFont constructors. If a subclass
     ///     overrides this method, it will be called before the subclass constructors.
     /// </para>
-    public BitmapFontCache NewFontCache()
+    public virtual BitmapFontCache NewFontCache()
     {
         return new BitmapFontCache( this, UseIntegerPositions );
     }

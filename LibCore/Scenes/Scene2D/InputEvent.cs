@@ -157,7 +157,7 @@ public class InputEvent : Event
 
     /// <summary>
     /// </summary>
-    public new void Reset()
+    public override void Reset()
     {
         base.Reset();
         RelatedActor = null;

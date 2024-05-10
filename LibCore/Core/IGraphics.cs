@@ -35,20 +35,20 @@ public interface IGraphics
     ///     <see cref="Height" />, <see cref="RefreshRate" />, and <see cref="BitsPerPixel" />.
     /// </summary>
     [PublicAPI]
-    public class DisplayModeDescriptor
+    public class DisplayMode
     {
-        public DisplayModeDescriptor( int width, int height, int refreshRate, int bitsPerPixel )
+        public int Width        { get; set; }
+        public int Height       { get; set; }
+        public int RefreshRate  { get; set; }
+        public int BitsPerPixel { get; set; }
+
+        public DisplayMode( int width, int height, int refreshRate, int bitsPerPixel )
         {
             Width        = width;
             Height       = height;
             RefreshRate  = refreshRate;
             BitsPerPixel = bitsPerPixel;
         }
-
-        public int Width        { get; set; }
-        public int Height       { get; set; }
-        public int RefreshRate  { get; set; }
-        public int BitsPerPixel { get; set; }
 
         public override string ToString()
         {
@@ -60,9 +60,9 @@ public interface IGraphics
     ///     Describes a monitor, with X, Y, and Name properties.
     /// </summary>
     [PublicAPI]
-    public class MonitorDescriptor
+    public class GdxMonitor
     {
-        public MonitorDescriptor( int x, int y, string name )
+        public GdxMonitor( int x, int y, string name )
         {
             VirtualX = x;
             VirtualY = y;
@@ -172,21 +172,21 @@ public interface IGraphics
 
     bool SupportsDisplayModeChange();
 
-    MonitorDescriptor GetPrimaryMonitor();
+    GdxMonitor GetPrimaryMonitor();
 
-    MonitorDescriptor GetMonitor();
+    GdxMonitor GetMonitor();
 
-    MonitorDescriptor[] GetMonitors();
+    GdxMonitor[] GetMonitors();
 
-    DisplayModeDescriptor[] GetDisplayModes();
+    DisplayMode[] GetDisplayModes();
 
-    DisplayModeDescriptor[] GetDisplayModes( MonitorDescriptor monitor );
+    DisplayMode[] GetDisplayModes( GdxMonitor gdxMonitor );
 
-    DisplayModeDescriptor GetDisplayMode();
+    DisplayMode GetDisplayMode();
 
-    DisplayModeDescriptor GetDisplayMode( MonitorDescriptor monitor );
+    DisplayMode GetDisplayMode( GdxMonitor gdxMonitor );
 
-    bool SetFullscreenMode( DisplayModeDescriptor displayMode );
+    bool SetFullscreenMode( DisplayMode displayMode );
 
     bool SetWindowedMode( int width, int height );
 

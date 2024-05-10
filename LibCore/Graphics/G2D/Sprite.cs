@@ -28,8 +28,126 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class Sprite : TextureRegion
 {
-    public readonly static int VertexSize = 2 + 1 + 2;
-    public readonly static int SpriteSize = 4 * VertexSize;
+    public const int VERTEX_SIZE = 2 + 1 + 2;
+    public const int SPRITE_SIZE = 4 * VERTEX_SIZE;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region Constructors
+
+    /// <summary>
+    ///     Creates an uninitialized sprite.
+    ///     <para>
+    ///         The sprite will need a texture region and bounds set before it can be drawn.
+    ///     </para>
+    /// </summary>
+    public Sprite()
+    {
+        SetColor( 1, 1, 1, 1 );
+    }
+
+    /// <summary>
+    ///     Creates a sprite with width, height, and texture region
+    ///     equal to the size of the texture.
+    /// </summary>
+    public Sprite( Texture texture )
+        : this( texture, 0, 0, texture.Width, texture.Height )
+    {
+    }
+
+    /// <summary>
+    ///     Creates a sprite with width, height, and texture region equal to the
+    ///     specified size. The texture region's upper left corner will be 0,0.
+    /// </summary>
+    /// <param name="texture"></param>
+    /// <param name="srcWidth">
+    ///     The width of the texture region.
+    ///     May be negative to flip the sprite when drawn.
+    /// </param>
+    /// <param name="srcHeight">
+    ///     The height of the texture region.
+    ///     May be negative to flip the sprite when drawn.
+    /// </param>
+    public Sprite( Texture texture, int srcWidth, int srcHeight )
+        : this( texture, 0, 0, srcWidth, srcHeight )
+    {
+    }
+
+    /// <summary>
+    ///     Creates a sprite with width, height, and texture region equal
+    ///     to the specified size.
+    /// </summary>
+    /// <param name="texture"></param>
+    /// <param name="srcX"></param>
+    /// <param name="srcY"></param>
+    /// <param name="srcWidth">
+    ///     The width of the texture region.
+    ///     May be negative to flip the sprite when drawn.
+    /// </param>
+    /// <param name="srcHeight">
+    ///     The height of the texture region.
+    ///     May be negative to flip the sprite when drawn.
+    /// </param>
+    public Sprite( Texture? texture, int srcX, int srcY, int srcWidth, int srcHeight )
+    {
+        Texture = texture ?? throw new ArgumentException( "texture cannot be null." );
+
+        SetRegion( srcX, srcY, srcWidth, srcHeight );
+        SetColor( 1, 1, 1, 1 );
+
+        SetSizeAndOrigin( Math.Abs( srcWidth ), Math.Abs( srcHeight ) );
+    }
+
+    // Note the region is copied.
+    /// <summary>
+    ///     Creates a sprite based on a specific TextureRegion.
+    ///     The new sprite's region is a copy of the parameter region - altering one
+    ///     does not affect the other
+    /// </summary>
+    public Sprite( TextureRegion region )
+    {
+        SetRegion( region );
+        SetColor( 1, 1, 1, 1 );
+
+        SetSizeAndOrigin( region.RegionWidth, region.RegionHeight );
+    }
+
+    /// <summary>
+    ///     Creates a sprite with width, height, and texture region equal to the
+    ///     specified size, relative to specified sprite's texture region.
+    /// </summary>
+    /// <param name="region"></param>
+    /// <param name="srcX"></param>
+    /// <param name="srcY"></param>
+    /// <param name="srcWidth">
+    ///     The width of the texture region.
+    ///     May be negative to flip the sprite when drawn.
+    /// </param>
+    /// <param name="srcHeight">
+    ///     The height of the texture region.
+    ///     May be negative to flip the sprite when drawn.
+    /// </param>
+    public Sprite( TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight )
+    {
+        SetRegion( region, srcX, srcY, srcWidth, srcHeight );
+        SetColor( 1, 1, 1, 1 );
+
+        SetSizeAndOrigin( Math.Abs( srcWidth ), Math.Abs( srcHeight ) );
+    }
+
+    /// <summary>
+    ///     Creates a sprite that is a copy in every way of the specified sprite.
+    /// </summary>
+    public Sprite( Sprite sprite )
+    {
+        Set( sprite );
+    }
+
+    #endregion
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Helper method for constructors which allows calls to <see cref="SetSize" />
@@ -49,18 +167,9 @@ public class Sprite : TextureRegion
     /// </summary>
     public void Set( Sprite sprite )
     {
-        if ( sprite == null )
-        {
-            throw new ArgumentException( "sprite cannot be null." );
-        }
+        ArgumentNullException.ThrowIfNull( sprite );
 
-        Array.Copy(
-                   sprite.Vertices,
-                   0,
-                   Vertices,
-                   0,
-                   SpriteSize
-                  );
+        Array.Copy( sprite.Vertices, 0, Vertices, 0, SPRITE_SIZE );
 
         Texture      = sprite.Texture;
         U            = sprite.U;
@@ -221,6 +330,22 @@ public class Sprite : TextureRegion
     }
 
     /// <summary>
+    ///     Sets the x position so that it is centered on the given x parameter
+    /// </summary>
+    public void SetCenterX( float value )
+    {
+        X = value - ( Width / 2 );
+    }
+
+    /// <summary>
+    ///     Sets the y position so that it is centered on the given y parameter
+    /// </summary>
+    public void SetCenterY( float value )
+    {
+        Y = value - ( Height / 2 );
+    }
+
+    /// <summary>
     ///     Sets the x position relative to the current position where the sprite will
     ///     be drawn. If origin, rotation, or scale are
     ///     changed, it is slightly more efficient to translate after those operations.
@@ -325,6 +450,9 @@ public class Sprite : TextureRegion
         Vertices[ IBatch.C4 ] = color;
     }
 
+    /// <summary>
+    ///     Sets the color used to tint this sprite.
+    /// </summary>
     public void SetColor( float r, float g, float b, float a )
     {
         Color.Set( r, g, b, a );
@@ -539,7 +667,7 @@ public class Sprite : TextureRegion
 
     public void Draw( IBatch batch )
     {
-        batch.Draw( Texture, Vertices, 0, SpriteSize );
+        batch.Draw( Texture, Vertices, 0, SPRITE_SIZE );
     }
 
     public void Draw( IBatch batch, float alphaModulation )
@@ -576,44 +704,6 @@ public class Sprite : TextureRegion
         Vertices[ IBatch.V4 ] = v2;
     }
 
-    // ----------------------------------------------------
-
-    // The following four Setters are methods so as to
-    // not interfere with inherited properties...
-
-    public void SetU( float value )
-    {
-        U = value;
-
-        Vertices[ IBatch.U1 ] = value;
-        Vertices[ IBatch.U2 ] = value;
-    }
-
-    public void SetV( float value )
-    {
-        V = value;
-
-        Vertices[ IBatch.V2 ] = value;
-        Vertices[ IBatch.V3 ] = value;
-    }
-
-    public void SetU2( float value )
-    {
-        U2 = value;
-
-        Vertices[ IBatch.U3 ] = value;
-        Vertices[ IBatch.U4 ] = value;
-    }
-
-    public void SetV2( float value )
-    {
-        V2                    = value;
-        Vertices[ IBatch.V1 ] = value;
-        Vertices[ IBatch.V4 ] = value;
-    }
-
-    // ----------------------------------------------------
-
     /// <summary>
     ///     Set the sprite's flip state regardless of current condition.
     /// </summary>
@@ -641,7 +731,7 @@ public class Sprite : TextureRegion
     /// </summary>
     /// <param name="flipx"> perform horizontal flip </param>
     /// <param name="flipy"> perform vertical flip  </param>
-    public virtual new void Flip( bool flipx, bool flipy )
+    public override void Flip( bool flipx, bool flipy )
     {
         base.Flip( flipx, flipy );
 
@@ -707,6 +797,9 @@ public class Sprite : TextureRegion
         }
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     #region PrivateData
 
     private readonly Color _color = new( 1, 1, 1, 1 );
@@ -720,119 +813,58 @@ public class Sprite : TextureRegion
 
     #endregion
 
-    #region Constructors
-
-    /// <summary>
-    ///     Creates an uninitialized sprite.
-    ///     <para>
-    ///         The sprite will need a texture region and bounds set before it can be drawn.
-    ///     </para>
-    /// </summary>
-    public Sprite()
-    {
-        SetColor( 1, 1, 1, 1 );
-    }
-
-    /// <summary>
-    ///     Creates a sprite with width, height, and texture region
-    ///     equal to the size of the texture.
-    /// </summary>
-    public Sprite( Texture texture )
-        : this( texture, 0, 0, texture.Width, texture.Height )
-    {
-    }
-
-    /// <summary>
-    ///     Creates a sprite with width, height, and texture region equal to the
-    ///     specified size. The texture region's upper left corner will be 0,0.
-    /// </summary>
-    /// <param name="texture"></param>
-    /// <param name="srcWidth">
-    ///     The width of the texture region.
-    ///     May be negative to flip the sprite when drawn.
-    /// </param>
-    /// <param name="srcHeight">
-    ///     The height of the texture region.
-    ///     May be negative to flip the sprite when drawn.
-    /// </param>
-    public Sprite( Texture texture, int srcWidth, int srcHeight )
-        : this( texture, 0, 0, srcWidth, srcHeight )
-    {
-    }
-
-    /// <summary>
-    ///     Creates a sprite with width, height, and texture region equal
-    ///     to the specified size.
-    /// </summary>
-    /// <param name="texture"></param>
-    /// <param name="srcX"></param>
-    /// <param name="srcY"></param>
-    /// <param name="srcWidth">
-    ///     The width of the texture region.
-    ///     May be negative to flip the sprite when drawn.
-    /// </param>
-    /// <param name="srcHeight">
-    ///     The height of the texture region.
-    ///     May be negative to flip the sprite when drawn.
-    /// </param>
-    public Sprite( Texture? texture, int srcX, int srcY, int srcWidth, int srcHeight )
-    {
-        Texture = texture ?? throw new ArgumentException( "texture cannot be null." );
-
-        SetRegion( srcX, srcY, srcWidth, srcHeight );
-        SetColor( 1, 1, 1, 1 );
-
-        SetSizeAndOrigin( Math.Abs( srcWidth ), Math.Abs( srcHeight ) );
-    }
-
-    // Note the region is copied.
-    /// <summary>
-    ///     Creates a sprite based on a specific TextureRegion.
-    ///     The new sprite's region is a copy of the parameter region - altering one
-    ///     does not affect the other
-    /// </summary>
-    public Sprite( TextureRegion region )
-    {
-        SetRegion( region );
-        SetColor( 1, 1, 1, 1 );
-
-        SetSizeAndOrigin( region.RegionWidth, region.RegionHeight );
-    }
-
-    /// <summary>
-    ///     Creates a sprite with width, height, and texture region equal to the
-    ///     specified size, relative to specified sprite's texture region.
-    /// </summary>
-    /// <param name="region"></param>
-    /// <param name="srcX"></param>
-    /// <param name="srcY"></param>
-    /// <param name="srcWidth">
-    ///     The width of the texture region.
-    ///     May be negative to flip the sprite when drawn.
-    /// </param>
-    /// <param name="srcHeight">
-    ///     The height of the texture region.
-    ///     May be negative to flip the sprite when drawn.
-    /// </param>
-    public Sprite( TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight )
-    {
-        SetRegion( region, srcX, srcY, srcWidth, srcHeight );
-        SetColor( 1, 1, 1, 1 );
-
-        SetSizeAndOrigin( Math.Abs( srcWidth ), Math.Abs( srcHeight ) );
-    }
-
-    /// <summary>
-    ///     Creates a sprite that is a copy in every way of the specified sprite.
-    /// </summary>
-    public Sprite( Sprite sprite )
-    {
-        Set( sprite );
-    }
-
-    #endregion
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     #region Properties
+
+    public override float U
+    {
+        get => base.U;
+        set
+        {
+            base.U = value;
+
+            Vertices[ IBatch.U1 ] = value;
+            Vertices[ IBatch.U2 ] = value;
+        }
+    }
+    
+    public override float V
+    {
+        get => base.V;
+        set
+        {
+            base.V = value;
+
+            Vertices[ IBatch.V2 ] = value;
+            Vertices[ IBatch.V3 ] = value;
+        }
+    }
+
+    public override float U2
+    {
+        get => base.U2;
+        set
+        {
+            base.U2 = value;
+
+            Vertices[ IBatch.U3 ] = value;
+            Vertices[ IBatch.U4 ] = value;
+        }
+    }
+    
+    public override float V2
+    {
+        get => base.V2;
+        set
+        {
+            base.V2 = value;
+
+            Vertices[ IBatch.V1 ] = value;
+            Vertices[ IBatch.V4 ] = value;
+        }
+    }
 
     /// <summary>
     ///     Sets the color of this sprite, expanding the alpha from 0-254 to 0-255.
@@ -1053,21 +1085,5 @@ public class Sprite : TextureRegion
         }
     }
 
-    /// <summary>
-    ///     Sets the x position so that it is centered on the given x parameter
-    /// </summary>
-    public void SetCenterX( float value )
-    {
-        X = value - ( Width / 2 );
-    }
-
-    /// <summary>
-    ///     Sets the y position so that it is centered on the given y parameter
-    /// </summary>
-    public void SetCenterY( float value )
-    {
-        Y = value - ( Height / 2 );
-    }
-
-    #endregion
+    #endregion properties
 }
