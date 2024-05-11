@@ -86,35 +86,20 @@ public class ShaderProgram
     /// </summary>
     private readonly static Dictionary< IApplication, List< ShaderProgram > > _shaders = new();
 
-    /// <summary>
-    ///     attribute lookup
-    /// </summary>
-    private readonly Dictionary< string, int > _attributes = new();
-
+    private readonly Dictionary< string, int > _attributes     = new();
     private readonly Dictionary< string, int > _attributeSizes = new();
     private readonly Dictionary< string, int > _attributeTypes = new();
+    private readonly IntBuffer                 _parameters     = BufferUtils.NewIntBuffer( 1 );
+    private readonly IntBuffer                 _progType       = BufferUtils.NewIntBuffer( 1 );
+    private readonly Dictionary< string, int > _uniforms       = new();
+    private readonly Dictionary< string, int > _uniformSizes   = new();
+    private readonly Dictionary< string, int > _uniformTypes   = new();
+    private readonly FloatBuffer               _matrix;
 
-    private readonly FloatBuffer _matrix;
-
-    private readonly IntBuffer _parameters = BufferUtils.NewIntBuffer( 1 );
-    private readonly IntBuffer _progType   = BufferUtils.NewIntBuffer( 1 );
-
-    /// <summary>
-    ///     uniform lookup
-    /// </summary>
-    private readonly Dictionary< string, int > _uniforms = new();
-
-    private readonly Dictionary< string, int > _uniformSizes = new();
-    private readonly Dictionary< string, int > _uniformTypes = new();
-    private          int                       _fragmentShaderHandle;
-    private          bool                      _invalidated;
-
-    /// <summary>
-    ///     the log
-    /// </summary>
+    private int    _fragmentShaderHandle;
+    private bool   _invalidated;
     private string _log = "";
-
-    private int _vertexShaderHandle;
+    private int    _vertexShaderHandle;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -175,12 +160,12 @@ public class ShaderProgram
         {
             if ( IsCompiled )
             {
-                // Gdx.gl20.glGetProgramiv(program, IGL.GL_INFO_LOG_LENGTH, intbuf);
-                // int infoLogLength = intbuf.get(0);
-                // if (infoLogLength > 1) {
+// Gdx.gl20.glGetProgramiv(program, IGL.GL_INFO_LOG_LENGTH, intbuf);
+// int infoLogLength = intbuf.get(0);
+// if (infoLogLength > 1)
+// {
                 _log = Gdx.GL.glGetProgramInfoLog( ( uint ) Handle, IGL.GL_INFO_LOG_LENGTH );
-
-                // }
+// }
             }
 
             return _log;
@@ -241,11 +226,11 @@ public class ShaderProgram
         {
 // gl.glGetShaderiv(shader, IGL.GL_INFO_LOG_LENGTH, intbuf);
 // int infoLogLength = intbuf.get(0);
-// if (infoLogLength > 1) {
+// if (infoLogLength > 1)
+// {
             var infoLog = Gdx.GL.glGetShaderInfoLog( shader, IGL.GL_INFO_LOG_LENGTH );
             _log += type == IGL.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
             _log += infoLog;
-
 // }
             return -1;
         }
@@ -289,9 +274,9 @@ public class ShaderProgram
         {
 // Gdx.gl20.glGetProgramiv(program, IGL.GL_INFO_LOG_LENGTH, intbuf);
 // int infoLogLength = intbuf.get(0);
-// if (infoLogLength > 1) {
+// if (infoLogLength > 1)
+// {
             _log = Gdx.GL.glGetProgramInfoLog( ( uint ) program, IGL.GL_INFO_LOG_LENGTH );
-
 // }
             return -1;
         }

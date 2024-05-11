@@ -260,7 +260,6 @@ public class ObjectMap< TK, TV >
     ///         collection using the <see cref="Put" /> method.
     ///     </para>
     /// </remarks>
-    /// <seealso cref="Put" />
     /// <typeparam name="TK">The type of the keys in the collection.</typeparam>
     /// <typeparam name="TV">The type of the values in the collection.</typeparam>
     public void PutAll( ObjectMap< TK, TV > map )
@@ -291,7 +290,6 @@ public class ObjectMap< TK, TV >
     ///     using the <see cref="LocateKey" /> method. If the key is found, the associated
     ///     value is returned; otherwise, <c>null</c> is returned.
     /// </remarks>
-    /// <seealso cref="LocateKey" />
     /// <typeparam name="TT">The type of the key to look up.</typeparam>
     /// <typeparam name="TK">The type constraint for the key type.</typeparam>
     /// <typeparam name="TV">The type of the value to retrieve.</typeparam>
@@ -319,7 +317,6 @@ public class ObjectMap< TK, TV >
     ///         returned; otherwise, the provided <paramref name="defaultValue" /> is returned.
     ///     </para>
     /// </remarks>
-    /// <seealso cref="LocateKey" />
     /// <typeparam name="TK">The type of the keys in the collection.</typeparam>
     /// <typeparam name="TV">The type of the values in the collection.</typeparam>
     public TV? Get( TK key, TV? defaultValue )

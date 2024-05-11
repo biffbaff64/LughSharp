@@ -28,6 +28,7 @@ using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
+[PublicAPI]
 public class ShapeRenderer : IDisposable
 {
     public enum ShapeTypes
@@ -37,17 +38,21 @@ public class ShapeRenderer : IDisposable
         Filled = IGL.GL_TRIANGLES
     }
 
-    private readonly Color _color = new( 1, 1, 1, 1 );
+    public IImmediateModeRenderer Renderer  { get; set; }
+    public ShapeTypes?            ShapeType { get; set; }
 
+    private readonly Color   _color                = new( 1, 1, 1, 1 );
     private readonly Matrix4 _combinedMatrix       = new();
     private readonly float   _defaultRectLineWidth = 0.75f;
     private readonly Vector2 _tmp                  = new();
-    private          bool    _autoShapeType;
 
+    private bool    _autoShapeType;
     private bool    _matrixDirty      = false;
     private Matrix4 _projectionMatrix = new();
     private Matrix4 _transformMatrix  = new();
 
+    // ------------------------------------------------------------------------
+    
     public ShapeRenderer( int maxVertices = 5000, ShaderProgram? defaultShader = null )
     {
         Renderer = defaultShader == null
@@ -57,9 +62,6 @@ public class ShapeRenderer : IDisposable
         _projectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
         _matrixDirty = true;
     }
-
-    public IImmediateModeRenderer Renderer  { get; set; }
-    public ShapeTypes?            ShapeType { get; set; }
 
     public Color Color
     {
@@ -85,11 +87,6 @@ public class ShapeRenderer : IDisposable
             _transformMatrix = value;
             _matrixDirty     = true;
         }
-    }
-
-    public void Dispose()
-    {
-        Dispose( true );
     }
 
     /// <summary>
@@ -988,8 +985,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws two crossed lines using <seealso cref="ShapeTypes.Lines" />
-    ///     or <seealso cref="ShapeTypes.Filled" />.
+    ///     Draws two crossed lines using <see cref="ShapeTypes.Lines" />
+    ///     or <see cref="ShapeTypes.Filled" />.
     /// </summary>
     public void XShape( float x, float y, float size )
     {
@@ -1587,8 +1584,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
+    ///     Returns true if currently between begin and end.
     /// </summary>
-    /// <returns> true if currently between begin and end.</returns>
     public bool IsDrawing()
     {
         return ShapeType != null;
@@ -1596,6 +1593,11 @@ public class ShapeRenderer : IDisposable
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
+
+    public void Dispose()
+    {
+        Dispose( true );
+    }
 
     private void Dispose( bool disposing )
     {

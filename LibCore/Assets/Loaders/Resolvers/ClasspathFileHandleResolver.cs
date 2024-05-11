@@ -25,7 +25,8 @@
 
 namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 
-internal class ClasspathFileHandleResolver : IFileHandleResolver
+[PublicAPI]
+public class ClasspathFileHandleResolver : IFileHandleResolver
 {
     /// <inheritdoc />
     public FileInfo Resolve( string fileName )

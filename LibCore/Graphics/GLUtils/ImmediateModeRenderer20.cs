@@ -32,26 +32,30 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 ///     Immediate mode rendering class for GLES 2.0. The renderer will allow you to
 ///     specify vertices on the fly and provides a default shader for (unlit) rendering.
 /// </summary>
+[PublicAPI]
 public class ImmediateModeRenderer20 : IImmediateModeRenderer
 {
-    private readonly int _colorOffset;
+    public int MaxVertices { get; set; }
+    public int NumVertices { get; set; }
 
-    private readonly Mesh _mesh;
-    private readonly int  _normalOffset;
-
+    private readonly int      _colorOffset;
+    private readonly Mesh     _mesh;
+    private readonly int      _normalOffset;
     private readonly int      _numTexCoords;
     private readonly Matrix4  _projModelView = new();
     private readonly string[] _shaderUniformNames;
     private readonly int      _texCoordOffset;
     private readonly int      _vertexSize;
     private readonly float[]  _vertices;
-    private          int      _numSetTexCoords;
 
-    private bool _ownsShader;
-    private int  _primitiveType;
-
+    private int            _numSetTexCoords;
+    private bool           _ownsShader;
+    private int            _primitiveType;
     private ShaderProgram? _shader;
     private int            _vertexIdx;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     public ImmediateModeRenderer20( bool hasNormals, bool hasColors, int numTexCoords )
         : this( 5000, hasNormals, hasColors, numTexCoords, CreateDefaultShader( hasNormals, hasColors, numTexCoords ) )
@@ -71,11 +75,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         _ownsShader = true;
     }
 
-    public ImmediateModeRenderer20( int maxVertices,
-                                    bool hasNormals,
-                                    bool hasColors,
-                                    int numTexCoords,
-                                    ShaderProgram shader )
+    public ImmediateModeRenderer20( int maxVertices, bool hasNormals, bool hasColors, int numTexCoords, ShaderProgram shader )
     {
         MaxVertices   = maxVertices;
         _numTexCoords = numTexCoords;
@@ -122,14 +122,15 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
     }
 
-    public int MaxVertices { get; set; }
-    public int NumVertices { get; set; }
-
-
     public void Begin( Matrix4 projModelView, int primitiveType )
     {
         _projModelView.Set( projModelView );
         _primitiveType = primitiveType;
+    }
+
+    public void End()
+    {
+        Flush();
     }
 
     public void SetColor( Color color )
@@ -204,21 +205,6 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         _numSetTexCoords = 0;
         _vertexIdx       = 0;
         NumVertices      = 0;
-    }
-
-    public void End()
-    {
-        Flush();
-    }
-
-    public void Dispose()
-    {
-        if ( _ownsShader && ( _shader != null ) )
-        {
-            _shader.Dispose();
-        }
-
-        _mesh.Dispose();
     }
 
     private VertexAttribute[] BuildVertexAttributes( bool hasNormals, bool hasColor, int numTexCoords )
@@ -371,5 +357,16 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
 
         return program;
+    }
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        if ( _ownsShader && ( _shader != null ) )
+        {
+            _shader.Dispose();
+        }
+
+        _mesh.Dispose();
     }
 }

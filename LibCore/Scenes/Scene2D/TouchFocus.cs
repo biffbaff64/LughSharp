@@ -27,8 +27,6 @@ using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
 namespace LughSharp.LibCore.Scenes.Scene2D;
 
-//TODO: In LibGDX this is public only for GWT; Is this still needed because of that?
-
 [PublicAPI]
 public class TouchFocus
 {

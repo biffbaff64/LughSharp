@@ -84,7 +84,7 @@ public class PerformanceCounter
 
     /// <summary>
     ///     Updates the time and load counters and resets the time.
-    ///     Call <seealso cref="Start()" /> to begin a new count. The values are only
+    ///     Call <see cref="Start()" /> to begin a new count. The values are only
     ///     valid after at least two calls to this method.
     /// </summary>
     public void Tick()
@@ -101,7 +101,7 @@ public class PerformanceCounter
 
     /// <summary>
     ///     Updates the time and load counters and resets the time.
-    ///     Call <seealso cref="Start()" /> to begin a new count.
+    ///     Call <see cref="Start()" /> to begin a new count.
     /// </summary>
     /// <param name="delta"> The time since the last call to this method</param>
     public void Tick( in float delta )

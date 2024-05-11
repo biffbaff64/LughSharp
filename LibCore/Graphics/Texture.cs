@@ -201,7 +201,7 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    ///     Draws the given <seealso cref="Pixmap" /> to the texture at position x, y.
+    ///     Draws the given <see cref="Pixmap"/> to the texture at position x, y.
     ///     No clipping is performed so you have to make sure that you draw only inside
     ///     the texture region. Note that this will only draw to mipmap level 0!
     /// </summary>

@@ -72,7 +72,7 @@ public class Body
 //    }
 //
 //    /// <summary>
-//    /// Resets this body after fetching it from the <seealso cref="World.freeBodies"/> Pool.
+//    ///   Resets this body after fetching it from the <see cref="World.freeBodies"/> Pool.
 //    /// </summary>
 //    protected internal virtual void Reset( long addr )
 //    {

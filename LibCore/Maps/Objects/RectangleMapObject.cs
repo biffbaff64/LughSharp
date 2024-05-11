@@ -40,13 +40,13 @@ public class RectangleMapObject : MapObject
     }
 
     /// <summary>
-    ///     Creates a <seealso cref="RectangleShape" /> object with the given X and Y
+    ///     Creates a <see cref="RectangleShape" /> object with the given X and Y
     ///     coordinates along with a given width and height.
     /// </summary>
     /// <param name="x"> X coordinate</param>
     /// <param name="y"> Y coordinate</param>
-    /// <param name="width"> Width of the <seealso cref="Rectangle" /> to be created.</param>
-    /// <param name="height"> Height of the <seealso cref="Rectangle" /> to be created.</param>
+    /// <param name="width"> Width of the <see cref="Rectangle" /> to be created.</param>
+    /// <param name="height"> Height of the <see cref="Rectangle" /> to be created.</param>
     public RectangleMapObject( float x, float y, float width, float height )
     {
         Rectangle = new RectangleShape( x, y, width, height );

@@ -22,7 +22,7 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-// -----------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // General System
 
 global using System;
@@ -31,12 +31,12 @@ global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.IO;
 
-// -----------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // Json
 global using System.Text.Json;
 global using System.Text.Json.Serialization;
 
-// -----------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // XML
 global using System.Xml;
 global using System.Xml.Linq;
@@ -46,14 +46,14 @@ global using System.Xml.Serialization;
 global using System.Xml.XPath;
 global using System.Xml.Xsl;
 
-// -----------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // Jetbrains
 global using JetBrains.Annotations;
 
-// -----------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // OpenAL support
 
-// -----------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // OpenGL / Glfw support
 global using DotGL;
 global using DotGLFW;
@@ -64,7 +64,7 @@ global using GLFWMonitor    = DotGLFW.Monitor;
 global using GLFWWindow     = DotGLFW.Window;
 //@formatter:on
 
-// -----------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // LughSharp
 global using LughSharp.LibCore.Assets;
 global using LughSharp.LibCore.Audio;
@@ -84,8 +84,10 @@ global using LughSharp.LibCore.Utils.Buffers;
 global using LughSharp.LibCore.Utils.Collections;
 global using LughSharp.LibCore.Utils.Pooling;
 global using LughSharp.LibCore.Utils.Viewport;
+
+// ----------------------------------------------------------------------------
+
 global using Vector2 = LughSharp.LibCore.Maths.Vector2;
 global using Vector3 = LughSharp.LibCore.Maths.Vector3;
 
-// -----------------------------------------------------------------------
-//
+// ----------------------------------------------------------------------------

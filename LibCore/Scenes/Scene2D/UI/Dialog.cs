@@ -37,6 +37,14 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class Dialog : Window
 {
+    public Actor? PreviousKeyboardFocus { get; set; }
+    public Actor? PreviousScrollFocus   { get; set; }
+    public Table? ContentTable          { get; private set; }
+    public Table? ButtonTable           { get; private set; }
+    public bool   CancelHide            { get; set; }
+
+    public Dictionary< Actor, object >? Values { get; set; } = new();
+
     private readonly IgnoreTouchDown _ignoreTouchDown = null!;
 
     private ChangeListener _dialogChangeListener = null!;
@@ -86,14 +94,6 @@ public class Dialog : Window
         Initialise();
     }
 
-    public Actor? PreviousKeyboardFocus { get; set; }
-    public Actor? PreviousScrollFocus   { get; set; }
-    public Table? ContentTable          { get; private set; }
-    public Table? ButtonTable           { get; private set; }
-    public bool   CancelHide            { get; set; }
-
-    public Dictionary< Actor, object >? Values { get; set; } = new();
-
     /// <summary>
     ///     Initialises the basic elements of this dialog, including the
     ///     necessary listeners.
@@ -128,7 +128,7 @@ public class Dialog : Window
     /// <summary>
     ///     Sets the <see cref="Stage" /> which this Dialog will act on.
     /// </summary>
-    protected override void SetStage( Stage? stage )
+    public override void SetStage( Stage? stage )
     {
         if ( stage == null )
         {
@@ -357,7 +357,6 @@ public class Dialog : Window
     ///     If this key is pressed, <see cref="Result(object)" /> is
     ///     called with the specified object.
     /// </summary>
-    /// <seealso cref="IInput.Keys" />
     public Dialog Key( int keycode, object obj )
     {
         //        AddListener

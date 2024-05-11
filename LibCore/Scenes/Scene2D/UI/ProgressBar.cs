@@ -87,7 +87,7 @@ public class ProgressBar : Widget, IDisableable
     /// <param name="max"> the maximum value </param>
     /// <param name="stepSize"> the step size between values </param>
     /// <param name="vertical"></param>
-    /// <param name="style"> the <seealso cref="ProgressBarStyle" />  </param>
+    /// <param name="style"> the <see cref="ProgressBarStyle" />  </param>
     public ProgressBar( float min, float max, float stepSize, bool vertical, ProgressBarStyle style )
     {
         if ( min > max )

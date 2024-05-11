@@ -1156,7 +1156,6 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
         ///     Updates the order of the actors in the tree for this node and all child nodes.
         ///     This is useful after changing the order. of <see cref="NodeChildren" />.
         /// </summary>
-        /// <seealso cref="Tree{TNode,TValue}.UpdateRootNodes()" />
         public void UpdateChildren()
         {
             if ( !IsExpanded )

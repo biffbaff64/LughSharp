@@ -121,7 +121,7 @@ public interface IBatch : IDisposable
     ///     color attribute is called "a_color".
     ///     <p>
     ///         See <see cref="ShaderProgram.POSITION_ATTRIBUTE" />, <see cref="ShaderProgram.COLOR_ATTRIBUTE" />
-    ///         and <seealso cref="ShaderProgram.TEXCOORD_ATTRIBUTE" /> which gets "0" appended to indicate
+    ///         and <see cref="ShaderProgram.TEXCOORD_ATTRIBUTE" /> which gets "0" appended to indicate
     ///         the use of the first texture unit.
     ///     </p>
     ///     <p>

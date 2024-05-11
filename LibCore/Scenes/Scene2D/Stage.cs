@@ -71,7 +71,7 @@ public class Stage : InputAdapter
     private Actor?          _scrollFocus;
 
     // True if any actor has ever had debug enabled.
-    public bool debug;
+    public bool Debug { get; set; }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -85,8 +85,7 @@ public class Stage : InputAdapter
         : this( new ScalingViewport( Scaling.Stretch,
                                      Gdx.Graphics.Width,
                                      Gdx.Graphics.Height,
-                                     new OrthographicCamera() ),
-                new SpriteBatch() )
+                                     new OrthographicCamera() ), new SpriteBatch() )
     {
         _ownsBatch = true;
     }
@@ -323,7 +322,7 @@ public class Stage : InputAdapter
 
             if ( value )
             {
-                debug = true;
+                Debug = true;
             }
             else
             {
@@ -349,7 +348,7 @@ public class Stage : InputAdapter
 
             if ( value )
             {
-                debug = true;
+                Debug = true;
             }
             else
             {
@@ -375,7 +374,7 @@ public class Stage : InputAdapter
 
             if ( value )
             {
-                debug = true;
+                Debug = true;
             }
             else
             {
@@ -404,7 +403,7 @@ public class Stage : InputAdapter
         Root.Draw( Batch, 1 );
         Batch.End();
 
-        if ( debug )
+        if ( Debug )
         {
             DrawDebug();
         }
@@ -1261,7 +1260,7 @@ public class Stage : InputAdapter
 
         if ( debugTableUnderMouse != Table.DebugType.None )
         {
-            debug = true;
+            Debug = true;
         }
         else
         {

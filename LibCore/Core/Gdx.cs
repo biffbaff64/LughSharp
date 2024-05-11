@@ -70,15 +70,12 @@ public static class Gdx
     ///         game code.
     ///     </para>
     /// </summary>
-    /// <seealso cref="https://en.wiktionary.org/wiki/god_mode" />
-
     public static bool GodMode { get; set; } = false;
 
     /// <summary>
     ///     Test mode flag which, when TRUE, means that all developer options are enabled.
     ///     This must, however, mean that software with this enabled cannot be published.
     /// </summary>
-
     public static bool DevMode { get; set; } = false;
 
     // ------------------------------------------------------------------------

@@ -39,9 +39,6 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 ///         straight to the target angle, regardless of where the angle starts and stops.
 ///         For example, starting at 350 and rotating to 10 will cause 20 degrees of rotation.
 ///     </para>
-///     <para>
-///         <seealso cref="MathUtils.LerpAngleDeg" />
-///     </para>
 /// </summary>
 public class RotateToAction : TemporalAction
 {

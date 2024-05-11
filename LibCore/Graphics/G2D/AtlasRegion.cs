@@ -146,7 +146,7 @@ public class AtlasRegion : TextureRegion
     public float RotatedPackedWidth => Rotate ? PackedHeight : PackedWidth;
 
     /// <summary>
-    ///     Returns the packed height considering the <seealso cref="Rotate" /> value,
+    ///     Returns the packed height considering the <see cref="Rotate" /> value,
     ///     if it is true then it returns the packedWidth, otherwise it returns the
     ///     packedHeight.
     /// </summary>

@@ -59,15 +59,18 @@ namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 ///         </li>
 ///     </ul>
 ///     <p>
-///         The files are ultimately resolved via the given <see cref="baseResolver" />. In case the
+///         The files are ultimately resolved via the given <see cref="BaseResolver" />. In case the
 ///         first version cannot be resolved, the fallback will try to search for the file without
 ///         the resolution folder.
 ///     </p>
 /// </summary>
-internal class ResolutionFileResolver : IFileHandleResolver
+[PublicAPI]
+public class ResolutionFileResolver : IFileHandleResolver
 {
-    protected readonly IFileHandleResolver baseResolver;
-    protected readonly Resolution[]        descriptors;
+    protected readonly IFileHandleResolver BaseResolver;
+    protected readonly Resolution[]        Descriptors;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Creates a <see cref="ResolutionFileResolver" /> based on a given
@@ -86,19 +89,20 @@ internal class ResolutionFileResolver : IFileHandleResolver
             throw new ArgumentException( "At least one Resolution needs to be supplied." );
         }
 
-        this.baseResolver = baseResolver;
-        descriptors       = descs;
+        this.BaseResolver = baseResolver;
+        Descriptors       = descs;
     }
 
+    /// <inheritdoc/>
     public FileInfo Resolve( string fileName )
     {
-        var      bestResolution = Choose( descriptors );
+        var      bestResolution = Choose( Descriptors );
         FileInfo originalHandle = new( fileName );
-        var      handle         = baseResolver.Resolve( Resolve( originalHandle, bestResolution.Folder ) );
+        var      handle         = BaseResolver.Resolve( Resolve( originalHandle, bestResolution.AssetsFolder ) );
 
         if ( !handle.Exists )
         {
-            handle = baseResolver.Resolve( fileName );
+            handle = BaseResolver.Resolve( fileName );
         }
 
         return handle;
@@ -159,8 +163,16 @@ internal class ResolutionFileResolver : IFileHandleResolver
         return best;
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    [PublicAPI]
     public class Resolution
     {
+        public int    PortraitWidth  { get; }
+        public int    PortraitHeight { get; }
+        public string AssetsFolder   { get; } // The folder where the assets for this resolution are located.
+
         /// <summary>
         ///     Constructs a {@code Resolution}.
         /// </summary>
@@ -173,13 +185,7 @@ internal class ResolutionFileResolver : IFileHandleResolver
         {
             PortraitWidth  = portraitWidth;
             PortraitHeight = portraitHeight;
-            Folder         = folder;
+            AssetsFolder   = folder;
         }
-
-        public int PortraitWidth  { get; }
-        public int PortraitHeight { get; }
-
-        // The name of the folder, where the assets which fit this resolution, are located.
-        public string Folder { get; }
     }
 }

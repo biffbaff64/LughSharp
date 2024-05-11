@@ -469,7 +469,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
     ///     Unbinds the framebuffer, all drawing will be performed to the
     ///     normal framebuffer from here on.
     /// </summary>
-    public void Unbind()
+    public virtual void Unbind()
     {
         Gdx.GL.glBindFramebuffer( IGL.GL_FRAMEBUFFER, ( uint ) DefaultFramebufferHandle );
     }

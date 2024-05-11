@@ -1104,7 +1104,7 @@ public class Quaternion
         // assuming quaternion normalised then w is less than 1, so term always positive.
         var s = Math.Sqrt( 1 - ( W * W ) );
 
-        if ( s < MathUtils.FLOAT_ROUNDING_ERROR )
+        if ( s < MathUtils.FLOAT_TOLERANCE )
         {
             // test to avoid divide by zero, s is always positive due to Sqrt
             // if s close to zero then direction of axis not important

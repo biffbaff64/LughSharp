@@ -31,10 +31,18 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 ///     This class will load each contained TextureData to the chosen
 ///     mipmap level. All the mipmap levels must be defined and cannot be null.
 /// </summary>
+[PublicAPI]
 public class MipMapTextureData : ITextureData
 {
+    public bool IsPrepared { get; set; }
+    public bool UseMipMaps { get; set; }
+    public int  Width      { get; set; }
+    public int  Height     { get; set; }
+
     private readonly ITextureData[] _mips;
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// </summary>
     /// <param name="mipMapData"> must be != null and its length must be >= 1 </param>
@@ -44,11 +52,6 @@ public class MipMapTextureData : ITextureData
 
         Array.Copy( mipMapData, 0, _mips, 0, mipMapData.Length );
     }
-
-    public bool IsPrepared { get; set; }
-    public bool UseMipMaps { get; set; }
-    public int  Width      { get; set; }
-    public int  Height     { get; set; }
 
     /// <summary>
     ///     Prepares the TextureData for a call to <see cref="ITextureData.ConsumePixmap" /> or
@@ -90,11 +93,6 @@ public class MipMapTextureData : ITextureData
         }
     }
 
-    public bool DisposePixmap()
-    {
-        return false;
-    }
-
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
     public Pixmap.Format GetFormat()
@@ -102,7 +100,9 @@ public class MipMapTextureData : ITextureData
         return Pixmap.Format.Alpha;
     }
 
-    public bool IsManaged()
+    public bool IsManaged() => false;
+
+    public bool DisposePixmap()
     {
         return false;
     }

@@ -76,8 +76,7 @@ public class VertexAttributes
 
     /// <summary>
     ///     Calculates a mask based on the contained <see cref="VertexAttribute" />
-    ///     instances. The mask is a bit-wise or of each attributes
-    ///     <seealso cref="VertexAttribute.usage" />.
+    ///     instances. The mask is a bit-wise or of each attributes <see cref="VertexAttribute.usage" />.
     /// </summary>
     /// <returns> the mask  </returns>
     protected long Mask

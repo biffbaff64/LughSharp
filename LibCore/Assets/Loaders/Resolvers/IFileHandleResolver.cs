@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 ///     Used to allow the AssetManager to load files from anywhere, or
 ///     implement caching strategies.
 /// </summary>
+[PublicAPI]
 public interface IFileHandleResolver
 {
     FileInfo Resolve( string fileName );

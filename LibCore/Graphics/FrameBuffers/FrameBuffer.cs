@@ -130,12 +130,4 @@ public class FrameBuffer : GLFrameBuffer< Texture >
                                        ( uint ) texture.GLTextureHandle,
                                        0 );
     }
-
-    /// <summary>
-    ///     See <see cref="GLFrameBuffer{T}.Unbind()" />
-    /// </summary>
-    public override void Unbind()
-    {
-        base.Unbind();
-    }
 }

@@ -153,7 +153,7 @@ public class CpuSpriteBatch : SpriteBatch
     ///     <para>
     ///         This adjustment must be performed until the matrices are realigned by restoring
     ///         the original matrix, or by calling <see cref="FlushAndSyncTransformMatrix()" />
-    ///         or <seealso cref="SpriteBatch.End" />.
+    ///         or <see cref="SpriteBatch.End" />.
     ///     </para>
     /// </summary>
     public virtual void SetTransformMatrix( Affine2 transform )

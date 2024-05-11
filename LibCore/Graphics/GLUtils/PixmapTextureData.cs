@@ -27,8 +27,17 @@ using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
+[PublicAPI]
 public class PixmapTextureData : ITextureData
 {
+    public Pixmap        Pixmap        { get; set; }
+    public Pixmap.Format Format        { get; set; }
+    public bool          DisposePixmap { get; set; }
+    public bool          Managed       { get; set; }
+    public bool          UseMipMaps    { get; set; }
+
+    // ------------------------------------------------------------------------
+    
     public PixmapTextureData( Pixmap pixmap,
                               Pixmap.Format? format,
                               bool useMipMaps,
@@ -42,15 +51,7 @@ public class PixmapTextureData : ITextureData
         Format        = format ?? pixmap.GetFormat();
     }
 
-    public Pixmap        Pixmap        { get; set; }
-    public Pixmap.Format Format        { get; set; }
-    public bool          DisposePixmap { get; set; }
-    public bool          Managed       { get; set; }
-
-    public Pixmap ConsumePixmap()
-    {
-        return Pixmap;
-    }
+    public Pixmap ConsumePixmap() => Pixmap;
 
     public int Width
     {
@@ -81,20 +82,15 @@ public class PixmapTextureData : ITextureData
         return DisposePixmap;
     }
 
-    /// <returns> the <see cref="Pixmap.Format" /> of the pixel data </returns>
-    public Pixmap.Format GetFormat()
-    {
-        return Format;
-    }
+    /// <summary>
+    ///     Returns the <see cref="Pixmap.Format" /> of the pixel data.
+    /// </summary>
+    public Pixmap.Format GetFormat() => Format;
 
-    /// <returns> whether to generate mipmaps or not. </returns>
-    public bool UseMipMaps { get; set; }
-
-    /// <returns> whether this implementation can cope with a EGL context loss. </returns>
-    public bool IsManaged()
-    {
-        return Managed;
-    }
+    /// <summary>
+    ///     Returns whether this implementation can cope with a EGL context loss.
+    /// </summary>
+    public bool IsManaged() => Managed;
 
     public void ConsumeCustomData( int target )
     {

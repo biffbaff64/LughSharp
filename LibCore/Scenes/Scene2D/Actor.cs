@@ -196,7 +196,7 @@ public class Actor : IActor
 
                 if ( value )
                 {
-                    Stage.debug = true;
+                    Stage.Debug = true;
                 }
             }
         }
@@ -458,7 +458,7 @@ public class Actor : IActor
     /// <returns>True if successful.</returns>
     public virtual bool Remove()
     {
-        return ( Parent != null ) && Parent.RemoveActor( this, true );
+        return ( Parent != null ) && Parent.RemoveActor( this );
     }
 
     /// <summary>
@@ -1432,7 +1432,7 @@ public class Actor : IActor
     ///     Enables Debug for this actor.
     /// </summary>
     /// <returns>This Actor for chaining.</returns>
-    public Actor EnableDebug()
+    public virtual Actor EnableDebug()
     {
         DebugActive = true;
 

@@ -38,12 +38,15 @@ public class VertexBufferObject : IVertexData
     private bool        _ownsBuffer;
     private int         _usage;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Constructs a new interleaved VertexBufferObject.
     /// </summary>
     /// <param name="isStatic"> whether the vertex data is static. </param>
     /// <param name="numVertices"> the maximum number of vertices </param>
-    /// <param name="attributes"> the <seealso cref="VertexAttribute" />s.  </param>
+    /// <param name="attributes"> the <see cref="VertexAttribute" />s.  </param>
     public VertexBufferObject( bool isStatic, int numVertices, params VertexAttribute[] attributes )
         : this( isStatic, numVertices, new VertexAttributes( attributes ) )
     {
@@ -54,7 +57,7 @@ public class VertexBufferObject : IVertexData
     /// </summary>
     /// <param name="isStatic"> whether the vertex data is static. </param>
     /// <param name="numVertices"> the maximum number of vertices </param>
-    /// <param name="attributes"> the <seealso cref="VertexAttributes" />.  </param>
+    /// <param name="attributes"> the <see cref="VertexAttributes" />.  </param>
     public VertexBufferObject( bool isStatic, int numVertices, VertexAttributes attributes )
     {
         _buffer    = default( FloatBuffer? )!;
@@ -70,6 +73,13 @@ public class VertexBufferObject : IVertexData
         Usage = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
     }
 
+    /// <summary>
+    ///     Constructs a new interleaved VertexBufferObject.
+    /// </summary>
+    /// <param name="usage"></param>
+    /// <param name="data"></param>
+    /// <param name="ownsBuffer"></param>
+    /// <param name="attributes"> the <see cref="VertexAttributes" />.  </param>
     public VertexBufferObject( int usage, ByteBuffer data, bool ownsBuffer, VertexAttributes attributes )
     {
         _buffer    = default( FloatBuffer? )!;
@@ -95,13 +105,19 @@ public class VertexBufferObject : IVertexData
         }
     }
 
-    /// <returns> the number of vertices this VertexData stores </returns>
+    /// <summary>
+    ///     Returns the number of vertices this VertexData stores.
+    /// </summary>
     public int NumVertices { get; set; }
 
-    /// <returns> the number of vertices this VertedData can store </returns>
+    /// <summary>
+    ///     Returns the number of vertices this VertedData can store.
+    /// </summary>
     public int NumMaxVertices { get; set; }
 
-    /// <returns> the <see cref="VertexAttributes" /> as specified during construction. </returns>
+    /// <summary>
+    ///     Returns the <see cref="VertexAttributes" /> as specified during construction.
+    /// </summary>
     public VertexAttributes Attributes { get; set; }
 
     /// <summary>

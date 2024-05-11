@@ -208,7 +208,7 @@ public class Vector3 : IVector< Vector3 >
     }
 
     /// <inheritdoc />
-    public bool IsUnit( float margin = 0.000000001f )
+    public bool IsUnit( float margin = MathUtils.FLOAT_TOLERANCE )
     {
         return Math.Abs( Len2() - 1f ) < margin;
     }
@@ -235,7 +235,7 @@ public class Vector3 : IVector< Vector3 >
     public bool IsOnLine( Vector3 other )
     {
         return Len2( ( Y * other.Z ) - ( Z * other.Y ), ( Z * other.X ) - ( X * other.Z ), ( X * other.Y ) - ( Y * other.X ) )
-            <= MathUtils.FLOAT_ROUNDING_ERROR;
+            <= MathUtils.FLOAT_TOLERANCE;
     }
 
     /// <inheritdoc />
@@ -358,7 +358,7 @@ public class Vector3 : IVector< Vector3 >
     }
 
     /// <inheritdoc />
-    public bool EpsilonEquals( Vector3? other, float epsilon = MathUtils.FLOAT_ROUNDING_ERROR )
+    public bool EpsilonEquals( Vector3? other, float epsilon = MathUtils.FLOAT_TOLERANCE )
     {
         if ( other == null )
         {
@@ -780,7 +780,7 @@ public class Vector3 : IVector< Vector3 >
     /// <param name="z"></param>
     /// <param name="epsilon"></param>
     /// <returns></returns>
-    public bool EpsilonEquals( float x, float y, float z, float epsilon = MathUtils.FLOAT_ROUNDING_ERROR )
+    public bool EpsilonEquals( float x, float y, float z, float epsilon = MathUtils.FLOAT_TOLERANCE )
     {
         if ( Math.Abs( x - X ) > epsilon )
         {

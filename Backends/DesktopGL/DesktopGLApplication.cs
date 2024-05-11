@@ -733,7 +733,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     ///     Returns false if the severity level could not be set (e.g. the NOTIFICATION
     ///     level is not supported by the ARB and AMD extensions).
     /// </summary>
-    /// <seealso cref="DesktopGLApplicationConfiguration.EnableGLDebugOutput(bool, StreamWriter)" />
     public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled )
     {
         //        GLCapabilities caps         = GL.GetCapabilities();

@@ -70,7 +70,7 @@ public class Event : IPoolable
     // would cause should not happen
     public bool IsCancelled { get; set; }
 
-    public void Reset()
+    public virtual void Reset()
     {
         Stage         = null;
         TargetActor   = null;

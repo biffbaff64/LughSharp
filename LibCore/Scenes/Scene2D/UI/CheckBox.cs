@@ -69,7 +69,7 @@ public class CheckBox : TextButton
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
-    public override ButtonStyle? Style
+    public ButtonStyle? Style
     {
         get => _style;
         set
@@ -129,7 +129,7 @@ public class CheckBox : TextButton
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     The style for a select box, see <seealso cref="CheckBox" />.
+    ///     The style for a select box, see <see cref="CheckBox" />.
     /// </summary>
     [PublicAPI]
     public class CheckBoxStyle : TextButtonStyle

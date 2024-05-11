@@ -61,7 +61,7 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
         return GetEnumerator();
     }
 
-    /// <param name="index"> index to get the desired <seealso cref="TiledMapTileSet" /> at. </param>
+    /// <param name="index"> index to get the desired <see cref="TiledMapTileSet" /> at. </param>
     /// <returns> tileset at index  </returns>
     public virtual TiledMapTileSet GetTileSet( int index )
     {
@@ -104,7 +104,7 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
         _tilesets.Remove( tileset );
     }
 
-    /// <param name="id"> id of the <seealso cref="ITiledMapTile" /> to get. </param>
+    /// <param name="id"> id of the <see cref="ITiledMapTile" /> to get. </param>
     /// <returns> tile with matching id, null if it doesn't exist  </returns>
     public virtual ITiledMapTile? GetTile( int id )
     {

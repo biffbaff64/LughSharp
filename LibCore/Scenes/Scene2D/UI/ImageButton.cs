@@ -34,8 +34,15 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///     where the <see cref="Button.ButtonStyle.Up" />, <see cref="Button.ButtonStyle.Down" />,
 ///     and <see cref="Button.ButtonStyle.Checked" /> nine patches define the image.
 /// </summary>
+[PublicAPI]
 public class ImageButton : Button
 {
+    public     Image            Image { get; }
+    public new ImageButtonStyle Style { get; private set; } = null!;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     public ImageButton( Skin skin )
         : this( skin.Get< ImageButtonStyle >() )
     {
@@ -56,7 +63,8 @@ public class ImageButton : Button
 
         Add( Image );
         SetStyle( style );
-        SetSize( GetPrefWidth(), GetPrefHeight() );
+        
+        ConstructorHelper();
     }
 
     public ImageButton( IDrawable? imageUp )
@@ -74,9 +82,11 @@ public class ImageButton : Button
     {
     }
 
-    public     Image            Image { get; }
-    public override ImageButtonStyle Style { get; private set; } = null!;
-
+    private void ConstructorHelper()
+    {
+        SetSize( GetPrefWidth(), GetPrefHeight() );
+    }
+    
     public void SetStyle( ButtonStyle style )
     {
         Style      = style as ImageButtonStyle ?? throw new ArgumentException( "style must be an ImageButtonStyle." );
@@ -90,21 +100,21 @@ public class ImageButton : Button
     /// </summary>
     protected IDrawable? GetImageDrawable()
     {
-        if ( IsDisabled && ( Style.imageDisabled != null ) )
+        if ( IsDisabled && ( Style.ImageDisabled != null ) )
         {
-            return Style.imageDisabled;
+            return Style.ImageDisabled;
         }
 
         if ( IsPressed() )
         {
-            if ( IsChecked && ( Style.imageCheckedDown != null ) )
+            if ( IsChecked && ( Style.ImageCheckedDown != null ) )
             {
-                return Style.imageCheckedDown;
+                return Style.ImageCheckedDown;
             }
 
-            if ( Style.imageDown != null )
+            if ( Style.ImageDown != null )
             {
-                return Style.imageDown;
+                return Style.ImageDown;
             }
         }
 
@@ -112,34 +122,34 @@ public class ImageButton : Button
         {
             if ( IsChecked )
             {
-                if ( Style.imageCheckedOver != null )
+                if ( Style.ImageCheckedOver != null )
                 {
-                    return Style.imageCheckedOver;
+                    return Style.ImageCheckedOver;
                 }
             }
             else
             {
-                if ( Style.imageOver != null )
+                if ( Style.ImageOver != null )
                 {
-                    return Style.imageOver;
+                    return Style.ImageOver;
                 }
             }
         }
 
         if ( IsChecked )
         {
-            if ( Style.imageChecked != null )
+            if ( Style.ImageChecked != null )
             {
-                return Style.imageChecked;
+                return Style.ImageChecked;
             }
 
-            if ( IsOver() && ( Style.imageOver != null ) )
+            if ( IsOver() && ( Style.ImageOver != null ) )
             {
-                return Style.imageOver;
+                return Style.ImageOver;
             }
         }
 
-        return Style.imageUp;
+        return Style.ImageUp;
     }
 
     /// <summary>
@@ -162,7 +172,8 @@ public class ImageButton : Button
         return GetCell( Image );
     }
 
-    protected override string ToString()
+    /// <inheritdoc/>
+    public override string ToString()
     {
         if ( Name != null )
         {
@@ -180,13 +191,22 @@ public class ImageButton : Button
         return ( className.IndexOf( '$' ) != -1 ? "ImageButton " : "" ) + className + ": " + Image.GetDrawable();
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     ///     The style for an image button.
     /// </summary>
+    [PublicAPI]
     public class ImageButtonStyle : ButtonStyle
     {
-        public readonly IDrawable? imageChecked, imageCheckedDown, imageCheckedOver;
-        public readonly IDrawable? imageUp,      imageDown,        imageOver, imageDisabled;
+        public readonly IDrawable? ImageChecked;
+        public readonly IDrawable? ImageCheckedDown;
+        public readonly IDrawable? ImageCheckedOver;
+        public readonly IDrawable? ImageUp;
+        public readonly IDrawable? ImageDown;
+        public readonly IDrawable? ImageOver;
+        public readonly IDrawable? ImageDisabled;
 
         public ImageButtonStyle()
         {
@@ -200,22 +220,22 @@ public class ImageButton : Button
                                  IDrawable? imageChecked )
             : base( up, down, chcked )
         {
-            this.imageUp      = imageUp;
-            this.imageDown    = imageDown;
-            this.imageChecked = imageChecked;
+            this.ImageUp      = imageUp;
+            this.ImageDown    = imageDown;
+            this.ImageChecked = imageChecked;
         }
 
         public ImageButtonStyle( ImageButtonStyle style )
             : base( style )
         {
-            imageUp       = style.imageUp;
-            imageDown     = style.imageDown;
-            imageOver     = style.imageOver;
-            imageDisabled = style.imageDisabled;
+            ImageUp       = style.ImageUp;
+            ImageDown     = style.ImageDown;
+            ImageOver     = style.ImageOver;
+            ImageDisabled = style.ImageDisabled;
 
-            imageChecked     = style.imageChecked;
-            imageCheckedDown = style.imageCheckedDown;
-            imageCheckedOver = style.imageCheckedOver;
+            ImageChecked     = style.ImageChecked;
+            ImageCheckedDown = style.ImageCheckedDown;
+            ImageCheckedOver = style.ImageCheckedOver;
         }
 
         public ImageButtonStyle( ButtonStyle style )

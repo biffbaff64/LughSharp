@@ -35,30 +35,79 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///         unless <see cref="Wrap" /> is enabled.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class Label : Widget
 {
-    private readonly static Color       TempColor      = new();
-    private readonly static GlyphLayout PrefSizeLayout = new();
-    private readonly        Vector2     _prefSize      = new();
-    private                 string?     _ellipsis;
-    private                 bool        _fontScaleChanged = false;
-    private                 float       _fontScaleX       = 1;
-    private                 float       _fontScaleY       = 1;
-    private                 int         _intValue         = int.MinValue;
-    private                 float       _lastPrefHeight;
-    private                 bool        _prefSizeInvalid = true;
-
-    private LabelStyle _style = null!;
-    private bool       _wrap;
-
     public BitmapFontCache FontCache   { get; set; } = null!;
     public StringBuilder   Text        { get; }      = new();
     public int             LabelAlign  { get; set; } = Align.LEFT;
     public int             LineAlign   { get; set; } = Align.LEFT;
     public GlyphLayout     GlyphLayout { get; set; } = new();
 
+    private readonly static Color       _tempColor      = new();
+    private readonly static GlyphLayout _prefSizeLayout = new();
+    private readonly        Vector2     _prefSize       = new();
+
+    private string?    _ellipsis;
+    private bool       _fontScaleChanged = false;
+    private float      _fontScaleX       = 1;
+    private float      _fontScaleY       = 1;
+    private int        _intValue         = int.MinValue;
+    private float      _lastPrefHeight;
+    private bool       _prefSizeInvalid = true;
+    private LabelStyle _style           = null!;
+    private bool       _wrap;
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
+
+    #region constructors
+
+    public Label( string text, Skin skin )
+        : this( text, skin.Get< LabelStyle >() )
+    {
+    }
+
+    public Label( string text, Skin skin, string styleName )
+        : this( text, skin.Get< LabelStyle >( styleName ) )
+    {
+    }
+
+    /// <summary>
+    ///     Creates a label, using a <see cref="LabelStyle" /> that has a BitmapFont with
+    ///     the specified name from the skin and the specified color.
+    /// </summary>
+    public Label( string text, Skin skin, string fontName, Color color )
+        : this( text, new LabelStyle( skin.GetFont( fontName ), color ) )
+    {
+    }
+
+    /// <summary>
+    ///     Creates a label, using a <see cref="LabelStyle" /> that has a BitmapFont
+    ///     with the specified name and the specified color from the
+    ///     skin.
+    /// </summary>
+    public Label( string text, Skin skin, string fontName, string colorName )
+        : this( text, new LabelStyle( skin.GetFont( fontName ), skin.GetColor( colorName ) ) )
+    {
+    }
+
+    public Label( string? text, LabelStyle style )
+    {
+        if ( text != null )
+        {
+            Text.Append( text );
+        }
+
+        Style = style;
+
+        if ( text is { Length: > 0 } )
+        {
+            SetSize( GetPrefWidth(), GetPrefHeight() );
+        }
+    }
+
+    #endregion constructors
 
     public LabelStyle Style
     {
@@ -233,14 +282,14 @@ public class Label : Widget
                       - _style.Background.RightWidth;
             }
 
-            PrefSizeLayout.SetText( FontCache.Font, Text.ToString(), Color.White, width, Align.LEFT, true );
+            _prefSizeLayout.SetText( FontCache.Font, Text.ToString(), Color.White, width, Align.LEFT, true );
         }
         else
         {
-            PrefSizeLayout.SetText( FontCache.Font, Text.ToString() );
+            _prefSizeLayout.SetText( FontCache.Font, Text.ToString() );
         }
 
-        _prefSize.Set( PrefSizeLayout.Width, PrefSizeLayout.Height );
+        _prefSize.Set( _prefSizeLayout.Width, _prefSizeLayout.Height );
     }
 
     public void Layout()
@@ -346,7 +395,7 @@ public class Label : Widget
     {
         Validate();
 
-        var color = TempColor.Set( Color! );
+        var color = _tempColor.Set( Color );
         color.A *= parentAlpha;
 
         if ( Style.Background != null )
@@ -486,7 +535,8 @@ public class Label : Widget
         _ellipsis = ellipsis ? "..." : null;
     }
 
-    protected override string ToString()
+    /// <inheritdoc/>
+    public override string ToString()
     {
         var name = Name;
 
@@ -511,11 +561,15 @@ public class Label : Widget
     #region labelstyle
 
     /// <summary>
-    ///     The style for a label, see <seealso cref="Label" />.
-    ///     @author Nathan Sweet
+    ///     The style for a label, see <see cref="Label" />.
     /// </summary>
+    [PublicAPI]
     public class LabelStyle
     {
+        public BitmapFont Font       { get; set; }
+        public Color?     FontColor  { get; set; }
+        public IDrawable? Background { get; set; }
+        
         public LabelStyle()
         {
             Font       = default( BitmapFont )!;
@@ -540,62 +594,7 @@ public class Label : Widget
 
             Background = style.Background;
         }
-
-        public BitmapFont Font       { get; set; }
-        public Color?     FontColor  { get; set; }
-        public IDrawable? Background { get; set; }
     }
 
     #endregion labelstyle
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    #region constructors
-
-    public Label( string text, Skin skin )
-        : this( text, skin.Get< LabelStyle >() )
-    {
-    }
-
-    public Label( string text, Skin skin, string styleName )
-        : this( text, skin.Get< LabelStyle >( styleName ) )
-    {
-    }
-
-    /// <summary>
-    ///     Creates a label, using a <see cref="LabelStyle" /> that has a BitmapFont with
-    ///     the specified name from the skin and the specified color.
-    /// </summary>
-    public Label( string text, Skin skin, string fontName, Color color )
-        : this( text, new LabelStyle( skin.GetFont( fontName ), color ) )
-    {
-    }
-
-    /// <summary>
-    ///     Creates a label, using a <see cref="LabelStyle" /> that has a BitmapFont
-    ///     with the specified name and the specified color from the
-    ///     skin.
-    /// </summary>
-    public Label( string text, Skin skin, string fontName, string colorName )
-        : this( text, new LabelStyle( skin.GetFont( fontName ), skin.GetColor( colorName ) ) )
-    {
-    }
-
-    public Label( string? text, LabelStyle style )
-    {
-        if ( text != null )
-        {
-            Text.Append( text );
-        }
-
-        Style = style;
-
-        if ( text is { Length: > 0 } )
-        {
-            SetSize( GetPrefWidth(), GetPrefHeight() );
-        }
-    }
-
-    #endregion constructors
 }

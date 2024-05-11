@@ -600,7 +600,7 @@ public class Group : Actor, ICullable
     ///     <param name="actor"></param>
     ///     <param name="unfocus">Unfocuses the actor if true.</param>
     /// </summary>
-    public virtual bool RemoveActor( Actor actor, bool unfocus )
+    public virtual bool RemoveActor( Actor actor, bool unfocus = true )
     {
         var index = Children.IndexOf( actor );
 
@@ -622,7 +622,7 @@ public class Group : Actor, ICullable
     /// </summary>
     /// <param name="index"></param>
     /// <param name="unfocus">
-    ///     If true, <seealso cref="Stage.Unfocus(Actor)" /> is called.
+    ///     If true, <see cref="Stage.Unfocus(Actor)" /> is called.
     /// </param>
     /// <returns> The actor removed from this group. </returns>
     public virtual Actor RemoveActorAt( int index, bool unfocus )
@@ -822,7 +822,7 @@ public class Group : Actor, ICullable
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public Group DebugAll()
+    public virtual Group DebugAll()
     {
         SetDebug( true, true );
 
@@ -832,7 +832,7 @@ public class Group : Actor, ICullable
     /// <summary>
     ///     Returns a description of the actor hierarchy, recursively.
     /// </summary>
-    protected override string ToString()
+    public override string ToString()
     {
         var buffer = new StringBuilder( 128 );
 

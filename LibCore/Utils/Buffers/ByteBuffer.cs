@@ -30,6 +30,10 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class ByteBuffer : Buffer
 {
+    protected byte[]? Hb        { get; set; }
+    protected int     Offset    { get; set; }
+    protected bool    BigEndian { get; set; } = true;
+
     // ------------------------------------------------------------------------
 
     protected bool NativeByteOrder = ( Bits.ByteOrder == ByteOrder.BigEndian );
@@ -42,10 +46,6 @@ public abstract class ByteBuffer : Buffer
         Hb     = hb;
         Offset = offset;
     }
-
-    protected byte[]? Hb        { get; set; }
-    protected int     Offset    { get; set; }
-    protected bool    BigEndian { get; set; } = true;
 
     /// <summary>
     ///     Allocates a new direct byte buffer.
@@ -346,7 +346,7 @@ public abstract class ByteBuffer : Buffer
     /// <exception cref="GdxRuntimeException">
     ///     If this buffer is not backed by an accessible array
     /// </exception>
-    public override byte[] BackingArray()
+    public new byte[] BackingArray()
     {
         if ( Hb == null )
         {
@@ -369,7 +369,7 @@ public abstract class ByteBuffer : Buffer
     ///         corresponds to array index <i>p</i> + <tt>arrayOffset()</tt>.
     ///     </para>
     ///     <para>
-    ///         Invoke the <seealso cref="HasArray" /> method before invoking this
+    ///         Invoke the <see cref="HasArray" /> method before invoking this
     ///         method in order to ensure that this buffer has an accessible backing
     ///         array.
     ///     </para>

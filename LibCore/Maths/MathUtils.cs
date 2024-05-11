@@ -29,7 +29,7 @@ namespace LughSharp.LibCore.Maths;
 public class MathUtils
 {
     public const float NANO_TO_SEC          = 1 / 1000000000f;
-    public const float FLOAT_ROUNDING_ERROR = 0.000001f; // 32 bits
+    public const float FLOAT_TOLERANCE      = 0.000001f; // 32 bits
     public const float PI                   = 3.1415927f;
     public const float HALF_PI              = PI / 2;
     public const float PI2                  = PI * 2;
@@ -476,12 +476,12 @@ public class MathUtils
     /// </summary>
     /// <param name="value">the value to test.</param>
     /// <param name="tolerance"> represent an upper bound below which the value is considered zero.</param>
-    public static bool IsZero( float value, float tolerance = FLOAT_ROUNDING_ERROR )
+    public static bool IsZero( float value, float tolerance = FLOAT_TOLERANCE )
     {
         return Math.Abs( value ) <= tolerance;
     }
 
-    public static bool IsNotEqual( float a, float b, float tolerance = FLOAT_ROUNDING_ERROR )
+    public static bool IsNotEqual( float a, float b, float tolerance = FLOAT_TOLERANCE )
     {
         return !IsEqual( a, b, tolerance );
     }
@@ -494,7 +494,7 @@ public class MathUtils
     /// <param name="tolerance">
     /// represent an upper bound below which the two values are considered equal.
     /// </param>
-    public static bool IsEqual( float a, float b, float tolerance = FLOAT_ROUNDING_ERROR )
+    public static bool IsEqual( float a, float b, float tolerance = FLOAT_TOLERANCE )
     {
         return Math.Abs( a - b ) <= tolerance;
     }

@@ -25,16 +25,20 @@
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
+[PublicAPI]
 public class VertexArray : IVertexData
 {
     private readonly FloatBuffer _buffer;
     private readonly ByteBuffer  _byteBuffer;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Constructs a new interleaved VertexArray
     /// </summary>
     /// <param name="numVertices"> the maximum number of vertices </param>
-    /// <param name="attributes"> the <seealso cref="VertexAttribute" />s  </param>
+    /// <param name="attributes"> the <see cref="VertexAttribute" />s  </param>
     public VertexArray( int numVertices, params VertexAttribute[] attributes )
         : this( numVertices, new VertexAttributes( attributes ) )
     {
@@ -56,18 +60,18 @@ public class VertexArray : IVertexData
     }
 
     /// <summary>
+    ///     Returns the number of vertices this VertexData stores.
     /// </summary>
-    /// <returns> the number of vertices this VertexData stores </returns>
     public int NumVertices => ( _buffer.Limit * 4 ) / Attributes.VertexSize;
 
     /// <summary>
+    ///     Returns the number of vertices this VertedData can store.
     /// </summary>
-    /// <returns> the number of vertices this VertedData can store </returns>
     public int NumMaxVertices => _byteBuffer.Capacity / Attributes.VertexSize;
 
     /// <summary>
+    ///     Returns the <see cref="VertexAttributes" /> as specified during construction.
     /// </summary>
-    /// <returns> the <see cref="VertexAttributes" /> as specified during construction. </returns>
     public VertexAttributes Attributes { get; set; }
 
     /// <summary>

@@ -115,7 +115,6 @@ public class PolygonSpriteBatch : IPolygonBatch
     ///     The max number of vertices and number of triangles in a single batch. Max of 32767.
     /// </param>
     /// <param name="defaultShader"></param>
-    /// <seealso cref="PolygonSpriteBatch(int, int, ShaderProgram)" />
     public PolygonSpriteBatch( int size, ShaderProgram? defaultShader = null )
         : this( size, size * 2, defaultShader )
     {
@@ -138,7 +137,6 @@ public class PolygonSpriteBatch : IPolygonBatch
     ///     The default shader to use. This is not owned by the PolygonSpriteBatch and must
     ///     be disposed separately. May be null to use the default shader.
     /// </param>
-    /// <seealso cref="SpriteBatch.CreateDefaultShader()" />
     public PolygonSpriteBatch( int maxVertices, int maxTriangles, ShaderProgram? defaultShader )
     {
         // 32767 is max vertex index.

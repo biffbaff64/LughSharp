@@ -29,10 +29,9 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics.G3D.Models.Data;
 
 /// <summary>
-///     Returned by a <seealso cref="ModelLoader{TP}" />, contains meshes, materials, nodes and animations. OpenGL resources
-///     like textures or vertex
-///     buffer objects are not stored. Instead, a ModelData instance needs to be converted to a Model first.
-///     @author badlogic
+///     Returned by a <see cref="ModelLoader{TP}" />, contains meshes, materials, nodes and animations.
+///     OpenGL resources like textures or vertex buffer objects are not stored. Instead, a ModelData
+///     instance needs to be converted to a Model first.
 /// </summary>
 public class ModelData
 {

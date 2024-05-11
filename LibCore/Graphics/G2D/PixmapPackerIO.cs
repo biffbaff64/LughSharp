@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Graphics.G2D;
 /// <summary>
 ///     PixmapPacker I/O, saves PixmapPackers to files.
 /// </summary>
+[PublicAPI]
 public class PixmapPackerIO
 {
     /// <summary>
@@ -159,6 +160,9 @@ public class PixmapPackerIO
         writer.Close();
     }
 
+    // ------------------------------------------------------------------------
+    
+    [PublicAPI]
     public class ImageFormat
     {
         public const int FCIM = 0;
@@ -167,19 +171,22 @@ public class PixmapPackerIO
         public readonly static ImageFormat CIM = new( ".cim", FCIM );
         public readonly static ImageFormat PNG = new( ".png", FPNG );
 
+        public string Extension { get; }
+        public int    FType     { get; }
+
         private ImageFormat( string extension, int ftype )
         {
             Extension = extension;
             FType     = ftype;
         }
-
-        public string Extension { get; }
-        public int    FType     { get; }
     }
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Additional parameters which will be used when writing a PixmapPacker.
     /// </summary>
+    [PublicAPI]
     public struct SaveParameters
     {
         public ImageFormat   Format     { get; set; }

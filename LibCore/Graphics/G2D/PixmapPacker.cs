@@ -92,6 +92,19 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class PixmapPacker : IDisposable
 {
+    public int           PageWidth        { get;         set; }
+    public int           PageHeight       { get;         set; }
+    public Pixmap.Format PageFormat       { get;         set; }
+    public Color         TransparentColor { get;         set; } = new( 0f, 0f, 0f, 0f );
+    public bool          PackToTexture    { get;         set; }
+    public bool          DuplicateBorder  { get;         set; }
+    public int           Padding          { get;         set; }
+    public List< Page >  Pages            { get;         set; } = new();
+    public int           AlphaThreshold   { private get; set; }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     private readonly IPackStrategy _packStrategy;
     private readonly bool          _stripWhitespaceX;
     private readonly bool          _stripWhitespaceY;
@@ -101,11 +114,42 @@ public class PixmapPacker : IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    ///     Creates a new ImagePacker which will insert all supplied pixmaps into
+    ///     one or more <tt>pageWidth</tt> by <tt>pageHeight</tt> pixmaps using the
+    ///     <see cref="GuillotineStrategy"/> strategy.
+    /// </summary>
+    /// <param name="pageWidth"> Page Width in pixels. </param>
+    /// <param name="pageHeight"> Page Height in pixels. </param>
+    /// <param name="pageFormat">
+    ///     The graphics format of pages. See <see cref="Pixmap.Format"/>
+    /// </param>
+    /// <param name="padding"> the number of blank pixels to insert between pixmaps. </param>
+    /// <param name="duplicateBorder">
+    ///     If TRUE, duplicate the border pixels of the inserted images to avoid
+    ///     seams when rendering with bi-linear filtering on.
+    /// </param>
     public PixmapPacker( int pageWidth, int pageHeight, Pixmap.Format pageFormat, int padding, bool duplicateBorder )
         : this( pageWidth, pageHeight, pageFormat, padding, duplicateBorder, false, false, new GuillotineStrategy() )
     {
     }
 
+    /// <summary>
+    ///     Creates a new ImagePacker which will insert all supplied pixmaps into
+    ///     one or more <tt>pageWidth</tt> by <tt>pageHeight</tt> pixmaps using the
+    ///     specified strategy.
+    /// </summary>
+    /// <param name="pageWidth"> Page Width in pixels. </param>
+    /// <param name="pageHeight"> Page Height in pixels. </param>
+    /// <param name="pageFormat">
+    ///     The graphics format of pages. See <see cref="Pixmap.Format"/>
+    /// </param>
+    /// <param name="padding"> the number of blank pixels to insert between pixmaps. </param>
+    /// <param name="duplicateBorder">
+    ///     If TRUE, duplicate the border pixels of the inserted images to avoid
+    ///     seams when rendering with bi-linear filtering on.
+    /// </param>
+    /// <param name="packStrategy"> The <see cref="IPackStrategy"/> to use. </param>
     public PixmapPacker( int pageWidth,
                          int pageHeight,
                          Pixmap.Format pageFormat,
@@ -121,9 +165,11 @@ public class PixmapPacker : IDisposable
     ///     one or more <tt>pageWidth</tt> by <tt>pageHeight</tt> pixmaps using the
     ///     specified strategy.
     /// </summary>
-    /// <param name="pageWidth"></param>
-    /// <param name="pageHeight"></param>
-    /// <param name="pageFormat"></param>
+    /// <param name="pageWidth"> Page Width in pixels. </param>
+    /// <param name="pageHeight"> Page Height in pixels. </param>
+    /// <param name="pageFormat">
+    ///     The graphics format of pages. See <see cref="Pixmap.Format"/>
+    /// </param>
     /// <param name="padding"> the number of blank pixels to insert between pixmaps. </param>
     /// <param name="duplicateBorder">
     ///     duplicate the border pixels of the inserted images to avoid seams when
@@ -131,7 +177,7 @@ public class PixmapPacker : IDisposable
     /// </param>
     /// <param name="stripWhitespaceX"> strip whitespace in x axis </param>
     /// <param name="stripWhitespaceY"> strip whitespace in y axis </param>
-    /// <param name="packStrategy"></param>
+    /// <param name="packStrategy"> The <see cref="IPackStrategy"/> to use. </param>
     public PixmapPacker( int pageWidth,
                          int pageHeight,
                          Pixmap.Format pageFormat,
@@ -149,33 +195,6 @@ public class PixmapPacker : IDisposable
         _stripWhitespaceX = stripWhitespaceX;
         _stripWhitespaceY = stripWhitespaceY;
         _packStrategy     = packStrategy;
-    }
-
-    public int           PageWidth        { get;         set; }
-    public int           PageHeight       { get;         set; }
-    public Pixmap.Format PageFormat       { get;         set; }
-    public Color         TransparentColor { get;         set; } = new( 0f, 0f, 0f, 0f );
-    public bool          PackToTexture    { get;         set; }
-    public bool          DuplicateBorder  { get;         set; }
-    public int           Padding          { get;         set; }
-    public List< Page >  Pages            { get;         set; } = new();
-    public int           AlphaThreshold   { private get; set; }
-
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        foreach ( var page in Pages )
-        {
-            if ( page.Texture == null )
-            {
-                page.Image.Dispose();
-            }
-        }
-
-        _disposed = true;
     }
 
     /// <summary>
@@ -779,8 +798,26 @@ public class PixmapPacker : IDisposable
         return 0;
     }
 
-// ========================================================================
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        foreach ( var page in Pages )
+        {
+            if ( page.Texture == null )
+            {
+                page.Image.Dispose();
+            }
+        }
 
+        _disposed = true;
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     [PublicAPI]
     public class Page
     {
@@ -851,10 +888,15 @@ public class PixmapPacker : IDisposable
         }
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     ///     Does bin packing by inserting to the right or below previously packed
     ///     rectangles. This is good at packing arbitrarily sized images.
     /// </summary>
+    //TODO:
+    [PublicAPI]
     public class GuillotineStrategy : IPackStrategy
     {
         public void Sort( List< Pixmap > images )
@@ -875,6 +917,7 @@ public class PixmapPacker : IDisposable
     ///     Does bin packing by inserting in rows. This is good at
     ///     packing images that have similar heights.
     /// </summary>
+    //TODO:
     [PublicAPI]
     public class SkylineStrategy : IPackStrategy
     {
@@ -892,9 +935,20 @@ public class PixmapPacker : IDisposable
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    //TODO:
     [PublicAPI]
     public class PixmapPackerRectangle : RectangleShape
     {
+        public int[]? Splits         { get; set; }
+        public int[]? Pads           { get; set; }
+        public int    OffsetX        { get; set; }
+        public int    OffsetY        { get; set; }
+        public int    OriginalWidth  { get; set; }
+        public int    OriginalHeight { get; set; }
+
         public PixmapPackerRectangle( int x, int y, int width, int height )
             : base( x, y, width, height )
         {
@@ -904,14 +958,7 @@ public class PixmapPacker : IDisposable
             OriginalHeight = height;
         }
 
-        public PixmapPackerRectangle( int x,
-                                      int y,
-                                      int width,
-                                      int height,
-                                      int left,
-                                      int top,
-                                      int originalWidth,
-                                      int originalHeight )
+        public PixmapPackerRectangle( int x, int y, int width, int height, int left, int top, int originalWidth, int originalHeight )
             : base( x, y, width, height )
         {
             OffsetX        = left;
@@ -919,13 +966,6 @@ public class PixmapPacker : IDisposable
             OriginalWidth  = originalWidth;
             OriginalHeight = originalHeight;
         }
-
-        public int[]? Splits         { get; set; }
-        public int[]? Pads           { get; set; }
-        public int    OffsetX        { get; set; }
-        public int    OffsetY        { get; set; }
-        public int    OriginalWidth  { get; set; }
-        public int    OriginalHeight { get; set; }
     }
 
     /// <summary>

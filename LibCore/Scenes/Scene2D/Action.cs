@@ -71,6 +71,7 @@ public abstract class Action : IAction, IPoolable
     private Actor? _actor;
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     
     /// <inheritdoc cref="IAction.Reset()" />
     public virtual void Reset()

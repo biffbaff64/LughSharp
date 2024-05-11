@@ -338,7 +338,6 @@ public class SplitPane : WidgetGroup
     /// <param name="splitAmount">
     ///     The split amount between the min and max amount. This parameter is clamped during layout.
     /// </param>
-    /// <seealso cref="ClampSplitAmount()" />
     public void SetSplitAmount( float splitAmount )
     {
         _splitAmount = splitAmount;

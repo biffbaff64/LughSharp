@@ -88,9 +88,8 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class CharBuffer : Buffer
 {
-    protected readonly int Offset;
-
-    private readonly char[]? _hb; // Non-null only for heap buffers
+    protected readonly int     Offset;
+    private readonly   char[]? _hb; // Non-null only for heap buffers
 
     protected CharBuffer( int mark, int pos, int lim, int cap, char[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
@@ -406,7 +405,7 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public CharBuffer Put( CharBuffer src )
     {
-        if ( src == this )
+        if ( Equals( src, this ) )
         {
             throw new ArgumentException( "Source buffer should not be this buffer!" );
         }
@@ -798,7 +797,7 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="GdxRuntimeException">
     ///     If this buffer is not backed by an accessible array.
     /// </exception>
-    public override char[] BackingArray()
+    public new char[] BackingArray()
     {
         if ( _hb == null )
         {
@@ -863,12 +862,11 @@ public abstract class CharBuffer : Buffer
     ///     </para>
     /// </summary>
     /// <returns>  The current hash code of this buffer </returns>
-    public int HashCode()
+    public override int GetHashCode()
     {
         var h = 1;
-        var p = Position;
 
-        for ( var i = Limit - 1; i >= p; i-- )
+        for ( var i = Offset - 1; i >= 0; i-- )
         {
             h = ( 31 * h ) + Get( i );
         }
@@ -892,7 +890,7 @@ public abstract class CharBuffer : Buffer
     ///     A negative integer, zero, or a positive integer as this buffer is less than,
     ///     equal to, or greater than the given buffer
     /// </returns>
-    public override bool Equals( object ob )
+    public override bool Equals( object? ob )
     {
         if ( this == ob )
         {

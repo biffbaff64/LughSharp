@@ -190,7 +190,7 @@ public class Polygon : IShape2D
     ///     Note the returned RectangleShape is cached in this polygon, and will
     ///     be reused if this Polygon is changed.
     /// </summary>
-    /// <returns> this polygon's bounding box <seealso cref="RectangleShape" />  </returns>
+    /// <returns> this polygon's bounding box <see cref="RectangleShape" />  </returns>
     public RectangleShape BoundingRectangle
     {
         get

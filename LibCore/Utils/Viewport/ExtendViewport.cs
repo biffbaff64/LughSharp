@@ -37,7 +37,7 @@ public class ExtendViewport : Viewport
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Creates a new viewport using a new <seealso cref="OrthographicCamera" />
+    ///     Creates a new viewport using a new <see cref="OrthographicCamera" />
     ///     with no maximum world size.
     /// </summary>
     /// <param name="minWorldWidth"> The minimum allowable world width. </param>
@@ -59,18 +59,14 @@ public class ExtendViewport : Viewport
     }
 
     /// <summary>
-    ///     Creates a new viewport using a new <seealso cref="OrthographicCamera" />
+    ///     Creates a new viewport using a new <see cref="OrthographicCamera" />
     ///     and a maximum world size.
     /// </summary>
     /// <param name="minWorldWidth"> The minimum allowable world width. </param>
     /// <param name="minWorldHeight"> The minimum allowable wortld height. </param>
     /// <param name="maxWorldWidth"> Use zero for no maximum width. </param>
     /// <param name="maxWorldHeight"> Use zero for no maximum height. </param>
-    /// <see cref="ExtendViewport(float, float, float, float, Camera)" />
-    public ExtendViewport( float minWorldWidth,
-                           float minWorldHeight,
-                           float maxWorldWidth,
-                           float maxWorldHeight )
+    public ExtendViewport( float minWorldWidth, float minWorldHeight, float maxWorldWidth, float maxWorldHeight )
         : this( minWorldWidth, minWorldHeight, maxWorldWidth, maxWorldHeight, new OrthographicCamera() )
     {
     }
@@ -83,11 +79,8 @@ public class ExtendViewport : Viewport
     /// <param name="maxWorldWidth"> Use zero for no maximum width. </param>
     /// <param name="maxWorldHeight"> Use zero for no maximum height. </param>
     /// <param name="camera"> The camera to associate with this viewport. </param>
-    public ExtendViewport( float minWorldWidth,
-                           float minWorldHeight,
-                           float maxWorldWidth,
-                           float maxWorldHeight,
-                           Camera camera ) : base( camera )
+    public ExtendViewport( float minWorldWidth, float minWorldHeight, float maxWorldWidth, float maxWorldHeight, Camera camera )
+        : base( camera )
     {
         MinWorldWidth  = minWorldWidth;
         MinWorldHeight = minWorldHeight;

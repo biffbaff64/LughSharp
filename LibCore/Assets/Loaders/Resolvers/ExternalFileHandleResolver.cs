@@ -25,8 +25,10 @@
 
 namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 
-internal class ExternalFileHandleResolver : IFileHandleResolver
+[PublicAPI]
+public class ExternalFileHandleResolver : IFileHandleResolver
 {
+    /// <inheritdoc/>
     public FileInfo Resolve( string fileName )
     {
         return Gdx.Files.External( fileName );

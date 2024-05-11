@@ -752,7 +752,7 @@ public class Intersector
 
         var f = -a.Normal.Dot( _tmp2 );
 
-        if ( Math.Abs( f ) < MathUtils.FLOAT_ROUNDING_ERROR )
+        if ( Math.Abs( f ) < MathUtils.FLOAT_TOLERANCE )
         {
             return false;
         }
@@ -827,7 +827,7 @@ public class Intersector
 
         if ( intersection != null )
         {
-            if ( t <= MathUtils.FLOAT_ROUNDING_ERROR )
+            if ( t <= MathUtils.FLOAT_TOLERANCE )
             {
                 intersection.Set( ray.origin );
             }
@@ -1131,7 +1131,7 @@ public class Intersector
         var e = xaxis.Dot( delta );
         var f = ray.direction.Dot( xaxis );
 
-        if ( Math.Abs( f ) > MathUtils.FLOAT_ROUNDING_ERROR )
+        if ( Math.Abs( f ) > MathUtils.FLOAT_TOLERANCE )
         {
             // Standard case
             t1 = ( e + bounds.Min.X ) / f; // Intersection with the "left" plane
@@ -1181,7 +1181,7 @@ public class Intersector
         e = yaxis.Dot( delta );
         f = ray.direction.Dot( yaxis );
 
-        if ( Math.Abs( f ) > MathUtils.FLOAT_ROUNDING_ERROR )
+        if ( Math.Abs( f ) > MathUtils.FLOAT_TOLERANCE )
         {
             t1 = ( e + bounds.Min.Y ) / f;
             t2 = ( e + bounds.Max.Y ) / f;
@@ -1219,7 +1219,7 @@ public class Intersector
         e = zaxis.Dot( delta );
         f = ray.direction.Dot( zaxis );
 
-        if ( Math.Abs( f ) > MathUtils.FLOAT_ROUNDING_ERROR )
+        if ( Math.Abs( f ) > MathUtils.FLOAT_TOLERANCE )
         {
             t1 = ( e + bounds.Min.Z ) / f;
             t2 = ( e + bounds.Max.Z ) / f;

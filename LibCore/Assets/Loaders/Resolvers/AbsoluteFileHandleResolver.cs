@@ -25,8 +25,10 @@
 
 namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 
-internal class AbsoluteFileHandleResolver : IFileHandleResolver
+[PublicAPI]
+public class AbsoluteFileHandleResolver : IFileHandleResolver
 {
+    /// <inheritdoc/>
     public FileInfo Resolve( string fileName )
     {
         return Gdx.Files.Absolute( fileName );

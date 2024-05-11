@@ -35,39 +35,26 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public abstract class Camera
 {
-    // ------------------------------------------------------------------------
-
-    private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
-    private readonly Vector3 _tmpVec = new();
-
-    // ------------------------------------------------------------------------
-
-    // the position of the camera
-    public Vector3 Position { get; set; } = new();
-
-    // the unit length up vector of the camera
-    public Vector3 Up { get; set; } = new( 0, 1, 0 );
-
+    public Vector3 Position       { get; set; } = new();          // the position of the camera
+    public Vector3 Up             { get; set; } = new( 0, 1, 0 ); // the unit length up vector of the camera
     public Matrix4 Combined       { get; set; } = new();
     public float   ViewportWidth  { get; set; } = 0;
     public float   ViewportHeight { get; set; } = 0;
 
     // ------------------------------------------------------------------------
 
-    protected Matrix4 Projection        { get; set; } = new();
-    protected Matrix4 View              { get; set; } = new();
-    protected Matrix4 InvProjectionView { get; set; } = new();
+    protected Matrix4  Projection        { get; set; } = new();
+    protected Matrix4  View              { get; set; } = new();
+    protected Matrix4  InvProjectionView { get; set; } = new();
+    protected float    Near              { get; set; } = 1;               // the near clipping plane distance, has to be positive
+    protected float    Far               { get; set; } = 100;             // the far clipping plane distance, has to be positive
+    protected Vector3  Direction         { get; set; } = new( 0, 0, -1 ); // the unit length direction vector of the camera
+    protected Frustrum Frustum           { get; set; } = new();
 
-    // the near clipping plane distance, has to be positive
-    protected float Near { get; set; } = 1;
+    // ------------------------------------------------------------------------
 
-    // the far clipping plane distance, has to be positive
-    protected float Far { get; set; } = 100;
-
-    // the unit length direction vector of the camera
-    protected Vector3 Direction { get; set; } = new( 0, 0, -1 );
-
-    protected Frustrum Frustum { get; set; } = new();
+    private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
+    private readonly Vector3 _tmpVec = new();
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -84,7 +71,7 @@ public abstract class Camera
     /// <summary>
     ///     Recalculates the direction of the camera to look at the point (x, y, z).
     /// </summary>
-    /// <param name="target">the point to look at.</param>
+    /// <param name="target"> Vector3 holding the point to look at. </param>
     public void LookAt( Vector3 target )
     {
         LookAt( target.X, target.Y, target.Z );
@@ -92,7 +79,7 @@ public abstract class Camera
 
     /// <summary>
     ///     Recalculates the direction of the camera to look at the point (x, y, z).
-    ///     This function assumes the up vector is normalized.
+    ///     This method assumes the up vector is normalized.
     /// </summary>
     /// <param name="x"> the x-coordinate of the point to look at.</param>
     /// <param name="y"> the y-coordinate of the point to look at.</param>
@@ -106,12 +93,12 @@ public abstract class Camera
             // up and direction must ALWAYS be orthonormal vectors
             var dot = _tmpVec.Dot( Up );
 
-            if ( Math.Abs( dot - 1 ) < 0.000000001f )
+            if ( Math.Abs( dot - 1 ) < MathUtils.FLOAT_TOLERANCE )
             {
                 // Collinear
                 Up.Set( Direction ).Scale( -1 );
             }
-            else if ( Math.Abs( dot + 1 ) < 0.000000001f )
+            else if ( Math.Abs( dot + 1 ) < MathUtils.FLOAT_TOLERANCE )
             {
                 // Collinear opposite
                 Up.Set( Direction );
@@ -313,7 +300,7 @@ public abstract class Camera
     ///     to the right. This makes it easily useable in conjunction with <see cref="IBatch" />
     ///     and similar classes.
     ///     This method allows you to specify the viewport position and dimensions in the coordinate
-    ///     system expected by <see cref="IGL.GLViewport(int, int, int, int)" />, with the origin
+    ///     system expected by <see cref="Gdx.GL.glViewport()" />, with the origin
     ///     in the bottom left corner of the screen.
     /// </summary>
     /// <param name="worldCoords"></param>

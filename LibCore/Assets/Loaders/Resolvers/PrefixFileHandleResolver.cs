@@ -31,16 +31,17 @@ namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 ///     the base resolver. The prefix is added as is, you have to include any trailing
 ///     '/' character if needed.
 /// </summary>
-internal class PrefixFileHandleResolver : IFileHandleResolver
+[PublicAPI]
+public class PrefixFileHandleResolver : IFileHandleResolver
 {
+    public string              Prefix       { get; }
+    public IFileHandleResolver BaseResolver { get; }
+
     public PrefixFileHandleResolver( IFileHandleResolver baseResolver, string prefix )
     {
         BaseResolver = baseResolver;
         Prefix       = prefix;
     }
-
-    public string              Prefix       { get; }
-    public IFileHandleResolver BaseResolver { get; }
 
     /// <inheritdoc />
     public FileInfo Resolve( string fileName )

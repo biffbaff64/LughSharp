@@ -122,7 +122,7 @@ public abstract class IntBuffer : Buffer
         return Wrap( array, 0, array.Length );
     }
 
-    public override int[] BackingArray()
+    public new int[] BackingArray()
     {
         return null!;
     }

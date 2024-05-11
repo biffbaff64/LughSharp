@@ -617,7 +617,7 @@ public abstract class FloatBuffer : Buffer
         return Offset;
     }
 
-    public override float[] BackingArray()
+    public new float[] BackingArray()
     {
         return null!;
     }

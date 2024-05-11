@@ -84,6 +84,7 @@ public interface IAction
 
     /// <summary>
     ///     Sets the state of the action so it can be run again.
+    ///     Default implementation does nothing.
     /// </summary>
     void Restart();
 }

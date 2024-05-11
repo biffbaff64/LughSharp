@@ -127,7 +127,7 @@ public class Button : Table, IDisableable
     ///     Returns the button's style. Modifying the returned style may not have an
     ///     effect until <see cref="Style" /> set() is called.
     /// </summary>
-    public virtual ButtonStyle? Style
+    public ButtonStyle? Style
     {
         get => _style;
 

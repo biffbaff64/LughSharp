@@ -42,57 +42,59 @@ namespace LughSharp.LibCore.Maths;
 [PublicAPI]
 public abstract class Number
 {
+    //TODO: This class can probably go
+    
     /// <summary>
-    ///     Returns the value of the specified number as an <code>int</code>
+    ///     Returns the value of the specified number as an <tt>int</tt>
     ///     which may involve rounding or truncation.
     /// </summary>
     /// <returns>
     ///     the numeric value represented by this object after conversion
-    ///     to type <code>int</code>.
+    ///     to type <tt>int</tt>.
     /// </returns>
     public abstract int IntValue();
 
     /// <summary>
-    ///     Returns the value of the specified number as a <code>long</code>
+    ///     Returns the value of the specified number as a <tt>long</tt>
     ///     which may involve rounding or truncation.
     /// </summary>
     /// <returns>
     ///     the numeric value represented by this object after conversion
-    ///     to type <code>long</code>.
+    ///     to type <tt>long</tt>.
     /// </returns>
     public abstract long LongValue();
 
     /// <summary>
-    ///     Returns the value of the specified number as a <code>float</code>
+    ///     Returns the value of the specified number as a <tt>float</tt>
     ///     which may involve rounding.
     /// </summary>
     /// <returns>
     ///     the numeric value represented by this object after conversion
-    ///     to type <code>float</code>.
+    ///     to type <tt>float</tt>.
     /// </returns>
     public abstract float FloatValue();
 
     /// <summary>
-    ///     Returns the value of the specified number as a <code>double</code>
+    ///     Returns the value of the specified number as a <tt>double</tt>
     ///     which may involve rounding.
     /// </summary>
     /// <returns>
     ///     the numeric value represented by this object after conversion
-    ///     to type <code>double</code>.
+    ///     to type <tt>double</tt>.
     /// </returns>
     public abstract double DoubleValue();
 
     /// <summary>
-    ///     Returns the value of the specified number as a <code>byte</code>
+    ///     Returns the value of the specified number as a <tt>byte</tt>
     ///     which may involve rounding or truncation.
     ///     <para>
     ///         This implementation returns the result of <see cref="IntValue" /> cast
-    ///         to a <code>byte</code>.
+    ///         to a <tt>byte</tt>.
     ///     </para>
     /// </summary>
     /// <returns>
     ///     the numeric value represented by this object after conversion
-    ///     to type <code>byte</code>.
+    ///     to type <tt>byte</tt>.
     /// </returns>
     public sbyte ByteValue()
     {
@@ -100,16 +102,16 @@ public abstract class Number
     }
 
     /// <summary>
-    ///     Returns the value of the specified number as a <code>short</code>
+    ///     Returns the value of the specified number as a <tt>short</tt>
     ///     which may involve rounding or truncation.
     ///     <para>
     ///         This implementation returns the result of <see cref="IntValue" />
-    ///         cast to a <code>short</code>.
+    ///         cast to a <tt>short</tt>.
     ///     </para>
     /// </summary>
     /// <returns>
     ///     the numeric value represented by this object after conversion
-    ///     to type <code>short</code>.
+    ///     to type <tt>short</tt>.
     /// </returns>
     public short ShortValue()
     {

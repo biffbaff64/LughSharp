@@ -35,7 +35,6 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 ///         Selection changes can be vetoed via <see cref="ChangeListener.ChangeEvent.Cancel()" />.
 ///     </para>
 /// </summary>
-/// <seealso cref="SortedSet{T}" />
 public class Selection< T > : IDisableable, IDisposable
 {
     private readonly SortedSet< T > _old = new();

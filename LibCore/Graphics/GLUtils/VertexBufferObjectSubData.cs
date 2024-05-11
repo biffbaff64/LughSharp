@@ -54,7 +54,7 @@ public class VertexBufferObjectSubData : IVertexData
     /// </summary>
     /// <param name="isStatic"> whether the vertex data is static. </param>
     /// <param name="numVertices"> the maximum number of vertices </param>
-    /// <param name="attributes"> the <seealso cref="VertexAttributes" />.  </param>
+    /// <param name="attributes"> the <see cref="VertexAttributes" />.  </param>
     public VertexBufferObjectSubData( bool isStatic, int numVertices, params VertexAttribute[] attributes )
         : this( isStatic, numVertices, new VertexAttributes( attributes ) )
     {

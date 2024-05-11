@@ -33,13 +33,21 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 ///     a <see cref="TextureRegionDrawable" /> will the actor's scale, rotation, and
 ///     origin be used when drawing.
 /// </summary>
+[PublicAPI]
 public class Image : Widget
 {
-    private int        _alignment; // Backing value for property Alignment
-    private IDrawable? _drawable;
+    public float ImageX      { get; set; }
+    public float ImageY      { get; set; }
+    public float ImageWidth  { get; set; }
+    public float ImageHeight { get; set; }
 
+    private int        _alignment; // Backing value for Alignment property
+    private IDrawable? _drawable;
     private Scaling _scaling;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     public Image() : this( ( IDrawable ) null! )
     {
     }
@@ -64,7 +72,8 @@ public class Image : Widget
     {
     }
 
-    public Image( IDrawable? drawable ) : this( drawable, Scaling.Stretch )
+    public Image( IDrawable? drawable )
+        : this( drawable, Scaling.Stretch )
     {
     }
 
@@ -77,11 +86,6 @@ public class Image : Widget
 
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
-
-    public float ImageX      { get; set; }
-    public float ImageY      { get; set; }
-    public float ImageWidth  { get; set; }
-    public float ImageHeight { get; set; }
 
     public int Alignment
     {
@@ -156,27 +160,22 @@ public class Image : Widget
 
             if ( scaleX is not 1 || scaleY is not 1 || rotation is not 0 )
             {
-                drawable.Draw(
-                              batch,
-                              x + ImageX,
-                              y + ImageY,
-                              OriginX - ImageX,
-                              OriginY - ImageY,
-                              ImageWidth,
-                              ImageHeight,
-                              scaleX,
-                              scaleY,
-                              rotation
-                             );
+                drawable.Draw( batch,
+                               x + ImageX,
+                               y + ImageY,
+                               OriginX - ImageX,
+                               OriginY - ImageY,
+                               ImageWidth,
+                               ImageHeight,
+                               scaleX,
+                               scaleY,
+                               rotation );
 
                 return;
             }
         }
 
-        if ( _drawable != null )
-        {
-            _drawable.Draw( batch, x + ImageX, y + ImageY, ImageWidth * scaleX, ImageHeight * scaleY );
-        }
+        _drawable?.Draw( batch, x + ImageX, y + ImageY, ImageWidth * scaleX, ImageHeight * scaleY );
     }
 
     public void SetDrawable( Skin skin, string drawableName )
@@ -193,7 +192,7 @@ public class Image : Widget
     /// <param name="drawable"> May be null. </param>
     public void SetDrawable( IDrawable? drawable )
     {
-        if ( _drawable == drawable )
+        if ( this._drawable == drawable )
         {
             return;
         }
@@ -210,7 +209,7 @@ public class Image : Widget
             InvalidateHierarchy();
         }
 
-        _drawable = drawable;
+        this._drawable = drawable;
     }
 
     public IDrawable? GetDrawable()
@@ -256,7 +255,8 @@ public class Image : Widget
         return 0;
     }
 
-    protected override string ToString()
+    /// <inheritdoc/>
+    public override string ToString()
     {
         var name = Name;
 

@@ -29,6 +29,7 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 ///     An IndexData instance holds index data.
 ///     Can be either a plain short buffer or an OpenGL buffer object.
 /// </summary>
+[PublicAPI]
 public interface IIndexData : IDisposable
 {
     /// <returns> the number of indices currently stored in this buffer </returns>

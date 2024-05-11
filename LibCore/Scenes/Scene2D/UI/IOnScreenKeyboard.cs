@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
+[PublicAPI]
 public interface IOnScreenKeyboard
 {
     void Show( bool visible );

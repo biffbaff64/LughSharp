@@ -30,8 +30,6 @@ namespace LughSharp.LibCore.Graphics.Profiling;
 ///     Enabling will wrap Gdx.GL* instances with delegate classes which provide
 ///     described functionality and route GL calls to the actual GL instances.
 /// </summary>
-/// <seealso cref="GL20Interceptor" />
-/// <seealso cref="GL30Interceptor" />
 [PublicAPI]
 public class GLProfiler
 {

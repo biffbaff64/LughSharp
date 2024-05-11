@@ -61,9 +61,6 @@ public class ParticleEffectLoader
     /// <returns>
     ///     A loaded instance of the <see cref="ParticleEffect" /> class.
     /// </returns>
-    /// <seealso cref="ParticleEffect" />
-    /// <seealso cref="ParticleEffectParameter" />
-    /// <seealso cref="TextureAtlas" />
     public override void Load( AssetManager? am,
                                string? fileName,
                                FileInfo? file,
@@ -108,9 +105,6 @@ public class ParticleEffectLoader
     /// <param name="fileName">The name of the file associated with the asset.</param>
     /// <param name="file">The file information associated with the asset.</param>
     /// <param name="parameters">The parameters used for loading the asset.</param>
-    /// <seealso cref="ParticleEffectParameter" />
-    /// <seealso cref="AssetDescriptor" />
-    /// <seealso cref="TextureAtlas" />
     /// <returns>
     ///     A list of asset descriptors representing the dependencies required for loading the particle effect.
     /// </returns>

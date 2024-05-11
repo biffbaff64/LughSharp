@@ -303,8 +303,6 @@ public class ParticleEffect : IDisposable
     ///         indicating the missing image.
     ///     </para>
     /// </remarks>
-    /// <seealso cref="ParticleEmitter.ImagePaths" />
-    /// <seealso cref="ParticleEmitter.SetSprites" />
     public void LoadEmitterImages( TextureAtlas atlas, string? atlasPrefix = null )
     {
         for ( int i = 0, n = _emitters.Count; i < n; i++ )
@@ -365,8 +363,6 @@ public class ParticleEffect : IDisposable
     ///         textures.
     ///     </para>
     /// </remarks>
-    /// <seealso cref="ParticleEmitter.ImagePaths" />
-    /// <seealso cref="ParticleEmitter.SetSprites" />
     public void LoadEmitterImages( DirectoryInfo imagesDir )
     {
         _ownsTexture = true;

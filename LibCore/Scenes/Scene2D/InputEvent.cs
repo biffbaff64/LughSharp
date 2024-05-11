@@ -54,7 +54,8 @@ public class InputEvent : Event
         MouseMoved,
 
         /// <summary>
-        ///     The mouse pointer or an active touch have entered (i.e., <see cref="Actor.Hit(float, float, bool)" />) an actor.
+        ///     The mouse pointer or an active touch have entered
+        ///     (i.e., <see cref="Actor.Hit(float, float, bool)" />) an actor.
         /// </summary>
         Enter,
 

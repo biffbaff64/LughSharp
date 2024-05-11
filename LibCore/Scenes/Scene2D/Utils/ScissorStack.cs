@@ -186,7 +186,7 @@ public class ScissorStack
     /// <param name="viewportWidth"></param>
     /// <param name="viewportHeight"></param>
     /// <param name="camera"> the <see cref="Camera" /> </param>
-    /// <param name="batchTransform"> the transformation <seealso cref="Matrix4" /> </param>
+    /// <param name="batchTransform"> the transformation <see cref="Matrix4" /> </param>
     /// <param name="area"> the <see cref="RectangleShape" /> to transform to window coordinates </param>
     /// <param name="scissor"> the Rectangle to store the result in  </param>
     public static void CalculateScissors( Camera camera,

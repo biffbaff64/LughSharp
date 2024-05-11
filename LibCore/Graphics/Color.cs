@@ -553,11 +553,11 @@ public sealed class Color
         {
             hsv[ 0 ] = 0;
         }
-        else if ( Math.Abs( max - R ) < 0.00001f )
+        else if ( Math.Abs( max - R ) < MathUtils.FLOAT_TOLERANCE )
         {
             hsv[ 0 ] = ( ( ( 60 * ( G - B ) ) / range ) + 360 ) % 360;
         }
-        else if ( Math.Abs( max - G ) < 0.00001f )
+        else if ( Math.Abs( max - G ) < MathUtils.FLOAT_TOLERANCE )
         {
             hsv[ 0 ] = ( ( 60 * ( B - R ) ) / range ) + 120;
         }

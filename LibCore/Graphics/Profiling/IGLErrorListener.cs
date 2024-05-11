@@ -31,13 +31,11 @@ namespace LughSharp.LibCore.Graphics.Profiling;
 /// <summary>
 ///     Listener for GL errors detected by <see cref="GLProfiler" />.
 /// </summary>
-/// <seealso cref="GLProfiler" />
 public interface IGLErrorListener
 {
     /// <summary>
     ///     Put your error logging code here.
     /// </summary>
-    /// <seealso cref="BaseGLInterceptor.ResolveErrorNumber(int) " />
     void OnError( int error );
 }
 

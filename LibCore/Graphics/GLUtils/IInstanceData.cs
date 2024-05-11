@@ -30,15 +30,22 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 ///     It is implemented as either a <see cref="InstanceBufferObject" /> or a
 ///     <see cref="InstanceBufferObjectSubData" />. Both require Open GL 3.3+.
 /// </summary>
+[PublicAPI]
 public interface IInstanceData : IDisposable
 {
-    /// <returns> the number of vertices this InstanceData stores </returns>
+    /// <summary>
+    ///     Returns the number of vertices this InstanceData stores
+    /// </summary>
     int NumInstances { get; }
 
-    /// <returns> the number of vertices this InstanceData can store </returns>
+    /// <summary>
+    ///     Returns the number of vertices this InstanceData can store
+    /// </summary>
     int NumMaxInstances { get; }
 
-    /// <returns> the <seealso cref="VertexAttributes" /> as specified during construction. </returns>
+    /// <summary>
+    ///     Returns the <see cref="VertexAttributes" /> as specified during construction.
+    /// </summary>
     VertexAttributes Attributes { get; }
 
     /// <summary>
@@ -118,9 +125,4 @@ public interface IInstanceData : IDisposable
     ///     Invalidates the InstanceData if applicable. Use this in case of a context loss.
     /// </summary>
     void Invalidate();
-
-//    /// <summary>
-//    /// Disposes this InstanceData and all its associated OpenGL resources.
-//    /// </summary>
-//    void Dispose();
 }

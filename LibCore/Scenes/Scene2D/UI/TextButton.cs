@@ -57,9 +57,7 @@ public class TextButton : Button
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
-    // This method needs to be public...
-    // ReSharper disable once MemberCanBeProtected.Global
-    public override TextButtonStyle? Style
+    public new TextButtonStyle? Style
     {
         get => _style;
         set
@@ -76,12 +74,10 @@ public class TextButton : Button
 
             if ( Label != null )
             {
-                var textButtonStyle = value;
-
                 var labelStyle = Label.Style;
 
-                labelStyle.Font      = textButtonStyle.Font!;
-                labelStyle.FontColor = textButtonStyle.FontColor;
+                labelStyle.Font      = value.Font!;
+                labelStyle.FontColor = value.FontColor;
                 Label.Style          = labelStyle;
             }
         }
@@ -196,7 +192,8 @@ public class TextButton : Button
 
     // ------------------------------------------------------------------------
 
-    protected override string ToString()
+    /// <inheritdoc/>
+    public override string ToString()
     {
         if ( Name != null )
         {

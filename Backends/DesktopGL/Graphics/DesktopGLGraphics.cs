@@ -187,7 +187,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <summary>
     ///     Enable or disable cubemap seamless feature. Default is true if supported.
     ///     Should only be called if this feature is supported.
-    ///     <seealso cref="SupportsCubeMapSeamless()" />
     /// </summary>
     /// <param name="enable"></param>
     public void EnableCubeMapSeamless( bool enable )

@@ -166,7 +166,7 @@ public class Table : WidgetGroup
     ///     Called to draw the background, before clipping is applied (if enabled).
     ///     Default implementation draws the background drawable.
     /// </summary>
-    protected void DrawBackground( IBatch batch, float parentAlpha, float x, float y )
+    protected virtual void DrawBackground( IBatch batch, float parentAlpha, float x, float y )
     {
         if ( _background == null )
         {

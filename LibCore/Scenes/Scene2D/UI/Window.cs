@@ -307,7 +307,8 @@ public class Window : Table
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    internal class TitleTableClass : Table
+    [PublicAPI]
+    public class TitleTableClass : Table
     {
         private readonly Window _window;
 
@@ -328,16 +329,17 @@ public class Window : Table
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    internal class WindowCaptureListener : InputListener
+    [PublicAPI]
+    public class WindowCaptureListener : InputListener
     {
         private readonly Window _window;
 
-        internal WindowCaptureListener( Window window )
+        public WindowCaptureListener( Window window )
         {
             _window = window;
         }
 
-        internal new bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
+        public new bool TouchDown( InputEvent ev, float x, float y, int pointer, int button )
         {
             _window.ToFront();
 
@@ -345,7 +347,8 @@ public class Window : Table
         }
     }
     
-    internal class WindowInputListener : InputListener
+    [PublicAPI]
+    public class WindowInputListener : InputListener
     {
         private readonly Window _window;
         private          float  _lastX;
@@ -353,7 +356,7 @@ public class Window : Table
         private          float  _startX;
         private          float  _startY;
 
-        internal WindowInputListener( Window window )
+        public WindowInputListener( Window window )
         {
             _window = window;
         }
@@ -557,7 +560,7 @@ public class Window : Table
                                ( float ) Math.Round( height ) );
         }
 
-        public override bool MouseMoved( InputEvent ev, float x, float y )
+        public override bool MouseMoved( InputEvent? ev, float x, float y )
         {
             UpdateEdge( x, y );
 
@@ -569,17 +572,17 @@ public class Window : Table
             return _window.IsModal;
         }
 
-        public override bool KeyDown( InputEvent ev, int keycode )
+        public override bool KeyDown( InputEvent? ev, int keycode )
         {
             return _window.IsModal;
         }
 
-        public override bool KeyUp( InputEvent ev, int keycode )
+        public override bool KeyUp( InputEvent? ev, int keycode )
         {
             return _window.IsModal;
         }
 
-        public override bool KeyTyped( InputEvent ev, char character )
+        public override bool KeyTyped( InputEvent? ev, char character )
         {
             return _window.IsModal;
         }
