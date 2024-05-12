@@ -27,6 +27,7 @@ using LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
+[PublicAPI]
 public class ImageTextButton : Button
 {
     private readonly Image?                _image;
@@ -65,11 +66,15 @@ public class ImageTextButton : Button
         Add( _image );
         Add( _label );
 
-        SetStyle( style );
-
-        SetSize( PrefWidth, PrefHeight );
+        SetStyleAndSize( style );
     }
 
+    private void SetStyleAndSize( ImageTextButtonStyle style )
+    {
+        SetStyle( style );
+        SetSize( PrefWidth, PrefHeight );
+    }
+    
     public void SetStyle( ButtonStyle style )
     {
         if ( !( style is ImageTextButtonStyle textButtonStyle ) )
@@ -99,7 +104,7 @@ public class ImageTextButton : Button
     ///     Returns the appropriate image drawable from the style based on the
     ///     current button state.
     /// </summary>
-    protected IDrawable? GetImageDrawable()
+    public virtual IDrawable? GetImageDrawable()
     {
         if ( IsDisabled && ( _style?.ImageDisabled != null ) )
         {
@@ -157,7 +162,7 @@ public class ImageTextButton : Button
     ///     Sets the image drawable based on the current button state. The default
     ///     implementation sets the image drawable using <see cref="GetImageDrawable()" />.
     /// </summary>
-    protected void UpdateImage()
+    public virtual void UpdateImage()
     {
         _image?.SetDrawable( GetImageDrawable() );
     }
@@ -231,6 +236,7 @@ public class ImageTextButton : Button
         return _style?.FontColor;
     }
 
+    /// <inheritdoc/>
     public override void Draw( IBatch batch, float parentAlpha )
     {
         UpdateImage();
@@ -283,6 +289,7 @@ public class ImageTextButton : Button
         }
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         if ( Name != null )
@@ -306,8 +313,17 @@ public class ImageTextButton : Button
     /// <summary>
     ///     The style for an image text button, see <see cref="ImageTextButton" />.
     /// </summary>
+    [PublicAPI]
     public class ImageTextButtonStyle : TextButton.TextButtonStyle
     {
+        public IDrawable? ImageUp          { get; set; }
+        public IDrawable? ImageDown        { get; set; }
+        public IDrawable? ImageOver        { get; set; }
+        public IDrawable? ImageDisabled    { get; set; }
+        public IDrawable? ImageChecked     { get; set; }
+        public IDrawable? ImageCheckedDown { get; set; }
+        public IDrawable? ImageCheckedOver { get; set; }
+
         public ImageTextButtonStyle()
         {
         }
@@ -334,13 +350,5 @@ public class ImageTextButton : Button
             : base( style )
         {
         }
-
-        public IDrawable? ImageUp          { get; set; }
-        public IDrawable? ImageDown        { get; set; }
-        public IDrawable? ImageOver        { get; set; }
-        public IDrawable? ImageDisabled    { get; set; }
-        public IDrawable? ImageChecked     { get; set; }
-        public IDrawable? ImageCheckedDown { get; set; }
-        public IDrawable? ImageCheckedOver { get; set; }
     }
 }

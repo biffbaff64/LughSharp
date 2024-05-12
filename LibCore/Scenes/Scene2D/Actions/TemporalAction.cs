@@ -25,14 +25,30 @@
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
+/// <summary>
+///     Base class for actions that transition over time using percent complete.
+/// </summary>
+[PublicAPI]
 public abstract class TemporalAction : Action
 {
+    public bool            Reverse       { get; set; }
+    public float           Duration      { get; set; }
+    public float           Time          { get; set; }
+    public IInterpolation? Interpolation { get; set; }
+
+    /// <summary>
+    ///     Returns true after <see cref="Act(float)" /> has been called where time >= duration.
+    /// </summary>
+    public bool IsComplete { get; private set; }
+
     private bool _began;
+
+    // ------------------------------------------------------------------------
 
     protected TemporalAction()
     {
     }
-
+    
     protected TemporalAction( float duration )
     {
         Duration = duration;
@@ -44,16 +60,7 @@ public abstract class TemporalAction : Action
         Interpolation = interpolation;
     }
 
-    public bool            Reverse       { get; set; }
-    public float           Duration      { get; set; }
-    public float           Time          { get; set; }
-    public IInterpolation? Interpolation { get; set; }
-
-    /// <summary>
-    ///     Returns true after <see cref="Act(float)" /> has been called where time >= duration.
-    /// </summary>
-    public bool IsComplete { get; private set; }
-
+    /// <inheritdoc/>
     public override bool Act( float delta )
     {
         if ( IsComplete )
@@ -110,7 +117,7 @@ public abstract class TemporalAction : Action
     /// <summary>
     ///     Called the last time <see cref="Act(float)" /> is called.
     /// </summary>
-    protected void End()
+    protected virtual void End()
     {
     }
 
@@ -126,7 +133,7 @@ public abstract class TemporalAction : Action
     /// <summary>
     ///     Skips to the end of the transition.
     /// </summary>
-    public void Finish()
+    public virtual void Finish()
     {
         Time = Duration;
     }

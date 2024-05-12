@@ -240,10 +240,11 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
+    ///     Returns the item at the specified <paramref name="index"/>.
     /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     Thrown if the specified index is &gt;= the array size.
+    /// </exception>
     public override T GetAt( int index )
     {
         if ( index >= Size )
@@ -271,9 +272,8 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
+    ///     Insert the supplied value into the array at position 'index'.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="value"></param>
     public override void Insert( int index, T value )
     {
         if ( index > Size )
@@ -308,13 +308,13 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
 
     /// <summary>
     /// </summary>
-    /// <param name="first"></param>
-    /// <param name="second"></param>
-    public override void Swap( int first, int second )
+    /// <param name="firstIndex"></param>
+    /// <param name="secondIndex"></param>
+    public override void Swap( int firstIndex, int secondIndex )
     {
         Modified();
 
-        ( Items[ first ], Items[ second ] ) = ( Items[ second ], Items[ first ] );
+        ( Items[ firstIndex ], Items[ secondIndex ] ) = ( Items[ secondIndex ], Items[ firstIndex ] );
     }
 
     /// <summary>
@@ -372,7 +372,9 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     /// <summary>
     ///     Removes a range of elements from the array.
     /// </summary>
-    /// <param name="start">The zero-based starting index of the range of elements to remove.</param>
+    /// <param name="start">
+    /// The zero-based starting index of the range of elements to remove.
+    /// </param>
     /// <param name="end">The ending index of the range.</param>
     public override void RemoveRange( int start, int end )
     {
@@ -408,11 +410,10 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
-    ///     Removes all the elements that match the conditions defined by the
-    ///     specified predicate.
+    ///     Removes all the elements that match the items in the supplied array.
     /// </summary>
     /// <param name="array"></param>
-    /// <returns></returns>
+    /// <returns> TRUE if items have been removed. </returns>
     public bool RemoveAll( SnapshotArray< T > array )
     {
         Modified();

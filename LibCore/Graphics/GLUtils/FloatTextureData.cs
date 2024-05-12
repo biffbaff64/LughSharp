@@ -34,12 +34,19 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class FloatTextureData : ITextureData
 {
-    private readonly int _format;
+    public FloatBuffer Buffer     { get; private set; } = null!;
+    public int         Width      { get; set; }         = 0;
+    public int         Height     { get; set; }         = 0;
+    public bool        IsPrepared { get; set; }         = false;
+    public bool        UseMipMaps { get; set; }
 
+    private readonly int _format;
     private readonly int  _internalFormat;
     private readonly bool _isGpuOnly;
     private readonly int  _type;
 
+    // ------------------------------------------------------------------------
+    
     public FloatTextureData( int w, int h, int internalFormat, int format, int type, bool isGpuOnly )
     {
         Width           = w;
@@ -49,11 +56,6 @@ public class FloatTextureData : ITextureData
         _type           = type;
         _isGpuOnly      = isGpuOnly;
     }
-
-    public FloatBuffer Buffer     { get; private set; } = null!;
-    public int         Width      { get; set; }         = 0;
-    public int         Height     { get; set; }         = 0;
-    public bool        IsPrepared { get; set; }         = false;
 
     public void Prepare()
     {
@@ -154,6 +156,16 @@ public class FloatTextureData : ITextureData
         }
     }
 
+    public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
+
+    /// <summary>
+    ///     FloatTextureData objects are Managed.
+    /// </summary>
+    public bool IsManaged() => true;
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     public Pixmap ConsumePixmap()
     {
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
@@ -167,14 +179,5 @@ public class FloatTextureData : ITextureData
     public Pixmap.Format GetFormat()
     {
         throw new NotSupportedException();
-    }
-
-    public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
-
-    public bool UseMipMaps { get; set; }
-
-    public bool IsManaged()
-    {
-        return true;
     }
 }

@@ -30,11 +30,28 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class FileTextureData : ITextureData
 {
+    public FileInfo? File { get; set; }
+
+    /// <returns> the width of the pixel data </returns>
+    public int Width { get; set; }
+
+    /// <returns> the height of the pixel data </returns>
+    public int Height { get; set; }
+
+    /// <returns> whether the TextureData is prepared or not.</returns>
+    public bool IsPrepared { get; set; }
+
+    /// <returns> whether to generate mipmaps or not. </returns>
+    public bool UseMipMaps { get; set; }
+
     private Pixmap.Format? _format;
     private int            _height = 0;
     private Pixmap?        _pixmap;
     private int            _width = 0;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     public FileTextureData( FileInfo file, Pixmap preloadedPixmap, Pixmap.Format? format, bool useMipMaps )
     {
         File       = file;
@@ -50,8 +67,6 @@ public class FileTextureData : ITextureData
             _format ??= _pixmap.GetFormat();
         }
     }
-
-    public FileInfo? File { get; set; }
 
     /// <summary>
     ///     Prepares the TextureData for a call to <see cref="ITextureData.ConsumePixmap" /> or
@@ -88,9 +103,9 @@ public class FileTextureData : ITextureData
     /// <summary>
     ///     Returns the <see cref="Pixmap" /> for upload by Texture.
     ///     <para>
-    ///         A call to <see cref="ITextureData.Prepare" /> must precede a call to this method. Any
-    ///         internal data structures created in <see cref="ITextureData.Prepare" /> should be
-    ///         disposed of here.
+    ///         A call to <see cref="ITextureData.Prepare" /> must precede a call to this
+    ///         method. Any internal data structures created in <see cref="ITextureData.Prepare" />
+    ///         should be disposed of here.
     ///     </para>
     /// </summary>
     /// <returns> the pixmap.</returns>
@@ -133,29 +148,13 @@ public class FileTextureData : ITextureData
             ( "This TextureData implementation does not upload data itself" );
     }
 
-    /// <returns> the width of the pixel data </returns>
-    public int Width { get; set; }
-
-    /// <returns> the height of the pixel data </returns>
-    public int Height { get; set; }
-
-    /// <returns> whether the TextureData is prepared or not.</returns>
-    public bool IsPrepared { get; set; }
-
-    /// <returns> whether to generate mipmaps or not. </returns>
-    public bool UseMipMaps { get; set; }
-
-    /// <returns> the <see cref="Pixmap.Format" /> of the pixel data </returns>
-    public Pixmap.Format GetFormat()
-    {
-        return Pixmap.Format.Alpha;
-    }
+    /// <summary>
+    ///     Returns the <see cref="Pixmap.Format" /> of the pixel data.
+    /// </summary>
+    public Pixmap.Format GetFormat() => Pixmap.Format.Alpha;
 
     /// <returns> whether this implementation can cope with a EGL context loss. </returns>
-    public virtual bool IsManaged()
-    {
-        return true;
-    }
+    public virtual bool IsManaged() => true;
 
     /// <returns> the <see cref="ITextureData.TextureDataType" /></returns>
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Pixmap;

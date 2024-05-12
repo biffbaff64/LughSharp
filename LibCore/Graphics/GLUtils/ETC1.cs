@@ -45,21 +45,8 @@ public class ETC1
     public const int RGB565_PIXEL_SIZE = 2;
     public const int RGB888_PIXEL_SIZE = 3;
 
-    private static int GetPixelSize( Pixmap.Format format )
-    {
-        if ( format == Pixmap.Format.RGB565 )
-        {
-            return RGB565_PIXEL_SIZE;
-        }
-
-        if ( format == Pixmap.Format.RGB888 )
-        {
-            return RGB888_PIXEL_SIZE;
-        }
-
-        throw new GdxRuntimeException( "Can only handle RGB565 or RGB888 images" );
-    }
-
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     ///     Encodes the image via the ETC1 compression scheme. Only <see cref="Pixmap.Format.RGB565" />
     ///     and <see cref="Pixmap.Format.RGB888" /> are supported.
@@ -130,6 +117,23 @@ public class ETC1
         return pixmap;
     }
 
+    private static int GetPixelSize( Pixmap.Format format )
+    {
+        if ( format == Pixmap.Format.RGB565 )
+        {
+            return RGB565_PIXEL_SIZE;
+        }
+
+        if ( format == Pixmap.Format.RGB888 )
+        {
+            return RGB888_PIXEL_SIZE;
+        }
+
+        throw new GdxRuntimeException( "Can only handle RGB565 or RGB888 images" );
+    }
+
+    // ------------------------------------------------------------------------
+    
     // @off
     /*JNI
     #include <etc1/etc1_utils.h>
@@ -277,6 +281,9 @@ public class ETC1
                                                      int height,
                                                      int pixelSize );
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     ///     Class for storing ETC1 compressed image data.
     /// </summary>
@@ -421,6 +428,7 @@ public class ETC1
 //            CompressedData.Limit    = CompressedData.Capacity;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             if ( HasPKMHeader() )

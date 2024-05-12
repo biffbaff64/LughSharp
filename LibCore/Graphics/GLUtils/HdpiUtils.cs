@@ -59,7 +59,7 @@ public class HdpiUtils
     }
 
     /// <summary>
-    ///     Calls <see cref="Gdx.GL.glScissor(int, int, int, int)" />, expecting the
+    ///     Calls <see cref="GLBindings.glScissor(int, int, int, int)" />, expecting the
     ///     coordinates and sizes given in logical coordinates and automatically
     ///     converts them to backbuffer coordinates, which may be bigger on HDPI screens.
     /// </summary>
@@ -81,7 +81,7 @@ public class HdpiUtils
     }
 
     /// <summary>
-    ///     Calls <see cref="Gdx.GL.glViewport(int, int, int, int)" />, expecting
+    ///     Calls <see cref="GLBindings.glViewport(int, int, int, int)" />, expecting
     ///     the coordinates and sizes given in logical coordinates and automatically
     ///     converts them to backbuffer coordinates, which may be bigger on HDPI screens.
     /// </summary>

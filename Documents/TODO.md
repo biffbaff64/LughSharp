@@ -347,12 +347,12 @@ GRAPHICS/GLUTILS
     - IP   - IP   - ETC1TextureData
     - IP   - IP   - FacedCubemapData
     - IP   - IP   - FileTextureArrayData
-    - IP   - IP   - FileTextureData
-    - IP   - IP   - FloatTextureData
-    - IP   - IP   - GLOnlyTextureData
+    - DONE - IP   - FileTextureData
+    - DONE - IP   - FloatTextureData
+    - DONE - IP   - GLOnlyTextureData
     - IP   - IP   - GLVersion
-    - IP   - IP   - HdpiMode
-    - IP   - IP   - HdpiUtils
+    - DONE - DONE - HdpiMode
+    - DONE - DONE - HdpiUtils
     - IP   - IP   - IImmediateModeRenderer
     - DONE - DONE - IIndexData
     - DONE - IP   - IInstanceData
@@ -362,7 +362,7 @@ GRAPHICS/GLUTILS
     - IP   - IP   - IndexBufferObjectSubData
     - IP   - IP   - InstanceBufferObject
     - IP   - IP   - InstanceBufferObjectSubData
-    - IP   - IP   - IVertexData
+    - DONE - DONE - IVertexData
     - IP   - IP   - KTXTTextureData
     - IP   - IP   - MipMapGenerator
     - DONE - IP   - MipMapTextureData
@@ -386,7 +386,7 @@ GRAPHICS/OPENGL
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - DONE - GLBindings
+    - DONE - IP   - GLBindings
     - IP   - IP   - GLSetup
     - IP   - IP   - IGL
 
@@ -409,8 +409,6 @@ GRAPHICS/PROFILING
 
 INPUT
 -----
-
-    - Not sure about these. Am I supporting mobile?
 
     -      - GestureDetector
     -      - RemoteInput
@@ -563,10 +561,8 @@ SCENES/SCENE2D
     - DONE - DONE - Group
     - DONE - DONE - IActor
     - DONE - DONE - InputEvent
-    - IP   - IP   - SceneBounds                 Might not need this after all
     - DONE - DONE - Stage
     - DONE - DONE - Touchable
-    - DONE - IP   - TouchFocus
 
 SCENES/SCENE2D/ACTIONS
 ----------------------
@@ -602,10 +598,10 @@ SCENES/SCENE2D/ACTIONS
     - DONE - IP   - SequenceAction
     - DONE - IP   - SizeByAction
     - DONE - IP   - SizeToAction
-    - DONE - IP   - TemporalAction
-    - DONE - IP   - TimeScaleAction
-    - DONE - IP   - TouchableAction
-    - DONE - IP   - VisibleAction
+    - DONE - DONE - TemporalAction
+    - DONE - DONE - TimeScaleAction
+    - DONE - DONE - TouchableAction
+    - DONE - DONE - VisibleAction
 
 SCENES/SCENE2D/LISTENERS
 ------------------------
@@ -656,7 +652,7 @@ SCENES/SCENE2D/UI
     - IP   - IP   - Image
     - IP   - IP   - ImageButton
     - IP   - IP   - ImageTextButton
-    - DONE - IP   - IOnScreenKeyboard
+    - DONE - DONE - IOnScreenKeyboard
     - IP   - IP   - Label
     - IP   - IP   - ListBox
     - IP   - IP   - ParticleEffectActor

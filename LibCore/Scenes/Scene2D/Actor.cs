@@ -714,9 +714,9 @@ public class Actor : IActor
             return false;
         }
 
-        for ( int i = 0, n = Stage.touchFocuses.Size; i < n; i++ )
+        for ( int i = 0, n = Stage.TouchFocuses.Size; i < n; i++ )
         {
-            if ( Stage.touchFocuses.GetAt( i ).Target == this )
+            if ( Stage.TouchFocuses.GetAt( i ).Target == this )
             {
                 return true;
             }
@@ -736,9 +736,9 @@ public class Actor : IActor
             return false;
         }
 
-        for ( int i = 0, n = Stage.touchFocuses.Size; i < n; i++ )
+        for ( int i = 0, n = Stage.TouchFocuses.Size; i < n; i++ )
         {
-            if ( Stage.touchFocuses.GetAt( i ).ListenerActor == this )
+            if ( Stage.TouchFocuses.GetAt( i ).ListenerActor == this )
             {
                 return true;
             }

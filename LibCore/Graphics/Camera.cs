@@ -300,7 +300,7 @@ public abstract class Camera
     ///     to the right. This makes it easily useable in conjunction with <see cref="IBatch" />
     ///     and similar classes.
     ///     This method allows you to specify the viewport position and dimensions in the coordinate
-    ///     system expected by <see cref="Gdx.GL.glViewport()" />, with the origin
+    ///     system expected by <see cref="GLBindings.glViewport()" />, with the origin
     ///     in the bottom left corner of the screen.
     /// </summary>
     /// <param name="worldCoords"></param>

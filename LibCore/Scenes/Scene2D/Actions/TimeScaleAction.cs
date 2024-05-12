@@ -25,10 +25,15 @@
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
+/// <summary>
+///     Multiplies the delta of an action.
+/// </summary>
+[PublicAPI]
 public class TimeScaleAction : DelegateAction
 {
     public float Scale { get; set; }
 
+    /// <inheritdoc/>
     protected override bool Delegate( float delta )
     {
         return ( Action == null ) || Action.Act( delta * Scale );

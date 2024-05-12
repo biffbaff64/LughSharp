@@ -25,7 +25,7 @@ Rule summary:
 Code
 ----
 
-- Names of classes, methods, enumerations, public properties, namespaces: **_PascalCase_**.
+- Names of classes, methods, enumerations, public and Protected properties, namespaces: **_PascalCase_**.
 - Names of public fields, local variables, parameters: **_camelCase_**.
 - Names of private, fields and properties: **__camelCase_**.
 - Names of protected, internal and protected internal fields and properties: **_camelCase_**.
@@ -327,8 +327,8 @@ ref and out
 - Place out parameters after all other parameters in the method definition.
 - ref should be used rarely, when mutating an input is necessary.
 - Do not use ref as an optimisation for passing structs.
-- Do not use ref to pass a modifiable container into a method. ref is only required when the supplied container needs be
-  replaced with an entirely different container instance.
+- Do not use ref to pass a modifiable container into a method. ref is only required when the supplied
+  container needs to be replaced with an entirely different container instance.
 
 LINQ
 ----

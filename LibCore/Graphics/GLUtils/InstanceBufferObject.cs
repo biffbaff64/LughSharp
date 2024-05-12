@@ -57,7 +57,7 @@ public class InstanceBufferObject : IInstanceData
     }
 
     /// <summary>
-    ///     The GL enum used in the call to <see cref="Gdx.GL.GLBufferData(int, int, Buffer, int)" />",
+    ///     The GL enum used in the call to <see cref="GLBindings.GLBufferData(int, int, Buffer, int)" />",
     ///     e.g. GL_STATIC_DRAW or GL_DYNAMIC_DRAW. It can only be called when the VBO is not bound.
     /// </summary>
     public int Usage
