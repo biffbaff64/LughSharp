@@ -62,16 +62,16 @@ public interface IGraphics
     [PublicAPI]
     public class GdxMonitor
     {
+        public int     VirtualX { get; set; }
+        public int     VirtualY { get; set; }
+        public string? Name     { get; set; }
+
         public GdxMonitor( int x, int y, string name )
         {
             VirtualX = x;
             VirtualY = y;
             Name     = name;
         }
-
-        public int     VirtualX { get; set; }
-        public int     VirtualY { get; set; }
-        public string? Name     { get; set; }
     }
 
     /// <summary>
@@ -104,15 +104,16 @@ public interface IGraphics
 
     #region properties
 
-    float                  DeltaTime        { get; set; }
-    GLVersion              GLVersion        { get; set; }
-    int                    Width            { get; }
-    int                    Height           { get; }
-    BufferFormatDescriptor BufferFormat     { get; set; }
-    int                    BackBufferWidth  { get; }
-    int                    BackBufferHeight { get; }
-    IGL                    IGL              { get; set; }
-    
+    IGL                    IGL          { get; set; }
+    GLVersion              GLVersion    { get; set; }
+    BufferFormatDescriptor BufferFormat { get; set; }
+
+    float DeltaTime        { get; set; }
+    int   Width            { get; }
+    int   Height           { get; }
+    int   BackBufferWidth  { get; }
+    int   BackBufferHeight { get; }
+
     #endregion properties
 
     #region methods
@@ -125,6 +126,7 @@ public interface IGraphics
     ///     to use OpenGL ES 3.0!
     /// </summary>
     /// <returns>TRUE if available.</returns>
+    [Obsolete]
     bool IsGL30Available();
 
     /// <summary>

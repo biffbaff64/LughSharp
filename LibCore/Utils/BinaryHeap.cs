@@ -218,8 +218,8 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     /// <summary>
     ///     Reset all elements in the heap to null.
     ///     <para>
-    ///         If the heap does not exist, it will be created first with capacity set
-    ///         to <see cref="DEFAULT_HEAP_CAPACITY" />
+    ///         If the heap does not exist, it will be created first with
+    ///         capacity set to <see cref="DEFAULT_HEAP_CAPACITY" />
     ///     </para>
     /// </summary>
     public void Clear()
@@ -282,6 +282,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     }
 
     /// <summary>
+    ///     Moves the element at position 'index' down
     /// </summary>
     /// <param name="index"></param>
     private void Down( int index )
@@ -418,6 +419,8 @@ public class BinaryHeap< T > where T : BinaryHeapNode
         return buffer.ToString();
     }
 
+    // ------------------------------------------------------------------------
+    
     #region properties
 
     public int Size { get; set; }

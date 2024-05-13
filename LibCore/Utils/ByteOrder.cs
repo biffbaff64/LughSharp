@@ -28,8 +28,6 @@ namespace LughSharp.LibCore.Utils;
 /// <summary>
 ///     A typesafe enumeration for byte orders.
 /// </summary>
-
-//TODO: Is this still needed?
 [PublicAPI]
 public class ByteOrder
 {
@@ -49,6 +47,8 @@ public class ByteOrder
 
     private readonly string _name;
 
+    // ------------------------------------------------------------------------
+    
     private ByteOrder( string name )
     {
         _name = name;

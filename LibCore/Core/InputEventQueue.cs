@@ -25,6 +25,9 @@
 
 namespace LughSharp.LibCore.Core;
 
+/// <summary>
+///     Queues events that are later passed to an <see cref="IInputProcessor"/>.
+/// </summary>
 [PublicAPI]
 public class InputEventQueue
 {
@@ -38,11 +41,12 @@ public class InputEventQueue
     private const int MOUSE_MOVED    = 6;
     private const int MOUSE_SCROLLED = 7;
 
-    private readonly List< int > _processingQueue = new();
-
-    private readonly List< int > _queue = new();
-
     public long CurrentEventTime { get; set; }
+
+    private readonly List< int > _processingQueue = new();
+    private readonly List< int > _queue           = new();
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// </summary>
@@ -73,49 +77,67 @@ public class InputEventQueue
             switch ( type )
             {
                 case SKIP:
+                {
                     i += q[ i ];
 
                     break;
+                }
 
                 case KEY_DOWN:
+                {
                     processor.KeyDown( q[ i++ ] );
 
                     break;
+                }
 
                 case KEY_UP:
+                {
                     processor.KeyUp( q[ i++ ] );
 
                     break;
+                }
 
                 case KEY_TYPED:
+                {
                     processor.KeyTyped( ( char ) q[ i++ ] );
 
                     break;
+                }
 
                 case TOUCH_DOWN:
+                {
                     processor.TouchDown( q[ i++ ], q[ i++ ], q[ i++ ], q[ i++ ] );
 
                     break;
+                }
 
                 case TOUCH_UP:
+                {
                     processor.TouchUp( q[ i++ ], q[ i++ ], q[ i++ ], q[ i++ ] );
 
                     break;
+                }
 
                 case TOUCH_DRAGGED:
+                {
                     processor.TouchDragged( q[ i++ ], q[ i++ ], q[ i++ ] );
 
                     break;
+                }
 
                 case MOUSE_MOVED:
+                {
                     processor.MouseMoved( q[ i++ ], q[ i++ ] );
 
                     break;
+                }
 
                 case MOUSE_SCROLLED:
+                {
                     processor.Scrolled( NumberUtils.IntBitsToFloat( q[ i++ ] ), NumberUtils.IntBitsToFloat( q[ i++ ] ) );
 
                     break;
+                }
 
                 default:
                     throw new SystemException();
@@ -130,7 +152,6 @@ public class InputEventQueue
     /// <param name="nextType"></param>
     /// <param name="i"></param>
     /// <returns></returns>
-    /// <exception cref="SystemException"></exception>
     private int Next( int nextType, int i )
     {
         lock ( this )
@@ -151,36 +172,48 @@ public class InputEventQueue
                 switch ( type )
                 {
                     case SKIP:
+                    {
                         i += q[ i ];
 
                         break;
+                    }
 
                     case KEY_DOWN:
                     case KEY_UP:
                     case KEY_TYPED:
+                    {
                         i++;
 
                         break;
+                    }
 
                     case TOUCH_DOWN:
                     case TOUCH_UP:
+                    {
                         i += 4;
 
                         break;
+                    }
 
                     case TOUCH_DRAGGED:
+                    {
                         i += 3;
 
                         break;
+                    }
 
                     case MOUSE_MOVED:
                     case MOUSE_SCROLLED:
+                    {
                         i += 2;
 
                         break;
+                    }
 
                     default:
+                    {
                         throw new SystemException();
+                    }
                 }
             }
         }

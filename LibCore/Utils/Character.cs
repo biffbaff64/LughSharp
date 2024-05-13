@@ -53,8 +53,9 @@ public static class Character
     public const char MIN_LOW_SURROGATE = '\uDC00';
 
     /// <summary>
+    ///     The minimum value of a <a href="http://www.unicode.org/glossary/#supplementary_code_point">
+    ///     Unicode supplementary c ode point</a>, constant {@code U+10000}.
     /// </summary>
-    /// <returns></returns>
     public const int MIN_SUPPLEMENTARY_CODE_POINT = 0x010000;
 
     /// <summary>

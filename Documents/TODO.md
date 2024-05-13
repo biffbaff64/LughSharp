@@ -133,7 +133,7 @@ AUDIO/MP3SHARP/DECODING
     - DONE - DONE - BitReserve
     - DONE - DONE - Bitstream
     - DONE - DONE - BitstreamErrors
-    - DONE - IP   - BitstreamException
+    - DONE - DONE - BitstreamException
     - DONE - IP   - CircularByteBuffer
     - DONE - DONE - Crc16
     - DONE - IP   - Decoder
@@ -235,14 +235,15 @@ CORE
     - DONE - DONE - IFiles
     - DONE - IP   - IGraphics
     - DONE - IP   - IInput
-    - DONE - IP   - IInputProcessor
+    - DONE - DONE - IInputProcessor
     - DONE - DONE - ILifecycleListener
     - DONE - IP   - INet
     - DONE - DONE - InputAdapter
     - DONE - IP   - InputEventQueue
-    - DONE - IP   - InputMultiplexer
+    - DONE - DONE - InputMultiplexer
     - DONE - DONE - IPreferences
     - DONE - DONE - IScreen
+    - DONE - IP   - Platform
     - DONE - DONE - ScreenAdapter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -713,15 +714,14 @@ UTILS
     - DONE - DONE - Align
     - DONE - IP   - BinaryHeap
     - DONE - DONE - Bits
-    - DONE - IP   - ByteOrder                       Is this still needed?
-    - DONE - IP   - Character                       C# System MUST already have this???
+    - DONE - IP   - ByteOrder                       Is this still needed? Possible Delete Candidate?
+    - DONE - DONE - Character                       C# System MUST already have this???
     - DONE - IP   - ComparableTimSort
     - DONE - IP   - DataInput                       Check
     - DONE - IP   - DataOutput                      Check
     - DONE - IP   - DataUtils                       Added Class
     - DONE - DONE - FloatConstants
     - DONE - DONE - GdxRuntimeException
-    - DONE - IP   - GdxSystem
     - DONE - DONE - IClipboard                      Convert - Interface, clipboard handled in backends.                 
     - DONE - DONE - ICloseable
     - DONE - DONE - IReadable
@@ -829,17 +829,6 @@ UTILS/COLLECTIONS/EXTENSIONS
     - DONE - DONE - DictionaryExtensions
     - DONE - DONE - ListExtensions
 
-UTILS/JSON
-----------
-
-    CODE   DOCUMENT
-    ----   --------
-    - DONE - IP   - AbstractWriter
-    - IP   - IP   - Json
-    - IP   - IP   - JsonReader
-    - IP   - IP   - JsonValue               Iterator needs finishing
-    - DONE - IP   - JsonWriter
-
 UTILS/POOLING
 -------------
 
@@ -864,6 +853,9 @@ UTILS/VIEWPORT
     - DONE - DONE - StretchViewport
     - DONE - DONE - Viewport
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1018,6 +1010,9 @@ TESTS
     -      -      - Core/Graphics/SpriteTest
     - IP   - IP   - Core/Scene/Scene2D/StageTest
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

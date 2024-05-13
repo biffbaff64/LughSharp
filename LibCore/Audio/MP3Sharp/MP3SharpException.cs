@@ -34,7 +34,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp;
 ///     thrown by MP3Sharp.
 /// </summary>
 [Serializable, PublicAPI]
-public class Mp3SharpException : Exception
+public class Mp3SharpException : ApplicationException
 {
     /// <summary>
     ///     Initializes a new Mp3SharpException with a specified error message.
@@ -72,22 +72,5 @@ public class Mp3SharpException : Exception
     protected Mp3SharpException( SerializationInfo info, StreamingContext context )
         : base( info, context )
     {
-    }
-
-    public void PrintStackTrace()
-    {
-        SupportClass.WriteStackTrace( this, Console.Error );
-    }
-
-    public void PrintStackTrace( StreamWriter ps )
-    {
-        if ( InnerException == null )
-        {
-            SupportClass.WriteStackTrace( this, ps );
-        }
-        else
-        {
-            SupportClass.WriteStackTrace( InnerException, Console.Error );
-        }
     }
 }

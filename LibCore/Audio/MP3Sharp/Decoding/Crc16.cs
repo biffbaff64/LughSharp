@@ -37,6 +37,8 @@ public class Crc16
 
     private short _crc = ( short ) SupportClass.Identity( 0xFFFF );
 
+    // ------------------------------------------------------------------------
+    
     static Crc16()
     {
         _polynomial = ( short ) SupportClass.Identity( 0x8005 );
@@ -65,8 +67,7 @@ public class Crc16
     }
 
     /// <summary>
-    ///     Return the calculated checksum.
-    ///     Erase it for next calls to add_bits().
+    ///     Return the calculated checksum. Erase it for next calls to add_bits().
     /// </summary>
     public short Checksum()
     {

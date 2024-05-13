@@ -46,28 +46,63 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 [Serializable, PublicAPI]
 public class BitstreamException : Mp3SharpException
 {
+    public int ErrorCode { get; set; }
+
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    ///     Initializes a new Mp3SharpException with a specified error message and a
+    ///     reference to the inner exception that is the cause of this exception.
+    /// </summary>
+    /// <param name="message">
+    ///     The error message that explains the reason for the exception.
+    /// </param>
+    /// <param name="inner">
+    ///     The exception that is the cause of the current exception, or a null reference
+    ///     if no inner exception is specified.
+    /// </param>
     public BitstreamException( string message, Exception? inner = null )
         : base( message, inner )
     {
         ErrorCode = BitstreamErrors.UNKNOWN_ERROR;
     }
 
+    /// <summary>
+    ///     Initializes a new Mp3SharpException with a specified error message and a
+    ///     reference to the inner exception that is the cause of this exception.
+    /// </summary>
+    /// <param name="errorcode">
+    ///     The errorcode which is used to extract the message that explains the
+    ///     reason for the exception.
+    /// </param>
+    /// <param name="inner">
+    ///     The exception that is the cause of the current exception, or a null reference
+    ///     if no inner exception is specified.
+    /// </param>
     public BitstreamException( int errorcode, Exception? inner = null )
         : this( GetErrorString( errorcode ), inner )
     {
         ErrorCode = errorcode;
     }
 
+    /// <summary>
+    ///     Initializes a new BitstreamException with serialized data.
+    /// </summary>
+    /// <param name="info">
+    ///     The <see cref="SerializationInfo"/> that holds the serialized object
+    ///     data about the exception being thrown.
+    /// </param>
+    /// <param name="context">
+    ///     The <see cref="StreamingContext"/> that contains contextual information
+    ///     about the source or destination.
+    /// </param>
     protected BitstreamException( SerializationInfo info, StreamingContext context )
         : base( info, context )
     {
         ErrorCode = info.GetInt32( "ErrorCode" );
     }
 
-    public int ErrorCode { get; set; }
-
+    /// <inheritdoc/>
     public override void GetObjectData( SerializationInfo info, StreamingContext context )
     {
         ArgumentNullException.ThrowIfNull( info );

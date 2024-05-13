@@ -31,6 +31,15 @@ namespace LughSharp.LibCore.Utils.Collections;
 [PublicAPI]
 public class PredicateIterator< T > : IEnumerator< T >
 {
+    public IEnumerator< T? > Enumerator { get; set; }
+    public IPredicate< T >   Predicate  { get; set; }
+    public bool              End        { get; set; }
+    public bool              Peeked     { get; set; }
+    public T?                NextItem   { get; set; }
+    public T                 Current    { get; }
+
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// </summary>
     /// <param name="enumerable"></param>
@@ -52,23 +61,6 @@ public class PredicateIterator< T > : IEnumerator< T >
         Peeked     = false;
         NextItem   = default( T? );
         Current    = default( T? )!;
-    }
-
-    public IEnumerator< T? > Enumerator { get; set; }
-    public IPredicate< T >   Predicate  { get; set; }
-    public bool              End        { get; set; }
-    public bool              Peeked     { get; set; }
-    public T?                NextItem   { get; set; }
-    public T                 Current    { get; }
-
-    public virtual bool MoveNext()
-    {
-        throw new NotImplementedException();
-    }
-
-    public virtual void Reset()
-    {
-        throw new NotImplementedException();
     }
 
     object? IEnumerator.Current => Current;
@@ -153,5 +145,18 @@ public class PredicateIterator< T > : IEnumerator< T >
         }
 
         Enumerator.Dispose();
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    public virtual bool MoveNext()
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void Reset()
+    {
+        throw new NotImplementedException();
     }
 }

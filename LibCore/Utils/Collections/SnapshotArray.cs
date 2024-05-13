@@ -117,7 +117,10 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     ///     Takes a snapshot of the current array state and then
     ///     returns the array.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>
+    ///     Returns the backing array, which is guaranteed to not be modified
+    ///     before <see cref="End()"/>
+    /// </returns>
     public T?[] Begin()
     {
         Modified();
@@ -130,6 +133,8 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
+    ///     Releases the guarantee that the array returned by <see cref="Begin()"/>
+    ///     won't be modified.
     /// </summary>
     public void End()
     {
@@ -181,8 +186,8 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
+    ///     Add the supplied value to the end of the array.
     /// </summary>
-    /// <param name="value"></param>
     public override void Add( T value )
     {
         Modified();
@@ -256,9 +261,10 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
+    ///     Sets the array element at position index to the supplied value.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="value"></param>
+    /// <param name="index"> The index. </param>
+    /// <param name="value"> The value. </param>
     public override void Set( int index, T value )
     {
         if ( index >= Size )
@@ -307,9 +313,11 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
+    ///     Swap the array elements at <paramref name="firstIndex"/>
+    ///     and <paramref name="secondIndex"/>.
     /// </summary>
-    /// <param name="firstIndex"></param>
-    /// <param name="secondIndex"></param>
+    /// <param name="firstIndex"> The position of element 1. </param>
+    /// <param name="secondIndex"> The position of element 2. </param>
     public override void Swap( int firstIndex, int secondIndex )
     {
         Modified();
@@ -318,9 +326,10 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
+    ///     Removes the first occurance of <paramref name="value"/> from the array.
     /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <param name="value"> The value to remove. </param>
+    /// <returns> TRUE if successful. </returns>
     public bool Remove( T value )
     {
         Modified();
@@ -339,9 +348,13 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
+    ///     Removes, and returns, the element at the specified index.
+    ///     If the array is ordered, all elements above index will be moved down
+    ///     1 position. If the array is not ordered, the element at the end of
+    ///     the array will be moved into the position at index.
     /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
+    /// <param name="index"> The index. </param>
+    /// <returns> The removed element. </returns>
     public T RemoveAt( int index )
     {
         Modified();
@@ -461,6 +474,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return -1;
     }
 
+    /// <inheritdoc/>
     public override bool Contains( T? value )
     {
         var i = Size - 1;
@@ -476,6 +490,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return false;
     }
 
+    /// <inheritdoc/>
     public override T Peek()
     {
         if ( Size == 0 )
@@ -486,6 +501,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return Items[ Size - 1 ];
     }
 
+    /// <inheritdoc/>
     public override T Pop()
     {
         Modified();
@@ -504,6 +520,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return item;
     }
 
+    /// <inheritdoc/>
     public override void Clear()
     {
         Array.Clear( Items );
@@ -543,9 +560,15 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     /// <inheritdoc />
     public override int GetHashCode()
     {
-        return base.GetHashCode();
+        const int PRIME = 31;
+
+        var result = PRIME + 43;
+        result = ( PRIME * result ) + 34;
+
+        return result;
     }
 
+    /// <inheritdoc/>
     public override bool Equals( object? obj )
     {
         if ( obj == this )
@@ -586,6 +609,8 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return true;
     }
 }
+
+// ----------------------------------------------------------------------------
 
 [PublicAPI]
 public class SnapshotEnumerator< T > : IEnumerator< T >

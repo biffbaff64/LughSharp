@@ -86,74 +86,66 @@ public interface IInput
 
     // --------------------------------------------------------------------
 
-    public float GetAccelerometerX();
-    public float GetAccelerometerY();
-    public float GetAccelerometerZ();
-    public float GetGyroscopeX();
-    public float GetGyroscopeY();
-    public float GetGyroscopeZ();
+    float GetAccelerometerX();
+    float GetAccelerometerY();
+    float GetAccelerometerZ();
+    float GetGyroscopeX();
+    float GetGyroscopeY();
+    float GetGyroscopeZ();
+    float GetPressure( int pointer = 0 );
+    float GetAzimuth();
+    float GetPitch();
+    float GetRoll();
 
-    public int GetMaxPointers();
-    public int GetX( int pointer = 0 );
-    public int GetDeltaX( int pointer = 0 );
-    public int GetY( int pointer = 0 );
-    public int GetDeltaY( int pointer = 0 );
+    int GetMaxPointers();
+    int GetX( int pointer = 0 );
+    int GetDeltaX( int pointer = 0 );
+    int GetY( int pointer = 0 );
+    int GetDeltaY( int pointer = 0 );
 
-    public bool IsTouched( int pointer = 0 );
-    public bool JustTouched();
+    bool IsTouched( int pointer = 0 );
+    bool JustTouched();
+    bool IsButtonPressed( int button );
+    bool IsButtonJustPressed( int button );
+    bool IsKeyPressed( int key );
+    bool IsKeyJustPressed( int key );
 
-    public float GetPressure( int pointer = 0 );
+    void GetTextInput( ITextInputListener listener,
+                       string title,
+                       string text,
+                       string hint,
+                       OnscreenKeyboardType type );
 
-    public bool IsButtonPressed( int button );
-    public bool IsButtonJustPressed( int button );
+    void SetOnscreenKeyboardVisible( bool visible );
+    void SetOnscreenKeyboardVisible( bool visible, OnscreenKeyboardType type );
+    void Vibrate( int milliseconds );
+    void Vibrate( long[] pattern, int repeat );
+    void CancelVibrate();
+    void GetRotationMatrix( float[] matrix );
 
-    public bool IsKeyPressed( int key );
-    public bool IsKeyJustPressed( int key );
+    long GetCurrentEventTime();
 
-    public void GetTextInput( ITextInputListener listener,
-                              string title,
-                              string text,
-                              string hint,
-                              OnscreenKeyboardType type );
+    void SetCatchKey( int keycode, bool catchKey );
 
-    public void SetOnscreenKeyboardVisible( bool visible );
-    public void SetOnscreenKeyboardVisible( bool visible, OnscreenKeyboardType type );
+    bool IsCatchKey( int keycode );
 
-    public void Vibrate( int milliseconds );
-    public void Vibrate( long[] pattern, int repeat );
-    public void CancelVibrate();
+    bool IsPeripheralAvailable( Peripheral peripheral );
 
-    public float GetAzimuth();
+    int GetRotation();
 
-    public float GetPitch();
-
-    public float GetRoll();
-
-    public void GetRotationMatrix( float[] matrix );
-
-    public long GetCurrentEventTime();
-
-    public void SetCatchKey( int keycode, bool catchKey );
-
-    public bool IsCatchKey( int keycode );
-
-    public bool IsPeripheralAvailable( Peripheral peripheral );
-
-    public int GetRotation();
-
-    public Orientation GetNativeOrientation();
+    Orientation GetNativeOrientation();
 
     /// <remarks>
     ///     Java LibGDX has this method named as SetCursorCatched(bool catched).
     /// </remarks>
-    public void SetCursorCaught( bool caught );
+    void SetCursorCaught( bool caught );
 
     /// <remarks>
     ///     Java LibGDX has this method named as IsCursorCatched().
     /// </remarks>
-    public bool IsCursorCaught();
+    bool IsCursorCaught();
 
-    public void SetCursorPosition( int x, int y );
+    void SetCursorPosition( int x, int y );
 
     /// <summary>
     ///     Mouse Buttons

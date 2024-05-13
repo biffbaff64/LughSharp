@@ -25,6 +25,9 @@
 
 namespace LughSharp.LibCore.Core;
 
+/// <summary>
+///     Base class for Input classes.
+/// </summary>
 [PublicAPI]
 public abstract class AbstractInput : IInput
 {
@@ -71,6 +74,7 @@ public abstract class AbstractInput : IInput
     // ------------------------------------------------------------------------
     
     //TODO: What are 'catch keys' in LibGDX???
+    //TODO: Are these for mobile devices???
     //TODO: Do I need to keep these???
     public virtual void SetCatchKey( int keycode, bool catchKey )
     {
@@ -115,50 +119,29 @@ public abstract class AbstractInput : IInput
 
     #region abstract methods
 
+    // I'm pretty sure these are for mobile devices...
     public abstract float GetAccelerometerX();
-
     public abstract float GetAccelerometerY();
-
     public abstract float GetAccelerometerZ();
-
     public abstract float GetGyroscopeX();
-
     public abstract float GetGyroscopeY();
-
     public abstract float GetGyroscopeZ();
-
     public abstract int GetMaxPointers();
-
     public abstract int GetX( int pointer = 0 );
-
     public abstract int GetDeltaX( int pointer = 0 );
-
     public abstract int GetY( int pointer = 0 );
-
     public abstract int GetDeltaY( int pointer = 0 );
-
     public abstract bool IsTouched( int pointer = 0 );
-
     public abstract bool JustTouched();
-
     public abstract float GetPressure( int pointer = 0 );
-
     public abstract bool IsButtonPressed( int button );
-
     public abstract bool IsButtonJustPressed( int button );
-
     public abstract bool IsPeripheralAvailable( IInput.Peripheral peripheral );
-
     public abstract int GetRotation();
-
     public abstract IInput.Orientation GetNativeOrientation();
-
     public abstract void SetCursorCaught( bool caught );
-
     public abstract bool IsCursorCaught();
-
     public abstract void SetCursorPosition( int x, int y );
-
     public abstract void GetTextInput( IInput.ITextInputListener listener,
                                        string title,
                                        string text,
@@ -166,23 +149,14 @@ public abstract class AbstractInput : IInput
                                        IInput.OnscreenKeyboardType type = IInput.OnscreenKeyboardType.Default );
 
     public abstract void SetOnscreenKeyboardVisible( bool visible );
-
     public abstract void SetOnscreenKeyboardVisible( bool visible, IInput.OnscreenKeyboardType type );
-
     public abstract void Vibrate( int milliseconds );
-
     public abstract void Vibrate( long[] pattern, int repeat );
-
     public abstract void CancelVibrate();
-
     public abstract float GetAzimuth();
-
     public abstract float GetPitch();
-
     public abstract float GetRoll();
-
     public abstract void GetRotationMatrix( float[] matrix );
-
     public abstract long GetCurrentEventTime();
 
     #endregion abstract methods

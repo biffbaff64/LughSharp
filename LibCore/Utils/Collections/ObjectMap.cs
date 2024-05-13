@@ -54,15 +54,16 @@ public class ObjectMap< TK, TV >
     private readonly   object _dummy = new();
     protected readonly float  LoadFactor;
 
-    private   Entries? _entries1;
-    private   Entries? _entries2;
-    private   Keys?    _keys1;
-    private   Keys?    _keys2;
-    private   Values?  _values1;
-    private   Values?  _values2;
     protected TK?[]    KeyTable;
     protected int      Threshold;
     protected TV?[]    ValueTable;
+
+    private Entries? _entries1;
+    private Entries? _entries2;
+    private Keys?    _keys1;
+    private Keys?    _keys2;
+    private Values?  _values1;
+    private Values?  _values2;
 
     // ------------------------------------------------------------------------
 
@@ -160,10 +161,8 @@ public class ObjectMap< TK, TV >
     ///         For more details, see
     ///         <a
     ///             href="https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/">
-    ///             Malte
-    ///             Skarupke's blog post
+    ///             Malte Skarupke's blog post
     ///         </a>
-    ///         .
     ///     </para>
     ///     <para>
     ///         You can override this method to customize hashing. This might be useful, for instance,
@@ -328,21 +327,15 @@ public class ObjectMap< TK, TV >
 
     /// <summary>
     ///     Helper method.
+    ///     Returns TRUE if Size is greater than zero.
     /// </summary>
-    /// <returns>TRUE if Size is greater than zero.</returns>
-    public bool NotEmpty()
-    {
-        return Size > 0;
-    }
+    public virtual bool NotEmpty() => Size > 0;
 
     /// <summary>
     ///     Helper method.
+    ///     Returns TRUE if Size is zero.
     /// </summary>
-    /// <returns>TRUE if Size is zero.</returns>
-    public bool IsEmpty()
-    {
-        return Size == 0;
-    }
+    public virtual bool IsEmpty() => Size == 0;
 
     /// <summary>
     ///     Shrinks the map to the specified maximum capacity.
@@ -483,9 +476,7 @@ public class ObjectMap< TK, TV >
         }
     }
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         const int PRIME = 28;
@@ -513,10 +504,7 @@ public class ObjectMap< TK, TV >
         return tableSize;
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public override bool Equals( object? obj )
     {
         if ( obj == this )
@@ -560,84 +548,6 @@ public class ObjectMap< TK, TV >
         }
 
         return true;
-    }
-
-    public string ToString( string separator )
-    {
-        return ToString( separator, false );
-    }
-
-    public override string ToString()
-    {
-        return ToString( ", ", true );
-    }
-
-    protected string ToString( string separator, bool braces )
-    {
-        if ( Size == 0 )
-        {
-            return braces ? "{}" : "";
-        }
-
-        var buffer = new StringBuilder( 32 );
-
-        if ( braces )
-        {
-            buffer.Append( '{' );
-        }
-
-        var i = KeyTable.Length;
-
-        while ( i-- > 0 )
-        {
-            var key = KeyTable[ i ];
-
-            if ( key == null )
-            {
-                continue;
-            }
-
-            buffer.Append( key );
-            buffer.Append( '=' );
-
-            var value = ValueTable[ i ];
-
-            buffer.Append( value );
-
-            break;
-        }
-
-        while ( i-- > 0 )
-        {
-            var key = KeyTable[ i ];
-
-            if ( key == null )
-            {
-                continue;
-            }
-
-            buffer.Append( separator );
-            buffer.Append( key );
-            buffer.Append( '=' );
-
-            var value = ValueTable[ i ];
-
-            if ( Equals( value, this ) )
-            {
-                buffer.Append( "(this)" );
-            }
-            else
-            {
-                buffer.Append( value );
-            }
-        }
-
-        if ( braces )
-        {
-            buffer.Append( '}' );
-        }
-
-        return buffer.ToString();
     }
 
     /// <summary>
@@ -718,8 +628,7 @@ public class ObjectMap< TK, TV >
         }
 
         var oldValue = ValueTable[ i ];
-
-        var next = ( i + 1 ) & Mask;
+        var next     = ( i + 1 ) & Mask;
 
         while ( KeyTable[ next ] is { } lkey )
         {
@@ -871,13 +780,95 @@ public class ObjectMap< TK, TV >
         return GetEntries();
     }
 
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return ToString( ", ", true );
+    }
+
+    public string ToString( string separator )
+    {
+        return ToString( separator, false );
+    }
+
+    protected string ToString( string separator, bool braces )
+    {
+        if ( Size == 0 )
+        {
+            return braces ? "{}" : "";
+        }
+
+        var buffer = new StringBuilder( 32 );
+
+        if ( braces )
+        {
+            buffer.Append( '{' );
+        }
+
+        var i = KeyTable.Length;
+
+        while ( i-- > 0 )
+        {
+            var key = KeyTable[ i ];
+
+            if ( key == null )
+            {
+                continue;
+            }
+
+            buffer.Append( key );
+            buffer.Append( '=' );
+
+            var value = ValueTable[ i ];
+
+            buffer.Append( value );
+
+            break;
+        }
+
+        while ( i-- > 0 )
+        {
+            var key = KeyTable[ i ];
+
+            if ( key == null )
+            {
+                continue;
+            }
+
+            buffer.Append( separator );
+            buffer.Append( key );
+            buffer.Append( '=' );
+
+            var value = ValueTable[ i ];
+
+            if ( Equals( value, this ) )
+            {
+                buffer.Append( "(this)" );
+            }
+            else
+            {
+                buffer.Append( value );
+            }
+        }
+
+        if ( braces )
+        {
+            buffer.Append( '}' );
+        }
+
+        return buffer.ToString();
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// </summary>
     [PublicAPI]
     public class Entry
     {
-        public TK? Key;
-        public TV? Value;
+        public TK? Key   { get; set; }
+        public TV? Value { get; set; }
 
         public Entry()
         {
@@ -895,6 +886,9 @@ public class ObjectMap< TK, TV >
         }
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// </summary>
     [PublicAPI]
@@ -902,8 +896,11 @@ public class ObjectMap< TK, TV >
     {
         protected readonly ObjectMap< TK, TV > Map;
 
-        protected int CurrentIndex = -1;
-        protected int NextIndex    = -1;
+        public bool Valid { get; set; } = true;
+
+        protected int  CurrentIndex { get; set; } = -1;
+        protected int  NextIndex    { get; set; } = -1;
+        protected bool HasNext      { get; set; }
 
         protected MapIterator( ObjectMap< TK, TV > map )
         {
@@ -911,9 +908,6 @@ public class ObjectMap< TK, TV >
 
             Reset();
         }
-
-        public    bool Valid   { get; set; } = true;
-        protected bool HasNext { get; set; }
 
         public void Reset()
         {
@@ -978,6 +972,9 @@ public class ObjectMap< TK, TV >
         }
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// </summary>
     [PublicAPI]
@@ -1021,6 +1018,9 @@ public class ObjectMap< TK, TV >
             return this;
         }
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// </summary>
@@ -1082,6 +1082,9 @@ public class ObjectMap< TK, TV >
             return array;
         }
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// </summary>

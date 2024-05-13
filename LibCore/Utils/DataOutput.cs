@@ -139,22 +139,28 @@ public class DataOutput : BinaryWriter
             switch ( c )
             {
                 case <= 0x007F:
+                {
                     Write( ( sbyte ) c );
 
                     break;
+                }
 
                 case > 0x07FF:
+                {
                     Write( unchecked( ( sbyte ) ( 0xE0 | ( ( c >> 12 ) & 0x0F ) ) ) );
                     Write( unchecked( ( sbyte ) ( 0x80 | ( ( c >> 6 ) & 0x3F ) ) ) );
                     Write( unchecked( ( sbyte ) ( 0x80 | ( c & 0x3F ) ) ) );
 
                     break;
+                }
 
                 default:
+                {
                     Write( unchecked( ( sbyte ) ( 0xC0 | ( ( c >> 6 ) & 0x1F ) ) ) );
                     Write( unchecked( ( sbyte ) ( 0x80 | ( c & 0x3F ) ) ) );
 
                     break;
+                }
             }
         }
     }

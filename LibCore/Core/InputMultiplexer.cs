@@ -28,6 +28,8 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public class InputMultiplexer : IInputProcessor
 {
+    public SnapshotArray< IInputProcessor > Processors { get; set; } = new( 4 );
+
     /// <summary>
     ///     Constructor.
     ///     Creates a new InputMultiplexer. It will not contain any Input Processors,
@@ -38,6 +40,9 @@ public class InputMultiplexer : IInputProcessor
     }
 
     /// <summary>
+    ///     Constructor.
+    ///     Creats a new InputMultiplexer. The supplied <see cref="IInputProcessor"/>(s)
+    ///     will be added to the multiplexer.
     /// </summary>
     public InputMultiplexer( params IInputProcessor[] processors )
     {
@@ -46,8 +51,6 @@ public class InputMultiplexer : IInputProcessor
             Processors.Add( inputProcessor );
         }
     }
-
-    public SnapshotArray< IInputProcessor > Processors { get; set; } = new( 4 );
 
     /// <inheritdoc />
     public bool KeyDown( int keycode )
@@ -261,11 +264,19 @@ public class InputMultiplexer : IInputProcessor
         Processors.Add( processor );
     }
 
+    /// <summary>
+    ///     Remove the <see cref="IInputProcessor"/> at the given index from
+    ///     the multiplexer.
+    /// </summary>
     public void RemoveProcessor( int index )
     {
         Processors.RemoveAt( index );
     }
 
+    /// <summary>
+    ///     Remove the first occurance of the specified <see cref="IInputProcessor"/>
+    ///     from the InputMultiplexer.
+    /// </summary>
     public void RemoveProcessor( IInputProcessor processor )
     {
         Processors.Remove( processor );
@@ -288,13 +299,21 @@ public class InputMultiplexer : IInputProcessor
         Processors.Clear();
     }
 
-    public void SetProcessors( params IInputProcessor[] processorList )
+    /// <summary>
+    ///     Adds the given list of <see cref="IInputProcessor"/>s, which can be a
+    ///     single processor or multiple processors, to the multiplexer.
+    /// </summary>
+    public void AddProcessors( params IInputProcessor[] processorList )
     {
         Processors.Clear();
         Processors.AddAll( processorList );
     }
 
-    public void SetProcessors( List< IInputProcessor > processorList )
+    /// <summary>
+    ///     Adds the given list of <see cref="IInputProcessor"/>s, which can be a
+    ///     single processor or multiple processors, to the multiplexer.
+    /// </summary>
+    public void AddProcessors( List< IInputProcessor > processorList )
     {
         Processors.Clear();
         Processors.AddAll( processorList );
