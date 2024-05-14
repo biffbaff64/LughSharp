@@ -32,8 +32,12 @@ namespace LughSharp.LibCore.Maps;
 [PublicAPI]
 public class MapProperties
 {
-    // The properties map.
+    public Dictionary< string, object? >.KeyCollection   Keys   => _properties.Keys;
+    public Dictionary< string, object? >.ValueCollection Values => _properties.Values;
+
     private Dictionary< string, object? > _properties = new();
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Gets the property matching the specified key.
@@ -41,7 +45,7 @@ public class MapProperties
     /// <param name="key"> The Key. </param>
     /// <typeparam name="T"> The Type of the required property. </typeparam>
     /// <returns></returns>
-    public T? Get< T >( string key )
+    public virtual T? Get< T >( string key )
     {
         return ( T? ) Get( key );
     }
@@ -54,13 +58,17 @@ public class MapProperties
     /// <param name="defaultValue"> The default value. </param>
     /// <typeparam name="T"> The Type of the required property. </typeparam>
     /// <returns></returns>
-    public T Get< T >( string key, T defaultValue )
+    public virtual T Get< T >( string key, T defaultValue )
     {
         var obj = Get( key );
 
         return obj == null ? defaultValue : ( T ) obj;
     }
 
+    /// <summary>
+    ///     Gets the property matching the specified key.
+    /// </summary>
+    /// <param name="key"> The Key. </param>
     public object? Get( string key )
     {
         return _properties[ key ];
@@ -76,33 +84,38 @@ public class MapProperties
         return _properties.ContainsKey( key );
     }
 
+    /// <summary>
+    ///     Sets the property matching the provided key to the provided value.
+    /// </summary>
+    /// <param name="key"> The key. </param>
+    /// <param name="value"> The value. </param>
     public void Put( string key, object? value )
     {
         _properties[ key ] = value;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="properties"></param>
     public void PutAll( MapProperties properties )
     {
         _properties = new Dictionary< string, object? >( properties._properties );
     }
 
+    /// <summary>
+    ///     Removes the property matching the specified key.
+    /// </summary>
+    /// <param name="key"> The key. </param>
     public void Remove( string key )
     {
         _properties.Remove( key );
     }
 
+    /// <summary>
+    ///     Clears the properties map.
+    /// </summary>
     public void Clear()
     {
         _properties.Clear();
-    }
-
-    public Dictionary< string, object? >.KeyCollection GetKeys()
-    {
-        return _properties.Keys;
-    }
-
-    public Dictionary< string, object? >.ValueCollection GetValues()
-    {
-        return _properties.Values;
     }
 }

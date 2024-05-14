@@ -43,25 +43,30 @@ public class MapObjects : IEnumerable< MapObject >
         _objects = new List< MapObject >();
     }
 
-    /// <summary>
-    ///     Returns an enumerator that iterates through the collection.
-    /// </summary>
-    /// <returns>An <see cref="IEnumerator{T}" /> object.</returns>
+    /// <inheritdoc/>
     public IEnumerator< MapObject > GetEnumerator()
     {
         return _objects.GetEnumerator();
     }
 
+    /// <inheritdoc/>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
 
+    /// <summary>
+    ///     Gets the <see cref="MapObject"/> at the specified index.
+    /// </summary>
     public MapObject Get( int index )
     {
         return _objects[ index ];
     }
 
+    /// <summary>
+    ///     Searches for, and returns, the <see cref="MapObject"/> which has
+    ///     the same name as the one provided.
+    /// </summary>
     public MapObject Get( string name )
     {
         for ( int i = 0, n = _objects.Count; i < n; i++ )
@@ -77,35 +82,33 @@ public class MapObjects : IEnumerable< MapObject >
         return null!;
     }
 
-    public int GetIndex( string name ) =>  GetIndex( Get( name ) );
+    /// <inheritdoc cref="List{MapObject}.IndexOf(MapObject)"/>
+    public int GetIndex( string name ) => GetIndex( Get( name ) );
 
+    /// <inheritdoc cref="List{MapObject}.IndexOf(MapObject)"/>
     public int GetIndex( MapObject obj ) => _objects.IndexOf( obj );
 
+    /// <inheritdoc cref="List{MapObject}.Count"/>
     public int GetCount() => _objects.Count;
 
+    /// <inheritdoc cref="List{MapObject}.Add"/>
     public virtual void Add( MapObject obj ) => _objects.Add( obj );
 
+    /// <inheritdoc cref="List{MapObject}.RemoveAt"/>
     public void RemoveIndex( int index ) => _objects.RemoveAt( index );
 
+    /// <inheritdoc cref="List{MapObject}.Remove"/>
     public void Remove( MapObject obj ) => _objects.Remove( obj );
 
     /// <summary>
+    ///     Returns a List of all <see cref="MapObject"/>s that match the
+    ///     specified type.
     /// </summary>
     /// <param name="type"> class of the objects we want to retrieve </param>
     /// <returns> array filled with all the objects in the collection matching type  </returns>
     public List< T > GetByType< T >( T type ) where T : MapObject
     {
-        return GetByType( type, new List< T >() );
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="type"> class of the objects we want to retrieve </param>
-    /// <param name="fill"> collection to put the returned objects in </param>
-    /// <returns> array filled with all the objects in the collection matching type  </returns>
-    public List< T > GetByType< T >( T type, List< T > fill ) where T : MapObject
-    {
-        fill.Clear();
+        var fill = new List< T >();
 
         for ( int i = 0, n = _objects.Count; i < n; i++ )
         {

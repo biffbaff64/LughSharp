@@ -75,6 +75,9 @@ public class FocusListener : IEventListener
     {
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     [PublicAPI]
     public class FocusEvent : Event
     {

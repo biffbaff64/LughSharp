@@ -27,16 +27,21 @@ using System.Collections;
 
 namespace LughSharp.LibCore.Maps;
 
+/// <summary>
+///     Ordered list of <see cref="MapLayer"/> instances owned by a <see cref="Map"/>.
+/// </summary>
 [PublicAPI]
 public class MapLayers : IEnumerable< MapLayer >
 {
     private readonly List< MapLayer > _layers = new();
 
+    /// <inheritdoc/>
     public IEnumerator< MapLayer > GetEnumerator()
     {
         return _layers.GetEnumerator();
     }
 
+    /// <inheritdoc/>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
@@ -94,12 +99,18 @@ public class MapLayers : IEnumerable< MapLayer >
     /// </summary>
     public virtual void Add( MapLayer layer ) => _layers.Add( layer );
 
-    public void Remove( int index )
+    /// <summary>
+    ///     Removes the <see cref="MapLayer"/> at the specified index.
+    /// </summary>
+    public virtual void Remove( int index )
     {
         _layers.RemoveAt( index );
     }
 
-    public void Remove( MapLayer layer )
+    /// <summary>
+    ///     Removes the requested <see cref="MapLayer"/>
+    /// </summary>
+    public virtual void Remove( MapLayer layer )
     {
         _layers.Remove( layer );
     }
@@ -124,7 +135,7 @@ public class MapLayers : IEnumerable< MapLayer >
     /// <summary>
     ///     Returns a list of layers which match the requested type in <b>T</b>
     /// </summary>
-    /// <param name="fill">Ther list in which to store the results</param>
+    /// <param name="fill">The list in which to store the results</param>
     /// <typeparam name="T">The requested type.</typeparam>
     /// <returns></returns>
     public List< T > GetByType< T >( List< T > fill ) where T : MapLayer

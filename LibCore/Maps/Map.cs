@@ -26,14 +26,18 @@
 namespace LughSharp.LibCore.Maps;
 
 /// <summary>
-///     This is a base type so cannot be a record or struct.
+///     Container for map layers and properties.
 /// </summary>
 [PublicAPI]
 public class Map
 {
-    // The layers which make up the map
-    public MapLayers     Layers     { get; } = new();
-    
-    // The map propereties.
+    /// <summary>
+    ///     The layers which make up the map
+    /// </summary>
+    public MapLayers Layers { get; } = new();
+
+    /// <summary>
+    ///     The map properties.
+    /// </summary>
     public MapProperties Properties { get; } = new();
 }

@@ -27,6 +27,9 @@ using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Maps;
 
+/// <summary>
+///     Map layer containing a set of objects and properties.
+/// </summary>
 [PublicAPI]
 public class MapLayer
 {
@@ -45,6 +48,9 @@ public class MapLayer
 
     // ------------------------------------------------------------------------
     
+    /// <summary>
+    ///     The layers X offset.
+    /// </summary>
     public float OffsetX
     {
         get => _offsetX;
@@ -55,6 +61,9 @@ public class MapLayer
         }
     }
 
+    /// <summary>
+    ///     The layers Y offset.
+    /// </summary>
     public float OffsetY
     {
         get => _offsetY;
@@ -65,6 +74,9 @@ public class MapLayer
         }
     }
 
+    /// <summary>
+    ///     The layer's X render offset, this takes into consideration all parent layers' offsets
+    /// </summary>
     public float RenderOffsetX
     {
         get
@@ -78,6 +90,9 @@ public class MapLayer
         }
     }
 
+    /// <summary>
+    ///     The layer's Y render offset, this takes into consideration all parent layers' offsets
+    /// </summary>
     public float RenderOffsetY
     {
         get
@@ -91,6 +106,9 @@ public class MapLayer
         }
     }
 
+    /// <summary>
+    ///     This layers parent MapLayer, or Null if there is no parent. 
+    /// </summary>
     public MapLayer? Parent
     {
         get => _parent;
@@ -105,6 +123,9 @@ public class MapLayer
         }
     }
 
+    /// <summary>
+    ///     Flags that Render Offsets need to be recalculated.
+    /// </summary>
     public virtual void InvalidateRenderOffset()
     {
         _renderOffsetDirty = true;

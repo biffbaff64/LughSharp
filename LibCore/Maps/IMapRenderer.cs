@@ -45,11 +45,6 @@ public interface IMapRenderer
     ///     the map which should be rendered. Make sure that the frustum spanned
     ///     by the projection matrix coincides with the viewbounds.
     /// </summary>
-    /// <param name="projectionMatrix"></param>
-    /// <param name="viewboundsX"></param>
-    /// <param name="viewboundsY"></param>
-    /// <param name="viewboundsWidth"></param>
-    /// <param name="viewboundsHeight"></param>
     public void SetView( Matrix4 projectionMatrix,
                          float viewboundsX,
                          float viewboundsY,

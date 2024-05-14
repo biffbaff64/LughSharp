@@ -34,11 +34,16 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 [PublicAPI]
 public class ActorGestureListener : IEventListener
 {
+    public ActorGestureDetector Detector        { get; set; }
+    public Actor?               TouchDownTarget { get; set; }
+
     private readonly static Vector2 _tmpCoords  = new();
     private readonly static Vector2 _tmpCoords2 = new();
 
     private Actor?      _actor;
     private InputEvent? _inputEvent;
+
+    // ------------------------------------------------------------------------
 
     public ActorGestureListener()
         : this( 20, 0.4f, 1.1f, int.MaxValue )
@@ -57,9 +62,6 @@ public class ActorGestureListener : IEventListener
                                              this );
     }
 
-    public ActorGestureDetector Detector        { get; set; }
-    public Actor?               TouchDownTarget { get; set; }
-
     public virtual bool Handle( Event e )
     {
         if ( e is not InputEvent ev )
@@ -70,11 +72,13 @@ public class ActorGestureListener : IEventListener
         switch ( ev.Type )
         {
             case InputEvent.EventType.TouchDown:
+            {
                 _actor          = ev.ListenerActor;
                 TouchDownTarget = ev.TargetActor;
 
                 Detector.TouchDown( ev.StageX, ev.StageY, ev.Pointer, ev.Button );
                 _actor?.StageToLocalCoordinates( _tmpCoords.Set( ev.StageX, ev.StageY ) );
+                
                 TouchDown( ev, _tmpCoords.X, _tmpCoords.Y, ev.Pointer, ev.Button );
 
                 if ( ev.TouchFocus )
@@ -87,8 +91,10 @@ public class ActorGestureListener : IEventListener
                 }
 
                 return true;
+            }
 
             case InputEvent.EventType.TouchUp:
+            {
                 if ( ev.TouchFocusCancel )
                 {
                     Detector.Reset();
@@ -104,13 +110,16 @@ public class ActorGestureListener : IEventListener
                 TouchUp( ev, _tmpCoords.X, _tmpCoords.Y, ev.Pointer, ev.Button );
 
                 return true;
+            }
 
             case InputEvent.EventType.TouchDragged:
+            {
                 _inputEvent = ev;
                 _actor      = ev.ListenerActor;
                 Detector.TouchDragged( ev.StageX, ev.StageY, ev.Pointer );
 
                 return true;
+            }
         }
 
         return false;
@@ -163,6 +172,8 @@ public class ActorGestureListener : IEventListener
                                Vector2 pointer2 )
     {
     }
+
+    // ------------------------------------------------------------------------
 
     [PublicAPI]
     public class ActorGestureDetector : GestureDetector

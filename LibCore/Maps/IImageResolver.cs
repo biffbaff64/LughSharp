@@ -57,6 +57,7 @@ public interface IImageResolver
     }
 
     /// <summary>
+    ///     Image Resolver for TextureRegions fetched via an <see cref="AssetManager"/>
     /// </summary>
     [PublicAPI]
     public class AssetManagerImageResolver : IImageResolver
@@ -75,17 +76,29 @@ public interface IImageResolver
     }
 
     /// <summary>
+    ///     Resolver for TextureAtlas regions.
+    ///     Provides a means of accessing TextureRegions in the atlas.
     /// </summary>
     [PublicAPI]
     public class TextureAtlasImageResolver : IImageResolver
     {
         private readonly TextureAtlas _atlas;
 
+        /// <summary>
+        ///     Constructor.
+        ///     Creates an Image Resolver for the supplied TextureAtlas.
+        /// </summary>
+        /// <param name="atlas"></param>
         public TextureAtlasImageResolver( TextureAtlas atlas )
         {
             _atlas = atlas;
         }
 
+        /// <summary>
+        ///     Gets the TextureRegion that matches the supplied name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public TextureRegion? GetImage( string name )
         {
             return _atlas.FindRegion( name );

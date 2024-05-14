@@ -400,10 +400,11 @@ GRAPHICS/PROFILING
     ----   --------
     - IP   - IP   - BaseGLInterceptor
     -      -      - GLInterceptor       Replace GL20Interceptor & GL30Interceptor with this.
-    - IP   - IP   - GL20Interceptor
-    - IP   - IP   - GL30Interceptor
     - IP   - IP   - GLProfiler
     - IP   - IP   - IGLErrorListener
+
+    - **** - **** - GL20Interceptor
+    - **** - **** - GL30Interceptor
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -424,13 +425,13 @@ MAPS
     CODE   DOCUMENT
     ----   --------
     - DONE - IP   - IImageResolver
-    - DONE - IP   - IMapRenderer
-    - DONE - IP   - Map
-    - DONE - IP   - MapGroupLayer
-    - DONE - IP   - MapLayer
-    - DONE - IP   - MapLayers
-    - DONE - IP   - MapObject
-    - DONE - IP   - MapObjects
+    - DONE - DONE - IMapRenderer
+    - DONE - DONE - Map
+    - DONE - DONE - MapGroupLayer
+    - DONE - DONE - MapLayer
+    - DONE - DONE - MapLayers
+    - DONE - DONE - MapObject
+    - DONE - DONE - MapObjects
     - DONE - IP   - MapProperties
 
 MAPS/OBJECTS
@@ -440,7 +441,7 @@ MAPS/OBJECTS
     ----   --------
     - DONE - DONE - CircleMapObject
     - DONE - DONE - EllipseMapObject
-    - DONE - IP   - PolygonMapObject
+    - DONE - DONE - PolygonMapObject
     - DONE - DONE - PolylineMapObject
     - DONE - DONE - RectangleMapObject
     - DONE - IP   - TextureMapObject
@@ -617,8 +618,8 @@ SCENES/SCENE2D/LISTENERS
     - IP   - IP   - DragListener
     - IP   - IP   - DragScrollListener
     - IP   - IP   - FocusListener
-    - IP   - IP   - IEventListener
-    - IP   - IP   - InputListener
+    - DONE - DONE - IEventListener
+    - DONE - DONE - InputListener
 
 ```
 TODO: Use Lambdas for these, i.e.
