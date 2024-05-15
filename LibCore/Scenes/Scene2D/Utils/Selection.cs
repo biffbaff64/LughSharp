@@ -35,15 +35,16 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 ///         Selection changes can be vetoed via <see cref="ChangeListener.ChangeEvent.Cancel()" />.
 ///     </para>
 /// </summary>
+[PublicAPI]
 public class Selection< T > : IDisableable, IDisposable
 {
-    private readonly SortedSet< T > _old = new();
-    public           SortedSet< T > Selected                 { get; set; } = new();
-    public           bool           Multiple                 { get; set; }
-    public           bool           Required                 { get; set; }
-    public           T?             LastSelected             { get; set; }
-    public           bool           Toggle                   { get; set; }
-    public           bool           ProgrammaticChangeEvents { get; set; } = true;
+    public SortedSet< T > Selected                 { get; set; } = new();
+    public bool           Multiple                 { get; set; }
+    public bool           Required                 { get; set; }
+    public T?             LastSelected             { get; set; }
+    public bool           Toggle                   { get; set; }
+    public bool           ProgrammaticChangeEvents { get; set; } = true;
+    public bool           IsDisabled               { get; set; }
 
     /// <summary>
     ///     <param name="value">
@@ -53,8 +54,12 @@ public class Selection< T > : IDisableable, IDisposable
     /// </summary>
     public Actor? Actor { get; set; }
 
-    public bool IsEmpty    => Selected.Count == 0;
-    public bool IsDisabled { get; set; }
+    public bool IsEmpty => Selected.Count == 0;
+
+    private readonly SortedSet< T > _old = new();
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Selects or deselects the specified item based on how the selection is
@@ -454,13 +459,10 @@ public class Selection< T > : IDisableable, IDisposable
         return Selected.Count > 0 ? Selected.First() : default( T? );
     }
 
-//    public IEnumerator< T >? Iterator() => Selected.GetEnumerator();
-
     public List< T > ToArray()
     {
         return Selected.ToList();
     }
-
 
     public List< T > ToArray( List< T > array )
     {

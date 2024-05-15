@@ -271,14 +271,13 @@ public static class PropertiesUtils
 
                         case ':':
                         case '=':
-                            switch ( keyLength )
+                            if ( keyLength == -1 )
                             {
-                                case -1:
-                                    // if parsing the key
-                                    mode      = NONE;
-                                    keyLength = offset;
+                                // if parsing the key
+                                mode      = NONE;
+                                keyLength = offset;
 
-                                    continue;
+                                continue;
                             }
 
                             break;
@@ -297,24 +296,20 @@ public static class PropertiesUtils
                             continue;
                         }
 
-                        switch ( keyLength )
+                        if ( keyLength == -1 )
                         {
-                            case -1:
-                                // if parsing the key
-                                mode = KEY_DONE;
+                            // if parsing the key
+                            mode = KEY_DONE;
 
-                                continue;
+                            continue;
                         }
                     }
 
-                    switch ( mode )
+                    mode = mode switch
                     {
-                        case IGNORE:
-                        case CONTINUE:
-                            mode = NONE;
-
-                            break;
-                    }
+                        IGNORE or CONTINUE => NONE,
+                        _                  => mode
+                    };
 
                     break;
                 }
@@ -322,13 +317,10 @@ public static class PropertiesUtils
 
             firstChar = false;
 
-            switch ( mode )
+            if ( mode == KEY_DONE )
             {
-                case KEY_DONE:
-                    keyLength = offset;
-                    mode      = NONE;
-
-                    break;
+                keyLength = offset;
+                mode      = NONE;
             }
 
             buf[ offset++ ] = nextChar;

@@ -28,6 +28,7 @@ using LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
+[PublicAPI]
 public partial class ScrollPane : WidgetGroup
 {
     private readonly ActorGestureListener _flickScrollListener;
@@ -56,10 +57,12 @@ public partial class ScrollPane : WidgetGroup
     private bool  _touchScrollV;
     private float _visualAmountX;
     private float _visualAmountY;
-
     private bool   _vScrollOnRight = true;
     private Actor? _widget;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     public ScrollPane( Actor? widget )
         : this( widget, new ScrollPaneStyle() )
     {

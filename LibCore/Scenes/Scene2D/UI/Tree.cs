@@ -1341,7 +1341,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
     {
         public readonly Tree< TNode, TValue > Tree = null!;
 
-        public override void Clicked( InputEvent ev, float x, float y )
+        public override void OnClicked( InputEvent ev, float x, float y )
         {
             var node = Tree.GetNodeAt( y );
 

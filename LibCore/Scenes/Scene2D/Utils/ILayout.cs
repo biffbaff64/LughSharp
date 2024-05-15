@@ -29,8 +29,16 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 ///     Provides methods for an actor to participate in layout and to provide
 ///     a minimum, preferred, and maximum size.
 /// </summary>
+[PublicAPI]
 public interface ILayout
 {
+    float MinWidth   { get; }
+    float MinHeight  { get; }
+    float MaxWidth   { get; }
+    float MaxHeight  { get; }
+    float PrefWidth  { get; }
+    float PrefHeight { get; }
+
     /// <summary>
     ///     If true, this actor will be sized to the parent in <see cref="Validate()" />. If the
     ///     parent is the stage, the actor will be sized to the stage. This method is for convenience
@@ -44,13 +52,6 @@ public interface ILayout
     ///     when an actor will be manipulated externally, such as with actions. Default is true.
     /// </summary>
     bool LayoutEnabled { get; set; }
-
-    float MinWidth   { get; }
-    float MinHeight  { get; }
-    float MaxWidth   { get; }
-    float MaxHeight  { get; }
-    float PrefWidth  { get; }
-    float PrefHeight { get; }
 
     /// <summary>
     ///     Computes and caches any information needed for drawing and, if this actor

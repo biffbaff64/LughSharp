@@ -32,25 +32,9 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 ///     Manages drag and drop operations through registered
 ///     drag sources and drop targets.
 /// </summary>
+[PublicAPI]
 public class DragAndDrop
 {
-    private readonly static Vector2                                TmpVector        = new();
-    private readonly        Dictionary< DragSource, DragListener > _sourceListeners = new();
-    private readonly        List< DragTarget >                     _targets         = new();
-    private                 float                                  _dragActorX      = 0;
-    private                 float                                  _dragActorY      = 0;
-
-    private DragListener? _dragListener;
-    private long          _dragValidTime;
-    private bool          _isValidTarget;
-
-    private bool  _removeDragActor;
-    private float _tapSquareSize = 8;
-    private float _touchOffsetX;
-    private float _touchOffsetY;
-
-    protected int activePointer = -1;
-
     /// <summary>
     ///     Time in milliseconds that a drag must take before a drop will be
     ///     considered valid. This ignores an accidental drag and drop that
@@ -73,6 +57,24 @@ public class DragAndDrop
     /// </summary>
     public bool CancelTouchFocus { get; set; } = true;
 
+    private readonly static Vector2                                _tmpVector       = new();
+    private readonly        Dictionary< DragSource, DragListener > _sourceListeners = new();
+    private readonly        List< DragTarget >                     _targets         = new();
+
+    private float         _dragActorX = 0;
+    private float         _dragActorY = 0;
+    private DragListener? _dragListener;
+    private long          _dragValidTime;
+    private bool          _isValidTarget;
+    private bool          _removeDragActor;
+    private float         _tapSquareSize = 8;
+    private float         _touchOffsetX;
+    private float         _touchOffsetY;
+
+    protected int ActivePointer = -1;
+
+    // ------------------------------------------------------------------------
+    
     public void AddSource( DragSource source )
     {
         _dragListener = new DragListenerImpl( this, source );
@@ -131,10 +133,7 @@ public class DragAndDrop
 
         var stage = except.Actor.Stage;
 
-        if ( stage != null )
-        {
-            stage.CancelTouchFocusExcept( listener, except.Actor );
-        }
+        stage?.CancelTouchFocusExcept( listener, except.Actor );
     }
 
     /// <summary>
@@ -192,14 +191,14 @@ public class DragAndDrop
 
         public override void DragStart( InputEvent ev, float x, float y, int pointer )
         {
-            if ( _parent.activePointer != -1 )
+            if ( _parent.ActivePointer != -1 )
             {
                 ev.Stop();
 
                 return;
             }
 
-            _parent.activePointer  = pointer;
+            _parent.ActivePointer  = pointer;
             _parent._dragValidTime = TimeUtils.Millis() + _parent.DragTime;
             _parent.Source         = _source;
             _parent.DragPayload    = _source.DragStart( ev, TouchDownX, TouchDownY, pointer )!;
@@ -219,7 +218,7 @@ public class DragAndDrop
 
         public override void Drag( InputEvent ev, float x, float y, int pointer )
         {
-            if ( ( _parent.DragPayload == null ) || ( pointer != _parent.activePointer ) )
+            if ( ( _parent.DragPayload == null ) || ( pointer != _parent.ActivePointer ) )
             {
                 return;
             }
@@ -268,7 +267,7 @@ public class DragAndDrop
                     }
 
                     newTarget = target;
-                    target.Actor.StageToLocalCoordinates( TmpVector.Set( stageX, stageY ) );
+                    target.Actor.StageToLocalCoordinates( _tmpVector.Set( stageX, stageY ) );
 
                     break;
                 }
@@ -290,8 +289,8 @@ public class DragAndDrop
             {
                 _parent._isValidTarget = newTarget.Drag( _source,
                                                          _parent.DragPayload,
-                                                         TmpVector.X,
-                                                         TmpVector.Y,
+                                                         _tmpVector.X,
+                                                         _tmpVector.Y,
                                                          pointer );
             }
 
@@ -361,12 +360,12 @@ public class DragAndDrop
 
         public override void DragStop( InputEvent ev, float x, float y, int pointer )
         {
-            if ( pointer != _parent.activePointer )
+            if ( pointer != _parent.ActivePointer )
             {
                 return;
             }
 
-            _parent.activePointer = -1;
+            _parent.ActivePointer = -1;
 
             if ( _parent.DragPayload == null )
             {
@@ -388,8 +387,8 @@ public class DragAndDrop
                 var stageX = ev.StageX + _parent._touchOffsetX;
                 var stageY = ev.StageY + _parent._touchOffsetY;
 
-                _parent.Target?.Actor.StageToLocalCoordinates( TmpVector.Set( stageX, stageY ) );
-                _parent.Target?.Drop( _parent.Source!, _parent.DragPayload, TmpVector.X, TmpVector.Y, pointer );
+                _parent.Target?.Actor.StageToLocalCoordinates( _tmpVector.Set( stageX, stageY ) );
+                _parent.Target?.Drop( _parent.Source!, _parent.DragPayload, _tmpVector.X, _tmpVector.Y, pointer );
             }
 
             _parent.Source?.DragStop( ev,
@@ -417,16 +416,17 @@ public class DragAndDrop
     /// <summary>
     ///     A source where a payload can be dragged from.
     /// </summary>
+    [PublicAPI]
     public class DragSource
     {
+        public Actor Actor { get; set; }
+
         public DragSource( Actor actor )
         {
             ArgumentNullException.ThrowIfNull( actor );
 
             Actor = actor;
         }
-
-        public Actor Actor { get; set; }
 
         /// <summary>
         ///     Called when a drag is started on the source. The coordinates
@@ -468,8 +468,11 @@ public class DragAndDrop
     /// <summary>
     ///     A target where a payload can be dropped to.
     /// </summary>
+    [PublicAPI]
     public abstract class DragTarget
     {
+        public Actor Actor { get; set; }
+
         /// <summary>
         ///     Constructor, creates a new Target actor.
         /// </summary>
@@ -487,8 +490,6 @@ public class DragAndDrop
                 throw new ArgumentException( "The stage root cannot be a drag and drop target." );
             }
         }
-
-        public Actor Actor { get; set; }
 
         /// <summary>
         ///     Called when the payload is dragged over the target. The coordinates are in the
@@ -521,6 +522,7 @@ public class DragAndDrop
     ///     during the drag operation as necessary and they will only be removed from the stage if they
     ///     were added automatically. A source actor can be used a payload drag actor.
     /// </summary>
+    [PublicAPI]
     public class Payload
     {
         public Actor?  DragActor        { get; set; }

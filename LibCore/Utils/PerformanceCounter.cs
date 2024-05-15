@@ -44,6 +44,8 @@ public class PerformanceCounter
     private long _lastTick  = 0L;
     private long _startTime = 0L;
 
+    // ------------------------------------------------------------------------
+    
     public PerformanceCounter( in string name ) : this( name, 5 )
     {
     }

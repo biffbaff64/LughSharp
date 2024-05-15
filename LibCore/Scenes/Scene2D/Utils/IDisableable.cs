@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
+[PublicAPI]
 public interface IDisableable
 {
     bool IsDisabled { get; set; }

@@ -34,18 +34,33 @@ namespace LughSharp.LibCore.Utils;
 [PublicAPI]
 public class SortUtils
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="a"></param>
+    /// <typeparam name="T"></typeparam>
     public static void Sort< T >( List< T > a ) where T : IComparable< T >
     {
         var comparableTimSort = new ComparableTimSort< T >();
         comparableTimSort.DoSort( a.ToArray(), 0, a.Count );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="a"></param>
     public static void Sort( object[] a )
     {
         var comparableTimSort = new ComparableTimSort< object >();
         comparableTimSort.DoSort( a, 0, a.Length );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="fromIndex"></param>
+    /// <param name="toIndex"></param>
     public static void Sort( object[] a, int fromIndex, int toIndex )
     {
         var comparableTimSort = new ComparableTimSort< object >();
@@ -90,6 +105,13 @@ public class SortUtils
         timSort.DoSort( a.ToArray(), c, fromIndex, toIndex );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    /// <typeparam name="T"></typeparam>
     public static void Sort< T >( T[] a, int from, int to )
     {
         var comparableTimSort = new ComparableTimSort< T >();

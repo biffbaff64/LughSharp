@@ -75,6 +75,9 @@ public class FocusListener : IEventListener
     {
     }
 
+    // --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+
     /// <summary>
     /// 
     /// </summary>
@@ -90,6 +93,8 @@ public class FocusListener : IEventListener
         public bool    Focused { get; set; }
         public FeType? Type    { get; set; }
 
+        // --------------------------------------------------------------------
+        
         /// <summary>
         ///     The actor related to the event. When focus is lost, this is the new
         ///     actor being focused, or null. When focus is gained, this is the

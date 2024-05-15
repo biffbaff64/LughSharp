@@ -40,6 +40,11 @@ public class HeapCharBuffer : CharBuffer
     {
     }
 
+    protected HeapCharBuffer( char[]? buf, int mark, int pos, int lim, int cap, int off )
+        : base( mark, pos, lim, cap, buf, off )
+    {
+    }
+
     /// <summary>
     ///     Tells whether or not this buffer is <i>direct</i>.
     /// </summary>
@@ -63,6 +68,51 @@ public class HeapCharBuffer : CharBuffer
     }
 
     /// <summary>
+    ///     Absolute <i>get</i> method.  Reads the char at the given index.
+    /// </summary>
+    /// <param name="index">The index from which the char will be read</param>
+    /// <returns> The char at the given index </returns>
+    /// <exception cref="IndexOutOfRangeException">
+    ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
+    /// </exception>
+    protected override char Get( int index )
+    {
+        return '\0';
+    }
+
+    /// <inheritdoc/>
+    public override CharBuffer Get( char[] dst, int offset, int length )
+    {
+        if ( Hb == null )
+        {
+            throw new GdxRuntimeException( "HB is null!" );
+        }
+
+        CheckBounds( offset, length, dst.Length );
+
+        if ( length > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Underflow!" );
+        }
+
+        Array.Copy( Hb, Ix( Position ), dst, offset, length );
+        SetPosition( Position + length );
+
+        return this;
+    }
+
+    /// <summary>
+    ///     Absolute <i>get</i> method. Reads the char at the given index without
+    ///     any validation of the index.
+    /// </summary>
+    /// <param name="index">The index from which the char will be read</param>
+    /// <returns>  The char at the given index </returns>
+    public override char GetUnchecked( int index )
+    {
+        return '\0';
+    }
+
+    /// <summary>
     ///     Relative <i>put</i> method  <i>(optional operation)</i>.
     ///     <para>
     ///         Writes the given char into this buffer at the current position, and then
@@ -79,31 +129,14 @@ public class HeapCharBuffer : CharBuffer
     /// </exception>
     protected override CharBuffer Put( char c )
     {
+        if ( Hb == null )
+        {
+            throw new GdxRuntimeException( "HB is Null!" );
+        }
+
+        Hb[ Ix( NextPutIndex() ) ] = c;
+
         return this;
-    }
-
-    /// <summary>
-    ///     Absolute <i>get</i> method.  Reads the char at the given index.
-    /// </summary>
-    /// <param name="index">The index from which the char will be read</param>
-    /// <returns> The char at the given index </returns>
-    /// <exception cref="IndexOutOfRangeException">
-    ///     If <tt>index</tt> is negative or not smaller than the buffer's limit
-    /// </exception>
-    protected override char Get( int index )
-    {
-        return '\0';
-    }
-
-    /// <summary>
-    ///     Absolute <i>get</i> method. Reads the char at the given index without
-    ///     any validation of the index.
-    /// </summary>
-    /// <param name="index">The index from which the char will be read</param>
-    /// <returns>  The char at the given index </returns>
-    public override char GetUnchecked( int index )
-    {
-        return '\0';
     }
 
     /// <summary>
@@ -123,6 +156,35 @@ public class HeapCharBuffer : CharBuffer
     /// <exception cref="GdxRuntimeException">If this buffer is read-only </exception>
     public override CharBuffer Put( int index, char c )
     {
+        if ( Hb == null )
+        {
+            throw new GdxRuntimeException( "HB is Null!" );
+        }
+
+        Hb[ Ix( CheckIndex( index ) ) ] = c;
+
+        return this;
+    }
+
+    /// <override/>
+    public override CharBuffer Put( char[] src, int offset, int length )
+    {
+        if ( Hb == null )
+        {
+            throw new GdxRuntimeException( "HB is Null!" );
+        }
+        
+        CheckBounds( offset, length, src.Length );
+
+        if ( length > Remaining() )
+        {
+            throw new GdxRuntimeException( "Buffer Overflow!" );
+        }
+        
+        Array.Copy( src, offset, Hb, Ix( Position ), length );
+        
+        SetPosition( Position + length );
+
         return this;
     }
 
@@ -267,5 +329,10 @@ public class HeapCharBuffer : CharBuffer
     public override CharBuffer SubSequence( int start, int end )
     {
         return this;
+    }
+
+    protected int Ix( int i )
+    {
+        return i + Offset;
     }
 }

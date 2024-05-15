@@ -35,10 +35,6 @@ public class DragListener : InputListener
 {
     // ------------------------------------------------------------------------
 
-    private float _dragLastX;
-    private float _dragLastY;
-    private int   _pressedPointer = -1;
-
     /// Sets the button to listen for, all other buttons are ignored.
     public int Button { get; set; } = IInput.Buttons.LEFT;
 
@@ -55,14 +51,14 @@ public class DragListener : InputListener
     public float DragX           { get; private set; }
     public float DragY           { get; private set; }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="ev"></param>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <param name="pointer"></param>
-    /// <param name="button"></param>
-    /// <returns></returns>
+    private float _dragLastX;
+    private float _dragLastY;
+    private int   _pressedPointer = -1;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    /// <inheritdoc/>
     public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
     {
         if ( ev == null )
@@ -89,6 +85,7 @@ public class DragListener : InputListener
         return true;
     }
 
+    /// <inheritdoc/>
     public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
     {
         if ( ev == null )
@@ -126,6 +123,7 @@ public class DragListener : InputListener
         }
     }
 
+    /// <inheritdoc/>
     public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
     {
         if ( ev == null )

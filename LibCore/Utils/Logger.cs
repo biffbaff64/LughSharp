@@ -282,21 +282,33 @@ public static class Logger
         fs.Close();
     }
 
+    /// <summary>
+    ///     Disables DEBUG Log messages without affecting other types.
+    /// </summary>
     public static void DisableLogDebug()
     {
         TraceLevel ^= 1 << LOG_DEBUG;
     }
 
+    /// <summary>
+    ///     Disables Error Log messages without affecting other types.
+    /// </summary>
     public static void DisableLogError()
     {
         TraceLevel ^= 1 << LOG_ERROR;
     }
 
+    /// <summary>
+    ///     Emnables DEBUG Log messages without affecting other types.
+    /// </summary>
     public static void EnableLogDebug()
     {
         TraceLevel |= LOG_DEBUG;
     }
 
+    /// <summary>
+    ///     Emnables ERROR Log messages without affecting other types.
+    /// </summary>
     public static void EnableLogError()
     {
         TraceLevel |= LOG_ERROR;
@@ -407,39 +419,39 @@ public static class Logger
     #endregion private methods
 }
 
-/// <summary>
-/// </summary>
-[InterpolatedStringHandler, SuppressMessage( "ReSharper", "UnusedMember.Global" )]
-public readonly ref struct LogInterpolatedStringHandler
-{
-    // Storage for the built-up string
-    private readonly StringBuilder _builder;
-
-    internal LogInterpolatedStringHandler( int literalLength, int formattedCount )
-    {
-        _builder = new StringBuilder( literalLength );
-    }
-
-    internal void AppendLiteral( string s )
-    {
-        _builder.Append( s );
-    }
-
-    internal void AppendFormatted< T >( T t )
-    {
-        _builder.Append( t );
-    }
-
-    public void AppendFormatted< T >( T t, string format ) where T : IFormattable
-    {
-        _builder.Append( t.ToString( format, null ) );
-    }
-
-    internal string GetFormattedText()
-    {
-        return _builder.ToString();
-    }
-}
+///// <summary>
+///// </summary>
+//[InterpolatedStringHandler, SuppressMessage( "ReSharper", "UnusedMember.Global" )]
+//public readonly ref struct LogInterpolatedStringHandler
+//{
+//    // Storage for the built-up string
+//    private readonly StringBuilder _builder;
+//
+//    internal LogInterpolatedStringHandler( int literalLength, int formattedCount )
+//    {
+//        _builder = new StringBuilder( literalLength );
+//    }
+//
+//    internal void AppendLiteral( string s )
+//    {
+//        _builder.Append( s );
+//    }
+//
+//    internal void AppendFormatted< T >( T t )
+//    {
+//        _builder.Append( t );
+//    }
+//
+//    public void AppendFormatted< T >( T t, string format ) where T : IFormattable
+//    {
+//        _builder.Append( t.ToString( format, null ) );
+//    }
+//
+//    internal string GetFormattedText()
+//    {
+//        return _builder.ToString();
+//    }
+//}
 
 /// <summary>
 ///     Object used for creating debug messages which include

@@ -842,7 +842,7 @@ public class SelectBox< T > : Widget, IDisableable
             _parent = parent;
         }
 
-        public override void Clicked( InputEvent? ev, float x, float y )
+        public override void OnClicked( InputEvent? ev, float x, float y )
         {
             var selected = _parent.ListBox.GetSelected();
 

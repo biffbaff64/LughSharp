@@ -25,32 +25,34 @@
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
+/// <summary>
+///     Listener for <see cref="ChangeEvent"/>s.
+/// </summary>
 [PublicAPI]
 public class ChangeListener : IEventListener
 {
-    public ChangeListener()
-    {
-    }
+//    public ChangeListener()
+//    {
+//    }
 
-    public ChangeListener( Action< object > action )
-    {
-    }
+//    public ChangeListener( Action< object > action )
+//    {
+//    }
 
     public virtual bool Handle( Event ev )
     {
-        if ( ev is not ChangeEvent changeEvent )
+        if ( ev is ChangeEvent changeEvent )
         {
-            return false;
+            Changed( changeEvent, changeEvent.TargetActor );
         }
-
-        Changed( changeEvent, changeEvent.TargetActor );
 
         return false;
     }
 
     /// <summary>
+    ///     Handles any <see cref="ChangeEvent"/>s generated.
     /// </summary>
-    /// <param name="ev"></param>
+    /// <param name="ev"> The change event. </param>
     /// <param name="actor">
     ///     The event target, which is the actor that emitted the change event.
     /// </param>

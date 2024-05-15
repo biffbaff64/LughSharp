@@ -37,8 +37,11 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 ///     to the left+right and top+bottom, excluding the middle size, to allow the
 ///     drawable to be sized down as small as possible.
 /// </summary>
+[PublicAPI]
 public class NinePatchDrawable : BaseDrawable, ITransformDrawable
 {
+    public NinePatch? Patch { get; set; }
+
     /// <summary>
     ///     Creates an uninitialized NinePatchDrawable. The ninepatch must be
     ///     set before use.
@@ -57,8 +60,6 @@ public class NinePatchDrawable : BaseDrawable, ITransformDrawable
     {
         Patch = drawable.Patch;
     }
-
-    public NinePatch? Patch { get; set; }
 
     public override void Draw( IBatch batch, float x, float y, float width, float height )
     {

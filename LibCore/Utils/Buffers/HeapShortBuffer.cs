@@ -48,34 +48,19 @@ public class HeapShortBuffer : ShortBuffer
     /// <inheritdoc/>
     public override ShortBuffer Slice()
     {
-        return new HeapShortBuffer( Hb,
-                                    -1,
-                                    0,
-                                    this.Remaining(),
-                                    this.Remaining(),
-                                    this.Position + Offset );
+        return new HeapShortBuffer( Hb, -1, 0, this.Remaining(), this.Remaining(), this.Position + Offset );
     }
 
     /// <inheritdoc/>
     public override ShortBuffer Duplicate()
     {
-        return new HeapShortBuffer( Hb,
-                                    this.MarkValue(),
-                                    this.Position,
-                                    this.Limit,
-                                    this.Capacity,
-                                    Offset );
+        return new HeapShortBuffer( Hb, this.MarkValue(), this.Position, this.Limit, this.Capacity, Offset );
     }
 
     /// <inheritdoc/>
     public override ShortBuffer AsReadOnlyBuffer()
     {
-        return new HeapShortBuffer( Hb,
-                                    this.MarkValue(),
-                                    this.Position,
-                                    this.Limit,
-                                    this.Capacity,
-                                    Offset );
+        return new HeapShortBufferR( Hb, this.MarkValue(), this.Position, this.Limit, this.Capacity, Offset );
     }
 
     protected int Ix( int i )
@@ -89,6 +74,7 @@ public class HeapShortBuffer : ShortBuffer
         return Hb?[ Ix( NextGetIndex() ) ] ?? throw new NullReferenceException();
     }
 
+    /// <inheritdoc />
     public override short Get( int index )
     {
         return Hb?[ Ix( CheckIndex( index ) ) ] ?? throw new NullReferenceException();
@@ -110,6 +96,7 @@ public class HeapShortBuffer : ShortBuffer
         }
 
         System.Array.Copy( Hb, Ix( Position ), dst, offset, length );
+        
         SetPosition( Position + length );
 
         return this;
@@ -163,6 +150,7 @@ public class HeapShortBuffer : ShortBuffer
         }
 
         System.Array.Copy( src, offset, Hb, Ix( Position ), length );
+        
         SetPosition( Position + length );
 
         return this;
@@ -178,7 +166,7 @@ public class HeapShortBuffer : ShortBuffer
 
         if ( src is HeapShortBuffer sb )
         {
-            if ( src == this )
+            if ( Equals( src, this ) )
             {
                 throw new ArgumentException();
             }
@@ -190,11 +178,7 @@ public class HeapShortBuffer : ShortBuffer
                 throw new GdxRuntimeException( "Buffer Overflow!" );
             }
 
-            System.Array.Copy( sb.Hb!,
-                               sb.Ix( sb.Position ),
-                               Hb,
-                               Ix( Position ),
-                               n );
+            System.Array.Copy( sb.Hb!, sb.Ix( sb.Position ), Hb, Ix( Position ), n );
 
             sb.SetPosition( sb.Position + n );
             SetPosition( Position + n );

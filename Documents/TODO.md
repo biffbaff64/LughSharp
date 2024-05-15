@@ -613,11 +613,11 @@ SCENES/SCENE2D/LISTENERS
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - ActorGestureListener
-    - IP   - IP   - ChangeListener
-    - IP   - IP   - ClickListener
+    - DONE - DONE - ChangeListener
+    - DONE - IP   - ClickListener
     - IP   - IP   - DragListener
-    - IP   - IP   - DragScrollListener
-    - IP   - IP   - FocusListener
+    - DONE - IP   - DragScrollListener
+    - DONE - IP   - FocusListener
     - DONE - DONE - IEventListener
     - DONE - DONE - InputListener
 
@@ -686,21 +686,21 @@ SCENES/SCENE2D/UTILS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - ArraySelection
-    - IP   - IP   - BaseDrawable
+    - DONE - DONE - ArraySelection
+    - DONE - DONE - BaseDrawable
     - IP   - IP   - DragAndDrop
-    - IP   - IP   - ICullable
+    - DONE - DONE - ICullable
     - IP   - IP   - IDisableable
-    - IP   - IP   - IDrawable
-    - IP   - IP   - ILayout
-    - IP   - IP   - ITransformDrawable
+    - DONE - DONE - IDrawable
+    - DONE - DONE - ILayout
+    - DONE - DONE - ITransformDrawable
     - IP   - IP   - NinePatchDrawable
-    - IP   - IP   - ScissorStack
-    - IP   - IP   - Selection
-    - IP   - IP   - SpriteDrawable
+    - DONE - IP   - ScissorStack
+    - DONE - IP   - Selection
+    - DONE - IP   - SpriteDrawable
     - IP   - IP   - TextureRegionDrawable
     - IP   - IP   - TiledDrawable
-    - IP   - IP   - UIUtils
+    - DONE - IP   - UIUtils
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -713,21 +713,20 @@ UTILS
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - Align
-    - DONE - IP   - BinaryHeap
+    - DONE - DONE - BinaryHeap
     - DONE - DONE - Bits
-    - DONE - IP   - ByteOrder                       Is this still needed? Possible Delete Candidate?
+    - DONE - DONE - ByteOrder                       Is this still needed? Possible Delete Candidate?
     - DONE - DONE - Character                       C# System MUST already have this???
     - DONE - IP   - ComparableTimSort
     - DONE - IP   - DataInput                       Check
     - DONE - IP   - DataOutput                      Check
     - DONE - IP   - DataUtils                       Added Class
     - DONE - DONE - FloatConstants
-    - DONE - DONE - GdxRuntimeException
     - DONE - DONE - IClipboard                      Convert - Interface, clipboard handled in backends.                 
     - DONE - DONE - ICloseable
     - DONE - DONE - IReadable
-    - DONE - IP   - IRunnable                       Done, but is it needed?
-    - DONE - IP   - Logger                          Needs documenting.
+    - DONE - DONE - IRunnable                       Done, but is it needed?
+    - DONE - DONE - Logger                          Check if LogInterpolatedStringHandler can be removed
     - DONE - IP   - PerformanceCounter              Check
     - DONE - IP   - PerformanceCounters             Check
     - DONE - IP   - PropertiesUtils                 Convert, but check if necessary first
@@ -735,7 +734,7 @@ UTILS
     - DONE - IP   - QuickSelect
     - DONE - IP   - Scaling
     - DONE - IP   - ScreenUtils
-    - DONE - IP   - Select                          Renamed Selector (See SortedSetExtensions.cs)
+    - DONE - IP   - Select
     - DONE - IP   - SortUtils
     - DONE - DONE - StringTokenizer
     - DONE - DONE - Timer
@@ -775,13 +774,20 @@ UTILS/BUFFERS
     - IP   - IP   - MappedByteBuffer
     - DONE - IP   - ShortBuffer
     - DONE - IP   - StringCharBuffer
-
+    -----------------------------------
     - IP   - IP   - HeapByteBuffer
     - IP   - IP   - HeapCharBuffer
     - DONE - DONE - HeapDoubleBuffer
     - IP   - IP   - HeapFloatBuffer
     - DONE - IP   - HeapIntBuffer
     - DONE - IP   - HeapShortBuffer
+    -----------------------------------
+    - IP   - IP   - HeapByteBufferR
+    - DONE - DONE - HeapCharBufferR
+    - IP   - IP   - HeapDoubleBufferR
+    - IP   - IP   - HeapFloatBufferR
+    - IP   - IP   - HeapIntBufferR
+    - DONE - DONE - HeapShortBufferR
 
 UTILS/COLLECTIONS
 -----------------
@@ -829,6 +835,14 @@ UTILS/COLLECTIONS/EXTENSIONS
     ----   --------
     - DONE - DONE - DictionaryExtensions
     - DONE - DONE - ListExtensions
+
+UTILS/EXCEPTIONS
+----------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - DONE - GdxRuntimeException
+    - IP   - IP   - ReadOnlyBufferException
 
 UTILS/POOLING
 -------------

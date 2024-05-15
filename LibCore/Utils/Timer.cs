@@ -349,7 +349,7 @@ public class Timer
         ///     It will not be executed until it is scheduled again.
         ///     This method can be called at any time.
         /// </summary>
-        public void Cancel()
+        public virtual void Cancel()
         {
             if ( Timer != null )
             {
@@ -381,14 +381,14 @@ public class Timer
         ///     <p>
         ///         To prevent the scheduled state from changing, synchronize on this task object, eg:
         ///         <code>
-        ///     lock( task )
-        ///     {
-        ///         if ( !task.IsScheduled() )
+        ///         lock( task )
         ///         {
-        ///             . . . . 
+        ///             if ( !task.IsScheduled() )
+        ///             {
+        ///                 . . . . 
+        ///             }
         ///         }
-        ///     }
-        /// </code>
+        ///         </code>
         ///     </p>
         /// </summary>
         /// <returns></returns>
@@ -400,7 +400,7 @@ public class Timer
         /// <summary>
         ///     Returns the time in milliseconds when this task will be executed next.
         /// </summary>
-        public long GetExecuteTimeMillis()
+        public virtual long GetExecuteTimeMillis()
         {
             return ExecuteTimeMillis;
         }

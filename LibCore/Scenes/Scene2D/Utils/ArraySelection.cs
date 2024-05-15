@@ -29,11 +29,16 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 ///     A selection that supports range selection by knowing about the
 ///     array of items being selected.
 /// </summary>
+[PublicAPI]
 public class ArraySelection< T > : Selection< T >
 {
+    public bool RangeSelect { get; set; } = true;
+
     private readonly List< T >? _array;
     private          T?         _rangeStart;
 
+    // ------------------------------------------------------------------------
+    
     public ArraySelection( List< T >? array )
     {
         _array      = array;
@@ -44,8 +49,7 @@ public class ArraySelection< T > : Selection< T >
     {
     }
 
-    public bool RangeSelect { get; set; } = true;
-
+    /// <inheritdoc/>
     public override void Choose( T item )
     {
         ArgumentNullException.ThrowIfNull( item );
@@ -125,7 +129,7 @@ public class ArraySelection< T > : Selection< T >
     ///     array. If <see cref="Selection{T}.Required" /> is true and there is
     ///     no selected item, the first item is selected.
     /// </summary>
-    public void Validate()
+    public virtual void Validate()
     {
         if ( _array?.Count == 0 )
         {

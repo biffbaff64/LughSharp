@@ -28,6 +28,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 /// <summary>
 ///     Drawable for a <see cref="Sprite" />.
 /// </summary>
+[PublicAPI]
 public class SpriteDrawable : BaseDrawable, ITransformDrawable
 {
     private Sprite? _sprite;
@@ -61,6 +62,7 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
         }
     }
 
+    /// <inheritdoc/>
     public override void Draw( IBatch batch, float x, float y, float width, float height )
     {
         if ( Sprite == null )

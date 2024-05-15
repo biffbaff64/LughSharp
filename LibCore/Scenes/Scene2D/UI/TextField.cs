@@ -1300,7 +1300,7 @@ public class TextField : Widget
         }
 
         /// <inheritdoc />
-        public override void Clicked( InputEvent ev, float x, float y )
+        public override void OnClicked( InputEvent ev, float x, float y )
         {
             var count = TapCount % 4;
 

@@ -28,8 +28,9 @@ namespace LughSharp.LibCore.Utils;
 [PublicAPI]
 public class PerformanceCounters
 {
-    private const   float                      NANO2_SECONDS = 1f / 1000000000.0f;
-    public readonly List< PerformanceCounter > counters      = new();
+    private const float NANO2_SECONDS = 1f / 1000000000.0f;
+
+    public List< PerformanceCounter > Counters { get; set; } = new();
 
     private long _lastTick = 0L;
 
@@ -39,7 +40,7 @@ public class PerformanceCounters
     {
         var result = new PerformanceCounter( name, windowSize );
 
-        counters.Add( result );
+        Counters.Add( result );
 
         return result;
     }
@@ -48,7 +49,7 @@ public class PerformanceCounters
     {
         var result = new PerformanceCounter( name );
 
-        counters.Add( result );
+        Counters.Add( result );
 
         return result;
     }
@@ -67,7 +68,7 @@ public class PerformanceCounters
 
     public void Tick( in float deltaTime )
     {
-        foreach ( var t in counters )
+        foreach ( var t in Counters )
         {
             t.Tick( deltaTime );
         }

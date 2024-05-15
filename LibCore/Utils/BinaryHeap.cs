@@ -52,6 +52,24 @@ public class BinaryHeap< T > where T : BinaryHeapNode
 {
     // ------------------------------------------------------------------------
 
+    #region properties
+
+    public int Size { get; set; }
+
+    /// <summary>
+    ///     Returns true if the heap has one or more items.
+    /// </summary>
+    public virtual bool NotEmpty => Size > 0;
+
+    /// <summary>
+    ///     Returns true if the heap is empty.
+    /// </summary>
+    public virtual bool IsEmpty => Size == 0;
+
+    #endregion properties
+
+    // ------------------------------------------------------------------------
+
     private const int DEFAULT_HEAP_CAPACITY = 16;
 
     // ------------------------------------------------------------------------
@@ -77,7 +95,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     ///     The node should not already be in the heap.
     /// </summary>
     /// <returns>The specified node.</returns>
-    public T Add( T node )
+    public virtual T Add( T node )
     {
         GdxRuntimeException.ThrowIfNull( _nodes );
 
@@ -106,7 +124,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     ///     The node should not already be in the heap.
     /// </summary>
     /// <returns>The specified node.</returns>
-    public T Add( T node, float value )
+    public virtual T Add( T node, float value )
     {
         node.Value = value;
 
@@ -251,6 +269,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     }
 
     /// <summary>
+    ///     Moves the element at position 'index' up
     /// </summary>
     /// <param name="index"></param>
     private void Up( int index )
@@ -418,22 +437,4 @@ public class BinaryHeap< T > where T : BinaryHeapNode
 
         return buffer.ToString();
     }
-
-    // ------------------------------------------------------------------------
-    
-    #region properties
-
-    public int Size { get; set; }
-
-    /// <summary>
-    ///     Returns true if the heap has one or more items.
-    /// </summary>
-    public bool NotEmpty => Size > 0;
-
-    /// <summary>
-    ///     Returns true if the heap is empty.
-    /// </summary>
-    public bool IsEmpty => Size == 0;
-
-    #endregion properties
 }

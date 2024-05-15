@@ -24,36 +24,142 @@
 
 
 using LughSharp.LibCore.Scenes.Scene2D.UI;
+using LughSharp.LibCore.Scenes.Scene2D.Utils;
+using Timer = LughSharp.LibCore.Utils.Timer;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
+/// <summary>
+///     Causes a scroll pane to scroll when a drag goes outside the bounds of the scroll pane.
+///     Attach the listener to the actor which will cause scrolling when dragged, usually the
+///     scroll pane or the scroll pane's actor.
+///     <para>
+///         If <see cref="ScrollPane.SetFlickScroll(bool)"/> is true, the scroll pane must have
+///         <see cref="ScrollPane.CancelTouchFocus"/> false. When a drag starts that should drag
+///         rather than flick scroll, cancel the scroll pane's touch focus using:-
+///         <code>
+///             Stage.CancelTouchFocus(scrollPane);
+///         </code>.
+///         In this case the drag scroll listener must not be attached to the scroll pane, else
+///         it would also lose touch focus. Instead it can be attached to the scroll pane's actor.
+///     </para>
+///     <para>
+///         If using drag and drop, <see cref="DragAndDrop.CancelTouchFocus"/> must be false.
+///     </para>
+/// </summary>
 [PublicAPI]
 public class DragScrollListener : DragListener
 {
     private readonly static Vector2             _tmpCoords     = new();
     private readonly        Interpolation.ExpIn _interpolation = Interpolation.Exp5In;
+    private readonly        ScrollPane          _scrollPane;
 
-    private readonly ScrollPane _scroll;
-    private          float      _maxSpeed = 75;
-    private          float      _minSpeed = 15;
-    private          float      _padBottom;
-    private          float      _padTop;
-    private          long       _rampTime = 1750;
-    private          long       _startTime;
-    private          float      _tickSecs = 0.05f;
+    private float      _maxSpeed  = 75;
+    private float      _minSpeed  = 15;
+    private float      _padBottom = 0;
+    private float      _padTop    = 0;
+    private long       _rampTime  = 1750;
+    private long       _startTime = 0;
+    private float      _tickSecs  = 0.05f;
+    private ScrollUp   _scrollUp;
+    private ScrollDown _scrollDown;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     public DragScrollListener( ScrollPane scroll )
     {
-        _scroll = scroll;
+        _scrollPane = scroll;
+
+        _scrollUp   = new ScrollUp( this, scroll );
+        _scrollDown = new ScrollDown( this, scroll );
     }
 
-    public void Setup( float minSpeedPixels, float maxSpeedPixels, float tickSecs, float rampSecs )
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="minSpeedPixels"></param>
+    /// <param name="maxSpeedPixels"></param>
+    /// <param name="tickSecs"></param>
+    /// <param name="rampSecs"></param>
+    public virtual void Setup( float minSpeedPixels, float maxSpeedPixels, float tickSecs, float rampSecs )
     {
         _minSpeed = minSpeedPixels;
         _maxSpeed = maxSpeedPixels;
         _tickSecs = tickSecs;
         _rampTime = ( long ) ( rampSecs * 1000 );
     }
+
+    /// <inheritdoc/>
+    public override void Drag( InputEvent ev, float x, float y, int pointer )
+    {
+        ev.ListenerActor?.LocalToActorCoordinates( _scrollPane, _tmpCoords.Set( x, y ) );
+
+        if ( IsAbove( _tmpCoords.Y ) )
+        {
+            _scrollDown.Cancel();
+
+            if ( !_scrollUp.IsScheduled() )
+            {
+                _startTime = TimeUtils.Millis();
+                Timer.Schedule( _scrollUp, _tickSecs, _tickSecs );
+            }
+            
+            return;
+        }
+        
+        if ( IsBelow( _tmpCoords.Y ) )
+        {
+            _scrollUp.Cancel();
+
+            if ( !_scrollDown.IsScheduled() )
+            {
+                _startTime = TimeUtils.Millis();
+                Timer.Schedule( _scrollDown, _tickSecs, _tickSecs );
+            }
+            
+            return;
+        }
+
+        // Don't call DragStop() from here because that can be overridden
+        // and problems may arise...
+        // Better safe than sorry, etc.
+        _scrollUp.Cancel();
+        _scrollDown.Cancel();
+    }
+
+    /// <inheritdoc/>
+    public override void DragStop( InputEvent ev, float x, float y, int pointer )
+    {
+        _scrollUp.Cancel();
+        _scrollDown.Cancel();
+    }
+
+    /// <summary>
+    ///     Sets the top and bottom padding amounts.
+    /// </summary>
+    /// <param name="padtop"> The Top padding. </param>
+    /// <param name="padbottom"> The Bottom padding. </param>
+    public void SetPadding( float padtop, float padbottom )
+    {
+        _padTop    = padtop;
+        _padBottom = padbottom;
+    }
+
+    /// <summary>
+    ///     Returns true if the provided Y value is above the scrollpane.
+    /// </summary>
+    protected bool IsAbove( float y ) => y >= ( _scrollPane.Height - _padTop );
+
+    /// <summary>
+    ///     Returns true if the provided Y value is below the scrollpane.
+    /// </summary>
+    protected bool IsBelow( float y ) => y < _padBottom;
+
+    /// <summary>
+    ///     Sets the ScrollPane Y Scroll to the provided value.
+    /// </summary>
+    protected void SetScroll( float y ) => _scrollPane.SetScrollY( y );
 
     private float GetScrollPixels()
     {
@@ -62,42 +168,40 @@ public class DragScrollListener : DragListener
                                      Math.Min( 1, ( TimeUtils.Millis() - _startTime ) / ( float ) _rampTime ) );
     }
 
-    public override void Drag( InputEvent ev, float x, float y, int pointer )
-    {
-        ev.ListenerActor?.LocalToActorCoordinates( _scroll, _tmpCoords.Set( x, y ) );
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-        if ( IsAbove( _tmpCoords.Y ) )
+    public class ScrollUp : Timer.Task
+    {
+        private readonly ScrollPane         _scroll;
+        private readonly DragScrollListener _parent;
+
+        public ScrollUp( DragScrollListener dsl, ScrollPane scroll )
         {
-            // TODO: Add code for moving the scrollbar UP
+            this._parent = dsl;
+            this._scroll = scroll;
         }
-        else if ( IsBelow( _tmpCoords.Y ) )
+
+        public override void Run()
         {
-            // TODO: Add code for moving the scrollbar DOWN
+            _parent.SetScroll( _scroll.GetVisualScrollY() - _parent.GetScrollPixels() );
         }
     }
 
-    public override void DragStop( InputEvent ev, float x, float y, int pointer )
+    public class ScrollDown : Timer.Task
     {
-    }
+        private readonly ScrollPane         _scroll;
+        private readonly DragScrollListener _parent;
 
-    protected bool IsAbove( float y )
-    {
-        return y >= ( _scroll.Height - _padTop );
-    }
+        public ScrollDown( DragScrollListener dsl, ScrollPane scroll )
+        {
+            this._parent = dsl;
+            this._scroll = scroll;
+        }
 
-    protected bool IsBelow( float y )
-    {
-        return y < _padBottom;
-    }
-
-    protected void Scroll( float y )
-    {
-        _scroll.SetScrollY( y );
-    }
-
-    public void SetPadding( float padtop, float padbottom )
-    {
-        _padTop    = padtop;
-        _padBottom = padbottom;
+        public override void Run()
+        {
+            _parent.SetScroll( _scroll.GetVisualScrollY() + _parent.GetScrollPixels() );
+        }
     }
 }

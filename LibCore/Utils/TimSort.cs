@@ -148,6 +148,7 @@ public class TimSort< T >
     // ------------------------------------------------------------------------
 
     /// <summary>
+    ///     Creates a new TimSort instance, using default values.
     /// </summary>
     public TimSort()
     {

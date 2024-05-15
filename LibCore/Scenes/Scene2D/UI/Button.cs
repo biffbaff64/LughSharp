@@ -351,7 +351,7 @@ public class Button : Table, IDisableable
             _button = button;
         }
 
-        public override void Clicked( InputEvent inputEvent, float x, float y )
+        public override void OnClicked( InputEvent inputEvent, float x, float y )
         {
             if ( _button.IsDisabled )
             {

@@ -28,6 +28,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 /// <summary>
 ///     A drawable that supports scale and rotation.
 /// </summary>
+[PublicAPI]
 public interface ITransformDrawable : IDrawable
 {
     void Draw( IBatch batch,

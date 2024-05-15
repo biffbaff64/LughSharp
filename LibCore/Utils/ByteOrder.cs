@@ -34,7 +34,7 @@ public class ByteOrder
     public readonly static ByteOrder NativeOrder = new( "NativeOrder" );
 
     /// <summary>
-    ///     Constant denoting big-endian byte order.  In this order, the bytes of a
+    ///     Constant denoting big-endian byte order. In this order, the bytes of a
     ///     multibyte value are ordered from most significant to least significant.
     /// </summary>
     public readonly static ByteOrder BigEndian = new( "BigEndian" );

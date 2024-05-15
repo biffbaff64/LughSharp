@@ -28,10 +28,15 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 /// <summary>
 ///     Drawable for a <see cref="TextureRegion" />.
 /// </summary>
+[PublicAPI]
 public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
 {
     private readonly TextureRegion? _region;
 
+    // ------------------------------------------------------------------------
+    
+    #region constructors
+    
     /// <summary>
     ///     Creates an uninitialized TextureRegionDrawable.
     ///     The texture region must be set before use.
@@ -55,6 +60,10 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
         Region = drawable.Region;
     }
 
+    #endregion constructors
+
+    // ------------------------------------------------------------------------
+    
     protected TextureRegion? Region
     {
         get => _region;
@@ -70,6 +79,7 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
         }
     }
 
+    /// <inheritdoc/>
     public override void Draw( IBatch batch, float x, float y, float width, float height )
     {
         if ( Region != null )
@@ -78,6 +88,19 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
         }
     }
 
+    /// <summary>
+    ///     Draws this drawable at the specified bounds.
+    /// </summary>
+    /// <param name="batch"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="originX"></param>
+    /// <param name="originY"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="scaleX"></param>
+    /// <param name="scaleY"></param>
+    /// <param name="rotation"></param>
     public virtual void Draw( IBatch batch,
                               float x,
                               float y,

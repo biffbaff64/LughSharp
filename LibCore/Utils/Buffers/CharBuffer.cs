@@ -89,12 +89,12 @@ namespace LughSharp.LibCore.Utils.Buffers;
 public abstract class CharBuffer : Buffer
 {
     protected readonly int     Offset;
-    private readonly   char[]? _hb; // Non-null only for heap buffers
+    protected readonly char[]? Hb; // Non-null only for heap buffers
 
     protected CharBuffer( int mark, int pos, int lim, int cap, char[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        _hb    = hb;
+        Hb    = hb;
         Offset = offset;
     }
 
@@ -322,7 +322,7 @@ public abstract class CharBuffer : Buffer
     /// <exception cref="IndexOutOfRangeException">
     ///     If the preconditions on the <tt>offset</tt> and <tt>length</tt> parameters do not hold
     /// </exception>
-    public CharBuffer Get( char[] dst, int off, int length )
+    public virtual CharBuffer Get( char[] dst, int off, int length )
     {
         CheckBounds( off, length, dst.Length );
 
@@ -403,7 +403,7 @@ public abstract class CharBuffer : Buffer
     /// </exception>
     /// <exception cref="ArgumentException"> If the source buffer is this buffer </exception>
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
-    public CharBuffer Put( CharBuffer src )
+    public virtual CharBuffer Put( CharBuffer src )
     {
         if ( Equals( src, this ) )
         {
@@ -472,7 +472,7 @@ public abstract class CharBuffer : Buffer
     ///     If the preconditions on the <tt>offset</tt> and <tt>length</tt> parameters do not hold
     /// </exception>
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
-    public CharBuffer Put( char[] src, int off, int length )
+    public virtual CharBuffer Put( char[] src, int off, int length )
     {
         CheckBounds( off, length, src.Length );
 
@@ -506,7 +506,7 @@ public abstract class CharBuffer : Buffer
     /// <returns> This buffer </returns>
     /// <exception cref="GdxRuntimeException"> If there is insufficient space in this buffer </exception>
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
-    public CharBuffer Put( char[] src )
+    public virtual CharBuffer Put( char[] src )
     {
         return Put( src, 0, src.Length );
     }
@@ -552,7 +552,7 @@ public abstract class CharBuffer : Buffer
     ///     If the preconditions on the <tt>start</tt> and <tt>end</tt> parameters do not hold
     /// </exception>
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
-    public CharBuffer Put( string src, int start, int end )
+    public virtual CharBuffer Put( string src, int start, int end )
     {
         CheckBounds( start, end - start, src.Length );
 
@@ -594,7 +594,7 @@ public abstract class CharBuffer : Buffer
     ///     If there is insufficient space in this buffer
     /// </exception>
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
-    public CharBuffer Put( string src )
+    public virtual CharBuffer Put( string src )
     {
         return Put( src, 0, src.Length );
     }
@@ -776,7 +776,7 @@ public abstract class CharBuffer : Buffer
     /// </returns>
     public override bool HasArray()
     {
-        return ( _hb != null ) && !IsReadOnly;
+        return ( Hb != null ) && !IsReadOnly;
     }
 
     /// <summary>
@@ -799,7 +799,7 @@ public abstract class CharBuffer : Buffer
     /// </exception>
     public new char[] BackingArray()
     {
-        if ( _hb == null )
+        if ( Hb == null )
         {
             throw new GdxRuntimeException( "Backing Array is null!" );
         }
@@ -809,7 +809,7 @@ public abstract class CharBuffer : Buffer
             throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
-        return _hb;
+        return Hb;
     }
 
     /// <summary>
@@ -835,7 +835,7 @@ public abstract class CharBuffer : Buffer
     /// </exception>
     public override int ArrayOffset()
     {
-        if ( _hb == null )
+        if ( Hb == null )
         {
             throw new GdxRuntimeException( "Backing Array is null!" );
         }
