@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Runtime.CompilerServices;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Utils.Buffers;
@@ -72,7 +73,7 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override ByteBuffer AsReadOnlyBuffer()
     {
-        return new HeapByteBuffer( Hb, MarkValue(), Position, Limit, Capacity, Offset );
+        return new HeapByteBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
     protected int Ix( int i )
@@ -187,12 +188,12 @@ public class HeapByteBuffer : ByteBuffer
             {
                 throw new GdxRuntimeException( "Buffer Overflow!" );
             }
-            
+
             System.Array.Copy( sb.Hb!,
                                sb.Ix( sb.Position ),
                                Hb,
                                Ix( Position ), n );
-            
+
             sb.SetPosition( sb.Position + n );
             SetPosition( Position + n );
         }
@@ -204,7 +205,7 @@ public class HeapByteBuffer : ByteBuffer
             {
                 throw new GdxRuntimeException( "Buffer Overflow!" );
             }
-            
+
             src.Get( Hb, Ix( Position ), n );
             SetPosition( Position + n );
         }
@@ -229,188 +230,241 @@ public class HeapByteBuffer : ByteBuffer
         SetPosition( Remaining() );
         SetLimit( Capacity );
         DiscardMark();
-        
+
         return this;
     }
 
     /// <inheritdoc/>
     public override char GetChar()
     {
-//        return Bits.GetChar( this, Ix( NextGetIndex( 2 ) ), BigEndian );
-        throw new NotImplementedException();
+        return BufferUtils.GetChar( this, Ix( NextGetIndex( 2 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
     public override char GetChar( int index )
     {
-        throw new NotImplementedException();
+        return BufferUtils.GetChar( this, Ix( CheckIndex( i, 2 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
     public override ByteBuffer PutChar( char value )
     {
-        throw new NotImplementedException();
+        BufferUtils.PutChar( this, Ix( NextPutIndex( 2 ) ), value, BigEndian );
+
+        return this;
     }
 
     /// <inheritdoc/>
     public override ByteBuffer PutChar( int index, char value )
     {
-        throw new NotImplementedException();
+        BufferUtils.PutChar( this, Ix( CheckIndex( index, 2 ) ), value, BigEndian );
+
+        return this;
     }
 
     /// <inheritdoc/>
     public override CharBuffer AsCharBuffer()
     {
-        throw new NotImplementedException();
+        var size = this.Remaining() >> 1;
+        var off  = this.Offset + Position;
+
+        return ( BigEndian
+                     ? ( CharBuffer ) ( new ByteBufferAsCharBufferB( this, -1, 0, size, size, off ) )
+                     : ( CharBuffer ) ( new ByteBufferAsCharBufferL( this, -1, 0, size, size, off ) ) );
     }
 
     /// <inheritdoc/>
     public override short GetShort()
     {
-        throw new NotImplementedException();
+        return Bits.GetShort( this, Ix( NextGetIndex( 2 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
-    public override short GetShort( int index )
+    public override short GetShort( int i )
     {
-        throw new NotImplementedException();
+        return Bits.GetShort( this, Ix( CheckIndex( i, 2 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
-    public override ByteBuffer PutShort( short value )
+    public override ByteBuffer PutShort( short x )
     {
-        throw new NotImplementedException();
+        Bits.PutShort( this, Ix( NextPutIndex( 2 ) ), x, BigEndian );
+
+        return this;
     }
 
     /// <inheritdoc/>
-    public override ByteBuffer PutShort( int index, short value )
+    public override ByteBuffer PutShort( int i, short x )
     {
-        throw new NotImplementedException();
+        Bits.PutShort( this, Ix( CheckIndex( i, 2 ) ), x, BigEndian );
+
+        return this;
     }
 
     /// <inheritdoc/>
     public override ShortBuffer AsShortBuffer()
     {
-        throw new NotImplementedException();
+        var size = this.Remaining() >> 1;
+        var off  = Offset + Position;
+
+        return ( BigEndian
+                     ? ( ShortBuffer ) ( new ByteBufferAsShortBufferB( this, -1, 0, size, size, off ) )
+                     : ( ShortBuffer ) ( new ByteBufferAsShortBufferL( this, -1, 0, size, size, off ) ) );
     }
 
     /// <inheritdoc/>
     public override int GetInt()
     {
-        throw new NotImplementedException();
+        return Bits.GetInt( this, Ix( NextGetIndex( 4 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
-    public override int GetInt( int index )
+    public override int GetInt( int i )
     {
-        throw new NotImplementedException();
+        return Bits.GetInt( this, Ix( CheckIndex( i, 4 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
-    public override ByteBuffer PutInt( int value )
+    public override ByteBuffer PutInt( int x )
     {
-        throw new NotImplementedException();
+        Bits.PutInt( this, Ix( NextPutIndex( 4 ) ), x, BigEndian );
+
+        return this;
     }
 
     /// <inheritdoc/>
-    public override ByteBuffer PutInt( int index, int value )
+    public override ByteBuffer PutInt( int i, int x )
     {
-        throw new NotImplementedException();
+        Bits.PutInt( this, Ix( CheckIndex( i, 4 ) ), x, BigEndian );
+
+        return this;
     }
 
     /// <inheritdoc/>
     public override IntBuffer AsIntBuffer()
     {
-        throw new NotImplementedException();
+        var size = this.Remaining() >> 2;
+        var off  = Offset + Position;
+
+        return ( BigEndian
+                     ? ( IntBuffer ) ( new ByteBufferAsIntBufferB( this, -1, 0, size, size, off ) )
+                     : ( IntBuffer ) ( new ByteBufferAsIntBufferL( this, -1, 0, size, size, off ) ) );
     }
 
     /// <inheritdoc/>
     public override long GetLong()
     {
-        throw new NotImplementedException();
+        return Bits.GetLong( this, Ix( NextGetIndex( 8 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
-    public override long GetLong( int index )
+    public override long GetLong( int i )
     {
-        throw new NotImplementedException();
+        return Bits.GetLong( this, Ix( CheckIndex( i, 8 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
-    public override ByteBuffer PutLong( long value )
+    public override ByteBuffer PutLong( long x )
     {
-        throw new NotImplementedException();
+        Bits.PutLong( this, Ix( NextPutIndex( 8 ) ), x, BigEndian );
+
+        return this;
     }
 
     /// <inheritdoc/>
-    public override ByteBuffer PutLong( int index, long value )
+    public override ByteBuffer PutLong( int i, long x )
     {
-        throw new NotImplementedException();
+        Bits.PutLong( this, Ix( CheckIndex( i, 8 ) ), x, BigEndian );
+
+        return this;
     }
 
     /// <inheritdoc/>
     public override LongBuffer AsLongBuffer()
     {
-        throw new NotImplementedException();
+        var size = this.Remaining() >> 3;
+        var off  = Offset + Position;
+
+        return ( BigEndian
+                     ? ( LongBuffer ) ( new ByteBufferAsLongBufferB( this, -1, 0, size, size, off ) )
+                     : ( LongBuffer ) ( new ByteBufferAsLongBufferL( this, -1, 0, size, size, off ) ) );
     }
 
     /// <inheritdoc/>
     public override float GetFloat()
     {
-        throw new NotImplementedException();
+        return Bits.GetFloat( this, Ix( NextGetIndex( 4 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
-    public override float GetFloat( int index )
+    public override float GetFloat( int i )
     {
-        throw new NotImplementedException();
+        return Bits.GetFloat( this, Ix( CheckIndex( i, 4 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
-    public override ByteBuffer PutFloat( float value )
+    public override ByteBuffer PutFloat( float x )
     {
-        throw new NotImplementedException();
+        Bits.PutFloat( this, Ix( NextPutIndex( 4 ) ), x, BigEndian );
+
+        return this;
     }
 
     /// <inheritdoc/>
-    public override ByteBuffer PutFloat( int index, float value )
+    public override ByteBuffer PutFloat( int i, float x )
     {
-        throw new NotImplementedException();
+        Bits.PutFloat( this, Ix( CheckIndex( i, 4 ) ), x, BigEndian );
+
+        return this;
     }
 
     /// <inheritdoc/>
     public override FloatBuffer AsFloatBuffer()
     {
-        throw new NotImplementedException();
+        var size = this.Remaining() >> 2;
+        var off  = Offset + Position;
+
+        return ( BigEndian
+                     ? ( FloatBuffer ) ( new ByteBufferAsFloatBufferB( this, -1, 0, size, size, off ) )
+                     : ( FloatBuffer ) ( new ByteBufferAsFloatBufferL( this, -1, 0, size, size, off ) ) );
     }
 
     /// <inheritdoc/>
     public override double GetDouble()
     {
-        throw new NotImplementedException();
+        return Bits.GetDouble( this, Ix( NextGetIndex( 8 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
-    public override double GetDouble( int index )
+    public override double GetDouble( int i )
     {
-        throw new NotImplementedException();
+        return Bits.GetDouble( this, Ix( CheckIndex( i, 8 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
-    public override ByteBuffer PutDouble( double value )
+    public override ByteBuffer PutDouble( double x )
     {
-        throw new NotImplementedException();
+        Bits.PutDouble( this, Ix( NextPutIndex( 8 ) ), x, BigEndian );
+
+        return this;
     }
 
     /// <inheritdoc/>
-    public override ByteBuffer PutDouble( int index, double value )
+    public override ByteBuffer PutDouble( int i, double x )
     {
-        throw new NotImplementedException();
+        Bits.PutDouble( this, Ix( CheckIndex( i, 8 ) ), x, BigEndian );
+
+        return this;
     }
 
     /// <inheritdoc/>
     public override DoubleBuffer AsDoubleBuffer()
     {
-        throw new NotImplementedException();
+        var size = this.Remaining() >> 3;
+        var off  = Offset + Position;
+
+        return ( BigEndian
+                     ? ( DoubleBuffer ) ( new ByteBufferAsDoubleBufferB( this, -1, 0, size, size, off ) )
+                     : ( DoubleBuffer ) ( new ByteBufferAsDoubleBufferL( this, -1, 0, size, size, off ) ) );
     }
 }

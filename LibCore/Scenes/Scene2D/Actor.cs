@@ -72,8 +72,8 @@ public class Actor : IActor
         set => _color.Set( value );
     }
 
-    public DelayedRemovalArray< IEventListener > Listeners        { get; }
-    public DelayedRemovalArray< IEventListener > CaptureListeners { get; }
+    public DelayedRemovalList< IEventListener > Listeners        { get; }
+    public DelayedRemovalList< IEventListener > CaptureListeners { get; }
     public List< Action >                        Actions          { get; set; } = new();
 
     /// <summary>
@@ -207,8 +207,8 @@ public class Actor : IActor
     /// </summary>
     protected Actor()
     {
-        Listeners        = new DelayedRemovalArray< IEventListener >( 0 );
-        CaptureListeners = new DelayedRemovalArray< IEventListener >( 0 );
+        Listeners        = new DelayedRemovalList< IEventListener >( 0 );
+        CaptureListeners = new DelayedRemovalList< IEventListener >( 0 );
     }
 
     /// <summary>
@@ -381,7 +381,7 @@ public class Actor : IActor
             throw new ArgumentException( "The event target cannot be null." );
         }
 
-        DelayedRemovalArray< IEventListener > listeners = capture ? CaptureListeners : Listeners;
+        DelayedRemovalList< IEventListener > listeners = capture ? CaptureListeners : Listeners;
 
         if ( listeners.Count == 0 )
         {

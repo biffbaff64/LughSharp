@@ -65,11 +65,6 @@ public class PredicateIterator< T > : IEnumerator< T >
 
     object? IEnumerator.Current => Current;
 
-    public void Dispose()
-    {
-        Remove();
-    }
-
     /// <summary>
     /// </summary>
     /// <param name="enumerable"></param>
@@ -145,6 +140,11 @@ public class PredicateIterator< T > : IEnumerator< T >
         }
 
         Enumerator.Dispose();
+    }
+
+    public void Dispose()
+    {
+        Remove();
     }
 
     // ------------------------------------------------------------------------

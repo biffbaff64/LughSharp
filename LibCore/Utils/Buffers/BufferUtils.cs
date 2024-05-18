@@ -34,8 +34,12 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public static class BufferUtils
 {
-    private readonly static List< ByteBuffer > _unsafeBuffers   = new();
-    private static          int                _allocatedUnsafe = 0;
+    private readonly static List< ByteBuffer > _unsafeBuffers = new();
+
+    private static int _allocatedUnsafe = 0;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Creates a new <see cref="FloatBuffer" /> with the specified capacity.
@@ -121,6 +125,38 @@ public static class BufferUtils
         return buffer.AsLongBuffer();
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="bb"></param>
+    /// <param name="bi"></param>
+    /// <param name="bigEndian"></param>
+    /// <returns></returns>
+    public static char GetChar( ByteBuffer bb, int bi, bool bigEndian )
+    {
+        return bigEndian
+                   ? MakeChar( bb.Hb![ ( byte ) bi ],
+                               bb.Hb![ ( byte ) ( bi + 1 ) ] )
+                   : MakeChar( bb.Hb![ ( byte ) ( bi + 1 ) ],
+                               bb.Hb![ ( byte ) bi ] );
+    }
+
+    public static void PutChar( ByteBuffer bb, int bi, char x, bool bigEndian )
+    {
+        if ( bigEndian )
+        {
+            bb.Hb![ bi ]     = ( byte ) ( x >> 8 );
+            bb.Hb![ bi + 1 ] = ( byte ) x;
+        }
+
+        bb.Hb![ bi ]     = ( byte ) x;
+        bb.Hb![ bi + 1 ] = ( byte ) ( x >> 8 );
+    }
+
+    private static char MakeChar( byte b1, byte b0 )
+    {
+        return ( char ) ( ( b1 << 8 ) | ( b0 & 0xff ) );
+    }
+
     public static byte Compare( byte x, byte y )
     {
         return ( byte ) ( x - y );
@@ -176,7 +212,6 @@ public static class BufferUtils
     ///         The Buffer must be a direct Buffer with native byte order. No error
     ///         checking is performed
     ///     </para>
-    ///     .
     /// </summary>
     /// <param name="src"> the source array. </param>
     /// <param name="srcOffset"> the offset into the source array. </param>

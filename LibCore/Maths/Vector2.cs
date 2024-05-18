@@ -28,6 +28,9 @@ using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Maths;
 
+/// <summary>
+///     Encapsulates a 2D vector. Allows chaining methods by returning a reference to itself
+/// </summary>
 [PublicAPI]
 public class Vector2 : IVector< Vector2 >
 {
@@ -36,9 +39,22 @@ public class Vector2 : IVector< Vector2 >
     public readonly static Vector2 Zero     = new( 0, 0 );
 
     /// <summary>
+    ///     The X-Component of this vector.
+    /// </summary>
+    public float X { get; set; }
+
+    /// <summary>
+    ///     The Y-Component of this vector.
+    /// </summary>
+    public float Y { get; set; }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    /// <summary>
     ///     Constructs a new vector at (0,0)
     /// </summary>
-    public Vector2()
+    public Vector2() : this( 0, 0 )
     {
     }
 
@@ -62,9 +78,9 @@ public class Vector2 : IVector< Vector2 >
         Set( v );
     }
 
-    public float X { get; set; } // the x-component of this vector.
-    public float Y { get; set; } // the y-component of this vector.
-
+    /// <summary>
+    ///     Returns a copy of this vector.
+    /// </summary>
     public Vector2 Cpy()
     {
         return new Vector2( this );

@@ -29,14 +29,14 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Utils.Collections;
 
 /// <summary>
-///     An array that queues removal during iteration until the iteration has completed.
+///     An list that queues removal during iteration until the iteration has completed.
 ///     Queues any removals done after <see cref="Begin()" /> is called to occur once
 ///     <see cref="End()" /> is called. This can allow code out of your control to remove items
 ///     without affecting iteration. Between begin and end, most mutator methods will throw
 ///     IllegalStateException. Only <see cref="RemoveIndex(int)" />, <see cref="RemoveValue" />,
 ///     <see cref="RemoveRange(int, int)" />, <see cref="Clear()" />, and add methods are allowed.
 ///     <para>
-///         Note that DelayedRemovalArray is not for thread safety, only for removal during iteration.
+///         Note that DelayedRemovalList is not for thread safety, only for removal during iteration.
 ///     </para>
 ///     <para>
 ///         Code using this class must not rely on items being removed immediately. Consider using
@@ -44,7 +44,7 @@ namespace LughSharp.LibCore.Utils.Collections;
 ///     </para>
 /// </summary>
 [PublicAPI]
-public class DelayedRemovalArray< T > : List< T >
+public class DelayedRemovalList< T > : List< T >
 {
     private readonly List< int > _remove = new();
 
@@ -54,54 +54,60 @@ public class DelayedRemovalArray< T > : List< T >
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Creates a new DelayedRemovalArray from the supplied <see cref="IEnumerable{T}"/>
+    ///     Creates a new DelayedRemovalList from the supplied <see cref="IEnumerable{T}"/>
     /// </summary>
-    public DelayedRemovalArray( IEnumerable< T > array )
-        : base( array )
+    public DelayedRemovalList( IEnumerable< T > list )
+        : base( list )
     {
         Reset();
     }
 
     /// <summary>
-    ///     Creates a new DelayedRemovalArray from the supplied T array.
+    ///     Creates a new DelayedRemovalList from the supplied T list.
     /// </summary>
-    public DelayedRemovalArray( T[] array )
-        : base( array )
+    public DelayedRemovalList( T[] list )
+        : base( list )
     {
         Reset();
     }
 
     /// <summary>
-    ///     Creates a new, empty, DelayedRemovalArray with the specified initial
+    ///     Creates a new, empty, DelayedRemovalList with the specified initial
     ///     capacity. The default capacity is 16.
     /// </summary>
     /// <param name="initialCapacity"></param>
-    public DelayedRemovalArray( int initialCapacity = 16 )
+    public DelayedRemovalList( int initialCapacity = 16 )
         : base( initialCapacity )
     {
         Reset();
     }
 
     /// <summary>
-    ///     Creates a new DelayedRemovalArray from the supplied <see cref="IReadOnlyList{T}"/>.
-    ///     <paramref name="count"/> elements from the source array will be copied, starting
+    ///     Creates a new DelayedRemovalList from the supplied <see cref="IReadOnlyList{T}"/>.
+    ///     <paramref name="count"/> elements from the source list will be copied, starting
     ///     at <paramref name="startIndex"/>.
     /// </summary>
-    /// <param name="array"></param>
+    /// <param name="list"></param>
     /// <param name="startIndex"></param>
     /// <param name="count"></param>
-    public DelayedRemovalArray( IReadOnlyList< T > array, int startIndex, int count )
+    public DelayedRemovalList( IReadOnlyList< T > list, int startIndex, int count )
         : base()
     {
         for ( var i = 0; i < count; i++ )
         {
-            Add( array[ startIndex + i ] );
+            Add( list[ startIndex + i ] );
         }
 
         Reset();
     }
 
     /// <summary>
+    ///     Begins the iteration process which delays removal until iteration
+    ///     has finished.
+    ///     <para>
+    ///         See the <see cref="DelayedRemovalList{T}"/> class description for
+    ///         a fuller description.
+    ///     </para>
     /// </summary>
     public void Begin()
     {
@@ -109,8 +115,15 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
+    ///     Ends the iteration process to allow element removal.
+    ///     <para>
+    ///         See the <see cref="DelayedRemovalList{T}"/> class description for
+    ///         a fuller description.
+    ///     </para>
     /// </summary>
-    /// <exception cref="GdxRuntimeException"></exception>
+    /// <exception cref="GdxRuntimeException">
+    ///     Thrown if this method is called before calling <see cref="Begin()"/>.
+    /// </exception>
     public void End()
     {
         if ( _iterating == 0 )
@@ -150,7 +163,7 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
-    ///     Removes the item at position <paramref name="index"/> from the array.
+    ///     Removes the item at position <paramref name="index"/> from the list.
     /// </summary>
     /// <param name="index"> The zero-based index of the element to remove. </param>
     public void Remove( int index )
@@ -181,12 +194,12 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
-    ///     Removes the first occurance of the specified value from the array.
+    ///     Removes the first occurance of the specified value from the list.
     /// </summary>
     /// <param name="value"> The value to remove. </param>
     /// <returns>
     ///     true if item is successfully removed; otherwise, false. This method also
-    ///     returns false if item was not found in the array.
+    ///     returns false if item was not found in the list.
     /// </returns>
     public bool RemoveValue( T value )
     {
@@ -227,13 +240,13 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
-    ///     Removes a range of items from the array, beginning at <paramref name="start"/>
+    ///     Removes a range of items from the list, beginning at <paramref name="start"/>
     ///     and ending at <paramref name="end"/>.
     ///     Start index is zero-based.
     ///     Positions are inclusive.
     /// </summary>
-    /// <param name="start"></param>
-    /// <param name="end"></param>
+    /// <param name="start"> Start position. </param>
+    /// <param name="end"> End position. </param>
     public new void RemoveRange( int start, int end )
     {
         if ( _iterating > 0 )
@@ -250,7 +263,7 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
-    ///     Clear this array.
+    ///     Clear this list.
     /// </summary>
     public new void Clear()
     {
@@ -265,10 +278,13 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
+    ///     Sets the value at the supplied index.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="value"></param>
-    /// <exception cref="GdxRuntimeException"></exception>
+    /// <param name="index"> The index. </param>
+    /// <param name="value"> The Value. </param>
+    /// <exception cref="GdxRuntimeException">
+    ///     If still between the <see cref="Begin"/> and <see cref="End"/> cycle.
+    /// </exception>
     public void Set( int index, T value )
     {
         if ( _iterating > 0 )
@@ -280,10 +296,14 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
+    ///     Inserts an entry into the list at the specified index, and
+    ///     sets it to the supplied value.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="value"></param>
-    /// <exception cref="GdxRuntimeException"></exception>
+    /// <param name="index"> The index. </param>
+    /// <param name="value"> The Value. </param>
+    /// <exception cref="GdxRuntimeException">
+    ///     If still between the <see cref="Begin"/> and <see cref="End"/> cycle.
+    /// </exception>
     public new void Insert( int index, T value )
     {
         if ( _iterating > 0 )
@@ -301,7 +321,9 @@ public class DelayedRemovalArray< T > : List< T >
     /// </summary>
     /// <param name="index"></param>
     /// <param name="count"></param>
-    /// <exception cref="GdxRuntimeException"></exception>
+    /// <exception cref="GdxRuntimeException">
+    ///     If still between the <see cref="Begin"/> and <see cref="End"/> cycle.
+    /// </exception>
     public void InsertRange( int index, int count )
     {
         if ( _iterating > 0 )
@@ -318,10 +340,13 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
+    ///     Swaps the two values at indexes <paramref name="first"/> and <paramref name="second."/>
     /// </summary>
-    /// <param name="first"></param>
-    /// <param name="second"></param>
-    /// <exception cref="GdxRuntimeException"></exception>
+    /// <param name="first"> List position of the first element. </param>
+    /// <param name="second"> List position of the second element. </param>
+    /// <exception cref="GdxRuntimeException">
+    ///     If still between the <see cref="Begin"/> and <see cref="End"/> cycle.
+    /// </exception>
     public void Swap( int first, int second )
     {
         if ( _iterating > 0 )
@@ -333,9 +358,11 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
+    ///     Removes and returns the last item in this list.
     /// </summary>
-    /// <returns></returns>
-    /// <exception cref="GdxRuntimeException"></exception>
+    /// <exception cref="GdxRuntimeException">
+    ///     If still between the <see cref="Begin"/> and <see cref="End"/> cycle.
+    /// </exception>
     public T Pop()
     {
         if ( _iterating > 0 )
@@ -351,8 +378,15 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
+    ///     Wrapper for <see cref="List{T}.Sort()"/>, which allows for checking that this
+    ///     was NOT called between <see cref="Begin"/> and <see cref="End"/>.
+    ///     Sorts the elements in this list. Uses Array.Sort with the provided comparer.
     /// </summary>
     /// <exception cref="GdxRuntimeException"></exception>
+    /// <exception cref="GdxRuntimeException">
+    ///     If still between the <see cref="Begin"/> and <see cref="End"/> cycle.
+    /// </exception>
+    /// <inheritdoc cref="List{T}.Sort()"/>
     public new void Sort()
     {
         if ( _iterating > 0 )
@@ -364,8 +398,16 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
+    ///     Wrapper for <see cref="List{T}.Sort(IComparer{T})"/>, which allows for
+    ///     checking that this was NOT called between <see cref="Begin"/> and <see cref="End"/>.
+    ///     Sorts the elements in this list. Uses Array.Sort with the provided comparer.
     /// </summary>
-    /// <param name="comparator"></param>
+    /// <param name="comparator">
+    ///     The <see cref="IComparer{T}"/> implementation to use when comparing elements,
+    ///     or null to use the default comparer Default.</param>
+    /// <exception cref="GdxRuntimeException">
+    ///     If still between the <see cref="Begin"/> and <see cref="End"/> cycle.
+    /// </exception>
     public new void Sort( IComparer< T > comparator )
     {
         if ( _iterating > 0 )
@@ -377,11 +419,11 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
-    ///     Reverses the order of the elements in the array. Essentially a
+    ///     Reverses the order of the elements in the list. Essentially a
     ///     wrapper for <see cref="List{T}.Reverse()"/> with error checking.
     /// </summary>
     /// <exception cref="GdxRuntimeException">
-    ///     If <see cref="Begin()"/> has not been called first.
+    ///     If still between the <see cref="Begin"/> and <see cref="End"/> cycle.
     /// </exception>
     public new void Reverse()
     {
@@ -394,10 +436,10 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
-    ///     Shuffles the contents of this array.
+    ///     Shuffles the contents of this list.
     /// </summary>
     /// <exception cref="GdxRuntimeException">
-    ///     If <see cref="Begin()"/> has not been called first.
+    ///     If still between the <see cref="Begin"/> and <see cref="End"/> cycle.
     /// </exception>
     public void Shuffle()
     {
@@ -410,12 +452,12 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
-    ///     Truncates the array to the specified new size.
+    ///     Truncates the list to the specified new size.
     /// </summary>
     /// <param name="newSize"> The new required size. </param>
     /// <exception cref="GdxRuntimeException">
-    ///     If <see cref="Begin()"/> has not been called first, or the
-    ///     requested new size is invalid.
+    ///     If still between the <see cref="Begin"/> and <see cref="End"/> cycle,
+    ///     or the requested new size is invalid.
     /// </exception>
     public void Truncate( int newSize )
     {
@@ -441,14 +483,14 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
-    ///     Sets the capacity for this array. Essentially a wrapper for
+    ///     Sets the capacity for this list. Essentially a wrapper for
     ///     <see cref="List{T}.EnsureCapacity"/> with error checking.
     /// </summary>
     /// <param name="newSize"> The new required capacity. </param>
     /// <returns> The new capacity </returns>
     /// <exception cref="GdxRuntimeException">
-    ///     If <see cref="Begin()"/> has not been called first, or the
-    ///     requested new size is invalid.
+    ///     If still between the <see cref="Begin"/> and <see cref="End"/> cycle,
+    ///     or the requested new size is invalid.
     /// </exception>
     public int SetSize( int newSize )
     {
@@ -466,7 +508,7 @@ public class DelayedRemovalArray< T > : List< T >
     }
 
     /// <summary>
-    ///     Resets the delayed removal task for this array.
+    ///     Resets the delayed removal task for this list.
     /// </summary>
     private void Reset()
     {

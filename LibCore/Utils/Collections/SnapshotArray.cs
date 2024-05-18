@@ -29,14 +29,12 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Utils.Collections;
 
 /// <summary>
-///     An array that allows modification during iteration. Guarantees that
-///     array entries provided by begin() between indexes 0 and size at the
-///     time begin was called will not be modified until end() is called. If
-///     modification of the SnapshotArray occurs between begin/end, the backing
-///     array is copied prior to the modification, ensuring that the backing
-///     array that was returned by begin() is unaffected. To avoid allocation,
-///     an attempt is made to reuse any extra array created as a result of this
-///     copy on subsequent copies.
+///     An array that allows modification during iteration. Guarantees that array entries provided
+///     by begin() between indexes 0 and size at the time begin was called will not be modified
+///     until end() is called. If modification of the SnapshotArray occurs between begin/end, the
+///     backing array is copied prior to the modification, ensuring that the backing array that was
+///     returned by begin() is unaffected. To avoid allocation, an attempt is made to reuse any extra
+///     array created as a result of this copy on subsequent copies.
 ///     <para>
 ///         Note that SnapshotArray is not for thread safety, only for modification
 ///         during iteration.
@@ -75,8 +73,8 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
-    ///     Creates a new SnapshotArray, with <see cref="Array{T}.Ordered" /> set to the
-    ///     supplied value, and ther array capacity set to the supplied capacity.
+    ///     Creates a new SnapshotArray, with <see cref="Array{T}.Ordered" /> and
+    ///     array capacity set to the supplied values.
     /// </summary>
     /// <param name="ordered"> Default value is TRUE. </param>
     /// <param name="capacity"> Default value is 16. </param>
@@ -87,11 +85,14 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     }
 
     /// <summary>
+    ///     Creates a new SnapshotArray from the supplied <paramref name="array"/>,
+    ///     copying <paramref name="count"/> elements from <paramref name="startIndex"/>
+    ///     onwards. <see cref="Array{T}.Ordered"/> will be set to the supplied value.
     /// </summary>
-    /// <param name="ordered"></param>
-    /// <param name="array"></param>
-    /// <param name="startIndex"></param>
-    /// <param name="count"></param>
+    /// <param name="ordered"> Whether this array is ordered or not. </param>
+    /// <param name="array"> The array to copy from. </param>
+    /// <param name="startIndex"> The index to start copying data from. </param>
+    /// <param name="count"> The number of elements to copy. </param>
     public SnapshotArray( bool ordered, T[] array, int startIndex, int count )
     {
         Ordered = ordered;
@@ -528,6 +529,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         Size = 0;
     }
 
+    /// <inheritdoc/>
     protected override T[] Resize( int newSize )
     {
         var newItems = ( T[] ) Array.CreateInstance( Items.GetType(), newSize );
@@ -539,6 +541,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return newItems;
     }
 
+    /// <inheritdoc/>
     public override T[] ToArray()
     {
         var memberInfo = Items.GetType().BaseType;
@@ -548,6 +551,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
                    : ( T[] ) Array.CreateInstance( Items.GetType(), Size );
     }
 
+    /// <inheritdoc/>
     public override T[] ToArray( Type type )
     {
         var result = ( T[] ) Array.CreateInstance( type, Size );

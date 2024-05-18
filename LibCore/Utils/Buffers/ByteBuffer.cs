@@ -30,11 +30,12 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class ByteBuffer : Buffer
 {
-    protected byte[]? Hb        { get; set; }
-    protected int     Offset    { get; set; }
-    protected bool    BigEndian { get; set; } = true;
+    public byte[]? Hb { get; set; }
 
     // ------------------------------------------------------------------------
+
+    protected int  Offset    { get; set; }
+    protected bool BigEndian { get; set; } = true;
 
     protected bool NativeByteOrder = ( Bits.ByteOrder == ByteOrder.BigEndian );
 
@@ -593,7 +594,7 @@ public abstract class ByteBuffer : Buffer
     /// <returns> This buffer </returns>
     public ByteBuffer Order( ByteOrder order )
     {
-        BigEndian        = order == ByteOrder.BigEndian;
+        BigEndian       = order == ByteOrder.BigEndian;
         NativeByteOrder = BigEndian == ( Bits.ByteOrder == ByteOrder.BigEndian );
 
         return this;

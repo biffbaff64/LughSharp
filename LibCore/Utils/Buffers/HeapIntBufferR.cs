@@ -22,16 +22,9 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Utils.Exceptions;
+namespace LughSharp.LibCore.Utils.Buffers;
 
-/// <summary>
-///     Unchecked exception thrown when a content-mutation method such as
-///     put or compact is invoked upon a read-only buffer.
-/// </summary>
 [PublicAPI]
-public class ReadOnlyBufferException : NotSupportedException
+public class HeapIntBufferR : HeapIntBuffer
 {
-    public ReadOnlyBufferException()
-    {
-    }
 }

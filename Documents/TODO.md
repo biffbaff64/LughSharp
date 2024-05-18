@@ -134,7 +134,7 @@ AUDIO/MP3SHARP/DECODING
     - DONE - DONE - Bitstream
     - DONE - DONE - BitstreamErrors
     - DONE - DONE - BitstreamException
-    - DONE - IP   - CircularByteBuffer
+    - DONE - DONE - CircularByteBuffer
     - DONE - DONE - Crc16
     - DONE - IP   - Decoder
     - DONE - IP   - DecoderParameters
@@ -535,6 +535,7 @@ MATHS
     - DONE - IP   - Quaternion
     - DONE - IP   - RandomXS128
     - DONE - IP   - RectangleShape
+    - DONE - DONE - SimpleVectors
     - DONE - IP   - Vector2                        Convert, I prefer the way the LibGDX class works.
     - DONE - IP   - Vector3                        Convert, I prefer the way the LibGDX class works.
     - DONE - IP   - WindowedMean
@@ -774,14 +775,18 @@ UTILS/BUFFERS
     - IP   - IP   - MappedByteBuffer
     - DONE - IP   - ShortBuffer
     - DONE - IP   - StringCharBuffer
+
     -----------------------------------
+    -- Heap Buffers
     - IP   - IP   - HeapByteBuffer
     - IP   - IP   - HeapCharBuffer
     - DONE - DONE - HeapDoubleBuffer
     - IP   - IP   - HeapFloatBuffer
     - DONE - IP   - HeapIntBuffer
     - DONE - IP   - HeapShortBuffer
+
     -----------------------------------
+    -- Read-only Heap Buffers
     - IP   - IP   - HeapByteBufferR
     - DONE - DONE - HeapCharBufferR
     - IP   - IP   - HeapDoubleBufferR
@@ -795,14 +800,21 @@ UTILS/COLLECTIONS
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - Array<T>                       Converted, but use List<T> for most cases.
-    - DONE - DONE - CollectionsData
-    - DONE - IP   - DelayedRemovalArray            Convert / Extend List<>
-    - DONE - IP   - IdentityMap<K, V>              Convert / extend Dictionary< object, object > 
-    - DONE - IP   - IPredicate
-    - DONE - IP   - ObjectMap                      Converted, but use Dictionary< object, object >
-    - DONE - IP   - PredicateIterable
-    - DONE - IP   - PredicateIterator
-    - DONE - IP   - SnapshotArray<T>
+    - DONE - DONE - DictionaryExtensions
+    - DONE - DONE - DelayedRemovalList             Convert / Extend List<>
+    - DONE - DONE - ListExtensions
+    - DONE - DONE - SnapshotArray<T>
+
+    - If I created a SnapshotList<T> to replace SnapshotArray<T>, the Array<T> could go.
+
+    - Work on removing these
+
+    - **** - CollectionsData
+    - **** - IdentityMap<K, V>                      Convert / extend Dictionary< object, object > 
+    - **** - IPredicate
+    - **** - ObjectMap                              Converted, but use Dictionary< object, object >
+    - **** - PredicateIterable
+    - **** - PredicateIterator
 
     - The following do not need converting
 
@@ -828,21 +840,13 @@ UTILS/COLLECTIONS
     - **** - OrderedSet<T>                  -> Use SortedSet<T>
     - **** - ShortArray                     -> Use List< short >
 
-UTILS/COLLECTIONS/EXTENSIONS
-----------------------------
-
-    CODE   DOCUMENT
-    ----   --------
-    - DONE - DONE - DictionaryExtensions
-    - DONE - DONE - ListExtensions
-
 UTILS/EXCEPTIONS
 ----------------
 
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - GdxRuntimeException
-    - IP   - IP   - ReadOnlyBufferException
+    - DONE - DONE - ReadOnlyBufferException
 
 UTILS/POOLING
 -------------
