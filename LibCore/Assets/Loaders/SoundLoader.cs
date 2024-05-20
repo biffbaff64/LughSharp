@@ -28,7 +28,7 @@ using LughSharp.LibCore.Assets.Loaders.Resolvers;
 namespace LughSharp.LibCore.Assets.Loaders;
 
 /// <summary>
-///     <see cref="AssetLoaderBase" /> to load <see cref="ISound" /> instances.
+///     <see cref="AssetLoader" /> to load <see cref="ISound" /> instances.
 /// </summary>
 [PublicAPI]
 public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoaderParameters >, IDisposable

@@ -45,16 +45,15 @@ public class AssetManager
     private readonly Dictionary< string, List< string > >?                          _assetDependencies = new();
     private readonly Dictionary< Type, Dictionary< string, IRefCountedContainer > > _assets            = new();
     private readonly Dictionary< string, Type? >                                    _assetTypes        = new();
+    private readonly List< string >                                                 _injected          = new();
+    private readonly Dictionary< Type, Dictionary< string, AssetLoader? >? >        _loaders           = new();
+    private readonly List< AssetDescriptor >                                        _loadQueue         = new();
+    private readonly Stack< AssetLoadingTask >                                      _tasks             = new();
 
-    private readonly List< string >                                              _injected  = new();
-    private readonly Dictionary< Type, Dictionary< string, AssetLoaderBase? >? > _loaders   = new();
-    private readonly List< AssetDescriptor >                                     _loadQueue = new();
-    private readonly Stack< AssetLoadingTask >                                   _tasks     = new();
-    private          IAssetErrorListener?                                        _listener;
-
-    private int _loaded;
-    private int _peakTasks;
-    private int _toLoad;
+    private IAssetErrorListener? _listener;
+    private int                  _loaded;
+    private int                  _peakTasks;
+    private int                  _toLoad;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -108,73 +107,32 @@ public class AssetManager
     public int LoadedAssetsCount => _assetTypes.Count;
 
     /// <summary>
+    ///     Retrieves an asset of the specified type by its name.
     /// </summary>
+    /// <typeparam name="T">The type of the asset to retrieve.</typeparam>
+    /// <param name="name">The name of the asset to retrieve.</param>
+    /// <returns>The asset of the specified type.</returns>
+    /// <exception cref="GdxRuntimeException">Thrown if the asset is not loaded.</exception>
     public T Get< T >( string name )
     {
-        T? asset;
-
         lock ( this )
         {
-            var type = _assetTypes[ name ];
-
-            if ( type == null )
+            if ( !_assetTypes.TryGetValue( name, out var type ) || ( type == null ) )
             {
                 throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
 
-            Dictionary< string, IRefCountedContainer > assetsByType = _assets[ type ];
-
-            if ( assetsByType == null )
+            if ( !_assets.TryGetValue( type, out Dictionary< string, IRefCountedContainer >? assetsByType ) )
             {
                 throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
 
-            var assetContainer = assetsByType[ name ];
-
-            if ( assetContainer == null )
+            if ( !assetsByType.TryGetValue( name, out var assetContainer ) )
             {
                 throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
 
-            asset = ( T? ) assetContainer.Asset;
-
-            if ( asset == null )
-            {
-                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
-            }
-        }
-
-        return asset;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="type"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    /// <exception cref="GdxRuntimeException"></exception>
-    public T Get< T >( string name, Type type )
-    {
-        lock ( this )
-        {
-            Dictionary< string, IRefCountedContainer >? assetsByType = _assets[ type ];
-
-            if ( assetsByType == null )
-            {
-                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
-            }
-
-            var assetContainer = assetsByType[ name ];
-
-            if ( assetContainer == null )
-            {
-                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
-            }
-
-            var asset = ( T? ) assetContainer.Asset;
-
-            if ( asset == null )
+            if ( ( assetContainer.Asset is not T asset ) || ( asset == null ) )
             {
                 throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
@@ -184,14 +142,55 @@ public class AssetManager
     }
 
     /// <summary>
+    ///     Retrieves an asset of the specified type by its name.
     /// </summary>
-    /// <param name="assetDescriptor"></param>
-    /// <returns></returns>
+    /// <typeparam name="T">The type of the asset to retrieve.</typeparam>
+    /// <param name="name">The name of the asset to retrieve.</param>
+    /// <param name="type">The type of the asset as a Type object.</param>
+    /// <returns>The asset of the specified type.</returns>
+    /// <exception cref="GdxRuntimeException">Thrown if the asset is not loaded.</exception>
+    public T Get< T >( string name, Type type )
+    {
+        lock ( this )
+        {
+            if ( !_assets.TryGetValue( type, out Dictionary< string, IRefCountedContainer >? assetsByType ) )
+            {
+                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
+            }
+
+            if ( !assetsByType.TryGetValue( name, out var assetContainer ) )
+            {
+                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
+            }
+
+            if ( !( assetContainer.Asset is T asset ) || asset == null )
+            {
+                throw new GdxRuntimeException( $"Asset not loaded - {name}" );
+            }
+
+            return asset;
+        }
+    }
+
+    /// <summary>
+    ///     Retrieves an asset of the specified type using the given asset descriptor.
+    /// </summary>
+    /// <typeparam name="T">The type of the asset to retrieve.</typeparam>
+    /// <param name="assetDescriptor">The descriptor containing the filepath and type of the asset.</param>
+    /// <returns>The asset of the specified type.</returns>
+    /// <exception cref="GdxRuntimeException">
+    /// Thrown if the asset descriptor is null or if the filepath is null.
+    /// </exception>
     public T Get< T >( AssetDescriptor assetDescriptor )
     {
+        if ( assetDescriptor == null )
+        {
+            throw new GdxRuntimeException( "Asset descriptor is null!" );
+        }
+
         if ( assetDescriptor.Filepath == null )
         {
-            throw new GdxRuntimeException( "Filepath is Null!" );
+            throw new GdxRuntimeException( "Filepath is null!" );
         }
 
         return Get< T >( assetDescriptor.Filepath, assetDescriptor.AssetType );
@@ -206,15 +205,22 @@ public class AssetManager
     /// <returns></returns>
     public List< T > GetAll< T >( Type type, List< T > outArray )
     {
+        ArgumentNullException.ThrowIfNull( type );
+        ArgumentNullException.ThrowIfNull( outArray );
+
         lock ( this )
         {
-            Dictionary< string, IRefCountedContainer > assetsByType = _assets[ type ];
-
-            foreach ( var asset in assetsByType.Values )
+            if ( !_assets.TryGetValue( type, out Dictionary< string, IRefCountedContainer >? assetsByType ) )
             {
-                var obj = asset.Asset;
+                throw new GdxRuntimeException( $"No assets loaded for type {type.FullName}" );
+            }
 
-                outArray.Add( ( T ) obj! );
+            foreach ( var assetContainer in assetsByType.Values )
+            {
+                if ( assetContainer.Asset is T asset )
+                {
+                    outArray.Add( asset );
+                }
             }
         }
 
@@ -225,10 +231,12 @@ public class AssetManager
     /// </summary>
     /// <param name="fileName"></param>
     /// <returns></returns>
-    public bool Contains( string fileName )
+    public bool Contains( string? fileName )
     {
-        if ( _tasks.First().AssetDesc is { } assetDescriptor
-          && ( _tasks.Count > 0 )
+        if ( fileName == null ) return false;
+
+        if ( ( _tasks.Count > 0 )
+          && _tasks.First().AssetDesc is { } assetDescriptor
           && assetDescriptor.Filepath.Equals( fileName ) )
         {
             return true;
@@ -250,8 +258,10 @@ public class AssetManager
     /// <param name="fileName"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public bool Contains( string fileName, Type type )
+    public bool Contains( string? fileName, Type? type )
     {
+        if ( fileName == null || type == null ) return false;
+        
         if ( _tasks.Count > 0 )
         {
             if ( _tasks.First().AssetDesc is { } assetDesc
@@ -469,7 +479,7 @@ public class AssetManager
     /// <returns>
     ///     The loader capable of loading the type and filename, or null if none exists.
     /// </returns>
-    public AssetLoaderBase? GetLoader( Type? type, string? fileName = null )
+    public AssetLoader? GetLoader( Type? type, string? fileName = null )
     {
         if ( ( type == null ) || ( _loaders[ type ] == null ) || ( _loaders[ type ]?.Count < 1 ) )
         {
@@ -481,11 +491,11 @@ public class AssetManager
             return _loaders[ type ]?[ "" ];
         }
 
-        AssetLoaderBase? result = null;
+        AssetLoader? result = null;
 
         var len = -1;
 
-        foreach ( KeyValuePair< string, AssetLoaderBase? > entry in _loaders[ type ]! )
+        foreach ( KeyValuePair< string, AssetLoader? > entry in _loaders[ type ]! )
         {
             if ( ( entry.Key.Length > len ) && fileName.EndsWith( entry.Key ) )
             {
@@ -502,7 +512,7 @@ public class AssetManager
     ///     Adds the given asset to the loading queue of the AssetManager.
     /// </summary>
     /// <param name="fileName">
-    ///     the file name (interpretation depends on <see cref="AssetLoaderBase" />)
+    ///     the file name (interpretation depends on <see cref="AssetLoader" />)
     /// </param>
     /// <param name="type">the type of the asset.</param>
     /// <param name="parameter"></param>
@@ -678,7 +688,7 @@ public class AssetManager
     ///     Blocks until the specified asset is loaded.
     /// </summary>
     /// <param name="fileName">
-    ///     the file name (interpretation depends on <see cref="AssetLoaderBase" />)
+    ///     the file name (interpretation depends on <see cref="AssetLoader" />)
     /// </param>
     public T FinishLoadingAsset< T >( string? fileName )
     {
@@ -1001,11 +1011,11 @@ public class AssetManager
     }
 
     /// <summary>
-    ///     Sets a new <see cref="AssetLoaderBase" /> for the given type.
+    ///     Sets a new <see cref="AssetLoader" /> for the given type.
     /// </summary>
     /// <param name="type"> the type of the asset </param>
     /// <param name="loader"> the loader  </param>
-    public void SetLoader( Type type, AssetLoaderBase loader )
+    public void SetLoader( Type type, AssetLoader loader )
     {
         lock ( this )
         {
@@ -1014,7 +1024,7 @@ public class AssetManager
     }
 
     /// <summary>
-    ///     Sets a new <see cref="AssetLoaderBase" /> for the given type.
+    ///     Sets a new <see cref="AssetLoader" /> for the given type.
     /// </summary>
     /// <param name="type"> the type of the asset </param>
     /// <param name="suffix">
@@ -1022,7 +1032,7 @@ public class AssetManager
     ///     to specify the default loader.
     /// </param>
     /// <param name="loader"> the loader</param>
-    public void SetLoader( Type type, string? suffix, AssetLoaderBase loader )
+    public void SetLoader( Type type, string? suffix, AssetLoader loader )
     {
         lock ( this )
         {
@@ -1031,7 +1041,7 @@ public class AssetManager
 
             if ( _loaders[ type ] == null )
             {
-                _loaders.Put( type, new Dictionary< string, AssetLoaderBase? >() );
+                _loaders.Put( type, new Dictionary< string, AssetLoader? >() );
             }
 
             _loaders[ type ]?.Put( suffix ?? "", loader );

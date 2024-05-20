@@ -22,7 +22,6 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 - All uses of IRunnable.Runnable need checking and correcting.
--
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -56,8 +55,8 @@ ASSETS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - AssetDescriptor
-    - IP   - IP   - AssetLoaderParameters
+    - DONE - DONE - AssetDescriptor
+    - DONE - DONE - AssetLoaderParameters
     - IP   - IP   - AssetLoadingTask
     - IP   - IP   - AssetManager
     - IP   - IP   - IAssetErrorListener
@@ -804,8 +803,6 @@ UTILS/COLLECTIONS
     - DONE - DONE - DelayedRemovalList             Convert / Extend List<>
     - DONE - DONE - ListExtensions
     - DONE - DONE - SnapshotArray<T>
-
-    - If I created a SnapshotList<T> to replace SnapshotArray<T>, the Array<T> could go.
 
     - Work on removing these
 

@@ -28,24 +28,18 @@ using LughSharp.LibCore.Assets.Loaders.Resolvers;
 namespace LughSharp.LibCore.Assets.Loaders;
 
 /// <summary>
-///     <see cref="AssetLoaderBase" /> for <see cref="IMusic" /> instances.
+///     <see cref="AssetLoader" /> for <see cref="IMusic" /> instances.
 ///     The Music instance is loaded synchronously.
 /// </summary>
 [PublicAPI]
 public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameters >, IDisposable
 {
+    public IMusic LoadedMusic { get; set; }
+
     public MusicLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
         LoadedMusic = null!;
-    }
-
-    public IMusic LoadedMusic { get; set; }
-
-    /// <inheritdoc />
-    public void Dispose()
-    {
-        Dispose( true );
     }
 
     /// <summary>
@@ -67,15 +61,23 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
     ///     the asset into the AssetManager.
     /// </summary>
     /// <param name="manager"></param>
-    /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public override void Load( AssetManager? manager,
-                               string? fileName,
+    public override object Load( AssetManager? manager,
                                FileInfo? file,
                                AssetLoaderParameters? parameter )
     {
         LoadedMusic = Gdx.Audio.NewMusic( file );
+
+        return LoadedMusic;
+    }
+
+    // ------------------------------------------------------------------------
+    
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        Dispose( true );
     }
 
     private void Dispose( bool disposing )

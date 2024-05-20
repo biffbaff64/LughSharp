@@ -28,12 +28,12 @@ using LughSharp.LibCore.Assets.Loaders.Resolvers;
 namespace LughSharp.LibCore.Assets.Loaders;
 
 /// <summary>
-///     <see cref="AssetLoaderBase" /> for <see cref="Texture" /> instances.
-///     The pixel data is loaded asynchronously. The texture is then created on the
-///     rendering thread, synchronously. Passing a <see cref="TextureLoaderParameters" />
-///     to <see cref="AssetManager" />.Load() allows one to specify parameters as
-///     can be passed to the various Texture constructors, e.g. filtering, whether
-///     to generate mipmaps and so on.
+///     <see cref="AssetLoader" /> for <see cref="Texture" /> instances. The pixel data
+///     is loaded asynchronously. The texture is then created on the rendering thread,
+///     synchronously.
+///     Passing a <see cref="TextureLoaderParameters" /> to <see cref="AssetManager" />.Load()
+///     allows one to specify parameters as can be passed to the various Texture constructors,
+///     e.g. filtering, whether to generate mipmaps and so on.
 /// </summary>
 [PublicAPI]
 public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.TextureLoaderParameters >,
@@ -47,17 +47,16 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
     }
 
     /// <summary>
+    ///     Load the asset.
     /// </summary>
     /// <param name="manager"></param>
-    /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     public override void Load( AssetManager? manager,
-                               string? fileName,
                                FileInfo? file,
                                TextureLoaderParameters? parameter )
     {
-        _loaderInfo.Filename = fileName;
+        _loaderInfo.Filename = file?.Name;
 
         if ( parameter?.TextureData == null )
         {
@@ -90,6 +89,7 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public class TextureLoaderInfo
     {
         public string?       Filename { get; set; }
@@ -105,6 +105,11 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
     [PublicAPI]
     public class TextureLoaderParameters : AssetLoaderParameters
     {
+        public TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
+        public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
+        public TextureWrap   WrapU     { get; set; } = TextureWrap.ClampToEdge;
+        public TextureWrap   WrapV     { get; set; } = TextureWrap.ClampToEdge;
+
         /// <summary>
         ///     the format of the final Texture. Uses the source images format if null
         /// </summary>
@@ -124,11 +129,6 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
         ///     TextureData for textures created on the fly, optional. When set, all format and genMipMaps are ignored
         /// </summary>
         public ITextureData? TextureData { get; set; } = null;
-
-        public TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
-        public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
-        public TextureWrap   WrapU     { get; set; } = TextureWrap.ClampToEdge;
-        public TextureWrap   WrapV     { get; set; } = TextureWrap.ClampToEdge;
     }
 
     #region dispose pattern

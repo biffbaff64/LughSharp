@@ -33,11 +33,11 @@ namespace LughSharp.LibCore.Assets.Loaders;
 public abstract class ModelLoader< TP > : AsynchronousAssetLoader< Model, TP >
     where TP : ModelLoader< TP >.ModelLoaderParameters
 {
-    protected readonly ModelLoaderParameters defaultLoaderParameters = new();
+    protected readonly ModelLoaderParameters DefaultLoaderParameters = new();
 
     // Check this declaration.
     // Original Java was Array< ObjectMap.Entry< string, ModelData > > items...
-    protected readonly List< ObjectMap< string, ModelData >.Entry > items = new();
+    protected readonly List< ObjectMap< string, ModelData >.Entry > Items = new();
 
     protected ModelLoader( IFileHandleResolver resolver ) : base( resolver )
     {
@@ -127,14 +127,14 @@ public abstract class ModelLoader< TP > : AsynchronousAssetLoader< Model, TP >
             Value = data
         };
 
-        lock ( items )
+        lock ( Items )
         {
-            items.Add( item );
+            Items.Add( item );
         }
 
         var textureLoaderParameters = parameters != null
                                           ? ( ( ModelLoaderParameters ) parameters ).TextureLoaderParameters
-                                          : defaultLoaderParameters.TextureLoaderParameters;
+                                          : DefaultLoaderParameters.TextureLoaderParameters;
 
         foreach ( var modelMaterial in data.Materials! )
         {
@@ -154,32 +154,30 @@ public abstract class ModelLoader< TP > : AsynchronousAssetLoader< Model, TP >
     ///     Loads the OpenGL part of the asset.
     /// </summary>
     /// <param name="manager"></param>
-    /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     /// <returns></returns>
-    public override void Load( AssetManager? manager,
-                               string? fileName,
+    public override Model Load( AssetManager? manager,
                                FileInfo? file,
                                TP? parameter )
     {
         ModelData? data = null;
 
-        lock ( items )
+        lock ( Items )
         {
-            for ( var i = 0; i < items.Count; i++ )
+            for ( var i = 0; i < Items.Count; i++ )
             {
-                if ( items[ i ].Key!.Equals( fileName ) )
+                if ( Items[ i ].Key!.Equals( file?.Name ) )
                 {
-                    data = items[ i ].Value;
-                    items.RemoveAt( i );
+                    data = Items[ i ].Value;
+                    Items.RemoveAt( i );
                 }
             }
         }
 
         if ( data == null )
         {
-            return;
+            return null!;
         }
 
         Model result = new( data, new ITextureProvider.AssetTextureProvider( manager ) );
@@ -198,6 +196,8 @@ public abstract class ModelLoader< TP > : AsynchronousAssetLoader< Model, TP >
                 disposables.Dispose();
             }
         }
+
+        return result;
     }
 
     // ------------------------------------------------------------------------

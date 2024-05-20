@@ -27,4 +27,8 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public class HeapDoubleBufferR : HeapDoubleBuffer
 {
+    public HeapDoubleBufferR( int capacity, int limit )
+        : base( capacity, limit )
+    {
+    }
 }

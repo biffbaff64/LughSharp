@@ -36,7 +36,7 @@ namespace LughSharp.LibCore.Assets.Loaders;
 /// <typeparam name="TParameters"></typeparam>
 [PublicAPI]
 public abstract class AsynchronousAssetLoader< TAssetType, TParameters >
-    : AssetLoaderBase where TParameters : AssetLoaderParameters
+    : AssetLoader where TParameters : AssetLoaderParameters
 {
     /// <summary>
     /// </summary>
@@ -52,12 +52,9 @@ public abstract class AsynchronousAssetLoader< TAssetType, TParameters >
     ///     the asset into the AssetManager.
     /// </summary>
     /// <param name="manager"></param>
-    /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public virtual void Load( AssetManager manager, string? fileName, FileInfo? file, TParameters? parameter )
-    {
-    }
+    public abstract object? Load( AssetManager manager, FileInfo? file, TParameters? parameter );
 
     /// <summary>
     ///     Called if this task is unloaded before loadSync is called. This method may be
@@ -70,16 +67,16 @@ public abstract class AsynchronousAssetLoader< TAssetType, TParameters >
     ///     when this method is called and must release any resources it allocated.
     /// </summary>
     /// <param name="manager"></param>
-    /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public virtual void Unload( AssetManager manager, string? fileName, FileInfo? file, TParameters parameter )
+    public virtual void Unload( AssetManager manager, FileInfo? file, TParameters parameter )
     {
     }
 }
 
+//TODO: This class needs to be removed
 [PublicAPI]
-public abstract class AsynchronousAssetLoader : AssetLoaderBase
+public abstract class AsynchronousAssetLoader : AssetLoader
 {
     protected AsynchronousAssetLoader( IFileHandleResolver resolver )
         : base( resolver )
@@ -87,16 +84,15 @@ public abstract class AsynchronousAssetLoader : AssetLoaderBase
         IsSynchronous = false;
     }
 
-    public abstract void Load< T >( AssetManager manager,
-                                    string? fileName,
-                                    FileInfo? file,
-                                    T parameter ) where T : AssetLoaderParameters;
+    public abstract object? Load< T >( AssetManager manager,
+                                       string? fileName,
+                                       FileInfo? file,
+                                       T parameter ) where T : AssetLoaderParameters;
 
     public static void Unload< T >( AssetManager manager,
                                     string fileName,
                                     FileInfo file,
                                     T parameter ) where T : AssetLoaderParameters
-
     {
     }
 }

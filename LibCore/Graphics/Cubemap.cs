@@ -278,14 +278,14 @@ public class Cubemap : GLTexture
                     // well as a callback that sets the ref count.
                     var parameter = new CubemapLoader.CubemapParameter
                     {
-                        cubemapData = cubemap.Data,
-                        minFilter   = cubemap.MinFilter,
-                        magFilter   = cubemap.MagFilter,
-                        wrapU       = cubemap.UWrap,
-                        wrapV       = cubemap.VWrap,
+                        CubemapData = cubemap.Data,
+                        MinFilter   = cubemap.MinFilter,
+                        MagFilter   = cubemap.MagFilter,
+                        WrapU       = cubemap.UWrap,
+                        WrapV       = cubemap.VWrap,
 
                         // special parameter which will ensure that the references stay the same.
-                        cubemap        = cubemap,
+                        Cubemap        = cubemap,
                         LoadedCallback = new DefaultLoadedCallback( refCount )
                     };
 

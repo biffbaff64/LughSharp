@@ -27,4 +27,8 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public class HeapIntBufferR : HeapIntBuffer
 {
+    public HeapIntBufferR( int capacity, int limit )
+        : base( capacity, limit )
+    {
+    }
 }

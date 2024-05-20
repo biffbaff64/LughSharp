@@ -117,15 +117,11 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
     /// <summary>
     /// </summary>
     /// <param name="manager"></param>
-    /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public override void Load( AssetManager manager,
-                               string? fileName,
-                               FileInfo? file,
-                               BitmapFontParameter? parameter )
+    public override BitmapFont Load( AssetManager manager, FileInfo? file, BitmapFontParameter? parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( file );
@@ -139,22 +135,22 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
 
             if ( region == null )
             {
-                throw new GdxRuntimeException( $"Could not find font region {name} in atlas "
-                                             + $"{parameter.AtlasName}" );
+                throw new GdxRuntimeException
+                    ( $"Could not find font region {name} in atlas {parameter.AtlasName}" );
             }
 
-//            return new BitmapFont( file, region );
+            return new BitmapFont( file, region );
         }
 
-//        var n    = ( int )_data?.ImagePaths?.Length!;
-//        var regs = new List< TextureRegion >( capacity: n );
+        var n    = ( int ) _data?.ImagePaths?.Length!;
+        var regs = new List< TextureRegion >( capacity: n );
 
-//        for ( var i = 0; i < n; i++ )
-//        {
-//            regs.Add( new TextureRegion( manager.Get< Texture >( _data.ImagePaths[ i ] ) ) );
-//        }
+        for ( var i = 0; i < n; i++ )
+        {
+            regs.Add( new TextureRegion( manager.Get< Texture >( _data.ImagePaths[ i ] ) ) );
+        }
 
-//        return new BitmapFont( _data, regs, true );
+        return new BitmapFont( _data, regs, true );
     }
 
     private void Dispose( bool disposing )

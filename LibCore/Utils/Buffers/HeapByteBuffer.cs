@@ -243,7 +243,7 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override char GetChar( int index )
     {
-        return BufferUtils.GetChar( this, Ix( CheckIndex( i, 2 ) ), BigEndian );
+        return BufferUtils.GetChar( this, Ix( CheckIndex( index, 2 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
@@ -276,19 +276,19 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override short GetShort()
     {
-        return Bits.GetShort( this, Ix( NextGetIndex( 2 ) ), BigEndian );
+        return BufferUtils.GetShort( this, Ix( NextGetIndex( 2 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
     public override short GetShort( int i )
     {
-        return Bits.GetShort( this, Ix( CheckIndex( i, 2 ) ), BigEndian );
+        return BufferUtils.GetShort( this, Ix( CheckIndex( i, 2 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
     public override ByteBuffer PutShort( short x )
     {
-        Bits.PutShort( this, Ix( NextPutIndex( 2 ) ), x, BigEndian );
+        BufferUtils.PutShort( this, Ix( NextPutIndex( 2 ) ), x, BigEndian );
 
         return this;
     }
@@ -296,7 +296,7 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override ByteBuffer PutShort( int i, short x )
     {
-        Bits.PutShort( this, Ix( CheckIndex( i, 2 ) ), x, BigEndian );
+        BufferUtils.PutShort( this, Ix( CheckIndex( i, 2 ) ), x, BigEndian );
 
         return this;
     }
@@ -315,19 +315,19 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override int GetInt()
     {
-        return Bits.GetInt( this, Ix( NextGetIndex( 4 ) ), BigEndian );
+        return BufferUtils.GetInt( this, Ix( NextGetIndex( 4 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
     public override int GetInt( int i )
     {
-        return Bits.GetInt( this, Ix( CheckIndex( i, 4 ) ), BigEndian );
+        return BufferUtils.GetInt( this, Ix( CheckIndex( i, 4 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
     public override ByteBuffer PutInt( int x )
     {
-        Bits.PutInt( this, Ix( NextPutIndex( 4 ) ), x, BigEndian );
+        BufferUtils.PutInt( this, Ix( NextPutIndex( 4 ) ), x, BigEndian );
 
         return this;
     }
@@ -335,7 +335,7 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override ByteBuffer PutInt( int i, int x )
     {
-        Bits.PutInt( this, Ix( CheckIndex( i, 4 ) ), x, BigEndian );
+        BufferUtils.PutInt( this, Ix( CheckIndex( i, 4 ) ), x, BigEndian );
 
         return this;
     }
@@ -354,19 +354,19 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override long GetLong()
     {
-        return Bits.GetLong( this, Ix( NextGetIndex( 8 ) ), BigEndian );
+        return BufferUtils.GetLong( this, Ix( NextGetIndex( 8 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
     public override long GetLong( int i )
     {
-        return Bits.GetLong( this, Ix( CheckIndex( i, 8 ) ), BigEndian );
+        return BufferUtils.GetLong( this, Ix( CheckIndex( i, 8 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
     public override ByteBuffer PutLong( long x )
     {
-        Bits.PutLong( this, Ix( NextPutIndex( 8 ) ), x, BigEndian );
+        BufferUtils.PutLong( this, Ix( NextPutIndex( 8 ) ), x, BigEndian );
 
         return this;
     }
@@ -374,7 +374,7 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override ByteBuffer PutLong( int i, long x )
     {
-        Bits.PutLong( this, Ix( CheckIndex( i, 8 ) ), x, BigEndian );
+        BufferUtils.PutLong( this, Ix( CheckIndex( i, 8 ) ), x, BigEndian );
 
         return this;
     }
@@ -393,19 +393,19 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override float GetFloat()
     {
-        return Bits.GetFloat( this, Ix( NextGetIndex( 4 ) ), BigEndian );
+        return BufferUtils.GetFloat( this, Ix( NextGetIndex( 4 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
     public override float GetFloat( int i )
     {
-        return Bits.GetFloat( this, Ix( CheckIndex( i, 4 ) ), BigEndian );
+        return BufferUtils.GetFloat( this, Ix( CheckIndex( i, 4 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
     public override ByteBuffer PutFloat( float x )
     {
-        Bits.PutFloat( this, Ix( NextPutIndex( 4 ) ), x, BigEndian );
+        BufferUtils.PutFloat( this, Ix( NextPutIndex( 4 ) ), x, BigEndian );
 
         return this;
     }
@@ -413,7 +413,7 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override ByteBuffer PutFloat( int i, float x )
     {
-        Bits.PutFloat( this, Ix( CheckIndex( i, 4 ) ), x, BigEndian );
+        BufferUtils.PutFloat( this, Ix( CheckIndex( i, 4 ) ), x, BigEndian );
 
         return this;
     }
@@ -432,19 +432,19 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override double GetDouble()
     {
-        return Bits.GetDouble( this, Ix( NextGetIndex( 8 ) ), BigEndian );
+        return BufferUtils.GetDouble( this, Ix( NextGetIndex( 8 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
     public override double GetDouble( int i )
     {
-        return Bits.GetDouble( this, Ix( CheckIndex( i, 8 ) ), BigEndian );
+        return BufferUtils.GetDouble( this, Ix( CheckIndex( i, 8 ) ), BigEndian );
     }
 
     /// <inheritdoc/>
     public override ByteBuffer PutDouble( double x )
     {
-        Bits.PutDouble( this, Ix( NextPutIndex( 8 ) ), x, BigEndian );
+        BufferUtils.PutDouble( this, Ix( NextPutIndex( 8 ) ), x, BigEndian );
 
         return this;
     }
@@ -452,7 +452,7 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override ByteBuffer PutDouble( int i, double x )
     {
-        Bits.PutDouble( this, Ix( CheckIndex( i, 8 ) ), x, BigEndian );
+        BufferUtils.PutDouble( this, Ix( CheckIndex( i, 8 ) ), x, BigEndian );
 
         return this;
     }

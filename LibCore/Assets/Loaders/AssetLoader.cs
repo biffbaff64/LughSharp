@@ -31,8 +31,16 @@ namespace LughSharp.LibCore.Assets.Loaders;
 ///     Abstract base class for asset loaders.
 /// </summary>
 [PublicAPI]
-public abstract class AssetLoaderBase
+public abstract class AssetLoader
 {
+    /// <summary>
+    ///     <see cref="IFileHandleResolver"/> used to map from plain
+    ///     asset names to File Handle instances
+    /// </summary>
+    public IFileHandleResolver Resolver { get; }
+
+    public bool IsSynchronous { get; set; }
+    
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -40,18 +48,19 @@ public abstract class AssetLoaderBase
     ///     Constructor, sets the FileHandleResolver to use to resolve the file
     ///     associated with the asset name.
     /// </summary>
-    protected AssetLoaderBase( IFileHandleResolver resolver )
+    protected AssetLoader( IFileHandleResolver resolver )
     {
         Resolver = resolver;
     }
 
-    public IFileHandleResolver Resolver      { get; }
-    public bool                IsSynchronous { get; protected init; } = false;
-
     /// <summary>
+    ///     Resolves the specified filename.
     /// </summary>
-    /// <param name="fileName"></param>
-    /// <returns></returns>
+    /// <param name="fileName"> The filename to resolve. </param>
+    /// <returns>
+    ///     A handle to the file, as resolved by the <see cref="IFileHandleResolver"/>
+    ///     set on the loader.
+    /// </returns>
     public FileInfo Resolve( string fileName )
     {
         return Resolver.Resolve( fileName );

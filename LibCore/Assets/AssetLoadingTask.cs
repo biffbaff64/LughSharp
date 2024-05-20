@@ -29,19 +29,25 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Assets;
 
 /// <summary>
-///     Responsible for loading an asset through an <see cref="AssetLoaderBase" /> based
+///     Responsible for loading an asset through an <see cref="AssetLoader" /> based
 ///     on an <see cref="AssetDescriptor" />.
 /// </summary>
 [PublicAPI]
 public class AssetLoadingTask
 {
+    public bool                     DependenciesLoaded { get; set; }
+    public AssetDescriptor          AssetDesc          { get; }
+    public bool                     Cancel             { get; set; }
+    public object?                  Asset              { get; set; }
+    public List< AssetDescriptor >? Dependencies       { get; set; }
+
     // ------------------------------------------------------------------------
 
-    private readonly AssetLoaderBase _loader;
-    private readonly AssetManager    _manager;
+    private readonly AssetLoader  _loader;
+    private readonly AssetManager _manager;
 
-//    private volatile bool            _asyncDone = false;
-    private long _startTime;
+    private volatile bool _asyncDone = false;
+    private          long _startTime;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -51,23 +57,13 @@ public class AssetLoadingTask
     /// <param name="manager"></param>
     /// <param name="assetDesc"></param>
     /// <param name="loader"></param>
-    public AssetLoadingTask( AssetManager manager,
-                             AssetDescriptor assetDesc,
-                             AssetLoaderBase loader )
+    public AssetLoadingTask( AssetManager manager, AssetDescriptor assetDesc, AssetLoader loader )
     {
         _manager   = manager;
         AssetDesc  = assetDesc;
         _loader    = loader;
         _startTime = Logger.TraceLevel == Logger.LOG_DEBUG ? TimeUtils.NanoTime() : 0;
     }
-
-    public bool                     DependenciesLoaded { get; set; }
-    public AssetDescriptor          AssetDesc          { get; }
-    public bool                     Cancel             { get; set; }
-    public object?                  Asset              { get; set; }
-    public List< AssetDescriptor >? Dependencies       { get; set; }
-
-    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Loads parts of the asset asynchronously if the loader is
@@ -96,14 +92,13 @@ public class AssetLoadingTask
             }
             else
             {
-                // if we have no dependencies, we load the
-                // async part of the task immediately.
+                // if we have no dependencies, we load the async part of the task immediately.
                 asyncLoader?.Load( _manager,
                                    AssetDesc.Filepath,
                                    Resolve( asyncLoader, AssetDesc ),
                                    AssetDesc.Parameters! );
 
-//                _asyncDone = true;
+                _asyncDone = true;
             }
         }
         else
@@ -113,7 +108,7 @@ public class AssetLoadingTask
                                Resolve( asyncLoader, AssetDesc ),
                                AssetDesc.Parameters! );
 
-//            _asyncDone = true;
+            _asyncDone = true;
         }
     }
 
@@ -141,7 +136,6 @@ public class AssetLoadingTask
         {
             ( ( AsynchronousAssetLoader< Type, AssetLoaderParameters > ) _loader )
                .Unload( _manager,
-                        AssetDesc.Filepath,
                         Resolve( _loader, AssetDesc ),
                         AssetDesc.Parameters! );
         }
@@ -154,7 +148,7 @@ public class AssetLoadingTask
     /// <param name="loader"></param>
     /// <param name="assetDesc"></param>
     /// <returns></returns>
-    private static FileInfo? Resolve( AssetLoaderBase? loader, AssetDescriptor? assetDesc )
+    private static FileInfo? Resolve( AssetLoader? loader, AssetDescriptor? assetDesc )
     {
         if ( assetDesc is { File: null } descriptor )
         {
@@ -171,73 +165,73 @@ public class AssetLoadingTask
     /// </summary>
     private void HandleAsyncLoader()
     {
-//        if ( AssetDesc == null )
-//        {
-//            throw new GdxRuntimeException( "Unable to load asset: AssetDesc is null" );
-//        }
-//
-//        var asyncLoader = ( AsynchronousAssetLoader? )_loader;
-//
-//        if ( asyncLoader == null )
-//        {
-//            throw new GdxRuntimeException( "asyncLoader is null" );
-//        }
-//
-//        if ( !DependenciesLoaded )
-//        {
-//            if ( _depsFuture == null )
-//            {
-//                _depsFuture = AsyncExecutor.Submit( this );
-//            }
-//            else if ( _depsFuture.IsDone )
-//            {
-//                try
-//                {
-//                    _depsFuture.Get();
-//                }
-//                catch ( Exception e )
-//                {
-//                    throw new GdxRuntimeException( $"Couldn't load dependencies of asset: {AssetDesc.Filepath}", e );
-//                }
-//
-//                DependenciesLoaded = true;
-//
-//                if ( _asyncDone )
-//                {
-//                    Asset = asyncLoader.Load( _manager,
-//                                              AssetDesc.Filepath,
-//                                              Resolve( _loader, AssetDesc ),
-//                                              AssetDesc.Parameters! );
-//                }
-//            }
-//        }
-//        else if ( ( _loadFuture == null ) && !_asyncDone )
-//        {
-//            _loadFuture = AsyncExecutor.Submit( this );
-//        }
-//        else if ( _asyncDone )
-//        {
-//            Asset = asyncLoader.LoadSync( _manager,
-//                                          AssetDesc.Filepath,
-//                                          Resolve( _loader, AssetDesc ),
-//                                          AssetDesc.Parameters! );
-//        }
-//        else if ( _loadFuture is { IsDone: true } )
-//        {
-//            try
-//            {
-//                _loadFuture.Get();
-//            }
-//            catch ( Exception e )
-//            {
-//                throw new GdxRuntimeException( $"Couldn't load asset: {AssetDesc.Filepath}", e );
-//            }
-//
-//            Asset = asyncLoader.LoadSync( _manager,
-//                                          AssetDesc.Filepath,
-//                                          Resolve( _loader, AssetDesc ),
-//                                          AssetDesc.Parameters! );
-//        }
+        if ( AssetDesc == null )
+        {
+            throw new GdxRuntimeException( "Unable to load asset: AssetDesc is null" );
+        }
+
+        var asyncLoader = ( AsynchronousAssetLoader? ) _loader;
+
+        if ( asyncLoader == null )
+        {
+            throw new GdxRuntimeException( "asyncLoader is null" );
+        }
+
+        if ( !DependenciesLoaded )
+        {
+            if ( _depsFuture == null )
+            {
+                _depsFuture = AsyncExecutor.Submit( this );
+            }
+            else if ( _depsFuture.IsDone )
+            {
+                try
+                {
+                    _depsFuture.Get();
+                }
+                catch ( Exception e )
+                {
+                    throw new GdxRuntimeException( $"Couldn't load dependencies of asset: {AssetDesc.Filepath}", e );
+                }
+
+                DependenciesLoaded = true;
+
+                if ( _asyncDone )
+                {
+                    Asset = asyncLoader.Load( _manager,
+                                              AssetDesc.Filepath,
+                                              Resolve( _loader, AssetDesc ),
+                                              AssetDesc.Parameters! );
+                }
+            }
+        }
+        else if ( ( _loadFuture == null ) && !_asyncDone )
+        {
+            _loadFuture = AsyncExecutor.Submit( this );
+        }
+        else if ( _asyncDone )
+        {
+            Asset = asyncLoader.LoadSync( _manager,
+                                          AssetDesc.Filepath,
+                                          Resolve( _loader, AssetDesc ),
+                                          AssetDesc.Parameters! );
+        }
+        else if ( _loadFuture is { IsDone: true } )
+        {
+            try
+            {
+                _loadFuture.Get();
+            }
+            catch ( Exception e )
+            {
+                throw new GdxRuntimeException( $"Couldn't load asset: {AssetDesc.Filepath}", e );
+            }
+
+            Asset = asyncLoader.LoadSync( _manager,
+                                          AssetDesc.Filepath,
+                                          Resolve( _loader, AssetDesc ),
+                                          AssetDesc.Parameters! );
+        }
     }
 
     /// <summary>

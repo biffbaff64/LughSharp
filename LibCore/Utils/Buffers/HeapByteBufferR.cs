@@ -27,6 +27,8 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public class HeapByteBufferR : HeapByteBuffer
 {
-    
+    public HeapByteBufferR( byte[]? buf, int mark, int pos, int lim, int cap, int off )
+        : base( buf, mark, pos, lim, cap, off )
+    {
+    }
 }
-

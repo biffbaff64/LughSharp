@@ -28,7 +28,7 @@ using LughSharp.LibCore.Assets.Loaders.Resolvers;
 namespace LughSharp.LibCore.Assets.Loaders;
 
 /// <summary>
-///     <see cref="AssetLoaderBase" /> to load <see cref="ParticleEffect" /> instances. Passing a
+///     <see cref="AssetLoader" /> to load <see cref="ParticleEffect" /> instances. Passing a
 ///     <see cref="ParticleEffectParameter" /> to <see cref="AssetManager.Load(string, Type, AssetLoaderParameters)" />
 ///     allows to specify an atlas file or an image directory to be used for the effect's images.
 ///     Per default images are loaded from the directory in which the effect file is found.
@@ -55,14 +55,12 @@ public class ParticleEffectLoader
     ///     </para>
     /// </summary>
     /// <param name="am">The asset manager used for loading dependent assets.</param>
-    /// <param name="fileName">The name of the file associated with the asset.</param>
     /// <param name="file">The file information associated with the asset.</param>
     /// <param name="param">The parameters used for loading the asset.</param>
     /// <returns>
     ///     A loaded instance of the <see cref="ParticleEffect" /> class.
     /// </returns>
-    public override void Load( AssetManager? am,
-                               string? fileName,
+    public override object Load( AssetManager? am,
                                FileInfo? file,
                                ParticleEffectParameter? param )
     {
@@ -90,6 +88,8 @@ public class ParticleEffectLoader
 
                 break;
         }
+
+        return effect;
     }
 
     /// <summary>

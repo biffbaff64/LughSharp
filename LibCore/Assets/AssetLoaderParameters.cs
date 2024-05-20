@@ -29,6 +29,29 @@ namespace LughSharp.LibCore.Assets;
 // ----------------------------------------------------------------------------
 
 [PublicAPI]
+public interface ILoaderParameters
+{
+    ILoadedCallback? LoadedCallback { get; set; }
+}
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+/// <summary>
+///     Callback interface that will be invoked when the
+///     <see cref="AssetManager" /> loaded an asset.
+/// </summary>
+[PublicAPI]
+public interface ILoadedCallback
+{
+    void FinishedLoading( AssetManager assetManager, string fileName, Type type );
+}
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+/// <summary>
+/// </summary>
+[PublicAPI]
 public class AssetLoaderParameters : ILoaderParameters
 {
     public ILoadedCallback? LoadedCallback { get; set; }
@@ -37,6 +60,9 @@ public class AssetLoaderParameters : ILoaderParameters
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
+/// <summary>
+///     Default Loaded callback for when there is no other available.
+/// </summary>
 [PublicAPI]
 public class DefaultLoadedCallback : ILoadedCallback
 {
@@ -51,25 +77,4 @@ public class DefaultLoadedCallback : ILoadedCallback
     {
         assetManager.SetReferenceCount( fileName, _refCount );
     }
-}
-
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
-
-[PublicAPI]
-public interface ILoaderParameters
-{
-    ILoadedCallback? LoadedCallback { get; set; }
-}
-
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
-
-/// <summary>
-///     Callback interface that will be invoked when the <see cref="AssetManager" /> loaded an asset.
-/// </summary>
-[PublicAPI]
-public interface ILoadedCallback
-{
-    void FinishedLoading( AssetManager assetManager, string fileName, Type type );
 }

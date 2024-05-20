@@ -28,6 +28,11 @@ namespace LughSharp.LibCore.Assets;
 [PublicAPI]
 public class AssetDescriptor
 {
+    public Type                   AssetType  { get; set; }
+    public string                 Filepath   { get; set; }
+    public AssetLoaderParameters? Parameters { get; set; }
+    public FileInfo               File       { get; set; }
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -77,11 +82,6 @@ public class AssetDescriptor
         Parameters = parameters;
         File       = file;
     }
-
-    public Type                   AssetType  { get; set; }
-    public string                 Filepath   { get; set; }
-    public AssetLoaderParameters? Parameters { get; set; }
-    public FileInfo               File       { get; set; }
 
     /// <inheritdoc />
     public override string ToString()
