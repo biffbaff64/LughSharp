@@ -25,7 +25,7 @@
 
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LughSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics.Cameras;
 
 /// <summary>
 ///     A Camera with Perspective Projection.
@@ -33,11 +33,13 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class PerspectiveCamera : Camera
 {
+    // the field of view of the height, in degrees.
+    public readonly float FieldOfView = 67;
+
     private readonly Vector3 _tmp = new();
 
-    // the field of view of the height, in degrees.
-    public readonly float fieldOfView = 67;
-
+    // ------------------------------------------------------------------------
+    
     public PerspectiveCamera()
     {
     }
@@ -55,19 +57,20 @@ public class PerspectiveCamera : Camera
     /// <remarks>Call <see cref="Update" /> immediately after this constructor.</remarks>
     public PerspectiveCamera( float fieldOfViewY, float viewportWidth, float viewportHeight )
     {
-        fieldOfView    = fieldOfViewY;
+        FieldOfView    = fieldOfViewY;
         ViewportWidth  = viewportWidth;
         ViewportHeight = viewportHeight;
     }
 
     /// <summary>
+    ///     Updates the camera.
+    ///     Also updates the frustrum if <paramref name="updateFrustrum"/> is true.
     /// </summary>
-    /// <param name="updateFrustum"></param>
-    public override void Update( bool updateFrustum = true )
+    public override void Update( bool updateFrustrum = true )
     {
         var aspect = ViewportWidth / ViewportHeight;
 
-        Projection.SetToProjection( Math.Abs( Near ), Math.Abs( Far ), fieldOfView, aspect );
+        Projection.SetToProjection( Math.Abs( Near ), Math.Abs( Far ), FieldOfView, aspect );
 
         View.SetToLookAt( Position, _tmp.Set( Position ).Add( Direction ), Up );
 
@@ -75,7 +78,7 @@ public class PerspectiveCamera : Camera
 
         Matrix4.Mul( Combined.Val, View.Val );
 
-        if ( updateFrustum )
+        if ( updateFrustrum )
         {
             InvProjectionView.Set( Combined );
             Matrix4.Inv( InvProjectionView.Val );

@@ -117,9 +117,9 @@ public class CircularByteBuffer
         }
     }
 
-	/// <summary>
-	/// 	Creates a new copy of this circular buffer.
-	/// </summary>
+    /// <summary>
+    ///     Creates a new copy of this circular buffer.
+    /// </summary>
     public CircularByteBuffer Copy()
     {
         return new CircularByteBuffer( this );

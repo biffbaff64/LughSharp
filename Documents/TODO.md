@@ -58,9 +58,9 @@ ASSETS
     - DONE - DONE - AssetDescriptor
     - DONE - DONE - AssetLoaderParameters
     - IP   - IP   - AssetLoadingTask
-    - IP   - IP   - AssetManager
-    - IP   - IP   - IAssetErrorListener
-    - IP   - IP   - RefCountedContainer
+    - DONE - IP   - AssetManager
+    - DONE - IP   - IAssetErrorListener
+    - DONE - DONE - RefCountedContainer
 
 ASSETS/LOADERS
 --------------
@@ -242,7 +242,7 @@ CORE
     - DONE - DONE - InputMultiplexer
     - DONE - DONE - IPreferences
     - DONE - DONE - IScreen
-    - DONE - IP   - Platform
+    - DONE - DONE - Platform
     - DONE - DONE - ScreenAdapter
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -265,8 +265,8 @@ GRAPHICS
     - DONE - IP   - ITextureArrayData
     - DONE - IP   - ITextureData
     - DONE - IP   - Mesh
-    - DONE - IP   - OrthographicCamera
-    - DONE - IP   - PerspectiveCamera
+    - DONE - DONE - OrthographicCamera
+    - DONE - DONE - PerspectiveCamera
     - DONE - IP   - Pixmap
     - DONE - IP   - PixmapFormat
     - DONE - IP   - PixmapIO                            Tests needed

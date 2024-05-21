@@ -42,6 +42,14 @@ public interface IGraphics
         public int RefreshRate  { get; set; }
         public int BitsPerPixel { get; set; }
 
+        /// <summary>
+        ///     Creates a new DisplayMode object, using the specified width, height,
+        ///     refresh rate and bits per pixel values.
+        /// </summary>
+        /// <param name="width"> Width of this display mode in pixels. </param>
+        /// <param name="height"> Height of this display mode in pixels. </param>
+        /// <param name="refreshRate"> The refresh rate. </param>
+        /// <param name="bitsPerPixel"> Bits per Pixel. </param>
         public DisplayMode( int width, int height, int refreshRate, int bitsPerPixel )
         {
             Width        = width;
@@ -50,15 +58,21 @@ public interface IGraphics
             BitsPerPixel = bitsPerPixel;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return $"{Width}x{Height}, bpp: {BitsPerPixel}, hz: {RefreshRate}";
         }
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     ///     Describes a monitor, with X, Y, and Name properties.
     /// </summary>
+
+    //TODO: This may no longer be needed when GL is properly implemented
     [PublicAPI]
     public class GdxMonitor
     {
@@ -73,6 +87,9 @@ public interface IGraphics
             Name     = name;
         }
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Class describing the bits per pixel, depth buffer precision,
@@ -89,8 +106,10 @@ public interface IGraphics
         public int Stencil { get; set; } // ...
         public int Samples { get; set; } // number of samples for multi-sample anti-aliasing (MSAA).
 
-        // whether coverage sampling anti-aliasing is used.
-        // If so, you have to clear the coverage buffer as well!
+        /// <summary>
+        ///     Whether coverage sampling anti-aliasing is used. If so, you have
+        ///     to clear the coverage buffer as well!
+        /// </summary>
         public bool CoverageSampling { get; set; }
 
         public override string ToString()
@@ -102,10 +121,13 @@ public interface IGraphics
 
     #endregion nested classes
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     #region properties
 
-    IGL                    IGL          { get; set; }
     GLVersion              GLVersion    { get; set; }
+    GLVersion.GLType       GraphicsType { get; }
     BufferFormatDescriptor BufferFormat { get; set; }
 
     float DeltaTime        { get; set; }
@@ -113,21 +135,14 @@ public interface IGraphics
     int   Height           { get; }
     int   BackBufferWidth  { get; }
     int   BackBufferHeight { get; }
+    bool  IsFullscreen     { get; }
 
     #endregion properties
 
-    #region methods
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-    /// <summary>
-    ///     Returns whether OpenGL ES 3.0 is available.
-    ///     If it is you can get an instance of GL30 via GetGL30() to access
-    ///     OpenGL ES 3.0 functionality. Note that this functionality will
-    ///     only be available if you instructed the Application instance
-    ///     to use OpenGL ES 3.0!
-    /// </summary>
-    /// <returns>TRUE if available.</returns>
-    [Obsolete]
-    bool IsGL30Available();
+    #region methods
 
     /// <summary>
     ///     Returns the amount of pixels per logical pixel (point).
@@ -142,7 +157,7 @@ public interface IGraphics
 
     int GetSafeInsetRight();
 
-    long GetFrameId();
+    long GetFrameID();
 
     int GetFramesPerSecond();
 
@@ -151,13 +166,13 @@ public interface IGraphics
     /// </summary>
     float GetRawDeltaTime();
 
-    GLVersion.GLType GetGraphicsType();
+    (float X, float Y) GetPpcXY();
+
+    (float X, float Y) GetPpiXY();
 
     float GetPpiX();
 
     float GetPpiY();
-
-    (float X, float Y) GetPpcXY();
 
     float GetPpcX();
 
@@ -173,12 +188,6 @@ public interface IGraphics
     float GetDensity();
 
     bool SupportsDisplayModeChange();
-
-    GdxMonitor GetPrimaryMonitor();
-
-    GdxMonitor GetMonitor();
-
-    GdxMonitor[] GetMonitors();
 
     DisplayMode[] GetDisplayModes();
 
@@ -207,11 +216,6 @@ public interface IGraphics
     bool ContinuousRendering { get; }
 
     void RequestRendering();
-
-    /// <summary>
-    ///     Whether the app is full screen or not.
-    /// </summary>
-    bool IsFullscreen();
 
     /// <summary>
     /// </summary>

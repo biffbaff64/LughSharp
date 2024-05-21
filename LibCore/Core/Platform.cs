@@ -27,6 +27,9 @@ using Environment = System.Environment;
 
 namespace LughSharp.LibCore.Core;
 
+/// <summary>
+///     Platform specific flags and methods.
+/// </summary>
 [PublicAPI]
 public static class Platform
 {

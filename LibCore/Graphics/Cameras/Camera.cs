@@ -27,7 +27,7 @@ using LughSharp.LibCore.Maths.Collision;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 using Quaternion = LughSharp.LibCore.Maths.Quaternion;
 
-namespace LughSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics.Cameras;
 
 /// <summary>
 ///     Base class for <see cref="OrthographicCamera" /> and <see cref="PerspectiveCamera" />.

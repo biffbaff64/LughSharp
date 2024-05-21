@@ -25,39 +25,36 @@
 
 namespace LughSharp.LibCore.Core;
 
-using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
-
 [PublicAPI]
 public abstract class AbstractGraphics : IGraphics
 {
     #region properties
 
-    public IGL                    IGL                 { get; set; } = null!;
-    public BufferFormatDescriptor BufferFormat        { get; set; } = null!;
-    public int                    BackBufferWidth     { get; protected set; }
-    public int                    BackBufferHeight    { get; protected set; }
-    public int                    LogicalWidth        { get; set; }
-    public int                    LogicalHeight       { get; set; }
-    public int                    Width               { get; }
-    public int                    Height              { get; }
-    public float                  DeltaTime           { get; set; }
-    public GLVersion              GLVersion           { get; set; } = null!;
-    public bool                   ContinuousRendering { get; set; } = true;
+    public IGraphics.BufferFormatDescriptor BufferFormat { get; set; } = null!;
+
+    public virtual int              BackBufferWidth     { get; protected set; }
+    public virtual int              BackBufferHeight    { get; protected set; }
+    public virtual int              LogicalWidth        { get; set; }
+    public virtual int              LogicalHeight       { get; set; }
+    public virtual int              Width               { get; }
+    public virtual int              Height              { get; }
+    public virtual float            DeltaTime           { get; set; }
+    public virtual GLVersion        GLVersion           { get; set; } = null!;
+    public virtual GLVersion.GLType GraphicsType        { get; }
+    public virtual bool             ContinuousRendering { get; set; } = true;
+    public virtual bool             IsFullscreen        { get; }
 
     #endregion properties
 
     // ------------------------------------------------------------------------
-    
+
     #region implemented methods
 
     /// <summary>
     ///     Returns the time span between the current frame and the last frame
     ///     in seconds, without smoothing.
     /// </summary>
-    public float GetRawDeltaTime()
-    {
-        return DeltaTime;
-    }
+    public virtual float GetRawDeltaTime() => DeltaTime;
 
     /// <summary>
     ///     This is a scaling factor for the Density Independent Pixel unit, following
@@ -66,18 +63,12 @@ public abstract class AbstractGraphics : IGraphics
     ///     would be .75; etc.
     /// </summary>
     /// <returns>the Density Independent Pixel factor of the display.</returns>
-    public float GetDensity()
-    {
-        return GetPpiX() / 160f;
-    }
+    public virtual float GetDensity() => GetPpiX() / 160f;
 
     /// <summary>
     ///     Returns the amount of pixels per logical pixel (point).
     /// </summary>
-    public float GetBackBufferScale()
-    {
-        return BackBufferWidth / ( float ) Width;
-    }
+    public float GetBackBufferScale() => BackBufferWidth / ( float ) Width;
 
     #endregion implemented methods
 
@@ -85,55 +76,47 @@ public abstract class AbstractGraphics : IGraphics
 
     #region abstract methods
 
-    // ========================================================================
+    // ------------------------------------------------------------------------
     // Abstract methods because C# insists this is done to fulfill the contract
     // between the class and interface, which just makes everything annoying tbh.
 
-    //TODO:
-    [Obsolete]
-    public abstract IGraphics.GdxMonitor GetPrimaryMonitor();
-
-    //TODO:
-    [Obsolete]
-    public abstract IGraphics.GdxMonitor GetMonitor();
-
-    //TODO:
-    [Obsolete]
-    public abstract IGraphics.GdxMonitor[] GetMonitors();
-
-    // ------------------------------------------------------------------------
-
     public abstract IGraphics.DisplayMode[] GetDisplayModes();
     public abstract IGraphics.DisplayMode[] GetDisplayModes( IGraphics.GdxMonitor gdxMonitor );
-    public abstract IGraphics.DisplayMode GetDisplayMode();
-    public abstract IGraphics.DisplayMode GetDisplayMode( IGraphics.GdxMonitor gdxMonitor );
-    public abstract bool SetFullscreenMode( IGraphics.DisplayMode displayMode );
-    public abstract bool SetWindowedMode( int width, int height );
+    public abstract IGraphics.DisplayMode   GetDisplayMode();
+    public abstract IGraphics.DisplayMode   GetDisplayMode( IGraphics.GdxMonitor gdxMonitor );
+
+    // ------------------------------------------------------------------------
     public abstract void SetTitle( string title );
+    public abstract bool SetWindowedMode( int width, int height );
     public abstract void SetUndecorated( bool undecorated );
     public abstract void SetResizable( bool resizable );
     public abstract void SetVSync( bool vsync );
     public abstract void SetForegroundFps( int fps );
-    public abstract bool SupportsExtension( string extension );
-    public abstract bool SupportsDisplayModeChange();
-    public abstract void RequestRendering();
-    public abstract bool IsFullscreen();
+    public abstract bool SetFullscreenMode( IGraphics.DisplayMode displayMode );
+
+    // ------------------------------------------------------------------------
+    public abstract bool    SupportsExtension( string extension );
+    public abstract bool    SupportsDisplayModeChange();
+    public abstract void    RequestRendering();
+    public abstract int     GetSafeInsetLeft();
+    public abstract int     GetSafeInsetTop();
+    public abstract int     GetSafeInsetBottom();
+    public abstract int     GetSafeInsetRight();
+    public abstract long    GetFrameID();
+    public abstract int     GetFramesPerSecond();
+
+    // ------------------------------------------------------------------------
     public abstract ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot );
-    public abstract void SetCursor( ICursor cursor );
-    public abstract void SetSystemCursor( ICursor.SystemCursor systemCursor );
-    public abstract bool IsGL30Available();
-    public abstract int GetSafeInsetLeft();
-    public abstract int GetSafeInsetTop();
-    public abstract int GetSafeInsetBottom();
-    public abstract int GetSafeInsetRight();
-    public abstract long GetFrameId();
-    public abstract int GetFramesPerSecond();
-    public abstract GLVersion.GLType GetGraphicsType();
-    public abstract float GetPpiX();
+    public abstract void    SetCursor( ICursor cursor );
+    public abstract void    SetSystemCursor( ICursor.SystemCursor systemCursor );
+
+    // ------------------------------------------------------------------------
     public abstract (float X, float Y) GetPpcXY();
-    public abstract float GetPpiY();
-    public abstract float GetPpcX();
-    public abstract float GetPpcY();
+    public abstract (float X, float Y) GetPpiXY();
+    public abstract float              GetPpiX();
+    public abstract float              GetPpiY();
+    public abstract float              GetPpcX();
+    public abstract float              GetPpcY();
 
     #endregion abstract methods
 }

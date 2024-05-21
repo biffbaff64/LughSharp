@@ -25,7 +25,7 @@
 
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LughSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics.Cameras;
 
 /// <summary>
 ///     A Camera with Orthographic Projection.
@@ -33,6 +33,8 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class OrthographicCamera : Camera
 {
+    public float Zoom { get; set; }
+
     private readonly Vector3 _tmp = new();
 
     public OrthographicCamera()
@@ -50,8 +52,8 @@ public class OrthographicCamera : Camera
     ///         IMPORTANT: <see cref="Update" /> MUST be called after the call to this constructor.
     ///     </para>
     /// </summary>
-    /// <param name="viewportWidth"></param>
-    /// <param name="viewportHeight"></param>
+    /// <param name="viewportWidth"> Width, in pixels, of this cameras viewport. </param>
+    /// <param name="viewportHeight"> Height, in pixels, of this cameras viewport. </param>
     public OrthographicCamera( float viewportWidth, float viewportHeight )
     {
         ViewportWidth  = viewportWidth;
@@ -60,9 +62,9 @@ public class OrthographicCamera : Camera
         Zoom           = 1;
     }
 
-    public float Zoom { get; set; }
-
     /// <summary>
+    ///     Updates the camera.
+    ///     Also updates the frustrum if <paramref name="updateFrustrum"/> is true.
     /// </summary>
     /// <param name="updateFrustrum"></param>
     public override void Update( bool updateFrustrum = true )

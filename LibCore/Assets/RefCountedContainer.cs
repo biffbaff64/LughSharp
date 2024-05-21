@@ -25,6 +25,13 @@
 
 namespace LughSharp.LibCore.Assets;
 
+[PublicAPI]
+public interface IRefCountedContainer
+{
+    object? Asset    { get; }
+    int     RefCount { get; set; }
+}
+
 /// <summary>
 ///     A class that stores a reference to an object, as well as counts the number
 ///     of times it has been referenced. <see cref="RefCount" /> must be incremented
@@ -34,17 +41,11 @@ namespace LughSharp.LibCore.Assets;
 [PublicAPI]
 public class RefCountedContainer : IRefCountedContainer
 {
+    public object? Asset    { get; set; }
+    public int     RefCount { get; set; } = 1;
+
     public RefCountedContainer( object obj )
     {
         Asset = obj ?? throw new ArgumentException( "Object must not be null" );
     }
-
-    public int     RefCount { get; set; } = 1;
-    public object? Asset    { get; set; }
-}
-
-internal interface IRefCountedContainer
-{
-    object? Asset    { get; }
-    int     RefCount { get; set; }
 }

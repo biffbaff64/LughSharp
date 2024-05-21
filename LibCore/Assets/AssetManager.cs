@@ -67,7 +67,7 @@ public class AssetManager
 
     /// <summary>
     ///     Creates a new AssetManager with optionally all default loaders. If you don't add the
-    ///     default loaders then you do have to manually add the loaders you need, including any
+    ///     default loaders then you have to manually add the loaders you need, including any
     ///     loaders they might depend on.
     /// </summary>
     /// <param name="resolver"></param>
@@ -77,17 +77,17 @@ public class AssetManager
         if ( defaultLoaders )
         {
             //@formatter:off
-            SetLoader( typeof(BitmapFont),      new BitmapFontLoader( resolver ) );
-            SetLoader( typeof(Texture),         new TextureLoader( resolver ) );
-            SetLoader( typeof(TextureAtlas),    new TextureAtlasLoader( resolver ) );
-            SetLoader( typeof(Pixmap),          new PixmapLoader( resolver ) );
-            SetLoader( typeof(Skin),            new SkinLoader( resolver ) );
-            SetLoader( typeof(IMusic),          new MusicLoader( resolver ) );
-            SetLoader( typeof(ISound),          new SoundLoader( resolver ) );
-            SetLoader( typeof(Cubemap),         new CubemapLoader( resolver ) );
-            SetLoader( typeof(ParticleEffect),  new ParticleEffectLoader( resolver ) );
-            SetLoader( typeof(ShaderProgram),   new ShaderProgramLoader( resolver ) );
-            SetLoader( typeof(PolygonRegion),   new PolygonRegionLoader( resolver ) );
+            SetLoader(typeof(BitmapFont), new BitmapFontLoader(resolver));
+            SetLoader(typeof(Texture), new TextureLoader(resolver));
+            SetLoader(typeof(TextureAtlas), new TextureAtlasLoader(resolver));
+            SetLoader(typeof(Pixmap), new PixmapLoader(resolver));
+            SetLoader(typeof(Skin), new SkinLoader(resolver));
+            SetLoader(typeof(IMusic), new MusicLoader(resolver));
+            SetLoader(typeof(ISound), new SoundLoader(resolver));
+            SetLoader(typeof(Cubemap), new CubemapLoader(resolver));
+            SetLoader(typeof(ParticleEffect), new ParticleEffectLoader(resolver));
+            SetLoader(typeof(ShaderProgram), new ShaderProgramLoader(resolver));
+            SetLoader(typeof(PolygonRegion), new PolygonRegionLoader(resolver));
             //@formatter:on
         }
 
@@ -163,7 +163,7 @@ public class AssetManager
                 throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
 
-            if ( !( assetContainer.Asset is T asset ) || asset == null )
+            if ( !( assetContainer.Asset is T asset ) || ( asset == null ) )
             {
                 throw new GdxRuntimeException( $"Asset not loaded - {name}" );
             }
@@ -260,8 +260,8 @@ public class AssetManager
     /// <returns></returns>
     public bool Contains( string? fileName, Type? type )
     {
-        if ( fileName == null || type == null ) return false;
-        
+        if ( ( fileName == null ) || ( type == null ) ) return false;
+
         if ( _tasks.Count > 0 )
         {
             if ( _tasks.First().AssetDesc is { } assetDesc
@@ -284,116 +284,233 @@ public class AssetManager
         return IsLoaded( fileName, type );
     }
 
+    // ------------------------------------------------------------------------
+
+    #region asset loading
+
+    /// <summary>
+    ///     Adds the given asset to the loading queue of the AssetManager.
+    /// </summary>
+    /// <param name="fileName">
+    ///     the file name (interpretation depends on <see cref="AssetLoader" />)
+    /// </param>
+    /// <param name="type">the type of the asset.</param>
+    /// <param name="parameter"></param>
+    public void Load( string? fileName, Type? type, AssetLoaderParameters? parameter )
+    {
+        ArgumentNullException.ThrowIfNull( fileName, "Filename not specified!" );
+
+        var loader = GetLoader( type, fileName );
+
+        if ( loader == null )
+        {
+            throw new GdxRuntimeException( $"No loader for type: {type?.Name}" );
+        }
+
+        if ( _loadQueue.Count == 0 )
+        {
+            // reset stats
+            _loaded    = 0;
+            _toLoad    = 0;
+            _peakTasks = 0;
+        }
+
+        // check if an asset with the same name but a
+        // different type has already been added.
+
+        // check preload queue
+        foreach ( var desc in _loadQueue )
+        {
+            if ( ( desc.Filepath == fileName ) && ( desc.AssetType != type ) )
+            {
+                throw new GdxRuntimeException
+                    ( $"Asset with name '{fileName}' already in preload queue, but has different type (expected: {type?.Name}, found: {desc.AssetType.Name})" );
+            }
+        }
+
+        // check task list
+        for ( var i = 0; i < _tasks.Count; i++ )
+        {
+            var desc = _tasks.ElementAt( i ).AssetDesc;
+
+            if ( ( desc.Filepath == fileName ) && ( desc.AssetType != type ) )
+            {
+                throw new GdxRuntimeException
+                    ( $"Asset with name '{fileName}' already in preload queue, but has different type (expected: {type?.Name}, found: {desc.AssetType.Name})" );
+            }
+        }
+
+        // check loaded assets
+        var otherType = _assetTypes[ fileName ];
+
+        if ( ( otherType != null ) && ( otherType != type ) )
+        {
+            throw new GdxRuntimeException
+                ( $"Asset with name '{fileName}' already loaded, but has different " +
+                  $"type (expected: {type?.Name}, found: {otherType.Name})" );
+        }
+
+        _toLoad++;
+
+        var assetDesc = new AssetDescriptor
+        {
+            Filepath   = fileName,
+            AssetType  = type!,
+            Parameters = parameter
+        };
+
+        _loadQueue.Add( assetDesc );
+
+        Logger.Debug( $"Queued: {assetDesc}" );
+    }
+
+    /// <summary>
+    ///     Adds the given asset to the loading queue of the AssetManager.
+    /// </summary>
+    /// <param name="desc">the <see cref="AssetDescriptor"/></param>
+    public void Load( AssetDescriptor desc )
+    {
+        ArgumentNullException.ThrowIfNull( desc );
+
+        Load( desc.Filepath, desc.AssetType, desc.Parameters );
+    }
+
+    #endregion asset loading
+
+    // ------------------------------------------------------------------------
+
+    #region asset unloading
+
     /// <summary>
     ///     Removes the asset and all its dependencies, IF they are not used by other assets.
     /// </summary>
     /// <param name="fileName"> the asset file name</param>
     public void Unload( string fileName )
     {
-        // convert all windows path separators to unix style
+        // Convert all Windows path separators to Unix style
         fileName = fileName.Replace( '\\', '/' );
 
-        // check if it's currently processed (and the first element in the
-        // stack, thus not a dependency) and cancel if necessary
-        if ( _tasks.Count > 0 )
+        // Check if it's currently processed (and the first element in the stack, thus not a dependency) and cancel if necessary
+        if ( TryCancelCurrentTask( fileName ) )
         {
-            if ( _tasks.First().AssetDesc.Filepath == fileName )
-            {
-                Logger.Debug( $"Unload (from tasks): {fileName}" );
-
-                _tasks.First().Cancel = true;
-                _tasks.First().Unload();
-
-                return;
-            }
-        }
-
-        var type = _assetTypes[ fileName ];
-
-        // check if it's in the queue
-        var foundIndex = -1;
-
-        for ( var i = 0; i < _loadQueue.Count; i++ )
-        {
-            if ( _loadQueue[ i ].Filepath.Equals( fileName ) )
-            {
-                foundIndex = i;
-
-                break;
-            }
-        }
-
-        if ( foundIndex != -1 )
-        {
-            _toLoad--;
-
-            var desc = _loadQueue[ foundIndex ];
-
-            _loadQueue.RemoveAt( foundIndex );
-
-            Logger.Debug( $"Unload (from queue): {fileName}" );
-
-            // if the queued asset was already loaded, let the callback know it is available.
-            if ( ( type != null ) && desc.Parameters is { LoadedCallback: not null } )
-            {
-                desc.Parameters.LoadedCallback?.FinishedLoading( this, desc.Filepath, desc.AssetType );
-            }
-
             return;
         }
 
-        if ( type == null )
+        // Get the type of the asset
+        if ( !_assetTypes.TryGetValue( fileName, out var type ) )
         {
             throw new GdxRuntimeException( $"Asset not loaded: {fileName}" );
         }
 
-        _assets.TryGetValue( type, out Dictionary< string, IRefCountedContainer >? assetRef );
-
-        // if it is reference counted, decrement ref count and check if we can really get rid of it.
-        if ( assetRef != null )
+        // Check if the asset is in the load queue
+        if ( TryRemoveFromQueue( fileName, type! ) )
         {
-            assetRef[ fileName ].RefCount--;
+            return;
+        }
 
-            if ( assetRef[ fileName ].RefCount <= 0 )
+        // Handle unloading the asset and its dependencies
+        UnloadAsset( fileName, type );
+    }
+
+    private bool TryCancelCurrentTask( string fileName )
+    {
+        if ( ( _tasks.Count > 0 ) && ( _tasks.First().AssetDesc.Filepath == fileName ) )
+        {
+            Logger.Debug( $"Unload (from tasks): {fileName}" );
+            _tasks.First().Cancel = true;
+            _tasks.First().Unload();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool TryRemoveFromQueue( string fileName, Type type )
+    {
+        for ( var i = 0; i < _loadQueue.Count; i++ )
+        {
+            if ( _loadQueue[ i ].Filepath.Equals( fileName ) )
             {
-                Logger.Debug( $"Unload (dispose): {fileName}" );
+                Logger.Debug( $"Unload (from queue): {fileName}" );
+                _toLoad--;
+                var desc = _loadQueue[ i ];
+                _loadQueue.RemoveAt( i );
 
-                if ( assetRef[ fileName ].Asset is IDisposable disposable )
-                {
-                    disposable.Dispose();
-                }
+                // Notify callback if the asset was already loaded
+                desc.Parameters?.LoadedCallback?.FinishedLoading( this, desc.Filepath, desc.AssetType );
 
-                // remove the asset from the manager.
-                _assetTypes.Remove( fileName );
-                _assets[ type ].Remove( fileName );
-            }
-            else
-            {
-                Logger.Debug( $"Unload (decrement): {fileName}" );
-            }
-
-            // remove any dependencies (or just decrement their ref count).
-            List< string >? dependencies = _assetDependencies?[ fileName ];
-
-            if ( dependencies != null )
-            {
-                foreach ( var dependency in dependencies )
-                {
-                    if ( IsLoaded( dependency ) )
-                    {
-                        //TODO: Refactor to remove recursiveness
-                        Unload( dependency );
-                    }
-                }
-            }
-
-            // remove dependencies if ref count < 0
-            if ( assetRef[ fileName ].RefCount <= 0 )
-            {
-                _assetDependencies?.Remove( fileName );
+                return true;
             }
         }
+
+        return false;
     }
+
+    private void UnloadAsset( string fileName, Type? type )
+    {
+        if ( type == null )
+        {
+            throw new GdxRuntimeException( $"Asset not loaded: {fileName}: Type not specified." );
+        }
+        
+        if ( !_assets.TryGetValue( type, out Dictionary< string, IRefCountedContainer >? assetRef )
+          || !assetRef.TryGetValue( fileName, out var container ) )
+        {
+            throw new GdxRuntimeException( $"Asset not loaded: {fileName}" );
+        }
+
+        container.RefCount--;
+
+        if ( container.RefCount <= 0 )
+        {
+            Logger.Debug( $"Unload (dispose): {fileName}" );
+            DisposeAsset( container );
+            _assetTypes.Remove( fileName );
+            assetRef.Remove( fileName );
+
+            // Remove dependencies if the asset is completely unloaded
+            RemoveDependencies( fileName );
+        }
+        else
+        {
+            Logger.Debug( $"Unload (decrement): {fileName}" );
+        }
+    }
+
+    private void DisposeAsset( IRefCountedContainer container )
+    {
+        if ( container.Asset is IDisposable disposable )
+        {
+            disposable.Dispose();
+        }
+    }
+
+    private void RemoveDependencies( string fileName )
+    {
+        if ( ( _assetDependencies == null )
+          || !_assetDependencies.TryGetValue( fileName, out List< string >? dependencies ) )
+        {
+            return;
+        }
+
+        foreach ( var dependency in dependencies )
+        {
+            if ( IsLoaded( dependency ) )
+            {
+                Unload( dependency ); // This recursive call can be refactored if necessary
+            }
+        }
+
+        if ( _assets[ _assetTypes[ fileName ]! ][ fileName ].RefCount <= 0 )
+        {
+            _assetDependencies.Remove( fileName );
+        }
+    }
+
+    #endregion asset unloading
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// </summary>
@@ -506,92 +623,6 @@ public class AssetManager
         }
 
         return result;
-    }
-
-    /// <summary>
-    ///     Adds the given asset to the loading queue of the AssetManager.
-    /// </summary>
-    /// <param name="fileName">
-    ///     the file name (interpretation depends on <see cref="AssetLoader" />)
-    /// </param>
-    /// <param name="type">the type of the asset.</param>
-    /// <param name="parameter"></param>
-    public void Load( string? fileName, Type? type, AssetLoaderParameters? parameter )
-    {
-        ArgumentNullException.ThrowIfNull( fileName, "Filename not specified!" );
-
-        var loader = GetLoader( type, fileName );
-
-        if ( loader == null )
-        {
-            throw new GdxRuntimeException( $"No loader for type: {type?.Name}" );
-        }
-
-        if ( _loadQueue.Count == 0 )
-        {
-            // reset stats
-            _loaded    = 0;
-            _toLoad    = 0;
-            _peakTasks = 0;
-        }
-
-        // check if an asset with the same name but a
-        // different type has already been added.
-
-        // check preload queue
-        foreach ( var desc in _loadQueue )
-        {
-            if ( ( desc.Filepath == fileName ) && ( desc.AssetType != type ) )
-            {
-                throw new GdxRuntimeException
-                    ( $"Asset with name '{fileName}' already in preload queue, but has different type (expected: {type?.Name}, found: {desc.AssetType.Name})" );
-            }
-        }
-
-        // check task list
-        for ( var i = 0; i < _tasks.Count; i++ )
-        {
-            var desc = _tasks.ElementAt( i ).AssetDesc;
-
-            if ( ( desc.Filepath == fileName ) && ( desc.AssetType != type ) )
-            {
-                throw new GdxRuntimeException
-                    ( $"Asset with name '{fileName}' already in preload queue, but has different type (expected: {type?.Name}, found: {desc.AssetType.Name})" );
-            }
-        }
-
-        // check loaded assets
-        var otherType = _assetTypes[ fileName ];
-
-        if ( ( otherType != null ) && ( otherType != type ) )
-        {
-            throw new GdxRuntimeException
-                ( $"Asset with name '{fileName}' already loaded, but has different type (expected: {type?.Name}, found: {otherType.Name})" );
-        }
-
-        _toLoad++;
-
-        var assetDesc = new AssetDescriptor
-        {
-            Filepath   = fileName,
-            AssetType  = type!,
-            Parameters = parameter
-        };
-
-        _loadQueue.Add( assetDesc );
-
-        Logger.Debug( $"Queued: {assetDesc}" );
-    }
-
-    /// <summary>
-    ///     Adds the given asset to the loading queue of the AssetManager.
-    /// </summary>
-    /// <param name="desc">the <see cref="AssetDescriptor" /></param>
-    public void Load( AssetDescriptor desc )
-    {
-        ArgumentNullException.ThrowIfNull( desc );
-
-        Load( desc.Filepath, desc.AssetType, desc.Parameters );
     }
 
     /// <summary>
@@ -1086,6 +1117,10 @@ public class AssetManager
         _listener = listener;
     }
 
+    // ------------------------------------------------------------------------
+
+    #region dispose pattern
+
     /// <summary>
     ///     Disposes all assets in the manager and stops all asynchronous loading.
     /// </summary>
@@ -1101,6 +1136,10 @@ public class AssetManager
             Clear();
         }
     }
+
+    #endregion dispose pattern
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     ///     Clears and disposes all assets and the preloading queue.
@@ -1207,7 +1246,8 @@ public class AssetManager
     }
 
     /// <summary>
-    ///     Returns a string containing ref count and dependency information for all assets.
+    ///     Returns a string containing ref count and dependency
+    ///     information for all assets.
     /// </summary>
     public string GetDiagnostics()
     {
@@ -1267,8 +1307,8 @@ public class AssetManager
     }
 
     /// <summary>
+    ///     Returns a list of all asset names.
     /// </summary>
-    /// <returns></returns>
     public List< string > GetAssetNames()
     {
         lock ( this )
@@ -1278,9 +1318,10 @@ public class AssetManager
     }
 
     /// <summary>
+    ///     Returns a list of dependencies for the named asset.
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
+    /// <param name="name"> Asset name. </param>
+    /// <returns> Dependencies list. </returns>
     public IEnumerable< string >? GetDependencies( string name )
     {
         lock ( this )

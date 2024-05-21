@@ -76,8 +76,8 @@ public partial class Decoder
         }
     }
 
-	/// <summary>
-	/// </summary>
+    /// <summary>
+    /// </summary>
     public virtual Equalizer? Equalizer
     {
         get => _equalizer;

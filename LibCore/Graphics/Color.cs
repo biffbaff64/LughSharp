@@ -73,6 +73,15 @@ public sealed class Color
     /// </summary>
     public readonly static float WhiteFloatBits = White.ToFloatBits();
 
+    #region Colour Components
+
+    public float R { get; set; }
+    public float G { get; set; }
+    public float B { get; set; }
+    public float A { get; set; }
+
+    #endregion Colour Components
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -139,6 +148,7 @@ public sealed class Color
     }
 
     /// <summary>
+    ///     Sets this colors components using the supplied r,g,b,a components.
     /// </summary>
     /// <returns></returns>
     public Color Set( float r, float g, float b, float a )
@@ -168,9 +178,11 @@ public sealed class Color
     }
 
     /// <summary>
+    ///     Multiplies each of this colors components by the corresponding
+    ///     components in the supplied Color.
     /// </summary>
     /// <param name="color"></param>
-    /// <returns></returns>
+    /// <returns>This Color for chaining.</returns>
     public Color Mul( Color color )
     {
         R *= color.R;
@@ -184,8 +196,7 @@ public sealed class Color
     /// <summary>
     ///     Multiplies the colour components by the supplied value.
     /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <returns>This Color for chaining.</returns>
     public Color Mul( float value )
     {
         R *= value;
@@ -197,6 +208,8 @@ public sealed class Color
     }
 
     /// <summary>
+    ///     Multiplies each of this colors components by the corresponding
+    ///     supplied components.
     /// </summary>
     /// <param name="r">Red component</param>
     /// <param name="g">Green component</param>
@@ -214,9 +227,11 @@ public sealed class Color
     }
 
     /// <summary>
+    ///     Adds the components from the supplied Color to the corresponding
+    ///     components of this color.
     /// </summary>
-    /// <param name="color"></param>
-    /// <returns></returns>
+    /// <param name="color"> The Color to add. </param>
+    /// <returns>This Color for chaining.</returns>
     public Color Add( Color color )
     {
         R += color.R;
@@ -228,8 +243,10 @@ public sealed class Color
     }
 
     /// <summary>
+    ///     Adds the supplied Color components to the corresponding
+    ///     components of this Color.
     /// </summary>
-    /// <returns></returns>
+    /// <returns> This Color for chaining. </returns>
     public Color Add( float r, float g, float b, float a )
     {
         R += r;
@@ -245,7 +262,7 @@ public sealed class Color
     ///     elements in this Color.
     /// </summary>
     /// <param name="color"></param>
-    /// <returns></returns>
+    /// <returns>This Color for chaining.</returns>
     public Color Sub( Color color )
     {
         R -= color.R;
@@ -257,6 +274,7 @@ public sealed class Color
     }
 
     /// <summary>
+    ///     Subtracts the supplied elements from the equivalent elements in this Color.
     /// </summary>
     /// <param name="r">Red component</param>
     /// <param name="g">Green component</param>
@@ -279,34 +297,11 @@ public sealed class Color
     /// <returns>This Color for chaining.</returns>
     private Color Clamp()
     {
-        R = R switch
-        {
-            < 0 => 0, // If R < 0 R = 0
-            > 1 => 1, // If R > 1 R = 1
-            _   => R  // ( set R )
-        };
-
-        G = G switch
-        {
-            < 0 => 0,
-            > 1 => 1,
-            _   => G
-        };
-
-        B = B switch
-        {
-            < 0 => 0,
-            > 1 => 1,
-            _   => B
-        };
-
-        A = A switch
-        {
-            < 0 => 0,
-            > 1 => 1,
-            _   => A
-        };
-
+        R = Math.Clamp( R, 0, 1 );
+        G = Math.Clamp( R, 0, 1 );
+        B = Math.Clamp( R, 0, 1 );
+        A = Math.Clamp( R, 0, 1 );
+        
         return this;
     }
 
@@ -317,7 +312,7 @@ public sealed class Color
     /// </summary>
     /// <param name="target"></param>
     /// <param name="interpolationCoefficient"></param>
-    /// <returns></returns>
+    /// <returns>This Color for chaining.</returns>
     public Color Lerp( Color target, float interpolationCoefficient )
     {
         R += interpolationCoefficient * ( target.R - R );
@@ -338,7 +333,7 @@ public sealed class Color
     /// <param name="b">Blue component</param>
     /// <param name="a">Alpha component</param>
     /// <param name="interpolationCoefficient"></param>
-    /// <returns></returns>
+    /// <returns>This Color for chaining.</returns>
     public Color Lerp( float r, float g, float b, float a, float interpolationCoefficient )
     {
         R += interpolationCoefficient * ( r - R );
@@ -364,14 +359,19 @@ public sealed class Color
 
     public static bool operator ==( Color? c1, object? c2 )
     {
-        return c1 is not null && c1.Equals( c2 );
+        if ( c1 is null )
+        {
+            return c2 is not null;
+        }
+        
+        return c1.Equals( c2 );
     }
 
     public static bool operator !=( Color? c1, object? c2 )
     {
         if ( c1 is null )
         {
-            return true;
+            return c2 is not null;
         }
 
         return !c1.Equals( c2 );
@@ -462,7 +462,10 @@ public sealed class Color
     /// <returns></returns>
     public int Rgba8888( float r, float g, float b, float a )
     {
-        return ( ( int ) ( r * 255 ) << 24 ) | ( ( int ) ( g * 255 ) << 16 ) | ( ( int ) ( b * 255 ) << 8 ) | ( int ) ( a * 255 );
+        return ( ( int ) ( r * 255 ) << 24 )
+             | ( ( int ) ( g * 255 ) << 16 )
+             | ( ( int ) ( b * 255 ) << 8 )
+             | ( int ) ( a * 255 );
     }
 
     /// <summary>
@@ -476,9 +479,11 @@ public sealed class Color
     /// <returns>The modified Color for chaining.</returns>
     public Color FromHsv( float h, float s, float v )
     {
-        var x = ( ( h / 60f ) + 6 ) % 6;
-        var i = ( int ) x;
-        var f = x - i;
+        h %= 360; // Ensure hue is in the range [0, 360]
+        if ( h < 0 ) h += 360;
+
+        var i = ( int ) ( h / 60 ) % 6;
+        var f = (  h / 60 ) - i;
         var p = v * ( 1 - s );
         var q = v * ( 1 - ( s * f ) );
         var t = v * ( 1 - ( s * ( 1 - f ) ) );
@@ -543,15 +548,29 @@ public sealed class Color
         return FromHsv( hsv[ 0 ], hsv[ 1 ], hsv[ 2 ] );
     }
 
+    /// <summary>
+    ///     Converts the RGB color values to HSV and stores the result in the provided array.
+    /// </summary>
+    /// <param name="hsv">An array of at least 3 elements where the HSV values will be stored.</param>
+    /// <returns>The array with HSV values.</returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown if the provided array does not have at least 3 elements.
+    /// </exception>
     public float[] ToHsv( float[] hsv )
     {
+        if ( hsv.Length < 3 )
+        {
+            throw new ArgumentException( "The hsv array must have at least 3 elements.", nameof( hsv ) );
+        }
+
         var max   = Math.Max( Math.Max( R, G ), B );
         var min   = Math.Min( Math.Min( R, G ), B );
         var range = max - min;
 
-        if ( range == 0 )
+        // Hue calculation
+        if ( Math.Abs( range ) < MathUtils.FLOAT_TOLERANCE )
         {
-            hsv[ 0 ] = 0;
+            hsv[ 0 ] = 0; // Undefined hue, achromatic case
         }
         else if ( Math.Abs( max - R ) < MathUtils.FLOAT_TOLERANCE )
         {
@@ -559,22 +578,17 @@ public sealed class Color
         }
         else if ( Math.Abs( max - G ) < MathUtils.FLOAT_TOLERANCE )
         {
-            hsv[ 0 ] = ( ( 60 * ( B - R ) ) / range ) + 120;
+            hsv[ 0 ] = ( ( ( 60 * ( B - R ) ) / range ) + 120 ) % 360;
         }
-        else
+        else // max == B
         {
-            hsv[ 0 ] = ( ( 60 * ( R - G ) ) / range ) + 240;
+            hsv[ 0 ] = ( ( ( 60 * ( R - G ) ) / range ) + 240 ) % 360;
         }
 
-        if ( max > 0 )
-        {
-            hsv[ 1 ] = 1 - ( min / max );
-        }
-        else
-        {
-            hsv[ 1 ] = 0;
-        }
+        // Saturation calculation
+        hsv[ 1 ] = max > 0 ? ( range / max ) : 0;
 
+        // Value calculation
         hsv[ 2 ] = max;
 
         return hsv;
@@ -660,24 +674,61 @@ public sealed class Color
     /// <returns></returns>
     public static Color ValueOf( string hex )
     {
-        return ValueOf( hex, new Color() );
+        var color = new Color();
+
+        return ValueOf( hex, ref color );
     }
 
     /// <summary>
+    /// Parses a hex color string and assigns the color values to the provided Color object.
     /// </summary>
-    /// <param name="hex"></param>
-    /// <param name="color"></param>
-    /// <returns></returns>
-    public static Color ValueOf( string hex, Color color )
+    /// <param name="hex">The hex color string, which can optionally start with '#'.</param>
+    /// <param name="color">The Color object to assign the parsed values to.</param>
+    /// <returns>The Color object with the parsed color values.</returns>
+    /// <exception cref="ArgumentException">Thrown if the hex string is not valid.</exception>
+    public static Color ValueOf( string hex, ref Color color )
     {
-        hex = hex[ 0 ] == '#' ? hex.Substring( 1 ) : hex;
+        if ( string.IsNullOrEmpty( hex ) )
+        {
+            throw new ArgumentException( "Hex string cannot be null or empty.", nameof( hex ) );
+        }
 
-        color.R = int.Parse( hex.Substring( 0, 2 ) ) / 255f;
-        color.G = int.Parse( hex.Substring( 2, 4 ) ) / 255f;
-        color.B = int.Parse( hex.Substring( 4, 6 ) ) / 255f;
-        color.A = hex.Length != 8 ? 1 : int.Parse( hex.Substring( 6, 8 ) ) / 255f;
+        // Remove the leading '#' if present
+        if ( hex[ 0 ] == '#' )
+        {
+            hex = hex.Substring( 1 );
+        }
+
+        if ( ( hex.Length != 6 ) && ( hex.Length != 8 ) )
+        {
+            throw new ArgumentException( "Hex string must be 6 or 8 characters long.", nameof( hex ) );
+        }
+
+        try
+        {
+            color.R = ParseHexComponent( hex.Substring( 0, 2 ) );
+            color.G = ParseHexComponent( hex.Substring( 2, 2 ) );
+            color.B = ParseHexComponent( hex.Substring( 4, 2 ) );
+            color.A = hex.Length == 8 ? ParseHexComponent( hex.Substring( 6, 2 ) ) : 1f;
+        }
+        catch ( Exception ex ) when ( ex is FormatException or OverflowException )
+        {
+            throw new ArgumentException( "Hex string contains invalid characters or values.", nameof( hex ), ex );
+        }
 
         return color;
+    }
+
+    /// <summary>
+    /// Parses a hex component (2 characters) to a float value between 0 and 1.
+    /// </summary>
+    /// <param name="hexComponent">The hex component to parse.</param>
+    /// <returns>The parsed float value.</returns>
+    /// <exception cref="FormatException">Thrown if the hex component is not a valid hex number.</exception>
+    /// <exception cref="OverflowException">Thrown if the hex component value is too large to fit in an Int32.</exception>
+    private static float ParseHexComponent( string hexComponent )
+    {
+        return Convert.ToInt32( hexComponent, 16 ) / 255f;
     }
 
     public static int Alpha( float alpha )
@@ -726,6 +777,8 @@ public sealed class Color
 
     public static int RGB565( Color color )
     {
+        ArgumentNullException.ThrowIfNull( color );
+
         return ( ( int ) ( color.R * 31 ) << 11 )
              | ( ( int ) ( color.G * 63 ) << 5 )
              | ( int ) ( color.B * 31 );
@@ -733,6 +786,8 @@ public sealed class Color
 
     public static int RGBA4444( Color color )
     {
+        ArgumentNullException.ThrowIfNull( color );
+
         return ( ( int ) ( color.R * 15 ) << 12 )
              | ( ( int ) ( color.G * 15 ) << 8 )
              | ( ( int ) ( color.B * 15 ) << 4 )
@@ -741,6 +796,8 @@ public sealed class Color
 
     public static int RGB888( Color color )
     {
+        ArgumentNullException.ThrowIfNull( color );
+
         return ( ( int ) ( color.R * 255 ) << 16 )
              | ( ( int ) ( color.G * 255 ) << 8 )
              | ( int ) ( color.B * 255 );
@@ -748,6 +805,8 @@ public sealed class Color
 
     public static int RGBA8888( Color color )
     {
+        ArgumentNullException.ThrowIfNull( color );
+
         return ( ( int ) ( color.R * 255 ) << 24 )
              | ( ( int ) ( color.G * 255 ) << 16 )
              | ( ( int ) ( color.B * 255 ) << 8 )
@@ -756,6 +815,8 @@ public sealed class Color
 
     public static int ARGB8888( Color color )
     {
+        ArgumentNullException.ThrowIfNull( color );
+
         return ( ( int ) ( color.A * 255 ) << 24 )
              | ( ( int ) ( color.R * 255 ) << 16 )
              | ( ( int ) ( color.G * 255 ) << 8 )
@@ -800,16 +861,4 @@ public sealed class Color
 
         return result;
     }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    #region Colour Components
-
-    public float R { get; set; }
-    public float G { get; set; }
-    public float B { get; set; }
-    public float A { get; set; }
-
-    #endregion Colour Components
 }

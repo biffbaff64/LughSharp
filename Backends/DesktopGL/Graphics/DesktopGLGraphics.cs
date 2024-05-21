@@ -29,32 +29,31 @@ using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.Backends.DesktopGL.Graphics;
 
-using BufferFormatDescriptor = IGraphics.BufferFormatDescriptor;
-
 [PublicAPI]
 public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
     // ------------------------------------------------------------------------
 
-    private readonly IntBuffer                       _tmpBuffer                   = BufferUtils.NewIntBuffer( 1 );
-    private readonly IntBuffer                       _tmpBuffer2                  = BufferUtils.NewIntBuffer( 1 );
-    private          IGraphics.DisplayMode _displayModeBeforeFullscreen = null!;
-    private          int                             _fps;
-    private          long                            _frameCounterStart = 0;
-    private          long                            _frameId;
-    private          int                             _frames;
+    private readonly IntBuffer _tmpBuffer  = BufferUtils.NewIntBuffer( 1 );
+    private readonly IntBuffer _tmpBuffer2 = BufferUtils.NewIntBuffer( 1 );
 
-    private long      _lastFrameTime = -1;
-    private IntBuffer _tmpBuffer3    = BufferUtils.NewIntBuffer( 1 );
-    private IntBuffer _tmpBuffer4    = BufferUtils.NewIntBuffer( 1 );
+    private IGraphics.DisplayMode _displayModeBeforeFullscreen = null!;
+    private long                  _lastFrameTime               = -1;
+    private IntBuffer             _tmpBuffer3                  = BufferUtils.NewIntBuffer( 1 );
+    private IntBuffer             _tmpBuffer4                  = BufferUtils.NewIntBuffer( 1 );
 
-    private int _tmpInt  = 0;
-    private int _tmpInt2 = 0;
-    private int _windowHeightBeforeFullscreen;
-    private int _windowPosXBeforeFullscreen;
-    private int _windowPosYBeforeFullscreen;
-    private int _windowWidthBeforeFullscreen;
+    private int  _fps;
+    private long _frameCounterStart = 0;
+    private long _frameId;
+    private int  _frames;
+    private int  _tmpInt  = 0;
+    private int  _tmpInt2 = 0;
+    private int  _windowHeightBeforeFullscreen;
+    private int  _windowPosXBeforeFullscreen;
+    private int  _windowPosYBeforeFullscreen;
+    private int  _windowWidthBeforeFullscreen;
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     public DesktopGLGraphics( DesktopGLWindow glWindow )
@@ -78,8 +77,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
     }
 
-    public DesktopGLWindow?       GLWindow               { get; set; }
-    public BufferFormatDescriptor BufferFormatDescriptor { get; set; } = null!;
+    public DesktopGLWindow? GLWindow { get; set; }
 
     public override int Width
         => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
@@ -127,7 +125,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         LogicalWidth  = tmpWidth;
         LogicalHeight = tmpHeight;
 
-        BufferFormatDescriptor = new BufferFormatDescriptor
+        BufferFormat = new IGraphics.BufferFormatDescriptor
         {
             R                = GLWindow.Config.R,
             G                = GLWindow.Config.G,
@@ -225,7 +223,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     public override IGraphics.GdxMonitor GetMonitor()
     {
         IGraphics.GdxMonitor[] monitors = GetMonitors();
-        var                           result   = monitors[ 0 ];
+        var                    result   = monitors[ 0 ];
 
         Glfw.GetWindowPos( GLWindow!.GlfwWindow, out _tmpInt, out _tmpInt2 );
 
@@ -319,11 +317,14 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// <summary>
     ///     Whether the app is full screen or not.
     /// </summary>
-    public override bool IsFullscreen()
+    public override bool IsFullscreen
     {
-        GdxRuntimeException.ThrowIfNull( GLWindow );
+        get
+        {
+            GdxRuntimeException.ThrowIfNull( GLWindow );
 
-        return Glfw.GetWindowMonitor( GLWindow.GlfwWindow ) != GLFWMonitor.NULL;
+            return Glfw.GetWindowMonitor( GLWindow.GlfwWindow ) != GLFWMonitor.NULL;
+        }
     }
 
     /// <summary>
@@ -401,7 +402,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         return 0;
     }
 
-    public override long GetFrameId()
+    public override long GetFrameID()
     {
         return _frameId;
     }
@@ -409,23 +410,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     public override int GetFramesPerSecond()
     {
         return _fps;
-    }
-
-    // ------------------------------------------------------------------------
-
-    /// <inheritdoc />
-    [Obsolete]
-    public override IGraphics.GdxMonitor[] GetMonitors()
-    {
-        GLFWMonitor[] glfwMonitors = Glfw.GetMonitors();
-        var           monitors     = new IGraphics.GdxMonitor[ glfwMonitors.Length ];
-
-        for ( var i = 0; i < glfwMonitors.Length; i++ )
-        {
-            monitors[ i ] = DesktopGLApplicationConfiguration.ToGLMonitor( glfwMonitors[ i ] );
-        }
-
-        return monitors;
     }
 
     // ------------------------------------------------------------------------
@@ -459,6 +443,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <inheritdoc />
     public override bool SetFullscreenMode( IGraphics.DisplayMode displayMode )
@@ -469,7 +454,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         var newMode = ( DesktopGLDisplayMode ) displayMode;
 
-        if ( IsFullscreen() )
+        if ( IsFullscreen )
         {
             var currentMode = ( DesktopGLDisplayMode ) GetDisplayMode();
 
@@ -515,40 +500,29 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-    public override GLVersion.GLType GetGraphicsType()
-    {
-        return GLVersion.GLType.GL20;
-    }
+    public override GLVersion.GLType GraphicsType => GLVersion.GLType.GL20;
 
-    public override float GetPpiX()
+    public override (float X, float Y) GetPpiXY()
     {
-        return GetPpcXY().X * 2.54f;
-    }
-
-    public override float GetPpiY()
-    {
-        return GetPpcXY().Y * 2.54f;
+        return ( GetPpcXY().X * 2.54f, GetPpcXY().Y * 2.54f );
     }
 
     public override (float X, float Y) GetPpcXY()
     {
-        Glfw.GetMonitorPhysicalSize( Glfw.GetPrimaryMonitor(), out var sizeX, out var sizeY ); //TODO:
+        Glfw.GetMonitorPhysicalSize( Glfw.GetPrimaryMonitor(), out var sizeX, out var sizeY );
 
         return ( ( GetDisplayMode().Width / ( float ) sizeX ) * 10,
                  ( GetDisplayMode().Height / ( float ) sizeY ) * 10 );
     }
 
-    public override float GetPpcX()
-    {
-        return GetPpcXY().X;
-    }
+    public override float GetPpiX() => GetPpiXY().X;
+    public override float GetPpiY() => GetPpiXY().Y;
+    public override float GetPpcX() => GetPpcXY().X;
+    public override float GetPpcY() => GetPpcXY().Y;
 
-    public override float GetPpcY()
-    {
-        return GetPpcXY().Y;
-    }
-
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     private void StoreCurrentWindowPositionAndDisplayMode()
@@ -602,6 +576,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         public GLFWMonitor MonitorHandle { get; private set; }
     }
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     #region IDisposable implementation
