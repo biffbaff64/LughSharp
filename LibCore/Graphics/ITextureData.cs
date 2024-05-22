@@ -49,25 +49,35 @@ public interface ITextureData
         Custom
     }
 
-    /// <returns> the <see cref="TextureDataType" /> </returns>
+    /// <summary>
+    ///     Returns the <see cref="TextureDataType"/>.
+    /// </summary>
     public TextureType TextureDataType { get; }
 
+    /// <summary>
     /// <returns> whether the TextureData is prepared or not.</returns>
+    /// </summary>
     public bool IsPrepared { get; set; }
 
-    /// <returns> whether to generate mipmaps or not. </returns>
+    /// <summary>
+    ///     Returns whether to generate mipmaps or not.
+    /// </summary>
     public bool UseMipMaps { get; set; }
 
-    /// <returns> the width of the pixel data </returns>
+    /// <summary>
+    ///     Returns the width of the pixel data.
+    /// </summary>
     public int Width { get; set; }
 
-    /// <returns> the height of the pixel data </returns>
+    /// <summary>
+    ///     Returns the height of the pixel data.
+    /// </summary>
     public int Height { get; set; }
 
     /// <summary>
     ///     Prepares the TextureData for a call to <see cref="ConsumePixmap()" /> or
     ///     <see cref="ConsumeCustomData" />. This method can be called from a non
-    ///     OpenGL thread and should thus not interact with OpenGL.
+    ///     OpenGL thread and should not interact with OpenGL.
     /// </summary>
     public void Prepare();
 
@@ -82,10 +92,10 @@ public interface ITextureData
     /// <returns> the pixmap.</returns>
     public Pixmap? ConsumePixmap();
 
-    /// <returns>
-    ///     whether the caller of <see cref="ConsumePixmap()" /> should dispose the
-    ///     Pixmap returned by <see cref="ConsumePixmap()" />
-    /// </returns>
+    /// <summary>
+    ///     Returns whether the caller of <see cref="ConsumePixmap()"/> should
+    ///     dispose the Pixmap returned by <see cref="ConsumePixmap()"/>.
+    /// </summary>
     public bool DisposePixmap();
 
     /// <summary>
@@ -99,54 +109,61 @@ public interface ITextureData
     /// </summary>
     public void ConsumeCustomData( int target );
 
-    /// <returns> the <see cref="Pixmap.Format" /> of the pixel data </returns>
+    /// <summary>
+    ///     Returns the <see cref="Pixmap.Format" /> of the pixel data.
+    /// </summary>
     public Pixmap.Format GetFormat();
 
-    /// <returns> whether this implementation can cope with a EGL context loss. </returns>
+    /// <summary>
+    ///     Returns whether this implementation can cope with a EGL context loss.
+    /// </summary>
     public bool IsManaged();
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
+    ///     Factory class for creating instances of ITextureData based on file types.
     ///     Provides static methods to instantiate the right implementation (Pixmap, ETC1, KTX).
     /// </summary>
     [PublicAPI]
-    public static class Factory
+    public static class TextureDataFactory
     {
         /// <summary>
+        ///     Loads texture data from the specified file with default format and mipmaps settings.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="useMipMaps"></param>
-        /// <returns></returns>
-        public static ITextureData? LoadFromFile( FileInfo? file, bool useMipMaps )
-        {
-            return LoadFromFile( file, null, useMipMaps );
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="format"></param>
-        /// <param name="useMipMaps"></param>
-        /// <returns></returns>
-        public static ITextureData LoadFromFile( FileInfo? file, Pixmap.Format? format, bool useMipMaps )
+        /// <param name="file">The file to load texture data from.</param>
+        /// <param name="useMipMaps">Specifies whether to use mipmaps.</param>
+        /// <returns>The loaded texture data.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the file parameter is null.</exception>
+        public static ITextureData LoadFromFile( FileInfo file, bool useMipMaps = true )
         {
             ArgumentNullException.ThrowIfNull( file );
 
-            if ( file.Name.EndsWith( ".cim" ) )
-            {
-                return new FileTextureData( file, PixmapIO.ReadCIM( file ), format, useMipMaps );
-            }
+            Pixmap.Format? format = null; // Default format if not specified
 
-            if ( file.Name.EndsWith( ".etc1" ) )
-            {
-                return new ETC1TextureData( file, useMipMaps );
-            }
+            return LoadFromFile( file, format );
+        }
 
-            if ( file.Name.EndsWith( ".ktx" ) || file.Name.EndsWith( ".zktx" ) )
-            {
-                return new KtxTextureData( file, useMipMaps );
-            }
+        /// <summary>
+        ///     Loads texture data from the specified file with the given format and mipmaps settings.
+        /// </summary>
+        /// <param name="file">The file to load texture data from.</param>
+        /// <param name="format">The format of the texture data.</param>
+        /// <param name="useMipMaps">Specifies whether to use mipmaps.</param>
+        /// <returns>The loaded texture data.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the file parameter is null.</exception>
+        public static ITextureData LoadFromFile( FileInfo file, Pixmap.Format? format, bool useMipMaps = true )
+        {
+            ArgumentNullException.ThrowIfNull( file );
 
-            return new FileTextureData( file, new Pixmap( file ), format, useMipMaps );
+            return file.Extension.ToLower() switch
+            {
+                ".cim"            => new FileTextureData( file, PixmapIO.ReadCIM( file ), format, useMipMaps ),
+                ".etc1"           => new ETC1TextureData( file, useMipMaps ),
+                ".ktx" or ".zktx" => new KtxTextureData( file, useMipMaps ),
+                _                 => new FileTextureData( file, new Pixmap( file ), format, useMipMaps )
+            };
         }
     }
 }

@@ -50,9 +50,11 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class Pixmap : IDisposable
 {
+    public Gdx2DPixmap GDX2DPixmap { get; set; }
+    public bool        IsDisposed  { get; set; } = false;
+
     private int _color = 0;
 
-    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -125,9 +127,6 @@ public class Pixmap : IDisposable
 
     // ----------------------------------------------------------
 
-    public Gdx2DPixmap GDX2DPixmap { get; set; }
-    public bool        IsDisposed  { get; set; } = false;
-
     /// <summary>
     ///     Returns the width of the Pixmap in pixels.
     /// </summary>
@@ -190,15 +189,6 @@ public class Pixmap : IDisposable
 
             BufferUtils.Copy( value, dst, dst.Limit );
         }
-    }
-
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing, releasing,
-    ///     or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( !IsDisposed );
     }
 
     /// <summary>
@@ -298,7 +288,16 @@ public class Pixmap : IDisposable
     /// <param name="srcHeight"> The height of the area from the other Pixmap in pixels  </param>
     public void DrawPixmap( Pixmap pixmap, int x, int y, int srcx, int srcy, int srcWidth, int srcHeight )
     {
-        GDX2DPixmap.DrawPixmap( pixmap.GDX2DPixmap, srcx, srcy, x, y, srcWidth, srcHeight );
+        ArgumentNullException.ThrowIfNull( nameof( pixmap ), "Source Pixmap cannot be null." );
+
+        try
+        {
+            GDX2DPixmap.DrawPixmap( pixmap.GDX2DPixmap, srcx, srcy, x, y, srcWidth, srcHeight );
+        }
+        catch ( Exception ex )
+        {
+            throw new GdxRuntimeException( "Error occurred while drawing the pixmap.", ex );
+        }
     }
 
     /// <summary>
@@ -318,25 +317,18 @@ public class Pixmap : IDisposable
     /// <param name="dsty"> The target y-coordinate (top left corner) </param>
     /// <param name="dstWidth"> The target width </param>
     /// <param name="dstHeight"> the target height  </param>
-    public void DrawPixmap( Pixmap pixmap,
-                            int srcx,
-                            int srcy,
-                            int srcWidth,
-                            int srcHeight,
-                            int dstx,
-                            int dsty,
-                            int dstWidth,
-                            int dstHeight )
+    public void DrawPixmap( Pixmap pixmap, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight )
     {
-        GDX2DPixmap.DrawPixmap( pixmap.GDX2DPixmap,
-                                srcx,
-                                srcy,
-                                srcWidth,
-                                srcHeight,
-                                dstx,
-                                dsty,
-                                dstWidth,
-                                dstHeight );
+        ArgumentNullException.ThrowIfNull( nameof( pixmap ), "Source Pixmap cannot be null." );
+
+        try
+        {
+            GDX2DPixmap.DrawPixmap( pixmap.GDX2DPixmap, srcx, srcy, srcWidth, srcHeight, dstx, dsty, dstWidth, dstHeight );
+        }
+        catch ( Exception ex )
+        {
+            throw new GdxRuntimeException( "Error occurred while drawing the pixmap.", ex );
+        }
     }
 
     /// <summary>
@@ -428,8 +420,6 @@ public class Pixmap : IDisposable
         return PixmapFormat.FromGdx2DPixmapFormat( GDX2DPixmap.Format );
     }
 
-    // #############################################################
-
     /// <summary>
     ///     Creates a Pixmap from a part of the current framebuffer.
     /// </summary>
@@ -452,6 +442,9 @@ public class Pixmap : IDisposable
         return pixmap;
     }
 
+    /// <summary>
+    ///     Returns the pixel format from a valid named string.
+    /// </summary>
     public static Format FormatFromString( string str )
     {
         str = str.ToLower();
@@ -469,6 +462,19 @@ public class Pixmap : IDisposable
         };
     }
 
+    // ------------------------------------------------------------------------
+
+    #region dispose pattern
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing, releasing,
+    ///     or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( !IsDisposed );
+    }
+
     private void Dispose( bool disposing )
     {
         if ( disposing )
@@ -478,22 +484,52 @@ public class Pixmap : IDisposable
         }
     }
 
-    // ----------------------------------------------------------
+    #endregion dispose pattern
+
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    ///     Response listener for <see cref="Pixmap.DownloadFromUrl(String, IDownloadPixmapResponseListener)"/>
+    /// </summary>
+    [PublicAPI]
+    public interface IDownloadPixmapResponseListener
+    {
+        /// <summary>
+        ///     Called on the render thread when image was downloaded successfully.
+        /// </summary>
+        void DownloadComplete( Pixmap pixmap );
+
+        /// <summary>
+        ///     Called when image download failed. This might get called on a background thread.
+        /// </summary>
+        void DownloadFailed( Exception e );
+    }
+
+    // ------------------------------------------------------------------------
 
     #region PixmapEnums
 
+    /// <summary>
+    ///     Blending functions to be set with <see cref="Pixmap.Blending"/>.
+    /// </summary>
     public enum BlendTypes
     {
         None,
         SourceOver
     }
 
+    /// <summary>
+    ///     Filters to be used with <see cref="DrawPixmap(Pixmap, int, int, int, int, int, int, int, int)"/>.
+    /// </summary>
     public enum Filter
     {
         NearestNeighbour,
         BiLinear
     }
 
+    /// <summary>
+    ///     Available Pixmap pixel formats.
+    /// </summary>
     public enum Format
     {
         Alpha,

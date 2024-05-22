@@ -86,8 +86,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     }
 
     /// <inheritdoc />
-    public override void Load( AssetManager? manager,
-                               string? fileName,
+    public override object Load( AssetManager? manager,
                                FileInfo? tmxFile,
                                AtlasTiledMapLoaderParameters? parameter )
     {
@@ -99,6 +98,8 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         AtlasResolver = new IAtlasResolver.AssetManagerAtlasResolver( manager, atlasHandle.Name );
 
         Map = LoadTiledMap( tmxFile, parameter, AtlasResolver );
+
+        return Map;
     }
 
     /// <summary>

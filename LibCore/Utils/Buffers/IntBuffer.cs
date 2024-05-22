@@ -559,7 +559,7 @@ public abstract class IntBuffer : Buffer
 
         for ( var i = Limit - 1; i >= p; i-- )
         {
-            h = 31 * h + Get( i );
+            h = ( 31 * h ) + Get( i );
         }
 
         return h;

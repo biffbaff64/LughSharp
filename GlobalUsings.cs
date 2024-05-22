@@ -69,6 +69,7 @@ global using LughSharp.LibCore.Assets;
 global using LughSharp.LibCore.Audio;
 global using LughSharp.LibCore.Core;
 global using LughSharp.LibCore.Graphics;
+global using LughSharp.LibCore.Graphics.Cameras;
 global using LughSharp.LibCore.Graphics.FrameBuffers;
 global using LughSharp.LibCore.Graphics.G2D;
 global using LughSharp.LibCore.Graphics.G3D;

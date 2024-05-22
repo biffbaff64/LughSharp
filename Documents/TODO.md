@@ -254,20 +254,20 @@ GRAPHICS
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - Camera
-    - DONE - IP   - Color
-    - DONE - IP   - Colors
+    - DONE - IP   - Color           Strip out some of the static methods where there is a non-static equivalent
+    - DONE - DONE - Colors
     - DONE - IP   - Cubemap
-    - DONE - IP   - FPSLogger
+    - DONE - DONE - FPSLogger
     - DONE - IP   - GLTexture
     - DONE - IP   - ICubemapData
-    - DONE - IP   - ICursor
+    - DONE - DONE - ICursor
     - DONE - IP   - IDownloadPixmapResponseListener
-    - DONE - IP   - ITextureArrayData
-    - DONE - IP   - ITextureData
+    - DONE - DONE - ITextureArrayData
+    - DONE - DONE - ITextureData
     - DONE - IP   - Mesh
     - DONE - DONE - OrthographicCamera
     - DONE - DONE - PerspectiveCamera
-    - DONE - IP   - Pixmap
+    - DONE - DONE - Pixmap
     - DONE - IP   - PixmapFormat
     - DONE - IP   - PixmapIO                            Tests needed
     - DONE - IP   - Texture

@@ -78,7 +78,7 @@ public class Texture : GLTexture
     }
 
     public Texture( FileInfo? file, Pixmap.Format format = default( Pixmap.Format ), bool useMipMaps = false )
-        : this( ITextureData.Factory.LoadFromFile( file, format, useMipMaps ) )
+        : this( ITextureData.TextureDataFactory.LoadFromFile( file!, format, useMipMaps ) )
     {
     }
 
@@ -370,6 +370,7 @@ public class Texture : GLTexture
         return builder.ToString();
     }
 
+    /// <inheritdoc/>
     public override string? ToString()
     {
         return TextureData is FileTextureData

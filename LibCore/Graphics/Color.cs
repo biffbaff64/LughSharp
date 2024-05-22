@@ -170,7 +170,7 @@ public sealed class Color
     {
         var color = this;
 
-        Rgba8888ToColor( ref color, rgba );
+        RGBA8888ToColor( ref color, rgba );
 
         Set( color.R, color.G, color.B, color.A );
 
@@ -292,17 +292,30 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Clamps this Color's components to a valid range [0 - 1]
+    ///     Clamps this Colors RGBA components to a valid range [0 - 1]
     /// </summary>
     /// <returns>This Color for chaining.</returns>
     private Color Clamp()
     {
         R = Math.Clamp( R, 0, 1 );
-        G = Math.Clamp( R, 0, 1 );
-        B = Math.Clamp( R, 0, 1 );
-        A = Math.Clamp( R, 0, 1 );
-        
+        G = Math.Clamp( G, 0, 1 );
+        B = Math.Clamp( B, 0, 1 );
+        A = Math.Clamp( A, 0, 1 );
+
         return this;
+    }
+
+    /// <summary>
+    ///     Clamps the provided Colors RGBA components to a valid range [0 - 1]
+    /// </summary>
+    private Color Clamp( Color color )
+    {
+        color.R = Math.Clamp( color.R, 0, 1 );
+        color.G = Math.Clamp( color.G, 0, 1 );
+        color.B = Math.Clamp( color.B, 0, 1 );
+        color.A = Math.Clamp( color.A, 0, 1 );
+
+        return color;
     }
 
     /// <summary>
@@ -315,6 +328,14 @@ public sealed class Color
     /// <returns>This Color for chaining.</returns>
     public Color Lerp( Color target, float interpolationCoefficient )
     {
+        ArgumentNullException.ThrowIfNull( target );
+
+        if ( interpolationCoefficient is < 0.0f or > 1.0f )
+        {
+            throw new ArgumentOutOfRangeException( nameof( interpolationCoefficient ),
+                                                   "Interpolation coefficient must be between 0f and 1f." );
+        }
+
         R += interpolationCoefficient * ( target.R - R );
         G += interpolationCoefficient * ( target.G - G );
         B += interpolationCoefficient * ( target.B - B );
@@ -336,6 +357,12 @@ public sealed class Color
     /// <returns>This Color for chaining.</returns>
     public Color Lerp( float r, float g, float b, float a, float interpolationCoefficient )
     {
+        if ( interpolationCoefficient is < 0.0f or > 1.0f )
+        {
+            throw new ArgumentOutOfRangeException( nameof( interpolationCoefficient ),
+                                                   "Interpolation coefficient must be between 0f and 1f." );
+        }
+
         R += interpolationCoefficient * ( r - R );
         G += interpolationCoefficient * ( g - G );
         B += interpolationCoefficient * ( b - B );
@@ -354,7 +381,7 @@ public sealed class Color
         G *= A;
         B *= A;
 
-        return this;
+        return Clamp();
     }
 
     public static bool operator ==( Color? c1, object? c2 )
@@ -363,7 +390,7 @@ public sealed class Color
         {
             return c2 is not null;
         }
-        
+
         return c1.Equals( c2 );
     }
 
@@ -378,34 +405,59 @@ public sealed class Color
     }
 
     /// <summary>
+    ///     Converts a 16-bit RGB565 integer value to a Color object.
     /// </summary>
-    /// <param name="color"></param>
-    /// <param name="value"></param>
-    public static void Rgb565ToColor( ref Color color, int value )
+    /// <param name="color">The Color object to assign the converted values to.</param>
+    /// <param name="value">The 16-bit RGB565 integer value.</param>
+    public static void RGB565ToColor( ref Color color, int value )
     {
-        color.R = ( ( value & 0x0000F800 ) >>> 11 ) / 31f;
-        color.G = ( ( value & 0x000007E0 ) >>> 5 ) / 63f;
-        color.B = ( ( value & 0x0000001F ) >>> 0 ) / 31f;
+        // Ensure the value is within the valid range for 16-bit RGB565
+        if ( value is < 0 or > 0xFFFF )
+        {
+            throw new ArgumentOutOfRangeException( nameof( value ),
+                                                   "Value must be a 16-bit integer." );
+        }
+
+        color.R = ( ( value & 0xF800 ) >> 11 ) / 31f;
+        color.G = ( ( value & 0x07E0 ) >> 5 ) / 63f;
+        color.B = ( value & 0x001F ) / 31f;
     }
 
     /// <summary>
+    ///     Converts a 16-bit RGBA4444 integer value to a Color object.
     /// </summary>
-    /// <param name="color"></param>
-    /// <param name="value"></param>
-    public static void Rgba4444ToColor( ref Color color, int value )
+    /// <param name="color">The Color object to assign the converted values to.</param>
+    /// <param name="value">The 16-bit RGBA4444 integer value.</param>
+    public static void RGBA4444ToColor( ref Color color, int value )
     {
-        color.R = ( ( value & 0x0000f000 ) >>> 12 ) / 15f;
-        color.G = ( ( value & 0x00000f00 ) >>> 8 ) / 15f;
-        color.B = ( ( value & 0x000000f0 ) >>> 4 ) / 15f;
-        color.A = ( value & 0x0000000f ) / 15f;
+        // Ensure the value is within the valid range for 16-bit RGBA4444
+        if ( value is < 0 or > 0xFFFF )
+        {
+            throw new ArgumentOutOfRangeException( nameof( value ),
+                                                   "Value must be a 16-bit integer." );
+        }
+
+        color.R = ( ( value & 0xF000 ) >> 12 ) / 15f;
+        color.G = ( ( value & 0x0F00 ) >> 8 ) / 15f;
+        color.B = ( ( value & 0x00F0 ) >> 4 ) / 15f;
+        color.A = ( value & 0x000F ) / 15f;
     }
 
     /// <summary>
+    ///     Converts a 32-bit RGBA8888 integer value to a Color object.
     /// </summary>
-    /// <param name="color"></param>
-    /// <param name="value"></param>
-    public static void Rgba8888ToColor( ref Color color, int value )
+    /// <param name="color">The Color object to assign the converted values to.</param>
+    /// <param name="value">The 32-bit RGBA8888 integer value.</param>
+    public static void RGBA8888ToColor( ref Color color, int value )
     {
+        ArgumentNullException.ThrowIfNull( color );
+
+        if ( value is < 0 or > 0xFFFF )
+        {
+            throw new ArgumentOutOfRangeException( nameof( value ),
+                                                   "Value must be a 16-bit integer." );
+        }
+
         color.R = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
         color.G = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
         color.B = ( ( value & 0x0000ff00 ) >>> 8 ) / 255f;
@@ -413,10 +465,11 @@ public sealed class Color
     }
 
     /// <summary>
+    /// Converts a 32-bit ARGB8888 integer value to a Color object.
     /// </summary>
-    /// <param name="color"></param>
-    /// <param name="value"></param>
-    public static void Argb8888ToColor( ref Color color, int value )
+    /// <param name="color">The Color object to assign the converted values to.</param>
+    /// <param name="value">The 32-bit ARGB8888 integer value.</param>
+    public static void ARGB8888ToColor( ref Color color, int value )
     {
         color.A = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
         color.R = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
@@ -425,13 +478,16 @@ public sealed class Color
     }
 
     /// <summary>
+    ///     Sets the Color components using the specified float value in the format ABGR8888.
     /// </summary>
-    /// <param name="color"></param>
-    /// <param name="value"></param>
-    public static void Abgr8888ToColor( ref Color color, float value )
+    /// <param name="color">The Color object to assign the converted values to.</param>
+    /// <param name="value">The float value representing the color in ABGR8888 format.</param>
+    public static void ABGR8888ToColor( ref Color color, float value )
     {
+        // Convert the float value to an integer representing the color
         var c = NumberUtils.FloatToIntColor( value );
 
+        // Extract and assign color components using bitwise operations
         color.A = ( ( c & 0xff000000 ) >>> 24 ) / 255f;
         color.B = ( ( c & 0x00ff0000 ) >>> 16 ) / 255f;
         color.G = ( ( c & 0x0000ff00 ) >>> 8 ) / 255f;
@@ -445,7 +501,7 @@ public sealed class Color
     /// </summary>
     /// <param name="color">The Color to be modified.</param>
     /// <param name="value">An integer color value in RGBA8888 format.</param>
-    private void Rgba8888ToColor( ref Color color, uint value )
+    private void RGBA8888ToColor( ref Color color, uint value )
     {
         color.R = ( ( value & 0xff000000 ) >> 24 ) / 255f;
         color.G = ( ( value & 0x00ff0000 ) >> 16 ) / 255f;
@@ -460,7 +516,7 @@ public sealed class Color
     /// <param name="b"></param>
     /// <param name="a"></param>
     /// <returns></returns>
-    public int Rgba8888( float r, float g, float b, float a )
+    public int RGBA8888ToInt( float r, float g, float b, float a )
     {
         return ( ( int ) ( r * 255 ) << 24 )
              | ( ( int ) ( g * 255 ) << 16 )
@@ -483,7 +539,7 @@ public sealed class Color
         if ( h < 0 ) h += 360;
 
         var i = ( int ) ( h / 60 ) % 6;
-        var f = (  h / 60 ) - i;
+        var f = ( h / 60 ) - i;
         var p = v * ( 1 - s );
         var q = v * ( 1 - ( s * f ) );
         var t = v * ( 1 - ( s * ( 1 - f ) ) );
@@ -824,28 +880,32 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Creates a copy of this Color object.
+    ///     Creates a copy of this <see cref="Color"/> object.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>
+    /// A new <see cref="Color"/> object that is a copy of the current instance.
+    /// </returns>
     public Color Copy()
     {
+        ArgumentNullException.ThrowIfNull( this );
+
         return new Color( this );
     }
 
     /// <inheritdoc />
-    public override bool Equals( object? o )
+    public override bool Equals( object? obj )
     {
-        if ( ( o == null ) || ( GetType() != o.GetType() ) )
+        if ( ( obj == null ) || ( GetType() != obj.GetType() ) )
         {
             return false;
         }
 
-        if ( this == o )
+        if ( this == obj )
         {
             return true;
         }
 
-        var color = ( Color ) o;
+        var color = ( Color ) obj;
 
         return ToIntBits() == color.ToIntBits();
     }

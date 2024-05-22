@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics.Cameras;
 using LughSharp.LibCore.Maps.Tiled.Tiles;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 

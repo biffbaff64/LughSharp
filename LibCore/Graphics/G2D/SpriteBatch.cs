@@ -224,7 +224,7 @@ public class SpriteBatch : IBatch
         {
             var color = Color;
 
-            Color.Abgr8888ToColor( ref color, value );
+            Color.ABGR8888ToColor( ref color, value );
             ColorPacked = value;
 
             Color = color;

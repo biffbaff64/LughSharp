@@ -35,42 +35,34 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public static class Colors
 {
+    public static Dictionary< string, Color > Map { get; set; } = new();
+
     static Colors()
     {
         Reset();
     }
 
-    public static Dictionary< string, Color? > Map { get; set; } = new();
-
     /// <summary>
-    ///     Convenience method to lookup a color by <code>name</code>.
-    ///     The invocation of this method is equivalent to the expression
-    ///     <code>Colors.GetColors().Get(name)</code>
+    ///     Looks up a color by its name.
     /// </summary>
-    /// <param name="name">The name of the color</param>
+    /// <param name="name">The name of the color.</param>
     /// <returns>
-    ///     The Color to which the specified <code>name</code> is mapped,
-    ///     or <code>null</code> if no mapping was found.
+    ///     The <see cref="Color"/> associated with the specified <paramref name="name"/>,
+    ///     or <c>null</c> if no mapping was found.
     /// </returns>
     public static Color? Get( string name )
     {
-        return Map[ name ];
+        return Map.GetValueOrDefault( name );
     }
 
     /// <summary>
-    ///     Convenience method to add a color with its <code>name</code>.
-    ///     The invocation of this method is equivalent to the expression
-    ///     <tt>Colors.GetColors().Put(name, color)</tt>
+    ///     Adds or replaces a color with the specified name.
     /// </summary>
     /// <param name="name">The name of the color.</param>
-    /// <param name="color">The color.</param>
-    /// <returns>
-    ///     The previous Color associated with <code>name</code> or <code>null</code>
-    ///     if no mapping was found.
-    /// </returns>
-    public static Color Put( string name, Color color )
+    /// <param name="color">The color to add or replace.</param>
+    public static void Put( string name, Color color )
     {
-        return Map[ name ] = color;
+        Map[ name ] = color;
     }
 
     /// <summary>
@@ -79,46 +71,47 @@ public static class Colors
     public static void Reset()
     {
         Map.Clear();
-        Map.Put( "CLEAR", Color.Clear );
-        Map.Put( "BLACK", Color.Black );
+        AddPredefinedColors();
+    }
 
-        Map.Put( "WHITE", Color.White );
-        Map.Put( "LIGHT_GRAY", Color.LightGray );
-        Map.Put( "GRAY", Color.Gray );
-        Map.Put( "DARK_GRAY", Color.DarkGray );
-
-        Map.Put( "BLUE", Color.Blue );
-        Map.Put( "NAVY", Color.Navy );
-        Map.Put( "ROYAL", Color.Royal );
-        Map.Put( "SLATE", Color.Slate );
-        Map.Put( "SKY", Color.Sky );
-        Map.Put( "CYAN", Color.Cyan );
-        Map.Put( "TEAL", Color.Teal );
-
-        Map.Put( "GREEN", Color.Green );
-        Map.Put( "CHARTREUSE", Color.Chartreuse );
-        Map.Put( "LIME", Color.Lime );
-        Map.Put( "FOREST", Color.Forest );
-        Map.Put( "OLIVE", Color.Olive );
-
-        Map.Put( "YELLOW", Color.Yellow );
-        Map.Put( "GOLD", Color.Gold );
-        Map.Put( "GOLDENROD", Color.Goldenrod );
-        Map.Put( "ORANGE", Color.Orange );
-
-        Map.Put( "BROWN", Color.Brown );
-        Map.Put( "TAN", Color.Tan );
-        Map.Put( "FIREBRICK", Color.Firebrick );
-
-        Map.Put( "RED", Color.Red );
-        Map.Put( "SCARLET", Color.Scarlet );
-        Map.Put( "CORAL", Color.Coral );
-        Map.Put( "SALMON", Color.Salmon );
-        Map.Put( "PINK", Color.Pink );
-        Map.Put( "MAGENTA", Color.Magenta );
-
-        Map.Put( "PURPLE", Color.Purple );
-        Map.Put( "VIOLET", Color.Violet );
-        Map.Put( "MAROON", Color.Maroon );
+    /// <summary>
+    ///     Adds the predefined colors to the color map.
+    /// </summary>
+    private static void AddPredefinedColors()
+    {
+        Map[ "CLEAR" ]      = Color.Clear;
+        Map[ "BLACK" ]      = Color.Black;
+        Map[ "WHITE" ]      = Color.White;
+        Map[ "LIGHT_GRAY" ] = Color.LightGray;
+        Map[ "GRAY" ]       = Color.Gray;
+        Map[ "DARK_GRAY" ]  = Color.DarkGray;
+        Map[ "BLUE" ]       = Color.Blue;
+        Map[ "NAVY" ]       = Color.Navy;
+        Map[ "ROYAL" ]      = Color.Royal;
+        Map[ "SLATE" ]      = Color.Slate;
+        Map[ "SKY" ]        = Color.Sky;
+        Map[ "CYAN" ]       = Color.Cyan;
+        Map[ "TEAL" ]       = Color.Teal;
+        Map[ "GREEN" ]      = Color.Green;
+        Map[ "CHARTREUSE" ] = Color.Chartreuse;
+        Map[ "LIME" ]       = Color.Lime;
+        Map[ "FOREST" ]     = Color.Forest;
+        Map[ "OLIVE" ]      = Color.Olive;
+        Map[ "YELLOW" ]     = Color.Yellow;
+        Map[ "GOLD" ]       = Color.Gold;
+        Map[ "GOLDENROD" ]  = Color.Goldenrod;
+        Map[ "ORANGE" ]     = Color.Orange;
+        Map[ "BROWN" ]      = Color.Brown;
+        Map[ "TAN" ]        = Color.Tan;
+        Map[ "FIREBRICK" ]  = Color.Firebrick;
+        Map[ "RED" ]        = Color.Red;
+        Map[ "SCARLET" ]    = Color.Scarlet;
+        Map[ "CORAL" ]      = Color.Coral;
+        Map[ "SALMON" ]     = Color.Salmon;
+        Map[ "PINK" ]       = Color.Pink;
+        Map[ "MAGENTA" ]    = Color.Magenta;
+        Map[ "PURPLE" ]     = Color.Purple;
+        Map[ "VIOLET" ]     = Color.Violet;
+        Map[ "MAROON" ]     = Color.Maroon;
     }
 }

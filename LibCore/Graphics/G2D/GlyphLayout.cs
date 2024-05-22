@@ -765,7 +765,7 @@ public class GlyphLayout : IPoolable
 
                         var color = colorpool.Obtain();
                         _colorStack.Add( color! );
-                        Color.Rgba8888ToColor( ref color!, colorInt );
+                        Color.RGBA8888ToColor( ref color!, colorInt );
 
                         return i - start;
                     }

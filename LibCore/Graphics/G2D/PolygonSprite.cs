@@ -414,7 +414,7 @@ public class PolygonSprite
 
         if ( _vertices != null )
         {
-            Color.Abgr8888ToColor( ref color, _vertices[ 2 ] );
+            Color.ABGR8888ToColor( ref color, _vertices[ 2 ] );
         }
 
         return color;

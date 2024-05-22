@@ -127,7 +127,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
         {
             Gdx.GL.glFramebufferTexture2D( IGL.GL_FRAMEBUFFER,
                                            IGL.GL_COLOR_ATTACHMENT0,
-                                           side.GLEnum,
+                                           side.GLTarget,
                                            glHandle,
                                            0 );
         }
@@ -184,7 +184,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 
         Gdx.GL.glFramebufferTexture2D( IGL.GL_FRAMEBUFFER,
                                        IGL.GL_COLOR_ATTACHMENT0,
-                                       side.GLEnum,
+                                       side.GLTarget,
                                        ( uint ) GetColorBufferTexture().GLTextureHandle,
                                        0 );
     }

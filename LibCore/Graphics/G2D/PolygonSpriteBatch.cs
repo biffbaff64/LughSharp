@@ -247,7 +247,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         {
             var color = Color;
 
-            Color.Abgr8888ToColor( ref color, value );
+            Color.ABGR8888ToColor( ref color, value );
             _colorPacked = value;
         }
     }

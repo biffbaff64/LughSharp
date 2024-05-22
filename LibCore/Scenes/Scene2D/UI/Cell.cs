@@ -1175,7 +1175,7 @@ public class Cell : IPoolable
 
     public float GetPadX()
     {
-        if ( PadLeft == null || PadRight == null )
+        if ( ( PadLeft == null ) || ( PadRight == null ) )
         {
             throw new GdxRuntimeException( "PadLeft / PadRight is cannot be null!" );
         }
@@ -1185,7 +1185,7 @@ public class Cell : IPoolable
 
     public float GetPadY()
     {
-        if ( PadTop == null || PadBottom == null )
+        if ( ( PadTop == null ) || ( PadBottom == null ) )
         {
             throw new GdxRuntimeException( "PadTop / PadBottom is cannot be null!" );
         }

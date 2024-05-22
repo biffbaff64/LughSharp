@@ -36,7 +36,7 @@ namespace LughSharp.LibCore.Graphics;
 ///         pixel data if the OpenGL ES context is lost.
 ///     </para>
 ///     <para>
-///         Before a call to either <see cref="ConsumeTextureArrayData()" />, TextureArray will
+///         Before a call to <see cref="ConsumeTextureArrayData()" />, TextureArray will
 ///         bind the OpenGL ES texture.
 ///     </para>
 ///     Look at <see cref="FileTextureArrayData" /> for example implementation of this interface.
@@ -44,25 +44,39 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public interface ITextureArrayData
 {
-    /// <returns> whether the TextureArrayData is prepared or not. </returns>
+    /// <summary>
+    ///     Returns whether the TextureArrayData is prepared or not. .
+    /// </summary>
     bool Prepared { get; }
 
-    /// <returns> the width of this TextureArray </returns>
+    /// <summary>
+    ///     Returns the width of this TextureArray .
+    /// </summary>
     int Width { get; }
 
-    /// <returns> the height of this TextureArray </returns>
+    /// <summary>
+    ///     Returns the height of this TextureArray .
+    /// </summary>
     int Height { get; }
 
-    /// <returns> the layer count of this TextureArray </returns>
+    /// <summary>
+    ///     Returns the layer count of this TextureArray .
+    /// </summary>
     int Depth { get; }
 
-    /// <returns> whether this implementation can cope with a EGL context loss. </returns>
+    /// <summary>
+    ///     Returns whether this implementation can cope with a EGL context loss. .
+    /// </summary>
     bool Managed { get; }
 
-    /// <returns> the internal format of this TextureArray </returns>
+    /// <summary>
+    ///     Returns the internal format of this TextureArray .
+    /// </summary>
     int InternalFormat { get; }
 
-    /// <returns> the GL type of this TextureArray </returns>
+    /// <summary>
+    ///     Returns the GL type of this TextureArray .
+    /// </summary>
     int GLType { get; }
 
     /// <summary>

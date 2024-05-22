@@ -71,15 +71,15 @@ public class IsometricStaggeredTiledMapRenderer : BatchTileMapRenderer
 
         var minX = Math.Max( 0, ( int ) ( ( ( ViewBounds.X - layerTileWidth50 - layerOffsetX ) / layerTileWidth ) ) );
         var maxX = Math.Min( layerWidth,
-                             ( int ) ( ( ViewBounds.X + ViewBounds.Width + layerTileWidth + layerTileWidth50 - layerOffsetX ) / layerTileWidth ) );
+                             ( int ) ( ( ( ViewBounds.X + ViewBounds.Width + layerTileWidth + layerTileWidth50 ) - layerOffsetX ) / layerTileWidth ) );
 
         var minY = Math.Max( 0, ( int ) ( ( ( ViewBounds.Y - layerTileHeight - layerOffsetY ) / layerTileHeight ) ) );
         var maxY = Math.Min( layerHeight,
-                             ( int ) ( ( ViewBounds.Y + ViewBounds.Height + layerTileHeight - layerOffsetY ) / layerTileHeight50 ) );
+                             ( int ) ( ( ( ViewBounds.Y + ViewBounds.Height + layerTileHeight ) - layerOffsetY ) / layerTileHeight50 ) );
 
         for ( var y = maxY - 1; y >= minY; y-- )
         {
-            var offsetX = ( y % 2 == 1 ) ? layerTileWidth50 : 0;
+            var offsetX = ( ( y % 2 ) == 1 ) ? layerTileWidth50 : 0;
 
             for ( var x = maxX - 1; x >= minX; x-- )
             {
@@ -96,10 +96,10 @@ public class IsometricStaggeredTiledMapRenderer : BatchTileMapRenderer
                         var rotations = cell.GetRotation();
                         var region    = tile.TextureRegion;
 
-                        var x1 = x * layerTileWidth - offsetX + tile.OffsetX * UnitScale + layerOffsetX;
-                        var y1 = y * layerTileHeight50 + tile.OffsetY * UnitScale + layerOffsetY;
-                        var x2 = x1 + region.RegionWidth * UnitScale;
-                        var y2 = y1 + region.RegionHeight * UnitScale;
+                        var x1 = ( ( x * layerTileWidth ) - offsetX ) + ( tile.OffsetX * UnitScale ) + layerOffsetX;
+                        var y1 = ( y * layerTileHeight50 ) + ( tile.OffsetY * UnitScale ) + layerOffsetY;
+                        var x2 = x1 + ( region.RegionWidth * UnitScale );
+                        var y2 = y1 + ( region.RegionHeight * UnitScale );
 
                         var u1 = region.U;
                         var v1 = region.V2;

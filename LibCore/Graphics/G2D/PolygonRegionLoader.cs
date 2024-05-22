@@ -52,16 +52,15 @@ public class PolygonRegionLoader
     {
     }
 
-    public override void Load( AssetManager manager,
-                               string? fileName,
-                               FileInfo? file,
-                               PolygonRegionParameters? parameter )
+    public override object Load( AssetManager manager,
+                                  FileInfo? file,
+                                  PolygonRegionParameters? parameter )
     {
-        ArgumentNullException.ThrowIfNull( fileName );
+        ArgumentNullException.ThrowIfNull( file?.Name );
 
-        var texture = manager.Get< Texture >( manager.GetDependencies( fileName )!.First() );
+        var texture = manager.Get< Texture >( manager.GetDependencies( file.Name )!.First() );
 
-        Load( new TextureRegion( texture ), file! );
+        return Load( new TextureRegion( texture ), file );
     }
 
     /// <summary>
@@ -192,6 +191,8 @@ public class PolygonRegionLoader
         throw new GdxRuntimeException( "Polygon shape not found: " + file );
     }
 
+    // ------------------------------------------------------------------------
+    
     [PublicAPI]
     public class PolygonRegionParameters : AssetLoaderParameters
     {

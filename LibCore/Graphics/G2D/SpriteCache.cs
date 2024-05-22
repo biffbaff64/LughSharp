@@ -193,7 +193,7 @@ public class SpriteCache
         set
         {
             var color = Color;
-            Color.Abgr8888ToColor( ref color, value );
+            Color.ABGR8888ToColor( ref color, value );
 
             _colorPacked = value;
 

@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics.Cameras;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Maps.Tiled.Renderers;
@@ -78,15 +79,15 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 
         SpriteCache.ProjectionMatrix = camera.Combined;
 
-        var width  = camera.ViewportWidth * camera.Zoom + MaxTileWidth * 2 * UnitScale;
-        var height = camera.ViewportHeight * camera.Zoom + MaxTileHeight * 2 * UnitScale;
+        var width  = ( camera.ViewportWidth * camera.Zoom ) + ( MaxTileWidth * 2 * UnitScale );
+        var height = ( camera.ViewportHeight * camera.Zoom ) + ( MaxTileHeight * 2 * UnitScale );
 
-        ViewBounds.Set( camera.Position.X - width / 2, camera.Position.Y - height / 2, width, height );
+        ViewBounds.Set( camera.Position.X - ( width / 2 ), camera.Position.Y - ( height / 2 ), width, height );
 
-        if ( ( CanCacheMoreW && ViewBounds.X < CacheBounds.X - _tolerance )
-          || ( CanCacheMoreS && ViewBounds.Y < CacheBounds.Y - _tolerance )
-          || ( CanCacheMoreE && ViewBounds.X + ViewBounds.Width > CacheBounds.X + CacheBounds.Width + _tolerance )
-          || ( CanCacheMoreN && ViewBounds.Y + ViewBounds.Height > CacheBounds.Y + CacheBounds.Height + _tolerance ) )
+        if ( ( CanCacheMoreW && ( ViewBounds.X < ( CacheBounds.X - _tolerance ) ) )
+          || ( CanCacheMoreS && ( ViewBounds.Y < ( CacheBounds.Y - _tolerance ) ) )
+          || ( CanCacheMoreE && ( ( ViewBounds.X + ViewBounds.Width ) > ( CacheBounds.X + CacheBounds.Width + _tolerance ) ) )
+          || ( CanCacheMoreN && ( ( ViewBounds.Y + ViewBounds.Height ) > ( CacheBounds.Y + CacheBounds.Height + _tolerance ) ) ) )
         {
             Cached = false;
         }
@@ -105,10 +106,10 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 
         ViewBounds.Set( x, y, width, height );
 
-        if ( ( CanCacheMoreW && ViewBounds.X < CacheBounds.X - _tolerance )
-          || ( CanCacheMoreS && ViewBounds.Y < CacheBounds.Y - _tolerance )
-          || ( CanCacheMoreE && ViewBounds.X + ViewBounds.Width > CacheBounds.X + CacheBounds.Width + _tolerance )
-          || ( CanCacheMoreN && ViewBounds.Y + ViewBounds.Height > CacheBounds.Y + CacheBounds.Height + _tolerance ) )
+        if ( ( CanCacheMoreW && ( ViewBounds.X < ( CacheBounds.X - _tolerance ) ) )
+          || ( CanCacheMoreS && ( ViewBounds.Y < ( CacheBounds.Y - _tolerance ) ) )
+          || ( CanCacheMoreE && ( ( ViewBounds.X + ViewBounds.Width ) > ( CacheBounds.X + CacheBounds.Width + _tolerance ) ) )
+          || ( CanCacheMoreN && ( ( ViewBounds.Y + ViewBounds.Height ) > ( CacheBounds.Y + CacheBounds.Height + _tolerance ) ) ) )
         {
             Cached = false;
         }
@@ -129,8 +130,8 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 
             CacheBounds.X      = ViewBounds.X - extraWidth;
             CacheBounds.Y      = ViewBounds.Y - extraHeight;
-            CacheBounds.Width  = ViewBounds.Width + extraWidth * 2;
-            CacheBounds.Height = ViewBounds.Height + extraHeight * 2;
+            CacheBounds.Width  = ViewBounds.Width + ( extraWidth * 2 );
+            CacheBounds.Height = ViewBounds.Height + ( extraHeight * 2 );
 
             foreach ( var layer in Map!.Layers )
             {
@@ -191,8 +192,8 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 
             CacheBounds.X      = ViewBounds.X - extraWidth;
             CacheBounds.Y      = ViewBounds.Y - extraHeight;
-            CacheBounds.Width  = ViewBounds.Width + extraWidth * 2;
-            CacheBounds.Height = ViewBounds.Height + extraHeight * 2;
+            CacheBounds.Width  = ViewBounds.Width + ( extraWidth * 2 );
+            CacheBounds.Height = ViewBounds.Height + ( extraHeight * 2 );
 
             foreach ( var layer in Map!.Layers )
             {
@@ -266,11 +267,11 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 
         var col1 = Math.Max( 0, ( int ) ( ( CacheBounds.X - layerOffsetX ) / layerTileWidth ) );
         var col2 = Math.Min( layerWidth,
-                             ( int ) ( ( CacheBounds.X + CacheBounds.Width + layerTileWidth - layerOffsetX ) / layerTileWidth ) );
+                             ( int ) ( ( ( CacheBounds.X + CacheBounds.Width + layerTileWidth ) - layerOffsetX ) / layerTileWidth ) );
 
         var row1 = Math.Max( 0, ( int ) ( ( CacheBounds.Y - layerOffsetY ) / layerTileHeight ) );
         var row2 = Math.Min( layerHeight,
-                             ( int ) ( ( CacheBounds.Y + CacheBounds.Height + layerTileHeight - layerOffsetY ) / layerTileHeight ) );
+                             ( int ) ( ( ( CacheBounds.Y + CacheBounds.Height + layerTileHeight ) - layerOffsetY ) / layerTileHeight ) );
 
         CanCacheMoreN = row2 < layerHeight;
         CanCacheMoreE = col2 < layerWidth;
@@ -298,10 +299,10 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
                 var region  = tile.TextureRegion;
                 var       texture = region.Texture;
 
-                var x1 = col * layerTileWidth + tile.OffsetX * UnitScale + layerOffsetX;
-                var y1 = row * layerTileHeight + tile.OffsetY * UnitScale + layerOffsetY;
-                var x2 = x1 + region.RegionWidth * UnitScale;
-                var y2 = y1 + region.RegionHeight * UnitScale;
+                var x1 = ( col * layerTileWidth ) + ( tile.OffsetX * UnitScale ) + layerOffsetX;
+                var y1 = ( row * layerTileHeight ) + ( tile.OffsetY * UnitScale ) + layerOffsetY;
+                var x2 = x1 + ( region.RegionWidth * UnitScale );
+                var y2 = y1 + ( region.RegionHeight * UnitScale );
 
                 var adjustX = 0.5f / texture.Width;
                 var adjustY = 0.5f / texture.Height;
@@ -433,8 +434,8 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
         var y  = layer.Y;
         var x1 = x * UnitScale;
         var y1 = y * UnitScale;
-        var x2 = x1 + region.RegionWidth * UnitScale;
-        var y2 = y1 + region.RegionHeight * UnitScale;
+        var x2 = x1 + ( region.RegionWidth * UnitScale );
+        var y2 = y1 + ( region.RegionHeight * UnitScale );
 
         var u1 = region.U;
         var v1 = region.V2;

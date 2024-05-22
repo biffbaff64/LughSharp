@@ -30,11 +30,10 @@
 #pragma warning disable IDE0090 // Use 'new(...)'.
 
 #if !OGL_WRAPPER_API_BOTH && !OGL_WRAPPER_API_UNSAFE && !OGL_WRAPPER_API_SAFE
-#error You must define one of OGL_WRAPPER_API_BOTH, OGL_WRAPPER_API_UNSAFE, or OGL_WRAPPER_API_SAFE
+    #error You must define one of OGL_WRAPPER_API_BOTH, OGL_WRAPPER_API_UNSAFE, or OGL_WRAPPER_API_SAFE
 #endif
 
 #if OGL_P_CORE
-
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 #if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
 using System.Numerics;
@@ -62,14 +61,12 @@ using GLbyte = System.SByte;
 using GLushort = System.UInt16;
 using GLchar = System.Byte;
 #endif
-
 #if OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
 #endif
 
 #if OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
 using GLuint64 = System.UInt64;
 using GLint64 = System.Int64;
-
 #endif
 
 #endif
@@ -79,25 +76,30 @@ namespace DotGL;
 /// <summary>
 ///     Bindings for OpenGL 4.6, both core and compatibility profiles.
 ///     Blazing fast, low level, direct access to the OpenGL API for all versions of OpenGL,
-///     using the new unmanaged delegates feature in C# 9.0,
+///     using the unmanaged delegates feature in C# 9.0,
 ///     <para>
-///         <see
-///             href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/function-pointers" />
-///         .
+///         <a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/function-pointers"/>
 ///     </para>
-///     Also includes a few overloads of many functions to make them a bit more C# friendly
-///     (e.g. passing arrays of bytes or floats instead of passing pointers to fixed memory
-///     locations). Significant effort has been made to make sure that the overloads are as
-///     efficient as possible, in terms of both performance and memory usage.
+///     <para>
+///         Also includes a few overloads of many functions to make them a bit more C# friendly
+///         (e.g. passing arrays of bytes or floats instead of passing pointers to fixed memory
+///         locations). Significant effort has been made to make sure that the overloads are as
+///         efficient as possible, in terms of both performance and memory usage.
+///     </para>
 /// </summary>
-
-//[SuppressUnmanagedCodeSecurity]
 public unsafe class GLBindings
 {
     /// <summary>
     ///     The null pointer, just like in C/C++.
     /// </summary>
     public readonly void* NULL = ( void* ) 0;
+
+    // ------------------------------------------------------------------------
+
+    public ( int major, int minor ) GetProjectOpenGLVersion()
+    {
+        return ( GetProjectOpenGLVersionMajor(), GetProjectOpenGLVersionMinor() );
+    }
 
     /// <summary>
     ///     Useful helper function for getting the major OpenGL version of the project as defined
@@ -109,46 +111,17 @@ public unsafe class GLBindings
     public int GetProjectOpenGLVersionMajor()
     {
         var major = -1;
-#if OGL_V_4_6
+
+#if OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
         major = 4;
-#elif OGL_V_4_5
-        major = 4;
-#elif OGL_V_4_4
-        major = 4;
-#elif OGL_V_4_3
-        major = 4;
-#elif OGL_V_4_2
-        major = 4;
-#elif OGL_V_4_1
-        major = 4;
-#elif OGL_V_4_0
-        major = 4;
-#elif OGL_V_3_3
+#elif OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3
         major = 3;
-#elif OGL_V_3_2
-        major = 3;
-#elif OGL_V_3_1
-        major = 3;
-#elif OGL_V_3_0
-        major = 3;
-#elif OGL_V_2_1
+#elif OGL_V_2_0 || OGL_V_2_1
         major = 2;
-#elif OGL_V_2_0
-        major = 2;
-#elif OGL_V_1_5
-        major = 1;
-#elif OGL_V_1_4
-        major = 1;
-#elif OGL_V_1_3
-        major = 1;
-#elif OGL_V_1_2
-        major = 1;
-#elif OGL_V_1_1
-        major = 1;
-#elif OGL_V_1_0
+#elif OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5
         major = 1;
 #else
-#error "OpenGL version not defined"
+    #error "OpenGL version not defined"
 #endif
         return major;
     }
@@ -163,53 +136,25 @@ public unsafe class GLBindings
     public int GetProjectOpenGLVersionMinor()
     {
         var minor = -1;
+
 #if OGL_V_4_6
         minor = 6;
-#elif OGL_V_4_5
+#elif OGL_V_1_5 || OGL_V_4_5
         minor = 5;
-#elif OGL_V_4_4
+#elif OGL_V_1_4 || OGL_V_4_4
         minor = 4;
-#elif OGL_V_4_3
+#elif OGL_V_1_3 || OGL_V_3_3 || OGL_V_4_3
         minor = 3;
-#elif OGL_V_4_2
+#elif OGL_V_1_2 || OGL_V_3_2 || OGL_V_4_2
         minor = 2;
-#elif OGL_V_4_1
+#elif OGL_V_1_1 || OGL_V_2_1 || OGL_V_3_1 || OGL_V_4_1
         minor = 1;
-#elif OGL_V_4_0
-        minor = 0;
-#elif OGL_V_3_3
-        minor = 3;
-#elif OGL_V_3_2
-        minor = 2;
-#elif OGL_V_3_1
-        minor = 1;
-#elif OGL_V_3_0
-        minor = 0;
-#elif OGL_V_2_1
-        minor = 1;
-#elif OGL_V_2_0
-        minor = 0;
-#elif OGL_V_1_5
-        minor = 5;
-#elif OGL_V_1_4
-        minor = 4;
-#elif OGL_V_1_3
-        minor = 3;
-#elif OGL_V_1_2
-        minor = 2;
-#elif OGL_V_1_1
-        minor = 1;
-#elif OGL_V_1_0
+#elif OGL_V_1_0 || OGL_V_2_0 || OGL_V_3_0 || OGL_V_4_0
         minor = 0;
 #else
-#error "OpenGL version not defined"
+    #error "OpenGL version not defined"
 #endif
         return minor;
-    }
-
-    public ( int major, int minor ) GetProjectOpenGLVersion()
-    {
-        return ( GetProjectOpenGLVersionMajor(), GetProjectOpenGLVersionMinor() );
     }
 
     /// <summary>
@@ -230,7 +175,7 @@ public unsafe class GLBindings
         profile = "COMPAT";
 #error "COMPAT profile not supported yet"
 #else
-#error "OpenGL profile not defined"
+    #error "OpenGL profile not defined"
 #endif
         return profile;
     }

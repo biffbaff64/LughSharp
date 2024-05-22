@@ -144,6 +144,8 @@ public interface IGraphics
 
     #region methods
 
+    bool IsGL30Available();
+    
     /// <summary>
     ///     Returns the amount of pixels per logical pixel (point).
     /// </summary>
@@ -216,31 +218,6 @@ public interface IGraphics
     bool ContinuousRendering { get; }
 
     void RequestRendering();
-
-    /// <summary>
-    /// </summary>
-    /// <param name="pixmap"></param>
-    /// <param name="xHotspot"></param>
-    /// <param name="yHotspot"></param>
-    /// <returns></returns>
-    ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot );
-
-    /// <summary>
-    ///     Only viable on the lwjgl-backend and on the gwt-backend.
-    ///     Browsers that support cursor:url() and support the png format (the pixmap
-    ///     is converted to a data-url of type image/png) should also support custom
-    ///     cursors. Will set the mouse cursor image to the image represented by the
-    ///     Cursor. It is recommended to call this function in the main render thread,
-    ///     and maximum one time per frame.
-    /// </summary>
-    /// <param name="cursor">The mouse cursor as a <see cref="ICursor" /></param>
-    void SetCursor( ICursor cursor );
-
-    /// <summary>
-    ///     Sets one of the predefined <see cref="ICursor.SystemCursor" />s.
-    /// </summary>
-    /// <param name="systemCursor">The system cursor to use.</param>
-    void SetSystemCursor( ICursor.SystemCursor systemCursor );
 
     #endregion methods
 }

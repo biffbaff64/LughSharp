@@ -128,12 +128,9 @@ public class FloatTextureData : ITextureData
         }
         else
         {
-            if ( !Gdx.Graphics.IsGL30Available() )
+            if ( !Gdx.Graphics.SupportsExtension( "GL_ARB_texture_float" ) )
             {
-                if ( !Gdx.Graphics.SupportsExtension( "GL_ARB_texture_float" ) )
-                {
-                    throw new GdxRuntimeException( "Extension GL_ARB_texture_float not supported!" );
-                }
+                throw new GdxRuntimeException( "Extension GL_ARB_texture_float not supported!" );
             }
 
             // in desktop OpenGL the texture format is defined only by the third argument,

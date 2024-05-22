@@ -25,9 +25,20 @@
 
 namespace LughSharp.LibCore.Graphics;
 
+/// <summary>
+///     Represents a mouse cursor.
+///     Create a cursor via <see cref="IGraphics.NewCursor(Pixmap, int, int)"/>.
+///     To set the cursor use <see cref="IGraphics.SetCursor(ICursor)"/>.
+///     To use one of the system cursors, call <see cref="IGraphics.SetSystemCursor"/>.
+/// </summary>
+[PublicAPI]
 public interface ICursor
 {
-    public enum SystemCursor
+    /// <summary>
+    ///     Available system mouse cursor types.
+    /// </summary>
+    [PublicAPI]
+    public enum SystemCursor : int
     {
         Arrow,
         Ibeam,
@@ -36,4 +47,44 @@ public interface ICursor
         HorizontalResize,
         VerticalResize
     }
+
+    /// <summary>
+    ///     Create a new cursor represented by the <see cref="Pixmap"/>. The Pixmap must be
+    ///     in RGBA8888 format, Width &amp; height must be powers-of-two greater than zero (not
+    ///     necessarily equal) and of a certain minimum size (32x32 is a safe bet), and alpha
+    ///     transparency must be single-bit (i.e., 0x00 or 0xFF only).
+    ///     <para>
+    ///         This function returns a Cursor object that can be set as the system cursor
+    ///         by calling <see cref="SetCursor(ICursor)"/>.
+    ///     </para>
+    /// </summary>
+    /// <param name="pixmap"> the mouse cursor image as a <see cref="Pixmap"/>. </param>
+    /// <param name="xHotspot">
+    /// The x location of the hotspot pixel within the cursor image (origin top-left corner)
+    /// </param>
+    /// <param name="yHotspot">
+    /// The y location of the hotspot pixel within the cursor image (origin top-left corner)
+    /// </param>
+    /// <returns>
+    /// a cursor object that can be used by calling <see cref="SetCursor(ICursor)"/> or null
+    /// if not supported
+    /// </returns>
+    ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot );
+
+    /// <summary>
+    ///     Only viable on the lwjgl-backend and on the gwt-backend.
+    ///     Browsers that support cursor:url() and support the png format (the pixmap
+    ///     is converted to a data-url of type image/png) should also support custom
+    ///     cursors. Will set the mouse cursor image to the image represented by the
+    ///     Cursor. It is recommended to call this function in the main render thread,
+    ///     and maximum one time per frame.
+    /// </summary>
+    /// <param name="cursor">The mouse cursor as a <see cref="ICursor" /></param>
+    void SetCursor( ICursor cursor );
+
+    /// <summary>
+    ///     Sets one of the predefined <see cref="ICursor.SystemCursor" />s.
+    /// </summary>
+    /// <param name="systemCursor"> The system cursor to use. </param>
+    void SetSystemCursor( ICursor.SystemCursor systemCursor );
 }

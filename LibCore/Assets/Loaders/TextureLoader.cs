@@ -72,7 +72,7 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
                 _loaderInfo.Texture = parameter.Texture;
             }
 
-            _loaderInfo.Data = ITextureData.Factory.LoadFromFile( file, format, genMipMaps );
+            _loaderInfo.Data = ITextureData.TextureDataFactory.LoadFromFile( file, format, genMipMaps );
         }
         else
         {

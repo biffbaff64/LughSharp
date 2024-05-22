@@ -33,12 +33,12 @@ namespace LughSharp.LibCore.Graphics;
 public class FPSLogger
 {
     private readonly int  _bound;
-    private          long _startTime;
+    private          long _lastLogTime;
 
     public FPSLogger( int bound = int.MaxValue )
     {
-        _bound     = bound;
-        _startTime = TimeUtils.NanoTime();
+        _bound       = bound;
+        _lastLogTime = TimeUtils.NanoTime();
     }
 
     /// <summary>
@@ -46,18 +46,20 @@ public class FPSLogger
     /// </summary>
     public void Log()
     {
-        var nanoTime = TimeUtils.NanoTime();
+        var currentTime = TimeUtils.NanoTime();
+        var elapsedTime = TimeSpan.FromTicks( currentTime - _lastLogTime );
 
-        if ( ( nanoTime - _startTime ) > 1000000000 ) // 1,000,000,000ns == one second
+        // Log FPS if at least one second has passed
+        if ( elapsedTime.TotalSeconds >= 1 )
         {
             var fps = Gdx.Graphics.GetFramesPerSecond();
 
-            if ( fps < _bound )
+            if ( fps <= _bound )
             {
-                Logger.Debug( "fps: {fps}" );
-
-                _startTime = nanoTime;
+                Logger.Debug( $"FPS: {fps}" );
             }
+
+            _lastLogTime = currentTime;
         }
     }
 }

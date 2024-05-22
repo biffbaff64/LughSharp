@@ -565,7 +565,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
 
         for ( var i = Limit - 1; i >= p; i-- )
         {
-            h = 31 * h + ( int ) Get( i );
+            h = ( 31 * h ) + ( int ) Get( i );
         }
 
         return h;

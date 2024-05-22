@@ -99,11 +99,10 @@ public class Sprite : TextureRegion
         SetSizeAndOrigin( Math.Abs( srcWidth ), Math.Abs( srcHeight ) );
     }
 
-    // Note the region is copied.
     /// <summary>
     ///     Creates a sprite based on a specific TextureRegion.
     ///     The new sprite's region is a copy of the parameter region - altering one
-    ///     does not affect the other
+    ///     does not affect the other.
     /// </summary>
     public Sprite( TextureRegion region )
     {
@@ -150,9 +149,8 @@ public class Sprite : TextureRegion
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Helper method for constructors which allows calls to <see cref="SetSize" />
-    ///     and <see cref="SetOrigin" /> as they are virtual methods which cannot be
-    ///     called from constructors.
+    ///     Helper method for constructors which allows calls to virtual
+    ///     methods which cannot be called from constructors.
     /// </summary>
     /// <param name="srcWidth"></param>
     /// <param name="srcHeight"></param>
@@ -165,12 +163,26 @@ public class Sprite : TextureRegion
     /// <summary>
     ///     Make this sprite a copy in every way of the specified sprite
     /// </summary>
+    /// <summary>
+    /// Sets the properties of this Sprite to match those of the provided Sprite.
+    /// </summary>
+    /// <param name="sprite">The Sprite whose properties will be copied.</param>
+    /// <exception cref="ArgumentNullException">Thrown if the provided sprite is null.</exception>
     public void Set( Sprite sprite )
     {
-        ArgumentNullException.ThrowIfNull( sprite );
+        ArgumentNullException.ThrowIfNull( sprite, nameof( sprite ) );
 
-        Array.Copy( sprite.Vertices, 0, Vertices, 0, SPRITE_SIZE );
+        try
+        {
+            // Copy vertices array
+            Array.Copy( sprite.Vertices, 0, Vertices, 0, SPRITE_SIZE );
+        }
+        catch ( ArgumentException ex )
+        {
+            throw new InvalidOperationException( "Failed to copy vertices array.", ex );
+        }
 
+        // Assign properties
         Texture      = sprite.Texture;
         U            = sprite.U;
         V            = sprite.V;
@@ -189,6 +201,7 @@ public class Sprite : TextureRegion
         ScaleY       = sprite.ScaleY;
         _dirty       = sprite._dirty;
 
+        // Copy color
         _color.Set( sprite._color );
     }
 
@@ -829,7 +842,7 @@ public class Sprite : TextureRegion
             Vertices[ IBatch.U2 ] = value;
         }
     }
-    
+
     public override float V
     {
         get => base.V;
@@ -853,7 +866,7 @@ public class Sprite : TextureRegion
             Vertices[ IBatch.U4 ] = value;
         }
     }
-    
+
     public override float V2
     {
         get => base.V2;
@@ -876,7 +889,7 @@ public class Sprite : TextureRegion
         {
             var color = Color;
 
-            Color.Abgr8888ToColor( ref color, value );
+            Color.ABGR8888ToColor( ref color, value );
 
             Vertices[ IBatch.C1 ] = value;
             Vertices[ IBatch.C2 ] = value;

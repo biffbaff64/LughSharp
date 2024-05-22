@@ -104,19 +104,17 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     /// <summary>
     /// </summary>
     /// <param name="manager"></param>
-    /// <param name="fileName"></param>
     /// <param name="tmxFile"></param>
     /// <param name="parameter"></param>
-    public override void Load( AssetManager? manager,
-                               string? fileName,
-                               FileInfo? tmxFile,
-                               LoaderParameters? parameter )
+    public override object Load( AssetManager? manager,
+                                  FileInfo? tmxFile,
+                                  LoaderParameters? parameter )
     {
         Debug.Assert( tmxFile != null );
 
-        Map = LoadTiledMap( tmxFile,
-                            parameter,
-                            new IImageResolver.AssetManagerImageResolver( manager! ) );
+        Map = LoadTiledMap( tmxFile, parameter, new IImageResolver.AssetManagerImageResolver( manager! ) );
+
+        return Map;
     }
 
     /// <summary>
