@@ -50,14 +50,22 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 [PublicAPI]
 public class Stage : InputAdapter, IDisposable
 {
-    private readonly bool                        _ownsBatch;
-    private readonly Actor?[]                    _pointerOverActors = new Actor?[ 20 ];
-    private readonly int[]                       _pointerScreenX    = new int[ 20 ];
-    private readonly int[]                       _pointerScreenY    = new int[ 20 ];
-    private readonly bool[]                      _pointerTouched    = new bool[ 20 ];
-    private readonly Group                       _root              = null!;
-    private readonly Vector2                     _tempCoords        = new();
-    private readonly SnapshotArray< TouchFocus > _touchFocuses      = new( true, 4 );
+    public float Width  => Viewport.WorldWidth;
+    public float Height => Viewport.WorldHeight;
+
+    public SnapshotArray< TouchFocus > TouchFocuses { get; }      = new( true, 4 );
+    public Camera?                     Camera       { get; set; } = null!;
+    public Viewport                    Viewport     { get; }
+    public IBatch                      Batch        { get; }
+    public bool                        Debug        { get; set; } // True if any actor has ever had debug enabled.
+
+    private readonly bool     _ownsBatch;
+    private readonly Actor?[] _pointerOverActors = new Actor?[ 20 ];
+    private readonly int[]    _pointerScreenX    = new int[ 20 ];
+    private readonly int[]    _pointerScreenY    = new int[ 20 ];
+    private readonly bool[]   _pointerTouched    = new bool[ 20 ];
+    private readonly Group    _root              = null!;
+    private readonly Vector2  _tempCoords        = new();
 
     private bool            _debugAll;
     private bool            _debugParentUnderMouse;
@@ -70,9 +78,6 @@ public class Stage : InputAdapter, IDisposable
     private int             _mouseScreenY;
     private Actor?          _scrollFocus;
 
-    // True if any actor has ever had debug enabled.
-    public bool Debug { get; set; }
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -81,11 +86,10 @@ public class Stage : InputAdapter, IDisposable
     ///     <see cref="Scaling.Stretch" />. The stage will use its own <see cref="IBatch" />
     ///     which will be disposed when the stage is disposed.
     /// </summary>
-    public Stage()
-        : this( new ScalingViewport( Scaling.Stretch,
-                                     Gdx.Graphics.Width,
-                                     Gdx.Graphics.Height,
-                                     new OrthographicCamera() ), new SpriteBatch() )
+    public Stage() : this( new ScalingViewport( Scaling.Stretch,
+                                                Gdx.Graphics.Width,
+                                                Gdx.Graphics.Height,
+                                                new OrthographicCamera() ), new SpriteBatch() )
     {
         _ownsBatch = true;
     }
@@ -94,8 +98,7 @@ public class Stage : InputAdapter, IDisposable
     ///     Creates a stage with the specified viewport. The stage will use its own
     ///     <see cref="IBatch" /> which will be disposed when the stage is disposed.
     /// </summary>
-    public Stage( Viewport viewport )
-        : this( viewport, new SpriteBatch() )
+    public Stage( Viewport viewport ) : this( viewport, new SpriteBatch() )
     {
         _ownsBatch = true;
     }
@@ -243,14 +246,6 @@ public class Stage : InputAdapter, IDisposable
             Pools< FocusListener.FocusEvent >.Free( focusEvent );
         }
     }
-
-    public float                       Width        => Viewport.WorldWidth;
-    public float                       Height       => Viewport.WorldHeight;
-    public SnapshotArray< TouchFocus > TouchFocuses => _touchFocuses;
-
-    public Camera?  Camera   { get; set; } = null!;
-    public Viewport Viewport { get; }
-    public IBatch   Batch    { get; }
 
     /// <summary>
     ///     Returns the root group which holds all actors in the stage.
@@ -599,7 +594,7 @@ public class Stage : InputAdapter, IDisposable
         _mouseScreenX              = screenX;
         _mouseScreenY              = screenY;
 
-        if ( _touchFocuses.Size == 0 )
+        if ( TouchFocuses.Size == 0 )
         {
             return false;
         }
@@ -619,9 +614,9 @@ public class Stage : InputAdapter, IDisposable
         inputEvent.StageY  = _tempCoords.X;
         inputEvent.Pointer = pointer;
 
-        TouchFocus?[] focuses = _touchFocuses.Begin();
+        TouchFocus?[] focuses = TouchFocuses.Begin();
 
-        for ( int i = 0, n = _touchFocuses.Size; i < n; i++ )
+        for ( int i = 0, n = TouchFocuses.Size; i < n; i++ )
         {
             var focus = focuses[ i ];
 
@@ -630,7 +625,7 @@ public class Stage : InputAdapter, IDisposable
                 continue;
             }
 
-            if ( !_touchFocuses.Contains( focus ) )
+            if ( !TouchFocuses.Contains( focus ) )
             {
                 // Touch focus already gone.
                 continue;
@@ -645,7 +640,7 @@ public class Stage : InputAdapter, IDisposable
             }
         }
 
-        _touchFocuses.End();
+        TouchFocuses.End();
 
         var handled = inputEvent.IsHandled;
 
@@ -666,7 +661,7 @@ public class Stage : InputAdapter, IDisposable
         _pointerScreenX[ pointer ] = screenX;
         _pointerScreenY[ pointer ] = screenY;
 
-        if ( _touchFocuses.Size == 0 )
+        if ( TouchFocuses.Size == 0 )
         {
             return false;
         }
@@ -687,9 +682,9 @@ public class Stage : InputAdapter, IDisposable
         inputEvent.Pointer = pointer;
         inputEvent.Button  = button;
 
-        TouchFocus?[] focuses = _touchFocuses.Begin();
+        TouchFocus?[] focuses = TouchFocuses.Begin();
 
-        for ( int i = 0, n = _touchFocuses.Size; i < n; i++ )
+        for ( int i = 0, n = TouchFocuses.Size; i < n; i++ )
         {
             var focus = focuses[ i ];
 
@@ -698,7 +693,7 @@ public class Stage : InputAdapter, IDisposable
                 continue;
             }
 
-            if ( !_touchFocuses.Remove( focus ) )
+            if ( !TouchFocuses.Remove( focus ) )
             {
                 // Touch focus already gone.
                 continue;
@@ -715,7 +710,7 @@ public class Stage : InputAdapter, IDisposable
             Pools< TouchFocus >.Free( focus );
         }
 
-        _touchFocuses.End();
+        TouchFocuses.End();
 
         var handled = inputEvent.IsHandled;
         Pools< InputEvent >.Free( inputEvent );
@@ -901,7 +896,7 @@ public class Stage : InputAdapter, IDisposable
         focus.Pointer       = pointer;
         focus.Button        = button;
 
-        _touchFocuses.Add( focus );
+        TouchFocuses.Add( focus );
     }
 
     /// <summary>
@@ -915,9 +910,9 @@ public class Stage : InputAdapter, IDisposable
                                   int pointer,
                                   int button )
     {
-        for ( var i = _touchFocuses.Size - 1; i >= 0; i-- )
+        for ( var i = TouchFocuses.Size - 1; i >= 0; i-- )
         {
-            var focus = _touchFocuses.GetAt( i );
+            var focus = TouchFocuses.GetAt( i );
 
             if ( ( focus.Listener == listener )
               && ( focus.ListenerActor == listenerActor )
@@ -925,7 +920,7 @@ public class Stage : InputAdapter, IDisposable
               && ( focus.Pointer == pointer )
               && ( focus.Button == button ) )
             {
-                _touchFocuses.RemoveAt( i );
+                TouchFocuses.RemoveAt( i );
                 Pools< TouchFocus >.Free( focus );
             }
         }
@@ -940,9 +935,9 @@ public class Stage : InputAdapter, IDisposable
         // Cancel all current touch focuses for the specified listener, allowing
         // for concurrent modification, and never cancel the same focus twice.
         InputEvent?   inputEvent = null;
-        TouchFocus?[] items      = _touchFocuses.Begin();
+        TouchFocus?[] items      = TouchFocuses.Begin();
 
-        for ( int i = 0, n = _touchFocuses.Size; i < n; i++ )
+        for ( int i = 0, n = TouchFocuses.Size; i < n; i++ )
         {
             var focus = items[ i ];
 
@@ -951,7 +946,7 @@ public class Stage : InputAdapter, IDisposable
                 continue;
             }
 
-            if ( !_touchFocuses.Remove( focus ) )
+            if ( !TouchFocuses.Remove( focus ) )
             {
                 continue; // Touch focus already gone.
             }
@@ -982,7 +977,7 @@ public class Stage : InputAdapter, IDisposable
             // (eg if cancelTouchFocus is called from touchDragged).
         }
 
-        _touchFocuses.End();
+        TouchFocuses.End();
 
         if ( inputEvent != null )
         {
@@ -1021,9 +1016,9 @@ public class Stage : InputAdapter, IDisposable
 
         // Cancel all current touch focuses except for the specified listener,
         // allowing for concurrent modification, and never cancel the same focus twice.
-        TouchFocus?[] items = _touchFocuses.Begin();
+        TouchFocus?[] items = TouchFocuses.Begin();
 
-        for ( int i = 0, n = _touchFocuses.Size; i < n; i++ )
+        for ( int i = 0, n = TouchFocuses.Size; i < n; i++ )
         {
             var focus = items[ i ];
 
@@ -1035,7 +1030,7 @@ public class Stage : InputAdapter, IDisposable
 
             if ( focus != null )
             {
-                if ( !_touchFocuses.Remove( focus ) )
+                if ( !TouchFocuses.Remove( focus ) )
                 {
                     continue; // Touch focus already gone.
                 }
@@ -1052,7 +1047,7 @@ public class Stage : InputAdapter, IDisposable
             // (eg if cancelTouchFocus is called from touchDragged).
         }
 
-        _touchFocuses.End();
+        TouchFocuses.End();
 
         Pools< InputEvent >.Free( inputEvent );
     }
@@ -1279,9 +1274,7 @@ public class Stage : InputAdapter, IDisposable
             _debugShapes.SetAutoShapeType( true );
         }
 
-        if ( _debugUnderMouse
-          || _debugParentUnderMouse
-          || ( _debugTableUnderMouse != Table.DebugType.None ) )
+        if ( _debugUnderMouse || _debugParentUnderMouse || ( _debugTableUnderMouse != Table.DebugType.None ) )
         {
             ScreenToStageCoordinates( _tempCoords.Set( Gdx.Input.GetX(), Gdx.Input.GetY() ) );
 
@@ -1303,6 +1296,7 @@ public class Stage : InputAdapter, IDisposable
             }
             else
             {
+                // Move up the 'family tree' to find which actor is the Table.
                 while ( actor != null )
                 {
                     if ( actor is Table )
@@ -1348,13 +1342,15 @@ public class Stage : InputAdapter, IDisposable
         Gdx.GL.glDisable( IGL.GL_BLEND );
     }
 
-    // TODO: Refactor this to remove the recursiveness
     /// <summary>
     ///     Disables debug on all actors recursively except the specified
     ///     actor and any children.
     /// </summary>
     private void DisableDebug( Actor actor, Actor except )
     {
+        ArgumentNullException.ThrowIfNull( actor );
+        ArgumentNullException.ThrowIfNull( except );
+
         if ( actor == except )
         {
             return;
@@ -1366,7 +1362,10 @@ public class Stage : InputAdapter, IDisposable
         {
             for ( int i = 0, n = group.Children.Size; i < n; i++ )
             {
-                DisableDebug( group.Children.GetAt( i ), except );
+                if ( group.Children.GetAt( i ) != except )
+                {
+                    group.Children.GetAt( i ).DebugActive = false;
+                }
             }
         }
     }
@@ -1396,19 +1395,23 @@ public class Stage : InputAdapter, IDisposable
 
         screenY = Gdx.Graphics.Height - 1 - screenY;
 
-        return ( screenX >= x0 ) && ( screenX < x1 ) && ( screenY >= y0 ) && ( screenY < y1 );
+        return ( screenX >= x0 ) && ( screenX < x1 )
+            && ( screenY >= y0 ) && ( screenY < y1 );
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
+    
+    //TODO: NEEDS Documentation!!
+    
     [PublicAPI]
     public class TouchFocus
     {
-        public int             Button        { get; set; }
-        public IEventListener? Listener      { get; set; }
-        public Actor?          ListenerActor { get; set; }
-        public int             Pointer       { get; set; }
-        public Actor?          Target        { get; set; }
+        public IEventListener? Listener      { get; set; } = null;
+        public Actor?          ListenerActor { get; set; } = null;
+        public Actor?          Target        { get; set; } = null;
+        public int             Button        { get; set; } = 0;
+        public int             Pointer       { get; set; } = 0;
 
         public void Reset()
         {

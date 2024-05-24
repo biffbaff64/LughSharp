@@ -54,45 +54,31 @@ public abstract class AsynchronousAssetLoader< TAssetType, TParameters >
     /// <param name="manager"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public abstract object? Load( AssetManager manager, FileInfo? file, TParameters? parameter );
+    public abstract void LoadAsync( AssetManager manager, FileInfo? file, TParameters? parameter );
 
     /// <summary>
-    ///     Called if this task is unloaded before loadSync is called. This method may be
-    ///     invoked on any thread, but will not be invoked during or after loadSync. This
-    ///     method is not invoked when a task is cancelled because it threw an exception,
-    ///     only when the asset is unloaded before loading is complete. The default
-    ///     implementation does nothing. Subclasses should release any resources acquired
-    ///     in loadAsync, which may or may not have been called before this method, but
-    ///     never during or after this method. Note that loadAsync may still be executing
-    ///     when this method is called and must release any resources it allocated.
+    ///     Called if this task is unloaded before <see cref="LoadSync"/> is called. This method may
+    ///     be invoked on any thread, but will not be invoked during or after <see cref="LoadSync"/>.
+    ///     This method is not invoked when a task is cancelled because it threw an exception, only
+    ///     when the asset is unloaded before loading is complete. The default implementation does
+    ///     nothing. Subclasses should release any resources acquired in <see cref="LoadAsync"/>,
+    ///     which may or may not have been called before this method, but never during or after this
+    ///     method. Note that <see cref="LoadAsync"/> may still be executing when this method is called
+    ///     and must release any resources it allocated.
     /// </summary>
     /// <param name="manager"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public virtual void Unload( AssetManager manager, FileInfo? file, TParameters parameter )
+    public virtual void UnloadAsync( AssetManager manager, FileInfo? file, TParameters parameter )
     {
     }
-}
 
-//TODO: This class needs to be removed
-[PublicAPI]
-public abstract class AsynchronousAssetLoader : AssetLoader
-{
-    protected AsynchronousAssetLoader( IFileHandleResolver resolver )
-        : base( resolver )
-    {
-        IsSynchronous = false;
-    }
-
-    public abstract object? Load< T >( AssetManager manager,
-                                       string? fileName,
-                                       FileInfo? file,
-                                       T parameter ) where T : AssetLoaderParameters;
-
-    public static void Unload< T >( AssetManager manager,
-                                    string fileName,
-                                    FileInfo file,
-                                    T parameter ) where T : AssetLoaderParameters
-    {
-    }
+    /// <summary>
+    /// Loads the OpenGL part of the asset.
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="fileName"></param>
+    /// <param name="file"> the resolved file to load </param>
+    /// <param name="parameter"></param>
+    public abstract object? LoadSync( AssetManager manager, FileInfo? file, TParameters parameter );
 }

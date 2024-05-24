@@ -27,6 +27,7 @@ using System.Text;
 using LughSharp.LibCore.Assets.Loaders;
 using LughSharp.LibCore.Assets.Loaders.Resolvers;
 using LughSharp.LibCore.Scenes.Scene2D.UI;
+using LughSharp.LibCore.Utils.Async;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
@@ -50,6 +51,7 @@ public class AssetManager
     private readonly List< AssetDescriptor >                                        _loadQueue         = new();
     private readonly Stack< AssetLoadingTask >                                      _tasks             = new();
 
+    private AsyncExecutor?       _executor;
     private IAssetErrorListener? _listener;
     private int                  _loaded;
     private int                  _peakTasks;
@@ -453,7 +455,7 @@ public class AssetManager
         {
             throw new GdxRuntimeException( $"Asset not loaded: {fileName}: Type not specified." );
         }
-        
+
         if ( !_assets.TryGetValue( type, out Dictionary< string, IRefCountedContainer >? assetRef )
           || !assetRef.TryGetValue( fileName, out var container ) )
         {
@@ -880,7 +882,7 @@ public class AssetManager
             throw new GdxRuntimeException( $"No loader for type: {assetDesc.AssetType}" );
         }
 
-        _tasks.Push( new AssetLoadingTask( this, assetDesc, loader ) );
+        _tasks.Push( new AssetLoadingTask( this, assetDesc, loader, _executor ) );
 
         _peakTasks++;
     }

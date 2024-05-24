@@ -42,13 +42,7 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
         LoadedMusic = null!;
     }
 
-    /// <summary>
-    ///     Returns the assets this asset requires to be loaded first.
-    ///     This method may be called on a thread other than the GL thread.
-    /// </summary>
-    /// <param name="fileName">name of the asset to load</param>
-    /// <param name="file">the resolved file to load</param>
-    /// <param name="parameter">parameters for loading the asset</param>
+    /// <inheritdoc/>
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
                                                              AssetLoaderParameters? parameter )
@@ -56,16 +50,13 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
         return null!;
     }
 
-    /// <summary>
-    ///     Loads the non-OpenGL part of the asset and injects any dependencies of
-    ///     the asset into the AssetManager.
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
-    public override object Load( AssetManager? manager,
-                               FileInfo? file,
-                               AssetLoaderParameters? parameter )
+    /// <inheritdoc />
+    public override void LoadAsync( AssetManager manager, FileInfo? file, AssetLoaderParameters? parameter )
+    {
+    }
+
+    /// <inheritdeoc/>
+    public override object LoadSync( AssetManager? manager, FileInfo? file, AssetLoaderParameters? parameter )
     {
         LoadedMusic = Gdx.Audio.NewMusic( file );
 

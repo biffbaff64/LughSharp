@@ -63,12 +63,17 @@ public class ShaderProgramLoader
         _fragmentFileSuffix = fragmentFileSuffix;
     }
 
-    public override void Load( AssetManager? manager,
-                               string? fileName,
-                               FileInfo? file,
-                               ShaderProgramParameter? parameter )
+    /// <inheritdoc />
+    public override void LoadAsync( AssetManager manager, FileInfo? file, ShaderProgramParameter? parameter )
     {
-        ArgumentNullException.ThrowIfNull( fileName );
+    }
+
+    /// <inheritdoc />
+    public override object LoadSync( AssetManager? manager,
+                                     FileInfo? file,
+                                     ShaderProgramParameter? parameter )
+    {
+        ArgumentNullException.ThrowIfNull( file?.Name );
 
         string? vertFileName = null;
         string? fragFileName = null;
@@ -86,24 +91,24 @@ public class ShaderProgramLoader
             }
         }
 
-        if ( ( vertFileName == null ) && fileName.EndsWith( _fragmentFileSuffix, StringComparison.Ordinal ) )
+        if ( ( vertFileName == null ) && file.Name.EndsWith( _fragmentFileSuffix, StringComparison.Ordinal ) )
         {
-            vertFileName = fileName[ ..^_fragmentFileSuffix.Length ] + _vertexFileSuffix;
+            vertFileName = file.Name[ ..^_fragmentFileSuffix.Length ] + _vertexFileSuffix;
         }
 
-        if ( ( fragFileName == null ) && fileName.EndsWith( _vertexFileSuffix, StringComparison.Ordinal ) )
+        if ( ( fragFileName == null ) && file.Name.EndsWith( _vertexFileSuffix, StringComparison.Ordinal ) )
         {
-            fragFileName = fileName[ ..^_vertexFileSuffix.Length ] + _fragmentFileSuffix;
+            fragFileName = file.Name[ ..^_vertexFileSuffix.Length ] + _fragmentFileSuffix;
         }
 
         var vertexFile   = vertFileName == null ? file : Resolve( vertFileName );
         var fragmentFile = fragFileName == null ? file : Resolve( fragFileName );
 
-        var vertexCode = File.ReadAllText( Path.GetFullPath( vertexFile!.Name ) );
+        var vertexCode = File.ReadAllText( Path.GetFullPath( vertexFile.Name ) );
 
         var fragmentCode = vertexFile.Equals( fragmentFile )
                                ? vertexCode
-                               : File.ReadAllText( Path.GetFullPath( fragmentFile!.Name ) );
+                               : File.ReadAllText( Path.GetFullPath( fragmentFile.Name ) );
 
         if ( parameter != null )
         {
@@ -123,8 +128,10 @@ public class ShaderProgramLoader
         if ( ( ( parameter == null ) || parameter.LogOnCompileFailure )
           && !shaderProgram.IsCompiled )
         {
-            Logger.Error( $"ShaderProgram {fileName} failed to compile:\n{shaderProgram.Log}" );
+            Logger.Error( $"ShaderProgram {file.Name} failed to compile:\n{shaderProgram.Log}" );
         }
+
+        return shaderProgram;
     }
 
     // ------------------------------------------------------------------------

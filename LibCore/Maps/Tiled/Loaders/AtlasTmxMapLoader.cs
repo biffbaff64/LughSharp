@@ -86,7 +86,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     }
 
     /// <inheritdoc />
-    public override object Load( AssetManager? manager,
+    public override object LoadAsync( AssetManager? manager,
                                FileInfo? tmxFile,
                                AtlasTiledMapLoaderParameters? parameter )
     {

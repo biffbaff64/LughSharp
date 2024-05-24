@@ -106,7 +106,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     /// <param name="manager"></param>
     /// <param name="tmxFile"></param>
     /// <param name="parameter"></param>
-    public override object Load( AssetManager? manager,
+    public override object LoadAsync( AssetManager? manager,
                                   FileInfo? tmxFile,
                                   LoaderParameters? parameter )
     {

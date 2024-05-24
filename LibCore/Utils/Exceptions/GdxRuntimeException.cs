@@ -52,7 +52,7 @@ public class GdxRuntimeException : ApplicationException
     ///     The exception that is the cause of the current exception, or a null
     ///     reference if no inner exception is specified.
     /// </param>
-    public GdxRuntimeException( Exception e )
+    public GdxRuntimeException( Exception? e )
         : this( "", e )
     {
     }

@@ -35,8 +35,6 @@ public abstract class ModelLoader< TP > : AsynchronousAssetLoader< Model, TP >
 {
     protected readonly ModelLoaderParameters DefaultLoaderParameters = new();
 
-    // Check this declaration.
-    // Original Java was Array< ObjectMap.Entry< string, ModelData > > items...
     protected readonly List< ObjectMap< string, ModelData >.Entry > Items = new();
 
     protected ModelLoader( IFileHandleResolver resolver ) : base( resolver )
@@ -157,9 +155,7 @@ public abstract class ModelLoader< TP > : AsynchronousAssetLoader< Model, TP >
     /// <param name="file"></param>
     /// <param name="parameter"></param>
     /// <returns></returns>
-    public override Model Load( AssetManager? manager,
-                               FileInfo? file,
-                               TP? parameter )
+    public override Model LoadSync( AssetManager? manager, FileInfo? file, TP? parameter )
     {
         ModelData? data = null;
 

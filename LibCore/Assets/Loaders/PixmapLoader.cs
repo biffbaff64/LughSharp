@@ -30,7 +30,7 @@ namespace LughSharp.LibCore.Assets.Loaders;
 [PublicAPI]
 public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.PixmapLoaderParameter >
 {
-    private Pixmap _pixmap;
+    private Pixmap? _pixmap;
 
     public PixmapLoader( IFileHandleResolver resolver ) : base( resolver )
     {
@@ -38,14 +38,27 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
     }
 
     /// <inheritdoc />
-    public override void Load( AssetManager? manager,
-                               string? fileName,
-                               FileInfo? file,
-                               PixmapLoaderParameter? parameter )
+    public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
+    {
+        return null!;
+    }
+
+    /// <inheritdoc />
+    public override void LoadAsync( AssetManager? manager, FileInfo? file, PixmapLoaderParameter? parameter )
     {
         ArgumentNullException.ThrowIfNull( file );
 
         _pixmap = new Pixmap( file );
+    }
+
+    /// <inheritdoc />
+    public override object? LoadSync( AssetManager manager, FileInfo? file, PixmapLoaderParameter parameter )
+    {
+        var pixmap = this._pixmap;
+
+        this._pixmap = null;
+        
+        return pixmap;
     }
 
     /// <summary>
@@ -61,7 +74,7 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
     {
         if ( disposing )
         {
-            _pixmap.Dispose();
+            _pixmap?.Dispose();
             _pixmap = null!;
         }
     }

@@ -58,6 +58,11 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         return default( List< AssetDescriptor > )!;
     }
 
+    /// <inheritdoc />
+    public override void LoadAsync( AssetManager manager, FileInfo? file, CubemapParameter? parameter )
+    {
+    }
+
     /// <summary>
     ///     Loads the non-OpenGL part of the asset and injects any dependencies of
     ///     the asset into the AssetManager.
@@ -65,7 +70,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     /// <param name="manager">The AssetManager to use.</param>
     /// <param name="file">The assets FileInfo object.</param>
     /// <param name="parameter">The AssetLoader parameters object.</param>
-    public override Cubemap Load( AssetManager? manager, FileInfo? file, CubemapParameter? parameter )
+    public override object LoadSync( AssetManager? manager, FileInfo? file, CubemapParameter? parameter )
     {
         var cubemap = _loaderInfo.Cubemap;
         
@@ -87,13 +92,17 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         return cubemap;
     }
 
+    // ------------------------------------------------------------------------
+    
     [PublicAPI]
-    internal struct CubemapLoaderInfo
+    public struct CubemapLoaderInfo
     {
         public string?       Filename    { get; set; }
         public Cubemap?      Cubemap     { get; init; }
         public ICubemapData? CubemapData { get; init; }
     }
+
+    // ------------------------------------------------------------------------
 
     [PublicAPI]
     public class CubemapParameter : AssetLoaderParameters

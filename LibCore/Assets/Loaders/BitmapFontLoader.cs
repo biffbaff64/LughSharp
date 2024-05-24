@@ -50,16 +50,6 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
     {
     }
 
-    // ------------------------------------------------------------------------
-    // Dispose pattern
-    // ------------------------------------------------------------------------
-
-    /// <inheritdoc />
-    public void Dispose()
-    {
-        Dispose( true );
-    }
-
     /// <summary>
     ///     Returns the assets this asset requires to be loaded first.
     ///     This method may be called on a thread other than the GL thread.
@@ -114,6 +104,10 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
         return deps;
     }
 
+    public override void LoadAsync( AssetManager manager, FileInfo? file, BitmapFontParameter? parameter )
+    {
+    }
+
     /// <summary>
     /// </summary>
     /// <param name="manager"></param>
@@ -121,7 +115,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
     /// <param name="parameter"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public override BitmapFont Load( AssetManager manager, FileInfo? file, BitmapFontParameter? parameter )
+    public override object LoadSync( AssetManager manager, FileInfo? file, BitmapFontParameter? parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( file );
@@ -142,15 +136,23 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
             return new BitmapFont( file, region );
         }
 
-        var n    = ( int ) _data?.ImagePaths?.Length!;
-        var regs = new List< TextureRegion >( capacity: n );
+        var capacity = ( int ) _data?.ImagePaths?.Length!;
+        var regs     = new List< TextureRegion >( capacity );
 
-        for ( var i = 0; i < n; i++ )
+        for ( var i = 0; i < capacity; i++ )
         {
             regs.Add( new TextureRegion( manager.Get< Texture >( _data.ImagePaths[ i ] ) ) );
         }
 
         return new BitmapFont( _data, regs, true );
+    }
+
+    #region dispose pattern
+    
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        Dispose( true );
     }
 
     private void Dispose( bool disposing )
@@ -160,6 +162,8 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
             _data = null;
         }
     }
+    
+    #endregion dispose pattern
 }
 
 [PublicAPI]

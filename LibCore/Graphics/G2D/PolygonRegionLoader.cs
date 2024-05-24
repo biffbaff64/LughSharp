@@ -52,7 +52,7 @@ public class PolygonRegionLoader
     {
     }
 
-    public override object Load( AssetManager manager,
+    public override object LoadAsync( AssetManager manager,
                                   FileInfo? file,
                                   PolygonRegionParameters? parameter )
     {
