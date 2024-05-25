@@ -106,15 +106,25 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     /// <param name="manager"></param>
     /// <param name="tmxFile"></param>
     /// <param name="parameter"></param>
-    public override object LoadAsync( AssetManager? manager,
+    public override void LoadAsync( AssetManager? manager,
                                   FileInfo? tmxFile,
                                   LoaderParameters? parameter )
     {
         Debug.Assert( tmxFile != null );
 
         Map = LoadTiledMap( tmxFile, parameter, new IImageResolver.AssetManagerImageResolver( manager! ) );
+    }
 
+    /// <inheritdoc />
+    public override TiledMap LoadSync( AssetManager manager, FileInfo? file, LoaderParameters parameter )
+    {
         return Map;
+    }
+
+    /// <inheritdoc />
+    public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
+    {
+        return null!;
     }
 
     /// <summary>

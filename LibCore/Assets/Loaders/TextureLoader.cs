@@ -39,11 +39,17 @@ namespace LughSharp.LibCore.Assets.Loaders;
 public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.TextureLoaderParameters >,
                              IDisposable
 {
-    private TextureLoaderInfo _loaderInfo;
+    private TextureLoaderInfo? _loaderInfo;
 
     public TextureLoader( IFileHandleResolver resolver ) : base( resolver )
     {
         _loaderInfo = new TextureLoaderInfo();
+    }
+
+    /// <inheritdoc />
+    public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
+    {
+        return null!;
     }
 
     /// <summary>
@@ -52,10 +58,10 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
     /// <param name="manager"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public override void Load( AssetManager? manager,
-                               FileInfo? file,
-                               TextureLoaderParameters? parameter )
+    public override void LoadAsync( AssetManager? manager, FileInfo? file, TextureLoaderParameters? parameter )
     {
+        if ( _loaderInfo == null ) return;
+        
         _loaderInfo.Filename = file?.Name;
 
         if ( parameter?.TextureData == null )
@@ -72,7 +78,7 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
                 _loaderInfo.Texture = parameter.Texture;
             }
 
-            _loaderInfo.Data = ITextureData.TextureDataFactory.LoadFromFile( file, format, genMipMaps );
+            _loaderInfo.Data = ITextureData.TextureDataFactory.LoadFromFile( file!, format, genMipMaps );
         }
         else
         {
@@ -85,6 +91,55 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
             _loaderInfo.Data.Prepare();
         }
     }
+
+    /// <inheritdoc/>
+    public override Texture? LoadSync( AssetManager manager, FileInfo? file, TextureLoaderParameters? parameter )
+    {
+        if ( _loaderInfo == null ) return null;
+
+        var texture = _loaderInfo.Texture;
+        
+        if ( texture != null )
+        {
+            texture.Load( _loaderInfo.Data );
+        }
+        else
+        {
+            texture = new Texture( _loaderInfo.Data );
+        }
+
+        if ( parameter != null )
+        {
+            texture.SetFilter( parameter.MinFilter, parameter.MagFilter );
+            texture.SetWrap( parameter.WrapU, parameter.WrapV );
+        }
+
+        return texture;
+    }
+
+    #region dispose pattern
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="disposing"></param>
+    protected virtual void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            _loaderInfo = null!;
+        }
+    }
+
+    #endregion dispose pattern
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -130,28 +185,4 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
         /// </summary>
         public ITextureData? TextureData { get; set; } = null;
     }
-
-    #region dispose pattern
-
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="disposing"></param>
-    protected virtual void Dispose( bool disposing )
-    {
-        if ( disposing )
-        {
-            _loaderInfo = null!;
-        }
-    }
-
-    #endregion dispose pattern
 }

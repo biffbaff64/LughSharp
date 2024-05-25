@@ -46,45 +46,34 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 ASSETS
 ------
 
-    TODO:   Remove SynchronousAssetLoader and modify AssetLoader / AsynchronousAssetLoader
-            to be just one loading system.
-
-    FOR NOW: Just use basic file loading until the rest is working, then work on a proper
-             asset loading and management system. This will allow testing of everything else.
-             ( Don't forget Maps.Tiled.Loaders... )
-
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - AssetDescriptor
     - DONE - DONE - AssetLoaderParameters
-    - IP   - IP   - AssetLoadingTask
+    - DONE - IP   - AssetLoadingTask
     - DONE - IP   - AssetManager
-    - DONE - IP   - IAssetErrorListener
+    - DONE - DONE - IAssetErrorListener
     - DONE - DONE - RefCountedContainer
 
 ASSETS/LOADERS
 --------------
 
-    TODO:   I think most, if not all, of these classes could be modified or rewritten.
-            As I've learned more about C# I've also learned more about Tasks and Delegates,
-            I think these classes could/should use these.
-
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - AssetLoader
-    - IP   - IP   - AsynchronousAssetLoader
-    - IP   - IP   - BitmapFontLoader
-    - IP   - IP   - CubemapLoader
-    - IP   - IP   - ModelLoader
-    - IP   - IP   - MusicLoader
-    - IP   - IP   - ParticleEffectLoader
-    - IP   - IP   - PixmapLoader
-    - IP   - IP   - ShaderProgramLoader
-    - IP   - IP   - SkinLoader
-    - IP   - IP   - SoundLoader
-    - IP   - IP   - SynchronousAssetLoader
-    - IP   - IP   - TextureAtlasLoader
-    - IP   - IP   - TextureLoader
+    - DONE - DONE - AssetLoader
+    - DONE - DONE - AsynchronousAssetLoader
+    - DONE - DONE - BitmapFontLoader
+    - DONE - IP   - CubemapLoader
+    - DONE - IP   - ModelLoader
+    - DONE - IP   - MusicLoader
+    - DONE - IP   - ParticleEffectLoader
+    - DONE - IP   - PixmapLoader
+    - DONE - IP   - ShaderProgramLoader
+    - DONE - IP   - SkinLoader
+    - DONE - IP   - SoundLoader
+    - DONE - IP   - SynchronousAssetLoader
+    - DONE - IP   - TextureAtlasLoader
+    - DONE - IP   - TextureLoader
 
 ASSETS/LOADERS/RESOLVERS
 ------------------------

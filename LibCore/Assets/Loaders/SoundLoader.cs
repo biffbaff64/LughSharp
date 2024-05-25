@@ -33,20 +33,20 @@ namespace LughSharp.LibCore.Assets.Loaders;
 [PublicAPI]
 public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoaderParameters >, IDisposable
 {
+    /// <summary>
+    ///     The <see cref="ISound" /> instance currently loaded by this <see cref="SoundLoader" />.
+    /// </summary>
+    public ISound? LoadedSound { get; set; }
+
     public SoundLoader( IFileHandleResolver resolver ) : base( resolver )
     {
         LoadedSound = null!;
     }
 
-    /// <summary>
-    ///     The <see cref="ISound" /> instance currently loaded by this <see cref="SoundLoader" />.
-    /// </summary>
-    public ISound LoadedSound { get; set; }
-
     /// <inheritdoc />
-    public void Dispose()
+    public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
     {
-        Dispose( true );
+        return null!;
     }
 
     /// <summary>
@@ -54,15 +54,25 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
     ///     the asset into the AssetManager.
     /// </summary>
     /// <param name="manager"></param>
-    /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public override void Load( AssetManager? manager,
-                               string? fileName,
-                               FileInfo? file,
-                               SoundLoaderParameters? parameter )
+    public override void LoadAsync( AssetManager? manager, FileInfo? file, SoundLoaderParameters? parameter )
     {
         LoadedSound = Gdx.Audio.NewSound( file );
+    }
+
+    public override ISound? LoadSync( AssetManager manager, FileInfo? file, SoundLoaderParameters parameter )
+    {
+        var sound = this.LoadedSound;
+        this.LoadedSound = null;
+
+        return sound;
+    }
+    
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        Dispose( true );
     }
 
     private void Dispose( bool disposing )

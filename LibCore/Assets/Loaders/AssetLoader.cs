@@ -39,6 +39,9 @@ public abstract class AssetLoader
     /// </summary>
     public IFileHandleResolver Resolver { get; }
 
+    /// <summary>
+    ///     Indicates whether the child loader class is Async or Sync.
+    /// </summary>
     public bool IsSynchronous { get; set; }
     
     // ------------------------------------------------------------------------
@@ -73,10 +76,5 @@ public abstract class AssetLoader
     /// <param name="filename">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
     /// <param name="p">parameters for loading the asset</param>
-    public virtual List< AssetDescriptor > GetDependencies( string? filename,
-                                                            FileInfo? file,
-                                                            AssetLoaderParameters? p )
-    {
-        return null!;
-    }
+    public abstract List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p );
 }

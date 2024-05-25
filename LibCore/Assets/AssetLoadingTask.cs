@@ -100,9 +100,7 @@ public class AssetLoadingTask : IAsyncTask< object >
             else
             {
                 // if we have no dependencies, we load the async part of the task immediately.
-                asyncLoader?.LoadSync( _manager,
-                                       Resolve( asyncLoader, AssetDesc ),
-                                       AssetDesc.Parameters! );
+                asyncLoader?.LoadSync( _manager, Resolve( asyncLoader, AssetDesc ), AssetDesc.Parameters! );
 
                 _asyncDone = true;
             }
@@ -136,6 +134,8 @@ public class AssetLoadingTask : IAsyncTask< object >
     }
 
     /// <summary>
+    ///     Called when this task is the task that is currently being processed
+    ///     and it is unloaded.
     /// </summary>
     public void Unload()
     {
@@ -148,28 +148,32 @@ public class AssetLoadingTask : IAsyncTask< object >
         }
     }
 
-    /// <summary>
-    ///     Resolve the file and path names for the asset described in
-    ///     the member <see cref="AssetDesc" />
-    /// </summary>
-    /// <param name="loader"></param>
-    /// <param name="assetDesc"></param>
-    /// <returns></returns>
-    private static FileInfo? Resolve( AssetLoader? loader, AssetDescriptor? assetDesc )
+    private void HandleSyncLoader()
     {
-        if ( assetDesc is { File: null } descriptor )
+        var syncLoader = ( SynchronousAssetLoader< Type, AssetLoaderParameters > ) _loader;
+        
+        if ( !DependenciesLoaded )
         {
-            if ( loader != null )
+            DependenciesLoaded = true;
+            Dependencies       = syncLoader.GetDependencies( AssetDesc.Filepath, Resolve( _loader, AssetDesc ), AssetDesc.Parameters );
+            
+            if ( Dependencies == null )
             {
-                descriptor.File = loader.Resolve( descriptor.Filepath );
-            }
-        }
+                Asset = syncLoader.Load( _manager, Resolve( _loader, AssetDesc )!, AssetDesc.Parameters! );
 
-        return assetDesc?.File;
+                return;
+            }
+
+            RemoveDuplicates( Dependencies );
+
+            _manager.InjectDependencies( AssetDesc.Filepath, Dependencies );
+        }
+        else
+        {
+            Asset = syncLoader.Load( _manager, Resolve( _loader, AssetDesc )!, AssetDesc.Parameters! );
+        }
     }
 
-    /// <summary>
-    /// </summary>
     private void HandleAsyncLoader()
     {
         if ( AssetDesc == null )
@@ -236,6 +240,26 @@ public class AssetLoadingTask : IAsyncTask< object >
                                           Resolve( _loader, AssetDesc ),
                                           AssetDesc.Parameters! );
         }
+    }
+
+    /// <summary>
+    ///     Resolve the file and path names for the asset described in
+    ///     the member <see cref="AssetDesc" />
+    /// </summary>
+    /// <param name="loader"></param>
+    /// <param name="assetDesc"></param>
+    /// <returns></returns>
+    private static FileInfo? Resolve( AssetLoader? loader, AssetDescriptor? assetDesc )
+    {
+        if ( assetDesc is { File: null } descriptor )
+        {
+            if ( loader != null )
+            {
+                descriptor.File = loader.Resolve( descriptor.Filepath );
+            }
+        }
+
+        return assetDesc?.File;
     }
 
     /// <summary>

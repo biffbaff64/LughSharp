@@ -64,6 +64,12 @@ public class ShaderProgramLoader
     }
 
     /// <inheritdoc />
+    public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
+    {
+        return null!;
+    }
+
+    /// <inheritdoc />
     public override void LoadAsync( AssetManager manager, FileInfo? file, ShaderProgramParameter? parameter )
     {
     }

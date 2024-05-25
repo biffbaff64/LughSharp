@@ -48,16 +48,16 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
     {
         List< AssetDescriptor > deps = new();
 
-        if ( ( ( SkinLoaderParameters? ) parameter )?.textureAtlasPath == null )
+        if ( ( ( SkinLoaderParameters? ) parameter )?.TextureAtlasPath == null )
         {
             var path = Path.ChangeExtension( file?.FullName, ".atlas" );
 
             deps.Add( new AssetDescriptor( path, typeof( TextureAtlas ), new SkinLoaderParameters() ) );
         }
 
-        else if ( ( ( SkinLoaderParameters? ) parameter )?.textureAtlasPath != null )
+        else if ( ( ( SkinLoaderParameters? ) parameter )?.TextureAtlasPath != null )
         {
-            deps.Add( new AssetDescriptor( ( ( SkinLoaderParameters? ) parameter )?.textureAtlasPath,
+            deps.Add( new AssetDescriptor( ( ( SkinLoaderParameters? ) parameter )?.TextureAtlasPath,
                                            typeof( TextureAtlas ),
                                            parameter ) );
         }
@@ -65,10 +65,15 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
         return deps;
     }
 
-    public override void Load( AssetManager manager,
-                               string? fileName,
-                               FileInfo? file,
-                               SkinLoaderParameters? parameter )
+    /// <inheritdoc />
+    public override void LoadAsync( AssetManager manager, FileInfo? file, SkinLoaderParameters? parameter )
+    {
+    }
+
+    /// <inheritdoc />
+    public override object LoadSync( AssetManager manager,
+                                     FileInfo? file,
+                                     SkinLoaderParameters? parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( file );
@@ -79,14 +84,14 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
 
         if ( parameter != null )
         {
-            if ( parameter.textureAtlasPath != null )
+            if ( parameter.TextureAtlasPath != null )
             {
-                textureAtlasPath = parameter.textureAtlasPath;
+                textureAtlasPath = parameter.TextureAtlasPath;
             }
 
-            if ( parameter.resources != null )
+            if ( parameter.Resources != null )
             {
-                resources = parameter.resources;
+                resources = parameter.Resources;
             }
         }
 
@@ -102,9 +107,18 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
         }
 
         skin.Load( file );
+
+        return skin;
     }
 
-    private static Skin NewSkin( TextureAtlas atlas )
+    /// <summary>
+    ///     Override to allow subclasses of Skin to be loaded or the skin instance to be configured.
+    /// </summary>
+    /// <param name="atlas"> The TextureAtlas that the skin will use. </param>
+    /// <returns>
+    /// A new Skin (or subclass of Skin) instance based on the provided TextureAtlas.
+    /// </returns>
+    protected virtual Skin NewSkin( TextureAtlas atlas )
     {
         return new Skin( atlas );
     }
@@ -115,8 +129,8 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
     [PublicAPI]
     public class SkinLoaderParameters : AssetLoaderParameters
     {
-        public readonly Dictionary< string, object >? resources;
-        public readonly string?                       textureAtlasPath;
+        public Dictionary< string, object >? Resources        { get; set; }
+        public string?                       TextureAtlasPath { get; set; }
 
         public SkinLoaderParameters() : this( null, null )
         {
@@ -129,8 +143,8 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
 
         public SkinLoaderParameters( string? textureAtlasPath, Dictionary< string, object >? resources = null )
         {
-            this.textureAtlasPath = textureAtlasPath;
-            this.resources        = resources;
+            this.TextureAtlasPath = textureAtlasPath;
+            this.Resources        = resources;
         }
     }
 }

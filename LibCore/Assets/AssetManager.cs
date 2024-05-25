@@ -79,17 +79,17 @@ public class AssetManager
         if ( defaultLoaders )
         {
             //@formatter:off
-            SetLoader(typeof(BitmapFont), new BitmapFontLoader(resolver));
-            SetLoader(typeof(Texture), new TextureLoader(resolver));
-            SetLoader(typeof(TextureAtlas), new TextureAtlasLoader(resolver));
-            SetLoader(typeof(Pixmap), new PixmapLoader(resolver));
-            SetLoader(typeof(Skin), new SkinLoader(resolver));
-            SetLoader(typeof(IMusic), new MusicLoader(resolver));
-            SetLoader(typeof(ISound), new SoundLoader(resolver));
-            SetLoader(typeof(Cubemap), new CubemapLoader(resolver));
-            SetLoader(typeof(ParticleEffect), new ParticleEffectLoader(resolver));
-            SetLoader(typeof(ShaderProgram), new ShaderProgramLoader(resolver));
-            SetLoader(typeof(PolygonRegion), new PolygonRegionLoader(resolver));
+            SetLoader(typeof(BitmapFont),       new BitmapFontLoader(resolver));
+            SetLoader(typeof(Texture),          new TextureLoader(resolver));
+            SetLoader(typeof(TextureAtlas),     new TextureAtlasLoader(resolver));
+            SetLoader(typeof(Pixmap),           new PixmapLoader(resolver));
+            SetLoader(typeof(Skin),             new SkinLoader(resolver));
+            SetLoader(typeof(IMusic),           new MusicLoader(resolver));
+            SetLoader(typeof(ISound),           new SoundLoader(resolver));
+            SetLoader(typeof(Cubemap),          new CubemapLoader(resolver));
+            SetLoader(typeof(ParticleEffect),   new ParticleEffectLoader(resolver));
+            SetLoader(typeof(ShaderProgram),    new ShaderProgramLoader(resolver));
+            SetLoader(typeof(PolygonRegion),    new PolygonRegionLoader(resolver));
             //@formatter:on
         }
 
@@ -230,9 +230,9 @@ public class AssetManager
     }
 
     /// <summary>
+    ///     Returns true if an asset with the specified name is loading,
+    ///     queued to be loaded, or has been loaded.
     /// </summary>
-    /// <param name="fileName"></param>
-    /// <returns></returns>
     public bool Contains( string? fileName )
     {
         if ( fileName == null ) return false;
@@ -256,10 +256,9 @@ public class AssetManager
     }
 
     /// <summary>
+    ///     Returns true if an asset with the specified name and type is loading,
+    ///     queued to be loaded, or has been loaded.
     /// </summary>
-    /// <param name="fileName"></param>
-    /// <param name="type"></param>
-    /// <returns></returns>
     public bool Contains( string? fileName, Type? type )
     {
         if ( ( fileName == null ) || ( type == null ) ) return false;
@@ -515,9 +514,8 @@ public class AssetManager
     // ------------------------------------------------------------------------
 
     /// <summary>
+    ///     Returns whether the specified asset is contained in this manager.
     /// </summary>
-    /// <param name="asset">the asset</param>
-    /// <returns>whether the asset is contained in this manager</returns>
     public bool ContainsAsset< T >( T asset )
     {
         if ( asset == null )
@@ -541,9 +539,9 @@ public class AssetManager
     }
 
     /// <summary>
+    ///     Gets the filename for the specified asset type.
+    ///     Will return Null if the asset is not contained in this manager.
     /// </summary>
-    /// <param name="asset">the asset</param>
-    /// <returns>the filename of the asset or null</returns>
     public string? GetAssetFileName< T >( T asset )
     {
         if ( asset == null )
@@ -570,19 +568,16 @@ public class AssetManager
     }
 
     /// <summary>
+    ///     Returns TRUE if the asset identified by fileName is loaded.
     /// </summary>
-    /// <param name="fileName">the file name of the asset</param>
-    /// <returns>whether the asset is loaded</returns>
     public bool IsLoaded( string? fileName )
     {
         return ( fileName != null ) && _assetTypes.ContainsKey( fileName );
     }
 
     /// <summary>
+    ///     Returns TRUE if the asset identified by fileName and Type is loaded.
     /// </summary>
-    /// <param name="fileName">the file name of the asset</param>
-    /// <param name="type"></param>
-    /// <returns>whether the asset is loaded</returns>
     public bool IsLoaded( string fileName, Type type )
     {
         return _assets[ type ][ fileName ].Asset != null;

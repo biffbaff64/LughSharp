@@ -34,7 +34,7 @@ namespace LughSharp.LibCore.Assets.Loaders;
 ///     the atlas regions should be flipped on the y-axis or not.
 /// </summary>
 [PublicAPI]
-public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >,
+public class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >,
                                   IDisposable
 {
     private TextureAtlasData? _data;
@@ -45,24 +45,11 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
     }
 
     /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
-    }
-
-    /// <summary>
     /// </summary>
     /// <param name="assetManager"></param>
-    /// <param name="fileName"></param>
     /// <param name="file"></param>
     /// <param name="parameter"></param>
-    public override void Load( AssetManager assetManager,
-                               string? fileName,
-                               FileInfo? file,
-                               TextureAtlasParameter? parameter )
+    public override TextureAtlas Load( AssetManager assetManager, FileInfo? file, TextureAtlasParameter? parameter )
     {
         if ( _data == null )
         {
@@ -81,9 +68,11 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
             }
         }
 
-        //        var atlas = new TextureAtlas( _data );
+        var atlas = new TextureAtlas( _data );
 
         _data = null;
+
+        return atlas;
     }
 
     /// <inheritdoc />
@@ -97,7 +86,7 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
 
         _data = parameter != null
                     ? new TextureAtlasData( atlasFile, imgDir, ( ( TextureAtlasParameter ) parameter ).FlipVertically )
-                    : new TextureAtlasData( atlasFile, imgDir, false );
+                    : new TextureAtlasData( atlasFile, imgDir );
 
         var dependencies = new List< AssetDescriptor >();
 
@@ -118,6 +107,15 @@ public class TextureAtlasLoader : AsynchronousAssetLoader< TextureAtlas, Texture
         }
 
         return dependencies;
+    }
+
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
     }
 
     /// <summary>

@@ -33,6 +33,10 @@ namespace LughSharp.LibCore.Assets.Loaders;
 // ------------------------------------------------------------------------
 
 /// <summary>
+///     <see cref="AssetLoader"/> for <see cref="BitmapFont"/> instances. Loads the font
+///     description file (.fnt) asynchronously, loads the <see cref="Texture"/> containing
+///     the glyphs as a dependency. The <see cref="BitmapFontParameter"/> allows you to
+///     set things like texture filters or whether to flip the glyphs vertically.
 /// </summary>
 [PublicAPI]
 public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontParameter >, IDisposable
@@ -43,8 +47,8 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
     // ------------------------------------------------------------------------
 
     /// <summary>
+    ///     Creates a new BitmapFontLoader using the specified <see cref="IFileHandleResolver"/>
     /// </summary>
-    /// <param name="resolver"></param>
     public BitmapFontLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
@@ -104,17 +108,12 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
         return deps;
     }
 
+    /// <inheritdoc/>
     public override void LoadAsync( AssetManager manager, FileInfo? file, BitmapFontParameter? parameter )
     {
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
-    /// <returns></returns>
-    /// <exception cref="GdxRuntimeException"></exception>
+    /// <inheritdoc/>
     public override object LoadSync( AssetManager manager, FileInfo? file, BitmapFontParameter? parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );

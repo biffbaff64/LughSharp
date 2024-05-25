@@ -27,6 +27,9 @@ using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Assets;
 
+/// <summary>
+///     Error callback for asset loaders.
+/// </summary>
 [PublicAPI]
 public interface IAssetErrorListener
 {

@@ -72,12 +72,12 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         // ----------------------------------------
 
         var atlasFileHandle = GetAtlasFileHandle( tmxFile );
-        var atlas = new TextureAtlas( atlasFileHandle );
+        var atlas           = new TextureAtlas( atlasFileHandle );
 
         AtlasResolver = new IAtlasResolver.DirectAtlasResolver( atlas );
 
         var map = LoadTiledMap( tmxFile, parameter, AtlasResolver );
-        
+
         map.OwnedResources = new List< object >( new[] { atlas } );
 
         SetTextureFilters( parameter.TextureMinFilter, parameter.TextureMagFilter );
@@ -86,20 +86,34 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     }
 
     /// <inheritdoc />
-    public override object LoadAsync( AssetManager? manager,
-                               FileInfo? tmxFile,
-                               AtlasTiledMapLoaderParameters? parameter )
+    public override void LoadAsync( AssetManager? manager,
+                                      FileInfo? tmxFile,
+                                      AtlasTiledMapLoaderParameters? parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( tmxFile );
 
         var atlasHandle = GetAtlasFileHandle( tmxFile );
-        
+
         AtlasResolver = new IAtlasResolver.AssetManagerAtlasResolver( manager, atlasHandle.Name );
 
         Map = LoadTiledMap( tmxFile, parameter, AtlasResolver );
+    }
+
+    public override TiledMap LoadSync( AssetManager manager, FileInfo? file, AtlasTiledMapLoaderParameters? parameter )
+    {
+        if ( parameter != null )
+        {
+            SetTextureFilters( parameter.TextureMinFilter, parameter.TextureMagFilter );
+        }
 
         return Map;
+    }
+
+    /// <inheritdoc />
+    public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
+    {
+        return null!;
     }
 
     /// <summary>

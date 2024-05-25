@@ -34,7 +34,7 @@ namespace LughSharp.LibCore.Graphics.G2D;
 /// </summary>
 [PublicAPI]
 public class PolygonRegionLoader
-    : AsynchronousAssetLoader< PolygonRegion, PolygonRegionLoader.PolygonRegionParameters >
+    : SynchronousAssetLoader< PolygonRegion, PolygonRegionLoader.PolygonRegionParameters >
 {
     private readonly PolygonRegionParameters _defaultParameters = new();
     private readonly EarClippingTriangulator _triangulator      = new();
@@ -52,7 +52,7 @@ public class PolygonRegionLoader
     {
     }
 
-    public override object LoadAsync( AssetManager manager,
+    public override PolygonRegion Load( AssetManager manager,
                                   FileInfo? file,
                                   PolygonRegionParameters? parameter )
     {

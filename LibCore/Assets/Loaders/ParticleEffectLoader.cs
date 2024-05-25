@@ -35,7 +35,7 @@ namespace LughSharp.LibCore.Assets.Loaders;
 /// </summary>
 [PublicAPI]
 public class ParticleEffectLoader
-    : AsynchronousAssetLoader< ParticleEffect, ParticleEffectLoader.ParticleEffectParameter >
+    : SynchronousAssetLoader< ParticleEffect, ParticleEffectLoader.ParticleEffectParameter >
 {
     public ParticleEffectLoader( IFileHandleResolver resolver )
         : base( resolver )
@@ -60,7 +60,7 @@ public class ParticleEffectLoader
     /// <returns>
     ///     A loaded instance of the <see cref="ParticleEffect" /> class.
     /// </returns>
-    public override object LoadSync( AssetManager? am, FileInfo? file, ParticleEffectParameter? param )
+    public override ParticleEffect Load( AssetManager? am, FileInfo? file, ParticleEffectParameter? param )
     {
         ArgumentNullException.ThrowIfNull( am );
         ArgumentNullException.ThrowIfNull( file );
@@ -88,11 +88,6 @@ public class ParticleEffectLoader
         }
 
         return effect;
-    }
-
-    /// <inheritdoc />
-    public override void LoadAsync( AssetManager manager, FileInfo? file, ParticleEffectParameter? parameter )
-    {
     }
 
     /// <summary>

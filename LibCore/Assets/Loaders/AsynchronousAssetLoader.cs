@@ -39,8 +39,9 @@ public abstract class AsynchronousAssetLoader< TAssetType, TParameters >
     : AssetLoader where TParameters : AssetLoaderParameters
 {
     /// <summary>
+    ///     Creates a new AsynchronousAssetLoader using the specified <see cref="IFileHandleResolver"/>
     /// </summary>
-    /// <param name="resolver"></param>
+    /// <param name="resolver"> The resolver to use. </param>
     protected AsynchronousAssetLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
@@ -77,7 +78,6 @@ public abstract class AsynchronousAssetLoader< TAssetType, TParameters >
     /// Loads the OpenGL part of the asset.
     /// </summary>
     /// <param name="manager"></param>
-    /// <param name="fileName"></param>
     /// <param name="file"> the resolved file to load </param>
     /// <param name="parameter"></param>
     public abstract object? LoadSync( AssetManager manager, FileInfo? file, TParameters parameter );
