@@ -22,13 +22,13 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.HeapBuffers;
 
 [PublicAPI]
-public class HeapByteBufferR : HeapByteBuffer
+public class HeapDoubleBufferR : HeapDoubleBuffer
 {
-    public HeapByteBufferR( byte[]? buf, int mark, int pos, int lim, int cap, int off )
-        : base( buf, mark, pos, lim, cap, off )
+    public HeapDoubleBufferR( int capacity, int limit )
+        : base( capacity, limit )
     {
     }
 }

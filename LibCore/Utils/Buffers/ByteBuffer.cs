@@ -23,13 +23,140 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Utils.Buffers.HeapBuffers;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Utils.Buffers;
 
+/// <summary>
+/// A byte buffer.
+/// <para>
+///     This class defines six categories of operations upon byte buffers:
+///     <li>
+///     Absolute and relative <see cref="Get()"/> and <see cref="Put(byte)"/> methods
+///     that read and write single bytes.
+///     </li>
+///     <li>
+///     Relative <see cref="Get(byte[])"/> methods that transfer contiguous sequences
+///     of bytes from this buffer into an array.
+///     </li>
+///     <li>
+///     Relative <see cref="Put(byte[])"/> methods that transfer contiguous sequences
+///     of bytes from a byte array or some other byte buffer into this buffer.
+///     </li>
+///     <li>
+///     Absolute and relative <see cref="GetChar()"/> and <see cref="PutChar(char)"/>
+///     methods that read and write values of other primitive types, translating them
+///     to and from sequences of bytes in a particular byte order.
+///     </li>
+///     <li>
+///     Methods for creating view buffers, which allow a byte buffer to be viewed
+///     as a buffer containing values of some other primitive type.
+///     </li>
+///     <li>
+///     Methods for <see cref="Compact"/>ing, <see cref="Duplicate"/>ing, and
+///     <see cref="Slice"/>ing a byte buffer.
+///     </li>
+/// </para>
+/// <para>
+///     Byte buffers can be created either by <see cref="Allocate"/>, which allocates
+///     space for the buffers content, or by <see cref="Wrap(byte[])"/> an existing
+///     byte array into a buffer.
+/// </para>
+///
+/// <h2> Access to binary data </h2>
+/// <para>
+///     This class defines methods for reading and writing values of all other
+///     primitive types, except <tt>bool</tt>. Primitive values are translated
+///     to (or from) sequences of bytes according to the buffer's current byte
+///     order, which may be retrieved and modified via the <see cref="Order()"/>
+///     methods.  Specific byte orders are represented by instances of the
+///     <see cref="ByteOrder"/> class. The initial order of a byte buffer is always
+///     <see cref="ByteOrder.BigEndian"/>.
+/// </para>
+///
+/// <para>
+///     For access to heterogeneous binary data, that is, sequences of values of
+///     different types, this class defines a family of absolute and relative
+///     <i>Get</i> and <i>Put</i> methods for each type. For 32-bit floating-point
+///     values, for example, this class defines:
+///     <code>
+///         float GetFloat()
+///         float GetFloat(int)
+///         void PutFloat(float)
+///         void PutFloat(int,float)
+///     </code>
+/// </para>
+/// 
+/// <para>
+///     Corresponding methods are defined for the types <tt>char</tt>, <tt>short</tt>,
+///     <tt>int</tt>, <tt>long</tt>, and <tt>double</tt>. The index parameters of the
+///     absolute <i>Get</i> and <i>Put</i> methods are in terms of bytes rather than of
+///     the type being read or written.
+/// </para>
+/// 
+/// <h2> View Buffers. </h2>
+/// <para>
+///     For access to homogeneous binary data, that is, sequences of values of
+///     the same type, this class defines methods that can create <i>views</i> of a
+///     given byte buffer.  A <i>view buffer</i> is simply another buffer whose
+///     content is backed by the byte buffer. Changes to the byte buffer's content
+///     will be visible in the view buffer, and vice versa; the two buffers'
+///     position, limit, and mark values are independent. The <see cref="AsFloatBuffer()"/>
+///     method, for example, creates an instance of the <see cref="FloatBuffer"/> class
+///     that is backed by the byte buffer upon which the method is invoked. Corresponding
+///     view-creation methods are defined for the types <tt>char</tt>, <tt>short</tt>,
+///     <tt>int</tt>, <tt>long</tt>, and <tt>double</tt>.
+/// </para>
+/// 
+/// <para>
+///     View buffers have some3 important advantages over the families of
+///     type-specific <i>Get</i> and <i>Put</i> methods described above:
+///     <li>
+///     A view buffer is indexed not in terms of bytes but rather in terms
+///     of the type-specific size of its values.
+///     </li>
+///     <li>
+///     A view buffer provides relative bulk <i>Get</i> and <i>Put</i>
+///     methods that can transfer contiguous sequences of values between a buffer
+///     and an array or some other buffer of the same type.
+///     </li>
+/// </para>
+///
+/// <para>
+///     The byte order of a view buffer is fixed to be that of its byte buffer
+///     at the time that the view is created.
+/// </para>
+///
+/// <h2> Invocation chaining </h2>
+/// <para>
+///     Methods in this class that do not otherwise have a value to return are
+///     specified to return the buffer upon which they are invoked.  This allows
+///     method invocations to be chained.
+///
+///     <para>
+///     The sequence of statements:-
+/// 
+///     <code>
+///         bb.PutInt(0xCAFEBABE);
+///         bb.PutShort(3);
+///         bb.PutShort(45);
+///     </code>
+/// 
+///     can, for example, be replaced by the single statement
+/// 
+///     <code>
+///         bb.PutInt(0xCAFEBABE).PutShort(3).PutShort(45);
+///     </code>
+///     </para>
+/// </para>
+/// </summary>
 [PublicAPI]
 public abstract class ByteBuffer : Buffer
 {
+    /// <summary>
+    ///     This byte buffer's backing array.
+    /// </summary>
     public byte[]? Hb { get; set; }
 
     // ------------------------------------------------------------------------
@@ -41,6 +168,10 @@ public abstract class ByteBuffer : Buffer
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    ///     Creates a new buffer with the given mark, position, limit, capacity,
+    ///     backing array, and array offset
+    /// </summary>
     protected ByteBuffer( int mark, int pos, int lim, int cap, byte[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
@@ -599,6 +730,8 @@ public abstract class ByteBuffer : Buffer
 
         return this;
     }
+
+    protected abstract int Ix( int i );
 
     // ------------------------------------------------------------------------
 

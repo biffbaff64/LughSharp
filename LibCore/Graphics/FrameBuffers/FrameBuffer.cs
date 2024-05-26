@@ -89,7 +89,7 @@ public class FrameBuffer : GLFrameBuffer< Texture >
 
         BufferBuilder = frameBufferBuilder;
 
-        Build();
+        BuildBuffer();
     }
 
     protected override Texture CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )

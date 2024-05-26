@@ -34,21 +34,27 @@ namespace LughSharp.LibCore.Assets.Loaders;
 ///     the atlas regions should be flipped on the y-axis or not.
 /// </summary>
 [PublicAPI]
-public class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >,
-                                  IDisposable
+public class TextureAtlasLoader
+    : SynchronousAssetLoader< TextureAtlas, TextureAtlasLoader.TextureAtlasParameter >, IDisposable
 {
     private TextureAtlasData? _data;
 
+    /// <summary>
+    ///     Creates a new TextureAtlasLoader using the supplied resolver.
+    /// </summary>
     public TextureAtlasLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
     }
 
     /// <summary>
+    ///     Loads the texture atlas using the provided asset manager, file, and parameters.
     /// </summary>
-    /// <param name="assetManager"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
+    /// <param name="assetManager">The asset manager responsible for loading the assets.</param>
+    /// <param name="file">The file information of the texture atlas.</param>
+    /// <param name="parameter">The parameters for loading the texture atlas.</param>
+    /// <returns>The loaded texture atlas.</returns>
+    /// <exception cref="GdxRuntimeException">Thrown if the texture atlas data is null.</exception>
     public override TextureAtlas Load( AssetManager assetManager, FileInfo? file, TextureAtlasParameter? parameter )
     {
         if ( _data == null )
@@ -119,8 +125,11 @@ public class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureA
     }
 
     /// <summary>
+    ///     Releases the unmanaged resources used by the texture loader.
     /// </summary>
-    /// <param name="disposing"></param>
+    /// <param name="disposing">
+    /// True to release both managed and unmanaged resources; false to release only unmanaged resources.
+    /// </param>
     protected virtual void Dispose( bool disposing )
     {
         if ( disposing )
@@ -132,6 +141,9 @@ public class TextureAtlasLoader : SynchronousAssetLoader< TextureAtlas, TextureA
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    ///     Parameters for loading a <see cref="TextureAtlas"/>
+    /// </summary>
     [PublicAPI]
     public class TextureAtlasParameter : AssetLoaderParameters
     {

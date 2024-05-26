@@ -36,11 +36,16 @@ namespace LughSharp.LibCore.Assets.Loaders;
 ///     e.g. filtering, whether to generate mipmaps and so on.
 /// </summary>
 [PublicAPI]
-public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.TextureLoaderParameters >,
-                             IDisposable
+public class TextureLoader
+    : AsynchronousAssetLoader< Texture, TextureLoader.TextureLoaderParameters >, IDisposable
 {
     private TextureLoaderInfo? _loaderInfo;
 
+    /// <summary>
+    ///     Creates a new TextureLoader using the specified <see cref="IFileHandleResolver"/>.
+    ///     A new reference to <see cref="TextureLoaderInfo"/> is created to help with loading.
+    /// </summary>
+    /// <param name="resolver"> The <see cref="IFileHandleResolver"/> to use. </param>
     public TextureLoader( IFileHandleResolver resolver ) : base( resolver )
     {
         _loaderInfo = new TextureLoaderInfo();
@@ -52,16 +57,11 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
         return null!;
     }
 
-    /// <summary>
-    ///     Load the asset.
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
+    /// <inheritdoc/>
     public override void LoadAsync( AssetManager? manager, FileInfo? file, TextureLoaderParameters? parameter )
     {
         if ( _loaderInfo == null ) return;
-        
+
         _loaderInfo.Filename = file?.Name;
 
         if ( parameter?.TextureData == null )
@@ -98,7 +98,7 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
         if ( _loaderInfo == null ) return null;
 
         var texture = _loaderInfo.Texture;
-        
+
         if ( texture != null )
         {
             texture.Load( _loaderInfo.Data );
@@ -129,12 +129,16 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
     }
 
     /// <summary>
+    ///     Releases the unmanaged resources used by the texture loader.
     /// </summary>
-    /// <param name="disposing"></param>
+    /// <param name="disposing">
+    /// True to release both managed and unmanaged resources; false to release only unmanaged resources.
+    /// </param>
     protected virtual void Dispose( bool disposing )
     {
         if ( disposing )
         {
+            // Dispose managed resources
             _loaderInfo = null!;
         }
     }
@@ -144,44 +148,75 @@ public class TextureLoader : AsynchronousAssetLoader< Texture, TextureLoader.Tex
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    ///     Contains information about a texture being loaded.
+    /// </summary>
     [PublicAPI]
     public class TextureLoaderInfo
     {
-        public string?       Filename { get; set; }
-        public ITextureData? Data     { get; set; }
-        public Texture?      Texture  { get; set; }
+        /// <summary>
+        /// Gets or sets the filename of the texture.
+        /// </summary>
+        public string? Filename { get; set; }
+
+        /// <summary>
+        /// Gets or sets the texture data.
+        /// </summary>
+        public ITextureData? Data { get; set; }
+
+        /// <summary>
+        /// Gets or sets the loaded texture object.
+        /// </summary>
+        public Texture? Texture { get; set; }
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
+    ///     Parameters for loading a texture asset.
     /// </summary>
     [PublicAPI]
     public class TextureLoaderParameters : AssetLoaderParameters
     {
+        /// <summary>
+        /// Gets or sets the minification filter for the texture.
+        /// </summary>
         public TextureFilter MinFilter { get; set; } = TextureFilter.Nearest;
-        public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
-        public TextureWrap   WrapU     { get; set; } = TextureWrap.ClampToEdge;
-        public TextureWrap   WrapV     { get; set; } = TextureWrap.ClampToEdge;
 
         /// <summary>
-        ///     the format of the final Texture. Uses the source images format if null
+        /// Gets or sets the magnification filter for the texture.
+        /// </summary>
+        public TextureFilter MagFilter { get; set; } = TextureFilter.Nearest;
+
+        /// <summary>
+        /// Gets or sets the wrapping mode for the texture in the horizontal direction.
+        /// </summary>
+        public TextureWrap WrapU { get; set; } = TextureWrap.ClampToEdge;
+
+        /// <summary>
+        /// Gets or sets the wrapping mode for the texture in the vertical direction.
+        /// </summary>
+        public TextureWrap WrapV { get; set; } = TextureWrap.ClampToEdge;
+
+        /// <summary>
+        /// Gets or sets the format of the final texture. Uses the source image's format if null.
         /// </summary>
         public Pixmap.Format? Format { get; set; } = null;
 
         /// <summary>
-        ///     whether to generate mipmaps
+        /// Gets or sets a value indicating whether to generate mipmaps for the texture.
         /// </summary>
         public bool GenMipMaps { get; set; } = false;
 
         /// <summary>
-        ///     The texture to put the <see cref="TextureData" /> in, optional.
+        /// Gets or sets the texture object to put the <see cref="TextureData"/> in (optional).
         /// </summary>
         public Texture? Texture { get; set; } = null;
 
         /// <summary>
-        ///     TextureData for textures created on the fly, optional. When set, all format and genMipMaps are ignored
+        /// Gets or sets the <see cref="ITextureData"/> for textures created on the fly (optional).
+        /// When set, all format and genMipMaps are ignored.
         /// </summary>
         public ITextureData? TextureData { get; set; } = null;
     }

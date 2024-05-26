@@ -36,6 +36,9 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
 {
     public IMusic LoadedMusic { get; set; }
 
+    /// <summary>
+    ///     Creates a new Music loader using the provided <see cref="IFileHandleResolver"/>
+    /// </summary>
     public MusicLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
@@ -65,12 +68,21 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
 
     // ------------------------------------------------------------------------
     
-    /// <inheritdoc />
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
     public void Dispose()
     {
         Dispose( true );
     }
 
+    /// <summary>
+    ///     Releases the unmanaged resources used by the texture loader.
+    /// </summary>
+    /// <param name="disposing">
+    /// True to release both managed and unmanaged resources; false to release only unmanaged resources.
+    /// </param>
     private void Dispose( bool disposing )
     {
         if ( disposing )

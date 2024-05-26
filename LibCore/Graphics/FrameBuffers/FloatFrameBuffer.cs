@@ -33,12 +33,16 @@ namespace LughSharp.LibCore.Graphics.FrameBuffers;
 [PublicAPI]
 public class FloatFrameBuffer : FrameBuffer
 {
+    /// <summary>
+    ///     Default constructor which creates an empty FloatFrameBuffer.
+    /// </summary>
     public FloatFrameBuffer()
     {
     }
 
     /// <summary>
-    ///     Creates a GLFrameBuffer from the specifications provided by bufferBuilder
+    ///     Creates a GLFrameBuffer from the specifications provided by the
+    ///     given <see cref="GLFrameBufferBuilder{TU}"/>.
     /// </summary>
     /// <param name="bufferBuilder"></param>
     public FloatFrameBuffer( GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > bufferBuilder )
@@ -67,9 +71,15 @@ public class FloatFrameBuffer : FrameBuffer
 
         BufferBuilder = bufferBuilder;
 
-        Build();
+        BuildBuffer();
     }
 
+    /// <summary>
+    ///     Creates the backing <see cref="Texture"/> for this buffer, using the provided
+    ///     <see cref="FrameBufferTextureAttachmentSpec"/> which contains config
+    ///     data for said texture.
+    /// </summary>
+    /// <returns> The texture</returns>
     protected override Texture CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )
     {
         var data = new FloatTextureData( BufferBuilder.Width,

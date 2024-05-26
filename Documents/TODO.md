@@ -50,8 +50,8 @@ ASSETS
     ----   --------
     - DONE - DONE - AssetDescriptor
     - DONE - DONE - AssetLoaderParameters
-    - DONE - IP   - AssetLoadingTask
-    - DONE - IP   - AssetManager
+    - DONE - DONE - AssetLoadingTask
+    - DONE - DONE - AssetManager
     - DONE - DONE - IAssetErrorListener
     - DONE - DONE - RefCountedContainer
 
@@ -63,17 +63,17 @@ ASSETS/LOADERS
     - DONE - DONE - AssetLoader
     - DONE - DONE - AsynchronousAssetLoader
     - DONE - DONE - BitmapFontLoader
-    - DONE - IP   - CubemapLoader
-    - DONE - IP   - ModelLoader
-    - DONE - IP   - MusicLoader
-    - DONE - IP   - ParticleEffectLoader
-    - DONE - IP   - PixmapLoader
-    - DONE - IP   - ShaderProgramLoader
-    - DONE - IP   - SkinLoader
-    - DONE - IP   - SoundLoader
-    - DONE - IP   - SynchronousAssetLoader
-    - DONE - IP   - TextureAtlasLoader
-    - DONE - IP   - TextureLoader
+    - DONE - DONE - CubemapLoader
+    - DONE - DONE - ModelLoader
+    - DONE - DONE - MusicLoader
+    - DONE - DONE - ParticleEffectLoader
+    - DONE - DONE - PixmapLoader
+    - DONE - DONE - ShaderProgramLoader
+    - DONE - DONE - SkinLoader
+    - DONE - DONE - SoundLoader
+    - DONE - DONE - SynchronousAssetLoader
+    - DONE - DONE - TextureAtlasLoader
+    - DONE - DONE - TextureLoader
 
 ASSETS/LOADERS/RESOLVERS
 ------------------------
@@ -87,7 +87,7 @@ ASSETS/LOADERS/RESOLVERS
     - DONE - DONE - InternalFileHandleResolver
     - DONE - DONE - LocalFileHandleResolver
     - DONE - DONE - PrefixFileHandleResolver
-    - DONE - IP   - ResolutionFileResolver
+    - DONE - DONE - ResolutionFileResolver
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -274,7 +274,7 @@ GRAPHICS/FRAMEBUFFERS
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - IP   - FloatFrameBuffer
+    - DONE - DONE - FloatFrameBuffer
     - DONE - IP   - FloatFrameBufferBuilder
     - DONE - IP   - FrameBuffer
     - DONE - IP   - FrameBufferBuilder
@@ -285,8 +285,6 @@ GRAPHICS/FRAMEBUFFERS
     - DONE - IP   - GLFrameBuffer
     - DONE - IP   - GLFrameBufferBuilder
 
-    ** Restructure GLFrameBuffer.Build(), this method is too long.
-
 GRAPHICS/G2D
 ------------
 
@@ -294,7 +292,7 @@ GRAPHICS/G2D
     ----   --------
     - DONE - DONE - Animation
     - DONE - IP   - AtlasRegion
-    - DONE - IP   - AtlasSprite                     Done but I've spotted some possible updates
+    - DONE - IP   - AtlasSprite                     Done but I've spotted some possible improvements
     - IP   - IP   - BitmapFont                      Much work needed!
     - IP   - IP   - BitmapFontCache                 Relies on the BitmapFont rewrite.
     - IP   - IP   - CpuSpriteBatch                  Some methods have too many parameters
@@ -747,6 +745,8 @@ UTILS
 UTILS/BUFFERS
 -------------
 
+    I think Direct Buffers can go. Non-Direct buffers only.
+
      CODE   DOCUMENT
     ----   --------
     - DONE - DONE - Buffer
@@ -764,17 +764,17 @@ UTILS/BUFFERS
     - DONE - IP   - ShortBuffer
     - DONE - IP   - StringCharBuffer
 
-    -----------------------------------
-    -- Heap Buffers
+UTILS/BUFFERS/HEAPBUFFERS
+-------------------------
+
+     CODE   DOCUMENT
+    ----   --------
     - IP   - IP   - HeapByteBuffer
     - IP   - IP   - HeapCharBuffer
     - DONE - DONE - HeapDoubleBuffer
     - IP   - IP   - HeapFloatBuffer
     - DONE - IP   - HeapIntBuffer
     - DONE - IP   - HeapShortBuffer
-
-    -----------------------------------
-    -- Read-only Heap Buffers
     - IP   - IP   - HeapByteBufferR
     - DONE - DONE - HeapCharBufferR
     - IP   - IP   - HeapDoubleBufferR
@@ -788,17 +788,17 @@ UTILS/COLLECTIONS
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - Array<T>                       Converted, but use List<T> for most cases.
+    - DONE - DONE - CollectionsData
     - DONE - DONE - DictionaryExtensions
     - DONE - DONE - DelayedRemovalList             Convert / Extend List<>
     - DONE - DONE - ListExtensions
+    - DONE - DONE - ObjectMap                      Converted, but use Dictionary< object, object >
     - DONE - DONE - SnapshotArray<T>
 
     - Work on removing these
 
-    - **** - CollectionsData
     - **** - IdentityMap<K, V>                      Convert / extend Dictionary< object, object > 
     - **** - IPredicate
-    - **** - ObjectMap                              Converted, but use Dictionary< object, object >
     - **** - PredicateIterable
     - **** - PredicateIterator
 

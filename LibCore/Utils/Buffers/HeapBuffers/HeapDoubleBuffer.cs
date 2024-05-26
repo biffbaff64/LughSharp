@@ -24,7 +24,7 @@
 
 using LughSharp.LibCore.Utils.Exceptions;
 
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.HeapBuffers;
 
 [PublicAPI]
 public class HeapDoubleBuffer : DoubleBuffer

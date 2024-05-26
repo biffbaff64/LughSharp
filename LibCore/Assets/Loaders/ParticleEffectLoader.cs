@@ -37,6 +37,10 @@ namespace LughSharp.LibCore.Assets.Loaders;
 public class ParticleEffectLoader
     : SynchronousAssetLoader< ParticleEffect, ParticleEffectLoader.ParticleEffectParameter >
 {
+    /// <summary>
+    ///     Creates a new <see cref="ParticleEffect"/> loader using the
+    ///     provided <see cref="IFileHandleResolver"/>
+    /// </summary>
     public ParticleEffectLoader( IFileHandleResolver resolver )
         : base( resolver )
     {

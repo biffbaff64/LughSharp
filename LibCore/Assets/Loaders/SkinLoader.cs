@@ -126,25 +126,49 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    ///     Parameters for loading skin assets.
+    /// </summary>
     [PublicAPI]
     public class SkinLoaderParameters : AssetLoaderParameters
     {
-        public Dictionary< string, object >? Resources        { get; set; }
-        public string?                       TextureAtlasPath { get; set; }
+        /// <summary>
+        ///     Gets or sets the resources to be used by the skin.
+        /// </summary>
+        public Dictionary< string, object >? Resources { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the file path of the texture atlas to be used by the skin.
+        /// </summary>
+        public string? TextureAtlasPath { get; set; }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SkinLoaderParameters"/>
+        ///     class with default values.
+        /// </summary>
         public SkinLoaderParameters() : this( null, null )
         {
         }
 
-        public SkinLoaderParameters( Dictionary< string, object > resources )
-            : this( null, resources )
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SkinLoaderParameters"/>
+        ///     class with the specified resources.
+        /// </summary>
+        /// <param name="resources">The resources to be used by the skin.</param>
+        public SkinLoaderParameters( Dictionary< string, object > resources ) : this( null, resources )
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SkinLoaderParameters"/> class
+        ///     with the specified texture atlas path and resources.
+        /// </summary>
+        /// <param name="textureAtlasPath">The file path of the texture atlas to be used by the skin.</param>
+        /// <param name="resources">The resources to be used by the skin.</param>
         public SkinLoaderParameters( string? textureAtlasPath, Dictionary< string, object >? resources = null )
         {
-            this.TextureAtlasPath = textureAtlasPath;
-            this.Resources        = resources;
+            TextureAtlasPath = textureAtlasPath;
+            Resources        = resources;
         }
     }
 }

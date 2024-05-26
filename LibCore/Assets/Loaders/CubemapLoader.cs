@@ -27,9 +27,22 @@ using LughSharp.LibCore.Assets.Loaders.Resolvers;
 
 namespace LughSharp.LibCore.Assets.Loaders;
 
+/// <summary>
+///     <see cref="AssetLoader"/> for <see cref="Cubemap"/> instances. The pixel data
+///     is loaded asynchronously. The texture is then created on the rendering thread,
+///     synchronously.
+///     <para>
+///     Passing a <see cref="CubemapParameter"/> to <see cref="AssetManager.Load(String,Type,AssetLoaderParameters)"/>"
+///     allows one to specify parameters as can be passed to the various Cubemap
+///     constructors, e.g. filtering and so on.
+///     </para>
+/// </summary>
 [PublicAPI]
 public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
+    /// <summary>
+    ///     Information about the cubemap being loaded.
+    /// </summary>
     private CubemapLoaderInfo _loaderInfo = new()
     {
         Filename    = "",
@@ -94,6 +107,9 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
 
     // ------------------------------------------------------------------------
     
+    /// <summary>
+    ///     Contains information about the Cubemap being loaded.
+    /// </summary>
     [PublicAPI]
     public struct CubemapLoaderInfo
     {

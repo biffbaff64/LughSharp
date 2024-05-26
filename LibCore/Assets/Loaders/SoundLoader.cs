@@ -38,6 +38,10 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
     /// </summary>
     public ISound? LoadedSound { get; set; }
 
+    /// <summary>
+    ///     Creates a new SoundLoader using the provided <see cref="IFileHandleResolver"/>
+    /// </summary>
+    /// <param name="resolver"></param>
     public SoundLoader( IFileHandleResolver resolver ) : base( resolver )
     {
         LoadedSound = null!;
@@ -53,15 +57,22 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
     ///     Loads the non-OpenGL part of the asset and injects any dependencies of
     ///     the asset into the AssetManager.
     /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
+    /// <param name="manager"> The <see cref="AssetManager"/> to use. </param>
+    /// <param name="file"> A <see cref="FileInfo"/> object holding file information. </param>
+    /// <param name="parameter"> <see cref="SoundLoaderParameters"/> to use. </param>
     public override void LoadAsync( AssetManager? manager, FileInfo? file, SoundLoaderParameters? parameter )
     {
         LoadedSound = Gdx.Audio.NewSound( file );
     }
 
-    public override ISound? LoadSync( AssetManager manager, FileInfo? file, SoundLoaderParameters parameter )
+    /// <summary>
+    ///     Loads the sound asset synchronously.
+    /// </summary>
+    /// <param name="manager">The asset manager responsible for loading assets.</param>
+    /// <param name="file">The file information of the sound asset.</param>
+    /// <param name="parameter">The parameters for loading the sound asset (ignored).</param>
+    /// <returns>The loaded sound asset, or null if no sound is loaded.</returns>
+    public override ISound? LoadSync(AssetManager manager, FileInfo? file, SoundLoaderParameters parameter)
     {
         var sound = this.LoadedSound;
         this.LoadedSound = null;
@@ -69,12 +80,21 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
         return sound;
     }
     
-    /// <inheritdoc />
+    /// <summary>
+    ///     Performs application-defined tasks associated with freeing,
+    ///     releasing, or resetting unmanaged resources.
+    /// </summary>
     public void Dispose()
     {
         Dispose( true );
     }
 
+    /// <summary>
+    ///     Releases the unmanaged resources used by the texture loader.
+    /// </summary>
+    /// <param name="disposing">
+    /// True to release both managed and unmanaged resources; false to release only unmanaged resources.
+    /// </param>
     private void Dispose( bool disposing )
     {
         if ( disposing )
@@ -86,6 +106,10 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    ///     Parameters for loading sound assets. The default class provides no extra
+    ///     parameters and acts as a placeholder for possible future extensions.
+    /// </summary>
     [PublicAPI]
     public class SoundLoaderParameters : AssetLoaderParameters
     {

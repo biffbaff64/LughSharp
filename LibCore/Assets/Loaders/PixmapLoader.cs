@@ -27,11 +27,19 @@ using LughSharp.LibCore.Assets.Loaders.Resolvers;
 
 namespace LughSharp.LibCore.Assets.Loaders;
 
+/// <summary>
+///     <see cref="AssetLoader"/> for <see cref="Pixmap"/> instances.
+///     The Pixmap is loaded asynchronously.
+/// </summary>
 [PublicAPI]
 public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.PixmapLoaderParameter >
 {
     private Pixmap? _pixmap;
 
+    /// <summary>
+    ///     Creates a new PixmapLoader using the provided <see cref="IFileHandleResolver"/>
+    /// </summary>
+    /// <param name="resolver"> The resolver to use. </param>
     public PixmapLoader( IFileHandleResolver resolver ) : base( resolver )
     {
         _pixmap = default( Pixmap )!;
@@ -70,6 +78,12 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
         Dispose( true );
     }
 
+    /// <summary>
+    ///     Releases the unmanaged resources used by the texture loader.
+    /// </summary>
+    /// <param name="disposing">
+    /// True to release both managed and unmanaged resources; false to release only unmanaged resources.
+    /// </param>
     private void Dispose( bool disposing )
     {
         if ( disposing )
@@ -82,6 +96,10 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    ///     Parameters for loading Pixmap assets. The default class provides no extra
+    ///     parameters and acts as a placeholder for possible future extensions.
+    /// </summary>
     [PublicAPI]
     public class PixmapLoaderParameter : AssetLoaderParameters
     {

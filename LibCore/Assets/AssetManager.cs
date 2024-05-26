@@ -72,7 +72,7 @@ public class AssetManager
     ///     default loaders then you have to manually add the loaders you need, including any
     ///     loaders they might depend on.
     /// </summary>
-    /// <param name="resolver"></param>
+    /// <param name="resolver">The dedicated resolver to use.</param>
     /// <param name="defaultLoaders">Whether to add the default loaders (default is true).</param>
     public AssetManager( IFileHandleResolver resolver, bool defaultLoaders = true )
     {
@@ -199,12 +199,16 @@ public class AssetManager
     }
 
     /// <summary>
-    ///     Returns all assets matching the requested type.
+    /// Retrieves all assets of the specified type and adds them to the provided list.
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="outArray"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <typeparam name="T">The type of assets to retrieve.</typeparam>
+    /// <param name="type">The type of the assets to retrieve.</param>
+    /// <param name="outArray">The list to which the retrieved assets will be added.</param>
+    /// <returns>The list containing all assets of the specified type.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if the <paramref name="type"/> or <paramref name="outArray"/> is null.
+    /// </exception>
+    /// <exception cref="GdxRuntimeException">Thrown if no assets of the specified type are found.</exception>
     public List< T > GetAll< T >( Type type, List< T > outArray )
     {
         ArgumentNullException.ThrowIfNull( type );
@@ -391,7 +395,8 @@ public class AssetManager
         // Convert all Windows path separators to Unix style
         fileName = fileName.Replace( '\\', '/' );
 
-        // Check if it's currently processed (and the first element in the stack, thus not a dependency) and cancel if necessary
+        // Check if it's currently processed (and the first element in the stack,
+        // thus not a dependency) and cancel if necessary
         if ( TryCancelCurrentTask( fileName ) )
         {
             return;
@@ -413,11 +418,18 @@ public class AssetManager
         UnloadAsset( fileName, type );
     }
 
+    /// <summary>
+    ///     Attempts to cancel the current task if the specified file name matches
+    ///     the file path of the first task in the queue.
+    /// </summary>
+    /// <param name="fileName">The file name to match against the current task's file path.</param>
+    /// <returns>True if the task was successfully canceled; otherwise, false.</returns>
     private bool TryCancelCurrentTask( string fileName )
     {
         if ( ( _tasks.Count > 0 ) && ( _tasks.First().AssetDesc.Filepath == fileName ) )
         {
             Logger.Debug( $"Unload (from tasks): {fileName}" );
+
             _tasks.First().Cancel = true;
             _tasks.First().Unload();
 
@@ -427,6 +439,13 @@ public class AssetManager
         return false;
     }
 
+    /// <summary>
+    ///     Attempts to remove a task from the load queue if the specified
+    ///     file name matches a file path in the queue.
+    /// </summary>
+    /// <param name="fileName">The file name to match against the load queue.</param>
+    /// <param name="type">The type of the asset to be removed from the queue.</param>
+    /// <returns>True if the task was successfully removed from the queue; otherwise, false.</returns>
     private bool TryRemoveFromQueue( string fileName, Type type )
     {
         for ( var i = 0; i < _loadQueue.Count; i++ )
@@ -435,6 +454,7 @@ public class AssetManager
             {
                 Logger.Debug( $"Unload (from queue): {fileName}" );
                 _toLoad--;
+
                 var desc = _loadQueue[ i ];
                 _loadQueue.RemoveAt( i );
 
@@ -448,6 +468,13 @@ public class AssetManager
         return false;
     }
 
+    /// <summary>
+    ///     Unloads the specified asset, decrementing its reference count and disposing
+    ///     of it if the reference count reaches zero.
+    /// </summary>
+    /// <param name="fileName">The file name of the asset to be unloaded.</param>
+    /// <param name="type">The type of the asset to be unloaded.</param>
+    /// <exception cref="GdxRuntimeException">Thrown if the type is null or the asset is not loaded.</exception>
     private void UnloadAsset( string fileName, Type? type )
     {
         if ( type == null )
@@ -479,6 +506,10 @@ public class AssetManager
         }
     }
 
+    /// <summary>
+    ///     Disposes of the specified asset container if it implements <see cref="IDisposable"/>.
+    /// </summary>
+    /// <param name="container">The asset container to dispose.</param>
     private void DisposeAsset( IRefCountedContainer container )
     {
         if ( container.Asset is IDisposable disposable )
@@ -487,6 +518,10 @@ public class AssetManager
         }
     }
 
+    /// <summary>
+    ///     Removes the dependencies of the specified asset if they are no longer needed.
+    /// </summary>
+    /// <param name="fileName">The file name of the asset whose dependencies are to be removed.</param>
     private void RemoveDependencies( string fileName )
     {
         if ( ( _assetDependencies == null )
@@ -753,9 +788,12 @@ public class AssetManager
     }
 
     /// <summary>
+    ///     Injects dependencies for a given parent asset by adding the specified
+    ///     dependent asset descriptors.
     /// </summary>
-    /// <param name="parentAssetFilename"></param>
-    /// <param name="dependendAssetDescs"></param>
+    /// <param name="parentAssetFilename">The file name of the parent asset.</param>
+    /// <param name="dependendAssetDescs">The list of dependent asset descriptors to inject.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="parentAssetFilename"/> is null.</exception>
     public void InjectDependencies( string? parentAssetFilename, List< AssetDescriptor > dependendAssetDescs )
     {
         ArgumentNullException.ThrowIfNull( parentAssetFilename );
@@ -780,25 +818,25 @@ public class AssetManager
     }
 
     /// <summary>
+    ///     Injects a single dependency for a given parent asset.
     /// </summary>
-    /// <param name="parentAssetFilename"></param>
-    /// <param name="dependendAssetDesc"></param>
-    /// <exception cref="GdxRuntimeException"></exception>
+    /// <param name="parentAssetFilename">The file name of the parent asset.</param>
+    /// <param name="dependendAssetDesc">The descriptor of the dependent asset to inject.</param>
+    /// <exception cref="GdxRuntimeException">Thrown if the type of the dependent asset is null.</exception>
     public void InjectDependency( string parentAssetFilename, AssetDescriptor dependendAssetDesc )
     {
-        // add the asset as a dependency of the parent asset
+        // Add the asset as a dependency of the parent asset
         List< string >? dependencies = _assetDependencies?[ parentAssetFilename ];
 
         if ( dependencies == null )
         {
             dependencies = new List< string >();
-
             _assetDependencies?.Put( parentAssetFilename, dependencies );
         }
 
         _assetDependencies?[ parentAssetFilename ].Add( dependendAssetDesc.Filepath );
 
-        // if the asset is already loaded, increase its reference count.
+        // If the asset is already loaded, increase its reference count.
         if ( IsLoaded( dependendAssetDesc.Filepath ) )
         {
             Logger.Debug( $"Dependency already loaded: {dependendAssetDesc}" );
@@ -816,7 +854,7 @@ public class AssetManager
         }
         else
         {
-            // else add a new task for the asset.
+            // Else add a new task for the asset.
             Logger.Debug( $"Loading dependency: {dependendAssetDesc}" );
 
             AddTask( dependendAssetDesc );
@@ -877,18 +915,19 @@ public class AssetManager
             throw new GdxRuntimeException( $"No loader for type: {assetDesc.AssetType}" );
         }
 
-        _tasks.Push( new AssetLoadingTask( this, assetDesc, loader, _executor ) );
+        _tasks.Push( new AssetLoadingTask( this, assetDesc, loader, _executor! ) );
 
         _peakTasks++;
     }
 
     /// <summary>
-    ///     Adds an asset to this AssetManager.
+    ///     Adds an asset to the asset manager with the specified file name and type.
     /// </summary>
-    /// <param name="fileName"></param>
-    /// <param name="type"></param>
-    /// <param name="asset"></param>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type of the asset to add.</typeparam>
+    /// <param name="fileName">The file name associated with the asset.</param>
+    /// <param name="type">The type of the asset.</param>
+    /// <param name="asset">The asset to add.</param>
+    /// <exception cref="GdxRuntimeException">Thrown if the asset is null.</exception>
     public void AddAsset< T >( string fileName, Type type, T asset )
     {
         if ( asset == null )
@@ -896,7 +935,7 @@ public class AssetManager
             throw new GdxRuntimeException( "No asset to add: null" );
         }
 
-        // add the asset to the filename lookup
+        // Add the asset to the filename lookup
         _assetTypes[ fileName ]     = type;
         _assets[ type ][ fileName ] = new RefCountedContainer( asset );
     }
@@ -971,8 +1010,13 @@ public class AssetManager
     }
 
     /// <summary>
+    ///         Increments the reference count of the dependencies for a given parent asset.
+    /// If the parent asset has dependencies, their reference counts will be incremented recursively.
     /// </summary>
-    /// <param name="parent"></param>
+    /// <param name="parent">
+    /// The file name of the parent asset whose dependencies' reference counts are to be incremented.
+    /// </param>
+    /// <exception cref="GdxRuntimeException">Thrown if the type of a dependency is null.</exception>
     public void IncrementRefCountedDependencies( string parent )
     {
         if ( _assetDependencies?[ parent ] == null )
@@ -1207,7 +1251,7 @@ public class AssetManager
     /// <summary>
     ///     Returns the reference count of an asset.
     /// </summary>
-    /// <param name="fileName"></param>
+    /// <param name="fileName"> The asset name. </param>
     public int GetReferenceCount( string fileName )
     {
         var type = _assetTypes[ fileName ];
@@ -1228,8 +1272,8 @@ public class AssetManager
     /// <summary>
     ///     Sets the reference count of an asset.
     /// </summary>
-    /// <param name="fileName"></param>
-    /// <param name="refCount"></param>
+    /// <param name="fileName"> The asset name. </param>
+    /// <param name="refCount"> The new reference count. </param>
     public void SetReferenceCount( string fileName, int refCount )
     {
         var type = _assetTypes[ fileName ];

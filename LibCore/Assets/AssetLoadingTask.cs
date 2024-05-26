@@ -58,11 +58,12 @@ public class AssetLoadingTask : IAsyncTask< object >
     // ------------------------------------------------------------------------
 
     /// <summary>
+    ///     Initializes a new instance of the <see cref="AssetLoadingTask"/> class.
     /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="assetDesc"></param>
-    /// <param name="loader"></param>
-    /// <param name="threadPool"></param>
+    /// <param name="manager">The asset manager responsible for managing assets.</param>
+    /// <param name="assetDesc">The descriptor of the asset to be loaded.</param>
+    /// <param name="loader">The loader used to load the asset.</param>
+    /// <param name="threadPool">The asynchronous executor for handling loading tasks.</param>
     public AssetLoadingTask( AssetManager manager, AssetDescriptor assetDesc, AssetLoader loader, AsyncExecutor threadPool )
     {
         _manager   = manager;
@@ -148,15 +149,19 @@ public class AssetLoadingTask : IAsyncTask< object >
         }
     }
 
+    /// <summary>
+    ///     Handles the loading of assets using a synchronous asset loader. 
+    ///     It manages dependencies and ensures they are loaded before the main asset.
+    /// </summary>
     private void HandleSyncLoader()
     {
         var syncLoader = ( SynchronousAssetLoader< Type, AssetLoaderParameters > ) _loader;
-        
+
         if ( !DependenciesLoaded )
         {
             DependenciesLoaded = true;
             Dependencies       = syncLoader.GetDependencies( AssetDesc.Filepath, Resolve( _loader, AssetDesc ), AssetDesc.Parameters );
-            
+
             if ( Dependencies == null )
             {
                 Asset = syncLoader.Load( _manager, Resolve( _loader, AssetDesc )!, AssetDesc.Parameters! );
@@ -174,6 +179,15 @@ public class AssetLoadingTask : IAsyncTask< object >
         }
     }
 
+    /// <summary>
+    ///     Handles the loading of assets using an asynchronous asset loader. 
+    ///     Manages the asynchronous loading process, including dependency
+    ///     loading and main asset loading.
+    /// </summary>
+    /// <exception cref="GdxRuntimeException">
+    /// Thrown if the asset description or asynchronous loader is null, or if there
+    /// is an error loading dependencies or the asset.
+    /// </exception>
     private void HandleAsyncLoader()
     {
         if ( AssetDesc == null )
@@ -188,12 +202,16 @@ public class AssetLoadingTask : IAsyncTask< object >
             throw new GdxRuntimeException( "asyncLoader is null" );
         }
 
+        // Check if dependencies have been loaded.
         if ( !DependenciesLoaded )
         {
+            // If the future task for loading dependencies is not started, submit it to the executor.
             if ( _depsFuture == null )
             {
                 _depsFuture = _executor.Submit( this );
             }
+
+            // If the future task is done, process the dependencies.
             else if ( _depsFuture.IsDone )
             {
                 try
@@ -207,6 +225,7 @@ public class AssetLoadingTask : IAsyncTask< object >
 
                 DependenciesLoaded = true;
 
+                // If asynchronous loading is done, load the asset synchronously.
                 if ( _asyncDone )
                 {
                     Asset = asyncLoader.LoadSync( _manager,
@@ -215,16 +234,23 @@ public class AssetLoadingTask : IAsyncTask< object >
                 }
             }
         }
+
+        // If dependencies are loaded and the loading future task is not started
+        // and async loading is not done, submit it to the executor.
         else if ( ( _loadFuture == null ) && !_asyncDone )
         {
             _loadFuture = _executor.Submit( this );
         }
+
+        // If asynchronous loading is done, load the asset synchronously.
         else if ( _asyncDone )
         {
             Asset = asyncLoader.LoadSync( _manager,
                                           Resolve( _loader, AssetDesc ),
                                           AssetDesc.Parameters! );
         }
+
+        // If the loading future task is done, process the loaded asset.
         else if ( _loadFuture is { IsDone: true } )
         {
             try
@@ -243,22 +269,27 @@ public class AssetLoadingTask : IAsyncTask< object >
     }
 
     /// <summary>
-    ///     Resolve the file and path names for the asset described in
-    ///     the member <see cref="AssetDesc" />
+    ///     Resolves the file path of an asset descriptor using the provided asset loader.
     /// </summary>
-    /// <param name="loader"></param>
-    /// <param name="assetDesc"></param>
-    /// <returns></returns>
+    /// <param name="loader">The asset loader used to resolve the file path.</param>
+    /// <param name="assetDesc">The asset descriptor containing the file path to be resolved.</param>
+    /// <returns>
+    /// The resolved <see cref="FileInfo"/> object, or null if the resolution
+    /// fails or the asset descriptor is null.
+    /// </returns>
     private static FileInfo? Resolve( AssetLoader? loader, AssetDescriptor? assetDesc )
     {
+        // If the asset descriptor is not null and its File property is null, resolve the file path.
         if ( assetDesc is { File: null } descriptor )
         {
+            // Use the loader to resolve the file path if the loader is not null.
             if ( loader != null )
             {
                 descriptor.File = loader.Resolve( descriptor.Filepath );
             }
         }
 
+        // Return the resolved file or null if resolution did not occur.
         return assetDesc?.File;
     }
 

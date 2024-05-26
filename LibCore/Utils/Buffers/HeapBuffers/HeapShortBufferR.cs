@@ -24,76 +24,52 @@
 
 using LughSharp.LibCore.Utils.Exceptions;
 
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.HeapBuffers;
 
 /// <summary>
-///     A read-only HeapCharBuffer.  This class extends the corresponding read/write class,
+///     A read-only HeapShortBuffer.  This class extends the corresponding read/write class,
 ///     overriding the mutation methods to throw a <see cref="ReadOnlyBufferException"/> and
 ///     overriding the view-buffer methods to return an instance of this class rather than
 ///     of the superclass.
 /// </summary>
 [PublicAPI]
-public class HeapCharBufferR : HeapCharBuffer
+public class HeapShortBufferR : HeapShortBuffer
 {
-    public HeapCharBufferR( int cap, int lim )
+    public HeapShortBufferR( int cap, int lim )
         : base( cap, lim )
     {
     }
 
-    public HeapCharBufferR( char[] buf, int off, int len )
+    public HeapShortBufferR( short[] buf, int off, int len )
         : base( buf, off, len )
     {
     }
 
-    protected HeapCharBufferR( char[]? buf, int mark, int pos, int lim, int cap, int off )
+    public HeapShortBufferR( short[]? buf, int mark, int pos, int lim, int cap, int off )
         : base( buf, mark, pos, lim, cap, off )
     {
     }
 
-    /// <inheritdoc/>
-    public override CharBuffer Slice()
+    /// <override/>
+    public override ShortBuffer Slice()
     {
-        return new HeapCharBufferR( Hb, -1, 0, this.Remaining(), this.Remaining(), this.Position + Offset );
+        return new HeapShortBufferR( Hb, -1, 0, this.Remaining(), this.Remaining(), this.Position + Offset );
+    }
+
+    /// <override/>
+    public override ShortBuffer Duplicate()
+    {
+        return new HeapShortBufferR( Hb, this.MarkValue(), this.Position, this.Limit, this.Capacity, Offset );
     }
 
     /// <inheritdoc/>
-    public override CharBuffer Duplicate()
-    {
-        return new HeapCharBufferR( Hb, this.MarkValue(), this.Position, this.Limit, this.Capacity, Offset );
-    }
-
-    /// <inheritdoc/>
-    public override CharBuffer AsReadOnlyBuffer()
+    public override ShortBuffer AsReadOnlyBuffer()
     {
         return Duplicate();
     }
 
     /// <inheritdoc/>
     public override bool IsReadOnly => true;
-
-    /// <inheritdoc/>
-    protected override string ToString( int start, int end )
-    {
-        try
-        {
-            return new string( Hb!, start + Offset, end - start );
-        }
-        catch ( Exception )
-        {
-            throw new IndexOutOfRangeException();
-        }
-    }
-
-    /// <inheritdoc/>
-    public override CharBuffer SubSequence( int start, int end )
-    {
-        if ( ( start < 0 ) || ( end > Length() ) || ( start > end ) )
-        {
-            throw new IndexOutOfRangeException();
-        }
-        
-        return new HeapCharBufferR( Hb, -1, Position + start, Position + end, Capacity, Offset );
-    }
 
     /// <inheritdoc/>
     public override ByteOrder Order()
@@ -103,14 +79,14 @@ public class HeapCharBufferR : HeapCharBuffer
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
+    
+    public override ShortBuffer Put( short x ) => throw new ReadOnlyBufferException();
 
-    public override CharBuffer Put( char[] src, int offset, int length ) => throw new ReadOnlyBufferException();
+    public override ShortBuffer Put( int i, short x ) => throw new ReadOnlyBufferException();
 
-    public override CharBuffer Put( CharBuffer src ) => throw new ReadOnlyBufferException();
+    public override ShortBuffer Put( short[] src, int offset, int length ) => throw new ReadOnlyBufferException();
 
-    protected override CharBuffer Put( char x ) => throw new ReadOnlyBufferException();
+    public override ShortBuffer Put( ShortBuffer src ) => throw new ReadOnlyBufferException();
 
-    public override CharBuffer Put( int i, char x ) => throw new ReadOnlyBufferException();
-
-    public override CharBuffer Compact() => throw new ReadOnlyBufferException();
+    public override ShortBuffer Compact() => throw new ReadOnlyBufferException();
 }

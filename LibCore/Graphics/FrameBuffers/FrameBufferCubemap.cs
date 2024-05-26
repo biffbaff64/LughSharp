@@ -92,7 +92,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
 
         BufferBuilder = frameBufferBuilder;
 
-        Build();
+        BuildBuffer();
     }
 
     protected override Cubemap CreateTexture( FrameBufferTextureAttachmentSpec attachmentSpec )

@@ -23,10 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Runtime.CompilerServices;
 using LughSharp.LibCore.Utils.Exceptions;
 
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.HeapBuffers;
 
 [PublicAPI]
 public class HeapByteBuffer : ByteBuffer
@@ -51,34 +50,19 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc/>
     public override ByteBuffer Slice()
     {
-        return new HeapByteBuffer( Hb,
-                                   -1,
-                                   0,
-                                   Remaining(),
-                                   Remaining(),
-                                   Position + Offset );
+        return new HeapByteBuffer( Hb, -1, 0, Remaining(), Remaining(), Position + Offset );
     }
 
     /// <inheritdoc/>
     public override ByteBuffer Duplicate()
     {
-        return new HeapByteBuffer( Hb,
-                                   MarkValue(),
-                                   Position,
-                                   Limit,
-                                   Capacity,
-                                   Offset );
+        return new HeapByteBuffer( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc/>
     public override ByteBuffer AsReadOnlyBuffer()
     {
         return new HeapByteBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
-    }
-
-    protected int Ix( int i )
-    {
-        return i + Offset;
     }
 
     /// <inheritdoc/>
@@ -108,7 +92,7 @@ public class HeapByteBuffer : ByteBuffer
             throw new GdxRuntimeException( "Buffer Underflow!" );
         }
 
-        System.Array.Copy( Hb, Ix( Position ), dst, offset, length );
+        Array.Copy( Hb, Ix( Position ), dst, offset, length );
         SetPosition( Position + length );
 
         return this;
@@ -119,6 +103,9 @@ public class HeapByteBuffer : ByteBuffer
 
     /// <inheritdoc/>
     public override bool IsReadOnly => false;
+
+    /// <inheritdoc/>
+    protected override int Ix( int i ) => i + Offset;
 
     /// <inheritdoc/>
     public override ByteBuffer Put( byte b )
@@ -189,10 +176,7 @@ public class HeapByteBuffer : ByteBuffer
                 throw new GdxRuntimeException( "Buffer Overflow!" );
             }
 
-            System.Array.Copy( sb.Hb!,
-                               sb.Ix( sb.Position ),
-                               Hb,
-                               Ix( Position ), n );
+            Array.Copy( sb.Hb!, sb.Ix( sb.Position ), Hb, Ix( Position ), n );
 
             sb.SetPosition( sb.Position + n );
             SetPosition( Position + n );

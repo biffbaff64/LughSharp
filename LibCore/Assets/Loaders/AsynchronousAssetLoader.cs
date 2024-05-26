@@ -50,11 +50,11 @@ public abstract class AsynchronousAssetLoader< TAssetType, TParameters >
 
     /// <summary>
     ///     Loads the non-OpenGL part of the asset and injects any dependencies of
-    ///     the asset into the AssetManager.
+    ///     the asset into the <paramref name="manager"/>.
     /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
+    /// <param name="manager">The asset manager responsible for loading the asset.</param>
+    /// <param name="file">The file information of the asset to load.</param>
+    /// <param name="parameter">The parameters for loading the asset.</param>
     public abstract void LoadAsync( AssetManager manager, FileInfo? file, TParameters? parameter );
 
     /// <summary>

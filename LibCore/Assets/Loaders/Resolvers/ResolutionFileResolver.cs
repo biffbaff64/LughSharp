@@ -108,6 +108,12 @@ public class ResolutionFileResolver : IFileHandleResolver
         return handle;
     }
 
+    /// <summary>
+    ///         Resolves a file path based on the original file handle and a suffix.
+    /// </summary>
+    /// <param name="originalHandle">The original file handle.</param>
+    /// <param name="suffix">The suffix to append to the file path.</param>
+    /// <returns>The resolved file path.</returns>
     protected static string Resolve( FileInfo originalHandle, string suffix )
     {
         var parentstring = "";
@@ -121,6 +127,11 @@ public class ResolutionFileResolver : IFileHandleResolver
         return parentstring + suffix + "/" + originalHandle.Name;
     }
 
+    /// <summary>
+    /// Chooses the best resolution from the provided resolutions based on the device's back buffer size.
+    /// </summary>
+    /// <param name="descs">The array of resolutions to choose from.</param>
+    /// <returns>The best resolution.</returns>
     public static Resolution Choose( params Resolution[] descs )
     {
         var w = Gdx.Graphics.BackBufferWidth;
@@ -165,22 +176,35 @@ public class ResolutionFileResolver : IFileHandleResolver
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
+    /// <summary>
+    ///     Represents a resolution for an application.
+    /// </summary>
     [PublicAPI]
     public class Resolution
     {
-        public int    PortraitWidth  { get; }
-        public int    PortraitHeight { get; }
-        public string AssetsFolder   { get; } // The folder where the assets for this resolution are located.
+        /// <summary>
+        ///     Gets the width of this resolution in portrait mode.
+        /// </summary>
+        public int PortraitWidth { get; }
 
         /// <summary>
-        ///     Constructs a {@code Resolution}.
+        ///     Gets the height of this resolution in portrait mode.
         /// </summary>
-        /// <param name="portraitWidth"> This resolution's width. </param>
-        /// <param name="portraitHeight"> This resolution's height. </param>
-        /// <param name="folder">
-        ///     The name of the folder, where the assets which fit this resolution, are located.
-        /// </param>
+        public int PortraitHeight { get; }
+
+        /// <summary>
+        ///     Gets the folder where the assets for this resolution are located.
+        /// </summary>
+        public string AssetsFolder { get; }
+
+        /// <summary>
+        ///     Constructs a new instance of the <see cref="Resolution"/> class with
+        ///     the specified portrait width, portrait height, and assets folder.
+        /// </summary>
+        /// <param name="portraitWidth">The width of this resolution in portrait mode.</param>
+        /// <param name="portraitHeight">The height of this resolution in portrait mode.</param>
+        /// <param name="folder">The name of the folder where the assets which fit this resolution are located.</param>
         public Resolution( int portraitWidth, int portraitHeight, string folder )
         {
             PortraitWidth  = portraitWidth;

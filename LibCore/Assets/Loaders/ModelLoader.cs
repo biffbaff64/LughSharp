@@ -29,14 +29,22 @@ using LughSharp.LibCore.Graphics.G3D.Utils;
 
 namespace LughSharp.LibCore.Assets.Loaders;
 
+/// <summary>
+///     Abstract base class for asynchronous model loaders.
+/// </summary>
+/// <typeparam name="TP">The type of parameters for loading the model.</typeparam>
 [PublicAPI]
 public abstract class ModelLoader< TP > : AsynchronousAssetLoader< Model, TP >
     where TP : ModelLoader< TP >.ModelLoaderParameters
 {
-    protected readonly ModelLoaderParameters DefaultLoaderParameters = new();
+    protected readonly ModelLoaderParameters                        DefaultLoaderParameters = new();
+    protected readonly List< ObjectMap< string, ModelData >.Entry > Items                   = new();
 
-    protected readonly List< ObjectMap< string, ModelData >.Entry > Items = new();
-
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="ModelLoader{TP}"/> class
+    ///     with the specified file resolver.
+    /// </summary>
+    /// <param name="resolver">The file resolver to use for resolving model file paths.</param>
     protected ModelLoader( IFileHandleResolver resolver ) : base( resolver )
     {
     }
@@ -148,13 +156,7 @@ public abstract class ModelLoader< TP > : AsynchronousAssetLoader< Model, TP >
         return deps;
     }
 
-    /// <summary>
-    ///     Loads the OpenGL part of the asset.
-    /// </summary>
-    /// <param name="manager"></param>
-    /// <param name="file"></param>
-    /// <param name="parameter"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public override Model LoadSync( AssetManager? manager, FileInfo? file, TP? parameter )
     {
         ModelData? data = null;
@@ -199,9 +201,16 @@ public abstract class ModelLoader< TP > : AsynchronousAssetLoader< Model, TP >
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    ///     Parameters for loading models.
+    /// </summary>
     [PublicAPI]
     public class ModelLoaderParameters : AssetLoaderParameters
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ModelLoaderParameters"/>
+        ///     class with default values.
+        /// </summary>
         public ModelLoaderParameters()
         {
             TextureLoaderParameters           = new TextureLoader.TextureLoaderParameters();
@@ -209,6 +218,9 @@ public abstract class ModelLoader< TP > : AsynchronousAssetLoader< Model, TP >
             TextureLoaderParameters.WrapU     = TextureLoaderParameters.WrapV     = TextureWrap.Repeat;
         }
 
+        /// <summary>
+        ///     Gets or sets the texture loader parameters for loading model textures.
+        /// </summary>
         public TextureLoader.TextureLoaderParameters TextureLoaderParameters { get; set; }
     }
 }

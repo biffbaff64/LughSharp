@@ -52,10 +52,21 @@ public class ShaderProgramLoader
     private readonly string _fragmentFileSuffix = ".frag";
     private readonly string _vertexFileSuffix   = ".vert";
 
+    /// <summary>
+    ///     Creates a new ShaderProgramLoader using the provided <see cref="IFileHandleResolver"/>
+    /// </summary>
     public ShaderProgramLoader( IFileHandleResolver resolver ) : base( resolver )
     {
     }
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="ShaderProgramLoader"/> class with
+    ///     the specified <see cref="IFileHandleResolver"/>, vertex shader file suffix, and
+    ///     fragment shader file suffix.
+    /// </summary>
+    /// <param name="resolver">The file resolver to use for resolving shader file paths.</param>
+    /// <param name="vertexFileSuffix">The suffix of the vertex shader files.</param>
+    /// <param name="fragmentFileSuffix">The suffix of the fragment shader files.</param>
     public ShaderProgramLoader( IFileHandleResolver resolver, string vertexFileSuffix, string fragmentFileSuffix )
         : base( resolver )
     {
@@ -143,6 +154,9 @@ public class ShaderProgramLoader
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    ///     Loading parameters for loading <see cref="ShaderProgram"/>s.
+    /// </summary>
     [PublicAPI]
     public class ShaderProgramParameter : AssetLoaderParameters
     {

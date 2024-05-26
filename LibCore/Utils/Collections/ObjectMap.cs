@@ -49,14 +49,12 @@ namespace LughSharp.LibCore.Utils.Collections;
 [PublicAPI]
 public class ObjectMap< TK, TV >
 {
-    // ------------------------------------------------------------------------
-
     private readonly   object _dummy = new();
     protected readonly float  LoadFactor;
 
-    protected TK?[]    KeyTable;
-    protected int      Threshold;
-    protected TV?[]    ValueTable;
+    protected TK?[] KeyTable;
+    protected int   Threshold;
+    protected TV?[] ValueTable;
 
     private Entries? _entries1;
     private Entries? _entries2;
@@ -68,9 +66,16 @@ public class ObjectMap< TK, TV >
     // ------------------------------------------------------------------------
 
     /// <summary>
+    ///     Initializes a new instance of the <see cref="ObjectMap{TK, TV}"/> class
+    ///     with the specified initial capacity and load factor.
     /// </summary>
-    /// <param name="initialCapacity"></param>
-    /// <param name="loadFactor"></param>
+    /// <param name="initialCapacity">The initial capacity of the map. Defaults to 51.</param>
+    /// <param name="loadFactor">
+    /// The load factor of the map. Must be greater than 0 and less than 1. Defaults to 0.8.
+    /// </param>
+    /// <exception cref="ArgumentException">
+    /// Thrown when the load factor is less than or equal to 0, or greater than or equal to 1.
+    /// </exception>
     public ObjectMap( int initialCapacity = 51, float loadFactor = 0.8f )
     {
         if ( loadFactor is <= 0f or >= 1f )
@@ -93,7 +98,7 @@ public class ObjectMap< TK, TV >
     ///     Copy Constructor
     /// </summary>
     /// <param name="map">The ObjectMap to copy.</param>
-    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="ArgumentException"> Thrown if map is null. </exception>
     protected ObjectMap( ObjectMap< TK, TV > map )
     {
         ArgumentNullException.ThrowIfNull( map );
@@ -117,6 +122,8 @@ public class ObjectMap< TK, TV >
     }
 
     // ------------------------------------------------------------------------
+
+    #region properties
 
     /// <summary>
     ///     Used by <see cref="Place" /> to bit shift the upper bits of a <b>long</b>
@@ -147,6 +154,9 @@ public class ObjectMap< TK, TV >
     /// </summary>
     public int Size { get; set; }
 
+    #endregion properties
+
+    // ------------------------------------------------------------------------
     /// <summary>
     ///     Returns an index between 0 and <see cref="Mask" /> for the specified <c>item</c>.
     ///     <para>
@@ -180,10 +190,14 @@ public class ObjectMap< TK, TV >
     }
 
     /// <summary>
+    ///     Locates the specified key in the map.
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
+    /// <param name="key">The key to locate in the map.</param>
+    /// <returns>
+    /// The index of the key if found; otherwise, the negative value of the available index minus one.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">Thrown when the key is null.</exception>
+    /// <exception cref="NullReferenceException">Thrown when the KeyTable is null.</exception>
     private int LocateKey( TK key )
     {
         ArgumentNullException.ThrowIfNull( key );
@@ -357,6 +371,8 @@ public class ObjectMap< TK, TV >
     }
 
     /// <summary>
+    ///     Clears the map and reduces the size of the backing arrays to be the
+    ///     specified capacity / loadFactor, if they are larger.
     /// </summary>
     /// <param name="maximumCapacity"></param>
     public void Clear( int maximumCapacity )
@@ -376,6 +392,7 @@ public class ObjectMap< TK, TV >
     }
 
     /// <summary>
+    ///     Clears the map.
     /// </summary>
     public void Clear()
     {
@@ -391,9 +408,14 @@ public class ObjectMap< TK, TV >
     }
 
     /// <summary>
+    ///     Returns true if the specified value is in the map. Note this traverses the
+    ///     entire map and compares every value, which may be an expensive operation.
     /// </summary>
-    /// <param name="value"></param>
-    /// <param name="identity"></param>
+    /// <param name="value"> The value to check for. </param>
+    /// <param name="identity">
+    ///     If true, uses == to compare the specified value with values in the
+    ///     map. If false, uses equals(Object).
+    /// </param>
     /// <returns></returns>
     public bool ContainsValue( object? value, bool identity )
     {
@@ -422,9 +444,9 @@ public class ObjectMap< TK, TV >
     }
 
     /// <summary>
+    ///     Checks to see if the map contains the given key.
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <returns> True if the key is found. </returns>
     public bool ContainsKey( TK key )
     {
         return LocateKey( key ) >= 0;
@@ -487,6 +509,18 @@ public class ObjectMap< TK, TV >
         return result;
     }
 
+    /// <summary>
+    ///     Calculates the appropriate table size, which is the next power of two greater
+    ///     than or equal to the specified capacity divided by the load factor.
+    /// </summary>
+    /// <param name="capacity">The desired capacity of the map.</param>
+    /// <param name="lf">The load factor used to determine the table size.</param>
+    /// <returns>
+    /// The next power of two greater than or equal to the capacity divided by the load factor.
+    /// </returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown when the capacity is less than 0 or when the required capacity is too large.
+    /// </exception>
     public int TableSize( int capacity, float lf )
     {
         if ( capacity < 0 )
@@ -551,28 +585,32 @@ public class ObjectMap< TK, TV >
     }
 
     /// <summary>
+    ///     Resizes the internal storage arrays to the specified new size.
     /// </summary>
-    /// <param name="newSize"></param>
+    /// <param name="newSize">The new size for the internal storage arrays.</param>
     public void Resize( int newSize )
     {
         var oldCapacity = KeyTable.Length;
 
+        // Update the threshold, mask, and shift based on the new size
         Threshold = ( int ) ( newSize * LoadFactor );
         Mask      = newSize - 1;
         Shift     = int.LeadingZeroCount( Mask );
 
+        // Store the old tables
         TK?[] oldKeyTable   = KeyTable;
         TV?[] oldValueTable = ValueTable;
 
+        // Initialize the new tables with the new size
         KeyTable   = new TK[ newSize ];
         ValueTable = new TV[ newSize ];
 
+        // Rehash all existing entries into the new tables
         if ( Size > 0 )
         {
             for ( var i = 0; i < oldCapacity; i++ )
             {
                 var key = oldKeyTable[ i ];
-
                 if ( key != null )
                 {
                     PutResize( key, oldValueTable[ i ] );
@@ -582,14 +620,10 @@ public class ObjectMap< TK, TV >
     }
 
     /// <summary>
+    ///     Places a key-value pair into the resized tables.
     /// </summary>
-    /// <remarks>Skips checks for existing keys.</remarks>
-    /// <remarks>
-    ///     Doesn't increment Size. This method is actually a utility
-    ///     method for <see cref="Resize" />
-    /// </remarks>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
+    /// <param name="key">The key to be inserted.</param>
+    /// <param name="value">The value to be associated with the key.</param>
     private void PutResize( TK key, TV? value )
     {
         for ( var i = Place( key );; i = ( i + 1 ) & Mask )
@@ -605,9 +639,13 @@ public class ObjectMap< TK, TV >
     }
 
     /// <summary>
+    ///     Removes the entry for the specified key from the map, if present.
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="key">The key whose mapping is to be removed from the map.</param>
+    /// <returns>
+    /// The previous value associated with the specified key, or the default
+    /// value if the key was not found.
+    /// </returns>
     public TV? Remove( TK key )
     {
         if ( KeyTable == null )
@@ -863,60 +901,72 @@ public class ObjectMap< TK, TV >
     // ------------------------------------------------------------------------
 
     /// <summary>
+    ///     Represents a key-value pair in the map.
     /// </summary>
     [PublicAPI]
     public class Entry
     {
         public TK? Key   { get; set; }
         public TV? Value { get; set; }
-
-        public Entry()
-        {
-        }
-
-        public Entry( TK? k, TV? v )
-        {
-            Key   = k;
-            Value = v;
-        }
-
-        public override string ToString()
-        {
-            return Key + " = " + Value;
-        }
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
+    ///     Abstract base class for iterators that iterate over an ObjectMap.
     /// </summary>
     [PublicAPI]
     public abstract class MapIterator
     {
+        /// <summary>
+        ///     The map being iterated over.
+        /// </summary>
         protected readonly ObjectMap< TK, TV > Map;
 
+        /// <summary>
+        ///     Indicates whether the iterator is valid.
+        /// </summary>
         public bool Valid { get; set; } = true;
 
-        protected int  CurrentIndex { get; set; } = -1;
-        protected int  NextIndex    { get; set; } = -1;
-        protected bool HasNext      { get; set; }
+        /// <summary>
+        ///     The current index in the map.
+        /// </summary>
+        protected int CurrentIndex { get; set; } = -1;
 
+        /// <summary>
+        ///     The next index in the map.
+        /// </summary>
+        protected int NextIndex { get; set; } = -1;
+
+        /// <summary>
+        ///     Indicates whether there are more elements to iterate over.
+        /// </summary>
+        protected bool HasNext { get; set; }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MapIterator"/> class.
+        /// </summary>
+        /// <param name="map">The map to iterate over.</param>
         protected MapIterator( ObjectMap< TK, TV > map )
         {
             Map = map;
-
             Reset();
         }
 
+        /// <summary>
+        ///     Resets the iterator to the start of the map.
+        /// </summary>
         public void Reset()
         {
             CurrentIndex = -1;
             NextIndex    = -1;
-
             FindNextIndex();
         }
 
+        /// <summary>
+        ///     Finds the next index in the map that contains a key.
+        /// </summary>
         protected void FindNextIndex()
         {
             for ( var n = Map.KeyTable.Length; ++NextIndex < n; )
@@ -932,13 +982,16 @@ public class ObjectMap< TK, TV >
             HasNext = false;
         }
 
+        /// <summary>
+        ///     Removes the current key-value pair from the map.
+        /// </summary>
         public void Remove()
         {
             var i = CurrentIndex;
 
             if ( i < 0 )
             {
-                throw new GdxRuntimeException( "Next() must be called before Remove()." );
+                throw new GdxRuntimeException( "CurrentIndex must not be < 0!" );
             }
 
             var mask = Map.Mask;
@@ -976,6 +1029,7 @@ public class ObjectMap< TK, TV >
     // ------------------------------------------------------------------------
 
     /// <summary>
+    ///     An iterator for the entries in an ObjectMap.
     /// </summary>
     [PublicAPI]
     public class Entries : MapIterator
@@ -983,20 +1037,25 @@ public class ObjectMap< TK, TV >
         private readonly Entry _entry = new();
 
         /// <summary>
+        ///     Initializes a new instance of the Entries class for the specified map.
         /// </summary>
-        /// <param name="map"></param>
+        /// <param name="map">The ObjectMap to iterate over.</param>
         public Entries( ObjectMap< TK, TV > map ) : base( map )
         {
         }
 
         /// <summary>
-        ///     Note the same entry instance is returned each time this method is called.
+        ///     Returns the next entry in the iteration.
         /// </summary>
+        /// <returns>The next entry in the map.</returns>
+        /// <exception cref="GdxRuntimeException">
+        /// Thrown if there are no more entries to iterate over, or if the iterator is nested.
+        /// </exception>
         public Entry Next()
         {
             if ( !HasNext )
             {
-                throw new GdxRuntimeException( "HasNext : false!" );
+                throw new GdxRuntimeException( "No more entries to iterate over!" );
             }
 
             if ( !Valid )
@@ -1013,6 +1072,9 @@ public class ObjectMap< TK, TV >
             return _entry;
         }
 
+        /// <summary>
+        ///     Returns this instance as its iterator.
+        /// </summary>
         public Entries Iterator()
         {
             return this;
@@ -1023,18 +1085,27 @@ public class ObjectMap< TK, TV >
     // ------------------------------------------------------------------------
 
     /// <summary>
+    ///     Represents an iterator for the values of an ObjectMap.
     /// </summary>
     [PublicAPI]
     public class Values : MapIterator
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="Values"/> class.
         /// </summary>
-        /// <param name="map"></param>
+        /// <param name="map">The map to iterate over.</param>
         public Values( ObjectMap< TK, TV > map )
             : base( map )
         {
         }
 
+        /// <summary>
+        ///     Returns the next key in the iteration.
+        /// </summary>
+        /// <returns>The next key in the map.</returns>
+        /// <exception cref="GdxRuntimeException">
+        /// Thrown if there are no more values to iterate over, or if the iterator is nested.
+        /// </exception>
         public TV? Next()
         {
             if ( !HasNext )
@@ -1056,6 +1127,9 @@ public class ObjectMap< TK, TV >
             return value;
         }
 
+        /// <summary>
+        ///     Returns this instance as its iterator.
+        /// </summary>
         public Values Iterator()
         {
             return this;
@@ -1087,15 +1161,27 @@ public class ObjectMap< TK, TV >
     // ------------------------------------------------------------------------
 
     /// <summary>
+    ///     Represents an iterator for the keys of an ObjectMap.
     /// </summary>
     [PublicAPI]
     public class Keys : MapIterator
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Keys"/> class.
+        /// </summary>
+        /// <param name="map">The map to iterate over.</param>
         public Keys( ObjectMap< TK, TV > map )
             : base( map )
         {
         }
 
+        /// <summary>
+        ///     Returns the next key in the iteration.
+        /// </summary>
+        /// <returns>The next key in the map.</returns>
+        /// <exception cref="GdxRuntimeException">
+        /// Thrown if there are no more keys to iterate over, or if the iterator is nested.
+        /// </exception>
         public TK Next()
         {
             if ( !HasNext )
@@ -1117,13 +1203,16 @@ public class ObjectMap< TK, TV >
             return key;
         }
 
+        /// <summary>
+        ///     Returns this instance as its iterator.
+        /// </summary>
         public Keys Iterator()
         {
             return this;
         }
 
         /// <summary>
-        ///     Returns a new array containing the remaining keys.
+        ///     Returns a new list containing the remaining keys.
         /// </summary>
         public List< TK > ToArray()
         {
@@ -1131,8 +1220,10 @@ public class ObjectMap< TK, TV >
         }
 
         /// <summary>
-        ///     Adds the remaining keys to the array.
+        ///     Adds the remaining keys to the specified list.
         /// </summary>
+        /// <param name="array">The list to add the remaining keys to.</param>
+        /// <returns>The list containing the remaining keys.</returns>
         public List< TK > ToArray( List< TK > array )
         {
             while ( HasNext )
