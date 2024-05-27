@@ -119,6 +119,15 @@ public class Gdx2DPixmap : IDisposable
         Format   = ( int ) nativeData[ 3 ];
     }
 
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
     private ByteBuffer GetNewPixmap( long[] nativeData, int width, int height, int format )
     {
         return NewPixmap( nativeData, width, height, format );
@@ -301,15 +310,6 @@ public class Gdx2DPixmap : IDisposable
             GDX_2D_FORMAT_RGBA4444        => "Rgba4444",
             _                             => "Unknown"
         };
-    }
-
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
     }
 
     /// <summary>

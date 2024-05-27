@@ -26,75 +26,75 @@
 namespace LughSharp.LibCore.Maths;
 
 /// <summary>
-///     The abstract class Number is the superclass of platform classes representing
-///     numeric values that are convertible to the primitive types byte, double, float,
-///     int, long, and short.
-///     The specific semantics of the conversion from the numeric value of a particular
-///     Number implementation to a given primitive type is defined by the Number
-///     implementation in question. For platform classes, the conversion is often
-///     analogous to a narrowing primitive conversion or a widening primitive conversion.
-///     Therefore, conversions may lose information about the overall magnitude of a
-///     numeric value, may lose precision, and may even return a result of a different
-///     sign than the input.
-///     See the documentation of a given Number implementation for conversion details.
+/// The abstract class Number is the superclass of platform classes representing
+/// numeric values that are convertible to the primitive types byte, double, float,
+/// int, long, and short.
+/// The specific semantics of the conversion from the numeric value of a particular
+/// Number implementation to a given primitive type is defined by the Number
+/// implementation in question. For platform classes, the conversion is often
+/// analogous to a narrowing primitive conversion or a widening primitive conversion.
+/// Therefore, conversions may lose information about the overall magnitude of a
+/// numeric value, may lose precision, and may even return a result of a different
+/// sign than the input.
+/// See the documentation of a given Number implementation for conversion details.
 /// </summary>
 /// <remarks>This class is taken directly from java.lang.Number</remarks>
 [PublicAPI]
 public abstract class Number
 {
     //TODO: This class can probably go
-    
+
     /// <summary>
-    ///     Returns the value of the specified number as an <tt>int</tt>
-    ///     which may involve rounding or truncation.
+    /// Returns the value of the specified number as an <tt>int</tt>
+    /// which may involve rounding or truncation.
     /// </summary>
     /// <returns>
-    ///     the numeric value represented by this object after conversion
-    ///     to type <tt>int</tt>.
+    /// the numeric value represented by this object after conversion
+    /// to type <tt>int</tt>.
     /// </returns>
     public abstract int IntValue();
 
     /// <summary>
-    ///     Returns the value of the specified number as a <tt>long</tt>
-    ///     which may involve rounding or truncation.
+    /// Returns the value of the specified number as a <tt>long</tt>
+    /// which may involve rounding or truncation.
     /// </summary>
     /// <returns>
-    ///     the numeric value represented by this object after conversion
-    ///     to type <tt>long</tt>.
+    /// the numeric value represented by this object after conversion
+    /// to type <tt>long</tt>.
     /// </returns>
     public abstract long LongValue();
 
     /// <summary>
-    ///     Returns the value of the specified number as a <tt>float</tt>
-    ///     which may involve rounding.
+    /// Returns the value of the specified number as a <tt>float</tt>
+    /// which may involve rounding.
     /// </summary>
     /// <returns>
-    ///     the numeric value represented by this object after conversion
-    ///     to type <tt>float</tt>.
+    /// the numeric value represented by this object after conversion
+    /// to type <tt>float</tt>.
     /// </returns>
     public abstract float FloatValue();
 
     /// <summary>
-    ///     Returns the value of the specified number as a <tt>double</tt>
-    ///     which may involve rounding.
+    /// Returns the value of the specified number as a <tt>double</tt>
+    /// which may involve rounding.
     /// </summary>
     /// <returns>
-    ///     the numeric value represented by this object after conversion
-    ///     to type <tt>double</tt>.
+    /// the numeric value represented by this object after conversion
+    /// to type <tt>double</tt>.
     /// </returns>
     public abstract double DoubleValue();
 
     /// <summary>
-    ///     Returns the value of the specified number as a <tt>byte</tt>
-    ///     which may involve rounding or truncation.
-    ///     <para>
-    ///         This implementation returns the result of <see cref="IntValue" /> cast
-    ///         to a <tt>byte</tt>.
-    ///     </para>
+    /// Returns the value of the specified number as a <tt>byte</tt>
+    /// which may involve rounding or truncation.
+    /// <para>
+    /// This implementation returns the result of <see cref="IntValue"/> cast
+    /// to a <tt>byte</tt>.
+    /// </para>
     /// </summary>
     /// <returns>
-    ///     the numeric value represented by this object after conversion
-    ///     to type <tt>byte</tt>.
+    /// the numeric value represented by this object after conversion
+    /// to type <tt>byte</tt>.
     /// </returns>
     public sbyte ByteValue()
     {
@@ -102,16 +102,16 @@ public abstract class Number
     }
 
     /// <summary>
-    ///     Returns the value of the specified number as a <tt>short</tt>
-    ///     which may involve rounding or truncation.
-    ///     <para>
-    ///         This implementation returns the result of <see cref="IntValue" />
-    ///         cast to a <tt>short</tt>.
-    ///     </para>
+    /// Returns the value of the specified number as a <tt>short</tt>
+    /// which may involve rounding or truncation.
+    /// <para>
+    /// This implementation returns the result of <see cref="IntValue"/>
+    /// cast to a <tt>short</tt>.
+    /// </para>
     /// </summary>
     /// <returns>
-    ///     the numeric value represented by this object after conversion
-    ///     to type <tt>short</tt>.
+    /// the numeric value represented by this object after conversion
+    /// to type <tt>short</tt>.
     /// </returns>
     public short ShortValue()
     {

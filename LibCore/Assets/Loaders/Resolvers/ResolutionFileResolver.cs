@@ -26,43 +26,43 @@
 namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 
 /// <summary>
-///     This <see cref="IFileHandleResolver" /> uses a given list of <see cref="Resolution" />s to
-///     determine the best match based on the current back buffer size. An example of how this
-///     resolver works:
-///     <p>
-///         Let's assume that we have only a single <see cref="Resolution" />; added to this
-///         resolver. This resolution has the following properties:
-///     </p>
-///     <ul>
-///         <li>
-///             <tt> portraitWidth = 1920</tt>
-///         </li>
-///         <li>
-///             <tt> portraitHeight = 1080</tt>
-///         </li>
-///         <li>
-///             <tt> folder = "1920x1080"</tt>
-///         </li>
-///     </ul>
-///     <p>
-///         One would now supply a file to be found to the resolver. For this example, we assume it is
-///         <tt>"textures/walls/brick.png"</tt>. Since there is only a single <see cref="Resolution" />,
-///         this will be the best match for any screen size. The resolver will now try to find the file
-///         in the following ways:
-///     </p>
-///     <ul>
-///         <li>
-///             <tt>"textures/walls/1920x1080/brick.png"</tt>
-///         </li>
-///         <li>
-///             <tt>"textures/walls/brick.png"</tt>
-///         </li>
-///     </ul>
-///     <p>
-///         The files are ultimately resolved via the given <see cref="BaseResolver" />. In case the
-///         first version cannot be resolved, the fallback will try to search for the file without
-///         the resolution folder.
-///     </p>
+/// This <see cref="IFileHandleResolver"/> uses a given list of <see cref="Resolution"/>s to
+/// determine the best match based on the current back buffer size. An example of how this
+/// resolver works:
+/// <p>
+/// Let's assume that we have only a single <see cref="Resolution"/>; added to this
+/// resolver. This resolution has the following properties:
+/// </p>
+/// <ul>
+///     <li>
+///         <tt> portraitWidth = 1920</tt>
+///     </li>
+///     <li>
+///         <tt> portraitHeight = 1080</tt>
+///     </li>
+///     <li>
+///         <tt> folder = "1920x1080"</tt>
+///     </li>
+/// </ul>
+/// <p>
+/// One would now supply a file to be found to the resolver. For this example, we assume it is
+/// <tt>"textures/walls/brick.png"</tt>. Since there is only a single <see cref="Resolution"/>,
+/// this will be the best match for any screen size. The resolver will now try to find the file
+/// in the following ways:
+/// </p>
+/// <ul>
+///     <li>
+///         <tt>"textures/walls/1920x1080/brick.png"</tt>
+///     </li>
+///     <li>
+///         <tt>"textures/walls/brick.png"</tt>
+///     </li>
+/// </ul>
+/// <p>
+/// The files are ultimately resolved via the given <see cref="BaseResolver"/>. In case the
+/// first version cannot be resolved, the fallback will try to search for the file without
+/// the resolution folder.
+/// </p>
 /// </summary>
 [PublicAPI]
 public class ResolutionFileResolver : IFileHandleResolver
@@ -73,14 +73,14 @@ public class ResolutionFileResolver : IFileHandleResolver
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Creates a <see cref="ResolutionFileResolver" /> based on a given
-    ///     <see cref="IFileHandleResolver" /> and a list of <see cref="Resolution" />s.
+    /// Creates a <see cref="ResolutionFileResolver"/> based on a given
+    /// <see cref="IFileHandleResolver"/> and a list of <see cref="Resolution"/>s.
     /// </summary>
     /// <param name="baseResolver">
-    ///     The <see cref="IFileHandleResolver" /> that will ultimately used to resolve the file.
+    /// The <see cref="IFileHandleResolver"/> that will ultimately used to resolve the file.
     /// </param>
     /// <param name="descs">
-    ///     A list of <see cref="Resolution" />s. At least one has to be supplied.
+    /// A list of <see cref="Resolution"/>s. At least one has to be supplied.
     /// </param>
     public ResolutionFileResolver( IFileHandleResolver baseResolver, params Resolution[] descs )
     {
@@ -89,8 +89,8 @@ public class ResolutionFileResolver : IFileHandleResolver
             throw new ArgumentException( "At least one Resolution needs to be supplied." );
         }
 
-        this.BaseResolver = baseResolver;
-        Descriptors       = descs;
+        BaseResolver = baseResolver;
+        Descriptors  = descs;
     }
 
     /// <inheritdoc/>
@@ -109,7 +109,7 @@ public class ResolutionFileResolver : IFileHandleResolver
     }
 
     /// <summary>
-    ///         Resolves a file path based on the original file handle and a suffix.
+    /// Resolves a file path based on the original file handle and a suffix.
     /// </summary>
     /// <param name="originalHandle">The original file handle.</param>
     /// <param name="suffix">The suffix to append to the file path.</param>
@@ -178,29 +178,14 @@ public class ResolutionFileResolver : IFileHandleResolver
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Represents a resolution for an application.
+    /// Represents a resolution for an application.
     /// </summary>
     [PublicAPI]
     public class Resolution
     {
         /// <summary>
-        ///     Gets the width of this resolution in portrait mode.
-        /// </summary>
-        public int PortraitWidth { get; }
-
-        /// <summary>
-        ///     Gets the height of this resolution in portrait mode.
-        /// </summary>
-        public int PortraitHeight { get; }
-
-        /// <summary>
-        ///     Gets the folder where the assets for this resolution are located.
-        /// </summary>
-        public string AssetsFolder { get; }
-
-        /// <summary>
-        ///     Constructs a new instance of the <see cref="Resolution"/> class with
-        ///     the specified portrait width, portrait height, and assets folder.
+        /// Constructs a new instance of the <see cref="Resolution"/> class with
+        /// the specified portrait width, portrait height, and assets folder.
         /// </summary>
         /// <param name="portraitWidth">The width of this resolution in portrait mode.</param>
         /// <param name="portraitHeight">The height of this resolution in portrait mode.</param>
@@ -211,5 +196,20 @@ public class ResolutionFileResolver : IFileHandleResolver
             PortraitHeight = portraitHeight;
             AssetsFolder   = folder;
         }
+
+        /// <summary>
+        /// Gets the width of this resolution in portrait mode.
+        /// </summary>
+        public int PortraitWidth { get; }
+
+        /// <summary>
+        /// Gets the height of this resolution in portrait mode.
+        /// </summary>
+        public int PortraitHeight { get; }
+
+        /// <summary>
+        /// Gets the folder where the assets for this resolution are located.
+        /// </summary>
+        public string AssetsFolder { get; }
     }
 }

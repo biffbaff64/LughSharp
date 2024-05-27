@@ -26,86 +26,86 @@
 namespace LughSharp.Backends.DesktopGL.Audio.Mock;
 
 /// <summary>
-///     Audio stubs for use when Audio is disabled, or when Audio failed to initialise.
+/// Audio stubs for use when Audio is disabled, or when Audio failed to initialise.
 /// </summary>
 [PublicAPI]
 public class MockSound : ISound
 {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public long Play( float volume )
     {
         return 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public long Play( float volume, float pitch, float pan )
     {
         return 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public long Loop( float volume )
     {
         return 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public long Loop( float volume, float pitch, float pan )
     {
         return 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Stop()
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Pause()
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Resume()
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Stop( long soundId )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Pause( long soundId )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Resume( long soundId )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void SetLooping( long soundId, bool looping )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void SetPitch( long soundId, float pitch )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void SetVolume( long soundId, float volume )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void SetPan( long soundId, float pan, float volume )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Dispose()
     {
     }

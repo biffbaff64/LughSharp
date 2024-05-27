@@ -30,13 +30,10 @@ namespace LughSharp.LibCore.Maps.Tiled;
 [PublicAPI]
 public class TiledMapTileSet : IEnumerable< ITiledMapTile >
 {
-    public string?       Name       { get; set; }
-    public MapProperties Properties { get; private set; }
-
     private readonly Dictionary< int, ITiledMapTile > _tiles;
 
     /// <summary>
-    ///     Creates empty tileset
+    /// Creates empty tileset
     /// </summary>
     public TiledMapTileSet()
     {
@@ -44,6 +41,9 @@ public class TiledMapTileSet : IEnumerable< ITiledMapTile >
         _tiles     = new Dictionary< int, ITiledMapTile >();
         Properties = new MapProperties();
     }
+
+    public string?       Name       { get; set; }
+    public MapProperties Properties { get; private set; }
 
     /// <summary>
     /// </summary>
@@ -62,9 +62,9 @@ public class TiledMapTileSet : IEnumerable< ITiledMapTile >
     }
 
     /// <summary>
-    ///     Gets the <see cref="ITiledMapTile" /> that has the given id.
+    /// Gets the <see cref="ITiledMapTile"/> that has the given id.
     /// </summary>
-    /// <param name="id"> the id of the <see cref="ITiledMapTile" /> to retrieve. </param>
+    /// <param name="id"> the id of the <see cref="ITiledMapTile"/> to retrieve. </param>
     /// <returns> tile matching id, null if it doesn't exist  </returns>
     public ITiledMapTile? GetTile( int id )
     {
@@ -72,10 +72,10 @@ public class TiledMapTileSet : IEnumerable< ITiledMapTile >
     }
 
     /// <summary>
-    ///     Adds or replaces tile with that id
+    /// Adds or replaces tile with that id
     /// </summary>
-    /// <param name="id"> the id of the <see cref="ITiledMapTile" /> to add or replace. </param>
-    /// <param name="tile"> the <see cref="ITiledMapTile" /> to add or replace. </param>
+    /// <param name="id"> the id of the <see cref="ITiledMapTile"/> to add or replace. </param>
+    /// <param name="tile"> the <see cref="ITiledMapTile"/> to add or replace. </param>
     public void PutTile( int id, ITiledMapTile tile )
     {
         _tiles[ id ] = tile;

@@ -28,7 +28,7 @@ using Environment = System.Environment;
 namespace LughSharp.LibCore.Core;
 
 /// <summary>
-///     Platform specific flags and methods.
+/// Platform specific flags and methods.
 /// </summary>
 [PublicAPI]
 public static class Platform
@@ -40,14 +40,14 @@ public static class Platform
     public static bool IsARM     { get; private set; } = IsArmArchitecture();
 
     // ------------------------------------------------------------------------
-    
+
     public static bool IsIos     { get; private set; } = false; //TODO: For the future, concentrating on desktop for now. 
     public static bool IsAndroid { get; private set; } = false; //TODO: For the future, concentrating on desktop for now.
 
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Returns TRUE if the OS architecture is ARM based.
+    /// Returns TRUE if the OS architecture is ARM based.
     /// </summary>
     public static bool IsArmArchitecture()
     {
@@ -60,7 +60,7 @@ public static class Platform
     }
 
     /// <summary>
-    ///     Returns a string representation of a new GUID structure.
+    /// Returns a string representation of a new GUID structure.
     /// </summary>
     public static string RandomUUID()
     {

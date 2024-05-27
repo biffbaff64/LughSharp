@@ -333,24 +333,24 @@ public class FileProcessor
 //    }
 
     /// <summary>
-    ///     Called with each input file.
+    /// Called with each input file.
     /// </summary>
     protected void ProcessFile( Entry entry )
     {
     }
 
     /// <summary>
-    ///     Called for each input directory. The files will be <see cref="SetComparator(Comparator)" />
-    ///     sorted. The specified files list can be modified to change which files are processed.
+    /// Called for each input directory. The files will be <see cref="SetComparator(Comparator)"/>
+    /// sorted. The specified files list can be modified to change which files are processed.
     /// </summary>
     protected void ProcessDir( Entry entryDir, List< Entry > files )
     {
     }
 
     /// <summary>
-    ///     This method should be called by <see cref="ProcessFile(Entry)" /> or <see cref="ProcessDir(Entry, List{})" />
-    ///     if the return value of <see cref="Process(File, File)" /> or <see cref="Process(File[], File)" /> should return
-    ///     all the processed files.
+    /// This method should be called by <see cref="ProcessFile(Entry)"/> or <see cref="ProcessDir(Entry, List{})"/>
+    /// if the return value of <see cref="Process(File, File)"/> or <see cref="Process(File[], File)"/> should return
+    /// all the processed files.
     /// </summary>
     protected void AddProcessedFile( Entry entry )
     {

@@ -28,21 +28,15 @@ using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
-///     A listener that shows a tooltip actor when the mouse is over another actor.
+/// A listener that shows a tooltip actor when the mouse is over another actor.
 /// </summary>
 [PublicAPI]
 public class Tooltip< T > : InputListener where T : Actor
 {
-    public Container< T >      Container   { get; set; }
-    public TooltipManager< T > Manager     { get; set; }
-    public Actor?              TargetActor { get; set; }
-    public bool                Instant     { get; set; }
-    public bool                Always      { get; set; }
-
     private readonly Vector2 _tmp = new();
 
     // ------------------------------------------------------------------------
-    
+
     public Tooltip( T? contents ) : this( contents, new TooltipManager< T >() )
     {
     }
@@ -53,6 +47,12 @@ public class Tooltip< T > : InputListener where T : Actor
         Container           = new TooltipContainer( this, contents );
         Container.Touchable = Touchable.Disabled;
     }
+
+    public Container< T >      Container   { get; set; }
+    public TooltipManager< T > Manager     { get; set; }
+    public Actor?              TargetActor { get; set; }
+    public bool                Instant     { get; set; }
+    public bool                Always      { get; set; }
 
     public Actor? Actor
     {

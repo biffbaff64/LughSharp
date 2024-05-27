@@ -26,25 +26,25 @@
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>
-///     Class with static helper methods related to currently bound OpenGL frame buffer,
-///     including access to the current OpenGL FrameBuffer. These methods can be used to
-///     get the entire screen content or a portion thereof.
+/// Class with static helper methods related to currently bound OpenGL frame buffer,
+/// including access to the current OpenGL FrameBuffer. These methods can be used to
+/// get the entire screen content or a portion thereof.
 /// </summary>
 [PublicAPI]
 public class ScreenUtils
 {
     /// <summary>
-    ///     Returns the current framebuffer contents as a <see cref="TextureRegion" /> with
-    ///     a width and height equal to the current screen size.
-    ///     <p>
-    ///         The base <see cref="Texture" /> always has <see cref="MathUtils.NextPowerOfTwo" />
-    ///         dimensions and RGBA8888 <see cref="Pixmap.Format" />. It can be accessed via
-    ///         <see cref="TextureRegion.Texture" />. The texture is not managed and has to be
-    ///         reloaded manually on a context loss.
-    ///     </p>
-    ///     <p>
-    ///         The returned TextureRegion is flipped along the Y axis by default.
-    ///     </p>
+    /// Returns the current framebuffer contents as a <see cref="TextureRegion"/> with
+    /// a width and height equal to the current screen size.
+    /// <p>
+    /// The base <see cref="Texture"/> always has <see cref="MathUtils.NextPowerOfTwo"/>
+    /// dimensions and RGBA8888 <see cref="Pixmap.Format"/>. It can be accessed via
+    /// <see cref="TextureRegion.Texture"/>. The texture is not managed and has to be
+    /// reloaded manually on a context loss.
+    /// </p>
+    /// <p>
+    /// The returned TextureRegion is flipped along the Y axis by default.
+    /// </p>
     /// </summary>
     public static TextureRegion FrameBufferTexture
     {
@@ -63,7 +63,7 @@ public class ScreenUtils
     }
 
     /// <summary>
-    ///     Clears the color buffers with the specified Color.
+    /// Clears the color buffers with the specified Color.
     /// </summary>
     /// <param name="color">Color to clear the color buffers with.</param>
     public static void Clear( Color color )
@@ -72,7 +72,7 @@ public class ScreenUtils
     }
 
     /// <summary>
-    ///     Clears the color buffers and optionally the depth buffer.
+    /// Clears the color buffers and optionally the depth buffer.
     /// </summary>
     /// <param name="color">Color to clear the color buffers with.</param>
     /// <param name="clearDepth">Clears the depth buffer if true.</param>
@@ -82,7 +82,7 @@ public class ScreenUtils
     }
 
     /// <summary>
-    ///     Clears the color buffers and optionally the depth buffer.
+    /// Clears the color buffers and optionally the depth buffer.
     /// </summary>
     /// <param name="a"></param>
     /// <param name="clearDepth"> Clears the depth buffer if true.</param>
@@ -104,21 +104,21 @@ public class ScreenUtils
     }
 
     /// <summary>
-    ///     Returns a portion of the current framebuffer contents specified by x, y,
-    ///     width and height as a <see cref="TextureRegion" /> with the same dimensions.
-    ///     <para>
-    ///         The base <see cref="Texture" /> always has <see cref="MathUtils.NextPowerOfTwo" />
-    ///         dimensions and RGBA8888 <see cref="Pixmap.Format" />. It can be accessed via
-    ///         <see cref="TextureRegion.Texture" />.
-    ///     </para>
-    ///     <para>
-    ///         This texture is not managed and has to be reloaded manually on a context loss.
-    ///         If the width and height specified are larger than the framebuffer dimensions,
-    ///         the Texture will be padded accordingly.
-    ///     </para>
-    ///     <para>
-    ///         Pixels that fall outside of the current screen will have RGBA values of 0.
-    ///     </para>
+    /// Returns a portion of the current framebuffer contents specified by x, y,
+    /// width and height as a <see cref="TextureRegion"/> with the same dimensions.
+    /// <para>
+    /// The base <see cref="Texture"/> always has <see cref="MathUtils.NextPowerOfTwo"/>
+    /// dimensions and RGBA8888 <see cref="Pixmap.Format"/>. It can be accessed via
+    /// <see cref="TextureRegion.Texture"/>.
+    /// </para>
+    /// <para>
+    /// This texture is not managed and has to be reloaded manually on a context loss.
+    /// If the width and height specified are larger than the framebuffer dimensions,
+    /// the Texture will be padded accordingly.
+    /// </para>
+    /// <para>
+    /// Pixels that fall outside of the current screen will have RGBA values of 0.
+    /// </para>
     /// </summary>
     /// <param name="x"> the x position of the framebuffer contents to capture </param>
     /// <param name="y"> the y position of the framebuffer contents to capture </param>
@@ -150,11 +150,11 @@ public class ScreenUtils
     }
 
     /// <summary>
-    ///     Returns the current framebuffer contents as a byte[] array with a length equal
-    ///     to screen width * height * 4. The byte[] will always contain RGBA8888 data.
-    ///     Because of differences in screen and image origins the framebuffer contents
-    ///     should be flipped along the Y axis if you intend save them to disk as a bitmap.
-    ///     Flipping is not a cheap operation, so use this functionality wisely.
+    /// Returns the current framebuffer contents as a byte[] array with a length equal
+    /// to screen width * height * 4. The byte[] will always contain RGBA8888 data.
+    /// Because of differences in screen and image origins the framebuffer contents
+    /// should be flipped along the Y axis if you intend save them to disk as a bitmap.
+    /// Flipping is not a cheap operation, so use this functionality wisely.
     /// </summary>
     /// <param name="flipY"> whether to flip pixels along Y axis</param>
     public static byte[] GetFrameBufferPixels( bool flipY )
@@ -171,16 +171,16 @@ public class ScreenUtils
     }
 
     /// <summary>
-    ///     Returns a portion of the current framebuffer contents specified by x, y, width and
-    ///     height, as a byte[] array with a length equal to the specified width * height * 4.
-    ///     The byte[] will always contain RGBA8888 data. If the width and height specified
-    ///     are larger than the framebuffer dimensions, the Texture will be padded accordingly.
-    ///     Pixels that fall outside of the current screen will have RGBA values of 0. Because
-    ///     of differences in screen and image origins the framebuffer contents should be flipped
-    ///     along the Y axis if you intend save them to disk as a bitmap.
-    ///     <p>
-    ///         Flipping is not a cheap operation, so use this functionality wisely.
-    ///     </p>
+    /// Returns a portion of the current framebuffer contents specified by x, y, width and
+    /// height, as a byte[] array with a length equal to the specified width * height * 4.
+    /// The byte[] will always contain RGBA8888 data. If the width and height specified
+    /// are larger than the framebuffer dimensions, the Texture will be padded accordingly.
+    /// Pixels that fall outside of the current screen will have RGBA values of 0. Because
+    /// of differences in screen and image origins the framebuffer contents should be flipped
+    /// along the Y axis if you intend save them to disk as a bitmap.
+    /// <p>
+    /// Flipping is not a cheap operation, so use this functionality wisely.
+    /// </p>
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>

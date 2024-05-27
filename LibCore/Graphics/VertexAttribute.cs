@@ -26,13 +26,13 @@
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
-///     A single vertex attribute defined by its <see cref="usage" />, its number
-///     of components and its shader alias. The Usage is used for uniquely identifying
-///     the vertex attribute from among its <see cref="VertexAttributes" /> siblings.
-///     The number of components  defines how many components the attribute has. The
-///     alias defines to which shader attribute this attribute should bind. The alias
-///     is used by a <see cref="Mesh" /> when drawing with a <see cref="ShaderProgram" />.
-///     The alias can be changed at any time.
+/// A single vertex attribute defined by its <see cref="usage"/>, its number
+/// of components and its shader alias. The Usage is used for uniquely identifying
+/// the vertex attribute from among its <see cref="VertexAttributes"/> siblings.
+/// The number of components  defines how many components the attribute has. The
+/// alias defines to which shader attribute this attribute should bind. The alias
+/// is used by a <see cref="Mesh"/> when drawing with a <see cref="ShaderProgram"/>.
+/// The alias can be changed at any time.
 /// </summary>
 [PublicAPI]
 public class VertexAttribute
@@ -40,34 +40,34 @@ public class VertexAttribute
     private readonly int _usageIndex;
 
     /// <summary>
-    ///     The alias for the attribute used in a <see cref="ShaderProgram" />
+    /// The alias for the attribute used in a <see cref="ShaderProgram"/>
     /// </summary>
     public readonly string alias;
 
     /// <summary>
-    ///     For fixed types, whether the values are normalized to either
-    ///     -1f and +1f (signed) or 0f and +1f (unsigned)
+    /// For fixed types, whether the values are normalized to either
+    /// -1f and +1f (signed) or 0f and +1f (unsigned)
     /// </summary>
     public readonly bool normalized;
 
     /// <summary>
-    ///     the number of components this attribute has
+    /// the number of components this attribute has
     /// </summary>
     public readonly int numComponents;
 
     /// <summary>
-    ///     the OpenGL type of each component, e.g. <see cref="IGL.GL_FLOAT" />
-    ///     or <see cref="IGL.GL_UNSIGNED_BYTE" />
+    /// the OpenGL type of each component, e.g. <see cref="IGL.GL_FLOAT"/>
+    /// or <see cref="IGL.GL_UNSIGNED_BYTE"/>
     /// </summary>
     public readonly int type;
 
     /// <summary>
-    ///     optional unit/index specifier, used for texture coordinates and bone weights.
+    /// optional unit/index specifier, used for texture coordinates and bone weights.
     /// </summary>
     public readonly int unit;
 
     /// <summary>
-    ///     The attribute <see cref="usage" />, used for identification.
+    /// The attribute <see cref="usage"/>, used for identification.
     /// </summary>
     public readonly int usage;
 
@@ -75,23 +75,23 @@ public class VertexAttribute
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Constructs a new VertexAttribute. The GL data type is automatically
-    ///     selected based on the usage.
+    /// Constructs a new VertexAttribute. The GL data type is automatically
+    /// selected based on the usage.
     /// </summary>
     /// <param name="usage">
-    ///     The attribute <see cref="usage" />, used to select the <see cref="type" />
-    ///     and for identification.
+    /// The attribute <see cref="usage"/>, used to select the <see cref="type"/>
+    /// and for identification.
     /// </param>
     /// <param name="numComponents">
-    ///     the number of components of this attribute, must be between 1 and 4.
+    /// the number of components of this attribute, must be between 1 and 4.
     /// </param>
     /// <param name="alias">
-    ///     the alias used in a shader for this attribute. Can be changed after
-    ///     construction.
+    /// the alias used in a shader for this attribute. Can be changed after
+    /// construction.
     /// </param>
     /// <param name="unit">
-    ///     Optional unit/index specifier, used for texture
-    ///     coordinates and bone weights
+    /// Optional unit/index specifier, used for texture
+    /// coordinates and bone weights
     /// </param>
     public VertexAttribute( int usage, int numComponents, string alias, int unit = 0 )
         : this( usage,
@@ -104,30 +104,30 @@ public class VertexAttribute
     }
 
     /// <summary>
-    ///     Constructs a new VertexAttribute.
+    /// Constructs a new VertexAttribute.
     /// </summary>
     /// <param name="usage">
-    ///     The attribute <see cref="usage" />, used for identification.
+    /// The attribute <see cref="usage"/>, used for identification.
     /// </param>
     /// <param name="numComponents">
-    ///     The number of components of this attribute, must be between 1 and 4.
+    /// The number of components of this attribute, must be between 1 and 4.
     /// </param>
     /// <param name="type">
-    ///     The OpenGL type of each component, e.g. <see cref="IGL.GL_FLOAT" />
-    ///     or <see cref="IGL.GL_UNSIGNED_BYTE" />. Since <see cref="Mesh" />
-    ///     stores vertex data in 32bit floats, the total size of this attribute
-    ///     (type size times number of components) must be a multiple of four bytes.
+    /// The OpenGL type of each component, e.g. <see cref="IGL.GL_FLOAT"/>
+    /// or <see cref="IGL.GL_UNSIGNED_BYTE"/>. Since <see cref="Mesh"/>
+    /// stores vertex data in 32bit floats, the total size of this attribute
+    /// (type size times number of components) must be a multiple of four bytes.
     /// </param>
     /// <param name="normalized">
-    ///     For fixed types, whether the values are normalized to either -1f and
-    ///     +1f (signed) or 0f and +1f (unsigned)
+    /// For fixed types, whether the values are normalized to either -1f and
+    /// +1f (signed) or 0f and +1f (unsigned)
     /// </param>
     /// <param name="alias">
-    ///     The alias used in a shader for this attribute. Can be changed after
-    ///     construction.
+    /// The alias used in a shader for this attribute. Can be changed after
+    /// construction.
     /// </param>
     /// <param name="unit">
-    ///     Optional unit/index specifier, used for texture coordinates and bone weights
+    /// Optional unit/index specifier, used for texture coordinates and bone weights
     /// </param>
     public VertexAttribute( int usage,
                             int numComponents,
@@ -146,15 +146,15 @@ public class VertexAttribute
     }
 
     /// <summary>
-    ///     the offset of this attribute in bytes, don't change this!
+    /// the offset of this attribute in bytes, don't change this!
     /// </summary>
     public int Offset { get; set; }
 
     /// <returns>
-    ///     A copy of this VertexAttribute with the same parameters.
-    ///     The <see cref="Offset" /> is not copied and must be recalculated,
-    ///     as is typically done by the <see cref="VertexAttributes" /> that
-    ///     owns the VertexAttribute.
+    /// A copy of this VertexAttribute with the same parameters.
+    /// The <see cref="Offset"/> is not copied and must be recalculated,
+    /// as is typically done by the <see cref="VertexAttributes"/> that
+    /// owns the VertexAttribute.
     /// </returns>
     public VertexAttribute Copy()
     {
@@ -224,7 +224,7 @@ public class VertexAttribute
     }
 
     /// <summary>
-    ///     Tests to determine if the passed object was created with the same parameters
+    /// Tests to determine if the passed object was created with the same parameters
     /// </summary>
     public override bool Equals( object obj )
     {
@@ -248,7 +248,7 @@ public class VertexAttribute
     }
 
     /// <returns>
-    ///     A unique number specifying the usage index (3 MSB) and unit (1 LSB).
+    /// A unique number specifying the usage index (3 MSB) and unit (1 LSB).
     /// </returns>
     public int GetKey()
     {

@@ -38,9 +38,6 @@ public class ShapeRenderer : IDisposable
         Filled = IGL.GL_TRIANGLES
     }
 
-    public IImmediateModeRenderer Renderer  { get; set; }
-    public ShapeTypes?            ShapeType { get; set; }
-
     private readonly Color   _color                = new( 1, 1, 1, 1 );
     private readonly Matrix4 _combinedMatrix       = new();
     private readonly float   _defaultRectLineWidth = 0.75f;
@@ -52,7 +49,7 @@ public class ShapeRenderer : IDisposable
     private Matrix4 _transformMatrix  = new();
 
     // ------------------------------------------------------------------------
-    
+
     public ShapeRenderer( int maxVertices = 5000, ShaderProgram? defaultShader = null )
     {
         Renderer = defaultShader == null
@@ -62,6 +59,9 @@ public class ShapeRenderer : IDisposable
         _projectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
         _matrixDirty = true;
     }
+
+    public IImmediateModeRenderer Renderer  { get; set; }
+    public ShapeTypes?            ShapeType { get; set; }
 
     public Color Color
     {
@@ -89,8 +89,16 @@ public class ShapeRenderer : IDisposable
         }
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
     /// <summary>
-    ///     Sets the color to be used by the next shapes drawn.
+    /// Sets the color to be used by the next shapes drawn.
     /// </summary>
     public void SetColor( float r, float g, float b, float a )
     {
@@ -103,7 +111,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Sets the transformation matrix to identity.
+    /// Sets the transformation matrix to identity.
     /// </summary>
     public void Identity()
     {
@@ -112,7 +120,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Multiplies the current transformation matrix by a translation matrix.
+    /// Multiplies the current transformation matrix by a translation matrix.
     /// </summary>
     public void Translate( float x, float y, float z )
     {
@@ -121,7 +129,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Multiplies the current transformation matrix by a rotation matrix.
+    /// Multiplies the current transformation matrix by a rotation matrix.
     /// </summary>
     public void Rotate( float axisX, float axisY, float axisZ, float degrees )
     {
@@ -130,7 +138,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Multiplies the current transformation matrix by a scale matrix.
+    /// Multiplies the current transformation matrix by a scale matrix.
     /// </summary>
     public void Scale( float scaleX, float scaleY, float scaleZ )
     {
@@ -139,10 +147,10 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     If true, when drawing a shape cannot be performed with the current shape
-    ///     type, the batch is flushed and the shape type is changed automatically.
-    ///     This can increase the number of batch flushes if care is not taken to draw
-    ///     the same type of shapes together. Default is false.
+    /// If true, when drawing a shape cannot be performed with the current shape
+    /// type, the batch is flushed and the shape type is changed automatically.
+    /// This can increase the number of batch flushes if care is not taken to draw
+    /// the same type of shapes together. Default is false.
     /// </summary>
     public void SetAutoShapeType( bool type )
     {
@@ -150,9 +158,9 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Begins a new batch without specifying a shape type.
+    /// Begins a new batch without specifying a shape type.
     /// </summary>
-    /// <exception cref="GdxRuntimeException"> if <see cref="_autoShapeType" /> is false.</exception>
+    /// <exception cref="GdxRuntimeException"> if <see cref="_autoShapeType"/> is false.</exception>
     public void Begin()
     {
         if ( !_autoShapeType )
@@ -164,11 +172,11 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Starts a new batch of shapes. Shapes drawn within the batch will attempt
-    ///     to use the type specified. The call to this method must be paired with a
-    ///     call to <see cref="End()" />.
+    /// Starts a new batch of shapes. Shapes drawn within the batch will attempt
+    /// to use the type specified. The call to this method must be paired with a
+    /// call to <see cref="End()"/>.
     /// </summary>
-    /// <see cref="SetAutoShapeType(bool) " />
+    /// <see cref="SetAutoShapeType(bool) "/>
     public void Begin( ShapeTypes? type )
     {
         if ( ShapeType != null )
@@ -194,7 +202,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Finishes the batch of shapes and ensures they get rendered.
+    /// Finishes the batch of shapes and ensures they get rendered.
     /// </summary>
     public void End()
     {
@@ -225,8 +233,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a point using <see cref="ShapeTypes.Points" />, <see cref="ShapeTypes.Lines" />
-    ///     or <see cref="ShapeTypes.Filled" />.
+    /// Draws a point using <see cref="ShapeTypes.Points"/>, <see cref="ShapeTypes.Lines"/>
+    /// or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Point( float x, float y, float z )
     {
@@ -262,7 +270,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a line using <see cref="ShapeTypes.Lines" /> or <see cref="ShapeTypes.Filled" />.
+    /// Draws a line using <see cref="ShapeTypes.Lines"/> or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Line( float x, float y, float z, float x2, float y2, float z2 )
     {
@@ -290,8 +298,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a line using <see cref="ShapeTypes.Lines" /> or <see cref="ShapeTypes.Filled" />.
-    ///     The line is drawn with two colors interpolated between the start and end points.
+    /// Draws a line using <see cref="ShapeTypes.Lines"/> or <see cref="ShapeTypes.Filled"/>.
+    /// The line is drawn with two colors interpolated between the start and end points.
     /// </summary>
     public void Line( float x, float y, float z, float x2, float y2, float z2, Color c1, Color c2 )
     {
@@ -311,7 +319,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a curve using <see cref="ShapeTypes.Lines" />
+    /// Draws a curve using <see cref="ShapeTypes.Lines"/>
     /// </summary>
     public void Curve( float x1,
                        float y1,
@@ -378,8 +386,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a triangle in x/y plane using <see cref="ShapeTypes.Lines" />
-    ///     or <see cref="ShapeTypes.Filled" />.
+    /// Draws a triangle in x/y plane using <see cref="ShapeTypes.Lines"/>
+    /// or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Triangle( float x1, float y1, float x2, float y2, float x3, float y3 )
     {
@@ -416,8 +424,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a triangle in x/y plane with colored corners using <see cref="ShapeTypes.Lines" />
-    ///     or <see cref="ShapeTypes.Filled" />.
+    /// Draws a triangle in x/y plane with colored corners using <see cref="ShapeTypes.Lines"/>
+    /// or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Triangle( float x1,
                           float y1,
@@ -460,8 +468,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines" /> or
-    ///     <see cref="ShapeTypes.Filled" />.
+    /// Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines"/> or
+    /// <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Rect( float x, float y, float width, float height )
     {
@@ -509,8 +517,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines" /> or
-    ///     <see cref="ShapeTypes.Filled" />. The x and y specify the lower left corner.
+    /// Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines"/> or
+    /// <see cref="ShapeTypes.Filled"/>. The x and y specify the lower left corner.
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
@@ -572,9 +580,9 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines" /> or
-    ///     <see cref="ShapeTypes.Filled" />. The x and y specify the lower left corner.
-    ///     The originX and originY specify the point about which to rotate the rectangle.
+    /// Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines"/> or
+    /// <see cref="ShapeTypes.Filled"/>. The x and y specify the lower left corner.
+    /// The originX and originY specify the point about which to rotate the rectangle.
     /// </summary>
     public void Rect( float x,
                       float y,
@@ -590,10 +598,10 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines" />
-    ///     or <see cref="ShapeTypes.Filled" />. The x and y specify the lower left
-    ///     corner. The originX and originY specify the point about which to rotate
-    ///     the rectangle.
+    /// Draws a rectangle in the x/y plane using <see cref="ShapeTypes.Lines"/>
+    /// or <see cref="ShapeTypes.Filled"/>. The x and y specify the lower left
+    /// corner. The originX and originY specify the point about which to rotate
+    /// the rectangle.
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
@@ -696,8 +704,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a line using a rotated rectangle, where with one edge is centered at x1, y1 and the opposite edge centered at
-    ///     x2, y2.
+    /// Draws a line using a rotated rectangle, where with one edge is centered at x1, y1 and the opposite edge centered at
+    /// x2, y2.
     /// </summary>
     public void RectLine( float x1, float y1, float x2, float y2, float width )
     {
@@ -752,8 +760,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a line using a rotated rectangle, where with one edge is centered
-    ///     at x1, y1 and the opposite edge centered at x2, y2.
+    /// Draws a line using a rotated rectangle, where with one edge is centered
+    /// at x1, y1 and the opposite edge centered at x2, y2.
     /// </summary>
     public void RectLine( float x1, float y1, float x2, float y2, float width, Color c1, Color c2 )
     {
@@ -815,9 +823,9 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a cube using <see cref="ShapeTypes.Lines" /> or
-    ///     <see cref="ShapeTypes.Filled" />. The x, y and z specify
-    ///     the bottom, left, front corner of the rectangle.
+    /// Draws a cube using <see cref="ShapeTypes.Lines"/> or
+    /// <see cref="ShapeTypes.Filled"/>. The x, y and z specify
+    /// the bottom, left, front corner of the rectangle.
     /// </summary>
     public void Box( float x, float y, float z, float width, float height, float depth )
     {
@@ -985,8 +993,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws two crossed lines using <see cref="ShapeTypes.Lines" />
-    ///     or <see cref="ShapeTypes.Filled" />.
+    /// Draws two crossed lines using <see cref="ShapeTypes.Lines"/>
+    /// or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void XShape( float x, float y, float size )
     {
@@ -1000,8 +1008,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Calls <see cref="Arc(float, float, float, float, float, int)" /> by
-    ///     estimating the number of segments needed for a smooth arc.
+    /// Calls <see cref="Arc(float, float, float, float, float, int)"/> by
+    /// estimating the number of segments needed for a smooth arc.
     /// </summary>
     public void Arc( float x, float y, float radius, float start, float degrees )
     {
@@ -1017,7 +1025,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws an arc using <see cref="ShapeTypes.Lines" /> or <see cref="ShapeTypes.Filled" />.
+    /// Draws an arc using <see cref="ShapeTypes.Lines"/> or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Arc( float x, float y, float radius, float start, float degrees, int segments )
     {
@@ -1095,8 +1103,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Calls <see cref="Circle(float, float, float, int)" /> by estimating the
-    ///     number of segments needed for a smooth circle.
+    /// Calls <see cref="Circle(float, float, float, int)"/> by estimating the
+    /// number of segments needed for a smooth circle.
     /// </summary>
     public void Circle( float x, float y, float radius )
     {
@@ -1104,8 +1112,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a circle using <see cref="ShapeTypes.Lines" /> or
-    ///     <see cref="ShapeTypes.Filled" />.
+    /// Draws a circle using <see cref="ShapeTypes.Lines"/> or
+    /// <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Circle( float x, float y, float radius, int segments )
     {
@@ -1181,8 +1189,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Calls <see cref="Ellipse(float, float, float, float, int)" /> by estimating
-    ///     the number of segments needed for a smooth ellipse.
+    /// Calls <see cref="Ellipse(float, float, float, float, int)"/> by estimating
+    /// the number of segments needed for a smooth ellipse.
     /// </summary>
     public void Ellipse( float x, float y, float width, float height )
     {
@@ -1197,7 +1205,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws an ellipse using <see cref="ShapeTypes.Lines" /> or <see cref="ShapeTypes.Filled" />.
+    /// Draws an ellipse using <see cref="ShapeTypes.Lines"/> or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Ellipse( float x, float y, float width, float height, int segments )
     {
@@ -1252,8 +1260,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Calls <see cref="Ellipse(float, float, float, float, float, int)" /> by
-    ///     estimating the number of segments needed for a smooth ellipse.
+    /// Calls <see cref="Ellipse(float, float, float, float, float, int)"/> by
+    /// estimating the number of segments needed for a smooth ellipse.
     /// </summary>
     public void Ellipse( float x, float y, float width, float height, float rotation )
     {
@@ -1269,7 +1277,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws an ellipse using <see cref="ShapeTypes.Lines" /> or <see cref="ShapeTypes.Filled" />.
+    /// Draws an ellipse using <see cref="ShapeTypes.Lines"/> or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Ellipse( float x, float y, float width, float height, float rotation, int segments )
     {
@@ -1326,8 +1334,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Calls <see cref="Cone(float, float, float, float, float, int)" /> by estimating
-    ///     the number of segments needed for a smooth circular base.
+    /// Calls <see cref="Cone(float, float, float, float, float, int)"/> by estimating
+    /// the number of segments needed for a smooth circular base.
     /// </summary>
     public void Cone( float x, float y, float z, float radius, float height )
     {
@@ -1335,7 +1343,7 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a cone using <see cref="ShapeTypes.Lines" /> or <see cref="ShapeTypes.Filled" />.
+    /// Draws a cone using <see cref="ShapeTypes.Lines"/> or <see cref="ShapeTypes.Filled"/>.
     /// </summary>
     public void Cone( float x, float y, float z, float radius, float height, int segments )
     {
@@ -1435,8 +1443,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a polygon in the x/y plane using <see cref="ShapeTypes.Lines" />.
-    ///     The vertices must contain at least 3 points (6 floats x,y).
+    /// Draws a polygon in the x/y plane using <see cref="ShapeTypes.Lines"/>.
+    /// The vertices must contain at least 3 points (6 floats x,y).
     /// </summary>
     public void Polygon( float[] vertices, int offset, int count )
     {
@@ -1488,8 +1496,8 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Draws a polyline in the x/y plane using <see cref="ShapeTypes.Lines" />.
-    ///     The vertices must contain at least 2 points (4 floats x,y).
+    /// Draws a polyline in the x/y plane using <see cref="ShapeTypes.Lines"/>.
+    /// The vertices must contain at least 2 points (4 floats x,y).
     /// </summary>
     public void Polyline( float[] vertices, int offset, int count )
     {
@@ -1584,19 +1592,11 @@ public class ShapeRenderer : IDisposable
     }
 
     /// <summary>
-    ///     Returns true if currently between begin and end.
+    /// Returns true if currently between begin and end.
     /// </summary>
     public bool IsDrawing()
     {
         return ShapeType != null;
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public void Dispose()
-    {
-        Dispose( true );
     }
 
     private void Dispose( bool disposing )

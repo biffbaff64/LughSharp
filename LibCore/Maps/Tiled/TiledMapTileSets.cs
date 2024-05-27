@@ -28,7 +28,7 @@ using System.Collections;
 namespace LughSharp.LibCore.Maps.Tiled;
 
 /// <summary>
-///     A Collection of <see cref="TiledMapTileSet" /> objects.
+/// A Collection of <see cref="TiledMapTileSet"/> objects.
 /// </summary>
 [PublicAPI]
 public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
@@ -36,7 +36,7 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
     private readonly List< TiledMapTileSet > _tilesets;
 
     /// <summary>
-    ///     Creates an empty collection of tilesets.
+    /// Creates an empty collection of tilesets.
     /// </summary>
     public TiledMapTileSets()
     {
@@ -50,25 +50,25 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
     }
 
     /// <summary>
-    ///     Returns an enumerator that iterates through a collection.
+    /// Returns an enumerator that iterates through a collection.
     /// </summary>
     /// <returns>
-    ///     An <see cref="T:System.Collections.IEnumerator" /> object that can be used
-    ///     to iterate through the collection.
+    /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used
+    /// to iterate through the collection.
     /// </returns>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
 
-    /// <param name="index"> index to get the desired <see cref="TiledMapTileSet" /> at. </param>
+    /// <param name="index"> index to get the desired <see cref="TiledMapTileSet"/> at. </param>
     /// <returns> tileset at index  </returns>
     public virtual TiledMapTileSet GetTileSet( int index )
     {
         return _tilesets[ index ];
     }
 
-    /// <param name="name"> Name of the <see cref="TiledMapTileSet" /> to retrieve.</param>
+    /// <param name="name"> Name of the <see cref="TiledMapTileSet"/> to retrieve.</param>
     /// <returns> tileset with matching name, null if it doesn't exist  </returns>
     public virtual TiledMapTileSet? GetTileSet( string name )
     {
@@ -90,7 +90,7 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
     }
 
     /// <summary>
-    ///     Removes tileset at index
+    /// Removes tileset at index
     /// </summary>
     /// <param name="index"> index at which to remove a tileset. </param>
     public virtual void RemoveTileSet( int index )
@@ -104,7 +104,7 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
         _tilesets.Remove( tileset );
     }
 
-    /// <param name="id"> id of the <see cref="ITiledMapTile" /> to get. </param>
+    /// <param name="id"> id of the <see cref="ITiledMapTile"/> to get. </param>
     /// <returns> tile with matching id, null if it doesn't exist  </returns>
     public virtual ITiledMapTile? GetTile( int id )
     {

@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Maths.Collision;
 
 /// <summary>
-///     Encapsulates a ray having a starting position and a unit length direction.
+/// Encapsulates a ray having a starting position and a unit length direction.
 /// </summary>
 [Serializable]
 public class Ray
@@ -36,7 +36,7 @@ public class Ray
     public readonly Vector3 origin    = new();
 
     /// <summary>
-    ///     Constructor, sets the starting position of the ray and the direction.
+    /// Constructor, sets the starting position of the ray and the direction.
     /// </summary>
     /// <param name="origin"> The starting position </param>
     /// <param name="direction"> The direction  </param>
@@ -47,7 +47,7 @@ public class Ray
     }
 
     /// <summary>
-    ///     Returns a copy of this ray.
+    /// Returns a copy of this ray.
     /// </summary>
     public virtual Ray Copy()
     {
@@ -55,8 +55,8 @@ public class Ray
     }
 
     /// <summary>
-    ///     Returns the endpoint given the distance.
-    ///     This is calculated as startpoint + distance * direction.
+    /// Returns the endpoint given the distance.
+    /// This is calculated as startpoint + distance * direction.
     /// </summary>
     /// <param name="result">The vector to set to the result</param>
     /// <param name="distance">The distance from the end point to the start point.</param>
@@ -67,8 +67,8 @@ public class Ray
     }
 
     /// <summary>
-    ///     Multiplies the ray by the given matrix.
-    ///     Use this to transform a ray into another coordinate system.
+    /// Multiplies the ray by the given matrix.
+    /// Use this to transform a ray into another coordinate system.
     /// </summary>
     /// <param name="matrix"> The matrix </param>
     /// <returns> This ray for chaining.  </returns>
@@ -83,14 +83,14 @@ public class Ray
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override string ToString()
     {
         return "ray [" + origin + ":" + direction + "]";
     }
 
     /// <summary>
-    ///     Sets the starting position and the direction of this ray.
+    /// Sets the starting position and the direction of this ray.
     /// </summary>
     /// <param name="orig"> The starting position </param>
     /// <param name="dir"> The direction </param>
@@ -104,7 +104,7 @@ public class Ray
     }
 
     /// <summary>
-    ///     Sets this ray from the given starting position and direction.
+    /// Sets this ray from the given starting position and direction.
     /// </summary>
     /// <param name="x"> The x-component of the starting position </param>
     /// <param name="y"> The y-component of the starting position </param>
@@ -122,7 +122,7 @@ public class Ray
     }
 
     /// <summary>
-    ///     Sets the starting position and direction from the given ray
+    /// Sets the starting position and direction from the given ray
     /// </summary>
     /// <param name="ray"> The ray </param>
     /// <returns> This ray for chaining  </returns>
@@ -134,7 +134,7 @@ public class Ray
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override bool Equals( object? o )
     {
         if ( o == this )
@@ -152,7 +152,7 @@ public class Ray
         return direction.Equals( r.direction ) && origin.Equals( r.origin );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         const int PRIME = 73;

@@ -31,104 +31,104 @@ namespace LughSharp.LibCore.Maths;
 public class Matrix4
 {
     /// <summary>
-    ///     XX: Typically the unrotated X component for scaling, also the cosine
-    ///     of the angle when rotated on the Y and/or Z axis. On Vector3 multiplication
-    ///     this value is multiplied with the source X component and added to the
-    ///     target X component.
+    /// XX: Typically the unrotated X component for scaling, also the cosine
+    /// of the angle when rotated on the Y and/or Z axis. On Vector3 multiplication
+    /// this value is multiplied with the source X component and added to the
+    /// target X component.
     /// </summary>
     public const int M00 = 0;
 
     /// <summary>
-    ///     XY: Typically the negative sine of the angle when rotated on the Z axis.
-    ///     On Vector3 multiplication this value is multiplied with the source Y
-    ///     component and added to the target X component.
+    /// XY: Typically the negative sine of the angle when rotated on the Z axis.
+    /// On Vector3 multiplication this value is multiplied with the source Y
+    /// component and added to the target X component.
     /// </summary>
     public const int M01 = 4;
 
     /// <summary>
-    ///     XZ: Typically the sine of the angle when rotated on the Y axis.
-    ///     On Vector3 multiplication this value is multiplied with the
-    ///     source Z component and added to the target X component.
+    /// XZ: Typically the sine of the angle when rotated on the Y axis.
+    /// On Vector3 multiplication this value is multiplied with the
+    /// source Z component and added to the target X component.
     /// </summary>
     public const int M02 = 8;
 
     /// <summary>
-    ///     XW: Typically the translation of the X component. On Vector3 multiplication
-    ///     this value is added to the target X component.
+    /// XW: Typically the translation of the X component. On Vector3 multiplication
+    /// this value is added to the target X component.
     /// </summary>
     public const int M03 = 12;
 
     /// <summary>
-    ///     YX: Typically the sine of the angle when rotated on the Z axis. On Vector3
-    ///     multiplication this value is multiplied with the source X component and
-    ///     added to the target Y component.
+    /// YX: Typically the sine of the angle when rotated on the Z axis. On Vector3
+    /// multiplication this value is multiplied with the source X component and
+    /// added to the target Y component.
     /// </summary>
     public const int M10 = 1;
 
     /// <summary>
-    ///     YY: Typically the unrotated Y component for scaling, also the cosine of the
-    ///     angle when rotated on the X and/or Z axis. On Vector3 multiplication this value
-    ///     is multiplied with the source Y component and added to the target Y component.
+    /// YY: Typically the unrotated Y component for scaling, also the cosine of the
+    /// angle when rotated on the X and/or Z axis. On Vector3 multiplication this value
+    /// is multiplied with the source Y component and added to the target Y component.
     /// </summary>
     public const int M11 = 5;
 
     /// <summary>
-    ///     YZ: Typically the negative sine of the angle when rotated on the X axis.
-    ///     On Vector3 multiplication this value is multiplied with the source Z component
-    ///     and added to the target Y component.
+    /// YZ: Typically the negative sine of the angle when rotated on the X axis.
+    /// On Vector3 multiplication this value is multiplied with the source Z component
+    /// and added to the target Y component.
     /// </summary>
     public const int M12 = 9;
 
     /// <summary>
-    ///     YW: Typically the translation of the Y component.
-    ///     On Vector3 multiplication this value is added to the target Y component.
+    /// YW: Typically the translation of the Y component.
+    /// On Vector3 multiplication this value is added to the target Y component.
     /// </summary>
     public const int M13 = 13;
 
     /// <summary>
-    ///     ZX: Typically the negative sine of the angle when rotated on the Y axis.
-    ///     On Vector3 multiplication this value is multiplied with the source X component
-    ///     and added to the target Z component.
+    /// ZX: Typically the negative sine of the angle when rotated on the Y axis.
+    /// On Vector3 multiplication this value is multiplied with the source X component
+    /// and added to the target Z component.
     /// </summary>
     public const int M20 = 2;
 
     /// <summary>
-    ///     ZY: Typically the sine of the angle when rotated on the X axis.
-    ///     On Vector3 multiplication this value is multiplied with the source Y component
-    ///     and added to the target Z component.
+    /// ZY: Typically the sine of the angle when rotated on the X axis.
+    /// On Vector3 multiplication this value is multiplied with the source Y component
+    /// and added to the target Z component.
     /// </summary>
     public const int M21 = 6;
 
     /// <summary>
-    ///     ZZ: Typically the unrotated Z component for scaling, also the cosine of the angle
-    ///     when rotated on the X and/or Y axis. On Vector3 multiplication this value is
-    ///     multiplied with the source Z component and added to the target Z component.
+    /// ZZ: Typically the unrotated Z component for scaling, also the cosine of the angle
+    /// when rotated on the X and/or Y axis. On Vector3 multiplication this value is
+    /// multiplied with the source Z component and added to the target Z component.
     /// </summary>
     public const int M22 = 10;
 
     /// <summary>
-    ///     ZW: Typically the translation of the Z component. On Vector3 multiplication
-    ///     this value is added to the target Z component.
+    /// ZW: Typically the translation of the Z component. On Vector3 multiplication
+    /// this value is added to the target Z component.
     /// </summary>
     public const int M23 = 14;
 
     /// <summary>
-    ///     WX: Typically the value zero. On Vector3 multiplication this value is ignored.
+    /// WX: Typically the value zero. On Vector3 multiplication this value is ignored.
     /// </summary>
     public const int M30 = 3;
 
     /// <summary>
-    ///     WY: Typically the value zero. On Vector3 multiplication this value is ignored.
+    /// WY: Typically the value zero. On Vector3 multiplication this value is ignored.
     /// </summary>
     public const int M31 = 7;
 
     /// <summary>
-    ///     WZ: Typically the value zero. On Vector3 multiplication this value is ignored.
+    /// WZ: Typically the value zero. On Vector3 multiplication this value is ignored.
     /// </summary>
     public const int M32 = 11;
 
     /// <summary>
-    ///     WW: Typically the value one. On Vector3 multiplication this value is ignored.
+    /// WW: Typically the value one. On Vector3 multiplication this value is ignored.
     /// </summary>
     public const int M33 = 15;
 
@@ -146,7 +146,7 @@ public class Matrix4
     public readonly float[] Val = new float[ 16 ];
 
     /// <summary>
-    ///     Constructs an identity matrix
+    /// Constructs an identity matrix
     /// </summary>
     public Matrix4()
     {
@@ -157,10 +157,10 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Constructs a matrix from the given matrix.
+    /// Constructs a matrix from the given matrix.
     /// </summary>
     /// <param name="matrix">
-    ///     The matrix to copy. (This matrix is not modified)
+    /// The matrix to copy. (This matrix is not modified)
     /// </param>
     public Matrix4( Matrix4 matrix )
     {
@@ -168,16 +168,16 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Constructs a matrix from the given float array. The array must have at
-    ///     least 16 elements; the first 16 will be copied.
+    /// Constructs a matrix from the given float array. The array must have at
+    /// least 16 elements; the first 16 will be copied.
     /// </summary>
     /// <param name="values">
-    ///     The float array to copy. Remember that this matrix is in column-major order.
-    ///     (The float array is not modified.)
-    ///     <para>
-    ///         See here:
-    ///         <a href="http://en.wikipedia.org/wiki/Row-major_order">wikipedia.org/wiki/Row-major_order</a>
-    ///     </para>
+    /// The float array to copy. Remember that this matrix is in column-major order.
+    /// (The float array is not modified.)
+    /// <para>
+    /// See here:
+    /// <a href="http://en.wikipedia.org/wiki/Row-major_order">wikipedia.org/wiki/Row-major_order</a>
+    /// </para>
     /// </param>
     public Matrix4( float[] values )
     {
@@ -185,7 +185,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Constructs a rotation matrix from the given <see cref="Quaternion" />.
+    /// Constructs a rotation matrix from the given <see cref="Quaternion"/>.
     /// </summary>
     /// <param name="quaternion">The quaternion to be copied. (The quaternion is not modified)</param>
     public Matrix4( Quaternion quaternion )
@@ -194,7 +194,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Construct a matrix from the given translation, rotation and scale.
+    /// Construct a matrix from the given translation, rotation and scale.
     /// </summary>
     /// <param name="position"> The translation </param>
     /// <param name="rotation"> The rotation, must be normalized </param>
@@ -210,7 +210,7 @@ public class Matrix4
     public float[] Values => Val;
 
     /// <summary>
-    ///     Sets the matrix to the given matrix.
+    /// Sets the matrix to the given matrix.
     /// </summary>
     /// <param name="matrix"> The matrix that is to be copied.(The given matrix is not modified)</param>
     /// <returns> This matrix for the purpose of chaining methods together.</returns>
@@ -220,16 +220,16 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to the given matrix as a float array. The float array must
-    ///     have at least 16 elements; the first 16 will be copied.
+    /// Sets the matrix to the given matrix as a float array. The float array must
+    /// have at least 16 elements; the first 16 will be copied.
     /// </summary>
     /// <param name="values">
-    ///     The matrix, in float form, that is to be copied. Remember that this matrix is in
-    ///     Column-Major order.
-    ///     <p>
-    ///         See here:
-    ///         <a href="http://en.wikipedia.org/wiki/Row-major_order">wikipedia.org/wiki/Row-major_order</a>
-    ///     </p>
+    /// The matrix, in float form, that is to be copied. Remember that this matrix is in
+    /// Column-Major order.
+    /// <p>
+    /// See here:
+    /// <a href="http://en.wikipedia.org/wiki/Row-major_order">wikipedia.org/wiki/Row-major_order</a>
+    /// </p>
     /// </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Set( float[] values )
@@ -240,7 +240,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to a rotation matrix representing the quaternion.
+    /// Sets the matrix to a rotation matrix representing the quaternion.
     /// </summary>
     /// <param name="quaternion"> The quaternion that is to be used to Set this matrix. </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
@@ -250,7 +250,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to a rotation matrix representing the quaternion.
+    /// Sets the matrix to a rotation matrix representing the quaternion.
     /// </summary>
     /// <param name="quaternionX"> The X component of the quaternion that is to be used to Set this matrix. </param>
     /// <param name="quaternionY"> The Y component of the quaternion that is to be used to Set this matrix. </param>
@@ -263,7 +263,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Set this matrix to the specified translation and rotation.
+    /// Set this matrix to the specified translation and rotation.
     /// </summary>
     /// <param name="position"> The translation </param>
     /// <param name="orientation"> The rotation, must be normalized </param>
@@ -274,7 +274,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to a rotation matrix representing the translation and quaternion.
+    /// Sets the matrix to a rotation matrix representing the translation and quaternion.
     /// </summary>
     /// <param name="translationX"> The X component of the translation that is to be used to Set this matrix. </param>
     /// <param name="translationY"> The Y component of the translation that is to be used to Set this matrix. </param>
@@ -321,7 +321,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Set this matrix to the specified translation, rotation and scale.
+    /// Set this matrix to the specified translation, rotation and scale.
     /// </summary>
     /// <param name="position"> The translation </param>
     /// <param name="orientation"> The rotation, must be normalized </param>
@@ -344,7 +344,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to a rotation matrix representing the translation and quaternion.
+    /// Sets the matrix to a rotation matrix representing the translation and quaternion.
     /// </summary>
     /// <param name="translationX"> The X component of the translation that is to be used to Set this matrix. </param>
     /// <param name="translationY"> The Y component of the translation that is to be used to Set this matrix. </param>
@@ -397,9 +397,9 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the four columns of the matrix which correspond to the x-, y- and z-axis of the vector space this matrix
-    ///     creates as
-    ///     well as the 4th column representing the translation of any point that is multiplied by this matrix.
+    /// Sets the four columns of the matrix which correspond to the x-, y- and z-axis of the vector space this matrix
+    /// creates as
+    /// well as the 4th column representing the translation of any point that is multiplied by this matrix.
     /// </summary>
     /// <param name="xAxis"> The x-axis. </param>
     /// <param name="yAxis"> The y-axis. </param>
@@ -434,11 +434,11 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Adds a translational component to the matrix in the 4th column.
-    ///     The other columns are untouched.
+    /// Adds a translational component to the matrix in the 4th column.
+    /// The other columns are untouched.
     /// </summary>
     /// <param name="vector">
-    ///     The translation vector to add to the current matrix. (This vector is not modified)
+    /// The translation vector to add to the current matrix. (This vector is not modified)
     /// </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Trn( Vector3 vector )
@@ -451,8 +451,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Adds a translational component to the matrix in the 4th column.
-    ///     The other columns are untouched.
+    /// Adds a translational component to the matrix in the 4th column.
+    /// The other columns are untouched.
     /// </summary>
     /// <param name="x"> The x-component of the translation vector. </param>
     /// <param name="y"> The y-component of the translation vector. </param>
@@ -468,8 +468,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Postmultiplies this matrix with the given matrix, storing the result in this matrix. For example:
-    ///     <code>
+    /// Postmultiplies this matrix with the given matrix, storing the result in this matrix. For example:
+    /// <code>
     /// A.mul(B) results in A := AB.
     /// </code>
     /// </summary>
@@ -483,10 +483,10 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Premultiplies this matrix with the given matrix, storing the result in this matrix. For example:
-    ///     <para>
-    ///         <tt>A.mulLeft(B) results in A := BA.</tt>
-    ///     </para>
+    /// Premultiplies this matrix with the given matrix, storing the result in this matrix. For example:
+    /// <para>
+    ///     <tt>A.mulLeft(B) results in A := BA.</tt>
+    /// </para>
     /// </summary>
     /// <param name="matrix"> The other matrix to multiply by. </param>
     /// <returns> This matrix for the purpose of chaining operations together.  </returns>
@@ -500,7 +500,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Transposes the matrix.
+    /// Transposes the matrix.
     /// </summary>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Tra()
@@ -529,7 +529,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to an identity matrix.
+    /// Sets the matrix to an identity matrix.
     /// </summary>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Idt()
@@ -555,7 +555,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Inverts the matrix. Stores the result in this matrix.
+    /// Inverts the matrix. Stores the result in this matrix.
     /// </summary>
     /// <returns> This matrix for the purpose of chaining methods together. </returns>
     /// <exception cref="GdxRuntimeException"> if the matrix is singular (not invertible)  </exception>
@@ -803,10 +803,10 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to a projection matrix with a near- and far plane, a field
-    ///     of view in degrees and an aspect ratio. Note that the field of view specified
-    ///     is the angle in degrees for the height, the field of view for the width will
-    ///     be calculated according to the aspect ratio.
+    /// Sets the matrix to a projection matrix with a near- and far plane, a field
+    /// of view in degrees and an aspect ratio. Note that the field of view specified
+    /// is the angle in degrees for the height, the field of view for the width will
+    /// be calculated according to the aspect ratio.
     /// </summary>
     /// <param name="near"> The near plane </param>
     /// <param name="far"> The far plane </param>
@@ -842,10 +842,10 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to a projection matrix with a near/far plane, and left, bottom,
-    ///     right and top specifying the points on the near plane that are mapped to the lower
-    ///     left and upper right corners of the viewport. This allows to create projection
-    ///     matrix with off-center vanishing point.
+    /// Sets the matrix to a projection matrix with a near/far plane, and left, bottom,
+    /// right and top specifying the points on the near plane that are mapped to the lower
+    /// left and upper right corners of the viewport. This allows to create projection
+    /// matrix with off-center vanishing point.
     /// </summary>
     /// <param name="left"> </param>
     /// <param name="right"> </param>
@@ -884,9 +884,9 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets this matrix to an orthographic projection matrix with the origin at (x,y) extending by width and height. The
-    ///     near plane
-    ///     is Set to 0, the far plane is Set to 1.
+    /// Sets this matrix to an orthographic projection matrix with the origin at (x,y) extending by width and height. The
+    /// near plane
+    /// is Set to 0, the far plane is Set to 1.
     /// </summary>
     /// <param name="x"> The x-coordinate of the origin </param>
     /// <param name="y"> The y-coordinate of the origin </param>
@@ -901,9 +901,9 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets this matrix to an orthographic projection matrix with the origin at (x,y) extending by width and height,
-    ///     having a near
-    ///     and far plane.
+    /// Sets this matrix to an orthographic projection matrix with the origin at (x,y) extending by width and height,
+    /// having a near
+    /// and far plane.
     /// </summary>
     /// <param name="x"> The x-coordinate of the origin </param>
     /// <param name="y"> The y-coordinate of the origin </param>
@@ -920,9 +920,9 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to an orthographic projection like glOrtho (http://www.opengl.org/sdk/docs/man/xhtml/glOrtho.xml)
-    ///     following
-    ///     the OpenGL equivalent
+    /// Sets the matrix to an orthographic projection like glOrtho (http://www.opengl.org/sdk/docs/man/xhtml/glOrtho.xml)
+    /// following
+    /// the OpenGL equivalent
     /// </summary>
     /// <param name="left"> The left clipping plane </param>
     /// <param name="right"> The right clipping plane </param>
@@ -962,7 +962,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the 4th column to the translation vector.
+    /// Sets the 4th column to the translation vector.
     /// </summary>
     /// <param name="vector"> The translation vector </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
@@ -976,7 +976,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the 4th column to the translation vector.
+    /// Sets the 4th column to the translation vector.
     /// </summary>
     /// <param name="x"> The X coordinate of the translation vector </param>
     /// <param name="y"> The Y coordinate of the translation vector </param>
@@ -992,9 +992,9 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets this matrix to a translation matrix, overwriting it first by an identity matrix and then setting the 4th
-    ///     column to the
-    ///     translation vector.
+    /// Sets this matrix to a translation matrix, overwriting it first by an identity matrix and then setting the 4th
+    /// column to the
+    /// translation vector.
     /// </summary>
     /// <param name="vector"> The translation vector </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
@@ -1010,9 +1010,9 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets this matrix to a translation matrix, overwriting it first by an identity matrix and then setting the 4th
-    ///     column to the
-    ///     translation vector.
+    /// Sets this matrix to a translation matrix, overwriting it first by an identity matrix and then setting the 4th
+    /// column to the
+    /// translation vector.
     /// </summary>
     /// <param name="x"> The x-component of the translation vector. </param>
     /// <param name="y"> The y-component of the translation vector. </param>
@@ -1030,8 +1030,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets this matrix to a translation and scaling matrix by first overwriting it with an identity and then setting the
-    ///     translation vector in the 4th column and the scaling vector in the diagonal.
+    /// Sets this matrix to a translation and scaling matrix by first overwriting it with an identity and then setting the
+    /// translation vector in the 4th column and the scaling vector in the diagonal.
     /// </summary>
     /// <param name="translation"> The translation vector </param>
     /// <param name="scaling"> The scaling vector </param>
@@ -1051,8 +1051,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets this matrix to a translation and scaling matrix by first overwriting it with an identity and then setting the
-    ///     translation vector in the 4th column and the scaling vector in the diagonal.
+    /// Sets this matrix to a translation and scaling matrix by first overwriting it with an identity and then setting the
+    /// translation vector in the 4th column and the scaling vector in the diagonal.
     /// </summary>
     /// <param name="translationX"> The x-component of the translation vector </param>
     /// <param name="translationY"> The y-component of the translation vector </param>
@@ -1081,7 +1081,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to a rotation matrix around the given axis.
+    /// Sets the matrix to a rotation matrix around the given axis.
     /// </summary>
     /// <param name="axis"> The axis </param>
     /// <param name="degrees"> The angle in degrees </param>
@@ -1099,7 +1099,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to a rotation matrix around the given axis.
+    /// Sets the matrix to a rotation matrix around the given axis.
     /// </summary>
     /// <param name="axis"> The axis </param>
     /// <param name="radians"> The angle in radians </param>
@@ -1117,7 +1117,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to a rotation matrix around the given axis.
+    /// Sets the matrix to a rotation matrix around the given axis.
     /// </summary>
     /// <param name="axisX"> The x-component of the axis </param>
     /// <param name="axisY"> The y-component of the axis </param>
@@ -1137,7 +1137,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets the matrix to a rotation matrix around the given axis.
+    /// Sets the matrix to a rotation matrix around the given axis.
     /// </summary>
     /// <param name="axisX"> The x-component of the axis </param>
     /// <param name="axisY"> The y-component of the axis </param>
@@ -1157,7 +1157,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Set the matrix to a rotation matrix between two vectors.
+    /// Set the matrix to a rotation matrix between two vectors.
     /// </summary>
     /// <param name="v1"> The base vector </param>
     /// <param name="v2"> The target vector </param>
@@ -1168,7 +1168,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Set the matrix to a rotation matrix between two vectors.
+    /// Set the matrix to a rotation matrix between two vectors.
     /// </summary>
     /// <param name="x1"> The base vectors x value </param>
     /// <param name="y1"> The base vectors y value </param>
@@ -1183,7 +1183,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets this matrix to a rotation matrix from the given euler angles.
+    /// Sets this matrix to a rotation matrix from the given euler angles.
     /// </summary>
     /// <param name="yaw"> the yaw in degrees </param>
     /// <param name="pitch"> the pitch in degrees </param>
@@ -1197,7 +1197,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets this matrix to a rotation matrix from the given euler angles.
+    /// Sets this matrix to a rotation matrix from the given euler angles.
     /// </summary>
     /// <param name="yaw"> the yaw in radians </param>
     /// <param name="pitch"> the pitch in radians </param>
@@ -1211,7 +1211,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets this matrix to a scaling matrix
+    /// Sets this matrix to a scaling matrix
     /// </summary>
     /// <param name="vector"> The scaling vector </param>
     /// <returns> This matrix for chaining.  </returns>
@@ -1227,7 +1227,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets this matrix to a scaling matrix
+    /// Sets this matrix to a scaling matrix
     /// </summary>
     /// <param name="x"> The x-component of the scaling vector </param>
     /// <param name="y"> The y-component of the scaling vector </param>
@@ -1246,8 +1246,8 @@ public class Matrix4
 
 
     /// <summary>
-    ///     Sets the matrix to a look at matrix with a direction and an up vector. Multiply
-    ///     with a translation matrix to get a camera model view matrix.
+    /// Sets the matrix to a look at matrix with a direction and an up vector. Multiply
+    /// with a translation matrix to get a camera model view matrix.
     /// </summary>
     /// <param name="direction"> The direction vector </param>
     /// <param name="up"> The up vector </param>
@@ -1275,7 +1275,7 @@ public class Matrix4
 
 
     /// <summary>
-    ///     Sets this matrix to a look at matrix with the given position, target and up vector.
+    /// Sets this matrix to a look at matrix with the given position, target and up vector.
     /// </summary>
     /// <param name="position"> the position </param>
     /// <param name="target"> the target </param>
@@ -1302,7 +1302,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Linearly interpolates between this matrix and the given matrix mixing by alpha
+    /// Linearly interpolates between this matrix and the given matrix mixing by alpha
     /// </summary>
     /// <param name="matrix"> the matrix </param>
     /// <param name="alpha"> the alpha value in the range [0,1] </param>
@@ -1318,9 +1318,9 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Averages the given transform with this one and stores the result in this matrix. Translations and scales are lerped
-    ///     while
-    ///     rotations are slerped.
+    /// Averages the given transform with this one and stores the result in this matrix. Translations and scales are lerped
+    /// while
+    /// rotations are slerped.
     /// </summary>
     /// <param name="other"> The other transform </param>
     /// <param name="w"> Weight of this transform; weight of the other transform is (1 - w) </param>
@@ -1344,9 +1344,9 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Averages the given transforms and stores the result in this matrix. Translations
-    ///     and scales are lerped while rotations are slerped. Does not destroy the data
-    ///     contained in t.
+    /// Averages the given transforms and stores the result in this matrix. Translations
+    /// and scales are lerped while rotations are slerped. Does not destroy the data
+    /// contained in t.
     /// </summary>
     /// <param name="t"> List of transforms </param>
     /// <returns> This matrix for chaining  </returns>
@@ -1375,10 +1375,10 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Averages the given transforms with the given weights and stores the result
-    ///     in this matrix. Translations and scales are lerped while rotations are slerped.
-    ///     Does not destroy the data contained in t or w; Sum of w_i must be equal to 1, or
-    ///     unexpected results will occur.
+    /// Averages the given transforms with the given weights and stores the result
+    /// in this matrix. Translations and scales are lerped while rotations are slerped.
+    /// Does not destroy the data contained in t or w; Sum of w_i must be equal to 1, or
+    /// unexpected results will occur.
     /// </summary>
     /// <param name="t"> List of transforms </param>
     /// <param name="w"> List of weights </param>
@@ -1406,8 +1406,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets this matrix to the given 3x3 matrix.
-    ///     The third column of this matrix is Set to ( 0, 0, 1, 0 ).
+    /// Sets this matrix to the given 3x3 matrix.
+    /// The third column of this matrix is Set to ( 0, 0, 1, 0 ).
     /// </summary>
     /// <param name="mat"> the matrix </param>
     public Matrix4 Set( Matrix3 mat )
@@ -1433,13 +1433,13 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Sets this matrix to the given affine matrix. The values are mapped as follows:
-    ///     <para></para>
-    ///     <para>     [  M00  M01  ___  M02  ]</para>
-    ///     <para>     [  M10  M11  ___  M12  ]</para>
-    ///     <para>     [  ___  ___  ___  ___  ]</para>
-    ///     <para>     [  ___  ___  ___  ___  ]</para>
-    ///     <para></para>
+    /// Sets this matrix to the given affine matrix. The values are mapped as follows:
+    /// <para></para>
+    /// <para>     [  M00  M01  ___  M02  ]</para>
+    /// <para>     [  M10  M11  ___  M12  ]</para>
+    /// <para>     [  ___  ___  ___  ___  ]</para>
+    /// <para>     [  ___  ___  ___  ___  ]</para>
+    /// <para></para>
     /// </summary>
     /// <param name="affine"> the source matrix </param>
     /// <returns> This matrix for chaining </returns>
@@ -1466,14 +1466,14 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Assumes that both matrices are 2D affine transformations, copying only
-    ///     the relevant components. The copied are mapped as follows:
-    ///     <para></para>
-    ///     <para>     [  M00  M01  ___  M02  ]</para>
-    ///     <para>     [  M10  M11  ___  M12  ]</para>
-    ///     <para>     [  ___  ___  ___  ___  ]</para>
-    ///     <para>     [  ___  ___  ___  ___  ]</para>
-    ///     <para></para>
+    /// Assumes that both matrices are 2D affine transformations, copying only
+    /// the relevant components. The copied are mapped as follows:
+    /// <para></para>
+    /// <para>     [  M00  M01  ___  M02  ]</para>
+    /// <para>     [  M10  M11  ___  M12  ]</para>
+    /// <para>     [  ___  ___  ___  ___  ]</para>
+    /// <para>     [  ___  ___  ___  ___  ]</para>
+    /// <para></para>
     /// </summary>
     /// <param name="affine"> the source matrix </param>
     /// <returns> This matrix for chaining </returns>
@@ -1490,14 +1490,14 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Assumes that both matrices are 2D affine transformations, copying only
-    ///     the relevant components. The copied values are:
-    ///     <para></para>
-    ///     <para>     [  M00  M01  ___  M03  ]</para>
-    ///     <para>     [  M10  M11  ___  M13  ]</para>
-    ///     <para>     [  ___  ___  ___  ___  ]</para>
-    ///     <para>     [  ___  ___  ___  ___  ]</para>
-    ///     <para></para>
+    /// Assumes that both matrices are 2D affine transformations, copying only
+    /// the relevant components. The copied values are:
+    /// <para></para>
+    /// <para>     [  M00  M01  ___  M03  ]</para>
+    /// <para>     [  M10  M11  ___  M13  ]</para>
+    /// <para>     [  ___  ___  ___  ___  ]</para>
+    /// <para>     [  ___  ___  ___  ___  ]</para>
+    /// <para></para>
     /// </summary>
     /// <param name="mat"> the source matrix </param>
     /// <returns> This matrix for chaining </returns>
@@ -1550,21 +1550,21 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Gets the rotation of this matrix.
+    /// Gets the rotation of this matrix.
     /// </summary>
-    /// <param name="rotation"> The <see cref="Quaternion" /> to receive the rotation </param>
+    /// <param name="rotation"> The <see cref="Quaternion"/> to receive the rotation </param>
     /// <param name="normalizeAxes"> True to normalize the axes, necessary when the matrix might also include scaling. </param>
-    /// <returns> The provided <see cref="Quaternion" /> for chaining.  </returns>
+    /// <returns> The provided <see cref="Quaternion"/> for chaining.  </returns>
     public Quaternion GetRotation( Quaternion rotation, bool normalizeAxes )
     {
         return rotation.SetFromMatrix( normalizeAxes, this );
     }
 
     /// <summary>
-    ///     Gets the rotation of this matrix.
+    /// Gets the rotation of this matrix.
     /// </summary>
-    /// <param name="rotation"> The <see cref="Quaternion" /> to receive the rotation </param>
-    /// <returns> The provided <see cref="Quaternion" /> for chaining.  </returns>
+    /// <param name="rotation"> The <see cref="Quaternion"/> to receive the rotation </param>
+    /// <returns> The provided <see cref="Quaternion"/> for chaining.  </returns>
     public Quaternion GetRotation( Quaternion rotation )
     {
         return rotation.SetFromMatrix( this );
@@ -1634,7 +1634,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     removes the translational part and transposes the matrix.
+    /// removes the translational part and transposes the matrix.
     /// </summary>
     public Matrix4 ToNormalMatrix()
     {
@@ -1654,14 +1654,14 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Multiplies the vectors with the given matrix. The matrix array is assumed to
-    ///     hold a 4x4 column major matrix as you can get from <see cref="Val" />.
-    ///     The vectors array is assumed to hold 3-component vectors. Offset specifies
-    ///     the offset into the array where the x-component of the first vector is located.
-    ///     The numVecs parameter specifies the number of vectors stored in the vectors
-    ///     array. The stride parameter specifies the number of floats between subsequent
-    ///     vectors and must be >= 3. This is the same as <see cref="Vector3.Mul(Matrix4)" />
-    ///     applied to multiple vectors.
+    /// Multiplies the vectors with the given matrix. The matrix array is assumed to
+    /// hold a 4x4 column major matrix as you can get from <see cref="Val"/>.
+    /// The vectors array is assumed to hold 3-component vectors. Offset specifies
+    /// the offset into the array where the x-component of the first vector is located.
+    /// The numVecs parameter specifies the number of vectors stored in the vectors
+    /// array. The stride parameter specifies the number of floats between subsequent
+    /// vectors and must be >= 3. This is the same as <see cref="Vector3.Mul(Matrix4)"/>
+    /// applied to multiple vectors.
     /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vecs"> the vectors </param>
@@ -1688,15 +1688,15 @@ public class Matrix4
     */
 
     /// <summary>
-    ///     Multiplies the vectors with the given matrix, performing a division by w.
-    ///     The matrix array is assumed to hold a 4x4 column major matrix as you can
-    ///     get from <see cref="Val" />. The vectors array is assumed to hold
-    ///     3-component vectors. Offset specifies the offset into the array where the
-    ///     x-component of the first vector is located. The numVecs parameter specifies
-    ///     the number of vectors stored in the vectors array. The stride parameter
-    ///     specifies the number of floats between subsequent vectors and must be >= 3.
-    ///     This is the same as <see cref="Vector3.Prj(Matrix4)" /> applied to multiple
-    ///     vectors.
+    /// Multiplies the vectors with the given matrix, performing a division by w.
+    /// The matrix array is assumed to hold a 4x4 column major matrix as you can
+    /// get from <see cref="Val"/>. The vectors array is assumed to hold
+    /// 3-component vectors. Offset specifies the offset into the array where the
+    /// x-component of the first vector is located. The numVecs parameter specifies
+    /// the number of vectors stored in the vectors array. The stride parameter
+    /// specifies the number of floats between subsequent vectors and must be >= 3.
+    /// This is the same as <see cref="Vector3.Prj(Matrix4)"/> applied to multiple
+    /// vectors.
     /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vecs"> the vectors </param>
@@ -1722,14 +1722,14 @@ public class Matrix4
     */
 
     /// <summary>
-    ///     Multiplies the vectors with the top most 3x3 sub-matrix of the given matrix.
-    ///     The matrix array is assumed to hold a 4x4 column major matrix as you can get
-    ///     from <see cref="Val" />. The vectors array is assumed to hold
-    ///     3-component vectors. Offset specifies the offset into the array where the
-    ///     x-component of the first vector is located. The numVecs parameter specifies
-    ///     the number of vectors stored in the vectors array. The stride parameter
-    ///     specifies the number of floats between subsequent vectors and must be >= 3.
-    ///     This is the same as <see cref="Vector3.Rot(Matrix4)" /> applied to multiple vectors.
+    /// Multiplies the vectors with the top most 3x3 sub-matrix of the given matrix.
+    /// The matrix array is assumed to hold a 4x4 column major matrix as you can get
+    /// from <see cref="Val"/>. The vectors array is assumed to hold
+    /// 3-component vectors. Offset specifies the offset into the array where the
+    /// x-component of the first vector is located. The numVecs parameter specifies
+    /// the number of vectors stored in the vectors array. The stride parameter
+    /// specifies the number of floats between subsequent vectors and must be >= 3.
+    /// This is the same as <see cref="Vector3.Rot(Matrix4)"/> applied to multiple vectors.
     /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vecs"> the vectors </param>
@@ -1757,10 +1757,10 @@ public class Matrix4
     // @on
 
     /// <summary>
-    ///     Multiplies the matrix mata with matrix matb, storing the result in mata.
-    ///     The arrays are assumed to hold 4x4 column major matrices as you can get
-    ///     from <see cref="Val" />.
-    ///     This is the same as <see cref="Matrix4.Mul(Matrix4)" />.
+    /// Multiplies the matrix mata with matrix matb, storing the result in mata.
+    /// The arrays are assumed to hold 4x4 column major matrices as you can get
+    /// from <see cref="Val"/>.
+    /// This is the same as <see cref="Matrix4.Mul(Matrix4)"/>.
     /// </summary>
     /// <param name="mata"> the first matrix. </param>
     /// <param name="matb"> the second matrix.  </param>
@@ -1865,11 +1865,11 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Multiplies the vector with the given matrix. The matrix array is assumed
-    ///     to hold a 4x4 column major matrix as you can get from <see cref="Val" />.
-    ///     The vector array is assumed to hold a 3-component vector, with x being the
-    ///     first element, y being the second and z being the last component. The result
-    ///     is stored in the vector array. This is the same as <see cref="Vector3.Mul(Matrix4)" />.
+    /// Multiplies the vector with the given matrix. The matrix array is assumed
+    /// to hold a 4x4 column major matrix as you can get from <see cref="Val"/>.
+    /// The vector array is assumed to hold a 3-component vector, with x being the
+    /// first element, y being the second and z being the last component. The result
+    /// is stored in the vector array. This is the same as <see cref="Vector3.Mul(Matrix4)"/>.
     /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vec"> the vector.  </param>
@@ -1885,12 +1885,12 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Multiplies the vector with the given matrix, performing a division by w. The
-    ///     matrix array is assumed to hold a 4x4 column major matrix as you can get from
-    ///     <see cref="Val" />. The vector array is assumed to hold a 3-component
-    ///     vector, with x being the first element, y being the second and z being the last
-    ///     component. The result is stored in the vector array. This is the same as
-    ///     <see cref="Vector3.Prj(Matrix4)" />.
+    /// Multiplies the vector with the given matrix, performing a division by w. The
+    /// matrix array is assumed to hold a 4x4 column major matrix as you can get from
+    /// <see cref="Val"/>. The vector array is assumed to hold a 3-component
+    /// vector, with x being the first element, y being the second and z being the last
+    /// component. The result is stored in the vector array. This is the same as
+    /// <see cref="Vector3.Prj(Matrix4)"/>.
     /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vec"> the vector.  </param>
@@ -1914,12 +1914,12 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Multiplies the vector with the top most 3x3 sub-matrix of the given matrix.
-    ///     The matrix array is assumed to hold a 4x4 column major matrix as you can get
-    ///     from <see cref="Val" />. The vector array is assumed to hold a
-    ///     3-component vector, with x being the first element, y being the second and z
-    ///     being the last component. The result is stored in the vector array. This is the
-    ///     same as <see cref="Vector3.Rot(Matrix4)" />.
+    /// Multiplies the vector with the top most 3x3 sub-matrix of the given matrix.
+    /// The matrix array is assumed to hold a 4x4 column major matrix as you can get
+    /// from <see cref="Val"/>. The vector array is assumed to hold a
+    /// 3-component vector, with x being the first element, y being the second and z
+    /// being the last component. The result is stored in the vector array. This is the
+    /// same as <see cref="Vector3.Rot(Matrix4)"/>.
     /// </summary>
     /// <param name="mat"> the matrix </param>
     /// <param name="vec"> the vector.  </param>
@@ -1934,8 +1934,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Computes the inverse of the given matrix. The matrix array is assumed to
-    ///     hold a 4x4 column major matrix as you can get from <see cref="Val" />.
+    /// Computes the inverse of the given matrix. The matrix array is assumed to
+    /// hold a 4x4 column major matrix as you can get from <see cref="Val"/>.
     /// </summary>
     /// <param name="values"> the matrix values. </param>
     /// <returns> false in case the inverse could not be calculated, true otherwise.  </returns>
@@ -2082,8 +2082,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Computes the determinante of the given matrix. The matrix array is assumed
-    ///     to hold a 4x4 column major matrix as you can get from <see cref="Val" />.
+    /// Computes the determinante of the given matrix. The matrix array is assumed
+    /// to hold a 4x4 column major matrix as you can get from <see cref="Val"/>.
     /// </summary>
     /// <param name="values"> the matrix values. </param>
     /// <returns> the determinante.  </returns>
@@ -2132,8 +2132,8 @@ public class Matrix4
 
     //@formatter:on
     /// <summary>
-    ///     Postmultiplies this matrix by a translation matrix.
-    ///     Postmultiplication is also used by OpenGL ES' glTranslate/glRotate/glScale
+    /// Postmultiplies this matrix by a translation matrix.
+    /// Postmultiplication is also used by OpenGL ES' glTranslate/glRotate/glScale
     /// </summary>
     /// <param name="translation"> </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
@@ -2143,8 +2143,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Postmultiplies this matrix by a translation matrix.
-    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    /// Postmultiplies this matrix by a translation matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
     /// <param name="x"> Translation in the x-axis. </param>
     /// <param name="y"> Translation in the y-axis. </param>
@@ -2161,8 +2161,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
     /// <param name="axis"> The vector axis to rotate around. </param>
     /// <param name="degrees"> The angle in degrees. </param>
@@ -2180,8 +2180,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
     /// <param name="axis"> The vector axis to rotate around. </param>
     /// <param name="radians"> The angle in radians. </param>
@@ -2199,8 +2199,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale
+    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale
     /// </summary>
     /// <param name="axisX"> The x-axis component of the vector to rotate around. </param>
     /// <param name="axisY"> The y-axis component of the vector to rotate around. </param>
@@ -2220,8 +2220,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale
+    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale
     /// </summary>
     /// <param name="axisX"> The x-axis component of the vector to rotate around. </param>
     /// <param name="axisY"> The y-axis component of the vector to rotate around. </param>
@@ -2241,8 +2241,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    /// Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
     /// <param name="rotation"> </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
@@ -2298,7 +2298,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Postmultiplies this matrix by the rotation between two vectors.
+    /// Postmultiplies this matrix by the rotation between two vectors.
     /// </summary>
     /// <param name="v1"> The base vector </param>
     /// <param name="v2"> The target vector </param>
@@ -2309,7 +2309,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Post-multiplies this matrix by a rotation toward a direction.
+    /// Post-multiplies this matrix by a rotation toward a direction.
     /// </summary>
     /// <param name="direction"> direction to rotate toward </param>
     /// <param name="up"> up vector </param>
@@ -2350,7 +2350,7 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Post-multiplies this matrix by a rotation toward a target.
+    /// Post-multiplies this matrix by a rotation toward a target.
     /// </summary>
     /// <param name="target"> the target to rotate to </param>
     /// <param name="up"> the up vector </param>
@@ -2363,8 +2363,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Postmultiplies this matrix with a scale matrix.
-    ///     Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
+    /// Postmultiplies this matrix with a scale matrix.
+    /// Postmultiplication is also used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
     /// </summary>
     /// <param name="scaleX"> The scale in the x-axis. </param>
     /// <param name="scaleY"> The scale in the y-axis. </param>
@@ -2389,8 +2389,8 @@ public class Matrix4
     }
 
     /// <summary>
-    ///     Copies the 4x3 upper-left sub-matrix into float array. The destination
-    ///     array is supposed to be a column major matrix.
+    /// Copies the 4x3 upper-left sub-matrix into float array. The destination
+    /// array is supposed to be a column major matrix.
     /// </summary>
     /// <param name="dst"> the destination matrix </param>
     public void Extract4X3Matrix( float[] dst )

@@ -28,11 +28,11 @@ using LughSharp.LibCore.Audio.MP3Sharp.Support;
 namespace LughSharp.LibCore.Audio.MP3Sharp.IO;
 
 /// <summary>
-///     public class allowing WaveFormat Access
+/// public class allowing WaveFormat Access
 /// </summary>
 /// <remarks>
-///     This class is marked as  to indicate to ReSharper that
-///     methods and members etc may be called externally.
+/// This class is marked as  to indicate to ReSharper that
+/// methods and members etc may be called externally.
 /// </remarks>
 [PublicAPI]
 public class WaveFile : RiffFile
@@ -47,7 +47,7 @@ public class WaveFile : RiffFile
     private long _pcmDataOffset; // offset of 'pc_data' in output file
 
     /// <summary>
-    ///     Creates a new WaveFile instance.
+    /// Creates a new WaveFile instance.
     /// </summary>
     public WaveFile()
     {
@@ -59,7 +59,7 @@ public class WaveFile : RiffFile
     }
 
     /// <summary>
-    ///     Pass in either a FileName or a Stream.
+    /// Pass in either a FileName or a Stream.
     /// </summary>
     public virtual int OpenForWrite( string filename,
                                      Stream? stream,
@@ -116,7 +116,7 @@ public class WaveFile : RiffFile
     }
 
     /// <summary>
-    ///     Write 16-bit audio
+    /// Write 16-bit audio
     /// </summary>
     public virtual int WriteData( short[] data, int numData )
     {
@@ -179,7 +179,7 @@ public class WaveFile : RiffFile
     }
 
     /// <summary>
-    ///     Open for write using another wave file's parameters...
+    /// Open for write using another wave file's parameters...
     /// </summary>
     public virtual int OpenForWrite( string filename, WaveFile otherWave )
     {

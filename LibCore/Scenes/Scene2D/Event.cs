@@ -26,20 +26,20 @@
 namespace LughSharp.LibCore.Scenes.Scene2D;
 
 /// <summary>
-///     The base class for all events.
-///     By default an event will "bubble" up through an actor's parent's handlers
-///     (see <see cref="Bubbles" />).
-///     <para>
-///         An actor's capture listeners can stop() an event to prevent child actors
-///         from seeing it.
-///     </para>
-///     <para>
-///         An Event may be marked as "handled" which will end its propagation outside
-///         of the Stage (see <see cref="IsHandled" />). The default Actor.fire(Event)
-///         will mark events handled if an EventListener returns true.
-///         A cancelled event will be stopped and handled. Additionally, many actors
-///         will undo the side-effects of a canceled event. (See <see cref="IsCancelled" />)
-///     </para>
+/// The base class for all events.
+/// By default an event will "bubble" up through an actor's parent's handlers
+/// (see <see cref="Bubbles"/>).
+/// <para>
+/// An actor's capture listeners can stop() an event to prevent child actors
+/// from seeing it.
+/// </para>
+/// <para>
+/// An Event may be marked as "handled" which will end its propagation outside
+/// of the Stage (see <see cref="IsHandled"/>). The default Actor.fire(Event)
+/// will mark events handled if an EventListener returns true.
+/// A cancelled event will be stopped and handled. Additionally, many actors
+/// will undo the side-effects of a canceled event. (See <see cref="IsCancelled"/>)
+/// </para>
 /// </summary>
 [PublicAPI]
 public class Event : IPoolable
@@ -83,10 +83,10 @@ public class Event : IPoolable
     }
 
     /// <summary>
-    ///     Marks this event as handled. This does not affect event propagation inside
-    ///     scene2d, but causes the <see cref="Stage" /> <see cref="IInputProcessor" />
-    ///     methods to return true, which will consume the event so it is not passed
-    ///     on to the application under the stage.
+    /// Marks this event as handled. This does not affect event propagation inside
+    /// scene2d, but causes the <see cref="Stage"/> <see cref="IInputProcessor"/>
+    /// methods to return true, which will consume the event so it is not passed
+    /// on to the application under the stage.
     /// </summary>
     public virtual void SetHandled()
     {
@@ -94,13 +94,13 @@ public class Event : IPoolable
     }
 
     /// <summary>
-    ///     Marks this event cancelled. This handles the event and stops the event
-    ///     propagation. It also cancels any default action that would have been taken
-    ///     by the code that fired the event.
-    ///     <para>
-    ///         Eg, if the event is for a checkbox being checked, cancelling
-    ///         the event could uncheck the checkbox.
-    ///     </para>
+    /// Marks this event cancelled. This handles the event and stops the event
+    /// propagation. It also cancels any default action that would have been taken
+    /// by the code that fired the event.
+    /// <para>
+    /// Eg, if the event is for a checkbox being checked, cancelling
+    /// the event could uncheck the checkbox.
+    /// </para>
     /// </summary>
     public void Cancel()
     {
@@ -110,9 +110,9 @@ public class Event : IPoolable
     }
 
     /// <summary>
-    ///     Marks this event as being stopped. This halts event propagation. Any other
-    ///     listeners on the <see cref="ListenerActor" /> are notified, but
-    ///     after that no other listeners are notified.
+    /// Marks this event as being stopped. This halts event propagation. Any other
+    /// listeners on the <see cref="ListenerActor"/> are notified, but
+    /// after that no other listeners are notified.
     /// </summary>
     public void Stop()
     {

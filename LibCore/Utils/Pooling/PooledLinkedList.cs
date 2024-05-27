@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Utils.Pooling;
 
 /// <summary>
-///     A simple linked list that pools its nodes.
+/// A simple linked list that pools its nodes.
 /// </summary>
 [PublicAPI]
 public class PooledLinkedList< T >
@@ -41,8 +41,8 @@ public class PooledLinkedList< T >
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Creates a new PooledLinkedList with an initial capacity of 16 and the
-    ///     supplied maximum pool size.
+    /// Creates a new PooledLinkedList with an initial capacity of 16 and the
+    /// supplied maximum pool size.
     /// </summary>
     /// <param name="maxPoolSize"></param>
     /// <param name="initialCapacity"></param>
@@ -59,7 +59,7 @@ public class PooledLinkedList< T >
     public int Size { get; set; } = 0;
 
     /// <summary>
-    ///     Creates, and returns, a new <see cref="Item{T}" />
+    /// Creates, and returns, a new <see cref="Item{T}"/>
     /// </summary>
     public Item< T > GetNewObject()
     {
@@ -67,7 +67,7 @@ public class PooledLinkedList< T >
     }
 
     /// <summary>
-    ///     Adds the specified object to the end of the list regardless of iteration status
+    /// Adds the specified object to the end of the list regardless of iteration status
     /// </summary>
     public void Add( T obj )
     {
@@ -99,7 +99,7 @@ public class PooledLinkedList< T >
     }
 
     /// <summary>
-    ///     Adds the specified object to the head of the list regardless of iteration status
+    /// Adds the specified object to the head of the list regardless of iteration status
     /// </summary>
     public void AddFirst( T obj )
     {
@@ -127,7 +127,7 @@ public class PooledLinkedList< T >
     }
 
     /// <summary>
-    ///     Starts iterating over the list's items from the head of the list
+    /// Starts iterating over the list's items from the head of the list
     /// </summary>
     protected void Iterate()
     {
@@ -135,7 +135,7 @@ public class PooledLinkedList< T >
     }
 
     /// <summary>
-    ///     Starts iterating over the list's items from the tail of the list
+    /// Starts iterating over the list's items from the tail of the list
     /// </summary>
     public void IterateReverse()
     {
@@ -143,7 +143,7 @@ public class PooledLinkedList< T >
     }
 
     /// <summary>
-    ///     Gets the next item in the list
+    /// Gets the next item in the list
     /// </summary>
     /// <returns> the next item in the list or null if there are no more items</returns>
     protected T? Next()
@@ -162,7 +162,7 @@ public class PooledLinkedList< T >
     }
 
     /// <summary>
-    ///     Gets the previous item in the list
+    /// Gets the previous item in the list
     /// </summary>
     /// <returns> the previous item in the list or null if there are no more items </returns>
     public T? Previous()
@@ -181,7 +181,7 @@ public class PooledLinkedList< T >
     }
 
     /// <summary>
-    ///     Removes the current list item based on the iterator position.
+    /// Removes the current list item based on the iterator position.
     /// </summary>
     protected void Remove()
     {
@@ -228,7 +228,7 @@ public class PooledLinkedList< T >
     }
 
     /// <summary>
-    ///     Removes the tail of the list regardless of iteration status
+    /// Removes the tail of the list regardless of iteration status
     /// </summary>
     public T? RemoveLast()
     {
@@ -264,7 +264,7 @@ public class PooledLinkedList< T >
     }
 
     /// <summary>
-    ///     Clears this linked list.
+    /// Clears this linked list.
     /// </summary>
     public void Clear()
     {

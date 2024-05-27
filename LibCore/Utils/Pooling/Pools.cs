@@ -28,7 +28,7 @@ using LughSharp.LibCore.Utils.Collections.Extensions;
 namespace LughSharp.LibCore.Utils.Pooling;
 
 /// <summary>
-///     Stores a map of <see cref="Pool{T}" />s by type for convenient static access.
+/// Stores a map of <see cref="Pool{T}"/>s by type for convenient static access.
 /// </summary>
 [PublicAPI]
 public static class Pools< T >
@@ -36,9 +36,9 @@ public static class Pools< T >
     private readonly static Dictionary< Type, Pool< T >? > _typePools = new();
 
     /// <summary>
-    ///     Returns a new or existing pool for the specified type, stored in a Class
-    ///     to map. Note the max size is ignored if this is not the first time this
-    ///     pool has been requested.
+    /// Returns a new or existing pool for the specified type, stored in a Class
+    /// to map. Note the max size is ignored if this is not the first time this
+    /// pool has been requested.
     /// </summary>
     public static Pool< T > Get( int max = 100 )
     {
@@ -55,21 +55,21 @@ public static class Pools< T >
     }
 
     /// <summary>
-    ///     Sets an existing pool for the specified type, stored in a Class
-    ///     to <see cref="Pool{T}" /> map.
+    /// Sets an existing pool for the specified type, stored in a Class
+    /// to <see cref="Pool{T}"/> map.
     /// </summary>
     public static void Set( Type type, Pool< T > pool )
     {
         _typePools[ type ] = pool;
     }
 
-    /// <inheritdoc cref="Pool{T}.Obtain()" />
+    /// <inheritdoc cref="Pool{T}.Obtain()"/>
     public static T? Obtain()
     {
         return Get().Obtain();
     }
 
-    /// <inheritdoc cref="Pool{T}.Free(T)" />
+    /// <inheritdoc cref="Pool{T}.Free(T)"/>
     public static void Free( T? obj )
     {
         ArgumentNullException.ThrowIfNull( obj );
@@ -78,13 +78,13 @@ public static class Pools< T >
     }
 
     /// <summary>
-    ///     Frees the specified objects from the pool.
-    ///     Null objects within the array are silently ignored.
+    /// Frees the specified objects from the pool.
+    /// Null objects within the array are silently ignored.
     /// </summary>
     /// <param name="objects"></param>
     /// <param name="samePool">
-    ///     If true, objects don't need to be from the same pool but the
-    ///     pool must be looked up for each object.
+    /// If true, objects don't need to be from the same pool but the
+    /// pool must be looked up for each object.
     /// </param>
     public static void FreeAll( List< T > objects, bool samePool = false )
     {

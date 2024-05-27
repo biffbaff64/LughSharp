@@ -26,14 +26,14 @@
 namespace LughSharp.LibCore.Graphics.G3D;
 
 /// <summary>
-///     Extend this class to implement a material attribute. Register the attribute type by
-///     statically calling the <see cref="Register(string)" /> method, whose return value should
-///     be used to instantiate the attribute. A class can implement multiple types
+/// Extend this class to implement a material attribute. Register the attribute type by
+/// statically calling the <see cref="Register(string)"/> method, whose return value should
+/// be used to instantiate the attribute. A class can implement multiple types
 /// </summary>
 public abstract class Attribute : IComparable< Attribute >
 {
     /// <summary>
-    ///     The registered type aliases
+    /// The registered type aliases
     /// </summary>
     private readonly static List< string > Types = new();
 
@@ -48,7 +48,7 @@ public abstract class Attribute : IComparable< Attribute >
         _typeBit  = ( int ) long.TrailingZeroCount( type );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int CompareTo( Attribute? other )
     {
         if ( other == null )
@@ -60,12 +60,12 @@ public abstract class Attribute : IComparable< Attribute >
     }
 
     /// <summary>
-    ///     Returns An exact copy of this attribute.
+    /// Returns An exact copy of this attribute.
     /// </summary>
     public abstract Attribute Copy();
 
     /// <summary>
-    ///     Returns the ID of the specified attribute type, or zero if not available
+    /// Returns the ID of the specified attribute type, or zero if not available
     /// </summary>
     public static long GetAttributeType( string alias )
     {
@@ -81,7 +81,7 @@ public abstract class Attribute : IComparable< Attribute >
     }
 
     /// <summary>
-    ///     Returns the alias of the specified attribute type, or zero if not available
+    /// Returns the alias of the specified attribute type, or zero if not available
     /// </summary>
     public static string? GetAttributeAlias( long type )
     {
@@ -95,17 +95,17 @@ public abstract class Attribute : IComparable< Attribute >
     }
 
     /// <summary>
-    ///     Call this method to register a custom attribute type. If the alias already
-    ///     exists, then that ID will be reused. The alias should be unambiguous and will
-    ///     by default be returned by the call to <see cref="ToString()" />.
+    /// Call this method to register a custom attribute type. If the alias already
+    /// exists, then that ID will be reused. The alias should be unambiguous and will
+    /// by default be returned by the call to <see cref="ToString()"/>.
     /// </summary>
     /// <param name="alias">
-    ///     The alias of the type to register, must be different for each dirrect type,
-    ///     will be used for debugging.
+    /// The alias of the type to register, must be different for each dirrect type,
+    /// will be used for debugging.
     /// </param>
     /// <returns>
-    ///     the ID of the newly registered type, or the ID of the existing type if the
-    ///     alias was already registered.
+    /// the ID of the newly registered type, or the ID of the existing type if the
+    /// alias was already registered.
     /// </returns>
     protected static long Register( string alias )
     {
@@ -126,7 +126,7 @@ public abstract class Attribute : IComparable< Attribute >
         return other.GetHashCode() == GetHashCode();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override bool Equals( object? obj )
     {
         if ( obj == null )
@@ -147,13 +147,13 @@ public abstract class Attribute : IComparable< Attribute >
         return ( type == other.type ) && Equals( other );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override string? ToString()
     {
         return GetAttributeAlias( type );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return 7489 * _typeBit;

@@ -26,8 +26,8 @@
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 /// <summary>
-///     Executes a number of actions one at a time.
-///     @author Nathan Sweet
+/// Executes a number of actions one at a time.
+/// @author Nathan Sweet
 /// </summary>
 public class SequenceAction : ParallelAction
 {

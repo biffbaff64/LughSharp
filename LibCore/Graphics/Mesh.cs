@@ -86,7 +86,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Sets the instance data of this Mesh. The attributes are assumed to be given in float format.
+    /// Sets the instance data of this Mesh. The attributes are assumed to be given in float format.
     /// </summary>
     /// <param name="instanceData"> the instance data. </param>
     /// <param name="offset"> the offset into the vertices array </param>
@@ -105,7 +105,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Sets the instance data of this Mesh. The attributes are assumed to be given in float format.
+    /// Sets the instance data of this Mesh. The attributes are assumed to be given in float format.
     /// </summary>
     /// <param name="instanceData"> the instance data. </param>
     /// <returns> the mesh for invocation chaining.  </returns>
@@ -122,7 +122,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Sets the instance data of this Mesh. The attributes are assumed to be given in float format.
+    /// Sets the instance data of this Mesh. The attributes are assumed to be given in float format.
     /// </summary>
     /// <param name="instanceData"> the instance data. </param>
     /// <param name="count"> the number of floats to use </param>
@@ -140,7 +140,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Sets the instance data of this Mesh. The attributes are assumed to be given in float format.
+    /// Sets the instance data of this Mesh. The attributes are assumed to be given in float format.
     /// </summary>
     /// <param name="instanceData"> the instance data. </param>
     /// <returns> the mesh for invocation chaining.  </returns>
@@ -157,16 +157,16 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Update (a portion of) the instance data. Does not resize the backing buffer.
+    /// Update (a portion of) the instance data. Does not resize the backing buffer.
     /// </summary>
     /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
     /// <param name="source"> the instance data to update the mesh part with </param>
     /// <param name="sourceOffset">
-    ///     the offset in number of floats within the source array. Default is zero.
+    /// the offset in number of floats within the source array. Default is zero.
     /// </param>
     /// <param name="count">
-    ///     the number of floats to update. Default is zero which dictates that count will be
-    ///     overridden with the value of <paramref name="source" />.Length.
+    /// the number of floats to update. Default is zero which dictates that count will be
+    /// overridden with the value of <paramref name="source"/>.Length.
     /// </param>
     public Mesh UpdateInstanceData( int targetOffset, float[] source, int sourceOffset = 0, int count = 0 )
     {
@@ -181,16 +181,16 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Update (a portion of) the instance data. Does not resize the backing buffer.
+    /// Update (a portion of) the instance data. Does not resize the backing buffer.
     /// </summary>
     /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
     /// <param name="source"> the instance data to update the mesh part with </param>
     /// <param name="sourceOffset">
-    ///     the offset in number of floats within the source array. Default is zero.
+    /// the offset in number of floats within the source array. Default is zero.
     /// </param>
     /// <param name="count">
-    ///     the number of floats to update. Default is zero which dictates that count will be
-    ///     overridden with the value of <paramref name="source" />.Limit.
+    /// the number of floats to update. Default is zero which dictates that count will be
+    /// overridden with the value of <paramref name="source"/>.Limit.
     /// </param>
     public Mesh UpdateInstanceData( int targetOffset, FloatBuffer source, int sourceOffset = 0, int count = 0 )
     {
@@ -205,7 +205,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Sets the vertices of this Mesh. The attributes are assumed to be given in float format.
+    /// Sets the vertices of this Mesh. The attributes are assumed to be given in float format.
     /// </summary>
     /// <param name="vertices"> the vertices.</param>
     /// <returns> the mesh for invocation chaining.</returns>
@@ -217,7 +217,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Sets the vertices of this Mesh. The attributes are assumed to be given in float format.
+    /// Sets the vertices of this Mesh. The attributes are assumed to be given in float format.
     /// </summary>
     /// <param name="vertices"> the vertices. </param>
     /// <param name="offset"> the offset into the vertices array </param>
@@ -231,7 +231,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Update (a portion of) the vertices. Does not resize the backing buffer.
+    /// Update (a portion of) the vertices. Does not resize the backing buffer.
     /// </summary>
     /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
     /// <param name="source"> the vertex data to update the mesh part with  </param>
@@ -241,7 +241,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Update (a portion of) the vertices. Does not resize the backing buffer.
+    /// Update (a portion of) the vertices. Does not resize the backing buffer.
     /// </summary>
     /// <param name="targetOffset"> the offset in number of floats of the mesh part. </param>
     /// <param name="source"> the vertex data to update the mesh part with </param>
@@ -255,8 +255,8 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Copies the vertices from the Mesh to the float array. The float array
-    ///     must be large enough to hold all the Mesh's vertices.
+    /// Copies the vertices from the Mesh to the float array. The float array
+    /// must be large enough to hold all the Mesh's vertices.
     /// </summary>
     /// <param name="vertices"> the array to copy the vertices to  </param>
     public float[] GetVertices( float[] vertices )
@@ -265,11 +265,11 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Copies the the remaining vertices from the Mesh to the float array.
-    ///     The float array must be large enough to hold the remaining vertices.
+    /// Copies the the remaining vertices from the Mesh to the float array.
+    /// The float array must be large enough to hold the remaining vertices.
     /// </summary>
     /// <param name="srcOffset">
-    ///     the offset (in number of floats) of the vertices in the mesh to copy
+    /// the offset (in number of floats) of the vertices in the mesh to copy
     /// </param>
     /// <param name="vertices"> the array to copy the vertices to  </param>
     public float[] GetVertices( int srcOffset, float[] vertices )
@@ -278,8 +278,8 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Copies the specified vertices from the Mesh to the float array. The float
-    ///     array must be large enough to hold destOffset + count vertices.
+    /// Copies the specified vertices from the Mesh to the float array. The float
+    /// array must be large enough to hold destOffset + count vertices.
     /// </summary>
     /// <param name="srcOffset"> the offset (in number of floats) of the vertices in the mesh to copy </param>
     /// <param name="count"> the amount of floats to copy </param>
@@ -326,7 +326,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Sets the indices of this Mesh
+    /// Sets the indices of this Mesh
     /// </summary>
     /// <param name="indices"> the indices </param>
     /// <returns> the mesh for invocation chaining.  </returns>
@@ -338,7 +338,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Sets the indices of this Mesh.
+    /// Sets the indices of this Mesh.
     /// </summary>
     /// <param name="indices"> the indices </param>
     /// <param name="offset"> the offset into the indices array </param>
@@ -352,8 +352,8 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Copies the indices from the Mesh to the short array. The short array
-    ///     must be large enough to hold destOffset + all the Mesh's _indices.
+    /// Copies the indices from the Mesh to the short array. The short array
+    /// must be large enough to hold destOffset + all the Mesh's _indices.
     /// </summary>
     /// <param name="indices"> the array to copy the indices to </param>
     /// <param name="destOffset"> the offset in the indices array to start copying  </param>
@@ -363,8 +363,8 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Copies the remaining indices from the Mesh to the short array. The short
-    ///     array must be large enough to hold destOffset + all the remaining _indices.
+    /// Copies the remaining indices from the Mesh to the short array. The short
+    /// array must be large enough to hold destOffset + all the remaining _indices.
     /// </summary>
     /// <param name="srcOffset"> the zero-based offset of the first index to fetch </param>
     /// <param name="indices"> the array to copy the indices to </param>
@@ -375,8 +375,8 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Copies the indices from the Mesh to the short array. The short array must
-    ///     be large enough to hold destOffset + count _indices.
+    /// Copies the indices from the Mesh to the short array. The short array must
+    /// be large enough to hold destOffset + count _indices.
     /// </summary>
     /// <param name="srcOffset"> the zero-based offset of the first index to fetch </param>
     /// <param name="count"> the total amount of indices to copy </param>
@@ -411,9 +411,9 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Binds the underlying <see cref="VertexBufferObject" /> and
-    ///     <see cref="IndexBufferObject" /> if indices where given.
-    ///     Use this with OpenGL ES 2.0 and when auto-bind is disabled.
+    /// Binds the underlying <see cref="VertexBufferObject"/> and
+    /// <see cref="IndexBufferObject"/> if indices where given.
+    /// Use this with OpenGL ES 2.0 and when auto-bind is disabled.
     /// </summary>
     public void Bind( in ShaderProgram shader )
     {
@@ -421,9 +421,9 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Binds the underlying <see cref="VertexBufferObject" /> and
-    ///     <see cref="IndexBufferObject" /> if indices where given.
-    ///     Use this with OpenGL ES 2.0 and when auto-bind is disabled.
+    /// Binds the underlying <see cref="VertexBufferObject"/> and
+    /// <see cref="IndexBufferObject"/> if indices where given.
+    /// Use this with OpenGL ES 2.0 and when auto-bind is disabled.
     /// </summary>
     /// <param name="shader"> the shader (does not bind the shader) </param>
     /// <param name="locations"> array containing the attribute locations.  </param>
@@ -443,8 +443,8 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Unbinds the underlying <see cref="VertexBufferObject" /> and <see cref="IndexBufferObject" />
-    ///     is indices were given. Use this with OpenGL ES 1.x and when auto-bind is disabled.
+    /// Unbinds the underlying <see cref="VertexBufferObject"/> and <see cref="IndexBufferObject"/>
+    /// is indices were given. Use this with OpenGL ES 1.x and when auto-bind is disabled.
     /// </summary>
     /// <param name="shader"> the shader (does not unbind the shader)  </param>
     public void Unbind( in ShaderProgram? shader )
@@ -453,8 +453,8 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Unbinds the underlying <see cref="VertexBufferObject" /> and <see cref="IndexBufferObject" />
-    ///     is indices were given. Use this with OpenGL ES 1.x and when auto-bind is disabled.
+    /// Unbinds the underlying <see cref="VertexBufferObject"/> and <see cref="IndexBufferObject"/>
+    /// is indices were given. Use this with OpenGL ES 1.x and when auto-bind is disabled.
     /// </summary>
     /// <param name="shader"> the shader (does not unbind the shader) </param>
     /// <param name="locations"> array containing the attribute locations.  </param>
@@ -480,22 +480,22 @@ public class Mesh
 
     /// <summary>
     ///     <para>
-    ///         Renders the mesh using the given primitive type. If indices are set for this
-    ///         mesh then getNumIndices() / #vertices per primitive primitives are rendered.
-    ///         If no indices are set then NumVertices / #vertices per primitive are rendered.
+    ///     Renders the mesh using the given primitive type. If indices are set for this
+    ///     mesh then getNumIndices() / #vertices per primitive primitives are rendered.
+    ///     If no indices are set then NumVertices / #vertices per primitive are rendered.
     ///     </para>
     ///     <para>
-    ///         This method will automatically bind each vertex attribute as specified at
-    ///         construction time via <see cref="VertexAttributes" /> to the respective shader
-    ///         attributes. The binding is based on the alias defined for each VertexAttribute.
+    ///     This method will automatically bind each vertex attribute as specified at
+    ///     construction time via <see cref="VertexAttributes"/> to the respective shader
+    ///     attributes. The binding is based on the alias defined for each VertexAttribute.
     ///     </para>
     ///     <para>
-    ///         This method must only be called after the <see cref="ShaderProgram.Bind()" />
-    ///         method has been called!
+    ///     This method must only be called after the <see cref="ShaderProgram.Bind()"/>
+    ///     method has been called!
     ///     </para>
     ///     <para>
-    ///         This method is intended for use with OpenGL ES 2.0 and will throw an
-    ///         IllegalStateException when OpenGL ES 1.x is used.
+    ///     This method is intended for use with OpenGL ES 2.0 and will throw an
+    ///     IllegalStateException when OpenGL ES 1.x is used.
     ///     </para>
     /// </summary>
     /// <param name="shader"></param>
@@ -507,23 +507,23 @@ public class Mesh
 
     /// <summary>
     ///     <para>
-    ///         Renders the mesh using the given primitive type. offset specifies the offset into
-    ///         either the vertex buffer or the index buffer depending on whether indices are
-    ///         defined. count specifies the number of vertices or indices to use thus count /
-    ///         vertices per primitive primitives are rendered.
+    ///     Renders the mesh using the given primitive type. offset specifies the offset into
+    ///     either the vertex buffer or the index buffer depending on whether indices are
+    ///     defined. count specifies the number of vertices or indices to use thus count /
+    ///     vertices per primitive primitives are rendered.
     ///     </para>
     ///     <para>
-    ///         This method will automatically bind each vertex attribute as specified at
-    ///         construction time via <see cref="VertexAttributes" /> to the respective shader
-    ///         attributes. The binding is based on the alias defined for each VertexAttribute.
+    ///     This method will automatically bind each vertex attribute as specified at
+    ///     construction time via <see cref="VertexAttributes"/> to the respective shader
+    ///     attributes. The binding is based on the alias defined for each VertexAttribute.
     ///     </para>
     ///     <para>
-    ///         This method must only be called after the <see cref="ShaderProgram.Bind()" />
-    ///         method has been called!
+    ///     This method must only be called after the <see cref="ShaderProgram.Bind()"/>
+    ///     method has been called!
     ///     </para>
     ///     <para>
-    ///         This method is intended for use with OpenGL ES 2.0 and will throw an
-    ///         IllegalStateException when OpenGL ES 1.x is used.
+    ///     This method is intended for use with OpenGL ES 2.0 and will throw an
+    ///     IllegalStateException when OpenGL ES 1.x is used.
     ///     </para>
     /// </summary>
     /// <param name="shader"> the shader to be used </param>
@@ -537,23 +537,23 @@ public class Mesh
 
     /// <summary>
     ///     <para>
-    ///         Renders the mesh using the given primitive type. offset specifies the offset
-    ///         into either the vertex buffer or the index buffer depending on whether indices
-    ///         are defined. count specifies the number of vertices or indices to use thus count /
-    ///         vertices per primitive primitives are rendered.
+    ///     Renders the mesh using the given primitive type. offset specifies the offset
+    ///     into either the vertex buffer or the index buffer depending on whether indices
+    ///     are defined. count specifies the number of vertices or indices to use thus count /
+    ///     vertices per primitive primitives are rendered.
     ///     </para>
     ///     <para>
-    ///         This method will automatically bind each vertex attribute as specified at
-    ///         construction time via <see cref="VertexAttributes" /> to the respective shader
-    ///         attributes. The binding is based on the alias defined for each VertexAttribute.
+    ///     This method will automatically bind each vertex attribute as specified at
+    ///     construction time via <see cref="VertexAttributes"/> to the respective shader
+    ///     attributes. The binding is based on the alias defined for each VertexAttribute.
     ///     </para>
     ///     <para>
-    ///         This method must only be called after the <see cref="ShaderProgram.Bind()" />
-    ///         method has been called!
+    ///     This method must only be called after the <see cref="ShaderProgram.Bind()"/>
+    ///     method has been called!
     ///     </para>
     ///     <para>
-    ///         This method is intended for use with OpenGL ES 2.0 and will throw an
-    ///         IllegalStateException when OpenGL ES 1.x is used.
+    ///     This method is intended for use with OpenGL ES 2.0 and will throw an
+    ///     IllegalStateException when OpenGL ES 1.x is used.
     ///     </para>
     /// </summary>
     /// <param name="shader"> the shader to be used </param>
@@ -659,7 +659,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Returns the first <see cref="VertexAttribute" /> having the given <see cref="VertexAttributes.Usage" />.
+    /// Returns the first <see cref="VertexAttribute"/> having the given <see cref="VertexAttributes.Usage"/>.
     /// </summary>
     /// <param name="usage"> the Usage. </param>
     /// <returns> the VertexAttribute or null if no attribute with that usage was found.  </returns>
@@ -681,8 +681,8 @@ public class Mesh
     }
 
     /// <returns>
-    ///     the backing FloatBuffer holding the vertices.
-    ///     Does not have to be a direct buffer on Android!
+    /// the backing FloatBuffer holding the vertices.
+    /// Does not have to be a direct buffer on Android!
     /// </returns>
     public FloatBuffer GetVerticesBuffer()
     {
@@ -690,9 +690,9 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Calculates the <see cref="BoundingBox" /> of the vertices contained in this mesh.
-    ///     In case no vertices are defined yet a <see cref="GdxRuntimeException" /> is thrown.
-    ///     This method creates a new BoundingBox instance.
+    /// Calculates the <see cref="BoundingBox"/> of the vertices contained in this mesh.
+    /// In case no vertices are defined yet a <see cref="GdxRuntimeException"/> is thrown.
+    /// This method creates a new BoundingBox instance.
     /// </summary>
     /// <returns> the bounding box.  </returns>
     public BoundingBox CalculateBoundingBox()
@@ -704,8 +704,8 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Calculates the <see cref="BoundingBox" /> of the vertices contained in this mesh.
-    ///     In case no vertices are defined yet a <see cref="GdxRuntimeException" /> is thrown.
+    /// Calculates the <see cref="BoundingBox"/> of the vertices contained in this mesh.
+    /// In case no vertices are defined yet a <see cref="GdxRuntimeException"/> is thrown.
     /// </summary>
     /// <param name="bbox"> the bounding box to store the result in.  </param>
     public void CalculateBoundingBox( BoundingBox bbox )
@@ -765,7 +765,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Calculate the <see cref="BoundingBox" /> of the specified part.
+    /// Calculate the <see cref="BoundingBox"/> of the specified part.
     /// </summary>
     /// <param name="box"> the bounding box to store the result in. </param>
     /// <param name="offset"> the start index of the part. </param>
@@ -777,7 +777,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Calculate the <see cref="BoundingBox" /> of the specified part.
+    /// Calculate the <see cref="BoundingBox"/> of the specified part.
     /// </summary>
     /// <param name="box"> the bounding box to store the result in. </param>
     /// <param name="offset"> the start index of the part. </param>
@@ -790,7 +790,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Extends the specified <see cref="BoundingBox" /> with the specified part.
+    /// Extends the specified <see cref="BoundingBox"/> with the specified part.
     /// </summary>
     /// <param name="box"> the bounding box to store the result in. </param>
     /// <param name="offset"> the start index of the part. </param>
@@ -802,7 +802,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Extends the specified <see cref="BoundingBox" /> with the specified part.
+    /// Extends the specified <see cref="BoundingBox"/> with the specified part.
     /// </summary>
     /// <param name="box"> the bounding box to store the result in. </param>
     /// <param name="offset"> the start of the part. </param>
@@ -949,8 +949,8 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Calculates the squared radius of the bounding sphere around the
-    ///     specified center for the specified part.
+    /// Calculates the squared radius of the bounding sphere around the
+    /// specified center for the specified part.
     /// </summary>
     /// <param name="centerX"> The X coordinate of the center of the bounding sphere </param>
     /// <param name="centerY"> The Y coordinate of the center of the bounding sphere </param>
@@ -1052,7 +1052,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Calculates the radius of the bounding sphere around the specified center for the specified part.
+    /// Calculates the radius of the bounding sphere around the specified center for the specified part.
     /// </summary>
     /// <param name="centerX"> The X coordinate of the center of the bounding sphere </param>
     /// <param name="centerY"> The Y coordinate of the center of the bounding sphere </param>
@@ -1072,7 +1072,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Calculates the squared radius of the bounding sphere around the specified center for the specified part.
+    /// Calculates the squared radius of the bounding sphere around the specified center for the specified part.
     /// </summary>
     /// <param name="center"> The center of the bounding sphere </param>
     /// <param name="offset"> the start index of the part. </param>
@@ -1085,7 +1085,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Calculates the squared radius of the bounding sphere around the specified center for the specified part.
+    /// Calculates the squared radius of the bounding sphere around the specified center for the specified part.
     /// </summary>
     /// <param name="centerX"> The X coordinate of the center of the bounding sphere </param>
     /// <param name="centerY"> The Y coordinate of the center of the bounding sphere </param>
@@ -1099,7 +1099,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Calculates the squared radius of the bounding sphere around the specified center for the specified part.
+    /// Calculates the squared radius of the bounding sphere around the specified center for the specified part.
     /// </summary>
     /// <param name="center"> The center of the bounding sphere </param>
     /// <param name="offset"> the start index of the part. </param>
@@ -1111,7 +1111,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Calculates the squared radius of the bounding sphere around the specified center for the specified part.
+    /// Calculates the squared radius of the bounding sphere around the specified center for the specified part.
     /// </summary>
     /// <param name="centerX"> The X coordinate of the center of the bounding sphere </param>
     /// <param name="centerY"> The Y coordinate of the center of the bounding sphere </param>
@@ -1123,8 +1123,8 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Calculates the squared radius of the bounding sphere around the specified
-    ///     center for the specified part.
+    /// Calculates the squared radius of the bounding sphere around the specified
+    /// center for the specified part.
     /// </summary>
     /// <param name="center"> The center of the bounding sphere </param>
     /// <returns> the squared radius of the bounding sphere.  </returns>
@@ -1144,7 +1144,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Invalidates all meshes so the next time they are rendered new VBO handles are generated.
+    /// Invalidates all meshes so the next time they are rendered new VBO handles are generated.
     /// </summary>
     /// <param name="app">  </param>
     public static void InvalidateAllMeshes( IApplication app )
@@ -1157,7 +1157,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Will clear the managed mesh cache. I wouldn't use this if i was you :)
+    /// Will clear the managed mesh cache. I wouldn't use this if i was you :)
     /// </summary>
     public static void ClearAllMeshes( IApplication app )
     {
@@ -1165,9 +1165,9 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Method to scale the positions in the mesh. Normals will be kept as is.
-    ///     This is a potentially slow operation, use with care.
-    ///     It will also create a temporary float[] which will be garbage collected.
+    /// Method to scale the positions in the mesh. Normals will be kept as is.
+    /// This is a potentially slow operation, use with care.
+    /// It will also create a temporary float[] which will be garbage collected.
     /// </summary>
     /// <param name="scaleX"> scale on x </param>
     /// <param name="scaleY"> scale on y </param>
@@ -1222,9 +1222,9 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Method to transform the positions in the mesh. Normals will be kept as is.
-    ///     This is a potentially slow operation, use with care. It will also create a
-    ///     temporary float[] which will be garbage collected.
+    /// Method to transform the positions in the mesh. Normals will be kept as is.
+    /// This is a potentially slow operation, use with care. It will also create a
+    /// temporary float[] which will be garbage collected.
     /// </summary>
     /// <param name="matrix"> the transformation matrix  </param>
     public void Transform( in Matrix4 matrix )
@@ -1251,8 +1251,8 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Method to transform the positions in the float array. Normals will be
-    ///     kept as is. This is a potentially slow operation, use with care.
+    /// Method to transform the positions in the float array. Normals will be
+    /// kept as is. This is a potentially slow operation, use with care.
     /// </summary>
     /// <param name="matrix"> the transformation matrix </param>
     /// <param name="vertices"> the float array </param>
@@ -1330,9 +1330,9 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Method to transform the texture coordinates in the mesh. This is a potentially
-    ///     slow operation, use with care. It will also create a temporary float[] which
-    ///     will be garbage collected.
+    /// Method to transform the texture coordinates in the mesh. This is a potentially
+    /// slow operation, use with care. It will also create a temporary float[] which
+    /// will be garbage collected.
     /// </summary>
     /// <param name="matrix"> the transformation matrix  </param>
     public void TransformUV( in Matrix3 matrix )
@@ -1353,8 +1353,8 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Method to transform the texture coordinates (UV) in the float array. This
-    ///     is a potentially slow operation, use with care.
+    /// Method to transform the texture coordinates (UV) in the float array. This
+    /// is a potentially slow operation, use with care.
     /// </summary>
     /// <param name="matrix"> the transformation matrix </param>
     /// <param name="vertices"> the float array </param>
@@ -1397,10 +1397,10 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Copies this mesh.
+    /// Copies this mesh.
     /// </summary>
     /// <param name="isStatic">
-    ///     whether the new mesh is static or not. Allows for internal optimizations.
+    /// whether the new mesh is static or not. Allows for internal optimizations.
     /// </param>
     /// <returns> the copy of this mesh  </returns>
     public Mesh Copy( bool isStatic )
@@ -1409,15 +1409,15 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Copies this mesh optionally removing duplicate vertices and/or reducing
-    ///     the amount of attributes.
+    /// Copies this mesh optionally removing duplicate vertices and/or reducing
+    /// the amount of attributes.
     /// </summary>
     /// <param name="isStatic">
-    ///     whether the new mesh is static or not. Allows for internal optimizations.
+    /// whether the new mesh is static or not. Allows for internal optimizations.
     /// </param>
     /// <param name="removeDuplicates">
-    ///     whether to remove duplicate vertices if possible. Only the vertices
-    ///     specified by usage are checked.
+    /// whether to remove duplicate vertices if possible. Only the vertices
+    /// specified by usage are checked.
     /// </param>
     /// <param name="usage"> which attributes (if available) to copy </param>
     /// <returns> the copy of this mesh  </returns>
@@ -1567,7 +1567,7 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Frees all resources associated with this Mesh
+    /// Frees all resources associated with this Mesh
     /// </summary>
     public void Dispose()
     {
@@ -1601,8 +1601,8 @@ public class Mesh
     public int VertexSize => _vertices.Attributes.VertexSize;
 
     /// <returns>
-    ///     the backing shortbuffer holding the _indices.
-    ///     Does not have to be a direct buffer on Android!
+    /// the backing shortbuffer holding the _indices.
+    /// Does not have to be a direct buffer on Android!
     /// </returns>
     public ShortBuffer IndicesBuffer => _indices.GetBuffer( false );
 
@@ -1625,15 +1625,15 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Sets whether to bind the underlying <see cref="VertexArray" /> or
-    ///     <see cref="VertexBufferObject" /> automatically on a call to one of the
-    ///     render methods. Usually you want to use autobind. Manual binding is an
-    ///     expert functionality.
-    ///     <para>
-    ///         There is a driver bug on the MSM720xa chips that will corrupt memory if
-    ///         you manipulate the vertices and indices of a Mesh multiple times while
-    ///         it is bound. Keep this in mind.
-    ///     </para>
+    /// Sets whether to bind the underlying <see cref="VertexArray"/> or
+    /// <see cref="VertexBufferObject"/> automatically on a call to one of the
+    /// render methods. Usually you want to use autobind. Manual binding is an
+    /// expert functionality.
+    /// <para>
+    /// There is a driver bug on the MSM720xa chips that will corrupt memory if
+    /// you manipulate the vertices and indices of a Mesh multiple times while
+    /// it is bound. Keep this in mind.
+    /// </para>
     /// </summary>
     /// <param name="value"> whether to autobind meshes.  </param>
     public bool AutoBind { get; init; } = true;
@@ -1656,7 +1656,7 @@ public class Mesh
     #region constructors
 
     /// <summary>
-    ///     Creates a new mesh with the given attrributes.
+    /// Creates a new mesh with the given attrributes.
     /// </summary>
     /// <param name="vertices"></param>
     /// <param name="indices"></param>
@@ -1671,14 +1671,14 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Creates a new Mesh with the given attributes.
+    /// Creates a new Mesh with the given attributes.
     /// </summary>
     /// <param name="isStatic"> whether this mesh is static or not. Allows for internal optimizations. </param>
     /// <param name="maxVertices"> the maximum number of vertices this mesh can hold </param>
     /// <param name="maxIndices"> the maximum number of indices this mesh can hold </param>
     /// <param name="attributes">
-    ///     the <see cref="VertexAttribute" />s. Each vertex attribute defines one property
-    ///     of a vertex such as position, normal or texture coordinate
+    /// the <see cref="VertexAttribute"/>s. Each vertex attribute defines one property
+    /// of a vertex such as position, normal or texture coordinate
     /// </param>
     public Mesh( bool isStatic, int maxVertices, int maxIndices, params VertexAttribute[] attributes )
     {
@@ -1690,14 +1690,14 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Creates a new Mesh with the given attributes.
+    /// Creates a new Mesh with the given attributes.
     /// </summary>
     /// <param name="isStatic">whether this mesh is static or not. Allows for internal optimizations.</param>
     /// <param name="maxVertices">the maximum number of vertices this mesh can hold</param>
     /// <param name="maxIndices">the maximum number of indices this mesh can hold</param>
     /// <param name="attributes">
-    ///     the <see cref="VertexAttributes" />. Each vertex attribute defines one property
-    ///     of a vertex such as position, normal or texture coordinate
+    /// the <see cref="VertexAttributes"/>. Each vertex attribute defines one property
+    /// of a vertex such as position, normal or texture coordinate
     /// </param>
     public Mesh( bool isStatic, int maxVertices, int maxIndices, VertexAttributes attributes )
     {
@@ -1709,20 +1709,20 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Creates a new Mesh with the given attributes. Adds extra optimizations
-    ///     for dynamic (frequently modified) meshes.
+    /// Creates a new Mesh with the given attributes. Adds extra optimizations
+    /// for dynamic (frequently modified) meshes.
     /// </summary>
     /// <param name="staticVertices">
-    ///     whether vertices of this mesh are static or not. Allows for internal optimizations.
+    /// whether vertices of this mesh are static or not. Allows for internal optimizations.
     /// </param>
     /// <param name="staticIndices">
-    ///     whether indices of this mesh are static or not. Allows for internal optimizations.
+    /// whether indices of this mesh are static or not. Allows for internal optimizations.
     /// </param>
     /// <param name="maxVertices"> the maximum number of vertices this mesh can hold </param>
     /// <param name="maxIndices"> the maximum number of indices this mesh can hold </param>
     /// <param name="attributes">
-    ///     the <see cref="VertexAttributes" />. Each vertex attribute defines one property
-    ///     of a vertex such as position, normal or texture coordinate
+    /// the <see cref="VertexAttributes"/>. Each vertex attribute defines one property
+    /// of a vertex such as position, normal or texture coordinate
     /// </param>
     public Mesh( bool staticVertices,
                  bool staticIndices,
@@ -1738,16 +1738,16 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Creates a new Mesh with the given attributes. This is an expert method
-    ///     with no error checking. Use at your own risk.
+    /// Creates a new Mesh with the given attributes. This is an expert method
+    /// with no error checking. Use at your own risk.
     /// </summary>
-    /// <param name="type">the <see cref="VertexDataType" /> to be used, VBO or VA.</param>
+    /// <param name="type">the <see cref="VertexDataType"/> to be used, VBO or VA.</param>
     /// <param name="isStatic">whether this mesh is static or not. Allows for internal optimizations.</param>
     /// <param name="maxVertices">the maximum number of vertices this mesh can hold</param>
     /// <param name="maxIndices">the maximum number of indices this mesh can hold</param>
     /// <param name="attributes">
-    ///     the <see cref="VertexAttribute" />s. Each vertex attribute defines one property
-    ///     of a vertex such as position, normal or texture coordinate
+    /// the <see cref="VertexAttribute"/>s. Each vertex attribute defines one property
+    /// of a vertex such as position, normal or texture coordinate
     /// </param>
     public Mesh( VertexDataType type,
                  bool isStatic,
@@ -1759,14 +1759,14 @@ public class Mesh
     }
 
     /// <summary>
-    ///     Creates a new Mesh with the given attributes. This is an expert method
-    ///     with no error checking. Use at your own risk.
+    /// Creates a new Mesh with the given attributes. This is an expert method
+    /// with no error checking. Use at your own risk.
     /// </summary>
-    /// <param name="type">the <see cref="VertexDataType" /> to be used, VBO or VA.</param>
+    /// <param name="type">the <see cref="VertexDataType"/> to be used, VBO or VA.</param>
     /// <param name="isStatic">whether this mesh is static or not. Allows for internal optimizations.</param>
     /// <param name="maxVertices">the maximum number of vertices this mesh can hold</param>
     /// <param name="maxIndices">the maximum number of indices this mesh can hold</param>
-    /// <param name="attributes">the <see cref="VertexAttributes" />.</param>
+    /// <param name="attributes">the <see cref="VertexAttributes"/>.</param>
     public Mesh( VertexDataType type, bool isStatic, int maxVertices, int maxIndices, VertexAttributes attributes )
     {
         switch ( type )

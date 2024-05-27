@@ -26,11 +26,11 @@
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
-///     Implementation of Bit Reservoir for Layer III.
-///     The implementation stores single bits as a word in the buffer. If a bit is set, the
-///     corresponding word in the buffer will be non-zero. If a bit is clear, the corresponding
-///     word is zero. Although this may seem waseful, this can be a factor of two quicker than
-///     packing 8 bits to a byte and extracting.
+/// Implementation of Bit Reservoir for Layer III.
+/// The implementation stores single bits as a word in the buffer. If a bit is set, the
+/// corresponding word in the buffer will be non-zero. If a bit is clear, the corresponding
+/// word is zero. Although this may seem waseful, this can be a factor of two quicker than
+/// packing 8 bits to a byte and extracting.
 /// </summary>
 
 // TODO: there is no range checking, so buffer underflow or overflow can silently occur.
@@ -38,13 +38,13 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 public class BitReserve
 {
     /// <summary>
-    ///     Size of the public buffer to store the reserved bits. Must be a power of 2. And
-    ///     x8, as each bit is stored as a single entry.
+    /// Size of the public buffer to store the reserved bits. Must be a power of 2. And
+    /// x8, as each bit is stored as a single entry.
     /// </summary>
     private const int BUFSIZE = 4096 * 8;
 
     /// <summary>
-    ///     Mask that can be used to quickly implement the modulus operation on BUFSIZE.
+    /// Mask that can be used to quickly implement the modulus operation on BUFSIZE.
     /// </summary>
     private const int BUFSIZE_MASK = BUFSIZE - 1;
 
@@ -55,7 +55,7 @@ public class BitReserve
     private int _totbit     = 0;
 
     /// <summary>
-    ///     Return totbit Field.
+    /// Return totbit Field.
     /// </summary>
     public int HssTell()
     {
@@ -63,7 +63,7 @@ public class BitReserve
     }
 
     /// <summary>
-    ///     Read a number bits from the bit stream.
+    /// Read a number bits from the bit stream.
     /// </summary>
     public int ReadBits( int n )
     {
@@ -96,7 +96,7 @@ public class BitReserve
     }
 
     /// <summary>
-    ///     Read 1 bit from the bit stream.
+    /// Read 1 bit from the bit stream.
     /// </summary>
     public int ReadOneBit()
     {
@@ -110,7 +110,7 @@ public class BitReserve
     }
 
     /// <summary>
-    ///     Write 8 bits into the bit stream.
+    /// Write 8 bits into the bit stream.
     /// </summary>
     public void PutBuffer( int val )
     {
@@ -129,7 +129,7 @@ public class BitReserve
     }
 
     /// <summary>
-    ///     Rewind n bits in Stream.
+    /// Rewind n bits in Stream.
     /// </summary>
     public void RewindStreamBits( int bitCount )
     {
@@ -143,7 +143,7 @@ public class BitReserve
     }
 
     /// <summary>
-    ///     Rewind n bytes in Stream.
+    /// Rewind n bytes in Stream.
     /// </summary>
     public void RewindStreamBytes( int byteCount )
     {

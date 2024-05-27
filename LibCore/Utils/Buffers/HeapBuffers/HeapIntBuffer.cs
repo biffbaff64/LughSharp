@@ -44,46 +44,48 @@ public class HeapIntBuffer : IntBuffer
     {
     }
 
-    /// <inheritdoc />
+    public override bool IsReadOnly => false;
+
+    /// <inheritdoc/>
     public override IntBuffer Slice()
     {
         return new HeapIntBuffer( Hb,
                                   -1,
                                   0,
-                                  this.Remaining(),
-                                  this.Remaining(),
-                                  this.Position + Offset );
+                                  Remaining(),
+                                  Remaining(),
+                                  Position + Offset );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override IntBuffer Duplicate()
     {
         return new HeapIntBuffer( Hb,
-                                  this.MarkValue(),
-                                  this.Position,
-                                  this.Limit,
-                                  this.Capacity,
+                                  MarkValue(),
+                                  Position,
+                                  Limit,
+                                  Capacity,
                                   Offset );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override IntBuffer asReadOnlyBuffer()
     {
         return new HeapIntBuffer( Hb,
-                                  this.MarkValue(),
-                                  this.Position,
-                                  this.Limit,
-                                  this.Capacity,
+                                  MarkValue(),
+                                  Position,
+                                  Limit,
+                                  Capacity,
                                   Offset );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int Get()
     {
         return Hb?[ Ix( NextGetIndex() ) ] ?? throw new NullReferenceException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int Get( int index )
     {
         return Hb?[ Ix( CheckIndex( index ) ) ] ?? throw new NullReferenceException();
@@ -109,15 +111,13 @@ public class HeapIntBuffer : IntBuffer
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override bool IsDirect()
     {
         return false;
     }
 
-    public override bool IsReadOnly => false;
-
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override IntBuffer Put( int x )
     {
         if ( Hb == null )
@@ -130,7 +130,7 @@ public class HeapIntBuffer : IntBuffer
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override IntBuffer Put( int index, int i )
     {
         if ( Hb == null )
@@ -143,7 +143,7 @@ public class HeapIntBuffer : IntBuffer
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override IntBuffer Put( int[] src, int offset, int length )
     {
         if ( Hb == null )
@@ -164,7 +164,7 @@ public class HeapIntBuffer : IntBuffer
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override IntBuffer Put( IntBuffer src )
     {
         if ( Hb == null )
@@ -191,7 +191,7 @@ public class HeapIntBuffer : IntBuffer
                                Hb,
                                Ix( Position ),
                                n );
-            
+
             sb.SetPosition( sb.Position + n );
             SetPosition( Position + n );
         }
@@ -216,7 +216,7 @@ public class HeapIntBuffer : IntBuffer
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override IntBuffer Compact()
     {
         if ( Hb == null )
@@ -233,7 +233,7 @@ public class HeapIntBuffer : IntBuffer
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override ByteOrder Order()
     {
         return ByteOrder.NativeOrder;

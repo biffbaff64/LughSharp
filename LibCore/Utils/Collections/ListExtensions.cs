@@ -40,8 +40,8 @@ public static class ListExtensions
     }
 
     /// <summary>
-    ///     Returns the element found at a random position
-    ///     within the list.
+    /// Returns the element found at a random position
+    /// within the list.
     /// </summary>
     /// <param name="list"> This list </param>
     /// <typeparam name="T"> This list type </typeparam>
@@ -52,7 +52,7 @@ public static class ListExtensions
     }
 
     /// <summary>
-    ///     Returns a new List of the required type.
+    /// Returns a new List of the required type.
     /// </summary>
     public static List< T > New< T >( T t )
     {
@@ -60,8 +60,8 @@ public static class ListExtensions
     }
 
     /// <summary>
-    ///     Adds <paramref name="count" /> elements in the source Array, starting at position
-    ///     <paramref name="start" /> to the target List.
+    /// Adds <paramref name="count"/> elements in the source Array, starting at position
+    /// <paramref name="start"/> to the target List.
     /// </summary>
     public static void AddAll< T >( this List< T > target, T[] source, int start, int count )
     {
@@ -72,8 +72,8 @@ public static class ListExtensions
     }
 
     /// <summary>
-    ///     Adds <paramref name="count" /> elements in the source List, starting at position
-    ///     <paramref name="start" /> to the target List.
+    /// Adds <paramref name="count"/> elements in the source List, starting at position
+    /// <paramref name="start"/> to the target List.
     /// </summary>
     public static void AddAll< T >( this List< T > target, List< T > source, int start, int count )
     {
@@ -84,7 +84,7 @@ public static class ListExtensions
     }
 
     /// <summary>
-    ///     Adds all elements in the source List to the target List.
+    /// Adds all elements in the source List to the target List.
     /// </summary>
     public static void AddAll< T >( this List< T > target, List< T > source )
     {
@@ -95,7 +95,7 @@ public static class ListExtensions
     }
 
     /// <summary>
-    ///     Adds all elements in the array 'items' to the target List.
+    /// Adds all elements in the array 'items' to the target List.
     /// </summary>
     public static void AddAll< T >( this List< T > target, params T[] items )
     {
@@ -106,7 +106,7 @@ public static class ListExtensions
     }
 
     /// <summary>
-    ///     Shuffles the element order of the specified list.
+    /// Shuffles the element order of the specified list.
     /// </summary>
     public static void Shuffle< T >( this List< T > ts )
     {
@@ -124,8 +124,8 @@ public static class ListExtensions
     }
 
     /// <summary>
-    ///     Reduces the size of the array to the specified size. If the array is
-    ///     already smaller than the specified size, no action is taken.
+    /// Reduces the size of the array to the specified size. If the array is
+    /// already smaller than the specified size, no action is taken.
     /// </summary>
     public static void Truncate< T >( this List< T > ts, int newSize )
     {
@@ -136,7 +136,7 @@ public static class ListExtensions
     }
 
     /// <summary>
-    ///     Removes and returns the last item in the list.
+    /// Removes and returns the last item in the list.
     /// </summary>
     /// <param name="list"></param>
     /// <typeparam name="T"></typeparam>
@@ -157,7 +157,7 @@ public static class ListExtensions
     }
 
     /// <summary>
-    ///     Returns the last item in a list.
+    /// Returns the last item in a list.
     /// </summary>
     /// <param name="list"></param>
     /// <typeparam name="T"></typeparam>
@@ -168,7 +168,7 @@ public static class ListExtensions
     }
 
     /// <summary>
-    ///     Removes and returns the item at the specified index.
+    /// Removes and returns the item at the specified index.
     /// </summary>
     /// <param name="list"></param>
     /// <param name="index"></param>

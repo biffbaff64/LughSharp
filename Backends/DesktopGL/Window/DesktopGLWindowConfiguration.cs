@@ -44,74 +44,74 @@ public class DesktopGLWindowConfiguration
     public DesktopGLGraphics.DesktopGLMonitor? MaximizedMonitor { get; set; }
 
     /// <summary>
-    ///     whether the window will be visible on creation. (default true)
+    /// whether the window will be visible on creation. (default true)
     /// </summary>
     public bool InitialVisible { get; set; } = true;
 
     /// <summary>
-    ///     Sets the <see cref="IDesktopGLWindowListener" /> which will be informed about
-    ///     iconficiation, focus loss and window close events.
+    /// Sets the <see cref="IDesktopGLWindowListener"/> which will be informed about
+    /// iconficiation, focus loss and window close events.
     /// </summary>
     public IDesktopGLWindowListener? WindowListener { get; set; }
 
     /// <summary>
-    ///     Sets the app to use fullscreen mode.
-    ///     Use the static methods like <see cref="DesktopGLApplicationConfiguration.GetDisplayMode()" />
-    ///     on this class to enumerate connected monitors and their fullscreen display modes.
+    /// Sets the app to use fullscreen mode.
+    /// Use the static methods like <see cref="DesktopGLApplicationConfiguration.GetDisplayMode()"/>
+    /// on this class to enumerate connected monitors and their fullscreen display modes.
     /// </summary>
     public DesktopGLGraphics.DesktopGLDisplayMode? FullscreenMode { get; set; }
 
     /// <summary>
-    ///     Sets whether to use vsync.
-    ///     <para>
-    ///         This setting can be changed anytime at runtime via <see cref="IGraphics.SetVSync(bool)" />.
-    ///     </para>
-    ///     <para>
-    ///         For multi-window applications, only one (the main) window should enable vsync. Otherwise,
-    ///         every window will wait for the vertical blank on swap individually, effectively cutting
-    ///         the frame rate to (refreshRate / numberOfWindows).
-    ///     </para>
+    /// Sets whether to use vsync.
+    /// <para>
+    /// This setting can be changed anytime at runtime via <see cref="IGraphics.SetVSync(bool)"/>.
+    /// </para>
+    /// <para>
+    /// For multi-window applications, only one (the main) window should enable vsync. Otherwise,
+    /// every window will wait for the vertical blank on swap individually, effectively cutting
+    /// the frame rate to (refreshRate / numberOfWindows).
+    /// </para>
     /// </summary>
     public bool VSyncEnabled { get; set; } = true;
 
     /// <summary>
-    ///     whether the windowed mode window is resizable (default true)
+    /// whether the windowed mode window is resizable (default true)
     /// </summary>
     public bool WindowResizable { get; set; } = true;
 
     /// <summary>
-    ///     whether the windowed mode window is decorated, i.e. displaying the title bars.
-    ///     (default true)
+    /// whether the windowed mode window is decorated, i.e. displaying the title bars.
+    /// (default true)
     /// </summary>
     public bool WindowDecorated { get; set; } = true;
 
     /// <summary>
-    ///     whether the window starts maximized. Ignored if the window is full screen.
-    ///     (default false)
+    /// whether the window starts maximized. Ignored if the window is full screen.
+    /// (default false)
     /// </summary>
     public bool WindowMaximized { get; set; } = false;
 
     /// <summary>
-    ///     whether the window should automatically iconify and restore previous video mode
-    ///     on input focus loss. (default false). Does nothing in windowed mode.
-    ///     (default false)
+    /// whether the window should automatically iconify and restore previous video mode
+    /// on input focus loss. (default false). Does nothing in windowed mode.
+    /// (default false)
     /// </summary>
     public bool AutoIconify { get; set; } = false;
 
     /// <summary>
-    ///     Sets the initial background color. Defaults to black.
+    /// Sets the initial background color. Defaults to black.
     /// </summary>
     public Color InitialBackgroundColor { get; set; } = Color.Black;
 
     /// <summary>
-    ///     Sets the window title. Defaults to empty string.
+    /// Sets the window title. Defaults to empty string.
     /// </summary>
     public string? Title { get; set; } = "";
 
     /// <summary>
     /// </summary>
     /// <param name="config">
-    ///     The window configuration data from which to initialise this window config.
+    /// The window configuration data from which to initialise this window config.
     /// </param>
     public void SetWindowConfiguration( DesktopGLWindowConfiguration config )
     {
@@ -146,13 +146,13 @@ public class DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Sets the icon that will be used in the window's title bar. Has no effect in
-    ///     macOS, which doesn't use window icons.
+    /// Sets the icon that will be used in the window's title bar. Has no effect in
+    /// macOS, which doesn't use window icons.
     /// </summary>
     /// <param name="filePaths">
-    ///     One or more internal image paths. Must be JPEG, PNG, or BMP format.
-    ///     The one closest to the system's desired size will be scaled. Good
-    ///     sizes include 16x16, 32x32 and 48x48.
+    /// One or more internal image paths. Must be JPEG, PNG, or BMP format.
+    /// The one closest to the system's desired size will be scaled. Good
+    /// sizes include 16x16, 32x32 and 48x48.
     /// </param>
     public void SetWindowIcon( params string[] filePaths )
     {
@@ -160,7 +160,7 @@ public class DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Sets the app to use windowed mode.
+    /// Sets the app to use windowed mode.
     /// </summary>
     /// <param name="width"> the width of the window (default 640) </param>
     /// <param name="height">the height of the window (default 480) </param>
@@ -171,8 +171,8 @@ public class DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Sets the position of the window in windowed mode.
-    ///     Default -1 for both coordinates for centered on primary monitor.
+    /// Sets the position of the window in windowed mode.
+    /// Default -1 for both coordinates for centered on primary monitor.
     /// </summary>
     public void SetWindowPosition( int x, int y )
     {
@@ -181,9 +181,9 @@ public class DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Sets minimum and maximum size limits for the window. If the window is full
-    ///     screen or not resizable, these limits are ignored. The default for all four
-    ///     parameters is -1, which means unrestricted.
+    /// Sets minimum and maximum size limits for the window. If the window is full
+    /// screen or not resizable, these limits are ignored. The default for all four
+    /// parameters is -1, which means unrestricted.
     /// </summary>
     public void SetWindowSizeLimits( int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
@@ -194,14 +194,14 @@ public class DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Sets the icon that will be used in the window's title bar.Has no effect in macOS,
-    ///     which doesn't use window icons.
+    /// Sets the icon that will be used in the window's title bar.Has no effect in macOS,
+    /// which doesn't use window icons.
     /// </summary>
     /// <param name="fileType"> The type of file handle the paths are relative to. </param>
     /// <param name="filePaths">
-    ///     One or more image paths, relative to the given <see cref="FileType" />. Must be JPEG,
-    ///     PNG, or BMP format. The one closest to the system's desired size will be scaled.
-    ///     Good sizes include 16x16, 32x32 and 48x48.
+    /// One or more image paths, relative to the given <see cref="FileType"/>. Must be JPEG,
+    /// PNG, or BMP format. The one closest to the system's desired size will be scaled.
+    /// Good sizes include 16x16, 32x32 and 48x48.
     /// </param>
     public void SetWindowIcon( FileType fileType, params string[] filePaths )
     {

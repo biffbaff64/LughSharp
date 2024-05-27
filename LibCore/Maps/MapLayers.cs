@@ -28,7 +28,7 @@ using System.Collections;
 namespace LughSharp.LibCore.Maps;
 
 /// <summary>
-///     Ordered list of <see cref="MapLayer"/> instances owned by a <see cref="Map"/>.
+/// Ordered list of <see cref="MapLayer"/> instances owned by a <see cref="Map"/>.
 /// </summary>
 [PublicAPI]
 public class MapLayers : IEnumerable< MapLayer >
@@ -48,7 +48,7 @@ public class MapLayers : IEnumerable< MapLayer >
     }
 
     /// <summary>
-    ///     Returns the <see cref="MapLayer" /> at the specified index.
+    /// Returns the <see cref="MapLayer"/> at the specified index.
     /// </summary>
     public MapLayer Get( int index )
     {
@@ -56,7 +56,7 @@ public class MapLayers : IEnumerable< MapLayer >
     }
 
     /// <summary>
-    ///     Returns the first layer having the specified name, if one exists, otherwise null
+    /// Returns the first layer having the specified name, if one exists, otherwise null
     /// </summary>
     public MapLayer? Get( string name )
     {
@@ -77,7 +77,7 @@ public class MapLayers : IEnumerable< MapLayer >
     }
 
     /// <summary>
-    ///     Get the index of the layer having the specified name, or -1 if no such layer exists.
+    /// Get the index of the layer having the specified name, or -1 if no such layer exists.
     /// </summary>
     public int GetIndex( string name )
     {
@@ -87,7 +87,7 @@ public class MapLayers : IEnumerable< MapLayer >
     }
 
     /// <summary>
-    ///     Get the index of the layer in the collection, or -1 if no such layer exists.
+    /// Get the index of the layer in the collection, or -1 if no such layer exists.
     /// </summary>
     public int GetIndex( MapLayer layer )
     {
@@ -95,12 +95,15 @@ public class MapLayers : IEnumerable< MapLayer >
     }
 
     /// <summary>
-    ///     Adds a layer to this collection
+    /// Adds a layer to this collection
     /// </summary>
-    public virtual void Add( MapLayer layer ) => _layers.Add( layer );
+    public virtual void Add( MapLayer layer )
+    {
+        _layers.Add( layer );
+    }
 
     /// <summary>
-    ///     Removes the <see cref="MapLayer"/> at the specified index.
+    /// Removes the <see cref="MapLayer"/> at the specified index.
     /// </summary>
     public virtual void Remove( int index )
     {
@@ -108,7 +111,7 @@ public class MapLayers : IEnumerable< MapLayer >
     }
 
     /// <summary>
-    ///     Removes the requested <see cref="MapLayer"/>
+    /// Removes the requested <see cref="MapLayer"/>
     /// </summary>
     public virtual void Remove( MapLayer layer )
     {
@@ -116,7 +119,7 @@ public class MapLayers : IEnumerable< MapLayer >
     }
 
     /// <summary>
-    ///     Returns the number of layers.
+    /// Returns the number of layers.
     /// </summary>
     public int Size()
     {
@@ -133,7 +136,7 @@ public class MapLayers : IEnumerable< MapLayer >
     }
 
     /// <summary>
-    ///     Returns a list of layers which match the requested type in <b>T</b>
+    /// Returns a list of layers which match the requested type in <b>T</b>
     /// </summary>
     /// <param name="fill">The list in which to store the results</param>
     /// <typeparam name="T">The requested type.</typeparam>

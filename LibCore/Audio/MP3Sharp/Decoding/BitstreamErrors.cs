@@ -26,8 +26,8 @@
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
-///     This struct describes all error codes that can be thrown
-///     in BistreamExceptions.
+/// This struct describes all error codes that can be thrown
+/// in BistreamExceptions.
 /// </summary>
 [PublicAPI]
 public struct BitstreamErrors

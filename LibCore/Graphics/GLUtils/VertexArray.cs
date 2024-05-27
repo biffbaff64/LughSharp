@@ -33,22 +33,22 @@ public class VertexArray : IVertexData
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
-    ///     Constructs a new interleaved VertexArray
+    /// Constructs a new interleaved VertexArray
     /// </summary>
     /// <param name="numVertices"> the maximum number of vertices </param>
-    /// <param name="attributes"> the <see cref="VertexAttribute" />s  </param>
+    /// <param name="attributes"> the <see cref="VertexAttribute"/>s  </param>
     public VertexArray( int numVertices, params VertexAttribute[] attributes )
         : this( numVertices, new VertexAttributes( attributes ) )
     {
     }
 
     /// <summary>
-    ///     Constructs a new interleaved VertexArray
+    /// Constructs a new interleaved VertexArray
     /// </summary>
     /// <param name="numVertices"> the maximum number of vertices </param>
-    /// <param name="attributes"> the <see cref="VertexAttributes" /> </param>
+    /// <param name="attributes"> the <see cref="VertexAttributes"/> </param>
     public VertexArray( int numVertices, VertexAttributes attributes )
     {
         Attributes  = attributes;
@@ -60,25 +60,25 @@ public class VertexArray : IVertexData
     }
 
     /// <summary>
-    ///     Returns the number of vertices this VertexData stores.
+    /// Returns the number of vertices this VertexData stores.
     /// </summary>
     public int NumVertices => ( _buffer.Limit * 4 ) / Attributes.VertexSize;
 
     /// <summary>
-    ///     Returns the number of vertices this VertedData can store.
+    /// Returns the number of vertices this VertedData can store.
     /// </summary>
     public int NumMaxVertices => _byteBuffer.Capacity / Attributes.VertexSize;
 
     /// <summary>
-    ///     Returns the <see cref="VertexAttributes" /> as specified during construction.
+    /// Returns the <see cref="VertexAttributes"/> as specified during construction.
     /// </summary>
     public VertexAttributes Attributes { get; set; }
 
     /// <summary>
-    ///     Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
-    ///     contents to be uploaded on the next call to bind. If you need immediate
-    ///     uploading use <see cref="IVertexData.SetVertices" />; Any modifications made to the Buffer
-    ///     after* the call to bind will not automatically be uploaded.
+    /// Returns the underlying FloatBuffer and marks it as dirty, causing the buffer
+    /// contents to be uploaded on the next call to bind. If you need immediate
+    /// uploading use <see cref="IVertexData.SetVertices"/>; Any modifications made to the Buffer
+    /// after* the call to bind will not automatically be uploaded.
     /// </summary>
     /// <returns> the underlying FloatBuffer holding the vertex data.</returns>
     public FloatBuffer GetBuffer( bool forWriting )
@@ -87,14 +87,14 @@ public class VertexArray : IVertexData
     }
 
     /// <summary>
-    ///     Sets the vertices of this VertexData, discarding the old vertex data. The
-    ///     count must equal the number of floats per vertex times the number of vertices
-    ///     to be copied to this VertexData. The order of the vertex attributes must be
-    ///     the same as specified at construction time via <see cref="VertexAttributes" />.
-    ///     <para>
-    ///         This can be called in between calls to bind and unbind. The vertex data will
-    ///         be updated instantly.
-    ///     </para>
+    /// Sets the vertices of this VertexData, discarding the old vertex data. The
+    /// count must equal the number of floats per vertex times the number of vertices
+    /// to be copied to this VertexData. The order of the vertex attributes must be
+    /// the same as specified at construction time via <see cref="VertexAttributes"/>.
+    /// <para>
+    /// This can be called in between calls to bind and unbind. The vertex data will
+    /// be updated instantly.
+    /// </para>
     /// </summary>
     /// <param name="vertices"> the vertex data </param>
     /// <param name="offset"> the offset to start copying the data from </param>
@@ -108,7 +108,7 @@ public class VertexArray : IVertexData
     }
 
     /// <summary>
-    ///     Update (a portion of) the vertices. Does not resize the backing buffer.
+    /// Update (a portion of) the vertices. Does not resize the backing buffer.
     /// </summary>
     /// <param name="targetOffset"></param>
     /// <param name="vertices"> the vertex data </param>
@@ -126,7 +126,7 @@ public class VertexArray : IVertexData
     }
 
     /// <summary>
-    ///     Binds this VertexData for rendering via glDrawArrays or glDrawElements.
+    /// Binds this VertexData for rendering via glDrawArrays or glDrawElements.
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.</param>
@@ -215,7 +215,7 @@ public class VertexArray : IVertexData
     }
 
     /// <summary>
-    ///     Unbinds this VertexData.
+    /// Unbinds this VertexData.
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"> array containing the attribute locations.</param>
@@ -245,15 +245,15 @@ public class VertexArray : IVertexData
     }
 
     /// <summary>
-    ///     Invalidates the VertexData if applicable. Use this in case of a context loss.
+    /// Invalidates the VertexData if applicable. Use this in case of a context loss.
     /// </summary>
     public void Invalidate()
     {
     }
 
     /// <summary>
-    ///     Performs application-defined tasks associated with freeing, releasing,
-    ///     or resetting unmanaged resources.
+    /// Performs application-defined tasks associated with freeing, releasing,
+    /// or resetting unmanaged resources.
     /// </summary>
     public void Dispose()
     {

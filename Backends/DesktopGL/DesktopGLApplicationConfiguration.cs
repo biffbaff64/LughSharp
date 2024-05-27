@@ -102,10 +102,10 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Sets the audio device configuration.
+    /// Sets the audio device configuration.
     /// </summary>
     /// <param name="simultaniousSources">
-    ///     the maximum number of sources that can be played simultaniously (default 16)
+    /// the maximum number of sources that can be played simultaniously (default 16)
     /// </param>
     /// <param name="bufferSize">the audio device buffer size in samples (default 512)</param>
     /// <param name="bufferCount">the audio device buffer count (default 9)</param>
@@ -117,8 +117,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Sets whether to use OpenGL ES 3.0. If the given major/minor version is not
-    ///     supported, the backend falls back to OpenGL ES 2.0.
+    /// Sets whether to use OpenGL ES 3.0. If the given major/minor version is not
+    /// supported, the backend falls back to OpenGL ES 2.0.
     /// </summary>
     /// <param name="useGL30">whether to use OpenGL ES 3.0</param>
     /// <param name="gles3MajorVersion">OpenGL ES major version, use 3 as default</param>
@@ -131,8 +131,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Sets the bit depth of the color, depth and stencil buffer as well as
-    ///     multi-sampling.
+    /// Sets the bit depth of the color, depth and stencil buffer as well as
+    /// multi-sampling.
     /// </summary>
     /// <param name="r">red bits (default 8)</param>
     /// <param name="g">green bits (default 8)</param>
@@ -153,9 +153,9 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Sets the directory where <see cref="IPreferences" /> will be stored, as well as
-    ///     the file type to be used to store them. Defaults to "$USER_HOME/.prefs/"
-    ///     and <see cref="FileType" />.
+    /// Sets the directory where <see cref="IPreferences"/> will be stored, as well as
+    /// the file type to be used to store them. Defaults to "$USER_HOME/.prefs/"
+    /// and <see cref="FileType"/>.
     /// </summary>
     public void SetPreferencesConfig( string preferencesDirectory, FileType preferencesFileType )
     {
@@ -164,12 +164,12 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Enables use of OpenGL debug message callbacks. If not supported by the core GL driver
-    ///     (since GL 4.3), this uses the KHR_debug, ARB_debug_output or AMD_debug_output extension
-    ///     if available. By default, debug messages with NOTIFICATION severity are disabled to
-    ///     avoid log spam.
-    ///     Use <see cref="DesktopGLApplication.SetGLDebugMessageControl(DesktopGLApplication.GLDebugMessageSeverity, bool)" />
-    ///     to enable or disable other severity debug levels.
+    /// Enables use of OpenGL debug message callbacks. If not supported by the core GL driver
+    /// (since GL 4.3), this uses the KHR_debug, ARB_debug_output or AMD_debug_output extension
+    /// if available. By default, debug messages with NOTIFICATION severity are disabled to
+    /// avoid log spam.
+    /// Use <see cref="DesktopGLApplication.SetGLDebugMessageControl(DesktopGLApplication.GLDebugMessageSeverity, bool)"/>
+    /// to enable or disable other severity debug levels.
     /// </summary>
     public void EnableGLDebugOutput( bool enable, StreamWriter debugOutputStream )
     {
@@ -178,7 +178,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Gets the currently active display mode for the primary monitor.
+    /// Gets the currently active display mode for the primary monitor.
     /// </summary>
     public static IGraphics.DisplayMode GetDisplayMode()
     {
@@ -207,7 +207,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Return the available <see cref="IGraphics.DisplayMode" />s of the primary monitor
+    /// Return the available <see cref="IGraphics.DisplayMode"/>s of the primary monitor
     /// </summary>
     public static IGraphics.DisplayMode[] GetDisplayModes()
     {
@@ -232,8 +232,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    ///     Return the available <see cref="IGraphics.DisplayMode" />"s
-    ///     of the given <see cref="GLFWMonitor" />
+    /// Return the available <see cref="IGraphics.DisplayMode"/>"s
+    /// of the given <see cref="GLFWMonitor"/>
     /// </summary>
     public static IGraphics.DisplayMode[] GetDisplayModes( GLFWMonitor monitor )
     {

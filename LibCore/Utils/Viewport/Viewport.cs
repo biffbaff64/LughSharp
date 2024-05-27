@@ -30,10 +30,10 @@ using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 namespace LughSharp.LibCore.Utils.Viewport;
 
 /// <summary>
-///     Manages a <see cref="Camera" /> and determines how world coordinates
-///     are mapped to and from the screen.
-///     Extending classes should initialise <see cref="Camera" /> to avoid
-///     causing exceptions.
+/// Manages a <see cref="Camera"/> and determines how world coordinates
+/// are mapped to and from the screen.
+/// Extending classes should initialise <see cref="Camera"/> to avoid
+/// causing exceptions.
 /// </summary>
 [PublicAPI]
 public abstract class Viewport
@@ -44,7 +44,7 @@ public abstract class Viewport
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Creates a new viewport using the supplied <see cref="OrthographicCamera" />.
+    /// Creates a new viewport using the supplied <see cref="OrthographicCamera"/>.
     /// </summary>
     /// <param name="camera"> The camera to use. </param>
     protected Viewport( Camera camera )
@@ -53,40 +53,40 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Returns the left gutter (black bar) width in screen coordinates.
+    /// Returns the left gutter (black bar) width in screen coordinates.
     /// </summary>
     public virtual int LeftGutterWidth => ScreenX;
 
     /// <summary>
-    ///     Returns the right gutter (black bar) x in screen coordinates.
+    /// Returns the right gutter (black bar) x in screen coordinates.
     /// </summary>
     public virtual int RightGutterX => ScreenX + ScreenWidth;
 
     /// <summary>
-    ///     Returns the right gutter (black bar) width in screen coordinates.
+    /// Returns the right gutter (black bar) width in screen coordinates.
     /// </summary>
     public virtual int RightGutterWidth => Gdx.Graphics.Width - ( ScreenX + ScreenWidth );
 
     /// <summary>
-    ///     Returns the bottom gutter (black bar) height in screen coordinates.
+    /// Returns the bottom gutter (black bar) height in screen coordinates.
     /// </summary>
     public virtual int BottomGutterHeight => ScreenY;
 
     /// <summary>
-    ///     Returns the top gutter (black bar) y in screen coordinates.
+    /// Returns the top gutter (black bar) y in screen coordinates.
     /// </summary>
     public virtual int TopGutterY => ScreenY + ScreenHeight;
 
     /// <summary>
-    ///     Returns the top gutter (black bar) height in screen coordinates.
+    /// Returns the top gutter (black bar) height in screen coordinates.
     /// </summary>
     public virtual int TopGutterHeight => Gdx.Graphics.Height - ( ScreenY + ScreenHeight );
 
     /// <summary>
-    ///     Applies the viewport to the camera and sets the glViewport.
+    /// Applies the viewport to the camera and sets the glViewport.
     /// </summary>
     /// <param name="centerCamera">
-    ///     If true, the camera position is set to the center of the world.
+    /// If true, the camera position is set to the center of the world.
     /// </param>
     public virtual void Apply( bool centerCamera = false )
     {
@@ -109,16 +109,16 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Configures this viewport's screen bounds using the specified screen
-    ///     size and calls <see cref="Apply(bool)" />. Typically called
-    ///     from <see cref="IApplicationListener.Resize" /> or
-    ///     <see cref="IScreen.Resize(int, int)" />.
+    /// Configures this viewport's screen bounds using the specified screen
+    /// size and calls <see cref="Apply(bool)"/>. Typically called
+    /// from <see cref="IApplicationListener.Resize"/> or
+    /// <see cref="IScreen.Resize(int, int)"/>.
     /// </summary>
     /// <param name="screenWidth"></param>
     /// <param name="screenHeight"></param>
     /// <param name="centerCamera"></param>
     /// <remarks>
-    ///     The default implementation only calls <see cref="Apply(bool)" />.
+    /// The default implementation only calls <see cref="Apply(bool)"/>.
     /// </remarks>
     public virtual void Update( int screenWidth, int screenHeight, bool centerCamera = false )
     {
@@ -126,10 +126,10 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Transforms the specified screen coordinate to world coordinates.
+    /// Transforms the specified screen coordinate to world coordinates.
     /// </summary>
     /// <returns> The vector that was passed in, transformed to world coordinates.</returns>
-    /// <see cref="Camera.Unproject(Vector3)" />
+    /// <see cref="Camera.Unproject(Vector3)"/>
     public virtual Vector2 Unproject( Vector2 screenCoords )
     {
         if ( Camera == null )
@@ -152,10 +152,10 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Transforms the specified world coordinate to screen coordinates.
+    /// Transforms the specified world coordinate to screen coordinates.
     /// </summary>
     /// <returns> The vector that was passed in, transformed to screen coordinates.</returns>
-    /// <see cref="Camera.Project(Vector3) " />
+    /// <see cref="Camera.Project(Vector3) "/>
     public virtual Vector2 Project( Vector2 worldCoords )
     {
         if ( Camera == null )
@@ -172,10 +172,10 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Transforms the specified screen coordinate to world coordinates.
+    /// Transforms the specified screen coordinate to world coordinates.
     /// </summary>
     /// <returns> The vector that was passed in, transformed to world coordinates.</returns>
-    /// <see cref="Camera.Unproject(Vector3)" />
+    /// <see cref="Camera.Unproject(Vector3)"/>
     public virtual Vector3 Unproject( Vector3 screenCoords )
     {
         if ( Camera == null )
@@ -189,10 +189,10 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Transforms the specified world coordinate to screen coordinates.
+    /// Transforms the specified world coordinate to screen coordinates.
     /// </summary>
     /// <returns> The vector that was passed in, transformed to screen coordinates. </returns>
-    /// <see cref="Camera.Project(Vector3) " />
+    /// <see cref="Camera.Project(Vector3) "/>
     public virtual Vector3 Project( Vector3 worldCoords )
     {
         if ( Camera == null )
@@ -206,9 +206,9 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Creates a picking Ray from the coordinates given in screen coordinates.
+    /// Creates a picking Ray from the coordinates given in screen coordinates.
     /// </summary>
-    /// <see cref="Camera.GetPickRay(float, float, float, float, float, float)" />
+    /// <see cref="Camera.GetPickRay(float, float, float, float, float, float)"/>
     public virtual Ray GetPickRay( float screenX, float screenY )
     {
         if ( Camera == null )
@@ -220,8 +220,8 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Calculates a scissor rectangle in OpenGL window coordinates.
-    ///     <see cref="ScissorStack" />.CalculateScissors methods for more details.
+    /// Calculates a scissor rectangle in OpenGL window coordinates.
+    /// <see cref="ScissorStack"/>.CalculateScissors methods for more details.
     /// </summary>
     public virtual void CalculateScissors( Matrix4 batchTransform, RectangleShape area, RectangleShape scissor )
     {
@@ -234,9 +234,9 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Transforms a point to real screen coordinates (as opposed to OpenGL
-    ///     window coordinates), where the origin is in the top left and the
-    ///     the y-axis is pointing downwards.
+    /// Transforms a point to real screen coordinates (as opposed to OpenGL
+    /// window coordinates), where the origin is in the top left and the
+    /// the y-axis is pointing downwards.
     /// </summary>
     public virtual Vector2 ToScreenCoordinates( Vector2 worldCoords, Matrix4 transformMatrix )
     {
@@ -261,7 +261,7 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Sets the World Size to the supplied width and height.
+    /// Sets the World Size to the supplied width and height.
     /// </summary>
     /// <param name="worldWidth"> New World width in pixels. </param>
     /// <param name="worldHeight"> New World height in pixels. </param>
@@ -272,8 +272,8 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Sets the viewport's position in screen coordinates.
-    ///     This is typically set by <see cref="Update(int, int, bool)" />.
+    /// Sets the viewport's position in screen coordinates.
+    /// This is typically set by <see cref="Update(int, int, bool)"/>.
     /// </summary>
     public virtual void SetScreenPosition( int screenX, int screenY )
     {
@@ -282,8 +282,8 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Sets the viewport's size in screen coordinates.
-    ///     This is typically set by <see cref="Update(int, int, bool)" />.
+    /// Sets the viewport's size in screen coordinates.
+    /// This is typically set by <see cref="Update(int, int, bool)"/>.
     /// </summary>
     public virtual void SetScreenSize( int screenWidth, int screenHeight )
     {
@@ -292,8 +292,8 @@ public abstract class Viewport
     }
 
     /// <summary>
-    ///     Sets the viewport's bounds in screen coordinates.
-    ///     This is typically set by <see cref="Update(int, int, bool)" />.
+    /// Sets the viewport's bounds in screen coordinates.
+    /// This is typically set by <see cref="Update(int, int, bool)"/>.
     /// </summary>
     public virtual void SetScreenBounds( int screenX, int screenY, int screenWidth, int screenHeight )
     {

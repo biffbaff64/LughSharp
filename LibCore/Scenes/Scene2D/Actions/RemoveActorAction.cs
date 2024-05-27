@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 /// <summary>
-///     Removes an actor from the stage.
+/// Removes an actor from the stage.
 /// </summary>
 public class RemoveActorAction : Action
 {

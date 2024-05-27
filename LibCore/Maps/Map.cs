@@ -26,18 +26,18 @@
 namespace LughSharp.LibCore.Maps;
 
 /// <summary>
-///     Container for map layers and properties.
+/// Container for map layers and properties.
 /// </summary>
 [PublicAPI]
 public class Map
 {
     /// <summary>
-    ///     The layers which make up the map
+    /// The layers which make up the map
     /// </summary>
     public MapLayers Layers { get; } = new();
 
     /// <summary>
-    ///     The map properties.
+    /// The map properties.
     /// </summary>
     public MapProperties Properties { get; } = new();
 }

@@ -47,7 +47,7 @@ public class PointLightsAttribute : Attribute
     public static string Alias => "pointLights";
     public static long   Type  => Register( Alias );
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override Attribute Copy()
     {
         return this;

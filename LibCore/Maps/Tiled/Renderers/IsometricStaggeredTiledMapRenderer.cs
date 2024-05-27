@@ -69,17 +69,17 @@ public class IsometricStaggeredTiledMapRenderer : BatchTileMapRenderer
         var layerTileWidth50  = layerTileWidth * 0.50f;
         var layerTileHeight50 = layerTileHeight * 0.50f;
 
-        var minX = Math.Max( 0, ( int ) ( ( ( ViewBounds.X - layerTileWidth50 - layerOffsetX ) / layerTileWidth ) ) );
+        var minX = Math.Max( 0, ( int ) ( ( ViewBounds.X - layerTileWidth50 - layerOffsetX ) / layerTileWidth ) );
         var maxX = Math.Min( layerWidth,
                              ( int ) ( ( ( ViewBounds.X + ViewBounds.Width + layerTileWidth + layerTileWidth50 ) - layerOffsetX ) / layerTileWidth ) );
 
-        var minY = Math.Max( 0, ( int ) ( ( ( ViewBounds.Y - layerTileHeight - layerOffsetY ) / layerTileHeight ) ) );
+        var minY = Math.Max( 0, ( int ) ( ( ViewBounds.Y - layerTileHeight - layerOffsetY ) / layerTileHeight ) );
         var maxY = Math.Min( layerHeight,
                              ( int ) ( ( ( ViewBounds.Y + ViewBounds.Height + layerTileHeight ) - layerOffsetY ) / layerTileHeight50 ) );
 
         for ( var y = maxY - 1; y >= minY; y-- )
         {
-            var offsetX = ( ( y % 2 ) == 1 ) ? layerTileWidth50 : 0;
+            var offsetX = ( y % 2 ) == 1 ? layerTileWidth50 : 0;
 
             for ( var x = maxX - 1; x >= minX; x-- )
             {
@@ -165,6 +165,7 @@ public class IsometricStaggeredTiledMapRenderer : BatchTileMapRenderer
                                     Vertices[ IBatch.U2 ] = Vertices[ IBatch.U3 ];
                                     Vertices[ IBatch.U3 ] = Vertices[ IBatch.U4 ];
                                     Vertices[ IBatch.U4 ] = tempU;
+
                                     break;
                                 }
 
@@ -181,6 +182,7 @@ public class IsometricStaggeredTiledMapRenderer : BatchTileMapRenderer
 
                                     ( Vertices[ IBatch.V2 ], Vertices[ IBatch.V4 ] )
                                         = ( Vertices[ IBatch.V4 ], Vertices[ IBatch.V2 ] );
+
                                     break;
                                 }
 
@@ -197,6 +199,7 @@ public class IsometricStaggeredTiledMapRenderer : BatchTileMapRenderer
                                     Vertices[ IBatch.U4 ] = Vertices[ IBatch.U3 ];
                                     Vertices[ IBatch.U3 ] = Vertices[ IBatch.U2 ];
                                     Vertices[ IBatch.U2 ] = tempU;
+
                                     break;
                                 }
                             }

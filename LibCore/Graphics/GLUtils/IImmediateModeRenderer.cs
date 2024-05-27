@@ -31,7 +31,7 @@ public interface IImmediateModeRenderer : IDisposable
 {
     public int NumVertices { get; set; }
 
-    public int MaxVertices { get; set; }
+    public int  MaxVertices { get; set; }
     public void Begin( Matrix4 projModelView, int primitiveType );
 
     public void End();

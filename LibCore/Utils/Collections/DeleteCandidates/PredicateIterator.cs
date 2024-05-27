@@ -31,15 +31,8 @@ namespace LughSharp.LibCore.Utils.Collections;
 [PublicAPI]
 public class PredicateIterator< T > : IEnumerator< T >
 {
-    public IEnumerator< T? > Enumerator { get; set; }
-    public IPredicate< T >   Predicate  { get; set; }
-    public bool              End        { get; set; }
-    public bool              Peeked     { get; set; }
-    public T?                NextItem   { get; set; }
-    public T                 Current    { get; }
-
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// </summary>
     /// <param name="enumerable"></param>
@@ -63,7 +56,32 @@ public class PredicateIterator< T > : IEnumerator< T >
         Current    = default( T? )!;
     }
 
+    public IEnumerator< T? > Enumerator { get; set; }
+    public IPredicate< T >   Predicate  { get; set; }
+    public bool              End        { get; set; }
+    public bool              Peeked     { get; set; }
+    public T?                NextItem   { get; set; }
+    public T                 Current    { get; }
+
     object? IEnumerator.Current => Current;
+
+    public void Dispose()
+    {
+        Remove();
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public virtual bool MoveNext()
+    {
+        throw new NotImplementedException();
+    }
+
+    public virtual void Reset()
+    {
+        throw new NotImplementedException();
+    }
 
     /// <summary>
     /// </summary>
@@ -140,23 +158,5 @@ public class PredicateIterator< T > : IEnumerator< T >
         }
 
         Enumerator.Dispose();
-    }
-
-    public void Dispose()
-    {
-        Remove();
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-    
-    public virtual bool MoveNext()
-    {
-        throw new NotImplementedException();
-    }
-
-    public virtual void Reset()
-    {
-        throw new NotImplementedException();
     }
 }

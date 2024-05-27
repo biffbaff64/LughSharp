@@ -28,10 +28,8 @@ namespace LughSharp.LibCore.Maps.Objects;
 [PublicAPI]
 public class PolylineMapObject : MapObject
 {
-    public Polyline Polyline { get; set; }
-
     /// <summary>
-    ///     Creates a new, empty, PolylineMapObject.
+    /// Creates a new, empty, PolylineMapObject.
     /// </summary>
     public PolylineMapObject()
         : this( Array.Empty< float >() )
@@ -39,20 +37,22 @@ public class PolylineMapObject : MapObject
     }
 
     /// <summary>
-    ///     Creates a new PolylineMapObject using the supplied vertices.
+    /// Creates a new PolylineMapObject using the supplied vertices.
     /// </summary>
     /// <param name="vertices"> polyline defining vertices </param>
     public PolylineMapObject( float[] vertices )
     {
-        this.Polyline = new Polyline( vertices );
+        Polyline = new Polyline( vertices );
     }
 
     /// <summary>
-    ///     Creates a new PolylineMapObject using the supplied <see cref="Polyline"/>
+    /// Creates a new PolylineMapObject using the supplied <see cref="Polyline"/>
     /// </summary>
     /// <param name="polyline"> the polyline </param>
     public PolylineMapObject( Polyline polyline )
     {
-        this.Polyline = polyline;
+        Polyline = polyline;
     }
+
+    public Polyline Polyline { get; set; }
 }

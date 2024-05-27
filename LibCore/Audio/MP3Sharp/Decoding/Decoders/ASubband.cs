@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 
 /// <summary>
-///     Abstract base class for subband classes of layer I and II
+/// Abstract base class for subband classes of layer I and II
 /// </summary>
 [PublicAPI]
 public abstract class ASubband

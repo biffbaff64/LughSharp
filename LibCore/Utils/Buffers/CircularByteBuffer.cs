@@ -42,7 +42,7 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     Initialize by copying the CircularByteBuffer passed in
+    /// Initialize by copying the CircularByteBuffer passed in
     /// </summary>
     public CircularByteBuffer( CircularByteBuffer cdb )
     {
@@ -61,7 +61,7 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     The physical size of the Buffer (read/write)
+    /// The physical size of the Buffer (read/write)
     /// </summary>
     public int BufferSize
     {
@@ -84,7 +84,7 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     e.g. Offset[0] is the current value
+    /// e.g. Offset[0] is the current value
     /// </summary>
     public byte this[ int index ]
     {
@@ -93,7 +93,7 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     How far back it is safe to look (read/write).  Write only to reduce NumValid.
+    /// How far back it is safe to look (read/write).  Write only to reduce NumValid.
     /// </summary>
     public int NumValid
     {
@@ -122,7 +122,7 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     Push a byte into the buffer.  Returns the value of whatever comes off.
+    /// Push a byte into the buffer.  Returns the value of whatever comes off.
     /// </summary>
     public byte Push( byte newValue )
     {
@@ -148,7 +148,7 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     Pop an integer off the start of the buffer.
+    /// Pop an integer off the start of the buffer.
     /// </summary>
     /// <exception cref="System.Exception">if the buffer is empty (NumValid == 0)</exception>
     public byte Pop()
@@ -167,8 +167,8 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     Returns what would fall out of the buffer on a Push.
-    ///     NOT the same as what you'd get with a Pop().
+    /// Returns what would fall out of the buffer on a Push.
+    /// NOT the same as what you'd get with a Pop().
     /// </summary>
     public byte Peek()
     {
@@ -213,9 +213,9 @@ public class CircularByteBuffer
     }
 
     /// <summary>
-    ///     Returns a range (in terms of Offsets) in an int array in chronological
-    ///     (oldest-to-newest) order. e.g. (3, 0) returns the last four ints pushed,
-    ///     with result[3] being the most recent.
+    /// Returns a range (in terms of Offsets) in an int array in chronological
+    /// (oldest-to-newest) order. e.g. (3, 0) returns the last four ints pushed,
+    /// with result[3] being the most recent.
     /// </summary>
     public byte[] GetRange( int str, int stp )
     {
@@ -229,7 +229,7 @@ public class CircularByteBuffer
         return outByte;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override string ToString()
     {
         var ret = "";

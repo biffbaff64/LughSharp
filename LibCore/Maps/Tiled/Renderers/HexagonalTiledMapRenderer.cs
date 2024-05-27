@@ -31,27 +31,27 @@ namespace LughSharp.LibCore.Maps.Tiled.Renderers;
 public class HexagonalTiledMapRenderer : BatchTileMapRenderer
 {
     /// <summary>
-    ///     the parameter defining the shape of the hexagon from tiled. more
-    ///     specifically it represents the length of the sides that are parallel
-    ///     to the stagger axis. e.g. with respect to the stagger axis a value
-    ///     of 0 results in a rhombus shape, while a value equal to the tile
-    ///     length/height represents a square shape and a value of 0.5 represents
-    ///     a regular hexagon if tile length equals tile height
+    /// the parameter defining the shape of the hexagon from tiled. more
+    /// specifically it represents the length of the sides that are parallel
+    /// to the stagger axis. e.g. with respect to the stagger axis a value
+    /// of 0 results in a rhombus shape, while a value equal to the tile
+    /// length/height represents a square shape and a value of 0.5 represents
+    /// a regular hexagon if tile length equals tile height
     /// </summary>
     private float _hexSideLength = 0f;
 
     /// <summary>
-    ///     true for X-Axis, false for Y-Axis
+    /// true for X-Axis, false for Y-Axis
     /// </summary>
     private bool _staggerAxisX = true;
 
     /// <summary>
-    ///     true for even StaggerIndex, false for odd
+    /// true for even StaggerIndex, false for odd
     /// </summary>
     private bool _staggerIndexEven = false;
 
     // ------------------------------------------------------------------------
-    
+
     public HexagonalTiledMapRenderer( TiledMap map ) : base( map )
     {
         Init( map );
@@ -76,7 +76,7 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
     }
 
     // ------------------------------------------------------------------------
-    
+
     private void Init( TiledMap map )
     {
         var axis = map.Properties.Get< string >( "staggeraxis" );

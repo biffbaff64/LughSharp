@@ -28,21 +28,18 @@ using LughSharp.LibCore.Scenes.Scene2D.Utils;
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
-///     A button with a child <see cref="UI.Image" /> to display an image. This is useful when
-///     the button must be larger than the image and the image centered on the button. If
-///     the image is the size of the button, a Button without any children can be used,
-///     where the <see cref="Button.ButtonStyle.Up" />, <see cref="Button.ButtonStyle.Down" />,
-///     and <see cref="Button.ButtonStyle.Checked" /> nine patches define the image.
+/// A button with a child <see cref="UI.Image"/> to display an image. This is useful when
+/// the button must be larger than the image and the image centered on the button. If
+/// the image is the size of the button, a Button without any children can be used,
+/// where the <see cref="Button.ButtonStyle.Up"/>, <see cref="Button.ButtonStyle.Down"/>,
+/// and <see cref="Button.ButtonStyle.Checked"/> nine patches define the image.
 /// </summary>
 [PublicAPI]
 public class ImageButton : Button
 {
-    public     Image            Image { get; }
-    public new ImageButtonStyle Style { get; private set; } = null!;
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-    
     public ImageButton( Skin skin )
         : this( skin.Get< ImageButtonStyle >() )
     {
@@ -63,7 +60,7 @@ public class ImageButton : Button
 
         Add( Image );
         SetStyle( style );
-        
+
         ConstructorHelper();
     }
 
@@ -82,11 +79,14 @@ public class ImageButton : Button
     {
     }
 
+    public     Image            Image { get; }
+    public new ImageButtonStyle Style { get; private set; } = null!;
+
     private void ConstructorHelper()
     {
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
-    
+
     public void SetStyle( ButtonStyle style )
     {
         Style      = style as ImageButtonStyle ?? throw new ArgumentException( "style must be an ImageButtonStyle." );
@@ -96,7 +96,7 @@ public class ImageButton : Button
     }
 
     /// <summary>
-    ///     Returns the appropriate image drawable from the style based on the current button state.
+    /// Returns the appropriate image drawable from the style based on the current button state.
     /// </summary>
     protected IDrawable? GetImageDrawable()
     {
@@ -153,8 +153,8 @@ public class ImageButton : Button
     }
 
     /// <summary>
-    ///     Sets the image drawable based on the current button state. The default implementation
-    ///     sets the image drawable using <see cref="GetImageDrawable()" />.
+    /// Sets the image drawable based on the current button state. The default implementation
+    /// sets the image drawable using <see cref="GetImageDrawable()"/>.
     /// </summary>
     protected void UpdateImage()
     {
@@ -195,7 +195,7 @@ public class ImageButton : Button
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     The style for an image button.
+    /// The style for an image button.
     /// </summary>
     [PublicAPI]
     public class ImageButtonStyle : ButtonStyle
@@ -203,10 +203,10 @@ public class ImageButton : Button
         public readonly IDrawable? ImageChecked;
         public readonly IDrawable? ImageCheckedDown;
         public readonly IDrawable? ImageCheckedOver;
-        public readonly IDrawable? ImageUp;
+        public readonly IDrawable? ImageDisabled;
         public readonly IDrawable? ImageDown;
         public readonly IDrawable? ImageOver;
-        public readonly IDrawable? ImageDisabled;
+        public readonly IDrawable? ImageUp;
 
         public ImageButtonStyle()
         {
@@ -220,9 +220,9 @@ public class ImageButton : Button
                                  IDrawable? imageChecked )
             : base( up, down, chcked )
         {
-            this.ImageUp      = imageUp;
-            this.ImageDown    = imageDown;
-            this.ImageChecked = imageChecked;
+            ImageUp      = imageUp;
+            ImageDown    = imageDown;
+            ImageChecked = imageChecked;
         }
 
         public ImageButtonStyle( ImageButtonStyle style )

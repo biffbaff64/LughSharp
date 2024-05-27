@@ -28,22 +28,22 @@ using System.Text.RegularExpressions;
 namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>
-///     PixmapPacker I/O, saves PixmapPackers to files.
+/// PixmapPacker I/O, saves PixmapPackers to files.
 /// </summary>
 [PublicAPI]
 public class PixmapPackerIO
 {
     /// <summary>
-    ///     Saves the provided PixmapPacker to the provided file. The resulting
-    ///     file will use the standard TextureAtlas file format and can be loaded
-    ///     by TextureAtlas as if it had been created using TexturePacker.
-    ///     <para>
-    ///         Default <see cref="SaveParameters" /> will be used.
-    ///     </para>
+    /// Saves the provided PixmapPacker to the provided file. The resulting
+    /// file will use the standard TextureAtlas file format and can be loaded
+    /// by TextureAtlas as if it had been created using TexturePacker.
+    /// <para>
+    /// Default <see cref="SaveParameters"/> will be used.
+    /// </para>
     /// </summary>
     /// <param name="file">
-    ///     the file to which the atlas descriptor will be written,
-    ///     images will be written as siblings
+    /// the file to which the atlas descriptor will be written,
+    /// images will be written as siblings
     /// </param>
     /// <param name="packer"> the PixmapPacker to be written </param>
     /// <exception cref="IOException"> if the atlas file can not be written </exception>
@@ -53,12 +53,12 @@ public class PixmapPackerIO
     }
 
     /// <summary>
-    ///     Saves the provided PixmapPacker to the provided file. The resulting file will use the standard TextureAtlas file
-    ///     format and
-    ///     can be loaded by TextureAtlas as if it had been created using TexturePacker.
+    /// Saves the provided PixmapPacker to the provided file. The resulting file will use the standard TextureAtlas file
+    /// format and
+    /// can be loaded by TextureAtlas as if it had been created using TexturePacker.
     /// </summary>
     /// <param name="file">
-    ///     the file to which the atlas descriptor will be written, images will be written as siblings
+    /// the file to which the atlas descriptor will be written, images will be written as siblings
     /// </param>
     /// <param name="packer"> the PixmapPacker to be written </param>
     /// <param name="parameters"> the SaveParameters specifying how to save the PixmapPacker </param>
@@ -161,7 +161,7 @@ public class PixmapPackerIO
     }
 
     // ------------------------------------------------------------------------
-    
+
     [PublicAPI]
     public class ImageFormat
     {
@@ -171,20 +171,20 @@ public class PixmapPackerIO
         public readonly static ImageFormat CIM = new( ".cim", FCIM );
         public readonly static ImageFormat PNG = new( ".png", FPNG );
 
-        public string Extension { get; }
-        public int    FType     { get; }
-
         private ImageFormat( string extension, int ftype )
         {
             Extension = extension;
             FType     = ftype;
         }
+
+        public string Extension { get; }
+        public int    FType     { get; }
     }
 
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Additional parameters which will be used when writing a PixmapPacker.
+    /// Additional parameters which will be used when writing a PixmapPacker.
     /// </summary>
     [PublicAPI]
     public struct SaveParameters

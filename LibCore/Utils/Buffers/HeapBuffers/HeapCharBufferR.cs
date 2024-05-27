@@ -27,10 +27,10 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Utils.Buffers.HeapBuffers;
 
 /// <summary>
-///     A read-only HeapCharBuffer.  This class extends the corresponding read/write class,
-///     overriding the mutation methods to throw a <see cref="ReadOnlyBufferException"/> and
-///     overriding the view-buffer methods to return an instance of this class rather than
-///     of the superclass.
+/// A read-only HeapCharBuffer.  This class extends the corresponding read/write class,
+/// overriding the mutation methods to throw a <see cref="ReadOnlyBufferException"/> and
+/// overriding the view-buffer methods to return an instance of this class rather than
+/// of the superclass.
 /// </summary>
 [PublicAPI]
 public class HeapCharBufferR : HeapCharBuffer
@@ -51,15 +51,18 @@ public class HeapCharBufferR : HeapCharBuffer
     }
 
     /// <inheritdoc/>
+    public override bool IsReadOnly => true;
+
+    /// <inheritdoc/>
     public override CharBuffer Slice()
     {
-        return new HeapCharBufferR( Hb, -1, 0, this.Remaining(), this.Remaining(), this.Position + Offset );
+        return new HeapCharBufferR( Hb, -1, 0, Remaining(), Remaining(), Position + Offset );
     }
 
     /// <inheritdoc/>
     public override CharBuffer Duplicate()
     {
-        return new HeapCharBufferR( Hb, this.MarkValue(), this.Position, this.Limit, this.Capacity, Offset );
+        return new HeapCharBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc/>
@@ -67,9 +70,6 @@ public class HeapCharBufferR : HeapCharBuffer
     {
         return Duplicate();
     }
-
-    /// <inheritdoc/>
-    public override bool IsReadOnly => true;
 
     /// <inheritdoc/>
     protected override string ToString( int start, int end )
@@ -91,7 +91,7 @@ public class HeapCharBufferR : HeapCharBuffer
         {
             throw new IndexOutOfRangeException();
         }
-        
+
         return new HeapCharBufferR( Hb, -1, Position + start, Position + end, Capacity, Offset );
     }
 
@@ -104,13 +104,28 @@ public class HeapCharBufferR : HeapCharBuffer
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public override CharBuffer Put( char[] src, int offset, int length ) => throw new ReadOnlyBufferException();
+    public override CharBuffer Put( char[] src, int offset, int length )
+    {
+        throw new ReadOnlyBufferException();
+    }
 
-    public override CharBuffer Put( CharBuffer src ) => throw new ReadOnlyBufferException();
+    public override CharBuffer Put( CharBuffer src )
+    {
+        throw new ReadOnlyBufferException();
+    }
 
-    protected override CharBuffer Put( char x ) => throw new ReadOnlyBufferException();
+    protected override CharBuffer Put( char x )
+    {
+        throw new ReadOnlyBufferException();
+    }
 
-    public override CharBuffer Put( int i, char x ) => throw new ReadOnlyBufferException();
+    public override CharBuffer Put( int i, char x )
+    {
+        throw new ReadOnlyBufferException();
+    }
 
-    public override CharBuffer Compact() => throw new ReadOnlyBufferException();
+    public override CharBuffer Compact()
+    {
+        throw new ReadOnlyBufferException();
+    }
 }

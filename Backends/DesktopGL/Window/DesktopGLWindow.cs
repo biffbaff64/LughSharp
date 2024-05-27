@@ -72,7 +72,7 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Creates a new Window and sets up the various related callbacks.
+    /// Creates a new Window and sets up the various related callbacks.
     /// </summary>
     public void Create( GLFWWindow window )
     {
@@ -93,9 +93,9 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Post a <see cref="IRunnable.Runnable" /> to this window's event queue. Use this if
-    ///     you access statics like <see cref="Gdx.Graphics" /> in your runnable instead
-    ///     of <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)" />".
+    /// Post a <see cref="IRunnable.Runnable"/> to this window's event queue. Use this if
+    /// you access statics like <see cref="Gdx.Graphics"/> in your runnable instead
+    /// of <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)"/>".
     /// </summary>
     public void PostRunnable( IRunnable.Runnable runnable )
     {
@@ -163,9 +163,9 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Sets minimum and maximum size limits for the window. If the window
-    ///     is full screen or not resizable, these limits are ignored. Use -1
-    ///     to indicate an unrestricted dimension.
+    /// Sets minimum and maximum size limits for the window. If the window
+    /// is full screen or not resizable, these limits are ignored. Use -1
+    /// to indicate an unrestricted dimension.
     /// </summary>
     public void SetSizeLimits( int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
@@ -175,9 +175,9 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Sets minimum and maximum size limits for the window. If the window
-    ///     is full screen or not resizable, these limits are ignored. Use -1
-    ///     to indicate an unrestricted dimension.
+    /// Sets minimum and maximum size limits for the window. If the window
+    /// is full screen or not resizable, these limits are ignored. Use -1
+    /// to indicate an unrestricted dimension.
     /// </summary>
     public void SetSizeLimits( GLFWWindow windowHandle, int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
@@ -185,14 +185,14 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Sets the icon that will be used in the window's title bar. Has no effect in macOS,
-    ///     which doesn't use window icons.
+    /// Sets the icon that will be used in the window's title bar. Has no effect in macOS,
+    /// which doesn't use window icons.
     /// </summary>
     /// <param name="images">
-    ///     One or more images. The one closest to the system's desired size will be scaled.
-    ///     Good sizes include 16x16, 32x32 and 48x48. Pixmap format <see cref="Pixmap.Format.RGBA8888" />
-    ///     is preferred so the images will not have to be copied and converted. The chosen image
-    ///     is copied, and the provided Pixmaps are not disposed.
+    /// One or more images. The one closest to the system's desired size will be scaled.
+    /// Good sizes include 16x16, 32x32 and 48x48. Pixmap format <see cref="Pixmap.Format.RGBA8888"/>
+    /// is preferred so the images will not have to be copied and converted. The chosen image
+    /// is copied, and the provided Pixmaps are not disposed.
     /// </param>
     public void SetIcon( params Pixmap[] images )
     {
@@ -316,9 +316,9 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Gets the current window position in logical coordinates. All monitors span a
-    ///     virtual surface together. The coordinates are relative to the first monitor
-    ///     in the virtual surface.
+    /// Gets the current window position in logical coordinates. All monitors span a
+    /// virtual surface together. The coordinates are relative to the first monitor
+    /// in the virtual surface.
     /// </summary>
     /// <returns>A Vector2 holding the window X and Y.</returns>
     public Vector2 GetPosition()
@@ -329,9 +329,9 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Return the window X position in logical coordinates. All monitors span a virtual
-    ///     surface together. The coordinates are relative to the first monitor in the
-    ///     virtual surface.
+    /// Return the window X position in logical coordinates. All monitors span a virtual
+    /// surface together. The coordinates are relative to the first monitor in the
+    /// virtual surface.
     /// </summary>
     public int GetPositionX()
     {
@@ -339,9 +339,9 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Return the window Y position in logical coordinates. All monitors span a virtual
-    ///     surface together. The coordinates are relative to the first monitor in the
-    ///     virtual surface.
+    /// Return the window Y position in logical coordinates. All monitors span a virtual
+    /// surface together. The coordinates are relative to the first monitor in the
+    /// virtual surface.
     /// </summary>
     public int GetPositionY()
     {
@@ -349,8 +349,8 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Sets the visibility of the window.
-    ///     Invisible windows will still call their <see cref="IApplicationListener" />
+    /// Sets the visibility of the window.
+    /// Invisible windows will still call their <see cref="IApplicationListener"/>
     /// </summary>
     public void SetVisible( bool visible )
     {
@@ -367,7 +367,7 @@ public class DesktopGLWindow : IDisposable
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Closes this window and pauses and disposes the associated <see cref="IApplicationListener" />.
+    /// Closes this window and pauses and disposes the associated <see cref="IApplicationListener"/>.
     /// </summary>
     public void CloseWindow()
     {
@@ -375,8 +375,8 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Minimizes (iconifies) the window. Iconified windows do not call
-    ///     their <see cref="IApplicationListener" /> until the window is restored.
+    /// Minimizes (iconifies) the window. Iconified windows do not call
+    /// their <see cref="IApplicationListener"/> until the window is restored.
     /// </summary>
     public void IconifyWindow()
     {
@@ -384,7 +384,7 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     De-minimizes (de-iconifies) and de-maximizes the window.
+    /// De-minimizes (de-iconifies) and de-maximizes the window.
     /// </summary>
     public void RestoreWindow()
     {
@@ -392,7 +392,7 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Maximizes the window.
+    /// Maximizes the window.
     /// </summary>
     public void MaximizeWindow()
     {
@@ -400,8 +400,8 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    ///     Brings the window to front and sets input focus. The window should
-    ///     already be visible and not iconified.
+    /// Brings the window to front and sets input focus. The window should
+    /// already be visible and not iconified.
     /// </summary>
     public void FocusWindow()
     {

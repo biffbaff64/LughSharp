@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
-///     Keeps track of an application's tooltips.
+/// Keeps track of an application's tooltips.
 /// </summary>
 [PublicAPI]
 public class TooltipManager< T > where T : Actor
@@ -128,7 +128,7 @@ public class TooltipManager< T > where T : Actor
     }
 
     /// <summary>
-    ///     Called when tooltip is shown. Default implementation sets actions to animate showing.
+    /// Called when tooltip is shown. Default implementation sets actions to animate showing.
     /// </summary>
     protected void ShowAction( Tooltip< T > tooltip )
     {
@@ -149,9 +149,9 @@ public class TooltipManager< T > where T : Actor
     }
 
     /// <summary>
-    ///     Called when tooltip is hidden. Default implementation sets actions to animate hiding
-    ///     and to remove the actor from the stage when the actions are complete. A subclass must
-    ///     at least remove the actor.
+    /// Called when tooltip is hidden. Default implementation sets actions to animate hiding
+    /// and to remove the actor from the stage when the actions are complete. A subclass must
+    /// at least remove the actor.
     /// </summary>
     protected static void HideAction( Tooltip< T > tooltip )
     {
@@ -185,7 +185,7 @@ public class TooltipManager< T > where T : Actor
     }
 
     /// <summary>
-    ///     Shows all tooltips on hover without a delay for <see cref="ResetTime" /> seconds.
+    /// Shows all tooltips on hover without a delay for <see cref="ResetTime"/> seconds.
     /// </summary>
     public void ShowInstantly()
     {
@@ -209,51 +209,51 @@ public class TooltipManager< T > where T : Actor
     #region properties
 
     /// <summary>
-    ///     The X distance from the mouse position to offset the tooltip actor. Default is 15.
+    /// The X distance from the mouse position to offset the tooltip actor. Default is 15.
     /// </summary>
     public float OffsetX { get; set; } = 15;
 
     /// <summary>
-    ///     The Y distance from the mouse position to offset the tooltip actor. Default is 19.
+    /// The Y distance from the mouse position to offset the tooltip actor. Default is 19.
     /// </summary>
     public float OffsetY { get; set; } = 19;
 
     /// <summary>
-    ///     The maximum width of a <see cref="TextTooltip" />. The label will wrap if needed.
-    ///     Default is <see cref="int.MaxValue" />.
+    /// The maximum width of a <see cref="TextTooltip"/>. The label will wrap if needed.
+    /// Default is <see cref="int.MaxValue"/>.
     /// </summary>
     public float MaxWidth { get; set; } = int.MaxValue;
 
     /// <summary>
-    ///     The distance from the tooltip actor position to the edge of the screen where the
-    ///     actor will be shown on the other side of the mouse cursor. Default is 7.
+    /// The distance from the tooltip actor position to the edge of the screen where the
+    /// actor will be shown on the other side of the mouse cursor. Default is 7.
     /// </summary>
     public float EdgeDistance { get; set; } = 7;
 
     /// <summary>
-    ///     Seconds from when an actor is hovered to when the tooltip is shown. Default is 2.
-    ///     Call <see cref="HideAll()" /> after changing to reset internal state.
+    /// Seconds from when an actor is hovered to when the tooltip is shown. Default is 2.
+    /// Call <see cref="HideAll()"/> after changing to reset internal state.
     /// </summary>
     public float InitialTime { get; set; } = 2;
 
     /// <summary>
-    ///     Once a tooltip is shown, this is used instead of <see cref="InitialTime" />.
-    ///     Default is 0.
+    /// Once a tooltip is shown, this is used instead of <see cref="InitialTime"/>.
+    /// Default is 0.
     /// </summary>
     public float SubsequentTime { get; set; } = 0;
 
     /// <summary>
-    ///     Seconds to use <see cref="SubsequentTime" />. Default is 1.5f.
+    /// Seconds to use <see cref="SubsequentTime"/>. Default is 1.5f.
     /// </summary>
     public float ResetTime { get; set; } = 1.5f;
 
     /// <summary>
-    ///     If false, tooltips will not be shown. Default is true.
+    /// If false, tooltips will not be shown. Default is true.
     /// </summary>
     public bool Enabled { get; set; } = true;
 
     /// <summary>
-    ///     If false, tooltips will be shown without animations. Default is true.
+    /// If false, tooltips will be shown without animations. Default is true.
     /// </summary>
     public bool Animations { get; set; } = true;
 

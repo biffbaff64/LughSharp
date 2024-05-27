@@ -28,12 +28,12 @@ namespace LughSharp.Backends.DesktopGL.Audio;
 [PublicAPI]
 public class GdxSoundAudioRecorder : IAudioRecorder
 {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Read( short[] samples, int offset, int numSamples )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Dispose()
     {
     }

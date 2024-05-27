@@ -30,9 +30,9 @@ public class PerformanceCounters
 {
     private const float NANO2_SECONDS = 1f / 1000000000.0f;
 
-    public List< PerformanceCounter > Counters { get; set; } = new();
-
     private long _lastTick = 0L;
+
+    public List< PerformanceCounter > Counters { get; set; } = new();
 
     // ------------------------------------------------------------------------
 

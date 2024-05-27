@@ -26,15 +26,15 @@
 namespace LughSharp.LibCore.Maps;
 
 /// <summary>
-///     Resolves an image by a string, wrapper around a Map or AssetManager to load
-///     maps either directly or via AssetManager.
+/// Resolves an image by a string, wrapper around a Map or AssetManager to load
+/// maps either directly or via AssetManager.
 /// </summary>
 [PublicAPI]
 public interface IImageResolver
 {
     /// <summary>
-    ///     Returns the <see cref="TextureRegion" /> for the given name,
-    ///     or null if texture doesn't exist.
+    /// Returns the <see cref="TextureRegion"/> for the given name,
+    /// or null if texture doesn't exist.
     /// </summary>
     public TextureRegion? GetImage( string name );
 
@@ -57,7 +57,7 @@ public interface IImageResolver
     }
 
     /// <summary>
-    ///     Image Resolver for TextureRegions fetched via an <see cref="AssetManager"/>
+    /// Image Resolver for TextureRegions fetched via an <see cref="AssetManager"/>
     /// </summary>
     [PublicAPI]
     public class AssetManagerImageResolver : IImageResolver
@@ -76,8 +76,8 @@ public interface IImageResolver
     }
 
     /// <summary>
-    ///     Resolver for TextureAtlas regions.
-    ///     Provides a means of accessing TextureRegions in the atlas.
+    /// Resolver for TextureAtlas regions.
+    /// Provides a means of accessing TextureRegions in the atlas.
     /// </summary>
     [PublicAPI]
     public class TextureAtlasImageResolver : IImageResolver
@@ -85,8 +85,8 @@ public interface IImageResolver
         private readonly TextureAtlas _atlas;
 
         /// <summary>
-        ///     Constructor.
-        ///     Creates an Image Resolver for the supplied TextureAtlas.
+        /// Constructor.
+        /// Creates an Image Resolver for the supplied TextureAtlas.
         /// </summary>
         /// <param name="atlas"></param>
         public TextureAtlasImageResolver( TextureAtlas atlas )
@@ -95,7 +95,7 @@ public interface IImageResolver
         }
 
         /// <summary>
-        ///     Gets the TextureRegion that matches the supplied name.
+        /// Gets the TextureRegion that matches the supplied name.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>

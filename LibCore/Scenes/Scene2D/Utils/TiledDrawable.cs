@@ -26,17 +26,14 @@
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
-///     Draws a <see cref="TextureRegion" /> repeatedly to fill the area,
-///     instead of stretching it.
+/// Draws a <see cref="TextureRegion"/> repeatedly to fill the area,
+/// instead of stretching it.
 /// </summary>
 [PublicAPI]
 public class TiledDrawable : TextureRegionDrawable
 {
-    public Color Color { get; set; } = new( 1, 1, 1, 1 );
-    public float Scale { set; get; } = 1;
-
     // ------------------------------------------------------------------------
-    
+
     public TiledDrawable( TextureRegion region )
         : base( region )
     {
@@ -46,6 +43,9 @@ public class TiledDrawable : TextureRegionDrawable
         : base( drawable )
     {
     }
+
+    public Color Color { get; set; } = new( 1, 1, 1, 1 );
+    public float Scale { set; get; } = 1;
 
     /// <inheritdoc/>
     public override void Draw( IBatch batch, float x, float y, float width, float height )

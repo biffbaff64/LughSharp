@@ -30,32 +30,32 @@ namespace LughSharp.Backends.DesktopGL.Graphics;
 [PublicAPI]
 public class DesktopGL30 : DesktopGL20, IGL30
 {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLReadBuffer( int mode )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDrawRangeElements( int mode, int start, int end, int count, int type, Buffer indices )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDrawRangeElements( int mode, int start, int end, int count, int type, int offset )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLTexImage3D( int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, Buffer pixels )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLTexImage3D( int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, int offset )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLTexSubImage3D( int target,
                                  int level,
                                  int xoffset,
@@ -70,7 +70,7 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLTexSubImage3D( int target,
                                  int level,
                                  int xoffset,
@@ -85,443 +85,443 @@ public class DesktopGL30 : DesktopGL20, IGL30
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLCopyTexSubImage3D( int target, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGenQueries( int n, int[] ids, int offset )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGenQueries( int n, IntBuffer ids )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDeleteQueries( int n, int[] ids, int offset )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDeleteQueries( int n, IntBuffer ids )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public bool GLIsQuery( int id )
     {
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLBeginQuery( int target, int id )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLEndQuery( int target )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetQueryiv( int target, int pname, IntBuffer param )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetQueryObjectuiv( int id, int pname, IntBuffer param )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public bool GLUnmapBuffer( int target )
     {
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public Buffer GLGetBufferPointerv( int target, int pname )
     {
         return null!;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDrawBuffers( int n, IntBuffer bufs )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLUniformMatrix2X3Fv( int location, int count, bool transpose, FloatBuffer value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLUniformMatrix3X2Fv( int location, int count, bool transpose, FloatBuffer value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLUniformMatrix2X4Fv( int location, int count, bool transpose, FloatBuffer value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLUniformMatrix4X2Fv( int location, int count, bool transpose, FloatBuffer value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLUniformMatrix3X4Fv( int location, int count, bool transpose, FloatBuffer value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLUniformMatrix4X3Fv( int location, int count, bool transpose, FloatBuffer value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLBlitFramebuffer( int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, int mask, int filter )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLRenderbufferStorageMultisample( int target, int samples, int internalformat, int width, int height )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLFramebufferTextureLayer( int target, int attachment, int texture, int level, int layer )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public Buffer GLMapBufferRange( int target, int offset, int length, int access )
     {
         return null!;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLFlushMappedBufferRange( int target, int offset, int length )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLBindVertexArray( int array )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDeleteVertexArrays( int n, int[] arrays, int offset )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDeleteVertexArrays( int n, IntBuffer arrays )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGenVertexArrays( int n, int[] arrays, int offset )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGenVertexArrays( int n, IntBuffer arrays )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public bool GLIsVertexArray( int array )
     {
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLBeginTransformFeedback( int primitiveMode )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLEndTransformFeedback()
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLBindBufferRange( int target, int index, int buffer, int offset, int size )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLBindBufferBase( int target, int index, int buffer )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLTransformFeedbackVaryings( int program, string[] varyings, int bufferMode )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLVertexAttribIPointer( int index, int size, int type, int stride, int offset )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetVertexAttribIiv( int index, int pname, IntBuffer param )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetVertexAttribIuiv( int index, int pname, IntBuffer parameters )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLVertexAttribI4I( int index, int x, int y, int z, int w )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLVertexAttribI4Ui( int index, int x, int y, int z, int w )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetUniformuiv( int program, int location, IntBuffer parameters )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int GLGetFragDataLocation( int program, string name )
     {
         return 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLUniform1Uiv( int location, int count, IntBuffer value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLUniform3Uiv( int location, int count, IntBuffer value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLUniform4Uiv( int location, int count, IntBuffer value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLClearBufferiv( int buffer, int drawbuffer, IntBuffer value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLClearBufferuiv( int buffer, int drawbuffer, IntBuffer value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLClearBufferfv( int buffer, int drawbuffer, FloatBuffer value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLClearBufferfi( int buffer, int drawbuffer, float depth, int stencil )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public string GLGetStringi( int name, int index )
     {
         return string.Empty;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLCopyBufferSubData( int readTarget, int writeTarget, int readOffset, int writeOffset, int size )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetUniformIndices( int program, string[] uniformNames, IntBuffer uniformIndices )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetActiveUniformsiv( int program, int uniformCount, IntBuffer uniformIndices, int pname, IntBuffer parameters )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int GLGetUniformBlockIndex( int program, string uniformBlockName )
     {
         return 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetActiveUniformBlockiv( int program, int uniformBlockIndex, int pname, IntBuffer parameters )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetActiveUniformBlockName( int program, int uniformBlockIndex, Buffer length, Buffer uniformBlockName )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public string GLGetActiveUniformBlockName( int program, int uniformBlockIndex )
     {
         return string.Empty;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLUniformBlockBinding( int program, int uniformBlockIndex, int uniformBlockBinding )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDrawArraysInstanced( int mode, int first, int count, int instanceCount )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDrawElementsInstanced( int mode, int count, int type, int indicesOffset, int instanceCount )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetInteger64V( int pname, LongBuffer parameters )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetBufferParameteri64V( int target, int pname, LongBuffer parameters )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGenSamplers( int count, int[] samplers, int offset )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGenSamplers( int count, IntBuffer samplers )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDeleteSamplers( int count, int[] samplers, int offset )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDeleteSamplers( int count, IntBuffer samplers )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public bool GLIsSampler( int sampler )
     {
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLBindSampler( int unit, int sampler )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLSamplerParameteri( int sampler, int pname, int param )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLSamplerParameteriv( int sampler, int pname, IntBuffer param )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLSamplerParameterf( int sampler, int pname, float param )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLSamplerParameterfv( int sampler, int pname, FloatBuffer param )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetSamplerParameteriv( int sampler, int pname, IntBuffer parameters )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGetSamplerParameterfv( int sampler, int pname, FloatBuffer parameters )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLVertexAttribDivisor( int index, int divisor )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLBindTransformFeedback( int target, int id )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDeleteTransformFeedbacks( int n, int[] ids, int offset )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLDeleteTransformFeedbacks( int n, IntBuffer ids )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGenTransformFeedbacks( int n, int[] ids, int offset )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLGenTransformFeedbacks( int n, IntBuffer ids )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public bool GLIsTransformFeedback( int id )
     {
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLPauseTransformFeedback()
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLResumeTransformFeedback()
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLProgramParameteri( int program, int pname, int value )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLInvalidateFramebuffer( int target, int numAttachments, IntBuffer attachments )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void GLInvalidateSubFramebuffer( int target, int numAttachments, IntBuffer attachments, int x, int y, int width, int height )
     {
     }

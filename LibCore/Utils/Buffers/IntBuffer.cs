@@ -35,7 +35,7 @@ public abstract class IntBuffer : Buffer
     protected readonly int    Offset;
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// Creates a new buffer with the given mark, position, limit, capacity,
     /// backing array, and array offset
@@ -43,8 +43,8 @@ public abstract class IntBuffer : Buffer
     protected IntBuffer( int mark, int pos, int lim, int cap, int[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        this.Hb     = hb;
-        this.Offset = offset;
+        Hb     = hb;
+        Offset = offset;
     }
 
     /// <summary>
@@ -127,7 +127,7 @@ public abstract class IntBuffer : Buffer
     {
         return null!;
     }
-    
+
     /// <summary>
     /// Creates a new int buffer whose content is a shared subsequence of
     /// this buffer's content.
@@ -148,7 +148,7 @@ public abstract class IntBuffer : Buffer
     /// <returns> The new int buffer </returns>
     public abstract IntBuffer Slice();
 
-    ///<summary>
+    /// <summary>
     /// Creates a new int buffer that shares this buffer's content.
     /// <para>
     /// The content of the new buffer will be that of this buffer. Changes
@@ -388,13 +388,13 @@ public abstract class IntBuffer : Buffer
     /// </summary>
     /// <param name="src"> The array from which ints are to be read </param>
     /// <param name="offset">
-    ///         The offset within the array of the first int to be read;
-    ///         must be non-negative and no larger than <tt>array.length</tt>
+    /// The offset within the array of the first int to be read;
+    /// must be non-negative and no larger than <tt>array.length</tt>
     /// </param>
     /// <param name="length">
-    ///         The number of ints to be read from the given array;
-    ///         must be non-negative and no larger than
-    ///         <tt>array.length - offset</tt>
+    /// The number of ints to be read from the given array;
+    /// must be non-negative and no larger than
+    /// <tt>array.length - offset</tt>
     /// </param>
     /// <returns> This buffer </returns>
     public virtual IntBuffer Put( int[] src, int offset, int length )
@@ -410,7 +410,7 @@ public abstract class IntBuffer : Buffer
 
         for ( var i = offset; i < end; i++ )
         {
-            this.Put( src[ i ] );
+            Put( src[ i ] );
         }
 
         return this;
@@ -446,21 +446,26 @@ public abstract class IntBuffer : Buffer
     /// <returns>
     /// TRUE if, and only if, this buffer is backed by an array and is not read-only
     /// </returns>
-    public override bool HasArray()
+    public override bool HasBackingArray()
     {
         return ( Hb != null ) && !IsReadOnly;
     }
 
-    ///
     /// Returns the int array that backs this
-    /// buffer  <i>(optional operation)</i>.
-    /// <para> Modifications to this buffer's content will cause the returned
+    /// buffer
+    /// <i>(optional operation)</i>
+    /// .
+    /// <para>
+    /// Modifications to this buffer's content will cause the returned
     /// array's content to be modified, and vice versa.
     /// </para>
-    /// <para> Invoke the {@link #hasArray hasArray} method before invoking this
+    /// <para>
+    /// Invoke the {@link #hasArray hasArray} method before invoking this
     /// method in order to ensure that this buffer has an accessible backing
-    /// array.  </para>
-    /// <returns> The array that backs this buffer
+    /// array.
+    /// </para>
+    /// <returns>
+    /// The array that backs this buffer
     /// </returns>
     public int[] Array()
     {
@@ -485,7 +490,7 @@ public abstract class IntBuffer : Buffer
     /// corresponds to array index <i>p</i> + <tt>arrayOffset()</tt>.
     /// </para>
     /// <para>
-    /// Invoke the <see cref="HasArray"/> method before invoking this
+    /// Invoke the <see cref="HasBackingArray"/> method before invoking this
     /// method in order to ensure that this buffer has an accessible backing
     /// array.
     /// </para>
@@ -570,12 +575,12 @@ public abstract class IntBuffer : Buffer
     /// Tells whether or not this buffer is equal to another object.
     /// <para>
     /// Two int buffers are equal if, and only if,
-    ///     <li>They have the same element type,</li>
-    ///     <li>They have the same number of remaining elements, and</li>
-    ///     <li>
-    ///     The two sequences of remaining elements, considered
-    ///     independently of their starting positions, are pointwise equal.
-    ///     </li>
+    /// <li>They have the same element type,</li>
+    /// <li>They have the same number of remaining elements, and</li>
+    /// <li>
+    /// The two sequences of remaining elements, considered
+    /// independently of their starting positions, are pointwise equal.
+    /// </li>
     /// </para>
     /// <para>
     /// A int buffer is not equal to any other type of object.
@@ -597,16 +602,16 @@ public abstract class IntBuffer : Buffer
             return false;
         }
 
-        if ( this.Remaining() != that.Remaining() )
+        if ( Remaining() != that.Remaining() )
         {
             return false;
         }
 
-        var p = this.Position;
+        var p = Position;
 
-        for ( int i = this.Limit - 1, j = that.Limit - 1; i >= p; i--, j-- )
+        for ( int i = Limit - 1, j = that.Limit - 1; i >= p; i--, j-- )
         {
-            if ( !Equals( this.Get( i ), that.Get( j ) ) )
+            if ( !Equals( Get( i ), that.Get( j ) ) )
             {
                 return false;
             }
@@ -615,7 +620,7 @@ public abstract class IntBuffer : Buffer
         return true;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         const int PRIME = 31;
@@ -643,16 +648,17 @@ public abstract class IntBuffer : Buffer
     /// A int buffer is not comparable to any other type of object.
     /// </para>
     /// </summary>
-    /// <returns> A negative integer, zero, or a positive integer as this buffer
-    ///          is less than, equal to, or greater than the given buffer
+    /// <returns>
+    /// A negative integer, zero, or a positive integer as this buffer
+    /// is less than, equal to, or greater than the given buffer
     /// </returns>
     public int CompareTo( IntBuffer that )
     {
-        var n = this.Position + Math.Min( this.Remaining(), that.Remaining() );
+        var n = Position + Math.Min( Remaining(), that.Remaining() );
 
-        for ( int i = this.Position, j = that.Position; i < n; i++, j++ )
+        for ( int i = Position, j = that.Position; i < n; i++, j++ )
         {
-            var cmp = Compare( this.Get( i ), that.Get( j ) );
+            var cmp = Compare( Get( i ), that.Get( j ) );
 
             if ( cmp != 0 )
             {
@@ -660,7 +666,7 @@ public abstract class IntBuffer : Buffer
             }
         }
 
-        return this.Remaining() - that.Remaining();
+        return Remaining() - that.Remaining();
     }
 
     private static int Compare( int x, int y )
@@ -675,8 +681,12 @@ public abstract class IntBuffer : Buffer
     /// <para>
     /// The byte order of an int buffer created by allocation or by wrapping an existing
     /// <tt>int</tt> array is the <see cref="ByteOrder.NativeOrder"/> of the underlying
-    /// hardware.  The byte order of an int buffer created as a <a
-    /// href="ByteBuffer.html#views">view</a> of a byte buffer is that of the
+    /// hardware.  The byte order of an int buffer created as a
+    /// <a
+    ///     href="ByteBuffer.html#views">
+    /// view
+    /// </a>
+    /// of a byte buffer is that of the
     /// byte buffer at the moment that the view is created.
     /// </para>
     /// </summary>

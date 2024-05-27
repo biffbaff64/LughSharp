@@ -25,7 +25,7 @@
 namespace LughSharp.LibCore.Utils.Async;
 
 /// <summary>
-///     Task to be submitted to an <see cref="AsyncExecutor"/>, returning a result of type T.
+/// Task to be submitted to an <see cref="AsyncExecutor"/>, returning a result of type T.
 /// </summary>
 [PublicAPI]
 public interface IAsyncTask< out T >

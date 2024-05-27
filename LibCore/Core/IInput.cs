@@ -26,32 +26,27 @@
 namespace LughSharp.LibCore.Core;
 
 /// <summary>
-///     Interface to the input facilities. This allows polling the state of the
-///     keyboard, the touch screen and the accelerometer. On some backends
-///     (desktop, gwt, etc) the touch screen is replaced by mouse input. The
-///     accelerometer is of course not available on all backends.
-///     Instead of polling for events, one can process all input events with an
-///     InputProcessor. You can set the InputProcessor via the SetInputProcessor(InputProcessor)
-///     method. It will be called before the ApplicationListener.render() method in each frame.
-///     Keyboard keys are translated to the constants in Input.Keys transparently on all systems.
-///     Do not use system specific key constants.
-///     The class also offers methods to use (and test for the presence of) other input systems
-///     like vibration, compass, on-screen keyboards, and cursor capture.
-///     Support for simple input dialogs is also provided.
+/// Interface to the input facilities. This allows polling the state of the
+/// keyboard, the touch screen and the accelerometer. On some backends
+/// (desktop, gwt, etc) the touch screen is replaced by mouse input. The
+/// accelerometer is of course not available on all backends.
+/// Instead of polling for events, one can process all input events with an
+/// InputProcessor. You can set the InputProcessor via the SetInputProcessor(InputProcessor)
+/// method. It will be called before the ApplicationListener.render() method in each frame.
+/// Keyboard keys are translated to the constants in Input.Keys transparently on all systems.
+/// Do not use system specific key constants.
+/// The class also offers methods to use (and test for the presence of) other input systems
+/// like vibration, compass, on-screen keyboards, and cursor capture.
+/// Support for simple input dialogs is also provided.
 /// </summary>
 [PublicAPI]
 public interface IInput
 {
-    /// <summary>
-    ///     The currently set <see cref="IInputProcessor"/>.
-    /// </summary>
-    IInputProcessor? InputProcessor { get; set; }
-
     // --------------------------------------------------------------------
     // --------------------------------------------------------------------
 
     /// <summary>
-    ///     Keyboard Types
+    /// Keyboard Types
     /// </summary>
     [PublicAPI]
     public enum OnscreenKeyboardType
@@ -68,7 +63,7 @@ public interface IInput
     // --------------------------------------------------------------------
 
     /// <summary>
-    ///     Screen orientation types.
+    /// Screen orientation types.
     /// </summary>
     [PublicAPI]
     public enum Orientation
@@ -81,7 +76,7 @@ public interface IInput
     // --------------------------------------------------------------------
 
     /// <summary>
-    ///     Supported peripherals.
+    /// Supported peripherals.
     /// </summary>
     [PublicAPI]
     public enum Peripheral
@@ -97,11 +92,82 @@ public interface IInput
         Pressure
     }
 
+    /// <summary>
+    /// The currently set <see cref="IInputProcessor"/>.
+    /// </summary>
+    IInputProcessor? InputProcessor { get; set; }
+
+    // --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+
+    float GetAccelerometerX();
+    float GetAccelerometerY();
+    float GetAccelerometerZ();
+    float GetGyroscopeX();
+    float GetGyroscopeY();
+    float GetGyroscopeZ();
+    float GetPressure( int pointer = 0 );
+    float GetAzimuth();
+    float GetPitch();
+    float GetRoll();
+
+    int GetMaxPointers();
+    int GetX( int pointer = 0 );
+    int GetDeltaX( int pointer = 0 );
+    int GetY( int pointer = 0 );
+    int GetDeltaY( int pointer = 0 );
+
+    bool IsTouched( int pointer = 0 );
+    bool JustTouched();
+    bool IsButtonPressed( int button );
+    bool IsButtonJustPressed( int button );
+    bool IsKeyPressed( int key );
+    bool IsKeyJustPressed( int key );
+
+    void GetTextInput( ITextInputListener listener,
+                       string title,
+                       string text,
+                       string hint,
+                       OnscreenKeyboardType type );
+
+    void SetOnscreenKeyboardVisible( bool visible );
+    void SetOnscreenKeyboardVisible( bool visible, OnscreenKeyboardType type );
+    void Vibrate( int milliseconds );
+    void Vibrate( long[] pattern, int repeat );
+    void CancelVibrate();
+    void GetRotationMatrix( float[] matrix );
+
+    long GetCurrentEventTime();
+
+    bool IsPeripheralAvailable( Peripheral peripheral );
+
+    int GetRotation();
+
+    Orientation GetNativeOrientation();
+
+    bool IsCursorCaught();
+
+    void SetCursorPosition( int x, int y );
+
+    void SetCatchKey( int keycode, bool catchKey );
+
+    bool IsCatchKey( int keycode );
+
+    bool IsCatchBackKey();
+
+    void SetCatchBackKey( bool catchBack );
+
+    bool IsCatchMenuKey();
+
+    void SetCatchMenuKey( bool catchMenu );
+
+    void SetCursorCaught( bool caught );
+
     // --------------------------------------------------------------------
     // --------------------------------------------------------------------
 
     /// <summary>
-    ///     Mouse Buttons
+    /// Mouse Buttons
     /// </summary>
     [PublicAPI]
     public static class Buttons
@@ -117,7 +183,7 @@ public interface IInput
     // --------------------------------------------------------------------
 
     /// <summary>
-    ///     Available Keys
+    /// Available Keys
     /// </summary>
     [PublicAPI]
     public static class Keys
@@ -524,7 +590,7 @@ public interface IInput
     // --------------------------------------------------------------------
 
     /// <summary>
-    ///     Interface describing a listener for text input.
+    /// Interface describing a listener for text input.
     /// </summary>
     [PublicAPI]
     public interface ITextInputListener
@@ -532,70 +598,4 @@ public interface IInput
         void Input( string text );
         void Canceled();
     }
-
-    // --------------------------------------------------------------------
-    // --------------------------------------------------------------------
-
-    float GetAccelerometerX();
-    float GetAccelerometerY();
-    float GetAccelerometerZ();
-    float GetGyroscopeX();
-    float GetGyroscopeY();
-    float GetGyroscopeZ();
-    float GetPressure( int pointer = 0 );
-    float GetAzimuth();
-    float GetPitch();
-    float GetRoll();
-
-    int GetMaxPointers();
-    int GetX( int pointer = 0 );
-    int GetDeltaX( int pointer = 0 );
-    int GetY( int pointer = 0 );
-    int GetDeltaY( int pointer = 0 );
-
-    bool IsTouched( int pointer = 0 );
-    bool JustTouched();
-    bool IsButtonPressed( int button );
-    bool IsButtonJustPressed( int button );
-    bool IsKeyPressed( int key );
-    bool IsKeyJustPressed( int key );
-
-    void GetTextInput( ITextInputListener listener,
-                       string title,
-                       string text,
-                       string hint,
-                       OnscreenKeyboardType type );
-
-    void SetOnscreenKeyboardVisible( bool visible );
-    void SetOnscreenKeyboardVisible( bool visible, OnscreenKeyboardType type );
-    void Vibrate( int milliseconds );
-    void Vibrate( long[] pattern, int repeat );
-    void CancelVibrate();
-    void GetRotationMatrix( float[] matrix );
-
-    long GetCurrentEventTime();
-
-    bool IsPeripheralAvailable( Peripheral peripheral );
-
-    int GetRotation();
-
-    Orientation GetNativeOrientation();
-
-    bool IsCursorCaught();
-
-    void SetCursorPosition( int x, int y );
-
-    void SetCatchKey( int keycode, bool catchKey );
-
-    bool IsCatchKey( int keycode );
-
-    bool IsCatchBackKey();
-
-    void SetCatchBackKey( bool catchBack );
-
-    bool IsCatchMenuKey();
-
-    void SetCatchMenuKey( bool catchMenu );
-
-    void SetCursorCaught( bool caught );
 }

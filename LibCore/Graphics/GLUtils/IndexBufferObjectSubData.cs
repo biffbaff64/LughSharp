@@ -28,20 +28,20 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
-///     IndexBufferObject wraps OpenGL's index buffer functionality to be
-///     used in conjunction with VBOs.
-///     <para>
-///         You can also use this to store indices for vertex arrays. Do not call
-///         <see cref="Bind()" />" or <see cref="Unbind()" />" in this case but rather
-///         use <see cref="GetBuffer(bool)" />" to use the buffer directly with
-///         GLDrawElements. You must also create the IndexBufferObject with the second
-///         constructor and specify isDirect as true as glDrawElements in conjunction
-///         with vertex arrays needs direct buffers.
-///     </para>
-///     <para>
-///         VertexBufferObjects must be disposed via the <see cref="Dispose()" />" method
-///         when no longer needed.
-///     </para>
+/// IndexBufferObject wraps OpenGL's index buffer functionality to be
+/// used in conjunction with VBOs.
+/// <para>
+/// You can also use this to store indices for vertex arrays. Do not call
+/// <see cref="Bind()"/>" or <see cref="Unbind()"/>" in this case but rather
+/// use <see cref="GetBuffer(bool)"/>" to use the buffer directly with
+/// GLDrawElements. You must also create the IndexBufferObject with the second
+/// constructor and specify isDirect as true as glDrawElements in conjunction
+/// with vertex arrays needs direct buffers.
+/// </para>
+/// <para>
+/// VertexBufferObjects must be disposed via the <see cref="Dispose()"/>" method
+/// when no longer needed.
+/// </para>
 /// </summary>
 [PublicAPI]
 public class IndexBufferObjectSubData : IIndexData
@@ -54,7 +54,7 @@ public class IndexBufferObjectSubData : IIndexData
     private          bool        _isDirty = true;
 
     /// <summary>
-    ///     Creates a new IndexBufferObject.
+    /// Creates a new IndexBufferObject.
     /// </summary>
     /// <param name="isStatic"> whether the index buffer is static </param>
     /// <param name="maxIndices"> the maximum number of indices this buffer can hold </param>
@@ -72,7 +72,7 @@ public class IndexBufferObjectSubData : IIndexData
     }
 
     /// <summary>
-    ///     Creates a new IndexBufferObject to be used with vertex arrays.
+    /// Creates a new IndexBufferObject to be used with vertex arrays.
     /// </summary>
     /// <param name="maxIndices"> the maximum number of indices this buffer can hold </param>
     public IndexBufferObjectSubData( int maxIndices )
@@ -88,13 +88,13 @@ public class IndexBufferObjectSubData : IIndexData
         _bufferHandle = CreateBufferObject();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int NumIndices => _buffer.Limit;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int NumMaxIndices => _buffer.Capacity;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public unsafe void SetIndices( short[] indices, int offset, int count )
     {
         _isDirty = true;
@@ -117,7 +117,7 @@ public class IndexBufferObjectSubData : IIndexData
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public unsafe void SetIndices( ShortBuffer indices )
     {
         var pos = indices.Position;
@@ -144,7 +144,7 @@ public class IndexBufferObjectSubData : IIndexData
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public unsafe void UpdateIndices( int targetOffset, short[] indices, int offset, int count )
     {
         _isDirty = true;
@@ -169,7 +169,7 @@ public class IndexBufferObjectSubData : IIndexData
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public ShortBuffer GetBuffer( bool forWriting )
     {
         _isDirty |= forWriting;
@@ -177,7 +177,7 @@ public class IndexBufferObjectSubData : IIndexData
         return _buffer;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public unsafe void Bind()
     {
         if ( _bufferHandle == 0 )
@@ -203,21 +203,21 @@ public class IndexBufferObjectSubData : IIndexData
         _isBound = true;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Unbind()
     {
         Gdx.GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Invalidate()
     {
         _bufferHandle = CreateBufferObject();
         _isDirty      = true;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Dispose()
     {
         Gdx.GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, 0 );

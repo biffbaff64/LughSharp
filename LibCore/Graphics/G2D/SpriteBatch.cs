@@ -31,29 +31,6 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class SpriteBatch : IBatch
 {
-    // Number of render calls since the last call to Begin()
-    public int RenderCalls { get; set; } = 0;
-
-    // Number of rendering calls, ever. Will not be reset unless set manually.
-    public int TotalRenderCalls { get; set; } = 0;
-
-    // The maximum number of sprites rendered in one batch so far.
-    public int MaxSpritesInBatch { get; set; } = 0;
-
-    public bool    BlendingDisabled  { get; set; }         = false;
-    public float   InvTexHeight      { get; set; }         = 0;
-    public float   InvTexWidth       { get; set; }         = 0;
-    public int     BlendSrcFunc      { get; private set; } = IGL.GL_SRC_ALPHA;
-    public int     BlendDstFunc      { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
-    public int     BlendSrcFuncAlpha { get; private set; } = IGL.GL_SRC_ALPHA;
-    public int     BlendDstFuncAlpha { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
-    public Matrix4 ProjectionMatrix  { get; }              = new();
-    public Matrix4 TransformMatrix   { get; }              = new();
-    public bool    IsDrawing         { get; set; }
-
-    protected Texture? LastTexture { get; set; }
-    protected float[]  Vertices    { get; set; }
-
     // ------------------------------------------------------------------------
 
     private const int MAX_VERTEX_INDEX = 32767;
@@ -72,30 +49,30 @@ public class SpriteBatch : IBatch
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Constructs a new SpriteBatch with a size of 1000, one buffer,
-    ///     and the default shader.
+    /// Constructs a new SpriteBatch with a size of 1000, one buffer,
+    /// and the default shader.
     /// </summary>
     public SpriteBatch() : this( 1000 )
     {
     }
 
     /// <summary>
-    ///     Constructs a new SpriteBatch. Sets the projection matrix to an orthographic
-    ///     projection with y-axis point upwards, x-axis point to the right and the origin
-    ///     being in the bottom left corner of the screen. The projection will be pixel
-    ///     perfect with respect to the current screen resolution.
-    ///     <para>
-    ///         The defaultShader specifies the shader to use. Note that the names for uniforms
-    ///         for this default shader are different than the ones expect for shaders set with
-    ///         <see cref="Shader" />. See <see cref="CreateDefaultShader()" />.
-    ///     </para>
+    /// Constructs a new SpriteBatch. Sets the projection matrix to an orthographic
+    /// projection with y-axis point upwards, x-axis point to the right and the origin
+    /// being in the bottom left corner of the screen. The projection will be pixel
+    /// perfect with respect to the current screen resolution.
+    /// <para>
+    /// The defaultShader specifies the shader to use. Note that the names for uniforms
+    /// for this default shader are different than the ones expect for shaders set with
+    /// <see cref="Shader"/>. See <see cref="CreateDefaultShader()"/>.
+    /// </para>
     /// </summary>
     /// <param name="size">
-    ///     The max number of sprites in a single batch. Max of 8191.
+    /// The max number of sprites in a single batch. Max of 8191.
     /// </param>
     /// <param name="defaultShader">
-    ///     The default shader to use. This is not owned by the SpriteBatch and must
-    ///     be disposed separately.
+    /// The default shader to use. This is not owned by the SpriteBatch and must
+    /// be disposed separately.
     /// </param>
     protected SpriteBatch( int size, ShaderProgram? defaultShader = null )
     {
@@ -153,6 +130,29 @@ public class SpriteBatch : IBatch
             _shader = defaultShader;
         }
     }
+
+    // Number of render calls since the last call to Begin()
+    public int RenderCalls { get; set; } = 0;
+
+    // Number of rendering calls, ever. Will not be reset unless set manually.
+    public int TotalRenderCalls { get; set; } = 0;
+
+    // The maximum number of sprites rendered in one batch so far.
+    public int MaxSpritesInBatch { get; set; } = 0;
+
+    public bool  BlendingDisabled { get; set; } = false;
+    public float InvTexHeight     { get; set; } = 0;
+    public float InvTexWidth      { get; set; } = 0;
+
+    protected Texture? LastTexture       { get; set; }
+    protected float[]  Vertices          { get; set; }
+    public    int      BlendSrcFunc      { get; private set; } = IGL.GL_SRC_ALPHA;
+    public    int      BlendDstFunc      { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
+    public    int      BlendSrcFuncAlpha { get; private set; } = IGL.GL_SRC_ALPHA;
+    public    int      BlendDstFuncAlpha { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
+    public    Matrix4  ProjectionMatrix  { get; }              = new();
+    public    Matrix4  TransformMatrix   { get; }              = new();
+    public    bool     IsDrawing         { get; set; }
 
     public void Begin()
     {
@@ -1255,51 +1255,51 @@ public class SpriteBatch : IBatch
     }
 
     /// <summary>
-    ///     Returns a new instance of the default shader used by SpriteBatch
-    ///     for GL2 when no shader is specified.
+    /// Returns a new instance of the default shader used by SpriteBatch
+    /// for GL2 when no shader is specified.
     /// </summary>
     public static ShaderProgram CreateDefaultShader()
     {
         const string VERTEX_SHADER = "attribute vec4 "
-                                  + ShaderProgram.POSITION_ATTRIBUTE
-                                  + ";\n"
-                                  + "attribute vec4 "
-                                  + ShaderProgram.COLOR_ATTRIBUTE
-                                  + ";\n"
-                                  + "attribute vec2 "
-                                  + ShaderProgram.TEXCOORD_ATTRIBUTE
-                                  + "0;\n"
-                                  + "uniform mat4 u_projTrans;\n"
-                                  + "varying vec4 v_color;\n"
-                                  + "varying vec2 v_texCoords;\n"
-                                  + "\n"
-                                  + "void main()\n"
-                                  + "{\n"
-                                  + "   v_color = "
-                                  + ShaderProgram.COLOR_ATTRIBUTE
-                                  + ";\n"
-                                  + "   v_color.a = v_color.a * (255.0/254.0);\n"
-                                  + "   v_texCoords = "
-                                  + ShaderProgram.TEXCOORD_ATTRIBUTE
-                                  + "0;\n"
-                                  + "   gl_Position =  u_projTrans * "
-                                  + ShaderProgram.POSITION_ATTRIBUTE
-                                  + ";\n"
-                                  + "}\n";
+                                   + ShaderProgram.POSITION_ATTRIBUTE
+                                   + ";\n"
+                                   + "attribute vec4 "
+                                   + ShaderProgram.COLOR_ATTRIBUTE
+                                   + ";\n"
+                                   + "attribute vec2 "
+                                   + ShaderProgram.TEXCOORD_ATTRIBUTE
+                                   + "0;\n"
+                                   + "uniform mat4 u_projTrans;\n"
+                                   + "varying vec4 v_color;\n"
+                                   + "varying vec2 v_texCoords;\n"
+                                   + "\n"
+                                   + "void main()\n"
+                                   + "{\n"
+                                   + "   v_color = "
+                                   + ShaderProgram.COLOR_ATTRIBUTE
+                                   + ";\n"
+                                   + "   v_color.a = v_color.a * (255.0/254.0);\n"
+                                   + "   v_texCoords = "
+                                   + ShaderProgram.TEXCOORD_ATTRIBUTE
+                                   + "0;\n"
+                                   + "   gl_Position =  u_projTrans * "
+                                   + ShaderProgram.POSITION_ATTRIBUTE
+                                   + ";\n"
+                                   + "}\n";
 
         const string FRAGMENT_SHADER = "#ifdef GL_ES\n"
-                                    + "#define LOWP lowp\n"
-                                    + "precision mediump float;\n"
-                                    + "#else\n"
-                                    + "#define LOWP \n"
-                                    + "#endif\n"
-                                    + "varying LOWP vec4 v_color;\n"
-                                    + "varying vec2 v_texCoords;\n"
-                                    + "uniform sampler2D u_texture;\n"
-                                    + "void main()\n"
-                                    + "{\n"
-                                    + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
-                                    + "}";
+                                     + "#define LOWP lowp\n"
+                                     + "precision mediump float;\n"
+                                     + "#else\n"
+                                     + "#define LOWP \n"
+                                     + "#endif\n"
+                                     + "varying LOWP vec4 v_color;\n"
+                                     + "varying vec2 v_texCoords;\n"
+                                     + "uniform sampler2D u_texture;\n"
+                                     + "void main()\n"
+                                     + "{\n"
+                                     + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n"
+                                     + "}";
 
         var shader = new ShaderProgram( VERTEX_SHADER, FRAGMENT_SHADER );
 

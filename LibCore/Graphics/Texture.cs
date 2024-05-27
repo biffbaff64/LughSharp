@@ -31,32 +31,29 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
-///     A Texture wraps a standard OpenGL ES texture.
-///     <para>
-///         A Texture can be managed. If the OpenGL context is lost all managed textures
-///         get invalidated. This happens when a user switches to another application or
-///         receives an incoming call. Managed textures get reloaded automatically.
-///     </para>
-///     <para>
-///         A Texture has to be bound via the <see cref="Texture.Bind()" /> method in order
-///         for it to be applied to geometry. The texture will be bound to the currently
-///         active texture unit specified via <see cref="GLBindings.glActiveTexture" />.
-///     </para>
-///     <para>
-///         You can draw <see cref="Pixmap" />s to a texture at any time. The changes will
-///         be automatically uploaded to texture memory. This is of course not extremely
-///         fast so use it with care. It also only works with unmanaged textures.
-///     </para>
-///     <para>
-///         A Texture must be disposed when it is no longer used
-///     </para>
+/// A Texture wraps a standard OpenGL ES texture.
+/// <para>
+/// A Texture can be managed. If the OpenGL context is lost all managed textures
+/// get invalidated. This happens when a user switches to another application or
+/// receives an incoming call. Managed textures get reloaded automatically.
+/// </para>
+/// <para>
+/// A Texture has to be bound via the <see cref="Texture.Bind()"/> method in order
+/// for it to be applied to geometry. The texture will be bound to the currently
+/// active texture unit specified via <see cref="GLBindings.glActiveTexture"/>.
+/// </para>
+/// <para>
+/// You can draw <see cref="Pixmap"/>s to a texture at any time. The changes will
+/// be automatically uploaded to texture memory. This is of course not extremely
+/// fast so use it with care. It also only works with unmanaged textures.
+/// </para>
+/// <para>
+/// A Texture must be disposed when it is no longer used
+/// </para>
 /// </summary>
 [PublicAPI]
 public class Texture : GLTexture
 {
-    public AssetManager? AssetManager { get; set; } = null;
-    public ITextureData? TextureData  { get; set; } = null;
-
     // ------------------------------------------------------------------------
 
     private readonly Dictionary< IApplication, List< Texture >? > _managedTextures = new();
@@ -64,7 +61,7 @@ public class Texture : GLTexture
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Create a new Texture from the file at the given path.
+    /// Create a new Texture from the file at the given path.
     /// </summary>
     /// <param name="internalPath"></param>
     public Texture( string internalPath )
@@ -83,7 +80,7 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    ///     Creates a new Texture from the supplied <see cref="Pixmap" />.
+    /// Creates a new Texture from the supplied <see cref="Pixmap"/>.
     /// </summary>
     /// <param name="pixmap"> The pixmap to use. </param>
     /// <param name="useMipMaps"> Whether or nopt to generate MipMaps. Default is false. </param>
@@ -93,7 +90,7 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    ///     Creates a new Texture from the supplied <see cref="Pixmap" /> and <see cref="Pixmap.Format" />
+    /// Creates a new Texture from the supplied <see cref="Pixmap"/> and <see cref="Pixmap.Format"/>
     /// </summary>
     /// <param name="pixmap"> The pixmap to use. </param>
     /// <param name="format"> The pixmap format to use. </param>
@@ -104,18 +101,18 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    ///     Creates a new Texture with the specified width, height, and Pixmap format.
+    /// Creates a new Texture with the specified width, height, and Pixmap format.
     /// </summary>
     /// <param name="width">The width in pixels.</param>
     /// <param name="height">The Height in pixels.</param>
-    /// <param name="format">The pixmap <see cref="Pixmap.Format" /></param>
+    /// <param name="format">The pixmap <see cref="Pixmap.Format"/></param>
     public Texture( int width, int height, Pixmap.Format format )
         : this( new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ) )
     {
     }
 
     /// <summary>
-    ///     Creates a new Texture using the supplied <see cref="ITextureData" />.
+    /// Creates a new Texture using the supplied <see cref="ITextureData"/>.
     /// </summary>
     public Texture( ITextureData? data )
         : this( IGL.GL_TEXTURE_2D, ( int ) Gdx.GL.glGenTexture(), data )
@@ -123,8 +120,8 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    ///     Default constructor. Creates a new Texture from the supplied
-    ///     GLTarget, GLTextureHandle and TextureData.
+    /// Default constructor. Creates a new Texture from the supplied
+    /// GLTarget, GLTextureHandle and TextureData.
     /// </summary>
     /// <param name="glTarget"></param>
     /// <param name="glTextureHandle"></param>
@@ -141,6 +138,9 @@ public class Texture : GLTexture
             AddManagedTexture( Gdx.App, this );
         }
     }
+
+    public AssetManager? AssetManager { get; set; } = null;
+    public ITextureData? TextureData  { get; set; } = null;
 
     // ------------------------------------------------------------------------
 
@@ -185,8 +185,8 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    ///     Used internally to reload after context loss. Creates a new GL handle then
-    ///     calls <see cref="Load(ITextureData)" />.
+    /// Used internally to reload after context loss. Creates a new GL handle then
+    /// calls <see cref="Load(ITextureData)"/>.
     /// </summary>
     protected override void Reload()
     {
@@ -201,9 +201,9 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    ///     Draws the given <see cref="Pixmap"/> to the texture at position x, y.
-    ///     No clipping is performed so you have to make sure that you draw only inside
-    ///     the texture region. Note that this will only draw to mipmap level 0!
+    /// Draws the given <see cref="Pixmap"/> to the texture at position x, y.
+    /// No clipping is performed so you have to make sure that you draw only inside
+    /// the texture region. Note that this will only draw to mipmap level 0!
     /// </summary>
     /// <param name="pixmap"> The Pixmap </param>
     /// <param name="x"> The x coordinate in pixels </param>
@@ -235,14 +235,14 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    ///     Disposes all resources associated with the texture.
+    /// Disposes all resources associated with the texture.
     /// </summary>
     public override void Dispose()
     {
         Dispose( true );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void Dispose( bool disposing )
     {
         if ( disposing )
@@ -278,7 +278,7 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    ///     Invalidate all managed textures. This is an internal method. Do not use it!
+    /// Invalidate all managed textures. This is an internal method. Do not use it!
     /// </summary>
     internal void InvalidateAllTextures( IApplication app )
     {
@@ -379,7 +379,7 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    ///     Clears all managed textures.
+    /// Clears all managed textures.
     /// </summary>
     internal void ClearAllTextures( IApplication app )
     {

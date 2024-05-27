@@ -28,7 +28,7 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 /// <summary>
-///     Moves an actor from its current size to a specific size.
+/// Moves an actor from its current size to a specific size.
 /// </summary>
 public class SizeToAction : TemporalAction
 {

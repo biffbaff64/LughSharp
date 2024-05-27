@@ -30,24 +30,24 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
-///     A button is a <see cref="Table" /> with a checked state and additional
-///     <see cref="ButtonStyle" /> style fields for pressed, unpressed, and
-///     checked. Each time a button is clicked, the checked state is toggled.
-///     Being a table, a button can contain any other actors.
-///     <para>
-///         The button's padding is set to the background drawable's padding when
-///         the background changes, overwriting any padding set manually. Padding
-///         can still be set on the button's table cells.
-///     </para>
-///     <para>
-///         A <see cref="ChangeListener.ChangeEvent" /> is fired when the button is
-///         clicked. Cancelling the event will restore the checked button state to
-///         what it was previously.
-///     </para>
-///     <para>
-///         The preferred size of the button is determined by the background and the
-///         button contents.
-///     </para>
+/// A button is a <see cref="Table"/> with a checked state and additional
+/// <see cref="ButtonStyle"/> style fields for pressed, unpressed, and
+/// checked. Each time a button is clicked, the checked state is toggled.
+/// Being a table, a button can contain any other actors.
+/// <para>
+/// The button's padding is set to the background drawable's padding when
+/// the background changes, overwriting any padding set manually. Padding
+/// can still be set on the button's table cells.
+/// </para>
+/// <para>
+/// A <see cref="ChangeListener.ChangeEvent"/> is fired when the button is
+/// clicked. Cancelling the event will restore the checked button state to
+/// what it was previously.
+/// </para>
+/// <para>
+/// The preferred size of the button is determined by the background and the
+/// button contents.
+/// </para>
 /// </summary>
 [PublicAPI]
 public class Button : Table, IDisableable
@@ -95,8 +95,8 @@ public class Button : Table, IDisableable
     }
 
     /// <summary>
-    ///     Creates a button without setting the style or size.
-    ///     At least a style must be set before using this button.
+    /// Creates a button without setting the style or size.
+    /// At least a style must be set before using this button.
     /// </summary>
     public Button()
     {
@@ -124,8 +124,8 @@ public class Button : Table, IDisableable
     }
 
     /// <summary>
-    ///     Returns the button's style. Modifying the returned style may not have an
-    ///     effect until <see cref="Style" /> set() is called.
+    /// Returns the button's style. Modifying the returned style may not have an
+    /// effect until <see cref="Style"/> set() is called.
     /// </summary>
     public ButtonStyle? Style
     {
@@ -140,8 +140,8 @@ public class Button : Table, IDisableable
     }
 
     /// <summary>
-    ///     Somewhere to call virtual methods that used to be called
-    ///     from constructors.
+    /// Somewhere to call virtual methods that used to be called
+    /// from constructors.
     /// </summary>
     private void ConstructorHelper( ButtonStyle style )
     {
@@ -197,9 +197,9 @@ public class Button : Table, IDisableable
     }
 
     /// <summary>
-    ///     If false, <see cref="SetChecked(bool)" /> and <see cref="Toggle()" /> will not
-    ///     fire <see cref="ChangeListener.ChangeEvent()" />.
-    ///     The event will only be fired when the user clicks the button
+    /// If false, <see cref="SetChecked(bool)"/> and <see cref="Toggle()"/> will not
+    /// fire <see cref="ChangeListener.ChangeEvent()"/>.
+    /// The event will only be fired when the user clicks the button
     /// </summary>
     public void SetProgrammaticChangeEvents( bool programmaticChangeEvents )
     {
@@ -207,7 +207,7 @@ public class Button : Table, IDisableable
     }
 
     /// <summary>
-    ///     Returns appropriate background drawable from the style based on the current button state.
+    /// Returns appropriate background drawable from the style based on the current button state.
     /// </summary>
     public virtual IDrawable? GetBackgroundDrawable()
     {
@@ -332,11 +332,20 @@ public class Button : Table, IDisableable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public void Toggle() => SetChecked( !IsChecked );
+    public void Toggle()
+    {
+        SetChecked( !IsChecked );
+    }
 
-    public bool IsPressed() => ClickListener!.VisualPressed;
+    public bool IsPressed()
+    {
+        return ClickListener!.VisualPressed;
+    }
 
-    public bool IsOver() => ClickListener!.Over;
+    public bool IsOver()
+    {
+        return ClickListener!.Over;
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -366,27 +375,11 @@ public class Button : Table, IDisableable
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     The style for a button, see <see cref="Button" />.
+    /// The style for a button, see <see cref="Button"/>.
     /// </summary>
     [PublicAPI]
     public class ButtonStyle
     {
-        public IDrawable? Up               { get; set; }
-        public IDrawable? Down             { get; set; }
-        public IDrawable? Over             { get; set; }
-        public IDrawable? Focused          { get; set; }
-        public IDrawable? Disabled         { get; set; }
-        public IDrawable? Checked          { get; set; }
-        public IDrawable? CheckedOver      { get; set; }
-        public IDrawable? CheckedDown      { get; set; }
-        public IDrawable? CheckedFocused   { get; set; }
-        public float      PressedOffsetX   { get; set; }
-        public float      PressedOffsetY   { get; set; }
-        public float      UnpressedOffsetX { get; set; }
-        public float      UnpressedOffsetY { get; set; }
-        public float      CheckedOffsetX   { get; set; }
-        public float      CheckedOffsetY   { get; set; }
-
         public ButtonStyle()
         {
         }
@@ -417,6 +410,22 @@ public class Button : Table, IDisableable
             CheckedOffsetX   = style.CheckedOffsetX;
             CheckedOffsetY   = style.CheckedOffsetY;
         }
+
+        public IDrawable? Up               { get; set; }
+        public IDrawable? Down             { get; set; }
+        public IDrawable? Over             { get; set; }
+        public IDrawable? Focused          { get; set; }
+        public IDrawable? Disabled         { get; set; }
+        public IDrawable? Checked          { get; set; }
+        public IDrawable? CheckedOver      { get; set; }
+        public IDrawable? CheckedDown      { get; set; }
+        public IDrawable? CheckedFocused   { get; set; }
+        public float      PressedOffsetX   { get; set; }
+        public float      PressedOffsetY   { get; set; }
+        public float      UnpressedOffsetX { get; set; }
+        public float      UnpressedOffsetY { get; set; }
+        public float      CheckedOffsetX   { get; set; }
+        public float      CheckedOffsetY   { get; set; }
     }
 
     // ------------------------------------------------------------------------

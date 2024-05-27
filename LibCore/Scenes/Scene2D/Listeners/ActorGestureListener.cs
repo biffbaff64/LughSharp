@@ -28,15 +28,12 @@ using LughSharp.LibCore.Input;
 namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
 /// <summary>
-///     Detects tap, long press, fling, pan, zoom, and pinch gestures on an actor.
-///     If there is only a need to detect tap, use <see cref="ClickListener" />.
+/// Detects tap, long press, fling, pan, zoom, and pinch gestures on an actor.
+/// If there is only a need to detect tap, use <see cref="ClickListener"/>.
 /// </summary>
 [PublicAPI]
 public class ActorGestureListener : IEventListener
 {
-    public ActorGestureDetector Detector        { get; set; }
-    public Actor?               TouchDownTarget { get; set; }
-
     private readonly static Vector2 _tmpCoords  = new();
     private readonly static Vector2 _tmpCoords2 = new();
 
@@ -62,6 +59,9 @@ public class ActorGestureListener : IEventListener
                                              this );
     }
 
+    public ActorGestureDetector Detector        { get; set; }
+    public Actor?               TouchDownTarget { get; set; }
+
     public virtual bool Handle( Event e )
     {
         if ( e is not InputEvent ev )
@@ -78,7 +78,7 @@ public class ActorGestureListener : IEventListener
 
                 Detector.TouchDown( ev.StageX, ev.StageY, ev.Pointer, ev.Button );
                 _actor?.StageToLocalCoordinates( _tmpCoords.Set( ev.StageX, ev.StageY ) );
-                
+
                 TouchDown( ev, _tmpCoords.X, _tmpCoords.Y, ev.Pointer, ev.Button );
 
                 if ( ev.TouchFocus )
@@ -138,8 +138,8 @@ public class ActorGestureListener : IEventListener
     }
 
     /// <summary>
-    ///     If true is returned, additional gestures will not be triggered. No ev is
-    ///     provided because this ev is triggered by time passing, not by an InputEvent.
+    /// If true is returned, additional gestures will not be triggered. No ev is
+    /// provided because this ev is triggered by time passing, not by an InputEvent.
     /// </summary>
     public virtual bool LongPress( Actor actor, float x, float y )
     {
@@ -151,7 +151,7 @@ public class ActorGestureListener : IEventListener
     }
 
     /// <summary>
-    ///     The delta is the difference in stage coordinates since the last pan.
+    /// The delta is the difference in stage coordinates since the last pan.
     /// </summary>
     public virtual void Pan( InputEvent ev, float x, float y, float deltaX, float deltaY )
     {

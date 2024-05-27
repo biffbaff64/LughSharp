@@ -32,19 +32,19 @@ using Exception = System.Exception;
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
-///     Write Pixmaps to various formats.
+/// Write Pixmaps to various formats.
 /// </summary>
 [PublicAPI]
 public static class PixmapIO
 {
     /// <summary>
-    ///     Writes the <see cref="Pixmap" /> to the given file using a custom compression
-    ///     scheme. First three integers define the width, height and format, remaining
-    ///     bytes are zlib compressed pixels. To be able to load the Pixmap to a Texture,
-    ///     use ".cim" as the file suffix.
-    ///     <para>
-    ///         Throws a GdxRuntimeException if the Pixmap couldn't be written to the file.
-    ///     </para>
+    /// Writes the <see cref="Pixmap"/> to the given file using a custom compression
+    /// scheme. First three integers define the width, height and format, remaining
+    /// bytes are zlib compressed pixels. To be able to load the Pixmap to a Texture,
+    /// use ".cim" as the file suffix.
+    /// <para>
+    /// Throws a GdxRuntimeException if the Pixmap couldn't be written to the file.
+    /// </para>
     /// </summary>
     /// <param name="file">The file to write the Pixmap to.</param>
     /// <param name="pixmap"></param>
@@ -54,11 +54,11 @@ public static class PixmapIO
     }
 
     /// <summary>
-    ///     Reads the <see cref="Pixmap" /> from the given file, assuming the Pixmap was
-    ///     written with the <see cref="PixmapIO.WriteCIM(FileInfo, Pixmap)" /> method.
-    ///     <para>
-    ///         Throws a GdxRuntimeException in case the file couldn't be read.
-    ///     </para>
+    /// Reads the <see cref="Pixmap"/> from the given file, assuming the Pixmap was
+    /// written with the <see cref="PixmapIO.WriteCIM(FileInfo, Pixmap)"/> method.
+    /// <para>
+    /// Throws a GdxRuntimeException in case the file couldn't be read.
+    /// </para>
     /// </summary>
     /// <param name="file"> the file to read the Pixmap from  </param>
     public static Pixmap ReadCIM( FileInfo file )
@@ -67,14 +67,14 @@ public static class PixmapIO
     }
 
     /// <summary>
-    ///     Writes the pixmap as a PNG. See <see cref="PNG" /> to write out multiple PNGs
-    ///     with minimal allocation.
+    /// Writes the pixmap as a PNG. See <see cref="PNG"/> to write out multiple PNGs
+    /// with minimal allocation.
     /// </summary>
     /// <param name="file"></param>
     /// <param name="pixmap"></param>
     /// <param name="compression">
-    ///     Sets the deflate compression level.
-    ///     Default is <see cref="Deflater.DEFAULT_COMPRESSION" />
+    /// Sets the deflate compression level.
+    /// Default is <see cref="Deflater.DEFAULT_COMPRESSION"/>
     /// </param>
     /// <param name="flipY">Flips the Pixmap vertically if true</param>
     public static void WritePNG( FileInfo file,
@@ -208,7 +208,7 @@ public static class PixmapIO
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Paeth filter - a filtering algorithm used in the compression of PNG images
+    /// Paeth filter - a filtering algorithm used in the compression of PNG images
     /// </summary>
     [PublicAPI]
     public class PNG : IDisposable
@@ -241,13 +241,13 @@ public static class PixmapIO
         }
 
         /// <summary>
-        ///     If true, the resulting PNG is flipped vertically. Default is true.
+        /// If true, the resulting PNG is flipped vertically. Default is true.
         /// </summary>
         public bool FlipY { get; set; }
 
         /// <summary>
-        ///     Performs application-defined tasks associated with freeing,
-        ///     releasing, or resetting unmanaged resources.
+        /// Performs application-defined tasks associated with freeing,
+        /// releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -255,8 +255,8 @@ public static class PixmapIO
         }
 
         /// <summary>
-        ///     Sets the deflate compression level.
-        ///     Default is <see cref="Deflater.DEFAULT_COMPRESSION" />.
+        /// Sets the deflate compression level.
+        /// Default is <see cref="Deflater.DEFAULT_COMPRESSION"/>.
         /// </summary>
         public void SetCompression( int level )
         {
@@ -281,7 +281,7 @@ public static class PixmapIO
         }
 
         /// <summary>
-        ///     Writes the pixmap to the stream without closing the stream.
+        /// Writes the pixmap to the stream without closing the stream.
         /// </summary>
         public void Write( Stream output, Pixmap pixmap )
         {
@@ -392,7 +392,7 @@ public static class PixmapIO
 
                     if ( ( pa <= pb ) && ( pa <= pc ) )
                     {
-                        c                  = a;
+                        c = a;
                     }
                     else if ( pb <= pc )
                     {

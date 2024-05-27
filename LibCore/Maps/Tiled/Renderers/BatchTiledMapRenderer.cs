@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics.Cameras;
 using LughSharp.LibCore.Maps.Tiled.Tiles;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
@@ -32,27 +31,18 @@ namespace LughSharp.LibCore.Maps.Tiled.Renderers;
 [PublicAPI]
 public class BatchTileMapRenderer : ITiledMapRenderer
 {
-    public TiledMap       TiledMap    { get; set; }
-    public bool           OwnsBatch   { get; set; }
-    public RectangleShape ImageBounds { get; set; } = new();
-
-    protected IBatch         Batch      { get; set; }
-    protected RectangleShape ViewBounds { get; set; }
-    protected float          UnitScale  { get; set; }
-    protected float[]        Vertices   { get; set; } = new float[ NUM_VERTICES ];
-
     protected const int NUM_VERTICES = 20;
 
     // ------------------------------------------------------------------------
-    
+
     public BatchTileMapRenderer()
         : this( new TiledMap() )
     {
     }
 
     /// <summary>
-    ///     Creates a new Renderer using the supplied <see cref="TiledMap"/>
-    ///     and <see cref="IBatch"/> 
+    /// Creates a new Renderer using the supplied <see cref="TiledMap"/>
+    /// and <see cref="IBatch"/>
     /// </summary>
     protected BatchTileMapRenderer( TiledMap map, IBatch batch )
         : this( map, 1.0f, batch )
@@ -83,10 +73,19 @@ public class BatchTileMapRenderer : ITiledMapRenderer
         OwnsBatch  = ownsBatch;
     }
 
+    public TiledMap       TiledMap    { get; set; }
+    public bool           OwnsBatch   { get; set; }
+    public RectangleShape ImageBounds { get; set; } = new();
+
+    protected IBatch         Batch      { get; set; }
+    protected RectangleShape ViewBounds { get; set; }
+    protected float          UnitScale  { get; set; }
+    protected float[]        Vertices   { get; set; } = new float[ NUM_VERTICES ];
+
     /// <summary>
-    ///     Draws all layers in the default <see cref="TiledMap"/>.
-    ///     This is the map supplied on creation, or supplied by any
-    ///     extending classes.
+    /// Draws all layers in the default <see cref="TiledMap"/>.
+    /// This is the map supplied on creation, or supplied by any
+    /// extending classes.
     /// </summary>
     public void Render()
     {
@@ -275,7 +274,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     }
 
     /// <summary>
-    ///     Called before the rendering of all layers starts.
+    /// Called before the rendering of all layers starts.
     /// </summary>
     protected void BeginRender()
     {
@@ -284,7 +283,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     }
 
     /// <summary>
-    ///     Called after the rendering of all layers ended.
+    /// Called after the rendering of all layers ended.
     /// </summary>
     protected void EndRender()
     {

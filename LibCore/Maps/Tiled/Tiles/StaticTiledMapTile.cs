@@ -28,28 +28,22 @@ namespace LughSharp.LibCore.Maps.Tiled.Tiles;
 [PublicAPI]
 public class StaticTiledMapTile : ITiledMapTile
 {
-    public int                     ID            { get; set; }
-    public float                   OffsetX       { get; set; }
-    public float                   OffsetY       { get; set; }
-    public TextureRegion           TextureRegion { get; set; }
-    public ITiledMapTile.Blendmode BlendMode     { get; set; } = ITiledMapTile.Blendmode.Alpha;
-
-    private MapObjects? _mapObjects;
+    private MapObjects?    _mapObjects;
     private MapProperties? _properties;
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
-    ///     Creates a static tile with the given region
+    /// Creates a static tile with the given region
     /// </summary>
-    /// <param name="texture">The <see cref="TextureRegion" /> to use.</param>
+    /// <param name="texture">The <see cref="TextureRegion"/> to use.</param>
     public StaticTiledMapTile( TextureRegion texture )
     {
         TextureRegion = texture;
     }
 
     /// <summary>
-    ///     Copy Constructor
+    /// Copy Constructor
     /// </summary>
     /// <param name="copy">The StaticTiledMapTile to copy.</param>
     public StaticTiledMapTile( StaticTiledMapTile copy )
@@ -63,6 +57,12 @@ public class StaticTiledMapTile : ITiledMapTile
         TextureRegion = copy.TextureRegion;
         ID            = copy.ID;
     }
+
+    public int                     ID            { get; set; }
+    public float                   OffsetX       { get; set; }
+    public float                   OffsetY       { get; set; }
+    public TextureRegion           TextureRegion { get; set; }
+    public ITiledMapTile.Blendmode BlendMode     { get; set; } = ITiledMapTile.Blendmode.Alpha;
 
     public MapProperties GetProperties()
     {

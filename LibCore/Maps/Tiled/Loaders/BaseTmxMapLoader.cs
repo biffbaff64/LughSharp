@@ -39,12 +39,6 @@ namespace LughSharp.LibCore.Maps.Tiled.Loaders;
 public abstract class BaseTmxMapLoader< TP >
     : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.BaseTmxLoaderParameters
 {
-    public int      MapTileWidth      { get; set; }
-    public int      MapTileHeight     { get; set; }
-    public int      MapWidthInPixels  { get; set; }
-    public int      MapHeightInPixels { get; set; }
-    public TiledMap Map               { get; set; } = null!;
-
     // ------------------------------------------------------------------------
 
     protected const uint FLAG_FLIP_HORIZONTALLY = 0x80000000;
@@ -74,13 +68,19 @@ public abstract class BaseTmxMapLoader< TP >
     {
     }
 
+    public int      MapTileWidth      { get; set; }
+    public int      MapTileHeight     { get; set; }
+    public int      MapWidthInPixels  { get; set; }
+    public int      MapHeightInPixels { get; set; }
+    public TiledMap Map               { get; set; } = null!;
+
     /// <summary>
-    ///     Loads the map data, given the XML root element.
+    /// Loads the map data, given the XML root element.
     /// </summary>
     /// <param name="tmxFile">The Filehandle of the tmx file </param>
     /// <param name="parameter"></param>
     /// <param name="imageResolver"></param>
-    /// <returns>The <see cref="TiledMap" />.</returns>
+    /// <returns>The <see cref="TiledMap"/>.</returns>
     protected TiledMap LoadTiledMap( FileInfo tmxFile, TP? parameter, IImageResolver imageResolver )
     {
         // ----------------------------
@@ -445,14 +445,14 @@ public abstract class BaseTmxMapLoader< TP >
     }
 
     /// <summary>
-    ///     From the official Tiled website:
-    ///     "Image layers provide a way to quickly include a single image as foreground
-    ///     or background of your map. They currently have limited functionality and you
-    ///     may consider adding the image as a Tileset instead and place it as a Tile
-    ///     Object. This way, you gain the ability to freely scale and rotate the image."
-    ///     See https://doc.mapeditor.org/en/stable/manual/layers/
+    /// From the official Tiled website:
+    /// "Image layers provide a way to quickly include a single image as foreground
+    /// or background of your map. They currently have limited functionality and you
+    /// may consider adding the image as a Tileset instead and place it as a Tile
+    /// Object. This way, you gain the ability to freely scale and rotate the image."
+    /// See https://doc.mapeditor.org/en/stable/manual/layers/
     /// </summary>
-    /// <param name="map"> The parent <see cref="TiledMap" />. </param>
+    /// <param name="map"> The parent <see cref="TiledMap"/>. </param>
     /// <param name="parentLayers"> The actual layer group belonging to the map. </param>
     /// <param name="node"> The xml node being processed. </param>
     /// <param name="tmxFile"> The parent TMX map file. </param>
@@ -979,14 +979,14 @@ public abstract class BaseTmxMapLoader< TP >
     }
 
     /// <summary>
-    ///     Loads a Tileset as described in <paramref name="tilesetNode" />.
-    ///     The Node is laid ouit as follows:-
-    ///     <code>
+    /// Loads a Tileset as described in <paramref name="tilesetNode"/>.
+    /// The Node is laid ouit as follows:-
+    /// <code>
     /// &lt;tileset firstgid="x" source="filename.tsx"/&gt;
     /// </code>
-    ///     where 'x' is the id of the first tile in the tileset.
-    ///     The width and height dimensions of the image used for the tiles are held in the TSX file, as are
-    ///     the tile width/height, number of columns in the tile image, and total tile count.
+    /// where 'x' is the id of the first tile in the tileset.
+    /// The width and height dimensions of the image used for the tiles are held in the TSX file, as are
+    /// the tile width/height, number of columns in the tile image, and total tile count.
     /// </summary>
     /// <param name="tilesetNode"> The node referencing the TSX tileset file. </param>
     /// <param name="tmxFile"> The current TMX file being processed. </param>
@@ -1286,7 +1286,7 @@ public abstract class BaseTmxMapLoader< TP >
     }
 
     /// <summary>
-    ///     Add a standard, non-animating, static tile to the map.
+    /// Add a standard, non-animating, static tile to the map.
     /// </summary>
     /// <param name="tileSet"></param>
     /// <param name="textureRegion"> The tile image </param>
@@ -1327,14 +1327,14 @@ public abstract class BaseTmxMapLoader< TP >
         public TextureFilter TextureMagFilter { get; set; } = TextureFilter.Nearest;
 
         /// <summary>
-        ///     Whether to convert the objects' pixel position and size to the equivalent in tile space.
+        /// Whether to convert the objects' pixel position and size to the equivalent in tile space.
         /// </summary>
         public bool ConvertObjectToTileSpace { get; set; } = false;
 
         /// <summary>
-        ///     Whether to flip all Y coordinates so that Y positive is up. All LibGDX renderers
-        ///     require flipped Y coordinates, and thus flipY set to true. This parameter is included
-        ///     for non-rendering related purposes of TMX files, or custom renderers.
+        /// Whether to flip all Y coordinates so that Y positive is up. All LibGDX renderers
+        /// require flipped Y coordinates, and thus flipY set to true. This parameter is included
+        /// for non-rendering related purposes of TMX files, or custom renderers.
         /// </summary>
         public bool FlipY { get; set; } = true;
     }
@@ -1345,24 +1345,6 @@ public abstract class BaseTmxMapLoader< TP >
 
 internal class MapData
 {
-    internal string? MapVersion         { get; set; }
-    internal string? TiledVersion       { get; set; }
-    internal string? MapOrientation     { get; set; }
-    internal string? RenderOrder        { get; set; }
-    internal string? NextLayerID        { get; set; }
-    internal string? NextObjectID       { get; set; }
-    internal string? HexSideLength      { get; set; }
-    internal string? StaggerAxis        { get; set; }
-    internal string? StaggerIndex       { get; set; }
-    internal string? MapBackgroundColor { get; set; }
-
-    internal int MapWidth   { get; set; }
-    internal int MapHeight  { get; set; }
-    internal int TileWidth  { get; set; }
-    internal int TileHeight { get; set; }
-
-    internal bool IsInfinite { get; set; }
-
     internal MapData( XmlNode? node )
     {
         if ( node == null )
@@ -1388,4 +1370,22 @@ internal class MapData
         IsInfinite         = node.Attributes?[ "infinite" ]?.Value == "1";
         //@formatter:on
     }
+
+    internal string? MapVersion         { get; set; }
+    internal string? TiledVersion       { get; set; }
+    internal string? MapOrientation     { get; set; }
+    internal string? RenderOrder        { get; set; }
+    internal string? NextLayerID        { get; set; }
+    internal string? NextObjectID       { get; set; }
+    internal string? HexSideLength      { get; set; }
+    internal string? StaggerAxis        { get; set; }
+    internal string? StaggerIndex       { get; set; }
+    internal string? MapBackgroundColor { get; set; }
+
+    internal int MapWidth   { get; set; }
+    internal int MapHeight  { get; set; }
+    internal int TileWidth  { get; set; }
+    internal int TileHeight { get; set; }
+
+    internal bool IsInfinite { get; set; }
 }

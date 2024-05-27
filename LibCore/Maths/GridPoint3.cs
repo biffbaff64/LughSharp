@@ -26,24 +26,20 @@
 namespace LughSharp.LibCore.Maths;
 
 /// <summary>
-///     A point in a 3D grid, with integer x and y coordinates
+/// A point in a 3D grid, with integer x and y coordinates
 /// </summary>
 [PublicAPI]
 public class GridPoint3
 {
-     public int X { get; set; }
-     public int Y { get; set; }
-     public int Z { get; set; }
- 
-   /// <summary>
-    ///     Constructs a 3D grid point with all coordinates pointing to the origin (0, 0, 0).
+    /// <summary>
+    /// Constructs a 3D grid point with all coordinates pointing to the origin (0, 0, 0).
     /// </summary>
     public GridPoint3() : this( 0, 0, 0 )
     {
     }
 
     /// <summary>
-    ///     Constructs a 3D grid point.
+    /// Constructs a 3D grid point.
     /// </summary>
     /// <param name="x"> X coordinate </param>
     /// <param name="y"> Y coordinate </param>
@@ -56,7 +52,7 @@ public class GridPoint3
     }
 
     /// <summary>
-    ///     Copy constructor
+    /// Copy constructor
     /// </summary>
     /// <param name="point"> The 3D grid point to make a copy of.  </param>
     public GridPoint3( GridPoint3 point )
@@ -66,11 +62,15 @@ public class GridPoint3
         Z = point.Z;
     }
 
+    public int X { get; set; }
+    public int Y { get; set; }
+    public int Z { get; set; }
+
     /// <summary>
-    ///     Sets the coordinates of this 3D grid point to that of another.
+    /// Sets the coordinates of this 3D grid point to that of another.
     /// </summary>
     /// <param name="point">
-    ///     The 3D grid point to copy coordinates of.
+    /// The 3D grid point to copy coordinates of.
     /// </param>
     /// <returns> this GridPoint3 for chaining.  </returns>
     public virtual GridPoint3 Set( GridPoint3 point )
@@ -83,12 +83,12 @@ public class GridPoint3
     }
 
     /// <summary>
-    ///     Sets the coordinates of this GridPoint3D.
+    /// Sets the coordinates of this GridPoint3D.
     /// </summary>
     /// <param name="x"> X coordinate </param>
     /// <param name="y"> Y coordinate </param>
     /// <param name="z">
-    ///     Z coordinate
+    /// Z coordinate
     /// </param>
     /// <returns> this GridPoint3D for chaining.  </returns>
     public virtual GridPoint3 Set( int x, int y, int z )
@@ -157,7 +157,7 @@ public class GridPoint3
     }
 
     /// <summary>
-    ///     Adds another 3D grid point to this point.
+    /// Adds another 3D grid point to this point.
     /// </summary>
     /// <param name="other"> The other point </param>
     /// <returns> this 3d grid point for chaining. </returns>
@@ -171,7 +171,7 @@ public class GridPoint3
     }
 
     /// <summary>
-    ///     Adds another 3D grid point to this point.
+    /// Adds another 3D grid point to this point.
     /// </summary>
     /// <param name="x"> The x-coordinate of the other point </param>
     /// <param name="y"> The y-coordinate of the other point </param>
@@ -187,7 +187,7 @@ public class GridPoint3
     }
 
     /// <summary>
-    ///     Subtracts another 3D grid point from this point.
+    /// Subtracts another 3D grid point from this point.
     /// </summary>
     /// <param name="other"> The other point </param>
     /// <returns> this 3d grid point for chaining. </returns>
@@ -201,7 +201,7 @@ public class GridPoint3
     }
 
     /// <summary>
-    ///     Subtracts another 3D grid point from this point.
+    /// Subtracts another 3D grid point from this point.
     /// </summary>
     /// <param name="x"> The x-coordinate of the other point </param>
     /// <param name="y"> The y-coordinate of the other point </param>

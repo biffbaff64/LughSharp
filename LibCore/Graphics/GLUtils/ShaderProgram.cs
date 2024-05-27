@@ -32,27 +32,27 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
 ///     <para>
-///         A shader program encapsulates a vertex and fragment shader pair
-///         linked to form a shader program.
+///     A shader program encapsulates a vertex and fragment shader pair
+///     linked to form a shader program.
 ///     </para>
 ///     <para>
-///         After construction a ShaderProgram can be used to draw <see cref="Mesh" />.
-///         To make the GPU use a specific ShaderProgram the programs <see cref="Bind()" />
-///         method must be used which effectively binds the program.
+///     After construction a ShaderProgram can be used to draw <see cref="Mesh"/>.
+///     To make the GPU use a specific ShaderProgram the programs <see cref="Bind()"/>
+///     method must be used which effectively binds the program.
 ///     </para>
 ///     <para>
-///         When a ShaderProgram is bound one can set uniforms, vertex attributes and
-///         attributes as needed via the respective methods.
+///     When a ShaderProgram is bound one can set uniforms, vertex attributes and
+///     attributes as needed via the respective methods.
 ///     </para>
 ///     <para>
-///         A ShaderProgram must be disposed via a call to <see cref="Dispose()" />
-///         when it is no longer needed
+///     A ShaderProgram must be disposed via a call to <see cref="Dispose()"/>
+///     when it is no longer needed
 ///     </para>
 ///     <para>
-///         ShaderPrograms are managed. In case the OpenGL context is lost all shaders
-///         get invalidated and have to be reloaded. Managed ShaderPrograms are
-///         automatically reloaded when the OpenGL context is recreated so you don't
-///         have to do this manually.
+///     ShaderPrograms are managed. In case the OpenGL context is lost all shaders
+///     get invalidated and have to be reloaded. Managed ShaderPrograms are
+///     automatically reloaded when the OpenGL context is recreated so you don't
+///     have to do this manually.
 ///     </para>
 /// </summary>
 [PublicAPI]
@@ -62,39 +62,39 @@ public class ShaderProgram
     private const int NOT_CACHED       = -2;
 
     /// <summary>
-    ///     flag indicating whether attributes & uniforms must be present
-    ///     at all times.
+    /// flag indicating whether attributes & uniforms must be present
+    /// at all times.
     /// </summary>
     public readonly static bool Pedantic = true;
 
     /// <summary>
-    ///     code that is always added to the vertex shader code, typically used to
-    ///     inject a #version line. Note that this is added as-is, you should include
-    ///     a newline (`\n`) if needed.
+    /// code that is always added to the vertex shader code, typically used to
+    /// inject a #version line. Note that this is added as-is, you should include
+    /// a newline (`\n`) if needed.
     /// </summary>
     public readonly static string PrependVertexCode = "";
 
     /// <summary>
-    ///     code that is always added to every fragment shader code, typically used
-    ///     to inject a #version line. Note that this is added as-is, you should
-    ///     include a newline (`\n`) if needed.
+    /// code that is always added to every fragment shader code, typically used
+    /// to inject a #version line. Note that this is added as-is, you should
+    /// include a newline (`\n`) if needed.
     /// </summary>
     public readonly static string PrependFragmentCode = "";
 
     /// <summary>
-    ///     the list of currently available shaders
+    /// the list of currently available shaders
     /// </summary>
     private readonly static Dictionary< IApplication, List< ShaderProgram > > _shaders = new();
 
     private readonly Dictionary< string, int > _attributes     = new();
     private readonly Dictionary< string, int > _attributeSizes = new();
     private readonly Dictionary< string, int > _attributeTypes = new();
-    private readonly IntBuffer                 _parameters     = BufferUtils.NewIntBuffer( 1 );
-    private readonly IntBuffer                 _progType       = BufferUtils.NewIntBuffer( 1 );
-    private readonly Dictionary< string, int > _uniforms       = new();
-    private readonly Dictionary< string, int > _uniformSizes   = new();
-    private readonly Dictionary< string, int > _uniformTypes   = new();
     private readonly FloatBuffer               _matrix;
+    private readonly IntBuffer                 _parameters   = BufferUtils.NewIntBuffer( 1 );
+    private readonly IntBuffer                 _progType     = BufferUtils.NewIntBuffer( 1 );
+    private readonly Dictionary< string, int > _uniforms     = new();
+    private readonly Dictionary< string, int > _uniformSizes = new();
+    private readonly Dictionary< string, int > _uniformTypes = new();
 
     private int    _fragmentShaderHandle;
     private bool   _invalidated;
@@ -151,8 +151,8 @@ public class ShaderProgram
 //    internal readonly static IntBuffer Intbuf = BufferUtils.NewIntBuffer( 1 );
 
     /// <returns>
-    ///     the log info for the shader compilation and program linking stage.
-    ///     The shader needs to be bound for this method to have an effect.
+    /// the log info for the shader compilation and program linking stage.
+    /// The shader needs to be bound for this method to have an effect.
     /// </returns>
     public string Log
     {
@@ -165,6 +165,7 @@ public class ShaderProgram
 // if (infoLogLength > 1)
 // {
                 _log = Gdx.GL.glGetProgramInfoLog( ( uint ) Handle, IGL.GL_INFO_LOG_LENGTH );
+
 // }
             }
 
@@ -173,7 +174,7 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Loads and compiles the shaders, creates a new program and links the shaders.
+    /// Loads and compiles the shaders, creates a new program and links the shaders.
     /// </summary>
     /// <param name="vertexShader"> </param>
     /// <param name="fragmentShader">  </param>
@@ -231,6 +232,7 @@ public class ShaderProgram
             var infoLog = Gdx.GL.glGetShaderInfoLog( shader, IGL.GL_INFO_LOG_LENGTH );
             _log += type == IGL.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
             _log += infoLog;
+
 // }
             return -1;
         }
@@ -277,6 +279,7 @@ public class ShaderProgram
 // if (infoLogLength > 1)
 // {
             _log = Gdx.GL.glGetProgramInfoLog( ( uint ) program, IGL.GL_INFO_LOG_LENGTH );
+
 // }
             return -1;
         }
@@ -331,8 +334,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform with the given name. The <see cref="ShaderProgram" />
-    ///     must be bound for this to work.
+    /// Sets the uniform with the given name. The <see cref="ShaderProgram"/>
+    /// must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="value"> the value  </param>
@@ -350,8 +353,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform with the given name. The <see cref="ShaderProgram" />
-    ///     must be bound for this to work.
+    /// Sets the uniform with the given name. The <see cref="ShaderProgram"/>
+    /// must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="count"> the first value </param>
@@ -369,8 +372,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform with the given name.
-    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
+    /// Sets the uniform with the given name.
+    /// The <see cref="ShaderProgram"/> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="value1"> the first value </param>
@@ -389,8 +392,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform with the given name.
-    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
+    /// Sets the uniform with the given name.
+    /// The <see cref="ShaderProgram"/> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="value"> the value  </param>
@@ -407,8 +410,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform with the given name.
-    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
+    /// Sets the uniform with the given name.
+    /// The <see cref="ShaderProgram"/> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="value1"> the first value </param>
@@ -426,8 +429,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform with the given name.
-    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
+    /// Sets the uniform with the given name.
+    /// The <see cref="ShaderProgram"/> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="value1"> the first value </param>
@@ -446,8 +449,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform with the given name. The <see cref="ShaderProgram" />
-    ///     must be bound for this to work.
+    /// Sets the uniform with the given name. The <see cref="ShaderProgram"/>
+    /// must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="x"></param>
@@ -515,8 +518,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform matrix with the given name. The <see cref="ShaderProgram" />
-    ///     must be bound for this to work.
+    /// Sets the uniform matrix with the given name. The <see cref="ShaderProgram"/>
+    /// must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="matrix"> the matrix  </param>
@@ -526,8 +529,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform matrix with the given name. The <see cref="ShaderProgram" />
-    ///     must be bound for this to work.
+    /// Sets the uniform matrix with the given name. The <see cref="ShaderProgram"/>
+    /// must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="matrix"> the matrix </param>
@@ -549,8 +552,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform matrix with the given name.
-    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
+    /// Sets the uniform matrix with the given name.
+    /// The <see cref="ShaderProgram"/> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="matrix"> the matrix  </param>
@@ -560,8 +563,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform matrix with the given name.
-    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
+    /// Sets the uniform matrix with the given name.
+    /// The <see cref="ShaderProgram"/> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="matrix"> the matrix </param>
@@ -583,8 +586,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets an array of uniform matrices with the given name.
-    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
+    /// Sets an array of uniform matrices with the given name.
+    /// The <see cref="ShaderProgram"/> must be bound for this to work.
     /// </summary>
     /// <param name="name">the name of the uniform </param>
     /// <param name="buffer">buffer containing the matrix data </param>
@@ -605,8 +608,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets an array of uniform matrices with the given name. The <see cref="ShaderProgram" />
-    ///     must be bound for this to work.
+    /// Sets an array of uniform matrices with the given name. The <see cref="ShaderProgram"/>
+    /// must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="buffer"> buffer containing the matrix data </param>
@@ -632,7 +635,7 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform with the given name. The <see cref="ShaderProgram" /> must be bound for this to work.
+    /// Sets the uniform with the given name. The <see cref="ShaderProgram"/> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="values"> x and y as the first and second values respectively  </param>
@@ -649,7 +652,7 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform with the given name. The <see cref="ShaderProgram" /> must be bound for this to work.
+    /// Sets the uniform with the given name. The <see cref="ShaderProgram"/> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="values"> x, y and z as the first, second and third values respectively  </param>
@@ -666,7 +669,7 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the uniform with the given name. The <see cref="ShaderProgram" /> must be bound for this to work.
+    /// Sets the uniform with the given name. The <see cref="ShaderProgram"/> must be bound for this to work.
     /// </summary>
     /// <param name="name"> the name of the uniform </param>
     /// <param name="values"> r, g, b and a as the first through fourth values respectively  </param>
@@ -681,20 +684,20 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the vertex attribute with the given name.
-    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
+    /// Sets the vertex attribute with the given name.
+    /// The <see cref="ShaderProgram"/> must be bound for this to work.
     /// </summary>
     /// <param name="name">The attribute name.</param>
     /// <param name="size">
-    ///     The number of components, must be >= 1 and &lt;= 4.
+    /// The number of components, must be >= 1 and &lt;= 4.
     /// </param>
     /// <param name="type">
-    ///     The type, must be one of IGL.GL_Byte, IGL.GL_Unsigned_Byte, IGL.GL_Short,
-    ///     IGL.GL_Unsigned_Short, IGL.GL_Fixed, or IGL.GL_Float.
-    ///     <para>GL_F will not work on the desktop.</para>
+    /// The type, must be one of IGL.GL_Byte, IGL.GL_Unsigned_Byte, IGL.GL_Short,
+    /// IGL.GL_Unsigned_Short, IGL.GL_Fixed, or IGL.GL_Float.
+    /// <para>GL_F will not work on the desktop.</para>
     /// </param>
     /// <param name="normalize">
-    ///     Whether fixed point data should be normalized. Will not work on the desktop.
+    /// Whether fixed point data should be normalized. Will not work on the desktop.
     /// </param>
     /// <param name="stride">The stride in bytes between successive attributes.</param>
     /// <param name="buffer">The buffer containing the vertex attributes.</param>
@@ -719,22 +722,22 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the vertex attribute with the given name.
-    ///     The <see cref="ShaderProgram" /> must be bound for this to work.
+    /// Sets the vertex attribute with the given name.
+    /// The <see cref="ShaderProgram"/> must be bound for this to work.
     /// </summary>
     /// <param name="name">The attribute name.</param>
     /// <param name="size">The number of components, must be >= 1 and &lt;= 4.</param>
     /// <param name="type">
-    ///     The type, must be one of IGL.GL_Byte, IGL.GL_Unsigned_Byte, IGL.GL_Short,
-    ///     IGL.GL_Unsigned_Short, IGL.GL_Fixed, or IGL.GL_Float.
-    ///     <para>GL_Fixed will not work on the desktop.</para>
+    /// The type, must be one of IGL.GL_Byte, IGL.GL_Unsigned_Byte, IGL.GL_Short,
+    /// IGL.GL_Unsigned_Short, IGL.GL_Fixed, or IGL.GL_Float.
+    /// <para>GL_Fixed will not work on the desktop.</para>
     /// </param>
     /// <param name="normalize">
-    ///     Whether fixed point data should be normalized. Will not work on the desktop.
+    /// Whether fixed point data should be normalized. Will not work on the desktop.
     /// </param>
     /// <param name="stride">The stride in bytes between successive attributes.</param>
     /// <param name="offset">
-    ///     Byte offset into the vertex buffer object bound to IGL.GL_Array_Buffer.
+    /// Byte offset into the vertex buffer object bound to IGL.GL_Array_Buffer.
     /// </param>
     public void SetVertexAttribute( string name, int size, int type, bool normalize, int stride, int offset )
     {
@@ -763,8 +766,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Disposes all resources associated with this shader.
-    ///     Must be called when the shader is no longer used.
+    /// Disposes all resources associated with this shader.
+    /// Must be called when the shader is no longer used.
     /// </summary>
     public void Dispose()
     {
@@ -777,7 +780,7 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Disables the vertex attribute with the given name
+    /// Disables the vertex attribute with the given name
     /// </summary>
     /// <param name="name"> the vertex attribute name  </param>
     public void DisableVertexAttribute( string name )
@@ -801,7 +804,7 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Enables the vertex attribute with the given name
+    /// Enables the vertex attribute with the given name
     /// </summary>
     /// <param name="name"> the vertex attribute name  </param>
     public void EnableVertexAttribute( string name )
@@ -842,8 +845,8 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Invalidates all shaders so the next time they are used new
-    ///     handles are generated.
+    /// Invalidates all shaders so the next time they are used new
+    /// handles are generated.
     /// </summary>
     /// <param name="app">  </param>
     public static void InvalidateAllShaderPrograms( IApplication app )
@@ -863,7 +866,7 @@ public class ShaderProgram
     }
 
     /// <summary>
-    ///     Sets the given attribute
+    /// Sets the given attribute
     /// </summary>
     /// <param name="name"> the name of the attribute </param>
     /// <param name="value1"> the first value </param>
@@ -954,8 +957,8 @@ public class ShaderProgram
 
     /// <param name="name"> the name of the attribute </param>
     /// <returns>
-    ///     the type of the attribute, one of <see cref="IGL.GL_FLOAT" />,
-    ///     <see cref="IGL.GL_FLOAT_VEC2" /> etc.
+    /// the type of the attribute, one of <see cref="IGL.GL_FLOAT"/>,
+    /// <see cref="IGL.GL_FLOAT_VEC2"/> etc.
     /// </returns>
     public int GetAttributeType( string name )
     {
@@ -985,8 +988,8 @@ public class ShaderProgram
 
     /// <param name="name"> the name of the uniform </param>
     /// <returns>
-    ///     the type of the uniform, one of <see cref="IGL.GL_FLOAT" />,
-    ///     <see cref="IGL.GL_FLOAT_VEC2" /> etc.
+    /// the type of the uniform, one of <see cref="IGL.GL_FLOAT"/>,
+    /// <see cref="IGL.GL_FLOAT_VEC2"/> etc.
     /// </returns>
     public int GetUniformType( string name )
     {

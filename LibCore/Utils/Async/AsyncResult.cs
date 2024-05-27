@@ -27,8 +27,8 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Utils.Async;
 
 /// <summary>
-///     Returned by <see cref="AsyncExecutor.Submit{T}(IAsyncTask{T})"/>.
-///     Allows to poll for the result of the async workload.
+/// Returned by <see cref="AsyncExecutor.Submit{T}(IAsyncTask{T})"/>.
+/// Allows to poll for the result of the async workload.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 [PublicAPI]
@@ -38,17 +38,17 @@ public class AsyncResult< T >
 
     public AsyncResult( Task< T > task )
     {
-        this._task = task;
+        _task = task;
     }
 
     /// <summary>
-    ///     Returns whether the AsyncTask is done.
+    /// Returns whether the AsyncTask is done.
     /// </summary>
     public bool IsDone => _task.IsCompleted;
 
     /// <summary>
-    ///     waits if necessary for the computation to complete and
-    ///     then returns the result
+    /// waits if necessary for the computation to complete and
+    /// then returns the result
     /// </summary>
     public T? Get()
     {

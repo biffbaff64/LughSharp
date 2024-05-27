@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
-///     Drawable for a <see cref="TextureRegion" />.
+/// Drawable for a <see cref="TextureRegion"/>.
 /// </summary>
 [PublicAPI]
 public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
@@ -34,36 +34,7 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
     private readonly TextureRegion? _region;
 
     // ------------------------------------------------------------------------
-    
-    #region constructors
-    
-    /// <summary>
-    ///     Creates an uninitialized TextureRegionDrawable.
-    ///     The texture region must be set before use.
-    /// </summary>
-    public TextureRegionDrawable()
-    {
-    }
 
-    public TextureRegionDrawable( Texture texture )
-    {
-        Region = new TextureRegion( texture );
-    }
-
-    public TextureRegionDrawable( TextureRegion region )
-    {
-        Region = region;
-    }
-
-    public TextureRegionDrawable( TextureRegionDrawable drawable ) : base( drawable )
-    {
-        Region = drawable.Region;
-    }
-
-    #endregion constructors
-
-    // ------------------------------------------------------------------------
-    
     protected TextureRegion? Region
     {
         get => _region;
@@ -89,7 +60,7 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
     }
 
     /// <summary>
-    ///     Draws this drawable at the specified bounds.
+    /// Draws this drawable at the specified bounds.
     /// </summary>
     /// <param name="batch"></param>
     /// <param name="x"></param>
@@ -119,8 +90,8 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
     }
 
     /// <summary>
-    ///     Creates a new drawable that renders the same as this drawable
-    ///     tinted the specified color.
+    /// Creates a new drawable that renders the same as this drawable
+    /// tinted the specified color.
     /// </summary>
     public virtual IDrawable Tint( Color tint )
     {
@@ -153,4 +124,33 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
 
         return drawable;
     }
+
+    // ------------------------------------------------------------------------
+
+    #region constructors
+
+    /// <summary>
+    /// Creates an uninitialized TextureRegionDrawable.
+    /// The texture region must be set before use.
+    /// </summary>
+    public TextureRegionDrawable()
+    {
+    }
+
+    public TextureRegionDrawable( Texture texture )
+    {
+        Region = new TextureRegion( texture );
+    }
+
+    public TextureRegionDrawable( TextureRegion region )
+    {
+        Region = region;
+    }
+
+    public TextureRegionDrawable( TextureRegionDrawable drawable ) : base( drawable )
+    {
+        Region = drawable.Region;
+    }
+
+    #endregion constructors
 }

@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Core;
 
 /// <summary>
-///     Base class for Input classes.
+/// Base class for Input classes.
 /// </summary>
 [PublicAPI]
 public abstract class AbstractInput : IInput
@@ -45,8 +45,8 @@ public abstract class AbstractInput : IInput
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Returns TRUE if the key identified by the supplied <see cref="IInput.Keys"/>
-    ///     key code is pressed.
+    /// Returns TRUE if the key identified by the supplied <see cref="IInput.Keys"/>
+    /// key code is pressed.
     /// </summary>
     public virtual bool IsKeyPressed( int key )
     {
@@ -59,8 +59,8 @@ public abstract class AbstractInput : IInput
     }
 
     /// <summary>
-    ///     Returns TRUE if the key identified by the supplied <see cref="IInput.Keys"/>
-    ///     key code has <b>just</b> been pressed.
+    /// Returns TRUE if the key identified by the supplied <see cref="IInput.Keys"/>
+    /// key code has <b>just</b> been pressed.
     /// </summary>
     public virtual bool IsKeyJustPressed( int key )
     {
@@ -69,13 +69,13 @@ public abstract class AbstractInput : IInput
             return KeyJustPressed;
         }
 
-        return ( key is >= 0 and <= IInput.Keys.MAX_KEYCODE ) && JustPressedKeys[ key ];
+        return key is >= 0 and <= IInput.Keys.MAX_KEYCODE && JustPressedKeys[ key ];
     }
 
     // ------------------------------------------------------------------------
 
     #region catch keys
-    
+
     //TODO: What are 'catch keys' in LibGDX???
     //TODO: Are these just for mobile devices???
     //TODO: Do I need to keep these???
@@ -91,15 +91,30 @@ public abstract class AbstractInput : IInput
         }
     }
 
-    public virtual bool IsCatchKey( int keycode ) => _keysToCatch.Contains( keycode );
+    public virtual bool IsCatchKey( int keycode )
+    {
+        return _keysToCatch.Contains( keycode );
+    }
 
-    public virtual bool IsCatchBackKey() => _keysToCatch.Contains( IInput.Keys.BACK );
+    public virtual bool IsCatchBackKey()
+    {
+        return _keysToCatch.Contains( IInput.Keys.BACK );
+    }
 
-    public virtual void SetCatchBackKey( bool catchBack ) => SetCatchKey( IInput.Keys.BACK, catchBack );
+    public virtual void SetCatchBackKey( bool catchBack )
+    {
+        SetCatchKey( IInput.Keys.BACK, catchBack );
+    }
 
-    public virtual bool IsCatchMenuKey() => _keysToCatch.Contains( IInput.Keys.MENU );
+    public virtual bool IsCatchMenuKey()
+    {
+        return _keysToCatch.Contains( IInput.Keys.MENU );
+    }
 
-    public virtual void SetCatchMenuKey( bool catchMenu ) => SetCatchKey( IInput.Keys.MENU, catchMenu );
+    public virtual void SetCatchMenuKey( bool catchMenu )
+    {
+        SetCatchKey( IInput.Keys.MENU, catchMenu );
+    }
 
     #endregion catch keys
 
@@ -110,35 +125,27 @@ public abstract class AbstractInput : IInput
     #region abstract methods
 
     // I'm pretty sure these are for mobile devices...
-    public abstract float              GetAccelerometerX();
-    public abstract float              GetAccelerometerY();
-    public abstract float              GetAccelerometerZ();
-    public abstract float              GetGyroscopeX();
-    public abstract float              GetGyroscopeY();
-    public abstract float              GetGyroscopeZ();
-    public abstract int                GetMaxPointers();
-    public abstract int                GetX( int pointer = 0 );
-    public abstract int                GetDeltaX( int pointer = 0 );
-    public abstract int                GetY( int pointer = 0 );
-    public abstract int                GetDeltaY( int pointer = 0 );
-    public abstract bool               IsTouched( int pointer = 0 );
-    public abstract bool               JustTouched();
-    public abstract float              GetPressure( int pointer = 0 );
-    public abstract bool               IsButtonPressed( int button );
-    public abstract bool               IsButtonJustPressed( int button );
-    public abstract bool               IsPeripheralAvailable( IInput.Peripheral peripheral );
-    public abstract int                GetRotation();
-    public abstract IInput.Orientation GetNativeOrientation();
-    public abstract void               SetCursorCaught( bool caught );
-    public abstract bool               IsCursorCaught();
-    public abstract void               SetCursorPosition( int x, int y );
-
-    public abstract void GetTextInput( IInput.ITextInputListener listener,
-                                       string title,
-                                       string text,
-                                       string hint,
-                                       IInput.OnscreenKeyboardType type = IInput.OnscreenKeyboardType.Default );
-
+    public abstract float GetAccelerometerX();
+    public abstract float GetAccelerometerY();
+    public abstract float GetAccelerometerZ();
+    public abstract float GetGyroscopeX();
+    public abstract float GetGyroscopeY();
+    public abstract float GetGyroscopeZ();
+    public abstract int   GetMaxPointers();
+    public abstract int   GetX( int pointer = 0 );
+    public abstract int   GetDeltaX( int pointer = 0 );
+    public abstract int   GetY( int pointer = 0 );
+    public abstract int   GetDeltaY( int pointer = 0 );
+    public abstract bool  IsTouched( int pointer = 0 );
+    public abstract bool  JustTouched();
+    public abstract float GetPressure( int pointer = 0 );
+    public abstract bool  IsButtonPressed( int button );
+    public abstract bool  IsButtonJustPressed( int button );
+    public abstract bool  IsPeripheralAvailable( IInput.Peripheral peripheral );
+    public abstract int   GetRotation();
+    public abstract void  SetCursorCaught( bool caught );
+    public abstract bool  IsCursorCaught();
+    public abstract void  SetCursorPosition( int x, int y );
     public abstract void  SetOnscreenKeyboardVisible( bool visible );
     public abstract void  SetOnscreenKeyboardVisible( bool visible, IInput.OnscreenKeyboardType type );
     public abstract void  Vibrate( int milliseconds );
@@ -149,6 +156,14 @@ public abstract class AbstractInput : IInput
     public abstract float GetRoll();
     public abstract void  GetRotationMatrix( float[] matrix );
     public abstract long  GetCurrentEventTime();
+
+    public abstract IInput.Orientation GetNativeOrientation();
+
+    public abstract void GetTextInput( IInput.ITextInputListener listener,
+                                       string title,
+                                       string text,
+                                       string hint,
+                                       IInput.OnscreenKeyboardType type = IInput.OnscreenKeyboardType.Default );
 
     #endregion abstract methods
 }

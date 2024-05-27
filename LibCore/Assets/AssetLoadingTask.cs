@@ -30,35 +30,30 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Assets;
 
 /// <summary>
-///     Responsible for loading an asset through an <see cref="AssetLoader"/> based
-///     on an <see cref="AssetDescriptor" />.
+/// Responsible for loading an asset through an <see cref="AssetLoader"/> based
+/// on an <see cref="AssetDescriptor"/>.
 /// </summary>
 [PublicAPI]
 public class AssetLoadingTask : IAsyncTask< object >
 {
-    public bool                     DependenciesLoaded { get; set; }
-    public List< AssetDescriptor >? Dependencies       { get; set; }
-    public AssetDescriptor          AssetDesc          { get; }
-    public bool                     Cancel             { get; set; }
-    public object?                  Asset              { get; set; }
+    private readonly AsyncExecutor _executor;
 
     // ------------------------------------------------------------------------
 
-    private readonly AssetLoader   _loader;
-    private readonly AssetManager  _manager;
-    private readonly AsyncExecutor _executor;
-    private readonly long          _startTime;
+    private readonly AssetLoader  _loader;
+    private readonly AssetManager _manager;
+    private readonly long         _startTime;
+
+    private volatile bool _asyncDone = false;
 
     private AsyncResult< object >? _depsFuture;
     private AsyncResult< object >? _loadFuture;
-
-    private volatile bool _asyncDone = false;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="AssetLoadingTask"/> class.
+    /// Initializes a new instance of the <see cref="AssetLoadingTask"/> class.
     /// </summary>
     /// <param name="manager">The asset manager responsible for managing assets.</param>
     /// <param name="assetDesc">The descriptor of the asset to be loaded.</param>
@@ -73,9 +68,15 @@ public class AssetLoadingTask : IAsyncTask< object >
         _startTime = Logger.TraceLevel == Logger.LOG_DEBUG ? TimeUtils.NanoTime() : 0;
     }
 
+    public bool                     DependenciesLoaded { get; set; }
+    public List< AssetDescriptor >? Dependencies       { get; set; }
+    public AssetDescriptor          AssetDesc          { get; }
+    public bool                     Cancel             { get; set; }
+    public object?                  Asset              { get; set; }
+
     /// <summary>
-    ///     Loads parts of the asset asynchronously if the loader is
-    ///     an <see cref="AsynchronousAssetLoader{T,TP}" />.
+    /// Loads parts of the asset asynchronously if the loader is
+    /// an <see cref="AsynchronousAssetLoader{T,TP}"/>.
     /// </summary>
     public object? Call()
     {
@@ -119,11 +120,11 @@ public class AssetLoadingTask : IAsyncTask< object >
     }
 
     /// <summary>
-    ///     Updates the loading of the asset. In case the asset is loaded with an
-    ///     <see cref="AsynchronousAssetLoader{T, TP}" />, the loaders
-    ///     <see cref="AsynchronousAssetLoader{TAssetType,TParameters}.LoadAsync" /> method is first called on a
-    ///     worker thread. Once this method returns, the rest of the asset is loaded on the
-    ///     rendering thread via <see cref="AsynchronousAssetLoader{TAssetType,TParameters}.LoadAsync" />.
+    /// Updates the loading of the asset. In case the asset is loaded with an
+    /// <see cref="AsynchronousAssetLoader{T, TP}"/>, the loaders
+    /// <see cref="AsynchronousAssetLoader{TAssetType,TParameters}.LoadAsync"/> method is first called on a
+    /// worker thread. Once this method returns, the rest of the asset is loaded on the
+    /// rendering thread via <see cref="AsynchronousAssetLoader{TAssetType,TParameters}.LoadAsync"/>.
     /// </summary>
     /// <returns> true in case the asset was fully loaded, false otherwise </returns>
     /// <exception cref="GdxRuntimeException"></exception>
@@ -135,8 +136,8 @@ public class AssetLoadingTask : IAsyncTask< object >
     }
 
     /// <summary>
-    ///     Called when this task is the task that is currently being processed
-    ///     and it is unloaded.
+    /// Called when this task is the task that is currently being processed
+    /// and it is unloaded.
     /// </summary>
     public void Unload()
     {
@@ -150,8 +151,8 @@ public class AssetLoadingTask : IAsyncTask< object >
     }
 
     /// <summary>
-    ///     Handles the loading of assets using a synchronous asset loader. 
-    ///     It manages dependencies and ensures they are loaded before the main asset.
+    /// Handles the loading of assets using a synchronous asset loader.
+    /// It manages dependencies and ensures they are loaded before the main asset.
     /// </summary>
     private void HandleSyncLoader()
     {
@@ -180,9 +181,9 @@ public class AssetLoadingTask : IAsyncTask< object >
     }
 
     /// <summary>
-    ///     Handles the loading of assets using an asynchronous asset loader. 
-    ///     Manages the asynchronous loading process, including dependency
-    ///     loading and main asset loading.
+    /// Handles the loading of assets using an asynchronous asset loader.
+    /// Manages the asynchronous loading process, including dependency
+    /// loading and main asset loading.
     /// </summary>
     /// <exception cref="GdxRuntimeException">
     /// Thrown if the asset description or asynchronous loader is null, or if there
@@ -269,7 +270,7 @@ public class AssetLoadingTask : IAsyncTask< object >
     }
 
     /// <summary>
-    ///     Resolves the file path of an asset descriptor using the provided asset loader.
+    /// Resolves the file path of an asset descriptor using the provided asset loader.
     /// </summary>
     /// <param name="loader">The asset loader used to resolve the file path.</param>
     /// <param name="assetDesc">The asset descriptor containing the file path to be resolved.</param>
@@ -294,7 +295,7 @@ public class AssetLoadingTask : IAsyncTask< object >
     }
 
     /// <summary>
-    ///     Removes any duplicate assets from the referenced asset list.
+    /// Removes any duplicate assets from the referenced asset list.
     /// </summary>
     private static void RemoveDuplicates( List< AssetDescriptor > array )
     {

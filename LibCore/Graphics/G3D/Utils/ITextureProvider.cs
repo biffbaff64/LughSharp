@@ -28,7 +28,7 @@ using LughSharp.LibCore.Graphics.G3D.Models.Data;
 namespace LughSharp.LibCore.Graphics.G3D.Utils;
 
 /// <summary>
-///     Used by <see cref="Model" /> to load textures from <see cref="ModelData" />.
+/// Used by <see cref="Model"/> to load textures from <see cref="ModelData"/>.
 /// </summary>
 public interface ITextureProvider
 {

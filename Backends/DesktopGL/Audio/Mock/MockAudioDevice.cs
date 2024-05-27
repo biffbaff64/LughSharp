@@ -26,39 +26,39 @@
 namespace LughSharp.Backends.DesktopGL.Audio.Mock;
 
 /// <summary>
-///     Audio stubs for use when Audio is disabled, or when Audio failed to initialise.
+/// Audio stubs for use when Audio is disabled, or when Audio failed to initialise.
 /// </summary>
 [PublicAPI]
 public class MockAudioDevice : IAudioDevice
 {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public bool IsMono()
     {
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void WriteSamples( int[] samples, int offset, int numSamples )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void WriteSamples( float[] samples, int offset, int numSamples )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int GetLatency()
     {
         return 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void SetVolume( float volume )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Dispose()
     {
     }

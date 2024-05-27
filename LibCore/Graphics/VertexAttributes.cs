@@ -31,12 +31,12 @@ namespace LughSharp.LibCore.Graphics;
 public class VertexAttributes
 {
     /// <summary>
-    ///     the attributes in the order they were specified
+    /// the attributes in the order they were specified
     /// </summary>
     private readonly VertexAttribute[] _attributes;
 
     /// <summary>
-    ///     cache of the value calculated by <see cref="Mask" />.
+    /// cache of the value calculated by <see cref="Mask"/>.
     /// </summary>
     private long _mask = -1;
 
@@ -44,7 +44,7 @@ public class VertexAttributes
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Constructor, sets the vertex attributes in a specific order.
+    /// Constructor, sets the vertex attributes in a specific order.
     /// </summary>
     public VertexAttributes( params VertexAttribute[] attributes )
     {
@@ -65,18 +65,18 @@ public class VertexAttributes
     }
 
     /// <summary>
-    ///     the size of a single vertex in bytes
+    /// the size of a single vertex in bytes
     /// </summary>
     public int VertexSize { get; private set; }
 
     /// <summary>
-    ///     Gets the number of attributes.
+    /// Gets the number of attributes.
     /// </summary>
     public int Size => _attributes.Length;
 
     /// <summary>
-    ///     Calculates a mask based on the contained <see cref="VertexAttribute" />
-    ///     instances. The mask is a bit-wise or of each attributes <see cref="VertexAttribute.usage" />.
+    /// Calculates a mask based on the contained <see cref="VertexAttribute"/>
+    /// instances. The mask is a bit-wise or of each attributes <see cref="VertexAttribute.usage"/>.
     /// </summary>
     /// <returns> the mask  </returns>
     protected long Mask
@@ -100,16 +100,16 @@ public class VertexAttributes
     }
 
     /// <summary>
-    ///     Calculates the mask based on <see cref="Mask" /> and packs
-    ///     the attributes count into the last 32 bits.
+    /// Calculates the mask based on <see cref="Mask"/> and packs
+    /// the attributes count into the last 32 bits.
     /// </summary>
     /// <returns>
-    ///     the mask with attributes count packed into the last 32 bits.
+    /// the mask with attributes count packed into the last 32 bits.
     /// </returns>
     public virtual long MaskWithSizePacked => Mask | ( ( long ) _attributes.Length << 32 );
 
     /// <summary>
-    ///     Returns the offset for the first VertexAttribute with the specified usage.
+    /// Returns the offset for the first VertexAttribute with the specified usage.
     /// </summary>
     /// <param name="usage"> The usage of the VertexAttribute.</param>
     /// <param name="defaultIfNotFound"></param>
@@ -126,7 +126,7 @@ public class VertexAttributes
     }
 
     /// <summary>
-    ///     Returns the offset for the first VertexAttribute with the specified usage.
+    /// Returns the offset for the first VertexAttribute with the specified usage.
     /// </summary>
     /// <param name="usage"> The usage of the VertexAttribute.  </param>
     public int GetOffset( int usage )
@@ -135,7 +135,7 @@ public class VertexAttributes
     }
 
     /// <summary>
-    ///     Returns the first VertexAttribute for the given usage.
+    /// Returns the first VertexAttribute for the given usage.
     /// </summary>
     /// <param name="usage"> The usage of the VertexAttribute to find.  </param>
     public VertexAttribute? FindByUsage( int usage )
@@ -167,7 +167,7 @@ public class VertexAttributes
     }
 
     /// <summary>
-    ///     Gets the VertexAttribute at the given index.
+    /// Gets the VertexAttribute at the given index.
     /// </summary>
     /// <param name="index"> the index </param>
     public VertexAttribute Get( int index )

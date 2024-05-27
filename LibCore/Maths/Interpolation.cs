@@ -242,10 +242,10 @@ public class Interpolation
 
         public Exp( float value, float power )
         {
-            this.Value = value;
-            this.Power = power;
-            Min        = ( float ) Math.Pow( value, -power );
-            Scale      = 1 / ( 1 - Min );
+            Value = value;
+            Power = power;
+            Min   = ( float ) Math.Pow( value, -power );
+            Scale = 1 / ( 1 - Min );
         }
 
         public override float Apply( float a )
@@ -297,10 +297,10 @@ public class Interpolation
 
         public ElasticImpl( float value, float power, int bounces, float scale )
         {
-            this.Value   = value;
-            this.Power   = power;
-            this.Scale   = scale;
-            this.Bounces = bounces * MathUtils.PI * ( ( bounces % 2 ) == 0 ? 1 : -1 );
+            Value   = value;
+            Power   = power;
+            Scale   = scale;
+            Bounces = bounces * MathUtils.PI * ( ( bounces % 2 ) == 0 ? 1 : -1 );
         }
 
         public override float Apply( float a )
@@ -408,8 +408,8 @@ public class Interpolation
                 throw new ArgumentException( "Must be the same number of widths and heights." );
             }
 
-            this.Widths  = widths;
-            this.Heights = heights;
+            Widths  = widths;
+            Heights = heights;
         }
 
         public BounceOutImpl( int bounces )
@@ -528,7 +528,7 @@ public class Interpolation
 
         public SwingImpl( float scale )
         {
-            this.Scale = scale * 2;
+            Scale = scale * 2;
         }
 
         public override float Apply( float a )

@@ -46,21 +46,24 @@ public class HeapShortBuffer : ShortBuffer
     }
 
     /// <inheritdoc/>
+    public override bool IsReadOnly => false;
+
+    /// <inheritdoc/>
     public override ShortBuffer Slice()
     {
-        return new HeapShortBuffer( Hb, -1, 0, this.Remaining(), this.Remaining(), this.Position + Offset );
+        return new HeapShortBuffer( Hb, -1, 0, Remaining(), Remaining(), Position + Offset );
     }
 
     /// <inheritdoc/>
     public override ShortBuffer Duplicate()
     {
-        return new HeapShortBuffer( Hb, this.MarkValue(), this.Position, this.Limit, this.Capacity, Offset );
+        return new HeapShortBuffer( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc/>
     public override ShortBuffer AsReadOnlyBuffer()
     {
-        return new HeapShortBufferR( Hb, this.MarkValue(), this.Position, this.Limit, this.Capacity, Offset );
+        return new HeapShortBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
     protected int Ix( int i )
@@ -68,19 +71,19 @@ public class HeapShortBuffer : ShortBuffer
         return i + Offset;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override short Get()
     {
         return Hb?[ Ix( NextGetIndex() ) ] ?? throw new NullReferenceException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override short Get( int index )
     {
         return Hb?[ Ix( CheckIndex( index ) ) ] ?? throw new NullReferenceException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override ShortBuffer Get( short[] dst, int offset, int length )
     {
         if ( Hb == null )
@@ -96,19 +99,19 @@ public class HeapShortBuffer : ShortBuffer
         }
 
         System.Array.Copy( Hb, Ix( Position ), dst, offset, length );
-        
+
         SetPosition( Position + length );
 
         return this;
     }
 
-    /// <inheritdoc />
-    public override bool IsDirect() => false;
+    /// <inheritdoc/>
+    public override bool IsDirect()
+    {
+        return false;
+    }
 
-    /// <inheritdoc />
-    public override bool IsReadOnly => false;
-
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override ShortBuffer Put( short s )
     {
         if ( Hb == null )
@@ -121,7 +124,7 @@ public class HeapShortBuffer : ShortBuffer
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override ShortBuffer Put( int index, short s )
     {
         if ( Hb == null )
@@ -134,7 +137,7 @@ public class HeapShortBuffer : ShortBuffer
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override ShortBuffer Put( short[] src, int offset, int length )
     {
         if ( Hb == null )
@@ -150,13 +153,13 @@ public class HeapShortBuffer : ShortBuffer
         }
 
         System.Array.Copy( src, offset, Hb, Ix( Position ), length );
-        
+
         SetPosition( Position + length );
 
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override ShortBuffer Put( ShortBuffer src )
     {
         if ( Hb == null )
@@ -203,7 +206,7 @@ public class HeapShortBuffer : ShortBuffer
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override ShortBuffer Compact()
     {
         if ( Hb == null )
@@ -212,15 +215,15 @@ public class HeapShortBuffer : ShortBuffer
         }
 
         System.Array.Copy( Hb, Ix( Position ), Hb, Ix( 0 ), Remaining() );
-        
+
         SetPosition( Remaining() );
         SetLimit( Capacity );
         DiscardMark();
-        
+
         return this;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override ByteOrder Order()
     {
         return ByteOrder.NativeOrder;

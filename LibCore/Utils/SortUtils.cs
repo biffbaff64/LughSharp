@@ -26,16 +26,15 @@
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>
-///     Provides methods to sort arrays of objects.
-///     Sorting requires working memory and this class allows that memory to be reused
-///     to avoid allocation. The sorting is otherwise identical to the Arrays.sort
-///     methods (uses timsort).
+/// Provides methods to sort arrays of objects.
+/// Sorting requires working memory and this class allows that memory to be reused
+/// to avoid allocation. The sorting is otherwise identical to the Arrays.sort
+/// methods (uses timsort).
 /// </summary>
 [PublicAPI]
 public class SortUtils
 {
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="a"></param>
     /// <typeparam name="T"></typeparam>
@@ -46,7 +45,6 @@ public class SortUtils
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="a"></param>
     public static void Sort( object[] a )
@@ -56,7 +54,6 @@ public class SortUtils
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="a"></param>
     /// <param name="fromIndex"></param>
@@ -106,7 +103,6 @@ public class SortUtils
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="a"></param>
     /// <param name="from"></param>

@@ -26,8 +26,8 @@
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 
 /// <summary>
-///     Implementations of FrameDecoder are responsible for decoding
-///     an MPEG audio frame.
+/// Implementations of FrameDecoder are responsible for decoding
+/// an MPEG audio frame.
 /// </summary>
 
 //TODO: the interface currently is too thin. There should be
@@ -37,7 +37,7 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 public interface IFrameDecoder
 {
     /// <summary>
-    ///     Decodes one frame of MPEG audio.
+    /// Decodes one frame of MPEG audio.
     /// </summary>
     void DecodeFrame();
 }

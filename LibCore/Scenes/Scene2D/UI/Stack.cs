@@ -30,20 +30,8 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class Stack : WidgetGroup
 {
-    #region Backing data for properties
-    
-    private float _maxHeight;
-    private float _maxWidth;
-    private float _minHeight;
-    private float _minWidth;
-    private float _prefHeight;
-    private float _prefWidth;
-    private bool  _sizeInvalid = true;
-
-    #endregion Backing data for properties
-
     // ------------------------------------------------------------------------
-    
+
     public Stack()
     {
         Transform = false;
@@ -219,4 +207,16 @@ public class Stack : WidgetGroup
             }
         }
     }
+
+    #region Backing data for properties
+
+    private float _maxHeight;
+    private float _maxWidth;
+    private float _minHeight;
+    private float _minWidth;
+    private float _prefHeight;
+    private float _prefWidth;
+    private bool  _sizeInvalid = true;
+
+    #endregion Backing data for properties
 }

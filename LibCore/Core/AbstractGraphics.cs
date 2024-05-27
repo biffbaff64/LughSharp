@@ -51,24 +51,33 @@ public abstract class AbstractGraphics : IGraphics
     #region implemented methods
 
     /// <summary>
-    ///     Returns the time span between the current frame and the last frame
-    ///     in seconds, without smoothing.
+    /// Returns the time span between the current frame and the last frame
+    /// in seconds, without smoothing.
     /// </summary>
-    public virtual float GetRawDeltaTime() => DeltaTime;
+    public virtual float GetRawDeltaTime()
+    {
+        return DeltaTime;
+    }
 
     /// <summary>
-    ///     This is a scaling factor for the Density Independent Pixel unit, following
-    ///     the convention where one DIP is one pixel on an approximately 160 dpi screen.
-    ///     Thus on a 160dpi screen this density value will be 1; on a 120 dpi screen it
-    ///     would be .75; etc.
+    /// This is a scaling factor for the Density Independent Pixel unit, following
+    /// the convention where one DIP is one pixel on an approximately 160 dpi screen.
+    /// Thus on a 160dpi screen this density value will be 1; on a 120 dpi screen it
+    /// would be .75; etc.
     /// </summary>
     /// <returns>the Density Independent Pixel factor of the display.</returns>
-    public virtual float GetDensity() => GetPpiX() / 160f;
+    public virtual float GetDensity()
+    {
+        return GetPpiX() / 160f;
+    }
 
     /// <summary>
-    ///     Returns the amount of pixels per logical pixel (point).
+    /// Returns the amount of pixels per logical pixel (point).
     /// </summary>
-    public float GetBackBufferScale() => BackBufferWidth / ( float ) Width;
+    public float GetBackBufferScale()
+    {
+        return BackBufferWidth / ( float ) Width;
+    }
 
     //TODO: This may no longer be needed. DotGL uses OGL 4.6 I think.
     public bool IsGL30Available()
@@ -79,7 +88,7 @@ public abstract class AbstractGraphics : IGraphics
         return false;
 #endif
     }
-    
+
     #endregion implemented methods
 
     // ------------------------------------------------------------------------
@@ -105,15 +114,15 @@ public abstract class AbstractGraphics : IGraphics
     public abstract bool SetFullscreenMode( IGraphics.DisplayMode displayMode );
 
     // ------------------------------------------------------------------------
-    public abstract bool    SupportsExtension( string extension );
-    public abstract bool    SupportsDisplayModeChange();
-    public abstract void    RequestRendering();
-    public abstract int     GetSafeInsetLeft();
-    public abstract int     GetSafeInsetTop();
-    public abstract int     GetSafeInsetBottom();
-    public abstract int     GetSafeInsetRight();
-    public abstract long    GetFrameID();
-    public abstract int     GetFramesPerSecond();
+    public abstract bool SupportsExtension( string extension );
+    public abstract bool SupportsDisplayModeChange();
+    public abstract void RequestRendering();
+    public abstract int  GetSafeInsetLeft();
+    public abstract int  GetSafeInsetTop();
+    public abstract int  GetSafeInsetBottom();
+    public abstract int  GetSafeInsetRight();
+    public abstract long GetFrameID();
+    public abstract int  GetFramesPerSecond();
 
     // ------------------------------------------------------------------------
     public abstract ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot );

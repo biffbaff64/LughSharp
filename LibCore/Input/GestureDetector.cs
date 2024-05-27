@@ -25,9 +25,9 @@
 namespace LughSharp.LibCore.Input;
 
 /// <summary>
-///     <see cref="IInputProcessor" />" implementation that detects gestures
-///     (tap, long press, fling, pan, zoom, pinch) and hands them to a
-///     <see cref="IGestureListener" />.
+/// <see cref="IInputProcessor"/>" implementation that detects gestures
+/// (tap, long press, fling, pan, zoom, pinch) and hands them to a
+/// <see cref="IGestureListener"/>.
 /// </summary>
 [PublicAPI]
 public class GestureDetector : InputAdapter
@@ -64,8 +64,8 @@ public class GestureDetector : InputAdapter
     private long                     _touchDownTime;
 
     /// <summary>
-    ///     Creates a new GestureDetector with default values: halfTapSquareSize=20,
-    ///     tapCountInterval=0.4f, longPressDuration=1.1f, maxFlingDelay=int.MaxValue.
+    /// Creates a new GestureDetector with default values: halfTapSquareSize=20,
+    /// tapCountInterval=0.4f, longPressDuration=1.1f, maxFlingDelay=int.MaxValue.
     /// </summary>
     public GestureDetector( IGestureListener listener )
         : this( 20, 0.4f, 1.1f, int.MaxValue, listener )
@@ -73,23 +73,23 @@ public class GestureDetector : InputAdapter
     }
 
     /// <summary>
-    ///     Constructor.
+    /// Constructor.
     /// </summary>
     /// <param name="halfTapSquareSize">
-    ///     half width in pixels of the square around an initial touch event, see
-    ///     <see cref="IGestureListener.Tap(float, float, int, int)" />.
+    /// half width in pixels of the square around an initial touch event, see
+    /// <see cref="IGestureListener.Tap(float, float, int, int)"/>.
     /// </param>
     /// <param name="tapCountInterval">
-    ///     time in seconds that must pass for two touch down/up sequences to
-    ///     be detected as consecutive taps.
+    /// time in seconds that must pass for two touch down/up sequences to
+    /// be detected as consecutive taps.
     /// </param>
     /// <param name="longPressDuration">
-    ///     time in seconds that must pass for the detector to fire a
-    ///     <see cref="IGestureListener.LongPress(float, float)" /> event.
+    /// time in seconds that must pass for the detector to fire a
+    /// <see cref="IGestureListener.LongPress(float, float)"/> event.
     /// </param>
     /// <param name="maxFlingDelay">
-    ///     no fling event is fired when the time in seconds the finger was dragged is
-    ///     larger than this, see <see cref="IGestureListener.Fling(float, float, int)" />
+    /// no fling event is fired when the time in seconds the finger was dragged is
+    /// larger than this, see <see cref="IGestureListener.Fling(float, float, int)"/>
     /// </param>
     /// <param name="listener"></param>
     public GestureDetector( float halfTapSquareSize,
@@ -107,27 +107,27 @@ public class GestureDetector : InputAdapter
     }
 
     /// <summary>
-    ///     Constructor.
+    /// Constructor.
     /// </summary>
     /// <param name="halfTapRectangleWidth">
-    ///     half width in pixels of the rectangle around an initial touch event,
-    ///     see <see cref="IGestureListener.Tap(float, float, int, int)" />.
+    /// half width in pixels of the rectangle around an initial touch event,
+    /// see <see cref="IGestureListener.Tap(float, float, int, int)"/>.
     /// </param>
     /// <param name="halfTapRectangleHeight">
-    ///     half height in pixels of the rectangle around an initial touch event,
-    ///     see <see cref="IGestureListener.Tap(float, float, int, int)" />.
+    /// half height in pixels of the rectangle around an initial touch event,
+    /// see <see cref="IGestureListener.Tap(float, float, int, int)"/>.
     /// </param>
     /// <param name="tapCountInterval">
-    ///     time in seconds that must pass for two touch down/up sequences to be
-    ///     detected as consecutive taps.
+    /// time in seconds that must pass for two touch down/up sequences to be
+    /// detected as consecutive taps.
     /// </param>
     /// <param name="longPressDuration">
-    ///     time in seconds that must pass for the detector to fire a
-    ///     <see cref="IGestureListener.LongPress(float, float)" /> event.
+    /// time in seconds that must pass for the detector to fire a
+    /// <see cref="IGestureListener.LongPress(float, float)"/> event.
     /// </param>
     /// <param name="maxFlingDelay">
-    ///     no fling event is fired when the time in seconds the finger was dragged
-    ///     is larger than this, see <see cref="IGestureListener.Fling(float, float, int)" />
+    /// no fling event is fired when the time in seconds the finger was dragged
+    /// is larger than this, see <see cref="IGestureListener.Fling(float, float, int)"/>
     /// </param>
     /// <param name="listener"></param>
     public GestureDetector( float halfTapRectangleWidth,
@@ -184,7 +184,7 @@ public class GestureDetector : InputAdapter
     }
 
     /// <summary>
-    ///     If _longPressTask is not null and is running, cancel it.
+    /// If _longPressTask is not null and is running, cancel it.
     /// </summary>
     private void CancelLongPressTask()
     {
@@ -407,8 +407,8 @@ public class GestureDetector : InputAdapter
     }
 
     /// <summary>
-    ///     No further gesture events will be triggered for the
-    ///     current touch, if any.
+    /// No further gesture events will be triggered for the
+    /// current touch, if any.
     /// </summary>
     public void Cancel()
     {
@@ -418,8 +418,8 @@ public class GestureDetector : InputAdapter
     }
 
     /// <summary>
-    ///     Returns whether the user touched the screen long enough
-    ///     to trigger a long press event.
+    /// Returns whether the user touched the screen long enough
+    /// to trigger a long press event.
     /// </summary>
     public bool IsLongPressed()
     {
@@ -427,8 +427,8 @@ public class GestureDetector : InputAdapter
     }
 
     /// <summary>
-    ///     returns whether the user touched the screen for as much
-    ///     or more than the given duration.
+    /// returns whether the user touched the screen for as much
+    /// or more than the given duration.
     /// </summary>
     public bool IsLongPressed( float duration )
     {
@@ -460,7 +460,7 @@ public class GestureDetector : InputAdapter
     }
 
     /// <summary>
-    ///     The tap square will no longer be used for the current touch.
+    /// The tap square will no longer be used for the current touch.
     /// </summary>
     public void InvalidateTapSquare()
     {
@@ -494,20 +494,20 @@ public class GestureDetector : InputAdapter
     }
 
     /// <summary>
-    ///     Register an instance of this class with a <see cref="GestureDetector" /> to
-    ///     receive gestures such as taps, long presses, flings, panning or pinch zooming.
-    ///     Each method returns a bool indicating if the event should be handed to the
-    ///     next listener (false to hand it to the next listener, true otherwise).
+    /// Register an instance of this class with a <see cref="GestureDetector"/> to
+    /// receive gestures such as taps, long presses, flings, panning or pinch zooming.
+    /// Each method returns a bool indicating if the event should be handed to the
+    /// next listener (false to hand it to the next listener, true otherwise).
     /// </summary>
     public interface IGestureListener
     {
         bool TouchDown( float x, float y, int pointer, int button );
 
         /// <summary>
-        ///     Called when a tap occured. A tap happens if a touch went down on the
-        ///     screen and was lifted again without moving outside of the tap square.
-        ///     The tap square is a rectangular area around the initial touch position
-        ///     as specified on construction time of the <see cref="GestureDetector" />.
+        /// Called when a tap occured. A tap happens if a touch went down on the
+        /// screen and was lifted again without moving outside of the tap square.
+        /// The tap square is a rectangular area around the initial touch position
+        /// as specified on construction time of the <see cref="GestureDetector"/>.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -518,8 +518,8 @@ public class GestureDetector : InputAdapter
         bool LongPress( float x, float y );
 
         /// <summary>
-        ///     Called when the user dragged a finger over the screen and lifted it.
-        ///     Reports the last known velocity of the finger in pixels per second.
+        /// Called when the user dragged a finger over the screen and lifted it.
+        /// Reports the last known velocity of the finger in pixels per second.
         /// </summary>
         /// <param name="velocityX"> velocity on x in seconds </param>
         /// <param name="velocityY"> velocity on y in seconds </param>
@@ -527,7 +527,7 @@ public class GestureDetector : InputAdapter
         bool Fling( float velocityX, float velocityY, int button );
 
         /// <summary>
-        ///     Called when the user drags a finger over the screen.
+        /// Called when the user drags a finger over the screen.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -536,23 +536,23 @@ public class GestureDetector : InputAdapter
         bool Pan( float x, float y, float deltaX, float deltaY );
 
         /// <summary>
-        ///     Called when no longer panning.
+        /// Called when no longer panning.
         /// </summary>
         bool PanStop( float x, float y, int pointer, int button );
 
         /// <summary>
-        ///     Called when the user performs a pinch zoom gesture. The original
-        ///     distance is the distance in pixels when the gesture started.
+        /// Called when the user performs a pinch zoom gesture. The original
+        /// distance is the distance in pixels when the gesture started.
         /// </summary>
         /// <param name="initialDistance">
-        ///     distance between fingers when the gesture started.
+        /// distance between fingers when the gesture started.
         /// </param>
         /// <param name="distance"> current distance between fingers. </param>
         bool Zoom( float initialDistance, float distance );
 
         /// <summary>
-        ///     Called when a user performs a pinch zoom gesture. Reports the initial
-        ///     positions of the two involved fingers and their current positions.
+        /// Called when a user performs a pinch zoom gesture. Reports the initial
+        /// positions of the two involved fingers and their current positions.
         /// </summary>
         /// <param name="initialPointer1"> </param>
         /// <param name="initialPointer2"> </param>
@@ -561,14 +561,14 @@ public class GestureDetector : InputAdapter
         bool Pinch( Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2 );
 
         /// <summary>
-        ///     Called when no longer pinching.
+        /// Called when no longer pinching.
         /// </summary>
         void PinchStop();
     }
 
     /// <summary>
-    ///     Derrive from this if you only want to implement a subset
-    ///     of <see cref="IGestureListener" />.
+    /// Derrive from this if you only want to implement a subset
+    /// of <see cref="IGestureListener"/>.
     /// </summary>
     public class GestureAdapter : IGestureListener
     {

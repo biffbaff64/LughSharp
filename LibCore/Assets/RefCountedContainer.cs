@@ -33,19 +33,19 @@ public interface IRefCountedContainer
 }
 
 /// <summary>
-///     A class that stores a reference to an object, as well as counts the number
-///     of times it has been referenced. <see cref="RefCount" /> must be incremented
-///     each time you start using the object, and decrement it after you're done
-///     using it. AssetManager handles this automatically.
+/// A class that stores a reference to an object, as well as counts the number
+/// of times it has been referenced. <see cref="RefCount"/> must be incremented
+/// each time you start using the object, and decrement it after you're done
+/// using it. AssetManager handles this automatically.
 /// </summary>
 [PublicAPI]
 public class RefCountedContainer : IRefCountedContainer
 {
-    public object? Asset    { get; set; }
-    public int     RefCount { get; set; } = 1;
-
     public RefCountedContainer( object obj )
     {
         Asset = obj ?? throw new ArgumentException( "Object must not be null" );
     }
+
+    public object? Asset    { get; set; }
+    public int     RefCount { get; set; } = 1;
 }

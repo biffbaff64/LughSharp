@@ -28,8 +28,8 @@ using LughSharp.LibCore.Assets.Loaders.Resolvers;
 namespace LughSharp.LibCore.Assets.Loaders;
 
 /// <summary>
-///     <see cref="AssetLoader"/> for <see cref="Pixmap"/> instances.
-///     The Pixmap is loaded asynchronously.
+/// <see cref="AssetLoader"/> for <see cref="Pixmap"/> instances.
+/// The Pixmap is loaded asynchronously.
 /// </summary>
 [PublicAPI]
 public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.PixmapLoaderParameter >
@@ -37,7 +37,7 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
     private Pixmap? _pixmap;
 
     /// <summary>
-    ///     Creates a new PixmapLoader using the provided <see cref="IFileHandleResolver"/>
+    /// Creates a new PixmapLoader using the provided <see cref="IFileHandleResolver"/>
     /// </summary>
     /// <param name="resolver"> The resolver to use. </param>
     public PixmapLoader( IFileHandleResolver resolver ) : base( resolver )
@@ -45,13 +45,13 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
         _pixmap = default( Pixmap )!;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
     {
         return null!;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override void LoadAsync( AssetManager? manager, FileInfo? file, PixmapLoaderParameter? parameter )
     {
         ArgumentNullException.ThrowIfNull( file );
@@ -59,19 +59,19 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
         _pixmap = new Pixmap( file );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override object? LoadSync( AssetManager manager, FileInfo? file, PixmapLoaderParameter parameter )
     {
-        var pixmap = this._pixmap;
+        var pixmap = _pixmap;
 
-        this._pixmap = null;
-        
+        _pixmap = null;
+
         return pixmap;
     }
 
     /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
     /// </summary>
     public void Dispose()
     {
@@ -79,7 +79,7 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
     }
 
     /// <summary>
-    ///     Releases the unmanaged resources used by the texture loader.
+    /// Releases the unmanaged resources used by the texture loader.
     /// </summary>
     /// <param name="disposing">
     /// True to release both managed and unmanaged resources; false to release only unmanaged resources.
@@ -97,8 +97,8 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Parameters for loading Pixmap assets. The default class provides no extra
-    ///     parameters and acts as a placeholder for possible future extensions.
+    /// Parameters for loading Pixmap assets. The default class provides no extra
+    /// parameters and acts as a placeholder for possible future extensions.
     /// </summary>
     [PublicAPI]
     public class PixmapLoaderParameter : AssetLoaderParameters

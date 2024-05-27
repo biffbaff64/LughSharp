@@ -27,10 +27,10 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Utils.Buffers.HeapBuffers;
 
 /// <summary>
-///     A read-only HeapShortBuffer.  This class extends the corresponding read/write class,
-///     overriding the mutation methods to throw a <see cref="ReadOnlyBufferException"/> and
-///     overriding the view-buffer methods to return an instance of this class rather than
-///     of the superclass.
+/// A read-only HeapShortBuffer.  This class extends the corresponding read/write class,
+/// overriding the mutation methods to throw a <see cref="ReadOnlyBufferException"/> and
+/// overriding the view-buffer methods to return an instance of this class rather than
+/// of the superclass.
 /// </summary>
 [PublicAPI]
 public class HeapShortBufferR : HeapShortBuffer
@@ -50,16 +50,19 @@ public class HeapShortBufferR : HeapShortBuffer
     {
     }
 
+    /// <inheritdoc/>
+    public override bool IsReadOnly => true;
+
     /// <override/>
     public override ShortBuffer Slice()
     {
-        return new HeapShortBufferR( Hb, -1, 0, this.Remaining(), this.Remaining(), this.Position + Offset );
+        return new HeapShortBufferR( Hb, -1, 0, Remaining(), Remaining(), Position + Offset );
     }
 
     /// <override/>
     public override ShortBuffer Duplicate()
     {
-        return new HeapShortBufferR( Hb, this.MarkValue(), this.Position, this.Limit, this.Capacity, Offset );
+        return new HeapShortBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc/>
@@ -69,9 +72,6 @@ public class HeapShortBufferR : HeapShortBuffer
     }
 
     /// <inheritdoc/>
-    public override bool IsReadOnly => true;
-
-    /// <inheritdoc/>
     public override ByteOrder Order()
     {
         return ByteOrder.NativeOrder;
@@ -79,14 +79,29 @@ public class HeapShortBufferR : HeapShortBuffer
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
-    public override ShortBuffer Put( short x ) => throw new ReadOnlyBufferException();
 
-    public override ShortBuffer Put( int i, short x ) => throw new ReadOnlyBufferException();
+    public override ShortBuffer Put( short x )
+    {
+        throw new ReadOnlyBufferException();
+    }
 
-    public override ShortBuffer Put( short[] src, int offset, int length ) => throw new ReadOnlyBufferException();
+    public override ShortBuffer Put( int i, short x )
+    {
+        throw new ReadOnlyBufferException();
+    }
 
-    public override ShortBuffer Put( ShortBuffer src ) => throw new ReadOnlyBufferException();
+    public override ShortBuffer Put( short[] src, int offset, int length )
+    {
+        throw new ReadOnlyBufferException();
+    }
 
-    public override ShortBuffer Compact() => throw new ReadOnlyBufferException();
+    public override ShortBuffer Put( ShortBuffer src )
+    {
+        throw new ReadOnlyBufferException();
+    }
+
+    public override ShortBuffer Compact()
+    {
+        throw new ReadOnlyBufferException();
+    }
 }

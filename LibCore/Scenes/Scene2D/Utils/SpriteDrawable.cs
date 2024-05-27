@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
-///     Drawable for a <see cref="Sprite" />.
+/// Drawable for a <see cref="Sprite"/>.
 /// </summary>
 [PublicAPI]
 public class SpriteDrawable : BaseDrawable, ITransformDrawable
@@ -34,7 +34,7 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
     private Sprite? _sprite;
 
     /// <summary>
-    ///     Creates an uninitialized SpriteDrawable. The sprite must be set before use.
+    /// Creates an uninitialized SpriteDrawable. The sprite must be set before use.
     /// </summary>
     public SpriteDrawable()
     {
@@ -113,8 +113,8 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
     }
 
     /// <summary>
-    ///     Creates a new drawable that renders the same as this
-    ///     drawable tinted the specified color.
+    /// Creates a new drawable that renders the same as this
+    /// drawable tinted the specified color.
     /// </summary>
     public SpriteDrawable Tint( Color tint )
     {

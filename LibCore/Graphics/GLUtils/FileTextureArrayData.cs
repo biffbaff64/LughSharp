@@ -70,9 +70,9 @@ public class FileTextureArrayData : ITextureArrayData
     public int GLType => _format.ToGLType();
 
     /// <summary>
-    ///     Prepares the TextureArrayData for a call to <see cref="ITextureArrayData.ConsumeTextureArrayData" />.
-    ///     This method can be called from a non OpenGL thread and should thus not interact
-    ///     with OpenGL.
+    /// Prepares the TextureArrayData for a call to <see cref="ITextureArrayData.ConsumeTextureArrayData"/>.
+    /// This method can be called from a non OpenGL thread and should thus not interact
+    /// with OpenGL.
     /// </summary>
     public void Prepare()
     {
@@ -107,16 +107,16 @@ public class FileTextureArrayData : ITextureArrayData
     }
 
     /// <summary>
-    ///     Uploads the pixel data of the TextureArray layers of the TextureArray to the OpenGL
-    ///     ES texture. The caller must bind an OpenGL ES texture.
-    ///     <para></para>
-    ///     <para>
-    ///         A call to <see cref="ITextureArrayData.Prepare" /> must preceed a call to this method.
-    ///     </para>
-    ///     <para>
-    ///         Any internal data structures created in <see cref="ITextureArrayData.Prepare" />
-    ///         should be disposed of here.
-    ///     </para>
+    /// Uploads the pixel data of the TextureArray layers of the TextureArray to the OpenGL
+    /// ES texture. The caller must bind an OpenGL ES texture.
+    /// <para></para>
+    /// <para>
+    /// A call to <see cref="ITextureArrayData.Prepare"/> must preceed a call to this method.
+    /// </para>
+    /// <para>
+    /// Any internal data structures created in <see cref="ITextureArrayData.Prepare"/>
+    /// should be disposed of here.
+    /// </para>
     /// </summary>
     public void ConsumeTextureArrayData()
     {

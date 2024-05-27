@@ -30,22 +30,19 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class TextureAtlas
 {
-    public List< AtlasRegion? > Regions  { get; set; } = new();
-    public List< Texture >      Textures { get; set; } = new( 4 );
-
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
-    ///     Creates an empty atlas to which regions can be added.
+    /// Creates an empty atlas to which regions can be added.
     /// </summary>
     public TextureAtlas()
     {
     }
 
     /// <summary>
-    ///     Creates a new TextureAtlas.
-    ///     Loads the specified pack file using <see cref="FileType.Internal" />,
-    ///     using the parent directory of the pack file to find the page images.
+    /// Creates a new TextureAtlas.
+    /// Loads the specified pack file using <see cref="FileType.Internal"/>,
+    /// using the parent directory of the pack file to find the page images.
     /// </summary>
     public TextureAtlas( string internalPackFile )
         : this( Gdx.Files.Internal( internalPackFile ) )
@@ -53,9 +50,9 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Creates a new TextureAtlas.
-    ///     Loads the specified pack file, using the parent directory of the
-    ///     pack file to find the page images.
+    /// Creates a new TextureAtlas.
+    /// Loads the specified pack file, using the parent directory of the
+    /// pack file to find the page images.
     /// </summary>
     public TextureAtlas( FileInfo packFile )
         : this( packFile, packFile.Directory )
@@ -63,13 +60,13 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Creates a new TextureAtlas.
+    /// Creates a new TextureAtlas.
     /// </summary>
-    ///     Creates a new TextureAtlas.
+    /// Creates a new TextureAtlas.
     /// <param name="packFile"></param>
     /// <param name="flip">
-    ///     If true, all regions loaded will be flipped for use with a perspective
-    ///     where 0,0 is the upper left corner.
+    /// If true, all regions loaded will be flipped for use with a perspective
+    /// where 0,0 is the upper left corner.
     /// </param>
     public TextureAtlas( FileInfo packFile, bool flip )
         : this( packFile, packFile.Directory, flip )
@@ -77,13 +74,13 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Creates a new TextureAtlas.
+    /// Creates a new TextureAtlas.
     /// </summary>
     /// <param name="packFile"></param>
     /// <param name="imagesDir"></param>
     /// <param name="flip">
-    ///     If true, all regions loaded will be flipped for use with a perspective
-    ///     where 0,0 is the upper left corner.
+    /// If true, all regions loaded will be flipped for use with a perspective
+    /// where 0,0 is the upper left corner.
     /// </param>
     public TextureAtlas( FileInfo packFile, DirectoryInfo? imagesDir, bool flip = false )
         : this( new TextureAtlasData( packFile, imagesDir, flip ) )
@@ -91,7 +88,7 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Creates a new TextureAtlas.
+    /// Creates a new TextureAtlas.
     /// </summary>
     /// <param name="data"></param>
     public TextureAtlas( TextureAtlasData data )
@@ -99,8 +96,11 @@ public class TextureAtlas
         Load( data );
     }
 
+    public List< AtlasRegion? > Regions  { get; set; } = new();
+    public List< Texture >      Textures { get; set; } = new( 4 );
+
     /// <summary>
-    ///     Adds the textures and regions from the specified <see cref="TextureAtlasData" />
+    /// Adds the textures and regions from the specified <see cref="TextureAtlasData"/>
     /// </summary>
     public void Load( TextureAtlasData data )
     {
@@ -150,8 +150,8 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Adds a region to the atlas. The specified texture will be disposed
-    ///     when the atlas is disposed.
+    /// Adds a region to the atlas. The specified texture will be disposed
+    /// when the atlas is disposed.
     /// </summary>
     public AtlasRegion AddRegion( string name, Texture texture, int x, int y, int width, int height )
     {
@@ -168,8 +168,8 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Adds a region to the atlas. The texture for the specified region will
-    ///     be disposed when the atlas is disposed.
+    /// Adds a region to the atlas. The texture for the specified region will
+    /// be disposed when the atlas is disposed.
     /// </summary>
     public AtlasRegion AddRegion( string name, TextureRegion textureRegion )
     {
@@ -191,9 +191,9 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Returns the first region found with the specified name. This method uses
-    ///     string comparison to find the region, so the result should be cached
-    ///     rather than calling this method multiple times.
+    /// Returns the first region found with the specified name. This method uses
+    /// string comparison to find the region, so the result should be cached
+    /// rather than calling this method multiple times.
     /// </summary>
     public AtlasRegion? FindRegion( string? name )
     {
@@ -209,9 +209,9 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Returns the first region found with the specified name and index. This method
-    ///     uses string comparison to find the region, so the result should be cached
-    ///     rather than calling this method multiple times.
+    /// Returns the first region found with the specified name and index. This method
+    /// uses string comparison to find the region, so the result should be cached
+    /// rather than calling this method multiple times.
     /// </summary>
     public AtlasRegion? FindRegion( string name, int index )
     {
@@ -231,10 +231,10 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Returns all regions with the specified name, ordered by smallest to
-    ///     largest index. This method uses string comparison to find the regions,
-    ///     so the result should be cached rather than calling this method multiple
-    ///     times.
+    /// Returns all regions with the specified name, ordered by smallest to
+    /// largest index. This method uses string comparison to find the regions,
+    /// so the result should be cached rather than calling this method multiple
+    /// times.
     /// </summary>
     public List< AtlasRegion? > FindRegions( string name )
     {
@@ -254,9 +254,9 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Returns all regions in the atlas as sprites. This method creates a new
-    ///     sprite for each region, so the result should be stored rather than calling
-    ///     this method multiple times.
+    /// Returns all regions in the atlas as sprites. This method creates a new
+    /// sprite for each region, so the result should be stored rather than calling
+    /// this method multiple times.
     /// </summary>
     public List< Sprite > CreateSprites()
     {
@@ -271,12 +271,12 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Returns the first region found with the specified name as a sprite.
-    ///     If whitespace was stripped from the region when it was packed, the
-    ///     sprite is automatically positioned as if whitespace had not been
-    ///     stripped. This method uses string comparison to find the region and
-    ///     constructs a new sprite, so the result should be cached rather than
-    ///     calling this method multiple times.
+    /// Returns the first region found with the specified name as a sprite.
+    /// If whitespace was stripped from the region when it was packed, the
+    /// sprite is automatically positioned as if whitespace had not been
+    /// stripped. This method uses string comparison to find the region and
+    /// constructs a new sprite, so the result should be cached rather than
+    /// calling this method multiple times.
     /// </summary>
     public Sprite? CreateSprite( string name )
     {
@@ -292,10 +292,10 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Returns the first region found with the specified name and index as a
-    ///     sprite. This method uses string comparison to find the region and
-    ///     constructs a new sprite, so the result should be cached rather than
-    ///     calling this method multiple times.
+    /// Returns the first region found with the specified name and index as a
+    /// sprite. This method uses string comparison to find the region and
+    /// constructs a new sprite, so the result should be cached rather than
+    /// calling this method multiple times.
     /// </summary>
     public Sprite? CreateSprite( string name, int index )
     {
@@ -315,13 +315,13 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Returns all regions with the specified name as sprites, ordered by smallest
-    ///     to largest index.
-    ///     <para>
-    ///         This method uses string comparison to find the regions and constructs new
-    ///         sprites, so the result should be cached rather than calling this method
-    ///         multiple times.
-    ///     </para>
+    /// Returns all regions with the specified name as sprites, ordered by smallest
+    /// to largest index.
+    /// <para>
+    /// This method uses string comparison to find the regions and constructs new
+    /// sprites, so the result should be cached rather than calling this method
+    /// multiple times.
+    /// </para>
     /// </summary>
     public List< Sprite > CreateSprites( string name )
     {
@@ -371,11 +371,11 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Returns the first region found with the specified name as
-    ///     a <see cref="NinePatch" />. The region must have been packed with
-    ///     ninepatch splits. This method uses string comparison to find the region
-    ///     and constructs a new ninepatch, so the result should
-    ///     be cached rather than calling this method multiple times.
+    /// Returns the first region found with the specified name as
+    /// a <see cref="NinePatch"/>. The region must have been packed with
+    /// ninepatch splits. This method uses string comparison to find the region
+    /// and constructs a new ninepatch, so the result should
+    /// be cached rather than calling this method multiple times.
     /// </summary>
     public NinePatch? CreatePatch( string name )
     {
@@ -409,9 +409,9 @@ public class TextureAtlas
     }
 
     /// <summary>
-    ///     Releases all resources associated with this TextureAtlas instance.
-    ///     This releases all the textures backing all TextureRegions and Sprites,
-    ///     which should no longer be used after calling dispose.
+    /// Releases all resources associated with this TextureAtlas instance.
+    /// This releases all the textures backing all TextureRegions and Sprites,
+    /// which should no longer be used after calling dispose.
     /// </summary>
     public void Dispose()
     {

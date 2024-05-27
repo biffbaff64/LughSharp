@@ -28,9 +28,9 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 /// <summary>
-///     Sets the actor's color (or a specified color), from the current to the new
-///     color. Note this action transitions from the color at the time the action
-///     starts to the specified color.
+/// Sets the actor's color (or a specified color), from the current to the new
+/// color. Note this action transitions from the color at the time the action
+/// starts to the specified color.
 /// </summary>
 [PublicAPI]
 public class ColorAction : TemporalAction

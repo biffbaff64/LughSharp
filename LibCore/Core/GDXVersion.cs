@@ -30,25 +30,21 @@ using Exception = System.Exception;
 namespace LughSharp.LibCore.Core;
 
 /// <summary>
-///     The current LughSharp Library version.
+/// The current LughSharp Library version.
 /// </summary>
 
 //TODO: Needs testing
 [PublicAPI]
 public class GDXVersion
 {
-    protected static int MajorVersion    { get; set; }
-    protected static int MinorVersion    { get; set; }
-    protected static int RevisionVersion { get; set; }
-
     private readonly static Version? _version;
 
     // ------------------------------------------------------------------------
-    
+
     static GDXVersion()
     {
         _version = Assembly.GetEntryAssembly()?.GetName().Version;
-        
+
         if ( _version == null )
         {
             throw new NullReferenceException( "NULL Assembly Version!" );
@@ -68,11 +64,15 @@ public class GDXVersion
         }
     }
 
+    protected static int MajorVersion    { get; set; }
+    protected static int MinorVersion    { get; set; }
+    protected static int RevisionVersion { get; set; }
+
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Checks the provided version components against the current and reports
-    ///     TRUE if the CURRENT version is GREATER than the provided version.
+    /// Checks the provided version components against the current and reports
+    /// TRUE if the CURRENT version is GREATER than the provided version.
     /// </summary>
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>
@@ -83,9 +83,9 @@ public class GDXVersion
     }
 
     /// <summary>
-    ///     Checks the provided version components against the current
-    ///     and reports TRUE if the CURRENT version is GREATER than or
-    ///     EQUAL to the provided version.
+    /// Checks the provided version components against the current
+    /// and reports TRUE if the CURRENT version is GREATER than or
+    /// EQUAL to the provided version.
     /// </summary>
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>
@@ -106,8 +106,8 @@ public class GDXVersion
     }
 
     /// <summary>
-    ///     Checks the provided version components against the current and
-    ///     reports TRUE if the CURRENT version is LESS than the provided version.
+    /// Checks the provided version components against the current and
+    /// reports TRUE if the CURRENT version is LESS than the provided version.
     /// </summary>
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>
@@ -118,9 +118,9 @@ public class GDXVersion
     }
 
     /// <summary>
-    ///     Checks the provided version components against the current
-    ///     and reports TRUE if the CURRENT version is LESS than or
-    ///     EQUAL to the provided version.
+    /// Checks the provided version components against the current
+    /// and reports TRUE if the CURRENT version is LESS than or
+    /// EQUAL to the provided version.
     /// </summary>
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>

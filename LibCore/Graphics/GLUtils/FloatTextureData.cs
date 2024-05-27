@@ -28,25 +28,19 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
-///     A <see cref="ITextureData" /> implementation which should be used
-///     to create float textures.
+/// A <see cref="ITextureData"/> implementation which should be used
+/// to create float textures.
 /// </summary>
 [PublicAPI]
 public class FloatTextureData : ITextureData
 {
-    public FloatBuffer Buffer     { get; private set; } = null!;
-    public int         Width      { get; set; }         = 0;
-    public int         Height     { get; set; }         = 0;
-    public bool        IsPrepared { get; set; }         = false;
-    public bool        UseMipMaps { get; set; }
-
-    private readonly int _format;
+    private readonly int  _format;
     private readonly int  _internalFormat;
     private readonly bool _isGpuOnly;
     private readonly int  _type;
 
     // ------------------------------------------------------------------------
-    
+
     public FloatTextureData( int w, int h, int internalFormat, int format, int type, bool isGpuOnly )
     {
         Width           = w;
@@ -56,6 +50,12 @@ public class FloatTextureData : ITextureData
         _type           = type;
         _isGpuOnly      = isGpuOnly;
     }
+
+    public FloatBuffer Buffer     { get; private set; } = null!;
+    public int         Width      { get; set; }         = 0;
+    public int         Height     { get; set; }         = 0;
+    public bool        IsPrepared { get; set; }         = false;
+    public bool        UseMipMaps { get; set; }
 
     public void Prepare()
     {
@@ -156,10 +156,13 @@ public class FloatTextureData : ITextureData
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
     /// <summary>
-    ///     FloatTextureData objects are Managed.
+    /// FloatTextureData objects are Managed.
     /// </summary>
-    public bool IsManaged() => true;
-    
+    public bool IsManaged()
+    {
+        return true;
+    }
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 

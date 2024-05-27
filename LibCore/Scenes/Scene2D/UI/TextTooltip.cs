@@ -28,7 +28,7 @@ using LughSharp.LibCore.Scenes.Scene2D.Utils;
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
-///     A tooltip that shows a label.
+/// A tooltip that shows a label.
 /// </summary>
 [PublicAPI]
 public class TextTooltip : Tooltip< Label >
@@ -91,10 +91,6 @@ public class TextTooltip : Tooltip< Label >
     [PublicAPI]
     public class TextTooltipStyle
     {
-        public Label.LabelStyle Label      { get; set; } = null!;
-        public IDrawable        Background { get; set; } = null!;
-        public float            WrapWidth  { get; set; }
-
         public TextTooltipStyle()
         {
         }
@@ -111,5 +107,9 @@ public class TextTooltip : Tooltip< Label >
             Background = style.Background;
             WrapWidth  = style.WrapWidth;
         }
+
+        public Label.LabelStyle Label      { get; set; } = null!;
+        public IDrawable        Background { get; set; } = null!;
+        public float            WrapWidth  { get; set; }
     }
 }

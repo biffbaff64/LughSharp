@@ -33,12 +33,8 @@ public partial record TextureAtlasData
 {
     internal readonly static bool[] HasIndexes = { false };
 
-    public List< Page >   Pages   { get; set; } = new();
-    public List< Region > Regions { get; set; } = new();
-    public string[]       Entry   { get; set; } = new string[ 5 ];
-
     // ------------------------------------------------------------------------
-    
+
     #region Constructors
 
     /// <summary>
@@ -56,8 +52,12 @@ public partial record TextureAtlasData
 
     #endregion
 
+    public List< Page >   Pages   { get; set; } = new();
+    public List< Region > Regions { get; set; } = new();
+    public string[]       Entry   { get; set; } = new string[ 5 ];
+
     // ------------------------------------------------------------------------
-    
+
     private void Load( FileInfo? packFile, DirectoryInfo? imagesDir, bool flip )
     {
         //@formatter:off
@@ -286,7 +286,7 @@ public partial record TextureAtlasData
     }
 
     // ------------------------------------------------------------------------
-    
+
     protected interface IField< in T >
     {
         void Parse( T obj, params string[] entry );
@@ -302,13 +302,13 @@ public partial record TextureAtlasData
     public record Page
     {
         /// <summary>
-        ///     May be null if the texture is not yet loaded.
+        /// May be null if the texture is not yet loaded.
         /// </summary>
         public Texture? Texture { get; set; }
 
         /// <summary>
-        ///     May be null if this page isn't associated with a file. In that
-        ///     case, <see cref="Texture" /> must be set.
+        /// May be null if this page isn't associated with a file. In that
+        /// case, <see cref="Texture"/> must be set.
         /// </summary>
         public FileInfo? TextureFile { get; set; }
 

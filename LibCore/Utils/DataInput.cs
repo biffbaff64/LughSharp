@@ -35,7 +35,7 @@ public class DataInput : BinaryReader
     }
 
     /// <summary>
-    ///     Reads a 1-5 byte int.
+    /// Reads a 1-5 byte int.
     /// </summary>
     public int ReadInt( bool optimizePositive )
     {
@@ -70,7 +70,7 @@ public class DataInput : BinaryReader
     }
 
     /// <summary>
-    ///     Reads the length and string of UTF8 characters, or null.
+    /// Reads the length and string of UTF8 characters, or null.
     /// </summary>
     public string? ReadStringUTF8()
     {

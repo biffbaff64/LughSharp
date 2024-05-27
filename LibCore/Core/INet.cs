@@ -98,6 +98,17 @@ public interface INet
     [PublicAPI]
     public class HttpRequest : IPoolable
     {
+        private readonly Dictionary< string, string >? _headers;
+        private          bool                          _followRedirects = true;
+
+        // --------------------------------------------------------------------
+
+        public HttpRequest( string? httpMethod = null )
+        {
+            _headers   = new Dictionary< string, string >();
+            HttpMethod = httpMethod;
+        }
+
         public string?       Url                { get; set; }
         public string?       HttpMethod         { get; set; }
         public int           TimeOut            { get; set; } = 0;
@@ -105,17 +116,6 @@ public interface INet
         public StreamReader? ContentStream      { get; private set; }
         public long          ContentLength      { get; private set; }
         public string?       Content            { get; set; }
-
-        private readonly Dictionary< string, string >? _headers;
-        private          bool                          _followRedirects = true;
-
-        // --------------------------------------------------------------------
-        
-        public HttpRequest( string? httpMethod = null )
-        {
-            _headers   = new Dictionary< string, string >();
-            HttpMethod = httpMethod;
-        }
 
         public bool FollowRedirects
         {
@@ -135,19 +135,6 @@ public interface INet
             }
         }
 
-        public Dictionary< string, string >? GetHeaders()
-        {
-            return _headers;
-        }
-
-        public void SetHeader( string name, string value )
-        {
-            if ( _headers != null )
-            {
-                _headers[ name ] = value;
-            }
-        }
-
         public void Reset()
         {
             HttpMethod       = null;
@@ -159,6 +146,19 @@ public interface INet
             _followRedirects = true;
 
             _headers?.Clear();
+        }
+
+        public Dictionary< string, string >? GetHeaders()
+        {
+            return _headers;
+        }
+
+        public void SetHeader( string name, string value )
+        {
+            if ( _headers != null )
+            {
+                _headers[ name ] = value;
+            }
         }
     }
 }

@@ -28,8 +28,8 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Core;
 
 /// <summary>
-///     Environment class holding references to the Application,
-///     Graphics, Audio, Files and Input instances.
+/// Environment class holding references to the Application,
+/// Graphics, Audio, Files and Input instances.
 /// </summary>
 [PublicAPI]
 public static class Gdx
@@ -41,11 +41,11 @@ public static class Gdx
     private static IGraphics?    _graphics = null;
     private static INet?         _net      = null;
     private static GLBindings?   _igl      = null;
-    
+
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Initialise the Framework.
+    /// Initialise the Framework.
     /// </summary>
     static Gdx()
     {
@@ -56,32 +56,32 @@ public static class Gdx
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     From Wiktionary...
-    ///     <para>
-    ///         "1. (video games) A game mode where the player character is invulnerable to damage,
-    ///         typically activated by entering a cheat code."
-    ///     </para>
-    ///     <para>
-    ///         "2. (video games) A mode of play in (mostly) roguelike games, allowing the player to
-    ///         create objects on demand, to be resurrected in the case of death, etc."
-    ///     </para>
-    ///     <para>
-    ///         Note: Only the flag is provided by this library. It is intended for use in your local
-    ///         game code.
-    ///     </para>
+    /// From Wiktionary...
+    /// <para>
+    /// "1. (video games) A game mode where the player character is invulnerable to damage,
+    /// typically activated by entering a cheat code."
+    /// </para>
+    /// <para>
+    /// "2. (video games) A mode of play in (mostly) roguelike games, allowing the player to
+    /// create objects on demand, to be resurrected in the case of death, etc."
+    /// </para>
+    /// <para>
+    /// Note: Only the flag is provided by this library. It is intended for use in your local
+    /// game code.
+    /// </para>
     /// </summary>
     public static bool GodMode { get; set; } = false;
 
     /// <summary>
-    ///     Test mode flag which, when TRUE, means that all developer options are enabled.
-    ///     This must, however, mean that software with this enabled cannot be published.
+    /// Test mode flag which, when TRUE, means that all developer options are enabled.
+    /// This must, however, mean that software with this enabled cannot be published.
     /// </summary>
     public static bool DevMode { get; set; } = false;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    /// <inheritdoc cref="IApplication" />
+    /// <inheritdoc cref="IApplication"/>
     public static IApplication App
     {
         get
@@ -93,7 +93,7 @@ public static class Gdx
         set => _app = value;
     }
 
-    /// <inheritdoc cref="IAudio" />
+    /// <inheritdoc cref="IAudio"/>
     public static IAudio Audio
     {
         get
@@ -105,7 +105,7 @@ public static class Gdx
         set => _audio = value;
     }
 
-    /// <inheritdoc cref="IInput" />
+    /// <inheritdoc cref="IInput"/>
     public static IInput Input
     {
         get
@@ -117,7 +117,7 @@ public static class Gdx
         set => _input = value;
     }
 
-    /// <inheritdoc cref="IFiles" />
+    /// <inheritdoc cref="IFiles"/>
     public static IFiles Files
     {
         get
@@ -129,7 +129,7 @@ public static class Gdx
         set => _files = value;
     }
 
-    /// <inheritdoc cref="IGraphics" />
+    /// <inheritdoc cref="IGraphics"/>
     public static IGraphics Graphics
     {
         get
@@ -141,7 +141,7 @@ public static class Gdx
         set => _graphics = value;
     }
 
-    /// <inheritdoc cref="INet" />
+    /// <inheritdoc cref="INet"/>
     public static INet Net
     {
         get

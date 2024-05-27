@@ -28,19 +28,19 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>
-///     A 3x3 grid of texture regions. Any of the regions may be omitted.
-///     Padding may be set as a hint on how to inset content on top of the ninepatch
-///     (by default the eight "edge" textures of the ninepatch define the padding).
-///     When drawn, the four corner patches will not be scaled, the interior patch will
-///     be scaled in both directions, and the middle patch for each edge will be scaled
-///     in only one direction.
-///     <para>
-///         Note this class does not accept ".9.png" textures that include the metadata
-///         border pixels describing the splits (and padding) for the ninepatch. That
-///         information is either passed to a constructor or defined implicitly by the
-///         size of the individual patch textures. TextureAtlas is one way to generate
-///         a postprocessed ninepatch texture regions from ".9.png" files.
-///     </para>
+/// A 3x3 grid of texture regions. Any of the regions may be omitted.
+/// Padding may be set as a hint on how to inset content on top of the ninepatch
+/// (by default the eight "edge" textures of the ninepatch define the padding).
+/// When drawn, the four corner patches will not be scaled, the interior patch will
+/// be scaled in both directions, and the middle patch for each edge will be scaled
+/// in only one direction.
+/// <para>
+/// Note this class does not accept ".9.png" textures that include the metadata
+/// border pixels describing the splits (and padding) for the ninepatch. That
+/// information is either passed to a constructor or defined implicitly by the
+/// size of the individual patch textures. TextureAtlas is one way to generate
+/// a postprocessed ninepatch texture regions from ".9.png" files.
+/// </para>
 /// </summary>
 [PublicAPI]
 public class NinePatch
@@ -67,9 +67,9 @@ public class NinePatch
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Create a ninepatch by cutting up the given texture into nine patches.
-    ///     The subsequent parameters define the 4 lines that will cut the texture
-    ///     region into 9 pieces.
+    /// Create a ninepatch by cutting up the given texture into nine patches.
+    /// The subsequent parameters define the 4 lines that will cut the texture
+    /// region into 9 pieces.
     /// </summary>
     /// <param name="texture"></param>
     /// <param name="left">Pixels from left edge.</param>
@@ -82,9 +82,9 @@ public class NinePatch
     }
 
     /// <summary>
-    ///     Create a ninepatch by cutting up the given texture region into nine patches.
-    ///     The subsequent parameters define the 4 lines that will cut the texture region
-    ///     into 9 pieces.
+    /// Create a ninepatch by cutting up the given texture region into nine patches.
+    /// The subsequent parameters define the 4 lines that will cut the texture region
+    /// into 9 pieces.
     /// </summary>
     /// <param name="region"></param>
     /// <param name="left"> Pixels from left edge. </param>
@@ -183,7 +183,7 @@ public class NinePatch
     }
 
     /// <summary>
-    ///     Construct a degenerate "nine" patch with only a center component.
+    /// Construct a degenerate "nine" patch with only a center component.
     /// </summary>
     public NinePatch( Texture texture, Color color )
         : this( texture )
@@ -198,7 +198,7 @@ public class NinePatch
     }
 
     /// <summary>
-    ///     Construct a degenerate "nine" patch with only a center component.
+    /// Construct a degenerate "nine" patch with only a center component.
     /// </summary>
     public NinePatch( TextureRegion region, Color color )
         : this( region )
@@ -207,7 +207,7 @@ public class NinePatch
     }
 
     /// <summary>
-    ///     Construct a degenerate "nine" patch with only a center component.
+    /// Construct a degenerate "nine" patch with only a center component.
     /// </summary>
     public NinePatch( TextureRegion region )
     {
@@ -220,11 +220,11 @@ public class NinePatch
     }
 
     /// <summary>
-    ///     Construct a nine patch from the given nine texture regions. The provided
-    ///     patches must be consistently sized (e.g., any left edge textures must have
-    ///     the same width, etc). Patches may be <tt>null</tt>. Patch indices are
-    ///     specified via the public members <see cref="TopLeft" />, <see cref="TopCenter" />,
-    ///     etc.
+    /// Construct a nine patch from the given nine texture regions. The provided
+    /// patches must be consistently sized (e.g., any left edge textures must have
+    /// the same width, etc). Patches may be <tt>null</tt>. Patch indices are
+    /// specified via the public members <see cref="TopLeft"/>, <see cref="TopCenter"/>,
+    /// etc.
     /// </summary>
     public NinePatch( params TextureRegion[] patches )
     {
@@ -277,7 +277,7 @@ public class NinePatch
     }
 
     /// <summary>
-    ///     Creates a ninepatch from the supplied ninepatch.
+    /// Creates a ninepatch from the supplied ninepatch.
     /// </summary>
     /// <param name="ninePatch"></param>
     public NinePatch( NinePatch ninePatch )
@@ -286,8 +286,8 @@ public class NinePatch
     }
 
     /// <summary>
-    ///     Creates a ninepatch from the supplied ninepatch and sets
-    ///     it to the supplied Color.
+    /// Creates a ninepatch from the supplied ninepatch and sets
+    /// it to the supplied Color.
     /// </summary>
     /// <param name="ninePatch"></param>
     /// <param name="color"></param>
@@ -522,7 +522,7 @@ public class NinePatch
     }
 
     /// <summary>
-    ///     Set the coordinates and color of a ninth of the patch.
+    /// Set the coordinates and color of a ninth of the patch.
     /// </summary>
     private void Set( int idx, float x, float y, float width, float height, float color )
     {
@@ -658,9 +658,9 @@ public class NinePatch
     }
 
     /// <summary>
-    ///     Set the padding for content inside this ninepatch. By default the padding
-    ///     is set to match the exterior of the ninepatch, so the content should fit
-    ///     exactly within the middle patch.
+    /// Set the padding for content inside this ninepatch. By default the padding
+    /// is set to match the exterior of the ninepatch, so the content should fit
+    /// exactly within the middle patch.
     /// </summary>
     public void SetPadding( float left, float right, float top, float bottom )
     {
@@ -671,7 +671,7 @@ public class NinePatch
     }
 
     /// <summary>
-    ///     Multiplies the top/left/bottom/right sizes and padding by the specified amount.
+    /// Multiplies the top/left/bottom/right sizes and padding by the specified amount.
     /// </summary>
     public void Scale( float scaleX, float scaleY )
     {
@@ -704,7 +704,7 @@ public class NinePatch
     }
 
     // ------------------------------------------------------------------------
-    
+
     #region properties
 
     public float[]  Vertices     { get; set; } = new float[ 9 * 4 * 5 ];
@@ -754,7 +754,6 @@ public class NinePatch
         get => _padBottom <= 0.0001f ? BottomHeight : _padBottom;
         set => _padBottom = value;
     }
-    
+
     #endregion properties
-    
 }

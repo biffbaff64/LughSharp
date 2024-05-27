@@ -30,9 +30,6 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class CheckBox : TextButton
 {
-    public Image? Image     { get; set; }
-    public Cell?  ImageCell { get; set; }
-
     private CheckBoxStyle? _style;
 
     public CheckBox( string text, Skin skin )
@@ -48,6 +45,24 @@ public class CheckBox : TextButton
     public CheckBox( string text, CheckBoxStyle style ) : base( text, style )
     {
         Setup( style );
+    }
+
+    public Image? Image     { get; set; }
+    public Cell?  ImageCell { get; set; }
+
+    public ButtonStyle? Style
+    {
+        get => _style;
+        set
+        {
+            if ( value is not CheckBoxStyle style )
+            {
+                throw new ArgumentException( "style must be a CheckBoxStyle." );
+            }
+
+            _style     = style;
+            base.Style = style;
+        }
     }
 
     // Private setup method to allow calls to virtual methods that can't
@@ -67,21 +82,6 @@ public class CheckBox : TextButton
         label?.SetAlignment( Align.LEFT );
 
         SetSize( GetPrefWidth(), GetPrefHeight() );
-    }
-
-    public ButtonStyle? Style
-    {
-        get => _style;
-        set
-        {
-            if ( value is not CheckBoxStyle style )
-            {
-                throw new ArgumentException( "style must be a CheckBoxStyle." );
-            }
-
-            _style     = style;
-            base.Style = style;
-        }
     }
 
     public override void Draw( IBatch batch, float parentAlpha )
@@ -129,7 +129,7 @@ public class CheckBox : TextButton
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     The style for a select box, see <see cref="CheckBox" />.
+    /// The style for a select box, see <see cref="CheckBox"/>.
     /// </summary>
     [PublicAPI]
     public class CheckBoxStyle : TextButtonStyle

@@ -29,18 +29,18 @@ using Exception = System.Exception;
 namespace LughSharp.LibCore.Graphics.Profiling;
 
 /// <summary>
-///     Listener for GL errors detected by <see cref="GLProfiler" />.
+/// Listener for GL errors detected by <see cref="GLProfiler"/>.
 /// </summary>
 public interface IGLErrorListener
 {
     /// <summary>
-    ///     Put your error logging code here.
+    /// Put your error logging code here.
     /// </summary>
     void OnError( int error );
 }
 
 /// <summary>
-///     Listener that will log using Gdx.app.error GL error name and GL function.
+/// Listener that will log using Gdx.app.error GL error name and GL function.
 /// </summary>
 [PublicAPI]
 public class GLLoggingListener : IGLErrorListener
@@ -83,7 +83,7 @@ public class GLLoggingListener : IGLErrorListener
 }
 
 /// <summary>
-///     Listener that will throw a GdxRuntimeException with error name.
+/// Listener that will throw a GdxRuntimeException with error name.
 /// </summary>
 public class ThrowingListener : IGLErrorListener
 {

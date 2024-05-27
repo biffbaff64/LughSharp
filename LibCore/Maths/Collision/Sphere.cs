@@ -26,26 +26,25 @@
 namespace LughSharp.LibCore.Maths.Collision;
 
 /// <summary>
-///     Encapsulates a 3D sphere with a center and a radius
+/// Encapsulates a 3D sphere with a center and a radius
 /// </summary>
 public class Sphere
 {
+    private const   float   PI43 = ( MathUtils.PI * 4f ) / 3f;
     public readonly Vector3 Center; // the center of the sphere
     public readonly float   Radius; // the radius of the sphere
-
-    private const float PI43 = ( MathUtils.PI * 4f ) / 3f;
 
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Constructs a sphere with the given center and radius
+    /// Constructs a sphere with the given center and radius
     /// </summary>
     /// <param name="center"> The center </param>
     /// <param name="radius"> The radius  </param>
     public Sphere( Vector3 center, float radius )
     {
-        this.Center = new Vector3( center );
-        this.Radius = radius;
+        Center = new Vector3( center );
+        Radius = radius;
     }
 
     /// <summary>
@@ -92,7 +91,7 @@ public class Sphere
     }
 
     /// <summary>
-    ///     Returns the volume of this sphere.
+    /// Returns the volume of this sphere.
     /// </summary>
     public virtual float Volume()
     {
@@ -100,7 +99,7 @@ public class Sphere
     }
 
     /// <summary>
-    ///     Returns the surface area of this sphere.
+    /// Returns the surface area of this sphere.
     /// </summary>
     public virtual float SurfaceArea()
     {

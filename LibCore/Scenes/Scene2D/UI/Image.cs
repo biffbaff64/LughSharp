@@ -28,26 +28,21 @@ using LughSharp.LibCore.Scenes.Scene2D.Utils;
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
-///     Displays a <see cref="IDrawable" />, scaled various way within the widgets
-///     bounds. The preferred size is the min size of the drawable. Only when using
-///     a <see cref="TextureRegionDrawable" /> will the actor's scale, rotation, and
-///     origin be used when drawing.
+/// Displays a <see cref="IDrawable"/>, scaled various way within the widgets
+/// bounds. The preferred size is the min size of the drawable. Only when using
+/// a <see cref="TextureRegionDrawable"/> will the actor's scale, rotation, and
+/// origin be used when drawing.
 /// </summary>
 [PublicAPI]
 public class Image : Widget
 {
-    public float ImageX      { get; set; }
-    public float ImageY      { get; set; }
-    public float ImageWidth  { get; set; }
-    public float ImageHeight { get; set; }
-
     private int        _alignment; // Backing value for Alignment property
     private IDrawable? _drawable;
-    private Scaling _scaling;
+    private Scaling    _scaling;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     public Image() : this( ( IDrawable ) null! )
     {
     }
@@ -86,6 +81,11 @@ public class Image : Widget
 
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
+
+    public float ImageX      { get; set; }
+    public float ImageY      { get; set; }
+    public float ImageWidth  { get; set; }
+    public float ImageHeight { get; set; }
 
     public int Alignment
     {
@@ -184,15 +184,15 @@ public class Image : Widget
     }
 
     /// <summary>
-    ///     Sets a new drawable for the image. The image's pref size is the
-    ///     drawable's min size. If using the image actor's size rather than
-    ///     the pref size, <see cref="Widget.Pack" /> can be used to size the
-    ///     image to its pref size.
+    /// Sets a new drawable for the image. The image's pref size is the
+    /// drawable's min size. If using the image actor's size rather than
+    /// the pref size, <see cref="Widget.Pack"/> can be used to size the
+    /// image to its pref size.
     /// </summary>
     /// <param name="drawable"> May be null. </param>
     public void SetDrawable( IDrawable? drawable )
     {
-        if ( this._drawable == drawable )
+        if ( _drawable == drawable )
         {
             return;
         }
@@ -209,7 +209,7 @@ public class Image : Widget
             InvalidateHierarchy();
         }
 
-        this._drawable = drawable;
+        _drawable = drawable;
     }
 
     public IDrawable? GetDrawable()

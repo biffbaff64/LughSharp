@@ -47,7 +47,7 @@ public class SpotLightsAttribute : Attribute
     public static string Alias => "spotLights";
     public static long   Type  => Register( Alias );
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override Attribute Copy()
     {
         return this;

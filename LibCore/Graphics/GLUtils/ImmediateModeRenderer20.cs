@@ -29,15 +29,12 @@ using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
-///     Immediate mode rendering class for GLES 2.0. The renderer will allow you to
-///     specify vertices on the fly and provides a default shader for (unlit) rendering.
+/// Immediate mode rendering class for GLES 2.0. The renderer will allow you to
+/// specify vertices on the fly and provides a default shader for (unlit) rendering.
 /// </summary>
 [PublicAPI]
 public class ImmediateModeRenderer20 : IImmediateModeRenderer
 {
-    public int MaxVertices { get; set; }
-    public int NumVertices { get; set; }
-
     private readonly int      _colorOffset;
     private readonly Mesh     _mesh;
     private readonly int      _normalOffset;
@@ -122,6 +119,9 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
     }
 
+    public int MaxVertices { get; set; }
+    public int NumVertices { get; set; }
+
     public void Begin( Matrix4 projModelView, int primitiveType )
     {
         _projModelView.Set( projModelView );
@@ -205,6 +205,17 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         _numSetTexCoords = 0;
         _vertexIdx       = 0;
         NumVertices      = 0;
+    }
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        if ( _ownsShader && ( _shader != null ) )
+        {
+            _shader.Dispose();
+        }
+
+        _mesh.Dispose();
     }
 
     private VertexAttribute[] BuildVertexAttributes( bool hasNormals, bool hasColor, int numTexCoords )
@@ -342,8 +353,8 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     }
 
     /// <summary>
-    ///     Returns a new instance of the default shader used by SpriteBatch
-    ///     for GL2 when no shader is specified.
+    /// Returns a new instance of the default shader used by SpriteBatch
+    /// for GL2 when no shader is specified.
     /// </summary>
     public static ShaderProgram CreateDefaultShader( bool hasNormals, bool hasColors, int numTexCoords )
     {
@@ -357,16 +368,5 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
 
         return program;
-    }
-
-    /// <inheritdoc/>
-    public void Dispose()
-    {
-        if ( _ownsShader && ( _shader != null ) )
-        {
-            _shader.Dispose();
-        }
-
-        _mesh.Dispose();
     }
 }

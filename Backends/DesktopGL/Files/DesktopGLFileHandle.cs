@@ -48,7 +48,7 @@ public class DesktopGLFileHandle // : FileInfo
     //TODO: Updates to Child(string) and Sibling(string) needed. I'm not sure either are correct.
 
     /// <summary>
-    ///     Returns a handle to the child with the specified name.
+    /// Returns a handle to the child with the specified name.
     /// </summary>
     public FileInfo Child( string name )
     {
@@ -64,7 +64,7 @@ public class DesktopGLFileHandle // : FileInfo
     }
 
     /// <summary>
-    ///     Returns a handle to the sibling with the specified name.
+    /// Returns a handle to the sibling with the specified name.
     /// </summary>
     public FileInfo Sibling( string name )
     {
@@ -82,13 +82,13 @@ public class DesktopGLFileHandle // : FileInfo
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Returns the abstract pathname of this abstract pathname's parent, or null if this pathname
-    ///     does not name a parent directory.
-    ///     <para>
-    ///         The parent of an abstract pathname consists of the pathname's prefix, if any, and each name
-    ///         in the pathname's name sequence except for the last. If the name sequence is empty then the
-    ///         pathname does not name a parent directory.
-    ///     </para>
+    /// Returns the abstract pathname of this abstract pathname's parent, or null if this pathname
+    /// does not name a parent directory.
+    /// <para>
+    /// The parent of an abstract pathname consists of the pathname's prefix, if any, and each name
+    /// in the pathname's name sequence except for the last. If the name sequence is empty then the
+    /// pathname does not name a parent directory.
+    /// </para>
     /// </summary>
     public DirectoryInfo ParentFolder()
     {
@@ -111,9 +111,9 @@ public class DesktopGLFileHandle // : FileInfo
     }
 
     /// <summary>
-    ///     Returns a FileInfo that represents this file handle. Note the returned file will
-    ///     only be usable for <see cref="FileType.Absolute" /> and <see cref="FileType.External" />
-    ///     file handles.
+    /// Returns a FileInfo that represents this file handle. Note the returned file will
+    /// only be usable for <see cref="FileType.Absolute"/> and <see cref="FileType.External"/>
+    /// file handles.
     /// </summary>
     public FileInfo File()
     {

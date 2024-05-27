@@ -28,18 +28,13 @@ using LughSharp.LibCore.Assets.Loaders.Resolvers;
 namespace LughSharp.LibCore.Assets.Loaders;
 
 /// <summary>
-///     <see cref="AssetLoader" /> to load <see cref="ISound" /> instances.
+/// <see cref="AssetLoader"/> to load <see cref="ISound"/> instances.
 /// </summary>
 [PublicAPI]
 public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoaderParameters >, IDisposable
 {
     /// <summary>
-    ///     The <see cref="ISound" /> instance currently loaded by this <see cref="SoundLoader" />.
-    /// </summary>
-    public ISound? LoadedSound { get; set; }
-
-    /// <summary>
-    ///     Creates a new SoundLoader using the provided <see cref="IFileHandleResolver"/>
+    /// Creates a new SoundLoader using the provided <see cref="IFileHandleResolver"/>
     /// </summary>
     /// <param name="resolver"></param>
     public SoundLoader( IFileHandleResolver resolver ) : base( resolver )
@@ -47,15 +42,29 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
         LoadedSound = null!;
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// The <see cref="ISound"/> instance currently loaded by this <see cref="SoundLoader"/>.
+    /// </summary>
+    public ISound? LoadedSound { get; set; }
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
+    /// <inheritdoc/>
     public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
     {
         return null!;
     }
 
     /// <summary>
-    ///     Loads the non-OpenGL part of the asset and injects any dependencies of
-    ///     the asset into the AssetManager.
+    /// Loads the non-OpenGL part of the asset and injects any dependencies of
+    /// the asset into the AssetManager.
     /// </summary>
     /// <param name="manager"> The <see cref="AssetManager"/> to use. </param>
     /// <param name="file"> A <see cref="FileInfo"/> object holding file information. </param>
@@ -66,31 +75,22 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
     }
 
     /// <summary>
-    ///     Loads the sound asset synchronously.
+    /// Loads the sound asset synchronously.
     /// </summary>
     /// <param name="manager">The asset manager responsible for loading assets.</param>
     /// <param name="file">The file information of the sound asset.</param>
     /// <param name="parameter">The parameters for loading the sound asset (ignored).</param>
     /// <returns>The loaded sound asset, or null if no sound is loaded.</returns>
-    public override ISound? LoadSync(AssetManager manager, FileInfo? file, SoundLoaderParameters parameter)
+    public override ISound? LoadSync( AssetManager manager, FileInfo? file, SoundLoaderParameters parameter )
     {
-        var sound = this.LoadedSound;
-        this.LoadedSound = null;
+        var sound = LoadedSound;
+        LoadedSound = null;
 
         return sound;
     }
-    
-    /// <summary>
-    ///     Performs application-defined tasks associated with freeing,
-    ///     releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
-    }
 
     /// <summary>
-    ///     Releases the unmanaged resources used by the texture loader.
+    /// Releases the unmanaged resources used by the texture loader.
     /// </summary>
     /// <param name="disposing">
     /// True to release both managed and unmanaged resources; false to release only unmanaged resources.
@@ -107,8 +107,8 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Parameters for loading sound assets. The default class provides no extra
-    ///     parameters and acts as a placeholder for possible future extensions.
+    /// Parameters for loading sound assets. The default class provides no extra
+    /// parameters and acts as a placeholder for possible future extensions.
     /// </summary>
     [PublicAPI]
     public class SoundLoaderParameters : AssetLoaderParameters

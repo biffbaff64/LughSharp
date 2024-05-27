@@ -26,9 +26,9 @@
 namespace LughSharp.LibCore.Maths;
 
 /// <summary>
-///     Encapsulates a general vector. Allows chaining operations by returning
-///     a reference to itself in all modification methods. See Vector2 and
-///     Vector3 for specific implementations.
+/// Encapsulates a general vector. Allows chaining operations by returning
+/// a reference to itself in all modification methods. See Vector2 and
+/// Vector3 for specific implementations.
 /// </summary>
 [PublicAPI]
 public interface IVector< T > where T : IVector< T >
@@ -44,47 +44,47 @@ public interface IVector< T > where T : IVector< T >
     float Len();
 
     /// <summary>
-    ///     This method is faster than IVector.Len() because it avoids calculating
-    ///     a square root. It is useful for comparisons, but not for getting exact
-    ///     lengths, as the return value is the square of the actual length.
+    /// This method is faster than IVector.Len() because it avoids calculating
+    /// a square root. It is useful for comparisons, but not for getting exact
+    /// lengths, as the return value is the square of the actual length.
     /// </summary>
     /// <returns> The squared euclidean length  </returns>
     float Len2();
 
     /// <summary>
-    ///     Limits the length of this vector, based on the desired maximum length.
+    /// Limits the length of this vector, based on the desired maximum length.
     /// </summary>
     /// <param name="limit"> desired maximum length for this vector </param>
     /// <returns> this vector for chaining  </returns>
     T Limit( float limit );
 
     /// <summary>
-    ///     Limits the length of this vector, based on the desired maximum length squared.
-    ///     This method is slightly faster than Limit().
+    /// Limits the length of this vector, based on the desired maximum length squared.
+    /// This method is slightly faster than Limit().
     /// </summary>
     /// <param name="limit2"> squared desired maximum length for this vector </param>
     /// <returns> this vector for chaining </returns>
-    /// <see cref="Len2() " />
+    /// <see cref="Len2() "/>
     T Limit2( float limit2 );
 
     /// <summary>
-    ///     Sets the length of this vector. Does nothing if this vector is zero.
+    /// Sets the length of this vector. Does nothing if this vector is zero.
     /// </summary>
     /// <param name="len"> desired length for this vector </param>
     /// <returns> this vector for chaining  </returns>
     T SetLength( float len );
 
     /// <summary>
-    ///     Sets the length of this vector, based on the square of the desired length.
-    ///     Does nothing if this vector is zero.
-    ///     This method is slightly faster than setLength().
+    /// Sets the length of this vector, based on the square of the desired length.
+    /// Does nothing if this vector is zero.
+    /// This method is slightly faster than setLength().
     /// </summary>
     /// <param name="len2"> desired square of the length for this vector </param>
     /// <returns> this vector for chaining </returns>
     T SetLength2( float len2 );
 
     /// <summary>
-    ///     Clamps this vector's length to given min and max values
+    /// Clamps this vector's length to given min and max values
     /// </summary>
     /// <param name="min"> Min length </param>
     /// <param name="max"> Max length </param>
@@ -92,68 +92,68 @@ public interface IVector< T > where T : IVector< T >
     T Clamp( float min, float max );
 
     /// <summary>
-    ///     Sets this vector from the given vector
+    /// Sets this vector from the given vector
     /// </summary>
     /// <param name="v"> The vector </param>
     /// <returns> This vector for chaining  </returns>
     T Set( T v );
 
     /// <summary>
-    ///     Subtracts the given vector from this vector.
+    /// Subtracts the given vector from this vector.
     /// </summary>
     /// <param name="v"> The vector </param>
     /// <returns> This vector for chaining  </returns>
     T Sub( T v );
 
     /// <summary>
-    ///     Normalizes this vector. Does nothing if it is zero.
+    /// Normalizes this vector. Does nothing if it is zero.
     /// </summary>
     /// <returns> This vector for chaining  </returns>
     T Nor();
 
     /// <summary>
-    ///     Adds the given vector to this vector
+    /// Adds the given vector to this vector
     /// </summary>
     /// <param name="v"> The vector </param>
     /// <returns> This vector for chaining  </returns>
     T Add( T v );
 
     /// <summary>
-    ///     Returns the Dot product between this vector and the supplied vector.
+    /// Returns the Dot product between this vector and the supplied vector.
     /// </summary>
     float Dot( T v );
 
     /// <summary>
-    ///     Scales this vector by a scalar
+    /// Scales this vector by a scalar
     /// </summary>
     /// <param name="scalar"> The scalar </param>
     /// <returns> This vector for chaining  </returns>
     T Scale( float scalar );
 
     /// <summary>
-    ///     Scales this vector by another vector
+    /// Scales this vector by another vector
     /// </summary>
     /// <returns> This vector for chaining  </returns>
     T Scale( T v );
 
     /// <summary>
-    ///     Returns the Distance between this vector and the supplied vector.
+    /// Returns the Distance between this vector and the supplied vector.
     /// </summary>
     float Distance( T v );
 
     /// <summary>
-    ///     This method is faster than <see cref="Distance" /> because it
-    ///     avoids calculating a square root. It is useful for comparisons, but not for
-    ///     getting accurate distances, as the return value is the square of the actual
-    ///     distance.
+    /// This method is faster than <see cref="Distance"/> because it
+    /// avoids calculating a square root. It is useful for comparisons, but not for
+    /// getting accurate distances, as the return value is the square of the actual
+    /// distance.
     /// </summary>
     /// <param name="v"> The other vector </param>
     /// <returns> the squared distance between this and the other vector  </returns>
     float Distance2( T v );
 
     /// <summary>
-    ///     Linearly interpolates between this vector and the target vector by alpha
-    ///     which is in the range [0,1]. The result is stored in this vector.
+    /// Linearly interpolates between this vector and the target vector by alpha
+    /// which is in the range [0,1]. The result is stored in this vector.
     /// </summary>
     /// <param name="target"> The target vector </param>
     /// <param name="alpha"> The interpolation coefficient </param>
@@ -161,9 +161,9 @@ public interface IVector< T > where T : IVector< T >
     T Lerp( T target, float alpha );
 
     /// <summary>
-    ///     Interpolates between this vector and the given target vector by alpha
-    ///     (within range [0,1]) using the given Interpolation method. the result
-    ///     is stored in this vector.
+    /// Interpolates between this vector and the given target vector by alpha
+    /// (within range [0,1]) using the given Interpolation method. the result
+    /// is stored in this vector.
     /// </summary>
     /// <param name="target"> The target vector </param>
     /// <param name="alpha"> The interpolation coefficient </param>
@@ -172,7 +172,7 @@ public interface IVector< T > where T : IVector< T >
     T Interpolate( T target, float alpha, IInterpolation interpolator );
 
     /// <summary>
-    ///     Sets this vector to the unit vector with a random direction
+    /// Sets this vector to the unit vector with a random direction
     /// </summary>
     /// <returns> This vector for chaining  </returns>
     T SetToRandomDirection();
@@ -195,16 +195,16 @@ public interface IVector< T > where T : IVector< T >
     /// <summary>
     /// </summary>
     /// <returns>
-    ///     true if this vector is in line with the other vector (either in the same
-    ///     or the opposite direction)
+    /// true if this vector is in line with the other vector (either in the same
+    /// or the opposite direction)
     /// </returns>
     bool IsOnLine( T other, float epsilon );
 
     /// <summary>
     /// </summary>
     /// <returns>
-    ///     true if this vector is in line with the other vector (either in the
-    ///     same or the opposite direction)
+    /// true if this vector is in line with the other vector (either in the
+    /// same or the opposite direction)
     /// </returns>
     bool IsOnLine( T other );
 
@@ -224,37 +224,37 @@ public interface IVector< T > where T : IVector< T >
     bool IsCollinearOpposite( T other, float epsilon );
 
     /// <summary>
-    ///     Returns true if this vector is opposite collinear with the other vector.
+    /// Returns true if this vector is opposite collinear with the other vector.
     /// </summary>
     bool IsCollinearOpposite( T other );
 
     /// <summary>
-    ///     Returns whether this vector is perpendicular with the other vector.
-    ///     True if the dot product is 0.
+    /// Returns whether this vector is perpendicular with the other vector.
+    /// True if the dot product is 0.
     /// </summary>
     bool IsPerpendicular( T other );
 
     /// <summary>
-    ///     Whether this vector is perpendicular with the other vector.
-    ///     True if the dot product is 0.
+    /// Whether this vector is perpendicular with the other vector.
+    /// True if the dot product is 0.
     /// </summary>
     bool IsPerpendicular( T other, float epsilon );
 
     /// <summary>
-    ///     Returns whether this vector has similar direction compared to the other vector.
-    ///     True if the normalized dot product is > 0.
+    /// Returns whether this vector has similar direction compared to the other vector.
+    /// True if the normalized dot product is > 0.
     /// </summary>
     bool HasSameDirection( T other );
 
     /// <summary>
-    ///     Returns whether this vector has opposite direction compared to the
-    ///     other vector. True if the normalized dot product is less than 0.
+    /// Returns whether this vector has opposite direction compared to the
+    /// other vector. True if the normalized dot product is less than 0.
     /// </summary>
     bool HasOppositeDirection( T other );
 
     /// <summary>
-    ///     Compares this vector with the other vector, using the supplied
-    ///     epsilon for fuzzy equality testing.
+    /// Compares this vector with the other vector, using the supplied
+    /// epsilon for fuzzy equality testing.
     /// </summary>
     /// <param name="other"> </param>
     /// <param name="epsilon"> </param>
@@ -262,21 +262,21 @@ public interface IVector< T > where T : IVector< T >
     bool EpsilonEquals( T other, float epsilon );
 
     /// <summary>
-    ///     First scale a supplied vector, then add it to this vector.
+    /// First scale a supplied vector, then add it to this vector.
     /// </summary>
     /// <param name="v"> addition vector </param>
     /// <param name="scalar"> for scaling the addition vector  </param>
     T MulAdd( T v, float scalar );
 
     /// <summary>
-    ///     First scale a supplied vector, then add it to this vector.
+    /// First scale a supplied vector, then add it to this vector.
     /// </summary>
     /// <param name="v"> addition vector </param>
     /// <param name="mulVec"> vector by whose values the addition vector will be scaled  </param>
     T MulAdd( T v, T mulVec );
 
     /// <summary>
-    ///     Sets the components of this vector to 0
+    /// Sets the components of this vector to 0
     /// </summary>
     /// <returns> This vector for chaining  </returns>
     T SetZero();

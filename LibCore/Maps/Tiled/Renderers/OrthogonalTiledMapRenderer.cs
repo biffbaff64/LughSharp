@@ -73,8 +73,8 @@ public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
         var row2 = Math.Min( layerHeight,
                              ( int ) ( ( ( ViewBounds.Y + ViewBounds.Height + layerTileHeight ) - layerOffsetY ) / layerTileHeight ) );
 
-        var y        = ( row2 * layerTileHeight ) + layerOffsetY;
-        var xStart   = ( col1 * layerTileWidth ) + layerOffsetX;
+        var y      = ( row2 * layerTileHeight ) + layerOffsetY;
+        var xStart = ( col1 * layerTileWidth ) + layerOffsetX;
 
         for ( var row = row2; row >= row1; row-- )
         {
@@ -178,13 +178,13 @@ public class OrthogonalTiledMapRenderer : BatchTileMapRenderer
                             {
                                 ( Vertices[ IBatch.U1 ], Vertices[ IBatch.U3 ] )
                                     = ( Vertices[ IBatch.U3 ], Vertices[ IBatch.U1 ] );
-                            
+
                                 ( Vertices[ IBatch.U2 ], Vertices[ IBatch.U4 ] )
                                     = ( Vertices[ IBatch.U4 ], Vertices[ IBatch.U2 ] );
 
                                 ( Vertices[ IBatch.V1 ], Vertices[ IBatch.V3 ] )
                                     = ( Vertices[ IBatch.V3 ], Vertices[ IBatch.V1 ] );
-                            
+
                                 ( Vertices[ IBatch.V2 ], Vertices[ IBatch.V4 ] )
                                     = ( Vertices[ IBatch.V4 ], Vertices[ IBatch.V2 ] );
 

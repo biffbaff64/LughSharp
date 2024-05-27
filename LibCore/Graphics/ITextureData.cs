@@ -26,19 +26,19 @@
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
-///     Used by a Texture to load the pixel data. A TextureData can either return a Pixmap or
-///     upload the pixel data itself. It signals it's type via getType() to the Texture that's
-///     using it. The Texture will then either invoke consumePixmap() or consumeCustomData(int).
-///     These are the first methods to be called by Texture. After that the Texture will invoke
-///     the other methods to find out about the size of the image data, the format, whether
-///     mipmaps should be generated and whether the TextureData is able to manage the pixel data
-///     if the OpenGL ES context is lost. In case the TextureData implementation has the type
-///     TextureData.TextureDataType.Custom, the implementation has to generate the mipmaps itself
-///     if necessary. See MipMapGenerator. Before a call to either consumePixmap() or
-///     consumeCustomData(int), Texture will bind the OpenGL ES texture.
-///     <para>
-///         Look at FileTextureData and ETC1TextureData for example implementations of this interface.
-///     </para>
+/// Used by a Texture to load the pixel data. A TextureData can either return a Pixmap or
+/// upload the pixel data itself. It signals it's type via getType() to the Texture that's
+/// using it. The Texture will then either invoke consumePixmap() or consumeCustomData(int).
+/// These are the first methods to be called by Texture. After that the Texture will invoke
+/// the other methods to find out about the size of the image data, the format, whether
+/// mipmaps should be generated and whether the TextureData is able to manage the pixel data
+/// if the OpenGL ES context is lost. In case the TextureData implementation has the type
+/// TextureData.TextureDataType.Custom, the implementation has to generate the mipmaps itself
+/// if necessary. See MipMapGenerator. Before a call to either consumePixmap() or
+/// consumeCustomData(int), Texture will bind the OpenGL ES texture.
+/// <para>
+/// Look at FileTextureData and ETC1TextureData for example implementations of this interface.
+/// </para>
 /// </summary>
 [PublicAPI]
 public interface ITextureData
@@ -50,87 +50,87 @@ public interface ITextureData
     }
 
     /// <summary>
-    ///     Returns the <see cref="TextureDataType"/>.
+    /// Returns the <see cref="TextureDataType"/>.
     /// </summary>
     public TextureType TextureDataType { get; }
 
     /// <summary>
-    /// <returns> whether the TextureData is prepared or not.</returns>
+    ///     <returns> whether the TextureData is prepared or not.</returns>
     /// </summary>
     public bool IsPrepared { get; set; }
 
     /// <summary>
-    ///     Returns whether to generate mipmaps or not.
+    /// Returns whether to generate mipmaps or not.
     /// </summary>
     public bool UseMipMaps { get; set; }
 
     /// <summary>
-    ///     Returns the width of the pixel data.
+    /// Returns the width of the pixel data.
     /// </summary>
     public int Width { get; set; }
 
     /// <summary>
-    ///     Returns the height of the pixel data.
+    /// Returns the height of the pixel data.
     /// </summary>
     public int Height { get; set; }
 
     /// <summary>
-    ///     Prepares the TextureData for a call to <see cref="ConsumePixmap()" /> or
-    ///     <see cref="ConsumeCustomData" />. This method can be called from a non
-    ///     OpenGL thread and should not interact with OpenGL.
+    /// Prepares the TextureData for a call to <see cref="ConsumePixmap()"/> or
+    /// <see cref="ConsumeCustomData"/>. This method can be called from a non
+    /// OpenGL thread and should not interact with OpenGL.
     /// </summary>
     public void Prepare();
 
     /// <summary>
-    ///     Returns the <see cref="Pixmap" /> for upload by Texture.
-    ///     <para>
-    ///         A call to <see cref="Prepare()" /> must precede a call to this method. Any
-    ///         internal data structures created in <see cref="Prepare()" /> should be
-    ///         disposed of here.
-    ///     </para>
+    /// Returns the <see cref="Pixmap"/> for upload by Texture.
+    /// <para>
+    /// A call to <see cref="Prepare()"/> must precede a call to this method. Any
+    /// internal data structures created in <see cref="Prepare()"/> should be
+    /// disposed of here.
+    /// </para>
     /// </summary>
     /// <returns> the pixmap.</returns>
     public Pixmap? ConsumePixmap();
 
     /// <summary>
-    ///     Returns whether the caller of <see cref="ConsumePixmap()"/> should
-    ///     dispose the Pixmap returned by <see cref="ConsumePixmap()"/>.
+    /// Returns whether the caller of <see cref="ConsumePixmap()"/> should
+    /// dispose the Pixmap returned by <see cref="ConsumePixmap()"/>.
     /// </summary>
     public bool DisposePixmap();
 
     /// <summary>
-    ///     Uploads the pixel data to the OpenGL ES texture. The caller must bind an
-    ///     OpenGL ES texture. A call to <see cref="Prepare()" /> must preceed a call
-    ///     to this method.
-    ///     <para>
-    ///         Any internal data structures created in <see cref="Prepare()" /> should be
-    ///         disposed of here.
-    ///     </para>
+    /// Uploads the pixel data to the OpenGL ES texture. The caller must bind an
+    /// OpenGL ES texture. A call to <see cref="Prepare()"/> must preceed a call
+    /// to this method.
+    /// <para>
+    /// Any internal data structures created in <see cref="Prepare()"/> should be
+    /// disposed of here.
+    /// </para>
     /// </summary>
     public void ConsumeCustomData( int target );
 
     /// <summary>
-    ///     Returns the <see cref="Pixmap.Format" /> of the pixel data.
+    /// Returns the <see cref="Pixmap.Format"/> of the pixel data.
     /// </summary>
     public Pixmap.Format GetFormat();
 
     /// <summary>
-    ///     Returns whether this implementation can cope with a EGL context loss.
+    /// Returns whether this implementation can cope with a EGL context loss.
     /// </summary>
     public bool IsManaged();
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
-    ///     Factory class for creating instances of ITextureData based on file types.
-    ///     Provides static methods to instantiate the right implementation (Pixmap, ETC1, KTX).
+    /// Factory class for creating instances of ITextureData based on file types.
+    /// Provides static methods to instantiate the right implementation (Pixmap, ETC1, KTX).
     /// </summary>
     [PublicAPI]
     public static class TextureDataFactory
     {
         /// <summary>
-        ///     Loads texture data from the specified file with default format and mipmaps settings.
+        /// Loads texture data from the specified file with default format and mipmaps settings.
         /// </summary>
         /// <param name="file">The file to load texture data from.</param>
         /// <param name="useMipMaps">Specifies whether to use mipmaps.</param>
@@ -146,7 +146,7 @@ public interface ITextureData
         }
 
         /// <summary>
-        ///     Loads texture data from the specified file with the given format and mipmaps settings.
+        /// Loads texture data from the specified file with the given format and mipmaps settings.
         /// </summary>
         /// <param name="file">The file to load texture data from.</param>
         /// <param name="format">The format of the texture data.</param>

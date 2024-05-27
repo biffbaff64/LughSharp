@@ -31,9 +31,6 @@ namespace LughSharp.LibCore.Maps.Tiled.Tiles;
 [PublicAPI]
 public class AnimatedTiledMapTile : ITiledMapTile
 {
-    public int       ID        { get; set; }
-    public Blendmode BlendMode { get; set; } = Blendmode.Alpha;
-
     private readonly static long _initialTimeOffset = DateTime.Now.Millisecond;
 
     private static   long                 _lastTiledMapRenderTime = 0;
@@ -47,11 +44,11 @@ public class AnimatedTiledMapTile : ITiledMapTile
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Creates an animated tile with the given animation interval and frame tiles.
+    /// Creates an animated tile with the given animation interval and frame tiles.
     /// </summary>
     /// <param name="interval">The interval between each individual frame tile.</param>
     /// <param name="frameTiles">
-    ///     An array of <see cref="StaticTiledMapTile" />s that make up the animation.
+    /// An array of <see cref="StaticTiledMapTile"/>s that make up the animation.
     /// </param>
     public AnimatedTiledMapTile( float interval, List< StaticTiledMapTile > frameTiles )
     {
@@ -68,13 +65,13 @@ public class AnimatedTiledMapTile : ITiledMapTile
     }
 
     /// <summary>
-    ///     Creates an animated tile with the given animation intervals and frame tiles.
+    /// Creates an animated tile with the given animation intervals and frame tiles.
     /// </summary>
     /// <param name="intervals">
-    ///     The intervals between each individual frame tile in milliseconds.
+    /// The intervals between each individual frame tile in milliseconds.
     /// </param>
     /// <param name="frameTiles">
-    ///     An array of <see cref="StaticTiledMapTile"/> that make up the animation.
+    /// An array of <see cref="StaticTiledMapTile"/> that make up the animation.
     /// </param>
     public AnimatedTiledMapTile( List< int > intervals, List< StaticTiledMapTile > frameTiles )
     {
@@ -89,6 +86,9 @@ public class AnimatedTiledMapTile : ITiledMapTile
             _loopDuration    += intervals[ i ];
         }
     }
+
+    public int       ID        { get; set; }
+    public Blendmode BlendMode { get; set; } = Blendmode.Alpha;
 
     public TextureRegion TextureRegion
     {
@@ -108,13 +108,25 @@ public class AnimatedTiledMapTile : ITiledMapTile
         set { }
     }
 
-    public MapProperties GetProperties() => _properties ??= new MapProperties();
+    public MapProperties GetProperties()
+    {
+        return _properties ??= new MapProperties();
+    }
 
-    public MapObjects GetObjects() => _mapObjects ??= new MapObjects();
+    public MapObjects GetObjects()
+    {
+        return _mapObjects ??= new MapObjects();
+    }
 
-    public StaticTiledMapTile[] GetFrameTiles() => _frameTiles;
+    public StaticTiledMapTile[] GetFrameTiles()
+    {
+        return _frameTiles;
+    }
 
-    public ITiledMapTile GetCurrentFrame() => _frameTiles[ GetCurrentFrameIndex() ];
+    public ITiledMapTile GetCurrentFrame()
+    {
+        return _frameTiles[ GetCurrentFrameIndex() ];
+    }
 
     public int GetCurrentFrameIndex()
     {

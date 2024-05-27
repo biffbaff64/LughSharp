@@ -28,14 +28,8 @@ namespace LughSharp.LibCore.Maths;
 [PublicAPI]
 public class BSpline< T > : IPath< T > where T : IVector< T >
 {
-    public T[]?       ControlPoints { get; set; }
-    public List< T >? Knots         { get; set; }
-    public int        Degree        { get; set; }
-    public bool       Continuous    { get; set; }
-    public int        SpanCount     { get; set; }
-
     // ------------------------------------------------------------------------
-    
+
     private const float D6 = 1f / 6f;
 
     private T? _tmp;
@@ -52,6 +46,12 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     {
         Set( controlPoints, degree, continuous );
     }
+
+    public T[]?       ControlPoints { get; set; }
+    public List< T >? Knots         { get; set; }
+    public int        Degree        { get; set; }
+    public bool       Continuous    { get; set; }
+    public int        SpanCount     { get; set; }
 
     public T ValueAt( in T output, in float t )
     {
@@ -109,7 +109,7 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Calculates the cubic b-spline value for the given position (t).
+    /// Calculates the cubic b-spline value for the given position (t).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="t"> The position (0&lt;=t&lt;=1) on the spline </param>
@@ -129,7 +129,7 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Calculates the cubic b-spline derivative for the given position (t).
+    /// Calculates the cubic b-spline derivative for the given position (t).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="t"> The position (0&lt;=t&lt;=1) on the spline </param>
@@ -149,11 +149,11 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Calculates the cubic b-spline value for the given span (i) at the given position (u).
+    /// Calculates the cubic b-spline value for the given span (i) at the given position (u).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="i">
-    ///     The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - 3 (cubic degree)
+    /// The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - 3 (cubic degree)
     /// </param>
     /// <param name="u"> The position (0&lt;=u&lt;=1) on the span </param>
     /// <param name="points"> The control points </param>
@@ -190,11 +190,11 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Calculates the cubic b-spline derivative for the given span (i) at the given position (u).
+    /// Calculates the cubic b-spline derivative for the given span (i) at the given position (u).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="i">
-    ///     The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - 3 (cubic degree)
+    /// The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - 3 (cubic degree)
     /// </param>
     /// <param name="u"> The position (0&lt;=u&lt;=1) on the span </param>
     /// <param name="points"> The control points </param>
@@ -230,7 +230,7 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Calculates the n-degree b-spline value for the given position (t).
+    /// Calculates the n-degree b-spline value for the given position (t).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="t"> The position (0&lt;=t&lt;=1) on the spline </param>
@@ -251,7 +251,7 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Calculates the n-degree b-spline derivative for the given position (t).
+    /// Calculates the n-degree b-spline derivative for the given position (t).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="t"> The position (0&lt;=t&lt;=1) on the spline </param>
@@ -272,11 +272,11 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Calculates the n-degree b-spline value for the given span (i) at the given position (u).
+    /// Calculates the n-degree b-spline value for the given span (i) at the given position (u).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="i">
-    ///     The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - degree
+    /// The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - degree
     /// </param>
     /// <param name="u"> The position (0&lt;=u&lt;=1) on the span </param>
     /// <param name="points"> The control points </param>
@@ -295,11 +295,11 @@ public class BSpline< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Calculates the n-degree b-spline derivative for the given span (i) at the given position (u).
+    /// Calculates the n-degree b-spline derivative for the given span (i) at the given position (u).
     /// </summary>
     /// <param name="output"> The Vector to set to the result. </param>
     /// <param name="i">
-    ///     The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - degree
+    /// The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.length : points.length - degree
     /// </param>
     /// <param name="u"> The position (0&lt;=u&lt;=1) on the span </param>
     /// <param name="points"> The control points </param>

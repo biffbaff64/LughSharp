@@ -129,8 +129,8 @@ public class GLVersion : GDXVersion
     }
 
     /// <summary>
-    ///     Forgiving parsing of gl major, minor and release versions as
-    ///     some manufacturers don't adhere to spec
+    /// Forgiving parsing of gl major, minor and release versions as
+    /// some manufacturers don't adhere to spec
     /// </summary>
     private int ParseInt( string v, int defaultValue )
     {
@@ -147,8 +147,8 @@ public class GLVersion : GDXVersion
     }
 
     /// <summary>
-    ///     Checks to see if the current GL connection version is higher, or
-    ///     equal to the provided test versions.
+    /// Checks to see if the current GL connection version is higher, or
+    /// equal to the provided test versions.
     /// </summary>
     /// <param name="testMajorVersion"> the major version to test against </param>
     /// <param name="testMinorVersion"> the minor version to test against </param>

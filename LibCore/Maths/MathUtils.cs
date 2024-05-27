@@ -28,12 +28,12 @@ namespace LughSharp.LibCore.Maths;
 [PublicAPI]
 public class MathUtils
 {
-    public const float NANO_TO_SEC          = 1 / 1000000000f;
-    public const float FLOAT_TOLERANCE      = 0.000001f; // 32 bits
-    public const float PI                   = 3.1415927f;
-    public const float HALF_PI              = PI / 2;
-    public const float PI2                  = PI * 2;
-    public const float E                    = 2.7182818f;
+    public const float NANO_TO_SEC     = 1 / 1000000000f;
+    public const float FLOAT_TOLERANCE = 0.000001f; // 32 bits
+    public const float PI              = 3.1415927f;
+    public const float HALF_PI         = PI / 2;
+    public const float PI2             = PI * 2;
+    public const float E               = 2.7182818f;
 
     // multiply by this to convert from radians to degrees.
     public const float RADIANS_TO_DEGREES = 180f / PI;
@@ -60,7 +60,7 @@ public class MathUtils
     private readonly static Random _rand = new();
 
     /// <summary>
-    ///     Returns the sine in radians from a lookup table.
+    /// Returns the sine in radians from a lookup table.
     /// </summary>
     public static float Sin( float radians )
     {
@@ -68,7 +68,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns the cosine in radians from a lookup table.
+    /// Returns the cosine in radians from a lookup table.
     /// </summary>
     public static float Cos( float radians )
     {
@@ -76,7 +76,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns the sine in radians from a lookup table.
+    /// Returns the sine in radians from a lookup table.
     /// </summary>
     public static float SinDeg( float degrees )
     {
@@ -84,7 +84,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns the cosine in radians from a lookup table.
+    /// Returns the cosine in radians from a lookup table.
     /// </summary>
     public static float CosDeg( float degrees )
     {
@@ -92,9 +92,9 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns atan2 in radians, faster but less accurate than Math.atan2.
-    ///     Average error of 0.00231 radians (0.1323 degrees),
-    ///     Largest error of 0.00488 radians (0.2796 degrees).
+    /// Returns atan2 in radians, faster but less accurate than Math.atan2.
+    /// Average error of 0.00231 radians (0.1323 degrees),
+    /// Largest error of 0.00488 radians (0.2796 degrees).
     /// </summary>
     public static float Atan2( float y, float x )
     {
@@ -128,7 +128,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns a random number between 0 (inclusive) and the specified value (inclusive).
+    /// Returns a random number between 0 (inclusive) and the specified value (inclusive).
     /// </summary>
     public static int Random( int range )
     {
@@ -136,7 +136,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns a random number between start (inclusive) and end (inclusive).
+    /// Returns a random number between start (inclusive) and end (inclusive).
     /// </summary>
     public static int Random( int start, int end )
     {
@@ -144,7 +144,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns a random number between 0 (inclusive) and the specified value (inclusive).
+    /// Returns a random number between 0 (inclusive) and the specified value (inclusive).
     /// </summary>
     public static long Random( long range )
     {
@@ -152,7 +152,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns a random number between start (inclusive) and end (inclusive).
+    /// Returns a random number between start (inclusive) and end (inclusive).
     /// </summary>
     public static long Random( long start, long end )
     {
@@ -160,7 +160,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns the next random number as a long.
+    /// Returns the next random number as a long.
     /// </summary>
     public static long RandomLong()
     {
@@ -168,7 +168,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns a random bool value.
+    /// Returns a random bool value.
     /// </summary>
     public static bool RandomBool()
     {
@@ -176,7 +176,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns true if a random value between 0 and 1 is less than the specified value.
+    /// Returns true if a random value between 0 and 1 is less than the specified value.
     /// </summary>
     public static bool RandomBool( float chance )
     {
@@ -184,7 +184,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns random number between 0.0 (inclusive) and 1.0 (exclusive).
+    /// Returns random number between 0.0 (inclusive) and 1.0 (exclusive).
     /// </summary>
     public static float Random()
     {
@@ -192,7 +192,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns a random number between 0 (inclusive) and the specified value (exclusive).
+    /// Returns a random number between 0 (inclusive) and the specified value (exclusive).
     /// </summary>
     public static float Random( float range )
     {
@@ -200,7 +200,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns a random number between start (inclusive) and end (exclusive).
+    /// Returns a random number between start (inclusive) and end (exclusive).
     /// </summary>
     public static float Random( float start, float end )
     {
@@ -208,7 +208,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns -1 or 1, randomly.
+    /// Returns -1 or 1, randomly.
     /// </summary>
     public static int RandomSign()
     {
@@ -216,8 +216,8 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns a triangularly distributed random number between -1.0 (exclusive) and
-    ///     1.0 (exclusive), where values around zero are more likely.
+    /// Returns a triangularly distributed random number between -1.0 (exclusive) and
+    /// 1.0 (exclusive), where values around zero are more likely.
     /// </summary>
     public static float RandomTriangular()
     {
@@ -225,8 +225,8 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns a triangularly distributed random number between <tt>-max</tt> (exclusive)
-    ///     and <tt>max</tt> (exclusive), where values around zero are more likely.
+    /// Returns a triangularly distributed random number between <tt>-max</tt> (exclusive)
+    /// and <tt>max</tt> (exclusive), where values around zero are more likely.
     /// </summary>
     /// <param name="max"> the upper limit  </param>
     public static float RandomTriangular( float max )
@@ -235,9 +235,9 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns a triangularly distributed random number between <tt>min</tt> (inclusive)
-    ///     and <tt>max</tt> (exclusive), where the <tt>mode</tt> argument defaults to the
-    ///     midpoint between the bounds, giving a symmetric distribution.
+    /// Returns a triangularly distributed random number between <tt>min</tt> (inclusive)
+    /// and <tt>max</tt> (exclusive), where the <tt>mode</tt> argument defaults to the
+    /// midpoint between the bounds, giving a symmetric distribution.
     /// </summary>
     /// <param name="min"> the lower limit </param>
     /// <param name="max"> the upper limit  </param>
@@ -247,8 +247,8 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns a triangularly distributed random number between <tt>min</tt> (inclusive)
-    ///     and <tt>max</tt> (exclusive), where values around <tt>mode</tt> are more likely.
+    /// Returns a triangularly distributed random number between <tt>min</tt> (inclusive)
+    /// and <tt>max</tt> (exclusive), where values around <tt>mode</tt> are more likely.
     /// </summary>
     /// <param name="min"> the lower limit </param>
     /// <param name="max"> the upper limit </param>
@@ -267,8 +267,8 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns the next power of two. Returns the specified value if the
-    ///     value is already a power of two.
+    /// Returns the next power of two. Returns the specified value if the
+    /// value is already a power of two.
     /// </summary>
     public static int NextPowerOfTwo( int value )
     {
@@ -377,7 +377,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Linearly interpolates between fromValue to toValue on progress position.
+    /// Linearly interpolates between fromValue to toValue on progress position.
     /// </summary>
     public static float Lerp( float fromValue, float toValue, float progress )
     {
@@ -385,8 +385,8 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Linearly interpolates between two angles in radians. Takes into account that
-    ///     angles wrap at two pi and always takes the direction with the smallest delta angle.
+    /// Linearly interpolates between two angles in radians. Takes into account that
+    /// angles wrap at two pi and always takes the direction with the smallest delta angle.
     /// </summary>
     /// <param name="fromRadians"> start angle in radians </param>
     /// <param name="toRadians"> target angle in radians </param>
@@ -400,9 +400,9 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Linearly interpolates between two angles in degrees. Takes into account
-    ///     that angles wrap at 360 degrees and always takes the direction with the
-    ///     smallest delta angle.
+    /// Linearly interpolates between two angles in degrees. Takes into account
+    /// that angles wrap at 360 degrees and always takes the direction with the
+    /// smallest delta angle.
     /// </summary>
     /// <param name="fromDegrees"> start angle in degrees </param>
     /// <param name="toDegrees"> target angle in degrees </param>
@@ -416,9 +416,9 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns the largest integer less than or equal to the specified float.
-    ///     This method will only properly floor floats from
-    ///     -(2^14) to (Float.MAX_VALUE - 2^14).
+    /// Returns the largest integer less than or equal to the specified float.
+    /// This method will only properly floor floats from
+    /// -(2^14) to (Float.MAX_VALUE - 2^14).
     /// </summary>
     public static int Floor( float value )
     {
@@ -426,9 +426,9 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns the largest integer less than or equal to the specified float.
-    ///     This method will only properly floor floats that are positive.
-    ///     Note this method simply casts the float to int.
+    /// Returns the largest integer less than or equal to the specified float.
+    /// This method will only properly floor floats that are positive.
+    /// Note this method simply casts the float to int.
     /// </summary>
     public static int FloorPositive( float value )
     {
@@ -436,8 +436,8 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns the smallest integer greater than or equal to the specified float.
-    ///     This method will only properly ceil floats from -(2^14) to (Float.MAX_VALUE - 2^14).
+    /// Returns the smallest integer greater than or equal to the specified float.
+    /// This method will only properly ceil floats from -(2^14) to (Float.MAX_VALUE - 2^14).
     /// </summary>
     public static int Ceil( float value )
     {
@@ -445,8 +445,8 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns the smallest integer greater than or equal to the specified float.
-    ///     This method will only properly ceil floats that are positive.
+    /// Returns the smallest integer greater than or equal to the specified float.
+    /// This method will only properly ceil floats that are positive.
     /// </summary>
     public static int CeilPositive( float value )
     {
@@ -454,8 +454,8 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns the closest integer to the specified float.
-    ///     This method will only properly round floats from -(2^14) to (Float.MAX_VALUE - 2^14).
+    /// Returns the closest integer to the specified float.
+    /// This method will only properly round floats from -(2^14) to (Float.MAX_VALUE - 2^14).
     /// </summary>
     public static int Round( float value )
     {
@@ -463,8 +463,8 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns the closest integer to the specified float.
-    ///     This method will only properly round floats that are positive.
+    /// Returns the closest integer to the specified float.
+    /// This method will only properly round floats that are positive.
     /// </summary>
     public static int RoundPositive( float value )
     {
@@ -472,7 +472,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns true if the value is zero.
+    /// Returns true if the value is zero.
     /// </summary>
     /// <param name="value">the value to test.</param>
     /// <param name="tolerance"> represent an upper bound below which the value is considered zero.</param>
@@ -487,7 +487,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Returns true if a is nearly equal to b.
+    /// Returns true if a is nearly equal to b.
     /// </summary>
     /// <param name="a"> the first value. </param>
     /// <param name="b"> the second value. </param>
@@ -516,7 +516,7 @@ public class MathUtils
     }
 
     /// <summary>
-    ///     Helper method for convenience. Simply 'converts' a ubyte to an int.
+    /// Helper method for convenience. Simply 'converts' a ubyte to an int.
     /// </summary>
     /// <param name="b"> The 8-bit unsigned byte to convert. </param>
     public static int UnsignedByteToInt( byte b )

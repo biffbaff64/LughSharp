@@ -26,10 +26,10 @@
 namespace LughSharp.LibCore.Utils.Viewport;
 
 /// <summary>
-///     A viewport that keeps the world aspect ratio by extending the world in one direction.
-///     The world is first scaled to fit within the viewport, then the shorter dimension is
-///     lengthened to fill the viewport. A maximum size can be specified to limit how much the
-///     world is extended and black bars (letterboxing) are used for any remaining space.
+/// A viewport that keeps the world aspect ratio by extending the world in one direction.
+/// The world is first scaled to fit within the viewport, then the shorter dimension is
+/// lengthened to fill the viewport. A maximum size can be specified to limit how much the
+/// world is extended and black bars (letterboxing) are used for any remaining space.
 /// </summary>
 [PublicAPI]
 public class ExtendViewport : Viewport
@@ -37,8 +37,8 @@ public class ExtendViewport : Viewport
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Creates a new viewport using a new <see cref="OrthographicCamera" />
-    ///     with no maximum world size.
+    /// Creates a new viewport using a new <see cref="OrthographicCamera"/>
+    /// with no maximum world size.
     /// </summary>
     /// <param name="minWorldWidth"> The minimum allowable world width. </param>
     /// <param name="minWorldHeight"> The minimum allowable wortld height. </param>
@@ -48,7 +48,7 @@ public class ExtendViewport : Viewport
     }
 
     /// <summary>
-    ///     Creates a new viewport with no maximum world size.
+    /// Creates a new viewport with no maximum world size.
     /// </summary>
     /// <param name="minWorldWidth"> The minimum allowable world width. </param>
     /// <param name="minWorldHeight"> The minimum allowable wortld height. </param>
@@ -59,8 +59,8 @@ public class ExtendViewport : Viewport
     }
 
     /// <summary>
-    ///     Creates a new viewport using a new <see cref="OrthographicCamera" />
-    ///     and a maximum world size.
+    /// Creates a new viewport using a new <see cref="OrthographicCamera"/>
+    /// and a maximum world size.
     /// </summary>
     /// <param name="minWorldWidth"> The minimum allowable world width. </param>
     /// <param name="minWorldHeight"> The minimum allowable wortld height. </param>
@@ -72,7 +72,7 @@ public class ExtendViewport : Viewport
     }
 
     /// <summary>
-    ///     Creates a new viewport with a maximum world size.
+    /// Creates a new viewport with a maximum world size.
     /// </summary>
     /// <param name="minWorldWidth"> The minimum allowable world width. </param>
     /// <param name="minWorldHeight"> The minimum allowable wortld height. </param>
@@ -89,7 +89,7 @@ public class ExtendViewport : Viewport
     }
 
     /// <summary>
-    ///     Update the viewport with the supplied width and height.
+    /// Update the viewport with the supplied width and height.
     /// </summary>
     /// <param name="screenWidth"> The Viewport width. </param>
     /// <param name="screenHeight"> The Viewport height. </param>

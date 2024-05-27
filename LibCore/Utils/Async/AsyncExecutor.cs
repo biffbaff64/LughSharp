@@ -27,20 +27,20 @@ using System.Collections.Concurrent;
 namespace LughSharp.LibCore.Utils.Async;
 
 /// <summary>
-///     Allows asnynchronous execution of AsyncTask instances on a separate thread.
-///     Needs to be disposed via a call to Dispose() when no longer used, in which
-///     case the executor waits for running tasks to finish. Scheduled but not yet
-///     running tasks will not be executed.
+/// Allows asnynchronous execution of AsyncTask instances on a separate thread.
+/// Needs to be disposed via a call to Dispose() when no longer used, in which
+/// case the executor waits for running tasks to finish. Scheduled but not yet
+/// running tasks will not be executed.
 /// </summary>
 [PublicAPI]
 public class AsyncExecutor : IDisposable
 {
-    private readonly ConcurrentQueue< Task > _taskQueue;
     private readonly CancellationTokenSource _cts;
     private readonly SemaphoreSlim           _semaphore;
+    private readonly ConcurrentQueue< Task > _taskQueue;
 
     /// <summary>
-    ///     Creates a new AsynchExecutor that allows maxConcurrent Runnable instances to run in parallel.
+    /// Creates a new AsynchExecutor that allows maxConcurrent Runnable instances to run in parallel.
     /// </summary>
     /// <param name="maxConcurrent"> The maximum allowed instances. </param>
     /// <param name="name"> The name of the threads. Default is "AsyncExecutor-Thread". </param>
@@ -71,9 +71,19 @@ public class AsyncExecutor : IDisposable
         }
     }
 
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        _cts.Cancel();
+
+        while ( _taskQueue.TryDequeue( out var _ ) )
+        {
+        }
+    }
+
     /// <summary>
-    ///     Submits a Task to be executed asynchronously.
-    ///     If maxConcurrent tasks are already running, the task will be queued.
+    /// Submits a Task to be executed asynchronously.
+    /// If maxConcurrent tasks are already running, the task will be queued.
     /// </summary>
     /// <param name="task"> The task to execute. </param>
     public AsyncResult< T > Submit< T >( IAsyncTask< T > task )
@@ -102,15 +112,5 @@ public class AsyncExecutor : IDisposable
         _taskQueue.Enqueue( taskWrapper );
 
         return new AsyncResult< T >( taskWrapper );
-    }
-
-    /// <inheritdoc/>
-    public void Dispose()
-    {
-        _cts.Cancel();
-
-        while ( _taskQueue.TryDequeue( out var _ ) )
-        {
-        }
     }
 }

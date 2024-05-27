@@ -37,9 +37,9 @@ public class MipMapGenerator
     public static bool UseHwMipMap { get; set; } = true;
 
     /// <summary>
-    ///     Sets the image data of the <see cref="Texture" /> based on the <see cref="Pixmap" />.
-    ///     The texture must be bound for this to work. If <code>disposePixmap</code> is true,
-    ///     the pixmap will be disposed at the end of the method.
+    /// Sets the image data of the <see cref="Texture"/> based on the <see cref="Pixmap"/>.
+    /// The texture must be bound for this to work. If <code>disposePixmap</code> is true,
+    /// the pixmap will be disposed at the end of the method.
     /// </summary>
     /// <param name="pixmap"> the Pixmap </param>
     /// <param name="textureWidth"></param>
@@ -50,9 +50,9 @@ public class MipMapGenerator
     }
 
     /// <summary>
-    ///     Sets the image data of the <see cref="Texture" /> based on the <see cref="Pixmap" />.
-    ///     The texture must be bound for this to work. If <code>disposePixmap</code> is true,
-    ///     the pixmap will be disposed at the end of the method.
+    /// Sets the image data of the <see cref="Texture"/> based on the <see cref="Pixmap"/>.
+    /// The texture must be bound for this to work. If <code>disposePixmap</code> is true,
+    /// the pixmap will be disposed at the end of the method.
     /// </summary>
     public static void GenerateMipMap( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {

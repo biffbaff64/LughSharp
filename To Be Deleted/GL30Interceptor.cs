@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
-
 namespace LughSharp.LibCore.Graphics.Profiling;
 
 [PublicAPI]

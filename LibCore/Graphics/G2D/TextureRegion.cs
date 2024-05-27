@@ -28,36 +28,34 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>
-///     Defines a rectangular area of a texture. The coordinate system used has
-///     its origin in the upper left corner with the x-axis pointing to the
-///     right and the y axis pointing downwards.
+/// Defines a rectangular area of a texture. The coordinate system used has
+/// its origin in the upper left corner with the x-axis pointing to the
+/// right and the y axis pointing downwards.
 /// </summary>
 [PublicAPI]
 public class TextureRegion
 {
-    public  Texture Texture { get; set; } = null!;
-
     // ------------------------------------------------------------------------
-    
-    private int     _regionHeight;
-    private int     _regionWidth;
-    private float   _u;
-    private float   _u2;
-    private float   _v;
-    private float   _v2;
+
+    private int   _regionHeight;
+    private int   _regionWidth;
+    private float _u;
+    private float _u2;
+    private float _v;
+    private float _v2;
 
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Constructs a region that cannot be used until a texture
-    ///     and texture coordinates are set.
+    /// Constructs a region that cannot be used until a texture
+    /// and texture coordinates are set.
     /// </summary>
     public TextureRegion()
     {
     }
 
     /// <summary>
-    ///     Constructs a region the size of the specified texture.
+    /// Constructs a region the size of the specified texture.
     /// </summary>
     /// <param name="texture"></param>
     public TextureRegion( Texture texture )
@@ -69,10 +67,10 @@ public class TextureRegion
 
     /// <param name="texture"></param>
     /// <param name="width">
-    ///     The width of the texture region. May be negative to flip the sprite when drawn.
+    /// The width of the texture region. May be negative to flip the sprite when drawn.
     /// </param>
     /// <param name="height">
-    ///     The height of the texture region. May be negative to flip the sprite when drawn.
+    /// The height of the texture region. May be negative to flip the sprite when drawn.
     /// </param>
     public TextureRegion( Texture texture, int width, int height )
         : this( texture, 0, 0, width, height )
@@ -83,10 +81,10 @@ public class TextureRegion
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="width">
-    ///     The width of the texture region. May be negative to flip the sprite when drawn.
+    /// The width of the texture region. May be negative to flip the sprite when drawn.
     /// </param>
     /// <param name="height">
-    ///     The height of the texture region. May be negative to flip the sprite when drawn.
+    /// The height of the texture region. May be negative to flip the sprite when drawn.
     /// </param>
     public TextureRegion( Texture texture, int x, int y, int width, int height )
     {
@@ -126,6 +124,8 @@ public class TextureRegion
     {
         SetRegion( region, x, y, width, height );
     }
+
+    public Texture Texture { get; set; } = null!;
 
     /// <summary>
     /// </summary>
@@ -196,7 +196,7 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     This TextureRegions Width property.
+    /// This TextureRegions Width property.
     /// </summary>
     public int RegionWidth
     {
@@ -217,7 +217,7 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     This TextureRegions Height property.
+    /// This TextureRegions Height property.
     /// </summary>
     public int RegionHeight
     {
@@ -270,8 +270,8 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Non-Virtual version of <see cref="SetRegion( float, float, float, float )" />,
-    ///     enabling this to be called from constructors.
+    /// Non-Virtual version of <see cref="SetRegion( float, float, float, float )"/>,
+    /// enabling this to be called from constructors.
     /// </summary>
     private void SetRegionNV( float u, float v, float u2, float v2 )
     {
@@ -342,7 +342,7 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Flips this TextureRegion horizontally, vertically, or both.
+    /// Flips this TextureRegion horizontally, vertically, or both.
     /// </summary>
     /// <param name="x"> TRUE to flip horizontally. </param>
     /// <param name="y"> TRUE to flip vertically. </param>
@@ -360,7 +360,7 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Returns true if this TextureRegion is flipped horizontally.
+    /// Returns true if this TextureRegion is flipped horizontally.
     /// </summary>
     public virtual bool IsFlipX()
     {
@@ -368,7 +368,7 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Returns true if this TextureRegion is flipped vertically.
+    /// Returns true if this TextureRegion is flipped vertically.
     /// </summary>
     public virtual bool IsFlipY()
     {
@@ -376,14 +376,14 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Offsets the region relative to the current region. Generally the region's
-    ///     size should be the entire size of the texture in the direction(s) it is
-    ///     scrolled.
+    /// Offsets the region relative to the current region. Generally the region's
+    /// size should be the entire size of the texture in the direction(s) it is
+    /// scrolled.
     /// </summary>
     /// <param name="xAmount">The percentage to offset horizontally.</param>
     /// <param name="yAmount">
-    ///     The percentage to offset vertically.
-    ///     This is done in texture space, so up is negative.
+    /// The percentage to offset vertically.
+    /// This is done in texture space, so up is negative.
     /// </param>
     public virtual void Scroll( float xAmount, float yAmount )
     {
@@ -405,12 +405,12 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Helper function to create tiles out of this TextureRegion starting from the
-    ///     top left corner going to the right and ending at the bottom right corner.
-    ///     Only complete tiles will be returned so if the region's width or height are
-    ///     not a multiple of the tile width and height not all of the region will be
-    ///     used. This will not work on texture regions returned form a TextureAtlas that
-    ///     either have whitespace removed or where flipped before the region is split.
+    /// Helper function to create tiles out of this TextureRegion starting from the
+    /// top left corner going to the right and ending at the bottom right corner.
+    /// Only complete tiles will be returned so if the region's width or height are
+    /// not a multiple of the tile width and height not all of the region will be
+    /// used. This will not work on texture regions returned form a TextureAtlas that
+    /// either have whitespace removed or where flipped before the region is split.
     /// </summary>
     /// <param name="tileWidth">Required tile's width in pixels.</param>
     /// <param name="tileHeight">Required tile's height in pixels.</param>
@@ -442,10 +442,10 @@ public class TextureRegion
     }
 
     /// <summary>
-    ///     Helper function to create tiles out of the given Texture starting from the
-    ///     top left corner going to the right and ending at the bottom right corner.
-    ///     Only complete tiles will be returned so if the texture's width or height are
-    ///     not a multiple of the tile width and height not all of the texture will be used.
+    /// Helper function to create tiles out of the given Texture starting from the
+    /// top left corner going to the right and ending at the bottom right corner.
+    /// Only complete tiles will be returned so if the texture's width or height are
+    /// not a multiple of the tile width and height not all of the texture will be used.
     /// </summary>
     /// <param name="texture">The texture to split.</param>
     /// <param name="tileWidth">Required tile's width in pixels.</param>

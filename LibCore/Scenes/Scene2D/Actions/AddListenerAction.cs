@@ -28,7 +28,7 @@ using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 /// <summary>
-///     Adds a listener to an actor.
+/// Adds a listener to an actor.
 /// </summary>
 [PublicAPI]
 public class AddListenerAction : Action

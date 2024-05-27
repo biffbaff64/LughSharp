@@ -26,29 +26,29 @@
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
-///     A Type-safe representation of the the supported output channel constants.
-///     This class is immutable and, hence, is thread safe.
+/// A Type-safe representation of the the supported output channel constants.
+/// This class is immutable and, hence, is thread safe.
 /// </summary>
 [PublicAPI]
 public class OutputChannels
 {
     /// <summary>
-    ///     Flag to indicate output should include both channels.
+    /// Flag to indicate output should include both channels.
     /// </summary>
     public const int BOTH_CHANNELS = 0;
 
     /// <summary>
-    ///     Flag to indicate output should include the left channel only.
+    /// Flag to indicate output should include the left channel only.
     /// </summary>
     public const int LEFT_CHANNEL = 1;
 
     /// <summary>
-    ///     Flag to indicate output should include the right channel only.
+    /// Flag to indicate output should include the right channel only.
     /// </summary>
     public const int RIGHT_CHANNEL = 2;
 
     /// <summary>
-    ///     Flag to indicate output is mono.
+    /// Flag to indicate output is mono.
     /// </summary>
     public const int DOWNMIX_CHANNELS = 3;
 
@@ -70,17 +70,17 @@ public class OutputChannels
     }
 
     /// <summary>
-    ///     Retrieves the code representing the desired output channels. Will be one of LEFT_CHANNEL,
-    ///     RIGHT_CHANNEL, BOTH_CHANNELS or DOWNMIX_CHANNELS.
+    /// Retrieves the code representing the desired output channels. Will be one of LEFT_CHANNEL,
+    /// RIGHT_CHANNEL, BOTH_CHANNELS or DOWNMIX_CHANNELS.
     /// </summary>
     /// <returns>
-    ///     the channel code represented by this instance.
+    /// the channel code represented by this instance.
     /// </returns>
     public virtual int ChannelsOutputCode => _outputChannels;
 
     /// <summary>
-    ///     Retrieves the number of output channels for this channel output
-    ///     type. This will be 2 for BOTH_CHANNELS only, and 1 for all other types.
+    /// Retrieves the number of output channels for this channel output
+    /// type. This will be 2 for BOTH_CHANNELS only, and 1 for all other types.
     /// </summary>
     public virtual int ChannelCount
     {
@@ -93,7 +93,7 @@ public class OutputChannels
     }
 
     /// <summary>
-    ///     Creates an OutputChannels instance corresponding to the given channel code.
+    /// Creates an OutputChannels instance corresponding to the given channel code.
     /// </summary>
     /// <param name="code"> one of the OutputChannels channel code constants. </param>
     /// <exception cref="ArgumentException"> if code is not a valid channel code.</exception>

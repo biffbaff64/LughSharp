@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Core;
 
 /// <summary>
-///     Queues events that are later passed to an <see cref="IInputProcessor"/>.
+/// Queues events that are later passed to an <see cref="IInputProcessor"/>.
 /// </summary>
 [PublicAPI]
 public class InputEventQueue
@@ -41,10 +41,10 @@ public class InputEventQueue
     private const int MOUSE_MOVED    = 6;
     private const int MOUSE_SCROLLED = 7;
 
-    public long CurrentEventTime { get; set; }
-
     private readonly List< int > _processingQueue = new();
     private readonly List< int > _queue           = new();
+
+    public long CurrentEventTime { get; set; }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

@@ -29,7 +29,7 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Maths;
 
 /// <summary>
-///     Implementation of the Bezier curve.
+/// Implementation of the Bezier curve.
 /// </summary>
 public class Bezier< T > : IPath< T > where T : IVector< T >
 {
@@ -188,7 +188,7 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Simple linear interpolation
+    /// Simple linear interpolation
     /// </summary>
     /// <param name="alist"> The collection in which to set to the result.</param>
     /// <param name="t"> The location (ranging 0..1) on the line.</param>
@@ -203,7 +203,7 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Simple linear interpolation derivative
+    /// Simple linear interpolation derivative
     /// </summary>
     /// <param name="vec"> The collection in which to set to the result.</param>
     /// <param name="t"> The location (ranging 0..1) on the line.</param>
@@ -218,7 +218,7 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Quadratic Bezier curve
+    /// Quadratic Bezier curve
     /// </summary>
     /// <param name="list"> The collection in which to set to the result.</param>
     /// <param name="t"> The location (ranging 0..1) on the curve. </param>
@@ -238,7 +238,7 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Quadratic Bezier curve derivative
+    /// Quadratic Bezier curve derivative
     /// </summary>
     /// <param name="alist"> The collection in which to set to the result.</param>
     /// <param name="t"> The location (ranging 0..1) on the curve. </param>
@@ -256,7 +256,7 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Cubic Bezier curve
+    /// Cubic Bezier curve
     /// </summary>
     /// <param name="alist"> The collection in which to set to the result.</param>
     /// <param name="t"> The location (ranging 0..1) on the curve.</param>
@@ -280,7 +280,7 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Cubic Bezier curve derivative
+    /// Cubic Bezier curve derivative
     /// </summary>
     /// <param name="alist"> The collection in which to set to the result.</param>
     /// <param name="t"> The location (ranging 0..1) on the curve. </param>

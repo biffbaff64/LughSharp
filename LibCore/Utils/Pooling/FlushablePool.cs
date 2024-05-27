@@ -26,33 +26,33 @@
 namespace LughSharp.LibCore.Utils.Pooling;
 
 /// <summary>
-///     A <see cref="Pool{T}" /> which keeps track of the obtained items
-///     (see <see cref="Obtain()" />), which can be freed all at once using the
-///     <see cref="Flush()" /> method.
+/// A <see cref="Pool{T}"/> which keeps track of the obtained items
+/// (see <see cref="Obtain()"/>), which can be freed all at once using the
+/// <see cref="Flush()"/> method.
 /// </summary>
 [PublicAPI]
 public abstract class FlushablePool< T > : Pool< T >
 {
     private readonly List< T > _obtained = new();
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected FlushablePool()
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected FlushablePool( int initialCapacity )
         : base( initialCapacity )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected FlushablePool( int initialCapacity, int max )
         : base( initialCapacity, max )
     {
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override T? Obtain()
     {
         var result = base.Obtain();
@@ -63,7 +63,7 @@ public abstract class FlushablePool< T > : Pool< T >
     }
 
     /// <summary>
-    ///     Frees all obtained instances.
+    /// Frees all obtained instances.
     /// </summary>
     public virtual void Flush()
     {
@@ -71,7 +71,7 @@ public abstract class FlushablePool< T > : Pool< T >
         _obtained.Clear();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override void Free( T obj )
     {
         _obtained.Remove( obj );
@@ -79,7 +79,7 @@ public abstract class FlushablePool< T > : Pool< T >
         base.Free( obj );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override void FreeAll( List< T > objects )
     {
         foreach ( var obj in objects )

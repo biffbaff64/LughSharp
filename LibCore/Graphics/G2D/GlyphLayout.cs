@@ -30,32 +30,28 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>
-///     Stores <see cref="GlyphRun" /> runs of glyphs for a piece of text. The text
-///     may contain newlines and color markup tags.
-///     <para>
-///         Where wrapping occurs is determined by <see cref="BitmapFont.BitmapFontData.GetWrapIndex" />.
-///         Additionally, when <see cref="BitmapFont.BitmapFontData.MarkupEnabled" /> is true wrapping
-///         can occur at color start or end tags.
-///     </para>
-///     <para>
-///         When wrapping occurs, whitespace is removed before and after the wrap position.
-///         Whitespace is determined by <see cref="BitmapFont.BitmapFontData.IsWhitespace(char)" />.
-///     </para>
-///     <para>
-///         Glyphs positions are determined by <see cref="BitmapFont.BitmapFontData.GetGlyphs" />.
-///     </para>
-///     <para>
-///         This class is not thread safe, even if synchronized externally, and must only
-///         be used from the game thread.
-///     </para>
+/// Stores <see cref="GlyphRun"/> runs of glyphs for a piece of text. The text
+/// may contain newlines and color markup tags.
+/// <para>
+/// Where wrapping occurs is determined by <see cref="BitmapFont.BitmapFontData.GetWrapIndex"/>.
+/// Additionally, when <see cref="BitmapFont.BitmapFontData.MarkupEnabled"/> is true wrapping
+/// can occur at color start or end tags.
+/// </para>
+/// <para>
+/// When wrapping occurs, whitespace is removed before and after the wrap position.
+/// Whitespace is determined by <see cref="BitmapFont.BitmapFontData.IsWhitespace(char)"/>.
+/// </para>
+/// <para>
+/// Glyphs positions are determined by <see cref="BitmapFont.BitmapFontData.GetGlyphs"/>.
+/// </para>
+/// <para>
+/// This class is not thread safe, even if synchronized externally, and must only
+/// be used from the game thread.
+/// </para>
 /// </summary>
 [PublicAPI]
 public class GlyphLayout : IPoolable
 {
-    public List< GlyphRun > Runs   { get; set; } = new( 1 );
-    public float            Width  { get; set; }
-    public float            Height { get; set; }
-
     private readonly static float            _epsilon      = 0.0001f;
     private readonly        Pool< Color >    _colorPool    = Pools< Color >.Get();
     private readonly        List< Color >    _colorStack   = new( 4 );
@@ -64,15 +60,15 @@ public class GlyphLayout : IPoolable
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Creates an empty GlyphLayout.
+    /// Creates an empty GlyphLayout.
     /// </summary>
     public GlyphLayout()
     {
     }
 
     /// <summary>
-    ///     Creates a new GlyphLayout, using the supplied <see cref="BitmapFont"/>
-    ///     and text.
+    /// Creates a new GlyphLayout, using the supplied <see cref="BitmapFont"/>
+    /// and text.
     /// </summary>
     /// <param name="font"></param>
     /// <param name="str"></param>
@@ -99,9 +95,13 @@ public class GlyphLayout : IPoolable
         SetText( font, str, start, end, color, targetWidth, halign, wrap, truncate );
     }
 
+    public List< GlyphRun > Runs   { get; set; } = new( 1 );
+    public float            Width  { get; set; }
+    public float            Height { get; set; }
+
     /// <summary>
-    ///     Resets the object for reuse. Object references should
-    ///     be nulled and fields may be set to default values.
+    /// Resets the object for reuse. Object references should
+    /// be nulled and fields may be set to default values.
     /// </summary>
     public void Reset()
     {
@@ -113,8 +113,8 @@ public class GlyphLayout : IPoolable
     }
 
     /// <summary>
-    ///     Calls <see cref="SetText(BitmapFont, string, int, int, Color, float, int, bool, string)" />
-    ///     with the whole string, the font's current color, and no alignment or wrapping.
+    /// Calls <see cref="SetText(BitmapFont, string, int, int, Color, float, int, bool, string)"/>
+    /// with the whole string, the font's current color, and no alignment or wrapping.
     /// </summary>
     public void SetText( BitmapFont font, string str )
     {
@@ -122,8 +122,8 @@ public class GlyphLayout : IPoolable
     }
 
     /// <summary>
-    ///     Calls <see cref="SetText(BitmapFont, string, int, int, Color, float, int, bool, string)" />
-    ///     with the whole string and no truncation.
+    /// Calls <see cref="SetText(BitmapFont, string, int, int, Color, float, int, bool, string)"/>
+    /// with the whole string and no truncation.
     /// </summary>
     public void SetText( BitmapFont font, string str, Color color, float targetWidth, int halign, bool wrap )
     {
@@ -137,24 +137,24 @@ public class GlyphLayout : IPoolable
     /// <param name="start"></param>
     /// <param name="end"></param>
     /// <param name="color">
-    ///     The default color to use for the text (the BitmapFont <see cref="BitmapFont.GetColor()" />
-    ///     is not used). If <see cref="BitmapFont.BitmapFontData.MarkupEnabled" /> is true, color
-    ///     markup tags in the specified string may change the color for portions of the text.
+    /// The default color to use for the text (the BitmapFont <see cref="BitmapFont.GetColor()"/>
+    /// is not used). If <see cref="BitmapFont.BitmapFontData.MarkupEnabled"/> is true, color
+    /// markup tags in the specified string may change the color for portions of the text.
     /// </param>
     /// <param name="halign">
-    ///     Horizontal alignment of the text, see also <see cref="Align" />.
+    /// Horizontal alignment of the text, see also <see cref="Align"/>.
     /// </param>
     /// <param name="targetWidth">
-    ///     The width used for alignment, line wrapping, and truncation. May be zero if
-    ///     those features are not used.
+    /// The width used for alignment, line wrapping, and truncation. May be zero if
+    /// those features are not used.
     /// </param>
     /// <param name="wrap"></param>
     /// <param name="truncate">
-    ///     If not null and the width of the glyphs exceed targetWidth, the glyphs are
-    ///     truncated and the glyphs for the specified truncate string are placed at the end.
-    ///     Empty string can be used to truncate without adding glyphs. Truncate should not
-    ///     be used with text that contains multiple lines. Wrap is ignored if truncate is
-    ///     not null.
+    /// If not null and the width of the glyphs exceed targetWidth, the glyphs are
+    /// truncated and the glyphs for the specified truncate string are placed at the end.
+    /// Empty string can be used to truncate without adding glyphs. Truncate should not
+    /// be used with text that contains multiple lines. Wrap is ignored if truncate is
+    /// not null.
     /// </param>
     public void SetText( BitmapFont font,
                          string str,
@@ -630,7 +630,7 @@ public class GlyphLayout : IPoolable
     }
 
     /// <summary>
-    ///     Breaks a run into two runs at the specified wrapIndex.
+    /// Breaks a run into two runs at the specified wrapIndex.
     /// </summary>
     /// <returns> May be null if second run is all whitespace. </returns>
     private GlyphRun? Wrap( BitmapFont.BitmapFontData? fontData, GlyphRun? first, int wrapIndex, int widthIndex )
@@ -711,7 +711,7 @@ public class GlyphLayout : IPoolable
     }
 
     /// <summary>
-    ///     Adjusts the xadvance of the last glyph to use its width instead of xadvance.
+    /// Adjusts the xadvance of the last glyph to use its width instead of xadvance.
     /// </summary>
     private void AdjustLastGlyph( BitmapFont.BitmapFontData fontData, GlyphRun run )
     {
@@ -836,8 +836,8 @@ public class GlyphLayout : IPoolable
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Stores glyphs and positions for a piece of text which is a single
-    ///     color and does not span multiple lines.
+    /// Stores glyphs and positions for a piece of text which is a single
+    /// color and does not span multiple lines.
     /// </summary>
     [PublicAPI]
     public class GlyphRun : IPoolable
@@ -850,8 +850,8 @@ public class GlyphLayout : IPoolable
         public Color                    Color     { get; set; } = new();
 
         /// <summary>
-        ///     Resets the object for reuse. Object references should
-        ///     be nulled and fields may be set to default values.
+        /// Resets the object for reuse. Object references should
+        /// be nulled and fields may be set to default values.
         /// </summary>
         public void Reset()
         {

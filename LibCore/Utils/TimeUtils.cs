@@ -31,7 +31,7 @@ public static class TimeUtils
     private const long NANOS_PER_MILLI = 1000000;
 
     /// <summary>
-    ///     The current value of the system timer, in nanoseconds.
+    /// The current value of the system timer, in nanoseconds.
     /// </summary>
     public static long NanoTime()
     {
@@ -39,7 +39,7 @@ public static class TimeUtils
     }
 
     /// <summary>
-    ///     The current value of the system timer, in milliseconds.
+    /// The current value of the system timer, in milliseconds.
     /// </summary>
     public static long Millis()
     {
@@ -47,7 +47,7 @@ public static class TimeUtils
     }
 
     /// <summary>
-    ///     Convert nanoseconds time to milliseconds
+    /// Convert nanoseconds time to milliseconds
     /// </summary>
     /// <param name="nanos">Must be in nanoseconds.</param>
     /// <returns></returns>
@@ -57,7 +57,7 @@ public static class TimeUtils
     }
 
     /// <summary>
-    ///     Converts the CURRENT time in nanoseconds to milliseconds.
+    /// Converts the CURRENT time in nanoseconds to milliseconds.
     /// </summary>
     /// <returns></returns>
     public static long NanosToMillis()
@@ -66,7 +66,7 @@ public static class TimeUtils
     }
 
     /// <summary>
-    ///     Convert milliseconds time to nanoseconds
+    /// Convert milliseconds time to nanoseconds
     /// </summary>
     /// <param name="millis">Must be in milliseconds.</param>
     /// <returns></returns>
@@ -76,7 +76,7 @@ public static class TimeUtils
     }
 
     /// <summary>
-    ///     Get the time in nanos passed since a previous time
+    /// Get the time in nanos passed since a previous time
     /// </summary>
     /// <param name="prevTime"></param>
     /// <returns></returns>
@@ -86,7 +86,7 @@ public static class TimeUtils
     }
 
     /// <summary>
-    ///     Get the time in millis passed since a previous time
+    /// Get the time in millis passed since a previous time
     /// </summary>
     /// <param name="prevTime"></param>
     /// <returns></returns>

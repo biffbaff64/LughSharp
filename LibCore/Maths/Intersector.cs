@@ -30,8 +30,8 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Maths;
 
 /// <summary>
-///     Class offering various static methods for intersection testing
-///     between different geometric objects.
+/// Class offering various static methods for intersection testing
+/// between different geometric objects.
 /// </summary>
 [PublicAPI]
 public class Intersector
@@ -81,9 +81,9 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns whether the given point is inside the triangle. This assumes that
-    ///     the point is on the plane of the triangle. No check is performed that this
-    ///     is the case.
+    /// Returns whether the given point is inside the triangle. This assumes that
+    /// the point is on the plane of the triangle. No check is performed that this
+    /// is the case.
     /// </summary>
     /// <param name="point"></param>
     /// <param name="t1"> the first vertex of the triangle </param>
@@ -112,7 +112,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns true if the given point is inside the triangle.
+    /// Returns true if the given point is inside the triangle.
     /// </summary>
     public static bool IsPointInTriangle( Vector2 p, Vector2 a, Vector2 b, Vector2 c )
     {
@@ -129,7 +129,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns true if the given point is inside the triangle.
+    /// Returns true if the given point is inside the triangle.
     /// </summary>
     public static bool IsPointInTriangle( float px,
                                           float py,
@@ -182,11 +182,11 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Determines on which side of the given line the point is. Returns 1 if the point is on the left side of the line, 0
-    ///     if the
-    ///     point is on the line and -1 if the point is on the right side of the line. Left and right are relative to the lines
-    ///     direction
-    ///     which is linePoint1 to linePoint2.
+    /// Determines on which side of the given line the point is. Returns 1 if the point is on the left side of the line, 0
+    /// if the
+    /// point is on the line and -1 if the point is on the right side of the line. Left and right are relative to the lines
+    /// direction
+    /// which is linePoint1 to linePoint2.
     /// </summary>
     public static int PointLineSide( Vector2 linePoint1, Vector2 linePoint2, Vector2 point )
     {
@@ -216,7 +216,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Checks whether the given point is in the polygon.
+    /// Checks whether the given point is in the polygon.
     /// </summary>
     /// <param name="polygon">The polygon vertices passed as an array.</param>
     /// <param name="point">The point to check.</param>
@@ -245,7 +245,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns true if the specified point is in the polygon.
+    /// Returns true if the specified point is in the polygon.
     /// </summary>
     /// <param name="polygon">The polygon vertices as an array of float values.</param>
     /// <param name="offset">Starting polygon index.</param>
@@ -290,9 +290,9 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersects two convex polygons with clockwise vertices and sets the
-    ///     overlap polygon resulting from the intersection.
-    ///     Follows the Sutherland-Hodgman algorithm.
+    /// Intersects two convex polygons with clockwise vertices and sets the
+    /// overlap polygon resulting from the intersection.
+    /// Follows the Sutherland-Hodgman algorithm.
     /// </summary>
     /// <param name="p1"> The polygon that is being clipped </param>
     /// <param name="p2"> The clip polygon </param>
@@ -393,7 +393,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns true if the specified poygons intersect.
+    /// Returns true if the specified poygons intersect.
     /// </summary>
     public static bool IntersectPolygons( List< float > polygon1, List< float > polygon2 )
     {
@@ -415,7 +415,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns true if the lines of the specified poygons intersect.
+    /// Returns true if the lines of the specified poygons intersect.
     /// </summary>
     public static bool IntersectPolygonEdges( List< float > polygon1, List< float > polygon2 )
     {
@@ -452,7 +452,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns the distance between the given line and point. Note the specified line is not a line segment.
+    /// Returns the distance between the given line and point. Note the specified line is not a line segment.
     /// </summary>
     public static float DistanceLinePoint( float startX, float startY, float endX, float endY, float pointX, float pointY )
     {
@@ -462,7 +462,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns the distance between the given segment and point.
+    /// Returns the distance between the given segment and point.
     /// </summary>
     public static float DistanceSegmentPoint( float startX, float startY, float endX, float endY, float pointX, float pointY )
     {
@@ -470,7 +470,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns the distance between the given segment and point.
+    /// Returns the distance between the given segment and point.
     /// </summary>
     public static float DistanceSegmentPoint( Vector2 start, Vector2 end, Vector2 point )
     {
@@ -478,7 +478,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns a point on the segment nearest to the specified point.
+    /// Returns a point on the segment nearest to the specified point.
     /// </summary>
     public static Vector2 NearestSegmentPoint( Vector2 start, Vector2 end, Vector2 point, Vector2 nearest )
     {
@@ -503,7 +503,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns a point on the segment nearest to the specified point.
+    /// Returns a point on the segment nearest to the specified point.
     /// </summary>
     public static Vector2 NearestSegmentPoint( float startX,
                                                float startY,
@@ -536,7 +536,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns whether the given line segment intersects the given circle.
+    /// Returns whether the given line segment intersects the given circle.
     /// </summary>
     /// <param name="start"> The start point of the line segment </param>
     /// <param name="end"> The end point of the line segment </param>
@@ -571,13 +571,13 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns whether the given line segment intersects the given circle.
+    /// Returns whether the given line segment intersects the given circle.
     /// </summary>
     /// <param name="start"> The start point of the line segment </param>
     /// <param name="end"> The end point of the line segment </param>
     /// <param name="circle"> The circle </param>
     /// <param name="mtv">
-    ///     A Minimum Translation Vector to fill in the case of a collision, or null (optional).
+    /// A Minimum Translation Vector to fill in the case of a collision, or null (optional).
     /// </param>
     /// <returns> Whether the line segment and the circle intersect </returns>
     public static bool IntersectSegmentCircle( Vector2 start, Vector2 end, Circle circle, MinimumTranslationVector? mtv )
@@ -624,25 +624,25 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersect two 2D rays and return the scalar parameter of the first ray at
-    ///     the intersection point.
-    ///     <para>
-    ///         You can get the intersection point by:
-    ///         <code>Vector2 point = direction1.Scl(scalar).Add(start1);</code>
-    ///         For more information, check:
-    ///         <a href="http://stackoverflow.com/a/565282/1091440">StackOverflow Post</a>.
-    ///     </para>
+    /// Intersect two 2D rays and return the scalar parameter of the first ray at
+    /// the intersection point.
+    /// <para>
+    /// You can get the intersection point by:
+    /// <code>Vector2 point = direction1.Scl(scalar).Add(start1);</code>
+    /// For more information, check:
+    /// <a href="http://stackoverflow.com/a/565282/1091440">StackOverflow Post</a>.
+    /// </para>
     /// </summary>
     /// <param name="start1">The starting point of the first ray.</param>
     /// <param name="direction1">The direction the first ray is pointing.</param>
     /// <param name="start2">The starting point of the second ray.</param>
     /// <param name="direction2">The direction the second ray is pointing.</param>
     /// <returns>
-    ///     The scalar parameter on the first ray describing the point where the
-    ///     intersection happens.
-    ///     May be negative.
-    ///     In case the rays are collinear, <see cref="float.PositiveInfinity" />
-    ///     will be returned.
+    /// The scalar parameter on the first ray describing the point where the
+    /// intersection happens.
+    /// May be negative.
+    /// In case the rays are collinear, <see cref="float.PositiveInfinity"/>
+    /// will be returned.
     /// </returns>
     public static float IntersectRayRay( Vector2 start1, Vector2 direction1, Vector2 start2, Vector2 direction2 )
     {
@@ -662,8 +662,8 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersects a <see cref="Ray" /> and a <see cref="Maths.Plane" />. The intersection
-    ///     point is stored in intersection in case an intersection is present.
+    /// Intersects a <see cref="Ray"/> and a <see cref="Maths.Plane"/>. The intersection
+    /// point is stored in intersection in case an intersection is present.
     /// </summary>
     /// <param name="ray"></param>
     /// <param name="plane"></param>
@@ -698,11 +698,11 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersects a line and a plane. The intersection is returned as the
-    ///     distance from the first point to the plane. In case an intersection
-    ///     happened, the return value is in the range [0,1]. The intersection
-    ///     point can be recovered by <tt>point1 + t * (point2 - point1)</tt> where t is
-    ///     the return value of this method.
+    /// Intersects a line and a plane. The intersection is returned as the
+    /// distance from the first point to the plane. In case an intersection
+    /// happened, the return value is in the range [0,1]. The intersection
+    /// point can be recovered by <tt>point1 + t * (point2 - point1)</tt> where t is
+    /// the return value of this method.
     /// </summary>
     public static float IntersectLinePlane( float x,
                                             float y,
@@ -737,8 +737,8 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Returns true if the three <see cref="Maths.Plane" />s intersect, setting the point
-    ///     of intersection in <tt>intersection</tt>, if any.
+    /// Returns true if the three <see cref="Maths.Plane"/>s intersect, setting the point
+    /// of intersection in <tt>intersection</tt>, if any.
     /// </summary>
     /// <param name="a"></param>
     /// <param name="b"></param>
@@ -768,8 +768,8 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersect a <see cref="Ray" /> and a triangle, returning the intersection
-    ///     point in intersection.
+    /// Intersect a <see cref="Ray"/> and a triangle, returning the intersection
+    /// point in intersection.
     /// </summary>
     /// <param name="ray"></param>
     /// <param name="t1"> The first vertex of the triangle </param>
@@ -841,7 +841,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersects a {@link Ray} and a sphere, returning the intersection point in intersection.
+    /// Intersects a {@link Ray} and a sphere, returning the intersection point in intersection.
     /// </summary>
     /// <param name="ray"> The ray, the direction component must be normalized before calling this method </param>
     /// <param name="center"> The center of the sphere </param>
@@ -876,22 +876,22 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersects a <see cref="Ray" /> and a <see cref="BoundingBox" />, returning
-    ///     the intersection point in <paramref name="intersection" />.
-    ///     <para>
-    ///         This intersection is defined as the point on the ray closest to the origin
-    ///         which is within the specified bounds.
-    ///     </para>
-    ///     <para>
-    ///         The returned intersection (if any) is guaranteed to be within the bounds of
-    ///         the bounding box, but it can occasionally diverge slightly from the ray due
-    ///         to small floating-point errors.
-    ///     </para>
-    ///     <para>
-    ///         If the origin of the ray is inside the box, this method returns <tt>true</tt>
-    ///         and the intersection point is set to the origin of the ray, accordingly to the
-    ///         definition above.
-    ///     </para>
+    /// Intersects a <see cref="Ray"/> and a <see cref="BoundingBox"/>, returning
+    /// the intersection point in <paramref name="intersection"/>.
+    /// <para>
+    /// This intersection is defined as the point on the ray closest to the origin
+    /// which is within the specified bounds.
+    /// </para>
+    /// <para>
+    /// The returned intersection (if any) is guaranteed to be within the bounds of
+    /// the bounding box, but it can occasionally diverge slightly from the ray due
+    /// to small floating-point errors.
+    /// </para>
+    /// <para>
+    /// If the origin of the ray is inside the box, this method returns <tt>true</tt>
+    /// and the intersection point is set to the origin of the ray, accordingly to the
+    /// definition above.
+    /// </para>
     /// </summary>
     /// <param name="ray"></param>
     /// <param name="box"></param>
@@ -1055,7 +1055,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Quick check whether the given <see cref="Ray" /> and <see cref="BoundingBox" /> intersect.
+    /// Quick check whether the given <see cref="Ray"/> and <see cref="BoundingBox"/> intersect.
     /// </summary>
     /// <returns> Whether the ray and the bounding box intersect. </returns>
     public static bool IntersectRayBoundsFast( Ray ray, BoundingBox box )
@@ -1064,7 +1064,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Quick check whether the given {@link Ray} and {@link BoundingBox} intersect.
+    /// Quick check whether the given {@link Ray} and {@link BoundingBox} intersect.
     /// </summary>
     /// <param name="ray"></param>
     /// <param name="center"> The center of the bounding box </param>
@@ -1107,8 +1107,8 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Quick check whether the given <see cref="Ray" /> and Oriented
-    ///     <see cref="BoundingBox" /> intersect.
+    /// Quick check whether the given <see cref="Ray"/> and Oriented
+    /// <see cref="BoundingBox"/> intersect.
     /// </summary>
     /// <param name="ray"></param>
     /// <param name="bounds"></param>
@@ -1253,13 +1253,13 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersects the given ray with list of triangles. Returns the nearest
-    ///     intersection point in intersection
+    /// Intersects the given ray with list of triangles. Returns the nearest
+    /// intersection point in intersection
     /// </summary>
     /// <param name="ray"></param>
     /// <param name="triangles">
-    ///     The triangles, each successive 9 elements are the 3 vertices of a triangle,
-    ///     a vertex is made of 3 successive floats (XYZ)
+    /// The triangles, each successive 9 elements are the 3 vertices of a triangle,
+    /// a vertex is made of 3 successive floats (XYZ)
     /// </param>
     /// <param name="intersection"> The nearest intersection point (optional) </param>
     /// <returns> Whether the ray and the triangles intersect. </returns>
@@ -1307,7 +1307,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersects the given ray with list of triangles. Returns the nearest intersection point in intersection
+    /// Intersects the given ray with list of triangles. Returns the nearest intersection point in intersection
     /// </summary>
     /// <param name="ray"></param>
     /// <param name="vertices"></param>
@@ -1367,7 +1367,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersects the given ray with list of triangles. Returns the nearest intersection point in intersection
+    /// Intersects the given ray with list of triangles. Returns the nearest intersection point in intersection
     /// </summary>
     /// <param name="ray"></param>
     /// <param name="triangles"> The triangles, each successive 3 elements are the 3 vertices of a triangle </param>
@@ -1411,7 +1411,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Quick check whether the given <see cref="BoundingBox" /> and <see cref="Maths.Plane" /> intersect.
+    /// Quick check whether the given <see cref="BoundingBox"/> and <see cref="Maths.Plane"/> intersect.
     /// </summary>
     /// <returns> Whether the bounding box and the plane intersect. </returns>
     public static bool IntersectBoundsPlaneFast( BoundingBox box, Plane plane )
@@ -1423,8 +1423,8 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Quick check whether the given bounding box and a plane intersect. Code adapted from Christer
-    ///     Ericson's Real Time Collision
+    /// Quick check whether the given bounding box and a plane intersect. Code adapted from Christer
+    /// Ericson's Real Time Collision
     /// </summary>
     /// <param name="center"> The center of the bounding box </param>
     /// <param name="halfDimensions"> Half of the dimensions (width, height and depth) of the bounding box </param>
@@ -1446,7 +1446,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersects the two lines and returns the intersection point in intersection.
+    /// Intersects the two lines and returns the intersection point in intersection.
     /// </summary>
     /// <param name="p1"> The first point of the first line </param>
     /// <param name="p2"> The second point of the first line </param>
@@ -1475,7 +1475,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersects the two lines and returns the intersection point in intersection.
+    /// Intersects the two lines and returns the intersection point in intersection.
     /// </summary>
     /// <param name="x1"></param>
     /// <param name="y1"></param>
@@ -1514,7 +1514,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Check whether the given line and <see cref="Polygon" /> intersect.
+    /// Check whether the given line and <see cref="Polygon"/> intersect.
     /// </summary>
     /// <param name="p1"> The first point of the line </param>
     /// <param name="p2"> The second point of the line </param>
@@ -1556,8 +1556,8 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Determines whether the given rectangles intersect and, if they do, sets the
-    ///     supplied <tt>intersection</tt> rectangle to the area of overlap.
+    /// Determines whether the given rectangles intersect and, if they do, sets the
+    /// supplied <tt>intersection</tt> rectangle to the area of overlap.
     /// </summary>
     /// <returns> Whether the rectangles intersect </returns>
     public static bool IntersectRectangles( RectangleShape rectangle1, RectangleShape rectangle2, RectangleShape intersection )
@@ -1576,7 +1576,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Determines whether the given rectangle and segment intersect
+    /// Determines whether the given rectangle and segment intersect
     /// </summary>
     /// <param name="startX"> x-coordinate start of line segment </param>
     /// <param name="startY"> y-coordinate start of line segment </param>
@@ -1614,7 +1614,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Check whether the given line segment and <see cref="Polygon" /> intersect.
+    /// Check whether the given line segment and <see cref="Polygon"/> intersect.
     /// </summary>
     /// <param name="p1"> The first point of the segment </param>
     /// <param name="p2"> The second point of the segment </param>
@@ -1663,7 +1663,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Intersects the two line segments and returns the intersection point in intersection.
+    /// Intersects the two line segments and returns the intersection point in intersection.
     /// </summary>
     /// <param name="p1"> The first point of the first line segment </param>
     /// <param name="p2"> The second point of the first line segment </param>
@@ -1797,8 +1797,8 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Check whether specified convex polygons overlap (clockwise or
-    ///     counter-clockwise round doesn't matter).
+    /// Check whether specified convex polygons overlap (clockwise or
+    /// counter-clockwise round doesn't matter).
     /// </summary>
     /// <param name="p1"> The first polygon. </param>
     /// <param name="p2"> The second polygon. </param>
@@ -1809,16 +1809,16 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Check whether convex polygons overlap (clockwise or counter-clockwise
-    ///     wound doesn't matter). If they do, optionally obtain a Minimum Translation
-    ///     Vector indicating the minimum magnitude vector required to push the polygon
-    ///     p1 out of collision with polygon p2.
+    /// Check whether convex polygons overlap (clockwise or counter-clockwise
+    /// wound doesn't matter). If they do, optionally obtain a Minimum Translation
+    /// Vector indicating the minimum magnitude vector required to push the polygon
+    /// p1 out of collision with polygon p2.
     /// </summary>
     /// <param name="p1"> The first polygon. </param>
     /// <param name="p2"> The second polygon. </param>
     /// <param name="mtv">
-    ///     A Minimum Translation Vector to fill in the case of a collision,
-    ///     or null (optional).
+    /// A Minimum Translation Vector to fill in the case of a collision,
+    /// or null (optional).
     /// </param>
     /// <returns> Whether polygons overlap. </returns>
     public static bool OverlapConvexPolygons( Polygon p1, Polygon p2, ref MinimumTranslationVector? mtv )
@@ -1835,21 +1835,21 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Check whether polygons defined by the given vertex arrays overlap
-    ///     (clockwise or counter-clockwise wound doesn't matter). If they do,
-    ///     optionally obtain a Minimum Translation Vector indicating the minimum
-    ///     magnitude vector required to push the polygon defined by <paramref name="verts1" />
-    ///     out of the collision with the polygon defined by <paramref name="verts2" />.
+    /// Check whether polygons defined by the given vertex arrays overlap
+    /// (clockwise or counter-clockwise wound doesn't matter). If they do,
+    /// optionally obtain a Minimum Translation Vector indicating the minimum
+    /// magnitude vector required to push the polygon defined by <paramref name="verts1"/>
+    /// out of the collision with the polygon defined by <paramref name="verts2"/>.
     /// </summary>
     /// <param name="verts1">Vertices of the first polygon.</param>
-    /// <param name="offset1">The offset of the <paramref name="verts1" /> array.</param>
-    /// <param name="count1">The amount that is added to the <paramref name="offset1" />.</param>
+    /// <param name="offset1">The offset of the <paramref name="verts1"/> array.</param>
+    /// <param name="count1">The amount that is added to the <paramref name="offset1"/>.</param>
     /// <param name="verts2">Vertices of the second polygon.</param>
-    /// <param name="offset2">The offset of the <paramref name="verts2" /> array.</param>
-    /// <param name="count2">The amount that is added to the <paramref name="offset2" />.</param>
+    /// <param name="offset2">The offset of the <paramref name="verts2"/> array.</param>
+    /// <param name="count2">The amount that is added to the <paramref name="offset2"/>.</param>
     /// <param name="mtv">
-    ///     A Minimum Translation Vector to fill in the case of a collision,
-    ///     or <see langword="null" /> (optional).
+    /// A Minimum Translation Vector to fill in the case of a collision,
+    /// or <see langword="null"/> (optional).
     /// </param>
     /// <returns>Whether polygons overlap.</returns>
     public static bool OverlapConvexPolygons( float[] verts1,
@@ -1899,7 +1899,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Implementation of the Separating Axis Theorem (SAT) algorithm.
+    /// Implementation of the Separating Axis Theorem (SAT) algorithm.
     /// </summary>
     /// <param name="verts1"></param>
     /// <param name="offset1">Offset of vertices in the first shape.</param>
@@ -1909,8 +1909,8 @@ public class Intersector
     /// <param name="count2">Count of vertices in the second shape.</param>
     /// <param name="mtv">The minimum translation vector.</param>
     /// <param name="shapesShifted">
-    ///     Indicates if shapes A and B are shifted, which is important for
-    ///     calculating the axis translation for vertices in the first shape.
+    /// Indicates if shapes A and B are shifted, which is important for
+    /// calculating the axis translation for vertices in the first shape.
     /// </param>
     private static bool OverlapsOnAxisOfShape( float[] verts1,
                                                int offset1,
@@ -2017,38 +2017,38 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Splits the triangle by the plane. The result is stored in the
-    ///     <paramref name="split" /> instance.
+    /// Splits the triangle by the plane. The result is stored in the
+    /// <paramref name="split"/> instance.
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///         Depending on where the triangle is relative to the plane, the result can be:
+    ///     Depending on where the triangle is relative to the plane, the result can be:
     ///     </para>
     ///     <para>
-    ///         i) Triangle is fully in front/behind: <see cref="SplitTriangle.Front" /> or
-    ///         <see cref="SplitTriangle.Back" /> will contain the original triangle, and
-    ///         <see cref="SplitTriangle.Total" /> will be one.
+    ///     i) Triangle is fully in front/behind: <see cref="SplitTriangle.Front"/> or
+    ///     <see cref="SplitTriangle.Back"/> will contain the original triangle, and
+    ///     <see cref="SplitTriangle.Total"/> will be one.
     ///     </para>
     ///     <para>
-    ///         ii) Triangle has two vertices in front, one behind: <see cref="SplitTriangle.Front" />
-    ///         contains 2 triangles, <see cref="SplitTriangle.Back" /> contains 1 triangle, and
-    ///         <see cref="SplitTriangle.Total" /> will be 3.
+    ///     ii) Triangle has two vertices in front, one behind: <see cref="SplitTriangle.Front"/>
+    ///     contains 2 triangles, <see cref="SplitTriangle.Back"/> contains 1 triangle, and
+    ///     <see cref="SplitTriangle.Total"/> will be 3.
     ///     </para>
     ///     <para>
-    ///         iii) Triangle has one vertex in front, two behind: <see cref="SplitTriangle.Front" />
-    ///         contains 1 triangle, <see cref="SplitTriangle.Back" /> contains 2 triangles, and
-    ///         <see cref="SplitTriangle.Total" /> will be 3.
+    ///     iii) Triangle has one vertex in front, two behind: <see cref="SplitTriangle.Front"/>
+    ///     contains 1 triangle, <see cref="SplitTriangle.Back"/> contains 2 triangles, and
+    ///     <see cref="SplitTriangle.Total"/> will be 3.
     ///     </para>
     ///     <para>
-    ///         The input triangle should have the form: x, y, z, x2, y2, z2, x3, y3, z3. You can
-    ///         add additional attributes per vertex that will be interpolated if split, such as
-    ///         texture coordinates or normals. Note that these additional attributes won't be
-    ///         normalized, as might be necessary in case of normals.
+    ///     The input triangle should have the form: x, y, z, x2, y2, z2, x3, y3, z3. You can
+    ///     add additional attributes per vertex that will be interpolated if split, such as
+    ///     texture coordinates or normals. Note that these additional attributes won't be
+    ///     normalized, as might be necessary in case of normals.
     ///     </para>
     /// </remarks>
     /// <param name="triangle"></param>
     /// <param name="plane"></param>
-    /// <param name="split">Output <see cref="SplitTriangle" /> to store the result of the split.</param>
+    /// <param name="split">Output <see cref="SplitTriangle"/> to store the result of the split.</param>
     public static void DoSplitTriangle( float[] triangle, Plane plane, SplitTriangle split )
     {
         var stride = triangle.Length / 3;
@@ -2205,8 +2205,8 @@ public class Intersector
     public class SplitTriangle
     {
         /// <summary>
-        ///     Creates a new instance, assuming numAttributes attributes
-        ///     per triangle vertex.
+        /// Creates a new instance, assuming numAttributes attributes
+        /// per triangle vertex.
         /// </summary>
         /// <param name="numAttributes"> must be &gt;= 3 </param>
         public SplitTriangle( int numAttributes )
@@ -2263,7 +2263,7 @@ public class Intersector
     }
 
     /// <summary>
-    ///     Minimum translation required to separate two polygons.
+    /// Minimum translation required to separate two polygons.
     /// </summary>
     public record MinimumTranslationVector
     {

@@ -29,14 +29,14 @@ namespace LughSharp.LibCore.Maths;
 public interface IShape2D
 {
     /// <summary>
-    ///     Returns whether the given point is contained within the shape.
+    /// Returns whether the given point is contained within the shape.
     /// </summary>
     /// <param name="point"> The point as a Vector2. </param>
     /// <returns></returns>
     bool Contains( Vector2 point );
 
     /// <summary>
-    ///     Returns whether a point with the given coordinates is contained within the shape.
+    /// Returns whether a point with the given coordinates is contained within the shape.
     /// </summary>
     /// <param name="x"> The point X coordinate. </param>
     /// <param name="y"> The point Y coordinate. </param>

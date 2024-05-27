@@ -33,12 +33,12 @@ public interface IAction
     Pool< Action >? Pool { get; set; }
 
     /// <summary>
-    ///     The actor this action targets, or null if a target has not been set.
+    /// The actor this action targets, or null if a target has not been set.
     /// </summary>
     Actor? Target { get; set; }
 
     /// <summary>
-    ///     The <see cref="Actor" /> this Action is attached to.
+    /// The <see cref="Actor"/> this Action is attached to.
     /// </summary>
     Actor? Actor
     {
@@ -58,33 +58,33 @@ public interface IAction
     }
 
     /// <summary>
-    ///     Resets the optional state of this action to as if it were newly created, allowing the
-    ///     action to be pooled and reused. State required to be set for every usage of this action
-    ///     or computed during the action does not need to be reset.
-    ///     <para>
-    ///         The default implementation calls <see cref="Action.Restart" />
-    ///     </para>
-    ///     <para>
-    ///         If a subclass has optional state, it must override this method, call super, and reset
-    ///         the optional state.
-    ///     </para>
+    /// Resets the optional state of this action to as if it were newly created, allowing the
+    /// action to be pooled and reused. State required to be set for every usage of this action
+    /// or computed during the action does not need to be reset.
+    /// <para>
+    /// The default implementation calls <see cref="Action.Restart"/>
+    /// </para>
+    /// <para>
+    /// If a subclass has optional state, it must override this method, call super, and reset
+    /// the optional state.
+    /// </para>
     /// </summary>
     void Reset();
 
     /// <summary>
-    ///     Updates the action based on time.
-    ///     Typically this is called each frame by <see cref="Action.Actor" />.
+    /// Updates the action based on time.
+    /// Typically this is called each frame by <see cref="Action.Actor"/>.
     /// </summary>
     /// <param name="delta">Time in seconds since the last frame.</param>
     /// <returns>
-    ///     true if the action is done. This method may continue to be called after
-    ///     the action is done.
+    /// true if the action is done. This method may continue to be called after
+    /// the action is done.
     /// </returns>
     bool Act( float delta );
 
     /// <summary>
-    ///     Sets the state of the action so it can be run again.
-    ///     Default implementation does nothing.
+    /// Sets the state of the action so it can be run again.
+    /// Default implementation does nothing.
     /// </summary>
     void Restart();
 }

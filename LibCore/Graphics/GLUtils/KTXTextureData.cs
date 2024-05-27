@@ -30,15 +30,15 @@ using Exception = System.Exception;
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
-///     A KTXTextureData holds the data from a KTX (or zipped KTX file, aka ZKTX).
-///     That is to say an OpenGL ready texture data. The KTX file format is just a
-///     thin wrapper around OpenGL textures and therefore is compatible with most
-///     OpenGL texture capabilities like texture compression, cubemapping, mipmapping,
-///     etc.
-///     <para>
-///         For example, KTXTextureData can be used for <see cref="Texture" /> or
-///         <see cref="Cubemap" />.
-///     </para>
+/// A KTXTextureData holds the data from a KTX (or zipped KTX file, aka ZKTX).
+/// That is to say an OpenGL ready texture data. The KTX file format is just a
+/// thin wrapper around OpenGL textures and therefore is compatible with most
+/// OpenGL texture capabilities like texture compression, cubemapping, mipmapping,
+/// etc.
+/// <para>
+/// For example, KTXTextureData can be used for <see cref="Texture"/> or
+/// <see cref="Cubemap"/>.
+/// </para>
 /// </summary>
 [PublicAPI]
 public class KtxTextureData : ITextureData, ICubemapData
@@ -75,10 +75,10 @@ public class KtxTextureData : ITextureData, ICubemapData
     }
 
     /// <summary>
-    ///     Uploads the pixel data for the 6 faces of the cube to the OpenGL ES texture.
-    ///     The caller must bind an OpenGL ES texture. A call to <see cref="ICubemapData.Prepare" />
-    ///     must preceed a call to this method. Any internal data structures created
-    ///     in <see cref="ICubemapData.Prepare" /> should be disposed of here.
+    /// Uploads the pixel data for the 6 faces of the cube to the OpenGL ES texture.
+    /// The caller must bind an OpenGL ES texture. A call to <see cref="ICubemapData.Prepare"/>
+    /// must preceed a call to this method. Any internal data structures created
+    /// in <see cref="ICubemapData.Prepare"/> should be disposed of here.
     /// </summary>
     public void ConsumeCubemapData()
     {
@@ -86,11 +86,11 @@ public class KtxTextureData : ITextureData, ICubemapData
     }
 
     /// <summary>
-    ///     Returns true if this implementation can cope with a EGL context loss.
+    /// Returns true if this implementation can cope with a EGL context loss.
     /// </summary>
     public bool Managed { get; set; }
 
-    /// <returns> the <see cref="ITextureData.TextureDataType" /></returns>
+    /// <returns> the <see cref="ITextureData.TextureDataType"/></returns>
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
     /// <returns> whether the TextureData is prepared or not.</returns>
@@ -101,9 +101,9 @@ public class KtxTextureData : ITextureData, ICubemapData
     }
 
     /// <summary>
-    ///     Prepares the TextureData for a call to <see cref="ICubemapData.ConsumeCubemapData" />.
-    ///     This method can be called from a non OpenGL thread and should thus not
-    ///     interact with OpenGL.
+    /// Prepares the TextureData for a call to <see cref="ICubemapData.ConsumeCubemapData"/>.
+    /// This method can be called from a non OpenGL thread and should thus not
+    /// interact with OpenGL.
     /// </summary>
     public void Prepare()
     {
@@ -279,12 +279,12 @@ public class KtxTextureData : ITextureData, ICubemapData
     }
 
     /// <summary>
-    ///     Returns the <see cref="Pixmap" /> for upload by Texture.
-    ///     <para>
-    ///         A call to <see cref="ITextureData.Prepare" /> must precede a call to this method. Any
-    ///         internal data structures created in <see cref="ITextureData.Prepare" /> should be
-    ///         disposed of here.
-    ///     </para>
+    /// Returns the <see cref="Pixmap"/> for upload by Texture.
+    /// <para>
+    /// A call to <see cref="ITextureData.Prepare"/> must precede a call to this method. Any
+    /// internal data structures created in <see cref="ITextureData.Prepare"/> should be
+    /// disposed of here.
+    /// </para>
     /// </summary>
     /// <returns> the pixmap.</returns>
     public Pixmap ConsumePixmap()
@@ -293,8 +293,8 @@ public class KtxTextureData : ITextureData, ICubemapData
     }
 
     /// <returns>
-    ///     whether the caller of <see cref="ITextureData.ConsumePixmap" /> should dispose the
-    ///     Pixmap returned by <see cref="ITextureData.ConsumePixmap" />
+    /// whether the caller of <see cref="ITextureData.ConsumePixmap"/> should dispose the
+    /// Pixmap returned by <see cref="ITextureData.ConsumePixmap"/>
     /// </returns>
     public bool DisposePixmap()
     {
@@ -302,13 +302,13 @@ public class KtxTextureData : ITextureData, ICubemapData
     }
 
     /// <summary>
-    ///     Uploads the pixel data to the OpenGL ES texture. The caller must bind an
-    ///     OpenGL ES texture. A call to <see cref="ITextureData.Prepare" /> must preceed a call
-    ///     to this method.
-    ///     <para>
-    ///         Any internal data structures created in <see cref="ITextureData.Prepare" /> should be
-    ///         disposed of here.
-    ///     </para>
+    /// Uploads the pixel data to the OpenGL ES texture. The caller must bind an
+    /// OpenGL ES texture. A call to <see cref="ITextureData.Prepare"/> must preceed a call
+    /// to this method.
+    /// <para>
+    /// Any internal data structures created in <see cref="ITextureData.Prepare"/> should be
+    /// disposed of here.
+    /// </para>
     /// </summary>
     public void ConsumeCustomData( int target )
     {
@@ -604,7 +604,7 @@ public class KtxTextureData : ITextureData, ICubemapData
     /// <returns> the height of the pixel data </returns>
     public int Height { get; set; }
 
-    /// <returns> the <see cref="Pixmap.Format" /> of the pixel data </returns>
+    /// <returns> the <see cref="Pixmap.Format"/> of the pixel data </returns>
     public Pixmap.Format GetFormat()
     {
         return Pixmap.Format.Alpha;

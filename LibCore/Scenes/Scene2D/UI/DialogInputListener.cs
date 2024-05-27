@@ -42,7 +42,7 @@ public class DialogInputListener : InputListener
         _object  = o;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override bool KeyDown( InputEvent? inputEvent, int keycode )
     {
         if ( keycode == _thisKey )

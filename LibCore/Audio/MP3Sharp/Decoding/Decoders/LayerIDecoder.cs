@@ -28,7 +28,7 @@ using LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerI;
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 
 /// <summary>
-///     Implements decoding of MPEG Audio Layer I frames.
+/// Implements decoding of MPEG Audio Layer I frames.
 /// </summary>
 [PublicAPI]
 public class LayerIDecoder : IFrameDecoder

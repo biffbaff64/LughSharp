@@ -74,89 +74,29 @@ public class ParticleEmitter
 
     private float _accumulator;
     private bool  _allowCompletion;
-    private float _delay;
-    private float _delayTimer;
-    private float _emission;
-    private float _emissionDelta;
-    private float _emissionDiff;
-    private bool  _firstUpdate;
-    private bool  _flipX;
-    private bool  _flipY;
-    private int   _life;
-    private int   _lifeDiff;
-    private int   _lifeOffset;
-    private int   _lifeOffsetDiff;
-    private float _spawnHeight;
-    private float _spawnHeightDiff;
-    private float _spawnWidth;
-    private float _spawnWidthDiff;
-    private int   _updateFlags;
 
     private BoundingBox?          _bounds;
+    private float                 _delay;
+    private float                 _delayTimer;
+    private float                 _emission;
+    private float                 _emissionDelta;
+    private float                 _emissionDiff;
+    private bool                  _firstUpdate;
+    private bool                  _flipX;
+    private bool                  _flipY;
+    private int                   _life;
+    private int                   _lifeDiff;
+    private int                   _lifeOffset;
+    private int                   _lifeOffsetDiff;
     private RangedNumericValue[]? _motionValues;
     private Particle?[]           _particles = new Particle[ 4 ];
+    private float                 _spawnHeight;
+    private float                 _spawnHeightDiff;
+    private float                 _spawnWidth;
+    private float                 _spawnWidthDiff;
+    private int                   _updateFlags;
     private RangedNumericValue[]? _xSizeValues;
     private RangedNumericValue[]? _ySizeValues;
-
-    // ------------------------------------------------------------------------
-
-    #region properties
-
-    /// <summary>
-    ///     Set whether to automatically return the <see cref="IBatch" />'s blend
-    ///     function to the alpha-blending default (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-    ///     when done drawing. Is true by default. If set to false, the IBatch's blend
-    ///     function is left as it was for drawing this ParticleEmitter, which prevents
-    ///     the IBatch from being flushed repeatedly if consecutive ParticleEmitters
-    ///     with the same additive or pre-multiplied alpha state are drawn in a row.
-    ///     <para>
-    ///         IMPORTANT: If set to false and if the next object to use this IBatch expects
-    ///         alpha blending, you are responsible for setting the IBatch's blend function
-    ///         to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) before that next object is drawn.
-    ///     </para>
-    /// </summary>
-    public bool CleansUpBlendFunction { get; set; } = true;
-
-    public List< Sprite >                Sprites           { get; set; } = new();
-    public SpriteModes                   SpriteMode        { get; set; } = SpriteModes.Single;
-    public List< string >                ImagePaths        { get; set; } = new();
-    public ScaledNumericValue            XScaleValue       { get; set; } = new();
-    public ScaledNumericValue            YScaleValue       { get; set; } = new();
-    public RangedNumericValue            DelayValue        { get; set; } = new();
-    public IndependentScaledNumericValue LifeOffsetValue   { get; set; } = new();
-    public RangedNumericValue            DurationValue     { get; set; } = new();
-    public IndependentScaledNumericValue LifeValue         { get; set; } = new();
-    public ScaledNumericValue            EmissionValue     { get; set; } = new();
-    public ScaledNumericValue            RotationValue     { get; set; } = new();
-    public ScaledNumericValue            VelocityValue     { get; set; } = new();
-    public ScaledNumericValue            AngleValue        { get; set; } = new();
-    public ScaledNumericValue            WindValue         { get; set; } = new();
-    public ScaledNumericValue            GravityValue      { get; set; } = new();
-    public ScaledNumericValue            TransparencyValue { get; set; } = new();
-    public GradientColorValue            TintValue         { get; set; } = new();
-    public RangedNumericValue            XOffsetValue      { get; set; } = new ScaledNumericValue();
-    public RangedNumericValue            YOffsetValue      { get; set; } = new ScaledNumericValue();
-    public ScaledNumericValue            SpawnWidthValue   { get; set; } = new();
-    public ScaledNumericValue            SpawnHeightValue  { get; set; } = new();
-    public ParticleSpawnShapeValue       SpawnShapeValue   { get; set; } = new();
-
-    public bool[] IsActive           { get; set; } = { false };
-    public float  Duration           { get; set; } = 1;
-    public float  DurationTimer      { get; set; }
-    public bool   Behind             { get; set; }
-    public string Name               { get; set; } = "";
-    public bool   Attached           { get; set; }
-    public bool   Continuous         { get; set; }
-    public bool   Aligned            { get; set; }
-    public bool   Additive           { get; set; } = true;
-    public bool   PremultipliedAlpha { get; set; } = false;
-    public float  X                  { get; set; }
-    public float  Y                  { get; set; }
-    public int    ActiveCount        { get; set; }
-    public int    MinParticleCount   { get; set; }
-    public int    MaxParticleCount   { get; set; } = DEFAULT_MAX_PARTICLE_COUNT;
-
-    #endregion properties
 
     // ------------------------------------------------------------------------
 
@@ -171,8 +111,8 @@ public class ParticleEmitter
     }
 
     /// <summary>
-    ///     Create a new Particvle Emitter which is a copy of the
-    ///     supplied emitter.
+    /// Create a new Particvle Emitter which is a copy of the
+    /// supplied emitter.
     /// </summary>
     /// <param name="emitter"></param>
     public ParticleEmitter( ParticleEmitter emitter )
@@ -217,7 +157,7 @@ public class ParticleEmitter
     }
 
     /// <summary>
-    ///     Common initialisation method for all constructors
+    /// Common initialisation method for all constructors
     /// </summary>
     private void Initialise()
     {
@@ -410,9 +350,9 @@ public class ParticleEmitter
     }
 
     /// <summary>
-    ///     Updates and draws the particles. This is slightly more efficient
-    ///     than calling {@link #update(float)} and <see cref="Draw(IBatch)" />"
-    ///     separately.
+    /// Updates and draws the particles. This is slightly more efficient
+    /// than calling {@link #update(float)} and <see cref="Draw(IBatch)"/>"
+    /// separately.
     /// </summary>
     public void Draw( IBatch batch, float delta )
     {
@@ -1165,8 +1105,8 @@ public class ParticleEmitter
     }
 
     /// <summary>
-    ///     Ignores the <see cref="Continuous" /> setting until the
-    ///     emitter is started again. This allows the emitter to stop smoothly.
+    /// Ignores the <see cref="Continuous"/> setting until the
+    /// emitter is started again. This allows the emitter to stop smoothly.
     /// </summary>
     public void AllowCompletion()
     {
@@ -1226,8 +1166,8 @@ public class ParticleEmitter
     }
 
     /// <summary>
-    ///     Returns the bounding box for all active particles.
-    ///     Z axis will always be zero.
+    /// Returns the bounding box for all active particles.
+    /// Z axis will always be zero.
     /// </summary>
     public BoundingBox GetBoundingBox()
     {
@@ -1291,8 +1231,8 @@ public class ParticleEmitter
     }
 
     /// <summary>
-    ///     Permanently scales the size of the emitter by scaling
-    ///     all of its ranged values related to size.
+    /// Permanently scales the size of the emitter by scaling
+    /// all of its ranged values related to size.
     /// </summary>
     public void ScaleSize( float scale )
     {
@@ -1305,8 +1245,8 @@ public class ParticleEmitter
     }
 
     /// <summary>
-    ///     Permanently scales the size of the emitter by scaling
-    ///     all of its ranged values related to size.
+    /// Permanently scales the size of the emitter by scaling
+    /// all of its ranged values related to size.
     /// </summary>
     public void ScaleSize( float scaleX, float scaleY )
     {
@@ -1327,8 +1267,8 @@ public class ParticleEmitter
     }
 
     /// <summary>
-    ///     Permanently scales the speed of the emitter by scaling all its
-    ///     ranged values related to motion.
+    /// Permanently scales the speed of the emitter by scaling all its
+    /// ranged values related to motion.
     /// </summary>
     public void ScaleMotion( float scale )
     {
@@ -1725,7 +1665,7 @@ public class ParticleEmitter
         }
 
         /// <summary>
-        ///     permanently scales the range by a scalar.
+        /// permanently scales the range by a scalar.
         /// </summary>
         public virtual void Scale( float scale )
         {
@@ -2217,4 +2157,64 @@ public class ParticleEmitter
             Side  = value.Side;
         }
     }
+
+    // ------------------------------------------------------------------------
+
+    #region properties
+
+    /// <summary>
+    /// Set whether to automatically return the <see cref="IBatch"/>'s blend
+    /// function to the alpha-blending default (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+    /// when done drawing. Is true by default. If set to false, the IBatch's blend
+    /// function is left as it was for drawing this ParticleEmitter, which prevents
+    /// the IBatch from being flushed repeatedly if consecutive ParticleEmitters
+    /// with the same additive or pre-multiplied alpha state are drawn in a row.
+    /// <para>
+    /// IMPORTANT: If set to false and if the next object to use this IBatch expects
+    /// alpha blending, you are responsible for setting the IBatch's blend function
+    /// to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) before that next object is drawn.
+    /// </para>
+    /// </summary>
+    public bool CleansUpBlendFunction { get; set; } = true;
+
+    public List< Sprite >                Sprites           { get; set; } = new();
+    public SpriteModes                   SpriteMode        { get; set; } = SpriteModes.Single;
+    public List< string >                ImagePaths        { get; set; } = new();
+    public ScaledNumericValue            XScaleValue       { get; set; } = new();
+    public ScaledNumericValue            YScaleValue       { get; set; } = new();
+    public RangedNumericValue            DelayValue        { get; set; } = new();
+    public IndependentScaledNumericValue LifeOffsetValue   { get; set; } = new();
+    public RangedNumericValue            DurationValue     { get; set; } = new();
+    public IndependentScaledNumericValue LifeValue         { get; set; } = new();
+    public ScaledNumericValue            EmissionValue     { get; set; } = new();
+    public ScaledNumericValue            RotationValue     { get; set; } = new();
+    public ScaledNumericValue            VelocityValue     { get; set; } = new();
+    public ScaledNumericValue            AngleValue        { get; set; } = new();
+    public ScaledNumericValue            WindValue         { get; set; } = new();
+    public ScaledNumericValue            GravityValue      { get; set; } = new();
+    public ScaledNumericValue            TransparencyValue { get; set; } = new();
+    public GradientColorValue            TintValue         { get; set; } = new();
+    public RangedNumericValue            XOffsetValue      { get; set; } = new ScaledNumericValue();
+    public RangedNumericValue            YOffsetValue      { get; set; } = new ScaledNumericValue();
+    public ScaledNumericValue            SpawnWidthValue   { get; set; } = new();
+    public ScaledNumericValue            SpawnHeightValue  { get; set; } = new();
+    public ParticleSpawnShapeValue       SpawnShapeValue   { get; set; } = new();
+
+    public bool[] IsActive           { get; set; } = { false };
+    public float  Duration           { get; set; } = 1;
+    public float  DurationTimer      { get; set; }
+    public bool   Behind             { get; set; }
+    public string Name               { get; set; } = "";
+    public bool   Attached           { get; set; }
+    public bool   Continuous         { get; set; }
+    public bool   Aligned            { get; set; }
+    public bool   Additive           { get; set; } = true;
+    public bool   PremultipliedAlpha { get; set; } = false;
+    public float  X                  { get; set; }
+    public float  Y                  { get; set; }
+    public int    ActiveCount        { get; set; }
+    public int    MinParticleCount   { get; set; }
+    public int    MaxParticleCount   { get; set; } = DEFAULT_MAX_PARTICLE_COUNT;
+
+    #endregion properties
 }

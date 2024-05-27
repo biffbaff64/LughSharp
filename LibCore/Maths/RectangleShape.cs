@@ -28,8 +28,8 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Maths;
 
 /// <summary>
-///     Rectangle class that is independent of any backends.
-///     This has no drawing methods, just those that handle the shape.
+/// Rectangle class that is independent of any backends.
+/// This has no drawing methods, just those that handle the shape.
 /// </summary>
 [PublicAPI]
 public class RectangleShape : IShape2D
@@ -37,14 +37,14 @@ public class RectangleShape : IShape2D
     public readonly static RectangleShape Tmp = new();
 
     /// <summary>
-    ///     Constructs a new rectangle with all values set to zero
+    /// Constructs a new rectangle with all values set to zero
     /// </summary>
     public RectangleShape() : this( 0, 0, 0, 0 )
     {
     }
 
     /// <summary>
-    ///     Constructs a new rectangle with the given corner point in the bottom left and dimensions.
+    /// Constructs a new rectangle with the given corner point in the bottom left and dimensions.
     /// </summary>
     /// <param name="x"> The corner point x-coordinate </param>
     /// <param name="y"> The corner point y-coordinate </param>
@@ -59,7 +59,7 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Constructs a rectangle based on the given rectangle
+    /// Constructs a rectangle based on the given rectangle
     /// </summary>
     /// <param name="rect"> The rectangle  </param>
     public RectangleShape( RectangleShape rect )
@@ -112,7 +112,7 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Return the current rectangle position.
+    /// Return the current rectangle position.
     /// </summary>
     public Vector2 GetPosition()
     {
@@ -120,8 +120,8 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Set the x and y coordinates of the bottom left corner,
-    ///     from the supplied vector.
+    /// Set the x and y coordinates of the bottom left corner,
+    /// from the supplied vector.
     /// </summary>
     /// <returns>This rectangle for chaining.</returns>
     public RectangleShape SetPosition( Vector2 position )
@@ -133,8 +133,8 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Set the x and y coordinates of the bottom left corner,
-    ///     from the supplied x and y values.
+    /// Set the x and y coordinates of the bottom left corner,
+    /// from the supplied x and y values.
     /// </summary>
     /// <returns>This rectangle for chaining.</returns>
     public RectangleShape SetPosition( float x, float y )
@@ -146,7 +146,7 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Sets the size of this rectangle from the values provided.
+    /// Sets the size of this rectangle from the values provided.
     /// </summary>
     /// <param name="width">The new width.</param>
     /// <param name="height">The new height.</param>
@@ -160,7 +160,7 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Sets the squared size of this rectangle from the value provided.
+    /// Sets the squared size of this rectangle from the value provided.
     /// </summary>
     /// <param name="sizeXY">The new width and height value.</param>
     /// <returns>This rectangle for chaining.</returns>
@@ -173,7 +173,7 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Gets the current size of this rectangle.
+    /// Gets the current size of this rectangle.
     /// </summary>
     public Vector2 GetSize()
     {
@@ -194,7 +194,7 @@ public class RectangleShape : IShape2D
 
     /// <summary>
     /// </summary>
-    /// <param name="rectangle"> the other <see cref="RectangleShape" />.</param>
+    /// <param name="rectangle"> the other <see cref="RectangleShape"/>.</param>
     /// <returns> whether the other rectangle is contained in this rectangle.</returns>
     public bool Contains( RectangleShape rectangle )
     {
@@ -215,9 +215,9 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Checks for overlap between this rectangle and the specified rectangle.
+    /// Checks for overlap between this rectangle and the specified rectangle.
     /// </summary>
-    /// <param name="r"> the other <see cref="RectangleShape" /> </param>
+    /// <param name="r"> the other <see cref="RectangleShape"/> </param>
     /// <returns> whether this rectangle overlaps the other rectangle.  </returns>
     public bool Overlaps( RectangleShape r )
     {
@@ -225,7 +225,7 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Sets the values of the given rectangle to this rectangle.
+    /// Sets the values of the given rectangle to this rectangle.
     /// </summary>
     /// <param name="rect"> the other rectangle </param>
     /// <returns> this rectangle for chaining  </returns>
@@ -240,8 +240,8 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Merges this rectangle with the other rectangle.
-    ///     The rectangle should not have negative width or negative height.
+    /// Merges this rectangle with the other rectangle.
+    /// The rectangle should not have negative width or negative height.
     /// </summary>
     /// <param name="rect"> the other rectangle </param>
     /// <returns> this rectangle for chaining  </returns>
@@ -263,8 +263,8 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Merges this rectangle with a point.
-    ///     The rectangle should not have negative width or negative height.
+    /// Merges this rectangle with a point.
+    /// The rectangle should not have negative width or negative height.
     /// </summary>
     /// <param name="x"> the x coordinate of the point </param>
     /// <param name="y"> the y coordinate of the point </param>
@@ -287,8 +287,8 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Merges this rectangle with a point.
-    ///     The rectangle should not have negative width or negative height.
+    /// Merges this rectangle with a point.
+    /// The rectangle should not have negative width or negative height.
     /// </summary>
     /// <param name="vec"> the vector describing the point </param>
     /// <returns> this rectangle for chaining  </returns>
@@ -298,8 +298,8 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Merges this rectangle with a list of points.
-    ///     The rectangle should not have negative width or negative height.
+    /// Merges this rectangle with a list of points.
+    /// The rectangle should not have negative width or negative height.
     /// </summary>
     /// <param name="vecs"> the vectors describing the points </param>
     /// <returns> this rectangle for chaining  </returns>
@@ -327,11 +327,11 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Calculates the aspect ratio ( width / height ) of this rectangle
+    /// Calculates the aspect ratio ( width / height ) of this rectangle
     /// </summary>
     /// <returns>
-    ///     The aspect ratio of this rectangle.
-    ///     Returns Float.NaN if height is 0 to avoid ArithmeticException.
+    /// The aspect ratio of this rectangle.
+    /// Returns Float.NaN if height is 0 to avoid ArithmeticException.
     /// </returns>
     public float GetAspectRatio()
     {
@@ -339,7 +339,7 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Calculates the center of the rectangle. Results are located in the given Vector2
+    /// Calculates the center of the rectangle. Results are located in the given Vector2
     /// </summary>
     /// <param name="vector"> the Vector2 to use </param>
     /// <returns> the given vector with results stored inside  </returns>
@@ -352,7 +352,7 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Moves this rectangle so that its center point is located at a given position
+    /// Moves this rectangle so that its center point is located at a given position
     /// </summary>
     /// <param name="x"> the position's x </param>
     /// <param name="y"> the position's y </param>
@@ -365,7 +365,7 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Moves this rectangle so that its center point is located at a given position
+    /// Moves this rectangle so that its center point is located at a given position
     /// </summary>
     /// <param name="position"> the position </param>
     /// <returns> this for chaining  </returns>
@@ -377,13 +377,13 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Fits this rectangle around another rectangle while maintaining aspect
-    ///     ratio. This scales and centers the rectangle to the other rectangle
-    ///     (e.g. Having a camera translate and scale to show a given area)
+    /// Fits this rectangle around another rectangle while maintaining aspect
+    /// ratio. This scales and centers the rectangle to the other rectangle
+    /// (e.g. Having a camera translate and scale to show a given area)
     /// </summary>
     /// <param name="rect"> the other rectangle to fit this rectangle around </param>
     /// <returns> this rectangle for chaining </returns>
-    /// <see cref="Scaling " />
+    /// <see cref="Scaling "/>
     public RectangleShape FitOutside( RectangleShape rect )
     {
         var ratio = GetAspectRatio();
@@ -405,13 +405,13 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Fits this rectangle into another rectangle while maintaining aspect ratio.
-    ///     This scales and centers the rectangle to the other rectangle (e.g. Scaling
-    ///     a texture within a arbitrary cell without squeezing)
+    /// Fits this rectangle into another rectangle while maintaining aspect ratio.
+    /// This scales and centers the rectangle to the other rectangle (e.g. Scaling
+    /// a texture within a arbitrary cell without squeezing)
     /// </summary>
     /// <param name="rect"> the other rectangle to fit this rectangle inside </param>
     /// <returns> this rectangle for chaining </returns>
-    /// <see cref="Scaling " />
+    /// <see cref="Scaling "/>
     public RectangleShape FitInside( RectangleShape rect )
     {
         var ratio = GetAspectRatio();
@@ -433,8 +433,8 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Converts this <code>Rectangle</code> to a string in the
-    ///     format <code>[x,y,width,height]</code>.
+    /// Converts this <code>Rectangle</code> to a string in the
+    /// format <code>[x,y,width,height]</code>.
     /// </summary>
     /// <returns> a string representation of this object.</returns>
     public override string ToString()
@@ -443,8 +443,8 @@ public class RectangleShape : IShape2D
     }
 
     /// <summary>
-    ///     Sets this {@code Rectangle} to the value represented by the
-    ///     specified string according to the format of <see cref="ToString()" />.
+    /// Sets this {@code Rectangle} to the value represented by the
+    /// specified string according to the format of <see cref="ToString()"/>.
     /// </summary>
     /// <param name="v"> the string. </param>
     /// <returns> this rectangle for chaining  </returns>

@@ -24,6 +24,7 @@
 
 // ----------------------------------------------------------------------------
 // General System
+
 global using System;
 global using System.Diagnostics;
 global using System.Diagnostics.CodeAnalysis;
@@ -86,7 +87,6 @@ global using LughSharp.LibCore.Utils.Pooling;
 global using LughSharp.LibCore.Utils.Viewport;
 
 // ----------------------------------------------------------------------------
-
 global using Vector2 = LughSharp.LibCore.Maths.Vector2;
 global using Vector3 = LughSharp.LibCore.Maths.Vector3;
 

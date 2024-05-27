@@ -26,9 +26,9 @@
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
-///     A color class, holding the r, g, b and alpha component as floats in
-///     the range [0,1].
-///     All methods perform clamping on the internal values after execution.
+/// A color class, holding the r, g, b and alpha component as floats in
+/// the range [0,1].
+/// All methods perform clamping on the internal values after execution.
 /// </summary>
 [PublicAPI]
 public sealed class Color
@@ -68,33 +68,24 @@ public sealed class Color
     public readonly static Color Violet     = new( 0xee82eeff );
     public readonly static Color Maroon     = new( 0xb03060ff );
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
-    ///     Convenience for frequently used <tt>White.ToFloatBits()</tt>
+    /// Convenience for frequently used <tt>White.ToFloatBits()</tt>
     /// </summary>
     public readonly static float WhiteFloatBits = White.ToFloatBits();
 
-    #region Colour Components
-
-    public float R { get; set; }
-    public float G { get; set; }
-    public float B { get; set; }
-    public float A { get; set; }
-
-    #endregion Colour Components
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
     /// <summary>
-    ///     Constructor, sets all the components to 0.
+    /// Constructor, sets all the components to 0.
     /// </summary>
     public Color() : this( 0, 0, 0, 0 )
     {
     }
 
     /// <summary>
-    ///     Constructor, sets the Color components using the specified integer value in
-    ///     the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
+    /// Constructor, sets the Color components using the specified integer value in
+    /// the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
     /// </summary>
     /// <param name="rgba8888"> An integer color value in RGBA8888 format. </param>
     public Color( int rgba8888 ) : this( ( uint ) rgba8888 )
@@ -102,8 +93,8 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Constructor, sets the Color components using the specified integer value in
-    ///     the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
+    /// Constructor, sets the Color components using the specified integer value in
+    /// the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
     /// </summary>
     /// <param name="rgba8888"> An uint color value in RGBA8888 format. </param>
     public Color( uint rgba8888 )
@@ -112,7 +103,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Constructor, sets the components of the color.
+    /// Constructor, sets the components of the color.
     /// </summary>
     /// <param name="r"> The red component. </param>
     /// <param name="g"> The green component. </param>
@@ -129,7 +120,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Constructs a new color using the components from the supplied color.
+    /// Constructs a new color using the components from the supplied color.
     /// </summary>
     public Color( Color color )
     {
@@ -137,7 +128,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Sets this colors components using the components from the supplied colot.
+    /// Sets this colors components using the components from the supplied colot.
     /// </summary>
     /// <returns> This Color for chaining. </returns>
     public Color Set( Color color )
@@ -148,7 +139,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Sets this colors components using the supplied r,g,b,a components.
+    /// Sets this colors components using the supplied r,g,b,a components.
     /// </summary>
     /// <returns></returns>
     public Color Set( float r, float g, float b, float a )
@@ -162,7 +153,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Sets this color's component values through an integer representation.
+    /// Sets this color's component values through an integer representation.
     /// </summary>
     /// <param name="rgba"></param>
     /// <returns>This color for chaining.</returns>
@@ -178,8 +169,8 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Multiplies each of this colors components by the corresponding
-    ///     components in the supplied Color.
+    /// Multiplies each of this colors components by the corresponding
+    /// components in the supplied Color.
     /// </summary>
     /// <param name="color"></param>
     /// <returns>This Color for chaining.</returns>
@@ -194,7 +185,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Multiplies the colour components by the supplied value.
+    /// Multiplies the colour components by the supplied value.
     /// </summary>
     /// <returns>This Color for chaining.</returns>
     public Color Mul( float value )
@@ -208,8 +199,8 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Multiplies each of this colors components by the corresponding
-    ///     supplied components.
+    /// Multiplies each of this colors components by the corresponding
+    /// supplied components.
     /// </summary>
     /// <param name="r">Red component</param>
     /// <param name="g">Green component</param>
@@ -227,8 +218,8 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Adds the components from the supplied Color to the corresponding
-    ///     components of this color.
+    /// Adds the components from the supplied Color to the corresponding
+    /// components of this color.
     /// </summary>
     /// <param name="color"> The Color to add. </param>
     /// <returns>This Color for chaining.</returns>
@@ -243,8 +234,8 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Adds the supplied Color components to the corresponding
-    ///     components of this Color.
+    /// Adds the supplied Color components to the corresponding
+    /// components of this Color.
     /// </summary>
     /// <returns> This Color for chaining. </returns>
     public Color Add( float r, float g, float b, float a )
@@ -258,8 +249,8 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Subtracts the elements in the supplied Color from the equivalent
-    ///     elements in this Color.
+    /// Subtracts the elements in the supplied Color from the equivalent
+    /// elements in this Color.
     /// </summary>
     /// <param name="color"></param>
     /// <returns>This Color for chaining.</returns>
@@ -274,7 +265,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Subtracts the supplied elements from the equivalent elements in this Color.
+    /// Subtracts the supplied elements from the equivalent elements in this Color.
     /// </summary>
     /// <param name="r">Red component</param>
     /// <param name="g">Green component</param>
@@ -292,7 +283,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Clamps this Colors RGBA components to a valid range [0 - 1]
+    /// Clamps this Colors RGBA components to a valid range [0 - 1]
     /// </summary>
     /// <returns>This Color for chaining.</returns>
     private Color Clamp()
@@ -306,7 +297,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Clamps the provided Colors RGBA components to a valid range [0 - 1]
+    /// Clamps the provided Colors RGBA components to a valid range [0 - 1]
     /// </summary>
     private Color Clamp( Color color )
     {
@@ -319,9 +310,9 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Linearly interpolates between this color and the target color by
-    ///     'interpolationCoefficient' which is in the range [0,1].
-    ///     The result is stored in this color.
+    /// Linearly interpolates between this color and the target color by
+    /// 'interpolationCoefficient' which is in the range [0,1].
+    /// The result is stored in this color.
     /// </summary>
     /// <param name="target"></param>
     /// <param name="interpolationCoefficient"></param>
@@ -345,9 +336,9 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Linearly interpolates between this color and the target color by
-    ///     'interpolationCoefficient' which is in the range [0,1].
-    ///     The result is stored in this color.
+    /// Linearly interpolates between this color and the target color by
+    /// 'interpolationCoefficient' which is in the range [0,1].
+    /// The result is stored in this color.
     /// </summary>
     /// <param name="r">Red component</param>
     /// <param name="g">Green component</param>
@@ -372,7 +363,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Multiplies the RGB values by the alpha.
+    /// Multiplies the RGB values by the alpha.
     /// </summary>
     /// <returns>This color for chaining.</returns>
     public Color PremultiplyAlpha()
@@ -388,7 +379,7 @@ public sealed class Color
     {
         if ( c1 is null )
         {
-            return c2 is not null;
+            return c2 is null;
         }
 
         return c1.Equals( c2 );
@@ -396,16 +387,11 @@ public sealed class Color
 
     public static bool operator !=( Color? c1, object? c2 )
     {
-        if ( c1 is null )
-        {
-            return c2 is not null;
-        }
-
-        return !c1.Equals( c2 );
+        return !( c1 == c2 );
     }
 
     /// <summary>
-    ///     Converts a 16-bit RGB565 integer value to a Color object.
+    /// Converts a 16-bit RGB565 integer value to a Color object.
     /// </summary>
     /// <param name="color">The Color object to assign the converted values to.</param>
     /// <param name="value">The 16-bit RGB565 integer value.</param>
@@ -424,7 +410,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Converts a 16-bit RGBA4444 integer value to a Color object.
+    /// Converts a 16-bit RGBA4444 integer value to a Color object.
     /// </summary>
     /// <param name="color">The Color object to assign the converted values to.</param>
     /// <param name="value">The 16-bit RGBA4444 integer value.</param>
@@ -444,7 +430,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Converts a 32-bit RGBA8888 integer value to a Color object.
+    /// Converts a 32-bit RGBA8888 integer value to a Color object.
     /// </summary>
     /// <param name="color">The Color object to assign the converted values to.</param>
     /// <param name="value">The 32-bit RGBA8888 integer value.</param>
@@ -478,7 +464,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Sets the Color components using the specified float value in the format ABGR8888.
+    /// Sets the Color components using the specified float value in the format ABGR8888.
     /// </summary>
     /// <param name="color">The Color object to assign the converted values to.</param>
     /// <param name="value">The float value representing the color in ABGR8888 format.</param>
@@ -495,9 +481,9 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Sets the Color components using the specified integer value
-    ///     in the format RGBA8888. This is inverse to the
-    ///     RGBA8888(r, g, b, a) method.
+    /// Sets the Color components using the specified integer value
+    /// in the format RGBA8888. This is inverse to the
+    /// RGBA8888(r, g, b, a) method.
     /// </summary>
     /// <param name="color">The Color to be modified.</param>
     /// <param name="value">An integer color value in RGBA8888 format.</param>
@@ -525,9 +511,9 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Sets the RGB Color components using the specified Hue-Saturation-Value.
-    ///     Note that HSV components are voluntary not clamped to preserve high range
-    ///     color and can range beyond typical values.
+    /// Sets the RGB Color components using the specified Hue-Saturation-Value.
+    /// Note that HSV components are voluntary not clamped to preserve high range
+    /// color and can range beyond typical values.
     /// </summary>
     /// <param name="h">The Hue in degree from 0 to 360</param>
     /// <param name="s">The Saturation from 0 to 1</param>
@@ -593,9 +579,9 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Sets RGB components using the specified Hue-Saturation-Value.
-    ///     This is a convenient method for fromHsv(float, float, float).
-    ///     This is the inverse of toHsv(float[]).
+    /// Sets RGB components using the specified Hue-Saturation-Value.
+    /// This is a convenient method for fromHsv(float, float, float).
+    /// This is the inverse of toHsv(float[]).
     /// </summary>
     /// <param name="hsv"></param>
     /// <returns></returns>
@@ -605,7 +591,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Converts the RGB color values to HSV and stores the result in the provided array.
+    /// Converts the RGB color values to HSV and stores the result in the provided array.
     /// </summary>
     /// <param name="hsv">An array of at least 3 elements where the HSV values will be stored.</param>
     /// <returns>The array with HSV values.</returns>
@@ -642,7 +628,7 @@ public sealed class Color
         }
 
         // Saturation calculation
-        hsv[ 1 ] = max > 0 ? ( range / max ) : 0;
+        hsv[ 1 ] = max > 0 ? range / max : 0;
 
         // Value calculation
         hsv[ 2 ] = max;
@@ -651,11 +637,11 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Packs the color components into a 32-bit integer with the format ABGR and
-    ///     then converts it to a float. Alpha is compressed from 0-255 to use only even
-    ///     numbers between 0-254 to avoid using float bits in the NaN range
-    ///     (see NumberUtils.intToFloatColor(int)).
-    ///     Converting a color to a float and back can be lossy for alpha.
+    /// Packs the color components into a 32-bit integer with the format ABGR and
+    /// then converts it to a float. Alpha is compressed from 0-255 to use only even
+    /// numbers between 0-254 to avoid using float bits in the NaN range
+    /// (see NumberUtils.intToFloatColor(int)).
+    /// Converting a color to a float and back can be lossy for alpha.
     /// </summary>
     /// <returns></returns>
     public float ToFloatBits()
@@ -724,7 +710,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Returns a new color from a hex string with the format RRGGBBAA.
+    /// Returns a new color from a hex string with the format RRGGBBAA.
     /// </summary>
     /// <param name="hex"></param>
     /// <returns></returns>
@@ -880,7 +866,7 @@ public sealed class Color
     }
 
     /// <summary>
-    ///     Creates a copy of this <see cref="Color"/> object.
+    /// Creates a copy of this <see cref="Color"/> object.
     /// </summary>
     /// <returns>
     /// A new <see cref="Color"/> object that is a copy of the current instance.
@@ -892,7 +878,7 @@ public sealed class Color
         return new Color( this );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override bool Equals( object? obj )
     {
         if ( ( obj == null ) || ( GetType() != obj.GetType() ) )
@@ -910,7 +896,7 @@ public sealed class Color
         return ToIntBits() == color.ToIntBits();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         var result = White != 0F ? NumberUtils.FloatToIntBits( White.ToFloatBits() ) : 0;
@@ -921,4 +907,13 @@ public sealed class Color
 
         return result;
     }
+
+    #region Colour Components
+
+    public float R { get; set; }
+    public float G { get; set; }
+    public float B { get; set; }
+    public float A { get; set; }
+
+    #endregion Colour Components
 }

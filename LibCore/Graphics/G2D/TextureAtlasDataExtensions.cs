@@ -35,8 +35,8 @@ public class ComparatorAnonymousInnerClass : IComparer< TextureAtlasData.Region 
     }
 
     /// <summary>
-    ///     Compares two objects and returns a value indicating whether one is
-    ///     less than, equal to, or greater than the other.
+    /// Compares two objects and returns a value indicating whether one is
+    /// less than, equal to, or greater than the other.
     /// </summary>
     /// <param name="region1">The first object to compare.</param>
     /// <param name="region2">The second object to compare.</param>
@@ -184,7 +184,7 @@ public partial record TextureAtlasData
 
             if ( value.Equals( "true" ) )
             {
-                region.Degrees                                  = 90;
+                region.Degrees = 90;
             }
             else if ( !value.Equals( "false" ) )
             {

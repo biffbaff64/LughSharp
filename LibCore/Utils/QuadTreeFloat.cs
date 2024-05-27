@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>
-///     A quad tree that stores a float for each point.
+/// A quad tree that stores a float for each point.
 /// </summary>
 [PublicAPI]
 public class QuadTreeFloat : IPoolable
@@ -41,23 +41,23 @@ public class QuadTreeFloat : IPoolable
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Creates a quad tree with 16 for maxValues and 8 for maxDepth.
+    /// Creates a quad tree with 16 for maxValues and 8 for maxDepth.
     /// </summary>
     public QuadTreeFloat() : this( 16, 8 )
     {
     }
 
     /// <summary>
-    ///     Creates a quad tree with provided values for maxValues and maxDepth.
+    /// Creates a quad tree with provided values for maxValues and maxDepth.
     /// </summary>
     /// <param name="maxValues">
-    ///     The maximum number of values stored in each quad tree node. When exceeded,
-    ///     the node is split into 4 child nodes. If the maxDepth has been reached,
-    ///     more than maxValues may be stored.
+    /// The maximum number of values stored in each quad tree node. When exceeded,
+    /// the node is split into 4 child nodes. If the maxDepth has been reached,
+    /// more than maxValues may be stored.
     /// </param>
     /// <param name="maxDepth">
-    ///     The maximum depth of the tree nodes. Nodes at the maxDepth will not be
-    ///     split and may store more than maxValues number of entries.
+    /// The maximum depth of the tree nodes. Nodes at the maxDepth will not be
+    /// split and may store more than maxValues number of entries.
     /// </param>
     public QuadTreeFloat( int maxValues, int maxDepth )
     {
@@ -225,8 +225,8 @@ public class QuadTreeFloat : IPoolable
     }
 
     /// <summary>
-    ///     Returns a new length for <see cref="Values" /> when it is not enough to
-    ///     hold all the entries after <see cref="MaxDepth" /> has been reached.
+    /// Returns a new length for <see cref="Values"/> when it is not enough to
+    /// hold all the entries after <see cref="MaxDepth"/> has been reached.
     /// </summary>
     protected int GrowValues()
     {
@@ -239,8 +239,8 @@ public class QuadTreeFloat : IPoolable
     /// <param name="centerY"></param>
     /// <param name="radius"></param>
     /// <param name="results">
-    ///     For each entry found within the radius, if any, the value, x, y, and
-    ///     square of the distance to the entry are added to this array.
+    /// For each entry found within the radius, if any, the value, x, y, and
+    /// square of the distance to the entry are added to this array.
     /// </param>
     public void Query( float centerX, float centerY, float radius, List< float > results )
     {
@@ -308,13 +308,13 @@ public class QuadTreeFloat : IPoolable
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="result">
-    ///     For the entry nearest to the specified point, the value, x, y, and square
-    ///     of the distance to the value are added to this array after it is cleared.
+    /// For the entry nearest to the specified point, the value, x, y, and square
+    /// of the distance to the value are added to this array after it is cleared.
     /// </param>
     /// <returns>
-    ///     False if no entry was found because the quad tree was empty or the specified
-    ///     point is farther than the larger of the quad tree's width or height from an
-    ///     entry. If false is returned the result array is empty.
+    /// False if no entry was found because the quad tree was empty or the specified
+    /// point is farther than the larger of the quad tree's width or height from an
+    /// entry. If false is returned the result array is empty.
     /// </returns>
     public bool Nearest( float x, float y, List< float > result )
     {

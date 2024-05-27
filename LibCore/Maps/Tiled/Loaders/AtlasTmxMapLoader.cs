@@ -30,14 +30,14 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Maps.Tiled.Loaders;
 
 /// <summary>
-///     A TiledMap Loader which loads tiles from a TextureAtlas instead of separate images.
-///     It requires a map-level property called 'atlas' with its value being the relative
-///     path to the TextureAtlas.
-///     <p>
-///         The atlas must have in it indexed regions named after the tilesets used in the map.
-///         The indexes shall be local to the tileset (not the global id). Strip whitespace and
-///         rotation should not be used when creating the atlas.
-///     </p>
+/// A TiledMap Loader which loads tiles from a TextureAtlas instead of separate images.
+/// It requires a map-level property called 'atlas' with its value being the relative
+/// path to the TextureAtlas.
+/// <p>
+/// The atlas must have in it indexed regions named after the tilesets used in the map.
+/// The indexes shall be local to the tileset (not the global id). Strip whitespace and
+/// rotation should not be used when creating the atlas.
+/// </p>
 /// </summary>
 [PublicAPI]
 public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledMapLoaderParameters >
@@ -85,10 +85,10 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return map;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override void LoadAsync( AssetManager? manager,
-                                      FileInfo? tmxFile,
-                                      AtlasTiledMapLoaderParameters? parameter )
+                                    FileInfo? tmxFile,
+                                    AtlasTiledMapLoaderParameters? parameter )
     {
         ArgumentNullException.ThrowIfNull( manager );
         ArgumentNullException.ThrowIfNull( tmxFile );
@@ -110,7 +110,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return Map;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
     {
         return null!;
@@ -132,7 +132,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return descriptors;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void AddStaticTiles( FileInfo tmxFile,
                                             IImageResolver imageResolver,
                                             TiledMapTileSet tileSet,

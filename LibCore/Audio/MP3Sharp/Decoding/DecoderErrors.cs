@@ -26,12 +26,23 @@
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
-///     This interface provides constants describing the error
-///     codes used by the Decoder to indicate errors.
+/// Defines error codes for decoder-related errors.
 /// </summary>
+/// <remarks>
+/// This struct provides constant error codes that are used to indicate specific errors
+/// encountered during decoding. The error codes are built upon the base error code
+/// defined in <see cref="BitstreamErrors.DECODER_ERROR"/>.
+/// </remarks>
 [PublicAPI]
 public struct DecoderErrors
 {
-    public const int UNKNOWN_ERROR     = BitstreamErrors.DECODER_ERROR + 0;
+    /// <summary>
+    /// Indicates an unknown decoder error.
+    /// </summary>
+    public const int UNKNOWN_ERROR = BitstreamErrors.DECODER_ERROR + 0;
+
+    /// <summary>
+    /// Indicates that the layer specified in the bitstream is unsupported by the decoder.
+    /// </summary>
     public const int UNSUPPORTED_LAYER = BitstreamErrors.DECODER_ERROR + 1;
 }

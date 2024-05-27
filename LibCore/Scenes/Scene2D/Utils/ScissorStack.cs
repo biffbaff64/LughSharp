@@ -30,10 +30,10 @@ using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
-///     A stack of {@link Rectangle} objects to be used for clipping via
-///     <see cref="GLBindings.glScissor(int, int, int, int)" />. When a new Rectangle is
-///     pushed onto the stack, it will be merged with the current top of stack. The
-///     minimum area of overlap is then set as the real top of the stack.
+/// A stack of {@link Rectangle} objects to be used for clipping via
+/// <see cref="GLBindings.glScissor(int, int, int, int)"/>. When a new Rectangle is
+/// pushed onto the stack, it will be merged with the current top of stack. The
+/// minimum area of overlap is then set as the real top of the stack.
 /// </summary>
 [PublicAPI]
 public class ScissorStack
@@ -43,19 +43,19 @@ public class ScissorStack
     private readonly static RectangleShape         _viewport = new();
 
     /// <summary>
-    ///     Pushes a new scissor <see cref="Rectangle" /> onto the stack, merging it with
-    ///     the current top of the stack. The minimal area of overlap between the top of
-    ///     stack rectangle and the provided rectangle is pushed onto the stack. This will
-    ///     invoke <see cref="GLBindings.glScissor(int, int, int, int)" /> with the final top of
-    ///     stack rectangle. In case no scissor is yet on the stack this will also enable
-    ///     <see cref="IGL.GL_SCISSOR_TEST" /> automatically.
-    ///     <para>
-    ///         Any drawing should be flushed before pushing scissors.
-    ///     </para>
+    /// Pushes a new scissor <see cref="Rectangle"/> onto the stack, merging it with
+    /// the current top of the stack. The minimal area of overlap between the top of
+    /// stack rectangle and the provided rectangle is pushed onto the stack. This will
+    /// invoke <see cref="GLBindings.glScissor(int, int, int, int)"/> with the final top of
+    /// stack rectangle. In case no scissor is yet on the stack this will also enable
+    /// <see cref="IGL.GL_SCISSOR_TEST"/> automatically.
+    /// <para>
+    /// Any drawing should be flushed before pushing scissors.
+    /// </para>
     /// </summary>
     /// <returns>
-    ///     true if the scissors were pushed. false if the scissor area was zero, in this
-    ///     case the scissors were not pushed and no drawing should occur.
+    /// true if the scissors were pushed. false if the scissor area was zero, in this
+    /// case the scissors were not pushed and no drawing should occur.
     /// </returns>
     public static bool PushScissors( RectangleShape scissor )
     {
@@ -108,12 +108,12 @@ public class ScissorStack
     }
 
     /// <summary>
-    ///     Pops the current scissor rectangle from the stack and sets the new scissor
-    ///     area to the new top of stack rectangle. In case no more rectangles are on
-    ///     the stack, <see cref="IGL.GL_SCISSOR_TEST" /> is disabled.
-    ///     <para>
-    ///         Any drawing should be flushed before popping scissors.
-    ///     </para>
+    /// Pops the current scissor rectangle from the stack and sets the new scissor
+    /// area to the new top of stack rectangle. In case no more rectangles are on
+    /// the stack, <see cref="IGL.GL_SCISSOR_TEST"/> is disabled.
+    /// <para>
+    /// Any drawing should be flushed before popping scissors.
+    /// </para>
     /// </summary>
     public static RectangleShape PopScissors()
     {
@@ -162,8 +162,8 @@ public class ScissorStack
     }
 
     /// <summary>
-    ///     Calculates a scissor rectangle using 0, 0, Gdx.graphics.getWidth(),
-    ///     and Gdx.graphics.getHeight() as the viewport.
+    /// Calculates a scissor rectangle using 0, 0, Gdx.graphics.getWidth(),
+    /// and Gdx.graphics.getHeight() as the viewport.
     /// </summary>
     public static void CalculateScissors( Camera camera,
                                           Matrix4 batchTransform,
@@ -174,20 +174,20 @@ public class ScissorStack
     }
 
     /// <summary>
-    ///     Calculates a scissor rectangle in OpenGL ES window coordinates from a <see cref="Camera" />,
-    ///     a transformation <see cref="Matrix4" /> and an axis aligned <see cref="RectangleShape" />.
-    ///     The rectangle will get transformed by the camera and transform matrices and is then
-    ///     projected to screen coordinates. Note that only axis aligned rectangles will work with
-    ///     this method. If either the Camera or the Matrix4 have rotational components, the output
-    ///     of this method will not be suitable for <see cref="GLBindings.glScissor(int, int, int, int)" />.
+    /// Calculates a scissor rectangle in OpenGL ES window coordinates from a <see cref="Camera"/>,
+    /// a transformation <see cref="Matrix4"/> and an axis aligned <see cref="RectangleShape"/>.
+    /// The rectangle will get transformed by the camera and transform matrices and is then
+    /// projected to screen coordinates. Note that only axis aligned rectangles will work with
+    /// this method. If either the Camera or the Matrix4 have rotational components, the output
+    /// of this method will not be suitable for <see cref="GLBindings.glScissor(int, int, int, int)"/>.
     /// </summary>
     /// <param name="viewportX"></param>
     /// <param name="viewportY"></param>
     /// <param name="viewportWidth"></param>
     /// <param name="viewportHeight"></param>
-    /// <param name="camera"> the <see cref="Camera" /> </param>
-    /// <param name="batchTransform"> the transformation <see cref="Matrix4" /> </param>
-    /// <param name="area"> the <see cref="RectangleShape" /> to transform to window coordinates </param>
+    /// <param name="camera"> the <see cref="Camera"/> </param>
+    /// <param name="batchTransform"> the transformation <see cref="Matrix4"/> </param>
+    /// <param name="area"> the <see cref="RectangleShape"/> to transform to window coordinates </param>
     /// <param name="scissor"> the Rectangle to store the result in  </param>
     public static void CalculateScissors( Camera camera,
                                           float viewportX,
@@ -215,8 +215,8 @@ public class ScissorStack
     }
 
     /// <summary>
-    ///     Return the current viewport in OpenGL ES window coordinates based
-    ///     on the currently applied scissor.
+    /// Return the current viewport in OpenGL ES window coordinates based
+    /// on the currently applied scissor.
     /// </summary>
     public static RectangleShape GetViewport()
     {

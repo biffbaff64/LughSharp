@@ -30,6 +30,38 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class Cell : IPoolable
 {
+    // ------------------------------------------------------------------------
+
+    private const float ZEROF   = 0f;
+    private const float ONEF    = 1f;
+    private const int   ZEROI   = 0;
+    private const int   ONEI    = 1;
+    private const int   CENTERI = ONEI;
+    private const int   TOPI    = Align.TOP;
+    private const int   BOTTOMI = Align.BOTTOM;
+    private const int   LEFTI   = Align.LEFT;
+    private const int   RIGHTI  = Align.RIGHT;
+
+    private Cell?   _defaults;
+    private IFiles? _files;
+
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public Cell()
+    {
+        CellAboveIndex = -1;
+
+        var defaults = GetCellDefaults();
+
+        if ( defaults != null )
+        {
+            Set( defaults );
+        }
+    }
+
     public Value? MinWidth    { get; set; }
     public Value? MinHeight   { get; set; }
     public Value? PrefWidth   { get; set; }
@@ -70,41 +102,25 @@ public class Cell : IPoolable
     public float  ComputedPadBottom { get; set; }
     public float  ComputedPadRight  { get; set; }
 
-    // ------------------------------------------------------------------------
-
-    private const float ZEROF   = 0f;
-    private const float ONEF    = 1f;
-    private const int   ZEROI   = 0;
-    private const int   ONEI    = 1;
-    private const int   CENTERI = ONEI;
-    private const int   TOPI    = Align.TOP;
-    private const int   BOTTOMI = Align.BOTTOM;
-    private const int   LEFTI   = Align.LEFT;
-    private const int   RIGHTI  = Align.RIGHT;
-
-    private Cell?   _defaults;
-    private IFiles? _files;
-
-    // ------------------------------------------------------------------------
+    // -------------------- From IPoolable.cs --------------------
 
     /// <summary>
-    ///     Default constructor.
+    /// Reset state so the cell can be reused, setting all constraints to
+    /// their <see cref="GetCellDefaults()"/> values.
     /// </summary>
-    public Cell()
+    public void Reset()
     {
+        Actor          = null;
+        Table          = null!;
+        EndRow         = false;
         CellAboveIndex = -1;
 
-        var defaults = GetCellDefaults();
-
-        if ( defaults != null )
-        {
-            Set( defaults );
-        }
+        Set( GetCellDefaults() );
     }
 
     /// <summary>
-    ///     Sets the actor in this cell and adds the actor to the cell's table.
-    ///     If null, removes any current actor.
+    /// Sets the actor in this cell and adds the actor to the cell's table.
+    /// If null, removes any current actor.
     /// </summary>
     /// <returns>This Cell for chaining.</returns>
     public Cell SetActor< T >( T? newActor ) where T : Actor
@@ -128,7 +144,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Removes the current actor for the cell, if any.
+    /// Removes the current actor for the cell, if any.
     /// </summary>
     /// <returns>This Cell for chaining.</returns>
     public Cell ClearActor()
@@ -144,10 +160,10 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the MinWidth, PrefWidth, MaxWidth, MinHeight, PrefHeight,
-    ///     and MaxHeight to the specified value.
+    /// Sets the MinWidth, PrefWidth, MaxWidth, MinHeight, PrefHeight,
+    /// and MaxHeight to the specified value.
     /// </summary>
-    /// <param name="size">The <see cref="Value" /> to use.</param>
+    /// <param name="size">The <see cref="Value"/> to use.</param>
     /// <exception cref="ArgumentNullException">If parameter <tt>size</tt> is null.</exception>
     public Cell Size( Value size )
     {
@@ -164,8 +180,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the MinWidth, PrefWidth, MaxWidth, MinHeight, PrefHeight,
-    ///     and MaxHeight to the specified values.
+    /// Sets the MinWidth, PrefWidth, MaxWidth, MinHeight, PrefHeight,
+    /// and MaxHeight to the specified values.
     /// </summary>
     public Cell Size( Value width, Value height )
     {
@@ -183,8 +199,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the MinWidth, PrefWidth, MaxWidth, MinHeight, PrefHeight,
-    ///     and MaxHeight to the specified value.
+    /// Sets the MinWidth, PrefWidth, MaxWidth, MinHeight, PrefHeight,
+    /// and MaxHeight to the specified value.
     /// </summary>
     public Cell Size( float size )
     {
@@ -194,8 +210,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the MinWidth, PrefWidth, MaxWidth, MinHeight, PrefHeight,
-    ///     and MaxHeight to the specified values.
+    /// Sets the MinWidth, PrefWidth, MaxWidth, MinHeight, PrefHeight,
+    /// and MaxHeight to the specified values.
     /// </summary>
     public Cell Size( float width, float height )
     {
@@ -205,7 +221,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the minWidth, prefWidth, and maxWidth to the specified value.
+    /// Sets the minWidth, prefWidth, and maxWidth to the specified value.
     /// </summary>
     /// <param name="width"></param>
     /// <returns></returns>
@@ -221,7 +237,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the minWidth, prefWidth, and maxWidth to the specified value.
+    /// Sets the minWidth, prefWidth, and maxWidth to the specified value.
     /// </summary>
     /// <param name="width"></param>
     /// <returns></returns>
@@ -233,7 +249,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the minHeight, prefHeight, and maxHeight to the specified value.
+    /// Sets the minHeight, prefHeight, and maxHeight to the specified value.
     /// </summary>
     /// <param name="height"></param>
     /// <returns></returns>
@@ -249,7 +265,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the minHeight, prefHeight, and maxHeight to the specified value.
+    /// Sets the minHeight, prefHeight, and maxHeight to the specified value.
     /// </summary>
     public Cell Height( float height )
     {
@@ -259,7 +275,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the minWidth and minHeight to the specified value.
+    /// Sets the minWidth and minHeight to the specified value.
     /// </summary>
     public Cell MinSize( Value size )
     {
@@ -272,7 +288,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the minWidth and minHeight to the specified value.
+    /// Sets the minWidth and minHeight to the specified value.
     /// </summary>
     public Cell MinSize( float size )
     {
@@ -282,7 +298,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the minWidth and minHeight to the specified values.
+    /// Sets the minWidth and minHeight to the specified values.
     /// </summary>
     public Cell MinSize( Value width, Value height )
     {
@@ -296,7 +312,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the minWidth and minHeight to the specified values.
+    /// Sets the minWidth and minHeight to the specified values.
     /// </summary>
     public Cell MinSize( float width, float height )
     {
@@ -306,11 +322,11 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Convenience method which sets the <see cref="MinWidth" /> property
-    ///     and then returns this Cell for chaining.
+    /// Convenience method which sets the <see cref="MinWidth"/> property
+    /// and then returns this Cell for chaining.
     /// </summary>
     /// <param name="minWidth">
-    ///     The new value for MinWidth, passed as a <see cref="Value" />
+    /// The new value for MinWidth, passed as a <see cref="Value"/>
     /// </param>
     /// <returns>This Cell for chaining.</returns>
     public Cell SetMinWidth( Value minWidth )
@@ -323,11 +339,11 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Convenience method which sets the <see cref="MinHeight" /> property
-    ///     and then returns this Cell for chaining.
+    /// Convenience method which sets the <see cref="MinHeight"/> property
+    /// and then returns this Cell for chaining.
     /// </summary>
     /// <param name="minHeight">
-    ///     The new value for MinHeight, passed as a <see cref="Value" />
+    /// The new value for MinHeight, passed as a <see cref="Value"/>
     /// </param>
     /// <returns>This Cell for chaining.</returns>
     public Cell SetMinHeight( Value minHeight )
@@ -340,11 +356,11 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Convenience method which sets the <see cref="MinWidth" /> property
-    ///     and then returns this Cell for chaining.
+    /// Convenience method which sets the <see cref="MinWidth"/> property
+    /// and then returns this Cell for chaining.
     /// </summary>
     /// <param name="minWidth">
-    ///     The new value for MinWidth, passed as a float.
+    /// The new value for MinWidth, passed as a float.
     /// </param>
     /// <returns>This Cell for chaining.</returns>
     public Cell SetMinWidth( float minWidth )
@@ -355,11 +371,11 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Convenience method which sets the <see cref="MinHeight" /> property
-    ///     and then returns this Cell for chaining.
+    /// Convenience method which sets the <see cref="MinHeight"/> property
+    /// and then returns this Cell for chaining.
     /// </summary>
     /// <param name="minHeight">
-    ///     The new value for MinHeight, passed as a float
+    /// The new value for MinHeight, passed as a float
     /// </param>
     /// <returns>This Cell for chaining.</returns>
     public Cell SetMinHeight( float minHeight )
@@ -370,7 +386,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the prefWidth and prefHeight to the specified value.
+    /// Sets the prefWidth and prefHeight to the specified value.
     /// </summary>
     public Cell SetPrefSize( Value size )
     {
@@ -383,7 +399,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the prefWidth and prefHeight to the specified value.
+    /// Sets the prefWidth and prefHeight to the specified value.
     /// </summary>
     public Cell SetPrefSize( Value width, Value height )
     {
@@ -415,7 +431,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the prefWidth and prefHeight to the specified value.
+    /// Sets the prefWidth and prefHeight to the specified value.
     /// </summary>
     /// <param name="width"></param>
     /// <param name="height"></param>
@@ -428,7 +444,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the prefWidth and prefHeight to the specified values.
+    /// Sets the prefWidth and prefHeight to the specified values.
     /// </summary>
     /// <param name="size"></param>
     /// <returns></returns>
@@ -454,8 +470,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the maxWidth and maxHeight to the specified value.
-    ///     If the max size is 0, no maximum size is used.
+    /// Sets the maxWidth and maxHeight to the specified value.
+    /// If the max size is 0, no maximum size is used.
     /// </summary>
     /// <param name="size"></param>
     /// <returns></returns>
@@ -471,8 +487,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the maxWidth and maxHeight to the specified values.
-    ///     If the max size is 0, no maximum size is used.
+    /// Sets the maxWidth and maxHeight to the specified values.
+    /// If the max size is 0, no maximum size is used.
     /// </summary>
     /// <param name="width"></param>
     /// <param name="height"></param>
@@ -490,7 +506,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     If the maxWidth is 0, no maximum width is used. */
+    /// If the maxWidth is 0, no maximum width is used. */
     /// </summary>
     /// <param name="maxWidth"></param>
     /// <returns></returns>
@@ -505,7 +521,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     If the maxHeight is 0, no maximum height is used.
+    /// If the maxHeight is 0, no maximum height is used.
     /// </summary>
     /// <param name="maxHeight"></param>
     /// <returns></returns>
@@ -520,8 +536,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the maxWidth and maxHeight to the specified value.
-    ///     If the max size is 0, no maximum size is used.
+    /// Sets the maxWidth and maxHeight to the specified value.
+    /// If the max size is 0, no maximum size is used.
     /// </summary>
     /// <param name="size"></param>
     /// <returns></returns>
@@ -533,8 +549,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the maxWidth and maxHeight to the specified values.
-    ///     If the max size is 0, no maximum size is used.
+    /// Sets the maxWidth and maxHeight to the specified values.
+    /// If the max size is 0, no maximum size is used.
     /// </summary>
     /// <param name="width"></param>
     /// <param name="height"></param>
@@ -547,7 +563,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     If the maxWidth is 0, no maximum width is used.
+    /// If the maxWidth is 0, no maximum width is used.
     /// </summary>
     /// <param name="maxWidth"></param>
     /// <returns></returns>
@@ -559,7 +575,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     If the maxHeight is 0, no maximum height is used.
+    /// If the maxHeight is 0, no maximum height is used.
     /// </summary>
     /// <param name="maxHeight"></param>
     /// <returns></returns>
@@ -571,7 +587,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value.
+    /// Sets the spaceTop, spaceLeft, spaceBottom, and spaceRight to the specified value.
     /// </summary>
     /// <param name="space"></param>
     /// <returns></returns>
@@ -730,7 +746,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the padTop, padLeft, padBottom, and padRight to the specified value.
+    /// Sets the padTop, padLeft, padBottom, and padRight to the specified value.
     /// </summary>
     public Cell Pad( Value pad )
     {
@@ -832,7 +848,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets <see cref="FillX" /> and <see cref="FillY" /> to <see cref="ONEF" />
+    /// Sets <see cref="FillX"/> and <see cref="FillY"/> to <see cref="ONEF"/>
     /// </summary>
     /// <returns>This Cell for chaining</returns>
     public Cell SetFill()
@@ -844,8 +860,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets <see cref="FillX" /> to <see cref="ONEF" />.
-    ///     Leaves <see cref="FillY" /> unchanged.
+    /// Sets <see cref="FillX"/> to <see cref="ONEF"/>.
+    /// Leaves <see cref="FillY"/> unchanged.
     /// </summary>
     /// <returns>This Cell for chaining</returns>
     public Cell SetFillX()
@@ -856,8 +872,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets <see cref="FillY" /> to <see cref="ONEF" />.
-    ///     Leaves <see cref="FillX" /> unchanged.
+    /// Sets <see cref="FillY"/> to <see cref="ONEF"/>.
+    /// Leaves <see cref="FillX"/> unchanged.
     /// </summary>
     /// <returns>This Cell for chaining</returns>
     public Cell SetFillY()
@@ -892,9 +908,9 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the alignment of the actor within the cell. Set to <see cref="Align.CENTER" />,
-    ///     <see cref="Align.TOP" />, <see cref="Align.BOTTOM" />, <see cref="Align.LEFT" />,
-    ///     <see cref="Align.RIGHT" />, or any combination of those.
+    /// Sets the alignment of the actor within the cell. Set to <see cref="Align.CENTER"/>,
+    /// <see cref="Align.TOP"/>, <see cref="Align.BOTTOM"/>, <see cref="Align.LEFT"/>,
+    /// <see cref="Align.RIGHT"/>, or any combination of those.
     /// </summary>
     public Cell SetAlignment( int align )
     {
@@ -904,8 +920,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets the alignment of the actor within the cell to <see cref="Align.CENTER" />.
-    ///     This clears any other alignment.
+    /// Sets the alignment of the actor within the cell to <see cref="Align.CENTER"/>.
+    /// This clears any other alignment.
     /// </summary>
     public Cell Center()
     {
@@ -915,8 +931,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Adds <see cref="Align.TOP" /> and clears <see cref="Align.BOTTOM" /> for
-    ///     the alignment of the actor within the cell.
+    /// Adds <see cref="Align.TOP"/> and clears <see cref="Align.BOTTOM"/> for
+    /// the alignment of the actor within the cell.
     /// </summary>
     public Cell Top()
     {
@@ -933,8 +949,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Adds <see cref="Align.LEFT" /> and clears <see cref="Align.RIGHT" /> for
-    ///     the alignment of the actor within the cell.
+    /// Adds <see cref="Align.LEFT"/> and clears <see cref="Align.RIGHT"/> for
+    /// the alignment of the actor within the cell.
     /// </summary>
     public Cell Left()
     {
@@ -951,8 +967,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Adds <see cref="Align.BOTTOM" /> and clears <see cref="Align.TOP" /> for
-    ///     the alignment of the actor within the cell.
+    /// Adds <see cref="Align.BOTTOM"/> and clears <see cref="Align.TOP"/> for
+    /// the alignment of the actor within the cell.
     /// </summary>
     public Cell Bottom()
     {
@@ -969,8 +985,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Adds <see cref="Align.RIGHT" /> and clears <see cref="Align.LEFT" /> for
-    ///     the alignment of the actor within the cell.
+    /// Adds <see cref="Align.RIGHT"/> and clears <see cref="Align.LEFT"/> for
+    /// the alignment of the actor within the cell.
     /// </summary>
     public Cell Right()
     {
@@ -1199,7 +1215,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Sets all constraint fields to null. */
+    /// Sets all constraint fields to null. */
     /// </summary>
     public void Clear()
     {
@@ -1376,8 +1392,8 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    ///     Returns the defaults to use for all cells. This can be used to avoid
-    ///     needing to set the same defaults for every table (eg, for spacing).
+    /// Returns the defaults to use for all cells. This can be used to avoid
+    /// needing to set the same defaults for every table (eg, for spacing).
     /// </summary>
     public Cell? GetCellDefaults()
     {
@@ -1413,21 +1429,5 @@ public class Cell : IPoolable
         }
 
         return _defaults;
-    }
-
-    // -------------------- From IPoolable.cs --------------------
-
-    /// <summary>
-    ///     Reset state so the cell can be reused, setting all constraints to
-    ///     their <see cref="GetCellDefaults()" /> values.
-    /// </summary>
-    public void Reset()
-    {
-        Actor          = null;
-        Table          = null!;
-        EndRow         = false;
-        CellAboveIndex = -1;
-
-        Set( GetCellDefaults() );
     }
 }

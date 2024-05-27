@@ -28,7 +28,7 @@ using LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 namespace LughSharp.LibCore.Audio.MP3Sharp.IO;
 
 /// <summary>
-///     Implements an Obuffer by writing the data to a file in RIFF WAVE format.
+/// Implements an Obuffer by writing the data to a file in RIFF WAVE format.
 /// </summary>
 [PublicAPI]
 public class WaveFileBuffer : AudioBase
@@ -71,7 +71,7 @@ public class WaveFileBuffer : AudioBase
     }
 
     /// <summary>
-    ///     Takes a 16 Bit PCM sample.
+    /// Takes a 16 Bit PCM sample.
     /// </summary>
     protected override void Append( int channel, short valueRenamed )
     {

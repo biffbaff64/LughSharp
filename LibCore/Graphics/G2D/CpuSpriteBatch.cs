@@ -29,13 +29,13 @@ using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>
-///     CpuSpriteBatch behaves like SpriteBatch, except it doesn't flush automatically
-///     whenever the transformation matrix changes. Instead, the vertices get adjusted
-///     on subsequent draws to match the running batch. This can improve performance
-///     through longer batches, for example when drawing Groups with transform enabled.
+/// CpuSpriteBatch behaves like SpriteBatch, except it doesn't flush automatically
+/// whenever the transformation matrix changes. Instead, the vertices get adjusted
+/// on subsequent draws to match the running batch. This can improve performance
+/// through longer batches, for example when drawing Groups with transform enabled.
 /// </summary>
-/// <see cref="SpriteBatch.RenderCalls" />
-/// <see cref="Group.Transform" />
+/// <see cref="SpriteBatch.RenderCalls"/>
+/// <see cref="Group.Transform"/>
 [PublicAPI]
 public class CpuSpriteBatch : SpriteBatch
 {
@@ -47,17 +47,17 @@ public class CpuSpriteBatch : SpriteBatch
     private bool _haveIdentityRealMatrix = true;
 
     /// <summary>
-    ///     Constructs a CpuSpriteBatch with a size of 1000 and the default shader.
+    /// Constructs a CpuSpriteBatch with a size of 1000 and the default shader.
     /// </summary>
-    /// <para>See also: <see cref="SpriteBatch" /></para>
+    /// <para>See also: <see cref="SpriteBatch"/></para>
     public CpuSpriteBatch() : this( 1000 )
     {
     }
 
     /// <summary>
-    ///     Constructs a CpuSpriteBatch with a custom shader.
+    /// Constructs a CpuSpriteBatch with a custom shader.
     /// </summary>
-    /// <para>See also: <see cref="SpriteBatch" /></para>
+    /// <para>See also: <see cref="SpriteBatch"/></para>
     public CpuSpriteBatch( int size, ShaderProgram defaultShader = null! )
         : base( size, defaultShader )
     {
@@ -65,13 +65,13 @@ public class CpuSpriteBatch : SpriteBatch
 
     /// <summary>
     ///     <para>
-    ///         Flushes the batch and realigns the real matrix on the GPU. Subsequent
-    ///         draws won't need adjustment and will be slightly faster as long as the
-    ///         transform matrix is not changed by <see cref="SetTransformMatrix(Matrix4)" />.
+    ///     Flushes the batch and realigns the real matrix on the GPU. Subsequent
+    ///     draws won't need adjustment and will be slightly faster as long as the
+    ///     transform matrix is not changed by <see cref="SetTransformMatrix(Matrix4)"/>.
     ///     </para>
     ///     <para>
-    ///         Note: The real transform matrix <em>must</em> be invertible. If a singular
-    ///         matrix is detected, GdxRuntimeException will be thrown.
+    ///     Note: The real transform matrix <em>must</em> be invertible. If a singular
+    ///     matrix is detected, GdxRuntimeException will be thrown.
     ///     </para>
     /// </summary>
     public virtual void FlushAndSyncTransformMatrix()
@@ -102,13 +102,13 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <summary>
-    ///     Sets the transform matrix to be used by this Batch. Even if this is called
-    ///     inside a <see cref="SpriteBatch.Begin" />/<see cref="SpriteBatch.End" /> block,
-    ///     the current batch is <em>not</em> flushed to the GPU. Instead, for every
-    ///     subsequent draw() the vertices will be transformed on the CPU to match the
-    ///     original batch matrix. This adjustment must be performed until the matrices
-    ///     are realigned by restoring the original matrix, or by calling
-    ///     <see cref="FlushAndSyncTransformMatrix()" />.
+    /// Sets the transform matrix to be used by this Batch. Even if this is called
+    /// inside a <see cref="SpriteBatch.Begin"/>/<see cref="SpriteBatch.End"/> block,
+    /// the current batch is <em>not</em> flushed to the GPU. Instead, for every
+    /// subsequent draw() the vertices will be transformed on the CPU to match the
+    /// original batch matrix. This adjustment must be performed until the matrices
+    /// are realigned by restoring the original matrix, or by calling
+    /// <see cref="FlushAndSyncTransformMatrix()"/>.
     /// </summary>
     public override void SetTransformMatrix( Matrix4 transform )
     {
@@ -145,16 +145,16 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <summary>
-    ///     Sets the transform matrix to be used by this Batch. Even if this is calle
-    ///     inside a <see cref="SpriteBatch.Begin" />/<see cref="SpriteBatch.End" /> block,
-    ///     the current batch is <em>not</em> flushed to the GPU. Instead, for every
-    ///     subsequent draw() the vertices will be transformed on the CPU to match the
-    ///     original batch matrix.
-    ///     <para>
-    ///         This adjustment must be performed until the matrices are realigned by restoring
-    ///         the original matrix, or by calling <see cref="FlushAndSyncTransformMatrix()" />
-    ///         or <see cref="SpriteBatch.End" />.
-    ///     </para>
+    /// Sets the transform matrix to be used by this Batch. Even if this is calle
+    /// inside a <see cref="SpriteBatch.Begin"/>/<see cref="SpriteBatch.End"/> block,
+    /// the current batch is <em>not</em> flushed to the GPU. Instead, for every
+    /// subsequent draw() the vertices will be transformed on the CPU to match the
+    /// original batch matrix.
+    /// <para>
+    /// This adjustment must be performed until the matrices are realigned by restoring
+    /// the original matrix, or by calling <see cref="FlushAndSyncTransformMatrix()"/>
+    /// or <see cref="SpriteBatch.End"/>.
+    /// </para>
     /// </summary>
     public virtual void SetTransformMatrix( Affine2 transform )
     {

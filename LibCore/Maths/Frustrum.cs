@@ -26,8 +26,8 @@
 namespace LughSharp.LibCore.Maths;
 
 /// <summary>
-///     A truncated rectangular pyramid. Used to define the viewable
-///     region and its projection onto the screen.
+/// A truncated rectangular pyramid. Used to define the viewable
+/// region and its projection onto the screen.
 /// </summary>
 [PublicAPI]
 public class Frustrum
@@ -47,8 +47,8 @@ public class Frustrum
     protected readonly static float[] ClipSpacePlanePointsArray = new float[ 8 * 3 ];
 
     /// <system>
-    ///     eight points making up the near and far clipping "rectangles".
-    ///     Order is counter clockwise, starting at bottom left.
+    /// eight points making up the near and far clipping "rectangles".
+    /// Order is counter clockwise, starting at bottom left.
     /// </system>
     public readonly Vector3[] PlanePoints =
     {
@@ -79,14 +79,14 @@ public class Frustrum
     }
 
     /// <system>
-    ///     the six clipping planes, near, far, left, right, top, bottom
+    /// the six clipping planes, near, far, left, right, top, bottom
     /// </system>
     public Plane[] Planes { get; set; } = new Plane[ 6 ];
 
     /// <summary>
-    ///     Updates the clipping plane's based on the given inverse combined
-    ///     projection and view matrix, e.g. from an <see cref="OrthographicCamera" />
-    ///     or <see cref="PerspectiveCamera" />.
+    /// Updates the clipping plane's based on the given inverse combined
+    /// projection and view matrix, e.g. from an <see cref="OrthographicCamera"/>
+    /// or <see cref="PerspectiveCamera"/>.
     /// </summary>
     /// <param name="inverseProjectionView">The combined projection and view matrices.</param>
     public virtual void Update( Matrix4 inverseProjectionView )
@@ -113,7 +113,7 @@ public class Frustrum
     }
 
     /// <summary>
-    ///     Returns whether the point is in the frustum.
+    /// Returns whether the point is in the frustum.
     /// </summary>
     /// <param name="point"> The point </param>
     /// <returns> Whether the point is in the frustum.  </returns>

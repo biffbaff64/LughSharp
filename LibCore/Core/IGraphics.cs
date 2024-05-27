@@ -31,20 +31,15 @@ public interface IGraphics
     #region nested classes
 
     /// <summary>
-    ///     Describes a fullscreen display mode, having the properties <see cref="Width" />,
-    ///     <see cref="Height" />, <see cref="RefreshRate" />, and <see cref="BitsPerPixel" />.
+    /// Describes a fullscreen display mode, having the properties <see cref="Width"/>,
+    /// <see cref="Height"/>, <see cref="RefreshRate"/>, and <see cref="BitsPerPixel"/>.
     /// </summary>
     [PublicAPI]
     public class DisplayMode
     {
-        public int Width        { get; set; }
-        public int Height       { get; set; }
-        public int RefreshRate  { get; set; }
-        public int BitsPerPixel { get; set; }
-
         /// <summary>
-        ///     Creates a new DisplayMode object, using the specified width, height,
-        ///     refresh rate and bits per pixel values.
+        /// Creates a new DisplayMode object, using the specified width, height,
+        /// refresh rate and bits per pixel values.
         /// </summary>
         /// <param name="width"> Width of this display mode in pixels. </param>
         /// <param name="height"> Height of this display mode in pixels. </param>
@@ -58,6 +53,11 @@ public interface IGraphics
             BitsPerPixel = bitsPerPixel;
         }
 
+        public int Width        { get; set; }
+        public int Height       { get; set; }
+        public int RefreshRate  { get; set; }
+        public int BitsPerPixel { get; set; }
+
         /// <inheritdoc/>
         public override string ToString()
         {
@@ -69,31 +69,31 @@ public interface IGraphics
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Describes a monitor, with X, Y, and Name properties.
+    /// Describes a monitor, with X, Y, and Name properties.
     /// </summary>
 
     //TODO: This may no longer be needed when GL is properly implemented
     [PublicAPI]
     public class GdxMonitor
     {
-        public int     VirtualX { get; set; }
-        public int     VirtualY { get; set; }
-        public string? Name     { get; set; }
-
         public GdxMonitor( int x, int y, string name )
         {
             VirtualX = x;
             VirtualY = y;
             Name     = name;
         }
+
+        public int     VirtualX { get; set; }
+        public int     VirtualY { get; set; }
+        public string? Name     { get; set; }
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Class describing the bits per pixel, depth buffer precision,
-    ///     stencil precision and number of MSAA samples.
+    /// Class describing the bits per pixel, depth buffer precision,
+    /// stencil precision and number of MSAA samples.
     /// </summary>
     [PublicAPI]
     public class BufferFormatDescriptor
@@ -107,8 +107,8 @@ public interface IGraphics
         public int Samples { get; set; } // number of samples for multi-sample anti-aliasing (MSAA).
 
         /// <summary>
-        ///     Whether coverage sampling anti-aliasing is used. If so, you have
-        ///     to clear the coverage buffer as well!
+        /// Whether coverage sampling anti-aliasing is used. If so, you have
+        /// to clear the coverage buffer as well!
         /// </summary>
         public bool CoverageSampling { get; set; }
 
@@ -145,9 +145,9 @@ public interface IGraphics
     #region methods
 
     bool IsGL30Available();
-    
+
     /// <summary>
-    ///     Returns the amount of pixels per logical pixel (point).
+    /// Returns the amount of pixels per logical pixel (point).
     /// </summary>
     float GetBackBufferScale();
 
@@ -164,7 +164,7 @@ public interface IGraphics
     int GetFramesPerSecond();
 
     /// <summary>
-    ///     Returns the time span between the current frame and the last frame in seconds, without smoothing.
+    /// Returns the time span between the current frame and the last frame in seconds, without smoothing.
     /// </summary>
     float GetRawDeltaTime();
 
@@ -181,10 +181,10 @@ public interface IGraphics
     float GetPpcY();
 
     /// <summary>
-    ///     This is a scaling factor for the Density Independent Pixel
-    ///     unit, following the convention where one DIP is one pixel on
-    ///     an approximately 160 dpi screen. Thus on a 160dpi screen this
-    ///     density value will be 1; on a 120 dpi screen it would be .75; etc.
+    /// This is a scaling factor for the Density Independent Pixel
+    /// unit, following the convention where one DIP is one pixel on
+    /// an approximately 160 dpi screen. Thus on a 160dpi screen this
+    /// density value will be 1; on a 120 dpi screen it would be .75; etc.
     /// </summary>
     /// <returns>the Density Independent Pixel factor of the display.</returns>
     float GetDensity();

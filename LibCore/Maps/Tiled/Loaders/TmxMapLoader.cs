@@ -33,7 +33,7 @@ namespace LughSharp.LibCore.Maps.Tiled.Loaders;
 public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 {
     /// <summary>
-    ///     Creates a new TmxMapLoader using a new <see cref="InternalFileHandleResolver" />.
+    /// Creates a new TmxMapLoader using a new <see cref="InternalFileHandleResolver"/>.
     /// </summary>
     public TmxMapLoader()
         : this( new InternalFileHandleResolver() )
@@ -41,7 +41,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     }
 
     /// <summary>
-    ///     Creates a new TmxMapLoader using a supplied <see cref="IFileHandleResolver" />.
+    /// Creates a new TmxMapLoader using a supplied <see cref="IFileHandleResolver"/>.
     /// </summary>
     /// <param name="resolver"></param>
     public TmxMapLoader( IFileHandleResolver resolver ) : base( resolver )
@@ -49,10 +49,10 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     }
 
     /// <summary>
-    ///     Loads the <see cref="TiledMap" /> from the given file. The file is resolved via
-    ///     the <see cref="IFileHandleResolver" /> set in the constructor of this class.
-    ///     By default it will resolve to an internal file. The map will be loaded for a
-    ///     y-up coordinate system.
+    /// Loads the <see cref="TiledMap"/> from the given file. The file is resolved via
+    /// the <see cref="IFileHandleResolver"/> set in the constructor of this class.
+    /// By default it will resolve to an internal file. The map will be loaded for a
+    /// y-up coordinate system.
     /// </summary>
     /// <param name="fileName"> the filename </param>
     /// <returns> the TiledMap </returns>
@@ -62,9 +62,9 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     }
 
     /// <summary>
-    ///     Loads the <see cref="TiledMap" /> from the given file. The file is resolved
-    ///     via the <see cref="IFileHandleResolver" /> set in the constructor of this class.
-    ///     By default it will resolve to an internal file.
+    /// Loads the <see cref="TiledMap"/> from the given file. The file is resolved
+    /// via the <see cref="IFileHandleResolver"/> set in the constructor of this class.
+    /// By default it will resolve to an internal file.
     /// </summary>
     /// <param name="fileName"> the filename </param>
     /// <param name="parameter"> specifies whether to use y-up, generate mip maps etc. </param>
@@ -107,21 +107,21 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
     /// <param name="tmxFile"></param>
     /// <param name="parameter"></param>
     public override void LoadAsync( AssetManager? manager,
-                                  FileInfo? tmxFile,
-                                  LoaderParameters? parameter )
+                                    FileInfo? tmxFile,
+                                    LoaderParameters? parameter )
     {
         Debug.Assert( tmxFile != null );
 
         Map = LoadTiledMap( tmxFile, parameter, new IImageResolver.AssetManagerImageResolver( manager! ) );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override TiledMap LoadSync( AssetManager manager, FileInfo? file, LoaderParameters parameter )
     {
         return Map;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
     {
         return null!;
@@ -256,7 +256,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         return fileHandles;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void AddStaticTiles( FileInfo tmxFile,
                                             IImageResolver imageResolver,
                                             TiledMapTileSet tileset,

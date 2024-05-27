@@ -28,10 +28,6 @@ namespace LughSharp.LibCore.Maths;
 [PublicAPI]
 public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
 {
-    public T[]  ControlPoints { get; set; } = default( T[] )!;
-    public bool Continuous    { get; set; }
-    public int  SpanCount     { get; set; }
-
     // ------------------------------------------------------------------------
 
     private T? _tmp;
@@ -48,6 +44,10 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
     {
         Set( controlPoints, continuous );
     }
+
+    public T[]  ControlPoints { get; set; } = default( T[] )!;
+    public bool Continuous    { get; set; }
+    public int  SpanCount     { get; set; }
 
     public T ValueAt( in T outp, in float t )
     {
@@ -150,7 +150,7 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
     /// <summary>
     /// </summary>
     /// <returns>
-    ///     The span closest to the specified value, restricting to the specified spans.
+    /// The span closest to the specified value, restricting to the specified spans.
     /// </returns>
     public int Nearest( T inp, int start, int count )
     {
@@ -218,7 +218,7 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Calculates the catmullrom value for the given position (t).
+    /// Calculates the catmullrom value for the given position (t).
     /// </summary>
     /// <param name="outvec"> The Vector to Set to the result. </param>
     /// <param name="t"> The position (0 &lt;= t &lt;= 1) on the spline </param>
@@ -238,11 +238,11 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Calculates the catmullrom value for the given span (i) at the given position (u).
+    /// Calculates the catmullrom value for the given span (i) at the given position (u).
     /// </summary>
     /// <param name="outp"> The Vector to Set to the result. </param>
     /// <param name="i">
-    ///     The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.Length : points.Length - degree
+    /// The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.Length : points.Length - degree
     /// </param>
     /// <param name="u"> The position (0 &lt;= u &lt;= 1) on the span </param>
     /// <param name="points"> The control points </param>
@@ -281,7 +281,7 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Calculates the derivative of the catmullrom spline for the given position (t).
+    /// Calculates the derivative of the catmullrom spline for the given position (t).
     /// </summary>
     /// <param name="outp"> The Vector to Set to the result. </param>
     /// <param name="t"> The position (0&lt;=t&lt;=1) on the spline </param>
@@ -304,12 +304,12 @@ public class CatmullRomSpline< T > : IPath< T > where T : IVector< T >
     }
 
     /// <summary>
-    ///     Calculates the derivative of the catmullrom spline for the given
-    ///     span (i) at the given position (u).
+    /// Calculates the derivative of the catmullrom spline for the given
+    /// span (i) at the given position (u).
     /// </summary>
     /// <param name="outp"> The Vector to Set to the result. </param>
     /// <param name="i">
-    ///     The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.Length : points.Length - degree
+    /// The span (0&lt;=i&lt;spanCount) spanCount = continuous ? points.Length : points.Length - degree
     /// </param>
     /// <param name="u"> The position (0&lt;=u&lt;=1) on the span </param>
     /// <param name="points"> The control points </param>

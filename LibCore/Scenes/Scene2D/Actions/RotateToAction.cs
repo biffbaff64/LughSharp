@@ -28,17 +28,17 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 /// <summary>
-///     Sets the actor's rotation from its current value to a specific value.
-///     <para>
-///         By default, the rotation will take you from the starting value to the specified
-///         value via simple subtraction. For example, setting the start at 350 and the target
-///         at 10 will result in 340 degrees of movement.
-///     </para>
-///     <para>
-///         If the action is instead set to useShortestDirection instead, it will rotate
-///         straight to the target angle, regardless of where the angle starts and stops.
-///         For example, starting at 350 and rotating to 10 will cause 20 degrees of rotation.
-///     </para>
+/// Sets the actor's rotation from its current value to a specific value.
+/// <para>
+/// By default, the rotation will take you from the starting value to the specified
+/// value via simple subtraction. For example, setting the start at 350 and the target
+/// at 10 will result in 340 degrees of movement.
+/// </para>
+/// <para>
+/// If the action is instead set to useShortestDirection instead, it will rotate
+/// straight to the target angle, regardless of where the angle starts and stops.
+/// For example, starting at 350 and rotating to 10 will cause 20 degrees of rotation.
+/// </para>
 /// </summary>
 public class RotateToAction : TemporalAction
 {

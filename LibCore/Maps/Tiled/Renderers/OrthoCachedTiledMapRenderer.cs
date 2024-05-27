@@ -23,39 +23,38 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics.Cameras;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Maps.Tiled.Renderers;
 
 /// <summary>
-///     Renders ortho tiles by caching geometry on the GPU. How much is cached is controlled
-///     by SetOverCache(float). When the view reaches the edge of the cached tiles, the cache
-///     is rebuilt at the new view position. This class may have poor performance when tiles
-///     are often changed dynamically, since the cache must be rebuilt after each change.
+/// Renders ortho tiles by caching geometry on the GPU. How much is cached is controlled
+/// by SetOverCache(float). When the view reaches the edge of the cached tiles, the cache
+/// is rebuilt at the new view position. This class may have poor performance when tiles
+/// are often changed dynamically, since the cache must be rebuilt after each change.
 /// </summary>
 [PublicAPI]
 public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 {
-    private const    int   DEFAULT_CACHE_SIZE = 2000;
-    private static   float _tolerance         = 0.00001f;
-    protected static int   NumVertices        = 20;
+    private const    int            DEFAULT_CACHE_SIZE = 2000;
+    private static   float          _tolerance         = 0.00001f;
+    protected static int            NumVertices        = 20;
+    protected        bool           Blending;
+    protected        RectangleShape CacheBounds = new();
+    protected        bool           Cached;
+    protected        bool           CanCacheMoreE;
+    protected        bool           CanCacheMoreN;
+    protected        bool           CanCacheMoreS;
+    protected        bool           CanCacheMoreW;
+    protected        int            Count;
 
     protected TiledMap?      Map;
-    protected SpriteCache?   SpriteCache;
-    protected float[]        Vertices = new float[ 20 ];
-    protected bool           Blending;
-    protected float          UnitScale;
-    protected RectangleShape ViewBounds  = new();
-    protected RectangleShape CacheBounds = new();
-    protected float          MaxTileWidth;
     protected float          MaxTileHeight;
-    protected bool           Cached;
-    protected int            Count;
-    protected bool           CanCacheMoreN;
-    protected bool           CanCacheMoreE;
-    protected bool           CanCacheMoreW;
-    protected bool           CanCacheMoreS;
+    protected float          MaxTileWidth;
+    protected SpriteCache?   SpriteCache;
+    protected float          UnitScale;
+    protected float[]        Vertices   = new float[ 20 ];
+    protected RectangleShape ViewBounds = new();
 
     // ------------------------------------------------------------------------
 
@@ -68,9 +67,24 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
     /// </param>
     public OrthoCachedTiledMapRenderer( TiledMap map, float unitScale, int cacheSize = DEFAULT_CACHE_SIZE )
     {
-        this.Map         = map;
-        this.UnitScale   = unitScale;
-        this.SpriteCache = new SpriteCache( cacheSize, true );
+        Map         = map;
+        UnitScale   = unitScale;
+        SpriteCache = new SpriteCache( cacheSize, true );
+    }
+
+    /// <summary>
+    /// Sets the percentage of the view that is cached in each direction. Default is 0.5.
+    /// <para>
+    /// Eg, 0.75 will cache 75% of the width of the view to the left and right of the view,
+    /// and 75% of the height of the view above and below the view.
+    /// </para>
+    /// </summary>
+    public float OverCache { get; set; } = 0.50f;
+
+    // <inheritdoc/>
+    public void Dispose()
+    {
+        SpriteCache?.Dispose();
     }
 
     public void SetView( OrthographicCamera camera )
@@ -294,10 +308,10 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 
                 var flipX     = cell.GetFlipHorizontally();
                 var flipY     = cell.GetFlipVertically();
-                var  rotations = cell.GetRotation();
+                var rotations = cell.GetRotation();
 
                 var region  = tile.TextureRegion;
-                var       texture = region.Texture;
+                var texture = region.Texture;
 
                 var x1 = ( col * layerTileWidth ) + ( tile.OffsetX * UnitScale ) + layerOffsetX;
                 var y1 = ( row * layerTileHeight ) + ( tile.OffsetY * UnitScale ) + layerOffsetY;
@@ -486,15 +500,6 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
     }
 
     /// <summary>
-    /// Sets the percentage of the view that is cached in each direction. Default is 0.5.
-    /// <para>
-    /// Eg, 0.75 will cache 75% of the width of the view to the left and right of the view,
-    /// and 75% of the height of the view above and below the view.
-    /// </para>
-    /// </summary>
-    public float OverCache { get; set; } = 0.50f;
-
-    /// <summary>
     /// Expands the view size in each direction, ensuring that tiles of this size or
     /// smaller are never culled from the visible portion of the view. Default is 0,0.
     /// <para>
@@ -509,13 +514,7 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
     /// </summary>
     public void SetMaxTileSize( float maxPixelWidth, float maxPixelHeight )
     {
-        this.MaxTileWidth  = maxPixelWidth;
-        this.MaxTileHeight = maxPixelHeight;
-    }
-
-    // <inheritdoc/>
-    public void Dispose()
-    {
-        SpriteCache?.Dispose();
+        MaxTileWidth  = maxPixelWidth;
+        MaxTileHeight = maxPixelHeight;
     }
 }

@@ -29,7 +29,7 @@ namespace LughSharp.Backends.DesktopGL.Utils;
 public class DesktopGLClipboard : IClipboard
 {
     /// <summary>
-    ///     Check if the clipboard has contents.
+    /// Check if the clipboard has contents.
     /// </summary>
     /// <returns> true, if the clipboard has contents</returns>
     public bool HasContents()
@@ -38,7 +38,7 @@ public class DesktopGLClipboard : IClipboard
     }
 
     /// <summary>
-    ///     The current content of the clipboard if it contains text
+    /// The current content of the clipboard if it contains text
     /// </summary>
     /// <returns> the clipboard content or null  </returns>
     public string Contents { get; set; } = "";

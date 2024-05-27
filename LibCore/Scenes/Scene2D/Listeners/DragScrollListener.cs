@@ -30,22 +30,23 @@ using Timer = LughSharp.LibCore.Utils.Timer;
 namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
 /// <summary>
-///     Causes a scroll pane to scroll when a drag goes outside the bounds of the scroll pane.
-///     Attach the listener to the actor which will cause scrolling when dragged, usually the
-///     scroll pane or the scroll pane's actor.
-///     <para>
-///         If <see cref="ScrollPane.SetFlickScroll(bool)"/> is true, the scroll pane must have
-///         <see cref="ScrollPane.CancelTouchFocus"/> false. When a drag starts that should drag
-///         rather than flick scroll, cancel the scroll pane's touch focus using:-
-///         <code>
+/// Causes a scroll pane to scroll when a drag goes outside the bounds of the scroll pane.
+/// Attach the listener to the actor which will cause scrolling when dragged, usually the
+/// scroll pane or the scroll pane's actor.
+/// <para>
+/// If <see cref="ScrollPane.SetFlickScroll(bool)"/> is true, the scroll pane must have
+/// <see cref="ScrollPane.CancelTouchFocus"/> false. When a drag starts that should drag
+/// rather than flick scroll, cancel the scroll pane's touch focus using:-
+/// <code>
 ///             Stage.CancelTouchFocus(scrollPane);
-///         </code>.
-///         In this case the drag scroll listener must not be attached to the scroll pane, else
-///         it would also lose touch focus. Instead it can be attached to the scroll pane's actor.
-///     </para>
-///     <para>
-///         If using drag and drop, <see cref="DragAndDrop.CancelTouchFocus"/> must be false.
-///     </para>
+///         </code>
+/// .
+/// In this case the drag scroll listener must not be attached to the scroll pane, else
+/// it would also lose touch focus. Instead it can be attached to the scroll pane's actor.
+/// </para>
+/// <para>
+/// If using drag and drop, <see cref="DragAndDrop.CancelTouchFocus"/> must be false.
+/// </para>
 /// </summary>
 [PublicAPI]
 public class DragScrollListener : DragListener
@@ -59,10 +60,10 @@ public class DragScrollListener : DragListener
     private float      _padBottom = 0;
     private float      _padTop    = 0;
     private long       _rampTime  = 1750;
+    private ScrollDown _scrollDown;
+    private ScrollUp   _scrollUp;
     private long       _startTime = 0;
     private float      _tickSecs  = 0.05f;
-    private ScrollUp   _scrollUp;
-    private ScrollDown _scrollDown;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -76,7 +77,6 @@ public class DragScrollListener : DragListener
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="minSpeedPixels"></param>
     /// <param name="maxSpeedPixels"></param>
@@ -104,10 +104,10 @@ public class DragScrollListener : DragListener
                 _startTime = TimeUtils.Millis();
                 Timer.Schedule( _scrollUp, _tickSecs, _tickSecs );
             }
-            
+
             return;
         }
-        
+
         if ( IsBelow( _tmpCoords.Y ) )
         {
             _scrollUp.Cancel();
@@ -117,7 +117,7 @@ public class DragScrollListener : DragListener
                 _startTime = TimeUtils.Millis();
                 Timer.Schedule( _scrollDown, _tickSecs, _tickSecs );
             }
-            
+
             return;
         }
 
@@ -136,7 +136,7 @@ public class DragScrollListener : DragListener
     }
 
     /// <summary>
-    ///     Sets the top and bottom padding amounts.
+    /// Sets the top and bottom padding amounts.
     /// </summary>
     /// <param name="padtop"> The Top padding. </param>
     /// <param name="padbottom"> The Bottom padding. </param>
@@ -147,19 +147,28 @@ public class DragScrollListener : DragListener
     }
 
     /// <summary>
-    ///     Returns true if the provided Y value is above the scrollpane.
+    /// Returns true if the provided Y value is above the scrollpane.
     /// </summary>
-    protected bool IsAbove( float y ) => y >= ( _scrollPane.Height - _padTop );
+    protected bool IsAbove( float y )
+    {
+        return y >= ( _scrollPane.Height - _padTop );
+    }
 
     /// <summary>
-    ///     Returns true if the provided Y value is below the scrollpane.
+    /// Returns true if the provided Y value is below the scrollpane.
     /// </summary>
-    protected bool IsBelow( float y ) => y < _padBottom;
+    protected bool IsBelow( float y )
+    {
+        return y < _padBottom;
+    }
 
     /// <summary>
-    ///     Sets the ScrollPane Y Scroll to the provided value.
+    /// Sets the ScrollPane Y Scroll to the provided value.
     /// </summary>
-    protected void SetScroll( float y ) => _scrollPane.SetScrollY( y );
+    protected void SetScroll( float y )
+    {
+        _scrollPane.SetScrollY( y );
+    }
 
     private float GetScrollPixels()
     {
@@ -173,13 +182,13 @@ public class DragScrollListener : DragListener
 
     public class ScrollUp : Timer.Task
     {
-        private readonly ScrollPane         _scroll;
         private readonly DragScrollListener _parent;
+        private readonly ScrollPane         _scroll;
 
         public ScrollUp( DragScrollListener dsl, ScrollPane scroll )
         {
-            this._parent = dsl;
-            this._scroll = scroll;
+            _parent = dsl;
+            _scroll = scroll;
         }
 
         public override void Run()
@@ -190,13 +199,13 @@ public class DragScrollListener : DragListener
 
     public class ScrollDown : Timer.Task
     {
-        private readonly ScrollPane         _scroll;
         private readonly DragScrollListener _parent;
+        private readonly ScrollPane         _scroll;
 
         public ScrollDown( DragScrollListener dsl, ScrollPane scroll )
         {
-            this._parent = dsl;
-            this._scroll = scroll;
+            _parent = dsl;
+            _scroll = scroll;
         }
 
         public override void Run()

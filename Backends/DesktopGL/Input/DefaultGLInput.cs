@@ -49,7 +49,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     private int _mouseX;
     private int _mouseY;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public DefaultDesktopGLInput( DesktopGLWindow? window )
     {
         ArgumentNullException.ThrowIfNull( window );
@@ -59,7 +59,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         WindowHandleChanged( _window.GlfwWindow );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void ResetPollingStates()
     {
         _justTouched   = false;
@@ -71,13 +71,13 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         _eventQueue.Drain( null );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Update()
     {
         _eventQueue.Drain( _inputProcessor );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void PrepareNext()
     {
         if ( _justTouched )
@@ -98,37 +98,37 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         _deltaY = 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int GetMaxPointers()
     {
         return DEFAULT_MAX_POINTERS;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int GetX( int pointer = 0 )
     {
         return pointer == 0 ? _mouseX : 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int GetDeltaX( int pointer = 0 )
     {
         return pointer == 0 ? _deltaX : 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int GetY( int pointer = 0 )
     {
         return pointer == 0 ? _mouseY : 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int GetDeltaY( int pointer = 0 )
     {
         return pointer == 0 ? _deltaY : 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override bool IsTouched( int pointer = 0 )
     {
         if ( pointer == 0 )
@@ -145,26 +145,26 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override bool JustTouched()
     {
         return _justTouched;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override float GetPressure( int pointer = 0 )
     {
         return IsTouched( pointer ) ? 1 : 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override bool IsButtonPressed( int button )
     {
         return Glfw.GetMouseButton( _window!.GlfwWindow, TranslateToMouseButton( button ) )
             == InputState.Press;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override bool IsButtonJustPressed( int button )
     {
         if ( ( button < 0 ) || ( button >= _justPressedButtons.Length ) )
@@ -175,7 +175,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         return _justPressedButtons[ button ];
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override void GetTextInput( IInput.ITextInputListener listener,
                                        string title,
                                        string text,
@@ -186,14 +186,14 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         listener.Canceled();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override long GetCurrentEventTime()
     {
         // queue sets its event time for each event dequeued/processed
         return _eventQueue.CurrentEventTime;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override void SetCursorCaught( bool caught )
     {
         //TODO:
@@ -202,7 +202,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
 //                           ( int )( caught ? CursorMode.Disabled : CursorMode.Normal ) );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override bool IsCursorCaught()
     {
         //TODO:
@@ -212,7 +212,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override void SetCursorPosition( int x, int y )
     {
         if ( _window!.Config.HdpiMode == HdpiMode.Pixels )
@@ -227,7 +227,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         Glfw.SetCursorPos( _window!.GlfwWindow, x, y );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void WindowHandleChanged( GLFWWindow? windowHandle )
     {
         ResetPollingStates();
@@ -328,8 +328,8 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     }
 
     /// <summary>
-    ///     Performs application-defined tasks associated with freeing, releasing,
-    ///     or resetting unmanaged resources.
+    /// Performs application-defined tasks associated with freeing, releasing,
+    /// or resetting unmanaged resources.
     /// </summary>
     public void Dispose()
     {
@@ -493,8 +493,8 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     }
 
     /// <summary>
-    ///     Performs application-defined tasks associated with freeing, releasing,
-    ///     or resetting unmanaged resources.
+    /// Performs application-defined tasks associated with freeing, releasing,
+    /// or resetting unmanaged resources.
     /// </summary>
     private void Dispose( bool disposing )
     {

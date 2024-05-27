@@ -28,9 +28,9 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
-///     Class representing an OpenGL texture by its target and handle. Keeps track of
-///     its state like the TextureFilter and TextureWrap. Also provides some static
-///     methods to create TextureData and upload image data.
+/// Class representing an OpenGL texture by its target and handle. Keeps track of
+/// its state like the TextureFilter and TextureWrap. Also provides some static
+/// methods to create TextureData and upload image data.
 /// </summary>
 [PublicAPI]
 public abstract class GLTexture : IDisposable
@@ -59,22 +59,22 @@ public abstract class GLTexture : IDisposable
     public float AnisotropicFilterLevel { get; private set; } = 1.0f;
 
     /// <summary>
-    ///     Returns the <see cref="TextureFilter" /> used for minification.
+    /// Returns the <see cref="TextureFilter"/> used for minification.
     /// </summary>
     public TextureFilter MinFilter { get; private set; } = TextureFilter.Nearest;
 
     /// <summary>
-    ///     Returns the <see cref="TextureFilter" /> used for magnification.
+    /// Returns the <see cref="TextureFilter"/> used for magnification.
     /// </summary>
     public TextureFilter MagFilter { get; private set; } = TextureFilter.Nearest;
 
     /// <summary>
-    ///     Returns the <see cref="TextureWrap" /> used for horizontal (U) texture coordinates.
+    /// Returns the <see cref="TextureWrap"/> used for horizontal (U) texture coordinates.
     /// </summary>
     public TextureWrap UWrap { get; set; } = TextureWrap.ClampToEdge;
 
     /// <summary>
-    ///     Returns the <see cref="TextureWrap" /> used for vertical (V) texture coordinates.
+    /// Returns the <see cref="TextureWrap"/> used for vertical (V) texture coordinates.
     /// </summary>
     public TextureWrap VWrap { get; set; } = TextureWrap.ClampToEdge;
 
@@ -82,7 +82,7 @@ public abstract class GLTexture : IDisposable
 
     // ------------------------------------------------------------------------
 
-    /// <inheritdoc cref="IDisposable.Dispose" />
+    /// <inheritdoc cref="IDisposable.Dispose"/>
     public virtual void Dispose()
     {
         Dispose( true );
@@ -92,14 +92,14 @@ public abstract class GLTexture : IDisposable
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Used internally to reload after context loss. Creates a new GL handle then
-    ///     calls <see cref="Texture.Load" />.
+    /// Used internally to reload after context loss. Creates a new GL handle then
+    /// calls <see cref="Texture.Load"/>.
     /// </summary>
     protected abstract void Reload();
 
     /// <summary>
-    ///     Binds this texture. The texture will be bound to the currently active
-    ///     texture unit.
+    /// Binds this texture. The texture will be bound to the currently active
+    /// texture unit.
     /// </summary>
     public void Bind()
     {
@@ -107,8 +107,8 @@ public abstract class GLTexture : IDisposable
     }
 
     /// <summary>
-    ///     Binds the texture to the given texture unit.
-    ///     Sets the currently active texture unit.
+    /// Binds the texture to the given texture unit.
+    /// Sets the currently active texture unit.
     /// </summary>
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>
     public void Bind( int unit )
@@ -118,13 +118,13 @@ public abstract class GLTexture : IDisposable
     }
 
     /// <summary>
-    ///     Sets the <see cref="TextureWrap" /> for this texture on the u and v axis.
-    ///     Assumes the texture is bound and active!
+    /// Sets the <see cref="TextureWrap"/> for this texture on the u and v axis.
+    /// Assumes the texture is bound and active!
     /// </summary>
     /// <param name="u"> the u wrap </param>
     /// <param name="v"> the v wrap </param>
     /// <param name="force">
-    ///     True to always set the values, even if they are the same as the current values.
+    /// True to always set the values, even if they are the same as the current values.
     /// </param>
     public void UnsafeSetWrap( TextureWrap? u, TextureWrap? v, bool force = false )
     {
@@ -142,8 +142,8 @@ public abstract class GLTexture : IDisposable
     }
 
     /// <summary>
-    ///     Sets the <see cref="TextureWrap" /> for this texture on the u and v axis.
-    ///     This will bind this texture!
+    /// Sets the <see cref="TextureWrap"/> for this texture on the u and v axis.
+    /// This will bind this texture!
     /// </summary>
     /// <param name="u">the u wrap</param>
     /// <param name="v">the v wrap</param>
@@ -159,14 +159,14 @@ public abstract class GLTexture : IDisposable
     }
 
     /// <summary>
-    ///     Sets the <see cref="TextureFilter" /> for this texture for minification and
-    ///     magnification. Assumes the texture is bound and active!
+    /// Sets the <see cref="TextureFilter"/> for this texture for minification and
+    /// magnification. Assumes the texture is bound and active!
     /// </summary>
     /// <param name="minFilter"> the minification filter </param>
     /// <param name="magFilter"> the magnification filter  </param>
     /// <param name="force">
-    ///     True to always set the values, even if they are the same as the current values.
-    ///     Default is false.
+    /// True to always set the values, even if they are the same as the current values.
+    /// Default is false.
     /// </param>
     public void UnsafeSetFilter( TextureFilter? minFilter, TextureFilter? magFilter, bool force = false )
     {
@@ -184,8 +184,8 @@ public abstract class GLTexture : IDisposable
     }
 
     /// <summary>
-    ///     Sets the <see cref="TextureFilter" /> for this texture for minification and
-    ///     magnification. This will bind this texture!
+    /// Sets the <see cref="TextureFilter"/> for this texture for minification and
+    /// magnification. This will bind this texture!
     /// </summary>
     /// <param name="minFilter"> the minification filter </param>
     /// <param name="magFilter"> the magnification filter  </param>
@@ -201,17 +201,17 @@ public abstract class GLTexture : IDisposable
     }
 
     /// <summary>
-    ///     Sets the anisotropic filter level for the texture.
-    ///     Assumes the texture is bound and active!
+    /// Sets the anisotropic filter level for the texture.
+    /// Assumes the texture is bound and active!
     /// </summary>
     /// <param name="level">
-    ///     The desired level of filtering. The maximum level supported by
-    ///     the device up to this value will be used.
+    /// The desired level of filtering. The maximum level supported by
+    /// the device up to this value will be used.
     /// </param>
     /// <param name="force"></param>
     /// <returns>
-    ///     The actual level set, which may be lower than the provided value
-    ///     due to device limitations.
+    /// The actual level set, which may be lower than the provided value
+    /// due to device limitations.
     /// </returns>
     public float UnsafeSetAnisotropicFilter( float level, bool force = false )
     {

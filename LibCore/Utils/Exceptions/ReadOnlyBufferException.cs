@@ -25,8 +25,8 @@
 namespace LughSharp.LibCore.Utils.Exceptions;
 
 /// <summary>
-///     Unchecked exception thrown when a content-mutation method such as
-///     put or compact is invoked upon a read-only buffer.
+/// Unchecked exception thrown when a content-mutation method such as
+/// put or compact is invoked upon a read-only buffer.
 /// </summary>
 [PublicAPI]
 public class ReadOnlyBufferException : NotSupportedException

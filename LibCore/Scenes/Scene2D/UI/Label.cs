@@ -29,85 +29,33 @@ using LughSharp.LibCore.Scenes.Scene2D.Utils;
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
-///     A text label, with optional word wrapping.
-///     <para>
-///         The preferred size of the label is determined by the actual text bounds,
-///         unless <see cref="Wrap" /> is enabled.
-///     </para>
+/// A text label, with optional word wrapping.
+/// <para>
+/// The preferred size of the label is determined by the actual text bounds,
+/// unless <see cref="Wrap"/> is enabled.
+/// </para>
 /// </summary>
 [PublicAPI]
 public class Label : Widget
 {
-    public BitmapFontCache FontCache   { get; set; } = null!;
-    public StringBuilder   Text        { get; }      = new();
-    public int             LabelAlign  { get; set; } = Align.LEFT;
-    public int             LineAlign   { get; set; } = Align.LEFT;
-    public GlyphLayout     GlyphLayout { get; set; } = new();
-
     private readonly static Color       _tempColor      = new();
     private readonly static GlyphLayout _prefSizeLayout = new();
     private readonly        Vector2     _prefSize       = new();
 
-    private string?    _ellipsis;
-    private bool       _fontScaleChanged = false;
-    private float      _fontScaleX       = 1;
-    private float      _fontScaleY       = 1;
-    private int        _intValue         = int.MinValue;
-    private float      _lastPrefHeight;
-    private bool       _prefSizeInvalid = true;
-    private LabelStyle _style           = null!;
-    private bool       _wrap;
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    #region constructors
-
-    public Label( string text, Skin skin )
-        : this( text, skin.Get< LabelStyle >() )
-    {
-    }
-
-    public Label( string text, Skin skin, string styleName )
-        : this( text, skin.Get< LabelStyle >( styleName ) )
-    {
-    }
-
-    /// <summary>
-    ///     Creates a label, using a <see cref="LabelStyle" /> that has a BitmapFont with
-    ///     the specified name from the skin and the specified color.
-    /// </summary>
-    public Label( string text, Skin skin, string fontName, Color color )
-        : this( text, new LabelStyle( skin.GetFont( fontName ), color ) )
-    {
-    }
-
-    /// <summary>
-    ///     Creates a label, using a <see cref="LabelStyle" /> that has a BitmapFont
-    ///     with the specified name and the specified color from the
-    ///     skin.
-    /// </summary>
-    public Label( string text, Skin skin, string fontName, string colorName )
-        : this( text, new LabelStyle( skin.GetFont( fontName ), skin.GetColor( colorName ) ) )
-    {
-    }
-
-    public Label( string? text, LabelStyle style )
-    {
-        if ( text != null )
-        {
-            Text.Append( text );
-        }
-
-        Style = style;
-
-        if ( text is { Length: > 0 } )
-        {
-            SetSize( GetPrefWidth(), GetPrefHeight() );
-        }
-    }
-
-    #endregion constructors
+    private string?         _ellipsis;
+    private bool            _fontScaleChanged = false;
+    private float           _fontScaleX       = 1;
+    private float           _fontScaleY       = 1;
+    private int             _intValue         = int.MinValue;
+    private float           _lastPrefHeight;
+    private bool            _prefSizeInvalid = true;
+    private LabelStyle      _style           = null!;
+    private bool            _wrap;
+    public  BitmapFontCache FontCache   { get; set; } = null!;
+    public  StringBuilder   Text        { get; }      = new();
+    public  int             LabelAlign  { get; set; } = Align.LEFT;
+    public  int             LineAlign   { get; set; } = Align.LEFT;
+    public  GlyphLayout     GlyphLayout { get; set; } = new();
 
     public LabelStyle Style
     {
@@ -135,22 +83,22 @@ public class Label : Widget
     }
 
     /// <summary>
-    ///     If false, the text will only wrap where it contains newlines (\n). The preferred
-    ///     size of the label will be the text bounds.
-    ///     <para>
-    ///         If true, the text will word wrap using the width of the label. The preferred width
-    ///         of the label will be 0, it is expected that something external will set the width
-    ///         of the label. Wrapping will not occur when ellipsis is enabled.
-    ///     </para>
-    ///     <para>
-    ///         Default is false.
-    ///     </para>
-    ///     <para>
-    ///         When wrap is enabled, the label's preferred height depends on the width of the
-    ///         label. In some cases the parent of the label will need to layout twice: once to
-    ///         set the width of the label and a second time to adjust to the label's new preferred
-    ///         height.
-    ///     </para>
+    /// If false, the text will only wrap where it contains newlines (\n). The preferred
+    /// size of the label will be the text bounds.
+    /// <para>
+    /// If true, the text will word wrap using the width of the label. The preferred width
+    /// of the label will be 0, it is expected that something external will set the width
+    /// of the label. Wrapping will not occur when ellipsis is enabled.
+    /// </para>
+    /// <para>
+    /// Default is false.
+    /// </para>
+    /// <para>
+    /// When wrap is enabled, the label's preferred height depends on the width of the
+    /// label. In some cases the parent of the label will need to layout twice: once to
+    /// set the width of the label and a second time to adjust to the label's new preferred
+    /// height.
+    /// </para>
     /// </summary>
     public bool Wrap
     {
@@ -176,8 +124,8 @@ public class Label : Widget
     }
 
     /// <summary>
-    ///     Sets the text to the specified integer value. If the text is already equivalent
-    ///     to the specified value, a string is not allocated.
+    /// Sets the text to the specified integer value. If the text is already equivalent
+    /// to the specified value, a string is not allocated.
     /// </summary>
     /// <returns> true if the text was changed. </returns>
     public bool SetText( int value )
@@ -466,19 +414,19 @@ public class Label : Widget
     /// <summary>
     /// </summary>
     /// <param name="alignment">
-    ///     Aligns all the text within the label (default left center) and each line
-    ///     of text horizontally (default is left).
+    /// Aligns all the text within the label (default left center) and each line
+    /// of text horizontally (default is left).
     /// </param>
-    /// <see cref="Align" />
+    /// <see cref="Align"/>
     public void SetAlignment( int alignment )
     {
         SetAlignment( alignment, alignment );
     }
 
     /// <summary>
-    ///     <param name="labelAlign"> Aligns all the text within the label (default left center). </param>
-    ///     <param name="lineAlign"> Aligns each line of text horizontally (default left). </param>
-    ///     See also <see cref="Align " />
+    /// <param name="labelAlign"> Aligns all the text within the label (default left center). </param>
+    /// <param name="lineAlign"> Aligns each line of text horizontally (default left). </param>
+    /// See also <see cref="Align "/>
     /// </summary>
     public void SetAlignment( int labelAlign, int lineAlign )
     {
@@ -516,9 +464,9 @@ public class Label : Widget
     }
 
     /// <summary>
-    ///     When non-null the text will be truncated "..." if it does not fit within
-    ///     the width of the label. Wrapping will not occur when ellipsis is enabled.
-    ///     Default is false.
+    /// When non-null the text will be truncated "..." if it does not fit within
+    /// the width of the label. Wrapping will not occur when ellipsis is enabled.
+    /// Default is false.
     /// </summary>
     public void SetEllipsis( string? ellipsis )
     {
@@ -526,9 +474,9 @@ public class Label : Widget
     }
 
     /// <summary>
-    ///     When true the text will be truncated "..." if it does not fit within the
-    ///     width of the label. Wrapping will not occur when ellipsis is true. Default
-    ///     is false.
+    /// When true the text will be truncated "..." if it does not fit within the
+    /// width of the label. Wrapping will not occur when ellipsis is true. Default
+    /// is false.
     /// </summary>
     public void SetEllipsis( bool ellipsis )
     {
@@ -561,15 +509,11 @@ public class Label : Widget
     #region labelstyle
 
     /// <summary>
-    ///     The style for a label, see <see cref="Label" />.
+    /// The style for a label, see <see cref="Label"/>.
     /// </summary>
     [PublicAPI]
     public class LabelStyle
     {
-        public BitmapFont Font       { get; set; }
-        public Color?     FontColor  { get; set; }
-        public IDrawable? Background { get; set; }
-        
         public LabelStyle()
         {
             Font       = default( BitmapFont )!;
@@ -594,7 +538,62 @@ public class Label : Widget
 
             Background = style.Background;
         }
+
+        public BitmapFont Font       { get; set; }
+        public Color?     FontColor  { get; set; }
+        public IDrawable? Background { get; set; }
     }
 
     #endregion labelstyle
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region constructors
+
+    public Label( string text, Skin skin )
+        : this( text, skin.Get< LabelStyle >() )
+    {
+    }
+
+    public Label( string text, Skin skin, string styleName )
+        : this( text, skin.Get< LabelStyle >( styleName ) )
+    {
+    }
+
+    /// <summary>
+    /// Creates a label, using a <see cref="LabelStyle"/> that has a BitmapFont with
+    /// the specified name from the skin and the specified color.
+    /// </summary>
+    public Label( string text, Skin skin, string fontName, Color color )
+        : this( text, new LabelStyle( skin.GetFont( fontName ), color ) )
+    {
+    }
+
+    /// <summary>
+    /// Creates a label, using a <see cref="LabelStyle"/> that has a BitmapFont
+    /// with the specified name and the specified color from the
+    /// skin.
+    /// </summary>
+    public Label( string text, Skin skin, string fontName, string colorName )
+        : this( text, new LabelStyle( skin.GetFont( fontName ), skin.GetColor( colorName ) ) )
+    {
+    }
+
+    public Label( string? text, LabelStyle style )
+    {
+        if ( text != null )
+        {
+            Text.Append( text );
+        }
+
+        Style = style;
+
+        if ( text is { Length: > 0 } )
+        {
+            SetSize( GetPrefWidth(), GetPrefHeight() );
+        }
+    }
+
+    #endregion constructors
 }

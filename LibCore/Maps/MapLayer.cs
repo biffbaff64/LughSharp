@@ -28,28 +28,27 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Maps;
 
 /// <summary>
-///     Map layer containing a set of objects and properties.
+/// Map layer containing a set of objects and properties.
 /// </summary>
 [PublicAPI]
 public class MapLayer
 {
-    public MapObjects    Objects    { get; private set; } = new();
-    public MapProperties Properties { get; private set; } = new();
-    public string?       Name       { get; set; }
-    public float         Opacity    { get; set; }
-    public bool          Visible    { get; set; } = true;
-
     private float         _offsetX;
     private float         _offsetY;
     private MapLayer?     _parent            = null!;
     private bool          _renderOffsetDirty = true;
     private float         _renderOffsetX;
     private float         _renderOffsetY;
+    public  MapObjects    Objects    { get; private set; } = new();
+    public  MapProperties Properties { get; private set; } = new();
+    public  string?       Name       { get; set; }
+    public  float         Opacity    { get; set; }
+    public  bool          Visible    { get; set; } = true;
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
-    ///     The layers X offset.
+    /// The layers X offset.
     /// </summary>
     public float OffsetX
     {
@@ -62,7 +61,7 @@ public class MapLayer
     }
 
     /// <summary>
-    ///     The layers Y offset.
+    /// The layers Y offset.
     /// </summary>
     public float OffsetY
     {
@@ -75,7 +74,7 @@ public class MapLayer
     }
 
     /// <summary>
-    ///     The layer's X render offset, this takes into consideration all parent layers' offsets
+    /// The layer's X render offset, this takes into consideration all parent layers' offsets
     /// </summary>
     public float RenderOffsetX
     {
@@ -91,7 +90,7 @@ public class MapLayer
     }
 
     /// <summary>
-    ///     The layer's Y render offset, this takes into consideration all parent layers' offsets
+    /// The layer's Y render offset, this takes into consideration all parent layers' offsets
     /// </summary>
     public float RenderOffsetY
     {
@@ -107,7 +106,7 @@ public class MapLayer
     }
 
     /// <summary>
-    ///     This layers parent MapLayer, or Null if there is no parent. 
+    /// This layers parent MapLayer, or Null if there is no parent.
     /// </summary>
     public MapLayer? Parent
     {
@@ -124,7 +123,7 @@ public class MapLayer
     }
 
     /// <summary>
-    ///     Flags that Render Offsets need to be recalculated.
+    /// Flags that Render Offsets need to be recalculated.
     /// </summary>
     public virtual void InvalidateRenderOffset()
     {

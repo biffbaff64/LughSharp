@@ -26,16 +26,44 @@
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
-///     The SampleBuffer class implements an output buffer that provides storage for a
-///     fixed size block of samples.
+/// The SampleBuffer class implements an output buffer that provides storage for a
+/// fixed size block of samples.
 /// </summary>
 [PublicAPI]
 public class SampleBuffer : AudioBase
 {
+    /// <summary>
+    /// Gets or sets the sample frequency of the audio samples.
+    /// </summary>
+    public virtual int SampleFrequency { get; set; }
+
+    /// <summary>
+    /// Gets the number of channels in the audio samples.
+    /// </summary>
+    public virtual int ChannelCount => _channels;
+
+    /// <summary>
+    /// Gets the buffer containing the audio samples.
+    /// </summary>
+    public virtual short[] Buffer => _buffer;
+
+    /// <summary>
+    /// Gets the length of the buffer.
+    /// </summary>
+    public virtual int BufferLength => _bufferp[ 0 ];
+
     private readonly short[] _buffer;
     private readonly int[]   _bufferp;
     private readonly int     _channels;
 
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SampleBuffer"/> class with the
+    /// specified sample frequency and number of channels.
+    /// </summary>
+    /// <param name="sampleFrequency">The sample frequency of the audio samples.</param>
+    /// <param name="numberOfChannels">The number of channels in the audio samples.</param>
     public SampleBuffer( int sampleFrequency, int numberOfChannels )
     {
         _buffer   = new short[ OBUFFERSIZE ];
@@ -50,26 +78,27 @@ public class SampleBuffer : AudioBase
         }
     }
 
-    public virtual int SampleFrequency { get; set; }
-
-    public virtual int     ChannelCount => _channels;
-    public virtual short[] Buffer       => _buffer;
-    public virtual int     BufferLength => _bufferp[ 0 ];
-
     private void Init( int sampleFrequency )
     {
         SampleFrequency = sampleFrequency;
     }
 
     /// <summary>
-    ///     Takes a 16 Bit PCM sample.
+    /// Appends a 16-bit PCM sample to the buffer.
     /// </summary>
+    /// <param name="channel">The channel index.</param>
+    /// <param name="valueRenamed">The 16-bit PCM sample value.</param>
     protected override void Append( int channel, short valueRenamed )
     {
         _buffer[ _bufferp[ channel ] ] =  valueRenamed;
         _bufferp[ channel ]            += _channels;
     }
 
+    /// <summary>
+    /// Appends an array of floating-point samples to the buffer.
+    /// </summary>
+    /// <param name="channel">The channel index.</param>
+    /// <param name="samples">The array of floating-point samples.</param>
     public override void AppendSamples( int channel, float[] samples )
     {
         var pos = _bufferp[ channel ];
@@ -77,10 +106,10 @@ public class SampleBuffer : AudioBase
         for ( var i = 0; i < 32; )
         {
             var fs = samples[ i++ ];
+            
             fs = fs > 32767.0f ? 32767.0f : fs < -32767.0f ? -32767.0f : fs;
 
-            //UPGRADE_WARNING: Narrowing conversions may produce unexpected results in C#.
-            //'ms-help://MS.VSCC.2003/commoner/redir/redirect.htm?keyword="jlca1042"'
+            // Converting to short
             var s = ( short ) fs;
 
             _buffer[ pos ] =  s;
@@ -91,19 +120,23 @@ public class SampleBuffer : AudioBase
     }
 
     /// <summary>
-    ///     Write the samples to the file (Random Access).
+    /// Writes the buffer to the file (Random Access).
     /// </summary>
     public override void WriteBuffer( int val )
     {
-        // for (int i = 0; i < channels; ++i) 
-        // bufferp[i] = (short)i;
-    }
-
-    public override void Close()
-    {
+        // Implementation omitted
     }
 
     /// <summary>
+    /// Closes the buffer.
+    /// </summary>
+    public override void Close()
+    {
+        // Implementation omitted
+    }
+
+    /// <summary>
+    /// Clears the buffer.
     /// </summary>
     public override void ClearBuffer()
     {
@@ -114,8 +147,10 @@ public class SampleBuffer : AudioBase
     }
 
     /// <summary>
+    /// Sets the stop flag.
     /// </summary>
     public override void SetStopFlag()
     {
+        // Implementation omitted
     }
 }

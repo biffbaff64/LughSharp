@@ -33,6 +33,11 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 [PublicAPI]
 public class DragListener : InputListener
 {
+    private float _dragLastX;
+    private float _dragLastY;
+
+    private int _pressedPointer = -1;
+
     // ------------------------------------------------------------------------
 
     /// Sets the button to listen for, all other buttons are ignored.
@@ -51,13 +56,9 @@ public class DragListener : InputListener
     public float DragX           { get; private set; }
     public float DragY           { get; private set; }
 
-    private float _dragLastX;
-    private float _dragLastY;
-    private int   _pressedPointer = -1;
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-    
     /// <inheritdoc/>
     public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
     {
@@ -155,8 +156,8 @@ public class DragListener : InputListener
     }
 
     /// <summary>
-    ///     If a drag is in progress, no further drag methods will be
-    ///     called until a new drag is started.
+    /// If a drag is in progress, no further drag methods will be
+    /// called until a new drag is started.
     /// </summary>
     public virtual void Cancel()
     {
@@ -165,7 +166,7 @@ public class DragListener : InputListener
     }
 
     /// <summary>
-    ///     The distance from drag start to the current drag position.
+    /// The distance from drag start to the current drag position.
     /// </summary>
     public float GetDragDistance()
     {
@@ -173,8 +174,8 @@ public class DragListener : InputListener
     }
 
     /// <summary>
-    ///     Returns the amount on the x axis that the touch has been
-    ///     dragged since the last drag event.
+    /// Returns the amount on the x axis that the touch has been
+    /// dragged since the last drag event.
     /// </summary>
     public float GetDeltaX()
     {
@@ -182,8 +183,8 @@ public class DragListener : InputListener
     }
 
     /// <summary>
-    ///     Returns the amount on the y axis that the touch has been
-    ///     dragged since the last drag event.
+    /// Returns the amount on the y axis that the touch has been
+    /// dragged since the last drag event.
     /// </summary>
     public float GetDeltaY()
     {

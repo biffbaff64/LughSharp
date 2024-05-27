@@ -29,11 +29,11 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Audio.MP3Sharp.IO;
 
 /// <summary>
-///     public class to manage RIFF files.
+/// public class to manage RIFF files.
 /// </summary>
 /// <remarks>
-///     This class is marked as  to indicate to ReSharper that
-///     methods and members etc may be called externally.
+/// This class is marked as  to indicate to ReSharper that
+/// methods and members etc may be called externally.
 /// </remarks>
 [PublicAPI]
 public class RiffFile
@@ -66,7 +66,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Return File Mode.
+    /// Return File Mode.
     /// </summary>
     public int CurrentFileMode()
     {
@@ -74,7 +74,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Open a RIFF file.
+    /// Open a RIFF file.
     /// </summary>
     public virtual int Open( string filename, int newMode )
     {
@@ -179,7 +179,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Open a RIFF STREAM.
+    /// Open a RIFF STREAM.
     /// </summary>
     public virtual int Open( Stream stream, int newMode )
     {
@@ -288,7 +288,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Write NumBytes data.
+    /// Write NumBytes data.
     /// </summary>
     public virtual int Write( sbyte[] data, int numBytes )
     {
@@ -313,7 +313,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Write NumBytes data.
+    /// Write NumBytes data.
     /// </summary>
     public virtual int Write( short[] data, int numBytes )
     {
@@ -347,7 +347,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Write NumBytes data.
+    /// Write NumBytes data.
     /// </summary>
     public virtual int Write( RiffChunkHeader riffHeader, int numBytes )
     {
@@ -389,7 +389,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Write NumBytes data.
+    /// Write NumBytes data.
     /// </summary>
     public virtual int Write( short data, int numBytes )
     {
@@ -415,7 +415,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Write NumBytes data.
+    /// Write NumBytes data.
     /// </summary>
     public virtual int Write( int data, int numBytes )
     {
@@ -442,7 +442,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Read NumBytes data.
+    /// Read NumBytes data.
     /// </summary>
     public virtual int Read( sbyte[] data, int numBytes )
     {
@@ -461,7 +461,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Expect NumBytes data.
+    /// Expect NumBytes data.
     /// </summary>
     public virtual int Expect( string data, int numBytes )
     {
@@ -488,8 +488,8 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Close Riff File.
-    ///     Length is written too.
+    /// Close Riff File.
+    /// Length is written too.
     /// </summary>
     public virtual int Close()
     {
@@ -551,7 +551,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Return File Position.
+    /// Return File Position.
     /// </summary>
     public virtual long CurrentFilePosition()
     {
@@ -572,7 +572,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Write Data to specified offset.
+    /// Write Data to specified offset.
     /// </summary>
     public virtual int Backpatch( long fileOffset, RiffChunkHeader data, int numBytes )
     {
@@ -613,7 +613,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Seek in the File.
+    /// Seek in the File.
     /// </summary>
     protected virtual int Seek( long offset )
     {
@@ -633,7 +633,7 @@ public class RiffFile
     }
 
     /// <summary>
-    ///     Fill the header.
+    /// Fill the header.
     /// </summary>
     public static int FourCC( string chunkName )
     {

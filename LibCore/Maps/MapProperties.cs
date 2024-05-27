@@ -26,21 +26,20 @@
 namespace LughSharp.LibCore.Maps;
 
 /// <summary>
-///     Set of string indexed values representing map elements' properties, allowing
-///     to retrieve, modify and add properties to the set.
+/// Set of string indexed values representing map elements' properties, allowing
+/// to retrieve, modify and add properties to the set.
 /// </summary>
 [PublicAPI]
 public class MapProperties
 {
-    public Dictionary< string, object? >.KeyCollection   Keys   => _properties.Keys;
-    public Dictionary< string, object? >.ValueCollection Values => _properties.Values;
-
-    private Dictionary< string, object? > _properties = new();
+    private Dictionary< string, object? >                 _properties = new();
+    public  Dictionary< string, object? >.KeyCollection   Keys   => _properties.Keys;
+    public  Dictionary< string, object? >.ValueCollection Values => _properties.Values;
 
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Gets the property matching the specified key.
+    /// Gets the property matching the specified key.
     /// </summary>
     /// <param name="key"> The Key. </param>
     /// <typeparam name="T"> The Type of the required property. </typeparam>
@@ -51,8 +50,8 @@ public class MapProperties
     }
 
     /// <summary>
-    ///     Gets the property matching the specified key. If the fetched property
-    ///     is null the provided <paramref name="defaultValue" /> is returned instead.
+    /// Gets the property matching the specified key. If the fetched property
+    /// is null the provided <paramref name="defaultValue"/> is returned instead.
     /// </summary>
     /// <param name="key"> The Key. </param>
     /// <param name="defaultValue"> The default value. </param>
@@ -66,7 +65,7 @@ public class MapProperties
     }
 
     /// <summary>
-    ///     Gets the property matching the specified key.
+    /// Gets the property matching the specified key.
     /// </summary>
     /// <param name="key"> The Key. </param>
     public object? Get( string key )
@@ -75,7 +74,7 @@ public class MapProperties
     }
 
     /// <summary>
-    ///     Returns true if the properties map contains the specified key.
+    /// Returns true if the properties map contains the specified key.
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
@@ -85,7 +84,7 @@ public class MapProperties
     }
 
     /// <summary>
-    ///     Sets the property matching the provided key to the provided value.
+    /// Sets the property matching the provided key to the provided value.
     /// </summary>
     /// <param name="key"> The key. </param>
     /// <param name="value"> The value. </param>
@@ -103,7 +102,7 @@ public class MapProperties
     }
 
     /// <summary>
-    ///     Removes the property matching the specified key.
+    /// Removes the property matching the specified key.
     /// </summary>
     /// <param name="key"> The key. </param>
     public void Remove( string key )
@@ -112,7 +111,7 @@ public class MapProperties
     }
 
     /// <summary>
-    ///     Clears the properties map.
+    /// Clears the properties map.
     /// </summary>
     public void Clear()
     {

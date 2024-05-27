@@ -28,9 +28,9 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
-///     Modification of the <see cref="VertexBufferObjectSubData" /> class.
-///     Sets the glVertexAttribDivisor for every <see cref="VertexAttribute" />
-///     automatically.
+/// Modification of the <see cref="VertexBufferObjectSubData"/> class.
+/// Sets the glVertexAttribDivisor for every <see cref="VertexAttribute"/>
+/// automatically.
 /// </summary>
 [PublicAPI]
 public class InstanceBufferObjectSubData : IInstanceData
@@ -45,11 +45,11 @@ public class InstanceBufferObjectSubData : IInstanceData
     private          bool _isStatic;
 
     /// <summary>
-    ///     Constructs a new interleaved InstanceBufferObject.
+    /// Constructs a new interleaved InstanceBufferObject.
     /// </summary>
     /// <param name="isStatic"> whether the vertex data is static. </param>
     /// <param name="numInstances"> the maximum number of vertices. </param>
-    /// <param name="instanceAttributes"> the <see cref="VertexAttributes" />". </param>
+    /// <param name="instanceAttributes"> the <see cref="VertexAttributes"/>". </param>
     public InstanceBufferObjectSubData( bool isStatic,
                                         int numInstances,
                                         params VertexAttribute[] instanceAttributes )
@@ -58,11 +58,11 @@ public class InstanceBufferObjectSubData : IInstanceData
     }
 
     /// <summary>
-    ///     Constructs a new interleaved InstanceBufferObject.
+    /// Constructs a new interleaved InstanceBufferObject.
     /// </summary>
     /// <param name="isStatic"> whether the vertex data is static. </param>
     /// <param name="numInstances"> the maximum number of vertices. </param>
-    /// <param name="instanceAttributes"> the <see cref="VertexAttributes" />". </param>
+    /// <param name="instanceAttributes"> the <see cref="VertexAttributes"/>". </param>
     public InstanceBufferObjectSubData( bool isStatic, int numInstances, VertexAttributes instanceAttributes )
     {
         _isStatic   = isStatic;
@@ -82,12 +82,12 @@ public class InstanceBufferObjectSubData : IInstanceData
     public VertexAttributes Attributes   { get; set; }
 
     /// <summary>
-    ///     Returns the number of instances in this buffer.
+    /// Returns the number of instances in this buffer.
     /// </summary>
     public int NumInstances => ( _buffer.Limit * 4 ) / Attributes.VertexSize;
 
     /// <summary>
-    ///     Returns the max number of instances in this buffer.
+    /// Returns the max number of instances in this buffer.
     /// </summary>
     public int NumMaxInstances => _byteBuffer.Capacity / Attributes.VertexSize;
 
@@ -194,8 +194,8 @@ public class InstanceBufferObjectSubData : IInstanceData
     }
 
     /// <summary>
-    ///     Binds this InstanceBufferObject for rendering via glDrawArraysInstanced
-    ///     or glDrawElementsInstanced.
+    /// Binds this InstanceBufferObject for rendering via glDrawArraysInstanced
+    /// or glDrawElementsInstanced.
     /// </summary>
     /// <param name="shader"></param>
     /// <param name="locations"></param>
@@ -273,7 +273,7 @@ public class InstanceBufferObjectSubData : IInstanceData
     }
 
     /// <summary>
-    ///     Unbinds this InstanceBufferObject.
+    /// Unbinds this InstanceBufferObject.
     /// </summary>
     public void Unbind( ShaderProgram shader, int[]? locations = null )
     {
@@ -319,8 +319,8 @@ public class InstanceBufferObjectSubData : IInstanceData
     }
 
     /// <summary>
-    ///     Invalidates the InstanceBufferObject so a new OpenGL buffer handle is
-    ///     created. Use this in case of a context loss.
+    /// Invalidates the InstanceBufferObject so a new OpenGL buffer handle is
+    /// created. Use this in case of a context loss.
     /// </summary>
     public void Invalidate()
     {
@@ -329,7 +329,7 @@ public class InstanceBufferObjectSubData : IInstanceData
     }
 
     /// <summary>
-    ///     Disposes of all resources this InstanceBufferObject uses.
+    /// Disposes of all resources this InstanceBufferObject uses.
     /// </summary>
     public void Dispose()
     {

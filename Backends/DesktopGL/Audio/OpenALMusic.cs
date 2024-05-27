@@ -341,19 +341,19 @@ public abstract class OpenALMusic : IMusic
     }
 
     /// <summary>
-    ///     Fills as much of the buffer as possible and returns the number of
-    ///     bytes filled. Returns &lt;= 0 to indicate the end of the stream.
+    /// Fills as much of the buffer as possible and returns the number of
+    /// bytes filled. Returns &lt;= 0 to indicate the end of the stream.
     /// </summary>
     public abstract int Read( byte[] buffer );
 
     /// <summary>
-    ///     Resets the stream to the beginning.
+    /// Resets the stream to the beginning.
     /// </summary>
     public abstract void Reset();
 
     /// <summary>
-    ///     By default, does just the same as reset().
-    ///     Used to add special behaviour in Ogg.Music.
+    /// By default, does just the same as reset().
+    /// Used to add special behaviour in Ogg.Music.
     /// </summary>
     protected void Loop()
     {

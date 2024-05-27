@@ -45,13 +45,13 @@ public class ETC1TextureData : ITextureData
         UseMipMaps = useMipMaps;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public bool IsPrepared { get; set; }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Prepare()
     {
         if ( IsPrepared )
@@ -79,19 +79,19 @@ public class ETC1TextureData : ITextureData
         IsPrepared = true;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public Pixmap ConsumePixmap()
     {
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public bool DisposePixmap()
     {
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void ConsumeCustomData( int target )
     {
         if ( !IsPrepared )
@@ -161,22 +161,22 @@ public class ETC1TextureData : ITextureData
         IsPrepared = false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int Width { get; set; }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int Height { get; set; }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public bool UseMipMaps { get; set; } = false;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public Pixmap.Format GetFormat()
     {
         return Pixmap.Format.Alpha;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public bool IsManaged()
     {
         return false;

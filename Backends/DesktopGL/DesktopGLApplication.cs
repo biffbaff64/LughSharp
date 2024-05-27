@@ -49,13 +49,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Creates a new Desktop Gl Application.
-    ///     <para>
-    ///         Uses the provided <see cref="DesktopGLApplicationConfiguration" />.
-    ///     </para>
+    /// Creates a new Desktop Gl Application.
+    /// <para>
+    /// Uses the provided <see cref="DesktopGLApplicationConfiguration"/>.
+    /// </para>
     /// </summary>
-    /// <param name="listener"> The <see cref="IApplicationListener" /> to use. </param>
-    /// <param name="config"> The <see cref="DesktopGLApplicationConfiguration" /> to use.</param>
+    /// <param name="listener"> The <see cref="IApplicationListener"/> to use. </param>
+    /// <param name="config"> The <see cref="DesktopGLApplicationConfiguration"/> to use.</param>
     public DesktopGLApplication( IApplicationListener listener,
                                  DesktopGLApplicationConfiguration config )
     {
@@ -98,7 +98,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    ///     Gets the Desktop Preferences object.
+    /// Gets the Desktop Preferences object.
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
@@ -211,7 +211,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    ///     Framework Main Loop
+    /// Framework Main Loop
     /// </summary>
     protected void Loop()
     {
@@ -326,7 +326,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    ///     Cleans up, and disposes of, any windows that have been closed.
+    /// Cleans up, and disposes of, any windows that have been closed.
     /// </summary>
     protected void CleanupWindows()
     {
@@ -361,14 +361,14 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    ///     Creates a new <see cref="DesktopGLWindow" /> using the provided listener and
-    ///     <see cref="DesktopGLWindowConfiguration" />.
-    ///     <para>
-    ///         This function only just instantiates a <see cref="DesktopGLWindow" /> and
-    ///         returns immediately. The actual window creation is postponed with
-    ///         <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)" /> until after all
-    ///         existing windows are updated.
-    ///     </para>
+    /// Creates a new <see cref="DesktopGLWindow"/> using the provided listener and
+    /// <see cref="DesktopGLWindowConfiguration"/>.
+    /// <para>
+    /// This function only just instantiates a <see cref="DesktopGLWindow"/> and
+    /// returns immediately. The actual window creation is postponed with
+    /// <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)"/> until after all
+    /// existing windows are updated.
+    /// </para>
     /// </summary>
     public DesktopGLWindow NewWindow( IApplicationListener listener, DesktopGLWindowConfiguration config )
     {
@@ -729,9 +729,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    ///     Enables or disables GL debug messages for the specified severity level.
-    ///     Returns false if the severity level could not be set (e.g. the NOTIFICATION
-    ///     level is not supported by the ARB and AMD extensions).
+    /// Enables or disables GL debug messages for the specified severity level.
+    /// Returns false if the severity level could not be set (e.g. the NOTIFICATION
+    /// level is not supported by the ARB and AMD extensions).
     /// </summary>
     public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled )
     {

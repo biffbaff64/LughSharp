@@ -28,7 +28,7 @@ using LughSharp.LibCore.Audio.MP3Sharp.Support;
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
 /// <summary>
-///     Implements a Huffman decoder.
+/// Implements a Huffman decoder.
 /// </summary>
 [PublicAPI]
 public class Huffman
@@ -697,7 +697,7 @@ public class Huffman
     private readonly int      _ylen;       //max. y-index+
 
     /// <summary>
-    ///     Computes all Huffman Tables.
+    /// Computes all Huffman Tables.
     /// </summary>
     private Huffman( string s,
                      int xlen,
@@ -725,8 +725,8 @@ public class Huffman
     }
 
     /// <summary>
-    ///     Do the huffman-decoding.
-    ///     NOTE: for counta, countb -the 4 bit value is returned in y, discard x.
+    /// Do the huffman-decoding.
+    /// NOTE: for counta, countb -the 4 bit value is returned in y, discard x.
     /// </summary>
     public static int Decode( Huffman h, int[] x, int[] y, int[] v, int[] w, BitReserve br )
     {

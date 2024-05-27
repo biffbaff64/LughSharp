@@ -28,7 +28,7 @@ namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 [PublicAPI]
 public class LocalFileHandleResolver : IFileHandleResolver
 {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public FileInfo Resolve( string fileName )
     {
         return Gdx.Files.Local( fileName );

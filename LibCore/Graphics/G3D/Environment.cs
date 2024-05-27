@@ -32,13 +32,13 @@ namespace LughSharp.LibCore.Graphics.G3D;
 public class Environment : AttributesGroup
 {
     /// <summary>
-    ///     Shadow map used to render shadows
+    /// Shadow map used to render shadows
     /// </summary>
     public IShadowMap? ShadowMap { get; set; }
 
     /// <summary>
-    ///     Adds one or more Lights, extended from <see cref="BaseLight" />, to the
-    ///     attributes list in <see cref="AttributesGroup" /> .
+    /// Adds one or more Lights, extended from <see cref="BaseLight"/>, to the
+    /// attributes list in <see cref="AttributesGroup"/> .
     /// </summary>
     /// <param name="lights"></param>
     /// <returns></returns>

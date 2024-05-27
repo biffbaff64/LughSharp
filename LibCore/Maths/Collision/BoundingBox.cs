@@ -26,16 +26,13 @@
 namespace LughSharp.LibCore.Maths.Collision;
 
 /// <summary>
-///     Encapsulates an axis aligned bounding box represented by a minimum
-///     and a maximum Vector. Additionally you can query for the bounding
-///     box's center, dimensions and corner points.
+/// Encapsulates an axis aligned bounding box represented by a minimum
+/// and a maximum Vector. Additionally you can query for the bounding
+/// box's center, dimensions and corner points.
 /// </summary>
 [Serializable, PublicAPI]
 public class BoundingBox
 {
-    public Vector3 Max { get; set; } = new();
-    public Vector3 Min { get; set; } = new();
-
     // ------------------------------------------------------------------------
 
     private readonly static Vector3 _tmpVector = new();
@@ -46,7 +43,7 @@ public class BoundingBox
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Constructs a new bounding box with the minimum and maximum vector set to zeros.
+    /// Constructs a new bounding box with the minimum and maximum vector set to zeros.
     /// </summary>
     public BoundingBox()
     {
@@ -54,7 +51,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Constructs a new bounding box from the given bounding box.
+    /// Constructs a new bounding box from the given bounding box.
     /// </summary>
     /// <param name="bounds"> The bounding box to copy  </param>
     public BoundingBox( BoundingBox bounds )
@@ -63,7 +60,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Constructs the new bounding box using the given minimum and maximum vector.
+    /// Constructs the new bounding box using the given minimum and maximum vector.
     /// </summary>
     /// <param name="minimum"> The minimum vector </param>
     /// <param name="maximum"> The maximum vector  </param>
@@ -71,6 +68,9 @@ public class BoundingBox
     {
         Set( minimum, maximum );
     }
+
+    public Vector3 Max { get; set; } = new();
+    public Vector3 Min { get; set; } = new();
 
     // ------------------------------------------------------------------------
 
@@ -85,14 +85,14 @@ public class BoundingBox
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Returns whether this bounding box is valid.
-    ///     This means that <see cref="Max" /> is greater than or equal to <see cref="Min" />.
+    /// Returns whether this bounding box is valid.
+    /// This means that <see cref="Max"/> is greater than or equal to <see cref="Min"/>.
     /// </summary>
     /// <returns> True in case the bounding box is valid, false otherwise  </returns>
     public bool Valid => ( Min.X <= Max.X ) && ( Min.Y <= Max.Y ) && ( Min.Z <= Max.Z );
 
     /// <summary>
-    ///     Sets the given bounding box.
+    /// Sets the given bounding box.
     /// </summary>
     /// <param name="bounds">The bounds.</param>
     /// <returns>This bounding box for chaining.</returns>
@@ -102,7 +102,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Sets the given minimum and maximum vector.
+    /// Sets the given minimum and maximum vector.
     /// </summary>
     /// <param name="minimum"> The minimum vector </param>
     /// <param name="maximum"> The maximum vector </param>
@@ -124,7 +124,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Sets the bounding box minimum and maximum vector from the given points.
+    /// Sets the bounding box minimum and maximum vector from the given points.
     /// </summary>
     /// <param name="points"> The points. </param>
     /// <returns> This bounding box for chaining.  </returns>
@@ -141,7 +141,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Sets the bounding box minimum and maximum vector from the given points.
+    /// Sets the bounding box minimum and maximum vector from the given points.
     /// </summary>
     /// <param name="points"> The points. </param>
     /// <returns> This bounding box for chaining.  </returns>
@@ -158,11 +158,11 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Gets the centre of the bounding box and places it into the supplied
-    ///     Vector3. The modified vector is returned but can be thrown away.
+    /// Gets the centre of the bounding box and places it into the supplied
+    /// Vector3. The modified vector is returned but can be thrown away.
     /// </summary>
     /// <param name="vec3">
-    ///     The <see cref="Vector3" /> to receive the center of the bounding box.
+    /// The <see cref="Vector3"/> to receive the center of the bounding box.
     /// </param>
     /// <returns>The vector specified with the vec3 argument.</returns>
     public Vector3 GetCenter( Vector3 vec3 )
@@ -245,7 +245,7 @@ public class BoundingBox
     /// <summary>
     /// </summary>
     /// <param name="vec3">
-    ///     The <see cref="Vector3" /> to receive the dimensions of this bounding box on all three axis.
+    /// The <see cref="Vector3"/> to receive the dimensions of this bounding box on all three axis.
     /// </param>
     /// <returns> The vector specified with the vec3 argument</returns>
     public Vector3 GetDimensions( in Vector3 vec3 )
@@ -254,9 +254,9 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Gets the minimum values into a <see cref="Vector3" />.
+    /// Gets the minimum values into a <see cref="Vector3"/>.
     /// </summary>
-    /// <param name="vec3"> The <see cref="Vector3" /> to receive the minimum values.</param>
+    /// <param name="vec3"> The <see cref="Vector3"/> to receive the minimum values.</param>
     /// <returns> The vector specified with the out argument</returns>
     public Vector3 GetMin( in Vector3 vec3 )
     {
@@ -264,9 +264,9 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Gets the maximum values into a <see cref="Vector3" />.
+    /// Gets the maximum values into a <see cref="Vector3"/>.
     /// </summary>
-    /// <param name="vec3">The <see cref="Vector3" /> to receive the maximum values.</param>
+    /// <param name="vec3">The <see cref="Vector3"/> to receive the maximum values.</param>
     /// <returns> The vector specified with the out argument</returns>
     public Vector3 GetMax( in Vector3 vec3 )
     {
@@ -274,7 +274,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Sets the minimum and maximum vector to positive and negative infinity.
+    /// Sets the minimum and maximum vector to positive and negative infinity.
     /// </summary>
     /// <returns> This bounding box for chaining.  </returns>
     public BoundingBox ToInfinity()
@@ -289,7 +289,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Extends the bounding box to incorporate the given <see cref="Vector3" />.
+    /// Extends the bounding box to incorporate the given <see cref="Vector3"/>.
     /// </summary>
     /// <param name="point"> The vector</param>
     /// <returns> This bounding box for chaining.</returns>
@@ -304,7 +304,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Sets the minimum and maximum vector to zeros.
+    /// Sets the minimum and maximum vector to zeros.
     /// </summary>
     /// <returns>This bounding box for chaining.</returns>
     public BoundingBox Clear()
@@ -313,7 +313,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Extends this bounding box by the given bounding box.
+    /// Extends this bounding box by the given bounding box.
     /// </summary>
     /// <param name="aBounds">The bounding box</param>
     /// <returns>This bounding box for chaining.</returns>
@@ -328,7 +328,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Extends this bounding box by the given sphere.
+    /// Extends this bounding box by the given sphere.
     /// </summary>
     /// <param name="center">Sphere center</param>
     /// <param name="radius">Sphere radius</param>
@@ -344,12 +344,12 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Extends this bounding box by the given transformed bounding box.
+    /// Extends this bounding box by the given transformed bounding box.
     /// </summary>
     /// <param name="bounds">The bounding box</param>
     /// <param name="transform">
-    ///     The transformation matrix to apply to bounds, before using it
-    ///     to extend this bounding box.
+    /// The transformation matrix to apply to bounds, before using it
+    /// to extend this bounding box.
     /// </param>
     /// <returns>This bounding box for chaining.</returns>
     public BoundingBox Extend( BoundingBox bounds, Matrix4 transform )
@@ -367,9 +367,9 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Multiplies the bounding box by the given matrix. This is achieved by
-    ///     multiplying the 8 corner points and then calculating the minimum and
-    ///     maximum vectors from the transformed points.
+    /// Multiplies the bounding box by the given matrix. This is achieved by
+    /// multiplying the 8 corner points and then calculating the minimum and
+    /// maximum vectors from the transformed points.
     /// </summary>
     /// <param name="transform">The matrix</param>
     /// <returns>This bounding box for chaining.</returns>
@@ -397,7 +397,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Returns whether the given bounding box is contained in this bounding box.
+    /// Returns whether the given bounding box is contained in this bounding box.
     /// </summary>
     /// <param name="b">The bounding box</param>
     /// <returns>Whether the given bounding box is contained</returns>
@@ -413,8 +413,8 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Returns whether the given bounding box is intersecting this
-    ///     bounding box (at least one point in).
+    /// Returns whether the given bounding box is intersecting this
+    /// bounding box (at least one point in).
     /// </summary>
     /// <param name="b">The bounding box</param>
     /// <returns>Whether the given bounding box is intersected</returns>
@@ -440,7 +440,7 @@ public class BoundingBox
     }
 
     /// <summary>
-    ///     Returns whether the given vector is contained in this bounding box.
+    /// Returns whether the given vector is contained in this bounding box.
     /// </summary>
     /// <param name="v"> The vector </param>
     /// <returns> Whether the vector is contained or not.  </returns>
@@ -454,14 +454,14 @@ public class BoundingBox
             && ( Max.Z >= v.Z );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override string ToString()
     {
         return $"[ {Min} | {Max} ]";
     }
 
     /// <summary>
-    ///     Extends the bounding box by the given vector.
+    /// Extends the bounding box by the given vector.
     /// </summary>
     /// <param name="x">The x-coordinate</param>
     /// <param name="y">The y-coordinate</param>

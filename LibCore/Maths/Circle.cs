@@ -26,26 +26,22 @@
 namespace LughSharp.LibCore.Maths;
 
 /// <summary>
-///     A convenient 2D Circle class
+/// A convenient 2D Circle class
 /// </summary>
 [PublicAPI]
 public class Circle : IShape2D
 {
-    public float X      { get; set; }
-    public float Y      { get; set; }
-    public float Radius { get; set; }
-
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Constructs a new circle with all values set to zero
+    /// Constructs a new circle with all values set to zero
     /// </summary>
     public Circle() : this( 0, 0, 0 )
     {
     }
 
     /// <summary>
-    ///     Constructs a new circle with the given X and Y coordinates and the given radius.
+    /// Constructs a new circle with the given X and Y coordinates and the given radius.
     /// </summary>
     /// <param name="x"> X coordinate </param>
     /// <param name="y"> Y coordinate </param>
@@ -58,10 +54,10 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Constructs a new circle using a given <see cref="Vector2" /> that contains
-    ///     the desired X and Y coordinates, and a given radius.
+    /// Constructs a new circle using a given <see cref="Vector2"/> that contains
+    /// the desired X and Y coordinates, and a given radius.
     /// </summary>
-    /// <param name="position"> The position <see cref="Vector2" />. </param>
+    /// <param name="position"> The position <see cref="Vector2"/>. </param>
     /// <param name="radius"> The radius  </param>
     public Circle( Vector2 position, float radius )
     {
@@ -71,7 +67,7 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Copy constructor
+    /// Copy constructor
     /// </summary>
     /// <param name="circle"> The circle to construct a copy of. </param>
     public Circle( Circle circle )
@@ -82,7 +78,7 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Creates a new <see cref="Circle" /> in terms of its center and a point on its edge.
+    /// Creates a new <see cref="Circle"/> in terms of its center and a point on its edge.
     /// </summary>
     /// <param name="center"> The center of the new circle </param>
     /// <param name="edge"> Any point on the edge of the given circle </param>
@@ -93,8 +89,12 @@ public class Circle : IShape2D
         Radius = Vector2.Len( center.X - edge.X, center.Y - edge.Y );
     }
 
+    public float X      { get; set; }
+    public float Y      { get; set; }
+    public float Radius { get; set; }
+
     /// <summary>
-    ///     Checks whether or not this circle contains a given point.
+    /// Checks whether or not this circle contains a given point.
     /// </summary>
     /// <param name="x"> X coordinate </param>
     /// <param name="y"> Y coordinate </param>
@@ -108,10 +108,10 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Checks whether or not this circle contains a given point.
+    /// Checks whether or not this circle contains a given point.
     /// </summary>
     /// <param name="point">
-    ///     The <see cref="Vector2" /> that contains the point coordinates.
+    /// The <see cref="Vector2"/> that contains the point coordinates.
     /// </param>
     /// <returns> true if this circle contains this point; false otherwise.  </returns>
     public bool Contains( Vector2 point )
@@ -123,7 +123,7 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Sets a new location and radius for this circle.
+    /// Sets a new location and radius for this circle.
     /// </summary>
     /// <param name="x"> X coordinate </param>
     /// <param name="y"> Y coordinate </param>
@@ -136,9 +136,9 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Sets a new location and radius for this circle.
+    /// Sets a new location and radius for this circle.
     /// </summary>
-    /// <param name="position"> Position <see cref="Vector2" /> for this circle. </param>
+    /// <param name="position"> Position <see cref="Vector2"/> for this circle. </param>
     /// <param name="radius"> Circle radius  </param>
     public void Set( Vector2 position, float radius )
     {
@@ -148,7 +148,7 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Sets a new location and radius for this circle, based upon another circle.
+    /// Sets a new location and radius for this circle, based upon another circle.
     /// </summary>
     /// <param name="circle"> The circle to copy the position and radius of.  </param>
     public void Set( Circle circle )
@@ -159,7 +159,7 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Sets this <see cref="Circle" />'s values in terms of its center and a point on its edge.
+    /// Sets this <see cref="Circle"/>'s values in terms of its center and a point on its edge.
     /// </summary>
     /// <param name="center"> The new center of the circle </param>
     /// <param name="edge"> Any point on the edge of the given circle  </param>
@@ -171,7 +171,7 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Sets the x and y-coordinates of circle center from vector
+    /// Sets the x and y-coordinates of circle center from vector
     /// </summary>
     /// <param name="position"> The position vector  </param>
     public void SetPosition( Vector2 position )
@@ -181,7 +181,7 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Sets the x and y-coordinates of circle center
+    /// Sets the x and y-coordinates of circle center
     /// </summary>
     /// <param name="x"> The x-coordinate </param>
     /// <param name="y"> The y-coordinate  </param>
@@ -192,9 +192,9 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Returns TRUE if this circle contains the supplied reference circle.
+    /// Returns TRUE if this circle contains the supplied reference circle.
     /// </summary>
-    /// <param name="c"> the other <see cref="Circle" /> </param>
+    /// <param name="c"> the other <see cref="Circle"/> </param>
     public bool Contains( Circle c )
     {
         var radiusDiff = Radius - c.Radius;
@@ -213,9 +213,9 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Returns TRUE if this circle overlaps the supplied reference circle.
+    /// Returns TRUE if this circle overlaps the supplied reference circle.
     /// </summary>
-    /// <param name="c"> the other <see cref="Circle" /> </param>
+    /// <param name="c"> the other <see cref="Circle"/> </param>
     public bool Overlaps( Circle c )
     {
         var dx        = X - c.X;
@@ -227,8 +227,8 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Returns a <see cref="string" /> representation of this
-    ///     <see cref="Circle" /> of the form <tt>x,y,radius</tt>.
+    /// Returns a <see cref="string"/> representation of this
+    /// <see cref="Circle"/> of the form <tt>x,y,radius</tt>.
     /// </summary>
     public override string ToString()
     {
@@ -236,8 +236,8 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Returns the circumference of this circle:-
-    ///     (as 2 * <see cref="MathUtils.PI2" />) * <code>radius</code>
+    /// Returns the circumference of this circle:-
+    /// (as 2 * <see cref="MathUtils.PI2"/>) * <code>radius</code>
     /// </summary>
     public float Circumference()
     {
@@ -245,8 +245,8 @@ public class Circle : IShape2D
     }
 
     /// <summary>
-    ///     Returns the area of this circle:-
-    ///     (as <see cref="MathUtils.PI" /> * radius * radius).
+    /// Returns the area of this circle:-
+    /// (as <see cref="MathUtils.PI"/> * radius * radius).
     /// </summary>
     public float Area()
     {

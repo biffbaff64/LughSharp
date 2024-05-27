@@ -38,14 +38,15 @@ public interface ILoaderParameters
 // ----------------------------------------------------------------------------
 
 /// <summary>
-///     Callback interface that will be invoked when the
-///     <see cref="AssetManager" /> loaded an asset.
+/// Callback interface that will be invoked when the
+/// <see cref="AssetManager"/> loaded an asset.
 /// </summary>
 [PublicAPI]
 public interface ILoadedCallback
 {
     void FinishedLoading( AssetManager assetManager, string fileName, Type type );
 }
+
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
@@ -61,7 +62,7 @@ public class AssetLoaderParameters : ILoaderParameters
 // ----------------------------------------------------------------------------
 
 /// <summary>
-///     Default Loaded callback for when there is no other available.
+/// Default Loaded callback for when there is no other available.
 /// </summary>
 [PublicAPI]
 public class DefaultLoadedCallback : ILoadedCallback

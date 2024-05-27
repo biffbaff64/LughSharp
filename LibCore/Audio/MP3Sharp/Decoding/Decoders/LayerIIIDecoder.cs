@@ -29,7 +29,7 @@ using LughSharp.LibCore.Audio.MP3Sharp.Support;
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 
 /// <summary>
-///     Implements decoding of MPEG Audio Layer 3 frames.
+/// Implements decoding of MPEG Audio Layer 3 frames.
 /// </summary>
 [PublicAPI]
 public sealed class LayerIIIDecoder : IFrameDecoder
@@ -221,7 +221,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    ///     TODO: these ctor arguments should be moved to the decodeFrame() method.
+    /// TODO: these ctor arguments should be moved to the decodeFrame() method.
     /// </summary>
     public LayerIIIDecoder( Bitstream stream, Header header, SynthesisFilter? filtera, SynthesisFilter? filterb, AudioBase? buffer, int whichCh )
     {
@@ -461,7 +461,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    ///     Notify decoder that a seek is being made.
+    /// Notify decoder that a seek is being made.
     /// </summary>
     public void SeekNotify()
     {
@@ -627,10 +627,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    ///     Reads the side info from the stream, assuming the entire.
-    ///     frame has been read already.
-    ///     Mono   : 136 bits (= 17 bytes)
-    ///     Stereo : 256 bits (= 32 bytes)
+    /// Reads the side info from the stream, assuming the entire.
+    /// frame has been read already.
+    /// Mono   : 136 bits (= 17 bytes)
+    /// Stereo : 256 bits (= 32 bytes)
     /// </summary>
     private bool ReadSideInfo()
     {
@@ -2058,7 +2058,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     }
 
     /// <summary>
-    ///     Fast Inverse Modified discrete cosine transform.
+    /// Fast Inverse Modified discrete cosine transform.
     /// </summary>
     public static void InverseMdct( float[] inValues, float[] outValues, int blockType )
     {

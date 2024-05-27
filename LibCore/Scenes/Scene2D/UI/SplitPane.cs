@@ -78,13 +78,6 @@ public class SplitPane : WidgetGroup
         Initialise();
     }
 
-    private void Initialise()
-    {
-        SetSize( PrefWidth, PrefHeight );
-
-        AddListener( new SplitPaneInputListener( this ) );
-    }
-
     public override float PrefWidth
     {
         get
@@ -179,6 +172,13 @@ public class SplitPane : WidgetGroup
             _style = value;
             InvalidateHierarchy();
         }
+    }
+
+    private void Initialise()
+    {
+        SetSize( PrefWidth, PrefHeight );
+
+        AddListener( new SplitPaneInputListener( this ) );
     }
 
     public void Layout()
@@ -336,7 +336,7 @@ public class SplitPane : WidgetGroup
     /// <summary>
     /// </summary>
     /// <param name="splitAmount">
-    ///     The split amount between the min and max amount. This parameter is clamped during layout.
+    /// The split amount between the min and max amount. This parameter is clamped during layout.
     /// </param>
     public void SetSplitAmount( float splitAmount )
     {
@@ -350,11 +350,11 @@ public class SplitPane : WidgetGroup
     }
 
     /// <summary>
-    ///     Called during layout to clamp the <see cref="_splitAmount" /> within the set limits.
-    ///     By default it imposes the limits of the <see cref="GetMinSplitAmount()" />",
-    ///     <see cref="GetMaxSplitAmount()" />", and min sizes of the children.
-    ///     This method is internally called in response to layout, so it should not call
-    ///     <see cref="WidgetGroup.Invalidate()" />.
+    /// Called during layout to clamp the <see cref="_splitAmount"/> within the set limits.
+    /// By default it imposes the limits of the <see cref="GetMinSplitAmount()"/>",
+    /// <see cref="GetMaxSplitAmount()"/>", and min sizes of the children.
+    /// This method is internally called in response to layout, so it should not call
+    /// <see cref="WidgetGroup.Invalidate()"/>.
     /// </summary>
     protected void ClampSplitAmount()
     {
@@ -435,7 +435,7 @@ public class SplitPane : WidgetGroup
     {
         if ( _firstWidget != null )
         {
-            base.RemoveActor( _firstWidget, true );
+            base.RemoveActor( _firstWidget );
         }
 
         _firstWidget = widget;
@@ -452,7 +452,7 @@ public class SplitPane : WidgetGroup
     {
         if ( _secondWidget != null )
         {
-            base.RemoveActor( _secondWidget, true );
+            base.RemoveActor( _secondWidget );
         }
 
         _secondWidget = widget;

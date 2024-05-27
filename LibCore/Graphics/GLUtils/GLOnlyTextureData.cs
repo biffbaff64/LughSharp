@@ -28,25 +28,16 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
-///     A <see cref="ITextureData" /> implementation which should be used to create
-///     GL only textures.
-///     This TextureData fits perfectly for <see cref="FrameBuffer"/>s.
-///     The data is not managed.
+/// A <see cref="ITextureData"/> implementation which should be used to create
+/// GL only textures.
+/// This TextureData fits perfectly for <see cref="FrameBuffer"/>s.
+/// The data is not managed.
 /// </summary>
 [PublicAPI]
 public class GLOnlyTextureData : ITextureData
 {
-    public int  Width          { get; set; } = 0;
-    public int  Height         { get; set; } = 0;
-    public bool IsPrepared     { get; set; } = false;
-    public int  MipLevel       { get; set; } = 0;
-    public int  InternalFormat { get; set; }
-    public int  Format         { get; set; }
-    public int  Type           { get; set; }
-    public bool UseMipMaps     { get; set; }
-
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// See <a href="https://www.khronos.org/opengles/sdk/docs/man/xhtml/glTexImage2D.xml">glTexImage2D</a>
     /// </summary>
@@ -54,20 +45,20 @@ public class GLOnlyTextureData : ITextureData
     /// <param name="height"></param>
     /// <param name="mipMapLevel"></param>
     /// <param name="internalFormat">
-    ///     Specifies the internal format of the texture. Must be one of the following symbolic constants:
-    ///     <see cref="IGL.GL_ALPHA"/>, <see cref="IGL.GL_LUMINANCE"/>, <see cref="IGL.GL_LUMINANCE_ALPHA"/>,
-    ///     <see cref="IGL.GL_RGB"/>, <see cref="IGL.GL_RGBA"/>.
+    /// Specifies the internal format of the texture. Must be one of the following symbolic constants:
+    /// <see cref="IGL.GL_ALPHA"/>, <see cref="IGL.GL_LUMINANCE"/>, <see cref="IGL.GL_LUMINANCE_ALPHA"/>,
+    /// <see cref="IGL.GL_RGB"/>, <see cref="IGL.GL_RGBA"/>.
     /// </param>
     /// <param name="format">
-    ///     Specifies the format of the texel data. Must match internalformat.
-    ///     The following symbolic values are accepted:
-    ///     <see cref="IGL.GL_ALPHA"/>, <see cref="IGL.GL_RGB"/>, <see cref="IGL.GL_RGBA"/>,
-    ///     <see cref="IGL.GL_LUMINANCE"/>, and <see cref="IGL.GL_LUMINANCE_ALPHA"/>.
+    /// Specifies the format of the texel data. Must match internalformat.
+    /// The following symbolic values are accepted:
+    /// <see cref="IGL.GL_ALPHA"/>, <see cref="IGL.GL_RGB"/>, <see cref="IGL.GL_RGBA"/>,
+    /// <see cref="IGL.GL_LUMINANCE"/>, and <see cref="IGL.GL_LUMINANCE_ALPHA"/>.
     /// </param>
     /// <param name="type">
-    ///     Specifies the data type of the texel data. The following symbolic values are accepted:
-    ///     <see cref="IGL.GL_UNSIGNED_BYTE"/>, <see cref="IGL.GL_UNSIGNED_SHORT_5_6_5"/>,
-    ///     <see cref="IGL.GL_UNSIGNED_SHORT_4_4_4_4"/>, and <see cref="IGL.GL_UNSIGNED_SHORT_5_5_5_1"/>.
+    /// Specifies the data type of the texel data. The following symbolic values are accepted:
+    /// <see cref="IGL.GL_UNSIGNED_BYTE"/>, <see cref="IGL.GL_UNSIGNED_SHORT_5_6_5"/>,
+    /// <see cref="IGL.GL_UNSIGNED_SHORT_4_4_4_4"/>, and <see cref="IGL.GL_UNSIGNED_SHORT_5_5_5_1"/>.
     /// </param>
     public GLOnlyTextureData( int width,
                               int height,
@@ -83,6 +74,15 @@ public class GLOnlyTextureData : ITextureData
         Format         = format;
         Type           = type;
     }
+
+    public int  MipLevel       { get; set; } = 0;
+    public int  InternalFormat { get; set; }
+    public int  Format         { get; set; }
+    public int  Type           { get; set; }
+    public int  Width          { get; set; } = 0;
+    public int  Height         { get; set; } = 0;
+    public bool IsPrepared     { get; set; } = false;
+    public bool UseMipMaps     { get; set; }
 
     public void Prepare()
     {
@@ -100,23 +100,29 @@ public class GLOnlyTextureData : ITextureData
     }
 
     /// <summary>
-    ///     Returns the <see cref="Pixmap.Format"/> for this GLOnlyTextureData object.
+    /// Returns the <see cref="Pixmap.Format"/> for this GLOnlyTextureData object.
     /// </summary>
-    public Pixmap.Format GetFormat() => Pixmap.Format.RGBA8888;
+    public Pixmap.Format GetFormat()
+    {
+        return Pixmap.Format.RGBA8888;
+    }
 
     /// <summary>
-    ///     GLOnlyTextureData objects are not Managed.
+    /// GLOnlyTextureData objects are not Managed.
     /// </summary>
-    public bool IsManaged() => false;
+    public bool IsManaged()
+    {
+        return false;
+    }
 
     /// <summary>
-    ///     Returns the <see cref="ITextureData.TextureType"/> for this Texture Data.
+    /// Returns the <see cref="ITextureData.TextureType"/> for this Texture Data.
     /// </summary>
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     public Pixmap ConsumePixmap()
     {
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );

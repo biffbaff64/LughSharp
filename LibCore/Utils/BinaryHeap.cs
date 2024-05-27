@@ -29,9 +29,9 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>
-///     Node record holding a value and its index.
-///     To change the contents of <see cref="Value" /> use <see cref="BinaryHeap{T}.Add(T, float)" />
-///     if the node is NOT in the heap, otherwise use <see cref="BinaryHeap{T}.SetValue(T, float)" />.
+/// Node record holding a value and its index.
+/// To change the contents of <see cref="Value"/> use <see cref="BinaryHeap{T}.Add(T, float)"/>
+/// if the node is NOT in the heap, otherwise use <see cref="BinaryHeap{T}.SetValue(T, float)"/>.
 /// </summary>
 [PublicAPI]
 public record BinaryHeapNode
@@ -41,33 +41,15 @@ public record BinaryHeapNode
 }
 
 /// <summary>
-///     A binary heap that stores nodes which each have a float value and are
-///     sorted either lowest first or highest first.
-///     <para>
-///         The <see cref="BinaryHeapNode" /> class can be extended to store additional information.
-///     </para>
+/// A binary heap that stores nodes which each have a float value and are
+/// sorted either lowest first or highest first.
+/// <para>
+/// The <see cref="BinaryHeapNode"/> class can be extended to store additional information.
+/// </para>
 /// </summary>
 [PublicAPI]
 public class BinaryHeap< T > where T : BinaryHeapNode
 {
-    // ------------------------------------------------------------------------
-
-    #region properties
-
-    public int Size { get; set; }
-
-    /// <summary>
-    ///     Returns true if the heap has one or more items.
-    /// </summary>
-    public virtual bool NotEmpty => Size > 0;
-
-    /// <summary>
-    ///     Returns true if the heap is empty.
-    /// </summary>
-    public virtual bool IsEmpty => Size == 0;
-
-    #endregion properties
-
     // ------------------------------------------------------------------------
 
     private const int DEFAULT_HEAP_CAPACITY = 16;
@@ -80,7 +62,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Creates a new BinaryHeap with the stated capacity.
+    /// Creates a new BinaryHeap with the stated capacity.
     /// </summary>
     /// <param name="capacity"> The capacity to use. Deafult is 16. </param>
     /// <param name="isMaxHeap"></param>
@@ -91,8 +73,8 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     }
 
     /// <summary>
-    ///     Adds the node to the heap using its current value.
-    ///     The node should not already be in the heap.
+    /// Adds the node to the heap using its current value.
+    /// The node should not already be in the heap.
     /// </summary>
     /// <returns>The specified node.</returns>
     public virtual T Add( T node )
@@ -120,8 +102,8 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     }
 
     /// <summary>
-    ///     Sets the node's value and adds it to the heap.
-    ///     The node should not already be in the heap.
+    /// Sets the node's value and adds it to the heap.
+    /// The node should not already be in the heap.
     /// </summary>
     /// <returns>The specified node.</returns>
     public virtual T Add( T node, float value )
@@ -132,11 +114,11 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     }
 
     /// <summary>
-    ///     Returns true if the heap contains the specified node.
+    /// Returns true if the heap contains the specified node.
     /// </summary>
-    /// <param name="node"> The <see cref="BinaryHeapNode" /> to look for. </param>
+    /// <param name="node"> The <see cref="BinaryHeapNode"/> to look for. </param>
     /// <param name="identity">
-    ///     If true, == comparison will be used. If false, .Equals() comparison will be used.
+    /// If true, == comparison will be used. If false, .Equals() comparison will be used.
     /// </param>
     public bool Contains( T node, bool identity )
     {
@@ -160,8 +142,8 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     }
 
     /// <summary>
-    ///     Returns the first item in the heap. This is the item with the lowest
-    ///     value (or highest value if this heap is configured as a max heap).
+    /// Returns the first item in the heap. This is the item with the lowest
+    /// value (or highest value if this heap is configured as a max heap).
     /// </summary>
     public virtual T Peek()
     {
@@ -176,9 +158,9 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     }
 
     /// <summary>
-    ///     Removes the first item in the heap and returns it. This is
-    ///     the item with the lowest value (or highest value if this heap
-    ///     is configured as a max heap).
+    /// Removes the first item in the heap and returns it. This is
+    /// the item with the lowest value (or highest value if this heap
+    /// is configured as a max heap).
     /// </summary>
     public virtual T Pop()
     {
@@ -202,7 +184,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     }
 
     /// <summary>
-    ///     Removes the specified node from the heap.
+    /// Removes the specified node from the heap.
     /// </summary>
     /// <returns> The specified node. </returns>
     /// <exception cref="GdxRuntimeException"> If the heap is null. </exception>
@@ -234,11 +216,11 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     }
 
     /// <summary>
-    ///     Reset all elements in the heap to null.
-    ///     <para>
-    ///         If the heap does not exist, it will be created first with
-    ///         capacity set to <see cref="DEFAULT_HEAP_CAPACITY" />
-    ///     </para>
+    /// Reset all elements in the heap to null.
+    /// <para>
+    /// If the heap does not exist, it will be created first with
+    /// capacity set to <see cref="DEFAULT_HEAP_CAPACITY"/>
+    /// </para>
     /// </summary>
     public void Clear()
     {
@@ -250,7 +232,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     }
 
     /// <summary>
-    ///     Changes the value of the node, which should already be in the heap.
+    /// Changes the value of the node, which should already be in the heap.
     /// </summary>
     public void SetValue( T node, float value )
     {
@@ -269,7 +251,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     }
 
     /// <summary>
-    ///     Moves the element at position 'index' up
+    /// Moves the element at position 'index' up
     /// </summary>
     /// <param name="index"></param>
     private void Up( int index )
@@ -301,7 +283,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
     }
 
     /// <summary>
-    ///     Moves the element at position 'index' down
+    /// Moves the element at position 'index' down
     /// </summary>
     /// <param name="index"></param>
     private void Down( int index )
@@ -376,7 +358,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
         _nodes[ index ] = node;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override bool Equals( object? obj )
     {
         if ( obj is not BinaryHeap< T > other )
@@ -403,7 +385,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
         return true;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         var hash = 37 + GetType().GetHashCode();
@@ -413,7 +395,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
         return hash;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override string ToString()
     {
         if ( ( Size == 0 ) || ( _nodes == null ) )
@@ -437,4 +419,22 @@ public class BinaryHeap< T > where T : BinaryHeapNode
 
         return buffer.ToString();
     }
+
+    // ------------------------------------------------------------------------
+
+    #region properties
+
+    public int Size { get; set; }
+
+    /// <summary>
+    /// Returns true if the heap has one or more items.
+    /// </summary>
+    public virtual bool NotEmpty => Size > 0;
+
+    /// <summary>
+    /// Returns true if the heap is empty.
+    /// </summary>
+    public virtual bool IsEmpty => Size == 0;
+
+    #endregion properties
 }

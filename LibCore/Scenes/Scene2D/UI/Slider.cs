@@ -29,17 +29,17 @@ using LughSharp.LibCore.Scenes.Scene2D.Utils;
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>
-///     A slider is a horizontal indicator that allows a user to set a value. The slider has
-///     a range (min, max) and a stepping between each value the slider represents.
-///     <para>
-///         <see cref="ChangeListener.ChangeEvent" /> is fired when the
-///         slider knob is moved. Canceling the event will move the knob to where it was previously.
-///     </para>
-///     <para>
-///         For a horizontal progress bar, its preferred height is determined by the larger of the
-///         knob and background, and the preferred width is 140, a relatively arbitrary size. These
-///         parameters are reversed for a vertical progress bar.
-///     </para>
+/// A slider is a horizontal indicator that allows a user to set a value. The slider has
+/// a range (min, max) and a stepping between each value the slider represents.
+/// <para>
+/// <see cref="ChangeListener.ChangeEvent"/> is fired when the
+/// slider knob is moved. Canceling the event will move the knob to where it was previously.
+/// </para>
+/// <para>
+/// For a horizontal progress bar, its preferred height is determined by the larger of the
+/// knob and background, and the preferred width is 140, a relatively arbitrary size. These
+/// parameters are reversed for a vertical progress bar.
+/// </para>
 /// </summary>
 [PublicAPI]
 public class Slider : ProgressBar
@@ -61,9 +61,9 @@ public class Slider : ProgressBar
     /// Creates a new slider. If horizontal, its width is determined by the prefWidth
     /// parameter, its height is determined by the maximum of the height of either the
     /// slider
-    /// <see cref="NinePatch" />
+    /// <see cref="NinePatch"/>
     /// or slider handle
-    /// <see cref="TextureRegion" />
+    /// <see cref="TextureRegion"/>
     /// .
     /// The min and max values determine the range the values of this slider can take on,
     /// the stepSize parameter specifies the distance between individual values. E.g. min
@@ -73,7 +73,7 @@ public class Slider : ProgressBar
     /// <param name="max"> the maximum value </param>
     /// <param name="stepSize"> the step size between values </param>
     /// <param name="vertical"></param>
-    /// <param name="style"> the <see cref="SliderStyle" /> </param>
+    /// <param name="style"> the <see cref="SliderStyle"/> </param>
     public Slider( float min, float max, float stepSize, bool vertical, SliderStyle style )
         : base( min, max, stepSize, vertical, style )
     {
@@ -83,14 +83,14 @@ public class Slider : ProgressBar
     public bool MouseOver { get; set; }
 
     /// <summary>
-    ///     Sets the mouse button, which can trigger a change of the slider.
-    ///     Is set to -1, so every button, by default.
+    /// Sets the mouse button, which can trigger a change of the slider.
+    /// Is set to -1, so every button, by default.
     /// </summary>
     public int MouseButton { get; set; } = -1;
 
     /// <summary>
-    ///     Sets the inverse interpolation to use for display. This should perform the
-    ///     inverse of setting <see cref="ProgressBar.VisualInterpolation" />".
+    /// Sets the inverse interpolation to use for display. This should perform the
+    /// inverse of setting <see cref="ProgressBar.VisualInterpolation"/>".
     /// </summary>
     public Interpolator VisualInterpolationInverse { get; set; } = Interpolation.Linear;
 
@@ -265,8 +265,8 @@ public class Slider : ProgressBar
     }
 
     /// <summary>
-    ///     Will make this progress bar snap to the specified values, if the
-    ///     knob is within the threshold.
+    /// Will make this progress bar snap to the specified values, if the
+    /// knob is within the threshold.
     /// </summary>
     /// <param name="values"> May be null. </param>
     /// <param name="threshld"></param>
@@ -277,7 +277,7 @@ public class Slider : ProgressBar
     }
 
     /// <summary>
-    ///     Returns true if the slider is being dragged.
+    /// Returns true if the slider is being dragged.
     /// </summary>
     public bool IsDragging()
     {
@@ -285,7 +285,7 @@ public class Slider : ProgressBar
     }
 
     /// <summary>
-    ///     Sets the value using the specified visual percent.
+    /// Sets the value using the specified visual percent.
     /// </summary>
     public void SetVisualPercent( float percent )
     {
@@ -298,15 +298,6 @@ public class Slider : ProgressBar
     [PublicAPI]
     public class SliderStyle : ProgressBarStyle
     {
-        public IDrawable? BackgroundOver { get; set; }
-        public IDrawable? BackgroundDown { get; set; }
-        public IDrawable? KnobBeforeOver { get; set; }
-        public IDrawable? KnobOver       { get; set; }
-        public IDrawable? KnobAfterOver  { get; set; }
-        public IDrawable? KnobBeforeDown { get; set; }
-        public IDrawable? KnobDown       { get; set; }
-        public IDrawable? KnobAfterDown  { get; set; }
-
         public SliderStyle()
         {
         }
@@ -330,6 +321,15 @@ public class Slider : ProgressBar
             KnobAfterOver = style.KnobAfterOver;
             KnobAfterDown = style.KnobAfterDown;
         }
+
+        public IDrawable? BackgroundOver { get; set; }
+        public IDrawable? BackgroundDown { get; set; }
+        public IDrawable? KnobBeforeOver { get; set; }
+        public IDrawable? KnobOver       { get; set; }
+        public IDrawable? KnobAfterOver  { get; set; }
+        public IDrawable? KnobBeforeDown { get; set; }
+        public IDrawable? KnobDown       { get; set; }
+        public IDrawable? KnobAfterDown  { get; set; }
     }
 
     // ------------------------------------------------------------------------

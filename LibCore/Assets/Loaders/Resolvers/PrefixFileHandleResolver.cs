@@ -26,24 +26,24 @@
 namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 
 /// <summary>
-///     A <see cref="IFileHandleResolver" /> that adds a prefix to the filename before
-///     passing it to the base resolver. Can be used e.g. to use a given subfolder from
-///     the base resolver. The prefix is added as is, you have to include any trailing
-///     '/' character if needed.
+/// A <see cref="IFileHandleResolver"/> that adds a prefix to the filename before
+/// passing it to the base resolver. Can be used e.g. to use a given subfolder from
+/// the base resolver. The prefix is added as is, you have to include any trailing
+/// '/' character if needed.
 /// </summary>
 [PublicAPI]
 public class PrefixFileHandleResolver : IFileHandleResolver
 {
-    public string              Prefix       { get; }
-    public IFileHandleResolver BaseResolver { get; }
-
     public PrefixFileHandleResolver( IFileHandleResolver baseResolver, string prefix )
     {
         BaseResolver = baseResolver;
         Prefix       = prefix;
     }
 
-    /// <inheritdoc />
+    public string              Prefix       { get; }
+    public IFileHandleResolver BaseResolver { get; }
+
+    /// <inheritdoc/>
     public FileInfo Resolve( string fileName )
     {
         return BaseResolver.Resolve( Prefix + fileName );

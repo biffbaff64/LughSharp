@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Maps;
 
 /// <summary>
-///     Generic Map entity with basic attributes like name, opacity, color 
+/// Generic Map entity with basic attributes like name, opacity, color
 /// </summary>
 [PublicAPI]
 public class MapObject

@@ -28,8 +28,8 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Utils.Buffers;
 
 /// <summary>
-///     Class with static helper methods to increase the speed of array/direct
-///     buffer and direct buffer/direct buffer transfers
+/// Class with static helper methods to increase the speed of array/direct
+/// buffer and direct buffer/direct buffer transfers
 /// </summary>
 [PublicAPI]
 public static class BufferUtils
@@ -42,102 +42,97 @@ public static class BufferUtils
     // ------------------------------------------------------------------------
 
     /// <summary>
-    ///     Creates a new <see cref="FloatBuffer" /> with the specified capacity.
-    ///     All elements will be initialised to zero.
+    /// Creates a new <see cref="FloatBuffer"/> with the specified capacity.
+    /// All elements will be initialised to zero.
     /// </summary>
     public static FloatBuffer NewFloatBuffer( int numFloats )
     {
-        var buffer = ByteBuffer.AllocateDirect( numFloats * 4 );
+        var buffer = ByteBuffer.Allocate( numFloats * 4 );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsFloatBuffer();
     }
 
     /// <summary>
-    ///     Creates a new <see cref="DoubleBuffer" /> with the specified capacity.
-    ///     All elements will be initialised to zero.
+    /// Creates a new <see cref="DoubleBuffer"/> with the specified capacity.
+    /// All elements will be initialised to zero.
     /// </summary>
     public static DoubleBuffer NewDoubleBuffer( int numFloats )
     {
-        var buffer = ByteBuffer.AllocateDirect( numFloats * 4 );
+        var buffer = ByteBuffer.Allocate( numFloats * 4 );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsDoubleBuffer();
     }
 
     /// <summary>
-    ///     Creates a new <see cref="ByteBuffer" /> with the specified capacity.
-    ///     All elements will be initialised to zero.
+    /// Creates a new <see cref="ByteBuffer"/> with the specified capacity.
+    /// All elements will be initialised to zero.
     /// </summary>
     public static ByteBuffer NewByteBuffer( int numBytes )
     {
-        var buffer = ByteBuffer.AllocateDirect( numBytes );
+        var buffer = ByteBuffer.Allocate( numBytes );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer;
     }
 
     /// <summary>
-    ///     Creates a new <see cref="ShortBuffer" /> with the specified capacity.
-    ///     All elements will be initialised to zero.
+    /// Creates a new <see cref="ShortBuffer"/> with the specified capacity.
+    /// All elements will be initialised to zero.
     /// </summary>
     public static ShortBuffer NewShortBuffer( int numBytes )
     {
-        var buffer = ByteBuffer.AllocateDirect( numBytes );
+        var buffer = ByteBuffer.Allocate( numBytes );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsShortBuffer();
     }
 
     /// <summary>
-    ///     Creates a new <see cref="CharBuffer" /> with the specified capacity.
-    ///     All elements will be initialised to zero.
+    /// Creates a new <see cref="CharBuffer"/> with the specified capacity.
+    /// All elements will be initialised to zero.
     /// </summary>
     public static CharBuffer NewCharBuffer( int numBytes )
     {
-        var buffer = ByteBuffer.AllocateDirect( numBytes );
+        var buffer = ByteBuffer.Allocate( numBytes );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsCharBuffer();
     }
 
     /// <summary>
-    ///     Creates a new <see cref="IntBuffer" /> with the specified capacity.
-    ///     All elements will be initialised to zero.
+    /// Creates a new <see cref="IntBuffer"/> with the specified capacity.
+    /// All elements will be initialised to zero.
     /// </summary>
     public static IntBuffer NewIntBuffer( int numBytes )
     {
-        var buffer = ByteBuffer.AllocateDirect( numBytes );
+        var buffer = ByteBuffer.Allocate( numBytes );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsIntBuffer();
     }
 
     /// <summary>
-    ///     Creates a new <see cref="LongBuffer" /> with the specified capacity.
-    ///     All elements will be initialised to zero.
+    /// Creates a new <see cref="LongBuffer"/> with the specified capacity.
+    /// All elements will be initialised to zero.
     /// </summary>
     public static LongBuffer NewLongBuffer( int numBytes )
     {
-        var buffer = ByteBuffer.AllocateDirect( numBytes );
+        var buffer = ByteBuffer.Allocate( numBytes );
         buffer.Order( ByteOrder.NativeOrder );
 
         return buffer.AsLongBuffer();
     }
 
     /// <summary>
-    ///     Copies the contents of src to dst, starting from the current position of src,
-    ///     copying numElements elements (using the data type of src, no matter the datatype
-    ///     of dst). The dst <see cref="Buffer.Position" /> is used as the writing offset.
-    ///     The position of both Buffers will stay the same. The limit of the src Buffer will
-    ///     stay the same. The limit of the dst Buffer will be set to dst.Position + numElements,
-    ///     where numElements are translated to the number of elements appropriate for the dst
-    ///     Buffer data type.
-    ///     <b>
-    ///         The Buffers must be direct Buffers with native byte order.
-    ///         No error checking is performed
-    ///     </b>
-    ///     .
+    /// Copies the contents of src to dst, starting from the current position of src,
+    /// copying numElements elements (using the data type of src, no matter the datatype
+    /// of dst). The dst <see cref="Buffer.Position"/> is used as the writing offset.
+    /// The position of both Buffers will stay the same. The limit of the src Buffer will
+    /// stay the same. The limit of the dst Buffer will be set to dst.Position + numElements,
+    /// where numElements are translated to the number of elements appropriate for the dst
+    /// Buffer data type.
     /// </summary>
     /// <param name="src"> the source Buffer. </param>
     /// <param name="dst"> the destination Buffer. </param>
@@ -152,14 +147,10 @@ public static class BufferUtils
     }
 
     /// <summary>
-    ///     Copies the contents of src to dst, starting from src[srcOffset],
-    ///     copying numElements elements. The <see cref="Buffer" /> instance's
-    ///     <see cref="Buffer.Position()" /> is used to define the offset into
-    ///     the Buffer itself. The position and limit will stay the same.
-    ///     <para>
-    ///         The Buffer must be a direct Buffer with native byte order. No error
-    ///         checking is performed
-    ///     </para>
+    /// Copies the contents of src to dst, starting from src[srcOffset], copying numElements
+    /// elements. The <see cref="Buffer"/> instance's <see cref="Buffer.Position()"/> is
+    /// used to define the offset into the Buffer itself. The position and limit will stay
+    /// the same.
     /// </summary>
     /// <param name="src"> the source array. </param>
     /// <param name="srcOffset"> the offset into the source array. </param>
@@ -198,8 +189,8 @@ public static class BufferUtils
             ShortBuffer or CharBuffer  => dst.Position << 1,
             IntBuffer or FloatBuffer   => dst.Position << 2,
             LongBuffer or DoubleBuffer => dst.Position << 3,
-            _ => throw new GdxRuntimeException
-                     ( $"Can't get position for {dst.GetType().Name} instance" )
+            var _ => throw new GdxRuntimeException
+                         ( $"Can't get position for {dst.GetType().Name} instance" )
         };
     }
 
@@ -217,8 +208,8 @@ public static class BufferUtils
             ShortBuffer or CharBuffer  => bytes >>> 1,
             IntBuffer or FloatBuffer   => bytes >>> 2,
             LongBuffer or DoubleBuffer => bytes >>> 3,
-            _ => throw new GdxRuntimeException
-                     ( $"Can't copy to a {dst.GetType().Name} instance" )
+            var _ => throw new GdxRuntimeException
+                         ( $"Can't copy to a {dst.GetType().Name} instance" )
         };
     }
 
@@ -236,8 +227,8 @@ public static class BufferUtils
             ShortBuffer or CharBuffer  => elements << 1,
             IntBuffer or FloatBuffer   => elements << 2,
             LongBuffer or DoubleBuffer => elements << 3,
-            _ => throw new GdxRuntimeException
-                     ( $"Can't copy to a {dst.GetType().Name} instance" )
+            var _ => throw new GdxRuntimeException
+                         ( $"Can't copy to a {dst.GetType().Name} instance" )
         };
     }
 
@@ -303,7 +294,7 @@ public static class BufferUtils
                                 bb.Hb![ ( byte ) bi ] );
     }
 
-    public static void PutShort( ByteBuffer bb, int bi, char x, bool bigEndian )
+    public static void PutShort( ByteBuffer bb, int bi, short x, bool bigEndian )
     {
         if ( bigEndian )
         {
@@ -324,7 +315,7 @@ public static class BufferUtils
         return bigEndian ? GetIntByte( bb, bi ) : GetIntLong( bb, bi );
     }
 
-    public static void PutInt( ByteBuffer bb, int bi, char x, bool bigEndian )
+    public static void PutInt( ByteBuffer bb, int bi, int x, bool bigEndian )
     {
         if ( bigEndian )
         {
@@ -432,7 +423,7 @@ public static class BufferUtils
         bb.Hb![ bi + 6 ] = ( byte ) ( x >> 48 );
         bb.Hb![ bi + 7 ] = ( byte ) ( x >> 56 );
     }
-    
+
     // ------------------------------------------------------------------------
     // DOUBLE
     // ------------------------------------------------------------------------
@@ -561,38 +552,38 @@ public static class BufferUtils
     }
 
     /// <summary>
-    ///     Converts the supplied sequence of 4 bytes into an int.
+    /// Converts the supplied sequence of 4 bytes into an int.
     /// </summary>
     /// <returns> The result. </returns>
     private static int MakeInt( byte b3, byte b2, byte b1, byte b0 )
     {
-        return ( ( ( b3 ) << 24 )
-               | ( ( b2 & 0xff ) << 16 )
-               | ( ( b1 & 0xff ) << 8 )
-               | ( ( b0 & 0xff ) ) );
+        return ( b3 << 24 )
+             | ( ( b2 & 0xff ) << 16 )
+             | ( ( b1 & 0xff ) << 8 )
+             | b0 & 0xff;
     }
 
     /// <summary>
-    ///     Converts the supplied sequence of 8 bytes into a long.
+    /// Converts the supplied sequence of 8 bytes into a long.
     /// </summary>
     /// <returns> The result. </returns>
     private static long MakeLong( byte b7, byte b6, byte b5, byte b4, byte b3, byte b2, byte b1, byte b0 )
     {
-        return ( ( ( ( long ) b7 ) << 56 )
-               | ( ( ( long ) b6 & 0xff ) << 48 )
-               | ( ( ( long ) b5 & 0xff ) << 40 )
-               | ( ( ( long ) b4 & 0xff ) << 32 )
-               | ( ( ( long ) b3 & 0xff ) << 24 )
-               | ( ( ( long ) b2 & 0xff ) << 16 )
-               | ( ( ( long ) b1 & 0xff ) << 8 )
-               | ( ( ( long ) b0 & 0xff ) ) );
+        return ( ( long ) b7 << 56 )
+             | ( ( ( long ) b6 & 0xff ) << 48 )
+             | ( ( ( long ) b5 & 0xff ) << 40 )
+             | ( ( ( long ) b4 & 0xff ) << 32 )
+             | ( ( ( long ) b3 & 0xff ) << 24 )
+             | ( ( ( long ) b2 & 0xff ) << 16 )
+             | ( ( ( long ) b1 & 0xff ) << 8 )
+             | ( long ) b0 & 0xff;
     }
-    
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     //TODO: Should these be moved to NumberUtils or MathUtils??
-    
+
     public static byte Compare( byte x, byte y )
     {
         return ( byte ) ( x - y );

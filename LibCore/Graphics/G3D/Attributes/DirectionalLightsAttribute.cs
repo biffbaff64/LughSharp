@@ -47,7 +47,7 @@ public class DirectionalLightsAttribute : Attribute
     public static string Alias => "directionalLights";
     public static long   Type  => Register( Alias );
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override Attribute Copy()
     {
         return this;

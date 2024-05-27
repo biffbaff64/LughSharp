@@ -85,7 +85,7 @@ public class TextureWrap
         throw new ArgumentException( name );
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override string ToString()
     {
         return _nameValue;

@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>
-///     Various constants applicable to floats.
+/// Various constants applicable to floats.
 /// </summary>
 [PublicAPI]
 public static class FloatConstants

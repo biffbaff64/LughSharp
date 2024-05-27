@@ -30,14 +30,8 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class PixmapTextureData : ITextureData
 {
-    public Pixmap        Pixmap        { get; set; }
-    public Pixmap.Format Format        { get; set; }
-    public bool          DisposePixmap { get; set; }
-    public bool          Managed       { get; set; }
-    public bool          UseMipMaps    { get; set; }
-
     // ------------------------------------------------------------------------
-    
+
     public PixmapTextureData( Pixmap pixmap,
                               Pixmap.Format? format,
                               bool useMipMaps,
@@ -51,7 +45,16 @@ public class PixmapTextureData : ITextureData
         Format        = format ?? pixmap.GetFormat();
     }
 
-    public Pixmap ConsumePixmap() => Pixmap;
+    public Pixmap        Pixmap        { get; set; }
+    public Pixmap.Format Format        { get; set; }
+    public bool          DisposePixmap { get; set; }
+    public bool          Managed       { get; set; }
+    public bool          UseMipMaps    { get; set; }
+
+    public Pixmap ConsumePixmap()
+    {
+        return Pixmap;
+    }
 
     public int Width
     {
@@ -74,8 +77,8 @@ public class PixmapTextureData : ITextureData
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Pixmap;
 
     /// <returns>
-    ///     whether the caller of <see cref="ITextureData.ConsumePixmap" /> should dispose the
-    ///     Pixmap returned by <see cref="ITextureData.ConsumePixmap" />
+    /// whether the caller of <see cref="ITextureData.ConsumePixmap"/> should dispose the
+    /// Pixmap returned by <see cref="ITextureData.ConsumePixmap"/>
     /// </returns>
     bool ITextureData.DisposePixmap()
     {
@@ -83,14 +86,20 @@ public class PixmapTextureData : ITextureData
     }
 
     /// <summary>
-    ///     Returns the <see cref="Pixmap.Format" /> of the pixel data.
+    /// Returns the <see cref="Pixmap.Format"/> of the pixel data.
     /// </summary>
-    public Pixmap.Format GetFormat() => Format;
+    public Pixmap.Format GetFormat()
+    {
+        return Format;
+    }
 
     /// <summary>
-    ///     Returns whether this implementation can cope with a EGL context loss.
+    /// Returns whether this implementation can cope with a EGL context loss.
     /// </summary>
-    public bool IsManaged() => Managed;
+    public bool IsManaged()
+    {
+        return Managed;
+    }
 
     public void ConsumeCustomData( int target )
     {

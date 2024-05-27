@@ -26,31 +26,31 @@
 namespace LughSharp.LibCore.Utils.Viewport;
 
 /// <summary>
-///     A viewport that scales the world using <see cref="Scaling" />.
-///     <para>
-///         <see cref="Utils.Scaling.Fit" /> keeps the aspect ratio by scaling the world up to
-///         fit the screen, adding black bars (letterboxing) for the remaining space.
-///     </para>
-///     <para>
-///         <see cref="Utils.Scaling.Fill" /> keeps the aspect ratio by scaling the world up to
-///         take the whole screen (some of the world may be off screen).
-///     </para>
-///     <para>
-///         <see cref="Utils.Scaling.Stretch" /> does not keep the aspect ratio, the world is
-///         scaled to take the whole screen.
-///     </para>
-///     <para>
-///         <see cref="Utils.Scaling.None" /> keeps the aspect ratio by using a fixed size world
-///         (the world may not fill the screen or some of the world may be off screen).
-///     </para>
+/// A viewport that scales the world using <see cref="Scaling"/>.
+/// <para>
+/// <see cref="Utils.Scaling.Fit"/> keeps the aspect ratio by scaling the world up to
+/// fit the screen, adding black bars (letterboxing) for the remaining space.
+/// </para>
+/// <para>
+/// <see cref="Utils.Scaling.Fill"/> keeps the aspect ratio by scaling the world up to
+/// take the whole screen (some of the world may be off screen).
+/// </para>
+/// <para>
+/// <see cref="Utils.Scaling.Stretch"/> does not keep the aspect ratio, the world is
+/// scaled to take the whole screen.
+/// </para>
+/// <para>
+/// <see cref="Utils.Scaling.None"/> keeps the aspect ratio by using a fixed size world
+/// (the world may not fill the screen or some of the world may be off screen).
+/// </para>
 /// </summary>
 [PublicAPI]
 public class ScalingViewport : Viewport
 {
     /// <summary>
-    ///     Creates a new viewport using a new <see cref="OrthographicCamera" />.
+    /// Creates a new viewport using a new <see cref="OrthographicCamera"/>.
     /// </summary>
-    /// <param name="scaling"> The <see cref="Scaling" /> to use. </param>
+    /// <param name="scaling"> The <see cref="Scaling"/> to use. </param>
     /// <param name="worldWidth"> The world width in pixels. </param>
     /// <param name="worldHeight"> The world height in pixels. </param>
     protected ScalingViewport( Scaling scaling, float worldWidth, float worldHeight )
@@ -59,9 +59,9 @@ public class ScalingViewport : Viewport
     }
 
     /// <summary>
-    ///     Creates a new viewport using the supplied <see cref="OrthographicCamera" />.
+    /// Creates a new viewport using the supplied <see cref="OrthographicCamera"/>.
     /// </summary>
-    /// <param name="scaling"> The <see cref="Scaling" /> to use. </param>
+    /// <param name="scaling"> The <see cref="Scaling"/> to use. </param>
     /// <param name="worldWidth"> The world width in pixels. </param>
     /// <param name="worldHeight"> The world height in pixels. </param>
     /// <param name="camera"> The camera to use. </param>
@@ -77,7 +77,7 @@ public class ScalingViewport : Viewport
     protected Scaling Scaling { get; }
 
     /// <summary>
-    ///     Configures this viewports screen bounds and applies it to the camera
+    /// Configures this viewports screen bounds and applies it to the camera
     /// </summary>
     /// <param name="screenWidth"> Screen width in pixels. </param>
     /// <param name="screenHeight"> Screen height in pixels. </param>

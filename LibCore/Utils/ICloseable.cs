@@ -26,9 +26,9 @@
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>
-///     A Closeable is a source or destination of data that can be closed.
-///     The close method is invoked to release resources that the object
-///     is holding (such as open files).
+/// A Closeable is a source or destination of data that can be closed.
+/// The close method is invoked to release resources that the object
+/// is holding (such as open files).
 /// </summary>
 [PublicAPI]
 public interface ICloseable

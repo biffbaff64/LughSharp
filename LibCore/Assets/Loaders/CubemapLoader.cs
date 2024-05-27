@@ -28,20 +28,20 @@ using LughSharp.LibCore.Assets.Loaders.Resolvers;
 namespace LughSharp.LibCore.Assets.Loaders;
 
 /// <summary>
-///     <see cref="AssetLoader"/> for <see cref="Cubemap"/> instances. The pixel data
-///     is loaded asynchronously. The texture is then created on the rendering thread,
-///     synchronously.
-///     <para>
-///     Passing a <see cref="CubemapParameter"/> to <see cref="AssetManager.Load(String,Type,AssetLoaderParameters)"/>"
-///     allows one to specify parameters as can be passed to the various Cubemap
-///     constructors, e.g. filtering and so on.
-///     </para>
+/// <see cref="AssetLoader"/> for <see cref="Cubemap"/> instances. The pixel data
+/// is loaded asynchronously. The texture is then created on the rendering thread,
+/// synchronously.
+/// <para>
+/// Passing a <see cref="CubemapParameter"/> to <see cref="AssetManager.Load(String,Type,AssetLoaderParameters)"/>"
+/// allows one to specify parameters as can be passed to the various Cubemap
+/// constructors, e.g. filtering and so on.
+/// </para>
 /// </summary>
 [PublicAPI]
 public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.CubemapParameter >
 {
     /// <summary>
-    ///     Information about the cubemap being loaded.
+    /// Information about the cubemap being loaded.
     /// </summary>
     private CubemapLoaderInfo _loaderInfo = new()
     {
@@ -51,15 +51,15 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     };
 
     /// <summary>
-    ///     Creates a new CubmapLoader using the supplied resolver.
+    /// Creates a new CubmapLoader using the supplied resolver.
     /// </summary>
     public CubemapLoader( IFileHandleResolver resolver ) : base( resolver )
     {
     }
 
     /// <summary>
-    ///     Returns the assets this asset requires to be loaded first.
-    ///     This method may be called on a thread other than the GL thread.
+    /// Returns the assets this asset requires to be loaded first.
+    /// This method may be called on a thread other than the GL thread.
     /// </summary>
     /// <param name="fileName">name of the asset to load</param>
     /// <param name="file">the resolved file to load</param>
@@ -71,14 +71,14 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         return default( List< AssetDescriptor > )!;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public override void LoadAsync( AssetManager manager, FileInfo? file, CubemapParameter? parameter )
     {
     }
 
     /// <summary>
-    ///     Loads the non-OpenGL part of the asset and injects any dependencies of
-    ///     the asset into the AssetManager.
+    /// Loads the non-OpenGL part of the asset and injects any dependencies of
+    /// the asset into the AssetManager.
     /// </summary>
     /// <param name="manager">The AssetManager to use.</param>
     /// <param name="file">The assets FileInfo object.</param>
@@ -86,7 +86,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     public override object LoadSync( AssetManager? manager, FileInfo? file, CubemapParameter? parameter )
     {
         var cubemap = _loaderInfo.Cubemap;
-        
+
         if ( cubemap != null )
         {
             cubemap.Load( _loaderInfo.CubemapData! );
@@ -106,9 +106,9 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     }
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
-    ///     Contains information about the Cubemap being loaded.
+    /// Contains information about the Cubemap being loaded.
     /// </summary>
     [PublicAPI]
     public struct CubemapLoaderInfo
@@ -124,18 +124,13 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
     public class CubemapParameter : AssetLoaderParameters
     {
         /// <summary>
-        ///     The texture to put the TextureData in, optional.
-        /// </summary>
-        public Cubemap? Cubemap { get; set; } = null;
-
-        /// <summary>
-        ///     CubemapData for textures created on the fly, optional.
-        ///     When set, all format and genMipMaps are ignored
+        /// CubemapData for textures created on the fly, optional.
+        /// When set, all format and genMipMaps are ignored
         /// </summary>
         public ICubemapData? CubemapData = null;
 
         /// <summary>
-        ///     the format of the final Texture. Uses the source images format if null
+        /// the format of the final Texture. Uses the source images format if null
         /// </summary>
         public Pixmap.Format? Format = null;
 
@@ -143,5 +138,10 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         public TextureFilter MinFilter = TextureFilter.Nearest;
         public TextureWrap   WrapU     = TextureWrap.ClampToEdge;
         public TextureWrap   WrapV     = TextureWrap.ClampToEdge;
+
+        /// <summary>
+        /// The texture to put the TextureData in, optional.
+        /// </summary>
+        public Cubemap? Cubemap { get; set; } = null;
     }
 }

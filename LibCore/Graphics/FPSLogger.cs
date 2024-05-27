@@ -26,8 +26,8 @@
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
-///     A simple helper class to log the frames per seconds achieved. Just invoke the
-///     Log() method in your rendering method. The output will be logged once per second.
+/// A simple helper class to log the frames per seconds achieved. Just invoke the
+/// Log() method in your rendering method. The output will be logged once per second.
 /// </summary>
 [PublicAPI]
 public class FPSLogger
@@ -42,7 +42,7 @@ public class FPSLogger
     }
 
     /// <summary>
-    ///     Logs the current frames per second to the console.
+    /// Logs the current frames per second to the console.
     /// </summary>
     public void Log()
     {
