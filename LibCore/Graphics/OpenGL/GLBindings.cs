@@ -87,7 +87,7 @@ namespace DotGL;
 /// efficient as possible, in terms of both performance and memory usage.
 /// </para>
 /// </summary>
-public unsafe class GLBindings
+public unsafe class GLBindings : IGLBindings
 {
     /// <summary>
     /// The null pointer, just like in C/C++.

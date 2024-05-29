@@ -31,6 +31,8 @@ public interface IGL
     // Moved from IGL20
     // ------------------------------------------------------------------------
 
+    #region IGL20
+    
     // ------------------------------------------------------------------------
     const int GL_NO_ERROR = 0;
     const int GL_FALSE    = 0;
@@ -261,6 +263,8 @@ public interface IGL
     const int GL_ONE_MINUS_CONSTANT_ALPHA = 0x8004;
     const int GL_BLEND_COLOR              = 0x8005;
     const int GL_FUNC_ADD                 = 0x8006;
+    const int GL_MIN                      = 0x8007;
+    const int GL_MAX                      = 0x8008;
     const int GL_FUNC_SUBTRACT            = 0x800A;
     const int GL_FUNC_REVERSE_SUBTRACT    = 0x800B;
     const int GL_BLEND_EQUATION           = 0x8009;
@@ -269,9 +273,18 @@ public interface IGL
     const int GL_UNSIGNED_SHORT_5_5_5_1   = 0x8034;
     const int GL_POLYGON_OFFSET_FILL      = 0x8037;
     const int GL_POLYGON_OFFSET_FACTOR    = 0x8038;
+    const int GL_RGB8                     = 0x8051;
     const int GL_RGBA4                    = 0x8056;
     const int GL_RGB5_A1                  = 0x8057;
+    const int GL_RGBA8                    = 0x8058;
+    const int GL_RGB10_A2                 = 0x8059;
     const int GL_TEXTURE_BINDING_2D       = 0x8069;
+    const int GL_TEXTURE_BINDING_3D       = 0x806A;
+    const int GL_UNPACK_SKIP_IMAGES       = 0x806D;
+    const int GL_UNPACK_IMAGE_HEIGHT      = 0x806E;
+    const int GL_TEXTURE_3D               = 0x806F;
+    const int GL_TEXTURE_WRAP_R           = 0x8072;
+    const int GL_MAX_3D_TEXTURE_SIZE      = 0x8073;
     const int GL_SAMPLE_ALPHA_TO_COVERAGE = 0x809E;
     const int GL_SAMPLE_COVERAGE          = 0x80A0;
     const int GL_SAMPLE_BUFFERS           = 0x80A8;
@@ -282,16 +295,61 @@ public interface IGL
     const int GL_BLEND_SRC_RGB            = 0x80C9;
     const int GL_BLEND_DST_ALPHA          = 0x80CA;
     const int GL_BLEND_SRC_ALPHA          = 0x80CB;
+    const int GL_MAX_ELEMENTS_VERTICES    = 0x80E8;
+    const int GL_MAX_ELEMENTS_INDICES     = 0x80E9;
 
     // ------------------------------------------------------------------------
     const int GL_CLAMP_TO_EDGE        = 0x812F;
+    const int GL_TEXTURE_MIN_LOD      = 0x813A;
+    const int GL_TEXTURE_MAX_LOD      = 0x813B;
+    const int GL_TEXTURE_BASE_LEVEL   = 0x813C;
+    const int GL_TEXTURE_MAX_LEVEL    = 0x813D;
     const int GL_GENERATE_MIPMAP      = 0x8191;
     const int GL_GENERATE_MIPMAP_HINT = 0x8192;
     const int GL_DEPTH_COMPONENT16    = 0x81A5;
+    const int GL_DEPTH_COMPONENT24    = 0x81A6;
 
     // ------------------------------------------------------------------------
-    const int GL_UNSIGNED_SHORT_5_6_5 = 0x8363;
-    const int GL_MIRRORED_REPEAT      = 0x8370;
+    const int GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING = 0x8210;
+    const int GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE = 0x8211;
+    const int GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE       = 0x8212;
+    const int GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE     = 0x8213;
+    const int GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE      = 0x8214;
+    const int GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE     = 0x8215;
+    const int GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE     = 0x8216;
+    const int GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE   = 0x8217;
+    const int GL_FRAMEBUFFER_DEFAULT                   = 0x8218;
+    const int GL_FRAMEBUFFER_UNDEFINED                 = 0x8219;
+    const int GL_DEPTH_STENCIL_ATTACHMENT              = 0x821A;
+    const int GL_MAJOR_VERSION                         = 0x821B;
+    const int GL_MINOR_VERSION                         = 0x821C;
+    const int GL_NUM_EXTENSIONS                        = 0x821D;
+    const int GL_RG                                    = 0x8227;
+    const int GL_RG_INTEGER                            = 0x8228;
+    const int GL_R8                                    = 0x8229;
+    const int GL_RG8                                   = 0x822B;
+    const int GL_R16_F                                 = 0x822D;
+    const int GL_R32_F                                 = 0x822E;
+    const int GL_RG16_F                                = 0x822F;
+    const int GL_RG32_F                                = 0x8230;
+    const int GL_R8_I                                  = 0x8231;
+    const int GL_R8_UI                                 = 0x8232;
+    const int GL_R16_I                                 = 0x8233;
+    const int GL_R16_UI                                = 0x8234;
+    const int GL_R32_I                                 = 0x8235;
+    const int GL_R32_UI                                = 0x8236;
+    const int GL_RG8_I                                 = 0x8237;
+    const int GL_RG8_UI                                = 0x8238;
+    const int GL_RG16_I                                = 0x8239;
+    const int GL_RG16_UI                               = 0x823A;
+    const int GL_RG32_I                                = 0x823B;
+    const int GL_RG32_UI                               = 0x823C;
+    const int GL_TEXTURE_IMMUTABLE_LEVELS              = 0x82DF;
+
+    // ------------------------------------------------------------------------
+    const int GL_UNSIGNED_SHORT_5_6_5        = 0x8363;
+    const int GL_UNSIGNED_INT_2_10_10_10_REV = 0x8368;
+    const int GL_MIRRORED_REPEAT             = 0x8370;
 
     // ------------------------------------------------------------------------
     const int GL_ALIASED_POINT_SIZE_RANGE       = 0x846D;
@@ -331,6 +389,9 @@ public interface IGL
     const int GL_ACTIVE_TEXTURE                 = 0x84E0;
     const int GL_MAX_TEXTURE_UNITS              = 0x84E2;
     const int GL_MAX_RENDERBUFFER_SIZE          = 0x84E8;
+    const int GL_DEPTH_STENCIL                  = 0x84F9;
+    const int GL_UNSIGNED_INT_24_8              = 0x84FA;
+    const int GL_MAX_TEXTURE_LOD_BIAS           = 0x84FD;
     const int GL_TEXTURE_MAX_ANISOTROPY_EXT     = 0x84FE;
     const int GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT = 0x84FF;
 
@@ -530,36 +591,6 @@ public interface IGL
     const int GL_BUFFER_MAP_OFFSET             = 0x9121;
 
     // ------------------------------------------------------------------------
-    const int GL_MIN                   = 0x8007;
-    const int GL_MAX                   = 0x8008;
-    const int GL_RGB8                  = 0x8051;
-    const int GL_RGBA8                 = 0x8058;
-    const int GL_RGB10_A2              = 0x8059;
-    const int GL_TEXTURE_BINDING_3D    = 0x806A;
-    const int GL_UNPACK_SKIP_IMAGES    = 0x806D;
-    const int GL_UNPACK_IMAGE_HEIGHT   = 0x806E;
-    const int GL_TEXTURE_3D            = 0x806F;
-    const int GL_TEXTURE_WRAP_R        = 0x8072;
-    const int GL_MAX_3D_TEXTURE_SIZE   = 0x8073;
-    const int GL_MAX_ELEMENTS_VERTICES = 0x80E8;
-    const int GL_MAX_ELEMENTS_INDICES  = 0x80E9;
-
-    // ------------------------------------------------------------------------
-    const int GL_TEXTURE_MIN_LOD    = 0x813A;
-    const int GL_TEXTURE_MAX_LOD    = 0x813B;
-    const int GL_TEXTURE_BASE_LEVEL = 0x813C;
-    const int GL_TEXTURE_MAX_LEVEL  = 0x813D;
-    const int GL_DEPTH_COMPONENT24  = 0x81A6;
-
-    // ------------------------------------------------------------------------
-    const int GL_UNSIGNED_INT_2_10_10_10_REV = 0x8368;
-
-    // ------------------------------------------------------------------------
-    const int GL_MAX_TEXTURE_LOD_BIAS = 0x84FD;
-    const int GL_DEPTH_STENCIL        = 0x84F9;
-    const int GL_UNSIGNED_INT_24_8    = 0x84FA;
-
-    // ------------------------------------------------------------------------
     const int GL_TEXTURE_COMPARE_MODE        = 0x884C;
     const int GL_TEXTURE_COMPARE_FUNC        = 0x884D;
     const int GL_CURRENT_QUERY               = 0x8865;
@@ -668,46 +699,11 @@ public interface IGL
     const int GL_COLOR_ATTACHMENT15                            = 0x8CEF;
 
     // ------------------------------------------------------------------------
-    const int GL_MAJOR_VERSION                         = 0x821B;
-    const int GL_MINOR_VERSION                         = 0x821C;
-    const int GL_NUM_EXTENSIONS                        = 0x821D;
-    const int GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING = 0x8210;
-    const int GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE = 0x8211;
-    const int GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE       = 0x8212;
-    const int GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE     = 0x8213;
-    const int GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE      = 0x8214;
-    const int GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE     = 0x8215;
-    const int GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE     = 0x8216;
-    const int GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE   = 0x8217;
-    const int GL_FRAMEBUFFER_DEFAULT                   = 0x8218;
-    const int GL_FRAMEBUFFER_UNDEFINED                 = 0x8219;
-    const int GL_DEPTH_STENCIL_ATTACHMENT              = 0x821A;
-    const int GL_RG                                    = 0x8227;
-    const int GL_RG_INTEGER                            = 0x8228;
-    const int GL_R8                                    = 0x8229;
-    const int GL_RG8                                   = 0x822B;
-    const int GL_R16_F                                 = 0x822D;
-    const int GL_R32_F                                 = 0x822E;
-    const int GL_RG16_F                                = 0x822F;
-    const int GL_RG32_F                                = 0x8230;
-    const int GL_R8_I                                  = 0x8231;
-    const int GL_R8_UI                                 = 0x8232;
-    const int GL_R16_I                                 = 0x8233;
-    const int GL_R16_UI                                = 0x8234;
-    const int GL_R32_I                                 = 0x8235;
-    const int GL_R32_UI                                = 0x8236;
-    const int GL_RG8_I                                 = 0x8237;
-    const int GL_RG8_UI                                = 0x8238;
-    const int GL_RG16_I                                = 0x8239;
-    const int GL_RG16_UI                               = 0x823A;
-    const int GL_RG32_I                                = 0x823B;
-    const int GL_RG32_UI                               = 0x823C;
-
-    // ------------------------------------------------------------------------
     const int GL_MIN_PROGRAM_TEXEL_OFFSET = 0x8904;
     const int GL_MAX_PROGRAM_TEXEL_OFFSET = 0x8905;
 
     // ------------------------------------------------------------------------
+    const int GL_MAX_ELEMENT_INDEX              = 0x8D6B;
     const int GL_RGBA32_UI                      = 0x8D70;
     const int GL_RGB32_UI                       = 0x8D71;
     const int GL_RGBA16_UI                      = 0x8D76;
@@ -740,7 +736,6 @@ public interface IGL
     const int GL_FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
 
     // ------------------------------------------------------------------------
-
 
     // GL_TIMEOUT_IGNORED is defined as 0xFFFFFFFFFFFFFFFFull in C.
     const long GL_TIMEOUT_IGNORED                           = -1;
@@ -775,13 +770,22 @@ public interface IGL
     const int  GL_COMPRESSED_RGBA8_ETC2_EAC                 = 0x9278;
     const int  GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC          = 0x9279;
     const int  GL_TEXTURE_IMMUTABLE_FORMAT                  = 0x912F;
-    const int  GL_MAX_ELEMENT_INDEX                         = 0x8D6B;
     const int  GL_NUM_SAMPLE_COUNTS                         = 0x9380;
-    const int  GL_TEXTURE_IMMUTABLE_LEVELS                  = 0x82DF;
+
+    #endregion IGL20
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     // ------------------------------------------------------------------------
     // Moved from IGL30
     // ------------------------------------------------------------------------
+
+    #region IGL30
 
     // ------------------------------------------------------------------------
     const int GL_FRONT_LEFT  = 0x0400;
@@ -1556,6 +1560,8 @@ public interface IGL
     const int GL_MAX_TEXTURE_MAX_ANISOTROPY                                 = 0x84FF;
     const int GL_TRANSFORM_FEEDBACK_OVERFLOW                                = 0x82EC;
     const int GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW                         = 0x82ED;
+
+    #endregion IGL30
 
     // ------------------------------------------------
 }

@@ -27,6 +27,23 @@ using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
+/// <summary>
+/// <para>
+/// A <see cref="IVertexData"/> implementation based on OpenGL vertex buffer objects.
+/// </para>
+/// <para>
+/// If the OpenGL context was lost you can call <see cref="Invalidate()"/> to recreate
+/// a new OpenGL vertex buffer object.
+/// </para>
+/// <para>
+/// The data is bound via <tt>GLBindings.glVertexAttribPointer</tt> according to the
+/// attribute aliases specified via <see cref="VertexAttributes"/> in the constructor.
+/// </para>
+/// <para>
+/// VertexBufferObjects must be disposed via the <see cref="Dispose()"/> method when
+/// no longer needed
+/// </para>
+/// </summary>
 [PublicAPI]
 public class VertexBufferObject : IVertexData
 {
@@ -74,23 +91,36 @@ public class VertexBufferObject : IVertexData
     }
 
     /// <summary>
-    /// Constructs a new interleaved VertexBufferObject.
+    /// Constructs a new interleaved VertexBufferObject with the specified usage, data,
+    /// ownership flag, and vertex attributes. It generates a buffer handle using OpenGL,
+    /// sets the buffer data and attributes, and assigns the usage parameter.
     /// </summary>
-    /// <param name="usage"></param>
-    /// <param name="data"></param>
-    /// <param name="ownsBuffer"></param>
-    /// <param name="attributes"> the <see cref="VertexAttributes"/>.  </param>
+    /// <param name="usage">
+    /// Specifies the expected usage pattern of the data store (e.g., GL_STATIC_DRAW, GL_DYNAMIC_DRAW).
+    /// </param>
+    /// <param name="data">The byte buffer containing the vertex data.</param>
+    /// <param name="ownsBuffer">Indicates whether this object should take ownership of the buffer.</param>
+    /// <param name="attributes">The vertex attributes that define the structure of the vertex data.</param>
     public VertexBufferObject( int usage, ByteBuffer data, bool ownsBuffer, VertexAttributes attributes )
     {
+        // Initialize the _buffer and Attributes fields to default values.
         _buffer    = default( FloatBuffer? )!;
         Attributes = default( VertexAttributes )!;
 
+        // Generate a new buffer handle using OpenGL and assign it to _bufferHandle.
         _bufferHandle = ( int ) Gdx.GL.glGenBuffer();
 
+        // Set the buffer data, ownership flag, and attributes using the provided parameters.
         SetBuffer( data, ownsBuffer, attributes );
+
+        // Assign the usage parameter to the Usage property.
         Usage = usage;
     }
 
+    /// <summary>
+    /// The usage pattern for the vertex buffer object, which hints to the GPU how the
+    /// data will be used (e.g., GL_STATIC_DRAW for data that doesn't change often).
+    /// </summary>
     public int Usage
     {
         get => _usage;
@@ -172,12 +202,13 @@ public class VertexBufferObject : IVertexData
     /// <summary>
     /// Update (a portion of) the vertices. Does not resize the backing buffer.
     /// </summary>
-    /// <param name="targetOffset"></param>
-    /// <param name="vertices"> the vertex data </param>
-    /// <param name="sourceOffset"> the offset to start copying the data from </param>
-    /// <param name="count"> the number of floats to copy  </param>
+    /// <param name="targetOffset">The offset in the target buffer where the update begins.</param>
+    /// <param name="vertices">The vertex data to be copied.</param>
+    /// <param name="sourceOffset">The offset in the source array where copying starts.</param>
+    /// <param name="count">The number of floats to copy.</param>
     public void UpdateVertices( int targetOffset, float[] vertices, int sourceOffset, int count )
     {
+        // Check if the byte buffer is null and log an error if it is.
         if ( _byteBuffer == null )
         {
             Logger.Error( "_byteBuffer is NULL!" );
@@ -185,24 +216,32 @@ public class VertexBufferObject : IVertexData
             return;
         }
 
+        // Mark the buffer as dirty, indicating it has been modified.
         _isDirty = true;
 
+        // Save the current position of the byte buffer.
         var pos = _byteBuffer.Position;
 
+        // Set the position of the byte buffer to the target offset, converted to bytes.
         _byteBuffer.Position = targetOffset * 4;
 
+        // Copy the vertex data from the source array to the byte buffer.
         BufferUtils.Copy( vertices, sourceOffset, count, _byteBuffer );
 
+        // Restore the byte buffer's position to its original value.
         _byteBuffer.Position = pos;
-        _buffer.Position     = 0;
 
+        // Reset the main buffer's position to the beginning.
+        _buffer.Position = 0;
+
+        // Signal that the buffer has changed.
         BufferChanged();
     }
 
     /// <summary>
     /// Binds this VertexData for rendering via glDrawArrays or glDrawElements.
     /// </summary>
-    /// <param name="shader"></param>
+    /// <param name="shader"> The <see cref="ShaderProgram"/> to use. </param>
     /// <param name="locations"> array containing the attribute locations.  </param>
     public void Bind( ShaderProgram shader, int[]? locations = null )
     {
@@ -257,27 +296,35 @@ public class VertexBufferObject : IVertexData
     }
 
     /// <summary>
-    /// Unbinds this VertexData.
+    /// Unbinds the vertex buffer object from the shader, disabling the vertex attributes.
     /// </summary>
-    /// <param name="shader"></param>
-    /// <param name="locations"> array containing the attribute locations.  </param>
+    /// <param name="shader">The shader program currently in use.</param>
+    /// <param name="locations">
+    /// An optional array of attribute locations to be disabled. If null, attribute
+    /// aliases from the vertex attributes are used.
+    /// </param>
     public void Unbind( ShaderProgram shader, int[]? locations = null )
     {
+        // Get the number of attributes in the vertex attributes.
         var numAttributes = Attributes.Size;
 
+        // If no specific locations are provided, disable attributes using their aliases.
         if ( locations == null )
         {
             for ( var i = 0; i < numAttributes; i++ )
             {
+                // Disable the vertex attribute for the alias of each attribute.
                 shader.DisableVertexAttribute( Attributes.Get( i ).alias );
             }
         }
         else
         {
+            // If specific locations are provided, disable attributes based on the locations array.
             for ( var i = 0; i < numAttributes; i++ )
             {
                 var location = locations[ i ];
 
+                // Disable the vertex attribute at the given location if it is valid (>= 0).
                 if ( location >= 0 )
                 {
                     shader.DisableVertexAttribute( location );
@@ -285,7 +332,10 @@ public class VertexBufferObject : IVertexData
             }
         }
 
+        // Unbind the buffer from the GL_ARRAY_BUFFER target.
         Gdx.GL.glBindBuffer( IGL.GL_ARRAY_BUFFER, 0 );
+
+        // Mark the buffer as unbound.
         _isBound = false;
     }
 
@@ -316,7 +366,8 @@ public class VertexBufferObject : IVertexData
     }
 
     /// <summary>
-    /// Low level method to reset the buffer and attributes to the specified values. Use with care!
+    /// Low level method to reset the buffer and attributes to the specified values.
+    /// Use with care!
     /// </summary>
     public void SetBuffer( Buffer data, bool ownsBuffer, VertexAttributes value )
     {
@@ -353,6 +404,9 @@ public class VertexBufferObject : IVertexData
         _buffer.Limit     = lim / 4;
     }
 
+    /// <summary>
+    /// Handles any additional logic required when the buffer is updated.
+    /// </summary>
     private unsafe void BufferChanged()
     {
         if ( _isBound )

@@ -28,6 +28,8 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class VertexBufferObjectWithVAO : IVertexData
 {
+    public VertexAttributes Attributes { get; set; }
+
     private readonly static IntBuffer _tmpHandle = BufferUtils.NewIntBuffer( 1 );
 
     private readonly FloatBuffer _buffer;
@@ -43,6 +45,8 @@ public class VertexBufferObjectWithVAO : IVertexData
     private bool _isStatic;
     private int  _vaoHandle = -1;
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Constructs a new interleaved VertexBufferObjectWithVAO.
     /// </summary>
@@ -95,8 +99,6 @@ public class VertexBufferObjectWithVAO : IVertexData
 
         CreateVAO();
     }
-
-    public VertexAttributes Attributes { get; set; }
 
     /// <summary>
     /// </summary>

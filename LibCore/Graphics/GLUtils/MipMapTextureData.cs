@@ -105,7 +105,7 @@ public class MipMapTextureData : ITextureData
         return false;
     }
 
-    public bool DisposePixmap()
+    public bool ShouldDisposePixmap()
     {
         return false;
     }

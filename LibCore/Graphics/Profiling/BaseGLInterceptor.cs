@@ -28,21 +28,21 @@ namespace LughSharp.LibCore.Graphics.Profiling;
 [PublicAPI]
 public abstract class BaseGLInterceptor
 {
-    protected readonly GLProfiler GLProfiler;
-
-    protected BaseGLInterceptor( GLProfiler profiler )
-    {
-        GLProfiler = profiler;
-    }
-
     public int          Calls           { get; set; }
     public int          TextureBindings { get; set; }
     public int          DrawCalls       { get; set; }
     public int          ShaderSwitches  { get; set; }
     public FloatCounter VertexCount     { get; set; } = new( 0 );
 
+    protected readonly GLProfiler GLProfiler;
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
+
+    protected BaseGLInterceptor( GLProfiler profiler )
+    {
+        GLProfiler = profiler;
+    }
 
     public static string ResolveErrorNumber( int error )
     {
@@ -65,5 +65,16 @@ public abstract class BaseGLInterceptor
         DrawCalls       = 0;
         ShaderSwitches  = 0;
         VertexCount.Reset();
+    }
+    
+    protected void Check()
+    {
+        var error = Gdx.GL.glGetError();
+
+        while ( error != IGL.GL_NO_ERROR )
+        {
+            GLProfiler.Listener.OnError( error );
+            error = Gdx.GL.glGetError();
+        }
     }
 }

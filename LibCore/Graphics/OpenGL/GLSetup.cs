@@ -31,35 +31,50 @@ public class GLSetup
     public static GLVersion?     GLVersion     { get; set; }
     public static bool           GLInitialised { get; private set; } = false;
 
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Sets up an OpenGL context using GLFW, retrieves OpenGL version and profile information
+    /// from the project settings, and initializes the OpenGL environment accordingly. 
+    /// </summary>
     public static unsafe void InitiateGL()
     {
-        // Retrieve OpenGL version and profile from `.csproj` file
-        // Does some switching depending on which constants are defined
+        // Retrieve OpenGL version and profile from the project settings.
+        // These methods read the OpenGL major and minor version numbers
+        // and the profile from the `.csproj` file.
         var glMajor   = Gdx.GL.GetProjectOpenGLVersionMajor();
         var glMinor   = Gdx.GL.GetProjectOpenGLVersionMinor();
         var glProfile = Gdx.GL.GetProjectOpenGLProfile();
 
-        // Normal GLFW window creation
+        // Initialize the GLFW library.
         Glfw.Init();
+
+        // Set the client API to use OpenGL.
         Glfw.WindowHint( Hint.ClientAPI, ClientAPI.OpenGLAPI );
+
+        // Set the OpenGL context version based on the retrieved major and minor version numbers.
         Glfw.WindowHint( Hint.ContextVersionMajor, glMajor );
         Glfw.WindowHint( Hint.ContextVersionMinor, glMinor );
 
+        // Determine the OpenGL profile to use based on the profile string retrieved.
         OGLProfile = glProfile switch
         {
-            "CORE"   => OpenGLProfile.CoreProfile,
-            "COMPAT" => OpenGLProfile.CompatProfile,
-            _        => throw new Exception( "Invalid OpenGL profile!" )
+            "CORE"   => OpenGLProfile.CoreProfile,                       // Use the core profile.
+            "COMPAT" => OpenGLProfile.CompatProfile,                     // Use the compatibility profile.
+            var _    => throw new Exception( "Invalid OpenGL profile!" ) // Throw an exception for an invalid profile.
         };
 
+        // Retrieve the OpenGL vendor and renderer strings.
         var vendorString   = Gdx.GL.glGetString( IGL.GL_VENDOR )->ToString();
         var rendererString = Gdx.GL.glGetString( IGL.GL_RENDERER )->ToString();
 
+        // Create a new GLVersion object with the application type, GLFW version, vendor, and renderer strings.
         GLVersion = new GLVersion( IApplication.ApplicationType.DesktopGL,
                                    Glfw.GetVersionString(),
                                    vendorString,
                                    rendererString );
 
+        // Set the flag indicating that OpenGL has been initialized.
         GLInitialised = true;
     }
 }

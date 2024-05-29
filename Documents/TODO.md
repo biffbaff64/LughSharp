@@ -305,7 +305,7 @@ GRAPHICS/G2D
     - DONE - IP   - ParticleEffect
     - DONE - IP   - ParticleEffectPool
     - DONE - IP   - ParticleEmitter
-    - IP   - IP   - PixmapPacker                    Strategy classes need completing
+    - DONE - IP   - PixmapPacker
     - DONE - IP   - PixmapPackerIO
     - DONE - IP   - PolygonRegion
     - DONE - IP   - PolygonRegionLoader
@@ -337,29 +337,29 @@ GRAPHICS/GLUTILS
     - DONE - IP   - FileTextureData
     - DONE - IP   - FloatTextureData
     - DONE - IP   - GLOnlyTextureData
-    - IP   - IP   - GLVersion
+    - DONE - IP   - GLVersion
     - DONE - DONE - HdpiMode
     - DONE - DONE - HdpiUtils
-    - IP   - IP   - IImmediateModeRenderer
+    - DONE - IP   - IImmediateModeRenderer
     - DONE - DONE - IIndexData
     - DONE - IP   - IInstanceData
-    - IP   - IP   - ImmediateModeRenderer20
-    - IP   - IP   - IndexArray
-    - IP   - IP   - IndexBufferObject
+    - DONE - IP   - ImmediateModeRenderer20
+    - DONE - IP   - IndexArray
+    - DONE - DONE - IndexBufferObject
     - IP   - IP   - IndexBufferObjectSubData
     - IP   - IP   - InstanceBufferObject
     - IP   - IP   - InstanceBufferObjectSubData
     - DONE - DONE - IVertexData
-    - IP   - IP   - KTXTTextureData
-    - IP   - IP   - MipMapGenerator
+    - DONE - IP   - KTXTTextureData
+    - DONE - IP   - MipMapGenerator
     - DONE - IP   - MipMapTextureData
     - DONE - IP   - PixmapTextureData
     - DONE - IP   - ShaderProgram
     - DONE - IP   - ShapeRenderer
     - DONE - DONE - VertexArray
-    - DONE - IP   - VertexBufferObject
-    - IP   - IP   - VertexBufferObjectSubData
-    - IP   - IP   - VertexBufferObjectWithVAO
+    - DONE - DONE - VertexBufferObject
+    - DONE - IP   - VertexBufferObjectSubData
+    - DONE - IP   - VertexBufferObjectWithVAO
 
     - The following do not need converting
 
@@ -373,9 +373,9 @@ GRAPHICS/OPENGL
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - IP   - GLBindings
-    - IP   - IP   - GLSetup
-    - IP   - IP   - IGL
+    - DONE - DONE - GLBindings
+    - DONE - DONE - GLSetup
+    - DONE - DONE - IGL
 
 GRAPHICS/PROFILING
 ------------------
@@ -385,7 +385,7 @@ GRAPHICS/PROFILING
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - BaseGLInterceptor
-    -      -      - GLInterceptor       Replace GL20Interceptor & GL30Interceptor with this.
+    - IP   - IP   - GLInterceptor       Replace GL20Interceptor & GL30Interceptor with this.
     - IP   - IP   - GLProfiler
     - IP   - IP   - IGLErrorListener
 

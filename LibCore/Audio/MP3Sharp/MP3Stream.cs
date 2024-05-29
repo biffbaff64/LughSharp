@@ -24,6 +24,7 @@
 
 
 using LughSharp.LibCore.Audio.MP3Sharp.Decoding;
+using Decoder = LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoder;
 
 namespace LughSharp.LibCore.Audio.MP3Sharp;
 

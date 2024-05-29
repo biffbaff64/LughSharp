@@ -80,7 +80,7 @@ public class PixmapTextureData : ITextureData
     /// whether the caller of <see cref="ITextureData.ConsumePixmap"/> should dispose the
     /// Pixmap returned by <see cref="ITextureData.ConsumePixmap"/>
     /// </returns>
-    bool ITextureData.DisposePixmap()
+    bool ITextureData.ShouldDisposePixmap()
     {
         return DisposePixmap;
     }

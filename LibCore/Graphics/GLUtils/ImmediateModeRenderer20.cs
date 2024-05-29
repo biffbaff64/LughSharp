@@ -35,6 +35,12 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class ImmediateModeRenderer20 : IImmediateModeRenderer
 {
+    public int MaxVertices { get; set; }
+    public int NumVertices { get; set; }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     private readonly int      _colorOffset;
     private readonly Mesh     _mesh;
     private readonly int      _normalOffset;
@@ -118,9 +124,6 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
             _ownsShader = false;
         }
     }
-
-    public int MaxVertices { get; set; }
-    public int NumVertices { get; set; }
 
     public void Begin( Matrix4 projModelView, int primitiveType )
     {
@@ -207,17 +210,6 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         NumVertices      = 0;
     }
 
-    /// <inheritdoc/>
-    public void Dispose()
-    {
-        if ( _ownsShader && ( _shader != null ) )
-        {
-            _shader.Dispose();
-        }
-
-        _mesh.Dispose();
-    }
-
     private VertexAttribute[] BuildVertexAttributes( bool hasNormals, bool hasColor, int numTexCoords )
     {
         var attribs = new List< VertexAttribute >
@@ -292,7 +284,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         {
             shader += "   v_col = "
                     + ShaderProgram.COLOR_ATTRIBUTE
-                    + ";\n" //
+                    + ";\n"
                     + "   v_col.a *= 255.0 / 254.0;\n";
         }
 
@@ -326,9 +318,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
             shader += "uniform sampler2D u_sampler" + i + ";\n";
         }
 
-        shader += "void main() {\n"
-                + "   gl_FragColor = "
-                + ( hasColors ? "v_col" : "vec4(1, 1, 1, 1)" );
+        shader += "void main() {\n   gl_FragColor = " + ( hasColors ? "v_col" : "vec4(1, 1, 1, 1)" );
 
         if ( numTexCoords > 0 )
         {
@@ -354,7 +344,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
 
     /// <summary>
     /// Returns a new instance of the default shader used by SpriteBatch
-    /// for GL2 when no shader is specified.
+    /// when no shader is specified.
     /// </summary>
     public static ShaderProgram CreateDefaultShader( bool hasNormals, bool hasColors, int numTexCoords )
     {
@@ -368,5 +358,16 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
         }
 
         return program;
+    }
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        if ( _ownsShader && ( _shader != null ) )
+        {
+            _shader.Dispose();
+        }
+
+        _mesh.Dispose();
     }
 }

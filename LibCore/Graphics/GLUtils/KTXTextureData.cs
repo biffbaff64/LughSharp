@@ -68,6 +68,9 @@ public class KtxTextureData : ITextureData, ICubemapData
     private int _pixelHeight = -1;
     private int _pixelWidth  = -1;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     public KtxTextureData( FileInfo? file, bool useMipMaps )
     {
         _file      = file;
@@ -90,7 +93,9 @@ public class KtxTextureData : ITextureData, ICubemapData
     /// </summary>
     public bool Managed { get; set; }
 
-    /// <returns> the <see cref="ITextureData.TextureDataType"/></returns>
+    /// <summary>
+    /// Returns the <see cref="ITextureData.TextureDataType"/>.
+    /// </summary>
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
     /// <returns> whether the TextureData is prepared or not.</returns>
@@ -296,7 +301,7 @@ public class KtxTextureData : ITextureData, ICubemapData
     /// whether the caller of <see cref="ITextureData.ConsumePixmap"/> should dispose the
     /// Pixmap returned by <see cref="ITextureData.ConsumePixmap"/>
     /// </returns>
-    public bool DisposePixmap()
+    public bool ShouldDisposePixmap()
     {
         return false;
     }
@@ -445,8 +450,6 @@ public class KtxTextureData : ITextureData, ICubemapData
         {
             var pixelWidth  = Math.Max( 1, _pixelWidth >> level );
             var pixelHeight = Math.Max( 1, _pixelHeight >> level );
-
-//            var pixelDepth  = Math.Max( 1, _pixelDepth >> level );
 
             _compressedData.Position = pos;
 

@@ -88,8 +88,9 @@ public sealed class Color
     /// the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
     /// </summary>
     /// <param name="rgba8888"> An integer color value in RGBA8888 format. </param>
-    public Color( int rgba8888 ) : this( ( uint ) rgba8888 )
+    public Color( int rgba8888 )
     {
+        Set( rgba8888 );
     }
 
     /// <summary>
@@ -99,7 +100,7 @@ public sealed class Color
     /// <param name="rgba8888"> An uint color value in RGBA8888 format. </param>
     public Color( uint rgba8888 )
     {
-        Set( rgba8888 );
+        Set( ( int ) rgba8888 );
     }
 
     /// <summary>
@@ -141,7 +142,7 @@ public sealed class Color
     /// <summary>
     /// Sets this colors components using the supplied r,g,b,a components.
     /// </summary>
-    /// <returns></returns>
+    /// <returns> This Color for chaining. </returns>
     public Color Set( float r, float g, float b, float a )
     {
         R = r;
@@ -157,7 +158,7 @@ public sealed class Color
     /// </summary>
     /// <param name="rgba"></param>
     /// <returns>This color for chaining.</returns>
-    public Color Set( uint rgba )
+    public Color Set( int rgba )
     {
         var color = this;
 
@@ -169,11 +170,11 @@ public sealed class Color
     }
 
     /// <summary>
-    /// Multiplies each of this colors components by the corresponding
-    /// components in the supplied Color.
+    /// Multiplies each of this colors components by the corresponding components
+    /// in the supplied Color.
     /// </summary>
-    /// <param name="color"></param>
-    /// <returns>This Color for chaining.</returns>
+    /// <param name="color"> The supplied color. </param>
+    /// <returns> This Color for chaining. </returns>
     public Color Mul( Color color )
     {
         R *= color.R;
@@ -252,7 +253,7 @@ public sealed class Color
     /// Subtracts the elements in the supplied Color from the equivalent
     /// elements in this Color.
     /// </summary>
-    /// <param name="color"></param>
+    /// <param name="color"> The color to subtract. </param>
     /// <returns>This Color for chaining.</returns>
     public Color Sub( Color color )
     {
@@ -314,8 +315,8 @@ public sealed class Color
     /// 'interpolationCoefficient' which is in the range [0,1].
     /// The result is stored in this color.
     /// </summary>
-    /// <param name="target"></param>
-    /// <param name="interpolationCoefficient"></param>
+    /// <param name="target"> The target color. </param>
+    /// <param name="interpolationCoefficient"> This value must be in the range [0, 1] </param>
     /// <returns>This Color for chaining.</returns>
     public Color Lerp( Color target, float interpolationCoefficient )
     {
@@ -344,8 +345,8 @@ public sealed class Color
     /// <param name="g">Green component</param>
     /// <param name="b">Blue component</param>
     /// <param name="a">Alpha component</param>
-    /// <param name="interpolationCoefficient"></param>
-    /// <returns>This Color for chaining.</returns>
+    /// <param name="interpolationCoefficient"> This value must be in the range [0, 1] </param>
+    /// <returns> This Color for chaining. </returns>
     public Color Lerp( float r, float g, float b, float a, float interpolationCoefficient )
     {
         if ( interpolationCoefficient is < 0.0f or > 1.0f )
@@ -450,6 +451,20 @@ public sealed class Color
         color.A = ( value & 0x000000ff ) / 255f;
     }
 
+//    /// <summary>
+//    /// Sets the Color components using the specified integer value in the format
+//    /// RGBA8888. This is inverse to the RGBA8888(r, g, b, a) method.
+//    /// </summary>
+//    /// <param name="color">The Color to be modified.</param>
+//    /// <param name="value">An integer color value in RGBA8888 format.</param>
+//    private void RGBA8888ToColor( ref Color color, uint value )
+//    {
+//        color.R = ( ( value & 0xff000000 ) >> 24 ) / 255f;
+//        color.G = ( ( value & 0x00ff0000 ) >> 16 ) / 255f;
+//        color.B = ( ( value & 0x0000ff00 ) >> 8 ) / 255f;
+//        color.A = ( value & 0x000000ff ) / 255f;
+//    }
+
     /// <summary>
     /// Converts a 32-bit ARGB8888 integer value to a Color object.
     /// </summary>
@@ -478,21 +493,6 @@ public sealed class Color
         color.B = ( ( c & 0x00ff0000 ) >>> 16 ) / 255f;
         color.G = ( ( c & 0x0000ff00 ) >>> 8 ) / 255f;
         color.R = ( c & 0x000000ff ) / 255f;
-    }
-
-    /// <summary>
-    /// Sets the Color components using the specified integer value
-    /// in the format RGBA8888. This is inverse to the
-    /// RGBA8888(r, g, b, a) method.
-    /// </summary>
-    /// <param name="color">The Color to be modified.</param>
-    /// <param name="value">An integer color value in RGBA8888 format.</param>
-    private void RGBA8888ToColor( ref Color color, uint value )
-    {
-        color.R = ( ( value & 0xff000000 ) >> 24 ) / 255f;
-        color.G = ( ( value & 0x00ff0000 ) >> 16 ) / 255f;
-        color.B = ( ( value & 0x0000ff00 ) >> 8 ) / 255f;
-        color.A = ( value & 0x000000ff ) / 255f;
     }
 
     /// <summary>

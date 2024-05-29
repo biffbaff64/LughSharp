@@ -128,7 +128,7 @@ public class FileTextureData : ITextureData
     /// whether the caller of <see cref="ITextureData.ConsumePixmap"/> should dispose the
     /// Pixmap returned by <see cref="ITextureData.ConsumePixmap"/>
     /// </returns>
-    public virtual bool DisposePixmap()
+    public virtual bool ShouldDisposePixmap()
     {
         return true;
     }

@@ -23,7 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Collections;
 using System.Text.RegularExpressions;
+using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.G2D;
@@ -92,7 +94,16 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class PixmapPacker : IDisposable
 {
-    // ------------------------------------------------------------------------
+    public int           PageWidth        { get;         set; }
+    public int           PageHeight       { get;         set; }
+    public Pixmap.Format PageFormat       { get;         set; }
+    public Color         TransparentColor { get;         set; } = new( 0f, 0f, 0f, 0f );
+    public bool          PackToTexture    { get;         set; }
+    public bool          DuplicateBorder  { get;         set; }
+    public int           Padding          { get;         set; }
+    public List< Page >  Pages            { get;         set; } = new();
+    public int           AlphaThreshold   { private get; set; }
+
     // ------------------------------------------------------------------------
 
     private readonly IPackStrategy _packStrategy;
@@ -186,16 +197,6 @@ public class PixmapPacker : IDisposable
         _stripWhitespaceY = stripWhitespaceY;
         _packStrategy     = packStrategy;
     }
-
-    public int           PageWidth        { get;         set; }
-    public int           PageHeight       { get;         set; }
-    public Pixmap.Format PageFormat       { get;         set; }
-    public Color         TransparentColor { get;         set; } = new( 0f, 0f, 0f, 0f );
-    public bool          PackToTexture    { get;         set; }
-    public bool          DuplicateBorder  { get;         set; }
-    public int           Padding          { get;         set; }
-    public List< Page >  Pages            { get;         set; } = new();
-    public int           AlphaThreshold   { private get; set; }
 
     /// <summary>
     /// Performs application-defined tasks associated with freeing,
@@ -412,17 +413,15 @@ public class PixmapPacker : IDisposable
             {
                 fixed ( void* ptr = &image.Pixels.BackingArray()[ 0 ] )
                 {
-                    Gdx.GL.glTexSubImage2D(
-                                           page.Texture!.GLTarget,
-                                           0,
-                                           rectX,
-                                           rectY,
-                                           rectWidth,
-                                           rectHeight,
-                                           image.GLFormat,
-                                           image.GLType,
-                                           ptr
-                                          );
+                    Gdx.GL.glTexSubImage2D( page.Texture!.GLTarget,
+                                            0,
+                                            rectX,
+                                            rectY,
+                                            rectWidth,
+                                            rectHeight,
+                                            image.GLFormat,
+                                            image.GLType,
+                                            ptr );
                 }
             }
         }
@@ -519,18 +518,23 @@ public class PixmapPacker : IDisposable
         return atlas;
     }
 
-    /**
-     * Updates the {@link TextureAtlas}, adding any new {@link Pixmap} instances packed since the last call to this method. This
-     * can be used to insert Pixmap instances on a separate thread via {@link #pack(String, Pixmap)} and update the TextureAtlas on
-     * the rendering thread. This method must be called on the rendering thread. After calling this method, disposing the packer
-     * will no longer dispose the page pixmaps. Has useIndexes on by default so as to keep backwards compatibility
-     */
+    /// <summary>
+    /// Updates the <see cref="TextureAtlas"/>, adding any new <see cref="Pixmap"/> instances
+    /// packed since the last call to this method. This can be used to insert Pixmap instances
+    /// on a separate thread via <see cref="Pack(String, Pixmap)"/> and update the TextureAtlas
+    /// on the rendering thread.
+    /// <para>
+    /// This method must be called on the rendering thread.
+    /// </para>
+    /// After calling this method, disposing the packer will no longer dispose the page pixmaps.
+    /// Has useIndexes on by default so as to keep backwards compatibility
+    /// </summary>
     public void UpdateTextureAtlas( TextureAtlas atlas,
                                     TextureFilter minFilter,
                                     TextureFilter magFilter,
                                     bool useMipMaps )
     {
-        UpdateTextureAtlas( atlas, minFilter, magFilter, useMipMaps, true );
+        UpdateTextureAtlas( atlas, minFilter, magFilter, useMipMaps, useIndexes: true );
     }
 
     /// <summary>
@@ -788,7 +792,7 @@ public class PixmapPacker : IDisposable
 
             Color c = new();
 
-            c.Set( ( uint ) raster.GetPixel( x, y ) );
+            c.Set( raster.GetPixel( x, y ) );
 
             rgba[ 0 ] = ( int ) ( c.R * 255 );
             rgba[ 1 ] = ( int ) ( c.G * 255 );
@@ -821,6 +825,13 @@ public class PixmapPacker : IDisposable
     [PublicAPI]
     public class Page
     {
+        public Pixmap         Image      { get; set; }
+        public Texture?       Texture    { get; set; }
+        public List< string > AddedRects { get; set; } = new();
+        public bool           Dirty      { get; set; }
+
+        public Dictionary< string, PixmapPackerRectangle? > Rects { get; set; } = new();
+
         /// <summary>
         /// Creates a new page filled with the color provided by the
         /// <see cref="PixmapPacker.TransparentColor"/>"
@@ -832,13 +843,6 @@ public class PixmapPacker : IDisposable
             Image.SetColor( packer.TransparentColor );
             Image.FillWithCurrentColor();
         }
-
-        public Dictionary< string, PixmapPackerRectangle? > Rects { get; set; } = new();
-
-        public Pixmap         Image      { get; set; }
-        public Texture?       Texture    { get; set; }
-        public List< string > AddedRects { get; set; } = new();
-        public bool           Dirty      { get; set; }
 
         /// <summary>
         /// Creates the texture if it has not been created, else reuploads the
@@ -861,23 +865,12 @@ public class PixmapPacker : IDisposable
             {
                 Texture = new Texture
                     (
-                     new PixmapTextureData(
-                                           Image,
-                                           Image.GetFormat(),
-                                           useMipMaps,
-                                           false,
-                                           true
-                                          )
+                     new PixmapTextureData( Image,
+                                            Image.GetFormat(),
+                                            useMipMaps,
+                                            false,
+                                            true )
                     );
-
-//                {
-//                    @Override
-//                    public void dispose ()
-//                    {
-//                        super.dispose();
-//                        image.dispose();
-//                    }
-//                };
 
                 Texture.SetFilter( minFilter, magFilter );
             }
@@ -895,55 +888,300 @@ public class PixmapPacker : IDisposable
     /// Does bin packing by inserting to the right or below previously packed
     /// rectangles. This is good at packing arbitrarily sized images.
     /// </summary>
-
-    //TODO:
     [PublicAPI]
     public class GuillotineStrategy : IPackStrategy
     {
-        public void Sort( List< Pixmap > images )
+        private IComparer< Pixmap >? _comparer;
+
+        public void Sort( List< Pixmap > pixmaps )
         {
+            _comparer ??= new PixmapComparer();
+
+            pixmaps.Sort( _comparer );
         }
 
-        /// <summary>
-        /// Returns the page the rectangle should be placed in and
-        /// modifies the specified rectangle position.
-        /// </summary>
         public Page Pack( PixmapPacker packer, string? name, RectangleShape rect )
         {
-            return null!;
+            GuillotinePage page;
+
+            if ( packer.Pages.Count == 0 )
+            {
+                // Add a page if empty.
+                page = new GuillotinePage( packer );
+                packer.Pages.Add( page );
+            }
+            else
+            {
+                // Always try to pack into the last page.
+                page = ( GuillotinePage ) packer.Pages.Peek();
+            }
+
+            var padding = packer.Padding;
+            
+            rect.Width  += padding;
+            rect.Height += padding;
+            
+            var node = Insert( page.Root, rect );
+            
+            if ( node == null )
+            {
+                // Didn't fit, pack into a new page.
+                page = new GuillotinePage( packer );
+            
+                packer.Pages.Add( page );
+                node = Insert( page.Root, rect );
+            }
+
+            node!.Full = true;
+            rect.Set( node.Rect.X, node.Rect.Y, node.Rect.Width - padding, node.Rect.Height - padding );
+
+            return page;
+        }
+
+        private Node? Insert( Node node, RectangleShape rect )
+        {
+            if ( node is { Full: false, LeftChild: not null, RightChild: not null } )
+            {
+                var newNode = Insert( node.LeftChild, rect );
+
+                // If null, try the right child
+                newNode ??= Insert( node.RightChild, rect );
+
+                return newNode;
+            }
+
+            if ( node.Full ) return null;
+
+            if ( ( Math.Abs( node.Rect.Width - rect.Width ) < MathUtils.FLOAT_TOLERANCE )
+              && ( Math.Abs( node.Rect.Height - rect.Height ) < MathUtils.FLOAT_TOLERANCE ) )
+            {
+                return node;
+            }
+            
+            if ( ( node.Rect.Width < rect.Width ) || ( node.Rect.Height < rect.Height ) ) return null;
+
+            node.LeftChild  = new Node();
+            node.RightChild = new Node();
+
+            var deltaWidth  = ( int ) node.Rect.Width - ( int ) rect.Width;
+            var deltaHeight = ( int ) node.Rect.Height - ( int ) rect.Height;
+            
+            if ( deltaWidth > deltaHeight )
+            {
+                node.LeftChild.Rect.X      = node.Rect.X;
+                node.LeftChild.Rect.Y      = node.Rect.Y;
+                node.LeftChild.Rect.Width  = rect.Width;
+                node.LeftChild.Rect.Height = node.Rect.Height;
+
+                node.RightChild.Rect.X      = node.Rect.X + rect.Width;
+                node.RightChild.Rect.Y      = node.Rect.Y;
+                node.RightChild.Rect.Width  = node.Rect.Width - rect.Width;
+                node.RightChild.Rect.Height = node.Rect.Height;
+            }
+            else
+            {
+                node.LeftChild.Rect.X      = node.Rect.X;
+                node.LeftChild.Rect.Y      = node.Rect.Y;
+                node.LeftChild.Rect.Width  = node.Rect.Width;
+                node.LeftChild.Rect.Height = rect.Height;
+
+                node.RightChild.Rect.X      = node.Rect.X;
+                node.RightChild.Rect.Y      = node.Rect.Y + rect.Height;
+                node.RightChild.Rect.Width  = node.Rect.Width;
+                node.RightChild.Rect.Height = node.Rect.Height - rect.Height;
+            }
+
+            return Insert( node.LeftChild, rect );
+        }
+
+        private class PixmapComparer : IComparer< Pixmap >
+        {
+            /// <inheritdoc />
+            public int Compare( Pixmap? x, Pixmap? y )
+            {
+                return Math.Max( x!.Width, x.Height ) - Math.Max( y!.Width, y.Height );
+            }
+        }
+
+        [PublicAPI]
+        public class Node
+        {
+            public Node?          LeftChild  { get; set; } = null;
+            public Node?          RightChild { get; set; } = null;
+            public RectangleShape Rect       { get; set; } = new();
+            public bool           Full       { get; set; } = false;
+        }
+
+        [PublicAPI]
+        public class GuillotinePage : Page
+        {
+            public Node Root { get; set; }
+
+            public GuillotinePage( PixmapPacker packer )
+                : base( packer )
+            {
+                Root = new Node
+                {
+                    Rect =
+                    {
+                        X      = packer.Padding,
+                        Y      = packer.Padding,
+                        Width  = packer.PageWidth - ( packer.Padding * 2 ),
+                        Height = packer.PageHeight - ( packer.Padding * 2 )
+                    }
+                };
+            }
         }
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Does bin packing by inserting in rows. This is good at
     /// packing images that have similar heights.
     /// </summary>
-
-    //TODO:
     [PublicAPI]
     public class SkylineStrategy : IPackStrategy
     {
+        private IComparer< Pixmap >? _comparer;
+
         public void Sort( List< Pixmap > images )
         {
+            _comparer ??= new PixmapComparer();
+
+            images.Sort( _comparer );
         }
 
-        /// <summary>
-        /// Returns the page the rectangle should be placed in and
-        /// modifies the specified rectangle position.
-        /// </summary>
         public Page Pack( PixmapPacker packer, string? name, RectangleShape rect )
         {
-            return null!;
+            var padding    = packer.Padding;
+            var pageWidth  = packer.PageWidth - ( padding * 2 );
+            var pageHeight = packer.PageHeight - ( padding * 2 );
+            var rectWidth  = ( int ) rect.Width + padding;
+            var rectHeight = ( int ) rect.Height + padding;
+
+            for ( int i = 0, n = packer.Pages.Count; i < n; i++ )
+            {
+                var                  page    = ( SkylinePage ) packer.Pages[ i ];
+                SkylinePage.RowSpec? bestRow = null;
+
+                // Fit in any row before the last.
+                for ( int ii = 0, nn = page.Rows.Count - 1; ii < nn; ii++ )
+                {
+                    var row = page.Rows[ ii ];
+
+                    if ( ( row.X + rectWidth ) >= pageWidth ) continue;
+                    if ( ( row.Y + rectHeight ) >= pageHeight ) continue;
+                    if ( rectHeight > row.Height ) continue;
+
+                    if ( ( bestRow == null ) || ( row.Height < bestRow.Height ) ) bestRow = row;
+                }
+
+                if ( bestRow == null )
+                {
+                    // Fit in last row, increasing Height.
+                    var row = page.Rows.Peek();
+
+                    if ( ( row.Y + rectHeight ) >= pageHeight ) continue;
+
+                    if ( ( row.X + rectWidth ) < pageWidth )
+                    {
+                        row.Height = Math.Max( row.Height, rectHeight );
+                        bestRow    = row;
+                    }
+                    else if ( ( row.Y + row.Height + rectHeight ) < pageHeight )
+                    {
+                        // Fit in new row.
+                        bestRow = new SkylinePage.RowSpec
+                        {
+                            Y      = row.Y + row.Height,
+                            Height = rectHeight
+                        };
+
+                        page.Rows.Add( bestRow );
+                    }
+                }
+
+                if ( bestRow != null )
+                {
+                    rect.X    =  bestRow.X;
+                    rect.Y    =  bestRow.Y;
+                    bestRow.X += rectWidth;
+
+                    return page;
+                }
+            }
+
+            // Fit in new page.
+            var skylinePage = new SkylinePage( packer );
+
+            packer.Pages.Add( skylinePage );
+
+            var rowSpec = new SkylinePage.RowSpec
+            {
+                X      = padding + rectWidth,
+                Y      = padding,
+                Height = rectHeight
+            };
+
+            skylinePage.Rows.Add( rowSpec );
+
+            rect.X = padding;
+            rect.Y = padding;
+
+            return skylinePage;
+        }
+
+        private class PixmapComparer : IComparer< Pixmap >
+        {
+            /// <inheritdoc/>
+            public int Compare( Pixmap? x, Pixmap? y )
+            {
+                if ( ReferenceEquals( x, y ) )
+                    return 0;
+
+                if ( ReferenceEquals( null, y ) )
+                    return 1;
+
+                if ( ReferenceEquals( null, x ) )
+                    return -1;
+
+                return x.IsDisposed.CompareTo( y.IsDisposed );
+            }
+        }
+
+        internal class SkylinePage : Page
+        {
+            internal readonly List< RowSpec > Rows = new();
+
+            internal SkylinePage( PixmapPacker packer )
+                : base( packer )
+            {
+            }
+
+            internal record RowSpec
+            {
+                internal int X      = 0;
+                internal int Y      = 0;
+                internal int Height = 0;
+            }
         }
     }
 
-    /// <summary>
-    /// </summary>
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-    //TODO:
     [PublicAPI]
     public class PixmapPackerRectangle : RectangleShape
     {
+        public int[]? Splits         { get; set; }
+        public int[]? Pads           { get; set; }
+        public int    OffsetX        { get; set; }
+        public int    OffsetY        { get; set; }
+        public int    OriginalWidth  { get; set; }
+        public int    OriginalHeight { get; set; }
+
         public PixmapPackerRectangle( int x, int y, int width, int height )
             : base( x, y, width, height )
         {
@@ -953,7 +1191,14 @@ public class PixmapPacker : IDisposable
             OriginalHeight = height;
         }
 
-        public PixmapPackerRectangle( int x, int y, int width, int height, int left, int top, int originalWidth, int originalHeight )
+        public PixmapPackerRectangle( int x,
+                                      int y,
+                                      int width,
+                                      int height,
+                                      int left,
+                                      int top,
+                                      int originalWidth,
+                                      int originalHeight )
             : base( x, y, width, height )
         {
             OffsetX        = left;
@@ -961,14 +1206,10 @@ public class PixmapPacker : IDisposable
             OriginalWidth  = originalWidth;
             OriginalHeight = originalHeight;
         }
-
-        public int[]? Splits         { get; set; }
-        public int[]? Pads           { get; set; }
-        public int    OffsetX        { get; set; }
-        public int    OffsetY        { get; set; }
-        public int    OriginalWidth  { get; set; }
-        public int    OriginalHeight { get; set; }
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Choose the page and location for each rectangle.

@@ -72,7 +72,7 @@ public partial class Decoder
 
         if ( eq != null )
         {
-            _equalizer.FromEqualizer = eq;
+            _equalizer.SetFromEqualizer = eq;
         }
     }
 
@@ -92,7 +92,7 @@ public partial class Decoder
             // Ensure _equalizer is not null and set its FromEqualizer property to the new value
             if ( _equalizer != null )
             {
-                _equalizer.FromEqualizer = value;
+                _equalizer.SetFromEqualizer = value;
 
                 // Get the band factors from the new equalizer
                 var factors = _equalizer.BandFactors;

@@ -330,7 +330,7 @@ public abstract class GLTexture : IDisposable
         }
 
         var pixmap        = data.ConsumePixmap();
-        var disposePixmap = data.DisposePixmap();
+        var disposePixmap = data.ShouldDisposePixmap();
 
         if ( pixmap == null )
         {
@@ -344,7 +344,7 @@ public abstract class GLTexture : IDisposable
             tmp.Blending = Pixmap.BlendTypes.None;
             tmp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
 
-            if ( data.DisposePixmap() )
+            if ( data.ShouldDisposePixmap() )
             {
                 pixmap.Dispose();
             }

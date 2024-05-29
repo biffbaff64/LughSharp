@@ -40,6 +40,9 @@ public class GLVersion : GDXVersion
         WebGL,
 
         // --------------------------------------
+        Vulkan,
+
+        // --------------------------------------
         // Sub-Categories for OpenGL
         GL10,
         GL20,
@@ -47,8 +50,14 @@ public class GLVersion : GDXVersion
         GL40
     }
 
-    private const string TAG = "GLVersion";
+    // ------------------------------------------------------------------------
 
+    public string? VendorString   { get; set; }
+    public string? RendererString { get; set; }
+    public GLType  GLtype         { get; set; }
+
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// </summary>
     /// <param name="appType"></param>
@@ -65,7 +74,7 @@ public class GLVersion : GDXVersion
             IApplication.ApplicationType.Android   => GLType.GLES,
             IApplication.ApplicationType.DesktopGL => GLType.OpenGL,
             IApplication.ApplicationType.WebGL     => GLType.WebGL,
-            _                                      => GLType.None
+            var _                                  => GLType.None
         };
 
         if ( GLtype == GLType.GLES )
@@ -95,10 +104,6 @@ public class GLVersion : GDXVersion
         VendorString   = vendorString;
         RendererString = rendererString;
     }
-
-    public string? VendorString   { get; set; }
-    public string? RendererString { get; set; }
-    public GLType  GLtype         { get; set; }
 
     /// <summary>
     /// </summary>
@@ -161,8 +166,8 @@ public class GLVersion : GDXVersion
     }
 
     /// <summary>
+    /// Returns a string with the current GL connection data.
     /// </summary>
-    /// <returns> a string with the current GL connection data </returns>
     public string DebugVersionString()
     {
         return $"Type: {GLtype}\n"

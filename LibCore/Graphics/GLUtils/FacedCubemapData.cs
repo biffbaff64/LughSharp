@@ -136,7 +136,7 @@ public class FacedCubemapData : ICubemapData
             else
             {
                 var pixmap        = _data[ i ]!.ConsumePixmap()!;
-                var disposePixmap = _data[ i ]!.DisposePixmap();
+                var disposePixmap = _data[ i ]!.ShouldDisposePixmap();
 
                 if ( _data[ i ]!.GetFormat() != pixmap.GetFormat() )
                 {
@@ -145,7 +145,7 @@ public class FacedCubemapData : ICubemapData
                     tmp.Blending = Pixmap.BlendTypes.None;
                     tmp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
 
-                    if ( _data[ i ]!.DisposePixmap() )
+                    if ( _data[ i ]!.ShouldDisposePixmap() )
                     {
                         pixmap.Dispose();
                     }

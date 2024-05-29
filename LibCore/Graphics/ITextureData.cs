@@ -96,7 +96,7 @@ public interface ITextureData
     /// Returns whether the caller of <see cref="ConsumePixmap()"/> should
     /// dispose the Pixmap returned by <see cref="ConsumePixmap()"/>.
     /// </summary>
-    public bool DisposePixmap();
+    public bool ShouldDisposePixmap();
 
     /// <summary>
     /// Uploads the pixel data to the OpenGL ES texture. The caller must bind an

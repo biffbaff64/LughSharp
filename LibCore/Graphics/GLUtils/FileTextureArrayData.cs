@@ -130,7 +130,7 @@ public class FileTextureArrayData : ITextureArrayData
             {
                 var texData       = _textureData[ i ];
                 var pixmap        = texData?.ConsumePixmap();
-                var disposePixmap = texData?.DisposePixmap() ?? false;
+                var disposePixmap = texData?.ShouldDisposePixmap() ?? false;
 
                 Debug.Assert( texData != null, nameof( texData ) + " != null" );
                 Debug.Assert( pixmap != null, nameof( pixmap ) + " != null" );
@@ -142,7 +142,7 @@ public class FileTextureArrayData : ITextureArrayData
                     temp.Blending = Pixmap.BlendTypes.None;
                     temp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
 
-                    if ( texData.DisposePixmap() )
+                    if ( texData.ShouldDisposePixmap() )
                     {
                         pixmap.Dispose();
                     }

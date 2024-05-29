@@ -27,6 +27,19 @@ using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
+/// <summary>
+/// An IndexBufferObject wraps OpenGL's index buffer functionality to be used in conjunction
+/// with VBOs.
+/// <para>
+/// You can also use this to store indices for vertex arrays. Do not call <see cref="Bind()"/>
+/// or <see cref="Unbind()"/> in this case but rather use <see cref="GetBuffer()"/> to use the
+/// buffer directly with glDrawElements. You must also create the IndexBufferObject with the
+/// second constructor and specify isDirect as true as glDrawElements in conjunction with vertex arrays needs direct buffers.
+/// </para>
+/// <para>
+/// VertexBufferObjects must be disposed via the {@link #dispose()} method when no longer needed
+/// </para>
+/// </summary>
 [PublicAPI]
 public class IndexBufferObject : IIndexData
 {
@@ -41,29 +54,53 @@ public class IndexBufferObject : IIndexData
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Constructs a new IndexBufferObject, setting <see cref="_usage"/> to
+    /// <see cref="IGL.GL_STATIC_DRAW"/> and <see cref="maxIndices"/> to the
+    /// given value.
+    /// </summary>
     public IndexBufferObject( int maxIndices )
         : this( true, maxIndices )
     {
     }
 
+    /// <summary>
+    /// Constructs a new IndexBufferObject.
+    /// </summary>
+    /// <param name="isStatic">
+    /// If true, the buffer will be created with static draw usage, otherwise
+    /// with dynamic draw usage.
+    /// </param>
+    /// <param name="maxIndices">The maximum number of indices that this buffer can hold.</param>
     public IndexBufferObject( bool isStatic, int maxIndices )
     {
+        // Determine if the buffer is empty based on the maxIndices parameter.
         _empty = maxIndices == 0;
 
+        // If the buffer is empty, set maxIndices to 1 to avoid creating a zero-sized buffer.
         if ( _empty )
         {
             maxIndices = 1;
         }
 
+        // Create a new byte buffer to hold the indices. Each index is a short (2 bytes).
         _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
-        _buffer     = _byteBuffer.AsShortBuffer();
+
+        // Create a view of the byte buffer as a short buffer.
+        _buffer = _byteBuffer.AsShortBuffer();
+
+        // Set the ownership flag to true, indicating that this object owns the buffer.
         _ownsBuffer = true;
 
+        // Flip the buffers to prepare them for reading.
         _buffer.Flip();
         _byteBuffer.Flip();
 
+        // Generate a new OpenGL buffer handle.
         _bufferHandle = ( int ) Gdx.GL.glGenBuffer();
-        _usage        = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
+
+        // Set the usage flag for the buffer based on whether it is static or dynamic.
+        _usage = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;
     }
 
     /// <inheritdoc/>

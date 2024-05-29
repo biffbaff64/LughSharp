@@ -35,10 +35,6 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 [PublicAPI]
 public class Equalizer
 {
-    private const int BANDS = 32;
-
-    private readonly float[] _settings = new float[ BANDS ];
-
     /// <summary>
     /// Equalizer setting to denote that a given band will not be
     /// present in the output signal.
@@ -47,6 +43,12 @@ public class Equalizer
 
     public readonly static Equalizer PassThruEq = new();
 
+    private const int BANDS = 32;
+
+    private readonly float[] _settings = new float[ BANDS ];
+
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// Creates a new Equalizer instance.
     /// </summary>
@@ -54,9 +56,13 @@ public class Equalizer
     {
     }
 
+    /// <summary>
+    /// Creates a new Equalizer instance, using the supplied float[] array
+    /// to initialise this instances equalizer bands.
+    /// </summary>
     public Equalizer( float[] settings )
     {
-        FromFloatArray = settings;
+        SetFromFloatArray = settings;
     }
 
     public Equalizer( EQFunction eq )
@@ -64,7 +70,7 @@ public class Equalizer
         FromEQFunction = eq;
     }
 
-    public float[] FromFloatArray
+    public float[] SetFromFloatArray
     {
         set
         {
@@ -83,13 +89,13 @@ public class Equalizer
     /// Sets the bands of this equalizer to the value the bands of another
     /// equalizer. Bands that are not present in both equalizers are ignored.
     /// </summary>
-    public virtual Equalizer FromEqualizer
+    public virtual Equalizer SetFromEqualizer
     {
         set
         {
             if ( value != this )
             {
-                FromFloatArray = value._settings;
+                SetFromFloatArray = value._settings;
             }
         }
     }
@@ -174,6 +180,9 @@ public class Equalizer
         return eq;
     }
 
+    /// <summary>
+    /// Returns the Equalizer band limit for the specified band.
+    /// </summary>
     private static float Limit( float eq )
     {
         return eq switch
@@ -181,14 +190,14 @@ public class Equalizer
             BAND_NOT_PRESENT => eq,
             > 1.0f           => 1.0f,
             < -1.0f          => -1.0f,
-            _                => eq
+            var _            => eq
         };
     }
 
     /// <summary>
-    /// Converts an equalizer band setting to a sample factor.
-    /// The factor is determined by the function f = 2^n where
-    /// n is the equalizer band setting in the range [-1.0,1.0].
+    /// Converts an equalizer band setting to a sample factor. The factor is
+    /// determined by the function f = 2^n where n is the equalizer band setting
+    /// in the range [-1.0,1.0].
     /// </summary>
     public static float GetBandFactor( float eq )
     {
@@ -202,7 +211,9 @@ public class Equalizer
         return f;
     }
 
+    // ------------------------------------------------------------------------
 
+    [PublicAPI]
     public abstract class EQFunction
     {
         /// <summary>

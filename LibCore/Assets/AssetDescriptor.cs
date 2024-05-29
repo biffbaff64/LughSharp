@@ -28,6 +28,26 @@ namespace LughSharp.LibCore.Assets;
 [PublicAPI]
 public class AssetDescriptor
 {
+    /// <summary>
+    /// The Type of asset ( Texture, Pixmap, Audio, Atlas etc ).
+    /// </summary>
+    public Type AssetType { get; set; }
+
+    /// <summary>
+    /// The path to the asset file.
+    /// </summary>
+    public string Filepath { get; set; }
+
+    /// <summary>
+    /// Optional parameters for the asset loader.
+    /// </summary>
+    public AssetLoaderParameters? Parameters { get; set; }
+
+    /// <summary>
+    /// The file information for the asset.
+    /// </summary>
+    public FileInfo File { get; set; }
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -51,7 +71,7 @@ public class AssetDescriptor
     /// </summary>
     /// <param name="filepath"> The full path, including filename, of the asset. </param>
     /// <param name="assetType"> The Type of asset ( Texture, Pixmap, Audio, Atlas etc ). </param>
-    /// <param name="parameters"> The <see cref="AssetLoaderParameters"/> to use. </param>
+    /// <param name="parameters">Optional parameters for the asset loader.</param>
     public AssetDescriptor( string? filepath, Type assetType, AssetLoaderParameters? parameters )
     {
         ArgumentNullException.ThrowIfNull( filepath );
@@ -63,25 +83,18 @@ public class AssetDescriptor
     }
 
     /// <summary>
-    /// Creates a new AssetDescriptor object.
+    /// Initializes a new instance of the <see cref="AssetDescriptor"/> class.
     /// </summary>
-    /// <param name="file"></param>
-    /// <param name="assetType"></param>
-    /// <param name="parameters">The loader parameters to use. Can be null.</param>
-    public AssetDescriptor( FileInfo file,
-                            Type assetType,
-                            AssetLoaderParameters? parameters = null )
+    /// <param name="file"> The file information for the asset. </param>
+    /// <param name="assetType"> The Type of asset ( Texture, Pixmap, Audio, Atlas etc ). </param>
+    /// <param name="parameters"> Optional parameters for the asset loader. </param>
+    public AssetDescriptor( FileInfo file, Type? assetType, AssetLoaderParameters? parameters = null )
     {
-        AssetType  = assetType;
+        File       = file ?? throw new ArgumentNullException( nameof( file ) );
+        AssetType  = assetType ?? throw new ArgumentNullException( nameof( assetType ) );
         Filepath   = file.FullName.Replace( '\\', '/' );
         Parameters = parameters;
-        File       = file;
     }
-
-    public Type                   AssetType  { get; set; }
-    public string                 Filepath   { get; set; }
-    public AssetLoaderParameters? Parameters { get; set; }
-    public FileInfo               File       { get; set; }
 
     /// <inheritdoc/>
     public override string ToString()

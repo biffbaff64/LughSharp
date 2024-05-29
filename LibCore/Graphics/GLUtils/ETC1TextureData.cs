@@ -86,7 +86,7 @@ public class ETC1TextureData : ITextureData
     }
 
     /// <inheritdoc/>
-    public bool DisposePixmap()
+    public bool ShouldDisposePixmap()
     {
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
     }

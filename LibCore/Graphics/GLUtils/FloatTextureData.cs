@@ -171,7 +171,7 @@ public class FloatTextureData : ITextureData
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
     }
 
-    public bool DisposePixmap()
+    public bool ShouldDisposePixmap()
     {
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
     }

@@ -25,7 +25,8 @@
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
-public class IndexArray : IIndexData, IDisposable
+[PublicAPI]
+public class IndexArray : IIndexData
 {
     // used to work around bug: https://android-review.googlesource.com/#/c/73175/
     private readonly bool        _empty;
@@ -42,7 +43,8 @@ public class IndexArray : IIndexData, IDisposable
 
         if ( _empty )
         {
-            maxIndices = 1; // avoid allocating a zero-sized buffer because of a bug in Android's ART < Android 5.0
+            // avoid allocating a zero-sized buffer because of a bug in Android's ART < Android 5.0
+            maxIndices = 1; 
         }
 
         _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
@@ -64,9 +66,8 @@ public class IndexArray : IIndexData, IDisposable
     public int NumMaxIndices => _empty ? 0 : _buffer.Capacity;
 
     /// <summary>
-    /// Sets the indices of this IndexArray, discarding the old indices.
-    /// The count must equal the number of indices to be copied to
-    /// this IndexArray.
+    /// Sets the indices of this IndexArray, discarding the old indices. The count must
+    /// equal the number of indices to be copied to this IndexArray.
     /// <para>
     /// This can be called in between calls to <see cref="Bind()"/> and
     /// <see cref="Unbind()"/>. The index data will be updated instantly.
@@ -118,39 +119,36 @@ public class IndexArray : IIndexData, IDisposable
     /// If you need immediate uploading use <see cref="SetIndices(short[], int, int)"/>.
     /// </summary>
     /// <returns> the underlying short buffer. </returns>
-    public ShortBuffer GetBuffer( bool forWriting )
+    public virtual ShortBuffer GetBuffer( bool forWriting )
     {
         return _buffer;
     }
 
     /// <summary>
-    /// Binds this IndexArray for rendering with glDrawElements.
-    /// Default method is empty.
+    /// Binds this IndexArray for rendering with glDrawElements. Default method is empty.
     /// </summary>
     public virtual void Bind()
     {
     }
 
     /// <summary>
-    /// Unbinds this IndexArray.
-    /// Default method is empty.
+    /// Unbinds this IndexArray. Default method is empty.
     /// </summary>
     public virtual void Unbind()
     {
     }
 
     /// <summary>
-    /// Invalidates the IndexArray so a new OpenGL buffer handle is
-    /// created. Use this in case of a context loss.
-    /// Default method is empty.
+    /// Invalidates the IndexArray so a new OpenGL buffer handle is created.
+    /// Use this in case of a context loss. Default method is empty.
     /// </summary>
     public virtual void Invalidate()
     {
     }
 
     /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
+    /// Performs application-defined tasks associated with freeing, releasing,
+    /// or resetting unmanaged resources.
     /// </summary>
     public void Dispose()
     {

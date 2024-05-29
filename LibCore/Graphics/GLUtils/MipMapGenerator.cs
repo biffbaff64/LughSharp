@@ -30,11 +30,13 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class MipMapGenerator
 {
+    public static bool UseHwMipMap { get; set; } = true;
+
+    // ------------------------------------------------------------------------
+    
     private MipMapGenerator()
     {
     }
-
-    public static bool UseHwMipMap { get; set; } = true;
 
     /// <summary>
     /// Sets the image data of the <see cref="Texture"/> based on the <see cref="Pixmap"/>.
