@@ -40,7 +40,7 @@ public static class Gdx
     private static IFiles?       _files    = null;
     private static IGraphics?    _graphics = null;
     private static INet?         _net      = null;
-    private static GLBindings?   _igl      = null;
+    private static IGLBindings?  _igl      = null;
 
     // ------------------------------------------------------------------------
 
@@ -141,6 +141,18 @@ public static class Gdx
         set => _graphics = value;
     }
 
+    /// <inheritdoc cref="IGLBindings"/>
+    public static IGLBindings GL
+    {
+        get
+        {
+            GdxRuntimeException.ThrowIfNull( _igl );
+
+            return _igl;
+        }
+        set => _igl = value;
+    }
+
     /// <inheritdoc cref="INet"/>
     public static INet Net
     {
@@ -151,16 +163,5 @@ public static class Gdx
             return _net;
         }
         set => _net = value;
-    }
-
-    public static GLBindings GL
-    {
-        get
-        {
-            GdxRuntimeException.ThrowIfNull( _igl );
-
-            return _igl;
-        }
-        set => _igl = value;
     }
 }

@@ -58,6 +58,15 @@ public class Button : Table, IDisableable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Creates a button without setting the style or size.
+    /// At least a style must be set before using this button.
+    /// </summary>
+    public Button()
+    {
+        Initialise();
+    }
+
     public Button( Skin skin ) : base( skin )
     {
         Initialise();
@@ -94,15 +103,6 @@ public class Button : Table, IDisableable
         ConstructorHelper( style );
     }
 
-    /// <summary>
-    /// Creates a button without setting the style or size.
-    /// At least a style must be set before using this button.
-    /// </summary>
-    public Button()
-    {
-        Initialise();
-    }
-
     public Button( IDrawable? up )
         : this( new ButtonStyle( up, null, null ) )
     {
@@ -127,7 +127,7 @@ public class Button : Table, IDisableable
     /// Returns the button's style. Modifying the returned style may not have an
     /// effect until <see cref="Style"/> set() is called.
     /// </summary>
-    public ButtonStyle? Style
+    public virtual ButtonStyle? Style
     {
         get => _style;
 
@@ -148,9 +148,6 @@ public class Button : Table, IDisableable
         Style = style;
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
 
     private void Initialise()
     {
@@ -275,6 +272,7 @@ public class Button : Table, IDisableable
         return Style?.Up;
     }
 
+    /// <inheritdoc/>
     public override void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
@@ -332,20 +330,72 @@ public class Button : Table, IDisableable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public void Toggle()
+    #region properties
+
+    public          void  Toggle()    => SetChecked( !IsChecked );
+    public          bool  IsPressed() => ClickListener!.VisualPressed;
+    public          bool  IsOver()    => ClickListener!.Over;
+    public override float MinWidth    => PrefWidth;
+    public override float MinHeight   => PrefHeight;
+
+    public ButtonClickListener?   ClickListener { get; set; }
+    public bool                   IsChecked     { get; private set; }
+    public bool                   IsDisabled    { get; set; }
+    public ButtonGroup< Button >? ButtonGroup   { get; set; }
+
+    /// <inheritdoc/>
+    public override float PrefWidth
     {
-        SetChecked( !IsChecked );
+        get
+        {
+            var width = GetPrefWidth();
+
+            if ( Style?.Up != null )
+            {
+                width = Math.Max( width, Style.Up.MinWidth );
+            }
+
+            if ( Style?.Down != null )
+            {
+                width = Math.Max( width, Style.Down.MinWidth );
+            }
+
+            if ( Style?.Checked != null )
+            {
+                width = Math.Max( width, Style.Checked.MinWidth );
+            }
+
+            return width;
+        }
     }
 
-    public bool IsPressed()
+    /// <inheritdoc/>
+    public override float PrefHeight
     {
-        return ClickListener!.VisualPressed;
+        get
+        {
+            var height = GetPrefHeight();
+
+            if ( Style?.Up != null )
+            {
+                height = Math.Max( height, Style.Up.MinHeight );
+            }
+
+            if ( Style?.Down != null )
+            {
+                height = Math.Max( height, Style.Down.MinHeight );
+            }
+
+            if ( Style?.Checked != null )
+            {
+                height = Math.Max( height, Style.Checked!.MinHeight );
+            }
+
+            return height;
+        }
     }
 
-    public bool IsOver()
-    {
-        return ClickListener!.Over;
-    }
+    #endregion properties
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -380,15 +430,32 @@ public class Button : Table, IDisableable
     [PublicAPI]
     public class ButtonStyle
     {
+        public IDrawable? Up               { get; set; }
+        public IDrawable? Down             { get; set; }
+        public IDrawable? Over             { get; set; }
+        public IDrawable? Focused          { get; set; }
+        public IDrawable? Disabled         { get; set; }
+        public IDrawable? Checked          { get; set; }
+        public IDrawable? CheckedOver      { get; set; }
+        public IDrawable? CheckedDown      { get; set; }
+        public IDrawable? CheckedFocused   { get; set; }
+        public float      PressedOffsetX   { get; set; }
+        public float      PressedOffsetY   { get; set; }
+        public float      UnpressedOffsetX { get; set; }
+        public float      UnpressedOffsetY { get; set; }
+        public float      CheckedOffsetX   { get; set; }
+        public float      CheckedOffsetY   { get; set; }
+
+        // --------------------------------------------------------------------
+
         public ButtonStyle()
         {
         }
 
         public ButtonStyle( IDrawable? up, IDrawable? down, IDrawable? ischecked )
         {
-            Up   = up;
-            Down = down;
-
+            Up      = up;
+            Down    = down;
             Checked = ischecked;
         }
 
@@ -410,86 +477,5 @@ public class Button : Table, IDisableable
             CheckedOffsetX   = style.CheckedOffsetX;
             CheckedOffsetY   = style.CheckedOffsetY;
         }
-
-        public IDrawable? Up               { get; set; }
-        public IDrawable? Down             { get; set; }
-        public IDrawable? Over             { get; set; }
-        public IDrawable? Focused          { get; set; }
-        public IDrawable? Disabled         { get; set; }
-        public IDrawable? Checked          { get; set; }
-        public IDrawable? CheckedOver      { get; set; }
-        public IDrawable? CheckedDown      { get; set; }
-        public IDrawable? CheckedFocused   { get; set; }
-        public float      PressedOffsetX   { get; set; }
-        public float      PressedOffsetY   { get; set; }
-        public float      UnpressedOffsetX { get; set; }
-        public float      UnpressedOffsetY { get; set; }
-        public float      CheckedOffsetX   { get; set; }
-        public float      CheckedOffsetY   { get; set; }
     }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    #region properties
-
-    public override float PrefWidth
-    {
-        get
-        {
-            var width = GetPrefWidth();
-
-            if ( Style?.Up != null )
-            {
-                width = Math.Max( width, Style.Up.MinWidth );
-            }
-
-            if ( Style?.Down != null )
-            {
-                width = Math.Max( width, Style.Down.MinWidth );
-            }
-
-            if ( Style?.Checked != null )
-            {
-                width = Math.Max( width, Style.Checked.MinWidth );
-            }
-
-            return width;
-        }
-    }
-
-    public override float PrefHeight
-    {
-        get
-        {
-            var height = GetPrefHeight();
-
-            if ( Style?.Up != null )
-            {
-                height = Math.Max( height, Style.Up.MinHeight );
-            }
-
-            if ( Style?.Down != null )
-            {
-                height = Math.Max( height, Style.Down.MinHeight );
-            }
-
-            if ( Style?.Checked != null )
-            {
-                height = Math.Max( height, Style.Checked!.MinHeight );
-            }
-
-            return height;
-        }
-    }
-
-    public override float MinWidth  => PrefWidth;
-    public override float MinHeight => PrefHeight;
-
-    public ButtonClickListener?   ClickListener { get; set; }
-    public bool                   IsChecked     { get; private set; }
-    public bool                   IsDisabled    { get; set; }
-    public ButtonGroup< Button >? ButtonGroup   { get; set; }
-
-    #endregion properties
 }

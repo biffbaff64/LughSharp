@@ -25,6 +25,7 @@
 
 using System.Drawing;
 using System.Text;
+using LughSharp.LibCore.Input;
 using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
 using LughSharp.LibCore.Utils.Exceptions;
@@ -1402,7 +1403,7 @@ public class TextField : Widget
             }
 
             var repeat  = false;
-            var ctrl    = UIUtils.Ctrl();
+            var ctrl    = InputUtils.CtrlKey();
             var jump    = ctrl && !_tf._passwordMode;
             var handled = true;
 
@@ -1448,7 +1449,7 @@ public class TextField : Widget
                 }
             }
 
-            if ( UIUtils.Shift() )
+            if ( InputUtils.ShiftKey() )
             {
                 switch ( keycode )
                 {
@@ -1613,7 +1614,7 @@ public class TextField : Widget
 
             if ( CheckFocusTraversal( character ) )
             {
-                _tf.Next( UIUtils.Shift() );
+                _tf.Next( InputUtils.ShiftKey() );
             }
             else
             {

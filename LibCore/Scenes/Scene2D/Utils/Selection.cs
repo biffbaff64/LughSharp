@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Input;
 using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 
@@ -80,7 +81,7 @@ public class Selection< T > : IDisableable, IDisposable
 
         try
         {
-            if ( ( Toggle || UIUtils.Ctrl() ) && Selected.Contains( item ) )
+            if ( ( Toggle || InputUtils.CtrlKey() ) && Selected.Contains( item ) )
             {
                 if ( Required && ( Selected.Count == 1 ) )
                 {
@@ -94,7 +95,7 @@ public class Selection< T > : IDisableable, IDisposable
             {
                 var modified = false;
 
-                if ( !Multiple || ( !Toggle && !UIUtils.Ctrl() ) )
+                if ( !Multiple || ( !Toggle && !InputUtils.CtrlKey() ) )
                 {
                     if ( ( Selected.Count == 1 ) && Selected.Contains( item ) )
                     {

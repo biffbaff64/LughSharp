@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Input;
 using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
 using LughSharp.LibCore.Utils.Exceptions;
@@ -463,7 +464,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
 
         if ( ( node == OverNode )
           && ( Gdx.App.AppType == IApplication.ApplicationType.DesktopGL )
-          && ( !_selection.Multiple || ( !UIUtils.Ctrl() && !UIUtils.Shift() ) ) )
+          && ( !_selection.Multiple || ( !InputUtils.CtrlKey() && !InputUtils.ShiftKey() ) ) )
         {
             var mouseX = ScreenToLocalCoordinates( _tmp.Set( Gdx.Input.GetX(), 0 ) ).X;
 
@@ -1355,14 +1356,14 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
                 return;
             }
 
-            if ( Tree._selection.Multiple && Tree._selection.NotEmpty() && UIUtils.Shift() )
+            if ( Tree._selection.Multiple && Tree._selection.NotEmpty() && InputUtils.ShiftKey() )
             {
                 // Select range (shift).
                 Tree.RangeStart ??= node;
 
                 var rangeStart = Tree.RangeStart;
 
-                if ( !UIUtils.Ctrl() )
+                if ( !InputUtils.CtrlKey() )
                 {
                     Tree._selection.Clear();
                 }
@@ -1391,7 +1392,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
                 return;
             }
 
-            if ( ( node.NodeChildren?.Count > 0 ) && ( !Tree._selection.Multiple || !UIUtils.Ctrl() ) )
+            if ( ( node.NodeChildren?.Count > 0 ) && ( !Tree._selection.Multiple || !InputUtils.CtrlKey() ) )
             {
                 // Toggle expanded if left of icon.
                 var rowX = node.Actor?.X;

@@ -30,8 +30,6 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class Cell : IPoolable
 {
-    // ------------------------------------------------------------------------
-
     private const float ZEROF   = 0f;
     private const float ONEF    = 1f;
     private const int   ZEROI   = 0;
@@ -42,25 +40,7 @@ public class Cell : IPoolable
     private const int   LEFTI   = Align.LEFT;
     private const int   RIGHTI  = Align.RIGHT;
 
-    private Cell?   _defaults;
-    private IFiles? _files;
-
     // ------------------------------------------------------------------------
-
-    /// <summary>
-    /// Default constructor.
-    /// </summary>
-    public Cell()
-    {
-        CellAboveIndex = -1;
-
-        var defaults = GetCellDefaults();
-
-        if ( defaults != null )
-        {
-            Set( defaults );
-        }
-    }
 
     public Value? MinWidth    { get; set; }
     public Value? MinHeight   { get; set; }
@@ -102,7 +82,27 @@ public class Cell : IPoolable
     public float  ComputedPadBottom { get; set; }
     public float  ComputedPadRight  { get; set; }
 
-    // -------------------- From IPoolable.cs --------------------
+    // ------------------------------------------------------------------------
+
+    private Cell?   _defaults;
+    private IFiles? _files;
+
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    public Cell()
+    {
+        CellAboveIndex = -1;
+
+        var defaults = GetCellDefaults();
+
+        if ( defaults != null )
+        {
+            Set( defaults );
+        }
+    }
 
     /// <summary>
     /// Reset state so the cell can be reused, setting all constraints to
@@ -506,7 +506,7 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    /// If the maxWidth is 0, no maximum width is used. */
+    /// If the maxWidth is 0, no maximum width is used.
     /// </summary>
     /// <param name="maxWidth"></param>
     /// <returns></returns>
@@ -850,7 +850,7 @@ public class Cell : IPoolable
     /// <summary>
     /// Sets <see cref="FillX"/> and <see cref="FillY"/> to <see cref="ONEF"/>
     /// </summary>
-    /// <returns>This Cell for chaining</returns>
+    /// <returns> This Cell for chaining </returns>
     public Cell SetFill()
     {
         FillX = ONEF;
@@ -860,10 +860,9 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    /// Sets <see cref="FillX"/> to <see cref="ONEF"/>.
-    /// Leaves <see cref="FillY"/> unchanged.
+    /// Sets <see cref="FillX"/> to <see cref="ONEF"/>. Leaves <see cref="FillY"/> unchanged.
     /// </summary>
-    /// <returns>This Cell for chaining</returns>
+    /// <returns> This Cell for chaining </returns>
     public Cell SetFillX()
     {
         FillX = ONEF;
@@ -872,10 +871,9 @@ public class Cell : IPoolable
     }
 
     /// <summary>
-    /// Sets <see cref="FillY"/> to <see cref="ONEF"/>.
-    /// Leaves <see cref="FillX"/> unchanged.
+    /// Sets <see cref="FillY"/> to <see cref="ONEF"/>. Leaves <see cref="FillX"/> unchanged.
     /// </summary>
-    /// <returns>This Cell for chaining</returns>
+    /// <returns> This Cell for chaining </returns>
     public Cell SetFillY()
     {
         FillY = ONEF;

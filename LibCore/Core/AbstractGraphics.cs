@@ -31,6 +31,7 @@ public abstract class AbstractGraphics : IGraphics
     #region properties
 
     public IGraphics.BufferFormatDescriptor BufferFormat { get; set; } = null!;
+    public IGLBindings                      GL           { get; set; } = null!;
 
     public virtual int              BackBufferWidth     { get; protected set; }
     public virtual int              BackBufferHeight    { get; protected set; }

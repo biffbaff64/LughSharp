@@ -26,18 +26,23 @@
 namespace LughSharp.LibCore.Core;
 
 /// <summary>
-/// Interface to the input facilities. This allows polling the state of the
-/// keyboard, the touch screen and the accelerometer. On some backends
-/// (desktop, gwt, etc) the touch screen is replaced by mouse input. The
-/// accelerometer is of course not available on all backends.
-/// Instead of polling for events, one can process all input events with an
+/// Interface to the input facilities. This allows polling the state of the keyboard, the
+/// touch screen and the accelerometer. On some backends (desktop, gwt, etc) the touch
+/// screen is replaced by mouse input. The accelerometer is of course not available on all
+/// backends. Instead of polling for events, one can process all input events with an
 /// InputProcessor. You can set the InputProcessor via the SetInputProcessor(InputProcessor)
 /// method. It will be called before the ApplicationListener.render() method in each frame.
 /// Keyboard keys are translated to the constants in Input.Keys transparently on all systems.
+/// <para>
 /// Do not use system specific key constants.
+/// </para>
+/// <para>
 /// The class also offers methods to use (and test for the presence of) other input systems
 /// like vibration, compass, on-screen keyboards, and cursor capture.
+/// </para>
+/// <para>
 /// Support for simple input dialogs is also provided.
+/// </para>
 /// </summary>
 [PublicAPI]
 public interface IInput
@@ -100,6 +105,8 @@ public interface IInput
     // --------------------------------------------------------------------
     // --------------------------------------------------------------------
 
+	#region Mobile Devices
+
     float GetAccelerometerX();
     float GetAccelerometerY();
     float GetAccelerometerZ();
@@ -110,19 +117,31 @@ public interface IInput
     float GetAzimuth();
     float GetPitch();
     float GetRoll();
+    void SetOnscreenKeyboardVisible( bool visible );
+    void SetOnscreenKeyboardVisible( bool visible, OnscreenKeyboardType type );
+    void Vibrate( int milliseconds );
+    void Vibrate( long[] pattern, int repeat );
+    void CancelVibrate();
+    void GetRotationMatrix( float[] matrix );
+    bool IsTouched( int pointer = 0 );
+    bool JustTouched();
+
+	#endregion Mobile Devices
+
+	// ------------------------------------------------------------------------
 
     int GetMaxPointers();
     int GetX( int pointer = 0 );
     int GetDeltaX( int pointer = 0 );
     int GetY( int pointer = 0 );
     int GetDeltaY( int pointer = 0 );
+    int GetRotation();
 
-    bool IsTouched( int pointer = 0 );
-    bool JustTouched();
     bool IsButtonPressed( int button );
     bool IsButtonJustPressed( int button );
     bool IsKeyPressed( int key );
     bool IsKeyJustPressed( int key );
+    bool IsPeripheralAvailable( Peripheral peripheral );
 
     void GetTextInput( ITextInputListener listener,
                        string title,
@@ -130,38 +149,26 @@ public interface IInput
                        string hint,
                        OnscreenKeyboardType type );
 
-    void SetOnscreenKeyboardVisible( bool visible );
-    void SetOnscreenKeyboardVisible( bool visible, OnscreenKeyboardType type );
-    void Vibrate( int milliseconds );
-    void Vibrate( long[] pattern, int repeat );
-    void CancelVibrate();
-    void GetRotationMatrix( float[] matrix );
-
     long GetCurrentEventTime();
-
-    bool IsPeripheralAvailable( Peripheral peripheral );
-
-    int GetRotation();
 
     Orientation GetNativeOrientation();
 
+	// ------------------------------------------------------------------------
+
+	#region catch keys
+
     bool IsCursorCaught();
-
-    void SetCursorPosition( int x, int y );
-
-    void SetCatchKey( int keycode, bool catchKey );
-
     bool IsCatchKey( int keycode );
-
     bool IsCatchBackKey();
-
-    void SetCatchBackKey( bool catchBack );
-
     bool IsCatchMenuKey();
 
+    void SetCursorPosition( int x, int y );
+    void SetCatchKey( int keycode, bool catchKey );
+    void SetCatchBackKey( bool catchBack );
     void SetCatchMenuKey( bool catchMenu );
-
     void SetCursorCaught( bool caught );
+
+	#endregion catch keys
 
     // --------------------------------------------------------------------
     // --------------------------------------------------------------------

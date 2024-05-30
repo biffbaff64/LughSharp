@@ -33,18 +33,34 @@ public class TextButton : Button
     private Label?           _label;
     private TextButtonStyle? _style;
 
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Creates a new TextButton using the supplied <see cref="Skin"/>, and
+    /// setting its text property to the supplied text.
+    /// The default <see cref="TextButtonStyle"/> will be used.
+    /// </summary>
     public TextButton( string? text, Skin skin )
         : this( text, skin.Get< TextButtonStyle >() )
     {
         Skin = skin;
     }
 
+    /// <summary>
+    /// Creates a new TextButton using the supplied <see cref="Skin"/>, and
+    /// setting its text property to the supplied text.
+    /// A <see cref="TextButtonStyle"/> identified by <tt>styleName</tt> will be used.
+    /// </summary>
     public TextButton( string? text, Skin skin, string styleName )
         : this( text, skin.Get< TextButtonStyle >( styleName ) )
     {
         Skin = skin;
     }
 
+    /// <summary>
+    /// Creates a new TextButton, setting its text property to the supplied text.
+    /// The supplied <see cref="TextButtonStyle"/> will be used.
+    /// </summary>
     public TextButton( string? text, TextButtonStyle style )
     {
         Style = style;
@@ -54,9 +70,15 @@ public class TextButton : Button
 
         Add( _label ).Expand().SetFill();
 
-        SetSize( GetPrefWidth(), GetPrefHeight() );
+        NonVirtualSetup();
     }
 
+    /// <summary>
+    /// Property: The <see cref="TextButtonStyle"/> for this TextButton.
+    /// </summary>
+    /// <exception cref="ArgumentException">
+    /// Thrown if an attempt to set Style to null is made.
+    /// </exception>
     public new TextButtonStyle? Style
     {
         get => _style;
@@ -83,6 +105,9 @@ public class TextButton : Button
         }
     }
 
+    /// <summary>
+    /// A Text<see cref="Label"/> which is used to store the text for this button.
+    /// </summary>
     public Label? Label
     {
         get => _label;
@@ -96,7 +121,8 @@ public class TextButton : Button
     }
 
     /// <summary>
-    /// Returns the appropriate label font color from the style based on the current button state.
+    /// Returns the appropriate label font color from the style based on
+    /// the current button state.
     /// </summary>
     public Color? GetFontColor()
     {
@@ -166,6 +192,7 @@ public class TextButton : Button
         return Style?.FontColor;
     }
 
+    /// <inheritdoc/>
     public override void Draw( IBatch batch, float parentAlpha )
     {
         if ( Label != null )
@@ -175,19 +202,17 @@ public class TextButton : Button
         }
     }
 
-    public Cell? GetLabelCell()
-    {
-        return GetCell( _label! );
-    }
+    public Cell?   GetLabelCell()          => GetCell( _label! );
+    public void    SetText( string? text ) => _label?.SetText( text );
+    public string? GetText()               => _label?.Text.ToString();
 
-    public void SetText( string? text )
+    /// <summary>
+    /// Private setup method to allow calls to virtual methods that can't
+    /// be called from constructors.
+    /// </summary>
+    private void NonVirtualSetup()
     {
-        _label?.SetText( text );
-    }
-
-    public string? GetText()
-    {
-        return _label?.Text.ToString();
+        SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
     // ------------------------------------------------------------------------

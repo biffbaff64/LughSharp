@@ -32,8 +32,6 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 [PublicAPI]
 public class Actor : IActor
 {
-    // ------------------------------------------------------------------------
-
     private readonly Color _color = new( 1, 1, 1, 1 );
 
     private bool  _debug;
@@ -45,14 +43,7 @@ public class Actor : IActor
     private float _x;
     private float _y;
 
-    /// <summary>
-    /// Default Constructor.
-    /// </summary>
-    protected Actor()
-    {
-        Listeners        = new DelayedRemovalList< IEventListener >( 0 );
-        CaptureListeners = new DelayedRemovalList< IEventListener >( 0 );
-    }
+    // ------------------------------------------------------------------------
 
     public Stage?    Stage      { get; set; }
     public Group?    Parent     { get; set; }
@@ -75,15 +66,20 @@ public class Actor : IActor
 
     // ------------------------------------------------------------------------
 
-    public Color Color
-    {
-        get => _color;
-        set => _color.Set( value );
-    }
-
     public DelayedRemovalList< IEventListener > Listeners        { get; }
     public DelayedRemovalList< IEventListener > CaptureListeners { get; }
     public List< Action >                       Actions          { get; set; } = new();
+
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Default Constructor.
+    /// </summary>
+    protected Actor()
+    {
+        Listeners        = new DelayedRemovalList< IEventListener >( 0 );
+        CaptureListeners = new DelayedRemovalList< IEventListener >( 0 );
+    }
 
     /// <summary>
     /// The X position of the actor's left edge.
@@ -189,6 +185,12 @@ public class Actor : IActor
                 RotationChanged();
             }
         }
+    }
+
+    public Color Color
+    {
+        get => _color;
+        set => _color.Set( value );
     }
 
     /// <summary>

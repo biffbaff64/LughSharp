@@ -26,15 +26,14 @@
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>
-/// Class to keep track of the time and load (percentage of total time) a
-/// specific task takes. Call start() just before starting the task and
-/// stop() right after. You can do this multiple times if required.
-/// <p>
-/// Every render or update call tick() to update the values. The time
-/// FloatCounter provides access to the minimum, maximum, average,
-/// total and current time (in seconds) the task takes. Likewise for
-/// the load value, which is the percentage of the total time.
-/// </p>
+/// Class to keep track of the time and load (percentage of total time) a specific task
+/// takes. Call start() just before starting the task and stop() right after. You can do
+/// this multiple times if required.
+/// <para>
+/// Every render or update call tick() to update the values. The time FloatCounter provides
+/// access to the minimum, maximum, average, total and current time (in seconds) the task
+/// takes. Likewise for the load value, which is the percentage of the total time.
+/// </para>
 /// </summary>
 [PublicAPI]
 public class PerformanceCounter
@@ -46,10 +45,16 @@ public class PerformanceCounter
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Creates a new PerformanceCounter instance, giving it the siupplied name.
+    /// </summary>
     public PerformanceCounter( in string name ) : this( name, 5 )
     {
     }
 
+    /// <summary>
+    /// Creates a new PerformanceCounter instance, giving it the supplied name.
+    /// </summary>
     public PerformanceCounter( in string name, in int windowSize )
     {
         Name = name;

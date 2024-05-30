@@ -22,7 +22,7 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 
 [PublicAPI]
 public class ByteBufferAsFloatBufferL : FloatBuffer

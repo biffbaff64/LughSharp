@@ -22,13 +22,13 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 
 [PublicAPI]
-public class ByteBufferAsIntBufferL : IntBuffer
+public class ByteBufferAsDoubleBufferL : DoubleBuffer
 {
     /// <inheritdoc />
-    public ByteBufferAsIntBufferL( ByteBuffer bb, int mark, int pos, int lim, int cap, int offset = 0 )
+    public ByteBufferAsDoubleBufferL( ByteBuffer bb, int mark, int pos, int lim, int cap, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
     }
@@ -40,49 +40,49 @@ public class ByteBufferAsIntBufferL : IntBuffer
     }
 
     /// <inheritdoc />
-    public override IntBuffer Slice()
+    public override DoubleBuffer Slice()
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override IntBuffer Duplicate()
+    public override DoubleBuffer Duplicate()
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override IntBuffer asReadOnlyBuffer()
+    public override DoubleBuffer asReadOnlyBuffer()
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override int Get()
+    public override double Get()
     {
         return 0;
     }
 
     /// <inheritdoc />
-    public override IntBuffer Put( int i )
+    public override DoubleBuffer Put( double d )
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override int Get( int index )
+    public override double Get( int index )
     {
         return 0;
     }
 
     /// <inheritdoc />
-    public override IntBuffer Put( int index, int i )
+    public override DoubleBuffer Put( int index, double d )
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override IntBuffer Compact()
+    public override DoubleBuffer Compact()
     {
         return null;
     }

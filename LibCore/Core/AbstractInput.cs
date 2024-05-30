@@ -69,7 +69,7 @@ public abstract class AbstractInput : IInput
             return KeyJustPressed;
         }
 
-        return key is >= 0 and <= IInput.Keys.MAX_KEYCODE && JustPressedKeys[ key ];
+        return ( key is >= 0 and <= IInput.Keys.MAX_KEYCODE ) && JustPressedKeys[ key ];
     }
 
     // ------------------------------------------------------------------------
@@ -166,4 +166,6 @@ public abstract class AbstractInput : IInput
                                        IInput.OnscreenKeyboardType type = IInput.OnscreenKeyboardType.Default );
 
     #endregion abstract methods
+
+	// ------------------------------------------------------------------------
 }

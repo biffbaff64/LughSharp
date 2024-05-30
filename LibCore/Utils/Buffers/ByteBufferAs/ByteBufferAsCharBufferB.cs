@@ -22,13 +22,13 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Utils.Buffers;
+
+namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 
 [PublicAPI]
-public class ByteBufferAsIntBufferB : IntBuffer
+public class ByteBufferAsCharBufferB : CharBuffer
 {
-    /// <inheritdoc />
-    public ByteBufferAsIntBufferB( ByteBuffer bb, int mark, int pos, int lim, int cap, int offset = 0 )
+    public ByteBufferAsCharBufferB( ByteBuffer bb, int mark, int pos, int lim, int cap, int off )
         : base( mark, pos, lim, cap )
     {
     }
@@ -40,55 +40,73 @@ public class ByteBufferAsIntBufferB : IntBuffer
     }
 
     /// <inheritdoc />
-    public override IntBuffer Slice()
+    protected override char Get()
+    {
+        return '\0';
+    }
+
+    /// <inheritdoc />
+    protected override CharBuffer Put( char c )
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override IntBuffer Duplicate()
+    protected override char Get( int index )
+    {
+        return '\0';
+    }
+
+    /// <inheritdoc />
+    public override char GetUnchecked( int index )
+    {
+        return '\0';
+    }
+
+    /// <inheritdoc />
+    public override CharBuffer Put( int index, char c )
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override IntBuffer asReadOnlyBuffer()
+    public override CharBuffer Compact()
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override int Get()
-    {
-        return 0;
-    }
-
-    /// <inheritdoc />
-    public override IntBuffer Put( int i )
+    public override CharBuffer Slice()
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override int Get( int index )
-    {
-        return 0;
-    }
-
-    /// <inheritdoc />
-    public override IntBuffer Put( int index, int i )
+    public override CharBuffer Duplicate()
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override IntBuffer Compact()
+    public override CharBuffer AsReadOnlyBuffer()
+    {
+        return null;
+    }
+
+    /// <inheritdoc />
+    protected override string ToString( int start, int end )
     {
         return null;
     }
 
     /// <inheritdoc />
     public override ByteOrder Order()
+    {
+        return null;
+    }
+
+    /// <inheritdoc />
+    public override CharBuffer SubSequence( int start, int end )
     {
         return null;
     }

@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Utils.Exceptions;
+
 namespace LughSharp.LibCore.Maps;
 
 /// <summary>
@@ -39,20 +41,48 @@ public interface IImageResolver
     public TextureRegion? GetImage( string name );
 
     /// <summary>
+    /// A class that resolves images directly from a dictionary of textures.
+    /// Implements the IImageResolver interface.
     /// </summary>
     [PublicAPI]
     public class DirectImageResolver : IImageResolver
     {
+        // A dictionary that maps image names to Texture objects.
         private readonly Dictionary< string, Texture > _images;
 
-        internal DirectImageResolver( Dictionary< string, Texture > images )
+        /// <summary>
+        /// Initializes a new instance of the DirectImageResolver class with the
+        /// specified dictionary of images.
+        /// </summary>
+        /// <param name="images">A dictionary mapping image names to Texture objects.</param>
+        public DirectImageResolver( Dictionary< string, Texture > images )
         {
-            _images = images;
+            _images = images ?? throw new ArgumentNullException( nameof( images ), "Images dictionary cannot be null" );
         }
 
+        /// <summary>
+        /// Retrieves the texture region for the specified image name.
+        /// </summary>
+        /// <param name="name">The name of the image to retrieve.</param>
+        /// <returns>
+        /// A <see cref="TextureRegion"/> object representing the texture region of the specified image.
+        /// </returns>
+        /// <exception cref="KeyNotFoundException">
+        /// Thrown if the specified image name is not found in the dictionary.
+        /// </exception>
         public TextureRegion GetImage( string name )
         {
-            return new TextureRegion( _images[ name ] );
+            if ( string.IsNullOrWhiteSpace( name ) )
+            {
+                throw new ArgumentException( "Image name cannot be null or whitespace", nameof( name ) );
+            }
+
+            if ( !_images.TryGetValue( name, out var texture ) )
+            {
+                throw new KeyNotFoundException( $"The image with name '{name}' was not found in the images dictionary." );
+            }
+
+            return new TextureRegion( texture );
         }
     }
 
@@ -64,14 +94,44 @@ public interface IImageResolver
     {
         private readonly AssetManager _assetManager;
 
-        internal AssetManagerImageResolver( AssetManager assetManager )
+        /// <summary>
+        /// Initializes a new instance of the AssetManagerImageResolver class with the specified AssetManager.
+        /// </summary>
+        /// <param name="assetManager">The AssetManager used to manage and retrieve assets.</param>
+        public AssetManagerImageResolver( AssetManager assetManager )
         {
-            _assetManager = assetManager;
+            _assetManager = assetManager 
+                         ?? throw new ArgumentNullException( nameof( assetManager ), "AssetManager cannot be null" );
         }
 
+        /// <summary>
+        /// Retrieves the texture region for the specified image name.
+        /// </summary>
+        /// <param name="name">The name of the image to retrieve.</param>
+        /// <returns>
+        /// A <see cref="TextureRegion"/> object representing the texture region of the specified image.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if the specified image name is null or empty.
+        /// </exception>
+        /// <exception cref="AssetNotLoadedException">
+        /// Thrown if the specified image is not loaded by the AssetManager.
+        /// </exception>
         public TextureRegion GetImage( string name )
         {
-            return new TextureRegion( _assetManager.Get< Texture >( name ) );
+            if ( string.IsNullOrWhiteSpace( name ) )
+            {
+                throw new ArgumentNullException( nameof( name ), "Image name cannot be null or whitespace" );
+            }
+
+            if ( !_assetManager.IsLoaded( name, typeof( Texture ) ) )
+            {
+                throw new AssetNotLoadedException( $"The asset '{name}' is not loaded." );
+            }
+
+            var texture = _assetManager.Get< Texture >( name );
+
+            return new TextureRegion( texture );
         }
     }
 

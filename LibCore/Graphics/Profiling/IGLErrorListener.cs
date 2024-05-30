@@ -31,6 +31,7 @@ namespace LughSharp.LibCore.Graphics.Profiling;
 /// <summary>
 /// Listener for GL errors detected by <see cref="GLProfiler"/>.
 /// </summary>
+[PublicAPI]
 public interface IGLErrorListener
 {
     /// <summary>
@@ -45,6 +46,10 @@ public interface IGLErrorListener
 [PublicAPI]
 public class GLLoggingListener : IGLErrorListener
 {
+    /// <summary>
+    /// Handle and Log GL profiling errors.
+    /// </summary>
+    /// <param name="error"> The error number. </param>
     public void OnError( int error )
     {
         string? place = null;
@@ -85,6 +90,7 @@ public class GLLoggingListener : IGLErrorListener
 /// <summary>
 /// Listener that will throw a GdxRuntimeException with error name.
 /// </summary>
+[PublicAPI]
 public class ThrowingListener : IGLErrorListener
 {
     public void OnError( int error )

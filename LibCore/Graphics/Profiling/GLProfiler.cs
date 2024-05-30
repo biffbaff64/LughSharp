@@ -33,6 +33,11 @@ namespace LughSharp.LibCore.Graphics.Profiling;
 [PublicAPI]
 public class GLProfiler
 {
+    public IGLErrorListener  Listener    { get; set; }
+    public bool              Enabled     { get; set; } = false;
+    public IGraphics         Graphics    { get; set; }
+    public BaseGLInterceptor Interceptor { get; set; }
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -42,26 +47,10 @@ public class GLProfiler
     /// <param name="graphics"> instance to monitor with this instance.</param>
     public GLProfiler( IGraphics graphics )
     {
-        Graphics = graphics;
-
+        Graphics    = graphics;
         Interceptor = new GLInterceptor( this );
-
-//        if ( graphics.IsGL30Available() )
-//        {
-//            Interceptor = new GL30Interceptor( this, graphics.GL30! );
-//        }
-//        else
-//        {
-//            Interceptor = new GL20Interceptor( this, graphics.GL20! );
-//        }
-
-        Listener = new GLLoggingListener();
+        Listener    = new GLLoggingListener();
     }
-
-    public IGLErrorListener  Listener    { get; set; }
-    public bool              Enabled     { get; set; } = false;
-    public IGraphics         Graphics    { get; set; }
-    public BaseGLInterceptor Interceptor { get; set; }
 
     /// <summary>
     /// Returns the total gl calls made since the last reset
@@ -91,6 +80,8 @@ public class GLProfiler
     /// </summary>
     public FloatCounter VertexCount => Interceptor.VertexCount;
 
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// Will reset the statistical information which has been collected so far.
     /// This should be called after every frame.
@@ -100,8 +91,6 @@ public class GLProfiler
     {
         Interceptor.Reset();
     }
-
-    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Enables profiling by replacing the <tt>GL20</tt> and <tt>GL30</tt>
@@ -114,14 +103,7 @@ public class GLProfiler
             return;
         }
 
-        //        if ( Graphics.IsGL30Available() )
-//        {
-//            Graphics.GL30 = ( IGL30 ) Interceptor;
-//        }
-//        else
-//        {
-//            Graphics.GL20 = Interceptor;
-//        }
+        Gdx.Graphics.GL = ( IGLBindings ) Interceptor;
 
         Enabled = true;
     }
@@ -137,14 +119,7 @@ public class GLProfiler
             return;
         }
 
-        //        if ( Graphics.GL30 != null )
-//        {
-//            Graphics.GL30 = ( ( GL30Interceptor ) Graphics.GL30! ).GL30;
-//        }
-//        else
-//        {
-//            Graphics.GL20 = ( ( GL20Interceptor ) Graphics.GL20! ).GL20;
-//        }
+        Gdx.Graphics.GL = ( GLBindings ) Graphics.GL;
 
         Enabled = false;
     }

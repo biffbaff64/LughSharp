@@ -22,91 +22,30 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 
 [PublicAPI]
-public class ByteBufferAsCharBufferL : CharBuffer
+public class ByteBufferAsLongBufferL : LongBuffer
 {
-    public ByteBufferAsCharBufferL( ByteBuffer bb, int mark, int pos, int lim, int cap, int off )
-        : base( mark, pos, lim, cap )
+    public ByteBufferAsLongBufferL( ByteBuffer bb, int i, int i1, int size, int size1, int off )
     {
+    }
+
+    /// <inheritdoc />
+    public override bool HasBackingArray()
+    {
+        return false;
+    }
+
+    /// <inheritdoc />
+    public override int ArrayOffset()
+    {
+        return 0;
     }
 
     /// <inheritdoc />
     public override bool IsDirect()
     {
         return false;
-    }
-
-    /// <inheritdoc />
-    protected override char Get()
-    {
-        return '\0';
-    }
-
-    /// <inheritdoc />
-    protected override CharBuffer Put( char c )
-    {
-        return null;
-    }
-
-    /// <inheritdoc />
-    protected override char Get( int index )
-    {
-        return '\0';
-    }
-
-    /// <inheritdoc />
-    public override char GetUnchecked( int index )
-    {
-        return '\0';
-    }
-
-    /// <inheritdoc />
-    public override CharBuffer Put( int index, char c )
-    {
-        return null;
-    }
-
-    /// <inheritdoc />
-    public override CharBuffer Compact()
-    {
-        return null;
-    }
-
-    /// <inheritdoc />
-    public override CharBuffer Slice()
-    {
-        return null;
-    }
-
-    /// <inheritdoc />
-    public override CharBuffer Duplicate()
-    {
-        return null;
-    }
-
-    /// <inheritdoc />
-    public override CharBuffer AsReadOnlyBuffer()
-    {
-        return null;
-    }
-
-    /// <inheritdoc />
-    protected override string ToString( int start, int end )
-    {
-        return null;
-    }
-
-    /// <inheritdoc />
-    public override ByteOrder Order()
-    {
-        return null;
-    }
-
-    /// <inheritdoc />
-    public override CharBuffer SubSequence( int start, int end )
-    {
-        return null;
     }
 }

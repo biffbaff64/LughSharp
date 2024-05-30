@@ -25,52 +25,79 @@
 
 using Keys = LughSharp.LibCore.Core.IInput.Keys;
 
-namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
+namespace LughSharp.LibCore.Input;
 
 [PublicAPI]
-public static class UIUtils
+public static class InputUtils
 {
-    public static bool Left()
+    /// <summary>
+    /// Returns true if the left mouse button is pressed.
+    /// </summary>
+    public static bool MouseLeft()
     {
         return Gdx.Input.IsButtonPressed( IInput.Buttons.LEFT );
     }
 
-    public static bool Left( int button )
+    /// <summary>
+    /// Returns true if the given keycode is the left mouse button.
+    /// </summary>
+    public static bool MouseLeft( int button )
     {
         return button == IInput.Buttons.LEFT;
     }
 
-    public static bool Right()
+    /// <summary>
+    /// Returns true if the right mouse button is pressed.
+    /// </summary>
+    public static bool MouseRight()
     {
         return Gdx.Input.IsButtonPressed( IInput.Buttons.RIGHT );
     }
 
-    public static bool Right( int button )
+    /// <summary>
+    /// Returns true if the given keycode is the left mouse button.
+    /// </summary>
+    public static bool MouseRight( int button )
     {
         return button == IInput.Buttons.RIGHT;
     }
 
-    public static bool Middle()
+    /// <summary>
+    /// Returns true if the middle mouse button is pressed.
+    /// </summary>
+    public static bool MouseMiddle()
     {
         return Gdx.Input.IsButtonPressed( IInput.Buttons.MIDDLE );
     }
 
-    public static bool Middle( int button )
+    /// <summary>
+    /// Returns true if the given keycode is the middle mouse button.
+    /// </summary>
+    public static bool MouseMiddle( int button )
     {
         return button == IInput.Buttons.MIDDLE;
     }
 
-    public static bool Shift()
+    /// <summary>
+    /// Returns true if either of the SHIFT keys are pressed.
+    /// </summary>
+    public static bool ShiftKey()
     {
         return Gdx.Input.IsKeyPressed( Keys.SHIFT_LEFT ) || Gdx.Input.IsKeyPressed( Keys.SHIFT_RIGHT );
     }
 
-    public static bool Shift( int keycode )
+    /// <summary>
+    /// Returns true if the given keycode is a SHIFT key.
+    /// </summary>
+    public static bool ShiftKey( int keycode )
     {
         return keycode is Keys.SHIFT_LEFT or Keys.SHIFT_RIGHT;
     }
 
-    public static bool Ctrl()
+    /// <summary>
+    /// Returns true if either of the CTRL keys are pressed, or SYM key on MacOS.
+    /// </summary>
+    public static bool CtrlKey()
     {
 #if MACOS
         return Gdx.Input.isKeyPressed( Keys.SYM );
@@ -79,7 +106,10 @@ public static class UIUtils
 #endif
     }
 
-    public static bool Ctrl( int keycode )
+    /// <summary>
+    /// Returns true if the given keycode is a CTRL key, or SYM key on MacOS.
+    /// </summary>
+    public static bool CtrlKey( int keycode )
     {
 #if MACOS
         return keycode == Keys.SYM;
@@ -88,12 +118,18 @@ public static class UIUtils
 #endif
     }
 
-    public static bool Alt()
+    /// <summary>
+    /// Returns true if either of the ALT keys are pressed.
+    /// </summary>
+    public static bool AltKey()
     {
         return Gdx.Input.IsKeyPressed( Keys.ALT_LEFT ) || Gdx.Input.IsKeyPressed( Keys.ALT_RIGHT );
     }
 
-    public static bool Alt( int keycode )
+    /// <summary>
+    /// Returns true if the given keycode is an ALT key.
+    /// </summary>
+    public static bool AltKey( int keycode )
     {
         return keycode is Keys.ALT_LEFT or Keys.ALT_RIGHT;
     }

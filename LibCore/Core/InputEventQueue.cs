@@ -31,6 +31,8 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public class InputEventQueue
 {
+	#region constants
+
     private const int SKIP           = -1;
     private const int KEY_DOWN       = 0;
     private const int KEY_UP         = 1;
@@ -41,10 +43,12 @@ public class InputEventQueue
     private const int MOUSE_MOVED    = 6;
     private const int MOUSE_SCROLLED = 7;
 
+	#endregion constants
+	
+    public long CurrentEventTime { get; set; }
+
     private readonly List< int > _processingQueue = new();
     private readonly List< int > _queue           = new();
-
-    public long CurrentEventTime { get; set; }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

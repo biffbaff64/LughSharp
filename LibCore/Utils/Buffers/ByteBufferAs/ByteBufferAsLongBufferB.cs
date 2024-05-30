@@ -22,9 +22,7 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using LughSharp.LibCore.Utils.Buffers.HeapBuffers;
-
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 
 [PublicAPI]
 public class ByteBufferAsLongBufferB : LongBuffer

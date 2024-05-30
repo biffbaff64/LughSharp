@@ -22,14 +22,14 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using LughSharp.LibCore.Utils.Buffers.HeapBuffers;
-
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 
 [PublicAPI]
-public class ByteBufferAsShortBufferB : ShortBuffer
+public class ByteBufferAsIntBufferL : IntBuffer
 {
-    public ByteBufferAsShortBufferB( ByteBuffer bb, int i, int i1, int size, int size1, int off )
+    /// <inheritdoc />
+    public ByteBufferAsIntBufferL( ByteBuffer bb, int mark, int pos, int lim, int cap, int offset = 0 )
+        : base( mark, pos, lim, cap )
     {
     }
 
@@ -40,49 +40,49 @@ public class ByteBufferAsShortBufferB : ShortBuffer
     }
 
     /// <inheritdoc />
-    public override ShortBuffer Slice()
+    public override IntBuffer Slice()
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override ShortBuffer Duplicate()
+    public override IntBuffer Duplicate()
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override ShortBuffer AsReadOnlyBuffer()
+    public override IntBuffer asReadOnlyBuffer()
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override short Get()
+    public override int Get()
     {
         return 0;
     }
 
     /// <inheritdoc />
-    public override ShortBuffer Put( short s )
+    public override IntBuffer Put( int i )
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override short Get( int index )
+    public override int Get( int index )
     {
         return 0;
     }
 
     /// <inheritdoc />
-    public override ShortBuffer Put( int index, short s )
+    public override IntBuffer Put( int index, int i )
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override ShortBuffer Compact()
+    public override IntBuffer Compact()
     {
         return null;
     }

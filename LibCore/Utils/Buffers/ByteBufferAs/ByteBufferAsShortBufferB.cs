@@ -22,14 +22,12 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using LughSharp.LibCore.Utils.Buffers.HeapBuffers;
-
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 
 [PublicAPI]
-public class ByteBufferAsShortBufferL : ShortBuffer
+public class ByteBufferAsShortBufferB : ShortBuffer
 {
-    public ByteBufferAsShortBufferL( ByteBuffer bb, int i, int i1, int size, int size1, int off )
+    public ByteBufferAsShortBufferB( ByteBuffer bb, int i, int i1, int size, int size1, int off )
     {
     }
 

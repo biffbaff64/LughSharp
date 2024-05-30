@@ -22,19 +22,14 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 
 [PublicAPI]
-public class ByteBufferAsFloatBufferB : FloatBuffer
+public class ByteBufferAsIntBufferB : IntBuffer
 {
     /// <inheritdoc />
-    public ByteBufferAsFloatBufferB( ByteBuffer bb, int mark, int pos, int lim, int cap, int offset = 0 )
+    public ByteBufferAsIntBufferB( ByteBuffer bb, int mark, int pos, int lim, int cap, int offset = 0 )
         : base( mark, pos, lim, cap )
-    {
-    }
-
-    /// <inheritdoc />
-    public ByteBufferAsFloatBufferB( int mark, int pos, int lim, int cap ) : base( mark, pos, lim, cap )
     {
     }
 
@@ -45,49 +40,49 @@ public class ByteBufferAsFloatBufferB : FloatBuffer
     }
 
     /// <inheritdoc />
-    public override FloatBuffer Slice()
+    public override IntBuffer Slice()
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override FloatBuffer Duplicate()
+    public override IntBuffer Duplicate()
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override FloatBuffer asReadOnlyBuffer()
+    public override IntBuffer asReadOnlyBuffer()
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override float Get()
+    public override int Get()
     {
         return 0;
     }
 
     /// <inheritdoc />
-    public override FloatBuffer Put( float f )
+    public override IntBuffer Put( int i )
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override float Get( int index )
+    public override int Get( int index )
     {
         return 0;
     }
 
     /// <inheritdoc />
-    public override FloatBuffer Put( int index, float f )
+    public override IntBuffer Put( int index, int i )
     {
         return null;
     }
 
     /// <inheritdoc />
-    public override FloatBuffer Compact()
+    public override IntBuffer Compact()
     {
         return null;
     }

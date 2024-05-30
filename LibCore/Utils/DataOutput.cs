@@ -31,6 +31,10 @@ namespace LughSharp.LibCore.Utils;
 [PublicAPI]
 public class DataOutput : BinaryWriter
 {
+    /// <summary>
+    /// Constructs a new DataOuput instance with the given output stream.
+    /// </summary>
+    /// <param name="output"></param>
     public DataOutput( Stream output ) : base( output )
     {
     }

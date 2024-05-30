@@ -30,28 +30,55 @@ public abstract class DataUtils
 {
     /// <summary>
     /// Returns the value obtained by reversing the order of the bytes in the
-    /// two's complement representation of the specified <tt>short</tt> value.
+    /// two's complement representation of the specified <b>short</b> value.
     /// </summary>
     /// <param name="input">the value whose bytes are to be reversed</param>
     /// <returns>
     /// the value obtained by reversing (or, equivalently, swapping) the bytes
-    /// in the specified short value.
+    /// in the specified <b>short</b> value.
     /// </returns>
     public static short ReverseBytes( short input )
     {
         return ( short ) ( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
     }
 
+    /// <summary>
+    /// Returns the value obtained by reversing the order of the bytes in the
+    /// two's complement representation of the specified <b>char</b> value.
+    /// </summary>
+    /// <param name="input">the value whose bytes are to be reversed</param>
+    /// <returns>
+    /// the value obtained by reversing (or, equivalently, swapping) the bytes
+    /// in the specified <b>char</b> value.
+    /// </returns>
     public static char ReverseBytes( char input )
     {
         return ( char ) ( ( ( input & 0xFF00 ) >> 8 ) | ( input << 8 ) );
     }
 
+    /// <summary>
+    /// Returns the value obtained by reversing the order of the bytes in the
+    /// two's complement representation of the specified <b>int</b> value.
+    /// </summary>
+    /// <param name="input">the value whose bytes are to be reversed</param>
+    /// <returns>
+    /// the value obtained by reversing (or, equivalently, swapping) the bytes
+    /// in the specified <b>int</b> value.
+    /// </returns>
     public static int ReverseBytes( int input )
     {
         return ( input >>> 24 ) | ( ( input >> 8 ) & 0xFF00 ) | ( ( input << 8 ) & 0xFF0000 ) | ( input << 24 );
     }
 
+    /// <summary>
+    /// Returns the value obtained by reversing the order of the bytes in the
+    /// two's complement representation of the specified <b>long</b> value.
+    /// </summary>
+    /// <param name="input">the value whose bytes are to be reversed</param>
+    /// <returns>
+    /// the value obtained by reversing (or, equivalently, swapping) the bytes
+    /// in the specified <b>long</b> value.
+    /// </returns>
     public static long ReverseBytes( long input )
     {
         input = ( ( input & 0x00ff00ff00ff00ffL ) << 8 ) | ( ( input >>> 8 ) & 0x00ff00ff00ff00ffL );

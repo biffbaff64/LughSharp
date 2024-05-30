@@ -27,9 +27,11 @@ namespace LughSharp.LibCore.Utils;
 
 /// <summary>
 /// Provides methods to sort arrays of objects.
+/// <para>
 /// Sorting requires working memory and this class allows that memory to be reused
 /// to avoid allocation. The sorting is otherwise identical to the Arrays.sort
 /// methods (uses timsort).
+/// </para>
 /// </summary>
 [PublicAPI]
 public class SortUtils

@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Input;
+
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
@@ -66,7 +68,7 @@ public class ArraySelection< T > : Selection< T >
             return;
         }
 
-        if ( ( Selected.Count > 0 ) && UIUtils.Shift() )
+        if ( ( Selected.Count > 0 ) && InputUtils.ShiftKey() )
         {
             var rangeStartIndex = _rangeStart == null ? -1 : _array!.IndexOf( _rangeStart, 0 );
 
@@ -84,7 +86,7 @@ public class ArraySelection< T > : Selection< T >
                     ( end, start ) = ( start, end );
                 }
 
-                if ( !UIUtils.Ctrl() )
+                if ( !InputUtils.CtrlKey() )
                 {
                     Selected.Clear(); // Clear( 8 );
                 }

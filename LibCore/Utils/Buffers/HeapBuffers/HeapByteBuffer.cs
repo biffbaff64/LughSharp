@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Utils.Buffers.HeapBuffers;

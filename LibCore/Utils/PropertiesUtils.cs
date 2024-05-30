@@ -44,6 +44,8 @@ public static class PropertiesUtils
     private const int    IGNORE         = 5;
     private const string LINE_SEPARATOR = "\n";
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Adds to the specified <see cref="Dictionary{T,K}"/> the key/value pairs
     /// loaded from the <see cref="StreamReader"/> in a simple line-oriented format.

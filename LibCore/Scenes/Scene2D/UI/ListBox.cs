@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Input;
 using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
 using LughSharp.LibCore.Utils.Collections.Extensions;
@@ -489,7 +490,7 @@ public class ListBox< T > : Widget
             switch ( keycode )
             {
                 case IInput.Keys.A:
-                    if ( UIUtils.Ctrl() && _parent.Selection.Multiple )
+                    if ( InputUtils.CtrlKey() && _parent.Selection.Multiple )
                     {
                         _parent.Selection.Clear();
                         _parent.Selection.AddAll( _parent.Items );

@@ -22,32 +22,79 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using LughSharp.LibCore.Utils.Buffers.HeapBuffers;
-
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 
 [PublicAPI]
-public class ByteBufferAsLongBufferL : LongBuffer
+public class ByteBufferAsFloatBufferB : FloatBuffer
 {
-    public ByteBufferAsLongBufferL( ByteBuffer bb, int i, int i1, int size, int size1, int off )
+    /// <inheritdoc />
+    public ByteBufferAsFloatBufferB( ByteBuffer bb, int mark, int pos, int lim, int cap, int offset = 0 )
+        : base( mark, pos, lim, cap )
     {
     }
 
     /// <inheritdoc />
-    public override bool HasBackingArray()
+    public ByteBufferAsFloatBufferB( int mark, int pos, int lim, int cap ) : base( mark, pos, lim, cap )
     {
-        return false;
-    }
-
-    /// <inheritdoc />
-    public override int ArrayOffset()
-    {
-        return 0;
     }
 
     /// <inheritdoc />
     public override bool IsDirect()
     {
         return false;
+    }
+
+    /// <inheritdoc />
+    public override FloatBuffer Slice()
+    {
+        return null;
+    }
+
+    /// <inheritdoc />
+    public override FloatBuffer Duplicate()
+    {
+        return null;
+    }
+
+    /// <inheritdoc />
+    public override FloatBuffer asReadOnlyBuffer()
+    {
+        return null;
+    }
+
+    /// <inheritdoc />
+    public override float Get()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override FloatBuffer Put( float f )
+    {
+        return null;
+    }
+
+    /// <inheritdoc />
+    public override float Get( int index )
+    {
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public override FloatBuffer Put( int index, float f )
+    {
+        return null;
+    }
+
+    /// <inheritdoc />
+    public override FloatBuffer Compact()
+    {
+        return null;
+    }
+
+    /// <inheritdoc />
+    public override ByteOrder Order()
+    {
+        return null;
     }
 }

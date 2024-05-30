@@ -30,8 +30,13 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class CheckBox : TextButton
 {
+    public Image? Image     { get; set; }
+    public Cell?  ImageCell { get; set; }
+
     private CheckBoxStyle? _style;
 
+    // ------------------------------------------------------------------------
+    
     public CheckBox( string text, Skin skin )
         : this( text, skin.Get< CheckBoxStyle >() )
     {
@@ -44,13 +49,10 @@ public class CheckBox : TextButton
 
     public CheckBox( string text, CheckBoxStyle style ) : base( text, style )
     {
-        Setup( style );
+        NonVirtualSetup( style );
     }
 
-    public Image? Image     { get; set; }
-    public Cell?  ImageCell { get; set; }
-
-    public ButtonStyle? Style
+    public new ButtonStyle? Style
     {
         get => _style;
         set
@@ -65,9 +67,11 @@ public class CheckBox : TextButton
         }
     }
 
-    // Private setup method to allow calls to virtual methods that can't
-    // be called from constructors.
-    private void Setup( CheckBoxStyle style )
+    /// <summary>
+    /// Private setup method to allow calls to virtual methods that can't
+    /// be called from constructors.
+    /// </summary>
+    private void NonVirtualSetup( CheckBoxStyle style )
     {
         ClearChildren();
 

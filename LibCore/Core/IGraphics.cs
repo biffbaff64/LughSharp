@@ -126,17 +126,18 @@ public interface IGraphics
 
     #region properties
 
-    GLVersion              GLVersion    { get; set; }
-    GLVersion.GLType       GraphicsType { get; }
-    BufferFormatDescriptor BufferFormat { get; set; }
-
-    float DeltaTime        { get; set; }
-    int   Width            { get; }
-    int   Height           { get; }
-    int   BackBufferWidth  { get; }
-    int   BackBufferHeight { get; }
-    bool  IsFullscreen     { get; }
-
+    GLVersion              GLVersion        { get; set; }
+    GLVersion.GLType       GraphicsType     { get; }
+    BufferFormatDescriptor BufferFormat     { get; set; }
+    IGLBindings            GL               { get; set; }
+    
+    float                  DeltaTime        { get; set; }
+    int                    Width            { get; }
+    int                    Height           { get; }
+    int                    BackBufferWidth  { get; }
+    int                    BackBufferHeight { get; }
+    bool                   IsFullscreen     { get; }
+    
     #endregion properties
 
     // ------------------------------------------------------------------------

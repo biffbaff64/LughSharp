@@ -96,9 +96,8 @@ internal class FillScaling : Scaling
 // ----------------------------------------------------------------------------
 
 /// <summary>
-/// Scales the source to fill the target in the x direction while keeping
-/// the same aspect ratio. This may cause the source to be smaller or larger
-/// than the target in the y direction.
+/// Scales the source to fill the target in the x direction while keeping the same aspect
+/// ratio. This may cause the source to be smaller or larger than the target in the y direction.
 /// </summary>
 [PublicAPI]
 internal class FillXScaling : Scaling

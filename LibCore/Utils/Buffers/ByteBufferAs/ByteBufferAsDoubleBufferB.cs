@@ -22,13 +22,13 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Utils.Buffers;
+namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 
 [PublicAPI]
-public class ByteBufferAsDoubleBufferL : DoubleBuffer
+public class ByteBufferAsDoubleBufferB : DoubleBuffer
 {
     /// <inheritdoc />
-    public ByteBufferAsDoubleBufferL( ByteBuffer bb, int mark, int pos, int lim, int cap, int offset = 0 )
+    public ByteBufferAsDoubleBufferB( ByteBuffer bb, int mark, int pos, int lim, int cap, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
     }

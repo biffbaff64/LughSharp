@@ -36,6 +36,13 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class Image : Widget
 {
+    public float ImageX      { get; set; }
+    public float ImageY      { get; set; }
+    public float ImageWidth  { get; set; }
+    public float ImageHeight { get; set; }
+
+    // ------------------------------------------------------------------------
+
     private int        _alignment; // Backing value for Alignment property
     private IDrawable? _drawable;
     private Scaling    _scaling;
@@ -82,11 +89,6 @@ public class Image : Widget
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
-    public float ImageX      { get; set; }
-    public float ImageY      { get; set; }
-    public float ImageWidth  { get; set; }
-    public float ImageHeight { get; set; }
-
     public int Alignment
     {
         get => _alignment;
@@ -97,6 +99,7 @@ public class Image : Widget
         }
     }
 
+    /// <inheritdoc/>
     public override void SetLayout()
     {
         if ( _drawable == null )
@@ -141,6 +144,7 @@ public class Image : Widget
         }
     }
 
+    /// <inheritdoc/>
     public override void Draw( IBatch batch, float parentAlpha )
     {
         Validate();
@@ -184,10 +188,9 @@ public class Image : Widget
     }
 
     /// <summary>
-    /// Sets a new drawable for the image. The image's pref size is the
-    /// drawable's min size. If using the image actor's size rather than
-    /// the pref size, <see cref="Widget.Pack"/> can be used to size the
-    /// image to its pref size.
+    /// Sets a new drawable for the image. The image's pref size is the drawable's min size.
+    /// If using the image actor's size rather than the pref size, <see cref="Widget.Pack"/>
+    /// can be used to size the image to its pref size.
     /// </summary>
     /// <param name="drawable"> May be null. </param>
     public void SetDrawable( IDrawable? drawable )
