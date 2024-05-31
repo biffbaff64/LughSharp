@@ -40,12 +40,8 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 [PublicAPI]
 public class Group : Actor, ICullable
 {
-    private readonly Matrix4 _computedTransform = new();
-    private readonly Matrix4 _oldTransform      = new();
-    private readonly Vector2 _tmp               = new();
-
-    private readonly Affine2                _worldTransform = new();
-    public           SnapshotArray< Actor > Children { get; set; } = new( 4 );
+    public SnapshotArray< Actor > Children    { get; set; } = new( 4 );
+    public RectangleShape?        CullingArea { get; set; }
 
     /// <summary>
     /// When true (the default), the Batch is transformed so children are drawn
@@ -57,12 +53,17 @@ public class Group : Actor, ICullable
     /// in the correct location even though the Batch has not been transformed.
     /// </summary>
     public bool Transform { get; set; } = true;
+    
+    // ------------------------------------------------------------------------
 
-    public RectangleShape? CullingArea { get; set; }
+    private readonly Matrix4 _computedTransform = new();
+    private readonly Matrix4 _oldTransform      = new();
+    private readonly Vector2 _tmp               = new();
+    private readonly Affine2 _worldTransform    = new();
 
-    /// <summary>
-    /// </summary>
-    /// <param name="delta"></param>
+    // ------------------------------------------------------------------------
+
+    /// <inheritdoc/>
     public override void Act( float delta )
     {
         base.Act( delta );
@@ -439,6 +440,12 @@ public class Group : Actor, ICullable
         shapes.TransformMatrix = _oldTransform;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="touchable"></param>
+    /// <returns></returns>
     public override Actor? Hit( float x, float y, bool touchable )
     {
         if ( touchable && ( Touchable == Touchable.Disabled ) )
@@ -597,8 +604,8 @@ public class Group : Actor, ICullable
 
     /// <summary>
     /// Removes an actor from this group.
-    /// <param name="actor"></param>
-    /// <param name="unfocus">Unfocuses the actor if true.</param>
+    /// <param name="actor"> The actor to remove. </param>
+    /// <param name="unfocus"> Unfocuses the actor if true. </param>
     /// </summary>
     public virtual bool RemoveActor( Actor actor, bool unfocus = true )
     {
@@ -620,10 +627,8 @@ public class Group : Actor, ICullable
     /// the actions will be returned to their <see cref="Action.Pool"/>, if
     /// any. This is not done automatically.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="unfocus">
-    /// If true, <see cref="Stage.Unfocus(Actor)"/> is called.
-    /// </param>
+    /// <param name="index"> The group index of the actor to remove. </param>
+    /// <param name="unfocus"> Unfocuses the actor if true. </param>
     /// <returns> The actor removed from this group. </returns>
     public virtual Actor RemoveActorAt( int index, bool unfocus )
     {
@@ -702,6 +707,9 @@ public class Group : Actor, ICullable
         return null;
     }
 
+    /// <summary>
+    /// Sets the stage for this groups actors to act upon.
+    /// </summary>
     public virtual void SetStage( Stage? stage )
     {
         Stage = stage;
@@ -762,6 +770,9 @@ public class Group : Actor, ICullable
         return Children.GetAt( index );
     }
 
+    /// <summary>
+    /// Returns true if this group has children.
+    /// </summary>
     public bool HasChildren()
     {
         return Children.Size > 0;

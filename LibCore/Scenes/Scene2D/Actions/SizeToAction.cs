@@ -30,6 +30,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 /// <summary>
 /// Moves an actor from its current size to a specific size.
 /// </summary>
+[PublicAPI]
 public class SizeToAction : TemporalAction
 {
     public float StartWidth  { get; set; }
@@ -37,6 +38,7 @@ public class SizeToAction : TemporalAction
     public float EndWidth    { get; set; }
     public float EndHeight   { get; set; }
 
+    /// <inheritdoc/>
     protected override void Begin()
     {
         if ( Target == null )
@@ -48,6 +50,7 @@ public class SizeToAction : TemporalAction
         StartHeight = Target.Height;
     }
 
+    /// <inheritdoc/>
     protected override void Update( float percent )
     {
         float width, height;
@@ -71,6 +74,11 @@ public class SizeToAction : TemporalAction
         Target?.SetSize( width, height );
     }
 
+    /// <summary>
+    /// Sets the target width and height of this action. 
+    /// </summary>
+    /// <param name="width"> Target width. </param>
+    /// <param name="height"> Target height. </param>
     public void SetSize( float width, float height )
     {
         EndWidth  = width;

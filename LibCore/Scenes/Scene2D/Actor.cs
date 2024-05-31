@@ -32,19 +32,6 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 [PublicAPI]
 public class Actor : IActor
 {
-    private readonly Color _color = new( 1, 1, 1, 1 );
-
-    private bool  _debug;
-    private float _height;
-    private float _rotation;
-    private float _scaleX;
-    private float _scaleY;
-    private float _width;
-    private float _x;
-    private float _y;
-
-    // ------------------------------------------------------------------------
-
     public Stage?    Stage      { get; set; }
     public Group?    Parent     { get; set; }
     public string?   Name       { get; set; }
@@ -59,6 +46,10 @@ public class Actor : IActor
     public virtual float PrefWidth  { get; set; } = 0;
     public virtual float PrefHeight { get; set; } = 0;
 
+    public DelayedRemovalList< IEventListener > Listeners        { get; }      = new();
+    public DelayedRemovalList< IEventListener > CaptureListeners { get; }      = new();
+    public List< Action >                       Actions          { get; set; } = new();
+
     // ------------------------------------------------------------------------
 
     protected float OriginX { get; set; }
@@ -66,9 +57,16 @@ public class Actor : IActor
 
     // ------------------------------------------------------------------------
 
-    public DelayedRemovalList< IEventListener > Listeners        { get; }
-    public DelayedRemovalList< IEventListener > CaptureListeners { get; }
-    public List< Action >                       Actions          { get; set; } = new();
+    // Backing values for properties
+    private float _x;
+    private float _y;
+    private float _width;
+    private float _height;
+    private float _scaleX;
+    private float _scaleY;
+    private float _rotation = 0.0f;
+    private Color _color    = new( 1, 1, 1, 1 );
+    private bool  _debug    = false;
 
     // ------------------------------------------------------------------------
 
@@ -77,12 +75,10 @@ public class Actor : IActor
     /// </summary>
     protected Actor()
     {
-        Listeners        = new DelayedRemovalList< IEventListener >( 0 );
-        CaptureListeners = new DelayedRemovalList< IEventListener >( 0 );
     }
 
     /// <summary>
-    /// The X position of the actor's left edge.
+    /// The X coordinate of the actor's left edge.
     /// </summary>
     public float X
     {
@@ -98,7 +94,7 @@ public class Actor : IActor
     }
 
     /// <summary>
-    /// Returns the Y position of the actor's bottom edge.
+    /// The Y coordinate of the actor's bottom edge.
     /// </summary>
     public float Y
     {
@@ -113,6 +109,9 @@ public class Actor : IActor
         }
     }
 
+    /// <summary>
+    /// The actors width.
+    /// </summary>
     public float Width
     {
         get => _width;
@@ -126,6 +125,9 @@ public class Actor : IActor
         }
     }
 
+    /// <summary>
+    /// The actors height.
+    /// </summary>
     public float Height
     {
         get => _height;
@@ -139,7 +141,14 @@ public class Actor : IActor
         }
     }
 
-    public float TopEdge   => _y + _height;
+    /// <summary>
+    /// Top edge of this actor.
+    /// </summary>
+    public float TopEdge => _y + _height;
+
+    /// <summary>
+    /// Right side edge of this actor.
+    /// </summary>
     public float RightEdge => _x + _width;
 
     /// <summary>
@@ -174,6 +183,9 @@ public class Actor : IActor
         }
     }
 
+    /// <summary>
+    /// This actors rotation.
+    /// </summary>
     public float Rotation
     {
         get => _rotation;
@@ -187,6 +199,9 @@ public class Actor : IActor
         }
     }
 
+    /// <summary>
+    /// This actors Color.
+    /// </summary>
     public Color Color
     {
         get => _color;
@@ -214,13 +229,18 @@ public class Actor : IActor
     }
 
     /// <summary>
-    /// Draws the actor. The batch is configured to draw in the parent's coordinate
-    /// system. This draw method is convenient to draw a rotated and scaled TextureRegion.
-    /// Batch.begin() has already been called on the batch. If Batch.end() is called to
-    /// draw without the batch then Batch.begin() must be called before the method returns.
-    /// The default implementation does nothing.
+    /// Draws the actor. The batch is configured to draw in the parent's coordinate system. This
+    /// draw method is convenient to draw a rotated and scaled TextureRegion.
+    /// <para>
+    /// <see cref="IBatch.Begin()"/> has already been called on the batch. If <see cref="IBatch.End()"/>
+    /// is called to draw without the batch then <see cref="IBatch.Begin()"/> must be called before
+    /// the method returns.
+    /// </para>
+    /// <para>
+    /// <b>The default implementation does nothing. Child classes should override and implement.</b>
+    /// </para>
     /// </summary>
-    /// <param name="batch"></param>
+    /// <param name="batch"> The <see cref="IBatch"/> to use. </param>
     /// <param name="parentAlpha">
     /// The parent alpha, to be multiplied with this actor's alpha,
     /// allowing the parent's alpha to affect all children.
@@ -230,9 +250,9 @@ public class Actor : IActor
     }
 
     /// <summary>
+    /// Handles all actions attached to this actor.
     /// </summary>
-    /// <param name="delta"></param>
-    /// <exception cref="SystemException"></exception>
+    /// <param name="delta"> Time in seconds since the last update. </param>
     public virtual void Act( float delta )
     {
         if ( Actions.Count == 0 )
@@ -276,21 +296,26 @@ public class Actor : IActor
     }
 
     /// <summary>
-    /// Sets this actor as the event target and propagates the event to
-    /// this actor and ascendants as necessary. If this actor is not in
-    /// the stage, the stage must be set before calling this method.
+    /// Sets this actor as the event target and propagates the event to this actor and
+    /// ascendants as necessary. If this actor is not in the stage, the stage must be
+    /// set before calling this method.
+    /// <para>
     /// Events are fired in 2 phases:
-    /// 1.  The first phase (the "capture" phase) notifies listeners on
-    /// each actor starting at the root and propagating down the
-    /// hierarchy to (and including) this actor.
-    /// 2.  The second phase notifies listeners on each actor starting
-    /// at this actor and, if Event.getBubbles() is true, propagating
-    /// upward to the root.
-    /// If the event is stopped at any time, it will not propagate to the
-    /// next actor.
+    /// <li>
+    /// The first phase (the "capture" phase) notifies listeners on each actor starting
+    /// at the root and propagating down the hierarchy to (and including) this actor.
+    /// </li>
+    /// <li>
+    /// The second phase notifies listeners on each actor starting at this actor and, if
+    /// <see cref="Event.Bubbles()"/> is true, propagating upward to the root.
+    /// </li>
+    /// </para>
+    /// <para>
+    /// If the event is stopped at any time, it will not propagate to the next actor.
+    /// </para>
     /// </summary>
-    /// <param name="ev">The <see cref="Event"/></param>
-    /// <returns>True if the event was cancelled.</returns>
+    /// <param name="ev"> The <see cref="Event"/> to fire. </param>
+    /// <returns> True if the event was cancelled. </returns>
     public virtual bool Fire( Event? ev )
     {
         ArgumentNullException.ThrowIfNull( ev );
@@ -376,6 +401,23 @@ public class Actor : IActor
         }
     }
 
+    /// <summary>
+    /// Responsible for notifying event listeners of an event.
+    /// <para>
+    /// This method first verifies that the event has a valid target actor. Depending on
+    /// whether the event is in the capture phase, it selects the appropriate listener list.
+    /// It then iterates through these listeners and notifies them of the event. If any
+    /// listener handles the event, the event is marked as handled.
+    /// </para>
+    /// <para>
+    /// If an exception occurs during this process, a new exception is thrown with additional
+    /// context.
+    /// </para>
+    /// </summary>
+    /// <param name="ev"> The event. </param>
+    /// <param name="capture">
+    /// true for <see cref="CaptureListeners"/>, false for <see cref="Listeners"/>. </param>
+    /// <returns></returns>
     public virtual bool Notify( Event ev, bool capture )
     {
         if ( ev.TargetActor == null )
@@ -415,10 +457,7 @@ public class Actor : IActor
 
             if ( context != null )
             {
-                throw new SystemException(
-                                          $"Actor - {context.AsSpan( 0, Math.Min( context.Length, 128 ) )}",
-                                          ex
-                                         );
+                throw new SystemException( $"Actor - {context.AsSpan( 0, Math.Min( context.Length, 128 ) )}", ex );
             }
         }
 
@@ -426,14 +465,18 @@ public class Actor : IActor
     }
 
     /// <summary>
-    /// Returns the deepest visible (and optionally, touchable) actor that
-    /// contains the specified point, or null if no actor was hit. The point
-    /// is specified in the actor's local coordinate system (0,0 is the bottom
-    /// left of the actor and width,height is the upper right).
+    /// Returns the deepest visible (and optionally, touchable) actor that contains the
+    /// specified point, or null if no actor was hit. The point is specified in the actor's
+    /// local coordinate system (0,0 is the bottom left of the actor and width, height is
+    /// the upper right).
+    /// <para>
     /// This method is used to delegate touchDown, mouse, and enter/exit events.
-    /// If this method returns null, those events will not occur on this Actor.
-    /// The default implementation returns this actor if the point is within
-    /// this actor's bounds and this actor is visible.
+    /// </para>
+    /// <para>
+    /// If this method returns null, those events will not occur on this Actor. The default
+    /// implementation returns this actor if the point is within this actor's bounds and
+    /// this actor is visible.
+    /// </para>
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
@@ -457,7 +500,7 @@ public class Actor : IActor
     /// <summary>
     /// Removes this actor from its parent, if it has a parent.
     /// </summary>
-    /// <returns>True if successful.</returns>
+    /// <returns> True if successful. </returns>
     public virtual bool Remove()
     {
         return ( Parent != null ) && Parent.RemoveActor( this );
@@ -479,10 +522,10 @@ public class Actor : IActor
     }
 
     /// <summary>
+    /// Remove the specified listener from this Actor.
     /// </summary>
-    /// <param name="listener"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
+    /// <param name="listener"> The listener to remove. </param>
+    /// <returns> True if listener successfully removed. </returns>
     public bool RemoveListener( IEventListener listener )
     {
         return Listeners.RemoveValue( listener );

@@ -543,12 +543,12 @@ SCENES/SCENE2D
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - Action
-    - DONE - DONE - Actor
-    - DONE - DONE - Event
-    - DONE - DONE - Group
+    - DONE - IP   - Actor
+    - DONE - IP   - Event
+    - DONE - IP   - Group
     - DONE - DONE - IActor
     - DONE - DONE - InputEvent
-    - DONE - DONE - Stage
+    - DONE - IP   - Stage
     - DONE - DONE - Touchable
 
 SCENES/SCENE2D/ACTIONS
@@ -560,14 +560,14 @@ SCENES/SCENE2D/ACTIONS
     - DONE - IP   - AddAction
     - DONE - IP   - AddListenerAction
     - DONE - IP   - AfterAction
-    - DONE - IP   - AlphaAction
+    - DONE - DONE - AlphaAction
     - DONE - IP   - ColorAction
     - DONE - IP   - CountdownEventAction
     - DONE - IP   - DelayAction
     - DONE - IP   - DelegateAction
     - DONE - IP   - EventAction
-    - DONE - IP   - FloatAction
-    - DONE - IP   - IntAction
+    - DONE - DONE - FloatAction
+    - DONE - DONE - IntAction
     - DONE - IP   - LayoutAction
     - DONE - IP   - MoveByAction
     - DONE - IP   - MoveToAction
@@ -583,8 +583,8 @@ SCENES/SCENE2D/ACTIONS
     - DONE - IP   - ScaleByAction
     - DONE - IP   - ScaleToAction
     - DONE - IP   - SequenceAction
-    - DONE - IP   - SizeByAction
-    - DONE - IP   - SizeToAction
+    - DONE - DONE - SizeByAction
+    - DONE - DONE - SizeToAction
     - DONE - DONE - TemporalAction
     - DONE - DONE - TimeScaleAction
     - DONE - DONE - TouchableAction

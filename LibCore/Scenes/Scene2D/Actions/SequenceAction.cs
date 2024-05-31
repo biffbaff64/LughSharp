@@ -27,8 +27,8 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 /// <summary>
 /// Executes a number of actions one at a time.
-/// @author Nathan Sweet
 /// </summary>
+[PublicAPI]
 public class SequenceAction : ParallelAction
 {
     private int _index;
@@ -45,6 +45,7 @@ public class SequenceAction : ParallelAction
         }
     }
 
+    /// <inheritdoc/>
     public override bool Act( float delta )
     {
         if ( _index >= GetActions().Count )
@@ -82,6 +83,7 @@ public class SequenceAction : ParallelAction
         }
     }
 
+    /// <inheritdoc/>
     public override void Restart()
     {
         base.Restart();

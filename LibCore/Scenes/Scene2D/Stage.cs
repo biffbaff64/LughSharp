@@ -50,6 +50,12 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 [PublicAPI]
 public class Stage : InputAdapter, IDisposable
 {
+    public SnapshotArray< TouchFocus > TouchFocuses { get; }      = new( true, 4 );
+    public Camera?                     Camera       { get; set; } = null!;
+    public Viewport                    Viewport     { get; }
+    public IBatch                      Batch        { get; }
+    public bool                        Debug        { get; set; } // True if any actor has ever had debug enabled.
+
     private readonly bool     _ownsBatch;
     private readonly Actor?[] _pointerOverActors = new Actor?[ 20 ];
     private readonly int[]    _pointerScreenX    = new int[ 20 ];
@@ -77,10 +83,11 @@ public class Stage : InputAdapter, IDisposable
     /// <see cref="Scaling.Stretch"/>. The stage will use its own <see cref="IBatch"/>
     /// which will be disposed when the stage is disposed.
     /// </summary>
-    public Stage() : this( new ScalingViewport( Scaling.Stretch,
-                                                Gdx.Graphics.Width,
-                                                Gdx.Graphics.Height,
-                                                new OrthographicCamera() ), new SpriteBatch() )
+    public Stage()
+        : this( new ScalingViewport( Scaling.Stretch,
+                                     Gdx.Graphics.Width,
+                                     Gdx.Graphics.Height,
+                                     new OrthographicCamera() ), new SpriteBatch() )
     {
         _ownsBatch = true;
     }
@@ -95,10 +102,11 @@ public class Stage : InputAdapter, IDisposable
     }
 
     /// <summary>
-    /// Creates a stage with the specified viewport and batch. This can be used
-    /// to specify an existing batch or to customize which batch implementation is used.
+    /// Creates a stage with the specified <see cref="Viewport"/> and <see cref="IBatch"/>.
+    /// This can be used to specify an existing batch or to customize which batch implementation
+    /// is used.
     /// </summary>
-    /// <param name="viewport"></param>
+    /// <param name="viewport"> The viewport for this stage. </param>
     /// <param name="batch">
     /// Will not be disposed if <see cref="Dispose()"/> is called,
     /// handle disposal yourself.
@@ -116,12 +124,6 @@ public class Stage : InputAdapter, IDisposable
 
     public float Width  => Viewport.WorldWidth;
     public float Height => Viewport.WorldHeight;
-
-    public SnapshotArray< TouchFocus > TouchFocuses { get; }      = new( true, 4 );
-    public Camera?                     Camera       { get; set; } = null!;
-    public Viewport                    Viewport     { get; }
-    public IBatch                      Batch        { get; }
-    public bool                        Debug        { get; set; } // True if any actor has ever had debug enabled.
 
     /// <summary>
     /// Sets the actor that will receive key events.
@@ -595,10 +597,9 @@ public class Stage : InputAdapter, IDisposable
     }
 
     /// <summary>
-    /// Applies a touch moved event to the stage and returns true if an actor in
-    /// the scene <see cref="Event.SetHandled"/> handled the event.
-    /// Only <see cref="InputListener"/> listeners that returned true for
-    /// touchDown will receive this event.
+    /// Applies a touch moved event to the stage and returns true if an actor in the scene
+    /// <see cref="Event.SetHandled"/> handled the event. Only <see cref="InputListener"/>
+    /// listeners that returned true for touchDown will receive this event.
     /// </summary>
     public override bool TouchDragged( int screenX, int screenY, int pointer )
     {

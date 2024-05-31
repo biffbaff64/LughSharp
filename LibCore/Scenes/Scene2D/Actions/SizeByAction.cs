@@ -25,16 +25,29 @@
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
+/// <summary>
+/// Scales an actor by the the values in <see cref="AmountWidth"/>
+/// and <see cref="AmountHeight"/>.
+/// </summary>
+[PublicAPI]
 public class SizeByAction : RelativeTemporalAction
 {
     public float AmountWidth  { get; set; }
     public float AmountHeight { get; set; }
 
+    // ------------------------------------------------------------------------
+    
+    /// <inheritdoc/>
     protected override void UpdateRelative( float percentDelta )
     {
         Target?.SizeBy( AmountWidth * percentDelta, AmountHeight * percentDelta );
     }
 
+    /// <summary>
+    /// Sets the amounts by which to scale the width and height.
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
     public void SetAmount( float width, float height )
     {
         AmountWidth  = width;

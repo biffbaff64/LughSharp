@@ -30,6 +30,12 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 /// </summary>
 public class IntAction : TemporalAction
 {
+    public int Start    { get; }
+    public int EndValue { get; }
+    public int Value    { get; set; }
+
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Creates a IntAction that transitions from 0 to 1.
     /// </summary>
@@ -67,15 +73,13 @@ public class IntAction : TemporalAction
         EndValue = end;
     }
 
-    public int Start    { get; }
-    public int EndValue { get; }
-    public int Value    { get; set; }
-
+    /// <inheritdoc/>
     protected override void Begin()
     {
         Value = Start;
     }
 
+    /// <inheritdoc/>
     protected override void Update( float percent )
     {
         if ( percent == 0 )

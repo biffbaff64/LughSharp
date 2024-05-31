@@ -29,6 +29,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D;
 public interface IAction
 {
     /// <summary>
+    /// The pool of actions.
     /// </summary>
     Pool< Action >? Pool { get; set; }
 
@@ -58,11 +59,11 @@ public interface IAction
     }
 
     /// <summary>
-    /// Resets the optional state of this action to as if it were newly created, allowing the
+    /// Resets the optional state of this action as if it were newly created, allowing the
     /// action to be pooled and reused. State required to be set for every usage of this action
     /// or computed during the action does not need to be reset.
     /// <para>
-    /// The default implementation calls <see cref="Action.Restart"/>
+    /// The default implementation should call <see cref="Action.Restart"/>
     /// </para>
     /// <para>
     /// If a subclass has optional state, it must override this method, call super, and reset

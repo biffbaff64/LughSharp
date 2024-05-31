@@ -157,10 +157,12 @@ public class InputEvent : Event
     public bool TouchFocus { get; set; } = true;
 
     /// <summary>
+    /// Resets this event.
     /// </summary>
     public override void Reset()
     {
         base.Reset();
+
         RelatedActor = null;
         Button       = -1;
     }

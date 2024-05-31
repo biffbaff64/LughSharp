@@ -28,9 +28,9 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
 /// <summary>
-/// Sets the alpha for an actor's color (or a specified color), from the
-/// current alpha to the new alpha. Note this action transitions from the
-/// alpha at the time the action starts to the specified alpha.
+/// Sets the alpha for an actor's color (or a specified color), from the current alpha
+/// to the new alpha. Note this action transitions from the alpha at the time the action
+/// starts to the specified alpha.
 /// </summary>
 [PublicAPI]
 public class AlphaAction : TemporalAction
@@ -38,6 +38,9 @@ public class AlphaAction : TemporalAction
     private float _start;
     public  float Alpha { get; set; }
 
+    // ------------------------------------------------------------------------
+    
+    /// <inheritdoc/>
     protected override void Begin()
     {
         if ( Target == null )
@@ -48,6 +51,7 @@ public class AlphaAction : TemporalAction
         _start = Target.Color.A;
     }
 
+    /// <inheritdoc/>
     protected override void Update( float percent )
     {
         if ( Target == null )
