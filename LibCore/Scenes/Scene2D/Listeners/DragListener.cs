@@ -25,25 +25,23 @@
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
-/**
- * Detects mouse or finger touch drags on an actor. A touch must go down over the actor and a drag won't start until it is moved
- * outside the {@link #setTapSquareSize(float) tap square}. Any touch (not just the first) will trigger this listener. While
- * pressed, other touch downs are ignored.
- */
+/// <summary>
+/// Detects mouse or finger touch drags on an actor. A touch must go down over the actor
+/// and a drag won't start until it is moved outside the <see cref="TapSquareSize"/> tap
+/// square. Any touch (not just the first) will trigger this listener. While pressed, other
+/// touch downs are ignored.
+/// </summary>
 [PublicAPI]
 public class DragListener : InputListener
 {
-    private float _dragLastX;
-    private float _dragLastY;
-
-    private int _pressedPointer = -1;
-
-    // ------------------------------------------------------------------------
-
+    /// <summary>
     /// Sets the button to listen for, all other buttons are ignored.
+    /// </summary>
     public int Button { get; set; } = IInput.Buttons.LEFT;
 
+    /// <summary>
     /// Returns true if a touch has been dragged outside the tap square.
+    /// </summary>
     public bool IsDragging { get; private set; }
 
     public float DragStartX      { get; set; }
@@ -55,6 +53,10 @@ public class DragListener : InputListener
     public float StageTouchDownY { get; private set; } = -1;
     public float DragX           { get; private set; }
     public float DragY           { get; private set; }
+
+    private float _dragLastX;
+    private float _dragLastY;
+    private int   _pressedPointer = -1;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -143,14 +145,32 @@ public class DragListener : InputListener
         }
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="ev"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="pointer"></param>
     public virtual void DragStart( InputEvent ev, float x, float y, int pointer )
     {
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="ev"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="pointer"></param>
     public virtual void Drag( InputEvent ev, float x, float y, int pointer )
     {
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="ev"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="pointer"></param>
     public virtual void DragStop( InputEvent ev, float x, float y, int pointer )
     {
     }

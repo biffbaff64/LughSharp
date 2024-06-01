@@ -23,10 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Drawing;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LughSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D.OldBatchers;
 
 /// <summary>
 /// A Batch is used to draw 2D rectangles that reference a texture (region). The class will
@@ -60,28 +59,28 @@ namespace LughSharp.LibCore.Graphics.G2D;
 /// </para>
 /// </summary>
 [PublicAPI]
-interface IBatch : IDisposable
+public interface IBatch : IDisposable
 {
-    const int X1 = 0;
-    const int Y1 = 1;
-    const int C1 = 2;
-    const int U1 = 3;
-    const int V1 = 4;
-    const int X2 = 5;
-    const int Y2 = 6;
-    const int C2 = 7;
-    const int U2 = 8;
-    const int V2 = 9;
-    const int X3 = 10;
-    const int Y3 = 11;
-    const int C3 = 12;
-    const int U3 = 13;
-    const int V3 = 14;
-    const int X4 = 15;
-    const int Y4 = 16;
-    const int C4 = 17;
-    const int U4 = 18;
-    const int V4 = 19;
+    public const int X1 = 0;
+    public const int Y1 = 1;
+    public const int C1 = 2;
+    public const int U1 = 3;
+    public const int V1 = 4;
+    public const int X2 = 5;
+    public const int Y2 = 6;
+    public const int C2 = 7;
+    public const int U2 = 8;
+    public const int V2 = 9;
+    public const int X3 = 10;
+    public const int Y3 = 11;
+    public const int C3 = 12;
+    public const int U3 = 13;
+    public const int V3 = 14;
+    public const int X4 = 15;
+    public const int Y4 = 16;
+    public const int C4 = 17;
+    public const int U4 = 18;
+    public const int V4 = 19;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -89,32 +88,32 @@ interface IBatch : IDisposable
     /// <returns>
     /// The rendering color of this Batch.
     /// </returns>
-    Color Color { get; set; }
+    public Color Color { get; set; }
 
     /// <returns>
     /// the rendering color of this Batch in vertex format (alpha compressed to 0-254)
     /// </returns>
-    float PackedColor { get; set; }
+    public float PackedColor { get; set; }
 
-    int BlendSrcFunc { get; }
+    public int BlendSrcFunc { get; }
 
-    int BlendDstFunc { get; }
+    public int BlendDstFunc { get; }
 
-    int BlendSrcFuncAlpha { get; }
+    public int BlendSrcFuncAlpha { get; }
 
-    int BlendDstFuncAlpha { get; }
+    public int BlendDstFuncAlpha { get; }
 
     /// <summary>
     /// Returns the current projection matrix.
     /// Changing this within <see cref="Begin()"/> / <see cref="End()"/> results in undefined behaviour.
     /// </summary>
-    Matrix4 ProjectionMatrix { get; }
+    public Matrix4 ProjectionMatrix { get; }
 
     /// <summary>
     /// Returns the current transform matrix.
     /// Changing this within <see cref="Begin()"/> / <see cref="End()"/> results in undefined behaviour.
     /// </summary>
-    Matrix4 TransformMatrix { get; }
+    public Matrix4 TransformMatrix { get; }
 
     /// <summary>
     /// Sets the shader to be used in a GLES 2.0 environment. Vertex position attribute is
@@ -137,10 +136,10 @@ interface IBatch : IDisposable
     /// It can be called inbetween <see cref="Begin()"/> and <see cref="End()"/>.
     /// </para>
     /// </summary>
-    ShaderProgram? Shader { get; set; }
+    public ShaderProgram? Shader { get; set; }
 
     /// <returns> true if currently between begin and end. </returns>
-    bool IsDrawing { get; set; }
+    public bool IsDrawing { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -152,50 +151,63 @@ interface IBatch : IDisposable
     /// and modelview matrices via <see cref="SetProjectionMatrix(Matrix4)"/> and
     /// <see cref="SetTransformMatrix(Matrix4)"/>.
     /// </summary>
-    void Begin();
+    public void Begin();
 
     /// <summary>
     /// Finishes off rendering. Enables depth writes, disables blending and texturing.
     /// Must always be called after a call to <see cref="Begin"/>
     /// </summary>
-    void End();
+    public void End();
 
-    void SetColor( float r, float g, float b, float a );
+    public void SetColor( float r, float g, float b, float a );
 
     /// <summary>
-    /// Draws a rectangle with the bottom left corner at regionX, regionX having the given width
-    /// and height, from region.Width and region.Height, in pixels. The rectangle is offset by origin.X,
-    /// origin.Y relative to the origin. Scale specifies the scaling factor by which the rectangle
-    /// should be scaled around originX, originY. Rotation specifies the angle of counter clockwise
-    /// rotation of the rectangle around originX, originY. The portion of the <see cref="Texture"/>
-    /// given by srcX, srcY and srcWidth, srcHeight is used.
-    /// <para>
+    /// Draws a rectangle with the bottom left corner at x,y having the given width and height in
+    /// pixels. The rectangle is offset by originX, originY relative to the origin. Scale specifies
+    /// the scaling factor by which the rectangle should be scaled around originX, originY. Rotation
+    /// specifies the angle of counter clockwise rotation of the rectangle around originX, originY. The
+    /// portion of the <see cref="Texture"/> given by srcX, srcY and srcWidth, srcHeight is used.
     /// These coordinates and sizes are given in texels. FlipX and FlipY specify whether the texture
     /// portion should be flipped horizontally or vertically.
-    /// </para>
     /// </summary>
     /// <param name="texture"></param>
-    /// <param name="region">
-    /// the x &amp; y coordinates in screen space, and width &amp; height of the rectangle.
+    /// <param name="x"> the x-coordinate in screen space </param>
+    /// <param name="y"> the y-coordinate in screen space </param>
+    /// <param name="originX">
+    /// the x-coordinate of the scaling and rotation origin relative to the screen space coordinates
     /// </param>
-    /// <param name="origin">
-    /// the x &amp; y coordinates of the scaling and rotation origin relative to the screen space coordinates
+    /// <param name="originY">
+    /// the y-coordinate of the scaling and rotation origin relative to the screen space coordinates
     /// </param>
-    /// <param name="scale"> the scale of the rectangle around originX/originY in x &amp; y </param>
+    /// <param name="width"> the width in pixels </param>
+    /// <param name="height"> the height in pixels </param>
+    /// <param name="scaleX"> the scale of the rectangle around originX/originY in x </param>
+    /// <param name="scaleY"> the scale of the rectangle around originX/originY in y </param>
     /// <param name="rotation">
     /// the angle of counter clockwise rotation of the rectangle around originX/originY
     /// </param>
-    /// <param name="src">
-    /// the x &amp; y coordinates in texel space, and source width &amp; height in texels.
-    /// </param>
-    /// <param name="flipXY"> whether to flip the sprite horizontally and/or vertically </param>
-    void Draw( Texture texture,
-               Rectangle region,
-               Vector2 origin,
-               Vector2 scale,
-               float rotation,
-               Rectangle src,
-               Vector2 flipXY );
+    /// <param name="srcX"> the x-coordinate in texel space </param>
+    /// <param name="srcY"> the y-coordinate in texel space </param>
+    /// <param name="srcWidth"> the source with in texels </param>
+    /// <param name="srcHeight"> the source height in texels </param>
+    /// <param name="flipX"> whether to flip the sprite horizontally </param>
+    /// <param name="flipY"> whether to flip the sprite vertically  </param>
+    public void Draw( Texture texture,
+                      float x,
+                      float y,
+                      float originX,
+                      float originY,
+                      float width,
+                      float height,
+                      float scaleX,
+                      float scaleY,
+                      float rotation,
+                      int srcX,
+                      int srcY,
+                      int srcWidth,
+                      int srcHeight,
+                      bool flipX,
+                      bool flipY );
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y having the given width and height
@@ -204,17 +216,27 @@ interface IBatch : IDisposable
     /// specify whether the texture portion should be flipped horizontally or vertically.
     /// </summary>
     /// <param name="texture"></param>
-    /// <param name="region">
-    /// the x &amp; y coordinates in screen space, and width &amp; height of the rectangle.
-    /// </param>
-    /// <param name="src">
-    /// the x &amp; y coordinates in texel space, and source width &amp; height in texels.
-    /// </param>
-    /// <param name="flipXY"> whether to flip the sprite horizontally and/or vertically </param>
-    void Draw( Texture texture,
-               Rectangle region,
-               Rectangle src,
-               Vector2 flipXY );
+    /// <param name="x"> the x-coordinate in screen space </param>
+    /// <param name="y"> the y-coordinate in screen space </param>
+    /// <param name="width"> the width in pixels </param>
+    /// <param name="height"> the height in pixels </param>
+    /// <param name="srcX"> the x-coordinate in texel space </param>
+    /// <param name="srcY"> the y-coordinate in texel space </param>
+    /// <param name="srcWidth"> the source with in texels </param>
+    /// <param name="srcHeight"> the source height in texels </param>
+    /// <param name="flipX"> whether to flip the sprite horizontally </param>
+    /// <param name="flipY"> whether to flip the sprite vertically  </param>
+    public void Draw( Texture texture,
+                      float x,
+                      float y,
+                      float width,
+                      float height,
+                      int srcX,
+                      int srcY,
+                      int srcWidth,
+                      int srcHeight,
+                      bool flipX,
+                      bool flipY );
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y having the given width and height
@@ -224,10 +246,11 @@ interface IBatch : IDisposable
     /// <param name="texture"></param>
     /// <param name="x"> the x-coordinate in screen space </param>
     /// <param name="y"> the y-coordinate in screen space </param>
-    /// <param name="src">
-    /// the x &amp; y coordinates in texel space, and source width &amp; height in texels.
-    /// </param>
-    void Draw( Texture texture, float x, float y, Rectangle src );
+    /// <param name="srcX"> the x-coordinate in texel space </param>
+    /// <param name="srcY"> the y-coordinate in texel space </param>
+    /// <param name="srcWidth"> the source with in texels </param>
+    /// <param name="srcHeight"> the source height in texels  </param>
+    public void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight );
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y having the given width and height
@@ -236,14 +259,15 @@ interface IBatch : IDisposable
     /// have the given tint <see cref="Color"/>.
     /// </summary>
     /// <param name="texture"></param>
-    /// <param name="region">
-    /// the x &amp; y coordinates in screen space, and width &amp; height of the rectangle.
-    /// </param>
+    /// <param name="x"> the x-coordinate in screen space </param>
+    /// <param name="y"> the y-coordinate in screen space </param>
+    /// <param name="width"> the width in pixels </param>
+    /// <param name="height"> the height in pixels  </param>
     /// <param name="u"></param>
     /// <param name="v"></param>
     /// <param name="u2"></param>
     /// <param name="v2"></param>
-    void Draw( Texture texture, Rectangle region, float u, float v, float u2, float v2 );
+    public void Draw( Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2 );
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y having the width and
@@ -252,32 +276,32 @@ interface IBatch : IDisposable
     /// <param name="texture"></param>
     /// <param name="x"> the x-coordinate in screen space </param>
     /// <param name="y"> the y-coordinate in screen space  </param>
-    void Draw( Texture texture, float x, float y );
+    public void Draw( Texture texture, float x, float y );
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y and stretching the region
     /// to cover the given width and height.
     /// </summary>
-    void Draw( Texture texture, float x, float y, float width, float height );
+    public void Draw( Texture texture, float x, float y, float width, float height );
 
     /// <summary>
     /// Draws a rectangle using the given vertices. There must be 4 vertices, each made
     /// up of 5 elements in this order: x, y, color, u, v. The <see cref="Color"/>
     /// from the Batch is not applied.
     /// </summary>
-    void Draw( Texture texture, float[] spriteVertices, int offset, int count );
+    public void Draw( Texture texture, float[] spriteVertices, int offset, int count );
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y having the width and
     /// height of the region.
     /// </summary>
-    void Draw( TextureRegion region, float x, float y );
+    public void Draw( TextureRegion region, float x, float y );
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y and stretching the region to cover
     /// the given width and height.
     /// </summary>
-    void Draw( TextureRegion region, float x, float y, float width, float height );
+    public void Draw( TextureRegion region, float x, float y, float width, float height );
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y and stretching the region to
@@ -286,16 +310,16 @@ interface IBatch : IDisposable
     /// around originX, originY. Rotation specifies the angle of counter clockwise rotation
     /// of the rectangle around originX, originY.
     /// </summary>
-    void Draw( TextureRegion region,
-               float x,
-               float y,
-               float originX,
-               float originY,
-               float width,
-               float height,
-               float scaleX,
-               float scaleY,
-               float rotation );
+    public void Draw( TextureRegion region,
+                      float x,
+                      float y,
+                      float originX,
+                      float originY,
+                      float width,
+                      float height,
+                      float scaleX,
+                      float scaleY,
+                      float rotation );
 
     /// <summary>
     /// Draws a rectangle with the texture coordinates rotated 90 degrees. The bottom left corner
@@ -304,12 +328,13 @@ interface IBatch : IDisposable
     /// which the rectangle should be scaled around originX, originY. Rotation specifies the angle
     /// of counter clockwise rotation of the rectangle around originX, originY.
     /// </summary>
-    /// <param name="textureRegion"></param>
-    /// <param name="region">
-    /// the x &amp; y coordinates in screen space, and width &amp; height of the rectangle.
-    /// </param>
+    /// <param name="region"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     /// <param name="originX"></param>
     /// <param name="originY"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
     /// <param name="scaleX"></param>
     /// <param name="scaleY"></param>
     /// <param name="rotation"></param>
@@ -317,36 +342,39 @@ interface IBatch : IDisposable
     /// If true, the texture coordinates are rotated 90 degrees clockwise.
     /// If false, they are rotated 90 degrees counter clockwise.
     /// </param>
-    void Draw( TextureRegion textureRegion,
-               Rectangle region,
-               float originX,
-               float originY,
-               float scaleX,
-               float scaleY,
-               float rotation,
-               bool clockwise );
+    public void Draw( TextureRegion region,
+                      float x,
+                      float y,
+                      float originX,
+                      float originY,
+                      float width,
+                      float height,
+                      float scaleX,
+                      float scaleY,
+                      float rotation,
+                      bool clockwise );
 
     /// <summary>
     /// Draws a rectangle transformed by the given matrix.
     /// </summary>
-    void Draw( TextureRegion region, float width, float height, Affine2 transform );
+    public void Draw( TextureRegion region, float width, float height, Affine2 transform );
 
     /// <summary>
     /// Causes any pending sprites to be rendered, without ending the Batch.
     /// </summary>
-    void Flush();
+    public void Flush();
 
     /// <summary>
     /// Disables blending for drawing sprites.
     /// Calling this within <see cref="Begin()"/> / <see cref="End()"/> will flush the batch.
     /// </summary>
-    void DisableBlending();
+    public void DisableBlending();
 
     /// <summary>
     /// Enables blending for drawing sprites.
     /// Calling this within <see cref="Begin()"/> / <see cref="End()"/> will flush the batch.
     /// </summary>
-    void EnableBlending();
+    public void EnableBlending();
 
     /// <summary>
     /// Sets the blending function to be used when rendering sprites.
@@ -356,7 +384,7 @@ interface IBatch : IDisposable
     /// If set to -1, Batch won't change the blending function.
     /// </param>
     /// <param name="dstFunc"> the destination function, e.g. GL20.GL_ONE_MINUS_SRC_ALPHA </param>
-    void SetBlendFunction( int srcFunc, int dstFunc );
+    public void SetBlendFunction( int srcFunc, int dstFunc );
 
     /// <summary>
     /// Sets separate (color/alpha) blending function to be used when rendering sprites.
@@ -370,17 +398,17 @@ interface IBatch : IDisposable
     /// <param name="dstFuncAlpha">
     /// the destination alpha function, e.g. GL20.GL_ONE_MINUS_SRC_ALPHA.
     /// </param>
-    void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha );
+    public void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha );
 
     /// <summary>
     /// Sets the projection matrix to be used by this Batch.
     /// If this is called inside a <see cref="Begin()"/> / <see cref="End()"/> block, the
     /// current batch is flushed to the gpu.
     /// </summary>
-    void SetProjectionMatrix( Matrix4 projection );
+    public void SetProjectionMatrix( Matrix4 projection );
 
     /// <summary>
     /// Sets the transform matrix to be used by this Batch.
     /// </summary>
-    void SetTransformMatrix( Matrix4 transform );
+    public void SetTransformMatrix( Matrix4 transform );
 }

@@ -27,7 +27,7 @@ using System.Drawing;
 using LughSharp.LibCore.Utils.Exceptions;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LughSharp.LibCore.Graphics.G2D;
+namespace LughSharp.LibCore.Graphics.G2D.OldBatchers;
 
 /// <summary>
 /// CpuSpriteBatch behaves like SpriteBatch, except it doesn't flush automatically
@@ -192,6 +192,15 @@ public class CpuSpriteBatch : SpriteBatch
                 _haveIdentityRealMatrix = CheckIdt( TransformMatrix );
             }
         }
+    }
+
+    public void Draw( Texture texture,
+                      Rectangle region,
+                      Vector2 origin,
+                      Vector2 scale,
+                      Rectangle source,
+                      Vector2 flipXY )
+    {
     }
     
     /// <inheritdoc/>

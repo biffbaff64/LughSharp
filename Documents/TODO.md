@@ -242,20 +242,16 @@ GRAPHICS
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - DONE - Camera
     - DONE - IP   - Color
     - DONE - DONE - Colors
     - DONE - IP   - Cubemap
-    - DONE - DONE - FPSLogger
+    - DONE - IP   - FPSLogger
     - DONE - IP   - GLTexture
     - DONE - IP   - ICubemapData
     - DONE - DONE - ICursor
-    - DONE - IP   - IDownloadPixmapResponseListener
     - DONE - DONE - ITextureArrayData
     - DONE - DONE - ITextureData
     - DONE - IP   - Mesh
-    - DONE - DONE - OrthographicCamera
-    - DONE - DONE - PerspectiveCamera
     - DONE - DONE - Pixmap
     - DONE - IP   - PixmapFormat
     - DONE - IP   - PixmapIO                            Tests needed
@@ -266,8 +262,14 @@ GRAPHICS
     - DONE - IP   - VertexAttribute
     - DONE - IP   - VertexAttributes
 
-    - GameWindow ??
-    - GraphicsDevice ??
+GRAPHICS/CAMERAS
+----------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - DONE - Camera
+    - DONE - DONE - OrthographicCamera
+    - DONE - DONE - PerspectiveCamera
 
 GRAPHICS/FRAMEBUFFERS
 ---------------------
@@ -295,12 +297,9 @@ GRAPHICS/G2D
     - DONE - IP   - AtlasSprite                     Done but I've spotted some possible improvements
     - IP   - IP   - BitmapFont                      Much work needed!
     - IP   - IP   - BitmapFontCache                 Relies on the BitmapFont rewrite.
-    - IP   - IP   - CpuSpriteBatch                  Some methods have too many parameters
     - DONE - IP   - DistanceFieldFont
     - DONE - IP   - Gdx2DPixmap
     - IP   - IP   - GlyphLayout                     Method SetText() is too big.
-    - DONE - DONE - IBatch                          Some methods have too many parameters
-    - DONE - DONE - IPolygonBatch
     - DONE - IP   - NinePatch
     - DONE - IP   - ParticleEffect
     - DONE - IP   - ParticleEffectPool
@@ -310,15 +309,21 @@ GRAPHICS/G2D
     - DONE - IP   - PolygonRegion
     - DONE - IP   - PolygonRegionLoader
     - DONE - IP   - PolygonSprite
-    - DONE - IP   - PolygonSpriteBatch
     - DONE - IP   - RepeatablePolygonSprite
     - DONE - IP   - Sprite
-    - DONE - IP   - SpriteBatch                     Some methods have too many parameters
     - DONE - IP   - SpriteCache
     - DONE - IP   - TextureAtlas
     - DONE - IP   - TextureAtlasData
     - DONE - IP   - TextureAtlasDataExtensions
     - DONE - IP   - TextureRegion
+
+    Batching
+    --------
+    - IP   - IP   - CpuSpriteBatch                  Some methods have too many parameters
+    - IP   - IP   - IBatch                          Some methods have too many parameters
+    - IP   - IP   - IPolygonBatch                   Some methods have too many parameters
+    - IP   - IP   - PolygonSpriteBatch              Some methods have too many parameters
+    - IP   - IP   - SpriteBatch                     Some methods have too many parameters
 
 GRAPHICS/G3D
 ------------
@@ -597,10 +602,10 @@ SCENES/SCENE2D/LISTENERS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - ActorGestureListener
+    - DONE - IP   - ActorGestureListener
     - DONE - DONE - ChangeListener
     - DONE - IP   - ClickListener
-    - IP   - IP   - DragListener
+    - DONE - IP   - DragListener
     - DONE - IP   - DragScrollListener
     - DONE - IP   - FocusListener
     - DONE - DONE - IEventListener

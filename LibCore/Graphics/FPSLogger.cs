@@ -35,10 +35,16 @@ public class FPSLogger
     private readonly int  _bound;
     private          long _lastLogTime;
 
+    // ------------------------------------------------------------------------
+    
+    /// <summary>
+    /// Constructs a new FPSLogger instance.
+    /// </summary>
+    /// <param name="bound"></param>
     public FPSLogger( int bound = int.MaxValue )
     {
-        _bound       = bound;
-        _lastLogTime = TimeUtils.NanoTime();
+        this._bound       = bound;
+        this._lastLogTime = TimeUtils.NanoTime();
     }
 
     /// <summary>

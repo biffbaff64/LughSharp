@@ -34,23 +34,45 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 [PublicAPI]
 public class ActorGestureListener : IEventListener
 {
+    private const float DEFAULT_HALF_TAP_SQUARE_SIZE = 20;
+    private const float DEFAULT_TAP_COUNT_INTERVAL   = 0.4f;
+    private const float DEFAULT_LONG_PRESS_DURATION  = 1.1f;
+    private const float DEFAULT_MAX_FLING_DELAY      = int.MaxValue;
+
     private readonly static Vector2 _tmpCoords  = new();
     private readonly static Vector2 _tmpCoords2 = new();
+
+    public ActorGestureDetector Detector        { get; set; }
+    public Actor?               TouchDownTarget { get; set; }
 
     private Actor?      _actor;
     private InputEvent? _inputEvent;
 
     // ------------------------------------------------------------------------
 
-    public ActorGestureListener()
-        : this( 20, 0.4f, 1.1f, int.MaxValue )
-    {
-    }
-
-    public ActorGestureListener( float halfTapSquareSize,
-                                 float tapCountInterval,
-                                 float longPressDuration,
-                                 float maxFlingDelay )
+    /// <summary>
+    /// Constructs a new GestureListener for Actors.
+    /// </summary>
+    /// <param name="halfTapSquareSize">
+    /// Half width in pixels of the square around an initial touch event, see
+    /// <see cref="ActorGestureDetector.Tap(float, float, int, int)"/>.
+    /// </param>
+    /// <param name="tapCountInterval">
+    /// Time in seconds that must pass for two touch down/up sequences to be detected
+    /// as consecutive taps.
+    /// </param>
+    /// <param name="longPressDuration">
+    /// Time in seconds that must pass for the detector to fire a
+    /// <see cref="ActorGestureDetector.LongPress(float, float)"/> event.
+    /// </param>
+    /// <param name="maxFlingDelay">
+    /// No fling event is fired when the time in seconds the finger was dragged is larger
+    /// than this, see <see cref="ActorGestureDetector.Fling(float, float, int)"/>.
+    ///</param>
+    public ActorGestureListener( float halfTapSquareSize = DEFAULT_HALF_TAP_SQUARE_SIZE,
+                                 float tapCountInterval = DEFAULT_TAP_COUNT_INTERVAL,
+                                 float longPressDuration = DEFAULT_LONG_PRESS_DURATION,
+                                 float maxFlingDelay = DEFAULT_MAX_FLING_DELAY )
     {
         Detector = new ActorGestureDetector( halfTapSquareSize,
                                              tapCountInterval,
@@ -59,9 +81,10 @@ public class ActorGestureListener : IEventListener
                                              this );
     }
 
-    public ActorGestureDetector Detector        { get; set; }
-    public Actor?               TouchDownTarget { get; set; }
-
+    /// <summary>
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
     public virtual bool Handle( Event e )
     {
         if ( e is not InputEvent ev )
@@ -120,6 +143,9 @@ public class ActorGestureListener : IEventListener
 
                 return true;
             }
+
+            default:
+                break;
         }
 
         return false;
@@ -146,6 +172,12 @@ public class ActorGestureListener : IEventListener
         return false;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="ev"></param>
+    /// <param name="velocityX"></param>
+    /// <param name="velocityY"></param>
+    /// <param name="button"></param>
     public virtual void Fling( InputEvent ev, float velocityX, float velocityY, int button )
     {
     }
