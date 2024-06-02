@@ -60,7 +60,7 @@ namespace LughSharp.LibCore.Graphics.G2D;
 /// </para>
 /// </summary>
 [PublicAPI]
-interface IBatch : IDisposable
+public interface IBatch : IDisposable
 {
     const int X1 = 0;
     const int Y1 = 1;
@@ -120,15 +120,15 @@ interface IBatch : IDisposable
     /// Sets the shader to be used in a GLES 2.0 environment. Vertex position attribute is
     /// called "a_position", the texture coordinates attribute is called "a_texCoord0", the
     /// color attribute is called "a_color".
-    /// <p>
+    /// <para>
     /// See <see cref="ShaderProgram.POSITION_ATTRIBUTE"/>, <see cref="ShaderProgram.COLOR_ATTRIBUTE"/>
     /// and <see cref="ShaderProgram.TEXCOORD_ATTRIBUTE"/> which gets "0" appended to indicate
     /// the use of the first texture unit.
-    /// </p>
-    /// <p>
+    /// </para>
+    /// <para>
     /// The combined transform and projection matrx is uploaded via a mat4 uniform called "u_projTrans".
     /// The texture sampler is passed via a uniform called "u_texture".
-    /// </p>
+    /// </para>
     /// <para>
     /// Call this method with a null argument to use the default shader.
     /// </para>
@@ -139,7 +139,9 @@ interface IBatch : IDisposable
     /// </summary>
     ShaderProgram? Shader { get; set; }
 
-    /// <returns> true if currently between begin and end. </returns>
+    /// <summary>
+    /// Returns true if currently between begin and end.
+    /// </summary>
     bool IsDrawing { get; set; }
 
     // ------------------------------------------------------------------------
@@ -188,14 +190,16 @@ interface IBatch : IDisposable
     /// <param name="src">
     /// the x &amp; y coordinates in texel space, and source width &amp; height in texels.
     /// </param>
-    /// <param name="flipXY"> whether to flip the sprite horizontally and/or vertically </param>
+    /// <param name="flipX"> whether to flip the sprite horizontally </param>
+    /// <param name="flipY"> whether to flip the sprite vertically </param>
     void Draw( Texture texture,
                Rectangle region,
-               Vector2 origin,
-               Vector2 scale,
+               Point2D origin,
+               Point2D scale,
                float rotation,
                Rectangle src,
-               Vector2 flipXY );
+               bool flipX,
+               bool flipY );
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y having the given width and height
@@ -210,11 +214,13 @@ interface IBatch : IDisposable
     /// <param name="src">
     /// the x &amp; y coordinates in texel space, and source width &amp; height in texels.
     /// </param>
-    /// <param name="flipXY"> whether to flip the sprite horizontally and/or vertically </param>
+    /// <param name="flipX"> whether to flip the sprite horizontally </param>
+    /// <param name="flipY"> whether to flip the sprite vertically </param>
     void Draw( Texture texture,
                Rectangle region,
                Rectangle src,
-               Vector2 flipXY );
+               bool flipX,
+               bool flipY );
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y having the given width and height
@@ -258,7 +264,7 @@ interface IBatch : IDisposable
     /// Draws a rectangle with the bottom left corner at x,y and stretching the region
     /// to cover the given width and height.
     /// </summary>
-    void Draw( Texture texture, float x, float y, float width, float height );
+    void Draw( Texture texture, Point loc, Size size );
 
     /// <summary>
     /// Draws a rectangle using the given vertices. There must be 4 vertices, each made
@@ -286,15 +292,10 @@ interface IBatch : IDisposable
     /// around originX, originY. Rotation specifies the angle of counter clockwise rotation
     /// of the rectangle around originX, originY.
     /// </summary>
-    void Draw( TextureRegion region,
-               float x,
-               float y,
-               float originX,
-               float originY,
-               float width,
-               float height,
-               float scaleX,
-               float scaleY,
+    void Draw( TextureRegion textureRegion,
+               Rectangle region,
+               Point2D origin,
+               Point2D scale,
                float rotation );
 
     /// <summary>
@@ -308,10 +309,8 @@ interface IBatch : IDisposable
     /// <param name="region">
     /// the x &amp; y coordinates in screen space, and width &amp; height of the rectangle.
     /// </param>
-    /// <param name="originX"></param>
-    /// <param name="originY"></param>
-    /// <param name="scaleX"></param>
-    /// <param name="scaleY"></param>
+    /// <param name="origin"></param>
+    /// <param name="scale"></param>
     /// <param name="rotation"></param>
     /// <param name="clockwise">
     /// If true, the texture coordinates are rotated 90 degrees clockwise.
@@ -319,10 +318,8 @@ interface IBatch : IDisposable
     /// </param>
     void Draw( TextureRegion textureRegion,
                Rectangle region,
-               float originX,
-               float originY,
-               float scaleX,
-               float scaleY,
+               Point2D origin,
+               Point2D scale,
                float rotation,
                bool clockwise );
 

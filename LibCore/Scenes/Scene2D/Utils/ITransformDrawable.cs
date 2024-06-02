@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Drawing;
+
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
@@ -31,14 +33,5 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 [PublicAPI]
 public interface ITransformDrawable : IDrawable
 {
-    void Draw( IBatch batch,
-               float x,
-               float y,
-               float originX,
-               float originY,
-               float width,
-               float height,
-               float scaleX,
-               float scaleY,
-               float rotation );
+    void Draw( IBatch batch, Rectangle region, Point2D origin, Point2D scale, float rotation );
 }

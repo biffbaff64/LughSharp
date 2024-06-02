@@ -76,7 +76,7 @@ public static class Logger
     #region public methods
 
     /// <summary>
-    /// Default Constructor.
+    /// Initialises the Logger.
     /// </summary>
     /// <param name="logLevel"> The initially enabled log level(s). </param>
     /// <param name="enableWriteToFile"> TRUE to enable outputting messages to a file. </param>
@@ -164,7 +164,7 @@ public static class Logger
     /// Write a message to console if the supplied condition is TRUE.
     /// </summary>
     /// <param name="message"> The message to send. </param>
-    /// <param name="condition">The condition to evaluate.</param>
+    /// <param name="condition"> The condition to evaluate. </param>
     /// <param name="callerFilePath"> The File this message was sent from. </param>
     /// <param name="callerMethod"> The Method this message was sent from. </param>
     /// <param name="callerLine"> The Line this message was sent from. </param>
@@ -190,8 +190,8 @@ public static class Logger
 
     /// <summary>
     /// Writes a debug message consisting solely of the following:-
-    /// - Current time and date.
-    /// - Calling Class/method/line number information.
+    /// <li> Current time and date. </li>
+    /// <li> Calling Class/method/line number information. </li>
     /// </summary>
     /// <param name="callerFilePath"> The File this message was sent from. </param>
     /// <param name="callerMethod"> The Method this message was sent from. </param>
@@ -217,8 +217,8 @@ public static class Logger
     /// <summary>
     /// Adds a dividing line to text output.
     /// </summary>
-    /// <param name="ch">The character to use, default is '-'</param>
-    /// <param name="length">The line length, default is 80.</param>
+    /// <param name="ch"> The character to use, default is '-' </param>
+    /// <param name="length"> The line length, default is 80. </param>
     public static void Divider( char ch = '-', int length = 80 )
     {
         var sb = new StringBuilder( DEBUG_TAG );
@@ -239,8 +239,7 @@ public static class Logger
     /// and the file will be created in the working directory.
     /// </param>
     /// <param name="deleteExisting">
-    /// True to delete existing copies of the file.
-    /// False to append to existing file.
+    /// True to delete existing copies of the file, False to append to existing file.
     /// </param>
     public static void OpenDebugFile( string fileName, bool deleteExisting )
     {
@@ -285,7 +284,7 @@ public static class Logger
     /// <summary>
     /// Disables DEBUG Log messages without affecting other types.
     /// </summary>
-    public static void DisableLogDebug()
+    public static void DisableDebugLogging()
     {
         TraceLevel ^= 1 << LOG_DEBUG;
     }
@@ -293,23 +292,23 @@ public static class Logger
     /// <summary>
     /// Disables Error Log messages without affecting other types.
     /// </summary>
-    public static void DisableLogError()
+    public static void DisableErrorLogging()
     {
         TraceLevel ^= 1 << LOG_ERROR;
     }
 
     /// <summary>
-    /// Emnables DEBUG Log messages without affecting other types.
+    /// Enables DEBUG Log messages without affecting other types.
     /// </summary>
-    public static void EnableLogDebug()
+    public static void EnableDebugLogging()
     {
         TraceLevel |= LOG_DEBUG;
     }
 
     /// <summary>
-    /// Emnables ERROR Log messages without affecting other types.
+    /// Enables ERROR Log messages without affecting other types.
     /// </summary>
-    public static void EnableLogError()
+    public static void EnableErrorLogging()
     {
         TraceLevel |= LOG_ERROR;
     }
@@ -412,46 +411,15 @@ public static class Logger
         {
             LOG_DEBUG
                 or LOG_ERROR => ( TraceLevel & traceLevel ) != 0,
-            _ => false
+            var _ => false
         };
     }
 
     #endregion private methods
 }
 
-///// <summary>
-///// </summary>
-//[InterpolatedStringHandler, SuppressMessage( "ReSharper", "UnusedMember.Global" )]
-//public readonly ref struct LogInterpolatedStringHandler
-//{
-//    // Storage for the built-up string
-//    private readonly StringBuilder _builder;
-//
-//    internal LogInterpolatedStringHandler( int literalLength, int formattedCount )
-//    {
-//        _builder = new StringBuilder( literalLength );
-//    }
-//
-//    internal void AppendLiteral( string s )
-//    {
-//        _builder.Append( s );
-//    }
-//
-//    internal void AppendFormatted< T >( T t )
-//    {
-//        _builder.Append( t );
-//    }
-//
-//    public void AppendFormatted< T >( T t, string format ) where T : IFormattable
-//    {
-//        _builder.Append( t.ToString( format, null ) );
-//    }
-//
-//    internal string GetFormattedText()
-//    {
-//        return _builder.ToString();
-//    }
-//}
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 
 /// <summary>
 /// Object used for creating debug messages which include

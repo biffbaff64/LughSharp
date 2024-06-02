@@ -27,7 +27,7 @@ using LughSharp.LibCore.Maths.Collision;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
-namespace LughSharp.LibCore.Utils.Viewport;
+namespace LughSharp.LibCore.Graphics.Viewport;
 
 /// <summary>
 /// Manages a <see cref="Camera"/> and determines how world coordinates

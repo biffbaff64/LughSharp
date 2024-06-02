@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Drawing;
+using Color = LughSharp.LibCore.Graphics.Color;
+
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
@@ -40,49 +43,68 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 [PublicAPI]
 public class NinePatchDrawable : BaseDrawable, ITransformDrawable
 {
+    public NinePatch? Patch { get; set; }
+
+    // ------------------------------------------------------------------------
+
     /// <summary>
-    /// Creates an uninitialized NinePatchDrawable. The ninepatch must be
-    /// set before use.
+    /// Creates an uninitialized NinePatchDrawable. The ninepatch must be set before use.
     /// </summary>
     public NinePatchDrawable()
     {
     }
 
+    /// <summary>
+    /// Creates a new NinePatchDrawable, initialised with the supplied <see cref="NinePatch"/>.
+    /// </summary>
+    /// <param name="patch"></param>
     public NinePatchDrawable( NinePatch patch )
     {
         SetPatch( patch );
     }
 
+    /// <summary>
+    /// Creates a new NinePatchDrawable, initialised with the <see cref="NinePatch"/>
+    /// from another NinePatchDrawable.
+    /// </summary>
+    /// <param name="drawable"></param>
     public NinePatchDrawable( NinePatchDrawable drawable )
         : base( drawable )
     {
         Patch = drawable.Patch;
     }
 
-    public NinePatch? Patch { get; set; }
-
+    /// <inheritdoc/>
     public override void Draw( IBatch batch, float x, float y, float width, float height )
     {
         Patch?.Draw( batch, x, y, width, height );
     }
 
-    public void Draw( IBatch batch,
-                      float x,
-                      float y,
-                      float originX,
-                      float originY,
-                      float width,
-                      float height,
-                      float scaleX,
-                      float scaleY,
-                      float rotation )
+    /// <summary>
+    /// Draw the <see cref="NinePatch"/>
+    /// </summary>
+    /// <param name="batch"> The <see cref="IBatch"/> to use. </param>
+    /// <param name="region"></param>
+    /// <param name="origin"></param>
+    /// <param name="scale"></param>
+    /// <param name="rotation"></param>
+    public void Draw( IBatch batch, Rectangle region, Point2D origin, Point2D scale, float rotation )
     {
+        Patch?.Draw( batch,
+                     region.X,
+                     region.Y,
+                     origin.X,
+                     origin.Y,
+                     region.Width,
+                     region.Height,
+                     scale.X,
+                     scale.Y,
+                     rotation );
     }
 
     /// <summary>
-    /// Sets this drawable's ninepatch and set the min width, min height,
-    /// top height, right width, bottom height, and left width to the
-    /// patch's padding.
+    /// Sets this drawable's ninepatch and set the min width, min height, top height,
+    /// right width, bottom height, and left width to the patch's padding.
     /// </summary>
     public void SetPatch( NinePatch patch )
     {
@@ -100,8 +122,8 @@ public class NinePatchDrawable : BaseDrawable, ITransformDrawable
     }
 
     /// <summary>
-    /// Creates a new drawable that renders the same as this
-    /// drawable tinted the specified color.
+    /// Creates a new drawable that renders the same as this drawable tinted
+    /// the specified color.
     /// </summary>
     public NinePatchDrawable Tint( Color tint )
     {

@@ -673,7 +673,7 @@ public class ObjectMap< TK, TV >
     /// <returns></returns>
     public Entries GetEntries()
     {
-        if ( CollectionsData.AllocateIterators )
+        if ( AllocateIterators )
         {
             return new Entries( this );
         }
@@ -713,7 +713,7 @@ public class ObjectMap< TK, TV >
     /// <returns></returns>
     public Values GetValues()
     {
-        if ( CollectionsData.AllocateIterators )
+        if ( AllocateIterators )
         {
             return new Values( this );
         }
@@ -754,7 +754,7 @@ public class ObjectMap< TK, TV >
     /// <returns></returns>
     public Keys GetKeys()
     {
-        if ( CollectionsData.AllocateIterators )
+        if ( AllocateIterators )
         {
             return new Keys( this );
         }
@@ -1238,6 +1238,14 @@ public class ObjectMap< TK, TV >
     /// Returns the size of this ObjectMap
     /// </summary>
     public int Size { get; set; }
+
+    /// <summary>
+    /// When true, <see cref="IEnumerator{T}"/> for collections will allocate a new
+    /// iterator for each invocation. When false, the iterator is reused and nested
+    /// use will throw an exception.
+    /// <para> Default is false. </para>
+    /// </summary>
+    public bool AllocateIterators { get; set; }
 
     #endregion properties
 }

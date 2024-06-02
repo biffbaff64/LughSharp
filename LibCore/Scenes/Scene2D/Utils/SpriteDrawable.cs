@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Drawing;
+using Color = LughSharp.LibCore.Graphics.Color;
+
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
@@ -50,6 +53,9 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
         Sprite = drawable?.Sprite;
     }
 
+    /// <summary>
+    /// The <see cref="Sprite"/> component of this <see cref="IDrawable"/>.
+    /// </summary>
     public Sprite? Sprite
     {
         get => _sprite;
@@ -83,16 +89,14 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
         Sprite.PackedColor = oldColor;
     }
 
-    public void Draw( IBatch batch,
-                      float x,
-                      float y,
-                      float originX,
-                      float originY,
-                      float width,
-                      float height,
-                      float scaleX,
-                      float scaleY,
-                      float rotation )
+    /// <summary>
+    /// </summary>
+    /// <param name="batch"></param>
+    /// <param name="region"></param>
+    /// <param name="origin"></param>
+    /// <param name="scale"></param>
+    /// <param name="rotation"></param>
+    public void Draw( IBatch batch, Rectangle region, Point2D origin, Point2D scale, float rotation )
     {
         if ( Sprite == null )
         {
@@ -104,17 +108,17 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
 
         Sprite.SetColor( spriteColor.Mul( batch.Color ) );
 
-        Sprite.SetOrigin( originX, originY );
+        Sprite.SetOrigin( origin.X, origin.Y );
         Sprite.Rotation = rotation;
-        Sprite.SetScale( scaleX, scaleY );
-        Sprite.SetBounds( x, y, width, height );
+        Sprite.SetScale( scale.X, scale.Y );
+        Sprite.SetBounds( region.X, region.Y, region.Width, region.Height );
         Sprite.Draw( batch );
         Sprite.PackedColor = oldColor;
     }
 
     /// <summary>
-    /// Creates a new drawable that renders the same as this
-    /// drawable tinted the specified color.
+    /// Creates a new drawable that renders the same as this drawable,
+    /// tinted with the specified color.
     /// </summary>
     public SpriteDrawable Tint( Color tint )
     {

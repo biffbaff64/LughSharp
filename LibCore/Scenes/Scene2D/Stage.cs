@@ -24,6 +24,7 @@
 
 
 using System.Reflection.Metadata;
+using LughSharp.LibCore.Graphics.Viewport;
 using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 using LughSharp.LibCore.Scenes.Scene2D.UI;
 using LughSharp.LibCore.Utils.Exceptions;

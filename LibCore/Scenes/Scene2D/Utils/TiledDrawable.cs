@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Drawing;
+using Color = LughSharp.LibCore.Graphics.Color;
+
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
@@ -32,6 +35,9 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 [PublicAPI]
 public class TiledDrawable : TextureRegionDrawable
 {
+    public Color Color { get; set; } = new( 1, 1, 1, 1 );
+    public float Scale { set; get; } = 1;
+
     // ------------------------------------------------------------------------
 
     public TiledDrawable( TextureRegion region )
@@ -43,9 +49,6 @@ public class TiledDrawable : TextureRegionDrawable
         : base( drawable )
     {
     }
-
-    public Color Color { get; set; } = new( 1, 1, 1, 1 );
-    public float Scale { set; get; } = 1;
 
     /// <inheritdoc/>
     public override void Draw( IBatch batch, float x, float y, float width, float height )
@@ -95,7 +98,15 @@ public class TiledDrawable : TextureRegionDrawable
 
                 for ( var ii = 0; ii < fullY; ii++ )
                 {
-                    batch.Draw( texture, x, y, remainingX, regionHeight, u, v2, u2, v );
+                    batch.Draw( texture,
+                                new Rectangle( ( int ) x,
+                                               ( int ) y,
+                                               ( int ) remainingX,
+                                               ( int ) regionHeight ),
+                                u,
+                                v2,
+                                u2,
+                                v );
                     y += regionHeight;
                 }
 
@@ -103,7 +114,15 @@ public class TiledDrawable : TextureRegionDrawable
                 if ( remainingY > 0 )
                 {
                     v = v2 - ( remainingY / ( texture.Height * Scale ) );
-                    batch.Draw( texture, x, y, remainingX, remainingY, u, v2, u2, v );
+                    batch.Draw( texture,
+                                new Rectangle( ( int ) x,
+                                               ( int ) y,
+                                               ( int ) remainingX,
+                                               ( int ) remainingY ),
+                                u,
+                                v2,
+                                u2,
+                                v );
                 }
             }
 
@@ -117,7 +136,15 @@ public class TiledDrawable : TextureRegionDrawable
 
                 for ( var i = 0; i < fullX; i++ )
                 {
-                    batch.Draw( texture, x, y, regionWidth, remainingY, u, v2, u2, v );
+                    batch.Draw( texture,
+                                new Rectangle( ( int ) x,
+                                               ( int ) y,
+                                               ( int ) regionWidth,
+                                               ( int ) remainingY ),
+                                u,
+                                v2,
+                                u2,
+                                v );
                     x += regionWidth;
                 }
             }

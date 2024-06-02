@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LughSharp.LibCore.Utils.Viewport;
+namespace LughSharp.LibCore.Graphics.Viewport;
 
 /// <summary>
 /// A viewport that scales the world using <see cref="Scaling"/>.

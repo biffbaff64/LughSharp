@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LughSharp.LibCore.Utils.Viewport;
+namespace LughSharp.LibCore.Graphics.Viewport;
 
 /// <summary>
 /// A ScalingViewport that uses <see cref="Scaling.Fill"/> so it keeps the aspect

@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Drawing;
 using LughSharp.LibCore.Utils.Exceptions;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
@@ -66,6 +67,25 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class PolygonSpriteBatch : IPolygonBatch
 {
+    public int     BlendSrcFunc      { get; private set; } = IGL.GL_SRC_ALPHA;
+    public int     BlendDstFunc      { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
+    public int     BlendSrcFuncAlpha { get; private set; } = IGL.GL_SRC_ALPHA;
+    public int     BlendDstFuncAlpha { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
+    public Matrix4 ProjectionMatrix  { get; set; }         = new();
+    public Matrix4 TransformMatrix   { get; set; }         = new();
+    public bool    IsDrawing         { get; set; }
+
+    // The maximum number of triangles rendered in one batch so far.
+    public int MaxTrianglesInBatch { get; set; } = 0;
+
+    // Number of render calls since the last call to Begin()
+    public int RenderCalls { get; set; } = 0;
+
+    // Number of rendering calls, ever. Will not be reset unless set manually.
+    public int TotalRenderCalls { get; set; } = 0;
+
+    // ------------------------------------------------------------------------
+
     private readonly Color          _color          = new( 1, 1, 1, 1 );
     private readonly Matrix4        _combinedMatrix = new();
     private readonly Mesh           _mesh;
@@ -167,15 +187,6 @@ public class PolygonSpriteBatch : IPolygonBatch
         ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
     }
 
-    // The maximum number of triangles rendered in one batch so far.
-    public int MaxTrianglesInBatch { get; set; } = 0;
-
-    // Number of render calls since the last call to Begin()
-    public int RenderCalls { get; set; } = 0;
-
-    // Number of rendering calls, ever. Will not be reset unless set manually.
-    public int TotalRenderCalls { get; set; } = 0;
-
     public void Begin()
     {
         if ( IsDrawing )
@@ -218,7 +229,7 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         Gdx.GL.glDepthMask( true );
 
-        if ( ISBlendingEnabled() )
+        if ( IsBlendingEnabled() )
         {
             Gdx.GL.glDisable( IGL.GL_BLEND );
         }
@@ -416,19 +427,11 @@ public class PolygonSpriteBatch : IPolygonBatch
     }
 
     public void Draw( Texture texture,
-                      float x,
-                      float y,
-                      float originX,
-                      float originY,
-                      float width,
-                      float height,
-                      float scaleX,
-                      float scaleY,
+                      Rectangle region,
+                      Point2D origin,
+                      Point2D scale,
                       float rotation,
-                      int srcX,
-                      int srcY,
-                      int srcWidth,
-                      int srcHeight,
+                      Rectangle src,
                       bool flipX,
                       bool flipY )
     {
@@ -457,20 +460,20 @@ public class PolygonSpriteBatch : IPolygonBatch
         _triangles[ _triangleIndex++ ] = ( short ) startVertex;
 
         // bottom left and top right corner points relative to origin
-        var worldOriginX = x + originX;
-        var worldOriginY = y + originY;
-        var fx           = -originX;
-        var fy           = -originY;
-        var fx2          = width - originX;
-        var fy2          = height - originY;
+        var worldOriginX = region.X + origin.X;
+        var worldOriginY = region.Y + origin.Y;
+        var fx           = -origin.X;
+        var fy           = -origin.Y;
+        var fx2          = region.Width - origin.X;
+        var fy2          = region.Height - origin.Y;
 
         // scale
-        if ( !scaleX.Equals( 1 ) || !scaleY.Equals( 1 ) )
+        if ( !scale.X.Equals( 1 ) || !scale.Y.Equals( 1 ) )
         {
-            fx  *= scaleX;
-            fy  *= scaleY;
-            fx2 *= scaleX;
-            fy2 *= scaleY;
+            fx  *= scale.X;
+            fy  *= scale.Y;
+            fx2 *= scale.X;
+            fy2 *= scale.Y;
         }
 
         // construct corner points, start from top left and go counter clockwise
@@ -534,10 +537,10 @@ public class PolygonSpriteBatch : IPolygonBatch
         x4 += worldOriginX;
         y4 += worldOriginY;
 
-        var u  = srcX * _invTexWidth;
-        var v  = ( srcY + srcHeight ) * _invTexHeight;
-        var u2 = ( srcX + srcWidth ) * _invTexWidth;
-        var v2 = srcY * _invTexHeight;
+        var u  = src.X * _invTexWidth;
+        var v  = ( src.Y + src.Height ) * _invTexHeight;
+        var u2 = ( src.X + src.Width ) * _invTexWidth;
+        var v2 = src.Y * _invTexHeight;
 
         if ( flipX )
         {
@@ -575,14 +578,8 @@ public class PolygonSpriteBatch : IPolygonBatch
     }
 
     public void Draw( Texture texture,
-                      float x,
-                      float y,
-                      float width,
-                      float height,
-                      int srcX,
-                      int srcY,
-                      int srcWidth,
-                      int srcHeight,
+                      Rectangle region,
+                      Rectangle src,
                       bool flipX,
                       bool flipY )
     {
@@ -610,12 +607,12 @@ public class PolygonSpriteBatch : IPolygonBatch
         _triangles[ _triangleIndex++ ] = ( short ) ( startVertex + 3 );
         _triangles[ _triangleIndex++ ] = ( short ) startVertex;
 
-        var u   = srcX * _invTexWidth;
-        var v   = ( srcY + srcHeight ) * _invTexHeight;
-        var u2  = ( srcX + srcWidth ) * _invTexWidth;
-        var v2  = srcY * _invTexHeight;
-        var fx2 = x + width;
-        var fy2 = y + height;
+        var u   = src.X * _invTexWidth;
+        var v   = ( src.Y + src.Height ) * _invTexHeight;
+        var u2  = ( src.X + src.Width ) * _invTexWidth;
+        var v2  = src.Y * _invTexHeight;
+        var fx2 = region.X + region.Width;
+        var fy2 = region.Y + region.Height;
 
         if ( flipX )
         {
@@ -627,13 +624,13 @@ public class PolygonSpriteBatch : IPolygonBatch
             ( v, v2 ) = ( v2, v );
         }
 
-        _vertices[ _vertexIndex++ ] = x;
-        _vertices[ _vertexIndex++ ] = y;
+        _vertices[ _vertexIndex++ ] = region.X;
+        _vertices[ _vertexIndex++ ] = region.Y;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u;
         _vertices[ _vertexIndex++ ] = v;
 
-        _vertices[ _vertexIndex++ ] = x;
+        _vertices[ _vertexIndex++ ] = region.X;
         _vertices[ _vertexIndex++ ] = fy2;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u;
@@ -646,13 +643,13 @@ public class PolygonSpriteBatch : IPolygonBatch
         _vertices[ _vertexIndex++ ] = v2;
 
         _vertices[ _vertexIndex++ ] = fx2;
-        _vertices[ _vertexIndex++ ] = y;
+        _vertices[ _vertexIndex++ ] = region.Y;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u2;
         _vertices[ _vertexIndex++ ] = v;
     }
 
-    public void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight )
+    public void Draw( Texture texture, float x, float y, Rectangle src )
     {
         if ( !IsDrawing )
         {
@@ -678,12 +675,12 @@ public class PolygonSpriteBatch : IPolygonBatch
         _triangles[ _triangleIndex++ ] = ( short ) ( startVertex + 3 );
         _triangles[ _triangleIndex++ ] = ( short ) startVertex;
 
-        var u   = srcX * _invTexWidth;
-        var v   = ( srcY + srcHeight ) * _invTexHeight;
-        var u2  = ( srcX + srcWidth ) * _invTexWidth;
-        var v2  = srcY * _invTexHeight;
-        var fx2 = x + srcWidth;
-        var fy2 = y + srcHeight;
+        var u   = src.X * _invTexWidth;
+        var v   = ( src.Y + src.Height ) * _invTexHeight;
+        var u2  = ( src.X + src.Width ) * _invTexWidth;
+        var v2  = src.Y * _invTexHeight;
+        var fx2 = x + src.Width;
+        var fy2 = y + src.Height;
 
         _vertices[ _vertexIndex++ ] = x;
         _vertices[ _vertexIndex++ ] = y;
@@ -710,7 +707,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         _vertices[ _vertexIndex++ ] = v;
     }
 
-    public void Draw( Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2 )
+    public void Draw( Texture texture, Rectangle region, float u, float v, float u2, float v2 )
     {
         if ( !IsDrawing )
         {
@@ -736,16 +733,16 @@ public class PolygonSpriteBatch : IPolygonBatch
         _triangles[ _triangleIndex++ ] = ( short ) ( startVertex + 3 );
         _triangles[ _triangleIndex++ ] = ( short ) startVertex;
 
-        var fx2 = x + width;
-        var fy2 = y + height;
+        var fx2 = region.X + region.Width;
+        var fy2 = region.Y + region.Height;
 
-        _vertices[ _vertexIndex++ ] = x;
-        _vertices[ _vertexIndex++ ] = y;
+        _vertices[ _vertexIndex++ ] = region.X;
+        _vertices[ _vertexIndex++ ] = region.Y;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u;
         _vertices[ _vertexIndex++ ] = v;
 
-        _vertices[ _vertexIndex++ ] = x;
+        _vertices[ _vertexIndex++ ] = region.X;
         _vertices[ _vertexIndex++ ] = fy2;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u;
@@ -758,7 +755,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         _vertices[ _vertexIndex++ ] = v2;
 
         _vertices[ _vertexIndex++ ] = fx2;
-        _vertices[ _vertexIndex++ ] = y;
+        _vertices[ _vertexIndex++ ] = region.X;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u2;
         _vertices[ _vertexIndex++ ] = v;
@@ -766,10 +763,10 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void Draw( Texture texture, float x, float y )
     {
-        Draw( texture, x, y, texture.Width, texture.Height );
+        Draw( texture, new Point( ( int ) x, ( int ) y ), new Size( texture.Width, texture.Height ) );
     }
 
-    public void Draw( Texture texture, float x, float y, float width, float height )
+    public void Draw( Texture texture, Point loc, Size size )
     {
         if ( !IsDrawing )
         {
@@ -795,20 +792,20 @@ public class PolygonSpriteBatch : IPolygonBatch
         _triangles[ _triangleIndex++ ] = ( short ) ( startVertex + 3 );
         _triangles[ _triangleIndex++ ] = ( short ) startVertex;
 
-        var   fx2 = x + width;
-        var   fy2 = y + height;
+        var   fx2 = loc.X + size.Width;
+        var   fy2 = loc.Y + size.Height;
         float u   = 0;
         float v   = 1;
         float u2  = 1;
         float v2  = 0;
 
-        _vertices[ _vertexIndex++ ] = x;
-        _vertices[ _vertexIndex++ ] = y;
+        _vertices[ _vertexIndex++ ] = loc.X;
+        _vertices[ _vertexIndex++ ] = loc.Y;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u;
         _vertices[ _vertexIndex++ ] = v;
 
-        _vertices[ _vertexIndex++ ] = x;
+        _vertices[ _vertexIndex++ ] = loc.X;
         _vertices[ _vertexIndex++ ] = fy2;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u;
@@ -821,7 +818,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         _vertices[ _vertexIndex++ ] = v2;
 
         _vertices[ _vertexIndex++ ] = fx2;
-        _vertices[ _vertexIndex++ ] = y;
+        _vertices[ _vertexIndex++ ] = loc.Y;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u2;
         _vertices[ _vertexIndex++ ] = v;
@@ -957,15 +954,10 @@ public class PolygonSpriteBatch : IPolygonBatch
         _vertices[ _vertexIndex++ ] = v;
     }
 
-    public void Draw( TextureRegion region,
-                      float x,
-                      float y,
-                      float originX,
-                      float originY,
-                      float width,
-                      float height,
-                      float scaleX,
-                      float scaleY,
+    public void Draw( TextureRegion textureRegion,
+                      Rectangle region,
+                      Point2D origin,
+                      Point2D scale,
                       float rotation )
     {
         if ( !IsDrawing )
@@ -973,9 +965,9 @@ public class PolygonSpriteBatch : IPolygonBatch
             throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
-        if ( region.Texture != _lastTexture )
+        if ( textureRegion.Texture != _lastTexture )
         {
-            SwitchTexture( region.Texture );
+            SwitchTexture( textureRegion.Texture );
         }
         else if ( ( ( _triangleIndex + 6 ) > _triangles.Length )
                || ( ( _vertexIndex + Sprite.SPRITE_SIZE ) > _vertices.Length ) ) //
@@ -993,20 +985,20 @@ public class PolygonSpriteBatch : IPolygonBatch
         _triangles[ _triangleIndex++ ] = ( short ) startVertex;
 
         // bottom left and top right corner points relative to origin
-        var worldOriginX = x + originX;
-        var worldOriginY = y + originY;
-        var fx           = -originX;
-        var fy           = -originY;
-        var fx2          = width - originX;
-        var fy2          = height - originY;
+        var worldOriginX = region.X + origin.X;
+        var worldOriginY = region.Y + origin.Y;
+        var fx           = -origin.X;
+        var fy           = -origin.Y;
+        var fx2          = region.Width - origin.X;
+        var fy2          = region.Height - origin.Y;
 
         // scale
-        if ( !scaleX.Equals( 1 ) || !scaleY.Equals( 1 ) )
+        if ( !scale.X.Equals( 1 ) || !scale.Y.Equals( 1 ) )
         {
-            fx  *= scaleX;
-            fy  *= scaleY;
-            fx2 *= scaleX;
-            fy2 *= scaleY;
+            fx  *= scale.X;
+            fy  *= scale.Y;
+            fx2 *= scale.X;
+            fy2 *= scale.Y;
         }
 
         // construct corner points, start from top left and go counter clockwise
@@ -1070,10 +1062,10 @@ public class PolygonSpriteBatch : IPolygonBatch
         x4 += worldOriginX;
         y4 += worldOriginY;
 
-        var u  = region.U;
-        var v  = region.V2;
-        var u2 = region.U2;
-        var v2 = region.V;
+        var u  = textureRegion.U;
+        var v  = textureRegion.V2;
+        var u2 = textureRegion.U2;
+        var v2 = textureRegion.V;
 
         _vertices[ _vertexIndex++ ] = x1;
         _vertices[ _vertexIndex++ ] = y1;
@@ -1100,15 +1092,10 @@ public class PolygonSpriteBatch : IPolygonBatch
         _vertices[ _vertexIndex++ ] = v;
     }
 
-    public void Draw( TextureRegion region,
-                      float x,
-                      float y,
-                      float originX,
-                      float originY,
-                      float width,
-                      float height,
-                      float scaleX,
-                      float scaleY,
+    public void Draw( TextureRegion textureRegion,
+                      Rectangle region,
+                      Point2D origin,
+                      Point2D scale,
                       float rotation,
                       bool clockwise )
     {
@@ -1117,9 +1104,9 @@ public class PolygonSpriteBatch : IPolygonBatch
             throw new GdxRuntimeException( "PolygonSpriteBatch.begin must be called before Draw." );
         }
 
-        if ( region.Texture != _lastTexture )
+        if ( textureRegion.Texture != _lastTexture )
         {
-            SwitchTexture( region.Texture );
+            SwitchTexture( textureRegion.Texture );
         }
         else if ( ( ( _triangleIndex + 6 ) > _triangles.Length )
                || ( ( _vertexIndex + Sprite.SPRITE_SIZE ) > _vertices.Length ) )
@@ -1137,20 +1124,20 @@ public class PolygonSpriteBatch : IPolygonBatch
         _triangles[ _triangleIndex++ ] = ( short ) startVertex;
 
         // bottom left and top right corner points relative to origin
-        var worldOriginX = x + originX;
-        var worldOriginY = y + originY;
-        var fx           = -originX;
-        var fy           = -originY;
-        var fx2          = width - originX;
-        var fy2          = height - originY;
+        var worldOriginX = region.X + origin.X;
+        var worldOriginY = region.Y + origin.Y;
+        var fx           = -origin.X;
+        var fy           = -origin.Y;
+        var fx2          = region.Width - origin.X;
+        var fy2          = region.Height - origin.Y;
 
         // scale
-        if ( !scaleX.Equals( 1 ) || !scaleY.Equals( 1 ) )
+        if ( !scale.X.Equals( 1 ) || !scale.Y.Equals( 1 ) )
         {
-            fx  *= scaleX;
-            fy  *= scaleY;
-            fx2 *= scaleX;
-            fy2 *= scaleY;
+            fx  *= scale.X;
+            fy  *= scale.Y;
+            fx2 *= scale.X;
+            fy2 *= scale.Y;
         }
 
         // construct corner points, start from top left and go counter clockwise
@@ -1218,25 +1205,25 @@ public class PolygonSpriteBatch : IPolygonBatch
 
         if ( clockwise )
         {
-            u1 = region.U2;
-            v1 = region.V2;
-            u2 = region.U;
-            v2 = region.V2;
-            u3 = region.U;
-            v3 = region.V;
-            u4 = region.U2;
-            v4 = region.V;
+            u1 = textureRegion.U2;
+            v1 = textureRegion.V2;
+            u2 = textureRegion.U;
+            v2 = textureRegion.V2;
+            u3 = textureRegion.U;
+            v3 = textureRegion.V;
+            u4 = textureRegion.U2;
+            v4 = textureRegion.V;
         }
         else
         {
-            u1 = region.U;
-            v1 = region.V;
-            u2 = region.U2;
-            v2 = region.V;
-            u3 = region.U2;
-            v3 = region.V2;
-            u4 = region.U;
-            v4 = region.V2;
+            u1 = textureRegion.U;
+            v1 = textureRegion.V;
+            u2 = textureRegion.U2;
+            v2 = textureRegion.V;
+            u3 = textureRegion.U2;
+            v3 = textureRegion.V2;
+            u4 = textureRegion.U;
+            v4 = textureRegion.V2;
         }
 
         _vertices[ _vertexIndex++ ] = x1;
@@ -1477,20 +1464,6 @@ public class PolygonSpriteBatch : IPolygonBatch
         }
     }
 
-    public int BlendSrcFunc { get; private set; } = IGL.GL_SRC_ALPHA;
-
-    public int BlendDstFunc { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
-
-    public int BlendSrcFuncAlpha { get; private set; } = IGL.GL_SRC_ALPHA;
-
-    public int BlendDstFuncAlpha { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
-
-    public Matrix4 ProjectionMatrix { get; set; } = new();
-
-    public Matrix4 TransformMatrix { get; set; } = new();
-
-    public bool IsDrawing { get; set; }
-
     public void SetupMatrices()
     {
         _combinedMatrix.Set( ProjectionMatrix ).Mul( TransformMatrix );
@@ -1515,7 +1488,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         _invTexHeight = 1.0f / texture.Height;
     }
 
-    public bool ISBlendingEnabled()
+    public bool IsBlendingEnabled()
     {
         return !_blendingDisabled;
     }

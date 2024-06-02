@@ -31,6 +31,14 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 [PublicAPI]
 public class BaseDrawable : IDrawable
 {
+    public string? Name         { get; set; }
+    public float   LeftWidth    { get; set; }
+    public float   RightWidth   { get; set; }
+    public float   TopHeight    { get; set; }
+    public float   BottomHeight { get; set; }
+    public float   MinWidth     { get; set; }
+    public float   MinHeight    { get; set; }
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -59,14 +67,6 @@ public class BaseDrawable : IDrawable
         MinWidth     = drawable.MinWidth;
         MinHeight    = drawable.MinHeight;
     }
-
-    public string? Name         { get; set; }
-    public float   LeftWidth    { get; set; }
-    public float   RightWidth   { get; set; }
-    public float   TopHeight    { get; set; }
-    public float   BottomHeight { get; set; }
-    public float   MinWidth     { get; set; }
-    public float   MinHeight    { get; set; }
 
     /// <summary>
     /// Draws this drawable at the specified bounds. The drawable should be tinted

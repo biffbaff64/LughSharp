@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LughSharp.LibCore.Utils.Viewport;
+namespace LughSharp.LibCore.Graphics.Viewport;
 
 /// <summary>
 /// A viewport that keeps the world aspect ratio by extending the world in one direction.

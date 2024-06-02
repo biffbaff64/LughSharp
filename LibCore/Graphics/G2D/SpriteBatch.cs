@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Drawing;
 using LughSharp.LibCore.Utils.Exceptions;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
@@ -31,6 +32,22 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class SpriteBatch : IBatch
 {
+    public bool    BlendingDisabled  { get; set; }         = false;
+    public float   InvTexHeight      { get; set; }         = 0;
+    public float   InvTexWidth       { get; set; }         = 0;
+    public int     BlendSrcFunc      { get; private set; } = IGL.GL_SRC_ALPHA;
+    public int     BlendDstFunc      { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
+    public int     BlendSrcFuncAlpha { get; private set; } = IGL.GL_SRC_ALPHA;
+    public int     BlendDstFuncAlpha { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
+    public Matrix4 ProjectionMatrix  { get; }              = new();
+    public Matrix4 TransformMatrix   { get; }              = new();
+    public bool    IsDrawing         { get; set; }
+
+    protected Texture? LastTexture { get; set; }
+    protected float[]  Vertices    { get; set; }
+    protected float    ColorPacked { get; set; } = Color.WhiteFloatBits;
+    protected int      Idx         { get; set; } = 0;
+
     // ------------------------------------------------------------------------
 
     private const int MAX_VERTEX_INDEX = 32767;
@@ -42,9 +59,6 @@ public class SpriteBatch : IBatch
     private readonly bool           _ownsShader;
     private readonly ShaderProgram? _shader;
     private          ShaderProgram? _customShader;
-
-    protected float ColorPacked = Color.WhiteFloatBits;
-    protected int   Idx         = 0;
 
     // ------------------------------------------------------------------------
 
@@ -140,20 +154,6 @@ public class SpriteBatch : IBatch
     // The maximum number of sprites rendered in one batch so far.
     public int MaxSpritesInBatch { get; set; } = 0;
 
-    public bool  BlendingDisabled { get; set; } = false;
-    public float InvTexHeight     { get; set; } = 0;
-    public float InvTexWidth      { get; set; } = 0;
-
-    protected Texture? LastTexture       { get; set; }
-    protected float[]  Vertices          { get; set; }
-    public    int      BlendSrcFunc      { get; private set; } = IGL.GL_SRC_ALPHA;
-    public    int      BlendDstFunc      { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
-    public    int      BlendSrcFuncAlpha { get; private set; } = IGL.GL_SRC_ALPHA;
-    public    int      BlendDstFuncAlpha { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
-    public    Matrix4  ProjectionMatrix  { get; }              = new();
-    public    Matrix4  TransformMatrix   { get; }              = new();
-    public    bool     IsDrawing         { get; set; }
-
     public void Begin()
     {
         if ( IsDrawing )
@@ -233,19 +233,11 @@ public class SpriteBatch : IBatch
     }
 
     public virtual void Draw( Texture texture,
-                              float x,
-                              float y,
-                              float originX,
-                              float originY,
-                              float width,
-                              float height,
-                              float scaleX,
-                              float scaleY,
+                              Rectangle region,
+                              Point2D origin,
+                              Point2D scale,
                               float rotation,
-                              int srcX,
-                              int srcY,
-                              int srcWidth,
-                              int srcHeight,
+                              Rectangle src,
                               bool flipX,
                               bool flipY )
     {
@@ -264,20 +256,20 @@ public class SpriteBatch : IBatch
         }
 
         // bottom left and top right corner points relative to origin
-        var worldOriginX = x + originX;
-        var worldOriginY = y + originY;
-        var fx           = -originX;
-        var fy           = -originY;
-        var fx2          = width - originX;
-        var fy2          = height - originY;
+        var worldOriginX = region.X + origin.X;
+        var worldOriginY = region.Y + origin.Y;
+        var fx           = -origin.X;
+        var fy           = -origin.Y;
+        var fx2          = region.Width - origin.X;
+        var fy2          = region.Height - origin.Y;
 
         // scale
-        if ( ( Math.Abs( scaleX - 1 ) > 0 ) || ( Math.Abs( scaleY - 1 ) > 0 ) )
+        if ( ( Math.Abs( scale.X - 1 ) > 0 ) || ( Math.Abs( scale.Y - 1 ) > 0 ) )
         {
-            fx  *= scaleX;
-            fy  *= scaleY;
-            fx2 *= scaleX;
-            fy2 *= scaleY;
+            fx  *= scale.X;
+            fy  *= scale.Y;
+            fx2 *= scale.X;
+            fy2 *= scale.Y;
         }
 
         // construct corner points, start from top left and go counter clockwise
@@ -341,10 +333,10 @@ public class SpriteBatch : IBatch
         x4 += worldOriginX;
         y4 += worldOriginY;
 
-        var u     = srcX * InvTexWidth;
-        var v     = ( srcY + srcHeight ) * InvTexHeight;
-        var u2    = ( srcX + srcWidth ) * InvTexWidth;
-        var v2    = srcY * InvTexHeight;
+        var u     = src.X * InvTexWidth;
+        var v     = ( src.Y + src.Height ) * InvTexHeight;
+        var u2    = ( src.X + src.Width ) * InvTexWidth;
+        var v2    = src.Y * InvTexHeight;
         var color = ColorPacked;
 
         if ( flipX )
@@ -385,14 +377,8 @@ public class SpriteBatch : IBatch
     }
 
     public virtual void Draw( Texture texture,
-                              float x,
-                              float y,
-                              float width,
-                              float height,
-                              int srcX,
-                              int srcY,
-                              int srcWidth,
-                              int srcHeight,
+                              Rectangle region,
+                              Rectangle src,
                               bool flipX,
                               bool flipY )
     {
@@ -410,12 +396,12 @@ public class SpriteBatch : IBatch
             Flush();
         }
 
-        var u     = srcX * InvTexWidth;
-        var v     = ( srcY + srcHeight ) * InvTexHeight;
-        var u2    = ( srcX + srcWidth ) * InvTexWidth;
-        var v2    = srcY * InvTexHeight;
-        var fx2   = x + width;
-        var fy2   = y + height;
+        var u     = src.X * InvTexWidth;
+        var v     = ( src.Y + src.Height ) * InvTexHeight;
+        var u2    = ( src.X + src.Width ) * InvTexWidth;
+        var v2    = src.Y * InvTexHeight;
+        var fx2   = region.X + region.Width;
+        var fy2   = region.Y + region.Height;
         var color = ColorPacked;
 
         if ( flipX )
@@ -428,13 +414,13 @@ public class SpriteBatch : IBatch
             ( v, v2 ) = ( v2, v );
         }
 
-        Vertices[ Idx ]     = x;
-        Vertices[ Idx + 1 ] = y;
+        Vertices[ Idx ]     = region.X;
+        Vertices[ Idx + 1 ] = region.Y;
         Vertices[ Idx + 2 ] = color;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
-        Vertices[ Idx + 5 ] = x;
+        Vertices[ Idx + 5 ] = region.X;
         Vertices[ Idx + 6 ] = fy2;
         Vertices[ Idx + 7 ] = color;
         Vertices[ Idx + 8 ] = u;
@@ -447,7 +433,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = fx2;
-        Vertices[ Idx + 16 ] = y;
+        Vertices[ Idx + 16 ] = region.Y;
         Vertices[ Idx + 17 ] = color;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
@@ -455,7 +441,7 @@ public class SpriteBatch : IBatch
         Idx = Idx + 20;
     }
 
-    public virtual void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight )
+    public virtual void Draw( Texture texture, float x, float y, Rectangle src )
     {
         if ( !IsDrawing )
         {
@@ -471,12 +457,12 @@ public class SpriteBatch : IBatch
             Flush();
         }
 
-        var u   = srcX * InvTexWidth;
-        var v   = ( srcY + srcHeight ) * InvTexHeight;
-        var u2  = ( srcX + srcWidth ) * InvTexWidth;
-        var v2  = srcY * InvTexHeight;
-        var fx2 = x + srcWidth;
-        var fy2 = y + srcHeight;
+        var u   = src.X * InvTexWidth;
+        var v   = ( src.Y + src.Height ) * InvTexHeight;
+        var u2  = ( src.X + src.Width ) * InvTexWidth;
+        var v2  = src.Y * InvTexHeight;
+        var fx2 = x + src.Width;
+        var fy2 = y + src.Height;
 
         var color = ColorPacked;
 
@@ -508,10 +494,7 @@ public class SpriteBatch : IBatch
     }
 
     public virtual void Draw( Texture texture,
-                              float x,
-                              float y,
-                              float width,
-                              float height,
+                              Rectangle region,
                               float u,
                               float v,
                               float u2,
@@ -531,17 +514,17 @@ public class SpriteBatch : IBatch
             Flush();
         }
 
-        var fx2   = x + width;
-        var fy2   = y + height;
+        var fx2   = region.X + region.Width;
+        var fy2   = region.Y + region.Height;
         var color = ColorPacked;
 
-        Vertices[ Idx ]     = x;
-        Vertices[ Idx + 1 ] = y;
+        Vertices[ Idx ]     = region.X;
+        Vertices[ Idx + 1 ] = region.Y;
         Vertices[ Idx + 2 ] = color;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
-        Vertices[ Idx + 5 ] = x;
+        Vertices[ Idx + 5 ] = region.X;
         Vertices[ Idx + 6 ] = fy2;
         Vertices[ Idx + 7 ] = color;
         Vertices[ Idx + 8 ] = u;
@@ -554,7 +537,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = fx2;
-        Vertices[ Idx + 16 ] = y;
+        Vertices[ Idx + 16 ] = region.Y;
         Vertices[ Idx + 17 ] = color;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
@@ -564,10 +547,10 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( Texture texture, float x, float y )
     {
-        Draw( texture, x, y, texture.Width, texture.Height );
+        Draw( texture, new Point( ( int ) x, ( int ) y ), new Size( texture.Width, texture.Height ) );
     }
 
-    public virtual void Draw( Texture texture, float x, float y, float width, float height )
+    public virtual void Draw( Texture texture, Point loc, Size size )
     {
         if ( !IsDrawing )
         {
@@ -583,8 +566,8 @@ public class SpriteBatch : IBatch
             Flush();
         }
 
-        var fx2   = x + width;
-        var fy2   = y + height;
+        var fx2   = loc.X + size.Width;
+        var fy2   = loc.Y + size.Height;
         var color = ColorPacked;
 
         const float U  = 0;
@@ -592,13 +575,13 @@ public class SpriteBatch : IBatch
         const float U2 = 1;
         const float V2 = 0;
 
-        Vertices[ Idx ]     = x;
-        Vertices[ Idx + 1 ] = y;
+        Vertices[ Idx ]     = loc.X;
+        Vertices[ Idx + 1 ] = loc.Y;
         Vertices[ Idx + 2 ] = color;
         Vertices[ Idx + 3 ] = U;
         Vertices[ Idx + 4 ] = V;
 
-        Vertices[ Idx + 5 ] = x;
+        Vertices[ Idx + 5 ] = loc.X;
         Vertices[ Idx + 6 ] = fy2;
         Vertices[ Idx + 7 ] = color;
         Vertices[ Idx + 8 ] = U;
@@ -611,7 +594,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 14 ] = V2;
 
         Vertices[ Idx + 15 ] = fx2;
-        Vertices[ Idx + 16 ] = y;
+        Vertices[ Idx + 16 ] = loc.Y;
         Vertices[ Idx + 17 ] = color;
         Vertices[ Idx + 18 ] = U2;
         Vertices[ Idx + 19 ] = V;
@@ -737,15 +720,10 @@ public class SpriteBatch : IBatch
         Idx = Idx + 20;
     }
 
-    public virtual void Draw( TextureRegion region,
-                              float x,
-                              float y,
-                              float originX,
-                              float originY,
-                              float width,
-                              float height,
-                              float scaleX,
-                              float scaleY,
+    public virtual void Draw( TextureRegion textureRegion,
+                              Rectangle region,
+                              Point2D origin,
+                              Point2D scale,
                               float rotation )
     {
         if ( !IsDrawing )
@@ -753,7 +731,7 @@ public class SpriteBatch : IBatch
             throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
         }
 
-        var texture = region.Texture;
+        var texture = textureRegion.Texture;
 
         if ( texture != LastTexture )
         {
@@ -765,20 +743,20 @@ public class SpriteBatch : IBatch
         }
 
         // bottom left and top right corner points relative to origin
-        var worldOriginX = x + originX;
-        var worldOriginY = y + originY;
-        var fx           = -originX;
-        var fy           = -originY;
-        var fx2          = width - originX;
-        var fy2          = height - originY;
+        var worldOriginX = region.X + origin.X;
+        var worldOriginY = region.Y + origin.Y;
+        var fx           = -origin.X;
+        var fy           = -origin.Y;
+        var fx2          = region.Width - origin.X;
+        var fy2          = region.Height - origin.Y;
 
         // scale
-        if ( ( Math.Abs( scaleX - 1 ) > 0 ) || ( Math.Abs( scaleY - 1 ) > 0 ) )
+        if ( ( Math.Abs( scale.X - 1 ) > 0 ) || ( Math.Abs( scale.Y - 1 ) > 0 ) )
         {
-            fx  *= scaleX;
-            fy  *= scaleY;
-            fx2 *= scaleX;
-            fy2 *= scaleY;
+            fx  *= scale.X;
+            fy  *= scale.Y;
+            fx2 *= scale.X;
+            fy2 *= scale.Y;
         }
 
         // construct corner points, start from top left and go counter clockwise
@@ -842,10 +820,10 @@ public class SpriteBatch : IBatch
         x4 += worldOriginX;
         y4 += worldOriginY;
 
-        var u  = region.U;
-        var v  = region.V2;
-        var u2 = region.U2;
-        var v2 = region.V;
+        var u  = textureRegion.U;
+        var v  = textureRegion.V2;
+        var u2 = textureRegion.U2;
+        var v2 = textureRegion.V;
 
         var color = ColorPacked;
 
@@ -876,15 +854,10 @@ public class SpriteBatch : IBatch
         Idx = Idx + 20;
     }
 
-    public virtual void Draw( TextureRegion region,
-                              float x,
-                              float y,
-                              float originX,
-                              float originY,
-                              float width,
-                              float height,
-                              float scaleX,
-                              float scaleY,
+    public virtual void Draw( TextureRegion textureRegion,
+                              Rectangle region,
+                              Point2D origin,
+                              Point2D scale,
                               float rotation,
                               bool clockwise )
     {
@@ -893,7 +866,7 @@ public class SpriteBatch : IBatch
             throw new GdxRuntimeException( "SpriteBatch.Begin() must be called before Draw()" );
         }
 
-        var texture = region.Texture;
+        var texture = textureRegion.Texture;
 
         if ( texture != LastTexture )
         {
@@ -905,20 +878,20 @@ public class SpriteBatch : IBatch
         }
 
         // bottom left and top right corner points relative to origin
-        var worldOriginX = x + originX;
-        var worldOriginY = y + originY;
-        var fx           = -originX;
-        var fy           = -originY;
-        var fx2          = width - originX;
-        var fy2          = height - originY;
+        var worldOriginX = region.X + origin.X;
+        var worldOriginY = region.Y + origin.Y;
+        var fx           = -origin.X;
+        var fy           = -origin.Y;
+        var fx2          = region.Width - origin.X;
+        var fy2          = region.Height - origin.Y;
 
         // scale
-        if ( ( Math.Abs( scaleX - 1 ) > 0 ) || ( Math.Abs( scaleY - 1 ) > 0 ) )
+        if ( ( Math.Abs( scale.X - 1 ) > 0 ) || ( Math.Abs( scale.Y - 1 ) > 0 ) )
         {
-            fx  *= scaleX;
-            fy  *= scaleY;
-            fx2 *= scaleX;
-            fy2 *= scaleY;
+            fx  *= scale.X;
+            fy  *= scale.Y;
+            fx2 *= scale.X;
+            fy2 *= scale.Y;
         }
 
         // construct corner points, start from top left and go counter clockwise
@@ -986,25 +959,25 @@ public class SpriteBatch : IBatch
 
         if ( clockwise )
         {
-            u1 = region.U2;
-            v1 = region.V2;
-            u2 = region.U;
-            v2 = region.V2;
-            u3 = region.U;
-            v3 = region.V;
-            u4 = region.U2;
-            v4 = region.V;
+            u1 = textureRegion.U2;
+            v1 = textureRegion.V2;
+            u2 = textureRegion.U;
+            v2 = textureRegion.V2;
+            u3 = textureRegion.U;
+            v3 = textureRegion.V;
+            u4 = textureRegion.U2;
+            v4 = textureRegion.V;
         }
         else
         {
-            u1 = region.U;
-            v1 = region.V;
-            u2 = region.U2;
-            v2 = region.V;
-            u3 = region.U2;
-            v3 = region.V2;
-            u4 = region.U;
-            v4 = region.V2;
+            u1 = textureRegion.U;
+            v1 = textureRegion.V;
+            u2 = textureRegion.U2;
+            v2 = textureRegion.V;
+            u3 = textureRegion.U2;
+            v3 = textureRegion.V2;
+            u4 = textureRegion.U;
+            v4 = textureRegion.V2;
         }
 
         var color = ColorPacked;
@@ -1033,7 +1006,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u4;
         Vertices[ Idx + 19 ] = v4;
 
-        Idx = Idx + 20;
+        Idx += 20;
     }
 
     public virtual void Draw( TextureRegion region, float width, float height, Affine2 transform )
@@ -1092,7 +1065,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx = Idx + 20;
+        Idx += 20;
     }
 
     /// <summary>

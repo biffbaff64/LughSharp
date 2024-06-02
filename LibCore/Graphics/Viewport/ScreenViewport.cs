@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LughSharp.LibCore.Utils.Viewport;
+namespace LughSharp.LibCore.Graphics.Viewport;
 
 /// <summary>
 /// A viewport where the world size is based on the size of the screen.

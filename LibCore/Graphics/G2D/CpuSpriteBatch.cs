@@ -48,7 +48,7 @@ public class CpuSpriteBatch : SpriteBatch
     private bool _haveIdentityRealMatrix = true;
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// Constructs a CpuSpriteBatch with a size of 1000 and the default shader.
     /// </summary>
@@ -193,60 +193,44 @@ public class CpuSpriteBatch : SpriteBatch
             }
         }
     }
-    
+
     /// <inheritdoc/>
     public override void Draw( Texture texture,
-                               float x,
-                               float y,
-                               float originX,
-                               float originY,
-                               float width,
-                               float height,
-                               float scaleX,
-                               float scaleY,
+                               Rectangle region,
+                               Point2D origin,
+                               Point2D scale,
                                float rotation,
-                               int srcX,
-                               int srcY,
-                               int srcWidth,
-                               int srcHeight,
+                               Rectangle src,
                                bool flipX,
                                bool flipY )
     {
         if ( !_adjustNeeded )
         {
             base.Draw( texture,
-                       x,
-                       y,
-                       originX,
-                       originY,
-                       width,
-                       height,
-                       scaleX,
-                       scaleY,
+                       region,
+                       origin,
+                       scale,
                        rotation,
-                       srcX,
-                       srcY,
-                       srcWidth,
-                       srcHeight,
+                       src,
                        flipX,
                        flipY );
         }
         else
         {
             DrawAdjusted( texture,
-                          x,
-                          y,
-                          originX,
-                          originY,
-                          width,
-                          height,
-                          scaleX,
-                          scaleY,
+                          region.X,
+                          region.Y,
+                          region.Width,
+                          region.Height,
+                          origin.X,
+                          origin.Y,
+                          scale.X,
+                          scale.Y,
                           rotation,
-                          srcX,
-                          srcY,
-                          srcWidth,
-                          srcHeight,
+                          src.X,
+                          src.Y,
+                          src.Width,
+                          src.Height,
                           flipX,
                           flipY );
         }
@@ -254,65 +238,59 @@ public class CpuSpriteBatch : SpriteBatch
 
     /// <inheritdoc/>
     public override void Draw( Texture texture,
-                               float x,
-                               float y,
-                               float width,
-                               float height,
-                               int srcX,
-                               int srcY,
-                               int srcWidth,
-                               int srcHeight,
+                               Rectangle region,
+                               Rectangle src,
                                bool flipX,
                                bool flipY )
     {
         if ( !_adjustNeeded )
         {
-            base.Draw( texture, x, y, width, height, srcX, srcY, srcWidth, srcHeight, flipX, flipY );
+            base.Draw( texture, region, src, flipX, flipY );
         }
         else
         {
             DrawAdjusted( texture,
-                          x,
-                          y,
+                          region.X,
+                          region.Y,
+                          region.Width,
+                          region.Height,
                           0,
                           0,
-                          width,
-                          height,
                           1,
                           1,
                           0,
-                          srcX,
-                          srcY,
-                          srcWidth,
-                          srcHeight,
+                          src.X,
+                          src.Y,
+                          src.Width,
+                          src.Height,
                           flipX,
                           flipY );
         }
     }
 
     /// <inheritdoc/>
-    public override void Draw( Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight )
+    public override void Draw( Texture texture, float x, float y, Rectangle src )
     {
         if ( !_adjustNeeded )
         {
-            base.Draw( texture, x, y, srcX, srcY, srcWidth, srcHeight );
+            base.Draw( texture, x, y, src );
         }
         else
         {
             DrawAdjusted( texture,
                           x,
                           y,
+                          src.Width,
+                          src.Height,
                           0,
                           0,
-                          srcWidth,
-                          srcHeight,
                           1,
                           1,
                           0,
-                          srcX,
-                          srcY,
-                          srcWidth,
-                          srcHeight,
+                          src.X,
+                          src.Y,
+                          src.Width,
+                          src.Height,
                           false,
                           false );
         }
@@ -320,10 +298,7 @@ public class CpuSpriteBatch : SpriteBatch
 
     /// <inheritdoc/>
     public override void Draw( Texture texture,
-                               float x,
-                               float y,
-                               float width,
-                               float height,
+                               Rectangle region,
                                float u,
                                float v,
                                float u2,
@@ -331,11 +306,26 @@ public class CpuSpriteBatch : SpriteBatch
     {
         if ( !_adjustNeeded )
         {
-            base.Draw( texture, x, y, width, height, u, v, u2, v2 );
+            base.Draw( texture, region, u, v, u2, v2 );
         }
         else
         {
-            DrawAdjustedUV( texture, x, y, 0, 0, width, height, 1, 1, 0, u, v, u2, v2, false, false );
+            DrawAdjustedUV( texture,
+                            region.X,
+                            region.Y,
+                            region.Width,
+                            region.Height,
+                            0,
+                            0,
+                            1,
+                            1,
+                            0,
+                            u,
+                            v,
+                            u2,
+                            v2,
+                            false,
+                            false );
         }
     }
 
@@ -368,15 +358,15 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc/>
-    public override void Draw( Texture texture, float x, float y, float width, float height )
+    public override void Draw( Texture texture, Point loc, Size size )
     {
         if ( !_adjustNeeded )
         {
-            base.Draw( texture, x, y, width, height );
+            base.Draw( texture, loc, size );
         }
         else
         {
-            DrawAdjusted( texture, x, y, 0, 0, width, height, 1, 1, 0, 0, 1, 1, 0, false, false );
+            DrawAdjusted( texture, loc.X, loc.Y, 0, 0, size.Width, size.Height, 1, 1, 0, 0, 1, 1, 0, false, false );
         }
     }
 
@@ -407,59 +397,47 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc/>
-    public override void Draw( TextureRegion region,
-                               float x,
-                               float y,
-                               float originX,
-                               float originY,
-                               float width,
-                               float height,
-                               float scaleX,
-                               float scaleY,
+    public override void Draw( TextureRegion textureRegion,
+                               Rectangle region,
+                               Point2D origin,
+                               Point2D scale,
                                float rotation )
     {
         if ( !_adjustNeeded )
         {
-            base.Draw( region, x, y, originX, originY, width, height, scaleX, scaleY, rotation );
+            base.Draw( textureRegion, region, origin, scale, rotation );
         }
         else
         {
-            DrawAdjusted( region, x, y, originX, originY, width, height, scaleX, scaleY, rotation );
+            DrawAdjusted( textureRegion, region.X, region.Y, origin.X, origin.Y, region.Width, region.Height, scale.X, scale.Y, rotation );
         }
     }
 
     /// <inheritdoc/>
-    public override void Draw( TextureRegion region,
-                               float x,
-                               float y,
-                               float originX,
-                               float originY,
-                               float width,
-                               float height,
-                               float scaleX,
-                               float scaleY,
+    public override void Draw( TextureRegion textureRegion,
+                               Rectangle region,
+                               Point2D origin,
+                               Point2D scale,
                                float rotation,
                                bool clockwise )
     {
         if ( !_adjustNeeded )
         {
-            base.Draw( region, x, y, originX, originY, width, height, scaleX, scaleY, rotation, clockwise );
+            base.Draw( textureRegion, region, origin, scale, rotation, clockwise );
         }
         else
         {
-            DrawAdjusted(
-                         region,
-                         x,
-                         y,
-                         originX,
-                         originY,
-                         width,
-                         height,
-                         scaleX,
-                         scaleY,
-                         rotation,
-                         clockwise
-                        );
+            DrawAdjusted( textureRegion,
+                          region.X,
+                          region.Y,
+                          origin.X,
+                          origin.Y,
+                          region.Width,
+                          region.Height,
+                          scale.X,
+                          scale.Y,
+                          rotation,
+                          clockwise );
         }
     }
 
@@ -568,7 +546,7 @@ public class CpuSpriteBatch : SpriteBatch
                         flipX,
                         flipY );
     }
-    
+
     private void DrawAdjustedUV( Texture texture,
                                  float x,
                                  float y,

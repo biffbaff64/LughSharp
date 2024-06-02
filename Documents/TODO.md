@@ -247,6 +247,7 @@ GRAPHICS
     - DONE - IP   - Cubemap
     - DONE - IP   - FPSLogger
     - DONE - IP   - GLTexture
+    - IP   - IP   - GStructs
     - DONE - IP   - ICubemapData
     - DONE - DONE - ICursor
     - DONE - DONE - ITextureArrayData
@@ -320,7 +321,7 @@ GRAPHICS/G2D
     Batching
     --------
     - IP   - IP   - CpuSpriteBatch                  Some methods have too many parameters
-    - IP   - IP   - IBatch                          Some methods have too many parameters
+    - DONE - DONE - IBatch
     - IP   - IP   - IPolygonBatch                   Some methods have too many parameters
     - IP   - IP   - PolygonSpriteBatch              Some methods have too many parameters
     - IP   - IP   - SpriteBatch                     Some methods have too many parameters
@@ -393,6 +394,19 @@ GRAPHICS/PROFILING
     - IP   - IP   - GLInterceptor
     - DONE - DONE - GLProfiler          
     - DONE - DONE - IGLErrorListener
+
+GRAPHICS/VIEWPORT
+-----------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - DONE - ExtendedViewport
+    - DONE - DONE - FillViewport
+    - DONE - DONE - FitViewport
+    - DONE - DONE - ScalingViewport
+    - DONE - DONE - ScreenViewport
+    - DONE - DONE - StretchViewport
+    - DONE - DONE - Viewport
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -519,6 +533,7 @@ MATHS
     - DONE - IP   - Number
     - DONE - IP   - NumberUtils
     - DONE - IP   - Plane
+    - IP   - IP   - Point2D
     - DONE - IP   - Polygon
     - DONE - IP   - Polyline
     - DONE - IP   - Quaternion
@@ -678,13 +693,13 @@ SCENES/SCENE2D/UTILS
     ----   --------
     - DONE - DONE - ArraySelection
     - DONE - DONE - BaseDrawable
-    - IP   - IP   - DragAndDrop
+    - DONE - IP   - DragAndDrop
     - DONE - DONE - ICullable
-    - IP   - IP   - IDisableable
+    - DONE - IP   - IDisableable
     - DONE - DONE - IDrawable
     - DONE - DONE - ILayout
     - DONE - DONE - ITransformDrawable
-    - IP   - IP   - NinePatchDrawable
+    - DONE - IP   - NinePatchDrawable
     - DONE - IP   - ScissorStack
     - DONE - IP   - Selection
     - DONE - IP   - SpriteDrawable
@@ -704,8 +719,6 @@ UTILS
     - DONE - DONE - Align
     - DONE - DONE - BinaryHeap
     - DONE - DONE - Bits
-    - DONE - DONE - ByteOrder                       Is this still needed? Possible Delete Candidate?
-    - DONE - DONE - Character                       C# System MUST already have this???
     - DONE - IP   - ComparableTimSort
     - DONE - IP   - DataInput                       Check
     - DONE - IP   - DataOutput                      Check
@@ -714,21 +727,26 @@ UTILS
     - DONE - DONE - IClipboard                      Convert - Interface, clipboard handled in backends.                 
     - DONE - DONE - ICloseable
     - DONE - DONE - IReadable
-    - DONE - DONE - IRunnable                       Done, but is it needed?
-    - DONE - DONE - Logger                          Check if LogInterpolatedStringHandler can be removed
+    - DONE - DONE - Logger
     - DONE - DONE - PerformanceCounter              Check
     - DONE - IP   - PerformanceCounters             Check
-    - DONE - IP   - PropertiesUtils                 Convert, but check if necessary first
     - DONE - IP   - QuadTreeFloat
     - DONE - IP   - QuickSelect
     - DONE - IP   - Scaling
     - DONE - DONE - ScreenUtils
     - DONE - IP   - Select
-    - DONE - IP   - SortUtils                       Do I still need this?
     - DONE - DONE - StringTokenizer
     - DONE - DONE - Timer
     - DONE - DONE - TimeUtils
     - DONE - IP   - TimSort
+
+    - The following might not be needed
+
+    - DONE - DONE - ByteOrder                       Is this still needed? Possible Delete Candidate?
+    - DONE - DONE - Character                       C# System MUST already have this???
+    - DONE - DONE - IRunnable                       Done, but is it needed?
+    - DONE - IP   - PropertiesUtils                 Convert, but check if necessary
+    - DONE - IP   - SortUtils                       Do I still need this?
 
     - The following do not need converting
 
@@ -807,8 +825,7 @@ UTILS/COLLECTIONS
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - DONE - Array<T>                       Converted, but use List<T> for most cases.
-    - DONE - DONE - CollectionsData
+    - DONE - IP   - Array<T>                       Converted, but use List<T> for most cases.
     - DONE - DONE - DictionaryExtensions
     - DONE - DONE - DelayedRemovalList             Convert / Extend List<>
     - DONE - DONE - ListExtensions
@@ -817,7 +834,6 @@ UTILS/COLLECTIONS
 
     - Work on removing these
 
-    - **** - IdentityMap<K, V>                      Convert / extend Dictionary< object, object > 
     - **** - IPredicate
     - **** - PredicateIterable
     - **** - PredicateIterator
@@ -830,7 +846,9 @@ UTILS/COLLECTIONS
     - **** - BoolArray                      -> Use List< bool >
     - **** - ByteArray                      -> Use List< byte >
     - **** - CharArray                      -> Use List< char >
+    - **** - CollectionsData                -> Not needed
     - **** - FloatArray                     -> Use List< float >
+    - **** - IdentityMap<K, V>              -> Not needed
     - **** - IntArray                       -> Use List< int >
     - **** - IntFloatMap                    -> Use Dictionary< int, float >
     - **** - IntIntMap                      -> Use Dictionary< int, int >
@@ -867,19 +885,6 @@ UTILS/POOLING
     - DONE - DONE - Pool
     - DONE - DONE - PooledLinkedList
     - DONE - DONE - Pools
-
-UTILS/VIEWPORT
---------------
-
-    CODE   DOCUMENT
-    ----   --------
-    - DONE - DONE - ExtendedViewport
-    - DONE - DONE - FillViewport
-    - DONE - DONE - FitViewport
-    - DONE - DONE - ScalingViewport
-    - DONE - DONE - ScreenViewport
-    - DONE - DONE - StretchViewport
-    - DONE - DONE - Viewport
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Drawing;
+using Color = LughSharp.LibCore.Graphics.Color;
+
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 /// <summary>
@@ -35,6 +38,32 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Creates an uninitialized TextureRegionDrawable.
+    /// The texture region must be set before use.
+    /// </summary>
+    public TextureRegionDrawable()
+    {
+    }
+
+    public TextureRegionDrawable( Texture texture )
+    {
+        Region = new TextureRegion( texture );
+    }
+
+    public TextureRegionDrawable( TextureRegion region )
+    {
+        Region = region;
+    }
+
+    public TextureRegionDrawable( TextureRegionDrawable drawable ) : base( drawable )
+    {
+        Region = drawable.Region;
+    }
+
+    /// <summary>
+    /// The <see cref="TextureRegion"/> component of this <see cref="IDrawable"/>
+    /// </summary>
     protected TextureRegion? Region
     {
         get => _region;
@@ -62,30 +91,15 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
     /// <summary>
     /// Draws this drawable at the specified bounds.
     /// </summary>
-    /// <param name="batch"></param>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <param name="originX"></param>
-    /// <param name="originY"></param>
-    /// <param name="width"></param>
-    /// <param name="height"></param>
-    /// <param name="scaleX"></param>
-    /// <param name="scaleY"></param>
-    /// <param name="rotation"></param>
     public virtual void Draw( IBatch batch,
-                              float x,
-                              float y,
-                              float originX,
-                              float originY,
-                              float width,
-                              float height,
-                              float scaleX,
-                              float scaleY,
+                              Rectangle region,
+                              Point2D origin,
+                              Point2D scale,
                               float rotation )
     {
         if ( Region != null )
         {
-            batch.Draw( Region, x, y, originX, originY, width, height, scaleX, scaleY, rotation );
+            batch.Draw( Region, region, origin, scale, rotation );
         }
     }
 
@@ -100,16 +114,9 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
             throw new NullReferenceException();
         }
 
-        Sprite sprite;
-
-        if ( Region is AtlasRegion region )
-        {
-            sprite = new AtlasSprite( region );
-        }
-        else
-        {
-            sprite = new Sprite( Region! );
-        }
+        var sprite = Region is AtlasRegion region
+                         ? new AtlasSprite( region )
+                         : new Sprite( Region! );
 
         sprite.SetColor( tint );
         sprite.SetSize( MinWidth, MinHeight );
@@ -124,33 +131,4 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
 
         return drawable;
     }
-
-    // ------------------------------------------------------------------------
-
-    #region constructors
-
-    /// <summary>
-    /// Creates an uninitialized TextureRegionDrawable.
-    /// The texture region must be set before use.
-    /// </summary>
-    public TextureRegionDrawable()
-    {
-    }
-
-    public TextureRegionDrawable( Texture texture )
-    {
-        Region = new TextureRegion( texture );
-    }
-
-    public TextureRegionDrawable( TextureRegion region )
-    {
-        Region = region;
-    }
-
-    public TextureRegionDrawable( TextureRegionDrawable drawable ) : base( drawable )
-    {
-        Region = drawable.Region;
-    }
-
-    #endregion constructors
 }

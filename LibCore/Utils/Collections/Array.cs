@@ -652,8 +652,9 @@ public class Array< T >
     }
 
     /// <summary>
+    /// Truncates this array to the specified new size, if the new size
+    /// is smaller than the current size.
     /// </summary>
-    /// <param name="newSize"></param>
     public virtual void Truncate( int newSize )
     {
         if ( Size <= newSize )
@@ -679,8 +680,9 @@ public class Array< T >
     }
 
     /// <summary>
+    /// Returns the <see cref="Items"/> backing array as a one-dimensional array
     /// </summary>
-    /// <returns></returns>
+    /// <returns> The new array. </returns>
     [MustUseReturnValue]
     public virtual T[] ToArray()
     {
@@ -692,9 +694,11 @@ public class Array< T >
     }
 
     /// <summary>
+    /// Returns the <see cref="Items"/> backing array as a one-dimensional array
+    /// of the specified Type.
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
+    /// <param name="type"> The <see cref="Type"/> of the array to create. </param>
+    /// <returns> The new array. </returns>
     [MustUseReturnValue]
     public virtual T[] ToArray( Type type )
     {
@@ -705,9 +709,7 @@ public class Array< T >
         return result;
     }
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         var h = 31 * GetType().GetHashCode();
@@ -716,10 +718,7 @@ public class Array< T >
         return h;
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public override bool Equals( object? obj )
     {
         if ( obj == this )
@@ -760,9 +759,7 @@ public class Array< T >
         return true;
     }
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public override string ToString()
     {
         if ( Size == 0 )
@@ -787,9 +784,10 @@ public class Array< T >
     }
 
     /// <summary>
+    /// Returns a string that represents the current object.
     /// </summary>
-    /// <param name="separator"></param>
-    /// <returns></returns>
+    /// <param name="separator"> Character(s) to use as seperators between items. </param>
+    /// <returns> A string that represents the current object. </returns>
     public virtual string ToString( string separator )
     {
         if ( Size == 0 )

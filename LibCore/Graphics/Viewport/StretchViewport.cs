@@ -23,16 +23,33 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LughSharp.LibCore.Utils.Collections;
+namespace LughSharp.LibCore.Graphics.Viewport;
 
+/// <summary>
+/// A ScalingViewport that uses <see cref="Scaling.Stretch"/> so it does not
+/// keep the aspect ratio, the world is scaled to take the whole screen.
+/// </summary>
 [PublicAPI]
-public class CollectionsData
+public class StretchViewport : ScalingViewport
 {
     /// <summary>
-    /// When true, <see cref="IEnumerator{T}"/> for collections will allocate a new
-    /// iterator for each invocation. When false, the iterator is reused and nested
-    /// use will throw an exception.
-    /// <para> Default is false. </para>
+    /// Creates a new viewport using a new <see cref="OrthographicCamera"/>.
     /// </summary>
-    public static bool AllocateIterators { get; set; }
+    /// <param name="worldWidth"> The world width in pixels. </param>
+    /// <param name="worldHeight"> The world height in pixels. </param>
+    public StretchViewport( float worldWidth, float worldHeight )
+        : base( Scaling.Stretch, worldWidth, worldHeight )
+    {
+    }
+
+    /// <summary>
+    /// Creates a new viewport using the supplied <see cref="OrthographicCamera"/>.
+    /// </summary>
+    /// <param name="worldWidth"> The world width in pixels. </param>
+    /// <param name="worldHeight"> The world height in pixels. </param>
+    /// <param name="camera"> The camera to use. </param>
+    public StretchViewport( float worldWidth, float worldHeight, Camera camera )
+        : base( Scaling.Stretch, worldWidth, worldHeight, camera )
+    {
+    }
 }

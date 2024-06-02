@@ -90,7 +90,6 @@ global using LughSharp.LibCore.Utils;
 global using LughSharp.LibCore.Utils.Buffers;
 global using LughSharp.LibCore.Utils.Collections;
 global using LughSharp.LibCore.Utils.Pooling;
-global using LughSharp.LibCore.Utils.Viewport;
 
 // ----------------------------------------------------------------------------
 global using Vector2 = LughSharp.LibCore.Maths.Vector2;
