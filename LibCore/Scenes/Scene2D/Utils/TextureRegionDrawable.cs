@@ -46,16 +46,28 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
     {
     }
 
+    /// <summary>
+    /// Creates a new TextureRegionDrawable, initialised with a new <see cref="TextureRegion"/>
+    /// from the supplied <see cref="Texture"/>
+    /// </summary>
     public TextureRegionDrawable( Texture texture )
+        : this( new TextureRegion( texture ) )
     {
-        Region = new TextureRegion( texture );
     }
 
+    /// <summary>
+    /// Creates a new TextureRegionDrawable, initialised with the supplied <see cref="TextureRegion"/>
+    /// </summary>
     public TextureRegionDrawable( TextureRegion region )
     {
         Region = region;
     }
 
+    /// <summary>
+    /// Creates a new TextureRegionDrawable using the <see cref="TextureRegion"/> from
+    /// the given TextureRegionDrawable.
+    /// </summary>
+    /// <param name="drawable"></param>
     public TextureRegionDrawable( TextureRegionDrawable drawable ) : base( drawable )
     {
         Region = drawable.Region;
@@ -92,7 +104,7 @@ public class TextureRegionDrawable : BaseDrawable, ITransformDrawable
     /// Draws this drawable at the specified bounds.
     /// </summary>
     public virtual void Draw( IBatch batch,
-                              Rectangle region,
+                              GRect region,
                               Point2D origin,
                               Point2D scale,
                               float rotation )

@@ -195,7 +195,7 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     public void Draw( Texture texture,
-                      Rectangle region,
+                      GRect region,
                       Vector2 origin,
                       Vector2 scale,
                       Rectangle source,

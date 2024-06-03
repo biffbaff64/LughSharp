@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Drawing;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
@@ -36,20 +37,23 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class Image : Widget
 {
-    public float ImageX      { get; set; }
-    public float ImageY      { get; set; }
-    public float ImageWidth  { get; set; }
-    public float ImageHeight { get; set; }
+    public float      ImageX      { get; set; }
+    public float      ImageY      { get; set; }
+    public float      ImageWidth  { get; set; }
+    public float      ImageHeight { get; set; }
+    public IDrawable? Drawable    { get; private set; }
 
     // ------------------------------------------------------------------------
 
-    private int        _alignment; // Backing value for Alignment property
-    private IDrawable? _drawable;
-    private Scaling    _scaling;
+    private int     _alignment; // Backing value for Alignment property
+    private Scaling _scaling;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Creates a new, unitialised, Image instance.
+    /// </summary>
     public Image() : this( ( IDrawable ) null! )
     {
     }
@@ -86,7 +90,16 @@ public class Image : Widget
         _scaling  = scaling;
         Alignment = align;
 
-        SetSize( GetPrefWidth(), GetPrefHeight() );
+        NonVirtualConstructorHelper();
+    }
+
+    /// <summary>
+    /// Helper method for constructors, allowing access to virtual members which are
+    /// unsafe to be referenced from constructors.
+    /// </summary>
+    private void NonVirtualConstructorHelper()
+    {
+        SetSize( PrefWidth, PrefHeight );
     }
 
     public int Alignment
@@ -102,13 +115,13 @@ public class Image : Widget
     /// <inheritdoc/>
     public override void SetLayout()
     {
-        if ( _drawable == null )
+        if ( Drawable == null )
         {
             return;
         }
 
-        var regionWidth  = _drawable.MinWidth;
-        var regionHeight = _drawable.MinHeight;
+        var regionWidth  = Drawable.MinWidth;
+        var regionHeight = Drawable.MinHeight;
         var width        = Width;
         var height       = Height;
 
@@ -149,39 +162,53 @@ public class Image : Widget
     {
         Validate();
 
-        var color = Color ?? Color.Black;
-
-        batch.SetColor( color.R, color.G, color.B, color.A * parentAlpha );
+        batch.SetColor( Color.R, Color.G, Color.B, Color.A * parentAlpha );
 
         var x      = X;
         var y      = Y;
         var scaleX = ScaleX;
         var scaleY = ScaleY;
 
-        if ( _drawable is ITransformDrawable drawable )
+        if ( Drawable is ITransformDrawable drawable )
         {
             var rotation = Rotation;
 
             if ( scaleX is not 1 || scaleY is not 1 || rotation is not 0 )
             {
-                drawable.Draw( batch,
-                               x + ImageX,
-                               y + ImageY,
-                               OriginX - ImageX,
-                               OriginY - ImageY,
-                               ImageWidth,
-                               ImageHeight,
-                               scaleX,
-                               scaleY,
-                               rotation );
+                var region = new GRect
+                {
+                    X      = ( int ) ( x + ImageX ),
+                    Y      = ( int ) ( y + ImageY ),
+                    Width  = ( int ) ImageWidth,
+                    Height = ( int ) ImageHeight
+                };
+
+                var origin = new Point2D
+                {
+                    X = ( int ) ( OriginX - ImageX ),
+                    Y = ( int ) ( OriginY - ImageY )
+                };
+
+                var scale = new Point2D
+                {
+                    X = ( int ) scaleX,
+                    Y = ( int ) scaleY
+                };
+
+                drawable.Draw( batch, region, origin, scale, rotation );
 
                 return;
             }
         }
 
-        _drawable?.Draw( batch, x + ImageX, y + ImageY, ImageWidth * scaleX, ImageHeight * scaleY );
+        Drawable?.Draw( batch, x + ImageX, y + ImageY, ImageWidth * scaleX, ImageHeight * scaleY );
     }
 
+    /// <summary>
+    /// Sets the <see cref="IDrawable"/> for this Image.
+    /// </summary>
+    /// <param name="skin"></param>
+    /// <param name="drawableName"></param>
     public void SetDrawable( Skin skin, string drawableName )
     {
         SetDrawable( skin.GetDrawable( drawableName ) );
@@ -195,14 +222,14 @@ public class Image : Widget
     /// <param name="drawable"> May be null. </param>
     public void SetDrawable( IDrawable? drawable )
     {
-        if ( _drawable == drawable )
+        if ( Drawable == drawable )
         {
             return;
         }
 
         if ( drawable != null )
         {
-            if ( !GetPrefWidth().Equals( drawable.MinWidth ) || !GetPrefHeight().Equals( drawable.MinHeight ) )
+            if ( !PrefWidth.Equals( drawable.MinWidth ) || !PrefHeight.Equals( drawable.MinHeight ) )
             {
                 InvalidateHierarchy();
             }
@@ -212,14 +239,12 @@ public class Image : Widget
             InvalidateHierarchy();
         }
 
-        _drawable = drawable;
+        Drawable = drawable;
     }
 
-    public IDrawable? GetDrawable()
-    {
-        return _drawable;
-    }
-
+    /// <summary>
+    /// Sets the <see cref="Scaling"/>Mode for this Image.
+    /// </summary>
     public void SetScaling( Scaling scale )
     {
         ArgumentNullException.ThrowIfNull( scale );
@@ -228,34 +253,33 @@ public class Image : Widget
         Invalidate();
     }
 
-    public float GetMinWidth()
+    /// <inheritdoc />
+    public override float PrefWidth
     {
-        return 0;
-    }
-
-    public float GetMinHeight()
-    {
-        return 0;
-    }
-
-    public float GetPrefWidth()
-    {
-        if ( _drawable != null )
+        get
         {
-            return _drawable.MinWidth;
-        }
+            if ( Drawable != null )
+            {
+                return Drawable.MinWidth;
+            }
 
-        return 0;
+            return 0;
+        }
+        set { }
     }
 
-    public float GetPrefHeight()
+    public override float PrefHeight
     {
-        if ( _drawable != null )
+        get
         {
-            return _drawable.MinHeight;
-        }
+            if ( Drawable != null )
+            {
+                return Drawable.MinWidth;
+            }
 
-        return 0;
+            return 0;
+        }
+        set { }
     }
 
     /// <inheritdoc/>
@@ -276,6 +300,6 @@ public class Image : Widget
             className = className.Substring( dotIndex + 1 );
         }
 
-        return ( className.IndexOf( '$' ) != -1 ? "Image " : "" ) + className + ": " + _drawable;
+        return ( className.IndexOf( '$' ) != -1 ? "Image " : "" ) + className + ": " + Drawable;
     }
 }

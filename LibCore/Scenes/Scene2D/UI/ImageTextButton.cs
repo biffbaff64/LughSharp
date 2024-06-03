@@ -307,7 +307,7 @@ public class ImageTextButton : Button
 
         return ( className.IndexOf( '$' ) != -1 ? "ImageTextButton " : "" )
              + className
-             + $":  {_image?.GetDrawable()}  {_label?.Text}";
+             + $":  {_image?.Drawable}  {_label?.Text}";
     }
 
     /// <summary>

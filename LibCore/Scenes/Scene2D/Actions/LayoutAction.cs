@@ -58,7 +58,7 @@ public class LayoutAction : Action
             return false;
         }
 
-        ( ( ILayout ) base.Target ).LayoutEnabled = Enabled;
+        ( ( ILayout ) base.Target ).EnableLayout = Enabled;
 
         return true;
     }

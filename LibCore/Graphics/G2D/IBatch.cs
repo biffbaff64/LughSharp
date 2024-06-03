@@ -193,7 +193,7 @@ public interface IBatch : IDisposable
     /// <param name="flipX"> whether to flip the sprite horizontally </param>
     /// <param name="flipY"> whether to flip the sprite vertically </param>
     void Draw( Texture texture,
-               Rectangle region,
+               GRect region,
                Point2D origin,
                Point2D scale,
                float rotation,
@@ -217,7 +217,7 @@ public interface IBatch : IDisposable
     /// <param name="flipX"> whether to flip the sprite horizontally </param>
     /// <param name="flipY"> whether to flip the sprite vertically </param>
     void Draw( Texture texture,
-               Rectangle region,
+               GRect region,
                Rectangle src,
                bool flipX,
                bool flipY );
@@ -249,7 +249,7 @@ public interface IBatch : IDisposable
     /// <param name="v"></param>
     /// <param name="u2"></param>
     /// <param name="v2"></param>
-    void Draw( Texture texture, Rectangle region, float u, float v, float u2, float v2 );
+    void Draw( Texture texture, GRect region, float u, float v, float u2, float v2 );
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y having the width and
@@ -293,7 +293,7 @@ public interface IBatch : IDisposable
     /// of the rectangle around originX, originY.
     /// </summary>
     void Draw( TextureRegion textureRegion,
-               Rectangle region,
+               GRect region,
                Point2D origin,
                Point2D scale,
                float rotation );
@@ -317,7 +317,7 @@ public interface IBatch : IDisposable
     /// If false, they are rotated 90 degrees counter clockwise.
     /// </param>
     void Draw( TextureRegion textureRegion,
-               Rectangle region,
+               GRect region,
                Point2D origin,
                Point2D scale,
                float rotation,

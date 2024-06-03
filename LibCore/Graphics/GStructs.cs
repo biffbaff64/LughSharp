@@ -24,6 +24,18 @@
 
 namespace LughSharp.LibCore.Graphics;
 
+/// <summary>
+/// A simple Rectangle shape struct, which contains only X, Y, Width, and Height
+/// members. For use when no 'padding' is needed, as in method parameters, for instance.
+/// <example>
+/// <code>
+/// public void SetRegion( Texture texture, GRect region )
+/// {
+///     . . .
+/// }
+/// </code>
+/// </example>
+/// </summary>
 [PublicAPI]
 public struct GRect
 {
@@ -33,6 +45,19 @@ public struct GRect
     public int Height;
 }
 
+/// <summary>
+/// A Simple 2D Point struct with only X and Y members.
+/// For use when no 'padding' is needed, as in method parameters, for instance.
+/// <example>
+/// <code>
+/// public void SetPosition( GPoint pos )
+/// {
+///     Position.X = pos.X;
+///     Position.Y = pos.Y;
+/// }
+/// </code>
+/// </example>
+/// </summary>
 [PublicAPI]
 public struct GPoint
 {
@@ -40,6 +65,19 @@ public struct GPoint
     public int Y;
 }
 
+/// <summary>
+/// A Simple 2D Size struct with only Width and Height members.
+/// For use when no 'padding' is needed, as in method parameters, for instance.
+/// <example>
+/// <code>
+/// public void SetSize( GSize newSize )
+/// {
+///     Width = newSize.Width;
+///     Height = newSize.Height;
+/// }
+/// </code>
+/// </example>
+/// </summary>
 [PublicAPI]
 public struct GSize
 {

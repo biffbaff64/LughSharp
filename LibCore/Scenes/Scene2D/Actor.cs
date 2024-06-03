@@ -964,7 +964,7 @@ public class Actor : IActor
     /// <summary>
     /// Sets the width and height.
     /// </summary>
-    public void SetSize( float width, float height )
+    public virtual void SetSize( float width, float height )
     {
         if ( MathUtils.IsNotEqual( _width, width )
           || MathUtils.IsNotEqual( _height, height ) )
@@ -1004,7 +1004,7 @@ public class Actor : IActor
     /// <summary>
     /// Set bounds the x, y, width, and height.
     /// </summary>
-    public void SetBounds( float x, float y, float width, float height )
+    public virtual void SetBounds( float x, float y, float width, float height )
     {
         if ( MathUtils.IsNotEqual( _x, x ) || MathUtils.IsNotEqual( _y, y ) )
         {
@@ -1024,7 +1024,7 @@ public class Actor : IActor
     /// <summary>
     /// Sets the origin position which is relative to the actor's bottom left corner.
     /// </summary>
-    public void SetOrigin( float originX, float originY )
+    public virtual void SetOrigin( float originX, float originY )
     {
         OriginX = originX;
         OriginY = originY;
@@ -1033,7 +1033,7 @@ public class Actor : IActor
     /// <summary>
     /// Sets the origin position to the specified <see cref="Align"/> alignment.
     /// </summary>
-    public void SetOrigin( int alignment )
+    public virtual void SetOrigin( int alignment )
     {
         if ( ( alignment & Align.LEFT ) != 0 )
         {

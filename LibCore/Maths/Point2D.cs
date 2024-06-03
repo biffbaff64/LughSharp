@@ -24,8 +24,22 @@
 
 namespace LughSharp.LibCore.Maths;
 
+
 /// <summary>
 /// Simple struct with just X and Y members, and absolutely nothing else.
+/// For use when no 'padding' is needed, as in method parameters, for instance.
+/// <example>
+/// <code>
+///    public int X { get; set; }
+///    public int Y { get; set; }
+///        
+///    internal void SetPosition( Point2D&lt;int&gt; pos )
+///    {
+///        X = pos.X;
+///        Y = pos.Y;
+///    }
+/// </code>
+/// </example>
 /// </summary>
 [PublicAPI]
 public struct Point2D< T > //TODO: replace the others with this
@@ -36,6 +50,7 @@ public struct Point2D< T > //TODO: replace the others with this
 
 /// <summary>
 /// Simple struct with just X and Y members, and absolutely nothing else.
+/// For use when no 'padding' is needed, as in method parameters, for instance.
 /// </summary>
 [PublicAPI]
 public struct Point2D
@@ -46,6 +61,7 @@ public struct Point2D
 
 /// <summary>
 /// Simple struct with just X and Y members, and absolutely nothing else.
+/// For use when no 'padding' is needed, as in method parameters, for instance.
 /// </summary>
 [PublicAPI]
 public struct Point2Df

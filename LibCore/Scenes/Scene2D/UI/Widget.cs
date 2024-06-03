@@ -43,12 +43,15 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class Widget : Actor, ILayout
 {
-    private bool _layoutEnabled = true;
-
     /// <summary>
     /// </summary>
     public bool NeedsLayout { get; set; } = true;
 
+    private bool _layoutEnabled = true;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Computes and caches any information needed for drawing and, if this actor
     /// has children, positions and sizes each child, calls <see cref="ILayout.Invalidate"/>
@@ -72,7 +75,7 @@ public class Widget : Actor, ILayout
     /// </summary>
     public virtual void Validate()
     {
-        if ( !LayoutEnabled )
+        if ( !EnableLayout )
         {
             return;
         }
@@ -127,7 +130,7 @@ public class Widget : Actor, ILayout
     /// </summary>
     public virtual void InvalidateHierarchy()
     {
-        if ( !LayoutEnabled )
+        if ( !EnableLayout )
         {
             return;
         }
@@ -157,9 +160,6 @@ public class Widget : Actor, ILayout
         Validate();
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
     /// <summary>
     /// If true, this actor will be sized to the parent in <see cref="ILayout.Validate"/>. If the
     /// parent is the stage, the actor will be sized to the stage. This method is for convenience
@@ -172,7 +172,7 @@ public class Widget : Actor, ILayout
     /// When false, <see cref="ILayout.Validate"/> will not cause a layout to occur. This can be useful
     /// when an actor will be manipulated externally, such as with actions. Default is true.
     /// </summary>
-    public bool LayoutEnabled
+    public bool EnableLayout
     {
         get => _layoutEnabled;
         set

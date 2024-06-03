@@ -62,7 +62,7 @@ public class WidgetGroup : Group, ILayout
     // Returns true if the widget's layout has been invalidated.
     public bool NeedsLayout { get; private set; } = true;
 
-    public bool LayoutEnabled { get; set; } = true;
+    public bool EnableLayout { get; set; } = true;
 
     public bool FillParent { get; set; }
 
@@ -87,7 +87,7 @@ public class WidgetGroup : Group, ILayout
     /// <inheritdoc/>
     public virtual void Validate()
     {
-        if ( !LayoutEnabled )
+        if ( !EnableLayout )
         {
             return;
         }
@@ -175,7 +175,7 @@ public class WidgetGroup : Group, ILayout
 
     public void SetLayoutEnabled( bool enabled )
     {
-        LayoutEnabled = enabled;
+        EnableLayout = enabled;
         SetLayoutEnabled( this, enabled );
     }
 
@@ -189,7 +189,7 @@ public class WidgetGroup : Group, ILayout
 
             if ( actor is ILayout layout )
             {
-                layout.LayoutEnabled = enabled;
+                layout.EnableLayout = enabled;
             }
             else if ( actor is Group group )
             {

@@ -247,7 +247,7 @@ GRAPHICS
     - DONE - IP   - Cubemap
     - DONE - IP   - FPSLogger
     - DONE - IP   - GLTexture
-    - IP   - IP   - GStructs
+    - DONE - DONE - GStructs
     - DONE - IP   - ICubemapData
     - DONE - DONE - ICursor
     - DONE - DONE - ITextureArrayData
@@ -703,8 +703,8 @@ SCENES/SCENE2D/UTILS
     - DONE - IP   - ScissorStack
     - DONE - IP   - Selection
     - DONE - IP   - SpriteDrawable
-    - IP   - IP   - TextureRegionDrawable
-    - IP   - IP   - TiledDrawable
+    - DONE - DONE - TextureRegionDrawable
+    - DONE - IP   - TiledDrawable
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

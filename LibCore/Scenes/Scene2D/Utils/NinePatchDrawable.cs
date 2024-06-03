@@ -88,7 +88,7 @@ public class NinePatchDrawable : BaseDrawable, ITransformDrawable
     /// <param name="origin"></param>
     /// <param name="scale"></param>
     /// <param name="rotation"></param>
-    public void Draw( IBatch batch, Rectangle region, Point2D origin, Point2D scale, float rotation )
+    public void Draw( IBatch batch, GRect region, Point2D origin, Point2D scale, float rotation )
     {
         Patch?.Draw( batch,
                      region.X,

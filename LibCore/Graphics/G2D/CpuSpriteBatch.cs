@@ -196,7 +196,7 @@ public class CpuSpriteBatch : SpriteBatch
 
     /// <inheritdoc/>
     public override void Draw( Texture texture,
-                               Rectangle region,
+                               GRect region,
                                Point2D origin,
                                Point2D scale,
                                float rotation,
@@ -238,7 +238,7 @@ public class CpuSpriteBatch : SpriteBatch
 
     /// <inheritdoc/>
     public override void Draw( Texture texture,
-                               Rectangle region,
+                               GRect region,
                                Rectangle src,
                                bool flipX,
                                bool flipY )
@@ -298,7 +298,7 @@ public class CpuSpriteBatch : SpriteBatch
 
     /// <inheritdoc/>
     public override void Draw( Texture texture,
-                               Rectangle region,
+                               GRect region,
                                float u,
                                float v,
                                float u2,
@@ -398,7 +398,7 @@ public class CpuSpriteBatch : SpriteBatch
 
     /// <inheritdoc/>
     public override void Draw( TextureRegion textureRegion,
-                               Rectangle region,
+                               GRect region,
                                Point2D origin,
                                Point2D scale,
                                float rotation )
@@ -415,7 +415,7 @@ public class CpuSpriteBatch : SpriteBatch
 
     /// <inheritdoc/>
     public override void Draw( TextureRegion textureRegion,
-                               Rectangle region,
+                               GRect region,
                                Point2D origin,
                                Point2D scale,
                                float rotation,

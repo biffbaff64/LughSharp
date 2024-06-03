@@ -427,7 +427,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     }
 
     public void Draw( Texture texture,
-                      Rectangle region,
+                      GRect region,
                       Point2D origin,
                       Point2D scale,
                       float rotation,
@@ -578,7 +578,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     }
 
     public void Draw( Texture texture,
-                      Rectangle region,
+                      GRect region,
                       Rectangle src,
                       bool flipX,
                       bool flipY )
@@ -707,7 +707,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         _vertices[ _vertexIndex++ ] = v;
     }
 
-    public void Draw( Texture texture, Rectangle region, float u, float v, float u2, float v2 )
+    public void Draw( Texture texture, GRect region, float u, float v, float u2, float v2 )
     {
         if ( !IsDrawing )
         {
@@ -955,7 +955,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     }
 
     public void Draw( TextureRegion textureRegion,
-                      Rectangle region,
+                      GRect region,
                       Point2D origin,
                       Point2D scale,
                       float rotation )
@@ -1093,7 +1093,7 @@ public class PolygonSpriteBatch : IPolygonBatch
     }
 
     public void Draw( TextureRegion textureRegion,
-                      Rectangle region,
+                      GRect region,
                       Point2D origin,
                       Point2D scale,
                       float rotation,

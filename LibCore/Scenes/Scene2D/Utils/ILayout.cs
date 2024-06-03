@@ -39,6 +39,8 @@ public interface ILayout
     float PrefWidth  { get; }
     float PrefHeight { get; }
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// If true, this actor will be sized to the parent in <see cref="Validate()"/>. If the
     /// parent is the stage, the actor will be sized to the stage. This method is for convenience
@@ -51,7 +53,7 @@ public interface ILayout
     /// When false, <see cref="Validate()"/> will not cause a layout to occur. This can be useful
     /// when an actor will be manipulated externally, such as with actions. Default is true.
     /// </summary>
-    bool LayoutEnabled { get; set; }
+    bool EnableLayout { get; set; }
 
     /// <summary>
     /// Computes and caches any information needed for drawing and, if this actor

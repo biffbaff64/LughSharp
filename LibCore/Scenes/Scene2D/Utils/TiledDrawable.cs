@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Drawing;
 using Color = LughSharp.LibCore.Graphics.Color;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
@@ -40,11 +39,17 @@ public class TiledDrawable : TextureRegionDrawable
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Creates a new TiledDrawable, using the given <see cref="TextureRegion"/>
+    /// </summary>
     public TiledDrawable( TextureRegion region )
         : base( region )
     {
     }
 
+    /// <summary>
+    /// Creates a new TiledDrawable, using the given <see cref="TextureRegionDrawable"/>
+    /// </summary>
     public TiledDrawable( TextureRegionDrawable drawable )
         : base( drawable )
     {
@@ -96,17 +101,18 @@ public class TiledDrawable : TextureRegionDrawable
 
                 y = startY;
 
+                var rect = new GRect
+                {
+                    X      = ( int ) x,
+                    Y      = ( int ) y,
+                    Width  = ( int ) remainingX,
+                    Height = ( int ) regionHeight
+                };
+
                 for ( var ii = 0; ii < fullY; ii++ )
                 {
-                    batch.Draw( texture,
-                                new Rectangle( ( int ) x,
-                                               ( int ) y,
-                                               ( int ) remainingX,
-                                               ( int ) regionHeight ),
-                                u,
-                                v2,
-                                u2,
-                                v );
+                    batch.Draw( texture, rect, u, v2, u2, v );
+
                     y += regionHeight;
                 }
 
@@ -114,15 +120,16 @@ public class TiledDrawable : TextureRegionDrawable
                 if ( remainingY > 0 )
                 {
                     v = v2 - ( remainingY / ( texture.Height * Scale ) );
-                    batch.Draw( texture,
-                                new Rectangle( ( int ) x,
-                                               ( int ) y,
-                                               ( int ) remainingX,
-                                               ( int ) remainingY ),
-                                u,
-                                v2,
-                                u2,
-                                v );
+
+                    rect = new GRect
+                    {
+                        X      = ( int ) x,
+                        Y      = ( int ) y,
+                        Width  = ( int ) remainingX,
+                        Height = ( int ) remainingY
+                    };
+
+                    batch.Draw( texture, rect, u, v2, u2, v );
                 }
             }
 
@@ -134,17 +141,18 @@ public class TiledDrawable : TextureRegionDrawable
 
                 x = startX;
 
+                var rect = new GRect
+                {
+                    X      = ( int ) x,
+                    Y      = ( int ) y,
+                    Width  = ( int ) regionWidth,
+                    Height = ( int ) remainingY
+                };
+
                 for ( var i = 0; i < fullX; i++ )
                 {
-                    batch.Draw( texture,
-                                new Rectangle( ( int ) x,
-                                               ( int ) y,
-                                               ( int ) regionWidth,
-                                               ( int ) remainingY ),
-                                u,
-                                v2,
-                                u2,
-                                v );
+                    batch.Draw( texture, rect, u, v2, u2, v );
+
                     x += regionWidth;
                 }
             }
@@ -154,16 +162,7 @@ public class TiledDrawable : TextureRegionDrawable
     }
 
     /// <inheritdoc/>
-    public override void Draw( IBatch batch,
-                               float x,
-                               float y,
-                               float originX,
-                               float originY,
-                               float width,
-                               float height,
-                               float scaleX,
-                               float scaleY,
-                               float rotation )
+    public override void Draw( IBatch batch, GRect region, Point2D origin, Point2D scale, float rotation )
     {
         throw new NotSupportedException();
     }

@@ -37,21 +37,36 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class ImageButton : Button
 {
+    public     Image            Image { get; }
+    public new ImageButtonStyle Style { get; private set; } = null!;
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Creates a new ImageButton using the supplied <see cref="Skin"/>. The
+    /// skin should contain an <see cref="ImageButtonStyle"/>.
+    /// </summary>
+    /// <param name="skin"></param>
     public ImageButton( Skin skin )
         : this( skin.Get< ImageButtonStyle >() )
     {
         Skin = skin;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="skin"></param>
+    /// <param name="styleName"></param>
     public ImageButton( Skin skin, string styleName )
         : this( skin.Get< ImageButtonStyle >( styleName ) )
     {
         Skin = skin;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="style"></param>
     public ImageButton( ImageButtonStyle style )
         : base( style )
     {
@@ -64,29 +79,42 @@ public class ImageButton : Button
         ConstructorHelper();
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="imageUp"></param>
     public ImageButton( IDrawable? imageUp )
         : this( new ImageButtonStyle( null, null, null, imageUp, null, null ) )
     {
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="imageUp"></param>
+    /// <param name="imageDown"></param>
     public ImageButton( IDrawable? imageUp, IDrawable? imageDown )
         : this( new ImageButtonStyle( null, null, null, imageUp, imageDown, null ) )
     {
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="imageUp"></param>
+    /// <param name="imageDown"></param>
+    /// <param name="imageChecked"></param>
     public ImageButton( IDrawable? imageUp, IDrawable? imageDown, IDrawable? imageChecked )
         : this( new ImageButtonStyle( null, null, null, imageUp, imageDown, imageChecked ) )
     {
     }
-
-    public     Image            Image { get; }
-    public new ImageButtonStyle Style { get; private set; } = null!;
 
     private void ConstructorHelper()
     {
         SetSize( GetPrefWidth(), GetPrefHeight() );
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="style"></param>
+    /// <exception cref="ArgumentException"></exception>
     public void SetStyle( ButtonStyle style )
     {
         Style      = style as ImageButtonStyle ?? throw new ArgumentException( "style must be an ImageButtonStyle." );
@@ -161,15 +189,18 @@ public class ImageButton : Button
         Image.SetDrawable( GetImageDrawable() );
     }
 
+    /// <summary>
+    /// Draws the group and its children. The default implementation calls
+    /// <see cref="Button.ApplyTransform(IBatch, Matrix4)"/> if needed, then
+    /// <see cref="Button.DrawChildren(IBatch, float)"/>, followed by
+    /// <see cref="Button.ResetTransform(IBatch)"/> if needed. 
+    /// </summary>
+    /// <param name="batch"> The <see cref="IBatch"/> </param>
+    /// <param name="parentAlpha"></param>
     public override void Draw( IBatch batch, float parentAlpha )
     {
         UpdateImage();
         base.Draw( batch, parentAlpha );
-    }
-
-    public Cell? GetImageCell()
-    {
-        return GetCell( Image );
     }
 
     /// <inheritdoc/>
@@ -188,7 +219,7 @@ public class ImageButton : Button
             className = className.Substring( dotIndex + 1 );
         }
 
-        return ( className.IndexOf( '$' ) != -1 ? "ImageButton " : "" ) + className + ": " + Image.GetDrawable();
+        return ( className.IndexOf( '$' ) != -1 ? "ImageButton " : "" ) + className + ": " + Image.Drawable;
     }
 
     // ------------------------------------------------------------------------
@@ -200,18 +231,25 @@ public class ImageButton : Button
     [PublicAPI]
     public class ImageButtonStyle : ButtonStyle
     {
+        public readonly IDrawable? ImageUp;
+        public readonly IDrawable? ImageDown;
         public readonly IDrawable? ImageChecked;
         public readonly IDrawable? ImageCheckedDown;
         public readonly IDrawable? ImageCheckedOver;
         public readonly IDrawable? ImageDisabled;
-        public readonly IDrawable? ImageDown;
         public readonly IDrawable? ImageOver;
-        public readonly IDrawable? ImageUp;
 
+        /// <summary>
+        /// Creates a new, unitialised, ImageButtonStyle instance.
+        /// </summary>
         public ImageButtonStyle()
         {
         }
 
+        /// <summary>
+        /// Creates a new ImageButtonStyle instance, using the supplied <see cref="IDrawable"/>
+        /// images for <see cref="ImageUp"/>, <see cref="ImageDown"/> and <see cref="ImageChecked"/>.
+        /// </summary>
         public ImageButtonStyle( IDrawable? up,
                                  IDrawable? down,
                                  IDrawable? chcked,
@@ -225,6 +263,9 @@ public class ImageButton : Button
             ImageChecked = imageChecked;
         }
 
+        /// <summary>
+        /// Creates a new ImageButtonStyle instance, using the given <see cref="ImageButtonStyle"/> 
+        /// </summary>
         public ImageButtonStyle( ImageButtonStyle style )
             : base( style )
         {
@@ -238,6 +279,10 @@ public class ImageButton : Button
             ImageCheckedOver = style.ImageCheckedOver;
         }
 
+        /// <summary>
+        /// Creates a new ImageButtonStyle instance, using the supplied
+        /// <see cref="ButtonStyle"/>.
+        /// </summary>
         public ImageButtonStyle( ButtonStyle style )
             : base( style )
         {
