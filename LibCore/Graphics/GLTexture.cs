@@ -35,21 +35,6 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public abstract class GLTexture : IDisposable
 {
-    private static float _maxAnisotropicFilterLevel = 0;
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    protected GLTexture( int glTarget ) : this( glTarget, ( int ) Gdx.GL.glGenTexture() )
-    {
-    }
-
-    protected GLTexture( int glTarget, int glTextureHandle )
-    {
-        GLTarget        = glTarget;
-        GLTextureHandle = glTextureHandle;
-    }
-
     public virtual int Width  { get; }
     public virtual int Height { get; }
     public virtual int Depth  { get; }
@@ -57,6 +42,12 @@ public abstract class GLTexture : IDisposable
     public int   GLTextureHandle        { get; set; }
     public int   GLTarget               { get; }
     public float AnisotropicFilterLevel { get; private set; } = 1.0f;
+
+    // ------------------------------------------------------------------------
+
+    private static float _maxAnisotropicFilterLevel = 0;
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Returns the <see cref="TextureFilter"/> used for minification.
@@ -81,15 +72,18 @@ public abstract class GLTexture : IDisposable
     public virtual bool IsManaged => false;
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-    /// <inheritdoc cref="IDisposable.Dispose"/>
-    public virtual void Dispose()
+    protected GLTexture( int glTarget )
+        : this( glTarget, ( int ) Gdx.GL.glGenTexture() )
     {
-        Dispose( true );
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
+    protected GLTexture( int glTarget, int glTextureHandle )
+    {
+        GLTarget        = glTarget;
+        GLTextureHandle = glTextureHandle;
+    }
 
     /// <summary>
     /// Used internally to reload after context loss. Creates a new GL handle then
@@ -208,7 +202,7 @@ public abstract class GLTexture : IDisposable
     /// The desired level of filtering. The maximum level supported by
     /// the device up to this value will be used.
     /// </param>
-    /// <param name="force"></param>
+    /// <param name="force"> True to force setting of the level. </param>
     /// <returns>
     /// The actual level set, which may be lower than the provided value
     /// due to device limitations.
@@ -277,10 +271,6 @@ public abstract class GLTexture : IDisposable
 
         if ( Gdx.Graphics.SupportsExtension( "GL_EXT_texture_filter_anisotropic" ) )
         {
-//            FloatBuffer buffer = BufferUtils.NewFloatBuffer( 16 );
-//            buffer.SetPosition( 0 );
-//            buffer.SetLimit( buffer.Capacity );
-
             var buffer = new float[ 16 ];
 
             Gdx.GL.glGetFloatv( IGL.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer );
@@ -382,6 +372,14 @@ public abstract class GLTexture : IDisposable
         {
             pixmap.Dispose();
         }
+    }
+
+    // ------------------------------------------------------------------------
+
+    /// <inheritdoc/>
+    public virtual void Dispose()
+    {
+        Dispose( true );
     }
 
     protected virtual void Dispose( bool disposing )

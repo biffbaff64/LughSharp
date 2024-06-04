@@ -33,6 +33,18 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 public class OutputChannels
 {
     /// <summary>
+    /// Enumeration of Audio output channels.
+    /// </summary>
+    [PublicAPI]
+    public enum OutputChannelsEnum
+    {
+        BothChannels    = 0,
+        LeftChannel     = 1,
+        RightChannel    = 2,
+        DownmixChannels = 3
+    }
+
+    /// <summary>
     /// Flag to indicate output should include both channels.
     /// </summary>
     public const int BOTH_CHANNELS = 0;
@@ -59,6 +71,9 @@ public class OutputChannels
 
     private readonly int _outputChannels;
 
+    // ------------------------------------------------------------------------
+    
+    // private constructor for use when declaring new static instances.
     private OutputChannels( int channels )
     {
         _outputChannels = channels;
@@ -105,10 +120,11 @@ public class OutputChannels
             ( int ) OutputChannelsEnum.RightChannel    => Right,
             ( int ) OutputChannelsEnum.BothChannels    => Both,
             ( int ) OutputChannelsEnum.DownmixChannels => DownMix,
-            _                                          => throw new ArgumentException( "Invalid channel code: " + code )
+            var _                                      => throw new ArgumentException( "Invalid channel code: " + code )
         };
     }
 
+    /// <inheritdoc/>
     public override bool Equals( object? obj )
     {
         var equals = false;
@@ -121,6 +137,7 @@ public class OutputChannels
         return equals;
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         return _outputChannels;

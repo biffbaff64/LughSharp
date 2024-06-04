@@ -242,8 +242,8 @@ public static class PropertiesUtils
                                 {
                                     keyLength = keyLength switch
                                     {
-                                        -1 => offset,
-                                        _  => keyLength
+                                        -1    => offset,
+                                        var _ => keyLength
                                     };
 
                                     var temp = new string( buf, 0, offset );
@@ -264,7 +264,7 @@ public static class PropertiesUtils
                             keyLength = mode switch
                             {
                                 KEY_DONE => offset,
-                                _        => keyLength
+                                var _    => keyLength
                             };
 
                             mode = SLASH;
@@ -290,7 +290,7 @@ public static class PropertiesUtils
                         mode = mode switch
                         {
                             CONTINUE => IGNORE,
-                            _        => mode
+                            var _    => mode
                         };
 
                         if ( ( offset == 0 ) || ( offset == keyLength ) || ( mode == IGNORE ) )
@@ -310,7 +310,7 @@ public static class PropertiesUtils
                     mode = mode switch
                     {
                         IGNORE or CONTINUE => NONE,
-                        _                  => mode
+                        var _              => mode
                     };
 
                     break;
@@ -336,7 +336,7 @@ public static class PropertiesUtils
         keyLength = keyLength switch
         {
             -1 when offset > 0 => offset,
-            _                  => keyLength
+            var _              => keyLength
         };
 
         switch ( keyLength )

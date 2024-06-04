@@ -47,11 +47,10 @@ public static class PixmapFormat
             Pixmap.Format.RGB888         => Gdx2DPixmap.GDX_2D_FORMAT_RGB888,
             Pixmap.Format.RGBA8888       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888,
 
-            _ => throw new GdxRuntimeException( $"Unknown Format: {format}" )
+            var _ => throw new GdxRuntimeException( $"Unknown Format: {format}" )
         };
     }
-
-
+    
     /// <summary>
     /// </summary>
     /// <param name="format"></param>
@@ -68,7 +67,7 @@ public static class PixmapFormat
             Gdx2DPixmap.GDX_2D_FORMAT_RGB888          => Pixmap.Format.RGB888,
             Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888        => Pixmap.Format.RGBA8888,
 
-            _ => throw new GdxRuntimeException( "Unknown Gdx2DPixmap Format: " + format )
+            var _ => throw new GdxRuntimeException( "Unknown Gdx2DPixmap Format: " + format )
         };
     }
 

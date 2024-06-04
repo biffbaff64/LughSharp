@@ -163,7 +163,7 @@ public interface IInput
     bool IsCatchMenuKey();
 
     void SetCursorPosition( int x, int y );
-    void SetCatchKey( int keycode, bool catchKey );
+    void SetCatchKey( int keycode, bool addKey );
     void SetCatchBackKey( bool catchBack );
     void SetCatchMenuKey( bool catchMenu );
     void SetCursorCaught( bool caught );
@@ -581,7 +581,7 @@ public interface IInput
                 SCROLL_LOCK        => "Scroll Lock",
                 PAUSE              => "Pause",
                 PRINT_SCREEN       => "Print",
-                _                  => null
+                var _              => null
             };
 
             return str;

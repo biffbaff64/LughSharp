@@ -86,14 +86,14 @@ public class SplitPane : WidgetGroup
             {
                 null           => 0,
                 ILayout widget => widget.PrefWidth,
-                _              => _firstWidget.Width
+                var _          => _firstWidget.Width
             };
 
             var second = _secondWidget switch
             {
                 null           => 0,
                 ILayout layout => layout.PrefWidth,
-                _              => _secondWidget.Width
+                var _          => _secondWidget.Width
             };
 
             if ( _vertical )
@@ -113,14 +113,14 @@ public class SplitPane : WidgetGroup
             {
                 null           => 0,
                 ILayout widget => widget.PrefHeight,
-                _              => _firstWidget.Height
+                var _          => _firstWidget.Height
             };
 
             var second = _secondWidget switch
             {
                 null           => 0,
                 ILayout layout => layout.PrefHeight,
-                _              => _secondWidget.Height
+                var _          => _secondWidget.Height
             };
 
             if ( !_vertical )

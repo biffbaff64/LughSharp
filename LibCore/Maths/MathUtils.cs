@@ -102,9 +102,9 @@ public class MathUtils
         {
             return y switch
             {
-                > 0f => PI / 2,
-                0f   => 0f,
-                _    => -PI / 2
+                > 0f  => PI / 2,
+                0f    => 0f,
+                var _ => -PI / 2
             };
         }
 

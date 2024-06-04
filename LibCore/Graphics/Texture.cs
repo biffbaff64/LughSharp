@@ -54,10 +54,23 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class Texture : GLTexture
 {
+    public AssetManager? AssetManager { get; set; } = null;
+    public ITextureData? TextureData  { get; set; } = null;
+
+    // ------------------------------------------------------------------------
+
+    public override int  Width     => TextureData?.Width ?? 0;
+    public override int  Height    => TextureData?.Height ?? 0;
+    public override int  Depth     => 0;
+    public override bool IsManaged => ( TextureData != null ) && TextureData.IsManaged();
+
+    public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
+
     // ------------------------------------------------------------------------
 
     private readonly Dictionary< IApplication, List< Texture >? > _managedTextures = new();
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -103,9 +116,9 @@ public class Texture : GLTexture
     /// <summary>
     /// Creates a new Texture with the specified width, height, and Pixmap format.
     /// </summary>
-    /// <param name="width">The width in pixels.</param>
-    /// <param name="height">The Height in pixels.</param>
-    /// <param name="format">The pixmap <see cref="Pixmap.Format"/></param>
+    /// <param name="width"> The width in pixels. </param>
+    /// <param name="height"> The Height in pixels. </param>
+    /// <param name="format"> The pixmap <see cref="Pixmap.Format"/> </param>
     public Texture( int width, int height, Pixmap.Format format )
         : this( new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ) )
     {
@@ -120,8 +133,8 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    /// Default constructor. Creates a new Texture from the supplied
-    /// GLTarget, GLTextureHandle and TextureData.
+    /// Default constructor. Creates a new Texture from the supplied GLTarget,
+    /// GLTextureHandle and TextureData.
     /// </summary>
     /// <param name="glTarget"></param>
     /// <param name="glTextureHandle"></param>
@@ -138,21 +151,6 @@ public class Texture : GLTexture
             AddManagedTexture( Gdx.App, this );
         }
     }
-
-    public AssetManager? AssetManager { get; set; } = null;
-    public ITextureData? TextureData  { get; set; } = null;
-
-    // ------------------------------------------------------------------------
-
-    public override int  Width     => TextureData?.Width ?? 0;
-    public override int  Height    => TextureData?.Height ?? 0;
-    public override int  Depth     => 0;
-    public override bool IsManaged => ( TextureData != null ) && TextureData.IsManaged();
-
-    public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
 
     public void Load( ITextureData? data )
     {
@@ -201,9 +199,11 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    /// Draws the given <see cref="Pixmap"/> to the texture at position x, y.
-    /// No clipping is performed so you have to make sure that you draw only inside
-    /// the texture region. Note that this will only draw to mipmap level 0!
+    /// Draws the given <see cref="Pixmap"/> to the texture at position x, y. No clipping
+    /// is performed so you have to make sure that you draw only inside the texture region.
+    /// <para>
+    /// Note that this will only draw to mipmap level 0!
+    /// </para>
     /// </summary>
     /// <param name="pixmap"> The Pixmap </param>
     /// <param name="x"> The x coordinate in pixels </param>

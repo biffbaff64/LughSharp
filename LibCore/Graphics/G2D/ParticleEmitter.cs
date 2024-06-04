@@ -578,7 +578,7 @@ public class ParticleEmitter
             SpriteModes.Single   => Sprites.First(),
             SpriteModes.Animated => Sprites.First(),
             SpriteModes.Random   => Sprites.Random(),
-            _                    => null!
+            var _                => null!
         };
 
         if ( sprite == null )
@@ -782,7 +782,7 @@ public class ParticleEmitter
                         // Note the minus sign...
                         SpawnEllipseSide.Top    => -MathUtils.Random( 179f ),
                         SpawnEllipseSide.Bottom => MathUtils.Random( 179f ),
-                        _                       => MathUtils.Random( 360f )
+                        var _                   => MathUtils.Random( 360f )
                     };
 
                     var cosDeg = MathUtils.CosDeg( spawnAngle );

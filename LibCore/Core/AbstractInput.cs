@@ -34,14 +34,30 @@ public abstract class AbstractInput : IInput
     /// <inheritdoc/>
     public IInputProcessor? InputProcessor { get; set; }
 
-    protected bool[] PressedKeys     { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
+    /// <summary>
+    /// A List of keys that are currently pressed.
+    /// </summary>
+    protected bool[] PressedKeys { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
+
+    /// <summary>
+    /// A list of keys that have JUST been pressed.
+    /// </summary>
     protected bool[] JustPressedKeys { get; set; } = new bool[ IInput.Keys.MAX_KEYCODE + 1 ];
-    protected bool   KeyJustPressed  { get; set; } = false;
-    protected int    PressedKeyCount { get; set; } = 0;
+
+    /// <summary>
+    /// True if any key has just been pressed.
+    /// </summary>
+    protected bool KeyJustPressed { get; set; } = false;
+
+    /// <summary>
+    /// The number of currently pressed keys.
+    /// </summary>
+    protected int PressedKeyCount { get; set; } = 0;
+
+    // ------------------------------------------------------------------------
 
     private readonly List< int > _keysToCatch = new();
 
-    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -79,41 +95,66 @@ public abstract class AbstractInput : IInput
     //TODO: What are 'catch keys' in LibGDX???
     //TODO: Are these just for mobile devices???
     //TODO: Do I need to keep these???
-    public virtual void SetCatchKey( int keycode, bool catchKey )
+    
+    /// <summary>
+    /// Either <b>adds</b> or <b>removes</b> the specified keycode to the
+    /// list of 'Catch Keys'.
+    /// </summary>
+    /// <param name="keycode"> The <see cref="IInput.Keys"/> code. </param>
+    /// <param name="addKey"> True to add, false to remove. </param>
+    public virtual void SetCatchKey( int keycode, bool addKey )
     {
-        if ( !catchKey )
-        {
-            _keysToCatch.Remove( keycode );
-        }
-        else
+        if ( addKey )
         {
             _keysToCatch.Add( keycode );
         }
+        else
+        {
+            _keysToCatch.Remove( keycode );
+        }
     }
 
+    /// <summary>
+    /// Returns <b>true</b> if the list of Catch Keys contains the given key code.
+    /// </summary>
+    /// <param name="keycode"> The <see cref="IInput.Keys"/> code. </param>
     public virtual bool IsCatchKey( int keycode )
     {
         return _keysToCatch.Contains( keycode );
     }
 
+    /// <summary>
+    /// Returns <b>true</b> if the list of Catch Keys contains <see cref="IInput.Keys.BACK"/>
+    /// </summary>
     public virtual bool IsCatchBackKey()
     {
         return _keysToCatch.Contains( IInput.Keys.BACK );
     }
 
-    public virtual void SetCatchBackKey( bool catchBack )
+    /// <summary>
+    /// Either <b>adds</b> or <b>removes</b> the <see cref="IInput.Keys.BACK"/> key.
+    /// </summary>
+    /// <param name="addKey"> True to add, false to remove. </param>
+    public virtual void SetCatchBackKey( bool addKey )
     {
-        SetCatchKey( IInput.Keys.BACK, catchBack );
+        SetCatchKey( IInput.Keys.BACK, addKey );
     }
 
+    /// <summary>
+    /// Returns <b>true</b> if the list of Catch Keys contains <see cref="IInput.Keys.MENU"/>
+    /// </summary>
     public virtual bool IsCatchMenuKey()
     {
         return _keysToCatch.Contains( IInput.Keys.MENU );
     }
 
-    public virtual void SetCatchMenuKey( bool catchMenu )
+    /// <summary>
+    /// Either <b>adds</b> or <b>removes</b> the <see cref="IInput.Keys.MENU"/> key.
+    /// </summary>
+    /// <param name="addKey"> True to add, false to remove. </param>
+    public virtual void SetCatchMenuKey( bool addKey )
     {
-        SetCatchKey( IInput.Keys.MENU, catchMenu );
+        SetCatchKey( IInput.Keys.MENU, addKey );
     }
 
     #endregion catch keys
@@ -167,5 +208,5 @@ public abstract class AbstractInput : IInput
 
     #endregion abstract methods
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 }

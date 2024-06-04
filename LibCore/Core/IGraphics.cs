@@ -28,6 +28,25 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public interface IGraphics
 {
+    #region properties
+
+    GLVersion              GLVersion    { get; set; }
+    GLVersion.GLType       GraphicsType { get; }
+    BufferFormatDescriptor BufferFormat { get; set; }
+    IGLBindings            GL           { get; set; }
+
+    float DeltaTime        { get; set; }
+    int   Width            { get; }
+    int   Height           { get; }
+    int   BackBufferWidth  { get; }
+    int   BackBufferHeight { get; }
+    bool  IsFullscreen     { get; }
+
+    #endregion properties
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     #region nested classes
 
     /// <summary>
@@ -37,6 +56,11 @@ public interface IGraphics
     [PublicAPI]
     public class DisplayMode
     {
+        public int Width        { get; set; }
+        public int Height       { get; set; }
+        public int RefreshRate  { get; set; }
+        public int BitsPerPixel { get; set; }
+
         /// <summary>
         /// Creates a new DisplayMode object, using the specified width, height,
         /// refresh rate and bits per pixel values.
@@ -53,39 +77,11 @@ public interface IGraphics
             BitsPerPixel = bitsPerPixel;
         }
 
-        public int Width        { get; set; }
-        public int Height       { get; set; }
-        public int RefreshRate  { get; set; }
-        public int BitsPerPixel { get; set; }
-
         /// <inheritdoc/>
         public override string ToString()
         {
             return $"{Width}x{Height}, bpp: {BitsPerPixel}, hz: {RefreshRate}";
         }
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    /// <summary>
-    /// Describes a monitor, with X, Y, and Name properties.
-    /// </summary>
-
-    //TODO: This may no longer be needed when GL is properly implemented
-    [PublicAPI]
-    public class GdxMonitor
-    {
-        public GdxMonitor( int x, int y, string name )
-        {
-            VirtualX = x;
-            VirtualY = y;
-            Name     = name;
-        }
-
-        public int     VirtualX { get; set; }
-        public int     VirtualY { get; set; }
-        public string? Name     { get; set; }
     }
 
     // ------------------------------------------------------------------------
@@ -124,33 +120,55 @@ public interface IGraphics
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    #region properties
+    #region To Be Removed
 
-    GLVersion              GLVersion        { get; set; }
-    GLVersion.GLType       GraphicsType     { get; }
-    BufferFormatDescriptor BufferFormat     { get; set; }
-    IGLBindings            GL               { get; set; }
-    
-    float                  DeltaTime        { get; set; }
-    int                    Width            { get; }
-    int                    Height           { get; }
-    int                    BackBufferWidth  { get; }
-    int                    BackBufferHeight { get; }
-    bool                   IsFullscreen     { get; }
-    
-    #endregion properties
+    /// <summary>
+    /// Describes a monitor, with X, Y, and Name properties.
+    /// </summary>
+
+    //TODO: This may no longer be needed when GL is properly implemented
+    [PublicAPI, Obsolete]
+    public class GdxMonitor
+    {
+        public GdxMonitor( int x, int y, string name )
+        {
+            VirtualX = x;
+            VirtualY = y;
+            Name     = name;
+        }
+
+        public int     VirtualX { get; set; }
+        public int     VirtualY { get; set; }
+        public string? Name     { get; set; }
+    }
+
+    #endregion To Be Removed
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     #region methods
 
-    bool IsGL30Available();
-
     /// <summary>
     /// Returns the amount of pixels per logical pixel (point).
     /// </summary>
     float GetBackBufferScale();
+
+    /// <summary>
+    /// Returns the time span between the current frame and the last frame in seconds, without smoothing.
+    /// </summary>
+    float GetRawDeltaTime();
+
+    /// <summary>
+    /// This is a scaling factor for the Density Independent Pixel
+    /// unit, following the convention where one DIP is one pixel on
+    /// an approximately 160 dpi screen. Thus on a 160dpi screen this
+    /// density value will be 1; on a 120 dpi screen it would be .75; etc.
+    /// </summary>
+    /// <returns>the Density Independent Pixel factor of the display.</returns>
+    float GetDensity();
+
+    bool IsGL30Available();
 
     int GetSafeInsetLeft();
 
@@ -164,31 +182,9 @@ public interface IGraphics
 
     int GetFramesPerSecond();
 
-    /// <summary>
-    /// Returns the time span between the current frame and the last frame in seconds, without smoothing.
-    /// </summary>
-    float GetRawDeltaTime();
-
     (float X, float Y) GetPpcXY();
 
     (float X, float Y) GetPpiXY();
-
-    float GetPpiX();
-
-    float GetPpiY();
-
-    float GetPpcX();
-
-    float GetPpcY();
-
-    /// <summary>
-    /// This is a scaling factor for the Density Independent Pixel
-    /// unit, following the convention where one DIP is one pixel on
-    /// an approximately 160 dpi screen. Thus on a 160dpi screen this
-    /// density value will be 1; on a 120 dpi screen it would be .75; etc.
-    /// </summary>
-    /// <returns>the Density Independent Pixel factor of the display.</returns>
-    float GetDensity();
 
     bool SupportsDisplayModeChange();
 

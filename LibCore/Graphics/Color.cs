@@ -26,9 +26,10 @@
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
-/// A color class, holding the r, g, b and alpha component as floats in
-/// the range [0,1].
+/// A color class, holding the r, g, b and alpha component as floats in the range [0,1].
+/// <para>
 /// All methods perform clamping on the internal values after execution.
+/// </para>
 /// </summary>
 [PublicAPI]
 public sealed class Color
@@ -69,6 +70,16 @@ public sealed class Color
     public readonly static Color Maroon     = new( 0xb03060ff );
 
     // ------------------------------------------------------------------------
+
+    #region Colour Components
+
+    public float R { get; set; }    // Red
+    public float G { get; set; }    // Green
+    public float B { get; set; }    // Blue
+    public float A { get; set; }    // Alpha
+
+    #endregion Colour Components
+    
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -157,7 +168,7 @@ public sealed class Color
     /// Sets this color's component values through an integer representation.
     /// </summary>
     /// <param name="rgba"></param>
-    /// <returns>This color for chaining.</returns>
+    /// <returns> This color for chaining. </returns>
     public Color Set( int rgba )
     {
         var color = this;
@@ -188,7 +199,7 @@ public sealed class Color
     /// <summary>
     /// Multiplies the colour components by the supplied value.
     /// </summary>
-    /// <returns>This Color for chaining.</returns>
+    /// <returns> This Color for chaining. </returns>
     public Color Mul( float value )
     {
         R *= value;
@@ -203,10 +214,10 @@ public sealed class Color
     /// Multiplies each of this colors components by the corresponding
     /// supplied components.
     /// </summary>
-    /// <param name="r">Red component</param>
-    /// <param name="g">Green component</param>
-    /// <param name="b">Blue component</param>
-    /// <param name="a">Alpha component</param>
+    /// <param name="r"> Red component </param>
+    /// <param name="g"> Green component </param>
+    /// <param name="b"> Blue component </param>
+    /// <param name="a"> Alpha component </param>
     /// <returns>This Color for chaining.</returns>
     public Color Mul( float r, float g, float b, float a )
     {
@@ -223,7 +234,7 @@ public sealed class Color
     /// components of this color.
     /// </summary>
     /// <param name="color"> The Color to add. </param>
-    /// <returns>This Color for chaining.</returns>
+    /// <returns> This Color for chaining. </returns>
     public Color Add( Color color )
     {
         R += color.R;
@@ -235,8 +246,7 @@ public sealed class Color
     }
 
     /// <summary>
-    /// Adds the supplied Color components to the corresponding
-    /// components of this Color.
+    /// Adds the supplied Color components to the corresponding components of this Color.
     /// </summary>
     /// <returns> This Color for chaining. </returns>
     public Color Add( float r, float g, float b, float a )
@@ -254,7 +264,7 @@ public sealed class Color
     /// elements in this Color.
     /// </summary>
     /// <param name="color"> The color to subtract. </param>
-    /// <returns>This Color for chaining.</returns>
+    /// <returns> This Color for chaining. </returns>
     public Color Sub( Color color )
     {
         R -= color.R;
@@ -268,11 +278,11 @@ public sealed class Color
     /// <summary>
     /// Subtracts the supplied elements from the equivalent elements in this Color.
     /// </summary>
-    /// <param name="r">Red component</param>
-    /// <param name="g">Green component</param>
-    /// <param name="b">Blue component</param>
-    /// <param name="a">Alpha component</param>
-    /// <returns>This Color for chaining.</returns>
+    /// <param name="r"> Red component. </param>
+    /// <param name="g"> Green component. </param>
+    /// <param name="b"> Blue component. </param>
+    /// <param name="a"> Alpha component. </param>
+    /// <returns> This Color for chaining. </returns>
     public Color Sub( float r, float g, float b, float a )
     {
         R -= r;
@@ -286,7 +296,7 @@ public sealed class Color
     /// <summary>
     /// Clamps this Colors RGBA components to a valid range [0 - 1]
     /// </summary>
-    /// <returns>This Color for chaining.</returns>
+    /// <returns> This Color for chaining. </returns>
     private Color Clamp()
     {
         R = Math.Clamp( R, 0, 1 );
@@ -341,10 +351,10 @@ public sealed class Color
     /// 'interpolationCoefficient' which is in the range [0,1].
     /// The result is stored in this color.
     /// </summary>
-    /// <param name="r">Red component</param>
-    /// <param name="g">Green component</param>
-    /// <param name="b">Blue component</param>
-    /// <param name="a">Alpha component</param>
+    /// <param name="r"> Red component. </param>
+    /// <param name="g"> Green component. </param>
+    /// <param name="b"> Blue component. </param>
+    /// <param name="a"> Alpha component. </param>
     /// <param name="interpolationCoefficient"> This value must be in the range [0, 1] </param>
     /// <returns> This Color for chaining. </returns>
     public Color Lerp( float r, float g, float b, float a, float interpolationCoefficient )
@@ -376,6 +386,12 @@ public sealed class Color
         return Clamp();
     }
 
+    /// <summary>
+    /// Determines whether two <see cref="Color"/> objects are equal.
+    /// </summary>
+    /// <param name="c1">The first <see cref="Color"/> object to compare, or <see langword="null"/>.</param>
+    /// <param name="c2">The second object to compare, or <see langword="null"/>.</param>
+    /// <returns><see langword="true"/> if the two objects are equal; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==( Color? c1, object? c2 )
     {
         if ( c1 is null )
@@ -386,6 +402,12 @@ public sealed class Color
         return c1.Equals( c2 );
     }
 
+    /// <summary>
+    /// Determines whether two <see cref="Color"/> objects are not equal.
+    /// </summary>
+    /// <param name="c1"> The first <see cref="Color"/> object to compare, or null. </param>
+    /// <param name="c2"> The second object to compare, or null. </param>
+    /// <returns><b>true</b> if the two objects are not equal; otherwise, <b>false</b>.</returns>
     public static bool operator !=( Color? c1, object? c2 )
     {
         return !( c1 == c2 );
@@ -394,8 +416,8 @@ public sealed class Color
     /// <summary>
     /// Converts a 16-bit RGB565 integer value to a Color object.
     /// </summary>
-    /// <param name="color">The Color object to assign the converted values to.</param>
-    /// <param name="value">The 16-bit RGB565 integer value.</param>
+    /// <param name="color"> The Color object to assign the converted values to. </param>
+    /// <param name="value"> The 16-bit RGB565 integer value. </param>
     public static void RGB565ToColor( ref Color color, int value )
     {
         // Ensure the value is within the valid range for 16-bit RGB565
@@ -413,8 +435,8 @@ public sealed class Color
     /// <summary>
     /// Converts a 16-bit RGBA4444 integer value to a Color object.
     /// </summary>
-    /// <param name="color">The Color object to assign the converted values to.</param>
-    /// <param name="value">The 16-bit RGBA4444 integer value.</param>
+    /// <param name="color"> The Color object to assign the converted values to. </param>
+    /// <param name="value"> The 16-bit RGBA4444 integer value. </param>
     public static void RGBA4444ToColor( ref Color color, int value )
     {
         // Ensure the value is within the valid range for 16-bit RGBA4444
@@ -433,8 +455,8 @@ public sealed class Color
     /// <summary>
     /// Converts a 32-bit RGBA8888 integer value to a Color object.
     /// </summary>
-    /// <param name="color">The Color object to assign the converted values to.</param>
-    /// <param name="value">The 32-bit RGBA8888 integer value.</param>
+    /// <param name="color"> The Color object to assign the converted values to. </param>
+    /// <param name="value"> The 32-bit RGBA8888 integer value. </param>
     public static void RGBA8888ToColor( ref Color color, int value )
     {
         ArgumentNullException.ThrowIfNull( color );
@@ -451,25 +473,11 @@ public sealed class Color
         color.A = ( value & 0x000000ff ) / 255f;
     }
 
-//    /// <summary>
-//    /// Sets the Color components using the specified integer value in the format
-//    /// RGBA8888. This is inverse to the RGBA8888(r, g, b, a) method.
-//    /// </summary>
-//    /// <param name="color">The Color to be modified.</param>
-//    /// <param name="value">An integer color value in RGBA8888 format.</param>
-//    private void RGBA8888ToColor( ref Color color, uint value )
-//    {
-//        color.R = ( ( value & 0xff000000 ) >> 24 ) / 255f;
-//        color.G = ( ( value & 0x00ff0000 ) >> 16 ) / 255f;
-//        color.B = ( ( value & 0x0000ff00 ) >> 8 ) / 255f;
-//        color.A = ( value & 0x000000ff ) / 255f;
-//    }
-
     /// <summary>
     /// Converts a 32-bit ARGB8888 integer value to a Color object.
     /// </summary>
-    /// <param name="color">The Color object to assign the converted values to.</param>
-    /// <param name="value">The 32-bit ARGB8888 integer value.</param>
+    /// <param name="color"> The Color object to assign the converted values to. </param>
+    /// <param name="value"> The 32-bit ARGB8888 integer value. </param>
     public static void ARGB8888ToColor( ref Color color, int value )
     {
         color.A = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
@@ -496,11 +504,12 @@ public sealed class Color
     }
 
     /// <summary>
+    /// Converts the supplied color components to an <b>int</b>.
     /// </summary>
-    /// <param name="r"></param>
-    /// <param name="g"></param>
-    /// <param name="b"></param>
-    /// <param name="a"></param>
+    /// <param name="r"> Red component. </param>
+    /// <param name="g"> Green component. </param>
+    /// <param name="b"> Blue component. </param>
+    /// <param name="a"> Alpha component. </param>
     /// <returns></returns>
     public int RGBA8888ToInt( float r, float g, float b, float a )
     {
@@ -579,12 +588,12 @@ public sealed class Color
     }
 
     /// <summary>
-    /// Sets RGB components using the specified Hue-Saturation-Value.
-    /// This is a convenient method for fromHsv(float, float, float).
-    /// This is the inverse of toHsv(float[]).
+    /// Sets RGB components using the specified Hue-Saturation-Value. This is a
+    /// convenient method for fromHsv(float, float, float). This is the inverse
+    /// of toHsv(float[]).
     /// </summary>
-    /// <param name="hsv"></param>
-    /// <returns></returns>
+    /// <param name="hsv"> The Hue-Saturation-Value. </param>
+    /// <returns> The modified color for chaining. </returns>
     public Color FromHsv( float[] hsv )
     {
         return FromHsv( hsv[ 0 ], hsv[ 1 ], hsv[ 2 ] );
@@ -637,13 +646,15 @@ public sealed class Color
     }
 
     /// <summary>
-    /// Packs the color components into a 32-bit integer with the format ABGR and
-    /// then converts it to a float. Alpha is compressed from 0-255 to use only even
-    /// numbers between 0-254 to avoid using float bits in the NaN range
-    /// (see NumberUtils.intToFloatColor(int)).
-    /// Converting a color to a float and back can be lossy for alpha.
+    /// Packs the color components into a 32-bit integer with the format ABGR and then
+    /// converts it to a float. Alpha is compressed from 0-255 to use only even numbers
+    /// between 0-254 to avoid using float bits in the NaN range.
+    /// <para>
+    /// Note: Converting a color to a float and back can be lossy for alpha.
+    /// </para>
     /// </summary>
-    /// <returns></returns>
+    /// <returns> The resulting float. </returns>
+    /// <seealso cref="NumberUtils.IntToFloatColor(int)"/>
     public float ToFloatBits()
     {
         var color = ( ( int ) ( 255 * A ) << 24 )
@@ -773,7 +784,7 @@ public sealed class Color
         return Convert.ToInt32( hexComponent, 16 ) / 255f;
     }
 
-    public static int Alpha( float alpha )
+    public static int AlphaToInt( float alpha )
     {
         return ( int ) ( alpha * 255.0f );
     }
@@ -907,13 +918,4 @@ public sealed class Color
 
         return result;
     }
-
-    #region Colour Components
-
-    public float R { get; set; }
-    public float G { get; set; }
-    public float B { get; set; }
-    public float A { get; set; }
-
-    #endregion Colour Components
 }

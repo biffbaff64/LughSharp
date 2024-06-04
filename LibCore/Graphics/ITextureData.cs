@@ -162,7 +162,7 @@ public interface ITextureData
                 ".cim"            => new FileTextureData( file, PixmapIO.ReadCIM( file ), format, useMipMaps ),
                 ".etc1"           => new ETC1TextureData( file, useMipMaps ),
                 ".ktx" or ".zktx" => new KtxTextureData( file, useMipMaps ),
-                _                 => new FileTextureData( file, new Pixmap( file ), format, useMipMaps )
+                var _             => new FileTextureData( file, new Pixmap( file ), format, useMipMaps )
             };
         }
     }

@@ -31,7 +31,7 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public class InputEventQueue
 {
-	#region constants
+    #region constants
 
     private const int SKIP           = -1;
     private const int KEY_DOWN       = 0;
@@ -43,22 +43,30 @@ public class InputEventQueue
     private const int MOUSE_MOVED    = 6;
     private const int MOUSE_SCROLLED = 7;
 
-	#endregion constants
-	
+    #endregion constants
+
+    // ------------------------------------------------------------------------
+
     public long CurrentEventTime { get; set; }
+
+    // ------------------------------------------------------------------------
 
     private readonly List< int > _processingQueue = new();
     private readonly List< int > _queue           = new();
 
     // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
 
     /// <summary>
+    /// Processes and drains the events in the queue using the specified input processor.
     /// </summary>
-    /// <param name="processor"></param>
-    /// <exception cref="SystemException"></exception>
+    /// <param name="processor">
+    /// The input processor to handle the events. If null, the queue will be cleared without processing.
+    /// </param>
+    /// <exception cref="SystemException"> Thrown if an unknown event type is encountered. </exception>
     public void Drain( IInputProcessor? processor )
     {
+        int[] processingArray;
+
         lock ( this )
         {
             if ( processor == null )
@@ -70,82 +78,76 @@ public class InputEventQueue
 
             _processingQueue.AddRange( _queue );
             _queue.Clear();
+
+            processingArray = _processingQueue.ToArray();
         }
 
-        var q = _processingQueue.ToArray();
+        var index = 0;
+        var count = processingArray.Length;
 
-        for ( int i = 0, n = _processingQueue.Count; i < n; )
+        while ( index < count )
         {
-            var type = q[ i++ ];
-            CurrentEventTime = ( ( long ) q[ i++ ] << 32 ) | ( q[ i++ ] & 0xFFFFFFFFL );
+            var eventType = processingArray[ index++ ];
+            CurrentEventTime = ( ( long ) processingArray[ index++ ] << 32 ) | ( processingArray[ index++ ] & 0xFFFFFFFFL );
 
-            switch ( type )
+            switch ( eventType )
             {
                 case SKIP:
-                {
-                    i += q[ i ];
+                    index += processingArray[ index ];
 
                     break;
-                }
 
                 case KEY_DOWN:
-                {
-                    processor.KeyDown( q[ i++ ] );
+                    processor.KeyDown( processingArray[ index++ ] );
 
                     break;
-                }
 
                 case KEY_UP:
-                {
-                    processor.KeyUp( q[ i++ ] );
+                    processor.KeyUp( processingArray[ index++ ] );
 
                     break;
-                }
 
                 case KEY_TYPED:
-                {
-                    processor.KeyTyped( ( char ) q[ i++ ] );
+                    processor.KeyTyped( ( char ) processingArray[ index++ ] );
 
                     break;
-                }
 
                 case TOUCH_DOWN:
-                {
-                    processor.TouchDown( q[ i++ ], q[ i++ ], q[ i++ ], q[ i++ ] );
+                    processor.TouchDown( processingArray[ index++ ],
+                                         processingArray[ index++ ],
+                                         processingArray[ index++ ],
+                                         processingArray[ index++ ] );
 
                     break;
-                }
 
                 case TOUCH_UP:
-                {
-                    processor.TouchUp( q[ i++ ], q[ i++ ], q[ i++ ], q[ i++ ] );
+                    processor.TouchUp( processingArray[ index++ ],
+                                       processingArray[ index++ ],
+                                       processingArray[ index++ ],
+                                       processingArray[ index++ ] );
 
                     break;
-                }
 
                 case TOUCH_DRAGGED:
-                {
-                    processor.TouchDragged( q[ i++ ], q[ i++ ], q[ i++ ] );
+                    processor.TouchDragged( processingArray[ index++ ],
+                                            processingArray[ index++ ],
+                                            processingArray[ index++ ] );
 
                     break;
-                }
 
                 case MOUSE_MOVED:
-                {
-                    processor.MouseMoved( q[ i++ ], q[ i++ ] );
+                    processor.MouseMoved( processingArray[ index++ ], processingArray[ index++ ] );
 
                     break;
-                }
 
                 case MOUSE_SCROLLED:
-                {
-                    processor.Scrolled( NumberUtils.IntBitsToFloat( q[ i++ ] ), NumberUtils.IntBitsToFloat( q[ i++ ] ) );
+                    processor.Scrolled( NumberUtils.IntBitsToFloat( processingArray[ index++ ] ),
+                                        NumberUtils.IntBitsToFloat( processingArray[ index++ ] ) );
 
                     break;
-                }
 
                 default:
-                    throw new SystemException();
+                    throw new SystemException( $"Unknown event type: {eventType}" );
             }
         }
 
@@ -153,10 +155,14 @@ public class InputEventQueue
     }
 
     /// <summary>
+    /// Finds the next index of the specified event type starting from the given index.
     /// </summary>
-    /// <param name="nextType"></param>
-    /// <param name="i"></param>
-    /// <returns></returns>
+    /// <param name="nextType"> The event type to search for. </param>
+    /// <param name="i"> The index to start searching from. </param>
+    /// <returns>
+    /// The index of the next occurrence of the specified event type, or -1 if not found.
+    /// </returns>
+    /// <exception cref="SystemException"> Thrown if an unknown event type is encountered. </exception>
     private int Next( int nextType, int i )
     {
         lock ( this )
@@ -227,8 +233,9 @@ public class InputEventQueue
     }
 
     /// <summary>
+    /// Adds the specified time to the queue.
     /// </summary>
-    /// <param name="time"></param>
+    /// <param name="time">The time to add to the queue.</param>
     private void QueueTime( long time )
     {
         _queue.Add( ( int ) ( time >> 32 ) );
@@ -236,10 +243,11 @@ public class InputEventQueue
     }
 
     /// <summary>
+    /// Queues a key down event with the specified keycode and time.
     /// </summary>
-    /// <param name="keycode"></param>
-    /// <param name="time"></param>
-    /// <returns></returns>
+    /// <param name="keycode"> The keycode of the key down event. </param>
+    /// <param name="time"> The time the event occurred. </param>
+    /// <returns> Always returns false. </returns>
     public bool KeyDown( int keycode, long time )
     {
         lock ( this )
@@ -253,10 +261,11 @@ public class InputEventQueue
     }
 
     /// <summary>
+    /// Queues a key up event with the specified keycode and time.
     /// </summary>
-    /// <param name="keycode"></param>
-    /// <param name="time"></param>
-    /// <returns></returns>
+    /// <param name="keycode"> The keycode of the key up event. </param>
+    /// <param name="time"> The time the event occurred. </param>
+    /// <returns> Always returns false. </returns>
     public bool KeyUp( int keycode, long time )
     {
         lock ( this )
@@ -270,10 +279,11 @@ public class InputEventQueue
     }
 
     /// <summary>
+    /// Queues a key typed event with the specified character and time.
     /// </summary>
-    /// <param name="character"></param>
-    /// <param name="time"></param>
-    /// <returns></returns>
+    /// <param name="character"> The character of the key typed event. </param>
+    /// <param name="time"> The time the event occurred. </param>
+    /// <returns> Always returns false. </returns>
     public bool KeyTyped( char character, long time )
     {
         lock ( this )
@@ -287,21 +297,20 @@ public class InputEventQueue
     }
 
     /// <summary>
+    /// Queues a touch down event with the specified parameters.
     /// </summary>
-    /// <param name="screenX"></param>
-    /// <param name="screenY"></param>
-    /// <param name="pointer"></param>
-    /// <param name="button"></param>
-    /// <param name="time"></param>
-    /// <returns></returns>
+    /// <param name="screenX"> The x-coordinate of the touch. </param>
+    /// <param name="screenY"> The y-coordinate of the touch. </param>
+    /// <param name="pointer"> The pointer index. </param>
+    /// <param name="button"> The button pressed. </param>
+    /// <param name="time"> The time the event occurred. </param>
+    /// <returns> Always returns false. </returns>
     public bool TouchDown( int screenX, int screenY, int pointer, int button, long time )
     {
         lock ( this )
         {
             _queue.Add( TOUCH_DOWN );
-
             QueueTime( time );
-
             _queue.Add( screenX );
             _queue.Add( screenY );
             _queue.Add( pointer );
@@ -312,21 +321,22 @@ public class InputEventQueue
     }
 
     /// <summary>
+    /// Queues a touch up event with the specified parameters.
     /// </summary>
-    /// <param name="screenX"></param>
-    /// <param name="screenY"></param>
-    /// <param name="pointer"></param>
-    /// <param name="button"></param>
-    /// <param name="time"></param>
-    /// <returns></returns>
+    /// <param name="screenX"> The x-coordinate of the touch. </param>
+    /// <param name="screenY"> The y-coordinate of the touch. </param>
+    /// <param name="pointer"> The pointer index. </param>
+    /// <param name="button"> The button released. </param>
+    /// <param name="time"> The time the event occurred. </param>
+    /// <returns> Always returns false. </returns>
     public bool TouchUp( int screenX, int screenY, int pointer, int button, long time )
     {
         lock ( this )
         {
             _queue.Add( TOUCH_UP );
-
+            
             QueueTime( time );
-
+            
             _queue.Add( screenX );
             _queue.Add( screenY );
             _queue.Add( pointer );
@@ -337,12 +347,14 @@ public class InputEventQueue
     }
 
     /// <summary>
+    /// Queues a touch dragged event with the specified parameters, skipping any previously
+    /// queued touch dragged events for the same pointer.
     /// </summary>
-    /// <param name="screenX"></param>
-    /// <param name="screenY"></param>
-    /// <param name="pointer"></param>
-    /// <param name="time"></param>
-    /// <returns></returns>
+    /// <param name="screenX"> The x-coordinate of the drag. </param>
+    /// <param name="screenY"> The y-coordinate of the drag. </param>
+    /// <param name="pointer"> The pointer index. </param>
+    /// <param name="time"> The time the event occurred. </param>
+    /// <returns> Always returns false. </returns>
     public bool TouchDragged( int screenX, int screenY, int pointer, long time )
     {
         lock ( this )
@@ -357,10 +369,10 @@ public class InputEventQueue
                 }
             }
 
-            _queue.Add( TOUCH_DRAGGED );
-
+            _queue.Add( TOUCH_DRAGGED ); 
+            
             QueueTime( time );
-
+            
             _queue.Add( screenX );
             _queue.Add( screenY );
             _queue.Add( pointer );
@@ -370,11 +382,13 @@ public class InputEventQueue
     }
 
     /// <summary>
+    /// Queues a mouse moved event with the specified parameters, skipping any previously
+    /// queued mouse moved events.
     /// </summary>
-    /// <param name="screenX"></param>
-    /// <param name="screenY"></param>
-    /// <param name="time"></param>
-    /// <returns></returns>
+    /// <param name="screenX"> The x-coordinate of the mouse. </param>
+    /// <param name="screenY"> The y-coordinate of the mouse. </param>
+    /// <param name="time"> The time the event occurred. </param>
+    /// <returns> Always returns false. </returns>
     public bool MouseMoved( int screenX, int screenY, long time )
     {
         lock ( this )
@@ -387,9 +401,9 @@ public class InputEventQueue
             }
 
             _queue.Add( MOUSE_MOVED );
-
+            
             QueueTime( time );
-
+            
             _queue.Add( screenX );
             _queue.Add( screenY );
         }
@@ -398,19 +412,20 @@ public class InputEventQueue
     }
 
     /// <summary>
+    /// Queues a mouse scrolled event with the specified parameters.
     /// </summary>
-    /// <param name="amountX"></param>
-    /// <param name="amountY"></param>
-    /// <param name="time"></param>
-    /// <returns></returns>
+    /// <param name="amountX">The horizontal scroll amount.</param>
+    /// <param name="amountY">The vertical scroll amount.</param>
+    /// <param name="time">The time the event occurred.</param>
+    /// <returns>Always returns false.</returns>
     public bool Scrolled( float amountX, float amountY, long time )
     {
         lock ( this )
         {
             _queue.Add( MOUSE_SCROLLED );
-
+            
             QueueTime( time );
-
+            
             _queue.Add( NumberUtils.FloatToIntBits( amountX ) );
             _queue.Add( NumberUtils.FloatToIntBits( amountY ) );
         }

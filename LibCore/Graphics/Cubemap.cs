@@ -31,12 +31,21 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
-/// Wraps a standard OpenGL ES Cubemap.
-/// Must be disposed when it is no longer used.
+/// Wraps a standard OpenGL ES Cubemap. Must be disposed when it is no longer used.
 /// </summary>
 [PublicAPI]
 public class Cubemap : GLTexture
 {
+    public static AssetManager? AssetManager { get; set; }
+    public        ICubemapData  Data         { get; set; }
+
+    public override bool IsManaged => Data.Managed;
+    public override int  Width     => Data.Width;
+    public override int  Height    => Data.Height;
+    public override int  Depth     => 0;
+
+    // ------------------------------------------------------------------------
+    
     private readonly static Dictionary< IApplication, List< Cubemap >? > _managedCubemaps = new();
 
     // ------------------------------------------------------------------------
@@ -123,14 +132,6 @@ public class Cubemap : GLTexture
         : this( new FacedCubemapData( positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ ) )
     {
     }
-
-    public static AssetManager? AssetManager { get; set; }
-    public        ICubemapData  Data         { get; set; }
-
-    public override bool IsManaged => Data.Managed;
-    public override int  Width     => Data.Width;
-    public override int  Height    => Data.Height;
-    public override int  Depth     => 0;
 
     /// <summary>
     /// return the number of managed cubemaps currently loaded

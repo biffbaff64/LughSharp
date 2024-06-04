@@ -40,45 +40,24 @@ public interface IFiles
     /// </exception>
     FileInfo GetFileHandle( string path, FileType type );
 
-    /// <summary>
-    /// Convenience method that returns a <see cref="FileType.Classpath"/> file handle.
-    /// </summary>
-    /// <param name="path"></param>
-    /// <returns></returns>
+    /// <inheritdoc cref="FileType.Classpath"/>
     FileInfo Classpath( string path );
 
-    /// <summary>
-    /// Convenience method that returns a <see cref="FileType.Internal"/> file handle.
-    /// </summary>
-    /// <param name="path"></param>
-    /// <returns></returns>
+    /// <inheritdoc cref="FileType.Internal"/>
     FileInfo Internal( string path );
 
-    /// <summary>
-    /// Convenience method that returns a <see cref="FileType.External"/> file handle.
-    /// </summary>
-    /// <param name="path"></param>
-    /// <returns></returns>
+    /// <inheritdoc cref="FileType.External"/>
     FileInfo External( string path );
 
-    /// <summary>
-    /// Convenience method that returns a <see cref="FileType.Absolute"/> file handle.
-    /// </summary>
-    /// <param name="path"></param>
-    /// <returns></returns>
+    /// <inheritdoc cref="FileType.Absolute"/>
     FileInfo Absolute( string path );
 
-    /// <summary>
-    /// Convenience method that returns a <see cref="FileType.Local"/> file handle.
-    /// </summary>
-    /// <param name="path"></param>
-    /// <returns></returns>
+    /// <inheritdoc cref="FileType.Local"/>
     FileInfo Local( string path );
 
     /// <summary>
-    /// Returns the external storage path directory. This is the app
-    /// external storage on Android and the home directory of the
-    /// current user on the desktop.
+    /// Returns the external storage path directory. This is the app external storage
+    /// on Android and the home directory of the current user on the desktop.
     /// </summary>
     string GetExternalStoragePath();
 

@@ -33,24 +33,24 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 [PublicAPI]
 public class LayerIIDecoder : LayerIDecoder
 {
+    /// <summary>
+    /// Creates subband instances based on the header mode for Layer II.
+    /// </summary>
     protected override void CreateSubbands()
     {
+        int i;
+        
         switch ( Mode )
         {
             case Header.SINGLE_CHANNEL:
-            {
-                for ( var i = 0; i < NuSubbands; ++i )
+                for ( i = 0; i < NuSubbands; ++i )
                 {
                     Subbands[ i ] = new SubbandLayer2( i );
                 }
 
                 break;
-            }
 
             case Header.JOINT_STEREO:
-            {
-                int i;
-
                 for ( i = 0; i < Header?.IntensityStereoBound(); ++i )
                 {
                     Subbands[ i ] = new SubbandLayer2Stereo( i );
@@ -62,20 +62,20 @@ public class LayerIIDecoder : LayerIDecoder
                 }
 
                 break;
-            }
 
             default:
-            {
-                for ( var i = 0; i < NuSubbands; ++i )
+                for ( i = 0; i < NuSubbands; ++i )
                 {
                     Subbands[ i ] = new SubbandLayer2Stereo( i );
                 }
 
                 break;
-            }
         }
     }
 
+    /// <summary>
+    /// Reads the scale factor selection for each subband.
+    /// </summary>
     protected override void ReadScaleFactorSelection()
     {
         for ( var i = 0; i < NuSubbands; ++i )

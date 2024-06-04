@@ -55,7 +55,7 @@ public static class Platform
         {
             Architecture.Arm   => true,
             Architecture.Arm64 => true,
-            _                  => false
+            var _              => false
         };
     }
 

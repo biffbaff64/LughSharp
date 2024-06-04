@@ -458,7 +458,7 @@ public class Pixmap : IDisposable
             "rgba4444"       => Format.RGBA4444,
             "rgb888"         => Format.RGB888,
             "rgba8888"       => Format.RGBA8888,
-            _                => throw new GdxRuntimeException( $"Unknown Format: {str}" )
+            var _            => throw new GdxRuntimeException( $"Unknown Format: {str}" )
         };
     }
 
@@ -494,7 +494,7 @@ public class Pixmap : IDisposable
         Dispose( !IsDisposed );
     }
 
-    private void Dispose( bool disposing )
+    protected void Dispose( bool disposing )
     {
         if ( disposing )
         {
@@ -613,7 +613,7 @@ public static class PixmapFormatExtensions
             Pixmap.Format.RGB888         => Gdx2DPixmap.GDX_2D_FORMAT_RGB888,
             Pixmap.Format.RGBA8888       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888,
 
-            _ => throw new GdxRuntimeException( $"Unknown format: {format}" )
+            var _ => throw new GdxRuntimeException( $"Unknown format: {format}" )
         };
     }
 }

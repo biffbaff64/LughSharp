@@ -782,9 +782,9 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
         {
             _parent.RangeStart = Size() switch
             {
-                0 => default( TNode ),
-                1 => First(),
-                _ => _parent.RangeStart
+                0     => default( TNode ),
+                1     => First(),
+                var _ => _parent.RangeStart
             };
         }
     }

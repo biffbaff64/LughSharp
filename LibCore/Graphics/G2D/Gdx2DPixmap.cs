@@ -119,15 +119,6 @@ public class Gdx2DPixmap : IDisposable
         Format   = ( int ) nativeData[ 3 ];
     }
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
-    }
-
     private ByteBuffer GetNewPixmap( long[] nativeData, int width, int height, int format )
     {
         return NewPixmap( nativeData, width, height, format );
@@ -160,7 +151,7 @@ public class Gdx2DPixmap : IDisposable
             GDX_2D_FORMAT_RGB565          => IGL.GL_RGB,
             GDX_2D_FORMAT_RGBA8888        => IGL.GL_RGBA,
             GDX_2D_FORMAT_RGBA4444        => IGL.GL_RGBA,
-            _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
+            var _                         => throw new GdxRuntimeException( $"unknown format: {format}" )
         };
     }
 
@@ -179,7 +170,7 @@ public class Gdx2DPixmap : IDisposable
             GDX_2D_FORMAT_RGBA8888        => IGL.GL_UNSIGNED_BYTE,
             GDX_2D_FORMAT_RGB565          => IGL.GL_UNSIGNED_SHORT_5_6_5,
             GDX_2D_FORMAT_RGBA4444        => IGL.GL_UNSIGNED_SHORT_4_4_4_4,
-            _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
+            var _                         => throw new GdxRuntimeException( $"unknown format: {format}" )
         };
     }
 
@@ -280,6 +271,13 @@ public class Gdx2DPixmap : IDisposable
         }
     }
 
+    /// <summary>
+    /// Creates a new Gdx2DPixmap.
+    /// </summary>
+    /// <param name="width"> The width. </param>
+    /// <param name="height"> The height. </param>
+    /// <param name="format"> The pixmap format. </param>
+    /// <returns></returns>
     public static Gdx2DPixmap? NewPixmap( int width, int height, int format )
     {
         try
@@ -308,13 +306,24 @@ public class Gdx2DPixmap : IDisposable
             GDX_2D_FORMAT_RGBA8888        => "Rgba8888",
             GDX_2D_FORMAT_RGB565          => "Rgb565",
             GDX_2D_FORMAT_RGBA4444        => "Rgba4444",
-            _                             => "Unknown"
+            var _                         => "Unknown"
         };
     }
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
     /// </summary>
-    /// <param name="disposing"></param>
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
+    /// <summary>
+    /// Centralize all logic related to releasing unmanaged resources.
+    /// </summary>
     protected virtual void Dispose( bool disposing )
     {
         if ( disposing )

@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text;
 using LughSharp.LibCore.Audio.MP3Sharp.Support;
 
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
@@ -34,6 +33,8 @@ namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 [PublicAPI]
 public class Header
 {
+    #region constants
+    
     public const int MPEG2_LSF  = 0;
     public const int MPEG25_LSF = 2;
     public const int MPEG1      = 1;
@@ -46,25 +47,7 @@ public class Header
     public const int FOURTYEIGHT          = 1;
     public const int THIRTYTWO            = 2;
 
-    public int   Framesize { get; set; }
-    public short Checksum  { get; set; }
-    public int   NSlots    { get; set; }
-
-    private int    _bitrateIndex;
-    private bool   _copyright;
-    private Crc16? _crc;
-    private int    _headerstring = -1;
-    private int    _intensityStereoBound;
-    private int    _layer;
-    private int    _mode;
-    private int    _modeExtension;
-    private int    _numberOfSubbands;
-    private bool   _original;
-    private int    _paddingBit;
-    private int    _protectionBit;
-    private int    _sampleFrequency;
-    private sbyte  _syncmode = Bitstream.INITIAL_SYNC;
-    private int    _version;
+    #endregion constants
 
     // ------------------------------------------------------------------------
 
@@ -204,36 +187,36 @@ public class Header
         }
     };
 
+    // ------------------------------------------------------------------------
+    
+    public int   Framesize { get; set; }
+    public short Checksum  { get; set; }
+    public int   NSlots    { get; set; }
+
+    // ------------------------------------------------------------------------
+    
+    private int    _bitrateIndex;
+    private bool   _copyright;
+    private Crc16? _crc;
+    private int    _headerstring = -1;
+    private int    _intensityStereoBound;
+    private int    _layer;
+    private int    _mode;
+    private int    _modeExtension;
+    private int    _numberOfSubbands;
+    private bool   _original;
+    private int    _paddingBit;
+    private int    _protectionBit;
+    private int    _sampleFrequency;
+    private sbyte  _syncmode = Bitstream.INITIAL_SYNC;
+    private int    _version;
+
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// Returns synchronized header.
     /// </summary>
     public virtual int SyncHeader => _headerstring;
-
-    public override string ToString()
-    {
-        var buffer = new StringBuilder( 200 );
-
-        buffer.Append( "Layer " );
-        buffer.Append( LayerAsString() );
-        buffer.Append( " frame " );
-        buffer.Append( ModeAsString() );
-        buffer.Append( ' ' );
-        buffer.Append( VersionAsString() );
-
-        if ( !IsProtection() )
-        {
-            buffer.Append( " no" );
-        }
-
-        buffer.Append( " checksums" );
-        buffer.Append( ' ' );
-        buffer.Append( SampleFrequencyAsString() );
-        buffer.Append( ',' );
-        buffer.Append( ' ' );
-        buffer.Append( BitrateAsString() );
-
-        return buffer.ToString();
-    }
 
     /// <summary>
     /// Read a 32-bit header from the bitstream.
@@ -505,8 +488,7 @@ public class Header
     }
 
     /// <summary>
-    /// Calculate Frame size.
-    /// Calculates framesize in bytes excluding header size.
+    /// Calculate Frame size in bytes excluding header size.
     /// </summary>
     public int CalculateFrameSize()
     {
@@ -617,10 +599,10 @@ public class Header
     {
         return _layer switch
         {
-            1 => "I",
-            2 => "II",
-            3 => "III",
-            _ => null
+            1     => "I",
+            2     => "II",
+            3     => "III",
+            var _ => null
         };
     }
 
@@ -727,5 +709,31 @@ public class Header
     public int IntensityStereoBound()
     {
         return _intensityStereoBound;
+    }
+
+    public override string ToString()
+    {
+        var buffer = new StringBuilder( 200 );
+
+        buffer.Append( "Layer " );
+        buffer.Append( LayerAsString() );
+        buffer.Append( " frame " );
+        buffer.Append( ModeAsString() );
+        buffer.Append( ' ' );
+        buffer.Append( VersionAsString() );
+
+        if ( !IsProtection() )
+        {
+            buffer.Append( " no" );
+        }
+
+        buffer.Append( " checksums" );
+        buffer.Append( ' ' );
+        buffer.Append( SampleFrequencyAsString() );
+        buffer.Append( ',' );
+        buffer.Append( ' ' );
+        buffer.Append( BitrateAsString() );
+
+        return buffer.ToString();
     }
 }

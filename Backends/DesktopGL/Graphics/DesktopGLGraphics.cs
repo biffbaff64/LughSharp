@@ -517,26 +517,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
                  ( GetDisplayMode().Height / ( float ) sizeY ) * 10 );
     }
 
-    public override float GetPpiX()
-    {
-        return GetPpiXY().X;
-    }
-
-    public override float GetPpiY()
-    {
-        return GetPpiXY().Y;
-    }
-
-    public override float GetPpcX()
-    {
-        return GetPpcXY().X;
-    }
-
-    public override float GetPpcY()
-    {
-        return GetPpcXY().Y;
-    }
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 

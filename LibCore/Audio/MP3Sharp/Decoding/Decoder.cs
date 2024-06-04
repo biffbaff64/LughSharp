@@ -25,6 +25,7 @@
 
 using LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 using Exception = System.Exception;
+using OutputChannelsEnum = LughSharp.LibCore.Audio.MP3Sharp.Decoding.OutputChannels.OutputChannelsEnum;
 
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding;
 
@@ -261,14 +262,12 @@ public partial class Decoder
         {
             case 3:
             {
-                _l3Decoder ??= new LayerIIIDecoder(
-                                                   stream,
-                                                   header,
-                                                   _leftChannelFilter,
-                                                   _rightChannelFilter,
-                                                   _output,
-                                                   ( int ) OutputChannelsEnum.BothChannels
-                                                  );
+                _l3Decoder ??= new LayerIIIDecoder( stream,
+                                                    header,
+                                                    _leftChannelFilter,
+                                                    _rightChannelFilter,
+                                                    _output,
+                                                    ( int ) OutputChannelsEnum.BothChannels );
 
                 decoder = _l3Decoder;
 
@@ -281,14 +280,12 @@ public partial class Decoder
                 {
                     _l2Decoder = new LayerIIDecoder();
 
-                    _l2Decoder.Create(
-                                      stream,
-                                      header,
-                                      _leftChannelFilter,
-                                      _rightChannelFilter,
-                                      _output,
-                                      ( int ) OutputChannelsEnum.BothChannels
-                                     );
+                    _l2Decoder.Create( stream,
+                                       header,
+                                       _leftChannelFilter,
+                                       _rightChannelFilter,
+                                       _output,
+                                       ( int ) OutputChannelsEnum.BothChannels );
                 }
 
                 decoder = _l2Decoder;
@@ -302,14 +299,12 @@ public partial class Decoder
                 {
                     _l1Decoder = new LayerIDecoder();
 
-                    _l1Decoder.Create(
-                                      stream,
-                                      header,
-                                      _leftChannelFilter,
-                                      _rightChannelFilter,
-                                      _output,
-                                      ( int ) OutputChannelsEnum.BothChannels
-                                     );
+                    _l1Decoder.Create( stream,
+                                       header,
+                                       _leftChannelFilter,
+                                       _rightChannelFilter,
+                                       _output,
+                                       ( int ) OutputChannelsEnum.BothChannels );
                 }
 
                 decoder = _l1Decoder;

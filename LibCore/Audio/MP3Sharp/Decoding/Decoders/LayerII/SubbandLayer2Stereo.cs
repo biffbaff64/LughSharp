@@ -203,9 +203,9 @@ public class SubbandLayer2Stereo : SubbandLayer2
 
             sample *= groupnumber switch
             {
-                <= 4 => channel2Scalefactor1,
-                <= 8 => channel2Scalefactor2,
-                _    => channel2Scalefactor3
+                <= 4  => channel2Scalefactor1,
+                <= 8  => channel2Scalefactor2,
+                var _ => channel2Scalefactor3
             };
 
             if ( channels == OutputChannels.BOTH_CHANNELS )

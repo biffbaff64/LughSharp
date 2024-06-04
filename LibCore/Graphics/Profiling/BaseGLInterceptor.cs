@@ -71,7 +71,7 @@ public abstract class BaseGLInterceptor
             IGL.GL_INVALID_ENUM                  => "InvalidEnum",
             IGL.GL_OUT_OF_MEMORY                 => "OutOfMemory",
             IGL.GL_NO_ERROR                      => "NoError",
-            _                                    => throw new ArgumentOutOfRangeException( nameof( error ), error, null )
+            var _                                => throw new ArgumentOutOfRangeException( nameof( error ), error, null )
         };
     }
 

@@ -810,7 +810,7 @@ public class BitmapFont
 
                 var pageCount = 1;
 
-                if ( common is [ _, _, _, _, _, not null, .. ]
+                if ( common is [ var _, var _, var _, var _, var _, not null, .. ]
                   && common[ 5 ].StartsWith( "pages=" ) )
                 {
                     try

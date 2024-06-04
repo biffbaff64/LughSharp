@@ -98,7 +98,7 @@ public class DesktopGLCursor : ICursor
             ICursor.SystemCursor.Hand             => Glfw.CreateStandardCursor( CursorShape.Hand ),
             ICursor.SystemCursor.HorizontalResize => Glfw.CreateStandardCursor( CursorShape.HResize ),
             ICursor.SystemCursor.VerticalResize   => Glfw.CreateStandardCursor( CursorShape.VResize ),
-            _                                     => Glfw.CreateStandardCursor( CursorShape.Arrow )
+            var _                                 => Glfw.CreateStandardCursor( CursorShape.Arrow )
         };
         //@formatter:on
 

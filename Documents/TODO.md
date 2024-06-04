@@ -21,6 +21,14 @@ ALL CLASSES WILL BE UP FOR MODIFICATION FOLLOWING TESTING.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+RULES TO FOLLOW
+---------------
+
+- Methods like **Dispose(), ToString(), Equals(), GetHashCode()** should be positioned at the
+  END of source files.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 - All uses of IRunnable.Runnable need checking and correcting.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -131,8 +139,7 @@ AUDIO/MP3SHARP/DECODING
     - DONE - IP   - Equalizer
     - DONE - IP   - Header
     - DONE - IP   - Huffman
-    - DONE - IP   - OutputChannels
-    - DONE - IP   - OutputChannelsEnum
+    - DONE - DONE - OutputChannels
     - DONE - DONE - PushbackStream
     - DONE - DONE - SampleBuffer
     - DONE - IP   - SynthesisFilter
@@ -143,9 +150,9 @@ AUDIO/MP3SHARP/DECODING/DECODERS
     CODE   DOCUMENT
     ----   --------
     - DONE - IP   - ASubband
-    - DONE - IP   - IFrameDecoder
-    - DONE - IP   - LayerIDecoder
-    - DONE - IP   - LayerIIDecoder
+    - DONE - DONE - IFrameDecoder
+    - DONE - DONE - LayerIDecoder
+    - DONE - DONE - LayerIIDecoder
     - DONE - IP   - LayerIIIDecoder
 
 AUDIO/MP3SHARP/DECODING/DECODERS/LAYERI
@@ -200,8 +207,8 @@ AUDIO/OPENAL
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - IP   - AL
-    - DONE - IP   - ALC
+    - DONE - **** - AL
+    - DONE - **** - ALC
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -212,7 +219,7 @@ CORE
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - AbstractGraphics
-    - DONE - IP   - AbstractInput
+    - DONE - DONE - AbstractInput               Documentation of Catch Keys needed.
     - DONE - DONE - ApplicationAdapter
     - DONE - DONE - Game
     - DONE - DONE - Gdx
@@ -221,13 +228,13 @@ CORE
     - DONE - DONE - IApplicationListener
     - DONE - DONE - IAudio
     - DONE - DONE - IFiles
-    - DONE - IP   - IGraphics
+    - DONE - DONE - IGraphics
     - DONE - DONE - IInput
     - DONE - DONE - IInputProcessor
     - DONE - DONE - ILifecycleListener
-    - DONE - IP   - INet
+    - DONE - DONE - INet
     - DONE - DONE - InputAdapter
-    - DONE - IP   - InputEventQueue
+    - DONE - DONE - InputEventQueue
     - DONE - DONE - InputMultiplexer
     - DONE - DONE - IPreferences
     - DONE - DONE - IScreen
@@ -245,10 +252,10 @@ GRAPHICS
     - DONE - IP   - Color
     - DONE - DONE - Colors
     - DONE - IP   - Cubemap
-    - DONE - IP   - FPSLogger
+    - DONE - DONE - FPSLogger
     - DONE - IP   - GLTexture
     - DONE - DONE - GStructs
-    - DONE - IP   - ICubemapData
+    - DONE - DONE - ICubemapData
     - DONE - DONE - ICursor
     - DONE - DONE - ITextureArrayData
     - DONE - DONE - ITextureData

@@ -952,7 +952,7 @@ public class AssetManager
             // only dispose of assets that are root assets (not referenced)
             foreach ( var asset in assets )
             {
-                if ( dependencyCount.TryGetValue( asset, out _ ) == default( bool ) )
+                if ( dependencyCount.TryGetValue( asset, out var _ ) == default( bool ) )
                 {
                     Unload( asset );
                 }

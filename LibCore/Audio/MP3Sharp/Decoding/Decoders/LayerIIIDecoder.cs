@@ -25,6 +25,7 @@
 
 using LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
 using LughSharp.LibCore.Audio.MP3Sharp.Support;
+using OutputChannelsEnum = LughSharp.LibCore.Audio.MP3Sharp.Decoding.OutputChannels.OutputChannelsEnum;
 
 namespace LughSharp.LibCore.Audio.MP3Sharp.Decoding.Decoders;
 
@@ -166,17 +167,30 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         new[] { new[] { 8, 8, 5, 0 }, new[] { 15, 12, 9, 0 }, new[] { 6, 18, 9, 0 } }
     };
 
-    private readonly AudioBase?       _buffer;
-    private readonly int              _channels;
-    private readonly SynthesisFilter? _filter1;
-    private readonly SynthesisFilter? _filter2;
-    private readonly int              _firstChannel;
-    private readonly Header           _header;
-    private readonly int[]            _is1D;
-    private readonly float[][]        _k;
-    private readonly int              _lastChannel;
-    private readonly float[][][]      _lr;
+    // ------------------------------------------------------------------------
 
+    public readonly int[] V = { 0 };
+    public readonly int[] W = { 0 };
+    public readonly int[] X = { 0 };
+    public readonly int[] Y = { 0 };
+
+    public ScaleFactorTable Sftable { get; set; }
+
+    // TsOutCopy and rawout do not need initializing, so the arrays can be reused.
+    public float[]? TsOutCopy { get; set; }
+
+    // ------------------------------------------------------------------------
+
+    private readonly AudioBase?        _buffer;
+    private readonly int               _channels;
+    private readonly SynthesisFilter?  _filter1;
+    private readonly SynthesisFilter?  _filter2;
+    private readonly int               _firstChannel;
+    private readonly Header            _header;
+    private readonly int[]             _is1D;
+    private readonly float[][]         _k;
+    private readonly int               _lastChannel;
+    private readonly float[][][]       _lr;
     private readonly int               _maxGr;
     private readonly int[]             _nonzero;
     private readonly float[]           _out1D;
@@ -189,41 +203,41 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private readonly Bitstream         _stream;
     private readonly int               _whichChannels;
 
-    public readonly int[]      v = { 0 };
-    public readonly int[]      w = { 0 };
-    public readonly int[]      x = { 0 };
-    public readonly int[]      y = { 0 };
-    private         BitReserve _bitReserve;
+    private BitReserve _bitReserve;
+    private int        _checkSumHuff;
+    private int        _frameStart;
+    private int        _part2Start;
 
-    private int _checkSumHuff;
-    private int _frameStart;
-
-    // new_slen is fully initialized before use, no need
-    // to reallocate array.
+    // new_slen is fully initialized before use, no need to reallocate array.
     private int[] _newSlen = null!;
-
-    private int _part2Start;
 
     // subband samples are buffered and passed to the SynthesisFilter in one go.
     private float[] _samples1 = null!;
-
     private float[] _samples2 = null!;
 
-    public ScaleFactorTable sftable;
+    // ------------------------------------------------------------------------
 
-    // MDM: tsOutCopy and rawout do not need initializing, so the arrays
-    // can be reused.
-    public float[] tsOutCopy = null!;
-
+    /// <summary>
+    /// </summary>
     static LayerIIIDecoder()
     {
         PowerTable = CreatePowerTable();
     }
 
     /// <summary>
-    /// TODO: these ctor arguments should be moved to the decodeFrame() method.
     /// </summary>
-    public LayerIIIDecoder( Bitstream stream, Header header, SynthesisFilter? filtera, SynthesisFilter? filterb, AudioBase? buffer, int whichCh )
+    /// <param name="stream"></param>
+    /// <param name="header"></param>
+    /// <param name="filtera"></param>
+    /// <param name="filterb"></param>
+    /// <param name="buffer"></param>
+    /// <param name="whichCh"></param>
+    public LayerIIIDecoder( Bitstream stream,
+                            Header header,
+                            SynthesisFilter? filtera,
+                            SynthesisFilter? filterb,
+                            AudioBase? buffer,
+                            int whichCh )
     {
         Huffman.Initialize();
 
@@ -378,7 +392,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         // Sftable
         int[] ll0 = { 0, 6, 11, 16, 21 };
         int[] ss0 = { 0, 6, 12 };
-        sftable = new ScaleFactorTable( this, ll0, ss0 );
+        Sftable = new ScaleFactorTable( this, ll0, ss0 );
 
         // END OF Sftable
 
@@ -452,7 +466,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private void InitBlock()
     {
         Rawout    = new float[ 36 ];
-        tsOutCopy = new float[ 18 ];
+        TsOutCopy = new float[ 18 ];
         IsRatio   = new float[ 576 ];
         IsPos     = new int[ 576 ];
         _newSlen  = new int[ 4 ];
@@ -912,9 +926,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         {
             blocktypenumber = grInfo.MixedBlockFlag switch
             {
-                0 => 1,
-                1 => 2,
-                _ => 0
+                0     => 1,
+                1     => 2,
+                var _ => 0
             };
         }
         else
@@ -1079,10 +1093,10 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
     private void HuffmanDecode( int ch, int gr )
     {
-        x[ 0 ] = 0;
-        y[ 0 ] = 0;
-        v[ 0 ] = 0;
-        w[ 0 ] = 0;
+        X[ 0 ] = 0;
+        Y[ 0 ] = 0;
+        V[ 0 ] = 0;
+        W[ 0 ] = 0;
 
         var part23End = _part2Start + _sideInfo.Channels[ ch ].granules[ gr ].Part23Length;
 
@@ -1135,11 +1149,11 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 h = Huffman.GetHuffmanTable()[ _sideInfo.Channels[ ch ].granules[ gr ].TableSelect[ 2 ] ];
             }
 
-            Huffman.Decode( h, x, y, v, w, _bitReserve );
+            Huffman.Decode( h, X, Y, V, W, _bitReserve );
 
-            _is1D[ index++ ] = x[ 0 ];
-            _is1D[ index++ ] = y[ 0 ];
-            _checkSumHuff    = _checkSumHuff + x[ 0 ] + y[ 0 ];
+            _is1D[ index++ ] = X[ 0 ];
+            _is1D[ index++ ] = Y[ 0 ];
+            _checkSumHuff    = _checkSumHuff + X[ 0 ] + Y[ 0 ];
 
             // System.out.println("x = "+x[0]+" y = "+y[0]);
         }
@@ -1150,13 +1164,13 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
         while ( ( nuBits < part23End ) && ( index < 576 ) )
         {
-            Huffman.Decode( h, x, y, v, w, _bitReserve );
+            Huffman.Decode( h, X, Y, V, W, _bitReserve );
 
-            _is1D[ index++ ] = v[ 0 ];
-            _is1D[ index++ ] = w[ 0 ];
-            _is1D[ index++ ] = x[ 0 ];
-            _is1D[ index++ ] = y[ 0 ];
-            _checkSumHuff    = _checkSumHuff + v[ 0 ] + w[ 0 ] + x[ 0 ] + y[ 0 ];
+            _is1D[ index++ ] = V[ 0 ];
+            _is1D[ index++ ] = W[ 0 ];
+            _is1D[ index++ ] = X[ 0 ];
+            _is1D[ index++ ] = Y[ 0 ];
+            _checkSumHuff    = _checkSumHuff + V[ 0 ] + W[ 0 ] + X[ 0 ] + Y[ 0 ];
 
             // System.out.println("v = "+v[0]+" w = "+w[0]);
             // System.out.println("x = "+x[0]+" y = "+y[0]);
@@ -1992,14 +2006,14 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
             for ( var cc = 0; cc < 18; cc++ )
             {
-                tsOutCopy[ cc ] = tsOut[ cc + sb18 ];
+                TsOutCopy[ cc ] = tsOut[ cc + sb18 ];
             }
 
-            InverseMdct( tsOutCopy, Rawout, bt );
+            InverseMdct( TsOutCopy, Rawout, bt );
 
             for ( var cc = 0; cc < 18; cc++ )
             {
-                tsOut[ cc + sb18 ] = tsOutCopy[ cc ];
+                tsOut[ cc + sb18 ] = TsOutCopy[ cc ];
             }
 
             // overlap addition

@@ -340,15 +340,15 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     {
         return button switch
         {
-            0 => MouseButton.Button1,
-            1 => MouseButton.Button2,
-            2 => MouseButton.Button3,
-            3 => MouseButton.Button4,
-            4 => MouseButton.Button5,
-            5 => MouseButton.Button6,
-            6 => MouseButton.Button7,
-            7 => MouseButton.Button8,
-            _ => throw new GdxRuntimeException( $"Unknown MouseButton: {button}" )
+            0     => MouseButton.Button1,
+            1     => MouseButton.Button2,
+            2     => MouseButton.Button3,
+            3     => MouseButton.Button4,
+            4     => MouseButton.Button5,
+            5     => MouseButton.Button6,
+            6     => MouseButton.Button7,
+            7     => MouseButton.Button8,
+            var _ => throw new GdxRuntimeException( $"Unknown MouseButton: {button}" )
         };
     }
 
@@ -361,7 +361,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             IInput.Keys.FORWARD_DEL  => ( char ) 127,
             IInput.Keys.NUMPAD_ENTER => '\n',
             IInput.Keys.ENTER        => '\n',
-            _                        => ( char ) 0
+            var _                    => ( char ) 0
         };
     }
 
@@ -488,7 +488,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             Keys.RightAlt     => IInput.Keys.ALT_RIGHT,
             Keys.RightSuper   => IInput.Keys.SYM,
             Keys.Menu         => IInput.Keys.MENU,
-            _                 => IInput.Keys.UNKNOWN
+            var _             => IInput.Keys.UNKNOWN
         };
     }
 
@@ -590,7 +590,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             MouseButton.Middle  => IInput.Buttons.MIDDLE,
             MouseButton.Button4 => IInput.Buttons.BACK,
             MouseButton.Button5 => IInput.Buttons.FORWARD,
-            _                   => -1
+            var _               => -1
         };
 
 

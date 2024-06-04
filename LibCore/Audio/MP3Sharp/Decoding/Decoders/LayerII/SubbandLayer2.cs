@@ -731,9 +731,9 @@ public class SubbandLayer2 : ASubband
 
             sample *= groupnumber switch
             {
-                <= 4 => scalefactor1,
-                <= 8 => scalefactor2,
-                _    => scalefactor3
+                <= 4  => scalefactor1,
+                <= 8  => scalefactor2,
+                var _ => scalefactor3
             };
 
             filter1?.AddSample( sample, subbandnumber );
