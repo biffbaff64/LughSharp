@@ -120,34 +120,9 @@ public interface IGraphics
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    #region To Be Removed
-
-    /// <summary>
-    /// Describes a monitor, with X, Y, and Name properties.
-    /// </summary>
-
-    //TODO: This may no longer be needed when GL is properly implemented
-    [PublicAPI, Obsolete]
-    public class GdxMonitor
-    {
-        public GdxMonitor( int x, int y, string name )
-        {
-            VirtualX = x;
-            VirtualY = y;
-            Name     = name;
-        }
-
-        public int     VirtualX { get; set; }
-        public int     VirtualY { get; set; }
-        public string? Name     { get; set; }
-    }
-
-    #endregion To Be Removed
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
     #region methods
+
+    bool IsGL30Available();
 
     /// <summary>
     /// Returns the amount of pixels per logical pixel (point).
@@ -167,8 +142,6 @@ public interface IGraphics
     /// </summary>
     /// <returns>the Density Independent Pixel factor of the display.</returns>
     float GetDensity();
-
-    bool IsGL30Available();
 
     int GetSafeInsetLeft();
 
@@ -190,11 +163,7 @@ public interface IGraphics
 
     DisplayMode[] GetDisplayModes();
 
-    DisplayMode[] GetDisplayModes( GdxMonitor gdxMonitor );
-
     DisplayMode GetDisplayMode();
-
-    DisplayMode GetDisplayMode( GdxMonitor gdxMonitor );
 
     bool SetFullscreenMode( DisplayMode displayMode );
 

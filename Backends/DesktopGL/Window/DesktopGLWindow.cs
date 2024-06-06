@@ -34,6 +34,14 @@ namespace LughSharp.Backends.DesktopGL.Window;
 [PublicAPI]
 public class DesktopGLWindow : IDisposable
 {
+    public GLFWWindow?                       GlfwWindow          { get; set; }
+    public IDesktopGLWindowListener?         WindowListener      { get; set; }
+    public IApplicationListener              Listener            { get; set; }
+    public IDesktopGLInput                   Input               { get; set; } = null!;
+    public DesktopGLGraphics                 Graphics            { get; set; } = null!;
+    public DesktopGLApplicationConfiguration Config              { get; set; }
+    public bool                              ListenerInitialised { get; set; } = false;
+
     // ------------------------------------------------------------------------
 
     private readonly IDesktopGLApplicationBase  _application;
@@ -54,21 +62,6 @@ public class DesktopGLWindow : IDisposable
         WindowListener = config.WindowListener;
         Config         = config;
         _application   = application;
-    }
-
-    public GLFWWindow?                       GlfwWindow          { get; set; }
-    public IDesktopGLWindowListener?         WindowListener      { get; set; }
-    public IApplicationListener              Listener            { get; set; }
-    public IDesktopGLInput                   Input               { get; set; } = null!;
-    public DesktopGLGraphics                 Graphics            { get; set; } = null!;
-    public DesktopGLApplicationConfiguration Config              { get; set; }
-    public bool                              ListenerInitialised { get; set; } = false;
-
-    // ------------------------------------------------------------------------
-
-    public void Dispose()
-    {
-        Dispose( true );
     }
 
     /// <summary>
@@ -288,10 +281,10 @@ public class DesktopGLWindow : IDisposable
     public void MakeCurrent()
     {
         Gdx.Graphics = Graphics;
+        Gdx.Input    = Input;
         Gdx.GL30     = Graphics.GL30;
         Gdx.GL20     = Gdx.GL30 != null ? Gdx.GL30 : Graphics.GL20!;
         Gdx.GL       = Gdx.GL30 != null ? Gdx.GL30 : Gdx.GL20;
-        Gdx.Input    = Input;
 
         Glfw.MakeContextCurrent( GlfwWindow );
     }
@@ -333,20 +326,14 @@ public class DesktopGLWindow : IDisposable
     /// surface together. The coordinates are relative to the first monitor in the
     /// virtual surface.
     /// </summary>
-    public int GetPositionX()
-    {
-        return ( int ) GetPosition().X;
-    }
+    public int PositionX => ( int ) GetPosition().X;
 
     /// <summary>
     /// Return the window Y position in logical coordinates. All monitors span a virtual
     /// surface together. The coordinates are relative to the first monitor in the
     /// virtual surface.
     /// </summary>
-    public int GetPositionY()
-    {
-        return ( int ) GetPosition().Y;
-    }
+    public int PositionY => ( int ) GetPosition().Y;
 
     /// <summary>
     /// Sets the visibility of the window.
@@ -375,8 +362,8 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    /// Minimizes (iconifies) the window. Iconified windows do not call
-    /// their <see cref="IApplicationListener"/> until the window is restored.
+    /// Minimizes (iconifies) the window. Iconified windows do not call their
+    /// <see cref="IApplicationListener"/> until the window is restored.
     /// </summary>
     public void IconifyWindow()
     {
@@ -406,6 +393,13 @@ public class DesktopGLWindow : IDisposable
     public void FocusWindow()
     {
         Glfw.FocusWindow( GlfwWindow );
+    }
+
+    // ------------------------------------------------------------------------
+    
+    public void Dispose()
+    {
+        Dispose( true );
     }
 
     public void Dispose( bool disposing )

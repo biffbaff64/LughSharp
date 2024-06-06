@@ -52,14 +52,13 @@ public abstract class IntBuffer : Buffer
     /// <para>
     /// The new buffer's position will be zero, its limit will be its capacity, its mark
     /// will be undefined, and each of its elements will be initialized to zero. It will
-    /// have a backing <see cref="Array"/>, and its <see cref="ArrayOffset"/> will be zero.
+    /// have a backing <see cref="BackingArray"/>, and its <see cref="ArrayOffset"/> will
+    /// be zero.
     /// </para>
     /// </summary>
     /// <param name="capacity"> The new buffer's capacity, in ints. </param>
     /// <returns> The new int buffer </returns>
-    /// <exception cref="ArgumentException">
-    /// If the <tt>capacity</tt> is a negative integer
-    /// </exception>
+    /// <exception cref="ArgumentException"> If the <tt>capacity</tt> is a negative integer </exception>
     public static IntBuffer Allocate( int capacity )
     {
         if ( capacity < 0 )
@@ -76,7 +75,7 @@ public abstract class IntBuffer : Buffer
     /// The new buffer will be backed by the given int array; that is, modifications to the
     /// buffer will cause the array to be modified and vice versa. The new buffer's capacity
     /// will be <tt>array.Length</tt>, its position will be <tt>offset</tt>, its limit will
-    /// be <tt>offset + length</tt>, and its mark will be undefined. Its backing <see cref="Array"/>
+    /// be <tt>offset + length</tt>, and its mark will be undefined. Its backing <see cref="BackingArray"/>
     /// will be the given array, and its <see cref="ArrayOffset"/> will be zero.
     /// </para>
     /// </summary>
@@ -112,8 +111,8 @@ public abstract class IntBuffer : Buffer
     /// The new buffer will be backed by the given int array; that is, modifications
     /// to the buffer will cause the array to be modified and vice versa. The new buffer's
     /// capacity and limit will be <tt>array.length</tt>, its position will be zero, and
-    /// its mark will be undefined. Its backing <see cref="Array"/> will be the given array,
-    /// and its <see cref="ArrayOffset"/> will be zero.
+    /// its mark will be undefined. Its backing <see cref="BackingArray"/> will be the given
+    /// array, and its <see cref="ArrayOffset"/> will be zero.
     /// </para>
     /// </summary>
     /// <param name="array"> The array that will back this buffer. </param>
@@ -123,26 +122,18 @@ public abstract class IntBuffer : Buffer
         return Wrap( array, 0, array.Length );
     }
 
-    public new int[] BackingArray()
-    {
-        return null!;
-    }
-
     /// <summary>
-    /// Creates a new int buffer whose content is a shared subsequence of
-    /// this buffer's content.
+    /// Creates a new int buffer whose content is a shared subsequence of this buffer's content.
     /// <para>
-    /// The content of the new buffer will start at this buffer's current
-    /// position.  Changes to this buffer's content will be visible in the new
-    /// buffer, and vice versa; the two buffers' position, limit, and mark
-    /// values will be independent.
+    /// The content of the new buffer will start at this buffer's current position. Changes to
+    /// this buffer's content will be visible in the new buffer, and vice versa; the two buffers'
+    /// position, limit, and mark values will be independent.
     /// </para>
     /// <para>
-    /// The new buffer's position will be zero, its capacity and its limit
-    /// will be the number of ints remaining in this buffer, and its mark
-    /// will be undefined.  The new buffer will be direct if, and only if, this
-    /// buffer is direct, and it will be read-only if, and only if, this buffer
-    /// is read-only.
+    /// The new buffer's position will be zero, its capacity and its limit will be the number of
+    /// ints remaining in this buffer, and its mark will be undefined. The new buffer will be
+    /// direct if, and only if, this buffer is direct, and it will be read-only if, and only if,
+    /// this buffer is read-only.
     /// </para>
     /// </summary>
     /// <returns> The new int buffer </returns>
@@ -151,46 +142,42 @@ public abstract class IntBuffer : Buffer
     /// <summary>
     /// Creates a new int buffer that shares this buffer's content.
     /// <para>
-    /// The content of the new buffer will be that of this buffer. Changes
-    /// to this buffer's content will be visible in the new buffer, and vice
-    /// versa; the two buffers' position, limit, and mark values will be
-    /// independent.
+    /// The content of the new buffer will be that of this buffer. Changes to this buffer's content
+    /// will be visible in the new buffer, and vice versa; the two buffers' position, limit, and mark
+    /// values will be independent.
     /// </para>
     /// <para>
-    /// The new buffer's capacity, limit, position, and mark values will be
-    /// identical to those of this buffer. The new buffer will be direct if,
-    /// and only if, this buffer is direct, and it will be read-only if, and
-    /// only if, this buffer is read-only.
+    /// The new buffer's capacity, limit, position, and mark values will be identical to those of this
+    /// buffer. The new buffer will be direct if, and only if, this buffer is direct, and it will be
+    /// read-only if, and only if, this buffer is read-only.
     /// </para>
     /// </summary>
     /// <returns> The new int buffer </returns>
     public abstract IntBuffer Duplicate();
 
     /// <summary>
-    /// Creates a new, read-only int buffer that shares this buffer's
-    /// content.
+    /// Creates a new, read-only int buffer that shares this buffer's content.
     /// <para>
-    /// The content of the new buffer will be that of this buffer. Changes
-    /// to this buffer's content will be visible in the new buffer; the new
-    /// buffer itself, however, will be read-only and will not allow the shared
-    /// content to be modified.  The two buffers' position, limit, and mark
-    /// values will be independent.
+    /// The content of the new buffer will be that of this buffer. Changes to this buffer's
+    /// content will be visible in the new buffer; the new buffer itself, however, will be
+    /// read-only and will not allow the shared content to be modified. The two buffers'
+    /// position, limit, and mark values will be independent.
     /// </para>
     /// <para>
-    /// The new buffer's capacity, limit, position, and mark values will be
-    /// identical to those of this buffer.
+    /// The new buffer's capacity, limit, position, and mark values will be identical to
+    /// those of this buffer.
     /// </para>
     /// <para>
-    /// If this buffer is itself read-only then this method behaves in
-    /// exactly the same way as the {@link #duplicate duplicate} method.
+    /// If this buffer is itself read-only then this method behaves in exactly the same way
+    /// as the <see cref="Duplicate"/> method.
     /// </para>
     /// </summary>
     /// <returns> The new, read-only int buffer </returns>
     public abstract IntBuffer asReadOnlyBuffer();
 
     /// <summary>
-    /// Relative <i>get</i> method. Reads the int at this buffer's
-    /// current position, and then increments the position.
+    /// Relative <i>get</i> method. Reads the int at this buffer's current position, and
+    /// then increments the position.
     /// </summary>
     /// <returns> The int at the buffer's current position </returns>
     public abstract int Get();
@@ -439,7 +426,7 @@ public abstract class IntBuffer : Buffer
     /// Tells whether or not this buffer is backed by an accessible int
     /// array.
     /// <para>
-    /// If this method returns <tt>true</tt> then the <see cref="Array"/>
+    /// If this method returns <tt>true</tt> then the <see cref="BackingArray"/>
     /// and <see cref="ArrayOffset"/> methods may safely be invoked.
     /// </para>
     /// </summary>
@@ -451,23 +438,19 @@ public abstract class IntBuffer : Buffer
         return ( Hb != null ) && !IsReadOnly;
     }
 
-    /// Returns the int array that backs this
-    /// buffer
-    /// <i>(optional operation)</i>
-    /// .
+    /// <summary>
+    /// Returns the int array that backs this buffer <i>(optional operation)</i>.
     /// <para>
-    /// Modifications to this buffer's content will cause the returned
-    /// array's content to be modified, and vice versa.
+    /// Modifications to this buffer's content will cause the returned array's content
+    /// to be modified, and vice versa.
     /// </para>
     /// <para>
-    /// Invoke the {@link #hasArray hasArray} method before invoking this
-    /// method in order to ensure that this buffer has an accessible backing
-    /// array.
+    /// Invoke the <see cref="HasBackingArray"/> method before invoking this method in
+    /// order to ensure that this buffer has an accessible backing array.
     /// </para>
-    /// <returns>
-    /// The array that backs this buffer
-    /// </returns>
-    public int[] Array()
+    /// </summary>
+    /// <returns> The array that backs this buffer </returns>
+    public new int[] BackingArray()
     {
         if ( Hb == null )
         {
@@ -649,8 +632,8 @@ public abstract class IntBuffer : Buffer
     /// </para>
     /// </summary>
     /// <returns>
-    /// A negative integer, zero, or a positive integer as this buffer
-    /// is less than, equal to, or greater than the given buffer
+    /// A negative integer, zero, or a positive integer as this buffer is less than, equal to,
+    /// or greater than the given buffer
     /// </returns>
     public int CompareTo( IntBuffer that )
     {
@@ -669,11 +652,14 @@ public abstract class IntBuffer : Buffer
         return Remaining() - that.Remaining();
     }
 
-    private static int Compare( int x, int y )
+    /// <summary>
+    /// Tells whether or not int <tt>a</tt> is equal to int <tt>b</tt>.
+    /// </summary>
+    private static int Compare( int a, int b )
     {
-        return x < y  ? -1 :
-               x > y  ? +1 :
-               x == y ? 0 : -1;
+        return a < b  ? -1 :
+               a > b  ? +1 :
+               a == b ? 0 : -1;
     }
 
     /// <summary>
@@ -681,13 +667,8 @@ public abstract class IntBuffer : Buffer
     /// <para>
     /// The byte order of an int buffer created by allocation or by wrapping an existing
     /// <tt>int</tt> array is the <see cref="ByteOrder.NativeOrder"/> of the underlying
-    /// hardware.  The byte order of an int buffer created as a
-    /// <a
-    ///     href="ByteBuffer.html#views">
-    /// view
-    /// </a>
-    /// of a byte buffer is that of the
-    /// byte buffer at the moment that the view is created.
+    /// hardware.  The byte order of an int buffer created as a view of a byte buffer is
+    /// that of the byte buffer at the moment that the view is created.
     /// </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>

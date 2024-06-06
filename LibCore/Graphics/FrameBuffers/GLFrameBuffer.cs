@@ -26,6 +26,7 @@
 using System.Text;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
+using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 
 namespace LughSharp.LibCore.Graphics.FrameBuffers;
 
@@ -356,7 +357,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 
             buffer.Position = 0;
 
-            fixed ( int* ptr = &buffer.BackingArray()[ 0 ] )
+            fixed ( int* ptr = &( ( Buffer ) buffer ).BackingArray()[ 0 ] )
             {
                 Gdx.GL.glDrawBuffers( colorTextureCounter, ptr );
             }
@@ -493,7 +494,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
                 var intbuf = ByteBuffer.Allocate
                     ( ( 16 * sizeof( int ) ) / 8 ).Order( ByteOrder.NativeOrder ).AsIntBuffer();
 
-                fixed ( int* ptr = &intbuf.BackingArray()[ 0 ] )
+                fixed ( int* ptr = &( ( Buffer ) intbuf ).BackingArray()[ 0 ] )
                 {
                     Gdx.GL.glGetIntegerv( IGL.GL_FRAMEBUFFER_BINDING, ptr );
                 }

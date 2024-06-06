@@ -113,17 +113,17 @@ public class OpenALAudio : IGLAudio
         var orientation = BufferUtils.NewFloatBuffer( 6 ).Put( new[] { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f } );
         orientation.Flip();
 
-        AL.Listenerfv( AL.ORIENTATION, orientation.Array() );
+        AL.Listenerfv( AL.ORIENTATION, orientation.BackingArray() );
 
         var velocity = BufferUtils.NewFloatBuffer( 3 ).Put( new[] { 0.0f, 0.0f, 0.0f } );
         velocity.Flip();
 
-        AL.Listenerfv( AL.VELOCITY, velocity.Array() );
+        AL.Listenerfv( AL.VELOCITY, velocity.BackingArray() );
 
         var position = BufferUtils.NewFloatBuffer( 3 ).Put( new[] { 0.0f, 0.0f, 0.0f } );
         position.Flip();
 
-        AL.Listenerfv( AL.POSITION, position.Array() );
+        AL.Listenerfv( AL.POSITION, position.BackingArray() );
 
         _recentSounds = new OpenALSound[ simultaneousSources ];
     }

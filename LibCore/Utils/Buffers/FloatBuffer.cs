@@ -78,8 +78,21 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class FloatBuffer : Buffer
 {
+    protected float[]? Hb     { get; set; }
+    protected int      Offset { get; set; }
+
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FloatBuffer"/> class with the
+    /// specified parameters.
+    /// </summary>
+    /// <param name="mark"> The mark position. </param>
+    /// <param name="pos"> The current position. </param>
+    /// <param name="lim"> The limit of the buffer. </param>
+    /// <param name="cap"> The capacity of the buffer. </param>
+    /// <param name="hb"> The backing array, if any. Default is null. </param>
+    /// <param name="offset">The offset within the backing array. Default is 0.</param>
     protected FloatBuffer( int mark, int pos, int lim, int cap, float[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
@@ -87,14 +100,19 @@ public abstract class FloatBuffer : Buffer
         Offset = offset;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FloatBuffer"/> class with the
+    /// specified parameters and no backing array.
+    /// </summary>
+    /// <param name="mark"> The mark position. </param>
+    /// <param name="pos"> The current position. </param>
+    /// <param name="lim"> The limit of the buffer. </param>
+    /// <param name="cap"> The capacity of the buffer. </param>
     protected FloatBuffer( int mark, int pos, int lim, int cap )
         : this( mark, pos, lim, cap, null )
     {
         Offset = 0;
     }
-
-    protected float[]? Hb     { get; set; }
-    protected int      Offset { get; set; }
 
     /// <summary>
     /// Allocates a new float buffer.
@@ -383,45 +401,42 @@ public abstract class FloatBuffer : Buffer
         return Get( dst, 0, dst.Length );
     }
 
+    // ------------------------------------------------------------------------
     // -- Bulk put operations --
 
     /// <summary>
     /// Relative bulk <tt>put</tt> method (optional operation).
-    /// </summary>
-    /// <remarks>
-    /// This method transfers the floats remaining in the given source buffer into
-    /// this buffer. If there are more floats remaining in the source buffer than
-    /// in this buffer, that is, if <tt>src.Remaining()</tt> is greater than
-    /// <tt>Remaining()</tt>, then no floats are transferred, and a
+    /// This method transfers the floats remaining in the given source buffer into this buffer.
+    /// If there are more floats remaining in the source buffer than in this buffer, that is,
+    /// if <tt>src.Remaining() &gt; this.Remaining()</tt>, then no floats are transferred, and a
     /// <see cref="GdxRuntimeException"/> is thrown.
     /// <para>
-    /// Otherwise, this method copies <tt>n = src.Remaining()</tt> floats
-    /// from the given buffer into this buffer, starting at each buffer's current
-    /// position. The positions of both buffers are then incremented by <tt>n</tt>.
+    /// Otherwise, this method copies <tt>n = src.Remaining()</tt> floats from the given buffer
+    /// into this buffer, starting at each buffer's current position. The positions of both buffers
+    /// are then incremented by <tt>n</tt>.
     /// </para>
     /// <para>
-    /// In other words, an invocation of this method of the form <c>dst.Put(src)</c>
-    /// has exactly the same effect as the loop:
+    /// In other words, an invocation of this method of the form <tt>dst.Put(src)</tt> has exactly
+    /// the same effect as the loop:
     /// <code>
     ///         while (src.HasRemaining)
     ///         {
     ///             dst.Put(src.Get());
     ///         }
-    ///         </code>
-    /// except that it first checks that there is sufficient space in this buffer
-    /// and is potentially much more efficient.
+    /// </code>
+    /// except that it first checks that there is sufficient space in this buffer and is potentially
+    /// much more efficient.
     /// </para>
-    /// </remarks>
+    /// </summary>
     /// <param name="src">
     /// The source buffer from which floats are to be read; must not be this buffer.
     /// </param>
     /// <returns>This buffer.</returns>
     /// <exception cref="GdxRuntimeException">
-    /// If there is insufficient space in this buffer for the remaining floats
-    /// in the source buffer.
+    /// If there is insufficient space in this buffer for the remaining floats in the source buffer.
     /// </exception>
-    /// <exception cref="ArgumentException">If the source buffer is this buffer.</exception>
-    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
+    /// <exception cref="ArgumentException"> If the source buffer is this buffer. </exception>
+    /// <exception cref="GdxRuntimeException"> If this buffer is read-only. </exception>
     public FloatBuffer Put( FloatBuffer src )
     {
         if ( src.Equals( this ) )
@@ -453,16 +468,14 @@ public abstract class FloatBuffer : Buffer
     /// Relative bulk <i>put</i> method (optional operation).
     /// </summary>
     /// <remarks>
-    /// This method transfers floats into this buffer from the given source array.
-    /// If there are more floats to be copied from the array than remain in this
-    /// buffer, that is, if <paramref name="length"/> is greater than
-    /// <see cref="Buffer.Remaining()"/>, then no floats are transferred, and a
-    /// <see cref="GdxRuntimeException"/> is thrown.
+    /// This method transfers floats into this buffer from the given source array. If
+    /// there are more floats to be copied from the array than remain in this buffer,
+    /// that is, if <tt>length &gt; this.Remaining()</tt>, then no floats are transferred,
+    /// and a <see cref="GdxRuntimeException"/> is thrown.
     /// <para>
-    /// Otherwise, this method copies <paramref name="length"/> floats from the
-    /// given array into this buffer, starting at the given offset in the array
-    /// and at the current position of this buffer. The position of this buffer
-    /// is then incremented by <paramref name="length"/>.
+    /// Otherwise, this method copies <tt>length</tt> floats from the given array into this
+    /// buffer, starting at the given offset in the array and at the current position of this
+    /// buffer. The position of this buffer is then incremented by <tt>length</tt>.
     /// </para>
     /// In other words, an invocation of this method of the form <tt>dst.Put(src, off, len)</tt>
     /// has exactly the same effect as the loop:
@@ -471,14 +484,14 @@ public abstract class FloatBuffer : Buffer
     ///     {
     ///         dst.Put(a[i]);
     ///     }
-    ///     </code>
-    /// except that it first checks that there is sufficient space in this buffer
-    /// and is potentially much more efficient.
+    /// </code>
+    /// except that it first checks that there is sufficient space in this buffer and is
+    /// potentially much more efficient.
     /// </remarks>
     /// <param name="src">The array from which floats are to be read.</param>
     /// <param name="offset">
-    /// The offset within the array of the first float to be read; must be
-    /// non-negative and no larger than <paramref name="src"/>.Length.
+    /// The offset within the array of the first float to be read; must be non-negative and
+    /// no larger than <paramref name="src"/>.Length.
     /// </param>
     /// <param name="length">
     /// The number of floats to be read from the given array; must be non-negative
@@ -486,13 +499,12 @@ public abstract class FloatBuffer : Buffer
     /// </param>
     /// <returns>This buffer.</returns>
     /// <exception cref="GdxRuntimeException">
-    /// If there is insufficient space in this buffer.
+    /// If there is insufficient space in this buffer, or if the buffer is read-only.
     /// </exception>
     /// <exception cref="IndexOutOfRangeException">
     /// If the preconditions on the <paramref name="offset"/> and <paramref name="length"/>
     /// parameters do not hold.
     /// </exception>
-    /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public FloatBuffer Put( float[] src, int offset, int length )
     {
         CheckBounds( offset, length, src.Length );
@@ -539,7 +551,7 @@ public abstract class FloatBuffer : Buffer
     /// Tells whether or not this buffer is backed by an accessible float array.
     /// </summary>
     /// <remarks>
-    /// If this method returns <tt>true</tt>, then the <see cref="Array"/> and
+    /// If this method returns <tt>true</tt>, then the <see cref="BackingArray"/> and
     /// <see cref="ArrayOffset"/> methods may safely be invoked.
     /// </remarks>
     /// <returns>
@@ -566,7 +578,7 @@ public abstract class FloatBuffer : Buffer
     /// <exception cref="NotSupportedException">
     /// If this buffer is not backed by an accessible array.
     /// </exception>
-    public float[] Array()
+    public new float[] BackingArray()
     {
         if ( Hb == null )
         {
@@ -616,11 +628,6 @@ public abstract class FloatBuffer : Buffer
         }
 
         return Offset;
-    }
-
-    public new float[] BackingArray()
-    {
-        return null!;
     }
 
     /// <summary>
@@ -682,24 +689,18 @@ public abstract class FloatBuffer : Buffer
     /// Tells whether or not this buffer is equal to another object.
     /// <para>
     /// Two float buffers are equal if, and only if,
-    /// </para>
-    /// <para>
-    /// They have the same element type,
-    /// <para>
-    /// </para>
-    /// <para>
-    /// They have the same number of remaining elements, and,
-    /// </para>
-    /// <para>
+    /// <li> They have the same element type, </li>
+    /// <li> They have the same number of remaining elements, and, </li>
+    /// <li>
     /// The two sequences of remaining elements, considered independently of their
     /// starting positions, are pointwise equal. This method considers two float
     /// elements <tt>a</tt> and <tt>b</tt> to be equal if:-
-    /// <para>
-    /// <tt>(a == b) || (Float.isNaN(a) &amp;&amp; Float.isNaN(b))</tt>.
-    /// </para>
+    /// <code>
+    ///     <tt>(a == b) || (Float.isNaN(a) &amp;&amp; Float.isNaN(b))</tt>.
+    /// </code>
     /// The values <tt>-0.0</tt> and <tt>+0.0</tt> are considered to be
     /// equal, unlike <see cref="float.Equals(object)"/>.
-    /// </para>
+    /// </li>
     /// </para>
     /// <para>
     /// A float buffer is not equal to any other type of object.
@@ -739,9 +740,12 @@ public abstract class FloatBuffer : Buffer
         return true;
     }
 
-    private static bool Equals( float x, float y )
+    /// <summary>
+    /// Tells whether or not float <tt>a</tt> is equal to float <tt>b</tt>.
+    /// </summary>
+    private static bool Equals( float a, float b )
     {
-        return x.Equals( y ) || ( float.IsNaN( x ) && float.IsNaN( y ) );
+        return a.Equals( b ) || ( float.IsNaN( a ) && float.IsNaN( b ) );
     }
 
     /// <summary>
@@ -782,19 +786,26 @@ public abstract class FloatBuffer : Buffer
         return Remaining() - that.Remaining();
     }
 
+    /// <summary>
+    /// Compare two float values, returning -1 if the first is less than the second,
+    /// +1 if the first is greater than the second, and 0 if they are equal. It also
+    /// handles NaN (Not a Number) values by considering them equal to each other but
+    /// less than any non-NaN number.
+    /// </summary>
     private static int Compare( float x, float y )
     {
-        return x < y
-                   ? -1
-                   : x > y
-                       ? +1
-                       : x.Equals( y )
-                           ? 0
-                           : float.IsNaN( x )
-                               ? float.IsNaN( y )
-                                     ? 0
-                                     : +1
-                               : -1;
+        if ( x < y ) return -1;
+
+        if ( x > y ) return 1;
+
+        if ( x.Equals( y ) ) return 0;
+
+        if ( float.IsNaN( x ) )
+        {
+            return float.IsNaN( y ) ? 0 : 1;
+        }
+
+        return -1;
     }
 
     /// <summary>

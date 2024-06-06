@@ -23,18 +23,36 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text.RegularExpressions;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
-
+/// <summary>
+/// Renders bitmap fonts. The font consists of 2 files: an image file or <see cref="TextureRegion"/>
+/// containing the glyphs and a file in the <b>AngleCode BMFont</b> text format that describes where
+/// each glyph is on the image.
+/// <para>
+/// Text is drawn using a <see cref="IBatch"/>. Text can be cached in a <see cref="BitmapFontCache"/>
+/// for faster rendering of static text, which saves needing to compute the location of each glyph
+/// each frame.
+/// </para>
+/// <para>
+/// The texture for a BitmapFont loaded from a file is managed. <see cref="Dispose()"/> must be
+/// called to free the texture when no longer needed. A BitmapFont which has loaded using a
+/// <see cref="TextureRegion"/> is managed if the region's texture is managed. Disposing the
+/// BitmapFont disposes the region's texture, which may not be desirable if the texture is still
+/// being used elsewhere.
+/// </para>
+/// <para>
+/// The code was originally based on Matthias Mann's TWL BitmapFont class. Thanks for sharing, Matthias! :)
+/// </para>
+/// </summary>
 [PublicAPI]
 public class BitmapFont
 {
-	#region constants
+    #region constants
 
     private const string REGEX_PATTERN  = ".*id=(\\d+)";
     private const string FONT_NAME      = "Resources/arial-15.fnt";
@@ -42,7 +60,7 @@ public class BitmapFont
     private const int    PAGE_SIZE      = 1 << LOG2_PAGE_SIZE;
     private const int    PAGES          = 0x10000 / PAGE_SIZE;
 
-	#endregion constants
+    #endregion constants
 
     public bool Flipped     { get; set; }
     public bool OwnsTexture { get; set; }
@@ -157,8 +175,8 @@ public class BitmapFont
     /// specifying each page manually with the TextureRegion[] constructor.
     /// </para>
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="region"></param>
+    /// <param name="data"> The BitmapFontData. </param>
+    /// <param name="region"> The TextureRegion. </param>
     /// <param name="integer">
     /// If true, rendering positions will be at integer values to avoid filtering
     /// artifacts.
@@ -177,8 +195,8 @@ public class BitmapFont
     /// path(s) will be read from the BitmapFontData. The dispose() method will not dispose
     /// the texture of the region(s) if the regions array is != null and not empty.
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="pageRegions"></param>
+    /// <param name="data"> The BitmapFontData. </param>
+    /// <param name="pageRegions"> The list of TextureRegions. </param>
     /// <param name="integer">
     /// If true, rendering positions will be at integer values to avoid filtering artifacts.
     /// </param>
@@ -219,7 +237,7 @@ public class BitmapFont
             OwnsTexture = false;
         }
 
-        _cache = NewFontCache();
+        _cache = new BitmapFontCache( this, UseIntegerPositions );
 
         InitialLoad( data );
     }
@@ -240,32 +258,48 @@ public class BitmapFont
         }
     }
 
-	public float GetScaleX() => _data.ScaleX;
+    /// <summary>
+    /// Returns the <see cref="BitmapFontData.ScaleX"/> value.
+    /// </summary>
+    public float GetScaleX() => _data.ScaleX;
 
-	public float GetScaleY() => _data.ScaleY;
+    /// <summary>
+    /// Returns the <see cref="BitmapFontData.ScaleY"/> value.
+    /// </summary>
+    public float GetScaleY() => _data.ScaleY;
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-	/// <summary>
-	/// Helper method, allowing a call to <see cref="Load(BitmapFontData)"/>,
-	/// which is a <b>virtual</b> method, from constructors.
-	/// </summary>
-	private void InitialLoad( BitmapFontData data )
+    /// <summary>
+    /// Helper method, allowing a call to <see cref="Load(BitmapFontData)"/>,
+    /// which is a <b>virtual</b> method, from constructors.
+    /// </summary>
+    private void InitialLoad( BitmapFontData data )
     {
         Load( data );
     }
 
+    /// <summary>
+    /// Loads the glyph regions for each glyph in the provided font data.
+    /// </summary>
+    /// <param name="data">
+    /// The BitmapFontData containing information about the glyphs and their regions.
+    /// </param>
     protected virtual void Load( BitmapFontData data )
     {
+        // Iterate through each page of glyphs in the font data.
         foreach ( Glyph?[]? page in data.Glyphs )
         {
+            // Skip null pages.
             if ( page == null )
             {
                 continue;
             }
 
+            // Iterate through each glyph in the page.
             foreach ( var glyph in page )
             {
+                // Set the glyph region if the glyph is not null.
                 if ( glyph != null )
                 {
                     data.SetGlyphRegion( glyph, _regions[ glyph.Page ] );
@@ -273,15 +307,16 @@ public class BitmapFont
             }
         }
 
+        // Set the glyph region for the missing glyph if it exists.
         if ( data.MissingGlyph != null )
         {
             data.MissingGlyph = data.SetGlyphRegion( data.MissingGlyph, _regions[ data.MissingGlyph.Page ] );
         }
     }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-	#region font drawing
+    #region font drawing
 
     /// <summary>
     /// Draws text at the specified position.
@@ -370,51 +405,51 @@ public class BitmapFont
         _cache.Draw( batch );
     }
 
-	#endregion font drawing
+    #endregion font drawing
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-	/// <summary>
-	/// Returns the color of text drawn with this font.
-	/// </summary>
-	public Color GetColor() => _cache.GetColor();
+    /// <summary>
+    /// Returns the color of text drawn with this font.
+    /// </summary>
+    public Color GetColor() => _cache.GetColor();
 
-	/// <summary>
-	/// A convenience method for setting the font color.
-	/// </summary>
-	public void SetColor(Color color) => _cache.GetColor().Set(color);
+    /// <summary>
+    /// A convenience method for setting the font color.
+    /// </summary>
+    public void SetColor( Color color ) => _cache.GetColor().Set( color );
 
-	/// <summary>
-	/// A convenience method for setting the font color.
-	/// </summary>
-	public void SetColor( float r, float g, float b, float a )
+    /// <summary>
+    /// A convenience method for setting the font color.
+    /// </summary>
+    public void SetColor( float r, float g, float b, float a )
     {
         _cache.GetColor().Set( r, g, b, a );
     }
 
-	/// <summary>
-	/// Returns the first texture region. This is included for backwards
-	/// compatibility, and for convenience since most fonts only use one
-	/// texture page.
-	/// <para>
-	/// For multi-page fonts, use <see cref="GetRegions()"/>.
-	/// </para>
-	/// </summary>
-	/// <returns>the first texture region</returns>
-	public TextureRegion GetRegion() => _regions.First();
+    /// <summary>
+    /// Returns the first texture region. This is included for backwards
+    /// compatibility, and for convenience since most fonts only use one
+    /// texture page.
+    /// <para>
+    /// For multi-page fonts, use <see cref="GetRegions()"/>.
+    /// </para>
+    /// </summary>
+    /// <returns>the first texture region</returns>
+    public TextureRegion GetRegion() => _regions.First();
 
-	/// <summary>
-	/// Returns the array of TextureRegions that represents each texture page of glyphs.
-	/// </summary>
-	/// <returns>
-	/// the array of texture regions; modifying it may produce undesirable results
-	/// </returns>
-	public List<TextureRegion> GetRegions() => _regions;
+    /// <summary>
+    /// Returns the array of TextureRegions that represents each texture page of glyphs.
+    /// </summary>
+    /// <returns>
+    /// the array of texture regions; modifying it may produce undesirable results
+    /// </returns>
+    public List< TextureRegion > GetRegions() => _regions;
 
-	/// <summary>
-	/// Returns the texture page at the given index.
-	/// </summary>
-	public TextureRegion GetRegion( int index ) => _regions[ index ];
+    /// <summary>
+    /// Returns the texture page at the given index.
+    /// </summary>
+    public TextureRegion GetRegion( int index ) => _regions[ index ];
 
     /// <summary>
     /// Returns the line height, which is the distance from one line of text to the next.
@@ -438,17 +473,17 @@ public class BitmapFont
     /// </summary>
     public float GetCapHeight() => _data.CapHeight;
 
-	/// <summary>
-	/// Returns the ascent, which is the distance from the cap height to the top of
-	/// the tallest glyph.
-	/// </summary>
-	public float GetAscent() => _data.Ascent;
+    /// <summary>
+    /// Returns the ascent, which is the distance from the cap height to the top of
+    /// the tallest glyph.
+    /// </summary>
+    public float GetAscent() => _data.Ascent;
 
-	/// <summary>
-	/// Returns the descent, which is the distance from the bottom of the glyph that
-	/// extends the lowest to the baseline. This number is negative.
-	/// </summary>
-	public float GetDescent() => _data.Descent;
+    /// <summary>
+    /// Returns the descent, which is the distance from the bottom of the glyph that
+    /// extends the lowest to the baseline. This number is negative.
+    /// </summary>
+    public float GetDescent() => _data.Descent;
 
     /// <summary>
     /// Makes the specified glyphs fixed width. This can be useful to make the numbers
@@ -518,16 +553,16 @@ public class BitmapFont
         return new BitmapFontCache( this, UseIntegerPositions );
     }
 
-	/// <inheritdoc/>
+    /// <inheritdoc/>
     public override string? ToString()
     {
         return _data.Name ?? base.ToString();
     }
 
-	/// <summary>
-	/// Returns the index of the character 'ch' in the supplied text string.
-	/// Scanning for the character begins at the index specified by 'start'.
-	/// </summary>
+    /// <summary>
+    /// Returns the index of the character 'ch' in the supplied text string.
+    /// Scanning for the character begins at the index specified by 'start'.
+    /// </summary>
     private static int IndexOf( string text, char ch, int start )
     {
         var n = text.Length;
@@ -543,11 +578,11 @@ public class BitmapFont
         return n;
     }
 
-	/// <summary>
-	/// Disposes the texture used by this BitmapFont's region IF this BitmapFont
-	/// created the texture.
-	/// </summary>
-	public void Dispose()
+    /// <summary>
+    /// Disposes the texture used by this BitmapFont's region IF this BitmapFont
+    /// created the texture.
+    /// </summary>
+    public void Dispose()
     {
         if ( OwnsTexture )
         {
@@ -558,8 +593,8 @@ public class BitmapFont
         }
     }
 
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Represents a single character in a font page.
@@ -662,14 +697,18 @@ public class BitmapFont
 
         // --------------------------------------------------------------------
 
-        internal string?   Name       { get; private set; }
-        internal string[]? ImagePaths { get; private set; }
-        internal FileInfo  FontFile   { get; set; }
-        internal bool      Flipped    { get; set; }
-        internal float     PadTop     { get; set; }
-        internal float     PadRight   { get; set; }
-        internal float     PadBottom  { get; set; }
-        internal float     PadLeft    { get; set; }
+        internal string?     Name          { get; private set; }
+        internal string[]?   ImagePaths    { get; private set; }
+        internal FileInfo    FontFile      { get; set; }
+        internal bool        Flipped       { get; set; }
+        internal float       PadTop        { get; set; }
+        internal float       PadRight      { get; set; }
+        internal float       PadBottom     { get; set; }
+        internal float       PadLeft       { get; set; }
+        internal float       ScaleX        { get; private set; } = 1;
+        internal float       ScaleY        { get; private set; } = 1;
+        internal bool        MarkupEnabled { get; set; }
+        internal Glyph?[]?[] Glyphs        { get; set; } = new Glyph[ PAGES ][];
 
         /// <summary>
         /// The distance from one line of text to the next.
@@ -706,18 +745,12 @@ public class BitmapFont
         /// </summary>
         internal float BlankLineScale { get; set; } = 1;
 
-        internal float ScaleX        { get; private set; } = 1;
-        internal float ScaleY        { get; private set; } = 1;
-        internal bool  MarkupEnabled { get; set; }
-
         /// <summary>
         /// The amount to add to the glyph X position when drawing a cursor between
         /// glyphs. This field is not set by the BMFont file, it needs to be set
         /// manually depending on how the glyphs are rendered on the backing textures.
         /// </summary>
         internal float CursorX { get; set; }
-
-        internal Glyph?[]?[] Glyphs { get; set; } = new Glyph[ PAGES ][];
 
         /// <summary>
         /// The glyph to display for characters not in the font. May be null.
@@ -1409,8 +1442,8 @@ public class BitmapFont
                 glyphs.Add( glyph );
 
                 xAdvances.Add( lastGlyph == null // First glyph on line, adjust the position so it isn't drawn left of 0.
-                         ? glyph.FixedWidth ? 0 : ( -glyph.Xoffset * scaleX ) - PadLeft
-                         : ( lastGlyph.Xadvance + lastGlyph.GetKerning( ch ) ) * scaleX );
+                                   ? glyph.FixedWidth ? 0 : ( -glyph.Xoffset * scaleX ) - PadLeft
+                                   : ( lastGlyph.Xadvance + lastGlyph.GetKerning( ch ) ) * scaleX );
 
                 lastGlyph = glyph;
 
@@ -1572,7 +1605,7 @@ public class BitmapFont
             SetScale( ScaleX + amount, ScaleY + amount );
         }
 
-		/// <inheritdoc/>
+        /// <inheritdoc/>
         public override string? ToString()
         {
             return Name ?? base.ToString();

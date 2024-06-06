@@ -175,7 +175,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glTexParameteriv( int target, int pname, int[] @params )
+    public void glTexParameteriv( int target, int pname, int[] @params )
     {
         Calls++;
         Gdx.GL.glTexParameteriv( target, pname, @params );
@@ -191,7 +191,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glTexImage1D< T >( int target, int level, int internalformat, int width, int border, int format, int type, T[] pixels )
+    public void glTexImage1D< T >( int target, int level, int internalformat, int width, int border, int format, int type, T[] pixels )
         where T : unmanaged
     {
         Calls++;
@@ -208,7 +208,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glTexImage2D< T >( int target, int level, int internalformat, int width, int height, int border, int format, int type, T[] pixels )
+    public void glTexImage2D< T >( int target, int level, int internalformat, int width, int height, int border, int format, int type, T[] pixels )
         where T : unmanaged
     {
         Calls++;
@@ -385,7 +385,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glReadPixels< T >( int x, int y, int width, int height, int format, int type, ref T[] pixels ) where T : unmanaged
+    public void glReadPixels< T >( int x, int y, int width, int height, int format, int type, ref T[] pixels ) where T : unmanaged
     {
         Calls++;
         Gdx.GL.glReadPixels( x, y, width, height, format, type, ref pixels );
@@ -401,7 +401,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetBooleanv( int pname, ref bool[] data )
+    public void glGetBooleanv( int pname, ref bool[] data )
     {
         Calls++;
         Gdx.GL.glGetBooleanv( pname, ref data );
@@ -417,7 +417,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetDoublev( int pname, ref double[] data )
+    public void glGetDoublev( int pname, ref double[] data )
     {
         Calls++;
         Gdx.GL.glGetDoublev( pname, ref data );
@@ -443,7 +443,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetFloatv( int pname, ref float[] data )
+    public void glGetFloatv( int pname, ref float[] data )
     {
         Calls++;
         Gdx.GL.glGetFloatv( pname, ref data );
@@ -459,7 +459,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetIntegerv( int pname, ref int[] data )
+    public void glGetIntegerv( int pname, ref int[] data )
     {
         Calls++;
         Gdx.GL.glGetIntegerv( pname, ref data );
@@ -477,10 +477,10 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe string glGetStringSafe( int name )
+    public string glGetStringSafe( int name )
     {
         Calls++;
-        var str = Gdx.GL.glGetStringSafe( name ); 
+        var str = Gdx.GL.glGetStringSafe( name );
         CheckErrors();
 
         return str;
@@ -490,13 +490,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetTexImage( int target, int level, int format, int type, void* pixels )
     {
         Calls++;
+        Gdx.GL.glGetTexImage( target, level, format, type, pixels );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetTexImage< T >( int target, int level, int format, int type, ref T[] pixels ) where T : unmanaged
+    public void glGetTexImage< T >( int target, int level, int format, int type, ref T[] pixels )
+        where T : unmanaged
     {
         Calls++;
+        Gdx.GL.glGetTexImage( target, level, format, type, ref pixels );
         CheckErrors();
     }
 
@@ -504,13 +507,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetTexParameterfv( int target, int pname, float* @params )
     {
         Calls++;
+        Gdx.GL.glGetTexParameterfv( target, pname, @params );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetTexParameterfv( int target, int pname, ref float[] @params )
+    public void glGetTexParameterfv( int target, int pname, ref float[] @params )
     {
         Calls++;
+        Gdx.GL.glGetTexParameterfv( target, pname, ref @params );
         CheckErrors();
     }
 
@@ -518,13 +523,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetTexParameteriv( int target, int pname, int* @params )
     {
         Calls++;
+        Gdx.GL.glGetTexParameteriv( target, pname, @params );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetTexParameteriv( int target, int pname, ref int[] @params )
+    public void glGetTexParameteriv( int target, int pname, ref int[] @params )
     {
         Calls++;
+        Gdx.GL.glGetTexParameteriv( target, pname, ref @params );
         CheckErrors();
     }
 
@@ -532,13 +539,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetTexLevelParameterfv( int target, int level, int pname, float* @params )
     {
         Calls++;
+        Gdx.GL.glGetTexLevelParameterfv( target, level, pname, @params );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetTexLevelParameterfv( int target, int level, int pname, ref float[] @params )
+    public void glGetTexLevelParameterfv( int target, int level, int pname, ref float[] @params )
     {
         Calls++;
+        Gdx.GL.glGetTexLevelParameterfv( target, level, pname, ref @params );
         CheckErrors();
     }
 
@@ -546,13 +555,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetTexLevelParameteriv( int target, int level, int pname, int* @params )
     {
         Calls++;
+        Gdx.GL.glGetTexLevelParameteriv( target, level, pname, @params );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetTexLevelParameteriv( int target, int level, int pname, ref int[] @params )
+    public void glGetTexLevelParameteriv( int target, int level, int pname, ref int[] @params )
     {
         Calls++;
+        Gdx.GL.glGetTexLevelParameteriv( target, level, pname, ref @params );
         CheckErrors();
     }
 
@@ -560,15 +571,17 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public bool glIsEnabled( int cap )
     {
         Calls++;
+        var result = Gdx.GL.glIsEnabled( cap );
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
     public void glDepthRange( double near, double far )
     {
         Calls++;
+        Gdx.GL.glDepthRange( near, far );
         CheckErrors();
     }
 
@@ -576,6 +589,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glViewport( int x, int y, int width, int height )
     {
         Calls++;
+        Gdx.GL.glViewport( x, y, width, height );
         CheckErrors();
     }
 
@@ -583,6 +597,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glDrawArrays( int mode, int first, int count )
     {
         Calls++;
+        Gdx.GL.glDrawArrays( mode, first, count );
         CheckErrors();
     }
 
@@ -590,13 +605,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glDrawElements( int mode, int count, int type, void* indices )
     {
         Calls++;
+        Gdx.GL.glDrawElements( mode, count, type, indices );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glDrawElements< T >( int mode, int count, int type, T[] indices ) where T : unmanaged, IUnsignedNumber< T >
+    public void glDrawElements< T >( int mode, int count, int type, T[] indices )
+        where T : unmanaged, IUnsignedNumber< T >
     {
         Calls++;
+        Gdx.GL.glDrawElements( mode, count, type, indices );
         CheckErrors();
     }
 
@@ -604,6 +622,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glPolygonOffset( float factor, float units )
     {
         Calls++;
+        Gdx.GL.glPolygonOffset( factor, units );
         CheckErrors();
     }
 
@@ -611,6 +630,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glCopyTexImage1D( int target, int level, int internalformat, int x, int y, int width, int border )
     {
         Calls++;
+        Gdx.GL.glCopyTexImage1D( target, level, internalformat, x, y, width, border );
         CheckErrors();
     }
 
@@ -618,6 +638,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glCopyTexImage2D( int target, int level, int internalformat, int x, int y, int width, int height, int border )
     {
         Calls++;
+        Gdx.GL.glCopyTexImage2D( target, level, internalformat, x, y, width, height, border );
         CheckErrors();
     }
 
@@ -625,6 +646,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glCopyTexSubImage1D( int target, int level, int xoffset, int x, int y, int width )
     {
         Calls++;
+        Gdx.GL.glCopyTexSubImage1D( target, level, xoffset, x, y, width );
         CheckErrors();
     }
 
@@ -632,6 +654,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glCopyTexSubImage2D( int target, int level, int xoffset, int yoffset, int x, int y, int width, int height )
     {
         Calls++;
+        Gdx.GL.glCopyTexSubImage2D( target, level, xoffset, yoffset, x, y, width, height );
         CheckErrors();
     }
 
@@ -639,13 +662,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glTexSubImage1D( int target, int level, int xoffset, int width, int format, int type, void* pixels )
     {
         Calls++;
+        Gdx.GL.glTexSubImage1D( target, level, xoffset, width, format, type, pixels );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glTexSubImage1D< T >( int target, int level, int xoffset, int width, int format, int type, T[] pixels ) where T : unmanaged
+    public void glTexSubImage1D< T >( int target, int level, int xoffset, int width, int format, int type, T[] pixels )
+        where T : unmanaged
     {
         Calls++;
+        Gdx.GL.glTexSubImage1D( target, level, xoffset, width, format, type, pixels );
         CheckErrors();
     }
 
@@ -653,14 +679,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, void* pixels )
     {
         Calls++;
+        Gdx.GL.glTexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, pixels );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glTexSubImage2D< T >( int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, T[] pixels )
+    public void glTexSubImage2D< T >( int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, T[] pixels )
         where T : unmanaged
     {
         Calls++;
+        Gdx.GL.glTexSubImage2D( target, level, xoffset, yoffset, width, height, format, type, pixels );
         CheckErrors();
     }
 
@@ -668,6 +696,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glBindTexture( int target, uint texture )
     {
         Calls++;
+        Gdx.GL.glBindTexture( target, texture );
         CheckErrors();
     }
 
@@ -675,13 +704,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glDeleteTextures( int n, uint* textures )
     {
         Calls++;
+        Gdx.GL.glDeleteTextures( n, textures );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glDeleteTextures( params uint[] textures )
+    public void glDeleteTextures( params uint[] textures )
     {
         Calls++;
+        Gdx.GL.glDeleteTextures( textures );
         CheckErrors();
     }
 
@@ -689,47 +720,54 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGenTextures( int n, uint* textures )
     {
         Calls++;
+        Gdx.GL.glGenTextures( n, textures );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe uint[] glGenTextures( int n )
+    public uint[] glGenTextures( int n )
     {
         Calls++;
+        var result = Gdx.GL.glGenTextures( n );
         CheckErrors();
 
-        return null!;
+        return result;
     }
 
     /// <inheritdoc />
     public uint glGenTexture()
     {
         Calls++;
+        var result = Gdx.GL.glGenTexture();
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
     public bool glIsTexture( uint texture )
     {
         Calls++;
+        var result = Gdx.GL.glIsTexture( texture );
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void glDrawRangeElements( int mode, uint start, uint end, int count, int type, void* indices )
     {
         Calls++;
+        Gdx.GL.glDrawRangeElements( mode, start, end, count, type, indices );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glDrawRangeElements< T >( int mode, uint start, uint end, int count, int type, T[] indices ) where T : unmanaged, IUnsignedNumber< T >
+    public void glDrawRangeElements< T >( int mode, uint start, uint end, int count, int type, T[] indices )
+        where T : unmanaged, IUnsignedNumber< T >
     {
         Calls++;
+        Gdx.GL.glDrawRangeElements( mode, start, end, count, type, indices );
         CheckErrors();
     }
 
@@ -746,22 +784,24 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
                                      void* pixels )
     {
         Calls++;
+        Gdx.GL.glTexImage3D( target, level, internalformat, width, height, depth, border, format, type, pixels );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glTexImage3D< T >( int target,
-                                          int level,
-                                          int internalformat,
-                                          int width,
-                                          int height,
-                                          int depth,
-                                          int border,
-                                          int format,
-                                          int type,
-                                          T[] pixels ) where T : unmanaged
+    public void glTexImage3D< T >( int target,
+                                   int level,
+                                   int internalformat,
+                                   int width,
+                                   int height,
+                                   int depth,
+                                   int border,
+                                   int format,
+                                   int type,
+                                   T[] pixels ) where T : unmanaged
     {
         Calls++;
+        Gdx.GL.glTexImage3D( target, level, internalformat, width, height, depth, border, format, type, pixels );
         CheckErrors();
     }
 
@@ -779,23 +819,25 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
                                         void* pixels )
     {
         Calls++;
+        Gdx.GL.glTexSubImage3D( target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glTexSubImage3D< T >( int target,
-                                             int level,
-                                             int xoffset,
-                                             int yoffset,
-                                             int zoffset,
-                                             int width,
-                                             int height,
-                                             int depth,
-                                             int format,
-                                             int type,
-                                             T[] pixels ) where T : unmanaged
+    public void glTexSubImage3D< T >( int target,
+                                      int level,
+                                      int xoffset,
+                                      int yoffset,
+                                      int zoffset,
+                                      int width,
+                                      int height,
+                                      int depth,
+                                      int format,
+                                      int type,
+                                      T[] pixels ) where T : unmanaged
     {
         Calls++;
+        Gdx.GL.glTexSubImage3D( target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels );
         CheckErrors();
     }
 
@@ -803,18 +845,23 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glCopyTexSubImage3D( int target, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height )
     {
         Calls++;
+        Gdx.GL.glCopyTexSubImage3D( target, level, xoffset, yoffset, zoffset, x, y, width, height );
         CheckErrors();
     }
 
     /// <inheritdoc />
     public void glActiveTexture( int texture )
     {
+        Calls++;
+        Gdx.GL.glActiveTexture( texture );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glSampleCoverage( float value, bool invert )
     {
         Calls++;
+        Gdx.GL.glSampleCoverage( value, invert );
         CheckErrors();
     }
 
@@ -830,13 +877,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
                                                void* data )
     {
         Calls++;
+        Gdx.GL.glCompressedTexImage3D( target, level, internalformat, width, height, depth, border, imageSize, data );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glCompressedTexImage3D( int target, int level, int internalformat, int width, int height, int depth, int border, byte[] data )
+    public void glCompressedTexImage3D( int target, int level, int internalformat, int width, int height, int depth, int border, byte[] data )
     {
         Calls++;
+        Gdx.GL.glCompressedTexImage3D( target, level, internalformat, width, height, depth, border, data );
         CheckErrors();
     }
 
@@ -844,13 +893,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glCompressedTexImage2D( int target, int level, int internalformat, int width, int height, int border, int imageSize, void* data )
     {
         Calls++;
+        Gdx.GL.glCompressedTexImage2D( target, level, internalformat, width, height, border, imageSize, data );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glCompressedTexImage2D( int target, int level, int internalformat, int width, int height, int border, byte[] data )
+    public void glCompressedTexImage2D( int target, int level, int internalformat, int width, int height, int border, byte[] data )
     {
         Calls++;
+        Gdx.GL.glCompressedTexImage2D( target, level, internalformat, width, height, border, data );
         CheckErrors();
     }
 
@@ -858,13 +909,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glCompressedTexImage1D( int target, int level, int internalformat, int width, int border, int imageSize, void* data )
     {
         Calls++;
+        Gdx.GL.glCompressedTexImage1D( target, level, internalformat, width, border, imageSize, data );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glCompressedTexImage1D( int target, int level, int internalformat, int width, int border, byte[] data )
+    public void glCompressedTexImage1D( int target, int level, int internalformat, int width, int border, byte[] data )
     {
         Calls++;
+        Gdx.GL.glCompressedTexImage1D( target, level, internalformat, width, border, data );
         CheckErrors();
     }
 
@@ -882,22 +935,24 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
                                                   void* data )
     {
         Calls++;
+        Gdx.GL.glCompressedTexSubImage3D( target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glCompressedTexSubImage3D( int target,
-                                                  int level,
-                                                  int xoffset,
-                                                  int yoffset,
-                                                  int zoffset,
-                                                  int width,
-                                                  int height,
-                                                  int depth,
-                                                  int format,
-                                                  byte[] data )
+    public void glCompressedTexSubImage3D( int target,
+                                           int level,
+                                           int xoffset,
+                                           int yoffset,
+                                           int zoffset,
+                                           int width,
+                                           int height,
+                                           int depth,
+                                           int format,
+                                           byte[] data )
     {
         Calls++;
+        Gdx.GL.glCompressedTexSubImage3D( target, level, xoffset, yoffset, zoffset, width, height, depth, format, data );
         CheckErrors();
     }
 
@@ -913,13 +968,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
                                                   void* data )
     {
         Calls++;
+        Gdx.GL.glCompressedTexSubImage2D( target, level, xoffset, yoffset, width, height, format, imageSize, data );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glCompressedTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height, int format, byte[] data )
+    public void glCompressedTexSubImage2D( int target, int level, int xoffset, int yoffset, int width, int height, int format, byte[] data )
     {
         Calls++;
+        Gdx.GL.glCompressedTexSubImage2D( target, level, xoffset, yoffset, width, height, format, data );
         CheckErrors();
     }
 
@@ -927,13 +984,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glCompressedTexSubImage1D( int target, int level, int xoffset, int width, int format, int imageSize, void* data )
     {
         Calls++;
+        Gdx.GL.glCompressedTexSubImage1D( target, level, xoffset, width, format, imageSize, data );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glCompressedTexSubImage1D( int target, int level, int xoffset, int width, int format, byte[] data )
+    public void glCompressedTexSubImage1D( int target, int level, int xoffset, int width, int format, byte[] data )
     {
         Calls++;
+        Gdx.GL.glCompressedTexSubImage1D( target, level, xoffset, width, format, data );
         CheckErrors();
     }
 
@@ -941,13 +1000,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetCompressedTexImage( int target, int level, void* img )
     {
         Calls++;
+        Gdx.GL.glGetCompressedTexImage( target, level, img );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetCompressedTexImage( int target, int level, ref byte[] img )
+    public void glGetCompressedTexImage( int target, int level, ref byte[] img )
     {
         Calls++;
+        Gdx.GL.glGetCompressedTexImage( target, level, ref img );
         CheckErrors();
     }
 
@@ -955,6 +1016,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glBlendFuncSeparate( int sfactorRGB, int dfactorRGB, int sfactorAlpha, int dfactorAlpha )
     {
         Calls++;
+        Gdx.GL.glBlendFuncSeparate( sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha );
         CheckErrors();
     }
 
@@ -962,13 +1024,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glMultiDrawArrays( int mode, int* first, int* count, int drawcount )
     {
         Calls++;
+        Gdx.GL.glMultiDrawArrays( mode, first, count, drawcount );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glMultiDrawArrays( int mode, int[] first, int[] count )
+    public void glMultiDrawArrays( int mode, int[] first, int[] count )
     {
         Calls++;
+        Gdx.GL.glMultiDrawArrays( mode, first, count );
         CheckErrors();
     }
 
@@ -976,13 +1040,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glMultiDrawElements( int mode, int* count, int type, void** indices, int drawcount )
     {
         Calls++;
+        Gdx.GL.glMultiDrawElements( mode, count, type, indices, drawcount );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glMultiDrawElements< T >( int mode, int[] count, int type, T[][] indices ) where T : unmanaged, IUnsignedNumber< T >
+    public void glMultiDrawElements< T >( int mode, int[] count, int type, T[][] indices )
+        where T : unmanaged, IUnsignedNumber< T >
     {
         Calls++;
+        Gdx.GL.glMultiDrawElements( mode, count, type, indices );
         CheckErrors();
     }
 
@@ -990,6 +1057,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glPointParameterf( int pname, float param )
     {
         Calls++;
+        Gdx.GL.glPointParameterf( pname, param );
         CheckErrors();
     }
 
@@ -997,13 +1065,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glPointParameterfv( int pname, float* @params )
     {
         Calls++;
+        Gdx.GL.glPointParameterfv( pname, @params );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glPointParameterfv( int pname, float[] @params )
+    public void glPointParameterfv( int pname, float[] @params )
     {
         Calls++;
+        Gdx.GL.glPointParameterfv( pname, @params );
         CheckErrors();
     }
 
@@ -1022,7 +1092,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glPointParameteriv( int pname, int[] @params )
+    public void glPointParameteriv( int pname, int[] @params )
     {
         Calls++;
         CheckErrors();
@@ -1050,21 +1120,23 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe uint[] glGenQueries( int n )
+    public uint[] glGenQueries( int n )
     {
         Calls++;
+        var result = Gdx.GL.glGenQueries( n );
         CheckErrors();
 
-        return null!;
+        return result;
     }
 
     /// <inheritdoc />
     public uint glGenQuery()
     {
         Calls++;
+        var result = Gdx.GL.glGenQuery();
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1075,7 +1147,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glDeleteQueries( params uint[] ids )
+    public void glDeleteQueries( params uint[] ids )
     {
         Calls++;
         CheckErrors();
@@ -1085,9 +1157,10 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public bool glIsQuery( uint id )
     {
         Calls++;
+        var result = Gdx.GL.glIsQuery( id );
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1112,7 +1185,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetQueryiv( int target, int pname, ref int[] @params )
+    public void glGetQueryiv( int target, int pname, ref int[] @params )
     {
         Calls++;
         CheckErrors();
@@ -1126,7 +1199,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetQueryObjectiv( uint id, int pname, ref int[] @params )
+    public void glGetQueryObjectiv( uint id, int pname, ref int[] @params )
     {
         Calls++;
         CheckErrors();
@@ -1140,7 +1213,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetQueryObjectuiv( uint id, int pname, ref uint[] @params )
+    public void glGetQueryObjectuiv( uint id, int pname, ref uint[] @params )
     {
         Calls++;
         CheckErrors();
@@ -1161,7 +1234,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glDeleteBuffers( params uint[] buffers )
+    public void glDeleteBuffers( params uint[] buffers )
     {
         Calls++;
         CheckErrors();
@@ -1175,30 +1248,33 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe uint[] glGenBuffers( int n )
+    public uint[] glGenBuffers( int n )
     {
         Calls++;
+        var result = Gdx.GL.glGenBuffers( n );
         CheckErrors();
 
-        return null!;
+        return result;
     }
 
     /// <inheritdoc />
     public uint glGenBuffer()
     {
         Calls++;
+        var result = Gdx.GL.glGenBuffer();
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
     public bool glIsBuffer( uint buffer )
     {
         Calls++;
+        var result = Gdx.GL.glIsBuffer( buffer );
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1209,7 +1285,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glBufferData< T >( int target, T[] data, int usage ) where T : unmanaged
+    public void glBufferData< T >( int target, T[] data, int usage ) where T : unmanaged
     {
         Calls++;
         CheckErrors();
@@ -1223,7 +1299,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glBufferSubData< T >( int target, int offsetCount, T[] data ) where T : unmanaged
+    public void glBufferSubData< T >( int target, int offsetCount, T[] data ) where T : unmanaged
     {
         Calls++;
         CheckErrors();
@@ -1237,37 +1313,30 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetBufferSubData< T >( int target, int offsetCount, int count, ref T[] data ) where T : unmanaged
+    public void glGetBufferSubData< T >( int target, int offsetCount, int count, ref T[] data ) where T : unmanaged
     {
         Calls++;
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void* glMapBuffer( int target, int access )
+    public Span< T > glMapBuffer< T >( int target, int access ) where T : unmanaged
     {
         Calls++;
+        Span< T > result = Gdx.GL.glMapBuffer< T >( target, access );
         CheckErrors();
 
-        return null;
-    }
-
-    /// <inheritdoc />
-    public unsafe Span< T > glMapBuffer< T >( int target, int access ) where T : unmanaged
-    {
-        Calls++;
-        CheckErrors();
-
-        return null!;
+        return result;
     }
 
     /// <inheritdoc />
     public bool glUnmapBuffer( int target )
     {
         Calls++;
+        var result = Gdx.GL.glUnmapBuffer( target );
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1278,7 +1347,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetBufferParameteriv( int target, int pname, ref int[] @params )
+    public void glGetBufferParameteriv( int target, int pname, ref int[] @params )
     {
         Calls++;
         CheckErrors();
@@ -1292,7 +1361,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetBufferPointerv( int target, int pname, ref IntPtr[] @params )
+    public void glGetBufferPointerv( int target, int pname, ref IntPtr[] @params )
     {
         Calls++;
         CheckErrors();
@@ -1313,7 +1382,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glDrawBuffers( params int[] bufs )
+    public void glDrawBuffers( params int[] bufs )
     {
         Calls++;
         CheckErrors();
@@ -1355,7 +1424,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glBindAttribLocation( uint program, uint index, string name )
+    public void glBindAttribLocation( uint program, uint index, string name )
     {
         Calls++;
         CheckErrors();
@@ -1374,7 +1443,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1383,7 +1452,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1429,14 +1498,14 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe string glGetActiveAttrib( uint program, uint index, int bufSize, out int size, out int type )
+    public string glGetActiveAttrib( uint program, uint index, int bufSize, out int size, out int type )
     {
         Calls++;
         CheckErrors();
         size = 0;
         type = 0;
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1447,14 +1516,14 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe string glGetActiveUniform( uint program, uint index, int bufSize, out int size, out int type )
+    public string glGetActiveUniform( uint program, uint index, int bufSize, out int size, out int type )
     {
         Calls++;
         CheckErrors();
         size = 0;
         type = 0;
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1463,7 +1532,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1474,12 +1543,12 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe uint[] glGetAttachedShaders( uint program, int maxCount )
+    public uint[] glGetAttachedShaders( uint program, int maxCount )
     {
         Calls++;
         CheckErrors();
 
-        return null!;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1488,16 +1557,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
-    public unsafe int glGetAttribLocation( uint program, string name )
+    public int glGetAttribLocation( uint program, string name )
     {
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1508,14 +1577,14 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetProgramiv( uint program, int pname, ref int[] @params )
+    public void glGetProgramiv( uint program, int pname, ref int[] @params )
     {
         Calls++;
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetProgramiv( uint program, int pname, Buffer buffer )
+    public void glGetProgramiv( uint program, int pname, Buffer buffer )
     {
         Calls++;
         CheckErrors();
@@ -1529,12 +1598,12 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe string glGetProgramInfoLog( uint program, int bufSize )
+    public string glGetProgramInfoLog( uint program, int bufSize )
     {
         Calls++;
         CheckErrors();
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1545,7 +1614,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetShaderiv( uint shader, int pname, ref int[] @params )
+    public void glGetShaderiv( uint shader, int pname, ref int[] @params )
     {
         Calls++;
         CheckErrors();
@@ -1559,12 +1628,12 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe string glGetShaderInfoLog( uint shader, int bufSize )
+    public string glGetShaderInfoLog( uint shader, int bufSize )
     {
         Calls++;
         CheckErrors();
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1575,12 +1644,12 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe string glGetShaderSource( uint shader, int bufSize = 4096 )
+    public string glGetShaderSource( uint shader, int bufSize = 4096 )
     {
         Calls++;
         CheckErrors();
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1589,16 +1658,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
-    public unsafe int glGetUniformLocation( uint program, string name )
+    public int glGetUniformLocation( uint program, string name )
     {
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1609,7 +1678,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetUniformfv( uint program, int location, ref float[] @params )
+    public void glGetUniformfv( uint program, int location, ref float[] @params )
     {
         Calls++;
         CheckErrors();
@@ -1623,7 +1692,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetUniformiv( uint program, int location, ref int[] @params )
+    public void glGetUniformiv( uint program, int location, ref int[] @params )
     {
         Calls++;
         CheckErrors();
@@ -1637,7 +1706,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetVertexAttribdv( uint index, int pname, ref double[] @params )
+    public void glGetVertexAttribdv( uint index, int pname, ref double[] @params )
     {
         Calls++;
         CheckErrors();
@@ -1651,7 +1720,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetVertexAttribfv( uint index, int pname, ref float[] @params )
+    public void glGetVertexAttribfv( uint index, int pname, ref float[] @params )
     {
         Calls++;
         CheckErrors();
@@ -1665,7 +1734,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetVertexAttribiv( uint index, int pname, ref int[] @params )
+    public void glGetVertexAttribiv( uint index, int pname, ref int[] @params )
     {
         Calls++;
         CheckErrors();
@@ -1679,7 +1748,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetVertexAttribPointerv( uint index, int pname, ref uint[] pointer )
+    public void glGetVertexAttribPointerv( uint index, int pname, ref uint[] pointer )
     {
         Calls++;
         CheckErrors();
@@ -1691,7 +1760,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1700,7 +1769,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1718,7 +1787,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glShaderSource( uint shader, params string[] @string )
+    public void glShaderSource( uint shader, params string[] @string )
     {
         Calls++;
         CheckErrors();
@@ -1795,7 +1864,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniform1fv( int location, params float[] value )
+    public void glUniform1fv( int location, params float[] value )
     {
         Calls++;
         CheckErrors();
@@ -1809,7 +1878,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniform2fv( int location, params float[] value )
+    public void glUniform2fv( int location, params float[] value )
     {
         Calls++;
         CheckErrors();
@@ -1823,7 +1892,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniform3fv( int location, params float[] value )
+    public void glUniform3fv( int location, params float[] value )
     {
         Calls++;
         CheckErrors();
@@ -1837,7 +1906,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniform4fv( int location, params float[] value )
+    public void glUniform4fv( int location, params float[] value )
     {
         Calls++;
         CheckErrors();
@@ -1851,7 +1920,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniform1iv( int location, params int[] value )
+    public void glUniform1iv( int location, params int[] value )
     {
         Calls++;
         CheckErrors();
@@ -1865,7 +1934,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniform2iv( int location, params int[] value )
+    public void glUniform2iv( int location, params int[] value )
     {
         Calls++;
         CheckErrors();
@@ -1879,7 +1948,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniform3iv( int location, params int[] value )
+    public void glUniform3iv( int location, params int[] value )
     {
         Calls++;
         CheckErrors();
@@ -1893,7 +1962,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniform4iv( int location, params int[] value )
+    public void glUniform4iv( int location, params int[] value )
     {
         Calls++;
         CheckErrors();
@@ -1907,7 +1976,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniformMatrix2fv( int location, bool transpose, params float[] value )
+    public void glUniformMatrix2fv( int location, bool transpose, params float[] value )
     {
         Calls++;
         CheckErrors();
@@ -1921,7 +1990,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniformMatrix3fv( int location, bool transpose, params float[] value )
+    public void glUniformMatrix3fv( int location, bool transpose, params float[] value )
     {
         Calls++;
         CheckErrors();
@@ -1935,14 +2004,14 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniformMatrix4fv( int location, bool transpose, params float[] value )
+    public void glUniformMatrix4fv( int location, bool transpose, params float[] value )
     {
         Calls++;
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glUniformMatrix4fv( int location, int count, bool transpose, Buffer buffer )
+    public void glUniformMatrix4fv( int location, int count, bool transpose, Buffer buffer )
     {
         Calls++;
         CheckErrors();
@@ -1954,7 +2023,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
@@ -1972,7 +2041,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib1dv( uint index, params double[] v )
+    public void glVertexAttrib1dv( uint index, params double[] v )
     {
         Calls++;
         CheckErrors();
@@ -1993,7 +2062,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib1fv( uint index, params float[] v )
+    public void glVertexAttrib1fv( uint index, params float[] v )
     {
         Calls++;
         CheckErrors();
@@ -2014,7 +2083,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib1sv( uint index, params short[] v )
+    public void glVertexAttrib1sv( uint index, params short[] v )
     {
         Calls++;
         CheckErrors();
@@ -2035,7 +2104,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib2dv( uint index, params double[] v )
+    public void glVertexAttrib2dv( uint index, params double[] v )
     {
         Calls++;
         CheckErrors();
@@ -2056,7 +2125,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib2fv( uint index, params float[] v )
+    public void glVertexAttrib2fv( uint index, params float[] v )
     {
         Calls++;
         CheckErrors();
@@ -2077,7 +2146,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib2sv( uint index, params short[] v )
+    public void glVertexAttrib2sv( uint index, params short[] v )
     {
         Calls++;
         CheckErrors();
@@ -2098,7 +2167,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib3dv( uint index, params double[] v )
+    public void glVertexAttrib3dv( uint index, params double[] v )
     {
         Calls++;
         CheckErrors();
@@ -2119,7 +2188,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib3fv( uint index, params float[] v )
+    public void glVertexAttrib3fv( uint index, params float[] v )
     {
         Calls++;
         CheckErrors();
@@ -2140,7 +2209,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib3sv( uint index, params short[] v )
+    public void glVertexAttrib3sv( uint index, params short[] v )
     {
         Calls++;
         CheckErrors();
@@ -2154,7 +2223,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4Nbv( uint index, params sbyte[] v )
+    public void glVertexAttrib4Nbv( uint index, params sbyte[] v )
     {
         Calls++;
         CheckErrors();
@@ -2168,7 +2237,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4Niv( uint index, params int[] v )
+    public void glVertexAttrib4Niv( uint index, params int[] v )
     {
         Calls++;
         CheckErrors();
@@ -2182,7 +2251,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4Nsv( uint index, params short[] v )
+    public void glVertexAttrib4Nsv( uint index, params short[] v )
     {
         Calls++;
         CheckErrors();
@@ -2203,7 +2272,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4Nubv( uint index, params byte[] v )
+    public void glVertexAttrib4Nubv( uint index, params byte[] v )
     {
         Calls++;
         CheckErrors();
@@ -2217,7 +2286,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4Nuiv( uint index, params uint[] v )
+    public void glVertexAttrib4Nuiv( uint index, params uint[] v )
     {
         Calls++;
         CheckErrors();
@@ -2231,7 +2300,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4Nusv( uint index, params ushort[] v )
+    public void glVertexAttrib4Nusv( uint index, params ushort[] v )
     {
         Calls++;
         CheckErrors();
@@ -2245,7 +2314,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4bv( uint index, params sbyte[] v )
+    public void glVertexAttrib4bv( uint index, params sbyte[] v )
     {
         Calls++;
         CheckErrors();
@@ -2266,7 +2335,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4dv( uint index, params double[] v )
+    public void glVertexAttrib4dv( uint index, params double[] v )
     {
         Calls++;
         CheckErrors();
@@ -2287,7 +2356,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4fv( uint index, params float[] v )
+    public void glVertexAttrib4fv( uint index, params float[] v )
     {
         Calls++;
         CheckErrors();
@@ -2301,7 +2370,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4iv( uint index, params int[] v )
+    public void glVertexAttrib4iv( uint index, params int[] v )
     {
         Calls++;
         CheckErrors();
@@ -2322,7 +2391,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4sv( uint index, params short[] v )
+    public void glVertexAttrib4sv( uint index, params short[] v )
     {
         Calls++;
         CheckErrors();
@@ -2336,7 +2405,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4ubv( uint index, params byte[] v )
+    public void glVertexAttrib4ubv( uint index, params byte[] v )
     {
         Calls++;
         CheckErrors();
@@ -2350,7 +2419,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4uiv( uint index, params uint[] v )
+    public void glVertexAttrib4uiv( uint index, params uint[] v )
     {
         Calls++;
         CheckErrors();
@@ -2364,7 +2433,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttrib4usv( uint index, params ushort[] v )
+    public void glVertexAttrib4usv( uint index, params ushort[] v )
     {
         Calls++;
         CheckErrors();
@@ -2378,14 +2447,14 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribPointer( uint index, int size, int type, bool normalized, int stride, uint pointer )
+    public void glVertexAttribPointer( uint index, int size, int type, bool normalized, int stride, uint pointer )
     {
         Calls++;
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer )
+    public void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer )
     {
         Calls++;
         CheckErrors();
@@ -2399,7 +2468,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniformMatrix2x3fv( int location, bool transpose, params float[] value )
+    public void glUniformMatrix2x3fv( int location, bool transpose, params float[] value )
     {
         Calls++;
         CheckErrors();
@@ -2413,7 +2482,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniformMatrix3x2fv( int location, bool transpose, params float[] value )
+    public void glUniformMatrix3x2fv( int location, bool transpose, params float[] value )
     {
         Calls++;
         CheckErrors();
@@ -2427,7 +2496,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniformMatrix2x4fv( int location, bool transpose, params float[] value )
+    public void glUniformMatrix2x4fv( int location, bool transpose, params float[] value )
     {
         Calls++;
         CheckErrors();
@@ -2441,7 +2510,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniformMatrix4x2fv( int location, bool transpose, params float[] value )
+    public void glUniformMatrix4x2fv( int location, bool transpose, params float[] value )
     {
         Calls++;
         CheckErrors();
@@ -2455,7 +2524,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniformMatrix3x4fv( int location, bool transpose, params float[] value )
+    public void glUniformMatrix3x4fv( int location, bool transpose, params float[] value )
     {
         Calls++;
         CheckErrors();
@@ -2469,7 +2538,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniformMatrix4x3fv( int location, bool transpose, params float[] value )
+    public void glUniformMatrix4x3fv( int location, bool transpose, params float[] value )
     {
         Calls++;
         CheckErrors();
@@ -2490,7 +2559,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetBooleani_v( int target, uint index, ref bool[] data )
+    public void glGetBooleani_v( int target, uint index, ref bool[] data )
     {
         Calls++;
         CheckErrors();
@@ -2504,7 +2573,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetIntegeri_v( int target, uint index, ref int[] data )
+    public void glGetIntegeri_v( int target, uint index, ref int[] data )
     {
         Calls++;
         CheckErrors();
@@ -2530,7 +2599,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
@@ -2569,7 +2638,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glTransformFeedbackVaryings( uint program, string[] varyings, int bufferMode )
+    public void glTransformFeedbackVaryings( uint program, string[] varyings, int bufferMode )
     {
         Calls++;
         CheckErrors();
@@ -2583,14 +2652,14 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe string glGetTransformFeedbackVarying( uint program, uint index, int bufSize, out int size, out int type )
+    public string glGetTransformFeedbackVarying( uint program, uint index, int bufSize, out int size, out int type )
     {
         Calls++;
         CheckErrors();
         size = 0;
         type = 0;
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
@@ -2622,7 +2691,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribIPointer( uint index, int size, int type, int stride, uint pointer )
+    public void glVertexAttribIPointer( uint index, int size, int type, int stride, uint pointer )
     {
         Calls++;
         CheckErrors();
@@ -2636,7 +2705,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetVertexAttribIiv( uint index, int pname, ref int[] parameters )
+    public void glGetVertexAttribIiv( uint index, int pname, ref int[] parameters )
     {
         Calls++;
         CheckErrors();
@@ -2650,7 +2719,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetVertexAttribIuiv( uint index, int pname, ref uint[] parameters )
+    public void glGetVertexAttribIuiv( uint index, int pname, ref uint[] parameters )
     {
         Calls++;
         CheckErrors();
@@ -2720,7 +2789,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribI1iv( uint index, int[] v )
+    public void glVertexAttribI1iv( uint index, int[] v )
     {
         Calls++;
         CheckErrors();
@@ -2734,7 +2803,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribI2iv( uint index, int[] v )
+    public void glVertexAttribI2iv( uint index, int[] v )
     {
         Calls++;
         CheckErrors();
@@ -2748,7 +2817,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribI3iv( uint index, int[] v )
+    public void glVertexAttribI3iv( uint index, int[] v )
     {
         Calls++;
         CheckErrors();
@@ -2762,7 +2831,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribI4iv( uint index, int[] v )
+    public void glVertexAttribI4iv( uint index, int[] v )
     {
         Calls++;
         CheckErrors();
@@ -2776,7 +2845,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribI1uiv( uint index, uint[] v )
+    public void glVertexAttribI1uiv( uint index, uint[] v )
     {
         Calls++;
         CheckErrors();
@@ -2790,7 +2859,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribI2uiv( uint index, uint[] v )
+    public void glVertexAttribI2uiv( uint index, uint[] v )
     {
         Calls++;
         CheckErrors();
@@ -2804,7 +2873,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribI3uiv( uint index, uint[] v )
+    public void glVertexAttribI3uiv( uint index, uint[] v )
     {
         Calls++;
         CheckErrors();
@@ -2818,7 +2887,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribI4uiv( uint index, uint[] v )
+    public void glVertexAttribI4uiv( uint index, uint[] v )
     {
         Calls++;
         CheckErrors();
@@ -2832,7 +2901,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribI4bv( uint index, sbyte[] v )
+    public void glVertexAttribI4bv( uint index, sbyte[] v )
     {
         Calls++;
         CheckErrors();
@@ -2846,7 +2915,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribI4sv( uint index, short[] v )
+    public void glVertexAttribI4sv( uint index, short[] v )
     {
         Calls++;
         CheckErrors();
@@ -2860,7 +2929,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribI4ubv( uint index, byte[] v )
+    public void glVertexAttribI4ubv( uint index, byte[] v )
     {
         Calls++;
         CheckErrors();
@@ -2874,7 +2943,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribI4usv( uint index, ushort[] v )
+    public void glVertexAttribI4usv( uint index, ushort[] v )
     {
         Calls++;
         CheckErrors();
@@ -2888,7 +2957,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetUniformuiv( uint program, int location, ref uint[] @params )
+    public void glGetUniformuiv( uint program, int location, ref uint[] @params )
     {
         Calls++;
         CheckErrors();
@@ -2902,7 +2971,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glBindFragDataLocation( uint program, uint color, string name )
+    public void glBindFragDataLocation( uint program, uint color, string name )
     {
         Calls++;
         CheckErrors();
@@ -2914,16 +2983,17 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
-    public unsafe int glGetFragDataLocation( uint program, string name )
+    public int glGetFragDataLocation( uint program, string name )
     {
         Calls++;
+        var result = Gdx.GL.glGetFragDataLocation( program, name );
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -2962,7 +3032,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniform1uiv( int location, uint[] value )
+    public void glUniform1uiv( int location, uint[] value )
     {
         Calls++;
         CheckErrors();
@@ -2976,7 +3046,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniform2uiv( int location, uint[] value )
+    public void glUniform2uiv( int location, uint[] value )
     {
         Calls++;
         CheckErrors();
@@ -2990,7 +3060,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniform3uiv( int location, uint[] value )
+    public void glUniform3uiv( int location, uint[] value )
     {
         Calls++;
         CheckErrors();
@@ -3004,7 +3074,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glUniform4uiv( int location, uint[] value )
+    public void glUniform4uiv( int location, uint[] value )
     {
         Calls++;
         CheckErrors();
@@ -3018,7 +3088,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glTexParameterIiv( int target, int pname, int[] param )
+    public void glTexParameterIiv( int target, int pname, int[] param )
     {
         Calls++;
         CheckErrors();
@@ -3032,7 +3102,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glTexParameterIuiv( int target, int pname, uint[] param )
+    public void glTexParameterIuiv( int target, int pname, uint[] param )
     {
         Calls++;
         CheckErrors();
@@ -3046,7 +3116,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetTexParameterIiv( int target, int pname, ref int[] parameters )
+    public void glGetTexParameterIiv( int target, int pname, ref int[] parameters )
     {
         Calls++;
         CheckErrors();
@@ -3060,7 +3130,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetTexParameterIuiv( int target, int pname, ref uint[] parameters )
+    public void glGetTexParameterIuiv( int target, int pname, ref uint[] parameters )
     {
         Calls++;
         CheckErrors();
@@ -3074,7 +3144,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glClearBufferiv( int buffer, int drawbuffer, int[] value )
+    public void glClearBufferiv( int buffer, int drawbuffer, int[] value )
     {
         Calls++;
         CheckErrors();
@@ -3088,7 +3158,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glClearBufferuiv( int buffer, int drawbuffer, uint[] value )
+    public void glClearBufferuiv( int buffer, int drawbuffer, uint[] value )
     {
         Calls++;
         CheckErrors();
@@ -3102,7 +3172,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glClearBufferfv( int buffer, int drawbuffer, float[] value )
+    public void glClearBufferfv( int buffer, int drawbuffer, float[] value )
     {
         Calls++;
         CheckErrors();
@@ -3121,16 +3191,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
-    public unsafe string glGetStringiSafe( int name, uint index )
+    public string glGetStringiSafe( int name, uint index )
     {
         Calls++;
         CheckErrors();
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3139,7 +3209,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3157,7 +3227,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glDeleteRenderbuffers( params uint[] renderbuffers )
+    public void glDeleteRenderbuffers( params uint[] renderbuffers )
     {
         Calls++;
         CheckErrors();
@@ -3171,12 +3241,12 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe uint[] glGenRenderbuffers( int n )
+    public uint[] glGenRenderbuffers( int n )
     {
         Calls++;
         CheckErrors();
 
-        return null!;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3185,7 +3255,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3203,7 +3273,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetRenderbufferParameteriv( int target, int pname, ref int[] parameters )
+    public void glGetRenderbufferParameteriv( int target, int pname, ref int[] parameters )
     {
         Calls++;
         CheckErrors();
@@ -3215,7 +3285,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3233,7 +3303,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glDeleteFramebuffers( params uint[] framebuffers )
+    public void glDeleteFramebuffers( params uint[] framebuffers )
     {
         Calls++;
         CheckErrors();
@@ -3247,12 +3317,12 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe uint[] glGenFramebuffers( int n )
+    public uint[] glGenFramebuffers( int n )
     {
         Calls++;
         CheckErrors();
 
-        return null!;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3261,7 +3331,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3270,7 +3340,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3309,7 +3379,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, ref int[] parameters )
+    public void glGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, ref int[] parameters )
     {
         Calls++;
         CheckErrors();
@@ -3349,11 +3419,11 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
-    public unsafe Span< T > glMapBufferRange< T >( int target, int offset, int length, uint access ) where T : unmanaged
+    public Span< T > glMapBufferRange< T >( int target, int offset, int length, uint access ) where T : unmanaged
     {
         Calls++;
         CheckErrors();
@@ -3383,7 +3453,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glDeleteVertexArrays( params uint[] arrays )
+    public void glDeleteVertexArrays( params uint[] arrays )
     {
         Calls++;
         CheckErrors();
@@ -3397,21 +3467,21 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe uint[] glGenVertexArrays( int n )
+    public uint[] glGenVertexArrays( int n )
     {
         Calls++;
         CheckErrors();
 
-        return null!;
+        return result;
     }
 
     /// <inheritdoc />
-    public unsafe uint glGenVertexArray()
+    public uint glGenVertexArray()
     {
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3420,7 +3490,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3438,7 +3508,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glDrawElementsInstanced< T >( int mode, int count, int type, T[] indices, int instancecount ) where T : unmanaged, IUnsignedNumber< T >
+    public void glDrawElementsInstanced< T >( int mode, int count, int type, T[] indices, int instancecount ) where T : unmanaged, IUnsignedNumber< T >
     {
         Calls++;
         CheckErrors();
@@ -3473,12 +3543,12 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe uint[] glGetUniformIndices( uint program, params string[] uniformNames )
+    public uint[] glGetUniformIndices( uint program, params string[] uniformNames )
     {
         Calls++;
         CheckErrors();
 
-        return null!;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3489,12 +3559,12 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe int[] glGetActiveUniformsiv( uint program, int pname, params uint[] uniformIndices )
+    public int[] glGetActiveUniformsiv( uint program, int pname, params uint[] uniformIndices )
     {
         Calls++;
         CheckErrors();
 
-        return null!;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3505,12 +3575,12 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe string glGetActiveUniformName( uint program, uint uniformIndex, int bufSize )
+    public string glGetActiveUniformName( uint program, uint uniformIndex, int bufSize )
     {
         Calls++;
         CheckErrors();
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3519,16 +3589,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
-    public unsafe uint glGetUniformBlockIndex( uint program, string uniformBlockName )
+    public uint glGetUniformBlockIndex( uint program, string uniformBlockName )
     {
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3539,7 +3609,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetActiveUniformBlockiv( uint program, uint uniformBlockIndex, int pname, ref int[] parameters )
+    public void glGetActiveUniformBlockiv( uint program, uint uniformBlockIndex, int pname, ref int[] parameters )
     {
         Calls++;
         CheckErrors();
@@ -3553,12 +3623,12 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe string glGetActiveUniformBlockName( uint program, uint uniformBlockIndex, int bufSize )
+    public string glGetActiveUniformBlockName( uint program, uint uniformBlockIndex, int bufSize )
     {
         Calls++;
         CheckErrors();
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3576,7 +3646,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glDrawElementsBaseVertex< T >( int mode, int count, int type, T[] indices, int basevertex ) where T : unmanaged, IUnsignedNumber< T >
+    public void glDrawElementsBaseVertex< T >( int mode, int count, int type, T[] indices, int basevertex ) where T : unmanaged, IUnsignedNumber< T >
     {
         Calls++;
         CheckErrors();
@@ -3590,7 +3660,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glDrawRangeElementsBaseVertex< T >( int mode, uint start, uint end, int count, int type, T[] indices, int basevertex )
+    public void glDrawRangeElementsBaseVertex< T >( int mode, uint start, uint end, int count, int type, T[] indices, int basevertex )
         where T : unmanaged, IUnsignedNumber< T >
     {
         Calls++;
@@ -3605,7 +3675,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glDrawElementsInstancedBaseVertex< T >( int mode, int count, int type, T[] indices, int instancecount, int basevertex )
+    public void glDrawElementsInstancedBaseVertex< T >( int mode, int count, int type, T[] indices, int instancecount, int basevertex )
         where T : unmanaged, IUnsignedNumber< T >
     {
         Calls++;
@@ -3620,7 +3690,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glMultiDrawElementsBaseVertex< T >( int mode, int type, T[][] indices, int[] basevertex ) where T : unmanaged, IUnsignedNumber< T >
+    public void glMultiDrawElementsBaseVertex< T >( int mode, int type, T[][] indices, int[] basevertex ) where T : unmanaged, IUnsignedNumber< T >
     {
         Calls++;
         CheckErrors();
@@ -3639,16 +3709,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return null;
+        return result;
     }
 
     /// <inheritdoc />
-    public unsafe IntPtr glFenceSyncSafe( int condition, uint flags )
+    public IntPtr glFenceSyncSafe( int condition, uint flags )
     {
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3657,16 +3727,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
-    public unsafe bool glIsSyncSafe( IntPtr sync )
+    public bool glIsSyncSafe( IntPtr sync )
     {
         Calls++;
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3677,7 +3747,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glDeleteSyncSafe( IntPtr sync )
+    public void glDeleteSyncSafe( IntPtr sync )
     {
         Calls++;
         CheckErrors();
@@ -3689,16 +3759,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
-    public unsafe int glClientWaitSyncSafe( IntPtr sync, uint flags, ulong timeout )
+    public int glClientWaitSyncSafe( IntPtr sync, uint flags, ulong timeout )
     {
         Calls++;
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
@@ -3709,7 +3779,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glWaitSyncSafe( IntPtr sync, uint flags, ulong timeout )
+    public void glWaitSyncSafe( IntPtr sync, uint flags, ulong timeout )
     {
         Calls++;
         CheckErrors();
@@ -3723,7 +3793,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetInteger64v( int pname, ref long[] data )
+    public void glGetInteger64v( int pname, ref long[] data )
     {
         Calls++;
         CheckErrors();
@@ -3733,29 +3803,33 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetSynciv( void* sync, int pname, int bufSize, int* length, int* values )
     {
         Calls++;
+        Gdx.GL.glGetSynciv( sync, pname, bufSize, length, values );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe int[] glGetSynciv( IntPtr sync, int pname, int bufSize )
+    public int[] glGetSynciv( IntPtr sync, int pname, int bufSize )
     {
         Calls++;
+        var result = Gdx.GL.glGetSynciv( sync, pname, bufSize );
         CheckErrors();
 
-        return null!;
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void glGetInteger64i_v( int target, uint index, long* data )
     {
         Calls++;
+        Gdx.GL.glGetInteger64i_v( target, index, data );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetInteger64i_v( int target, uint index, ref long[] data )
+    public void glGetInteger64i_v( int target, uint index, ref long[] data )
     {
         Calls++;
+        Gdx.GL.glGetInteger64i_v( target, index, ref data );
         CheckErrors();
     }
 
@@ -3763,13 +3837,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetBufferParameteri64v( int target, int pname, long* parameters )
     {
         Calls++;
+        Gdx.GL.glGetBufferParameteri64v( target, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetBufferParameteri64v( int target, int pname, ref long[] parameters )
+    public void glGetBufferParameteri64v( int target, int pname, ref long[] parameters )
     {
         Calls++;
+        Gdx.GL.glGetBufferParameteri64v( target, pname, ref parameters );
         CheckErrors();
     }
 
@@ -3777,6 +3853,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glFramebufferTexture( int target, int attachment, uint texture, int level )
     {
         Calls++;
+        Gdx.GL.glFramebufferTexture( target, attachment, texture, level );
         CheckErrors();
     }
 
@@ -3784,6 +3861,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glTexImage2DMultisample( int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations )
     {
         Calls++;
+        Gdx.GL.glTexImage2DMultisample( target, samples, internalformat, width, height, fixedsamplelocations );
         CheckErrors();
     }
 
@@ -3791,6 +3869,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glTexImage3DMultisample( int target, int samples, int internalformat, int width, int height, int depth, bool fixedsamplelocations )
     {
         Calls++;
+        Gdx.GL.glTexImage3DMultisample( target, samples, internalformat, width, height, depth, fixedsamplelocations );
         CheckErrors();
     }
 
@@ -3798,13 +3877,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetMultisamplefv( int pname, uint index, float* val )
     {
         Calls++;
+        Gdx.GL.glGetMultisamplefv( pname, index, val );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetMultisamplefvSafe( int pname, uint index, ref float[] val )
+    public void glGetMultisamplefvSafe( int pname, uint index, ref float[] val )
     {
         Calls++;
+        Gdx.GL.glGetMultisamplefvSafe( pname, index, ref val );
         CheckErrors();
     }
 
@@ -3812,6 +3893,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glSampleMaski( uint maskNumber, uint mask )
     {
         Calls++;
+        Gdx.GL.glSampleMaski( maskNumber, mask );
         CheckErrors();
     }
 
@@ -3819,13 +3901,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glBindFragDataLocationIndexed( uint program, uint colorNumber, uint index, byte* name )
     {
         Calls++;
+        Gdx.GL.glBindFragDataLocationIndexed( program, colorNumber, index, name );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glBindFragDataLocationIndexed( uint program, uint colorNumber, uint index, string name )
+    public void glBindFragDataLocationIndexed( uint program, uint colorNumber, uint index, string name )
     {
         Calls++;
+        Gdx.GL.glBindFragDataLocationIndexed( program, colorNumber, index, name );
         CheckErrors();
     }
 
@@ -3833,56 +3917,63 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe int glGetFragDataIndex( uint program, byte* name )
     {
         Calls++;
+        var result = Gdx.GL.glGetFragDataIndex( program, name );
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
-    public unsafe int glGetFragDataIndex( uint program, string name )
+    public int glGetFragDataIndex( uint program, string name )
     {
         Calls++;
+        var result = Gdx.GL.glGetFragDataIndex( program, name );
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void glGenSamplers( int count, uint* samplers )
     {
         Calls++;
+        Gdx.GL.glGenSamplers( count, samplers );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe uint[] glGenSamplers( int count )
+    public uint[] glGenSamplers( int count )
     {
         Calls++;
+        var result = Gdx.GL.glGenSamplers( count );
         CheckErrors();
 
-        return null!;
+        return result;
     }
 
     /// <inheritdoc />
     public uint glGenSampler()
     {
         Calls++;
+        var result = Gdx.GL.glGenSampler();
         CheckErrors();
 
-        return 0;
+        return result;
     }
 
     /// <inheritdoc />
     public unsafe void glDeleteSamplers( int count, uint* samplers )
     {
         Calls++;
+        Gdx.GL.glDeleteSamplers( count, samplers );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glDeleteSamplers( params uint[] samplers )
+    public void glDeleteSamplers( params uint[] samplers )
     {
         Calls++;
+        Gdx.GL.glDeleteSamplers( samplers );
         CheckErrors();
     }
 
@@ -3890,15 +3981,17 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public bool glIsSampler( uint sampler )
     {
         Calls++;
+        var result = Gdx.GL.glIsSampler( sampler );
         CheckErrors();
 
-        return false;
+        return result;
     }
 
     /// <inheritdoc />
     public void glBindSampler( uint unit, uint sampler )
     {
         Calls++;
+        Gdx.GL.glBindSampler( unit, sampler );
         CheckErrors();
     }
 
@@ -3906,6 +3999,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glSamplerParameteri( uint sampler, int pname, int param )
     {
         Calls++;
+        Gdx.GL.glSamplerParameteri( sampler, pname, param );
         CheckErrors();
     }
 
@@ -3913,13 +4007,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glSamplerParameteriv( uint sampler, int pname, int* param )
     {
         Calls++;
+        Gdx.GL.glSamplerParameteriv( sampler, pname, param );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glSamplerParameteriv( uint sampler, int pname, int[] param )
+    public void glSamplerParameteriv( uint sampler, int pname, int[] param )
     {
         Calls++;
+        Gdx.GL.glSamplerParameteriv( sampler, pname, param );
         CheckErrors();
     }
 
@@ -3927,6 +4023,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glSamplerParameterf( uint sampler, int pname, float param )
     {
         Calls++;
+        Gdx.GL.glSamplerParameterf( sampler, pname, param );
         CheckErrors();
     }
 
@@ -3934,13 +4031,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glSamplerParameterfv( uint sampler, int pname, float* param )
     {
         Calls++;
-        CheckErrors();
-    }
-
-    /// <inheritdoc />
-    public unsafe void glSamplerParameterfv( uint sampler, int pname, float[] param )
-    {
-        Calls++;
+        Gdx.GL.glGetSamplerParameterfv( sampler, pname, param );
         CheckErrors();
     }
 
@@ -3948,13 +4039,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glSamplerParameterIiv( uint sampler, int pname, int* param )
     {
         Calls++;
-        CheckErrors();
-    }
-
-    /// <inheritdoc />
-    public unsafe void glSamplerParameterIiv( uint sampler, int pname, int[] param )
-    {
-        Calls++;
+        Gdx.GL.glGetSamplerParameterIiv( sampler, pname, param );
         CheckErrors();
     }
 
@@ -3962,13 +4047,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glSamplerParameterIuiv( uint sampler, int pname, uint* param )
     {
         Calls++;
-        CheckErrors();
-    }
-
-    /// <inheritdoc />
-    public unsafe void glSamplerParameterIuiv( uint sampler, int pname, uint[] param )
-    {
-        Calls++;
+        Gdx.GL.glGetSamplerParameterIuiv( sampler, pname, param );
         CheckErrors();
     }
 
@@ -3976,13 +4055,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetSamplerParameteriv( uint sampler, int pname, int* param )
     {
         Calls++;
+        Gdx.GL.glGetSamplerParameteriv( sampler, pname, param );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetSamplerParameteriv( uint sampler, int pname, ref int[] param )
+    public void glGetSamplerParameteriv( uint sampler, int pname, ref int[] param )
     {
         Calls++;
+        Gdx.GL.glGetSamplerParameteriv( sampler, pname, ref param );
         CheckErrors();
     }
 
@@ -3990,13 +4071,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetSamplerParameterIiv( uint sampler, int pname, int* param )
     {
         Calls++;
+        Gdx.GL.glGetSamplerParameterIiv( sampler, pname, param );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetSamplerParameterIiv( uint sampler, int pname, ref int[] param )
+    public void glGetSamplerParameterIiv( uint sampler, int pname, ref int[] param )
     {
         Calls++;
+        Gdx.GL.glGetSamplerParameterIiv( sampler, pname, ref param );
         CheckErrors();
     }
 
@@ -4004,13 +4087,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetSamplerParameterfv( uint sampler, int pname, float* param )
     {
         Calls++;
+        Gdx.GL.glGetSamplerParameterfv( sampler, pname, param );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetSamplerParameterfv( uint sampler, int pname, ref float[] param )
+    public void glGetSamplerParameterfv( uint sampler, int pname, ref float[] param )
     {
         Calls++;
+        Gdx.GL.glGetSamplerParameterfv( sampler, pname, ref param );
         CheckErrors();
     }
 
@@ -4018,13 +4103,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetSamplerParameterIuiv( uint sampler, int pname, uint* param )
     {
         Calls++;
+        Gdx.GL.glGetSamplerParameterIuiv( sampler, pname, param );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetSamplerParameterIuiv( uint sampler, int pname, ref uint[] param )
+    public void glGetSamplerParameterIuiv( uint sampler, int pname, ref uint[] param )
     {
         Calls++;
+        Gdx.GL.glGetSamplerParameterIuiv( sampler, pname, ref param );
         CheckErrors();
     }
 
@@ -4032,6 +4119,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glQueryCounter( uint id, int target )
     {
         Calls++;
+        Gdx.GL.glQueryCounter( id, target );
         CheckErrors();
     }
 
@@ -4039,13 +4127,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetQueryObjecti64v( uint id, int pname, long* param )
     {
         Calls++;
+        Gdx.GL.glGetQueryObjecti64v( id, pname, param );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetQueryObjecti64v( uint id, int pname, ref long[] param )
+    public void glGetQueryObjecti64v( uint id, int pname, ref long[] param )
     {
         Calls++;
+        Gdx.GL.glGetQueryObjecti64v( id, pname, ref param );
         CheckErrors();
     }
 
@@ -4053,13 +4143,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetQueryObjectui64v( uint id, int pname, ulong* param )
     {
         Calls++;
+        Gdx.GL.glGetQueryObjectui64v( id, pname, param );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetQueryObjectui64v( uint id, int pname, ref ulong[] param )
+    public void glGetQueryObjectui64v( uint id, int pname, ref ulong[] param )
     {
         Calls++;
+        Gdx.GL.glGetQueryObjectui64v( id, pname, ref param );
         CheckErrors();
     }
 
@@ -4067,6 +4159,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glVertexAttribDivisor( uint index, uint divisor )
     {
         Calls++;
+        Gdx.GL.glVertexAttribDivisor( index, divisor );
         CheckErrors();
     }
 
@@ -4074,6 +4167,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glVertexAttribP1ui( uint index, int type, bool normalized, uint value )
     {
         Calls++;
+        Gdx.GL.glVertexAttribP1ui( index, type, normalized, value );
         CheckErrors();
     }
 
@@ -4081,13 +4175,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glVertexAttribP1uiv( uint index, int type, bool normalized, uint* value )
     {
         Calls++;
+        Gdx.GL.glVertexAttribP1uiv( index, type, normalized, value );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribP1uiv( uint index, int type, bool normalized, uint[] value )
+    public void glVertexAttribP1uiv( uint index, int type, bool normalized, uint[] value )
     {
         Calls++;
+        Gdx.GL.glVertexAttribP1uiv( index, type, normalized, value );
         CheckErrors();
     }
 
@@ -4095,6 +4191,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glVertexAttribP2ui( uint index, int type, bool normalized, uint value )
     {
         Calls++;
+        Gdx.GL.glVertexAttribP2ui( index, type, normalized, value );
         CheckErrors();
     }
 
@@ -4102,13 +4199,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glVertexAttribP2uiv( uint index, int type, bool normalized, uint* value )
     {
         Calls++;
+        Gdx.GL.glVertexAttribP2uiv( index, type, normalized, value );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribP2uiv( uint index, int type, bool normalized, uint[] value )
+    public void glVertexAttribP2uiv( uint index, int type, bool normalized, uint[] value )
     {
         Calls++;
+        Gdx.GL.glVertexAttribP2uiv( index, type, normalized, value );
         CheckErrors();
     }
 
@@ -4116,6 +4215,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glVertexAttribP3ui( uint index, int type, bool normalized, uint value )
     {
         Calls++;
+        Gdx.GL.glVertexAttribP3ui( index, type, normalized, value );
         CheckErrors();
     }
 
@@ -4123,13 +4223,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glVertexAttribP3uiv( uint index, int type, bool normalized, uint* value )
     {
         Calls++;
+        Gdx.GL.glVertexAttribP3uiv( index, type, normalized, value );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribP3uiv( uint index, int type, bool normalized, uint[] value )
+    public void glVertexAttribP3uiv( uint index, int type, bool normalized, uint[] value )
     {
         Calls++;
+        Gdx.GL.glVertexAttribP3uiv( index, type, normalized, value );
         CheckErrors();
     }
 
@@ -4137,6 +4239,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glVertexAttribP4ui( uint index, int type, bool normalized, uint value )
     {
         Calls++;
+        Gdx.GL.glVertexAttribP4ui( index, type, normalized, value );
         CheckErrors();
     }
 
@@ -4144,13 +4247,15 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glVertexAttribP4uiv( uint index, int type, bool normalized, uint* value )
     {
         Calls++;
+        Gdx.GL.glVertexAttribP4uiv( index, type, normalized, value );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glVertexAttribP4uiv( uint index, int type, bool normalized, uint[] value )
+    public void glVertexAttribP4uiv( uint index, int type, bool normalized, uint[] value )
     {
         Calls++;
+        Gdx.GL.glVertexAttribP4uiv( index, type, normalized, value );
         CheckErrors();
     }
 
@@ -4158,6 +4263,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void Import( GLBindings.GetProcAddressHandler loader )
     {
         Calls++;
+        Gdx.GL.Import( loader );
         CheckErrors();
     }
 }

@@ -39,6 +39,34 @@ namespace LughSharp.Backends.DesktopGL;
 [PublicAPI]
 public class DesktopGLApplication : IDesktopGLApplicationBase
 {
+    #region public properties
+
+    public DesktopGLApplicationConfiguration?  Config             { get; set; }
+    public List< DesktopGLWindow >             Windows            { get; set; } = new();
+    public Dictionary< string, IPreferences >? Preferences        { get; set; }
+    public List< IRunnable.Runnable >          Runnables          { get; set; } = new();
+    public List< IRunnable.Runnable >          ExecutedRunnables  { get; set; } = new();
+    public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
+
+    public int         LogLevel  { get; set; }
+    public IClipboard? Clipboard { get; set; }
+    public GLVersion?  GLVersion { get; set; }
+    public IGLAudio?   Audio     { get; set; } = null;
+    public INet        Network   { get; set; }
+    public IFiles      Files     { get; set; }
+
+    public IGraphics?            Graphics            => _currentWindow?.Graphics;
+    public IApplicationListener? ApplicationListener => _currentWindow?.Listener;
+    public IInput?               Input               => _currentWindow?.Input;
+
+    public IApplication.ApplicationType AppType
+    {
+        get => IApplication.ApplicationType.DesktopGL;
+        set { }
+    }
+
+    #endregion public properties
+
     // ------------------------------------------------------------------------
 
     private static   GlfwErrorCallback? _errorCallback = null;
@@ -66,7 +94,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Config = config = DesktopGLApplicationConfiguration.Copy( config );
 
         Gdx.App = this;
-
+        
         if ( !config.DisableAudio )
         {
             try
@@ -85,7 +113,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Audio = new MockAudio();
         }
 
-        Files     = CreateFiles();
+        Files     = new DesktopGLFiles();
         Network   = new DesktopGLNet( config );
         Clipboard = new DesktopGLClipboard();
         _sync     = new Sync();
@@ -95,93 +123,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Gdx.Net   = Network;
 
         Windows.Add( CreateWindow( config, listener, 0 ) );
-    }
 
-    /// <summary>
-    /// Gets the Desktop Preferences object.
-    /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    public IPreferences GetPreferences( string name )
-    {
-        if ( Preferences!.ContainsKey( name ) )
-        {
-            return Preferences.Get( name );
-        }
-
-        IPreferences prefs = new DesktopGLPreferences( name );
-
-        Preferences.Put( name, prefs );
-
-        return prefs;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="runnable"></param>
-    public void PostRunnable( IRunnable.Runnable runnable )
-    {
-        lock ( Runnables )
-        {
-            Runnables.Add( runnable );
-        }
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="config"></param>
-    /// <returns></returns>
-    public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
-    {
-        return new OpenALAudio( config.AudioDeviceSimultaneousSources,
-                                config.AudioDeviceBufferCount,
-                                config.AudioDeviceBufferSize );
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="window"></param>
-    /// <returns></returns>
-    public IDesktopGLInput CreateInput( DesktopGLWindow window )
-    {
-        return new DefaultDesktopGLInput( window );
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public int GetVersion()
-    {
-        return 0;
-    }
-
-    /// <summary>
-    /// </summary>
-    public void Exit()
-    {
-        _running = false;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="listener"></param>
-    public void AddLifecycleListener( ILifecycleListener listener )
-    {
-        lock ( LifecycleListeners )
-        {
-            LifecycleListeners.Add( listener );
-        }
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="listener"></param>
-    public void RemoveLifecycleListener( ILifecycleListener listener )
-    {
-        lock ( LifecycleListeners )
-        {
-            LifecycleListeners.Remove( listener );
-        }
+        Run();
     }
 
     /// <summary>
@@ -326,6 +269,93 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
+    /// Gets the Desktop Preferences object.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public IPreferences GetPreferences( string name )
+    {
+        if ( Preferences!.ContainsKey( name ) )
+        {
+            return Preferences.Get( name );
+        }
+
+        IPreferences prefs = new DesktopGLPreferences( name );
+
+        Preferences.Put( name, prefs );
+
+        return prefs;
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="runnable"></param>
+    public void PostRunnable( IRunnable.Runnable runnable )
+    {
+        lock ( Runnables )
+        {
+            Runnables.Add( runnable );
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="config"></param>
+    /// <returns></returns>
+    public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
+    {
+        return new OpenALAudio( config.AudioDeviceSimultaneousSources,
+                                config.AudioDeviceBufferCount,
+                                config.AudioDeviceBufferSize );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="window"></param>
+    /// <returns></returns>
+    public IDesktopGLInput CreateInput( DesktopGLWindow window )
+    {
+        return new DefaultDesktopGLInput( window );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    public int GetVersion()
+    {
+        return 0;
+    }
+
+    /// <summary>
+    /// </summary>
+    public void Exit()
+    {
+        _running = false;
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="listener"></param>
+    public void AddLifecycleListener( ILifecycleListener listener )
+    {
+        lock ( LifecycleListeners )
+        {
+            LifecycleListeners.Add( listener );
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="listener"></param>
+    public void RemoveLifecycleListener( ILifecycleListener listener )
+    {
+        lock ( LifecycleListeners )
+        {
+            LifecycleListeners.Remove( listener );
+        }
+    }
+
+    /// <summary>
     /// Cleans up, and disposes of, any windows that have been closed.
     /// </summary>
     protected void CleanupWindows()
@@ -448,7 +478,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// <param name="sharedContextWindow"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    private GLFWWindow CreateGLFWWindow( DesktopGLApplicationConfiguration appConfig, GLFWWindow sharedContextWindow )
+    private GLFWWindow CreateGLFWWindow( DesktopGLApplicationConfiguration appConfig,
+                                         GLFWWindow sharedContextWindow )
     {
         Glfw.DefaultWindowHints();
 
@@ -571,9 +602,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         if ( appConfig.WindowIconPaths != null )
         {
-            _currentWindow?.SetIcon( windowHandle,
-                                     appConfig.WindowIconPaths,
-                                     appConfig.WindowIconFileType );
+            _currentWindow?.SetIcon( windowHandle, appConfig.WindowIconPaths, appConfig.WindowIconFileType );
         }
 
         Glfw.MakeContextCurrent( windowHandle );
@@ -583,7 +612,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         if ( !GLVersion!.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
         {
-            var (major, minor) = GL.GetProjectOpenGLVersion();
+            var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
 
             throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is required. "
                                          + $"OpenGL version: {major}.{minor}"
@@ -634,51 +663,15 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     /// <summary>
     /// </summary>
-    /// <returns></returns>
-    protected static IFiles CreateFiles()
-    {
-        return new DesktopGLFiles();
-    }
-
-    /// <summary>
-    /// </summary>
-    private void InitiateGL()
+    private unsafe void InitiateGL()
     {
         Glfw.GetVersion( out var major, out var minor, out var revision );
 
         GLVersion = new GLVersion( IApplication.ApplicationType.DesktopGL,
                                    $"{major}.{minor}.{revision}",
-                                   Gdx.GL20.GLGetString( IGL.GL_VENDOR ),
-                                   Gdx.GL20.GLGetString( IGL.GL_RENDERER ) );
+                                   Gdx.GL.glGetString( IGL.GL_VENDOR )->ToString(),
+                                   Gdx.GL.glGetString( IGL.GL_RENDERER )->ToString() );
     }
-
-    #region public properties
-
-    public DesktopGLApplicationConfiguration?  Config             { get; set; }
-    public List< DesktopGLWindow >             Windows            { get; set; } = new();
-    public Dictionary< string, IPreferences >? Preferences        { get; set; }
-    public List< IRunnable.Runnable >          Runnables          { get; set; } = new();
-    public List< IRunnable.Runnable >          ExecutedRunnables  { get; set; } = new();
-    public List< ILifecycleListener >          LifecycleListeners { get; set; } = new();
-
-    public int         LogLevel  { get; set; }
-    public IClipboard? Clipboard { get; set; }
-    public GLVersion?  GLVersion { get; set; }
-    public IGLAudio?   Audio     { get; set; } = null;
-    public INet        Network   { get; set; }
-    public IFiles      Files     { get; set; }
-
-    public IGraphics?            Graphics            => _currentWindow?.Graphics;
-    public IApplicationListener? ApplicationListener => _currentWindow?.Listener;
-    public IInput?               Input               => _currentWindow?.Input;
-
-    public IApplication.ApplicationType AppType
-    {
-        get => IApplication.ApplicationType.DesktopGL;
-        set { }
-    }
-
-    #endregion public properties
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -690,20 +683,19 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     [PublicAPI]
     public struct Gldms
     {
-        public int gl43;
-        public int khr;
-        public int arb;
-        public int amd;
+        public int GL43;
+        public int Khr;
+        public int Arb;
+        public int Amd;
 
         public Gldms( int gl43, int khr, int arb, int amd )
         {
-            this.gl43 = gl43;
-            this.khr  = khr;
-            this.arb  = arb;
-            this.amd  = amd;
+            this.GL43 = gl43;
+            this.Khr  = khr;
+            this.Arb  = arb;
+            this.Amd  = amd;
         }
     }
-
 
     public record GLDebugMessageSeverity
     {

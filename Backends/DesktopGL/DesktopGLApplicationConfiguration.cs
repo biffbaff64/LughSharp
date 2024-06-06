@@ -256,47 +256,4 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
         return result;
     }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    #region To Be Removed
-
-    //TODO: Refactor so that this can be removed
-    [Obsolete]
-    public static GLFWMonitor GetPrimaryMonitor()
-    {
-        DesktopGLApplication.InitialiseGL();
-
-        return Glfw.GetPrimaryMonitor();
-    }
-
-    //TODO: Refactor so that this can be removed
-    [Obsolete]
-    public static IGraphics.GdxMonitor[] GetMonitors()
-    {
-        DesktopGLApplication.InitialiseGL();
-
-        var monitors = new IGraphics.GdxMonitor[ Glfw.GetMonitors().Length ];
-
-        for ( var i = 0; i < Glfw.GetMonitors().Length; i++ )
-        {
-            monitors[ i ] = ToGLMonitor( Glfw.GetMonitors()[ i ] );
-        }
-
-        return monitors;
-    }
-
-    //TODO: Refactor so that this can be removed
-    [Obsolete]
-    public static IGraphics.GdxMonitor ToGLMonitor( GLFWMonitor monitor )
-    {
-        Glfw.GetMonitorPos( monitor, out var virtualX, out var virtualY );
-
-        var name = Glfw.GetMonitorName( monitor );
-
-        return new IGraphics.GdxMonitor( virtualX, virtualY, name );
-    }
-
-    #endregion To Be Removed
 }

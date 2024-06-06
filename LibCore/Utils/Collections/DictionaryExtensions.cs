@@ -110,4 +110,20 @@ public static class DictionaryExtension
         self.Remove( key );
         self.Add( key, value );
     }
+
+    /// <summary>
+    /// Puts all values in <paramref name="map"/> into <paramref name="self"/>.
+    /// </summary>
+    public static void PutAll< TK, TV >( this Dictionary< TK, TV > self, Dictionary< TK, TV > map ) where TK : notnull
+    {
+        self.EnsureCapacity( map.Count );
+
+        TK[] keyTable   = map.Keys.ToArray();
+        TV[] valueTable = map.Values.ToArray();
+
+        for ( int i = 0, n = keyTable.Length; i < n; i++ )
+        {
+            self.Put( keyTable[ i ], valueTable[ i ] );
+        }
+    }
 }

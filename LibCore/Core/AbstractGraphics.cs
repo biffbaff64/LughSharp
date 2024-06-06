@@ -69,7 +69,7 @@ public abstract class AbstractGraphics : IGraphics
     /// <returns>the Density Independent Pixel factor of the display.</returns>
     public virtual float GetDensity()
     {
-        return GetPpiX() / 160f;
+        return GetPpiXY().X / 160f;
     }
 
     /// <summary>
@@ -80,7 +80,9 @@ public abstract class AbstractGraphics : IGraphics
         return BackBufferWidth / ( float ) Width;
     }
 
-    //TODO: This may no longer be needed. DotGL uses OGL 4.6 I think.
+    /// <summary>
+    /// Returns <b>true</b> if the version of opengl is &gt;= 3.0
+    /// </summary>
     public bool IsGL30Available()
     {
 #if OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3
@@ -101,9 +103,7 @@ public abstract class AbstractGraphics : IGraphics
     // between the class and interface, which just makes everything annoying tbh.
 
     public abstract IGraphics.DisplayMode[] GetDisplayModes();
-    public abstract IGraphics.DisplayMode[] GetDisplayModes( IGraphics.GdxMonitor gdxMonitor );
     public abstract IGraphics.DisplayMode   GetDisplayMode();
-    public abstract IGraphics.DisplayMode   GetDisplayMode( IGraphics.GdxMonitor gdxMonitor );
 
     // ------------------------------------------------------------------------
     public abstract void SetTitle( string title );
@@ -133,10 +133,6 @@ public abstract class AbstractGraphics : IGraphics
     // ------------------------------------------------------------------------
     public abstract (float X, float Y) GetPpcXY();
     public abstract (float X, float Y) GetPpiXY();
-    public abstract float              GetPpiX();
-    public abstract float              GetPpiY();
-    public abstract float              GetPpcX();
-    public abstract float              GetPpcY();
 
     #endregion abstract methods
 }

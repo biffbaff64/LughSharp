@@ -32,6 +32,13 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class AtlasSprite : Sprite
 {
+    public AtlasRegion Region          { get; set; }
+    public float       OriginalOffsetX { get; set; }
+    public float       OriginalOffsetY { get; set; }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Creates a new AtlasSprite using the atlas region from the
     /// supplied AtlasSprite.
@@ -53,18 +60,6 @@ public class AtlasSprite : Sprite
         Region = new AtlasRegion( region );
 
         Init( region );
-    }
-
-    public override float X
-    {
-        get => base.X - Region.OffsetX;
-        set => base.X = value + Region.OffsetX;
-    }
-
-    public override float Y
-    {
-        get => base.Y - Region.OffsetY;
-        set => base.Y = value + Region.OffsetY;
     }
 
     /// <summary>
@@ -96,6 +91,21 @@ public class AtlasSprite : Sprite
         SetColor( 1, 1, 1, 1 );
     }
 
+    /// <inheritdoc/>
+    public override float X
+    {
+        get => base.X - Region.OffsetX;
+        set => base.X = value + Region.OffsetX;
+    }
+
+    /// <inheritdoc/>
+    public override float Y
+    {
+        get => base.Y - Region.OffsetY;
+        set => base.Y = value + Region.OffsetY;
+    }
+
+    /// <inheritdoc/>
     public override void SetBounds( float x, float y, float width, float height )
     {
         var widthRatio  = width / Region.OriginalWidth;
@@ -115,21 +125,25 @@ public class AtlasSprite : Sprite
                       );
     }
 
+    /// <inheritdoc/>
     public override void SetSize( float width, float height )
     {
         SetBounds( X, Y, width, height );
     }
 
+    /// <inheritdoc/>
     public override void SetOrigin( float originX, float originY )
     {
         base.SetOrigin( originX - Region.OffsetX, originY - Region.OffsetY );
     }
 
+    /// <inheritdoc/>
     public override void SetOriginCenter()
     {
         base.SetOrigin( ( Width / 2 ) - Region.OffsetX, ( Height / 2 ) - Region.OffsetY );
     }
 
+    /// <inheritdoc/>
     public override void Flip( bool x, bool y )
     {
         // Flip texture.
@@ -165,6 +179,7 @@ public class AtlasSprite : Sprite
         SetOrigin( oldOriginX, oldOriginY );
     }
 
+    /// <inheritdoc/>
     public override void Rotate90( bool clockwise )
     {
         // Rotate texture.
@@ -230,16 +245,9 @@ public class AtlasSprite : Sprite
         return Height / Region.RotatedPackedHeight;
     }
 
+    /// <inheritdoc/>
     public override string? ToString()
     {
         return Region.ToString();
     }
-
-    #region properties
-
-    public AtlasRegion Region          { get; set; }
-    public float       OriginalOffsetX { get; set; }
-    public float       OriginalOffsetY { get; set; }
-
-    #endregion properties
 }

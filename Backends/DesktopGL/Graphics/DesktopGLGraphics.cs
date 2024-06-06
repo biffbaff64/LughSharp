@@ -32,6 +32,8 @@ namespace LughSharp.Backends.DesktopGL.Graphics;
 [PublicAPI]
 public class DesktopGLGraphics : AbstractGraphics, IDisposable
 {
+    public DesktopGLWindow? GLWindow { get; set; }
+
     // ------------------------------------------------------------------------
 
     private readonly IntBuffer _tmpBuffer  = BufferUtils.NewIntBuffer( 1 );
@@ -60,6 +62,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     {
         GLWindow = glWindow;
 
+        //TODO:
 //        if ( glWindow.Config.UseGL30 )
 //        {
 //            GL30 = new DesktopGL30();
@@ -77,13 +80,13 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
     }
 
-    public DesktopGLWindow? GLWindow { get; set; }
-
+    /// <inheritdoc/>
     public override int Width
         => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
                ? BackBufferWidth
                : LogicalWidth;
 
+    /// <inheritdoc/>
     public override int Height
         => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
                ? BackBufferHeight
@@ -105,10 +108,16 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <inheritdoc/>
     public override GLVersion.GLType GraphicsType => GLVersion.GLType.GL20;
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// </summary>
+    /// <param name="windowHandle"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
     public void ResizeCallback( GLFWWindow windowHandle, int width, int height )
     {
         UpdateFramebufferInfo();
@@ -223,64 +232,59 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    public override bool SupportsDisplayModeChange()
-    {
-        return true;
-    }
-
-    // ------------------------------------------------------------------------
-
-    [Obsolete]
-    public override IGraphics.GdxMonitor GetPrimaryMonitor()
-    {
-        //TODO:
-        throw new NotImplementedException();
-    }
-
-    [Obsolete]
-    public override IGraphics.GdxMonitor GetMonitor()
-    {
-        IGraphics.GdxMonitor[] monitors = GetMonitors();
-        var                    result   = monitors[ 0 ];
-
-        Glfw.GetWindowPos( GLWindow!.GlfwWindow, out _tmpInt, out _tmpInt2 );
-
-        var windowX = _tmpBuffer.Get( 0 );
-        var windowY = _tmpBuffer2.Get( 0 );
-
-        Glfw.GetWindowSize( GLWindow.GlfwWindow, out var windowWidth, out var windowHeight );
-
-        var bestOverlap = 0;
-
-        foreach ( var monitor in monitors )
-        {
-            var mode = GetDisplayMode( monitor );
-
-            var overlap = Math.Max( 0,
-                                    Math.Min( windowX + windowWidth, monitor.VirtualX + mode.Width )
-                                  - Math.Max( windowX, monitor.VirtualX ) )
-                        * Math.Max( 0,
-                                    Math.Min( windowY + windowHeight, monitor.VirtualY + mode.Height )
-                                  - Math.Max( windowY, monitor.VirtualY ) );
-
-            if ( bestOverlap < overlap )
-            {
-                bestOverlap = overlap;
-                result      = monitor;
-            }
-        }
-
-        return result;
-    }
+    /// <inheritdoc/>
+    public override bool SupportsDisplayModeChange() => true;
 
     // ------------------------------------------------------------------------
 
     /// <inheritdoc/>
     public override bool SetWindowedMode( int width, int height )
     {
-        return false;
+        GLWindow?.Input.ResetPollingStates();
+
+        if ( !IsFullscreen )
+        {
+            if ( width != LogicalWidth || height != LogicalHeight )
+            {
+                //Center window
+                DesktopGLMonitor monitor = ( DesktopGLMonitor ) GetMonitor();
+                GLFW.glfwGetMonitorWorkarea( monitor.monitorHandle, tmpBuffer, tmpBuffer2, tmpBuffer3, tmpBuffer4 );
+                window.setPosition( tmpBuffer.get( 0 ) + ( tmpBuffer3.get( 0 ) - width ) / 2, tmpBuffer2.get( 0 ) + ( tmpBuffer4.get( 0 ) - height ) / 2 );
+            }
+
+            GLFW.glfwSetWindowSize( window.getWindowHandle(), width, height );
+        }
+        else
+        {
+            if ( displayModeBeforeFullscreen == null )
+            {
+                storeCurrentWindowPositionAndDisplayMode();
+            }
+
+            if ( width != windowWidthBeforeFullscreen || height != windowHeightBeforeFullscreen )
+            {
+                Lwjgl3Monitor monitor = ( Lwjgl3Monitor ) getMonitor();
+                GLFW.glfwGetMonitorWorkarea( monitor.monitorHandle, tmpBuffer, tmpBuffer2, tmpBuffer3, tmpBuffer4 );
+
+                GLFW.glfwSetWindowMonitor( window.getWindowHandle(), 0,
+                                           tmpBuffer.get( 0 ) + ( tmpBuffer3.get( 0 ) - width ) / 2, tmpBuffer2.get( 0 ) + ( tmpBuffer4.get( 0 ) - height ) / 2,
+                                           width, height,
+                                           displayModeBeforeFullscreen.refreshRate );
+            }
+            else
+            {
+                GLFW.glfwSetWindowMonitor( window.getWindowHandle(), 0,
+                                           windowPosXBeforeFullscreen, windowPosYBeforeFullscreen, width, height,
+                                           displayModeBeforeFullscreen.refreshRate );
+            }
+        }
+
+        UpdateFramebufferInfo();
+
+        return true;
     }
 
+    /// <inheritdoc/>
     public override void SetTitle( string title )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
@@ -288,6 +292,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SetWindowTitle( GLWindow.GlfwWindow, title );
     }
 
+    /// <inheritdoc/>
     public override void SetUndecorated( bool undecorated )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
@@ -297,6 +302,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SetWindowAttrib( GLWindow.GlfwWindow, WindowAttrib.Decorated, undecorated );
     }
 
+    /// <inheritdoc/>
     public override void SetResizable( bool resizable )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
@@ -306,6 +312,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SetWindowAttrib( GLWindow.GlfwWindow, WindowAttrib.Resizable, resizable );
     }
 
+    /// <inheritdoc/>
     public override void SetVSync( bool vsync )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
@@ -315,6 +322,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SwapInterval( vsync ? 1 : 0 );
     }
 
+    /// <inheritdoc/>
     public override void SetForegroundFps( int fps )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
@@ -322,22 +330,19 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         GLWindow.Config.ForegroundFPS = fps;
     }
 
+    /// <inheritdoc/>
     public override bool SupportsExtension( string extension )
     {
         return Glfw.ExtensionSupported( extension );
     }
 
+    /// <inheritdoc/>
     public override void RequestRendering()
     {
         GLWindow?.RequestRendering();
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="pixmap"></param>
-    /// <param name="xHotspot"></param>
-    /// <param name="yHotspot"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public override ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot )
     {
         return new DesktopGLCursor( GLWindow!, pixmap, xHotspot, yHotspot );
@@ -369,19 +374,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         GdxRuntimeException.ThrowIfNull( GLWindow?.GlfwWindow );
 
         DesktopGLCursor.SetSystemCursor( GLWindow.GlfwWindow, systemCursor );
-    }
-
-    /// <summary>
-    /// Returns whether OpenGL ES 3.0 is available.
-    /// If it is you can get an instance of GL30 via GetGL30() to access
-    /// OpenGL ES 3.0 functionality. Note that this functionality will
-    /// only be available if you instructed the Application instance
-    /// to use OpenGL ES 3.0!
-    /// </summary>
-    /// <returns>TRUE if available.</returns>
-    public override bool IsGL30Available()
-    {
-        return true;
     }
 
     // ------------------------------------------------------------------------
@@ -417,37 +409,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         return _fps;
     }
 
-    // ------------------------------------------------------------------------
-
-    /// <inheritdoc/>
-    public override IGraphics.DisplayMode[] GetDisplayModes()
-    {
-        //TODO:
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public override IGraphics.DisplayMode[] GetDisplayModes( IGraphics.GdxMonitor gdxMonitor )
-    {
-        //TODO:
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public override IGraphics.DisplayMode GetDisplayMode()
-    {
-        //TODO:
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public override IGraphics.DisplayMode GetDisplayMode( IGraphics.GdxMonitor gdxMonitor )
-    {
-        //TODO:
-        throw new NotImplementedException();
-    }
-
-    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <inheritdoc/>
@@ -504,11 +465,13 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         return true;
     }
 
+    /// <inheritdoc/>
     public override (float X, float Y) GetPpiXY()
     {
         return ( GetPpcXY().X * 2.54f, GetPpcXY().Y * 2.54f );
     }
 
+    /// <inheritdoc/>
     public override (float X, float Y) GetPpcXY()
     {
         Glfw.GetMonitorPhysicalSize( Glfw.GetPrimaryMonitor(), out var sizeX, out var sizeY );
@@ -527,8 +490,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
             return;
         }
 
-        _windowPosXBeforeFullscreen   = GLWindow.GetPositionX();
-        _windowPosYBeforeFullscreen   = GLWindow.GetPositionY();
+        _windowPosXBeforeFullscreen   = GLWindow.PositionX;
+        _windowPosYBeforeFullscreen   = GLWindow.PositionY;
         _windowWidthBeforeFullscreen  = LogicalWidth;
         _windowHeightBeforeFullscreen = LogicalHeight;
         _displayModeBeforeFullscreen  = GetDisplayMode();

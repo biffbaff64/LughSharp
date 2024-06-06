@@ -302,12 +302,12 @@ GRAPHICS/G2D
     ----   --------
     - DONE - DONE - Animation
     - DONE - IP   - AtlasRegion
-    - DONE - IP   - AtlasSprite                     Done but I've spotted some possible improvements
+    - DONE - IP   - AtlasSprite
     - IP   - IP   - BitmapFont                      Much work needed!
     - IP   - IP   - BitmapFontCache                 Relies on the BitmapFont rewrite.
     - DONE - IP   - DistanceFieldFont
     - DONE - IP   - Gdx2DPixmap
-    - IP   - IP   - GlyphLayout                     Method SetText() is too big.
+    - DONE - IP   - GlyphLayout
     - DONE - IP   - NinePatch
     - DONE - IP   - ParticleEffect
     - DONE - IP   - ParticleEffectPool
@@ -772,7 +772,7 @@ UTILS
 UTILS/BUFFERS
 -------------
 
-    I think Direct Buffers can go. Non-Direct buffers only.
+    I think Direct Buffers can go. Non-Direct buffers only?
     Do I need the Heap buffers?
     I only really need the ones that LibGDX uses, and I OUGHT to be finding .net equivalents.
 
@@ -784,8 +784,8 @@ UTILS/BUFFERS
     - DONE - IP   - CharBuffer
     - DONE - IP   - CircularByteBuffer
     - DONE - DONE - DoubleBuffer
-    - DONE - IP   - FloatBuffer
-    - DONE - IP   - IntBuffer
+    - DONE - DONE - FloatBuffer
+    - DONE - DONE - IntBuffer
     - IP   - IP   - LongBuffer
     - IP   - IP   - MappedByteBuffer
     - DONE - IP   - ShortBuffer

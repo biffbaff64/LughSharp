@@ -36,6 +36,8 @@ public class Sync
 
     private long _nextFrame = 0;
 
+    // ------------------------------------------------------------------------
+    
     public void SyncFrameRate( int fps )
     {
         if ( fps <= 0 )
@@ -88,7 +90,7 @@ public class Sync
 
         _nextFrame = GetTime();
 
-        var osName = Environment.OSVersion.Platform.ToString();
+        var osName = System.Environment.OSVersion.Platform.ToString();
 
         if ( osName.StartsWith( "Win" ) )
         {
@@ -116,6 +118,8 @@ public class Sync
         return DateTime.UtcNow.Ticks * 100;
     }
 
+    // ------------------------------------------------------------------------
+    
     private sealed class RunningAvg
     {
         private const    long   DAMPEN_THRESHOLD = 10 * 1000L * 1000L;

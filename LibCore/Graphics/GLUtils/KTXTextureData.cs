@@ -25,6 +25,7 @@
 
 using System.IO.Compression;
 using LughSharp.LibCore.Utils.Exceptions;
+using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
@@ -429,7 +430,7 @@ public class KtxTextureData : ITextureData, ICubemapData
         // KTX files require an unpack alignment of 4
         unsafe
         {
-            fixed ( int* ptr = &buffer.BackingArray()[ 0 ] )
+            fixed ( int* ptr = &( ( Buffer ) buffer ).BackingArray()[ 0 ] )
             {
                 Gdx.GL.glGetIntegerv( IGL.GL_UNPACK_ALIGNMENT, ptr );
             }
