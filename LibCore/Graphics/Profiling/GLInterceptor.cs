@@ -1335,7 +1335,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetBufferSubData( int target, int offset, int size, void* data )
     {
         Calls++;
-        Gdx.GL.glGetBufferSubData(target, offset, size, data );
+        Gdx.GL.glGetBufferSubData( target, offset, size, data );
         CheckErrors();
     }
 
@@ -1379,98 +1379,112 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glGetBufferParameteriv( int target, int pname, ref int[] @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetBufferParameteriv( target, pname, ref @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetBufferPointerv( int target, int pname, void** @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetBufferPointerv( target, pname, @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetBufferPointerv( int target, int pname, ref IntPtr[] @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetBufferPointerv( target, pname, ref @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glBlendEquationSeparate( int modeRGB, int modeAlpha )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glBlendEquationSeparate( modeRGB, modeAlpha );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glDrawBuffers( int n, int* bufs )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDrawBuffers( n, bufs );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glDrawBuffers( params int[] bufs )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDrawBuffers( bufs );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glStencilOpSeparate( int face, int sfail, int dpfail, int dppass )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glStencilOpSeparate( face, sfail, dpfail, dppass );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glStencilFuncSeparate( int face, int func, int @ref, uint mask )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glStencilFuncSeparate( face, func, @ref, mask );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glStencilMaskSeparate( int face, uint mask )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glStencilMaskSeparate( face, mask );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glAttachShader( uint program, uint shader )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glAttachShader( program, shader );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glBindAttribLocation( uint program, uint index, byte* name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glBindAttribLocation( program, index, name );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glBindAttribLocation( uint program, uint index, string name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glBindAttribLocation( program, index, name );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glCompileShader( uint shader )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glCompileShader( shader );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public uint glCreateProgram()
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glCreateProgram();
+        CheckErrors();
 
         return result;
     }
@@ -1479,7 +1493,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public uint glCreateShader( int type )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glCreateShader( type );
+        CheckErrors();
 
         return result;
     }
@@ -1488,49 +1503,56 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glDeleteProgram( uint program )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDeleteProgram( program );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glDeleteShader( uint shader )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDeleteShader( shader );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glDetachShader( uint program, uint shader )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDetachShader( program, shader );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glDisableVertexAttribArray( uint index )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDisableVertexAttribArray( index );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glEnableVertexAttribArray( uint index )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glEnableVertexAttribArray( index );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetActiveAttrib( uint program, uint index, int bufSize, int* length, int* size, int* type, byte* name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetActiveAttrib( program, index, bufSize, length, size, type, name );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public string glGetActiveAttrib( uint program, uint index, int bufSize, out int size, out int type )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetActiveAttrib( program, index, bufSize, out size, out type );
+        CheckErrors();
 
         size = 0;
         type = 0;
@@ -1542,14 +1564,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetActiveUniform( uint program, uint index, int bufSize, int* length, int* size, int* type, byte* name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetActiveUniform( program, index, bufSize, length, size, type, name );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public string glGetActiveUniform( uint program, uint index, int bufSize, out int size, out int type )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetActiveUniform( program, index, bufSize, out size, out type );
+        CheckErrors();
 
         size = 0;
         type = 0;
@@ -1561,7 +1585,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public string glGetActiveUniform( int handle, int u, IntBuffer bufSize, Buffer buffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetActiveUniform( handle, u, bufSize, buffer );
+        CheckErrors();
 
         return result;
     }
@@ -1570,14 +1595,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetAttachedShaders( uint program, int maxCount, int* count, uint* shaders )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetAttachedShaders( program, maxCount, count, shaders );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public uint[] glGetAttachedShaders( uint program, int maxCount )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetAttachedShaders( program, maxCount );
+        CheckErrors();
 
         return result;
     }
@@ -1586,7 +1613,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe int glGetAttribLocation( uint program, byte* name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetAttribLocation( program, name );
+        CheckErrors();
 
         return result;
     }
@@ -1595,7 +1623,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public int glGetAttribLocation( uint program, string name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetAttribLocation( program, name );
+        CheckErrors();
 
         return result;
     }
@@ -1604,35 +1633,40 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetProgramiv( uint program, int pname, int* @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetProgramiv( program, pname, @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetProgramiv( uint program, int pname, ref int[] @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetProgramiv( program, pname, ref @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetProgramiv( uint program, int pname, Buffer buffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetProgramiv( program, pname, buffer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetProgramInfoLog( uint program, int bufSize, int* length, byte* infoLog )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetProgramInfoLog( program, bufSize, length, infoLog );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public string glGetProgramInfoLog( uint program, int bufSize )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetProgramInfoLog( program, bufSize );
+        CheckErrors();
 
         return result;
     }
@@ -1641,28 +1675,32 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetShaderiv( uint shader, int pname, int* @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetShaderiv( shader, pname, @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetShaderiv( uint shader, int pname, ref int[] @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetShaderiv( shader, pname, ref @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetShaderInfoLog( uint shader, int bufSize, int* length, byte* infoLog )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetShaderInfoLog( shader, bufSize, length, infoLog );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public string glGetShaderInfoLog( uint shader, int bufSize )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetShaderInfoLog( shader, bufSize );
+        CheckErrors();
 
         return result;
     }
@@ -1671,14 +1709,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetShaderSource( uint shader, int bufSize, int* length, byte* source )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetShaderSource( shader, bufSize, length, source );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public string glGetShaderSource( uint shader, int bufSize = 4096 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetShaderSource( shader, bufSize );
+        CheckErrors();
 
         return result;
     }
@@ -1687,7 +1727,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe int glGetUniformLocation( uint program, byte* name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetUniformLocation( program, name );
+        CheckErrors();
 
         return result;
     }
@@ -1696,7 +1737,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public int glGetUniformLocation( uint program, string name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetUniformLocation( program, name );
+        CheckErrors();
 
         return result;
     }
@@ -1705,91 +1747,104 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetUniformfv( uint program, int location, float* @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetUniformfv( program, location, @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetUniformfv( uint program, int location, ref float[] @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetUniformfv( program, location, ref @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetUniformiv( uint program, int location, int* @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetUniformiv( program, location, @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetUniformiv( uint program, int location, ref int[] @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetUniformiv( program, location, ref @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetVertexAttribdv( uint index, int pname, double* @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetVertexAttribdv( index, pname, @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetVertexAttribdv( uint index, int pname, ref double[] @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetVertexAttribdv( index, pname, ref @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetVertexAttribfv( uint index, int pname, float* @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetVertexAttribfv( index, pname, @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetVertexAttribfv( uint index, int pname, ref float[] @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetVertexAttribfv( index, pname, ref @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetVertexAttribiv( uint index, int pname, int* @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetVertexAttribiv( index, pname, @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetVertexAttribiv( uint index, int pname, ref int[] @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetVertexAttribiv( index, pname, ref @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetVertexAttribPointerv( uint index, int pname, void** pointer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetVertexAttribPointerv( index, pname, pointer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetVertexAttribPointerv( uint index, int pname, ref uint[] pointer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetVertexAttribPointerv( index, pname, ref pointer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public bool glIsProgram( uint program )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glIsProgram( program );
+        CheckErrors();
 
         return result;
     }
@@ -1798,7 +1853,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public bool glIsShader( uint shader )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glIsShader( shader );
+        CheckErrors();
 
         return result;
     }
@@ -1807,126 +1863,144 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glLinkProgram( uint program )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glLinkProgram( program );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glShaderSource( uint shader, int count, byte** @string, int* length )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glShaderSource( shader, count, @string, length );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glShaderSource( uint shader, params string[] @string )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glShaderSource( shader, @string );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUseProgram( uint program )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUseProgram( program );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform1f( int location, float v0 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform1f( location, v0 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform2f( int location, float v0, float v1 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform2f( location, v0, v1 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform3f( int location, float v0, float v1, float v2 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform3f( location, v0, v1, v2 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform4f( int location, float v0, float v1, float v2, float v3 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform4f( location, v0, v1, v2, v3 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform1i( int location, int v0 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform1i( location, v0 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform2i( int location, int v0, int v1 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform2i( location, v0, v1 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform3i( int location, int v0, int v1, int v2 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform3i( location, v0, v1, v2 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform4i( int location, int v0, int v1, int v2, int v3 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform4i( location, v0, v1, v2, v3 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glUniform1fv( int location, int count, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform1fv( location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform1fv( int location, params float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform1fv( location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glUniform2fv( int location, int count, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform2fv( location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform2fv( int location, params float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform2fv( location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glUniform3fv( int location, int count, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform3fv( location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform3fv( int location, params float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform3fv( location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
@@ -2872,147 +2946,168 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glVertexAttribI1uiv( uint index, uint* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI1uiv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glVertexAttribI1uiv( uint index, uint[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI1uiv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glVertexAttribI2uiv( uint index, uint* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI2uiv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glVertexAttribI2uiv( uint index, uint[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI2uiv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glVertexAttribI3uiv( uint index, uint* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI3uiv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glVertexAttribI3uiv( uint index, uint[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI3uiv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glVertexAttribI4uiv( uint index, uint* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI4uiv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glVertexAttribI4uiv( uint index, uint[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI4uiv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glVertexAttribI4bv( uint index, sbyte* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI4bv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glVertexAttribI4bv( uint index, sbyte[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI4bv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glVertexAttribI4sv( uint index, short* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI4sv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glVertexAttribI4sv( uint index, short[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI4sv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glVertexAttribI4ubv( uint index, byte* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI4ubv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glVertexAttribI4ubv( uint index, byte[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI4ubv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glVertexAttribI4usv( uint index, ushort* v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI4usv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glVertexAttribI4usv( uint index, ushort[] v )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glVertexAttribI4usv( index, v );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetUniformuiv( uint program, int location, uint* @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetUniformuiv( program, location, @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetUniformuiv( uint program, int location, ref uint[] @params )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetUniformuiv( program, location, ref @params );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glBindFragDataLocation( uint program, uint color, byte* name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glBindFragDataLocation( program, color, name );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glBindFragDataLocation( uint program, uint color, string name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glBindFragDataLocation( program, color, name );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe int glGetFragDataLocation( uint program, byte* name )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetFragDataLocation( program, name );
+        CheckErrors();
 
         return result;
     }
@@ -3021,10 +3116,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public int glGetFragDataLocation( uint program, string name )
     {
         Calls++;
-
-        Gdx.GL.
-            var result = Gdx.GL.glGetFragDataLocation( program, name );
-
+        var result = Gdx.GL.glGetFragDataLocation( program, name );
         CheckErrors();
 
         return result;
@@ -3034,196 +3126,224 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glUniform1ui( int location, uint v0 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform1ui( location, v0 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform2ui( int location, uint v0, uint v1 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform2ui( location, v0, v1 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform3ui( int location, uint v0, uint v1, uint v2 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform3ui( location, v0, v1, v2 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform4ui( int location, uint v0, uint v1, uint v2, uint v3 )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform4ui( location, v0, v1, v2, v3 );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glUniform1uiv( int location, int count, uint* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform1uiv( location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform1uiv( int location, uint[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform1uiv( location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glUniform2uiv( int location, int count, uint* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform2uiv( location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform2uiv( int location, uint[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform2uiv( location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glUniform3uiv( int location, int count, uint* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform3uiv( location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform3uiv( int location, uint[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform3uiv( location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glUniform4uiv( int location, int count, uint* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform4uiv( location, count, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glUniform4uiv( int location, uint[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glUniform4uiv( location, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glTexParameterIiv( int target, int pname, int* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glTexParameterIiv( target, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glTexParameterIiv( int target, int pname, int[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glTexParameterIiv( target, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glTexParameterIuiv( int target, int pname, uint* param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glTexParameterIuiv( target, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glTexParameterIuiv( int target, int pname, uint[] param )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glTexParameterIuiv( target, pname, param );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetTexParameterIiv( int target, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetTexParameterIiv( target, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetTexParameterIiv( int target, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetTexParameterIiv( target, pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetTexParameterIuiv( int target, int pname, uint* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetTexParameterIuiv( target, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetTexParameterIuiv( int target, int pname, ref uint[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetTexParameterIuiv( target, pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glClearBufferiv( int buffer, int drawbuffer, int* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glClearBufferiv( buffer, drawbuffer, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glClearBufferiv( int buffer, int drawbuffer, int[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glClearBufferiv( buffer, drawbuffer, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glClearBufferuiv( int buffer, int drawbuffer, uint* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glClearBufferuiv( buffer, drawbuffer, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glClearBufferuiv( int buffer, int drawbuffer, uint[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glClearBufferuiv( buffer, drawbuffer, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glClearBufferfv( int buffer, int drawbuffer, float* value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glClearBufferfv( buffer, drawbuffer, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glClearBufferfv( int buffer, int drawbuffer, float[] value )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glClearBufferfv( buffer, drawbuffer, value );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glClearBufferfi( int buffer, int drawbuffer, float depth, int stencil )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glClearBufferfi( buffer, drawbuffer, depth, stencil );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe byte* glGetStringi( int name, uint index )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetStringi( name, index );
+        CheckErrors();
 
         return result;
     }
@@ -3232,7 +3352,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public string glGetStringiSafe( int name, uint index )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetStringiSafe( name, index );
+        CheckErrors();
 
         return result;
     }
@@ -3241,7 +3362,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public bool glIsRenderbuffer( uint renderbuffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glIsRenderbuffer( renderbuffer );
+        CheckErrors();
 
         return result;
     }
@@ -3250,35 +3372,40 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glBindRenderbuffer( int target, uint renderbuffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glBindRenderbuffer( target, renderbuffer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glDeleteRenderbuffers( int n, uint* renderbuffers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDeleteRenderbuffers( n, renderbuffers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glDeleteRenderbuffers( params uint[] renderbuffers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDeleteRenderbuffers( renderbuffers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGenRenderbuffers( int n, uint* renderbuffers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGenRenderbuffers( n, renderbuffers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public uint[] glGenRenderbuffers( int n )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGenRenderbuffers( n );
+        CheckErrors();
 
         return result;
     }
@@ -3287,7 +3414,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public uint glGenRenderbuffer()
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGenRenderbuffer();
+        CheckErrors();
 
         return result;
     }
@@ -3296,28 +3424,32 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glRenderbufferStorage( int target, int internalformat, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glRenderbufferStorage( target, internalformat, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetRenderbufferParameteriv( int target, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetRenderbufferParameteriv( target, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetRenderbufferParameteriv( int target, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetRenderbufferParameteriv( target, pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public bool glIsFramebuffer( uint framebuffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glIsFramebuffer( framebuffer );
+        CheckErrors();
 
         return result;
     }
@@ -3326,35 +3458,40 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glBindFramebuffer( int target, uint framebuffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glBindFramebuffer( target, framebuffer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glDeleteFramebuffers( int n, uint* framebuffers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDeleteFramebuffers( n, framebuffers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glDeleteFramebuffers( params uint[] framebuffers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDeleteFramebuffers( framebuffers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGenFramebuffers( int n, uint* framebuffers )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGenFramebuffers( n, framebuffers );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public uint[] glGenFramebuffers( int n )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGenFramebuffers( n );
+        CheckErrors();
 
         return result;
     }
@@ -3363,7 +3500,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public uint glGenFramebuffer()
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGenFramebuffer();
+        CheckErrors();
 
         return result;
     }
@@ -3372,7 +3510,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public int glCheckFramebufferStatus( int target )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glCheckFramebufferStatus( target );
+        CheckErrors();
 
         return result;
     }
@@ -3381,77 +3520,88 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glFramebufferTexture1D( int target, int attachment, int textarget, uint texture, int level )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glFramebufferTexture1D( target, attachment, textarget, texture, level );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glFramebufferTexture2D( int target, int attachment, int textarget, uint texture, int level )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glFramebufferTexture2D( target, attachment, textarget, texture, level );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glFramebufferTexture3D( int target, int attachment, int textarget, uint texture, int level, int zoffset )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glFramebufferTexture3D( target, attachment, textarget, texture, level, zoffset );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glFramebufferRenderbuffer( int target, int attachment, int renderbuffertarget, uint renderbuffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glFramebufferRenderbuffer( target, attachment, renderbuffertarget, renderbuffer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetFramebufferAttachmentParameteriv( target, attachment, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGetFramebufferAttachmentParameteriv( int target, int attachment, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetFramebufferAttachmentParameteriv( target, attachment, pname, ref parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glGenerateMipmap( int target )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGenerateMipmap( target );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glBlitFramebuffer( int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, uint mask, int filter )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glBlitFramebuffer( srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glRenderbufferStorageMultisample( int target, int samples, int internalformat, int width, int height )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glRenderbufferStorageMultisample( target, samples, internalformat, width, height );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glFramebufferTextureLayer( int target, int attachment, uint texture, int level, int layer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glFramebufferTextureLayer( target, attachment, texture, level, layer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void* glMapBufferRange( int target, int offset, int length, uint access )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        void* result = Gdx.GL.glMapBufferRange( target, offset, length, access );
+        CheckErrors();
 
         return result;
     }
@@ -3460,51 +3610,58 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public Span< T > glMapBufferRange< T >( int target, int offset, int length, uint access ) where T : unmanaged
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Span< T > result = Gdx.GL.glMapBufferRange< T >( target, offset, length, access );
+        CheckErrors();
 
-        return default;
+        return result;
     }
 
     /// <inheritdoc />
     public void glFlushMappedBufferRange( int target, int offset, int length )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glFlushMappedBufferRange( target, offset, length );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glBindVertexArray( uint array )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glBindVertexArray( array );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glDeleteVertexArrays( int n, uint* arrays )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDeleteVertexArrays( n, arrays );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glDeleteVertexArrays( params uint[] arrays )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDeleteVertexArrays( arrays );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGenVertexArrays( int n, uint* arrays )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGenVertexArrays( n, arrays );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public uint[] glGenVertexArrays( int n )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGenVertexArrays( n );
+        CheckErrors();
 
         return result;
     }
@@ -3513,7 +3670,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public uint glGenVertexArray()
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGenVertexArray();
+        CheckErrors();
 
         return result;
     }
@@ -3522,7 +3680,8 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public bool glIsVertexArray( uint array )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glIsVertexArray( array );
+        CheckErrors();
 
         return result;
     }
@@ -3531,56 +3690,64 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public void glDrawArraysInstanced( int mode, int first, int count, int instancecount )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDrawArraysInstanced( mode, first, count, instancecount );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glDrawElementsInstanced( int mode, int count, int type, void* indices, int instancecount )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDrawElementsInstanced( mode, count, type, indices, instancecount );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glDrawElementsInstanced< T >( int mode, int count, int type, T[] indices, int instancecount ) where T : unmanaged, IUnsignedNumber< T >
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glDrawElementsInstanced( mode, count, type, indices, instancecount );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glTexBuffer( int target, int internalformat, uint buffer )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glTexBuffer( target, internalformat, buffer );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glPrimitiveRestartIndex( uint index )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glPrimitiveRestartIndex( index );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public void glCopyBufferSubData( int readTarget, int writeTarget, int readOffset, int writeOffset, int size )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glCopyBufferSubData( readTarget, writeTarget, readOffset, writeOffset, size );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public unsafe void glGetUniformIndices( uint program, int uniformCount, byte** uniformNames, uint* uniformIndices )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetUniformIndices( program, uniformCount, uniformNames, uniformIndices );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public uint[] glGetUniformIndices( uint program, params string[] uniformNames )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetUniformIndices( program, uniformNames );
+        CheckErrors();
 
         return result;
     }
@@ -3589,14 +3756,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetActiveUniformsiv( uint program, int uniformCount, uint* uniformIndices, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetActiveUniformsiv( program, uniformCount, uniformIndices, pname, parameters );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public int[] glGetActiveUniformsiv( uint program, int pname, params uint[] uniformIndices )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetActiveUniformsiv( program, pname, uniformIndices );
+        CheckErrors();
 
         return result;
     }
@@ -3605,14 +3774,16 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     public unsafe void glGetActiveUniformName( uint program, uint uniformIndex, int bufSize, int* length, byte* uniformName )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        Gdx.GL.glGetActiveUniformName( program, uniformIndex, bufSize, length, uniformName );
+        CheckErrors();
     }
 
     /// <inheritdoc />
     public string glGetActiveUniformName( uint program, uint uniformIndex, int bufSize )
     {
         Calls++;
-        Gdx.GL.CheckErrors();
+        var result = Gdx.GL.glGetActiveUniformName( program, uniformIndex, bufSize );
+        CheckErrors();
 
         return result;
     }
