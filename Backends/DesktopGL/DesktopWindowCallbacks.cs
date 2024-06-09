@@ -28,27 +28,27 @@ namespace LughSharp.Backends.DesktopGL;
 [PublicAPI]
 public class DesktopWindowCallbacks
 {
-    public static void GdxFocusCallback( GLFWWindow window, bool focusing )
+    public static void GdxFocusCallback( GLFW.Window window, bool focusing )
     {
     }
 
-    public static void GdxIconifyCallback( GLFWWindow window, bool focusing )
+    public static void GdxIconifyCallback( GLFW.Window window, bool focusing )
     {
     }
 
-    public static void GdxMaximizeCallback( GLFWWindow window, bool maximized )
+    public static void GdxMaximizeCallback( GLFW.Window window, bool maximized )
     {
     }
 
-    public static void GdxWindowCloseCallback( GLFWWindow window )
+    public static void GdxWindowCloseCallback( GLFW.Window window )
     {
     }
 
-    public static void GdxDropCallback( GLFWWindow window, string[] paths )
+    public static void GdxDropCallback( GLFW.Window window, string[] paths )
     {
     }
 
-    public static void GdxRefreshCallback( GLFWWindow window )
+    public static void GdxRefreshCallback( GLFW.Window window )
     {
     }
 }

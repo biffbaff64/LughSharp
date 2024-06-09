@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Collections;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Utils.Collections;
@@ -261,6 +260,15 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return Items[ index ];
     }
 
+    /// <summary>
+    /// Sets or Gets the element at the given index.
+    /// </summary>
+    public T this[ int index ]
+    {
+        get => Items[ index ];
+        set => Items[ index ] = value;
+    }
+    
     /// <summary>
     /// Sets the array element at position index to the supplied value.
     /// </summary>

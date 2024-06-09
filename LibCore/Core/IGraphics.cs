@@ -87,6 +87,24 @@ public interface IGraphics
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    [PublicAPI]
+    public class GdxMonitor
+    {
+        public int    VirtualX { get; set; }
+        public int    VirtualY { get; set; }
+        public string Name     { get; set; }
+
+        protected GdxMonitor( int virtualX, int virtualY, string name )
+        {
+            this.VirtualX = virtualX;
+            this.VirtualY = virtualY;
+            this.Name     = name;
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// Class describing the bits per pixel, depth buffer precision,
     /// stencil precision and number of MSAA samples.
@@ -144,46 +162,75 @@ public interface IGraphics
     float GetDensity();
 
     int GetSafeInsetLeft();
-
     int GetSafeInsetTop();
-
     int GetSafeInsetBottom();
-
     int GetSafeInsetRight();
 
     long GetFrameID();
-
     int GetFramesPerSecond();
 
     (float X, float Y) GetPpcXY();
-
     (float X, float Y) GetPpiXY();
 
     bool SupportsDisplayModeChange();
+    bool SupportsExtension( string extension );
 
     DisplayMode[] GetDisplayModes();
-
-    DisplayMode GetDisplayMode();
+    DisplayMode   GetDisplayMode();
+    DisplayMode[] GetDisplayModes( GLFW.Monitor monitor );
+    DisplayMode   GetDisplayMode( GLFW.Monitor monitor );
 
     bool SetFullscreenMode( DisplayMode displayMode );
-
     bool SetWindowedMode( int width, int height );
-
     void SetTitle( string title );
-
     void SetUndecorated( bool undecorated );
-
     void SetResizable( bool resizable );
 
     void SetVSync( bool vsync );
-
     void SetForegroundFps( int fps );
 
-    bool SupportsExtension( string extension );
-
     bool ContinuousRendering { get; }
-
     void RequestRendering();
+
+    /// <summary>
+    /// Create a new cursor represented by the <see cref="Pixmap"/>. The Pixmap must be
+    /// in RGBA8888 format, Width &amp; height must be powers-of-two greater than zero (not
+    /// necessarily equal) and of a certain minimum size (32x32 is a safe bet), and alpha
+    /// transparency must be single-bit (i.e., 0x00 or 0xFF only).
+    /// <para>
+    /// This function returns a Cursor object that can be set as the system cursor
+    /// by calling <see cref="SetCursor(ICursor)"/>.
+    /// </para>
+    /// </summary>
+    /// <param name="pixmap"> the mouse cursor image as a <see cref="Pixmap"/>. </param>
+    /// <param name="xHotspot">
+    /// The x location of the hotspot pixel within the cursor image (origin top-left corner)
+    /// </param>
+    /// <param name="yHotspot">
+    /// The y location of the hotspot pixel within the cursor image (origin top-left corner)
+    /// </param>
+    /// <returns>
+    /// a cursor object that can be used by calling <see cref="SetCursor(ICursor)"/> or null
+    /// if not supported
+    /// </returns>
+    ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot );
+
+    /// <summary>
+    /// Only viable on the lwjgl-backend and on the gwt-backend.
+    /// Browsers that support cursor:url() and support the png format (the pixmap
+    /// is converted to a data-url of type image/png) should also support custom
+    /// cursors. Will set the mouse cursor image to the image represented by the
+    /// Cursor. It is recommended to call this function in the main render thread,
+    /// and maximum one time per frame.
+    /// </summary>
+    /// <param name="cursor">The mouse cursor as a <see cref="ICursor"/></param>
+    void SetCursor( ICursor cursor );
+
+    /// <summary>
+    /// Sets one of the predefined <see cref="ICursor.SystemCursor"/>s.
+    /// </summary>
+    /// <param name="systemCursor"> The system cursor to use. </param>
+    void SetSystemCursor( ICursor.SystemCursor systemCursor );
 
     #endregion methods
 }

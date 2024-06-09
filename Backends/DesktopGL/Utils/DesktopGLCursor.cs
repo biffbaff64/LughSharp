@@ -34,6 +34,14 @@ public class DesktopGLCursor : ICursor
     public readonly static List< DesktopGLCursor >                    Cursors       = new();
     public readonly static Dictionary< ICursor.SystemCursor, Cursor > SystemCursors = new();
 
+    public DesktopGLWindow Window     { get; set; }
+    public Pixmap          PixmapCopy { get; set; }
+    public Image           GLFWImage  { get; set; }
+    public Cursor          GLFWCursor { get; set; }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     public DesktopGLCursor( DesktopGLWindow window, Pixmap pixmap, int xHotspot, int yHotspot )
     {
         Window = window;
@@ -83,12 +91,7 @@ public class DesktopGLCursor : ICursor
         Cursors.Add( this );
     }
 
-    public DesktopGLWindow Window     { get; set; }
-    public Pixmap          PixmapCopy { get; set; }
-    public Image           GLFWImage  { get; set; }
-    public Cursor          GLFWCursor { get; set; }
-
-    public static void SetSystemCursor( GLFWWindow window, ICursor.SystemCursor systemCursor )
+    public static void SetSystemCursor( GLFW.Window window, ICursor.SystemCursor systemCursor )
     {
         //@formatter:off
         var glCursor = systemCursor switch

@@ -228,7 +228,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     }
 
     /// <inheritdoc/>
-    public void WindowHandleChanged( GLFWWindow? windowHandle )
+    public void WindowHandleChanged( GLFW.Window? windowHandle )
     {
         ResetPollingStates();
 
@@ -507,7 +507,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     // Callbacks
     // ------------------------------------------------------------------------
 
-    internal void KeyCallback( GLFWWindow window,
+    internal void KeyCallback( GLFW.Window window,
                                Keys key,
                                int scancode,
                                InputState action,
@@ -569,7 +569,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         }
     }
 
-    internal void CharCallback( GLFWWindow window, uint codepoint )
+    internal void CharCallback( GLFW.Window window, uint codepoint )
     {
         if ( ( codepoint & 0xff00 ) == 0xf700 )
         {
@@ -581,7 +581,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         _eventQueue.KeyTyped( ( char ) codepoint, TimeUtils.NanoTime() );
     }
 
-    internal void MouseCallback( GLFWWindow window, MouseButton button, InputState state, ModifierKeys mods )
+    internal void MouseCallback( GLFW.Window window, MouseButton button, InputState state, ModifierKeys mods )
     {
         var gdxButton = button switch
         {
@@ -619,13 +619,13 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         }
     }
 
-    internal void ScrollCallback( GLFWWindow window, double x, double y )
+    internal void ScrollCallback( GLFW.Window window, double x, double y )
     {
         _window?.Graphics.RequestRendering();
         _eventQueue.Scrolled( -( float ) x, -( float ) y, TimeUtils.NanoTime() );
     }
 
-    internal void CursorPosCallback( GLFWWindow window, double x, double y )
+    internal void CursorPosCallback( GLFW.Window window, double x, double y )
     {
         _deltaX = ( int ) x - _logicalMouseX;
         _deltaY = ( int ) y - _logicalMouseY;

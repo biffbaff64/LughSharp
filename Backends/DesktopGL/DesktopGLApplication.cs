@@ -478,8 +478,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// <param name="sharedContextWindow"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    private GLFWWindow CreateGLFWWindow( DesktopGLApplicationConfiguration appConfig,
-                                         GLFWWindow sharedContextWindow )
+    private GLFW.Window CreateGLFWWindow( DesktopGLApplicationConfiguration appConfig,
+                                         GLFW.Window sharedContextWindow )
     {
         Glfw.DefaultWindowHints();
 
@@ -522,7 +522,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Glfw.WindowHint( Hint.OpenGLDebugContext, true );
         }
 
-        GLFWWindow windowHandle;
+        GLFW.Window windowHandle;
 
         if ( appConfig.FullscreenMode != null )
         {
@@ -542,10 +542,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                               appConfig.WindowHeight,
                                               appConfig.Title ?? "",
                                               Monitor.NULL,
-                                              GLFWWindow.NULL );
+                                              GLFW.Window.NULL );
         }
 
-        if ( windowHandle == GLFWWindow.NULL )
+        if ( windowHandle == GLFW.Window.NULL )
         {
             throw new GdxRuntimeException( "Couldn't create window" );
         }

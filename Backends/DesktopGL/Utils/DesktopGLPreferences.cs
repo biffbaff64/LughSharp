@@ -28,20 +28,23 @@ using Exception = System.Exception;
 
 namespace LughSharp.Backends.DesktopGL.Utils;
 
+[PublicAPI]
 public class DesktopGLPreferences : IPreferences
 {
-    private readonly string _filePath;
-
+    private readonly string                        _filePath;
     private readonly Dictionary< string, object >? _properties;
     private readonly string                        _propertiesFile;
     private readonly XDocument?                    _xDocument;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// </summary>
     /// <param name="filename"></param>
     public DesktopGLPreferences( string filename )
     {
-        _filePath       = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile ) + "//.prefs//";
+        _filePath       = System.Environment.GetFolderPath( System.Environment.SpecialFolder.UserProfile ) + "//.prefs//";
         _propertiesFile = filename;
 
         if ( !Path.Exists( _filePath + _propertiesFile ) )
@@ -133,12 +136,7 @@ public class DesktopGLPreferences : IPreferences
     {
         var value = _properties?[ key ];
 
-        if ( value == null )
-        {
-            return defValue;
-        }
-
-        return Convert.ToInt16( value );
+        return value == null ? defValue : Convert.ToInt16( value );
     }
 
     /// <summary>
@@ -150,12 +148,7 @@ public class DesktopGLPreferences : IPreferences
     {
         var value = _properties?[ key ];
 
-        if ( value == null )
-        {
-            return defValue;
-        }
-
-        return Convert.ToInt32( value );
+        return value == null ? defValue : Convert.ToInt32( value );
     }
 
     /// <summary>
@@ -167,12 +160,7 @@ public class DesktopGLPreferences : IPreferences
     {
         var value = _properties?[ key ];
 
-        if ( value == null )
-        {
-            return defValue;
-        }
-
-        return Convert.ToSingle( value );
+        return value == null ? defValue : Convert.ToSingle( value );
     }
 
     /// <summary>
@@ -184,12 +172,7 @@ public class DesktopGLPreferences : IPreferences
     {
         var value = _properties?[ key ];
 
-        if ( value == null )
-        {
-            return defValue;
-        }
-
-        return ( string ) value;
+        return value == null ? defValue : ( string ) value;
     }
 
     public Dictionary< string, object > Get()

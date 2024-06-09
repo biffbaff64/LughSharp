@@ -193,7 +193,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
                                                            videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits );
     }
 
-    public static IGraphics.DisplayMode GetDisplayMode( GLFWMonitor monitor )
+    public static IGraphics.DisplayMode GetDisplayMode( GLFW.Monitor monitor )
     {
         DesktopGLApplication.InitialiseGL();
 
@@ -233,9 +233,9 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
     /// <summary>
     /// Return the available <see cref="IGraphics.DisplayMode"/>"s
-    /// of the given <see cref="GLFWMonitor"/>
+    /// of the given <see cref="IGraphics.GdxMonitor"/>
     /// </summary>
-    public static IGraphics.DisplayMode[] GetDisplayModes( GLFWMonitor monitor )
+    public static IGraphics.DisplayMode[] GetDisplayModes( GLFW.Monitor monitor )
     {
         DesktopGLApplication.InitialiseGL();
 
@@ -255,5 +255,14 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
         }
 
         return result;
+    }
+
+    public static DesktopGLGraphics.DesktopGLMonitor ToDesktopGLMonitor( GLFW.Monitor glfwMonitor )
+    {
+        Glfw.GetMonitorPos( glfwMonitor, out var tmp, out var tmp2 );
+
+        var name = Glfw.GetMonitorName( glfwMonitor );
+
+        return new DesktopGLGraphics.DesktopGLMonitor( glfwMonitor, tmp, tmp2, name );
     }
 }

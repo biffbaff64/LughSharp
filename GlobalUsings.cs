@@ -24,6 +24,7 @@
 
 // ----------------------------------------------------------------------------
 // General System
+
 global using System;
 global using System.Collections;
 global using System.Diagnostics;
@@ -63,12 +64,7 @@ global using JetBrains.Annotations;
 // OpenGL / Glfw support
 global using DotGL;
 global using DotGLFW;
-
-//@formatter:off
-global using GLFW           = DotGLFW;
-global using GLFWMonitor    = DotGLFW.Monitor;
-global using GLFWWindow     = DotGLFW.Window;
-//@formatter:on
+global using GLFW = DotGLFW;
 
 // ----------------------------------------------------------------------------
 // LughSharp

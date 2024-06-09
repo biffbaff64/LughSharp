@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
-
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
 [PublicAPI]
@@ -354,7 +352,7 @@ public class VertexBufferObjectWithVAO : IVertexData
     {
         _tmpHandle.Clear();
 
-        fixed ( int* intptr = &( ( Buffer ) _tmpHandle ).BackingArray()[ 0 ] )
+        fixed ( int* intptr = &_tmpHandle.BackingArray()[ 0 ] )
         {
             Gdx.GL.glGenVertexArrays( 1, ( uint* ) intptr );
         }
@@ -371,7 +369,7 @@ public class VertexBufferObjectWithVAO : IVertexData
 
             _tmpHandle.Flip();
 
-            fixed ( int* intptr = &( ( Buffer ) _tmpHandle ).BackingArray()[ 0 ] )
+            fixed ( int* intptr = &_tmpHandle.BackingArray()[ 0 ] )
             {
                 Gdx.GL.glDeleteVertexArrays( 1, ( uint* ) intptr );
             }

@@ -249,7 +249,7 @@ public class OpenALSound : ISound
 
         Duration = samples / ( float ) sampleRate;
 
-        var buffer = ByteBuffer.AllocateDirect( bytes );
+        var buffer = ByteBuffer.Allocate( bytes );
 
         buffer.Order( ByteOrder.NativeOrder )
               .Put( pcm, 0, bytes )

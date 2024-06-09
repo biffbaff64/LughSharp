@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Text;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
@@ -216,7 +215,7 @@ public class ShaderProgram
         Gdx.GL.glShaderSource( shader, source );
         Gdx.GL.glCompileShader( shader );
 
-        fixed ( int* ptr = &( ( Buffer ) intbuf ).BackingArray()[ 0 ] )
+        fixed ( int* ptr = &intbuf.BackingArray()[ 0 ] )
         {
             Gdx.GL.glGetShaderiv( shader, IGL.GL_COMPILE_STATUS, ptr );
         }
@@ -265,7 +264,7 @@ public class ShaderProgram
         tmp.Order( ByteOrder.NativeOrder );
         var intbuf = tmp.AsIntBuffer();
 
-        fixed ( int* ptr = &( ( Buffer ) intbuf ).BackingArray()[ 0 ] )
+        fixed ( int* ptr = &intbuf.BackingArray()[ 0 ] )
         {
             Gdx.GL.glGetProgramiv( ( uint ) program, IGL.GL_LINK_STATUS, ptr );
         }
@@ -600,7 +599,7 @@ public class ShaderProgram
 
         unsafe
         {
-            fixed ( float* ptr = &( ( Buffer ) buffer ).BackingArray()[ 0 ] )
+            fixed ( float* ptr = &( buffer ).BackingArray()[ 0 ] )
             {
                 Gdx.GL.glUniformMatrix3fv( FetchUniformLocation( name ), count, transpose, ptr );
             }
@@ -914,7 +913,7 @@ public class ShaderProgram
     {
         _parameters.Clear();
 
-        fixed ( int* ptr = &( ( Buffer ) _parameters ).BackingArray()[ 0 ] )
+        fixed ( int* ptr = &_parameters.BackingArray()[ 0 ] )
         {
             Gdx.GL.glGetProgramiv( ( uint ) Handle, IGL.GL_ACTIVE_ATTRIBUTES, ptr );
         }

@@ -104,6 +104,8 @@ public abstract class AbstractGraphics : IGraphics
 
     public abstract IGraphics.DisplayMode[] GetDisplayModes();
     public abstract IGraphics.DisplayMode   GetDisplayMode();
+    public abstract IGraphics.DisplayMode[] GetDisplayModes( GLFW.Monitor monitor );
+    public abstract IGraphics.DisplayMode   GetDisplayMode( GLFW.Monitor monitor );
 
     // ------------------------------------------------------------------------
     public abstract void SetTitle( string title );

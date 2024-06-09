@@ -25,9 +25,10 @@
 
 namespace LughSharp.Backends.DesktopGL.Input;
 
+[PublicAPI]
 public interface IDesktopGLInput : IInput, IDisposable
 {
-    void WindowHandleChanged( GLFWWindow windowHandle );
+    void WindowHandleChanged( GLFW.Window windowHandle );
 
     void Update();
 

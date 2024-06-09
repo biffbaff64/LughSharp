@@ -372,7 +372,7 @@ GRAPHICS/GLUTILS
     - DONE - DONE - VertexArray
     - DONE - DONE - VertexBufferObject
     - DONE - IP   - VertexBufferObjectSubData
-    - DONE - IP   - VertexBufferObjectWithVAO
+    - DONE£ - IP   - VertexBufferObjectWithVAO
 
     - The following do not need converting
 
