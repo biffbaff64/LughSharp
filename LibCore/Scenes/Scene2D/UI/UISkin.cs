@@ -197,7 +197,7 @@ public class UISkin
         public TextButtonStyleDefault? Default { get; set; }
 
         [JsonPropertyName( "" )]
-        public Toggle1 Toggle { get; set; }
+        public Toggle1? Toggle1 { get; set; }
     }
 
     [PublicAPI]
@@ -235,7 +235,7 @@ public class UISkin
     public class ScrollPaneStyle
     {
         [JsonPropertyName( "" )]
-        public Default2 Default { get; set; }
+        public Default2? Default2 { get; set; }
     }
 
     [PublicAPI]
@@ -263,7 +263,7 @@ public class UISkin
     public class SelectBoxStyle
     {
         [JsonPropertyName( "" )]
-        public Default3 Default { get; set; }
+        public Default3? Default3 { get; set; }
     }
 
     [PublicAPI]
@@ -282,7 +282,7 @@ public class UISkin
         public string? ScrollStyle { get; set; }
 
         [JsonPropertyName( "" )]
-        public ListStyle1 ListStyle { get; set; }
+        public ListStyle1? ListStyle1 { get; set; }
     }
 
     [PublicAPI]
@@ -301,10 +301,10 @@ public class UISkin
     public class SplitPaneStyle
     {
         [JsonPropertyName( "" )]
-        public DefaultVertical Default_Vertical { get; set; }
+        public DefaultVertical? Default_Vertical { get; set; }
 
         [JsonPropertyName( "" )]
-        public DefaultHorizontal Default_Horizontal { get; set; }
+        public DefaultHorizontal? Default_Horizontal { get; set; }
     }
 
     [PublicAPI]
@@ -327,10 +327,10 @@ public class UISkin
     public class WindowStyle
     {
         [JsonPropertyName( "" )]
-        public Default4 Default { get; set; }
+        public Default4? Default4 { get; set; }
 
         [JsonPropertyName( "" )]
-        public Dialog Dialog { get; set; }
+        public Dialog? Dialog { get; set; }
     }
 
     [PublicAPI]
@@ -362,10 +362,10 @@ public class UISkin
     public class ProgressBarStyle
     {
         [JsonPropertyName( "" )]
-        public DefaultHorizontal1 Default_Horizontal { get; set; }
+        public DefaultHorizontal1? Default_Horizontal { get; set; }
 
         [JsonPropertyName( "" )]
-        public DefaultVertical1 Default_Vertical { get; set; }
+        public DefaultVertical1? Default_Vertical { get; set; }
     }
 
     [PublicAPI]
@@ -394,10 +394,10 @@ public class UISkin
     public class SliderStyle
     {
         [JsonPropertyName( "" )]
-        public DefaultHorizontal2 Default_Horizontal { get; set; }
+        public DefaultHorizontal2? Default_Horizontal { get; set; }
 
         [JsonPropertyName( "" )]
-        public DefaultVertical2 Default_Vertical { get; set; }
+        public DefaultVertical2? Default_Vertical { get; set; }
     }
 
     [PublicAPI]
@@ -420,7 +420,7 @@ public class UISkin
     public class LabelStyle
     {
         [JsonPropertyName( "" )]
-        public Default5 Default { get; set; }
+        public Default5? Default5 { get; set; }
     }
 
     [PublicAPI]
@@ -439,7 +439,7 @@ public class UISkin
     public class TextFieldStyle
     {
         [JsonPropertyName( "" )]
-        public Default6 Default { get; set; }
+        public Default6? Default6 { get; set; }
     }
 
     [PublicAPI]
@@ -467,7 +467,7 @@ public class UISkin
     public class CheckBoxStyle
     {
         [JsonPropertyName( "" )]
-        public Default7 Default { get; set; }
+        public Default7? Default7 { get; set; }
     }
 
     [PublicAPI]

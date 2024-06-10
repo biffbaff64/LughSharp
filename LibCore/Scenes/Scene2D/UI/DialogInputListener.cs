@@ -27,8 +27,7 @@ using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
-//TODO: I think I was drunk when writing this class. Rip it up and start again.
-
+[PublicAPI]
 public class DialogInputListener : InputListener
 {
     private readonly Dialog  _dialog;

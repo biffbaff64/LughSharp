@@ -42,19 +42,19 @@ public class ByteBufferAsIntBufferL : IntBuffer
     /// <inheritdoc />
     public override IntBuffer Slice()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override IntBuffer Duplicate()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override IntBuffer asReadOnlyBuffer()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
@@ -66,7 +66,7 @@ public class ByteBufferAsIntBufferL : IntBuffer
     /// <inheritdoc />
     public override IntBuffer Put( int i )
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
@@ -78,18 +78,18 @@ public class ByteBufferAsIntBufferL : IntBuffer
     /// <inheritdoc />
     public override IntBuffer Put( int index, int i )
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override IntBuffer Compact()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override ByteOrder Order()
     {
-        return null;
+        return ByteOrder.NativeOrder;
     }
 }

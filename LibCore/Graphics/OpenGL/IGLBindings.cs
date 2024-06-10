@@ -867,7 +867,7 @@ public interface IGLBindings
     /// a list of possible values.
     /// </param>
     /// <param name="data">A pointer to where the float value or values will be returned.</param>
-    void glGetFloatv( Int32 pname, float[] data );
+    void glGetFloatv( Int32 pname, float* data );
 
     /// <summary>
     /// Return the float value or values of a selected parameter.

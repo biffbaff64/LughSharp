@@ -32,9 +32,7 @@ namespace LughSharp.LibCore.Maps;
 [PublicAPI]
 public class MapProperties
 {
-    private Dictionary< string, object? >                 _properties = new();
-    public  Dictionary< string, object? >.KeyCollection   Keys   => _properties.Keys;
-    public  Dictionary< string, object? >.ValueCollection Values => _properties.Values;
+    private Dictionary< string, object? > _properties = new();
 
     // ------------------------------------------------------------------------
 
@@ -43,7 +41,7 @@ public class MapProperties
     /// </summary>
     /// <param name="key"> The Key. </param>
     /// <typeparam name="T"> The Type of the required property. </typeparam>
-    /// <returns></returns>
+    /// <returns> The property, if found, or null. </returns>
     public virtual T? Get< T >( string key )
     {
         return ( T? ) Get( key );
@@ -56,7 +54,7 @@ public class MapProperties
     /// <param name="key"> The Key. </param>
     /// <param name="defaultValue"> The default value. </param>
     /// <typeparam name="T"> The Type of the required property. </typeparam>
-    /// <returns></returns>
+    /// <returns> The property, if found, or the default value. </returns>
     public virtual T Get< T >( string key, T defaultValue )
     {
         var obj = Get( key );
@@ -68,6 +66,7 @@ public class MapProperties
     /// Gets the property matching the specified key.
     /// </summary>
     /// <param name="key"> The Key. </param>
+    /// <returns> The property, if found, or null. </returns>
     public object? Get( string key )
     {
         return _properties[ key ];
@@ -76,8 +75,7 @@ public class MapProperties
     /// <summary>
     /// Returns true if the properties map contains the specified key.
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="key"> The Key. </param>
     public bool ContainsKey( string key )
     {
         return _properties.ContainsKey( key );

@@ -223,30 +223,6 @@ public class VertexAttribute
                                     unit );
     }
 
-    /// <summary>
-    /// Tests to determine if the passed object was created with the same parameters
-    /// </summary>
-    public override bool Equals( object obj )
-    {
-        if ( obj is not VertexAttribute attribute )
-        {
-            return false;
-        }
-
-        return Equals( attribute );
-    }
-
-    public bool Equals( VertexAttribute? other )
-    {
-        return ( other != null )
-            && ( usage == other.usage )
-            && ( numComponents == other.numComponents )
-            && ( type == other.type )
-            && ( normalized == other.normalized )
-            && alias.Equals( other.alias )
-            && ( unit == other.unit );
-    }
-
     /// <returns>
     /// A unique number specifying the usage index (3 MSB) and unit (1 LSB).
     /// </returns>
@@ -272,7 +248,32 @@ public class VertexAttribute
         };
     }
 
-    public int HashCode()
+    /// <summary>
+    /// Tests to determine if the passed object was created with the same parameters
+    /// </summary>
+    public override bool Equals( object? obj )
+    {
+        if ( obj is not VertexAttribute attribute )
+        {
+            return false;
+        }
+
+        return Equals( attribute );
+    }
+
+    public bool Equals( VertexAttribute? other )
+    {
+        return ( other != null )
+            && ( usage == other.usage )
+            && ( numComponents == other.numComponents )
+            && ( type == other.type )
+            && ( normalized == other.normalized )
+            && alias.Equals( other.alias )
+            && ( unit == other.unit );
+    }
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
     {
         var result = GetKey();
 

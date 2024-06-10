@@ -319,7 +319,7 @@ public class PolygonSprite
         var cos          = MathUtils.CosDeg( Rotation );
         var sin          = MathUtils.SinDeg( Rotation );
 
-        for ( int i = 0, v = 0, n = regionVertices.Length; i < n; i += 2, v += 5 )
+        for ( int i = 0, v = 0, n = regionVertices!.Length; i < n; i += 2, v += 5 )
         {
             var fx = ( ( regionVertices[ i ] * sX ) - originX ) * scaleX;
             var fy = ( ( regionVertices[ i + 1 ] * sY ) - originY ) * scaleY;

@@ -599,7 +599,7 @@ public abstract class ShortBuffer : Buffer
     /// </para>
     /// </summary>
     /// <returns> The current hash code of this buffer </returns>
-    public int HashCode()
+    public override int GetHashCode()
     {
         var h = 1;
         var p = Position;
@@ -631,7 +631,7 @@ public abstract class ShortBuffer : Buffer
     /// <returns>
     /// <tt>true</tt> if, and only if, this buffer is equal to the given object
     /// </returns>
-    public override bool Equals( object ob )
+    public override bool Equals( object? ob )
     {
         if ( this == ob )
         {

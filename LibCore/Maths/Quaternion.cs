@@ -968,36 +968,6 @@ public class Quaternion
         return this;
     }
 
-    public int HashCode()
-    {
-        const int PRIME = 31;
-
-        var result = PRIME + NumberUtils.FloatToRawIntBits( W );
-        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( X );
-        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Y );
-        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Z );
-
-        return result;
-    }
-
-    public override bool Equals( object? obj )
-    {
-        if ( this == obj )
-        {
-            return true;
-        }
-
-        if ( obj is not Quaternion quaternion )
-        {
-            return false;
-        }
-
-        return ( NumberUtils.FloatToRawIntBits( W ) == NumberUtils.FloatToRawIntBits( quaternion.W ) )
-            && ( NumberUtils.FloatToRawIntBits( X ) == NumberUtils.FloatToRawIntBits( quaternion.X ) )
-            && ( NumberUtils.FloatToRawIntBits( Y ) == NumberUtils.FloatToRawIntBits( quaternion.Y ) )
-            && ( NumberUtils.FloatToRawIntBits( Z ) == NumberUtils.FloatToRawIntBits( quaternion.Z ) );
-    }
-
     /// <summary>
     /// Get the dot product between the two quaternions (commutative).
     /// </summary>
@@ -1280,5 +1250,37 @@ public class Quaternion
     public float GetAngleAround( Vector3 axis )
     {
         return GetAngleAround( axis.X, axis.Y, axis.Z );
+    }
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
+    {
+        const int PRIME = 31;
+
+        var result = PRIME + NumberUtils.FloatToRawIntBits( W );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( X );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Y );
+        result = ( PRIME * result ) + NumberUtils.FloatToRawIntBits( Z );
+
+        return result;
+    }
+    
+    /// <inheritdoc/>
+    public override bool Equals( object? obj )
+    {
+        if ( this == obj )
+        {
+            return true;
+        }
+
+        if ( obj is not Quaternion quaternion )
+        {
+            return false;
+        }
+
+        return ( NumberUtils.FloatToRawIntBits( W ) == NumberUtils.FloatToRawIntBits( quaternion.W ) )
+            && ( NumberUtils.FloatToRawIntBits( X ) == NumberUtils.FloatToRawIntBits( quaternion.X ) )
+            && ( NumberUtils.FloatToRawIntBits( Y ) == NumberUtils.FloatToRawIntBits( quaternion.Y ) )
+            && ( NumberUtils.FloatToRawIntBits( Z ) == NumberUtils.FloatToRawIntBits( quaternion.Z ) );
     }
 }

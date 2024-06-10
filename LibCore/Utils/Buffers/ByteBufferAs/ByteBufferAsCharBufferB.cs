@@ -48,7 +48,7 @@ public class ByteBufferAsCharBufferB : CharBuffer
     /// <inheritdoc />
     protected override CharBuffer Put( char c )
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
@@ -66,48 +66,48 @@ public class ByteBufferAsCharBufferB : CharBuffer
     /// <inheritdoc />
     public override CharBuffer Put( int index, char c )
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override CharBuffer Compact()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override CharBuffer Slice()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override CharBuffer Duplicate()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override CharBuffer AsReadOnlyBuffer()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     protected override string ToString( int start, int end )
     {
-        return null;
+        return string.Empty;
     }
 
     /// <inheritdoc />
     public override ByteOrder Order()
     {
-        return null;
+        return ByteOrder.NativeOrder;
     }
 
     /// <inheritdoc />
     public override CharBuffer SubSequence( int start, int end )
     {
-        return null;
+        return this;
     }
 }

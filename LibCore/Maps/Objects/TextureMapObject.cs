@@ -25,9 +25,21 @@
 
 namespace LughSharp.LibCore.Maps.Objects;
 
+/// <summary>
+/// Represents a map object containing a texture (region).
+/// </summary>
 [PublicAPI]
 public class TextureMapObject : MapObject
 {
+    public float          X             { get; set; } = 0.0f;
+    public float          Y             { get; set; } = 0.0f;
+    public float          OriginX       { get; set; } = 0.0f;
+    public float          OriginY       { get; set; } = 0.0f;
+    public float          ScaleX        { get; set; } = 1.0f;
+    public float          ScaleY        { get; set; } = 1.0f;
+    public float          Rotation      { get; set; } = 0.0f;
+    public TextureRegion? TextureRegion { get; set; } = null;
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -38,20 +50,11 @@ public class TextureMapObject : MapObject
     }
 
     /// <summary>
-    /// Creates texture map object with the given region
+    /// Creates a new texture map object with the given region
     /// </summary>
     /// <param name="textureRegion">the <see cref="TextureRegion"/> to use.</param>
     public TextureMapObject( TextureRegion? textureRegion )
     {
         TextureRegion = textureRegion;
     }
-
-    public float          X             { get; set; } = 0.0f;
-    public float          Y             { get; set; } = 0.0f;
-    public float          OriginX       { get; set; } = 0.0f;
-    public float          OriginY       { get; set; } = 0.0f;
-    public float          ScaleX        { get; set; } = 1.0f;
-    public float          ScaleY        { get; set; } = 1.0f;
-    public float          Rotation      { get; set; } = 0.0f;
-    public TextureRegion? TextureRegion { get; set; } = null;
 }

@@ -60,6 +60,8 @@ public partial record TextureAtlasData
 
     private void Load( FileInfo? packFile, DirectoryInfo? imagesDir, bool flip )
     {
+        ArgumentNullException.ThrowIfNull( packFile );
+        
         //@formatter:off
         Dictionary< string, IField< Page > > pageFields = new( 15 )
         {

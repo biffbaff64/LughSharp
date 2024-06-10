@@ -398,7 +398,7 @@ GRAPHICS/PROFILING
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - BaseGLInterceptor
-    - IP   - IP   - GLInterceptor
+    - DONE - DONE - GLInterceptor
     - DONE - DONE - GLProfiler          
     - DONE - DONE - IGLErrorListener
 
@@ -442,7 +442,7 @@ MAPS
     - DONE - DONE - MapLayers
     - DONE - DONE - MapObject
     - DONE - DONE - MapObjects
-    - DONE - IP   - MapProperties
+    - DONE - DONE - MapProperties
 
 MAPS/OBJECTS
 ------------
@@ -454,7 +454,7 @@ MAPS/OBJECTS
     - DONE - DONE - PolygonMapObject
     - DONE - DONE - PolylineMapObject
     - DONE - DONE - RectangleMapObject
-    - DONE - IP   - TextureMapObject
+    - DONE - DONE - TextureMapObject
 
 MAPS/TILED
 ----------

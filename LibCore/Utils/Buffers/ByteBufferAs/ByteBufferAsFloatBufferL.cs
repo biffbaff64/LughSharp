@@ -47,19 +47,19 @@ public class ByteBufferAsFloatBufferL : FloatBuffer
     /// <inheritdoc />
     public override FloatBuffer Slice()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override FloatBuffer Duplicate()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override FloatBuffer asReadOnlyBuffer()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
@@ -71,7 +71,7 @@ public class ByteBufferAsFloatBufferL : FloatBuffer
     /// <inheritdoc />
     public override FloatBuffer Put( float f )
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
@@ -83,18 +83,18 @@ public class ByteBufferAsFloatBufferL : FloatBuffer
     /// <inheritdoc />
     public override FloatBuffer Put( int index, float f )
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override FloatBuffer Compact()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override ByteOrder Order()
     {
-        return null;
+        return ByteOrder.NativeOrder;
     }
 }

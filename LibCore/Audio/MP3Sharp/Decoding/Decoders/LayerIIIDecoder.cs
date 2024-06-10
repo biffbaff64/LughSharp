@@ -174,10 +174,8 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     public readonly int[] X = { 0 };
     public readonly int[] Y = { 0 };
 
-    public ScaleFactorTable Sftable { get; set; }
-
-    // TsOutCopy and rawout do not need initializing, so the arrays can be reused.
-    public float[]? TsOutCopy { get; set; }
+    public ScaleFactorTable Sftable   { get; set; }
+    public float[]          TsOutCopy { get; set; } = null!;
 
     // ------------------------------------------------------------------------
 

@@ -42,19 +42,19 @@ public class ByteBufferAsDoubleBufferL : DoubleBuffer
     /// <inheritdoc />
     public override DoubleBuffer Slice()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override DoubleBuffer Duplicate()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override DoubleBuffer asReadOnlyBuffer()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
@@ -66,7 +66,7 @@ public class ByteBufferAsDoubleBufferL : DoubleBuffer
     /// <inheritdoc />
     public override DoubleBuffer Put( double d )
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
@@ -78,18 +78,18 @@ public class ByteBufferAsDoubleBufferL : DoubleBuffer
     /// <inheritdoc />
     public override DoubleBuffer Put( int index, double d )
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override DoubleBuffer Compact()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override ByteOrder Order()
     {
-        return null;
+        return ByteOrder.NativeOrder;
     }
 }

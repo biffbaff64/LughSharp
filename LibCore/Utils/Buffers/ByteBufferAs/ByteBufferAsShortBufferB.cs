@@ -40,19 +40,19 @@ public class ByteBufferAsShortBufferB : ShortBuffer
     /// <inheritdoc />
     public override ShortBuffer Slice()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override ShortBuffer Duplicate()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override ShortBuffer AsReadOnlyBuffer()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
@@ -64,7 +64,7 @@ public class ByteBufferAsShortBufferB : ShortBuffer
     /// <inheritdoc />
     public override ShortBuffer Put( short s )
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
@@ -76,18 +76,18 @@ public class ByteBufferAsShortBufferB : ShortBuffer
     /// <inheritdoc />
     public override ShortBuffer Put( int index, short s )
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override ShortBuffer Compact()
     {
-        return null;
+        return this;
     }
 
     /// <inheritdoc />
     public override ByteOrder Order()
     {
-        return null;
+        return ByteOrder.NativeOrder;
     }
 }

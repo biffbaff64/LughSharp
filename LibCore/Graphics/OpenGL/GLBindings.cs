@@ -1375,7 +1375,7 @@ public unsafe class GLBindings : IGLBindings
     /// a list of possible values.
     /// </param>
     /// <param name="data">A pointer to where the float value or values will be returned.</param>
-    public void glGetFloatv( GLenum pname, float[] data )
+    public void glGetFloatv( GLenum pname, float* data )
     {
         _glGetFloatv( pname, data );
     }
@@ -4423,7 +4423,7 @@ public unsafe class GLBindings : IGLBindings
     public Span< T > glMapBuffer< T >( GLenum target, GLenum access ) where T : unmanaged
     {
         GLint size;
-        _glGetBufferParameteriv( target, GL_BUFFER_SIZE, &size );
+        _glGetBufferParameteriv( target, IGL.GL_BUFFER_SIZE, &size );
 
         void* ret = _glMapBuffer( target, access );
 
@@ -7947,7 +7947,7 @@ public unsafe class GLBindings : IGLBindings
     /// </param>
     public void glClampColor( GLenum target, GLboolean clamp )
     {
-        _glClampColor( target, clamp ? GL_TRUE : GL_FALSE );
+        _glClampColor( target, clamp ? IGL.GL_TRUE : IGL.GL_FALSE );
     }
 
     [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
@@ -19644,7 +19644,7 @@ public unsafe class GLBindings : IGLBindings
 #endif
     public void glGetProgramiv( GLuint program, GLenum pname, Buffer buffer )
     {
-        fixed ( int* ptr = &buffer.BackingArray()[ 0 ] )
+        fixed ( int* ptr = ( int* ) buffer.BackingArray()[ 0 ] )
         {
             _glGetProgramiv( program, pname, ptr );
         }
@@ -19652,7 +19652,7 @@ public unsafe class GLBindings : IGLBindings
 
     public void glUniformMatrix4fv( GLint location, GLsizei count, GLboolean transpose, Buffer buffer )
     {
-        fixed ( float* ptr = &buffer.BackingArray()[ 0 ] )
+        fixed ( float* ptr = ( int* ) buffer.BackingArray()[ 0 ] )
         {
             _glUniformMatrix4fv( location, count, transpose, ptr );
         }
@@ -19660,9 +19660,9 @@ public unsafe class GLBindings : IGLBindings
 
     public void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer )
     {
-        fixed ( void* ptr = &buffer.BackingArray()[ 0 ] )
+        fixed ( void* ptr = ( int* ) buffer.BackingArray()[ 0 ] )
         {
-            _glVertexAttribPointer( index, size, type, normalized, stride, ptr );
+            _glVertexAttribPointer( location, size, type, normalized, stride, ptr );
         }
     }
 

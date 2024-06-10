@@ -43,12 +43,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     private long _frameId;
     private int  _frames;
     private long _lastFrameTime = -1;
-    private int  _tmpBuffer;
-    private int  _tmpBuffer2;
-    private int  _tmpBuffer3;
-    private int  _tmpBuffer4;
-    private int  _tmpInt  = 0;
-    private int  _tmpInt2 = 0;
     private int  _windowHeightBeforeFullscreen;
     private int  _windowPosXBeforeFullscreen;
     private int  _windowPosYBeforeFullscreen;
