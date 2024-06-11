@@ -25,18 +25,30 @@
 
 namespace LughSharp.LibCore.Maps.Tiled.Tiles;
 
+/// <summary>
+/// Represents a non changing <see cref="ITiledMapTile"/> (can be cached)
+/// </summary>
 [PublicAPI]
 public class StaticTiledMapTile : ITiledMapTile
 {
+    public int                     ID            { get; set; }
+    public float                   OffsetX       { get; set; }
+    public float                   OffsetY       { get; set; }
+    public TextureRegion           TextureRegion { get; set; }
+    public ITiledMapTile.Blendmode BlendMode     { get; set; } = ITiledMapTile.Blendmode.Alpha;
+
+    // ------------------------------------------------------------------------
+
     private MapObjects?    _mapObjects;
     private MapProperties? _properties;
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
     /// Creates a static tile with the given region
     /// </summary>
-    /// <param name="texture">The <see cref="TextureRegion"/> to use.</param>
+    /// <param name="texture"> The <see cref="TextureRegion"/> to use. </param>
     public StaticTiledMapTile( TextureRegion texture )
     {
         TextureRegion = texture;
@@ -45,12 +57,12 @@ public class StaticTiledMapTile : ITiledMapTile
     /// <summary>
     /// Copy Constructor
     /// </summary>
-    /// <param name="copy">The StaticTiledMapTile to copy.</param>
+    /// <param name="copy"> The StaticTiledMapTile to copy. </param>
     public StaticTiledMapTile( StaticTiledMapTile copy )
     {
         if ( copy._properties != null )
         {
-            GetProperties().PutAll( copy._properties );
+            Properties.PutAll( copy._properties );
         }
 
         _mapObjects   = copy._mapObjects;
@@ -58,19 +70,15 @@ public class StaticTiledMapTile : ITiledMapTile
         ID            = copy.ID;
     }
 
-    public int                     ID            { get; set; }
-    public float                   OffsetX       { get; set; }
-    public float                   OffsetY       { get; set; }
-    public TextureRegion           TextureRegion { get; set; }
-    public ITiledMapTile.Blendmode BlendMode     { get; set; } = ITiledMapTile.Blendmode.Alpha;
+    /// <summary>
+    /// Returns the <see cref="MapProperties"/> instance for this tile. If the
+    /// current properties instance is null, a new instance will be created first.
+    /// </summary>
+    public MapProperties Properties => _properties ??= new MapProperties();
 
-    public MapProperties GetProperties()
-    {
-        return _properties ??= new MapProperties();
-    }
-
-    public MapObjects GetObjects()
-    {
-        return _mapObjects ??= new MapObjects();
-    }
+    /// <summary>
+    /// Returns the <see cref="MapObjects"/> instance for this tile. If the
+    /// current mapobjects instance is null, a new instance will be created first.
+    /// </summary>
+    public MapObjects MapObjects => _mapObjects ??= new MapObjects();
 }

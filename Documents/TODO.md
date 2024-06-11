@@ -461,12 +461,12 @@ MAPS/TILED
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - IP   - ITiledMapTile
-    - DONE - IP   - TiledMap
-    - DONE - IP   - TiledMapImageLayer
-    - DONE - IP   - TiledMapTileLayer
-    - DONE - IP   - TiledMapTileSet
-    - DONE - IP   - TiledMapTileSets
+    - DONE - DONE - ITiledMapTile
+    - DONE - DONE - TiledMap
+    - DONE - DONE - TiledMapImageLayer
+    - DONE - DONE - TiledMapTileLayer
+    - DONE - DONE - TiledMapTileSet
+    - DONE - DONE - TiledMapTileSets
 
 MAPS/TILED/LOADERS
 ------------------
@@ -487,6 +487,8 @@ MAPS/TILED/OBJECTS
 MAPS/TILED/RENDERERS
 --------------------
 
+    All Classes in this section could be made more efficient.
+
     CODE   DOCUMENT
     ----   --------
     - DONE - IP   - BatchTiledMapRenderer
@@ -502,8 +504,8 @@ MAPS/TILED/TILES
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - IP   - AnimatedTileMapTile
-    - DONE - IP   - StaticTiledMapTile
+    - DONE - DONE - AnimatedTileMapTile
+    - DONE - DONE - StaticTiledMapTile
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -540,7 +542,7 @@ MATHS
     - DONE - IP   - Number
     - DONE - IP   - NumberUtils
     - DONE - IP   - Plane
-    - IP   - IP   - Point2D
+    - DONE - DONE - Point2D
     - DONE - IP   - Polygon
     - DONE - IP   - Polyline
     - DONE - IP   - Quaternion

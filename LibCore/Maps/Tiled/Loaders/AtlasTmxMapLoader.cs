@@ -45,6 +45,9 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     protected readonly List< Texture > TrackedTextures = new();
     protected          IAtlasResolver? AtlasResolver;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     public AtlasTmxMapLoader()
         : base( new InternalFileHandleResolver() )
     {
@@ -100,6 +103,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         Map = LoadTiledMap( tmxFile, parameter, AtlasResolver );
     }
 
+    /// <inheritdoc/>
     public override TiledMap LoadSync( AssetManager manager, FileInfo? file, AtlasTiledMapLoaderParameters? parameter )
     {
         if ( parameter != null )
@@ -116,11 +120,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return null!;
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="tmxFile"></param>
-    /// <param name="textureLoaderParameters"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
     public override List< AssetDescriptor > GetDependencyAssetDescriptors( FileInfo tmxFile,
                                                                            TextureLoader.TextureLoaderParameters textureLoaderParameters )
     {
@@ -173,9 +173,8 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         {
             var lastgid = ( firstgid + ( ( imageWidth / tilewidth ) * ( imageHeight / tileheight ) ) ) - 1;
 
+            // Handle unused tileIds
             foreach ( var region in atlas.FindRegions( name! ) )
-
-                // Handle unused tileIds
             {
                 if ( region != null )
                 {
@@ -220,12 +219,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
             }
         }
     }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="tmxFile"></param>
-    /// <returns></returns>
-    /// <exception cref="GdxRuntimeException"></exception>
+    
     protected FileInfo GetAtlasFileHandle( FileInfo tmxFile )
     {
         var properties = XmlDocument.SelectSingleNode( "properties" );
@@ -272,10 +266,6 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         throw new GdxRuntimeException( $"The 'atlas' file could not be found: '{atlasFilePath}'" );
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="min"></param>
-    /// <param name="mag"></param>
     protected void SetTextureFilters( TextureFilter min, TextureFilter mag )
     {
         foreach ( var texture in TrackedTextures )
@@ -298,7 +288,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     protected interface IAtlasResolver : IImageResolver
     {
         public TextureAtlas GetAtlas();

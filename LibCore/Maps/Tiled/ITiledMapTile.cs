@@ -25,6 +25,9 @@
 
 namespace LughSharp.LibCore.Maps.Tiled;
 
+/// <summary>
+/// Generalises the concept of tile in a TiledMap
+/// </summary>
 [PublicAPI]
 public interface ITiledMapTile
 {
@@ -34,13 +37,38 @@ public interface ITiledMapTile
         Alpha
     }
 
-    int           ID            { get; set; }
-    Blendmode     BlendMode     { get; set; }
+    /// <summary>
+    /// The tile ID
+    /// </summary>
+    int ID { get; set; }
+
+    /// <summary>
+    /// The <see cref="Blendmode"/> to use when rendering a tile.
+    /// </summary>
+    Blendmode BlendMode { get; set; }
+
+    /// <summary>
+    /// The <see cref="TextureRegion"/> to display.
+    /// </summary>
     TextureRegion TextureRegion { get; set; }
-    float         OffsetX       { get; set; }
-    float         OffsetY       { get; set; }
 
-    public MapProperties GetProperties();
+    /// <summary>
+    /// X co-ordinate of a tile image in a tileset.
+    /// </summary>
+    float OffsetX { get; set; }
 
-    public MapObjects GetObjects();
+    /// <summary>
+    /// Y co-ordinate of a tile image in a tileset.
+    /// </summary>
+    float OffsetY { get; set; }
+
+    /// <summary>
+    /// Returns this tiles properties set.
+    /// </summary>
+    MapProperties Properties { get; }
+
+    /// <summary>
+    /// Returns the collection of objects contained within a tile.
+    /// </summary>
+    MapObjects MapObjects { get; }
 }

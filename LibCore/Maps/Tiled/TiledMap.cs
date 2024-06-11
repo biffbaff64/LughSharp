@@ -25,6 +25,9 @@
 
 namespace LughSharp.LibCore.Maps.Tiled;
 
+/// <summary>
+/// Represents a tiled map, adds the concept of tiles and tilesets.
+/// </summary>
 [PublicAPI]
 public class TiledMap : Map, IDisposable
 {

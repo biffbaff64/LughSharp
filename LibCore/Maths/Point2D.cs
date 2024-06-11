@@ -24,48 +24,69 @@
 
 namespace LughSharp.LibCore.Maths;
 
-
 /// <summary>
-/// Simple struct with just X and Y members, and absolutely nothing else.
-/// For use when no 'padding' is needed, as in method parameters, for instance.
+/// Simple struct with X and Y members of a generic type, and absolutely nothing else.
+/// For use when no 'padding' is needed, such as methods or constructors.
+/// </summary>
+/// <typeparam name="T">The type of the X and Y members.</typeparam>
 /// <example>
 /// <code>
-///    public int X { get; set; }
-///    public int Y { get; set; }
-///        
-///    internal void SetPosition( Point2D&lt;int&gt; pos )
-///    {
-///        X = pos.X;
-///        Y = pos.Y;
-///    }
+/// public int X { get; set; }
+/// public int Y { get; set; }
+/// 
+/// internal void SetPosition(Point2D&lt;int&gt; pos)
+/// {
+///     X = pos.X;
+///     Y = pos.Y;
+/// }
 /// </code>
 /// </example>
-/// </summary>
 [PublicAPI]
-public struct Point2D< T > //TODO: replace the others with this
+public struct Point2D< T >
 {
+    /// <summary>
+    /// The X coordinate.
+    /// </summary>
     public T X;
+
+    /// <summary>
+    /// The Y coordinate.
+    /// </summary>
     public T Y;
 }
 
 /// <summary>
-/// Simple struct with just X and Y members, and absolutely nothing else.
-/// For use when no 'padding' is needed, as in method parameters, for instance.
+/// Simple struct with X and Y members of type int, and absolutely nothing else.
+/// For use when no 'padding' is needed, such as methods or constructors.
 /// </summary>
 [PublicAPI]
 public struct Point2D
 {
+    /// <summary>
+    /// The X coordinate.
+    /// </summary>
     public int X;
+
+    /// <summary>
+    /// The Y coordinate.
+    /// </summary>
     public int Y;
 }
 
 /// <summary>
-/// Simple struct with just X and Y members, and absolutely nothing else.
-/// For use when no 'padding' is needed, as in method parameters, for instance.
+/// Simple struct with X and Y members of type float, and absolutely nothing else.
+/// For use when no 'padding' is needed, such as methods or constructors.
 /// </summary>
 [PublicAPI]
 public struct Point2Df
 {
+    /// <summary>
+    /// The X coordinate.
+    /// </summary>
     public float X;
+
+    /// <summary>
+    /// The Y coordinate.
+    /// </summary>
     public float Y;
 }

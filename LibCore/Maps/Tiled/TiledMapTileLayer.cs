@@ -28,6 +28,12 @@ namespace LughSharp.LibCore.Maps.Tiled;
 [PublicAPI]
 public class TiledMapTileLayer : MapLayer
 {
+    public int       Width      { get; }
+    public int       Height     { get; }
+    public int       TileWidth  { get; private set; }
+    public int       TileHeight { get; private set; }
+    public Cell[ , ] Cells      { get; }
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -46,13 +52,8 @@ public class TiledMapTileLayer : MapLayer
         Cells      = new Cell[ width, height ];
     }
 
-    public int       Width      { get; }
-    public int       Height     { get; }
-    public int       TileWidth  { get; private set; }
-    public int       TileHeight { get; private set; }
-    public Cell[ , ] Cells      { get; }
-
     /// <summary>
+    /// Gets the <see cref="Cell"/> at the given X, Y coordinates.
     /// </summary>
     /// <param name="x"> X coordinate </param>
     /// <param name="y"> Y coordinate </param>
@@ -99,14 +100,15 @@ public class TiledMapTileLayer : MapLayer
     [PublicAPI]
     public class Cell
     {
-        public const int            ROTATE0   = 0;
-        public const int            ROTATE90  = 1;
-        public const int            ROTATE180 = 2;
-        public const int            ROTATE270 = 3;
-        private      bool           _flipHorizontally;
-        private      bool           _flipVertically;
-        private      int            _rotation;
-        private      ITiledMapTile? _tile;
+        public const int ROTATE0   = 0;
+        public const int ROTATE90  = 1;
+        public const int ROTATE180 = 2;
+        public const int ROTATE270 = 3;
+
+        private bool           _flipHorizontally;
+        private bool           _flipVertically;
+        private int            _rotation;
+        private ITiledMapTile? _tile;
 
         /// <summary>
         /// return The tile currently assigned to this cell.

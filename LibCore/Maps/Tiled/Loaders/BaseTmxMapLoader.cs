@@ -39,6 +39,12 @@ namespace LughSharp.LibCore.Maps.Tiled.Loaders;
 public abstract class BaseTmxMapLoader< TP >
     : AsynchronousAssetLoader< TiledMap, TP > where TP : BaseTmxMapLoader< TP >.BaseTmxLoaderParameters
 {
+    public int      MapTileWidth      { get; set; }
+    public int      MapTileHeight     { get; set; }
+    public int      MapWidthInPixels  { get; set; }
+    public int      MapHeightInPixels { get; set; }
+    public TiledMap Map               { get; set; } = null!;
+
     // ------------------------------------------------------------------------
 
     protected const uint FLAG_FLIP_HORIZONTALLY = 0x80000000;
@@ -67,12 +73,6 @@ public abstract class BaseTmxMapLoader< TP >
         : base( resolver )
     {
     }
-
-    public int      MapTileWidth      { get; set; }
-    public int      MapTileHeight     { get; set; }
-    public int      MapWidthInPixels  { get; set; }
-    public int      MapHeightInPixels { get; set; }
-    public TiledMap Map               { get; set; } = null!;
 
     /// <summary>
     /// Loads the map data, given the XML root element.
@@ -239,12 +239,6 @@ public abstract class BaseTmxMapLoader< TP >
         return Map;
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="fileName"></param>
-    /// <param name="tmxFile"></param>
-    /// <param name="parameter"></param>
-    /// <returns></returns>
     public List< AssetDescriptor >? GetDependencies( string fileName, FileInfo tmxFile, TP? parameter )
     {
         var textureParameter = new TextureLoader.TextureLoaderParameters();
@@ -259,17 +253,11 @@ public abstract class BaseTmxMapLoader< TP >
         return GetDependencyAssetDescriptors( tmxFile, textureParameter );
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="tmxFile"></param>
-    /// <param name="textureLoaderParameters"></param>
-    /// <returns></returns>
     public virtual List< AssetDescriptor >? GetDependencyAssetDescriptors( FileInfo tmxFile,
                                                                            TextureLoader.TextureLoaderParameters textureLoaderParameters )
     {
         return default( List< AssetDescriptor >? );
     }
-
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -550,7 +538,7 @@ public abstract class BaseTmxMapLoader< TP >
     /// <param name="node"></param>
     protected void LoadObject( TiledMap map, ITiledMapTile tile, XmlNode node )
     {
-        LoadObject( map, tile.GetObjects(), node, tile.TextureRegion.RegionHeight );
+        LoadObject( map, tile.MapObjects, node, tile.TextureRegion.RegionHeight );
     }
 
     /// <summary>
@@ -1200,21 +1188,21 @@ public abstract class BaseTmxMapLoader< TP >
 
         if ( ( terrain = node.Attributes![ "terrain" ]!.Value ) != string.Empty )
         {
-            tile.GetProperties().Put( "terrain", terrain );
+            tile.Properties.Put( "terrain", terrain );
         }
 
         string? probability;
 
         if ( ( probability = node.Attributes![ "probability" ]!.Value ) != string.Empty )
         {
-            tile.GetProperties().Put( "probability", probability );
+            tile.Properties.Put( "probability", probability );
         }
 
         var properties = node.SelectSingleNode( "properties" );
 
         if ( properties != null )
         {
-            LoadProperties( tile.GetProperties(), properties );
+            LoadProperties( tile.Properties, properties );
         }
     }
 

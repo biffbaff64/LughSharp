@@ -43,31 +43,18 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
         _tilesets = new List< TiledMapTileSet >();
     }
 
-    /// <returns> iterator to tilesets </returns>
-    public virtual IEnumerator< TiledMapTileSet > GetEnumerator()
-    {
-        return _tilesets.GetEnumerator();
-    }
-
     /// <summary>
-    /// Returns an enumerator that iterates through a collection.
+    /// Returns the desired <see cref="TiledMapTileSet"/> from this collection
+    /// at the specified index.
     /// </summary>
-    /// <returns>
-    /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used
-    /// to iterate through the collection.
-    /// </returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-
-    /// <param name="index"> index to get the desired <see cref="TiledMapTileSet"/> at. </param>
-    /// <returns> tileset at index  </returns>
     public virtual TiledMapTileSet GetTileSet( int index )
     {
         return _tilesets[ index ];
     }
 
+    /// <summary>
+    /// Gets the named tileset.
+    /// </summary>
     /// <param name="name"> Name of the <see cref="TiledMapTileSet"/> to retrieve.</param>
     /// <returns> tileset with matching name, null if it doesn't exist  </returns>
     public virtual TiledMapTileSet? GetTileSet( string name )
@@ -83,6 +70,9 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
         return null;
     }
 
+    /// <summary>
+    /// Adds the specified tileset to the collection.
+    /// </summary>
     /// <param name="tileset"> set to be added to the collection </param>
     public virtual void AddTileSet( TiledMapTileSet tileset )
     {
@@ -98,21 +88,30 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
         _tilesets.RemoveAt( index );
     }
 
+    /// <summary>
+    /// Removes the specified tileset from the collection.
+    /// </summary>
     /// <param name="tileset"> set to be removed </param>
     public virtual void RemoveTileSet( TiledMapTileSet tileset )
     {
         _tilesets.Remove( tileset );
     }
 
+    /// <summary>
+    /// Returns the tile matching the specified ID by performing backward iteration
+    /// through the collection of tilesets.
+    /// <para>
+    /// The purpose of backward iteration here is to maintain backwards compatibility with
+    /// maps created with earlier versions of a shared tileset. The assumption is that the
+    /// tilesets are in order of ascending firstgid, and by backward iterating precedence
+    /// for conflicts is given to later tilesets in the list, which are likely to be the
+    /// earlier version of any given gid.  
+    /// </para>
+    /// </summary>
     /// <param name="id"> id of the <see cref="ITiledMapTile"/> to get. </param>
     /// <returns> tile with matching id, null if it doesn't exist  </returns>
     public virtual ITiledMapTile? GetTile( int id )
     {
-        // The purpose of backward iteration here is to maintain backwards compatibility
-        // with maps created with earlier versions of a shared tileset. The assumption
-        // is that the tilesets are in order of ascending firstgid, and by backward
-        // iterating precedence for conflicts is given to later tilesets in the list, 
-        // which are likely to be the earlier version of any given gid.  
         for ( var i = _tilesets.Count - 1; i >= 0; i-- )
         {
             var tileset = _tilesets[ i ];
@@ -125,5 +124,23 @@ public class TiledMapTileSets : IEnumerable< TiledMapTileSet >
         }
 
         return null;
+    }
+
+    /// <inheritdoc/>
+    public virtual IEnumerator< TiledMapTileSet > GetEnumerator()
+    {
+        return _tilesets.GetEnumerator();
+    }
+
+    /// <summary>
+    /// Returns an enumerator that iterates through a collection.
+    /// </summary>
+    /// <returns>
+    /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used
+    /// to iterate through the collection.
+    /// </returns>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

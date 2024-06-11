@@ -28,9 +28,15 @@ using Blendmode = LughSharp.LibCore.Maps.Tiled.ITiledMapTile.Blendmode;
 
 namespace LughSharp.LibCore.Maps.Tiled.Tiles;
 
+/// <summary>
+/// Represents an animating <see cref="ITiledMapTile"/>.
+/// </summary>
 [PublicAPI]
 public class AnimatedTiledMapTile : ITiledMapTile
 {
+    public int       ID        { get; set; }
+    public Blendmode BlendMode { get; set; } = Blendmode.Alpha;
+
     private readonly static long _initialTimeOffset = DateTime.Now.Millisecond;
 
     private static   long                 _lastTiledMapRenderTime = 0;
@@ -41,6 +47,7 @@ public class AnimatedTiledMapTile : ITiledMapTile
     private MapObjects?    _mapObjects;
     private MapProperties? _properties;
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -87,47 +94,36 @@ public class AnimatedTiledMapTile : ITiledMapTile
         }
     }
 
-    public int       ID        { get; set; }
-    public Blendmode BlendMode { get; set; } = Blendmode.Alpha;
-
+    /// <summary>
+    /// The currently displayed animation frame.
+    /// </summary>
     public TextureRegion TextureRegion
     {
         get => GetCurrentFrame().TextureRegion;
         set { }
     }
 
+    /// <summary>
+    /// X-coordinate of the currently displayed animation frame in the tilemap.
+    /// </summary>
     public float OffsetX
     {
         get => GetCurrentFrame().OffsetX;
         set { }
     }
 
+    /// <summary>
+    /// Y-coordinate of the currently displayed animation frame in the tilemap.
+    /// </summary>
     public float OffsetY
     {
         get => GetCurrentFrame().OffsetY;
         set { }
     }
 
-    public MapProperties GetProperties()
-    {
-        return _properties ??= new MapProperties();
-    }
-
-    public MapObjects GetObjects()
-    {
-        return _mapObjects ??= new MapObjects();
-    }
-
-    public StaticTiledMapTile[] GetFrameTiles()
-    {
-        return _frameTiles;
-    }
-
-    public ITiledMapTile GetCurrentFrame()
-    {
-        return _frameTiles[ GetCurrentFrameIndex() ];
-    }
-
+    /// <summary>
+    /// Gets the index into the animation images array
+    /// </summary>
     public int GetCurrentFrameIndex()
     {
         var currentTime = ( int ) ( _lastTiledMapRenderTime % _loopDuration );
@@ -148,8 +144,19 @@ public class AnimatedTiledMapTile : ITiledMapTile
             ( "Could not determine current animation frame in AnimatedTiledMapTile. This should never happen." );
     }
 
+    /// <summary>
+    /// Update the animation time
+    /// </summary>
     public static void UpdateAnimationBaseTime()
     {
-        _lastTiledMapRenderTime = DateTime.Now.Millisecond - _initialTimeOffset;
+        _lastTiledMapRenderTime = ( DateTime.Now.Millisecond - _initialTimeOffset );
     }
+
+    public MapProperties Properties => _properties ??= new MapProperties();
+
+    public MapObjects MapObjects => _mapObjects ??= new MapObjects();
+
+    public StaticTiledMapTile[] GetFrameTiles() => _frameTiles;
+
+    public ITiledMapTile GetCurrentFrame() => _frameTiles[ GetCurrentFrameIndex() ];
 }

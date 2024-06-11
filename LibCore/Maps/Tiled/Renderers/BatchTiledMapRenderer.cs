@@ -31,6 +31,15 @@ namespace LughSharp.LibCore.Maps.Tiled.Renderers;
 [PublicAPI]
 public class BatchTileMapRenderer : ITiledMapRenderer
 {
+    public TiledMap       TiledMap    { get; set; }
+    public bool           OwnsBatch   { get; set; }
+    public RectangleShape ImageBounds { get; set; } = new();
+
+    protected IBatch         Batch      { get; set; }
+    protected RectangleShape ViewBounds { get; set; }
+    protected float          UnitScale  { get; set; }
+    protected float[]        Vertices   { get; set; } = new float[ NUM_VERTICES ];
+
     protected const int NUM_VERTICES = 20;
 
     // ------------------------------------------------------------------------
@@ -72,15 +81,6 @@ public class BatchTileMapRenderer : ITiledMapRenderer
         Batch      = batch;
         OwnsBatch  = ownsBatch;
     }
-
-    public TiledMap       TiledMap    { get; set; }
-    public bool           OwnsBatch   { get; set; }
-    public RectangleShape ImageBounds { get; set; } = new();
-
-    protected IBatch         Batch      { get; set; }
-    protected RectangleShape ViewBounds { get; set; }
-    protected float          UnitScale  { get; set; }
-    protected float[]        Vertices   { get; set; } = new float[ NUM_VERTICES ];
 
     /// <summary>
     /// Draws all layers in the default <see cref="TiledMap"/>.
@@ -231,8 +231,8 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     }
 
     /// <summary>
+    /// Renders the specified <see cref="MapLayer"/>.
     /// </summary>
-    /// <param name="layer"></param>
     protected void RenderMapLayer( MapLayer layer )
     {
         if ( !layer.Visible )
@@ -240,36 +240,55 @@ public class BatchTileMapRenderer : ITiledMapRenderer
             return;
         }
 
-        if ( layer is MapGroupLayer groupLayer )
+        switch ( layer )
         {
-            var childLayers = groupLayer.Layers;
-
-            for ( var i = 0; i < childLayers.Size(); i++ )
+            case MapGroupLayer groupLayer:
             {
-                var childLayer = childLayers.Get( i );
+                RenderGroupLayerChildren( groupLayer );
 
-                if ( !childLayer.Visible )
-                {
-                    continue;
-                }
-
-                RenderMapLayer( childLayer );
+                break;
             }
-        }
-        else
-        {
-            if ( layer is TiledMapTileLayer tileLayer )
+
+            case TiledMapTileLayer tileLayer:
             {
                 RenderTileLayer( tileLayer );
+
+                break;
             }
-            else if ( layer is TiledMapImageLayer imageLayer )
+
+            case TiledMapImageLayer imageLayer:
             {
                 RenderImageLayer( imageLayer );
+
+                break;
             }
-            else
+
+            default:
             {
                 RenderObjects( layer );
+
+                break;
             }
+        }
+    }
+
+    /// <summary>
+    /// Rendes the child layers of a <see cref="MapGroupLayer"/>.
+    /// </summary>
+    private void RenderGroupLayerChildren( MapGroupLayer groupLayer )
+    {
+        var childLayers = groupLayer.Layers;
+
+        for ( var i = 0; i < childLayers.Size(); i++ )
+        {
+            var childLayer = childLayers.Get( i );
+
+            if ( !childLayer.Visible )
+            {
+                continue;
+            }
+
+            RenderMapLayer( childLayer );
         }
     }
 
