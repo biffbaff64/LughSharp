@@ -46,9 +46,6 @@ public class HeapByteBuffer : ByteBuffer
     {
     }
 
-    /// <inheritdoc/>
-    public override bool IsReadOnly => false;
-
     // ------------------------------------------------------------------------
 
     /// <inheritdoc/>
@@ -102,17 +99,18 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
+    // ------------------------------------------------------------------------
+    
     /// <inheritdoc/>
-    public override bool IsDirect()
-    {
-        return false;
-    }
+    public override bool IsDirect() => false;
 
     /// <inheritdoc/>
-    protected override int Ix( int i )
-    {
-        return i + Offset;
-    }
+    public override bool IsReadOnly => false;
+
+    /// <inheritdoc/>
+    protected override int Ix( int i ) => i + Offset;
+
+    // ------------------------------------------------------------------------
 
     /// <inheritdoc/>
     public override ByteBuffer Put( byte b )

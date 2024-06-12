@@ -47,7 +47,7 @@ public class InstanceBufferObject : IInstanceData
     {
         _bufferHandle = ( int ) Gdx.GL.glGenBuffer();
 
-        var data = BufferUtils.NewByteBuffer( instanceAttributes.VertexSize * numVertices );
+        var data = BufferUtils.NewByteBuffer( instanceAttributes.VertexSize * numVertices, false );
 
         data.Limit = 0;
 

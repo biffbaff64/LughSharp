@@ -47,7 +47,7 @@ public class IndexArray : IIndexData
             maxIndices = 1; 
         }
 
-        _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
+        _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2, false );
 
         _buffer = _byteBuffer.AsShortBuffer();
         _buffer.Flip();

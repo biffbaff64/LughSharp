@@ -82,7 +82,7 @@ public class VertexBufferObject : IVertexData
 
         _bufferHandle = ( int ) Gdx.GL.glGenBuffer();
 
-        var data = BufferUtils.NewByteBuffer( attributes.VertexSize * numVertices );
+        var data = BufferUtils.NewByteBuffer( attributes.VertexSize * numVertices, false );
 
         data.Limit = 0;
 

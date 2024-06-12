@@ -69,7 +69,7 @@ public class VertexBufferObjectWithVAO : IVertexData
         _isStatic  = isStatic;
         Attributes = attributes;
 
-        _byteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numVertices );
+        _byteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numVertices, false );
         _buffer     = _byteBuffer.AsFloatBuffer();
         _ownsBuffer = true;
 

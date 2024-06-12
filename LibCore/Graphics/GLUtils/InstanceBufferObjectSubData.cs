@@ -67,7 +67,7 @@ public class InstanceBufferObjectSubData : IInstanceData
     {
         _isStatic   = isStatic;
         Attributes  = instanceAttributes;
-        _byteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numInstances );
+        _byteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numInstances, false );
         _isDirect   = true;
 
         _usage       = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;

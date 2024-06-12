@@ -436,7 +436,7 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public void glGetFloatv( int pname, float[] data )
+    public unsafe void glGetFloatv( int pname, float* data )
     {
         Calls++;
         Gdx.GL.glGetFloatv( pname, data );

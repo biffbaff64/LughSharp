@@ -33,7 +33,7 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 /// Also provides methods to add a PKM header.
 /// </summary>
 [PublicAPI]
-public abstract class ETC1
+public class ETC1
 {
     /// <summary>
     /// The PKM header size in bytes
@@ -43,7 +43,7 @@ public abstract class ETC1
     public const int ETC1_RGB8_OES     = 0x00008d64;
     public const int RGB565_PIXEL_SIZE = 2;
     public const int RGB888_PIXEL_SIZE = 3;
-
+    
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -57,9 +57,9 @@ public abstract class ETC1
         var pixelSize      = GetPixelSize( pixmap.GetFormat() );
         var compressedData = EncodeImage( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
 
-//        BufferUtils.NewByteBuffer( compressedData );
+//        BufferUtils.NewUnsafeByteBuffer( compressedData );
 
-        return new ETC1Data( pixmap.Width, pixmap.Height, compressedData, 0 );
+        return new ETC1Data( pixmap.Width, pixmap.Height, compressedData, 0, this );
     }
 
     /// <summary>
@@ -74,9 +74,9 @@ public abstract class ETC1
         var pixelSize      = GetPixelSize( pixmap.GetFormat() );
         var compressedData = EncodeImagePKM( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
 
-//        BufferUtils.NewByteBuffer( compressedData );
+//        BufferUtils.NewUnsafeByteBuffer( compressedData );
 
-        return new ETC1Data( pixmap.Width, pixmap.Height, compressedData, 16 );
+        return new ETC1Data( pixmap.Width, pixmap.Height, compressedData, 16, this );
     }
 
     /// <summary>
@@ -139,11 +139,14 @@ public abstract class ETC1
     // Abstract Methods
 
     /// <summary>
+    /// Returns the number of bytes needed to store the compressed data.
     /// </summary>
     /// <param name="width"> the width in pixels </param>
     /// <param name="height"> the height in pixels </param>
-    /// <returns> the number of bytes needed to store the compressed data </returns>
-    public abstract int GetCompressedDataSize( int width, int height );
+    public virtual int GetCompressedDataSize( int width, int height )
+    {
+        throw new NotImplementedException();
+    }
 
 //    {
 //            return etc1_get_encoded_data_size(width, height);
@@ -157,13 +160,17 @@ public abstract class ETC1
     /// <param name="offset"> the offset to the header in bytes</param>
     /// <param name="width"> the width in pixels </param>
     /// <param name="height"> the height in pixels </param>
-    public abstract void FormatHeader( ByteBuffer header, int offset, int width, int height );
+    public virtual void FormatHeader( ByteBuffer header, int offset, int width, int height )
+    {
+        throw new NotImplementedException();
+    }
 
 //    {
 //            etc1_pkm_format_header((etc1_byte*)header + offset, width, height);
 //    }
 
     /// <summary>
+    /// Returns the width stored in the PKM header.
     /// </summary>
     /// <param name="header">
     /// direct native order <see cref="ByteBuffer"/> holding the PKM header
@@ -171,35 +178,38 @@ public abstract class ETC1
     /// <param name="offset">
     /// the offset in bytes to the PKM header from the ByteBuffer's start
     /// </param>
-    /// <returns> the width stored in the PKM header </returns>
-    ///
-    public abstract int GetWidthPKM( ByteBuffer? header, int offset );
+    public virtual int GetWidthPKM( ByteBuffer? header, int offset )
+    {
+        throw new NotImplementedException();
+    }
 
 //    {
 //            return etc1_pkm_get_width((etc1_byte*)header + offset);
 //    }
 
-    /**
-     * @param header direct native order {@link ByteBuffer} holding the PKM header
-     * @param offset the offset in bytes to the PKM header from the ByteBuffer's start
-     * @return the height stored in the PKM header
-     */
-    public abstract int GetHeightPKM( ByteBuffer? header, int offset );
+    /// <summary>
+    /// Returns the height stored in the PKM header
+    /// </summary>
+    /// <param name="header"> direct native order {@link ByteBuffer} holding the PKM header </param>
+    /// <param name="offset"> the offset in bytes to the PKM header from the ByteBuffer's start </param>
+    public virtual int GetHeightPKM( ByteBuffer? header, int offset )
+    {
+        throw new NotImplementedException();
+    }
 
 //    {
 //            return etc1_pkm_get_height((etc1_byte*)header + offset);
 //    }
 
     /// <summary>
+    /// Returns <b>true</b> if the header if valid PKM.
     /// </summary>
-    /// <param name="header">
-    /// direct native order <see cref="ByteBuffer"/> holding the PKM header.
-    /// </param>
-    /// <param name="offset">
-    /// the offset in bytes to the PKM header from the ByteBuffer's start.
-    /// </param>
-    /// <returns> the width stored in the PKM header </returns>
-    public abstract bool IsValidPKM( ByteBuffer header, int offset );
+    /// <param name="header"> direct native order <see cref="ByteBuffer"/> holding the PKM header. </param>
+    /// <param name="offset"> the offset in bytes to the PKM header from the ByteBuffer's start. </param>
+    public virtual bool IsValidPKM( ByteBuffer header, int offset )
+    {
+        throw new NotImplementedException();
+    }
 
 //    {
 //            return etc1_pkm_is_valid((etc1_byte*)header + offset) != 0?true:false;
@@ -212,9 +222,7 @@ public abstract class ETC1
     /// <param name="compressedData">
     /// the compressed image data in a direct native order {@link ByteBuffer}
     /// </param>
-    /// <param name="offset">
-    /// the offset in bytes to the image data from the start of the buffer
-    /// </param>
+    /// <param name="offset"> the offset in bytes to the image data from the start of the buffer </param>
     /// <param name="decodedData">
     /// the decoded data in a direct native order ByteBuffer, must hold width * height * pixelSize bytes.
     /// </param>
@@ -222,13 +230,16 @@ public abstract class ETC1
     /// <param name="width"> the width in pixels </param>
     /// <param name="height"> the height in pixels </param>
     /// <param name="pixelSize"> the pixel size, either 2 (RBG565) or 3 (RGB888) </param>
-    public abstract void DecodeImage( ByteBuffer? compressedData,
+    public virtual void DecodeImage( ByteBuffer? compressedData,
                                       int offset,
                                       ByteBuffer decodedData,
                                       int offsetDec,
                                       int width,
                                       int height,
-                                      int pixelSize );
+                                      int pixelSize )
+    {
+        throw new NotImplementedException();
+    }
 
 //    {
 //            etc1_decode_image((etc1_byte*)compressedData + offset, (etc1_byte*)decodedData + offsetDec, width, height, pixelSize, width * pixelSize);
@@ -238,23 +249,16 @@ public abstract class ETC1
     /// Encodes the image data given as RGB565 or RGB888. Does not modify the
     /// position or limit of the <see cref="ByteBuffer"/>.
     /// </summary>
-    /// <param name="imageData">
-    /// the image data in a direct native order <see cref="ByteBuffer"/>
-    /// </param>
-    /// <param name="offset">
-    /// the offset in bytes to the image data from the start of the buffer
-    /// </param>
+    /// <param name="imageData"> the image data in a direct native order <see cref="ByteBuffer"/> </param>
+    /// <param name="offset"> the offset in bytes to the image data from the start of the buffer </param>
     /// <param name="width"> the width in pixels </param>
     /// <param name="height"> the height in pixels </param>
     /// <param name="pixelSize"> the pixel size, either 2 (RGB565) or 3 (RGB888) </param>
-    /// <returns>
-    /// a new direct native order ByteBuffer containing the compressed image data
-    /// </returns>
-    public abstract ByteBuffer EncodeImage( ByteBuffer imageData,
-                                            int offset,
-                                            int width,
-                                            int height,
-                                            int pixelSize );
+    /// <returns> a new direct native order ByteBuffer containing the compressed image data </returns>
+    public virtual ByteBuffer EncodeImage( ByteBuffer imageData, int offset, int width, int height, int pixelSize )
+    {
+        throw new NotImplementedException();
+    }
 
 //    {
 //            int compressedSize = etc1_get_encoded_data_size(width, height);
@@ -267,23 +271,16 @@ public abstract class ETC1
     /// Encodes the image data given as RGB565 or RGB888. Does not modify
     /// the position or limit of the <see cref="ByteBuffer"/>.
     /// </summary>
-    /// <param name="imageData">
-    /// the image data in a direct native order <see cref="ByteBuffer"/>
-    /// </param>
-    /// <param name="offset">
-    /// the offset in bytes to the image data from the start of the buffer
-    /// </param>
+    /// <param name="imageData"> the image data in a direct native order <see cref="ByteBuffer"/> </param>
+    /// <param name="offset"> the offset in bytes to the image data from the start of the buffer </param>
     /// <param name="width"> the width in pixels </param>
     /// <param name="height"> the height in pixels </param>
     /// <param name="pixelSize"> the pixel size, either 2 (RGB565) or 3 (RGB888) </param>
-    /// <returns>
-    /// a new direct native order ByteBuffer containing the compressed image data
-    /// </returns>
-    public abstract ByteBuffer EncodeImagePKM( ByteBuffer imageData,
-                                               int offset,
-                                               int width,
-                                               int height,
-                                               int pixelSize );
+    /// <returns> a new direct native order ByteBuffer containing the compressed image data </returns>
+    public virtual ByteBuffer EncodeImagePKM( ByteBuffer imageData, int offset, int width, int height, int pixelSize )
+    {
+        throw new NotImplementedException();
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -294,8 +291,11 @@ public abstract class ETC1
     [PublicAPI]
     public class ETC1Data : IDisposable
     {
-        public ETC1Data( int width, int height, ByteBuffer compressedData, int dataOffset )
+        private readonly ETC1 _etc1;
+
+        public ETC1Data( int width, int height, ByteBuffer compressedData, int dataOffset, ETC1 etc1 )
         {
+            _etc1          = etc1;
             Width          = width;
             Height         = height;
             CompressedData = compressedData;
@@ -304,10 +304,12 @@ public abstract class ETC1
             CheckNPOT();
         }
 
-        public ETC1Data( FileInfo pkmFile )
+        public ETC1Data( FileInfo pkmFile, ETC1 etc )
         {
             var           buffer = new byte[ 1024 * 10 ];
             BinaryReader? input  = null;
+
+            _etc1 = etc;
 
             try
             {
@@ -318,7 +320,7 @@ public abstract class ETC1
 
                 var fileSize = input.ReadInt32();
 
-                CompressedData = BufferUtils.NewByteBuffer( fileSize );
+                CompressedData = BufferUtils.NewByteBuffer( fileSize, false );
                 int readBytes;
 
                 while ( ( readBytes = input.Read( buffer ) ) != -1 )
@@ -338,8 +340,8 @@ public abstract class ETC1
                 input?.Close();
             }
 
-            Width      = GetWidthPKM( CompressedData, 0 );
-            Height     = GetHeightPKM( CompressedData, 0 );
+            Width      = _etc1.GetWidthPKM( CompressedData, 0 );
+            Height     = _etc1.GetHeightPKM( CompressedData, 0 );
             DataOffset = PKM_HEADER_SIZE;
 
             CompressedData.Position = DataOffset;
@@ -376,7 +378,7 @@ public abstract class ETC1
         {
             if ( !MathUtils.IsPowerOfTwo( Width ) || !MathUtils.IsPowerOfTwo( Height ) )
             {
-                Console.WriteLine( @"ETC1Data warning: non-power-of-two ETC1textures may crash the driver of PowerVR GPUs" );
+                Console.WriteLine( "ETC1Data warning: non-power-of-two ETC1textures may crash the driver of PowerVR GPUs" );
             }
         }
 
@@ -387,8 +389,8 @@ public abstract class ETC1
         public void Write( FileInfo file )
         {
 //            DataOutputStream? write        = null;
-//            sbyte[]           buffer       = new sbyte[ 10 * 1024 ];
-//            int               writtenBytes = 0;
+//            var               buffer       = new sbyte[ 10 * 1024 ];
+//            var               writtenBytes = 0;
 
 //            CompressedData.Position = 0;
 //            CompressedData.Limit    = CompressedData.Capacity;
@@ -400,7 +402,7 @@ public abstract class ETC1
 
 //                while ( writtenBytes != CompressedData.Capacity )
 //                {
-//                    int bytesToWrite = Math.Min( CompressedData.Remaining(), buffer.Length );
+//                    var bytesToWrite = Math.Min( CompressedData.Remaining(), buffer.Length );
 
 //                    CompressedData.Get( buffer, 0, bytesToWrite );
 
@@ -426,8 +428,8 @@ public abstract class ETC1
         {
             if ( HasPKMHeader() )
             {
-                return $"{( IsValidPKM( CompressedData, 0 ) ? "valid" : "invalid" )} "
-                     + $"pkm [{GetWidthPKM( CompressedData, 0 )}x{GetHeightPKM( CompressedData, 0 )}], "
+                return $"{( _etc1.IsValidPKM( CompressedData, 0 ) ? "valid" : "invalid" )} "
+                     + $"pkm [{_etc1.GetWidthPKM( CompressedData, 0 )}x{_etc1.GetHeightPKM( CompressedData, 0 )}], "
                      + $"compressed: {CompressedData.Capacity - PKM_HEADER_SIZE}";
             }
 

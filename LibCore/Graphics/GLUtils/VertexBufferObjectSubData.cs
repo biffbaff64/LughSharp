@@ -76,7 +76,7 @@ public class VertexBufferObjectSubData : IVertexData
         _isStatic  = isStatic;
         Attributes = attributes;
 
-        ByteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numVertices );
+        ByteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numVertices, false );
         _isDirect  = true;
 
         _usage  = isStatic ? IGL.GL_STATIC_DRAW : IGL.GL_DYNAMIC_DRAW;

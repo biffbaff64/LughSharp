@@ -46,6 +46,8 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     private T[]? _snapshot;
     private int  _snapshotCount;
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Creates a new SnapshotArray with the specified initial capacity.
     /// The created array will be Ordered.
@@ -609,10 +611,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
 
         for ( var i = 0; i < n; i++ )
         {
-            var obj1 = Items[ i ];
-            var obj2 = array.Items[ i ];
-
-            if ( !( obj1?.Equals( obj2 ) ?? ( obj2 == null ) ) )
+            if ( Items[ i ]!.Equals( array.Items[ i ] ) )
             {
                 return false;
             }

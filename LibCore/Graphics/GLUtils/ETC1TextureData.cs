@@ -30,26 +30,42 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class ETC1TextureData : ITextureData
 {
+    /// <inheritdoc/>
+    public int Width { get; set; }
+
+    /// <inheritdoc/>
+    public int Height { get; set; }
+
+    /// <inheritdoc/>
+    public bool UseMipMaps { get; set; } = false;
+
+    /// <inheritdoc/>
+    public bool IsPrepared { get; set; }
+
+    // ------------------------------------------------------------------------
+
     private readonly FileInfo?      _file;
     private          ETC1.ETC1Data? _data;
+    private          ETC1           _etc1;
+
+    // ------------------------------------------------------------------------
 
     public ETC1TextureData( FileInfo file, bool useMipMaps = false )
     {
         _file      = file;
+        _etc1      = new ETC1();
         UseMipMaps = useMipMaps;
     }
 
     public ETC1TextureData( ETC1.ETC1Data encodedImage, bool useMipMaps )
     {
         _data      = encodedImage;
+        _etc1      = new ETC1();
         UseMipMaps = useMipMaps;
     }
 
     /// <inheritdoc/>
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
-
-    /// <inheritdoc/>
-    public bool IsPrepared { get; set; }
 
     /// <inheritdoc/>
     public void Prepare()
@@ -66,7 +82,7 @@ public class ETC1TextureData : ITextureData
 
         if ( _file != null )
         {
-            _data = new ETC1.ETC1Data( _file );
+            _data = new ETC1.ETC1Data( _file, _etc1 );
         }
 
         if ( _data == null )
@@ -92,7 +108,7 @@ public class ETC1TextureData : ITextureData
     }
 
     /// <inheritdoc/>
-    public void ConsumeCustomData( int target )
+    public unsafe void ConsumeCustomData( int target )
     {
         if ( !IsPrepared )
         {
@@ -106,47 +122,41 @@ public class ETC1TextureData : ITextureData
 
         if ( !Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
         {
-            unsafe
+            var pixmap = _etc1.DecodeImage( _data, Pixmap.Format.RGB565 );
+
+            fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
             {
-                var pixmap = ETC1.DecodeImage( _data, Pixmap.Format.RGB565 );
-
-                fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
-                {
-                    Gdx.GL.glTexImage2D( target,
-                                         0,
-                                         pixmap.GLInternalFormat,
-                                         pixmap.Width,
-                                         pixmap.Height,
-                                         0,
-                                         pixmap.GLFormat,
-                                         pixmap.GLType,
-                                         ptr );
-                }
-
-                if ( UseMipMaps )
-                {
-                    MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
-                }
-
-                pixmap.Dispose();
-                UseMipMaps = false;
+                Gdx.GL.glTexImage2D( target,
+                                     0,
+                                     pixmap.GLInternalFormat,
+                                     pixmap.Width,
+                                     pixmap.Height,
+                                     0,
+                                     pixmap.GLFormat,
+                                     pixmap.GLType,
+                                     ptr );
             }
+
+            if ( UseMipMaps )
+            {
+                MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
+            }
+
+            pixmap.Dispose();
+            UseMipMaps = false;
         }
         else
         {
-            unsafe
+            fixed ( void* ptr = &_data.CompressedData.BackingArray()[ 0 ] )
             {
-                fixed ( void* ptr = &_data.CompressedData.BackingArray()[ 0 ] )
-                {
-                    Gdx.GL.glCompressedTexImage2D( target,
-                                                   0,
-                                                   ETC1.ETC1_RGB8_OES,
-                                                   Width,
-                                                   Height,
-                                                   0,
-                                                   _data.CompressedData.Capacity - _data.DataOffset,
-                                                   ptr );
-                }
+                Gdx.GL.glCompressedTexImage2D( target,
+                                               0,
+                                               ETC1.ETC1_RGB8_OES,
+                                               Width,
+                                               Height,
+                                               0,
+                                               _data.CompressedData.Capacity - _data.DataOffset,
+                                               ptr );
             }
 
             if ( UseMipMaps )
@@ -160,15 +170,6 @@ public class ETC1TextureData : ITextureData
         _data      = null;
         IsPrepared = false;
     }
-
-    /// <inheritdoc/>
-    public int Width { get; set; }
-
-    /// <inheritdoc/>
-    public int Height { get; set; }
-
-    /// <inheritdoc/>
-    public bool UseMipMaps { get; set; } = false;
 
     /// <inheritdoc/>
     public Pixmap.Format GetFormat()

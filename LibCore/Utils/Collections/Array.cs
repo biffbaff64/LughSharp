@@ -23,14 +23,23 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Utils.Collections;
 
+/// <summary>
+/// A resizable, ordered or unordered array of objects. If unordered, this class
+/// avoids a memory copy when removing elements (the last element is moved to the
+/// removed element's position).
+/// </summary>
+/// <typeparam name="T"> The type of elements returned by the iterator. </typeparam>
 [PublicAPI]
 public class Array< T >
 {
+    public T[]  Items   { get; set; }
+    public int  Size    { get; set; }
+    public bool Ordered { get; set; }
+
     private PredicateIterable< T >? _predicateIEnumerable;
 
     // ------------------------------------------------------------------------
@@ -39,12 +48,12 @@ public class Array< T >
     /// Creates a new Array with the specified initial capacity. Default is 16.
     /// </summary>
     /// <param name="ordered">
-    /// If false, methods that remove elements may change the order of other
-    /// elements in the array, which avoids a memory copy.
+    /// If false, methods that remove elements may change the order of other elements
+    /// in the array, which avoids a memory copy.
     /// </param>
     /// <param name="capacity">
-    /// The initial capacity.
-    /// Any elements added beyond this will cause the backing array to be grown.
+    /// The initial capacity.  Any elements added beyond this will cause the backing
+    /// array to be grown.
     /// </param>
     public Array( bool ordered = true, int capacity = 16 )
     {
@@ -78,7 +87,7 @@ public class Array< T >
     /// <param name="array"> The array[]  to use. </param>
     /// <param name="start"> The start index to start copyiong from. </param>
     /// <param name="count"> The number of elements to copy. </param>
-    public Array( bool ordered, T[] array, int start, int count )
+    public Array( bool ordered, T[]? array, int start, int count )
     {
         ArgumentNullException.ThrowIfNull( array );
 
@@ -88,10 +97,6 @@ public class Array< T >
 
         Array.Copy( array, start, Items, 0, Size );
     }
-
-    public T[]  Items   { get; set; }
-    public int  Size    { get; set; }
-    public bool Ordered { get; set; }
 
     /// <summary>
     /// Adds the specified value to this array.
@@ -313,8 +318,8 @@ public class Array< T >
     /// <summary>
     /// Returns the index of the last occurance of the requested value in this array.
     /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <param name="value"> The value to find. </param>
+    /// <returns> The above mentione3d index. </returns>
     public virtual int LastIndexOf( T? value )
     {
         return Array.LastIndexOf( Items, value );
@@ -329,7 +334,7 @@ public class Array< T >
     {
         for ( int i = 0, n = Size; i < n; i++ )
         {
-            if ( value!.Equals( Items[ i ] ) )
+            if ( ( value != null ) && value.Equals( Items[ i ] ) )
             {
                 RemoveIndex( i );
 
@@ -412,6 +417,7 @@ public class Array< T >
     /// Removes all items from this array that match items in the supplied
     /// array at the same index.
     /// </summary>
+    /// <returns> <b>True</b> if successful. </returns>
     public virtual bool RemoveAll( Array< T > array )
     {
         var size      = Size;
@@ -423,7 +429,7 @@ public class Array< T >
 
             for ( var ii = 0; ii < size; ii++ )
             {
-                if ( item!.Equals( Items[ ii ] ) )
+                if ( ( item != null ) && item.Equals( Items[ ii ] ) )
                 {
                     RemoveIndex( ii );
                     size--;
@@ -498,7 +504,7 @@ public class Array< T >
     /// Shrinks the backing array for this Array to the specified size.
     /// All items beyond the new size are lost.
     /// </summary>
-    /// <returns></returns>
+    /// <returns> The resized backing array. </returns>
     public virtual T?[] Shrink()
     {
         if ( Items.Length != Size )
@@ -512,6 +518,7 @@ public class Array< T >
     /// <summary>
     /// Sets the size of this array to the new specified value.
     /// </summary>
+    /// <returns> The resized backing array. </returns>
     public virtual T?[] SetSize( int newSize )
     {
         Truncate( newSize );
@@ -527,7 +534,9 @@ public class Array< T >
     }
 
     /// <summary>
+    /// Ensures the backing array has enough room for the requested additional capacity.
     /// </summary>
+    /// <returns> The resized backing array. </returns>
     public virtual T?[] EnsureCapacity( int additionalCapacity )
     {
         var sizeNeeded = Size + additionalCapacity;
@@ -541,9 +550,10 @@ public class Array< T >
     }
 
     /// <summary>
+    /// Resize the backing array to the given new size.
     /// </summary>
-    /// <param name="newSize"></param>
-    /// <returns></returns>
+    /// <param name="newSize"> The new backing array size. </param>
+    /// <returns> The resized backing array. </returns>
     protected virtual T[] Resize( int newSize )
     {
         var newItems = ( T[] ) Array.CreateInstance( Items.GetType(), newSize );
@@ -556,6 +566,7 @@ public class Array< T >
     }
 
     /// <summary>
+    /// Sort the backing array, using the default comparer.
     /// </summary>
     public virtual void Sort()
     {
@@ -563,18 +574,21 @@ public class Array< T >
     }
 
     /// <summary>
+    /// Sort the backing array, using the specified comparer.
     /// </summary>
-    /// <param name="comparator"></param>
+    /// <param name="comparator"> The comparer to use. </param>
     public virtual void Sort( IComparer< T > comparator )
     {
         SortUtils.Sort( Items, comparator, 0, Size );
     }
 
     /// <summary>
+    /// Selects the kth ranked item from the backing array, using the specified
+    /// comparer.
     /// </summary>
-    /// <param name="comparator"></param>
-    /// <param name="kthLowest"></param>
-    /// <returns></returns>
+    /// <param name="comparator"> The comparer to use. </param>
+    /// <param name="kthLowest"> The rank. </param>
+    /// <returns> The selected item. </returns>
     /// <exception cref="GdxRuntimeException"></exception>
     public virtual T SelectRanked( IComparer< T > comparator, int kthLowest )
     {
@@ -747,10 +761,7 @@ public class Array< T >
 
         for ( var i = 0; i < n; i++ )
         {
-            var o1 = Items[ i ];
-            var o2 = array.Items[ i ];
-
-            if ( !( o1?.Equals( o2 ) ?? ( o2 == null ) ) )
+            if ( Items[ i ]!.Equals( array.Items[ i ] ) )
             {
                 return false;
             }

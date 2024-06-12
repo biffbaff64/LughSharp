@@ -23,9 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text;
-using LughSharp.LibCore.Utils.Collections.Extensions;
-
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>
@@ -44,19 +41,13 @@ public static class PropertiesUtils
     private const int    IGNORE         = 5;
     private const string LINE_SEPARATOR = "\n";
 
-    // ------------------------------------------------------------------------
-    
     /// <summary>
-    /// Adds to the specified <see cref="Dictionary{T,K}"/> the key/value pairs
-    /// loaded from the <see cref="StreamReader"/> in a simple line-oriented format.
-    /// <para>
-    /// The input stream remains open after this method returns.
-    /// </para>
+    /// Loads properties from the specified <see cref="StreamReader"/> into the provided dictionary.
     /// </summary>
-    /// <param name="properties"> the map to be filled. </param>
-    /// <param name="reader"> the input character stream reader. </param>
-    /// <exception cref="IOException"> if an error occurred when reading from the input stream. </exception>
-    /// <exception cref="ArgumentException"> if a malformed Unicode escape appears in the input.  </exception>
+    /// <param name="properties">The dictionary to load properties into.</param>
+    /// <param name="reader">The reader to read the properties from.</param>
+    /// <exception cref="ArgumentNullException">Thrown if properties or reader is null.</exception>
+    /// <exception cref="ArgumentException">Thrown if an invalid Unicode sequence is encountered.</exception>
     public static void Load( Dictionary< string, string > properties, StreamReader reader )
     {
         ArgumentNullException.ThrowIfNull( properties );
@@ -74,64 +65,40 @@ public static class PropertiesUtils
         {
             var intVal = reader.Read();
 
-            if ( intVal == -1 )
-            {
-                break;
-            }
+            if ( intVal == -1 ) break;
 
             var nextChar = ( char ) intVal;
 
             if ( offset == buf.Length )
             {
                 var newBuf = new char[ buf.Length * 2 ];
-
                 Array.Copy( buf, 0, newBuf, 0, offset );
-
                 buf = newBuf;
             }
 
             switch ( mode )
             {
                 case UNICODE:
-                {
                     var num   = char.GetNumericValue( nextChar.ToString(), 16 );
                     var digit = ( int ) num;
 
-                    switch ( digit )
+                    if ( digit >= 0 )
                     {
-                        case >= 0:
-                        {
-                            unicode = ( unicode << 4 ) + digit;
+                        unicode = ( unicode << 4 ) + digit;
 
-                            if ( ++count < 4 )
-                            {
-                                continue;
-                            }
-
-                            break;
-                        }
-
-                        default:
-                        {
-                            if ( count <= 4 )
-                            {
-                                throw new ArgumentException( "Invalid Unicode sequence: illegal character" );
-                            }
-
-                            break;
-                        }
+                        if ( ++count < 4 ) continue;
+                    }
+                    else if ( count <= 4 )
+                    {
+                        throw new ArgumentException( "Invalid Unicode sequence: illegal character" );
                     }
 
                     mode            = NONE;
                     buf[ offset++ ] = ( char ) unicode;
 
-                    if ( nextChar != '\n' )
-                    {
-                        continue;
-                    }
+                    if ( nextChar != '\n' ) continue;
 
                     break;
-                }
             }
 
             switch ( mode )
@@ -142,12 +109,12 @@ public static class PropertiesUtils
                     switch ( nextChar )
                     {
                         case '\r':
-                            mode = CONTINUE; // Look for a following \n
+                            mode = CONTINUE;
 
                             continue;
 
                         case '\n':
-                            mode = IGNORE; // Ignore whitespace on the next line
+                            mode = IGNORE;
 
                             continue;
 
@@ -186,88 +153,55 @@ public static class PropertiesUtils
                     break;
 
                 default:
-                {
                     switch ( nextChar )
                     {
                         case '#':
                         case '!':
-                            switch ( firstChar )
+                            if ( firstChar )
                             {
-                                case true:
+                                while ( true )
                                 {
-                                    while ( true )
-                                    {
-                                        intVal = reader.Read();
+                                    intVal = reader.Read();
 
-                                        if ( intVal == -1 )
-                                        {
-                                            break;
-                                        }
+                                    if ( intVal == -1 ) break;
 
-                                        nextChar = ( char ) intVal;
+                                    nextChar = ( char ) intVal;
 
-                                        if ( nextChar is '\r' or '\n' )
-                                        {
-                                            break;
-                                        }
-                                    }
-
-                                    continue;
+                                    if ( ( nextChar == '\r' ) || ( nextChar == '\n' ) ) break;
                                 }
+
+                                continue;
                             }
 
                             break;
 
                         case '\n':
                         case '\r':
-                            switch ( nextChar )
+                            if ( ( nextChar == '\n' ) && ( mode == CONTINUE ) )
                             {
-                                case '\n' when mode == CONTINUE:
-                                    // Part of a \r\n sequence
-                                    // Ignore whitespace on the next line
-                                    mode = IGNORE;
+                                mode = IGNORE;
 
-                                    continue;
+                                continue;
                             }
 
                             mode      = NONE;
                             firstChar = true;
 
-                            // 'r'
-                        {
-                            switch ( offset )
+                            if ( ( offset > 0 ) || ( keyLength == 0 ) )
                             {
-                                case > 0:
-                                case 0 when keyLength == 0:
-                                {
-                                    keyLength = keyLength switch
-                                    {
-                                        -1    => offset,
-                                        var _ => keyLength
-                                    };
-
-                                    var temp = new string( buf, 0, offset );
-
-                                    properties.Put( temp[ ..keyLength ], temp[ keyLength.. ] );
-
-                                    break;
-                                }
+                                keyLength = keyLength == -1 ? offset : keyLength;
+                                var temp = new string( buf, 0, offset );
+                                properties[ temp.Substring( 0, keyLength ) ] = temp.Substring( keyLength );
                             }
 
                             keyLength = -1;
                             offset    = 0;
 
                             continue;
-                        }
 
                         case '\\':
-                            keyLength = mode switch
-                            {
-                                KEY_DONE => offset,
-                                var _    => keyLength
-                            };
-
-                            mode = SLASH;
+                            keyLength = mode == KEY_DONE ? offset : keyLength;
+                            mode      = SLASH;
 
                             continue;
 
@@ -275,7 +209,6 @@ public static class PropertiesUtils
                         case '=':
                             if ( keyLength == -1 )
                             {
-                                // if parsing the key
                                 mode      = NONE;
                                 keyLength = offset;
 
@@ -287,34 +220,21 @@ public static class PropertiesUtils
 
                     if ( char.IsWhiteSpace( nextChar ) )
                     {
-                        mode = mode switch
-                        {
-                            CONTINUE => IGNORE,
-                            var _    => mode
-                        };
+                        mode = mode == CONTINUE ? IGNORE : mode;
 
-                        if ( ( offset == 0 ) || ( offset == keyLength ) || ( mode == IGNORE ) )
-                        {
-                            continue;
-                        }
+                        if ( ( offset == 0 ) || ( offset == keyLength ) || ( mode == IGNORE ) ) continue;
 
                         if ( keyLength == -1 )
                         {
-                            // if parsing the key
                             mode = KEY_DONE;
 
                             continue;
                         }
                     }
 
-                    mode = mode switch
-                    {
-                        IGNORE or CONTINUE => NONE,
-                        var _              => mode
-                    };
+                    mode = ( mode == IGNORE ) || ( mode == CONTINUE ) ? NONE : mode;
 
                     break;
-                }
             }
 
             firstChar = false;
@@ -333,65 +253,31 @@ public static class PropertiesUtils
             throw new ArgumentException( "Invalid Unicode sequence: expected format \\uxxxx" );
         }
 
-        keyLength = keyLength switch
-        {
-            -1 when offset > 0 => offset,
-            var _              => keyLength
-        };
+        keyLength = ( keyLength == -1 ) && ( offset > 0 ) ? offset : keyLength;
 
-        switch ( keyLength )
+        if ( keyLength >= 0 )
         {
-            case >= 0:
+            var temp  = new string( buf, 0, offset );
+            var key   = temp.Substring( 0, keyLength );
+            var value = temp.Substring( keyLength );
+
+            if ( mode == SLASH )
             {
-                var temp  = new string( buf, 0, offset );
-                var key   = temp.Substring( 0, keyLength );
-                var value = temp.Substring( keyLength );
-
-                switch ( mode )
-                {
-                    case SLASH:
-                        value += "\u0000";
-
-                        break;
-                }
-
-                properties.Put( key, value );
-
-                break;
+                value += "\u0000";
             }
+
+            properties[ key ] = value;
         }
     }
 
     /// <summary>
-    /// Writes the key/value pairs of the specified <see cref="Dictionary{T,K}"/> to
-    /// the output character stream in a simple line-oriented format.
-    /// <para>
-    /// Every entry in the <tt>Dictionary</tt> is written out, one per line. For each
-    /// entry the key string is written, then an <tt>ASCII =</tt>, then the associated
-    /// element string. For the key, all space characters are written with a preceding
-    /// <tt>\ (back-slash)</tt> character. For the element, leading space characters,
-    /// but not embedded or trailing space characters, are written with a preceding
-    /// <tt>\ (back-slash)</tt> character. The key and element characters <tt>#</tt>, <tt>!</tt>,
-    /// <tt>=</tt>, and <tt>:</tt> are written with a preceding backslash to ensure that
-    /// they are properly loaded.
-    /// </para>
-    /// <para>
-    /// After the entries have been written, the output stream is flushed. The output
-    /// stream remains open after this method returns.
-    /// </para>
+    /// Stores the properties from the dictionary to the specified <see cref="StreamWriter"/>.
     /// </summary>
-    /// <param name="properties"> the Dictionary. </param>
-    /// <param name="writer"> an output character stream writer. </param>
-    /// <param name="comment"> an optional comment to be written, or null. </param>
-    /// <param name="escapeUnicode"></param>
-    /// <exception cref="IOException">
-    /// if writing this property list to the specified output stream throws an <tt>IOException</tt>.
-    /// </exception>
-    /// <exception cref="NullReferenceException"> if <code>writer</code> is null.</exception>
-    public static void Store( Dictionary< string, string > properties,
-                              StreamWriter writer,
-                              string? comment,
-                              bool escapeUnicode = false )
+    /// <param name="properties">The dictionary containing properties to store.</param>
+    /// <param name="writer">The writer to write the properties to.</param>
+    /// <param name="comment">An optional comment to include at the top of the output.</param>
+    /// <param name="escapeUnicode">Whether to escape non-ASCII Unicode characters.</param>
+    public static void Store( Dictionary< string, string > properties, StreamWriter writer, string? comment, bool escapeUnicode = false )
     {
         if ( comment != null )
         {
@@ -417,6 +303,13 @@ public static class PropertiesUtils
         writer.Flush();
     }
 
+    /// <summary>
+    /// Converts a string to a form suitable for writing to a properties file, escaping necessary characters.
+    /// </summary>
+    /// <param name="outBuffer">The buffer to write the escaped string to.</param>
+    /// <param name="str">The string to escape.</param>
+    /// <param name="escapeSpace">Whether to escape spaces.</param>
+    /// <param name="escapeUnicode">Whether to escape non-ASCII Unicode characters.</param>
     private static void DumpString( StringBuilder outBuffer, string str, bool escapeSpace, bool escapeUnicode )
     {
         var len = str.Length;
@@ -425,7 +318,6 @@ public static class PropertiesUtils
         {
             var ch = str[ i ];
 
-            // Handle common case first
             if ( ( ch > 61 ) && ( ch < 127 ) )
             {
                 outBuffer.Append( ch == '\\' ? @"\\" : ch );
@@ -467,37 +359,30 @@ public static class PropertiesUtils
 
                     break;
 
-                case '=': // Fall through
-                case ':': // Fall through
-                case '#': // Fall through
+                case '=':
+                case ':':
+                case '#':
                 case '!':
                     outBuffer.Append( '\\' ).Append( ch );
 
                     break;
 
                 default:
-                    switch ( ( ( ch < 0x0020 ) || ( ch > 0x007e ) ) & escapeUnicode )
+                    if ( escapeUnicode && ( ( ch < 0x0020 ) || ( ch > 0x007e ) ) )
                     {
-                        case true:
+                        var hex = ( ( int ) ch ).ToString( "X" );
+                        outBuffer.Append( "\\u" );
+
+                        for ( var j = 0; j < ( 4 - hex.Length ); j++ )
                         {
-                            var hex = ( ( int ) ch ).ToString( "X" );
-
-                            outBuffer.Append( "\\u" );
-
-                            for ( var j = 0; j < ( 4 - hex.Length ); j++ )
-                            {
-                                outBuffer.Append( '0' );
-                            }
-
-                            outBuffer.Append( hex );
-
-                            break;
+                            outBuffer.Append( '0' );
                         }
 
-                        default:
-                            outBuffer.Append( ch );
-
-                            break;
+                        outBuffer.Append( hex );
+                    }
+                    else
+                    {
+                        outBuffer.Append( ch );
                     }
 
                     break;
@@ -505,6 +390,11 @@ public static class PropertiesUtils
         }
     }
 
+    /// <summary>
+    /// Writes a comment to the specified <see cref="StreamWriter"/>.
+    /// </summary>
+    /// <param name="writer">The writer to write the comment to.</param>
+    /// <param name="comment">The comment to write.</param>
     private static void WriteComment( StreamWriter writer, string comment )
     {
         writer.Write( "#" );
@@ -517,61 +407,41 @@ public static class PropertiesUtils
         {
             var c = comment[ curIndex ];
 
-            switch ( c )
+            if ( ( c > '\u00ff' ) || ( c == '\n' ) || ( c == '\r' ) )
             {
-                case > '\u00ff':
-                case '\n':
-                case '\r':
+                if ( lastIndex != curIndex )
                 {
-                    if ( lastIndex != curIndex )
-                    {
-                        writer.Write( comment.Substring( lastIndex, curIndex ) );
-                    }
-
-                    switch ( c )
-                    {
-                        case > '\u00ff':
-                        {
-                            var hex = ( ( int ) c ).ToString( "X" );
-
-                            writer.Write( "\\u" );
-
-                            for ( var j = 0; j < ( 4 - hex.Length ); j++ )
-                            {
-                                writer.Write( '0' );
-                            }
-
-                            writer.Write( hex );
-
-                            break;
-                        }
-
-                        default:
-                        {
-                            writer.Write( LINE_SEPARATOR );
-
-                            switch ( c )
-                            {
-                                case '\r' when ( curIndex != ( len - 1 ) ) && ( comment[ curIndex + 1 ] == '\n' ):
-                                    curIndex++;
-
-                                    break;
-                            }
-
-                            if ( ( curIndex == ( len - 1 ) )
-                              || ( ( comment[ curIndex + 1 ] != '#' ) && ( comment[ curIndex + 1 ] != '!' ) ) )
-                            {
-                                writer.Write( "#" );
-                            }
-
-                            break;
-                        }
-                    }
-
-                    lastIndex = curIndex + 1;
-
-                    break;
+                    writer.Write( comment.Substring( lastIndex, curIndex ) );
                 }
+
+                if ( c > '\u00ff' )
+                {
+                    var hex = ( ( int ) c ).ToString( "X" );
+                    writer.Write( "\\u" );
+
+                    for ( var j = 0; j < ( 4 - hex.Length ); j++ )
+                    {
+                        writer.Write( '0' );
+                    }
+
+                    writer.Write( hex );
+                }
+                else
+                {
+                    writer.Write( LINE_SEPARATOR );
+
+                    if ( ( c == '\r' ) && ( curIndex != ( len - 1 ) ) && ( comment[ curIndex + 1 ] == '\n' ) )
+                    {
+                        curIndex++;
+                    }
+
+                    if ( ( curIndex == ( len - 1 ) ) || ( ( comment[ curIndex + 1 ] != '#' ) && ( comment[ curIndex + 1 ] != '!' ) ) )
+                    {
+                        writer.Write( "#" );
+                    }
+                }
+
+                lastIndex = curIndex + 1;
             }
 
             curIndex++;

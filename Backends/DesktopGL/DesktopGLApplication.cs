@@ -128,6 +128,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
+    /// The framework entry point.
     /// </summary>
     public void Run()
     {

@@ -1407,7 +1407,7 @@ public class Stage : InputAdapter, IDisposable
     //TODO: NEEDS Documentation!!
 
     [PublicAPI]
-    public class TouchFocus
+    public class TouchFocus //: IComparable< TouchFocus >
     {
         public IEventListener? Listener      { get; set; } = null;
         public Actor?          ListenerActor { get; set; } = null;

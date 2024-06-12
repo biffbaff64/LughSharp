@@ -25,6 +25,9 @@
 
 namespace LughSharp.LibCore.Utils;
 
+/// <summary>
+/// Class to keep track of a group of <see cref="PerformanceCounter"/> instances.
+/// </summary>
 [PublicAPI]
 public class PerformanceCounters
 {
@@ -32,10 +35,19 @@ public class PerformanceCounters
 
     private long _lastTick = 0L;
 
+    /// <summary>
+    /// The list of <see cref="PerformanceCounter"/>s to track.
+    /// </summary>
     public List< PerformanceCounter > Counters { get; set; } = new();
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Adds a new <see cref="PerformanceCounter"/> to the <see cref="Counters"/> list.
+    /// </summary>
+    /// <param name="name"> The identifying name. </param>
+    /// <param name="windowSize"></param>
+    /// <returns> The newly created PerformanceCounter. </returns>
     public PerformanceCounter Add( in string name, in int windowSize )
     {
         var result = new PerformanceCounter( name, windowSize );
@@ -45,6 +57,11 @@ public class PerformanceCounters
         return result;
     }
 
+    /// <summary>
+    /// Adds a new <see cref="PerformanceCounter"/> to the <see cref="Counters"/> list.
+    /// </summary>
+    /// <param name="name"> The identifying name. </param>
+    /// <returns> The newly created PerformanceCounter. </returns>
     public PerformanceCounter Add( in string name )
     {
         var result = new PerformanceCounter( name );
@@ -54,6 +71,8 @@ public class PerformanceCounters
         return result;
     }
 
+    /// <summary>
+    /// </summary>
     public void Tick()
     {
         var t = TimeUtils.NanoTime();
@@ -66,6 +85,9 @@ public class PerformanceCounters
         _lastTick = t;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="deltaTime"></param>
     public void Tick( in float deltaTime )
     {
         foreach ( var t in Counters )

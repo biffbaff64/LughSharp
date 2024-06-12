@@ -23,9 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.IO.Compression;
 using LughSharp.LibCore.Utils.Exceptions;
-using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 using Exception = System.Exception;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
@@ -137,7 +135,7 @@ public class KtxTextureData : ITextureData, ICubemapData
 
                 var fileSize = dataInputStream.ReadInt32();
 
-                _compressedData = BufferUtils.NewByteBuffer( fileSize );
+                _compressedData = BufferUtils.NewByteBuffer( fileSize, false );
 
                 int readBytes;
 
@@ -276,7 +274,7 @@ public class KtxTextureData : ITextureData, ICubemapData
             _compressedData.Limit    = pos;
             _compressedData.Position = 0;
 
-            var directBuffer = BufferUtils.NewByteBuffer( pos );
+            var directBuffer = BufferUtils.NewByteBuffer( pos, false );
             directBuffer.Order( _compressedData.Order() );
             directBuffer.Put( _compressedData );
 
@@ -494,8 +492,9 @@ public class KtxTextureData : ITextureData, ICubemapData
                         {
                             if ( !Gdx.Graphics.SupportsExtension( "GL_OES_compressed_ETC1_RGB8_texture" ) )
                             {
-                                var etcData = new ETC1.ETC1Data( pixelWidth, pixelHeight, data, 0 );
-                                var pixmap  = ETC1.DecodeImage( etcData, Pixmap.Format.RGB888 );
+                                ETC1 etc1    = new();
+                                var  etcData = new ETC1.ETC1Data( pixelWidth, pixelHeight, data, 0, etc1 );
+                                var  pixmap  = etc1.DecodeImage( etcData, Pixmap.Format.RGB888 );
 
                                 unsafe
                                 {

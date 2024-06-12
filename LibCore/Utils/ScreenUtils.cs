@@ -193,9 +193,7 @@ public class ScreenUtils
 
         Gdx.GL.glPixelStorei( IGL.GL_PACK_ALIGNMENT, 1 );
 
-        // var pixels = BufferUtils.NewByteBuffer( numBytes );
-
-        var pixels = BufferUtils.NewByteBuffer( numBytes );
+        var pixels = BufferUtils.NewByteBuffer( numBytes, false );
 
         fixed ( void* ptr = &pixels.BackingArray()[ 0 ] )
         {

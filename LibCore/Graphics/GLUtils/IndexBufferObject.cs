@@ -84,7 +84,7 @@ public class IndexBufferObject : IIndexData
         }
 
         // Create a new byte buffer to hold the indices. Each index is a short (2 bytes).
-        _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2 );
+        _byteBuffer = BufferUtils.NewByteBuffer( maxIndices * 2, false );
 
         // Create a view of the byte buffer as a short buffer.
         _buffer = _byteBuffer.AsShortBuffer();

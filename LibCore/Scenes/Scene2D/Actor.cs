@@ -30,7 +30,7 @@ using LughSharp.LibCore.Utils.Collections.Extensions;
 namespace LughSharp.LibCore.Scenes.Scene2D;
 
 [PublicAPI]
-public class Actor : IActor
+public class Actor : IActor, IComparable< Actor >
 {
     public Stage?    Stage      { get; set; }
     public Group?    Parent     { get; set; }
@@ -1453,8 +1453,7 @@ public class Actor : IActor
     }
 
     /// <summary>
-    /// Draws a rectangle for the bounds of this actor
-    /// if <see cref="DebugActive"/> is true.
+    /// Draws a rectangle for the bounds of this actor if <see cref="DebugActive"/> is true.
     /// </summary>
     protected virtual void DrawDebugBounds( ShapeRenderer shapes )
     {
@@ -1476,7 +1475,7 @@ public class Actor : IActor
     /// <summary>
     /// Enables Debug for this actor.
     /// </summary>
-    /// <returns>This Actor for chaining.</returns>
+    /// <returns> This Actor for chaining. </returns>
     public virtual Actor EnableDebug()
     {
         DebugActive = true;
@@ -1484,9 +1483,17 @@ public class Actor : IActor
         return this;
     }
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
+    /// <inheritdoc />
+    public int CompareTo( Actor? other )
+    {
+        //TODO:
+        
+        if ( other == null ) return 1;
+        
+        return 0;
+    }
+
+    /// <inheritdoc />
     public override string? ToString()
     {
         return Name;

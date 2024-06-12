@@ -516,7 +516,7 @@ MATHS
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - Affine2
-    - DONE - IP   - Bezier
+    - DONE - DONE - Bezier
     - DONE - IP   - Bresenham2
     - DONE - IP   - BSpline
     - DONE - IP   - CatmullRomSpline
@@ -728,6 +728,8 @@ UTILS
     - DONE - DONE - Align
     - DONE - DONE - BinaryHeap
     - DONE - DONE - Bits
+    - DONE - DONE - ByteOrder                       Is this still needed? Possible Delete Candidate?
+    - DONE - DONE - Character                       C# System MUST already have this???
     - DONE - IP   - ComparableTimSort
     - DONE - IP   - DataInput                       Check
     - DONE - IP   - DataOutput                      Check
@@ -736,26 +738,22 @@ UTILS
     - DONE - DONE - IClipboard                      Convert - Interface, clipboard handled in backends.                 
     - DONE - DONE - ICloseable
     - DONE - DONE - IReadable
+    - DONE - DONE - IRunnable                       Done, but is it needed?
     - DONE - DONE - Logger
     - DONE - DONE - PerformanceCounter              Check
     - DONE - IP   - PerformanceCounters             Check
+    - DONE - DONE - PropertiesUtils                 Convert, but check if necessary
     - DONE - IP   - QuadTreeFloat
     - DONE - IP   - QuickSelect
     - DONE - IP   - Scaling
     - DONE - DONE - ScreenUtils
-    - DONE - IP   - Select
+    - DONE - IP   - Selector
+    - DONE - DONE - SingletonBase<T>
+    - DONE - DONE - SortUtils                       Do I still need this?
     - DONE - DONE - StringTokenizer
     - DONE - DONE - Timer
     - DONE - DONE - TimeUtils
     - DONE - IP   - TimSort
-
-    - The following might not be needed
-
-    - DONE - DONE - ByteOrder                       Is this still needed? Possible Delete Candidate?
-    - DONE - DONE - Character                       C# System MUST already have this???
-    - DONE - DONE - IRunnable                       Done, but is it needed?
-    - DONE - IP   - PropertiesUtils                 Convert, but check if necessary
-    - DONE - IP   - SortUtils                       Do I still need this?
 
     - The following do not need converting
 
@@ -774,9 +772,7 @@ UTILS
 UTILS/BUFFERS
 -------------
 
-    I think Direct Buffers can go. Non-Direct buffers only?
-    Do I need the Heap buffers?
-    I only really need the ones that LibGDX uses, and I OUGHT to be finding .net equivalents.
+    I only really need the buffers that LibGDX uses, and I OUGHT to be finding .net equivalents.
 
      CODE   DOCUMENT
     ----   --------
@@ -793,8 +789,8 @@ UTILS/BUFFERS
     - DONE - IP   - ShortBuffer
     - DONE - IP   - StringCharBuffer
 
-UTILS/BUFFERS/HEAPBUFFERS
--------------------------
+UTILS/BUFFERS/BYTEBUFFERAS
+--------------------------
 
      CODE   DOCUMENT
     ----   --------
@@ -810,6 +806,14 @@ UTILS/BUFFERS/HEAPBUFFERS
     - IP   - IP   - ByteBufferAsLongBufferL
     - IP   - IP   - ByteBufferAsShortBufferB
     - IP   - IP   - ByteBufferAsShortBufferL
+
+UTILS/BUFFERS/DIRECTBUFFERS
+---------------------------
+
+     CODE   DOCUMENT
+    ----   --------
+    -      -      -
+    -      -      -
 
 UTILS/BUFFERS/HEAPBUFFERS
 -------------------------

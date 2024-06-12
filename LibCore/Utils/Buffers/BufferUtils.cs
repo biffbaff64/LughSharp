@@ -69,12 +69,32 @@ public static class BufferUtils
     /// Creates a new <see cref="ByteBuffer"/> with the specified capacity.
     /// All elements will be initialised to zero.
     /// </summary>
-    public static ByteBuffer NewByteBuffer( int numBytes )
+    public static ByteBuffer NewByteBuffer( int numBytes, bool isUnsafe )
     {
-        var buffer = ByteBuffer.Allocate( numBytes );
+        var buffer = isUnsafe
+                         ? NewDisposableByteBuffer( numBytes )
+                         : ByteBuffer.Allocate( numBytes );
+
         buffer.Order( ByteOrder.NativeOrder );
 
+        if ( isUnsafe )
+        {
+            _allocatedUnsafe += numBytes;
+
+            lock ( _unsafeBuffers )
+            {
+                _unsafeBuffers.Add( buffer );
+            }
+        }
+
         return buffer;
+    }
+
+    public static ByteBuffer NewDisposableByteBuffer( int numBytes )
+    {
+        //TODO:
+
+        return ByteBuffer.Allocate( numBytes );
     }
 
     /// <summary>

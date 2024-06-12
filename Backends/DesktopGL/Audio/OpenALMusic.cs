@@ -36,7 +36,7 @@ public abstract class OpenALMusic : IMusic
     private readonly static int         _bufferCount    = 3;
     private readonly static int         _bytesPerSample = 2;
     private readonly static byte[]      _tempBytes      = new byte[ _bufferSize ];
-    private readonly static ByteBuffer  _tempBuffer     = BufferUtils.NewByteBuffer( _bufferSize );
+    private readonly static ByteBuffer  _tempBuffer     = BufferUtils.NewByteBuffer( _bufferSize, false );
     private readonly        OpenALAudio _audio;
     private readonly        float       _pan = 0;
 

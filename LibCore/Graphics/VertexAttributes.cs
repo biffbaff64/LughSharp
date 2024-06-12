@@ -23,13 +23,25 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text;
-
 namespace LughSharp.LibCore.Graphics;
 
 [PublicAPI]
 public class VertexAttributes
 {
+    [PublicAPI]
+    public struct Usage
+    {
+        public const int POSITION            = 1;
+        public const int COLOR_UNPACKED      = 2;
+        public const int COLOR_PACKED        = 4;
+        public const int NORMAL              = 8;
+        public const int TEXTURE_COORDINATES = 16;
+        public const int GENERIC             = 32;
+        public const int BONE_WEIGHT         = 64;
+        public const int TANGENT             = 128;
+        public const int BI_NORMAL           = 256;
+    }
+
     /// <summary>
     /// the attributes in the order they were specified
     /// </summary>
@@ -175,6 +187,7 @@ public class VertexAttributes
         return _attributes[ index ];
     }
 
+    /// <inheritdoc/>
     public override string ToString()
     {
         var builder = new StringBuilder();
@@ -199,11 +212,8 @@ public class VertexAttributes
         return builder.ToString();
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public override bool Equals( object obj )
+    /// <inheritdoc/>
+    public override bool Equals( object? obj )
     {
         if ( obj == this )
         {
@@ -231,16 +241,14 @@ public class VertexAttributes
         return true;
     }
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public int HashCode()
+    /// <inheritdoc/>
+    public override int GetHashCode()
     {
         long result = 61 * _attributes.Length;
 
         foreach ( var t in _attributes )
         {
-            result = ( result * 61 ) + t.HashCode();
+            result = ( result * 61 ) + t.GetHashCode();
         }
 
         return ( int ) ( result ^ ( result >> 32 ) );
@@ -293,18 +301,5 @@ public class VertexAttributes
         }
 
         return 0;
-    }
-
-    public struct Usage
-    {
-        internal const int POSITION            = 1;
-        internal const int COLOR_UNPACKED      = 2;
-        internal const int COLOR_PACKED        = 4;
-        internal const int NORMAL              = 8;
-        internal const int TEXTURE_COORDINATES = 16;
-        internal const int GENERIC             = 32;
-        internal const int BONE_WEIGHT         = 64;
-        internal const int TANGENT             = 128;
-        internal const int BI_NORMAL           = 256;
     }
 }

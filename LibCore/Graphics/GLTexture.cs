@@ -273,7 +273,7 @@ public abstract class GLTexture : IDisposable
         {
             var buffer = new float[ 16 ];
 
-            Gdx.GL.glGetFloatv( IGL.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, buffer );
+            Gdx.GL.glGetFloatv( IGL.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, ref buffer );
 
             return _maxAnisotropicFilterLevel = buffer[ 0 ];
         }
