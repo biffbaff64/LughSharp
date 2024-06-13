@@ -43,6 +43,9 @@ public class DesktopGLWindowConfiguration
 
     public DesktopGLGraphics.DesktopGLMonitor? MaximizedMonitor { get; set; }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// whether the window will be visible on creation. (default true)
     /// </summary>
@@ -56,8 +59,10 @@ public class DesktopGLWindowConfiguration
 
     /// <summary>
     /// Sets the app to use fullscreen mode.
+    /// <para>
     /// Use the static methods like <see cref="DesktopGLApplicationConfiguration.GetDisplayMode()"/>
     /// on this class to enumerate connected monitors and their fullscreen display modes.
+    /// </para>
     /// </summary>
     public DesktopGLGraphics.DesktopGLDisplayMode? FullscreenMode { get; set; }
 
@@ -109,6 +114,7 @@ public class DesktopGLWindowConfiguration
     public string? Title { get; set; } = "";
 
     /// <summary>
+    /// Sets this windows configuration settings.
     /// </summary>
     /// <param name="config">
     /// The window configuration data from which to initialise this window config.
@@ -150,9 +156,9 @@ public class DesktopGLWindowConfiguration
     /// macOS, which doesn't use window icons.
     /// </summary>
     /// <param name="filePaths">
-    /// One or more internal image paths. Must be JPEG, PNG, or BMP format.
-    /// The one closest to the system's desired size will be scaled. Good
-    /// sizes include 16x16, 32x32 and 48x48.
+    /// One or more internal image paths. Must be JPEG, PNG, or BMP format. The one
+    /// closest to the system's desired size will be scaled. Good sizes include 16x16,
+    /// 32x32 and 48x48.
     /// </param>
     public void SetWindowIcon( params string[] filePaths )
     {

@@ -66,17 +66,19 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
     }
 
+    //@formatter:off
+    
     /// <inheritdoc/>
-    public override int Width
-        => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
-               ? BackBufferWidth
-               : LogicalWidth;
+    public override int Width => GLWindow?.Config.HdpiMode == HdpiMode.Pixels 
+                                     ? BackBufferWidth
+                                     : LogicalWidth;
 
     /// <inheritdoc/>
-    public override int Height
-        => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
-               ? BackBufferHeight
-               : LogicalHeight;
+    public override int Height => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+                                      ? BackBufferHeight
+                                      : LogicalHeight;
+
+    //@formatter:on
 
     /// <summary>
     /// Whether the app is full screen or not.
@@ -352,7 +354,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// and maximum one time per frame.
     /// </summary>
     /// <param name="cursor">
-    /// The mouse cursor as a <see cref="T:LughSharp.LibCore.Graphics.ICursor"/>
+    /// The mouse cursor as a <see cref="ICursor"/>
     /// </param>
     public override void SetCursor( ICursor cursor )
     {
@@ -362,7 +364,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     /// <summary>
-    /// Sets one of the predefined <see cref="T:LughSharp.LibCore.Graphics.ICursor.SystemCursor"/>s.
+    /// Sets one of the predefined <see cref="ICursor.SystemCursor"/>s.
     /// </summary>
     /// <param name="systemCursor">The system cursor to use.</param>
     public override void SetSystemCursor( ICursor.SystemCursor systemCursor )

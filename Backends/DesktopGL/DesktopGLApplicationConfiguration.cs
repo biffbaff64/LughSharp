@@ -57,10 +57,13 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public HdpiMode      HdpiMode             { get; set; } = HdpiMode.Logical;
     public StreamWriter? DebugStream          { get; set; }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     /// <summary>
+    /// Creates, and returns, a new DesktopApplicationConfiguration, using settings
+    /// from the supplied DesktopApplicationConfiguratrion object.
     /// </summary>
-    /// <param name="config"></param>
-    /// <returns></returns>
     public static DesktopGLApplicationConfiguration Copy( DesktopGLApplicationConfiguration config )
     {
         var copy = new DesktopGLApplicationConfiguration();
@@ -71,8 +74,9 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
+    /// Sets this DesktopApplicationConfiguration settings, using settings
+    /// from the supplied DesktopApplicationConfiguratrion object.
     /// </summary>
-    /// <param name="config"></param>
     private void Set( DesktopGLApplicationConfiguration config )
     {
         SetWindowConfiguration( config );
@@ -193,6 +197,9 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
                                                            videoMode.RedBits + videoMode.GreenBits + videoMode.BlueBits );
     }
 
+    /// <summary>
+    /// Gets the currterntly active display mode for the given monitor.
+    /// </summary>
     public static IGraphics.DisplayMode GetDisplayMode( GLFW.Monitor monitor )
     {
         DesktopGLApplication.InitialiseGL();
@@ -232,8 +239,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Return the available <see cref="IGraphics.DisplayMode"/>"s
-    /// of the given <see cref="IGraphics.GdxMonitor"/>
+    /// Returns a list of the available <see cref="IGraphics.DisplayMode"/>s of the given monitor.
     /// </summary>
     public static IGraphics.DisplayMode[] GetDisplayModes( GLFW.Monitor monitor )
     {
@@ -257,12 +263,13 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
         return result;
     }
 
-    public static DesktopGLGraphics.DesktopGLMonitor ToDesktopGLMonitor( GLFW.Monitor glfwMonitor )
-    {
-        Glfw.GetMonitorPos( glfwMonitor, out var tmp, out var tmp2 );
+    //TODO: REMOVE
+//    public static DesktopGLGraphics.DesktopGLMonitor ToDesktopGLMonitor( GLFW.Monitor glfwMonitor )
+//    {
+//        Glfw.GetMonitorPos( glfwMonitor, out var tmp, out var tmp2 );
 
-        var name = Glfw.GetMonitorName( glfwMonitor );
+//        var name = Glfw.GetMonitorName( glfwMonitor );
 
-        return new DesktopGLGraphics.DesktopGLMonitor( glfwMonitor, tmp, tmp2, name );
-    }
+//        return new DesktopGLGraphics.DesktopGLMonitor( glfwMonitor, tmp, tmp2, name );
+//    }
 }

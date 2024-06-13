@@ -85,15 +85,54 @@ public interface IApplication
 
     // ------------------------------------------------------------------------
 
-    ApplicationType AppType   { get; set; }
-    IClipboard?     Clipboard { get; set; }
+    /// <summary>
+    /// What <see cref="ApplicationType"/> the application has.
+    /// </summary>
+    ApplicationType AppType { get; set; }
 
-    int          GetVersion();
+    IClipboard? Clipboard { get; set; }
+
+    /// <summary>
+    /// Returns the Android API level on Android, the major OS version on iOS (5, 6, 7, ..), or 0 on the desktop.
+    /// </summary>
+    int GetVersion();
+
+    /// <summary>
+    /// Returns the <see cref="IPreferences"/> instance of this Application. It can be
+    /// used to store application settings across runs.
+    /// </summary>
+    /// <param name="name"> the name of the preferences, must be useable as a file name. </param>
+    /// <returns> The preferences. </returns>
     IPreferences GetPreferences( string name );
 
+    /// <summary>
+    /// Adds a new <see cref="ILifecycleListener"/> to the application. This can be
+    /// used by extensions to hook into the lifecycle more easily.
+    /// The <see cref="IApplicationListener"/> methods are sufficient for application
+    /// level development.
+    /// </summary>
     void AddLifecycleListener( ILifecycleListener listener );
+
+    /// <summary>
+    /// Removes the specified <see cref="ILifecycleListener"/>
+    /// </summary>
     void RemoveLifecycleListener( ILifecycleListener listener );
+    
+    /// <summary>
+    /// Posts a <see cref="IRunnable"/> to the event queue.
+    /// </summary>
     void PostRunnable( IRunnable.Runnable runnable );
 
+    /// <summary>
+    /// Schedule an exit from the application. On android, this will cause a call to
+    /// <see cref="IApplicationListener.Pause()"/> and <see cref="IDisposable.Dispose()"/>
+    /// some time in the future.
+    /// <para>
+    /// It will not immediately finish your application.
+    ///</para>
+    /// <para>
+    /// On iOS this should be avoided in production as it breaks Apples guidelines
+    ///</para>
+    /// </summary>
     void Exit();
 }

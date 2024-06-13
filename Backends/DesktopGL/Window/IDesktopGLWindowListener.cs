@@ -32,7 +32,7 @@ public interface IDesktopGLWindowListener
 {
     /// <summary>
     /// Called after the GLFW window is created. Before this callback is received, it's
-    /// to use any<see cref="DesktopGLWindow"/> member functions which, for their part,
+    /// to use any <see cref="DesktopGLWindow"/> member functions which, for their part,
     /// involve calling GLFW functions.
     /// <para>
     /// For the main window, this is an immediate callback from inside
@@ -41,7 +41,6 @@ public interface IDesktopGLWindowListener
     /// </para>
     /// </summary>
     /// <param name="window">the window instance.</param>
-    /// <see cref="DesktopGLApplication"/>
     void Created( DesktopGLWindow window );
 
     /// <summary>
@@ -64,9 +63,8 @@ public interface IDesktopGLWindowListener
     void Maximized( bool isMaximized );
 
     /// <summary>
-    /// Called when the window lost focus to another window. The
-    /// window's {@link ApplicationListener} will continue to be
-    /// called.
+    /// Called when the window lost focus to another window. The window's
+    /// <see cref="IApplicationListener"/> will continue to be called.
     /// </summary>
     void FocusLost();
 
@@ -83,8 +81,7 @@ public interface IDesktopGLWindowListener
     bool CloseRequested();
 
     /// <summary>
-    /// Called when external files are dropped into the window,
-    /// e.g from the Desktop.
+    /// Called when external files are dropped into the window, e.g from the Desktop.
     /// </summary>
     /// <param name="files"> array with absolute paths to the files </param>
     void FilesDropped( string[] files );

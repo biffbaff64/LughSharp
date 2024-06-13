@@ -31,35 +31,43 @@ namespace LughSharp.Backends.DesktopGL.Window;
 /// </summary>
 public class DesktopGLWindowAdapter : IDesktopGLWindowListener
 {
+    /// <inheritdoc/>
     public virtual void Created( DesktopGLWindow window )
     {
     }
 
+    /// <inheritdoc/>
     public virtual void Iconified( bool isIconified )
     {
     }
 
+    /// <inheritdoc/>
     public virtual void Maximized( bool isMaximized )
     {
     }
 
+    /// <inheritdoc/>
     public virtual void FocusLost()
     {
     }
 
+    /// <inheritdoc/>
     public virtual void FocusGained()
     {
     }
 
+    /// <inheritdoc/>
     public virtual bool CloseRequested()
     {
         return false;
     }
 
+    /// <inheritdoc/>
     public virtual void FilesDropped( string[] files )
     {
     }
 
+    /// <inheritdoc/>
     public virtual void RefreshRequested()
     {
     }

@@ -958,8 +958,6 @@ BACKENDS/DESKTOPGL/GRAPHICS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - DesktopGL20
-    - IP   - IP   - DesktopGL30
     - IP   - IP   - DesktopGLGraphics
     - IP   - IP   - DesktopGLGraphics.DesktopGLDisplayMode   Delete candidate
     - IP   - IP   - DesktopGLGraphics.DesktopGLMonitor       Delete candidate
@@ -970,7 +968,7 @@ BACKENDS/DESKTOPGL/INPUT
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - DefaultGLInput
-    - IP   - IP   - IDesktopGLInput
+    - DONE - IP   - IDesktopGLInput
 
 BACKENDS/DESKTOPGL/UTILS
 ------------------------
@@ -988,9 +986,9 @@ BACKENDS/DESKTOPGL/WINDOW
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - DesktopGLWindow
-    - IP   - IP   - DesktopGLWindowConfiguration
-    - IP   - IP   - DesktopGLWindowAdapter
-    - IP   - IP   - IDesktopGLWindowListener
+    - DONE - DONE - DesktopGLWindowConfiguration
+    - DONE - DONE - DesktopGLWindowAdapter
+    - DONE - DONE - IDesktopGLWindowListener
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

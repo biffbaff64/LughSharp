@@ -69,6 +69,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     // ------------------------------------------------------------------------
 
+    private const int FR_UNINITIALISED = -2;
+
     private static   GlfwErrorCallback? _errorCallback = null;
     private readonly Sync?              _sync          = null;
     private volatile DesktopGLWindow?   _currentWindow = null;
@@ -94,25 +96,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Config = config = DesktopGLApplicationConfiguration.Copy( config );
 
         Gdx.App = this;
-        
-        if ( !config.DisableAudio )
-        {
-            try
-            {
-                Audio = CreateAudio( config );
-            }
-            catch ( Exception e )
-            {
-                Logger.Debug( $"Couldn't initialize audio, disabling audio: {e}" );
 
-                Audio = new MockAudio();
-            }
-        }
-        else
-        {
-            Audio = new MockAudio();
-        }
-
+        Audio     = CreateAudio( config );
         Files     = new DesktopGLFiles();
         Network   = new DesktopGLNet( config );
         Clipboard = new DesktopGLClipboard();
@@ -128,7 +113,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    /// The framework entry point.
+    /// The framework entry point. This passes control to <see cref="Loop()"/> and
+    /// stays there until the app is finished. At this point <see cref="CleanupWindows"/>
+    /// is called, followed by <see cref="Cleanup"/>.
     /// </summary>
     public void Run()
     {
@@ -155,7 +142,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    /// Framework Main Loop
+    /// Framework Main Loop.
     /// </summary>
     protected void Loop()
     {
@@ -166,17 +153,18 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Audio?.Update();
 
             var haveWindowsRendered = false;
-            var targetFramerate     = -2;
+            var targetFramerate     = FR_UNINITIALISED;
 
             closedWindows.Clear();
 
+            // Update active windows
             foreach ( var window in Windows )
             {
                 window.MakeCurrent();
 
                 _currentWindow = window;
 
-                if ( targetFramerate == -2 )
+                if ( targetFramerate == FR_UNINITIALISED )
                 {
                     targetFramerate = window.Config.ForegroundFPS;
                 }
@@ -206,6 +194,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                 Runnables.Clear();
             }
 
+            // Handle all Runnables.
             foreach ( var runnable in ExecutedRunnables )
             {
                 runnable();
@@ -213,7 +202,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
             if ( shouldRequestRendering )
             {
-                // Must follow Runnables execution so changes done by
+                // This section Must follow Runnables execution so changes done by
                 // Runnables are reflected in the following render.
                 foreach ( var window in Windows )
                 {
@@ -270,93 +259,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
-    /// Gets the Desktop Preferences object.
-    /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    public IPreferences GetPreferences( string name )
-    {
-        if ( Preferences!.ContainsKey( name ) )
-        {
-            return Preferences.Get( name );
-        }
-
-        IPreferences prefs = new DesktopGLPreferences( name );
-
-        Preferences.Put( name, prefs );
-
-        return prefs;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="runnable"></param>
-    public void PostRunnable( IRunnable.Runnable runnable )
-    {
-        lock ( Runnables )
-        {
-            Runnables.Add( runnable );
-        }
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="config"></param>
-    /// <returns></returns>
-    public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
-    {
-        return new OpenALAudio( config.AudioDeviceSimultaneousSources,
-                                config.AudioDeviceBufferCount,
-                                config.AudioDeviceBufferSize );
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="window"></param>
-    /// <returns></returns>
-    public IDesktopGLInput CreateInput( DesktopGLWindow window )
-    {
-        return new DefaultDesktopGLInput( window );
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public int GetVersion()
-    {
-        return 0;
-    }
-
-    /// <summary>
-    /// </summary>
-    public void Exit()
-    {
-        _running = false;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="listener"></param>
-    public void AddLifecycleListener( ILifecycleListener listener )
-    {
-        lock ( LifecycleListeners )
-        {
-            LifecycleListeners.Add( listener );
-        }
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="listener"></param>
-    public void RemoveLifecycleListener( ILifecycleListener listener )
-    {
-        lock ( LifecycleListeners )
-        {
-            LifecycleListeners.Remove( listener );
-        }
-    }
-
-    /// <summary>
     /// Cleans up, and disposes of, any windows that have been closed.
     /// </summary>
     protected void CleanupWindows()
@@ -379,6 +281,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
+    /// Cleanup everything before shutdown.
     /// </summary>
     protected void Cleanup()
     {
@@ -391,11 +294,99 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Glfw.Terminate();
     }
 
+    /// <inheritdoc/>
+    public IPreferences GetPreferences( string name )
+    {
+        if ( Preferences!.ContainsKey( name ) )
+        {
+            return Preferences.Get( name );
+        }
+
+        IPreferences prefs = new DesktopGLPreferences( name );
+
+        Preferences.Put( name, prefs );
+
+        return prefs;
+    }
+
+    /// <inheritdoc/>
+    public void PostRunnable( IRunnable.Runnable runnable )
+    {
+        lock ( Runnables )
+        {
+            Runnables.Add( runnable );
+        }
+    }
+
+    /// <inheritdoc/>
+    public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
+    {
+        IGLAudio audio;
+
+        if ( !config.DisableAudio )
+        {
+            try
+            {
+                audio = new OpenALAudio( config.AudioDeviceSimultaneousSources,
+                                         config.AudioDeviceBufferCount,
+                                         config.AudioDeviceBufferSize );
+            }
+            catch ( Exception e )
+            {
+                Logger.Debug( $"Couldn't initialize audio, disabling audio: {e}" );
+
+                audio = new MockAudio();
+            }
+        }
+        else
+        {
+            audio = new MockAudio();
+        }
+
+        return audio;
+    }
+
+    /// <inheritdoc/>
+    public virtual IDesktopGLInput CreateInput( DesktopGLWindow window )
+    {
+        return new DefaultDesktopGLInput( window );
+    }
+
+    /// <inheritdoc/>
+    public virtual int GetVersion()
+    {
+        return 0;
+    }
+
+    /// <inheritdoc/>
+    public virtual void Exit()
+    {
+        _running = false;
+    }
+
+    /// <inheritdoc/>
+    public void AddLifecycleListener( ILifecycleListener listener )
+    {
+        lock ( LifecycleListeners )
+        {
+            LifecycleListeners.Add( listener );
+        }
+    }
+
+    /// <inheritdoc/>
+    public void RemoveLifecycleListener( ILifecycleListener listener )
+    {
+        lock ( LifecycleListeners )
+        {
+            LifecycleListeners.Remove( listener );
+        }
+    }
+
     /// <summary>
     /// Creates a new <see cref="DesktopGLWindow"/> using the provided listener and
     /// <see cref="DesktopGLWindowConfiguration"/>.
     /// <para>
-    /// This function only just instantiates a <see cref="DesktopGLWindow"/> and
+    /// This function only instantiates a <see cref="DesktopGLWindow"/> and
     /// returns immediately. The actual window creation is postponed with
     /// <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)"/> until after all
     /// existing windows are updated.
@@ -449,9 +440,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// <param name="window"></param>
     /// <param name="config"></param>
     /// <param name="sharedContext"></param>
-    public void CreateWindow( DesktopGLWindow window,
-                              DesktopGLApplicationConfiguration config,
-                              long sharedContext )
+    public void CreateWindow( DesktopGLWindow window, DesktopGLApplicationConfiguration config, long sharedContext )
     {
         ArgumentNullException.ThrowIfNull( window );
         ArgumentNullException.ThrowIfNull( window.GlfwWindow );
@@ -480,7 +469,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
     private GLFW.Window CreateGLFWWindow( DesktopGLApplicationConfiguration appConfig,
-                                         GLFW.Window sharedContextWindow )
+                                          GLFW.Window sharedContextWindow )
     {
         Glfw.DefaultWindowHints();
 
@@ -728,8 +717,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     /// </summary>
     public static bool SetGLDebugMessageControl( GLDebugMessageSeverity severity, bool enabled )
     {
-        //        GLCapabilities caps         = GL.GetCapabilities();
-        //        const int      GL_DONT_CARE = 0x1100; // not defined anywhere yet
+        //        GLCapabilities caps = GL.GetCapabilities();
         //
         //        if ( caps.OpenGL43 )
         //        {

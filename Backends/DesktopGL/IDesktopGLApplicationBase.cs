@@ -29,9 +29,16 @@ using LughSharp.Backends.DesktopGL.Window;
 
 namespace LughSharp.Backends.DesktopGL;
 
+[PublicAPI]
 public interface IDesktopGLApplicationBase : IApplication
 {
+    /// <summary>
+    /// Creates the Audio device.
+    /// </summary>
     IGLAudio CreateAudio( DesktopGLApplicationConfiguration config );
 
+    /// <summary>
+    /// Creates an Input device.
+    /// </summary>
     IDesktopGLInput CreateInput( DesktopGLWindow window );
 }
