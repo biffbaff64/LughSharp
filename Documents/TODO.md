@@ -244,6 +244,17 @@ CORE
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+FILES
+-----
+
+    CODE   DOCUMENT
+    ----   --------
+    - IP   - IP   - File
+    - IP   - IP   - FileHandle
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 GRAPHICS
 --------
 
@@ -951,16 +962,14 @@ BACKENDS/DESKTOPGL/FILES
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - DesktopGLFileHandle
-    - IP   - IP   - DesktopGLFiles
+    - DONE - DONE - DesktopGLFiles
 
 BACKENDS/DESKTOPGL/GRAPHICS
 ---------------------------
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - DesktopGLGraphics
-    - IP   - IP   - DesktopGLGraphics.DesktopGLDisplayMode   Delete candidate
-    - IP   - IP   - DesktopGLGraphics.DesktopGLMonitor       Delete candidate
+    - DONE - IP   - DesktopGLGraphics
 
 BACKENDS/DESKTOPGL/INPUT
 ------------------------

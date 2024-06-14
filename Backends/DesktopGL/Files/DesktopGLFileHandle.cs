@@ -23,34 +23,33 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace LughSharp.Backends.DesktopGL.Files;
+using LughSharp.LibCore.Files;
+using File = LughSharp.LibCore.Files.File;
 
-//TODO: This file can be removed
+namespace LughSharp.Backends.DesktopGL.Files;
 
 /// <summary>
 /// </summary>
-public class DesktopGLFileHandle // : FileInfo
+[PublicAPI]
+public class DesktopGLFileHandle : FileHandle
 {
     public DesktopGLFileHandle( string fileName, FileType type )
-
-//        : base( fileName, type )
+        : base( fileName, type )
     {
     }
 
     public DesktopGLFileHandle( FileInfo file, FileType type )
-
-//        : base( file.Name, type )
+        : base( file.Name, type )
     {
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    //TODO: Updates to Child(string) and Sibling(string) needed. I'm not sure either are correct.
 
     /// <summary>
     /// Returns a handle to the child with the specified name.
     /// </summary>
-    public FileInfo Child( string name )
+    public FileHandle Child( string name )
     {
 //        if ( Path.GetFullPath( FileInfo.Name ).Length == 0 )
 //        {
@@ -66,7 +65,7 @@ public class DesktopGLFileHandle // : FileInfo
     /// <summary>
     /// Returns a handle to the sibling with the specified name.
     /// </summary>
-    public FileInfo Sibling( string name )
+    public FileHandle Sibling( string name )
     {
 //        if ( Path.GetFullPath( name ).Length == 0 )
 //        {
@@ -115,20 +114,15 @@ public class DesktopGLFileHandle // : FileInfo
     /// only be usable for <see cref="FileType.Absolute"/> and <see cref="FileType.External"/>
     /// file handles.
     /// </summary>
-    public FileInfo File()
+    public File GetFile()
     {
-//        if ( FileType == FileType.External )
-//        {
-//            return new FileInfo( DesktopGLFiles.UserHomePath + base.Name() );
-//        }
+        if ( Filetype == FileType.External )
+        {
+            return new File( DesktopGLFiles.UserHomePath + base.Name );
+        }
 
-//        if ( FileType == FileType.Local )
-//        {
-//            return new FileInfo( DesktopGLFiles.LocalPath + base.Name() );
-//        }
-
-//        return FileInfo;
-
-        throw new NotImplementedException();
+        return Filetype == FileType.Local
+                   ? new File( DesktopGLFiles.LocalPath + base.Name )
+                   : base.File;
     }
 }

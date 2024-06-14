@@ -140,8 +140,6 @@ public interface IGraphics
 
     #region methods
 
-    bool IsGL30Available();
-
     /// <summary>
     /// Returns the amount of pixels per logical pixel (point).
     /// </summary>

@@ -80,18 +80,6 @@ public abstract class AbstractGraphics : IGraphics
         return BackBufferWidth / ( float ) Width;
     }
 
-    /// <summary>
-    /// Returns <b>true</b> if the version of opengl is &gt;= 3.0
-    /// </summary>
-    public bool IsGL30Available()
-    {
-#if OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3
-        return true;
-#else
-        return false;
-#endif
-    }
-
     #endregion implemented methods
 
     // ------------------------------------------------------------------------

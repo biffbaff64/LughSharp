@@ -47,13 +47,7 @@ public class Mesh
 
     private IVertexData MakeVertexBuffer( bool isStatic, int maxVertices, VertexAttributes vertexAttributes )
     {
-        //TODO:
-//        if ( Gdx.GL30 != null! )
-//        {
-//            return new VertexBufferObjectWithVAO( isStatic, maxVertices, vertexAttributes );
-//        }
-
-        return new VertexBufferObject( isStatic, maxVertices, vertexAttributes );
+        return new VertexBufferObjectWithVAO( isStatic, maxVertices, vertexAttributes );
     }
 
     public Mesh EnableInstancedRendering( bool isStatic, int maxInstances, params VertexAttribute[] attributes )

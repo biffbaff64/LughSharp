@@ -31,35 +31,38 @@ namespace LughSharp.Backends.DesktopGL;
 [PublicAPI]
 public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 {
-    public bool DisableAudio           { get; set; } = false;
-    public bool UseGL30                { get; set; } = false;
-    public bool Debug                  { get; set; } = false;
-    public bool TransparentFramebuffer { get; set; }
+    public bool DisableAudio                   { get; set; } = false;
+    public int  AudioDeviceSimultaneousSources { get; set; } = 16;
+    public int  AudioDeviceBufferSize          { get; set; } = 512;
+    public int  AudioDeviceBufferCount         { get; set; } = 9;
 
-    public int MaxNetThreads                  { get; set; } = int.MaxValue;
-    public int AudioDeviceSimultaneousSources { get; set; } = 16;
-    public int AudioDeviceBufferSize          { get; set; } = 512;
-    public int AudioDeviceBufferCount         { get; set; } = 9;
-    public int Gles30ContextMajorVersion      { get; set; } = 3;
-    public int Gles30ContextMinorVersion      { get; set; } = 2;
-    public int R                              { get; set; } = 8;
-    public int G                              { get; set; } = 8;
-    public int B                              { get; set; } = 8;
-    public int A                              { get; set; } = 8;
-    public int Depth                          { get; set; } = 16;
-    public int Stencil                        { get; set; } = 0;
-    public int Samples                        { get; set; } = 0;
-    public int IdleFPS                        { get; set; } = 60;
-    public int ForegroundFPS                  { get; set; } = 0;
+    public bool          Debug       { get; set; } = false;
+    public StreamWriter? DebugStream { get; set; }
 
-    public string        PreferencesDirectory { get; set; } = ".prefs/";
-    public FileType      PreferencesFileType  { get; set; } = FileType.External;
-    public HdpiMode      HdpiMode             { get; set; } = HdpiMode.Logical;
-    public StreamWriter? DebugStream          { get; set; }
+    public bool     TransparentFramebuffer { get; set; }
+    public int      MaxNetThreads          { get; set; } = int.MaxValue;
+    public HdpiMode HdpiMode               { get; set; } = HdpiMode.Logical;
+    public int      Depth                  { get; set; } = 16;
+    public int      Stencil                { get; set; } = 0;
+    public int      Samples                { get; set; } = 0;
+    public int      IdleFPS                { get; set; } = 60;
+    public int      ForegroundFPS          { get; set; } = 0;
+
+    //TODO: Set these correctly
+    public int GLContextMajorVersion { get; set; } = 4;
+    public int GLContextMinorVersion { get; set; } = 6;
+
+    public int Red   { get; set; } = 8;
+    public int Green { get; set; } = 8;
+    public int Blue  { get; set; } = 8;
+    public int Alpha { get; set; } = 8;
+
+    public string   PreferencesDirectory { get; set; } = ".prefs/";
+    public FileType PreferencesFileType  { get; set; } = FileType.External;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// Creates, and returns, a new DesktopApplicationConfiguration, using settings
     /// from the supplied DesktopApplicationConfiguratrion object.
@@ -85,13 +88,10 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
         AudioDeviceSimultaneousSources = config.AudioDeviceSimultaneousSources;
         AudioDeviceBufferSize          = config.AudioDeviceBufferSize;
         AudioDeviceBufferCount         = config.AudioDeviceBufferCount;
-        UseGL30                        = config.UseGL30;
-        Gles30ContextMajorVersion      = config.Gles30ContextMajorVersion;
-        Gles30ContextMinorVersion      = config.Gles30ContextMinorVersion;
-        R                              = config.R;
-        G                              = config.G;
-        B                              = config.B;
-        A                              = config.A;
+        Red                            = config.Red;
+        Green                          = config.Green;
+        Blue                           = config.Blue;
+        Alpha                          = config.Alpha;
         Depth                          = config.Depth;
         Stencil                        = config.Stencil;
         Samples                        = config.Samples;
@@ -121,20 +121,6 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     }
 
     /// <summary>
-    /// Sets whether to use OpenGL ES 3.0. If the given major/minor version is not
-    /// supported, the backend falls back to OpenGL ES 2.0.
-    /// </summary>
-    /// <param name="useGL30">whether to use OpenGL ES 3.0</param>
-    /// <param name="gles3MajorVersion">OpenGL ES major version, use 3 as default</param>
-    /// <param name="gles3MinorVersion">OpenGL ES minor version, use 2 as default</param>
-    public void UseOpenGL30( bool useGL30, int gles3MajorVersion = 3, int gles3MinorVersion = 2 )
-    {
-        UseGL30                   = useGL30;
-        Gles30ContextMajorVersion = gles3MajorVersion;
-        Gles30ContextMinorVersion = gles3MinorVersion;
-    }
-
-    /// <summary>
     /// Sets the bit depth of the color, depth and stencil buffer as well as
     /// multi-sampling.
     /// </summary>
@@ -147,10 +133,10 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// <param name="samples">MSAA samples (default 0)</param>
     public void SetBackBufferConfig( int r, int g, int b, int a, int depth, int stencil, int samples )
     {
-        R       = r;
-        G       = g;
-        B       = b;
-        A       = a;
+        Red     = r;
+        Green   = g;
+        Blue    = b;
+        Alpha   = a;
         Depth   = depth;
         Stencil = stencil;
         Samples = samples;

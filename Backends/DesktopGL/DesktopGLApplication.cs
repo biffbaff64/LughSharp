@@ -478,28 +478,25 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Glfw.WindowHint( Hint.Maximized, appConfig.WindowMaximized );
         Glfw.WindowHint( Hint.AutoIconify, appConfig.AutoIconify );
 
-        Glfw.WindowHint( Hint.RedBits, appConfig.R );
-        Glfw.WindowHint( Hint.GreenBits, appConfig.G );
-        Glfw.WindowHint( Hint.BlueBits, appConfig.B );
-        Glfw.WindowHint( Hint.AlphaBits, appConfig.A );
+        Glfw.WindowHint( Hint.RedBits, appConfig.Red );
+        Glfw.WindowHint( Hint.GreenBits, appConfig.Green );
+        Glfw.WindowHint( Hint.BlueBits, appConfig.Blue );
+        Glfw.WindowHint( Hint.AlphaBits, appConfig.Alpha );
         Glfw.WindowHint( Hint.StencilBits, appConfig.Stencil );
         Glfw.WindowHint( Hint.DepthBits, appConfig.Depth );
         Glfw.WindowHint( Hint.Samples, appConfig.Samples );
 
-        if ( appConfig.UseGL30 )
+        Glfw.WindowHint( Hint.ContextVersionMajor, appConfig.GLContextMajorVersion );
+        Glfw.WindowHint( Hint.ContextVersionMinor, appConfig.GLContextMinorVersion );
+
+        if ( Platform.IsMac )
         {
-            Glfw.WindowHint( Hint.ContextVersionMajor, appConfig.Gles30ContextMajorVersion );
-            Glfw.WindowHint( Hint.ContextVersionMinor, appConfig.Gles30ContextMinorVersion );
+            // hints mandatory on OS X for GL 3.2+ context creation, but fail on Windows if the
+            // WGL_ARB_create_context extension is not available
+            // see: http://www.glfw.org/docs/latest/compat.html
 
-            if ( Platform.IsMac )
-            {
-                // hints mandatory on OS X for GL 3.2+ context creation, but fail on Windows if the
-                // WGL_ARB_create_context extension is not available
-                // see: http://www.glfw.org/docs/latest/compat.html
-
-                Glfw.WindowHint( Hint.OpenGLForwardCompat, true );
-                Glfw.WindowHint( Hint.OpenGLProfile, OpenGLProfile.CoreProfile );
-            }
+            Glfw.WindowHint( Hint.OpenGLForwardCompat, true );
+            Glfw.WindowHint( Hint.OpenGLProfile, OpenGLProfile.CoreProfile );
         }
 
         if ( appConfig.TransparentFramebuffer )

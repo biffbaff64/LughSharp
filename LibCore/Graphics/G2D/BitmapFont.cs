@@ -224,7 +224,7 @@ public class BitmapFont
             {
                 var file = data.FontFile == null
                                ? Gdx.Files.Internal( data.ImagePaths[ i ] )
-                               : Gdx.Files.GetFileHandle( data.ImagePaths[ i ], _fileType );
+                               : Gdx.Files.GetFileInfo( data.ImagePaths[ i ], _fileType );
 
                 _regions.Add( new TextureRegion( new Texture( file, false ) ) );
             }

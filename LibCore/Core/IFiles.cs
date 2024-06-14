@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Files;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Core;
@@ -38,7 +39,7 @@ public interface IFiles
     /// <exception cref="GdxRuntimeException">
     /// if the type is classpath or internal and the file does not exist.
     /// </exception>
-    FileInfo GetFileHandle( string path, FileType type );
+    FileInfo GetFileInfo( string path, FileType type );
 
     /// <inheritdoc cref="FileType.Classpath"/>
     FileInfo Classpath( string path );

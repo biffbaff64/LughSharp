@@ -51,6 +51,27 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
 {
     public const int GL_DEPTH24_STENCIL8_OES = 0x88F0;
 
+    public int  FramebufferHandle              { get; set; }
+    public int  DepthbufferHandle              { get; set; }
+    public int  StencilbufferHandle            { get; set; }
+    public int  DepthStencilPackedBufferHandle { get; set; }
+    public bool HasDepthStencilPackedBuffer    { get; set; }
+    public bool HasMultipleTexturesPresent     { get; set; }
+
+    // the frame buffers
+    public Dictionary< IApplication, List< GLFrameBuffer< T > >? >? Buffers { get; set; } = new();
+
+    // the color buffer texture
+    public List< T > TextureAttachments { get; set; } = new();
+
+    // the default framebuffer handle, a.k.a screen.
+    public int DefaultFramebufferHandle { get; set; }
+
+    // true if we have polled for the default handle already.
+    public bool DefaultFramebufferHandleInitialized { get; set; }
+
+    protected GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > BufferBuilder { get; set; }
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -74,62 +95,6 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
     }
 
     // ------------------------------------------------------------------------
-
-    public int  FramebufferHandle              { get; set; }
-    public int  DepthbufferHandle              { get; set; }
-    public int  StencilbufferHandle            { get; set; }
-    public int  DepthStencilPackedBufferHandle { get; set; }
-    public bool HasDepthStencilPackedBuffer    { get; set; }
-    public bool HasMultipleTexturesPresent     { get; set; }
-
-    // the frame buffers
-    public Dictionary< IApplication, List< GLFrameBuffer< T > >? >? Buffers { get; set; } = new();
-
-    // the color buffer texture
-    public List< T > TextureAttachments { get; set; } = new();
-
-    // the default framebuffer handle, a.k.a screen.
-    public int DefaultFramebufferHandle { get; set; }
-
-    // true if we have polled for the default handle already.
-    public bool DefaultFramebufferHandleInitialized { get; set; }
-
-    protected GLFrameBufferBuilder< GLFrameBuffer< GLTexture > > BufferBuilder { get; set; }
-
-    /// <summary>
-    /// Releases all resources associated with the FrameBuffer.
-    /// </summary>
-    public void Dispose()
-    {
-        foreach ( var texture in TextureAttachments )
-        {
-            DisposeColorTexture( texture );
-        }
-
-        if ( HasDepthStencilPackedBuffer )
-        {
-            Gdx.GL.glDeleteRenderbuffers( ( uint ) DepthStencilPackedBufferHandle );
-        }
-        else
-        {
-            if ( BufferBuilder.HasDepthRenderBuffer )
-            {
-                Gdx.GL.glDeleteRenderbuffers( ( uint ) DepthbufferHandle );
-            }
-
-            if ( BufferBuilder.HasStencilRenderBuffer )
-            {
-                Gdx.GL.glDeleteRenderbuffers( ( uint ) StencilbufferHandle );
-            }
-        }
-
-        Gdx.GL.glDeleteFramebuffers( ( uint ) FramebufferHandle );
-
-        if ( Buffers?[ Gdx.App ] != null )
-        {
-            Buffers[ Gdx.App ]?.Remove( this );
-        }
-    }
 
     /// <summary>
     /// Wrapper to allow calling of virtual method <see cref="Build"/>
@@ -175,10 +140,10 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         return TextureAttachments.First();
     }
 
+    /// <summary>
+    /// </summary>
     public virtual void Build()
     {
-        CheckValidBuilder();
-
         InitialiseFrameBufferHandle();
 
         var width  = BufferBuilder.Width;
@@ -481,6 +446,8 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         }
     }
 
+    /// <summary>
+    /// </summary>
     private unsafe void InitialiseFrameBufferHandle()
     {
         if ( !DefaultFramebufferHandleInitialized )
@@ -508,50 +475,6 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         FramebufferHandle = ( int ) Gdx.GL.glGenFramebuffer();
 
         Gdx.GL.glBindFramebuffer( IGL.GL_FRAMEBUFFER, ( uint ) FramebufferHandle );
-    }
-
-    private void CheckValidBuilder()
-    {
-        var runningGL30 = Gdx.Graphics.IsGL30Available();
-
-        if ( !runningGL30 )
-        {
-            if ( BufferBuilder.HasPackedStencilDepthRenderBuffer )
-            {
-                throw new GdxRuntimeException
-                    ( "Packed Stencil/Render render buffers are not available on GLES 2.0" );
-            }
-
-            if ( BufferBuilder.TextureAttachmentSpecs.Count > 1 )
-            {
-                throw new GdxRuntimeException
-                    ( "Multiple render targets not available on GLES 2.0" );
-            }
-
-            foreach ( var spec in BufferBuilder.TextureAttachmentSpecs )
-            {
-                if ( spec.IsDepth )
-                {
-                    throw new GdxRuntimeException
-                        ( "Depth texture FrameBuffer Attachment not available on GLES 2.0" );
-                }
-
-                if ( spec.IsStencil )
-                {
-                    throw new GdxRuntimeException
-                        ( "Stencil texture FrameBuffer Attachment not available on GLES 2.0" );
-                }
-
-                if ( spec.IsFloat )
-                {
-                    if ( !Gdx.Graphics.SupportsExtension( "OES_texture_float" ) )
-                    {
-                        throw new GdxRuntimeException
-                            ( "Float texture FrameBuffer Attachment not available on GLES 2.0" );
-                    }
-                }
-            }
-        }
     }
 
     /// <summary>
@@ -650,11 +573,18 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         }
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="app"></param>
     public void ClearAllFrameBuffers( IApplication app )
     {
         Buffers?.Remove( app );
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
     public StringBuilder GetManagedStatus( in StringBuilder builder )
     {
         builder.Append( "Managed buffers/app: { " );
@@ -678,5 +608,42 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         builder.Append( '}' );
 
         return builder;
+    }
+
+    // ------------------------------------------------------------------------
+    
+    /// <summary>
+    /// Releases all resources associated with the FrameBuffer.
+    /// </summary>
+    public void Dispose()
+    {
+        foreach ( var texture in TextureAttachments )
+        {
+            DisposeColorTexture( texture );
+        }
+
+        if ( HasDepthStencilPackedBuffer )
+        {
+            Gdx.GL.glDeleteRenderbuffers( ( uint ) DepthStencilPackedBufferHandle );
+        }
+        else
+        {
+            if ( BufferBuilder.HasDepthRenderBuffer )
+            {
+                Gdx.GL.glDeleteRenderbuffers( ( uint ) DepthbufferHandle );
+            }
+
+            if ( BufferBuilder.HasStencilRenderBuffer )
+            {
+                Gdx.GL.glDeleteRenderbuffers( ( uint ) StencilbufferHandle );
+            }
+        }
+
+        Gdx.GL.glDeleteFramebuffers( ( uint ) FramebufferHandle );
+
+        if ( Buffers?[ Gdx.App ] != null )
+        {
+            Buffers[ Gdx.App ]?.Remove( this );
+        }
     }
 }

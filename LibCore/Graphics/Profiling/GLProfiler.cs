@@ -93,8 +93,7 @@ public class GLProfiler
     }
 
     /// <summary>
-    /// Enables profiling by replacing the <tt>GL20</tt> and <tt>GL30</tt>
-    /// instances with profiling ones.
+    /// Enables profiling by replacing the <tt>GL</tt> instance with a profiling one.
     /// </summary>
     public void Enable()
     {
@@ -109,8 +108,7 @@ public class GLProfiler
     }
 
     /// <summary>
-    /// Disables profiling by resetting the <tt>GL20</tt> and <tt>GL30</tt>
-    /// instances with the original ones.
+    /// Disables profiling by resetting the <tt>GL</tt> instances with the original ones.
     /// </summary>
     public void Disable()
     {

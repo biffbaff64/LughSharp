@@ -136,12 +136,7 @@ public class PolygonSpriteBatch : IPolygonBatch
             throw new ArgumentException( "Can't have more than 32767 vertices per batch: " + maxVertices );
         }
 
-        var vertexDataType = Mesh.VertexDataType.VertexArray;
-
-        if ( Gdx.Graphics.IsGL30Available() )
-        {
-            vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
-        }
+        var vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
 
         _mesh = new Mesh( vertexDataType,
                           false,

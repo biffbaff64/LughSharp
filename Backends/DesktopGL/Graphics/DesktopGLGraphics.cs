@@ -66,6 +66,22 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
     }
 
+    /// <summary>
+    /// Helper method for constructors, allowing access to virtual methods and
+    /// properties.
+    /// </summary>
+    private void InitiateGL()
+    {
+        GLSetup.InitiateGL();
+
+        GLVersion = GLSetup.GLVersion!;
+
+        if ( SupportsCubeMapSeamless() )
+        {
+            EnableCubeMapSeamless( true );
+        }
+    }
+
     //@formatter:off
     
     /// <inheritdoc/>
@@ -93,13 +109,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
     /// <inheritdoc/>
     public override GLVersion.GLType GraphicsType => GLVersion.GLType.GL20; //TODO
-
-    // ------------------------------------------------------------------------
 
     /// <summary>
     /// </summary>
@@ -123,6 +134,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         GLWindow.Listener.Render();
     }
 
+    /// <summary>
+    /// </summary>
     private void UpdateFramebufferInfo()
     {
         if ( GLWindow == null )
@@ -142,10 +155,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         BufferFormat = new IGraphics.BufferFormatDescriptor
         {
-            R                = GLWindow.Config.R,
-            G                = GLWindow.Config.G,
-            B                = GLWindow.Config.B,
-            A                = GLWindow.Config.A,
+            R                = GLWindow.Config.Red,
+            G                = GLWindow.Config.Green,
+            B                = GLWindow.Config.Blue,
+            A                = GLWindow.Config.Alpha,
             Depth            = GLWindow.Config.Depth,
             Stencil          = GLWindow.Config.Stencil,
             Samples          = GLWindow.Config.Samples,
@@ -153,6 +166,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         };
     }
 
+    /// <summary>
+    /// </summary>
     public void Update()
     {
         var time = TimeUtils.NanoTime();
@@ -174,18 +189,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         _frames++;
         _frameId++;
-    }
-
-    private void InitiateGL()
-    {
-        GLSetup.InitiateGL();
-
-        GLVersion = GLSetup.GLVersion!;
-
-        if ( SupportsCubeMapSeamless() )
-        {
-            EnableCubeMapSeamless( true );
-        }
     }
 
     /// <summary>
@@ -218,12 +221,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         }
     }
 
-    // ------------------------------------------------------------------------
-
     /// <inheritdoc/>
     public override bool SupportsDisplayModeChange() => true;
-
-    // ------------------------------------------------------------------------
 
     /// <inheritdoc/>
     public override bool SetWindowedMode( int width, int height )
@@ -250,7 +249,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         {
             if ( _displayModeBeforeFullscreen == null )
             {
-                StoreCurrentWindowPositionAndDisplayMode();
+                BackupCurrentWindow();
             }
 
             if ( ( width != _windowWidthBeforeFullscreen ) || ( height != _windowHeightBeforeFullscreen ) )
@@ -347,11 +346,11 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     /// <summary>
-    /// Browsers that support cursor:url() and support the png format (the pixmap
-    /// is converted to a data-url of type image/png) should also support custom
-    /// cursors. Will set the mouse cursor image to the image represented by the
-    /// Cursor. It is recommended to call this function in the main render thread,
-    /// and maximum one time per frame.
+    /// Browsers that support cursor:url() and support the png format (the pixmap is
+    /// converted to a data-url of type image/png) should also support custom cursors.
+    /// Will set the mouse cursor image to the image represented by the Cursor. It is
+    /// recommended to call this function in the main render thread, and maximum one
+    /// time per frame.
     /// </summary>
     /// <param name="cursor">
     /// The mouse cursor as a <see cref="ICursor"/>
@@ -375,43 +374,30 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     // ------------------------------------------------------------------------
-    //TODO:
 
+    /// <inheritdoc/>
     public override IGraphics.DisplayMode[] GetDisplayModes()
     {
         return DesktopGLApplicationConfiguration.GetDisplayModes( Glfw.GetPrimaryMonitor() );
     }
 
+    /// <inheritdoc/>
     public override IGraphics.DisplayMode[] GetDisplayModes( GLFW.Monitor monitor )
     {
         return DesktopGLApplicationConfiguration.GetDisplayModes( monitor );
     }
 
+    /// <inheritdoc/>
     public override IGraphics.DisplayMode GetDisplayMode()
     {
         return DesktopGLApplicationConfiguration.GetDisplayMode( Glfw.GetPrimaryMonitor() );
     }
 
+    /// <inheritdoc/>
     public override IGraphics.DisplayMode GetDisplayMode( GLFW.Monitor monitor )
     {
         return DesktopGLApplicationConfiguration.GetDisplayMode( monitor );
     }
-
-    // ------------------------------------------------------------------------
-
-    public override int GetSafeInsetLeft() => 0;
-
-    public override int GetSafeInsetTop() => 0;
-
-    public override int GetSafeInsetBottom() => 0;
-
-    public override int GetSafeInsetRight() => 0;
-
-    public override long GetFrameID() => _frameId;
-
-    public override int GetFramesPerSecond() => _fps;
-
-    // ------------------------------------------------------------------------
 
     /// <inheritdoc/>
     public override bool SetFullscreenMode( IGraphics.DisplayMode displayMode )
@@ -448,7 +434,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         {
             // store window position so we can restore it when switching
             // from fullscreen to windowed later
-            StoreCurrentWindowPositionAndDisplayMode();
+            BackupCurrentWindow();
 
             // switch from windowed to fullscreen
             Glfw.SetWindowMonitor( GLWindow.GlfwWindow,
@@ -485,7 +471,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    private void StoreCurrentWindowPositionAndDisplayMode()
+    /// <summary>
+    /// Makes a backup of the current windows position and display mode.
+    /// </summary>
+    private void BackupCurrentWindow()
     {
         if ( GLWindow == null )
         {
@@ -499,56 +488,26 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         _displayModeBeforeFullscreen  = GetDisplayMode();
     }
 
-//    public IGraphics.GdxMonitor GetMonitor()
-//    {
-//        IGraphics.GdxMonitor[] monitors = GetMonitors();
-//        var                    result   = monitors[ 0 ];
-//
-//        Glfw.GetWindowPos( GLWindow?.GlfwWindow, out _tmpBuffer, out _tmpBuffer2 );
-//
-//        var windowX = _tmpBuffer;
-//        var windowY = _tmpBuffer2;
-//
-//        Glfw.GetWindowSize( GLWindow?.GlfwWindow, out _tmpBuffer, out _tmpBuffer2 );
-//
-//        var windowWidth  = _tmpBuffer; 
-//        var windowHeight = _tmpBuffer2;
-//        var bestOverlap  = 0;
-//
-//        foreach ( var monitor in monitors )
-//        {
-//            var mode = GetDisplayMode( monitor );
-//
-//            var overlap = Math.Max( 0,
-//                                    Math.Min( windowX + windowWidth, monitor.VirtualX + mode.Width )
-//                                  - Math.Max( windowX, monitor.VirtualX ) )
-//                        * Math.Max( 0, Math.Min( windowY + windowHeight, monitor.VirtualY + mode.Height )
-//                                     - Math.Max( windowY, monitor.VirtualY ) );
-//
-//            if ( bestOverlap < overlap )
-//            {
-//                bestOverlap = overlap;
-//                result      = monitor;
-//            }
-//        }
-//
-//        return result;
-//    }
-
-//    public IGraphics.GdxMonitor[] GetMonitors()
-//    {
-//        GLFW.Monitor[]? glfwMonitors = Glfw.GetMonitors();
-//        var            monitors     = new IGraphics.GdxMonitor[ glfwMonitors.Length ];
-//
-//        for ( var i = 0; i < glfwMonitors.Length; i++ )
-//        {
-//            monitors[ i ] = DesktopGLApplicationConfiguration.ToDesktopGLMonitor( glfwMonitors[ i ] );
-//        }
-//
-//        return monitors;
-//    }
-
     // ------------------------------------------------------------------------
+
+    /// <inheritdoc/>
+    public override int GetSafeInsetLeft() => 0;
+
+    /// <inheritdoc/>
+    public override int GetSafeInsetTop() => 0;
+
+    /// <inheritdoc/>
+    public override int GetSafeInsetBottom() => 0;
+
+    /// <inheritdoc/>
+    public override int GetSafeInsetRight() => 0;
+
+    /// <inheritdoc/>
+    public override long GetFrameID() => _frameId;
+
+    /// <inheritdoc/>
+    public override int GetFramesPerSecond() => _fps;
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -565,16 +524,12 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         /// <summary>
         /// Creates a new Display Mode and its properties.
         /// </summary>
-        /// <param name="monitor"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="refreshRate"></param>
-        /// <param name="bitsPerPixel"></param>
-        public DesktopGLDisplayMode( GLFW.Monitor monitor,
-                                     int width,
-                                     int height,
-                                     int refreshRate,
-                                     int bitsPerPixel )
+        /// <param name="monitor"> The target monitor. </param>
+        /// <param name="width"> Monitor display width. </param>
+        /// <param name="height"> Monior display height. </param>
+        /// <param name="refreshRate"> The refresh rate. </param>
+        /// <param name="bitsPerPixel"> The bits per pixel. </param>
+        public DesktopGLDisplayMode( GLFW.Monitor monitor, int width, int height, int refreshRate, int bitsPerPixel )
             : base( width, height, refreshRate, bitsPerPixel )
         {
             MonitorHandle = monitor;
@@ -591,13 +546,16 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     [PublicAPI]
     public class DesktopGLMonitor : IGraphics.GdxMonitor
     {
+        /// <summary>
+        /// The <see cref="GLFW.Monitor"/>.
+        /// </summary>
+        public GLFW.Monitor MonitorHandle { get; private set; }
+
         public DesktopGLMonitor( GLFW.Monitor monitor, int virtualX, int virtualY, string name )
             : base( virtualX, virtualY, name )
         {
             MonitorHandle = monitor;
         }
-
-        public GLFW.Monitor MonitorHandle { get; private set; }
     }
 
     // ------------------------------------------------------------------------
