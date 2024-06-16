@@ -33,6 +33,32 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public static class Platform
 {
+    /// <summary>
+    /// Target application backends.
+    /// </summary>
+    public enum ApplicationType
+    {
+        Unknown,
+        IOS,
+        Android,
+        WindowsGL,
+        UWP,
+        WebGL,
+        Linux,
+        XBox,
+        MacOS,
+    }
+
+    public enum Family
+    {
+        Uknown,
+        Mobile,
+        Desktop,
+        Console,
+    }
+
+    // ------------------------------------------------------------------------
+
     public static bool IsWindows { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Windows );
     public static bool Is64Bit   { get; private set; } = Environment.Is64BitOperatingSystem;
     public static bool IsLinux   { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Linux );
@@ -43,6 +69,7 @@ public static class Platform
 
     public static bool IsIos     { get; private set; } = false; //TODO: For the future, concentrating on desktop for now. 
     public static bool IsAndroid { get; private set; } = false; //TODO: For the future, concentrating on desktop for now.
+    public static bool IsXBox    { get; private set; } = false; //TODO: For the future, concentrating on desktop for now.
 
     // ------------------------------------------------------------------------
 

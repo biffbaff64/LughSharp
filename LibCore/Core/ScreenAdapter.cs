@@ -66,8 +66,8 @@ public class ScreenAdapter : IScreen
     {
     }
 
-    /// <inheritdoc cref="IScreen.Dispose"/>
-    public virtual void Dispose()
+    /// <inheritdoc cref="IScreen.Close"/>
+    public virtual void Close()
     {
     }
 }

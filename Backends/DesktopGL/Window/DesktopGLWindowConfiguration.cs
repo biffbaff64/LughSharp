@@ -38,7 +38,7 @@ public class DesktopGLWindowConfiguration
     public int       WindowMinHeight    { get; set; } = -1;
     public int       WindowMaxWidth     { get; set; } = -1;
     public int       WindowMaxHeight    { get; set; } = -1;
-    public FileType  WindowIconFileType { get; set; }
+    public PathTypes  WindowIconFileType { get; set; }
     public string[]? WindowIconPaths    { get; set; }
 
     public DesktopGLGraphics.DesktopGLMonitor? MaximizedMonitor { get; set; }
@@ -162,7 +162,7 @@ public class DesktopGLWindowConfiguration
     /// </param>
     public void SetWindowIcon( params string[] filePaths )
     {
-        SetWindowIcon( FileType.Internal, filePaths );
+        SetWindowIcon( PathTypes.Internal, filePaths );
     }
 
     /// <summary>
@@ -205,11 +205,11 @@ public class DesktopGLWindowConfiguration
     /// </summary>
     /// <param name="fileType"> The type of file handle the paths are relative to. </param>
     /// <param name="filePaths">
-    /// One or more image paths, relative to the given <see cref="FileType"/>. Must be JPEG,
+    /// One or more image paths, relative to the given <see cref="PathTypes"/>. Must be JPEG,
     /// PNG, or BMP format. The one closest to the system's desired size will be scaled.
     /// Good sizes include 16x16, 32x32 and 48x48.
     /// </param>
-    public void SetWindowIcon( FileType fileType, params string[] filePaths )
+    public void SetWindowIcon( PathTypes fileType, params string[] filePaths )
     {
         WindowIconFileType = fileType;
         WindowIconPaths    = filePaths;

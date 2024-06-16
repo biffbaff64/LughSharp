@@ -454,7 +454,7 @@ public class GLFrameBuffer< T > : IDisposable where T : GLTexture
         {
             DefaultFramebufferHandleInitialized = true;
 
-            if ( Gdx.App.AppType == IApplication.ApplicationType.IOS )
+            if ( Gdx.App.AppType == Platform.ApplicationType.IOS )
             {
                 var intbuf = ByteBuffer.Allocate
                     ( ( 16 * sizeof( int ) ) / 8 ).Order( ByteOrder.NativeOrder ).AsIntBuffer();

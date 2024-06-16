@@ -41,7 +41,7 @@ public class TextureAtlas
 
     /// <summary>
     /// Creates a new TextureAtlas.
-    /// Loads the specified pack file using <see cref="FileType.Internal"/>,
+    /// Loads the specified pack file using <see cref="PathTypes.Internal"/>,
     /// using the parent directory of the pack file to find the page images.
     /// </summary>
     public TextureAtlas( string internalPackFile )

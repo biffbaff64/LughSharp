@@ -100,9 +100,9 @@ public class FloatTextureData : ITextureData
 
     public void ConsumeCustomData( int target )
     {
-        if ( ( Gdx.App.AppType == IApplication.ApplicationType.Android )
-          || ( Gdx.App.AppType == IApplication.ApplicationType.IOS )
-          || ( Gdx.App.AppType == IApplication.ApplicationType.WebGL ) )
+        if ( ( Gdx.App.AppType == Platform.ApplicationType.Android )
+          || ( Gdx.App.AppType == Platform.ApplicationType.IOS )
+          || ( Gdx.App.AppType == Platform.ApplicationType.WebGL ) )
         {
             if ( !Gdx.Graphics.SupportsExtension( "OES_texture_float" ) )
             {

@@ -204,7 +204,7 @@ public class DesktopGLWindow : IDisposable
     /// Sets the icon that will be used in the window's title bar. Has no effect in macOS,
     /// which doesn't use window icons.
     /// </summary>
-    public void SetIcon( GLFW.Window window, string[] imagePaths, FileType imageFileType )
+    public void SetIcon( GLFW.Window window, string[] imagePaths, PathTypes imageFileType )
     {
         if ( Platform.IsMac )
         {

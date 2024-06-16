@@ -59,9 +59,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public IApplicationListener? ApplicationListener => _currentWindow?.Listener;
     public IInput?               Input               => _currentWindow?.Input;
 
-    public IApplication.ApplicationType AppType
+    public Platform.ApplicationType AppType
     {
-        get => IApplication.ApplicationType.DesktopGL;
+        get => Platform.ApplicationType.WindowsGL;
         set { }
     }
 
@@ -654,7 +654,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     {
         Glfw.GetVersion( out var major, out var minor, out var revision );
 
-        GLVersion = new GLVersion( IApplication.ApplicationType.DesktopGL,
+        GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
                                    $"{major}.{minor}.{revision}",
                                    Gdx.GL.glGetString( IGL.GL_VENDOR )->ToString(),
                                    Gdx.GL.glGetString( IGL.GL_RENDERER )->ToString() );

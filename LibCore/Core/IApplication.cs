@@ -72,23 +72,9 @@ namespace LughSharp.LibCore.Core;
 public interface IApplication
 {
     /// <summary>
-    /// Target application backends.
+    /// What <see cref="Platform.ApplicationType"/> the application has.
     /// </summary>
-    enum ApplicationType
-    {
-        IOS,
-        Android,
-        DesktopGL,
-        WebGL,
-        Linux
-    }
-
-    // ------------------------------------------------------------------------
-
-    /// <summary>
-    /// What <see cref="ApplicationType"/> the application has.
-    /// </summary>
-    ApplicationType AppType { get; set; }
+    Platform.ApplicationType AppType { get; set; }
 
     IClipboard? Clipboard { get; set; }
 

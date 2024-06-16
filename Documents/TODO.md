@@ -219,7 +219,7 @@ CORE
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - AbstractGraphics
-    - DONE - DONE - AbstractInput               Documentation of Catch Keys needed.
+    - DONE - IP   - AbstractInput               Documentation of Catch Keys needed.
     - DONE - DONE - ApplicationAdapter
     - DONE - DONE - Game
     - DONE - DONE - Gdx
@@ -249,7 +249,6 @@ FILES
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - File
     - IP   - IP   - FileHandle
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

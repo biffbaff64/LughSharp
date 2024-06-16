@@ -58,7 +58,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public int Alpha { get; set; } = 8;
 
     public string   PreferencesDirectory { get; set; } = ".prefs/";
-    public FileType PreferencesFileType  { get; set; } = FileType.External;
+    public PathTypes PreferencesFileType  { get; set; } = PathTypes.External;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -145,9 +145,9 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// <summary>
     /// Sets the directory where <see cref="IPreferences"/> will be stored, as well as
     /// the file type to be used to store them. Defaults to "$USER_HOME/.prefs/"
-    /// and <see cref="FileType"/>.
+    /// and <see cref="PathTypes"/>.
     /// </summary>
-    public void SetPreferencesConfig( string preferencesDirectory, FileType preferencesFileType )
+    public void SetPreferencesConfig( string preferencesDirectory, PathTypes preferencesFileType )
     {
         PreferencesDirectory = preferencesDirectory;
         PreferencesFileType  = preferencesFileType;

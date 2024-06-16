@@ -65,9 +65,9 @@ public class MipMapGenerator
             return;
         }
 
-        if ( ( Gdx.App.AppType == IApplication.ApplicationType.Android )
-          || ( Gdx.App.AppType == IApplication.ApplicationType.WebGL )
-          || ( Gdx.App.AppType == IApplication.ApplicationType.IOS ) )
+        if ( ( Gdx.App.AppType == Platform.ApplicationType.Android )
+          || ( Gdx.App.AppType == Platform.ApplicationType.WebGL )
+          || ( Gdx.App.AppType == Platform.ApplicationType.IOS ) )
         {
             GenerateMipMapGLES20( target, pixmap );
         }

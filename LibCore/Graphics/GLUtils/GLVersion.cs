@@ -64,16 +64,16 @@ public class GLVersion : GDXVersion
     /// <param name="versionString"></param>
     /// <param name="vendorString"></param>
     /// <param name="rendererString"></param>
-    public GLVersion( IApplication.ApplicationType appType,
+    public GLVersion( Platform.ApplicationType appType,
                       string versionString,
                       string vendorString,
                       string rendererString )
     {
         GLtype = appType switch
         {
-            IApplication.ApplicationType.Android   => GLType.GLES,
-            IApplication.ApplicationType.DesktopGL => GLType.OpenGL,
-            IApplication.ApplicationType.WebGL     => GLType.WebGL,
+            Platform.ApplicationType.Android   => GLType.GLES,
+            Platform.ApplicationType.WindowsGL => GLType.OpenGL,
+            Platform.ApplicationType.WebGL     => GLType.WebGL,
             var _                                  => GLType.None
         };
 

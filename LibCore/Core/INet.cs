@@ -245,7 +245,7 @@ public interface INet
             get => _followRedirects;
             set
             {
-                if ( value || ( Gdx.App.AppType != IApplication.ApplicationType.WebGL ) )
+                if ( value || ( Gdx.App.AppType != Platform.ApplicationType.WebGL ) )
                 {
                     _followRedirects = value;
                 }

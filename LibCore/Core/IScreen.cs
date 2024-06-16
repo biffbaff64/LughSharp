@@ -71,5 +71,5 @@ public interface IScreen
     /// <summary>
     /// Called when this screen should release all resources.
     /// </summary>
-    void Dispose();
+    void Close();
 }

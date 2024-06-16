@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Files;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Core;
@@ -39,21 +38,21 @@ public interface IFiles
     /// <exception cref="GdxRuntimeException">
     /// if the type is classpath or internal and the file does not exist.
     /// </exception>
-    FileInfo GetFileInfo( string path, FileType type );
+    FileInfo GetFileInfo( string path, PathTypes type );
 
-    /// <inheritdoc cref="FileType.Classpath"/>
+    /// <inheritdoc cref="PathTypes.Classpath"/>
     FileInfo Classpath( string path );
 
-    /// <inheritdoc cref="FileType.Internal"/>
+    /// <inheritdoc cref="PathTypes.Internal"/>
     FileInfo Internal( string path );
 
-    /// <inheritdoc cref="FileType.External"/>
+    /// <inheritdoc cref="PathTypes.External"/>
     FileInfo External( string path );
 
-    /// <inheritdoc cref="FileType.Absolute"/>
+    /// <inheritdoc cref="PathTypes.Absolute"/>
     FileInfo Absolute( string path );
 
-    /// <inheritdoc cref="FileType.Local"/>
+    /// <inheritdoc cref="PathTypes.Local"/>
     FileInfo Local( string path );
 
     /// <summary>
@@ -81,7 +80,7 @@ public interface IFiles
 }
 
 [PublicAPI]
-public enum FileType
+public enum PathTypes
 {
     /// <summary>
     /// Path relative to the root of the classpath. Classpath files are always readonly.

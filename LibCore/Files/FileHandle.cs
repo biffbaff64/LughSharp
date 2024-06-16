@@ -38,32 +38,26 @@ namespace LughSharp.LibCore.Files;
 [PublicAPI]
 public class FileHandle
 {
-    public FileType Filetype { get; set; }
-    public File     File     { get; set; }
+    public PathTypes PathType { get; set; }
+    public FileInfo  File     { get; set; }
 
     // ------------------------------------------------------------------------
-
-    protected FileHandle()
-    {
-        this.File     = new File();
-        this.Filetype = FileType.Absolute;
-    }
 
     /// <summary>
     /// Creates a new absolute FileHandle for the file name. Use this for tools on the
     /// desktop that don't need any of the backends. Do not use this constructor for
     /// cross-platform developments. Use the <see cref="IFiles"/> interface instead.
     /// </summary>
-    public FileHandle( string fileName, FileType type )
+    public FileHandle( string fileName, PathTypes type )
     {
-        this.File     = new File( fileName );
-        this.Filetype = type;
+        this.File     = new FileInfo( fileName );
+        this.PathType = type;
     }
 
     /// <summary>
     /// The name of the file, without any parent paths.
     /// </summary>
-    public string Name => File.Name;
+    public string FileName => File.Name;
 
     /// <summary>
     /// The path of the file as specified on construction, e.g.
@@ -74,5 +68,5 @@ public class FileHandle
     /// backward slashes will be replaced by forward slashes.
     /// </para>
     /// </summary>
-    public string Path => File.Path.Replace( "\\", "/" );
+    public string FilePath => File.FullName.Replace( "\\", "/" );
 }

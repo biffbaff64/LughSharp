@@ -45,35 +45,35 @@ public class DesktopGLFiles : IFiles
     /// <exception cref="GdxRuntimeException">
     /// if the type is classpath or internal and the file does not exist.
     /// </exception>
-    public FileHandle GetFileHandle( string path, FileType type )
+    public FileHandle GetFileHandle( string path, PathTypes type )
     {
         return new DesktopGLFileHandle( path, type );
     }
 
     /// <summary>
-    /// Convenience method that returns a <see cref="FileType.Classpath"/> file handle.
+    /// Convenience method that returns a <see cref="PathTypes.Classpath"/> file handle.
     /// </summary>
-    public FileHandle Classpath( string path ) => GetFileHandle( path, FileType.Classpath );
+    public FileHandle Classpath( string path ) => GetFileHandle( path, PathTypes.Classpath );
 
     /// <summary>
-    /// Convenience method that returns a <see cref="FileType.Internal"/> file handle.
+    /// Convenience method that returns a <see cref="PathTypes.Internal"/> file handle.
     /// </summary>
-    public FileHandle Internal( string path ) => GetFileHandle( path, FileType.Internal );
+    public FileHandle Internal( string path ) => GetFileHandle( path, PathTypes.Internal );
 
     /// <summary>
-    /// Convenience method that returns a <see cref="FileType.External"/> file handle.
+    /// Convenience method that returns a <see cref="PathTypes.External"/> file handle.
     /// </summary>
-    public FileHandle External( string path ) => GetFileHandle( path, FileType.External );
+    public FileHandle External( string path ) => GetFileHandle( path, PathTypes.External );
 
     /// <summary>
-    /// Convenience method that returns a <see cref="FileType.Absolute"/> file handle.
+    /// Convenience method that returns a <see cref="PathTypes.Absolute"/> file handle.
     /// </summary>
-    public FileHandle Absolute( string path ) => GetFileHandle( path, FileType.Absolute );
+    public FileHandle Absolute( string path ) => GetFileHandle( path, PathTypes.Absolute );
 
     /// <summary>
-    /// Convenience method that returns a <see cref="FileType.Local"/> file handle.
+    /// Convenience method that returns a <see cref="PathTypes.Local"/> file handle.
     /// </summary>
-    public FileHandle Local( string path ) => GetFileHandle( path, FileType.Local );
+    public FileHandle Local( string path ) => GetFileHandle( path, PathTypes.Local );
 
     /// <summary>
     /// Returns the external storage path directory. This is the app external storage

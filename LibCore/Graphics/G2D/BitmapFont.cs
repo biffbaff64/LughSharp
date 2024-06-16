@@ -67,7 +67,7 @@ public class BitmapFont
 
     private readonly BitmapFontCache       _cache;
     private readonly BitmapFontData        _data;
-    private readonly FileType              _fileType;
+    private readonly PathTypes              _fileType;
     private readonly List< TextureRegion > _regions;
 
     private bool _integer;
@@ -82,7 +82,7 @@ public class BitmapFont
     public BitmapFont()
         : this( Gdx.Files.Internal( FONT_NAME ), Gdx.Files.Internal( FONT_NAME ), false )
     {
-        _fileType = FileType.Internal;
+        _fileType = PathTypes.Internal;
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ public class BitmapFont
     public BitmapFont( bool flip )
         : this( Gdx.Files.Internal( FONT_NAME ), Gdx.Files.Internal( FONT_NAME ), flip )
     {
-        _fileType = FileType.Internal;
+        _fileType = PathTypes.Internal;
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class BitmapFont
     public BitmapFont( FileInfo fontFile, TextureRegion region, bool flip = false )
         : this( new BitmapFontData( fontFile, flip ), region, true )
     {
-        _fileType = FileType.Local;
+        _fileType = PathTypes.Local;
     }
 
     /// <summary>
@@ -137,7 +137,7 @@ public class BitmapFont
     public BitmapFont( FileInfo fontFile, bool flip = false )
         : this( new BitmapFontData( fontFile, flip ), ( TextureRegion? ) null, true )
     {
-        _fileType = FileType.Local;
+        _fileType = PathTypes.Local;
     }
 
     /// <summary>
@@ -157,7 +157,7 @@ public class BitmapFont
                 integer )
     {
         OwnsTexture = true;
-        _fileType   = FileType.Local;
+        _fileType   = PathTypes.Local;
     }
 
     /// <summary>
@@ -186,7 +186,7 @@ public class BitmapFont
                 region != null ? ListExtensions.New( region ) : null,
                 integer )
     {
-        _fileType = FileType.Local;
+        _fileType = PathTypes.Local;
     }
 
     /// <summary>
@@ -205,7 +205,7 @@ public class BitmapFont
         Flipped             = data.Flipped;
         _data               = data;
         UseIntegerPositions = integer;
-        _fileType           = FileType.Local;
+        _fileType           = PathTypes.Local;
 
         if ( ( pageRegions == null ) || ( pageRegions.Count == 0 ) )
         {

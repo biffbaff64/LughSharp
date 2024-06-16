@@ -463,7 +463,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
         var over = false;
 
         if ( ( node == OverNode )
-          && ( Gdx.App.AppType == IApplication.ApplicationType.DesktopGL )
+          && ( Gdx.App.AppType == Platform.ApplicationType.WindowsGL )
           && ( !_selection.Multiple || ( !InputUtils.CtrlKey() && !InputUtils.ShiftKey() ) ) )
         {
             var mouseX = ScreenToLocalCoordinates( _tmp.Set( Gdx.Input.GetX(), 0 ) ).X;
