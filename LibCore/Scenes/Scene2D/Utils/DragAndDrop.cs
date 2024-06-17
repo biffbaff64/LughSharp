@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -194,7 +194,7 @@ public class DragAndDrop
             _source = source;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DragStart( InputEvent ev, float x, float y, int pointer )
         {
             if ( _parent.ActivePointer != -1 )
@@ -219,7 +219,7 @@ public class DragAndDrop
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Drag( InputEvent ev, float x, float y, int pointer )
         {
             if ( ( _parent.DragPayload == null ) || ( pointer != _parent.ActivePointer ) )
@@ -345,7 +345,7 @@ public class DragAndDrop
             actor.SetPosition( actorX, actorY );
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DragStop( InputEvent ev, float x, float y, int pointer )
         {
             if ( pointer != _parent.ActivePointer )

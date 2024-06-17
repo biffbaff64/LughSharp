@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -169,7 +169,7 @@ public class PerformanceCounter
         Valid      = false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         return $"{Name}: [time: {Time.Value}, load: {Load.Value}]";

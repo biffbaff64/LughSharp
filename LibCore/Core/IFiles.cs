@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Files;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Core;
@@ -38,22 +39,22 @@ public interface IFiles
     /// <exception cref="GdxRuntimeException">
     /// if the type is classpath or internal and the file does not exist.
     /// </exception>
-    FileInfo GetFileInfo( string path, PathTypes type );
+    FileHandle GetFileHandle( string path, PathTypes type );
 
     /// <inheritdoc cref="PathTypes.Classpath"/>
-    FileInfo Classpath( string path );
+    FileHandle Classpath( string path );
 
     /// <inheritdoc cref="PathTypes.Internal"/>
-    FileInfo Internal( string path );
+    FileHandle Internal( string path );
 
     /// <inheritdoc cref="PathTypes.External"/>
-    FileInfo External( string path );
+    FileHandle External( string path );
 
     /// <inheritdoc cref="PathTypes.Absolute"/>
-    FileInfo Absolute( string path );
+    FileHandle Absolute( string path );
 
     /// <inheritdoc cref="PathTypes.Local"/>
-    FileInfo Local( string path );
+    FileHandle Local( string path );
 
     /// <summary>
     /// Returns the external storage path directory. This is the app external storage

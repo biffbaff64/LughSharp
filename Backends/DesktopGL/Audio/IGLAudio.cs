@@ -1,7 +1,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,11 @@
 
 namespace LughSharp.Backends.DesktopGL.Audio;
 
+/// <summary>
+/// Interface which extends <see cref="LibCore.Audio.IAudio"/> to add an Update
+/// method for updating of the sound device.
+/// </summary>
+[PublicAPI]
 public interface IGLAudio : IAudio, IDisposable
 {
     void Update();

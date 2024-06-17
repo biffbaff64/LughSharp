@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,58 +31,58 @@ namespace LughSharp.Backends.DesktopGL.Audio.Mock;
 [PublicAPI]
 public class MockMusic : IMusic
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Play()
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Pause()
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Stop()
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool IsPlaying { get; set; } = false;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool IsLooping { get; set; } = false;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void SetVolume( float volume )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public float GetVolume()
     {
         return 0;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void SetPan( float pan, float volume )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void SetPosition( float position )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public float GetPosition()
     {
         return 0;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IMusic.IOnCompletionListener? OnCompletionListener { get; set; }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Dispose()
     {
     }

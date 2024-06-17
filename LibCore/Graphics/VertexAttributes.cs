@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -187,7 +187,7 @@ public class VertexAttributes
         return _attributes[ index ];
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         var builder = new StringBuilder();
@@ -212,7 +212,7 @@ public class VertexAttributes
         return builder.ToString();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool Equals( object? obj )
     {
         if ( obj == this )
@@ -241,7 +241,7 @@ public class VertexAttributes
         return true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         long result = 61 * _attributes.Length;

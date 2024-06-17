@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ public partial class ScrollPane
             _parent = parent;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Scrolled( InputEvent? inputEvent, float x, float y, float scrollAmountX, float scrollAmountY )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
@@ -85,7 +85,7 @@ public partial class ScrollPane
             _parent = parent;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool TouchDown( InputEvent? inputEvent, float x, float y, int pointer, int button )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
@@ -162,7 +162,7 @@ public partial class ScrollPane
             return false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void TouchUp( InputEvent? inputEvent, float x, float y, int pointer, int button )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
@@ -175,7 +175,7 @@ public partial class ScrollPane
             _parent!.Cancel();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void TouchDragged( InputEvent? inputEvent, float x, float y, int pointer )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
@@ -229,7 +229,7 @@ public partial class ScrollPane
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool MouseMoved( InputEvent? inputEvent, float x, float y )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
@@ -252,7 +252,7 @@ public partial class ScrollPane
             _parent = parent;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Pan( InputEvent inputEvent, float x, float y, float deltaX, float deltaY )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
@@ -270,7 +270,7 @@ public partial class ScrollPane
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Fling( InputEvent inputEvent, float x, float y, int button )
         {
             GdxRuntimeException.ThrowIfNull( _parent );
@@ -298,7 +298,7 @@ public partial class ScrollPane
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Handle( Event inputEvent )
         {
             GdxRuntimeException.ThrowIfNull( _parent );

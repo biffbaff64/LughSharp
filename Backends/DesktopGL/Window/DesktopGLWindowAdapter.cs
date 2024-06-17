@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,43 +31,43 @@ namespace LughSharp.Backends.DesktopGL.Window;
 /// </summary>
 public class DesktopGLWindowAdapter : IDesktopGLWindowListener
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual void Created( DesktopGLWindow window )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual void Iconified( bool isIconified )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual void Maximized( bool isMaximized )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual void FocusLost()
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual void FocusGained()
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual bool CloseRequested()
     {
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual void FilesDropped( string[] files )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual void RefreshRequested()
     {
     }

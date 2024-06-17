@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -128,7 +128,7 @@ public class ClickListener : InputListener
         set => _tapCountInterval = value * 1000000000L;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
     {
         if ( Pressed )
@@ -151,7 +151,7 @@ public class ClickListener : InputListener
         return true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
     {
         if ( ( pointer != PressedPointer ) || _cancelled )
@@ -168,7 +168,7 @@ public class ClickListener : InputListener
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
     {
         if ( pointer == PressedPointer )
@@ -206,7 +206,7 @@ public class ClickListener : InputListener
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Enter( InputEvent? ev, float x, float y, int pointer, Actor? fromActor )
     {
         if ( ( pointer == -1 ) && !_cancelled )
@@ -215,7 +215,7 @@ public class ClickListener : InputListener
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Exit( InputEvent? ev, float x, float y, int pointer, Actor? toActor )
     {
         if ( ( pointer == -1 ) && !_cancelled )

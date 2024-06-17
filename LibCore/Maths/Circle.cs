@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -253,7 +253,7 @@ public class Circle : IShape2D
         return Radius * Radius * MathUtils.PI;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool Equals( object? o )
     {
         if ( o == this )
@@ -273,7 +273,7 @@ public class Circle : IShape2D
             || MathUtils.IsEqual( Radius, c.Radius );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         const int PRIME = 41;

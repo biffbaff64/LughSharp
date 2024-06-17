@@ -50,6 +50,8 @@ RULES TO FOLLOW
 - First column is for Code, Second column is for Documentation.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ASSETS
 ------
@@ -97,6 +99,7 @@ ASSETS/LOADERS/RESOLVERS
     - DONE - DONE - PrefixFileHandleResolver
     - DONE - DONE - ResolutionFileResolver
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -212,6 +215,7 @@ AUDIO/OPENAL
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CORE
 ----
@@ -243,6 +247,7 @@ CORE
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 FILES
 -----
@@ -251,6 +256,7 @@ FILES
     ----   --------
     - IP   - IP   - FileHandle
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -427,6 +433,7 @@ GRAPHICS/VIEWPORT
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 INPUT
 -----
@@ -436,6 +443,7 @@ INPUT
     -      -      - RemoteInput
     -      -      - RemoteSender
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -519,6 +527,7 @@ MAPS/TILED/TILES
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 MATHS
 -----
@@ -573,6 +582,7 @@ MATH/COLLISION
     - DONE - IP   - Segment
     - DONE - IP   - Sphere
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -725,6 +735,7 @@ SCENES/SCENE2D/UTILS
     - DONE - DONE - TextureRegionDrawable
     - DONE - IP   - TiledDrawable
 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -920,13 +931,13 @@ BACKENDS/DESKTOPGL
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - DesktopGLApplication
+    - DONE - IP   - DesktopGLApplication
     - IP   - IP   - DesktopGLApplicationConfiguration
     - IP   - IP   - DesktopGLNativesLoader
     - IP   - IP   - DesktopGLNet
     - IP   - IP   - DesktopWindowCallbacks
-    - IP   - IP   - IDesktopGLApplicationBase
-    - IP   - IP   - Sync
+    - DONE - DONE - IDesktopGLApplicationBase
+    - DONE - IP   - Sync
 
 BACKENDS/DESKTOPGL/AUDIO
 ------------------------
@@ -934,7 +945,7 @@ BACKENDS/DESKTOPGL/AUDIO
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - GdxSoundAudioRecorder
-    - IP   - IP   - IGLAudio
+    - DONE - DONE - IGLAudio
     - IP   - IP   - Mp3
     - IP   - IP   - Ogg
     - IP   - IP   - OggInputStream
@@ -960,7 +971,7 @@ BACKENDS/DESKTOPGL/FILES
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - DesktopGLFileHandle
+    - DONE - IP   - DesktopGLFileHandle
     - DONE - DONE - DesktopGLFiles
 
 BACKENDS/DESKTOPGL/GRAPHICS
@@ -975,7 +986,7 @@ BACKENDS/DESKTOPGL/INPUT
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - DefaultGLInput
+    - DONE - IP   - DefaultDesktopGLInput
     - DONE - IP   - IDesktopGLInput
 
 BACKENDS/DESKTOPGL/UTILS
@@ -983,17 +994,16 @@ BACKENDS/DESKTOPGL/UTILS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - DesktopGLApplicationLogger
-    - IP   - IP   - DesktopGLClipboard
-    - IP   - IP   - DesktopGLCursor
-    - IP   - IP   - DesktopGLPreferences
+    - DONE - DONE - DesktopGLClipboard
+    - DONE - IP   - DesktopGLCursor
+    - DONE - DONE - DesktopGLPreferences
 
 BACKENDS/DESKTOPGL/WINDOW
 -------------------------
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - DesktopGLWindow
+    - DONE - DONE - DesktopGLWindow
     - DONE - DONE - DesktopGLWindowConfiguration
     - DONE - DONE - DesktopGLWindowAdapter
     - DONE - DONE - IDesktopGLWindowListener

@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,11 +28,21 @@ namespace LughSharp.Backends.DesktopGL.Input;
 [PublicAPI]
 public interface IDesktopGLInput : IInput, IDisposable
 {
+    /// <summary>
+    /// Resets polling states and updates callbacks if the window
+    /// handle has changed.
+    /// </summary>
+    /// <param name="windowHandle"> The new handle. </param>
     void WindowHandleChanged( GLFW.Window windowHandle );
 
+    /// <inheritdoc cref="InputEventQueue.Drain" />
     void Update();
 
     void PrepareNext();
 
+    /// <summary>
+    /// Resets all polling states, clears touched and pressed flags,
+    /// and clears the event queue.
+    /// </summary>
     void ResetPollingStates();
 }

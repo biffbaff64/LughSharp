@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,16 +30,16 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class ETC1TextureData : ITextureData
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public int Width { get; set; }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public int Height { get; set; }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool UseMipMaps { get; set; } = false;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool IsPrepared { get; set; }
 
     // ------------------------------------------------------------------------
@@ -64,10 +64,10 @@ public class ETC1TextureData : ITextureData
         UseMipMaps = useMipMaps;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Custom;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Prepare()
     {
         if ( IsPrepared )
@@ -95,19 +95,19 @@ public class ETC1TextureData : ITextureData
         IsPrepared = true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public Pixmap ConsumePixmap()
     {
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool ShouldDisposePixmap()
     {
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public unsafe void ConsumeCustomData( int target )
     {
         if ( !IsPrepared )
@@ -171,13 +171,13 @@ public class ETC1TextureData : ITextureData
         IsPrepared = false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public Pixmap.Format GetFormat()
     {
         return Pixmap.Format.Alpha;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool IsManaged()
     {
         return false;

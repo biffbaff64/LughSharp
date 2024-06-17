@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -131,7 +131,7 @@ public class HorizontalGroup : WidgetGroup
         set => _prefHeight = value;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Invalidate()
     {
         base.Invalidate();
@@ -272,7 +272,7 @@ public class HorizontalGroup : WidgetGroup
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetLayout()
     {
         if ( _sizeInvalid )

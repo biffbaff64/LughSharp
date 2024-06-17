@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -61,7 +61,7 @@ public class DragListener : InputListener
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
     {
         if ( ev == null )
@@ -88,7 +88,7 @@ public class DragListener : InputListener
         return true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
     {
         if ( ev == null )
@@ -126,7 +126,7 @@ public class DragListener : InputListener
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
     {
         if ( ev == null )

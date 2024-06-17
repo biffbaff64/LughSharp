@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -91,21 +91,21 @@ public class AtlasSprite : Sprite
         SetColor( 1, 1, 1, 1 );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override float X
     {
         get => base.X - Region.OffsetX;
         set => base.X = value + Region.OffsetX;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override float Y
     {
         get => base.Y - Region.OffsetY;
         set => base.Y = value + Region.OffsetY;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetBounds( float x, float y, float width, float height )
     {
         var widthRatio  = width / Region.OriginalWidth;
@@ -125,25 +125,25 @@ public class AtlasSprite : Sprite
                       );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetSize( float width, float height )
     {
         SetBounds( X, Y, width, height );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetOrigin( float originX, float originY )
     {
         base.SetOrigin( originX - Region.OffsetX, originY - Region.OffsetY );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetOriginCenter()
     {
         base.SetOrigin( ( Width / 2 ) - Region.OffsetX, ( Height / 2 ) - Region.OffsetY );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Flip( bool x, bool y )
     {
         // Flip texture.
@@ -179,7 +179,7 @@ public class AtlasSprite : Sprite
         SetOrigin( oldOriginX, oldOriginY );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Rotate90( bool clockwise )
     {
         // Rotate texture.
@@ -245,7 +245,7 @@ public class AtlasSprite : Sprite
         return Height / Region.RotatedPackedHeight;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string? ToString()
     {
         return Region.ToString();

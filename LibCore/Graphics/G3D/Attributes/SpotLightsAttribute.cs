@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ public class SpotLightsAttribute : Attribute
     public static string Alias => "spotLights";
     public static long   Type  => Register( Alias );
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override Attribute Copy()
     {
         return this;

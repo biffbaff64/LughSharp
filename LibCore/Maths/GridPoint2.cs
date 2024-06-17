@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -198,7 +198,7 @@ public class GridPoint2
         return new GridPoint2( this );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool Equals( object? o )
     {
         if ( this == o )
@@ -216,7 +216,7 @@ public class GridPoint2
         return ( X == g.X ) && ( Y == g.Y );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         const int PRIME = 53;
@@ -227,7 +227,7 @@ public class GridPoint2
         return result;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         return $"({X},{Y})";

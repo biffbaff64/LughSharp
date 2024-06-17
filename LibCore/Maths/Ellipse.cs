@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -270,7 +270,7 @@ public class Ellipse : IShape2D
         return ( float ) ( MathUtils.PI2 * Math.Sqrt( ( ( a * a ) + ( b * b ) ) / 2 ) );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool Equals( object? o )
     {
         if ( o == this )
@@ -291,7 +291,7 @@ public class Ellipse : IShape2D
             && Height.Equals( e.Height );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         const int PRIME = 53;

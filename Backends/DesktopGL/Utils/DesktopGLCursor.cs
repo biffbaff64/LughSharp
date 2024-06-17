@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.Backends.DesktopGL.Utils;
 
 [PublicAPI]
-public class DesktopGLCursor : ICursor
+public class DesktopGLCursor : ICursor, IDisposable
 {
     public readonly static List< DesktopGLCursor >                    Cursors       = new();
     public readonly static Dictionary< ICursor.SystemCursor, Cursor > SystemCursors = new();
@@ -91,6 +91,12 @@ public class DesktopGLCursor : ICursor
         Cursors.Add( this );
     }
 
+    /// <summary>
+    /// Sets the system cursor for the given <see cref="GLFW.Window"/> to the
+    /// cursor specified by the parameter <paramref name="systemCursor"/>.
+    /// </summary>
+    /// <param name="window"></param>
+    /// <param name="systemCursor"></param>
     public static void SetSystemCursor( GLFW.Window window, ICursor.SystemCursor systemCursor )
     {
         //@formatter:off
@@ -110,6 +116,10 @@ public class DesktopGLCursor : ICursor
         Glfw.SetCursor( window, glCursor );
     }
 
+    // ------------------------------------------------------------------------
+    
+    #region Dispose methods
+    
     public void Dispose()
     {
         if ( PixmapCopy == null )
@@ -146,4 +156,6 @@ public class DesktopGLCursor : ICursor
 
         SystemCursors.Clear();
     }
+    
+    #endregion Dispose methods
 }

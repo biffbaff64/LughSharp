@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -194,7 +194,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( Texture texture,
                                GRect region,
                                Point2D origin,
@@ -236,7 +236,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( Texture texture,
                                GRect region,
                                Rectangle src,
@@ -268,7 +268,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( Texture texture, float x, float y, Rectangle src )
     {
         if ( !_adjustNeeded )
@@ -296,7 +296,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( Texture texture,
                                GRect region,
                                float u,
@@ -329,7 +329,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( Texture texture, float x, float y )
     {
         if ( !_adjustNeeded )
@@ -357,7 +357,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( Texture texture, Point loc, Size size )
     {
         if ( !_adjustNeeded )
@@ -370,7 +370,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( TextureRegion region, float x, float y )
     {
         if ( !_adjustNeeded )
@@ -383,7 +383,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( TextureRegion region, float x, float y, float width, float height )
     {
         if ( !_adjustNeeded )
@@ -396,7 +396,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( TextureRegion textureRegion,
                                GRect region,
                                Point2D origin,
@@ -413,7 +413,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( TextureRegion textureRegion,
                                GRect region,
                                Point2D origin,
@@ -441,7 +441,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( Texture texture, float[] spriteVertices, int offset, int count )
     {
         if ( ( count % Sprite.SPRITE_SIZE ) != 0 )
@@ -459,7 +459,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( TextureRegion region, float width, float height, Affine2 transform )
     {
         if ( !_adjustNeeded )

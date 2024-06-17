@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -74,18 +74,18 @@ public class ShaderProgramLoader
         _fragmentFileSuffix = fragmentFileSuffix;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
     {
         return null!;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void LoadAsync( AssetManager manager, FileInfo? file, ShaderProgramParameter? parameter )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override object LoadSync( AssetManager? manager,
                                      FileInfo? file,
                                      ShaderProgramParameter? parameter )

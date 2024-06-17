@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,7 @@ public class InputMultiplexer : IInputProcessor
 
     public SnapshotArray< IInputProcessor > Processors { get; set; } = new( 4 );
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool KeyDown( int keycode )
     {
         IInputProcessor?[] items = Processors.Begin();
@@ -75,7 +75,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool KeyUp( int keycode )
     {
         IInputProcessor?[] items = Processors.Begin();
@@ -98,7 +98,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool KeyTyped( char character )
     {
         IInputProcessor?[] items = Processors.Begin();
@@ -121,7 +121,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool TouchDown( int screenX, int screenY, int pointer, int button )
     {
         IInputProcessor?[] items = Processors.Begin();
@@ -144,7 +144,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool TouchUp( int screenX, int screenY, int pointer, int button )
     {
         IInputProcessor?[] items = Processors.Begin();
@@ -167,7 +167,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool TouchDragged( int screenX, int screenY, int pointer )
     {
         IInputProcessor?[] items = Processors.Begin();
@@ -190,7 +190,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool MouseMoved( int screenX, int screenY )
     {
         IInputProcessor?[] items = Processors.Begin();
@@ -213,7 +213,7 @@ public class InputMultiplexer : IInputProcessor
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool Scrolled( float amountX, float amountY )
     {
         IInputProcessor?[] items = Processors.Begin();

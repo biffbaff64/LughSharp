@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,19 +25,33 @@
 
 namespace LughSharp.Backends.DesktopGL;
 
+/// <summary>
+/// A highly accurate sync method that continually adapts to the system
+/// it runs on to provide reliable results.
+/// </summary>
 [PublicAPI]
 public class Sync
 {
+    // number of nano seconds in a second.
     private const long NANOS_IN_SECOND = 1000L * 1000L * 1000L;
 
+    // for calculating the averages the previous sleep/yield times are stored.
     private readonly RunningAvg _sleepDurations = new( 10 );
     private readonly RunningAvg _yieldDurations = new( 10 );
-    private          bool       _initialised    = false;
 
+    // whether the initialisation code has run.
+    private bool _initialised = false;
+
+    // The time to sleep/yield until the next frame.
     private long _nextFrame = 0;
 
     // ------------------------------------------------------------------------
-    
+
+    /// <summary>
+    /// An accurate sync method that will attempt to run at a constant frame rate.
+    /// It should be called once every frame.
+    /// </summary>
+    /// <param name="fps"> the desired frame rate, in frames per second. </param>
     public void SyncFrameRate( int fps )
     {
         if ( fps <= 0 )
@@ -81,6 +95,11 @@ public class Sync
         _nextFrame = Math.Max( _nextFrame + ( NANOS_IN_SECOND / fps ), GetTime() );
     }
 
+    /// <summary>
+    /// This method will initialise the sync method by setting initial values for
+    /// sleepDurations/ yieldDurations and nextFrame. If running on windows it will
+    /// start the sleep timer fix.
+    /// </summary>
     private void Initialise()
     {
         _initialised = true;
@@ -113,13 +132,17 @@ public class Sync
         }
     }
 
+    /// <summary>
+    /// Get the system time in nano seconds.
+    /// </summary>
     private long GetTime()
     {
         return DateTime.UtcNow.Ticks * 100;
     }
 
     // ------------------------------------------------------------------------
-    
+    // ------------------------------------------------------------------------
+
     private sealed class RunningAvg
     {
         private const    long   DAMPEN_THRESHOLD = 10 * 1000L * 1000L;

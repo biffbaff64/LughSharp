@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,7 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
         Dispose( true );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
                                                              AssetLoaderParameters? parameter )
@@ -64,7 +64,7 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
         return null!;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void LoadAsync( AssetManager manager, FileInfo? file, AssetLoaderParameters? parameter )
     {
     }

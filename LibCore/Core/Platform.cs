@@ -1,7 +1,7 @@
 ﻿// /////////////////////////////////////////////////////////////////////////////
 //  MIT License
 // 
-//  Copyright (c) 2024 Richard Ikin / Red 7 Projects
+//  Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 // 
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,6 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using System.Runtime.InteropServices;
 using Environment = System.Environment;
 
 namespace LughSharp.LibCore.Core;
@@ -36,7 +35,7 @@ public static class Platform
     /// <summary>
     /// Target application backends.
     /// </summary>
-    public enum ApplicationType
+    public enum ApplicationType : int
     {
         Unknown,
         IOS,
@@ -49,13 +48,21 @@ public static class Platform
         MacOS,
     }
 
-    public enum Family
+    /// <summary>
+    /// Application type family groups
+    /// </summary>
+    public enum Family : int
     {
-        Uknown,
-        Mobile,
-        Desktop,
-        Console,
+        Unknown,
+        Mobile,  // Android, IOS
+        Desktop, // WindowsGL, UWP, WebGL, Linux, MacOS
+        Console, // XBox
     }
+
+    // ------------------------------------------------------------------------
+
+    private static ApplicationType _targetPlatform = ApplicationType.Unknown;
+    private static Family          _familyGroup    = Family.Unknown;
 
     // ------------------------------------------------------------------------
 

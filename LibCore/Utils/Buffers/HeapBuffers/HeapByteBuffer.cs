@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -48,37 +48,37 @@ public class HeapByteBuffer : ByteBuffer
 
     // ------------------------------------------------------------------------
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer Slice()
     {
         return new HeapByteBuffer( Hb, -1, 0, Remaining(), Remaining(), Position + Offset );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer Duplicate()
     {
         return new HeapByteBuffer( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer AsReadOnlyBuffer()
     {
         return new HeapByteBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override byte Get()
     {
         return Hb?[ Ix( NextGetIndex() ) ] ?? throw new NullReferenceException();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override byte Get( int index )
     {
         return Hb?[ Ix( CheckIndex( index ) ) ] ?? throw new NullReferenceException();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer Get( byte[] dst, int offset, int length )
     {
         if ( Hb == null )
@@ -101,18 +101,18 @@ public class HeapByteBuffer : ByteBuffer
 
     // ------------------------------------------------------------------------
     
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool IsDirect() => false;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool IsReadOnly => false;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override int Ix( int i ) => i + Offset;
 
     // ------------------------------------------------------------------------
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer Put( byte b )
     {
         if ( Hb == null )
@@ -125,7 +125,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer Put( int index, byte b )
     {
         if ( Hb == null )
@@ -138,7 +138,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer Put( byte[] src, int offset, int length )
     {
         if ( Hb == null )
@@ -159,7 +159,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer Put( ByteBuffer src )
     {
         if ( Hb == null )
@@ -223,19 +223,19 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override char GetChar()
     {
         return BufferUtils.GetChar( this, Ix( NextGetIndex( 2 ) ), BigEndian );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override char GetChar( int index )
     {
         return BufferUtils.GetChar( this, Ix( CheckIndex( index, 2 ) ), BigEndian );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer PutChar( char value )
     {
         BufferUtils.PutChar( this, Ix( NextPutIndex( 2 ) ), value, BigEndian );
@@ -243,7 +243,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer PutChar( int index, char value )
     {
         BufferUtils.PutChar( this, Ix( CheckIndex( index, 2 ) ), value, BigEndian );
@@ -251,7 +251,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override CharBuffer AsCharBuffer()
     {
         var size = Remaining() >> 1;
@@ -262,19 +262,19 @@ public class HeapByteBuffer : ByteBuffer
                    : new ByteBufferAsCharBufferL( this, -1, 0, size, size, off );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override short GetShort()
     {
         return BufferUtils.GetShort( this, Ix( NextGetIndex( 2 ) ), BigEndian );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override short GetShort( int i )
     {
         return BufferUtils.GetShort( this, Ix( CheckIndex( i, 2 ) ), BigEndian );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer PutShort( short x )
     {
         BufferUtils.PutShort( this, Ix( NextPutIndex( 2 ) ), x, BigEndian );
@@ -282,7 +282,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer PutShort( int i, short x )
     {
         BufferUtils.PutShort( this, Ix( CheckIndex( i, 2 ) ), x, BigEndian );
@@ -290,7 +290,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ShortBuffer AsShortBuffer()
     {
         var size = Remaining() >> 1;
@@ -301,19 +301,19 @@ public class HeapByteBuffer : ByteBuffer
                    : new ByteBufferAsShortBufferL( this, -1, 0, size, size, off );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetInt()
     {
         return BufferUtils.GetInt( this, Ix( NextGetIndex( 4 ) ), BigEndian );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetInt( int i )
     {
         return BufferUtils.GetInt( this, Ix( CheckIndex( i, 4 ) ), BigEndian );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer PutInt( int x )
     {
         BufferUtils.PutInt( this, Ix( NextPutIndex( 4 ) ), x, BigEndian );
@@ -321,7 +321,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer PutInt( int i, int x )
     {
         BufferUtils.PutInt( this, Ix( CheckIndex( i, 4 ) ), x, BigEndian );
@@ -329,7 +329,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override IntBuffer AsIntBuffer()
     {
         var size = Remaining() >> 2;
@@ -340,19 +340,19 @@ public class HeapByteBuffer : ByteBuffer
                    : new ByteBufferAsIntBufferL( this, -1, 0, size, size, off );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override long GetLong()
     {
         return BufferUtils.GetLong( this, Ix( NextGetIndex( 8 ) ), BigEndian );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override long GetLong( int i )
     {
         return BufferUtils.GetLong( this, Ix( CheckIndex( i, 8 ) ), BigEndian );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer PutLong( long x )
     {
         BufferUtils.PutLong( this, Ix( NextPutIndex( 8 ) ), x, BigEndian );
@@ -360,7 +360,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer PutLong( int i, long x )
     {
         BufferUtils.PutLong( this, Ix( CheckIndex( i, 8 ) ), x, BigEndian );
@@ -368,7 +368,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override LongBuffer AsLongBuffer()
     {
         var size = Remaining() >> 3;
@@ -379,19 +379,19 @@ public class HeapByteBuffer : ByteBuffer
                    : new ByteBufferAsLongBufferL( this, -1, 0, size, size, off );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override float GetFloat()
     {
         return BufferUtils.GetFloat( this, Ix( NextGetIndex( 4 ) ), BigEndian );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override float GetFloat( int i )
     {
         return BufferUtils.GetFloat( this, Ix( CheckIndex( i, 4 ) ), BigEndian );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer PutFloat( float x )
     {
         BufferUtils.PutFloat( this, Ix( NextPutIndex( 4 ) ), x, BigEndian );
@@ -399,7 +399,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer PutFloat( int i, float x )
     {
         BufferUtils.PutFloat( this, Ix( CheckIndex( i, 4 ) ), x, BigEndian );
@@ -407,7 +407,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override FloatBuffer AsFloatBuffer()
     {
         var size = Remaining() >> 2;
@@ -418,19 +418,19 @@ public class HeapByteBuffer : ByteBuffer
                    : new ByteBufferAsFloatBufferL( this, -1, 0, size, size, off );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override double GetDouble()
     {
         return BufferUtils.GetDouble( this, Ix( NextGetIndex( 8 ) ), BigEndian );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override double GetDouble( int i )
     {
         return BufferUtils.GetDouble( this, Ix( CheckIndex( i, 8 ) ), BigEndian );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer PutDouble( double x )
     {
         BufferUtils.PutDouble( this, Ix( NextPutIndex( 8 ) ), x, BigEndian );
@@ -438,7 +438,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteBuffer PutDouble( int i, double x )
     {
         BufferUtils.PutDouble( this, Ix( CheckIndex( i, 8 ) ), x, BigEndian );
@@ -446,7 +446,7 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override DoubleBuffer AsDoubleBuffer()
     {
         var size = Remaining() >> 3;

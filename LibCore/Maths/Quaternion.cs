@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -144,7 +144,7 @@ public class Quaternion
         return ( float ) Math.Sqrt( ( X * X ) + ( Y * Y ) + ( Z * Z ) + ( W * W ) );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         return "[" + X + "|" + Y + "|" + Z + "|" + W + "]";
@@ -1252,7 +1252,7 @@ public class Quaternion
         return GetAngleAround( axis.X, axis.Y, axis.Z );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         const int PRIME = 31;
@@ -1265,7 +1265,7 @@ public class Quaternion
         return result;
     }
     
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool Equals( object? obj )
     {
         if ( this == obj )

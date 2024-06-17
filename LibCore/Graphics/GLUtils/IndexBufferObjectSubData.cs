@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -88,13 +88,13 @@ public class IndexBufferObjectSubData : IIndexData
         _bufferHandle = CreateBufferObject();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public int NumIndices => _buffer.Limit;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public int NumMaxIndices => _buffer.Capacity;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public unsafe void SetIndices( short[] indices, int offset, int count )
     {
         _isDirty = true;
@@ -117,7 +117,7 @@ public class IndexBufferObjectSubData : IIndexData
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public unsafe void SetIndices( ShortBuffer indices )
     {
         var pos = indices.Position;
@@ -144,7 +144,7 @@ public class IndexBufferObjectSubData : IIndexData
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public unsafe void UpdateIndices( int targetOffset, short[] indices, int offset, int count )
     {
         _isDirty = true;
@@ -169,7 +169,7 @@ public class IndexBufferObjectSubData : IIndexData
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public ShortBuffer GetBuffer( bool forWriting )
     {
         _isDirty |= forWriting;
@@ -177,7 +177,7 @@ public class IndexBufferObjectSubData : IIndexData
         return _buffer;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public unsafe void Bind()
     {
         if ( _bufferHandle == 0 )
@@ -203,21 +203,21 @@ public class IndexBufferObjectSubData : IIndexData
         _isBound = true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Unbind()
     {
         Gdx.GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, 0 );
         _isBound = false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Invalidate()
     {
         _bufferHandle = CreateBufferObject();
         _isDirty      = true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Dispose()
     {
         Gdx.GL.glBindBuffer( IGL.GL_ELEMENT_ARRAY_BUFFER, 0 );

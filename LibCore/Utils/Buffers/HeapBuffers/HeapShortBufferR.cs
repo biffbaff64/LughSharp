@@ -1,7 +1,7 @@
 ﻿// /////////////////////////////////////////////////////////////////////////////
 //  MIT License
 // 
-//  Copyright (c) 2024 Richard Ikin / Red 7 Projects
+//  Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 // 
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,7 @@ public class HeapShortBufferR : HeapShortBuffer
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool IsReadOnly => true;
 
     /// <override/>
@@ -65,13 +65,13 @@ public class HeapShortBufferR : HeapShortBuffer
         return new HeapShortBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ShortBuffer AsReadOnlyBuffer()
     {
         return Duplicate();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteOrder Order()
     {
         return ByteOrder.NativeOrder;

@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ public abstract class Attribute : IComparable< Attribute >
         _typeBit  = ( int ) long.TrailingZeroCount( type );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public int CompareTo( Attribute? other )
     {
         if ( other == null )
@@ -126,7 +126,7 @@ public abstract class Attribute : IComparable< Attribute >
         return other.GetHashCode() == GetHashCode();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool Equals( object? obj )
     {
         if ( obj == null )
@@ -147,13 +147,13 @@ public abstract class Attribute : IComparable< Attribute >
         return ( type == other.type ) && Equals( other );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string? ToString()
     {
         return GetAttributeAlias( type );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         return 7489 * _typeBit;

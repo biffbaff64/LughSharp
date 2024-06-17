@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -1423,7 +1423,7 @@ public class Cell : IPoolable
         return _defaults;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string? ToString()
     {
         return Actor != null ? Actor.ToString() : base.ToString();

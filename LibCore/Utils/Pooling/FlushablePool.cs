@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -35,24 +35,24 @@ public abstract class FlushablePool< T > : Pool< T >
 {
     private readonly List< T > _obtained = new();
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected FlushablePool()
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected FlushablePool( int initialCapacity )
         : base( initialCapacity )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected FlushablePool( int initialCapacity, int max )
         : base( initialCapacity, max )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override T? Obtain()
     {
         var result = base.Obtain();
@@ -71,7 +71,7 @@ public abstract class FlushablePool< T > : Pool< T >
         _obtained.Clear();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Free( T obj )
     {
         _obtained.Remove( obj );
@@ -79,7 +79,7 @@ public abstract class FlushablePool< T > : Pool< T >
         base.Free( obj );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void FreeAll( List< T > objects )
     {
         foreach ( var obj in objects )

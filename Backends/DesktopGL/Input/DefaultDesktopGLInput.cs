@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,20 +36,21 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     private readonly InputEventQueue  _eventQueue         = new();
     private readonly bool[]           _justPressedButtons = new bool[ 5 ];
     private readonly DesktopGLWindow? _window;
-    private          int              _deltaX;
-    private          int              _deltaY;
     private          IInputProcessor? _inputProcessor;
-    private          bool             _justTouched;
-    private          char             _lastCharacter;
-    private          int              _logicalMouseX;
 
-    private int _logicalMouseY;
-    private int _mousePressed;
+    private bool _justTouched;
+    private char _lastCharacter;
+    private int  _logicalMouseX;
+    private int  _deltaX;
+    private int  _deltaY;
+    private int  _logicalMouseY;
+    private int  _mousePressed;
+    private int  _mouseX;
+    private int  _mouseY;
 
-    private int _mouseX;
-    private int _mouseY;
+    // ------------------------------------------------------------------------
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public DefaultDesktopGLInput( DesktopGLWindow? window )
     {
         ArgumentNullException.ThrowIfNull( window );
@@ -59,25 +60,29 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         WindowHandleChanged( _window.GlfwWindow );
     }
 
-    /// <inheritdoc/>
-    public void ResetPollingStates()
+    // ------------------------------------------------------------------------
+
+    #region From IDesktopGLInput
+
+    /// <inheritdoc />
+    public void WindowHandleChanged( GLFW.Window? windowHandle )
     {
-        _justTouched   = false;
-        KeyJustPressed = false;
+        ResetPollingStates();
 
-        Array.Fill( JustPressedKeys, false );
-        Array.Fill( _justPressedButtons, false );
-
-        _eventQueue.Drain( null );
+        Glfw.SetKeyCallback( windowHandle, KeyCallback );
+        Glfw.SetCharCallback( windowHandle, CharCallback );
+        Glfw.SetMouseButtonCallback( windowHandle, MouseCallback );
+        Glfw.SetScrollCallback( windowHandle, ScrollCallback );
+        Glfw.SetCursorPosCallback( windowHandle, CursorPosCallback );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Update()
     {
         _eventQueue.Drain( _inputProcessor );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void PrepareNext()
     {
         if ( _justTouched )
@@ -98,37 +103,40 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         _deltaY = 0;
     }
 
-    /// <inheritdoc/>
-    public override int GetMaxPointers()
+    /// <inheritdoc />
+    public void ResetPollingStates()
     {
-        return DEFAULT_MAX_POINTERS;
+        _justTouched   = false;
+        KeyJustPressed = false;
+
+        Array.Fill( JustPressedKeys, false );
+        Array.Fill( _justPressedButtons, false );
+
+        _eventQueue.Drain( null );
     }
 
-    /// <inheritdoc/>
-    public override int GetX( int pointer = 0 )
-    {
-        return pointer == 0 ? _mouseX : 0;
-    }
+    #endregion From IDesktopGLInput
 
-    /// <inheritdoc/>
-    public override int GetDeltaX( int pointer = 0 )
-    {
-        return pointer == 0 ? _deltaX : 0;
-    }
+    // ------------------------------------------------------------------------
 
-    /// <inheritdoc/>
-    public override int GetY( int pointer = 0 )
-    {
-        return pointer == 0 ? _mouseY : 0;
-    }
+    #region From Abstract Input
 
-    /// <inheritdoc/>
-    public override int GetDeltaY( int pointer = 0 )
-    {
-        return pointer == 0 ? _deltaY : 0;
-    }
+    /// <inheritdoc />
+    public override int GetMaxPointers() => DEFAULT_MAX_POINTERS;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
+    public override int GetX( int pointer = 0 ) => pointer == 0 ? _mouseX : 0;
+
+    /// <inheritdoc />
+    public override int GetDeltaX( int pointer = 0 ) => pointer == 0 ? _deltaX : 0;
+
+    /// <inheritdoc />
+    public override int GetY( int pointer = 0 ) => pointer == 0 ? _mouseY : 0;
+
+    /// <inheritdoc />
+    public override int GetDeltaY( int pointer = 0 ) => pointer == 0 ? _deltaY : 0;
+
+    /// <inheritdoc />
     public override bool IsTouched( int pointer = 0 )
     {
         if ( pointer == 0 )
@@ -145,26 +153,20 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         return false;
     }
 
-    /// <inheritdoc/>
-    public override bool JustTouched()
-    {
-        return _justTouched;
-    }
+    /// <inheritdoc />
+    public override bool JustTouched() => _justTouched;
 
-    /// <inheritdoc/>
-    public override float GetPressure( int pointer = 0 )
-    {
-        return IsTouched( pointer ) ? 1 : 0;
-    }
+    /// <inheritdoc />
+    public override float GetPressure( int pointer = 0 ) => IsTouched( pointer ) ? 1 : 0;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool IsButtonPressed( int button )
     {
         return Glfw.GetMouseButton( _window!.GlfwWindow, TranslateToMouseButton( button ) )
             == InputState.Press;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool IsButtonJustPressed( int button )
     {
         if ( ( button < 0 ) || ( button >= _justPressedButtons.Length ) )
@@ -175,7 +177,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         return _justPressedButtons[ button ];
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void GetTextInput( IInput.ITextInputListener listener,
                                        string title,
                                        string text,
@@ -186,33 +188,28 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         listener.Canceled();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override long GetCurrentEventTime()
     {
         // queue sets its event time for each event dequeued/processed
         return _eventQueue.CurrentEventTime;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetCursorCaught( bool caught )
     {
-        //TODO:
-//        Glfw.SetInputMode( _window!.GlfwWindow,
-//                           InputMode.Cursor,
-//                           ( int )( caught ? CursorMode.Disabled : CursorMode.Normal ) );
+        Glfw.SetInputMode< CursorMode >( _window!.GlfwWindow,
+                                         InputMode.Cursor,
+                                         ( caught ? CursorMode.Disabled : CursorMode.Normal ) );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool IsCursorCaught()
     {
-        //TODO:
-//        return Glfw.GetInputMode( _window!.GlfwWindow, InputMode.Cursor )
-//            == ( int )CursorMode.Disabled;
-
-        return false;
+        return Glfw.GetInputMode( _window!.GlfwWindow, InputMode.Cursor ) == CursorMode.Disabled;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetCursorPosition( int x, int y )
     {
         if ( _window!.Config.HdpiMode == HdpiMode.Pixels )
@@ -227,72 +224,6 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         Glfw.SetCursorPos( _window!.GlfwWindow, x, y );
     }
 
-    /// <inheritdoc/>
-    public void WindowHandleChanged( GLFW.Window? windowHandle )
-    {
-        ResetPollingStates();
-
-        Glfw.SetKeyCallback( windowHandle, KeyCallback );
-        Glfw.SetCharCallback( windowHandle, CharCallback );
-        Glfw.SetMouseButtonCallback( windowHandle, MouseCallback );
-        Glfw.SetScrollCallback( windowHandle, ScrollCallback );
-        Glfw.SetCursorPosCallback( windowHandle, CursorPosCallback );
-    }
-
-    // ------------------------------------------------------------------------
-    // Stubs
-    // ------------------------------------------------------------------------
-
-    public override float GetAccelerometerX()
-    {
-        return 0;
-    }
-
-    public override float GetAccelerometerY()
-    {
-        return 0;
-    }
-
-    public override float GetAccelerometerZ()
-    {
-        return 0;
-    }
-
-    public override int GetRotation()
-    {
-        return 0;
-    }
-
-    public override float GetAzimuth()
-    {
-        return 0;
-    }
-
-    public override float GetPitch()
-    {
-        return 0;
-    }
-
-    public override float GetRoll()
-    {
-        return 0;
-    }
-
-    public override float GetGyroscopeX()
-    {
-        return 0;
-    }
-
-    public override float GetGyroscopeY()
-    {
-        return 0;
-    }
-
-    public override float GetGyroscopeZ()
-    {
-        return 0;
-    }
-
     public override bool IsPeripheralAvailable( IInput.Peripheral peripheral )
     {
         return peripheral == IInput.Peripheral.HardwareKeyboard;
@@ -301,39 +232,6 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     public override IInput.Orientation GetNativeOrientation()
     {
         return IInput.Orientation.Landscape;
-    }
-
-    public override void SetOnscreenKeyboardVisible( bool visible )
-    {
-    }
-
-    public override void SetOnscreenKeyboardVisible( bool visible, IInput.OnscreenKeyboardType type )
-    {
-    }
-
-    public override void Vibrate( int milliseconds )
-    {
-    }
-
-    public override void Vibrate( long[] pattern, int repeat )
-    {
-    }
-
-    public override void CancelVibrate()
-    {
-    }
-
-    public override void GetRotationMatrix( float[] matrix )
-    {
-    }
-
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing,
-    /// or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
     }
 
     private static MouseButton TranslateToMouseButton( int button )
@@ -492,11 +390,15 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         };
     }
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing,
-    /// or resetting unmanaged resources.
-    /// </summary>
-    private void Dispose( bool disposing )
+    // ------------------------------------------------------------------------
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
+    protected void Dispose( bool disposing )
     {
         if ( disposing )
         {
@@ -507,11 +409,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     // Callbacks
     // ------------------------------------------------------------------------
 
-    internal void KeyCallback( GLFW.Window window,
-                               Keys key,
-                               int scancode,
-                               InputState action,
-                               ModifierKeys mods )
+    public void KeyCallback( GLFW.Window window, Keys key, int scancode, InputState action, ModifierKeys mods )
     {
         int gdxKey;
 
@@ -566,10 +464,15 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
 
                 break;
             }
+
+            default:
+            {
+                break;
+            }
         }
     }
 
-    internal void CharCallback( GLFW.Window window, uint codepoint )
+    public void CharCallback( GLFW.Window window, uint codepoint )
     {
         if ( ( codepoint & 0xff00 ) == 0xf700 )
         {
@@ -581,7 +484,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         _eventQueue.KeyTyped( ( char ) codepoint, TimeUtils.NanoTime() );
     }
 
-    internal void MouseCallback( GLFW.Window window, MouseButton button, InputState state, ModifierKeys mods )
+    public void MouseCallback( GLFW.Window window, MouseButton button, InputState state, ModifierKeys mods )
     {
         var gdxButton = button switch
         {
@@ -619,13 +522,13 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
         }
     }
 
-    internal void ScrollCallback( GLFW.Window window, double x, double y )
+    public void ScrollCallback( GLFW.Window window, double x, double y )
     {
         _window?.Graphics.RequestRendering();
         _eventQueue.Scrolled( -( float ) x, -( float ) y, TimeUtils.NanoTime() );
     }
 
-    internal void CursorPosCallback( GLFW.Window window, double x, double y )
+    public void CursorPosCallback( GLFW.Window window, double x, double y )
     {
         _deltaX = ( int ) x - _logicalMouseX;
         _deltaY = ( int ) y - _logicalMouseY;
@@ -655,4 +558,54 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             _eventQueue.MouseMoved( _mouseX, _mouseY, TimeUtils.NanoTime() );
         }
     }
+
+    // ------------------------------------------------------------------------
+    // Stubs
+    // ------------------------------------------------------------------------
+
+    public override float GetAccelerometerX() => 0;
+
+    public override float GetAccelerometerY() => 0;
+
+    public override float GetAccelerometerZ() => 0;
+
+    public override int GetRotation() => 0;
+
+    public override float GetAzimuth() => 0;
+
+    public override float GetPitch() => 0;
+
+    public override float GetRoll() => 0;
+
+    public override float GetGyroscopeX() => 0;
+
+    public override float GetGyroscopeY() => 0;
+
+    public override float GetGyroscopeZ() => 0;
+
+    public override void SetOnscreenKeyboardVisible( bool visible )
+    {
+    }
+
+    public override void SetOnscreenKeyboardVisible( bool visible, IInput.OnscreenKeyboardType type )
+    {
+    }
+
+    public override void Vibrate( int milliseconds )
+    {
+    }
+
+    public override void Vibrate( long[] pattern, int repeat )
+    {
+    }
+
+    public override void CancelVibrate()
+    {
+    }
+
+    public override void GetRotationMatrix( float[] matrix )
+    {
+    }
+
+    #endregion From Abstract Input
 }

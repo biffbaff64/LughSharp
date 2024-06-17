@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -156,7 +156,7 @@ public abstract class ModelLoader< TP > : AsynchronousAssetLoader< Model, TP >
         return deps;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override Model LoadSync( AssetManager? manager, FileInfo? file, TP? parameter )
     {
         ModelData? data = null;

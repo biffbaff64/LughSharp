@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -71,7 +71,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         return default( List< AssetDescriptor > )!;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void LoadAsync( AssetManager manager, FileInfo? file, CubemapParameter? parameter )
     {
     }

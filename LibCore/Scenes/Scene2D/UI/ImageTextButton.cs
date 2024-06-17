@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -236,7 +236,7 @@ public class ImageTextButton : Button
         return _style?.FontColor;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( IBatch batch, float parentAlpha )
     {
         UpdateImage();
@@ -289,7 +289,7 @@ public class ImageTextButton : Button
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         if ( Name != null )

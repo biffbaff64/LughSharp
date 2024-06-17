@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -80,7 +80,7 @@ public class BitmapFont
     /// a bitmap font yourself.
     /// </summary>
     public BitmapFont()
-        : this( Gdx.Files.Internal( FONT_NAME ), Gdx.Files.Internal( FONT_NAME ), false )
+        : this( Gdx.Files.Internal( FONT_NAME ).File, Gdx.Files.Internal( FONT_NAME ).File, false )
     {
         _fileType = PathTypes.Internal;
     }
@@ -98,7 +98,7 @@ public class BitmapFont
     /// the upper left corner.
     /// </param>
     public BitmapFont( bool flip )
-        : this( Gdx.Files.Internal( FONT_NAME ), Gdx.Files.Internal( FONT_NAME ), flip )
+        : this( Gdx.Files.Internal( FONT_NAME ).File, Gdx.Files.Internal( FONT_NAME ).File, flip )
     {
         _fileType = PathTypes.Internal;
     }
@@ -224,9 +224,9 @@ public class BitmapFont
             {
                 var file = data.FontFile == null
                                ? Gdx.Files.Internal( data.ImagePaths[ i ] )
-                               : Gdx.Files.GetFileInfo( data.ImagePaths[ i ], _fileType );
+                               : Gdx.Files.GetFileHandle( data.ImagePaths[ i ], _fileType );
 
-                _regions.Add( new TextureRegion( new Texture( file, false ) ) );
+                _regions.Add( new TextureRegion( new Texture( file.File, false ) ) );
             }
 
             OwnsTexture = true;
@@ -553,7 +553,7 @@ public class BitmapFont
         return new BitmapFontCache( this, UseIntegerPositions );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string? ToString()
     {
         return _data.Name ?? base.ToString();
@@ -1605,7 +1605,7 @@ public class BitmapFont
             SetScale( ScaleX + amount, ScaleY + amount );
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string? ToString()
         {
             return Name ?? base.ToString();

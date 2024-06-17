@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,23 +23,28 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.Backends.DesktopGL.Graphics;
+
 namespace LughSharp.Backends.DesktopGL.Utils;
 
+/// <summary>
+/// Clipboard implementation for desktop that uses the system clipboard via GLFW.
+/// </summary>
 [PublicAPI]
 public class DesktopGLClipboard : IClipboard
 {
     /// <summary>
     /// Check if the clipboard has contents.
     /// </summary>
-    /// <returns> true, if the clipboard has contents</returns>
-    public bool HasContents()
-    {
-        return false;
-    }
+    /// <returns> true, if the clipboard has contents </returns>
+    public bool HasContents() => Contents?.Length > 0;
 
     /// <summary>
-    /// The current content of the clipboard if it contains text
+    /// Gets, or Sets, the current content of the clipboard.
     /// </summary>
-    /// <returns> the clipboard content or null  </returns>
-    public string Contents { get; set; } = "";
+    public string? Contents
+    {
+        get => Glfw.GetClipboardString( ( ( DesktopGLGraphics ) Gdx.Graphics ).GLWindow?.GlfwWindow );
+        set => Glfw.SetClipboardString( ( ( DesktopGLGraphics ) Gdx.Graphics ).GLWindow?.GlfwWindow, value );
+    }
 }

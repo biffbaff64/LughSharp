@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -115,13 +115,13 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         Map = LoadTiledMap( tmxFile, parameter, new IImageResolver.AssetManagerImageResolver( manager! ) );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override TiledMap LoadSync( AssetManager manager, FileInfo? file, LoaderParameters parameter )
     {
         return Map;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
     {
         return null!;
@@ -256,7 +256,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
         return fileHandles;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override void AddStaticTiles( FileInfo tmxFile,
                                             IImageResolver imageResolver,
                                             TiledMapTileSet tileset,

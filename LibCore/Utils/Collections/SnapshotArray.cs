@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -103,13 +103,13 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         Array.Copy( array, startIndex, Items, 0, count );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IEnumerator< T > GetEnumerator()
     {
         return new SnapshotEnumerator< T >( Items );
@@ -485,7 +485,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return -1;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool Contains( T? value )
     {
         var i = Size - 1;
@@ -501,7 +501,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override T Peek()
     {
         if ( Size == 0 )
@@ -512,7 +512,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return Items[ Size - 1 ];
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override T Pop()
     {
         Modified();
@@ -531,7 +531,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return item;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Clear()
     {
         Array.Clear( Items );
@@ -539,7 +539,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         Size = 0;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override T[] Resize( int newSize )
     {
         var newItems = ( T[] ) Array.CreateInstance( Items.GetType(), newSize );
@@ -551,7 +551,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return newItems;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override T[] ToArray()
     {
         var memberInfo = Items.GetType().BaseType;
@@ -561,7 +561,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
                    : ( T[] ) Array.CreateInstance( Items.GetType(), Size );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override T[] ToArray( Type type )
     {
         var result = ( T[] ) Array.CreateInstance( type, Size );
@@ -571,7 +571,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return result;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         const int PRIME = 31;
@@ -582,7 +582,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         return result;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool Equals( object? obj )
     {
         if ( obj == this )
@@ -634,7 +634,7 @@ public class SnapshotEnumerator< T > : IEnumerator< T >
         _array = array;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool MoveNext()
     {
         _position++;
@@ -642,12 +642,12 @@ public class SnapshotEnumerator< T > : IEnumerator< T >
         return _position < _array.Length;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Reset()
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public T Current
     {
         get
@@ -669,10 +669,10 @@ public class SnapshotEnumerator< T > : IEnumerator< T >
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     object IEnumerator.Current => Current!;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Dispose()
     {
     }

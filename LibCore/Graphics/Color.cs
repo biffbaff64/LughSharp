@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -889,7 +889,7 @@ public sealed class Color
         return new Color( this );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool Equals( object? obj )
     {
         if ( ( obj == null ) || ( GetType() != obj.GetType() ) )
@@ -907,7 +907,7 @@ public sealed class Color
         return ToIntBits() == color.ToIntBits();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         var result = White != 0F ? NumberUtils.FloatToIntBits( White.ToFloatBits() ) : 0;

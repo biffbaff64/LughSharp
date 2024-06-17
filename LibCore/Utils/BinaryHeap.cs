@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -358,7 +358,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
         _nodes[ index ] = node;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool Equals( object? obj )
     {
         if ( obj is not BinaryHeap< T > other )
@@ -385,7 +385,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
         return true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         var hash = 37 + GetType().GetHashCode();
@@ -395,7 +395,7 @@ public class BinaryHeap< T > where T : BinaryHeapNode
         return hash;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string ToString()
     {
         if ( ( Size == 0 ) || ( _nodes == null ) )

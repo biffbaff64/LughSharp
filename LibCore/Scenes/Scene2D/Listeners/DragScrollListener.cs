@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -90,7 +90,7 @@ public class DragScrollListener : DragListener
         _rampTime = ( long ) ( rampSecs * 1000 );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Drag( InputEvent ev, float x, float y, int pointer )
     {
         ev.ListenerActor?.LocalToActorCoordinates( _scrollPane, _tmpCoords.Set( x, y ) );
@@ -128,7 +128,7 @@ public class DragScrollListener : DragListener
         _scrollDown.Cancel();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void DragStop( InputEvent ev, float x, float y, int pointer )
     {
         _scrollUp.Cancel();

@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -294,7 +294,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Glfw.Terminate();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IPreferences GetPreferences( string name )
     {
         if ( Preferences!.ContainsKey( name ) )
@@ -309,7 +309,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         return prefs;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void PostRunnable( IRunnable.Runnable runnable )
     {
         lock ( Runnables )
@@ -318,7 +318,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IGLAudio CreateAudio( DesktopGLApplicationConfiguration config )
     {
         IGLAudio audio;
@@ -346,25 +346,25 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         return audio;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual IDesktopGLInput CreateInput( DesktopGLWindow window )
     {
         return new DefaultDesktopGLInput( window );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual int GetVersion()
     {
         return 0;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual void Exit()
     {
         _running = false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void AddLifecycleListener( ILifecycleListener listener )
     {
         lock ( LifecycleListeners )
@@ -373,7 +373,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void RemoveLifecycleListener( ILifecycleListener listener )
     {
         lock ( LifecycleListeners )
@@ -398,6 +398,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
         var appConfig = DesktopGLApplicationConfiguration.Copy( Config );
 
+        appConfig.SetGLContextVersion();
         appConfig.SetWindowConfiguration( config );
 
         return CreateWindow( appConfig, listener, 0 );
@@ -471,43 +472,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     private GLFW.Window CreateGLFWWindow( DesktopGLApplicationConfiguration appConfig,
                                           GLFW.Window sharedContextWindow )
     {
-        Glfw.DefaultWindowHints();
-
-        Glfw.WindowHint( Hint.Visible, false );
-        Glfw.WindowHint( Hint.Resizable, appConfig.WindowResizable );
-        Glfw.WindowHint( Hint.Maximized, appConfig.WindowMaximized );
-        Glfw.WindowHint( Hint.AutoIconify, appConfig.AutoIconify );
-
-        Glfw.WindowHint( Hint.RedBits, appConfig.Red );
-        Glfw.WindowHint( Hint.GreenBits, appConfig.Green );
-        Glfw.WindowHint( Hint.BlueBits, appConfig.Blue );
-        Glfw.WindowHint( Hint.AlphaBits, appConfig.Alpha );
-        Glfw.WindowHint( Hint.StencilBits, appConfig.Stencil );
-        Glfw.WindowHint( Hint.DepthBits, appConfig.Depth );
-        Glfw.WindowHint( Hint.Samples, appConfig.Samples );
-
-        Glfw.WindowHint( Hint.ContextVersionMajor, appConfig.GLContextMajorVersion );
-        Glfw.WindowHint( Hint.ContextVersionMinor, appConfig.GLContextMinorVersion );
-
-        if ( Platform.IsMac )
-        {
-            // hints mandatory on OS X for GL 3.2+ context creation, but fail on Windows if the
-            // WGL_ARB_create_context extension is not available
-            // see: http://www.glfw.org/docs/latest/compat.html
-
-            Glfw.WindowHint( Hint.OpenGLForwardCompat, true );
-            Glfw.WindowHint( Hint.OpenGLProfile, OpenGLProfile.CoreProfile );
-        }
-
-        if ( appConfig.TransparentFramebuffer )
-        {
-            Glfw.WindowHint( Hint.TransparentFramebuffer, true );
-        }
-
-        if ( appConfig.Debug )
-        {
-            Glfw.WindowHint( Hint.OpenGLDebugContext, true );
-        }
+        SetWindowHints( appConfig );
 
         GLFW.Window windowHandle;
 
@@ -595,8 +560,81 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Glfw.MakeContextCurrent( windowHandle );
         Glfw.SwapInterval( appConfig.VSyncEnabled ? 1 : 0 );
 
-        InitiateGL();
+        InitGLVersion();
 
+//        if ( appConfig.Debug )
+//        {
+//            GlDebugCallback = GLFW.DebugMessageCallback( config.debugStream );
+//            SetGLDebugMessageControl( GLDebugMessageSeverity.Notification, false );
+//        }
+
+        return windowHandle;
+    }
+
+    /// <summary>
+    /// Initialise the main Window <see cref="Hint"/>s. Some Hints may be set
+    /// elsewhere, but this is where most are initialised.
+    /// </summary>
+    /// <param name="appConfig"> The current <see cref="DesktopGLApplicationConfiguration"/>. </param>
+    private void SetWindowHints( DesktopGLApplicationConfiguration appConfig )
+    {
+        Glfw.DefaultWindowHints();
+
+        Glfw.WindowHint( Hint.Visible, false );
+        Glfw.WindowHint( Hint.Resizable, appConfig.WindowResizable );
+        Glfw.WindowHint( Hint.Maximized, appConfig.WindowMaximized );
+        Glfw.WindowHint( Hint.AutoIconify, appConfig.AutoIconify );
+
+        Glfw.WindowHint( Hint.RedBits, appConfig.Red );
+        Glfw.WindowHint( Hint.GreenBits, appConfig.Green );
+        Glfw.WindowHint( Hint.BlueBits, appConfig.Blue );
+        Glfw.WindowHint( Hint.AlphaBits, appConfig.Alpha );
+        Glfw.WindowHint( Hint.StencilBits, appConfig.Stencil );
+        Glfw.WindowHint( Hint.DepthBits, appConfig.Depth );
+        Glfw.WindowHint( Hint.Samples, appConfig.Samples );
+
+        Glfw.WindowHint( Hint.ContextVersionMajor, appConfig.GLContextMajorVersion );
+        Glfw.WindowHint( Hint.ContextVersionMinor, appConfig.GLContextMinorVersion );
+
+        if ( Platform.IsMac )
+        {
+            // hints mandatory on OS X for GL 3.2+ context creation, but fail on Windows if the
+            // WGL_ARB_create_context extension is not available
+            // see: http://www.glfw.org/docs/latest/compat.html
+
+            Glfw.WindowHint( Hint.OpenGLForwardCompat, true );
+            Glfw.WindowHint( Hint.OpenGLProfile, OpenGLProfile.CoreProfile );
+        }
+
+        if ( appConfig.TransparentFramebuffer )
+        {
+            Glfw.WindowHint( Hint.TransparentFramebuffer, true );
+        }
+
+        if ( appConfig.Debug )
+        {
+            Glfw.WindowHint( Hint.OpenGLDebugContext, true );
+        }
+    }
+    
+    /// <summary>
+    /// Initialises <see cref="GLVersion"/>.
+    /// </summary>
+    /// <exception cref="GdxRuntimeException">
+    /// If GLVersion is less than 2.0 or FBOs are not supported.
+    /// </exception>
+    private void InitGLVersion()
+    {
+        Glfw.GetVersion( out var majorv, out var minorv, out var revision );
+
+        unsafe
+        {
+            GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
+                                       $"{majorv}.{minorv}.{revision}",
+                                       Gdx.GL.glGetString( IGL.GL_VENDOR )->ToString(),
+                                       Gdx.GL.glGetString( IGL.GL_RENDERER )->ToString() );
+        }
+        
         if ( !GLVersion!.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
         {
             var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
@@ -605,19 +643,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                          + $"OpenGL version: {major}.{minor}"
                                          + $"\n{GLVersion?.DebugVersionString()}" );
         }
-
-        if ( appConfig.Debug )
-        {
-//            GlDebugCallback = GLFW.DebugMessageCallback( config.debugStream );
-//            SetGLDebugMessageControl( GLDebugMessageSeverity.Notification, false );
-        }
-
-        return windowHandle;
     }
-
+    
     /// <summary>
+    /// Returns <b>true</b> if <b><i>F</i></b>rame<b><i>B</i></b>uffer <b><i>O</i></b>bjects
+    /// are supported. 
     /// </summary>
-    /// <returns></returns>
     private bool SupportsFBO()
     {
         GdxRuntimeException.ThrowIfNull( GLVersion );
@@ -630,8 +661,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     }
 
     /// <summary>
+    /// Handle Glfw setup and initialisation.
     /// </summary>
-    /// <exception cref="GdxRuntimeException"></exception>
+    /// <exception cref="GdxRuntimeException">
+    /// Thrown if any problems occurred with GL initialisation.
+    /// </exception>
     public static void InitialiseGL()
     {
         if ( _errorCallback == null )
@@ -648,18 +682,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         }
     }
 
-    /// <summary>
-    /// </summary>
-    private unsafe void InitiateGL()
-    {
-        Glfw.GetVersion( out var major, out var minor, out var revision );
-
-        GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
-                                   $"{major}.{minor}.{revision}",
-                                   Gdx.GL.glGetString( IGL.GL_VENDOR )->ToString(),
-                                   Gdx.GL.glGetString( IGL.GL_RENDERER )->ToString() );
-    }
-
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -45,22 +45,22 @@ public class HeapShortBuffer : ShortBuffer
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool IsReadOnly => false;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ShortBuffer Slice()
     {
         return new HeapShortBuffer( Hb, -1, 0, Remaining(), Remaining(), Position + Offset );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ShortBuffer Duplicate()
     {
         return new HeapShortBuffer( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ShortBuffer AsReadOnlyBuffer()
     {
         return new HeapShortBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
@@ -71,19 +71,19 @@ public class HeapShortBuffer : ShortBuffer
         return i + Offset;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override short Get()
     {
         return Hb?[ Ix( NextGetIndex() ) ] ?? throw new NullReferenceException();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override short Get( int index )
     {
         return Hb?[ Ix( CheckIndex( index ) ) ] ?? throw new NullReferenceException();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ShortBuffer Get( short[] dst, int offset, int length )
     {
         if ( Hb == null )
@@ -105,13 +105,13 @@ public class HeapShortBuffer : ShortBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool IsDirect()
     {
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ShortBuffer Put( short s )
     {
         if ( Hb == null )
@@ -124,7 +124,7 @@ public class HeapShortBuffer : ShortBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ShortBuffer Put( int index, short s )
     {
         if ( Hb == null )
@@ -137,7 +137,7 @@ public class HeapShortBuffer : ShortBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ShortBuffer Put( short[] src, int offset, int length )
     {
         if ( Hb == null )
@@ -159,7 +159,7 @@ public class HeapShortBuffer : ShortBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ShortBuffer Put( ShortBuffer src )
     {
         if ( Hb == null )
@@ -206,7 +206,7 @@ public class HeapShortBuffer : ShortBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ShortBuffer Compact()
     {
         if ( Hb == null )
@@ -223,7 +223,7 @@ public class HeapShortBuffer : ShortBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteOrder Order()
     {
         return ByteOrder.NativeOrder;

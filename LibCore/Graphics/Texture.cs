@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -78,7 +78,7 @@ public class Texture : GLTexture
     /// </summary>
     /// <param name="internalPath"></param>
     public Texture( string internalPath )
-        : this( Gdx.Files.Internal( internalPath ) )
+        : this( Gdx.Files.Internal( internalPath ).File )
     {
     }
 
@@ -242,7 +242,7 @@ public class Texture : GLTexture
         Dispose( true );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override void Dispose( bool disposing )
     {
         if ( disposing )
@@ -370,7 +370,7 @@ public class Texture : GLTexture
         return builder.ToString();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string? ToString()
     {
         return TextureData is FileTextureData

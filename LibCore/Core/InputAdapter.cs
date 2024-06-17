@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,49 +32,49 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public class InputAdapter : IInputProcessor
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual bool KeyDown( int keycode )
     {
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual bool KeyUp( int keycode )
     {
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual bool KeyTyped( char character )
     {
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual bool TouchDown( int screenX, int screenY, int pointer, int button )
     {
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual bool TouchUp( int screenX, int screenY, int pointer, int button )
     {
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual bool TouchDragged( int screenX, int screenY, int pointer )
     {
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual bool MouseMoved( int screenX, int screenY )
     {
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public virtual bool Scrolled( float amountX, float amountY )
     {
         return false;

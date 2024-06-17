@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,34 +31,34 @@ namespace LughSharp.Backends.DesktopGL.Audio.Mock;
 [PublicAPI]
 public class MockAudioDevice : IAudioDevice
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public bool IsMono()
     {
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void WriteSamples( int[] samples, int offset, int numSamples )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void WriteSamples( float[] samples, int offset, int numSamples )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public int GetLatency()
     {
         return 0;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void SetVolume( float volume )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Dispose()
     {
     }

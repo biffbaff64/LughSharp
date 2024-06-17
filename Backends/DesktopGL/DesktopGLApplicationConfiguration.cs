@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -39,8 +39,13 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public bool          Debug       { get; set; } = false;
     public StreamWriter? DebugStream { get; set; }
 
+    /// <summary>
+    /// The maximum number of threads to use for network requests.
+    /// Default is <see cref="int.MaxValue"/>.
+    /// </summary>
+    public int MaxNetThreads { get; set; } = int.MaxValue;
+
     public bool     TransparentFramebuffer { get; set; }
-    public int      MaxNetThreads          { get; set; } = int.MaxValue;
     public HdpiMode HdpiMode               { get; set; } = HdpiMode.Logical;
     public int      Depth                  { get; set; } = 16;
     public int      Stencil                { get; set; } = 0;
@@ -48,16 +53,15 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public int      IdleFPS                { get; set; } = 60;
     public int      ForegroundFPS          { get; set; } = 0;
 
-    //TODO: Set these correctly
-    public int GLContextMajorVersion { get; set; } = 4;
-    public int GLContextMinorVersion { get; set; } = 6;
+    public int GLContextMajorVersion { get; set; }
+    public int GLContextMinorVersion { get; set; }
 
     public int Red   { get; set; } = 8;
     public int Green { get; set; } = 8;
     public int Blue  { get; set; } = 8;
     public int Alpha { get; set; } = 8;
 
-    public string   PreferencesDirectory { get; set; } = ".prefs/";
+    public string    PreferencesDirectory { get; set; } = ".prefs/";
     public PathTypes PreferencesFileType  { get; set; } = PathTypes.External;
 
     // ------------------------------------------------------------------------
@@ -124,14 +128,20 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// Sets the bit depth of the color, depth and stencil buffer as well as
     /// multi-sampling.
     /// </summary>
-    /// <param name="r">red bits (default 8)</param>
-    /// <param name="g">green bits (default 8)</param>
-    /// <param name="b">blue bits (default 8)</param>
-    /// <param name="a">alpha bits (default 8)</param>
-    /// <param name="depth">depth bits (default 16)</param>
-    /// <param name="stencil">stencil bits (default 0)</param>
-    /// <param name="samples">MSAA samples (default 0)</param>
-    public void SetBackBufferConfig( int r, int g, int b, int a, int depth, int stencil, int samples )
+    /// <param name="r"> red bits (default 8) </param>
+    /// <param name="g"> green bits (default 8) </param>
+    /// <param name="b"> blue bits (default 8) </param>
+    /// <param name="a"> alpha bits (default 8) </param>
+    /// <param name="depth"> depth bits (default 16) </param>
+    /// <param name="stencil"> stencil bits (default 0) </param>
+    /// <param name="samples"> MSAA samples (default 0) </param>
+    public void SetBackBufferConfig( int r = 8,
+                                     int g = 8,
+                                     int b = 8,
+                                     int a = 8,
+                                     int depth = 16,
+                                     int stencil = 0,
+                                     int samples = 0 )
     {
         Red     = r;
         Green   = g;
@@ -151,6 +161,17 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     {
         PreferencesDirectory = preferencesDirectory;
         PreferencesFileType  = preferencesFileType;
+    }
+
+    /// <summary>
+    /// Sets the vorrect values for <see cref="GLContextMajorVersion"/> and
+    /// <see cref="GLContextMinorVersion"/>. Defaults to 4 (major) and 6 (minor)
+    /// </summary>
+    public void SetGLContextVersion()
+    {
+        //TODO: Set these correctly
+        GLContextMajorVersion = 4;
+        GLContextMinorVersion = 6;
     }
 
     /// <summary>

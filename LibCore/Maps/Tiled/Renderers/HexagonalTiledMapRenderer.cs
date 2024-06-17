@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -132,7 +132,7 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void RenderTileLayer( TiledMapTileLayer layer )
     {
         var color = Color.ToFloatBits( Batch.Color.R, Batch.Color.G, Batch.Color.B, Batch.Color.A * layer.Opacity );

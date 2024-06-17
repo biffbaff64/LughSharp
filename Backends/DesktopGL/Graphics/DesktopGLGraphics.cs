@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -84,12 +84,12 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     //@formatter:off
     
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int Width => GLWindow?.Config.HdpiMode == HdpiMode.Pixels 
                                      ? BackBufferWidth
                                      : LogicalWidth;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int Height => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
                                       ? BackBufferHeight
                                       : LogicalHeight;
@@ -109,7 +109,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override GLVersion.GLType GraphicsType => GLVersion.GLType.GL20; //TODO
 
     /// <summary>
@@ -221,10 +221,10 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool SupportsDisplayModeChange() => true;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool SetWindowedMode( int width, int height )
     {
         GLWindow?.Input.ResetPollingStates();
@@ -281,7 +281,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         return true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetTitle( string title )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
@@ -289,7 +289,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SetWindowTitle( GLWindow.GlfwWindow, title );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetUndecorated( bool undecorated )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
@@ -299,7 +299,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SetWindowAttrib( GLWindow.GlfwWindow, WindowAttrib.Decorated, undecorated );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetResizable( bool resizable )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
@@ -309,7 +309,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SetWindowAttrib( GLWindow.GlfwWindow, WindowAttrib.Resizable, resizable );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetVSync( bool vsync )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
@@ -319,7 +319,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SwapInterval( vsync ? 1 : 0 );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void SetForegroundFps( int fps )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
@@ -327,19 +327,19 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         GLWindow.Config.ForegroundFPS = fps;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool SupportsExtension( string extension )
     {
         return Glfw.ExtensionSupported( extension );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void RequestRendering()
     {
         GLWindow?.RequestRendering();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ICursor NewCursor( Pixmap pixmap, int xHotspot, int yHotspot )
     {
         return new DesktopGLCursor( GLWindow!, pixmap, xHotspot, yHotspot );
@@ -375,31 +375,31 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override IGraphics.DisplayMode[] GetDisplayModes()
     {
         return DesktopGLApplicationConfiguration.GetDisplayModes( Glfw.GetPrimaryMonitor() );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override IGraphics.DisplayMode[] GetDisplayModes( GLFW.Monitor monitor )
     {
         return DesktopGLApplicationConfiguration.GetDisplayModes( monitor );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override IGraphics.DisplayMode GetDisplayMode()
     {
         return DesktopGLApplicationConfiguration.GetDisplayMode( Glfw.GetPrimaryMonitor() );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override IGraphics.DisplayMode GetDisplayMode( GLFW.Monitor monitor )
     {
         return DesktopGLApplicationConfiguration.GetDisplayMode( monitor );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool SetFullscreenMode( IGraphics.DisplayMode displayMode )
     {
         GdxRuntimeException.ThrowIfNull( GLWindow );
@@ -453,13 +453,13 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         return true;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override (float X, float Y) GetPpiXY()
     {
         return ( GetPpcXY().X * 2.54f, GetPpcXY().Y * 2.54f );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override (float X, float Y) GetPpcXY()
     {
         Glfw.GetMonitorPhysicalSize( Glfw.GetPrimaryMonitor(), out var sizeX, out var sizeY );
@@ -490,22 +490,22 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetSafeInsetLeft() => 0;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetSafeInsetTop() => 0;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetSafeInsetBottom() => 0;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetSafeInsetRight() => 0;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override long GetFrameID() => _frameId;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override int GetFramesPerSecond() => _fps;
 
     // ------------------------------------------------------------------------

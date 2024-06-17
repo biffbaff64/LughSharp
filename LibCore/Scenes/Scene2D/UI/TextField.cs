@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -1299,7 +1299,7 @@ public class TextField : Widget
             _tf = tf;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void OnClicked( InputEvent ev, float x, float y )
         {
             var count = TapCount % 4;
@@ -1321,7 +1321,7 @@ public class TextField : Widget
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool TouchDown( InputEvent? ev, float x, float y, int pointer, int button )
         {
             if ( !base.TouchDown( ev, x, y, pointer, button ) )
@@ -1353,14 +1353,14 @@ public class TextField : Widget
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void TouchDragged( InputEvent? ev, float x, float y, int pointer )
         {
             base.TouchDragged( ev, x, y, pointer );
             SetCursorPosition( x, y );
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void TouchUp( InputEvent? ev, float x, float y, int pointer, int button )
         {
             if ( _tf.SelectionStart == _tf.Cursor )
@@ -1381,7 +1381,7 @@ public class TextField : Widget
             _tf.Cursor = _tf.Text?.Length ?? 1;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool KeyDown( InputEvent? ev, int keycode )
         {
             if ( _tf._disabled )

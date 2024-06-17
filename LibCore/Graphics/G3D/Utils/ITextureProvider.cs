@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -64,7 +64,7 @@ public interface ITextureProvider
 
         public Texture Load( string fileName )
         {
-            var result = new Texture( Gdx.Files.Internal( fileName ), _useMipMaps );
+            var result = new Texture( Gdx.Files.Internal( fileName ).File, _useMipMaps );
             result.SetFilter( _minFilter, _magFilter );
             result.SetWrap( _uWrap, _vWrap );
 

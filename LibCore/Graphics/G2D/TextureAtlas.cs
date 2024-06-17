@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ public class TextureAtlas
     /// using the parent directory of the pack file to find the page images.
     /// </summary>
     public TextureAtlas( string internalPackFile )
-        : this( Gdx.Files.Internal( internalPackFile ) )
+        : this( Gdx.Files.Internal( internalPackFile ).File )
     {
     }
 

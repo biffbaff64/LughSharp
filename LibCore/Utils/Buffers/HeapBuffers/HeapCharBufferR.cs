@@ -1,7 +1,7 @@
 ﻿// /////////////////////////////////////////////////////////////////////////////
 //  MIT License
 // 
-//  Copyright (c) 2024 Richard Ikin / Red 7 Projects
+//  Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 // 
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -50,28 +50,28 @@ public class HeapCharBufferR : HeapCharBuffer
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool IsReadOnly => true;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override CharBuffer Slice()
     {
         return new HeapCharBufferR( Hb, -1, 0, Remaining(), Remaining(), Position + Offset );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override CharBuffer Duplicate()
     {
         return new HeapCharBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override CharBuffer AsReadOnlyBuffer()
     {
         return Duplicate();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override string ToString( int start, int end )
     {
         try
@@ -84,7 +84,7 @@ public class HeapCharBufferR : HeapCharBuffer
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override CharBuffer SubSequence( int start, int end )
     {
         if ( ( start < 0 ) || ( end > Length() ) || ( start > end ) )
@@ -95,7 +95,7 @@ public class HeapCharBufferR : HeapCharBuffer
         return new HeapCharBufferR( Hb, -1, Position + start, Position + end, Capacity, Offset );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteOrder Order()
     {
         return ByteOrder.NativeOrder;

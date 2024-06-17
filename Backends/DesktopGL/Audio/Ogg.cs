@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,13 +30,13 @@ public class Ogg
 {
     public class Music : OpenALMusic
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Read( byte[] buffer )
         {
             return 0;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Reset()
         {
         }
@@ -44,7 +44,7 @@ public class Ogg
 
     public class Sound : OpenALSound
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Sound( OpenALAudio audio ) : base( audio )
         {
         }

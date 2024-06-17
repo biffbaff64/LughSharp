@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public abstract class AbstractInput : IInput
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IInputProcessor? InputProcessor { get; set; }
 
     /// <summary>

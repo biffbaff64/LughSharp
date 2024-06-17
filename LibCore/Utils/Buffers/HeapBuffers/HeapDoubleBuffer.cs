@@ -1,7 +1,7 @@
 ﻿// /////////////////////////////////////////////////////////////////////////////
 //  MIT License
 // 
-//  Copyright (c) 2024 Richard Ikin / Red 7 Projects
+//  Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 // 
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -39,13 +39,13 @@ public class HeapDoubleBuffer : DoubleBuffer
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public HeapDoubleBuffer( double[]? hb, int mark, int pos, int lim, int cap, int offset = 0 )
         : base( mark, pos, lim, cap, hb, offset )
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override DoubleBuffer Slice()
     {
         return new HeapDoubleBuffer( Hb,
@@ -56,7 +56,7 @@ public class HeapDoubleBuffer : DoubleBuffer
                                      Position + Offset );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override DoubleBuffer Duplicate()
     {
         return new HeapDoubleBuffer( Hb,
@@ -67,7 +67,7 @@ public class HeapDoubleBuffer : DoubleBuffer
                                      Offset );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override DoubleBuffer asReadOnlyBuffer()
     {
         return new HeapDoubleBuffer( Hb,
@@ -78,19 +78,19 @@ public class HeapDoubleBuffer : DoubleBuffer
                                      Offset );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override double Get()
     {
         return Hb?[ Ix( NextGetIndex() ) ] ?? throw new GdxRuntimeException( "HB is null!" );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override double Get( int index )
     {
         return Hb?[ Ix( CheckIndex( index ) ) ] ?? throw new GdxRuntimeException( "HB is null!" );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override DoubleBuffer Get( double[] dst, int offset, int length )
     {
         CheckBounds( offset, length, dst.Length );
@@ -107,7 +107,7 @@ public class HeapDoubleBuffer : DoubleBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override DoubleBuffer Put( double d )
     {
         Put( NextPutIndex(), d );
@@ -115,7 +115,7 @@ public class HeapDoubleBuffer : DoubleBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override DoubleBuffer Put( int index, double d )
     {
         if ( Hb == null )
@@ -128,7 +128,7 @@ public class HeapDoubleBuffer : DoubleBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override DoubleBuffer Put( double[] src, int offset, int length )
     {
         if ( Hb == null )
@@ -149,7 +149,7 @@ public class HeapDoubleBuffer : DoubleBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override DoubleBuffer Put( DoubleBuffer src )
     {
         if ( Hb == null )
@@ -196,7 +196,7 @@ public class HeapDoubleBuffer : DoubleBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override DoubleBuffer Compact()
     {
         if ( Hb == null )
@@ -213,13 +213,13 @@ public class HeapDoubleBuffer : DoubleBuffer
         return this;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override bool IsDirect()
     {
         return false;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override ByteOrder Order()
     {
         return ByteOrder.NativeOrder;

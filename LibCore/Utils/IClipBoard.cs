@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@ public interface IClipboard
     /// The current content of the clipboard if it contains text
     /// </summary>
     /// <returns> the clipboard content or null  </returns>
-    string Contents { get; set; }
+    string? Contents { get; set; }
 
     /// <summary>
     /// Check if the clipboard has contents.

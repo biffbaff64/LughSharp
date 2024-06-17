@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -88,18 +88,9 @@ public class DesktopGLFileHandle : FileHandle
     /// </summary>
     public DirectoryInfo ParentFolder()
     {
-        DirectoryInfo directoryInfo;
-
-        if ( !Directory.Exists( base.FilePath ) )
-        {
-            directoryInfo = base.PathType == PathTypes.Absolute
-                ? new DirectoryInfo( "/" )
-                : new DirectoryInfo( "" );
-        }
-        else
-        {
-            directoryInfo = new DirectoryInfo( Path.GetFullPath( base.FileName ) );
-        }
+        var directoryInfo = !Directory.Exists( base.FilePath )
+                                ? new DirectoryInfo( base.PathType == PathTypes.Absolute ? "/" : "" )
+                                : new DirectoryInfo( Path.GetFullPath( base.FileName ) );
 
         return directoryInfo;
     }

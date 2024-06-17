@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -88,7 +88,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return map;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void LoadAsync( AssetManager? manager,
                                     FileInfo? tmxFile,
                                     AtlasTiledMapLoaderParameters? parameter )
@@ -103,7 +103,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         Map = LoadTiledMap( tmxFile, parameter, AtlasResolver );
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override TiledMap LoadSync( AssetManager manager, FileInfo? file, AtlasTiledMapLoaderParameters? parameter )
     {
         if ( parameter != null )
@@ -114,13 +114,13 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return Map;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override List< AssetDescriptor > GetDependencies( string? filename, FileInfo? file, AssetLoaderParameters? p )
     {
         return null!;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override List< AssetDescriptor > GetDependencyAssetDescriptors( FileInfo tmxFile,
                                                                            TextureLoader.TextureLoaderParameters textureLoaderParameters )
     {
@@ -132,7 +132,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
         return descriptors;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override void AddStaticTiles( FileInfo tmxFile,
                                             IImageResolver imageResolver,
                                             TiledMapTileSet tileSet,

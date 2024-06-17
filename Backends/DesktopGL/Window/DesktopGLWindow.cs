@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -54,6 +54,11 @@ public class DesktopGLWindow : IDisposable
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Creates a new DesktopGLWindow instance, using the given <see cref="IApplicationListener"/>,
+    /// <see cref="DesktopGLApplicationConfiguration"/>, and attaching it to the given
+    /// <see cref="IDesktopGLApplicationBase"/>.
+    /// </summary>
     public DesktopGLWindow( IApplicationListener listener,
                             DesktopGLApplicationConfiguration config,
                             IDesktopGLApplicationBase application )
@@ -215,7 +220,7 @@ public class DesktopGLWindow : IDisposable
 
         for ( var i = 0; i < imagePaths.Length; i++ )
         {
-            pixmaps[ i ] = new Pixmap( Gdx.Files.GetFileHandle( imagePaths[ i ], imageFileType ) );
+            pixmaps[ i ] = new Pixmap( Gdx.Files.GetFileHandle( imagePaths[ i ], imageFileType ).File );
         }
 
         SetIcon( window, pixmaps );
@@ -432,7 +437,7 @@ public class DesktopGLWindow : IDisposable
     
     #region dispose pattern
     
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Dispose()
     {
         Dispose( true );

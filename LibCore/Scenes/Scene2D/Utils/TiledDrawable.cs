@@ -1,7 +1,7 @@
 ﻿// ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2024 Richard Ikin / Red 7 Projects
+// Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -55,7 +55,7 @@ public class TiledDrawable : TextureRegionDrawable
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( IBatch batch, float x, float y, float width, float height )
     {
         var region = Region;
@@ -161,13 +161,13 @@ public class TiledDrawable : TextureRegionDrawable
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Draw( IBatch batch, GRect region, Point2D origin, Point2D scale, float rotation )
     {
         throw new NotSupportedException();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override TiledDrawable Tint( Color tint )
     {
         var drawable = new TiledDrawable( this );
