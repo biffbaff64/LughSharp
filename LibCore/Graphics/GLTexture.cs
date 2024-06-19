@@ -231,9 +231,10 @@ public abstract class GLTexture : IDisposable
     }
 
     /// <summary>
+    /// Sets, and returns, the Anisotropic Filter Level.
     /// </summary>
-    /// <param name="level"></param>
-    /// <returns></returns>
+    /// <param name="level"> The level. </param>
+    /// <returns> A float holding the new level. </returns>
     public float SetAnisotropicFilter( float level )
     {
         var max = GetMaxAnisotropicFilterLevel();
@@ -260,6 +261,10 @@ public abstract class GLTexture : IDisposable
     }
 
     /// <summary>
+    /// Gets the maximum Anisotropic Filter Level, if it is currently &gt; 0.
+    /// If it is not, then the level is obtained from OpenGL if the extension
+    /// <b> GL_EXT_texture_filter_anisotropic </b> is supported, or 1.0f
+    /// is the extension is not supported.
     /// </summary>
     /// <returns></returns>
     public float GetMaxAnisotropicFilterLevel()
@@ -282,6 +287,7 @@ public abstract class GLTexture : IDisposable
     }
 
     /// <summary>
+    /// Delete this GLTexture.
     /// </summary>
     public void Delete()
     {
@@ -293,6 +299,7 @@ public abstract class GLTexture : IDisposable
     }
 
     /// <summary>
+    /// 
     /// </summary>
     /// <param name="target"></param>
     /// <param name="data"></param>

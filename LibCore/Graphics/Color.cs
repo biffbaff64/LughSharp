@@ -27,13 +27,13 @@ namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
 /// A color class, holding the r, g, b and alpha component as floats in the range [0,1].
-/// <para>
 /// All methods perform clamping on the internal values after execution.
-/// </para>
 /// </summary>
 [PublicAPI]
 public sealed class Color
 {
+    #region colour values
+    
     public readonly static Color White      = new( 1, 1, 1, 1 );
     public readonly static Color LightGray  = new( 0xbfbfbfff );
     public readonly static Color Gray       = new( 0x7f7f7fff );
@@ -69,6 +69,8 @@ public sealed class Color
     public readonly static Color Violet     = new( 0xee82eeff );
     public readonly static Color Maroon     = new( 0xb03060ff );
 
+    #endregion colour values
+
     // ------------------------------------------------------------------------
 
     #region Colour Components
@@ -81,11 +83,6 @@ public sealed class Color
     #endregion Colour Components
     
     // ------------------------------------------------------------------------
-
-    /// <summary>
-    /// Convenience for frequently used <tt>White.ToFloatBits()</tt>
-    /// </summary>
-    public readonly static float WhiteFloatBits = White.ToFloatBits();
 
     /// <summary>
     /// Constructor, sets all the components to 0.
@@ -117,10 +114,10 @@ public sealed class Color
     /// <summary>
     /// Constructor, sets the components of the color.
     /// </summary>
-    /// <param name="r"> The red component. </param>
-    /// <param name="g"> The green component. </param>
-    /// <param name="b"> The blue component. </param>
-    /// <param name="a"> The alpha component. </param>
+    /// <param name="r"> Red component </param>
+    /// <param name="g"> Green component </param>
+    /// <param name="b"> Blue component </param>
+    /// <param name="a"> Alpha component </param>
     public Color( float r, float g, float b, float a )
     {
         R = r;
@@ -153,6 +150,10 @@ public sealed class Color
     /// <summary>
     /// Sets this colors components using the supplied r,g,b,a components.
     /// </summary>
+    /// <param name="r"> Red component </param>
+    /// <param name="g"> Green component </param>
+    /// <param name="b"> Blue component </param>
+    /// <param name="a"> Alpha component </param>
     /// <returns> This Color for chaining. </returns>
     public Color Set( float r, float g, float b, float a )
     {
@@ -248,6 +249,10 @@ public sealed class Color
     /// <summary>
     /// Adds the supplied Color components to the corresponding components of this Color.
     /// </summary>
+    /// <param name="r"> Red component </param>
+    /// <param name="g"> Green component </param>
+    /// <param name="b"> Blue component </param>
+    /// <param name="a"> Alpha component </param>
     /// <returns> This Color for chaining. </returns>
     public Color Add( float r, float g, float b, float a )
     {
@@ -667,10 +672,10 @@ public sealed class Color
 
     /// <summary>
     /// </summary>
-    /// <param name="r"></param>
-    /// <param name="g"></param>
-    /// <param name="b"></param>
-    /// <param name="a"></param>
+    /// <param name="r"> Red component </param>
+    /// <param name="g"> Green component </param>
+    /// <param name="b"> Blue component </param>
+    /// <param name="a"> Alpha component </param>
     /// <returns></returns>
     public static float ToFloatBits( int r, int g, int b, int a )
     {
@@ -682,10 +687,10 @@ public sealed class Color
 
     /// <summary>
     /// </summary>
-    /// <param name="r"></param>
-    /// <param name="g"></param>
-    /// <param name="b"></param>
-    /// <param name="a"></param>
+    /// <param name="r"> Red component </param>
+    /// <param name="g"> Green component </param>
+    /// <param name="b"> Blue component </param>
+    /// <param name="a"> Alpha component </param>
     /// <returns></returns>
     public static float ToFloatBits( float r, float g, float b, float a )
     {
@@ -696,6 +701,11 @@ public sealed class Color
 
         return NumberUtils.IntToFloatColor( color );
     }
+
+    /// <summary>
+    /// Convenience for frequently used <tt>White.ToFloatBits()</tt>
+    /// </summary>
+    public readonly static float WhiteFloatBits = White.ToFloatBits();
 
     /// <summary>
     /// </summary>
@@ -710,10 +720,10 @@ public sealed class Color
 
     /// <summary>
     /// </summary>
-    /// <param name="r"></param>
-    /// <param name="g"></param>
-    /// <param name="b"></param>
-    /// <param name="a"></param>
+    /// <param name="r"> Red component </param>
+    /// <param name="g"> Green component </param>
+    /// <param name="b"> Blue component </param>
+    /// <param name="a"> Alpha component </param>
     /// <returns></returns>
     public static int ToIntBits( int r, int g, int b, int a )
     {
@@ -784,21 +794,56 @@ public sealed class Color
         return Convert.ToInt32( hexComponent, 16 ) / 255f;
     }
 
+    /// <summary>
+    /// Returns the given Alpha value as a 32-bit int.
+    /// </summary>
+    /// <param name="alpha"> The Alpha value. </param>
+    /// <returns> The int result. </returns>
     public static int AlphaToInt( float alpha )
     {
         return ( int ) ( alpha * 255.0f );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="luminance"></param>
+    /// <param name="alpha"></param>
+    /// <returns></returns>
     public static int LuminanceAlpha( float luminance, float alpha )
     {
         return ( ( int ) ( luminance * 255.0f ) << 8 ) | ( int ) ( alpha * 255 );
     }
 
+    /// <summary>
+    /// Returns the given <see cref="Color"/> as a 32-bit int in the
+    /// following format:-
+    /// <li>Bits  0 - 4  : Blue component</li>
+    /// <li>Bits  5 - 10 : Green component</li>
+    /// <li>Bits 11 - 15 : Red component</li>
+    /// <li>Bits 16 - 31 : Undefined</li>
+    /// </summary>
+    /// <param name="r"> Red component </param>
+    /// <param name="g"> Green component </param>
+    /// <param name="b"> Blue component </param>
     public static int RGB565( float r, float g, float b )
     {
         return ( ( int ) ( r * 31 ) << 11 ) | ( ( int ) ( g * 63 ) << 5 ) | ( int ) ( b * 31 );
     }
 
+    /// <summary>
+    /// Returns the given R.G.B colour components as a 32-bit int in the
+    /// following format:-
+    /// <li>Bits  0 - 3  : Alpha component</li>
+    /// <li>Bits  4 - 7  : Blue component</li>
+    /// <li>Bits  8 - 11 : Green component</li>
+    /// <li>Bits 12 - 15 : Red component</li>
+    /// <li>Bits 16 - 31 : Undefined</li>
+    /// </summary>
+    /// <param name="r"> Red component </param>
+    /// <param name="g"> Green component </param>
+    /// <param name="b"> Blue component </param>
+    /// <param name="a"> Alpha component </param>
     public static int RGBA4444( float r, float g, float b, float a )
     {
         return ( ( int ) ( r * 15 ) << 12 )
@@ -807,11 +852,34 @@ public sealed class Color
              | ( int ) ( a * 15 );
     }
 
+    /// <summary>
+    /// Returns the given R.G.B colour components as a 32-bit int in the
+    /// following format:-
+    /// <li>Bits  0 - 7  : Blue component</li>
+    /// <li>Bits  8 - 15 : Green component</li>
+    /// <li>Bits 16 - 23 : Red component</li>
+    /// <li>Bits 24 - 31 : Undefined</li>
+    /// </summary>
+    /// <param name="r"> Red component </param>
+    /// <param name="g"> Green component </param>
+    /// <param name="b"> Blue component </param>
     public static int RGB888( float r, float g, float b )
     {
         return ( ( int ) ( r * 255 ) << 16 ) | ( ( int ) ( g * 255 ) << 8 ) | ( int ) ( b * 255 );
     }
 
+    /// <summary>
+    /// Returns the given seperate colour components as a 32-bit int in the
+    /// following format:-
+    /// <li>Bits  0 - 7  : Alpha component</li>
+    /// <li>Bits  8 - 15 : Blue component</li>
+    /// <li>Bits 16 - 23 : Green component</li>
+    /// <li>Bits 24 - 31 : Red component</li>
+    /// </summary>
+    /// <param name="r"> Red component </param>
+    /// <param name="g"> Green component </param>
+    /// <param name="b"> Blue component </param>
+    /// <param name="a"> Alpha component </param>
     public static int RGBA8888( float r, float g, float b, float a )
     {
         return ( ( int ) ( r * 255 ) << 24 )
@@ -820,6 +888,18 @@ public sealed class Color
              | ( int ) ( a * 255 );
     }
 
+    /// <summary>
+    /// Returns the given seperate colour components as a 32-bit int in the
+    /// following format:-
+    /// <li>Bits  0 - 7  : Blue component</li>
+    /// <li>Bits  8 - 15 : Green component</li>
+    /// <li>Bits 16 - 23 : Red component</li>
+    /// <li>Bits 24 - 31 : Alpha component</li>
+    /// </summary>
+    /// <param name="a"> Alpha component </param>
+    /// <param name="b"> Blue component </param>
+    /// <param name="g"> Green component </param>
+    /// <param name="r"> Red component </param>
     public static int ARGB8888( float a, float r, float g, float b )
     {
         return ( ( int ) ( a * 255 ) << 24 )
@@ -828,6 +908,15 @@ public sealed class Color
              | ( int ) ( b * 255 );
     }
 
+    /// <summary>
+    /// Returns the given <see cref="Color"/> as a 32-bit int in the
+    /// following format:-
+    /// <li>Bits  0 - 4  : Blue component</li>
+    /// <li>Bits  5 - 10 : Green component</li>
+    /// <li>Bits 11 - 15 : Red component</li>
+    /// <li>Bits 16 - 31 : Undefined</li>
+    /// </summary>
+    /// <param name="color"> The colour. </param>
     public static int RGB565( Color color )
     {
         ArgumentNullException.ThrowIfNull( color );
@@ -837,6 +926,16 @@ public sealed class Color
              | ( int ) ( color.B * 31 );
     }
 
+    /// <summary>
+    /// Returns the given <see cref="Color"/> as a 16-bit int in the
+    /// following format:-
+    /// <li>Bits  0 - 3  : Alpha component</li>
+    /// <li>Bits  4 - 7  : Blue component</li>
+    /// <li>Bits  8 - 11 : Green component</li>
+    /// <li>Bits 12 - 15 : Red component</li>
+    /// <li>Bits 16 - 31 : Undefined</li>
+    /// </summary>
+    /// <param name="color"> The colour. </param>
     public static int RGBA4444( Color color )
     {
         ArgumentNullException.ThrowIfNull( color );
@@ -847,6 +946,15 @@ public sealed class Color
              | ( int ) ( color.A * 15 );
     }
 
+    /// <summary>
+    /// Returns the given <see cref="Color"/> as a 32-bit int in the
+    /// following format:-
+    /// <li>Bits  0 - 7  : Blue component</li>
+    /// <li>Bits  8 - 15 : Green component</li>
+    /// <li>Bits 16 - 23 : Red component</li>
+    /// <li>Bits 24 - 31 : Undefined</li>
+    /// </summary>
+    /// <param name="color"> The colour. </param>
     public static int RGB888( Color color )
     {
         ArgumentNullException.ThrowIfNull( color );
@@ -856,6 +964,15 @@ public sealed class Color
              | ( int ) ( color.B * 255 );
     }
 
+    /// <summary>
+    /// Returns the given <see cref="Color"/> as a 32-bit int in the
+    /// following format:-
+    /// <li>Bits  0 - 7  : Alpha component</li>
+    /// <li>Bits  8 - 15 : Blue component</li>
+    /// <li>Bits 16 - 23 : Green component</li>
+    /// <li>Bits 24 - 31 : Red component</li>
+    /// </summary>
+    /// <param name="color"> The colour. </param>
     public static int RGBA8888( Color color )
     {
         ArgumentNullException.ThrowIfNull( color );
@@ -866,6 +983,15 @@ public sealed class Color
              | ( int ) ( color.A * 255 );
     }
 
+    /// <summary>
+    /// Returns the given <see cref="Color"/> as a 32-bit int in the
+    /// following format:-
+    /// <li>Bits  0 - 7  : Blue component</li>
+    /// <li>Bits  8 - 15 : Green component</li>
+    /// <li>Bits 16 - 23 : Red component</li>
+    /// <li>Bits 24 - 31 : Alpha component</li>
+    /// </summary>
+    /// <param name="color"> The colour. </param>
     public static int ARGB8888( Color color )
     {
         ArgumentNullException.ThrowIfNull( color );
@@ -884,8 +1010,6 @@ public sealed class Color
     /// </returns>
     public Color Copy()
     {
-        ArgumentNullException.ThrowIfNull( this );
-
         return new Color( this );
     }
 

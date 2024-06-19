@@ -93,6 +93,7 @@ public class AssetManager
             //@formatter:on
         }
 
+        _executor          = new AsyncExecutor( 1, "AssetManager" );
         FileHandleResolver = resolver;
     }
 
@@ -686,7 +687,7 @@ public class AssetManager
     /// <summary>
     /// Updates the current task on the top of the task stack.
     /// </summary>
-    /// <returns>true if the asset is loaded or the task was cancelled.</returns>
+    /// <returns> true if the asset is loaded or the task was cancelled. </returns>
     public bool UpdateTask()
     {
         var task = _tasks.Peek();
@@ -729,11 +730,9 @@ public class AssetManager
             AddAsset( task.AssetDesc.Filepath, task.AssetDesc.AssetType, task.Asset );
 
             // otherwise, if a listener was found in the parameter invoke it
-            task.AssetDesc.Parameters?.LoadedCallback?.FinishedLoading(
-                                                                       this,
-                                                                       task.AssetDesc.Filepath,
-                                                                       task.AssetDesc.AssetType
-                                                                      );
+            task.AssetDesc.Parameters?.LoadedCallback?.FinishedLoading( this,
+                                                                        task.AssetDesc.Filepath,
+                                                                        task.AssetDesc.AssetType );
 
             return true;
         }
@@ -902,72 +901,6 @@ public class AssetManager
     }
 
     // ------------------------------------------------------------------------
-
-    /// <summary>
-    /// Clears and disposes all assets and the preloading queue.
-    /// </summary>
-    public void Clear()
-    {
-        _loadQueue.Clear();
-
-        while ( !Update() )
-        {
-        }
-
-        var dependencyCount = new Dictionary< string, int >();
-
-        while ( _assetTypes.Count > 0 )
-        {
-            // for each asset, figure out how often it was referenced
-            dependencyCount.Clear();
-
-            List< string > assets = _assetTypes.Keys.ToList();
-
-            foreach ( var asset in assets )
-            {
-                dependencyCount[ asset ] = 0;
-            }
-
-            foreach ( var asset in assets )
-            {
-                List< string >? dependencies = _assetDependencies?[ asset ];
-
-                if ( dependencies != null )
-                {
-                    foreach ( var dependency in dependencies )
-                    {
-                        var count = 0;
-
-                        if ( dependencyCount.TryGetValue( dependency, out var value ) )
-                        {
-                            count = value == default( int ) ? 0 : value;
-                        }
-
-                        count++;
-                        dependencyCount[ dependency ] = count;
-                    }
-                }
-            }
-
-            // only dispose of assets that are root assets (not referenced)
-            foreach ( var asset in assets )
-            {
-                if ( dependencyCount.TryGetValue( asset, out var _ ) == default( bool ) )
-                {
-                    Unload( asset );
-                }
-            }
-        }
-
-        _assets.Clear();
-        _assetTypes.Clear();
-        _assetDependencies?.Clear();
-        _loaded    = 0;
-        _toLoad    = 0;
-        _peakTasks = 0;
-        _loadQueue.Clear();
-        _tasks.Clear();
-    }
 
     /// <summary>
     /// Returns the reference count of an asset.
@@ -1364,6 +1297,73 @@ public class AssetManager
 
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Clears and disposes all assets and the preloading queue.
+    /// </summary>
+    public void Clear()
+    {
+        _loadQueue.Clear();
+
+        while ( !Update() )
+        {
+        }
+
+        var dependencyCount = new Dictionary< string, int >();
+
+        while ( _assetTypes.Count > 0 )
+        {
+            // for each asset, figure out how often it was referenced
+            dependencyCount.Clear();
+
+            List< string > assets = _assetTypes.Keys.ToList();
+
+            foreach ( var asset in assets )
+            {
+                dependencyCount[ asset ] = 0;
+            }
+
+            foreach ( var asset in assets )
+            {
+                List< string >? dependencies = _assetDependencies?[ asset ];
+
+                if ( dependencies != null )
+                {
+                    foreach ( var dependency in dependencies )
+                    {
+                        var count = 0;
+
+                        if ( dependencyCount.TryGetValue( dependency, out var value ) )
+                        {
+                            count = value == default( int ) ? 0 : value;
+                        }
+
+                        count++;
+                        dependencyCount[ dependency ] = count;
+                    }
+                }
+            }
+
+            // only dispose of assets that are root assets (not referenced)
+            foreach ( var asset in assets )
+            {
+                if ( dependencyCount.TryGetValue( asset, out var _ ) == default( bool ) )
+                {
+                    Unload( asset );
+                }
+            }
+        }
+
+        _assets.Clear();
+        _assetTypes.Clear();
+        _assetDependencies?.Clear();
+        _loaded    = 0;
+        _toLoad    = 0;
+        _peakTasks = 0;
+        _loadQueue.Clear();
+        _tasks.Clear();
+        _executor?.Dispose();
+    }
+
     #region dispose pattern
 
     /// <summary>
@@ -1374,7 +1374,7 @@ public class AssetManager
         Dispose( true );
     }
 
-    private void Dispose( bool disposing )
+    protected void Dispose( bool disposing )
     {
         if ( disposing )
         {

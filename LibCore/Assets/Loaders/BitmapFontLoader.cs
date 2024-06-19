@@ -154,7 +154,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
         Dispose( true );
     }
 
-    private void Dispose( bool disposing )
+    protected void Dispose( bool disposing )
     {
         if ( disposing )
         {

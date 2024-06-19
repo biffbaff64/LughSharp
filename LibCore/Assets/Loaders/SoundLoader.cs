@@ -95,7 +95,7 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
     /// <param name="disposing">
     /// True to release both managed and unmanaged resources; false to release only unmanaged resources.
     /// </param>
-    private void Dispose( bool disposing )
+    protected void Dispose( bool disposing )
     {
         if ( disposing )
         {

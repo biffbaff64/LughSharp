@@ -22,6 +22,7 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
+using LughSharp.LibCore.Utils.Exceptions;
 using Environment = System.Environment;
 
 namespace LughSharp.LibCore.Core;
@@ -61,11 +62,6 @@ public static class Platform
 
     // ------------------------------------------------------------------------
 
-    private static ApplicationType _targetPlatform = ApplicationType.Unknown;
-    private static Family          _familyGroup    = Family.Unknown;
-
-    // ------------------------------------------------------------------------
-
     public static bool IsWindows { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Windows );
     public static bool Is64Bit   { get; private set; } = Environment.Is64BitOperatingSystem;
     public static bool IsLinux   { get; private set; } = RuntimeInformation.IsOSPlatform( OSPlatform.Linux );
@@ -77,6 +73,62 @@ public static class Platform
     public static bool IsIos     { get; private set; } = false; //TODO: For the future, concentrating on desktop for now. 
     public static bool IsAndroid { get; private set; } = false; //TODO: For the future, concentrating on desktop for now.
     public static bool IsXBox    { get; private set; } = false; //TODO: For the future, concentrating on desktop for now.
+
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// The target platform for the app.
+    /// Must be one of the enum <see cref="ApplicationType"/>
+    /// </summary>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public static ApplicationType TargetPlatform
+    {
+        get => _targetPlatform;
+        set
+            => _targetPlatform = value switch
+            {
+                // ----------------------------------------
+                ApplicationType.Android
+                    or ApplicationType.Linux
+                    or ApplicationType.XBox
+                    or ApplicationType.IOS
+                    or ApplicationType.MacOS
+                    or ApplicationType.UWP
+                    or ApplicationType.WebGL
+                    or ApplicationType.WindowsGL => value,
+
+                // ----------------------------------------
+                ApplicationType.Unknown => throw new GdxRuntimeException( $"Illegal Target Platform: {value.ToString()}" ),
+                var _                   => throw new GdxRuntimeException( $"Illegal Target Platform: {value.ToString()}" )
+            };
+    }
+
+    /// <summary>
+    /// The target family group (mobile, console, desktop etc).
+    /// Must be one of the enum <see cref="Family"/>.
+    /// </summary>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public static Family FamilyGroup
+    {
+        get => _familyGroup;
+        set
+            => _familyGroup = value switch
+            {
+                // ----------------------------------------
+                Family.Console
+                    or Family.Desktop
+                    or Family.Mobile => value,
+
+                // ----------------------------------------
+                Family.Unknown => throw new GdxRuntimeException( $"Illegal Family Group: {value.ToString()}" ),
+                var _          => throw new GdxRuntimeException( $"Illegal Family Group: {value.ToString()}" )
+            };
+    }
+
+    // ------------------------------------------------------------------------
+
+    private static ApplicationType _targetPlatform;
+    private static Family          _familyGroup;
 
     // ------------------------------------------------------------------------
 

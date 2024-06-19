@@ -26,9 +26,9 @@ namespace LughSharp.LibCore.Files;
 
 /// <summary>
 /// Represents a file or directory on the filesystem. FileHandles are created via a
-/// <see cref="File"/>s instance. Because some of the file types are backed by composite
+/// <see cref="FileInfo"/>s instance. Because some of the file types are backed by composite
 /// files and may be compressed (for example, if they are in an Android .apk or are found
-/// via the classpath), the methods for extracting a <b>Path</b> or <b>File</b> may not
+/// via the classpath), the methods for extracting a <b>Path</b> or <b>FileInfo</b> may not
 /// be appropriate for all types.
 /// <para>
 /// Use the Reader or Stream methods here to hide these dependencies from your platform
@@ -43,6 +43,36 @@ public class FileHandle
 
     // ------------------------------------------------------------------------
 
+    protected FileHandle()
+    {
+        this.File     = null!;
+        this.PathType = PathTypes.Absolute;
+    }
+    
+    /// <summary>
+    /// Creates a new absolute FileHandle for the file name. Use this for tools on
+    /// the desktop that don't need any of the backends. Do not use this constructor
+    /// for cross-platform developments. Use the <see cref="IFiles"/> interface instead.
+    /// </summary>
+    /// <param name="fileName"> the filename. </param>
+    public FileHandle( string fileName )
+    {
+        this.File     = new FileInfo( fileName );
+        this.PathType = PathTypes.Absolute;
+    }
+
+    /// <summary>
+    /// Creates a new absolute FileHandle for the File. Use this for tools on the desktop
+    /// that don't need any of the backends. Do not use this constructor for cross-platform
+    /// developments. Use the <see cref="IFiles"/> interface instead.
+    /// </summary>
+    /// <param name="file"> the file. </param>
+    public FileHandle( FileInfo file )
+    {
+        this.File     = file;
+        this.PathType = PathTypes.Absolute;
+    }
+
     /// <summary>
     /// Creates a new absolute FileHandle for the file name. Use this for tools on the
     /// desktop that don't need any of the backends. Do not use this constructor for
@@ -51,6 +81,17 @@ public class FileHandle
     public FileHandle( string fileName, PathTypes type )
     {
         this.File     = new FileInfo( fileName );
+        this.PathType = type;
+    }
+
+    /// <summary>
+    /// Creates a new absolute FileHandle for the file name. Use this for tools on the
+    /// desktop that don't need any of the backends. Do not use this constructor for
+    /// cross-platform developments. Use the <see cref="IFiles"/> interface instead.
+    /// </summary>
+    public FileHandle( FileInfo file, PathTypes type )
+    {
+        this.File     = file;
         this.PathType = type;
     }
 
@@ -69,4 +110,33 @@ public class FileHandle
     /// </para>
     /// </summary>
     public string FilePath => File.FullName.Replace( "\\", "/" );
+
+    /// <summary>
+    /// Returns the file extension (without the dot) or an empty string if the
+    /// file name doesn't contain a dot.
+    /// </summary>
+    public string Extension()
+    {
+        return Path.GetExtension( File.Name ).TrimStart( '.' );
+    }
+
+    /// <summary>
+    /// Return the name of the file, without parent paths or the extension.
+    /// </summary>
+    public string NameWithoutExtension()
+    {
+        return Path.GetFileNameWithoutExtension( File.Name );
+    }
+
+    /// <summary>
+    /// Returns the path and filename without the extension,
+    /// <para>
+    /// e.g. dir/dir2/file.png -> dir/dir2/file.
+    /// </para>
+    /// Backward slashes will be returned as forward slashes.
+    /// </summary>
+    public string PathWithoutExtension()
+    {
+        return Path.GetFileNameWithoutExtension( File.FullName );
+    }
 }

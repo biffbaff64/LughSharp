@@ -23,18 +23,54 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Utils.Exceptions;
+
 namespace LughSharp.Backends.DesktopGL.Audio;
 
 [PublicAPI]
 public class GdxSoundAudioRecorder : IAudioRecorder
 {
-    /// <inheritdoc />
-    public void Read( short[] samples, int offset, int numSamples )
+    private TargetDataLine line;
+    private byte[]         buffer = new byte[ 1024 * 4 ];
+
+    public GdxSoundAudioRecorder( int samplingRate, bool isMono )
     {
+        try
+        {
+            var format = new AudioFormat( AudioFormat.Encoding.PcmSigned,
+                                          samplingRate,
+                                          16,
+                                          isMono ? 1 : 2,
+                                          isMono ? 2 : 4,
+                                          samplingRate,
+                                          false );
+
+            line = AudioSystem.getTargetDataLine( format );
+            line.open( format, buffer.Length );
+            line.start();
+        }
+        catch ( Exception ex )
+        {
+            throw new GdxRuntimeException( "Error creating JavaSoundAudioRecorder.", ex );
+        }
     }
 
-    /// <inheritdoc />
+    public void Read( short[] samples, int offset, int numSamples )
+    {
+        if ( buffer.length < numSamples * 2 ) buffer = new byte[ numSamples * 2 ];
+
+        int toRead = numSamples * 2;
+        int read   = 0;
+
+        while ( read != toRead )
+            read += line.read( buffer, read, toRead - read );
+
+        for ( int i = 0, j = 0; i < numSamples * 2; i += 2, j++ )
+            samples[ offset + j ] = ( short ) ( ( buffer[ i + 1 ] << 8 ) | ( buffer[ i ] & 0xff ) );
+    }
+
     public void Dispose()
     {
+        line.close();
     }
 }

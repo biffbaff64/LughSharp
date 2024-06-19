@@ -113,97 +113,14 @@ AUDIO
     - DONE - DONE - IMusic
     - DONE - DONE - ISound
 
-AUDIO/MP3SHARP
---------------
+AUDIO/MAPONUS
+-------------
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - DONE - Buffer16BitSterso
-    - DONE - DONE - MP3SharpException
-    - DONE - DONE - MP3Stream
-    - DONE - DONE - SoundFormat
-
-AUDIO/MP3SHARP/DECODING
------------------------
-
-    CODE   DOCUMENT
-    ----   --------
-    - DONE - DONE - AudioBase
-    - DONE - DONE - BitReserve
-    - DONE - DONE - Bitstream
-    - DONE - DONE - BitstreamErrors
-    - DONE - DONE - BitstreamException
-    - DONE - DONE - CircularByteBuffer
-    - DONE - DONE - Crc16
-    - DONE - DONE - Decoder
-    - DONE - DONE - DecoderParameters
-    - DONE - DONE - DecoderErrors
-    - DONE - DONE - DecoderException
-    - DONE - IP   - Equalizer
-    - DONE - IP   - Header
-    - DONE - IP   - Huffman
-    - DONE - DONE - OutputChannels
-    - DONE - DONE - PushbackStream
-    - DONE - DONE - SampleBuffer
-    - DONE - IP   - SynthesisFilter
-
-AUDIO/MP3SHARP/DECODING/DECODERS
------------------------
-
-    CODE   DOCUMENT
-    ----   --------
-    - DONE - IP   - ASubband
-    - DONE - DONE - IFrameDecoder
-    - DONE - DONE - LayerIDecoder
-    - DONE - DONE - LayerIIDecoder
-    - DONE - IP   - LayerIIIDecoder
-
-AUDIO/MP3SHARP/DECODING/DECODERS/LAYERI
----------------------------------------
-
-    CODE   DOCUMENT
-    ----   --------
-    - DONE - IP   - SubbandLayer1
-    - DONE - IP   - SubbandLayer1IntensityStereo
-    - DONE - IP   - SubbandLayer1Stereo
-
-AUDIO/MP3SHARP/DECODING/DECODERS/LAYERII
-----------------------------------------
-
-    CODE   DOCUMENT
-    ----   --------
-    - DONE - IP   - SubbandLayer2
-    - DONE - IP   - SubbandLayer2IntensityStereo
-    - DONE - IP   - SubbandLayer2Stereo
-
-AUDIO/MP3SHARP/DECODING/DECODERS/LAYERIII
------------------------------------------
-
-    CODE   DOCUMENT
-    ----   --------
-    - DONE - IP   - ChannelData
-    - DONE - IP   - GranuleInfo
-    - DONE - IP   - Layer3SideInfo
-    - DONE - IP   - SBI
-    - DONE - IP   - ScaleFactorData
-    - DONE - IP   - ScaleFactorTable
-
-AUDIO/MP3SHARP/IO
------------------
-
-    CODE   DOCUMENT
-    ----   --------
-    - DONE - IP   - RandomAccessFileStream
-    - DONE - IP   - RiffFile
-    - DONE - IP   - WaveFile
-    - DONE - IP   - WaveFileBuffer
-
-AUDIO/MP3SHARP/SUPPORT
-----------------------
-
-    CODE   DOCUMENT
-    ----   --------
-    - DONE - IP   - SupportClass
+    - IP   - IP   - AudioFormat
+    - IP   - IP   - AudioSystem
+    - IP   - IP   - TargetDataLine
 
 AUDIO/OPENAL
 ------------
@@ -223,7 +140,7 @@ CORE
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - AbstractGraphics
-    - DONE - IP   - AbstractInput               Documentation of Catch Keys needed.
+    - DONE - DONE - AbstractInput
     - DONE - DONE - ApplicationAdapter
     - DONE - DONE - Game
     - DONE - DONE - Gdx
@@ -267,7 +184,7 @@ GRAPHICS
     ----   --------
     - DONE - IP   - Color
     - DONE - DONE - Colors
-    - DONE - IP   - Cubemap
+    - DONE - DONE - Cubemap
     - DONE - DONE - FPSLogger
     - DONE - IP   - GLTexture
     - DONE - DONE - GStructs
@@ -789,6 +706,15 @@ UTILS
     - **** - StreamUtils
     - **** - StringBuilder                  Use System.Text.StringBuilder
     - **** - TextFormatter
+
+UTILS/ASYNC
+-----------
+
+     CODE   DOCUMENT
+    ----   --------
+    - IP   - IP   - AsyncExecutor
+    - IP   - IP   - AsyncResult
+    - IP   - IP   - IAsyncTask
 
 UTILS/BUFFERS
 -------------

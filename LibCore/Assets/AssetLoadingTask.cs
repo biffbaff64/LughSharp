@@ -36,20 +36,24 @@ namespace LughSharp.LibCore.Assets;
 [PublicAPI]
 public class AssetLoadingTask : IAsyncTask< object >
 {
-    private readonly AsyncExecutor _executor;
+    public bool                     DependenciesLoaded { get; set; }
+    public List< AssetDescriptor >? Dependencies       { get; set; }
+    public AssetDescriptor          AssetDesc          { get; }
+    public bool                     Cancel             { get; set; }
+    public object?                  Asset              { get; set; }
 
     // ------------------------------------------------------------------------
 
-    private readonly AssetLoader  _loader;
-    private readonly AssetManager _manager;
-    private readonly long         _startTime;
+    private readonly AsyncExecutor _executor;
+    private readonly AssetLoader   _loader;
+    private readonly AssetManager  _manager;
+    private readonly long          _startTime;
 
     private volatile bool _asyncDone = false;
 
     private AsyncResult< object >? _depsFuture;
     private AsyncResult< object >? _loadFuture;
 
-    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -67,12 +71,6 @@ public class AssetLoadingTask : IAsyncTask< object >
         _loader    = loader;
         _startTime = Logger.TraceLevel == Logger.LOG_DEBUG ? TimeUtils.NanoTime() : 0;
     }
-
-    public bool                     DependenciesLoaded { get; set; }
-    public List< AssetDescriptor >? Dependencies       { get; set; }
-    public AssetDescriptor          AssetDesc          { get; }
-    public bool                     Cancel             { get; set; }
-    public object?                  Asset              { get; set; }
 
     /// <summary>
     /// Loads parts of the asset asynchronously if the loader is

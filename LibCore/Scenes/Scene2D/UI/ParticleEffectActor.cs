@@ -154,7 +154,7 @@ public class ParticleEffectActor : Actor, IDisposable
         Dispose( true );
     }
 
-    private void Dispose( bool disposing )
+    protected void Dispose( bool disposing )
     {
         if ( disposing )
         {

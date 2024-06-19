@@ -517,7 +517,7 @@ public class Timer
             Dispose();
         }
 
-        private void Dispose( bool disposing )
+        protected void Dispose( bool disposing )
         {
             if ( disposing )
             {

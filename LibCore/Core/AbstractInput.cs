@@ -165,30 +165,14 @@ public abstract class AbstractInput : IInput
 
     #region abstract methods
 
-    // I'm pretty sure these are for mobile devices...
+    #region mobile device methods
+    
     public abstract float GetAccelerometerX();
     public abstract float GetAccelerometerY();
     public abstract float GetAccelerometerZ();
     public abstract float GetGyroscopeX();
     public abstract float GetGyroscopeY();
     public abstract float GetGyroscopeZ();
-    public abstract int   GetMaxPointers();
-    public abstract int   GetX( int pointer = 0 );
-    public abstract int   GetDeltaX( int pointer = 0 );
-    public abstract int   GetY( int pointer = 0 );
-    public abstract int   GetDeltaY( int pointer = 0 );
-    public abstract bool  IsTouched( int pointer = 0 );
-    public abstract bool  JustTouched();
-    public abstract float GetPressure( int pointer = 0 );
-    public abstract bool  IsButtonPressed( int button );
-    public abstract bool  IsButtonJustPressed( int button );
-    public abstract bool  IsPeripheralAvailable( IInput.Peripheral peripheral );
-    public abstract int   GetRotation();
-    public abstract void  SetCursorCaught( bool caught );
-    public abstract bool  IsCursorCaught();
-    public abstract void  SetCursorPosition( int x, int y );
-    public abstract void  SetOnscreenKeyboardVisible( bool visible );
-    public abstract void  SetOnscreenKeyboardVisible( bool visible, IInput.OnscreenKeyboardType type );
     public abstract void  Vibrate( int milliseconds );
     public abstract void  Vibrate( long[] pattern, int repeat );
     public abstract void  CancelVibrate();
@@ -197,8 +181,27 @@ public abstract class AbstractInput : IInput
     public abstract float GetRoll();
     public abstract void  GetRotationMatrix( float[] matrix );
     public abstract long  GetCurrentEventTime();
-
+    public abstract bool  IsTouched( int pointer = 0 );
+    public abstract bool  JustTouched();
+    public abstract float GetPressure( int pointer = 0 );
+    public abstract int   GetRotation();
     public abstract IInput.Orientation GetNativeOrientation();
+
+    #endregion mobile device methods
+
+    public abstract int   GetMaxPointers();
+    public abstract int   GetX( int pointer = 0 );
+    public abstract int   GetY( int pointer = 0 );
+    public abstract int   GetDeltaX( int pointer = 0 );
+    public abstract int   GetDeltaY( int pointer = 0 );
+    public abstract bool  IsButtonPressed( int button );
+    public abstract bool  IsButtonJustPressed( int button );
+    public abstract bool  IsPeripheralAvailable( IInput.Peripheral peripheral );
+    public abstract void  SetCursorCaught( bool caught );
+    public abstract bool  IsCursorCaught();
+    public abstract void  SetCursorPosition( int x, int y );
+    public abstract void  SetOnscreenKeyboardVisible( bool visible );
+    public abstract void  SetOnscreenKeyboardVisible( bool visible, IInput.OnscreenKeyboardType type );
 
     public abstract void GetTextInput( IInput.ITextInputListener listener,
                                        string title,

@@ -45,7 +45,7 @@ public class Cubemap : GLTexture
     public override int  Depth     => 0;
 
     // ------------------------------------------------------------------------
-    
+
     private readonly static Dictionary< IApplication, List< Cubemap >? > _managedCubemaps = new();
 
     // ------------------------------------------------------------------------
@@ -274,8 +274,8 @@ public class Cubemap : GLTexture
     }
 
     /// <summary>
+    /// Retuens a string describing the managed status of this Cubemap.
     /// </summary>
-    /// <returns></returns>
     public static string GetManagedStatus()
     {
         var builder = new StringBuilder( "Managed cubemap/app: { " );
@@ -345,31 +345,68 @@ public class Cubemap : GLTexture
             NegativeZ
         }
 
-        //@formatter:off
+        // --------------------------------------------------------------------
 
-        /// <summary>/// The positive X and first side of the cubemap/// </summary>
+        /// <summary>
+        /// The positive X and first side of the cubemap
+        /// </summary>
         public readonly static CubemapSide PositiveX =
             new( "PositiveX", InnerEnum.PositiveX, 0, IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, -1, 0, 1, 0, 0 );
 
-        /// <summary>/// The negative X and second side of the cubemap/// </summary>
+        /// <summary>
+        /// The negative X and second side of the cubemap
+        /// </summary>
         public readonly static CubemapSide NegativeX =
             new( "NegativeX", InnerEnum.NegativeX, 1, IGL.GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, -1, 0, -1, 0, 0 );
 
-        /// <summary>/// The positive Y and third side of the cubemap/// </summary>
+        /// <summary>
+        /// The positive Y and third side of the cubemap
+        /// </summary>
         public readonly static CubemapSide PositiveY =
             new( "PositiveY", InnerEnum.PositiveY, 2, IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, 0, 1, 0, 1, 0 );
 
-        /// <summary>/// The negative Y and fourth side of the cubemap/// </summary>
+        /// <summary>
+        /// The negative Y and fourth side of the cubemap
+        /// </summary>
         public readonly static CubemapSide NegativeY =
             new( "NegativeY", InnerEnum.NegativeY, 3, IGL.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, 0, -1, 0, -1, 0 );
 
-        /// <summary>/// The positive Z and fifth side of the cubemap/// </summary>
+        /// <summary>
+        /// The positive Z and fifth side of the cubemap
+        /// </summary>
         public readonly static CubemapSide PositiveZ =
             new( "PositiveZ", InnerEnum.PositiveZ, 4, IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, -1, 0, 0, 0, 1 );
 
-        /// <summary>/// The negative Z and sixth side of the cubemap/// </summary>
+        /// <summary>
+        /// The negative Z and sixth side of the cubemap
+        /// </summary>
         public readonly static CubemapSide NegativeZ =
             new( "NegativeZ", InnerEnum.NegativeZ, 5, IGL.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, -1, 0, 0, 0, -1 );
+
+        public InnerEnum InnerEnumValue { get; private set; }
+        public int       OrdinalValue   { get; private set; }
+
+        /// <summary>
+        /// The zero based index of the side in the cubemap
+        /// </summary>
+        public int Index { get; set; }
+
+        /// <summary>
+        /// The OpenGL target (used for glTexImage2D) of the side.
+        /// </summary>
+        public int GLTarget { get; set; }
+
+        /// <summary>
+        /// The up vector to target the side.
+        /// </summary>
+        public Vector3 Up { get; set; }
+
+        /// <summary>
+        /// The direction vector to target the side.
+        /// </summary>
+        public Vector3 Direction { get; set; }
+
+        // --------------------------------------------------------------------
 
         private static List< CubemapSide > _valueList   = new();
         private static int                 _nextOrdinal = 0;
@@ -408,31 +445,6 @@ public class Cubemap : GLTexture
             OrdinalValue   = _nextOrdinal++;
             InnerEnumValue = innerEnum;
         }
-
-        //@formatter:on
-
-        public InnerEnum InnerEnumValue { get; private set; }
-        public int       OrdinalValue   { get; private set; }
-
-        /// <summary>
-        /// The zero based index of the side in the cubemap
-        /// </summary>
-        public int Index { get; set; }
-
-        /// <summary>
-        /// The OpenGL target (used for glTexImage2D) of the side.
-        /// </summary>
-        public int GLTarget { get; set; }
-
-        /// <summary>
-        /// The up vector to target the side.
-        /// </summary>
-        public Vector3 Up { get; set; }
-
-        /// <summary>
-        /// The direction vector to target the side.
-        /// </summary>
-        public Vector3 Direction { get; set; }
 
         /// <summary>
         /// Sets the supplied <see cref="Vector3"/> to the contents of
