@@ -118,8 +118,12 @@ AUDIO/MAPONUS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - AudioFormat
+    - IP   - IP   - AudioFileFormat
+    - DONE - DONE - AudioFormat
+    - IP   - IP   - AudioInputStream
     - IP   - IP   - AudioSystem
+    - IP   - IP   - IDateLine
+    - IP   - IP   - ILine
     - IP   - IP   - TargetDataLine
 
 AUDIO/OPENAL

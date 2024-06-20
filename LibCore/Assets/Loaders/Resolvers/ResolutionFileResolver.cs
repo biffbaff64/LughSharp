@@ -29,10 +29,10 @@ namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 /// This <see cref="IFileHandleResolver"/> uses a given list of <see cref="Resolution"/>s to
 /// determine the best match based on the current back buffer size. An example of how this
 /// resolver works:
-/// <p>
+/// <para>
 /// Let's assume that we have only a single <see cref="Resolution"/>; added to this
 /// resolver. This resolution has the following properties:
-/// </p>
+/// </para>
 /// <ul>
 ///     <li>
 ///         <tt> portraitWidth = 1920</tt>
@@ -44,12 +44,12 @@ namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 ///         <tt> folder = "1920x1080"</tt>
 ///     </li>
 /// </ul>
-/// <p>
+/// <para>
 /// One would now supply a file to be found to the resolver. For this example, we assume it is
 /// <tt>"textures/walls/brick.png"</tt>. Since there is only a single <see cref="Resolution"/>,
 /// this will be the best match for any screen size. The resolver will now try to find the file
 /// in the following ways:
-/// </p>
+/// </para>
 /// <ul>
 ///     <li>
 ///         <tt>"textures/walls/1920x1080/brick.png"</tt>
@@ -58,11 +58,11 @@ namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 ///         <tt>"textures/walls/brick.png"</tt>
 ///     </li>
 /// </ul>
-/// <p>
+/// <para>
 /// The files are ultimately resolved via the given <see cref="BaseResolver"/>. In case the
 /// first version cannot be resolved, the fallback will try to search for the file without
 /// the resolution folder.
-/// </p>
+/// </para>
 /// </summary>
 [PublicAPI]
 public class ResolutionFileResolver : IFileHandleResolver

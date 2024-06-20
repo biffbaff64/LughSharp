@@ -377,7 +377,7 @@ public class Timer
         /// Returns true if this task is scheduled to be executed in the future by a timer.
         /// The execution time may be reached at any time after calling this method,
         /// which may change the scheduled state.
-        /// <p>
+        /// <para>
         /// To prevent the scheduled state from changing, synchronize on this task object, eg:
         /// <code>
         ///         lock( task )
@@ -388,7 +388,7 @@ public class Timer
         ///             }
         ///         }
         ///         </code>
-        /// </p>
+        /// </para>
         /// </summary>
         /// <returns></returns>
         public virtual bool IsScheduled()

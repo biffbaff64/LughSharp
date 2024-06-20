@@ -30,14 +30,22 @@ namespace LughSharp.Backends.DesktopGL.Audio;
 [PublicAPI]
 public class GdxSoundAudioRecorder : IAudioRecorder
 {
-    private TargetDataLine line;
-    private byte[]         buffer = new byte[ 1024 * 4 ];
+    private TargetDataLine _line;
+    private byte[]         _buffer = new byte[ 1024 * 4 ];
 
+    // ------------------------------------------------------------------------
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="samplingRate"></param>
+    /// <param name="isMono"></param>
+    /// <exception cref="GdxRuntimeException"></exception>
     public GdxSoundAudioRecorder( int samplingRate, bool isMono )
     {
         try
         {
-            var format = new AudioFormat( AudioFormat.Encoding.PcmSigned,
+            var format = new AudioFormat( AudioFormat.EncodingType.PcmSigned,
                                           samplingRate,
                                           16,
                                           isMono ? 1 : 2,
@@ -45,32 +53,46 @@ public class GdxSoundAudioRecorder : IAudioRecorder
                                           samplingRate,
                                           false );
 
-            line = AudioSystem.getTargetDataLine( format );
-            line.open( format, buffer.Length );
-            line.start();
+            _line = AudioSystem.GetTargetDataLine( format );
+            _line.Open( format, _buffer.Length );
+            _line.Start();
         }
         catch ( Exception ex )
         {
-            throw new GdxRuntimeException( "Error creating JavaSoundAudioRecorder.", ex );
+            throw new GdxRuntimeException( $"Error creating {this.GetType().Name}.", ex );
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="samples"></param>
+    /// <param name="offset"></param>
+    /// <param name="numSamples"></param>
     public void Read( short[] samples, int offset, int numSamples )
     {
-        if ( buffer.length < numSamples * 2 ) buffer = new byte[ numSamples * 2 ];
+        if ( _buffer.Length < ( numSamples * 2 ) )
+        {
+            _buffer = new byte[ numSamples * 2 ];
+        }
 
-        int toRead = numSamples * 2;
-        int read   = 0;
+        var toRead = numSamples * 2;
+        var read   = 0;
 
         while ( read != toRead )
-            read += line.read( buffer, read, toRead - read );
+        {
+            read += _line.Read( _buffer, read, toRead - read );
+        }
 
         for ( int i = 0, j = 0; i < numSamples * 2; i += 2, j++ )
-            samples[ offset + j ] = ( short ) ( ( buffer[ i + 1 ] << 8 ) | ( buffer[ i ] & 0xff ) );
+        {
+            samples[ offset + j ] = ( short ) ( ( _buffer[ i + 1 ] << 8 ) | ( _buffer[ i ] & 0xff ) );
+        }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
-        line.close();
+        _line.Close();
     }
 }

@@ -25,34 +25,7 @@
 namespace LughSharp.LibCore.Audio.Maponus;
 
 [PublicAPI]
-public class AudioSystem
+public class AudioInputStream
 {
-    /// <summary>
-    /// An integer that stands for an unknown numeric value. This value is appropriate
-    /// only for signed quantities that do not normally take negative values. Examples
-    /// include file sizes, frame sizes, buffer sizes, and sample rates.
-    /// <para>
-    /// A number of Gdx Sound constructors accept a value of <b>NOT_SPECIFIED</b> for
-    /// such parameters. Other methods may also accept or return this value, as documented.
-    /// </para>
-    /// </summary>
-    public const int NOT_SPECIFIED = -1;
-
-    // ------------------------------------------------------------------------
-
-    public static TargetDataLine GetTargetDataLine( AudioFormat format )
-    {
-        var info = new IDataLine.Info( typeof( TargetDataLine ), format );
-
-        return ( TargetDataLine ) AudioSystem.GetLine( info );
-    }
-
-    public static bool IsConversionSupported( AudioFormat.EncodingType targetEncoding, AudioFormat sourceFormat )
-    {
-        return false;
-    }
-
-    public static bool IsConversionSupported( AudioFormat targetFormat, AudioFormat sourceFormat )
-    {
-    }
 }
+

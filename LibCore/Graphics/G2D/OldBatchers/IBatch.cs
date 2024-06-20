@@ -119,15 +119,15 @@ public interface IBatch : IDisposable
     /// Sets the shader to be used in a GLES 2.0 environment. Vertex position attribute is
     /// called "a_position", the texture coordinates attribute is called "a_texCoord0", the
     /// color attribute is called "a_color".
-    /// <p>
+    /// <para>
     /// See <see cref="ShaderProgram.POSITION_ATTRIBUTE"/>, <see cref="ShaderProgram.COLOR_ATTRIBUTE"/>
     /// and <see cref="ShaderProgram.TEXCOORD_ATTRIBUTE"/> which gets "0" appended to indicate
     /// the use of the first texture unit.
-    /// </p>
-    /// <p>
+    /// </para>
+    /// <para>
     /// The combined transform and projection matrx is uploaded via a mat4 uniform called "u_projTrans".
     /// The texture sampler is passed via a uniform called "u_texture".
-    /// </p>
+    /// </para>
     /// <para>
     /// Call this method with a null argument to use the default shader.
     /// </para>

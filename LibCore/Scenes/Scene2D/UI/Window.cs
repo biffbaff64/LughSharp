@@ -31,12 +31,12 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 /// <summary>
 /// A table that can be dragged and act as a modal window. The top padding is
 /// used as the window's title height.
-/// <p>
+/// <para>
 /// The preferred size of a window is the preferred size of the title text and
 /// the children as laid out by the table. After adding children to the window,
 /// it can be convenient to call <see cref="WidgetGroup.Pack"/> to size the
 /// window to the size of the children.
-/// </p>
+/// </para>
 /// </summary>
 [PublicAPI]
 public class Window : Table

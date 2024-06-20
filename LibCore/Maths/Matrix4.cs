@@ -226,10 +226,10 @@ public class Matrix4
     /// <param name="values">
     /// The matrix, in float form, that is to be copied. Remember that this matrix is in
     /// Column-Major order.
-    /// <p>
+    /// <para>
     /// See here:
     /// <a href="http://en.wikipedia.org/wiki/Row-major_order">wikipedia.org/wiki/Row-major_order</a>
-    /// </p>
+    /// </para>
     /// </param>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Set( float[] values )

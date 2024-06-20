@@ -33,14 +33,14 @@ namespace LughSharp.LibCore.Graphics.G2D;
 /// A PolygonSpriteBatch is used to Draw 2D polygons that reference a
 /// texture (region). The class will batch the drawing commands and
 /// optimize them for processing by the GPU.
-/// <p>
+/// <para>
 /// To Draw something with a PolygonSpriteBatch one has to first call the
 /// <see cref="PolygonSpriteBatch.Begin()"/> method which will setup appropriate
 /// render states. When you are done with drawing you have to call
 /// <see cref="PolygonSpriteBatch.End()"/> which will actually Draw the things
 /// you specified.
-/// </p>
-/// <p>
+/// </para>
+/// <para>
 /// All drawing commands of the PolygonSpriteBatch operate in screen coordinates.
 /// The screen coordinate system has an x-axis pointing to the right, an y-axis
 /// pointing upwards and the origin is in the lower left corner of the screen. You
@@ -50,19 +50,19 @@ namespace LughSharp.LibCore.Graphics.G2D;
 /// when a user switches to another application or receives an incoming call on Android.
 /// A SpritPolygonSpriteBatcheBatch will be automatically reloaded after the OpenGL
 /// context is restored.
-/// </p>
-/// <p>
+/// </para>
+/// <para>
 /// A PolygonSpriteBatch is a pretty heavy object so you should only ever have one
 /// in your program.
-/// </p>
-/// <p>
+/// </para>
+/// <para>
 /// A PolygonSpriteBatch works with OpenGL ES 1.x and 2.0. In the case of a 2.0 context
 /// it will use its own custom shader to Draw all provided sprites. You can set your own
 /// custom shader via <see cref="Shader"/>.
-/// </p>
-/// <p>
+/// </para>
+/// <para>
 /// A PolygonSpriteBatch has to be disposed if it is no longer used.
-/// </p>
+/// </para>
 /// </summary>
 [PublicAPI]
 public class PolygonSpriteBatch : IPolygonBatch
