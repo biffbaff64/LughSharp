@@ -57,13 +57,13 @@ public class HeapShortBuffer : ShortBuffer
     /// <inheritdoc />
     public override ShortBuffer Duplicate()
     {
-        return new HeapShortBuffer( Hb, MarkValue(), Position, Limit, Capacity, Offset );
+        return new HeapShortBuffer( Hb, Mark, Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc />
     public override ShortBuffer AsReadOnlyBuffer()
     {
-        return new HeapShortBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
+        return new HeapShortBufferR( Hb, Mark, Position, Limit, Capacity, Offset );
     }
 
     protected int Ix( int i )

@@ -103,7 +103,7 @@ public class StringCharBuffer : CharBuffer
     /// <returns>  The new char buffer </returns>
     public override CharBuffer Duplicate()
     {
-        return new StringCharBuffer( _string, MarkValue(), Position, Limit, Capacity, Offset );
+        return new StringCharBuffer( _string, Mark, Position, Limit, Capacity, Offset );
     }
 
     /// <summary>

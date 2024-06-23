@@ -59,6 +59,7 @@ global using JetBrains.Annotations;
 
 // ----------------------------------------------------------------------------
 // OpenAL support
+global using LughSharp.LibCore.Audio.OpenAL;
 
 // ----------------------------------------------------------------------------
 // OpenGL / Glfw support
@@ -70,7 +71,6 @@ global using GLFW = DotGLFW;
 // LughSharp
 global using LughSharp.LibCore.Assets;
 global using LughSharp.LibCore.Audio;
-global using LughSharp.LibCore.Audio.OpenAL;
 global using LughSharp.LibCore.Audio.Maponus;
 global using LughSharp.LibCore.Core;
 global using LughSharp.LibCore.Graphics;

@@ -49,34 +49,19 @@ public class HeapIntBuffer : IntBuffer
     /// <inheritdoc />
     public override IntBuffer Slice()
     {
-        return new HeapIntBuffer( Hb,
-                                  -1,
-                                  0,
-                                  Remaining(),
-                                  Remaining(),
-                                  Position + Offset );
+        return new HeapIntBuffer( Hb, -1, 0, Remaining(), Remaining(), Position + Offset );
     }
 
     /// <inheritdoc />
     public override IntBuffer Duplicate()
     {
-        return new HeapIntBuffer( Hb,
-                                  MarkValue(),
-                                  Position,
-                                  Limit,
-                                  Capacity,
-                                  Offset );
+        return new HeapIntBuffer( Hb, Mark, Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc />
     public override IntBuffer asReadOnlyBuffer()
     {
-        return new HeapIntBuffer( Hb,
-                                  MarkValue(),
-                                  Position,
-                                  Limit,
-                                  Capacity,
-                                  Offset );
+        return new HeapIntBuffer( Hb, Mark, Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc />

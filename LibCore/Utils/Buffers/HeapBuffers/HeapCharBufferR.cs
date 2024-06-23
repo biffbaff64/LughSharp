@@ -62,7 +62,7 @@ public class HeapCharBufferR : HeapCharBuffer
     /// <inheritdoc />
     public override CharBuffer Duplicate()
     {
-        return new HeapCharBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
+        return new HeapCharBufferR( Hb, Mark, Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc />

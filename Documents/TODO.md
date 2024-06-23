@@ -103,6 +103,9 @@ ASSETS/LOADERS/RESOLVERS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    - I'm currently considering ditching LibCore.Audio in favour of NAudio.
+    - Decision to be made asap.
+
 AUDIO
 -----
 
@@ -118,13 +121,92 @@ AUDIO/MAPONUS
 
     CODE   DOCUMENT
     ----   --------
-    - IP   - IP   - AudioFileFormat
-    - DONE - DONE - AudioFormat
-    - IP   - IP   - AudioInputStream
-    - IP   - IP   - AudioSystem
-    - IP   - IP   - IDateLine
-    - IP   - IP   - ILine
-    - IP   - IP   - TargetDataLine
+    - DONE - DONE - Buffer16BitSterso
+    - DONE - DONE - MP3SharpException
+    - DONE - DONE - MP3Stream
+    - DONE - DONE - SoundFormat
+
+AUDIO/MAPONUS/DECODING
+-----------------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - DONE - AudioBase
+    - DONE - DONE - BitReserve
+    - DONE - DONE - Bitstream
+    - DONE - DONE - BitstreamErrors
+    - DONE - DONE - BitstreamException
+    - DONE - DONE - CircularByteBuffer
+    - DONE - DONE - Crc16
+    - DONE - DONE - Decoder
+    - DONE - DONE - DecoderParameters
+    - DONE - DONE - DecoderErrors
+    - DONE - DONE - DecoderException
+    - DONE - IP   - Equalizer
+    - DONE - IP   - Header
+    - DONE - IP   - Huffman
+    - DONE - DONE - OutputChannels
+    - DONE - DONE - PushbackStream
+    - DONE - DONE - SampleBuffer
+    - DONE - IP   - SynthesisFilter
+
+AUDIO/MAPONUS/DECODING/DECODERS
+-----------------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - IP   - ASubband
+    - DONE - DONE - IFrameDecoder
+    - DONE - DONE - LayerIDecoder
+    - DONE - DONE - LayerIIDecoder
+    - DONE - IP   - LayerIIIDecoder
+
+AUDIO/MAPONUS/DECODING/DECODERS/LAYERI
+---------------------------------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - IP   - SubbandLayer1
+    - DONE - IP   - SubbandLayer1IntensityStereo
+    - DONE - IP   - SubbandLayer1Stereo
+
+AUDIO/MAPONUS/DECODING/DECODERS/LAYERII
+----------------------------------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - IP   - SubbandLayer2
+    - DONE - IP   - SubbandLayer2IntensityStereo
+    - DONE - IP   - SubbandLayer2Stereo
+
+AUDIO/MAPONUS/DECODING/DECODERS/LAYERIII
+-----------------------------------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - IP   - ChannelData
+    - DONE - IP   - GranuleInfo
+    - DONE - IP   - Layer3SideInfo
+    - DONE - IP   - SBI
+    - DONE - IP   - ScaleFactorData
+    - DONE - IP   - ScaleFactorTable
+
+AUDIO/MAPONUS/IO
+-----------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - IP   - RandomAccessFileStream
+    - DONE - IP   - RiffFile
+    - DONE - IP   - WaveFile
+    - DONE - IP   - WaveFileBuffer
+
+AUDIO/MAPONUS/SUPPORT
+----------------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - IP   - SupportClass
 
 AUDIO/OPENAL
 ------------

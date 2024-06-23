@@ -48,34 +48,19 @@ public class HeapDoubleBuffer : DoubleBuffer
     /// <inheritdoc />
     public override DoubleBuffer Slice()
     {
-        return new HeapDoubleBuffer( Hb,
-                                     -1,
-                                     0,
-                                     Remaining(),
-                                     Remaining(),
-                                     Position + Offset );
+        return new HeapDoubleBuffer( Hb, -1, 0, Remaining(), Remaining(), Position + Offset );
     }
 
     /// <inheritdoc />
     public override DoubleBuffer Duplicate()
     {
-        return new HeapDoubleBuffer( Hb,
-                                     MarkValue(),
-                                     Position,
-                                     Limit,
-                                     Capacity,
-                                     Offset );
+        return new HeapDoubleBuffer( Hb, Mark, Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc />
     public override DoubleBuffer asReadOnlyBuffer()
     {
-        return new HeapDoubleBuffer( Hb,
-                                     MarkValue(),
-                                     Position,
-                                     Limit,
-                                     Capacity,
-                                     Offset );
+        return new HeapDoubleBuffer( Hb, Mark, Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc />

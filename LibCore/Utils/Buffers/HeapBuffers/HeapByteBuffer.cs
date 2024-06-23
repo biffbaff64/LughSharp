@@ -57,13 +57,13 @@ public class HeapByteBuffer : ByteBuffer
     /// <inheritdoc />
     public override ByteBuffer Duplicate()
     {
-        return new HeapByteBuffer( Hb, MarkValue(), Position, Limit, Capacity, Offset );
+        return new HeapByteBuffer( Hb, Mark, Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc />
     public override ByteBuffer AsReadOnlyBuffer()
     {
-        return new HeapByteBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
+        return new HeapByteBufferR( Hb, Mark, Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc />

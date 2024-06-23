@@ -62,7 +62,7 @@ public class HeapShortBufferR : HeapShortBuffer
     /// <override/>
     public override ShortBuffer Duplicate()
     {
-        return new HeapShortBufferR( Hb, MarkValue(), Position, Limit, Capacity, Offset );
+        return new HeapShortBufferR( Hb, Mark, Position, Limit, Capacity, Offset );
     }
 
     /// <inheritdoc />
