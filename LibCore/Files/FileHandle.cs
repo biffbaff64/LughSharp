@@ -22,79 +22,54 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
+using Environment = System.Environment;
+
 namespace LughSharp.LibCore.Files;
 
 /// <summary>
-/// Represents a file or directory on the filesystem. FileHandles are created via a
-/// <see cref="FileInfo"/>s instance. Because some of the file types are backed by composite
-/// files and may be compressed (for example, if they are in an Android .apk or are found
-/// via the classpath), the methods for extracting a <b>Path</b> or <b>FileInfo</b> may not
-/// be appropriate for all types.
-/// <para>
-/// Use the Reader or Stream methods here to hide these dependencies from your platform
-/// independent code.
-/// </para>
+/// A FileInfo container which contains a <see cref="FileInfo"/> instance
+/// and a <see cref="PathTypes"/> instance.
 /// </summary>
 [PublicAPI]
 public class FileHandle
 {
     public PathTypes PathType { get; set; }
     public FileInfo  File     { get; set; }
-
+    
     // ------------------------------------------------------------------------
 
     protected FileHandle()
     {
-        this.File     = null!;
+        this.File     = new FileInfo( "" );
         this.PathType = PathTypes.Absolute;
     }
     
-    /// <summary>
-    /// Creates a new absolute FileHandle for the file name. Use this for tools on
-    /// the desktop that don't need any of the backends. Do not use this constructor
-    /// for cross-platform developments. Use the <see cref="IFiles"/> interface instead.
-    /// </summary>
-    /// <param name="fileName"> the filename. </param>
     public FileHandle( string fileName )
     {
         this.File     = new FileInfo( fileName );
         this.PathType = PathTypes.Absolute;
     }
 
-    /// <summary>
-    /// Creates a new absolute FileHandle for the File. Use this for tools on the desktop
-    /// that don't need any of the backends. Do not use this constructor for cross-platform
-    /// developments. Use the <see cref="IFiles"/> interface instead.
-    /// </summary>
-    /// <param name="file"> the file. </param>
     public FileHandle( FileInfo file )
     {
         this.File     = file;
         this.PathType = PathTypes.Absolute;
     }
 
-    /// <summary>
-    /// Creates a new absolute FileHandle for the file name. Use this for tools on the
-    /// desktop that don't need any of the backends. Do not use this constructor for
-    /// cross-platform developments. Use the <see cref="IFiles"/> interface instead.
-    /// </summary>
     public FileHandle( string fileName, PathTypes type )
     {
         this.File     = new FileInfo( fileName );
         this.PathType = type;
     }
 
-    /// <summary>
-    /// Creates a new absolute FileHandle for the file name. Use this for tools on the
-    /// desktop that don't need any of the backends. Do not use this constructor for
-    /// cross-platform developments. Use the <see cref="IFiles"/> interface instead.
-    /// </summary>
     public FileHandle( FileInfo file, PathTypes type )
     {
         this.File     = file;
         this.PathType = type;
     }
 
+    #region helpers
+    
     /// <summary>
     /// The name of the file, without any parent paths.
     /// </summary>
@@ -139,4 +114,6 @@ public class FileHandle
     {
         return Path.GetFileNameWithoutExtension( File.FullName );
     }
+    
+    #endregion helpers
 }

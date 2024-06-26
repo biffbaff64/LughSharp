@@ -54,7 +54,7 @@ public class FileTextureData : ITextureData
         }
     }
 
-    public FileInfo? File { get; set; }
+    public FileInfo File { get; set; }
 
     /// <returns> the width of the pixel data </returns>
     public int Width { get; set; }
@@ -82,14 +82,7 @@ public class FileTextureData : ITextureData
 
         if ( _pixmap == null )
         {
-            if ( ( bool ) File?.Extension.Equals( "cim" ) )
-            {
-                _pixmap = PixmapIO.ReadCIM( File );
-            }
-            else
-            {
-                _pixmap = new Pixmap( File );
-            }
+            _pixmap = File.Extension.Equals( "cim" ) ? PixmapIO.ReadCIM( File ) : new Pixmap( File );
 
             _width  = _pixmap.Width;
             _height = _pixmap.Height;
@@ -103,8 +96,8 @@ public class FileTextureData : ITextureData
     /// <summary>
     /// Returns the <see cref="Pixmap"/> for upload by Texture.
     /// <para>
-    /// A call to <see cref="ITextureData.Prepare"/> must precede a call to this
-    /// method. Any internal data structures created in <see cref="ITextureData.Prepare"/>
+    /// A call to <see cref="ITextureData.Prepare"/> must precede a call to this method.
+    /// Any internal data structures created in <see cref="ITextureData.Prepare"/>
     /// should be disposed of here.
     /// </para>
     /// </summary>

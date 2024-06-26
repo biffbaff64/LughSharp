@@ -711,13 +711,13 @@ public class ShaderProgram
             return;
         }
 
-        Gdx.GL.glVertexAttribPointer( location, size, type, normalize, stride, buffer );
+        Gdx.GL.glVertexAttribPointer( ( uint ) location, size, type, normalize, stride, buffer );
     }
 
     public void SetVertexAttribute( int location, int size, int type, bool normalize, int stride, Buffer buffer )
     {
         CheckManaged();
-        Gdx.GL.glVertexAttribPointer( location, size, type, normalize, stride, buffer );
+        Gdx.GL.glVertexAttribPointer( ( uint ) location, size, type, normalize, stride, buffer );
     }
 
     /// <summary>

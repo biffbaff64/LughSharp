@@ -342,7 +342,7 @@ public abstract class Buffer
     {
         Position = 0;
         Limit    = Capacity;
-        Mark    = -1;
+        Mark     = -1;
 
         return this;
     }
@@ -369,7 +369,7 @@ public abstract class Buffer
     {
         Limit    = Position;
         Position = 0;
-        Mark    = -1;
+        Mark     = -1;
 
         return this;
     }
@@ -389,7 +389,7 @@ public abstract class Buffer
     public virtual Buffer Rewind()
     {
         Position = 0;
-        Mark    = -1;
+        Mark     = -1;
 
         return this;
     }
@@ -439,7 +439,7 @@ public abstract class Buffer
     /// </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
-    public object[] BackingArray()
+    public virtual object[] BackingArray()
     {
         throw new GdxRuntimeException( "This method should be implemented in inheriting classes." );
     }
@@ -560,7 +560,7 @@ public abstract class Buffer
 
     protected private void Truncate()
     {
-        Mark    = -1;
+        Mark     = -1;
         Position = 0;
         Limit    = 0;
         Capacity = 0;

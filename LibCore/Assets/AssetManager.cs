@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text;
 using LughSharp.LibCore.Assets.Loaders;
 using LughSharp.LibCore.Assets.Loaders.Resolvers;
 using LughSharp.LibCore.Scenes.Scene2D.UI;

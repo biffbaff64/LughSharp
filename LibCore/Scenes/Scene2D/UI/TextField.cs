@@ -54,14 +54,15 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class TextField : Widget
 {
-    protected const char  CARRIAGE_RETURN      = '\r';
-    protected const char  NEWLINE              = '\n';
-    protected const char  TAB                  = '\t';
-    protected const char  BACKSPACE            = '\u0008';
-    protected const char  DELETE               = '\u007f';
-    protected const char  BULLET               = '\u0095';
-    public static   float KeyRepeatInitialTime = 0.4f;
-    public static   float KeyRepeatTime        = 0.1f;
+    protected const char CARRIAGE_RETURN = '\r';
+    protected const char NEWLINE         = '\n';
+    protected const char TAB             = '\t';
+    protected const char BACKSPACE       = '\u0008';
+    protected const char DELETE          = '\u007f';
+    protected const char BULLET          = '\u0095';
+
+    public static float KeyRepeatInitialTime = 0.4f;
+    public static float KeyRepeatTime        = 0.1f;
 
     private readonly BlinkTaskManager     _blink;
     private readonly IClipboard           _clipboard;
@@ -77,8 +78,6 @@ public class TextField : Widget
     private CancellationTokenSource? _blinkTokenSource;
 
     private bool                     _cursorOn;
-    private bool                     _disabled;
-    private ITextFieldFilter?        _filter;
     private bool                     _focused;
     private InputListener?           _inputListener;
     private IOnscreenKeyboard        _keyboard = new DefaultOnscreenKeyboard();
@@ -86,12 +85,9 @@ public class TextField : Widget
     private Task?                    _keyRepeatTask;
     private CancellationTokenSource? _keyRepeatTokenSource;
     private long                     _lastChangeTime;
-    private ITextFieldListener?      _listener;
-    private int                      _maxLength;
     private StringBuilder?           _passwordBuffer;
     private char                     _passwordCharacter = BULLET;
     private bool                     _passwordMode;
-    private bool                     _programmaticChangeEvents;
     private float                    _renderOffset;
     private float                    _selectionWidth;
     private float                    _selectionX;
@@ -122,20 +118,25 @@ public class TextField : Widget
 
     // ------------------------------------------------------------------------
 
-    public TextFieldStyle? Style          { get; set; }
-    public string?         Text           { get; set; }
-    public string?         MessageText    { get; set; }
-    public int             Cursor         { get; set; }
-    public int             SelectionStart { get; set; }
-    public bool            HasSelection   { get; set; }
-    public bool            WriteEnters    { get; set; }
-    public GlyphLayout     Layout         { get; set; } = new();
-    public List< float >   GlyphPositions { get; set; } = new();
-    public string?         DisplayText    { get; set; }
-    public float           FontOffset     { get; set; }
-    public float           TextHeight     { get; set; }
-    public float           TextOffset     { get; set; }
-    public bool            FocusTraversal { get; set; } = true;
+    public TextFieldStyle?     Style                    { get; set; }
+    public string?             Text                     { get; set; }
+    public string?             MessageText              { get; set; }
+    public int                 Cursor                   { get; set; }
+    public int                 SelectionStart           { get; set; }
+    public bool                HasSelection             { get; set; }
+    public bool                WriteEnters              { get; set; }
+    public GlyphLayout         Layout                   { get; set; } = new();
+    public List< float >       GlyphPositions           { get; set; } = new();
+    public string?             DisplayText              { get; set; }
+    public float               FontOffset               { get; set; }
+    public float               TextHeight               { get; set; }
+    public float               TextOffset               { get; set; }
+    public bool                FocusTraversal           { get; set; } = true;
+    public bool                ProgrammaticChangeEvents { get; set; }
+    public bool                Disabled                 { get; set; }
+    public ITextFieldFilter?   Filter                   { get; set; }
+    public ITextFieldListener? Listener                 { get; set; }
+    public int                 MaxLength                { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -452,12 +453,12 @@ public class TextField : Widget
 
     protected virtual bool WithinMaxLength( int size )
     {
-        return ( _maxLength <= 0 ) || ( size < _maxLength );
+        return ( MaxLength <= 0 ) || ( size < MaxLength );
     }
 
     protected virtual IDrawable? GetBackgroundDrawable()
     {
-        if ( _disabled && ( Style?.DisabledBackground != null ) )
+        if ( Disabled && ( Style?.DisabledBackground != null ) )
         {
             return Style.DisabledBackground;
         }
@@ -502,7 +503,7 @@ public class TextField : Widget
         var font = Style.Font!;
 
         //@formatter:off
-        var fontColor = _disabled && ( Style.DisabledFontColor != null )
+        var fontColor = Disabled && ( Style.DisabledFontColor != null )
                             ? Style.DisabledFontColor
                             : focused && ( Style.FocusedFontColor != null )
                                 ? Style.FocusedFontColor
@@ -567,7 +568,7 @@ public class TextField : Widget
             DrawText( batch, font, x + bgLeftWidth, y + textY + yOffset );
         }
 
-        if ( !_disabled && _cursorOn && ( cursorPatch != null ) )
+        if ( !Disabled && _cursorOn && ( cursorPatch != null ) )
         {
             DrawCursor( cursorPatch, batch, font, x + bgLeftWidth, y + textY );
         }
@@ -723,7 +724,7 @@ public class TextField : Widget
 
         Paste( str, false );
 
-        if ( _programmaticChangeEvents )
+        if ( ProgrammaticChangeEvents )
         {
             ChangeText( oldText!, Text );
         }
@@ -750,7 +751,7 @@ public class TextField : Widget
     /// </summary>
     public void Cut()
     {
-        Cut( _programmaticChangeEvents );
+        Cut( ProgrammaticChangeEvents );
     }
 
     public void Cut( bool fireChangeEvent )
@@ -803,7 +804,7 @@ public class TextField : Widget
                     continue;
                 }
 
-                if ( ( _filter != null ) && !_filter.AcceptChar( this, c ) )
+                if ( ( Filter != null ) && !Filter.AcceptChar( this, c ) )
                 {
                     continue;
                 }
@@ -945,7 +946,7 @@ public class TextField : Widget
                     continue;
                 }
 
-                if ( textField._disabled || !textField.FocusTraversal || !textField.AscendantsVisible() )
+                if ( textField.Disabled || !textField.FocusTraversal || !textField.AscendantsVisible() )
                 {
                     continue;
                 }
@@ -1334,7 +1335,7 @@ public class TextField : Widget
                 return false;
             }
 
-            if ( _tf._disabled )
+            if ( _tf.Disabled )
             {
                 return true;
             }
@@ -1384,7 +1385,7 @@ public class TextField : Widget
         /// <inheritdoc />
         public override bool KeyDown( InputEvent? ev, int keycode )
         {
-            if ( _tf._disabled )
+            if ( _tf.Disabled )
             {
                 return false;
             }
@@ -1550,7 +1551,7 @@ public class TextField : Widget
 
         public override bool KeyUp( InputEvent? ev, int keycode )
         {
-            if ( _tf._disabled )
+            if ( _tf.Disabled )
             {
                 return false;
             }
@@ -1578,7 +1579,7 @@ public class TextField : Widget
 
         public override bool KeyTyped( InputEvent? ev, char character )
         {
-            if ( _tf._disabled )
+            if ( _tf.Disabled )
             {
                 return false;
             }
@@ -1659,7 +1660,7 @@ public class TextField : Widget
                     if ( add && !remove )
                     {
                         // Character may be added to the text.
-                        if ( !enter && ( _tf._filter != null ) && !_tf._filter.AcceptChar( _tf, character ) )
+                        if ( !enter && ( _tf.Filter != null ) && !_tf.Filter.AcceptChar( _tf, character ) )
                         {
                             return true;
                         }
@@ -1701,7 +1702,7 @@ public class TextField : Widget
                 }
             }
 
-            _tf._listener?.KeyTyped( _tf, character );
+            _tf.Listener?.KeyTyped( _tf, character );
 
             return true;
         }

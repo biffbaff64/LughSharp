@@ -111,6 +111,7 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
     /// <inheritdoc />
     public override void LoadAsync( AssetManager manager, FileInfo? file, BitmapFontParameter? parameter )
     {
+        // Not used in this class
     }
 
     /// <inheritdoc />

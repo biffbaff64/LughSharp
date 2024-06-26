@@ -47,26 +47,19 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
 
     // ------------------------------------------------------------------------
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
-    }
-
     /// <inheritdoc />
     public override List< AssetDescriptor > GetDependencies( string? fileName,
                                                              FileInfo? file,
                                                              AssetLoaderParameters? parameter )
     {
+        // Not used in this class
         return null!;
     }
 
     /// <inheritdoc />
     public override void LoadAsync( AssetManager manager, FileInfo? file, AssetLoaderParameters? parameter )
     {
+        // Not used in this class
     }
 
     /// <inheritdeoc/>
@@ -75,6 +68,15 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
         LoadedMusic = Gdx.Audio.NewMusic( file );
 
         return LoadedMusic;
+    }
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
     }
 
     /// <summary>

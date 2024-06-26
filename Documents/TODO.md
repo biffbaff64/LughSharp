@@ -103,8 +103,8 @@ ASSETS/LOADERS/RESOLVERS
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    - I'm currently considering ditching LibCore.Audio in favour of NAudio.
-    - Decision to be made asap.
+- **I'm currently considering ditching LibCore.Audio in favour of NAudio.**
+- **Decision to be made asap.**
 
 AUDIO
 -----
@@ -252,17 +252,6 @@ CORE
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-FILES
------
-
-    CODE   DOCUMENT
-    ----   --------
-    - IP   - IP   - FileHandle
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 GRAPHICS
 --------
 
@@ -391,7 +380,7 @@ GRAPHICS/GLUTILS
     - DONE - DONE - VertexArray
     - DONE - DONE - VertexBufferObject
     - DONE - IP   - VertexBufferObjectSubData
-    - DONE£ - IP   - VertexBufferObjectWithVAO
+    - DONE - IP   - VertexBufferObjectWithVAO
 
     - The following do not need converting
 

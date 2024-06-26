@@ -36,7 +36,6 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     private readonly InputEventQueue  _eventQueue         = new();
     private readonly bool[]           _justPressedButtons = new bool[ 5 ];
     private readonly DesktopGLWindow? _window;
-    private          IInputProcessor? _inputProcessor;
 
     private bool _justTouched;
     private char _lastCharacter;
@@ -79,7 +78,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     /// <inheritdoc />
     public void Update()
     {
-        _eventQueue.Drain( _inputProcessor );
+        _eventQueue.Drain( InputProcessor );
     }
 
     /// <inheritdoc />
@@ -198,9 +197,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
     /// <inheritdoc />
     public override void SetCursorCaught( bool caught )
     {
-        Glfw.SetInputMode< CursorMode >( _window!.GlfwWindow,
-                                         InputMode.Cursor,
-                                         ( caught ? CursorMode.Disabled : CursorMode.Normal ) );
+        Glfw.SetInputMode( _window!.GlfwWindow, InputMode.Cursor, ( caught ? CursorMode.Disabled : CursorMode.Normal ) );
     }
 
     /// <inheritdoc />

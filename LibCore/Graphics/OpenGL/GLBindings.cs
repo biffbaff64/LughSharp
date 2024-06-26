@@ -19652,7 +19652,7 @@ public unsafe class GLBindings : IGLBindings
 
     public void glUniformMatrix4fv( GLint location, GLsizei count, GLboolean transpose, Buffer buffer )
     {
-        fixed ( float* ptr = ( int* ) buffer.BackingArray()[ 0 ] )
+        fixed ( float* ptr = ( float* ) buffer.BackingArray()[ 0 ] )
         {
             _glUniformMatrix4fv( location, count, transpose, ptr );
         }
@@ -19660,15 +19660,15 @@ public unsafe class GLBindings : IGLBindings
 
     public void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer )
     {
-        fixed ( void* ptr = ( int* ) buffer.BackingArray()[ 0 ] )
+        fixed ( void* ptr = ( void* ) buffer.BackingArray()[ 0 ] )
         {
-            _glVertexAttribPointer( location, size, type, normalized, stride, ptr );
+            _glVertexAttribPointer( ( uint ) location, size, type, normalized, stride, ptr );
         }
     }
 
     public string glGetActiveUniform( int handle, int u, IntBuffer bufSize, Buffer buffer )
     {
-        return null;
+        return _glGetActiveUniform( handle, u, bufSize, buffer );
     }
 }
 

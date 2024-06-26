@@ -47,19 +47,19 @@ public class ByteBufferAsFloatBufferB : FloatBuffer
     /// <inheritdoc />
     public override FloatBuffer Slice()
     {
-        return null;
+        throw new NotImplementedException();
     }
 
     /// <inheritdoc />
     public override FloatBuffer Duplicate()
     {
-        return null;
+        throw new NotImplementedException();
     }
 
     /// <inheritdoc />
     public override FloatBuffer asReadOnlyBuffer()
     {
-        return null;
+        throw new NotImplementedException();
     }
 
     /// <inheritdoc />
@@ -71,7 +71,7 @@ public class ByteBufferAsFloatBufferB : FloatBuffer
     /// <inheritdoc />
     public override FloatBuffer Put( float f )
     {
-        return null;
+        throw new NotImplementedException();
     }
 
     /// <inheritdoc />
@@ -83,18 +83,18 @@ public class ByteBufferAsFloatBufferB : FloatBuffer
     /// <inheritdoc />
     public override FloatBuffer Put( int index, float f )
     {
-        return null;
+        throw new NotImplementedException();
     }
 
     /// <inheritdoc />
     public override FloatBuffer Compact()
     {
-        return null;
+        throw new NotImplementedException();
     }
 
     /// <inheritdoc />
     public override ByteOrder Order()
     {
-        return null;
+        throw new NotImplementedException();
     }
 }

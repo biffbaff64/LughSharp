@@ -49,17 +49,14 @@ public class DialogInputListener : InputListener
             // Delay a frame to eat the keyTyped event.
             Gdx.App.PostRunnable( () =>
             {
-                void Run()
+                _dialog.Result( _object );
+
+                if ( !_dialog.CancelHide )
                 {
-                    _dialog.Result( _object );
-
-                    if ( !_dialog.CancelHide )
-                    {
-                        _dialog.Hide();
-                    }
-
-                    _dialog.CancelHide = false;
+                    _dialog.Hide();
                 }
+
+                _dialog.CancelHide = false;
             } );
         }
 
