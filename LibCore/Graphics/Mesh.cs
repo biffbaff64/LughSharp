@@ -22,8 +22,8 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 
-using System.Text;
 using LughSharp.LibCore.Maths.Collision;
 using LughSharp.LibCore.Utils.Exceptions;
 using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
@@ -582,10 +582,10 @@ public class Mesh
 
                 unsafe
                 {
-                    Gdx.GL.glDrawElements( primitiveType,
-                                           count,
-                                           IGL.GL_UNSIGNED_SHORT,
-                                           &buffer.BackingArray()[ 0 ] );
+                    fixed ( void* ptr = &buffer.BackingArray()[ 0 ] )
+                    {
+                        Gdx.GL.glDrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ptr );
+                    }
                 }
 
                 buffer.Position = oldPosition;

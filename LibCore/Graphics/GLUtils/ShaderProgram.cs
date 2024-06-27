@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LughSharp.LibCore.Utils.Collections.Extensions;
+using LughSharp.LibCore.Utils.Exceptions;
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
@@ -711,13 +712,13 @@ public class ShaderProgram
             return;
         }
 
-        Gdx.GL.glVertexAttribPointer( ( uint ) location, size, type, normalize, stride, buffer );
+        Gdx.GL.glVertexAttribPointer( location, size, type, normalize, stride, buffer );
     }
 
     public void SetVertexAttribute( int location, int size, int type, bool normalize, int stride, Buffer buffer )
     {
         CheckManaged();
-        Gdx.GL.glVertexAttribPointer( ( uint ) location, size, type, normalize, stride, buffer );
+        Gdx.GL.glVertexAttribPointer( location, size, type, normalize, stride, buffer );
     }
 
     /// <summary>
@@ -879,11 +880,15 @@ public class ShaderProgram
 
     /// <summary>
     /// </summary>
-    private void FetchUniforms()
+    private unsafe void FetchUniforms()
     {
+        throw new GdxRuntimeException( "This method is unfinished - DO NOT USE!!" );
+
+//TODO:
+/*        
         _parameters.Clear();
 
-        Gdx.GL.glGetProgramiv( ( uint ) Handle, IGL.GL_ACTIVE_UNIFORMS, _parameters );
+        Gdx.GL.glGetProgramiv( ( uint ) Handle, IGL.GL_ACTIVE_UNIFORMS, ( int* ) _parameters.BackingArray()[ 0 ] );
 
         var numUniforms = _parameters.Get( 0 );
 
@@ -895,9 +900,11 @@ public class ShaderProgram
             _parameters.Put( 0, 1 );
 
             _progType.Clear();
+            
+            // This method is not present in DotGL...
+            string? name = Gdx.GL.glGetActiveUniform( Handle, i, _parameters, _progType );
 
-            var name = Gdx.GL.glGetActiveUniform( Handle, i, _parameters, _progType );
-
+            var name     = string.Empty;
             var location = Gdx.GL.glGetUniformLocation( ( uint ) Handle, name );
 
             _uniforms[ name ]     = location;
@@ -905,6 +912,7 @@ public class ShaderProgram
             _uniformSizes[ name ] = _parameters.Get( 0 );
             Uniforms[ i ]         = name;
         }
+*/
     }
 
     /// <summary>

@@ -22,6 +22,7 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 
 using LughSharp.LibCore.Utils.Exceptions;
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
@@ -113,7 +114,7 @@ public class FloatTextureData : ITextureData
             // so to get a float texture one needs to supply GL_RGBA and GL_FLOAT there.
             unsafe
             {
-                fixed ( void* ptr = &( ( Buffer ) Buffer ).BackingArray< float >()[ 0 ] )
+                fixed ( void* ptr = &( ( Buffer ) Buffer ).BackingArray()[ 0 ] )
                 {
                     Gdx.GL.glTexImage2D( target,
                                          0,
@@ -138,7 +139,7 @@ public class FloatTextureData : ITextureData
             // hence we need to use GL_RGBA32F there (this constant is unavailable in GLES/WebGL)
             unsafe
             {
-                fixed ( void* ptr = &( ( Buffer ) Buffer ).BackingArray< float >()[ 0 ] )
+                fixed ( void* ptr = &( ( Buffer ) Buffer ).BackingArray()[ 0 ] )
                 {
                     Gdx.GL.glTexImage2D( target,
                                          0,

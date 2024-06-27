@@ -28,6 +28,7 @@
 #pragma warning disable IDE0060 // Remove unused parameter.
 #pragma warning disable IDE1006 // Naming Styles.
 #pragma warning disable IDE0090 // Use 'new(...)'.
+#pragma warning disable CS8500  // This takes the address of, gets the size of, or declares a pointer to a managed type
 
 #if !OGL_WRAPPER_API_BOTH && !OGL_WRAPPER_API_UNSAFE && !OGL_WRAPPER_API_SAFE
     #error You must define one of OGL_WRAPPER_API_BOTH, OGL_WRAPPER_API_UNSAFE, or OGL_WRAPPER_API_SAFE
@@ -19652,7 +19653,7 @@ public unsafe class GLBindings : IGLBindings
 
     public void glUniformMatrix4fv( GLint location, GLsizei count, GLboolean transpose, Buffer buffer )
     {
-        fixed ( float* ptr = ( float* ) buffer.BackingArray()[ 0 ] )
+        fixed ( float* ptr = ( int* ) buffer.BackingArray()[ 0 ] )
         {
             _glUniformMatrix4fv( location, count, transpose, ptr );
         }
@@ -19665,11 +19666,6 @@ public unsafe class GLBindings : IGLBindings
             _glVertexAttribPointer( ( uint ) location, size, type, normalized, stride, ptr );
         }
     }
-
-    public string glGetActiveUniform( int handle, int u, IntBuffer bufSize, Buffer buffer )
-    {
-        return _glGetActiveUniform( handle, u, bufSize, buffer );
-    }
 }
 
 #pragma warning restore IDE0079 // Remove unnecessary suppression
@@ -19678,3 +19674,4 @@ public unsafe class GLBindings : IGLBindings
 #pragma warning restore IDE0060 // Remove unused parameter.
 #pragma warning restore IDE1006 // Naming Styles.
 #pragma warning restore IDE0090 // Use 'new(...)'.
+#pragma warning restore CS8500  // This takes the address of, gets the size of, or declares a pointer to a managed type

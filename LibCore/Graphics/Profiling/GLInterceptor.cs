@@ -1591,16 +1591,17 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
 
         return result;
     }
-
-    /// <inheritdoc />
-    public string glGetActiveUniform( int handle, int u, IntBuffer bufSize, Buffer buffer )
-    {
-        Calls++;
-        var result = Gdx.GL.glGetActiveUniform( handle, u, bufSize, buffer );
-        CheckErrors();
-
-        return result;
-    }
+    
+//TODO: Unsupported method    
+//    /// <inheritdoc />
+//    public unsafe string glGetActiveUniform( int handle, int u, int* bufSize, Buffer buffer )
+//    {
+//        Calls++;
+//        var result = Gdx.GL.glGetActiveUniform( handle, u, bufSize, buffer );
+//        CheckErrors();
+//
+//        return result;
+//    }
 
     /// <inheritdoc />
     public unsafe void glGetAttachedShaders( uint program, int maxCount, int* count, uint* shaders )
@@ -1653,14 +1654,6 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     {
         Calls++;
         Gdx.GL.glGetProgramiv( program, pname, ref @params );
-        CheckErrors();
-    }
-
-    /// <inheritdoc />
-    public void glGetProgramiv( uint program, int pname, Buffer buffer )
-    {
-        Calls++;
-        Gdx.GL.glGetProgramiv( program, pname, buffer );
         CheckErrors();
     }
 

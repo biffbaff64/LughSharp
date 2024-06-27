@@ -3264,9 +3264,7 @@ public interface IGLBindings
     /// <param name="type">Returns the data type of the uniform variable.</param>
     /// <returns>Returns a managed string containing the name of the uniform variable.</returns>
     unsafe string glGetActiveUniform( UInt32 program, UInt32 index, Int32 bufSize, out Int32 size, out Int32 type );
-
-    string glGetActiveUniform( int handle, int u, IntBuffer bufSize, Buffer buffer );
-
+    
     /// <summary>
     /// Returns the shader objects attached to program
     /// </summary>
@@ -3327,8 +3325,6 @@ public interface IGLBindings
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the returned value(s) will be placed.</param>
     unsafe void glGetProgramiv( UInt32 program, Int32 pname, ref Int32[] @params );
-
-    unsafe void glGetProgramiv( UInt32 program, Int32 pname, Buffer buffer );
 
     /// <summary>
     /// Returns the information log for a program object
