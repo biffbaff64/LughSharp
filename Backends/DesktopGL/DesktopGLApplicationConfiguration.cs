@@ -48,10 +48,10 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public bool     TransparentFramebuffer { get; set; }
     public HdpiMode HdpiMode               { get; set; } = HdpiMode.Logical;
     public int      Depth                  { get; set; } = 16;
-    public int      Stencil                { get; set; } = 0;
-    public int      Samples                { get; set; } = 0;
+    public int      Stencil                { get; set; }
+    public int      Samples                { get; set; }
     public int      IdleFPS                { get; set; } = 60;
-    public int      ForegroundFPS          { get; set; } = 0;
+    public int      ForegroundFPS          { get; set; }
 
     public int GLContextMajorVersion { get; set; }
     public int GLContextMinorVersion { get; set; }
@@ -64,6 +64,9 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public string    PreferencesDirectory { get; set; } = ".prefs/";
     public PathTypes PreferencesFileType  { get; set; } = PathTypes.External;
 
+    private const int DEFAULT_CONTEXT_MAJOR = 4;
+    private const int DEFAULT_CONTEXT_MINOR = 6;
+    
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -169,9 +172,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public void SetGLContextVersion()
     {
-        //TODO: Set these correctly
-        GLContextMajorVersion = 4;
-        GLContextMinorVersion = 6;
+        GLContextMajorVersion = DEFAULT_CONTEXT_MAJOR;
+        GLContextMinorVersion = DEFAULT_CONTEXT_MINOR;
     }
 
     /// <summary>

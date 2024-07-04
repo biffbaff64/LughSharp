@@ -25,7 +25,7 @@
 
 // Asserts have been placed in if-statements for performance.
 // To enable them, uncomment this #define.
-// If you modify this class, please do test the asserts! 
+// If you modify this class, please do test the asserts!
 
 //#define ALLOW_ASSERTS
 
@@ -78,8 +78,8 @@ public class TimSort< T >
     /// <para>
     /// If you decrease this constant, you must change the stackLen computation in the
     /// TimSort constructor, or you risk an ArrayOutOfBounds exception. See listsort.txt
-    /// for a discussion of the minimum stack length required as a function of the
-    /// length of the array being sorted and the minimum merge sequence length.
+    /// for a discussion of the minimum stack length required as a function of the length
+    /// of the array being sorted and the minimum merge sequence length.
     /// </para>
     /// </summary>
     private const int MIN_MERGE = 32;
@@ -91,10 +91,9 @@ public class TimSort< T >
     private const int MIN_GALLOP = 7;
 
     /// <summary>
-    /// Maximum initial size of tmp array, which is used for merging.
-    /// The array can grow to accommodate demand.
-    /// Unlike Tim's original C version, we do not allocate this much storage when sorting
-    /// smaller arrays. This change was required for performance.
+    /// Maximum initial size of tmp array, which is used for merging. The array can grow
+    /// to accommodate demand. Unlike Tim's original C version, we do not allocate this
+    /// much storage when sorting smaller arrays. This change was required for performance.
     /// </summary>
     private const int INITIAL_TMP_STORAGE_LENGTH = 256;
 
@@ -105,9 +104,9 @@ public class TimSort< T >
     private readonly int[] _runLen;
 
     /// <summary>
-    /// This controls when we get into 'galloping mode'. It is initialized to MIN_GALLOP.
-    /// The mergeLo and mergeHi methods nudge it higher for random data, and lower for
-    /// highly structured data.
+    /// This controls when we get into 'galloping mode'. It is initialized to
+    /// <see cref="MIN_GALLOP"/>. The mergeLo and mergeHi methods nudge it higher
+    /// for random data, and lower for highly structured data.
     /// </summary>
     private int _minGallop = MIN_GALLOP;
 
@@ -126,10 +125,10 @@ public class TimSort< T >
     /// Run i starts at address base[i] and extends for len[i] elements.
     /// <para>
     /// It's always true (so long as the indices are in bounds) that:
-    /// </para>
     /// <code>
     /// runBase[i] + runLen[i] == runBase[i + 1]
     /// </code>
+    /// </para>
     /// <para>
     /// so we could cut the storage for this, but it's a minor amount, and keeping all
     /// the info explicit simplifies the code.

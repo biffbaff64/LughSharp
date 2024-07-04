@@ -26,6 +26,7 @@
 
 using LughSharp.LibCore.Utils.Exceptions;
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
+using Platform = LughSharp.LibCore.Core.Platform;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
@@ -36,6 +37,12 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class FloatTextureData : ITextureData
 {
+    public FloatBuffer Buffer     { get; private set; } = null!;
+    public int         Width      { get; set; }         = 0;
+    public int         Height     { get; set; }         = 0;
+    public bool        IsPrepared { get; set; }         = false;
+    public bool        UseMipMaps { get; set; }
+
     private readonly int  _format;
     private readonly int  _internalFormat;
     private readonly bool _isGpuOnly;
@@ -52,12 +59,6 @@ public class FloatTextureData : ITextureData
         _type           = type;
         _isGpuOnly      = isGpuOnly;
     }
-
-    public FloatBuffer Buffer     { get; private set; } = null!;
-    public int         Width      { get; set; }         = 0;
-    public int         Height     { get; set; }         = 0;
-    public bool        IsPrepared { get; set; }         = false;
-    public bool        UseMipMaps { get; set; }
 
     public void Prepare()
     {

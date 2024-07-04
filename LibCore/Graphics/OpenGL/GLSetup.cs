@@ -22,6 +22,8 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
+using Platform = LughSharp.LibCore.Core.Platform;
+
 namespace LughSharp.LibCore.Graphics.OpenGL;
 
 [PublicAPI]
@@ -65,8 +67,8 @@ public class GLSetup
         };
 
         // Retrieve the OpenGL vendor and renderer strings.
-        var vendorString   = Gdx.GL.glGetString( IGL.GL_VENDOR )->ToString();
-        var rendererString = Gdx.GL.glGetString( IGL.GL_RENDERER )->ToString();
+        var vendorString   = Gdx.GL.glGetString( IGL.GL_VENDOR ) -> ToString();
+        var rendererString = Gdx.GL.glGetString( IGL.GL_RENDERER ) -> ToString();
 
         // Create a new GLVersion object with the application type, GLFW version, vendor, and renderer strings.
         GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,

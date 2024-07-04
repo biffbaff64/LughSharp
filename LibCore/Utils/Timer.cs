@@ -35,10 +35,11 @@ namespace LughSharp.LibCore.Utils;
 [PublicAPI]
 public class Timer
 {
+    protected readonly List< Task? > Tasks = new( 8 );
+    
     private readonly static object _threadLock = new();
 
     private static     TimerThread?  _thread;
-    protected readonly List< Task? > Tasks = new( 8 );
 
     // ------------------------------------------------------------------------
 
@@ -197,9 +198,9 @@ public class Timer
     }
 
     /// <summary>
-    /// Returns true if the timer has no tasks in the queue.
-    /// Note that this can change at any time. Synchronize on the timer instance
-    /// to prevent tasks being added, removed, or updated.
+    /// Returns true if the timer has no tasks in the queue. Note that this can change
+    /// at any time. Synchronize on the timer instance to prevent tasks being added,
+    /// removed, or updated.
     /// </summary>
     /// <returns></returns>
     public bool IsEmpty()

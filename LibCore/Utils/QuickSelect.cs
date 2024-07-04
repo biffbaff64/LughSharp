@@ -26,10 +26,10 @@
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>
-/// Implementation of Tony Hoare's quickselect algorithm. Running time is generally O(n),
-/// but worst case is O(n^2) Pivot choice is median of three method, providing better
-/// performance than a random pivot for partially sorted data.
-/// http://en.wikipedia.org/wiki/Quickselect
+/// Implementation of Tony Hoare's quickselect algorithm. Running time is generally
+/// O(n), but worst case is O(n^2) Pivot choice is median of three method, providing
+/// better performance than a random pivot for partially sorted data.
+/// <para> http://en.wikipedia.org/wiki/Quickselect </para>
 /// </summary>
 [PublicAPI]
 public class QuickSelect< T >

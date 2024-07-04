@@ -27,33 +27,31 @@ namespace LughSharp.LibCore.Utils;
 
 /// <summary>
 /// The string tokenizer class allows an application to break a string into tokens.
-/// The <tt>StringTokenizer</tt> methods do not distinguish among identifiers,
+/// The <c>StringTokenizer</c> methods do not distinguish among identifiers,
 /// numbers, and quoted strings, nor do they recognize and skip comments.
 /// <para>
 /// The set of delimiters (the characters that separate tokens) may be specified
 /// either at creation time or on a per-token basis.
 /// </para>
 /// <para>
-/// An instance of <tt>StringTokenizer</tt> behaves in one of two ways, depending
-/// on whether it was created with the <tt>returnDelims</tt> flag having the value
-/// <tt>true</tt> or <tt>false</tt>:
+/// An instance of <c>StringTokenizer</c> behaves in one of two ways, depending
+/// on whether it was created with the <c>returnDelims</c> flag having the value
+/// <c>true</c> or <c>false</c>:
 /// <para></para>
-/// If the flag is <tt>false</tt>, delimiter characters serve to
-/// separate tokens. A token is a maximal sequence of consecutive
-/// characters that are not delimiters.
-/// If the flag is <tt>true</tt>, delimiter characters are themselves
-/// considered to be tokens. A token is thus either one delimiter
-/// character, or a maximal sequence of consecutive characters that are
-/// not delimiters.
+/// If the flag is <c>false</c>, delimiter characters serve to separate tokens.
+/// A token is a maximal sequence of consecutive characters that are not delimiters.
+/// If the flag is <c>true</c>, delimiter characters are themselves considered to
+/// be tokens. A token is thus either one delimiter character, or a maximal sequence
+/// of consecutive characters that are not delimiters.
 /// </para>
 /// <para>
-/// A <tt>StringTokenizer</tt> object internally maintains a current
-/// position within the string to be tokenized. Some operations advance this
-/// current position past the characters processed.
+/// A <c>StringTokenizer</c> object internally maintains a current position within
+/// the string to be tokenized. Some operations advance this current position past
+/// the characters processed.
 /// </para>
 /// <para>
-/// A token is returned by taking a substring of the string that was used to
-/// create the <tt>StringTokenizer</tt> object.
+/// A token is returned by taking a substring of the string that was used to create
+/// the <c>StringTokenizer</c> object.
 /// </para>
 /// <para>
 /// The following is one example of the use of the tokenizer. The code:
@@ -75,14 +73,14 @@ namespace LughSharp.LibCore.Utils;
 /// </code>
 /// </para>
 /// <para>
-/// <tt>StringTokenizer</tt> is a legacy class that is retained for compatibility
+/// <c>StringTokenizer</c> is a legacy class that is retained for compatibility
 /// reasons although its use is discouraged in new code. It is recommended that
-/// anyone seeking this functionality use the <tt>split</tt> method of <tt>String</tt>
+/// anyone seeking this functionality use the <c>split</c> method of <c>String</c>
 /// instead.
 /// </para>
 /// <para>
-/// The following example illustrates how the <tt>String.split</tt>
-/// method can be used to break up a string into its basic tokens:
+/// The following example illustrates how the <c>String.split</c> method can be
+/// used to break up a string into its basic tokens:
 /// <code>
 ///         string[] result = "this is a test".split("\\s");
 ///         for ( int x=0; x&lt;result.Length; x++ )
@@ -111,9 +109,8 @@ public class StringTokenizer
     private int _currentPosition;
 
     /// <summary>
-    /// When hasSurrogates is true, delimiters are converted to code
-    /// points and isDelimiter(int) is used to determine if the given
-    /// codepoint is a delimiter.
+    /// When hasSurrogates is true, delimiters are converted to code points and
+    /// isDelimiter(int) is used to determine if the given codepoint is a delimiter.
     /// </summary>
     private int[]? _delimiterCodePoints;
 
@@ -122,8 +119,8 @@ public class StringTokenizer
 
     /// <summary>
     /// If delimiters include any surrogates (including surrogate pairs),
-    /// hasSurrogates is true and the tokenizer uses the different code
-    /// path. This is because String.indexOf(int) doesn't handle unpaired
+    /// <c>_hasSurrogates</c> is true and the tokenizer uses the different code
+    /// path. This is because <c>string.IndexOf(int)</c> doesn't handle unpaired
     /// surrogates as a single character.
     /// </summary>
     private bool _hasSurrogates = false;
@@ -133,10 +130,9 @@ public class StringTokenizer
     /// highest value. It is used to optimize the detection of delimiter
     /// characters.
     /// <para>
-    /// It is unlikely to provide any optimization benefit in the
-    /// hasSurrogates case because most string characters will be
-    /// smaller than the limit, but we keep it so that the two code
-    /// paths remain similar.
+    /// It is unlikely to provide any optimization benefit in the hasSurrogates
+    /// case because most string characters will be smaller than the limit, but
+    /// we keep it so that the two code paths remain similar.
     /// </para>
     /// </summary>
     private int _maxDelimCodePoint;
@@ -145,17 +141,17 @@ public class StringTokenizer
 
     /// <summary>
     /// Constructs a string tokenizer for the specified string. All characters
-    /// in the <tt>delim</tt> argument are the delimitersfor separating tokens.
+    /// in the <c>delim</c> argument are the delimitersfor separating tokens.
     /// <para>
-    /// If the <tt>returnDelims</tt> flag is <tt>true</tt>, then the delimiter
+    /// If the <c>returnDelims</c> flag is <c>true</c>, then the delimiter
     /// characters are also returned as tokens. Each delimiter is returned as
-    /// a string of length one. If the flag is <tt>false</tt>, the delimiter
+    /// a string of length one. If the flag is <c>false</c>, the delimiter
     /// characters are skipped and only serve as separators between tokens.
     /// </para>
     /// <para>
-    /// Note that if <tt>delim</tt> is <tt>null</tt>, this constructor does
+    /// Note that if <c>delim</c> is <c>null</c>, this constructor does
     /// not throw an exception. However, trying to invoke other methods on the
-    /// resulting <tt>StringTokenizer</tt> may result in a <tt>NullReferenceException</tt>.
+    /// resulting <c>StringTokenizer</c> may result in a <c>NullReferenceException</c>.
     /// </para>
     /// </summary>
     /// <param name="str">a string to be parsed.</param>
@@ -351,12 +347,12 @@ public class StringTokenizer
 
     /// <summary>
     /// Tests if there are more tokens available from this tokenizer's string.
-    /// If this method returns <tt>true</tt>, then a subsequent call to
-    /// <tt>nextToken</tt> with no argument will successfully return a token.
+    /// If this method returns <c>true</c>, then a subsequent call to
+    /// <c>nextToken</c> with no argument will successfully return a token.
     /// </summary>
     /// <returns>
-    /// <tt>true</tt> if and only if there is at least one token in the string
-    /// after the current position; <tt>false</tt> otherwise.
+    /// <c>true</c> if and only if there is at least one token in the string
+    /// after the current position; <c>false</c> otherwise.
     /// </returns>
     public bool HasMoreTokens()
     {
@@ -402,8 +398,8 @@ public class StringTokenizer
     /// <summary>
     /// Returns the next token in this string tokenizer's string. First,
     /// the set of characters considered to be delimiters by this
-    /// <tt>StringTokenizer</tt> object is changed to be the characters in
-    /// the string <tt>delim</tt>. Then the next token in the string
+    /// <c>StringTokenizer</c> object is changed to be the characters in
+    /// the string <c>delim</c>. Then the next token in the string
     /// after the current position is returned. The current position is
     /// advanced beyond the recognized token.  The new delimiter set
     /// remains the default after this call.
@@ -423,7 +419,7 @@ public class StringTokenizer
     }
 
     /// <summary>
-    /// Calculates the number of times that this tokenizer's <tt>NextToken</tt>
+    /// Calculates the number of times that this tokenizer's <c>NextToken</c>
     /// method can be called before it generates an exception. The current
     /// position is not advanced.
     /// </summary>

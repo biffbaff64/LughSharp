@@ -91,7 +91,7 @@ public class Selector< T >
     }
 
     /// <summary>
-    /// Faster than quickselect for n = min
+    /// Faster than <see cref="QuickSelect{T}"/> for n = min
     /// </summary>
     private static int FastMin( T[] items, IComparer< T > comp, int size )
     {
@@ -111,7 +111,7 @@ public class Selector< T >
     }
 
     /// <summary>
-    /// Faster than quickselect for n = max
+    /// Faster than <see cref="QuickSelect{T}"/> for n = max
     /// </summary>
     private static int FastMax( T[] items, IComparer< T > comp, int size )
     {

@@ -36,6 +36,24 @@ public class QuadTreeFloat : IPoolable
     public const int YPOS    = 2;
     public const int DISTSQR = 3;
 
+    public int            MaxValues { get; }
+    public int            MaxDepth  { get; }
+    public float          X         { get; set; }
+    public float          Y         { get; set; }
+    public float          Width     { get; set; }
+    public float          Height    { get; set; }
+    public int            Depth     { get; set; }
+    public QuadTreeFloat? Nw        { get; set; }
+    public QuadTreeFloat? Ne        { get; set; }
+    public QuadTreeFloat? Sw        { get; set; }
+    public QuadTreeFloat? Se        { get; set; }
+
+    // For each entry, stores the value, x, and y.
+    public List< float > Values { get; set; }
+
+    // The number of elements stored in 'values' (3 values per quad tree entry).
+    public int Count { get; set; }
+
     private readonly Pool< QuadTreeFloat > _pool = new( 128, 4096 );
 
     // ------------------------------------------------------------------------
@@ -67,24 +85,6 @@ public class QuadTreeFloat : IPoolable
 
         _pool.NewObject = GetNewObject;
     }
-
-    public int            MaxValues { get; }
-    public int            MaxDepth  { get; }
-    public float          X         { get; set; }
-    public float          Y         { get; set; }
-    public float          Width     { get; set; }
-    public float          Height    { get; set; }
-    public int            Depth     { get; set; }
-    public QuadTreeFloat? Nw        { get; set; }
-    public QuadTreeFloat? Ne        { get; set; }
-    public QuadTreeFloat? Sw        { get; set; }
-    public QuadTreeFloat? Se        { get; set; }
-
-    // For each entry, stores the value, x, and y.
-    public List< float > Values { get; set; }
-
-    // The number of elements stored in 'values' (3 values per quad tree entry).
-    public int Count { get; set; }
 
     public void Reset()
     {

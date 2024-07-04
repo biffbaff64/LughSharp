@@ -33,11 +33,12 @@ using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 using Monitor = DotGLFW.Monitor;
+using Platform = LughSharp.LibCore.Core.Platform;
 
 namespace LughSharp.Backends.DesktopGL;
 
 [PublicAPI]
-public class DesktopGLApplication : IDesktopGLApplicationBase
+public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 {
     #region public properties
 
@@ -51,7 +52,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
     public int         LogLevel  { get; set; }
     public IClipboard? Clipboard { get; set; }
     public GLVersion?  GLVersion { get; set; }
-    public IGLAudio?   Audio     { get; set; } = null;
+    public IGLAudio?   Audio     { get; set; }
     public INet        Network   { get; set; }
     public IFiles      Files     { get; set; }
 
@@ -71,9 +72,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
 
     private const int FR_UNINITIALISED = -2;
 
-    private static   GlfwErrorCallback? _errorCallback = null;
-    private readonly Sync?              _sync          = null;
-    private volatile DesktopGLWindow?   _currentWindow = null;
+    private static   GlfwErrorCallback? _errorCallback;
+    private readonly Sync?              _sync;
+    private volatile DesktopGLWindow?   _currentWindow;
     private          bool               _running       = true;
 
     // ------------------------------------------------------------------------
@@ -108,8 +109,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         Gdx.Net   = Network;
 
         Windows.Add( CreateWindow( config, listener, 0 ) );
-
-        Run();
     }
 
     /// <summary>
@@ -616,7 +615,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             Glfw.WindowHint( Hint.OpenGLDebugContext, true );
         }
     }
-    
+
     /// <summary>
     /// Initialises <see cref="GLVersion"/>.
     /// </summary>
@@ -631,10 +630,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
         {
             GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
                                        $"{majorv}.{minorv}.{revision}",
-                                       Gdx.GL.glGetString( IGL.GL_VENDOR )->ToString(),
-                                       Gdx.GL.glGetString( IGL.GL_RENDERER )->ToString() );
+                                       Gdx.GL.glGetString( IGL.GL_VENDOR ) -> ToString(),
+                                       Gdx.GL.glGetString( IGL.GL_RENDERER ) -> ToString() );
         }
-        
+
         if ( !GLVersion!.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
         {
             var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
@@ -644,7 +643,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
                                          + $"\n{GLVersion?.DebugVersionString()}" );
         }
     }
-    
+
     /// <summary>
     /// Returns <b>true</b> if <b><i>F</i></b>rame<b><i>B</i></b>uffer <b><i>O</i></b>bjects
     /// are supported. 
@@ -681,6 +680,14 @@ public class DesktopGLApplication : IDesktopGLApplicationBase
             }
         }
     }
+
+    // ------------------------------------------------------------------------
+
+    public void Dispose()
+    {
+    }
+    
+    // ------------------------------------------------------------------------
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

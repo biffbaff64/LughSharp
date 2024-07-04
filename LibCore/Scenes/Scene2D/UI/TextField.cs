@@ -24,12 +24,12 @@
 
 
 using System.Drawing;
-using System.Text;
 using LughSharp.LibCore.Input;
 using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
 using LughSharp.LibCore.Utils.Exceptions;
 using Color = LughSharp.LibCore.Graphics.Color;
+using Platform = LughSharp.LibCore.Core.Platform;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
@@ -361,7 +361,7 @@ public class TextField : Widget
             var maxX     = Math.Min( glyphPositions[ maxIndex ] - glyphPositions[ _visibleTextStart ], visibleWidth - TextOffset );
 
             _selectionX     = minX;
-            _selectionWidth = maxX - minX - Style!.Font!.GetData().CursorX;
+            _selectionWidth = maxX - minX - Style!.Font!.Data.CursorX;
         }
     }
 
@@ -372,7 +372,7 @@ public class TextField : Widget
             return GlyphPositions.Count - 1;
         }
 
-        x -= ( TextOffset + FontOffset ) - Style.Font!.GetData().CursorX - GlyphPositions[ _visibleTextStart ];
+        x -= ( TextOffset + FontOffset ) - Style.Font!.Data.CursorX - GlyphPositions[ _visibleTextStart ];
 
         var background = GetBackgroundDrawable();
 
@@ -629,7 +629,7 @@ public class TextField : Widget
                           ( ( x + TextOffset + GlyphPositions[ Cursor ] )
                           - GlyphPositions[ _visibleTextStart ] )
                         + FontOffset
-                        + font.GetData().CursorX,
+                        + font.Data.CursorX,
                           y - TextHeight - font.GetDescent(),
                           cursorPatch.MinWidth,
                           TextHeight );
@@ -638,7 +638,7 @@ public class TextField : Widget
     public virtual void UpdateDisplayText()
     {
         var font       = Style?.Font ?? new BitmapFont();
-        var data       = font.GetData();
+        var data       = font.Data;
         var text       = Text ?? string.Empty;
         var textLength = text.Length;
         var buffer     = new StringBuilder();
@@ -781,7 +781,7 @@ public class TextField : Widget
             textLength -= Math.Abs( Cursor - SelectionStart );
         }
 
-        var data = Style!.Font!.GetData();
+        var data = Style!.Font!.Data;
 
         for ( int i = 0, n = content.Length; i < n; i++ )
         {
@@ -1625,7 +1625,7 @@ public class TextField : Widget
 
                 var add = enter
                               ? _tf.WriteEnters
-                              : !_tf._onlyFontChars || _tf.Style!.Font!.GetData().HasGlyph( character );
+                              : !_tf._onlyFontChars || _tf.Style!.Font!.Data.HasGlyph( character );
 
                 var remove = backspace || delete;
 

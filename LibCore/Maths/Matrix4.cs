@@ -1445,20 +1445,20 @@ public class Matrix4
     /// <returns> This matrix for chaining </returns>
     public Matrix4 Set( Affine2 affine )
     {
-        Val[ M00 ] = affine.m00;
-        Val[ M10 ] = affine.m10;
+        Val[ M00 ] = affine.M00;
+        Val[ M10 ] = affine.M10;
         Val[ M20 ] = 0;
         Val[ M30 ] = 0;
-        Val[ M01 ] = affine.m01;
-        Val[ M11 ] = affine.m11;
+        Val[ M01 ] = affine.M01;
+        Val[ M11 ] = affine.M11;
         Val[ M21 ] = 0;
         Val[ M31 ] = 0;
         Val[ M02 ] = 0;
         Val[ M12 ] = 0;
         Val[ M22 ] = 1;
         Val[ M32 ] = 0;
-        Val[ M03 ] = affine.m02;
-        Val[ M13 ] = affine.m12;
+        Val[ M03 ] = affine.M02;
+        Val[ M13 ] = affine.M12;
         Val[ M23 ] = 0;
         Val[ M33 ] = 1;
 
@@ -1479,12 +1479,12 @@ public class Matrix4
     /// <returns> This matrix for chaining </returns>
     public Matrix4 SetAsAffine( Affine2 affine )
     {
-        Val[ M00 ] = affine.m00;
-        Val[ M10 ] = affine.m10;
-        Val[ M01 ] = affine.m01;
-        Val[ M11 ] = affine.m11;
-        Val[ M03 ] = affine.m02;
-        Val[ M13 ] = affine.m12;
+        Val[ M00 ] = affine.M00;
+        Val[ M10 ] = affine.M10;
+        Val[ M01 ] = affine.M01;
+        Val[ M11 ] = affine.M11;
+        Val[ M03 ] = affine.M02;
+        Val[ M13 ] = affine.M12;
 
         return this;
     }

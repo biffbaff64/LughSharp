@@ -697,26 +697,26 @@ public class CpuSpriteBatch : SpriteBatch
             ( v, v2 ) = ( v2, v );
         }
 
-        Vertices[ Idx + 0 ] = ( _adjustAffine.m00 * x1 ) + ( _adjustAffine.m01 * y1 ) + _adjustAffine.m02;
-        Vertices[ Idx + 1 ] = ( _adjustAffine.m10 * x1 ) + ( _adjustAffine.m11 * y1 ) + _adjustAffine.m12;
+        Vertices[ Idx + 0 ] = ( _adjustAffine.M00 * x1 ) + ( _adjustAffine.M01 * y1 ) + _adjustAffine.M02;
+        Vertices[ Idx + 1 ] = ( _adjustAffine.M10 * x1 ) + ( _adjustAffine.M11 * y1 ) + _adjustAffine.M12;
         Vertices[ Idx + 2 ] = ColorPacked;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
-        Vertices[ Idx + 5 ] = ( _adjustAffine.m00 * x2 ) + ( _adjustAffine.m01 * y2 ) + _adjustAffine.m02;
-        Vertices[ Idx + 6 ] = ( _adjustAffine.m10 * x2 ) + ( _adjustAffine.m11 * y2 ) + _adjustAffine.m12;
+        Vertices[ Idx + 5 ] = ( _adjustAffine.M00 * x2 ) + ( _adjustAffine.M01 * y2 ) + _adjustAffine.M02;
+        Vertices[ Idx + 6 ] = ( _adjustAffine.M10 * x2 ) + ( _adjustAffine.M11 * y2 ) + _adjustAffine.M12;
         Vertices[ Idx + 7 ] = ColorPacked;
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ Idx + 10 ] = ( _adjustAffine.m00 * x3 ) + ( _adjustAffine.m01 * y3 ) + _adjustAffine.m02;
-        Vertices[ Idx + 11 ] = ( _adjustAffine.m10 * x3 ) + ( _adjustAffine.m11 * y3 ) + _adjustAffine.m12;
+        Vertices[ Idx + 10 ] = ( _adjustAffine.M00 * x3 ) + ( _adjustAffine.M01 * y3 ) + _adjustAffine.M02;
+        Vertices[ Idx + 11 ] = ( _adjustAffine.M10 * x3 ) + ( _adjustAffine.M11 * y3 ) + _adjustAffine.M12;
         Vertices[ Idx + 12 ] = ColorPacked;
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
-        Vertices[ Idx + 15 ] = ( _adjustAffine.m00 * x4 ) + ( _adjustAffine.m01 * y4 ) + _adjustAffine.m02;
-        Vertices[ Idx + 16 ] = ( _adjustAffine.m10 * x4 ) + ( _adjustAffine.m11 * y4 ) + _adjustAffine.m12;
+        Vertices[ Idx + 15 ] = ( _adjustAffine.M00 * x4 ) + ( _adjustAffine.M01 * y4 ) + _adjustAffine.M02;
+        Vertices[ Idx + 16 ] = ( _adjustAffine.M10 * x4 ) + ( _adjustAffine.M11 * y4 ) + _adjustAffine.M12;
         Vertices[ Idx + 17 ] = ColorPacked;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
@@ -853,26 +853,26 @@ public class CpuSpriteBatch : SpriteBatch
             v4 = region.V2;
         }
 
-        Vertices[ Idx + 0 ] = ( _adjustAffine.m00 * x1 ) + ( _adjustAffine.m01 * y1 ) + _adjustAffine.m02;
-        Vertices[ Idx + 1 ] = ( _adjustAffine.m10 * x1 ) + ( _adjustAffine.m11 * y1 ) + _adjustAffine.m12;
+        Vertices[ Idx + 0 ] = ( _adjustAffine.M00 * x1 ) + ( _adjustAffine.M01 * y1 ) + _adjustAffine.M02;
+        Vertices[ Idx + 1 ] = ( _adjustAffine.M10 * x1 ) + ( _adjustAffine.M11 * y1 ) + _adjustAffine.M12;
         Vertices[ Idx + 2 ] = ColorPacked;
         Vertices[ Idx + 3 ] = u1;
         Vertices[ Idx + 4 ] = v1;
 
-        Vertices[ Idx + 5 ] = ( _adjustAffine.m00 * x2 ) + ( _adjustAffine.m01 * y2 ) + _adjustAffine.m02;
-        Vertices[ Idx + 6 ] = ( _adjustAffine.m10 * x2 ) + ( _adjustAffine.m11 * y2 ) + _adjustAffine.m12;
+        Vertices[ Idx + 5 ] = ( _adjustAffine.M00 * x2 ) + ( _adjustAffine.M01 * y2 ) + _adjustAffine.M02;
+        Vertices[ Idx + 6 ] = ( _adjustAffine.M10 * x2 ) + ( _adjustAffine.M11 * y2 ) + _adjustAffine.M12;
         Vertices[ Idx + 7 ] = ColorPacked;
         Vertices[ Idx + 8 ] = u2;
         Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ Idx + 10 ] = ( _adjustAffine.m00 * x3 ) + ( _adjustAffine.m01 * y3 ) + _adjustAffine.m02;
-        Vertices[ Idx + 11 ] = ( _adjustAffine.m10 * x3 ) + ( _adjustAffine.m11 * y3 ) + _adjustAffine.m12;
+        Vertices[ Idx + 10 ] = ( _adjustAffine.M00 * x3 ) + ( _adjustAffine.M01 * y3 ) + _adjustAffine.M02;
+        Vertices[ Idx + 11 ] = ( _adjustAffine.M10 * x3 ) + ( _adjustAffine.M11 * y3 ) + _adjustAffine.M12;
         Vertices[ Idx + 12 ] = ColorPacked;
         Vertices[ Idx + 13 ] = u3;
         Vertices[ Idx + 14 ] = v3;
 
-        Vertices[ Idx + 15 ] = ( _adjustAffine.m00 * x4 ) + ( _adjustAffine.m01 * y4 ) + _adjustAffine.m02;
-        Vertices[ Idx + 16 ] = ( _adjustAffine.m10 * x4 ) + ( _adjustAffine.m11 * y4 ) + _adjustAffine.m12;
+        Vertices[ Idx + 15 ] = ( _adjustAffine.M00 * x4 ) + ( _adjustAffine.M01 * y4 ) + _adjustAffine.M02;
+        Vertices[ Idx + 16 ] = ( _adjustAffine.M10 * x4 ) + ( _adjustAffine.M11 * y4 ) + _adjustAffine.M12;
         Vertices[ Idx + 17 ] = ColorPacked;
         Vertices[ Idx + 18 ] = u4;
         Vertices[ Idx + 19 ] = v4;
@@ -897,14 +897,14 @@ public class CpuSpriteBatch : SpriteBatch
         }
 
         // construct corner points
-        var x1 = transform.m02;
-        var y1 = transform.m12;
-        var x2 = ( transform.m01 * height ) + transform.m02;
-        var y2 = ( transform.m11 * height ) + transform.m12;
-        var x3 = ( transform.m00 * width ) + ( transform.m01 * height ) + transform.m02;
-        var y3 = ( transform.m10 * width ) + ( transform.m11 * height ) + transform.m12;
-        var x4 = ( transform.m00 * width ) + transform.m02;
-        var y4 = ( transform.m10 * width ) + transform.m12;
+        var x1 = transform.M02;
+        var y1 = transform.M12;
+        var x2 = ( transform.M01 * height ) + transform.M02;
+        var y2 = ( transform.M11 * height ) + transform.M12;
+        var x3 = ( transform.M00 * width ) + ( transform.M01 * height ) + transform.M02;
+        var y3 = ( transform.M10 * width ) + ( transform.M11 * height ) + transform.M12;
+        var x4 = ( transform.M00 * width ) + transform.M02;
+        var y4 = ( transform.M10 * width ) + transform.M12;
 
         // v must be flipped
         var u  = region.U;
@@ -912,26 +912,26 @@ public class CpuSpriteBatch : SpriteBatch
         var u2 = region.U2;
         var v2 = region.V;
 
-        Vertices[ Idx + 0 ] = ( _adjustAffine.m00 * x1 ) + ( _adjustAffine.m01 * y1 ) + _adjustAffine.m02;
-        Vertices[ Idx + 1 ] = ( _adjustAffine.m10 * x1 ) + ( _adjustAffine.m11 * y1 ) + _adjustAffine.m12;
+        Vertices[ Idx + 0 ] = ( _adjustAffine.M00 * x1 ) + ( _adjustAffine.M01 * y1 ) + _adjustAffine.M02;
+        Vertices[ Idx + 1 ] = ( _adjustAffine.M10 * x1 ) + ( _adjustAffine.M11 * y1 ) + _adjustAffine.M12;
         Vertices[ Idx + 2 ] = ColorPacked;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
-        Vertices[ Idx + 5 ] = ( _adjustAffine.m00 * x2 ) + ( _adjustAffine.m01 * y2 ) + _adjustAffine.m02;
-        Vertices[ Idx + 6 ] = ( _adjustAffine.m10 * x2 ) + ( _adjustAffine.m11 * y2 ) + _adjustAffine.m12;
+        Vertices[ Idx + 5 ] = ( _adjustAffine.M00 * x2 ) + ( _adjustAffine.M01 * y2 ) + _adjustAffine.M02;
+        Vertices[ Idx + 6 ] = ( _adjustAffine.M10 * x2 ) + ( _adjustAffine.M11 * y2 ) + _adjustAffine.M12;
         Vertices[ Idx + 7 ] = ColorPacked;
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ Idx + 10 ] = ( _adjustAffine.m00 * x3 ) + ( _adjustAffine.m01 * y3 ) + _adjustAffine.m02;
-        Vertices[ Idx + 11 ] = ( _adjustAffine.m10 * x3 ) + ( _adjustAffine.m11 * y3 ) + _adjustAffine.m12;
+        Vertices[ Idx + 10 ] = ( _adjustAffine.M00 * x3 ) + ( _adjustAffine.M01 * y3 ) + _adjustAffine.M02;
+        Vertices[ Idx + 11 ] = ( _adjustAffine.M10 * x3 ) + ( _adjustAffine.M11 * y3 ) + _adjustAffine.M12;
         Vertices[ Idx + 12 ] = ColorPacked;
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
-        Vertices[ Idx + 15 ] = ( _adjustAffine.m00 * x4 ) + ( _adjustAffine.m01 * y4 ) + _adjustAffine.m02;
-        Vertices[ Idx + 16 ] = ( _adjustAffine.m10 * x4 ) + ( _adjustAffine.m11 * y4 ) + _adjustAffine.m12;
+        Vertices[ Idx + 15 ] = ( _adjustAffine.M00 * x4 ) + ( _adjustAffine.M01 * y4 ) + _adjustAffine.M02;
+        Vertices[ Idx + 16 ] = ( _adjustAffine.M10 * x4 ) + ( _adjustAffine.M11 * y4 ) + _adjustAffine.M12;
         Vertices[ Idx + 17 ] = ColorPacked;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
@@ -962,8 +962,8 @@ public class CpuSpriteBatch : SpriteBatch
                 var x = spriteVertices[ offset ];
                 var y = spriteVertices[ offset + 1 ];
 
-                Vertices[ Idx ]     = ( _adjustAffine.m00 * x ) + ( _adjustAffine.m01 * y ) + _adjustAffine.m02; // x
-                Vertices[ Idx + 1 ] = ( _adjustAffine.m10 * x ) + ( _adjustAffine.m11 * y ) + _adjustAffine.m12; // y
+                Vertices[ Idx ]     = ( _adjustAffine.M00 * x ) + ( _adjustAffine.M01 * y ) + _adjustAffine.M02; // x
+                Vertices[ Idx + 1 ] = ( _adjustAffine.M10 * x ) + ( _adjustAffine.M11 * y ) + _adjustAffine.M12; // y
                 Vertices[ Idx + 2 ] = spriteVertices[ offset + 2 ];                                              // color
                 Vertices[ Idx + 3 ] = spriteVertices[ offset + 3 ];                                              // u
                 Vertices[ Idx + 4 ] = spriteVertices[ offset + 4 ];                                              // v
@@ -1003,12 +1003,12 @@ public class CpuSpriteBatch : SpriteBatch
         var val = matrix.Values;
 
         // matrix is assumed to be 2D transformation
-        return val[ Matrix4.M00 ].Equals( affine.m00 )
-            && val[ Matrix4.M10 ].Equals( affine.m10 )
-            && val[ Matrix4.M01 ].Equals( affine.m01 )
-            && val[ Matrix4.M11 ].Equals( affine.m11 )
-            && val[ Matrix4.M03 ].Equals( affine.m02 )
-            && val[ Matrix4.M13 ].Equals( affine.m12 );
+        return val[ Matrix4.M00 ].Equals( affine.M00 )
+            && val[ Matrix4.M10 ].Equals( affine.M10 )
+            && val[ Matrix4.M01 ].Equals( affine.M01 )
+            && val[ Matrix4.M11 ].Equals( affine.M11 )
+            && val[ Matrix4.M03 ].Equals( affine.M02 )
+            && val[ Matrix4.M13 ].Equals( affine.M12 );
     }
 
     private static bool CheckIdt( Matrix4 matrix )

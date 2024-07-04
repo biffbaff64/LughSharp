@@ -65,8 +65,8 @@ public class BitmapFont
     public bool Flipped     { get; set; }
     public bool OwnsTexture { get; set; }
 
-    private readonly BitmapFontCache       _cache;
-    private readonly BitmapFontData        _data;
+//    private readonly BitmapFontCache       Cache;
+//    private readonly BitmapFontData        Data;
     private readonly PathTypes              _fileType;
     private readonly List< TextureRegion > _regions;
 
@@ -203,7 +203,7 @@ public class BitmapFont
     public BitmapFont( BitmapFontData data, List< TextureRegion >? pageRegions, bool integer )
     {
         Flipped             = data.Flipped;
-        _data               = data;
+        Data               = data;
         UseIntegerPositions = integer;
         _fileType           = PathTypes.Local;
 
@@ -237,7 +237,7 @@ public class BitmapFont
             OwnsTexture = false;
         }
 
-        _cache = new BitmapFontCache( this, UseIntegerPositions );
+        Cache = new BitmapFontCache( this, UseIntegerPositions );
 
         InitialLoad( data );
     }
@@ -254,19 +254,19 @@ public class BitmapFont
         set
         {
             _integer                   = value;
-            _cache.UseIntegerPositions = value;
+            Cache.UseIntegerPositions = value;
         }
     }
 
     /// <summary>
     /// Returns the <see cref="BitmapFontData.ScaleX"/> value.
     /// </summary>
-    public float GetScaleX() => _data.ScaleX;
+    public float GetScaleX() => Data.ScaleX;
 
     /// <summary>
     /// Returns the <see cref="BitmapFontData.ScaleY"/> value.
     /// </summary>
-    public float GetScaleY() => _data.ScaleY;
+    public float GetScaleY() => Data.ScaleY;
 
     // ------------------------------------------------------------------------
 
@@ -327,11 +327,11 @@ public class BitmapFont
     /// <param name="y"> Y coordinate. </param>
     public GlyphLayout Draw( IBatch batch, string str, float x, float y )
     {
-        _cache.Clear();
+        Cache.Clear();
 
-        var layout = _cache.AddText( str, x, y );
+        var layout = Cache.AddText( str, x, y );
 
-        _cache.Draw( batch );
+        Cache.Draw( batch );
 
         return layout;
     }
@@ -341,11 +341,11 @@ public class BitmapFont
     /// </summary>
     public GlyphLayout Draw( IBatch batch, string str, float x, float y, int targetWidth, int halign, bool wrap )
     {
-        _cache.Clear();
+        Cache.Clear();
 
-        var layout = _cache.AddText( str, x, y, targetWidth, halign, wrap );
+        var layout = Cache.AddText( str, x, y, targetWidth, halign, wrap );
 
-        _cache.Draw( batch );
+        Cache.Draw( batch );
 
         return layout;
     }
@@ -363,11 +363,11 @@ public class BitmapFont
                              int halign,
                              bool wrap )
     {
-        _cache.Clear();
+        Cache.Clear();
 
-        var layout = _cache.AddText( str, x, y, start, end, targetWidth, halign, wrap );
+        var layout = Cache.AddText( str, x, y, start, end, targetWidth, halign, wrap );
 
-        _cache.Draw( batch );
+        Cache.Draw( batch );
 
         return layout;
     }
@@ -386,11 +386,11 @@ public class BitmapFont
                              bool wrap,
                              string truncate )
     {
-        _cache.Clear();
+        Cache.Clear();
 
-        var layout = _cache.AddText( str, x, y, start, end, targetWidth, halign, wrap, truncate );
+        var layout = Cache.AddText( str, x, y, start, end, targetWidth, halign, wrap, truncate );
 
-        _cache.Draw( batch );
+        Cache.Draw( batch );
 
         return layout;
     }
@@ -400,9 +400,9 @@ public class BitmapFont
     /// </summary>
     public void Draw( IBatch batch, GlyphLayout layout, float x, float y )
     {
-        _cache.Clear();
-        _cache.AddText( layout, x, y );
-        _cache.Draw( batch );
+        Cache.Clear();
+        Cache.AddText( layout, x, y );
+        Cache.Draw( batch );
     }
 
     #endregion font drawing
@@ -412,25 +412,24 @@ public class BitmapFont
     /// <summary>
     /// Returns the color of text drawn with this font.
     /// </summary>
-    public Color GetColor() => _cache.GetColor();
+    public Color GetColor() => Cache.GetColor();
 
     /// <summary>
     /// A convenience method for setting the font color.
     /// </summary>
-    public void SetColor( Color color ) => _cache.GetColor().Set( color );
+    public void SetColor( Color color ) => Cache.GetColor().Set( color );
 
     /// <summary>
     /// A convenience method for setting the font color.
     /// </summary>
     public void SetColor( float r, float g, float b, float a )
     {
-        _cache.GetColor().Set( r, g, b, a );
+        Cache.GetColor().Set( r, g, b, a );
     }
 
     /// <summary>
-    /// Returns the first texture region. This is included for backwards
-    /// compatibility, and for convenience since most fonts only use one
-    /// texture page.
+    /// Returns the first texture region. This is included for backwards compatibility,
+    /// and for convenience since most fonts only use one texture page.
     /// <para>
     /// For multi-page fonts, use <see cref="GetRegions()"/>.
     /// </para>
@@ -454,36 +453,37 @@ public class BitmapFont
     /// <summary>
     /// Returns the line height, which is the distance from one line of text to the next.
     /// </summary>
-    public float GetLineHeight() => _data.LineHeight;
+    public float GetLineHeight() => Data.LineHeight;
 
     /// <summary>
     /// Returns the x-advance of the space character.
     /// </summary>
-    public virtual float GetSpaceXadvance() => _data.SpaceXadvance;
+    public virtual float GetSpaceXadvance() => Data.SpaceXadvance;
 
     /// <summary>
-    /// Returns the x-height, which is the distance from the top of most lowercase characters to the baseline.
+    /// Returns the x-height, which is the distance from the top of most lowercase
+    /// characters to the baseline.
     /// </summary>
-    public float GetXHeight() => _data.XHeight;
+    public float GetXHeight() => Data.XHeight;
 
     /// <summary>
     /// Returns the cap height, which is the distance from the top of most uppercase
     /// characters to the baseline. Since the drawing position is the cap height of
     /// the first line, the cap height can be used to get the location of the baseline.
     /// </summary>
-    public float GetCapHeight() => _data.CapHeight;
+    public float GetCapHeight() => Data.CapHeight;
 
     /// <summary>
     /// Returns the ascent, which is the distance from the cap height to the top of
     /// the tallest glyph.
     /// </summary>
-    public float GetAscent() => _data.Ascent;
+    public float GetAscent() => Data.Ascent;
 
     /// <summary>
     /// Returns the descent, which is the distance from the bottom of the glyph that
     /// extends the lowest to the baseline. This number is negative.
     /// </summary>
-    public float GetDescent() => _data.Descent;
+    public float GetDescent() => Data.Descent;
 
     /// <summary>
     /// Makes the specified glyphs fixed width. This can be useful to make the numbers
@@ -492,7 +492,7 @@ public class BitmapFont
     /// </summary>
     public void SetFixedWidthGlyphs( string glyphs )
     {
-        var data       = _data;
+        var data       = Data;
         var maxAdvance = 0;
 
         for ( int index = 0, end = glyphs.Length; index < end; index++ )
@@ -522,23 +522,16 @@ public class BitmapFont
     }
 
     /// <summary>
-    /// For expert usage -- returns the BitmapFontCache used by this font, for rendering
-    /// to a sprite batch. This can be used, for example, to manipulate glyph colors
-    /// within a specific index.
+    /// The BitmapFontCache used by this font, for rendering to a sprite batch.
+    /// This can be used, for example, to manipulate glyph colors within a
+    /// specific index.
     /// </summary>
-    /// <returns> the bitmap font cache used by this font  </returns>
-    public BitmapFontCache GetCache()
-    {
-        return _cache;
-    }
+    public BitmapFontCache Cache { get; set; }
 
     /// <summary>
-    /// Gets the underlying <see cref="BitmapFontData"/> for this BitmapFont.
+    /// The underlying <see cref="BitmapFontData"/> for this BitmapFont.
     /// </summary>
-    public BitmapFontData GetData()
-    {
-        return _data;
-    }
+    public BitmapFontData Data { get; set; }
 
     /// <summary>
     /// Creates a new BitmapFontCache for this font. Using this method allows the
@@ -556,7 +549,7 @@ public class BitmapFont
     /// <inheritdoc />
     public override string? ToString()
     {
-        return _data.Name ?? base.ToString();
+        return Data.Name ?? base.ToString();
     }
 
     /// <summary>
@@ -620,7 +613,7 @@ public class BitmapFont
         /// <summary>
         /// The index to the texture page that holds this glyph.
         /// </summary>
-        public int Page { get; set; } = 0;
+        public int Page { get; set; }
 
         public int GetKerning( char ch )
         {
@@ -659,15 +652,15 @@ public class BitmapFont
         /// Additional characters besides whitespace where text is wrapped.
         /// Eg, a hypen (-).
         /// </summary>
-        internal readonly char[]? BreakChars = null;
+        public readonly char[]? BreakChars;
 
-        internal readonly char[] CapChars =
+        public readonly char[] CapChars =
         {
             'M', 'N', 'B', 'D', 'C', 'E', 'F', 'K', 'A', 'G', 'H', 'I', 'J',
             'L', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
         };
 
-        internal readonly char[] XChars =
+        public readonly char[] XChars =
         {
             'x', 'e', 'a', 'o', 'n', 's', 'r', 'c', 'u', 'm', 'v', 'w', 'z'
         };
@@ -697,23 +690,23 @@ public class BitmapFont
 
         // --------------------------------------------------------------------
 
-        internal string?     Name          { get; private set; }
-        internal string[]?   ImagePaths    { get; private set; }
-        internal FileInfo    FontFile      { get; set; }
-        internal bool        Flipped       { get; set; }
-        internal float       PadTop        { get; set; }
-        internal float       PadRight      { get; set; }
-        internal float       PadBottom     { get; set; }
-        internal float       PadLeft       { get; set; }
-        internal float       ScaleX        { get; private set; } = 1;
-        internal float       ScaleY        { get; private set; } = 1;
-        internal bool        MarkupEnabled { get; set; }
-        internal Glyph?[]?[] Glyphs        { get; set; } = new Glyph[ PAGES ][];
+        public string?     Name          { get; private set; }
+        public string[]?   ImagePaths    { get; private set; }
+        public FileInfo    FontFile      { get; set; }
+        public bool        Flipped       { get; set; }
+        public float       PadTop        { get; set; }
+        public float       PadRight      { get; set; }
+        public float       PadBottom     { get; set; }
+        public float       PadLeft       { get; set; }
+        public float       ScaleX        { get; private set; } = 1;
+        public float       ScaleY        { get; private set; } = 1;
+        public bool        MarkupEnabled { get; set; }
+        public Glyph?[]?[] Glyphs        { get; set; } = new Glyph[ PAGES ][];
 
         /// <summary>
         /// The distance from one line of text to the next.
         /// </summary>
-        internal float LineHeight { get; private set; }
+        public float LineHeight { get; private set; }
 
         /// <summary>
         /// The distance from the top of most uppercase characters to the
@@ -721,52 +714,52 @@ public class BitmapFont
         /// first line, the cap height can be used to get the location of
         /// the baseline.
         /// </summary>
-        internal float CapHeight { get; private set; } = 1;
+        public float CapHeight { get; private set; } = 1;
 
         /// <summary>
         /// The distance from the cap height to the top of the tallest glyph.
         /// </summary>
-        internal float Ascent { get; private set; }
+        public float Ascent { get; private set; }
 
         /// <summary>
         /// The distance from the bottom of the glyph that extends the lowest
         /// to the baseline. This number is negative.
         /// </summary>
-        internal float Descent { get; private set; }
+        public float Descent { get; private set; }
 
         /// <summary>
         /// The distance to move down when \n is encountered.
         /// </summary>
-        internal float Down { get; set; }
+        public float Down { get; set; }
 
         /// <summary>
         /// Multiplier for the line height of blank lines. down * blankLineHeight is
         /// used as the distance to move down for a blank line.
         /// </summary>
-        internal float BlankLineScale { get; set; } = 1;
+        public float BlankLineScale { get; set; } = 1;
 
         /// <summary>
         /// The amount to add to the glyph X position when drawing a cursor between
         /// glyphs. This field is not set by the BMFont file, it needs to be set
         /// manually depending on how the glyphs are rendered on the backing textures.
         /// </summary>
-        internal float CursorX { get; set; }
+        public float CursorX { get; set; }
 
         /// <summary>
         /// The glyph to display for characters not in the font. May be null.
         /// </summary>
-        internal Glyph? MissingGlyph { get; set; }
+        public Glyph? MissingGlyph { get; set; }
 
         /// <summary>
         /// The width of the space character.
         /// </summary>
-        internal float SpaceXadvance { get; set; }
+        public float SpaceXadvance { get; set; }
 
         /// <summary>
         /// The x-height, which is the distance from the top of most lowercase
         /// characters to the baseline.
         /// </summary>
-        internal float XHeight { get; set; } = 1;
+        public float XHeight { get; set; } = 1;
 
         // --------------------------------------------------------------------
 

@@ -27,6 +27,7 @@ using LughSharp.LibCore.Input;
 using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
 using LughSharp.LibCore.Utils.Exceptions;
+using Platform = LughSharp.LibCore.Core.Platform;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
@@ -40,6 +41,14 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TValue >.Node
 {
+    public TNode?         RangeStart    { get; set; }
+    public ClickListener? ClickListener { get; set; }
+    public TreeStyle?     Style         { get; set; }
+    public List< TNode >  RootNodes     { get; set; } = new();
+    public float          YSpacing      { get; set; } = 4;
+    public float          IndentSpacing { get; set; }
+    public TNode?         OverNode      { get; set; }
+
     // ------------------------------------------------------------------------
 
     private readonly TreeSelection _selection;
@@ -81,14 +90,6 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
         SetStyle( style );
         Initialise();
     }
-
-    public TNode?         RangeStart    { get; set; }
-    public ClickListener? ClickListener { get; set; }
-    public TreeStyle?     Style         { get; set; }
-    public List< TNode >  RootNodes     { get; set; } = new();
-    public float          YSpacing      { get; set; } = 4;
-    public float          IndentSpacing { get; set; }
-    public TNode?         OverNode      { get; set; }
 
     private void Initialise()
     {
@@ -1195,8 +1196,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
             {
                 level++;
                 current = current.Parent;
-            }
-            while ( current != null );
+            } while ( current != null );
 
             return level;
         }
@@ -1302,8 +1302,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
                 }
 
                 current = current.Parent;
-            }
-            while ( current != null );
+            } while ( current != null );
 
             return false;
         }
@@ -1328,8 +1327,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
                 }
 
                 parent = parent.Parent;
-            }
-            while ( parent != null );
+            } while ( parent != null );
 
             return false;
         }

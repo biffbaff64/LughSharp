@@ -168,12 +168,12 @@ public sealed class Color
     /// <summary>
     /// Sets this color's component values through an integer representation.
     /// </summary>
-    /// <param name="rgba"></param>
+    /// <param name="rgba"> The integer representation. </param>
     /// <returns> This color for chaining. </returns>
     public Color Set( int rgba )
     {
         var color = this;
-
+        
         RGBA8888ToColor( ref color, rgba );
 
         Set( color.R, color.G, color.B, color.A );
@@ -464,8 +464,6 @@ public sealed class Color
     /// <param name="value"> The 32-bit RGBA8888 integer value. </param>
     public static void RGBA8888ToColor( ref Color color, int value )
     {
-        ArgumentNullException.ThrowIfNull( color );
-
         if ( value is < 0 or > 0xFFFF )
         {
             throw new ArgumentOutOfRangeException( nameof( value ),

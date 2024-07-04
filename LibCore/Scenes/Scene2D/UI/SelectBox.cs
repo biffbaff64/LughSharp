@@ -365,11 +365,11 @@ public class SelectBox< T > : Widget, IDisableable
                 width  -= background.LeftWidth + background.RightWidth;
                 height -= background.BottomHeight + background.TopHeight;
                 x      += background.LeftWidth;
-                y      += ( int ) ( ( height / 2 ) + background.BottomHeight + ( font.GetData().CapHeight / 2 ) );
+                y      += ( int ) ( ( height / 2 ) + background.BottomHeight + ( font.Data.CapHeight / 2 ) );
             }
             else
             {
-                y += ( int ) ( ( height / 2 ) + ( font.GetData().CapHeight / 2 ) );
+                y += ( int ) ( ( height / 2 ) + ( font.Data.CapHeight / 2 ) );
             }
 
             font.SetColor( fontColor.R, fontColor.G, fontColor.B, fontColor.A * parentAlpha );

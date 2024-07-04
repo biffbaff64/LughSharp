@@ -57,15 +57,11 @@ public class Matrix3
     }
 
     /// <summary>
-    /// Constructs a matrix from the given float array. The array must have at
-    /// least 9 elements; the first 9 will be copied.
+    /// Constructs a matrix from the given float array. The array must have at least 9
+    /// elements; the first 9 will be copied.
     /// </summary>
-    /// <param name="values">
-    /// The float array to copy.
-    /// Remember that this matrix is in
-    /// <a href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order">
-    /// column major
-    /// </a>
+    /// <param name="values"> The float array to copy. Remember that this matrix is in
+    /// <a href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order"> column major </a>
     /// order. (The float array is not modified.)
     /// </param>
     public Matrix3( float[] values )
@@ -132,7 +128,7 @@ public class Matrix3
     /// Premultiplies this matrix with the provided matrix and stores the
     /// result in this matrix. For example:
     /// <para>
-    ///     <tt>A.mulLeft(B) results in A := BA</tt>
+    /// <c>A.mulLeft(B) results in A := BA</c>
     /// </para>
     /// </summary>
     /// <param name="m"> The other Matrix to multiply by </param>
@@ -376,14 +372,14 @@ public class Matrix3
     /// <returns> This matrix for the purposes of chaining. </returns>
     public Matrix3 Set( Affine2 affine )
     {
-        Val[ M00 ] = affine.m00;
-        Val[ M10 ] = affine.m10;
+        Val[ M00 ] = affine.M00;
+        Val[ M10 ] = affine.M10;
         Val[ M20 ] = 0;
-        Val[ M01 ] = affine.m01;
-        Val[ M11 ] = affine.m11;
+        Val[ M01 ] = affine.M01;
+        Val[ M11 ] = affine.M11;
         Val[ M21 ] = 0;
-        Val[ M02 ] = affine.m02;
-        Val[ M12 ] = affine.m12;
+        Val[ M02 ] = affine.M02;
+        Val[ M12 ] = affine.M12;
         Val[ M22 ] = 1;
 
         return this;

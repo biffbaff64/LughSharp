@@ -388,7 +388,7 @@ GRAPHICS/OPENGL
 ---------------
 
     Remove the need for so much use of fixed() in code by implementing method overrides,
-    and doing the work inside those methods instead.
+    and doing the work inside those methods instead?
 
     Work on reducing the amount of casting to uint.
 
@@ -748,7 +748,7 @@ UTILS
     - DONE - IP   - DataOutput                      Check
     - DONE - DONE - DataUtils                       Added Class
     - DONE - DONE - FloatConstants
-    - DONE - DONE - IClipboard                      Convert - Interface, clipboard handled in backends.                 
+    - DONE - DONE - IClipboard                      Convert - Interface, clipboard handled in backends.
     - DONE - DONE - ICloseable
     - DONE - DONE - IReadable
     - DONE - DONE - IRunnable                       Done, but is it needed?
@@ -761,10 +761,10 @@ UTILS
     - DONE - IP   - Scaling
     - DONE - DONE - ScreenUtils
     - DONE - IP   - Selector
-    - DONE - DONE - SingletonBase<T>
+    - DONE - IP   - SingletonBase<T>
     - DONE - DONE - SortUtils                       Do I still need this?
     - DONE - DONE - StringTokenizer
-    - DONE - DONE - Timer
+    - DONE - IP   - Timer
     - DONE - DONE - TimeUtils
     - DONE - IP   - TimSort
 

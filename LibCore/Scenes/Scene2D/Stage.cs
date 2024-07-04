@@ -29,6 +29,7 @@ using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 using LughSharp.LibCore.Scenes.Scene2D.UI;
 using LughSharp.LibCore.Utils.Exceptions;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
+using Platform = LughSharp.LibCore.Core.Platform;
 
 namespace LughSharp.LibCore.Scenes.Scene2D;
 
@@ -476,8 +477,7 @@ public class Stage : InputAdapter, IDisposable
         // Update over actor for the mouse on the desktop.
         var type = Gdx.App.AppType;
 
-        if ( type is Platform.ApplicationType.WindowsGL
-                     or Platform.ApplicationType.WebGL )
+        if ( type is Platform.ApplicationType.WindowsGL or Platform.ApplicationType.WebGL )
         {
             _mouseOverActor = FireEnterAndExit( _mouseOverActor, _mouseScreenX, _mouseScreenY, -1 );
         }

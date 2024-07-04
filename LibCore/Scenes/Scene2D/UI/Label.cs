@@ -204,14 +204,14 @@ public class Label : Widget
 
         if ( _fontScaleChanged )
         {
-            font.GetData().SetScale( _fontScaleX, _fontScaleY );
+            font.Data.SetScale( _fontScaleX, _fontScaleY );
         }
 
         ComputePrefSize();
 
         if ( _fontScaleChanged )
         {
-            font.GetData().SetScale( oldScaleX, oldScaleY );
+            font.Data.SetScale( oldScaleX, oldScaleY );
         }
     }
 
@@ -249,7 +249,7 @@ public class Label : Widget
 
         if ( _fontScaleChanged )
         {
-            font.GetData().SetScale( _fontScaleX, _fontScaleY );
+            font.Data.SetScale( _fontScaleX, _fontScaleY );
         }
 
         var wrap = Wrap && ( _ellipsis == null );
@@ -305,7 +305,7 @@ public class Label : Widget
         else
         {
             textWidth  = width;
-            textHeight = font.GetData().CapHeight;
+            textHeight = font.Data.CapHeight;
         }
 
         Debug.Assert( Style.Font != null, "Style.Font != null" );
@@ -335,7 +335,7 @@ public class Label : Widget
 
         if ( _fontScaleChanged )
         {
-            font.GetData().SetScale( oldScaleX, oldScaleY );
+            font.Data.SetScale( oldScaleX, oldScaleY );
         }
     }
 

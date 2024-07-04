@@ -150,11 +150,11 @@ public class ScreenUtils
     }
 
     /// <summary>
-    /// Returns the current framebuffer contents as a byte[] array with a length equal to screen
-    /// width * height * 4. The byte[] will always contain RGBA8888 data. Because of differences
-    /// in screen and image origins the framebuffer contents should be flipped along the Y axis
-    /// if you intend save them to disk as a bitmap. Flipping is not a cheap operation, so use
-    /// this functionality wisely.
+    /// Returns the current framebuffer contents as a byte[] array with a length equal
+    /// to screen width * height * 4. The byte[] will always contain RGBA8888 data.
+    /// Because of differences in screen and image origins the framebuffer contents should
+    /// be flipped along the Y axis if you intend save them to disk as a bitmap. Flipping
+    /// is not a cheap operation, so use this functionality wisely.
     /// </summary>
     /// <param name="flipY"> whether to flip pixels along Y axis</param>
     public static byte[] GetFrameBufferPixels( bool flipY )

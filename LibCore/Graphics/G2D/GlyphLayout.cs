@@ -189,7 +189,7 @@ public class GlyphLayout : IPoolable
         _glyphRunPool.FreeAll( Runs );
         Runs.Clear();
 
-        var fontData = font.GetData();
+        var fontData = font.Data;
 
         if ( start == end )
         {

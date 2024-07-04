@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text.RegularExpressions;
+using Platform = LughSharp.LibCore.Core.Platform;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
 

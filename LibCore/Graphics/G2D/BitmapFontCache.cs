@@ -47,8 +47,8 @@ public class BitmapFontCache
     private int[] _idx;
 
     /// <summary>
-    /// For each page, an array with a value for each glyph from that page,
-    /// where the value is the index of the character in the full text being cached.
+    /// For each page, an array with a value for each glyph from that page, where
+    /// the value is the index of the character in the full text being cached.
     /// </summary>
     private List< int >[]? _pageGlyphIndices;
 
@@ -630,8 +630,8 @@ public class BitmapFontCache
 
     private void AddGlyph( BitmapFont.Glyph glyph, float x, float y, float color )
     {
-        var scaleX = Font.GetData().ScaleX;
-        var scaleY = Font.GetData().ScaleY;
+        var scaleX = Font.Data.ScaleX;
+        var scaleY = Font.Data.ScaleY;
 
         x += glyph.Xoffset * scaleX;
         y += glyph.Yoffset * scaleY;
@@ -804,7 +804,7 @@ public class BitmapFontCache
     {
         if ( layout != null )
         {
-            AddToCache( layout, x, y + Font.GetData().Ascent );
+            AddToCache( layout, x, y + Font.Data.Ascent );
         }
     }
 

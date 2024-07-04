@@ -1026,14 +1026,14 @@ public class SpriteBatch : IBatch
         }
 
         // construct corner points
-        var x1 = transform.m02;
-        var y1 = transform.m12;
-        var x2 = ( transform.m01 * height ) + transform.m02;
-        var y2 = ( transform.m11 * height ) + transform.m12;
-        var x3 = ( transform.m00 * width ) + ( transform.m01 * height ) + transform.m02;
-        var y3 = ( transform.m10 * width ) + ( transform.m11 * height ) + transform.m12;
-        var x4 = ( transform.m00 * width ) + transform.m02;
-        var y4 = ( transform.m10 * width ) + transform.m12;
+        var x1 = transform.M02;
+        var y1 = transform.M12;
+        var x2 = ( transform.M01 * height ) + transform.M02;
+        var y2 = ( transform.M11 * height ) + transform.M12;
+        var x3 = ( transform.M00 * width ) + ( transform.M01 * height ) + transform.M02;
+        var y3 = ( transform.M10 * width ) + ( transform.M11 * height ) + transform.M12;
+        var x4 = ( transform.M00 * width ) + transform.M02;
+        var y4 = ( transform.M10 * width ) + transform.M12;
 
         var u     = region.U;
         var v     = region.V2;
