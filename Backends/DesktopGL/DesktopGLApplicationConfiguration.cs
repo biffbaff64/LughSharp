@@ -195,7 +195,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode GetDisplayMode()
     {
-        DesktopGLApplication.InitialiseGL();
+        DesktopGLApplication.InitialiseGLFW();
 
         var videoMode = Glfw.GetVideoMode( Glfw.GetPrimaryMonitor() );
 
@@ -211,7 +211,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode GetDisplayMode( GLFW.Monitor monitor )
     {
-        DesktopGLApplication.InitialiseGL();
+        DesktopGLApplication.InitialiseGLFW();
 
         var videoMode = Glfw.GetVideoMode( monitor );
 
@@ -227,7 +227,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode[] GetDisplayModes()
     {
-        DesktopGLApplication.InitialiseGL();
+        DesktopGLApplication.InitialiseGLFW();
 
         VideoMode[] videoModes = Glfw.GetVideoModes( Glfw.GetPrimaryMonitor() );
 
@@ -252,7 +252,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode[] GetDisplayModes( GLFW.Monitor monitor )
     {
-        DesktopGLApplication.InitialiseGL();
+        DesktopGLApplication.InitialiseGLFW();
 
         VideoMode[] videoModes = Glfw.GetVideoModes( monitor );
 

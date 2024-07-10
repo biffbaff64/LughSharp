@@ -58,43 +58,28 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     public DesktopGLGraphics( DesktopGLWindow glWindow )
     {
         this.GLWindow = glWindow;
-        base.GL       = new GLBindings();
 
         UpdateFramebufferInfo();
-        InitiateGL();
-
-        Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
-    }
-
-    /// <summary>
-    /// Helper method for constructors, allowing access to virtual methods and
-    /// properties.
-    /// </summary>
-    private void InitiateGL()
-    {
-        GLSetup.InitiateGL();
-
-        GLVersion = GLSetup.GLVersion!;
 
         if ( SupportsCubeMapSeamless() )
         {
             EnableCubeMapSeamless( true );
         }
+
+        Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
     }
 
-    //@formatter:off
-    
     /// <inheritdoc />
-    public override int Width => GLWindow?.Config.HdpiMode == HdpiMode.Pixels 
-                                     ? BackBufferWidth
-                                     : LogicalWidth;
+    public override int Width
+        => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+               ? BackBufferWidth
+               : LogicalWidth;
 
     /// <inheritdoc />
-    public override int Height => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
-                                      ? BackBufferHeight
-                                      : LogicalHeight;
-
-    //@formatter:on
+    public override int Height
+        => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+               ? BackBufferHeight
+               : LogicalHeight;
 
     /// <summary>
     /// Whether the app is full screen or not.

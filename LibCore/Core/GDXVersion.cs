@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Reflection;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 
@@ -32,16 +31,41 @@ namespace LughSharp.LibCore.Core;
 /// <summary>
 /// The current LughSharp Library version.
 /// </summary>
-
-//TODO: Needs testing
 [PublicAPI]
 public class GDXVersion
 {
-    private readonly static Version? _version;
+    public enum GLType
+    {
+        None,
+        OpenGL,
+        GLES,
+        WebGL,
+
+        // --------------------------------------
+        Vulkan,
+
+        // --------------------------------------
+        // Sub-Categories for OpenGL
+        GL10,
+        GL20,
+        GL30,
+        GL40
+    }
 
     // ------------------------------------------------------------------------
 
-    static GDXVersion()
+    public int     MajorVersion    { get; set; }
+    public int     MinorVersion    { get; set; }
+    public int     RevisionVersion { get; set; }
+    public string? VendorString    { get; set; }
+    public string? RendererString  { get; set; }
+    public GLType  GLtype          { get; set; }
+
+    private readonly Version? _version;
+
+    // ------------------------------------------------------------------------
+
+    public GDXVersion()
     {
         _version = Assembly.GetEntryAssembly()?.GetName().Version;
 
@@ -64,10 +88,6 @@ public class GDXVersion
         }
     }
 
-    protected static int MajorVersion    { get; set; }
-    protected static int MinorVersion    { get; set; }
-    protected static int RevisionVersion { get; set; }
-
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -77,7 +97,7 @@ public class GDXVersion
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>
     /// <param name="revision">The Revision version component.</param>
-    public static bool IsHigher( int major, int minor, int revision )
+    public bool IsHigher( int major, int minor, int revision )
     {
         return IsHigherEqual( major, minor, revision + 1 );
     }
@@ -90,7 +110,7 @@ public class GDXVersion
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>
     /// <param name="revision">The Revision version component.</param>
-    public static bool IsHigherEqual( int major, int minor, int revision )
+    public bool IsHigherEqual( int major, int minor, int revision )
     {
         if ( MajorVersion != major )
         {
@@ -112,7 +132,7 @@ public class GDXVersion
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>
     /// <param name="revision">The Revision version component.</param>
-    public static bool IsLower( int major, int minor, int revision )
+    public bool IsLower( int major, int minor, int revision )
     {
         return IsLowerEqual( major, minor, revision - 1 );
     }
@@ -125,7 +145,7 @@ public class GDXVersion
     /// <param name="major">The Major version component.</param>
     /// <param name="minor">The Minor version component.</param>
     /// <param name="revision">The Revision version component.</param>
-    public static bool IsLowerEqual( int major, int minor, int revision )
+    public bool IsLowerEqual( int major, int minor, int revision )
     {
         if ( MajorVersion != major )
         {

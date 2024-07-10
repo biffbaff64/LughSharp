@@ -1,7 +1,7 @@
 ﻿// /////////////////////////////////////////////////////////////////////////////
 //  MIT License
 // 
-//  Copyright (c) 2024 Richard Ikin / Red 7 Projects and Contributors.
+//  Copyright (c) 2024 Richard Ikin / Red 7 Projects
 // 
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,23 +24,50 @@
 
 namespace LughSharp.LibCore.Utils;
 
-/// <summary>
-/// A Singleton pattern.
-/// </summary>
-/// <typeparam name="T"> The Type of the implementing class. </typeparam>
-/// <example>
-/// <code>
-/// public class AClass : SingletonBase&lt; AClass &gt;
-/// {
-/// }
-///
-/// then...
-///
-///     AClass.Instance.MethodCall();
-/// </code>
-/// </example>
-[PublicAPI]
-public abstract class SingletonBase< T > where T : SingletonBase< T >, new()
+public static partial class Logger
 {
-    public static T Instance { get; } = new();
+    private static bool _isBuilding = false;
+
+    // ------------------------------------------------------------------------
+    
+    public static void Begin()
+    {
+        _isBuilding = true;
+    }
+
+    public static void End()
+    {
+        _isBuilding = false;
+    }
+    
+    public static void Append( string message )
+    {
+        if ( _isBuilding )
+        {
+        }
+    }
+
+    public static void Append( bool b )
+    {
+    }
+
+    public static void Append( char c )
+    {
+    }
+
+    public static void Append( int i )
+    {
+    }
+
+    public static void Append( long l )
+    {
+    }
+
+    public static void Append( float f )
+    {
+    }
+
+    public static void Append( double d )
+    {
+    }
 }

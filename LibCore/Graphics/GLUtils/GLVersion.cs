@@ -32,32 +32,6 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class GLVersion : GDXVersion
 {
-    public enum GLType
-    {
-        None,
-        OpenGL,
-        GLES,
-        WebGL,
-
-        // --------------------------------------
-        Vulkan,
-
-        // --------------------------------------
-        // Sub-Categories for OpenGL
-        GL10,
-        GL20,
-        GL30,
-        GL40
-    }
-
-    // ------------------------------------------------------------------------
-
-    public string? VendorString   { get; set; }
-    public string? RendererString { get; set; }
-    public GLType  GLtype         { get; set; }
-
-    // ------------------------------------------------------------------------
-    
     /// <summary>
     /// </summary>
     /// <param name="appType"></param>
@@ -71,23 +45,23 @@ public class GLVersion : GDXVersion
     {
         GLtype = appType switch
         {
-            Platform.ApplicationType.Android   => GLType.GLES,
-            Platform.ApplicationType.WindowsGL => GLType.OpenGL,
-            Platform.ApplicationType.WebGL     => GLType.WebGL,
-            var _                                  => GLType.None
+            Platform.ApplicationType.Android   => Core.GDXVersion.GLType.GLES,
+            Platform.ApplicationType.WindowsGL => Core.GDXVersion.GLType.OpenGL,
+            Platform.ApplicationType.WebGL     => Core.GDXVersion.GLType.WebGL,
+            var _                              => Core.GDXVersion.GLType.None
         };
 
-        if ( GLtype == GLType.GLES )
+        if ( GLtype == Core.GDXVersion.GLType.GLES )
         {
             //OpenGL<space>ES<space><version number><space><vendor-specific information>.
             ExtractVersion( @"OpenGL ES (\d(\.\d){0,2})", versionString );
         }
-        else if ( GLtype == GLType.WebGL )
+        else if ( GLtype == Core.GDXVersion.GLType.WebGL )
         {
             //WebGL<space><version number><space><vendor-specific information>
             ExtractVersion( @"WebGL (\d(\.\d){0,2})", versionString );
         }
-        else if ( GLtype == GLType.OpenGL )
+        else if ( GLtype == Core.GDXVersion.GLType.OpenGL )
         {
             //<version number><space><vendor-specific information>
             ExtractVersion( @"(\d(\.\d){0,2})", versionString );

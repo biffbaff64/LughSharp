@@ -49,7 +49,7 @@ public class DesktopGLWindowConfiguration
     /// <summary>
     /// whether the window will be visible on creation. (default true)
     /// </summary>
-    public bool InitialVisible { get; set; } = true;
+    public bool InitialVisibility { get; set; } = true;
 
     /// <summary>
     /// Sets the <see cref="IDesktopGLWindowListener"/> which will be informed about
@@ -147,7 +147,7 @@ public class DesktopGLWindowConfiguration
         FullscreenMode         = config.FullscreenMode;
         Title                  = config.Title;
         InitialBackgroundColor = config.InitialBackgroundColor;
-        InitialVisible         = config.InitialVisible;
+        InitialVisibility         = config.InitialVisibility;
         VSyncEnabled           = config.VSyncEnabled;
     }
 

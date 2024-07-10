@@ -395,8 +395,8 @@ GRAPHICS/OPENGL
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - GLBindings
-    - DONE - DONE - GLSetup
     - DONE - DONE - IGL
+    - DONE - DONE - IGLBindings
 
 GRAPHICS/PROFILING
 ------------------
@@ -753,6 +753,7 @@ UTILS
     - DONE - DONE - IReadable
     - DONE - DONE - IRunnable                       Done, but is it needed?
     - DONE - DONE - Logger
+    - IP   - IP   - LogBuilder
     - DONE - DONE - PerformanceCounter              Check
     - DONE - IP   - PerformanceCounters             Check
     - DONE - DONE - PropertiesUtils                 Convert, but check if necessary

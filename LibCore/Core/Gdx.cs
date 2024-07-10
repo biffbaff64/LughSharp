@@ -44,14 +44,6 @@ public static class Gdx
 
     // ------------------------------------------------------------------------
 
-    /// <summary>
-    /// Initialise the Framework.
-    /// </summary>
-    static Gdx()
-    {
-        Logger.Initialise();
-    }
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -78,6 +70,21 @@ public static class Gdx
     /// </summary>
     public static bool DevMode { get; set; } = false;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Performs essential tasks, which MUST be performed to allow the
+    /// framework to work correctly.
+    /// </summary>
+    /// <param name="app"></param>
+    public static void Initialise( IApplication app )
+    {
+        App = app;
+        
+        Logger.Initialise();
+    }
+    
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 

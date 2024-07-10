@@ -41,7 +41,7 @@ namespace LughSharp.LibCore.Utils;
 /// </para>
 /// </summary>
 [PublicAPI]
-public static class Logger
+public static partial class Logger
 {
     // ------------------------------------------------------------------------
 
@@ -60,6 +60,8 @@ public static class Logger
     private const string DEBUG_TAG = "[DEBUG] ";
     private const string ERROR_TAG = "[ERROR] ";
 
+    private const string PREFS_FOLDER = @"\.prefs\";
+    
     #endregion constants
 
     // ------------------------------------------------------------------------
@@ -67,7 +69,7 @@ public static class Logger
     #region properties
 
     public static bool EnableWriteToFile { get; set; } = false;
-    public static int  TraceLevel        { get; set; }
+    public static int  TraceLevel        { get; set; } = LOG_NONE;
 
     #endregion properties
 
@@ -115,10 +117,7 @@ public static class Logger
             return;
         }
 
-        if ( boxedDebug )
-        {
-            Divider();
-        }
+        if ( boxedDebug ) Divider();
 
         var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
@@ -128,10 +127,7 @@ public static class Logger
 
         WriteToFile( str );
 
-        if ( boxedDebug )
-        {
-            Divider();
-        }
+        if ( boxedDebug ) Divider();
     }
 
     /// <summary>
@@ -253,16 +249,8 @@ public static class Logger
             File.Delete( fileName );
         }
 
-        if ( Gdx.DevMode )
-        {
-            _debugFilePath = ".//";
-        }
-        else
-        {
-            _debugFilePath = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile );
-            _debugFilePath = string.Join( _debugFilePath, "//.prefs//" );
-        }
-
+        _debugFilePath = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile ) + PREFS_FOLDER;
+        
         _debugFileName = fileName;
 
         using var fs = File.Create( _debugFilePath + _debugFileName );

@@ -33,36 +33,36 @@ namespace LughSharp.LibCore.Graphics;
 public sealed class Color
 {
     #region colour values
-    
+
     public readonly static Color White      = new( 1, 1, 1, 1 );
-    public readonly static Color LightGray  = new( 0xbfbfbfff );
-    public readonly static Color Gray       = new( 0x7f7f7fff );
-    public readonly static Color DarkGray   = new( 0x3f3f3fff );
-    public readonly static Color Black      = new( 0, 0, 0, 1 );
-    public readonly static Color Clear      = new( 0, 0, 0, 0 );
-    public readonly static Color Blue       = new( 0, 0, 1, 1 );
-    public readonly static Color Navy       = new( 0, 0, 0.5f, 1 );
-    public readonly static Color Royal      = new( 0x4169e1ff );
-    public readonly static Color Slate      = new( 0x708090ff );
-    public readonly static Color Sky        = new( 0x87ceebff );
-    public readonly static Color Cyan       = new( 0, 1, 1, 1 );
-    public readonly static Color Teal       = new( 0, 0.5f, 0.5f, 1 );
-    public readonly static Color Green      = new( 0x00ff00ff );
-    public readonly static Color Chartreuse = new( 0x7fff00ff );
-    public readonly static Color Lime       = new( 0x32cd32ff );
-    public readonly static Color Forest     = new( 0x228b22ff );
-    public readonly static Color Olive      = new( 0x6b8e23ff );
-    public readonly static Color Yellow     = new( 0xffff00ff );
-    public readonly static Color Gold       = new( 0xffd700ff );
-    public readonly static Color Goldenrod  = new( 0xdaa520ff );
-    public readonly static Color Orange     = new( 0xffa500ff );
-    public readonly static Color Brown      = new( 0x8b4513ff );
-    public readonly static Color Tan        = new( 0xd2b48cff );
-    public readonly static Color Firebrick  = new( 0xb22222ff );
-    public readonly static Color Red        = new( 0xff0000ff );
-    public readonly static Color Scarlet    = new( 0xff341cff );
-    public readonly static Color Coral      = new( 0xff7f50ff );
-    public readonly static Color Salmon     = new( 0xfa8072ff );
+    public readonly static Color LightGray  = new( 0xbfbfbfff );        
+    public readonly static Color Gray       = new( 0x7f7f7fff );        
+    public readonly static Color DarkGray   = new( 0x3f3f3fff );        
+    public readonly static Color Black      = new( 0, 0, 0, 1 );        
+    public readonly static Color Clear      = new( 0, 0, 0, 0 );        
+    public readonly static Color Blue       = new( 0, 0, 1, 1 );        
+    public readonly static Color Navy       = new( 0, 0, 0.5f, 1 );     
+    public readonly static Color Royal      = new( 0x4169e1ff );        
+    public readonly static Color Slate      = new( 0x708090ff );        
+    public readonly static Color Sky        = new( 0x87ceebff );        
+    public readonly static Color Cyan       = new( 0, 1, 1, 1 );        
+    public readonly static Color Teal       = new( 0, 0.5f, 0.5f, 1 );  
+    public readonly static Color Green      = new( 0x00ff00ff );        
+    public readonly static Color Chartreuse = new( 0x7fff00ff );        
+    public readonly static Color Lime       = new( 0x32cd32ff );        
+    public readonly static Color Forest     = new( 0x228b22ff );        
+    public readonly static Color Olive      = new( 0x6b8e23ff );        
+    public readonly static Color Yellow     = new( 0xffff00ff );        
+    public readonly static Color Gold       = new( 0xffd700ff );        
+    public readonly static Color Goldenrod  = new( 0xdaa520ff );        
+    public readonly static Color Orange     = new( 0xffa500ff );        
+    public readonly static Color Brown      = new( 0x8b4513ff );        
+    public readonly static Color Tan        = new( 0xd2b48cff );        
+    public readonly static Color Firebrick  = new( 0xb22222ff );        
+    public readonly static Color Red        = new( 0xff0000ff );        
+    public readonly static Color Scarlet    = new( 0xff341cff );        
+    public readonly static Color Coral      = new( 0xff7f50ff );        
+    public readonly static Color Salmon     = new( 0xfa8072ff );    
     public readonly static Color Pink       = new( 0xff69b4ff );
     public readonly static Color Magenta    = new( 1, 0, 1, 1 );
     public readonly static Color Purple     = new( 0xa020f0ff );
@@ -75,13 +75,13 @@ public sealed class Color
 
     #region Colour Components
 
-    public float R { get; set; }    // Red
-    public float G { get; set; }    // Green
-    public float B { get; set; }    // Blue
-    public float A { get; set; }    // Alpha
+    public float R { get; set; } // Red
+    public float G { get; set; } // Green
+    public float B { get; set; } // Blue
+    public float A { get; set; } // Alpha
 
     #endregion Colour Components
-    
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -108,7 +108,12 @@ public sealed class Color
     /// <param name="rgba8888"> An uint color value in RGBA8888 format. </param>
     public Color( uint rgba8888 )
     {
-        Set( ( int ) rgba8888 );
+        var r = ParseHexComponent( ( ( rgba8888 & 0xff000000 ) >> 24 ).ToString() );
+        var g = ParseHexComponent( ( ( rgba8888 & 0x00ff0000 ) >> 16 ).ToString() );
+        var b = ParseHexComponent( ( ( rgba8888 & 0x0000ff00 ) >> 8 ).ToString() );
+        var a = ParseHexComponent( ( rgba8888 & 0x000000ff ).ToString() );
+
+        Set( r, g, b, a );
     }
 
     /// <summary>
@@ -173,7 +178,7 @@ public sealed class Color
     public Color Set( int rgba )
     {
         var color = this;
-        
+
         RGBA8888ToColor( ref color, rgba );
 
         Set( color.R, color.G, color.B, color.A );
@@ -444,13 +449,6 @@ public sealed class Color
     /// <param name="value"> The 16-bit RGBA4444 integer value. </param>
     public static void RGBA4444ToColor( ref Color color, int value )
     {
-        // Ensure the value is within the valid range for 16-bit RGBA4444
-        if ( value is < 0 or > 0xFFFF )
-        {
-            throw new ArgumentOutOfRangeException( nameof( value ),
-                                                   "Value must be a 16-bit integer." );
-        }
-
         color.R = ( ( value & 0xF000 ) >> 12 ) / 15f;
         color.G = ( ( value & 0x0F00 ) >> 8 ) / 15f;
         color.B = ( ( value & 0x00F0 ) >> 4 ) / 15f;
@@ -464,12 +462,6 @@ public sealed class Color
     /// <param name="value"> The 32-bit RGBA8888 integer value. </param>
     public static void RGBA8888ToColor( ref Color color, int value )
     {
-        if ( value is < 0 or > 0xFFFF )
-        {
-            throw new ArgumentOutOfRangeException( nameof( value ),
-                                                   "Value must be a 16-bit integer." );
-        }
-
         color.R = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
         color.G = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
         color.B = ( ( value & 0x0000ff00 ) >>> 8 ) / 255f;
@@ -999,7 +991,7 @@ public sealed class Color
              | ( ( int ) ( color.G * 255 ) << 8 )
              | ( int ) ( color.B * 255 );
     }
-
+    
     /// <summary>
     /// Creates a copy of this <see cref="Color"/> object.
     /// </summary>

@@ -69,15 +69,15 @@ public class DesktopGLWindow : IDisposable
         Config         = config;
         _application   = application;
     }
-
+    
     /// <summary>
-    /// Creates a new Window and sets up the various related callbacks.
+    /// Creates a new DesktopGLWindow and sets up the various related callbacks.
     /// </summary>
     public void Create( GLFW.Window window )
     {
-        GlfwWindow = window;
-        Input      = _application.CreateInput( this );
-        Graphics   = new DesktopGLGraphics( this );
+        this.GlfwWindow = window;
+        this.Input      = _application.CreateInput( this );
+        this.Graphics   = new DesktopGLGraphics( this );
 
         //@formatter:off
         Glfw.SetWindowFocusCallback     ( window, DesktopWindowCallbacks.GdxFocusCallback );
@@ -179,11 +179,16 @@ public class DesktopGLWindow : IDisposable
     }
 
     /// <summary>
-    /// Sets minimum and maximum size limits for the window. If the window
-    /// is full screen or not resizable, these limits are ignored. Use -1
-    /// to indicate an unrestricted dimension.
+    /// Sets minimum and maximum size limits for the given window. If the window
+    /// is full screen or not resizable, these limits are ignored. Use -1  to
+    /// indicate an unrestricted dimension.
     /// </summary>
-    public void SetSizeLimits( GLFW.Window handle, int minWidth, int minHeight, int maxWidth, int maxHeight )
+    /// <param name="handle"> The window. </param>
+    /// <param name="minWidth"> The minimum window width. </param>
+    /// <param name="minHeight"> The minimum window height. </param>
+    /// <param name="maxWidth"> The maximum window width. </param>
+    /// <param name="maxHeight"> The maximum window height. </param>
+    public static void SetSizeLimits( GLFW.Window handle, int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
         Glfw.SetWindowSizeLimits( handle, minWidth, minHeight, maxWidth, maxHeight );
     }
@@ -390,19 +395,13 @@ public class DesktopGLWindow : IDisposable
     /// This function sets the value of the close flag of the specified window. This can be used to
     /// override the user's attempt to close the window, or to signal that it should be closed.
     /// </summary>
-    public void CloseWindow()
-    {
-        Glfw.SetWindowShouldClose( GlfwWindow, true );
-    }
+    public void CloseWindow() => Glfw.SetWindowShouldClose( GlfwWindow, true );
 
     /// <summary>
     /// Minimizes (iconifies) the window. Iconified windows do not call their
     /// <see cref="IApplicationListener"/> until the window is restored.
     /// </summary>
-    public void IconifyWindow()
-    {
-        Glfw.IconifyWindow( GlfwWindow );
-    }
+    public void IconifyWindow() => Glfw.IconifyWindow( GlfwWindow );
 
     /// <summary>
     /// This function restores the specified window if it was previously iconified
@@ -410,29 +409,20 @@ public class DesktopGLWindow : IDisposable
     /// does nothing. If the specified window is a full screen window, the resolution
     /// chosen for the window is restored on the selected monitor.
     /// </summary>
-    public void RestoreWindow()
-    {
-        Glfw.RestoreWindow( GlfwWindow );
-    }
+    public void RestoreWindow() => Glfw.RestoreWindow( GlfwWindow );
 
     /// <summary>
     /// This function maximizes the specified window if it was previously not maximized.
     /// If the window is already maximized, this function does nothing. If the specified
     /// window is a full screen window, this function does nothing.
     /// </summary>
-    public void MaximizeWindow()
-    {
-        Glfw.MaximizeWindow( GlfwWindow );
-    }
+    public void MaximizeWindow() => Glfw.MaximizeWindow( GlfwWindow );
 
     /// <summary>
     /// Brings the window to front and sets input focus. The window should
     /// already be visible and not iconified.
     /// </summary>
-    public void FocusWindow()
-    {
-        Glfw.FocusWindow( GlfwWindow );
-    }
+    public void FocusWindow() => Glfw.FocusWindow( GlfwWindow );
 
     // ------------------------------------------------------------------------
     

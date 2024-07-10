@@ -76,6 +76,11 @@ public static class Platform
 
     // ------------------------------------------------------------------------
 
+    private static ApplicationType _targetPlatform;
+    private static Family          _familyGroup;
+
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// The target platform for the app.
     /// Must be one of the enum <see cref="ApplicationType"/>
@@ -124,13 +129,6 @@ public static class Platform
                 var _          => throw new GdxRuntimeException( $"Illegal Family Group: {value.ToString()}" )
             };
     }
-
-    // ------------------------------------------------------------------------
-
-    private static ApplicationType _targetPlatform;
-    private static Family          _familyGroup;
-
-    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Returns TRUE if the OS architecture is ARM based.
