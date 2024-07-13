@@ -563,10 +563,14 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         return;
 
+        // --------------------------------------------------------------------
+        
         void ErrorCallback( ErrorCode error, string description )
         {
             Logger.Error( $"ErrorCode: {error}, {description}" );
         }
+        
+        // --------------------------------------------------------------------
     }
 
     /// <summary>
@@ -807,7 +811,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    #region GLDebug specific
+//    #region GLDebug specific
 
 //    [PublicAPI]
 //    public struct Gldms
@@ -888,5 +892,5 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 //        return false;
 //    }
 
-    #endregion GLDebug specific
+//    #endregion GLDebug specific
 }

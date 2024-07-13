@@ -160,7 +160,7 @@ public class DesktopGLWindow : IDisposable
     /// <summary>
     /// Sets the windows title.
     /// </summary>
-    /// <param name="title"> STring holding the Title text. </param>
+    /// <param name="title"> String holding the Title text. </param>
     public void SetTitle( string title )
     {
         Glfw.SetWindowTitle( GlfwWindow, title );

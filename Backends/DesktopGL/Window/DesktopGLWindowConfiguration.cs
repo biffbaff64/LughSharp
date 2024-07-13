@@ -38,14 +38,14 @@ public class DesktopGLWindowConfiguration
     public int       WindowMinHeight    { get; set; } = -1;
     public int       WindowMaxWidth     { get; set; } = -1;
     public int       WindowMaxHeight    { get; set; } = -1;
-    public PathTypes  WindowIconFileType { get; set; }
+    public PathTypes WindowIconFileType { get; set; }
     public string[]? WindowIconPaths    { get; set; }
 
     public DesktopGLGraphics.DesktopGLMonitor? MaximizedMonitor { get; set; }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// whether the window will be visible on creation. (default true)
     /// </summary>
@@ -147,7 +147,7 @@ public class DesktopGLWindowConfiguration
         FullscreenMode         = config.FullscreenMode;
         Title                  = config.Title;
         InitialBackgroundColor = config.InitialBackgroundColor;
-        InitialVisibility         = config.InitialVisibility;
+        InitialVisibility      = config.InitialVisibility;
         VSyncEnabled           = config.VSyncEnabled;
     }
 

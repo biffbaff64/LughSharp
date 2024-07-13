@@ -69,17 +69,19 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
     }
 
+    //@formatter:off
+    
     /// <inheritdoc />
-    public override int Width
-        => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
-               ? BackBufferWidth
-               : LogicalWidth;
+    public override int Width => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+                           ? BackBufferWidth
+                           : LogicalWidth;
 
     /// <inheritdoc />
-    public override int Height
-        => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
-               ? BackBufferHeight
-               : LogicalHeight;
+    public override int Height => GLWindow?.Config.HdpiMode == HdpiMode.Pixels
+                           ? BackBufferHeight
+                           : LogicalHeight;
+    
+    //@formatter:on
 
     /// <summary>
     /// Whether the app is full screen or not.
@@ -96,6 +98,9 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     /// <inheritdoc />
     public override GDXVersion.GLType GraphicsType => GDXVersion.GLType.GL20; //TODO
+
+    /// <inheritdoc />
+    public override bool SupportsDisplayModeChange() => true;
 
     /// <summary>
     /// </summary>
@@ -205,9 +210,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
             }
         }
     }
-
-    /// <inheritdoc />
-    public override bool SupportsDisplayModeChange() => true;
 
     /// <inheritdoc />
     public override bool SetWindowedMode( int width, int height )
