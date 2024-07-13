@@ -39,8 +39,8 @@ public class DesktopGLWindow : IDisposable
     public IDesktopGLWindowListener?         WindowListener      { get; set; }
     public IApplicationListener              Listener            { get; set; }
     public IDesktopGLInput                   Input               { get; set; } = null!;
-    public DesktopGLGraphics                 Graphics            { get; set; } = null!;
     public DesktopGLApplicationConfiguration Config              { get; set; }
+    public DesktopGLGraphics                 Graphics            { get; set; } = null!;
     public bool                              ListenerInitialised { get; set; } = false;
 
     // ------------------------------------------------------------------------
@@ -69,7 +69,7 @@ public class DesktopGLWindow : IDisposable
         Config         = config;
         _application   = application;
     }
-    
+
     /// <summary>
     /// Creates a new DesktopGLWindow and sets up the various related callbacks.
     /// </summary>
@@ -254,7 +254,7 @@ public class DesktopGLWindow : IDisposable
         {
             return;
         }
-        
+
         List< GLFW.Image > buffer = new( images.Length );
 
         Pixmap?[] tmpPixmaps = new Pixmap[ images.Length ];
@@ -276,7 +276,7 @@ public class DesktopGLWindow : IDisposable
 
             GLFW.Image icon = new()
             {
-                Width = pixmap.Width,
+                Width  = pixmap.Width,
                 Height = pixmap.Height,
                 Pixels = pixmap.Pixels.BackingArray()
             };
@@ -338,7 +338,7 @@ public class DesktopGLWindow : IDisposable
     {
         return Glfw.WindowShouldClose( GlfwWindow );
     }
-    
+
     /// <inheritdoc cref="Glfw.SetWindowPos(Window,int,int)"/>
     public void SetPosition( int x, int y )
     {
@@ -425,9 +425,9 @@ public class DesktopGLWindow : IDisposable
     public void FocusWindow() => Glfw.FocusWindow( GlfwWindow );
 
     // ------------------------------------------------------------------------
-    
+
     #region dispose pattern
-    
+
     /// <inheritdoc />
     public void Dispose()
     {
@@ -452,6 +452,6 @@ public class DesktopGLWindow : IDisposable
             Glfw.DestroyWindow( GlfwWindow );
         }
     }
-    
+
     #endregion dispose pattern
 }

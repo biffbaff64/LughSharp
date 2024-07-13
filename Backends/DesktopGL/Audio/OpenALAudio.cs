@@ -33,6 +33,9 @@ namespace LughSharp.Backends.DesktopGL.Audio;
 [PublicAPI]
 public class OpenALAudio : IGLAudio
 {
+    public bool                NoDevice { get; set; } = false;
+    public List< OpenALMusic > Music    { get; set; } = new( 1 );
+
     private readonly uint[]?                    _allSources;
     private readonly IntPtr                     _context;
     private readonly IntPtr                     _device;
@@ -127,9 +130,6 @@ public class OpenALAudio : IGLAudio
 
         _recentSounds = new OpenALSound[ simultaneousSources ];
     }
-
-    public bool                NoDevice { get; set; } = false;
-    public List< OpenALMusic > Music    { get; set; } = new( 1 );
 
     /// <summary>
     /// </summary>

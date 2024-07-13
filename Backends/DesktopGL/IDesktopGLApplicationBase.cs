@@ -32,6 +32,9 @@ namespace LughSharp.Backends.DesktopGL;
 [PublicAPI]
 public interface IDesktopGLApplicationBase : IApplication
 {
+    IApplicationListener GetApplicationListener();
+    IInput               GetInput();
+
     /// <summary>
     /// Creates the Audio device.
     /// </summary>

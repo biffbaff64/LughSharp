@@ -38,11 +38,11 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     private IGraphics.DisplayMode? _displayModeBeforeFullscreen;
 
-    private int  _fps;
     private long _frameCounterStart = 0;
+    private long _lastFrameTime = -1;
     private long _frameId;
     private int  _frames;
-    private long _lastFrameTime = -1;
+    private int  _fps;
     private int  _windowHeightBeforeFullscreen;
     private int  _windowPosXBeforeFullscreen;
     private int  _windowPosYBeforeFullscreen;
@@ -95,7 +95,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     }
 
     /// <inheritdoc />
-    public override GLVersion.GLType GraphicsType => GLVersion.GLType.GL20; //TODO
+    public override GDXVersion.GLType GraphicsType => GDXVersion.GLType.GL20; //TODO
 
     /// <summary>
     /// </summary>
