@@ -53,8 +53,8 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     public int      IdleFPS                { get; set; } = 60;
     public int      ForegroundFPS          { get; set; }
 
-    public int GLContextMajorVersion { get; set; }
-    public int GLContextMinorVersion { get; set; }
+    public int GLContextMajorVersion { get; set; } = DEFAULT_CONTEXT_MAJOR;
+    public int GLContextMinorVersion { get; set; } = DEFAULT_CONTEXT_MINOR;
 
     public int Red   { get; set; } = 8;
     public int Green { get; set; } = 8;

@@ -118,8 +118,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         _sync          = new Sync();
         _currentWindow = null!;
 
-        // OpenGL and OpenGLFW initialisation/setup is done from this point on.
-        InitialiseGL();
+        // GLFW initialisation
         InitialiseGLFW();
 
         // Create the window(s)
@@ -473,6 +472,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         Logger.CheckPoint();
 
+        InitialiseGL();
         InitGLVersion();
 
 //        if ( config.Debug )
@@ -496,7 +496,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         // Retrieve OpenGL version and profile from the project settings.
         // These methods read the OpenGL major and minor version numbers
-        // and the profile from the `.csproj` file.
+        // GLBindings, and the profile from the `.csproj` file.
         var glProfile = Gdx.GL.GetProjectOpenGLProfile();
         var glMajor   = Gdx.GL.GetProjectOpenGLVersionMajor();
         var glMinor   = Gdx.GL.GetProjectOpenGLVersionMinor();
@@ -581,13 +581,21 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// </exception>
     private unsafe void InitGLVersion()
     {
+        Logger.CheckPoint();
+        
         Glfw.GetVersion( out var majorv, out var minorv, out var revision );
 
+        Logger.Debug( $"major   : {majorv}" );
+        Logger.Debug( $"minorv  : {minorv}" );
+        Logger.Debug( $"revision: {revision}" );
+        
         GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
                                    $"{majorv}.{minorv}.{revision}",
                                    Gdx.GL.glGetString( IGL.GL_VENDOR ) -> ToString(),
                                    Gdx.GL.glGetString( IGL.GL_RENDERER ) -> ToString() );
 
+        Logger.CheckPoint();
+        
         if ( !GLVersion.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
         {
             var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
