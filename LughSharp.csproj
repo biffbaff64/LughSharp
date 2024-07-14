@@ -1,0 +1,107 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Title>LughSharp</Title>
+        <Authors>Red7Projects / Richard Ikin</Authors>
+        <Version>0.0.1-beta3.1</Version>
+        <Description>C# 2D/3D Game Framework based on the Java Framework LibGDX.</Description>
+        <RepositoryUrl>https://github.com/biffbaff64/LughSharp</RepositoryUrl>
+        <LangVersion>latestmajor</LangVersion>
+
+        <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">
+            true
+        </IsWindows>
+        <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">
+            true
+        </IsOSX>
+        <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+            true
+        </IsLinux>
+        <PackageProjectUrl>https://github.com/biffbaff64/LughSharp</PackageProjectUrl>
+        <AssemblyVersion>0.0.0.1</AssemblyVersion>
+        <FileVersion>0.0.0.1</FileVersion>
+        <PackageTags>CSharp;2D;Framework;OpenGL;</PackageTags>
+        <Copyright>Copyright 2024 Red7Projects / Richard Ikin</Copyright>
+        <Company>Red7Projects</Company>
+        <TargetFramework>net7.0</TargetFramework>
+        <PackageReleaseNotes>Testing Only!!</PackageReleaseNotes>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="LICENSE" Pack="true" PackagePath=""/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <!-- GL.cs configuration options! -->
+
+        <!-- Profile: CORE/COMPAT -->
+        <!-- COMPAT not implemented yet -->
+        <OpenGLProfile>CORE</OpenGLProfile>
+
+        <!-- Version: Any valid OpenGL version from 1.0-4.6 -->
+        <OpenGLVersionMajor>3</OpenGLVersionMajor>
+        <OpenGLVersionMinor>3</OpenGLVersionMinor>
+
+        <!-- Defining exposed wrapper API (SAFE/UNSAFE/BOTH) -->
+        <!-- SAFE: Only safe functions are exposed -->
+        <!-- UNSAFE: Only unsafe functions are exposed -->
+        <!-- BOTH: Both safe and unsafe functions are exposed -->
+        <OpenGLWrapperAPI>BOTH</OpenGLWrapperAPI>
+
+        <!-- Defining constants for compile time availability of APIs -->
+        <DefineConstants>$(DefineConstants);OGL_V_$(OpenGLVersionMajor)_$(OpenGLVersionMinor);OGL_P_$(OpenGLProfile);OGL_WRAPPER_API_$(OpenGLWrapperAPI)</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(IsWindows)'=='true'">
+        <DefineConstants>Windows</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(IsOSX)'=='true'">
+        <DefineConstants>OSX</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(IsLinux)'=='true'">
+        <DefineConstants>Linux</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <Optimize>True</Optimize>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DotGLFW" Version="1.1.0" />
+        <PackageReference Include="JetBrains.Annotations" Version="2024.2.0-eap1" />
+        <PackageReference Include="RestSharp" Version="111.3.1-alpha.0.6" />
+        <PackageReference Include="SharpZipLib" Version="1.4.2"/>
+        <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
+        <PackageReference Include="System.IO.Hashing" Version="8.0.0" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Backends\Android\" />
+        <Folder Include="LibCore\Utils\Buffers\DirectBuffers\" />
+        <Folder Include="packages\"/>
+        <Folder Include="To Be Deleted\" />
+    </ItemGroup>
+
+</Project>
