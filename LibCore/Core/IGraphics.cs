@@ -30,7 +30,7 @@ public interface IGraphics
 {
     #region properties
 
-//    GLVersion?             GLVersion    { get; set; }
+    GLVersion?             GLVersion    { get; set; }
     GDXVersion.GLType      GraphicsType { get; }
     BufferFormatDescriptor BufferFormat { get; set; }
     IGLBindings            GL           { get; set; }

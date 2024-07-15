@@ -80,7 +80,7 @@ public class DesktopGLWindow : IDisposable
         
         this.GlfwWindow = window;
         this.Input      = _application.CreateInput( this );
-        this.Graphics   = new DesktopGLGraphics( this, _application );
+        this.Graphics   = new DesktopGLGraphics( this );
 
         //@formatter:off
         Glfw.SetWindowFocusCallback     ( window, DesktopWindowCallbacks.GdxFocusCallback );
@@ -314,7 +314,6 @@ public class DesktopGLWindow : IDisposable
     {
         Gdx.Graphics = Graphics;
         Gdx.Input    = Input;
-        Gdx.GL       = Graphics.GL;
 
         Glfw.MakeContextCurrent( GlfwWindow );
     }

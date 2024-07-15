@@ -40,7 +40,7 @@ public abstract class AbstractGraphics : IGraphics
     public virtual int               Width               { get; }
     public virtual int               Height              { get; }
     public virtual float             DeltaTime           { get; set; }
-//    public virtual GLVersion?        GLVersion           { get; set; } = null!;
+    public virtual GLVersion?        GLVersion           { get; set; } = null!;
     public virtual GDXVersion.GLType GraphicsType        { get; }
     public virtual bool              ContinuousRendering { get; set; } = true;
     public virtual bool              IsFullscreen        { get; }

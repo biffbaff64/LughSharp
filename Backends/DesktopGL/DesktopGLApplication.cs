@@ -174,8 +174,9 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             {
                 window.MakeCurrent();
 
-                _currentWindow = window;
-
+                _currentWindow                    = window;
+                _currentWindow.Graphics.GLVersion = GLVersion;
+                
                 if ( targetFramerate == FR_UNINITIALISED )
                 {
                     targetFramerate = window.Config.ForegroundFPS;
@@ -310,11 +311,15 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         if ( sharedContext == 0 )
         {
+            Logger.CheckPoint();
+            
             // the main window is created immediately
             CreateWindow( dlgWindow, config, 0 );
         }
         else
         {
+            Logger.CheckPoint();
+
             // creation of additional windows is deferred to avoid GL context trouble
             PostRunnable( () =>
             {

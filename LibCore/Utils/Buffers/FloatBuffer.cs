@@ -571,7 +571,7 @@ public abstract class FloatBuffer : Buffer
     /// method before invoking this method to ensure that this buffer has an
     /// accessible backing array.
     /// </remarks>
-    /// <returns>The array that backs this buffer.</returns>
+    /// <returns> The array that backs this buffer. </returns>
     /// <exception cref="GdxRuntimeException">
     /// If this buffer is backed by an array but is read-only.
     /// </exception>
@@ -633,14 +633,13 @@ public abstract class FloatBuffer : Buffer
     /// <summary>
     /// Compacts this buffer  <i>(optional operation)</i>.
     /// <para>
-    /// The floats between the buffer's current position and its limit,
-    /// if any, are copied to the beginning of the buffer. That is, the
-    /// float at index <tt>p = Position</tt> is copied to index zero, the
-    /// float at index <tt>p + 1|</tt> is copied to index one, and so forth
-    /// until the float at index <tt>Limit - 1</tt> is copied to index
-    /// <tt>n = Limit - 1 - p</tt>.
-    /// The buffer's position is then set to <i>n+1</i> and its limit is set to
-    /// its capacity.  The mark, if defined, is discarded.
+    /// The floats between the buffer's current position and its limit, if any,
+    /// are copied to the beginning of the buffer. That is, the float at index
+    /// <c>p = Position</c> is copied to index zero, the float at index <c>p + 1|</c>
+    /// is copied to index one, and so forth until the float at index <c>Limit - 1</c>
+    /// is copied to index <c>n = Limit - 1 - p</c>. The buffer's position is then
+    /// set to <c>n + 1</c> and its limit is set to its capacity. The mark, if defined,
+    /// is discarded.
     /// </para>
     /// <para>
     /// The buffer's position is set to the number of floats copied, rather than
@@ -678,6 +677,7 @@ public abstract class FloatBuffer : Buffer
     public override int GetHashCode()
     {
         var h = 31 + ( int ) Get( 0 );
+        
         h = ( 31 * h ) + ( int ) Get( 1 );
         h = ( 31 * h ) + ( int ) Get( 2 );
         h = ( 31 * h ) + ( int ) Get( 3 );

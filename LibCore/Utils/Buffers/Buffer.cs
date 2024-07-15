@@ -439,11 +439,12 @@ public abstract class Buffer
     /// </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
-    public virtual object[] BackingArray()
-    {
-        throw new GdxRuntimeException( "This method should be implemented in inheriting classes." );
-    }
+    public abstract object[] BackingArray();
 
+    // or...
+
+    public abstract T[] BackingArray< T >();
+    
     /// <summary>
     /// Returns the offset within this buffer's backing array of the first
     /// element of the buffer <i>(optional operation)</i>.

@@ -26,6 +26,7 @@
 using LughSharp.Backends.DesktopGL.Utils;
 using LughSharp.Backends.DesktopGL.Window;
 using LughSharp.LibCore.Utils.Exceptions;
+using Platform = LughSharp.LibCore.Core.Platform;
 
 namespace LughSharp.Backends.DesktopGL.Graphics;
 
@@ -36,8 +37,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    private IGraphics.DisplayMode?    _displayModeBeforeFullscreen;
-    private IDesktopGLApplicationBase _application;
+    private IGraphics.DisplayMode? _displayModeBeforeFullscreen;
 
     private long _frameCounterStart = 0;
     private long _lastFrameTime     = -1;
@@ -56,24 +56,18 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// Creates a new GLGraphics instance for Desktop backends, using the
     /// given <see cref="DesktopGLWindow"/> as the main window.
     /// </summary>
-    public DesktopGLGraphics( DesktopGLWindow glWindow, IDesktopGLApplicationBase application )
+    public DesktopGLGraphics( DesktopGLWindow glWindow )
     {
         Logger.CheckPoint();
 
-        this.GLWindow     = glWindow;
-        this._application = application;
-        
+        this.GLWindow = glWindow;
+
         UpdateFramebufferInfo();
 
         Logger.CheckPoint();
 
-        if ( SupportsCubeMapSeamless() )
-        {
-            Logger.CheckPoint();
-
-            EnableCubeMapSeamless( true );
-        }
-
+        InitiateGL();
+        
         Logger.CheckPoint();
 
         Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
@@ -198,7 +192,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// </summary>
     public bool SupportsCubeMapSeamless()
     {
-        return ( bool ) _application.GLVersion?.IsVersionEqualToOrHigher( 3, 2 )
+        return ( bool ) GLVersion?.IsVersionEqualToOrHigher( 3, 2 )
             || SupportsExtension( "GL_ARB_seamless_cube_map" );
     }
 
@@ -476,6 +470,24 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         _windowWidthBeforeFullscreen  = LogicalWidth;
         _windowHeightBeforeFullscreen = LogicalHeight;
         _displayModeBeforeFullscreen  = GetDisplayMode();
+    }
+
+    private unsafe void InitiateGL()
+    {
+        Glfw.GetVersion( out var glMajor, out var glMinor, out var revision );
+
+        var vendorString   = Gdx.GL.glGetString( IGL.GL_VENDOR );
+        var rendererString = Gdx.GL.glGetString( IGL.GL_RENDERER );
+
+        GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
+                                   $"{glMajor}.{glMinor}.{revision}",
+                                   vendorString,
+                                   rendererString );
+
+        if ( SupportsCubeMapSeamless() )
+        {
+            EnableCubeMapSeamless( true );
+        }
     }
 
     // ------------------------------------------------------------------------

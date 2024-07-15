@@ -454,7 +454,7 @@ public abstract class IntBuffer : Buffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "Unsupported Operation!" );
+            throw new GdxRuntimeException( "Backing array is null!" );
         }
 
         if ( IsReadOnly )

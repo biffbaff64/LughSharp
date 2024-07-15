@@ -32,8 +32,6 @@ namespace LughSharp.Backends.DesktopGL;
 [PublicAPI]
 public interface IDesktopGLApplicationBase : IApplication
 {
-    GLVersion? GLVersion { get; set; }
-
     IApplicationListener GetApplicationListener();
     IInput               GetInput();
 
