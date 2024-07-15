@@ -27,7 +27,6 @@ using LughSharp.Backends.DesktopGL.Graphics;
 using LughSharp.Backends.DesktopGL.Input;
 using LughSharp.Backends.DesktopGL.Utils;
 using LughSharp.LibCore.Utils.Collections.Extensions;
-using LughSharp.LibCore.Utils.Exceptions;
 using Platform = LughSharp.LibCore.Core.Platform;
 
 namespace LughSharp.Backends.DesktopGL.Window;
@@ -64,6 +63,8 @@ public class DesktopGLWindow : IDisposable
                             DesktopGLApplicationConfiguration config,
                             IDesktopGLApplicationBase application )
     {
+        Logger.CheckPoint();
+        
         Listener       = listener;
         WindowListener = config.WindowListener;
         Config         = config;
@@ -75,9 +76,11 @@ public class DesktopGLWindow : IDisposable
     /// </summary>
     public void Create( GLFW.Window window )
     {
+        Logger.CheckPoint();
+        
         this.GlfwWindow = window;
         this.Input      = _application.CreateInput( this );
-        this.Graphics   = new DesktopGLGraphics( this );
+        this.Graphics   = new DesktopGLGraphics( this, _application );
 
         //@formatter:off
         Glfw.SetWindowFocusCallback     ( window, DesktopWindowCallbacks.GdxFocusCallback );
@@ -173,9 +176,7 @@ public class DesktopGLWindow : IDisposable
     /// </summary>
     public void SetSizeLimits( int minWidth, int minHeight, int maxWidth, int maxHeight )
     {
-        GdxRuntimeException.ThrowIfNull( GlfwWindow );
-
-        SetSizeLimits( GlfwWindow, minWidth, minHeight, maxWidth, maxHeight );
+        SetSizeLimits( GlfwWindow!, minWidth, minHeight, maxWidth, maxHeight );
     }
 
     /// <summary>

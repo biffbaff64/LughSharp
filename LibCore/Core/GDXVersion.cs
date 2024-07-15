@@ -67,6 +67,8 @@ public class GDXVersion
 
     public GDXVersion()
     {
+        Logger.CheckPoint();
+
         _version = Assembly.GetEntryAssembly()?.GetName().Version;
 
         if ( _version == null )
@@ -76,11 +78,22 @@ public class GDXVersion
 
         try
         {
-            var v = _version.ToString().Split( "\\." );
+            var matches = Regex.Matches( _version.ToString(), @"\d+" );
 
-            MajorVersion    = v.Length < 1 ? 0 : int.Parse( v[ 0 ] );
-            MinorVersion    = v.Length < 2 ? 0 : int.Parse( v[ 1 ] );
-            RevisionVersion = v.Length < 3 ? 0 : int.Parse( v[ 2 ] );
+            var v = string.Empty;
+
+            foreach ( var match in matches )
+            {
+                v += match;
+            }
+
+            MajorVersion    = v.Length < 1 ? 0 : int.Parse( v[ ..1 ] );
+            MinorVersion    = v.Length < 2 ? 0 : int.Parse( v[ 1.. ] );
+            RevisionVersion = v.Length < 3 ? 0 : int.Parse( v[ 2.. ] );
+            
+            Logger.Debug( $"MajorVersion   : {MajorVersion}" );
+            Logger.Debug( $"MinorVersion   : {MinorVersion}" );
+            Logger.Debug( $"RevisionVersion: {RevisionVersion}" );
         }
         catch ( Exception e )
         {

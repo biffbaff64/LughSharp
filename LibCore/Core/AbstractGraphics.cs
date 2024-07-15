@@ -33,17 +33,17 @@ public abstract class AbstractGraphics : IGraphics
     public IGraphics.BufferFormatDescriptor BufferFormat { get; set; } = null!;
     public IGLBindings                      GL           { get; set; } = null!;
 
-    public virtual int              BackBufferWidth     { get; protected set; }
-    public virtual int              BackBufferHeight    { get; protected set; }
-    public virtual int              LogicalWidth        { get; set; }
-    public virtual int              LogicalHeight       { get; set; }
-    public virtual int              Width               { get; }
-    public virtual int              Height              { get; }
-    public virtual float            DeltaTime           { get; set; }
-    public virtual GLVersion        GLVersion           { get; set; } = null!;
-    public virtual GLVersion.GLType GraphicsType        { get; }
-    public virtual bool             ContinuousRendering { get; set; } = true;
-    public virtual bool             IsFullscreen        { get; }
+    public virtual int               BackBufferWidth     { get; protected set; }
+    public virtual int               BackBufferHeight    { get; protected set; }
+    public virtual int               LogicalWidth        { get; set; }
+    public virtual int               LogicalHeight       { get; set; }
+    public virtual int               Width               { get; }
+    public virtual int               Height              { get; }
+    public virtual float             DeltaTime           { get; set; }
+//    public virtual GLVersion?        GLVersion           { get; set; } = null!;
+    public virtual GDXVersion.GLType GraphicsType        { get; }
+    public virtual bool              ContinuousRendering { get; set; } = true;
+    public virtual bool              IsFullscreen        { get; }
 
     #endregion properties
 
@@ -96,7 +96,6 @@ public abstract class AbstractGraphics : IGraphics
     public abstract IGraphics.DisplayMode   GetDisplayMode( GLFW.Monitor monitor );
 
     // ------------------------------------------------------------------------
-    public abstract void SetTitle( string title );
     public abstract bool SetWindowedMode( int width, int height );
     public abstract void SetUndecorated( bool undecorated );
     public abstract void SetResizable( bool resizable );

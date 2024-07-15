@@ -528,27 +528,4 @@ public class Bits
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-
-    #region statics
-
-    private static ByteOrder? _byteOrder;
-
-    public static ByteOrder ByteOrder
-    {
-        get
-        {
-            if ( _byteOrder == null )
-            {
-                throw new GdxRuntimeException( "Unknown Byte Order!" );
-            }
-
-            return _byteOrder;
-        }
-        set => _byteOrder = value;
-    }
-
-    #endregion statics
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
 }

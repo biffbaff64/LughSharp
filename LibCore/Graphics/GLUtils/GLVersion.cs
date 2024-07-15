@@ -38,11 +38,13 @@ public class GLVersion : GDXVersion
     /// <param name="versionString"></param>
     /// <param name="vendorString"></param>
     /// <param name="rendererString"></param>
-    public GLVersion( Platform.ApplicationType appType,
-                      string versionString,
-                      string vendorString,
-                      string rendererString )
+    public unsafe GLVersion( Platform.ApplicationType appType,
+                             string versionString,
+                             byte* vendorString,
+                             byte* rendererString )
     {
+        Logger.CheckPoint();
+
         GLtype = appType switch
         {
             Platform.ApplicationType.Android   => Core.GDXVersion.GLType.GLES,
@@ -50,6 +52,9 @@ public class GLVersion : GDXVersion
             Platform.ApplicationType.WebGL     => Core.GDXVersion.GLType.WebGL,
             var _                              => Core.GDXVersion.GLType.None
         };
+
+        VendorString   = vendorString == null ? "" : Marshal.PtrToStringUTF8( ( IntPtr ) vendorString );
+        RendererString = rendererString == null ? "" : Marshal.PtrToStringUTF8( ( IntPtr ) rendererString );
 
         if ( GLtype == Core.GDXVersion.GLType.GLES )
         {
@@ -74,9 +79,6 @@ public class GLVersion : GDXVersion
             VendorString    = "";
             RendererString  = "";
         }
-
-        VendorString   = vendorString;
-        RendererString = rendererString;
     }
 
     /// <summary>
@@ -135,8 +137,7 @@ public class GLVersion : GDXVersion
     public bool IsVersionEqualToOrHigher( int testMajorVersion, int testMinorVersion )
     {
         return ( MajorVersion > testMajorVersion )
-            || ( ( MajorVersion == testMajorVersion )
-              && ( MinorVersion >= testMinorVersion ) );
+            || ( ( MajorVersion == testMajorVersion ) && ( MinorVersion >= testMinorVersion ) );
     }
 
     /// <summary>

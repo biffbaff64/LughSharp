@@ -31,7 +31,7 @@ namespace LughSharp.LibCore.Utils;
 [PublicAPI]
 public class ByteOrder
 {
-    public readonly static ByteOrder NativeOrder = new( "NativeOrder" );
+    public static ByteOrder NativeOrder => BigEndian;
 
     /// <summary>
     /// Constant denoting big-endian byte order. In this order, the bytes of a

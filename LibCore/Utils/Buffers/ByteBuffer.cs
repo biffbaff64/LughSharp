@@ -153,7 +153,7 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class ByteBuffer : Buffer
 {
-    protected bool NativeByteOrder = Bits.ByteOrder == ByteOrder.BigEndian;
+    protected bool NativeByteOrder = ByteOrder.NativeOrder == ByteOrder.BigEndian;
 
     // ------------------------------------------------------------------------
 
@@ -704,7 +704,7 @@ public abstract class ByteBuffer : Buffer
     public ByteBuffer Order( ByteOrder order )
     {
         BigEndian       = order == ByteOrder.BigEndian;
-        NativeByteOrder = BigEndian == ( Bits.ByteOrder == ByteOrder.BigEndian );
+        NativeByteOrder = BigEndian == ( ByteOrder.NativeOrder == ByteOrder.BigEndian );
 
         return this;
     }

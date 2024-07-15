@@ -36,10 +36,11 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
     // ------------------------------------------------------------------------
 
-    private IGraphics.DisplayMode? _displayModeBeforeFullscreen;
+    private IGraphics.DisplayMode?    _displayModeBeforeFullscreen;
+    private IDesktopGLApplicationBase _application;
 
     private long _frameCounterStart = 0;
-    private long _lastFrameTime = -1;
+    private long _lastFrameTime     = -1;
     private long _frameId;
     private int  _frames;
     private int  _fps;
@@ -55,16 +56,25 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// Creates a new GLGraphics instance for Desktop backends, using the
     /// given <see cref="DesktopGLWindow"/> as the main window.
     /// </summary>
-    public DesktopGLGraphics( DesktopGLWindow glWindow )
+    public DesktopGLGraphics( DesktopGLWindow glWindow, IDesktopGLApplicationBase application )
     {
-        this.GLWindow = glWindow;
+        Logger.CheckPoint();
 
+        this.GLWindow     = glWindow;
+        this._application = application;
+        
         UpdateFramebufferInfo();
+
+        Logger.CheckPoint();
 
         if ( SupportsCubeMapSeamless() )
         {
+            Logger.CheckPoint();
+
             EnableCubeMapSeamless( true );
         }
+
+        Logger.CheckPoint();
 
         Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
     }
@@ -128,7 +138,9 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// </summary>
     private void UpdateFramebufferInfo()
     {
-        if ( GLWindow == null )
+        Logger.CheckPoint();
+
+        if ( ( GLWindow == null ) || ( GLWindow.GlfwWindow == null ) )
         {
             return;
         }
@@ -186,7 +198,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// </summary>
     public bool SupportsCubeMapSeamless()
     {
-        return GLVersion.IsVersionEqualToOrHigher( 3, 2 )
+        return ( bool ) _application.GLVersion?.IsVersionEqualToOrHigher( 3, 2 )
             || SupportsExtension( "GL_ARB_seamless_cube_map" );
     }
 
@@ -201,7 +213,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         {
             if ( enable )
             {
-                Gdx.GL.glEnable( IGL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
                 Gdx.GL.glEnable( IGL.GL_TEXTURE_CUBE_MAP_SEAMLESS );
             }
             else
@@ -266,14 +277,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
         UpdateFramebufferInfo();
 
         return true;
-    }
-
-    /// <inheritdoc />
-    public override void SetTitle( string title )
-    {
-        GdxRuntimeException.ThrowIfNull( GLWindow, "GLWindow == null" );
-
-        Glfw.SetWindowTitle( GLWindow.GlfwWindow, title );
     }
 
     /// <inheritdoc />

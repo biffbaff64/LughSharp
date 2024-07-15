@@ -34,14 +34,14 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public static class Gdx
 {
-    private static IApplication? _app      = null;
-    private static IAudio?       _audio    = null;
-    private static IInput?       _input    = null;
-    private static IFiles?       _files    = null;
-    private static IGraphics?    _graphics = null;
-    private static INet?         _net      = null;
-    private static IGLBindings?  _igl      = null;
-
+    private static IApplication? _app       = null;
+    private static IAudio?       _audio     = null;
+    private static IInput?       _input     = null;
+    private static IFiles?       _files     = null;
+    private static IGraphics?    _graphics  = null;
+    private static INet?         _net       = null;
+    private static IGLBindings?  _igl       = null;
+    
     // ------------------------------------------------------------------------
 
     // ------------------------------------------------------------------------

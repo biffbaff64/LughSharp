@@ -29,6 +29,11 @@ namespace DotGL;
 
 public interface IGLBindings
 {
+    /// <summary>
+    /// Helper / wrapper method to enable calling of <see cref="GetProjectOpenGLVersionMajor"/>
+    /// and <see cref="GetProjectOpenGLVersionMinor"/> in one method call.
+    /// </summary>
+    /// <returns> A tuple holding the major and minor version numbers. </returns>
     ( int major, int minor ) GetProjectOpenGLVersion();
 
     /// <summary>

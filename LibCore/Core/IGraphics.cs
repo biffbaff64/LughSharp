@@ -30,8 +30,8 @@ public interface IGraphics
 {
     #region properties
 
-    GLVersion              GLVersion    { get; set; }
-    GLVersion.GLType       GraphicsType { get; }
+//    GLVersion?             GLVersion    { get; set; }
+    GDXVersion.GLType      GraphicsType { get; }
     BufferFormatDescriptor BufferFormat { get; set; }
     IGLBindings            GL           { get; set; }
 
@@ -165,7 +165,7 @@ public interface IGraphics
     int GetSafeInsetRight();
 
     long GetFrameID();
-    int GetFramesPerSecond();
+    int  GetFramesPerSecond();
 
     (float X, float Y) GetPpcXY();
     (float X, float Y) GetPpiXY();
@@ -179,8 +179,8 @@ public interface IGraphics
     DisplayMode   GetDisplayMode( GLFW.Monitor monitor );
 
     bool SetFullscreenMode( DisplayMode displayMode );
+
     bool SetWindowedMode( int width, int height );
-    void SetTitle( string title );
     void SetUndecorated( bool undecorated );
     void SetResizable( bool resizable );
 

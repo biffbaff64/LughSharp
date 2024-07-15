@@ -89,17 +89,16 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         // This MUST be the first call in this constructor
         Gdx.Initialise( this );
 
-        Preferences = new Dictionary< string, IPreferences >();
-
         // Config.Title becomes the name of the ApplicationListener if
         // it has no value at this point.
         config.Title ??= listener.GetType().Name;
         Config       =   DesktopGLApplicationConfiguration.Copy( config );
 
-        // Initialise the global environment shortcuts.
-        // 'Gdx.Audio', 'Gdx.Files', and 'Gdx.Net' are instances of classes
-        // implementing IAudio, IFiles, and INet resprectively, and are used to
-        // access LughSharp members.
+        Preferences = new Dictionary< string, IPreferences >();
+
+        // Initialise the global environment shortcuts. 'Gdx.Audio', 'Gdx.Files',
+        // and 'Gdx.Net' are instances of classes implementing IAudio, IFiles, and
+        // INet resprectively, and are used to access LughSharp members.
         // 'Audio', 'Files', and 'Network' are instances of classes which extend
         // the aforementioned classes, and are used in backend code only.
         Audio   = CreateAudio( config );
@@ -271,29 +270,29 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         }
     }
 
-//    /// <summary>
-//    /// Creates a new <see cref="DesktopGLWindow"/> using the provided listener and
-//    /// <see cref="DesktopGLWindowConfiguration"/>.
-//    /// <para>
-//    /// This function only instantiates a <see cref="DesktopGLWindow"/> and
-//    /// returns immediately. The actual window creation is postponed with
-//    /// <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)"/> until after all
-//    /// existing windows are updated.
-//    /// </para>
-//    /// </summary>
-//    public DesktopGLWindow NewWindow( IApplicationListener listener, DesktopGLWindowConfiguration config )
-//    {
-//        Logger.CheckPoint();
-//
-//        GdxRuntimeException.ThrowIfNull( Config );
-//
-//        var appConfig = DesktopGLApplicationConfiguration.Copy( Config );
-//
-//        appConfig.SetGLContextVersion();
-//        appConfig.SetWindowConfiguration( config );
-//
-//        return CreateWindow( appConfig, listener, 0 );
-//    }
+    /// <summary>
+    /// Creates a new <see cref="DesktopGLWindow"/> using the provided listener and
+    /// <see cref="DesktopGLWindowConfiguration"/>.
+    /// <para>
+    /// This function only instantiates a <see cref="DesktopGLWindow"/> and
+    /// returns immediately. The actual window creation is postponed with
+    /// <see cref="DesktopGLApplication.PostRunnable(IRunnable.Runnable)"/> until after all
+    /// existing windows are updated.
+    /// </para>
+    /// </summary>
+    public DesktopGLWindow NewWindow( IApplicationListener listener, DesktopGLWindowConfiguration config )
+    {
+        Logger.CheckPoint();
+
+        GdxRuntimeException.ThrowIfNull( Config );
+
+        var appConfig = DesktopGLApplicationConfiguration.Copy( Config );
+
+        appConfig.SetGLContextVersion();
+        appConfig.SetWindowConfiguration( config );
+
+        return CreateWindow( appConfig, listener, 0 );
+    }
 
     /// <summary>
     /// </summary>
@@ -343,6 +342,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         dglWindow.Create( windowHandle );
         dglWindow.SetVisible( config.InitialVisibility );
 
+        Logger.CheckPoint();
+
         for ( var i = 0; i < 2; i++ )
         {
             Gdx.GL.glClearColor( config.InitialBackgroundColor.R,
@@ -353,6 +354,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             Gdx.GL.glClear( IGL.GL_COLOR_BUFFER_BIT );
             Glfw.SwapBuffers( windowHandle );
         }
+
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -389,7 +392,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
             Logger.Debug( $"windowWidth : {config.WindowWidth}" );
             Logger.Debug( $"windowHeight: {config.WindowHeight}" );
-            
+
             windowHandle = Glfw.CreateWindow( config.WindowWidth,
                                               config.WindowHeight,
                                               config.Title ?? "",
@@ -473,7 +476,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         Logger.CheckPoint();
 
         InitialiseGL();
-        InitGLVersion();
 
 //        if ( config.Debug )
 //        {
@@ -490,27 +492,33 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// Sets up an OpenGL context using GLFW, retrieves OpenGL version and profile information
     /// from the project settings, and initializes the OpenGL environment accordingly. 
     /// </summary>
-    public void InitialiseGL()
+    /// <remarks> 14.07.2024 - Merged with InitGLVersion(). </remarks>
+    public unsafe void InitialiseGL()
     {
         Logger.CheckPoint();
 
-        // Retrieve OpenGL version and profile from the project settings.
-        // These methods read the OpenGL major and minor version numbers
-        // GLBindings, and the profile from the `.csproj` file.
-        var glProfile = Gdx.GL.GetProjectOpenGLProfile();
-        var glMajor   = Gdx.GL.GetProjectOpenGLVersionMajor();
-        var glMinor   = Gdx.GL.GetProjectOpenGLVersionMinor();
+        // Retrieve OpenGL version
+        Glfw.GetVersion( out var glMajor, out var glMinor, out var revision );
 
         Logger.Debug( $"glMajor  : {glMajor}" );
-        Logger.Debug( $"glMinort : {glMinor}" );
+        Logger.Debug( $"glMinor  : {glMinor}" );
+        Logger.Debug( $"Revision : {revision}" );
+
+        // Retrieve the OpenGL profile from the ',csproj' file
+        var glProfile = Gdx.GL.GetProjectOpenGLProfile();
+
         Logger.Debug( $"glProfile: {glProfile}" );
 
         // Set the client API to use OpenGL.
         Glfw.WindowHint( Hint.ClientAPI, ClientAPI.OpenGLAPI );
 
+        Logger.CheckPoint();
+
         // Set the OpenGL context version based on the retrieved major and minor version numbers.
         Glfw.WindowHint( Hint.ContextVersionMajor, glMajor );
         Glfw.WindowHint( Hint.ContextVersionMinor, glMinor );
+
+        Logger.CheckPoint();
 
         // Determine the OpenGL profile to use based on the profile string retrieved.
         OGLProfile = glProfile switch
@@ -520,7 +528,29 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             var _    => throw new Exception( "Invalid OpenGL profile!" )
         };
 
+        Logger.CheckPoint();
+
+        GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
+                                   $"{glMajor}.{glMinor}.{revision}",
+                                   null,   //Gdx.GL.glGetString( IGL.GL_VENDOR ),
+                                   null ); //Gdx.GL.glGetString( IGL.GL_RENDERER ) );
+
+        Logger.CheckPoint();
+
+        if ( !GLVersion.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
+        {
+            var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
+
+            throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is required. "
+                                         + $"OpenGL version: {major}.{minor}"
+                                         + $"\n{GLVersion.DebugVersionString()}" );
+        }
+
+        Logger.CheckPoint();
+
         Gdx.GL.Import( Glfw.GetProcAddress );
+
+        Logger.CheckPoint();
 
         // Set the flag indicating that OpenGL has been initialized.
         GLInitialised = true;
@@ -564,46 +594,13 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         return;
 
         // --------------------------------------------------------------------
-        
+
         void ErrorCallback( ErrorCode error, string description )
         {
             Logger.Error( $"ErrorCode: {error}, {description}" );
         }
-        
+
         // --------------------------------------------------------------------
-    }
-
-    /// <summary>
-    /// Initialises the version returned by <see cref="GLVersion"/>.
-    /// </summary>
-    /// <exception cref="GdxRuntimeException">
-    /// If GLVersion is less than 2.0 or FBOs are not supported.
-    /// </exception>
-    private unsafe void InitGLVersion()
-    {
-        Logger.CheckPoint();
-        
-        Glfw.GetVersion( out var majorv, out var minorv, out var revision );
-
-        Logger.Debug( $"major   : {majorv}" );
-        Logger.Debug( $"minorv  : {minorv}" );
-        Logger.Debug( $"revision: {revision}" );
-        
-        GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,
-                                   $"{majorv}.{minorv}.{revision}",
-                                   Gdx.GL.glGetString( IGL.GL_VENDOR ) -> ToString(),
-                                   Gdx.GL.glGetString( IGL.GL_RENDERER ) -> ToString() );
-
-        Logger.CheckPoint();
-        
-        if ( !GLVersion.IsVersionEqualToOrHigher( 2, 0 ) || !SupportsFBO() )
-        {
-            var (major, minor) = Gdx.GL.GetProjectOpenGLVersion();
-
-            throw new GdxRuntimeException( $"OpenGL 2.0 or higher with the FBO extension is required. "
-                                         + $"OpenGL version: {major}.{minor}"
-                                         + $"\n{GLVersion.DebugVersionString()}" );
-        }
     }
 
     /// <inheritdoc />
