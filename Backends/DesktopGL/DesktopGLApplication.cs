@@ -89,6 +89,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         // This MUST be the first call in this constructor
         Gdx.Initialise( this );
 
+        Logger.CheckPoint();
+        
         // Config.Title becomes the name of the ApplicationListener if
         // it has no value at this point.
         config.Title ??= listener.GetType().Name;
@@ -122,6 +124,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         // Create the window(s)
         Windows.Add( CreateWindow( config, listener, 0 ) );
+        
+        Logger.Debug( " - Finished" );
     }
 
     /// <summary>
@@ -158,6 +162,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// </summary>
     protected void Loop()
     {
+        Logger.CheckPoint();
+        
         List< DesktopGLWindow > closedWindows = new();
 
         while ( _running && ( Windows.Count > 0 ) )
@@ -328,6 +334,8 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             } );
         }
 
+        Logger.Debug( " - Finished" );
+        
         return dlgWindow;
     }
 
@@ -360,7 +368,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             Glfw.SwapBuffers( windowHandle );
         }
 
-        Logger.CheckPoint();
+        Logger.Debug( " - Finished" );
     }
 
     /// <summary>

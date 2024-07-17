@@ -274,7 +274,7 @@ public class VertexBufferObject : IVertexData
             var attribute = Attributes.Get( i );
 
             var location = locations == null
-                               ? shader.GetAttributeLocation( attribute.alias )
+                               ? shader.GetAttributeLocation( attribute.Alias )
                                : locations[ i ];
 
             if ( location < 0 )
@@ -285,9 +285,9 @@ public class VertexBufferObject : IVertexData
             shader.EnableVertexAttribute( location );
 
             shader.SetVertexAttribute( location,
-                                       attribute.numComponents,
-                                       attribute.type,
-                                       attribute.normalized,
+                                       attribute.NumComponents,
+                                       attribute.Type,
+                                       attribute.Normalized,
                                        Attributes.VertexSize,
                                        attribute.Offset );
         }
@@ -314,7 +314,7 @@ public class VertexBufferObject : IVertexData
             for ( var i = 0; i < numAttributes; i++ )
             {
                 // Disable the vertex attribute for the alias of each attribute.
-                shader.DisableVertexAttribute( Attributes.Get( i ).alias );
+                shader.DisableVertexAttribute( Attributes.Get( i ).Alias );
             }
         }
         else

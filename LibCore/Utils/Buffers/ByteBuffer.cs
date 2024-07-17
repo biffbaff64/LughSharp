@@ -153,7 +153,9 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class ByteBuffer : Buffer
 {
-    protected bool NativeByteOrder = ByteOrder.NativeOrder == ByteOrder.BigEndian;
+    public    byte[]? Hb        { get; set; }
+    protected int     Offset    { get; set; }
+    protected bool    BigEndian { get; set; } = true;
 
     // ------------------------------------------------------------------------
 
@@ -167,16 +169,6 @@ public abstract class ByteBuffer : Buffer
         Hb     = hb;
         Offset = offset;
     }
-
-    /// <summary>
-    /// This byte buffer's backing array.
-    /// </summary>
-    public byte[]? Hb { get; set; }
-
-    // ------------------------------------------------------------------------
-
-    protected int  Offset    { get; set; }
-    protected bool BigEndian { get; set; } = true;
 
     /// <summary>
     /// Allocates a new byte buffer.
@@ -472,10 +464,7 @@ public abstract class ByteBuffer : Buffer
     /// </exception>
     public new byte[] BackingArray()
     {
-        if ( Hb == null )
-        {
-            throw new GdxRuntimeException( "Backing array is null!" );
-        }
+        Hb ??= new byte[ Capacity ];
 
         if ( IsReadOnly )
         {
@@ -554,6 +543,8 @@ public abstract class ByteBuffer : Buffer
     /// <returns> This buffer </returns>
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public abstract ByteBuffer Compact();
+
+    protected bool NativeByteOrder = ByteOrder.NativeOrder == ByteOrder.BigEndian;
 
     /// <summary>
     /// Returns a string summarizing the state of this buffer.

@@ -32,6 +32,8 @@ public class StringCharBuffer : CharBuffer
 {
     private readonly string _string;
 
+    // ------------------------------------------------------------------------
+    
     public StringCharBuffer( string csq, int start, int end )
         : base( -1, start, end, csq.Length )
     {
@@ -168,11 +170,6 @@ public class StringCharBuffer : CharBuffer
         return _string[ index + Offset ];
     }
 
-    protected override string ToString( int start, int end )
-    {
-        return _string.Substring( start + Offset, end + Offset );
-    }
-
     /// <summary>
     /// Creates a new character buffer that represents the specified subsequence
     /// of this buffer, relative to the current position.
@@ -239,6 +236,11 @@ public class StringCharBuffer : CharBuffer
     public override ByteOrder Order()
     {
         return ByteOrder.NativeOrder;
+    }
+
+    protected override string ToString( int start, int end )
+    {
+        return _string.Substring( start + Offset, end + Offset );
     }
 
     // ------------------------------------------------------------------------

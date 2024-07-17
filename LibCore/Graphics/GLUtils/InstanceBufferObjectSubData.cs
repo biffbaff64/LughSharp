@@ -223,20 +223,20 @@ public class InstanceBufferObjectSubData : IInstanceData
             for ( var i = 0; i < numAttributes; i++ )
             {
                 var attribute = Attributes.Get( i );
-                var location  = shader.GetAttributeLocation( attribute.alias );
+                var location  = shader.GetAttributeLocation( attribute.Alias );
 
                 if ( location < 0 )
                 {
                     continue;
                 }
 
-                var unitOffset = +attribute.unit;
+                var unitOffset = +attribute.Unit;
                 shader.EnableVertexAttribute( location + unitOffset );
 
                 shader.SetVertexAttribute( location + unitOffset,
-                                           attribute.numComponents,
-                                           attribute.type,
-                                           attribute.normalized,
+                                           attribute.NumComponents,
+                                           attribute.Type,
+                                           attribute.Normalized,
                                            Attributes.VertexSize,
                                            attribute.Offset );
 
@@ -255,13 +255,13 @@ public class InstanceBufferObjectSubData : IInstanceData
                     continue;
                 }
 
-                var unitOffset = +attribute.unit;
+                var unitOffset = +attribute.Unit;
                 shader.EnableVertexAttribute( location + unitOffset );
 
                 shader.SetVertexAttribute( location + unitOffset,
-                                           attribute.numComponents,
-                                           attribute.type,
-                                           attribute.normalized,
+                                           attribute.NumComponents,
+                                           attribute.Type,
+                                           attribute.Normalized,
                                            Attributes.VertexSize,
                                            attribute.Offset );
 
@@ -284,14 +284,14 @@ public class InstanceBufferObjectSubData : IInstanceData
             for ( var i = 0; i < numAttributes; i++ )
             {
                 var attribute = Attributes.Get( i );
-                var location  = shader.GetAttributeLocation( attribute.alias );
+                var location  = shader.GetAttributeLocation( attribute.Alias );
 
                 if ( location < 0 )
                 {
                     continue;
                 }
 
-                var unitOffset = +attribute.unit;
+                var unitOffset = +attribute.Unit;
 
                 shader.DisableVertexAttribute( location + unitOffset );
             }
@@ -308,7 +308,7 @@ public class InstanceBufferObjectSubData : IInstanceData
                     continue;
                 }
 
-                var unitOffset = +attribute.unit;
+                var unitOffset = +attribute.Unit;
 
                 shader.EnableVertexAttribute( location + unitOffset );
             }

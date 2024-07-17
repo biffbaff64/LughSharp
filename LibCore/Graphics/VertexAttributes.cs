@@ -60,6 +60,8 @@ public class VertexAttributes
     /// </summary>
     public VertexAttributes( params VertexAttribute[] attributes )
     {
+        Logger.CheckPoint();
+        
         if ( attributes.Length == 0 )
         {
             throw new ArgumentException( "attributes must be >= 1" );
@@ -74,6 +76,8 @@ public class VertexAttributes
 
         _attributes = list;
         VertexSize  = CalculateOffsets();
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -88,7 +92,7 @@ public class VertexAttributes
 
     /// <summary>
     /// Calculates a mask based on the contained <see cref="VertexAttribute"/>
-    /// instances. The mask is a bit-wise or of each attributes <see cref="VertexAttribute.usage"/>.
+    /// instances. The mask is a bit-wise or of each attributes <see cref="VertexAttribute.Usage"/>.
     /// </summary>
     /// <returns> the mask  </returns>
     protected long Mask
@@ -101,7 +105,7 @@ public class VertexAttributes
 
                 foreach ( var t in _attributes )
                 {
-                    result |= ( uint ) t.usage;
+                    result |= ( uint ) t.Usage;
                 }
 
                 _mask = result;
@@ -156,7 +160,7 @@ public class VertexAttributes
 
         for ( var i = 0; i < len; i++ )
         {
-            if ( Get( i ).usage == usage )
+            if ( Get( i ).Usage == usage )
             {
                 return Get( i );
             }
@@ -196,11 +200,11 @@ public class VertexAttributes
         foreach ( var t in _attributes )
         {
             builder.Append( '(' );
-            builder.Append( t.alias );
+            builder.Append( t.Alias );
             builder.Append( ", " );
-            builder.Append( t.usage );
+            builder.Append( t.Usage );
             builder.Append( ", " );
-            builder.Append( t.numComponents );
+            builder.Append( t.NumComponents );
             builder.Append( ", " );
             builder.Append( t.Offset );
             builder.Append( ')' );
@@ -274,29 +278,29 @@ public class VertexAttributes
             var va0 = _attributes[ i ];
             var va1 = o._attributes[ i ];
 
-            if ( va0.usage != va1.usage )
+            if ( va0.Usage != va1.Usage )
             {
-                return va0.usage - va1.usage;
+                return va0.Usage - va1.Usage;
             }
 
-            if ( va0.unit != va1.unit )
+            if ( va0.Unit != va1.Unit )
             {
-                return va0.unit - va1.unit;
+                return va0.Unit - va1.Unit;
             }
 
-            if ( va0.numComponents != va1.numComponents )
+            if ( va0.NumComponents != va1.NumComponents )
             {
-                return va0.numComponents - va1.numComponents;
+                return va0.NumComponents - va1.NumComponents;
             }
 
-            if ( va0.normalized != va1.normalized )
+            if ( va0.Normalized != va1.Normalized )
             {
-                return va0.normalized ? 1 : -1;
+                return va0.Normalized ? 1 : -1;
             }
 
-            if ( va0.type != va1.type )
+            if ( va0.Type != va1.Type )
             {
-                return va0.type - va1.type;
+                return va0.Type - va1.Type;
             }
         }
 

@@ -41,9 +41,9 @@ public class SpriteBatch : IBatch
     public int     BlendDstFuncAlpha { get; private set; } = IGL.GL_ONE_MINUS_SRC_ALPHA;
     public Matrix4 ProjectionMatrix  { get; }              = new();
     public Matrix4 TransformMatrix   { get; }              = new();
-    public bool    IsDrawing         { get; set; }
+    public bool    IsDrawing         { get; set; }         = false;
 
-    protected Texture? LastTexture { get; set; }
+    protected Texture? LastTexture { get; set; } = null;
     protected float[]  Vertices    { get; set; }
     protected float    ColorPacked { get; set; } = Color.WhiteFloatBits;
     protected int      Idx         { get; set; } = 0;
@@ -58,7 +58,8 @@ public class SpriteBatch : IBatch
     private readonly Mesh           _mesh;
     private readonly bool           _ownsShader;
     private readonly ShaderProgram? _shader;
-    private          ShaderProgram? _customShader;
+
+    private ShaderProgram? _customShader = null;
 
     // ------------------------------------------------------------------------
 
@@ -90,6 +91,8 @@ public class SpriteBatch : IBatch
     /// </param>
     protected SpriteBatch( int size, ShaderProgram? defaultShader = null )
     {
+        Logger.CheckPoint();
+
         // 32767 is max vertex index, so 32767 / 4 vertices per sprite = 8191 sprites max.
         if ( size > MAX_SPRITES )
         {
@@ -98,9 +101,7 @@ public class SpriteBatch : IBatch
 
         IsDrawing = false;
 
-        var vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
-
-        _mesh = new Mesh( vertexDataType,
+        _mesh = new Mesh( Mesh.VertexDataType.VertexBufferObjectWithVAO,
                           false,
                           size * 4,
                           size * 6,
@@ -112,9 +113,13 @@ public class SpriteBatch : IBatch
                                                ShaderProgram.COLOR_ATTRIBUTE ),
                           new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES,
                                                2,
-                                               ShaderProgram.TEXCOORD_ATTRIBUTE + "0" ) );
+                                               $"{ShaderProgram.TEXCOORD_ATTRIBUTE}0" ) );
+
+        Logger.CheckPoint();
 
         ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
+
+        Logger.CheckPoint();
 
         Vertices = new float[ size * Sprite.SPRITE_SIZE ];
 
@@ -132,6 +137,8 @@ public class SpriteBatch : IBatch
             indices[ i + 5 ] = j;
         }
 
+        Logger.CheckPoint();
+
         _mesh.SetIndices( indices );
 
         if ( defaultShader == null )
@@ -143,6 +150,8 @@ public class SpriteBatch : IBatch
         {
             _shader = defaultShader;
         }
+
+        Logger.Debug( " - finished" );
     }
 
     // Number of render calls since the last call to Begin()

@@ -26,7 +26,7 @@
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
-/// A single vertex attribute defined by its <see cref="usage"/>, its number
+/// A single vertex attribute defined by its <see cref="Usage"/>, its number
 /// of components and its shader alias. The Usage is used for uniquely identifying
 /// the vertex attribute from among its <see cref="VertexAttributes"/> siblings.
 /// The number of components  defines how many components the attribute has. The
@@ -37,39 +37,39 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class VertexAttribute
 {
-    private readonly int _usageIndex;
-
     /// <summary>
     /// The alias for the attribute used in a <see cref="ShaderProgram"/>
     /// </summary>
-    public readonly string alias;
+    public readonly string Alias;
 
     /// <summary>
     /// For fixed types, whether the values are normalized to either
     /// -1f and +1f (signed) or 0f and +1f (unsigned)
     /// </summary>
-    public readonly bool normalized;
+    public readonly bool Normalized;
 
     /// <summary>
     /// the number of components this attribute has
     /// </summary>
-    public readonly int numComponents;
+    public readonly int NumComponents;
 
     /// <summary>
     /// the OpenGL type of each component, e.g. <see cref="IGL.GL_FLOAT"/>
     /// or <see cref="IGL.GL_UNSIGNED_BYTE"/>
     /// </summary>
-    public readonly int type;
+    public readonly int Type;
 
     /// <summary>
     /// optional unit/index specifier, used for texture coordinates and bone weights.
     /// </summary>
-    public readonly int unit;
+    public readonly int Unit;
 
     /// <summary>
-    /// The attribute <see cref="usage"/>, used for identification.
+    /// The attribute <see cref="Usage"/>, used for identification.
     /// </summary>
-    public readonly int usage;
+    public readonly int Usage;
+
+    private readonly int _usageIndex;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -79,8 +79,8 @@ public class VertexAttribute
     /// selected based on the usage.
     /// </summary>
     /// <param name="usage">
-    /// The attribute <see cref="usage"/>, used to select the <see cref="type"/>
-    /// and for identification.
+    /// The attribute <see cref="Usage"/>, used to select the <see cref="Type"/>
+    /// and for identification.a
     /// </param>
     /// <param name="numComponents">
     /// the number of components of this attribute, must be between 1 and 4.
@@ -96,8 +96,8 @@ public class VertexAttribute
     public VertexAttribute( int usage, int numComponents, string alias, int unit = 0 )
         : this( usage,
                 numComponents,
-                usage == VertexAttributes.Usage.COLOR_PACKED ? IGL.GL_UNSIGNED_BYTE : IGL.GL_FLOAT,
-                usage == VertexAttributes.Usage.COLOR_PACKED,
+                ( usage == VertexAttributes.Usage.COLOR_PACKED ? IGL.GL_UNSIGNED_BYTE : IGL.GL_FLOAT ),
+                ( usage == VertexAttributes.Usage.COLOR_PACKED ),
                 alias,
                 unit )
     {
@@ -107,7 +107,7 @@ public class VertexAttribute
     /// Constructs a new VertexAttribute.
     /// </summary>
     /// <param name="usage">
-    /// The attribute <see cref="usage"/>, used for identification.
+    /// The attribute <see cref="Usage"/>, used for identification.
     /// </param>
     /// <param name="numComponents">
     /// The number of components of this attribute, must be between 1 and 4.
@@ -136,12 +136,12 @@ public class VertexAttribute
                             string alias,
                             int unit = 0 )
     {
-        this.usage         = usage;
-        this.numComponents = numComponents;
-        this.type          = type;
-        this.normalized    = normalized;
-        this.alias         = alias;
-        this.unit          = unit;
+        this.Usage         = usage;
+        this.NumComponents = numComponents;
+        this.Type          = type;
+        this.Normalized    = normalized;
+        this.Alias         = alias;
+        this.Unit          = unit;
         _usageIndex        = int.TrailingZeroCount( usage );
     }
 
@@ -158,7 +158,7 @@ public class VertexAttribute
     /// </returns>
     public VertexAttribute Copy()
     {
-        return new VertexAttribute( usage, numComponents, type, normalized, alias, unit );
+        return new VertexAttribute( Usage, NumComponents, Type, Normalized, Alias, Unit );
     }
 
     public static VertexAttribute Position()
@@ -228,7 +228,7 @@ public class VertexAttribute
     /// </returns>
     public int GetKey()
     {
-        return ( _usageIndex << 8 ) + ( unit & 0xFF );
+        return ( _usageIndex << 8 ) + ( Unit & 0xFF );
     }
 
     /// <summary>
@@ -236,14 +236,14 @@ public class VertexAttribute
     /// <returns>How many bytes this attribute uses.</returns>
     public int GetSizeInBytes()
     {
-        return type switch
+        return Type switch
         {
-            IGL.GL_FLOAT          => 4 * numComponents,
-            IGL.GL_FIXED          => 4 * numComponents,
-            IGL.GL_UNSIGNED_SHORT => 2 * numComponents,
-            IGL.GL_SHORT          => 2 * numComponents,
-            IGL.GL_UNSIGNED_BYTE  => numComponents,
-            IGL.GL_BYTE           => numComponents,
+            IGL.GL_FLOAT          => 4 * NumComponents,
+            IGL.GL_FIXED          => 4 * NumComponents,
+            IGL.GL_UNSIGNED_SHORT => 2 * NumComponents,
+            IGL.GL_SHORT          => 2 * NumComponents,
+            IGL.GL_UNSIGNED_BYTE  => NumComponents,
+            IGL.GL_BYTE           => NumComponents,
             var _                 => 0
         };
     }
@@ -264,12 +264,12 @@ public class VertexAttribute
     public bool Equals( VertexAttribute? other )
     {
         return ( other != null )
-            && ( usage == other.usage )
-            && ( numComponents == other.numComponents )
-            && ( type == other.type )
-            && ( normalized == other.normalized )
-            && alias.Equals( other.alias )
-            && ( unit == other.unit );
+            && ( Usage == other.Usage )
+            && ( NumComponents == other.NumComponents )
+            && ( Type == other.Type )
+            && ( Normalized == other.Normalized )
+            && Alias.Equals( other.Alias )
+            && ( Unit == other.Unit );
     }
 
     /// <inheritdoc />
@@ -277,8 +277,8 @@ public class VertexAttribute
     {
         var result = GetKey();
 
-        result = ( 541 * result ) + numComponents;
-        result = ( 541 * result ) + ( alias.Length * unit );
+        result = ( 541 * result ) + NumComponents;
+        result = ( 541 * result ) + ( Alias.Length * Unit );
 
         return result;
     }

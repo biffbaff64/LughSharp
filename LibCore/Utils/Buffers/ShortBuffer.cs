@@ -32,8 +32,8 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class ShortBuffer : Buffer
 {
-    protected readonly short[]? Hb;
-    protected readonly int      Offset;
+    public    short[]? Hb     { get; set; }
+    protected int      Offset { get; set; }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -470,7 +470,7 @@ public abstract class ShortBuffer : Buffer
     /// Tells whether or not this buffer is backed by an accessible short
     /// array.
     /// <para>
-    /// If this method returns <tt>true</tt> then the <see cref="Array()"/>
+    /// If this method returns <tt>true</tt> then the <see cref="BackingArray"/>
     /// and <see cref="ArrayOffset()"/> methods may safely be invoked.
     /// </para>
     /// </summary>
@@ -501,7 +501,7 @@ public abstract class ShortBuffer : Buffer
     /// <exception cref="GdxRuntimeException">
     /// If this buffer is not backed by an accessible array
     /// </exception>
-    public short[] Array()
+    public new short[] BackingArray()
     {
         if ( Hb == null )
         {

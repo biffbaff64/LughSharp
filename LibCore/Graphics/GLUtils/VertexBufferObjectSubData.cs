@@ -204,7 +204,7 @@ public class VertexBufferObjectSubData : IVertexData
             for ( var i = 0; i < numAttributes; i++ )
             {
                 var attribute = Attributes.Get( i );
-                var location  = shader.GetAttributeLocation( attribute.alias );
+                var location  = shader.GetAttributeLocation( attribute.Alias );
 
                 if ( location < 0 )
                 {
@@ -214,9 +214,9 @@ public class VertexBufferObjectSubData : IVertexData
                 shader.EnableVertexAttribute( location );
 
                 shader.SetVertexAttribute( location,
-                                           attribute.numComponents,
-                                           attribute.type,
-                                           attribute.normalized,
+                                           attribute.NumComponents,
+                                           attribute.Type,
+                                           attribute.Normalized,
                                            Attributes.VertexSize,
                                            attribute.Offset );
             }
@@ -236,9 +236,9 @@ public class VertexBufferObjectSubData : IVertexData
                 shader.EnableVertexAttribute( location );
 
                 shader.SetVertexAttribute( location,
-                                           attribute.numComponents,
-                                           attribute.type,
-                                           attribute.normalized,
+                                           attribute.NumComponents,
+                                           attribute.Type,
+                                           attribute.Normalized,
                                            Attributes.VertexSize,
                                            attribute.Offset );
             }
@@ -262,7 +262,7 @@ public class VertexBufferObjectSubData : IVertexData
         {
             for ( var i = 0; i < numAttributes; i++ )
             {
-                shader.DisableVertexAttribute( Attributes.Get( i ).alias );
+                shader.DisableVertexAttribute( Attributes.Get( i ).Alias );
             }
         }
         else

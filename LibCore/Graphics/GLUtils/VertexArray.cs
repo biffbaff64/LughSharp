@@ -141,7 +141,7 @@ public class VertexArray : IVertexData
             for ( var i = 0; i < numAttributes; i++ )
             {
                 var attribute = Attributes.Get( i );
-                var location  = shader.GetAttributeLocation( attribute.alias );
+                var location  = shader.GetAttributeLocation( attribute.Alias );
 
                 if ( location < 0 )
                 {
@@ -150,14 +150,14 @@ public class VertexArray : IVertexData
 
                 shader.EnableVertexAttribute( location );
 
-                if ( attribute.type == IGL.GL_FLOAT )
+                if ( attribute.Type == IGL.GL_FLOAT )
                 {
                     _buffer.Position = attribute.Offset / 4;
 
                     shader.SetVertexAttribute( location,
-                                               attribute.numComponents,
-                                               attribute.type,
-                                               attribute.normalized,
+                                               attribute.NumComponents,
+                                               attribute.Type,
+                                               attribute.Normalized,
                                                Attributes.VertexSize,
                                                _buffer );
                 }
@@ -166,9 +166,9 @@ public class VertexArray : IVertexData
                     _byteBuffer.Position = attribute.Offset;
 
                     shader.SetVertexAttribute( location,
-                                               attribute.numComponents,
-                                               attribute.type,
-                                               attribute.normalized,
+                                               attribute.NumComponents,
+                                               attribute.Type,
+                                               attribute.Normalized,
                                                Attributes.VertexSize,
                                                _byteBuffer );
                 }
@@ -188,14 +188,14 @@ public class VertexArray : IVertexData
 
                 shader.EnableVertexAttribute( location );
 
-                if ( attribute.type == IGL.GL_FLOAT )
+                if ( attribute.Type == IGL.GL_FLOAT )
                 {
                     _buffer.Position = attribute.Offset / 4;
 
                     shader.SetVertexAttribute( location,
-                                               attribute.numComponents,
-                                               attribute.type,
-                                               attribute.normalized,
+                                               attribute.NumComponents,
+                                               attribute.Type,
+                                               attribute.Normalized,
                                                Attributes.VertexSize,
                                                _buffer );
                 }
@@ -204,9 +204,9 @@ public class VertexArray : IVertexData
                     _byteBuffer.Position = attribute.Offset;
 
                     shader.SetVertexAttribute( location,
-                                               attribute.numComponents,
-                                               attribute.type,
-                                               attribute.normalized,
+                                               attribute.NumComponents,
+                                               attribute.Type,
+                                               attribute.Normalized,
                                                Attributes.VertexSize,
                                                _byteBuffer );
                 }
@@ -227,7 +227,7 @@ public class VertexArray : IVertexData
         {
             for ( var i = 0; i < numAttributes; i++ )
             {
-                shader?.DisableVertexAttribute( Attributes.Get( i ).alias );
+                shader?.DisableVertexAttribute( Attributes.Get( i ).Alias );
             }
         }
         else

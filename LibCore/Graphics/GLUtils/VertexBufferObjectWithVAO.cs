@@ -258,7 +258,7 @@ public class VertexBufferObjectWithVAO : IVertexData
                 {
                     var attribute = Attributes.Get( i );
 
-                    var location = shader.GetAttributeLocation( attribute.alias );
+                    var location = shader.GetAttributeLocation( attribute.Alias );
 
                     stillValid = location == _cachedLocations[ i ];
                 }
@@ -287,7 +287,7 @@ public class VertexBufferObjectWithVAO : IVertexData
                 var attribute = Attributes.Get( i );
 
                 _cachedLocations.Add( locations == null
-                                          ? shader.GetAttributeLocation( attribute.alias )
+                                          ? shader.GetAttributeLocation( attribute.Alias )
                                           : locations[ i ] );
 
                 var location = _cachedLocations[ i ];
@@ -300,9 +300,9 @@ public class VertexBufferObjectWithVAO : IVertexData
                 shader.EnableVertexAttribute( location );
 
                 shader.SetVertexAttribute( location,
-                                           attribute.numComponents,
-                                           attribute.type,
-                                           attribute.normalized,
+                                           attribute.NumComponents,
+                                           attribute.Type,
+                                           attribute.Normalized,
                                            Attributes.VertexSize,
                                            attribute.Offset );
             }

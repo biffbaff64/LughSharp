@@ -89,8 +89,10 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class CharBuffer : Buffer
 {
-    protected readonly int     Offset;
-    protected readonly char[]? Hb; // Non-null only for heap buffers
+    public    char[]? Hb     { get; set; }
+    protected int     Offset { get; set; }
+
+    // ------------------------------------------------------------------------
 
     protected CharBuffer( int mark, int pos, int lim, int cap, char[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
@@ -800,10 +802,7 @@ public abstract class CharBuffer : Buffer
     /// </exception>
     public new char[] BackingArray()
     {
-        if ( Hb == null )
-        {
-            throw new GdxRuntimeException( "Backing Array is null!" );
-        }
+        Hb ??= new char[ Capacity ];
 
         if ( IsReadOnly )
         {

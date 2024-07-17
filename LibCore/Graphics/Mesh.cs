@@ -26,6 +26,7 @@
 
 using LughSharp.LibCore.Maths.Collision;
 using LughSharp.LibCore.Utils.Exceptions;
+using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
@@ -582,7 +583,7 @@ public class Mesh
 
                 unsafe
                 {
-                    fixed ( void* ptr = &buffer.BackingArray()[ 0 ] )
+                    fixed ( void* ptr = &( ( Buffer ) buffer ).BackingArray()[ 0 ] )
                     {
                         Gdx.GL.glDrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ptr );
                     }
@@ -665,7 +666,7 @@ public class Mesh
 
         for ( var i = 0; i < len; i++ )
         {
-            if ( attributes.Get( i ).usage == usage )
+            if ( attributes.Get( i ).Usage == usage )
             {
                 return attributes.Get( i );
             }
@@ -721,7 +722,7 @@ public class Mesh
         var vertexSize = _vertices.Attributes.VertexSize / 4;
         var idx        = offset;
 
-        switch ( posAttrib.numComponents )
+        switch ( posAttrib.NumComponents )
         {
             case 1:
             {
@@ -830,7 +831,7 @@ public class Mesh
         var vertexSize = _vertices.Attributes.VertexSize / 4;
         var end        = offset + count;
 
-        switch ( posAttrib.numComponents )
+        switch ( posAttrib.NumComponents )
         {
             case 1:
                 if ( numIndices > 0 )
@@ -976,7 +977,7 @@ public class Mesh
 
         float result = 0;
 
-        switch ( posAttrib.numComponents )
+        switch ( posAttrib.NumComponents )
         {
             case 1:
                 for ( var i = offset; i < end; i++ )
@@ -1170,7 +1171,7 @@ public class Mesh
     {
         var posAttr       = GetVertexAttribute( VertexAttributes.Usage.POSITION );
         var offset        = posAttr!.Offset / 4;
-        var numComponents = posAttr.numComponents;
+        var numComponents = posAttr.NumComponents;
         var numVertices   = NumVertices;
         var vertexSize    = VertexSize / 4;
         var vertices      = new float[ numVertices * vertexSize ];
@@ -1232,7 +1233,7 @@ public class Mesh
 
         var posOffset     = posAttr!.Offset / 4;
         var stride        = VertexSize / 4;
-        var numComponents = posAttr.numComponents;
+        var numComponents = posAttr.NumComponents;
         var vertices      = new float[ count * stride ];
 
         GetVertices( start * stride, count * stride, vertices );
@@ -1437,7 +1438,7 @@ public class Mesh
             {
                 if ( GetVertexAttribute( t ) != null )
                 {
-                    size += GetVertexAttribute( t )!.numComponents;
+                    size += GetVertexAttribute( t )!.NumComponents;
                     asCount++;
                 }
             }
@@ -1460,13 +1461,13 @@ public class Mesh
                         continue;
                     }
 
-                    for ( var j = 0; j < a.numComponents; j++ )
+                    for ( var j = 0; j < a.NumComponents; j++ )
                     {
                         checks[ ++idx ] = ( short ) ( a.Offset + j );
                     }
 
                     attrs[ ++ai ] =  a.Copy();
-                    newVertexSize += a.numComponents;
+                    newVertexSize += a.NumComponents;
                 }
             }
         }
@@ -1676,8 +1677,8 @@ public class Mesh
     /// </param>
     public Mesh( bool isStatic, int maxVertices, int maxIndices, params VertexAttribute[] attributes )
     {
-        _vertices      = MakeVertexBuffer( isStatic, maxVertices, new VertexAttributes( attributes ) );
-        _indices       = new IndexBufferObject( isStatic, maxIndices );
+        _vertices = MakeVertexBuffer( isStatic, maxVertices, new VertexAttributes( attributes ) );
+        _indices = new IndexBufferObject( isStatic, maxIndices );
         _isVertexArray = false;
 
         AddManagedMesh( Gdx.App, this );

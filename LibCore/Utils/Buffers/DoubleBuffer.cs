@@ -31,8 +31,8 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
 {
-    protected readonly double[]? Hb;
-    protected readonly int       Offset;
+    public    double[]? Hb     { get; set; }
+    protected int       Offset { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -87,7 +87,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     /// <para>
     /// The new buffer's position will be zero, its limit will be its capacity,
     /// its mark will be undefined, and each of its elements will be initialized
-    /// to zero. It will have a backing <see cref="Array"/>, and its <see cref="ArrayOffset"/>
+    /// to zero. It will have a backing <see cref="BackingArray"/>, and its <see cref="ArrayOffset"/>
     /// will be zero.
     /// </para>
     /// </summary>
@@ -111,7 +111,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     /// to the buffer will cause the array to be modified and vice versa. =The new buffer's
     /// capacity will be <tt>array.length</tt>, its position will be <tt>offset</tt>, its limit
     /// will be <tt>offset + length</tt>, and its mark will be undefined. Its
-    /// <see cref="Array"/> will be the given array, and its <see cref="ArrayOffset"/> will be zero.
+    /// <see cref="BackingArray"/> will be the given array, and its <see cref="ArrayOffset"/> will be zero.
     /// </para>
     /// </summary>
     /// <param name="array"> The array that will back the new buffer. </param>
@@ -150,7 +150,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     /// that is, modifications to the buffer will cause the array to be modified
     /// and vice versa.  The new buffer's capacity and limit will be
     /// <tt>array.length</tt>, its position will be zero, and its mark will be
-    /// undefined.  Its <see cref="Array"/> backing array will be the
+    /// undefined.  Its <see cref="BackingArray"/> backing array will be the
     /// given array, and its <see cref="ArrayOffset"/> will
     /// be zero.
     /// </para>
@@ -480,7 +480,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     /// Tells whether or not this buffer is backed by an accessible double
     /// array.
     /// <para>
-    /// If this method returns <tt>true</tt> then the <see cref="Array()"/>
+    /// If this method returns <tt>true</tt> then the <see cref="BackingArray"/>
     /// and <see cref="ArrayOffset()"/> methods may safely be invoked.
     /// </para>
     /// </summary>
@@ -504,12 +504,9 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     /// </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
-    public double[] Array()
+    public new double[] BackingArray()
     {
-        if ( Hb == null )
-        {
-            throw new GdxRuntimeException( "Unsupported Operation!" );
-        }
+        Hb ??= new double[ Capacity ];
 
         if ( IsReadOnly )
         {

@@ -31,8 +31,8 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class IntBuffer : Buffer
 {
-    protected readonly int[]? Hb;
-    protected readonly int    Offset;
+    public    int[]? Hb     { get; set; }
+    protected int    Offset { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -452,11 +452,8 @@ public abstract class IntBuffer : Buffer
     /// <returns> The array that backs this buffer </returns>
     public new int[] BackingArray()
     {
-        if ( Hb == null )
-        {
-            throw new GdxRuntimeException( "Backing array is null!" );
-        }
-
+        Hb ??= new int[ Capacity ];
+        
         if ( IsReadOnly )
         {
             throw new GdxRuntimeException( "Readonly Buffer!" );
@@ -608,8 +605,8 @@ public abstract class IntBuffer : Buffer
     {
         const int PRIME = 31;
 
-        var result = PRIME + NumberUtils.FloatToIntBits( Offset );
-        result = ( PRIME * result ) + NumberUtils.FloatToIntBits( Offset );
+        var result = PRIME + NumberUtils.FloatToIntBits( 64.0f );
+        result = ( PRIME * result ) + NumberUtils.FloatToIntBits( 128.0f );
 
         return result;
     }

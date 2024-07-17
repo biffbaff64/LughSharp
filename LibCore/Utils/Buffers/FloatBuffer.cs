@@ -78,7 +78,7 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class FloatBuffer : Buffer
 {
-    protected float[]? Hb     { get; set; }
+    public    float[]? Hb     { get; set; }
     protected int      Offset { get; set; }
 
     // ------------------------------------------------------------------------
@@ -580,10 +580,7 @@ public abstract class FloatBuffer : Buffer
     /// </exception>
     public new float[] BackingArray()
     {
-        if ( Hb == null )
-        {
-            throw new GdxRuntimeException( "Backing array os null." );
-        }
+        Hb ??= new float[ Capacity ];
 
         if ( IsReadOnly )
         {
@@ -677,7 +674,7 @@ public abstract class FloatBuffer : Buffer
     public override int GetHashCode()
     {
         var h = 31 + ( int ) Get( 0 );
-        
+
         h = ( 31 * h ) + ( int ) Get( 1 );
         h = ( 31 * h ) + ( int ) Get( 2 );
         h = ( 31 * h ) + ( int ) Get( 3 );

@@ -216,7 +216,6 @@ public abstract class Buffer
 
     /// <summary>
     /// Used only by DirectBuffers
-    /// TODO: Would this be better moved elsewhere?
     /// </summary>
     public virtual long Address { get; set; }
 
@@ -439,11 +438,10 @@ public abstract class Buffer
     /// </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
-    public abstract object[] BackingArray();
-
-    // or...
-
-    public abstract T[] BackingArray< T >();
+    public virtual object[] BackingArray()
+    {
+        throw new NotImplementedException();
+    }
     
     /// <summary>
     /// Returns the offset within this buffer's backing array of the first
