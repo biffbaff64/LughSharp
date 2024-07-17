@@ -34,16 +34,19 @@ public class HeapByteBuffer : ByteBuffer
     public HeapByteBuffer( int cap, int lim )
         : base( -1, 0, lim, cap, new byte[ cap ] )
     {
+        Logger.CheckPoint();
     }
 
     public HeapByteBuffer( byte[]? buf, int off, int len )
         : base( -1, off, off + len, buf!.Length, buf )
     {
+        Logger.CheckPoint();
     }
 
     protected HeapByteBuffer( byte[]? buf, int mark, int pos, int lim, int cap, int off )
         : base( mark, pos, lim, cap, buf, off )
     {
+        Logger.CheckPoint();
     }
 
     // ------------------------------------------------------------------------

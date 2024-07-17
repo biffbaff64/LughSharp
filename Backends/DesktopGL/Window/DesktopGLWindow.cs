@@ -267,6 +267,8 @@ public class DesktopGLWindow : IDisposable
     /// </param>
     private void SetIcon( GLFW.Window window, Pixmap[] images )
     {
+        Logger.CheckPoint();
+        
         if ( Platform.IsMac )
         {
             return;
@@ -278,27 +280,23 @@ public class DesktopGLWindow : IDisposable
 
         for ( var i = 0; i < images.Length; i++ )
         {
-            var pixmap = images[ i ];
-
-            if ( pixmap.GetFormat() != Pixmap.Format.RGBA8888 )
+            if ( images[ i ].GetFormat() != Pixmap.Format.RGBA8888 )
             {
-                var rgba = new Pixmap( pixmap.Width, pixmap.Height, Pixmap.Format.RGBA8888 );
+                var rgba = new Pixmap( images[ i ].Width, images[ i ].Height, Pixmap.Format.RGBA8888 );
 
                 rgba.Blending = Pixmap.BlendTypes.None;
-                rgba.DrawPixmap( pixmap, 0, 0 );
+                rgba.DrawPixmap( images[ i ], 0, 0 );
 
                 tmpPixmaps[ i ] = rgba;
-                pixmap          = rgba;
             }
 
             GLFW.Image icon = new()
             {
-                Width  = pixmap.Width,
-                Height = pixmap.Height,
-                Pixels = pixmap.Pixels.BackingArray()
+                Width  = images[ i ].Width,
+                Height = images[ i ].Height,
+                Pixels = images[ i ].Pixels.BackingArray()
             };
-
-
+            
             buffer.Add( icon );
         }
 

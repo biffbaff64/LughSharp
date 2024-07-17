@@ -32,16 +32,19 @@ public class HeapIntBuffer : IntBuffer
     public HeapIntBuffer( int cap, int lim )
         : base( -1, 0, lim, cap, new int[ cap ] )
     {
+        Logger.CheckPoint();
     }
 
     public HeapIntBuffer( int[] cap, int offset, int length )
         : base( -1, offset, offset + length, cap.Length, cap )
     {
+        Logger.CheckPoint();
     }
 
     public HeapIntBuffer( int[]? buf, int mark, int pos, int lim, int cap, int off )
         : base( mark, pos, lim, cap, buf, off )
     {
+        Logger.CheckPoint();
     }
 
     public override bool IsReadOnly => false;

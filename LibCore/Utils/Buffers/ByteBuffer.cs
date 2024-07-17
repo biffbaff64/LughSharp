@@ -30,93 +30,80 @@ namespace LughSharp.LibCore.Utils.Buffers;
 
 /// <summary>
 /// A byte buffer.
-/// <br></br>
-/// <para>
 /// This class defines six categories of operations upon byte buffers:
 /// <li>
 /// Absolute and relative <see cref="Get()"/> and <see cref="Put(byte)"/> methods
 /// that read and write single bytes.
 /// </li>
 /// <li>
-/// Relative <see cref="Get(byte[])"/> methods that transfer contiguous sequences
-/// of bytes from this buffer into an array.
+/// Relative <see cref="Get(byte[])"/> methods that transfer contiguous sequences of bytes
+/// from this buffer into an array.
 /// </li>
 /// <li>
-/// Relative <see cref="Put(byte[])"/> methods that transfer contiguous sequences
-/// of bytes from a byte array or some other byte buffer into this buffer.
+/// Relative <see cref="Put(byte[])"/> methods that transfer contiguous sequences  of bytes
+/// from a byte array or some other byte buffer into this buffer.
 /// </li>
 /// <li>
-/// Absolute and relative <see cref="GetChar()"/> and <see cref="PutChar(char)"/>
-/// methods that read and write values of other primitive types, translating them
-/// to and from sequences of bytes in a particular byte order.
+/// Absolute and relative <see cref="GetChar()"/> and <see cref="PutChar(char)"/> methods that
+/// read and write values of other primitive types, translating them to and from sequences of
+/// bytes in a particular byte order.
 /// </li>
 /// <li>
-/// Methods for creating view buffers, which allow a byte buffer to be viewed
-/// as a buffer containing values of some other primitive type.
+/// Methods for creating view buffers, which allow a byte buffer to be viewed as a buffer containing
+/// values of some other primitive type.
 /// </li>
 /// <li>
-/// Methods for <see cref="Compact"/>ing, <see cref="Duplicate"/>ing, and
-/// <see cref="Slice"/>ing a byte buffer.
+/// Methods for <see cref="Compact"/>ing, <see cref="Duplicate"/>ing, and <see cref="Slice"/>ing a
+/// byte buffer.
 /// </li>
-/// </para>
-/// <br></br>
 /// <para>
-/// Byte buffers can be created either by <see cref="Allocate"/>, which allocates
-/// space for the buffers content, or by <see cref="Wrap(byte[])"/> an existing
-/// byte array into a buffer.
+/// Byte buffers can be created either by <see cref="Allocate"/>, which allocates space for the
+/// buffers content, or by <see cref="Wrap(byte[])"/> an existing byte array into a buffer.
 /// </para>
-/// <br></br>
-/// <h2> Access to binary data </h2>
+/// <b> Access to binary data </b>
 /// <para>
-/// This class defines methods for reading and writing values of all other primitive
-/// types, except <tt>bool</tt>. Primitive values are translated to (or from) sequences
-/// of bytes according to the buffer's current byte order, which may be retrieved and
-/// modified via the <see cref="Order()"/> methods. Specific byte orders are represented
-/// by instances of the <see cref="ByteOrder"/> class. The initial order of a byte buffer
-/// is always <see cref="ByteOrder.BigEndian"/>.
+/// This class defines methods for reading and writing values of all other primitive types, except
+/// <c>bool</c>. Primitive values are translated to (or from) sequences of bytes according to the
+/// buffer's current byte order, which may be retrieved and modified via the <see cref="Order()"/>
+/// methods. Specific byte orders are represented by instances of the <see cref="ByteOrder"/> class.
+/// The initial order of a byte buffer is always <see cref="ByteOrder.BigEndian"/>.
 /// </para>
-/// <br></br>
 /// <para>
-/// For access to heterogeneous binary data, that is, sequences of values of different types,
-/// this class defines a family of absolute and relative <i>Get</i> and <i>Put</i> methods
-/// for each type. For 32-bit floating-point values, for example, this class defines:
+/// For access to heterogeneous binary data, that is, sequences of values of different types, this
+/// class defines a family of absolute and relative <i>Get</i> and <i>Put</i> methods for each type.
+/// For 32-bit floating-point values, for example, this class defines:
+/// </para>
 /// <code>
-///         float GetFloat()
-///         float GetFloat(int)
-///         void PutFloat(float)
-///         void PutFloat(int,float)
-///     </code>
-/// </para>
+///     float GetFloat()
+///     float GetFloat(int)
+///     void PutFloat(float)
+///     void PutFloat(int,float)
+/// </code>
 /// <para>
-/// Corresponding methods are defined for the types <tt>char</tt>, <tt>short</tt>,
-/// <tt>int</tt>, <tt>long</tt>, and <tt>double</tt>. The index parameters of the
-/// absolute <i>Get</i> and <i>Put</i> methods are in terms of bytes rather than of
-/// the type being read or written.
+/// Corresponding methods are defined for the types <c>char</c>, <c>short</c>, <c>int</c>, <c>long</c>,
+/// and <c>double</c>. The index parameters of the absolute <i>Get</i> and <i>Put</i> methods are in
+/// terms of bytes rather than of the type being read or written.
 /// </para>
-/// <br></br>
-/// <h2> View Buffers. </h2>
+/// <b> View Buffers. </b>
 /// <para>
-/// For access to homogeneous binary data, that is, sequences of values of the same type,
-/// this class defines methods that can create <i>views</i> of a given byte buffer. A
-/// <i>view buffer</i> is simply another buffer whose content is backed by the byte buffer.
-/// Changes to the byte buffer's content will be visible in the view buffer, and vice versa;
-/// the two buffers' position, limit, and mark values are independent.
-/// <br></br>
+/// For access to homogeneous binary data, that is, sequences of values of the same type, this class
+/// defines methods that can create <i>views</i> of a given byte buffer. A <i>view buffer</i> is simply
+/// another buffer whose content is backed by the byte buffer. Changes to the byte buffer's content
+/// will be visible in the view buffer, and vice versa; the two buffers' position, limit, and mark
+/// values are independent.
+/// </para>
 /// <para>
 /// The <see cref="AsFloatBuffer()"/> method, for example, creates an instance of the
 /// <see cref="FloatBuffer"/> class that is backed by the byte buffer upon which the
 /// method is invoked.
 /// </para>
 /// <para>
-/// Corresponding view-creation methods are defined for the types <tt>char</tt>,
-/// <tt>short</tt>, <tt>int</tt>, <tt>long</tt>, and <tt>double</tt>.
+/// Corresponding view-creation methods are defined for the types <c>char</c>,
+/// <c>short</c>, <c>int</c>, <c>long</c>, and <c>double</c>.
 /// </para>
-/// </para>
-/// <br></br>
 /// <para>
 /// View buffers have some3 important advantages over the families of type-specific <i>Get</i>
 /// and <i>Put</i> methods described above:
-/// <br></br>
 /// <li>
 /// A view buffer is indexed not in terms of bytes but rather in terms of the type-specific
 /// size of its values.
@@ -131,13 +118,14 @@ namespace LughSharp.LibCore.Utils.Buffers;
 /// The byte order of a view buffer is fixed to be that of its byte buffer at the time that
 /// the view is created.
 /// </para>
-/// <h2> Invocation chaining </h2>
+/// <b> Invocation chaining </b>
 /// <para>
 /// Methods in this class that do not otherwise have a value to return are specified to return
 /// the buffer upon which they are invoked. This allows method invocations to be chained.
-/// <br></br>
+/// </para>
 /// <para>
 /// The sequence of statements:-
+/// </para>
 /// <code>
 ///         bb.PutInt(0xCAFEBABE);
 ///         bb.PutShort(3);
@@ -145,10 +133,8 @@ namespace LughSharp.LibCore.Utils.Buffers;
 ///     </code>
 /// can, for example, be replaced by the single statement
 /// <code>
-///         bb.PutInt(0xCAFEBABE).PutShort(3).PutShort(45);
-///     </code>
-/// </para>
-/// </para>
+///     bb.PutInt(0xCAFEBABE).PutShort(3).PutShort(45);
+/// </code>
 /// </summary>
 [PublicAPI]
 public abstract class ByteBuffer : Buffer
@@ -166,6 +152,8 @@ public abstract class ByteBuffer : Buffer
     protected ByteBuffer( int mark, int pos, int lim, int cap, byte[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
+        Logger.CheckPoint();
+
         Hb     = hb;
         Offset = offset;
     }
@@ -178,13 +166,15 @@ public abstract class ByteBuffer : Buffer
     /// It will have a backing array and its <see cref="ArrayOffset"/> will be zero.
     /// </para>
     /// </summary>
-    /// <param name="capacity">The new buffer's capacity, in bytes</param>
+    /// <param name="capacity"> The new buffer's capacity, in bytes </param>
     /// <returns> The new byte buffer </returns>
     /// <exception cref="ArgumentException">
-    /// If the <tt>capacity</tt> is a negative integer
+    /// If the <c>capacity</c> is a negative integer
     /// </exception>
     public static ByteBuffer Allocate( int capacity )
     {
+        Logger.CheckPoint();
+
         if ( capacity < 0 )
         {
             throw new ArgumentException( $"capacity should not be less than zero! : {capacity}" );
@@ -198,24 +188,24 @@ public abstract class ByteBuffer : Buffer
     /// <para>
     /// The new buffer will be backed by the given byte array; that is, modifications
     /// to the buffer will cause the array to be modified and vice versa. The new buffer's
-    /// capacity will be <tt>array.length</tt>, its position will be <tt>offset</tt>, its
-    /// limit will be <tt>offset + length</tt>, and its mark will be undefined. Its
+    /// capacity will be <c>array.length</c>, its position will be <c>offset</c>, its
+    /// limit will be <c>offset + length</c>, and its mark will be undefined. Its
     /// backing array will be the given array, and its <see cref="ArrayOffset"/> will be zero.
     /// </para>
     /// </summary>
-    /// <param name="array">The array that will back the new buffer</param>
+    /// <param name="array"> The array that will back the new buffer </param>
     /// <param name="offset">
     /// The offset of the subarray to be used; must be non-negative and no larger
-    /// than <tt>array.length</tt>. The new buffer's position will be set to this value.
+    /// than <c>array.length</c>. The new buffer's position will be set to this value.
     /// </param>
     /// <param name="length">
     /// The length of the subarray to be used; must be non-negative and no larger
-    /// than <tt>array.length - offset</tt>. The new buffer's limit will be set to
-    /// <tt>offset + length</tt>.
+    /// than <c>array.length - offset</c>. The new buffer's limit will be set to
+    /// <c>offset + length</c>.
     /// </param>
     /// <returns> The new byte buffer </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If the preconditions on the <tt>offset</tt> and <tt>length</tt> parameters do not hold
+    /// If the preconditions on the <c>offset</c> and <c>length</c> parameters do not hold
     /// </exception>
     public static ByteBuffer Wrap( byte[] array, int offset, int length )
     {
@@ -234,12 +224,12 @@ public abstract class ByteBuffer : Buffer
     /// <para>
     /// The new buffer will be backed by the given byte array; that is, modifications
     /// to the buffer will cause the array to be modified and vice versa. The new buffer's
-    /// capacity will be <tt>array.length</tt>, its position will be <tt>offset</tt>, its
-    /// limit will be <tt>offset + length</tt>, and its mark will be undefined. Its
+    /// capacity will be <c>array.length</c>, its position will be <c>offset</c>, its
+    /// limit will be <c>offset + length</c>, and its mark will be undefined. Its
     /// backing array will be the given array, and its <see cref="ArrayOffset"/> will be zero.
     /// </para>
     /// </summary>
-    /// <param name="array">The array that will back the new buffer</param>
+    /// <param name="array"> The array that will back the new buffer </param>
     /// <returns> The new byte buffer </returns>
     public static ByteBuffer Wrap( byte[] array )
     {
@@ -253,16 +243,16 @@ public abstract class ByteBuffer : Buffer
     /// <para>
     /// This method transfers bytes from this buffer into the given destination
     /// array. If there are fewer bytes remaining in the buffer than are required
-    /// to satisfy the request, that is, if <tt>length &gt; remaining()</tt>, then no
+    /// to satisfy the request, that is, if <c>length &gt; remaining()</c>, then no
     /// bytes are transferred and a <see cref="GdxRuntimeException"/> is thrown.
     /// </para>
     /// <para>
-    /// Otherwise, this method copies <tt>length</tt> bytes from this buffer into the
+    /// Otherwise, this method copies <c>length</c> bytes from this buffer into the
     /// given array, starting at the current position of this buffer and at the given
-    /// offset in the array. The position of this buffer is then incremented by <tt>length</tt>.
+    /// offset in the array. The position of this buffer is then incremented by <c>length</c>.
     /// </para>
     /// <para>
-    /// In other words, an invocation of this method of the form <tt>src.get(dst, off, len)</tt>
+    /// In other words, an invocation of this method of the form <c>src.get(dst, off, len)</c>
     /// has exactly the same effect as the loop
     /// <code>
     ///             for ( int i = off; i &lt; off + len; i++ )
@@ -277,18 +267,18 @@ public abstract class ByteBuffer : Buffer
     /// <param name="dst"> The array into which bytes are to be written </param>
     /// <param name="offset">
     /// The offset within the array of the first byte to be written; must be
-    /// non-negative and no larger than <tt>dst.length</tt>
+    /// non-negative and no larger than <c>dst.length</c>
     /// </param>
     /// <param name="length">
     /// The maximum number of bytes to be written to the given array; must be
-    /// non-negative and no larger than <tt>dst.length - offset</tt>
+    /// non-negative and no larger than <c>dst.length - offset</c>
     /// </param>
     /// <returns> This buffer </returns>
     /// <exception cref="GdxRuntimeException">
-    /// If there are fewer than <tt>length</tt> bytes remaining in this buffer
+    /// If there are fewer than <c>length</c> bytes remaining in this buffer
     /// </exception>
     /// <exception cref="IndexOutOfRangeException">
-    /// If the preconditions on the <tt>offset</tt> and <tt>length</tt> parameters do not hold.
+    /// If the preconditions on the <c>offset</c> and <c>length</c> parameters do not hold.
     /// </exception>
     public virtual ByteBuffer Get( byte[] dst, int offset, int length )
     {
@@ -320,7 +310,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="dst">The destination array.</param>
     /// <returns>This buffer.</returns>
     /// <exception cref="GdxRuntimeException">
-    /// If there are fewer than <tt> dst.Length </tt> bytes remaining in this buffer.
+    /// If there are fewer than <c> dst.Length </c> bytes remaining in this buffer.
     /// </exception>
     public ByteBuffer Get( byte[] dst )
     {
@@ -434,12 +424,12 @@ public abstract class ByteBuffer : Buffer
     /// <summary>
     /// Tells whether or not this buffer is backed by an accessible byte array.
     /// <para>
-    /// If this method returns <tt>true</tt> then the <see cref="Array()"/> and
+    /// If this method returns <c>true</c> then the <see cref="Array()"/> and
     /// <see cref="ArrayOffset()"/> methods may safely be invoked.
     /// </para>
     /// </summary>
     /// <returns>
-    /// <tt>true</tt> if, and only if, this buffer is backed by an array and is not read-only
+    /// <c>true</c> if, and only if, this buffer is backed by an array and is not read-only
     /// </returns>
     public override bool HasBackingArray()
     {
@@ -479,7 +469,7 @@ public abstract class ByteBuffer : Buffer
     /// element of the buffer  <i>(optional operation)</i>.
     /// <para>
     /// If this buffer is backed by an array then buffer position <i>p</i>
-    /// corresponds to array index <i>p</i> + <tt>arrayOffset()</tt>.
+    /// corresponds to array index <i>p</i> + <c>arrayOffset()</c>.
     /// </para>
     /// <para>
     /// Invoke the <see cref="HasBackingArray"/> method before invoking this
@@ -514,21 +504,21 @@ public abstract class ByteBuffer : Buffer
     /// <para>
     /// The bytes between the buffer's current position and its limit, if any,
     /// are copied to the beginning of the buffer. That is, the byte at index
-    /// <tt>p = Position()</tt> is copied to index zero, the byte at index
-    /// <tt>p + 1</tt> is copied to index one, and so forth until the byte at
-    /// index <tt>limit() - 1</tt> is copied to index <tt>n = Limit() - 1 - p</tt>.
+    /// <c>p = Position()</c> is copied to index zero, the byte at index
+    /// <c>p + 1</c> is copied to index one, and so forth until the byte at
+    /// index <c>limit() - 1</c> is copied to index <c>n = Limit() - 1 - p</c>.
     /// The buffer's position is then set to <i>n+1</i> and its limit is set to
     /// its capacity. The mark, if defined, is discarded.
     /// </para>
     /// <para>
     /// The buffer's position is set to the number of bytes copied, rather than
     /// to zero, so that an invocation of this method can be followed immediately
-    /// by an invocation of another relative <tt>put</tt> method.
+    /// by an invocation of another relative <c>put</c> method.
     /// </para>
     /// <para>
     /// Invoke this method after writing data from a buffer in case the write was
     /// incomplete. The following loop, for example, copies bytes from one channel
-    /// to another via the buffer <tt>buf</tt>:
+    /// to another via the buffer <c>buf</c>:
     /// <code>
     ///   buf.clear();          // Prepare buffer for use
     ///   while( in.read(buf) >= 0 || buf.position != 0 )
@@ -559,8 +549,8 @@ public abstract class ByteBuffer : Buffer
     /// Returns the current hash code of this buffer.
     /// <para>
     /// The hash code of a byte buffer depends only upon its remaining elements;
-    /// that is, upon the elements from <tt>position()</tt> up to, and including,
-    /// the element at <tt>limit()</tt> - <tt>1</tt>.
+    /// that is, upon the elements from <c>position()</c> up to, and including,
+    /// the element at <c>limit()</c> - <c>1</c>.
     /// </para>
     /// <para>
     /// Because buffer hash codes are content-dependent, it is inadvisable to use
@@ -597,7 +587,7 @@ public abstract class ByteBuffer : Buffer
     /// </summary>
     /// <param name="ob"> The object to which this buffer is to be compared </param>
     /// <returns>
-    /// <tt>true</tt> if, and only if, this buffer is equal to the given object
+    /// <c>true</c> if, and only if, this buffer is equal to the given object
     /// </returns>
     public override bool Equals( object? ob )
     {
@@ -776,7 +766,7 @@ public abstract class ByteBuffer : Buffer
     // -- Singleton get/put methods --
 
     /// <summary>
-    /// Relative <tt>get</tt> method.  Reads the byte at this buffer's
+    /// Relative <c>get</c> method.  Reads the byte at this buffer's
     /// current position, and then increments the position.
     /// </summary>
     /// <returns> The byte at the buffer's current position </returns>
@@ -806,7 +796,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="index">"> The index from which the byte will be read </param>
     /// <returns> The byte at the given index </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit
+    /// If <c>index</c> is negative or not smaller than the buffer's limit
     /// </exception>
     public abstract byte Get( int index );
 
@@ -820,7 +810,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="b"> The byte value to be written </param>
     /// <returns> This buffer </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit
+    /// If <c>index</c> is negative or not smaller than the buffer's limit
     /// </exception>
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public abstract ByteBuffer Put( int index, byte b );
@@ -870,7 +860,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="index"> The index from which the bytes will be read </param>
     /// <returns> The char value at the given index </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus one
+    /// If <c>index</c> is negative or not smaller than the buffer's limit, minus one
     /// </exception>
     public abstract char GetChar( int index );
 
@@ -885,7 +875,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="value"> The char value to be written </param>
     /// <returns> This buffer </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus one
+    /// If <c>index</c> is negative or not smaller than the buffer's limit, minus one
     /// </exception>
     /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
     public abstract ByteBuffer PutChar( int index, char value );
@@ -947,7 +937,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="index"> The index from which the bytes will be read </param>
     /// <returns> The short value at the given index </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus one
+    /// If <c>index</c> is negative or not smaller than the buffer's limit, minus one
     /// </exception>
     public abstract short GetShort( int index );
 
@@ -962,7 +952,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="value"> The short value to be written </param>
     /// <returns> This buffer </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus one
+    /// If <c>index</c> is negative or not smaller than the buffer's limit, minus one
     /// </exception>
     /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
     public abstract ByteBuffer PutShort( int index, short value );
@@ -1027,7 +1017,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="index"> The index from which the bytes will be read </param>
     /// <returns> The int value at the given index </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus three
+    /// If <c>index</c> is negative or not smaller than the buffer's limit, minus three
     /// </exception>
     public abstract int GetInt( int index );
 
@@ -1042,7 +1032,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="value"> The int value to be written </param>
     /// <returns> This buffer </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus three
+    /// If <c>index</c> is negative or not smaller than the buffer's limit, minus three
     /// </exception>
     /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
     public abstract ByteBuffer PutInt( int index, int value );
@@ -1105,7 +1095,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="index"> The index from which the bytes will be read </param>
     /// <returns> The long value at the given index </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus seven
+    /// If <c>index</c> is negative or not smaller than the buffer's limit, minus seven
     /// </exception>
     public abstract long GetLong( int index );
 
@@ -1121,7 +1111,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="value"> The long value to be written </param>
     /// <returns> This buffer </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus seven
+    /// If <c>index</c> is negative or not smaller than the buffer's limit, minus seven
     /// </exception>
     /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
     public abstract ByteBuffer PutLong( int index, long value );
@@ -1184,7 +1174,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="index">"> The index from which the bytes will be read </param>
     /// <returns> The float value at the given index </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus three
+    /// If <c>index</c> is negative or not smaller than the buffer's limit, minus three
     /// </exception>
     public abstract float GetFloat( int index );
 
@@ -1199,7 +1189,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="value">"> The float value to be written </param>
     /// <returns> This buffer </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus three
+    /// If <c>index</c> is negative or not smaller than the buffer's limit, minus three
     /// </exception>
     /// <exception cref="ReadOnlyBufferException"> If this buffer is read-only </exception>
     public abstract ByteBuffer PutFloat( int index, float value );
@@ -1246,7 +1236,7 @@ public abstract class ByteBuffer : Buffer
     public abstract double GetDouble( int index );
 
     /// <summary>
-    /// Absolute <tt>get</tt> method for reading a double value.
+    /// Absolute <c>get</c> method for reading a double value.
     /// Writes eight bytes containing the given double value, in the current byte
     /// order, into this buffer at the current position, and then increments the
     /// position by eight.
@@ -1260,7 +1250,7 @@ public abstract class ByteBuffer : Buffer
     public abstract ByteBuffer PutDouble( double value );
 
     /// <summary>
-    /// Absolute <tt>put</tt> method for writing a double value <tt>(optional operation)</tt>.
+    /// Absolute <c>put</c> method for writing a double value <c>(optional operation)</c>.
     /// <para>
     /// Writes eight bytes containing the given double value, in the current byte order,
     /// into this buffer at the given index.
@@ -1270,7 +1260,7 @@ public abstract class ByteBuffer : Buffer
     /// <param name="value">"> The double value to be written </param>
     /// <returns> This buffer </returns>
     /// <exception cref="IndexOutOfRangeException">
-    /// If <tt>index</tt> is negative or not smaller than the buffer's limit, minus 7
+    /// If <c>index</c> is negative or not smaller than the buffer's limit, minus 7
     /// </exception>
     /// <exception cref="GdxRuntimeException">
     /// if this buffer is read-only

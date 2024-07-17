@@ -31,6 +31,7 @@ public class ByteBufferAsIntBufferL : IntBuffer
     public ByteBufferAsIntBufferL( ByteBuffer bb, int mark, int pos, int lim, int cap, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
+        Logger.CheckPoint();
     }
 
     /// <inheritdoc />

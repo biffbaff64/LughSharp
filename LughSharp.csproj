@@ -88,7 +88,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DotGLFW" Version="1.1.0" />
+        <PackageReference Include="DotGLFW" Version="1.2.0" />
         <PackageReference Include="JetBrains.Annotations" Version="2024.2.0-eap1" />
         <PackageReference Include="RestSharp" Version="111.3.1-alpha.0.6" />
         <PackageReference Include="SharpZipLib" Version="1.4.2"/>
