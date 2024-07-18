@@ -31,8 +31,8 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class IntBuffer : Buffer
 {
-    public    int[]? Hb     { get; set; }
-    protected int    Offset { get; set; }
+    public new int[]? Hb     { get; set; }
+    protected  int    Offset { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -43,7 +43,9 @@ public abstract class IntBuffer : Buffer
     protected IntBuffer( int mark, int pos, int lim, int cap, int[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        Hb     = hb;
+        Logger.CheckPoint();
+
+        Hb     = hb ?? new int[ cap ];
         Offset = offset;
     }
 
@@ -452,14 +454,12 @@ public abstract class IntBuffer : Buffer
     /// <returns> The array that backs this buffer </returns>
     public new int[] BackingArray()
     {
-        Hb ??= new int[ Capacity ];
-        
         if ( IsReadOnly )
         {
             throw new GdxRuntimeException( "Readonly Buffer!" );
         }
 
-        return Hb;
+        return Hb!;
     }
 
     /// <summary>

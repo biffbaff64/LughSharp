@@ -28,7 +28,8 @@ namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 [PublicAPI]
 public class ByteBufferAsShortBufferL : ShortBuffer
 {
-    public ByteBufferAsShortBufferL( ByteBuffer bb, int i, int i1, int size, int size1, int off )
+    public ByteBufferAsShortBufferL( ByteBuffer bb, int mark, int pos, int lim, int cap, int off )
+        : base( mark, pos, lim, cap )
     {
     }
 

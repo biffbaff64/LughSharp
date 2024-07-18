@@ -181,8 +181,6 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// (since GL 4.3), this uses the KHR_debug, ARB_debug_output or AMD_debug_output extension
     /// if available. By default, debug messages with NOTIFICATION severity are disabled to
     /// avoid log spam.
-    /// Use <see cref="DesktopGLApplication.SetGLDebugMessageControl(DesktopGLApplication.GLDebugMessageSeverity, bool)"/>
-    /// to enable or disable other severity debug levels.
     /// </summary>
     public void EnableGLDebugOutput( bool enable, StreamWriter debugOutputStream )
     {
@@ -229,7 +227,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     {
 //        DesktopGLApplication.InitialiseGLFW();
 
-        VideoMode[] videoModes = Glfw.GetVideoModes( Glfw.GetPrimaryMonitor() );
+        GLFW.Vidmode[]? videoModes = Glfw.GetVideoModes( Glfw.GetPrimaryMonitor() );
 
         var result = new IGraphics.DisplayMode[ videoModes.Length ];
 
@@ -254,7 +252,7 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     {
 //        DesktopGLApplication.InitialiseGLFW();
 
-        VideoMode[] videoModes = Glfw.GetVideoModes( monitor );
+        GLFW.Vidmode[] videoModes = Glfw.GetVideoModes( monitor );
 
         var result = new IGraphics.DisplayMode[ videoModes.Length ];
 

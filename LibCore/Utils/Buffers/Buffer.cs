@@ -170,12 +170,7 @@ public abstract class Buffer
     // Invariants: mark <= position <= limit <= capacity
     public int Mark { get; set; } = -1;
 
-    /// <summary>
-    /// Default Constructor.
-    /// </summary>
-    protected Buffer()
-    {
-    }
+    public object[] Hb { get; set; }
 
     /// <summary>
     /// Creates a new buffer with the given mark, position, limit, and capacity,
@@ -183,6 +178,8 @@ public abstract class Buffer
     /// </summary>
     protected Buffer( int mark, int pos, int lim, int cap )
     {
+        Hb = new object[ cap ];
+        
         Setup( mark, pos, lim, cap );
     }
 
@@ -438,11 +435,11 @@ public abstract class Buffer
     /// </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>
-    public virtual object[] BackingArray()
+    public object[] BackingArray()
     {
-        throw new NotImplementedException();
+        return Hb;
     }
-    
+
     /// <summary>
     /// Returns the offset within this buffer's backing array of the first
     /// element of the buffer <i>(optional operation)</i>.

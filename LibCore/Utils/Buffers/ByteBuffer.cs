@@ -139,9 +139,9 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class ByteBuffer : Buffer
 {
-    public    byte[]? Hb        { get; set; }
-    protected int     Offset    { get; set; }
-    protected bool    BigEndian { get; set; } = true;
+    public new byte[]? Hb        { get; private set; }
+    protected  int     Offset    { get; set; }
+    protected  bool    BigEndian { get; set; } = true;
 
     // ------------------------------------------------------------------------
 
@@ -154,7 +154,7 @@ public abstract class ByteBuffer : Buffer
     {
         Logger.CheckPoint();
 
-        Hb     = hb;
+        Hb     = hb ?? new byte[ cap ];
         Offset = offset;
     }
 
@@ -454,14 +454,12 @@ public abstract class ByteBuffer : Buffer
     /// </exception>
     public new byte[] BackingArray()
     {
-        Hb ??= new byte[ Capacity ];
-
         if ( IsReadOnly )
         {
             throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
-        return Hb;
+        return Hb!;
     }
 
     /// <summary>

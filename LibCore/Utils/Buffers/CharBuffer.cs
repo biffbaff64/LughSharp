@@ -89,15 +89,15 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class CharBuffer : Buffer
 {
-    public    char[]? Hb     { get; set; }
-    protected int     Offset { get; set; }
+    public new char[]? Hb     { get; set; }
+    protected  int     Offset { get; set; }
 
     // ------------------------------------------------------------------------
 
     protected CharBuffer( int mark, int pos, int lim, int cap, char[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        Hb     = hb;
+        Hb     = hb ?? new char[ cap ];
         Offset = offset;
     }
 
@@ -802,14 +802,12 @@ public abstract class CharBuffer : Buffer
     /// </exception>
     public new char[] BackingArray()
     {
-        Hb ??= new char[ Capacity ];
-
         if ( IsReadOnly )
         {
             throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
-        return Hb;
+        return Hb!;
     }
 
     /// <summary>
@@ -864,14 +862,12 @@ public abstract class CharBuffer : Buffer
     /// <returns>  The current hash code of this buffer </returns>
     public override int GetHashCode()
     {
-        var h = 1;
+        const int PRIME = 31;
 
-        for ( var i = Offset - 1; i >= 0; i-- )
-        {
-            h = ( 31 * h ) + Get( i );
-        }
+        var result = PRIME + NumberUtils.FloatToIntBits( 64.0f );
+        result = ( PRIME * result ) + NumberUtils.FloatToIntBits( 128.0f );
 
-        return h;
+        return result;
     }
 
     /// <summary>

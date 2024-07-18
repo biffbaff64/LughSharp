@@ -31,8 +31,8 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
 {
-    public    double[]? Hb     { get; set; }
-    protected int       Offset { get; set; }
+    public    new double[]? Hb     { get; set; }
+    protected     int       Offset { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     protected DoubleBuffer( int mark, int pos, int lim, int cap, double[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        Hb     = hb;
+        Hb     = hb ?? new double[ cap ];        
         Offset = offset;
     }
 
@@ -506,14 +506,12 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     /// <returns>  The array that backs this buffer </returns>
     public new double[] BackingArray()
     {
-        Hb ??= new double[ Capacity ];
-
         if ( IsReadOnly )
         {
             throw new GdxRuntimeException( "Readonly Buffer!" );
         }
 
-        return Hb;
+        return Hb!;
     }
 
     /// <summary>
@@ -667,8 +665,8 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     {
         const int PRIME = 31;
 
-        var result = PRIME + NumberUtils.FloatToIntBits( Offset );
-        result = ( PRIME * result ) + NumberUtils.FloatToIntBits( Offset );
+        var result = PRIME + NumberUtils.FloatToIntBits( 64.0f );
+        result = ( PRIME * result ) + NumberUtils.FloatToIntBits( 128.0f );
 
         return result;
     }

@@ -192,7 +192,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// </summary>
     public bool SupportsCubeMapSeamless()
     {
-        return ( bool ) GLVersion?.IsVersionEqualToOrHigher( 3, 2 )
+        return ( bool ) GLVersion!.IsVersionEqualToOrHigher( 3, 2 )
             || SupportsExtension( "GL_ARB_seamless_cube_map" );
     }
 

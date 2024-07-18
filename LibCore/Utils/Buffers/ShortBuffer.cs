@@ -32,15 +32,11 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class ShortBuffer : Buffer
 {
-    public    short[]? Hb     { get; set; }
-    protected int      Offset { get; set; }
+    public new short[]? Hb     { get; set; }
+    protected  int      Offset { get; set; }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-
-    protected ShortBuffer()
-    {
-    }
 
     /// <summary>
     /// Creates a new buffer with the given mark, position, limit,
@@ -49,7 +45,7 @@ public abstract class ShortBuffer : Buffer
     protected ShortBuffer( int mark, int pos, int lim, int cap, short[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        Hb     = hb;
+        Hb     = hb ?? new short[ cap ];
         Offset = offset;
     }
 
@@ -348,7 +344,7 @@ public abstract class ShortBuffer : Buffer
     /// <exception cref="GdxRuntimeException">If this buffer is read-only.</exception>
     public virtual ShortBuffer Put( ShortBuffer src )
     {
-        if ( src == this )
+        if ( Equals( src, this ) )
         {
             throw new ArgumentException();
         }
@@ -503,17 +499,12 @@ public abstract class ShortBuffer : Buffer
     /// </exception>
     public new short[] BackingArray()
     {
-        if ( Hb == null )
-        {
-            throw new GdxRuntimeException( "Backing array os null." );
-        }
-
         if ( IsReadOnly )
         {
             throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
-        return Hb;
+        return Hb!;
     }
 
     /// <summary>
@@ -601,15 +592,12 @@ public abstract class ShortBuffer : Buffer
     /// <returns> The current hash code of this buffer </returns>
     public override int GetHashCode()
     {
-        var h = 1;
-        var p = Position;
+        const int PRIME = 31;
 
-        for ( var i = Limit - 1; i >= p; i-- )
-        {
-            h = ( 31 * h ) + Get( i );
-        }
+        var result = PRIME + NumberUtils.FloatToIntBits( 64.0f );
+        result = ( PRIME * result ) + NumberUtils.FloatToIntBits( 128.0f );
 
-        return h;
+        return result;
     }
 
     /// <summary>
@@ -633,7 +621,7 @@ public abstract class ShortBuffer : Buffer
     /// </returns>
     public override bool Equals( object? ob )
     {
-        if ( this == ob )
+        if ( Equals( this, ob ) )
         {
             return true;
         }

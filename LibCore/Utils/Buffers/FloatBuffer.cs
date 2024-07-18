@@ -78,8 +78,8 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public abstract class FloatBuffer : Buffer
 {
-    public    float[]? Hb     { get; set; }
-    protected int      Offset { get; set; }
+    public new float[]? Hb     { get; set; }
+    protected  int      Offset { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ public abstract class FloatBuffer : Buffer
     protected FloatBuffer( int mark, int pos, int lim, int cap, float[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        Hb     = hb;
+        Hb     = hb ?? new float[ cap ];
         Offset = offset;
     }
 
@@ -580,14 +580,12 @@ public abstract class FloatBuffer : Buffer
     /// </exception>
     public new float[] BackingArray()
     {
-        Hb ??= new float[ Capacity ];
-
         if ( IsReadOnly )
         {
             throw new GdxRuntimeException( "Buffer is Read Only!" );
         }
 
-        return Hb;
+        return Hb!;
     }
 
     /// <summary>
