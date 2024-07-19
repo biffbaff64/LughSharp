@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Audio.OpenAL;
-
 namespace LughSharp.Backends.DesktopGL.Audio;
 
 [PublicAPI]
@@ -125,7 +123,7 @@ public class OpenALSound : ISound
 
         _audio.FreeBuffer( _bufferID );
 
-//TODO:        AL.DeleteBuffers( _bufferID );
+//TODO: AL.DeleteBuffers( _bufferID );
 
         _bufferID = -1;
 
@@ -251,9 +249,7 @@ public class OpenALSound : ISound
 
         var buffer = ByteBuffer.Allocate( bytes );
 
-        buffer.Order( ByteOrder.NativeOrder )
-              .Put( pcm, 0, bytes )
-              .Flip();
+        buffer.Order( ByteOrder.NativeOrder ).Put( pcm, 0, bytes ).Flip();
 
 //TODO:
 //        if ( _bufferID == -1 )

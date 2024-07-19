@@ -23,7 +23,6 @@
 // /////////////////////////////////////////////////////////////////////////////
 
 using System.Numerics;
-using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 
 namespace LughSharp.LibCore.Graphics.Profiling;
 
@@ -143,18 +142,18 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glTexParameterfv( int target, int pname, float* @params )
+    public unsafe void glTexParameterfv( int target, int pname, float* parameters )
     {
         Calls++;
-        Gdx.GL.glTexParameterfv( target, pname, @params );
+        Gdx.GL.glTexParameterfv( target, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glTexParameterfv( int target, int pname, float[] @params )
+    public void glTexParameterfv( int target, int pname, float[] parameters )
     {
         Calls++;
-        Gdx.GL.glTexParameterfv( target, pname, @params );
+        Gdx.GL.glTexParameterfv( target, pname, parameters );
         CheckErrors();
     }
 
@@ -167,18 +166,18 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glTexParameteriv( int target, int pname, int* @params )
+    public unsafe void glTexParameteriv( int target, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.glTexParameteriv( target, pname, @params );
+        Gdx.GL.glTexParameteriv( target, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glTexParameteriv( int target, int pname, int[] @params )
+    public void glTexParameteriv( int target, int pname, int[] parameters )
     {
         Calls++;
-        Gdx.GL.glTexParameteriv( target, pname, @params );
+        Gdx.GL.glTexParameteriv( target, pname, parameters );
         CheckErrors();
     }
 
@@ -505,66 +504,66 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetTexParameterfv( int target, int pname, float* @params )
+    public unsafe void glGetTexParameterfv( int target, int pname, float* parameters )
     {
         Calls++;
-        Gdx.GL.glGetTexParameterfv( target, pname, @params );
+        Gdx.GL.glGetTexParameterfv( target, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetTexParameterfv( int target, int pname, ref float[] @params )
+    public void glGetTexParameterfv( int target, int pname, ref float[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetTexParameterfv( target, pname, ref @params );
+        Gdx.GL.glGetTexParameterfv( target, pname, ref parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetTexParameteriv( int target, int pname, int* @params )
+    public unsafe void glGetTexParameteriv( int target, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.glGetTexParameteriv( target, pname, @params );
+        Gdx.GL.glGetTexParameteriv( target, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetTexParameteriv( int target, int pname, ref int[] @params )
+    public void glGetTexParameteriv( int target, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetTexParameteriv( target, pname, ref @params );
+        Gdx.GL.glGetTexParameteriv( target, pname, ref parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetTexLevelParameterfv( int target, int level, int pname, float* @params )
+    public unsafe void glGetTexLevelParameterfv( int target, int level, int pname, float* parameters )
     {
         Calls++;
-        Gdx.GL.glGetTexLevelParameterfv( target, level, pname, @params );
+        Gdx.GL.glGetTexLevelParameterfv( target, level, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetTexLevelParameterfv( int target, int level, int pname, ref float[] @params )
+    public void glGetTexLevelParameterfv( int target, int level, int pname, ref float[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetTexLevelParameterfv( target, level, pname, ref @params );
+        Gdx.GL.glGetTexLevelParameterfv( target, level, pname, ref parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetTexLevelParameteriv( int target, int level, int pname, int* @params )
+    public unsafe void glGetTexLevelParameteriv( int target, int level, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.glGetTexLevelParameteriv( target, level, pname, @params );
+        Gdx.GL.glGetTexLevelParameteriv( target, level, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetTexLevelParameteriv( int target, int level, int pname, ref int[] @params )
+    public void glGetTexLevelParameteriv( int target, int level, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetTexLevelParameteriv( target, level, pname, ref @params );
+        Gdx.GL.glGetTexLevelParameteriv( target, level, pname, ref parameters );
         CheckErrors();
     }
 
@@ -1063,18 +1062,18 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glPointParameterfv( int pname, float* @params )
+    public unsafe void glPointParameterfv( int pname, float* parameters )
     {
         Calls++;
-        Gdx.GL.glPointParameterfv( pname, @params );
+        Gdx.GL.glPointParameterfv( pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glPointParameterfv( int pname, float[] @params )
+    public void glPointParameterfv( int pname, float[] parameters )
     {
         Calls++;
-        Gdx.GL.glPointParameterfv( pname, @params );
+        Gdx.GL.glPointParameterfv( pname, parameters );
         CheckErrors();
     }
 
@@ -1087,18 +1086,18 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glPointParameteriv( int pname, int* @params )
+    public unsafe void glPointParameteriv( int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.glPointParameteriv( pname, @params );
+        Gdx.GL.glPointParameteriv( pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glPointParameteriv( int pname, int[] @params )
+    public void glPointParameteriv( int pname, int[] parameters )
     {
         Calls++;
-        Gdx.GL.glPointParameteriv( pname, @params );
+        Gdx.GL.glPointParameteriv( pname, parameters );
         CheckErrors();
     }
 
@@ -1189,50 +1188,50 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetQueryiv( int target, int pname, int* @params )
+    public unsafe void glGetQueryiv( int target, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.glGetQueryiv( target, pname, @params );
+        Gdx.GL.glGetQueryiv( target, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetQueryiv( int target, int pname, ref int[] @params )
+    public void glGetQueryiv( int target, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetQueryiv( target, pname, ref @params );
+        Gdx.GL.glGetQueryiv( target, pname, ref parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetQueryObjectiv( uint id, int pname, int* @params )
+    public unsafe void glGetQueryObjectiv( uint id, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.glGetQueryObjectiv( id, pname, @params );
+        Gdx.GL.glGetQueryObjectiv( id, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetQueryObjectiv( uint id, int pname, ref int[] @params )
+    public void glGetQueryObjectiv( uint id, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetQueryObjectiv( id, pname, ref @params );
+        Gdx.GL.glGetQueryObjectiv( id, pname, ref parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetQueryObjectuiv( uint id, int pname, uint* @params )
+    public unsafe void glGetQueryObjectuiv( uint id, int pname, uint* parameters )
     {
         Calls++;
-        Gdx.GL.glGetQueryObjectuiv( id, pname, @params );
+        Gdx.GL.glGetQueryObjectuiv( id, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetQueryObjectuiv( uint id, int pname, ref uint[] @params )
+    public void glGetQueryObjectuiv( uint id, int pname, ref uint[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetQueryObjectuiv( id, pname, ref @params );
+        Gdx.GL.glGetQueryObjectuiv( id, pname, ref parameters );
         CheckErrors();
     }
 
@@ -1379,34 +1378,34 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetBufferParameteriv( int target, int pname, int* @params )
+    public unsafe void glGetBufferParameteriv( int target, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.glGetBufferParameteriv( target, pname, @params );
+        Gdx.GL.glGetBufferParameteriv( target, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetBufferParameteriv( int target, int pname, ref int[] @params )
+    public void glGetBufferParameteriv( int target, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetBufferParameteriv( target, pname, ref @params );
+        Gdx.GL.glGetBufferParameteriv( target, pname, ref parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetBufferPointerv( int target, int pname, void** @params )
+    public unsafe void glGetBufferPointerv( int target, int pname, void** parameters )
     {
         Calls++;
-        Gdx.GL.glGetBufferPointerv( target, pname, @params );
+        Gdx.GL.glGetBufferPointerv( target, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetBufferPointerv( int target, int pname, ref IntPtr[] @params )
+    public void glGetBufferPointerv( int target, int pname, ref IntPtr[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetBufferPointerv( target, pname, ref @params );
+        Gdx.GL.glGetBufferPointerv( target, pname, ref parameters );
         CheckErrors();
     }
 
@@ -1642,18 +1641,18 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetProgramiv( uint program, int pname, int* @params )
+    public unsafe void glGetProgramiv( uint program, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.glGetProgramiv( program, pname, @params );
+        Gdx.GL.glGetProgramiv( program, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetProgramiv( uint program, int pname, ref int[] @params )
+    public void glGetProgramiv( uint program, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetProgramiv( program, pname, ref @params );
+        Gdx.GL.glGetProgramiv( program, pname, ref parameters );
         CheckErrors();
     }
 
@@ -1676,18 +1675,18 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetShaderiv( uint shader, int pname, int* @params )
+    public unsafe void glGetShaderiv( uint shader, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.glGetShaderiv( shader, pname, @params );
+        Gdx.GL.glGetShaderiv( shader, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetShaderiv( uint shader, int pname, ref int[] @params )
+    public void glGetShaderiv( uint shader, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetShaderiv( shader, pname, ref @params );
+        Gdx.GL.glGetShaderiv( shader, pname, ref parameters );
         CheckErrors();
     }
 
@@ -1748,82 +1747,82 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetUniformfv( uint program, int location, float* @params )
+    public unsafe void glGetUniformfv( uint program, int location, float* parameters )
     {
         Calls++;
-        Gdx.GL.glGetUniformfv( program, location, @params );
+        Gdx.GL.glGetUniformfv( program, location, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetUniformfv( uint program, int location, ref float[] @params )
+    public void glGetUniformfv( uint program, int location, ref float[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetUniformfv( program, location, ref @params );
+        Gdx.GL.glGetUniformfv( program, location, ref parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetUniformiv( uint program, int location, int* @params )
+    public unsafe void glGetUniformiv( uint program, int location, int* parameters )
     {
         Calls++;
-        Gdx.GL.glGetUniformiv( program, location, @params );
+        Gdx.GL.glGetUniformiv( program, location, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetUniformiv( uint program, int location, ref int[] @params )
+    public void glGetUniformiv( uint program, int location, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetUniformiv( program, location, ref @params );
+        Gdx.GL.glGetUniformiv( program, location, ref parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetVertexAttribdv( uint index, int pname, double* @params )
+    public unsafe void glGetVertexAttribdv( uint index, int pname, double* parameters )
     {
         Calls++;
-        Gdx.GL.glGetVertexAttribdv( index, pname, @params );
+        Gdx.GL.glGetVertexAttribdv( index, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetVertexAttribdv( uint index, int pname, ref double[] @params )
+    public void glGetVertexAttribdv( uint index, int pname, ref double[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetVertexAttribdv( index, pname, ref @params );
+        Gdx.GL.glGetVertexAttribdv( index, pname, ref parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetVertexAttribfv( uint index, int pname, float* @params )
+    public unsafe void glGetVertexAttribfv( uint index, int pname, float* parameters )
     {
         Calls++;
-        Gdx.GL.glGetVertexAttribfv( index, pname, @params );
+        Gdx.GL.glGetVertexAttribfv( index, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetVertexAttribfv( uint index, int pname, ref float[] @params )
+    public void glGetVertexAttribfv( uint index, int pname, ref float[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetVertexAttribfv( index, pname, ref @params );
+        Gdx.GL.glGetVertexAttribfv( index, pname, ref parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public unsafe void glGetVertexAttribiv( uint index, int pname, int* @params )
+    public unsafe void glGetVertexAttribiv( uint index, int pname, int* parameters )
     {
         Calls++;
-        Gdx.GL.glGetVertexAttribiv( index, pname, @params );
+        Gdx.GL.glGetVertexAttribiv( index, pname, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetVertexAttribiv( uint index, int pname, ref int[] @params )
+    public void glGetVertexAttribiv( uint index, int pname, ref int[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetVertexAttribiv( index, pname, ref @params );
+        Gdx.GL.glGetVertexAttribiv( index, pname, ref parameters );
         CheckErrors();
     }
 
@@ -2135,13 +2134,14 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         CheckErrors();
     }
 
-    /// <inheritdoc />
-    public void glUniformMatrix4fv( int location, int count, bool transpose, Buffer buffer )
-    {
-        Calls++;
-        Gdx.GL.glUniformMatrix4fv( location, count, transpose, buffer );
-        CheckErrors();
-    }
+//TODO: Unsupported method    
+//    /// <inheritdoc />
+//    public void glUniformMatrix4fv( int location, int count, bool transpose, Buffer buffer )
+//    {
+//        Calls++;
+//        Gdx.GL.glUniformMatrix4fv( location, count, transpose, buffer );
+//        CheckErrors();
+//    }
 
     /// <inheritdoc />
     public bool glValidateProgram( uint program )
@@ -2641,13 +2641,14 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
         CheckErrors();
     }
 
-    /// <inheritdoc />
-    public void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer )
-    {
-        Calls++;
-        Gdx.GL.glVertexAttribPointer( location, size, type, normalized, stride, buffer );
-        CheckErrors();
-    }
+//TODO: Unsupported method    
+//    /// <inheritdoc />
+//    public void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer )
+//    {
+//        Calls++;
+//        Gdx.GL.glVertexAttribPointer( location, size, type, normalized, stride, buffer );
+//        CheckErrors();
+//    }
 
     /// <inheritdoc />
     public unsafe void glUniformMatrix2x3fv( int location, int count, bool transpose, float* value )
@@ -3209,18 +3210,18 @@ public class GLInterceptor : BaseGLInterceptor, IGLBindings
     }
 
     /// <inheritdoc />
-    public unsafe void glGetUniformuiv( uint program, int location, uint* @params )
+    public unsafe void glGetUniformuiv( uint program, int location, uint* parameters )
     {
         Calls++;
-        Gdx.GL.glGetUniformuiv( program, location, @params );
+        Gdx.GL.glGetUniformuiv( program, location, parameters );
         CheckErrors();
     }
 
     /// <inheritdoc />
-    public void glGetUniformuiv( uint program, int location, ref uint[] @params )
+    public void glGetUniformuiv( uint program, int location, ref uint[] parameters )
     {
         Calls++;
-        Gdx.GL.glGetUniformuiv( program, location, ref @params );
+        Gdx.GL.glGetUniformuiv( program, location, ref parameters );
         CheckErrors();
     }
 

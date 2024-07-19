@@ -179,7 +179,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_SWIZZLE_RGBA"/> is also acceptable.
     /// </param>
     /// <param name="params">Specifies the values of pname.</param>
-    unsafe void glTexParameterfv( Int32 target, Int32 pname, Single* @params );
+    unsafe void glTexParameterfv( Int32 target, Int32 pname, Single* parameters );
 
     /// <summary>
     /// Set texture parameters
@@ -203,7 +203,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_SWIZZLE_RGBA"/> is also acceptable.
     /// </param>
     /// <param name="params">Specifies the values of pname.</param>
-    unsafe void glTexParameterfv( Int32 target, Int32 pname, Single[] @params );
+    unsafe void glTexParameterfv( Int32 target, Int32 pname, Single[] parameters );
 
     /// <summary>
     /// Set texture parameters
@@ -251,7 +251,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_SWIZZLE_RGBA"/> is also acceptable.
     /// </param>
     /// <param name="params">Specifies the values of pname.</param>
-    unsafe void glTexParameteriv( Int32 target, Int32 pname, Int32* @params );
+    unsafe void glTexParameteriv( Int32 target, Int32 pname, Int32* parameters );
 
     /// <summary>
     /// Set texture parameters
@@ -275,7 +275,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_SWIZZLE_RGBA"/> is also acceptable.
     /// </param>
     /// <param name="params">Specifies the values of pname.</param>
-    unsafe void glTexParameteriv( Int32 target, Int32 pname, Int32[] @params );
+    unsafe void glTexParameteriv( Int32 target, Int32 pname, Int32[] parameters );
 
     /// <summary>
     /// Specify a one-dimensional texture image
@@ -1037,7 +1037,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_T"/> are accepted.
     /// </param>
     /// <param name="params">A pointer to a float array where the values will be returned.</param>
-    unsafe void glGetTexParameterfv( Int32 target, Int32 pname, Single* @params );
+    unsafe void glGetTexParameterfv( Int32 target, Int32 pname, Single* parameters );
 
     /// <summary>
     /// Return texture parameter (float) values.
@@ -1063,7 +1063,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_T"/> are accepted.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to a float array where the values will be returned.</param>
-    unsafe void glGetTexParameterfv( Int32 target, Int32 pname, ref Single[] @params );
+    unsafe void glGetTexParameterfv( Int32 target, Int32 pname, ref Single[] parameters );
 
     /// <summary>
     /// Return texture parameter (integer) values.
@@ -1089,7 +1089,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_T"/> are accepted.
     /// </param>
     /// <param name="params">A pointer to an integer array where the values will be returned.</param>
-    unsafe void glGetTexParameteriv( Int32 target, Int32 pname, Int32* @params );
+    unsafe void glGetTexParameteriv( Int32 target, Int32 pname, Int32* parameters );
 
     /// <summary>
     /// Return texture parameter (integer) values.
@@ -1115,7 +1115,7 @@ public interface IGLBindings
     /// <see cref="GL_TEXTURE_WRAP_T"/> are accepted.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the values will be returned.</param>
-    unsafe void glGetTexParameteriv( Int32 target, Int32 pname, ref Int32[] @params );
+    unsafe void glGetTexParameteriv( Int32 target, Int32 pname, ref Int32[] parameters );
 
     /// <summary>
     /// Return texture parameter (float) values for a specific level of detail.
@@ -1138,7 +1138,7 @@ public interface IGLBindings
     /// reduction image.
     /// </param>
     /// <param name="params">A pointer to a float array in which to place the returned parameter value(s).</param>
-    unsafe void glGetTexLevelParameterfv( Int32 target, Int32 level, Int32 pname, Single* @params );
+    unsafe void glGetTexLevelParameterfv( Int32 target, Int32 level, Int32 pname, Single* parameters );
 
     /// <summary>
     /// Return texture parameter (float) values for a specific level of detail.
@@ -1161,7 +1161,7 @@ public interface IGLBindings
     /// reduction image.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to a float array where the values will be returned.</param>
-    unsafe void glGetTexLevelParameterfv( Int32 target, Int32 level, Int32 pname, ref Single[] @params );
+    unsafe void glGetTexLevelParameterfv( Int32 target, Int32 level, Int32 pname, ref Single[] parameters );
 
     /// <summary>
     /// Return texture parameter (integer) values for a specific level of detail.
@@ -1184,7 +1184,7 @@ public interface IGLBindings
     /// reduction image.
     /// </param>
     /// <param name="params">A pointer to an integer array in which to place the returned parameter value(s).</param>
-    unsafe void glGetTexLevelParameteriv( Int32 target, Int32 level, Int32 pname, Int32* @params );
+    unsafe void glGetTexLevelParameteriv( Int32 target, Int32 level, Int32 pname, Int32* parameters );
 
     /// <summary>
     /// Return texture parameter (integer) values for a specific level of detail.
@@ -1207,7 +1207,7 @@ public interface IGLBindings
     /// reduction image.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the values will be returned.</param>
-    unsafe void glGetTexLevelParameteriv( Int32 target, Int32 level, Int32 pname, ref Int32[] @params );
+    unsafe void glGetTexLevelParameteriv( Int32 target, Int32 level, Int32 pname, ref Int32[] parameters );
 
     /// <summary>
     /// Test whether a capability is enabled.
@@ -2508,7 +2508,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array where the value or values to be assigned to
     /// <paramref name="pname"/> are currently stored.
     /// </param>
-    unsafe void glPointParameterfv( Int32 pname, Single* @params );
+    unsafe void glPointParameterfv( Int32 pname, Single* parameters );
 
     /// <summary>
     /// Specify point parameters.
@@ -2518,7 +2518,7 @@ public interface IGLBindings
     /// and <see cref="GL_POINT_SPRITE_COORD_ORIGIN"/> are accepted.
     /// </param>
     /// <param name="params">Specifies an array of values that will be used to update the current point parameters.</param>
-    unsafe void glPointParameterfv( Int32 pname, Single[] @params );
+    unsafe void glPointParameterfv( Int32 pname, Single[] parameters );
 
     /// <summary>
     /// Specify point parameters.
@@ -2541,7 +2541,7 @@ public interface IGLBindings
     /// Specifies a pointer to an array where the value or values to be assigned to
     /// <paramref name="pname"/> are currently stored.
     /// </param>
-    unsafe void glPointParameteriv( Int32 pname, Int32* @params );
+    unsafe void glPointParameteriv( Int32 pname, Int32* parameters );
 
     /// <summary>
     /// Specify point parameters.
@@ -2551,7 +2551,7 @@ public interface IGLBindings
     /// and <see cref="GL_POINT_SPRITE_COORD_ORIGIN"/> are accepted.
     /// </param>
     /// <param name="params">Specifies an array of values that will be used to update the current point parameters.</param>
-    unsafe void glPointParameteriv( Int32 pname, Int32[] @params );
+    unsafe void glPointParameteriv( Int32 pname, Int32[] parameters );
 
     /// <summary>
     /// Set the blend color.
@@ -2652,7 +2652,7 @@ public interface IGLBindings
     /// <see cref="GL_QUERY_COUNTER_BITS"/> are accepted.
     /// </param>
     /// <param name="params">A pointer to the location where the integer value or values are to be returned.</param>
-    unsafe void glGetQueryiv( Int32 target, Int32 pname, Int32* @params );
+    unsafe void glGetQueryiv( Int32 target, Int32 pname, Int32* parameters );
 
     /// <summary>
     /// Return parameters of a query object target.
@@ -2669,7 +2669,7 @@ public interface IGLBindings
     /// <see cref="GL_QUERY_COUNTER_BITS"/> are accepted.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the integer value or values are to be returned.</param>
-    unsafe void glGetQueryiv( Int32 target, Int32 pname, ref Int32[] @params );
+    unsafe void glGetQueryiv( Int32 target, Int32 pname, ref Int32[] parameters );
 
     /// <summary>
     /// Return parameters of a query object.
@@ -2680,7 +2680,7 @@ public interface IGLBindings
     /// <see cref="GL_QUERY_RESULT_NO_WAIT"/> or <see cref="GL_QUERY_RESULT_AVAILABLE"/> are accepted.
     /// </param>
     /// <param name="params">A pointer to the location where the integer value or values are to be returned.</param>
-    unsafe void glGetQueryObjectiv( UInt32 id, Int32 pname, Int32* @params );
+    unsafe void glGetQueryObjectiv( UInt32 id, Int32 pname, Int32* parameters );
 
     /// <summary>
     /// Return parameters of a query object.
@@ -2691,7 +2691,7 @@ public interface IGLBindings
     /// <see cref="GL_QUERY_RESULT_NO_WAIT"/> or <see cref="GL_QUERY_RESULT_AVAILABLE"/> are accepted.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the integer value or values are to be returned.</param>
-    unsafe void glGetQueryObjectiv( UInt32 id, Int32 pname, ref Int32[] @params );
+    unsafe void glGetQueryObjectiv( UInt32 id, Int32 pname, ref Int32[] parameters );
 
     /// <summary>
     /// Return parameters of a query object.
@@ -2702,7 +2702,7 @@ public interface IGLBindings
     /// <see cref="GL_QUERY_RESULT_NO_WAIT"/> or <see cref="GL_QUERY_RESULT_AVAILABLE"/> are accepted.
     /// </param>
     /// <param name="params">A pointer to the location where the unsigned integer value or values are to be returned.</param>
-    unsafe void glGetQueryObjectuiv( UInt32 id, Int32 pname, UInt32* @params );
+    unsafe void glGetQueryObjectuiv( UInt32 id, Int32 pname, UInt32* parameters );
 
     /// <summary>
     /// Return parameters of a query object.
@@ -2716,7 +2716,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an unsigned integer array where the integer value or values are to be
     /// returned.
     /// </param>
-    unsafe void glGetQueryObjectuiv( UInt32 id, Int32 pname, ref UInt32[] @params );
+    unsafe void glGetQueryObjectuiv( UInt32 id, Int32 pname, ref UInt32[] parameters );
 
     /// <summary>
     /// Bind a named buffer object.
@@ -2962,7 +2962,7 @@ public interface IGLBindings
     /// <see cref="GL_BUFFER_USAGE"/>.
     /// </param>
     /// <param name="params">A pointer to a memory location where the returned data will be placed.</param>
-    unsafe void glGetBufferParameteriv( Int32 target, Int32 pname, Int32* @params );
+    unsafe void glGetBufferParameteriv( Int32 target, Int32 pname, Int32* parameters );
 
     /// <summary>
     /// Return parameters of a buffer object.
@@ -2977,7 +2977,7 @@ public interface IGLBindings
     /// <see cref="GL_BUFFER_USAGE"/>.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the returned data will be placed.</param>
-    unsafe void glGetBufferParameteriv( Int32 target, Int32 pname, ref Int32[] @params );
+    unsafe void glGetBufferParameteriv( Int32 target, Int32 pname, ref Int32[] parameters );
 
     /// <summary>
     /// Return the pointer to a mapped buffer object's data store.
@@ -2992,7 +2992,7 @@ public interface IGLBindings
     /// </param>
     /// <param name="pname">Specifies the pointer to be returned. Accepted values are <see cref="GL_BUFFER_MAP_POINTER"/>.</param>
     /// <param name="params">A pointer to a memory location where the returned data will be placed.</param>
-    unsafe void glGetBufferPointerv( Int32 target, Int32 pname, void** @params );
+    unsafe void glGetBufferPointerv( Int32 target, Int32 pname, void** parameters );
 
     /// <summary>
     /// Return the pointer to a mapped buffer object's data store.
@@ -3010,7 +3010,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array of <see cref="IntPtr"/>s where the returned pointer(s) will
     /// be placed.
     /// </param>
-    unsafe void glGetBufferPointerv( Int32 target, Int32 pname, ref IntPtr[] @params );
+    unsafe void glGetBufferPointerv( Int32 target, Int32 pname, ref IntPtr[] parameters );
 
     /// <summary>
     /// Set the RGB blend equation and alpha blend equation separately
@@ -3318,7 +3318,7 @@ public interface IGLBindings
     /// for a list of possible values.
     /// </param>
     /// <param name="params">Returns the requested object parameter.</param>
-    unsafe void glGetProgramiv( UInt32 program, Int32 pname, Int32* @params );
+    unsafe void glGetProgramiv( UInt32 program, Int32 pname, Int32* parameters );
 
     /// <summary>
     /// Returns a parameter from a program object
@@ -3329,7 +3329,7 @@ public interface IGLBindings
     /// for a list of possible values.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the returned value(s) will be placed.</param>
-    unsafe void glGetProgramiv( UInt32 program, Int32 pname, ref Int32[] @params );
+    unsafe void glGetProgramiv( UInt32 program, Int32 pname, ref Int32[] parameters );
 
     /// <summary>
     /// Returns the information log for a program object
@@ -3358,7 +3358,7 @@ public interface IGLBindings
     /// <see cref="GL_SHADER_SOURCE_LENGTH"/>.
     /// </param>
     /// <param name="params">Returns the requested object parameter.</param>
-    unsafe void glGetShaderiv( UInt32 shader, Int32 pname, Int32* @params );
+    unsafe void glGetShaderiv( UInt32 shader, Int32 pname, Int32* parameters );
 
     /// <summary>
     /// Returns a parameter from a shader object
@@ -3370,7 +3370,7 @@ public interface IGLBindings
     /// <see cref="GL_SHADER_SOURCE_LENGTH"/>.
     /// </param>
     /// <param name="params">A <see langword="ref"/> to an integer array where the returned value(s) will be placed.</param>
-    unsafe void glGetShaderiv( UInt32 shader, Int32 pname, ref Int32[] @params );
+    unsafe void glGetShaderiv( UInt32 shader, Int32 pname, ref Int32[] parameters );
 
     /// <summary>
     /// Returns the information log for a shader object
@@ -3429,7 +3429,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="params">Returns the value of the uniform variable at the location specified by location.</param>
-    unsafe void glGetUniformfv( UInt32 program, Int32 location, Single* @params );
+    unsafe void glGetUniformfv( UInt32 program, Int32 location, Single* parameters );
 
     /// <summary>
     /// Returns the value of a uniform variable
@@ -3440,7 +3440,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array to receive the value of the uniform variable at the location
     /// specified by location.
     /// </param>
-    unsafe void glGetUniformfv( UInt32 program, Int32 location, ref Single[] @params );
+    unsafe void glGetUniformfv( UInt32 program, Int32 location, ref Single[] parameters );
 
     /// <summary>
     /// Returns the value of a uniform variable
@@ -3448,7 +3448,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="params">Returns the value of the uniform variable at the location specified by location.</param>
-    unsafe void glGetUniformiv( UInt32 program, Int32 location, Int32* @params );
+    unsafe void glGetUniformiv( UInt32 program, Int32 location, Int32* parameters );
 
     /// <summary>
     /// Returns the value of a uniform variable
@@ -3459,7 +3459,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array to receive the value of the uniform variable at the location
     /// specified by location.
     /// </param>
-    unsafe void glGetUniformiv( UInt32 program, Int32 location, ref Int32[] @params );
+    unsafe void glGetUniformiv( UInt32 program, Int32 location, ref Int32[] parameters );
 
     /// <summary>
     /// Returns the value of a generic vertex attribute parameter
@@ -3477,7 +3477,7 @@ public interface IGLBindings
     /// Returns the value of the generic vertex attribute parameter specified by pname for the vertex
     /// attribute specified by index.
     /// </param>
-    unsafe void glGetVertexAttribdv( UInt32 index, Int32 pname, Double* @params );
+    unsafe void glGetVertexAttribdv( UInt32 index, Int32 pname, Double* parameters );
 
     /// <summary>
     /// Returns the value of a generic vertex attribute parameter
@@ -3495,7 +3495,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array to receive the value of the generic vertex attribute
     /// parameter specified by pname for the vertex attribute specified by index.
     /// </param>
-    unsafe void glGetVertexAttribdv( UInt32 index, Int32 pname, ref Double[] @params );
+    unsafe void glGetVertexAttribdv( UInt32 index, Int32 pname, ref Double[] parameters );
 
     /// <summary>
     /// Returns the value of a generic vertex attribute parameter
@@ -3513,7 +3513,7 @@ public interface IGLBindings
     /// Returns the value of the generic vertex attribute parameter specified by pname for the vertex
     /// attribute specified by index.
     /// </param>
-    unsafe void glGetVertexAttribfv( UInt32 index, Int32 pname, Single* @params );
+    unsafe void glGetVertexAttribfv( UInt32 index, Int32 pname, Single* parameters );
 
     /// <summary>
     /// Returns the value of a generic vertex attribute parameter
@@ -3531,7 +3531,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array to receive the value of the generic vertex attribute
     /// parameter specified by pname for the vertex attribute specified by index.
     /// </param>
-    unsafe void glGetVertexAttribfv( UInt32 index, Int32 pname, ref Single[] @params );
+    unsafe void glGetVertexAttribfv( UInt32 index, Int32 pname, ref Single[] parameters );
 
     /// <summary>
     /// Returns the value of a generic vertex attribute parameter
@@ -3549,7 +3549,7 @@ public interface IGLBindings
     /// Returns the value of the generic vertex attribute parameter specified by pname for the vertex
     /// attribute specified by index.
     /// </param>
-    unsafe void glGetVertexAttribiv( UInt32 index, Int32 pname, Int32* @params );
+    unsafe void glGetVertexAttribiv( UInt32 index, Int32 pname, Int32* parameters );
 
     /// <summary>
     /// Returns the value of a generic vertex attribute parameter
@@ -3567,7 +3567,7 @@ public interface IGLBindings
     /// A <see langword="ref"/> to an array to receive the value of the generic vertex attribute
     /// parameter specified by pname for the vertex attribute specified by index.
     /// </param>
-    unsafe void glGetVertexAttribiv( UInt32 index, Int32 pname, ref Int32[] @params );
+    unsafe void glGetVertexAttribiv( UInt32 index, Int32 pname, ref Int32[] parameters );
 
     /// <summary>
     /// Return the address of the specified generic vertex attribute pointer
@@ -3983,7 +3983,8 @@ public interface IGLBindings
     /// </param>
     unsafe void glUniformMatrix4fv( Int32 location, Boolean transpose, params Single[] value );
 
-    unsafe void glUniformMatrix4fv( Int32 location, Int32 count, Boolean transpose, Buffer buffer );
+//TODO: Unsupported method    
+//    unsafe void glUniformMatrix4fv( Int32 location, Int32 count, Boolean transpose, Buffer buffer );
 
     /// <summary>
     /// Validates a program object
@@ -4516,7 +4517,8 @@ public interface IGLBindings
     /// </param>
     unsafe void glVertexAttribPointer( UInt32 index, Int32 size, Int32 type, Boolean normalized, Int32 stride, uint pointer );
 
-    unsafe void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer );
+//TODO: Unsupported method    
+//    unsafe void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer );
 
     /// <summary>
     /// Specify the value of a uniform variable for the current program object
@@ -5241,7 +5243,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object containing the uniform variable to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="params">Returns the value of the specified uniform variable.</param>
-    unsafe void glGetUniformuiv( UInt32 program, Int32 location, UInt32* @params );
+    unsafe void glGetUniformuiv( UInt32 program, Int32 location, UInt32* parameters );
 
     /// <summary>
     /// Return the value of a uniform variable of type unsigned int
@@ -5249,7 +5251,7 @@ public interface IGLBindings
     /// <param name="program">Specifies the program object containing the uniform variable to be queried.</param>
     /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
     /// <param name="params">A <see langword="ref"/> to an array to receive the value of the specified uniform variable.</param>
-    unsafe void glGetUniformuiv( UInt32 program, Int32 location, ref UInt32[] @params );
+    unsafe void glGetUniformuiv( UInt32 program, Int32 location, ref UInt32[] parameters );
 
     /// <summary>
     /// Bind a user-defined varying out variable to a fragment shader color number

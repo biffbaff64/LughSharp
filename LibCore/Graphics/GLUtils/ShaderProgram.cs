@@ -22,6 +22,8 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+#pragma warning disable CS8500  // This takes the address of, gets the size of, or declares a pointer to a managed type
+
 using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
@@ -615,20 +617,33 @@ public class ShaderProgram
     /// <param name="buffer"> buffer containing the matrix data </param>
     /// <param name="count"></param>
     /// <param name="transpose"> whether the uniform matrix should be transposed  </param>
-    public void SetUniformMatrix4Fv( string name, FloatBuffer buffer, int count, bool transpose )
+    public unsafe void SetUniformMatrix4Fv( string name, FloatBuffer buffer, int count, bool transpose )
     {
         CheckManaged();
         buffer.Position = 0;
 
-        Gdx.GL.glUniformMatrix4fv( FetchUniformLocation( name ), count, transpose, buffer );
+        fixed ( float* ptr = &buffer.BackingArray()[ 0 ] )
+        {
+            Gdx.GL.glUniformMatrix4fv( FetchUniformLocation( name ), count, transpose, ptr );
+        }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="location"></param>
+    /// <param name="values"></param>
     public void SetUniformMatrix4Fv( int location, params float[] values )
     {
         CheckManaged();
         Gdx.GL.glUniformMatrix4fv( location, false, values );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="values"></param>
     public void SetUniformMatrix4Fv( string name, params float[] values )
     {
         SetUniformMatrix4Fv( FetchUniformLocation( name ), values );
@@ -712,13 +727,26 @@ public class ShaderProgram
             return;
         }
 
-        Gdx.GL.glVertexAttribPointer( location, size, type, normalize, stride, buffer );
+        unsafe
+        {
+            fixed ( void* ptr = &buffer.BackingArray()[ 0 ] )
+            {
+                Gdx.GL.glVertexAttribPointer( ( uint ) location, size, type, normalize, stride, ptr );
+            }
+        }
     }
 
     public void SetVertexAttribute( int location, int size, int type, bool normalize, int stride, Buffer buffer )
     {
         CheckManaged();
-        Gdx.GL.glVertexAttribPointer( location, size, type, normalize, stride, buffer );
+
+        unsafe
+        {
+            fixed ( void* ptr = &buffer.BackingArray()[ 0 ] )
+            {
+                Gdx.GL.glVertexAttribPointer( ( uint ) location, size, type, normalize, stride, ptr );
+            }
+        }
     }
 
     /// <summary>
@@ -885,7 +913,7 @@ public class ShaderProgram
         throw new GdxRuntimeException( "This method is unfinished - DO NOT USE!!" );
 
 //TODO:
-/*        
+/*
         _parameters.Clear();
 
         Gdx.GL.glGetProgramiv( ( uint ) Handle, IGL.GL_ACTIVE_UNIFORMS, ( int* ) _parameters.BackingArray()[ 0 ] );
@@ -900,7 +928,7 @@ public class ShaderProgram
             _parameters.Put( 0, 1 );
 
             _progType.Clear();
-            
+
             // This method is not present in DotGL...
             string? name = Gdx.GL.glGetActiveUniform( Handle, i, _parameters, _progType );
 

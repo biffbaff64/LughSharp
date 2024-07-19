@@ -32,36 +32,36 @@ public abstract class OpenALMusic : IMusic
 {
     public const int INVALID_SOURCE_ID = AL.INVALID_VALUE;
 
-    private readonly static int         _bufferSize     = 4096 * 10;
-    private readonly static int         _bufferCount    = 3;
-    private readonly static int         _bytesPerSample = 2;
-    private readonly static byte[]      _tempBytes      = new byte[ _bufferSize ];
-    private readonly static ByteBuffer  _tempBuffer     = BufferUtils.NewByteBuffer( _bufferSize, false );
-    private readonly        OpenALAudio _audio;
-    private readonly        float       _pan = 0;
+    protected readonly FileInfo File;
 
-    private readonly List< float > _renderedSecondsQueue = new( _bufferCount );
-    private readonly float         _volume               = 1;
+    private readonly static int           _bufferSize     = 4096 * 10;
+    private readonly static int           _bufferCount    = 3;
+    private readonly static int           _bytesPerSample = 2;
+    private readonly static byte[]        _tempBytes      = new byte[ _bufferSize ];
+    private readonly static byte[]        _tempBuffer     = new byte[ _bufferSize ];
+    private readonly        OpenALAudio   _audio;
+    private readonly        float         _pan                  = 0;
+    private readonly        List< float > _renderedSecondsQueue = new( _bufferCount );
+    private readonly        float         _volume               = 1;
 
-    protected readonly FileInfo file;
-    private            uint[]?  _buffers;
-    private            int      _format;
-    private            bool     _isPlaying;
-    private            float    _maxSecondsPerBuffer;
-    private            float    _renderedSeconds;
-    private            int      _sampleRate;
+    private uint[]? _buffers;
+    private int     _format;
+    private bool    _isPlaying;
+    private float   _maxSecondsPerBuffer;
+    private float   _renderedSeconds;
+    private int     _sampleRate;
 
     protected OpenALMusic()
     {
         _audio               = null!;
-        file                 = null!;
+        File                 = null!;
         OnCompletionListener = null;
     }
 
     protected OpenALMusic( OpenALAudio audio, FileInfo file )
     {
         _audio               = audio;
-        this.file            = file;
+        this.File            = file;
         OnCompletionListener = null;
     }
 

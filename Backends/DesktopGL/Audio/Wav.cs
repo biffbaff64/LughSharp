@@ -61,7 +61,7 @@ public class Wav
             }
             catch ( IOException ex )
             {
-                throw new GdxRuntimeException( "Error reading WAV file: " + file, ex );
+                throw new GdxRuntimeException( "Error reading WAV file: " + File, ex );
             }
         }
 

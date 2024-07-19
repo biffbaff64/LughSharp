@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Audio.OpenAL;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
@@ -102,9 +101,6 @@ public class OpenALAudio : IGLAudio
             return;
         }
 
-        //TODO: Don't think this is needed?
-//        AL.CreateCapabilities( deviceCapabilities );
-
         _allSources = new uint[ simultaneousSources ];
 
         AL.GenSources( simultaneousSources, out _allSources );
@@ -113,20 +109,9 @@ public class OpenALAudio : IGLAudio
         _soundIdToSource = new Dictionary< long, int >();
         _sourceToSoundId = new Dictionary< int, long >();
 
-        var orientation = BufferUtils.NewFloatBuffer( 6 ).Put( new[] { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f } );
-        orientation.Flip();
-
-        AL.Listenerfv( AL.ORIENTATION, orientation.BackingArray() );
-
-        var velocity = BufferUtils.NewFloatBuffer( 3 ).Put( new[] { 0.0f, 0.0f, 0.0f } );
-        velocity.Flip();
-
-        AL.Listenerfv( AL.VELOCITY, velocity.BackingArray() );
-
-        var position = BufferUtils.NewFloatBuffer( 3 ).Put( new[] { 0.0f, 0.0f, 0.0f } );
-        position.Flip();
-
-        AL.Listenerfv( AL.POSITION, position.BackingArray() );
+        AL.Listenerfv( AL.ORIENTATION, new[] { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f } );
+        AL.Listenerfv( AL.VELOCITY, new[] { 0.0f, 0.0f, 0.0f } );
+        AL.Listenerfv( AL.POSITION, new[] { 0.0f, 0.0f, 0.0f } );
 
         _recentSounds = new OpenALSound[ simultaneousSources ];
     }
