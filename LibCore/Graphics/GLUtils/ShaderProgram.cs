@@ -908,7 +908,7 @@ public class ShaderProgram
 
     /// <summary>
     /// </summary>
-    private unsafe void FetchUniforms()
+    private void FetchUniforms()
     {
         throw new GdxRuntimeException( "This method is unfinished - DO NOT USE!!" );
 

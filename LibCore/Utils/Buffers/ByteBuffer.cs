@@ -532,8 +532,6 @@ public abstract class ByteBuffer : Buffer
     /// <exception cref="GdxRuntimeException"> If this buffer is read-only </exception>
     public abstract ByteBuffer Compact();
 
-    protected bool NativeByteOrder = ByteOrder.NativeOrder == ByteOrder.BigEndian;
-
     /// <summary>
     /// Returns a string summarizing the state of this buffer.
     /// </summary>
@@ -973,7 +971,6 @@ public abstract class ByteBuffer : Buffer
     /// </summary>
     /// <returns> A new short buffer </returns>
     public abstract ShortBuffer AsShortBuffer();
-
 
     /// <summary>
     /// Relative <i>get</i> method for reading an int value.

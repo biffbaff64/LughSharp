@@ -35,7 +35,6 @@
 #endif
 
 #if OGL_P_CORE
-using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 #if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -19643,29 +19642,6 @@ public unsafe class GLBindings : IGLBindings
 #endif
     }
 #endif
-    public void glGetProgramiv( GLuint program, GLenum pname, Buffer buffer )
-    {
-        fixed ( int* ptr = &( ( IntBuffer ) buffer ).BackingArray()[ 0 ] )
-        {
-            _glGetProgramiv( program, pname, ptr );
-        }
-    }
-
-    public void glUniformMatrix4fv( GLint location, GLsizei count, GLboolean transpose, Buffer buffer )
-    {
-        fixed ( float* ptr = &( ( FloatBuffer ) buffer ).BackingArray()[ 0 ] )
-        {
-            _glUniformMatrix4fv( location, count, transpose, ptr );
-        }
-    }
-
-    public void glVertexAttribPointer( int location, int size, int type, bool normalized, int stride, Buffer buffer )
-    {
-        fixed ( void* ptr = &buffer.BackingArray()[ 0 ] )
-        {
-            _glVertexAttribPointer( ( uint ) location, size, type, normalized, stride, ptr );
-        }
-    }
 }
 
 #pragma warning restore IDE0079 // Remove unnecessary suppression
