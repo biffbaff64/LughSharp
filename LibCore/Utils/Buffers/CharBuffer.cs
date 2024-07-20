@@ -291,7 +291,7 @@ public abstract class CharBuffer : Buffer
     /// </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
-    public ByteOrder Order()
+    public virtual ByteOrder Order()
     {
         return BigEndian ? ByteOrder.BigEndian : ByteOrder.LittleEndian;
     }

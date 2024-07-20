@@ -209,7 +209,7 @@ public class HeapIntBuffer : IntBuffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new GdxRuntimeException( "Heap buffer is null!" );
         }
 
         System.Array.Copy( Hb, Ix( Position ), Hb, Ix( 0 ), Remaining() );

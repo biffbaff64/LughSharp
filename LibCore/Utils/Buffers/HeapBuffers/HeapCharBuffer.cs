@@ -85,7 +85,7 @@ public class HeapCharBuffer : CharBuffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new GdxRuntimeException( "Heap buffer is null!" );
         }
 
         CheckBounds( offset, length, dst.Length );

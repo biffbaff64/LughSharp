@@ -95,12 +95,6 @@ public class HeapCharBufferR : HeapCharBuffer
         return new HeapCharBufferR( Hb, -1, Position + start, Position + end, Capacity, Offset );
     }
 
-    /// <inheritdoc />
-    public override ByteOrder Order()
-    {
-        return ByteOrder.NativeOrder;
-    }
-
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 

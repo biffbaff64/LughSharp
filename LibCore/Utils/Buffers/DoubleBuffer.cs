@@ -695,7 +695,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     /// </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
-    public ByteOrder Order()
+    public virtual ByteOrder Order()
     {
         return BigEndian ? ByteOrder.BigEndian : ByteOrder.LittleEndian;
     }
@@ -708,7 +708,7 @@ public abstract class DoubleBuffer : Buffer, IComparable< DoubleBuffer >
     /// or <see cref="ByteOrder.LittleEndian"/>
     /// </param>
     /// <returns> This buffer </returns>
-    public DoubleBuffer Order( ByteOrder order )
+    public virtual DoubleBuffer Order( ByteOrder order )
     {
         BigEndian       = order == ByteOrder.BigEndian;
         NativeByteOrder = BigEndian == ( ByteOrder.NativeOrder == ByteOrder.BigEndian );

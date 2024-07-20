@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.IO.Hashing;
+using LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Utils.Buffers.HeapBuffers;
@@ -89,7 +89,7 @@ public class HeapByteBuffer : ByteBuffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new GdxRuntimeException( "Heap buffer is null!" );
         }
 
         CheckBounds( offset, length, dst.Length );
@@ -123,7 +123,7 @@ public class HeapByteBuffer : ByteBuffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new GdxRuntimeException( "Heap buffer is null!" );
         }
 
         Hb[ Ix( NextPutIndex() ) ] = b;
@@ -136,7 +136,7 @@ public class HeapByteBuffer : ByteBuffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new GdxRuntimeException( "Heap buffer is null!" );
         }
 
         Hb[ Ix( CheckIndex( index ) ) ] = b;
@@ -149,7 +149,7 @@ public class HeapByteBuffer : ByteBuffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new GdxRuntimeException( "Heap buffer is null!" );
         }
 
         CheckBounds( offset, length, src.Length );
@@ -170,7 +170,7 @@ public class HeapByteBuffer : ByteBuffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new GdxRuntimeException( "Heap buffer is null!" );
         }
 
         if ( src is HeapByteBuffer sb )
@@ -217,7 +217,7 @@ public class HeapByteBuffer : ByteBuffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new GdxRuntimeException( "Heap buffer is null!" );
         }
 
         Array.Copy( Hb, Ix( Position ), Hb, Ix( 0 ), Remaining() );
@@ -257,18 +257,18 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-//    /// <inheritdoc />
-//    public override CharBuffer AsCharBuffer()
-//    {
-//        Logger.CheckPoint();
+    /// <inheritdoc />
+    public override CharBuffer AsCharBuffer()
+    {
+        Logger.CheckPoint();
         
-//        var size = Remaining() >> 1;
-//        var off  = Offset + Position;
+        var size = Remaining() >> 1;
+        var off  = Offset + Position;
         
-//        return BigEndian
-//                   ? new ByteBufferAsCharBufferB( this, -1, 0, size, size, off )
-//                   : new ByteBufferAsCharBufferL( this, -1, 0, size, size, off );
-//    }
+        return BigEndian
+                   ? new ByteBufferAsCharBufferB( this, -1, 0, size, size, off )
+                   : new ByteBufferAsCharBufferL( this, -1, 0, size, size, off );
+    }
 
     /// <inheritdoc />
     public override short GetShort()
@@ -298,18 +298,18 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-//    /// <inheritdoc />
-//    public override ShortBuffer AsShortBuffer()
-//    {
-//        Logger.CheckPoint();
+    /// <inheritdoc />
+    public override ShortBuffer AsShortBuffer()
+    {
+        Logger.CheckPoint();
         
-//        var size = Remaining() >> 1;
-//        var off  = Offset + Position;
+        var size = Remaining() >> 1;
+        var off  = Offset + Position;
 
-//        return BigEndian
-//                   ? new ByteBufferAsShortBufferB( this, -1, 0, size, size, off )
-//                   : new ByteBufferAsShortBufferL( this, -1, 0, size, size, off );
-//    }
+        return BigEndian
+                   ? new ByteBufferAsShortBufferB( this, -1, 0, size, size, off )
+                   : new ByteBufferAsShortBufferL( this, -1, 0, size, size, off );
+    }
 
     /// <inheritdoc />
     public override int GetInt()
@@ -339,18 +339,18 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-//    /// <inheritdoc />
-//    public override IntBuffer AsIntBuffer()
-//    {
-//        Logger.CheckPoint();
+    /// <inheritdoc />
+    public override IntBuffer AsIntBuffer()
+    {
+        Logger.CheckPoint();
         
-//        var size = Remaining() >> 2;
-//        var off  = Offset + Position;
+        var size = Remaining() >> 2;
+        var off  = Offset + Position;
 
-//        return BigEndian
-//                   ? new ByteBufferAsIntBufferB( this, -1, 0, size, size, off )
-//                   : new ByteBufferAsIntBufferL( this, -1, 0, size, size, off );
-//    }
+        return BigEndian
+                   ? new ByteBufferAsIntBufferB( this, -1, 0, size, size, off )
+                   : new ByteBufferAsIntBufferL( this, -1, 0, size, size, off );
+    }
 
     /// <inheritdoc />
     public override long GetLong()
@@ -380,16 +380,16 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-//    /// <inheritdoc />
-//    public override LongBuffer AsLongBuffer()
-//    {
-//        var size = Remaining() >> 3;
-//        var off  = Offset + Position;
+    /// <inheritdoc />
+    public override LongBuffer AsLongBuffer()
+    {
+        var size = Remaining() >> 3;
+        var off  = Offset + Position;
 
-//        return BigEndian
-//                   ? new ByteBufferAsLongBufferB( this, -1, 0, size, size, off )
-//                   : new ByteBufferAsLongBufferL( this, -1, 0, size, size, off );
-//    }
+        return BigEndian
+                   ? new ByteBufferAsLongBufferB( this, -1, 0, size, size, off )
+                   : new ByteBufferAsLongBufferL( this, -1, 0, size, size, off );
+    }
 
     /// <inheritdoc />
     public override float GetFloat()
@@ -419,16 +419,16 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-//    /// <inheritdoc />
-//    public override FloatBuffer AsFloatBuffer()
-//    {
-//        var size = Remaining() >> 2;
-//        var off  = Offset + Position;
+    /// <inheritdoc />
+    public override FloatBuffer AsFloatBuffer()
+    {
+        var size = Remaining() >> 2;
+        var off  = Offset + Position;
 
-//        return BigEndian
-//                   ? new ByteBufferAsFloatBufferB( this, -1, 0, size, size, off )
-//                   : new ByteBufferAsFloatBufferL( this, -1, 0, size, size, off );
-//    }
+        return BigEndian
+                   ? new ByteBufferAsFloatBufferB( this, -1, 0, size, size, off )
+                   : new ByteBufferAsFloatBufferL( this, -1, 0, size, size, off );
+    }
 
     /// <inheritdoc />
     public override double GetDouble()
@@ -458,19 +458,17 @@ public class HeapByteBuffer : ByteBuffer
         return this;
     }
 
-//    /// <inheritdoc />
-//    public override DoubleBuffer AsDoubleBuffer()
-//    {
-//        var size = Remaining() >> 3;
-//        var off  = Offset + Position;
+    /// <inheritdoc />
+    public override DoubleBuffer AsDoubleBuffer()
+    {
+        var size = Remaining() >> 3;
+        var off  = Offset + Position;
 
-//        return BigEndian
-//                   ? new ByteBufferAsDoubleBufferB( this, -1, 0, size, size, off )
-//                   : new ByteBufferAsDoubleBufferL( this, -1, 0, size, size, off );
-//    }
+        return BigEndian
+                   ? new ByteBufferAsDoubleBufferB( this, -1, 0, size, size, off )
+                   : new ByteBufferAsDoubleBufferL( this, -1, 0, size, size, off );
+    }
     
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
-    
 }

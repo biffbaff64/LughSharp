@@ -814,7 +814,7 @@ public abstract class FloatBuffer : Buffer
     /// </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
-    public ByteOrder Order()
+    public virtual ByteOrder Order()
     {
         return BigEndian ? ByteOrder.BigEndian : ByteOrder.LittleEndian;
     }
@@ -827,7 +827,7 @@ public abstract class FloatBuffer : Buffer
     /// or <see cref="ByteOrder.LittleEndian"/>
     /// </param>
     /// <returns> This buffer </returns>
-    public FloatBuffer Order( ByteOrder order )
+    public virtual FloatBuffer Order( ByteOrder order )
     {
         BigEndian       = order == ByteOrder.BigEndian;
         NativeByteOrder = BigEndian == ( ByteOrder.NativeOrder == ByteOrder.BigEndian );

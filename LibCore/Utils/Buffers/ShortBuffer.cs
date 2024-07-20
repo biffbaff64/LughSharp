@@ -711,7 +711,7 @@ public abstract class ShortBuffer : Buffer
     /// </para>
     /// </summary>
     /// <returns> This buffer's byte order </returns>
-    public ByteOrder Order()
+    public virtual ByteOrder Order()
     {
         return BigEndian ? ByteOrder.BigEndian : ByteOrder.LittleEndian;
     }
@@ -724,7 +724,7 @@ public abstract class ShortBuffer : Buffer
     /// or <see cref="ByteOrder.LittleEndian"/>
     /// </param>
     /// <returns> This buffer </returns>
-    public ShortBuffer Order( ByteOrder order )
+    public virtual ShortBuffer Order( ByteOrder order )
     {
         BigEndian       = order == ByteOrder.BigEndian;
         NativeByteOrder = BigEndian == ( ByteOrder.NativeOrder == ByteOrder.BigEndian );

@@ -66,13 +66,13 @@ public class HeapDoubleBuffer : DoubleBuffer
     /// <inheritdoc />
     public override double Get()
     {
-        return Hb?[ Ix( NextGetIndex() ) ] ?? throw new GdxRuntimeException( "HB is null!" );
+        return Hb?[ Ix( NextGetIndex() ) ] ?? throw new GdxRuntimeException( "Heap buffer is null!" );
     }
 
     /// <inheritdoc />
     public override double Get( int index )
     {
-        return Hb?[ Ix( CheckIndex( index ) ) ] ?? throw new GdxRuntimeException( "HB is null!" );
+        return Hb?[ Ix( CheckIndex( index ) ) ] ?? throw new GdxRuntimeException( "Heap buffer is null!" );
     }
 
     /// <inheritdoc />
@@ -105,7 +105,7 @@ public class HeapDoubleBuffer : DoubleBuffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new GdxRuntimeException( "Heap buffer is null!" );
         }
 
         Hb[ Ix( NextPutIndex() ) ] = d;
@@ -118,7 +118,7 @@ public class HeapDoubleBuffer : DoubleBuffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new GdxRuntimeException( "Heap buffer is null!" );
         }
 
         CheckBounds( offset, length, src.Length );
@@ -139,7 +139,7 @@ public class HeapDoubleBuffer : DoubleBuffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new GdxRuntimeException( "Heap buffer is null!" );
         }
 
         if ( src is HeapDoubleBuffer sb )
@@ -186,7 +186,7 @@ public class HeapDoubleBuffer : DoubleBuffer
     {
         if ( Hb == null )
         {
-            throw new GdxRuntimeException( "HB is null!" );
+            throw new GdxRuntimeException( "Heap buffer is null!" );
         }
 
         System.Array.Copy( Hb, Ix( Position ), Hb, Ix( 0 ), Remaining() );
