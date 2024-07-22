@@ -861,7 +861,7 @@ UTILS/COLLECTIONS
 
     CODE   DOCUMENT
     ----   --------
-    - DONE - IP   - Array<T>                       Converted, but use List<T> for most cases.
+    - DONE - DONE - Array<T>                       Converted, but use List<T> for most cases.
     - DONE - DONE - DictionaryExtensions
     - DONE - DONE - DelayedRemovalList             Convert / Extend List<>
     - DONE - DONE - ListExtensions

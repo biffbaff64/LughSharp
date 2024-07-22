@@ -235,11 +235,11 @@ public abstract class ShortBuffer : Buffer
     /// In other words, an invocation of this method of the form <tt>src.get(dst, off, len)</tt>
     /// has exactly the same effect as the loop
     /// <code>
-    ///             for (int i = off; i &lt; off + len; i++)
-    ///             {
-    ///                 dst[i] = src.get();
-    ///             }
-    ///         </code>
+    ///     for (int i = off; i &lt; off + len; i++)
+    ///     {
+    ///         dst[i] = src.get();
+    ///     }
+    /// </code>
     /// except that it first checks that there are sufficient shorts in this buffer and it
     /// is potentially much more efficient.
     /// </para>
@@ -287,8 +287,8 @@ public abstract class ShortBuffer : Buffer
     /// array. An invocation of this method of the form <tt>src.get(a)</tt> behaves
     /// in exactly the same way as the invocation
     /// <code>
-    ///             src.get(a, 0, a.Length);
-    ///         </code>
+    ///     src.get(a, 0, a.Length);
+    /// </code>
     /// </para>
     /// </summary>
     /// <param name="dst">
@@ -322,11 +322,11 @@ public abstract class ShortBuffer : Buffer
     /// exactly the same effect as the loop
     /// </para>
     /// <code>
-    ///         while (src.hasRemaining())
-    ///         {
-    ///             dst.put(src.get());
-    ///         }
-    ///     </code>
+    ///     while (src.hasRemaining())
+    ///     {
+    ///         dst.put(src.get());
+    ///     }
+    /// </code>
     /// <para>
     /// except that it first checks that there is sufficient space in this
     /// buffer and it is potentially much more efficient.
@@ -390,11 +390,11 @@ public abstract class ShortBuffer : Buffer
     /// <tt>dst.put(src, off, len)</tt> has exactly the same effect as
     /// the loop
     /// <code>
-    ///             for (int i = off; i &lt; off + len; i++)
-    ///             {
-    ///                 dst.put( a[ i ] );
-    ///             }
-    ///         </code>
+    ///     for (int i = off; i &lt; off + len; i++)
+    ///     {
+    ///         dst.put( a[ i ] );
+    ///     }
+    /// </code>
     /// except that it first checks that there is sufficient space in this
     /// buffer and it is potentially much more efficient.
     /// </para>

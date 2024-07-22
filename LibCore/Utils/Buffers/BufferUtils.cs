@@ -69,7 +69,7 @@ public static class BufferUtils
     /// Creates a new <see cref="ByteBuffer"/> with the specified capacity.
     /// All elements will be initialised to zero.
     /// </summary>
-    public static ByteBuffer NewByteBuffer( int numBytes, bool isUnsafe )
+    public static ByteBuffer NewByteBuffer( int numBytes, bool isUnsafe = false )
     {
         var buffer = isUnsafe
                          ? NewDisposableByteBuffer( numBytes )

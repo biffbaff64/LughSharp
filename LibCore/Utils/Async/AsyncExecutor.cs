@@ -39,6 +39,8 @@ public class AsyncExecutor : IDisposable
     private readonly SemaphoreSlim           _semaphore;
     private readonly ConcurrentQueue< Task > _taskQueue;
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Creates a new AsynchExecutor that allows maxConcurrent Runnable instances to run in parallel.
     /// </summary>
@@ -68,16 +70,6 @@ public class AsyncExecutor : IDisposable
                 Name         = name
             };
             thread.Start();
-        }
-    }
-
-    /// <inheritdoc />
-    public void Dispose()
-    {
-        _cts.Cancel();
-
-        while ( _taskQueue.TryDequeue( out var _ ) )
-        {
         }
     }
 
@@ -112,5 +104,15 @@ public class AsyncExecutor : IDisposable
         _taskQueue.Enqueue( taskWrapper );
 
         return new AsyncResult< T >( taskWrapper );
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        _cts.Cancel();
+
+        while ( _taskQueue.TryDequeue( out var _ ) )
+        {
+        }
     }
 }

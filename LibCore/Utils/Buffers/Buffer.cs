@@ -402,17 +402,16 @@ public abstract class Buffer
     public abstract bool HasBackingArray();
 
     /// <summary>
-    /// Returns the array that backs this buffer <c>(optional operation)</c>.
-    /// This method is intended to allow array-backed buffers to be passed to
-    /// native code more efficiently. Concrete subclasses provide more strongly
-    /// typed return values for this method.
+    /// Returns the array that backs this buffer <c>(optional operation)</c>. This method
+    /// is intended to allow array-backed buffers to be passed to native code more efficiently.
+    /// Concrete subclasses provide more strongly typed return values for this method.
     /// <para>
-    /// Modifications to this buffer's content will cause the returned array's
-    /// content to be modified, and vice versa.
+    /// Modifications to this buffer's content will cause the returned array's content to be
+    /// modified, and vice versa.
     /// </para>
     /// <para>
-    /// Invoke the <see cref="HasBackingArray"/> method before invoking this method in
-    /// order to ensure that this buffer has an accessible backing array.
+    /// Invoke the <see cref="HasBackingArray"/> method before invoking this method in order
+    /// to ensure that this buffer has an accessible backing array.
     /// </para>
     /// </summary>
     /// <returns>  The array that backs this buffer </returns>

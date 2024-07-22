@@ -601,10 +601,15 @@ public class Array< T >
     }
 
     /// <summary>
+    /// Selects the Kth lowest ranked object using the specified comparator.
     /// </summary>
-    /// <param name="comparator"></param>
-    /// <param name="kthLowest"></param>
-    /// <returns></returns>
+    /// <param name="comparator"> Used for comparison. </param>
+    /// <param name="kthLowest">
+    /// Rank of desired object according to comparison, n is based on ordinal numbers, not
+    /// array indices. for min value use 1, for max value use size of array, using 0 results
+    /// in runtime exception.
+    /// </param>
+    /// <returns> The index of the Nth lowest ranked object. </returns>
     /// <exception cref="GdxRuntimeException"></exception>
     public virtual int SelectRankedIndex( IComparer< T > comparator, int kthLowest )
     {
@@ -643,6 +648,13 @@ public class Array< T >
     }
 
     /// <summary>
+    /// Returns an iterable for the selected items in the array. Remove is
+    /// supported, but not between hasNext() and next().
+    /// <para>
+    /// If Collections.allocateIterators is false, the same iterable instance
+    /// is returned each time this method is called. Use the Predicate.
+    /// PredicateIterable constructor for nested or multithreaded iteration.
+    /// </para>
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns></returns>

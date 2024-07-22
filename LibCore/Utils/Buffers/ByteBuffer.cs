@@ -173,8 +173,6 @@ public abstract class ByteBuffer : Buffer
     /// </exception>
     public static ByteBuffer Allocate( int capacity )
     {
-        Logger.CheckPoint();
-
         if ( capacity < 0 )
         {
             throw new ArgumentException( $"capacity should not be less than zero! : {capacity}" );
@@ -255,11 +253,11 @@ public abstract class ByteBuffer : Buffer
     /// In other words, an invocation of this method of the form <c>src.get(dst, off, len)</c>
     /// has exactly the same effect as the loop
     /// <code>
-    ///             for ( int i = off; i &lt; off + len; i++ )
-    ///             {
-    ///                 dst[i] = src.get():
-    ///             }
-    ///         </code>
+    ///     for ( int i = off; i &lt; off + len; i++ )
+    ///     {
+    ///         dst[i] = src.get():
+    ///     }
+    /// </code>
     /// except that it first checks that there are sufficient bytes in
     /// this buffer and it is potentially much more efficient.
     /// </para>
@@ -305,7 +303,7 @@ public abstract class ByteBuffer : Buffer
     /// behaves in exactly the same way as invoking:-
     /// <code>
     ///     src.Get(dst, 0, dst.Length);
-    ///     </code>
+    /// </code>
     /// </summary>
     /// <param name="dst">The destination array.</param>
     /// <returns>This buffer.</returns>
@@ -423,10 +421,8 @@ public abstract class ByteBuffer : Buffer
 
     /// <summary>
     /// Tells whether or not this buffer is backed by an accessible byte array.
-    /// <para>
     /// If this method returns <c>true</c> then the <see cref="Array()"/> and
     /// <see cref="ArrayOffset()"/> methods may safely be invoked.
-    /// </para>
     /// </summary>
     /// <returns>
     /// <c>true</c> if, and only if, this buffer is backed by an array and is not read-only
@@ -438,10 +434,8 @@ public abstract class ByteBuffer : Buffer
 
     /// <summary>
     /// Returns the byte array that backs this buffer <i>(optional operation)</i>.
-    /// <para>
     /// Modifications to this buffer's content will cause the returned array's
     /// content to be modified, and vice versa.
-    /// </para>
     /// <para>
     /// Invoke the <see cref="HasBackingArray"/> method before invoking this method in
     /// order to ensure that this buffer has an accessible backing array.
@@ -464,7 +458,7 @@ public abstract class ByteBuffer : Buffer
 
     /// <summary>
     /// Returns the offset within this buffer's backing array of the first
-    /// element of the buffer  <i>(optional operation)</i>.
+    /// element of the buffer <i>(optional operation)</i>.
     /// <para>
     /// If this buffer is backed by an array then buffer position <i>p</i>
     /// corresponds to array index <i>p</i> + <c>arrayOffset()</c>.
