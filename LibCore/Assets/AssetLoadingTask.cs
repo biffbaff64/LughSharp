@@ -65,6 +65,8 @@ public class AssetLoadingTask : IAsyncTask< object >
     /// <param name="threadPool">The asynchronous executor for handling loading tasks.</param>
     public AssetLoadingTask( AssetManager manager, AssetDescriptor assetDesc, AssetLoader loader, AsyncExecutor threadPool )
     {
+        Logger.CheckPoint();
+
         _manager   = manager;
         _executor  = threadPool;
         AssetDesc  = assetDesc;

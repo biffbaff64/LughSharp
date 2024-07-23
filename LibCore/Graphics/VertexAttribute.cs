@@ -69,6 +69,11 @@ public class VertexAttribute
     /// </summary>
     public readonly int Usage;
 
+    /// <summary>
+    /// the offset of this attribute in bytes, don't change this!
+    /// </summary>
+    public int Offset { get; set; }
+
     private readonly int _usageIndex;
 
     // ------------------------------------------------------------------------
@@ -101,6 +106,8 @@ public class VertexAttribute
                 alias,
                 unit )
     {
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -136,6 +143,8 @@ public class VertexAttribute
                             string alias,
                             int unit = 0 )
     {
+        Logger.CheckPoint();
+
         this.Usage         = usage;
         this.NumComponents = numComponents;
         this.Type          = type;
@@ -143,12 +152,9 @@ public class VertexAttribute
         this.Alias         = alias;
         this.Unit          = unit;
         _usageIndex        = int.TrailingZeroCount( usage );
+        
+        Logger.Debug( " - finished" );
     }
-
-    /// <summary>
-    /// the offset of this attribute in bytes, don't change this!
-    /// </summary>
-    public int Offset { get; set; }
 
     /// <returns>
     /// A copy of this VertexAttribute with the same parameters.

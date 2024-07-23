@@ -35,6 +35,9 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class InstanceBufferObjectSubData : IInstanceData
 {
+    public int              BufferHandle { get; set; }
+    public VertexAttributes Attributes   { get; set; }
+
     private readonly FloatBuffer _buffer;
     private readonly ByteBuffer  _byteBuffer;
     private readonly bool        _isDirect;
@@ -44,6 +47,8 @@ public class InstanceBufferObjectSubData : IInstanceData
     private          bool _isDirty = false;
     private          bool _isStatic;
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Constructs a new interleaved InstanceBufferObject.
     /// </summary>
@@ -55,6 +60,7 @@ public class InstanceBufferObjectSubData : IInstanceData
                                         params VertexAttribute[] instanceAttributes )
         : this( isStatic, numInstances, new VertexAttributes( instanceAttributes ) )
     {
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -65,6 +71,8 @@ public class InstanceBufferObjectSubData : IInstanceData
     /// <param name="instanceAttributes"> the <see cref="VertexAttributes"/>". </param>
     public InstanceBufferObjectSubData( bool isStatic, int numInstances, VertexAttributes instanceAttributes )
     {
+        Logger.CheckPoint();
+
         _isStatic   = isStatic;
         Attributes  = instanceAttributes;
         _byteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numInstances, false );
@@ -77,9 +85,6 @@ public class InstanceBufferObjectSubData : IInstanceData
         _buffer.Flip();
         _byteBuffer.Flip();
     }
-
-    public int              BufferHandle { get; set; }
-    public VertexAttributes Attributes   { get; set; }
 
     /// <summary>
     /// Returns the number of instances in this buffer.

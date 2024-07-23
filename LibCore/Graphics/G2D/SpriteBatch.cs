@@ -69,6 +69,8 @@ public class SpriteBatch : IBatch
     /// </summary>
     public SpriteBatch() : this( 1000 )
     {
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -143,6 +145,8 @@ public class SpriteBatch : IBatch
 
         if ( defaultShader == null )
         {
+            Logger.CheckPoint();
+            
             _shader     = CreateDefaultShader();
             _ownsShader = true;
         }

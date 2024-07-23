@@ -62,6 +62,8 @@ public class Pixmap : IDisposable
     /// <param name="format">The <see cref="Pixmap.Format"/></param>
     public Pixmap( int width, int height, Format format )
     {
+        Logger.CheckPoint();
+
         GDX2DPixmap = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
         SetColor( 0, 0, 0, 0 );
         FillWithCurrentColor();
@@ -75,6 +77,8 @@ public class Pixmap : IDisposable
     /// </summary>
     public Pixmap( byte[] encodedData, int offset, int len )
     {
+        Logger.CheckPoint();
+
         try
         {
             GDX2DPixmap = new Gdx2DPixmap( encodedData, offset, len, 0 );
@@ -95,6 +99,8 @@ public class Pixmap : IDisposable
     /// <exception cref="GdxRuntimeException"></exception>
     public Pixmap( FileInfo file )
     {
+        Logger.CheckPoint();
+
         var fs = file.Open( FileMode.Open );
 
         try
@@ -119,6 +125,8 @@ public class Pixmap : IDisposable
     /// </summary>
     public Pixmap( Gdx2DPixmap pixmap )
     {
+        Logger.CheckPoint();
+
         GDX2DPixmap = pixmap;
     }
 

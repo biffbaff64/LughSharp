@@ -67,6 +67,7 @@ public class VertexBufferObject : IVertexData
     public VertexBufferObject( bool isStatic, int numVertices, params VertexAttribute[] attributes )
         : this( isStatic, numVertices, new VertexAttributes( attributes ) )
     {
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -77,6 +78,8 @@ public class VertexBufferObject : IVertexData
     /// <param name="attributes"> the <see cref="VertexAttributes"/>.  </param>
     public VertexBufferObject( bool isStatic, int numVertices, VertexAttributes attributes )
     {
+        Logger.CheckPoint();
+
         _buffer    = default( FloatBuffer? )!;
         Attributes = default( VertexAttributes )!;
 
@@ -103,6 +106,8 @@ public class VertexBufferObject : IVertexData
     /// <param name="attributes">The vertex attributes that define the structure of the vertex data.</param>
     public VertexBufferObject( int usage, ByteBuffer data, bool ownsBuffer, VertexAttributes attributes )
     {
+        Logger.CheckPoint();
+
         // Initialize the _buffer and Attributes fields to default values.
         _buffer    = default( FloatBuffer? )!;
         Attributes = default( VertexAttributes )!;

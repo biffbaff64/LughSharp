@@ -30,6 +30,9 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class TextureAtlas
 {
+    public List< AtlasRegion? > Regions  { get; set; } = new();
+    public List< Texture >      Textures { get; set; } = new( 4 );
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -37,6 +40,8 @@ public class TextureAtlas
     /// </summary>
     public TextureAtlas()
     {
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -47,6 +52,8 @@ public class TextureAtlas
     public TextureAtlas( string internalPackFile )
         : this( Gdx.Files.Internal( internalPackFile ).File )
     {
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -57,6 +64,8 @@ public class TextureAtlas
     public TextureAtlas( FileInfo packFile )
         : this( packFile, packFile.Directory )
     {
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -71,6 +80,8 @@ public class TextureAtlas
     public TextureAtlas( FileInfo packFile, bool flip )
         : this( packFile, packFile.Directory, flip )
     {
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -85,6 +96,8 @@ public class TextureAtlas
     public TextureAtlas( FileInfo packFile, DirectoryInfo? imagesDir, bool flip = false )
         : this( new TextureAtlasData( packFile, imagesDir, flip ) )
     {
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -93,11 +106,12 @@ public class TextureAtlas
     /// <param name="data"></param>
     public TextureAtlas( TextureAtlasData data )
     {
-        Load( data );
-    }
+        Logger.CheckPoint();
 
-    public List< AtlasRegion? > Regions  { get; set; } = new();
-    public List< Texture >      Textures { get; set; } = new( 4 );
+        Load( data );
+        
+        Logger.Debug( " - finished" );
+    }
 
     /// <summary>
     /// Adds the textures and regions from the specified <see cref="TextureAtlasData"/>

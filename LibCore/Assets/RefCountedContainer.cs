@@ -43,6 +43,8 @@ public class RefCountedContainer : IRefCountedContainer
 {
     public RefCountedContainer( object obj )
     {
+        Logger.CheckPoint();
+
         Asset = obj ?? throw new ArgumentException( "Object must not be null" );
     }
 

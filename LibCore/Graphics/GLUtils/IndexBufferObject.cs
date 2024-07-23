@@ -62,6 +62,7 @@ public class IndexBufferObject : IIndexData
     public IndexBufferObject( int maxIndices )
         : this( true, maxIndices )
     {
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -74,6 +75,8 @@ public class IndexBufferObject : IIndexData
     /// <param name="maxIndices">The maximum number of indices that this buffer can hold.</param>
     public IndexBufferObject( bool isStatic, int maxIndices )
     {
+        Logger.CheckPoint();
+
         // Determine if the buffer is empty based on the maxIndices parameter.
         _empty = maxIndices == 0;
 

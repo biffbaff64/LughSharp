@@ -42,6 +42,7 @@ public class VertexArray : IVertexData
     public VertexArray( int numVertices, params VertexAttribute[] attributes )
         : this( numVertices, new VertexAttributes( attributes ) )
     {
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -51,6 +52,8 @@ public class VertexArray : IVertexData
     /// <param name="attributes"> the <see cref="VertexAttributes"/> </param>
     public VertexArray( int numVertices, VertexAttributes attributes )
     {
+        Logger.CheckPoint();
+
         Attributes  = attributes;
         _byteBuffer = BufferUtils.NewByteBuffer( Attributes.VertexSize * numVertices, false );
         _buffer     = _byteBuffer.AsFloatBuffer();

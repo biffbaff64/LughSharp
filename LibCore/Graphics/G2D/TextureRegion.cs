@@ -52,6 +52,8 @@ public class TextureRegion
     /// </summary>
     public TextureRegion()
     {
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -60,9 +62,13 @@ public class TextureRegion
     /// <param name="texture"></param>
     public TextureRegion( Texture texture )
     {
+        Logger.CheckPoint();
+
         Texture = texture;
 
         SetRegion( 0, 0, texture.Width, texture.Height );
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <param name="texture"></param>
@@ -75,6 +81,8 @@ public class TextureRegion
     public TextureRegion( Texture texture, int width, int height )
         : this( texture, 0, 0, width, height )
     {
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <param name="texture"></param>
@@ -88,8 +96,12 @@ public class TextureRegion
     /// </param>
     public TextureRegion( Texture texture, int x, int y, int width, int height )
     {
+        Logger.CheckPoint();
+
         Texture = texture;
         SetRegion( x, y, width, height );
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -101,8 +113,12 @@ public class TextureRegion
     /// <param name="v2"></param>
     public TextureRegion( Texture texture, float u, float v, float u2, float v2 )
     {
+        Logger.CheckPoint();
+
         Texture = texture;
         SetRegionNV( u, v, u2, v2 );
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -110,7 +126,11 @@ public class TextureRegion
     /// <param name="region"></param>
     public TextureRegion( TextureRegion region )
     {
+        Logger.CheckPoint();
+
         SetRegion( region );
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -122,7 +142,11 @@ public class TextureRegion
     /// <param name="height"></param>
     public TextureRegion( TextureRegion region, int x, int y, int width, int height )
     {
+        Logger.CheckPoint();
+
         SetRegion( region, x, y, width, height );
+        
+        Logger.Debug( " - finished" );
     }
 
     public Texture Texture { get; set; } = null!;

@@ -64,6 +64,7 @@ public class AssetManager
     /// </summary>
     public AssetManager() : this( new AbsoluteFileHandleResolver() )
     {
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -75,6 +76,8 @@ public class AssetManager
     /// <param name="defaultLoaders">Whether to add the default loaders (default is true).</param>
     public AssetManager( IFileHandleResolver resolver, bool defaultLoaders = true )
     {
+        Logger.CheckPoint();
+
         if ( defaultLoaders )
         {
             //@formatter:off

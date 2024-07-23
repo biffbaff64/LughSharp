@@ -113,6 +113,8 @@ public class ShaderProgram
     /// <exception cref="ArgumentException"></exception>
     public ShaderProgram( string vertexShader, string fragmentShader )
     {
+        Logger.CheckPoint();
+
         ArgumentNullException.ThrowIfNull( vertexShader );
         ArgumentNullException.ThrowIfNull( fragmentShader );
 
@@ -148,9 +150,8 @@ public class ShaderProgram
     public ShaderProgram( FileSystemInfo vertexShader, FileSystemInfo fragmentShader )
         : this( File.ReadAllText( vertexShader.Name ), File.ReadAllText( fragmentShader.Name ) )
     {
+        Logger.CheckPoint();
     }
-
-//    internal readonly static IntBuffer Intbuf = BufferUtils.NewIntBuffer( 1 );
 
     /// <returns>
     /// the log info for the shader compilation and program linking stage.

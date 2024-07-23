@@ -43,13 +43,191 @@ public class Mesh
         VertexBufferObjectWithVAO
     }
 
+    // ------------------------------------------------------------------------
+
     /// <returns> the vertex attributes of this Mesh </returns>
     public VertexAttributes VertexAttributes => _vertices.Attributes;
 
-    private IVertexData MakeVertexBuffer( bool isStatic, int maxVertices, VertexAttributes vertexAttributes )
+    // ------------------------------------------------------------------------
+
+    private readonly static Dictionary< IApplication, List< Mesh >? > _meshes = new();
+
+    private readonly ShortBuffer _shortBuffer = BufferUtils.NewShortBuffer( 100 );
+    private readonly Vector3     _tmpV        = new();
+    private readonly IVertexData _vertices;
+    private readonly IIndexData  _indices;
+    private readonly bool        _isVertexArray;
+
+    private IInstanceData? _instances;
+
+    // ------------------------------------------------------------------------
+
+    #region constructors
+
+    /// <summary>
+    /// Creates a new mesh with the given attrributes.
+    /// </summary>
+    /// <param name="vertices"></param>
+    /// <param name="indices"></param>
+    /// <param name="isVertexArray"></param>
+    protected Mesh( IVertexData vertices, IIndexData indices, bool isVertexArray )
     {
-        return new VertexBufferObjectWithVAO( isStatic, maxVertices, vertexAttributes );
+        Logger.CheckPoint();
+
+        _vertices      = vertices;
+        _indices       = indices;
+        _isVertexArray = isVertexArray;
+
+        AddManagedMesh( Gdx.App, this );
     }
+
+    /// <summary>
+    /// Creates a new Mesh with the given attributes.
+    /// </summary>
+    /// <param name="isStatic"> whether this mesh is static or not. Allows for internal optimizations. </param>
+    /// <param name="maxVertices"> the maximum number of vertices this mesh can hold </param>
+    /// <param name="maxIndices"> the maximum number of indices this mesh can hold </param>
+    /// <param name="attributes">
+    /// the <see cref="VertexAttribute"/>s. Each vertex attribute defines one property
+    /// of a vertex such as position, normal or texture coordinate
+    /// </param>
+    public Mesh( bool isStatic, int maxVertices, int maxIndices, params VertexAttribute[] attributes )
+    {
+        Logger.CheckPoint();
+
+        _vertices      = MakeVertexBuffer( isStatic, maxVertices, new VertexAttributes( attributes ) );
+        _indices       = new IndexBufferObject( isStatic, maxIndices );
+        _isVertexArray = false;
+
+        AddManagedMesh( Gdx.App, this );
+    }
+
+    /// <summary>
+    /// Creates a new Mesh with the given attributes.
+    /// </summary>
+    /// <param name="isStatic">whether this mesh is static or not. Allows for internal optimizations.</param>
+    /// <param name="maxVertices">the maximum number of vertices this mesh can hold</param>
+    /// <param name="maxIndices">the maximum number of indices this mesh can hold</param>
+    /// <param name="attributes">
+    /// the <see cref="VertexAttributes"/>. Each vertex attribute defines one property
+    /// of a vertex such as position, normal or texture coordinate
+    /// </param>
+    public Mesh( bool isStatic, int maxVertices, int maxIndices, VertexAttributes attributes )
+    {
+        Logger.CheckPoint();
+
+        _vertices      = MakeVertexBuffer( isStatic, maxVertices, attributes );
+        _indices       = new IndexBufferObject( isStatic, maxIndices );
+        _isVertexArray = false;
+
+        AddManagedMesh( Gdx.App, this );
+    }
+
+    /// <summary>
+    /// Creates a new Mesh with the given attributes. Adds extra optimizations
+    /// for dynamic (frequently modified) meshes.
+    /// </summary>
+    /// <param name="staticVertices">
+    /// whether vertices of this mesh are static or not. Allows for internal optimizations.
+    /// </param>
+    /// <param name="staticIndices">
+    /// whether indices of this mesh are static or not. Allows for internal optimizations.
+    /// </param>
+    /// <param name="maxVertices"> the maximum number of vertices this mesh can hold </param>
+    /// <param name="maxIndices"> the maximum number of indices this mesh can hold </param>
+    /// <param name="attributes">
+    /// the <see cref="VertexAttributes"/>. Each vertex attribute defines one property
+    /// of a vertex such as position, normal or texture coordinate
+    /// </param>
+    public Mesh( bool staticVertices,
+                 bool staticIndices,
+                 int maxVertices,
+                 int maxIndices,
+                 VertexAttributes attributes )
+    {
+        Logger.CheckPoint();
+
+        _vertices      = MakeVertexBuffer( staticVertices, maxVertices, attributes );
+        _indices       = new IndexBufferObject( staticIndices, maxIndices );
+        _isVertexArray = false;
+
+        AddManagedMesh( Gdx.App, this );
+    }
+
+    /// <summary>
+    /// Creates a new Mesh with the given attributes. This is an expert method
+    /// with no error checking. Use at your own risk.
+    /// </summary>
+    /// <param name="type">the <see cref="VertexDataType"/> to be used, VBO or VA.</param>
+    /// <param name="isStatic">whether this mesh is static or not. Allows for internal optimizations.</param>
+    /// <param name="maxVertices">the maximum number of vertices this mesh can hold</param>
+    /// <param name="maxIndices">the maximum number of indices this mesh can hold</param>
+    /// <param name="attributes">
+    /// the <see cref="VertexAttribute"/>s. Each vertex attribute defines one property
+    /// of a vertex such as position, normal or texture coordinate
+    /// </param>
+    public Mesh( VertexDataType type,
+                 bool isStatic,
+                 int maxVertices,
+                 int maxIndices,
+                 params VertexAttribute[] attributes )
+        : this( type, isStatic, maxVertices, maxIndices, new VertexAttributes( attributes ) )
+    {
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
+    }
+
+    /// <summary>
+    /// Creates a new Mesh with the given attributes. This is an expert method
+    /// with no error checking. Use at your own risk.
+    /// </summary>
+    /// <param name="type">the <see cref="VertexDataType"/> to be used, VBO or VA.</param>
+    /// <param name="isStatic">whether this mesh is static or not. Allows for internal optimizations.</param>
+    /// <param name="maxVertices">the maximum number of vertices this mesh can hold</param>
+    /// <param name="maxIndices">the maximum number of indices this mesh can hold</param>
+    /// <param name="attributes">the <see cref="VertexAttributes"/>.</param>
+    public Mesh( VertexDataType type, bool isStatic, int maxVertices, int maxIndices, VertexAttributes attributes )
+    {
+        Logger.CheckPoint();
+
+        switch ( type )
+        {
+            case VertexDataType.VertexBufferObject:
+                _vertices      = new VertexBufferObject( isStatic, maxVertices, attributes );
+                _indices       = new IndexBufferObject( isStatic, maxIndices );
+                _isVertexArray = false;
+
+                break;
+
+            case VertexDataType.VertexBufferObjectSubData:
+                _vertices      = new VertexBufferObjectSubData( isStatic, maxVertices, attributes );
+                _indices       = new IndexBufferObjectSubData( isStatic, maxIndices );
+                _isVertexArray = false;
+
+                break;
+
+            case VertexDataType.VertexBufferObjectWithVAO:
+                _vertices      = new VertexBufferObjectWithVAO( isStatic, maxVertices, attributes );
+                _indices       = new IndexBufferObjectSubData( isStatic, maxIndices );
+                _isVertexArray = false;
+
+                break;
+
+            case VertexDataType.VertexArray:
+            default:
+                _vertices      = new VertexArray( maxVertices, attributes );
+                _indices       = new IndexArray( maxIndices );
+                _isVertexArray = true;
+
+                break;
+        }
+
+        AddManagedMesh( Gdx.App, this );
+
+        Logger.Debug( " - finished" );
+    }
+
+    #endregion constructors
 
     public Mesh EnableInstancedRendering( bool isStatic, int maxInstances, params VertexAttribute[] attributes )
     {
@@ -1130,12 +1308,20 @@ public class Mesh
 
     private static void AddManagedMesh( IApplication app, Mesh mesh )
     {
-        List< Mesh >? managedResources = _meshes[ app ];
+        List< Mesh >? managedResources;
 
-        managedResources ??= new List< Mesh >();
-        managedResources.Add( mesh );
+        if ( !_meshes.ContainsKey( app ) || _meshes[ app ] == null )
+        {
+            managedResources = new List< Mesh >();
+        }
+        else
+        {
+            managedResources = _meshes[ app ];
+        }
+        
+        managedResources?.Add( mesh );
 
-        _meshes[ app ] = managedResources;
+        _meshes.Add( app, managedResources );
     }
 
     /// <summary>
@@ -1635,169 +1821,8 @@ public class Mesh
 
     #endregion properties
 
-    #region private variables
-
-    private readonly static Dictionary< IApplication, List< Mesh >? > _meshes = new();
-
-    private readonly ShortBuffer    _shortBuffer = BufferUtils.NewShortBuffer( 100 );
-    private readonly Vector3        _tmpV        = new();
-    private readonly IVertexData    _vertices;
-    private readonly IIndexData     _indices;
-    private readonly bool           _isVertexArray;
-    private          IInstanceData? _instances;
-
-    #endregion private variables
-
-    #region constructors
-
-    /// <summary>
-    /// Creates a new mesh with the given attrributes.
-    /// </summary>
-    /// <param name="vertices"></param>
-    /// <param name="indices"></param>
-    /// <param name="isVertexArray"></param>
-    protected Mesh( IVertexData vertices, IIndexData indices, bool isVertexArray )
+    private IVertexData MakeVertexBuffer( bool isStatic, int maxVertices, VertexAttributes vertexAttributes )
     {
-        _vertices      = vertices;
-        _indices       = indices;
-        _isVertexArray = isVertexArray;
-
-        AddManagedMesh( Gdx.App, this );
+        return new VertexBufferObjectWithVAO( isStatic, maxVertices, vertexAttributes );
     }
-
-    /// <summary>
-    /// Creates a new Mesh with the given attributes.
-    /// </summary>
-    /// <param name="isStatic"> whether this mesh is static or not. Allows for internal optimizations. </param>
-    /// <param name="maxVertices"> the maximum number of vertices this mesh can hold </param>
-    /// <param name="maxIndices"> the maximum number of indices this mesh can hold </param>
-    /// <param name="attributes">
-    /// the <see cref="VertexAttribute"/>s. Each vertex attribute defines one property
-    /// of a vertex such as position, normal or texture coordinate
-    /// </param>
-    public Mesh( bool isStatic, int maxVertices, int maxIndices, params VertexAttribute[] attributes )
-    {
-        _vertices = MakeVertexBuffer( isStatic, maxVertices, new VertexAttributes( attributes ) );
-        _indices = new IndexBufferObject( isStatic, maxIndices );
-        _isVertexArray = false;
-
-        AddManagedMesh( Gdx.App, this );
-    }
-
-    /// <summary>
-    /// Creates a new Mesh with the given attributes.
-    /// </summary>
-    /// <param name="isStatic">whether this mesh is static or not. Allows for internal optimizations.</param>
-    /// <param name="maxVertices">the maximum number of vertices this mesh can hold</param>
-    /// <param name="maxIndices">the maximum number of indices this mesh can hold</param>
-    /// <param name="attributes">
-    /// the <see cref="VertexAttributes"/>. Each vertex attribute defines one property
-    /// of a vertex such as position, normal or texture coordinate
-    /// </param>
-    public Mesh( bool isStatic, int maxVertices, int maxIndices, VertexAttributes attributes )
-    {
-        _vertices      = MakeVertexBuffer( isStatic, maxVertices, attributes );
-        _indices       = new IndexBufferObject( isStatic, maxIndices );
-        _isVertexArray = false;
-
-        AddManagedMesh( Gdx.App, this );
-    }
-
-    /// <summary>
-    /// Creates a new Mesh with the given attributes. Adds extra optimizations
-    /// for dynamic (frequently modified) meshes.
-    /// </summary>
-    /// <param name="staticVertices">
-    /// whether vertices of this mesh are static or not. Allows for internal optimizations.
-    /// </param>
-    /// <param name="staticIndices">
-    /// whether indices of this mesh are static or not. Allows for internal optimizations.
-    /// </param>
-    /// <param name="maxVertices"> the maximum number of vertices this mesh can hold </param>
-    /// <param name="maxIndices"> the maximum number of indices this mesh can hold </param>
-    /// <param name="attributes">
-    /// the <see cref="VertexAttributes"/>. Each vertex attribute defines one property
-    /// of a vertex such as position, normal or texture coordinate
-    /// </param>
-    public Mesh( bool staticVertices,
-                 bool staticIndices,
-                 int maxVertices,
-                 int maxIndices,
-                 VertexAttributes attributes )
-    {
-        _vertices      = MakeVertexBuffer( staticVertices, maxVertices, attributes );
-        _indices       = new IndexBufferObject( staticIndices, maxIndices );
-        _isVertexArray = false;
-
-        AddManagedMesh( Gdx.App, this );
-    }
-
-    /// <summary>
-    /// Creates a new Mesh with the given attributes. This is an expert method
-    /// with no error checking. Use at your own risk.
-    /// </summary>
-    /// <param name="type">the <see cref="VertexDataType"/> to be used, VBO or VA.</param>
-    /// <param name="isStatic">whether this mesh is static or not. Allows for internal optimizations.</param>
-    /// <param name="maxVertices">the maximum number of vertices this mesh can hold</param>
-    /// <param name="maxIndices">the maximum number of indices this mesh can hold</param>
-    /// <param name="attributes">
-    /// the <see cref="VertexAttribute"/>s. Each vertex attribute defines one property
-    /// of a vertex such as position, normal or texture coordinate
-    /// </param>
-    public Mesh( VertexDataType type,
-                 bool isStatic,
-                 int maxVertices,
-                 int maxIndices,
-                 params VertexAttribute[] attributes )
-        : this( type, isStatic, maxVertices, maxIndices, new VertexAttributes( attributes ) )
-    {
-    }
-
-    /// <summary>
-    /// Creates a new Mesh with the given attributes. This is an expert method
-    /// with no error checking. Use at your own risk.
-    /// </summary>
-    /// <param name="type">the <see cref="VertexDataType"/> to be used, VBO or VA.</param>
-    /// <param name="isStatic">whether this mesh is static or not. Allows for internal optimizations.</param>
-    /// <param name="maxVertices">the maximum number of vertices this mesh can hold</param>
-    /// <param name="maxIndices">the maximum number of indices this mesh can hold</param>
-    /// <param name="attributes">the <see cref="VertexAttributes"/>.</param>
-    public Mesh( VertexDataType type, bool isStatic, int maxVertices, int maxIndices, VertexAttributes attributes )
-    {
-        switch ( type )
-        {
-            case VertexDataType.VertexBufferObject:
-                _vertices      = new VertexBufferObject( isStatic, maxVertices, attributes );
-                _indices       = new IndexBufferObject( isStatic, maxIndices );
-                _isVertexArray = false;
-
-                break;
-
-            case VertexDataType.VertexBufferObjectSubData:
-                _vertices      = new VertexBufferObjectSubData( isStatic, maxVertices, attributes );
-                _indices       = new IndexBufferObjectSubData( isStatic, maxIndices );
-                _isVertexArray = false;
-
-                break;
-
-            case VertexDataType.VertexBufferObjectWithVAO:
-                _vertices      = new VertexBufferObjectWithVAO( isStatic, maxVertices, attributes );
-                _indices       = new IndexBufferObjectSubData( isStatic, maxIndices );
-                _isVertexArray = false;
-
-                break;
-
-            case VertexDataType.VertexArray:
-            default:
-                _vertices      = new VertexArray( maxVertices, attributes );
-                _indices       = new IndexArray( maxIndices );
-                _isVertexArray = true;
-
-                break;
-        }
-
-        AddManagedMesh( Gdx.App, this );
-    }
-
-    #endregion constructors
 }

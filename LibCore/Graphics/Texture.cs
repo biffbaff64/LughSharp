@@ -80,16 +80,19 @@ public class Texture : GLTexture
     public Texture( string internalPath )
         : this( Gdx.Files.Internal( internalPath ).File )
     {
+        Logger.CheckPoint();
     }
 
     public Texture( FileInfo file, bool useMipMaps )
         : this( file, default( Pixmap.Format ), useMipMaps )
     {
+        Logger.CheckPoint();
     }
 
     public Texture( FileInfo? file, Pixmap.Format format = default( Pixmap.Format ), bool useMipMaps = false )
         : this( ITextureData.TextureDataFactory.LoadFromFile( file!, format, useMipMaps ) )
     {
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -100,6 +103,7 @@ public class Texture : GLTexture
     public Texture( Pixmap pixmap, bool useMipMaps = false )
         : this( new PixmapTextureData( pixmap, null, useMipMaps, false ) )
     {
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -111,6 +115,7 @@ public class Texture : GLTexture
     public Texture( Pixmap pixmap, Pixmap.Format format, bool useMipMaps )
         : this( new PixmapTextureData( pixmap, format, useMipMaps, false ) )
     {
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -122,6 +127,7 @@ public class Texture : GLTexture
     public Texture( int width, int height, Pixmap.Format format )
         : this( new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ) )
     {
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -130,6 +136,7 @@ public class Texture : GLTexture
     public Texture( ITextureData? data )
         : this( IGL.GL_TEXTURE_2D, ( int ) Gdx.GL.glGenTexture(), data )
     {
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -142,6 +149,8 @@ public class Texture : GLTexture
     protected Texture( int glTarget, int glTextureHandle, ITextureData? data )
         : base( glTarget, glTextureHandle )
     {
+        Logger.CheckPoint();
+
         ArgumentNullException.ThrowIfNull( data );
 
         Load( data );

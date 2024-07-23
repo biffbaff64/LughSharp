@@ -39,6 +39,8 @@ public class Gdx2DPixmap : IDisposable
     /// <exception cref="IOException"></exception>
     public Gdx2DPixmap( byte[] encodedData, int offset, int len, int requestedFormat )
     {
+        Logger.CheckPoint();
+
         PixelPtr = LoadData( NativeData, encodedData, offset, len );
 
         BasePtr = NativeData[ 0 ];
@@ -50,6 +52,8 @@ public class Gdx2DPixmap : IDisposable
         {
             Convert( requestedFormat );
         }
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -59,6 +63,8 @@ public class Gdx2DPixmap : IDisposable
     /// <exception cref="IOException"></exception>
     public Gdx2DPixmap( StreamReader inStream, int requestedFormat )
     {
+        Logger.CheckPoint();
+
         MemoryStream memoryStream = new( 1024 );
         StreamWriter writer       = new( memoryStream );
 
@@ -82,6 +88,8 @@ public class Gdx2DPixmap : IDisposable
         {
             Convert( requestedFormat );
         }
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -92,6 +100,8 @@ public class Gdx2DPixmap : IDisposable
     /// <exception cref="GdxRuntimeException"></exception>
     public Gdx2DPixmap( int width, int height, int format )
     {
+        Logger.CheckPoint();
+
         PixelPtr = GetNewPixmap( NativeData, width, height, format );
 
         if ( PixelPtr == null )
@@ -104,6 +114,8 @@ public class Gdx2DPixmap : IDisposable
         Width   = ( int ) NativeData[ 1 ];
         Height  = ( int ) NativeData[ 2 ];
         Format  = ( int ) NativeData[ 3 ];
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -112,15 +124,21 @@ public class Gdx2DPixmap : IDisposable
     /// <param name="nativeData"></param>
     public Gdx2DPixmap( ByteBuffer pixelPtr, long[] nativeData )
     {
+        Logger.CheckPoint();
+
         PixelPtr = pixelPtr;
         BasePtr  = nativeData[ 0 ];
         Width    = ( int ) nativeData[ 1 ];
         Height   = ( int ) nativeData[ 2 ];
         Format   = ( int ) nativeData[ 3 ];
+        
+        Logger.Debug( " - finished" );
     }
 
     private ByteBuffer GetNewPixmap( long[] nativeData, int width, int height, int format )
     {
+        Logger.CheckPoint();
+
         return NewPixmap( nativeData, width, height, format );
     }
 

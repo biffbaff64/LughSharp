@@ -77,10 +77,13 @@ public abstract class GLTexture : IDisposable
     protected GLTexture( int glTarget )
         : this( glTarget, ( int ) Gdx.GL.glGenTexture() )
     {
+        Logger.CheckPoint();
     }
 
     protected GLTexture( int glTarget, int glTextureHandle )
     {
+        Logger.CheckPoint();
+
         GLTarget        = glTarget;
         GLTextureHandle = glTextureHandle;
     }
