@@ -1244,6 +1244,7 @@ public class SpriteBatch : IBatch
     /// Returns a new instance of the default shader used by SpriteBatch
     /// for GL2 when no shader is specified.
     /// </summary>
+    //TODO: Update for GL4
     public static ShaderProgram CreateDefaultShader()
     {
         const string VERTEX_SHADER = "attribute vec4 "
@@ -1291,7 +1292,7 @@ public class SpriteBatch : IBatch
 
         if ( !shader.IsCompiled )
         {
-            throw new ArgumentException( "Error compiling shader: " + shader.Log );
+            throw new ArgumentException( "Error compiling shader: " + shader.ShaderLog );
         }
 
         return shader;

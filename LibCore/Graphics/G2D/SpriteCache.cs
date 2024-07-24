@@ -1315,7 +1315,7 @@ public class SpriteCache
 
         if ( !shader.IsCompiled )
         {
-            throw new ArgumentException( "Error compiling shader: " + shader.Log );
+            throw new ArgumentException( "Error compiling shader: " + shader.ShaderLog );
         }
 
         return shader;

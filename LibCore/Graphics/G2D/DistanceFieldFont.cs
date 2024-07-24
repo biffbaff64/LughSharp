@@ -142,7 +142,7 @@ public class DistanceFieldFont : BitmapFont
 
         if ( !shader.IsCompiled )
         {
-            throw new ArgumentException( $"Error compiling distance field shader: {shader.Log}" );
+            throw new ArgumentException( $"Error compiling distance field shader: {shader.ShaderLog}" );
         }
 
         return shader;

@@ -22,10 +22,9 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-#pragma warning disable CS8500  // This takes the address of, gets the size of, or declares a pointer to a managed type
+#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 
 using LughSharp.LibCore.Utils.Collections.Extensions;
-using LughSharp.LibCore.Utils.Exceptions;
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
@@ -33,29 +32,22 @@ using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 namespace LughSharp.LibCore.Graphics.GLUtils;
 
 /// <summary>
-///     <para>
-///     A shader program encapsulates a vertex and fragment shader pair
-///     linked to form a shader program.
-///     </para>
-///     <para>
-///     After construction a ShaderProgram can be used to draw <see cref="Mesh"/>.
-///     To make the GPU use a specific ShaderProgram the programs <see cref="Bind()"/>
-///     method must be used which effectively binds the program.
-///     </para>
-///     <para>
-///     When a ShaderProgram is bound one can set uniforms, vertex attributes and
-///     attributes as needed via the respective methods.
-///     </para>
-///     <para>
-///     A ShaderProgram must be disposed via a call to <see cref="Dispose()"/>
-///     when it is no longer needed
-///     </para>
-///     <para>
-///     ShaderPrograms are managed. In case the OpenGL context is lost all shaders
-///     get invalidated and have to be reloaded. Managed ShaderPrograms are
-///     automatically reloaded when the OpenGL context is recreated so you don't
-///     have to do this manually.
-///     </para>
+/// A shader program encapsulates a vertex and fragment shader pairlinked to
+/// form a shader program. After construction a ShaderProgram can be used to
+/// draw <see cref="Mesh"/>. To make the GPU use a specific ShaderProgram the
+/// programs <see cref="Bind()"/> method must be used which effectively binds
+/// the program. When a ShaderProgram is bound one can set uniforms, vertex
+/// attributes and attributes as needed via the respective methods.
+/// <para>
+/// A ShaderProgram must be disposed via a call to <see cref="Dispose()"/>
+/// when it is no longer needed
+/// </para>
+/// <para>
+/// ShaderPrograms are managed. In case the OpenGL context is lost all shaders
+/// get invalidated and have to be reloaded. Managed ShaderPrograms are
+/// automatically reloaded when the OpenGL context is recreated so you don't
+/// have to do this manually.
+/// </para>
 /// </summary>
 [PublicAPI]
 public class ShaderProgram
@@ -64,8 +56,7 @@ public class ShaderProgram
     private const int NOT_CACHED       = -2;
 
     /// <summary>
-    /// flag indicating whether attributes & uniforms must be present
-    /// at all times.
+    /// flag indicating whether attributes & uniforms must be present at all times.
     /// </summary>
     public readonly static bool Pedantic = true;
 
@@ -82,6 +73,17 @@ public class ShaderProgram
     /// include a newline (`\n`) if needed.
     /// </summary>
     public readonly static string PrependFragmentCode = "";
+    
+    // ------------------------------------------------------------------------
+
+    public bool     IsCompiled           { get; set; }
+    public string[] Attributes           { get; private set; } = null!;
+    public string[] Uniforms             { get; private set; } = null!;
+    public string   VertexShaderSource   { get; }
+    public string   FragmentShaderSource { get; }
+    public int      Handle               { get; private set; }
+
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// the list of currently available shaders
@@ -91,16 +93,13 @@ public class ShaderProgram
     private readonly Dictionary< string, int > _attributes     = new();
     private readonly Dictionary< string, int > _attributeSizes = new();
     private readonly Dictionary< string, int > _attributeTypes = new();
-    private readonly FloatBuffer               _matrix;
-    private readonly IntBuffer                 _parameters   = BufferUtils.NewIntBuffer( 1 );
-    private readonly IntBuffer                 _progType     = BufferUtils.NewIntBuffer( 1 );
-    private readonly Dictionary< string, int > _uniforms     = new();
-    private readonly Dictionary< string, int > _uniformSizes = new();
-    private readonly Dictionary< string, int > _uniformTypes = new();
+    private readonly Dictionary< string, int > _uniforms       = new();
+    private readonly Dictionary< string, int > _uniformSizes   = new();
+    private readonly Dictionary< string, int > _uniformTypes   = new();
 
     private int    _fragmentShaderHandle;
     private bool   _invalidated;
-    private string _log = "";
+    private string _shaderLog = "";
     private int    _vertexShaderHandle;
 
     // ------------------------------------------------------------------------
@@ -130,7 +129,6 @@ public class ShaderProgram
 
         VertexShaderSource   = vertexShader;
         FragmentShaderSource = fragmentShader;
-        _matrix              = BufferUtils.NewFloatBuffer( 16 );
 
         CompileShaders( vertexShader, fragmentShader );
 
@@ -141,6 +139,8 @@ public class ShaderProgram
 
             AddManagedShader( Gdx.App, this );
         }
+
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -151,28 +151,27 @@ public class ShaderProgram
         : this( File.ReadAllText( vertexShader.Name ), File.ReadAllText( fragmentShader.Name ) )
     {
         Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <returns>
     /// the log info for the shader compilation and program linking stage.
     /// The shader needs to be bound for this method to have an effect.
     /// </returns>
-    public string Log
+    public unsafe string ShaderLog
     {
         get
         {
             if ( IsCompiled )
             {
-// Gdx.gl20.glGetProgramiv(program, IGL.GL_INFO_LOG_LENGTH, intbuf);
-// int infoLogLength = intbuf.get(0);
-// if (infoLogLength > 1)
-// {
-                _log = Gdx.GL.glGetProgramInfoLog( ( uint ) Handle, IGL.GL_INFO_LOG_LENGTH );
+                var length = stackalloc int[ 1 ];
 
-// }
+                Gdx.GL.glGetProgramiv( ( uint ) Handle, IGL.GL_INFO_LOG_LENGTH, length );
+
+                _shaderLog = Gdx.GL.glGetProgramInfoLog( ( uint ) Handle, *length );
             }
 
-            return _log;
+            return _shaderLog;
         }
     }
 
@@ -183,11 +182,15 @@ public class ShaderProgram
     /// <param name="fragmentShader">  </param>
     private void CompileShaders( string vertexShader, string fragmentShader )
     {
+        Logger.CheckPoint();
+
         _vertexShaderHandle   = LoadShader( IGL.GL_VERTEX_SHADER, vertexShader );
         _fragmentShaderHandle = LoadShader( IGL.GL_FRAGMENT_SHADER, fragmentShader );
 
         if ( ( _vertexShaderHandle == -1 ) || ( _fragmentShaderHandle == -1 ) )
         {
+            Logger.CheckPoint();
+
             IsCompiled = false;
 
             return;
@@ -195,21 +198,12 @@ public class ShaderProgram
 
         Handle = LinkProgram( CreateProgram() );
 
-        if ( Handle == -1 )
-        {
-            IsCompiled = false;
-
-            return;
-        }
-
-        IsCompiled = true;
+        IsCompiled = ( Handle != -1 );
     }
 
-    private unsafe int LoadShader( int type, string source )
+    private unsafe int LoadShader( int shaderType, string source )
     {
-        var intbuf = BufferUtils.NewIntBuffer( 1 );
-
-        var shader = Gdx.GL.glCreateShader( type );
+        var shader = Gdx.GL.glCreateShader( shaderType );
 
         if ( shader == 0 )
         {
@@ -219,25 +213,24 @@ public class ShaderProgram
         Gdx.GL.glShaderSource( shader, source );
         Gdx.GL.glCompileShader( shader );
 
-        fixed ( int* ptr = &intbuf.BackingArray()[ 0 ] )
+        var status = stackalloc int[ 1 ];
+
+        Gdx.GL.glGetShaderiv( shader, IGL.GL_COMPILE_STATUS, status );
+
+        if ( *status == IGL.GL_FALSE )
         {
-            Gdx.GL.glGetShaderiv( shader, IGL.GL_COMPILE_STATUS, ptr );
-        }
+            var length = stackalloc int[ 1 ];
 
-        var compiled = intbuf.Get( 0 );
+            Gdx.GL.glGetShaderiv( shader, IGL.GL_INFO_LOG_LENGTH, length );
 
-        if ( compiled == 0 )
-        {
-// gl.glGetShaderiv(shader, IGL.GL_INFO_LOG_LENGTH, intbuf);
-// int infoLogLength = intbuf.get(0);
-// if (infoLogLength > 1)
-// {
-            var infoLog = Gdx.GL.glGetShaderInfoLog( shader, IGL.GL_INFO_LOG_LENGTH );
-            _log += type == IGL.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
-            _log += infoLog;
+            var infoLog = Gdx.GL.glGetShaderInfoLog( shader, *length );
 
-// }
-            return -1;
+            Gdx.GL.glDeleteShader( shader );
+
+            _shaderLog += shaderType == IGL.GL_VERTEX_SHADER ? "Vertex shader\n" : "Fragment shader:\n";
+            _shaderLog += infoLog;
+
+            throw new Exception( $"Failed to loader shader {shader}: {infoLog}" );
         }
 
         return ( int ) shader;
@@ -255,6 +248,8 @@ public class ShaderProgram
 
     private unsafe int LinkProgram( int program )
     {
+        Logger.CheckPoint();
+
         if ( program == -1 )
         {
             return -1;
@@ -264,27 +259,19 @@ public class ShaderProgram
         Gdx.GL.glAttachShader( ( uint ) program, ( uint ) _fragmentShaderHandle );
         Gdx.GL.glLinkProgram( ( uint ) program );
 
-        var tmp = ByteBuffer.Allocate( 4 );
-        tmp.Order( ByteOrder.NativeOrder );
-        var intbuf = tmp.AsIntBuffer();
+        var status = stackalloc int[ 1 ];
 
-        fixed ( int* ptr = &intbuf.BackingArray()[ 0 ] )
+        Gdx.GL.glGetProgramiv( ( uint ) program, IGL.GL_LINK_STATUS, status );
+
+        if ( *status == IGL.GL_FALSE )
         {
-            Gdx.GL.glGetProgramiv( ( uint ) program, IGL.GL_LINK_STATUS, ptr );
-        }
+            var length = stackalloc int[ 1 ];
 
-        var linked = intbuf.Get( 0 );
+            Gdx.GL.glGetProgramiv( ( uint ) program, IGL.GL_INFO_LOG_LENGTH, length );
 
-        if ( linked == 0 )
-        {
-// Gdx.gl20.glGetProgramiv(program, IGL.GL_INFO_LOG_LENGTH, intbuf);
-// int infoLogLength = intbuf.get(0);
-// if (infoLogLength > 1)
-// {
-            _log = Gdx.GL.glGetProgramInfoLog( ( uint ) program, IGL.GL_INFO_LOG_LENGTH );
+            _shaderLog = Gdx.GL.glGetProgramInfoLog( ( uint ) program, *length );
 
-// }
-            return -1;
+            throw new Exception( $"Failed to link shader program {program}: {_shaderLog}" );
         }
 
         return program;
@@ -327,7 +314,7 @@ public class ShaderProgram
                     throw new ArgumentException( "No uniform with name '" + name + "' in shader" );
                 }
 
-                throw new InvalidOperationException( "An attempted fetch uniform from uncompiled shader \n" + Log );
+                throw new InvalidOperationException( "An attempted fetch uniform from uncompiled shader \n" + ShaderLog );
             }
 
             _uniforms[ name ] = location;
@@ -867,6 +854,8 @@ public class ShaderProgram
 
     private void AddManagedShader( IApplication app, ShaderProgram shaderProgram )
     {
+        Logger.CheckPoint();
+
         List< ShaderProgram > managedResources = _shaders.Get( app );
 
         managedResources.Add( shaderProgram );
@@ -909,81 +898,64 @@ public class ShaderProgram
 
     /// <summary>
     /// </summary>
-    private void FetchUniforms()
+    private unsafe void FetchUniforms()
     {
-        throw new GdxRuntimeException( "This method is unfinished - DO NOT USE!!" );
+        Logger.CheckPoint();
 
-//TODO:
-/*
-        _parameters.Clear();
+        var numUniforms = stackalloc int[ 1 ];
 
-        Gdx.GL.glGetProgramiv( ( uint ) Handle, IGL.GL_ACTIVE_UNIFORMS, ( int* ) _parameters.BackingArray()[ 0 ] );
+        Gdx.GL.glGetProgramiv( ( uint ) Handle, IGL.GL_ACTIVE_UNIFORMS, numUniforms );
 
-        var numUniforms = _parameters.Get( 0 );
+        Uniforms = new string[ *numUniforms ];
 
-        Uniforms = new string[ numUniforms ];
-
-        for ( var i = 0; i < numUniforms; i++ )
+        for ( uint i = 0; i < *numUniforms; i++ )
         {
-            _parameters.Clear();
-            _parameters.Put( 0, 1 );
+            var name = Gdx.GL.glGetActiveUniform( ( uint ) Handle,
+                                                  i,
+                                                  IGL.GL_ACTIVE_UNIFORM_MAX_LENGTH,
+                                                  out var size,
+                                                  out var type );
 
-            _progType.Clear();
-
-            // This method is not present in DotGL...
-            string? name = Gdx.GL.glGetActiveUniform( Handle, i, _parameters, _progType );
-
-            var name     = string.Empty;
             var location = Gdx.GL.glGetUniformLocation( ( uint ) Handle, name );
 
             _uniforms[ name ]     = location;
-            _uniformTypes[ name ] = _progType.Get( 0 );
-            _uniformSizes[ name ] = _parameters.Get( 0 );
+            _uniformSizes[ name ] = size;
+            _uniformTypes[ name ] = type;
             Uniforms[ i ]         = name;
         }
-*/
     }
 
     /// <summary>
     /// </summary>
     private unsafe void FetchAttributes()
     {
-        _parameters.Clear();
+        Logger.CheckPoint();
 
-        fixed ( int* ptr = &_parameters.BackingArray()[ 0 ] )
+        var numAttributes = stackalloc int[ 1 ];
+
+        Gdx.GL.glGetProgramiv( ( uint ) Handle, IGL.GL_ACTIVE_ATTRIBUTES, numAttributes );
+
+        Attributes = new string[ *numAttributes ];
+
+        for ( var index = 0; index < *numAttributes; index++ )
         {
-            Gdx.GL.glGetProgramiv( ( uint ) Handle, IGL.GL_ACTIVE_ATTRIBUTES, ptr );
-        }
+            var name = Gdx.GL.glGetActiveAttrib( ( uint ) Handle,
+                                                 ( uint ) index,
+                                                 IGL.GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
+                                                 out var size,
+                                                 out var type );
 
-        var numAttributes = _parameters.Get( 0 );
+            var location = Gdx.GL.glGetAttribLocation( ( uint ) Handle, name );
 
-        Attributes = new string[ numAttributes ];
-
-        for ( var index = 0; index < numAttributes; index++ )
-        {
-            _parameters.Clear();
-            _parameters.Put( 0, 1 );
-
-            _progType.Clear();
-
-//    void glGetActiveAttrib( GLuint program, GLuint index, GLsizei bufSize,
-//                          GLsizei* length, GLint* size, GLenum* type, GLchar* name )
-
-//            var name     = Gdx.GL.glGetActiveAttrib( ( uint ) Handle,
-//                                                     ( uint ) index,
-//                                                     IGL.GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
-//                                                     _parameters,
-//                                                     _progType );
-
-//            var location = Gdx.GL.glGetAttribLocation( ( uint ) Handle, name );
-
-//            _attributes[ name ]     = location;
-//            _attributeTypes[ name ] = _progType.Get( 0 );
-//            _attributeSizes[ name ] = _parameters.Get( 0 );
-//            Attributes[ index ]     = name;
+            _attributes[ name ]     = location;
+            _attributeSizes[ name ] = size;
+            _attributeTypes[ name ] = type;
+            Attributes[ index ]     = name;
         }
     }
 
+    /// <summary>
+    /// </summary>
     /// <param name="name"> the name of the attribute </param>
     /// <returns> whether the attribute is available in the shader  </returns>
     public bool HasAttribute( string name )
@@ -1059,9 +1031,6 @@ public class ShaderProgram
     #endregion default attribute names
 
     // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    #region properties
 
     public static string ManagedStatus
     {
@@ -1082,13 +1051,4 @@ public class ShaderProgram
     }
 
     public static int NumManagedShaderPrograms => _shaders[ Gdx.App ].Count;
-
-    public bool     IsCompiled           { get; set; }
-    public string[] Attributes           { get; private set; } = null!;
-    public string[] Uniforms             { get; private set; } = null!;
-    public string   VertexShaderSource   { get; }
-    public string   FragmentShaderSource { get; }
-    public int      Handle               { get; private set; }
-
-    #endregion properties
 }
