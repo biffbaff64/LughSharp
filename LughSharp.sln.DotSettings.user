@@ -1,5 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CDevelopment_005CEngines_005Fand_005FFrameworks_005CSharpGDX_002Dmain_005CSharpGDX_002Dmain_005Csrc_005CSharpGDX_005Cgdx2d_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CDevelopment_005CProjects_005CCSharp_005CLughSharp_005Cgdx2d_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CDevelopment_005CProjects_005CCSharp_005CLughSharp_005CLibCore_005Cgdx2d_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CDevelopment_005CProjects_005CCSharp_005CLughSharp_005CLibs_005CGDX2DLIB_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CDevelopment_005CProjects_005CCSharp_005CLughSharp_005CLibs_005CGdxDLL_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CDevelopment_005CProjects_005CCSharp_005CLughSharp_005Cpackages_005CLughGLFW_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CDevelopment_005CProjects_005CCSharp_005CLughSharp_005CResources_005Cgdx2d_002Edll/@EntryIndexedValue">True</s:Boolean>
 	
 	<s:String x:Key="/Default/CodeEditing/GenerateMemberBody/MethodImplementationKind/@EntryValue">ReturnDefaultValue</s:String>
 	
@@ -58,6 +64,7 @@
  SOFTWARE.
 /////////////////////////////////////////////////////////////////////////////
 </s:String>
+	
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\7.0.5\ref\net7.0\System.Drawing.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\7.0.5\ref\net7.0\System.Runtime.dll" /&gt;&#xD;
@@ -70,6 +77,7 @@
   &lt;PhysicalFolder Path="C:\Users\richi\.nuget\packages\dotglfw\1.0.2" Loaded="True" /&gt;&#xD;
   &lt;PhysicalFolder Path="C:\Users\richi\.nuget\packages\dotglfw\1.0.3" Loaded="True" /&gt;&#xD;
   &lt;PhysicalFolder Path="C:\Users\richi\.nuget\packages\dotglfw\1.1.0" Loaded="True" /&gt;&#xD;
+  &lt;Assembly Path="C:\Development\Projects\CSharp\LughSharp\LibCore\gdx2d.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/InlayHints/CSharpOtherInlayHintsOptions/ShowResourcesDisposePoints/@EntryValue">PushToShowHints</s:String>
 	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EFeature_002EServices_002ECodeCleanup_002EFileHeader_002EFileHeaderSettingsMigrate/@EntryIndexedValue">True</s:Boolean>

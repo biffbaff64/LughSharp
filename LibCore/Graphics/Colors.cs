@@ -33,13 +33,10 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public static class Colors
 {
-    static Colors()
-    {
-        Reset();
-    }
-
     public static Dictionary< string, Color > Map { get; set; } = new();
 
+    // ------------------------------------------------------------------------
+    
     /// <summary>
     /// Looks up a color by its name.
     /// </summary>

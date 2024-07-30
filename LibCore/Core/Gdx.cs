@@ -50,16 +50,17 @@ public static class Gdx
     /// <summary>
     /// From Wiktionary...
     /// <para>
-    /// "1. (video games) A game mode where the player character is invulnerable to damage,
-    /// typically activated by entering a cheat code."
+    /// "1. (video games) A game mode where the player character is invulnerable to
+    /// damage, typically activated by entering a cheat code."
     /// </para>
     /// <para>
-    /// "2. (video games) A mode of play in (mostly) roguelike games, allowing the player to
-    /// create objects on demand, to be resurrected in the case of death, etc."
+    /// "2. (video games) A mode of play in (mostly) roguelike games, allowing the
+    /// player to create objects on demand, to be resurrected in the case of death,
+    /// etc."
     /// </para>
     /// <para>
-    /// Note: Only the flag is provided by this library. It is intended for use in your local
-    /// game code.
+    /// Note: Only the flag is provided by this library. It is intended for use in
+    /// your local game code.
     /// </para>
     /// </summary>
     public static bool GodMode { get; set; } = false;
@@ -83,6 +84,7 @@ public static class Gdx
         App = app;
         
         Logger.Initialise();
+        Colors.Reset();
     }
     
     // ------------------------------------------------------------------------
@@ -171,4 +173,20 @@ public static class Gdx
         }
         set => _net = value;
     }
+    
+    // ------------------------------------------------------------------------
+
+    #region A Prayer To The Goddess
+    
+    private const string SECRETIVE_STRING =
+        "Mother Earth, enlighten what's dark in me. " +
+        "Strengthen what's weak in me. " +
+        "Mend what's broken in me. " +
+        "Bind what's bruised in me. " +
+        "Heal what's sick in me. " +
+        "Revive whatever peace & love has died in me.";
+
+    #endregion A Prayer To The Goddess
+
+    // ------------------------------------------------------------------------
 }

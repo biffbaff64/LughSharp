@@ -35,10 +35,6 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
-    <ItemGroup>
-        <None Include="LICENSE" Pack="true" PackagePath=""/>
-    </ItemGroup>
-
     <PropertyGroup>
         <!-- GL.cs configuration options! -->
 
@@ -99,9 +95,19 @@
 
     <ItemGroup>
         <Folder Include="Backends\Android\" />
+        <Folder Include="bin\Debug\net7.0\" />
         <Folder Include="LibCore\Utils\Buffers\DirectBuffers\" />
         <Folder Include="packages\" />
         <Folder Include="To Be Deleted\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ReferencePathWithRefAssemblies Update="C:\Users\richi\.nuget\packages\dotglfw\1.2.0\lib\netstandard2.0\DotGLFW.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="LibCore\gdx2d.dll" />
+      <Content Include="LibCore\gdx2d.dll" />
     </ItemGroup>
 
 </Project>

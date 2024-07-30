@@ -50,6 +50,9 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class Pixmap : IDisposable
 {
+    public Gdx2DPixmap GDX2DPixmap { get; set; }
+    public bool        IsDisposed  { get; set; } = false;
+
     private int _color = 0;
 
     // ------------------------------------------------------------------------
@@ -65,15 +68,16 @@ public class Pixmap : IDisposable
         Logger.CheckPoint();
 
         GDX2DPixmap = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
+        
         SetColor( 0, 0, 0, 0 );
         FillWithCurrentColor();
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
     /// Creates a new Pixmap instance from the given encoded image data.
-    /// <para>
     /// The image can be encoded as JPEG, PNG or BMP.
-    /// </para>
     /// </summary>
     public Pixmap( byte[] encodedData, int offset, int len )
     {
@@ -87,16 +91,18 @@ public class Pixmap : IDisposable
         {
             throw new GdxRuntimeException( "Couldn't load pixmap from image data", e );
         }
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
-    /// Creates a new Pixmap instance from the given file.
-    /// <para>
-    /// The file must be a Png, Jpeg or Bitmap. Paletted formats are not supported.
-    /// </para>
+    /// Creates a new Pixmap instance from the given file. The file must be a Png,
+    /// Jpeg or Bitmap. Paletted formats are not supported.
     /// </summary>
-    /// <param name="file"></param>
-    /// <exception cref="GdxRuntimeException"></exception>
+    /// <param name="file"> The file. </param>
+    /// <exception cref="GdxRuntimeException">
+    /// Thrown if there were errors loading or reading the file.
+    /// </exception>
     public Pixmap( FileInfo file )
     {
         Logger.CheckPoint();
@@ -118,6 +124,8 @@ public class Pixmap : IDisposable
         {
             throw new GdxRuntimeException( $"Couldn't load file:  {file.Name}", e );
         }
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -128,10 +136,9 @@ public class Pixmap : IDisposable
         Logger.CheckPoint();
 
         GDX2DPixmap = pixmap;
+        
+        Logger.Debug( " - finished" );
     }
-
-    public Gdx2DPixmap GDX2DPixmap { get; set; }
-    public bool        IsDisposed  { get; set; } = false;
 
     // ----------------------------------------------------------
 

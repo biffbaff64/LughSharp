@@ -88,7 +88,7 @@ public class ShaderProgram
     /// <summary>
     /// the list of currently available shaders
     /// </summary>
-    private readonly static Dictionary< IApplication, List< ShaderProgram > > _shaders = new();
+    private readonly static Dictionary< IApplication, List< ShaderProgram >? > _shaders = new();
 
     private readonly Dictionary< string, int > _attributes     = new();
     private readonly Dictionary< string, int > _attributeSizes = new();
@@ -792,7 +792,7 @@ public class ShaderProgram
         Gdx.GL.glDeleteShader( ( uint ) _fragmentShaderHandle );
         Gdx.GL.glDeleteProgram( ( uint ) Handle );
 
-        _shaders.Get( Gdx.App ).Remove( this );
+        _shaders[ Gdx.App ]?.Remove( this );
     }
 
     /// <summary>
@@ -856,9 +856,19 @@ public class ShaderProgram
     {
         Logger.CheckPoint();
 
-        List< ShaderProgram > managedResources = _shaders.Get( app );
+        List< ShaderProgram >? managedResources;
 
-        managedResources.Add( shaderProgram );
+        if ( !_shaders.ContainsKey( app ) || ( _shaders[ app ] == null ) )
+        {
+            managedResources = new List< ShaderProgram >();
+        }
+        else
+        {
+            managedResources = _shaders[ app ];
+        }
+
+        managedResources?.Add( shaderProgram );
+
         _shaders.Put( app, managedResources );
     }
 
@@ -869,9 +879,18 @@ public class ShaderProgram
     /// <param name="app">  </param>
     public static void InvalidateAllShaderPrograms( IApplication app )
     {
-        List< ShaderProgram > shaderArray = _shaders.Get( app );
+        List< ShaderProgram >? shaderArray;
 
-        foreach ( var sp in shaderArray )
+        if ( !_shaders.ContainsKey( app ) || ( _shaders[ app ] == null ) )
+        {
+            shaderArray = new List< ShaderProgram >();
+        }
+        else
+        {
+            shaderArray = _shaders[ app ];
+        }
+        
+        foreach ( var sp in shaderArray! )
         {
             sp._invalidated = true;
             sp.CheckManaged();
@@ -1040,7 +1059,7 @@ public class ShaderProgram
 
             foreach ( var app in _shaders.Keys )
             {
-                builder.Append( _shaders[ app ].Count );
+                builder.Append( _shaders[ app ]?.Count );
                 builder.Append( ' ' );
             }
 
@@ -1050,5 +1069,5 @@ public class ShaderProgram
         }
     }
 
-    public static int NumManagedShaderPrograms => _shaders[ Gdx.App ].Count;
+    public static int NumManagedShaderPrograms => _shaders[ Gdx.App ]!.Count;
 }
