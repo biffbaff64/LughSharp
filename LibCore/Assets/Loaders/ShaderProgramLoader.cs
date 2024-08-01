@@ -57,6 +57,8 @@ public class ShaderProgramLoader
     /// </summary>
     public ShaderProgramLoader( IFileHandleResolver resolver ) : base( resolver )
     {
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>

@@ -48,7 +48,11 @@ public class TextureLoader
     /// <param name="resolver"> The <see cref="IFileHandleResolver"/> to use. </param>
     public TextureLoader( IFileHandleResolver resolver ) : base( resolver )
     {
+        Logger.CheckPoint();
+
         _loaderInfo = new TextureLoaderInfo();
+
+        Logger.Debug( " - finished" );
     }
 
     /// <inheritdoc />

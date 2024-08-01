@@ -1,14 +1,6 @@
 ﻿![lughlogo.png](Resources%2Flughlogo.png)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-NOTICE
-------
-
-This project is officially on hold. I cannot make any further progress due to a lack of
-knowledge and ability.
-I'm getting too old for this, I'm absolutely gutted but I have to come to terms with not
-being able to complete this project.
-
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 C# 2D Game Framework heavily inspired by the Java LibGDX Game Framework.

@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Runtime.InteropServices;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.G2D;
@@ -40,6 +39,7 @@ public class Gdx2DPixmap : IDisposable
     public const int GDX_2D_FORMAT_RGBA4444        = 6;
     public const int GDX_2D_SCALE_NEAREST          = 0;
     public const int GDX_2D_SCALE_LINEAR           = 1;
+    public const int GDX_2D_SCALE_BILINEAR         = 1;
     public const int GDX_2D_BLEND_NONE             = 0;
     public const int GDX_2D_BLEND_SRC_OVER         = 1;
 
@@ -71,7 +71,7 @@ public class Gdx2DPixmap : IDisposable
     {
         Logger.CheckPoint();
 
-        PixelPtr = LoadData( NativeData, encodedData, offset, len );
+        PixelPtr = LoadData( encodedData, offset, len );
 
         BasePtr = NativeData[ 0 ];
         Width   = ( int ) NativeData[ 1 ];
@@ -107,7 +107,7 @@ public class Gdx2DPixmap : IDisposable
 
         var buffer = memoryStream.ToArray();
 
-        PixelPtr = LoadData( NativeData, buffer, 0, buffer.Length );
+        PixelPtr = LoadData( buffer, 0, buffer.Length );
 
         BasePtr = NativeData[ 0 ];
         Width   = ( int ) NativeData[ 1 ];
@@ -132,7 +132,7 @@ public class Gdx2DPixmap : IDisposable
     {
         Logger.CheckPoint();
 
-        PixelPtr = GetNewPixmap( NativeData, width, height, format );
+        PixelPtr = GetNewPixmap( width, height, format );
 
         if ( PixelPtr == null )
         {
@@ -165,29 +165,39 @@ public class Gdx2DPixmap : IDisposable
         Logger.Debug( " - finished" );
     }
 
-    private ByteBuffer GetNewPixmap( long[] nativeData, int width, int height, int format )
+    private ByteBuffer GetNewPixmap( int width, int height, int format )
     {
         Logger.CheckPoint();
 
-        return NewPixmap( nativeData, width, height, format );
+        var pixmap = new Gdx2DUtils.Gdx2dPixmap
+        {
+            Width  = ( uint ) width,
+            Height = ( uint ) height,
+            Format = ( uint ) format,
+            Blend  = GDX_2D_BLEND_SRC_OVER,
+            Scale  = GDX_2D_SCALE_BILINEAR,
+            Pixels = new byte[ width * height * Gdx2DUtils.Gdx2dBytesPerPixel( ( uint ) format ) ]
+        };
+
+        return BufferUtils.NewByteBuffer( pixmap.Pixels.Length );
     }
 
     /// <summary>
     /// Created because <see cref="Load"/>, being a virtual method, is unsafe
     /// to be called from constructors.
     /// </summary>
-    private ByteBuffer LoadData( long[] nativeData, byte[] buffer, int offset, int len )
+    private ByteBuffer LoadData( byte[] buffer, int offset, int len )
     {
         Logger.CheckPoint();
 
-        var ptr = Load( nativeData, buffer, offset, len );
+//        var ptr = Load( nativeData, buffer, offset, len );
 
-        if ( ptr == null )
+//        if ( ptr == null )
         {
-            throw new IOException( $"Error loading pixmap: {GetFailureReason()}" );
+            throw new IOException( $"Error loading pixmap: {Gdx2DUtils.Gdx2dGetFailureReason()}" );
         }
 
-        return ptr;
+//        return ptr;
     }
 
     /// <summary>
@@ -237,7 +247,7 @@ public class Gdx2DPixmap : IDisposable
 
         Gdx2DPixmap pixmap = new( Width, Height, requestedFormat );
 
-        pixmap.Blend = GDX_2D_BLEND_NONE;
+//        pixmap.Blend = GDX_2D_BLEND_NONE;
         pixmap.DrawPixmap( this, 0, 0, 0, 0, Width, Height );
 
         Dispose();
@@ -252,52 +262,53 @@ public class Gdx2DPixmap : IDisposable
 
     public void Clear( int color )
     {
-        Clear( BasePtr, color );
+//        Clear( BasePtr, color );
     }
 
     public int GetPixel( int x, int y )
     {
-        return GetPixel( BasePtr, x, y );
+//        return GetPixel( BasePtr, x, y );
+        return 0;
     }
 
     public void SetPixel( int x, int y, int color )
     {
-        SetPixel( BasePtr, x, y, color );
+//        SetPixel( BasePtr, x, y, color );
     }
 
     public void DrawLine( int x, int y, int x2, int y2, int color )
     {
-        DrawLine( BasePtr, x, y, x2, y2, color );
+//        DrawLine( BasePtr, x, y, x2, y2, color );
     }
 
     public void DrawRect( int x, int y, int width, int height, int color )
     {
-        DrawRect( BasePtr, x, y, width, height, color );
+//        DrawRect( BasePtr, x, y, width, height, color );
     }
 
     public void DrawCircle( int x, int y, int radius, int color )
     {
-        DrawCircle( BasePtr, x, y, radius, color );
+//        DrawCircle( BasePtr, x, y, radius, color );
     }
 
     public void FillRect( int x, int y, int width, int height, int color )
     {
-        FillRect( BasePtr, x, y, width, height, color );
+//        FillRect( BasePtr, x, y, width, height, color );
     }
 
     public void FillCircle( int x, int y, int radius, int color )
     {
-        FillCircle( BasePtr, x, y, radius, color );
+//        FillCircle( BasePtr, x, y, radius, color );
     }
 
     public void FillTriangle( int x1, int y1, int x2, int y2, int x3, int y3, int color )
     {
-        FillTriangle( BasePtr, x1, y1, x2, y2, x3, y3, color );
+//        FillTriangle( BasePtr, x1, y1, x2, y2, x3, y3, color );
     }
 
     public void DrawPixmap( Gdx2DPixmap src, int srcX, int srcY, int dstX, int dstY, int width, int height )
     {
-        DrawPixmap( src.BasePtr, BasePtr, srcX, srcY, width, height, dstX, dstY, width, height );
+//        DrawPixmap( src.BasePtr, BasePtr, srcX, srcY, width, height, dstX, dstY, width, height );
     }
 
     public void DrawPixmap( Gdx2DPixmap src,
@@ -310,7 +321,7 @@ public class Gdx2DPixmap : IDisposable
                             int dstWidth,
                             int dstHeight )
     {
-        DrawPixmap( src.BasePtr, BasePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
+//        DrawPixmap( src.BasePtr, BasePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
     }
 
     public static Gdx2DPixmap? NewPixmap( StreamReader inStream, int requestedFormat )
@@ -357,15 +368,15 @@ public class Gdx2DPixmap : IDisposable
     public int    GLType           => ToGLType( Format );
     public string FormatString     => GetFormatString( Format );
 
-    public int Blend
-    {
-        set => SetBlend( BasePtr, value );
-    }
+//    public int Blend
+//    {
+//        set => Gdx2DUtils.Gdx2dSetBlend( BasePtr, value );
+//    }
 
-    public int Scale
-    {
-        set => SetScale( BasePtr, value );
-    }
+//    public int Scale
+//    {
+//        set => Gdx2DUtils.Gdx2dSetScale( BasePtr, value );
+//    }
 
     /// <summary>
     /// </summary>
@@ -409,141 +420,5 @@ public class Gdx2DPixmap : IDisposable
     }
 
     // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    // named "gdx2d_pixmap" in Libgdx
-    [StructLayout( LayoutKind.Sequential )]
-    private struct PixmapObject
-    {
-        public uint   Width;
-        public uint   Height;
-        public uint   Format;
-        public uint   Blend;
-        public uint   Scale;
-        public IntPtr Pixels;
-    }
-
-    // ------------------------------------------------------------------------
-    
-    private const string GDX_2D_DLL = "gdx2d.dll";
-
-    // ------------------------------------------------------------------------
-
-    public static ByteBuffer Load( long[] nativeData, byte[] buffer, int offset, int len )
-    {
-        var bufferHandle = GCHandle.Alloc( buffer, GCHandleType.Pinned );
-        var pixmapPtr    = load( bufferHandle.AddrOfPinnedObject() + offset, len );
-        var pixmap       = Marshal.PtrToStructure< PixmapObject >( pixmapPtr );
-
-        bufferHandle.Free();
-
-        nativeData[ 0 ] = pixmapPtr.ToInt64();
-        nativeData[ 1 ] = pixmap.Width;
-        nativeData[ 2 ] = pixmap.Height;
-        nativeData[ 3 ] = pixmap.Format;
-
-        var dataBlockSize = ( int ) ( pixmap.Width * pixmap.Height * bytes_per_pixel( pixmap.Format ) );
-        var byteArray     = new byte[ dataBlockSize ];
-        Marshal.Copy( pixmap.Pixels, byteArray, 0, dataBlockSize );
-
-        var pixelBuffer = ByteBuffer.Wrap( byteArray );
-
-        return pixelBuffer;
-
-        // --------------------------------------------------------------------
-        
-        [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_load" )]
-        static extern IntPtr load( IntPtr nativeData, int len ); 
-
-        // --------------------------------------------------------------------
-
-        [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_bytes_per_pixel" )]
-        static extern uint bytes_per_pixel( uint format ); 
-    }
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_new" )]
-    public static extern ByteBuffer NewPixmap( long[] nativeData, int width, int height, int format );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_get_pixel" )]
-    public static extern int GetPixel( long pixmap, int x, int y );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_get_failure_reason" )]
-    public static extern string GetFailureReason();
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_free" )]
-    public static extern void Free( long pixmap );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_clear" )]
-    public static extern void Clear( long pixmap, int color );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_set_pixel" )]
-    public static extern void SetPixel( long pixmap, int x, int y, int color );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_draw_line" )]
-    public static extern void DrawLine( long pixmap, int x, int y, int x2, int y2, int color );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_draw_rect" )]
-    public static extern void DrawRect( long pixmap, int x, int y, int width, int height, int color );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_draw_circle" )]
-    public static extern void DrawCircle( long pixmap, int x, int y, int radius, int color );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_fill_rect" )]
-    public static extern void FillRect( long pixmap, int x, int y, int width, int height, int color );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_fill_circle" )]
-    public static extern void FillCircle( long pixmap, int x, int y, int radius, int color );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_fill_triangle" )]
-    public static extern void FillTriangle( long pixmap, int x1, int y1, int x2, int y2, int x3, int y3, int color );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_draw_pixmap" )]
-    public static extern void DrawPixmap( long src,
-                                          long dst,
-                                          int srcX,
-                                          int srcY,
-                                          int srcWidth,
-                                          int srcHeight,
-                                          int dstX,
-                                          int dstY,
-                                          int dstWidth,
-                                          int dstHeight );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_set_blend" )]
-    public static extern void SetBlend( long src, int blend );
-
-    // ------------------------------------------------------------------------
-
-    [DllImport( GDX_2D_DLL, EntryPoint = "gdx2d_set_scale" )]
-    public static extern void SetScale( long src, int scale );
-
     // ------------------------------------------------------------------------
 }

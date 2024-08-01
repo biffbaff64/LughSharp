@@ -23,8 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text;
 using LughSharp.LibCore.Assets.Loaders;
+using LughSharp.LibCore.Assets.Loaders.Resolvers;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
 
@@ -70,7 +70,6 @@ public class Texture : GLTexture
 
     private readonly Dictionary< IApplication, List< Texture >? > _managedTextures = new();
 
-    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -153,6 +152,12 @@ public class Texture : GLTexture
 
         ArgumentNullException.ThrowIfNull( data );
 
+        if ( AssetManager == null )
+        {
+            AssetManager = new AssetManager();
+            AssetManager.SetLoader( typeof( Texture ), new TextureLoader( new AbsoluteFileHandleResolver() ) );
+        }
+
         Load( data );
 
         if ( data.IsManaged() )
@@ -163,19 +168,19 @@ public class Texture : GLTexture
 
     public void Load( ITextureData? data )
     {
-        if ( ( TextureData == null ) || ( data == null ) )
+        if ( TextureData == null )
         {
-            throw new GdxRuntimeException( "Load failed!: null TextureData supplied" );
+            throw new GdxRuntimeException( "Load failed!: TextureData property is null!" );
         }
 
-        if ( data.IsManaged() != TextureData.IsManaged() )
+        if ( ( data != null ) && ( data.IsManaged() != TextureData.IsManaged() ) )
         {
             throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
         }
 
         TextureData = data;
 
-        if ( !data.IsPrepared )
+        if ( !data!.IsPrepared )
         {
             data.Prepare();
         }
@@ -239,40 +244,6 @@ public class Texture : GLTexture
                                         pixmap.GLFormat,
                                         pixmap.GLType,
                                         ptr );
-            }
-        }
-    }
-
-    /// <summary>
-    /// Disposes all resources associated with the texture.
-    /// </summary>
-    public override void Dispose()
-    {
-        Dispose( true );
-    }
-
-    /// <inheritdoc />
-    protected override void Dispose( bool disposing )
-    {
-        if ( disposing )
-        {
-            // this is a hack. reason: we have to set the glHandle to 0 for textures that are
-            // reloaded through the asset manager as we first remove (and thus dispose) the texture
-            // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
-            // removal from the asset manager.
-            if ( GLTextureHandle == 0 )
-            {
-                return;
-            }
-
-            Delete();
-
-            if ( ( TextureData != null ) && TextureData.IsManaged() )
-            {
-                if ( _managedTextures[ Gdx.App ] != null )
-                {
-                    _managedTextures[ Gdx.App ]?.Remove( this );
-                }
             }
         }
     }
@@ -379,6 +350,14 @@ public class Texture : GLTexture
         return builder.ToString();
     }
 
+    /// <summary>
+    /// Clears all managed textures.
+    /// </summary>
+    internal void ClearAllTextures( IApplication app )
+    {
+        _managedTextures.Remove( app );
+    }
+
     /// <inheritdoc />
     public override string? ToString()
     {
@@ -388,11 +367,37 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    /// Clears all managed textures.
+    /// Disposes all resources associated with the texture.
     /// </summary>
-    internal void ClearAllTextures( IApplication app )
+    public override void Dispose()
     {
-        _managedTextures.Remove( app );
+        Dispose( true );
+    }
+
+    /// <inheritdoc />
+    protected override void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            // this is a hack. reason: we have to set the glHandle to 0 for textures that are
+            // reloaded through the asset manager as we first remove (and thus dispose) the texture
+            // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
+            // removal from the asset manager.
+            if ( GLTextureHandle == 0 )
+            {
+                return;
+            }
+
+            Delete();
+
+            if ( ( TextureData != null ) && TextureData.IsManaged() )
+            {
+                if ( _managedTextures[ Gdx.App ] != null )
+                {
+                    _managedTextures[ Gdx.App ]?.Remove( this );
+                }
+            }
+        }
     }
 
     // ------------------------------------------------------------------------

@@ -39,6 +39,13 @@ namespace LughSharp.LibCore.Assets;
 [PublicAPI]
 public class AssetManager
 {
+    /// <summary>
+    /// Returns the <see cref="IFileHandleResolver"/> which this
+    /// AssetManager was loaded with.
+    /// </summary>
+    /// <returns>the file handle resolver which this AssetManager uses.</returns>
+    public IFileHandleResolver FileHandleResolver { get; set; }
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -65,6 +72,7 @@ public class AssetManager
     public AssetManager() : this( new AbsoluteFileHandleResolver() )
     {
         Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -80,31 +88,30 @@ public class AssetManager
 
         if ( defaultLoaders )
         {
+            Logger.Debug( "Setting default loaders..." );
+            
             //@formatter:off
-            SetLoader(typeof(BitmapFont),       new BitmapFontLoader(resolver));
-            SetLoader(typeof(Texture),          new TextureLoader(resolver));
-            SetLoader(typeof(TextureAtlas),     new TextureAtlasLoader(resolver));
-            SetLoader(typeof(Pixmap),           new PixmapLoader(resolver));
-            SetLoader(typeof(Skin),             new SkinLoader(resolver));
-            SetLoader(typeof(IMusic),           new MusicLoader(resolver));
-            SetLoader(typeof(ISound),           new SoundLoader(resolver));
-            SetLoader(typeof(Cubemap),          new CubemapLoader(resolver));
-            SetLoader(typeof(ParticleEffect),   new ParticleEffectLoader(resolver));
-            SetLoader(typeof(ShaderProgram),    new ShaderProgramLoader(resolver));
-            SetLoader(typeof(PolygonRegion),    new PolygonRegionLoader(resolver));
+            SetLoader( typeof( BitmapFont ),       new BitmapFontLoader( resolver ) );
+            SetLoader( typeof( Texture ),          new TextureLoader( resolver ) );
+            SetLoader( typeof( TextureAtlas ),     new TextureAtlasLoader( resolver ) );
+            SetLoader( typeof( Pixmap ),           new PixmapLoader( resolver ) );
+            SetLoader( typeof( Skin ),             new SkinLoader( resolver ) );
+            SetLoader( typeof( IMusic ),           new MusicLoader( resolver ) );
+            SetLoader( typeof( ISound ),           new SoundLoader( resolver ) );
+            SetLoader( typeof( Cubemap ),          new CubemapLoader( resolver ) );
+            SetLoader( typeof( ParticleEffect ),   new ParticleEffectLoader( resolver ) );
+            SetLoader( typeof( ShaderProgram ),    new ShaderProgramLoader( resolver ) );
+            SetLoader( typeof( PolygonRegion ),    new PolygonRegionLoader( resolver ) );
             //@formatter:on
+            
+            Logger.Debug( " - finished" );
         }
 
         _executor          = new AsyncExecutor( 1, "AssetManager" );
         FileHandleResolver = resolver;
+        
+        Logger.Debug( " - finished" );
     }
-
-    /// <summary>
-    /// Returns the <see cref="IFileHandleResolver"/> which this
-    /// AssetManager was loaded with.
-    /// </summary>
-    /// <returns>the file handle resolver which this AssetManager uses.</returns>
-    public IFileHandleResolver FileHandleResolver { get; set; }
 
     /// <summary>
     /// Returns the number of loaded assets.
@@ -1244,7 +1251,9 @@ public class AssetManager
         if ( container.RefCount <= 0 )
         {
             Logger.Debug( $"Unload (dispose): {fileName}" );
+            
             DisposeAsset( container );
+            
             _assetTypes.Remove( fileName );
             assetRef.Remove( fileName );
 
@@ -1366,6 +1375,9 @@ public class AssetManager
         _executor?.Dispose();
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     #region dispose pattern
 
     /// <summary>

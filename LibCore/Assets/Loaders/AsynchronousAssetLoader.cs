@@ -45,7 +45,9 @@ public abstract class AsynchronousAssetLoader< TAssetType, TParameters >
     protected AsynchronousAssetLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
+        Logger.CheckPoint();
         IsSynchronous = false;
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>

@@ -33,6 +33,8 @@ public class SkinLoader : AsynchronousAssetLoader< Skin, SkinLoader.SkinLoaderPa
 {
     public SkinLoader( IFileHandleResolver resolver ) : base( resolver )
     {
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>

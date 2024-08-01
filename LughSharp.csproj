@@ -107,7 +107,12 @@
 
     <ItemGroup>
       <None Remove="LibCore\gdx2d.dll" />
-      <Content Include="LibCore\gdx2d.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="lib\gdx2d.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

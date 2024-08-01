@@ -45,15 +45,8 @@ public class TextureAtlasLoader
     public TextureAtlasLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
-    }
-
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing,
-    /// releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose()
-    {
-        Dispose( true );
+        Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -125,6 +118,15 @@ public class TextureAtlasLoader
     }
 
     /// <summary>
+    /// Performs application-defined tasks associated with freeing,
+    /// releasing, or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( true );
+    }
+
+    /// <summary>
     /// Releases the unmanaged resources used by the texture loader.
     /// </summary>
     /// <param name="disposing">
@@ -145,18 +147,12 @@ public class TextureAtlasLoader
     /// Parameters for loading a <see cref="TextureAtlas"/>
     /// </summary>
     [PublicAPI]
-    public class TextureAtlasParameter : AssetLoaderParameters
+    public class TextureAtlasParameter( bool flip ) : AssetLoaderParameters
     {
-        public TextureAtlasParameter()
+        public TextureAtlasParameter() : this( false )
         {
-            FlipVertically = false;
         }
 
-        public TextureAtlasParameter( bool flip )
-        {
-            FlipVertically = flip;
-        }
-
-        public bool FlipVertically { get; }
+        public bool FlipVertically { get; } = flip;
     }
 }

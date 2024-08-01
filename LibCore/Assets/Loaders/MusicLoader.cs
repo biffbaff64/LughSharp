@@ -34,18 +34,22 @@ namespace LughSharp.LibCore.Assets.Loaders;
 [PublicAPI]
 public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameters >, IDisposable
 {
+    public IMusic LoadedMusic { get; set; }
+
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// Creates a new Music loader using the provided <see cref="IFileHandleResolver"/>
     /// </summary>
     public MusicLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
+        Logger.CheckPoint();
+
         LoadedMusic = null!;
+        
+        Logger.Debug( " - finished" );
     }
-
-    public IMusic LoadedMusic { get; set; }
-
-    // ------------------------------------------------------------------------
 
     /// <inheritdoc />
     public override List< AssetDescriptor > GetDependencies( string? fileName,
