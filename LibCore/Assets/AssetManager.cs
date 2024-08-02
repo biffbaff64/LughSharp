@@ -862,7 +862,7 @@ public class AssetManager
             ArgumentNullException.ThrowIfNull( type );
             ArgumentNullException.ThrowIfNull( loader );
 
-            if ( _loaders[ type ] == null )
+            if ( !_loaders.ContainsKey( type ) || ( _loaders[ type ] == null ) )
             {
                 _loaders.Put( type, new Dictionary< string, AssetLoader? >() );
             }

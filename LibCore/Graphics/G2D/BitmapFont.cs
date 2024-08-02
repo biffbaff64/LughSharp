@@ -82,7 +82,11 @@ public class BitmapFont
     public BitmapFont()
         : this( Gdx.Files.Internal( FONT_NAME ).File, Gdx.Files.Internal( FONT_NAME ).File, false )
     {
+        Logger.CheckPoint();
+        
         _fileType = PathTypes.Internal;
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -100,7 +104,11 @@ public class BitmapFont
     public BitmapFont( bool flip )
         : this( Gdx.Files.Internal( FONT_NAME ).File, Gdx.Files.Internal( FONT_NAME ).File, flip )
     {
+        Logger.CheckPoint();
+        
         _fileType = PathTypes.Internal;
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -122,7 +130,11 @@ public class BitmapFont
     public BitmapFont( FileInfo fontFile, TextureRegion region, bool flip = false )
         : this( new BitmapFontData( fontFile, flip ), region, true )
     {
+        Logger.CheckPoint();
+        
         _fileType = PathTypes.Local;
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -137,7 +149,11 @@ public class BitmapFont
     public BitmapFont( FileInfo fontFile, bool flip = false )
         : this( new BitmapFontData( fontFile, flip ), ( TextureRegion? ) null, true )
     {
+        Logger.CheckPoint();
+        
         _fileType = PathTypes.Local;
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -156,8 +172,12 @@ public class BitmapFont
                 new TextureRegion( new Texture( imageFile, false ) ),
                 integer )
     {
+        Logger.CheckPoint();
+        
         OwnsTexture = true;
-        _fileType   = PathTypes.Local;
+        _fileType = PathTypes.Local;
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -186,7 +206,11 @@ public class BitmapFont
                 region != null ? ListExtensions.New( region ) : null,
                 integer )
     {
+        Logger.CheckPoint();
+        
         _fileType = PathTypes.Local;
+        
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -202,6 +226,8 @@ public class BitmapFont
     /// </param>
     public BitmapFont( BitmapFontData data, List< TextureRegion >? pageRegions, bool integer )
     {
+        Logger.CheckPoint();
+        
         Flipped             = data.Flipped;
         Data               = data;
         UseIntegerPositions = integer;
@@ -240,6 +266,8 @@ public class BitmapFont
         Cache = new BitmapFontCache( this, UseIntegerPositions );
 
         InitialLoad( data );
+        
+        Logger.Debug( " - finished" );
     }
 
     // ------------------------------------------------------------------------
@@ -287,6 +315,8 @@ public class BitmapFont
     /// </param>
     protected virtual void Load( BitmapFontData data )
     {
+        Logger.CheckPoint();
+
         // Iterate through each page of glyphs in the font data.
         foreach ( Glyph?[]? page in data.Glyphs )
         {
@@ -312,6 +342,8 @@ public class BitmapFont
         {
             data.MissingGlyph = data.SetGlyphRegion( data.MissingGlyph, _regions[ data.MissingGlyph.Page ] );
         }
+        
+        Logger.Debug( " - finished" );
     }
 
     // ------------------------------------------------------------------------
@@ -648,6 +680,21 @@ public class BitmapFont
     [PublicAPI]
     public class BitmapFontData
     {
+        public string?     Name          { get; private set; }
+        public string[]?   ImagePaths    { get; private set; }
+        public FileInfo    FontFile      { get; set; }
+        public bool        Flipped       { get; set; }
+        public float       PadTop        { get; set; }
+        public float       PadRight      { get; set; }
+        public float       PadBottom     { get; set; }
+        public float       PadLeft       { get; set; }
+        public float       ScaleX        { get; private set; } = 1;
+        public float       ScaleY        { get; private set; } = 1;
+        public bool        MarkupEnabled { get; set; }
+        public Glyph?[]?[] Glyphs        { get; set; } = new Glyph[ PAGES ][];
+
+        // --------------------------------------------------------------------
+
         /// <summary>
         /// Additional characters besides whitespace where text is wrapped.
         /// Eg, a hypen (-).
@@ -655,15 +702,15 @@ public class BitmapFont
         public readonly char[]? BreakChars;
 
         public readonly char[] CapChars =
-        {
+        [
             'M', 'N', 'B', 'D', 'C', 'E', 'F', 'K', 'A', 'G', 'H', 'I', 'J',
             'L', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-        };
+        ];
 
         public readonly char[] XChars =
-        {
+        [
             'x', 'e', 'a', 'o', 'n', 's', 'r', 'c', 'u', 'm', 'v', 'w', 'z'
-        };
+        ];
 
         /// <summary>
         /// Creates an empty BitmapFontData for configuration before calling
@@ -687,21 +734,6 @@ public class BitmapFont
 
             Load( fontFile, flip );
         }
-
-        // --------------------------------------------------------------------
-
-        public string?     Name          { get; private set; }
-        public string[]?   ImagePaths    { get; private set; }
-        public FileInfo    FontFile      { get; set; }
-        public bool        Flipped       { get; set; }
-        public float       PadTop        { get; set; }
-        public float       PadRight      { get; set; }
-        public float       PadBottom     { get; set; }
-        public float       PadLeft       { get; set; }
-        public float       ScaleX        { get; private set; } = 1;
-        public float       ScaleY        { get; private set; } = 1;
-        public bool        MarkupEnabled { get; set; }
-        public Glyph?[]?[] Glyphs        { get; set; } = new Glyph[ PAGES ][];
 
         /// <summary>
         /// The distance from one line of text to the next.

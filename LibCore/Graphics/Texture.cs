@@ -80,18 +80,21 @@ public class Texture : GLTexture
         : this( Gdx.Files.Internal( internalPath ).File )
     {
         Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     public Texture( FileInfo file, bool useMipMaps )
         : this( file, default( Pixmap.Format ), useMipMaps )
     {
         Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     public Texture( FileInfo? file, Pixmap.Format format = default( Pixmap.Format ), bool useMipMaps = false )
-        : this( ITextureData.TextureDataFactory.LoadFromFile( file!, format, useMipMaps ) )
+        : this( TextureDataFactory.LoadFromFile( file!, format, useMipMaps ) )
     {
         Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -103,6 +106,7 @@ public class Texture : GLTexture
         : this( new PixmapTextureData( pixmap, null, useMipMaps, false ) )
     {
         Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -115,6 +119,7 @@ public class Texture : GLTexture
         : this( new PixmapTextureData( pixmap, format, useMipMaps, false ) )
     {
         Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -127,6 +132,7 @@ public class Texture : GLTexture
         : this( new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ) )
     {
         Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -136,6 +142,7 @@ public class Texture : GLTexture
         : this( IGL.GL_TEXTURE_2D, ( int ) Gdx.GL.glGenTexture(), data )
     {
         Logger.CheckPoint();
+        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -164,16 +171,15 @@ public class Texture : GLTexture
         {
             AddManagedTexture( Gdx.App, this );
         }
+        
+        Logger.Debug( " - finished" );
     }
 
     public void Load( ITextureData? data )
     {
-        if ( TextureData == null )
-        {
-            throw new GdxRuntimeException( "Load failed!: TextureData property is null!" );
-        }
-
-        if ( ( data != null ) && ( data.IsManaged() != TextureData.IsManaged() ) )
+        if ( ( data != null )
+          && ( TextureData != null )
+          && ( data.IsManaged() != TextureData.IsManaged() ) )
         {
             throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
         }

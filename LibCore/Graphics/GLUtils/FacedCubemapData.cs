@@ -50,12 +50,12 @@ public class FacedCubemapData : ICubemapData
                              FileInfo positiveZ,
                              FileInfo negativeZ,
                              bool useMipMaps = false )
-        : this( ITextureData.TextureDataFactory.LoadFromFile( positiveX, useMipMaps ),
-                ITextureData.TextureDataFactory.LoadFromFile( negativeX, useMipMaps ),
-                ITextureData.TextureDataFactory.LoadFromFile( positiveY, useMipMaps ),
-                ITextureData.TextureDataFactory.LoadFromFile( negativeY, useMipMaps ),
-                ITextureData.TextureDataFactory.LoadFromFile( positiveZ, useMipMaps ),
-                ITextureData.TextureDataFactory.LoadFromFile( negativeZ, useMipMaps ) )
+        : this( TextureDataFactory.LoadFromFile( positiveX, useMipMaps ),
+                TextureDataFactory.LoadFromFile( negativeX, useMipMaps ),
+                TextureDataFactory.LoadFromFile( positiveY, useMipMaps ),
+                TextureDataFactory.LoadFromFile( negativeY, useMipMaps ),
+                TextureDataFactory.LoadFromFile( positiveZ, useMipMaps ),
+                TextureDataFactory.LoadFromFile( negativeZ, useMipMaps ) )
     {
     }
 
@@ -256,7 +256,7 @@ public class FacedCubemapData : ICubemapData
             throw new GdxRuntimeException( $"Cannot load {file.Name}, _data is null!" );
         }
 
-        _data[ side.Index ] = ITextureData.TextureDataFactory.LoadFromFile( file, false )
+        _data[ side.Index ] = TextureDataFactory.LoadFromFile( file, false )
                            ?? throw new GdxRuntimeException( $"Error loading {file.Name}" );
     }
 

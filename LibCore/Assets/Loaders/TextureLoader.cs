@@ -82,7 +82,7 @@ public class TextureLoader
                 _loaderInfo.Texture = parameter.Texture;
             }
 
-            _loaderInfo.Data = ITextureData.TextureDataFactory.LoadFromFile( file!, format, genMipMaps );
+            _loaderInfo.Data = TextureDataFactory.LoadFromFile( file!, format, genMipMaps );
         }
         else
         {

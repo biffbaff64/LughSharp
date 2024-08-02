@@ -44,7 +44,7 @@ public class FileTextureArrayData : ITextureArrayData
 
         for ( var i = 0; i < files.Length; i++ )
         {
-            _textureData[ i ] = ITextureData.TextureDataFactory.LoadFromFile( files[ i ], format, useMipMaps );
+            _textureData[ i ] = TextureDataFactory.LoadFromFile( files[ i ], format, useMipMaps );
         }
     }
 

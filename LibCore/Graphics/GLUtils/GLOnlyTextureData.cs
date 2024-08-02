@@ -36,6 +36,15 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class GLOnlyTextureData : ITextureData
 {
+    public int  MipLevel       { get; set; } = 0;
+    public int  InternalFormat { get; set; }
+    public int  Format         { get; set; }
+    public int  Type           { get; set; }
+    public int  Width          { get; set; } = 0;
+    public int  Height         { get; set; } = 0;
+    public bool IsPrepared     { get; set; } = false;
+    public bool UseMipMaps     { get; set; }
+
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -74,15 +83,6 @@ public class GLOnlyTextureData : ITextureData
         Format         = format;
         Type           = type;
     }
-
-    public int  MipLevel       { get; set; } = 0;
-    public int  InternalFormat { get; set; }
-    public int  Format         { get; set; }
-    public int  Type           { get; set; }
-    public int  Width          { get; set; } = 0;
-    public int  Height         { get; set; } = 0;
-    public bool IsPrepared     { get; set; } = false;
-    public bool UseMipMaps     { get; set; }
 
     public void Prepare()
     {
