@@ -43,7 +43,7 @@ namespace LughSharp.LibCore.Graphics;
 /// interface.
 /// </summary>
 [PublicAPI]
-public interface ICubemapData
+public interface ICubemapData : IManageable
 {
     /// <summary>
     /// whether the TextureData is prepared or not.
@@ -59,11 +59,6 @@ public interface ICubemapData
     /// The height of the pixel data.
     /// </summary>
     int Height { get; }
-
-    /// <summary>
-    /// Returns true if this implementation can cope with a EGL context loss.
-    /// </summary>
-    bool Managed { get; }
 
     /// <summary>
     /// Prepares the TextureData for a call to <see cref="ConsumeCubemapData()"/>.

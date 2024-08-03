@@ -100,9 +100,10 @@ public class MipMapTextureData : ITextureData
         return Pixmap.Format.Alpha;
     }
 
-    public bool IsManaged()
+    public bool IsManaged
     {
-        return false;
+        get => false;
+        set { }
     }
 
     public bool ShouldDisposePixmap()

@@ -41,7 +41,7 @@ namespace LughSharp.LibCore.Graphics;
 /// </para>
 /// </summary>
 [PublicAPI]
-public interface ITextureData
+public interface ITextureData : IManageable
 {
     public enum TextureType
     {
@@ -113,9 +113,4 @@ public interface ITextureData
     /// Returns the <see cref="Pixmap.Format"/> of the pixel data.
     /// </summary>
     public Pixmap.Format GetFormat();
-
-    /// <summary>
-    /// Returns whether this implementation can cope with a EGL context loss.
-    /// </summary>
-    public bool IsManaged();
 }

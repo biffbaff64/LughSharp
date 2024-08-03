@@ -178,8 +178,9 @@ public class ETC1TextureData : ITextureData
     }
 
     /// <inheritdoc />
-    public bool IsManaged()
+    public bool IsManaged
     {
-        return false;
+        get => false;
+        set { }
     }
 }

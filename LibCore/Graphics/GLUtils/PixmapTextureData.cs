@@ -38,17 +38,19 @@ public class PixmapTextureData : ITextureData
                               bool disposePixmap,
                               bool managed = false )
     {
+        Logger.CheckPoint();
+
         Pixmap        = pixmap;
         UseMipMaps    = useMipMaps;
         DisposePixmap = disposePixmap;
-        Managed       = managed;
+        IsManaged     = managed;
         Format        = format ?? pixmap.GetFormat();
     }
 
     public Pixmap        Pixmap        { get; set; }
     public Pixmap.Format Format        { get; set; }
     public bool          DisposePixmap { get; set; }
-    public bool          Managed       { get; set; }
+    public bool          IsManaged     { get; set; }
     public bool          UseMipMaps    { get; set; }
 
     public Pixmap ConsumePixmap()
@@ -91,14 +93,6 @@ public class PixmapTextureData : ITextureData
     public Pixmap.Format GetFormat()
     {
         return Format;
-    }
-
-    /// <summary>
-    /// Returns whether this implementation can cope with a EGL context loss.
-    /// </summary>
-    public bool IsManaged()
-    {
-        return Managed;
     }
 
     public void ConsumeCustomData( int target )

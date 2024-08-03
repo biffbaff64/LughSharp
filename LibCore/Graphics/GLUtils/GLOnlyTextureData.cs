@@ -110,9 +110,10 @@ public class GLOnlyTextureData : ITextureData
     /// <summary>
     /// GLOnlyTextureData objects are not Managed.
     /// </summary>
-    public bool IsManaged()
+    public bool IsManaged
     {
-        return false;
+        get => false;
+        set { }
     }
 
     /// <summary>

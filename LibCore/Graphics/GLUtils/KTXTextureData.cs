@@ -69,9 +69,11 @@ public class KtxTextureData : ITextureData, ICubemapData
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-    
+
     public KtxTextureData( FileInfo? file, bool useMipMaps )
     {
+        Logger.CheckPoint();
+
         _file      = file;
         UseMipMaps = useMipMaps;
     }
@@ -90,7 +92,11 @@ public class KtxTextureData : ITextureData, ICubemapData
     /// <summary>
     /// Returns true if this implementation can cope with a EGL context loss.
     /// </summary>
-    public bool Managed { get; set; }
+    public bool IsManaged
+    {
+        get => false;
+        set { }
+    }
 
     /// <summary>
     /// Returns the <see cref="ITextureData.TextureDataType"/>.
@@ -135,7 +141,7 @@ public class KtxTextureData : ITextureData, ICubemapData
 
                 var fileSize = dataInputStream.ReadInt32();
 
-                _compressedData = BufferUtils.NewByteBuffer( fileSize, false );
+                _compressedData = BufferUtils.NewByteBuffer( fileSize, isUnsafe: false );
 
                 int readBytes;
 
@@ -274,7 +280,7 @@ public class KtxTextureData : ITextureData, ICubemapData
             _compressedData.Limit    = pos;
             _compressedData.Position = 0;
 
-            var directBuffer = BufferUtils.NewByteBuffer( pos, false );
+            var directBuffer = BufferUtils.NewByteBuffer( pos, isUnsafe: false );
             directBuffer.Order( _compressedData.Order() );
             directBuffer.Put( _compressedData );
 
@@ -615,12 +621,6 @@ public class KtxTextureData : ITextureData, ICubemapData
 
     /// <returns> whether to generate mipmaps or not. </returns>
     public bool UseMipMaps { get; set; }
-
-    /// <returns> whether this implementation can cope with a EGL context loss. </returns>
-    public bool IsManaged()
-    {
-        return false;
-    }
 
     public void DisposePreparedData()
     {

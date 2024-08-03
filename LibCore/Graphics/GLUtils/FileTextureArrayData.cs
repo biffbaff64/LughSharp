@@ -182,16 +182,20 @@ public class FileTextureArrayData : ITextureArrayData
         }
     }
 
-    public bool IsManaged()
+    public bool IsManaged
     {
-        foreach ( var data in _textureData )
+        get
         {
-            if ( ( data != null ) && !data.IsManaged() )
+            foreach ( var data in _textureData )
             {
-                return false;
+                if ( data is { IsManaged: false } )
+                {
+                    return false;
+                }
             }
+            return true;
         }
-
-        return true;
+        // ReSharper disable once ValueParameterNotUsed
+        set { }
     }
 }

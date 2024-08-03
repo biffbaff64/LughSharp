@@ -33,7 +33,7 @@ namespace LughSharp.LibCore.Graphics;
 /// methods to create TextureData and upload image data.
 /// </summary>
 [PublicAPI]
-public abstract class GLTexture : IDisposable
+public abstract class GLTexture : IDisposable, IManageable
 {
     public virtual int Width  { get; }
     public virtual int Height { get; }
@@ -69,7 +69,11 @@ public abstract class GLTexture : IDisposable
     /// </summary>
     public TextureWrap VWrap { get; set; } = TextureWrap.ClampToEdge;
 
-    public virtual bool IsManaged => false;
+    public virtual bool IsManaged
+    {
+        get => false;
+        set { }
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

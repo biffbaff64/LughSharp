@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text;
 using LughSharp.LibCore.Assets.Loaders;
 using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
@@ -39,7 +38,7 @@ public class Cubemap : GLTexture
     public static AssetManager? AssetManager { get; set; }
     public        ICubemapData  Data         { get; set; }
 
-    public override bool IsManaged => Data.Managed;
+    public override bool IsManaged => Data.IsManaged;
     public override int  Width     => Data.Width;
     public override int  Height    => Data.Height;
     public override int  Depth     => 0;
@@ -61,7 +60,7 @@ public class Cubemap : GLTexture
 
         Load( data );
 
-        if ( data.Managed )
+        if ( data.IsManaged )
         {
             AddManagedCubemap( Gdx.App, this );
         }
@@ -315,7 +314,7 @@ public class Cubemap : GLTexture
 
             Delete();
 
-            if ( Data.Managed )
+            if ( Data.IsManaged )
             {
                 if ( _managedCubemaps[ Gdx.App ] != null )
                 {

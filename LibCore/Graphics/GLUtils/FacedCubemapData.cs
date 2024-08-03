@@ -194,7 +194,7 @@ public class FacedCubemapData : ICubemapData
     /// <summary>
     /// Returns true if this implementation can cope with a EGL context loss.
     /// </summary>
-    public bool Managed
+    public bool IsManaged
     {
         get
         {
@@ -205,7 +205,7 @@ public class FacedCubemapData : ICubemapData
 
             foreach ( var data in _data )
             {
-                if ( ( data != null ) && !data.IsManaged() )
+                if ( data is { IsManaged: false } )
                 {
                     return false;
                 }
@@ -213,6 +213,7 @@ public class FacedCubemapData : ICubemapData
 
             return true;
         }
+        set { }
     }
 
     /// <summary>

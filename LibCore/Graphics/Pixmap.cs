@@ -121,6 +121,9 @@ public class Pixmap : IDisposable
 
 //        GDX2DPixmap = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
 
+        PixelData = ByteBuffer.Allocate( width * height );
+        PixFormat = PixmapFormat.ToGdx2DPixmapFormat( format );
+        
         SetColor( 0, 0, 0, 0 );
         FillWithCurrentColor();
 
@@ -138,6 +141,15 @@ public class Pixmap : IDisposable
         try
         {
 //            GDX2DPixmap = new Gdx2DPixmap( encodedData, offset, len, 0 );
+
+            PixelData = ByteBuffer.Allocate( len );
+            
+            //TODO: create NativeData from encodedData, as done in Gdx2DPixmap
+            
+            BasePtr   = NativeData[ 0 ];
+            Width     = ( int ) NativeData[ 1 ];
+            Height    = ( int ) NativeData[ 2 ];
+            PixFormat = ( int ) NativeData[ 3 ];
         }
         catch ( IOException e )
         {
@@ -180,17 +192,17 @@ public class Pixmap : IDisposable
         Logger.Debug( " - finished" );
     }
 
-    /// <summary>
-    /// Creates a new Pixmap from the supplied <see cref="Gdx2DPixmap"/>.
-    /// </summary>
-    public Pixmap( Gdx2DPixmap pixmap )
-    {
-        Logger.CheckPoint();
-
+//    /// <summary>
+//    /// Creates a new Pixmap from the supplied <see cref="Gdx2DPixmap"/>.
+//    /// </summary>
+//    public Pixmap( Gdx2DPixmap pixmap )
+//    {
+//        Logger.CheckPoint();
+//
 //        GDX2DPixmap = pixmap;
-
-        Logger.Debug( " - finished" );
-    }
+//
+//        Logger.Debug( " - finished" );
+//    }
 
     // ----------------------------------------------------------
 

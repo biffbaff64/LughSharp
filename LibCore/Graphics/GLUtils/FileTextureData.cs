@@ -149,10 +149,10 @@ public class FileTextureData : ITextureData
         return Pixmap.Format.Alpha;
     }
 
-    /// <returns> whether this implementation can cope with a EGL context loss. </returns>
-    public virtual bool IsManaged()
+    public virtual bool IsManaged
     {
-        return true;
+        get => true;
+        set { }
     }
 
     /// <returns> the <see cref="ITextureData.TextureDataType"/></returns>

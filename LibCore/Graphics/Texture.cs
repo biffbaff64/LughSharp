@@ -62,7 +62,7 @@ public class Texture : GLTexture
     public override int  Width     => TextureData?.Width ?? 0;
     public override int  Height    => TextureData?.Height ?? 0;
     public override int  Depth     => 0;
-    public override bool IsManaged => ( TextureData != null ) && TextureData.IsManaged();
+    public override bool IsManaged => TextureData is { IsManaged: true };
 
     public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
 
@@ -167,11 +167,11 @@ public class Texture : GLTexture
 
         Load( data );
 
-        if ( data.IsManaged() )
+        if ( data.IsManaged )
         {
             AddManagedTexture( Gdx.App, this );
         }
-        
+
         Logger.Debug( " - finished" );
     }
 
@@ -179,7 +179,7 @@ public class Texture : GLTexture
     {
         if ( ( data != null )
           && ( TextureData != null )
-          && ( data.IsManaged() != TextureData.IsManaged() ) )
+          && ( data.IsManaged != TextureData.IsManaged ) )
         {
             throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
         }
@@ -230,7 +230,7 @@ public class Texture : GLTexture
     /// <param name="y"> The y coordinate in pixels  </param>
     public void Draw( Pixmap pixmap, int x, int y )
     {
-        if ( ( TextureData != null ) && TextureData.IsManaged() )
+        if ( TextureData is { IsManaged: true } )
         {
             throw new GdxRuntimeException( "can't draw to a managed texture" );
         }
@@ -396,7 +396,8 @@ public class Texture : GLTexture
 
             Delete();
 
-            if ( ( TextureData != null ) && TextureData.IsManaged() )
+//            if ( ( TextureData != null ) && TextureData.IsManaged )
+            if ( TextureData is { IsManaged: true } )
             {
                 if ( _managedTextures[ Gdx.App ] != null )
                 {
@@ -409,18 +410,11 @@ public class Texture : GLTexture
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    private sealed class LoadedCallbackInnerClass : ILoadedCallback
+    private sealed class LoadedCallbackInnerClass( int refCount ) : ILoadedCallback
     {
-        private readonly int _refCount;
-
-        public LoadedCallbackInnerClass( int refCount )
-        {
-            _refCount = refCount;
-        }
-
         public void FinishedLoading( AssetManager assetManager, string? fileName, Type? type )
         {
-            assetManager.SetReferenceCount( fileName!, _refCount );
+            assetManager.SetReferenceCount( fileName!, refCount );
         }
     }
 }

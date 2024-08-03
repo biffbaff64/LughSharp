@@ -750,6 +750,7 @@ UTILS
     - DONE - DONE - FloatConstants
     - DONE - DONE - IClipboard                      Convert - Interface, clipboard handled in backends.
     - DONE - DONE - ICloseable
+    - DONE - DONE - IManageable
     - DONE - DONE - IReadable
     - DONE - DONE - IRunnable                       Done, but is it needed?
     - DONE - DONE - Logger

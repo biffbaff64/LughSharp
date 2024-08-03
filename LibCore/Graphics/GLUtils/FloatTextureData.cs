@@ -161,9 +161,10 @@ public class FloatTextureData : ITextureData
     /// <summary>
     /// FloatTextureData objects are Managed.
     /// </summary>
-    public bool IsManaged()
+    public bool IsManaged
     {
-        return true;
+        get => true;
+        set { }
     }
 
     // ------------------------------------------------------------------------
