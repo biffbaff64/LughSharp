@@ -50,26 +50,6 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class Pixmap : IDisposable
 {
-    #region constants
-
-    public const int GDX_2D_FORMAT_ALPHA           = 1;
-    public const int GDX_2D_FORMAT_LUMINANCE_ALPHA = 2;
-    public const int GDX_2D_FORMAT_RGB888          = 3;
-    public const int GDX_2D_FORMAT_RGBA8888        = 4;
-    public const int GDX_2D_FORMAT_RGB565          = 5;
-    public const int GDX_2D_FORMAT_RGBA4444        = 6;
-    public const int GDX_2D_SCALE_NEAREST          = 0;
-    public const int GDX_2D_SCALE_LINEAR           = 1;
-    public const int GDX_2D_SCALE_BILINEAR         = 1;
-    public const int GDX_2D_BLEND_NONE             = 0;
-    public const int GDX_2D_BLEND_SRC_OVER         = 1;
-
-    #endregion constants
-
-    // ------------------------------------------------------------------------
-
-    #region properties
-
     public long       BasePtr    { get; set; }                  // 
     public int        PixFormat  { get; set; }                  // The actual pixmap format.
     public ByteBuffer PixelData  { get; set; }                  //
@@ -100,8 +80,6 @@ public class Pixmap : IDisposable
         }
     }
 
-    #endregion properties
-
     // ------------------------------------------------------------------------
 
     private Filter _filter = Filter.BiLinear;
@@ -121,8 +99,8 @@ public class Pixmap : IDisposable
 
 //        GDX2DPixmap = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
 
-        PixelData = ByteBuffer.Allocate( width * height );
         PixFormat = PixmapFormat.ToGdx2DPixmapFormat( format );
+        PixelData = ByteBuffer.Allocate( width * height * PixmapFormat.Gdx2dBytesPerPixel( PixFormat ) );
         
         SetColor( 0, 0, 0, 0 );
         FillWithCurrentColor();

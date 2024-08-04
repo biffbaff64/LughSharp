@@ -137,7 +137,7 @@ public class Gdx2DPixmap : IDisposable
         if ( PixelPtr == null )
         {
             throw new GdxRuntimeException( $"Unable to allocate memory for pixmap: "
-                                         + $"{width} x {height}: {GetFormatString( format )}" );
+                                         + $"{width} x {height}: {PixmapFormat.GetFormatString( format )}" );
         }
 
         BasePtr = NativeData[ 0 ];
@@ -176,7 +176,7 @@ public class Gdx2DPixmap : IDisposable
             Format = ( uint ) format,
             Blend  = GDX_2D_BLEND_SRC_OVER,
             Scale  = GDX_2D_SCALE_BILINEAR,
-            Pixels = new byte[ width * height * Gdx2DUtils.Gdx2dBytesPerPixel( ( uint ) format ) ]
+            Pixels = new byte[ width * height * PixmapFormat.Gdx2dBytesPerPixel( format ) ]
         };
 
         return BufferUtils.NewByteBuffer( pixmap.Pixels.Length );
@@ -321,7 +321,7 @@ public class Gdx2DPixmap : IDisposable
                             int dstWidth,
                             int dstHeight )
     {
-//        DrawPixmap( src.BasePtr, BasePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
+//        DrawPixmap( src, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
     }
 
     public static Gdx2DPixmap? NewPixmap( StreamReader inStream, int requestedFormat )
@@ -366,7 +366,7 @@ public class Gdx2DPixmap : IDisposable
     public int    GLInternalFormat => ToGLFormat( Format );
     public int    GLFormat         => ToGLFormat( Format );
     public int    GLType           => ToGLType( Format );
-    public string FormatString     => GetFormatString( Format );
+    public string FormatString     => PixmapFormat.GetFormatString( Format );
 
 //    public int Blend
 //    {
@@ -378,25 +378,6 @@ public class Gdx2DPixmap : IDisposable
 //        set => Gdx2DUtils.Gdx2dSetScale( BasePtr, value );
 //    }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="format"></param>
-    /// <returns></returns>
-    private static string GetFormatString( int format )
-    {
-        Logger.CheckPoint();
-
-        return format switch
-        {
-            GDX_2D_FORMAT_ALPHA           => "Alpha",
-            GDX_2D_FORMAT_LUMINANCE_ALPHA => "Luminance Alpha",
-            GDX_2D_FORMAT_RGB888          => "Rgb888",
-            GDX_2D_FORMAT_RGBA8888        => "Rgba8888",
-            GDX_2D_FORMAT_RGB565          => "Rgb565",
-            GDX_2D_FORMAT_RGBA4444        => "Rgba4444",
-            var _                         => "Unknown"
-        };
-    }
 
     // ------------------------------------------------------------------------
 

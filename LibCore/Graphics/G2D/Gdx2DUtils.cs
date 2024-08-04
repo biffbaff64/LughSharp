@@ -30,22 +30,7 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class Gdx2DUtils
 {
-    private const uint GDX_2D_FORMAT_ALPHA           = 1;
-    private const uint GDX_2D_FORMAT_LUMINANCE_ALPHA = 2;
-    private const uint GDX_2D_FORMAT_RGB888          = 3;
-    private const uint GDX_2D_FORMAT_RGBA8888        = 4;
-    private const uint GDX_2D_FORMAT_RGB565          = 5;
-    private const uint GDX_2D_FORMAT_RGBA4444        = 6;
-
-    private const uint GDX_2D_BLEND_NONE     = 0;
-    private const uint GDX_2D_BLEND_SRC_OVER = 1;
-
-    private const uint GDX_2D_SCALE_NEAREST  = 0;
-    private const uint GDX_2D_SCALE_BILINEAR = 1;
-
-    // ------------------------------------------------------------------------
-
-    [PublicAPI]
+    [PublicAPI, StructLayout( LayoutKind.Sequential )]
     public struct Gdx2dPixmap
     {
         public uint   Width  { get; set; }
@@ -54,16 +39,6 @@ public class Gdx2DUtils
         public uint   Blend  { get; set; }
         public uint   Scale  { get; set; }
         public byte[] Pixels { get; set; }
-
-//        public Gdx2dPixmap( uint width, uint height, uint format, uint blend, uint scale, byte[] pixels )
-//        {
-//            Width  = width;
-//            Height = height;
-//            Format = format;
-//            Blend  = blend;
-//            Scale  = scale;
-//            Pixels = pixels;
-//        }
     }
 
     // ------------------------------------------------------------------------
@@ -108,38 +83,38 @@ public class Gdx2DUtils
 
         switch ( format )
         {
-            case GDX_2D_FORMAT_ALPHA:
+            case PixmapFormat.GDX_2D_FORMAT_ALPHA:
                 return color & 0xff;
 
-            case GDX_2D_FORMAT_LUMINANCE_ALPHA:
+            case PixmapFormat.GDX_2D_FORMAT_LUMINANCE_ALPHA:
                 r = ( color & 0xff000000 ) >> 24;
                 g = ( color & 0xff0000 ) >> 16;
                 b = ( color & 0xff00 ) >> 8;
                 a = color & 0xff;
-                
+
                 var l = ( ( uint ) ( 0.2126f * r + 0.7152f * g + 0.0722f * b ) & 0xff ) << 8;
-                
+
                 return ( l & 0xffffff00 ) | a;
 
-            case GDX_2D_FORMAT_RGB888:
+            case PixmapFormat.GDX_2D_FORMAT_RGB888:
                 return color >> 8;
 
-            case GDX_2D_FORMAT_RGBA8888:
+            case PixmapFormat.GDX_2D_FORMAT_RGBA8888:
                 return color;
 
-            case GDX_2D_FORMAT_RGB565:
+            case PixmapFormat.GDX_2D_FORMAT_RGB565:
                 r = ( ( ( color & 0xff000000 ) >> 27 ) << 11 ) & 0xf800;
                 g = ( ( ( color & 0xff0000 ) >> 18 ) << 5 ) & 0x7e0;
                 b = ( ( color & 0xff00 ) >> 11 ) & 0x1f;
-                
+
                 return r | g | b;
 
-            case GDX_2D_FORMAT_RGBA4444:
+            case PixmapFormat.GDX_2D_FORMAT_RGBA4444:
                 r = ( ( ( color & 0xff000000 ) >> 28 ) << 12 ) & 0xf000;
                 g = ( ( ( color & 0xff0000 ) >> 20 ) << 8 ) & 0xf00;
                 b = ( ( ( color & 0xff00 ) >> 12 ) << 4 ) & 0xf0;
                 a = ( color & 0xff ) >> 4 & 0xf;
-                
+
                 return r | g | b | a;
 
             default:
@@ -167,26 +142,26 @@ public class Gdx2DUtils
 
         switch ( format )
         {
-            case GDX_2D_FORMAT_ALPHA:
+            case PixmapFormat.GDX_2D_FORMAT_ALPHA:
                 return ( color & 0xff ) | 0xffffff00;
 
-            case GDX_2D_FORMAT_LUMINANCE_ALPHA:
+            case PixmapFormat.GDX_2D_FORMAT_LUMINANCE_ALPHA:
                 return ( ( color & 0xff00 ) << 16 ) | ( ( color & 0xff00 ) << 8 ) | ( color & 0xffff );
 
-            case GDX_2D_FORMAT_RGB888:
+            case PixmapFormat.GDX_2D_FORMAT_RGB888:
                 return ( color << 8 ) | 0x000000ff;
 
-            case GDX_2D_FORMAT_RGBA8888:
+            case PixmapFormat.GDX_2D_FORMAT_RGBA8888:
                 return color;
 
-            case GDX_2D_FORMAT_RGB565:
+            case PixmapFormat.GDX_2D_FORMAT_RGB565:
                 r = _lu5[ ( color & 0xf800 ) >> 11 ] << 24;
                 g = _lu6[ ( color & 0x7e0 ) >> 5 ] << 16;
                 b = _lu5[ ( color & 0x1f ) ] << 8;
 
                 return r | g | b | 0xff;
 
-            case GDX_2D_FORMAT_RGBA4444:
+            case PixmapFormat.GDX_2D_FORMAT_RGBA4444:
                 r = _lu4[ ( color & 0xf000 ) >> 12 ] << 24;
                 g = _lu4[ ( color & 0xf00 ) >> 8 ] << 16;
                 b = _lu4[ ( color & 0xf0 ) >> 4 ] << 8;
@@ -204,13 +179,13 @@ public class Gdx2DUtils
     {
         return format switch
         {
-            GDX_2D_FORMAT_ALPHA           => GetPixelAlpha,
-            GDX_2D_FORMAT_LUMINANCE_ALPHA => GetPixelLuminanceAlpha,
-            GDX_2D_FORMAT_RGB888          => GetPixelRGB888,
-            GDX_2D_FORMAT_RGBA8888        => GetPixelRGBA8888,
-            GDX_2D_FORMAT_RGB565          => GetPixelRGB565,
-            GDX_2D_FORMAT_RGBA4444        => GetPixelRGBA4444,
-            _                             => GetPixelAlpha,
+            PixmapFormat.GDX_2D_FORMAT_ALPHA           => GetPixelAlpha,
+            PixmapFormat.GDX_2D_FORMAT_LUMINANCE_ALPHA => GetPixelLuminanceAlpha,
+            PixmapFormat.GDX_2D_FORMAT_RGB888          => GetPixelRGB888,
+            PixmapFormat.GDX_2D_FORMAT_RGBA8888        => GetPixelRGBA8888,
+            PixmapFormat.GDX_2D_FORMAT_RGB565          => GetPixelRGB565,
+            PixmapFormat.GDX_2D_FORMAT_RGBA4444        => GetPixelRGBA4444,
+            var _                                      => GetPixelAlpha,
         };
     }
 
@@ -218,13 +193,13 @@ public class Gdx2DUtils
     {
         return format switch
         {
-            GDX_2D_FORMAT_ALPHA           => SetPixelAlpha,
-            GDX_2D_FORMAT_LUMINANCE_ALPHA => SetPixelLuminanceAlpha,
-            GDX_2D_FORMAT_RGB888          => SetPixelRGB888,
-            GDX_2D_FORMAT_RGBA8888        => SetPixelRGBA8888,
-            GDX_2D_FORMAT_RGB565          => SetPixelRGB565,
-            GDX_2D_FORMAT_RGBA4444        => SetPixelRGBA4444,
-            _                             => SetPixelAlpha,
+            PixmapFormat.GDX_2D_FORMAT_ALPHA           => SetPixelAlpha,
+            PixmapFormat.GDX_2D_FORMAT_LUMINANCE_ALPHA => SetPixelLuminanceAlpha,
+            PixmapFormat.GDX_2D_FORMAT_RGB888          => SetPixelRGB888,
+            PixmapFormat.GDX_2D_FORMAT_RGBA8888        => SetPixelRGBA8888,
+            PixmapFormat.GDX_2D_FORMAT_RGB565          => SetPixelRGB565,
+            PixmapFormat.GDX_2D_FORMAT_RGBA4444        => SetPixelRGBA4444,
+            var _                                      => SetPixelAlpha,
         };
     }
 
@@ -247,9 +222,9 @@ public class Gdx2DUtils
         var dstR = ( dst >> 24 ) & 0xff;
 
         dstA -= ( dstA * srcA ) / 255;
-        
+
         var a = dstA + srcA;
-        
+
         dstR = ( dstR * dstA + srcR * srcA ) / a;
         dstG = ( dstG * dstA + srcG * srcA ) / a;
         dstB = ( dstB * dstA + srcB * srcA ) / a;
@@ -259,49 +234,35 @@ public class Gdx2DUtils
 
     public static Gdx2dPixmap? Gdx2dLoad( byte[] buffer, uint len )
     {
-        //TODO:
-        // Implement a suitable image loading function here, e.g., using an image library
-        // Assume we have a function `LoadImageFromMemory` returning the necessary data
-        // var (width, height, format, pixels) = LoadImageFromMemory(buffer, len);
+        var pixels = new byte[ len ];
 
-        
-        
-        // Mockup for demonstration purposes:
-        var     width  = 0;
-        var     height = 0;
-        var     format = 0;
-        byte[]? pixels = null;
-
-        if ( pixels == null )
-        {
-            return null;
-        }
+        LoadImageFromMemory( buffer, len, out var width, out var height, out var format, ref pixels );
 
         var pixmap = new Gdx2dPixmap
         {
             Width  = ( uint ) width,
             Height = ( uint ) height,
             Format = ( uint ) format,
-            Blend  = GDX_2D_BLEND_SRC_OVER,
-            Scale  = GDX_2D_SCALE_BILINEAR,
+            Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
+            Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
             Pixels = pixels
         };
 
         return pixmap;
     }
 
-    public static uint Gdx2dBytesPerPixel( uint format )
+    private static void LoadImageFromMemory( byte[] buffer, uint len, out int w, out int h, out int f, ref byte[] bytes )
     {
-        return format switch
+        //TODO: Set up data correctly
+
+        for ( var i = 0; i < len; i++ )
         {
-            GDX_2D_FORMAT_ALPHA => 1,
-            GDX_2D_FORMAT_LUMINANCE_ALPHA
-                or GDX_2D_FORMAT_RGB565
-                or GDX_2D_FORMAT_RGBA4444 => 2,
-            GDX_2D_FORMAT_RGB888   => 3,
-            GDX_2D_FORMAT_RGBA8888 => 4,
-            _                      => 4,
-        };
+            bytes[ i ] = buffer[ i ];
+        }
+
+        w = 0;
+        h = 0;
+        f = PixmapFormat.GDX_2D_FORMAT_RGBA8888;
     }
 
     public static Gdx2dPixmap Gdx2dNew( int width, int height, int format )
@@ -311,16 +272,16 @@ public class Gdx2DUtils
             Width  = ( uint ) width,
             Height = ( uint ) height,
             Format = ( uint ) format,
-            Blend  = GDX_2D_BLEND_SRC_OVER,
-            Scale  = GDX_2D_SCALE_BILINEAR,
-            Pixels = new byte[ width * height * Gdx2dBytesPerPixel( ( uint ) format ) ]
+            Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
+            Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
+            Pixels = new byte[ width * height * PixmapFormat.Gdx2dBytesPerPixel( format ) ]
         };
 
         return pixmap;
     }
 
     // ------------------------------------------------------------------------
-    
+
     public static void SetPixelAlpha( byte[] pixelAddr, uint color )
     {
         pixelAddr[ 0 ] = ( byte ) ( color & 0xff );
@@ -373,7 +334,10 @@ public class Gdx2DUtils
 
     public static uint GetPixelRGBA8888( byte[] pixelAddr )
     {
-        return ( ( uint ) pixelAddr[ 0 ] << 24 ) | ( ( uint ) pixelAddr[ 1 ] << 16 ) | ( ( uint ) pixelAddr[ 2 ] << 8 ) | pixelAddr[ 3 ];
+        return ( ( uint ) pixelAddr[ 0 ] << 24 )
+             | ( ( uint ) pixelAddr[ 1 ] << 16 )
+             | ( ( uint ) pixelAddr[ 2 ] << 8 )
+             | pixelAddr[ 3 ];
     }
 
     public static uint GetPixelRGB565( byte[] pixelAddr )

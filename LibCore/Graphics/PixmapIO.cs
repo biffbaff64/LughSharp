@@ -169,17 +169,13 @@ public static class PixmapIO
         {
             try
             {
-                // long start = System.nanoTime();
-                var input = new BinaryReader( new InflaterInputStream( file.OpenRead() ) );
-
-                var width  = input.Read();
-                var height = input.Read();
-
-                var format = PixmapFormat.FromGdx2DPixmapFormat( input.Read() );
-
-                var pixmap = new Pixmap( width, height, format );
-
+                var input    = new BinaryReader( new InflaterInputStream( file.OpenRead() ) );
+                var width    = input.Read();
+                var height   = input.Read();
+                var format   = PixmapFormat.FromGdx2DPixmapFormat( input.Read() );
+                var pixmap   = new Pixmap( width, height, format );
                 var pixelBuf = pixmap.Pixels;
+
                 pixelBuf.Position = 0;
                 pixelBuf.Limit    = pixelBuf.Capacity;
 
