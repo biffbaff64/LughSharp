@@ -67,7 +67,7 @@ public class PixmapFormat
         int GetDefault()
         {
             Logger.Divider( '=' );
-            Logger.Debug(  $"Unknown Format: {format}. Returning Default ( GDX_2D_FORMAT_RGBA8888 )"  );
+            Logger.Debug( $"Unknown Format: {format}. Returning Default ( GDX_2D_FORMAT_RGBA8888 )"  );
             Logger.Divider( '=' );
 
             return GDX_2D_FORMAT_RGBA8888;
@@ -96,7 +96,7 @@ public class PixmapFormat
         Pixmap.Format GetDefault()
         {
             Logger.Divider( '=' );
-            Logger.Debug(  $"Unknown Gdx2DPixmap Format: {format}. Returning Default ( RGBA8888 )"  );
+            Logger.Debug( $"Unknown Gdx2DPixmap Format: {format}. Returning Default ( RGBA8888 )"  );
             Logger.Divider( '=' );
 
             return Pixmap.Format.RGBA8888;

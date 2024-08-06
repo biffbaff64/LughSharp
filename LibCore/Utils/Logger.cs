@@ -57,11 +57,12 @@ public static partial class Logger
     public const int LOG_DEBUG = 1;
     public const int LOG_ERROR = 2;
 
-    private const string DEBUG_TAG = "[DEBUG] ";
-    private const string ERROR_TAG = "[ERROR] ";
+    private const string DEBUG_TAG      = "[DEBUG.....]";
+    private const string ERROR_TAG      = "[ERROR.....]";
+    private const string CHECKPOINT_TAG = "[CHECKPOINT]";
 
     private const string PREFS_FOLDER = @"\.prefs\";
-    
+
     #endregion constants
 
     // ------------------------------------------------------------------------
@@ -121,7 +122,7 @@ public static partial class Logger
 
         var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
-        var str = CreateMessage( $"{DEBUG_TAG}{message}", callerID );
+        var str = CreateMessage( DEBUG_TAG, message, callerID );
 
         Console.WriteLine( str );
 
@@ -149,7 +150,7 @@ public static partial class Logger
 
         var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
-        var str = CreateMessage( $"{ERROR_TAG}{message}", callerID );
+        var str = CreateMessage( ERROR_TAG, message, callerID );
 
         Console.WriteLine( str );
 
@@ -177,7 +178,7 @@ public static partial class Logger
 
         var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
-        var str = CreateMessage( $"{DEBUG_TAG}{message}", callerID );
+        var str = CreateMessage( DEBUG_TAG, message, callerID );
 
         Console.WriteLine( str );
 
@@ -203,7 +204,7 @@ public static partial class Logger
 
         var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
-        var message = $"CP::{GetTimeStampInfo()}:{GetCallerInfo( callerID )}";
+        var message = $"[CHECKPOINT] : {GetTimeStampInfo()} : {GetCallerInfo( callerID )}";
 
         Console.WriteLine( message );
 
@@ -219,6 +220,8 @@ public static partial class Logger
     {
         var sb = new StringBuilder( DEBUG_TAG );
 
+        sb.Append( " : " );
+        
         for ( var i = 0; i < length; i++ )
         {
             sb.Append( ch );
@@ -250,7 +253,7 @@ public static partial class Logger
         }
 
         _debugFilePath = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile ) + PREFS_FOLDER;
-        
+
         _debugFileName = fileName;
 
         using var fs = File.Create( _debugFilePath + _debugFileName );
@@ -310,13 +313,16 @@ public static partial class Logger
     /// <summary>
     /// Creates a debug/error/info message ready for dumping.
     /// </summary>
+    /// <param name="tag"></param>
     /// <param name="formatString">The base message</param>
     /// <param name="cid">Stack trace info from the calling method/file.</param>
     /// <returns></returns>
-    private static string CreateMessage( string formatString, CallerID cid )
+    private static string CreateMessage( string tag, string formatString, CallerID cid )
     {
-        var sb = new StringBuilder( GetTimeStampInfo() );
+        var sb = new StringBuilder( tag );
 
+        sb.Append( " : " );
+        sb.Append( GetTimeStampInfo() );
         sb.Append( " : " );
         sb.Append( GetCallerInfo( cid ) );
         sb.Append( " : " );

@@ -103,8 +103,6 @@ public class AssetManager
             SetLoader( typeof( ShaderProgram ),    new ShaderProgramLoader( resolver ) );
             SetLoader( typeof( PolygonRegion ),    new PolygonRegionLoader( resolver ) );
             //@formatter:on
-            
-            Logger.Debug( " - finished" );
         }
 
         _executor          = new AsyncExecutor( 1, "AssetManager" );
@@ -868,8 +866,6 @@ public class AssetManager
             }
 
             _loaders[ type ]?.Put( suffix ?? "", loader );
-
-            Logger.Debug( $"Loader set: {type.Name} -> {loader.GetType().Name}" );
         }
     }
 

@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Runtime.CompilerServices;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 
@@ -90,10 +91,16 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Creates a new Pixmap instance with the given width, height and format.
     /// </summary>
+    /// <param name="callerMethod"></param>
     /// <param name="width">The width in pixels.</param>
     /// <param name="height">The height in pixels.</param>
     /// <param name="format">The <see cref="Pixmap.Format"/></param>
-    public Pixmap( int width, int height, Format format )
+    /// <param name="callerFilePath"></param>
+    /// <param name="callerLine"></param>
+    public Pixmap( int width, int height, Format format,
+                   [CallerFilePath] string callerFilePath = "",
+                   [CallerMemberName] string callerMethod = "",
+                   [CallerLineNumber] int callerLine = 0 )
     {
         Logger.CheckPoint();
 
@@ -105,6 +112,10 @@ public class Pixmap : IDisposable
         SetColor( 0, 0, 0, 0 );
         FillWithCurrentColor();
 
+        Logger.Debug( $"Called from: {callerFilePath}::{callerMethod}::{callerLine}" );
+        Logger.Debug( $"Width: {width}, Height: {height}" );
+        Logger.Debug( $"Buffer capacity: {PixelData.Capacity}" );
+        Logger.Debug( $"Buffer limit: {PixelData.Limit}" );
         Logger.Debug( " - finished" );
     }
 
