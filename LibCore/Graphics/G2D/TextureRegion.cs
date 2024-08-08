@@ -53,7 +53,6 @@ public class TextureRegion
     public TextureRegion()
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -67,8 +66,6 @@ public class TextureRegion
         Texture = texture;
 
         SetRegion( 0, 0, texture.Width, texture.Height );
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <param name="texture"></param>
@@ -82,7 +79,6 @@ public class TextureRegion
         : this( texture, 0, 0, width, height )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <param name="texture"></param>
@@ -100,8 +96,6 @@ public class TextureRegion
 
         Texture = texture;
         SetRegion( x, y, width, height );
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -117,8 +111,6 @@ public class TextureRegion
 
         Texture = texture;
         SetRegionNV( u, v, u2, v2 );
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -129,8 +121,6 @@ public class TextureRegion
         Logger.CheckPoint();
 
         SetRegion( region );
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -145,8 +135,6 @@ public class TextureRegion
         Logger.CheckPoint();
 
         SetRegion( region, x, y, width, height );
-        
-        Logger.Debug( " - finished" );
     }
 
     public Texture Texture { get; set; } = null!;

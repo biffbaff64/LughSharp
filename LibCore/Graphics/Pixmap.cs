@@ -116,7 +116,6 @@ public class Pixmap : IDisposable
         Logger.Debug( $"Width: {width}, Height: {height}" );
         Logger.Debug( $"Buffer capacity: {PixelData.Capacity}" );
         Logger.Debug( $"Buffer limit: {PixelData.Limit}" );
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -144,8 +143,6 @@ public class Pixmap : IDisposable
         {
             throw new GdxRuntimeException( "Couldn't load pixmap from image data", e );
         }
-
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -177,8 +174,6 @@ public class Pixmap : IDisposable
         {
             throw new GdxRuntimeException( $"Couldn't load file:  {file.Name}", e );
         }
-
-        Logger.Debug( " - finished" );
     }
 
 //    /// <summary>
@@ -189,8 +184,6 @@ public class Pixmap : IDisposable
 //        Logger.CheckPoint();
 //
 //        GDX2DPixmap = pixmap;
-//
-//        Logger.Debug( " - finished" );
 //    }
 
     // ----------------------------------------------------------

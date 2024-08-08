@@ -52,8 +52,6 @@ public class PixelMap
         this.Format        = PixmapFormat.GDX_2D_FORMAT_RGBA8888;
         this.BytesPerPixel = PixmapFormat.Gdx2dBytesPerPixel( Format );
         this.Pixels        = new byte[ width * height * BytesPerPixel ];
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -71,8 +69,6 @@ public class PixelMap
         this.Pixels        = new byte[ Width * Height * BytesPerPixel ];
 
         map.Pixels.CopyTo( this.Pixels, 0 );
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -81,7 +77,6 @@ public class PixelMap
     public PixelMap( FileInfo info ) : this( info.Name )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
     
     /// <summary>
@@ -90,6 +85,5 @@ public class PixelMap
     public PixelMap( string path )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 }

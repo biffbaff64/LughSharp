@@ -82,8 +82,6 @@ public class Gdx2DPixmap : IDisposable
         {
             Convert( requestedFormat );
         }
-
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -118,8 +116,6 @@ public class Gdx2DPixmap : IDisposable
         {
             Convert( requestedFormat );
         }
-
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -144,8 +140,6 @@ public class Gdx2DPixmap : IDisposable
         Width   = ( int ) NativeData[ 1 ];
         Height  = ( int ) NativeData[ 2 ];
         Format  = ( int ) NativeData[ 3 ];
-
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -161,8 +155,6 @@ public class Gdx2DPixmap : IDisposable
         Width    = ( int ) nativeData[ 1 ];
         Height   = ( int ) nativeData[ 2 ];
         Format   = ( int ) nativeData[ 3 ];
-
-        Logger.Debug( " - finished" );
     }
 
     private ByteBuffer GetNewPixmap( int width, int height, int format )

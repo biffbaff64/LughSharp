@@ -53,7 +53,6 @@ public class BitmapFontLoader : AsynchronousAssetLoader< BitmapFont, BitmapFontP
         : base( resolver )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>

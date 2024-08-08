@@ -71,8 +71,6 @@ public class OldPixmap : IDisposable
         
         SetColor( 0, 0, 0, 0 );
         FillWithCurrentColor();
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -91,8 +89,6 @@ public class OldPixmap : IDisposable
         {
             throw new GdxRuntimeException( "Couldn't load pixmap from image data", e );
         }
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -124,8 +120,6 @@ public class OldPixmap : IDisposable
         {
             throw new GdxRuntimeException( $"Couldn't load file:  {file.Name}", e );
         }
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -136,8 +130,6 @@ public class OldPixmap : IDisposable
         Logger.CheckPoint();
 
         GDX2DPixmap = pixmap;
-        
-        Logger.Debug( " - finished" );
     }
 
     // ----------------------------------------------------------

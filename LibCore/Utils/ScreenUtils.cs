@@ -63,20 +63,11 @@ public class ScreenUtils
     }
 
     /// <summary>
-    /// Clears the color buffers with the specified Color.
-    /// </summary>
-    /// <param name="color">Color to clear the color buffers with.</param>
-    public static void Clear( Color color )
-    {
-        Clear( color.R, color.G, color.B, color.A );
-    }
-
-    /// <summary>
     /// Clears the color buffers and optionally the depth buffer.
     /// </summary>
     /// <param name="color">Color to clear the color buffers with.</param>
     /// <param name="clearDepth">Clears the depth buffer if true.</param>
-    public static void Clear( Color color, bool clearDepth )
+    public static void Clear( Color color, bool clearDepth = false )
     {
         Clear( color.R, color.G, color.B, color.A, clearDepth );
     }

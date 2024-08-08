@@ -41,7 +41,6 @@ public class TextureAtlas
     public TextureAtlas()
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -53,7 +52,6 @@ public class TextureAtlas
         : this( Gdx.Files.Internal( internalPackFile ).File )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -65,7 +63,6 @@ public class TextureAtlas
         : this( packFile, packFile.Directory )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -81,7 +78,6 @@ public class TextureAtlas
         : this( packFile, packFile.Directory, flip )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -97,7 +93,6 @@ public class TextureAtlas
         : this( new TextureAtlasData( packFile, imagesDir, flip ) )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -109,8 +104,6 @@ public class TextureAtlas
         Logger.CheckPoint();
 
         Load( data );
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>

@@ -47,8 +47,6 @@ public class MusicLoader : AsynchronousAssetLoader< IMusic, AssetLoaderParameter
         Logger.CheckPoint();
 
         LoadedMusic = null!;
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <inheritdoc />

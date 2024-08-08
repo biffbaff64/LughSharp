@@ -70,7 +70,6 @@ public class SpriteBatch : IBatch
     public SpriteBatch() : this( 1000 )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -154,8 +153,6 @@ public class SpriteBatch : IBatch
         {
             _shader = defaultShader;
         }
-
-        Logger.Debug( " - finished" );
     }
 
     // Number of render calls since the last call to Begin()

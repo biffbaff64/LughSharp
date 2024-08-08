@@ -45,7 +45,6 @@ public class ParticleEffectLoader
         : base( resolver )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>

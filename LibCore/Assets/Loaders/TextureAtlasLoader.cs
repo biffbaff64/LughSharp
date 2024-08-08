@@ -46,7 +46,6 @@ public class TextureAtlasLoader
         : base( resolver )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>

@@ -107,7 +107,6 @@ public class VertexAttribute
                 unit )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -152,8 +151,6 @@ public class VertexAttribute
         this.Alias         = alias;
         this.Unit          = unit;
         _usageIndex        = int.TrailingZeroCount( usage );
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <returns>

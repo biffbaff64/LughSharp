@@ -7,7 +7,7 @@
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Title>LughSharp</Title>
         <Authors>Red7Projects / Richard Ikin</Authors>
-        <Version>0.0.1-beta3.1</Version>
+        <Version>0.0.1-beta3.2</Version>
         <Description>C# 2D/3D Game Framework based on the Java Framework LibGDX.</Description>
         <RepositoryUrl>https://github.com/biffbaff64/LughSharp</RepositoryUrl>
         <LangVersion>latestmajor</LangVersion>
@@ -28,7 +28,7 @@
         <Copyright>Copyright 2024 Red7Projects / Richard Ikin</Copyright>
         <Company>Red7Projects</Company>
         <TargetFramework>net7.0</TargetFramework>
-        <PackageReleaseNotes>Testing Only!!</PackageReleaseNotes>
+        <PackageReleaseNotes>Gl Window crash fixed</PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup>

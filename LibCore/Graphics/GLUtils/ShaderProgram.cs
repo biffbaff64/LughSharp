@@ -139,8 +139,6 @@ public class ShaderProgram
 
             AddManagedShader( Gdx.App, this );
         }
-
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -151,7 +149,6 @@ public class ShaderProgram
         : this( File.ReadAllText( vertexShader.Name ), File.ReadAllText( fragmentShader.Name ) )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <returns>

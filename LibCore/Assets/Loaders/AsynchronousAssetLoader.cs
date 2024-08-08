@@ -47,7 +47,6 @@ public abstract class AsynchronousAssetLoader< TAssetType, TParameters >
     {
         Logger.CheckPoint();
         IsSynchronous = false;
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>

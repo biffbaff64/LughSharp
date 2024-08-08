@@ -45,8 +45,6 @@ public class PixmapLoader : AsynchronousAssetLoader< Pixmap, PixmapLoader.Pixmap
         Logger.CheckPoint();
 
         _pixmap = default( Pixmap )!;
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <inheritdoc />

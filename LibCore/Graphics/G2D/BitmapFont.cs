@@ -85,8 +85,6 @@ public class BitmapFont
         Logger.CheckPoint();
         
         _fileType = PathTypes.Internal;
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -107,8 +105,6 @@ public class BitmapFont
         Logger.CheckPoint();
         
         _fileType = PathTypes.Internal;
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -133,8 +129,6 @@ public class BitmapFont
         Logger.CheckPoint();
         
         _fileType = PathTypes.Local;
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -152,8 +146,6 @@ public class BitmapFont
         Logger.CheckPoint();
         
         _fileType = PathTypes.Local;
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -176,8 +168,6 @@ public class BitmapFont
         
         OwnsTexture = true;
         _fileType = PathTypes.Local;
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -209,8 +199,6 @@ public class BitmapFont
         Logger.CheckPoint();
         
         _fileType = PathTypes.Local;
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -266,8 +254,6 @@ public class BitmapFont
         Cache = new BitmapFontCache( this, UseIntegerPositions );
 
         InitialLoad( data );
-        
-        Logger.Debug( " - finished" );
     }
 
     // ------------------------------------------------------------------------
@@ -342,8 +328,6 @@ public class BitmapFont
         {
             data.MissingGlyph = data.SetGlyphRegion( data.MissingGlyph, _regions[ data.MissingGlyph.Page ] );
         }
-        
-        Logger.Debug( " - finished" );
     }
 
     // ------------------------------------------------------------------------

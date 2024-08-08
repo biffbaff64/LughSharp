@@ -72,7 +72,6 @@ public class AssetManager
     public AssetManager() : this( new AbsoluteFileHandleResolver() )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -89,6 +88,7 @@ public class AssetManager
         if ( defaultLoaders )
         {
             Logger.Debug( "Setting default loaders..." );
+            Logger.DisableDebugLogging();
             
             //@formatter:off
             SetLoader( typeof( BitmapFont ),       new BitmapFontLoader( resolver ) );
@@ -103,12 +103,12 @@ public class AssetManager
             SetLoader( typeof( ShaderProgram ),    new ShaderProgramLoader( resolver ) );
             SetLoader( typeof( PolygonRegion ),    new PolygonRegionLoader( resolver ) );
             //@formatter:on
+
+            Logger.EnableDebugLogging();
         }
 
         _executor          = new AsyncExecutor( 1, "AssetManager" );
         FileHandleResolver = resolver;
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>

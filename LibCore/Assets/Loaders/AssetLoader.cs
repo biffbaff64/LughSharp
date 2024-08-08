@@ -55,7 +55,6 @@ public abstract class AssetLoader
     {
         Logger.CheckPoint();
         Resolver = resolver;
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>

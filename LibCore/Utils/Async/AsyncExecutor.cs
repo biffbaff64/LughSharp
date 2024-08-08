@@ -73,8 +73,6 @@ public class AsyncExecutor : IDisposable
             };
             thread.Start();
         }
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>

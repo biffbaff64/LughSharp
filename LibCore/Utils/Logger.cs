@@ -277,7 +277,7 @@ public static partial class Logger
     /// </summary>
     public static void DisableDebugLogging()
     {
-        TraceLevel ^= 1 << LOG_DEBUG;
+        TraceLevel &= ~LOG_DEBUG;
     }
 
     /// <summary>
@@ -285,7 +285,7 @@ public static partial class Logger
     /// </summary>
     public static void DisableErrorLogging()
     {
-        TraceLevel ^= 1 << LOG_ERROR;
+        TraceLevel &= ~LOG_ERROR;
     }
 
     /// <summary>

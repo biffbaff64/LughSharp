@@ -46,14 +46,12 @@ public class PolygonRegionLoader
         : this( new InternalFileHandleResolver() )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     public PolygonRegionLoader( IFileHandleResolver resolver )
         : base( resolver )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     public override PolygonRegion Load( AssetManager manager,

@@ -126,8 +126,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         Windows.Add( CreateWindow( config, listener, 0 ) );
 
         OutputWindowsDebug();
-        
-        Logger.Debug( " - Finished" );
     }
 
     /// <summary>
@@ -351,7 +349,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         }
 
         Logger.Debug( $"{dlgWindow.Config.WindowWidth}, {dlgWindow.Config.WindowHeight}" );
-        Logger.Debug( " - Finished" );
         
         return dlgWindow;
     }
@@ -384,8 +381,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
             Gdx.GL.glClear( IGL.GL_COLOR_BUFFER_BIT );
             Glfw.SwapBuffers( windowHandle );
         }
-
-        Logger.Debug( " - Finished" );
 
         return dglWindow;
     }
@@ -496,8 +491,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 //            SetGLDebugMessageControl( GLDebugMessageSeverity.Notification, false );
 //        }
 
-        Logger.Debug( " - Finished" );
-
         return windowHandle;
     }
 
@@ -592,8 +585,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         {
             throw new ApplicationException( $"Failure in InitialiseGLFW() : {e}" );
         }
-
-        Logger.Debug( " - Finished" );
 
         return;
 
@@ -786,8 +777,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         {
             Glfw.WindowHint( WindowHint.OpenGLDebugContext, true );
         }
-
-        Logger.Debug( " - Finished" );
     }
 
     /// <summary>

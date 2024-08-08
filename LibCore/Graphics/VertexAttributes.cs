@@ -76,8 +76,6 @@ public class VertexAttributes
 
         _attributes = list;
         VertexSize  = CalculateOffsets();
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>

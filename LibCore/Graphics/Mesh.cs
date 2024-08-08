@@ -174,7 +174,6 @@ public class Mesh
         : this( type, isStatic, maxVertices, maxIndices, new VertexAttributes( attributes ) )
     {
         Logger.CheckPoint();
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>
@@ -223,8 +222,6 @@ public class Mesh
         }
 
         AddManagedMesh( Gdx.App, this );
-
-        Logger.Debug( " - finished" );
     }
 
     #endregion constructors

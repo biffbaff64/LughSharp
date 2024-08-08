@@ -42,8 +42,6 @@ public class SoundLoader : AsynchronousAssetLoader< ISound, SoundLoader.SoundLoa
         Logger.CheckPoint();
 
         LoadedSound = null!;
-        
-        Logger.Debug( " - finished" );
     }
 
     /// <summary>

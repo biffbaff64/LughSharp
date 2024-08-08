@@ -51,8 +51,6 @@ public class TextureLoader
         Logger.CheckPoint();
 
         _loaderInfo = new TextureLoaderInfo();
-
-        Logger.Debug( " - finished" );
     }
 
     /// <inheritdoc />
