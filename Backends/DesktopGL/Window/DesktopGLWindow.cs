@@ -113,14 +113,10 @@ public class DesktopGLWindow : IDisposable
     /// <returns> True if the window should render itself. </returns>
     public bool Update()
     {
-        Logger.CheckPoint();
-        
         if ( !ListenerInitialised )
         {
             InitialiseListener();
         }
-
-        Logger.CheckPoint();
 
         lock ( _runnables )
         {
@@ -128,14 +124,10 @@ public class DesktopGLWindow : IDisposable
             _runnables.Clear();
         }
 
-        Logger.CheckPoint();
-
         foreach ( var runnable in _executedRunnables )
         {
             runnable();
         }
-
-        Logger.CheckPoint();
 
         var shouldRender = ( _executedRunnables.Count > 0 ) || Graphics.ContinuousRendering;
 
@@ -146,15 +138,11 @@ public class DesktopGLWindow : IDisposable
             Input.Update();
         }
 
-        Logger.CheckPoint();
-
         lock ( this )
         {
             shouldRender      |= _requestRendering && !_iconified;
             _requestRendering =  false;
         }
-
-        Logger.CheckPoint();
 
         if ( shouldRender )
         {
@@ -164,14 +152,10 @@ public class DesktopGLWindow : IDisposable
             Glfw.SwapBuffers( GlfwWindow );
         }
 
-        Logger.CheckPoint();
-
         if ( !_iconified )
         {
             Input.PrepareNext();
         }
-
-        Logger.Debug( $" - finished: shouldRender: {shouldRender}" );
         
         return shouldRender;
     }

@@ -105,6 +105,7 @@ public class Sync
         _initialised = true;
 
         _sleepDurations.Init( 1000 * 1000 );
+
         _yieldDurations.Init( ( int ) ( -( GetTime() - GetTime() ) * 1.333 ) );
 
         _nextFrame = GetTime();
@@ -117,7 +118,7 @@ public class Sync
             {
                 try
                 {
-                    Thread.Sleep( Timeout.Infinite );
+                    Thread.Sleep( int.MaxValue );
                 }
                 catch ( ThreadInterruptedException )
                 {
@@ -137,24 +138,18 @@ public class Sync
     /// </summary>
     private long GetTime()
     {
-        return DateTime.UtcNow.Ticks * 100;
+        return ( long ) Glfw.GetTime() * NANOS_IN_SECOND;
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    private sealed class RunningAvg
+    private sealed class RunningAvg( int slotCount )
     {
         private const    long   DAMPEN_THRESHOLD = 10 * 1000L * 1000L;
         private const    float  DAMPEN_FACTOR    = 0.9f;
-        private readonly long[] _slots;
-        private          int    _offset;
-
-        public RunningAvg( int slotCount )
-        {
-            _slots  = new long[ slotCount ];
-            _offset = 0;
-        }
+        private readonly long[] _slots           = new long[ slotCount ];
+        private          int    _offset          = 0;
 
         public long Average
         {
