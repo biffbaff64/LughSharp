@@ -62,6 +62,8 @@ public class TextureLoader
     /// <inheritdoc />
     public override void LoadAsync( AssetManager? manager, FileInfo? file, TextureLoaderParameters? parameter )
     {
+        Logger.CheckPoint();
+
         if ( _loaderInfo == null ) return;
 
         _loaderInfo.Filename = file?.Name;
@@ -97,16 +99,20 @@ public class TextureLoader
     /// <inheritdoc />
     public override Texture? LoadSync( AssetManager manager, FileInfo? file, TextureLoaderParameters? parameter )
     {
+        Logger.CheckPoint();
+        
         if ( _loaderInfo == null ) return null;
 
         var texture = _loaderInfo.Texture;
 
         if ( texture != null )
         {
+            Logger.CheckPoint();
             texture.Load( _loaderInfo.Data );
         }
         else
         {
+            Logger.CheckPoint();
             texture = new Texture( _loaderInfo.Data );
         }
 

@@ -96,4 +96,5 @@ public class $CLASS$ {$END$}
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
 	
 	
+	
 	</wpf:ResourceDictionary>

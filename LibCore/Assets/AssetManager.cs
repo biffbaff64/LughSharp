@@ -69,7 +69,7 @@ public class AssetManager
     /// <summary>
     /// Creates a new AssetManager with all default loaders.
     /// </summary>
-    public AssetManager() : this( new AbsoluteFileHandleResolver() )
+    public AssetManager() : this( new InternalFileHandleResolver() )
     {
         Logger.CheckPoint();
     }

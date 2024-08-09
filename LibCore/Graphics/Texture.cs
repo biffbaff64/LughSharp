@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Runtime.CompilerServices;
 using LughSharp.LibCore.Assets.Loaders;
 using LughSharp.LibCore.Assets.Loaders.Resolvers;
 using LughSharp.LibCore.Utils.Collections.Extensions;
@@ -88,7 +89,15 @@ public class Texture : GLTexture
         Logger.CheckPoint();
     }
 
-    public Texture( FileInfo? file, Pixmap.Format format = default( Pixmap.Format ), bool useMipMaps = false )
+    /// <summary>
+    /// Create a new Texture from the file specified in the given <see cref="FileInfo"/>.
+    /// The Texture pixmap format will be set to the given format, which defaults to
+    /// <see cref="Pixmap.Format.RGBA8888"/>.
+    /// </summary>
+    /// <param name="file"></param>
+    /// <param name="format"> The pixmap format to use. </param>
+    /// <param name="useMipMaps"> Whether or not to generate MipMaps. Default is false. </param>
+    public Texture( FileInfo? file, Pixmap.Format format = Pixmap.Format.RGBA8888, bool useMipMaps = false )
         : this( TextureDataFactory.LoadFromFile( file!, format, useMipMaps ) )
     {
         Logger.CheckPoint();
@@ -98,7 +107,7 @@ public class Texture : GLTexture
     /// Creates a new Texture from the supplied <see cref="Pixmap"/>.
     /// </summary>
     /// <param name="pixmap"> The pixmap to use. </param>
-    /// <param name="useMipMaps"> Whether or nopt to generate MipMaps. Default is false. </param>
+    /// <param name="useMipMaps"> Whether or not to generate MipMaps. Default is false. </param>
     public Texture( Pixmap pixmap, bool useMipMaps = false )
         : this( new PixmapTextureData( pixmap, null, useMipMaps, false ) )
     {
@@ -145,7 +154,9 @@ public class Texture : GLTexture
     /// <param name="glTarget"></param>
     /// <param name="glTextureHandle"></param>
     /// <param name="data"></param>
-    protected Texture( int glTarget, int glTextureHandle, ITextureData? data )
+    protected Texture( int glTarget,
+                       int glTextureHandle,
+                       ITextureData? data )
         : base( glTarget, glTextureHandle )
     {
         Logger.CheckPoint();
@@ -166,14 +177,24 @@ public class Texture : GLTexture
         }
     }
 
+    /// <summary>
+    /// Load the given <see cref="ITextureData"/> data into this Texture.
+    /// </summary>
+    /// <param name="data"></param>
     public void Load( ITextureData? data )
     {
+        Logger.CheckPoint();
+
         if ( ( data != null )
           && ( TextureData != null )
           && ( data.IsManaged != TextureData.IsManaged ) )
         {
             throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
         }
+
+        Logger.Debug( $"data.Width : {data?.Width}" );
+        Logger.Debug( $"data.Height: {data?.Height}" );
+        Logger.Debug( $"data.Format: {data?.GetFormat()}" );
 
         TextureData = data;
 
@@ -183,6 +204,8 @@ public class Texture : GLTexture
         }
 
         Bind();
+
+        Logger.CheckPoint();
 
         UploadImageData( IGL.GL_TEXTURE_2D, data );
 

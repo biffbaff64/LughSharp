@@ -109,7 +109,7 @@ public class Pixmap : IDisposable
         PixFormat = PixmapFormat.ToGdx2DPixmapFormat( format );
         PixelData = ByteBuffer.Allocate( width * height * PixmapFormat.Gdx2dBytesPerPixel( PixFormat ) );
         
-        SetColor( 0, 0, 0, 0 );
+        SetColor( Color.Black );
         FillWithCurrentColor();
 
         Logger.Debug( $"Called from: {callerFilePath}::{callerMethod}::{callerLine}" );

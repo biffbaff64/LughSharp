@@ -55,6 +55,24 @@ public class DesktopGLFileHandle : FileHandle
     // ------------------------------------------------------------------------
 
     /// <summary>
+    /// Returns the abstract pathname of this abstract pathname's parent, or null if this pathname
+    /// does not name a parent directory.
+    /// <para>
+    /// The parent of an abstract pathname consists of the pathname's prefix, if any, and each name
+    /// in the pathname's name sequence except for the last. If the name sequence is empty then the
+    /// pathname does not name a parent directory.
+    /// </para>
+    /// </summary>
+    public DirectoryInfo ParentFolder()
+    {
+        var directoryInfo = !Directory.Exists( base.FilePath )
+                                ? new DirectoryInfo( base.PathType == PathTypes.Absolute ? "/" : "" )
+                                : new DirectoryInfo( Path.GetFullPath( base.FileName ) );
+
+        return directoryInfo;
+    }
+
+    /// <summary>
     /// Returns a handle to the child with the specified name.
     /// </summary>
     public FileHandle Child( string name )
@@ -74,27 +92,6 @@ public class DesktopGLFileHandle : FileHandle
                    : new DesktopGLFileHandle( new FileInfo( name ), PathType );
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    /// <summary>
-    /// Returns the abstract pathname of this abstract pathname's parent, or null if this pathname
-    /// does not name a parent directory.
-    /// <para>
-    /// The parent of an abstract pathname consists of the pathname's prefix, if any, and each name
-    /// in the pathname's name sequence except for the last. If the name sequence is empty then the
-    /// pathname does not name a parent directory.
-    /// </para>
-    /// </summary>
-    public DirectoryInfo ParentFolder()
-    {
-        var directoryInfo = !Directory.Exists( base.FilePath )
-                                ? new DirectoryInfo( base.PathType == PathTypes.Absolute ? "/" : "" )
-                                : new DirectoryInfo( Path.GetFullPath( base.FileName ) );
-
-        return directoryInfo;
-    }
-
     /// <summary>
     /// Returns a File that represents this file handle. Note the returned file will
     /// only be usable for <see cref="PathTypes.Absolute"/> and <see cref="PathTypes.External"/>
@@ -104,7 +101,7 @@ public class DesktopGLFileHandle : FileHandle
     {
         if ( PathType == PathTypes.External )
         {
-            return new FileInfo( DesktopGLFiles.UserHomePath + base.FileName );
+            return new FileInfo( DesktopGLFiles.ExternalPath + base.FileName );
         }
 
         return PathType == PathTypes.Local

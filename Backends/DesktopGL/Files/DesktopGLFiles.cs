@@ -25,14 +25,15 @@
 
 using LughSharp.LibCore.Files;
 using LughSharp.LibCore.Utils.Exceptions;
+using Environment = System.Environment;
 
 namespace LughSharp.Backends.DesktopGL.Files;
 
 [PublicAPI]
 public class DesktopGLFiles : IFiles
 {
-    public readonly static string UserHomePath = System.Environment.GetEnvironmentVariable( "user.home" ) + Path.PathSeparator;
-    public readonly static string LocalPath    = Path.GetFullPath( "" ) + Path.PathSeparator;
+    public readonly static string ExternalPath = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile );
+    public readonly static string LocalPath    = $"{Path.PathSeparator}";
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -79,7 +80,7 @@ public class DesktopGLFiles : IFiles
     /// Returns the external storage path directory. This is the app external storage
     /// on Android and the home directory of the current user on the desktop.
     /// </summary>
-    public string GetExternalStoragePath() => UserHomePath;
+    public string GetExternalStoragePath() => ExternalPath;
 
     /// <summary>
     /// Returns true if the external storage is ready for file IO.

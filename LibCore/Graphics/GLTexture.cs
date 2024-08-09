@@ -313,11 +313,17 @@ public abstract class GLTexture : IDisposable, IManageable
     /// <param name="miplevel"></param>
     public static void UploadImageData( int target, ITextureData? data, int miplevel = 0 )
     {
+        Logger.CheckPoint();
+
         if ( data == null )
         {
             // TODO: remove texture on target?
             return;
         }
+
+        Logger.Debug( $"data.Width : {data.Width}" );
+        Logger.Debug( $"data.Height: {data.Height}" );
+        Logger.Debug( $"data.Format: {data.GetFormat()}" );
 
         if ( !data.IsPrepared )
         {
@@ -365,21 +371,46 @@ public abstract class GLTexture : IDisposable, IManageable
         }
         else
         {
-            unsafe
+            if ( Gdx.DevMode )
             {
-                fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
-                {
-                    Gdx.GL.glTexImage2D( target,
-                                         miplevel,
-                                         pixmap.GLInternalFormat,
-                                         pixmap.Width,
-                                         pixmap.Height,
-                                         0,
-                                         pixmap.GLFormat,
-                                         pixmap.GLType,
-                                         ptr );
-                }
+                Logger.Debug( $"target: {target}" );
+                Logger.Debug( $"miplevel: {miplevel}" );
+                Logger.Debug( $"pixmap.GLInternalFormat: {pixmap.GLInternalFormat}" );
+                Logger.Debug( $"pixmap.Width: {pixmap.Width}" );
+                Logger.Debug( $"pixmap.Height: {pixmap.Height}" );
+                Logger.Debug( $"pixmap.GLFormat: {pixmap.GLFormat}" );
+                Logger.Debug( $"pixmap.GLType: {pixmap.GLType}" );
             }
+
+            var pixels = pixmap.Pixels.BackingArray();
+
+            Gdx.GL.glTexImage2D( target,
+                                 miplevel,
+                                 pixmap.GLInternalFormat,
+                                 pixmap.Width,
+                                 pixmap.Height,
+                                 border: 0,
+                                 pixmap.GLFormat,
+                                 pixmap.GLType,
+                                 pixels );
+
+            pixmap.Pixels.Put( pixels );
+
+//            unsafe
+//            {
+//                fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
+//                {
+//                    Gdx.GL.glTexImage2D( target,
+//                                         miplevel,
+//                                         pixmap.GLInternalFormat,
+//                                         pixmap.Width,
+//                                         pixmap.Height,
+//                                         0,
+//                                         pixmap.GLFormat,
+//                                         pixmap.GLType,
+//                                         ptr );
+//                }
+//            }
         }
 
         if ( disposePixmap )
