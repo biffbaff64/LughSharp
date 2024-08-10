@@ -24,7 +24,6 @@
 
 
 using LughSharp.LibCore.Maths.Collision;
-using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 

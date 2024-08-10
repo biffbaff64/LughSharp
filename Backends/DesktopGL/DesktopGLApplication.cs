@@ -29,7 +29,6 @@ using LughSharp.Backends.DesktopGL.Files;
 using LughSharp.Backends.DesktopGL.Input;
 using LughSharp.Backends.DesktopGL.Utils;
 using LughSharp.Backends.DesktopGL.Window;
-using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 using Monitor = DotGLFW.Monitor;

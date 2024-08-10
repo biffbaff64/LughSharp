@@ -24,7 +24,6 @@
 
 
 using LughSharp.LibCore.Assets.Loaders.Resolvers;
-using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Maps.Tiled.Loaders;
@@ -302,12 +301,14 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
             var id = firstgid;
 
             for ( var y = margin; y <= stopHeight; y += tileheight + spacing )
-            for ( var x = margin; x <= stopWidth; x += tilewidth + spacing )
             {
-                var tileRegion = new TextureRegion( texture, x, y, tilewidth, tileheight );
-                var tileId     = id++;
+                for ( var x = margin; x <= stopWidth; x += tilewidth + spacing )
+                {
+                    var tileRegion = new TextureRegion( texture, x, y, tilewidth, tileheight );
+                    var tileId     = id++;
 
-                AddStaticTiledMapTile( tileset, tileRegion, tileId, offsetX, offsetY );
+                    AddStaticTiledMapTile( tileset, tileRegion, tileId, offsetX, offsetY );
+                }
             }
         }
         else

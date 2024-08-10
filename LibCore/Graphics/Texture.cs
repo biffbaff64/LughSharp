@@ -23,10 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Runtime.CompilerServices;
 using LughSharp.LibCore.Assets.Loaders;
 using LughSharp.LibCore.Assets.Loaders.Resolvers;
-using LughSharp.LibCore.Utils.Collections.Extensions;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics;
@@ -154,9 +152,7 @@ public class Texture : GLTexture
     /// <param name="glTarget"></param>
     /// <param name="glTextureHandle"></param>
     /// <param name="data"></param>
-    protected Texture( int glTarget,
-                       int glTextureHandle,
-                       ITextureData? data )
+    protected Texture( int glTarget, int glTextureHandle, ITextureData? data )
         : base( glTarget, glTextureHandle )
     {
         Logger.CheckPoint();

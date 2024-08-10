@@ -25,7 +25,7 @@
 
 using LughSharp.LibCore.Utils.Exceptions;
 
-namespace LughSharp.LibCore.Utils.Collections.Extensions;
+namespace LughSharp.LibCore.Utils.Collections;
 
 [PublicAPI]
 public static class DictionaryExtension

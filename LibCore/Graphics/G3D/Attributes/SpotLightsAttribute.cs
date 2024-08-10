@@ -24,24 +24,24 @@
 
 
 using LughSharp.LibCore.Graphics.G3D.Env;
-using LughSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LughSharp.LibCore.Graphics.G3D.Attributes;
 
+[PublicAPI]
 public class SpotLightsAttribute : Attribute
 {
-    public readonly List< SpotLight > lights;
+    public readonly List< SpotLight > Lights;
 
     // ------------------------------------------------------------------------
 
     public SpotLightsAttribute() : base( Type )
     {
-        lights = new List< SpotLight >( 1 );
+        Lights = new List< SpotLight >( 1 );
     }
 
     public SpotLightsAttribute( SpotLightsAttribute copyFrom ) : this()
     {
-        lights.AddAll( copyFrom.lights );
+        Lights.AddAll( copyFrom.Lights );
     }
 
     public static string Alias => "spotLights";

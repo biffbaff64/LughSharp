@@ -33,6 +33,7 @@ namespace LughSharp.Backends.DesktopGL.Files;
 public class DesktopGLFiles : IFiles
 {
     public readonly static string ExternalPath = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile );
+    public readonly static string InternalPath = System.IO.Directory.GetCurrentDirectory();
     public readonly static string LocalPath    = $"{Path.PathSeparator}";
 
     // ------------------------------------------------------------------------

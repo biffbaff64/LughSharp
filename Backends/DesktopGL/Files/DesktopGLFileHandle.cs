@@ -93,9 +93,9 @@ public class DesktopGLFileHandle : FileHandle
     }
 
     /// <summary>
-    /// Returns a File that represents this file handle. Note the returned file will
-    /// only be usable for <see cref="PathTypes.Absolute"/> and <see cref="PathTypes.External"/>
-    /// file handles.
+    /// Returns a File that represents this file handle. Note the returned file will only
+    /// be usable for <see cref="PathTypes.Absolute"/>, <see cref="PathTypes.Internal"/>
+    /// and <see cref="PathTypes.External"/> file handles.
     /// </summary>
     public FileInfo GetFile()
     {
@@ -104,6 +104,11 @@ public class DesktopGLFileHandle : FileHandle
             return new FileInfo( DesktopGLFiles.ExternalPath + base.FileName );
         }
 
+        if ( PathType == PathTypes.Internal )
+        {
+            return new FileInfo( DesktopGLFiles.InternalPath + base.FileName );
+        }
+        
         return PathType == PathTypes.Local
                    ? new FileInfo( DesktopGLFiles.LocalPath + base.FileName )
                    : base.File;

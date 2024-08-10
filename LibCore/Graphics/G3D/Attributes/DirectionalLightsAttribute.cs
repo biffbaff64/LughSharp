@@ -24,24 +24,24 @@
 
 
 using LughSharp.LibCore.Graphics.G3D.Env;
-using LughSharp.LibCore.Utils.Collections.Extensions;
 
 namespace LughSharp.LibCore.Graphics.G3D.Attributes;
 
+[PublicAPI]
 public class DirectionalLightsAttribute : Attribute
 {
-    public readonly List< DirectionalLight > lights;
+    public readonly List< DirectionalLight > Lights;
 
     // ------------------------------------------------------------------------
 
     public DirectionalLightsAttribute() : base( Type )
     {
-        lights = new List< DirectionalLight >( 1 );
+        Lights = new List< DirectionalLight >( 1 );
     }
 
     public DirectionalLightsAttribute( DirectionalLightsAttribute copyFrom ) : this()
     {
-        lights.AddAll( copyFrom.lights );
+        Lights.AddAll( copyFrom.Lights );
     }
 
     public static string Alias => "directionalLights";

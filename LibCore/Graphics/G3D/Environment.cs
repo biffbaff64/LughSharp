@@ -93,7 +93,7 @@ public class Environment : AttributesGroup
             Set( dirLights = new DirectionalLightsAttribute() );
         }
 
-        dirLights.lights.Add( light );
+        dirLights.Lights.Add( light );
 
         return this;
     }
@@ -107,7 +107,7 @@ public class Environment : AttributesGroup
             Set( pointLights = new PointLightsAttribute() );
         }
 
-        pointLights.lights.Add( light );
+        pointLights.Lights.Add( light );
 
         return this;
     }
@@ -121,7 +121,7 @@ public class Environment : AttributesGroup
             Set( spotLights = new SpotLightsAttribute() );
         }
 
-        spotLights.lights.Add( light );
+        spotLights.Lights.Add( light );
 
         return this;
     }
@@ -174,9 +174,9 @@ public class Environment : AttributesGroup
         {
             var dirLights = ( DirectionalLightsAttribute? ) Get( DirectionalLightsAttribute.Type );
 
-            dirLights?.lights.Remove( light );
+            dirLights?.Lights.Remove( light );
 
-            if ( dirLights?.lights.Count == 0 )
+            if ( dirLights?.Lights.Count == 0 )
             {
                 Remove( DirectionalLightsAttribute.Type );
             }
@@ -191,9 +191,9 @@ public class Environment : AttributesGroup
         {
             var pointLights = ( PointLightsAttribute? ) Get( PointLightsAttribute.Type );
 
-            pointLights?.lights.Remove( light );
+            pointLights?.Lights.Remove( light );
 
-            if ( pointLights?.lights.Count == 0 )
+            if ( pointLights?.Lights.Count == 0 )
             {
                 Remove( PointLightsAttribute.Type );
             }
@@ -208,9 +208,9 @@ public class Environment : AttributesGroup
         {
             var spotLights = ( SpotLightsAttribute? ) Get( SpotLightsAttribute.Type );
 
-            spotLights?.lights.Remove( light );
+            spotLights?.Lights.Remove( light );
 
-            if ( spotLights?.lights.Count == 0 )
+            if ( spotLights?.Lights.Count == 0 )
             {
                 Remove( SpotLightsAttribute.Type );
             }
