@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Utils.Pooling;
+
 namespace LughSharp.LibCore.Graphics.G2D;
 
 [PublicAPI]

@@ -25,6 +25,11 @@
 
 using LughSharp.Backends.DesktopGL.Utils;
 using LughSharp.Backends.DesktopGL.Window;
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.GLUtils;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Utils;
 using LughSharp.LibCore.Utils.Exceptions;
 using Platform = LughSharp.LibCore.Core.Platform;
 

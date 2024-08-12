@@ -29,6 +29,11 @@ using LughSharp.Backends.DesktopGL.Files;
 using LughSharp.Backends.DesktopGL.Input;
 using LughSharp.Backends.DesktopGL.Utils;
 using LughSharp.Backends.DesktopGL.Window;
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.GLUtils;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Utils;
+using LughSharp.LibCore.Utils.Collections;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 using Monitor = DotGLFW.Monitor;
@@ -508,10 +513,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         // Retrieve the OpenGL profile from the ',csproj' file
         var glProfile = Gdx.GL.GetProjectOpenGLProfile();
 
-        Logger.Debug( $"glMajor  : {glMajor}" );
-        Logger.Debug( $"glMinor  : {glMinor}" );
-        Logger.Debug( $"Revision : {revision}" );
-        Logger.Debug( $"glProfile: {glProfile}" );
+        Logger.Debug( $"GL : {glMajor}.{glMinor}.{revision} : glProfile: {glProfile}" );
 
         // Set the client API to use OpenGL.
         Glfw.WindowHint( WindowHint.ClientAPI, ClientAPI.OpenGLAPI );

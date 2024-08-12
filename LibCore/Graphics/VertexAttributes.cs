@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Text;
+
 namespace LughSharp.LibCore.Graphics;
 
 [PublicAPI]
@@ -60,8 +62,6 @@ public class VertexAttributes
     /// </summary>
     public VertexAttributes( params VertexAttribute[] attributes )
     {
-        Logger.CheckPoint();
-        
         if ( attributes.Length == 0 )
         {
             throw new ArgumentException( "attributes must be >= 1" );

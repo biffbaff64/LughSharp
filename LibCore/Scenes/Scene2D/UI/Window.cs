@@ -23,8 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics.Cameras;
+using LughSharp.LibCore.Graphics.G2D;
 using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
+using LughSharp.LibCore.Utils;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 

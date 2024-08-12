@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics.OpenGL;
+
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>

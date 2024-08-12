@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics.GLUtils;
+using LughSharp.LibCore.Graphics.OpenGL;
+
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
@@ -106,7 +109,6 @@ public class VertexAttribute
                 alias,
                 unit )
     {
-        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -142,8 +144,6 @@ public class VertexAttribute
                             string alias,
                             int unit = 0 )
     {
-        Logger.CheckPoint();
-
         this.Usage         = usage;
         this.NumComponents = numComponents;
         this.Type          = type;

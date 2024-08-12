@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Utils.Pooling;
+
 namespace LughSharp.LibCore.Scenes.Scene2D;
 
 /// <summary>

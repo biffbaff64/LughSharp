@@ -23,6 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Text.RegularExpressions;
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.GLUtils;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Utils.Collections;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.G2D;
@@ -406,21 +411,35 @@ public class PixmapPacker : IDisposable
         {
             page.Texture?.Bind();
 
-            unsafe
-            {
-                fixed ( void* ptr = &image.Pixels.BackingArray()[ 0 ] )
-                {
-                    Gdx.GL.glTexSubImage2D( page.Texture!.GLTarget,
-                                            0,
-                                            rectX,
-                                            rectY,
-                                            rectWidth,
-                                            rectHeight,
-                                            image.GLFormat,
-                                            image.GLType,
-                                            ptr );
-                }
-            }
+            var pixels = image.Pixels.BackingArray();
+
+            Gdx.GL.glTexSubImage2D( page.Texture!.GLTarget,
+                                    0,
+                                    rectX,
+                                    rectY,
+                                    rectWidth,
+                                    rectHeight,
+                                    image.GLFormat,
+                                    image.GLType,
+                                    pixels );
+
+            image.Pixels.Put( pixels );
+
+//            unsafe
+//            {
+//                fixed ( void* ptr = &image.Pixels.BackingArray()[ 0 ] )
+//                {
+//                    Gdx.GL.glTexSubImage2D( page.Texture!.GLTarget,
+//                                            0,
+//                                            rectX,
+//                                            rectY,
+//                                            rectWidth,
+//                                            rectHeight,
+//                                            image.GLFormat,
+//                                            image.GLType,
+//                                            ptr );
+//                }
+//            }
         }
         else
         {
@@ -860,14 +879,11 @@ public class PixmapPacker : IDisposable
             }
             else
             {
-                Texture = new Texture
-                    (
-                     new PixmapTextureData( Image,
-                                            Image.GetFormat(),
-                                            useMipMaps,
-                                            false,
-                                            true )
-                    );
+                Texture = new Texture( new PixmapTextureData( Image,
+                                                              Image.GetFormat(),
+                                                              useMipMaps,
+                                                              false,
+                                                              true ) );
 
                 Texture.SetFilter( minFilter, magFilter );
             }
@@ -914,17 +930,17 @@ public class PixmapPacker : IDisposable
             }
 
             var padding = packer.Padding;
-            
+
             rect.Width  += padding;
             rect.Height += padding;
-            
+
             var node = Insert( page.Root, rect );
-            
+
             if ( node == null )
             {
                 // Didn't fit, pack into a new page.
                 page = new GuillotinePage( packer );
-            
+
                 packer.Pages.Add( page );
                 node = Insert( page.Root, rect );
             }
@@ -954,7 +970,7 @@ public class PixmapPacker : IDisposable
             {
                 return node;
             }
-            
+
             if ( ( node.Rect.Width < rect.Width ) || ( node.Rect.Height < rect.Height ) ) return null;
 
             node.LeftChild  = new Node();
@@ -962,7 +978,7 @@ public class PixmapPacker : IDisposable
 
             var deltaWidth  = ( int ) node.Rect.Width - ( int ) rect.Width;
             var deltaHeight = ( int ) node.Rect.Height - ( int ) rect.Height;
-            
+
             if ( deltaWidth > deltaHeight )
             {
                 node.LeftChild.Rect.X      = node.Rect.X;

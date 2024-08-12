@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics.G2D;
+
 namespace LughSharp.LibCore.Maps.Tiled.Tiles;
 
 /// <summary>

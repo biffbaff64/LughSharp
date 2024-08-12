@@ -22,6 +22,8 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
+using System.Runtime.InteropServices;
+
 namespace LughSharp.LibCore.Graphics.G2D;
 
 //TODO: There are many methods in here that could become properties.
@@ -232,53 +234,53 @@ public class Gdx2DUtils
         return ( dstR << 24 ) | ( dstG << 16 ) | ( dstB << 8 ) | a;
     }
 
-    public static Gdx2dPixmap? Gdx2dLoad( byte[] buffer, uint len )
-    {
-        var pixels = new byte[ len ];
+//    public static Gdx2dPixmap? Gdx2dLoad( byte[] buffer, uint len )
+//    {
+//        var pixels = new byte[ len ];
+//
+//        LoadImageFromMemory( buffer, len, out var width, out var height, out var format, ref pixels );
+//
+//        var pixmap = new Gdx2dPixmap
+//        {
+//            Width  = ( uint ) width,
+//            Height = ( uint ) height,
+//            Format = ( uint ) format,
+//            Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
+//            Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
+//            Pixels = pixels
+//        };
+//
+//        return pixmap;
+//    }
 
-        LoadImageFromMemory( buffer, len, out var width, out var height, out var format, ref pixels );
+//    private static void LoadImageFromMemory( byte[] buffer, uint len, out int w, out int h, out int f, ref byte[] bytes )
+//    {
+//        //TODO: Set up data correctly
+//
+//        for ( var i = 0; i < len; i++ )
+//        {
+//            bytes[ i ] = buffer[ i ];
+//        }
+//
+//        w = 0;
+//        h = 0;
+//        f = PixmapFormat.GDX_2D_FORMAT_RGBA8888;
+//    }
 
-        var pixmap = new Gdx2dPixmap
-        {
-            Width  = ( uint ) width,
-            Height = ( uint ) height,
-            Format = ( uint ) format,
-            Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
-            Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
-            Pixels = pixels
-        };
-
-        return pixmap;
-    }
-
-    private static void LoadImageFromMemory( byte[] buffer, uint len, out int w, out int h, out int f, ref byte[] bytes )
-    {
-        //TODO: Set up data correctly
-
-        for ( var i = 0; i < len; i++ )
-        {
-            bytes[ i ] = buffer[ i ];
-        }
-
-        w = 0;
-        h = 0;
-        f = PixmapFormat.GDX_2D_FORMAT_RGBA8888;
-    }
-
-    public static Gdx2dPixmap Gdx2dNew( int width, int height, int format )
-    {
-        var pixmap = new Gdx2dPixmap
-        {
-            Width  = ( uint ) width,
-            Height = ( uint ) height,
-            Format = ( uint ) format,
-            Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
-            Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
-            Pixels = new byte[ width * height * PixmapFormat.Gdx2dBytesPerPixel( format ) ]
-        };
-
-        return pixmap;
-    }
+//    public static Gdx2dPixmap Gdx2dNew( int width, int height, int format )
+//    {
+//        var pixmap = new Gdx2dPixmap
+//        {
+//            Width  = ( uint ) width,
+//            Height = ( uint ) height,
+//            Format = ( uint ) format,
+//            Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
+//            Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
+//            Pixels = new byte[ width * height * PixmapFormat.Gdx2dBytesPerPixel( format ) ]
+//        };
+//
+//        return pixmap;
+//    }
 
     // ------------------------------------------------------------------------
 

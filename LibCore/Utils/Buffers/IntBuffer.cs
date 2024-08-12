@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Utils.Buffers.HeapBuffers;
 using LughSharp.LibCore.Utils.Exceptions;
 
@@ -44,8 +45,6 @@ public abstract class IntBuffer : Buffer
     protected IntBuffer( int mark, int pos, int lim, int cap, int[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        Logger.CheckPoint();
-
         Hb     = hb ?? new int[ cap ];
         Offset = offset;
     }

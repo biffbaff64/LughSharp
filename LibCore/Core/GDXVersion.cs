@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Reflection;
+using System.Text.RegularExpressions;
+using LughSharp.LibCore.Utils;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 
@@ -91,9 +94,7 @@ public class GDXVersion
             MinorVersion    = v.Length < 2 ? 0 : int.Parse( v[ 1.. ] );
             RevisionVersion = v.Length < 3 ? 0 : int.Parse( v[ 2.. ] );
             
-            Logger.Debug( $"MajorVersion   : {MajorVersion}" );
-            Logger.Debug( $"MinorVersion   : {MinorVersion}" );
-            Logger.Debug( $"RevisionVersion: {RevisionVersion}" );
+            Logger.Debug( $"GDXVersion : {MajorVersion}.{MinorVersion}.{RevisionVersion}" );
         }
         catch ( Exception e )
         {

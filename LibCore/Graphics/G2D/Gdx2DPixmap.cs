@@ -22,6 +22,10 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using System.Runtime.InteropServices;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Utils;
+using LughSharp.LibCore.Utils.Buffers;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.G2D;
@@ -72,6 +76,8 @@ public class Gdx2DPixmap : IDisposable
         Logger.CheckPoint();
 
         PixelPtr = LoadData( encodedData, offset, len );
+
+        Logger.CheckPoint();
 
         BasePtr = NativeData[ 0 ];
         Width   = ( int ) NativeData[ 1 ];
@@ -128,7 +134,7 @@ public class Gdx2DPixmap : IDisposable
     {
         Logger.CheckPoint();
 
-        PixelPtr = GetNewPixmap( width, height, format );
+        PixelPtr = gdx2d_new( NativeData, width, height, format );
 
         if ( PixelPtr == null )
         {
@@ -140,6 +146,27 @@ public class Gdx2DPixmap : IDisposable
         Width   = ( int ) NativeData[ 1 ];
         Height  = ( int ) NativeData[ 2 ];
         Format  = ( int ) NativeData[ 3 ];
+    }
+
+    private ByteBuffer LoadData( byte[] buffer, int offset, int len )
+    {
+        Logger.CheckPoint();
+
+        var ptr = gdx2d_load( NativeData, buffer, offset, len );
+
+        Logger.CheckPoint();
+
+        if ( ptr == null )
+        {
+            Logger.CheckPoint();
+
+//            throw new IOException( $"Error loading pixmap: {gdx2d_get_failure_reason()}" );
+            throw new IOException( "Error loading pixmap" );
+        }
+
+        Logger.CheckPoint();
+
+        return ptr;
     }
 
     /// <summary>
@@ -172,24 +199,6 @@ public class Gdx2DPixmap : IDisposable
         };
 
         return BufferUtils.NewByteBuffer( pixmap.Pixels.Length );
-    }
-
-    /// <summary>
-    /// Created because <see cref="Load"/>, being a virtual method, is unsafe
-    /// to be called from constructors.
-    /// </summary>
-    private ByteBuffer LoadData( byte[] buffer, int offset, int len )
-    {
-        Logger.CheckPoint();
-
-//        var ptr = Load( nativeData, buffer, offset, len );
-
-//        if ( ptr == null )
-        {
-            throw new IOException( $"Error loading pixmap: {Gdx2DUtils.Gdx2dGetFailureReason()}" );
-        }
-
-//        return ptr;
     }
 
     /// <summary>
@@ -254,18 +263,17 @@ public class Gdx2DPixmap : IDisposable
 
     public void Clear( int color )
     {
-//        Clear( BasePtr, color );
+        gdx2d_clear( BasePtr, color );
     }
 
     public int GetPixel( int x, int y )
     {
-//        return GetPixel( BasePtr, x, y );
-        return 0;
+        return gdx2d_get_pixel( BasePtr, x, y );
     }
 
     public void SetPixel( int x, int y, int color )
     {
-//        SetPixel( BasePtr, x, y, color );
+        gdx2d_set_pixel( BasePtr, x, y, color );
     }
 
     public void DrawLine( int x, int y, int x2, int y2, int color )
@@ -360,15 +368,15 @@ public class Gdx2DPixmap : IDisposable
     public int    GLType           => ToGLType( Format );
     public string FormatString     => PixmapFormat.GetFormatString( Format );
 
-//    public int Blend
-//    {
-//        set => Gdx2DUtils.Gdx2dSetBlend( BasePtr, value );
-//    }
+    public int Blend
+    {
+        set => gdx2d_set_blend( BasePtr, value );
+    }
 
-//    public int Scale
-//    {
-//        set => Gdx2DUtils.Gdx2dSetScale( BasePtr, value );
-//    }
+    public int Scale
+    {
+        set => gdx2d_set_scale( BasePtr, value );
+    }
 
 
     // ------------------------------------------------------------------------
@@ -394,4 +402,31 @@ public class Gdx2DPixmap : IDisposable
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
+
+    [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    private static extern ByteBuffer gdx2d_load( long[] nativeData, byte[] buffer, int offset, int len );
+
+    [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    private static extern ByteBuffer gdx2d_new( long[] nativeData, int width, int height, int format );
+
+    [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    private static extern string gdx2d_get_failure_reason();
+
+    [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void gdx2d_clear( long basePtr, int color );
+
+    [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    private static extern int gdx2d_get_pixel( long basePtr, int x, int y );
+
+    [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void gdx2d_set_pixel( long basePtr, int x, int y, int color );
+
+    [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void gdx2d_set_blend( long basePtr, int blend );
+
+    [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void gdx2d_set_scale( long basePtr, int scale );
+
+    [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    private static extern uint gdx2d_bytes_per_pixel( uint format );
 }

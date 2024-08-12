@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Text;
+using LughSharp.LibCore.Core;
+
 namespace LughSharp.LibCore.Utils;
 
 /// <summary>

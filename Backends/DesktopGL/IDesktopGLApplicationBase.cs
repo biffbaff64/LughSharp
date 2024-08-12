@@ -26,6 +26,7 @@
 using LughSharp.Backends.DesktopGL.Audio;
 using LughSharp.Backends.DesktopGL.Input;
 using LughSharp.Backends.DesktopGL.Window;
+using LughSharp.LibCore.Core;
 
 namespace LughSharp.Backends.DesktopGL;
 

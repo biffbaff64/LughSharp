@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Utils.Collections;
+
 namespace LughSharp.LibCore.Maths;
 
 /// <summary>

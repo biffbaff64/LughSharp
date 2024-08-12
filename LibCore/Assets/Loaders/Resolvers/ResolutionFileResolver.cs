@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Core;
+
 namespace LughSharp.LibCore.Assets.Loaders.Resolvers;
 
 /// <summary>

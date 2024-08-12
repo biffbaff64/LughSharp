@@ -26,17 +26,13 @@
 namespace LughSharp.LibCore.Utils.Buffers;
 
 [PublicAPI]
-public abstract class LongBuffer : Buffer
+public abstract class LongBuffer() : Buffer( 0, 0, 0, 0 )
 {
     public new double[]? Hb        { get; set; }
     protected  int       Offset    { get; set; }
     protected  bool      BigEndian { get; set; } = true;
 
     // ------------------------------------------------------------------------
-
-    protected LongBuffer() : base( 0, 0, 0, 0 )
-    {
-    }
 
     public static LongBuffer Allocate( int numBytes )
     {

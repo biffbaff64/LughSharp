@@ -22,6 +22,9 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Utils;
+
 namespace LughSharp.LibCore.Input;
 
 /// <summary>

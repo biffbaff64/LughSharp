@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Runtime.CompilerServices;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Utils;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics;

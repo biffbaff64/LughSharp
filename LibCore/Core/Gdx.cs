@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Audio;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Utils;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Core;

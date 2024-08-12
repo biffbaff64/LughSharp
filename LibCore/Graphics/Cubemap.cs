@@ -23,7 +23,13 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Text;
+using LughSharp.LibCore.Assets;
 using LughSharp.LibCore.Assets.Loaders;
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.GLUtils;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Utils.Collections;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics;
@@ -168,7 +174,7 @@ public class Cubemap : GLTexture
             throw new GdxRuntimeException( "Tried to reload an unmanaged Cubemap" );
         }
 
-        GLTextureHandle = ( int ) Gdx.GL.glGenTexture();
+        GLTextureHandle = Gdx.GL.glGenTexture();
 
         Load( Data );
     }
@@ -261,7 +267,7 @@ public class Cubemap : GLTexture
 
                     // unload the c, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    cubemap.GLTextureHandle = ( int ) Gdx.GL.glGenTexture();
+                    cubemap.GLTextureHandle = Gdx.GL.glGenTexture();
                     AssetManager.Load( fileName, typeof( Cubemap ), parameter );
                 }
             }

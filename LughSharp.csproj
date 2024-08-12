@@ -113,6 +113,13 @@
       <Content Update="lib\gdx2d.dll">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <Content Update="Backends\DesktopGL\Test\LughLogo.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Libs\gdx2d.dll" />
+      <Content Include="Libs\gdx2d.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

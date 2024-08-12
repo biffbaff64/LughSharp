@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.OpenGL;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.GLUtils;
@@ -156,22 +158,20 @@ public class FacedCubemapData : ICubemapData
 
                 Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 1 );
 
-                unsafe
-                {
-                    fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
-                    {
-                        Gdx.GL.glTexImage2D( IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                                             0,
-                                             pixmap.GLInternalFormat,
-                                             pixmap.Width,
-                                             pixmap.Height,
-                                             0,
-                                             pixmap.GLFormat,
-                                             pixmap.GLType,
-                                             ptr );
-                    }
-                }
+                var pixels = pixmap.Pixels.BackingArray();
+                
+                Gdx.GL.glTexImage2D( IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                                     0,
+                                     pixmap.GLInternalFormat,
+                                     pixmap.Width,
+                                     pixmap.Height,
+                                     0,
+                                     pixmap.GLFormat,
+                                     pixmap.GLType,
+                                     pixels );
 
+                pixmap.Pixels.Put( pixels );
+                
                 if ( disposePixmap )
                 {
                     pixmap.Dispose();

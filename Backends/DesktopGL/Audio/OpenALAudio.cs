@@ -23,6 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Audio;
+using LughSharp.LibCore.Audio.OpenAL;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Utils.Collections;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 

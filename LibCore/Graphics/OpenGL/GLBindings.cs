@@ -35,6 +35,8 @@
 #endif
 
 #if OGL_P_CORE
+
+using LughSharp.LibCore.Graphics.OpenGL;
 #if OGL_V_1_0 || OGL_V_1_1 || OGL_V_1_2 || OGL_V_1_3 || OGL_V_1_4 || OGL_V_1_5 || OGL_V_2_0 || OGL_V_2_1 || OGL_V_3_0 || OGL_V_3_1 || OGL_V_3_2 || OGL_V_3_3 || OGL_V_4_0 || OGL_V_4_1 || OGL_V_4_2 || OGL_V_4_3 || OGL_V_4_4 || OGL_V_4_5 || OGL_V_4_6
 using System.Numerics;
 using System.Runtime.InteropServices;

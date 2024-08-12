@@ -23,8 +23,14 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Text;
+using LughSharp.LibCore.Assets;
 using LughSharp.LibCore.Assets.Loaders;
-using LughSharp.LibCore.Assets.Loaders.Resolvers;
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.GLUtils;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Utils;
+using LughSharp.LibCore.Utils.Collections;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics;
@@ -81,10 +87,14 @@ public class Texture : GLTexture
         Logger.CheckPoint();
     }
 
-    public Texture( FileInfo file, bool useMipMaps )
-        : this( file, default( Pixmap.Format ), useMipMaps )
+    /// <summary>
+    /// Create a new Texture from the file described by the given <see cref="FileInfo"/>
+    /// </summary>
+    /// <param name="file"></param>
+    /// <param name="useMipMaps"> Whether or not to generate MipMaps. Default is false. </param>
+    public Texture( FileInfo? file, bool useMipMaps )
+        : this( file, Pixmap.Format.RGBA8888, useMipMaps )
     {
-        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -118,7 +128,7 @@ public class Texture : GLTexture
     /// <param name="pixmap"> The pixmap to use. </param>
     /// <param name="format"> The pixmap format to use. </param>
     /// <param name="useMipMaps"> Whether or not to generate MipMaps. Default is false. </param>
-    public Texture( Pixmap pixmap, Pixmap.Format format, bool useMipMaps )
+    public Texture( Pixmap pixmap, Pixmap.Format format, bool useMipMaps = false )
         : this( new PixmapTextureData( pixmap, format, useMipMaps, false ) )
     {
         Logger.CheckPoint();
@@ -140,7 +150,7 @@ public class Texture : GLTexture
     /// Creates a new Texture using the supplied <see cref="ITextureData"/>.
     /// </summary>
     public Texture( ITextureData? data )
-        : this( IGL.GL_TEXTURE_2D, ( int ) Gdx.GL.glGenTexture(), data )
+        : this( IGL.GL_TEXTURE_2D, Gdx.GL.glGenTexture(), data )
     {
         Logger.CheckPoint();
     }
@@ -152,18 +162,18 @@ public class Texture : GLTexture
     /// <param name="glTarget"></param>
     /// <param name="glTextureHandle"></param>
     /// <param name="data"></param>
-    protected Texture( int glTarget, int glTextureHandle, ITextureData? data )
+    protected Texture( int glTarget, uint glTextureHandle, ITextureData? data )
         : base( glTarget, glTextureHandle )
     {
         Logger.CheckPoint();
+        Logger.Debug( $"glTarget       : {glTarget}" );
+        Logger.Debug( $"glTextureHandle: {glTextureHandle}" );
+        Logger.Debug( $"data           : {data}" );
+        Logger.Debug( $"data.Width     : {data?.Width}" );
+        Logger.Debug( $"data.Height    : {data?.Height}" );
+        Logger.Debug( $"data.Format    : {data?.GetFormat()}" );
 
         ArgumentNullException.ThrowIfNull( data );
-
-        if ( AssetManager == null )
-        {
-            AssetManager = new AssetManager();
-            AssetManager.SetLoader( typeof( Texture ), new TextureLoader( new AbsoluteFileHandleResolver() ) );
-        }
 
         Load( data );
 
@@ -180,7 +190,7 @@ public class Texture : GLTexture
     public void Load( ITextureData? data )
     {
         Logger.CheckPoint();
-
+        
         if ( ( data != null )
           && ( TextureData != null )
           && ( data.IsManaged != TextureData.IsManaged ) )
@@ -188,10 +198,13 @@ public class Texture : GLTexture
             throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
         }
 
+        Logger.Debug( $"data       : {data}" );
         Logger.Debug( $"data.Width : {data?.Width}" );
         Logger.Debug( $"data.Height: {data?.Height}" );
         Logger.Debug( $"data.Format: {data?.GetFormat()}" );
 
+        
+        
         TextureData = data;
 
         if ( !data!.IsPrepared )
@@ -223,7 +236,7 @@ public class Texture : GLTexture
             throw new GdxRuntimeException( "Tried to reload unmanaged Texture" );
         }
 
-        GLTextureHandle = ( int ) Gdx.GL.glGenTexture();
+        GLTextureHandle = Gdx.GL.glGenTexture();
 
         Load( TextureData );
     }
@@ -247,25 +260,17 @@ public class Texture : GLTexture
 
         Bind();
 
-        unsafe
-        {
-            fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
-            {
-                Gdx.GL.glTexSubImage2D( GLTarget,
-                                        0,
-                                        x,
-                                        y,
-                                        pixmap.Width,
-                                        pixmap.Height,
-                                        pixmap.GLFormat,
-                                        pixmap.GLType,
-                                        ptr );
-            }
-        }
+        var pixels = pixmap.Pixels.BackingArray();
+        
+        Gdx.GL.glTexSubImage2D( GLTarget, 0, x, y, pixmap.Width, pixmap.Height, pixmap.GLFormat, pixmap.GLType, pixels );
+
+        pixmap.Pixels.Put( pixels );
     }
 
     private void AddManagedTexture( IApplication app, Texture texture )
     {
+        Logger.CheckPoint();
+
         List< Texture > managedTextureArray = _managedTextures[ app ] ?? new List< Texture >();
 
         managedTextureArray.Add( texture );
@@ -338,7 +343,7 @@ public class Texture : GLTexture
 
                     // unload the texture, create a new gl handle then reload it.
                     AssetManager.Unload( fileName );
-                    texture.GLTextureHandle = ( int ) Gdx.GL.glGenTexture();
+                    texture.GLTextureHandle = Gdx.GL.glGenTexture();
                     AssetManager.Load( fileName, typeof( Texture ), parameters );
                 }
             }
@@ -406,7 +411,6 @@ public class Texture : GLTexture
 
             Delete();
 
-//            if ( ( TextureData != null ) && TextureData.IsManaged )
             if ( TextureData is { IsManaged: true } )
             {
                 if ( _managedTextures[ Gdx.App ] != null )

@@ -22,19 +22,19 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using System.Drawing;
+using LughSharp.LibCore.Utils;
 
-namespace LughSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics.Playground;
 
 [PublicAPI]
 public class PixelMap
 {
-    public int    Width         { get; set; }
-    public int    Height        { get; set; }
-    public int    Format        { get; set; }
-    public int    BytesPerPixel { get; set; }
-    public byte[] Pixels        { get; set; }
-    public bool   IsDisposed    { get; set; } = false;
+    public int     Width         { get; set; }
+    public int     Height        { get; set; }
+    public int     Format        { get; set; }
+    public int     BytesPerPixel { get; set; }
+    public byte[]? Pixels        { get; set; }
+    public bool    IsDisposed    { get; set; } = false;
 
     // ------------------------------------------------------------------------
     
@@ -68,7 +68,7 @@ public class PixelMap
         this.BytesPerPixel = map.BytesPerPixel;
         this.Pixels        = new byte[ Width * Height * BytesPerPixel ];
 
-        map.Pixels.CopyTo( this.Pixels, 0 );
+        map.Pixels?.CopyTo( this.Pixels, 0 );
     }
 
     /// <summary>
@@ -85,5 +85,11 @@ public class PixelMap
     public PixelMap( string path )
     {
         Logger.CheckPoint();
+
+        this.Width         = 0;     //TODO:
+        this.Height        = 0;     //TODO:
+        this.Format        = 0;     //TODO:
+        this.BytesPerPixel = 0;     //TODO:
+        this.Pixels        = new byte[ Width * Height * BytesPerPixel ];
     }
 }

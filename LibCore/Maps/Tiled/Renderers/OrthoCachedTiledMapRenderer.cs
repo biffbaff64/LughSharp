@@ -23,6 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.Cameras;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Maps.Tiled.Renderers;

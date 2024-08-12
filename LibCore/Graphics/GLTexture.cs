@@ -23,6 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.GLUtils;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Utils;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics;
@@ -39,7 +44,7 @@ public abstract class GLTexture : IDisposable, IManageable
     public virtual int Height { get; }
     public virtual int Depth  { get; }
 
-    public int   GLTextureHandle        { get; set; }
+    public uint  GLTextureHandle        { get; set; }
     public int   GLTarget               { get; }
     public float AnisotropicFilterLevel { get; private set; } = 1.0f;
 
@@ -79,14 +84,15 @@ public abstract class GLTexture : IDisposable, IManageable
     // ------------------------------------------------------------------------
 
     protected GLTexture( int glTarget )
-        : this( glTarget, ( int ) Gdx.GL.glGenTexture() )
+        : this( glTarget, Gdx.GL.glGenTexture() )
     {
         Logger.CheckPoint();
     }
 
-    protected GLTexture( int glTarget, int glTextureHandle )
+    protected GLTexture( int glTarget, uint glTextureHandle )
     {
         Logger.CheckPoint();
+        Logger.Debug( $"GLTarget: {glTarget}, GLTextureHandle: {GLTextureHandle}" );
 
         GLTarget        = glTarget;
         GLTextureHandle = glTextureHandle;
@@ -104,7 +110,7 @@ public abstract class GLTexture : IDisposable, IManageable
     /// </summary>
     public void Bind()
     {
-        Gdx.GL.glBindTexture( GLTarget, ( uint ) GLTextureHandle );
+        Gdx.GL.glBindTexture( GLTarget, GLTextureHandle );
     }
 
     /// <summary>

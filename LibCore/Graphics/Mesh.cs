@@ -24,7 +24,12 @@
 
 #pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 
+using System.Text;
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.GLUtils;
+using LughSharp.LibCore.Graphics.OpenGL;
 using LughSharp.LibCore.Maths.Collision;
+using LughSharp.LibCore.Utils.Buffers;
 using LughSharp.LibCore.Utils.Exceptions;
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
@@ -72,8 +77,6 @@ public class Mesh
     /// <param name="isVertexArray"></param>
     protected Mesh( IVertexData vertices, IIndexData indices, bool isVertexArray )
     {
-        Logger.CheckPoint();
-
         _vertices      = vertices;
         _indices       = indices;
         _isVertexArray = isVertexArray;
@@ -93,8 +96,6 @@ public class Mesh
     /// </param>
     public Mesh( bool isStatic, int maxVertices, int maxIndices, params VertexAttribute[] attributes )
     {
-        Logger.CheckPoint();
-
         _vertices      = MakeVertexBuffer( isStatic, maxVertices, new VertexAttributes( attributes ) );
         _indices       = new IndexBufferObject( isStatic, maxIndices );
         _isVertexArray = false;
@@ -114,8 +115,6 @@ public class Mesh
     /// </param>
     public Mesh( bool isStatic, int maxVertices, int maxIndices, VertexAttributes attributes )
     {
-        Logger.CheckPoint();
-
         _vertices      = MakeVertexBuffer( isStatic, maxVertices, attributes );
         _indices       = new IndexBufferObject( isStatic, maxIndices );
         _isVertexArray = false;
@@ -145,8 +144,6 @@ public class Mesh
                  int maxIndices,
                  VertexAttributes attributes )
     {
-        Logger.CheckPoint();
-
         _vertices      = MakeVertexBuffer( staticVertices, maxVertices, attributes );
         _indices       = new IndexBufferObject( staticIndices, maxIndices );
         _isVertexArray = false;
@@ -173,7 +170,6 @@ public class Mesh
                  params VertexAttribute[] attributes )
         : this( type, isStatic, maxVertices, maxIndices, new VertexAttributes( attributes ) )
     {
-        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -187,8 +183,6 @@ public class Mesh
     /// <param name="attributes">the <see cref="VertexAttributes"/>.</param>
     public Mesh( VertexDataType type, bool isStatic, int maxVertices, int maxIndices, VertexAttributes attributes )
     {
-        Logger.CheckPoint();
-
         switch ( type )
         {
             case VertexDataType.VertexBufferObject:
@@ -226,6 +220,8 @@ public class Mesh
 
     #endregion constructors
 
+    // ------------------------------------------------------------------------
+    
     public Mesh EnableInstancedRendering( bool isStatic, int maxInstances, params VertexAttribute[] attributes )
     {
         if ( !IsInstanced )

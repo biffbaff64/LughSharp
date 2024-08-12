@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.GLUtils;
+
 namespace LughSharp.LibCore.Core;
 
 [PublicAPI]

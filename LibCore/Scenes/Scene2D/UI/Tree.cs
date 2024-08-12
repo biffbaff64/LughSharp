@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.G2D;
 using LughSharp.LibCore.Input;
 using LughSharp.LibCore.Scenes.Scene2D.Listeners;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;

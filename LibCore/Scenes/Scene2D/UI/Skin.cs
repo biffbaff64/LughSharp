@@ -23,7 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Reflection;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G2D;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
+using LughSharp.LibCore.Utils.Collections;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 

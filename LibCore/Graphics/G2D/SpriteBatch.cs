@@ -24,6 +24,10 @@
 
 
 using System.Drawing;
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.GLUtils;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Utils.Exceptions;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
@@ -42,6 +46,17 @@ public class SpriteBatch : IBatch
     public Matrix4 ProjectionMatrix  { get; }              = new();
     public Matrix4 TransformMatrix   { get; }              = new();
     public bool    IsDrawing         { get; set; }         = false;
+
+    // Number of render calls since the last call to Begin()
+    public int RenderCalls { get; set; } = 0;
+
+    // Number of rendering calls, ever. Will not be reset unless set manually.
+    public int TotalRenderCalls { get; set; } = 0;
+
+    // The maximum number of sprites rendered in one batch so far.
+    public int MaxSpritesInBatch { get; set; } = 0;
+
+    // ------------------------------------------------------------------------
 
     protected Texture? LastTexture { get; set; } = null;
     protected float[]  Vertices    { get; set; }
@@ -69,7 +84,6 @@ public class SpriteBatch : IBatch
     /// </summary>
     public SpriteBatch() : this( 1000 )
     {
-        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -92,8 +106,6 @@ public class SpriteBatch : IBatch
     /// </param>
     protected SpriteBatch( int size, ShaderProgram? defaultShader = null )
     {
-        Logger.CheckPoint();
-
         // 32767 is max vertex index, so 32767 / 4 vertices per sprite = 8191 sprites max.
         if ( size > MAX_SPRITES )
         {
@@ -116,11 +128,7 @@ public class SpriteBatch : IBatch
                                                2,
                                                $"{ShaderProgram.TEXCOORD_ATTRIBUTE}0" ) );
 
-        Logger.CheckPoint();
-
         ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
-
-        Logger.CheckPoint();
 
         Vertices = new float[ size * Sprite.SPRITE_SIZE ];
 
@@ -138,14 +146,10 @@ public class SpriteBatch : IBatch
             indices[ i + 5 ] = j;
         }
 
-        Logger.CheckPoint();
-
         _mesh.SetIndices( indices );
 
         if ( defaultShader == null )
         {
-            Logger.CheckPoint();
-            
             _shader     = CreateDefaultShader();
             _ownsShader = true;
         }
@@ -154,15 +158,6 @@ public class SpriteBatch : IBatch
             _shader = defaultShader;
         }
     }
-
-    // Number of render calls since the last call to Begin()
-    public int RenderCalls { get; set; } = 0;
-
-    // Number of rendering calls, ever. Will not be reset unless set manually.
-    public int TotalRenderCalls { get; set; } = 0;
-
-    // The maximum number of sprites rendered in one batch so far.
-    public int MaxSpritesInBatch { get; set; } = 0;
 
     public void Begin()
     {

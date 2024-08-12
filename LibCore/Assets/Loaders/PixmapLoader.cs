@@ -24,6 +24,8 @@
 
 
 using LughSharp.LibCore.Assets.Loaders.Resolvers;
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Utils;
 
 namespace LughSharp.LibCore.Assets.Loaders;
 

@@ -24,6 +24,8 @@
 
 
 using System.Text;
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.OpenGL;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics;
@@ -132,7 +134,7 @@ public class TextureArray : GLTexture
             throw new GdxRuntimeException( "Tried to reload an unmanaged TextureArray" );
         }
 
-        GLTextureHandle = ( int ) Gdx.GL.glGenTexture();
+        GLTextureHandle = Gdx.GL.glGenTexture();
 
         Load( _data );
     }
@@ -193,7 +195,7 @@ public class TextureArray : GLTexture
     /// <param name="data"></param>
     /// <exception cref="GdxRuntimeException"></exception>
     public TextureArray( ITextureArrayData data )
-        : base( IGL.GL_TEXTURE_2D_ARRAY, ( int ) Gdx.GL.glGenTexture() )
+        : base( IGL.GL_TEXTURE_2D_ARRAY, Gdx.GL.glGenTexture() )
     {
         _data = null!;
 

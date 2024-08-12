@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics.G2D;
+
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 /// <summary>

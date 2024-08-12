@@ -24,6 +24,9 @@
 
 #pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Utils.Buffers;
 using LughSharp.LibCore.Utils.Exceptions;
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 using Platform = LughSharp.LibCore.Core.Platform;

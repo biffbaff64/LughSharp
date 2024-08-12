@@ -23,6 +23,7 @@
 // /////////////////////////////////////////////////////////////////////////////
 
 using System.Numerics;
+using LughSharp.LibCore.Core;
 
 namespace LughSharp.LibCore.Graphics.Profiling;
 

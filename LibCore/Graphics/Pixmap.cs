@@ -23,7 +23,11 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Runtime.CompilerServices;
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Utils;
+using LughSharp.LibCore.Utils.Buffers;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 
@@ -51,12 +55,12 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class Pixmap : IDisposable
 {
-    public long       BasePtr    { get; set; }                  // 
-    public int        PixFormat  { get; set; }                  // The actual pixmap format.
-    public ByteBuffer PixelData  { get; set; }                  //
-    public long[]     NativeData { get; set; } = new long[ 4 ]; //
-    public bool       IsDisposed { get; set; } = false;
-    public int        Scale      { get; set; }
+    public long        BasePtr    { get; set; }                  // 
+    public int         PixFormat  { get; set; }                  // The actual pixmap format.
+    public Gdx2DPixmap PixelData  { get; set; }                  //
+    public long[]      NativeData { get; set; } = new long[ 4 ]; //
+    public bool        IsDisposed { get; set; } = false;
+    public int         Scale      { get; set; }
 
     /// <summary>
     /// Sets the type of <see cref="BlendTypes"/> to be used for all operations.
@@ -91,31 +95,19 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Creates a new Pixmap instance with the given width, height and format.
     /// </summary>
-    /// <param name="callerMethod"></param>
     /// <param name="width">The width in pixels.</param>
     /// <param name="height">The height in pixels.</param>
     /// <param name="format">The <see cref="Pixmap.Format"/></param>
-    /// <param name="callerFilePath"></param>
-    /// <param name="callerLine"></param>
-    public Pixmap( int width, int height, Format format,
-                   [CallerFilePath] string callerFilePath = "",
-                   [CallerMemberName] string callerMethod = "",
-                   [CallerLineNumber] int callerLine = 0 )
+    public Pixmap( int width, int height, Format format )
     {
         Logger.CheckPoint();
+        Logger.Debug( $"width: {width}, height: {height}, format: {format}" );
 
-//        GDX2DPixmap = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
-
+        PixelData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
         PixFormat = PixmapFormat.ToGdx2DPixmapFormat( format );
-        PixelData = ByteBuffer.Allocate( width * height * PixmapFormat.Gdx2dBytesPerPixel( PixFormat ) );
-        
+
         SetColor( Color.Black );
         FillWithCurrentColor();
-
-        Logger.Debug( $"Called from: {callerFilePath}::{callerMethod}::{callerLine}" );
-        Logger.Debug( $"Width: {width}, Height: {height}" );
-        Logger.Debug( $"Buffer capacity: {PixelData.Capacity}" );
-        Logger.Debug( $"Buffer limit: {PixelData.Limit}" );
     }
 
     /// <summary>
@@ -125,15 +117,12 @@ public class Pixmap : IDisposable
     public Pixmap( byte[] encodedData, int offset, int len )
     {
         Logger.CheckPoint();
+        Logger.Debug( $"encodedData: {encodedData}, offset: {offset}, len: {len}" );
 
         try
         {
-//            GDX2DPixmap = new Gdx2DPixmap( encodedData, offset, len, 0 );
+            PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
 
-            PixelData = ByteBuffer.Allocate( len );
-            
-            //TODO: create NativeData from encodedData, as done in Gdx2DPixmap
-            
             BasePtr   = NativeData[ 0 ];
             Width     = ( int ) NativeData[ 1 ];
             Height    = ( int ) NativeData[ 2 ];
@@ -168,23 +157,17 @@ public class Pixmap : IDisposable
                 throw new FileLoadException( $"Error reading from {file.Name}: No data found." );
             }
 
-//            GDX2DPixmap = new Gdx2DPixmap( bytes, 0, bytes.Length, 0 );
+            Logger.CheckPoint();
+
+            PixelData = new Gdx2DPixmap( bytes, 0, bytes.Length, 0 );
         }
         catch ( Exception e )
         {
             throw new GdxRuntimeException( $"Couldn't load file:  {file.Name}", e );
         }
-    }
 
-//    /// <summary>
-//    /// Creates a new Pixmap from the supplied <see cref="Gdx2DPixmap"/>.
-//    /// </summary>
-//    public Pixmap( Gdx2DPixmap pixmap )
-//    {
-//        Logger.CheckPoint();
-//
-//        GDX2DPixmap = pixmap;
-//    }
+        Logger.CheckPoint();
+    }
 
     // ----------------------------------------------------------
 
@@ -242,14 +225,9 @@ public class Pixmap : IDisposable
                 throw new GdxRuntimeException( "Pixmap already disposed" );
             }
 
-            return PixelData;
+            return PixelData.PixelPtr;
         }
-        set
-        {
-            PixelData = ByteBuffer.Allocate( value.Limit );
-
-            BufferUtils.Copy( value, PixelData, PixelData.Limit );
-        }
+        set => BufferUtils.Copy( value, PixelData.PixelPtr, value.Limit );
     }
 
     /// <summary>

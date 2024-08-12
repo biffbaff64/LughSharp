@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics.Cameras;
+
 namespace LughSharp.LibCore.Graphics.Viewport;
 
 /// <summary>

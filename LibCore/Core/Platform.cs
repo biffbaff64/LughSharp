@@ -22,6 +22,7 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
+using System.Runtime.InteropServices;
 using LughSharp.LibCore.Utils.Exceptions;
 using Environment = System.Environment;
 

@@ -25,33 +25,33 @@
 // ----------------------------------------------------------------------------
 // General System
 
-global using System;
-global using System.Collections;
-global using System.Diagnostics;
-global using System.Diagnostics.CodeAnalysis;
-global using System.Globalization;
-global using System.IO;
-global using System.IO.Compression;
-global using System.Reflection;
-global using System.Runtime.InteropServices;
-global using System.Runtime.Serialization;
-global using System.Text;
-global using System.Text.RegularExpressions;
+//global using System;
+//global using System.Collections;
+//global using System.Diagnostics;
+//global using System.Diagnostics.CodeAnalysis;
+//global using System.Globalization;
+//global using System.IO;
+//global using System.IO.Compression;
+//global using System.Reflection;
+//global using System.Runtime.InteropServices;
+//global using System.Runtime.Serialization;
+//global using System.Text;
+//global using System.Text.RegularExpressions;
 
 // ----------------------------------------------------------------------------
 // Json
-global using System.Text.Json;
-global using System.Text.Json.Serialization;
+//global using System.Text.Json;
+//global using System.Text.Json.Serialization;
 
 // ----------------------------------------------------------------------------
 // XML
-global using System.Xml;
-global using System.Xml.Linq;
-global using System.Xml.Resolvers;
-global using System.Xml.Schema;
-global using System.Xml.Serialization;
-global using System.Xml.XPath;
-global using System.Xml.Xsl;
+//global using System.Xml;
+//global using System.Xml.Linq;
+//global using System.Xml.Resolvers;
+//global using System.Xml.Schema;
+//global using System.Xml.Serialization;
+//global using System.Xml.XPath;
+//global using System.Xml.Xsl;
 
 // ----------------------------------------------------------------------------
 // Jetbrains
@@ -59,35 +59,47 @@ global using JetBrains.Annotations;
 
 // ----------------------------------------------------------------------------
 // OpenAL support
-global using LughSharp.LibCore.Audio.OpenAL;
+//global using LughSharp.LibCore.Audio.OpenAL;
 
 // ----------------------------------------------------------------------------
 // OpenGL / Glfw support
 global using DotGL;
 global using DotGLFW;
 global using GLFW = DotGLFW;
+//
+//global using GLenum = int;
+//global using GLfloat = float;
+//global using GLint = int;
+//global using GLsizei = int;
+//global using GLbitfield = uint;
+//global using GLdouble = double;
+//global using GLuint = uint;
+//global using GLboolean = bool;
+//global using GLubyte = byte;
 
 // ----------------------------------------------------------------------------
 // LughSharp
-global using LughSharp.LibCore.Assets;
-global using LughSharp.LibCore.Audio;
-global using LughSharp.LibCore.Audio.Maponus;
-global using LughSharp.LibCore.Core;
-global using LughSharp.LibCore.Graphics;
-global using LughSharp.LibCore.Graphics.Cameras;
-global using LughSharp.LibCore.Graphics.FrameBuffers;
-global using LughSharp.LibCore.Graphics.G2D;
-global using LughSharp.LibCore.Graphics.G3D;
-global using LughSharp.LibCore.Graphics.GLUtils;
-global using LughSharp.LibCore.Graphics.OpenGL;
-global using LughSharp.LibCore.Graphics.Profiling;
-global using LughSharp.LibCore.Maps;
-global using LughSharp.LibCore.Maths;
-global using LughSharp.LibCore.Scenes.Scene2D;
-global using LughSharp.LibCore.Utils;
-global using LughSharp.LibCore.Utils.Buffers;
-global using LughSharp.LibCore.Utils.Collections;
-global using LughSharp.LibCore.Utils.Pooling;
+//global using LughSharp.LibCore.Assets;
+//global using LughSharp.LibCore.Assets.Loaders;
+//global using LughSharp.LibCore.Assets.Loaders.Resolvers;
+//global using LughSharp.LibCore.Audio;
+//global using LughSharp.LibCore.Audio.Maponus;
+//global using LughSharp.LibCore.Core;
+//global using LughSharp.LibCore.Graphics;
+//global using LughSharp.LibCore.Graphics.Cameras;
+//global using LughSharp.LibCore.Graphics.FrameBuffers;
+//global using LughSharp.LibCore.Graphics.G2D;
+//global using LughSharp.LibCore.Graphics.G3D;
+//global using LughSharp.LibCore.Graphics.GLUtils;
+//global using LughSharp.LibCore.Graphics.OpenGL;
+//global using LughSharp.LibCore.Graphics.Profiling;
+//global using LughSharp.LibCore.Maps;
+//global using LughSharp.LibCore.Maths;
+//global using LughSharp.LibCore.Scenes.Scene2D;
+//global using LughSharp.LibCore.Utils;
+//global using LughSharp.LibCore.Utils.Buffers;
+//global using LughSharp.LibCore.Utils.Collections;
+//global using LughSharp.LibCore.Utils.Pooling;
 
 // ----------------------------------------------------------------------------
 global using Vector2 = LughSharp.LibCore.Maths.Vector2;

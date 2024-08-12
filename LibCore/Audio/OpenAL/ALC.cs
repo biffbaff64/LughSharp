@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Reflection;
+using System.Runtime.InteropServices;
 using Environment = System.Environment;
 
 namespace LughSharp.LibCore.Audio.OpenAL;

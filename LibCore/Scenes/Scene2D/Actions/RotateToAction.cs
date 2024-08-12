@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;

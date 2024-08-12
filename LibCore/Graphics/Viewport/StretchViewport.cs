@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics.Cameras;
+using LughSharp.LibCore.Utils;
+
 namespace LughSharp.LibCore.Graphics.Viewport;
 
 /// <summary>

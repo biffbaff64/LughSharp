@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics;
+using LughSharp.LibCore.Graphics.G2D;
+using LughSharp.LibCore.Maths;
 using Color = LughSharp.LibCore.Graphics.Color;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Utils;

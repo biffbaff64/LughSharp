@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Core;
+
 namespace LughSharp.Backends.DesktopGL.Input;
 
 [PublicAPI]

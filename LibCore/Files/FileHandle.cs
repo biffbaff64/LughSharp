@@ -22,6 +22,7 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
+using LughSharp.LibCore.Core;
 using Environment = System.Environment;
 
 namespace LughSharp.LibCore.Files;

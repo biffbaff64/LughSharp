@@ -152,8 +152,6 @@ public abstract class ByteBuffer : Buffer
     protected ByteBuffer( int mark, int pos, int lim, int cap, byte[]? hb = null, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
-        Logger.CheckPoint();
-
         Hb     = hb ?? new byte[ cap ];
         Offset = offset;
     }

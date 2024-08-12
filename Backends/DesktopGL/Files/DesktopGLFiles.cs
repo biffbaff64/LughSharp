@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Core;
 using LughSharp.LibCore.Files;
 using LughSharp.LibCore.Utils.Exceptions;
 using Environment = System.Environment;

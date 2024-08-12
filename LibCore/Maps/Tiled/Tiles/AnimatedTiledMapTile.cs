@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics.G2D;
 using LughSharp.LibCore.Utils.Exceptions;
 using Blendmode = LughSharp.LibCore.Maps.Tiled.ITiledMapTile.Blendmode;
 

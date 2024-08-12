@@ -22,6 +22,8 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
+using System.Diagnostics;
+
 namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 
 [PublicAPI]
@@ -32,8 +34,6 @@ public class ByteBufferAsShortBufferB : ShortBuffer
     public ByteBufferAsShortBufferB( ByteBuffer bb, int mark, int pos, int lim, int cap, int off )
         : base( mark, pos, lim, cap )
     {
-        Logger.CheckPoint();
-
         this.Bb      = bb;
         base.Address = bb.Address;
     }

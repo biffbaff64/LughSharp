@@ -23,6 +23,9 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.IO.Compression;
+using LughSharp.LibCore.Maths;
+using LughSharp.LibCore.Utils.Buffers;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 

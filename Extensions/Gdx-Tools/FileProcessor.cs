@@ -23,6 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using System.Diagnostics;
+
 namespace LughSharp.Extensions.Gdx_Tools;
 
 ///// <summary>
@@ -349,7 +351,7 @@ public class FileProcessor
 
     /// <summary>
     /// This method should be called by <see cref="ProcessFile(Entry)"/> or <see cref="ProcessDir(Entry, List{})"/>
-    /// if the return value of <see cref="Process(File, File)"/> or <see cref="Process(File[], File)"/> should return
+    /// if the return value of <see cref="Process"/> or <see cref="Process(File[], File)"/> should return
     /// all the processed files.
     /// </summary>
     protected void AddProcessedFile( Entry entry )

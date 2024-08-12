@@ -24,6 +24,12 @@
 
 #pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 
+using System.Text;
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Utils;
+using LughSharp.LibCore.Utils.Buffers;
+using LughSharp.LibCore.Utils.Collections;
 using Buffer = LughSharp.LibCore.Utils.Buffers.Buffer;
 using Matrix3 = LughSharp.LibCore.Maths.Matrix3;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
@@ -111,8 +117,6 @@ public class ShaderProgram
     /// <exception cref="ArgumentException"></exception>
     public ShaderProgram( string vertexShader, string fragmentShader )
     {
-        Logger.CheckPoint();
-
         ArgumentNullException.ThrowIfNull( vertexShader );
         ArgumentNullException.ThrowIfNull( fragmentShader );
 
@@ -147,7 +151,6 @@ public class ShaderProgram
     public ShaderProgram( FileSystemInfo vertexShader, FileSystemInfo fragmentShader )
         : this( File.ReadAllText( vertexShader.Name ), File.ReadAllText( fragmentShader.Name ) )
     {
-        Logger.CheckPoint();
     }
 
     /// <returns>
@@ -178,15 +181,11 @@ public class ShaderProgram
     /// <param name="fragmentShader">  </param>
     private void CompileShaders( string vertexShader, string fragmentShader )
     {
-        Logger.CheckPoint();
-
         _vertexShaderHandle   = LoadShader( IGL.GL_VERTEX_SHADER, vertexShader );
         _fragmentShaderHandle = LoadShader( IGL.GL_FRAGMENT_SHADER, fragmentShader );
 
         if ( ( _vertexShaderHandle == -1 ) || ( _fragmentShaderHandle == -1 ) )
         {
-            Logger.CheckPoint();
-
             IsCompiled = false;
 
             return;
@@ -244,8 +243,6 @@ public class ShaderProgram
 
     private unsafe int LinkProgram( int program )
     {
-        Logger.CheckPoint();
-
         if ( program == -1 )
         {
             return -1;
@@ -328,7 +325,6 @@ public class ShaderProgram
     public void SetUniformi( string name, int value )
     {
         CheckManaged();
-
         Gdx.GL.glUniform1i( FetchUniformLocation( name ), value );
     }
 
@@ -915,8 +911,6 @@ public class ShaderProgram
     /// </summary>
     private unsafe void FetchUniforms()
     {
-        Logger.CheckPoint();
-
         var numUniforms = stackalloc int[ 1 ];
 
         Gdx.GL.glGetProgramiv( ( uint ) Handle, IGL.GL_ACTIVE_UNIFORMS, numUniforms );
@@ -944,8 +938,6 @@ public class ShaderProgram
     /// </summary>
     private unsafe void FetchAttributes()
     {
-        Logger.CheckPoint();
-
         var numAttributes = stackalloc int[ 1 ];
 
         Gdx.GL.glGetProgramiv( ( uint ) Handle, IGL.GL_ACTIVE_ATTRIBUTES, numAttributes );

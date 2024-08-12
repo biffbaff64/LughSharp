@@ -23,6 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Core;
+using LughSharp.LibCore.Graphics.OpenGL;
+using LughSharp.LibCore.Maths;
+
 namespace LughSharp.LibCore.Graphics.Profiling;
 
 [PublicAPI]
