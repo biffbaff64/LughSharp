@@ -23,18 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Diagnostics;
-using System.Text;
-using LughSharp.LibCore.Assets.Loaders;
-using LughSharp.LibCore.Assets.Loaders.Resolvers;
-using LughSharp.LibCore.Audio;
-using LughSharp.LibCore.Graphics;
-using LughSharp.LibCore.Graphics.G2D;
-using LughSharp.LibCore.Graphics.GLUtils;
 using LughSharp.LibCore.Scenes.Scene2D.UI;
-using LughSharp.LibCore.Utils;
 using LughSharp.LibCore.Utils.Async;
-using LughSharp.LibCore.Utils.Collections;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 

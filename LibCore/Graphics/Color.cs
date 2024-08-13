@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Maths;
-
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
@@ -83,6 +81,10 @@ public sealed class Color
     public float A { get; set; } // Alpha
 
     #endregion Colour Components
+
+    // ------------------------------------------------------------------------
+
+    private static Color _color = new();
 
     // ------------------------------------------------------------------------
 
@@ -616,15 +618,15 @@ public sealed class Color
         var range = max - min;
 
         // Hue calculation
-        if ( Math.Abs( range ) < MathUtils.FLOAT_TOLERANCE )
+        if ( Math.Abs( range ) < FloatConstants.FLOAT_TOLERANCE )
         {
             hsv[ 0 ] = 0; // Undefined hue, achromatic case
         }
-        else if ( Math.Abs( max - R ) < MathUtils.FLOAT_TOLERANCE )
+        else if ( Math.Abs( max - R ) < FloatConstants.FLOAT_TOLERANCE )
         {
             hsv[ 0 ] = ( ( ( 60 * ( G - B ) ) / range ) + 360 ) % 360;
         }
-        else if ( Math.Abs( max - G ) < MathUtils.FLOAT_TOLERANCE )
+        else if ( Math.Abs( max - G ) < FloatConstants.FLOAT_TOLERANCE )
         {
             hsv[ 0 ] = ( ( ( 60 * ( B - R ) ) / range ) + 120 ) % 360;
         }
@@ -693,7 +695,21 @@ public sealed class Color
 
         return NumberUtils.IntToFloatColor( color );
     }
+    
+    /// <summary>
+    /// </summary>
+    /// <param name="r"></param>
+    /// <param name="g"></param>
+    /// <param name="b"></param>
+    /// <param name="a"></param>
+    /// <returns></returns>
+    public static Color FromFloatBits( float r, float g, float b, float a )
+    {
+        _color.Set( r, g, b, a );
 
+        return _color;
+    }
+    
     /// <summary>
     /// Convenience for frequently used <tt>White.ToFloatBits()</tt>
     /// </summary>

@@ -23,11 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Core;
-using LughSharp.LibCore.Graphics.GLUtils;
-using LughSharp.LibCore.Graphics.OpenGL;
-using LughSharp.LibCore.Maths;
-using LughSharp.LibCore.Utils.Collections;
 using LughSharp.LibCore.Utils.Exceptions;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 

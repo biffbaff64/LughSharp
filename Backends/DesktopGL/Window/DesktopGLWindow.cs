@@ -26,10 +26,6 @@
 using LughSharp.Backends.DesktopGL.Graphics;
 using LughSharp.Backends.DesktopGL.Input;
 using LughSharp.Backends.DesktopGL.Utils;
-using LughSharp.LibCore.Core;
-using LughSharp.LibCore.Graphics;
-using LughSharp.LibCore.Utils;
-using LughSharp.LibCore.Utils.Collections;
 using Platform = LughSharp.LibCore.Core.Platform;
 
 namespace LughSharp.Backends.DesktopGL.Window;

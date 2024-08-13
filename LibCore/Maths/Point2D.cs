@@ -42,17 +42,17 @@ namespace LughSharp.LibCore.Maths;
 /// </code>
 /// </example>
 [PublicAPI]
-public struct Point2D< T >
+public struct Point2D< T >( T x, T y )
 {
     /// <summary>
     /// The X coordinate.
     /// </summary>
-    public T X;
+    public T X { get; private set; } = x;
 
     /// <summary>
     /// The Y coordinate.
     /// </summary>
-    public T Y;
+    public T Y { get; private set; } = y;
 }
 
 /// <summary>
@@ -60,17 +60,17 @@ public struct Point2D< T >
 /// For use when no 'padding' is needed, such as methods or constructors.
 /// </summary>
 [PublicAPI]
-public struct Point2D
+public struct Point2D( int x, int y )
 {
     /// <summary>
     /// The X coordinate.
     /// </summary>
-    public int X;
+    public int X { get; private set; } = x;
 
     /// <summary>
     /// The Y coordinate.
     /// </summary>
-    public int Y;
+    public int Y { get; private set; } = y;
 }
 
 /// <summary>
@@ -78,15 +78,15 @@ public struct Point2D
 /// For use when no 'padding' is needed, such as methods or constructors.
 /// </summary>
 [PublicAPI]
-public struct Point2Df
+public struct Point2Df( float x, float y )
 {
     /// <summary>
     /// The X coordinate.
     /// </summary>
-    public float X;
+    public float X { get; private set; } = x;
 
     /// <summary>
     /// The Y coordinate.
     /// </summary>
-    public float Y;
+    public float Y { get; private set; } = y;
 }

@@ -23,11 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics.OpenGL;
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Maths.Collision;
-using LughSharp.LibCore.Utils;
-using LughSharp.LibCore.Utils.Collections;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 

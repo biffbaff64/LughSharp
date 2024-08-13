@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text;
 using LughSharp.LibCore.Audio.Maponus.Support;
 
 namespace LughSharp.LibCore.Audio.Maponus.Decoding;

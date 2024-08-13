@@ -22,13 +22,20 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using System.Runtime.InteropServices;
-using LughSharp.LibCore.Graphics.OpenGL;
-using LughSharp.LibCore.Utils;
-using LughSharp.LibCore.Utils.Buffers;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.G2D;
+
+[PublicAPI, StructLayout( LayoutKind.Sequential )]
+public struct PixmapDef
+{
+    public uint   Width  { get; set; }
+    public uint   Height { get; set; }
+    public uint   Format { get; set; }
+    public uint   Blend  { get; set; }
+    public uint   Scale  { get; set; }
+    public byte[] Pixels { get; set; }
+}
 
 [PublicAPI]
 public class Gdx2DPixmap : IDisposable
@@ -151,7 +158,10 @@ public class Gdx2DPixmap : IDisposable
     private ByteBuffer LoadData( byte[] buffer, int offset, int len )
     {
         Logger.CheckPoint();
-
+        Logger.Debug( $"buffer length: {buffer.Length}" );
+        Logger.Debug( $"offset       : {offset}" );
+        Logger.Debug( $"len          : {len}" );
+        
         var ptr = gdx2d_load( NativeData, buffer, offset, len );
 
         Logger.CheckPoint();
@@ -160,7 +170,6 @@ public class Gdx2DPixmap : IDisposable
         {
             Logger.CheckPoint();
 
-//            throw new IOException( $"Error loading pixmap: {gdx2d_get_failure_reason()}" );
             throw new IOException( "Error loading pixmap" );
         }
 
@@ -184,22 +193,22 @@ public class Gdx2DPixmap : IDisposable
         Format   = ( int ) nativeData[ 3 ];
     }
 
-    private ByteBuffer GetNewPixmap( int width, int height, int format )
-    {
-        Logger.CheckPoint();
+//    private ByteBuffer GetNewPixmap( int width, int height, int format )
+//    {
+//        Logger.CheckPoint();
 
-        var pixmap = new Gdx2DUtils.Gdx2dPixmap
-        {
-            Width  = ( uint ) width,
-            Height = ( uint ) height,
-            Format = ( uint ) format,
-            Blend  = GDX_2D_BLEND_SRC_OVER,
-            Scale  = GDX_2D_SCALE_BILINEAR,
-            Pixels = new byte[ width * height * PixmapFormat.Gdx2dBytesPerPixel( format ) ]
-        };
+//        var pixmap = new PixmapDef
+//        {
+//            Width  = ( uint ) width,
+//            Height = ( uint ) height,
+//            Format = ( uint ) format,
+//            Blend  = GDX_2D_BLEND_SRC_OVER,
+//            Scale  = GDX_2D_SCALE_BILINEAR,
+//            Pixels = new byte[ width * height * PixmapFormat.Gdx2dBytesPerPixel( format ) ]
+//        };
 
-        return BufferUtils.NewByteBuffer( pixmap.Pixels.Length );
-    }
+//        return BufferUtils.NewByteBuffer( pixmap.Pixels.Length );
+//    }
 
     /// <summary>
     /// </summary>

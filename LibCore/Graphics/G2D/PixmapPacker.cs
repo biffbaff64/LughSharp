@@ -23,11 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text.RegularExpressions;
-using LughSharp.LibCore.Core;
-using LughSharp.LibCore.Graphics.GLUtils;
-using LughSharp.LibCore.Maths;
-using LughSharp.LibCore.Utils.Collections;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.G2D;
@@ -965,8 +960,8 @@ public class PixmapPacker : IDisposable
 
             if ( node.Full ) return null;
 
-            if ( ( Math.Abs( node.Rect.Width - rect.Width ) < MathUtils.FLOAT_TOLERANCE )
-              && ( Math.Abs( node.Rect.Height - rect.Height ) < MathUtils.FLOAT_TOLERANCE ) )
+            if ( ( Math.Abs( node.Rect.Width - rect.Width ) < FloatConstants.FLOAT_TOLERANCE )
+              && ( Math.Abs( node.Rect.Height - rect.Height ) < FloatConstants.FLOAT_TOLERANCE ) )
             {
                 return node;
             }

@@ -24,8 +24,6 @@
 
 
 using System.Drawing;
-using LughSharp.LibCore.Graphics.GLUtils;
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Utils.Exceptions;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 

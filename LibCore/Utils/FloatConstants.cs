@@ -45,4 +45,5 @@ public static class FloatConstants
     public const int   SIGN_BIT_MASK     = int.MinValue;
     public const int   EXP_BIT_MASK      = 2139095040;
     public const int   SIGNIF_BIT_MASK   = 8388607;
+    public const float FLOAT_TOLERANCE   = 0.000001f; // 32 bits
 }

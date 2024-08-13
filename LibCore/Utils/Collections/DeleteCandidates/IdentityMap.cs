@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Runtime.Serialization;
-
 namespace LughSharp.LibCore.Utils.Collections;
 
 /// <summary>

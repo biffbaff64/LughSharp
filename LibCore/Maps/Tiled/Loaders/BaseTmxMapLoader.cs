@@ -23,19 +23,10 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.IO.Compression;
-using System.Runtime.Serialization;
-using System.Xml;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using LughSharp.LibCore.Assets;
-using LughSharp.LibCore.Assets.Loaders;
-using LughSharp.LibCore.Assets.Loaders.Resolvers;
-using LughSharp.LibCore.Graphics;
-using LughSharp.LibCore.Graphics.G2D;
 using LughSharp.LibCore.Maps.Objects;
 using LughSharp.LibCore.Maps.Tiled.Objects;
 using LughSharp.LibCore.Maps.Tiled.Tiles;
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Maps.Tiled.Loaders;

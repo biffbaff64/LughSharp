@@ -22,22 +22,20 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using LughSharp.LibCore.Utils;
-
 namespace LughSharp.LibCore.Graphics.Playground;
 
 [PublicAPI]
 public class PixelMap
 {
-    public int     Width         { get; set; }
-    public int     Height        { get; set; }
-    public int     Format        { get; set; }
-    public int     BytesPerPixel { get; set; }
-    public byte[]? Pixels        { get; set; }
-    public bool    IsDisposed    { get; set; } = false;
+    public int        Width         { get; set; }
+    public int        Height        { get; set; }
+    public int        Format        { get; set; }
+    public int        BytesPerPixel { get; set; }
+    public Pixel[ , ] Pixels        { get; set; }
+    public bool       IsDisposed    { get; set; } = false;
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// Creates a new Pixmap of the desired width and height.
     /// </summary>
@@ -51,7 +49,7 @@ public class PixelMap
         this.Height        = height;
         this.Format        = PixmapFormat.GDX_2D_FORMAT_RGBA8888;
         this.BytesPerPixel = PixmapFormat.Gdx2dBytesPerPixel( Format );
-        this.Pixels        = new byte[ width * height * BytesPerPixel ];
+        this.Pixels        = new Pixel[ width, height ];
     }
 
     /// <summary>
@@ -66,7 +64,7 @@ public class PixelMap
         this.Height        = map.Height;
         this.Format        = map.Format;
         this.BytesPerPixel = map.BytesPerPixel;
-        this.Pixels        = new byte[ Width * Height * BytesPerPixel ];
+        this.Pixels        = new Pixel[ map.Width, map.Height ];
 
         map.Pixels?.CopyTo( this.Pixels, 0 );
     }
@@ -78,7 +76,7 @@ public class PixelMap
     {
         Logger.CheckPoint();
     }
-    
+
     /// <summary>
     /// Creates a new Pixmap from the data at the supplied path.
     /// </summary>
@@ -86,10 +84,41 @@ public class PixelMap
     {
         Logger.CheckPoint();
 
-        this.Width         = 0;     //TODO:
-        this.Height        = 0;     //TODO:
-        this.Format        = 0;     //TODO:
-        this.BytesPerPixel = 0;     //TODO:
-        this.Pixels        = new byte[ Width * Height * BytesPerPixel ];
+        this.Width         = 0; //TODO:
+        this.Height        = 0; //TODO:
+        this.Format        = 0; //TODO:
+        this.BytesPerPixel = 0; //TODO:
+        this.Pixels        = new Pixel[ Width, Height ];
     }
+
+    /// <summary>
+    /// Access a Pixel of the PixelMap from its X and Y coordinates.
+    /// </summary>
+    public Pixel this[ int x, int y ]
+    {
+        get => this.Inside( new Point2D( x, y ) )
+                   ? this.Pixels[ x, y ]
+                   : this.Pixels[ Math.Max( Math.Min( x, this.Width - 1 ), 0 ), Math.Max( Math.Min( y, this.Height - 1 ), 0 ) ];
+        set
+        {
+            if ( !this.Inside( new Point2D( x, y ) ) )
+                return;
+            this.Pixels[ x, y ] = value;
+        }
+    }
+
+    /// <summary>
+    /// Access a Pixel of the PixelMap from its X and Y coordinates contained
+    /// within a <see cref="Point2D"/>.
+    /// </summary>
+    public Pixel this[ Point2D point ]
+    {
+        get => this.Pixels[ point.X, point.Y ];
+        set => this.Pixels[ point.X, point.Y ] = value;
+    }
+    
+    /// <summary>
+    /// Determine if a point is within this PixelMap.
+    /// </summary>
+    public bool Inside( Point2D p ) => p is { X: >= 0, Y: >= 0 } && p.X < this.Width && p.Y < this.Height;
 }

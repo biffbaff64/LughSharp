@@ -23,10 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text.RegularExpressions;
-using LughSharp.LibCore.Core;
-using LughSharp.LibCore.Utils;
-using LughSharp.LibCore.Utils.Collections;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 

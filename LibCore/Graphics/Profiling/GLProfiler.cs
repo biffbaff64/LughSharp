@@ -23,9 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Core;
-using LughSharp.LibCore.Maths;
-
 namespace LughSharp.LibCore.Graphics.Profiling;
 
 /// <summary>

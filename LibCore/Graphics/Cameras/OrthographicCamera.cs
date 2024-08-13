@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Core;
-using LughSharp.LibCore.Utils;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
 namespace LughSharp.LibCore.Graphics.Cameras;

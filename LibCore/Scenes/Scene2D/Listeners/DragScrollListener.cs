@@ -23,10 +23,8 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Scenes.Scene2D.UI;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
-using LughSharp.LibCore.Utils;
 using Timer = LughSharp.LibCore.Utils.Timer;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;

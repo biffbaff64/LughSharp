@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Utils.Collections;

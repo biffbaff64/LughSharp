@@ -23,11 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Diagnostics;
-using LughSharp.LibCore.Core;
-using LughSharp.LibCore.Graphics.Cameras;
-using LughSharp.LibCore.Graphics.GLUtils;
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Maths.Collision;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;

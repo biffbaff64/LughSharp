@@ -23,9 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Globalization;
 using System.Runtime.CompilerServices;
-using System.Text;
 using Environment = System.Environment;
 
 namespace LughSharp.LibCore.Utils;

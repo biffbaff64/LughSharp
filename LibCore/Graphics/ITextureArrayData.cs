@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics.GLUtils;
-
 namespace LughSharp.LibCore.Graphics;
 
 /// <summary>

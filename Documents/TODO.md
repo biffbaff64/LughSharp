@@ -268,6 +268,7 @@ GRAPHICS
     - DONE - DONE - ITextureArrayData
     - DONE - DONE - ITextureData
     - DONE - IP   - Mesh
+    - DONE - IP   - Pixel
     - DONE - DONE - Pixmap
     - DONE - IP   - PixmapFormat
     - DONE - IP   - PixmapIO                            Tests needed

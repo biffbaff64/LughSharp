@@ -23,8 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Text.RegularExpressions;
-
 namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>

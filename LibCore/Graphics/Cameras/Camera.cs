@@ -23,10 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Core;
-using LughSharp.LibCore.Graphics.G2D;
-using LughSharp.LibCore.Graphics.OpenGL;
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Maths.Collision;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 using Quaternion = LughSharp.LibCore.Maths.Quaternion;
@@ -96,12 +92,12 @@ public abstract class Camera
             // up and direction must ALWAYS be orthonormal vectors
             var dot = _tmpVec.Dot( Up );
 
-            if ( Math.Abs( dot - 1 ) < MathUtils.FLOAT_TOLERANCE )
+            if ( Math.Abs( dot - 1 ) < FloatConstants.FLOAT_TOLERANCE )
             {
                 // Collinear
                 Up.Set( Direction ).Scale( -1 );
             }
-            else if ( Math.Abs( dot + 1 ) < MathUtils.FLOAT_TOLERANCE )
+            else if ( Math.Abs( dot + 1 ) < FloatConstants.FLOAT_TOLERANCE )
             {
                 // Collinear opposite
                 Up.Set( Direction );

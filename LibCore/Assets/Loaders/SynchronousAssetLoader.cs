@@ -22,8 +22,6 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using LughSharp.LibCore.Assets.Loaders.Resolvers;
-
 namespace LughSharp.LibCore.Assets.Loaders;
 
 /// <summary>

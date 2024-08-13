@@ -23,9 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Core;
-using LughSharp.LibCore.Utils;
-
 namespace LughSharp.LibCore.Scenes.Scene2D.Listeners;
 
 /// <summary>

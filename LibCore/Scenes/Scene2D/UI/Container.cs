@@ -23,11 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics.G2D;
-using LughSharp.LibCore.Graphics.GLUtils;
-using LughSharp.LibCore.Maths;
 using LughSharp.LibCore.Scenes.Scene2D.Utils;
-using LughSharp.LibCore.Utils;
 
 namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
