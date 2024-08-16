@@ -29,11 +29,11 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI, StructLayout( LayoutKind.Sequential )]
 public struct PixmapDef
 {
-    public uint   Width  { get; set; }
-    public uint   Height { get; set; }
-    public uint   Format { get; set; }
-    public uint   Blend  { get; set; }
-    public uint   Scale  { get; set; }
+    public int    Width  { get; set; }
+    public int    Height { get; set; }
+    public int    Format { get; set; }
+    public int    Blend  { get; set; }
+    public int    Scale  { get; set; }
     public byte[] Pixels { get; set; }
 }
 
@@ -81,6 +81,10 @@ public class Gdx2DPixmap : IDisposable
     public Gdx2DPixmap( byte[] encodedData, int offset, int len, int requestedFormat )
     {
         Logger.CheckPoint();
+        Logger.Debug( $"encodedData length: {encodedData.Length}" );
+        Logger.Debug( $"offset: {offset}" );
+        Logger.Debug( $"len: {len}" );
+        Logger.Debug( $"requestedFormat: {requestedFormat}" );
 
         PixelPtr = LoadData( encodedData, offset, len );
 
@@ -92,6 +96,31 @@ public class Gdx2DPixmap : IDisposable
         Format  = ( int ) NativeData[ 3 ];
 
         if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
+        {
+            Convert( requestedFormat );
+        }
+    }
+
+    public Gdx2DPixmap( ByteBuffer encodedData, int offset, int len, int requestedFormat )
+    {
+        if ( !encodedData.IsDirect() )
+        {
+            throw new IOException( "Couldn't load pixmap from non-direct ByteBuffer" );
+        }
+
+        PixelPtr = LoadByteBuffer( encodedData, offset, len );
+
+        if ( PixelPtr == null )
+        {
+            throw new IOException( "Error loading pixmap: " );
+        }
+
+        BasePtr = NativeData[ 0 ];
+        Width   = ( int ) NativeData[ 1 ];
+        Height  = ( int ) NativeData[ 2 ];
+        Format  = ( int ) NativeData[ 3 ];
+
+        if ( requestedFormat != 0 && requestedFormat != Format )
         {
             Convert( requestedFormat );
         }
@@ -161,8 +190,10 @@ public class Gdx2DPixmap : IDisposable
         Logger.Debug( $"buffer length: {buffer.Length}" );
         Logger.Debug( $"offset       : {offset}" );
         Logger.Debug( $"len          : {len}" );
-        
+
         var ptr = gdx2d_load( NativeData, buffer, offset, len );
+
+        ptr.Put( buffer );
 
         Logger.CheckPoint();
 
@@ -257,7 +288,7 @@ public class Gdx2DPixmap : IDisposable
 
         Gdx2DPixmap pixmap = new( Width, Height, requestedFormat );
 
-//        pixmap.Blend = GDX_2D_BLEND_NONE;
+        pixmap.Blend = GDX_2D_BLEND_NONE;
         pixmap.DrawPixmap( this, 0, 0, 0, 0, Width, Height );
 
         Dispose();
@@ -410,6 +441,54 @@ public class Gdx2DPixmap : IDisposable
     }
 
     // ------------------------------------------------------------------------
+
+    private PixmapDef Load( byte[] buffer, int offset, int len )
+    {
+        Logger.CheckPoint();
+
+        var pixels = new byte[ len ];
+        
+        LoadImageFromMemory( buffer, len, out var width, out var height, out var format, ref pixels );
+
+        var pixmap = new PixmapDef
+        {
+            Width  = ( int ) width,
+            Height = ( int ) height,
+            Format = ( int ) format,
+            Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
+            Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
+            Pixels = pixels
+        };
+
+        return pixmap;
+    }
+
+    private ByteBuffer LoadByteBuffer( ByteBuffer buffer, int offset, int len )
+    {
+        Logger.CheckPoint();
+        
+        var pixmap = Load( buffer.BackingArray(), offset, len );
+        var byteBuffer = ByteBuffer.Allocate( pixmap.Width
+                                            * pixmap.Height
+                                            * PixmapFormat.Gdx2dBytesPerPixel( Format ) );
+
+//        NativeData[ 0 ] = pixmap;
+        NativeData[ 1 ] = pixmap.Width;
+        NativeData[ 2 ] = pixmap.Height;
+        NativeData[ 3 ] = pixmap.Format;
+
+        return byteBuffer;
+    }
+
+    private void LoadImageFromMemory( byte[] buffer, int len, out int w, out int h, out int f, ref byte[] bytes )
+    {
+        //TODO:
+        w     = 0;
+        h     = 0;
+        f     = Format;
+        bytes = new byte[ len ];
+    }
+
     // ------------------------------------------------------------------------
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]

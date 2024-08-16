@@ -29,6 +29,7 @@
         <Company>Red7Projects</Company>
         <TargetFramework>net7.0</TargetFramework>
         <PackageReleaseNotes>Gl Window crash fixed</PackageReleaseNotes>
+        <UserSecretsId>15077a63-55d3-46e9-b882-0b5cf985e7cc</UserSecretsId>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -86,7 +87,6 @@
     <ItemGroup>
         <PackageReference Include="DotGLFW" Version="1.2.0" />
         <PackageReference Include="JetBrains.Annotations" Version="2024.2.0-eap1" />
-        <PackageReference Include="PixelMap" Version="1.0.1" />
         <PackageReference Include="RestSharp" Version="111.3.1-alpha.0.6" />
         <PackageReference Include="SharpZipLib" Version="1.4.2" />
         <PackageReference Include="System.Drawing.Common" Version="8.0.6" />

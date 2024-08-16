@@ -22,7 +22,7 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Graphics;
+namespace LughSharp.LibCore.Graphics.Playground;
 
 [PublicAPI]
 public struct Pixel
@@ -148,7 +148,7 @@ public struct Pixel
     /// <summary>
     /// The alpha value of the Pixel from 0 to 1.
     /// </summary>
-    public double AValue
+    public double AlphaValue
     {
         get => ( double ) this.A / ( double ) byte.MaxValue;
         set => this.A = ( byte ) ( value * ( double ) byte.MaxValue );
@@ -157,7 +157,7 @@ public struct Pixel
     /// <summary>
     /// The red value of the Pixel from 0 to 1.
     /// </summary>
-    public double RValue
+    public double RedValue
     {
         get => ( double ) this.R / ( double ) byte.MaxValue;
         set => this.R = ( byte ) ( value * ( double ) byte.MaxValue );
@@ -166,7 +166,7 @@ public struct Pixel
     /// <summary>
     /// The green value of the Pixel from 0 to 1.
     /// </summary>
-    public double GValue
+    public double GreenValue
     {
         get => ( double ) this.G / ( double ) byte.MaxValue;
         set => this.G = ( byte ) ( value * ( double ) byte.MaxValue );
@@ -175,7 +175,7 @@ public struct Pixel
     /// <summary>
     /// The blue value of the Pixel from 0 to 1.
     /// </summary>
-    public double BValue
+    public double BlueValue
     {
         get => ( double ) this.B / ( double ) byte.MaxValue;
         set => this.B = ( byte ) ( value * ( double ) byte.MaxValue );
@@ -338,10 +338,10 @@ public struct Pixel
     /// </summary>
     public static Pixel operator +( Pixel a, Pixel b )
     {
-        return new Pixel( ( byte ) ( ( a.AValue / 2.0 + b.AValue / 2.0 ) * ( double ) byte.MaxValue ),
-                          ( byte ) ( ( a.RValue / 2.0 + b.RValue / 2.0 ) * ( double ) byte.MaxValue ),
-                          ( byte ) ( ( a.GValue / 2.0 + b.GValue / 2.0 ) * ( double ) byte.MaxValue ),
-                          ( byte ) ( ( a.BValue / 2.0 + b.BValue / 2.0 ) * ( double ) byte.MaxValue ) );
+        return new Pixel( ( byte ) ( ( a.AlphaValue / 2.0 + b.AlphaValue / 2.0 ) * ( double ) byte.MaxValue ),
+                          ( byte ) ( ( a.RedValue / 2.0 + b.RedValue / 2.0 ) * ( double ) byte.MaxValue ),
+                          ( byte ) ( ( a.GreenValue / 2.0 + b.GreenValue / 2.0 ) * ( double ) byte.MaxValue ),
+                          ( byte ) ( ( a.BlueValue / 2.0 + b.BlueValue / 2.0 ) * ( double ) byte.MaxValue ) );
     }
 
     /// <summary>
@@ -349,8 +349,10 @@ public struct Pixel
     /// </summary>
     public static Pixel operator *( Pixel a, Pixel b )
     {
-        return new Pixel( ( byte ) ( a.AValue * b.AValue * ( double ) byte.MaxValue ), ( byte ) ( a.RValue * b.RValue * ( double ) byte.MaxValue ),
-                          ( byte ) ( a.GValue * b.GValue * ( double ) byte.MaxValue ), ( byte ) ( a.BValue * b.BValue * ( double ) byte.MaxValue ) );
+        return new Pixel( ( byte ) ( a.AlphaValue * b.AlphaValue * ( double ) byte.MaxValue ),
+                          ( byte ) ( a.RedValue * b.RedValue * ( double ) byte.MaxValue ),
+                          ( byte ) ( a.GreenValue * b.GreenValue * ( double ) byte.MaxValue ),
+                          ( byte ) ( a.BlueValue * b.BlueValue * ( double ) byte.MaxValue ) );
     }
 
     /// <summary>
@@ -358,9 +360,9 @@ public struct Pixel
     /// </summary>
     public static Pixel operator -( Pixel a, Pixel b )
     {
-        return new Pixel( ( byte ) ( Math.Abs( a.AValue / 2.0 - b.AValue / 2.0 ) * ( double ) byte.MaxValue ),
-                          ( byte ) ( Math.Abs( a.RValue / 2.0 - b.RValue / 2.0 ) * ( double ) byte.MaxValue ),
-                          ( byte ) ( Math.Abs( a.GValue / 2.0 - b.GValue / 2.0 ) * ( double ) byte.MaxValue ),
-                          ( byte ) ( Math.Abs( a.BValue / 2.0 - b.BValue / 2.0 ) * ( double ) byte.MaxValue ) );
+        return new Pixel( ( byte ) ( Math.Abs( a.AlphaValue / 2.0 - b.AlphaValue / 2.0 ) * ( double ) byte.MaxValue ),
+                          ( byte ) ( Math.Abs( a.RedValue / 2.0 - b.RedValue / 2.0 ) * ( double ) byte.MaxValue ),
+                          ( byte ) ( Math.Abs( a.GreenValue / 2.0 - b.GreenValue / 2.0 ) * ( double ) byte.MaxValue ),
+                          ( byte ) ( Math.Abs( a.BlueValue / 2.0 - b.BlueValue / 2.0 ) * ( double ) byte.MaxValue ) );
     }
 }

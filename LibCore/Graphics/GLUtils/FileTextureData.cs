@@ -30,30 +30,6 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class FileTextureData : ITextureData
 {
-    private Pixmap.Format? _format;
-    private int            _height = 0;
-    private Pixmap?        _pixmap;
-    private int            _width = 0;
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public FileTextureData( FileInfo file, Pixmap preloadedPixmap, Pixmap.Format? format, bool useMipMaps )
-    {
-        File       = file;
-        _pixmap    = preloadedPixmap;
-        _format    = format;
-        UseMipMaps = useMipMaps;
-
-        if ( _pixmap != null )
-        {
-            _width  = _pixmap.Width;
-            _height = _pixmap.Height;
-
-            _format ??= _pixmap.GetFormat();
-        }
-    }
-
     public FileInfo File { get; set; }
 
     /// <returns> the width of the pixel data </returns>
@@ -67,6 +43,34 @@ public class FileTextureData : ITextureData
 
     /// <returns> whether to generate mipmaps or not. </returns>
     public bool UseMipMaps { get; set; }
+
+    // ------------------------------------------------------------------------
+    
+    private Pixmap.Format? _format;
+    private int            _height = 0;
+    private Pixmap?        _pixmap;
+    private int            _width = 0;
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public FileTextureData( FileInfo file, Pixmap preloadedPixmap, Pixmap.Format? format, bool useMipMaps )
+    {
+        Logger.CheckPoint();
+        
+        File       = file;
+        _pixmap    = preloadedPixmap;
+        _format    = format;
+        UseMipMaps = useMipMaps;
+
+        if ( _pixmap != null )
+        {
+            _width  = _pixmap.Width;
+            _height = _pixmap.Height;
+
+            _format ??= _pixmap.GetFormat();
+        }
+    }
 
     /// <summary>
     /// Prepares the TextureData for a call to <see cref="ITextureData.ConsumePixmap"/> or

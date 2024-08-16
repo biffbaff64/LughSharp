@@ -60,7 +60,7 @@ public class DesktopGLFiles : IFiles
     /// <summary>
     /// Convenience method that returns a <see cref="PathTypes.Internal"/> file handle.
     /// </summary>
-    public FileHandle Internal( string path ) => GetFileHandle( path, PathTypes.Internal );
+    public FileHandle Internal( string path ) => GetFileHandle( $"{InternalPath}{'/'}{path}", PathTypes.Internal );
 
     /// <summary>
     /// Convenience method that returns a <see cref="PathTypes.External"/> file handle.

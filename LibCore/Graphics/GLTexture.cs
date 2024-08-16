@@ -328,6 +328,8 @@ public abstract class GLTexture : IDisposable, IManageable
 
         if ( !data.IsPrepared )
         {
+            Logger.CheckPoint();
+
             data.Prepare();
         }
 
@@ -335,13 +337,19 @@ public abstract class GLTexture : IDisposable, IManageable
 
         if ( type == ITextureData.TextureType.Custom )
         {
+            Logger.CheckPoint();
+
             data.ConsumeCustomData( target );
 
             return;
         }
 
+        Logger.CheckPoint();
+
         var pixmap        = data.ConsumePixmap();
         var disposePixmap = data.ShouldDisposePixmap();
+
+        Logger.CheckPoint();
 
         if ( pixmap == null )
         {
@@ -350,19 +358,29 @@ public abstract class GLTexture : IDisposable, IManageable
 
         if ( data.GetFormat() != pixmap.GetFormat() )
         {
+            Logger.CheckPoint();
+            
             var tmp = new Pixmap( pixmap.Width, pixmap.Height, data.GetFormat() );
+
+            Logger.CheckPoint();
 
             tmp.Blending = Pixmap.BlendTypes.None;
             tmp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
 
+            Logger.CheckPoint();
+
             if ( data.ShouldDisposePixmap() )
             {
+                Logger.CheckPoint();
+
                 pixmap.Dispose();
             }
 
             pixmap        = tmp;
             disposePixmap = true;
         }
+
+        Logger.CheckPoint();
 
         Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 1 );
 

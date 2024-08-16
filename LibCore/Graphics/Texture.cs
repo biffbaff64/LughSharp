@@ -74,11 +74,10 @@ public class Texture : GLTexture
     /// </summary>
     /// <param name="internalPath"></param>
     public Texture( string internalPath )
-        : this( Gdx.Files.Internal( internalPath ).File )
+        : this( Gdx.Files.Internal( internalPath ).File, false )
     {
         Logger.CheckPoint();
     }
-
     /// <summary>
     /// Create a new Texture from the file described by the given <see cref="FileInfo"/>
     /// </summary>
@@ -245,18 +244,19 @@ public class Texture : GLTexture
     /// <param name="y"> The y coordinate in pixels  </param>
     public void Draw( Pixmap pixmap, int x, int y )
     {
-        if ( TextureData is { IsManaged: true } )
-        {
-            throw new GdxRuntimeException( "can't draw to a managed texture" );
-        }
-
-        Bind();
-
-        var pixels = pixmap.Pixels.BackingArray();
-        
-        Gdx.GL.glTexSubImage2D( GLTarget, 0, x, y, pixmap.Width, pixmap.Height, pixmap.GLFormat, pixmap.GLType, pixels );
-
-        pixmap.Pixels.Put( pixels );
+        //TODO:
+//        if ( TextureData is { IsManaged: true } )
+//        {
+//            throw new GdxRuntimeException( "can't draw to a managed texture" );
+//        }
+//
+//        Bind();
+//
+//        var pixels = pixmap.Pixels;
+//        
+//        Gdx.GL.glTexSubImage2D( GLTarget, 0, x, y, pixmap.Width, pixmap.Height, pixmap.GLFormat, pixmap.GLType, pixels );
+//
+//        pixmap.Pixels.Put( pixels );
     }
 
     private void AddManagedTexture( IApplication app, Texture texture )

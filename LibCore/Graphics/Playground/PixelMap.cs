@@ -29,31 +29,40 @@ public class PixelMap
 {
     public int        Width         { get; set; }
     public int        Height        { get; set; }
-    public int        Format        { get; set; }
+    public int        PixFormat     { get; set; }
     public int        BytesPerPixel { get; set; }
     public Pixel[ , ] Pixels        { get; set; }
     public bool       IsDisposed    { get; set; } = false;
 
+    /// <summary>
+    /// Sets the type of <see cref="BlendTypes"/> to be used for all operations.
+    /// Default is <see cref="BlendTypes.SourceOver"/>.
+    /// </summary>
+    public BlendTypes Blending { get; set; } = BlendTypes.SourceOver;
+
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Creates a new Pixmap of the desired width and height.
+    /// Creates a new PixelMap of the desired width and height.
     /// </summary>
     /// <param name="width"> The width in pixels. </param>
     /// <param name="height"> The height in pixels. </param>
-    public PixelMap( int width, int height )
+    /// <param name="format">
+    /// The pixel format, defaults to <see cref="Format.RGBA8888"/>.
+    /// </param>
+    public PixelMap( int width, int height, int format )
     {
         Logger.CheckPoint();
 
         this.Width         = width;
         this.Height        = height;
-        this.Format        = PixmapFormat.GDX_2D_FORMAT_RGBA8888;
-        this.BytesPerPixel = PixmapFormat.Gdx2dBytesPerPixel( Format );
+        this.PixFormat     = format;
+        this.BytesPerPixel = PixmapFormat.Gdx2dBytesPerPixel( PixFormat );
         this.Pixels        = new Pixel[ width, height ];
     }
 
     /// <summary>
-    /// Makes a copy of the supplied Pixmap.
+    /// Makes a copy of the supplied PixelMap.
     /// </summary>
     /// <param name="map"> The pixmap to copy. </param>
     public PixelMap( PixelMap map )
@@ -62,7 +71,7 @@ public class PixelMap
 
         this.Width         = map.Width;
         this.Height        = map.Height;
-        this.Format        = map.Format;
+        this.PixFormat     = map.PixFormat;
         this.BytesPerPixel = map.BytesPerPixel;
         this.Pixels        = new Pixel[ map.Width, map.Height ];
 
@@ -70,7 +79,7 @@ public class PixelMap
     }
 
     /// <summary>
-    /// Creates a new Pixmap from the data at the suopplied FileInfo path.
+    /// Creates a new PixelMap from the data at the suopplied FileInfo path.
     /// </summary>
     public PixelMap( FileInfo info ) : this( info.Name )
     {
@@ -78,7 +87,7 @@ public class PixelMap
     }
 
     /// <summary>
-    /// Creates a new Pixmap from the data at the supplied path.
+    /// Creates a new PixelMap from the data at the supplied path.
     /// </summary>
     public PixelMap( string path )
     {
@@ -86,7 +95,7 @@ public class PixelMap
 
         this.Width         = 0; //TODO:
         this.Height        = 0; //TODO:
-        this.Format        = 0; //TODO:
+        this.PixFormat     = 0; //TODO:
         this.BytesPerPixel = 0; //TODO:
         this.Pixels        = new Pixel[ Width, Height ];
     }
@@ -96,7 +105,8 @@ public class PixelMap
     /// </summary>
     public Pixel this[ int x, int y ]
     {
-        get => this.Inside( new Point2D( x, y ) )
+        get
+            => this.Inside( new Point2D( x, y ) )
                    ? this.Pixels[ x, y ]
                    : this.Pixels[ Math.Max( Math.Min( x, this.Width - 1 ), 0 ), Math.Max( Math.Min( y, this.Height - 1 ), 0 ) ];
         set
@@ -116,9 +126,59 @@ public class PixelMap
         get => this.Pixels[ point.X, point.Y ];
         set => this.Pixels[ point.X, point.Y ] = value;
     }
-    
+
     /// <summary>
     /// Determine if a point is within this PixelMap.
     /// </summary>
     public bool Inside( Point2D p ) => p is { X: >= 0, Y: >= 0 } && p.X < this.Width && p.Y < this.Height;
+
+    /// <summary>
+    /// Produce a <see cref="Texture"/> from this PixelMap.
+    /// </summary>
+    public Texture GetTexture()
+    {
+        var texture = new Texture( this.Width,
+                                   this.Height,
+                                   PixmapFormat.FromGdx2DPixmapFormat( this.PixFormat ) );
+
+        return texture;
+    }
+
+    // ------------------------------------------------------------------------
+
+    #region PixmapEnums
+
+    /// <summary>
+    /// Blending functions to be set with <see cref="PixelMap.Blending"/>.
+    /// </summary>
+    public enum BlendTypes
+    {
+        None,
+        SourceOver
+    }
+
+    /// <summary>
+    /// Filters to be used with <see cref="DrawPixmap(PixelMap, int, int, int, int, int, int, int, int)"/>.
+    /// </summary>
+    public enum Filter
+    {
+        NearestNeighbour,
+        BiLinear
+    }
+
+    /// <summary>
+    /// Available PixelMap pixel formats.
+    /// </summary>
+    public enum Format
+    {
+        Alpha,
+        Intensity,
+        LuminanceAlpha,
+        RGB565,
+        RGBA4444,
+        RGB888,
+        RGBA8888
+    }
+
+    #endregion
 }

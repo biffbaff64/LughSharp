@@ -54,8 +54,9 @@ public class Pixmap : IDisposable
     public int         PixFormat  { get; set; }                  // The actual pixmap format.
     public Gdx2DPixmap PixelData  { get; set; }                  //
     public long[]      NativeData { get; set; } = new long[ 4 ]; //
-    public bool        IsDisposed { get; set; } = false;
-    public int         Scale      { get; set; }
+    public bool        IsDisposed { get; set; } = false;         // 
+    public int         Scale      { get; set; }                  // 
+    public int         Color      { get; set; } = 0;             // 
 
     /// <summary>
     /// Sets the type of <see cref="BlendTypes"/> to be used for all operations.
@@ -63,27 +64,9 @@ public class Pixmap : IDisposable
     /// </summary>
     public BlendTypes Blending { get; set; } = BlendTypes.SourceOver;
 
-    /// <summary>
-    /// Sets the type of interpolation <see cref="BlendTypes"/> to be used in
-    /// conjunction with <see cref="DrawPixmap(Pixmap, int, int, int, int, int, int, int, int)"/>.
-    /// </summary>
-    public Filter FilterValue
-    {
-        get => _filter;
-        set
-        {
-            _filter = value;
-
-            Scale = _filter == Filter.NearestNeighbour
-                        ? Gdx2DPixmap.GDX_2D_SCALE_NEAREST
-                        : Gdx2DPixmap.GDX_2D_SCALE_LINEAR;
-        }
-    }
-
     // ------------------------------------------------------------------------
 
     private Filter _filter = Filter.BiLinear;
-    private int    _color  = 0;
 
     // ------------------------------------------------------------------------
 
@@ -93,15 +76,16 @@ public class Pixmap : IDisposable
     /// <param name="width">The width in pixels.</param>
     /// <param name="height">The height in pixels.</param>
     /// <param name="format">The <see cref="Pixmap.Format"/></param>
-    public Pixmap( int width, int height, Format format )
+    public Pixmap( int width, int height, Pixmap.Format format )
     {
         Logger.CheckPoint();
         Logger.Debug( $"width: {width}, height: {height}, format: {format}" );
 
         PixelData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
-        PixFormat = PixmapFormat.ToGdx2DPixmapFormat( format );
 
-        SetColor( Color.Black );
+//        PixFormat = PixmapFormat.ToGdx2DPixmapFormat( format );
+
+        SetColor( Graphics.Color.Black );
         FillWithCurrentColor();
     }
 
@@ -129,6 +113,28 @@ public class Pixmap : IDisposable
         }
     }
 
+    public Pixmap( ByteBuffer encodedData, int offset, int len )
+    {
+        if ( !encodedData.IsDirect() )
+        {
+            throw new GdxRuntimeException( "Couldn't load pixmap from non-direct ByteBuffer" );
+        }
+
+        try
+        {
+            PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
+        }
+        catch ( IOException e )
+        {
+            throw new GdxRuntimeException( "Couldn't load pixmap from image data", e );
+        }
+    }
+
+    public Pixmap( ByteBuffer encodedData )
+        : this( encodedData, encodedData.Position, encodedData.Remaining() )
+    {
+    }
+
     /// <summary>
     /// Creates a new Pixmap instance from the given file. The file must be a Png,
     /// Jpeg or Bitmap. Paletted formats are not supported.
@@ -140,28 +146,29 @@ public class Pixmap : IDisposable
     public Pixmap( FileInfo file )
     {
         Logger.CheckPoint();
-
-        var fs = file.Open( FileMode.Open );
+        Logger.Debug( $"File: {file.FullName}" );
 
         try
         {
-            var bytes = new byte[ fs.Length ];
-
-            if ( fs.Read( bytes, 0, bytes.Length ) == 0 )
-            {
-                throw new FileLoadException( $"Error reading from {file.Name}: No data found." );
-            }
+            var bytes = File.ReadAllBytes( file.FullName );
 
             Logger.CheckPoint();
 
             PixelData = new Gdx2DPixmap( bytes, 0, bytes.Length, 0 );
+
+            Logger.CheckPoint();
         }
         catch ( Exception e )
         {
-            throw new GdxRuntimeException( $"Couldn't load file:  {file.Name}", e );
+            throw new GdxRuntimeException( $"Couldn't load file:  {file.FullName}", e );
         }
 
         Logger.CheckPoint();
+    }
+
+    public Pixmap( Gdx2DPixmap pixmap )
+    {
+        this.PixelData = pixmap;
     }
 
     // ----------------------------------------------------------
@@ -242,7 +249,7 @@ public class Pixmap : IDisposable
     /// <param name="color"> the color, encoded as RGBA8888  </param>
     public void SetColor( int color )
     {
-        _color = color;
+        this.Color = color;
     }
 
     /// <summary>
@@ -254,7 +261,7 @@ public class Pixmap : IDisposable
     /// <param name="a"> The alpha component.  </param>
     public void SetColor( float r, float g, float b, float a )
     {
-        _color = Color.RGBA8888( r, g, b, a );
+        this.Color = Graphics.Color.RGBA8888( r, g, b, a );
     }
 
     /// <summary>
@@ -263,7 +270,7 @@ public class Pixmap : IDisposable
     /// <param name="color"> The color.</param>
     public void SetColor( Color color )
     {
-        _color = Color.RGBA8888( color.R, color.G, color.B, color.A );
+        this.Color = Graphics.Color.RGBA8888( color.R, color.G, color.B, color.A );
     }
 
     /// <summary>
@@ -271,7 +278,7 @@ public class Pixmap : IDisposable
     /// </summary>
     public void FillWithCurrentColor()
     {
-//        GDX2DPixmap.Clear( _color );
+        PixelData.Clear( this.Color );
     }
 
     /// <summary>
@@ -283,7 +290,7 @@ public class Pixmap : IDisposable
     /// <param name="y2"> The y-coordinate of the second point  </param>
     public void DrawLine( int x, int y, int x2, int y2 )
     {
-//        GDX2DPixmap.DrawLine( x, y, x2, y2, _color );
+        PixelData.DrawLine( x, y, x2, y2, this.Color );
     }
 
     /// <summary>
@@ -296,7 +303,7 @@ public class Pixmap : IDisposable
     /// <param name="height"> The height in pixels  </param>
     public void DrawRectangle( int x, int y, int width, int height )
     {
-//        GDX2DPixmap.DrawRect( x, y, width, height, _color );
+        PixelData.DrawRect( x, y, width, height, this.Color );
     }
 
     /// <summary>
@@ -326,7 +333,7 @@ public class Pixmap : IDisposable
 
         try
         {
-//            GDX2DPixmap.DrawPixmap( pixmap.GDX2DPixmap, srcx, srcy, x, y, srcWidth, srcHeight );
+            PixelData.DrawPixmap( pixmap.PixelData, srcx, srcy, x, y, srcWidth, srcHeight );
         }
         catch ( Exception ex )
         {
@@ -357,7 +364,7 @@ public class Pixmap : IDisposable
 
         try
         {
-//            GDX2DPixmap.DrawPixmap( pixmap.GDX2DPixmap, srcx, srcy, srcWidth, srcHeight, dstx, dsty, dstWidth, dstHeight );
+            PixelData.DrawPixmap( pixmap.PixelData, srcx, srcy, srcWidth, srcHeight, dstx, dsty, dstWidth, dstHeight );
         }
         catch ( Exception ex )
         {
@@ -375,7 +382,7 @@ public class Pixmap : IDisposable
     /// <param name="height"> The height in pixels  </param>
     public void FillRectangle( int x, int y, int width, int height )
     {
-//        GDX2DPixmap.FillRect( x, y, width, height, _color );
+        PixelData.FillRect( x, y, width, height, this.Color );
     }
 
     /// <summary>
@@ -387,7 +394,7 @@ public class Pixmap : IDisposable
     /// <param name="radius"> The radius in pixels  </param>
     public void DrawCircle( int x, int y, int radius )
     {
-//        GDX2DPixmap.DrawCircle( x, y, radius, _color );
+        PixelData.DrawCircle( x, y, radius, this.Color );
     }
 
     /// <summary>
@@ -398,7 +405,7 @@ public class Pixmap : IDisposable
     /// <param name="radius"> The radius in pixels  </param>
     public void FillCircle( int x, int y, int radius )
     {
-//        GDX2DPixmap.FillCircle( x, y, radius, _color );
+        PixelData.FillCircle( x, y, radius, this.Color );
     }
 
     /// <summary>
@@ -412,7 +419,7 @@ public class Pixmap : IDisposable
     /// <param name="y3"> The y-coordinate of vertex 3  </param>
     public void FillTriangle( int x1, int y1, int x2, int y2, int x3, int y3 )
     {
-//        GDX2DPixmap.FillTriangle( x1, y1, x2, y2, x3, y3, _color );
+        PixelData.FillTriangle( x1, y1, x2, y2, x3, y3, this.Color );
     }
 
     /// <summary>
@@ -424,8 +431,7 @@ public class Pixmap : IDisposable
     /// <returns> The pixel color in RGBA8888 format.  </returns>
     public int GetPixel( int x, int y )
     {
-//        return GDX2DPixmap.GetPixel( x, y );
-        return 0;
+        return PixelData.GetPixel( x, y );
     }
 
     /// <summary>
@@ -435,7 +441,7 @@ public class Pixmap : IDisposable
     /// <param name="y"> the y-coordinate  </param>
     public void DrawPixel( int x, int y )
     {
-//        GDX2DPixmap.SetPixel( x, y, _color );
+        PixelData.SetPixel( x, y, this.Color );
     }
 
     /// <summary>
@@ -446,13 +452,13 @@ public class Pixmap : IDisposable
     /// <param name="color"> the color in RGBA8888 format.  </param>
     public void DrawPixel( int x, int y, int color )
     {
-//        GDX2DPixmap.SetPixel( x, y, color );
+        PixelData.SetPixel( x, y, color );
     }
 
     /// <returns> the <see cref="Pixmap.Format"/> of this Pixmap. </returns>
-    public Format GetFormat()
+    public Pixmap.Format GetFormat()
     {
-        return PixmapFormat.FromGdx2DPixmapFormat( PixFormat );
+        return PixmapFormat.FromGdx2DPixmapFormat( PixelData.Format );
     }
 
     /// <summary>
@@ -467,7 +473,7 @@ public class Pixmap : IDisposable
     {
         Gdx.GL.glPixelStorei( IGL.GL_PACK_ALIGNMENT, 1 );
 
-        Pixmap pixmap = new( width, height, Format.RGBA8888 );
+        Pixmap pixmap = new( width, height, Pixmap.Format.RGBA8888 );
 
         fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
         {
@@ -475,6 +481,23 @@ public class Pixmap : IDisposable
         }
 
         return pixmap;
+    }
+
+    /// <summary>
+    /// Sets the type of interpolation <see cref="BlendTypes"/> to be used in
+    /// conjunction with <see cref="DrawPixmap(Pixmap, int, int, int, int, int, int, int, int)"/>.
+    /// </summary>
+    public Filter FilterValue
+    {
+        get => _filter;
+        set
+        {
+            _filter = value;
+
+            Scale = _filter == Filter.NearestNeighbour
+                        ? Gdx2DPixmap.GDX_2D_SCALE_NEAREST
+                        : Gdx2DPixmap.GDX_2D_SCALE_LINEAR;
+        }
     }
 
     /// <summary>
@@ -576,9 +599,6 @@ public class Pixmap : IDisposable
     }
 
     #endregion
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
 }
 
 // ------------------------------------------------------------------------

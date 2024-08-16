@@ -26,7 +26,8 @@ namespace LughSharp.LibCore.Files;
 
 /// <summary>
 /// A FileInfo container which contains a <see cref="FileInfo"/> instance
-/// and a <see cref="PathTypes"/> instance.
+/// and a <see cref="PathTypes"/> instance. The <c>PathTypes</c> instance
+/// defaults to <see cref="PathTypes.Internal"/>.
 /// </summary>
 [PublicAPI]
 public class FileHandle
@@ -39,19 +40,19 @@ public class FileHandle
     protected FileHandle()
     {
         this.File     = new FileInfo( "" );
-        this.PathType = PathTypes.Absolute;
+        this.PathType = PathTypes.Internal;
     }
     
     public FileHandle( string fileName )
     {
         this.File     = new FileInfo( fileName );
-        this.PathType = PathTypes.Absolute;
+        this.PathType = PathTypes.Internal;
     }
 
     public FileHandle( FileInfo file )
     {
         this.File     = file;
-        this.PathType = PathTypes.Absolute;
+        this.PathType = PathTypes.Internal;
     }
 
     public FileHandle( string fileName, PathTypes type )

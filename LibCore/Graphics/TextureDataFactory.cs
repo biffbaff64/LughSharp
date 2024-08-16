@@ -40,6 +40,8 @@ public static class TextureDataFactory
     /// <exception cref="ArgumentNullException">Thrown when the file parameter is null.</exception>
     public static ITextureData LoadFromFile( FileInfo file, bool useMipMaps = true )
     {
+        Logger.CheckPoint();
+
         ArgumentNullException.ThrowIfNull( file );
 
         Pixmap.Format? format = null; // Default format if not specified
@@ -57,6 +59,8 @@ public static class TextureDataFactory
     /// <exception cref="ArgumentNullException">Thrown when the file parameter is null.</exception>
     public static ITextureData LoadFromFile( FileInfo file, Pixmap.Format? format, bool useMipMaps = true )
     {
+        Logger.CheckPoint();
+        
         ArgumentNullException.ThrowIfNull( file );
 
         return file.Extension.ToLower() switch

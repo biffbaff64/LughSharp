@@ -79,6 +79,7 @@
   &lt;PhysicalFolder Path="C:\Users\richi\.nuget\packages\dotglfw\1.1.0" Loaded="True" /&gt;&#xD;
   &lt;Assembly Path="C:\Development\Projects\CSharp\LughSharp\LibCore\gdx2d.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\richi\.nuget\packages\pixelmap\1.0.1\lib\PixelMap.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\richi\.nuget\packages\stbimagesharp\2.27.14\lib\netstandard2.0\StbImageSharp.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/InlayHints/CSharpOtherInlayHintsOptions/ShowResourcesDisposePoints/@EntryValue">PushToShowHints</s:String>
 	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EFeature_002EServices_002ECodeCleanup_002EFileHeader_002EFileHeaderSettingsMigrate/@EntryIndexedValue">True</s:Boolean>

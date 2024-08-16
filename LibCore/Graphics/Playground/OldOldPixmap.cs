@@ -42,13 +42,13 @@ namespace LughSharp.LibCore.Graphics.Playground;
 /// to <see cref="BlendTypes.None"/>, which may reduce blitting time by ~30%.
 /// </para>
 /// <para>
-/// The <see cref="DrawPixmap(OldPixmap, int, int, int, int, int, int, int, int)"/> method
+/// The <see cref="DrawPixmap(OldOldPixmap, int, int, int, int, int, int, int, int)"/> method
 /// will scale and stretch the source image to a target image. There either nearest
 /// neighbour or bilinear filtering can be used.
 /// </para>
 /// </summary>
 [PublicAPI]
-public class OldPixmap : IDisposable
+public class OldOldPixmap : IDisposable
 {
     public Gdx2DPixmap GDX2DPixmap { get; set; }
     public bool        IsDisposed  { get; set; } = false;
@@ -62,8 +62,8 @@ public class OldPixmap : IDisposable
     /// </summary>
     /// <param name="width">The width in pixels.</param>
     /// <param name="height">The height in pixels.</param>
-    /// <param name="format">The <see cref="OldPixmap.Format"/></param>
-    public OldPixmap( int width, int height, Format format )
+    /// <param name="format">The <see cref="OldOldPixmap.Format"/></param>
+    public OldOldPixmap( int width, int height, Format format )
     {
         Logger.CheckPoint();
 
@@ -77,7 +77,7 @@ public class OldPixmap : IDisposable
     /// Creates a new Pixmap instance from the given encoded image data.
     /// The image can be encoded as JPEG, PNG or BMP.
     /// </summary>
-    public OldPixmap( byte[] encodedData, int offset, int len )
+    public OldOldPixmap( byte[] encodedData, int offset, int len )
     {
         Logger.CheckPoint();
 
@@ -99,7 +99,7 @@ public class OldPixmap : IDisposable
     /// <exception cref="GdxRuntimeException">
     /// Thrown if there were errors loading or reading the file.
     /// </exception>
-    public OldPixmap( FileInfo file )
+    public OldOldPixmap( FileInfo file )
     {
         Logger.CheckPoint();
 
@@ -125,7 +125,7 @@ public class OldPixmap : IDisposable
     /// <summary>
     /// Creates a new Pixmap from the supplied <see cref="Gdx2DPixmap"/>.
     /// </summary>
-    public OldPixmap( Gdx2DPixmap pixmap )
+    public OldOldPixmap( Gdx2DPixmap pixmap )
     {
         Logger.CheckPoint();
 
@@ -278,7 +278,7 @@ public class OldPixmap : IDisposable
     /// <param name="pixmap"> The other Pixmap </param>
     /// <param name="x"> The target x-coordinate (top left corner) </param>
     /// <param name="y"> The target y-coordinate (top left corner)  </param>
-    public void DrawPixmap( OldPixmap pixmap, int x, int y )
+    public void DrawPixmap( OldOldPixmap pixmap, int x, int y )
     {
         DrawPixmap( pixmap, x, y, 0, 0, pixmap.Width, pixmap.Height );
     }
@@ -293,7 +293,7 @@ public class OldPixmap : IDisposable
     /// <param name="srcy"> The source y-coordinate (top left corner); </param>
     /// <param name="srcWidth"> The width of the area from the other Pixmap in pixels </param>
     /// <param name="srcHeight"> The height of the area from the other Pixmap in pixels  </param>
-    public void DrawPixmap( OldPixmap pixmap, int x, int y, int srcx, int srcy, int srcWidth, int srcHeight )
+    public void DrawPixmap( OldOldPixmap pixmap, int x, int y, int srcx, int srcy, int srcWidth, int srcHeight )
     {
         ArgumentNullException.ThrowIfNull( nameof( pixmap ), "Source Pixmap cannot be null." );
 
@@ -311,7 +311,7 @@ public class OldPixmap : IDisposable
     /// Draws an area from another Pixmap to this Pixmap. This will automatically
     /// scale and stretch the source image to the specified target rectangle.
     /// <para>
-    /// Use <see cref="OldPixmap.Filter"/> property to specify the type of filtering to
+    /// Use <see cref="OldOldPixmap.Filter"/> property to specify the type of filtering to
     /// be used (NearestNeighbour or Bilinear).
     /// </para>
     /// </summary>
@@ -324,7 +324,7 @@ public class OldPixmap : IDisposable
     /// <param name="dsty"> The target y-coordinate (top left corner) </param>
     /// <param name="dstWidth"> The target width </param>
     /// <param name="dstHeight"> the target height  </param>
-    public void DrawPixmap( OldPixmap pixmap, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight )
+    public void DrawPixmap( OldOldPixmap pixmap, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight )
     {
         ArgumentNullException.ThrowIfNull( nameof( pixmap ), "Source Pixmap cannot be null." );
 
@@ -421,7 +421,7 @@ public class OldPixmap : IDisposable
         GDX2DPixmap.SetPixel( x, y, color );
     }
 
-    /// <returns> the <see cref="OldPixmap.Format"/> of this Pixmap. </returns>
+    /// <returns> the <see cref="OldOldPixmap.Format"/> of this Pixmap. </returns>
     public Format GetFormat()
     {
 //        return PixmapFormat.FromGdx2DPixmapFormat( GDX2DPixmap.Format );
@@ -436,11 +436,11 @@ public class OldPixmap : IDisposable
     /// <param name="width">Framebuffer region width</param>
     /// <param name="height">Framebuffer region height</param>
     /// <returns>The new Pixmap.</returns>
-    public static unsafe OldPixmap CreateFromFrameBuffer( int x, int y, int width, int height )
+    public static unsafe OldOldPixmap CreateFromFrameBuffer( int x, int y, int width, int height )
     {
         Gdx.GL.glPixelStorei( IGL.GL_PACK_ALIGNMENT, 1 );
 
-        OldPixmap pixmap = new( width, height, Format.RGBA8888 );
+        OldOldPixmap pixmap = new( width, height, Format.RGBA8888 );
 
         fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
         {
@@ -473,7 +473,7 @@ public class OldPixmap : IDisposable
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Response listener for <see cref="OldPixmap.DownloadFromUrl(String, IDownloadPixmapResponseListener)"/>
+    /// Response listener for <see cref="OldOldPixmap.DownloadFromUrl(String, IDownloadPixmapResponseListener)"/>
     /// </summary>
     [PublicAPI]
     public interface IDownloadPixmapResponseListener
@@ -481,7 +481,7 @@ public class OldPixmap : IDisposable
         /// <summary>
         /// Called on the render thread when image was downloaded successfully.
         /// </summary>
-        void DownloadComplete( OldPixmap pixmap );
+        void DownloadComplete( OldOldPixmap pixmap );
 
         /// <summary>
         /// Called when image download failed. This might get called on a background thread.
@@ -518,7 +518,7 @@ public class OldPixmap : IDisposable
     #region PixmapEnums
 
     /// <summary>
-    /// Blending functions to be set with <see cref="OldPixmap.Blending"/>.
+    /// Blending functions to be set with <see cref="OldOldPixmap.Blending"/>.
     /// </summary>
     public enum BlendTypes
     {
@@ -527,7 +527,7 @@ public class OldPixmap : IDisposable
     }
 
     /// <summary>
-    /// Filters to be used with <see cref="DrawPixmap(OldPixmap, int, int, int, int, int, int, int, int)"/>.
+    /// Filters to be used with <see cref="DrawPixmap(OldOldPixmap, int, int, int, int, int, int, int, int)"/>.
     /// </summary>
     public enum Filter
     {
@@ -575,7 +575,7 @@ public class OldPixmap : IDisposable
 
     /// <summary>
     /// Sets the type of interpolation <see cref="BlendTypes"/> to be used in
-    /// conjunction with <see cref="DrawPixmap(OldPixmap, int, int, int, int, int, int, int, int)"/>.
+    /// conjunction with <see cref="DrawPixmap(OldOldPixmap, int, int, int, int, int, int, int, int)"/>.
     /// </summary>
     public Filter FilterValue
     {
@@ -599,27 +599,27 @@ public class OldPixmap : IDisposable
 [PublicAPI]
 public static class OldPixmapFormatExtensions
 {
-    public static int ToGLType( this OldPixmap.Format format )
+    public static int ToGLType( this OldOldPixmap.Format format )
     {
         return Gdx2DPixmap.ToGLType( ToGdx2DPixmapFormat( format ) );
     }
 
-    public static int ToGLFormat( this OldPixmap.Format format )
+    public static int ToGLFormat( this OldOldPixmap.Format format )
     {
         return Gdx2DPixmap.ToGLFormat( ToGdx2DPixmapFormat( format ) );
     }
 
-    public static int ToGdx2DPixmapFormat( this OldPixmap.Format format )
+    public static int ToGdx2DPixmapFormat( this OldOldPixmap.Format format )
     {
         return format switch
         {
-            OldPixmap.Format.Alpha          => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
-            OldPixmap.Format.Intensity      => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
-            OldPixmap.Format.LuminanceAlpha => Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA,
-            OldPixmap.Format.RGB565         => Gdx2DPixmap.GDX_2D_FORMAT_RGB565,
-            OldPixmap.Format.RGBA4444       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444,
-            OldPixmap.Format.RGB888         => Gdx2DPixmap.GDX_2D_FORMAT_RGB888,
-            OldPixmap.Format.RGBA8888       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888,
+            OldOldPixmap.Format.Alpha          => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
+            OldOldPixmap.Format.Intensity      => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
+            OldOldPixmap.Format.LuminanceAlpha => Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA,
+            OldOldPixmap.Format.RGB565         => Gdx2DPixmap.GDX_2D_FORMAT_RGB565,
+            OldOldPixmap.Format.RGBA4444       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444,
+            OldOldPixmap.Format.RGB888         => Gdx2DPixmap.GDX_2D_FORMAT_RGB888,
+            OldOldPixmap.Format.RGBA8888       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888,
 
             var _ => throw new GdxRuntimeException( $"Unknown format: {format}" )
         };
