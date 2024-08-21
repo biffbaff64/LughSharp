@@ -43,7 +43,7 @@ public class PixmapFormat
     public const int GDX_2D_BLEND_SRC_OVER         = 1;
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// </summary>
     /// <param name="format"></param>
@@ -60,18 +60,8 @@ public class PixmapFormat
             Pixmap.Format.RGBA4444       => GDX_2D_FORMAT_RGBA4444,
             Pixmap.Format.RGB888         => GDX_2D_FORMAT_RGB888,
             Pixmap.Format.RGBA8888       => GDX_2D_FORMAT_RGBA8888,
-
-            var _ => GetDefault()
+            var _                        => throw new GdxRuntimeException( $"unknown format: {format}" )
         };
-        
-        int GetDefault()
-        {
-            Logger.Divider( '=' );
-            Logger.Debug( $"Unknown Format: {format}. Returning Default ( GDX_2D_FORMAT_RGBA8888 )"  );
-            Logger.Divider( '=' );
-
-            return GDX_2D_FORMAT_RGBA8888;
-        }
     }
 
     /// <summary>
@@ -89,18 +79,8 @@ public class PixmapFormat
             GDX_2D_FORMAT_RGBA4444        => Pixmap.Format.RGBA4444,
             GDX_2D_FORMAT_RGB888          => Pixmap.Format.RGB888,
             GDX_2D_FORMAT_RGBA8888        => Pixmap.Format.RGBA8888,
-
-            var _ => GetDefault()
+            var _                         => throw new GdxRuntimeException( $"unknown format: {format}" )
         };
-        
-        Pixmap.Format GetDefault()
-        {
-            Logger.Divider( '=' );
-            Logger.Debug( $"Unknown Gdx2DPixmap Format: {format}. Returning Default ( RGBA8888 )"  );
-            Logger.Divider( '=' );
-
-            return Pixmap.Format.RGBA8888;
-        }
     }
 
     /// <summary>
@@ -127,7 +107,7 @@ public class PixmapFormat
     public static int ToGLFormat( Pixmap.Format format )
     {
         var cformat = ToGdx2DPixmapFormat( format );
-        
+
         return cformat switch
         {
             GDX_2D_FORMAT_ALPHA           => IGL.GL_ALPHA,
@@ -147,7 +127,7 @@ public class PixmapFormat
     public static int ToGLType( Pixmap.Format format )
     {
         var cformat = ToGdx2DPixmapFormat( format );
-        
+
         return cformat switch
         {
             GDX_2D_FORMAT_ALPHA           => IGL.GL_UNSIGNED_BYTE,
@@ -159,7 +139,7 @@ public class PixmapFormat
             var _                         => throw new GdxRuntimeException( $"unknown format: {format}" )
         };
     }
-    
+
     /// <summary>
     /// </summary>
     /// <param name="format"></param>
@@ -176,5 +156,40 @@ public class PixmapFormat
             GDX_2D_FORMAT_RGBA4444        => "Rgba4444",
             var _                         => "Unknown"
         };
+    }
+
+    /// <summary>
+    /// Extracts the <c>Width</c> and <c>Height</c> from a PNG file.
+    /// </summary>
+    /// <remarks>
+    /// Adapted from code obtained elsewhere. I'm not sure of where, and will credit
+    /// the original author when I have corrected this.
+    /// </remarks>
+    public static ( int width, int height ) GetPNGWidthHeight( FileInfo file )
+    {
+        if ( file.Extension.ToLower() != ".png" )
+        {
+            throw new GdxRuntimeException( $"PNG files ONLY!: ({file.Name})" );
+        }
+            
+        var br = new BinaryReader( File.OpenRead( file.Name ) );
+
+        br.BaseStream.Position = 16;
+
+        var widthbytes  = new byte[ sizeof( int ) ];
+        var heightbytes = new byte[ sizeof( int ) ];
+
+        for ( var i = 0; i < sizeof( int ); i++ )
+        {
+            widthbytes[ sizeof( int ) - 1 - i ] = br.ReadByte();
+        }
+
+        for ( var i = 0; i < sizeof( int ); i++ )
+        {
+            heightbytes[ sizeof( int ) - 1 - i ] = br.ReadByte();
+        }
+
+        return ( BitConverter.ToInt32( widthbytes, 0 ),
+                 BitConverter.ToInt32( heightbytes, 0 ) );
     }
 }

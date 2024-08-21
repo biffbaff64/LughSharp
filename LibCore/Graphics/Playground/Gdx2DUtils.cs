@@ -231,38 +231,38 @@ public class Gdx2DUtils
 //        return ( dstR << 24 ) | ( dstG << 16 ) | ( dstB << 8 ) | a;
 //    }
 
-    public static ByteBuffer Gdx2dLoad( long[] nativeData, byte[] buffer, int offset, int len )
-    {
-        Logger.CheckPoint();
+//    public static ByteBuffer Gdx2dLoad( long[] nativeData, byte[] buffer, int offset, int len )
+//    {
+//        Logger.CheckPoint();
 
-        var buf = new HeapByteBuffer( buffer, offset, len );
+//        var buf = new HeapByteBuffer( buffer, offset, len );
         
-        PixmapDef? pixmap = Gdx2dLoad( buffer, len );
+//        PixmapDef? pixmap = Gdx2dLoad( buffer, len );
 
         
-        return buf;
-    }
+//        return buf;
+//    }
     
-    public static PixmapDef? Gdx2dLoad( byte[] buffer, int len )
-    {
-        Logger.CheckPoint();
+//    public static PixmapDef? Gdx2dLoad( byte[] buffer, int len )
+//    {
+//        Logger.CheckPoint();
         
-        var pixels = new byte[ len ];
+//        var pixels = new byte[ len ];
 
-        LoadImageFromMemory( buffer, len, out var width, out var height, out var format, ref pixels );
+//        LoadImageFromMemory( buffer, len, out var width, out var height, out var format, ref pixels );
 
-        var pixmap = new PixmapDef
-        {
-            Width  = ( int ) width,
-            Height = ( int ) height,
-            Format = ( int ) format,
-            Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
-            Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
-            Pixels = pixels
-        };
+//        var pixmap = new PixmapDef
+//        {
+//            Width  = ( int ) width,
+//            Height = ( int ) height,
+//            Format = ( int ) format,
+//            Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
+//            Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
+//            Pixels = pixels
+//        };
 
-        return pixmap;
-    }
+//        return pixmap;
+//    }
 
     private static void LoadImageFromMemory( byte[] buffer, int len, out int w, out int h, out int f, ref byte[] bytes )
     {

@@ -176,17 +176,13 @@ public static class Gdx
     
     // ------------------------------------------------------------------------
 
-    #region A Prayer To The Goddess
-    
-    private const string SECRETIVE_STRING =
+    private const string A_PRAYER_TO_THE_GODDESS =
         "Mother Earth, enlighten what's dark in me. " +
         "Strengthen what's weak in me. " +
         "Mend what's broken in me. " +
         "Bind what's bruised in me. " +
         "Heal what's sick in me. " +
         "Revive whatever peace & love has died in me.";
-
-    #endregion A Prayer To The Goddess
 
     // ------------------------------------------------------------------------
 }

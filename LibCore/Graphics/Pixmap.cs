@@ -81,58 +81,10 @@ public class Pixmap : IDisposable
         Logger.CheckPoint();
         Logger.Debug( $"width: {width}, height: {height}, format: {format}" );
 
-        PixelData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
-
-//        PixFormat = PixmapFormat.ToGdx2DPixmapFormat( format );
+//        PixelData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
 
         SetColor( Graphics.Color.Black );
         FillWithCurrentColor();
-    }
-
-    /// <summary>
-    /// Creates a new Pixmap instance from the given encoded image data.
-    /// The image can be encoded as JPEG, PNG or BMP.
-    /// </summary>
-    public Pixmap( byte[] encodedData, int offset, int len )
-    {
-        Logger.CheckPoint();
-        Logger.Debug( $"encodedData: {encodedData}, offset: {offset}, len: {len}" );
-
-        try
-        {
-            PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
-
-            BasePtr   = NativeData[ 0 ];
-            Width     = ( int ) NativeData[ 1 ];
-            Height    = ( int ) NativeData[ 2 ];
-            PixFormat = ( int ) NativeData[ 3 ];
-        }
-        catch ( IOException e )
-        {
-            throw new GdxRuntimeException( "Couldn't load pixmap from image data", e );
-        }
-    }
-
-    public Pixmap( ByteBuffer encodedData, int offset, int len )
-    {
-        if ( !encodedData.IsDirect() )
-        {
-            throw new GdxRuntimeException( "Couldn't load pixmap from non-direct ByteBuffer" );
-        }
-
-        try
-        {
-            PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
-        }
-        catch ( IOException e )
-        {
-            throw new GdxRuntimeException( "Couldn't load pixmap from image data", e );
-        }
-    }
-
-    public Pixmap( ByteBuffer encodedData )
-        : this( encodedData, encodedData.Position, encodedData.Remaining() )
-    {
     }
 
     /// <summary>
@@ -153,8 +105,10 @@ public class Pixmap : IDisposable
             var bytes = File.ReadAllBytes( file.FullName );
 
             Logger.CheckPoint();
-
-            PixelData = new Gdx2DPixmap( bytes, 0, bytes.Length, 0 );
+            var (width, height) = PixmapFormat.GetPNGWidthHeight( file );
+            Logger.Debug( $"Width: {width}, Height: {height}" );
+            
+            PixelData           = new Gdx2DPixmap( bytes, 0, bytes.Length, 0 );
 
             Logger.CheckPoint();
         }
@@ -166,10 +120,51 @@ public class Pixmap : IDisposable
         Logger.CheckPoint();
     }
 
-    public Pixmap( Gdx2DPixmap pixmap )
-    {
-        this.PixelData = pixmap;
-    }
+//    /// <summary>
+//    /// Creates a new Pixmap instance from the given encoded image data.
+//    /// The image can be encoded as JPEG, PNG or BMP.
+//    /// </summary>
+//    public Pixmap( byte[] encodedData, int offset, int len )
+//    {
+//        Logger.CheckPoint();
+//        Logger.Debug( $"encodedData: {encodedData}, offset: {offset}, len: {len}" );
+//
+//        try
+//        {
+//            PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
+//
+//            BasePtr   = NativeData[ 0 ];
+//            Width     = ( int ) NativeData[ 1 ];
+//            Height    = ( int ) NativeData[ 2 ];
+//            PixFormat = ( int ) NativeData[ 3 ];
+//        }
+//        catch ( IOException e )
+//        {
+//            throw new GdxRuntimeException( "Couldn't load pixmap from image data", e );
+//        }
+//    }
+
+//    public Pixmap( ByteBuffer encodedData, int offset, int len )
+//    {
+//        if ( !encodedData.IsDirect() )
+//        {
+//            throw new GdxRuntimeException( "Couldn't load pixmap from non-direct ByteBuffer" );
+//        }
+//
+//        try
+//        {
+//            PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
+//        }
+//        catch ( IOException e )
+//        {
+//            throw new GdxRuntimeException( "Couldn't load pixmap from image data", e );
+//        }
+//    }
+
+//    public Pixmap( ByteBuffer encodedData )
+//        : this( encodedData, encodedData.Position, encodedData.Remaining() )
+//    {
+//    }
 
     // ----------------------------------------------------------
 
