@@ -23,6 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
+using LughSharp.LibCore.Graphics.Playground;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 
@@ -81,10 +82,17 @@ public class Pixmap : IDisposable
         Logger.CheckPoint();
         Logger.Debug( $"width: {width}, height: {height}, format: {format}" );
 
-//        PixelData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
+        PixelData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
 
+        Logger.CheckPoint();
+        
         SetColor( Graphics.Color.Black );
+
+        Logger.CheckPoint();
+        
         FillWithCurrentColor();
+
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -107,8 +115,8 @@ public class Pixmap : IDisposable
             Logger.CheckPoint();
             var (width, height) = PixmapFormat.GetPNGWidthHeight( file );
             Logger.Debug( $"Width: {width}, Height: {height}" );
-            
-            PixelData           = new Gdx2DPixmap( bytes, 0, bytes.Length, 0 );
+
+            PixelData = new Gdx2DPixmap( bytes, 0, bytes.Length, 0 );
 
             Logger.CheckPoint();
         }

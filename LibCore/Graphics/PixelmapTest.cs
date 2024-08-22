@@ -22,10 +22,11 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Graphics.Playground;
+
+namespace LughSharp.LibCore.Graphics;
 
 [PublicAPI]
-public class PixelMap
+public partial class Pixelmap : IDisposable
 {
     public int        Width         { get; set; }
     public int        Height        { get; set; }
@@ -33,12 +34,17 @@ public class PixelMap
     public int        BytesPerPixel { get; set; }
     public Pixel[ , ] Pixels        { get; set; }
     public bool       IsDisposed    { get; set; } = false;
+    public int        Scale         { get; set; } 
 
     /// <summary>
     /// Sets the type of <see cref="BlendTypes"/> to be used for all operations.
     /// Default is <see cref="BlendTypes.SourceOver"/>.
     /// </summary>
     public BlendTypes Blending { get; set; } = BlendTypes.SourceOver;
+
+    // ------------------------------------------------------------------------
+    
+    private Filter _filter = Filter.BiLinear;
 
     // ------------------------------------------------------------------------
 
@@ -50,22 +56,36 @@ public class PixelMap
     /// <param name="format">
     /// The pixel format, defaults to <see cref="Format.RGBA8888"/>.
     /// </param>
-    public PixelMap( int width, int height, int format )
+    public Pixelmap( int width, int height, Pixmap.Format format )
     {
         Logger.CheckPoint();
 
         this.Width         = width;
         this.Height        = height;
-        this.PixFormat     = format;
+        this.PixFormat     = PixmapFormat.ToGdx2DPixmapFormat( format );
         this.BytesPerPixel = PixmapFormat.Gdx2dBytesPerPixel( PixFormat );
         this.Pixels        = new Pixel[ width, height ];
+    }
+
+    /// <summary>
+    /// Creates a new PixelMap of the desired width and height.
+    /// </summary>
+    /// <param name="width"> The width in pixels. </param>
+    /// <param name="height"> The height in pixels. </param>
+    /// <param name="format">
+    /// The pixel format, defaults to <see cref="Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888"/>.
+    /// </param>
+    public Pixelmap( int width, int height, int format )
+        : this( width, height, PixmapFormat.FromGdx2DPixmapFormat( format ) )
+    {
+        Logger.CheckPoint();
     }
 
     /// <summary>
     /// Makes a copy of the supplied PixelMap.
     /// </summary>
     /// <param name="map"> The pixmap to copy. </param>
-    public PixelMap( PixelMap map )
+    public Pixelmap( Pixelmap map )
     {
         Logger.CheckPoint();
 
@@ -75,13 +95,13 @@ public class PixelMap
         this.BytesPerPixel = map.BytesPerPixel;
         this.Pixels        = new Pixel[ map.Width, map.Height ];
 
-        map.Pixels?.CopyTo( this.Pixels, 0 );
+        map.Pixels.CopyTo( this.Pixels, 0 );
     }
 
     /// <summary>
     /// Creates a new PixelMap from the data at the suopplied FileInfo path.
     /// </summary>
-    public PixelMap( FileInfo info ) : this( info.Name )
+    public Pixelmap( FileInfo info ) : this( info.Name )
     {
         Logger.CheckPoint();
     }
@@ -89,7 +109,7 @@ public class PixelMap
     /// <summary>
     /// Creates a new PixelMap from the data at the supplied path.
     /// </summary>
-    public PixelMap( string path )
+    public Pixelmap( string path )
     {
         Logger.CheckPoint();
 
@@ -143,13 +163,36 @@ public class PixelMap
 
         return texture;
     }
+    
+    // ------------------------------------------------------------------------
+
+    #region dispose pattern
+
+    /// <summary>
+    /// Performs application-defined tasks associated with freeing, releasing,
+    /// or resetting unmanaged resources.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose( !IsDisposed );
+    }
+
+    protected void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            IsDisposed = true;
+        }
+    }
+
+    #endregion dispose pattern
 
     // ------------------------------------------------------------------------
 
     #region PixmapEnums
 
     /// <summary>
-    /// Blending functions to be set with <see cref="PixelMap.Blending"/>.
+    /// Blending functions to be set with <see cref="Pixelmap.Blending"/>.
     /// </summary>
     public enum BlendTypes
     {
@@ -158,7 +201,7 @@ public class PixelMap
     }
 
     /// <summary>
-    /// Filters to be used with <see cref="DrawPixmap(PixelMap, int, int, int, int, int, int, int, int)"/>.
+    /// Filters to be used with <see cref="DrawPixmap(Pixelmap, int, int, int, int, int, int, int, int)"/>.
     /// </summary>
     public enum Filter
     {

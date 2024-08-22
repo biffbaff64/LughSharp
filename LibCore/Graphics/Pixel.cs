@@ -22,7 +22,7 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Graphics.Playground;
+namespace LughSharp.LibCore.Graphics;
 
 [PublicAPI]
 public struct Pixel

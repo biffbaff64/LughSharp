@@ -22,6 +22,7 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using LughSharp.LibCore.Graphics.Playground;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.G2D;
@@ -63,27 +64,14 @@ public class Gdx2DPixmap : IDisposable
 
     #region properties
 
-    public long          BasePtr    { get; set; }                  // 
-    public int           Format     { get; set; }                  // The actual pixmap format.
-    public ByteBuffer    PixelPtr   { get; set; }                  //
-    public int           Width      { get; set; }                  //
-    public int           Height     { get; set; }                  //
-    public long[]        NativeData { get; set; } = new long[ 4 ]; //
+    public long       BasePtr    { get; set; }                  // 
+    public int        Format     { get; set; }                  // The actual pixmap format.
+    public ByteBuffer PixelPtr   { get; set; }                  //
+    public int        Width      { get; set; }                  //
+    public int        Height     { get; set; }                  //
+    public long[]     NativeData { get; set; } = new long[ 4 ]; //
 
     #endregion properties
-
-    // ------------------------------------------------------------------------
-
-    private struct NativeDataDef
-    {
-        public IntPtr Ptr { get; set; }
-        public long   L1  { get; set; }
-        public long   L2  { get; set; }
-        public long   L3  { get; set; }
-    }
-
-    private NativeDataDef _ndef;
-    private PixmapDef     _pixmapDef;
 
     // ------------------------------------------------------------------------
 
@@ -306,7 +294,7 @@ public class Gdx2DPixmap : IDisposable
 
     public void Clear( int color )
     {
-        gdx2d_clear( BasePtr, color );
+//        Gdx2DUtils.gdx2d_clear( BasePtr, color );
     }
 
     public int GetPixel( int x, int y )
