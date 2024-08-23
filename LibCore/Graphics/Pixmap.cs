@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using LughSharp.LibCore.Graphics.Playground;
 using LughSharp.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 
@@ -87,7 +86,7 @@ public class Pixmap : IDisposable
         Logger.CheckPoint();
         
         SetColor( Graphics.Color.Black );
-
+        
         Logger.CheckPoint();
         
         FillWithCurrentColor();
@@ -461,7 +460,7 @@ public class Pixmap : IDisposable
     /// <returns> the <see cref="Pixmap.Format"/> of this Pixmap. </returns>
     public Pixmap.Format GetFormat()
     {
-        return PixmapFormat.FromGdx2DPixmapFormat( PixelData.Format );
+        return PixmapFormat.FromGdx2DPixmapFormat( PixelData.Def.Format );
     }
 
     /// <summary>

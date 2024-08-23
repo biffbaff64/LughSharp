@@ -22,21 +22,9 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LughSharp.LibCore.Graphics.Playground;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.G2D;
-
-[PublicAPI, StructLayout( LayoutKind.Sequential )]
-public struct PixmapDef
-{
-    public int    Width  { get; set; }
-    public int    Height { get; set; }
-    public uint   Format { get; set; }
-    public int    Blend  { get; set; }
-    public int    Scale  { get; set; }
-    public byte[] Pixels { get; set; }
-}
 
 [PublicAPI]
 public class Gdx2DPixmap : IDisposable
@@ -64,12 +52,12 @@ public class Gdx2DPixmap : IDisposable
 
     #region properties
 
-    public long       BasePtr    { get; set; }                  // 
-    public int        Format     { get; set; }                  // The actual pixmap format.
-    public ByteBuffer PixelPtr   { get; set; }                  //
-    public int        Width      { get; set; }                  //
-    public int        Height     { get; set; }                  //
-    public long[]     NativeData { get; set; } = new long[ 4 ]; //
+    public PixmapDef  Def      { get; set; }
+    public ByteBuffer PixelPtr { get; set; }
+
+//    public int Format { get; set; }
+//    public int Width  { get; set; }
+//    public int Height { get; set; }
 
     #endregion properties
 
@@ -90,16 +78,11 @@ public class Gdx2DPixmap : IDisposable
         Logger.Debug( $"len: {len}" );
         Logger.Debug( $"requestedFormat: {requestedFormat}" );
 
-        PixelPtr = LoadData( encodedData, offset, len );
+        LoadData( encodedData, offset, len );
 
         Logger.CheckPoint();
 
-        BasePtr = NativeData[ 0 ];
-        Width   = ( int ) NativeData[ 1 ];
-        Height  = ( int ) NativeData[ 2 ];
-        Format  = ( int ) NativeData[ 3 ];
-
-        if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
+        if ( ( requestedFormat != 0 ) && ( requestedFormat != Def.Format ) )
         {
             Convert( requestedFormat );
         }
@@ -151,14 +134,9 @@ public class Gdx2DPixmap : IDisposable
 
         var buffer = memoryStream.ToArray();
 
-        PixelPtr = LoadData( buffer, 0, buffer.Length );
+        LoadData( buffer, 0, buffer.Length );
 
-        BasePtr = NativeData[ 0 ];
-        Width   = ( int ) NativeData[ 1 ];
-        Height  = ( int ) NativeData[ 2 ];
-        Format  = ( int ) NativeData[ 3 ];
-
-        if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
+        if ( ( requestedFormat != 0 ) && ( requestedFormat != Def.Format ) )
         {
             Convert( requestedFormat );
         }
@@ -184,10 +162,12 @@ public class Gdx2DPixmap : IDisposable
 
         Logger.CheckPoint();
 
-        BasePtr = NativeData[ 0 ];
-        Width   = ( int ) NativeData[ 1 ];
-        Height  = ( int ) NativeData[ 2 ];
-        Format  = ( int ) NativeData[ 3 ];
+        Def = Def with
+        {
+            Width = width,
+            Height = height,
+            Format = format,
+        };
 
         Logger.CheckPoint();
     }
@@ -200,11 +180,11 @@ public class Gdx2DPixmap : IDisposable
     {
         Logger.CheckPoint();
 
-        PixelPtr = pixelPtr;
-        BasePtr  = nativeData[ 0 ];
-        Width    = ( int ) nativeData[ 1 ];
-        Height   = ( int ) nativeData[ 2 ];
-        Format   = ( int ) nativeData[ 3 ];
+//        PixelPtr = pixelPtr;
+//        BasePtr  = nativeData[ 0 ];
+//        Width    = ( int ) nativeData[ 1 ];
+//        Height   = ( int ) nativeData[ 2 ];
+//        Format   = ( int ) nativeData[ 3 ];
     }
 
     private ByteBuffer LoadData( byte[] buffer, int offset, int len )
@@ -214,13 +194,13 @@ public class Gdx2DPixmap : IDisposable
         Logger.Debug( $"offset       : {offset}" );
         Logger.Debug( $"len          : {len}" );
 
-        var ptr = gdx2d_load( NativeData, buffer, offset, len );
+        var nativeData = new long[ 4 ];
 
-        ptr.Put( buffer );
+        var ptr = Load( nativeData, buffer, offset, len );
 
         Logger.CheckPoint();
 
-        if ( ptr == null )
+        if ( PixelPtr == null )
         {
             Logger.CheckPoint();
 
@@ -277,19 +257,17 @@ public class Gdx2DPixmap : IDisposable
     {
         Logger.CheckPoint();
 
-        Gdx2DPixmap pixmap = new( Width, Height, requestedFormat );
-
-        pixmap.Blend = GDX_2D_BLEND_NONE;
-        pixmap.DrawPixmap( this, 0, 0, 0, 0, Width, Height );
+        Gdx2DPixmap pixmap = new( Def.Width, Def.Height, requestedFormat );
+        pixmap.DrawPixmap( this, 0, 0, 0, 0, Def.Width, Def.Height );
 
         Dispose();
 
-        BasePtr    = pixmap.BasePtr;
-        Format     = pixmap.Format;
-        Height     = pixmap.Height;
-        NativeData = pixmap.NativeData;
-        PixelPtr   = pixmap.PixelPtr;
-        Width      = pixmap.Width;
+        Def = Def with
+        {
+            Format = pixmap.Def.Format,
+            Width = pixmap.Def.Width,
+            Height = pixmap.Def.Height
+        };
     }
 
     public void Clear( int color )
@@ -299,12 +277,12 @@ public class Gdx2DPixmap : IDisposable
 
     public int GetPixel( int x, int y )
     {
-        return gdx2d_get_pixel( BasePtr, x, y );
+        return 0; //( BasePtr, x, y );
     }
 
     public void SetPixel( int x, int y, int color )
     {
-        gdx2d_set_pixel( BasePtr, x, y, color );
+//        gdx2d_set_pixel( BasePtr, x, y, color );
     }
 
     public void DrawLine( int x, int y, int x2, int y2, int color )
@@ -352,7 +330,7 @@ public class Gdx2DPixmap : IDisposable
                             int dstWidth,
                             int dstHeight )
     {
-//        DrawPixmap( src, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
+//        gdx_draw_pixmap( src, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
     }
 
     public static Gdx2DPixmap? NewPixmap( StreamReader inStream, int requestedFormat )
@@ -387,19 +365,19 @@ public class Gdx2DPixmap : IDisposable
         }
     }
 
-    public int    GLInternalFormat => ToGLFormat( Format );
-    public int    GLFormat         => ToGLFormat( Format );
-    public int    GLType           => ToGLType( Format );
-    public string FormatString     => PixmapFormat.GetFormatString( Format );
+    public int    GLInternalFormat => ToGLFormat( Def.Format );
+    public int    GLFormat         => ToGLFormat( Def.Format );
+    public int    GLType           => ToGLType( Def.Format );
+    public string FormatString     => PixmapFormat.GetFormatString( Def.Format );
 
     public int Blend
     {
-        set => gdx2d_set_blend( BasePtr, value );
+        set => gdx2d_set_blend( Def, value );
     }
 
     public int Scale
     {
-        set => gdx2d_set_scale( BasePtr, value );
+        set => gdx2d_set_scale( Def, value );
     }
 
 
@@ -426,26 +404,21 @@ public class Gdx2DPixmap : IDisposable
 
     // ------------------------------------------------------------------------
 
-//    private PixmapDef Load( byte[] buffer, int offset, int len )
-//    {
-//        Logger.CheckPoint();
-//
-//        var pixels = new byte[ len ];
-//
-//        LoadImageFromMemory( buffer, len, out var width, out var height, out var format, ref pixels );
-//
-//        var pixmap = new PixmapDef
-//        {
-//            Width  = width,
-//            Height = height,
-//            Format = ( uint ) format,
-//            Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
-//            Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
-//            Pixels = pixels
-//        };
-//
-//        return pixmap;
-//    }
+    private ByteBuffer Load( long[] nativeData, byte[] buffer, int offset, int len )
+    {
+        Logger.CheckPoint();
+
+        var bytebuf = gdx2d_load( nativeData, buffer, offset, len );
+
+        Def = Def with
+        {
+            Width = ( int ) nativeData[ 1 ],
+            Height = ( int ) nativeData[ 2 ],
+            Format = ( int ) nativeData[ 3 ],
+        };
+
+        return bytebuf;
+    }
 
 //    private ByteBuffer LoadByteBuffer( ByteBuffer buffer, int offset, int len )
 //    {
@@ -507,6 +480,13 @@ public class Gdx2DPixmap : IDisposable
         var pixmap = NewPixmapDef( width, height, format );
         var buffer = BufferUtils.NewByteBuffer( pixmap.Pixels.Length );
 
+        Def = Def with
+        {
+            Width = pixmap.Width,
+            Height = pixmap.Height,
+            Format = pixmap.Format
+        };
+
         Logger.CheckPoint();
 
         return buffer;
@@ -520,9 +500,7 @@ public class Gdx2DPixmap : IDisposable
         {
             Width  = width,
             Height = height,
-            Format = ( uint ) format,
-            Blend  = GDX_2D_BLEND_SRC_OVER,
-            Scale  = GDX_2D_SCALE_BILINEAR,
+            Format = format,
             Pixels = new byte[ width * height * PixmapFormat.Gdx2dBytesPerPixel( format ) ]
         };
 
@@ -532,37 +510,126 @@ public class Gdx2DPixmap : IDisposable
     }
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     [DllImport( "Libs/gdx2d.dll" )]
     private static extern ByteBuffer gdx2d_load( long[] nativeData, byte[] buffer, int offset, int len );
+    /*
+        const unsigned char* p_buffer = (const unsigned char*)env->GetPrimitiveArrayCritical(buffer, 0);
+        gdx2d_pixmap* pixmap = gdx2d_load(p_buffer + offset, len);
+        env->ReleasePrimitiveArrayCritical(buffer, (char*)p_buffer, 0);
+
+        if(pixmap==0)
+            return 0;
+
+        jobject pixel_buffer = env->NewDirectByteBuffer((void*)pixmap->pixels, pixmap->width * pixmap->height * gdx2d_bytes_per_pixel(pixmap->format));
+        jlong* p_native_data = (jlong*)env->GetPrimitiveArrayCritical(nativeData, 0);
+        p_native_data[0] = (jlong)pixmap;
+        p_native_data[1] = pixmap->width;
+        p_native_data[2] = pixmap->height;
+        p_native_data[3] = pixmap->format;
+        env->ReleasePrimitiveArrayCritical(nativeData, p_native_data, 0);
+
+        return pixel_buffer;
+     */
 
     [DllImport( "Libs/gdx2d.dll" )]
     private static extern ByteBuffer loadByteBuffer( long[] nativeData, ByteBuffer buffer, int offset, int len );
+    /*
+        if(buffer==0)
+            return 0;
+
+        const unsigned char* p_buffer = (const unsigned char*)env->GetDirectBufferAddress(buffer);
+        gdx2d_pixmap* pixmap = gdx2d_load(p_buffer + offset, len);
+
+        if(pixmap==0)
+            return 0;
+
+        jobject pixel_buffer = env->NewDirectByteBuffer((void*)pixmap->pixels, pixmap->width * pixmap->height * gdx2d_bytes_per_pixel(pixmap->format));
+        jlong* p_native_data = (jlong*)env->GetPrimitiveArrayCritical(nativeData, 0);
+        p_native_data[0] = (jlong)pixmap;
+        p_native_data[1] = pixmap->width;
+        p_native_data[2] = pixmap->height;
+        p_native_data[3] = pixmap->format;
+        env->ReleasePrimitiveArrayCritical(nativeData, p_native_data, 0);
+
+        return pixel_buffer;
+     */
 
     [DllImport( "Libs/gdx2d.dll" )]
     private static extern ByteBuffer gdx2d_new( long[] nativeData, int width, int height, int format );
+    /*
+        gdx2d_pixmap* pixmap = gdx2d_new(width, height, format);
+        if(pixmap==0)
+            return 0;
+
+        jobject pixel_buffer = env->NewDirectByteBuffer((void*)pixmap->pixels, pixmap->width * pixmap->height * gdx2d_bytes_per_pixel(pixmap->format));
+        jlong* p_native_data = (jlong*)env->GetPrimitiveArrayCritical(nativeData, 0);
+        p_native_data[0] = (jlong)pixmap;
+        p_native_data[1] = pixmap->width;
+        p_native_data[2] = pixmap->height;
+        p_native_data[3] = pixmap->format;
+        env->ReleasePrimitiveArrayCritical(nativeData, p_native_data, 0);
+
+        return pixel_buffer;
+     */
 
     [DllImport( "Libs/gdx2d.dll" )]
     private static extern string gdx2d_get_failure_reason();
+    /* return env->NewStringUTF(gdx2d_get_failure_reason()); */
 
     [DllImport( "Libs/gdx2d.dll" )]
     private static extern void gdx2d_clear( long basePtr, int color );
+    /* gdx2d_clear((gdx2d_pixmap*)pixmap, color); */
 
     [DllImport( "Libs/gdx2d.dll" )]
     private static extern int gdx2d_get_pixel( long basePtr, int x, int y );
+    /* return gdx2d_get_pixel((gdx2d_pixmap*)pixmap, x, y); */
 
     [DllImport( "Libs/gdx2d.dll" )]
     private static extern void gdx2d_set_pixel( long basePtr, int x, int y, int color );
+    /* gdx2d_set_pixel((gdx2d_pixmap*)pixmap, x, y, color); */
 
     [DllImport( "Libs/gdx2d.dll" )]
-    private static extern void gdx2d_set_blend( long basePtr, int blend );
+    private static extern void gdx2d_set_blend( PixmapDef src, int blend );
+    /* gdx2d_set_blend((gdx2d_pixmap*)src, blend); */
 
     [DllImport( "Libs/gdx2d.dll" )]
-    private static extern void gdx2d_set_scale( long basePtr, int scale );
+    private static extern void gdx2d_set_scale( PixmapDef src, int scale );
+    /* gdx2d_set_scale((gdx2d_pixmap*)src, scale); */
 
     [DllImport( "Libs/gdx2d.dll" )]
     private static extern uint gdx2d_bytes_per_pixel( uint format );
+    /* */
 
     [DllImport( "Libs/gdx2d.dll", EntryPoint = "gdx2d_free" )]
     private static extern void free( long pixmap );
+    /* gdx2d_free((gdx2d_pixmap*)pixmap); */
+
+    [DllImport( "Libs/gdx2d.dll" )]
+    private static extern void gdx_draw_pixmap( PixmapDef src,
+                                                long dst,
+                                                int srcX,
+                                                int srcY,
+                                                int srcWidth,
+                                                int srcHeight,
+                                                int dstX,
+                                                int dstY,
+                                                int dstWidth,
+                                                int dstHeight );
+    /* gdx2d_draw_pixmap((gdx2d_pixmap*)src, (gdx2d_pixmap*)dst, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight); */
+}
+
+// ----------------------------------------------------------------------------
+
+[PublicAPI, StructLayout( LayoutKind.Sequential )]
+public struct PixmapDef
+{
+    public int    Width  { get; set; }
+    public int    Height { get; set; }
+    public int    Format { get; set; }
+    public int    Blend  { get; set; }
+    public int    Scale  { get; set; }
+    public byte[] Pixels { get; set; }
 }

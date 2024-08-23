@@ -24,7 +24,7 @@
 
 using LughSharp.LibCore.Utils.Buffers.HeapBuffers;
 
-namespace LughSharp.LibCore.Graphics.Playground;
+namespace LughSharp.LibCore.Graphics;
 
 [PublicAPI]
 public class Gdx2DUtils
@@ -73,7 +73,7 @@ public class Gdx2DUtils
         }
     }
 
-    private static uint ToFormat( uint format, uint color )
+    private static uint ToFormat( int format, uint color )
     {
         uint r;
         uint g;
@@ -255,7 +255,7 @@ public class Gdx2DUtils
         {
             Width  = width,
             Height = height,
-            Format = ( uint ) format,
+            Format = format,
             Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
             Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
             Pixels = pixels
