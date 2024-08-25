@@ -58,17 +58,17 @@ public class FileTextureData : ITextureData
     {
         Logger.CheckPoint();
         
-        File       = file;
-        _pixmap    = preloadedPixmap;
-        _format    = format;
-        UseMipMaps = useMipMaps;
+        this.File       = file;
+        this._pixmap    = preloadedPixmap;
+        this._format    = format;
+        this.UseMipMaps = useMipMaps;
 
         if ( _pixmap != null )
         {
-            _width  = _pixmap.Width;
-            _height = _pixmap.Height;
+            this._width  = _pixmap.Width;
+            this._height = _pixmap.Height;
 
-            _format ??= _pixmap.GetFormat();
+            this._format ??= _pixmap.GetFormat();
         }
     }
 

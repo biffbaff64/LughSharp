@@ -106,6 +106,10 @@ public class Pixmap : IDisposable
     {
         Logger.CheckPoint();
         Logger.Debug( $"File: {file.FullName}" );
+        if ( File.Exists( file.FullName ) )
+        {
+            Logger.Debug( "Image file found" );
+        }
 
         try
         {
@@ -118,6 +122,7 @@ public class Pixmap : IDisposable
             PixelData = new Gdx2DPixmap( bytes, 0, bytes.Length, 0 );
 
             Logger.CheckPoint();
+            Logger.Debug( $"{PixelData.Def.Width}x{PixelData.Def.Height}, {PixelData.Def.Format}" );
         }
         catch ( Exception e )
         {

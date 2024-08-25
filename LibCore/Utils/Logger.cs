@@ -189,10 +189,12 @@ public static partial class Logger
     /// <li> Current time and date. </li>
     /// <li> Calling Class/method/line number information. </li>
     /// </summary>
+    /// <param name="drawLine"> Draws a divider line first, if set to true. </param>
     /// <param name="callerFilePath"> The File this message was sent from. </param>
     /// <param name="callerMethod"> The Method this message was sent from. </param>
     /// <param name="callerLine"> The Line this message was sent from. </param>
-    public static void CheckPoint( [CallerFilePath] string callerFilePath = "",
+    public static void CheckPoint( bool drawLine = false,
+                                   [CallerFilePath] string callerFilePath = "",
                                    [CallerMemberName] string callerMethod = "",
                                    [CallerLineNumber] int callerLine = 0 )
     {
@@ -201,6 +203,11 @@ public static partial class Logger
             return;
         }
 
+        if ( drawLine )
+        {
+            Divider();
+        }
+        
         var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
         var message = $"[CHECKPOINT] : {GetTimeStampInfo()} : {GetCallerInfo( callerID )}";

@@ -22,29 +22,15 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using LughSharp.LibCore.Utils.Buffers.HeapBuffers;
 
 namespace LughSharp.LibCore.Graphics;
 
 [PublicAPI]
 public class Gdx2DUtils
 {
-    [PublicAPI, StructLayout( LayoutKind.Sequential )]
-    public struct Gdx2dPixmap
-    {
-        public uint   Width  { get; set; }
-        public uint   Height { get; set; }
-        public uint   Format { get; set; }
-        public uint   Blend  { get; set; }
-        public uint   Scale  { get; set; }
-        public byte[] Pixels { get; set; }
-    }
-
-    // ------------------------------------------------------------------------
-
-    private static uint[] _lu4 = null!;
-    private static uint[] _lu5 = null!;
-    private static uint[] _lu6 = null!;
+    private static uint[]? _lu4 = null;
+    private static uint[]? _lu5 = null;
+    private static uint[]? _lu6 = null;
 
     // ------------------------------------------------------------------------
 
@@ -133,7 +119,10 @@ public class Gdx2DUtils
 
     public static uint ToRGBA8888( uint format, uint color )
     {
-        GenerateLookups();
+        if ( _lu5 == null )
+        {
+            GenerateLookups();
+        }
 
         uint r;
         uint g;
@@ -154,14 +143,14 @@ public class Gdx2DUtils
                 return color;
 
             case PixmapFormat.GDX_2D_FORMAT_RGB565:
-                r = _lu5[ ( color & 0xf800 ) >> 11 ] << 24;
-                g = _lu6[ ( color & 0x7e0 ) >> 5 ] << 16;
+                r = _lu5![ ( color & 0xf800 ) >> 11 ] << 24;
+                g = _lu5[ ( color & 0x7e0 ) >> 5 ] << 16;
                 b = _lu5[ ( color & 0x1f ) ] << 8;
 
                 return r | g | b | 0xff;
 
             case PixmapFormat.GDX_2D_FORMAT_RGBA4444:
-                r = _lu4[ ( color & 0xf000 ) >> 12 ] << 24;
+                r = _lu4![ ( color & 0xf000 ) >> 12 ] << 24;
                 g = _lu4[ ( color & 0xf00 ) >> 8 ] << 16;
                 b = _lu4[ ( color & 0xf0 ) >> 4 ] << 8;
 
@@ -231,26 +220,30 @@ public class Gdx2DUtils
         return ( dstR << 24 ) | ( dstG << 16 ) | ( dstB << 8 ) | a;
     }
 
-    public static ByteBuffer Gdx2dLoad( long[] nativeData, byte[] buffer, int offset, int len )
+    public static PixmapDef? Gdx2dLoad( ref long[] nativeData, byte[] buffer, int len )
     {
         Logger.CheckPoint();
 
-        var buf = new HeapByteBuffer( buffer, offset, len );
+        var (width, height, format, pixels ) = LoadImageFromMemory( buffer, len );
 
-        PixmapDef? pixmap = Gdx2dLoad( buffer, len );
-
-
-        return buf;
+        return NewPixmapDef( width, height, format, pixels );
     }
 
-    public static PixmapDef? Gdx2dLoad( byte[] buffer, int len )
+    private static (int w, int h, int f, byte[] bytes) LoadImageFromMemory( byte[] srcBuffer, int len )
     {
-        Logger.CheckPoint();
+        var w = 0;
+        var h = 0;
+        var f = PixmapFormat.GDX_2D_FORMAT_RGBA8888;
 
-        var pixels = new byte[ len ];
+        var m = new MemoryStream();
+        m.Write( srcBuffer, 0, len );
+        var bytes = m.ToArray();
 
-        LoadImageFromMemory( buffer, len, out var width, out var height, out var format, ref pixels );
+        return ( w, h, f, bytes );
+    }
 
+    public static PixmapDef NewPixmapDef( int width, int height, int format, byte[]? pixels = null )
+    {
         var pixmap = new PixmapDef
         {
             Width  = width,
@@ -258,36 +251,7 @@ public class Gdx2DUtils
             Format = format,
             Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
             Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
-            Pixels = pixels
-        };
-
-        return pixmap;
-    }
-
-    private static void LoadImageFromMemory( byte[] buffer, int len, out int w, out int h, out int f, ref byte[] bytes )
-    {
-        //TODO: Set up data correctly
-
-        for ( var i = 0; i < len; i++ )
-        {
-            bytes[ i ] = buffer[ i ];
-        }
-
-        w = 0;
-        h = 0;
-        f = PixmapFormat.GDX_2D_FORMAT_RGBA8888;
-    }
-
-    public static Gdx2dPixmap Gdx2dNew( int width, int height, int format )
-    {
-        var pixmap = new Gdx2dPixmap
-        {
-            Width  = ( uint ) width,
-            Height = ( uint ) height,
-            Format = ( uint ) format,
-            Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
-            Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
-            Pixels = new byte[ width * height * PixmapFormat.Gdx2dBytesPerPixel( format ) ]
+            Pixels = pixels ?? new byte[ ( width * height * PixmapFormat.Gdx2dBytesPerPixel( format ) ) ]
         };
 
         return pixmap;
@@ -295,7 +259,7 @@ public class Gdx2DUtils
 
     // ------------------------------------------------------------------------
 
-    public static void gdx2d_clear( ref PixmapDef pixmap, uint col )
+    public static void Gdx2dClear( ref PixmapDef pixmap, uint col )
     {
         col = ToFormat( pixmap.Format, col );
 
@@ -337,22 +301,27 @@ public class Gdx2DUtils
 
     public static void ClearLuminanceAlpha( ref PixmapDef pixmap, uint col )
     {
+        //TODO:
     }
 
     public static void ClearRGB888( ref PixmapDef pixmap, uint col )
     {
+        //TODO:
     }
 
     public static void ClearRGBA8888( ref PixmapDef pixmap, uint col )
     {
+        //TODO:
     }
 
     public static void ClearRGB565( ref PixmapDef pixmap, uint col )
     {
+        //TODO:
     }
 
     public static void ClearRGBA4444( ref PixmapDef pixmap, uint col )
     {
+        //TODO:
     }
     
     // ------------------------------------------------------------------------
@@ -425,18 +394,18 @@ public class Gdx2DUtils
         return BitConverter.ToUInt16( pixelAddr, 0 );
     }
 
-    public static void Gdx2dFree( Gdx2dPixmap pixmap )
+    public static void Gdx2dFree( PixmapDef pixmap )
     {
         //TODO: In C#, garbage collection handles this, so no need to free memory manually
         pixmap.Pixels = null!;
     }
 
-    public static void Gdx2dSetBlend( Gdx2dPixmap pixmap, uint blend )
+    public static void Gdx2dSetBlend( PixmapDef pixmap, int blend )
     {
         pixmap.Blend = blend;
     }
 
-    public static void Gdx2dSetScale( Gdx2dPixmap pixmap, uint scale )
+    public static void Gdx2dSetScale( PixmapDef pixmap, int scale )
     {
         pixmap.Scale = scale;
     }

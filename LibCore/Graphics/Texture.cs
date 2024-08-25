@@ -86,6 +86,7 @@ public class Texture : GLTexture
     public Texture( FileInfo? file, bool useMipMaps )
         : this( file, Pixmap.Format.RGBA8888, useMipMaps )
     {
+        Logger.CheckPoint();
     }
 
     /// <summary>

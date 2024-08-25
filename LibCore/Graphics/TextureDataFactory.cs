@@ -41,12 +41,22 @@ public static class TextureDataFactory
     public static ITextureData LoadFromFile( FileInfo file, bool useMipMaps = true )
     {
         Logger.CheckPoint();
+        if ( File.Exists( file.FullName ) )
+        {
+            Logger.Debug( "Image file found" );
+        }
 
         ArgumentNullException.ThrowIfNull( file );
 
         Pixmap.Format? format = null; // Default format if not specified
 
-        return LoadFromFile( file, format );
+        var data = LoadFromFile( file, format );
+
+        Logger.Debug( $"WH: {data.Width}, {data.Height}" );
+        Logger.Debug( $"Format: {data.GetFormat()}" );
+        Logger.Debug( $"Prepared: {data.IsPrepared}" );
+
+        return data;
     }
 
     /// <summary>
@@ -60,7 +70,12 @@ public static class TextureDataFactory
     public static ITextureData LoadFromFile( FileInfo file, Pixmap.Format? format, bool useMipMaps = true )
     {
         Logger.CheckPoint();
-        
+        Logger.Debug( $"Loading texture data from '{file.FullName}'" );
+        if ( File.Exists( file.FullName ) )
+        {
+            Logger.Debug( "Image file found" );
+        }
+
         ArgumentNullException.ThrowIfNull( file );
 
         return file.Extension.ToLower() switch

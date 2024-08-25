@@ -8,6 +8,7 @@
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CDevelopment_005CProjects_005CCSharp_005CLughSharp_005CResources_005Cgdx2d_002Edll/@EntryIndexedValue">True</s:Boolean>
 	
 	<s:String x:Key="/Default/CodeEditing/GenerateMemberBody/MethodImplementationKind/@EntryValue">ReturnDefaultValue</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AMarshal_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003F_002E_002E_003FUsers_003Frichi_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E2_003Fresharper_002Dhost_003FSourcesCache_003Fd620a3afb191b5e1e1deb13b4a8a96acc9f73836158d547dfc93ecebdc5bbb_003FMarshal_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	
 	
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=BadExpressionBracesLineBreaks/@EntryIndexedValue">DO_NOT_SHOW</s:String>
