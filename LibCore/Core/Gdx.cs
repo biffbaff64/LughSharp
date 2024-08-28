@@ -176,6 +176,9 @@ public static class Gdx
     
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// This is here, in line with my faith.
+    /// </summary>
     private const string A_PRAYER_TO_THE_GODDESS =
         "Mother Earth, enlighten what's dark in me. " +
         "Strengthen what's weak in me. " +

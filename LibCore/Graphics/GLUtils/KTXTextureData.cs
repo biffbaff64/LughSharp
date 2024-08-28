@@ -614,10 +614,7 @@ public class KtxTextureData : ITextureData, ICubemapData
     public int Height { get; set; }
 
     /// <returns> the <see cref="Pixmap.Format"/> of the pixel data </returns>
-    public Pixmap.Format GetFormat()
-    {
-        return Pixmap.Format.Alpha;
-    }
+    public Pixmap.Format? Format { get; set; } = Pixmap.Format.Alpha;
 
     /// <returns> whether to generate mipmaps or not. </returns>
     public bool UseMipMaps { get; set; }

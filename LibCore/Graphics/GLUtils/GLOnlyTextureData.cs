@@ -36,14 +36,14 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class GLOnlyTextureData : ITextureData
 {
-    public int  MipLevel       { get; set; } = 0;
-    public int  InternalFormat { get; set; }
-    public int  Format         { get; set; }
-    public int  Type           { get; set; }
-    public int  Width          { get; set; } = 0;
-    public int  Height         { get; set; } = 0;
-    public bool IsPrepared     { get; set; } = false;
-    public bool UseMipMaps     { get; set; }
+    public int            MipLevel       { get; set; } = 0;
+    public int            InternalFormat { get; set; }
+    public Pixmap.Format? Format         { get; set; }
+    public int            Type           { get; set; }
+    public int            Width          { get; set; } = 0;
+    public int            Height         { get; set; } = 0;
+    public bool           IsPrepared     { get; set; } = false;
+    public bool           UseMipMaps     { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ public class GLOnlyTextureData : ITextureData
         Height         = height;
         MipLevel       = mipMapLevel;
         InternalFormat = internalFormat;
-        Format         = format;
+        Format         = PixmapFormat.FromGdx2DPixmapFormat( format );
         Type           = type;
     }
 
@@ -96,7 +96,15 @@ public class GLOnlyTextureData : ITextureData
 
     public unsafe void ConsumeCustomData( int target )
     {
-        Gdx.GL.glTexImage2D( target, MipLevel, InternalFormat, Width, Height, 0, Format, Type, null! );
+        Gdx.GL.glTexImage2D( target,
+                             MipLevel,
+                             InternalFormat,
+                             Width,
+                             Height,
+                             0,
+                             PixmapFormat.ToGdx2DPixmapFormat( Format ),
+                             Type,
+                             null! );
     }
 
     /// <summary>

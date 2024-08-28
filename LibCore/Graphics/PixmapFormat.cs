@@ -49,7 +49,7 @@ public class PixmapFormat
     /// <param name="format"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public static int ToGdx2DPixmapFormat( Pixmap.Format format )
+    public static int ToGdx2DPixmapFormat( Pixmap.Format? format )
     {
         return format switch
         {

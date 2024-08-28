@@ -22,9 +22,7 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using LughSharp.LibCore.Utils.Buffers.HeapBuffers;
 using LughSharp.LibCore.Utils.Exceptions;
-using static LughSharp.LibCore.Graphics.Gdx2DUtils;
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
@@ -55,13 +53,9 @@ public class Gdx2DPixmap : IDisposable
 
     #region properties
 
-    public PixmapDef  Def        { get; set; }
-    public ByteBuffer PixelPtr   { get; set; }
-    public long[]     NativeData { get; set; } = new long[ 4 ];
-
-//    public int Format { get; set; }
-//    public int Width  { get; set; }
-//    public int Height { get; set; }
+    public PixmapDef   Def        { get; set; }
+    public ByteBuffer? PixelPtr   { get; set; }
+    public long[]      NativeData { get; set; } = new long[ 4 ];
 
     #endregion properties
 
@@ -69,20 +63,20 @@ public class Gdx2DPixmap : IDisposable
 
     /// <summary>
     /// </summary>
-    /// <param name="encodedData"></param>
+    /// <param name="buffer"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
     /// <param name="offset"></param>
-    /// <param name="len"></param>
     /// <param name="requestedFormat"></param>
     /// <exception cref="IOException"></exception>
-    public Gdx2DPixmap( byte[] encodedData, int offset, int len, int requestedFormat )
+    public Gdx2DPixmap( byte[] buffer, int width, int height, int offset, int requestedFormat )
     {
         Logger.CheckPoint();
-        Logger.Debug( $"encodedData length: {encodedData.Length}" );
+        Logger.Debug( $"buffer length: {buffer.Length}" );
         Logger.Debug( $"offset: {offset}" );
-        Logger.Debug( $"len: {len}" );
         Logger.Debug( $"requestedFormat: {requestedFormat}" );
 
-        LoadData( encodedData, offset, len );
+        LoadData( buffer, offset, buffer.Length );
 
         Logger.CheckPoint();
 
@@ -90,6 +84,8 @@ public class Gdx2DPixmap : IDisposable
         {
             Convert( requestedFormat );
         }
+
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -131,7 +127,7 @@ public class Gdx2DPixmap : IDisposable
     {
         Logger.CheckPoint();
 
-        PixelPtr = GetNewPixmap( width, height, format );
+        PixelPtr = NewPixmapByteBuffer( width, height, format );
 
         if ( PixelPtr == null )
         {
@@ -151,20 +147,20 @@ public class Gdx2DPixmap : IDisposable
         Logger.CheckPoint();
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="pixelPtr"></param>
-    /// <param name="nativeData"></param>
-    public Gdx2DPixmap( ByteBuffer pixelPtr, long[] nativeData )
-    {
-        Logger.CheckPoint();
-
+//    /// <summary>
+//    /// </summary>
+//    /// <param name="pixelPtr"></param>
+//    /// <param name="nativeData"></param>
+//    public Gdx2DPixmap( ByteBuffer pixelPtr, long[] nativeData )
+//    {
+//        Logger.CheckPoint();
+//
 //        PixelPtr = pixelPtr;
 //        BasePtr  = nativeData[ 0 ];
 //        Width    = ( int ) nativeData[ 1 ];
 //        Height   = ( int ) nativeData[ 2 ];
 //        Format   = ( int ) nativeData[ 3 ];
-    }
+//    }
 
     private ByteBuffer LoadData( byte[] buffer, int offset, int len )
     {
@@ -311,37 +307,37 @@ public class Gdx2DPixmap : IDisposable
 //        gdx_draw_pixmap( src, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
     }
 
-    public static Gdx2DPixmap? NewPixmap( StreamReader inStream, int requestedFormat )
-    {
-        Logger.CheckPoint();
+//    public static Gdx2DPixmap? NewPixmap( StreamReader inStream, int requestedFormat )
+//    {
+//        Logger.CheckPoint();
+//
+//        try
+//        {
+//            return new Gdx2DPixmap( inStream, requestedFormat );
+//        }
+//        catch ( IOException e )
+//        {
+//            Logger.Error( e.Message );
+//
+//            return null;
+//        }
+//    }
 
-        try
-        {
-            return new Gdx2DPixmap( inStream, requestedFormat );
-        }
-        catch ( IOException e )
-        {
-            Logger.Error( e.Message );
-
-            return null;
-        }
-    }
-
-    public static Gdx2DPixmap? NewPixmap( int width, int height, int format )
-    {
-        Logger.CheckPoint();
-
-        try
-        {
-            return new Gdx2DPixmap( width, height, format );
-        }
-        catch ( ArgumentException e )
-        {
-            Logger.Error( e.Message );
-
-            return null;
-        }
-    }
+//    public static Gdx2DPixmap? NewPixmap( int width, int height, int format )
+//    {
+//        Logger.CheckPoint();
+//
+//        try
+//        {
+//            return new Gdx2DPixmap( width, height, format );
+//        }
+//        catch ( ArgumentException e )
+//        {
+//            Logger.Error( e.Message );
+//
+//            return null;
+//        }
+//    }
 
     public int    GLInternalFormat => ToGLFormat( Def.Format );
     public int    GLFormat         => ToGLFormat( Def.Format );
@@ -382,28 +378,25 @@ public class Gdx2DPixmap : IDisposable
 
     // ------------------------------------------------------------------------
 
-    private ByteBuffer Load( byte[] buffer, int offset, int len )
-    {
-        Logger.CheckPoint( true );
-        Logger.Debug( $"buffer: {buffer} ({buffer.Length}), offset: {offset}, len: {len}" );
-
-        Def = load( buffer, len );
-        
-//        Def = Def with
+//    private unsafe ByteBuffer Load( byte[] buffer, int offset, int len )
+//    {
+//        Logger.CheckPoint( true );
+//        Logger.Debug( $"buffer: {buffer} ({buffer.Length}), offset: {offset}, len: {len}" );
+//
+//        fixed ( byte* ptr = &buffer[ offset ] )
 //        {
-//            Pixels = NativeData[ 0 ],
-//            Width = ( int ) NativeData[ 1 ],
-//            Height = ( int ) NativeData[ 2 ],
-//            Format = ( int ) NativeData[ 3 ],
-//        };
-
-        return new HeapByteBuffer( Def.Pixels, offset, len );
-        
-        // --------------------------------------------------------------------
-        
-        [DllImport( "gdx2d.dll", EntryPoint = "gdx2d_load" )]
-        static extern IntPtr load( long nativeData, int len );
-    }
+//            Def = load( ptr, len );
+//        }
+//
+//        Logger.CheckPoint();
+//
+//        return new HeapByteBuffer( Def.Pixels, offset, len );
+//
+//        // --------------------------------------------------------------------
+//
+//        [DllImport( "Libs/gdx2d.dll", EntryPoint = "gdx2d_load" )]
+//        static extern PixmapDef load( byte* buffer, int len );
+//    }
 
 //    private ByteBuffer LoadByteBuffer( ByteBuffer buffer, int offset, int len )
 //    {
@@ -424,41 +417,39 @@ public class Gdx2DPixmap : IDisposable
 
     // ------------------------------------------------------------------------
 
-//    private static ByteBuffer Load( byte[] buffer, int offset, int len )
-//    {
-//        var bufferHandle = GCHandle.Alloc( buffer, GCHandleType.Pinned );
-//        var pixmapPtr    = load( bufferHandle.AddrOfPinnedObject() + offset, len );
-//        var pixmap       = Marshal.PtrToStructure< PixmapDef >( pixmapPtr );
-//
-//        bufferHandle.Free();
-//
-//        nativeData[ 0 ] = pixmapPtr.ToInt64();
-//        nativeData[ 1 ] = pixmap.Width;
-//        nativeData[ 2 ] = pixmap.Height;
-//        nativeData[ 3 ] = pixmap.Format;
-//
-//        var dataBlockSize = ( int ) ( pixmap.Width * pixmap.Height * bytes_per_pixel( pixmap.Format ) );
-//        var byteArray     = new byte[ dataBlockSize ];
-//        Marshal.Copy( pixmap.Pixels, byteArray, 0, dataBlockSize );
-//
-//        var pixelBuffer = ByteBuffer.Wrap( byteArray );
-//
-//        return pixelBuffer;
-//
-//        // --------------------------------------------------------------------
-//        
-//        [DllImport( "gdx2d.dll", EntryPoint = "gdx2d_load" )]
-//        static extern IntPtr load( long nativeData, int len );
-//
-//        [DllImport( "gdx2d.dll", EntryPoint = "gdx2d_bytes_per_pixel" )]
-//        static extern uint bytes_per_pixel( uint format );
-//        
-//        // --------------------------------------------------------------------
-//    }
+    private ByteBuffer Load( byte[] buffer, int offset, int len )
+    {
+        Logger.CheckPoint();
+
+        var bufferHandle = GCHandle.Alloc( buffer, GCHandleType.Pinned );
+        Def = load( bufferHandle.AddrOfPinnedObject() + offset, len );
+
+        Logger.CheckPoint();
+
+        var dataBlockSize = ( int ) ( Def.Width * Def.Height * bytes_per_pixel( ( uint ) Def.Format ) );
+
+        Logger.CheckPoint();
+
+        var pixelBuffer = ByteBuffer.Wrap( buffer );
+
+        Logger.CheckPoint();
+
+        return pixelBuffer;
+
+        // --------------------------------------------------------------------
+
+        [DllImport( "Libs/gdx2d.dll", EntryPoint = "gdx2d_load" )]
+        static extern PixmapDef load( long nativeData, int len );
+
+        [DllImport( "Libs/gdx2d.dll", EntryPoint = "gdx2d_bytes_per_pixel" )]
+        static extern uint bytes_per_pixel( uint format );
+
+        // --------------------------------------------------------------------
+    }
 
     // ------------------------------------------------------------------------
 
-    private ByteBuffer GetNewPixmap( int width, int height, int format )
+    private ByteBuffer NewPixmapByteBuffer( int width, int height, int format )
     {
         Logger.CheckPoint();
 
@@ -499,7 +490,7 @@ public class Gdx2DPixmap : IDisposable
     // ------------------------------------------------------------------------
 
     [DllImport( "Libs/gdx2d.dll" )]
-    private static extern PixmapDef gdx2d_load( long[] nativeData, byte[] buffer, int offset, int len );
+    private static extern ByteBuffer gdx2d_load( long[] nativeData, byte[] buffer, int offset, int len );
     /*
         const unsigned char* p_buffer = (const unsigned char*)env->GetPrimitiveArrayCritical(buffer, 0);
         gdx2d_pixmap* pixmap = gdx2d_load(p_buffer + offset, len);

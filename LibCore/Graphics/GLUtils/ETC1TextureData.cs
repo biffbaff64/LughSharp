@@ -124,7 +124,7 @@ public class ETC1TextureData : ITextureData
         {
             var pixmap = _etc1.DecodeImage( _data, Pixmap.Format.RGB565 );
 
-            fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
+            fixed ( void* ptr = &pixmap.Pixels!.BackingArray()[ 0 ] )
             {
                 Gdx.GL.glTexImage2D( target,
                                      0,
@@ -172,10 +172,7 @@ public class ETC1TextureData : ITextureData
     }
 
     /// <inheritdoc />
-    public Pixmap.Format GetFormat()
-    {
-        return Pixmap.Format.Alpha;
-    }
+    public Pixmap.Format? Format { get; set; } = Pixmap.Format.Alpha;
 
     /// <inheritdoc />
     public bool IsManaged

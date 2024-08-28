@@ -26,37 +26,30 @@
 namespace LughSharp.LibCore.Graphics.G2D;
 
 [PublicAPI]
-public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
+public class ParticleEffectPool( ParticleEffect effect, int initialCapacity, int max )
+    : Pool< ParticleEffectPool.PooledEffect >( initialCapacity, max )
 {
-    private readonly ParticleEffect _effect;
-
-    public ParticleEffectPool( ParticleEffect effect, int initialCapacity, int max )
-        : base( initialCapacity, max )
-    {
-        _effect = effect;
-    }
-
     //TODO: Tests needed for this method, check it's called properly
     public new PooledEffect NewObject()
     {
-        var pooledEffect = new PooledEffect( _effect, this );
+        var pooledEffect = new PooledEffect( effect, this );
         pooledEffect.Start();
 
         return pooledEffect;
     }
 
-    public override void Free( PooledEffect effect )
+    public override void Free( PooledEffect effect1 )
     {
-        base.Free( effect );
+        base.Free( effect1 );
 
-        effect.Reset( false ); // copy parameters exactly to avoid introducing error
+        effect1.Reset( false ); // copy parameters exactly to avoid introducing error
 
-        if ( !effect.XSizeScale.Equals( _effect.XSizeScale )
-          || !effect.YSizeScale.Equals( _effect.YSizeScale )
-          || !effect.MotionScale.Equals( _effect.MotionScale ) )
+        if ( !effect1.XSizeScale.Equals( effect.XSizeScale )
+          || !effect1.YSizeScale.Equals( effect.YSizeScale )
+          || !effect1.MotionScale.Equals( effect.MotionScale ) )
         {
-            List< ParticleEmitter > emitters         = effect.GetEmitters();
-            List< ParticleEmitter > templateEmitters = _effect.GetEmitters();
+            List< ParticleEmitter > emitters         = effect1.GetEmitters();
+            List< ParticleEmitter > templateEmitters = effect.GetEmitters();
 
             for ( var i = 0; i < emitters.Count; i++ )
             {
@@ -67,9 +60,9 @@ public class ParticleEffectPool : Pool< ParticleEffectPool.PooledEffect >
                 emitter.MatchMotion( templateEmitter );
             }
 
-            effect.XSizeScale  = _effect.XSizeScale;
-            effect.YSizeScale  = _effect.YSizeScale;
-            effect.MotionScale = _effect.MotionScale;
+            effect1.XSizeScale  = effect.XSizeScale;
+            effect1.YSizeScale  = effect.YSizeScale;
+            effect1.MotionScale = effect.MotionScale;
         }
     }
 

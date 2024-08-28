@@ -53,7 +53,7 @@ public class Texture : GLTexture
 {
     public AssetManager? AssetManager { get; set; } = null;
     public ITextureData? TextureData  { get; set; } = null;
-
+    
     // ------------------------------------------------------------------------
 
     public override int  Width     => TextureData?.Width ?? 0;
@@ -78,6 +78,7 @@ public class Texture : GLTexture
     {
         Logger.CheckPoint();
     }
+    
     /// <summary>
     /// Create a new Texture from the file described by the given <see cref="FileInfo"/>
     /// </summary>
@@ -157,15 +158,15 @@ public class Texture : GLTexture
     protected Texture( int glTarget, uint glTextureHandle, ITextureData? data )
         : base( glTarget, glTextureHandle )
     {
+        ArgumentNullException.ThrowIfNull( data );
+
         Logger.CheckPoint();
         Logger.Debug( $"glTarget       : {glTarget}" );
         Logger.Debug( $"glTextureHandle: {glTextureHandle}" );
         Logger.Debug( $"data           : {data}" );
-        Logger.Debug( $"data.Width     : {data?.Width}" );
-        Logger.Debug( $"data.Height    : {data?.Height}" );
-        Logger.Debug( $"data.Format    : {data?.GetFormat()}" );
-
-        ArgumentNullException.ThrowIfNull( data );
+        Logger.Debug( $"data.Width     : {data.Width} - Zero is possible" );
+        Logger.Debug( $"data.Height    : {data.Height} - Zero is possible" );
+        Logger.Debug( $"data.Format    : {data.Format}" );
 
         Load( data );
 
@@ -191,11 +192,9 @@ public class Texture : GLTexture
         }
 
         Logger.Debug( $"data       : {data}" );
-        Logger.Debug( $"data.Width : {data?.Width}" );
-        Logger.Debug( $"data.Height: {data?.Height}" );
-        Logger.Debug( $"data.Format: {data?.GetFormat()}" );
-
-        
+        Logger.Debug( $"data.Width : {data?.Width} - Zero is possible" );
+        Logger.Debug( $"data.Height: {data?.Height} - Zero is possible" );
+        Logger.Debug( $"data.Format: {data?.Format}" );
         
         TextureData = data;
 

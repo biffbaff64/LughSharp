@@ -30,14 +30,13 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class FileTextureArrayData : ITextureArrayData
 {
-    private readonly Pixmap.Format   _format;
     private readonly ITextureData?[] _textureData;
     private readonly bool            _useMipMaps;
     private          int             _depth;
 
     public FileTextureArrayData( Pixmap.Format format, bool useMipMaps, FileInfo[] files )
     {
-        _format      = format;
+        Format      = format;
         _useMipMaps  = useMipMaps;
         _depth       = files.Length;
         _textureData = new ITextureData?[ files.Length ];
@@ -63,11 +62,13 @@ public class FileTextureArrayData : ITextureArrayData
     /// <returns> whether this implementation can cope with a EGL context loss. </returns>
     public bool Managed { get; set; }
 
+    public Pixmap.Format Format { get; set; }
+
     /// <returns> the internal format of this TextureArray </returns>
-    public int InternalFormat => _format.ToGLFormat();
+    public int InternalFormat => PixmapFormat.ToGLFormat( Format );
 
     /// <returns> the GL type of this TextureArray </returns>
-    public int GLType => _format.ToGLType();
+    public int GLType => PixmapFormat.ToGLType( Format );
 
     /// <summary>
     /// Prepares the TextureArrayData for a call to <see cref="ITextureArrayData.ConsumeTextureArrayData"/>.
@@ -135,9 +136,9 @@ public class FileTextureArrayData : ITextureArrayData
                 Debug.Assert( texData != null, nameof( texData ) + " != null" );
                 Debug.Assert( pixmap != null, nameof( pixmap ) + " != null" );
 
-                if ( texData.GetFormat() != pixmap.GetFormat() )
+                if ( texData.Format != pixmap.GetFormat() )
                 {
-                    var temp = new Pixmap( pixmap.Width, pixmap.Height, texData.GetFormat() );
+                    var temp = new Pixmap( pixmap.Width, pixmap.Height, texData.Format );
 
                     temp.Blending = Pixmap.BlendTypes.None;
                     temp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
@@ -153,7 +154,7 @@ public class FileTextureArrayData : ITextureArrayData
 
                 unsafe
                 {
-                    fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
+                    fixed ( void* ptr = &pixmap.Pixels!.BackingArray()[ 0 ] )
                     {
                         Gdx.GL.glTexSubImage3D( IGL.GL_TEXTURE_2D_ARRAY,
                                                 0,

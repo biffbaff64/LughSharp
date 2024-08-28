@@ -37,11 +37,11 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class FloatTextureData : ITextureData
 {
-    public FloatBuffer Buffer     { get; private set; } = null!;
-    public int         Width      { get; set; }         = 0;
-    public int         Height     { get; set; }         = 0;
-    public bool        IsPrepared { get; set; }         = false;
-    public bool        UseMipMaps { get; set; }
+    public FloatBuffer   Buffer     { get; private set; } = null!;
+    public int           Width      { get; set; }         = 0;
+    public int           Height     { get; set; }         = 0;
+    public bool          IsPrepared { get; set; }         = false;
+    public bool          UseMipMaps { get; set; }
 
     private readonly int  _format;
     private readonly int  _internalFormat;
@@ -170,6 +170,12 @@ public class FloatTextureData : ITextureData
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    public Pixmap.Format? Format
+    {
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
+    }
+
     public Pixmap ConsumePixmap()
     {
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
@@ -178,10 +184,5 @@ public class FloatTextureData : ITextureData
     public bool ShouldDisposePixmap()
     {
         throw new GdxRuntimeException( "This TextureData implementation does not return a Pixmap" );
-    }
-
-    public Pixmap.Format GetFormat()
-    {
-        throw new NotSupportedException();
     }
 }

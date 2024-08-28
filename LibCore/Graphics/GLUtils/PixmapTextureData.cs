@@ -30,6 +30,17 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class PixmapTextureData : ITextureData
 {
+    public Pixmap         Pixmap        { get; set; }
+    public Pixmap.Format? Format        { get; set; }
+    public bool           DisposePixmap { get; set; }
+    public bool           IsManaged     { get; set; }
+    public bool           UseMipMaps    { get; set; }
+
+    // ------------------------------------------------------------------------
+
+    private int _width;
+    private int _height;
+
     // ------------------------------------------------------------------------
 
     public PixmapTextureData( Pixmap pixmap,
@@ -45,13 +56,11 @@ public class PixmapTextureData : ITextureData
         DisposePixmap = disposePixmap;
         IsManaged     = managed;
         Format        = format ?? pixmap.GetFormat();
-    }
 
-    public Pixmap        Pixmap        { get; set; }
-    public Pixmap.Format Format        { get; set; }
-    public bool          DisposePixmap { get; set; }
-    public bool          IsManaged     { get; set; }
-    public bool          UseMipMaps    { get; set; }
+        Pixmap.Width     = pixmap.Width;
+        Pixmap.Height    = pixmap.Height;
+        Pixmap.PixFormat = PixmapFormat.ToGdx2DPixmapFormat( Format );
+    }
 
     public Pixmap ConsumePixmap()
     {
@@ -85,14 +94,6 @@ public class PixmapTextureData : ITextureData
     bool ITextureData.ShouldDisposePixmap()
     {
         return DisposePixmap;
-    }
-
-    /// <summary>
-    /// Returns the <see cref="Pixmap.Format"/> of the pixel data.
-    /// </summary>
-    public Pixmap.Format GetFormat()
-    {
-        return Format;
     }
 
     public void ConsumeCustomData( int target )

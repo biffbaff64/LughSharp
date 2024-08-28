@@ -220,17 +220,20 @@ public class Gdx2DUtils
         return ( dstR << 24 ) | ( dstG << 16 ) | ( dstB << 8 ) | a;
     }
 
-    public static PixmapDef? Gdx2dLoad( ref long[] nativeData, byte[] buffer, int len )
+    public static PixmapDef Gdx2dLoad( byte[] buffer, int len )
     {
         Logger.CheckPoint();
 
-        var (width, height, format, pixels ) = LoadImageFromMemory( buffer, len );
+        var (width, height, format, pixels) = LoadImageFromMemory( buffer, len );
 
+        Logger.Debug( $"width: {width}, height: {height}, format: {format}, pixels: {pixels}" );
+        
         return NewPixmapDef( width, height, format, pixels );
     }
 
     private static (int w, int h, int f, byte[] bytes) LoadImageFromMemory( byte[] srcBuffer, int len )
     {
+        //TODO:
         var w = 0;
         var h = 0;
         var f = PixmapFormat.GDX_2D_FORMAT_RGBA8888;
@@ -268,27 +271,27 @@ public class Gdx2DUtils
             case Gdx2DPixmap.GDX_2D_FORMAT_ALPHA:
                 ClearAlpha( ref pixmap, col );
                 break;
-            
+
             case Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA:
                 ClearLuminanceAlpha( ref pixmap, col );
                 break;
-            
+
             case Gdx2DPixmap.GDX_2D_FORMAT_RGB888:
                 ClearRGB888( ref pixmap, col );
                 break;
-            
+
             case Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888:
                 ClearRGBA8888( ref pixmap, col );
                 break;
-            
+
             case Gdx2DPixmap.GDX_2D_FORMAT_RGB565:
                 ClearRGB565( ref pixmap, col );
                 break;
-            
+
             case Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444:
                 ClearRGBA4444( ref pixmap, col );
                 break;
-            
+
             default:
                 break;
         }
@@ -323,7 +326,7 @@ public class Gdx2DUtils
     {
         //TODO:
     }
-    
+
     // ------------------------------------------------------------------------
 
     public static void SetPixelAlpha( byte[] pixelAddr, uint color )

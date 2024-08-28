@@ -53,7 +53,7 @@ public static class TextureDataFactory
         var data = LoadFromFile( file, format );
 
         Logger.Debug( $"WH: {data.Width}, {data.Height}" );
-        Logger.Debug( $"Format: {data.GetFormat()}" );
+        Logger.Debug( $"Format: {data.Format}" );
         Logger.Debug( $"Prepared: {data.IsPrepared}" );
 
         return data;

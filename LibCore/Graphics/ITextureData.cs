@@ -75,6 +75,11 @@ public interface ITextureData : IManageable
     public int Height { get; set; }
 
     /// <summary>
+    /// Returns the <see cref="Pixmap.Format"/> of the pixel data.
+    /// </summary>
+    public Pixmap.Format? Format { get; set; }
+
+    /// <summary>
     /// Prepares the TextureData for a call to <see cref="ConsumePixmap()"/> or
     /// <see cref="ConsumeCustomData"/>. This method can be called from a non
     /// OpenGL thread and should not interact with OpenGL.
@@ -108,9 +113,4 @@ public interface ITextureData : IManageable
     /// </para>
     /// </summary>
     public void ConsumeCustomData( int target );
-
-    /// <summary>
-    /// Returns the <see cref="Pixmap.Format"/> of the pixel data.
-    /// </summary>
-    public Pixmap.Format GetFormat();
 }

@@ -324,7 +324,7 @@ public abstract class GLTexture : IDisposable, IManageable
 
         Logger.Debug( $"data.Width : {data.Width}" );
         Logger.Debug( $"data.Height: {data.Height}" );
-        Logger.Debug( $"data.Format: {data.GetFormat()}" );
+        Logger.Debug( $"data.Format: {data.Format}" );
 
         if ( !data.IsPrepared )
         {
@@ -334,6 +334,8 @@ public abstract class GLTexture : IDisposable, IManageable
         }
 
         var type = data.TextureDataType;
+
+        Logger.Debug( $"Texture Data Type: {type}" );
 
         if ( type == ITextureData.TextureType.Custom )
         {
@@ -356,11 +358,14 @@ public abstract class GLTexture : IDisposable, IManageable
             throw new GdxRuntimeException( "ConsumePixmap() resulted in a null Pixmap!" );
         }
 
-        if ( data.GetFormat() != pixmap.GetFormat() )
+        Logger.Debug( $"data format  : {data.Format}" );
+        Logger.Debug( $"pixmap format: {pixmap.GetFormat()}" );
+
+        if ( data.Format != pixmap.GetFormat() )
         {
             Logger.CheckPoint();
-            
-            var tmp = new Pixmap( pixmap.Width, pixmap.Height, data.GetFormat() );
+
+            var tmp = new Pixmap( pixmap.Width, pixmap.Height, data.Format );
 
             Logger.CheckPoint();
 
@@ -386,22 +391,25 @@ public abstract class GLTexture : IDisposable, IManageable
 
         if ( data.UseMipMaps )
         {
+            Logger.CheckPoint();
+
             MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
         }
         else
         {
-            if ( Gdx.DevMode )
-            {
-                Logger.Debug( $"target: {target}" );
-                Logger.Debug( $"miplevel: {miplevel}" );
-                Logger.Debug( $"pixmap.GLInternalFormat: {pixmap.GLInternalFormat}" );
-                Logger.Debug( $"pixmap.Width: {pixmap.Width}" );
-                Logger.Debug( $"pixmap.Height: {pixmap.Height}" );
-                Logger.Debug( $"pixmap.GLFormat: {pixmap.GLFormat}" );
-                Logger.Debug( $"pixmap.GLType: {pixmap.GLType}" );
-            }
+            Logger.CheckPoint();
 
-            var pixels = pixmap.Pixels.BackingArray();
+            Logger.Debug( $"target: {target}" );
+            Logger.Debug( $"miplevel: {miplevel}" );
+            Logger.Debug( $"pixmap.GLInternalFormat: {pixmap.GLInternalFormat}" );
+            Logger.Debug( $"pixmap.Width: {pixmap.Width}" );
+            Logger.Debug( $"pixmap.Height: {pixmap.Height}" );
+            Logger.Debug( $"pixmap.GLFormat: {pixmap.GLFormat}" );
+            Logger.Debug( $"pixmap.GLType: {pixmap.GLType}" );
+            
+            var pixels = pixmap.Pixels?.BackingArray();
+
+            Logger.CheckPoint();
 
             Gdx.GL.glTexImage2D( target,
                                  miplevel,
@@ -413,23 +421,11 @@ public abstract class GLTexture : IDisposable, IManageable
                                  pixmap.GLType,
                                  pixels );
 
-            pixmap.Pixels.Put( pixels );
+            Logger.CheckPoint();
 
-//            unsafe
-//            {
-//                fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
-//                {
-//                    Gdx.GL.glTexImage2D( target,
-//                                         miplevel,
-//                                         pixmap.GLInternalFormat,
-//                                         pixmap.Width,
-//                                         pixmap.Height,
-//                                         0,
-//                                         pixmap.GLFormat,
-//                                         pixmap.GLType,
-//                                         ptr );
-//                }
-//            }
+            pixmap.Pixels?.Put( pixels );
+            
+            Logger.CheckPoint();
         }
 
         if ( disposePixmap )
