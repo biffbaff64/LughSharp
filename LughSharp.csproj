@@ -97,7 +97,6 @@
     <ItemGroup>
         <Folder Include="Backends\Android\" />
         <Folder Include="bin\Debug\net7.0\" />
-        <Folder Include="LibCore\Graphics\Images\" />
         <Folder Include="LibCore\Utils\Buffers\DirectBuffers\" />
         <Folder Include="packages\" />
         <Folder Include="To Be Deleted\" />

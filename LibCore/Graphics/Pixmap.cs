@@ -50,17 +50,15 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class Pixmap : IDisposable
 {
-//    public Gdx2DPixmap PixelData  { get; set; }             // 
-
     public long   BasePtr    { get; set; }                  // 
     public int    PixFormat  { get; set; }                  // 
-    public long[] NativeData { get; set; } = new long[ 4 ]; // 
+    public byte[] NativeData { get; set; } = new byte[ 4 ]; // 
     public bool   IsDisposed { get; set; } = false;         // 
     public int    Scale      { get; set; }                  // 
     public int    Color      { get; set; } = 0;             // 
 
-    public PixmapDef  PixmapDef { get; set; }
-    public ByteBuffer PixelData { get; set; }
+    public PixmapDef   PixmapDef { get; set; }
+    public Gdx2DPixmap PixelData { get; set; } // 
 
     /// <summary>
     /// Sets the type of <see cref="BlendTypes"/> to be used for all operations.
@@ -85,27 +83,70 @@ public class Pixmap : IDisposable
         Logger.CheckPoint();
         Logger.Debug( $"width: {width}, height: {height}, format: {format}" );
 
-//        PixelData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
+        PixelData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
 
-        PixelData = ByteBuffer.Wrap( new byte[ height * width * PixmapFormat.Gdx2dBytesPerPixel( PixmapFormat.ToGdx2DPixmapFormat( format ) ) ] );
-
-        PixmapDef = new PixmapDef
-        {
-            Width  = width,
-            Height = height,
-            Format = PixmapFormat.ToGdx2DPixmapFormat( format ),
-            Pixels = PixelData.BackingArray(),
-        };
-
-        Logger.CheckPoint();
+        this.Width     = PixelData.Width;
+        this.Height    = PixelData.Height;
+        this.PixFormat = PixelData.Format;
 
         SetColor( Graphics.Color.Black );
 
-        Logger.CheckPoint();
-
         FillWithCurrentColor();
+    }
 
+    /// <summary>
+    /// Creates a new Pixmap instance from the given encoded image data.
+    /// The image can be encoded as JPEG, PNG or BMP.
+    /// </summary>
+    public Pixmap( byte[] encodedData, int offset, int len )
+    {
         Logger.CheckPoint();
+        Logger.Debug( $"encodedData: {encodedData}, offset: {offset}, len: {len}" );
+
+        try
+        {
+            PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
+
+            BasePtr   = NativeData[ 0 ];
+            Width     = ( int ) NativeData[ 1 ];
+            Height    = ( int ) NativeData[ 2 ];
+            PixFormat = ( int ) NativeData[ 3 ];
+        }
+        catch ( IOException e )
+        {
+            throw new GdxRuntimeException( "Couldn't load pixmap from image data", e );
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="encodedData"></param>
+    /// <param name="offset"></param>
+    /// <param name="len"></param>
+    /// <exception cref="GdxRuntimeException"></exception>
+    public Pixmap( ByteBuffer encodedData, int offset, int len )
+    {
+        if ( !encodedData.IsDirect() )
+        {
+            throw new GdxRuntimeException( "Couldn't load pixmap from non-direct ByteBuffer" );
+        }
+
+        try
+        {
+            PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
+        }
+        catch ( IOException e )
+        {
+            throw new GdxRuntimeException( "Couldn't load pixmap from image data", e );
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="encodedData"></param>
+    public Pixmap( ByteBuffer encodedData )
+        : this( encodedData, encodedData.Position, encodedData.Remaining() )
+    {
     }
 
     /// <summary>
@@ -127,22 +168,12 @@ public class Pixmap : IDisposable
 
         try
         {
-            var bytes = File.ReadAllBytes( file.FullName );
+            var data = File.ReadAllBytes( file.FullName );
+
+            PixelData = new Gdx2DPixmap( data, 0, data.Length, 0 );
 
             Logger.CheckPoint();
-
-            //TODO: DO I need GetJpegWidthHeight() and GetBitmapWidthHeight() methods?
-            var (width, height) = PixmapFormat.GetPNGWidthHeight( file );
-
-            Logger.Debug( $"Width: {width}, Height: {height}" );
-
-//            PixelData = new Gdx2DPixmap( bytes, width, height, 0, 0 );
-
-            PixelData = ByteBuffer.Wrap( bytes );
-
-            Logger.CheckPoint();
-
-//            Logger.Debug( $"{PixelData.Def.Width} x {PixelData.Def.Height}, {PixelData.Def.Format}" );
+            Logger.Debug( $"{PixelData.Width} x {PixelData.Height}, {PixelData.Format}" );
         }
         catch ( Exception e )
         {
@@ -152,51 +183,12 @@ public class Pixmap : IDisposable
         Logger.CheckPoint();
     }
 
-//    /// <summary>
-//    /// Creates a new Pixmap instance from the given encoded image data.
-//    /// The image can be encoded as JPEG, PNG or BMP.
-//    /// </summary>
-//    public Pixmap( byte[] encodedData, int offset, int len )
-//    {
-//        Logger.CheckPoint();
-//        Logger.Debug( $"encodedData: {encodedData}, offset: {offset}, len: {len}" );
-//
-//        try
-//        {
-//            PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
-//
-//            BasePtr   = NativeData[ 0 ];
-//            Width     = ( int ) NativeData[ 1 ];
-//            Height    = ( int ) NativeData[ 2 ];
-//            PixFormat = ( int ) NativeData[ 3 ];
-//        }
-//        catch ( IOException e )
-//        {
-//            throw new GdxRuntimeException( "Couldn't load pixmap from image data", e );
-//        }
-//    }
-
-//    public Pixmap( ByteBuffer encodedData, int offset, int len )
-//    {
-//        if ( !encodedData.IsDirect() )
-//        {
-//            throw new GdxRuntimeException( "Couldn't load pixmap from non-direct ByteBuffer" );
-//        }
-//
-//        try
-//        {
-//            PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
-//        }
-//        catch ( IOException e )
-//        {
-//            throw new GdxRuntimeException( "Couldn't load pixmap from image data", e );
-//        }
-//    }
-
-//    public Pixmap( ByteBuffer encodedData )
-//        : this( encodedData, encodedData.Position, encodedData.Remaining() )
-//    {
-//    }
+    /// <summary>
+    /// </summary>
+    /// <param name="gdx2DPixmap"></param>
+    public Pixmap( Gdx2DPixmap gdx2DPixmap )
+    {
+    }
 
     // ----------------------------------------------------------
 
@@ -254,11 +246,11 @@ public class Pixmap : IDisposable
                 throw new GdxRuntimeException( "Pixmap already disposed" );
             }
 
-            return PixelData;
+            return PixelData.PixelPtr;
         }
 
         //TODO: Add Error/Null checking
-        set => BufferUtils.Copy( value!, PixelData!, value!.Limit );
+        set => BufferUtils.Copy( value!, PixelData.PixelPtr!, value!.Limit );
     }
 
     /// <summary>
@@ -307,7 +299,7 @@ public class Pixmap : IDisposable
     /// </summary>
     public void FillWithCurrentColor()
     {
-        Array.Fill( PixelData.BackingArray(), ( byte ) this.Color );
+        Array.Fill( PixelData.PixelPtr!.BackingArray(), ( byte ) this.Color );
     }
 
     /// <summary>
@@ -589,6 +581,7 @@ public class Pixmap : IDisposable
     {
         if ( disposing )
         {
+            //TODO:
             IsDisposed = true;
         }
     }
@@ -636,33 +629,3 @@ public class Pixmap : IDisposable
 
 // ------------------------------------------------------------------------
 // ------------------------------------------------------------------------
-
-[PublicAPI]
-public static class PixmapFormatExtensions
-{
-    public static int ToGLType( this Pixmap.Format format )
-    {
-        return Gdx2DPixmap.ToGLType( ToGdx2DPixmapFormat( format ) );
-    }
-
-    public static int ToGLFormat( this Pixmap.Format format )
-    {
-        return Gdx2DPixmap.ToGLFormat( ToGdx2DPixmapFormat( format ) );
-    }
-
-    public static int ToGdx2DPixmapFormat( this Pixmap.Format format )
-    {
-        return format switch
-        {
-            Pixmap.Format.Alpha          => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
-            Pixmap.Format.Intensity      => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
-            Pixmap.Format.LuminanceAlpha => Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA,
-            Pixmap.Format.RGB565         => Gdx2DPixmap.GDX_2D_FORMAT_RGB565,
-            Pixmap.Format.RGBA4444       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444,
-            Pixmap.Format.RGB888         => Gdx2DPixmap.GDX_2D_FORMAT_RGB888,
-            Pixmap.Format.RGBA8888       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888,
-
-            var _ => throw new GdxRuntimeException( $"Unknown format: {format}" )
-        };
-    }
-}

@@ -28,6 +28,8 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public abstract class AbstractGraphics : IGraphics
 {
+    // ------------------------------------------------------------------------
+
     #region properties
 
     public IGraphics.BufferFormatDescriptor BufferFormat { get; set; } = null!;
