@@ -176,7 +176,7 @@ public static class PixmapIO
                 var pixmap   = new Pixmap( width, height, format );
                 var pixelBuf = pixmap.Pixels;
 
-                pixelBuf.Position = 0;
+                pixelBuf!.Position = 0;
                 pixelBuf.Limit    = pixelBuf.Capacity;
 
                 lock ( _readBuffer )

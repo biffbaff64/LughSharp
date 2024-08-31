@@ -406,7 +406,7 @@ public class PixmapPacker : IDisposable
         {
             page.Texture?.Bind();
 
-            var pixels = image.Pixels.BackingArray();
+            var pixels = image.Pixels;
 
             Gdx.GL.glTexSubImage2D( page.Texture!.GLTarget,
                                     0,
@@ -416,25 +416,9 @@ public class PixmapPacker : IDisposable
                                     rectHeight,
                                     image.GLFormat,
                                     image.GLType,
-                                    pixels );
+                                    pixels!.BackingArray() );
 
-            image.Pixels.Put( pixels );
-
-//            unsafe
-//            {
-//                fixed ( void* ptr = &image.Pixels.BackingArray()[ 0 ] )
-//                {
-//                    Gdx.GL.glTexSubImage2D( page.Texture!.GLTarget,
-//                                            0,
-//                                            rectX,
-//                                            rectY,
-//                                            rectWidth,
-//                                            rectHeight,
-//                                            image.GLFormat,
-//                                            image.GLType,
-//                                            ptr );
-//                }
-//            }
+            image.Pixels = pixels;
         }
         else
         {
@@ -1021,24 +1005,18 @@ public class PixmapPacker : IDisposable
         }
 
         [PublicAPI]
-        public class GuillotinePage : Page
+        public class GuillotinePage( PixmapPacker packer ) : Page( packer )
         {
-            public Node Root { get; set; }
-
-            public GuillotinePage( PixmapPacker packer )
-                : base( packer )
+            public Node Root { get; set; } = new()
             {
-                Root = new Node
+                Rect =
                 {
-                    Rect =
-                    {
-                        X      = packer.Padding,
-                        Y      = packer.Padding,
-                        Width  = packer.PageWidth - ( packer.Padding * 2 ),
-                        Height = packer.PageHeight - ( packer.Padding * 2 )
-                    }
-                };
-            }
+                    X      = packer.Padding,
+                    Y      = packer.Padding,
+                    Width  = packer.PageWidth - ( packer.Padding * 2 ),
+                    Height = packer.PageHeight - ( packer.Padding * 2 )
+                }
+            };
         }
     }
 

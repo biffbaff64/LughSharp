@@ -484,7 +484,7 @@ public abstract class GLTexture : IDisposable, IManageable
             Logger.Debug( $"pixmap.GLFormat: {pixmap.GLFormat}" );
             Logger.Debug( $"pixmap.GLType: {pixmap.GLType}" );
 
-            var pixels = pixmap.Pixels?.BackingArray();
+            var pixels = pixmap.Pixels;
 
             Logger.CheckPoint();
 
@@ -496,11 +496,11 @@ public abstract class GLTexture : IDisposable, IManageable
                                  border: 0,
                                  pixmap.GLFormat,
                                  pixmap.GLType,
-                                 pixels );
+                                 pixels!.BackingArray() );
 
             Logger.CheckPoint();
 
-            pixmap.Pixels?.Put( pixels );
+            pixmap.Pixels = pixels;
 
             Logger.CheckPoint();
         }

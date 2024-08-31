@@ -27,6 +27,23 @@ using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
+/// <summary>
+/// simple pixmap struct holding the pixel data, the dimensions and the
+/// format of the pixmap. The format is one of the GDX_2D_FORMAT_XXX constants.
+/// </summary>
+[PublicAPI, StructLayout( LayoutKind.Sequential )]
+public struct PixmapDef
+{
+    public uint       Width  { get; set; }
+    public uint       Height { get; set; }
+    public uint       Format { get; set; }
+    public uint       Blend  { get; set; }
+    public uint       Scale  { get; set; }
+    public ByteBuffer Pixels { get; set; }
+}
+
+// ----------------------------------------------------------------------------
+
 [PublicAPI]
 public class Gdx2DPixmap : IDisposable
 {
@@ -54,15 +71,10 @@ public class Gdx2DPixmap : IDisposable
 
     #region properties
 
-    public ByteBuffer? PixelPtr { get; set; }
-
     public PixmapDef PixmapDef { get; set; }
-
-//    public byte[]      NativeData { get; set; } = new byte[ 4 ];
-    public int  Width   { get; set; }
-    public int  Height  { get; set; }
-    public int  Format  { get; set; }
-    public long BasePtr { get; set; }
+    public uint      Width     { get; set; }
+    public uint      Height    { get; set; }
+    public uint      Format    { get; set; }
 
     #endregion properties
 
@@ -151,13 +163,11 @@ public class Gdx2DPixmap : IDisposable
 
         Logger.CheckPoint();
 
-        PixelPtr = ByteBuffer.Wrap( this.PixmapDef.Pixels );
-
         this.Width  = this.PixmapDef.Width;
         this.Height = this.PixmapDef.Height;
         this.Format = this.PixmapDef.Format;
 
-        if ( PixelPtr == null )
+        if ( PixmapDef.Pixels == null )
         {
             throw new GdxRuntimeException( $"Unable to allocate memory for pixmap: "
                                          + $"{width} x {height}: {PixmapFormat.GetFormatString( format )}" );
@@ -169,19 +179,17 @@ public class Gdx2DPixmap : IDisposable
     /// <summary>
     /// </summary>
     /// <param name="pixelPtr"></param>
-    /// <param name="nativeData"></param>
-    public Gdx2DPixmap( ByteBuffer pixelPtr, long[] nativeData )
+    /// <param name="data"></param>
+    public Gdx2DPixmap( ByteBuffer pixelPtr, int[] data )
     {
         Logger.CheckPoint();
 
-        PixelPtr = pixelPtr;
-        BasePtr  = nativeData[ 0 ];
-        Width    = ( int ) nativeData[ 1 ];
-        Height   = ( int ) nativeData[ 2 ];
-        Format   = ( int ) nativeData[ 3 ];
+        //TODO:
     }
 
     #endregion constructors
+
+    // ------------------------------------------------------------------------
 
     private ByteBuffer LoadData( byte[] buffer, int offset, int len )
     {
@@ -194,9 +202,7 @@ public class Gdx2DPixmap : IDisposable
 
         Logger.CheckPoint();
 
-//        Logger.Debug( $"NativeData: {NativeData[ 0 ]}, {NativeData[ 1 ]}, {NativeData[ 2 ]}, {NativeData[ 3 ]}" );
-
-        if ( PixelPtr == null )
+        if ( ptr == null )
         {
             Logger.CheckPoint();
 
@@ -253,21 +259,17 @@ public class Gdx2DPixmap : IDisposable
     {
         Logger.CheckPoint();
 
-        var pixmap = new Gdx2DPixmap( Width, Height, requestedFormat );
+        var pixmap = new Gdx2DPixmap( ( int ) Width, ( int ) Height, requestedFormat );
 
         pixmap.Blend = GDX_2D_BLEND_NONE;
-        pixmap.DrawPixmap( this, 0, 0, 0, 0, Width, Height );
+        pixmap.DrawPixmap( this, 0, 0, 0, 0, ( int ) Width, ( int ) Height );
 
         Dispose();
 
-        this.BasePtr   = pixmap.BasePtr;
-        this.Format    = pixmap.Format;
+        this.Width     = pixmap.Width;
         this.Height    = pixmap.Height;
+        this.Format    = pixmap.Format;
         this.PixmapDef = pixmap.PixmapDef;
-
-//        this.NativeData = pixmap.NativeData;
-        this.PixelPtr = pixmap.PixelPtr;
-        this.Width    = pixmap.Width;
     }
 
     public void Clear( PixmapDef pd, int color )
@@ -285,24 +287,24 @@ public class Gdx2DPixmap : IDisposable
         gdx2d_set_pixel( pd, x, y, color );
     }
 
-    public void DrawLine( int x, int y, int x2, int y2, int color )
+    public void DrawLine( int x, int y, int x2, int y2, uint color )
     {
-//        DrawLine( BasePtr, x, y, x2, y2, color );
+        gdx2d_draw_line( PixmapDef, x, y, x2, y2, color );
     }
 
-    public void DrawRect( int x, int y, int width, int height, int color )
+    public void DrawRect( int x, int y, uint width, uint height, uint color )
     {
-//        DrawRect( BasePtr, x, y, width, height, color );
+        gdx2d_draw_rect( PixmapDef, x, y, width, height, color );
     }
 
-    public void DrawCircle( int x, int y, int radius, int color )
+    public void DrawCircle( int x, int y, uint radius, uint color )
     {
-//        DrawCircle( BasePtr, x, y, radius, color );
+        gdx2d_draw_circle( PixmapDef, x, y, radius, color );
     }
 
-    public void FillRect( int x, int y, int width, int height, int color )
+    public void FillRect( int x, int y, uint width, uint height, uint color )
     {
-//        FillRect( BasePtr, x, y, width, height, color );
+        gdx2d_fill_rect( PixmapDef, x, y, width, height, color );
     }
 
     public void FillCircle( int x, int y, int radius, int color )
@@ -317,7 +319,7 @@ public class Gdx2DPixmap : IDisposable
 
     public void DrawPixmap( Gdx2DPixmap src, int srcX, int srcY, int dstX, int dstY, int width, int height )
     {
-//        DrawPixmap( src.BasePtr, BasePtr, srcX, srcY, width, height, dstX, dstY, width, height );
+        gdx2d_draw_pixmap( src.PixmapDef, PixmapDef, srcX, srcY, width, height, dstX, dstY, width, height );
     }
 
     public void DrawPixmap( Gdx2DPixmap src,
@@ -330,7 +332,7 @@ public class Gdx2DPixmap : IDisposable
                             int dstWidth,
                             int dstHeight )
     {
-//        gdx_draw_pixmap( src, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
+        gdx2d_draw_pixmap( src.PixmapDef, PixmapDef, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
     }
 
     public static Gdx2DPixmap? NewPixmap( StreamReader inStream, int requestedFormat )
@@ -369,24 +371,26 @@ public class Gdx2DPixmap : IDisposable
     {
         var pmd = new PixmapDef
         {
-            Width  = width,
-            Height = height,
-            Format = format,
+            Width  = ( uint ) width,
+            Height = ( uint ) height,
+            Format = ( uint ) format,
             Blend  = GDX_2D_BLEND_SRC_OVER,
             Scale  = GDX_2D_SCALE_BILINEAR
         };
 
-        pmd.Pixels = new byte[ pmd.Width * pmd.Height * PixmapFormat.Gdx2dBytesPerPixel( format ) ];
+        var size = ( int ) ( pmd.Width * pmd.Height * PixmapFormat.Gdx2dBytesPerPixel( format ) );
+        
+        pmd.Pixels = new HeapByteBuffer( size, size );
 
         return pmd;
     }
 
     // ------------------------------------------------------------------------
 
-    public int    GLInternalFormat => ToGLFormat( Format );
-    public int    GLFormat         => ToGLFormat( Format );
-    public int    GLType           => ToGLType( Format );
-    public string FormatString     => PixmapFormat.GetFormatString( Format );
+    public int    GLInternalFormat => ToGLFormat( ( int ) Format );
+    public int    GLFormat         => ToGLFormat( ( int ) Format );
+    public int    GLType           => ToGLType( ( int ) Format );
+    public string FormatString     => PixmapFormat.GetFormatString( ( int ) Format );
 
     public int Blend { get; set; }
 
@@ -501,77 +505,55 @@ public class Gdx2DPixmap : IDisposable
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern string gdx2d_get_failure_reason();
-    /* return env->NewStringUTF(gdx2d_get_failure_reason()); */
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_clear( PixmapDef pd, int color );
-    /* gdx2d_clear((gdx2d_pixmap*)pixmap, color); */
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern int gdx2d_get_pixel( PixmapDef pd, int x, int y );
-    /* return gdx2d_get_pixel((gdx2d_pixmap*)pixmap, x, y); */
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_set_pixel( PixmapDef pd, int x, int y, int color );
-    /* gdx2d_set_pixel((gdx2d_pixmap*)pixmap, x, y, color); */
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_set_blend( PixmapDef src, int blend );
-    /* gdx2d_set_blend((gdx2d_pixmap*)src, blend); */
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_set_scale( PixmapDef src, int scale );
-    /* gdx2d_set_scale((gdx2d_pixmap*)src, scale); */
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern uint gdx2d_bytes_per_pixel( uint format );
-    /* */
 
     [DllImport( "Libs/gdx2d.dll", EntryPoint = "gdx2d_free", CallingConvention = CallingConvention.Cdecl )]
     private static extern void free( PixmapDef pixmap );
-    /* gdx2d_free((gdx2d_pixmap*)pixmap); */
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_draw_line( PixmapDef pd, int x0, int y0, int x1, int y1, uint col );
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
-    private static extern void gdx2d_draw_rect( PixmapDef pixmap, int x, int y, uint width, uint height, uint col );
+    private static extern void gdx2d_draw_rect( PixmapDef pd, int x, int y, uint width, uint height, uint col );
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
-    private static extern void gdx2d_draw_circle(const gdx2d_pixmap* pixmap, int32_t x, int32_t y, uint32_t radius, uint32_t col);
+    private static extern void gdx2d_draw_circle( PixmapDef pd, int x, int y, uint radius, uint col );
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
-    gdx2d_fill_rect
-        
-    [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
-    gdx2d_fill_circle
+    private static extern void gdx2d_fill_rect( PixmapDef pd, int x, int y, uint width, uint height, uint col );
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
-    gdx2d_fill_triangle
+    private static extern void gdx2d_fill_circle( PixmapDef pd, int x0, int y0, uint radius, uint col );
 
     [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
-    private static extern void gdx_draw_pixmap( PixmapDef src,
-                                                long dst,
-                                                int srcX,
-                                                int srcY,
-                                                int srcWidth,
-                                                int srcHeight,
-                                                int dstX,
-                                                int dstY,
-                                                int dstWidth,
-                                                int dstHeight );
-    /* gdx2d_draw_pixmap((gdx2d_pixmap*)src, (gdx2d_pixmap*)dst, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight); */
-}
+    private static extern void gdx2d_fill_triangle( PixmapDef pd, int x1, int y1, int x2, int y2, int x3, int y3, uint col );
 
-// ----------------------------------------------------------------------------
-
-[PublicAPI, StructLayout( LayoutKind.Sequential )]
-public struct PixmapDef
-{
-    public int    Width  { get; set; }
-    public int    Height { get; set; }
-    public int    Format { get; set; }
-    public int    Blend  { get; set; }
-    public int    Scale  { get; set; }
-    public byte[] Pixels { get; set; }
+    [DllImport( "Libs/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    private static extern void gdx2d_draw_pixmap( PixmapDef src,
+                                                  PixmapDef dst,
+                                                  int srcX,
+                                                  int srcY,
+                                                  int srcWidth,
+                                                  int srcHeight,
+                                                  int dstX,
+                                                  int dstY,
+                                                  int dstWidth,
+                                                  int dstHeight );
 }

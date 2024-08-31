@@ -504,7 +504,7 @@ public class KtxTextureData : ITextureData, ICubemapData
 
                                 unsafe
                                 {
-                                    fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
+                                    fixed ( void* ptr = &pixmap.Pixels!.BackingArray()[ 0 ] )
                                     {
                                         Gdx.GL.glTexImage2D( target + face,
                                                              level,

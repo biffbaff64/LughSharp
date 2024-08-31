@@ -50,15 +50,13 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class Pixmap : IDisposable
 {
-    public long   BasePtr    { get; set; }                  // 
-    public int    PixFormat  { get; set; }                  // 
-    public byte[] NativeData { get; set; } = new byte[ 4 ]; // 
-    public bool   IsDisposed { get; set; } = false;         // 
-    public int    Scale      { get; set; }                  // 
-    public int    Color      { get; set; } = 0;             // 
+//    public byte[] NativeData { get; set; } = new byte[ 4 ]; // 
 
-    public PixmapDef   PixmapDef { get; set; }
-    public Gdx2DPixmap PixelData { get; set; } // 
+    public int         PixFormat  { get; set; }          // 
+    public bool        IsDisposed { get; set; } = false; // 
+    public int         Scale      { get; set; }          // 
+    public int         Color      { get; set; } = 0;     // 
+    public Gdx2DPixmap PixelData  { get; set; }          // 
 
     /// <summary>
     /// Sets the type of <see cref="BlendTypes"/> to be used for all operations.
@@ -85,13 +83,21 @@ public class Pixmap : IDisposable
 
         PixelData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
 
-        this.Width     = PixelData.Width;
-        this.Height    = PixelData.Height;
-        this.PixFormat = PixelData.Format;
+        this.Width     = ( int ) PixelData.Width;
+        this.Height    = ( int ) PixelData.Height;
+        this.PixFormat = ( int ) PixelData.Format;
 
-        SetColor( Graphics.Color.Black );
+        Logger.Debug( $"Width: {this.Width}, Height: {this.Height}, Format: {this.PixFormat}" );
+
+        Logger.CheckPoint();
+
+        SetColor( Graphics.Color.Red );
+
+        Logger.CheckPoint();
 
         FillWithCurrentColor();
+
+        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -107,10 +113,9 @@ public class Pixmap : IDisposable
         {
             PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
 
-            BasePtr   = NativeData[ 0 ];
-            Width     = ( int ) NativeData[ 1 ];
-            Height    = ( int ) NativeData[ 2 ];
-            PixFormat = ( int ) NativeData[ 3 ];
+            Width     = ( int ) PixelData.Width;
+            Height    = ( int ) PixelData.Height;
+            PixFormat = ( int ) PixelData.Format;
         }
         catch ( IOException e )
         {
@@ -221,7 +226,7 @@ public class Pixmap : IDisposable
     public int GLType { get; set; }
 
     /// <summary>
-    /// Returns the direct ByteBuffer holding the pixel data. For the format Alpha each
+    /// Returns the byte[] array holding the pixel data. For the format Alpha each
     /// value is encoded as a byte.
     /// <para>
     /// For the format LuminanceAlpha the luminance is the first byte and the alpha is
@@ -236,7 +241,6 @@ public class Pixmap : IDisposable
     /// machine dependent order.
     /// </para>
     /// </summary>
-    /// <returns> the direct <see cref="ByteBuffer"/> holding the pixel data.  </returns>
     public ByteBuffer? Pixels
     {
         get
@@ -246,11 +250,10 @@ public class Pixmap : IDisposable
                 throw new GdxRuntimeException( "Pixmap already disposed" );
             }
 
-            return PixelData.PixelPtr;
+            return PixelData.PixmapDef.Pixels;
         }
 
-        //TODO: Add Error/Null checking
-        set => BufferUtils.Copy( value!, PixelData.PixelPtr!, value!.Limit );
+        set => PixelData.PixmapDef = PixelData.PixmapDef with { Pixels = value! };
     }
 
     /// <summary>
@@ -291,7 +294,7 @@ public class Pixmap : IDisposable
     /// <param name="color"> The color.</param>
     public void SetColor( Color color )
     {
-        this.Color = Graphics.Color.RGBA8888( color.R, color.G, color.B, color.A );
+        SetColor( color.R, color.G, color.B, color.A );
     }
 
     /// <summary>
@@ -299,7 +302,12 @@ public class Pixmap : IDisposable
     /// </summary>
     public void FillWithCurrentColor()
     {
-        Array.Fill( PixelData.PixelPtr!.BackingArray(), ( byte ) this.Color );
+//        PixelData.PixmapDef.Pixels.Clear();
+//        
+//        for ( var i = 0; i < PixelData.PixmapDef.Pixels.Capacity; i++ )
+//        {
+//            PixelData.PixmapDef.Pixels.Put( ( byte ) this.Color );
+//        }
     }
 
     /// <summary>
