@@ -97,6 +97,16 @@ public class NumberUtils
     }
 
     /// <summary>
+    /// Converts the given unsigned integer bit representation to its floating-point color value.
+    /// </summary>
+    /// <param name="value"> The integer bit representation to convert. </param>
+    /// <returns> The floating-point color value represented by the integer bits. </returns>
+    public static float UIntToFloatColor( uint value )
+    {
+        return BitConverter.UInt32BitsToSingle( value );
+    }
+
+    /// <summary>
     /// Converts the given double-precision floating-point value to its long bit representation.
     /// </summary>
     /// <param name="value"> The double-precision floating-point value to convert. </param>

@@ -787,7 +787,7 @@ public class PixmapPacker : IDisposable
 
             Color c = new();
 
-            c.Set( raster.GetPixel( x, y ) );
+            c.Set( ( uint ) raster.GetPixel( x, y ) );
 
             rgba[ 0 ] = ( int ) ( c.R * 255 );
             rgba[ 1 ] = ( int ) ( c.G * 255 );
@@ -822,7 +822,7 @@ public class PixmapPacker : IDisposable
     {
         public Pixmap         Image      { get; set; }
         public Texture?       Texture    { get; set; }
-        public List< string > AddedRects { get; set; } = new();
+        public List< string > AddedRects { get; set; } = [ ];
         public bool           Dirty      { get; set; }
 
         public Dictionary< string, PixmapPackerRectangle? > Rects { get; set; } = new();
@@ -835,6 +835,7 @@ public class PixmapPacker : IDisposable
         {
             Image          = new Pixmap( packer.PageWidth, packer.PageHeight, packer.PageFormat );
             Image.Blending = Pixmap.BlendTypes.None;
+            
             Image.SetColor( packer.TransparentColor );
             Image.FillWithCurrentColor();
         }

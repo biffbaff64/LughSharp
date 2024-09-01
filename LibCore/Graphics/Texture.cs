@@ -164,8 +164,8 @@ public class Texture : GLTexture
         Logger.Debug( $"glTarget       : {glTarget}" );
         Logger.Debug( $"glTextureHandle: {glTextureHandle}" );
         Logger.Debug( $"data           : {data}" );
-        Logger.Debug( $"data.Width     : {data.Width} - Zero is possible" );
-        Logger.Debug( $"data.Height    : {data.Height} - Zero is possible" );
+        Logger.Debug( $"data.Width     : {data.Width}" );
+        Logger.Debug( $"data.Height    : {data.Height}" );
         Logger.Debug( $"data.Format    : {data.Format}" );
 
         Load( data );
@@ -192,8 +192,8 @@ public class Texture : GLTexture
         }
 
         Logger.Debug( $"data       : {data}" );
-        Logger.Debug( $"data.Width : {data?.Width} - Zero is possible" );
-        Logger.Debug( $"data.Height: {data?.Height} - Zero is possible" );
+        Logger.Debug( $"data.Width : {data?.Width}" );
+        Logger.Debug( $"data.Height: {data?.Height}" );
         Logger.Debug( $"data.Format: {data?.Format}" );
         
         TextureData = data;

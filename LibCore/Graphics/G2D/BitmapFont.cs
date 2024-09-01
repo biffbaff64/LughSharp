@@ -54,7 +54,7 @@ public class BitmapFont
     #region constants
 
     private const string REGEX_PATTERN  = ".*id=(\\d+)";
-    private const string FONT_NAME      = "Resources/arial-15.fnt";
+    private const string FONT_NAME      = "Assets/arial-15.fnt";
     private const int    LOG2_PAGE_SIZE = 9;
     private const int    PAGE_SIZE      = 1 << LOG2_PAGE_SIZE;
     private const int    PAGES          = 0x10000 / PAGE_SIZE;

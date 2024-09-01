@@ -910,7 +910,7 @@ public class GlyphLayout : IPoolable
     /// </returns>
     private int ParseHexColor( string str, int start, int end, Pool< Color > colorpool )
     {
-        var colorInt = 0;
+        uint colorInt = 0;
 
         for ( var i = start + 1; i < end; i++ )
         {
@@ -939,7 +939,7 @@ public class GlyphLayout : IPoolable
 
             if ( NumberUtils.IsHexDigit( ch ) )
             {
-                colorInt = ( colorInt * 16 ) + NumberUtils.HexValue( ch );
+                colorInt = ( uint ) ( ( colorInt * 16 ) + NumberUtils.HexValue( ch ) );
             }
             else
             {

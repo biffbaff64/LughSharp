@@ -30,14 +30,9 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 
 public partial class ScrollPane
 {
-    public class ScrollPaneScrollListener : InputListener
+    public class ScrollPaneScrollListener( ScrollPane parent ) : InputListener
     {
-        private readonly ScrollPane? _parent;
-
-        public ScrollPaneScrollListener( ScrollPane parent )
-        {
-            _parent = parent;
-        }
+        private readonly ScrollPane? _parent = parent;
 
         /// <inheritdoc />
         public override bool Scrolled( InputEvent? inputEvent, float x, float y, float scrollAmountX, float scrollAmountY )
@@ -75,15 +70,10 @@ public partial class ScrollPane
         }
     }
 
-    public class ScrollPaneCaptureListener : InputListener
+    public class ScrollPaneCaptureListener( ScrollPane parent ) : InputListener
     {
-        private readonly ScrollPane? _parent;
+        private readonly ScrollPane? _parent = parent;
         private          float       _handlePosition;
-
-        public ScrollPaneCaptureListener( ScrollPane parent )
-        {
-            _parent = parent;
-        }
 
         /// <inheritdoc />
         public override bool TouchDown( InputEvent? inputEvent, float x, float y, int pointer, int button )

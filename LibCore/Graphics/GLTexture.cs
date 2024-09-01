@@ -483,10 +483,9 @@ public abstract class GLTexture : IDisposable, IManageable
             Logger.Debug( $"pixmap.Height: {pixmap.Height}" );
             Logger.Debug( $"pixmap.GLFormat: {pixmap.GLFormat}" );
             Logger.Debug( $"pixmap.GLType: {pixmap.GLType}" );
+            Logger.Debug( $"pixmap array size: {pixmap.Pixels?.BackingArray().Length}" );
 
             var pixels = pixmap.Pixels;
-
-            Logger.CheckPoint();
 
             Gdx.GL.glTexImage2D( target,
                                  miplevel,

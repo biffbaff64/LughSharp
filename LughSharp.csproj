@@ -116,10 +116,46 @@
       <Content Update="Backends\DesktopGL\Test\LughLogo.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Include="Libs\gdx2d.dll">
+      <Content Include="lib\gdx2d.dll">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <None Remove="Libs\gdx2d.dll" />
+      <None Remove="lib\gdx2d.dll" />
+      <None Remove="Assets\arial-15.fnt" />
+      <Content Include="Assets\arial-15.fnt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Assets\arial-15.png" />
+      <Content Include="Assets\arial-15.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Assets\jb_beam_small.png" />
+      <Content Include="Assets\jb_beam_small.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Assets\lughlogo.png" />
+      <Content Include="Assets\lughlogo.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Assets\OSI_Standard_Logo_100X130.png" />
+      <Content Include="Assets\OSI_Standard_Logo_100X130.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Assets\red7logo_small.png" />
+      <Content Include="Assets\red7logo_small.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Assets\uiskin.atlas" />
+      <Content Include="Assets\uiskin.atlas">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Assets\uiskin.json" />
+      <Content Include="Assets\uiskin.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Assets\uiskin.png" />
+      <Content Include="Assets\uiskin.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

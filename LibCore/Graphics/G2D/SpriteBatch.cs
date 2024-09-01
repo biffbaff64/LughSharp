@@ -630,13 +630,7 @@ public class SpriteBatch : IBatch
 
         var copyCount = Math.Min( remainingVertices, count );
 
-        Array.Copy(
-                   spriteVertices,
-                   offset,
-                   Vertices,
-                   Idx,
-                   copyCount
-                  );
+        Array.Copy( spriteVertices, offset, Vertices, Idx, copyCount );
 
         Idx   += copyCount;
         count -= copyCount;
@@ -649,13 +643,7 @@ public class SpriteBatch : IBatch
 
             copyCount = Math.Min( verticesLength, count );
 
-            Array.Copy(
-                       spriteVertices,
-                       offset,
-                       Vertices,
-                       0,
-                       copyCount
-                      );
+            Array.Copy( spriteVertices, offset, Vertices, 0, copyCount );
 
             Idx   += copyCount;
             count -= copyCount;

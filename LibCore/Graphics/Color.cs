@@ -99,16 +99,6 @@ public sealed class Color
     /// Constructor, sets the Color components using the specified integer value in
     /// the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
     /// </summary>
-    /// <param name="rgba8888"> An integer color value in RGBA8888 format. </param>
-    public Color( int rgba8888 )
-    {
-        Set( rgba8888 );
-    }
-
-    /// <summary>
-    /// Constructor, sets the Color components using the specified integer value in
-    /// the format RGBA8888. This is inverse to the rgba8888(r, g, b, a) method.
-    /// </summary>
     /// <param name="rgba8888"> An uint color value in RGBA8888 format. </param>
     public Color( uint rgba8888 )
     {
@@ -179,7 +169,7 @@ public sealed class Color
     /// </summary>
     /// <param name="rgba"> The integer representation. </param>
     /// <returns> This color for chaining. </returns>
-    public Color Set( int rgba )
+    public Color Set( uint rgba )
     {
         var color = this;
 
@@ -432,10 +422,10 @@ public sealed class Color
     /// </summary>
     /// <param name="color"> The Color object to assign the converted values to. </param>
     /// <param name="value"> The 16-bit RGB565 integer value. </param>
-    public static void RGB565ToColor( ref Color color, int value )
+    public static void RGB565ToColor( ref Color color, uint value )
     {
         // Ensure the value is within the valid range for 16-bit RGB565
-        if ( value is < 0 or > 0xFFFF )
+        if ( value > 0xFFFF )
         {
             throw new ArgumentOutOfRangeException( nameof( value ),
                                                    "Value must be a 16-bit integer." );
@@ -451,7 +441,7 @@ public sealed class Color
     /// </summary>
     /// <param name="color"> The Color object to assign the converted values to. </param>
     /// <param name="value"> The 16-bit RGBA4444 integer value. </param>
-    public static void RGBA4444ToColor( ref Color color, int value )
+    public static void RGBA4444ToColor( ref Color color, uint value )
     {
         color.R = ( ( value & 0xF000 ) >> 12 ) / 15f;
         color.G = ( ( value & 0x0F00 ) >> 8 ) / 15f;
@@ -464,7 +454,7 @@ public sealed class Color
     /// </summary>
     /// <param name="color"> The Color object to assign the converted values to. </param>
     /// <param name="value"> The 32-bit RGBA8888 integer value. </param>
-    public static void RGBA8888ToColor( ref Color color, int value )
+    public static void RGBA8888ToColor( ref Color color, uint value )
     {
         color.R = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
         color.G = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
@@ -477,7 +467,7 @@ public sealed class Color
     /// </summary>
     /// <param name="color"> The Color object to assign the converted values to. </param>
     /// <param name="value"> The 32-bit ARGB8888 integer value. </param>
-    public static void ARGB8888ToColor( ref Color color, int value )
+    public static void ARGB8888ToColor( ref Color color, uint value )
     {
         color.A = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
         color.R = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
@@ -503,21 +493,21 @@ public sealed class Color
     }
 
     /// <summary>
-    /// Converts the supplied color components to an <b>int</b>.
+    /// Converts the supplied color components to an <b>uint</b>.
     /// </summary>
     /// <param name="r"> Red component. </param>
     /// <param name="g"> Green component. </param>
     /// <param name="b"> Blue component. </param>
     /// <param name="a"> Alpha component. </param>
     /// <returns></returns>
-    public int RGBA8888ToInt( float r, float g, float b, float a )
+    public uint RGBA8888ToInt( float r, float g, float b, float a )
     {
-        return ( ( int ) ( r * 255 ) << 24 )
-             | ( ( int ) ( g * 255 ) << 16 )
-             | ( ( int ) ( b * 255 ) << 8 )
-             | ( int ) ( a * 255 );
+        return ( ( uint ) ( r * 255 ) << 24 )
+             | ( ( uint ) ( g * 255 ) << 16 )
+             | ( ( uint ) ( b * 255 ) << 8 )
+             | ( uint ) ( a * 255 );
     }
-
+    
     /// <summary>
     /// Sets the RGB Color components using the specified Hue-Saturation-Value.
     /// Note that HSV components are voluntary not clamped to preserve high range
@@ -532,7 +522,7 @@ public sealed class Color
         h %= 360; // Ensure hue is in the range [0, 360]
         if ( h < 0 ) h += 360;
 
-        var i = ( int ) ( h / 60 ) % 6;
+        var i = ( uint ) ( h / 60 ) % 6;
         var f = ( h / 60 ) - i;
         var p = v * ( 1 - s );
         var q = v * ( 1 - ( s * f ) );
@@ -656,12 +646,12 @@ public sealed class Color
     /// <seealso cref="NumberUtils.IntToFloatColor(int)"/>
     public float ToFloatBits()
     {
-        var color = ( ( int ) ( 255 * A ) << 24 )
-                  | ( ( int ) ( 255 * B ) << 16 )
-                  | ( ( int ) ( 255 * G ) << 8 )
-                  | ( int ) ( 255 * R );
+        var color = ( ( uint ) ( 255 * A ) << 24 )
+                  | ( ( uint ) ( 255 * B ) << 16 )
+                  | ( ( uint ) ( 255 * G ) << 8 )
+                  | ( uint ) ( 255 * R );
 
-        return NumberUtils.IntToFloatColor( color );
+        return NumberUtils.UIntToFloatColor( color );
     }
 
     /// <summary>
@@ -671,10 +661,10 @@ public sealed class Color
     /// <param name="b"> Blue component </param>
     /// <param name="a"> Alpha component </param>
     /// <returns></returns>
-    public static float ToFloatBits( int r, int g, int b, int a )
+    public static float ToFloatBits( uint r, uint g, uint b, uint a )
     {
         var color      = ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
-        var floatColor = NumberUtils.IntToFloatColor( color );
+        var floatColor = NumberUtils.UIntToFloatColor( color );
 
         return floatColor;
     }
@@ -688,12 +678,12 @@ public sealed class Color
     /// <returns></returns>
     public static float ToFloatBits( float r, float g, float b, float a )
     {
-        var color = ( ( int ) ( 255 * a ) << 24 )
-                  | ( ( int ) ( 255 * b ) << 16 )
-                  | ( ( int ) ( 255 * g ) << 8 )
-                  | ( int ) ( 255 * r );
+        var color = ( ( uint ) ( 255 * a ) << 24 )
+                  | ( ( uint ) ( 255 * b ) << 16 )
+                  | ( ( uint ) ( 255 * g ) << 8 )
+                  | ( uint ) ( 255 * r );
 
-        return NumberUtils.IntToFloatColor( color );
+        return NumberUtils.UIntToFloatColor( color );
     }
     
     /// <summary>
@@ -718,12 +708,12 @@ public sealed class Color
     /// <summary>
     /// </summary>
     /// <returns></returns>
-    public int ToIntBits()
+    public uint ToIntBits()
     {
-        return ( ( int ) ( 255 * A ) << 24 )
-             | ( ( int ) ( 255 * B ) << 16 )
-             | ( ( int ) ( 255 * G ) << 8 )
-             | ( int ) ( 255 * R );
+        return ( ( uint ) ( 255 * A ) << 24 )
+             | ( ( uint ) ( 255 * B ) << 16 )
+             | ( ( uint ) ( 255 * G ) << 8 )
+             | ( uint ) ( 255 * R );
     }
 
     /// <summary>
@@ -733,7 +723,7 @@ public sealed class Color
     /// <param name="b"> Blue component </param>
     /// <param name="a"> Alpha component </param>
     /// <returns></returns>
-    public static int ToIntBits( int r, int g, int b, int a )
+    public static uint ToIntBits( uint r, uint g, uint b, uint a )
     {
         return ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
     }
@@ -803,13 +793,13 @@ public sealed class Color
     }
 
     /// <summary>
-    /// Returns the given Alpha value as a 32-bit int.
+    /// Returns the given Alpha value as a 32-bit uint.
     /// </summary>
     /// <param name="alpha"> The Alpha value. </param>
-    /// <returns> The int result. </returns>
-    public static int AlphaToInt( float alpha )
+    /// <returns> The uint result. </returns>
+    public static uint AlphaToInt( float alpha )
     {
-        return ( int ) ( alpha * 255.0f );
+        return ( uint ) ( alpha * 255.0f );
     }
 
     /// <summary>
@@ -818,13 +808,13 @@ public sealed class Color
     /// <param name="luminance"></param>
     /// <param name="alpha"></param>
     /// <returns></returns>
-    public static int LuminanceAlpha( float luminance, float alpha )
+    public static uint LuminanceAlpha( float luminance, float alpha )
     {
-        return ( ( int ) ( luminance * 255.0f ) << 8 ) | ( int ) ( alpha * 255 );
+        return ( ( uint ) ( luminance * 255.0f ) << 8 ) | ( uint ) ( alpha * 255 );
     }
 
     /// <summary>
-    /// Returns the given <see cref="Color"/> as a 32-bit int in the
+    /// Returns the given <see cref="Color"/> as a 32-bit uint in the
     /// following format:-
     /// <li>Bits  0 - 4  : Blue component</li>
     /// <li>Bits  5 - 10 : Green component</li>
@@ -834,13 +824,13 @@ public sealed class Color
     /// <param name="r"> Red component </param>
     /// <param name="g"> Green component </param>
     /// <param name="b"> Blue component </param>
-    public static int RGB565( float r, float g, float b )
+    public static uint RGB565( float r, float g, float b )
     {
-        return ( ( int ) ( r * 31 ) << 11 ) | ( ( int ) ( g * 63 ) << 5 ) | ( int ) ( b * 31 );
+        return ( ( uint ) ( r * 31 ) << 11 ) | ( ( uint ) ( g * 63 ) << 5 ) | ( uint ) ( b * 31 );
     }
 
     /// <summary>
-    /// Returns the given R.G.B colour components as a 32-bit int in the
+    /// Returns the given R.G.B colour components as a 32-bit uint in the
     /// following format:-
     /// <li>Bits  0 - 3  : Alpha component</li>
     /// <li>Bits  4 - 7  : Blue component</li>
@@ -852,16 +842,16 @@ public sealed class Color
     /// <param name="g"> Green component </param>
     /// <param name="b"> Blue component </param>
     /// <param name="a"> Alpha component </param>
-    public static int RGBA4444( float r, float g, float b, float a )
+    public static uint RGBA4444( float r, float g, float b, float a )
     {
-        return ( ( int ) ( r * 15 ) << 12 )
-             | ( ( int ) ( g * 15 ) << 8 )
-             | ( ( int ) ( b * 15 ) << 4 )
-             | ( int ) ( a * 15 );
+        return ( ( uint ) ( r * 15 ) << 12 )
+             | ( ( uint ) ( g * 15 ) << 8 )
+             | ( ( uint ) ( b * 15 ) << 4 )
+             | ( uint ) ( a * 15 );
     }
 
     /// <summary>
-    /// Returns the given R.G.B colour components as a 32-bit int in the
+    /// Returns the given R.G.B colour components as a 32-bit uint in the
     /// following format:-
     /// <li>Bits  0 - 7  : Blue component</li>
     /// <li>Bits  8 - 15 : Green component</li>
@@ -871,13 +861,13 @@ public sealed class Color
     /// <param name="r"> Red component </param>
     /// <param name="g"> Green component </param>
     /// <param name="b"> Blue component </param>
-    public static int RGB888( float r, float g, float b )
+    public static uint RGB888( float r, float g, float b )
     {
-        return ( ( int ) ( r * 255 ) << 16 ) | ( ( int ) ( g * 255 ) << 8 ) | ( int ) ( b * 255 );
+        return ( ( uint ) ( r * 255 ) << 16 ) | ( ( uint ) ( g * 255 ) << 8 ) | ( uint ) ( b * 255 );
     }
 
     /// <summary>
-    /// Returns the given seperate colour components as a 32-bit int in the
+    /// Returns the given seperate colour components as a 32-bit uint in the
     /// following format:-
     /// <li>Bits  0 - 7  : Alpha component</li>
     /// <li>Bits  8 - 15 : Blue component</li>
@@ -888,16 +878,16 @@ public sealed class Color
     /// <param name="g"> Green component </param>
     /// <param name="b"> Blue component </param>
     /// <param name="a"> Alpha component </param>
-    public static int RGBA8888( float r, float g, float b, float a )
+    public static uint RGBA8888( float r, float g, float b, float a )
     {
-        return ( ( int ) ( r * 255 ) << 24 )
-             | ( ( int ) ( g * 255 ) << 16 )
-             | ( ( int ) ( b * 255 ) << 8 )
-             | ( int ) ( a * 255 );
+        return ( ( uint ) ( r * 255 ) << 24 )
+             | ( ( uint ) ( g * 255 ) << 16 )
+             | ( ( uint ) ( b * 255 ) << 8 )
+             | ( uint ) ( a * 255 );
     }
 
     /// <summary>
-    /// Returns the given seperate colour components as a 32-bit int in the
+    /// Returns the given seperate colour components as a 32-bit uint in the
     /// following format:-
     /// <li>Bits  0 - 7  : Blue component</li>
     /// <li>Bits  8 - 15 : Green component</li>
@@ -908,16 +898,16 @@ public sealed class Color
     /// <param name="b"> Blue component </param>
     /// <param name="g"> Green component </param>
     /// <param name="r"> Red component </param>
-    public static int ARGB8888( float a, float r, float g, float b )
+    public static uint ARGB8888( float a, float r, float g, float b )
     {
-        return ( ( int ) ( a * 255 ) << 24 )
-             | ( ( int ) ( r * 255 ) << 16 )
-             | ( ( int ) ( g * 255 ) << 8 )
-             | ( int ) ( b * 255 );
+        return ( ( uint ) ( a * 255 ) << 24 )
+             | ( ( uint ) ( r * 255 ) << 16 )
+             | ( ( uint ) ( g * 255 ) << 8 )
+             | ( uint ) ( b * 255 );
     }
 
     /// <summary>
-    /// Returns the given <see cref="Color"/> as a 32-bit int in the
+    /// Returns the given <see cref="Color"/> as a 32-bit uint in the
     /// following format:-
     /// <li>Bits  0 - 4  : Blue component</li>
     /// <li>Bits  5 - 10 : Green component</li>
@@ -925,17 +915,17 @@ public sealed class Color
     /// <li>Bits 16 - 31 : Undefined</li>
     /// </summary>
     /// <param name="color"> The colour. </param>
-    public static int RGB565( Color color )
+    public static uint RGB565( Color color )
     {
         ArgumentNullException.ThrowIfNull( color );
 
-        return ( ( int ) ( color.R * 31 ) << 11 )
-             | ( ( int ) ( color.G * 63 ) << 5 )
-             | ( int ) ( color.B * 31 );
+        return ( ( uint ) ( color.R * 31 ) << 11 )
+             | ( ( uint ) ( color.G * 63 ) << 5 )
+             | ( uint ) ( color.B * 31 );
     }
 
     /// <summary>
-    /// Returns the given <see cref="Color"/> as a 16-bit int in the
+    /// Returns the given <see cref="Color"/> as a 16-bit uint in the
     /// following format:-
     /// <li>Bits  0 - 3  : Alpha component</li>
     /// <li>Bits  4 - 7  : Blue component</li>
@@ -944,18 +934,18 @@ public sealed class Color
     /// <li>Bits 16 - 31 : Undefined</li>
     /// </summary>
     /// <param name="color"> The colour. </param>
-    public static int RGBA4444( Color color )
+    public static uint RGBA4444( Color color )
     {
         ArgumentNullException.ThrowIfNull( color );
 
-        return ( ( int ) ( color.R * 15 ) << 12 )
-             | ( ( int ) ( color.G * 15 ) << 8 )
-             | ( ( int ) ( color.B * 15 ) << 4 )
-             | ( int ) ( color.A * 15 );
+        return ( ( uint ) ( color.R * 15 ) << 12 )
+             | ( ( uint ) ( color.G * 15 ) << 8 )
+             | ( ( uint ) ( color.B * 15 ) << 4 )
+             | ( uint ) ( color.A * 15 );
     }
 
     /// <summary>
-    /// Returns the given <see cref="Color"/> as a 32-bit int in the
+    /// Returns the given <see cref="Color"/> as a 32-bit uint in the
     /// following format:-
     /// <li>Bits  0 - 7  : Blue component</li>
     /// <li>Bits  8 - 15 : Green component</li>
@@ -963,17 +953,17 @@ public sealed class Color
     /// <li>Bits 24 - 31 : Undefined</li>
     /// </summary>
     /// <param name="color"> The colour. </param>
-    public static int RGB888( Color color )
+    public static uint RGB888( Color color )
     {
         ArgumentNullException.ThrowIfNull( color );
 
-        return ( ( int ) ( color.R * 255 ) << 16 )
-             | ( ( int ) ( color.G * 255 ) << 8 )
-             | ( int ) ( color.B * 255 );
+        return ( ( uint ) ( color.R * 255 ) << 16 )
+             | ( ( uint ) ( color.G * 255 ) << 8 )
+             | ( uint ) ( color.B * 255 );
     }
 
     /// <summary>
-    /// Returns the given <see cref="Color"/> as a 32-bit int in the
+    /// Returns the given <see cref="Color"/> as a 32-bit uint in the
     /// following format:-
     /// <li>Bits  0 - 7  : Alpha component</li>
     /// <li>Bits  8 - 15 : Blue component</li>
@@ -981,18 +971,18 @@ public sealed class Color
     /// <li>Bits 24 - 31 : Red component</li>
     /// </summary>
     /// <param name="color"> The colour. </param>
-    public static int RGBA8888( Color color )
+    public static uint RGBA8888( Color color )
     {
         ArgumentNullException.ThrowIfNull( color );
 
-        return ( ( int ) ( color.R * 255 ) << 24 )
-             | ( ( int ) ( color.G * 255 ) << 16 )
-             | ( ( int ) ( color.B * 255 ) << 8 )
-             | ( int ) ( color.A * 255 );
+        return ( ( uint ) ( color.R * 255 ) << 24 )
+             | ( ( uint ) ( color.G * 255 ) << 16 )
+             | ( ( uint ) ( color.B * 255 ) << 8 )
+             | ( uint ) ( color.A * 255 );
     }
 
     /// <summary>
-    /// Returns the given <see cref="Color"/> as a 32-bit int in the
+    /// Returns the given <see cref="Color"/> as a 32-bit uint in the
     /// following format:-
     /// <li>Bits  0 - 7  : Blue component</li>
     /// <li>Bits  8 - 15 : Green component</li>
@@ -1000,14 +990,14 @@ public sealed class Color
     /// <li>Bits 24 - 31 : Alpha component</li>
     /// </summary>
     /// <param name="color"> The colour. </param>
-    public static int ARGB8888( Color color )
+    public static uint ARGB8888( Color color )
     {
         ArgumentNullException.ThrowIfNull( color );
 
-        return ( ( int ) ( color.A * 255 ) << 24 )
-             | ( ( int ) ( color.R * 255 ) << 16 )
-             | ( ( int ) ( color.G * 255 ) << 8 )
-             | ( int ) ( color.B * 255 );
+        return ( ( uint ) ( color.A * 255 ) << 24 )
+             | ( ( uint ) ( color.R * 255 ) << 16 )
+             | ( ( uint ) ( color.G * 255 ) << 8 )
+             | ( uint ) ( color.B * 255 );
     }
     
     /// <summary>
