@@ -277,12 +277,14 @@ GRAPHICS
     - DONE - DONE - GStructs
     - DONE - DONE - ICubemapData
     - DONE - DONE - ICursor
+    - IP   - IP   - ImageFormatStructs
     - DONE - DONE - ITextureArrayData
     - DONE - DONE - ITextureData
     - DONE - IP   - Mesh
     - DONE - IP   - Pixel
     - DONE - DONE - Pixmap
     - DONE - IP   - PixmapFormat
+    - DONE - IP   - PixmapFormatExtensions
     - DONE - IP   - PixmapIO                            Tests needed
     - DONE - IP   - Texture
     - DONE - IP   - TextureArray
@@ -327,7 +329,8 @@ GRAPHICS/G2D
     - IP   - IP   - BitmapFont                      Much work needed!
     - IP   - IP   - BitmapFontCache                 Relies on the BitmapFont rewrite.
     - DONE - IP   - DistanceFieldFont
-    - DONE - IP   - Gdx2DPixmap
+    - IP   - IP   - Gdx2DPixmap
+    - IP   - IP   - Gdx2DPixmapExtensions
     - DONE - IP   - GlyphLayout
     - DONE - IP   - NinePatch
     - DONE - IP   - ParticleEffect

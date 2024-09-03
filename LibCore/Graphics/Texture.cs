@@ -53,7 +53,7 @@ public class Texture : GLTexture
 {
     public AssetManager? AssetManager { get; set; } = null;
     public ITextureData? TextureData  { get; set; } = null;
-    
+
     // ------------------------------------------------------------------------
 
     public override int  Width     => TextureData?.Width ?? 0;
@@ -78,7 +78,7 @@ public class Texture : GLTexture
     {
         Logger.CheckPoint();
     }
-    
+
     /// <summary>
     /// Create a new Texture from the file described by the given <see cref="FileInfo"/>
     /// </summary>
@@ -167,6 +167,8 @@ public class Texture : GLTexture
         Logger.Debug( $"data.Width     : {data.Width}" );
         Logger.Debug( $"data.Height    : {data.Height}" );
         Logger.Debug( $"data.Format    : {data.Format}" );
+        Logger.Debug( $"data.IsManaged : {data.IsManaged}" );
+        Logger.Debug( $"data.IsPrepared: {data.IsPrepared}" );
 
         Load( data );
 
@@ -183,7 +185,7 @@ public class Texture : GLTexture
     public void Load( ITextureData? data )
     {
         Logger.CheckPoint();
-        
+
         if ( ( data != null )
           && ( TextureData != null )
           && ( data.IsManaged != TextureData.IsManaged ) )
@@ -191,15 +193,19 @@ public class Texture : GLTexture
             throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
         }
 
-        Logger.Debug( $"data       : {data}" );
-        Logger.Debug( $"data.Width : {data?.Width}" );
-        Logger.Debug( $"data.Height: {data?.Height}" );
-        Logger.Debug( $"data.Format: {data?.Format}" );
-        
+        Logger.Debug( $"data           : {data}" );
+        Logger.Debug( $"data.Width     : {data?.Width}" );
+        Logger.Debug( $"data.Height    : {data?.Height}" );
+        Logger.Debug( $"data.Format    : {data?.Format}" );
+        Logger.Debug( $"data.IsPrepared: {data?.IsPrepared}" );
+        Logger.Debug( $"data.IsManaged : {data?.IsManaged}" );
+
         TextureData = data;
 
         if ( !data!.IsPrepared )
         {
+            Logger.CheckPoint();
+
             data.Prepare();
         }
 
@@ -208,6 +214,8 @@ public class Texture : GLTexture
         Logger.CheckPoint();
 
         UploadImageData( IGL.GL_TEXTURE_2D, data );
+
+        Logger.CheckPoint();
 
         UnsafeSetFilter( MinFilter, MagFilter, true );
         UnsafeSetWrap( UWrap, VWrap, true );
@@ -263,11 +271,20 @@ public class Texture : GLTexture
     {
         Logger.CheckPoint();
 
-        List< Texture > managedTextureArray = _managedTextures[ app ] ?? new List< Texture >();
+        List< Texture >? managedTextureArray;
 
-        managedTextureArray.Add( texture );
+        if ( _managedTextures.TryGetValue( app, out List< Texture >? managedTexture ) )
+        {
+            managedTextureArray = managedTexture;
+        }
+        else
+        {
+            managedTextureArray = [ ];
+        }
 
-        _managedTextures[ app ] = managedTextureArray;
+        managedTextureArray?.Add( texture );
+
+        _managedTextures.Put( app, managedTextureArray );
     }
 
     /// <summary>
@@ -420,6 +437,8 @@ public class Texture : GLTexture
     {
         public void FinishedLoading( AssetManager assetManager, string? fileName, Type? type )
         {
+            Logger.CheckPoint();
+
             assetManager.SetReferenceCount( fileName!, refCount );
         }
     }

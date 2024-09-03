@@ -65,17 +65,12 @@ public class AssetLoaderParameters : ILoaderParameters
 /// Default Loaded callback for when there is no other available.
 /// </summary>
 [PublicAPI]
-public class DefaultLoadedCallback : ILoadedCallback
+public class DefaultLoadedCallback( int refCount ) : ILoadedCallback
 {
-    private readonly int _refCount;
-
-    public DefaultLoadedCallback( int refCount )
-    {
-        _refCount = refCount;
-    }
-
     public void FinishedLoading( AssetManager assetManager, string fileName, Type type )
     {
-        assetManager.SetReferenceCount( fileName, _refCount );
+        Logger.CheckPoint();
+        
+        assetManager.SetReferenceCount( fileName, refCount );
     }
 }

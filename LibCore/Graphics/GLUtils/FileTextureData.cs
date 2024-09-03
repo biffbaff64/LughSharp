@@ -33,10 +33,10 @@ public class FileTextureData : ITextureData
     public FileInfo File { get; set; }
 
     /// <returns> the width of the pixel data </returns>
-    public int Width { get; set; }
+    public int Width { get; set; } = 0;
 
     /// <returns> the height of the pixel data </returns>
-    public int Height { get; set; }
+    public int Height { get; set; } = 0;
 
     /// <returns> whether the TextureData is prepared or not.</returns>
     public bool IsPrepared { get; set; }
@@ -45,10 +45,8 @@ public class FileTextureData : ITextureData
     public bool UseMipMaps { get; set; }
 
     // ------------------------------------------------------------------------
-    
-    private int            _height = 0;
-    private Pixmap?        _pixmap;
-    private int            _width = 0;
+
+    private Pixmap? _pixmap;
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -56,16 +54,16 @@ public class FileTextureData : ITextureData
     public FileTextureData( FileInfo file, Pixmap preloadedPixmap, Pixmap.Format? format, bool useMipMaps )
     {
         Logger.CheckPoint();
-        
+
         this.File       = file;
         this._pixmap    = preloadedPixmap;
-        this.Format    = format;
+        this.Format     = format;
         this.UseMipMaps = useMipMaps;
 
         if ( _pixmap != null )
         {
-            this._width  = _pixmap.Width;
-            this._height = _pixmap.Height;
+            this.Width  = _pixmap.Width;
+            this.Height = _pixmap.Height;
 
             this.Format ??= _pixmap.GetFormat();
         }
@@ -87,8 +85,8 @@ public class FileTextureData : ITextureData
         {
             _pixmap = File.Extension.Equals( "cim" ) ? PixmapIO.ReadCIM( File ) : new Pixmap( File );
 
-            _width  = _pixmap.Width;
-            _height = _pixmap.Height;
+            this.Width  = _pixmap.Width;
+            this.Height = _pixmap.Height;
 
             Format ??= _pixmap.GetFormat();
         }

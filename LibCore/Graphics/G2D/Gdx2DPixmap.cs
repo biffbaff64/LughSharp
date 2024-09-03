@@ -28,7 +28,7 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics.G2D;
 
 /// <summary>
-/// simple pixmap struct holding the pixel data, the dimensions and the
+/// Simple pixmap struct holding the pixel data, the dimensions and the
 /// format of the pixmap. The format is one of the GDX_2D_FORMAT_XXX constants.
 /// </summary>
 [PublicAPI, StructLayout( LayoutKind.Sequential )]
@@ -39,9 +39,22 @@ public struct PixmapDef
     public uint       Format { get; set; }
     public uint       Blend  { get; set; }
     public uint       Scale  { get; set; }
-    public ByteBuffer Pixels { get; set; }
+    public ByteBuffer Pixels { get; set; } // Can I just extract this ByteBuffer and use it directly?
 }
 
+[PublicAPI, StructLayout( LayoutKind.Sequential )]
+public struct NativePixmapDef
+{
+    public uint   Width  { get; set; }
+    public uint   Height { get; set; }
+    public uint   Format { get; set; }
+    public uint   Blend  { get; set; }
+    public uint   Scale  { get; set; }
+    public byte[] Pixels { get; set; }
+}
+
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
 [PublicAPI]
@@ -68,16 +81,19 @@ public partial class Gdx2DPixmap : IDisposable
     #endregion constants
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     #region properties
 
-    public PixmapDef PixmapDef { get; set; }
-    public uint      Width     { get; set; }
-    public uint      Height    { get; set; }
-    public uint      Format    { get; set; }
+    public PixmapDef       PixmapDef       { get; set; }
+    public NativePixmapDef NativePixmapDef { get; set; }
+    public uint            Width           { get; set; }
+    public uint            Height          { get; set; }
+    public uint            Format          { get; set; }
 
     #endregion properties
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     #region constructors
@@ -97,7 +113,31 @@ public partial class Gdx2DPixmap : IDisposable
         Logger.Debug( $"offset: {offset}" );
         Logger.Debug( $"requestedFormat: {requestedFormat}" );
 
-        LoadData( buffer, offset, buffer.Length );
+//        LoadData( buffer, offset, len );
+
+//        this.NativePixmapDef = gdx2d_load( buffer, buffer.Length );
+
+        this.NativePixmapDef = new NativePixmapDef
+        {
+            Width  = 165,
+            Height = 111,
+            Format = ( uint ) requestedFormat,
+            Scale  = DEFAULT_SCALE,
+            Blend  = DEFAULT_BLEND,
+            Pixels = buffer,
+        };
+
+        Logger.CheckPoint();
+
+        this.PixmapDef = new PixmapDef
+        {
+            Width  = this.NativePixmapDef.Width,
+            Height = this.NativePixmapDef.Height,
+            Format = this.NativePixmapDef.Format,
+            Scale  = this.NativePixmapDef.Scale,
+            Blend  = this.NativePixmapDef.Blend,
+            Pixels = ByteBuffer.Wrap( this.NativePixmapDef.Pixels )
+        };
 
         Logger.CheckPoint();
 
@@ -105,6 +145,10 @@ public partial class Gdx2DPixmap : IDisposable
         {
             Convert( requestedFormat );
         }
+
+        this.Width  = NativePixmapDef.Width;
+        this.Height = NativePixmapDef.Height;
+        this.Format = this.NativePixmapDef.Format;
 
         Logger.CheckPoint();
     }
@@ -146,6 +190,10 @@ public partial class Gdx2DPixmap : IDisposable
         {
             Convert( requestedFormat );
         }
+        
+        this.Width  = NativePixmapDef.Width;
+        this.Height = NativePixmapDef.Height;
+        this.Format = this.NativePixmapDef.Format;
     }
 
     /// <summary>
@@ -159,13 +207,22 @@ public partial class Gdx2DPixmap : IDisposable
         Logger.CheckPoint();
         Logger.Debug( $"width: {width}, height: {height}, format: {format}" );
 
-        this.PixmapDef = Gdx2DNew( width, height, format );
+        this.PixmapDef = CreatePixmapDef( width, height, format );
+        this.NativePixmapDef = new NativePixmapDef
+        {
+            Width  = ( uint ) width,
+            Height = ( uint ) height,
+            Format = ( uint ) format,
+            Blend  = GDX_2D_BLEND_SRC_OVER,
+            Scale  = GDX_2D_SCALE_BILINEAR,
+            Pixels = new byte[ width * height * PixmapFormat.Gdx2dBytesPerPixel( format ) ]
+        };
 
         Logger.CheckPoint();
 
-        this.Width  = this.PixmapDef.Width;
-        this.Height = this.PixmapDef.Height;
-        this.Format = this.PixmapDef.Format;
+        this.Width  = this.NativePixmapDef.Width;
+        this.Height = this.NativePixmapDef.Height;
+        this.Format = this.NativePixmapDef.Format;
 
         if ( PixmapDef.Pixels == null )
         {
@@ -176,19 +233,20 @@ public partial class Gdx2DPixmap : IDisposable
         Logger.CheckPoint();
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="pixelPtr"></param>
-    /// <param name="data"></param>
-    public Gdx2DPixmap( ByteBuffer pixelPtr, int[] data )
-    {
-        Logger.CheckPoint();
-
-        //TODO:
-    }
+//    /// <summary>
+//    /// </summary>
+//    /// <param name="pixelPtr"></param>
+//    /// <param name="data"></param>
+//    public Gdx2DPixmap( ByteBuffer pixelPtr, byte[] data )
+//    {
+//        Logger.CheckPoint();
+//
+//        //TODO:
+//    }
 
     #endregion constructors
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     private ByteBuffer LoadData( byte[] buffer, int offset, int len )
@@ -212,6 +270,20 @@ public partial class Gdx2DPixmap : IDisposable
         Logger.CheckPoint();
 
         return ptr;
+    }
+
+    private ByteBuffer Load( byte[] buffer, int offset, int len )
+    {
+        Logger.CheckPoint();
+
+        this.NativePixmapDef = gdx2d_load( buffer, len );
+
+        Logger.CheckPoint();
+        Logger.Debug( $"NPixmapDef       : {NativePixmapDef.Width} x {NativePixmapDef.Height}" );
+        Logger.Debug( $"NPixmapDef.Format: {NativePixmapDef.Format}" );
+        Logger.Debug( $"NBuffer length   : {NativePixmapDef.Pixels.Length}" );
+
+        return ByteBuffer.Wrap( NativePixmapDef.Pixels );
     }
 
     /// <summary>
@@ -304,7 +376,7 @@ public partial class Gdx2DPixmap : IDisposable
         }
     }
 
-    private PixmapDef Gdx2DNew( int width, int height, int format )
+    private PixmapDef CreatePixmapDef( int width, int height, int format )
     {
         var pmd = new PixmapDef
         {
@@ -324,32 +396,15 @@ public partial class Gdx2DPixmap : IDisposable
 
     // ------------------------------------------------------------------------
 
-    private ByteBuffer Load( byte[] buffer, int offset, int len )
+    public int Blend
     {
-        return new HeapByteBuffer( buffer, offset, len );
+        set => gdx2d_set_blend( NativePixmapDef, value );
     }
 
-    // ------------------------------------------------------------------------
-
-//    public int    GLInternalFormat => ToGLFormat( ( int ) Format );
-//    public int    GLFormat         => ToGLFormat( ( int ) Format );
-//    public int    GLType           => ToGLType( ( int ) Format );
-//    public string FormatString     => PixmapFormat.GetFormatString( ( int ) Format );
-
-    public int Blend { get; set; }
-
-//TODO:
-//    {
-//        set => gdx2d_set_blend( PixmapDef, value );
-//    }
-
-    public int Scale { get; set; }
-
-//TODO:
-//    {
-//        set => gdx2d_set_scale( PixmapDef, value );
-//    }
-
+    public int Scale
+    {
+        set => gdx2d_set_scale( NativePixmapDef, value );
+    }
 
     // ------------------------------------------------------------------------
 
@@ -363,7 +418,7 @@ public partial class Gdx2DPixmap : IDisposable
     }
 
     /// <summary>
-    /// Centralize all logic related to releasing unmanaged resources.
+    /// Centralise all logic related to releasing unmanaged resources.
     /// </summary>
     protected virtual void Dispose( bool disposing )
     {

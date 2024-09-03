@@ -69,6 +69,8 @@ public static class TextureDataFactory
     /// <exception cref="ArgumentNullException">Thrown when the file parameter is null.</exception>
     public static ITextureData LoadFromFile( FileInfo file, Pixmap.Format? format, bool useMipMaps = true )
     {
+        ArgumentNullException.ThrowIfNull( file );
+
         Logger.CheckPoint();
         Logger.Debug( $"Loading texture data from '{file.FullName}'" );
         if ( File.Exists( file.FullName ) )
@@ -76,14 +78,29 @@ public static class TextureDataFactory
             Logger.Debug( "Image file found" );
         }
 
-        ArgumentNullException.ThrowIfNull( file );
-
-        return file.Extension.ToLower() switch
+        ITextureData data = file.Extension.ToLower() switch
         {
-            ".cim"            => new FileTextureData( file, PixmapIO.ReadCIM( file ), format, useMipMaps ),
-            ".etc1"           => new ETC1TextureData( file, useMipMaps ),
+            // Common Information Model image file format.
+            ".cim" => new FileTextureData( file, PixmapIO.ReadCIM( file ), format, useMipMaps ),
+
+            // Compressed Texture format for WebGL and OpenGL ES.
+            ".etc1" => new ETC1TextureData( file, useMipMaps ),
+
+            // Kronos TeXture image file format for OpenGL and OpenGL ES.
             ".ktx" or ".zktx" => new KtxTextureData( file, useMipMaps ),
-            var _             => new FileTextureData( file, new Pixmap( file ), format, useMipMaps )
+
+            // Other supported image file formats, PNG, BMP
+            // Unsure about JPG/JPEG and TGA
+            // The call to Pixmap() does the actual loading of the imager
+            var _ => new FileTextureData( file, new Pixmap( file ), format, useMipMaps )
         };
+
+        Logger.CheckPoint();
+        Logger.Debug( $"Width x Height: {data.Width}, {data.Height}" );
+        Logger.Debug( $"Format        : {data.Format}" );
+        Logger.Debug( $"IsPrepared    : {data.IsPrepared}" );
+        Logger.Debug( $"IsManaged     : {data.IsManaged}" );
+
+        return data;
     }
 }

@@ -133,7 +133,7 @@ public static class PixmapIO
 
                 var pixelBuf = pixmap.Pixels;
 
-                pixelBuf.Position = 0;
+                pixelBuf!.Position = 0;
                 pixelBuf.Limit    = pixelBuf.Capacity;
 
                 var remainingBytes = pixelBuf.Capacity % BUFFER_SIZE;

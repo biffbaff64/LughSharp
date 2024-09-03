@@ -137,6 +137,10 @@ public class Pixmap : IDisposable
         try
         {
             PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
+
+            Width     = ( int ) PixelData.Width;
+            Height    = ( int ) PixelData.Height;
+            PixFormat = ( int ) PixelData.Format;
         }
         catch ( IOException e )
         {
@@ -171,9 +175,17 @@ public class Pixmap : IDisposable
 
         try
         {
+            Logger.CheckPoint();
+            
             var data = File.ReadAllBytes( file.FullName );
 
+            Logger.CheckPoint();
+
             PixelData = new Gdx2DPixmap( data, 0, data.Length, 0 );
+
+            Width     = ( int ) PixelData.Width;
+            Height    = ( int ) PixelData.Height;
+            PixFormat = ( int ) PixelData.Format;
 
             Logger.CheckPoint();
             Logger.Debug( $"{PixelData.Width} x {PixelData.Height}, {PixelData.Format}" );
@@ -192,6 +204,10 @@ public class Pixmap : IDisposable
     public Pixmap( Gdx2DPixmap gdx2DPixmap )
     {
         this.PixelData = gdx2DPixmap;
+
+        Width     = ( int ) PixelData.Width;
+        Height    = ( int ) PixelData.Height;
+        PixFormat = ( int ) PixelData.Format;
     }
 
     // ----------------------------------------------------------
@@ -292,7 +308,7 @@ public class Pixmap : IDisposable
     /// </summary>
     public void FillWithCurrentColor()
     {
-        PixelData.Clear( PixelData.PixmapDef, this.Color );
+        PixelData.Clear( PixelData.NativePixmapDef, this.Color );
     }
 
     /// <summary>
@@ -445,7 +461,7 @@ public class Pixmap : IDisposable
     /// <returns> The pixel color in RGBA8888 format.  </returns>
     public int GetPixel( int x, int y )
     {
-        return PixelData.GetPixel( PixelData.PixmapDef, x, y );
+        return PixelData.GetPixel( PixelData.NativePixmapDef, x, y );
     }
 
     /// <summary>
@@ -455,7 +471,7 @@ public class Pixmap : IDisposable
     /// <param name="y"> the y-coordinate </param>
     public void DrawPixel( int x, int y )
     {
-        PixelData.SetPixel( PixelData.PixmapDef, x, y, this.Color );
+        PixelData.SetPixel( PixelData.NativePixmapDef, x, y, this.Color );
     }
 
     /// <summary>
@@ -466,7 +482,7 @@ public class Pixmap : IDisposable
     /// <param name="color"> the color in RGBA8888 format. </param>
     public void DrawPixel( int x, int y, Color color )
     {
-        PixelData.SetPixel( PixelData.PixmapDef, x, y, color );
+        PixelData.SetPixel( PixelData.NativePixmapDef, x, y, color );
     }
 
     /// <summary>

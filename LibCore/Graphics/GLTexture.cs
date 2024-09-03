@@ -476,14 +476,14 @@ public abstract class GLTexture : IDisposable, IManageable
         {
             Logger.CheckPoint();
 
-            Logger.Debug( $"target: {target}" );
-            Logger.Debug( $"miplevel: {miplevel}" );
+            Logger.Debug( $"target                 : {target}" );
+            Logger.Debug( $"miplevel               : {miplevel}" );
             Logger.Debug( $"pixmap.GLInternalFormat: {pixmap.GLInternalFormat}" );
-            Logger.Debug( $"pixmap.Width: {pixmap.Width}" );
-            Logger.Debug( $"pixmap.Height: {pixmap.Height}" );
-            Logger.Debug( $"pixmap.GLFormat: {pixmap.GLFormat}" );
-            Logger.Debug( $"pixmap.GLType: {pixmap.GLType}" );
-            Logger.Debug( $"pixmap array size: {pixmap.Pixels?.BackingArray().Length}" );
+            Logger.Debug( $"pixmap.Width           : {pixmap.Width}" );
+            Logger.Debug( $"pixmap.Height          : {pixmap.Height}" );
+            Logger.Debug( $"pixmap.GLFormat        : {pixmap.GLFormat}" );
+            Logger.Debug( $"pixmap.GLType          : {pixmap.GLType}" );
+            Logger.Debug( $"pixmap array size      : {pixmap.Pixels?.BackingArray().Length}" );
 
             var pixels = pixmap.Pixels;
 
@@ -506,6 +506,8 @@ public abstract class GLTexture : IDisposable, IManageable
 
         if ( disposePixmap )
         {
+            Logger.CheckPoint();
+            
             pixmap.Dispose();
         }
     }
