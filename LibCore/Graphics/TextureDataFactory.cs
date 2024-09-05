@@ -48,7 +48,7 @@ public static class TextureDataFactory
 
         ArgumentNullException.ThrowIfNull( file );
 
-        Pixmap.Format? format = null; // Default format if not specified
+        Pixmap.ColorFormat? format = null; // Default format if not specified
 
         var data = LoadFromFile( file, format );
 
@@ -67,7 +67,7 @@ public static class TextureDataFactory
     /// <param name="useMipMaps">Specifies whether to use mipmaps.</param>
     /// <returns>The loaded texture data.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the file parameter is null.</exception>
-    public static ITextureData LoadFromFile( FileInfo file, Pixmap.Format? format, bool useMipMaps = true )
+    public static ITextureData LoadFromFile( FileInfo file, Pixmap.ColorFormat? format, bool useMipMaps = true )
     {
         ArgumentNullException.ThrowIfNull( file );
 

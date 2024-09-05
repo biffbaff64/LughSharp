@@ -195,7 +195,7 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( Texture texture,
+    public override void Draw( Texture? texture,
                                GRect region,
                                Point2D origin,
                                Point2D scale,
@@ -204,16 +204,15 @@ public class CpuSpriteBatch : SpriteBatch
                                bool flipX,
                                bool flipY )
     {
+        if ( texture == null )
+        {
+            Logger.Error( "Supplied Texture is null." );
+            return;
+        }
+
         if ( !_adjustNeeded )
         {
-            base.Draw( texture,
-                       region,
-                       origin,
-                       scale,
-                       rotation,
-                       src,
-                       flipX,
-                       flipY );
+            base.Draw( texture, region, origin, scale, rotation, src, flipX, flipY );
         }
         else
         {
@@ -237,12 +236,18 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( Texture texture,
+    public override void Draw( Texture? texture,
                                GRect region,
                                Rectangle src,
                                bool flipX,
                                bool flipY )
     {
+        if ( texture == null )
+        {
+            Logger.Error( "Supplied Texture is null." );
+            return;
+        }
+
         if ( !_adjustNeeded )
         {
             base.Draw( texture, region, src, flipX, flipY );
@@ -269,8 +274,14 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( Texture texture, float x, float y, Rectangle src )
+    public override void Draw( Texture? texture, float x, float y, Rectangle src )
     {
+        if ( texture == null )
+        {
+            Logger.Error( "Supplied Texture is null." );
+            return;
+        }
+
         if ( !_adjustNeeded )
         {
             base.Draw( texture, x, y, src );
@@ -297,13 +308,19 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( Texture texture,
+    public override void Draw( Texture? texture,
                                GRect region,
                                float u,
                                float v,
                                float u2,
                                float v2 )
     {
+        if ( texture == null )
+        {
+            Logger.Error( "Supplied Texture is null." );
+            return;
+        }
+
         if ( !_adjustNeeded )
         {
             base.Draw( texture, region, u, v, u2, v2 );
@@ -330,36 +347,33 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( Texture texture, float x, float y )
+    public override void Draw( Texture? texture, float x, float y )
     {
+        if ( texture == null )
+        {
+            Logger.Error( "Supplied Texture is null." );
+            return;
+        }
+
         if ( !_adjustNeeded )
         {
             base.Draw( texture, x, y );
         }
         else
         {
-            DrawAdjusted( texture,
-                          x,
-                          y,
-                          0,
-                          0,
-                          texture.Width,
-                          texture.Height,
-                          1,
-                          1,
-                          0,
-                          0,
-                          1,
-                          1,
-                          0,
-                          false,
-                          false );
+            DrawAdjusted( texture, x, y, 0, 0, texture.Width, texture.Height, 1, 1, 0, 0, 1, 1, 0, false, false );
         }
     }
 
     /// <inheritdoc />
-    public override void Draw( Texture texture, Point loc, Size size )
+    public override void Draw( Texture? texture, Point loc, Size size )
     {
+        if ( texture == null )
+        {
+            Logger.Error( "Supplied Texture is null." );
+            return;
+        }
+
         if ( !_adjustNeeded )
         {
             base.Draw( texture, loc, size );
@@ -371,8 +385,14 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( TextureRegion region, float x, float y )
+    public override void Draw( TextureRegion? region, float x, float y )
     {
+        if ( region == null )
+        {
+            Logger.Error( "Supplied TextureRegion is null." );
+            return;
+        }
+
         if ( !_adjustNeeded )
         {
             base.Draw( region, x, y );
@@ -384,8 +404,14 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( TextureRegion region, float x, float y, float width, float height )
+    public override void Draw( TextureRegion? region, float x, float y, float width, float height )
     {
+        if ( region == null )
+        {
+            Logger.Error( "Supplied TextureRegion is null." );
+            return;
+        }
+
         if ( !_adjustNeeded )
         {
             base.Draw( region, x, y, width, height );
@@ -397,30 +423,51 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( TextureRegion textureRegion,
+    public override void Draw( TextureRegion? textureRegion,
                                GRect region,
                                Point2D origin,
                                Point2D scale,
                                float rotation )
     {
+        if ( textureRegion == null )
+        {
+            Logger.Error( "Supplied TextureRegion is null." );
+            return;
+        }
+
         if ( !_adjustNeeded )
         {
             base.Draw( textureRegion, region, origin, scale, rotation );
         }
         else
         {
-            DrawAdjusted( textureRegion, region.X, region.Y, origin.X, origin.Y, region.Width, region.Height, scale.X, scale.Y, rotation );
+            DrawAdjusted( textureRegion,
+                          region.X,
+                          region.Y,
+                          origin.X,
+                          origin.Y,
+                          region.Width,
+                          region.Height,
+                          scale.X,
+                          scale.Y,
+                          rotation );
         }
     }
 
     /// <inheritdoc />
-    public override void Draw( TextureRegion textureRegion,
+    public override void Draw( TextureRegion? textureRegion,
                                GRect region,
                                Point2D origin,
                                Point2D scale,
                                float rotation,
                                bool clockwise )
     {
+        if ( textureRegion == null )
+        {
+            Logger.Error( "Supplied TextureRegion is null." );
+            return;
+        }
+
         if ( !_adjustNeeded )
         {
             base.Draw( textureRegion, region, origin, scale, rotation, clockwise );
@@ -442,8 +489,14 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( Texture texture, float[] spriteVertices, int offset, int count )
+    public override void Draw( Texture? texture, float[] spriteVertices, int offset, int count )
     {
+        if ( texture == null )
+        {
+            Logger.Error( "Supplied Texture is null." );
+            return;
+        }
+
         if ( ( count % Sprite.SPRITE_SIZE ) != 0 )
         {
             throw new GdxRuntimeException( "invalid vertex count" );
@@ -460,8 +513,14 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( TextureRegion region, float width, float height, Affine2 transform )
+    public override void Draw( TextureRegion? region, float width, float height, Affine2 transform )
     {
+        if ( region == null )
+        {
+            Logger.Error( "Supplied TextureRegion is null." );
+            return;
+        }
+
         if ( !_adjustNeeded )
         {
             base.Draw( region, width, height, transform );
@@ -472,7 +531,7 @@ public class CpuSpriteBatch : SpriteBatch
         }
     }
 
-    private void DrawAdjusted( TextureRegion region,
+    private void DrawAdjusted( TextureRegion? region,
                                float x,
                                float y,
                                float originX,
@@ -483,28 +542,32 @@ public class CpuSpriteBatch : SpriteBatch
                                float scaleY,
                                float rotation )
     {
+        if ( region == null )
+        {
+            Logger.Error( "Supplied TextureRegion is null." );
+            return;
+        }
+
         // v must be flipped
-        DrawAdjustedUV(
-                       region.Texture,
-                       x,
-                       y,
-                       originX,
-                       originY,
-                       width,
-                       height,
-                       scaleX,
-                       scaleY,
-                       rotation,
-                       region.U,
-                       region.V2,
-                       region.U2,
-                       region.V,
-                       false,
-                       false
-                      );
+        DrawAdjustedUV( region.Texture,
+                        x,
+                        y,
+                        originX,
+                        originY,
+                        width,
+                        height,
+                        scaleX,
+                        scaleY,
+                        rotation,
+                        region.U,
+                        region.V2,
+                        region.U2,
+                        region.V,
+                        false,
+                        false );
     }
 
-    private void DrawAdjusted( Texture texture,
+    private void DrawAdjusted( Texture? texture,
                                float x,
                                float y,
                                float originX,
@@ -521,6 +584,12 @@ public class CpuSpriteBatch : SpriteBatch
                                bool flipX,
                                bool flipY )
     {
+        if ( texture == null )
+        {
+            Logger.Error( "Supplied Texture is null." );
+            return;
+        }
+
         var invWidth  = 1.0f / texture.Width;
         var invHeight = 1.0f / texture.Height;
 
@@ -547,7 +616,7 @@ public class CpuSpriteBatch : SpriteBatch
                         flipY );
     }
 
-    private void DrawAdjustedUV( Texture texture,
+    private void DrawAdjustedUV( Texture? texture,
                                  float x,
                                  float y,
                                  float originX,
@@ -567,6 +636,12 @@ public class CpuSpriteBatch : SpriteBatch
         if ( !IsDrawing )
         {
             throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
+        }
+
+        if ( texture == null )
+        {
+            Logger.Error( "Supplied Texture is null." );
+            return;
         }
 
         if ( texture != LastTexture )
@@ -693,7 +768,7 @@ public class CpuSpriteBatch : SpriteBatch
         Idx += Sprite.SPRITE_SIZE;
     }
 
-    private void DrawAdjusted( TextureRegion region,
+    private void DrawAdjusted( TextureRegion? region,
                                float x,
                                float y,
                                float originX,
@@ -708,6 +783,12 @@ public class CpuSpriteBatch : SpriteBatch
         if ( !IsDrawing )
         {
             throw new GdxRuntimeException( "CpuSpriteBatch.begin must be called before draw." );
+        }
+
+        if ( region == null )
+        {
+            Logger.Error( "Supplied TextureRegion is null." );
+            return;
         }
 
         if ( region.Texture != LastTexture )
@@ -849,11 +930,17 @@ public class CpuSpriteBatch : SpriteBatch
         Idx += Sprite.SPRITE_SIZE;
     }
 
-    private void DrawAdjusted( TextureRegion region, float width, float height, Affine2 transform )
+    private void DrawAdjusted( TextureRegion? region, float width, float height, Affine2 transform )
     {
         if ( !IsDrawing )
         {
             throw new InvalidOperationException( "CpuSpriteBatch.begin must be called before draw." );
+        }
+
+        if ( region == null )
+        {
+            Logger.Error( "Supplied TextureRegion is null." );
+            return;
         }
 
         if ( region.Texture != LastTexture )
@@ -908,7 +995,7 @@ public class CpuSpriteBatch : SpriteBatch
         Idx += Sprite.SPRITE_SIZE;
     }
 
-    private void DrawAdjusted( Texture texture, float[] spriteVertices, int offset, int count )
+    private void DrawAdjusted( Texture? texture, float[] spriteVertices, int offset, int count )
     {
         if ( !IsDrawing )
         {
@@ -947,8 +1034,7 @@ public class CpuSpriteBatch : SpriteBatch
                 Flush();
                 copyCount = Math.Min( Vertices.Length, count );
             }
-        }
-        while ( count > 0 );
+        } while ( count > 0 );
     }
 
     private static bool CheckEqual( Matrix4 a, Matrix4 b )

@@ -38,7 +38,7 @@ public class ScreenUtils
     /// a width and height equal to the current screen size.
     /// <para>
     /// The base <see cref="Texture"/> always has <see cref="MathUtils.NextPowerOfTwo"/>
-    /// dimensions and RGBA8888 <see cref="Pixmap.Format"/>. It can be accessed via
+    /// dimensions and RGBA8888 <see cref="Pixmap.ColorFormat"/>. It can be accessed via
     /// <see cref="TextureRegion.Texture"/>. The texture is not managed and has to be
     /// reloaded manually on a context loss.
     /// </para>
@@ -99,7 +99,7 @@ public class ScreenUtils
     /// width and height as a <see cref="TextureRegion"/> with the same dimensions.
     /// <para>
     /// The base <see cref="Texture"/> always has <see cref="MathUtils.NextPowerOfTwo"/>
-    /// dimensions and RGBA8888 <see cref="Pixmap.Format"/>. It can be accessed via
+    /// dimensions and RGBA8888 <see cref="Pixmap.ColorFormat"/>. It can be accessed via
     /// <see cref="TextureRegion.Texture"/>.
     /// </para>
     /// <para>
@@ -120,7 +120,7 @@ public class ScreenUtils
         var potW      = MathUtils.NextPowerOfTwo( w );
         var potH      = MathUtils.NextPowerOfTwo( h );
         var pixmap    = Pixmap.CreateFromFrameBuffer( x, y, w, h );
-        var potPixmap = new Pixmap( potW, potH, Pixmap.Format.RGBA8888 );
+        var potPixmap = new Pixmap( potW, potH, Pixmap.ColorFormat.RGBA8888 );
 
         potPixmap.Blending = Pixmap.BlendTypes.None;
         potPixmap.DrawPixmap( pixmap, 0, 0 );

@@ -173,7 +173,7 @@ public class TextureArray : GLTexture
     /// <param name="useMipMaps"></param>
     /// <param name="files"></param>
     public TextureArray( bool useMipMaps, params FileInfo[] files )
-        : this( useMipMaps, Pixmap.Format.RGBA8888, files )
+        : this( useMipMaps, Pixmap.ColorFormat.RGBA8888, files )
     {
     }
 
@@ -182,7 +182,7 @@ public class TextureArray : GLTexture
     /// <param name="useMipMaps"></param>
     /// <param name="format"></param>
     /// <param name="files"></param>
-    public TextureArray( bool useMipMaps, Pixmap.Format format, params FileInfo[] files )
+    public TextureArray( bool useMipMaps, Pixmap.ColorFormat format, params FileInfo[] files )
         : this( TextureArrayDataFactory.LoadFromFiles( format, useMipMaps, files ) )
     {
     }

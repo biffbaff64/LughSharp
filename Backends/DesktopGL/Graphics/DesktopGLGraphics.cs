@@ -64,12 +64,8 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         UpdateFramebufferInfo();
 
-        Logger.CheckPoint();
-
         InitiateGL();
         
-        Logger.CheckPoint();
-
         Glfw.SetWindowSizeCallback( GLWindow.GlfwWindow, ResizeCallback );
     }
 
@@ -132,8 +128,6 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
     /// </summary>
     private void UpdateFramebufferInfo()
     {
-        Logger.CheckPoint();
-
         if ( ( GLWindow == null ) || ( GLWindow.GlfwWindow == null ) )
         {
             return;

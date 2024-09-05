@@ -36,11 +36,13 @@ public class PixmapFormat
     public const int GDX_2D_FORMAT_RGBA8888        = 4;
     public const int GDX_2D_FORMAT_RGB565          = 5;
     public const int GDX_2D_FORMAT_RGBA4444        = 6;
-    public const int GDX_2D_SCALE_NEAREST          = 0;
-    public const int GDX_2D_SCALE_LINEAR           = 1;
-    public const int GDX_2D_SCALE_BILINEAR         = 1;
-    public const int GDX_2D_BLEND_NONE             = 0;
-    public const int GDX_2D_BLEND_SRC_OVER         = 1;
+
+    public const int GDX_2D_SCALE_NEAREST  = 0;
+    public const int GDX_2D_SCALE_LINEAR   = 1;
+    public const int GDX_2D_SCALE_BILINEAR = 1;
+
+    public const int GDX_2D_BLEND_NONE     = 0;
+    public const int GDX_2D_BLEND_SRC_OVER = 1;
 
     // ------------------------------------------------------------------------
 
@@ -49,18 +51,18 @@ public class PixmapFormat
     /// <param name="format"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public static int ToGdx2DPixmapFormat( Pixmap.Format? format )
+    public static int ToGdx2DPixmapFormat( Pixmap.ColorFormat? format )
     {
         return format switch
         {
-            Pixmap.Format.Alpha          => GDX_2D_FORMAT_ALPHA,
-            Pixmap.Format.Intensity      => GDX_2D_FORMAT_ALPHA,
-            Pixmap.Format.LuminanceAlpha => GDX_2D_FORMAT_LUMINANCE_ALPHA,
-            Pixmap.Format.RGB565         => GDX_2D_FORMAT_RGB565,
-            Pixmap.Format.RGBA4444       => GDX_2D_FORMAT_RGBA4444,
-            Pixmap.Format.RGB888         => GDX_2D_FORMAT_RGB888,
-            Pixmap.Format.RGBA8888       => GDX_2D_FORMAT_RGBA8888,
-            var _                        => throw new GdxRuntimeException( $"unknown format: {format}" )
+            Pixmap.ColorFormat.Alpha          => GDX_2D_FORMAT_ALPHA,
+            Pixmap.ColorFormat.Intensity      => GDX_2D_FORMAT_ALPHA,
+            Pixmap.ColorFormat.LuminanceAlpha => GDX_2D_FORMAT_LUMINANCE_ALPHA,
+            Pixmap.ColorFormat.RGB565         => GDX_2D_FORMAT_RGB565,
+            Pixmap.ColorFormat.RGBA4444       => GDX_2D_FORMAT_RGBA4444,
+            Pixmap.ColorFormat.RGB888         => GDX_2D_FORMAT_RGB888,
+            Pixmap.ColorFormat.RGBA8888       => GDX_2D_FORMAT_RGBA8888,
+            var _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
         };
     }
 
@@ -69,16 +71,18 @@ public class PixmapFormat
     /// <param name="format"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public static Pixmap.Format FromGdx2DPixmapFormat( int format )
+    public static Pixmap.ColorFormat FromGdx2DPixmapFormat( int format )
     {
+        Logger.Debug( $"format: {format}" );
+
         return format switch
         {
-            GDX_2D_FORMAT_ALPHA           => Pixmap.Format.Alpha,
-            GDX_2D_FORMAT_LUMINANCE_ALPHA => Pixmap.Format.LuminanceAlpha,
-            GDX_2D_FORMAT_RGB565          => Pixmap.Format.RGB565,
-            GDX_2D_FORMAT_RGBA4444        => Pixmap.Format.RGBA4444,
-            GDX_2D_FORMAT_RGB888          => Pixmap.Format.RGB888,
-            GDX_2D_FORMAT_RGBA8888        => Pixmap.Format.RGBA8888,
+            GDX_2D_FORMAT_ALPHA           => Pixmap.ColorFormat.Alpha,
+            GDX_2D_FORMAT_LUMINANCE_ALPHA => Pixmap.ColorFormat.LuminanceAlpha,
+            GDX_2D_FORMAT_RGB888          => Pixmap.ColorFormat.RGB888,
+            GDX_2D_FORMAT_RGBA8888        => Pixmap.ColorFormat.RGBA8888,
+            GDX_2D_FORMAT_RGB565          => Pixmap.ColorFormat.RGB565,
+            GDX_2D_FORMAT_RGBA4444        => Pixmap.ColorFormat.RGBA4444,
             var _                         => throw new GdxRuntimeException( $"unknown format: {format}" )
         };
     }
@@ -90,13 +94,13 @@ public class PixmapFormat
     {
         return format switch
         {
-            GDX_2D_FORMAT_ALPHA => 1,
-            GDX_2D_FORMAT_LUMINANCE_ALPHA
-                or GDX_2D_FORMAT_RGB565
-                or GDX_2D_FORMAT_RGBA4444 => 2,
-            GDX_2D_FORMAT_RGB888   => 3,
-            GDX_2D_FORMAT_RGBA8888 => 4,
-            _                      => 4,
+            GDX_2D_FORMAT_ALPHA           => 1,
+            GDX_2D_FORMAT_LUMINANCE_ALPHA => 2,
+            GDX_2D_FORMAT_RGB565          => 2,
+            GDX_2D_FORMAT_RGBA4444        => 2,
+            GDX_2D_FORMAT_RGB888          => 3,
+            GDX_2D_FORMAT_RGBA8888        => 4,
+            _                             => 4,
         };
     }
 
@@ -104,7 +108,7 @@ public class PixmapFormat
     /// </summary>
     /// <param name="format"></param>
     /// <returns></returns>
-    public static int ToGLFormat( Pixmap.Format format )
+    public static int ToGLFormat( Pixmap.ColorFormat format )
     {
         var cformat = ToGdx2DPixmapFormat( format );
 
@@ -124,7 +128,7 @@ public class PixmapFormat
     /// </summary>
     /// <param name="format"></param>
     /// <returns></returns>
-    public static int ToGLType( Pixmap.Format format )
+    public static int ToGLType( Pixmap.ColorFormat format )
     {
         var cformat = ToGdx2DPixmapFormat( format );
 
@@ -158,6 +162,21 @@ public class PixmapFormat
         };
     }
 
+    public static string GetFormatString( Pixmap.ColorFormat format )
+    {
+        return format switch
+        {
+            Pixmap.ColorFormat.Alpha          => "Alpha",
+            Pixmap.ColorFormat.Intensity      => "Intensity",
+            Pixmap.ColorFormat.LuminanceAlpha => "Luminance Alpha",
+            Pixmap.ColorFormat.RGB565         => "RGB565",
+            Pixmap.ColorFormat.RGBA4444       => "RGBA4444",
+            Pixmap.ColorFormat.RGB888         => "RGB888",
+            Pixmap.ColorFormat.RGBA8888       => "RGBA8888",
+            var _                             => "Unknown"
+        };
+    }
+
     /// <summary>
     /// Extracts the <c>Width</c> and <c>Height</c> from a PNG file.
     /// </summary>
@@ -171,7 +190,7 @@ public class PixmapFormat
         {
             throw new GdxRuntimeException( $"PNG files ONLY!: ({file.Name})" );
         }
-            
+
         var br = new BinaryReader( File.OpenRead( file.Name ) );
 
         br.BaseStream.Position = 16;

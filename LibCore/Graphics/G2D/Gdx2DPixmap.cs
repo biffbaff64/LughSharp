@@ -68,11 +68,12 @@ public partial class Gdx2DPixmap : IDisposable
     public const int GDX_2D_FORMAT_RGBA8888        = 4;
     public const int GDX_2D_FORMAT_RGB565          = 5;
     public const int GDX_2D_FORMAT_RGBA4444        = 6;
-    public const int GDX_2D_SCALE_NEAREST          = 0;
-    public const int GDX_2D_SCALE_LINEAR           = 1;
-    public const int GDX_2D_SCALE_BILINEAR         = 1;
-    public const int GDX_2D_BLEND_NONE             = 0;
-    public const int GDX_2D_BLEND_SRC_OVER         = 1;
+
+    public const int GDX_2D_SCALE_NEAREST  = 0;
+    public const int GDX_2D_SCALE_LINEAR   = 1;
+    public const int GDX_2D_SCALE_BILINEAR = 1;
+    public const int GDX_2D_BLEND_NONE     = 0;
+    public const int GDX_2D_BLEND_SRC_OVER = 1;
 
     public const int DEFAULT_FORMAT = GDX_2D_FORMAT_RGBA8888;
     public const int DEFAULT_BLEND  = GDX_2D_BLEND_SRC_OVER;
@@ -109,8 +110,8 @@ public partial class Gdx2DPixmap : IDisposable
     public Gdx2DPixmap( byte[] buffer, int offset, int len, int requestedFormat )
     {
         Logger.CheckPoint();
-        Logger.Debug( $"buffer length: {buffer.Length}" );
-        Logger.Debug( $"offset: {offset}" );
+        Logger.Debug( $"buffer length  : {buffer.Length}" );
+        Logger.Debug( $"offset         : {offset}" );
         Logger.Debug( $"requestedFormat: {requestedFormat}" );
 
 //        LoadData( buffer, offset, len );
@@ -119,9 +120,12 @@ public partial class Gdx2DPixmap : IDisposable
 
         this.NativePixmapDef = new NativePixmapDef
         {
-            Width  = 165,
-            Height = 111,
-            Format = ( uint ) requestedFormat,
+            //Note:
+            // Items marked as todo will be set within gdx2d_load
+            
+            Width  = 165, //TODO:
+            Height = 111, //TODO:
+            Format = ( uint ) ( ( uint ) requestedFormat == 0 ? GDX_2D_FORMAT_RGBA8888 : requestedFormat ), //TODO
             Scale  = DEFAULT_SCALE,
             Blend  = DEFAULT_BLEND,
             Pixels = buffer,
@@ -161,6 +165,7 @@ public partial class Gdx2DPixmap : IDisposable
     /// <param name="requestedFormat"></param>
     public Gdx2DPixmap( ByteBuffer encodedData, int offset, int len, int requestedFormat )
     {
+        //TODO:
     }
 
     /// <summary>
@@ -190,7 +195,7 @@ public partial class Gdx2DPixmap : IDisposable
         {
             Convert( requestedFormat );
         }
-        
+
         this.Width  = NativePixmapDef.Width;
         this.Height = NativePixmapDef.Height;
         this.Format = this.NativePixmapDef.Format;
@@ -233,16 +238,16 @@ public partial class Gdx2DPixmap : IDisposable
         Logger.CheckPoint();
     }
 
-//    /// <summary>
-//    /// </summary>
-//    /// <param name="pixelPtr"></param>
-//    /// <param name="data"></param>
-//    public Gdx2DPixmap( ByteBuffer pixelPtr, byte[] data )
-//    {
-//        Logger.CheckPoint();
-//
-//        //TODO:
-//    }
+    /// <summary>
+    /// </summary>
+    /// <param name="pixelPtr"></param>
+    /// <param name="data"></param>
+    public Gdx2DPixmap( ByteBuffer pixelPtr, byte[] data )
+    {
+        Logger.CheckPoint();
+
+        //TODO:
+    }
 
     #endregion constructors
 

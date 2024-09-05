@@ -93,7 +93,7 @@ public class PixmapPacker : IDisposable
 {
     public int           PageWidth        { get;         set; }
     public int           PageHeight       { get;         set; }
-    public Pixmap.Format PageFormat       { get;         set; }
+    public Pixmap.ColorFormat PageFormat       { get;         set; }
     public Color         TransparentColor { get;         set; } = new( 0f, 0f, 0f, 0f );
     public bool          PackToTexture    { get;         set; }
     public bool          DuplicateBorder  { get;         set; }
@@ -120,14 +120,14 @@ public class PixmapPacker : IDisposable
     /// <param name="pageWidth"> Page Width in pixels. </param>
     /// <param name="pageHeight"> Page Height in pixels. </param>
     /// <param name="pageFormat">
-    /// The graphics format of pages. See <see cref="Pixmap.Format"/>
+    /// The graphics format of pages. See <see cref="Pixmap.ColorFormat"/>
     /// </param>
     /// <param name="padding"> the number of blank pixels to insert between pixmaps. </param>
     /// <param name="duplicateBorder">
     /// If TRUE, duplicate the border pixels of the inserted images to avoid
     /// seams when rendering with bi-linear filtering on.
     /// </param>
-    public PixmapPacker( int pageWidth, int pageHeight, Pixmap.Format pageFormat, int padding, bool duplicateBorder )
+    public PixmapPacker( int pageWidth, int pageHeight, Pixmap.ColorFormat pageFormat, int padding, bool duplicateBorder )
         : this( pageWidth, pageHeight, pageFormat, padding, duplicateBorder, false, false, new GuillotineStrategy() )
     {
     }
@@ -140,7 +140,7 @@ public class PixmapPacker : IDisposable
     /// <param name="pageWidth"> Page Width in pixels. </param>
     /// <param name="pageHeight"> Page Height in pixels. </param>
     /// <param name="pageFormat">
-    /// The graphics format of pages. See <see cref="Pixmap.Format"/>
+    /// The graphics format of pages. See <see cref="Pixmap.ColorFormat"/>
     /// </param>
     /// <param name="padding"> the number of blank pixels to insert between pixmaps. </param>
     /// <param name="duplicateBorder">
@@ -150,7 +150,7 @@ public class PixmapPacker : IDisposable
     /// <param name="packStrategy"> The <see cref="IPackStrategy"/> to use. </param>
     public PixmapPacker( int pageWidth,
                          int pageHeight,
-                         Pixmap.Format pageFormat,
+                         Pixmap.ColorFormat pageFormat,
                          int padding,
                          bool duplicateBorder,
                          IPackStrategy packStrategy )
@@ -166,7 +166,7 @@ public class PixmapPacker : IDisposable
     /// <param name="pageWidth"> Page Width in pixels. </param>
     /// <param name="pageHeight"> Page Height in pixels. </param>
     /// <param name="pageFormat">
-    /// The graphics format of pages. See <see cref="Pixmap.Format"/>
+    /// The graphics format of pages. See <see cref="Pixmap.ColorFormat"/>
     /// </param>
     /// <param name="padding"> the number of blank pixels to insert between pixmaps. </param>
     /// <param name="duplicateBorder">
@@ -178,7 +178,7 @@ public class PixmapPacker : IDisposable
     /// <param name="packStrategy"> The <see cref="IPackStrategy"/> to use. </param>
     public PixmapPacker( int pageWidth,
                          int pageHeight,
-                         Pixmap.Format pageFormat,
+                         Pixmap.ColorFormat pageFormat,
                          int padding,
                          bool duplicateBorder,
                          bool stripWhitespaceX,
@@ -258,7 +258,7 @@ public class PixmapPacker : IDisposable
         if ( ( name != null ) && name.EndsWith( ".9" ) )
         {
             rect            = new PixmapPackerRectangle( 0, 0, image.Width - 2, image.Height - 2 );
-            pixmapToDispose = new Pixmap( image.Width - 2, image.Height - 2, image.GetFormat() );
+            pixmapToDispose = new Pixmap( image.Width - 2, image.Height - 2, image.Format );
 
             pixmapToDispose.Blending = Pixmap.BlendTypes.None;
 
@@ -365,7 +365,7 @@ public class PixmapPacker : IDisposable
                 var newWidth  = right - left;
                 var newHeight = bottom - top;
 
-                pixmapToDispose          = new Pixmap( newWidth, newHeight, image.GetFormat() );
+                pixmapToDispose          = new Pixmap( newWidth, newHeight, image.Format );
                 pixmapToDispose.Blending = Pixmap.BlendTypes.None;
                 pixmapToDispose.DrawPixmap( image, 0, 0, left, top, newWidth, newHeight );
 
@@ -860,7 +860,7 @@ public class PixmapPacker : IDisposable
             else
             {
                 Texture = new Texture( new PixmapTextureData( Image,
-                                                              Image.GetFormat(),
+                                                              Image.Format,
                                                               useMipMaps,
                                                               false,
                                                               true ) );

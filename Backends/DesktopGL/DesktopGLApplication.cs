@@ -130,9 +130,11 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     /// <summary>
     /// The entry point for running code using this framework. At this point at least
     /// one window will have been created, GLFW will have been set up, and the frsmework
-    /// properly initialised. This passes control to <see cref="Loop()"/> and
-    /// stays there until the app is finished. At this point <see cref="CleanupWindows"/>
-    /// is called, followed by <see cref="Cleanup"/>.
+    /// properly initialised.
+    /// <para>
+    /// This passes control to <see cref="Loop()"/> and stays there until the app is finished.
+    /// At this point <see cref="CleanupWindows"/> is called, followed by <see cref="Cleanup"/>.
+    /// </para>
     /// </summary>
     public void Run()
     {
@@ -313,6 +315,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
     }
 
     /// <summary>
+    /// Creates a new <see cref="DesktopGLWindow"/> using the 
     /// </summary>
     /// <param name="config"></param>
     /// <param name="listener"></param>
@@ -326,10 +329,10 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         var dlgWindow = new DesktopGLWindow( listener, config, this );
 
+        Logger.Debug( $"sharedContext = {sharedContext}" );
+
         if ( sharedContext == 0 )
         {
-            Logger.CheckPoint();
-            
             // the main window is created immediately
             dlgWindow = CreateWindow( dlgWindow, config, 0 );
             
@@ -337,8 +340,6 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         }
         else
         {
-            Logger.CheckPoint();
-
             // creation of additional windows is deferred to avoid GL context trouble
             PostRunnable( () =>
             {

@@ -48,14 +48,14 @@ public class ETC1
 
     /// <summary>
     /// Encodes the image via the ETC1 compression scheme.
-    /// Only <see cref="Pixmap.Format.RGB565"/> and <see cref="Pixmap.Format.RGB888"/> are supported.
+    /// Only <see cref="Pixmap.ColorFormat.RGB565"/> and <see cref="Pixmap.ColorFormat.RGB888"/> are supported.
     /// </summary>
     /// <param name="pixmap"> the <see cref="Pixmap"/> </param>
     /// <returns> the <see cref="ETC1Data"/> </returns>
     public ETC1Data EncodeImage( Pixmap pixmap )
     {
-        var pixelSize      = GetPixelSize( pixmap.GetFormat() );
-        var compressedData = EncodeImage( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
+        var pixelSize      = GetPixelSize( pixmap.Format );
+        var compressedData = EncodeImage( pixmap.Pixels!, 0, pixmap.Width, pixmap.Height, pixelSize );
 
 //        BufferUtils.NewUnsafeByteBuffer( compressedData );
 
@@ -64,14 +64,14 @@ public class ETC1
 
     /// <summary>
     /// Encodes the image via the ETC1 compression scheme.
-    /// Only <see cref="Pixmap.Format.RGB565"/> and <see cref="Pixmap.Format.RGB888"/> are supported.
+    /// Only <see cref="Pixmap.ColorFormat.RGB565"/> and <see cref="Pixmap.ColorFormat.RGB888"/> are supported.
     /// Adds a PKM header in front of the compressed image data.
     /// </summary>
     /// <param name="pixmap"> the <see cref="Pixmap"/> </param>
     /// <returns> the <see cref="ETC1Data"/> </returns>
     public ETC1Data EncodeImagePKM( Pixmap pixmap )
     {
-        var pixelSize      = GetPixelSize( pixmap.GetFormat() );
+        var pixelSize      = GetPixelSize( pixmap.Format );
         var compressedData = EncodeImagePKM( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
 
 //        BufferUtils.NewUnsafeByteBuffer( compressedData );
@@ -80,14 +80,14 @@ public class ETC1
     }
 
     /// <summary>
-    /// Takes ETC1 compressed image data and converts it to a <see cref="Pixmap.Format.RGB565"/> or
-    /// <see cref="Pixmap.Format.RGB888"/> <see cref="Pixmap"/>.
+    /// Takes ETC1 compressed image data and converts it to a <see cref="Pixmap.ColorFormat.RGB565"/> or
+    /// <see cref="Pixmap.ColorFormat.RGB888"/> <see cref="Pixmap"/>.
     /// Does not modify the ByteBuffer's position or limit.
     /// </summary>
     /// <param name="etc1Data"> the <see cref="ETC1Data"/> instance </param>
-    /// <param name="format"> either <see cref="Pixmap.Format.RGB565"/> or <see cref="Pixmap.Format.RGB888"/> </param>
+    /// <param name="format"> either <see cref="Pixmap.ColorFormat.RGB565"/> or <see cref="Pixmap.ColorFormat.RGB888"/> </param>
     /// <returns> the Pixmap </returns>
-    public Pixmap DecodeImage( ETC1Data? etc1Data, Pixmap.Format format )
+    public Pixmap DecodeImage( ETC1Data? etc1Data, Pixmap.ColorFormat format )
     {
         ArgumentNullException.ThrowIfNull( etc1Data );
 
@@ -111,23 +111,23 @@ public class ETC1
         var pixelSize = GetPixelSize( format );
         var pixmap    = new Pixmap( width, height, format );
 
-        DecodeImage( etc1Data.CompressedData, dataOffset, pixmap.Pixels, 0, width, height, pixelSize );
+        DecodeImage( etc1Data.CompressedData, dataOffset, pixmap.Pixels!, 0, width, height, pixelSize );
 
         return pixmap;
     }
 
     /// <summary>
-    /// Gets the pixel size for the given <see cref="Pixmap.Format"/>, which must be
-    /// one of <see cref="Pixmap.Format.RGB565"/> or <see cref="Pixmap.Format.RGB888"/>.
+    /// Gets the pixel size for the given <see cref="Pixmap.ColorFormat"/>, which must be
+    /// one of <see cref="Pixmap.ColorFormat.RGB565"/> or <see cref="Pixmap.ColorFormat.RGB888"/>.
     /// </summary>
-    private int GetPixelSize( Pixmap.Format format )
+    private int GetPixelSize( Pixmap.ColorFormat? format )
     {
-        if ( format == Pixmap.Format.RGB565 )
+        if ( format == Pixmap.ColorFormat.RGB565 )
         {
             return RGB565_PIXEL_SIZE;
         }
 
-        if ( format == Pixmap.Format.RGB888 )
+        if ( format == Pixmap.ColorFormat.RGB888 )
         {
             return RGB888_PIXEL_SIZE;
         }
@@ -277,7 +277,7 @@ public class ETC1
     /// <param name="height"> the height in pixels </param>
     /// <param name="pixelSize"> the pixel size, either 2 (RGB565) or 3 (RGB888) </param>
     /// <returns> a new direct native order ByteBuffer containing the compressed image data </returns>
-    public virtual ByteBuffer EncodeImagePKM( ByteBuffer imageData, int offset, int width, int height, int pixelSize )
+    public virtual ByteBuffer EncodeImagePKM( ByteBuffer? imageData, int offset, int width, int height, int pixelSize )
     {
         throw new NotImplementedException();
     }
@@ -320,7 +320,8 @@ public class ETC1
 
                 var fileSize = input.ReadInt32();
 
-                CompressedData = BufferUtils.NewByteBuffer( fileSize, false );
+                CompressedData = BufferUtils.NewByteBuffer( fileSize, isUnsafe: false );
+
                 int readBytes;
 
                 while ( ( readBytes = input.Read( buffer ) ) != -1 )

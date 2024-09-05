@@ -68,7 +68,7 @@ public class FrameBufferCubemap : GLFrameBuffer< Cubemap >
     /// <exception cref="GdxRuntimeException">
     /// Thrown if the FrameBuffer could not be created
     /// </exception>
-    public FrameBufferCubemap( Pixmap.Format format,
+    public FrameBufferCubemap( Pixmap.ColorFormat format,
                                int width,
                                int height,
                                bool hasDepth,

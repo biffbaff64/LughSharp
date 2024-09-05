@@ -131,7 +131,7 @@ public class CubemapLoader : AsynchronousAssetLoader< Cubemap, CubemapLoader.Cub
         /// <summary>
         /// the format of the final Texture. Uses the source images format if null
         /// </summary>
-        public Pixmap.Format? Format = null;
+        public Pixmap.ColorFormat? Format = null;
 
         public TextureFilter MagFilter = TextureFilter.Nearest;
         public TextureFilter MinFilter = TextureFilter.Nearest;

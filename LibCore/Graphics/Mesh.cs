@@ -748,7 +748,7 @@ public class Mesh
 
                 unsafe
                 {
-                    fixed ( void* ptr = &( ( Buffer ) buffer ).BackingArray()[ 0 ] )
+                    fixed ( void* ptr = &buffer.BackingArray()[ 0 ] )
                     {
                         Gdx.GL.glDrawElements( primitiveType, count, IGL.GL_UNSIGNED_SHORT, ptr );
                     }

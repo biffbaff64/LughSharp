@@ -85,7 +85,7 @@ public class Texture : GLTexture
     /// <param name="file"></param>
     /// <param name="useMipMaps"> Whether or not to generate MipMaps. Default is false. </param>
     public Texture( FileInfo? file, bool useMipMaps )
-        : this( file, Pixmap.Format.RGBA8888, useMipMaps )
+        : this( file, Pixmap.ColorFormat.RGBA8888, useMipMaps )
     {
         Logger.CheckPoint();
     }
@@ -93,12 +93,12 @@ public class Texture : GLTexture
     /// <summary>
     /// Create a new Texture from the file specified in the given <see cref="FileInfo"/>.
     /// The Texture pixmap format will be set to the given format, which defaults to
-    /// <see cref="Pixmap.Format.RGBA8888"/>.
+    /// <see cref="Pixmap.ColorFormat.RGBA8888"/>.
     /// </summary>
     /// <param name="file"></param>
     /// <param name="format"> The pixmap format to use. </param>
     /// <param name="useMipMaps"> Whether or not to generate MipMaps. Default is false. </param>
-    public Texture( FileInfo? file, Pixmap.Format format = Pixmap.Format.RGBA8888, bool useMipMaps = false )
+    public Texture( FileInfo? file, Pixmap.ColorFormat format = Pixmap.ColorFormat.RGBA8888, bool useMipMaps = false )
         : this( TextureDataFactory.LoadFromFile( file!, format, useMipMaps ) )
     {
         Logger.CheckPoint();
@@ -116,12 +116,12 @@ public class Texture : GLTexture
     }
 
     /// <summary>
-    /// Creates a new Texture from the supplied <see cref="Pixmap"/> and <see cref="Pixmap.Format"/>
+    /// Creates a new Texture from the supplied <see cref="Pixmap"/> and <see cref="Pixmap.ColorFormat"/>
     /// </summary>
     /// <param name="pixmap"> The pixmap to use. </param>
     /// <param name="format"> The pixmap format to use. </param>
     /// <param name="useMipMaps"> Whether or not to generate MipMaps. Default is false. </param>
-    public Texture( Pixmap pixmap, Pixmap.Format format, bool useMipMaps = false )
+    public Texture( Pixmap pixmap, Pixmap.ColorFormat format, bool useMipMaps = false )
         : this( new PixmapTextureData( pixmap, format, useMipMaps, false ) )
     {
         Logger.CheckPoint();
@@ -132,8 +132,8 @@ public class Texture : GLTexture
     /// </summary>
     /// <param name="width"> The width in pixels. </param>
     /// <param name="height"> The Height in pixels. </param>
-    /// <param name="format"> The pixmap <see cref="Pixmap.Format"/> </param>
-    public Texture( int width, int height, Pixmap.Format format )
+    /// <param name="format"> The pixmap <see cref="Pixmap.ColorFormat"/> </param>
+    public Texture( int width, int height, Pixmap.ColorFormat format )
         : this( new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ) )
     {
         Logger.CheckPoint();
@@ -211,11 +211,7 @@ public class Texture : GLTexture
 
         Bind();
 
-        Logger.CheckPoint();
-
         UploadImageData( IGL.GL_TEXTURE_2D, data );
-
-        Logger.CheckPoint();
 
         UnsafeSetFilter( MinFilter, MagFilter, true );
         UnsafeSetWrap( UWrap, VWrap, true );
@@ -252,35 +248,31 @@ public class Texture : GLTexture
     /// <param name="y"> The y coordinate in pixels  </param>
     public void Draw( Pixmap pixmap, int x, int y )
     {
-        //TODO:
-//        if ( TextureData is { IsManaged: true } )
-//        {
-//            throw new GdxRuntimeException( "can't draw to a managed texture" );
-//        }
-//
-//        Bind();
-//
-//        var pixels = pixmap.Pixels;
-//        
-//        Gdx.GL.glTexSubImage2D( GLTarget, 0, x, y, pixmap.Width, pixmap.Height, pixmap.GLFormat, pixmap.GLType, pixels );
-//
-//        pixmap.Pixels.Put( pixels );
+        if ( TextureData is { IsManaged: true } )
+        {
+            throw new GdxRuntimeException( "can't draw to a managed texture" );
+        }
+
+        Bind();
+
+        if ( pixmap.Pixels != null )
+        {
+            Gdx.GL.glTexSubImage2D( GLTarget,
+                                    0, x, y,
+                                    pixmap.Width, pixmap.Height,
+                                    pixmap.GLFormat,
+                                    pixmap.GLType,
+                                    pixmap.Pixels.BackingArray() );
+        }
     }
 
     private void AddManagedTexture( IApplication app, Texture texture )
     {
         Logger.CheckPoint();
 
-        List< Texture >? managedTextureArray;
-
-        if ( _managedTextures.TryGetValue( app, out List< Texture >? managedTexture ) )
-        {
-            managedTextureArray = managedTexture;
-        }
-        else
-        {
-            managedTextureArray = [ ];
-        }
+        List< Texture >? managedTextureArray = _managedTextures.TryGetValue( app, out List< Texture >? managedTexture )
+                                                   ? managedTexture
+                                                   : [ ];
 
         managedTextureArray?.Add( texture );
 
@@ -409,10 +401,11 @@ public class Texture : GLTexture
     {
         if ( disposing )
         {
-            // this is a hack. reason: we have to set the glHandle to 0 for textures that are
-            // reloaded through the asset manager as we first remove (and thus dispose) the texture
-            // and then reload it. the glHandle is set to 0 in invalidateAllTextures prior to
-            // removal from the asset manager.
+            // this is a hack.
+            // Reason: we have to set the glHandle to 0 for textures that are
+            // reloaded through the asset manager as we first remove (and thus
+            // dispose) the texture and then reload it. the glHandle is set to
+            // 0 in invalidateAllTextures prior to removal from the asset manager.
             if ( GLTextureHandle == 0 )
             {
                 return;

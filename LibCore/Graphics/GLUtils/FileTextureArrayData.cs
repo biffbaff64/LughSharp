@@ -34,7 +34,7 @@ public class FileTextureArrayData : ITextureArrayData
     private readonly bool            _useMipMaps;
     private          int             _depth;
 
-    public FileTextureArrayData( Pixmap.Format format, bool useMipMaps, FileInfo[] files )
+    public FileTextureArrayData( Pixmap.ColorFormat format, bool useMipMaps, FileInfo[] files )
     {
         Format      = format;
         _useMipMaps  = useMipMaps;
@@ -62,7 +62,7 @@ public class FileTextureArrayData : ITextureArrayData
     /// <returns> whether this implementation can cope with a EGL context loss. </returns>
     public bool Managed { get; set; }
 
-    public Pixmap.Format Format { get; set; }
+    public Pixmap.ColorFormat Format { get; set; }
 
     /// <returns> the internal format of this TextureArray </returns>
     public int InternalFormat => PixmapFormat.ToGLFormat( Format );
@@ -136,7 +136,7 @@ public class FileTextureArrayData : ITextureArrayData
                 Debug.Assert( texData != null, nameof( texData ) + " != null" );
                 Debug.Assert( pixmap != null, nameof( pixmap ) + " != null" );
 
-                if ( texData.Format != pixmap.GetFormat() )
+                if ( texData.Format != pixmap.Format )
                 {
                     var temp = new Pixmap( pixmap.Width, pixmap.Height, texData.Format );
 

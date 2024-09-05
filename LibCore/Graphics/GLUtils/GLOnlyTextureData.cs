@@ -36,14 +36,14 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class GLOnlyTextureData : ITextureData
 {
-    public int            MipLevel       { get; set; } = 0;
-    public int            InternalFormat { get; set; }
-    public Pixmap.Format? Format         { get; set; }
-    public int            Type           { get; set; }
-    public int            Width          { get; set; } = 0;
-    public int            Height         { get; set; } = 0;
-    public bool           IsPrepared     { get; set; } = false;
-    public bool           UseMipMaps     { get; set; }
+    public int                 MipLevel       { get; set; } = 0;
+    public int                 InternalFormat { get; set; }
+    public Pixmap.ColorFormat? Format         { get; set; }
+    public int                 Type           { get; set; }
+    public int                 Width          { get; set; } = 0;
+    public int                 Height         { get; set; } = 0;
+    public bool                IsPrepared     { get; set; } = false;
+    public bool                UseMipMaps     { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -108,11 +108,11 @@ public class GLOnlyTextureData : ITextureData
     }
 
     /// <summary>
-    /// Returns the <see cref="Pixmap.Format"/> for this GLOnlyTextureData object.
+    /// Returns the <see cref="Pixmap.ColorFormat"/> for this GLOnlyTextureData object.
     /// </summary>
-    public Pixmap.Format GetFormat()
+    public Pixmap.ColorFormat GetFormat()
     {
-        return Pixmap.Format.RGBA8888;
+        return Pixmap.ColorFormat.RGBA8888;
     }
 
     /// <summary>

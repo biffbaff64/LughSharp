@@ -610,8 +610,7 @@ public unsafe class GLBindings : IGLBindings
     public void glTexImage1D<T>( GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLenum format, GLenum type, T[] pixels )
         where T : unmanaged
     {
-        fixed ( void* p
-                   = &pixels[ 0 ] )
+        fixed ( void* p = &pixels[ 0 ] )
         {
             _glTexImage1D( target, level, internalformat, width, border, format, type, p );
         }

@@ -34,7 +34,7 @@ public partial class Gdx2DPixmap
         Logger.Debug( $"pd.Format: {pd.Format}" );
         Logger.Debug( $"pd.Color: {color} {color.ToIntBits()}" );
         
-//        gdx2d_clear( pd, color.ColorToUInt() );
+        gdx2d_clear( pd, color.ToIntBits() );
     }
 
     /// <summary>
@@ -104,59 +104,57 @@ public partial class Gdx2DPixmap
 
 // ------------------------------------------------------------------------
 // ------------------------------------------------------------------------
-
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+//TODO: Convert all of these to C#
+    
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern NativePixmapDef gdx2d_load( byte[] buffer, int len );
 
-//    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
-//    private static extern ByteBuffer loadByteBuffer( long[] nativeData, ByteBuffer buffer, int offset, int len );
-
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern NativePixmapDef gdx2d_new( int width, int height, int format );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern string gdx2d_get_failure_reason();
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_clear( NativePixmapDef pd, uint color );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern int gdx2d_get_pixel( NativePixmapDef pd, int x, int y );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_set_pixel( NativePixmapDef pd, int x, int y, uint color );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_set_blend( NativePixmapDef src, int blend );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_set_scale( NativePixmapDef src, int scale );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern uint gdx2d_bytes_per_pixel( uint format );
 
-    [DllImport( "lib/gdx2d.dll", EntryPoint = "gdx2d_free", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", EntryPoint = "gdx2d_free", CallingConvention = CallingConvention.Cdecl )]
     private static extern void free( NativePixmapDef pixmap );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_draw_line( NativePixmapDef pd, int x0, int y0, int x1, int y1, uint col );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_draw_rect( NativePixmapDef pd, int x, int y, uint width, uint height, uint col );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_draw_circle( NativePixmapDef pd, int x, int y, uint radius, uint col );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_fill_rect( NativePixmapDef pd, int x, int y, uint width, uint height, uint col );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_fill_circle( NativePixmapDef pd, int x0, int y0, uint radius, uint col );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_fill_triangle( NativePixmapDef pd, int x1, int y1, int x2, int y2, int x3, int y3, uint col );
 
-    [DllImport( "lib/gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
+    [DllImport( "lib\\gdx2d.dll", CallingConvention = CallingConvention.Cdecl )]
     private static extern void gdx2d_draw_pixmap( NativePixmapDef src,
                                                   NativePixmapDef dst,
                                                   int srcX,
@@ -167,4 +165,7 @@ public partial class Gdx2DPixmap
                                                   int dstY,
                                                   int dstWidth,
                                                   int dstHeight );
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 }

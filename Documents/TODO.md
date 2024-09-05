@@ -369,7 +369,7 @@ GRAPHICS/GLUTILS
     ----   --------
     - IP   - IP   - ETC1
     - IP   - IP   - ETC1TextureData
-    - IP   - IP   - FacedCubemapData
+    - IP   - IP   - FacedCubemapData              Width / Height are incorrect
     - IP   - IP   - FileTextureArrayData
     - DONE - IP   - FileTextureData
     - DONE - IP   - FloatTextureData

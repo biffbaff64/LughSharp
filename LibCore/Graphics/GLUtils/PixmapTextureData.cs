@@ -30,21 +30,17 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class PixmapTextureData : ITextureData
 {
-    public Pixmap         Pixmap        { get; set; }
-    public Pixmap.Format? Format        { get; set; }
-    public bool           DisposePixmap { get; set; }
-    public bool           IsManaged     { get; set; }
-    public bool           UseMipMaps    { get; set; }
-
-    // ------------------------------------------------------------------------
-
-    private int _width;
-    private int _height;
+    public Pixmap              Pixmap        { get; set; }
+    public Pixmap.ColorFormat? Format        { get; set; }
+    public bool                DisposePixmap { get; set; }
+    public bool                IsManaged     { get; set; }
+    public bool                UseMipMaps    { get; set; }
+    public bool                IsPrepared    { get; set; } = true;
 
     // ------------------------------------------------------------------------
 
     public PixmapTextureData( Pixmap pixmap,
-                              Pixmap.Format? format,
+                              Pixmap.ColorFormat? format,
                               bool useMipMaps,
                               bool disposePixmap,
                               bool managed = false )
@@ -55,17 +51,22 @@ public class PixmapTextureData : ITextureData
         UseMipMaps    = useMipMaps;
         DisposePixmap = disposePixmap;
         IsManaged     = managed;
-        Format        = format ?? pixmap.GetFormat();
+        Format        = format ?? pixmap.Format;
 
-        Pixmap.Width     = pixmap.Width;
-        Pixmap.Height    = pixmap.Height;
-        Pixmap.PixFormat = PixmapFormat.ToGdx2DPixmapFormat( Format );
+        Pixmap.Width  = pixmap.Width;
+        Pixmap.Height = pixmap.Height;
+        Pixmap.Format = Format;
     }
 
-    public Pixmap ConsumePixmap()
-    {
-        return Pixmap;
-    }
+    Pixmap ITextureData.ConsumePixmap() => Pixmap;
+
+    public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Pixmap;
+
+    /// <returns>
+    /// whether the caller of <see cref="ITextureData.ConsumePixmap"/> should dispose the
+    /// Pixmap returned by <see cref="ITextureData.ConsumePixmap"/>
+    /// </returns>
+    bool ITextureData.ShouldDisposePixmap() => DisposePixmap;
 
     public int Width
     {
@@ -79,22 +80,7 @@ public class PixmapTextureData : ITextureData
         set { }
     }
 
-    public bool IsPrepared
-    {
-        get => true;
-        set { }
-    }
-
-    public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Pixmap;
-
-    /// <returns>
-    /// whether the caller of <see cref="ITextureData.ConsumePixmap"/> should dispose the
-    /// Pixmap returned by <see cref="ITextureData.ConsumePixmap"/>
-    /// </returns>
-    bool ITextureData.ShouldDisposePixmap()
-    {
-        return DisposePixmap;
-    }
+    // ------------------------------------------------------------------------
 
     public void ConsumeCustomData( int target )
     {

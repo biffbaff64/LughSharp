@@ -29,27 +29,27 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public static class PixmapFormatExtensions
 {
-    public static int ToGLType( this Pixmap.Format format )
+    public static int ToGLType( this Pixmap.ColorFormat format )
     {
         return Gdx2DPixmap.ToGLType( ToGdx2DPixmapFormat( format ) );
     }
 
-    public static int ToGLFormat( this Pixmap.Format format )
+    public static int ToGLFormat( this Pixmap.ColorFormat format )
     {
         return Gdx2DPixmap.ToGLFormat( ToGdx2DPixmapFormat( format ) );
     }
 
-    public static int ToGdx2DPixmapFormat( this Pixmap.Format format )
+    public static int ToGdx2DPixmapFormat( this Pixmap.ColorFormat format )
     {
         return format switch
         {
-            Pixmap.Format.Alpha          => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
-            Pixmap.Format.Intensity      => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
-            Pixmap.Format.LuminanceAlpha => Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA,
-            Pixmap.Format.RGB565         => Gdx2DPixmap.GDX_2D_FORMAT_RGB565,
-            Pixmap.Format.RGBA4444       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444,
-            Pixmap.Format.RGB888         => Gdx2DPixmap.GDX_2D_FORMAT_RGB888,
-            Pixmap.Format.RGBA8888       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888,
+            Pixmap.ColorFormat.Alpha          => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
+            Pixmap.ColorFormat.Intensity      => Gdx2DPixmap.GDX_2D_FORMAT_ALPHA,
+            Pixmap.ColorFormat.LuminanceAlpha => Gdx2DPixmap.GDX_2D_FORMAT_LUMINANCE_ALPHA,
+            Pixmap.ColorFormat.RGB565         => Gdx2DPixmap.GDX_2D_FORMAT_RGB565,
+            Pixmap.ColorFormat.RGBA4444       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA4444,
+            Pixmap.ColorFormat.RGB888         => Gdx2DPixmap.GDX_2D_FORMAT_RGB888,
+            Pixmap.ColorFormat.RGBA8888       => Gdx2DPixmap.GDX_2D_FORMAT_RGBA8888,
 
             var _ => throw new GdxRuntimeException( $"Unknown format: {format}" )
         };

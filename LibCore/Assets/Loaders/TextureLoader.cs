@@ -68,7 +68,7 @@ public class TextureLoader
 
         if ( parameter?.TextureData == null )
         {
-            Pixmap.Format? format     = null;
+            Pixmap.ColorFormat? format     = null;
             var            genMipMaps = false;
 
             _loaderInfo.Texture = null;
@@ -180,7 +180,7 @@ public class TextureLoader
         /// <summary>
         /// Gets or sets the format of the final texture. Uses the source image's format if null.
         /// </summary>
-        public Pixmap.Format? Format { get; set; } = null;
+        public Pixmap.ColorFormat? Format { get; set; } = null;
 
         /// <summary>
         /// Gets or sets a value indicating whether to generate mipmaps for the texture.

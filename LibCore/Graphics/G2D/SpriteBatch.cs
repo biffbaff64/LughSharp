@@ -47,7 +47,7 @@ public class SpriteBatch : IBatch
     public int RenderCalls { get; set; } = 0;
 
     // Number of rendering calls, ever. Will not be reset unless set manually.
-    public int TotalRenderCalls { get; set; } = 0;
+    public long TotalRenderCalls { get; set; } = 0;
 
     // The maximum number of sprites rendered in one batch so far.
     public int MaxSpritesInBatch { get; set; } = 0;
@@ -64,13 +64,15 @@ public class SpriteBatch : IBatch
     private const int MAX_VERTEX_INDEX = 32767;
     private const int MAX_SPRITES      = 8191;
 
-    private readonly Color          _color          = new( 1, 1, 1, 1 );
-    private readonly Matrix4        _combinedMatrix = new();
-    private readonly Mesh           _mesh;
-    private readonly bool           _ownsShader;
-    private readonly ShaderProgram? _shader;
+    private readonly Color   _color          = new( 1, 1, 1, 1 );
+    private readonly Matrix4 _combinedMatrix = new();
+    private readonly bool    _ownsShader;
 
-    private ShaderProgram? _customShader = null;
+    private Mesh?          _mesh;
+    private ShaderProgram? _shader;
+    private Texture?       _lastSuccessfulTexture = null;
+    private int            _nullTextureCount      = 0;
+    private ShaderProgram? _customShader          = null;
 
     // ------------------------------------------------------------------------
 
@@ -128,11 +130,10 @@ public class SpriteBatch : IBatch
 
         Vertices = new float[ size * Sprite.SPRITE_SIZE ];
 
-        var   len     = size * 6;
-        var   indices = new short[ len ];
-        short j       = 0;
+        var len     = size * 6;
+        var indices = new short[ len ];
 
-        for ( var i = 0; i < len; i += 6, j += 4 )
+        for ( short i = 0, j = 0; i < len; i += 6, j += 4 )
         {
             indices[ i ]     = j;
             indices[ i + 1 ] = ( short ) ( j + 1 );
@@ -233,7 +234,7 @@ public class SpriteBatch : IBatch
         get => ColorPacked;
     }
 
-    public virtual void Draw( Texture texture,
+    public virtual void Draw( Texture? texture,
                               GRect region,
                               Point2D origin,
                               Point2D scale,
@@ -245,6 +246,11 @@ public class SpriteBatch : IBatch
         if ( !IsDrawing )
         {
             throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
+        }
+
+        if ( texture == null )
+        {
+            return;
         }
 
         if ( texture != LastTexture )
@@ -265,7 +271,7 @@ public class SpriteBatch : IBatch
         var fy2          = region.Height - origin.Y;
 
         // scale
-        if ( ( Math.Abs( scale.X - 1 ) > 0 ) || ( Math.Abs( scale.Y - 1 ) > 0 ) )
+        if ( scale.X != 1 || scale.Y != 1 )
         {
             fx  *= scale.X;
             fy  *= scale.Y;
@@ -334,11 +340,10 @@ public class SpriteBatch : IBatch
         x4 += worldOriginX;
         y4 += worldOriginY;
 
-        var u     = src.X * InvTexWidth;
-        var v     = ( src.Y + src.Height ) * InvTexHeight;
-        var u2    = ( src.X + src.Width ) * InvTexWidth;
-        var v2    = src.Y * InvTexHeight;
-        var color = ColorPacked;
+        var u  = src.X * InvTexWidth;
+        var v  = ( src.Y + src.Height ) * InvTexHeight;
+        var u2 = ( src.X + src.Width ) * InvTexWidth;
+        var v2 = src.Y * InvTexHeight;
 
         if ( flipX )
         {
@@ -352,32 +357,32 @@ public class SpriteBatch : IBatch
 
         Vertices[ Idx ]     = x1;
         Vertices[ Idx + 1 ] = y1;
-        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 2 ] = PackedColor;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = x2;
         Vertices[ Idx + 6 ] = y2;
-        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 7 ] = PackedColor;
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = x3;
         Vertices[ Idx + 11 ] = y3;
-        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 12 ] = PackedColor;
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = x4;
         Vertices[ Idx + 16 ] = y4;
-        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 17 ] = PackedColor;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
         Idx = Idx + 20;
     }
 
-    public virtual void Draw( Texture texture,
+    public virtual void Draw( Texture? texture,
                               GRect region,
                               Rectangle src,
                               bool flipX,
@@ -386,6 +391,11 @@ public class SpriteBatch : IBatch
         if ( !IsDrawing )
         {
             throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
+        }
+
+        if ( texture == null )
+        {
+            return;
         }
 
         if ( texture != LastTexture )
@@ -397,13 +407,12 @@ public class SpriteBatch : IBatch
             Flush();
         }
 
-        var u     = src.X * InvTexWidth;
-        var v     = ( src.Y + src.Height ) * InvTexHeight;
-        var u2    = ( src.X + src.Width ) * InvTexWidth;
-        var v2    = src.Y * InvTexHeight;
-        var fx2   = region.X + region.Width;
-        var fy2   = region.Y + region.Height;
-        var color = ColorPacked;
+        var u   = src.X * InvTexWidth;
+        var v   = ( src.Y + src.Height ) * InvTexHeight;
+        var u2  = ( src.X + src.Width ) * InvTexWidth;
+        var v2  = src.Y * InvTexHeight;
+        var fx2 = region.X + region.Width;
+        var fy2 = region.Y + region.Height;
 
         if ( flipX )
         {
@@ -417,36 +426,41 @@ public class SpriteBatch : IBatch
 
         Vertices[ Idx ]     = region.X;
         Vertices[ Idx + 1 ] = region.Y;
-        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 2 ] = PackedColor;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = region.X;
         Vertices[ Idx + 6 ] = fy2;
-        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 7 ] = PackedColor;
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = fx2;
         Vertices[ Idx + 11 ] = fy2;
-        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 12 ] = PackedColor;
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = fx2;
         Vertices[ Idx + 16 ] = region.Y;
-        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 17 ] = PackedColor;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
         Idx = Idx + 20;
     }
 
-    public virtual void Draw( Texture texture, float x, float y, Rectangle src )
+    public virtual void Draw( Texture? texture, float x, float y, Rectangle src )
     {
         if ( !IsDrawing )
         {
             throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
+        }
+
+        if ( texture == null )
+        {
+            return;
         }
 
         if ( texture != LastTexture )
@@ -465,36 +479,34 @@ public class SpriteBatch : IBatch
         var fx2 = x + src.Width;
         var fy2 = y + src.Height;
 
-        var color = ColorPacked;
-
         Vertices[ Idx ]     = x;
         Vertices[ Idx + 1 ] = y;
-        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 2 ] = PackedColor;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = x;
         Vertices[ Idx + 6 ] = fy2;
-        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 7 ] = PackedColor;
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = fx2;
         Vertices[ Idx + 11 ] = fy2;
-        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 12 ] = PackedColor;
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = fx2;
         Vertices[ Idx + 16 ] = y;
-        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 17 ] = PackedColor;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
         Idx = Idx + 20;
     }
 
-    public virtual void Draw( Texture texture,
+    public virtual void Draw( Texture? texture,
                               GRect region,
                               float u,
                               float v,
@@ -506,6 +518,11 @@ public class SpriteBatch : IBatch
             throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
         }
 
+        if ( texture == null )
+        {
+            return;
+        }
+
         if ( texture != LastTexture )
         {
             SwitchTexture( texture );
@@ -515,47 +532,61 @@ public class SpriteBatch : IBatch
             Flush();
         }
 
-        var fx2   = region.X + region.Width;
-        var fy2   = region.Y + region.Height;
-        var color = ColorPacked;
+        var fx2 = region.X + region.Width;
+        var fy2 = region.Y + region.Height;
 
         Vertices[ Idx ]     = region.X;
         Vertices[ Idx + 1 ] = region.Y;
-        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 2 ] = PackedColor;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = region.X;
         Vertices[ Idx + 6 ] = fy2;
-        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 7 ] = PackedColor;
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = fx2;
         Vertices[ Idx + 11 ] = fy2;
-        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 12 ] = PackedColor;
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = fx2;
         Vertices[ Idx + 16 ] = region.Y;
-        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 17 ] = PackedColor;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
         Idx = Idx + 20;
     }
 
-    public virtual void Draw( Texture texture, float x, float y )
+    public virtual void Draw( Texture? texture, float x, float y )
     {
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "SpriteBatch.Begin() must be called before Draw()" );
+        }
+
+        if ( texture == null )
+        {
+            return;
+        }
+
         Draw( texture, new Point( ( int ) x, ( int ) y ), new Size( texture.Width, texture.Height ) );
     }
 
-    public virtual void Draw( Texture texture, Point loc, Size size )
+    public virtual void Draw( Texture? texture, Point loc, Size size )
     {
         if ( !IsDrawing )
         {
             throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
+        }
+
+        if ( texture == null )
+        {
+            return;
         }
 
         if ( texture != LastTexture )
@@ -567,9 +598,8 @@ public class SpriteBatch : IBatch
             Flush();
         }
 
-        var fx2   = loc.X + size.Width;
-        var fy2   = loc.Y + size.Height;
-        var color = ColorPacked;
+        var fx2 = loc.X + size.Width;
+        var fy2 = loc.Y + size.Height;
 
         const float U  = 0;
         const float V  = 1;
@@ -578,36 +608,41 @@ public class SpriteBatch : IBatch
 
         Vertices[ Idx ]     = loc.X;
         Vertices[ Idx + 1 ] = loc.Y;
-        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 2 ] = PackedColor;
         Vertices[ Idx + 3 ] = U;
         Vertices[ Idx + 4 ] = V;
 
         Vertices[ Idx + 5 ] = loc.X;
         Vertices[ Idx + 6 ] = fy2;
-        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 7 ] = PackedColor;
         Vertices[ Idx + 8 ] = U;
         Vertices[ Idx + 9 ] = V2;
 
         Vertices[ Idx + 10 ] = fx2;
         Vertices[ Idx + 11 ] = fy2;
-        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 12 ] = PackedColor;
         Vertices[ Idx + 13 ] = U2;
         Vertices[ Idx + 14 ] = V2;
 
         Vertices[ Idx + 15 ] = fx2;
         Vertices[ Idx + 16 ] = loc.Y;
-        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 17 ] = PackedColor;
         Vertices[ Idx + 18 ] = U2;
         Vertices[ Idx + 19 ] = V;
 
-        Idx = Idx + 20;
+        Idx += 20;
     }
 
-    public virtual void Draw( Texture texture, float[] spriteVertices, int offset, int count )
+    public virtual void Draw( Texture? texture, float[] spriteVertices, int offset, int count )
     {
         if ( !IsDrawing )
         {
             throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
+        }
+
+        if ( texture == null )
+        {
+            return;
         }
 
         var verticesLength    = Vertices.Length;
@@ -650,16 +685,31 @@ public class SpriteBatch : IBatch
         }
     }
 
-    public virtual void Draw( TextureRegion region, float x, float y )
+    public virtual void Draw( TextureRegion? region, float x, float y )
     {
+        if ( !IsDrawing )
+        {
+            throw new GdxRuntimeException( "SpriteBatch.Begin() must be called before Draw()" );
+        }
+
+        if ( region == null )
+        {
+            return;
+        }
+
         Draw( region, x, y, region.RegionWidth, region.RegionHeight );
     }
 
-    public virtual void Draw( TextureRegion region, float x, float y, float width, float height )
+    public virtual void Draw( TextureRegion? region, float x, float y, float width, float height )
     {
         if ( !IsDrawing )
         {
             throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
+        }
+
+        if ( region == null )
+        {
+            return;
         }
 
         var texture = region.Texture;
@@ -680,36 +730,34 @@ public class SpriteBatch : IBatch
         var u2  = region.U2;
         var v2  = region.V;
 
-        var color = ColorPacked;
-
         Vertices[ Idx ]     = x;
         Vertices[ Idx + 1 ] = y;
-        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 2 ] = PackedColor;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = x;
         Vertices[ Idx + 6 ] = fy2;
-        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 7 ] = PackedColor;
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = fx2;
         Vertices[ Idx + 11 ] = fy2;
-        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 12 ] = PackedColor;
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = fx2;
         Vertices[ Idx + 16 ] = y;
-        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 17 ] = PackedColor;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
         Idx = Idx + 20;
     }
 
-    public virtual void Draw( TextureRegion textureRegion,
+    public virtual void Draw( TextureRegion? textureRegion,
                               GRect region,
                               Point2D origin,
                               Point2D scale,
@@ -718,6 +766,11 @@ public class SpriteBatch : IBatch
         if ( !IsDrawing )
         {
             throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
+        }
+
+        if ( textureRegion == null )
+        {
+            return;
         }
 
         var texture = textureRegion.Texture;
@@ -814,36 +867,34 @@ public class SpriteBatch : IBatch
         var u2 = textureRegion.U2;
         var v2 = textureRegion.V;
 
-        var color = ColorPacked;
-
         Vertices[ Idx ]     = x1;
         Vertices[ Idx + 1 ] = y1;
-        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 2 ] = PackedColor;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = x2;
         Vertices[ Idx + 6 ] = y2;
-        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 7 ] = PackedColor;
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = x3;
         Vertices[ Idx + 11 ] = y3;
-        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 12 ] = PackedColor;
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = x4;
         Vertices[ Idx + 16 ] = y4;
-        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 17 ] = PackedColor;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
         Idx = Idx + 20;
     }
 
-    public virtual void Draw( TextureRegion textureRegion,
+    public virtual void Draw( TextureRegion? textureRegion,
                               GRect region,
                               Point2D origin,
                               Point2D scale,
@@ -853,6 +904,11 @@ public class SpriteBatch : IBatch
         if ( !IsDrawing )
         {
             throw new GdxRuntimeException( "SpriteBatch.Begin() must be called before Draw()" );
+        }
+
+        if ( textureRegion == null )
+        {
+            return;
         }
 
         var texture = textureRegion.Texture;
@@ -969,40 +1025,43 @@ public class SpriteBatch : IBatch
             v4 = textureRegion.V2;
         }
 
-        var color = ColorPacked;
-
         Vertices[ Idx ]     = x1;
         Vertices[ Idx + 1 ] = y1;
-        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 2 ] = PackedColor;
         Vertices[ Idx + 3 ] = u1;
         Vertices[ Idx + 4 ] = v1;
 
         Vertices[ Idx + 5 ] = x2;
         Vertices[ Idx + 6 ] = y2;
-        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 7 ] = PackedColor;
         Vertices[ Idx + 8 ] = u2;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = x3;
         Vertices[ Idx + 11 ] = y3;
-        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 12 ] = PackedColor;
         Vertices[ Idx + 13 ] = u3;
         Vertices[ Idx + 14 ] = v3;
 
         Vertices[ Idx + 15 ] = x4;
         Vertices[ Idx + 16 ] = y4;
-        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 17 ] = PackedColor;
         Vertices[ Idx + 18 ] = u4;
         Vertices[ Idx + 19 ] = v4;
 
         Idx += 20;
     }
 
-    public virtual void Draw( TextureRegion region, float width, float height, Affine2 transform )
+    public virtual void Draw( TextureRegion? region, float width, float height, Affine2 transform )
     {
         if ( !IsDrawing )
         {
             throw new GdxRuntimeException( "SpriteBatch.Begin() must be called before Draw()" );
+        }
+
+        if ( region == null )
+        {
+            return;
         }
 
         if ( region.Texture != LastTexture )
@@ -1024,33 +1083,32 @@ public class SpriteBatch : IBatch
         var x4 = ( transform.M00 * width ) + transform.M02;
         var y4 = ( transform.M10 * width ) + transform.M12;
 
-        var u     = region.U;
-        var v     = region.V2;
-        var u2    = region.U2;
-        var v2    = region.V;
-        var color = ColorPacked;
+        var u  = region.U;
+        var v  = region.V2;
+        var u2 = region.U2;
+        var v2 = region.V;
 
         Vertices[ Idx ]     = x1;
         Vertices[ Idx + 1 ] = y1;
-        Vertices[ Idx + 2 ] = color;
+        Vertices[ Idx + 2 ] = PackedColor;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = x2;
         Vertices[ Idx + 6 ] = y2;
-        Vertices[ Idx + 7 ] = color;
+        Vertices[ Idx + 7 ] = PackedColor;
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = x3;
         Vertices[ Idx + 11 ] = y3;
-        Vertices[ Idx + 12 ] = color;
+        Vertices[ Idx + 12 ] = PackedColor;
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = x4;
         Vertices[ Idx + 16 ] = y4;
-        Vertices[ Idx + 17 ] = color;
+        Vertices[ Idx + 17 ] = PackedColor;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
@@ -1078,11 +1136,31 @@ public class SpriteBatch : IBatch
 
         var count = spritesInBatch * 6;
 
+        if ( LastTexture == null )
+        {
+            _nullTextureCount++;
+            Logger.Error( $"Attempt to flush with null texture. " +
+                          $"This batch will be skipped. " +
+                          $"Null texture count: {_nullTextureCount}. " +
+                          $"Last successful texture: {_lastSuccessfulTexture?.ToString() ?? "None"}" );
+
+            Idx = 0;
+            return;
+        }
+
         LastTexture?.Bind();
 
-        _mesh.SetVertices( Vertices, 0, Idx );
-        _mesh.IndicesBuffer.Position = 0;
-        _mesh.IndicesBuffer.Limit    = count;
+        if ( _mesh == null )
+        {
+            Logger.Error( "Mesh is NULL" );
+
+            Idx = 0;
+            return;
+        }
+
+        _mesh?.SetVertices( Vertices, 0, Idx );
+        _mesh!.IndicesBuffer.Position = 0;
+        _mesh!.IndicesBuffer.Limit    = count;
 
         if ( BlendingDisabled )
         {
@@ -1150,12 +1228,16 @@ public class SpriteBatch : IBatch
 
     public void Dispose()
     {
-        _mesh.Dispose();
+        _mesh?.Dispose();
 
         if ( _ownsShader && ( _shader != null ) )
         {
             _shader.Dispose();
         }
+
+        _mesh         = null;
+        _shader       = null;
+        _customShader = null;
     }
 
     public void SetProjectionMatrix( Matrix4 projection )
@@ -1220,7 +1302,6 @@ public class SpriteBatch : IBatch
     /// Returns a new instance of the default shader used by SpriteBatch
     /// for GL2 when no shader is specified.
     /// </summary>
-    //TODO: Update for GL4
     public static ShaderProgram CreateDefaultShader()
     {
         const string VERTEX_SHADER = "attribute vec4 "
@@ -1268,7 +1349,7 @@ public class SpriteBatch : IBatch
 
         if ( !shader.IsCompiled )
         {
-            throw new ArgumentException( "Error compiling shader: " + shader.ShaderLog );
+            throw new GdxRuntimeException( "Error compiling shader: " + shader.ShaderLog );
         }
 
         return shader;
@@ -1280,21 +1361,38 @@ public class SpriteBatch : IBatch
 
         if ( _customShader != null )
         {
+            if ( !_customShader.IsCompiled )
+            {
+                Logger.Debug( "Custom Shader is not compiled." );
+            }
+
             _customShader.SetUniformMatrix( "u_projTrans", _combinedMatrix );
             _customShader.SetUniformi( "u_texture", 0 );
         }
         else
         {
+            if ( _shader is { IsCompiled: false } )
+            {
+                Logger.Debug( "Custom Shader is not compiled." );
+            }
+
             _shader?.SetUniformMatrix( "u_projTrans", _combinedMatrix );
             _shader?.SetUniformi( "u_texture", 0 );
         }
     }
 
-    protected void SwitchTexture( Texture texture )
+    protected void SwitchTexture( Texture? texture )
     {
+        if ( texture == null )
+        {
+            return;
+        }
+
         Flush();
-        LastTexture  = texture;
-        InvTexWidth  = 1.0f / texture.Width;
-        InvTexHeight = 1.0f / texture.Height;
+
+        LastTexture            = texture;
+        _lastSuccessfulTexture = texture;
+        InvTexWidth            = 1.0f / texture.Width;
+        InvTexHeight           = 1.0f / texture.Height;
     }
 }

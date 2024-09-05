@@ -500,7 +500,7 @@ public class KtxTextureData : ITextureData, ICubemapData
                             {
                                 ETC1 etc1    = new();
                                 var  etcData = new ETC1.ETC1Data( pixelWidth, pixelHeight, data, 0, etc1 );
-                                var  pixmap  = etc1.DecodeImage( etcData, Pixmap.Format.RGB888 );
+                                var  pixmap  = etc1.DecodeImage( etcData, Pixmap.ColorFormat.RGB888 );
 
                                 unsafe
                                 {
@@ -613,8 +613,8 @@ public class KtxTextureData : ITextureData, ICubemapData
     /// <returns> the height of the pixel data </returns>
     public int Height { get; set; }
 
-    /// <returns> the <see cref="Pixmap.Format"/> of the pixel data </returns>
-    public Pixmap.Format? Format { get; set; } = Pixmap.Format.Alpha;
+    /// <returns> the <see cref="Pixmap.ColorFormat"/> of the pixel data </returns>
+    public Pixmap.ColorFormat? Format { get; set; } = Pixmap.ColorFormat.Alpha;
 
     /// <returns> whether to generate mipmaps or not. </returns>
     public bool UseMipMaps { get; set; }

@@ -28,16 +28,11 @@ using LughSharp.LibCore.Utils.Exceptions;
 namespace LughSharp.LibCore.Graphics.FrameBuffers;
 
 [PublicAPI]
-public class GLFrameBufferBuilder< TU > where TU : GLFrameBuffer< GLTexture >
+public class GLFrameBufferBuilder< TU >( int width, int height )
+    where TU : GLFrameBuffer< GLTexture >
 {
-    public GLFrameBufferBuilder( int width, int height )
-    {
-        Width  = width;
-        Height = height;
-    }
-
-    public int Width  { get; }
-    public int Height { get; }
+    public int Width  { get; } = width;
+    public int Height { get; } = height;
 
     public List< FrameBufferTextureAttachmentSpec > TextureAttachmentSpecs { get; } = new();
 
@@ -56,7 +51,7 @@ public class GLFrameBufferBuilder< TU > where TU : GLFrameBuffer< GLTexture >
         return this;
     }
 
-    public GLFrameBufferBuilder< TU > AddBasicColorTextureAttachment( Pixmap.Format format )
+    public GLFrameBufferBuilder< TU > AddBasicColorTextureAttachment( Pixmap.ColorFormat format )
     {
         var glFormat = PixmapFormat.ToGLFormat( format );
         var glType   = PixmapFormat.ToGLType( format );

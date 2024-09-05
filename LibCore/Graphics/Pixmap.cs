@@ -30,7 +30,7 @@ namespace LughSharp.LibCore.Graphics;
 
 /// <summary>
 /// A Pixmap represents an image in memory. It has a width and height expressed
-/// in pixels as well as a <see cref="Format"/> specifying the number and order
+/// in pixels as well as a <see cref="ColorFormat"/> specifying the number and order
 /// of color components per pixel.
 /// <para>
 /// Coordinates of pixels are specified with respect to the top left corner of
@@ -50,7 +50,6 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class Pixmap : IDisposable
 {
-    public int         PixFormat  { get; set; }                // 
     public bool        IsDisposed { get; set; } = false;       // 
     public int         Scale      { get; set; }                // 
     public Color       Color      { get; set; } = Color.Clear; // 
@@ -65,6 +64,7 @@ public class Pixmap : IDisposable
     // ------------------------------------------------------------------------
 
     private Filter _filter = Filter.BiLinear;
+    private int    _format;
 
     // ------------------------------------------------------------------------
 
@@ -73,26 +73,21 @@ public class Pixmap : IDisposable
     /// </summary>
     /// <param name="width">The width in pixels.</param>
     /// <param name="height">The height in pixels.</param>
-    /// <param name="format">The <see cref="Pixmap.Format"/></param>
-    public Pixmap( int width, int height, Pixmap.Format? format )
+    /// <param name="format">The <see cref="ColorFormat"/></param>
+    public Pixmap( int width, int height, Pixmap.ColorFormat? format )
     {
         Logger.CheckPoint();
         Logger.Debug( $"width: {width}, height: {height}, format: {format}" );
 
         PixelData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
 
-        this.Width     = ( int ) PixelData.Width;
-        this.Height    = ( int ) PixelData.Height;
-        this.PixFormat = ( int ) PixelData.Format;
+        this.Width  = ( int ) PixelData.Width;
+        this.Height = ( int ) PixelData.Height;
+        this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixelData.Format );
 
-        Logger.Debug( $"Width: {this.Width}, Height: {this.Height}, Format: {this.PixFormat}" );
-
-        Logger.CheckPoint();
+        Logger.Debug( $"Width: {this.Width}, Height: {this.Height}, Format: {this.Format}" );
 
         SetColor( Graphics.Color.Red );
-
-        Logger.CheckPoint();
-
         FillWithCurrentColor();
 
         Logger.CheckPoint();
@@ -111,9 +106,9 @@ public class Pixmap : IDisposable
         {
             PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
 
-            Width     = ( int ) PixelData.Width;
-            Height    = ( int ) PixelData.Height;
-            PixFormat = ( int ) PixelData.Format;
+            Width       = ( int ) PixelData.Width;
+            Height      = ( int ) PixelData.Height;
+            this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixelData.Format );
         }
         catch ( IOException e )
         {
@@ -138,9 +133,9 @@ public class Pixmap : IDisposable
         {
             PixelData = new Gdx2DPixmap( encodedData, offset, len, 0 );
 
-            Width     = ( int ) PixelData.Width;
-            Height    = ( int ) PixelData.Height;
-            PixFormat = ( int ) PixelData.Format;
+            Width       = ( int ) PixelData.Width;
+            Height      = ( int ) PixelData.Height;
+            this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixelData.Format );
         }
         catch ( IOException e )
         {
@@ -176,16 +171,19 @@ public class Pixmap : IDisposable
         try
         {
             Logger.CheckPoint();
-            
+
             var data = File.ReadAllBytes( file.FullName );
 
             Logger.CheckPoint();
 
             PixelData = new Gdx2DPixmap( data, 0, data.Length, 0 );
 
-            Width     = ( int ) PixelData.Width;
-            Height    = ( int ) PixelData.Height;
-            PixFormat = ( int ) PixelData.Format;
+            Logger.CheckPoint();
+
+            Width       = ( int ) PixelData.Width;
+            Height      = ( int ) PixelData.Height;
+            Logger.CheckPoint();
+            this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixelData.Format );
 
             Logger.CheckPoint();
             Logger.Debug( $"{PixelData.Width} x {PixelData.Height}, {PixelData.Format}" );
@@ -205,9 +203,9 @@ public class Pixmap : IDisposable
     {
         this.PixelData = gdx2DPixmap;
 
-        Width     = ( int ) PixelData.Width;
-        Height    = ( int ) PixelData.Height;
-        PixFormat = ( int ) PixelData.Format;
+        Width       = ( int ) PixelData.Width;
+        Height      = ( int ) PixelData.Height;
+        this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixelData.Format );
     }
 
     // ----------------------------------------------------------
@@ -486,12 +484,15 @@ public class Pixmap : IDisposable
     }
 
     /// <summary>
-    /// Returns the <see cref="Pixmap.Format"/> of this Pixmap.
+    /// Returns the <see cref="ColorFormat"/> of this Pixmap.
     /// </summary>
-    public Pixmap.Format GetFormat()
+    public Pixmap.ColorFormat? Format
     {
-        return PixmapFormat.FromGdx2DPixmapFormat
-            ( PixFormat != 0 ? PixFormat : PixmapFormat.GDX_2D_FORMAT_RGB888 );
+        get
+            => PixmapFormat.FromGdx2DPixmapFormat( _format != 0
+                                                       ? _format
+                                                       : PixmapFormat.GDX_2D_FORMAT_RGB888 );
+        set => _format = PixmapFormat.ToGdx2DPixmapFormat( value );
     }
 
     /// <summary>
@@ -506,7 +507,7 @@ public class Pixmap : IDisposable
     {
         Gdx.GL.glPixelStorei( IGL.GL_PACK_ALIGNMENT, 1 );
 
-        Pixmap pixmap = new( width, height, Pixmap.Format.RGBA8888 );
+        Pixmap pixmap = new( width, height, Pixmap.ColorFormat.RGBA8888 );
 
         fixed ( void* ptr = &pixmap.Pixels!.BackingArray()[ 0 ] )
         {
@@ -536,19 +537,19 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Returns the pixel format from a valid named string.
     /// </summary>
-    public static Format FormatFromString( string str )
+    public static ColorFormat FormatFromString( string str )
     {
         str = str.ToLower();
 
         return str switch
         {
-            "alpha"          => Format.Alpha,
-            "intensity"      => Format.Intensity,
-            "luminancealpha" => Format.LuminanceAlpha,
-            "rgb565"         => Format.RGB565,
-            "rgba4444"       => Format.RGBA4444,
-            "rgb888"         => Format.RGB888,
-            "rgba8888"       => Format.RGBA8888,
+            "alpha"          => ColorFormat.Alpha,
+            "intensity"      => ColorFormat.Intensity,
+            "luminancealpha" => ColorFormat.LuminanceAlpha,
+            "rgb565"         => ColorFormat.RGB565,
+            "rgba4444"       => ColorFormat.RGBA4444,
+            "rgb888"         => ColorFormat.RGB888,
+            "rgba8888"       => ColorFormat.RGBA8888,
             var _            => throw new GdxRuntimeException( $"Unknown Format: {str}" )
         };
     }
@@ -621,7 +622,7 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Available Pixmap pixel formats.
     /// </summary>
-    public enum Format
+    public enum ColorFormat
     {
         Alpha,
         Intensity,

@@ -81,7 +81,7 @@ public class FacedCubemapData : ICubemapData
     /// <summary>
     /// Construct a Cubemap with <see cref="Pixmap"/>s for each side of the specified size.
     /// </summary>
-    public FacedCubemapData( int width, int height, int depth, Pixmap.Format format )
+    public FacedCubemapData( int width, int height, int depth, Pixmap.ColorFormat format )
         : this( new PixmapTextureData( new Pixmap( depth, height, format ), null, false, true ),
                 new PixmapTextureData( new Pixmap( depth, height, format ), null, false, true ),
                 new PixmapTextureData( new Pixmap( width, depth, format ), null, false, true ),
@@ -124,11 +124,6 @@ public class FacedCubemapData : ICubemapData
 
         for ( var i = 0; i < _data.Length; i++ )
         {
-            if ( _data[ i ] == null )
-            {
-                continue;
-            }
-
             if ( _data[ i ]!.TextureDataType == ITextureData.TextureType.Custom )
             {
                 _data[ i ]!.ConsumeCustomData( IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i );
@@ -138,7 +133,7 @@ public class FacedCubemapData : ICubemapData
                 var pixmap        = _data[ i ]!.ConsumePixmap()!;
                 var disposePixmap = _data[ i ]!.ShouldDisposePixmap();
 
-                if ( _data[ i ]!.Format != pixmap.GetFormat() )
+                if ( _data[ i ]!.Format != pixmap.Format )
                 {
                     var tmp = new Pixmap( pixmap.Width, pixmap.Height, _data[ i ]?.Format );
 
@@ -156,8 +151,6 @@ public class FacedCubemapData : ICubemapData
 
                 Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 1 );
 
-                var pixels = pixmap.Pixels?.BackingArray();
-                
                 Gdx.GL.glTexImage2D( IGL.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                                      0,
                                      pixmap.GLInternalFormat,
@@ -166,10 +159,8 @@ public class FacedCubemapData : ICubemapData
                                      0,
                                      pixmap.GLFormat,
                                      pixmap.GLType,
-                                     pixels );
+                                     pixmap.Pixels!.BackingArray() );
 
-                pixmap.Pixels?.Put( pixels );
-                
                 if ( disposePixmap )
                 {
                     pixmap.Dispose();
@@ -178,16 +169,81 @@ public class FacedCubemapData : ICubemapData
         }
     }
 
-
     /// <summary>
     /// The width of the pixel data.
     /// </summary>
-    public int Width { get; set; }
+    public int Width
+    {
+        get
+        {
+            int tmp;
+            var width = 0;
+
+            if ( _data[ Cubemap.CubemapSide.PositiveZ.Index ] != null
+              && ( tmp = _data[ Cubemap.CubemapSide.PositiveZ.Index ]!.Width ) > width )
+            {
+                width = tmp;
+            }
+
+            if ( _data[ Cubemap.CubemapSide.NegativeZ.Index ] != null
+              && ( tmp = _data[ Cubemap.CubemapSide.NegativeZ.Index ]!.Width ) > width )
+            {
+                width = tmp;
+            }
+
+            if ( _data[ Cubemap.CubemapSide.PositiveY.Index ] != null
+              && ( tmp = _data[ Cubemap.CubemapSide.PositiveY.Index ]!.Width ) > width )
+            {
+                width = tmp;
+            }
+
+            if ( _data[ Cubemap.CubemapSide.NegativeY.Index ] != null
+              && ( tmp = _data[ Cubemap.CubemapSide.NegativeY.Index ]!.Width ) > width )
+            {
+                width = tmp;
+            }
+
+            return width;
+        }
+    }
 
     /// <summary>
     /// The height of the pixel data.
     /// </summary>
-    public int Height { get; set; }
+    public int Height
+    {
+        get
+        {
+            int tmp;
+            var height = 0;
+            
+            if ( _data[ Cubemap.CubemapSide.PositiveZ.Index ] != null
+              && ( tmp = _data[ Cubemap.CubemapSide.PositiveZ.Index ]!.Height ) > height )
+            {
+                height = tmp;
+            }
+
+            if ( _data[ Cubemap.CubemapSide.NegativeZ.Index ] != null
+              && ( tmp = _data[ Cubemap.CubemapSide.NegativeZ.Index ]!.Height ) > height )
+            {
+                height = tmp;
+            }
+
+            if ( _data[ Cubemap.CubemapSide.PositiveX.Index ] != null
+              && ( tmp = _data[ Cubemap.CubemapSide.PositiveX.Index ]!.Height ) > height )
+            {
+                height = tmp;
+            }
+
+            if ( _data[ Cubemap.CubemapSide.NegativeX.Index ] != null
+              && ( tmp = _data[ Cubemap.CubemapSide.NegativeX.Index ]!.Height ) > height )
+            {
+                height = tmp;
+            }
+
+            return height;
+        }
+    }
 
     /// <summary>
     /// Returns true if this implementation can cope with a EGL context loss.

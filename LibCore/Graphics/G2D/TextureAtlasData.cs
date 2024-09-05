@@ -315,7 +315,7 @@ public partial record TextureAtlasData
         public FileInfo? TextureFile { get; set; }
 
         public bool          UseMipMaps         { get; set; }
-        public Pixmap.Format Format             { get; set; } = Pixmap.Format.RGBA8888;
+        public Pixmap.ColorFormat Format             { get; set; } = Pixmap.ColorFormat.RGBA8888;
         public TextureFilter MinFilter          { get; set; } = TextureFilter.Nearest;
         public TextureFilter MagFilter          { get; set; } = TextureFilter.Nearest;
         public TextureWrap   UWrap              { get; set; } = TextureWrap.ClampToEdge;

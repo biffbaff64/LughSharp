@@ -105,8 +105,6 @@ public abstract class GLTexture : IDisposable, IManageable
     /// For color depth: It refers to the number of bits used to represent the color of
     /// each texel. Higher color depth allows for more colors and smoother gradients.
     /// </li>
-    /// </para>
-    /// <para>
     /// 3D textures are used in various graphics applications, such as:
     /// <li>Volumetric rendering (e.g., for medical imaging or scientific visualization)</li>
     /// <li>Storing precomputed lighting information</li>
@@ -145,6 +143,8 @@ public abstract class GLTexture : IDisposable, IManageable
     /// Returns the <see cref="TextureWrap"/> used for vertical (V) texture coordinates.
     /// </summary>
     public TextureWrap VWrap { get; set; } = TextureWrap.ClampToEdge;
+
+    // ------------------------------------------------------------------------
 
     public virtual bool IsManaged
     {
@@ -308,9 +308,7 @@ public abstract class GLTexture : IDisposable, IManageable
             return AnisotropicFilterLevel;
         }
 
-        Gdx.GL.glTexParameterf( IGL.GL_TEXTURE_2D,
-                                IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT,
-                                level );
+        Gdx.GL.glTexParameterf( IGL.GL_TEXTURE_2D, IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT, level );
 
         return AnisotropicFilterLevel = level;
     }
@@ -338,9 +336,7 @@ public abstract class GLTexture : IDisposable, IManageable
 
         Bind();
 
-        Gdx.GL.glTexParameterf( IGL.GL_TEXTURE_2D,
-                                IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT,
-                                level );
+        Gdx.GL.glTexParameterf( IGL.GL_TEXTURE_2D, IGL.GL_TEXTURE_MAX_ANISOTROPY_EXT, level );
 
         return AnisotropicFilterLevel = level;
     }
@@ -436,9 +432,9 @@ public abstract class GLTexture : IDisposable, IManageable
         }
 
         Logger.Debug( $"data format  : {data.Format}" );
-        Logger.Debug( $"pixmap format: {pixmap.GetFormat()}" );
+        Logger.Debug( $"pixmap format: {pixmap.Format}" );
 
-        if ( data.Format != pixmap.GetFormat() )
+        if ( data.Format != pixmap.Format )
         {
             Logger.CheckPoint();
 
