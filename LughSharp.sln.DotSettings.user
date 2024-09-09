@@ -9,6 +9,7 @@
 	
 	<s:String x:Key="/Default/CodeEditing/GenerateMemberBody/MethodImplementationKind/@EntryValue">ReturnDefaultValue</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AArray_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003F_002E_002E_003FUsers_003Frichi_003FAppData_003FLocal_003FSymbols_003Fsrc_003Fdotnet_003Fruntime_003F0fb6ac59fb1edbe4ed3ad62661df0eb7eacd7903_003Fsrc_003Flibraries_003FSystem_002EPrivate_002ECoreLib_003Fsrc_003FSystem_003FArray_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AEnvironment_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003F_002E_002E_003FUsers_003Frichi_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E2_003Fresharper_002Dhost_003FSourcesCache_003F69ced031c35719782e852f09f21b2dd6492bb0a8a7b728fdcded848d74b84a_003FEnvironment_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AMarshal_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003F_002E_002E_003FUsers_003Frichi_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E2_003Fresharper_002Dhost_003FSourcesCache_003Fd620a3afb191b5e1e1deb13b4a8a96acc9f73836158d547dfc93ecebdc5bbb_003FMarshal_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	
 	
@@ -83,6 +84,7 @@
   &lt;Assembly Path="C:\Users\richi\.nuget\packages\pixelmap\1.0.1\lib\PixelMap.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\richi\.nuget\packages\stbimagesharp\2.27.14\lib\netstandard2.0\StbImageSharp.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Development\Projects\CSharp\LughSharp\Libs\gdx2d.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Development\Projects\CSharp\LughSharp\LibCore\Graphics\G2D\lib\gdx2d.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/InlayHints/CSharpOtherInlayHintsOptions/ShowResourcesDisposePoints/@EntryValue">PushToShowHints</s:String>
 	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EFeature_002EServices_002ECodeCleanup_002EFileHeader_002EFileHeaderSettingsMigrate/@EntryIndexedValue">True</s:Boolean>

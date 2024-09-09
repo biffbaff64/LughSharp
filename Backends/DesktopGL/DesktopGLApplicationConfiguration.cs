@@ -193,8 +193,6 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode GetDisplayMode()
     {
-//        DesktopGLApplication.InitialiseGLFW();
-
         var videoMode = Glfw.GetVideoMode( Glfw.GetPrimaryMonitor() );
 
         return new DesktopGLGraphics.DesktopGLDisplayMode( Glfw.GetPrimaryMonitor(),
@@ -209,8 +207,6 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode GetDisplayMode( GLFW.Monitor monitor )
     {
-//        DesktopGLApplication.InitialiseGLFW();
-
         var videoMode = Glfw.GetVideoMode( monitor );
 
         return new DesktopGLGraphics.DesktopGLDisplayMode( monitor,
@@ -225,8 +221,6 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode[] GetDisplayModes()
     {
-//        DesktopGLApplication.InitialiseGLFW();
-
         GLFW.Vidmode[]? videoModes = Glfw.GetVideoModes( Glfw.GetPrimaryMonitor() );
 
         var result = new IGraphics.DisplayMode[ videoModes.Length ];
@@ -250,8 +244,6 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
     /// </summary>
     public static IGraphics.DisplayMode[] GetDisplayModes( GLFW.Monitor monitor )
     {
-//        DesktopGLApplication.InitialiseGLFW();
-
         GLFW.Vidmode[] videoModes = Glfw.GetVideoModes( monitor );
 
         var result = new IGraphics.DisplayMode[ videoModes.Length ];
@@ -269,14 +261,4 @@ public class DesktopGLApplicationConfiguration : DesktopGLWindowConfiguration
 
         return result;
     }
-
-    //TODO: REMOVE
-//    public static DesktopGLGraphics.DesktopGLMonitor ToDesktopGLMonitor( GLFW.Monitor glfwMonitor )
-//    {
-//        Glfw.GetMonitorPos( glfwMonitor, out var tmp, out var tmp2 );
-
-//        var name = Glfw.GetMonitorName( glfwMonitor );
-
-//        return new DesktopGLGraphics.DesktopGLMonitor( glfwMonitor, tmp, tmp2, name );
-//    }
 }

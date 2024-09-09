@@ -180,8 +180,8 @@ public class Pixmap : IDisposable
 
             Logger.CheckPoint();
 
-            Width       = ( int ) PixelData.Width;
-            Height      = ( int ) PixelData.Height;
+            Width  = ( int ) PixelData.Width;
+            Height = ( int ) PixelData.Height;
             Logger.CheckPoint();
             this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixelData.Format );
 
@@ -263,10 +263,10 @@ public class Pixmap : IDisposable
                 throw new GdxRuntimeException( "Pixmap already disposed" );
             }
 
-            return PixelData.PixmapDef.Pixels;
+            return PixelData.PixmapBuffer;
         }
 
-        set => PixelData.PixmapDef = PixelData.PixmapDef with { Pixels = value! };
+        set => PixelData.PixmapBuffer = value!;
     }
 
     /// <summary>
@@ -306,7 +306,7 @@ public class Pixmap : IDisposable
     /// </summary>
     public void FillWithCurrentColor()
     {
-        PixelData.Clear( PixelData.NativePixmapDef, this.Color );
+        PixelData.Clear( PixelData.PixmapDef, this.Color );
     }
 
     /// <summary>
@@ -459,7 +459,7 @@ public class Pixmap : IDisposable
     /// <returns> The pixel color in RGBA8888 format.  </returns>
     public int GetPixel( int x, int y )
     {
-        return PixelData.GetPixel( PixelData.NativePixmapDef, x, y );
+        return PixelData.GetPixel( PixelData.PixmapDef, x, y );
     }
 
     /// <summary>
@@ -469,7 +469,7 @@ public class Pixmap : IDisposable
     /// <param name="y"> the y-coordinate </param>
     public void DrawPixel( int x, int y )
     {
-        PixelData.SetPixel( PixelData.NativePixmapDef, x, y, this.Color );
+        PixelData.SetPixel( PixelData.PixmapDef, x, y, this.Color );
     }
 
     /// <summary>
@@ -480,7 +480,7 @@ public class Pixmap : IDisposable
     /// <param name="color"> the color in RGBA8888 format. </param>
     public void DrawPixel( int x, int y, Color color )
     {
-        PixelData.SetPixel( PixelData.NativePixmapDef, x, y, color );
+        PixelData.SetPixel( PixelData.PixmapDef, x, y, color );
     }
 
     /// <summary>
@@ -488,8 +488,7 @@ public class Pixmap : IDisposable
     /// </summary>
     public Pixmap.ColorFormat? Format
     {
-        get
-            => PixmapFormat.FromGdx2DPixmapFormat( _format != 0
+        get => PixmapFormat.FromGdx2DPixmapFormat( _format != 0
                                                        ? _format
                                                        : PixmapFormat.GDX_2D_FORMAT_RGB888 );
         set => _format = PixmapFormat.ToGdx2DPixmapFormat( value );

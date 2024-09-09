@@ -485,11 +485,12 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
 
         InitialiseGL();
 
-//        if ( config.Debug )
-//        {
+        if ( config.Debug )
+        {
+//TODO:
 //            GlDebugCallback = Glfw.DebugMessageCallback( config.debugStream );
 //            SetGLDebugMessageControl( GLDebugMessageSeverity.Notification, false );
-//        }
+        }
 
         return windowHandle;
     }
