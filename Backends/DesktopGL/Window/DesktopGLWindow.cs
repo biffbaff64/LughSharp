@@ -146,6 +146,7 @@ public class DesktopGLWindow : IDisposable
         if ( shouldRender )
         {
             Graphics.Update();
+            Listener.Update();
             Listener.Render();
 
             Glfw.SwapBuffers( GlfwWindow );

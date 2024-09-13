@@ -33,8 +33,18 @@ namespace LughSharp.LibCore.Graphics.Cameras;
 [PublicAPI]
 public class OrthographicCamera : Camera
 {
+    public float Zoom { get; set; }
+
+    // ------------------------------------------------------------------------
+
     private readonly Vector3 _tmp = new();
 
+    // ------------------------------------------------------------------------
+    
+    /// <summary>
+    /// Constructs a default OrthographicCamera.
+    /// All properties, such as viewport size etc, will need setting up before use.
+    /// </summary>
     public OrthographicCamera()
     {
         Logger.CheckPoint();
@@ -63,8 +73,6 @@ public class OrthographicCamera : Camera
         Near           = 0;
         Zoom           = 1;
     }
-
-    public float Zoom { get; set; }
 
     /// <summary>
     /// Updates the camera.

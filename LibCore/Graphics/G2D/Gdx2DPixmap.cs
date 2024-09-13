@@ -23,16 +23,20 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using LughSharp.LibCore.Utils.Exceptions;
+using StbiSharp;
 
 namespace LughSharp.LibCore.Graphics.G2D;
 
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
 [PublicAPI]
 public partial class Gdx2DPixmap : IDisposable
 {
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     #region constants
 
     public const int GDX_2D_FORMAT_ALPHA           = 1;
@@ -59,11 +63,11 @@ public partial class Gdx2DPixmap : IDisposable
 
     #region properties
 
-    public ByteBuffer   PixmapBuffer { get; set; }
-    public gdx2d_pixmap PixmapDef    { get; set; }
-    public uint         Width        { get; set; }
-    public uint         Height       { get; set; }
-    public uint         Format       { get; set; }
+    public ByteBuffer?       PixmapBuffer { get; set; }
+    public Gdx2dPixmapStruct PixmapDef    { get; set; }
+    public uint              Width        { get; set; }
+    public uint              Height       { get; set; }
+    public uint              Format       { get; set; }
 
     #endregion properties
 
@@ -83,32 +87,10 @@ public partial class Gdx2DPixmap : IDisposable
     public Gdx2DPixmap( byte[] buffer, int offset, int len, int requestedFormat )
     {
         Logger.CheckPoint();
-        Logger.Debug( $"buffer length  : {buffer.Length}" );
-        Logger.Debug( $"offset         : {offset}" );
-        Logger.Debug( $"requestedFormat: {requestedFormat}" );
 
         LoadData( buffer, offset, len );
 
-//        this.PixmapDef = new PixmapDef
-//        {
-//            //Note:
-//            // Members width, height, and format need to be set
-//            // correctly when gdx2d_load is working correctly
-//            Width  = 165,
-//            Height = 111,
-//            Format = ( uint ) ( ( uint ) requestedFormat == 0 ? GDX_2D_FORMAT_RGBA8888 : requestedFormat ),
-//            Scale  = DEFAULT_SCALE,
-//            Blend  = DEFAULT_BLEND,
-//            Pixels = buffer,
-//        };
-
-        Logger.CheckPoint();
-        Logger.Debug( $"NPixmapDef       : {PixmapDef.Width} x {PixmapDef.Height}" );
-        Logger.Debug( $"NPixmapDef.Format: {PixmapDef.Format}" );
-
         PixmapBuffer = ByteBuffer.Wrap( PixmapDef.Pixels );
-
-        Logger.CheckPoint();
 
         if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
         {
@@ -118,8 +100,6 @@ public partial class Gdx2DPixmap : IDisposable
         this.Width  = PixmapDef.Width;
         this.Height = PixmapDef.Height;
         this.Format = this.PixmapDef.Format;
-
-        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -175,12 +155,11 @@ public partial class Gdx2DPixmap : IDisposable
     /// <param name="height"> Height in pixels. </param>
     /// <param name="format"> The requested GDX_2D_FORMAT_xxx color format. </param>
     /// <exception cref="GdxRuntimeException"></exception>
-    public unsafe Gdx2DPixmap( int width, int height, int format )
+    public Gdx2DPixmap( int width, int height, int format )
     {
         Logger.CheckPoint();
-        Logger.Debug( $"width: {width}, height: {height}, format: {format}" );
 
-        this.PixmapDef = new gdx2d_pixmap
+        this.PixmapDef = new Gdx2dPixmapStruct
         {
             Width  = ( uint ) width,
             Height = ( uint ) height,
@@ -219,17 +198,24 @@ public partial class Gdx2DPixmap : IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
+    /// <summary>
+    /// Loads the data in the supplied byte array into a <see cref="Gdx2dPixmapStruct"/>
+    /// </summary>
+    /// <param name="buffer"></param>
+    /// <param name="offset"></param>
+    /// <param name="len"></param>
+    /// <returns></returns>
+    /// <exception cref="IOException"></exception>
     private ByteBuffer LoadData( byte[] buffer, int offset, int len )
     {
         Logger.CheckPoint();
 
         var buf = new byte[ len ];
 
+        //TODO: Once everything is working, implement a faster copy
         Array.Copy( buffer, offset, buf, 0, len );
 
-        this.PixmapDef = gdx2d_load( buf, len );
-
-        Logger.CheckPoint();
+        this.PixmapDef = Load( buf, len );
 
         var byteBuffer = ByteBuffer.Wrap( PixmapDef.Pixels );
 
@@ -239,6 +225,23 @@ public partial class Gdx2DPixmap : IDisposable
         }
 
         return byteBuffer;
+    }
+
+    private Gdx2dPixmapStruct Load( byte[] buffer, int len )
+    {
+        Logger.CheckPoint();
+
+        var image = Stbi.LoadFromMemory( buffer, PixmapFormat.Gdx2dBytesPerPixel( ( int ) Format ) );
+
+        var pixmapStruct = new Gdx2dPixmapStruct
+        {
+            Width  = ( uint ) image.Width,
+            Height = ( uint ) image.Height,
+            Format = ( uint ) image.NumChannels,
+            Pixels = image.Data.ToArray()
+        };
+
+        return pixmapStruct;
     }
 
     /// <summary>
@@ -288,10 +291,10 @@ public partial class Gdx2DPixmap : IDisposable
 
         var pixmap = new Gdx2DPixmap( ( int ) Width, ( int ) Height, requestedFormat );
 
-        pixmap.Blend = GDX_2D_BLEND_NONE;
+        pixmap.SetBlend( GDX_2D_BLEND_NONE );
         pixmap.DrawPixmap( this, 0, 0, 0, 0, ( int ) Width, ( int ) Height );
 
-        Dispose();
+//        Dispose();  // ??????
 
         this.Width        = pixmap.Width;
         this.Height       = pixmap.Height;
@@ -300,48 +303,69 @@ public partial class Gdx2DPixmap : IDisposable
         this.PixmapBuffer = pixmap.PixmapBuffer;
     }
 
-    public static Gdx2DPixmap? NewPixmap( StreamReader inStream, int requestedFormat )
-    {
-        Logger.CheckPoint();
-
-        try
-        {
-            return new Gdx2DPixmap( inStream, requestedFormat );
-        }
-        catch ( IOException e )
-        {
-            Logger.Error( e.Message );
-
-            return null;
-        }
-    }
-
-    public static Gdx2DPixmap? NewPixmap( int width, int height, int format )
-    {
-        Logger.CheckPoint();
-
-        try
-        {
-            return new Gdx2DPixmap( width, height, format );
-        }
-        catch ( ArgumentException e )
-        {
-            Logger.Error( e.Message );
-
-            return null;
-        }
-    }
+//    /// <summary>
+//    /// 
+//    /// </summary>
+//    /// <param name="inStream"></param>
+//    /// <param name="requestedFormat"></param>
+//    /// <returns></returns>
+//    public static Gdx2DPixmap? NewPixmap( StreamReader inStream, int requestedFormat )
+//    {
+//        Logger.CheckPoint();
+//
+//        try
+//        {
+//            return new Gdx2DPixmap( inStream, requestedFormat );
+//        }
+//        catch ( IOException e )
+//        {
+//            throw new GdxRuntimeException( e.Message );
+//        }
+//    }
+//
+//    /// <summary>
+//    /// 
+//    /// </summary>
+//    /// <param name="width"></param>
+//    /// <param name="height"></param>
+//    /// <param name="format"></param>
+//    /// <returns></returns>
+//    /// <exception cref="GdxRuntimeException"></exception>
+//    public static Gdx2DPixmap? NewPixmap( int width, int height, int format )
+//    {
+//        Logger.CheckPoint();
+//
+//        try
+//        {
+//            return new Gdx2DPixmap( width, height, format );
+//        }
+//        catch ( ArgumentException e )
+//        {
+//            throw new GdxRuntimeException( e.Message );
+//        }
+//    }
 
     // ------------------------------------------------------------------------
 
-    public int Blend
+    /// <summary>
+    /// Sets this pixmaps blending value.
+    /// </summary>
+    /// <param name="blend"></param>
+    public void SetBlend( int blend )
     {
-        set => gdx2d_set_blend( PixmapDef, value );
+        this.PixmapDef = PixmapDef with
+        {
+            Blend = ( uint ) blend,
+        };
     }
 
-    public int Scale
+    //TODO: Why is this not a float?
+    public void SetScale( int scale )
     {
-        set => gdx2d_set_scale( PixmapDef, value );
+        this.PixmapDef = PixmapDef with
+        {
+            Scale = ( uint ) scale,
+        };
     }
 
     // ------------------------------------------------------------------------
@@ -365,5 +389,6 @@ public partial class Gdx2DPixmap : IDisposable
         }
     }
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 }

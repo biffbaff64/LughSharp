@@ -39,6 +39,9 @@ public abstract class Camera
 
     private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
     private readonly Vector3 _tmpVec = new();
+    
+    // ------------------------------------------------------------------------
+    
     public           Vector3 Position       { get; set; } = new();          // the position of the camera
     public           Vector3 Up             { get; set; } = new( 0, 1, 0 ); // the unit length up vector of the camera
     public           Matrix4 Combined       { get; set; } = new();
@@ -71,7 +74,7 @@ public abstract class Camera
     /// Recalculates the direction of the camera to look at the point (x, y, z).
     /// </summary>
     /// <param name="target"> Vector3 holding the point to look at. </param>
-    public void LookAt( Vector3 target )
+    public virtual void LookAt( Vector3 target )
     {
         LookAt( target.X, target.Y, target.Z );
     }

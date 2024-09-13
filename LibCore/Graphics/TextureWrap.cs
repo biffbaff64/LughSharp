@@ -46,7 +46,7 @@ public class TextureWrap
     private static   int    _nextOrdinal = 0;
     private readonly string _nameValue;
 
-    public readonly InnerEnum innerEnumValue;
+    public readonly InnerEnum InnerEnumValue;
 
     static TextureWrap()
     {
@@ -61,7 +61,7 @@ public class TextureWrap
 
         _nameValue     = name;
         OrdinalValue   = _nextOrdinal++;
-        innerEnumValue = innerEnum;
+        InnerEnumValue = innerEnum;
     }
 
     public int GLEnum       { get; }

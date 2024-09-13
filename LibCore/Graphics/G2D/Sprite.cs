@@ -904,7 +904,6 @@ public class Sprite : TextureRegion
     /// bottom left corner. If you change the position or size of the sprite,
     /// you must fetch the triangle again for it to be recomputed.
     /// </summary>
-    /// <returns> the bounding Rectangle  </returns>
     public RectangleShape BoundingRectangle
     {
         get

@@ -98,7 +98,9 @@ public class Texture : GLTexture
     /// <param name="file"></param>
     /// <param name="format"> The pixmap format to use. </param>
     /// <param name="useMipMaps"> Whether or not to generate MipMaps. Default is false. </param>
-    public Texture( FileInfo? file, Pixmap.ColorFormat format = Pixmap.ColorFormat.RGBA8888, bool useMipMaps = false )
+    public Texture( FileInfo? file,
+                    Pixmap.ColorFormat format = Pixmap.ColorFormat.RGBA8888,
+                    bool useMipMaps = false )
         : this( TextureDataFactory.LoadFromFile( file!, format, useMipMaps ) )
     {
         Logger.CheckPoint();
@@ -161,14 +163,6 @@ public class Texture : GLTexture
         ArgumentNullException.ThrowIfNull( data );
 
         Logger.CheckPoint();
-        Logger.Debug( $"glTarget       : {glTarget}" );
-        Logger.Debug( $"glTextureHandle: {glTextureHandle}" );
-        Logger.Debug( $"data           : {data}" );
-        Logger.Debug( $"data.Width     : {data.Width}" );
-        Logger.Debug( $"data.Height    : {data.Height}" );
-        Logger.Debug( $"data.Format    : {data.Format}" );
-        Logger.Debug( $"data.IsManaged : {data.IsManaged}" );
-        Logger.Debug( $"data.IsPrepared: {data.IsPrepared}" );
 
         Load( data );
 
@@ -193,19 +187,10 @@ public class Texture : GLTexture
             throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
         }
 
-        Logger.Debug( $"data           : {data}" );
-        Logger.Debug( $"data.Width     : {data?.Width}" );
-        Logger.Debug( $"data.Height    : {data?.Height}" );
-        Logger.Debug( $"data.Format    : {data?.Format}" );
-        Logger.Debug( $"data.IsPrepared: {data?.IsPrepared}" );
-        Logger.Debug( $"data.IsManaged : {data?.IsManaged}" );
-
         TextureData = data;
 
         if ( !data!.IsPrepared )
         {
-            Logger.CheckPoint();
-
             data.Prepare();
         }
 
@@ -239,9 +224,7 @@ public class Texture : GLTexture
     /// <summary>
     /// Draws the given <see cref="Pixmap"/> to the texture at position x, y. No clipping
     /// is performed so you have to make sure that you draw only inside the texture region.
-    /// <para>
     /// Note that this will only draw to mipmap level 0!
-    /// </para>
     /// </summary>
     /// <param name="pixmap"> The Pixmap </param>
     /// <param name="x"> The x coordinate in pixels </param>

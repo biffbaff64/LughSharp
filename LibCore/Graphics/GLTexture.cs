@@ -164,7 +164,6 @@ public abstract class GLTexture : IDisposable, IManageable
     protected GLTexture( int glTarget, uint glTextureHandle )
     {
         Logger.CheckPoint();
-        Logger.Debug( $"GLTarget: {glTarget}, GLTextureHandle: {GLTextureHandle}" );
 
         GLTarget        = glTarget;
         GLTextureHandle = glTextureHandle;
@@ -395,62 +394,37 @@ public abstract class GLTexture : IDisposable, IManageable
             return;
         }
 
-        Logger.Debug( $"data.Width : {data.Width}" );
-        Logger.Debug( $"data.Height: {data.Height}" );
-        Logger.Debug( $"data.Format: {data.Format}" );
-
         if ( !data.IsPrepared )
         {
-            Logger.CheckPoint();
-
             data.Prepare();
         }
 
         var type = data.TextureDataType;
 
-        Logger.Debug( $"Texture Data Type: {type}" );
-
         if ( type == ITextureData.TextureType.Custom )
         {
-            Logger.CheckPoint();
-
             data.ConsumeCustomData( target );
 
             return;
         }
 
-        Logger.CheckPoint();
-
         var pixmap        = data.ConsumePixmap();
         var disposePixmap = data.ShouldDisposePixmap();
-
-        Logger.CheckPoint();
 
         if ( pixmap == null )
         {
             throw new GdxRuntimeException( "ConsumePixmap() resulted in a null Pixmap!" );
         }
 
-        Logger.Debug( $"data format  : {data.Format}" );
-        Logger.Debug( $"pixmap format: {pixmap.Format}" );
-
         if ( data.Format != pixmap.Format )
         {
-            Logger.CheckPoint();
-
             var tmp = new Pixmap( pixmap.Width, pixmap.Height, data.Format );
-
-            Logger.CheckPoint();
 
             tmp.Blending = Pixmap.BlendTypes.None;
             tmp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
 
-            Logger.CheckPoint();
-
             if ( data.ShouldDisposePixmap() )
             {
-                Logger.CheckPoint();
-
                 pixmap.Dispose();
             }
 
@@ -458,29 +432,14 @@ public abstract class GLTexture : IDisposable, IManageable
             disposePixmap = true;
         }
 
-        Logger.CheckPoint();
-
         Gdx.GL.glPixelStorei( IGL.GL_UNPACK_ALIGNMENT, 1 );
 
         if ( data.UseMipMaps )
         {
-            Logger.CheckPoint();
-
             MipMapGenerator.GenerateMipMap( target, pixmap, pixmap.Width, pixmap.Height );
         }
         else
         {
-            Logger.CheckPoint();
-
-            Logger.Debug( $"target                 : {target}" );
-            Logger.Debug( $"miplevel               : {miplevel}" );
-            Logger.Debug( $"pixmap.GLInternalFormat: {pixmap.GLInternalFormat}" );
-            Logger.Debug( $"pixmap.Width           : {pixmap.Width}" );
-            Logger.Debug( $"pixmap.Height          : {pixmap.Height}" );
-            Logger.Debug( $"pixmap.GLFormat        : {pixmap.GLFormat}" );
-            Logger.Debug( $"pixmap.GLType          : {pixmap.GLType}" );
-            Logger.Debug( $"pixmap array size      : {pixmap.Pixels?.BackingArray().Length}" );
-
             var pixels = pixmap.Pixels;
 
             Gdx.GL.glTexImage2D( target,
@@ -493,17 +452,11 @@ public abstract class GLTexture : IDisposable, IManageable
                                  pixmap.GLType,
                                  pixels!.BackingArray() );
 
-            Logger.CheckPoint();
-
             pixmap.Pixels = pixels;
-
-            Logger.CheckPoint();
         }
 
         if ( disposePixmap )
         {
-            Logger.CheckPoint();
-            
             pixmap.Dispose();
         }
     }

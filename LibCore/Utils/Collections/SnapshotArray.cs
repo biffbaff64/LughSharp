@@ -47,7 +47,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     private int  _snapshotCount;
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// Creates a new SnapshotArray with the specified initial capacity.
     /// The created array will be Ordered.
@@ -123,7 +123,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     /// Returns the backing array, which is guaranteed to not be modified
     /// before <see cref="End()"/>
     /// </returns>
-    public T?[] Begin()
+    public T[] Begin()
     {
         Modified();
 
@@ -270,7 +270,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         get => Items[ index ];
         set => Items[ index ] = value;
     }
-    
+
     /// <summary>
     /// Sets the array element at position index to the supplied value.
     /// </summary>

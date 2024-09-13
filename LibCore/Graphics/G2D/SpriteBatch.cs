@@ -379,7 +379,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx = Idx + 20;
+        Idx += 20;
     }
 
     public virtual void Draw( Texture? texture,
@@ -448,7 +448,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx = Idx + 20;
+        Idx += 20;
     }
 
     public virtual void Draw( Texture? texture, float x, float y, Rectangle src )
@@ -503,7 +503,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx = Idx + 20;
+        Idx += 20;
     }
 
     public virtual void Draw( Texture? texture,
@@ -559,7 +559,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx = Idx + 20;
+        Idx += 20;
     }
 
     public virtual void Draw( Texture? texture, float x, float y )
@@ -577,6 +577,8 @@ public class SpriteBatch : IBatch
         Draw( texture, new Point( ( int ) x, ( int ) y ), new Size( texture.Width, texture.Height ) );
     }
 
+    private bool _first = true;
+    
     public virtual void Draw( Texture? texture, Point loc, Size size )
     {
         if ( !IsDrawing )
@@ -586,9 +588,19 @@ public class SpriteBatch : IBatch
 
         if ( texture == null )
         {
+            Logger.Error( "Cannot draw null textures!" );
+            
             return;
         }
 
+        if ( _first )
+        {
+            Logger.Debug( $"texture.Width: {texture.Width}, texture.Height: {texture.Height}" );
+            Logger.Debug( $"loc.X: {loc.X}, loc.Y: {loc.Y}" );
+            Logger.Debug( $"size.Width: {size.Width}, size.Height: {size.Height}" );
+            _first = false;
+        }
+        
         if ( texture != LastTexture )
         {
             SwitchTexture( texture );
@@ -754,7 +766,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx = Idx + 20;
+        Idx += 20;
     }
 
     public virtual void Draw( TextureRegion? textureRegion,
@@ -891,7 +903,7 @@ public class SpriteBatch : IBatch
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
-        Idx = Idx + 20;
+        Idx += 20;
     }
 
     public virtual void Draw( TextureRegion? textureRegion,

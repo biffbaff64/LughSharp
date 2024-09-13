@@ -40,6 +40,12 @@ public interface IScreen
     void Show();
 
     /// <summary>
+    /// Called when the screen should update itself.
+    /// </summary>
+    /// <param name="delta"> The time in seconds since the last update. </param>
+    void Update( float delta );
+
+    /// <summary>
     /// Called when the screen should render itself.
     /// </summary>
     /// <param name="delta"> The time in seconds since the last render. </param>

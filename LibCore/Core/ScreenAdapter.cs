@@ -41,6 +41,11 @@ public class ScreenAdapter : IScreen
     {
     }
 
+    /// <inheritdoc cref="IScreen.Update"/>
+    public virtual void Update( float delta )
+    {
+    }
+
     /// <inheritdoc cref="IScreen.Render"/>
     public virtual void Render( float delta )
     {

@@ -66,6 +66,14 @@ public abstract class Game : IApplicationListener
     }
 
     /// <summary>
+    /// Update the currently active screen.
+    /// </summary>
+    public virtual void Update()
+    {
+        Screen?.Update( Gdx.Graphics.DeltaTime );
+    }
+
+    /// <summary>
     /// Render the currently active screen.
     /// </summary>
     public virtual void Render()

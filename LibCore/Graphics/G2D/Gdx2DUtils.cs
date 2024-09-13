@@ -22,48 +22,48 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
+using StbiSharp;
+
 namespace LughSharp.LibCore.Graphics.G2D;
 
 public partial class Gdx2DPixmap
 {
     /// <summary>
-    /// Clear the pd defined in the supplied <see cref="gdx2d_pixmap"/>,
+    /// Clear the pd defined in the supplied <see cref="Gdx2dPixmapStruct"/>,
     /// setting it to the supplied Color.
     /// </summary>
     /// <param name="pd"> The NativePixmapDef. </param>
     /// <param name="color"> The Color. </param>
-    public void Clear( gdx2d_pixmap pd, Color color )
+    public void Clear( Gdx2dPixmapStruct pd, Color color )
     {
         Logger.CheckPoint();
-        Logger.Debug( $"pd.Width: {pd.Width}" );
-        Logger.Debug( $"pd.Height: {pd.Height}" );
-        Logger.Debug( $"pd.Format: {pd.Format}" );
-        Logger.Debug( $"pd.Color: {color} {color.ToIntBits()}" );
+
+        var size = ( uint ) ( pd.Width * pd.Height * PixmapFormat.Gdx2dBytesPerPixel( ( int ) pd.Format ) );
 
         switch ( pd.Format )
         {
             case GDX_2D_FORMAT_ALPHA:
-                clear_alpha( pd, color );
+                clear_alpha( pd, color, size );
                 break;
 
             case GDX_2D_FORMAT_LUMINANCE_ALPHA:
-                clear_luminance_alpha( pd, color );
+                clear_luminance_alpha( pd, color, size );
                 break;
 
             case GDX_2D_FORMAT_RGB888:
-                clear_RGB888( pd, color );
+                clear_RGB888( pd, color, size );
                 break;
 
             case GDX_2D_FORMAT_RGBA8888:
-                clear_RGBA8888( pd, color );
+                clear_RGBA8888( pd, color, size );
                 break;
 
             case GDX_2D_FORMAT_RGB565:
-                clear_RGB565( pd, color );
+                clear_RGB565( pd, color, size );
                 break;
 
             case GDX_2D_FORMAT_RGBA4444:
-                clear_RGBA4444( pd, color );
+                clear_RGBA4444( pd, color, size );
                 break;
 
             default:
@@ -74,13 +74,13 @@ public partial class Gdx2DPixmap
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    internal void clear_alpha( gdx2d_pixmap pd, Color color )
+    internal void clear_alpha( Gdx2dPixmapStruct pd, Color color, uint size )
     {
 //        int pixels = pixmap->width * pixmap->height;
 //        memset((void*)pixmap->pixels, col, pixels);
     }
 
-    internal void clear_luminance_alpha( gdx2d_pixmap pd, Color color )
+    internal void clear_luminance_alpha( Gdx2dPixmapStruct pd, Color color, uint size )
     {
 //        int             pixels = pixmap->width * pixmap->height;
 //        unsigned short* ptr    = (unsigned short*)pixmap->pixels;
@@ -93,7 +93,7 @@ public partial class Gdx2DPixmap
 //        }
     }
 
-    internal void clear_RGB888( gdx2d_pixmap pd, Color color )
+    internal void clear_RGB888( Gdx2dPixmapStruct pd, Color color, uint size )
     {
 //        int            pixels = pixmap->width * pixmap->height;
 //        unsigned char* ptr    = (unsigned char*)pixmap->pixels;
@@ -112,7 +112,7 @@ public partial class Gdx2DPixmap
 //        }
     }
 
-    internal void clear_RGBA8888( gdx2d_pixmap pd, Color color )
+    internal void clear_RGBA8888( Gdx2dPixmapStruct pd, Color color, uint size )
     {
 //        int           pixels = pixmap->width * pixmap->height;
 //        uint32_t*     ptr    = (uint32_t*)pixmap->pixels;
@@ -127,9 +127,16 @@ public partial class Gdx2DPixmap
 //            *ptr = col;
 //            ptr++;
 //        }
+
+        var r = ( color.ToIntBits() & 0xff000000 ) >> 24;
+        var g = ( color.ToIntBits() & 0x00ff0000 ) >> 16;
+        var b = ( color.ToIntBits() & 0x0000ff00 ) >> 8;
+        var a = ( color.ToIntBits() & 0x000000ff );
+
+        var col = ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
     }
 
-    internal void clear_RGB565( gdx2d_pixmap pd, Color color )
+    internal void clear_RGB565( Gdx2dPixmapStruct pd, Color color, uint size )
     {
 //        int             pixels = pixmap->width * pixmap->height;
 //        unsigned short* ptr    = (unsigned short*)pixmap->pixels;
@@ -142,7 +149,7 @@ public partial class Gdx2DPixmap
 //        }
     }
 
-    internal unsafe void clear_RGBA4444( gdx2d_pixmap pd, Color color )
+    internal unsafe void clear_RGBA4444( Gdx2dPixmapStruct pd, Color color, uint size )
     {
 //        int             pixels = pixmap->width * pixmap->height;
 //        unsigned short* ptr    = (unsigned short*)pixmap->pixels;
@@ -154,10 +161,9 @@ public partial class Gdx2DPixmap
 //            ptr++;
 //        }
 /*
-        var pixels = pd.Width * pd.Height;
         var col    = ( byte ) color.ToIntBits();
         var offset = 0;
-        
+
         fixed ( byte* ptr = pd.Pixels )
         {
             for ( ; pixels > 0; pixels-- )

@@ -120,6 +120,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
 
         Gdx.GL.glViewport( 0, 0, width, height );
 
+        GLWindow.Listener.Update();
         GLWindow.Listener.Resize( Width, Height );
         GLWindow.Listener.Render();
     }

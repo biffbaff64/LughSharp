@@ -43,6 +43,11 @@ public interface IApplicationListener : IDisposable
     void Resize( int width, int height );
 
     /// <summary>
+    /// Called when the <see cref="IApplication"/> should update itself.
+    /// </summary>
+    void Update();
+
+    /// <summary>
     /// Called when the <see cref="IApplication"/> should draw itself.
     /// </summary>
     void Render();

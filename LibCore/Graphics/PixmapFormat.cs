@@ -73,8 +73,6 @@ public class PixmapFormat
     /// <exception cref="GdxRuntimeException"></exception>
     public static Pixmap.ColorFormat FromGdx2DPixmapFormat( int format )
     {
-        Logger.Debug( $"format: {format}" );
-
         return format switch
         {
             GDX_2D_FORMAT_ALPHA           => Pixmap.ColorFormat.Alpha,

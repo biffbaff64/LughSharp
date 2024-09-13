@@ -40,13 +40,9 @@ public class ApplicationAdapter : IApplicationListener
     }
 
     /// <summary>
-    /// Called when the <see cref="IApplication"/> is resized. This can
-    /// happen at any point during a non-paused state but will never happen
-    /// before a call to <see cref="IApplicationListener.Create"/>
+    /// Called when the <see cref="IApplication"/> should update itself.
     /// </summary>
-    /// <param name="width">The new width in pixels.</param>
-    /// <param name="height">The new height in pixels.</param>
-    public virtual void Resize( int width, int height )
+    public virtual void Update()
     {
     }
 
@@ -71,6 +67,17 @@ public class ApplicationAdapter : IApplicationListener
     /// usually when it regains focus.
     /// </summary>
     public virtual void Resume()
+    {
+    }
+
+    /// <summary>
+    /// Called when the <see cref="IApplication"/> is resized. This can
+    /// happen at any point during a non-paused state but will never happen
+    /// before a call to <see cref="IApplicationListener.Create"/>
+    /// </summary>
+    /// <param name="width">The new width in pixels.</param>
+    /// <param name="height">The new height in pixels.</param>
+    public virtual void Resize( int width, int height )
     {
     }
 

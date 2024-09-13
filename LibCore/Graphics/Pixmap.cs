@@ -77,15 +77,12 @@ public class Pixmap : IDisposable
     public Pixmap( int width, int height, Pixmap.ColorFormat? format )
     {
         Logger.CheckPoint();
-        Logger.Debug( $"width: {width}, height: {height}, format: {format}" );
 
         PixelData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
 
         this.Width  = ( int ) PixelData.Width;
         this.Height = ( int ) PixelData.Height;
         this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixelData.Format );
-
-        Logger.Debug( $"Width: {this.Width}, Height: {this.Height}, Format: {this.Format}" );
 
         SetColor( Graphics.Color.Red );
         FillWithCurrentColor();
@@ -100,7 +97,6 @@ public class Pixmap : IDisposable
     public Pixmap( byte[] encodedData, int offset, int len )
     {
         Logger.CheckPoint();
-        Logger.Debug( $"encodedData: {encodedData}, offset: {offset}, len: {len}" );
 
         try
         {
@@ -162,38 +158,21 @@ public class Pixmap : IDisposable
     public Pixmap( FileInfo file )
     {
         Logger.CheckPoint();
-        Logger.Debug( $"File: {file.FullName}" );
-        if ( File.Exists( file.FullName ) )
-        {
-            Logger.Debug( "Image file found" );
-        }
 
         try
         {
-            Logger.CheckPoint();
-
             var data = File.ReadAllBytes( file.FullName );
-
-            Logger.CheckPoint();
 
             PixelData = new Gdx2DPixmap( data, 0, data.Length, 0 );
 
-            Logger.CheckPoint();
-
-            Width  = ( int ) PixelData.Width;
-            Height = ( int ) PixelData.Height;
-            Logger.CheckPoint();
+            Width       = ( int ) PixelData.Width;
+            Height      = ( int ) PixelData.Height;
             this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixelData.Format );
-
-            Logger.CheckPoint();
-            Logger.Debug( $"{PixelData.Width} x {PixelData.Height}, {PixelData.Format}" );
         }
         catch ( Exception e )
         {
             throw new GdxRuntimeException( $"Couldn't load file:  {file.FullName}", e );
         }
-
-        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -275,6 +254,7 @@ public class Pixmap : IDisposable
     /// </summary>
     /// <param name="url">http url to download the image from.</param>
     /// <param name="responseListener">the listener to call once the image is available as a Pixmap</param>
+    /// <remarks>CURRENTLY NOT IMPLEMENTED!</remarks>
     public static void DownloadFromUrl( string url, IDownloadPixmapResponseListener responseListener )
     {
         throw new NotImplementedException();
@@ -488,7 +468,8 @@ public class Pixmap : IDisposable
     /// </summary>
     public Pixmap.ColorFormat? Format
     {
-        get => PixmapFormat.FromGdx2DPixmapFormat( _format != 0
+        get
+            => PixmapFormat.FromGdx2DPixmapFormat( _format != 0
                                                        ? _format
                                                        : PixmapFormat.GDX_2D_FORMAT_RGB888 );
         set => _format = PixmapFormat.ToGdx2DPixmapFormat( value );
