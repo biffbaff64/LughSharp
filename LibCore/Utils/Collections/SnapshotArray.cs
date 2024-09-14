@@ -127,11 +127,11 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     {
         Modified();
 
-        _snapshot = ToArray();
+        _snapshot = Items;
 
         _snapshotCount++;
 
-        return ToArray();
+        return Items;
     }
 
     /// <summary>
@@ -142,7 +142,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     {
         _snapshotCount = Math.Max( 0, _snapshotCount - 1 );
 
-        if ( ( _snapshot != ToArray() ) && ( _snapshotCount == 0 ) )
+        if ( ( _snapshot != Items ) && ( _snapshotCount == 0 ) )
         {
             // The backing array was copied, keep around the old array.
             _recycled = _snapshot;
@@ -163,14 +163,14 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     /// </summary>
     public void Modified()
     {
-        if ( _snapshot != ToArray() )
+        if ( ( _snapshot == null ) || ( _snapshot != Items ) )
         {
             return;
         }
 
         // Snapshot is in use, copy backing array to recycled
         // array or create new backing array.
-        if ( _recycled?.Length >= Size )
+        if ( ( _recycled != null ) && ( _recycled.Length >= Size ) )
         {
             // Copy the contents of items[] to recycled
             for ( var i = 0; i < Size; i++ )
@@ -178,7 +178,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
                 _recycled[ i ] = Items[ i ];
             }
 
-            // 'recycled' now references nothing 
+            // '_recycled' now references nothing 
             _recycled = null;
         }
         else
@@ -542,33 +542,13 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     /// <inheritdoc />
     protected override T[] Resize( int newSize )
     {
-        var newItems = ( T[] ) Array.CreateInstance( Items.GetType(), newSize );
-
+        var newItems = new T[ newSize ];
+        
         Array.Copy( Items, 0, newItems, 0, Math.Min( Size, newItems.Length ) );
 
         Items = newItems;
 
         return newItems;
-    }
-
-    /// <inheritdoc />
-    public override T[] ToArray()
-    {
-        var memberInfo = Items.GetType().BaseType;
-
-        return memberInfo != null
-                   ? ToArray( memberInfo )
-                   : ( T[] ) Array.CreateInstance( Items.GetType(), Size );
-    }
-
-    /// <inheritdoc />
-    public override T[] ToArray( Type type )
-    {
-        var result = ( T[] ) Array.CreateInstance( type, Size );
-
-        Array.Copy( Items, 0, result, 0, Size );
-
-        return result;
     }
 
     /// <inheritdoc />

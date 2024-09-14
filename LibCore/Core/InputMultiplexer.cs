@@ -39,7 +39,6 @@ public class InputMultiplexer : IInputProcessor
     /// </summary>
     public InputMultiplexer()
     {
-        Processors.Clear();
     }
 
     /// <summary>

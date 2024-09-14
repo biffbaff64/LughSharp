@@ -61,6 +61,8 @@ public class Texture : GLTexture
     public override int  Depth     => 0;
     public override bool IsManaged => TextureData is { IsManaged: true };
 
+    // ------------------------------------------------------------------------
+
     public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
 
     // ------------------------------------------------------------------------
