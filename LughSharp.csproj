@@ -153,6 +153,14 @@
       <Content Include="lib\gdx2d.dll">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="Assets\lsans-15.fnt" />
+      <Content Include="Assets\lsans-15.fnt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Assets\lsans-15.png" />
+      <Content Include="Assets\lsans-15.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

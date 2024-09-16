@@ -74,7 +74,7 @@ public class Pixmap : IDisposable
     /// <param name="width">The width in pixels.</param>
     /// <param name="height">The height in pixels.</param>
     /// <param name="format">The <see cref="ColorFormat"/></param>
-    public Pixmap( int width, int height, Pixmap.ColorFormat? format )
+    public Pixmap( int width, int height, Pixmap.ColorFormat format )
     {
         Logger.CheckPoint();
 
@@ -233,7 +233,7 @@ public class Pixmap : IDisposable
     /// machine dependent order.
     /// </para>
     /// </summary>
-    public ByteBuffer? Pixels
+    public ByteBuffer Pixels
     {
         get
         {
@@ -242,7 +242,7 @@ public class Pixmap : IDisposable
                 throw new GdxRuntimeException( "Pixmap already disposed" );
             }
 
-            return PixelData.PixmapBuffer;
+            return PixelData.PixmapBuffer ?? throw new GdxRuntimeException( "Pixmap buffer is null" );
         }
 
         set => PixelData.PixmapBuffer = value!;

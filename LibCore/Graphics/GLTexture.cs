@@ -450,7 +450,7 @@ public abstract class GLTexture : IDisposable, IManageable
                                  border: 0,
                                  pixmap.GLFormat,
                                  pixmap.GLType,
-                                 pixels!.BackingArray() );
+                                 pixels.BackingArray() );
 
             pixmap.Pixels = pixels;
         }

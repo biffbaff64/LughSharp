@@ -51,22 +51,33 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class BitmapFont
 {
-    #region constants
+    private const string REGEX_PATTERN      = ".*id=(\\d+)";
+    private const string DEFAULT_FONT       = "lsans-15.fnt";
+    private const string DEFAULT_FONT_IMAGE = "lsans-15.png";
+    private const int    LOG2_PAGE_SIZE     = 9;
+    private const int    PAGE_SIZE          = 1 << LOG2_PAGE_SIZE;
+    private const int    PAGES              = 0x10000 / PAGE_SIZE;
 
-    private const string REGEX_PATTERN  = ".*id=(\\d+)";
-    private const string FONT_NAME      = "Assets/arial-15.fnt";
-    private const int    LOG2_PAGE_SIZE = 9;
-    private const int    PAGE_SIZE      = 1 << LOG2_PAGE_SIZE;
-    private const int    PAGES          = 0x10000 / PAGE_SIZE;
-
-    #endregion constants
+    // ------------------------------------------------------------------------
 
     public bool Flipped     { get; set; }
     public bool OwnsTexture { get; set; }
 
-//    private readonly BitmapFontCache       Cache;
-//    private readonly BitmapFontData        Data;
-    private readonly PathTypes              _fileType;
+    /// <summary>
+    /// The BitmapFontCache used by this font, for rendering to a sprite batch.
+    /// This can be used, for example, to manipulate glyph colors within a
+    /// specific index.
+    /// </summary>
+    public BitmapFontCache Cache { get; set; }
+
+    /// <summary>
+    /// The underlying <see cref="BitmapFontData"/> for this BitmapFont.
+    /// </summary>
+    public BitmapFontData Data { get; set; }
+
+    // ------------------------------------------------------------------------
+
+    private readonly PathTypes             _fileType;
     private readonly List< TextureRegion > _regions;
 
     private bool _integer;
@@ -79,10 +90,10 @@ public class BitmapFont
     /// a bitmap font yourself.
     /// </summary>
     public BitmapFont()
-        : this( Gdx.Files.Internal( FONT_NAME ).File, Gdx.Files.Internal( FONT_NAME ).File, false )
+        : this( Gdx.Files.Internal( DEFAULT_FONT ).File, Gdx.Files.Internal( DEFAULT_FONT_IMAGE ).File, false )
     {
         Logger.CheckPoint();
-        
+
         _fileType = PathTypes.Internal;
     }
 
@@ -99,10 +110,10 @@ public class BitmapFont
     /// the upper left corner.
     /// </param>
     public BitmapFont( bool flip )
-        : this( Gdx.Files.Internal( FONT_NAME ).File, Gdx.Files.Internal( FONT_NAME ).File, flip )
+        : this( Gdx.Files.Internal( DEFAULT_FONT ).File, Gdx.Files.Internal( DEFAULT_FONT ).File, flip )
     {
         Logger.CheckPoint();
-        
+
         _fileType = PathTypes.Internal;
     }
 
@@ -126,7 +137,7 @@ public class BitmapFont
         : this( new BitmapFontData( fontFile, flip ), region, true )
     {
         Logger.CheckPoint();
-        
+
         _fileType = PathTypes.Local;
     }
 
@@ -143,7 +154,7 @@ public class BitmapFont
         : this( new BitmapFontData( fontFile, flip ), ( TextureRegion? ) null, true )
     {
         Logger.CheckPoint();
-        
+
         _fileType = PathTypes.Local;
     }
 
@@ -164,9 +175,9 @@ public class BitmapFont
                 integer )
     {
         Logger.CheckPoint();
-        
+
         OwnsTexture = true;
-        _fileType = PathTypes.Local;
+        _fileType   = PathTypes.Local;
     }
 
     /// <summary>
@@ -191,12 +202,10 @@ public class BitmapFont
     /// artifacts.
     /// </param>
     public BitmapFont( BitmapFontData data, TextureRegion? region, bool integer )
-        : this( data,
-                region != null ? ListExtensions.New( region ) : null,
-                integer )
+        : this( data, region != null ? ListExtensions.New( region ) : null, integer )
     {
         Logger.CheckPoint();
-        
+
         _fileType = PathTypes.Local;
     }
 
@@ -214,9 +223,9 @@ public class BitmapFont
     public BitmapFont( BitmapFontData data, List< TextureRegion >? pageRegions, bool integer )
     {
         Logger.CheckPoint();
-        
+
         Flipped             = data.Flipped;
-        Data               = data;
+        Data                = data;
         UseIntegerPositions = integer;
         _fileType           = PathTypes.Local;
 
@@ -266,7 +275,7 @@ public class BitmapFont
         get => _integer;
         set
         {
-            _integer                   = value;
+            _integer                  = value;
             Cache.UseIntegerPositions = value;
         }
     }
@@ -537,18 +546,6 @@ public class BitmapFont
     }
 
     /// <summary>
-    /// The BitmapFontCache used by this font, for rendering to a sprite batch.
-    /// This can be used, for example, to manipulate glyph colors within a
-    /// specific index.
-    /// </summary>
-    public BitmapFontCache Cache { get; set; }
-
-    /// <summary>
-    /// The underlying <see cref="BitmapFontData"/> for this BitmapFont.
-    /// </summary>
-    public BitmapFontData Data { get; set; }
-
-    /// <summary>
     /// Creates a new BitmapFontCache for this font. Using this method allows the
     /// font to provide the BitmapFontCache implementation to customize rendering.
     /// </summary>
@@ -632,9 +629,13 @@ public class BitmapFont
 
         public int GetKerning( char ch )
         {
-            var page = Kerning?[ ch >>> LOG2_PAGE_SIZE ];
+            if ( Kerning != null )
+            {
+                var page = Kerning[ ch >>> LOG2_PAGE_SIZE ];
+                return page != null ? page[ ch & ( PAGE_SIZE - 1 ) ] : 0;
+            }
 
-            return page != null ? page[ ch & ( PAGE_SIZE - 1 ) ] : 0;
+            return 0;
         }
 
         public void SetKerning( int ch, int value )
@@ -883,7 +884,8 @@ public class BitmapFont
 
                     if ( matches.Count > 0 )
                     {
-                        var id = matches[ 0 ];
+                        rx = new Regex( "\\d+" );
+                        var id = rx.Matches( matches[ 0 ].Value )[ 0 ];
 
                         try
                         {
@@ -909,8 +911,7 @@ public class BitmapFont
                         throw new GdxRuntimeException( "Missing: file" );
                     }
 
-                    //TODO: This line needs converting, but rewrite all this. Does it NEED regex?
-//                    imagePaths[p] = fontFile.parent().child(fileName).path().replaceAll("\\\\", "/");
+                    ImagePaths[ p ] = FontFile.FullName.Replace( @"\\\\", "/" );
                 }
 
                 Descent = 0;
@@ -923,6 +924,8 @@ public class BitmapFont
                     {
                         break; // EOF
                     }
+
+                    Logger.Debug( line! );
 
                     if ( line.StartsWith( "kernings " ) )
                     {
@@ -1031,6 +1034,8 @@ public class BitmapFont
                         break;
                     }
 
+                    Logger.Debug( line );
+
                     var tokens = new StringTokenizer( line, " =" );
 
                     tokens.NextToken();
@@ -1051,6 +1056,7 @@ public class BitmapFont
                     }
 
                     var glyph = GetGlyph( ( char ) first );
+
                     tokens.NextToken();
 
                     var amount = int.Parse( tokens.NextToken() );
@@ -1058,6 +1064,8 @@ public class BitmapFont
                     // Kernings may exist for glyph pairs not contained in the font.
                     glyph?.SetKerning( second, amount );
                 }
+
+                Logger.CheckPoint();
 
                 var hasMetricsOverride = false;
 
@@ -1463,8 +1471,7 @@ public class BitmapFont
                 {
                     start++;
                 }
-            }
-            while ( start < end );
+            } while ( start < end );
 
             if ( lastGlyph != null )
             {

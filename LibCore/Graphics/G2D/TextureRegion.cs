@@ -307,12 +307,12 @@ public class TextureRegion
         var texWidth  = Texture.Width;
         var texHeight = Texture.Height;
 
-        RegionWidth  = ( int ) Math.Round( Math.Abs( u2 - u ) * texWidth );
-        RegionHeight = ( int ) Math.Round( Math.Abs( v2 - v ) * texHeight );
+        this.RegionWidth  = ( int ) Math.Round( Math.Abs( u2 - u ) * texWidth );
+        this.RegionHeight = ( int ) Math.Round( Math.Abs( v2 - v ) * texHeight );
 
         // For a 1x1 region, adjust UVs toward pixel center to avoid filtering
         // artifacts on AMD GPUs when drawing very stretched.
-        if ( ( RegionWidth == 1 ) && ( RegionHeight == 1 ) )
+        if ( ( this.RegionWidth == 1 ) && ( this.RegionHeight == 1 ) )
         {
             var adjustX = 0.25f / texWidth;
 
@@ -325,10 +325,10 @@ public class TextureRegion
             v2 -= adjustY;
         }
 
-        U  = u;
-        V  = v;
-        U2 = u2;
-        V2 = v2;
+        this.U  = u;
+        this.V  = v;
+        this.U2 = u2;
+        this.V2 = v2;
     }
 
     /// <summary>

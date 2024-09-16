@@ -63,7 +63,7 @@ public partial class Gdx2DPixmap : IDisposable
 
     #region properties
 
-    public ByteBuffer?       PixmapBuffer { get; set; }
+    public ByteBuffer        PixmapBuffer { get; set; }
     public Gdx2dPixmapStruct PixmapDef    { get; set; }
     public uint              Width        { get; set; }
     public uint              Height       { get; set; }
@@ -109,8 +109,9 @@ public partial class Gdx2DPixmap : IDisposable
     /// <param name="len"></param>
     /// <param name="requestedFormat"></param>
     public Gdx2DPixmap( ByteBuffer encodedData, int offset, int len, int requestedFormat )
+        : this( encodedData.BackingArray(), offset, len, requestedFormat )
     {
-        //TODO:
+        Logger.CheckPoint();
     }
 
     /// <summary>

@@ -1045,6 +1045,19 @@ EXTENSIONS/BOX2D
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+EXTENSIONS/GDX-FREETYPE
+-----------------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - IP   - IP   - FreeType
+    - IP   - IP   - FreeTypeFontGenerator
+    - IP   - IP   - FreeTypeFontGeneratorLoader
+    - IP   - IP   - FreeTypeFontLoader
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 EXTENSIONS/GDX-TOOLS
 --------------------
 
