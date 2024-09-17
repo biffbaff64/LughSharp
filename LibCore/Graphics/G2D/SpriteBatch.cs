@@ -603,11 +603,13 @@ public class SpriteBatch : IBatch
             _first = false;
         }
 
+        var vertices = this.Vertices;
+        
         if ( texture != LastTexture )
         {
             SwitchTexture( texture );
         }
-        else if ( Idx == Vertices.Length )
+        else if ( Idx == vertices.Length )
         {
             Flush();
         }
@@ -620,29 +622,29 @@ public class SpriteBatch : IBatch
         const float U2 = 1;
         const float V2 = 0;
 
-        Vertices[ this.Idx ]     = loc.X;
-        Vertices[ this.Idx + 1 ] = loc.Y;
-        Vertices[ this.Idx + 2 ] = this.PackedColor;
-        Vertices[ this.Idx + 3 ] = U;
-        Vertices[ this.Idx + 4 ] = V;
+        vertices[ this.Idx ]     = loc.X;
+        vertices[ this.Idx + 1 ] = loc.Y;
+        vertices[ this.Idx + 2 ] = this.PackedColor;
+        vertices[ this.Idx + 3 ] = U;
+        vertices[ this.Idx + 4 ] = V;
 
-        Vertices[ this.Idx + 5 ] = loc.X;
-        Vertices[ this.Idx + 6 ] = fy2;
-        Vertices[ this.Idx + 7 ] = this.PackedColor;
-        Vertices[ this.Idx + 8 ] = U;
-        Vertices[ this.Idx + 9 ] = V2;
+        vertices[ this.Idx + 5 ] = loc.X;
+        vertices[ this.Idx + 6 ] = fy2;
+        vertices[ this.Idx + 7 ] = this.PackedColor;
+        vertices[ this.Idx + 8 ] = U;
+        vertices[ this.Idx + 9 ] = V2;
 
-        Vertices[ this.Idx + 10 ] = fx2;
-        Vertices[ this.Idx + 11 ] = fy2;
-        Vertices[ this.Idx + 12 ] = this.PackedColor;
-        Vertices[ this.Idx + 13 ] = U2;
-        Vertices[ this.Idx + 14 ] = V2;
+        vertices[ this.Idx + 10 ] = fx2;
+        vertices[ this.Idx + 11 ] = fy2;
+        vertices[ this.Idx + 12 ] = this.PackedColor;
+        vertices[ this.Idx + 13 ] = U2;
+        vertices[ this.Idx + 14 ] = V2;
 
-        Vertices[ this.Idx + 15 ] = fx2;
-        Vertices[ this.Idx + 16 ] = loc.Y;
-        Vertices[ this.Idx + 17 ] = this.PackedColor;
-        Vertices[ this.Idx + 18 ] = U2;
-        Vertices[ this.Idx + 19 ] = V;
+        vertices[ this.Idx + 15 ] = fx2;
+        vertices[ this.Idx + 16 ] = loc.Y;
+        vertices[ this.Idx + 17 ] = this.PackedColor;
+        vertices[ this.Idx + 18 ] = U2;
+        vertices[ this.Idx + 19 ] = V;
 
         this.Idx += 20;
     }
@@ -659,7 +661,8 @@ public class SpriteBatch : IBatch
             return;
         }
 
-        var verticesLength    = Vertices.Length;
+        var vertices          = this.Vertices;
+        var verticesLength    = vertices.Length;
         var remainingVertices = verticesLength;
 
         if ( texture != LastTexture )
@@ -679,7 +682,7 @@ public class SpriteBatch : IBatch
 
         var copyCount = Math.Min( remainingVertices, count );
 
-        Array.Copy( spriteVertices, offset, Vertices, Idx, copyCount );
+        Array.Copy( spriteVertices, offset, vertices, Idx, copyCount );
 
         Idx   += copyCount;
         count -= copyCount;
@@ -692,7 +695,7 @@ public class SpriteBatch : IBatch
 
             copyCount = Math.Min( verticesLength, count );
 
-            Array.Copy( spriteVertices, offset, Vertices, 0, copyCount );
+            Array.Copy( spriteVertices, offset, vertices, 0, copyCount );
 
             Idx   += copyCount;
             count -= copyCount;
@@ -726,13 +729,14 @@ public class SpriteBatch : IBatch
             return;
         }
 
-        var texture = region.Texture;
+        var vertices = this.Vertices;
+        var texture  = region.Texture;
 
         if ( texture != LastTexture )
         {
             SwitchTexture( texture );
         }
-        else if ( Idx == Vertices.Length )
+        else if ( Idx == vertices.Length )
         {
             Flush();
         }
@@ -744,29 +748,29 @@ public class SpriteBatch : IBatch
         var u2  = region.U2;
         var v2  = region.V;
 
-        Vertices[ Idx ]     = x;
-        Vertices[ Idx + 1 ] = y;
-        Vertices[ Idx + 2 ] = PackedColor;
-        Vertices[ Idx + 3 ] = u;
-        Vertices[ Idx + 4 ] = v;
+        vertices[ Idx ]     = x;
+        vertices[ Idx + 1 ] = y;
+        vertices[ Idx + 2 ] = PackedColor;
+        vertices[ Idx + 3 ] = u;
+        vertices[ Idx + 4 ] = v;
 
-        Vertices[ Idx + 5 ] = x;
-        Vertices[ Idx + 6 ] = fy2;
-        Vertices[ Idx + 7 ] = PackedColor;
-        Vertices[ Idx + 8 ] = u;
-        Vertices[ Idx + 9 ] = v2;
+        vertices[ Idx + 5 ] = x;
+        vertices[ Idx + 6 ] = fy2;
+        vertices[ Idx + 7 ] = PackedColor;
+        vertices[ Idx + 8 ] = u;
+        vertices[ Idx + 9 ] = v2;
 
-        Vertices[ Idx + 10 ] = fx2;
-        Vertices[ Idx + 11 ] = fy2;
-        Vertices[ Idx + 12 ] = PackedColor;
-        Vertices[ Idx + 13 ] = u2;
-        Vertices[ Idx + 14 ] = v2;
+        vertices[ Idx + 10 ] = fx2;
+        vertices[ Idx + 11 ] = fy2;
+        vertices[ Idx + 12 ] = PackedColor;
+        vertices[ Idx + 13 ] = u2;
+        vertices[ Idx + 14 ] = v2;
 
-        Vertices[ Idx + 15 ] = fx2;
-        Vertices[ Idx + 16 ] = y;
-        Vertices[ Idx + 17 ] = PackedColor;
-        Vertices[ Idx + 18 ] = u2;
-        Vertices[ Idx + 19 ] = v;
+        vertices[ Idx + 15 ] = fx2;
+        vertices[ Idx + 16 ] = y;
+        vertices[ Idx + 17 ] = PackedColor;
+        vertices[ Idx + 18 ] = u2;
+        vertices[ Idx + 19 ] = v;
 
         Idx += 20;
     }
@@ -787,13 +791,14 @@ public class SpriteBatch : IBatch
             return;
         }
 
-        var texture = textureRegion.Texture;
+        var vertices = this.Vertices;
+        var texture  = textureRegion.Texture;
 
         if ( texture != LastTexture )
         {
             SwitchTexture( texture );
         }
-        else if ( Idx == Vertices.Length )
+        else if ( Idx == vertices.Length )
         {
             Flush();
         }
@@ -881,29 +886,29 @@ public class SpriteBatch : IBatch
         var u2 = textureRegion.U2;
         var v2 = textureRegion.V;
 
-        Vertices[ Idx ]     = x1;
-        Vertices[ Idx + 1 ] = y1;
-        Vertices[ Idx + 2 ] = PackedColor;
-        Vertices[ Idx + 3 ] = u;
-        Vertices[ Idx + 4 ] = v;
+        vertices[ Idx ]     = x1;
+        vertices[ Idx + 1 ] = y1;
+        vertices[ Idx + 2 ] = PackedColor;
+        vertices[ Idx + 3 ] = u;
+        vertices[ Idx + 4 ] = v;
 
-        Vertices[ Idx + 5 ] = x2;
-        Vertices[ Idx + 6 ] = y2;
-        Vertices[ Idx + 7 ] = PackedColor;
-        Vertices[ Idx + 8 ] = u;
-        Vertices[ Idx + 9 ] = v2;
+        vertices[ Idx + 5 ] = x2;
+        vertices[ Idx + 6 ] = y2;
+        vertices[ Idx + 7 ] = PackedColor;
+        vertices[ Idx + 8 ] = u;
+        vertices[ Idx + 9 ] = v2;
 
-        Vertices[ Idx + 10 ] = x3;
-        Vertices[ Idx + 11 ] = y3;
-        Vertices[ Idx + 12 ] = PackedColor;
-        Vertices[ Idx + 13 ] = u2;
-        Vertices[ Idx + 14 ] = v2;
+        vertices[ Idx + 10 ] = x3;
+        vertices[ Idx + 11 ] = y3;
+        vertices[ Idx + 12 ] = PackedColor;
+        vertices[ Idx + 13 ] = u2;
+        vertices[ Idx + 14 ] = v2;
 
-        Vertices[ Idx + 15 ] = x4;
-        Vertices[ Idx + 16 ] = y4;
-        Vertices[ Idx + 17 ] = PackedColor;
-        Vertices[ Idx + 18 ] = u2;
-        Vertices[ Idx + 19 ] = v;
+        vertices[ Idx + 15 ] = x4;
+        vertices[ Idx + 16 ] = y4;
+        vertices[ Idx + 17 ] = PackedColor;
+        vertices[ Idx + 18 ] = u2;
+        vertices[ Idx + 19 ] = v;
 
         Idx += 20;
     }
@@ -925,13 +930,14 @@ public class SpriteBatch : IBatch
             return;
         }
 
-        var texture = textureRegion.Texture;
+        var vertices = this.Vertices;
+        var texture  = textureRegion.Texture;
 
         if ( texture != LastTexture )
         {
             SwitchTexture( texture );
         }
-        else if ( Idx == Vertices.Length )
+        else if ( Idx == vertices.Length )
         {
             Flush();
         }
@@ -1039,29 +1045,29 @@ public class SpriteBatch : IBatch
             v4 = textureRegion.V2;
         }
 
-        Vertices[ Idx ]     = x1;
-        Vertices[ Idx + 1 ] = y1;
-        Vertices[ Idx + 2 ] = PackedColor;
-        Vertices[ Idx + 3 ] = u1;
-        Vertices[ Idx + 4 ] = v1;
+        vertices[ Idx ]     = x1;
+        vertices[ Idx + 1 ] = y1;
+        vertices[ Idx + 2 ] = PackedColor;
+        vertices[ Idx + 3 ] = u1;
+        vertices[ Idx + 4 ] = v1;
 
-        Vertices[ Idx + 5 ] = x2;
-        Vertices[ Idx + 6 ] = y2;
-        Vertices[ Idx + 7 ] = PackedColor;
-        Vertices[ Idx + 8 ] = u2;
-        Vertices[ Idx + 9 ] = v2;
+        vertices[ Idx + 5 ] = x2;
+        vertices[ Idx + 6 ] = y2;
+        vertices[ Idx + 7 ] = PackedColor;
+        vertices[ Idx + 8 ] = u2;
+        vertices[ Idx + 9 ] = v2;
 
-        Vertices[ Idx + 10 ] = x3;
-        Vertices[ Idx + 11 ] = y3;
-        Vertices[ Idx + 12 ] = PackedColor;
-        Vertices[ Idx + 13 ] = u3;
-        Vertices[ Idx + 14 ] = v3;
+        vertices[ Idx + 10 ] = x3;
+        vertices[ Idx + 11 ] = y3;
+        vertices[ Idx + 12 ] = PackedColor;
+        vertices[ Idx + 13 ] = u3;
+        vertices[ Idx + 14 ] = v3;
 
-        Vertices[ Idx + 15 ] = x4;
-        Vertices[ Idx + 16 ] = y4;
-        Vertices[ Idx + 17 ] = PackedColor;
-        Vertices[ Idx + 18 ] = u4;
-        Vertices[ Idx + 19 ] = v4;
+        vertices[ Idx + 15 ] = x4;
+        vertices[ Idx + 16 ] = y4;
+        vertices[ Idx + 17 ] = PackedColor;
+        vertices[ Idx + 18 ] = u4;
+        vertices[ Idx + 19 ] = v4;
 
         Idx += 20;
     }
@@ -1078,11 +1084,13 @@ public class SpriteBatch : IBatch
             return;
         }
 
+        var vertices = this.Vertices;
+        
         if ( region.Texture != LastTexture )
         {
             SwitchTexture( region.Texture );
         }
-        else if ( Idx == Vertices.Length )
+        else if ( Idx == vertices.Length )
         {
             Flush();
         }
@@ -1102,29 +1110,29 @@ public class SpriteBatch : IBatch
         var u2 = region.U2;
         var v2 = region.V;
 
-        Vertices[ Idx ]     = x1;
-        Vertices[ Idx + 1 ] = y1;
-        Vertices[ Idx + 2 ] = PackedColor;
-        Vertices[ Idx + 3 ] = u;
-        Vertices[ Idx + 4 ] = v;
+        vertices[ Idx ]     = x1;
+        vertices[ Idx + 1 ] = y1;
+        vertices[ Idx + 2 ] = PackedColor;
+        vertices[ Idx + 3 ] = u;
+        vertices[ Idx + 4 ] = v;
 
-        Vertices[ Idx + 5 ] = x2;
-        Vertices[ Idx + 6 ] = y2;
-        Vertices[ Idx + 7 ] = PackedColor;
-        Vertices[ Idx + 8 ] = u;
-        Vertices[ Idx + 9 ] = v2;
+        vertices[ Idx + 5 ] = x2;
+        vertices[ Idx + 6 ] = y2;
+        vertices[ Idx + 7 ] = PackedColor;
+        vertices[ Idx + 8 ] = u;
+        vertices[ Idx + 9 ] = v2;
 
-        Vertices[ Idx + 10 ] = x3;
-        Vertices[ Idx + 11 ] = y3;
-        Vertices[ Idx + 12 ] = PackedColor;
-        Vertices[ Idx + 13 ] = u2;
-        Vertices[ Idx + 14 ] = v2;
+        vertices[ Idx + 10 ] = x3;
+        vertices[ Idx + 11 ] = y3;
+        vertices[ Idx + 12 ] = PackedColor;
+        vertices[ Idx + 13 ] = u2;
+        vertices[ Idx + 14 ] = v2;
 
-        Vertices[ Idx + 15 ] = x4;
-        Vertices[ Idx + 16 ] = y4;
-        Vertices[ Idx + 17 ] = PackedColor;
-        Vertices[ Idx + 18 ] = u2;
-        Vertices[ Idx + 19 ] = v;
+        vertices[ Idx + 15 ] = x4;
+        vertices[ Idx + 16 ] = y4;
+        vertices[ Idx + 17 ] = PackedColor;
+        vertices[ Idx + 18 ] = u2;
+        vertices[ Idx + 19 ] = v;
 
         Idx += 20;
     }

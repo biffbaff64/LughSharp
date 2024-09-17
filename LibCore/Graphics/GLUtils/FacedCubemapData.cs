@@ -135,7 +135,7 @@ public class FacedCubemapData : ICubemapData
 
                 if ( _data[ i ]!.Format != pixmap.Format )
                 {
-                    var tmp = new Pixmap( pixmap.Width, pixmap.Height, _data[ i ]?.Format );
+                    var tmp = new Pixmap( pixmap.Width, pixmap.Height, _data[ i ]!.Format );
 
                     tmp.Blending = Pixmap.BlendTypes.None;
                     tmp.DrawPixmap( pixmap, 0, 0, 0, 0, pixmap.Width, pixmap.Height );
@@ -159,7 +159,7 @@ public class FacedCubemapData : ICubemapData
                                      0,
                                      pixmap.GLFormat,
                                      pixmap.GLType,
-                                     pixmap.Pixels!.BackingArray() );
+                                     pixmap.Pixels.BackingArray() );
 
                 if ( disposePixmap )
                 {
@@ -179,26 +179,26 @@ public class FacedCubemapData : ICubemapData
             int tmp;
             var width = 0;
 
-            if ( _data[ Cubemap.CubemapSide.PositiveZ.Index ] != null
-              && ( tmp = _data[ Cubemap.CubemapSide.PositiveZ.Index ]!.Width ) > width )
+            if ( ( _data[ Cubemap.CubemapSide.PositiveZ.Index ] != null )
+              && ( ( tmp = _data[ Cubemap.CubemapSide.PositiveZ.Index ]!.Width ) > width ) )
             {
                 width = tmp;
             }
 
-            if ( _data[ Cubemap.CubemapSide.NegativeZ.Index ] != null
-              && ( tmp = _data[ Cubemap.CubemapSide.NegativeZ.Index ]!.Width ) > width )
+            if ( ( _data[ Cubemap.CubemapSide.NegativeZ.Index ] != null )
+              && ( ( tmp = _data[ Cubemap.CubemapSide.NegativeZ.Index ]!.Width ) > width ) )
             {
                 width = tmp;
             }
 
-            if ( _data[ Cubemap.CubemapSide.PositiveY.Index ] != null
-              && ( tmp = _data[ Cubemap.CubemapSide.PositiveY.Index ]!.Width ) > width )
+            if ( ( _data[ Cubemap.CubemapSide.PositiveY.Index ] != null )
+              && ( ( tmp = _data[ Cubemap.CubemapSide.PositiveY.Index ]!.Width ) > width ) )
             {
                 width = tmp;
             }
 
-            if ( _data[ Cubemap.CubemapSide.NegativeY.Index ] != null
-              && ( tmp = _data[ Cubemap.CubemapSide.NegativeY.Index ]!.Width ) > width )
+            if ( ( _data[ Cubemap.CubemapSide.NegativeY.Index ] != null )
+              && ( ( tmp = _data[ Cubemap.CubemapSide.NegativeY.Index ]!.Width ) > width ) )
             {
                 width = tmp;
             }
@@ -217,26 +217,26 @@ public class FacedCubemapData : ICubemapData
             int tmp;
             var height = 0;
             
-            if ( _data[ Cubemap.CubemapSide.PositiveZ.Index ] != null
-              && ( tmp = _data[ Cubemap.CubemapSide.PositiveZ.Index ]!.Height ) > height )
+            if ( ( _data[ Cubemap.CubemapSide.PositiveZ.Index ] != null )
+              && ( ( tmp = _data[ Cubemap.CubemapSide.PositiveZ.Index ]!.Height ) > height ) )
             {
                 height = tmp;
             }
 
-            if ( _data[ Cubemap.CubemapSide.NegativeZ.Index ] != null
-              && ( tmp = _data[ Cubemap.CubemapSide.NegativeZ.Index ]!.Height ) > height )
+            if ( ( _data[ Cubemap.CubemapSide.NegativeZ.Index ] != null )
+              && ( ( tmp = _data[ Cubemap.CubemapSide.NegativeZ.Index ]!.Height ) > height ) )
             {
                 height = tmp;
             }
 
-            if ( _data[ Cubemap.CubemapSide.PositiveX.Index ] != null
-              && ( tmp = _data[ Cubemap.CubemapSide.PositiveX.Index ]!.Height ) > height )
+            if ( ( _data[ Cubemap.CubemapSide.PositiveX.Index ] != null )
+              && ( ( tmp = _data[ Cubemap.CubemapSide.PositiveX.Index ]!.Height ) > height ) )
             {
                 height = tmp;
             }
 
-            if ( _data[ Cubemap.CubemapSide.NegativeX.Index ] != null
-              && ( tmp = _data[ Cubemap.CubemapSide.NegativeX.Index ]!.Height ) > height )
+            if ( ( _data[ Cubemap.CubemapSide.NegativeX.Index ] != null )
+              && ( ( tmp = _data[ Cubemap.CubemapSide.NegativeX.Index ]!.Height ) > height ) )
             {
                 height = tmp;
             }

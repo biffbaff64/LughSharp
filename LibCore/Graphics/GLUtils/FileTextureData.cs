@@ -51,7 +51,7 @@ public class FileTextureData : ITextureData
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public FileTextureData( FileInfo file, Pixmap preloadedPixmap, Pixmap.ColorFormat? format, bool useMipMaps )
+    public FileTextureData( FileInfo file, Pixmap preloadedPixmap, Pixmap.ColorFormat format, bool useMipMaps )
     {
         Logger.CheckPoint();
 
@@ -59,14 +59,9 @@ public class FileTextureData : ITextureData
         this._pixmap    = preloadedPixmap;
         this.Format     = format;
         this.UseMipMaps = useMipMaps;
-
-        if ( _pixmap != null )
-        {
-            this.Width  = _pixmap.Width;
-            this.Height = _pixmap.Height;
-
-            this.Format ??= _pixmap.Format;
-        }
+        this.Width      = _pixmap.Width;
+        this.Height     = _pixmap.Height;
+        this.Format     = _pixmap.Format;
     }
 
     /// <summary>
@@ -87,8 +82,7 @@ public class FileTextureData : ITextureData
 
             this.Width  = _pixmap.Width;
             this.Height = _pixmap.Height;
-
-            Format ??= _pixmap.Format;
+            this.Format = _pixmap.Format;
         }
 
         IsPrepared = true;
@@ -138,14 +132,13 @@ public class FileTextureData : ITextureData
     /// </summary>
     public virtual void ConsumeCustomData( int target )
     {
-        throw new GdxRuntimeException
-            ( "This TextureData implementation does not upload data itself" );
+        throw new GdxRuntimeException( "This TextureData implementation does not upload data itself" );
     }
 
     /// <summary>
     /// Returns the <see cref="Pixmap.ColorFormat"/> of the pixel data.
     /// </summary>
-    public Pixmap.ColorFormat? Format { get; set; }
+    public Pixmap.ColorFormat Format { get; set; }
 
     public virtual bool IsManaged
     {

@@ -504,7 +504,7 @@ public class KtxTextureData : ITextureData, ICubemapData
 
                                 unsafe
                                 {
-                                    fixed ( void* ptr = &pixmap.Pixels!.BackingArray()[ 0 ] )
+                                    fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
                                     {
                                         Gdx.GL.glTexImage2D( target + face,
                                                              level,
@@ -614,7 +614,7 @@ public class KtxTextureData : ITextureData, ICubemapData
     public int Height { get; set; }
 
     /// <returns> the <see cref="Pixmap.ColorFormat"/> of the pixel data </returns>
-    public Pixmap.ColorFormat? Format { get; set; } = Pixmap.ColorFormat.Alpha;
+    public Pixmap.ColorFormat Format { get; set; } = Pixmap.ColorFormat.Alpha;
 
     /// <returns> whether to generate mipmaps or not. </returns>
     public bool UseMipMaps { get; set; }

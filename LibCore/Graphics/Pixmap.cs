@@ -245,7 +245,7 @@ public class Pixmap : IDisposable
             return PixelData.PixmapBuffer ?? throw new GdxRuntimeException( "Pixmap buffer is null" );
         }
 
-        set => PixelData.PixmapBuffer = value!;
+        set => PixelData.PixmapBuffer = value;
     }
 
     /// <summary>
@@ -466,7 +466,7 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Returns the <see cref="ColorFormat"/> of this Pixmap.
     /// </summary>
-    public Pixmap.ColorFormat? Format
+    public Pixmap.ColorFormat Format
     {
         get
             => PixmapFormat.FromGdx2DPixmapFormat( _format != 0
@@ -489,7 +489,7 @@ public class Pixmap : IDisposable
 
         Pixmap pixmap = new( width, height, Pixmap.ColorFormat.RGBA8888 );
 
-        fixed ( void* ptr = &pixmap.Pixels!.BackingArray()[ 0 ] )
+        fixed ( void* ptr = &pixmap.Pixels.BackingArray()[ 0 ] )
         {
             Gdx.GL.glReadPixels( x, y, width, height, IGL.GL_RGBA, IGL.GL_UNSIGNED_BYTE, ptr );
         }
@@ -509,8 +509,8 @@ public class Pixmap : IDisposable
             _filter = value;
 
             Scale = _filter == Filter.NearestNeighbour
-                        ? Gdx2DPixmap.GDX_2D_SCALE_NEAREST
-                        : Gdx2DPixmap.GDX_2D_SCALE_LINEAR;
+                        ? PixmapFormat.GDX_2D_SCALE_NEAREST
+                        : PixmapFormat.GDX_2D_SCALE_LINEAR;
         }
     }
 
@@ -604,13 +604,16 @@ public class Pixmap : IDisposable
     /// </summary>
     public enum ColorFormat
     {
+        // ----------
         Alpha,
         Intensity,
         LuminanceAlpha,
         RGB565,
         RGBA4444,
         RGB888,
-        RGBA8888
+        RGBA8888,
+        // ----------
+        Default = RGBA8888
     }
 
     #endregion

@@ -170,7 +170,7 @@ public class FloatTextureData : ITextureData
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public Pixmap.ColorFormat? Format
+    public Pixmap.ColorFormat Format
     {
         get => throw new NotImplementedException();
         set => throw new NotImplementedException();

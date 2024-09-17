@@ -37,7 +37,7 @@ namespace LughSharp.LibCore.Assets.Loaders;
 public class TextureLoader
     : AsynchronousAssetLoader< Texture, TextureLoader.TextureLoaderParameters >, IDisposable
 {
-    private TextureLoaderInfo? _loaderInfo;
+    private TextureLoaderInfo _loaderInfo;
 
     /// <summary>
     /// Creates a new TextureLoader using the specified <see cref="IFileHandleResolver"/>.
@@ -62,14 +62,12 @@ public class TextureLoader
     {
         Logger.CheckPoint();
 
-        if ( _loaderInfo == null ) return;
-
         _loaderInfo.Filename = file?.Name;
 
         if ( parameter?.TextureData == null )
         {
-            Pixmap.ColorFormat? format     = null;
-            var            genMipMaps = false;
+            var format     = Pixmap.ColorFormat.Default;
+            var genMipMaps = false;
 
             _loaderInfo.Texture = null;
 
@@ -95,23 +93,19 @@ public class TextureLoader
     }
 
     /// <inheritdoc />
-    public override Texture? LoadSync( AssetManager manager, FileInfo? file, TextureLoaderParameters? parameter )
+    public override Texture LoadSync( AssetManager manager, FileInfo? file, TextureLoaderParameters? parameter )
     {
         Logger.CheckPoint();
-        
-        if ( _loaderInfo == null ) return null;
 
         var texture = _loaderInfo.Texture;
 
         if ( texture != null )
         {
-            Logger.CheckPoint();
-            texture.Load( _loaderInfo.Data );
+            texture.Load( _loaderInfo.Data! );
         }
         else
         {
-            Logger.CheckPoint();
-            texture = new Texture( _loaderInfo.Data );
+            texture = new Texture( _loaderInfo.Data! );
         }
 
         if ( parameter != null )
@@ -180,7 +174,7 @@ public class TextureLoader
         /// <summary>
         /// Gets or sets the format of the final texture. Uses the source image's format if null.
         /// </summary>
-        public Pixmap.ColorFormat? Format { get; set; } = null;
+        public Pixmap.ColorFormat Format { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to generate mipmaps for the texture.

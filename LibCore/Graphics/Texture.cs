@@ -52,22 +52,22 @@ namespace LughSharp.LibCore.Graphics;
 public class Texture : GLTexture
 {
     public AssetManager? AssetManager { get; set; } = null;
-    public ITextureData? TextureData  { get; set; } = null;
+    public ITextureData TextureData  { get; set; }
 
     // ------------------------------------------------------------------------
 
-    public override int  Width     => TextureData?.Width ?? 0;
-    public override int  Height    => TextureData?.Height ?? 0;
+    public override int  Width     => TextureData.Width;
+    public override int  Height    => TextureData.Height;
     public override int  Depth     => 0;
     public override bool IsManaged => TextureData is { IsManaged: true };
 
     // ------------------------------------------------------------------------
 
-    public int NumManagedTextures => _managedTextures[ Gdx.App ]?.Count ?? 0;
+    public int NumManagedTextures => _managedTextures[ Gdx.App ].Count;
 
     // ------------------------------------------------------------------------
 
-    private readonly Dictionary< IApplication, List< Texture >? > _managedTextures = new();
+    private readonly Dictionary< IApplication, List< Texture > > _managedTextures = new();
 
     // ------------------------------------------------------------------------
 
@@ -86,8 +86,8 @@ public class Texture : GLTexture
     /// </summary>
     /// <param name="file"></param>
     /// <param name="useMipMaps"> Whether or not to generate MipMaps. Default is false. </param>
-    public Texture( FileInfo? file, bool useMipMaps )
-        : this( file, Pixmap.ColorFormat.RGBA8888, useMipMaps )
+    public Texture( FileInfo file, bool useMipMaps )
+        : this( file, Pixmap.ColorFormat.Default, useMipMaps )
     {
         Logger.CheckPoint();
     }
@@ -100,10 +100,10 @@ public class Texture : GLTexture
     /// <param name="file"></param>
     /// <param name="format"> The pixmap format to use. </param>
     /// <param name="useMipMaps"> Whether or not to generate MipMaps. Default is false. </param>
-    public Texture( FileInfo? file,
-                    Pixmap.ColorFormat format = Pixmap.ColorFormat.RGBA8888,
+    public Texture( FileInfo file,
+                    Pixmap.ColorFormat format = Pixmap.ColorFormat.Default,
                     bool useMipMaps = false )
-        : this( TextureDataFactory.LoadFromFile( file!, format, useMipMaps ) )
+        : this( TextureDataFactory.LoadFromFile( file, format, useMipMaps ) )
     {
         Logger.CheckPoint();
     }
@@ -146,7 +146,7 @@ public class Texture : GLTexture
     /// <summary>
     /// Creates a new Texture using the supplied <see cref="ITextureData"/>.
     /// </summary>
-    public Texture( ITextureData? data )
+    public Texture( ITextureData data )
         : this( IGL.GL_TEXTURE_2D, Gdx.GL.glGenTexture(), data )
     {
         Logger.CheckPoint();
@@ -159,13 +159,15 @@ public class Texture : GLTexture
     /// <param name="glTarget"></param>
     /// <param name="glTextureHandle"></param>
     /// <param name="data"></param>
-    protected Texture( int glTarget, uint glTextureHandle, ITextureData? data )
+    protected Texture( int glTarget, uint glTextureHandle, ITextureData data )
         : base( glTarget, glTextureHandle )
     {
         ArgumentNullException.ThrowIfNull( data );
 
         Logger.CheckPoint();
 
+        TextureData = data;
+        
         Load( data );
 
         if ( data.IsManaged )
@@ -178,20 +180,18 @@ public class Texture : GLTexture
     /// Load the given <see cref="ITextureData"/> data into this Texture.
     /// </summary>
     /// <param name="data"></param>
-    public void Load( ITextureData? data )
+    public void Load( ITextureData data )
     {
         Logger.CheckPoint();
 
-        if ( ( data != null )
-          && ( TextureData != null )
-          && ( data.IsManaged != TextureData.IsManaged ) )
+        if ( data.IsManaged != TextureData.IsManaged )
         {
             throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
         }
 
         TextureData = data;
 
-        if ( !data!.IsPrepared )
+        if ( !data.IsPrepared )
         {
             data.Prepare();
         }
@@ -225,8 +225,8 @@ public class Texture : GLTexture
 
     /// <summary>
     /// Draws the given <see cref="Pixmap"/> to the texture at position x, y. No clipping
-    /// is performed so you have to make sure that you draw only inside the texture region.
-    /// Note that this will only draw to mipmap level 0!
+    /// is performed so it is important to make sure that you drawing is only done inside
+    /// the texture region. Note that this will only draw to mipmap level 0!
     /// </summary>
     /// <param name="pixmap"> The Pixmap </param>
     /// <param name="x"> The x coordinate in pixels </param>
@@ -240,26 +240,27 @@ public class Texture : GLTexture
 
         Bind();
 
-        if ( pixmap.Pixels != null )
-        {
-            Gdx.GL.glTexSubImage2D( GLTarget,
-                                    0, x, y,
-                                    pixmap.Width, pixmap.Height,
-                                    pixmap.GLFormat,
-                                    pixmap.GLType,
-                                    pixmap.Pixels.BackingArray() );
-        }
+        Gdx.GL.glTexSubImage2D( GLTarget,
+                                0, x, y,
+                                pixmap.Width,
+                                pixmap.Height,
+                                pixmap.GLFormat,
+                                pixmap.GLType,
+                                pixmap.Pixels.BackingArray() );
     }
 
+    /// <summary>
+    /// Add the supplied MANAGED texture to the list of managed textures.
+    /// </summary>
+    /// <param name="app"></param>
+    /// <param name="texture"></param>
     private void AddManagedTexture( IApplication app, Texture texture )
     {
-        Logger.CheckPoint();
+        List< Texture > managedTextureArray = _managedTextures.TryGetValue( app, out List< Texture >? managedTexture )
+                                                  ? managedTexture
+                                                  : [ ];
 
-        List< Texture >? managedTextureArray = _managedTextures.TryGetValue( app, out List< Texture >? managedTexture )
-                                                   ? managedTexture
-                                                   : [ ];
-
-        managedTextureArray?.Add( texture );
+        managedTextureArray.Add( texture );
 
         _managedTextures.Put( app, managedTextureArray );
     }
@@ -269,16 +270,9 @@ public class Texture : GLTexture
     /// </summary>
     internal void InvalidateAllTextures( IApplication app )
     {
-        List< Texture >? managedTextureArray = _managedTextures[ app ];
-
-        if ( managedTextureArray == null )
-        {
-            return;
-        }
-
         if ( AssetManager == null )
         {
-            foreach ( var t in managedTextureArray )
+            foreach ( var t in _managedTextures[ app ] )
             {
                 t.Reload();
             }
@@ -292,7 +286,7 @@ public class Texture : GLTexture
 
             // next we go through each texture and reload either directly or via the
             // asset manager.
-            var textures = new List< Texture >( managedTextureArray );
+            var textures = new List< Texture >( _managedTextures[ app ] );
 
             foreach ( var texture in textures )
             {
@@ -334,22 +328,23 @@ public class Texture : GLTexture
                 }
             }
 
-            managedTextureArray.Clear();
-            managedTextureArray.AddAll( textures );
+            _managedTextures[ app ].Clear();
+            _managedTextures[ app ].AddAll( textures );
         }
     }
 
+    /// <summary>
+    /// Returns a string detailing the managed status of the textures
+    /// within the managed textures list.
+    /// </summary>
     public string GetManagedStatus()
     {
         var builder = new StringBuilder( "Managed textures/app: { " );
 
         foreach ( var app in _managedTextures.Keys )
         {
-            if ( _managedTextures[ app ] != null )
-            {
-                builder.Append( _managedTextures[ app ]?.Count );
-                builder.Append( ' ' );
-            }
+            builder.Append( _managedTextures[ app ].Count );
+            builder.Append( ' ' );
         }
 
         builder.Append( '}' );
@@ -368,9 +363,7 @@ public class Texture : GLTexture
     /// <inheritdoc />
     public override string? ToString()
     {
-        return TextureData is FileTextureData
-                   ? TextureData.ToString()
-                   : base.ToString();
+        return TextureData is FileTextureData ? TextureData.ToString() : base.ToString();
     }
 
     /// <summary>
@@ -400,10 +393,7 @@ public class Texture : GLTexture
 
             if ( TextureData is { IsManaged: true } )
             {
-                if ( _managedTextures[ Gdx.App ] != null )
-                {
-                    _managedTextures[ Gdx.App ]?.Remove( this );
-                }
+                _managedTextures[ Gdx.App ].Remove( this );
             }
         }
     }
@@ -415,8 +405,6 @@ public class Texture : GLTexture
     {
         public void FinishedLoading( AssetManager assetManager, string? fileName, Type? type )
         {
-            Logger.CheckPoint();
-
             assetManager.SetReferenceCount( fileName!, refCount );
         }
     }

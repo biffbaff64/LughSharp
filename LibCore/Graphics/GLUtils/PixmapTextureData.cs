@@ -30,12 +30,12 @@ namespace LughSharp.LibCore.Graphics.GLUtils;
 [PublicAPI]
 public class PixmapTextureData : ITextureData
 {
-    public Pixmap              Pixmap        { get; set; }
-    public Pixmap.ColorFormat? Format        { get; set; }
-    public bool                DisposePixmap { get; set; }
-    public bool                IsManaged     { get; set; }
-    public bool                UseMipMaps    { get; set; }
-    public bool                IsPrepared    { get; set; } = true;
+    public Pixmap             Pixmap        { get; set; }
+    public Pixmap.ColorFormat Format        { get; set; }
+    public bool               DisposePixmap { get; set; }
+    public bool               IsManaged     { get; set; }
+    public bool               UseMipMaps    { get; set; }
+    public bool               IsPrepared    { get; set; } = true;
 
     // ------------------------------------------------------------------------
 

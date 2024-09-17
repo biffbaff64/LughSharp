@@ -91,15 +91,15 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public class PixmapPacker : IDisposable
 {
-    public int           PageWidth        { get;         set; }
-    public int           PageHeight       { get;         set; }
-    public Pixmap.ColorFormat PageFormat       { get;         set; }
-    public Color         TransparentColor { get;         set; } = new( 0f, 0f, 0f, 0f );
-    public bool          PackToTexture    { get;         set; }
-    public bool          DuplicateBorder  { get;         set; }
-    public int           Padding          { get;         set; }
-    public List< Page >  Pages            { get;         set; } = new();
-    public int           AlphaThreshold   { private get; set; }
+    public int                PageWidth        { get; set; }
+    public int                PageHeight       { get; set; }
+    public Pixmap.ColorFormat PageFormat       { get; set; }
+    public Color              TransparentColor { get; set; } = new( 0f, 0f, 0f, 0f );
+    public bool               PackToTexture    { get; set; }
+    public bool               DuplicateBorder  { get; set; }
+    public int                Padding          { get; set; }
+    public List< Page >       Pages            { get; set; } = [ ];
+    public int                AlphaThreshold   { get; set; }
 
     // ------------------------------------------------------------------------
 
@@ -416,7 +416,7 @@ public class PixmapPacker : IDisposable
                                     rectHeight,
                                     image.GLFormat,
                                     image.GLType,
-                                    pixels!.BackingArray() );
+                                    pixels.BackingArray() );
 
             image.Pixels = pixels;
         }
@@ -445,14 +445,15 @@ public class PixmapPacker : IDisposable
             page.Image.DrawPixmap( image, imageWidth - 1, 0, 1, imageHeight, rectX + rectWidth, rectY, 1, rectHeight );
         }
 
-        if ( pixmapToDispose != null )
-        {
-            pixmapToDispose.Dispose();
-        }
+        pixmapToDispose?.Dispose();
 
         return rect;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public RectangleShape? GetRect( string name )
     {
         foreach ( var page in Pages )
@@ -565,8 +566,8 @@ public class PixmapPacker : IDisposable
 
                     if ( rect.Splits != null )
                     {
-                        region.Names  = new[] { "split", "pad" };
-                        region.Values = new[] { rect.Splits, rect.Pads };
+                        region.Names  = [ "split", "pad" ];
+                        region.Values = [ rect.Splits, rect.Pads ];
                     }
 
                     var imageIndex = -1;
@@ -605,7 +606,7 @@ public class PixmapPacker : IDisposable
     }
 
     /// <summary>
-    /// Calls <see cref="Page.UpdateTexture(TextureFilter, TextureFilter, bool)"/>
+    /// Calls <see cref="UpdatePageTextures(TextureFilter, TextureFilter, bool)"/>
     /// for each page and adds a region to the specified array for each page texture.
     /// </summary>
     public void UpdateTextureRegions( List< TextureRegion > regions,
@@ -638,6 +639,10 @@ public class PixmapPacker : IDisposable
         }
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="raster"></param>
+    /// <returns></returns>
     private int[]? GetSplits( Pixmap raster )
     {
         var startX = GetSplitPoint( raster, 1, 0, true, true );
@@ -805,7 +810,7 @@ public class PixmapPacker : IDisposable
                 || ( rgba[ 2 ] != 0 )
                 || ( rgba[ 3 ] != 255 ) ) )
             {
-                Console.WriteLine( $@"{x}  {y} {rgba}" );
+                Console.WriteLine( $"{x}  {y} {rgba}" );
             }
 
             next++;
@@ -835,7 +840,7 @@ public class PixmapPacker : IDisposable
         {
             Image          = new Pixmap( packer.PageWidth, packer.PageHeight, packer.PageFormat );
             Image.Blending = Pixmap.BlendTypes.None;
-            
+
             Image.SetColor( packer.TransparentColor );
             Image.FillWithCurrentColor();
         }
@@ -859,11 +864,7 @@ public class PixmapPacker : IDisposable
             }
             else
             {
-                Texture = new Texture( new PixmapTextureData( Image,
-                                                              Image.Format,
-                                                              useMipMaps,
-                                                              false,
-                                                              true ) );
+                Texture = new Texture( new PixmapTextureData( Image, Image.Format, useMipMaps, false, true ) );
 
                 Texture.SetFilter( minFilter, magFilter );
             }

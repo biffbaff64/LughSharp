@@ -37,30 +37,6 @@ public partial class Gdx2DPixmap : IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    #region constants
-
-    public const int GDX_2D_FORMAT_ALPHA           = 1;
-    public const int GDX_2D_FORMAT_LUMINANCE_ALPHA = 2;
-    public const int GDX_2D_FORMAT_RGB888          = 3;
-    public const int GDX_2D_FORMAT_RGBA8888        = 4;
-    public const int GDX_2D_FORMAT_RGB565          = 5;
-    public const int GDX_2D_FORMAT_RGBA4444        = 6;
-
-    public const int GDX_2D_SCALE_NEAREST  = 0;
-    public const int GDX_2D_SCALE_LINEAR   = 1;
-    public const int GDX_2D_SCALE_BILINEAR = 1;
-    public const int GDX_2D_BLEND_NONE     = 0;
-    public const int GDX_2D_BLEND_SRC_OVER = 1;
-
-    public const int DEFAULT_FORMAT = GDX_2D_FORMAT_RGBA8888;
-    public const int DEFAULT_BLEND  = GDX_2D_BLEND_SRC_OVER;
-    public const int DEFAULT_SCALE  = GDX_2D_SCALE_BILINEAR;
-
-    #endregion constants
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
     #region properties
 
     public ByteBuffer        PixmapBuffer { get; set; }
@@ -75,6 +51,18 @@ public partial class Gdx2DPixmap : IDisposable
     // ------------------------------------------------------------------------
 
     #region constructors
+
+    /// <summary>
+    /// </summary>
+    /// <param name="encodedData"></param>
+    /// <param name="offset"></param>
+    /// <param name="len"></param>
+    /// <param name="requestedFormat"></param>
+    public Gdx2DPixmap( ByteBuffer encodedData, int offset, int len, int requestedFormat )
+        : this( encodedData.BackingArray(), offset, len, requestedFormat )
+    {
+        Logger.CheckPoint();
+    }
 
     /// <summary>
     /// Creates a new Gdx2DPixmap instance.
@@ -100,18 +88,6 @@ public partial class Gdx2DPixmap : IDisposable
         this.Width  = PixmapDef.Width;
         this.Height = PixmapDef.Height;
         this.Format = this.PixmapDef.Format;
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="encodedData"></param>
-    /// <param name="offset"></param>
-    /// <param name="len"></param>
-    /// <param name="requestedFormat"></param>
-    public Gdx2DPixmap( ByteBuffer encodedData, int offset, int len, int requestedFormat )
-        : this( encodedData.BackingArray(), offset, len, requestedFormat )
-    {
-        Logger.CheckPoint();
     }
 
     /// <summary>
@@ -165,8 +141,8 @@ public partial class Gdx2DPixmap : IDisposable
             Width  = ( uint ) width,
             Height = ( uint ) height,
             Format = ( uint ) format,
-            Blend  = GDX_2D_BLEND_SRC_OVER,
-            Scale  = GDX_2D_SCALE_BILINEAR,
+            Blend  = PixmapFormat.GDX_2D_BLEND_SRC_OVER,
+            Scale  = PixmapFormat.GDX_2D_SCALE_BILINEAR,
             Pixels = new byte[ width * height * PixmapFormat.Gdx2dBytesPerPixel( format ) ]
         };
 
@@ -183,16 +159,16 @@ public partial class Gdx2DPixmap : IDisposable
         }
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="pixelPtr"></param>
-    /// <param name="data"></param>
-    public Gdx2DPixmap( ByteBuffer pixelPtr, byte[] data )
-    {
-        Logger.CheckPoint();
-
-        //TODO:
-    }
+//    /// <summary>
+//    /// </summary>
+//    /// <param name="pixelPtr"></param>
+//    /// <param name="data"></param>
+//    public Gdx2DPixmap( ByteBuffer pixelPtr, byte[] data )
+//    {
+//        Logger.CheckPoint();
+//
+//        //TODO:
+//    }
 
     #endregion constructors
 
@@ -228,6 +204,12 @@ public partial class Gdx2DPixmap : IDisposable
         return byteBuffer;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="buffer"></param>
+    /// <param name="len"></param>
+    /// <returns></returns>
     private Gdx2dPixmapStruct Load( byte[] buffer, int len )
     {
         Logger.CheckPoint();
@@ -254,12 +236,12 @@ public partial class Gdx2DPixmap : IDisposable
     {
         return format switch
         {
-            GDX_2D_FORMAT_ALPHA           => IGL.GL_ALPHA,
-            GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL.GL_LUMINANCE_ALPHA,
-            GDX_2D_FORMAT_RGB888          => IGL.GL_RGB,
-            GDX_2D_FORMAT_RGB565          => IGL.GL_RGB,
-            GDX_2D_FORMAT_RGBA8888        => IGL.GL_RGBA,
-            GDX_2D_FORMAT_RGBA4444        => IGL.GL_RGBA,
+            PixmapFormat.GDX_2D_FORMAT_ALPHA           => IGL.GL_ALPHA,
+            PixmapFormat.GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL.GL_LUMINANCE_ALPHA,
+            PixmapFormat.GDX_2D_FORMAT_RGB888          => IGL.GL_RGB,
+            PixmapFormat.GDX_2D_FORMAT_RGB565          => IGL.GL_RGB,
+            PixmapFormat.GDX_2D_FORMAT_RGBA8888        => IGL.GL_RGBA,
+            PixmapFormat.GDX_2D_FORMAT_RGBA4444        => IGL.GL_RGBA,
             var _                         => throw new GdxRuntimeException( $"unknown format: {format}" )
         };
     }
@@ -273,12 +255,12 @@ public partial class Gdx2DPixmap : IDisposable
     {
         return format switch
         {
-            GDX_2D_FORMAT_ALPHA           => IGL.GL_UNSIGNED_BYTE,
-            GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL.GL_UNSIGNED_BYTE,
-            GDX_2D_FORMAT_RGB888          => IGL.GL_UNSIGNED_BYTE,
-            GDX_2D_FORMAT_RGBA8888        => IGL.GL_UNSIGNED_BYTE,
-            GDX_2D_FORMAT_RGB565          => IGL.GL_UNSIGNED_SHORT_5_6_5,
-            GDX_2D_FORMAT_RGBA4444        => IGL.GL_UNSIGNED_SHORT_4_4_4_4,
+            PixmapFormat.GDX_2D_FORMAT_ALPHA           => IGL.GL_UNSIGNED_BYTE,
+            PixmapFormat.GDX_2D_FORMAT_LUMINANCE_ALPHA => IGL.GL_UNSIGNED_BYTE,
+            PixmapFormat.GDX_2D_FORMAT_RGB888          => IGL.GL_UNSIGNED_BYTE,
+            PixmapFormat.GDX_2D_FORMAT_RGBA8888        => IGL.GL_UNSIGNED_BYTE,
+            PixmapFormat.GDX_2D_FORMAT_RGB565          => IGL.GL_UNSIGNED_SHORT_5_6_5,
+            PixmapFormat.GDX_2D_FORMAT_RGBA4444        => IGL.GL_UNSIGNED_SHORT_4_4_4_4,
             var _                         => throw new GdxRuntimeException( $"unknown format: {format}" )
         };
     }
@@ -292,7 +274,7 @@ public partial class Gdx2DPixmap : IDisposable
 
         var pixmap = new Gdx2DPixmap( ( int ) Width, ( int ) Height, requestedFormat );
 
-        pixmap.SetBlend( GDX_2D_BLEND_NONE );
+        pixmap.SetBlend( PixmapFormat.GDX_2D_BLEND_NONE );
         pixmap.DrawPixmap( this, 0, 0, 0, 0, ( int ) Width, ( int ) Height );
 
 //        Dispose();  // ??????
@@ -310,7 +292,7 @@ public partial class Gdx2DPixmap : IDisposable
 //    /// <param name="inStream"></param>
 //    /// <param name="requestedFormat"></param>
 //    /// <returns></returns>
-//    public static Gdx2DPixmap? NewPixmap( StreamReader inStream, int requestedFormat )
+//    public static Gdx2DPixmap NewPixmap( StreamReader inStream, int requestedFormat )
 //    {
 //        Logger.CheckPoint();
 //
@@ -332,7 +314,7 @@ public partial class Gdx2DPixmap : IDisposable
 //    /// <param name="format"></param>
 //    /// <returns></returns>
 //    /// <exception cref="GdxRuntimeException"></exception>
-//    public static Gdx2DPixmap? NewPixmap( int width, int height, int format )
+//    public static Gdx2DPixmap NewPixmap( int width, int height, int format )
 //    {
 //        Logger.CheckPoint();
 //

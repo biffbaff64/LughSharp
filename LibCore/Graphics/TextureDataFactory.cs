@@ -41,22 +41,8 @@ public static class TextureDataFactory
     public static ITextureData LoadFromFile( FileInfo file, bool useMipMaps = true )
     {
         Logger.CheckPoint();
-        if ( File.Exists( file.FullName ) )
-        {
-            Logger.Debug( "Image file found" );
-        }
 
-        ArgumentNullException.ThrowIfNull( file );
-
-        Pixmap.ColorFormat? format = null; // Default format if not specified
-
-        var data = LoadFromFile( file, format );
-
-        Logger.Debug( $"WH: {data.Width}, {data.Height}" );
-        Logger.Debug( $"Format: {data.Format}" );
-        Logger.Debug( $"Prepared: {data.IsPrepared}" );
-
-        return data;
+        return LoadFromFile( file, Pixmap.ColorFormat.RGBA8888, useMipMaps );
     }
 
     /// <summary>
@@ -67,16 +53,11 @@ public static class TextureDataFactory
     /// <param name="useMipMaps">Specifies whether to use mipmaps.</param>
     /// <returns>The loaded texture data.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the file parameter is null.</exception>
-    public static ITextureData LoadFromFile( FileInfo file, Pixmap.ColorFormat? format, bool useMipMaps = true )
+    public static ITextureData LoadFromFile( FileInfo file, Pixmap.ColorFormat format, bool useMipMaps = true )
     {
         ArgumentNullException.ThrowIfNull( file );
 
         Logger.CheckPoint();
-        Logger.Debug( $"Loading texture data from '{file.FullName}'" );
-        if ( File.Exists( file.FullName ) )
-        {
-            Logger.Debug( "Image file found" );
-        }
 
         ITextureData data = file.Extension.ToLower() switch
         {
@@ -94,12 +75,6 @@ public static class TextureDataFactory
             // The call to Pixmap() does the actual loading of the imager
             var _ => new FileTextureData( file, new Pixmap( file ), format, useMipMaps )
         };
-
-        Logger.CheckPoint();
-        Logger.Debug( $"Width x Height: {data.Width}, {data.Height}" );
-        Logger.Debug( $"Format        : {data.Format}" );
-        Logger.Debug( $"IsPrepared    : {data.IsPrepared}" );
-        Logger.Debug( $"IsManaged     : {data.IsManaged}" );
 
         return data;
     }

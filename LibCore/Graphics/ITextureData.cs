@@ -77,7 +77,7 @@ public interface ITextureData : IManageable
     /// <summary>
     /// Returns the <see cref="Pixmap.ColorFormat"/> of the pixel data.
     /// </summary>
-    public Pixmap.ColorFormat? Format { get; set; }
+    public Pixmap.ColorFormat Format { get; set; }
 
     /// <summary>
     /// Prepares the TextureData for a call to <see cref="ConsumePixmap()"/> or

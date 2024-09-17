@@ -172,7 +172,7 @@ public class ETC1TextureData : ITextureData
     }
 
     /// <inheritdoc />
-    public Pixmap.ColorFormat? Format { get; set; } = Pixmap.ColorFormat.Alpha;
+    public Pixmap.ColorFormat Format { get; set; } = Pixmap.ColorFormat.Alpha;
 
     /// <inheritdoc />
     public bool IsManaged

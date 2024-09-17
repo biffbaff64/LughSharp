@@ -42,27 +42,27 @@ public partial class Gdx2DPixmap
 
         switch ( pd.Format )
         {
-            case GDX_2D_FORMAT_ALPHA:
+            case PixmapFormat.GDX_2D_FORMAT_ALPHA:
                 clear_alpha( pd, color, size );
                 break;
 
-            case GDX_2D_FORMAT_LUMINANCE_ALPHA:
+            case PixmapFormat.GDX_2D_FORMAT_LUMINANCE_ALPHA:
                 clear_luminance_alpha( pd, color, size );
                 break;
 
-            case GDX_2D_FORMAT_RGB888:
+            case PixmapFormat.GDX_2D_FORMAT_RGB888:
                 clear_RGB888( pd, color, size );
                 break;
 
-            case GDX_2D_FORMAT_RGBA8888:
+            case PixmapFormat.GDX_2D_FORMAT_RGBA8888:
                 clear_RGBA8888( pd, color, size );
                 break;
 
-            case GDX_2D_FORMAT_RGB565:
+            case PixmapFormat.GDX_2D_FORMAT_RGB565:
                 clear_RGB565( pd, color, size );
                 break;
 
-            case GDX_2D_FORMAT_RGBA4444:
+            case PixmapFormat.GDX_2D_FORMAT_RGBA4444:
                 clear_RGBA4444( pd, color, size );
                 break;
 
@@ -184,10 +184,10 @@ public partial class Gdx2DPixmap
 
         switch ( format )
         {
-            case GDX_2D_FORMAT_ALPHA:
+            case PixmapFormat.GDX_2D_FORMAT_ALPHA:
                 return color & 0xff;
 
-            case GDX_2D_FORMAT_LUMINANCE_ALPHA:
+            case PixmapFormat.GDX_2D_FORMAT_LUMINANCE_ALPHA:
                 r = ( color & 0xff000000 ) >> 24;
                 g = ( color & 0xff0000 ) >> 16;
                 b = ( color & 0xff00 ) >> 8;
@@ -195,19 +195,19 @@ public partial class Gdx2DPixmap
                 var l = ( ( uint ) ( 0.2126f * r + 0.7152 * g + 0.0722 * b ) & 0xff ) << 8;
                 return ( l & 0xffffff00 ) | a;
 
-            case GDX_2D_FORMAT_RGB888:
+            case PixmapFormat.GDX_2D_FORMAT_RGB888:
                 return color >> 8;
 
-            case GDX_2D_FORMAT_RGBA8888:
+            case PixmapFormat.GDX_2D_FORMAT_RGBA8888:
                 return color;
 
-            case GDX_2D_FORMAT_RGB565:
+            case PixmapFormat.GDX_2D_FORMAT_RGB565:
                 r = ( ( ( color & 0xff000000 ) >> 27 ) << 11 ) & 0xf800;
                 g = ( ( ( color & 0xff0000 ) >> 18 ) << 5 ) & 0x7e0;
                 b = ( ( color & 0xff00 ) >> 11 ) & 0x1f;
                 return r | g | b;
 
-            case GDX_2D_FORMAT_RGBA4444:
+            case PixmapFormat.GDX_2D_FORMAT_RGBA4444:
                 r = ( ( ( color & 0xff000000 ) >> 28 ) << 12 ) & 0xf000;
                 g = ( ( ( color & 0xff0000 ) >> 20 ) << 8 ) & 0xf00;
                 b = ( ( ( color & 0xff00 ) >> 12 ) << 4 ) & 0xf0;
