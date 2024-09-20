@@ -49,17 +49,22 @@ namespace LughSharp.LibCore.Graphics;
 /// </para>
 /// </summary>
 [PublicAPI]
-public class Texture : GLTexture
+public class Texture : GLTexture, IManageable
 {
     public AssetManager? AssetManager { get; set; } = null;
     public ITextureData TextureData  { get; set; }
 
     // ------------------------------------------------------------------------
 
-    public override int  Width     => TextureData.Width;
-    public override int  Height    => TextureData.Height;
-    public override int  Depth     => 0;
-    public override bool IsManaged => TextureData is { IsManaged: true };
+    public override int  Width       => TextureData.Width;
+    public override int  Height      => TextureData.Height;
+    public override int  Depth       => 0;
+
+    public bool IsManaged
+    {
+        get => TextureData is { IsManaged: true };
+        set { }
+    }
 
     // ------------------------------------------------------------------------
 

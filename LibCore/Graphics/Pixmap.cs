@@ -52,14 +52,8 @@ public class Pixmap : IDisposable
 {
     public bool        IsDisposed { get; set; } = false;       // 
     public int         Scale      { get; set; }                // 
-    public Color       Color      { get; set; } = Color.Clear; // 
+    public Color       Color      { get; set; } = Color.Black; // 
     public Gdx2DPixmap PixelData  { get; set; }                // 
-
-    /// <summary>
-    /// Sets the type of <see cref="BlendTypes"/> to be used for all operations.
-    /// Default is <see cref="BlendTypes.SourceOver"/>.
-    /// </summary>
-    public BlendTypes Blending { get; set; } = BlendTypes.SourceOver;
 
     // ------------------------------------------------------------------------
 
@@ -164,10 +158,9 @@ public class Pixmap : IDisposable
             var data = File.ReadAllBytes( file.FullName );
 
             PixelData = new Gdx2DPixmap( data, 0, data.Length, 0 );
-
-            Width       = ( int ) PixelData.Width;
-            Height      = ( int ) PixelData.Height;
-            this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixelData.Format );
+            Width     = ( int ) PixelData.Width;
+            Height    = ( int ) PixelData.Height;
+            Format    = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixelData.Format );
         }
         catch ( Exception e )
         {
@@ -181,10 +174,9 @@ public class Pixmap : IDisposable
     public Pixmap( Gdx2DPixmap gdx2DPixmap )
     {
         this.PixelData = gdx2DPixmap;
-
-        Width       = ( int ) PixelData.Width;
-        Height      = ( int ) PixelData.Height;
-        this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixelData.Format );
+        this.Width     = ( int ) PixelData.Width;
+        this.Height    = ( int ) PixelData.Height;
+        this.Format    = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixelData.Format );
     }
 
     // ----------------------------------------------------------
@@ -198,6 +190,12 @@ public class Pixmap : IDisposable
     /// Returns the height of the Pixmap in pixels.
     /// </summary>
     public int Height { get; set; }
+
+    /// <summary>
+    /// Sets the type of <see cref="BlendTypes"/> to be used for all operations.
+    /// Default is <see cref="BlendTypes.SourceOver"/>.
+    /// </summary>
+    public BlendTypes Blending { get; set; } = BlendTypes.SourceOver;
 
     /// <summary>
     /// Returns the OpenGL ES format of this Pixmap.
@@ -254,7 +252,7 @@ public class Pixmap : IDisposable
     /// </summary>
     /// <param name="url">http url to download the image from.</param>
     /// <param name="responseListener">the listener to call once the image is available as a Pixmap</param>
-    /// <remarks>CURRENTLY NOT IMPLEMENTED!</remarks>
+    /// <remarks>CURRENTLY NOT IMPLEMENTED.</remarks>
     public static void DownloadFromUrl( string url, IDownloadPixmapResponseListener responseListener )
     {
         throw new NotImplementedException();
@@ -612,11 +610,22 @@ public class Pixmap : IDisposable
         RGBA4444,
         RGB888,
         RGBA8888,
+
         // ----------
         Default = RGBA8888
     }
 
     #endregion
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    public void Debug()
+    {
+        Logger.Debug( $"Width: {Width}, Height: {Height}" );
+        Logger.Debug( $"Format: {Format}" );
+        Logger.Debug( $"Color: {Color.R}, {Color.G}, {Color.B}, {Color.A}" );
+    }
 }
 
 // ------------------------------------------------------------------------

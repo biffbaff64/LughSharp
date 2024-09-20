@@ -29,26 +29,26 @@ public partial class Gdx2DPixmap
     /// <summary>
     /// Gets the pixel at the specified X and Y coordinates.
     /// </summary>
-    /// <param name="pd"> The <see cref="Gdx2dPixmapStruct"/> holding the pixmap info. </param>
+    /// <param name="pd"> The <see cref="PixmapDataStruct"/> holding the pixmap info. </param>
     /// <param name="x"> X co-ordinate. </param>
     /// <param name="y"> Y co-ordinate. </param>
     /// <returns></returns>
-    public int GetPixel( Gdx2dPixmapStruct pd, int x, int y )
+    public int GetPixel( PixmapDataStruct pd, int x, int y )
     {
         return gdx2d_get_pixel( pd, x, y );
 
         [DllImport( "lib/gdx2d.dll" )]
-        static extern int gdx2d_get_pixel( Gdx2dPixmapStruct pd, int x, int y );
+        static extern int gdx2d_get_pixel( PixmapDataStruct pd, int x, int y );
     }
 
-    public void SetPixel( Gdx2dPixmapStruct pd, int x, int y, Color color )
+    public void SetPixel( PixmapDataStruct pd, int x, int y, Color color )
     {
         gdx2d_set_pixel( pd, x, y, color.ToIntBits() );
 
         return;
 
         [DllImport( "lib/gdx2d.dll" )]
-        static extern void gdx2d_set_pixel( Gdx2dPixmapStruct pd, int x, int y, uint color );
+        static extern void gdx2d_set_pixel( PixmapDataStruct pd, int x, int y, uint color );
     }
 
     public void DrawLine( int x, int y, int x2, int y2, Color color )
@@ -58,7 +58,7 @@ public partial class Gdx2DPixmap
         return;
 
         [DllImport( "lib/gdx2d.dll" )]
-        static extern void gdx2d_draw_line( Gdx2dPixmapStruct pd, int x1, int y1, int x2, int y2, uint color );
+        static extern void gdx2d_draw_line( PixmapDataStruct pd, int x1, int y1, int x2, int y2, uint color );
     }
 
     public void DrawRect( int x, int y, uint width, uint height, Color color )
@@ -68,7 +68,7 @@ public partial class Gdx2DPixmap
         return;
 
         [DllImport( "lib/gdx2d.dll" )]
-        static extern void gdx2d_draw_rect( Gdx2dPixmapStruct pd, int x, int y, uint width, uint height, uint color );
+        static extern void gdx2d_draw_rect( PixmapDataStruct pd, int x, int y, uint width, uint height, uint color );
     }
 
     public void DrawCircle( int x, int y, uint radius, Color color )
@@ -78,7 +78,7 @@ public partial class Gdx2DPixmap
         return;
 
         [DllImport( "lib/gdx2d.dll" )]
-        static extern void gdx2d_draw_circle( Gdx2dPixmapStruct pd, int x, int y, uint radius, uint color );
+        static extern void gdx2d_draw_circle( PixmapDataStruct pd, int x, int y, uint radius, uint color );
     }
 
     public void FillRect( int x, int y, uint width, uint height, Color color )
@@ -88,7 +88,7 @@ public partial class Gdx2DPixmap
         return;
 
         [DllImport( "lib/gdx2d.dll" )]
-        static extern void gdx2d_fill_rect( Gdx2dPixmapStruct pd, int x, int y, uint width, uint height, uint color );
+        static extern void gdx2d_fill_rect( PixmapDataStruct pd, int x, int y, uint width, uint height, uint color );
     }
 
     public void FillCircle( int x, int y, uint radius, Color color )
@@ -98,7 +98,7 @@ public partial class Gdx2DPixmap
         return;
 
         [DllImport( "lib/gdx2d.dll" )]
-        static extern void gdx2d_fill_circle( Gdx2dPixmapStruct pd, int x, int y, uint radius, uint color );
+        static extern void gdx2d_fill_circle( PixmapDataStruct pd, int x, int y, uint radius, uint color );
     }
 
     public void FillTriangle( int x1, int y1, int x2, int y2, int x3, int y3, Color color )
@@ -108,7 +108,7 @@ public partial class Gdx2DPixmap
         return;
 
         [DllImport( "lib/gdx2d.dll" )]
-        static extern void gdx2d_fill_triangle( Gdx2dPixmapStruct pd, int x1, int y1, int x2, int y2, int x3, int y3, uint color );
+        static extern void gdx2d_fill_triangle( PixmapDataStruct pd, int x1, int y1, int x2, int y2, int x3, int y3, uint color );
     }
 
     public void DrawPixmap( Gdx2DPixmap src, int srcX, int srcY, int dstX, int dstY, int width, int height )
@@ -118,8 +118,8 @@ public partial class Gdx2DPixmap
         return;
         
         [DllImport( "lib/gdx2d.dll" )]
-        static extern void gdx2d_draw_pixmap( Gdx2dPixmapStruct pd,
-                                              Gdx2dPixmapStruct dpd,
+        static extern void gdx2d_draw_pixmap( PixmapDataStruct pd,
+                                              PixmapDataStruct dpd,
                                               int srcX,
                                               int srcY,
                                               int srcWidth,
@@ -137,8 +137,8 @@ public partial class Gdx2DPixmap
         return;
         
         [DllImport( "lib/gdx2d.dll" )]
-        static extern void gdx2d_draw_pixmap( Gdx2dPixmapStruct pd,
-                                              Gdx2dPixmapStruct dpd,
+        static extern void gdx2d_draw_pixmap( PixmapDataStruct pd,
+                                              PixmapDataStruct dpd,
                                               int srcX,
                                               int srcY,
                                               int srcWidth,
@@ -147,26 +147,6 @@ public partial class Gdx2DPixmap
                                               int dstY,
                                               int dstWidth,
                                               int dstHeight );
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    /// <summary>
-    /// Simple pixmap struct holding the pixel data, the dimensions and the
-    /// format of the pixmap. The format is one of the GDX_2D_FORMAT_XXX constants.
-    /// </summary>
-    [PublicAPI, StructLayout( LayoutKind.Sequential )]
-
-    // ReSharper disable once InconsistentNaming
-    public struct Gdx2dPixmapStruct
-    {
-        public uint   Width  { get; set; }
-        public uint   Height { get; set; }
-        public uint   Format { get; set; }
-        public uint   Blend  { get; set; }
-        public uint   Scale  { get; set; }
-        public byte[] Pixels { get; set; }
     }
 
     // ------------------------------------------------------------------------

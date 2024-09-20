@@ -22,19 +22,17 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using StbiSharp;
-
 namespace LughSharp.LibCore.Graphics.G2D;
 
 public partial class Gdx2DPixmap
 {
     /// <summary>
-    /// Clear the pd defined in the supplied <see cref="Gdx2dPixmapStruct"/>,
+    /// Clear the pd defined in the supplied <see cref="PixmapDataStruct"/>,
     /// setting it to the supplied Color.
     /// </summary>
     /// <param name="pd"> The NativePixmapDef. </param>
     /// <param name="color"> The Color. </param>
-    public void Clear( Gdx2dPixmapStruct pd, Color color )
+    public void Clear( PixmapDataStruct pd, Color color )
     {
         Logger.CheckPoint();
 
@@ -74,13 +72,13 @@ public partial class Gdx2DPixmap
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    internal void clear_alpha( Gdx2dPixmapStruct pd, Color color, uint size )
+    internal void clear_alpha( PixmapDataStruct pd, Color color, uint size )
     {
 //        int pixels = pixmap->width * pixmap->height;
 //        memset((void*)pixmap->pixels, col, pixels);
     }
 
-    internal void clear_luminance_alpha( Gdx2dPixmapStruct pd, Color color, uint size )
+    internal void clear_luminance_alpha( PixmapDataStruct pd, Color color, uint size )
     {
 //        int             pixels = pixmap->width * pixmap->height;
 //        unsigned short* ptr    = (unsigned short*)pixmap->pixels;
@@ -93,7 +91,7 @@ public partial class Gdx2DPixmap
 //        }
     }
 
-    internal void clear_RGB888( Gdx2dPixmapStruct pd, Color color, uint size )
+    internal void clear_RGB888( PixmapDataStruct pd, Color color, uint size )
     {
 //        int            pixels = pixmap->width * pixmap->height;
 //        unsigned char* ptr    = (unsigned char*)pixmap->pixels;
@@ -112,7 +110,7 @@ public partial class Gdx2DPixmap
 //        }
     }
 
-    internal void clear_RGBA8888( Gdx2dPixmapStruct pd, Color color, uint size )
+    internal void clear_RGBA8888( PixmapDataStruct pd, Color color, uint size )
     {
 //        int           pixels = pixmap->width * pixmap->height;
 //        uint32_t*     ptr    = (uint32_t*)pixmap->pixels;
@@ -136,7 +134,7 @@ public partial class Gdx2DPixmap
         var col = ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
     }
 
-    internal void clear_RGB565( Gdx2dPixmapStruct pd, Color color, uint size )
+    internal void clear_RGB565( PixmapDataStruct pd, Color color, uint size )
     {
 //        int             pixels = pixmap->width * pixmap->height;
 //        unsigned short* ptr    = (unsigned short*)pixmap->pixels;
@@ -149,7 +147,7 @@ public partial class Gdx2DPixmap
 //        }
     }
 
-    internal unsafe void clear_RGBA4444( Gdx2dPixmapStruct pd, Color color, uint size )
+    internal unsafe void clear_RGBA4444( PixmapDataStruct pd, Color color, uint size )
     {
 //        int             pixels = pixmap->width * pixmap->height;
 //        unsigned short* ptr    = (unsigned short*)pixmap->pixels;

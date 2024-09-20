@@ -198,7 +198,7 @@ public class SpriteBatch : IBatch
 
         Gdx.GL.glDepthMask( true );
 
-        if ( !BlendingDisabled )
+        if ( IsBlendingEnabled )
         {
             Gdx.GL.glDisable( IGL.GL_BLEND );
         }
@@ -243,16 +243,8 @@ public class SpriteBatch : IBatch
                               bool flipX,
                               bool flipY )
     {
-        if ( !IsDrawing )
-        {
-            throw new InvalidOperationException( "SpriteBatch.begin must be called before draw." );
-        }
-
-        if ( texture == null )
-        {
-            return;
-        }
-
+        Validate( texture );
+        
         if ( texture != LastTexture )
         {
             SwitchTexture( texture );
@@ -388,15 +380,7 @@ public class SpriteBatch : IBatch
                               bool flipX,
                               bool flipY )
     {
-        if ( !IsDrawing )
-        {
-            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
-        }
-
-        if ( texture == null )
-        {
-            return;
-        }
+        Validate( texture );
 
         if ( texture != LastTexture )
         {
@@ -453,15 +437,7 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( Texture? texture, float x, float y, Rectangle src )
     {
-        if ( !IsDrawing )
-        {
-            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
-        }
-
-        if ( texture == null )
-        {
-            return;
-        }
+        Validate( texture );
 
         if ( texture != LastTexture )
         {
@@ -513,15 +489,7 @@ public class SpriteBatch : IBatch
                               float u2,
                               float v2 )
     {
-        if ( !IsDrawing )
-        {
-            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
-        }
-
-        if ( texture == null )
-        {
-            return;
-        }
+        Validate( texture );
 
         if ( texture != LastTexture )
         {
@@ -564,17 +532,7 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( Texture? texture, float x, float y )
     {
-        if ( !IsDrawing )
-        {
-            throw new GdxRuntimeException( "SpriteBatch.Begin() must be called before Draw()" );
-        }
-
-        if ( texture == null )
-        {
-            Logger.Debug( "supplied texture is null." );
-
-            return;
-        }
+        Validate( texture );
 
         Draw( texture, new Point( ( int ) x, ( int ) y ), new Size( texture.Width, texture.Height ) );
     }
@@ -583,25 +541,15 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( Texture? texture, Point loc, Size size )
     {
-        if ( !IsDrawing )
-        {
-            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
-        }
+        Validate( texture );
 
-        if ( texture == null )
-        {
-            Logger.Debug( "supplied texture is null." );
-
-            return;
-        }
-
-        if ( _first )
-        {
-            Logger.Debug( $"texture.Width: {texture.Width}, texture.Height: {texture.Height}" );
-            Logger.Debug( $"loc.X: {loc.X}, loc.Y: {loc.Y}" );
-            Logger.Debug( $"size.Width: {size.Width}, size.Height: {size.Height}" );
-            _first = false;
-        }
+//        if ( _first )
+//        {
+//            Logger.Debug( $"texture.Width: {texture?.Width}, texture.Height: {texture?.Height}" );
+//            Logger.Debug( $"loc.X: {loc.X}, loc.Y: {loc.Y}" );
+//            Logger.Debug( $"size.Width: {size.Width}, size.Height: {size.Height}" );
+//            _first = false;
+//        }
 
         var vertices = this.Vertices;
         
@@ -651,15 +599,7 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( Texture? texture, float[] spriteVertices, int offset, int count )
     {
-        if ( !IsDrawing )
-        {
-            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
-        }
-
-        if ( texture == null )
-        {
-            return;
-        }
+        Validate( texture );
 
         var vertices          = this.Vertices;
         var verticesLength    = vertices.Length;
@@ -704,30 +644,14 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( TextureRegion? region, float x, float y )
     {
-        if ( !IsDrawing )
-        {
-            throw new GdxRuntimeException( "SpriteBatch.Begin() must be called before Draw()" );
-        }
-
-        if ( region == null )
-        {
-            return;
-        }
+        Validate( region );
 
         Draw( region, x, y, region.RegionWidth, region.RegionHeight );
     }
 
     public virtual void Draw( TextureRegion? region, float x, float y, float width, float height )
     {
-        if ( !IsDrawing )
-        {
-            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
-        }
-
-        if ( region == null )
-        {
-            return;
-        }
+        Validate( region );
 
         var vertices = this.Vertices;
         var texture  = region.Texture;
@@ -781,15 +705,7 @@ public class SpriteBatch : IBatch
                               Point2D scale,
                               float rotation )
     {
-        if ( !IsDrawing )
-        {
-            throw new InvalidOperationException( "SpriteBatch.Begin() must be called before Draw()" );
-        }
-
-        if ( textureRegion == null )
-        {
-            return;
-        }
+        Validate( textureRegion );
 
         var vertices = this.Vertices;
         var texture  = textureRegion.Texture;
@@ -920,18 +836,10 @@ public class SpriteBatch : IBatch
                               float rotation,
                               bool clockwise )
     {
-        if ( !IsDrawing )
-        {
-            throw new GdxRuntimeException( "SpriteBatch.Begin() must be called before Draw()" );
-        }
-
-        if ( textureRegion == null )
-        {
-            return;
-        }
+        Validate( textureRegion );
 
         var vertices = this.Vertices;
-        var texture  = textureRegion.Texture;
+        var texture  = textureRegion?.Texture;
 
         if ( texture != LastTexture )
         {
@@ -1074,21 +982,13 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( TextureRegion? region, float width, float height, Affine2 transform )
     {
-        if ( !IsDrawing )
-        {
-            throw new GdxRuntimeException( "SpriteBatch.Begin() must be called before Draw()" );
-        }
-
-        if ( region == null )
-        {
-            return;
-        }
+        Validate( region );
 
         var vertices = this.Vertices;
         
-        if ( region.Texture != LastTexture )
+        if ( region?.Texture != LastTexture )
         {
-            SwitchTexture( region.Texture );
+            SwitchTexture( region?.Texture );
         }
         else if ( Idx == vertices.Length )
         {
@@ -1161,6 +1061,7 @@ public class SpriteBatch : IBatch
         if ( LastTexture == null )
         {
             _nullTextureCount++;
+            
             Logger.Error( $"Attempt to flush with null texture. " +
                           $"This batch will be skipped. " +
                           $"Null texture count: {_nullTextureCount}. " +
@@ -1416,5 +1317,29 @@ public class SpriteBatch : IBatch
         _lastSuccessfulTexture = texture;
         InvTexWidth            = 1.0f / texture.Width;
         InvTexHeight           = 1.0f / texture.Height;
+    }
+
+    // ------------------------------------------------------------------------
+    
+    private bool IsBlendingEnabled => !BlendingDisabled;
+
+    private void Validate( Texture? texture )
+    {
+        ArgumentNullException.ThrowIfNull( texture );
+
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "Begin() must be called before Draw()." );
+        }
+    }
+
+    private void Validate( TextureRegion? region )
+    {
+        ArgumentNullException.ThrowIfNull( region );
+
+        if ( !IsDrawing )
+        {
+            throw new InvalidOperationException( "Begin() must be called before Draw()." );
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace LughSharp.LibCore.Graphics;
 /// methods to create TextureData and upload image data.
 /// </summary>
 [PublicAPI]
-public abstract class GLTexture : IDisposable, IManageable
+public abstract class GLTexture : IDisposable
 {
     /// <summary>
     /// The OpenGL target for the texture. A GL target, in the context of OpenGL (and
@@ -143,14 +143,6 @@ public abstract class GLTexture : IDisposable, IManageable
     /// Returns the <see cref="TextureWrap"/> used for vertical (V) texture coordinates.
     /// </summary>
     public TextureWrap VWrap { get; set; } = TextureWrap.ClampToEdge;
-
-    // ------------------------------------------------------------------------
-
-    public virtual bool IsManaged
-    {
-        get => false;
-        set { }
-    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

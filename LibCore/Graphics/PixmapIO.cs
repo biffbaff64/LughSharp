@@ -82,22 +82,16 @@ public static class PixmapIO
                                  int compression = Deflater.DEFAULT_COMPRESSION,
                                  bool flipY = false )
     {
-        Logger.CheckPoint();
-        
         try
         {
             // Guess at deflated size.
             var writer = new PNG( ( int ) ( pixmap.Width * pixmap.Height * 1.5f ) );
 
-            Logger.CheckPoint();
-
             try
             {
                 writer.FlipY = flipY;
                 writer.SetCompression( compression );
-                Logger.CheckPoint();
                 writer.Write( file, pixmap );
-                Logger.CheckPoint();
             }
             finally
             {
@@ -140,7 +134,7 @@ public static class PixmapIO
                 var pixelBuf = pixmap.Pixels;
 
                 pixelBuf!.Position = 0;
-                pixelBuf.Limit    = pixelBuf.Capacity;
+                pixelBuf.Limit     = pixelBuf.Capacity;
 
                 var remainingBytes = pixelBuf.Capacity % BUFFER_SIZE;
                 var iterations     = pixelBuf.Capacity / BUFFER_SIZE;
@@ -183,7 +177,7 @@ public static class PixmapIO
                 var pixelBuf = pixmap.Pixels;
 
                 pixelBuf!.Position = 0;
-                pixelBuf.Limit    = pixelBuf.Capacity;
+                pixelBuf.Limit     = pixelBuf.Capacity;
 
                 lock ( _readBuffer )
                 {
@@ -226,10 +220,10 @@ public static class PixmapIO
         private readonly ChunkBuffer _buffer;
         private readonly Deflater    _deflater;
 
-        private readonly byte[]        _signature = { 137, 80, 78, 71, 13, 10, 26, 10 };
-        private          List< byte >? _curLineBytes;
-        private          int           _lastLineLen;
+        private readonly byte[] _signature = [ 137, 80, 78, 71, 13, 10, 26, 10 ];
+        private          int    _lastLineLen;
 
+        private List< byte >? _curLineBytes;
         private List< byte >? _lineOutBytes;
         private List< byte >? _prevLineBytes;
 
@@ -248,8 +242,8 @@ public static class PixmapIO
         public bool FlipY { get; set; }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing,
-        /// releasing, or resetting unmanaged resources.
+        /// Performs application-defined tasks associated with freeing, releasing,
+        /// or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -271,11 +265,7 @@ public static class PixmapIO
         /// <param name="pixmap"></param>
         public void Write( FileInfo file, Pixmap pixmap )
         {
-            Logger.CheckPoint();
-
             var output = new MemoryStream();
-
-            Logger.CheckPoint();
 
             try
             {
@@ -291,37 +281,21 @@ public static class PixmapIO
         /// </summary>
         public void Write( Stream output, Pixmap pixmap )
         {
-            Logger.CheckPoint();
-
             var deflaterOutput = new DeflaterOutputStream( output /*_buffer*/, _deflater );
             var dataOutput     = new BinaryWriter( output );
 
-            Logger.CheckPoint();
-
             dataOutput.Write( _signature );
 
-            Logger.CheckPoint();
-
             _buffer.Write( IHDR );
-            Logger.CheckPoint();
             _buffer.Write( pixmap.Width );
-            Logger.CheckPoint();
             _buffer.Write( pixmap.Height );       // 
-            Logger.CheckPoint();
             _buffer.Write( 8 );                   // 8 bits per component.
-            Logger.CheckPoint();
             _buffer.Write( COLOR_ARGB );          // 
-            Logger.CheckPoint();
             _buffer.Write( COMPRESSION_DEFLATE ); // 
-            Logger.CheckPoint();
             _buffer.Write( FILTER_NONE );
-            Logger.CheckPoint();
             _buffer.Write( INTERLACE_NONE );
-            Logger.CheckPoint();
             _buffer.EndChunk( dataOutput );
-            Logger.CheckPoint();
             _buffer.Write( IDAT );
-            Logger.CheckPoint();
 
             _deflater.Reset();
 
@@ -333,14 +307,16 @@ public static class PixmapIO
 
             if ( _lineOutBytes == null )
             {
-                Logger.CheckPoint();
-                lineOut  = ( _lineOutBytes  = new List< byte >( lineLen ) ).ToArray();
-                curLine  = ( _curLineBytes  = new List< byte >( lineLen ) ).ToArray();
-                prevLine = ( _prevLineBytes = new List< byte >( lineLen ) ).ToArray();
+                _lineOutBytes  = new List< byte >( lineLen );
+                _curLineBytes  = new List< byte >( lineLen );
+                _prevLineBytes = new List< byte >( lineLen );
+
+                lineOut  = new byte[ lineLen ];
+                curLine  = new byte[ lineLen ];
+                prevLine = new byte[ lineLen ];
             }
             else
             {
-                Logger.CheckPoint();
                 _lineOutBytes.EnsureCapacity( lineLen );
                 _curLineBytes!.EnsureCapacity( lineLen );
                 _prevLineBytes!.EnsureCapacity( lineLen );
@@ -349,20 +325,13 @@ public static class PixmapIO
                 curLine  = _curLineBytes.ToArray();
                 prevLine = _prevLineBytes.ToArray();
 
-                for ( int i = 0, n = _lastLineLen; i < n; i++ )
-                {
-                    prevLine[ i ] = 0;
-                }
+                Array.Clear( prevLine, 0, _lastLineLen );
             }
 
             _lastLineLen = lineLen;
 
-            var oldPosition = pixmap.Pixels!.Position;
+            var oldPosition = pixmap.Pixels.Position;
             var isRgba8888  = pixmap.Format == Pixmap.ColorFormat.RGBA8888;
-
-            Logger.CheckPoint();
-            Logger.Debug( $"pixmap.Width : {pixmap.Width}" );
-            Logger.Debug( $"pixmap.Height: {pixmap.Height}" );
 
             for ( int y = 0, h = pixmap.Height; y < h; y++ )
             {
@@ -370,7 +339,7 @@ public static class PixmapIO
 
                 if ( isRgba8888 )
                 {
-                    pixmap.Pixels!.Position = py * lineLen;
+                    pixmap.Pixels.Position = py * lineLen;
                     pixmap.Pixels.Get( curLine, 0, lineLen );
                 }
                 else
@@ -436,7 +405,7 @@ public static class PixmapIO
                 ( curLine, prevLine ) = ( prevLine, curLine );
             }
 
-            pixmap.Pixels!.Position = oldPosition;
+            pixmap.Pixels.Position = oldPosition;
 
             deflaterOutput.Finish();
             _buffer.EndChunk( dataOutput );

@@ -31,7 +31,7 @@ namespace LughSharp.LibCore.Graphics;
 /// Open GLES wrapper for TextureArray.
 /// </summary>
 [PublicAPI]
-public class TextureArray : GLTexture
+public class TextureArray : GLTexture, IManageable
 {
     private readonly static Dictionary< IApplication, List< TextureArray > > _managedTextureArrays = new();
 
@@ -208,10 +208,15 @@ public class TextureArray : GLTexture
 
     #region aliases
 
-    public override int  Width     => _data.Width;
-    public override int  Height    => _data.Height;
-    public override int  Depth     => _data.Depth;
-    public override bool IsManaged => _data.Managed;
+    public override int Width  => _data.Width;
+    public override int Height => _data.Height;
+    public override int Depth  => _data.Depth;
+
+    public bool IsManaged
+    {
+        get => _data.Managed;
+        set { }
+    }
 
     #endregion aliases
 

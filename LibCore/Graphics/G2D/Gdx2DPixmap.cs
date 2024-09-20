@@ -37,15 +37,29 @@ public partial class Gdx2DPixmap : IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    #region properties
+    /// <summary>
+    /// Simple pixmap struct holding the pixel data, the dimensions and the
+    /// format of the pixmap. The format is one of the GDX_2D_FORMAT_XXX constants.
+    /// </summary>
+    [PublicAPI, StructLayout( LayoutKind.Sequential )]
+    public struct PixmapDataStruct
+    {
+        public uint   Width  { get; set; }
+        public uint   Height { get; set; }
+        public uint   Format { get; set; }
+        public uint   Blend  { get; set; }
+        public uint   Scale  { get; set; }
+        public byte[] Pixels { get; set; }
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     public ByteBuffer        PixmapBuffer { get; set; }
-    public Gdx2dPixmapStruct PixmapDef    { get; set; }
+    public PixmapDataStruct PixmapDef    { get; set; }
     public uint              Width        { get; set; }
     public uint              Height       { get; set; }
     public uint              Format       { get; set; }
-
-    #endregion properties
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -136,7 +150,7 @@ public partial class Gdx2DPixmap : IDisposable
     {
         Logger.CheckPoint();
 
-        this.PixmapDef = new Gdx2dPixmapStruct
+        this.PixmapDef = new PixmapDataStruct
         {
             Width  = ( uint ) width,
             Height = ( uint ) height,
@@ -176,7 +190,7 @@ public partial class Gdx2DPixmap : IDisposable
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Loads the data in the supplied byte array into a <see cref="Gdx2dPixmapStruct"/>
+    /// Loads the data in the supplied byte array into a <see cref="PixmapDataStruct"/>
     /// </summary>
     /// <param name="buffer"></param>
     /// <param name="offset"></param>
@@ -210,13 +224,13 @@ public partial class Gdx2DPixmap : IDisposable
     /// <param name="buffer"></param>
     /// <param name="len"></param>
     /// <returns></returns>
-    private Gdx2dPixmapStruct Load( byte[] buffer, int len )
+    private PixmapDataStruct Load( byte[] buffer, int len )
     {
         Logger.CheckPoint();
 
         var image = Stbi.LoadFromMemory( buffer, PixmapFormat.Gdx2dBytesPerPixel( ( int ) Format ) );
 
-        var pixmapStruct = new Gdx2dPixmapStruct
+        var pixmapStruct = new PixmapDataStruct
         {
             Width  = ( uint ) image.Width,
             Height = ( uint ) image.Height,
@@ -277,7 +291,7 @@ public partial class Gdx2DPixmap : IDisposable
         pixmap.SetBlend( PixmapFormat.GDX_2D_BLEND_NONE );
         pixmap.DrawPixmap( this, 0, 0, 0, 0, ( int ) Width, ( int ) Height );
 
-//        Dispose();  // ??????
+        Dispose();  // ??????
 
         this.Width        = pixmap.Width;
         this.Height       = pixmap.Height;
@@ -329,6 +343,7 @@ public partial class Gdx2DPixmap : IDisposable
 //    }
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Sets this pixmaps blending value.
@@ -342,6 +357,10 @@ public partial class Gdx2DPixmap : IDisposable
         };
     }
 
+    /// <summary>
+    /// Sets this pixmaps scaling value.
+    /// </summary>
+    /// <param name="scale"></param>
     //TODO: Why is this not a float?
     public void SetScale( int scale )
     {
@@ -351,6 +370,7 @@ public partial class Gdx2DPixmap : IDisposable
         };
     }
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
