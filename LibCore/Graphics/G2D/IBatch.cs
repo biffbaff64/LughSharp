@@ -197,7 +197,7 @@ public interface IBatch : IDisposable
                Point2D origin,
                Point2D scale,
                float rotation,
-               Rectangle src,
+               GRect src,
                bool flipX,
                bool flipY );
 
@@ -218,7 +218,7 @@ public interface IBatch : IDisposable
     /// <param name="flipY"> whether to flip the sprite vertically </param>
     void Draw( Texture texture,
                GRect region,
-               Rectangle src,
+               GRect src,
                bool flipX,
                bool flipY );
 
@@ -233,7 +233,7 @@ public interface IBatch : IDisposable
     /// <param name="src">
     /// the x &amp; y coordinates in texel space, and source width &amp; height in texels.
     /// </param>
-    void Draw( Texture texture, float x, float y, Rectangle src );
+    void Draw( Texture texture, float x, float y, GRect src );
 
     /// <summary>
     /// Draws a rectangle with the bottom left corner at x,y having the given width and height
@@ -264,7 +264,7 @@ public interface IBatch : IDisposable
     /// Draws a rectangle with the bottom left corner at x,y and stretching the region
     /// to cover the given width and height.
     /// </summary>
-    void Draw( Texture texture, Point loc, Size size );
+    void Draw( Texture texture, float locX, float locY, int width, int height );
 
     /// <summary>
     /// Draws a rectangle using the given vertices. There must be 4 vertices, each made

@@ -25,18 +25,9 @@
 namespace LughSharp.LibCore.Graphics.Playground;
 
 [PublicAPI]
-public class ImageBase : IImage
+public class PixmapDataTests
 {
-    public int Width  { get; set;  }
-    public int Height { get; set;  }
-
-    public ref byte this[ int index ] => ref _pixelData[ index ];
-
-    public ref byte this[ int x, int y ] => ref _pixelData[ ( y * Width ) + x ];
-
-    // ------------------------------------------------------------------------
-    
-    private byte[] _pixelData = null!;
-    
-    // ------------------------------------------------------------------------
+    public static void ValidateData( Gdx2DPixmap.PixmapDataStruct pixmapDef )
+    {
+    }
 }

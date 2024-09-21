@@ -22,7 +22,7 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Graphics.FutureAdditions;
+namespace LughSharp.LibCore.Graphics.Playground;
 
 [PublicAPI]
 public class PixelType
@@ -36,21 +36,21 @@ public class PixelType
 
     public uint BGR888()
     {
-        return ( uint ) ( B << 16 | ( G << 8 ) | R );
+        return ( uint ) ( ( B << 16 ) | ( G << 8 ) | R );
     }
 
     public uint BGRA8888()
     {
-        return ( uint ) ( B << 24 | ( G << 26 ) | ( R << 8 ) | A );
+        return ( uint ) ( ( B << 24 ) | ( G << 26 ) | ( R << 8 ) | A );
     }
 
     public uint RGB888()
     {
-        return ( uint ) ( R << 16 | ( G << 8 ) | B );
+        return ( uint ) ( ( R << 16 ) | ( G << 8 ) | B );
     }
 
     public uint RGBA8888()
     {
-        return ( uint ) ( R << 24 | ( G << 26 ) | ( B << 8 ) | A );
+        return ( uint ) ( ( R << 24 ) | ( G << 26 ) | ( B << 8 ) | A );
     }
 }

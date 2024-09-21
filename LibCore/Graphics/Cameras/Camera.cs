@@ -39,14 +39,14 @@ public abstract class Camera
 
     private readonly Ray     _ray    = new( new Vector3(), new Vector3() );
     private readonly Vector3 _tmpVec = new();
-    
+
     // ------------------------------------------------------------------------
-    
-    public           Vector3 Position       { get; set; } = new();          // the position of the camera
-    public           Vector3 Up             { get; set; } = new( 0, 1, 0 ); // the unit length up vector of the camera
-    public           Matrix4 Combined       { get; set; } = new();
-    public           float   ViewportWidth  { get; set; } = 0;
-    public           float   ViewportHeight { get; set; } = 0;
+
+    public Vector3 Position       { get; set; } = new();          // the position of the camera
+    public Vector3 Up             { get; set; } = new( 0, 1, 0 ); // the unit length up vector of the camera
+    public Matrix4 Combined       { get; set; } = new();
+    public float   ViewportWidth  { get; set; } = 0;
+    public float   ViewportHeight { get; set; } = 0;
 
     // ------------------------------------------------------------------------
 
@@ -233,7 +233,7 @@ public abstract class Camera
     /// point on the near plane, a z-coordinate of 1 will return a point on the far
     /// plane.
     /// This method allows you to specify the viewport position and dimensions in the
-    /// coordinate system expected by <see cref="IGL.GLViewport(int, int, int, int)"/>,
+    /// coordinate system expected by <see cref="GLBindings.glViewport(int, int, int, int)"/>,
     /// with the origin in the bottom left corner of the screen.
     /// </summary>
     /// <param name="screenCoords">The point in screen coordinates (origin top left)</param>

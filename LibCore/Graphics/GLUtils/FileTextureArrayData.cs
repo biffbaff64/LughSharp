@@ -154,7 +154,7 @@ public class FileTextureArrayData : ITextureArrayData
 
                 unsafe
                 {
-                    fixed ( void* ptr = &pixmap.Pixels!.BackingArray()[ 0 ] )
+                    fixed ( void* ptr = &pixmap.ByteBuffer!.BackingArray()[ 0 ] )
                     {
                         Gdx.GL.glTexSubImage3D( IGL.GL_TEXTURE_2D_ARRAY,
                                                 0,

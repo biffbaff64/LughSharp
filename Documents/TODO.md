@@ -880,6 +880,7 @@ UTILS/COLLECTIONS
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - Array<T>                       Converted, but use List<T> for most cases.
+    - IP   - IP   - ByteArray
     - DONE - DONE - DictionaryExtensions
     - DONE - DONE - DelayedRemovalList             Convert / Extend List<>
     - DONE - DONE - ListExtensions

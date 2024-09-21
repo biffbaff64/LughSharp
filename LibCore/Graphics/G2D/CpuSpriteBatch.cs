@@ -200,7 +200,7 @@ public class CpuSpriteBatch : SpriteBatch
                                Point2D origin,
                                Point2D scale,
                                float rotation,
-                               Rectangle src,
+                               GRect src,
                                bool flipX,
                                bool flipY )
     {
@@ -238,7 +238,7 @@ public class CpuSpriteBatch : SpriteBatch
     /// <inheritdoc />
     public override void Draw( Texture? texture,
                                GRect region,
-                               Rectangle src,
+                               GRect src,
                                bool flipX,
                                bool flipY )
     {
@@ -274,7 +274,7 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( Texture? texture, float x, float y, Rectangle src )
+    public override void Draw( Texture? texture, float x, float y, GRect src )
     {
         if ( texture == null )
         {
@@ -366,7 +366,7 @@ public class CpuSpriteBatch : SpriteBatch
     }
 
     /// <inheritdoc />
-    public override void Draw( Texture? texture, Point loc, Size size )
+    public override void Draw( Texture? texture, float locX, float locY, int width, int height )
     {
         if ( texture == null )
         {
@@ -376,11 +376,11 @@ public class CpuSpriteBatch : SpriteBatch
 
         if ( !_adjustNeeded )
         {
-            base.Draw( texture, loc, size );
+            base.Draw( texture, locX, locY, width, height );
         }
         else
         {
-            DrawAdjusted( texture, loc.X, loc.Y, 0, 0, size.Width, size.Height, 1, 1, 0, 0, 1, 1, 0, false, false );
+            DrawAdjusted( texture, locX, locY, 0, 0, width, height, 1, 1, 0, 0, 1, 1, 0, false, false );
         }
     }
 

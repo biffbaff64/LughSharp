@@ -58,8 +58,6 @@ public class PixmapTextureData : ITextureData
         Pixmap.Format = Format;
     }
 
-    Pixmap ITextureData.ConsumePixmap() => Pixmap;
-
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Pixmap;
 
     /// <returns>
@@ -67,6 +65,8 @@ public class PixmapTextureData : ITextureData
     /// Pixmap returned by <see cref="ITextureData.ConsumePixmap"/>
     /// </returns>
     bool ITextureData.ShouldDisposePixmap() => DisposePixmap;
+
+    Pixmap ITextureData.ConsumePixmap() => Pixmap;
 
     public int Width
     {

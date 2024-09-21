@@ -131,7 +131,7 @@ public static class PixmapIO
                 output.Write( pixmap.Height );
                 output.Write( PixmapFormat.ToGdx2DPixmapFormat( pixmap.Format ) );
 
-                var pixelBuf = pixmap.Pixels;
+                var pixelBuf = pixmap.ByteBuffer;
 
                 pixelBuf!.Position = 0;
                 pixelBuf.Limit     = pixelBuf.Capacity;
@@ -174,7 +174,7 @@ public static class PixmapIO
                 var height   = input.Read();
                 var format   = PixmapFormat.FromGdx2DPixmapFormat( input.Read() );
                 var pixmap   = new Pixmap( width, height, format );
-                var pixelBuf = pixmap.Pixels;
+                var pixelBuf = pixmap.ByteBuffer;
 
                 pixelBuf!.Position = 0;
                 pixelBuf.Limit     = pixelBuf.Capacity;
@@ -330,7 +330,7 @@ public static class PixmapIO
 
             _lastLineLen = lineLen;
 
-            var oldPosition = pixmap.Pixels.Position;
+            var oldPosition = pixmap.ByteBuffer.Position;
             var isRgba8888  = pixmap.Format == Pixmap.ColorFormat.RGBA8888;
 
             for ( int y = 0, h = pixmap.Height; y < h; y++ )
@@ -339,8 +339,8 @@ public static class PixmapIO
 
                 if ( isRgba8888 )
                 {
-                    pixmap.Pixels.Position = py * lineLen;
-                    pixmap.Pixels.Get( curLine, 0, lineLen );
+                    pixmap.ByteBuffer.Position = py * lineLen;
+                    pixmap.ByteBuffer.Get( curLine, 0, lineLen );
                 }
                 else
                 {
@@ -405,7 +405,7 @@ public static class PixmapIO
                 ( curLine, prevLine ) = ( prevLine, curLine );
             }
 
-            pixmap.Pixels.Position = oldPosition;
+            pixmap.ByteBuffer.Position = oldPosition;
 
             deflaterOutput.Finish();
             _buffer.EndChunk( dataOutput );

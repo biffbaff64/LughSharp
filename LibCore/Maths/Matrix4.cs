@@ -145,6 +145,9 @@ public class Matrix4
 
     public readonly float[] Val = new float[ 16 ];
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// Constructs an identity matrix
     /// </summary>
@@ -329,18 +332,16 @@ public class Matrix4
     /// <returns> This matrix for chaining  </returns>
     public Matrix4 Set( Vector3 position, Quaternion orientation, Vector3 scale )
     {
-        return Set(
-                   position.X,
-                   position.Y,
-                   position.Z,
-                   orientation.X,
-                   orientation.Y,
-                   orientation.Z,
-                   orientation.W,
-                   scale.X,
-                   scale.Y,
-                   scale.Z
-                  );
+        return Set( position.X,
+                    position.Y,
+                    position.Z,
+                    orientation.X,
+                    orientation.Y,
+                    orientation.Z,
+                    orientation.W,
+                    scale.X,
+                    scale.Y,
+                    scale.Z );
     }
 
     /// <summary>
@@ -561,165 +562,152 @@ public class Matrix4
     /// <exception cref="GdxRuntimeException"> if the matrix is singular (not invertible)  </exception>
     public Matrix4 Inv()
     {
-        var lDet = ( ( ( ( ( ( ( ( ( ( ( ( Val[ M30 ] * Val[ M21 ] * Val[ M12 ] * Val[ M03 ] )
-                                       - ( Val[ M20 ] * Val[ M31 ] * Val[ M12 ] * Val[ M03 ] )
-                                       - ( Val[ M30 ]
-                                         * Val[ M11 ]
-                                         * Val[ M22 ]
-                                         * Val[ M03 ] ) )
-                                     + ( Val[ M10 ] * Val[ M31 ] * Val[ M22 ] * Val[ M03 ] )
-                                     + ( Val[ M20 ] * Val[ M11 ] * Val[ M32 ] * Val[ M03 ] ) )
-                                   - ( Val[ M10 ]
-                                     * Val[ M21 ]
-                                     * Val[ M32 ]
-                                     * Val[ M03 ] )
-                                   - ( Val[ M30 ] * Val[ M21 ] * Val[ M02 ] * Val[ M13 ] ) )
-                                 + ( Val[ M20 ] * Val[ M31 ] * Val[ M02 ] * Val[ M13 ] )
-                                 + ( Val[ M30 ] * Val[ M01 ] * Val[ M22 ] * Val[ M13 ] ) )
-                               - ( Val[ M00 ] * Val[ M31 ] * Val[ M22 ] * Val[ M13 ] )
-                               - ( Val[ M20 ]
-                                 * Val[ M01 ]
-                                 * Val[ M32 ]
-                                 * Val[ M13 ] ) )
-                             + ( Val[ M00 ] * Val[ M21 ] * Val[ M32 ] * Val[ M13 ] )
-                             + ( Val[ M30 ] * Val[ M11 ] * Val[ M02 ] * Val[ M23 ] ) )
-                           - ( Val[ M10 ]
-                             * Val[ M31 ]
-                             * Val[ M02 ]
-                             * Val[ M23 ] )
-                           - ( Val[ M30 ] * Val[ M01 ] * Val[ M12 ] * Val[ M23 ] ) )
-                         + ( Val[ M00 ] * Val[ M31 ] * Val[ M12 ] * Val[ M23 ] )
-                         + ( Val[ M10 ]
-                           * Val[ M01 ]
-                           * Val[ M32 ]
-                           * Val[ M23 ] ) )
-                       - ( Val[ M00 ] * Val[ M11 ] * Val[ M32 ] * Val[ M23 ] )
-                       - ( Val[ M20 ] * Val[ M11 ] * Val[ M02 ] * Val[ M33 ] ) )
-                     + ( Val[ M10 ] * Val[ M21 ] * Val[ M02 ] * Val[ M33 ] )
-                     + ( Val[ M20 ] * Val[ M01 ] * Val[ M12 ] * Val[ M33 ] ) )
-                   - ( Val[ M00 ]
-                     * Val[ M21 ]
-                     * Val[ M12 ]
-                     * Val[ M33 ] )
-                   - ( Val[ M10 ] * Val[ M01 ] * Val[ M22 ] * Val[ M33 ] ) )
-                 + ( Val[ M00 ] * Val[ M11 ] * Val[ M22 ] * Val[ M33 ] );
+        //@formatter:off
+        var lDet = ( ( ( ( ( ( ( ( ( ( (
+              ( Val[ M30 ] * Val[ M21 ] * Val[ M12 ] * Val[ M03 ] )
+            - ( Val[ M20 ] * Val[ M31 ] * Val[ M12 ] * Val[ M03 ] )
+            - ( Val[ M30 ] * Val[ M11 ] * Val[ M22 ] * Val[ M03 ] ) )
+            + ( Val[ M10 ] * Val[ M31 ] * Val[ M22 ] * Val[ M03 ] )
+            + ( Val[ M20 ] * Val[ M11 ] * Val[ M32 ] * Val[ M03 ] ) )
+            - ( Val[ M10 ] * Val[ M21 ] * Val[ M32 ] * Val[ M03 ] )
+            - ( Val[ M30 ] * Val[ M21 ] * Val[ M02 ] * Val[ M13 ] ) )
+            + ( Val[ M20 ] * Val[ M31 ] * Val[ M02 ] * Val[ M13 ] )
+            + ( Val[ M30 ] * Val[ M01 ] * Val[ M22 ] * Val[ M13 ] ) )
+            - ( Val[ M00 ] * Val[ M31 ] * Val[ M22 ] * Val[ M13 ] )
+            - ( Val[ M20 ] * Val[ M01 ] * Val[ M32 ] * Val[ M13 ] ) )
+            + ( Val[ M00 ] * Val[ M21 ] * Val[ M32 ] * Val[ M13 ] )
+            + ( Val[ M30 ] * Val[ M11 ] * Val[ M02 ] * Val[ M23 ] ) )
+            - ( Val[ M10 ] * Val[ M31 ] * Val[ M02 ] * Val[ M23 ] )
+            - ( Val[ M30 ] * Val[ M01 ] * Val[ M12 ] * Val[ M23 ] ) )
+            + ( Val[ M00 ] * Val[ M31 ] * Val[ M12 ] * Val[ M23 ] )
+            + ( Val[ M10 ] * Val[ M01 ] * Val[ M32 ] * Val[ M23 ] ) )
+            - ( Val[ M00 ] * Val[ M11 ] * Val[ M32 ] * Val[ M23 ] )
+            - ( Val[ M20 ] * Val[ M11 ] * Val[ M02 ] * Val[ M33 ] ) )
+            + ( Val[ M10 ] * Val[ M21 ] * Val[ M02 ] * Val[ M33 ] )
+            + ( Val[ M20 ] * Val[ M01 ] * Val[ M12 ] * Val[ M33 ] ) )
+            - ( Val[ M00 ] * Val[ M21 ] * Val[ M12 ] * Val[ M33 ] )
+            - ( Val[ M10 ] * Val[ M01 ] * Val[ M22 ] * Val[ M33 ] ) )
+            + ( Val[ M00 ] * Val[ M11 ] * Val[ M22 ] * Val[ M33 ] );
+        //@formatter:on
 
         if ( lDet == 0f )
         {
             throw new GdxRuntimeException( "non-invertible matrix" );
         }
 
+        //@formatter:off
         var m00 = ( ( ( ( Val[ M12 ] * Val[ M23 ] * Val[ M31 ] )
                       - ( Val[ M13 ] * Val[ M22 ] * Val[ M31 ] ) )
-                    + ( Val[ M13 ] * Val[ M21 ] * Val[ M32 ] ) )
-                  - ( Val[ M11 ] * Val[ M23 ] * Val[ M32 ] )
-                  - ( Val[ M12 ] * Val[ M21 ] * Val[ M33 ] ) )
-                + ( Val[ M11 ] * Val[ M22 ] * Val[ M33 ] );
+                      + ( Val[ M13 ] * Val[ M21 ] * Val[ M32 ] ) )
+                      - ( Val[ M11 ] * Val[ M23 ] * Val[ M32 ] )
+                      - ( Val[ M12 ] * Val[ M21 ] * Val[ M33 ] ) )
+                      + ( Val[ M11 ] * Val[ M22 ] * Val[ M33 ] );
 
         var m01 = ( ( ( Val[ M03 ] * Val[ M22 ] * Val[ M31 ] )
                     - ( Val[ M02 ] * Val[ M23 ] * Val[ M31 ] )
                     - ( Val[ M03 ] * Val[ M21 ] * Val[ M32 ] ) )
-                  + ( Val[ M01 ] * Val[ M23 ] * Val[ M32 ] )
-                  + ( Val[ M02 ] * Val[ M21 ] * Val[ M33 ] ) )
-                - ( Val[ M01 ] * Val[ M22 ] * Val[ M33 ] );
+                    + ( Val[ M01 ] * Val[ M23 ] * Val[ M32 ] )
+                    + ( Val[ M02 ] * Val[ M21 ] * Val[ M33 ] ) )
+                    - ( Val[ M01 ] * Val[ M22 ] * Val[ M33 ] );
 
         var m02 = ( ( ( ( Val[ M02 ] * Val[ M13 ] * Val[ M31 ] )
                       - ( Val[ M03 ] * Val[ M12 ] * Val[ M31 ] ) )
-                    + ( Val[ M03 ] * Val[ M11 ] * Val[ M32 ] ) )
-                  - ( Val[ M01 ] * Val[ M13 ] * Val[ M32 ] )
-                  - ( Val[ M02 ] * Val[ M11 ] * Val[ M33 ] ) )
-                + ( Val[ M01 ] * Val[ M12 ] * Val[ M33 ] );
+                      + ( Val[ M03 ] * Val[ M11 ] * Val[ M32 ] ) )
+                      - ( Val[ M01 ] * Val[ M13 ] * Val[ M32 ] )
+                      - ( Val[ M02 ] * Val[ M11 ] * Val[ M33 ] ) )
+                      + ( Val[ M01 ] * Val[ M12 ] * Val[ M33 ] );
 
         var m03 = ( ( ( Val[ M03 ] * Val[ M12 ] * Val[ M21 ] )
                     - ( Val[ M02 ] * Val[ M13 ] * Val[ M21 ] )
                     - ( Val[ M03 ] * Val[ M11 ] * Val[ M22 ] ) )
-                  + ( Val[ M01 ] * Val[ M13 ] * Val[ M22 ] )
-                  + ( Val[ M02 ] * Val[ M11 ] * Val[ M23 ] ) )
-                - ( Val[ M01 ] * Val[ M12 ] * Val[ M23 ] );
+                    + ( Val[ M01 ] * Val[ M13 ] * Val[ M22 ] )
+                    + ( Val[ M02 ] * Val[ M11 ] * Val[ M23 ] ) )
+                    - ( Val[ M01 ] * Val[ M12 ] * Val[ M23 ] );
 
         var m10 = ( ( ( Val[ M13 ] * Val[ M22 ] * Val[ M30 ] )
                     - ( Val[ M12 ] * Val[ M23 ] * Val[ M30 ] )
                     - ( Val[ M13 ] * Val[ M20 ] * Val[ M32 ] ) )
-                  + ( Val[ M10 ] * Val[ M23 ] * Val[ M32 ] )
-                  + ( Val[ M12 ] * Val[ M20 ] * Val[ M33 ] ) )
-                - ( Val[ M10 ] * Val[ M22 ] * Val[ M33 ] );
+                    + ( Val[ M10 ] * Val[ M23 ] * Val[ M32 ] )
+                    + ( Val[ M12 ] * Val[ M20 ] * Val[ M33 ] ) )
+                    - ( Val[ M10 ] * Val[ M22 ] * Val[ M33 ] );
 
         var m11 = ( ( ( ( Val[ M02 ] * Val[ M23 ] * Val[ M30 ] )
                       - ( Val[ M03 ] * Val[ M22 ] * Val[ M30 ] ) )
-                    + ( Val[ M03 ] * Val[ M20 ] * Val[ M32 ] ) )
-                  - ( Val[ M00 ] * Val[ M23 ] * Val[ M32 ] )
-                  - ( Val[ M02 ] * Val[ M20 ] * Val[ M33 ] ) )
-                + ( Val[ M00 ] * Val[ M22 ] * Val[ M33 ] );
+                      + ( Val[ M03 ] * Val[ M20 ] * Val[ M32 ] ) )
+                      - ( Val[ M00 ] * Val[ M23 ] * Val[ M32 ] )
+                      - ( Val[ M02 ] * Val[ M20 ] * Val[ M33 ] ) )
+                      + ( Val[ M00 ] * Val[ M22 ] * Val[ M33 ] );
 
         var m12 = ( ( ( Val[ M03 ] * Val[ M12 ] * Val[ M30 ] )
                     - ( Val[ M02 ] * Val[ M13 ] * Val[ M30 ] )
                     - ( Val[ M03 ] * Val[ M10 ] * Val[ M32 ] ) )
-                  + ( Val[ M00 ] * Val[ M13 ] * Val[ M32 ] )
-                  + ( Val[ M02 ] * Val[ M10 ] * Val[ M33 ] ) )
-                - ( Val[ M00 ] * Val[ M12 ] * Val[ M33 ] );
+                    + ( Val[ M00 ] * Val[ M13 ] * Val[ M32 ] )
+                    + ( Val[ M02 ] * Val[ M10 ] * Val[ M33 ] ) )
+                    - ( Val[ M00 ] * Val[ M12 ] * Val[ M33 ] );
 
         var m13 = ( ( ( ( Val[ M02 ] * Val[ M13 ] * Val[ M20 ] )
                       - ( Val[ M03 ] * Val[ M12 ] * Val[ M20 ] ) )
-                    + ( Val[ M03 ] * Val[ M10 ] * Val[ M22 ] ) )
-                  - ( Val[ M00 ] * Val[ M13 ] * Val[ M22 ] )
-                  - ( Val[ M02 ] * Val[ M10 ] * Val[ M23 ] ) )
-                + ( Val[ M00 ] * Val[ M12 ] * Val[ M23 ] );
+                      + ( Val[ M03 ] * Val[ M10 ] * Val[ M22 ] ) )
+                      - ( Val[ M00 ] * Val[ M13 ] * Val[ M22 ] )
+                      - ( Val[ M02 ] * Val[ M10 ] * Val[ M23 ] ) )
+                      + ( Val[ M00 ] * Val[ M12 ] * Val[ M23 ] );
 
         var m20 = ( ( ( ( Val[ M11 ] * Val[ M23 ] * Val[ M30 ] )
                       - ( Val[ M13 ] * Val[ M21 ] * Val[ M30 ] ) )
-                    + ( Val[ M13 ] * Val[ M20 ] * Val[ M31 ] ) )
-                  - ( Val[ M10 ] * Val[ M23 ] * Val[ M31 ] )
-                  - ( Val[ M11 ] * Val[ M20 ] * Val[ M33 ] ) )
-                + ( Val[ M10 ] * Val[ M21 ] * Val[ M33 ] );
+                      + ( Val[ M13 ] * Val[ M20 ] * Val[ M31 ] ) )
+                      - ( Val[ M10 ] * Val[ M23 ] * Val[ M31 ] )
+                      - ( Val[ M11 ] * Val[ M20 ] * Val[ M33 ] ) )
+                      + ( Val[ M10 ] * Val[ M21 ] * Val[ M33 ] );
 
         var m21 = ( ( ( Val[ M03 ] * Val[ M21 ] * Val[ M30 ] )
                     - ( Val[ M01 ] * Val[ M23 ] * Val[ M30 ] )
                     - ( Val[ M03 ] * Val[ M20 ] * Val[ M31 ] ) )
-                  + ( Val[ M00 ] * Val[ M23 ] * Val[ M31 ] )
-                  + ( Val[ M01 ] * Val[ M20 ] * Val[ M33 ] ) )
-                - ( Val[ M00 ] * Val[ M21 ] * Val[ M33 ] );
+                    + ( Val[ M00 ] * Val[ M23 ] * Val[ M31 ] )
+                    + ( Val[ M01 ] * Val[ M20 ] * Val[ M33 ] ) )
+                    - ( Val[ M00 ] * Val[ M21 ] * Val[ M33 ] );
 
         var m22 = ( ( ( ( Val[ M01 ] * Val[ M13 ] * Val[ M30 ] )
                       - ( Val[ M03 ] * Val[ M11 ] * Val[ M30 ] ) )
-                    + ( Val[ M03 ] * Val[ M10 ] * Val[ M31 ] ) )
-                  - ( Val[ M00 ] * Val[ M13 ] * Val[ M31 ] )
-                  - ( Val[ M01 ] * Val[ M10 ] * Val[ M33 ] ) )
-                + ( Val[ M00 ] * Val[ M11 ] * Val[ M33 ] );
+                      + ( Val[ M03 ] * Val[ M10 ] * Val[ M31 ] ) )
+                      - ( Val[ M00 ] * Val[ M13 ] * Val[ M31 ] )
+                      - ( Val[ M01 ] * Val[ M10 ] * Val[ M33 ] ) )
+                      + ( Val[ M00 ] * Val[ M11 ] * Val[ M33 ] );
 
         var m23 = ( ( ( Val[ M03 ] * Val[ M11 ] * Val[ M20 ] )
                     - ( Val[ M01 ] * Val[ M13 ] * Val[ M20 ] )
                     - ( Val[ M03 ] * Val[ M10 ] * Val[ M21 ] ) )
-                  + ( Val[ M00 ] * Val[ M13 ] * Val[ M21 ] )
-                  + ( Val[ M01 ] * Val[ M10 ] * Val[ M23 ] ) )
-                - ( Val[ M00 ] * Val[ M11 ] * Val[ M23 ] );
+                    + ( Val[ M00 ] * Val[ M13 ] * Val[ M21 ] )
+                    + ( Val[ M01 ] * Val[ M10 ] * Val[ M23 ] ) )
+                    - ( Val[ M00 ] * Val[ M11 ] * Val[ M23 ] );
 
         var m30 = ( ( ( Val[ M12 ] * Val[ M21 ] * Val[ M30 ] )
                     - ( Val[ M11 ] * Val[ M22 ] * Val[ M30 ] )
                     - ( Val[ M12 ] * Val[ M20 ] * Val[ M31 ] ) )
-                  + ( Val[ M10 ] * Val[ M22 ] * Val[ M31 ] )
-                  + ( Val[ M11 ] * Val[ M20 ] * Val[ M32 ] ) )
-                - ( Val[ M10 ] * Val[ M21 ] * Val[ M32 ] );
+                    + ( Val[ M10 ] * Val[ M22 ] * Val[ M31 ] )
+                    + ( Val[ M11 ] * Val[ M20 ] * Val[ M32 ] ) )
+                    - ( Val[ M10 ] * Val[ M21 ] * Val[ M32 ] );
 
         var m31 = ( ( ( ( Val[ M01 ] * Val[ M22 ] * Val[ M30 ] )
                       - ( Val[ M02 ] * Val[ M21 ] * Val[ M30 ] ) )
-                    + ( Val[ M02 ] * Val[ M20 ] * Val[ M31 ] ) )
-                  - ( Val[ M00 ] * Val[ M22 ] * Val[ M31 ] )
-                  - ( Val[ M01 ] * Val[ M20 ] * Val[ M32 ] ) )
-                + ( Val[ M00 ] * Val[ M21 ] * Val[ M32 ] );
+                     + ( Val[ M02 ] * Val[ M20 ] * Val[ M31 ] ) )
+                     - ( Val[ M00 ] * Val[ M22 ] * Val[ M31 ] )
+                     - ( Val[ M01 ] * Val[ M20 ] * Val[ M32 ] ) )
+                     + ( Val[ M00 ] * Val[ M21 ] * Val[ M32 ] );
 
         var m32 = ( ( ( Val[ M02 ] * Val[ M11 ] * Val[ M30 ] )
                     - ( Val[ M01 ] * Val[ M12 ] * Val[ M30 ] )
                     - ( Val[ M02 ] * Val[ M10 ] * Val[ M31 ] ) )
-                  + ( Val[ M00 ] * Val[ M12 ] * Val[ M31 ] )
-                  + ( Val[ M01 ] * Val[ M10 ] * Val[ M32 ] ) )
-                - ( Val[ M00 ] * Val[ M11 ] * Val[ M32 ] );
+                    + ( Val[ M00 ] * Val[ M12 ] * Val[ M31 ] )
+                    + ( Val[ M01 ] * Val[ M10 ] * Val[ M32 ] ) )
+                    - ( Val[ M00 ] * Val[ M11 ] * Val[ M32 ] );
 
         var m33 = ( ( ( ( Val[ M01 ] * Val[ M12 ] * Val[ M20 ] )
                       - ( Val[ M02 ] * Val[ M11 ] * Val[ M20 ] ) )
-                    + ( Val[ M02 ] * Val[ M10 ] * Val[ M21 ] ) )
-                  - ( Val[ M00 ] * Val[ M12 ] * Val[ M21 ] )
-                  - ( Val[ M01 ] * Val[ M10 ] * Val[ M22 ] ) )
-                + ( Val[ M00 ] * Val[ M11 ] * Val[ M22 ] );
+                      + ( Val[ M02 ] * Val[ M10 ] * Val[ M21 ] ) )
+                      - ( Val[ M00 ] * Val[ M12 ] * Val[ M21 ] )
+                      - ( Val[ M01 ] * Val[ M10 ] * Val[ M22 ] ) )
+                      + ( Val[ M00 ] * Val[ M11 ] * Val[ M22 ] );
+        //@formatter:on
 
         var invDet = 1.0f / lDet;
 
@@ -745,61 +733,46 @@ public class Matrix4
 
     public float Det()
     {
-        return ( ( ( ( ( ( ( ( ( ( ( ( Val[ M30 ] * Val[ M21 ] * Val[ M12 ] * Val[ M03 ] )
-                                   - ( Val[ M20 ] * Val[ M31 ] * Val[ M12 ] * Val[ M03 ] )
-                                   - ( Val[ M30 ]
-                                     * Val[ M11 ]
-                                     * Val[ M22 ]
-                                     * Val[ M03 ] ) )
-                                 + ( Val[ M10 ] * Val[ M31 ] * Val[ M22 ] * Val[ M03 ] )
-                                 + ( Val[ M20 ] * Val[ M11 ] * Val[ M32 ] * Val[ M03 ] ) )
-                               - ( Val[ M10 ]
-                                 * Val[ M21 ]
-                                 * Val[ M32 ]
-                                 * Val[ M03 ] )
-                               - ( Val[ M30 ] * Val[ M21 ] * Val[ M02 ] * Val[ M13 ] ) )
-                             + ( Val[ M20 ] * Val[ M31 ] * Val[ M02 ] * Val[ M13 ] )
-                             + ( Val[ M30 ] * Val[ M01 ] * Val[ M22 ] * Val[ M13 ] ) )
-                           - ( Val[ M00 ] * Val[ M31 ] * Val[ M22 ] * Val[ M13 ] )
-                           - ( Val[ M20 ]
-                             * Val[ M01 ]
-                             * Val[ M32 ]
-                             * Val[ M13 ] ) )
-                         + ( Val[ M00 ] * Val[ M21 ] * Val[ M32 ] * Val[ M13 ] )
-                         + ( Val[ M30 ] * Val[ M11 ] * Val[ M02 ] * Val[ M23 ] ) )
-                       - ( Val[ M10 ]
-                         * Val[ M31 ]
-                         * Val[ M02 ]
-                         * Val[ M23 ] )
-                       - ( Val[ M30 ] * Val[ M01 ] * Val[ M12 ] * Val[ M23 ] ) )
-                     + ( Val[ M00 ] * Val[ M31 ] * Val[ M12 ] * Val[ M23 ] )
-                     + ( Val[ M10 ]
-                       * Val[ M01 ]
-                       * Val[ M32 ]
-                       * Val[ M23 ] ) )
-                   - ( Val[ M00 ] * Val[ M11 ] * Val[ M32 ] * Val[ M23 ] )
-                   - ( Val[ M20 ] * Val[ M11 ] * Val[ M02 ] * Val[ M33 ] ) )
-                 + ( Val[ M10 ] * Val[ M21 ] * Val[ M02 ] * Val[ M33 ] )
-                 + ( Val[ M20 ] * Val[ M01 ] * Val[ M12 ] * Val[ M33 ] ) )
-               - ( Val[ M00 ]
-                 * Val[ M21 ]
-                 * Val[ M12 ]
-                 * Val[ M33 ] )
-               - ( Val[ M10 ] * Val[ M01 ] * Val[ M22 ] * Val[ M33 ] ) )
-             + ( Val[ M00 ] * Val[ M11 ] * Val[ M22 ] * Val[ M33 ] );
+        //@formatter:off
+        return ( ( ( ( ( ( ( ( ( ( (
+                  ( Val[ M30 ] * Val[ M21 ] * Val[ M12 ] * Val[ M03 ] )
+                - ( Val[ M20 ] * Val[ M31 ] * Val[ M12 ] * Val[ M03 ] )
+                - ( Val[ M30 ] * Val[ M11 ] * Val[ M22 ] * Val[ M03 ] ) )
+                + ( Val[ M10 ] * Val[ M31 ] * Val[ M22 ] * Val[ M03 ] )
+                + ( Val[ M20 ] * Val[ M11 ] * Val[ M32 ] * Val[ M03 ] ) )
+                - ( Val[ M10 ] * Val[ M21 ] * Val[ M32 ] * Val[ M03 ] )
+                - ( Val[ M30 ] * Val[ M21 ] * Val[ M02 ] * Val[ M13 ] ) )
+                + ( Val[ M20 ] * Val[ M31 ] * Val[ M02 ] * Val[ M13 ] )
+                + ( Val[ M30 ] * Val[ M01 ] * Val[ M22 ] * Val[ M13 ] ) )
+                - ( Val[ M00 ] * Val[ M31 ] * Val[ M22 ] * Val[ M13 ] )
+                - ( Val[ M20 ] * Val[ M01 ] * Val[ M32 ] * Val[ M13 ] ) )
+                + ( Val[ M00 ] * Val[ M21 ] * Val[ M32 ] * Val[ M13 ] )
+                + ( Val[ M30 ] * Val[ M11 ] * Val[ M02 ] * Val[ M23 ] ) )
+                - ( Val[ M10 ] * Val[ M31 ] * Val[ M02 ] * Val[ M23 ] )
+                - ( Val[ M30 ] * Val[ M01 ] * Val[ M12 ] * Val[ M23 ] ) )
+                + ( Val[ M00 ] * Val[ M31 ] * Val[ M12 ] * Val[ M23 ] )
+                + ( Val[ M10 ] * Val[ M01 ] * Val[ M32 ] * Val[ M23 ] ) )
+                - ( Val[ M00 ] * Val[ M11 ] * Val[ M32 ] * Val[ M23 ] )
+                - ( Val[ M20 ] * Val[ M11 ] * Val[ M02 ] * Val[ M33 ] ) )
+                + ( Val[ M10 ] * Val[ M21 ] * Val[ M02 ] * Val[ M33 ] )
+                + ( Val[ M20 ] * Val[ M01 ] * Val[ M12 ] * Val[ M33 ] ) )
+                - ( Val[ M00 ] * Val[ M21 ] * Val[ M12 ] * Val[ M33 ] )
+                - ( Val[ M10 ] * Val[ M01 ] * Val[ M22 ] * Val[ M33 ] ) )
+                + ( Val[ M00 ] * Val[ M11 ] * Val[ M22 ] * Val[ M33 ] );
+        //@formatter:on
     }
 
     /// <returns> The determinant of the 3x3 upper left matrix </returns>
     public float Det3X3()
     {
+        //@formatter:off
         return ( ( Val[ M00 ] * Val[ M11 ] * Val[ M22 ] )
                + ( Val[ M01 ] * Val[ M12 ] * Val[ M20 ] )
                + ( Val[ M02 ] * Val[ M10 ] * Val[ M21 ] ) )
-             - ( Val[ M00 ]
-               * Val[ M12 ]
-               * Val[ M21 ] )
-             - ( Val[ M01 ] * Val[ M10 ] * Val[ M22 ] )
-             - ( Val[ M02 ] * Val[ M11 ] * Val[ M20 ] );
+               - ( Val[ M00 ] * Val[ M12 ] * Val[ M21 ] )
+               - ( Val[ M01 ] * Val[ M10 ] * Val[ M22 ] )
+               - ( Val[ M02 ] * Val[ M11 ] * Val[ M20 ] );
+        //@formatter:on
     }
 
     /// <summary>
@@ -1647,10 +1620,10 @@ public class Matrix4
 
     public override string ToString()
     {
-        return $"[{Val[ M00 ]}|{Val[ M01 ]}|{Val[ M02 ]}|{Val[ M03 ]}]\n[{Val[ M10 ]}"
-             + $"|{Val[ M11 ]}|{Val[ M12 ]}|{Val[ M13 ]}]\n[{Val[ M20 ]}|{Val[ M21 ]}"
-             + $"|{Val[ M22 ]}|{Val[ M23 ]}]\n[{Val[ M30 ]}|{Val[ M31 ]}|{Val[ M32 ]}"
-             + $"|{Val[ M33 ]}]\n";
+        return $"[{Val[ M00 ]}|{Val[ M01 ]}|{Val[ M02 ]}|{Val[ M03 ]}]\n" +
+               $"[{Val[ M10 ]}|{Val[ M11 ]}|{Val[ M12 ]}|{Val[ M13 ]}]\n" +
+               $"[{Val[ M20 ]}|{Val[ M21 ]}|{Val[ M22 ]}|{Val[ M23 ]}]\n" +
+               $"[{Val[ M30 ]}|{Val[ M31 ]}|{Val[ M32 ]}|{Val[ M33 ]}]\n";
     }
 
     /// <summary>
@@ -1896,17 +1869,25 @@ public class Matrix4
     /// <param name="vec"> the vector.  </param>
     public static void Prj( float[] mat, float[] vec )
     {
-        var invW = 1.0f
-                 / ( ( vec[ 0 ] * mat[ M30 ] ) + ( vec[ 1 ] * mat[ M31 ] ) + ( vec[ 2 ] * mat[ M32 ] ) + mat[ M33 ] );
+        var invW = 1.0f / ( ( vec[ 0 ] * mat[ M30 ] )
+                          + ( vec[ 1 ] * mat[ M31 ] )
+                          + ( vec[ 2 ] * mat[ M32 ] )
+                          + mat[ M33 ] );
 
-        var x = ( ( vec[ 0 ] * mat[ M00 ] ) + ( vec[ 1 ] * mat[ M01 ] ) + ( vec[ 2 ] * mat[ M02 ] ) + mat[ M03 ] )
-              * invW;
+        var x = ( ( vec[ 0 ] * mat[ M00 ] )
+                + ( vec[ 1 ] * mat[ M01 ] )
+                + ( vec[ 2 ] * mat[ M02 ] )
+                + mat[ M03 ] ) * invW;
 
-        var y = ( ( vec[ 0 ] * mat[ M10 ] ) + ( vec[ 1 ] * mat[ M11 ] ) + ( vec[ 2 ] * mat[ M12 ] ) + mat[ M13 ] )
-              * invW;
+        var y = ( ( vec[ 0 ] * mat[ M10 ] )
+                + ( vec[ 1 ] * mat[ M11 ] )
+                + ( vec[ 2 ] * mat[ M12 ] )
+                + mat[ M13 ] ) * invW;
 
-        var z = ( ( vec[ 0 ] * mat[ M20 ] ) + ( vec[ 1 ] * mat[ M21 ] ) + ( vec[ 2 ] * mat[ M22 ] ) + mat[ M23 ] )
-              * invW;
+        var z = ( ( vec[ 0 ] * mat[ M20 ] )
+                + ( vec[ 1 ] * mat[ M21 ] )
+                + ( vec[ 2 ] * mat[ M22 ] )
+                + mat[ M23 ] ) * invW;
 
         vec[ 0 ] = x;
         vec[ 1 ] = y;
@@ -1948,117 +1929,119 @@ public class Matrix4
             return false;
         }
 
+        //@formatter:off
         var m00 = ( ( ( ( values[ M12 ] * values[ M23 ] * values[ M31 ] )
                       - ( values[ M13 ] * values[ M22 ] * values[ M31 ] ) )
-                    + ( values[ M13 ] * values[ M21 ] * values[ M32 ] ) )
-                  - ( values[ M11 ] * values[ M23 ] * values[ M32 ] )
-                  - ( values[ M12 ] * values[ M21 ] * values[ M33 ] ) )
-                + ( values[ M11 ] * values[ M22 ] * values[ M33 ] );
+                      + ( values[ M13 ] * values[ M21 ] * values[ M32 ] ) )
+                      - ( values[ M11 ] * values[ M23 ] * values[ M32 ] )
+                      - ( values[ M12 ] * values[ M21 ] * values[ M33 ] ) )
+                      + ( values[ M11 ] * values[ M22 ] * values[ M33 ] );
 
         var m01 = ( ( ( values[ M03 ] * values[ M22 ] * values[ M31 ] )
                     - ( values[ M02 ] * values[ M23 ] * values[ M31 ] )
                     - ( values[ M03 ] * values[ M21 ] * values[ M32 ] ) )
-                  + ( values[ M01 ] * values[ M23 ] * values[ M32 ] )
-                  + ( values[ M02 ] * values[ M21 ] * values[ M33 ] ) )
-                - ( values[ M01 ] * values[ M22 ] * values[ M33 ] );
+                    + ( values[ M01 ] * values[ M23 ] * values[ M32 ] )
+                    + ( values[ M02 ] * values[ M21 ] * values[ M33 ] ) )
+                    - ( values[ M01 ] * values[ M22 ] * values[ M33 ] );
 
         var m02 = ( ( ( ( values[ M02 ] * values[ M13 ] * values[ M31 ] )
                       - ( values[ M03 ] * values[ M12 ] * values[ M31 ] ) )
-                    + ( values[ M03 ] * values[ M11 ] * values[ M32 ] ) )
-                  - ( values[ M01 ] * values[ M13 ] * values[ M32 ] )
-                  - ( values[ M02 ] * values[ M11 ] * values[ M33 ] ) )
-                + ( values[ M01 ] * values[ M12 ] * values[ M33 ] );
+                      + ( values[ M03 ] * values[ M11 ] * values[ M32 ] ) )
+                      - ( values[ M01 ] * values[ M13 ] * values[ M32 ] )
+                      - ( values[ M02 ] * values[ M11 ] * values[ M33 ] ) )
+                      + ( values[ M01 ] * values[ M12 ] * values[ M33 ] );
 
         var m03 = ( ( ( values[ M03 ] * values[ M12 ] * values[ M21 ] )
                     - ( values[ M02 ] * values[ M13 ] * values[ M21 ] )
                     - ( values[ M03 ] * values[ M11 ] * values[ M22 ] ) )
-                  + ( values[ M01 ] * values[ M13 ] * values[ M22 ] )
-                  + ( values[ M02 ] * values[ M11 ] * values[ M23 ] ) )
-                - ( values[ M01 ] * values[ M12 ] * values[ M23 ] );
+                    + ( values[ M01 ] * values[ M13 ] * values[ M22 ] )
+                    + ( values[ M02 ] * values[ M11 ] * values[ M23 ] ) )
+                    - ( values[ M01 ] * values[ M12 ] * values[ M23 ] );
 
         var m10 = ( ( ( values[ M13 ] * values[ M22 ] * values[ M30 ] )
                     - ( values[ M12 ] * values[ M23 ] * values[ M30 ] )
                     - ( values[ M13 ] * values[ M20 ] * values[ M32 ] ) )
-                  + ( values[ M10 ] * values[ M23 ] * values[ M32 ] )
-                  + ( values[ M12 ] * values[ M20 ] * values[ M33 ] ) )
-                - ( values[ M10 ] * values[ M22 ] * values[ M33 ] );
+                    + ( values[ M10 ] * values[ M23 ] * values[ M32 ] )
+                    + ( values[ M12 ] * values[ M20 ] * values[ M33 ] ) )
+                    - ( values[ M10 ] * values[ M22 ] * values[ M33 ] );
 
         var m11 = ( ( ( ( values[ M02 ] * values[ M23 ] * values[ M30 ] )
                       - ( values[ M03 ] * values[ M22 ] * values[ M30 ] ) )
-                    + ( values[ M03 ] * values[ M20 ] * values[ M32 ] ) )
-                  - ( values[ M00 ] * values[ M23 ] * values[ M32 ] )
-                  - ( values[ M02 ] * values[ M20 ] * values[ M33 ] ) )
-                + ( values[ M00 ] * values[ M22 ] * values[ M33 ] );
+                      + ( values[ M03 ] * values[ M20 ] * values[ M32 ] ) )
+                      - ( values[ M00 ] * values[ M23 ] * values[ M32 ] )
+                      - ( values[ M02 ] * values[ M20 ] * values[ M33 ] ) )
+                      + ( values[ M00 ] * values[ M22 ] * values[ M33 ] );
 
         var m12 = ( ( ( values[ M03 ] * values[ M12 ] * values[ M30 ] )
                     - ( values[ M02 ] * values[ M13 ] * values[ M30 ] )
                     - ( values[ M03 ] * values[ M10 ] * values[ M32 ] ) )
-                  + ( values[ M00 ] * values[ M13 ] * values[ M32 ] )
-                  + ( values[ M02 ] * values[ M10 ] * values[ M33 ] ) )
-                - ( values[ M00 ] * values[ M12 ] * values[ M33 ] );
+                    + ( values[ M00 ] * values[ M13 ] * values[ M32 ] )
+                    + ( values[ M02 ] * values[ M10 ] * values[ M33 ] ) )
+                    - ( values[ M00 ] * values[ M12 ] * values[ M33 ] );
 
         var m13 = ( ( ( ( values[ M02 ] * values[ M13 ] * values[ M20 ] )
                       - ( values[ M03 ] * values[ M12 ] * values[ M20 ] ) )
-                    + ( values[ M03 ] * values[ M10 ] * values[ M22 ] ) )
-                  - ( values[ M00 ] * values[ M13 ] * values[ M22 ] )
-                  - ( values[ M02 ] * values[ M10 ] * values[ M23 ] ) )
-                + ( values[ M00 ] * values[ M12 ] * values[ M23 ] );
+                      + ( values[ M03 ] * values[ M10 ] * values[ M22 ] ) )
+                      - ( values[ M00 ] * values[ M13 ] * values[ M22 ] )
+                      - ( values[ M02 ] * values[ M10 ] * values[ M23 ] ) )
+                      + ( values[ M00 ] * values[ M12 ] * values[ M23 ] );
 
         var m20 = ( ( ( ( values[ M11 ] * values[ M23 ] * values[ M30 ] )
                       - ( values[ M13 ] * values[ M21 ] * values[ M30 ] ) )
-                    + ( values[ M13 ] * values[ M20 ] * values[ M31 ] ) )
-                  - ( values[ M10 ] * values[ M23 ] * values[ M31 ] )
-                  - ( values[ M11 ] * values[ M20 ] * values[ M33 ] ) )
-                + ( values[ M10 ] * values[ M21 ] * values[ M33 ] );
+                      + ( values[ M13 ] * values[ M20 ] * values[ M31 ] ) )
+                      - ( values[ M10 ] * values[ M23 ] * values[ M31 ] )
+                      - ( values[ M11 ] * values[ M20 ] * values[ M33 ] ) )
+                      + ( values[ M10 ] * values[ M21 ] * values[ M33 ] );
 
         var m21 = ( ( ( values[ M03 ] * values[ M21 ] * values[ M30 ] )
                     - ( values[ M01 ] * values[ M23 ] * values[ M30 ] )
                     - ( values[ M03 ] * values[ M20 ] * values[ M31 ] ) )
-                  + ( values[ M00 ] * values[ M23 ] * values[ M31 ] )
-                  + ( values[ M01 ] * values[ M20 ] * values[ M33 ] ) )
-                - ( values[ M00 ] * values[ M21 ] * values[ M33 ] );
+                    + ( values[ M00 ] * values[ M23 ] * values[ M31 ] )
+                    + ( values[ M01 ] * values[ M20 ] * values[ M33 ] ) )
+                    - ( values[ M00 ] * values[ M21 ] * values[ M33 ] );
 
         var m22 = ( ( ( ( values[ M01 ] * values[ M13 ] * values[ M30 ] )
                       - ( values[ M03 ] * values[ M11 ] * values[ M30 ] ) )
-                    + ( values[ M03 ] * values[ M10 ] * values[ M31 ] ) )
-                  - ( values[ M00 ] * values[ M13 ] * values[ M31 ] )
-                  - ( values[ M01 ] * values[ M10 ] * values[ M33 ] ) )
-                + ( values[ M00 ] * values[ M11 ] * values[ M33 ] );
+                      + ( values[ M03 ] * values[ M10 ] * values[ M31 ] ) )
+                      - ( values[ M00 ] * values[ M13 ] * values[ M31 ] )
+                      - ( values[ M01 ] * values[ M10 ] * values[ M33 ] ) )
+                      + ( values[ M00 ] * values[ M11 ] * values[ M33 ] );
 
         var m23 = ( ( ( values[ M03 ] * values[ M11 ] * values[ M20 ] )
                     - ( values[ M01 ] * values[ M13 ] * values[ M20 ] )
                     - ( values[ M03 ] * values[ M10 ] * values[ M21 ] ) )
-                  + ( values[ M00 ] * values[ M13 ] * values[ M21 ] )
-                  + ( values[ M01 ] * values[ M10 ] * values[ M23 ] ) )
-                - ( values[ M00 ] * values[ M11 ] * values[ M23 ] );
+                    + ( values[ M00 ] * values[ M13 ] * values[ M21 ] )
+                    + ( values[ M01 ] * values[ M10 ] * values[ M23 ] ) )
+                    - ( values[ M00 ] * values[ M11 ] * values[ M23 ] );
 
         var m30 = ( ( ( values[ M12 ] * values[ M21 ] * values[ M30 ] )
                     - ( values[ M11 ] * values[ M22 ] * values[ M30 ] )
                     - ( values[ M12 ] * values[ M20 ] * values[ M31 ] ) )
-                  + ( values[ M10 ] * values[ M22 ] * values[ M31 ] )
-                  + ( values[ M11 ] * values[ M20 ] * values[ M32 ] ) )
-                - ( values[ M10 ] * values[ M21 ] * values[ M32 ] );
+                    + ( values[ M10 ] * values[ M22 ] * values[ M31 ] )
+                    + ( values[ M11 ] * values[ M20 ] * values[ M32 ] ) )
+                    - ( values[ M10 ] * values[ M21 ] * values[ M32 ] );
 
         var m31 = ( ( ( ( values[ M01 ] * values[ M22 ] * values[ M30 ] )
                       - ( values[ M02 ] * values[ M21 ] * values[ M30 ] ) )
-                    + ( values[ M02 ] * values[ M20 ] * values[ M31 ] ) )
-                  - ( values[ M00 ] * values[ M22 ] * values[ M31 ] )
-                  - ( values[ M01 ] * values[ M20 ] * values[ M32 ] ) )
-                + ( values[ M00 ] * values[ M21 ] * values[ M32 ] );
+                      + ( values[ M02 ] * values[ M20 ] * values[ M31 ] ) )
+                      - ( values[ M00 ] * values[ M22 ] * values[ M31 ] )
+                      - ( values[ M01 ] * values[ M20 ] * values[ M32 ] ) )
+                      + ( values[ M00 ] * values[ M21 ] * values[ M32 ] );
 
         var m32 = ( ( ( values[ M02 ] * values[ M11 ] * values[ M30 ] )
                     - ( values[ M01 ] * values[ M12 ] * values[ M30 ] )
                     - ( values[ M02 ] * values[ M10 ] * values[ M31 ] ) )
-                  + ( values[ M00 ] * values[ M12 ] * values[ M31 ] )
-                  + ( values[ M01 ] * values[ M10 ] * values[ M32 ] ) )
-                - ( values[ M00 ] * values[ M11 ] * values[ M32 ] );
+                    + ( values[ M00 ] * values[ M12 ] * values[ M31 ] )
+                    + ( values[ M01 ] * values[ M10 ] * values[ M32 ] ) )
+                    - ( values[ M00 ] * values[ M11 ] * values[ M32 ] );
 
         var m33 = ( ( ( ( values[ M01 ] * values[ M12 ] * values[ M20 ] )
                       - ( values[ M02 ] * values[ M11 ] * values[ M20 ] ) )
-                    + ( values[ M02 ] * values[ M10 ] * values[ M21 ] ) )
-                  - ( values[ M00 ] * values[ M12 ] * values[ M21 ] )
-                  - ( values[ M01 ] * values[ M10 ] * values[ M22 ] ) )
-                + ( values[ M00 ] * values[ M11 ] * values[ M22 ] );
+                      + ( values[ M02 ] * values[ M10 ] * values[ M21 ] ) )
+                      - ( values[ M00 ] * values[ M12 ] * values[ M21 ] )
+                      - ( values[ M01 ] * values[ M10 ] * values[ M22 ] ) )
+                      + ( values[ M00 ] * values[ M11 ] * values[ M22 ] );
+        //@formatter:on
 
         var invDet = 1.0f / lDet;
         values[ M00 ] = m00 * invDet;
@@ -2092,45 +2075,45 @@ public class Matrix4
         //@formatter:off
         // BE VERY CAREFUL WITH EDITING THIS!!!!
         return ( ( ( ( ( ( ( ( ( ( (
-                                   // --------------------------------------------------------------  
-                                   ( values[ M30 ] * values[ M21 ] * values[ M12 ] * values[ M03 ] )
-                                 - ( values[ M20 ] * values[ M31 ] * values[ M12 ] * values[ M03 ] )
-                                 - ( values[ M30 ] * values[ M11 ] * values[ M22 ] * values[ M03 ] ) )
-                                   // --------------------------------------------------------------  
-                                 + ( values[ M10 ] * values[ M31 ] * values[ M22 ] * values[ M03 ] )
-                                 + ( values[ M20 ] * values[ M11 ] * values[ M32 ] * values[ M03 ] ) )
-                                 // --------------------------------------------------------------  
-                               - ( values[ M10 ] * values[ M21 ] * values[ M32 ] * values[ M03 ] )
-                               - ( values[ M30 ] * values[ M21 ] * values[ M02 ] * values[ M13 ] ) )
-                               // --------------------------------------------------------------  
-                             + ( values[ M20 ] * values[ M31 ] * values[ M02 ] * values[ M13 ] )
-                             + ( values[ M30 ] * values[ M01 ] * values[ M22 ] * values[ M13 ] ) )
-                             // --------------------------------------------------------------  
-                           - ( values[ M00 ] * values[ M31 ] * values[ M22 ] * values[ M13 ] )
-                           - ( values[ M20 ] * values[ M01 ] * values[ M32 ] * values[ M13 ] ) )
-                           // --------------------------------------------------------------  
-                         + ( values[ M00 ] * values[ M21 ] * values[ M32 ] * values[ M13 ] )
-                         + ( values[ M30 ] * values[ M11 ] * values[ M02 ] * values[ M23 ] ) )
-                         // --------------------------------------------------------------  
-                       - ( values[ M10 ] * values[ M31 ] * values[ M02 ] * values[ M23 ] )
-                       - ( values[ M30 ] * values[ M01 ] * values[ M12 ] * values[ M23 ] ) )
-                       // --------------------------------------------------------------  
-                     + ( values[ M00 ] * values[ M31 ] * values[ M12 ] * values[ M23 ] )
-                     + ( values[ M10 ] * values[ M01 ] * values[ M32 ] * values[ M23 ] ) )
-                     // --------------------------------------------------------------  
-                   - ( values[ M00 ] * values[ M11 ] * values[ M32 ] * values[ M23 ] )
-                   - ( values[ M20 ] * values[ M11 ] * values[ M02 ] * values[ M33 ] ) )
-                   // --------------------------------------------------------------  
-                 + ( values[ M10 ] * values[ M21 ] * values[ M02 ] * values[ M33 ] )
-                 + ( values[ M20 ] * values[ M01 ] * values[ M12 ] * values[ M33 ] ) )
-                 // --------------------------------------------------------------  
-               - ( values[ M00 ] * values[ M21 ] * values[ M12 ] * values[ M33 ] )
-               - ( values[ M10 ] * values[ M01 ] * values[ M22 ] * values[ M33 ] ) )
-               // --------------------------------------------------------------  
-             + ( values[ M00 ] * values[ M11 ] * values[ M22 ] * values[ M33 ] );
+        // --------------------------------------------------------------  
+           ( values[ M30 ] * values[ M21 ] * values[ M12 ] * values[ M03 ] )
+         - ( values[ M20 ] * values[ M31 ] * values[ M12 ] * values[ M03 ] )
+         - ( values[ M30 ] * values[ M11 ] * values[ M22 ] * values[ M03 ] ) )
+        // --------------------------------------------------------------  
+         + ( values[ M10 ] * values[ M31 ] * values[ M22 ] * values[ M03 ] )
+         + ( values[ M20 ] * values[ M11 ] * values[ M32 ] * values[ M03 ] ) )
+         // --------------------------------------------------------------  
+        - ( values[ M10 ] * values[ M21 ] * values[ M32 ] * values[ M03 ] )
+        - ( values[ M30 ] * values[ M21 ] * values[ M02 ] * values[ M13 ] ) )
+        // --------------------------------------------------------------  
+        + ( values[ M20 ] * values[ M31 ] * values[ M02 ] * values[ M13 ] )
+        + ( values[ M30 ] * values[ M01 ] * values[ M22 ] * values[ M13 ] ) )
+        // --------------------------------------------------------------  
+        - ( values[ M00 ] * values[ M31 ] * values[ M22 ] * values[ M13 ] )
+        - ( values[ M20 ] * values[ M01 ] * values[ M32 ] * values[ M13 ] ) )
+        // --------------------------------------------------------------  
+        + ( values[ M00 ] * values[ M21 ] * values[ M32 ] * values[ M13 ] )
+        + ( values[ M30 ] * values[ M11 ] * values[ M02 ] * values[ M23 ] ) )
+        // --------------------------------------------------------------  
+        - ( values[ M10 ] * values[ M31 ] * values[ M02 ] * values[ M23 ] )
+        - ( values[ M30 ] * values[ M01 ] * values[ M12 ] * values[ M23 ] ) )
+        // --------------------------------------------------------------  
+        + ( values[ M00 ] * values[ M31 ] * values[ M12 ] * values[ M23 ] )
+        + ( values[ M10 ] * values[ M01 ] * values[ M32 ] * values[ M23 ] ) )
+        // --------------------------------------------------------------  
+        - ( values[ M00 ] * values[ M11 ] * values[ M32 ] * values[ M23 ] )
+        - ( values[ M20 ] * values[ M11 ] * values[ M02 ] * values[ M33 ] ) )
+        // --------------------------------------------------------------  
+        + ( values[ M10 ] * values[ M21 ] * values[ M02 ] * values[ M33 ] )
+        + ( values[ M20 ] * values[ M01 ] * values[ M12 ] * values[ M33 ] ) )
+        // --------------------------------------------------------------  
+        - ( values[ M00 ] * values[ M21 ] * values[ M12 ] * values[ M33 ] )
+        - ( values[ M10 ] * values[ M01 ] * values[ M22 ] * values[ M33 ] ) )
+        // --------------------------------------------------------------  
+        + ( values[ M00 ] * values[ M11 ] * values[ M22 ] * values[ M33 ] );
+        //@formatter:on
     }
 
-    //@formatter:on
     /// <summary>
     /// Postmultiplies this matrix by a translation matrix.
     /// Postmultiplication is also used by OpenGL ES' glTranslate/glRotate/glScale
@@ -2248,16 +2231,17 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 Rotate( Quaternion rotation )
     {
-        float x  = rotation.X, y = rotation.Y, z = rotation.Z, w = rotation.W;
-        var   xx = x * x;
-        var   xy = x * y;
-        var   xz = x * z;
-        var   xw = x * w;
-        var   yy = y * y;
-        var   yz = y * z;
-        var   yw = y * w;
-        var   zz = z * z;
-        var   zw = z * w;
+        float x = rotation.X, y = rotation.Y, z = rotation.Z, w = rotation.W;
+
+        var xx = x * x;
+        var xy = x * y;
+        var xz = x * z;
+        var xw = x * w;
+        var yy = y * y;
+        var yz = y * z;
+        var yw = y * w;
+        var zz = z * z;
+        var zw = z * w;
 
         // Set matrix from quaternion
         var r00 = 1 - ( 2 * ( yy + zz ) );
@@ -2269,6 +2253,7 @@ public class Matrix4
         var r20 = 2 * ( xz - yw );
         var r21 = 2 * ( yz + xw );
         var r22 = 1 - ( 2 * ( xx + yy ) );
+
         var m00 = ( Val[ M00 ] * r00 ) + ( Val[ M01 ] * r10 ) + ( Val[ M02 ] * r20 );
         var m01 = ( Val[ M00 ] * r01 ) + ( Val[ M01 ] * r11 ) + ( Val[ M02 ] * r21 );
         var m02 = ( Val[ M00 ] * r02 ) + ( Val[ M01 ] * r12 ) + ( Val[ M02 ] * r22 );
@@ -2281,6 +2266,7 @@ public class Matrix4
         var m30 = ( Val[ M30 ] * r00 ) + ( Val[ M31 ] * r10 ) + ( Val[ M32 ] * r20 );
         var m31 = ( Val[ M30 ] * r01 ) + ( Val[ M31 ] * r11 ) + ( Val[ M32 ] * r21 );
         var m32 = ( Val[ M30 ] * r02 ) + ( Val[ M31 ] * r12 ) + ( Val[ M32 ] * r22 );
+
         Val[ M00 ] = m00;
         Val[ M10 ] = m10;
         Val[ M20 ] = m20;

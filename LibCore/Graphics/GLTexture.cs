@@ -115,7 +115,14 @@ public abstract class GLTexture : IDisposable
     /// </summary>
     public virtual int Depth  { get; }
 
+    /// <summary>
+    /// The width, in pixels, of this texture.
+    /// </summary>
     public virtual int Width  { get; }
+
+    /// <summary>
+    /// The height, in pixels, of this texture.
+    /// </summary>
     public virtual int Height { get; }
 
     // ------------------------------------------------------------------------
@@ -359,18 +366,6 @@ public abstract class GLTexture : IDisposable
     }
 
     /// <summary>
-    /// Delete this GLTexture.
-    /// </summary>
-    public void Delete()
-    {
-        if ( GLTextureHandle != 0 )
-        {
-            Gdx.GL.glDeleteTextures( ( uint ) GLTextureHandle );
-            GLTextureHandle = 0;
-        }
-    }
-
-    /// <summary>
     /// 
     /// </summary>
     /// <param name="target"></param>
@@ -382,6 +377,8 @@ public abstract class GLTexture : IDisposable
 
         if ( data == null )
         {
+            Logger.Error( "NULL ITextureData supplied!" );
+            
             // TODO: remove texture on target?
             return;
         }
@@ -432,7 +429,7 @@ public abstract class GLTexture : IDisposable
         }
         else
         {
-            var pixels = pixmap.Pixels;
+            var pixels = pixmap.ByteBuffer;
 
             Gdx.GL.glTexImage2D( target,
                                  miplevel,
@@ -444,12 +441,27 @@ public abstract class GLTexture : IDisposable
                                  pixmap.GLType,
                                  pixels.BackingArray() );
 
-            pixmap.Pixels = pixels;
+            pixmap.ByteBuffer = pixels;
         }
 
         if ( disposePixmap )
         {
             pixmap.Dispose();
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Delete this GLTexture.
+    /// </summary>
+    public void Delete()
+    {
+        if ( GLTextureHandle != 0 )
+        {
+            Gdx.GL.glDeleteTextures( ( uint ) GLTextureHandle );
+            GLTextureHandle = 0;
         }
     }
 

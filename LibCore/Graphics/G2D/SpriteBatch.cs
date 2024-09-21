@@ -239,7 +239,7 @@ public class SpriteBatch : IBatch
                               Point2D origin,
                               Point2D scale,
                               float rotation,
-                              Rectangle src,
+                              GRect src,
                               bool flipX,
                               bool flipY )
     {
@@ -263,7 +263,7 @@ public class SpriteBatch : IBatch
         var fy2          = region.Height - origin.Y;
 
         // scale
-        if ( scale.X != 1 || scale.Y != 1 )
+        if ( ( scale.X != 1 ) || ( scale.Y != 1 ) )
         {
             fx  *= scale.X;
             fy  *= scale.Y;
@@ -376,7 +376,7 @@ public class SpriteBatch : IBatch
 
     public virtual void Draw( Texture? texture,
                               GRect region,
-                              Rectangle src,
+                              GRect src,
                               bool flipX,
                               bool flipY )
     {
@@ -435,7 +435,7 @@ public class SpriteBatch : IBatch
         Idx += 20;
     }
 
-    public virtual void Draw( Texture? texture, float x, float y, Rectangle src )
+    public virtual void Draw( Texture? texture, float x, float y, GRect src )
     {
         Validate( texture );
 
@@ -530,26 +530,22 @@ public class SpriteBatch : IBatch
         this.Idx += 20;
     }
 
+    /// <summary>
+    /// Draw the given <see cref="Texture"/> at the given X and Y coordinates.
+    /// </summary>
+    /// <param name="texture"> The texture. </param>
+    /// <param name="x"> X coordinate in pixels. </param>
+    /// <param name="y"> Y coordinate in pixels. </param>
     public virtual void Draw( Texture? texture, float x, float y )
     {
         Validate( texture );
 
-        Draw( texture, new Point( ( int ) x, ( int ) y ), new Size( texture.Width, texture.Height ) );
+        Draw( texture, x, y, texture!.Width, texture.Height );
     }
 
-    private bool _first = true;
-
-    public virtual void Draw( Texture? texture, Point loc, Size size )
+    public virtual void Draw( Texture? texture, float locX, float locY, int width, int height )
     {
         Validate( texture );
-
-//        if ( _first )
-//        {
-//            Logger.Debug( $"texture.Width: {texture?.Width}, texture.Height: {texture?.Height}" );
-//            Logger.Debug( $"loc.X: {loc.X}, loc.Y: {loc.Y}" );
-//            Logger.Debug( $"size.Width: {size.Width}, size.Height: {size.Height}" );
-//            _first = false;
-//        }
 
         var vertices = this.Vertices;
         
@@ -562,21 +558,21 @@ public class SpriteBatch : IBatch
             Flush();
         }
 
-        var fx2 = loc.X + size.Width;
-        var fy2 = loc.Y + size.Height;
+        var fx2 = locX + width;
+        var fy2 = locY + height;
 
         const float U  = 0;
         const float V  = 1;
         const float U2 = 1;
         const float V2 = 0;
 
-        vertices[ this.Idx ]     = loc.X;
-        vertices[ this.Idx + 1 ] = loc.Y;
+        vertices[ this.Idx ]     = locX;
+        vertices[ this.Idx + 1 ] = locY;
         vertices[ this.Idx + 2 ] = this.PackedColor;
         vertices[ this.Idx + 3 ] = U;
         vertices[ this.Idx + 4 ] = V;
 
-        vertices[ this.Idx + 5 ] = loc.X;
+        vertices[ this.Idx + 5 ] = locX;
         vertices[ this.Idx + 6 ] = fy2;
         vertices[ this.Idx + 7 ] = this.PackedColor;
         vertices[ this.Idx + 8 ] = U;
@@ -589,7 +585,7 @@ public class SpriteBatch : IBatch
         vertices[ this.Idx + 14 ] = V2;
 
         vertices[ this.Idx + 15 ] = fx2;
-        vertices[ this.Idx + 16 ] = loc.Y;
+        vertices[ this.Idx + 16 ] = locY;
         vertices[ this.Idx + 17 ] = this.PackedColor;
         vertices[ this.Idx + 18 ] = U2;
         vertices[ this.Idx + 19 ] = V;
@@ -646,7 +642,7 @@ public class SpriteBatch : IBatch
     {
         Validate( region );
 
-        Draw( region, x, y, region.RegionWidth, region.RegionHeight );
+        Draw( region, x, y, region!.RegionWidth, region.RegionHeight );
     }
 
     public virtual void Draw( TextureRegion? region, float x, float y, float width, float height )
@@ -654,7 +650,7 @@ public class SpriteBatch : IBatch
         Validate( region );
 
         var vertices = this.Vertices;
-        var texture  = region.Texture;
+        var texture  = region!.Texture;
 
         if ( texture != LastTexture )
         {
@@ -708,7 +704,7 @@ public class SpriteBatch : IBatch
         Validate( textureRegion );
 
         var vertices = this.Vertices;
-        var texture  = textureRegion.Texture;
+        var texture  = textureRegion!.Texture;
 
         if ( texture != LastTexture )
         {
@@ -932,7 +928,7 @@ public class SpriteBatch : IBatch
 
         if ( clockwise )
         {
-            u1 = textureRegion.U2;
+            u1 = textureRegion!.U2;
             v1 = textureRegion.V2;
             u2 = textureRegion.U;
             v2 = textureRegion.V2;
@@ -943,7 +939,7 @@ public class SpriteBatch : IBatch
         }
         else
         {
-            u1 = textureRegion.U;
+            u1 = textureRegion!.U;
             v1 = textureRegion.V;
             u2 = textureRegion.U2;
             v2 = textureRegion.V;
@@ -1005,7 +1001,7 @@ public class SpriteBatch : IBatch
         var x4 = ( transform.M00 * width ) + transform.M02;
         var y4 = ( transform.M10 * width ) + transform.M12;
 
-        var u  = region.U;
+        var u  = region!.U;
         var v  = region.V2;
         var u2 = region.U2;
         var v2 = region.V;

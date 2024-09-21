@@ -25,18 +25,6 @@
 namespace LughSharp.LibCore.Graphics.Playground;
 
 [PublicAPI]
-public class ImageBase : IImage
+public class TextureDataTests
 {
-    public int Width  { get; set;  }
-    public int Height { get; set;  }
-
-    public ref byte this[ int index ] => ref _pixelData[ index ];
-
-    public ref byte this[ int x, int y ] => ref _pixelData[ ( y * Width ) + x ];
-
-    // ------------------------------------------------------------------------
-    
-    private byte[] _pixelData = null!;
-    
-    // ------------------------------------------------------------------------
 }

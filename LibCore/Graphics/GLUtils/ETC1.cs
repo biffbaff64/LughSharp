@@ -55,7 +55,7 @@ public class ETC1
     public ETC1Data EncodeImage( Pixmap pixmap )
     {
         var pixelSize      = GetPixelSize( pixmap.Format );
-        var compressedData = EncodeImage( pixmap.Pixels!, 0, pixmap.Width, pixmap.Height, pixelSize );
+        var compressedData = EncodeImage( pixmap.ByteBuffer!, 0, pixmap.Width, pixmap.Height, pixelSize );
 
 //        BufferUtils.NewUnsafeByteBuffer( compressedData );
 
@@ -72,7 +72,7 @@ public class ETC1
     public ETC1Data EncodeImagePKM( Pixmap pixmap )
     {
         var pixelSize      = GetPixelSize( pixmap.Format );
-        var compressedData = EncodeImagePKM( pixmap.Pixels, 0, pixmap.Width, pixmap.Height, pixelSize );
+        var compressedData = EncodeImagePKM( pixmap.ByteBuffer, 0, pixmap.Width, pixmap.Height, pixelSize );
 
 //        BufferUtils.NewUnsafeByteBuffer( compressedData );
 
@@ -111,7 +111,7 @@ public class ETC1
         var pixelSize = GetPixelSize( format );
         var pixmap    = new Pixmap( width, height, format );
 
-        DecodeImage( etc1Data.CompressedData, dataOffset, pixmap.Pixels!, 0, width, height, pixelSize );
+        DecodeImage( etc1Data.CompressedData, dataOffset, pixmap.ByteBuffer!, 0, width, height, pixelSize );
 
         return pixmap;
     }

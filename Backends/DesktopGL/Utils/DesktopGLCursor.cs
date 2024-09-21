@@ -81,7 +81,7 @@ public class DesktopGLCursor : ICursor, IDisposable
 
         GLFWImage = new Image
         {
-            Pixels = PixmapCopy.Pixels?.BackingArray(),
+            Pixels = PixmapCopy.ByteBuffer?.BackingArray(),
             Width  = PixmapCopy.Width,
             Height = PixmapCopy.Height
         };

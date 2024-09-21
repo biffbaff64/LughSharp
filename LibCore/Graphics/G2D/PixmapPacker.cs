@@ -406,7 +406,7 @@ public class PixmapPacker : IDisposable
         {
             page.Texture?.Bind();
 
-            var pixels = image.Pixels;
+            var pixels = image.ByteBuffer;
 
             Gdx.GL.glTexSubImage2D( page.Texture!.GLTarget,
                                     0,
@@ -418,7 +418,7 @@ public class PixmapPacker : IDisposable
                                     image.GLType,
                                     pixels.BackingArray() );
 
-            image.Pixels = pixels;
+            image.ByteBuffer = pixels;
         }
         else
         {

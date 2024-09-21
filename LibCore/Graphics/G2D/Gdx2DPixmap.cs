@@ -31,6 +31,9 @@ namespace LughSharp.LibCore.Graphics.G2D;
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
+/// <summary>
+/// 
+/// </summary>
 [PublicAPI]
 public partial class Gdx2DPixmap : IDisposable
 {
@@ -90,13 +93,11 @@ public partial class Gdx2DPixmap : IDisposable
     {
         Logger.CheckPoint();
 
-        LoadData( buffer, offset, len );
-
-        PixmapBuffer = ByteBuffer.Wrap( PixmapDef.Pixels );
+        PixmapBuffer = LoadData( buffer, offset, len );
 
         if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
         {
-            Convert( requestedFormat );
+            ConvertFormatTo( requestedFormat );
         }
 
         this.Width  = PixmapDef.Width;
@@ -125,18 +126,16 @@ public partial class Gdx2DPixmap : IDisposable
 
         var buffer = memoryStream.ToArray();
 
-        LoadData( buffer, 0, buffer.Length );
+        PixmapBuffer = LoadData( buffer, 0, buffer.Length );
 
         if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
         {
-            Convert( requestedFormat );
+            ConvertFormatTo( requestedFormat );
         }
 
         this.Width  = PixmapDef.Width;
         this.Height = PixmapDef.Height;
         this.Format = this.PixmapDef.Format;
-
-        PixmapBuffer = ByteBuffer.Wrap( PixmapDef.Pixels );
     }
 
     /// <summary>
@@ -162,9 +161,9 @@ public partial class Gdx2DPixmap : IDisposable
 
         PixmapBuffer = ByteBuffer.Wrap( PixmapDef.Pixels );
 
-        this.Width  = this.PixmapDef.Width;
-        this.Height = this.PixmapDef.Height;
-        this.Format = this.PixmapDef.Format;
+        this.Width  = ( uint ) width;
+        this.Height = ( uint ) height;
+        this.Format = ( uint ) format;
 
         if ( PixmapBuffer == null )
         {
@@ -230,6 +229,10 @@ public partial class Gdx2DPixmap : IDisposable
 
         var image = Stbi.LoadFromMemory( buffer, PixmapFormat.Gdx2dBytesPerPixel( ( int ) Format ) );
 
+        Logger.Debug( $"image.Width: {image.Width}" );
+        Logger.Debug( $"image.Height: {image.Height}" );
+        Logger.Debug( $"image data length: {image.Data.Length}" );
+        
         var pixmapStruct = new PixmapDataStruct
         {
             Width  = ( uint ) image.Width,
@@ -280,9 +283,10 @@ public partial class Gdx2DPixmap : IDisposable
     }
 
     /// <summary>
+    /// Converts this Pixmaps <see cref="Format"/> to the requested format.
     /// </summary>
-    /// <param name="requestedFormat"></param>
-    private void Convert( int requestedFormat )
+    /// <param name="requestedFormat"> The new Format. </param>
+    private void ConvertFormatTo( int requestedFormat )
     {
         Logger.CheckPoint();
 

@@ -426,7 +426,7 @@ public class PolygonSpriteBatch : IPolygonBatch
                       Point2D origin,
                       Point2D scale,
                       float rotation,
-                      Rectangle src,
+                      GRect src,
                       bool flipX,
                       bool flipY )
     {
@@ -574,7 +574,7 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void Draw( Texture texture,
                       GRect region,
-                      Rectangle src,
+                      GRect src,
                       bool flipX,
                       bool flipY )
     {
@@ -644,7 +644,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         _vertices[ _vertexIndex++ ] = v;
     }
 
-    public void Draw( Texture texture, float x, float y, Rectangle src )
+    public void Draw( Texture texture, float x, float y, GRect src )
     {
         if ( !IsDrawing )
         {
@@ -758,10 +758,10 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void Draw( Texture texture, float x, float y )
     {
-        Draw( texture, new Point( ( int ) x, ( int ) y ), new Size( texture.Width, texture.Height ) );
+        Draw( texture, x, y, texture.Width, texture.Height );
     }
 
-    public void Draw( Texture texture, Point loc, Size size )
+    public void Draw( Texture texture, float locX, float locY, int width, int height )
     {
         if ( !IsDrawing )
         {
@@ -787,20 +787,20 @@ public class PolygonSpriteBatch : IPolygonBatch
         _triangles[ _triangleIndex++ ] = ( short ) ( startVertex + 3 );
         _triangles[ _triangleIndex++ ] = ( short ) startVertex;
 
-        var   fx2 = loc.X + size.Width;
-        var   fy2 = loc.Y + size.Height;
+        var   fx2 = locX + width;
+        var   fy2 = locY + height;
         float u   = 0;
         float v   = 1;
         float u2  = 1;
         float v2  = 0;
 
-        _vertices[ _vertexIndex++ ] = loc.X;
-        _vertices[ _vertexIndex++ ] = loc.Y;
+        _vertices[ _vertexIndex++ ] = locX;
+        _vertices[ _vertexIndex++ ] = locY;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u;
         _vertices[ _vertexIndex++ ] = v;
 
-        _vertices[ _vertexIndex++ ] = loc.X;
+        _vertices[ _vertexIndex++ ] = locX;
         _vertices[ _vertexIndex++ ] = fy2;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u;
@@ -813,7 +813,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         _vertices[ _vertexIndex++ ] = v2;
 
         _vertices[ _vertexIndex++ ] = fx2;
-        _vertices[ _vertexIndex++ ] = loc.Y;
+        _vertices[ _vertexIndex++ ] = locY;
         _vertices[ _vertexIndex++ ] = _colorPacked;
         _vertices[ _vertexIndex++ ] = u2;
         _vertices[ _vertexIndex++ ] = v;

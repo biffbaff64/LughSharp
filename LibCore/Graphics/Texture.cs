@@ -170,7 +170,11 @@ public class Texture : GLTexture, IManageable
         ArgumentNullException.ThrowIfNull( data );
 
         Logger.CheckPoint();
-
+        Logger.Debug( $"data.Width: {data.Width}, data.Height: {data.Height}" );
+        Logger.Debug( $"data.TextureDataType: {data.TextureDataType}" );
+        Logger.Debug( $"data.Format: {data.Format}" );
+        Logger.Debug( $"data.IsPrepared: {data.IsPrepared}" );
+        
         TextureData = data;
         
         Load( data );
@@ -251,7 +255,7 @@ public class Texture : GLTexture, IManageable
                                 pixmap.Height,
                                 pixmap.GLFormat,
                                 pixmap.GLType,
-                                pixmap.Pixels.BackingArray() );
+                                pixmap.ByteBuffer.BackingArray() );
     }
 
     /// <summary>

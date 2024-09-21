@@ -159,7 +159,7 @@ public class FacedCubemapData : ICubemapData
                                      0,
                                      pixmap.GLFormat,
                                      pixmap.GLType,
-                                     pixmap.Pixels.BackingArray() );
+                                     pixmap.ByteBuffer.BackingArray() );
 
                 if ( disposePixmap )
                 {

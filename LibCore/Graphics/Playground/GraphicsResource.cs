@@ -22,7 +22,7 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-namespace LughSharp.LibCore.Graphics.FutureAdditions;
+namespace LughSharp.LibCore.Graphics.Playground;
 
 public class GraphicsResource
 {
