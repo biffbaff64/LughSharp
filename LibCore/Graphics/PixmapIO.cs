@@ -82,6 +82,9 @@ public static class PixmapIO
                                  int compression = Deflater.DEFAULT_COMPRESSION,
                                  bool flipY = false )
     {
+        Logger.CheckPoint();
+        Logger.Debug( $"File {file.FullName}: File exists: {file.Exists}" );
+
         try
         {
             // Guess at deflated size.
@@ -265,6 +268,8 @@ public static class PixmapIO
         /// <param name="pixmap"></param>
         public void Write( FileInfo file, Pixmap pixmap )
         {
+            Logger.CheckPoint();
+
             var output = new MemoryStream();
 
             try
@@ -281,6 +286,8 @@ public static class PixmapIO
         /// </summary>
         public void Write( Stream output, Pixmap pixmap )
         {
+            Logger.CheckPoint();
+            
             var deflaterOutput = new DeflaterOutputStream( output /*_buffer*/, _deflater );
             var dataOutput     = new BinaryWriter( output );
 
@@ -396,7 +403,14 @@ public static class PixmapIO
                         c = b;
                     }
 
-                    lineOut[ x ] = ( byte ) ( curLine[ x ] - c );
+//                    lineOut[ x ] = ( byte ) ( curLine[ x ] - c );
+
+                    var t1   = ( curLine[ x ] - c );
+                    var t2   = ( byte ) ( t1 & 0x7f );
+                    var sign = ( byte ) ( t1 & 0x80 );
+                    var t3   = ( byte ) ( t2 | sign );
+
+                    lineOut[ x ] = t3;
                 }
 
                 deflaterOutput.Write( new ReadOnlySpan< byte >( PAETH_FILTER ) );

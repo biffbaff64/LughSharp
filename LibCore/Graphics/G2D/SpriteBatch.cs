@@ -53,11 +53,13 @@ public class SpriteBatch : IBatch
     public int MaxSpritesInBatch { get; set; } = 0;
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     protected Texture? LastTexture { get; set; } = null;
     protected float[]  Vertices    { get; set; }
     protected int      Idx         { get; set; } = 0;
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     private const int MAX_VERTEX_INDEX = 32767;
@@ -74,6 +76,7 @@ public class SpriteBatch : IBatch
     private ShaderProgram? _customShader          = null;
     private float          _colorPacked           = Color.WhiteFloatBits;
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>
@@ -116,15 +119,12 @@ public class SpriteBatch : IBatch
                           false,
                           size * 4,
                           size * 6,
-                          new VertexAttribute( VertexAttributes.Usage.POSITION,
-                                               2,
-                                               ShaderProgram.POSITION_ATTRIBUTE ),
-                          new VertexAttribute( VertexAttributes.Usage.COLOR_PACKED,
-                                               4,
-                                               ShaderProgram.COLOR_ATTRIBUTE ),
-                          new VertexAttribute( VertexAttributes.Usage.TEXTURE_COORDINATES,
-                                               2,
-                                               $"{ShaderProgram.TEXCOORD_ATTRIBUTE}0" ) );
+                          new VertexAttribute
+                              ( VertexAttributes.Usage.POSITION, 2, ShaderProgram.POSITION_ATTRIBUTE ),
+                          new VertexAttribute
+                              ( VertexAttributes.Usage.COLOR_PACKED, 4, ShaderProgram.COLOR_ATTRIBUTE ),
+                          new VertexAttribute
+                              ( VertexAttributes.Usage.TEXTURE_COORDINATES, 2, $"{ShaderProgram.TEXCOORD_ATTRIBUTE}0" ) );
 
         ProjectionMatrix.SetToOrtho2D( 0, 0, Gdx.Graphics.Width, Gdx.Graphics.Height );
 
@@ -156,6 +156,12 @@ public class SpriteBatch : IBatch
         }
     }
 
+    /// <summary>
+    /// Begins a new sprite batch.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if this method is called before a call to <see cref="End"/>.
+    /// </exception>
     public void Begin()
     {
         if ( IsDrawing )
@@ -181,6 +187,12 @@ public class SpriteBatch : IBatch
         IsDrawing = true;
     }
 
+    /// <summary>
+    /// Flushes all batched text, textures and sprites to the screen. 
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if this method is called BEFORE a call to <see cref="Begin"/>
+    /// </exception>
     public void End()
     {
         if ( !IsDrawing )
@@ -207,11 +219,12 @@ public class SpriteBatch : IBatch
     public Color Color
     {
         get => _color;
-        set
-        {
-            _color.Set( value );
-            _colorPacked = value.ToFloatBits();
-        }
+        set => SetColor( value );
+    }
+
+    public void SetColor( Color tint )
+    {
+        SetColor( tint.R, tint.G, tint.B, tint.A );
     }
 
     public void SetColor( float r, float g, float b, float a )
@@ -224,15 +237,19 @@ public class SpriteBatch : IBatch
     {
         set
         {
-            var color = Color;
+            var color = this.Color;
 
             Color.ABGR8888ToColor( ref color, value );
             _colorPacked = value;
 
-            Color = color;
+            this.Color = color;
         }
         get => _colorPacked;
     }
+
+    // ------------------------------------------------------------------------
+    
+    #region Drawing methods
 
     public virtual void Draw( Texture? texture,
                               GRect region,
@@ -244,7 +261,7 @@ public class SpriteBatch : IBatch
                               bool flipY )
     {
         Validate( texture );
-        
+
         if ( texture != LastTexture )
         {
             SwitchTexture( texture );
@@ -548,7 +565,7 @@ public class SpriteBatch : IBatch
         Validate( texture );
 
         var vertices = this.Vertices;
-        
+
         if ( texture != LastTexture )
         {
             SwitchTexture( texture );
@@ -981,7 +998,7 @@ public class SpriteBatch : IBatch
         Validate( region );
 
         var vertices = this.Vertices;
-        
+
         if ( region?.Texture != LastTexture )
         {
             SwitchTexture( region?.Texture );
@@ -1033,6 +1050,10 @@ public class SpriteBatch : IBatch
         Idx += 20;
     }
 
+    #endregion Drawing methods
+
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// </summary>
     public void Flush()
@@ -1057,7 +1078,7 @@ public class SpriteBatch : IBatch
         if ( LastTexture == null )
         {
             _nullTextureCount++;
-            
+
             Logger.Error( $"Attempt to flush with null texture. " +
                           $"This batch will be skipped. " +
                           $"Null texture count: {_nullTextureCount}. " +
@@ -1067,7 +1088,7 @@ public class SpriteBatch : IBatch
             return;
         }
 
-        LastTexture?.Bind();
+        LastTexture.Bind();
 
         if ( _mesh == null )
         {
@@ -1077,9 +1098,9 @@ public class SpriteBatch : IBatch
             return;
         }
 
-        _mesh?.SetVertices( Vertices, 0, Idx );
-        _mesh!.IndicesBuffer.Position = 0;
-        _mesh!.IndicesBuffer.Limit    = count;
+        _mesh.SetVertices( Vertices, 0, Idx );
+        _mesh.IndicesBuffer.Position = 0;
+        _mesh.IndicesBuffer.Limit    = count;
 
         if ( BlendingDisabled )
         {
@@ -1100,6 +1121,9 @@ public class SpriteBatch : IBatch
         Idx = 0;
     }
 
+    /// <summary>
+    /// Disables blending for textures.
+    /// </summary>
     public void DisableBlending()
     {
         if ( BlendingDisabled )
@@ -1111,6 +1135,9 @@ public class SpriteBatch : IBatch
         BlendingDisabled = true;
     }
 
+    /// <summary>
+    /// Enables blending for textures.
+    /// </summary>
     public void EnableBlending()
     {
         if ( !BlendingDisabled )
@@ -1122,12 +1149,26 @@ public class SpriteBatch : IBatch
         BlendingDisabled = false;
     }
 
+    /// <summary>
+    /// Sets the Blend Functions to use when rendering. The provided
+    /// methods handle both Color and Alpha functions.
+    /// </summary>
+    /// <param name="srcFunc"> Source Function for Color and Alpha. </param>
+    /// <param name="dstFunc"> Destination Function for Color and Alpha. </param>
     public void SetBlendFunction( int srcFunc, int dstFunc )
     {
-        SetBlendFunctionSeparate( srcFunc, dstFunc, srcFunc, dstFunc );
+        SetBlendFunctionSeperate( srcFunc, dstFunc, srcFunc, dstFunc );
     }
 
-    public void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha )
+    /// <summary>
+    /// Sets the Blend Functions to use when rendering. The provided
+    /// methods handle Color or Alpha functions.
+    /// </summary>
+    /// <param name="srcFuncColor"> Source Function for Color. </param>
+    /// <param name="dstFuncColor"> Destination Function for Color. </param>
+    /// <param name="srcFuncAlpha"> Source Function for Alpha. </param>
+    /// <param name="dstFuncAlpha"> Destination Function for Alpha. </param>
+    public void SetBlendFunctionSeperate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha )
     {
         if ( ( BlendSrcFunc == srcFuncColor )
           && ( BlendDstFunc == dstFuncColor )
@@ -1145,6 +1186,7 @@ public class SpriteBatch : IBatch
         BlendDstFuncAlpha = dstFuncAlpha;
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         _mesh?.Dispose();
@@ -1159,6 +1201,7 @@ public class SpriteBatch : IBatch
         _customShader = null;
     }
 
+    /// <inheritdoc />
     public void SetProjectionMatrix( Matrix4 projection )
     {
         if ( IsDrawing )
@@ -1174,6 +1217,7 @@ public class SpriteBatch : IBatch
         }
     }
 
+    /// <inheritdoc />
     public virtual void SetTransformMatrix( Matrix4 transform )
     {
         if ( IsDrawing )
@@ -1300,6 +1344,10 @@ public class SpriteBatch : IBatch
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="texture"></param>
     protected void SwitchTexture( Texture? texture )
     {
         if ( texture == null )
@@ -1316,9 +1364,19 @@ public class SpriteBatch : IBatch
     }
 
     // ------------------------------------------------------------------------
-    
-    private bool IsBlendingEnabled => !BlendingDisabled;
 
+    /// <summary>
+    /// Convenience property. Returns TRUE if blending is not disabled.
+    /// </summary>
+    public bool IsBlendingEnabled => !BlendingDisabled;
+
+    /// <summary>
+    /// Performs validation checks for Draw methods.
+    /// Throws an exception if the supplied Texture is null.
+    /// Throws an exception if <see cref="Begin"/> was not called before entering
+    /// the draw method.
+    /// </summary>
+    /// <param name="texture"> The Texture to check for null. </param>
     private void Validate( Texture? texture )
     {
         ArgumentNullException.ThrowIfNull( texture );
@@ -1329,6 +1387,13 @@ public class SpriteBatch : IBatch
         }
     }
 
+    /// <summary>
+    /// Performs validation checks for Draw methods.
+    /// Throws an exception if the supplied TextureRegion is null.
+    /// Throws an exception if <see cref="Begin"/> was not called before entering
+    /// the draw method.
+    /// </summary>
+    /// <param name="region"> The TextureRegion to check for null. </param>
     private void Validate( TextureRegion? region )
     {
         ArgumentNullException.ThrowIfNull( region );

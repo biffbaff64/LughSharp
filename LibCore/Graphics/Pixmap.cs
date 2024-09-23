@@ -492,6 +492,22 @@ public class Pixmap : IDisposable
 
         return pixmap;
     }
+    
+    public static void SaveToFile( FileInfo file, Pixmap pixmap )
+    {
+        try
+        {
+            Logger.Debug( $"Saving pixmap to file: {file}" );
+            
+            PixmapIO.WritePNG( file, pixmap );
+
+            Logger.Debug( "Pixmap saved successfully." );
+        }
+        catch ( Exception ex )
+        {
+            throw new GdxRuntimeException( "Error occurred while saving the pixmap.", ex );
+        }
+    }
 
     /// <summary>
     /// Sets the type of interpolation <see cref="BlendTypes"/> to be used in

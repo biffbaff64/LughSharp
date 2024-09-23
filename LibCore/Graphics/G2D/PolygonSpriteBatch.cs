@@ -1370,10 +1370,10 @@ public class PolygonSpriteBatch : IPolygonBatch
 
     public void SetBlendFunction( int srcFunc, int dstFunc )
     {
-        SetBlendFunctionSeparate( srcFunc, dstFunc, srcFunc, dstFunc );
+        SetBlendFunctionSeperate( srcFunc, dstFunc, srcFunc, dstFunc );
     }
 
-    public void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha )
+    public void SetBlendFunctionSeperate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha )
     {
         if ( ( BlendSrcFunc == srcFuncColor )
           && ( BlendDstFunc == dstFuncColor )

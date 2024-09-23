@@ -117,7 +117,7 @@ public interface IBatch : IDisposable
     Matrix4 TransformMatrix { get; }
 
     /// <summary>
-    /// Sets the shader to be used in a GLES 2.0 environment. Vertex position attribute is
+    /// Sets the shader to be used in a GL environment. Vertex position attribute is
     /// called "a_position", the texture coordinates attribute is called "a_texCoord0", the
     /// color attribute is called "a_color".
     /// <para>
@@ -367,7 +367,7 @@ public interface IBatch : IDisposable
     /// <param name="dstFuncAlpha">
     /// the destination alpha function, e.g. GL20.GL_ONE_MINUS_SRC_ALPHA.
     /// </param>
-    void SetBlendFunctionSeparate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha );
+    void SetBlendFunctionSeperate( int srcFuncColor, int dstFuncColor, int srcFuncAlpha, int dstFuncAlpha );
 
     /// <summary>
     /// Sets the projection matrix to be used by this Batch.
