@@ -285,7 +285,7 @@ GRAPHICS
     - DONE - DONE - Pixmap
     - DONE - IP   - PixmapFormat
     - DONE - IP   - PixmapFormatExtensions
-    - DONE - IP   - PixmapIO                            Tests needed
+    - DONE - IP   - PixmapIO                            Not working
     - IP   - IP   - PNGFormatStructs
     - DONE - IP   - Texture
     - DONE - IP   - TextureArray

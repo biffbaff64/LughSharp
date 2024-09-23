@@ -49,18 +49,27 @@ public class ByteArray
     {
     }
 
-    /** @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
-     *           memory copy.
-     * @param capacity Any elements added beyond this will cause the backing array to be grown. */
+    /// <summary>
+    /// </summary>
+    /// <param name="ordered">
+    /// If false, methods that remove elements may change the order of other
+    /// elements in the array, which avoids a memory copy.
+    /// </param>
+    /// <param name="capacity">
+    /// Any elements added beyond this will cause the backing array to be grown.
+    /// </param>
     public ByteArray( bool ordered = true, int capacity = 16 )
     {
         this.Ordered = ordered;
         Items        = new byte[ capacity ];
     }
 
-    /** Creates a new array containing the elements in the specific array. The new array will be ordered if the specific array is
-     * ordered. The capacity is set to the number of elements, so any subsequent elements added will cause the backing array to be
-     * grown. */
+    /// <summary>
+    /// Creates a new array containing the elements in the specific array. The new
+    /// array will be ordered if the specific array is ordered. The capacity is set
+    /// to the number of elements, so any subsequent elements added will cause the
+    /// backing array to be grown.
+    /// </summary>
     public ByteArray( ByteArray array )
     {
         this.Ordered = array.Ordered;
@@ -70,17 +79,25 @@ public class ByteArray
         Array.Copy( array.Items, 0, Items, 0, Size );
     }
 
-    /** Creates a new ordered array containing the elements in the specified array. The capacity is set to the number of elements,
-     * so any subsequent elements added will cause the backing array to be grown. */
+    /// <summary>
+    /// Creates a new ordered array containing the elements in the specified array.
+    /// The capacity is set to the number of elements, so any subsequent elements
+    /// added will cause the backing array to be grown.
+    /// </summary>
     public ByteArray( byte[] array )
         : this( true, array, 0, array.Length )
     {
     }
 
-    /** Creates a new array containing the elements in the specified array. The capacity is set to the number of elements, so any
-     * subsequent elements added will cause the backing array to be grown.
-     * @param ordered If false, methods that remove elements may change the order of other elements in the array, which avoids a
-     *           memory copy. */
+    /// <summary>
+    /// Creates a new array containing the elements in the specified array. The
+    /// capacity is set to the number of elements, so any subsequent elements
+    /// added will cause the backing array to be grown.
+    /// </summary>
+    /// <param name="ordered">
+    /// If false, methods that remove elements may change the order of other
+    /// elements in the array, which avoids a memory copy
+    /// </param>
     public ByteArray( bool ordered, byte[] array, int startIndex, int count )
         : this( ordered, count )
     {
@@ -153,7 +170,10 @@ public class ByteArray
     public void AddAll( ByteArray array, int offset, int length )
     {
         if ( ( offset + length ) > array.Size )
-            throw new ArgumentException( "offset + length must be <= size: " + offset + " + " + length + " <= " + array.Size );
+        {
+            throw new ArgumentException( $"offset + length must be <= size: {offset} + {length} <= {array.Size}" );
+        }
+        
         AddAll( array.Items, offset, length );
     }
 
@@ -181,7 +201,7 @@ public class ByteArray
     {
         if ( index >= Size )
         {
-            throw new IndexOutOfRangeException( "index can't be >= size: " + index + " >= " + Size );
+            throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
         }
 
         return Items[ index ];
@@ -191,7 +211,7 @@ public class ByteArray
     {
         if ( index >= Size )
         {
-            throw new IndexOutOfRangeException( "index can't be >= size: " + index + " >= " + Size );
+            throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
         }
 
         Items[ index ] = value;
@@ -201,7 +221,7 @@ public class ByteArray
     {
         if ( index >= Size )
         {
-            throw new IndexOutOfRangeException( "index can't be >= size: " + index + " >= " + Size );
+            throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
         }
 
         Items[ index ] += value;
@@ -221,7 +241,7 @@ public class ByteArray
     {
         if ( index >= Size )
         {
-            throw new IndexOutOfRangeException( "index can't be >= size: " + index + " >= " + Size );
+            throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
         }
 
         Items[ index ] *= value;
@@ -241,7 +261,7 @@ public class ByteArray
     {
         if ( index > Size )
         {
-            throw new IndexOutOfRangeException( "index can't be > size: " + index + " > " + Size );
+            throw new IndexOutOfRangeException( $"index can't be > size: {index} > {Size}" );
         }
 
         var items = this.Items;
@@ -264,13 +284,15 @@ public class ByteArray
         items[ index ] = value;
     }
 
-    /** Inserts the specified number of items at the specified index. The new items will have values equal to the values at those
-     * indices before the insertion. */
+    /// <summary>
+    /// Inserts the specified number of items at the specified index. The new items
+    /// will have values equal to the values at those indices before the insertion.
+    /// </summary>
     public void InsertRange( int index, int count )
     {
         if ( index > Size )
         {
-            throw new IndexOutOfRangeException( "index can't be > size: " + index + " > " + Size );
+            throw new IndexOutOfRangeException( $"index can't be > size: {index} > {Size}" );
         }
 
         var sizeNeeded = Size + count;
@@ -289,12 +311,12 @@ public class ByteArray
     {
         if ( first >= Size )
         {
-            throw new IndexOutOfRangeException( "first can't be >= size: " + first + " >= " + Size );
+            throw new IndexOutOfRangeException( $"first can't be >= size: {first} >= {Size}" );
         }
 
         if ( second >= Size )
         {
-            throw new IndexOutOfRangeException( "second can't be >= size: " + second + " >= " + Size );
+            throw new IndexOutOfRangeException( $"second can't be >= size: {second} >= {Size}" );
         }
 
         var items = this.Items;
@@ -364,12 +386,17 @@ public class ByteArray
         return false;
     }
 
-    /** Removes and returns the item at the specified index. */
+    /// <summary>
+    /// Removes and returns the item at the specified index.
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    /// <exception cref="IndexOutOfRangeException"></exception>
     public int RemoveIndex( int index )
     {
         if ( index >= Size )
         {
-            throw new IndexOutOfRangeException( "index can't be >= size: " + index + " >= " + Size );
+            throw new IndexOutOfRangeException( $"index can't be >= size: {index} >= {Size}" );
         }
 
         var items = this.Items;
@@ -389,19 +416,24 @@ public class ByteArray
         return value;
     }
 
-    /** Removes the items between the specified indices, inclusive. */
+    /// <summary>
+    /// Removes the items between the specified indices, inclusive.
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <exception cref="IndexOutOfRangeException"></exception>
     public void RemoveRange( int start, int end )
     {
         var n = Size;
 
         if ( end >= n )
         {
-            throw new IndexOutOfRangeException( "end can't be >= size: " + end + " >= " + Size );
+            throw new IndexOutOfRangeException( $"end can't be >= size: {end} >= {Size}" );
         }
 
         if ( start > end )
         {
-            throw new IndexOutOfRangeException( "start can't be > end: " + start + " > " + end );
+            throw new IndexOutOfRangeException( $"start can't be > end: {start} > {end}" );
         }
 
         int count = ( end - start ) + 1, lastIndex = n - count;
@@ -419,8 +451,11 @@ public class ByteArray
         Size = n - count;
     }
 
-    /** Removes from this array all of elements contained in the specified array.
-     * @return true if this array was modified. */
+    /// <summary>
+    /// Removes from this array all of elements contained in the specified array.
+    /// </summary>
+    /// <param name="array"></param>
+    /// <returns> true if this array was modified. </returns>
     public bool RemoveAll( ByteArray array )
     {
         var size      = this.Size;
@@ -445,67 +480,83 @@ public class ByteArray
         return size != startSize;
     }
 
-    /** Removes and returns the last item. */
-    public byte Pop()
-    {
-        return Items[ --Size ];
-    }
+    /// <summary>
+    /// Removes and returns the last item.
+    /// </summary>
+    public byte Pop() => Items[ --Size ];
 
-    /** Returns the last item. */
-    public byte Peek()
-    {
-        return Items[ Size - 1 ];
-    }
+    /// <summary>
+    /// Returns the last item.
+    /// </summary>
+    public byte Peek() => Items[ Size - 1 ];
 
-    /** Returns the first item. */
+    /// <summary>
+    /// Returns the first item.
+    /// </summary>
     public byte First()
     {
-        if ( Size == 0 ) throw new GdxRuntimeException( "Array is empty." );
+        if ( Size == 0 )
+        {
+            throw new GdxRuntimeException( "Array is empty." );
+        }
+        
         return Items[ 0 ];
     }
 
-    /** Returns true if the array has one or more items. */
-    public bool NotEmpty()
-    {
-        return Size > 0;
-    }
+    /// <summary>
+    /// Returns true if the array has one or more items.
+    /// </summary>
+    public bool NotEmpty() => Size > 0;
 
-    /** Returns true if the array is empty. */
-    public bool IsEmpty()
-    {
-        return Size == 0;
-    }
+    /// <summary>
+    /// Returns true if the array is empty.
+    /// </summary>
+    public bool IsEmpty() => Size == 0;
 
-    public void Clear()
-    {
-        Size = 0;
-    }
+    public void Clear() => Size = 0;
 
-    /** Reduces the size of the backing array to the size of the actual items. This is useful to release memory when many items
-     * have been removed, or if it is known that more items will not be added.
-     * @return {@link #items} */
+    /// <summary>
+    /// Reduces the size of the backing array to the size of the actual items.
+    /// This is useful to release memory when many items have been removed, or
+    /// if it is known that more items will not be added.
+    /// </summary>
     public byte[] Shrink()
     {
         if ( Items.Length != Size ) Resize( Size );
         return Items;
     }
 
-    /** Increases the size of the backing array to accommodate the specified number of additional items. Useful before adding many
-     * items to avoid multiple backing array resizes.
-     * @return {@link #items} */
+    /// <summary>
+    /// Increases the size of the backing array to accommodate the specified
+    /// number of additional items. Useful before adding many items to avoid
+    /// multiple backing array resizes.
+    /// </summary>
     public byte[] EnsureCapacity( int additionalCapacity )
     {
-        if ( additionalCapacity < 0 ) throw new ArgumentException( "additionalCapacity must be >= 0: " + additionalCapacity );
+        if ( additionalCapacity < 0 )
+        {
+            throw new ArgumentException( $"additionalCapacity must be >= 0: {additionalCapacity}" );
+        }
+        
         var sizeNeeded = Size + additionalCapacity;
-        if ( sizeNeeded > Items.Length ) Resize( Math.Max( Math.Max( 8, sizeNeeded ), ( int ) ( Size * 1.75f ) ) );
+
+        if ( sizeNeeded > Items.Length )
+        {
+            Resize( Math.Max( Math.Max( 8, sizeNeeded ), ( int ) ( Size * 1.75f ) ) );
+        }
+        
         return Items;
     }
 
-    /** Sets the array size, leaving any values beyond the current size undefined.
-     * @return {@link #items} */
+    /// <summary>
+    /// Sets the array size, leaving any values beyond the current size undefined.
+    /// </summary>
+    /// <param name="newSize"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public byte[] SetSize( int newSize )
     {
-        if ( newSize < 0 ) throw new ArgumentException( "newSize must be >= 0: " + newSize );
+        if ( newSize < 0 ) throw new ArgumentException( $"newSize must be >= 0: {newSize}" );
         if ( newSize > Items.Length ) Resize( Math.Max( 8, newSize ) );
 
         Size = newSize;
@@ -554,14 +605,19 @@ public class ByteArray
         }
     }
 
-    /** Reduces the size of the array to the specified size. If the array is already smaller than the specified size, no action is
-     * taken. */
+    /// <summary>
+    /// Reduces the size of the array to the specified size. If the array is
+    /// already smaller than the specified size, no action is taken.
+    /// </summary>
     public void Truncate( int newSize )
     {
         if ( Size > newSize ) Size = newSize;
     }
 
-    /** Returns a Random item from the array, or zero if the array is empty. */
+    /// <summary>
+    /// Returns a Random item from the array, or zero if the array is empty.
+    /// </summary>
+    /// <returns></returns>
     public byte Random()
     {
         if ( Size == 0 ) return 0;
@@ -575,6 +631,7 @@ public class ByteArray
         return array;
     }
 
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         var items = this.Items;
@@ -616,6 +673,7 @@ public class ByteArray
         return true;
     }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         if ( Size == 0 ) return "[]";

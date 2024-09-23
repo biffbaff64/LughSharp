@@ -226,10 +226,13 @@ public static class PixmapIO
         private readonly byte[] _signature = [ 137, 80, 78, 71, 13, 10, 26, 10 ];
         private          int    _lastLineLen;
 
-        private List< byte >? _curLineBytes;
-        private List< byte >? _lineOutBytes;
-        private List< byte >? _prevLineBytes;
+        private ByteArray? _curLineBytes;
+        private ByteArray? _lineOutBytes;
+        private ByteArray? _prevLineBytes;
 
+        // --------------------------------------------------------------------
+        // --------------------------------------------------------------------
+        
         /// <summary>
         /// </summary>
         /// <param name="initialBufferSize"></param>
@@ -314,9 +317,9 @@ public static class PixmapIO
 
             if ( _lineOutBytes == null )
             {
-                _lineOutBytes  = new List< byte >( lineLen );
-                _curLineBytes  = new List< byte >( lineLen );
-                _prevLineBytes = new List< byte >( lineLen );
+                _lineOutBytes  = new ByteArray( lineLen );
+                _curLineBytes  = new ByteArray( lineLen );
+                _prevLineBytes = new ByteArray( lineLen );
 
                 lineOut  = new byte[ lineLen ];
                 curLine  = new byte[ lineLen ];
@@ -403,17 +406,10 @@ public static class PixmapIO
                         c = b;
                     }
 
-//                    lineOut[ x ] = ( byte ) ( curLine[ x ] - c );
-
-                    var t1   = ( curLine[ x ] - c );
-                    var t2   = ( byte ) ( t1 & 0x7f );
-                    var sign = ( byte ) ( t1 & 0x80 );
-                    var t3   = ( byte ) ( t2 | sign );
-
-                    lineOut[ x ] = t3;
+                    lineOut[ x ] = ( byte ) ( curLine[ x ] - c );
                 }
 
-                deflaterOutput.Write( new ReadOnlySpan< byte >( PAETH_FILTER ) );
+                deflaterOutput.WriteByte( PAETH_FILTER );
                 deflaterOutput.Write( lineOut, 0, lineLen );
 
                 ( curLine, prevLine ) = ( prevLine, curLine );

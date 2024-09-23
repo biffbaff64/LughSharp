@@ -159,6 +159,8 @@ public class Pixmap : IDisposable
             Width      = ( int ) PixmapData.Width;
             Height     = ( int ) PixmapData.Height;
             Format     = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixmapData.Format );
+            
+            Debug();
         }
         catch ( Exception e )
         {
@@ -498,6 +500,11 @@ public class Pixmap : IDisposable
         try
         {
             Logger.Debug( $"Saving pixmap to file: {file}" );
+
+            if ( !File.Exists( file.FullName ) )
+            {
+                File.OpenWrite( file.FullName );
+            }
             
             PixmapIO.WritePNG( file, pixmap );
 

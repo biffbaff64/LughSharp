@@ -1627,109 +1627,6 @@ public class Matrix4
     }
 
     /// <summary>
-    /// Multiplies the vectors with the given matrix. The matrix array is assumed to
-    /// hold a 4x4 column major matrix as you can get from <see cref="Val"/>.
-    /// The vectors array is assumed to hold 3-component vectors. Offset specifies
-    /// the offset into the array where the x-component of the first vector is located.
-    /// The numVecs parameter specifies the number of vectors stored in the vectors
-    /// array. The stride parameter specifies the number of floats between subsequent
-    /// vectors and must be >= 3. This is the same as <see cref="Vector3.Mul(Matrix4)"/>
-    /// applied to multiple vectors.
-    /// </summary>
-    /// <param name="mat"> the matrix </param>
-    /// <param name="vecs"> the vectors </param>
-    /// <param name="offset"> the offset into the vectors array </param>
-    /// <param name="numVecs"> the number of vectors </param>
-    /// <param name="stride"> the stride between vectors in floats  </param>
-    public static void MulVec( float[] mat, float[] vecs, int offset, int numVecs, int stride )
-    {
-        var vecPtr = vecs.Skip( offset ).ToArray();
-
-        for ( var i = 0; i < numVecs; i++ )
-        {
-            MulVec( mat, vecPtr );
-            vecPtr = vecPtr.Skip( stride ).ToArray();
-        }
-    }
-
-    /*-{ }-*/ /*
-        float* vecPtr = vecs + offset;
-        for(int i = 0; i < numVecs; i++) {
-            matrix4_mulVec(mat, vecPtr);
-            vecPtr += stride;
-        }
-    */
-
-    /// <summary>
-    /// Multiplies the vectors with the given matrix, performing a division by w.
-    /// The matrix array is assumed to hold a 4x4 column major matrix as you can
-    /// get from <see cref="Val"/>. The vectors array is assumed to hold
-    /// 3-component vectors. Offset specifies the offset into the array where the
-    /// x-component of the first vector is located. The numVecs parameter specifies
-    /// the number of vectors stored in the vectors array. The stride parameter
-    /// specifies the number of floats between subsequent vectors and must be >= 3.
-    /// This is the same as <see cref="Vector3.Prj(Matrix4)"/> applied to multiple
-    /// vectors.
-    /// </summary>
-    /// <param name="mat"> the matrix </param>
-    /// <param name="vecs"> the vectors </param>
-    /// <param name="offset"> the offset into the vectors array </param>
-    /// <param name="numVecs"> the number of vectors </param>
-    /// <param name="stride"> the stride between vectors in floats  </param>
-    public static void Prj( float[] mat, float[] vecs, int offset, int numVecs, int stride )
-    {
-        var vecPtr = vecs.Skip( offset ).ToArray();
-
-        for ( var i = 0; i < numVecs; i++ )
-        {
-            Prj( mat, vecPtr );
-            vecPtr = vecPtr.Skip( stride ).ToArray();
-        }
-    }
-    /*-{ }-*/ /*
-        float* vecPtr = vecs + offset;
-        for(int i = 0; i < numVecs; i++) {
-            matrix4_proj(mat, vecPtr);
-            vecPtr += stride;
-        }
-    */
-
-    /// <summary>
-    /// Multiplies the vectors with the top most 3x3 sub-matrix of the given matrix.
-    /// The matrix array is assumed to hold a 4x4 column major matrix as you can get
-    /// from <see cref="Val"/>. The vectors array is assumed to hold
-    /// 3-component vectors. Offset specifies the offset into the array where the
-    /// x-component of the first vector is located. The numVecs parameter specifies
-    /// the number of vectors stored in the vectors array. The stride parameter
-    /// specifies the number of floats between subsequent vectors and must be >= 3.
-    /// This is the same as <see cref="Vector3.Rot(Matrix4)"/> applied to multiple vectors.
-    /// </summary>
-    /// <param name="mat"> the matrix </param>
-    /// <param name="vecs"> the vectors </param>
-    /// <param name="offset"> the offset into the vectors array </param>
-    /// <param name="numVecs"> the number of vectors </param>
-    /// <param name="stride"> the stride between vectors in floats  </param>
-    public static void Rot( float[] mat, float[] vecs, int offset, int numVecs, int stride )
-    {
-        var vecPtr = vecs.Skip( offset ).ToArray();
-
-        for ( var i = 0; i < numVecs; i++ )
-        {
-            Rot( mat, vecPtr );
-            vecPtr = vecPtr.Skip( stride ).ToArray();
-        }
-    }
-
-    /*-{ }-*/ /*
-        float* vecPtr = vecs + offset;
-        for(int i = 0; i < numVecs; i++) {
-            matrix4_rot(mat, vecPtr);
-            vecPtr += stride;
-        }
-    */
-    // @on
-
-    /// <summary>
     /// Multiplies the matrix mata with matrix matb, storing the result in mata.
     /// The arrays are assumed to hold 4x4 column major matrices as you can get
     /// from <see cref="Val"/>.
@@ -2410,4 +2307,97 @@ public class Matrix4
                && MathUtils.IsZero( Val[ M20 ] )
                && MathUtils.IsZero( Val[ M21 ] ) );
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Multiplies the vectors with the given matrix. The matrix array is assumed to
+    /// hold a 4x4 column major matrix as you can get from <see cref="Val"/>.
+    /// The vectors array is assumed to hold 3-component vectors. Offset specifies
+    /// the offset into the array where the x-component of the first vector is located.
+    /// The numVecs parameter specifies the number of vectors stored in the vectors
+    /// array. The stride parameter specifies the number of floats between subsequent
+    /// vectors and must be >= 3. This is the same as <see cref="Vector3.Mul(Matrix4)"/>
+    /// applied to multiple vectors.
+    /// </summary>
+    /// <param name="mat"> the matrix </param>
+    /// <param name="vecs"> the vectors </param>
+    /// <param name="offset"> the offset into the vectors array </param>
+    /// <param name="numVecs"> the number of vectors </param>
+    /// <param name="stride"> the stride between vectors in floats  </param>
+    [DllImport( "lib/gdx2d.dll", EntryPoint = "matrix4_mulVec" )]
+    public static extern void MulVec( float[] mat, float[] vecs, int offset, int numVecs, int stride );
+    /*-{ }-*/
+    /*
+        float* vecPtr = vecs + offset;
+        for(int i = 0; i < numVecs; i++) {
+            matrix4_mulVec(mat, vecPtr);
+            vecPtr += stride;
+        }
+    */
+
+    /// <summary>
+    /// Multiplies the vectors with the given matrix, performing a division by w.
+    /// The matrix array is assumed to hold a 4x4 column major matrix as you can
+    /// get from <see cref="Val"/>. The vectors array is assumed to hold
+    /// 3-component vectors. Offset specifies the offset into the array where the
+    /// x-component of the first vector is located. The numVecs parameter specifies
+    /// the number of vectors stored in the vectors array. The stride parameter
+    /// specifies the number of floats between subsequent vectors and must be >= 3.
+    /// This is the same as <see cref="Vector3.Prj(Matrix4)"/> applied to multiple
+    /// vectors.
+    /// </summary>
+    /// <param name="mat"> the matrix </param>
+    /// <param name="vecs"> the vectors </param>
+    /// <param name="offset"> the offset into the vectors array </param>
+    /// <param name="numVecs"> the number of vectors </param>
+    /// <param name="stride"> the stride between vectors in floats  </param>
+    public static void Prj( float[] mat, float[] vecs, int offset, int numVecs, int stride )
+    {
+        //TODO:
+
+        return;
+
+        [DllImport( "lib/gdx2d.dll", EntryPoint = "matrix4_proj" )]
+        static extern void matrix4_proj( long mat, long vec );
+    }
+    /*-{ }-*/
+    /*
+        float* vecPtr = vecs + offset;
+        for(int i = 0; i < numVecs; i++) {
+            matrix4_proj(mat, vecPtr);
+            vecPtr += stride;
+        }
+    */
+
+    /// <summary>
+    /// Multiplies the vectors with the top most 3x3 sub-matrix of the given matrix.
+    /// The matrix array is assumed to hold a 4x4 column major matrix as you can get
+    /// from <see cref="Val"/>. The vectors array is assumed to hold
+    /// 3-component vectors. Offset specifies the offset into the array where the
+    /// x-component of the first vector is located. The numVecs parameter specifies
+    /// the number of vectors stored in the vectors array. The stride parameter
+    /// specifies the number of floats between subsequent vectors and must be >= 3.
+    /// This is the same as <see cref="Vector3.Rot(Matrix4)"/> applied to multiple vectors.
+    /// </summary>
+    /// <param name="mat"> the matrix </param>
+    /// <param name="vecs"> the vectors </param>
+    /// <param name="offset"> the offset into the vectors array </param>
+    /// <param name="numVecs"> the number of vectors </param>
+    /// <param name="stride"> the stride between vectors in floats  </param>
+    [DllImport( "lib/gdx2d.dll", EntryPoint = "matrix4_rot" )]
+    public static extern void Rot( float[] mat, float[] vecs, int offset, int numVecs, int stride );
+    /*-{ }-*/
+    /*
+        float* vecPtr = vecs + offset;
+        for(int i = 0; i < numVecs; i++) {
+            matrix4_rot(mat, vecPtr);
+            vecPtr += stride;
+        }
+    */
+    // @on
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 }

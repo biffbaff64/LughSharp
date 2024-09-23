@@ -251,7 +251,7 @@ public class SpriteBatch : IBatch
     
     #region Drawing methods
 
-    public virtual void Draw( Texture? texture,
+    public virtual void Draw( Texture texture,
                               GRect region,
                               Point2D origin,
                               Point2D scale,
@@ -553,14 +553,14 @@ public class SpriteBatch : IBatch
     /// <param name="texture"> The texture. </param>
     /// <param name="x"> X coordinate in pixels. </param>
     /// <param name="y"> Y coordinate in pixels. </param>
-    public virtual void Draw( Texture? texture, float x, float y )
+    public virtual void Draw( Texture texture, float x, float y )
     {
         Validate( texture );
 
-        Draw( texture, x, y, texture!.Width, texture.Height );
+        Draw( texture, x, y, texture.Width, texture.Height );
     }
 
-    public virtual void Draw( Texture? texture, float locX, float locY, int width, int height )
+    public virtual void Draw( Texture texture, float locX, float locY, int width, int height )
     {
         Validate( texture );
 

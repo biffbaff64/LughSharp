@@ -122,6 +122,8 @@ public class Texture : GLTexture, IManageable
         : this( new PixmapTextureData( pixmap, null, useMipMaps, false ) )
     {
         Logger.CheckPoint();
+        
+        Debug();
     }
 
     /// <summary>
@@ -373,6 +375,14 @@ public class Texture : GLTexture, IManageable
     public override string? ToString()
     {
         return TextureData is FileTextureData ? TextureData.ToString() : base.ToString();
+    }
+
+    public void Debug()
+    {
+        Logger.Debug( $"Width: {Width}, Height: {Height}" );
+        Logger.Debug( $"Format: {TextureData.Format}" );
+        Logger.Debug( $"IsManaged: {IsManaged}" );
+        Logger.Debug( $"Depth: {Depth}" );
     }
 
     /// <summary>
