@@ -97,7 +97,7 @@ public class OrthographicCamera : Camera
         if ( updateFrustrum )
         {
             InvProjectionView.Set( Combined );
-            Matrix4.Inv( InvProjectionView.Val );
+            Matrix4.Invert( InvProjectionView.Val );
             Frustum.Update( InvProjectionView );
         }
     }

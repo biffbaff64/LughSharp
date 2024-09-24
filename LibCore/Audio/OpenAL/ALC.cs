@@ -33,13 +33,13 @@ public class ALC
     // ------------------------------------------------------------------------
 
     public readonly static int[] AttrList =
-    {
+    [
         FREQUENCY,
         REFRESH,
         SYNC,
         MONO_SOURCES,
         STEREO_SOURCES
-    };
+    ];
 
     // ------------------------------------------------------------------------
 

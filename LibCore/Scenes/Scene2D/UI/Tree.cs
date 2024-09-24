@@ -44,7 +44,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
     public TNode?         RangeStart    { get; set; }
     public ClickListener? ClickListener { get; set; }
     public TreeStyle?     Style         { get; set; }
-    public List< TNode >  RootNodes     { get; set; } = new();
+    public List< TNode >  RootNodes     { get; set; } = [ ];
     public float          YSpacing      { get; set; } = 4;
     public float          IndentSpacing { get; set; }
     public TNode?         OverNode      { get; set; }
@@ -407,7 +407,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
                 {
                     var iconY = y + actorY + Math.Round( ( height - node.Icon.MinHeight ) / 2 );
 
-                    batch.Color = actor.Color ?? Color.Black;
+                    batch.Color = actor.Color;
                     DrawIcon( node, node.Icon, batch, iconX, ( float ) iconY );
                     batch.SetColor( 1, 1, 1, 1 );
                 }
@@ -871,7 +871,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
         /// is not necessary if this node is not in the tree or is not expanded,
         /// because then the child node's actors are not in the tree.
         /// </summary>
-        public List< TNode >? NodeChildren { get; set; } = new();
+        public List< TNode >? NodeChildren { get; set; } = [ ];
 
         public Actor? Actor
         {
@@ -1079,9 +1079,9 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
             {
                 tree.Remove( Parent! );
             }
-            else if ( Parent != null )
+            else
             {
-                Parent.Remove( Parent! );
+                Parent?.Remove( Parent! );
             }
         }
 

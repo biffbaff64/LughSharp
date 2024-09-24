@@ -84,10 +84,15 @@ public partial class ScrollPane : WidgetGroup
 
         Style = style;
 
+        _flickScrollListener = new ScrollPaneGestureListener( this );
+
+        ConstructorHelper( widget );
+    }
+
+    private void ConstructorHelper( Actor? widget )
+    {
         SetActor( widget );
         SetSize( 150, 150 );
-
-        _flickScrollListener = new ScrollPaneGestureListener( this );
 
         AddCaptureListener( new ScrollPaneCaptureListener( this ) );
         AddListener( _flickScrollListener );
@@ -118,10 +123,7 @@ public partial class ScrollPane : WidgetGroup
     /// </summary>
     public void TouchFocusCancel()
     {
-        if ( Stage != null )
-        {
-            Stage.CancelTouchFocusExcept( _flickScrollListener, this );
-        }
+        Stage?.CancelTouchFocusExcept( _flickScrollListener, this );
     }
 
     /// <summary>
@@ -420,8 +422,8 @@ public partial class ScrollPane : WidgetGroup
         }
 
         // Determine if horizontal/vertical scrollbars are needed.
-        ScrollX = ForceScrollX || ( ( widgetWidth > _widgetArea.Width ) && !DisableX );
-        ScrollY = ForceScrollY || ( ( widgetHeight > _widgetArea.Height ) && !DisableY );
+        ScrollX = ForceScrollX || ( ( widgetWidth > _widgetArea.Width ) && !DisableXScroll );
+        ScrollY = ForceScrollY || ( ( widgetHeight > _widgetArea.Height ) && !DisableYScroll );
 
         // Adjust widget area for scrollbar sizes and check if it causes the other scrollbar to show.
         if ( !_scrollbarsOnTop )
@@ -436,7 +438,7 @@ public partial class ScrollPane : WidgetGroup
                 }
 
                 // Horizontal scrollbar may cause vertical scrollbar to show.
-                if ( !ScrollX && ( widgetWidth > _widgetArea.Width ) && !DisableX )
+                if ( !ScrollX && ( widgetWidth > _widgetArea.Width ) && !DisableXScroll )
                 {
                     ScrollX = true;
                 }
@@ -452,7 +454,7 @@ public partial class ScrollPane : WidgetGroup
                 }
 
                 // Vertical scrollbar may cause horizontal scrollbar to show.
-                if ( !ScrollY && ( widgetHeight > _widgetArea.Height ) && !DisableY )
+                if ( !ScrollY && ( widgetHeight > _widgetArea.Height ) && !DisableYScroll )
                 {
                     ScrollY           =  true;
                     _widgetArea.Width -= scrollbarWidth;
@@ -466,8 +468,8 @@ public partial class ScrollPane : WidgetGroup
         }
 
         // If the widget is smaller than the available space, make it take up the available space.
-        widgetWidth  = DisableX ? _widgetArea.Width : Math.Max( _widgetArea.Width, widgetWidth );
-        widgetHeight = DisableY ? _widgetArea.Height : Math.Max( _widgetArea.Height, widgetHeight );
+        widgetWidth  = DisableXScroll ? _widgetArea.Width : Math.Max( _widgetArea.Width, widgetWidth );
+        widgetHeight = DisableYScroll ? _widgetArea.Height : Math.Max( _widgetArea.Height, widgetHeight );
 
         MaxX = widgetWidth - _widgetArea.Width;
         MaxY = widgetHeight - _widgetArea.Height;
@@ -831,7 +833,7 @@ public partial class ScrollPane : WidgetGroup
 
         if ( _widget != null )
         {
-            base.RemoveActor( _widget );
+            base.RemoveActor( _widget, true );
         }
 
         _widget = actor;
@@ -1139,8 +1141,8 @@ public partial class ScrollPane : WidgetGroup
     /// </summary>
     public void SetScrollingDisabled( bool x, bool y )
     {
-        DisableX = x;
-        DisableY = y;
+        DisableXScroll = x;
+        DisableYScroll = y;
 
         Invalidate();
     }
@@ -1233,6 +1235,7 @@ public partial class ScrollPane : WidgetGroup
     }
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     #region debug
 
@@ -1254,14 +1257,24 @@ public partial class ScrollPane : WidgetGroup
     #endregion debug
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-
+    [PublicAPI]
     public class ScrollPaneStyle
     {
+        public IDrawable? Background  { get; set; }
+        public IDrawable? Corner      { get; set; }
+        public IDrawable? HScroll     { get; set; }
+        public IDrawable? HScrollKnob { get; set; }
+        public IDrawable? VScroll     { get; set; }
+        public IDrawable? VScrollKnob { get; set; }
+
+        // --------------------------------------------------------------------
+
         public ScrollPaneStyle()
         {
         }
-
+        
         public ScrollPaneStyle( IDrawable background,
                                 IDrawable hScroll,
                                 IDrawable hScrollKnob,
@@ -1286,15 +1299,9 @@ public partial class ScrollPane : WidgetGroup
             VScroll     = style.VScroll;
             VScrollKnob = style.VScrollKnob;
         }
-
-        public IDrawable? Background  { get; set; }
-        public IDrawable? Corner      { get; set; }
-        public IDrawable? HScroll     { get; set; }
-        public IDrawable? HScrollKnob { get; set; }
-        public IDrawable? VScroll     { get; set; }
-        public IDrawable? VScrollKnob { get; set; }
     }
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     #region expression bodies
@@ -1302,128 +1309,65 @@ public partial class ScrollPane : WidgetGroup
     /// <summary>
     /// Called whenever the visual x scroll amount is changed.
     /// </summary>
-    protected void VisualScrollX( float pixelsX )
-    {
-        _visualAmountX = pixelsX;
-    }
+    protected void VisualScrollX( float pixelsX ) => _visualAmountX = pixelsX;
 
     /// <summary>
     /// Called whenever the visual y scroll amount is changed.
     /// </summary>
-    protected void VisualScrollY( float pixelsY )
-    {
-        _visualAmountY = pixelsY;
-    }
+    protected void VisualScrollY( float pixelsY ) => _visualAmountY = pixelsY;
 
     /// <summary>
     /// Returns the actor embedded in this scroll pane, or null.
     /// </summary>
-    public Actor? GetActor()
-    {
-        return _widget;
-    }
+    public Actor? GetActor() => _widget;
 
     /// <summary>
     /// Returns the width of the scrolled viewport.
     /// </summary>
-    public float GetScrollWidth()
-    {
-        return _widgetArea.Width;
-    }
+    public float GetScrollWidth() => _widgetArea.Width;
 
     /// <summary>
     /// Returns the height of the scrolled viewport.
     /// </summary>
-    public float GetScrollHeight()
-    {
-        return _widgetArea.Height;
-    }
+    public float GetScrollHeight() => _widgetArea.Height;
 
     /// <summary>
     /// Returns true if the widget is larger than the scroll pane horizontally.
     /// </summary>
-    public bool ISScrollX()
-    {
-        return ScrollX;
-    }
+    public bool IsScrollX() => ScrollX; //TODO:
 
     /// <summary>
     /// Returns true if the widget is larger than the scroll pane vertically.
     /// </summary>
-    public bool ISScrollY()
-    {
-        return ScrollY;
-    }
+    public bool IsScrollY() => ScrollY; //TODO:
 
-    public bool ISScrollingDisabledX()
-    {
-        return DisableX;
-    }
+    public bool IsScrollingDisabledX() => DisableXScroll;
 
-    public bool ISScrollingDisabledY()
-    {
-        return DisableY;
-    }
+    public bool IsScrollingDisabledY() => DisableYScroll;
 
-    public bool ISLeftEdge()
-    {
-        return !ScrollX || ( AmountX <= 0 );
-    }
+    public bool IsLeftEdge() => !ScrollX || ( AmountX <= 0 );
 
-    public bool ISRightEdge()
-    {
-        return !ScrollX || ( AmountX >= MaxX );
-    }
+    public bool IsRightEdge() => !ScrollX || ( AmountX >= MaxX );
 
-    public bool ISTopEdge()
-    {
-        return !ScrollY || ( AmountY <= 0 );
-    }
+    public bool IsTopEdge() => !ScrollY || ( AmountY <= 0 );
 
-    public bool ISBottomEdge()
-    {
-        return !ScrollY || ( AmountY >= MaxY );
-    }
+    public bool IsBottomEdge() => !ScrollY || ( AmountY >= MaxY );
 
-    public bool ISDragging()
-    {
-        return _draggingPointer != -1;
-    }
+    public bool IsDragging() => _draggingPointer != -1;
 
-    public float GetVisualScrollX()
-    {
-        return !ScrollX ? 0 : _visualAmountX;
-    }
+    public float GetVisualScrollX() => !ScrollX ? 0 : _visualAmountX;
 
-    public float GetVisualScrollY()
-    {
-        return !ScrollY ? 0 : _visualAmountY;
-    }
+    public float GetVisualScrollY() => !ScrollY ? 0 : _visualAmountY;
 
-    public void SetScrollX( float pixels )
-    {
-        AmountX = MathUtils.Clamp( pixels, 0, MaxX );
-    }
+    public void SetScrollX( float pixels ) => AmountX = MathUtils.Clamp( pixels, 0, MaxX );
 
-    public void SetScrollY( float pixels )
-    {
-        AmountY = MathUtils.Clamp( pixels, 0, MaxY );
-    }
+    public void SetScrollY( float pixels ) => AmountY = MathUtils.Clamp( pixels, 0, MaxY );
 
-    public bool ISFlinging()
-    {
-        return _flingTimer > 0;
-    }
+    public bool IsFlinging() => _flingTimer > 0;
 
-    public float GetMinWidth()
-    {
-        return 0;
-    }
+    public float GetMinWidth() => 0;
 
-    public float GetMinHeight()
-    {
-        return 0;
-    }
+    public float GetMinHeight() => 0;
 
     #endregion expression bodies
 
@@ -1436,8 +1380,8 @@ public partial class ScrollPane : WidgetGroup
     public float           AmountY            { get; set; }
     public bool            ForceScrollX       { get; set; }
     public bool            ForceScrollY       { get; set; }
-    public bool            DisableX           { get; set; }
-    public bool            DisableY           { get; set; }
+    public bool            DisableXScroll     { get; set; }
+    public bool            DisableYScroll     { get; set; }
     public float           OverscrollDistance { get; set; } = 50;
     public bool            FadeScrollBars     { get; set; } = true;
     public bool            SmoothScrolling    { get; set; } = true;

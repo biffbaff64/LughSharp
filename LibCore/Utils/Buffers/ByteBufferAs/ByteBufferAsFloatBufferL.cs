@@ -28,7 +28,7 @@ namespace LughSharp.LibCore.Utils.Buffers.ByteBufferAs;
 public class ByteBufferAsFloatBufferL : FloatBuffer
 {
     /// <inheritdoc />
-    public ByteBufferAsFloatBufferL(ByteBuffer bb, int mark, int pos, int lim, int cap, int offset = 0 )
+    public ByteBufferAsFloatBufferL( ByteBuffer bb, int mark, int pos, int lim, int cap, int offset = 0 )
         : base( mark, pos, lim, cap )
     {
     }

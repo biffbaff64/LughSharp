@@ -284,7 +284,7 @@ public static class AL
 
     public static void DeleteSource( uint source )
     {
-        DeleteSources( 1, new[] { source } );
+        DeleteSources( 1, [ source ] );
     }
 
     [DllImport( OPEN_AL_DLL, EntryPoint = "alIsSource" )]
@@ -477,7 +477,7 @@ public static class AL
 
     public static void DeleteBuffer( uint buffer )
     {
-        DeleteBuffers( 1, new[] { buffer } );
+        DeleteBuffers( 1, [ buffer ] );
     }
 
     [DllImport( OPEN_AL_DLL, EntryPoint = "alIsBuffer" )]

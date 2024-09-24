@@ -684,7 +684,7 @@ public class PixmapPacker : IDisposable
             endY = raster.Height - 2;
         }
 
-        return new[] { startX, endX, startY, endY };
+        return [ startX, endX, startY, endY ];
     }
 
     private int[]? GetPads( Pixmap raster, int[]? splits )
@@ -1141,7 +1141,7 @@ public class PixmapPacker : IDisposable
 
         internal class SkylinePage : Page
         {
-            internal readonly List< RowSpec > Rows = new();
+            internal readonly List< RowSpec > Rows = [ ];
 
             internal SkylinePage( PixmapPacker packer )
                 : base( packer )

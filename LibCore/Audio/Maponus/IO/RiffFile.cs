@@ -637,7 +637,7 @@ public class RiffFile
     /// </summary>
     public static int FourCC( string chunkName )
     {
-        sbyte[] p = { 0x20, 0x20, 0x20, 0x20 };
+        sbyte[] p = [ 0x20, 0x20, 0x20, 0x20 ];
 
         SupportClass.GetSBytesFromString( chunkName, 0, 4, ref p, 0 );
 

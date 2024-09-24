@@ -115,7 +115,7 @@ public class TextureAtlas
 
         foreach ( var page in data.Pages )
         {
-            page.Texture ??= new Texture( page.TextureFile, page.Format, page.UseMipMaps );
+            page.Texture ??= new Texture( page.TextureFile!, page.Format, page.UseMipMaps );
 
             page.Texture.SetFilter( page.MinFilter, page.MagFilter );
             page.Texture.SetWrap( page.UWrap, page.VWrap );

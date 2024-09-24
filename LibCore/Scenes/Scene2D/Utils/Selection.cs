@@ -38,13 +38,14 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 [PublicAPI]
 public class Selection< T > : IDisableable, IDisposable
 {
-    private readonly SortedSet< T > _old = new();
-    public           SortedSet< T > Selected                 { get; set; } = new();
-    public           bool           Multiple                 { get; set; }
-    public           bool           Required                 { get; set; }
-    public           T?             LastSelected             { get; set; }
-    public           bool           Toggle                   { get; set; }
-    public           bool           ProgrammaticChangeEvents { get; set; } = true;
+    private readonly SortedSet< T > _old = [ ];
+
+    public SortedSet< T > Selected                 { get; set; } = [ ];
+    public bool           Multiple                 { get; set; }
+    public bool           Required                 { get; set; }
+    public T?             LastSelected             { get; set; }
+    public bool           Toggle                   { get; set; }
+    public bool           ProgrammaticChangeEvents { get; set; } = true;
 
     /// <summary>
     ///     <param name="value">
@@ -436,12 +437,7 @@ public class Selection< T > : IDisableable, IDisposable
 
     public bool Contains( T? item )
     {
-        if ( item == null )
-        {
-            return false;
-        }
-
-        return Selected.Contains( item );
+        return ( item != null ) && Selected.Contains( item );
     }
 
     /// <summary>

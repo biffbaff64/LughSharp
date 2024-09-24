@@ -215,7 +215,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
         if ( ( start + count ) > array.Size )
         {
             throw new ArgumentOutOfRangeException
-                ( $@"start + count must be <= size - {start} + {count} <= {array.Size}" );
+                ( $"start + count must be <= size - {start} + {count} <= {array.Size}" );
         }
 
         Modified();
@@ -256,7 +256,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     {
         if ( index >= Size )
         {
-            throw new ArgumentOutOfRangeException( $@"index can't be >= size - {index} >= {Size}" );
+            throw new ArgumentOutOfRangeException( $"index can't be >= size - {index} >= {Size}" );
         }
 
         return Items[ index ];
@@ -280,7 +280,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     {
         if ( index >= Size )
         {
-            throw new ArgumentOutOfRangeException( $@"index can't be >= size - {index} >= {Size}" );
+            throw new ArgumentOutOfRangeException( $"index can't be >= size - {index} >= {Size}" );
         }
 
         Modified();
@@ -295,7 +295,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
     {
         if ( index > Size )
         {
-            throw new ArgumentOutOfRangeException( $@"index can't be >= size - {index} >= {Size}" );
+            throw new ArgumentOutOfRangeException( $"index can't be >= size - {index} >= {Size}" );
         }
 
         if ( Items == null )
@@ -372,7 +372,7 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
 
         if ( index >= Size )
         {
-            throw new ArgumentOutOfRangeException( $@"index can't be >= size - {index} >= {Size}" );
+            throw new ArgumentOutOfRangeException( $"index can't be >= size - {index} >= {Size}" );
         }
 
         var value = Items[ index ];
@@ -406,12 +406,12 @@ public class SnapshotArray< T > : Array< T >, IEnumerable< T >
 
         if ( end >= Size )
         {
-            throw new ArgumentOutOfRangeException( $@"end can't be >= size - {end} >= {Size}" );
+            throw new ArgumentOutOfRangeException( $"end can't be >= size - {end} >= {Size}" );
         }
 
         if ( start > end )
         {
-            throw new ArgumentOutOfRangeException( $@"start can't be > end - {start} > {end}" );
+            throw new ArgumentOutOfRangeException( $"start can't be > end - {start} > {end}" );
         }
 
         var count = ( end - start ) + 1;

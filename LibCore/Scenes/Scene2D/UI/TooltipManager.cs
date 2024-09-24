@@ -31,7 +31,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class TooltipManager< T > where T : Actor
 {
-    private readonly List< Tooltip< T > > _activeTooltips = new();
+    private readonly List< Tooltip< T > > _activeTooltips = [ ];
 
     private readonly CancellationToken       _showTaskCancellationToken;
     private readonly CancellationTokenSource _showTaskCancellationTokenSource;

@@ -211,12 +211,11 @@ public class NinePatch
     /// </summary>
     public NinePatch( TextureRegion region )
     {
-        Load( new[]
-        {
+        Load( [
             null, null, null,
             null, region, null,
             null, null, null
-        } );
+        ] );
     }
 
     /// <summary>

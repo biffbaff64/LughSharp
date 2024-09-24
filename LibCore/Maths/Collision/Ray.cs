@@ -32,8 +32,8 @@ namespace LughSharp.LibCore.Maths.Collision;
 public class Ray
 {
     private static  Vector3 _tmp      = new();
-    public readonly Vector3 direction = new();
-    public readonly Vector3 origin    = new();
+    public readonly Vector3 Direction = new();
+    public readonly Vector3 Origin    = new();
 
     /// <summary>
     /// Constructor, sets the starting position of the ray and the direction.
@@ -42,8 +42,8 @@ public class Ray
     /// <param name="direction"> The direction  </param>
     public Ray( Vector3 origin, Vector3 direction )
     {
-        this.origin.Set( origin );
-        this.direction.Set( direction ).Nor();
+        this.Origin.Set( origin );
+        this.Direction.Set( direction ).Nor();
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class Ray
     /// </summary>
     public virtual Ray Copy()
     {
-        return new Ray( origin, direction );
+        return new Ray( Origin, Direction );
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public class Ray
     /// <returns> The out param  </returns>
     public virtual Vector3 GetEndPoint( in Vector3 result, in float distance )
     {
-        return result.Set( direction ).Scale( distance ).Add( origin );
+        return result.Set( Direction ).Scale( distance ).Add( Origin );
     }
 
     /// <summary>
@@ -74,11 +74,11 @@ public class Ray
     /// <returns> This ray for chaining.  </returns>
     public virtual Ray Multiply( Matrix4 matrix )
     {
-        _tmp.Set( origin ).Add( direction );
+        _tmp.Set( Origin ).Add( Direction );
         _tmp.Mul( matrix );
 
-        origin.Mul( matrix );
-        direction.Set( _tmp.Sub( origin ) ).Nor();
+        Origin.Mul( matrix );
+        Direction.Set( _tmp.Sub( Origin ) ).Nor();
 
         return this;
     }
@@ -86,7 +86,7 @@ public class Ray
     /// <inheritdoc />
     public override string ToString()
     {
-        return "ray [" + origin + ":" + direction + "]";
+        return "ray [" + Origin + ":" + Direction + "]";
     }
 
     /// <summary>
@@ -97,8 +97,8 @@ public class Ray
     /// <returns> this ray for chaining  </returns>
     public virtual Ray Set( Vector3 orig, Vector3 dir )
     {
-        origin.Set( orig );
-        direction.Set( dir ).Nor();
+        Origin.Set( orig );
+        Direction.Set( dir ).Nor();
 
         return this;
     }
@@ -115,8 +115,8 @@ public class Ray
     /// <returns> this ray for chaining  </returns>
     public virtual Ray Set( float x, float y, float z, float dx, float dy, float dz )
     {
-        origin.Set( x, y, z );
-        direction.Set( dx, dy, dz ).Nor();
+        Origin.Set( x, y, z );
+        Direction.Set( dx, dy, dz ).Nor();
 
         return this;
     }
@@ -128,8 +128,8 @@ public class Ray
     /// <returns> This ray for chaining  </returns>
     public virtual Ray Set( Ray ray )
     {
-        origin.Set( ray.origin );
-        direction.Set( ray.direction ).Nor();
+        Origin.Set( ray.Origin );
+        Direction.Set( ray.Direction ).Nor();
 
         return this;
     }
@@ -149,7 +149,7 @@ public class Ray
 
         var r = ( Ray ) o;
 
-        return direction.Equals( r.direction ) && origin.Equals( r.origin );
+        return Direction.Equals( r.Direction ) && Origin.Equals( r.Origin );
     }
 
     /// <inheritdoc />
@@ -157,8 +157,8 @@ public class Ray
     {
         const int PRIME = 73;
 
-        var result = PRIME + direction.GetHashCode();
-        result = ( PRIME * result ) + origin.GetHashCode();
+        var result = PRIME + Direction.GetHashCode();
+        result = ( PRIME * result ) + Origin.GetHashCode();
 
         return result;
     }

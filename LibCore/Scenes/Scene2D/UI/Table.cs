@@ -461,7 +461,7 @@ public class Table : WidgetGroup
         return Add( stack );
     }
 
-    public override bool RemoveActor( Actor actor, bool unfocus = true )
+    public override bool RemoveActor( Actor actor, bool unfocus )
     {
         if ( !base.RemoveActor( actor, unfocus ) )
         {
@@ -1827,7 +1827,7 @@ public class Table : WidgetGroup
 
     internal class DebugRect : RectangleShape
     {
-        internal static Pool< DebugRect > Pool  { get; set; } = Pools< DebugRect >.Get();
+        internal static Pool< DebugRect > Pool  { get; }      = Pools< DebugRect >.Get();
         internal        Color             Color { get; set; } = null!;
     }
 
@@ -1928,7 +1928,7 @@ public class Table : WidgetGroup
 
     private void ClearDebugRects()
     {
-        _debugRects ??= new List< DebugRect >();
+        _debugRects ??= [ ];
 
         DebugRect.Pool.FreeAll( _debugRects );
 
@@ -1962,7 +1962,7 @@ public class Table : WidgetGroup
             var c = _cells[ i ];
 
             // Actor bounds.
-            if ( ( TableDebug == DebugType.Actor ) || ( TableDebug == DebugType.All ) )
+            if ( TableDebug is DebugType.Actor or DebugType.All )
             {
                 AddDebugRect( c.ActorX, c.ActorY, c.ActorWidth, c.ActorHeight, DebugActorColor );
             }

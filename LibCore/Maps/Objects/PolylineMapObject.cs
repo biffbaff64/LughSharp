@@ -32,7 +32,7 @@ public class PolylineMapObject : MapObject
     /// Creates a new, empty, PolylineMapObject.
     /// </summary>
     public PolylineMapObject()
-        : this( Array.Empty< float >() )
+        : this( [ ] )
     {
     }
 

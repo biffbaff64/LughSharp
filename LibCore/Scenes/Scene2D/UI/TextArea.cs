@@ -84,7 +84,7 @@ public class TextArea : TextField
         base.Initialise();
 
         WriteEnters      = true;
-        LinesBreak       = new List< int >();
+        LinesBreak       = [ ];
         CursorLine       = 0;
         FirstLineShowing = 0;
         _moveOffset      = -1;
@@ -160,7 +160,7 @@ public class TextArea : TextField
             return base.GetPrefHeight();
         }
 
-        if ( ( Style == null ) || ( Style.Font == null ) )
+        if ( Style?.Font == null )
         {
             return base.GetPrefHeight();
         }
@@ -478,7 +478,7 @@ public class TextArea : TextField
             {
                 var lastCharacter = Text[ i ];
 
-                if ( ( lastCharacter == CARRIAGE_RETURN ) || ( lastCharacter == NEWLINE ) )
+                if ( lastCharacter is CARRIAGE_RETURN or NEWLINE )
                 {
                     LinesBreak?.Add( lineStart );
                     LinesBreak?.Add( i );

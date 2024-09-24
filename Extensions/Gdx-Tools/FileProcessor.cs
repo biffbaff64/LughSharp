@@ -362,9 +362,9 @@ public class FileProcessor
 //        public File inputFile;
 //        public File outputDir;
 //        public File outputFile;
-        public int depth;
+//        public int depth;
 
-        //        public Entry( File inputFile, File outputFile )
+//        public Entry( File inputFile, File outputFile )
 //        {
 //            this.inputFile  = inputFile;
 //            this.outputFile = outputFile;

@@ -89,7 +89,7 @@ public class VerticalGroup : WidgetGroup
 
             if ( _columnSizes == null )
             {
-                _columnSizes = new List< float >();
+                _columnSizes = [ ];
             }
             else
             {
@@ -330,10 +330,7 @@ public class VerticalGroup : WidgetGroup
                 child.SetBounds( x, y, width, height );
             }
 
-            if ( layout != null )
-            {
-                layout.Validate();
-            }
+            layout?.Validate();
         }
     }
 
@@ -490,10 +487,7 @@ public class VerticalGroup : WidgetGroup
                 child.SetBounds( x, y, width, height );
             }
 
-            if ( layout != null )
-            {
-                layout.Validate();
-            }
+            layout?.Validate();
         }
     }
 

@@ -236,7 +236,7 @@ public class Container< T > : WidgetGroup where T : Actor
 
         if ( _actor != null )
         {
-            base.RemoveActor( _actor );
+            base.RemoveActor( _actor, true );
         }
 
         _actor = actor;

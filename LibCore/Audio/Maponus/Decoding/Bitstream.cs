@@ -55,11 +55,11 @@ public sealed class Bitstream
     private const int BUFFER_INT_SIZE = 433;
 
     private readonly int[] _bitmask =
-    {
+    [
         0x00000000, 0x00000001, 0x00000003, 0x00000007, 0x0000000F, 0x0000001F,
         0x0000003F, 0x0000007F, 0x000000FF, 0x000001FF, 0x000003FF, 0x000007FF,
         0x00000FFF, 0x00001FFF, 0x00003FFF, 0x00007FFF, 0x0000FFFF, 0x0001FFFF
-    };
+    ];
 
     private readonly Crc16[] _crc;
 

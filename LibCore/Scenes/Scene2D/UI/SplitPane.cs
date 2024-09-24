@@ -246,7 +246,7 @@ public class SplitPane : WidgetGroup
         InvalidateHierarchy();
     }
 
-    public bool ISVertical()
+    public bool IsVertical()
     {
         return _vertical;
     }
@@ -435,7 +435,7 @@ public class SplitPane : WidgetGroup
     {
         if ( _firstWidget != null )
         {
-            base.RemoveActor( _firstWidget );
+            base.RemoveActor( _firstWidget, true );
         }
 
         _firstWidget = widget;
@@ -452,7 +452,7 @@ public class SplitPane : WidgetGroup
     {
         if ( _secondWidget != null )
         {
-            base.RemoveActor( _secondWidget );
+            base.RemoveActor( _secondWidget, true );
         }
 
         _secondWidget = widget;
@@ -539,7 +539,7 @@ public class SplitPane : WidgetGroup
         return actor;
     }
 
-    public bool ISCursorOverHandle()
+    public bool IsCursorOverHandle()
     {
         return _cursorOverHandle;
     }
@@ -612,7 +612,6 @@ public class SplitPane : WidgetGroup
                 dragX = Math.Min( availWidth, dragX );
 
                 _parent._splitAmount = dragX / availWidth;
-                _parent._lastPoint.Set( x, y );
             }
             else
             {
@@ -626,8 +625,9 @@ public class SplitPane : WidgetGroup
                 dragY = Math.Min( availHeight, dragY );
 
                 _parent._splitAmount = 1 - ( dragY / availHeight );
-                _parent._lastPoint.Set( x, y );
             }
+
+            _parent._lastPoint.Set( x, y );
 
             _parent.Invalidate();
         }

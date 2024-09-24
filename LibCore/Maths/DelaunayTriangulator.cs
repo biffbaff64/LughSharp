@@ -41,9 +41,9 @@ public class DelaunayTriangulator
 
     private readonly Vector2      _centroid        = new();
     private readonly List< bool > _complete        = new( 16 );
-    private readonly List< int >  _edges           = new();
-    private readonly List< int >  _originalIndices = new( 0 );
-    private readonly List< int >  _quicksortStack  = new();
+    private readonly List< int >  _edges           = [ ];
+    private readonly List< int >  _originalIndices = [ ];
+    private readonly List< int >  _quicksortStack  = [ ];
     private readonly float[]      _superTriangle   = new float[ 6 ];
     private readonly List< int >  _triangles       = new( 16 );
 
@@ -392,7 +392,6 @@ public class DelaunayTriangulator
             if ( y2Y3 < EPSILON )
             {
                 xc = ( x3 + x2 ) / 2f;
-                yc = ( m1 * ( xc - mx1 ) ) + my1;
             }
             else
             {
@@ -401,8 +400,9 @@ public class DelaunayTriangulator
                 var my2 = ( y2 + y3 ) / 2f;
 
                 xc = ( ( ( ( m1 * mx1 ) - ( m2 * mx2 ) ) + my2 ) - my1 ) / ( m1 - m2 );
-                yc = ( m1 * ( xc - mx1 ) ) + my1;
             }
+            
+            yc = ( m1 * ( xc - mx1 ) ) + my1;
         }
 
         var dx   = x2 - xc;

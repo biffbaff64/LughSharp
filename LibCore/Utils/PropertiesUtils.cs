@@ -167,7 +167,10 @@ public static class PropertiesUtils
 
                                     nextChar = ( char ) intVal;
 
-                                    if ( ( nextChar == '\r' ) || ( nextChar == '\n' ) ) break;
+                                    if ( nextChar is '\r' or '\n' )
+                                    {
+                                        break;
+                                    }
                                 }
 
                                 continue;
@@ -232,7 +235,7 @@ public static class PropertiesUtils
                         }
                     }
 
-                    mode = ( mode == IGNORE ) || ( mode == CONTINUE ) ? NONE : mode;
+                    mode = ( mode is IGNORE or CONTINUE ) ? NONE : mode;
 
                     break;
             }
@@ -263,7 +266,7 @@ public static class PropertiesUtils
 
             if ( mode == SLASH )
             {
-                value += "\u0000";
+                value += "\0";
             }
 
             properties[ key ] = value;
@@ -407,7 +410,7 @@ public static class PropertiesUtils
         {
             var c = comment[ curIndex ];
 
-            if ( ( c > '\u00ff' ) || ( c == '\n' ) || ( c == '\r' ) )
+            if ( c is > '\u00ff' or '\n' or '\r' )
             {
                 if ( lastIndex != curIndex )
                 {

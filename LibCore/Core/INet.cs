@@ -34,6 +34,7 @@ public interface INet
     /// <summary>
     /// Represents the supported network protocols.
     /// </summary>
+    [PublicAPI]
     public enum Protocol
     {
         Tcp

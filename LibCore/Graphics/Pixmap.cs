@@ -58,7 +58,6 @@ public class Pixmap : IDisposable
     // ------------------------------------------------------------------------
 
     private Filter _filter = Filter.BiLinear;
-    private int    _format;
 
     // ------------------------------------------------------------------------
 
@@ -73,10 +72,6 @@ public class Pixmap : IDisposable
         Logger.CheckPoint();
 
         PixmapData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
-
-        this.Width  = ( int ) PixmapData.Width;
-        this.Height = ( int ) PixmapData.Height;
-        this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixmapData.Format );
 
         SetColor( Graphics.Color.Red );
         FillWithCurrentColor();
@@ -93,10 +88,6 @@ public class Pixmap : IDisposable
         try
         {
             PixmapData = new Gdx2DPixmap( encodedData, offset, len, 0 );
-
-            Width       = ( int ) PixmapData.Width;
-            Height      = ( int ) PixmapData.Height;
-            this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixmapData.Format );
         }
         catch ( IOException e )
         {
@@ -120,10 +111,6 @@ public class Pixmap : IDisposable
         try
         {
             PixmapData = new Gdx2DPixmap( encodedData, offset, len, 0 );
-
-            Width       = ( int ) PixmapData.Width;
-            Height      = ( int ) PixmapData.Height;
-            this.Format = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixmapData.Format );
         }
         catch ( IOException e )
         {
@@ -156,9 +143,6 @@ public class Pixmap : IDisposable
             var data = File.ReadAllBytes( file.FullName );
 
             PixmapData = new Gdx2DPixmap( data, 0, data.Length, 0 );
-            Width      = ( int ) PixmapData.Width;
-            Height     = ( int ) PixmapData.Height;
-            Format     = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixmapData.Format );
             
             Debug();
         }
@@ -174,9 +158,6 @@ public class Pixmap : IDisposable
     public Pixmap( Gdx2DPixmap gdx2DPixmap )
     {
         this.PixmapData = gdx2DPixmap;
-        this.Width      = ( int ) PixmapData.Width;
-        this.Height     = ( int ) PixmapData.Height;
-        this.Format     = PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixmapData.Format );
     }
 
     // ----------------------------------------------------------
@@ -184,12 +165,12 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Returns the width of the Pixmap in pixels.
     /// </summary>
-    public int Width { get; set; }
+    public int Width => ( int ) PixmapData.Width;
 
     /// <summary>
     /// Returns the height of the Pixmap in pixels.
     /// </summary>
-    public int Height { get; set; }
+    public int Height => ( int ) PixmapData.Height;
 
     /// <summary>
     /// Sets the type of <see cref="BlendTypes"/> to be used for all operations.
@@ -320,7 +301,7 @@ public class Pixmap : IDisposable
     /// <param name="y"> The target y-coordinate (top left corner)  </param>
     public void DrawPixmap( Pixmap pixmap, int x, int y )
     {
-        DrawPixmap( pixmap, x, y, 0, 0, pixmap.Width, pixmap.Height );
+        DrawPixmap( pixmap, x, y, 0, 0, ( int ) pixmap.Width, ( int ) pixmap.Height );
     }
 
     /// <summary>
@@ -464,14 +445,14 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Returns the <see cref="ColorFormat"/> of this Pixmap.
     /// </summary>
-    public Pixmap.ColorFormat Format
-    {
-        get
-            => PixmapFormat.FromGdx2DPixmapFormat( _format != 0
-                                                       ? _format
-                                                       : PixmapFormat.GDX_2D_FORMAT_RGB888 );
-        set => _format = PixmapFormat.ToGdx2DPixmapFormat( value );
-    }
+    public Pixmap.ColorFormat Format => PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixmapData.Format );
+//    {
+//        get
+//            => PixmapFormat.FromGdx2DPixmapFormat( _format != 0
+//                                                       ? _format
+//                                                       : PixmapFormat.GDX_2D_FORMAT_RGB888 );
+//        set => _format = PixmapFormat.ToGdx2DPixmapFormat( value );
+//    }
 
     /// <summary>
     /// Creates a Pixmap from a part of the current framebuffer.

@@ -38,7 +38,7 @@ namespace LughSharp.LibCore.Maths;
 [PublicAPI]
 public class Bresenham2
 {
-    private readonly List< GridPoint2 > _points = new();
+    private readonly List< GridPoint2 > _points = [ ];
     private readonly Pool< GridPoint2 > _pool   = new();
 
     public Bresenham2()

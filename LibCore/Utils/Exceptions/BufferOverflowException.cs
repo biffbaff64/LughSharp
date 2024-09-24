@@ -25,9 +25,4 @@
 namespace LughSharp.LibCore.Utils.Exceptions;
 
 [PublicAPI]
-public class BufferOverflowException : ApplicationException
-{
-    public BufferOverflowException()
-    {
-    }
-}
+public class BufferOverflowException : ApplicationException;

@@ -56,7 +56,7 @@ public static class ListExtensions
     /// </summary>
     public static List< T > New< T >( T t )
     {
-        return new List< T > { t };
+        return [ t ];
     }
 
     /// <summary>

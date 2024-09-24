@@ -41,7 +41,7 @@ public class Polyline : IShape2D
 
     public Polyline()
     {
-        LocalVertices = Array.Empty< float >();
+        LocalVertices = [ ];
     }
 
     public Polyline( float[] vertices )

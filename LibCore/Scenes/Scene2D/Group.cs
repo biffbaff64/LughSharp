@@ -298,7 +298,7 @@ public class Group : Actor, ICullable
                     continue;
                 }
 
-                if ( !child.DebugActive && !( child is Group ) )
+                if ( !child.DebugActive && child is not Group )
                 {
                     continue;
                 }
@@ -606,7 +606,7 @@ public class Group : Actor, ICullable
     /// <param name="actor"> The actor to remove. </param>
     /// <param name="unfocus"> Unfocuses the actor if true. </param>
     /// </summary>
-    public virtual bool RemoveActor( Actor actor, bool unfocus = true )
+    public virtual bool RemoveActor( Actor actor, bool unfocus )
     {
         var index = Children.IndexOf( actor );
 

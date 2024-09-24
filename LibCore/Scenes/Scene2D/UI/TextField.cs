@@ -126,7 +126,7 @@ public class TextField : Widget
     public bool                HasSelection             { get; set; }
     public bool                WriteEnters              { get; set; }
     public GlyphLayout         Layout                   { get; set; } = new();
-    public List< float >       GlyphPositions           { get; set; } = new();
+    public List< float >       GlyphPositions           { get; set; } = [ ];
     public string?             DisplayText              { get; set; }
     public float               FontOffset               { get; set; }
     public float               TextHeight               { get; set; }
@@ -443,7 +443,7 @@ public class TextField : Widget
             }
         }
 
-        return new[] { left, right };
+        return [ left, right ];
     }
 
     protected virtual int[] WordUnderCursor( float x )
@@ -792,7 +792,7 @@ public class TextField : Widget
 
             var c = content[ i ];
 
-            if ( !( WriteEnters && ( ( c == NEWLINE ) || ( c == CARRIAGE_RETURN ) ) ) )
+            if ( !( WriteEnters && c is NEWLINE or CARRIAGE_RETURN ) )
             {
                 if ( c is '\r' or '\n' )
                 {

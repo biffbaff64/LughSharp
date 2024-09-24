@@ -150,9 +150,7 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <None Remove="lib\gdx2d.dll" />
-      <Content Include="lib\gdx2d.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+      <Content Include="lib\gdx2d.dll" />
       <None Remove="Assets\lsans-15.fnt" />
       <Content Include="Assets\lsans-15.fnt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -45,7 +45,7 @@ public class ByteArray
     /// Creates an ordered array with a capacity of 16.
     /// </summary>
     public ByteArray( int capacity )
-        : this( true, capacity = 16 )
+        : this( true, capacity )
     {
     }
 
@@ -98,6 +98,9 @@ public class ByteArray
     /// If false, methods that remove elements may change the order of other
     /// elements in the array, which avoids a memory copy
     /// </param>
+    /// <param name="array"></param>
+    /// <param name="startIndex"></param>
+    /// <param name="count"></param>
     public ByteArray( bool ordered, byte[] array, int startIndex, int count )
         : this( ordered, count )
     {
@@ -620,8 +623,7 @@ public class ByteArray
     /// <returns></returns>
     public byte Random()
     {
-        if ( Size == 0 ) return 0;
-        return Items[ MathUtils.Random( 0, Size - 1 ) ];
+        return Size == 0 ? ( byte ) 0 : Items[ MathUtils.Random( 0, Size - 1 ) ];
     }
 
     public byte[] ToArray()
@@ -653,7 +655,7 @@ public class ByteArray
         if ( obj == this ) return true;
         if ( !Ordered ) return false;
 
-        if ( !( obj is ByteArray array ) ) return false;
+        if ( obj is not ByteArray array ) return false;
 
         if ( !array.Ordered ) return false;
 

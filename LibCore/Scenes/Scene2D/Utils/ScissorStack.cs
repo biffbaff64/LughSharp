@@ -37,7 +37,7 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Utils;
 [PublicAPI]
 public class ScissorStack
 {
-    private readonly static List< RectangleShape > _scissors = new();
+    private readonly static List< RectangleShape > _scissors = [ ];
     private readonly static Vector3                _tmp      = new();
     private readonly static RectangleShape         _viewport = new();
 

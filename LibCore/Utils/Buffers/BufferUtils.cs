@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Runtime.CompilerServices;
 using LughSharp.LibCore.Utils.Exceptions;
 
 namespace LughSharp.LibCore.Utils.Buffers;
@@ -35,7 +34,7 @@ namespace LughSharp.LibCore.Utils.Buffers;
 [PublicAPI]
 public static class BufferUtils
 {
-    private readonly static List< ByteBuffer > _unsafeBuffers = new();
+    private readonly static List< ByteBuffer > _unsafeBuffers = [ ];
 
     private static int _allocatedUnsafe = 0;
 
@@ -586,7 +585,7 @@ public static class BufferUtils
         return ( b3 << 24 )
              | ( ( b2 & 0xff ) << 16 )
              | ( ( b1 & 0xff ) << 8 )
-             | b0 & 0xff;
+             | ( b0 & 0xff );
     }
 
     /// <summary>
@@ -602,7 +601,7 @@ public static class BufferUtils
              | ( ( ( long ) b3 & 0xff ) << 24 )
              | ( ( ( long ) b2 & 0xff ) << 16 )
              | ( ( ( long ) b1 & 0xff ) << 8 )
-             | ( long ) b0 & 0xff;
+             | ( ( long ) b0 & 0xff );
     }
 
     // ------------------------------------------------------------------------

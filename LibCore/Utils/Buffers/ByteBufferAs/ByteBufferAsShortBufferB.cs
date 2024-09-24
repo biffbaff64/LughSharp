@@ -48,7 +48,7 @@ public class ByteBufferAsShortBufferB : ShortBuffer
         var pos  = this.Position;
         var lim  = this.Limit;
         var rem  = ( pos <= lim ? lim - pos : 0 );
-        var addr = ByteOffset( pos );
+//        var addr = ByteOffset( pos );
 
         return new ByteBufferAsShortBufferB( Bb, -1, 0, rem, rem, 0 ); //addr );
     }

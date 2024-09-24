@@ -104,13 +104,13 @@ public class OpenALAudio : IGLAudio
 
         AL.GenSources( simultaneousSources, out _allSources );
 
-        _idleSources     = new List< uint >( _allSources );
+        _idleSources     = [ .._allSources ];
         _soundIdToSource = new Dictionary< long, int >();
         _sourceToSoundId = new Dictionary< int, long >();
 
-        AL.Listenerfv( AL.ORIENTATION, new[] { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f } );
-        AL.Listenerfv( AL.VELOCITY, new[] { 0.0f, 0.0f, 0.0f } );
-        AL.Listenerfv( AL.POSITION, new[] { 0.0f, 0.0f, 0.0f } );
+        AL.Listenerfv( AL.ORIENTATION, [ 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f ] );
+        AL.Listenerfv( AL.VELOCITY, [ 0.0f, 0.0f, 0.0f ] );
+        AL.Listenerfv( AL.POSITION, [ 0.0f, 0.0f, 0.0f ] );
 
         _recentSounds = new OpenALSound[ simultaneousSources ];
     }

@@ -67,7 +67,7 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
     {
         // create the isometric transform
         _isoTransform = new Matrix4();
-        _isoTransform.Idt();
+        _isoTransform.ToIdentity();
 
         // isoTransform.translate(0, 32, 0);
         _isoTransform.Scale(
@@ -80,7 +80,7 @@ public class IsometricTiledMapRenderer : BatchTileMapRenderer
 
         // ... and the inverse matrix
         _invIsotransform = new Matrix4( _isoTransform );
-        _invIsotransform.Inv();
+        _invIsotransform.Invert();
     }
 
     private Vector3 TranslateScreenToIsometric( Vector2 vec )

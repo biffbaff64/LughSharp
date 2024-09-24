@@ -713,7 +713,7 @@ public abstract class FloatBuffer : Buffer
             return true;
         }
 
-        if ( !( ob is FloatBuffer floatBuffer ) )
+        if ( ob is not FloatBuffer floatBuffer )
         {
             return false;
         }

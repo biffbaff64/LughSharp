@@ -32,7 +32,7 @@ public class PolygonMapObject : MapObject
     /// Creates empty polygon map object
     /// </summary>
     public PolygonMapObject()
-        : this( Array.Empty< float >() )
+        : this( [ ] )
     {
     }
 

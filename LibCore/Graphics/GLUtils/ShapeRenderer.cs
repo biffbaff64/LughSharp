@@ -117,7 +117,7 @@ public class ShapeRenderer : IDisposable
     /// </summary>
     public void Identity()
     {
-        TransformMatrix.Idt();
+        TransformMatrix.ToIdentity();
         _matrixDirty = true;
     }
 

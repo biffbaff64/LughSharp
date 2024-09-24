@@ -121,10 +121,7 @@ public class PolygonRegionLoader
 
         if ( image != null )
         {
-            List< AssetDescriptor > deps = new( 1 )
-            {
-                new AssetDescriptor( new FileInfo( siblingFilePath ), typeof( Texture ) )
-            };
+            List< AssetDescriptor > deps = [ new AssetDescriptor( new FileInfo( siblingFilePath ), typeof( Texture ) ) ];
 
             return deps;
         }
@@ -200,10 +197,10 @@ public class PolygonRegionLoader
         /// the possible file name extensions of the texture file.
         /// </summary>
         public readonly string[] TextureExtensions =
-        {
+        [
             "png", "PNG", "jpeg", "JPEG", "jpg", "JPG", "cim", "CIM",
             "etc1", "ETC1", "ktx", "KTX", "zktx", "ZKTX"
-        };
+        ];
 
         /// <summary>
         /// what the line starts with that contains the file name of the

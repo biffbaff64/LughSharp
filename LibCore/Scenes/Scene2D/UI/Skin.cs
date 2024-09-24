@@ -50,7 +50,7 @@ public class Skin : IDisposable
     // ------------------------------------------------------------------------
 
     private readonly static Type[] _defaultTagClasses =
-    {
+    [
         typeof( BitmapFont ),
         typeof( Color ),
         typeof( TintedDrawable ),
@@ -75,7 +75,7 @@ public class Skin : IDisposable
         typeof( Touchpad.TouchpadStyle ),
         typeof( Tree< , >.TreeStyle ),
         typeof( Window.WindowStyle )
-    };
+    ];
 
     // ------------------------------------------------------------------------
 
@@ -407,7 +407,7 @@ public class Skin : IDisposable
 
         if ( region != null )
         {
-            regions = new List< TextureRegion >();
+            regions = [ ];
 
             while ( region != null )
             {

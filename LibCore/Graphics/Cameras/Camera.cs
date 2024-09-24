@@ -359,19 +359,19 @@ public abstract class Camera
                            float viewportWidth,
                            float viewportHeight )
     {
-        Unproject( _ray.origin.Set( screenX, screenY, 0 ),
+        Unproject( _ray.Origin.Set( screenX, screenY, 0 ),
                    viewportX,
                    viewportY,
                    viewportWidth,
                    viewportHeight );
 
-        Unproject( _ray.direction.Set( screenX, screenY, 1 ),
+        Unproject( _ray.Direction.Set( screenX, screenY, 1 ),
                    viewportX,
                    viewportY,
                    viewportWidth,
                    viewportHeight );
 
-        _ray.direction.Sub( _ray.origin ).Nor();
+        _ray.Direction.Sub( _ray.Origin ).Nor();
 
         return _ray;
     }

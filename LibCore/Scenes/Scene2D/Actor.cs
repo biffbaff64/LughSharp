@@ -45,9 +45,9 @@ public class Actor : IActor, IComparable< Actor >
     public virtual float PrefWidth  { get; set; } = 0;
     public virtual float PrefHeight { get; set; } = 0;
 
-    public DelayedRemovalList< IEventListener > Listeners        { get; }      = new();
-    public DelayedRemovalList< IEventListener > CaptureListeners { get; }      = new();
-    public List< Action >                       Actions          { get; set; } = new();
+    public DelayedRemovalList< IEventListener > Listeners        { get; }      = [ ];
+    public DelayedRemovalList< IEventListener > CaptureListeners { get; }      = [ ];
+    public List< Action >                       Actions          { get; set; } = [ ];
 
     // ------------------------------------------------------------------------
 
@@ -502,7 +502,7 @@ public class Actor : IActor, IComparable< Actor >
     /// <returns> True if successful. </returns>
     public virtual bool Remove()
     {
-        return ( Parent != null ) && Parent.RemoveActor( this );
+        return ( Parent != null ) && Parent.RemoveActor( this, true );
     }
 
     /// <summary>
@@ -963,7 +963,7 @@ public class Actor : IActor, IComparable< Actor >
     /// <summary>
     /// Sets the width and height.
     /// </summary>
-    public virtual void SetSize( float width, float height )
+    public void SetSize( float width, float height )
     {
         if ( MathUtils.IsNotEqual( _width, width )
           || MathUtils.IsNotEqual( _height, height ) )
@@ -1486,10 +1486,7 @@ public class Actor : IActor, IComparable< Actor >
     public int CompareTo( Actor? other )
     {
         //TODO:
-        
-        if ( other == null ) return 1;
-        
-        return 0;
+        return other == null ? 1 : 0;
     }
 
     /// <inheritdoc />

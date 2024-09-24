@@ -370,19 +370,16 @@ public class Window : Table
             var padLeft   = _window.GetPadLeft();
             var padBottom = _window.GetPadBottom();
             var padRight  = _window.GetPadRight();
-
-            var left   = padLeft;
-            var right  = width - padRight;
-            var bottom = padBottom;
+            var right     = width - padRight;
 
             _window.Edge = 0;
 
             if ( _window.IsResizable
-              && ( x >= ( left - border ) )
+              && ( x >= ( padLeft - border ) )
               && ( x <= ( right + border ) )
-              && ( y >= ( bottom - border ) ) )
+              && ( y >= ( padBottom - border ) ) )
             {
-                if ( x < ( left + border ) )
+                if ( x < ( padLeft + border ) )
                 {
                     _window.Edge |= Align.LEFT;
                 }
@@ -392,7 +389,7 @@ public class Window : Table
                     _window.Edge |= Align.RIGHT;
                 }
 
-                if ( y < ( bottom + border ) )
+                if ( y < ( padBottom + border ) )
                 {
                     _window.Edge |= Align.BOTTOM;
                 }
@@ -402,7 +399,7 @@ public class Window : Table
                     border += 25;
                 }
 
-                if ( x < ( left + border ) )
+                if ( x < ( padLeft + border ) )
                 {
                     _window.Edge |= Align.LEFT;
                 }
@@ -412,7 +409,7 @@ public class Window : Table
                     _window.Edge |= Align.RIGHT;
                 }
 
-                if ( y < ( bottom + border ) )
+                if ( y < ( padBottom + border ) )
                 {
                     _window.Edge |= Align.BOTTOM;
                 }
@@ -421,7 +418,7 @@ public class Window : Table
             if ( _window is { IsMovable: true, Edge: 0 }
               && ( y <= height )
               && ( y >= ( height - padTop ) )
-              && ( x >= left )
+              && ( x >= padLeft )
               && ( x <= right )
                )
             {

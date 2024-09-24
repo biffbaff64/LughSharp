@@ -40,23 +40,24 @@ namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 /// For example, starting at 350 and rotating to 10 will cause 20 degrees of rotation.
 /// </para>
 /// </summary>
+[PublicAPI]
 public class RotateToAction : TemporalAction
 {
-    public RotateToAction()
-    {
-    }
+    public float Start                { get; set; }
+    public float Rotation             { get; set; }
+    public bool  UseShortestDirection { get; set; } = false;
 
-    /**
-     * @param useShortestDirection Set to true to move directly to the closest angle
-     */
+    // ------------------------------------------------------------------------
+    
+    /// <summary>
+    /// </summary>
+    /// <param name="useShortestDirection">
+    /// Set to true to move directly to the closest angle
+    /// </param>
     public RotateToAction( bool useShortestDirection )
     {
         UseShortestDirection = useShortestDirection;
     }
-
-    public float Start                { get; set; }
-    public float Rotation             { get; set; }
-    public bool  UseShortestDirection { get; set; } = false;
 
     protected override void Begin()
     {

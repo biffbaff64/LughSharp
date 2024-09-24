@@ -573,7 +573,7 @@ public abstract class ShortBuffer : Buffer
     /// <returns> A summary string </returns>
     public override string ToString()
     {
-        return $@"{GetType().Name}: [pos={Position} lim={Limit} cap={Capacity}]";
+        return $"{GetType().Name}: [pos={Position} lim={Limit} cap={Capacity}]";
     }
 
     /// <summary>

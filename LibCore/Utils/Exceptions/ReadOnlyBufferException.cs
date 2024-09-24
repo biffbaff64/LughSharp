@@ -29,9 +29,4 @@ namespace LughSharp.LibCore.Utils.Exceptions;
 /// put or compact is invoked upon a read-only buffer.
 /// </summary>
 [PublicAPI]
-public class ReadOnlyBufferException : NotSupportedException
-{
-    public ReadOnlyBufferException()
-    {
-    }
-}
+public class ReadOnlyBufferException : NotSupportedException;

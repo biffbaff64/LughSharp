@@ -93,6 +93,7 @@ public interface IMusic : IDisposable
     /// <summary>
     /// Interface definition for a callback to be invoked when playback of a music stream has completed.
     /// </summary>
+    [PublicAPI]
     interface IOnCompletionListener
     {
         /// <summary>

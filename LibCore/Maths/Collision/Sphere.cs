@@ -28,6 +28,7 @@ namespace LughSharp.LibCore.Maths.Collision;
 /// <summary>
 /// Encapsulates a 3D sphere with a center and a radius
 /// </summary>
+[PublicAPI]
 public class Sphere
 {
     private const   float   PI43 = ( MathUtils.PI * 4f ) / 3f;

@@ -45,7 +45,7 @@ namespace LughSharp.LibCore.Utils.Collections;
 [PublicAPI]
 public class DelayedRemovalList< T > : List< T >
 {
-    private readonly List< int > _remove = new();
+    private readonly List< int > _remove = [ ];
 
     private int _clear;
     private int _iterating;
@@ -90,7 +90,6 @@ public class DelayedRemovalList< T > : List< T >
     /// <param name="startIndex"></param>
     /// <param name="count"></param>
     public DelayedRemovalList( IReadOnlyList< T > list, int startIndex, int count )
-        : base()
     {
         for ( var i = 0; i < count; i++ )
         {

@@ -88,6 +88,13 @@ public class Touchpad : Widget
     /// <param name="style"></param>
     public Touchpad( float deadzoneRadius, TouchpadStyle style )
     {
+        ConstructorHelper( deadzoneRadius, style );
+    }
+
+    // ------------------------------------------------------------------------
+
+    private void ConstructorHelper( float deadzoneRadius, TouchpadStyle style )
+    {
         if ( deadzoneRadius <= 0 )
         {
             throw new ArgumentException( "deadzoneRadius must be > 0" );
@@ -103,7 +110,7 @@ public class Touchpad : Widget
 
         AddListener( new TouchpadInputListener( this ) );
     }
-
+    
     // ------------------------------------------------------------------------
 
     /// <summary>

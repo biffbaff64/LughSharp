@@ -52,10 +52,6 @@ public class PixmapTextureData : ITextureData
         DisposePixmap = disposePixmap;
         IsManaged     = managed;
         Format        = format ?? pixmap.Format;
-
-        Pixmap.Width  = pixmap.Width;
-        Pixmap.Height = pixmap.Height;
-        Pixmap.Format = Format;
     }
 
     public ITextureData.TextureType TextureDataType => ITextureData.TextureType.Pixmap;

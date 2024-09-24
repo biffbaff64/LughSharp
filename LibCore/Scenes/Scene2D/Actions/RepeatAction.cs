@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class RepeatAction : DelegateAction
 {
     public const int FOREVER = -1;
@@ -33,6 +34,8 @@ public class RepeatAction : DelegateAction
     public int  ExecutedCount { get; set; }
     public bool Finished      { get; set; }
 
+    // ------------------------------------------------------------------------
+    
     protected override bool Delegate( float delta )
     {
         if ( ExecutedCount == RepeatCount )

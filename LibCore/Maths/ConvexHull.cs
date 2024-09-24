@@ -32,10 +32,10 @@ namespace LughSharp.LibCore.Maths;
 [PublicAPI]
 public class ConvexHull
 {
-    private readonly List< float > _hull            = new();
-    private readonly List< int >   _indices         = new();
-    private readonly List< short > _originalIndices = new();
-    private readonly List< int >   _quicksortStack  = new();
+    private readonly List< float > _hull            = [ ];
+    private readonly List< int >   _indices         = [ ];
+    private readonly List< short > _originalIndices = [ ];
+    private readonly List< int >   _quicksortStack  = [ ];
 
     private float[]? _sortedPoints;
 

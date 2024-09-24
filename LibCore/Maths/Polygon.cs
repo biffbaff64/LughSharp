@@ -45,7 +45,7 @@ public class Polygon : IShape2D
     /// </summary>
     public Polygon()
     {
-        _localVertices = Array.Empty< float >();
+        _localVertices = [ ];
     }
 
     /// <summary>

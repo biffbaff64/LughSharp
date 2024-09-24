@@ -85,12 +85,12 @@ public class WaveFile : RiffFile
         }
 
         sbyte[] theWave =
-        {
+        [
             ( sbyte ) SupportClass.Identity( 'W' ),
             ( sbyte ) SupportClass.Identity( 'A' ),
             ( sbyte ) SupportClass.Identity( 'V' ),
             ( sbyte ) SupportClass.Identity( 'E' )
-        };
+        ];
 
         var retcode = Write( theWave, 4 );
 
@@ -248,6 +248,7 @@ public class WaveFormatChunk
     }
 }
 
+[PublicAPI]
 public class WaveFileSample
 {
     public WaveFileSample( WaveFile enclosingInstance )

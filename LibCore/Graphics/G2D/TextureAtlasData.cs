@@ -31,7 +31,7 @@ namespace LughSharp.LibCore.Graphics.G2D;
 [PublicAPI]
 public partial record TextureAtlasData
 {
-    internal readonly static bool[] HasIndexes = { false };
+    internal readonly static bool[] HasIndexes = [ false ];
 
     // ------------------------------------------------------------------------
 
@@ -52,8 +52,8 @@ public partial record TextureAtlasData
 
     #endregion
 
-    public List< Page >   Pages   { get; set; } = new();
-    public List< Region > Regions { get; set; } = new();
+    public List< Page >   Pages   { get; set; } = [ ];
+    public List< Region > Regions { get; set; } = [ ];
     public string[]       Entry   { get; set; } = new string[ 5 ];
 
     // ------------------------------------------------------------------------

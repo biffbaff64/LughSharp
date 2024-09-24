@@ -44,8 +44,22 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 /// These parameters are reversed for a vertical progress bar.
 /// </para>
 /// </summary>
+[PublicAPI]
 public class ProgressBar : Widget, IDisableable
 {
+    public float KnobPosition { get; set; }
+    public float MinValue     { get; set; }
+    public float MaxValue     { get; set; }
+    public float Value        { get; set; }
+    public bool  IsVertical   { get; set; }
+    public bool  IsRound      { get; set; } = true;
+    public bool  IsDisabled   { get; set; }
+
+    public Interpolator AnimateInterpolation { get; set; } = Interpolation.Linear;
+    public Interpolator VisualInterpolation  { get; set; } = Interpolation.Linear;
+
+    // ------------------------------------------------------------------------
+    
     private const    float DEFAULT_PREF_WIDTH        = 140f;
     private const    float DEFAULT_PREF_HEIGHT       = 140f;
     private readonly bool  _programmaticChangeEvents = true;
@@ -57,6 +71,9 @@ public class ProgressBar : Widget, IDisableable
     private float _animateFromValue;
     private float _animateTime;
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
     public ProgressBar( float min, float max, float stepSize, bool vertical, Skin skin )
         : this( min,
                 max,
@@ -113,16 +130,6 @@ public class ProgressBar : Widget, IDisableable
 
     // ------------------------------------------------------------------------
 
-    public float KnobPosition { get; set; }
-    public float MinValue     { get; set; }
-    public float MaxValue     { get; set; }
-    public float Value        { get; set; }
-    public bool  IsVertical   { get; set; }
-    public bool  IsRound      { get; set; } = true;
-
-    public Interpolator AnimateInterpolation { get; set; } = Interpolation.Linear;
-    public Interpolator VisualInterpolation  { get; set; } = Interpolation.Linear;
-
     public bool IsAnimating => _animateTime > 0;
 
     public float StepSize
@@ -150,8 +157,6 @@ public class ProgressBar : Widget, IDisableable
             InvalidateHierarchy();
         }
     }
-
-    public bool IsDisabled { get; set; }
 
     public override void Act( float delta )
     {
@@ -606,8 +611,19 @@ public class ProgressBar : Widget, IDisableable
     /// <summary>
     /// The style for a progress bar, see <see cref="ProgressBar"/>.
     /// </summary>
+    [PublicAPI]
     public class ProgressBarStyle
     {
+        // The progress bar background, stretched only in one direction.
+        public IDrawable? Background         { get; set; }
+        public IDrawable? DisabledBackground { get; set; }
+        public IDrawable? Knob               { get; set; }
+        public IDrawable? DisabledKnob       { get; set; }
+        public IDrawable? KnobBefore         { get; set; }
+        public IDrawable? DisabledKnobBefore { get; set; }
+        public IDrawable? KnobAfter          { get; set; }
+        public IDrawable? DisabledKnobAfter  { get; set; }
+
         public ProgressBarStyle()
         {
         }
@@ -629,15 +645,5 @@ public class ProgressBar : Widget, IDisableable
             KnobAfter          = style.KnobAfter;
             DisabledKnobAfter  = style.DisabledKnobAfter;
         }
-
-        // The progress bar background, stretched only in one direction.
-        public IDrawable? Background         { get; set; }
-        public IDrawable? DisabledBackground { get; set; }
-        public IDrawable? Knob               { get; set; }
-        public IDrawable? DisabledKnob       { get; set; }
-        public IDrawable? KnobBefore         { get; set; }
-        public IDrawable? DisabledKnobBefore { get; set; }
-        public IDrawable? KnobAfter          { get; set; }
-        public IDrawable? DisabledKnobAfter  { get; set; }
     }
 }

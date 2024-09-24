@@ -37,7 +37,7 @@ public class Bezier< T > : IPath< T > where T : IVector< T >
     /// <summary>
     /// Gets or sets the control points of the Bezier curve.
     /// </summary>
-    public List< T > Points { get; set; } = new();
+    public List< T > Points { get; set; } = [ ];
 
     private T? _tmp  = default( T );
     private T? _tmp2 = default( T );

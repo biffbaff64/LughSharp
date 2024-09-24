@@ -25,6 +25,7 @@
 
 namespace LughSharp.LibCore.Scenes.Scene2D.Actions;
 
+[PublicAPI]
 public class ScaleByAction : RelativeTemporalAction
 {
     public float AmountX { get; set; }

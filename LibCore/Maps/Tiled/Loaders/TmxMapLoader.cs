@@ -94,7 +94,7 @@ public class TmxMapLoader : BaseTmxMapLoader< TmxMapLoader.LoaderParameters >
 
         var map = LoadTiledMap( tmxFile, parameter, new IImageResolver.DirectImageResolver( textures ) );
 
-        map.OwnedResources = new List< object >( textures.Values.ToList() );
+        map.OwnedResources = [ ..textures.Values.ToList() ];
 
         return map;
     }

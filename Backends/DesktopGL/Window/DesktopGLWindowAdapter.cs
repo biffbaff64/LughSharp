@@ -29,6 +29,7 @@ namespace LughSharp.Backends.DesktopGL.Window;
 /// Convenience implementation of <see cref="IDesktopGLWindowListener"/>.
 /// Derive from this class and only override the methods you are interested in.
 /// </summary>
+[PublicAPI]
 public class DesktopGLWindowAdapter : IDesktopGLWindowListener
 {
     /// <inheritdoc />

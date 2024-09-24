@@ -34,6 +34,7 @@ namespace LughSharp.LibCore.Core;
 [PublicAPI]
 public class GDXVersion
 {
+    [PublicAPI]
     public enum GLType
     {
         None,

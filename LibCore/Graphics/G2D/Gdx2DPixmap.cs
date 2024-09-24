@@ -58,11 +58,11 @@ public partial class Gdx2DPixmap : IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public ByteBuffer        PixmapBuffer { get; set; }
+    public ByteBuffer       PixmapBuffer { get; set; }
     public PixmapDataStruct PixmapDef    { get; set; }
-    public uint              Width        { get; set; }
-    public uint              Height       { get; set; }
-    public uint              Format       { get; set; }
+    public uint             Width        { get; set; }
+    public uint             Height       { get; set; }
+    public uint             Format       { get; set; }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -172,17 +172,6 @@ public partial class Gdx2DPixmap : IDisposable
         }
     }
 
-//    /// <summary>
-//    /// </summary>
-//    /// <param name="pixelPtr"></param>
-//    /// <param name="data"></param>
-//    public Gdx2DPixmap( ByteBuffer pixelPtr, byte[] data )
-//    {
-//        Logger.CheckPoint();
-//
-//        //TODO:
-//    }
-
     #endregion constructors
 
     // ------------------------------------------------------------------------
@@ -232,7 +221,7 @@ public partial class Gdx2DPixmap : IDisposable
         Logger.Debug( $"image.Width: {image.Width}" );
         Logger.Debug( $"image.Height: {image.Height}" );
         Logger.Debug( $"image data length: {image.Data.Length}" );
-        
+
         var pixmapStruct = new PixmapDataStruct
         {
             Width  = ( uint ) image.Width,
@@ -259,7 +248,7 @@ public partial class Gdx2DPixmap : IDisposable
             PixmapFormat.GDX_2D_FORMAT_RGB565          => IGL.GL_RGB,
             PixmapFormat.GDX_2D_FORMAT_RGBA8888        => IGL.GL_RGBA,
             PixmapFormat.GDX_2D_FORMAT_RGBA4444        => IGL.GL_RGBA,
-            var _                         => throw new GdxRuntimeException( $"unknown format: {format}" )
+            var _                                      => throw new GdxRuntimeException( $"unknown format: {format}" )
         };
     }
 
@@ -278,7 +267,7 @@ public partial class Gdx2DPixmap : IDisposable
             PixmapFormat.GDX_2D_FORMAT_RGBA8888        => IGL.GL_UNSIGNED_BYTE,
             PixmapFormat.GDX_2D_FORMAT_RGB565          => IGL.GL_UNSIGNED_SHORT_5_6_5,
             PixmapFormat.GDX_2D_FORMAT_RGBA4444        => IGL.GL_UNSIGNED_SHORT_4_4_4_4,
-            var _                         => throw new GdxRuntimeException( $"unknown format: {format}" )
+            var _                                      => throw new GdxRuntimeException( $"unknown format: {format}" )
         };
     }
 
@@ -295,7 +284,7 @@ public partial class Gdx2DPixmap : IDisposable
         pixmap.SetBlend( PixmapFormat.GDX_2D_BLEND_NONE );
         pixmap.DrawPixmap( this, 0, 0, 0, 0, ( int ) Width, ( int ) Height );
 
-        Dispose();  // ??????
+        Dispose(); // ??????
 
         this.Width        = pixmap.Width;
         this.Height       = pixmap.Height;
@@ -365,6 +354,7 @@ public partial class Gdx2DPixmap : IDisposable
     /// Sets this pixmaps scaling value.
     /// </summary>
     /// <param name="scale"></param>
+
     //TODO: Why is this not a float?
     public void SetScale( int scale )
     {

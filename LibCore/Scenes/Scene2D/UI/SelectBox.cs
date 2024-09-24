@@ -44,6 +44,12 @@ namespace LughSharp.LibCore.Scenes.Scene2D.UI;
 [PublicAPI]
 public class SelectBox< T > : Widget, IDisableable
 {
+    public ClickListener  ClickListener { get; set; }
+    public SelectBoxStyle BoxStyle      { get; set; }
+    public bool           IsDisabled    { get; set; }
+
+    // ------------------------------------------------------------------------
+    
     private readonly List< T >           _items;
     private readonly SelectBoxList?      _selectBoxList;
     private readonly ArraySelection< T > _selection;
@@ -68,7 +74,7 @@ public class SelectBox< T > : Widget, IDisableable
     public SelectBox( SelectBoxStyle style )
     {
         _alignment = Align.LEFT;
-        _items     = new List< T >();
+        _items     = [ ];
 
         _selection = new ArraySelection< T >( _items )
         {
@@ -82,9 +88,6 @@ public class SelectBox< T > : Widget, IDisableable
 
         Setup( style );
     }
-
-    public ClickListener  ClickListener { get; set; }
-    public SelectBoxStyle BoxStyle      { get; set; }
 
     /// <summary>
     /// Set the max number of items to display when the select box is opened. Set to
@@ -115,8 +118,6 @@ public class SelectBox< T > : Widget, IDisableable
             return _prefHeight;
         }
     }
-
-    public bool IsDisabled { get; set; }
 
     private void Setup( SelectBoxStyle style )
     {
@@ -282,7 +283,7 @@ public class SelectBox< T > : Widget, IDisableable
                 listWidth = Math.Max( ( float ) ( listWidth + bg.LeftWidth + bg.RightWidth )!, bg.MinWidth );
             }
 
-            if ( _selectBoxList is not { DisableY: true } )
+            if ( _selectBoxList is not { DisableYScroll: true } )
             {
                 listWidth += Math.Max( BoxStyle.ScrollStyle.VScroll?.MinWidth ?? 0,
                                        BoxStyle.ScrollStyle.VScrollKnob?.MinWidth ?? 0 );
@@ -570,10 +571,18 @@ public class SelectBox< T > : Widget, IDisableable
     [PublicAPI]
     public class SelectBoxList : ScrollPane
     {
+        public int            MaxListCount { get; set; }
+        public ListBox< T >   ListBox      { get; set; }
+        public SelectBox< T > SelectBox    { get; set; }
+
+        // --------------------------------------------------------------------
+
         private readonly InputListener _hideListener;
         private readonly Vector2       _stagePosition = new();
         private          Actor?        _previousScrollFocus;
 
+        // --------------------------------------------------------------------
+        
         public SelectBoxList( SelectBox< T > selectBox )
             : base( null, selectBox.BoxStyle.ScrollStyle )
         {
@@ -596,10 +605,6 @@ public class SelectBox< T > : Widget, IDisableable
             AddListener( new SelectBoxListClickListener( this ) );
             AddListener( new SelectBoxListInputListener( this ) );
         }
-
-        public int            MaxListCount { get; set; }
-        public ListBox< T >   ListBox      { get; set; }
-        public SelectBox< T > SelectBox    { get; set; }
 
         public void Show( Stage stage )
         {
@@ -672,7 +677,7 @@ public class SelectBox< T > : Widget, IDisableable
 
             var width = Math.Max( PrefWidth, SelectBox.Width );
 
-            if ( ( PrefHeight > height ) && !DisableY )
+            if ( ( PrefHeight > height ) && !DisableYScroll )
             {
                 width += GetScrollBarWidth();
             }

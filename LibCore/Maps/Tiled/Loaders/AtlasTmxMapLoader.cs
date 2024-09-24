@@ -40,7 +40,7 @@ namespace LughSharp.LibCore.Maps.Tiled.Loaders;
 [PublicAPI]
 public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledMapLoaderParameters >
 {
-    protected readonly List< Texture > TrackedTextures = new();
+    protected readonly List< Texture > TrackedTextures = [ ];
     protected          IAtlasResolver? AtlasResolver;
 
     // ------------------------------------------------------------------------
@@ -79,7 +79,7 @@ public class AtlasTmxMapLoader : BaseTmxMapLoader< AtlasTmxMapLoader.AtlasTiledM
 
         var map = LoadTiledMap( tmxFile, parameter, AtlasResolver );
 
-        map.OwnedResources = new List< object >( new[] { atlas } );
+        map.OwnedResources = [ ..new[] { atlas } ];
 
         SetTextureFilters( parameter.TextureMinFilter, parameter.TextureMagFilter );
 

@@ -31,6 +31,7 @@ namespace LughSharp.LibCore.Maps.Tiled;
 [PublicAPI]
 public interface ITiledMapTile
 {
+    [PublicAPI]
     public enum Blendmode
     {
         None,

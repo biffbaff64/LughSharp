@@ -32,7 +32,7 @@ namespace LughSharp.LibCore.Utils;
 [PublicAPI]
 public class Bits
 {
-    private long[] _bits = { 0 };
+    private long[] _bits = [ 0 ];
 
     /// <summary>
     /// Creates a bit set whose initial size is large enough to explicitly

@@ -31,10 +31,10 @@ namespace LughSharp.LibCore.Audio.Maponus.Decoding.Decoders.LayerII;
 [PublicAPI]
 public class SubbandLayer2Stereo : SubbandLayer2
 {
-    protected readonly float[] channel2C          = { 0 };
-    protected readonly int[]   channel2Codelength = { 0 };
-    protected readonly float[] channel2D          = { 0 };
-    protected readonly float[] channel2Factor     = { 0 };
+    protected readonly float[] channel2C          = [ 0 ];
+    protected readonly int[]   channel2Codelength = [ 0 ];
+    protected readonly float[] channel2D          = [ 0 ];
+    protected readonly float[] channel2Factor     = [ 0 ];
     protected readonly float[] channel2Samples;
     protected          int     channel2Allocation;
     protected          float   channel2Scalefactor1;

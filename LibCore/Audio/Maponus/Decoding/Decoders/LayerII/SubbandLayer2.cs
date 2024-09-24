@@ -34,7 +34,7 @@ public class SubbandLayer2 : ASubband
     // this table contains 3 requantized samples for each legal codeword
     // when grouped in 5 bits, i.e. 3 quantization steps per sample
     public readonly static float[] Grouping5Bits =
-    {
+    [
         -2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f, 0.0f, -2.0f / 3.0f, -2.0f / 3.0f, 2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f,
         -2.0f / 3.0f, 0.0f, -2.0f / 3.0f, 0.0f, 0.0f, -2.0f / 3.0f, 2.0f / 3.0f, 0.0f, -2.0f / 3.0f, -2.0f / 3.0f, 2.0f / 3.0f,
         -2.0f / 3.0f, 0.0f, 2.0f / 3.0f, -2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f, -2.0f / 3.0f, 0.0f,
@@ -43,12 +43,12 @@ public class SubbandLayer2 : ASubband
         -2.0f / 3.0f, 2.0f / 3.0f, 0.0f, -2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f, -2.0f / 3.0f, 2.0f / 3.0f, -2.0f / 3.0f, 0.0f,
         2.0f / 3.0f, 0.0f, 0.0f, 2.0f / 3.0f, 2.0f / 3.0f, 0.0f, 2.0f / 3.0f, -2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f, 0.0f,
         2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f, 2.0f / 3.0f
-    };
+    ];
 
     // this table contains 3 requantized samples for each legal codeword
     // when grouped in 7 bits, i.e. 5 quantizationsteps per sample
     public readonly static float[] Grouping7Bits =
-    {
+    [
         -0.8f, -0.8f, -0.8f, -0.4f, -0.8f, -0.8f, 0.0f, -0.8f, -0.8f, 0.4f, -0.8f, -0.8f, 0.8f, -0.8f, -0.8f,
         -0.8f, -0.4f, -0.8f, -0.4f, -0.4f, -0.8f, 0.0f, -0.4f, -0.8f, 0.4f, -0.4f, -0.8f, 0.8f, -0.4f, -0.8f,
         -0.8f, 0.0f, -0.8f, -0.4f, 0.0f, -0.8f, 0.0f, 0.0f, -0.8f, 0.4f, 0.0f, -0.8f, 0.8f, 0.0f, -0.8f, -0.8f,
@@ -73,12 +73,12 @@ public class SubbandLayer2 : ASubband
         0.0f, 0.8f, 0.0f, 0.0f, 0.8f, 0.4f, 0.0f, 0.8f, 0.8f, 0.0f, 0.8f, -0.8f, 0.4f, 0.8f, -0.4f, 0.4f, 0.8f,
         0.0f, 0.4f, 0.8f, 0.4f, 0.4f, 0.8f, 0.8f, 0.4f, 0.8f, -0.8f, 0.8f, 0.8f, -0.4f, 0.8f, 0.8f, 0.0f, 0.8f,
         0.8f, 0.4f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f
-    };
+    ];
 
     // this table contains 3 requantized samples for each legal codeword
     // when grouped in 10 bits, i.e. 9 quantizationsteps per sample
     public readonly static float[] Grouping10Bits =
-    {
+    [
         -8.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f, -6.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f, -4.0f / 9.0f, -8.0f / 9.0f,
         -8.0f / 9.0f, -2.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f, 0.0f, -8.0f / 9.0f, -8.0f / 9.0f, 2.0f / 9.0f, -8.0f / 9.0f,
         -8.0f / 9.0f, 4.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f, 6.0f / 9.0f, -8.0f / 9.0f, -8.0f / 9.0f, 8.0f / 9.0f, -8.0f / 9.0f,
@@ -322,132 +322,132 @@ public class SubbandLayer2 : ASubband
         8.0f / 9.0f, 8.0f / 9.0f, -2.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f, 0.0f, 8.0f / 9.0f, 8.0f / 9.0f, 2.0f / 9.0f, 8.0f / 9.0f,
         8.0f / 9.0f, 4.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f, 6.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f, 8.0f / 9.0f,
         8.0f / 9.0f
-    };
+    ];
 
     // data taken from ISO/IEC DIS 11172, Annexes 3-B.2[abcd] and 3-B.4:
 
     // subbands 0-2 in tables 3-B.2a and 2b: (index is allocation)
-    public readonly static int[] TableAb1Codelength = { 0, 5, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+    public readonly static int[] TableAb1Codelength = [ 0, 5, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ];
 
     public readonly static float[][] TableAb1Groupingtables =
-    {
+    [
         null!, Grouping5Bits, null!, null!, null!, null!,
         null!, null!, null!, null!, null!, null!, null!, null!, null!, null!
-    };
+    ];
 
     public readonly static float[] TableAb1Factor =
-    {
+    [
         0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 8.0f, 1.0f / 16.0f, 1.0f / 32.0f, 1.0f / 64.0f, 1.0f / 128.0f, 1.0f / 256.0f,
         1.0f / 512.0f, 1.0f / 1024.0f, 1.0f / 2048.0f, 1.0f / 4096.0f, 1.0f / 8192.0f, 1.0f / 16384.0f, 1.0f / 32768.0f
-    };
+    ];
 
     public readonly static float[] TableAb1C =
-    {
+    [
         0.0f, 1.33333333333f, 1.14285714286f, 1.06666666666f, 1.03225806452f, 1.01587301587f, 1.00787401575f,
         1.00392156863f, 1.00195694716f, 1.00097751711f, 1.00048851979f, 1.00024420024f, 1.00012208522f,
         1.00006103888f, 1.00003051851f, 1.00001525902f
-    };
+    ];
 
     public readonly static float[] TableAb1D =
-    {
+    [
         0.0f, 0.50000000000f, 0.25000000000f, 0.12500000000f, 0.06250000000f, 0.03125000000f, 0.01562500000f,
         0.00781250000f, 0.00390625000f, 0.00195312500f, 0.00097656250f, 0.00048828125f, 0.00024414063f,
         0.00012207031f, 0.00006103516f, 0.00003051758f
-    };
+    ];
 
     // subbands 3-... tables 3-B.2a and 2b:
     public readonly static float[][] TableAb234Groupingtables =
-    {
+    [
         null!, Grouping5Bits, Grouping7Bits, null!,
         Grouping10Bits, null!, null!, null!, null!, null!, null!, null!, null!, null!, null!, null!
-    };
+    ];
 
     // subbands 3-10 in tables 3-B.2a and 2b:
-    public readonly static int[] TableAb2Codelength = { 0, 5, 7, 3, 10, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 };
+    public readonly static int[] TableAb2Codelength = [ 0, 5, 7, 3, 10, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 ];
 
     public readonly static float[] TableAb2Factor =
-    {
+    [
         0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 4.0f, 1.0f / 8.0f, 1.0f / 8.0f, 1.0f / 16.0f, 1.0f / 32.0f, 1.0f / 64.0f,
         1.0f / 128.0f, 1.0f / 256.0f, 1.0f / 512.0f, 1.0f / 1024.0f, 1.0f / 2048.0f, 1.0f / 4096.0f, 1.0f / 32768.0f
-    };
+    ];
 
     public readonly static float[] TableAb2C =
-    {
+    [
         0.0f, 1.33333333333f, 1.60000000000f, 1.14285714286f, 1.77777777777f, 1.06666666666f, 1.03225806452f,
         1.01587301587f, 1.00787401575f, 1.00392156863f, 1.00195694716f, 1.00097751711f, 1.00048851979f,
         1.00024420024f, 1.00012208522f, 1.00001525902f
-    };
+    ];
 
     public readonly static float[] TableAb2D =
-    {
+    [
         0.0f, 0.50000000000f, 0.50000000000f, 0.25000000000f, 0.50000000000f, 0.12500000000f, 0.06250000000f,
         0.03125000000f, 0.01562500000f, 0.00781250000f, 0.00390625000f, 0.00195312500f, 0.00097656250f,
         0.00048828125f, 0.00024414063f, 0.00003051758f
-    };
+    ];
 
     // subbands 11-22 in tables 3-B.2a and 2b:
-    public readonly static int[] TableAb3Codelength = { 0, 5, 7, 3, 10, 4, 5, 16 };
+    public readonly static int[] TableAb3Codelength = [ 0, 5, 7, 3, 10, 4, 5, 16 ];
 
     public readonly static float[] TableAb3Factor =
-    {
+    [
         0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 4.0f, 1.0f / 8.0f,
         1.0f / 8.0f, 1.0f / 16.0f, 1.0f / 32768.0f
-    };
+    ];
 
     public readonly static float[] TableAb3C =
-    {
+    [
         0.0f, 1.33333333333f, 1.60000000000f, 1.14285714286f, 1.77777777777f, 1.06666666666f, 1.03225806452f,
         1.00001525902f
-    };
+    ];
 
     public readonly static float[] TableAb3D =
-    {
+    [
         0.0f, 0.50000000000f, 0.50000000000f, 0.25000000000f, 0.50000000000f, 0.12500000000f, 0.06250000000f,
         0.00003051758f
-    };
+    ];
 
     // subbands 23-... in tables 3-B.2a and 2b:
-    public readonly static int[]   TableAb4Codelength = { 0, 5, 7, 16 };
-    public readonly static float[] TableAb4Factor     = { 0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 32768.0f };
-    public readonly static float[] TableAb4C          = { 0.0f, 1.33333333333f, 1.60000000000f, 1.00001525902f };
+    public readonly static int[]   TableAb4Codelength = [ 0, 5, 7, 16 ];
+    public readonly static float[] TableAb4Factor     = [ 0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 32768.0f ];
+    public readonly static float[] TableAb4C          = [ 0.0f, 1.33333333333f, 1.60000000000f, 1.00001525902f ];
 
-    public readonly static float[] TableAb4D = { 0.0f, 0.50000000000f, 0.50000000000f, 0.00003051758f };
+    public readonly static float[] TableAb4D = [ 0.0f, 0.50000000000f, 0.50000000000f, 0.00003051758f ];
 
     // subbands in tables 3-B.2c and 2d:
-    public readonly static int[] TableCdCodelength = { 0, 5, 7, 10, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+    public readonly static int[] TableCdCodelength = [ 0, 5, 7, 10, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ];
 
     public readonly static float[][] TableCdGroupingtables =
-    {
+    [
         null!, Grouping5Bits, Grouping7Bits,
         Grouping10Bits, null!, null!, null!, null!, null!, null!, null!, null!, null!, null!, null!, null!
-    };
+    ];
 
     public readonly static float[] TableCdFactor =
-    {
+    [
         0.0f, 1.0f / 2.0f, 1.0f / 4.0f, 1.0f / 8.0f, 1.0f / 8.0f, 1.0f / 16.0f, 1.0f / 32.0f, 1.0f / 64.0f, 1.0f / 128.0f,
         1.0f / 256.0f, 1.0f / 512.0f, 1.0f / 1024.0f, 1.0f / 2048.0f, 1.0f / 4096.0f, 1.0f / 8192.0f, 1.0f / 16384.0f
-    };
+    ];
 
     public readonly static float[] TableCdC =
-    {
+    [
         0.0f, 1.33333333333f, 1.60000000000f, 1.77777777777f, 1.06666666666f, 1.03225806452f, 1.01587301587f,
         1.00787401575f, 1.00392156863f, 1.00195694716f, 1.00097751711f, 1.00048851979f, 1.00024420024f,
         1.00012208522f, 1.00006103888f, 1.00003051851f
-    };
+    ];
 
     public readonly static float[] TableCdD =
-    {
+    [
         0.0f, 0.50000000000f, 0.50000000000f, 0.50000000000f, 0.12500000000f, 0.06250000000f, 0.03125000000f,
         0.01562500000f, 0.00781250000f, 0.00390625000f, 0.00195312500f, 0.00097656250f, 0.00048828125f,
         0.00024414063f, 0.00012207031f, 0.00006103516f
-    };
+    ];
 
-    protected readonly float[] cFactor    = { 0 };
-    protected readonly int[]   codelength = { 0 };
+    protected readonly float[] cFactor    = [ 0 ];
+    protected readonly int[]   codelength = [ 0 ];
 
-    protected readonly float[] d = { 0 };
+    protected readonly float[] d = [ 0 ];
 
-    protected readonly float[] factor = { 0.0f };
+    protected readonly float[] factor = [ 0.0f ];
     protected readonly int     subbandnumber;
 
     protected int allocation;

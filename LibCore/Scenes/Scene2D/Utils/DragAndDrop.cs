@@ -59,7 +59,7 @@ public class DragAndDrop
 
     private readonly static Vector2                                _tmpVector       = new();
     private readonly        Dictionary< DragSource, DragListener > _sourceListeners = new();
-    private readonly        List< DragTarget >                     _targets         = new();
+    private readonly        List< DragTarget >                     _targets         = [ ];
 
     private DragListener? _dragListener;
     private long          _dragValidTime;

@@ -116,9 +116,9 @@ public class ParticleEmitter
     /// <param name="emitter"></param>
     public ParticleEmitter( ParticleEmitter emitter )
     {
-        Sprites    = new List< Sprite >( emitter.Sprites );
+        Sprites    = [ ..emitter.Sprites ];
         Name       = emitter.Name;
-        ImagePaths = new List< string >( emitter.ImagePaths );
+        ImagePaths = [ ..emitter.ImagePaths ];
 
         SetMaxParticleCount( emitter.MaxParticleCount );
 
@@ -1478,7 +1478,7 @@ public class ParticleEmitter
 //                line = reader.ReadLine();
             }
 
-            List< string > imagePaths = new();
+            List< string > imagePaths = [ ];
 
             while ( ( ( line = reader.ReadLine() ) != null ) && ( line.Length != 0 ) )
             {
@@ -1717,8 +1717,8 @@ public class ParticleEmitter
     [PublicAPI]
     public class ScaledNumericValue : RangedNumericValue
     {
-        public float[] Scaling    { get; set; } = { 1 };
-        public float[] Timeline   { get; set; } = { 0 };
+        public float[] Scaling    { get; set; } = [ 1 ];
+        public float[] Timeline   { get; set; } = [ 0 ];
         public float   HighMin    { get; set; }
         public float   HighMax    { get; set; }
         public bool    IsRelative { get; set; }
@@ -1989,8 +1989,8 @@ public class ParticleEmitter
             AlwaysActive = true;
         }
 
-        public float[] Timeline { get; set; } = { 0 };
-        public float[] Colors   { get; set; } = { 1, 1, 1 };
+        public float[] Timeline { get; set; } = [ 0 ];
+        public float[] Colors   { get; set; } = [ 1, 1, 1 ];
 
         public float[] GetColor( float percent )
         {
@@ -2176,9 +2176,9 @@ public class ParticleEmitter
     /// </summary>
     public bool CleansUpBlendFunction { get; set; } = true;
 
-    public List< Sprite >                Sprites           { get; set; } = new();
+    public List< Sprite >                Sprites           { get; set; } = [ ];
     public SpriteModes                   SpriteMode        { get; set; } = SpriteModes.Single;
-    public List< string >                ImagePaths        { get; set; } = new();
+    public List< string >                ImagePaths        { get; set; } = [ ];
     public ScaledNumericValue            XScaleValue       { get; set; } = new();
     public ScaledNumericValue            YScaleValue       { get; set; } = new();
     public RangedNumericValue            DelayValue        { get; set; } = new();
@@ -2199,7 +2199,7 @@ public class ParticleEmitter
     public ScaledNumericValue            SpawnHeightValue  { get; set; } = new();
     public ParticleSpawnShapeValue       SpawnShapeValue   { get; set; } = new();
 
-    public bool[] IsActive           { get; set; } = { false };
+    public bool[] IsActive           { get; set; } = [ false ];
     public float  Duration           { get; set; } = 1;
     public float  DurationTimer      { get; set; }
     public bool   Behind             { get; set; }

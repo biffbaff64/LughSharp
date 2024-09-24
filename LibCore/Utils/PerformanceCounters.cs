@@ -38,7 +38,7 @@ public class PerformanceCounters
     /// <summary>
     /// The list of <see cref="PerformanceCounter"/>s to track.
     /// </summary>
-    public List< PerformanceCounter > Counters { get; set; } = new();
+    public List< PerformanceCounter > Counters { get; set; } = [ ];
 
     // ------------------------------------------------------------------------
 

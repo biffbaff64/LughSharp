@@ -521,7 +521,7 @@ public class Quaternion
     /// <summary>
     /// </summary>
     /// <returns> If this quaternion is an identity Quaternion </returns>
-    public bool ISIdentity()
+    public bool IsIdentity()
     {
         return MathUtils.IsZero( X )
             && MathUtils.IsZero( Y )
@@ -532,7 +532,7 @@ public class Quaternion
     /// <summary>
     /// </summary>
     /// <returns> If this quaternion is an identity Quaternion </returns>
-    public bool ISIdentity( float tolerance )
+    public bool IsIdentity( float tolerance )
     {
         return MathUtils.IsZero( X, tolerance )
             && MathUtils.IsZero( Y, tolerance )

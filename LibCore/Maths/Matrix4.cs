@@ -504,7 +504,7 @@ public class Matrix4
     /// Transposes the matrix.
     /// </summary>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
-    public Matrix4 Tra()
+    public Matrix4 Transpose()
     {
         var m01 = Val[ M01 ];
         var m02 = Val[ M02 ];
@@ -533,7 +533,7 @@ public class Matrix4
     /// Sets the matrix to an identity matrix.
     /// </summary>
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
-    public Matrix4 Idt()
+    public Matrix4 ToIdentity()
     {
         Val[ M00 ] = 1f;
         Val[ M01 ] = 0f;
@@ -560,7 +560,7 @@ public class Matrix4
     /// </summary>
     /// <returns> This matrix for the purpose of chaining methods together. </returns>
     /// <exception cref="GdxRuntimeException"> if the matrix is singular (not invertible)  </exception>
-    public Matrix4 Inv()
+    public Matrix4 Invert()
     {
         //@formatter:off
         var lDet = ( ( ( ( ( ( ( ( ( ( (
@@ -788,7 +788,7 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 SetToProjection( float near, float far, float fovy, float aspectRatio )
     {
-        Idt();
+        ToIdentity();
 
         var lFd = ( float ) ( 1.0 / Math.Tan( ( fovy * ( Math.PI / 180 ) ) / 2.0 ) );
         var lA1 = ( far + near ) / ( near - far );
@@ -973,7 +973,7 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 SetToTranslation( Vector3 vector )
     {
-        Idt();
+        ToIdentity();
 
         Val[ M03 ] = vector.X;
         Val[ M13 ] = vector.Y;
@@ -993,7 +993,7 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 SetToTranslation( float x, float y, float z )
     {
-        Idt();
+        ToIdentity();
 
         Val[ M03 ] = x;
         Val[ M13 ] = y;
@@ -1011,7 +1011,7 @@ public class Matrix4
     /// <returns> This matrix for the purpose of chaining methods together.  </returns>
     public Matrix4 SetToTranslationAndScaling( Vector3 translation, Vector3 scaling )
     {
-        Idt();
+        ToIdentity();
 
         Val[ M03 ] = translation.X;
         Val[ M13 ] = translation.Y;
@@ -1041,7 +1041,7 @@ public class Matrix4
                                                float scalingY,
                                                float scalingZ )
     {
-        Idt();
+        ToIdentity();
 
         Val[ M03 ] = translationX;
         Val[ M13 ] = translationY;
@@ -1063,7 +1063,7 @@ public class Matrix4
     {
         if ( degrees == 0 )
         {
-            Idt();
+            ToIdentity();
 
             return this;
         }
@@ -1081,7 +1081,7 @@ public class Matrix4
     {
         if ( radians == 0 )
         {
-            Idt();
+            ToIdentity();
 
             return this;
         }
@@ -1101,7 +1101,7 @@ public class Matrix4
     {
         if ( degrees == 0 )
         {
-            Idt();
+            ToIdentity();
 
             return this;
         }
@@ -1121,7 +1121,7 @@ public class Matrix4
     {
         if ( radians == 0 )
         {
-            Idt();
+            ToIdentity();
 
             return this;
         }
@@ -1190,7 +1190,7 @@ public class Matrix4
     /// <returns> This matrix for chaining.  </returns>
     public Matrix4 SetToScaling( Vector3 vector )
     {
-        Idt();
+        ToIdentity();
 
         Val[ M00 ] = vector.X;
         Val[ M11 ] = vector.Y;
@@ -1208,7 +1208,7 @@ public class Matrix4
     /// <returns> This matrix for chaining.  </returns>
     public Matrix4 SetToScaling( float x, float y, float z )
     {
-        Idt();
+        ToIdentity();
 
         Val[ M00 ] = x;
         Val[ M11 ] = y;
@@ -1231,7 +1231,7 @@ public class Matrix4
         LVex.Set( direction ).Crs( up ).Nor();
         LVey.Set( LVex ).Crs( LVez ).Nor();
 
-        Idt();
+        ToIdentity();
 
         Val[ M00 ] = LVex.X;
         Val[ M01 ] = LVex.Y;
@@ -1298,7 +1298,7 @@ public class Matrix4
     /// <param name="other"> The other transform </param>
     /// <param name="w"> Weight of this transform; weight of the other transform is (1 - w) </param>
     /// <returns> This matrix for chaining  </returns>
-    public Matrix4 Avg( Matrix4 other, float w )
+    public Matrix4 Average( Matrix4 other, float w )
     {
         GetScale( TmpVec );
         other.GetScale( TmpForward );
@@ -1323,7 +1323,7 @@ public class Matrix4
     /// </summary>
     /// <param name="t"> List of transforms </param>
     /// <returns> This matrix for chaining  </returns>
-    public Matrix4 Avg( Matrix4[] t )
+    public Matrix4 Average( Matrix4[] t )
     {
         var w = 1.0f / t.Length;
 
@@ -1356,7 +1356,7 @@ public class Matrix4
     /// <param name="t"> List of transforms </param>
     /// <param name="w"> List of weights </param>
     /// <returns> This matrix for chaining  </returns>
-    public Matrix4 Avg( Matrix4[] t, float[] w )
+    public Matrix4 Average( Matrix4[] t, float[] w )
     {
         TmpVec.Set( t[ 0 ].GetScale( TmpUp ).Scale( w[ 0 ] ) );
         Quat.Set( t[ 0 ].GetRotation( Quat2 ).Exp( w[ 0 ] ) );
@@ -1615,7 +1615,7 @@ public class Matrix4
         Val[ M13 ] = 0;
         Val[ M23 ] = 0;
 
-        return Inv().Tra();
+        return Invert().Transpose();
     }
 
     public override string ToString()
@@ -1817,7 +1817,7 @@ public class Matrix4
     /// </summary>
     /// <param name="values"> the matrix values. </param>
     /// <returns> false in case the inverse could not be calculated, true otherwise.  </returns>
-    public static bool Inv( float[] values )
+    public static bool Invert( float[] values )
     {
         var lDet = Det( values );
 
@@ -2326,16 +2326,20 @@ public class Matrix4
     /// <param name="offset"> the offset into the vectors array </param>
     /// <param name="numVecs"> the number of vectors </param>
     /// <param name="stride"> the stride between vectors in floats  </param>
-    [DllImport( "lib/gdx2d.dll", EntryPoint = "matrix4_mulVec" )]
-    public static extern void MulVec( float[] mat, float[] vecs, int offset, int numVecs, int stride );
-    /*-{ }-*/
-    /*
-        float* vecPtr = vecs + offset;
-        for(int i = 0; i < numVecs; i++) {
-            matrix4_mulVec(mat, vecPtr);
-            vecPtr += stride;
+    public static void MulVec( float[] mat, float[] vecs, int offset, int numVecs, int stride )
+    {
+        for ( var i = 0; i < numVecs; i++ )
+        {
+            var idx = offset + ( i * stride );
+            var x   = vecs[ idx ];
+            var y   = vecs[ idx + 1 ];
+            var z   = vecs[ idx + 2 ];
+
+            vecs[ idx ]     = ( mat[ M00 ] * x ) + ( mat[ M01 ] * y ) + ( mat[ M02 ] * z ) + mat[ M03 ];
+            vecs[ idx + 1 ] = ( mat[ M10 ] * x ) + ( mat[ M11 ] * y ) + ( mat[ M12 ] * z ) + mat[ M13 ];
+            vecs[ idx + 2 ] = ( mat[ M20 ] * x ) + ( mat[ M21 ] * y ) + ( mat[ M22 ] * z ) + mat[ M23 ];
         }
-    */
+    }
 
     /// <summary>
     /// Multiplies the vectors with the given matrix, performing a division by w.
@@ -2355,21 +2359,32 @@ public class Matrix4
     /// <param name="stride"> the stride between vectors in floats  </param>
     public static void Prj( float[] mat, float[] vecs, int offset, int numVecs, int stride )
     {
-        //TODO:
+        for ( var i = 0; i < numVecs; i++ )
+        {
+            var vecIndex = offset + ( i * stride );
+            var invW = 1.0f / ( ( vecs[ vecIndex ] * mat[ M30 ] )
+                              + ( vecs[ vecIndex + 1 ] * mat[ M31 ] )
+                              + ( vecs[ vecIndex + 2 ] * mat[ M32 ] )
+                              + mat[ M33 ] );
 
-        return;
+            var x = ( ( vecs[ vecIndex ] * mat[ M00 ] )
+                    + ( vecs[ vecIndex + 1 ] * mat[ M01 ] )
+                    + ( vecs[ vecIndex + 2 ] * mat[ M02 ] )
+                    + mat[ M03 ] ) * invW;
+            var y = ( ( vecs[ vecIndex ] * mat[ M10 ] )
+                    + ( vecs[ vecIndex + 1 ] * mat[ M11 ] )
+                    + ( vecs[ vecIndex + 2 ] * mat[ M12 ] )
+                    + mat[ M13 ] ) * invW;
+            var z = ( ( vecs[ vecIndex ] * mat[ M20 ] )
+                    + ( vecs[ vecIndex + 1 ] * mat[ M21 ] )
+                    + ( vecs[ vecIndex + 2 ] * mat[ M22 ] )
+                    + mat[ M23 ] ) * invW;
 
-        [DllImport( "lib/gdx2d.dll", EntryPoint = "matrix4_proj" )]
-        static extern void matrix4_proj( long mat, long vec );
-    }
-    /*-{ }-*/
-    /*
-        float* vecPtr = vecs + offset;
-        for(int i = 0; i < numVecs; i++) {
-            matrix4_proj(mat, vecPtr);
-            vecPtr += stride;
+            vecs[ vecIndex ]     = x;
+            vecs[ vecIndex + 1 ] = y;
+            vecs[ vecIndex + 2 ] = z;
         }
-    */
+    }
 
     /// <summary>
     /// Multiplies the vectors with the top most 3x3 sub-matrix of the given matrix.
@@ -2386,17 +2401,20 @@ public class Matrix4
     /// <param name="offset"> the offset into the vectors array </param>
     /// <param name="numVecs"> the number of vectors </param>
     /// <param name="stride"> the stride between vectors in floats  </param>
-    [DllImport( "lib/gdx2d.dll", EntryPoint = "matrix4_rot" )]
-    public static extern void Rot( float[] mat, float[] vecs, int offset, int numVecs, int stride );
-    /*-{ }-*/
-    /*
-        float* vecPtr = vecs + offset;
-        for(int i = 0; i < numVecs; i++) {
-            matrix4_rot(mat, vecPtr);
-            vecPtr += stride;
+    public static void Rot( float[] mat, float[] vecs, int offset, int numVecs, int stride )
+    {
+        for ( var i = 0; i < numVecs; i++ )
+        {
+            var idx = offset + ( i * stride );
+            var x   = vecs[ idx ];
+            var y   = vecs[ idx + 1 ];
+            var z   = vecs[ idx + 2 ];
+
+            vecs[ idx ]     = ( mat[ M00 ] * x ) + ( mat[ M01 ] * y ) + ( mat[ M02 ] * z );
+            vecs[ idx + 1 ] = ( mat[ M10 ] * x ) + ( mat[ M11 ] * y ) + ( mat[ M12 ] * z );
+            vecs[ idx + 2 ] = ( mat[ M20 ] * x ) + ( mat[ M21 ] * y ) + ( mat[ M22 ] * z );
         }
-    */
-    // @on
+    }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------

@@ -33,7 +33,7 @@ public abstract class ASubband
 {
     // Scalefactors for layer I and II, Annex 3-B.1 in ISO/IEC DIS 11172:
     public readonly static float[] ScaleFactors =
-    {
+    [
         2.00000000000000f, 1.58740105196820f, 1.25992104989487f, 1.00000000000000f,
         0.79370052598410f, 0.62996052494744f, 0.50000000000000f, 0.39685026299205f,
         0.31498026247372f, 0.25000000000000f, 0.19842513149602f, 0.15749013123686f,
@@ -50,7 +50,7 @@ public abstract class ASubband
         0.00001211090890f, 0.00000961243477f, 0.00000762939453f, 0.00000605545445f,
         0.00000480621738f, 0.00000381469727f, 0.00000302772723f, 0.00000240310869f,
         0.00000190734863f, 0.00000151386361f, 0.00000120155435f, 0.00000000000000f
-    };
+    ];
 
     public abstract void ReadAllocation( Bitstream stream, Header? header, Crc16 crc );
 
