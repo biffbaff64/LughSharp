@@ -226,7 +226,7 @@ FILES
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - FileHandle
-    -      -      - InputStream
+    -      -      - 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -269,6 +269,7 @@ GRAPHICS
 
     CODE   DOCUMENT
     ----   --------
+    - DONE - DONE - BMPFormatStructs
     - DONE - IP   - Color
     - DONE - DONE - Colors
     - DONE - DONE - Cubemap
@@ -277,7 +278,6 @@ GRAPHICS
     - DONE - DONE - GStructs
     - DONE - DONE - ICubemapData
     - DONE - DONE - ICursor
-    - IP   - IP   - ImageFormatStructs
     - DONE - DONE - ITextureArrayData
     - DONE - DONE - ITextureData
     - DONE - IP   - Mesh
@@ -286,9 +286,10 @@ GRAPHICS
     - DONE - IP   - PixmapFormat
     - DONE - IP   - PixmapFormatExtensions
     - DONE - IP   - PixmapIO                            Not working
-    - IP   - IP   - PNGFormatStructs
+    - DONE - IP   - PNGFormatStructs
     - DONE - IP   - Texture
     - DONE - IP   - TextureArray
+    - DONE - DONE - TextureDataFactory
     - DONE - IP   - TextureFilter
     - DONE - IP   - TextureWrap
     - DONE - IP   - VertexAttribute
@@ -332,6 +333,7 @@ GRAPHICS/G2D
     - DONE - IP   - DistanceFieldFont
     - IP   - IP   - Gdx2DPixmap
     - IP   - IP   - Gdx2DPixmapExtensions
+    - IP   - IP   - Gdx2DUtils
     - DONE - IP   - GlyphLayout
     - DONE - IP   - NinePatch
     - DONE - IP   - ParticleEffect

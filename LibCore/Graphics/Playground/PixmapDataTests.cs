@@ -27,7 +27,7 @@ namespace LughSharp.LibCore.Graphics.Playground;
 [PublicAPI]
 public class PixmapDataTests
 {
-    public static void ValidateData( Gdx2DPixmap.PixmapDataStruct pixmapDef )
+    public static void ValidateData( PixmapDataType pixmapDef )
     {
     }
 }

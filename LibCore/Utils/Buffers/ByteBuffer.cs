@@ -227,7 +227,7 @@ public abstract class ByteBuffer : Buffer
     /// </summary>
     /// <param name="array"> The array that will back the new buffer </param>
     /// <returns> The new byte buffer </returns>
-    public static ByteBuffer Wrap( byte[] array )
+    public static ByteBuffer Wrap( byte[] array = null! )
     {
         return Wrap( array, 0, array.Length );
     }

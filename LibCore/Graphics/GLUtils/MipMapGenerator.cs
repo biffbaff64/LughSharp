@@ -82,7 +82,7 @@ public class MipMapGenerator
     {
         unsafe
         {
-            fixed ( void* ptr = &pixmap.ByteBuffer!.BackingArray()[ 0 ] )
+            fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
             {
                 Gdx.GL.glTexImage2D( target,
                                      0,
@@ -104,7 +104,7 @@ public class MipMapGenerator
         if ( Gdx.Graphics.SupportsExtension( "GL_ARB_framebuffer_object" )
           || Gdx.Graphics.SupportsExtension( "GL_EXT_framebuffer_object" ) )
         {
-            fixed ( void* ptr = &pixmap.ByteBuffer!.BackingArray()[ 0 ] )
+            fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
             {
                 Gdx.GL.glTexImage2D( target,
                                      0,
@@ -127,7 +127,7 @@ public class MipMapGenerator
 
     private static unsafe void GenerateMipMapCPU( int target, Pixmap pixmap, int textureWidth, int textureHeight )
     {
-        fixed ( void* ptr = &pixmap.ByteBuffer!.BackingArray()[ 0 ] )
+        fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
         {
             Gdx.GL.glTexImage2D( target,
                                  0,
@@ -163,7 +163,7 @@ public class MipMapGenerator
 
             pixmap = tmp;
 
-            fixed ( void* ptr = &pixmap.ByteBuffer!.BackingArray()[ 0 ] )
+            fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
             {
                 Gdx.GL.glTexImage2D( target,
                                      level,

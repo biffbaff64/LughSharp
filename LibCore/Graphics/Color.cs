@@ -34,35 +34,36 @@ public sealed class Color
 {
     #region colour values
 
-    public readonly static Color White      = new( 1, 1, 1, 1 );
-    public readonly static Color LightGray  = new( 0xbfbfbfff );        
-    public readonly static Color Gray       = new( 0x7f7f7fff );        
-    public readonly static Color DarkGray   = new( 0x3f3f3fff );        
-    public readonly static Color Black      = new( 0, 0, 0, 1 );        
-    public readonly static Color Clear      = new( 0, 0, 0, 0 );        
-    public readonly static Color Blue       = new( 0, 0, 1, 1 );        
-    public readonly static Color Navy       = new( 0, 0, 0.5f, 1 );     
-    public readonly static Color Royal      = new( 0x4169e1ff );        
-    public readonly static Color Slate      = new( 0x708090ff );        
-    public readonly static Color Sky        = new( 0x87ceebff );        
-    public readonly static Color Cyan       = new( 0, 1, 1, 1 );        
-    public readonly static Color Teal       = new( 0, 0.5f, 0.5f, 1 );  
-    public readonly static Color Green      = new( 0x00ff00ff );        
-    public readonly static Color Chartreuse = new( 0x7fff00ff );        
-    public readonly static Color Lime       = new( 0x32cd32ff );        
-    public readonly static Color Forest     = new( 0x228b22ff );        
-    public readonly static Color Olive      = new( 0x6b8e23ff );        
-    public readonly static Color Yellow     = new( 0xffff00ff );        
-    public readonly static Color Gold       = new( 0xffd700ff );        
-    public readonly static Color Goldenrod  = new( 0xdaa520ff );        
-    public readonly static Color Orange     = new( 0xffa500ff );        
-    public readonly static Color Brown      = new( 0x8b4513ff );        
-    public readonly static Color Tan        = new( 0xd2b48cff );        
-    public readonly static Color Firebrick  = new( 0xb22222ff );        
-    public readonly static Color Red        = new( 0xff0000ff );        
-    public readonly static Color Scarlet    = new( 0xff341cff );        
-    public readonly static Color Coral      = new( 0xff7f50ff );        
-    public readonly static Color Salmon     = new( 0xfa8072ff );    
+    public readonly static Color Red   = new( 1, 0, 0, 1 );
+    public readonly static Color Green = new( 0, 1, 0, 1 );
+    public readonly static Color Blue  = new( 0, 0, 1, 1 );
+    public readonly static Color Clear = new( 0, 0, 0, 0 );
+    public readonly static Color White = new( 1, 1, 1, 1 );
+    public readonly static Color Black = new( 0, 0, 0, 1 );
+
+    public readonly static Color LightGray  = new( 0xbfbfbfff );
+    public readonly static Color Gray       = new( 0x7f7f7fff );
+    public readonly static Color DarkGray   = new( 0x3f3f3fff );
+    public readonly static Color Navy       = new( 0, 0, 0.5f, 1 );
+    public readonly static Color Royal      = new( 0x4169e1ff );
+    public readonly static Color Slate      = new( 0x708090ff );
+    public readonly static Color Sky        = new( 0x87ceebff );
+    public readonly static Color Cyan       = new( 0, 1, 1, 1 );
+    public readonly static Color Teal       = new( 0, 0.5f, 0.5f, 1 );
+    public readonly static Color Chartreuse = new( 0x7fff00ff );
+    public readonly static Color Lime       = new( 0x32cd32ff );
+    public readonly static Color Forest     = new( 0x228b22ff );
+    public readonly static Color Olive      = new( 0x6b8e23ff );
+    public readonly static Color Yellow     = new( 0xffff00ff );
+    public readonly static Color Gold       = new( 0xffd700ff );
+    public readonly static Color Goldenrod  = new( 0xdaa520ff );
+    public readonly static Color Orange     = new( 0xffa500ff );
+    public readonly static Color Brown      = new( 0x8b4513ff );
+    public readonly static Color Tan        = new( 0xd2b48cff );
+    public readonly static Color Firebrick  = new( 0xb22222ff );
+    public readonly static Color Scarlet    = new( 0xff341cff );
+    public readonly static Color Coral      = new( 0xff7f50ff );
+    public readonly static Color Salmon     = new( 0xfa8072ff );
     public readonly static Color Pink       = new( 0xff69b4ff );
     public readonly static Color Magenta    = new( 1, 0, 1, 1 );
     public readonly static Color Purple     = new( 0xa020f0ff );
@@ -507,7 +508,7 @@ public sealed class Color
              | ( ( uint ) ( b * 255 ) << 8 )
              | ( uint ) ( a * 255 );
     }
-    
+
     /// <summary>
     /// Sets the RGB Color components using the specified Hue-Saturation-Value.
     /// Note that HSV components are voluntary not clamped to preserve high range
@@ -685,7 +686,7 @@ public sealed class Color
 
         return NumberUtils.UIntToFloatColor( color );
     }
-    
+
     /// <summary>
     /// </summary>
     /// <param name="r"></param>
@@ -699,15 +700,16 @@ public sealed class Color
 
         return _color;
     }
-    
+
     /// <summary>
     /// Convenience for frequently used <tt>White.ToFloatBits()</tt>
     /// </summary>
     public readonly static float WhiteFloatBits = White.ToFloatBits();
 
     /// <summary>
+    /// Packs the color components into a 32-bit integer with the format ABGR.
     /// </summary>
-    /// <returns></returns>
+    /// <returns> the packed color as a 32-bit int. </returns>
     public uint ToIntBits()
     {
         return ( ( uint ) ( 255 * A ) << 24 )
@@ -717,12 +719,26 @@ public sealed class Color
     }
 
     /// <summary>
+    /// Packs the color components into a 32-bit integer with the format RGBA.
+    /// </summary>
+    /// <returns> the packed color as a 32-bit int. </returns>
+    public uint ToIntBitsRGBA()
+    {
+        return ( ( uint ) R << 24 )
+             | ( ( uint ) G << 16 )
+             | ( ( uint ) B << 8 )
+             | ( uint ) A;
+    }
+
+    /// <summary>
+    /// Packs the color components into a 32-bit integer with the format ABGR.
+    /// Note that no range checking is performed for higher performance.
     /// </summary>
     /// <param name="r"> Red component </param>
     /// <param name="g"> Green component </param>
     /// <param name="b"> Blue component </param>
     /// <param name="a"> Alpha component </param>
-    /// <returns></returns>
+    /// <returns> the packed color as a 32-bit int. </returns>
     public static uint ToIntBits( uint r, uint g, uint b, uint a )
     {
         return ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
@@ -917,8 +933,6 @@ public sealed class Color
     /// <param name="color"> The colour. </param>
     public static uint RGB565( Color color )
     {
-        ArgumentNullException.ThrowIfNull( color );
-
         return ( ( uint ) ( color.R * 31 ) << 11 )
              | ( ( uint ) ( color.G * 63 ) << 5 )
              | ( uint ) ( color.B * 31 );
@@ -936,8 +950,6 @@ public sealed class Color
     /// <param name="color"> The colour. </param>
     public static uint RGBA4444( Color color )
     {
-        ArgumentNullException.ThrowIfNull( color );
-
         return ( ( uint ) ( color.R * 15 ) << 12 )
              | ( ( uint ) ( color.G * 15 ) << 8 )
              | ( ( uint ) ( color.B * 15 ) << 4 )
@@ -955,8 +967,6 @@ public sealed class Color
     /// <param name="color"> The colour. </param>
     public static uint RGB888( Color color )
     {
-        ArgumentNullException.ThrowIfNull( color );
-
         return ( ( uint ) ( color.R * 255 ) << 16 )
              | ( ( uint ) ( color.G * 255 ) << 8 )
              | ( uint ) ( color.B * 255 );
@@ -973,8 +983,6 @@ public sealed class Color
     /// <param name="color"> The colour. </param>
     public static uint RGBA8888( Color color )
     {
-        ArgumentNullException.ThrowIfNull( color );
-
         return ( ( uint ) ( color.R * 255 ) << 24 )
              | ( ( uint ) ( color.G * 255 ) << 16 )
              | ( ( uint ) ( color.B * 255 ) << 8 )
@@ -992,14 +1000,12 @@ public sealed class Color
     /// <param name="color"> The colour. </param>
     public static uint ARGB8888( Color color )
     {
-        ArgumentNullException.ThrowIfNull( color );
-
         return ( ( uint ) ( color.A * 255 ) << 24 )
              | ( ( uint ) ( color.R * 255 ) << 16 )
              | ( ( uint ) ( color.G * 255 ) << 8 )
              | ( uint ) ( color.B * 255 );
     }
-    
+
     /// <summary>
     /// Creates a copy of this <see cref="Color"/> object.
     /// </summary>
@@ -1039,5 +1045,11 @@ public sealed class Color
         result = ( 31 * result ) + ( DarkGray != 0F ? NumberUtils.FloatToIntBits( DarkGray.ToFloatBits() ) : 0 );
 
         return result;
+    }
+
+    //TODO:
+    public string GetName()
+    {
+        return string.Empty;
     }
 }

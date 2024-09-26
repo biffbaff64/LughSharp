@@ -80,7 +80,7 @@ public class GLOnlyTextureData : ITextureData
         Height         = height;
         MipLevel       = mipMapLevel;
         InternalFormat = internalFormat;
-        Format         = PixmapFormat.FromGdx2DPixmapFormat( format );
+        Format         = PixmapFormat.ToPixmapColorFormat( format );
         Type           = type;
     }
 
@@ -102,7 +102,7 @@ public class GLOnlyTextureData : ITextureData
                              Width,
                              Height,
                              0,
-                             PixmapFormat.ToGdx2DPixmapFormat( Format ),
+                             PixmapFormat.ToGdx2DFormat( Format ),
                              Type,
                              null! );
     }

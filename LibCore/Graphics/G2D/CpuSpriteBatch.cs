@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-using System.Drawing;
 using LughSharp.LibCore.Utils.Exceptions;
 using Matrix4 = LughSharp.LibCore.Maths.Matrix4;
 
@@ -92,14 +91,14 @@ public class CpuSpriteBatch : SpriteBatch
             }
 
             _adjustNeeded = false;
+            
             base.SetTransformMatrix( _virtualMatrix );
         }
     }
 
     /// <summary>
-    /// Gets the transform matrix. 
+    /// Returns a <see cref="Matrix4"/> holding the transform matrix.
     /// </summary>
-    /// <returns></returns>
     public virtual Matrix4 GetTransformMatrix()
     {
         return _adjustNeeded ? _virtualMatrix : TransformMatrix;

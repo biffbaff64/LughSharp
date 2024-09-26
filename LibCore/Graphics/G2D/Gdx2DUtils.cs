@@ -27,16 +27,18 @@ namespace LughSharp.LibCore.Graphics.G2D;
 public partial class Gdx2DPixmap
 {
     /// <summary>
-    /// Clear the pd defined in the supplied <see cref="PixmapDataStruct"/>,
+    /// Clear the pd defined in the supplied <see cref="PixmapDataType"/>,
     /// setting it to the supplied Color.
     /// </summary>
     /// <param name="pd"> The NativePixmapDef. </param>
     /// <param name="color"> The Color. </param>
-    public void Clear( PixmapDataStruct pd, Color color )
+    public void Clear( PixmapDataType pd, Color color )
     {
         Logger.CheckPoint();
 
         var size = ( uint ) ( pd.Width * pd.Height * PixmapFormat.Gdx2dBytesPerPixel( ( int ) pd.Format ) );
+
+        Logger.Debug( $"size: {size}, color: {color.R}, {color.G}, {color.B}, {color.A}" );
 
         switch ( pd.Format )
         {
@@ -72,13 +74,13 @@ public partial class Gdx2DPixmap
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    internal void clear_alpha( PixmapDataStruct pd, Color color, uint size )
+    internal void clear_alpha( PixmapDataType pd, Color color, uint size )
     {
 //        int pixels = pixmap->width * pixmap->height;
 //        memset((void*)pixmap->pixels, col, pixels);
     }
 
-    internal void clear_luminance_alpha( PixmapDataStruct pd, Color color, uint size )
+    internal void clear_luminance_alpha( PixmapDataType pd, Color color, uint size )
     {
 //        int             pixels = pixmap->width * pixmap->height;
 //        unsigned short* ptr    = (unsigned short*)pixmap->pixels;
@@ -91,7 +93,7 @@ public partial class Gdx2DPixmap
 //        }
     }
 
-    internal void clear_RGB888( PixmapDataStruct pd, Color color, uint size )
+    internal void clear_RGB888( PixmapDataType pd, Color color, uint size )
     {
 //        int            pixels = pixmap->width * pixmap->height;
 //        unsigned char* ptr    = (unsigned char*)pixmap->pixels;
@@ -110,7 +112,7 @@ public partial class Gdx2DPixmap
 //        }
     }
 
-    internal void clear_RGBA8888( PixmapDataStruct pd, Color color, uint size )
+    internal void clear_RGBA8888( PixmapDataType pd, Color color, uint size )
     {
 //        int           pixels = pixmap->width * pixmap->height;
 //        uint32_t*     ptr    = (uint32_t*)pixmap->pixels;
@@ -126,15 +128,25 @@ public partial class Gdx2DPixmap
 //            ptr++;
 //        }
 
-        var r = ( color.ToIntBits() & 0xff000000 ) >> 24;
-        var g = ( color.ToIntBits() & 0x00ff0000 ) >> 16;
-        var b = ( color.ToIntBits() & 0x0000ff00 ) >> 8;
-        var a = ( color.ToIntBits() & 0x000000ff );
+//        var r = ( color.ToIntBits() & 0xff000000 ) >> 24;
+//        var g = ( color.ToIntBits() & 0x00ff0000 ) >> 16;
+//        var b = ( color.ToIntBits() & 0x0000ff00 ) >> 8;
+//        var a = ( color.ToIntBits() & 0x000000ff );
 
-        var col = ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
+//        var col = ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
+
+        var col = ToFormat( PixmapFormat.GDX_2D_FORMAT_RGB888, Color.RGBA8888( color ) );
+
+        Logger.Debug( $"col: {col}"  );
+        Logger.Debug( $"byte 0: {( col & 0x000000ff )}" );
+        Logger.Debug( $"byte 1: {( col & 0x0000ff00 ) >> 8}" );
+        Logger.Debug( $"byte 2: {( col & 0x00ff0000 ) >> 16}" );
+        Logger.Debug( $"byte 3: {( col & 0xff000000 ) >> 24}" );
+
+        pd.Pixels = Enumerable.Repeat( ( byte ) 255, ( int ) size ).ToArray();
     }
 
-    internal void clear_RGB565( PixmapDataStruct pd, Color color, uint size )
+    internal void clear_RGB565( PixmapDataType pd, Color color, uint size )
     {
 //        int             pixels = pixmap->width * pixmap->height;
 //        unsigned short* ptr    = (unsigned short*)pixmap->pixels;
@@ -147,7 +159,7 @@ public partial class Gdx2DPixmap
 //        }
     }
 
-    internal unsafe void clear_RGBA4444( PixmapDataStruct pd, Color color, uint size )
+    internal void clear_RGBA4444( PixmapDataType pd, Color color, uint size )
     {
 //        int             pixels = pixmap->width * pixmap->height;
 //        unsigned short* ptr    = (unsigned short*)pixmap->pixels;
@@ -190,7 +202,7 @@ public partial class Gdx2DPixmap
                 g = ( color & 0xff0000 ) >> 16;
                 b = ( color & 0xff00 ) >> 8;
                 a = ( color & 0xff );
-                var l = ( ( uint ) ( 0.2126f * r + 0.7152 * g + 0.0722 * b ) & 0xff ) << 8;
+                var l = ( ( uint ) ( ( 0.2126f * r ) + ( 0.7152 * g ) + ( 0.0722 * b ) ) & 0xff ) << 8;
                 return ( l & 0xffffff00 ) | a;
 
             case PixmapFormat.GDX_2D_FORMAT_RGB888:

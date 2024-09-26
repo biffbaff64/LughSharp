@@ -27,30 +27,33 @@ namespace LughSharp.LibCore.Files;
 [PublicAPI]
 public class InputStream : Stream
 {
-    /// <inheritdoc />
-    public override bool CanRead  { get; }
+    private const int MAX_SKIP_BUFFER_SIZE = 2048;
+    private const int DEFAULT_BUFFER_SIZE  = 8192;
 
     /// <inheritdoc />
-    public override bool CanSeek  { get; }
+    public override bool CanRead { get; }
+
+    /// <inheritdoc />
+    public override bool CanSeek { get; }
 
     /// <inheritdoc />
     public override bool CanWrite { get; }
 
     /// <inheritdoc />
-    public override long Length   { get; }
+    public override long Length { get; }
 
     /// <inheritdoc />
     public override long Position { get; set; }
 
     // ------------------------------------------------------------------------
-    
+
     /// <inheritdoc />
     public override void Flush()
     {
     }
 
     /// <inheritdoc />
-    public override int  Read( byte[] buffer, int offset, int count )
+    public override int Read( byte[] buffer, int offset, int count )
     {
         return 0;
     }

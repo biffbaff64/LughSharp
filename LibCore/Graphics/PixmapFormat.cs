@@ -55,7 +55,7 @@ public class PixmapFormat
     /// <param name="format"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public static int ToGdx2DPixmapFormat( Pixmap.ColorFormat? format )
+    public static int ToGdx2DFormat( Pixmap.ColorFormat? format )
     {
         return format switch
         {
@@ -75,7 +75,7 @@ public class PixmapFormat
     /// <param name="format"></param>
     /// <returns></returns>
     /// <exception cref="GdxRuntimeException"></exception>
-    public static Pixmap.ColorFormat FromGdx2DPixmapFormat( int format )
+    public static Pixmap.ColorFormat ToPixmapColorFormat( int format )
     {
         return format switch
         {
@@ -112,7 +112,7 @@ public class PixmapFormat
     /// <returns></returns>
     public static int ToGLFormat( Pixmap.ColorFormat format )
     {
-        var cformat = ToGdx2DPixmapFormat( format );
+        var cformat = ToGdx2DFormat( format );
 
         return cformat switch
         {
@@ -132,7 +132,7 @@ public class PixmapFormat
     /// <returns></returns>
     public static int ToGLType( Pixmap.ColorFormat format )
     {
-        var cformat = ToGdx2DPixmapFormat( format );
+        var cformat = ToGdx2DFormat( format );
 
         return cformat switch
         {
@@ -154,28 +154,13 @@ public class PixmapFormat
     {
         return format switch
         {
-            GDX_2D_FORMAT_ALPHA           => "Alpha",
-            GDX_2D_FORMAT_LUMINANCE_ALPHA => "Luminance Alpha",
-            GDX_2D_FORMAT_RGB888          => "Rgb888",
-            GDX_2D_FORMAT_RGBA8888        => "Rgba8888",
-            GDX_2D_FORMAT_RGB565          => "Rgb565",
-            GDX_2D_FORMAT_RGBA4444        => "Rgba4444",
+            GDX_2D_FORMAT_ALPHA           => "GDX_2D_FORMAT_ALPHA",
+            GDX_2D_FORMAT_LUMINANCE_ALPHA => "GDX_2D_FORMAT_LUMINANCE_ALPHA",
+            GDX_2D_FORMAT_RGB888          => "GDX_2D_FORMAT_RGB888",
+            GDX_2D_FORMAT_RGBA8888        => "GDX_2D_FORMAT_RGBA8888",
+            GDX_2D_FORMAT_RGB565          => "GDX_2D_FORMAT_RGB565",
+            GDX_2D_FORMAT_RGBA4444        => "GDX_2D_FORMAT_RGBA4444",
             var _                         => "Unknown"
-        };
-    }
-
-    public static string GetFormatString( Pixmap.ColorFormat format )
-    {
-        return format switch
-        {
-            Pixmap.ColorFormat.Alpha          => "Alpha",
-            Pixmap.ColorFormat.Intensity      => "Intensity",
-            Pixmap.ColorFormat.LuminanceAlpha => "Luminance Alpha",
-            Pixmap.ColorFormat.RGB565         => "RGB565",
-            Pixmap.ColorFormat.RGBA4444       => "RGBA4444",
-            Pixmap.ColorFormat.RGB888         => "RGB888",
-            Pixmap.ColorFormat.RGBA8888       => "RGBA8888",
-            var _                             => "Unknown"
         };
     }
 

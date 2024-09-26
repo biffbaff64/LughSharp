@@ -40,6 +40,8 @@ public class TextureArray : GLTexture, IManageable
     // ------------------------------------------------------------------------
 
     /// <summary>
+    /// Returns a string representation of the managed status of all
+    /// textures in the managed textures array.
     /// </summary>
     public string ManagedStatus
     {
@@ -58,8 +60,6 @@ public class TextureArray : GLTexture, IManageable
             return builder.ToString();
         }
     }
-
-    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Gets the number of managed TextureArrays currently loaded.
@@ -88,12 +88,13 @@ public class TextureArray : GLTexture, IManageable
     /// <exception cref="GdxRuntimeException"></exception>
     private unsafe void Load( ITextureArrayData data )
     {
-        if ( ( _data != null ) && ( data.Managed != _data.Managed ) )
+        if ( ( this._data != null ) && ( data.Managed != this._data.Managed ) )
         {
-            throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
+            throw new GdxRuntimeException
+                ( "New data must have the same managed status as the old data" );
         }
 
-        _data = data;
+        this._data = data;
 
         Bind();
 
@@ -117,6 +118,7 @@ public class TextureArray : GLTexture, IManageable
 
         SetFilter( MinFilter, MagFilter );
         SetWrap( UWrap, VWrap );
+        
         Gdx.GL.glBindTexture( GLTarget, 0 );
     }
 
@@ -206,6 +208,8 @@ public class TextureArray : GLTexture, IManageable
 
     #endregion constructors
 
+    // ------------------------------------------------------------------------
+    
     #region aliases
 
     public override int Width  => _data.Width;

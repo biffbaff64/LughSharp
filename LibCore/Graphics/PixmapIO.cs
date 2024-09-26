@@ -132,7 +132,7 @@ public static class PixmapIO
 
                 output.Write( pixmap.Width );
                 output.Write( pixmap.Height );
-                output.Write( PixmapFormat.ToGdx2DPixmapFormat( pixmap.Format ) );
+                output.Write( PixmapFormat.ToGdx2DFormat( pixmap.Format ) );
 
                 var pixelBuf = pixmap.ByteBuffer;
 
@@ -175,7 +175,7 @@ public static class PixmapIO
                 var input    = new BinaryReader( new InflaterInputStream( file.OpenRead() ) );
                 var width    = input.Read();
                 var height   = input.Read();
-                var format   = PixmapFormat.FromGdx2DPixmapFormat( input.Read() );
+                var format   = PixmapFormat.ToPixmapColorFormat( input.Read() );
                 var pixmap   = new Pixmap( width, height, format );
                 var pixelBuf = pixmap.ByteBuffer;
 
@@ -289,141 +289,142 @@ public static class PixmapIO
         /// </summary>
         public void Write( Stream output, Pixmap pixmap )
         {
-            Logger.CheckPoint();
-            
-            var deflaterOutput = new DeflaterOutputStream( output /*_buffer*/, _deflater );
-            var dataOutput     = new BinaryWriter( output );
-
-            dataOutput.Write( _signature );
-
-            _buffer.Write( IHDR );
-            _buffer.Write( pixmap.Width );
-            _buffer.Write( pixmap.Height );       // 
-            _buffer.Write( 8 );                   // 8 bits per component.
-            _buffer.Write( COLOR_ARGB );          // 
-            _buffer.Write( COMPRESSION_DEFLATE ); // 
-            _buffer.Write( FILTER_NONE );
-            _buffer.Write( INTERLACE_NONE );
-            _buffer.EndChunk( dataOutput );
-            _buffer.Write( IDAT );
-
-            _deflater.Reset();
-
-            var lineLen = pixmap.Width * 4;
-
-            byte[] lineOut;
-            byte[] curLine;
-            byte[] prevLine;
-
-            if ( _lineOutBytes == null )
-            {
-                _lineOutBytes  = new ByteArray( lineLen );
-                _curLineBytes  = new ByteArray( lineLen );
-                _prevLineBytes = new ByteArray( lineLen );
-
-                lineOut  = new byte[ lineLen ];
-                curLine  = new byte[ lineLen ];
-                prevLine = new byte[ lineLen ];
-            }
-            else
-            {
-                _lineOutBytes.EnsureCapacity( lineLen );
-                _curLineBytes!.EnsureCapacity( lineLen );
-                _prevLineBytes!.EnsureCapacity( lineLen );
-
-                lineOut  = _lineOutBytes.ToArray();
-                curLine  = _curLineBytes.ToArray();
-                prevLine = _prevLineBytes.ToArray();
-
-                Array.Clear( prevLine, 0, _lastLineLen );
-            }
-
-            _lastLineLen = lineLen;
-
-            var oldPosition = pixmap.ByteBuffer.Position;
-            var isRgba8888  = pixmap.Format == Pixmap.ColorFormat.RGBA8888;
-
-            for ( int y = 0, h = pixmap.Height; y < h; y++ )
-            {
-                var py = FlipY ? h - y - 1 : y;
-
-                if ( isRgba8888 )
-                {
-                    pixmap.ByteBuffer.Position = py * lineLen;
-                    pixmap.ByteBuffer.Get( curLine, 0, lineLen );
-                }
-                else
-                {
-                    for ( int px = 0, x = 0; px < pixmap.Width; px++ )
-                    {
-                        var pixel = pixmap.GetPixel( px, py );
-
-                        curLine[ x++ ] = ( byte ) ( ( pixel >> 24 ) & 0xff );
-                        curLine[ x++ ] = ( byte ) ( ( pixel >> 16 ) & 0xff );
-                        curLine[ x++ ] = ( byte ) ( ( pixel >> 8 ) & 0xff );
-                        curLine[ x++ ] = ( byte ) ( pixel & 0xff );
-                    }
-                }
-
-                lineOut[ 0 ] = ( byte ) ( curLine[ 0 ] - prevLine[ 0 ] );
-                lineOut[ 1 ] = ( byte ) ( curLine[ 1 ] - prevLine[ 1 ] );
-                lineOut[ 2 ] = ( byte ) ( curLine[ 2 ] - prevLine[ 2 ] );
-                lineOut[ 3 ] = ( byte ) ( curLine[ 3 ] - prevLine[ 3 ] );
-
-                for ( var x = 4; x < lineLen; x++ )
-                {
-                    var a  = curLine[ x - 4 ] & 0xff;
-                    var b  = prevLine[ x ] & 0xff;
-                    var c  = prevLine[ x - 4 ] & 0xff;
-                    var p  = ( a + b ) - c;
-                    var pa = p - a;
-
-                    if ( pa < 0 )
-                    {
-                        pa = -pa;
-                    }
-
-                    var pb = p - b;
-
-                    if ( pb < 0 )
-                    {
-                        pb = -pb;
-                    }
-
-                    var pc = p - c;
-
-                    if ( pc < 0 )
-                    {
-                        pc = -pc;
-                    }
-
-                    if ( ( pa <= pb ) && ( pa <= pc ) )
-                    {
-                        c = a;
-                    }
-                    else if ( pb <= pc )
-                    {
-                        c = b;
-                    }
-
-                    lineOut[ x ] = ( byte ) ( curLine[ x ] - c );
-                }
-
-                deflaterOutput.WriteByte( PAETH_FILTER );
-                deflaterOutput.Write( lineOut, 0, lineLen );
-
-                ( curLine, prevLine ) = ( prevLine, curLine );
-            }
-
-            pixmap.ByteBuffer.Position = oldPosition;
-
-            deflaterOutput.Finish();
-            _buffer.EndChunk( dataOutput );
-
-            _buffer.Write( IEND );
-            _buffer.EndChunk( dataOutput );
-
-            output.Flush();
+//TODO:
+//            Logger.CheckPoint();
+//            
+//            var deflaterOutput = new DeflaterOutputStream( output /*_buffer*/, _deflater );
+//            var dataOutput     = new BinaryWriter( output );
+//
+//            dataOutput.Write( _signature );
+//
+//            _buffer.Write( IHDR );
+//            _buffer.Write( pixmap.Width );
+//            _buffer.Write( pixmap.Height );       // 
+//            _buffer.Write( 8 );                   // 8 bits per component.
+//            _buffer.Write( COLOR_ARGB );          // 
+//            _buffer.Write( COMPRESSION_DEFLATE ); // 
+//            _buffer.Write( FILTER_NONE );
+//            _buffer.Write( INTERLACE_NONE );
+//            _buffer.EndChunk( dataOutput );
+//            _buffer.Write( IDAT );
+//
+//            _deflater.Reset();
+//
+//            var lineLen = pixmap.Width * 4;
+//
+//            byte[] lineOut;
+//            byte[] curLine;
+//            byte[] prevLine;
+//
+//            if ( _lineOutBytes == null )
+//            {
+//                _lineOutBytes  = new ByteArray( lineLen );
+//                _curLineBytes  = new ByteArray( lineLen );
+//                _prevLineBytes = new ByteArray( lineLen );
+//
+//                lineOut  = new byte[ lineLen ];
+//                curLine  = new byte[ lineLen ];
+//                prevLine = new byte[ lineLen ];
+//            }
+//            else
+//            {
+//                _lineOutBytes.EnsureCapacity( lineLen );
+//                _curLineBytes!.EnsureCapacity( lineLen );
+//                _prevLineBytes!.EnsureCapacity( lineLen );
+//
+//                lineOut  = _lineOutBytes.ToArray();
+//                curLine  = _curLineBytes.ToArray();
+//                prevLine = _prevLineBytes.ToArray();
+//
+//                Array.Clear( prevLine, 0, _lastLineLen );
+//            }
+//
+//            _lastLineLen = lineLen;
+//
+//            var oldPosition = pixmap.ByteBuffer.Position;
+//            var isRgba8888  = pixmap.Format == Pixmap.ColorFormat.RGBA8888;
+//
+//            for ( int y = 0, h = pixmap.Height; y < h; y++ )
+//            {
+//                var py = FlipY ? h - y - 1 : y;
+//
+//                if ( isRgba8888 )
+//                {
+//                    pixmap.ByteBuffer.Position = py * lineLen;
+//                    pixmap.ByteBuffer.Get( curLine, 0, lineLen );
+//                }
+//                else
+//                {
+//                    for ( int px = 0, x = 0; px < pixmap.Width; px++ )
+//                    {
+//                        var pixel = pixmap.GetPixel( px, py );
+//
+//                        curLine[ x++ ] = ( byte ) ( ( pixel >> 24 ) & 0xff );
+//                        curLine[ x++ ] = ( byte ) ( ( pixel >> 16 ) & 0xff );
+//                        curLine[ x++ ] = ( byte ) ( ( pixel >> 8 ) & 0xff );
+//                        curLine[ x++ ] = ( byte ) ( pixel & 0xff );
+//                    }
+//                }
+//
+//                lineOut[ 0 ] = ( byte ) ( curLine[ 0 ] - prevLine[ 0 ] );
+//                lineOut[ 1 ] = ( byte ) ( curLine[ 1 ] - prevLine[ 1 ] );
+//                lineOut[ 2 ] = ( byte ) ( curLine[ 2 ] - prevLine[ 2 ] );
+//                lineOut[ 3 ] = ( byte ) ( curLine[ 3 ] - prevLine[ 3 ] );
+//
+//                for ( var x = 4; x < lineLen; x++ )
+//                {
+//                    var a  = curLine[ x - 4 ] & 0xff;
+//                    var b  = prevLine[ x ] & 0xff;
+//                    var c  = prevLine[ x - 4 ] & 0xff;
+//                    var p  = ( a + b ) - c;
+//                    var pa = p - a;
+//
+//                    if ( pa < 0 )
+//                    {
+//                        pa = -pa;
+//                    }
+//
+//                    var pb = p - b;
+//
+//                    if ( pb < 0 )
+//                    {
+//                        pb = -pb;
+//                    }
+//
+//                    var pc = p - c;
+//
+//                    if ( pc < 0 )
+//                    {
+//                        pc = -pc;
+//                    }
+//
+//                    if ( ( pa <= pb ) && ( pa <= pc ) )
+//                    {
+//                        c = a;
+//                    }
+//                    else if ( pb <= pc )
+//                    {
+//                        c = b;
+//                    }
+//
+//                    lineOut[ x ] = ( byte ) ( curLine[ x ] - c );
+//                }
+//
+//                deflaterOutput.WriteByte( PAETH_FILTER );
+//                deflaterOutput.Write( lineOut, 0, lineLen );
+//
+//                ( curLine, prevLine ) = ( prevLine, curLine );
+//            }
+//
+//            pixmap.ByteBuffer.Position = oldPosition;
+//
+//            deflaterOutput.Finish();
+//            _buffer.EndChunk( dataOutput );
+//
+//            _buffer.Write( IEND );
+//            _buffer.EndChunk( dataOutput );
+//
+//            output.Flush();
         }
 
         // --------------------------------------------------------------------

@@ -37,16 +37,46 @@ public class TextureWrap
         Repeat
     }
 
-    public readonly static TextureWrap MirroredRepeat = new( "MirroredRepeat", InnerEnum.MirroredRepeat, IGL.GL_MIRRORED_REPEAT );
-    public readonly static TextureWrap ClampToEdge    = new( "ClampToEdge", InnerEnum.ClampToEdge, IGL.GL_CLAMP_TO_EDGE );
-    public readonly static TextureWrap Repeat         = new( "Repeat", InnerEnum.Repeat, IGL.GL_REPEAT );
+    // ------------------------------------------------------------------------
+
+    public readonly static TextureWrap MirroredRepeat = new
+        (
+         "MirroredRepeat",
+         InnerEnum.MirroredRepeat,
+         IGL.GL_MIRRORED_REPEAT
+        );
+
+    public readonly static TextureWrap ClampToEdge = new
+        (
+         "ClampToEdge",
+         InnerEnum.ClampToEdge,
+         IGL.GL_CLAMP_TO_EDGE
+        );
+
+    public readonly static TextureWrap Repeat = new
+        (
+         "Repeat",
+         InnerEnum.Repeat,
+         IGL.GL_REPEAT
+        );
+
+    // ------------------------------------------------------------------------
+
+    public int GLEnum       { get; }
+    public int OrdinalValue { get; set; }
+
+    // ------------------------------------------------------------------------
+
+    public readonly InnerEnum InnerEnumValue;
+
+    // ------------------------------------------------------------------------
 
     private readonly static List< TextureWrap > _valueList = new();
 
     private static   int    _nextOrdinal = 0;
     private readonly string _nameValue;
 
-    public readonly InnerEnum InnerEnumValue;
+    // ------------------------------------------------------------------------
 
     static TextureWrap()
     {
@@ -55,6 +85,12 @@ public class TextureWrap
         _valueList.Add( Repeat );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="innerEnum"></param>
+    /// <param name="glEnum"></param>
     public TextureWrap( string name, InnerEnum innerEnum, int glEnum )
     {
         GLEnum = glEnum;
@@ -64,14 +100,21 @@ public class TextureWrap
         InnerEnumValue = innerEnum;
     }
 
-    public int GLEnum       { get; }
-    public int OrdinalValue { get; set; }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public static TextureWrap[] Values()
     {
         return _valueList.ToArray();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public static TextureWrap ValueOf( string name )
     {
         foreach ( var enumInstance in _valueList )

@@ -41,9 +41,16 @@ public class TextureFilter
 
     // ------------------------------------------------------------------------
 
-    private readonly static List< TextureFilter > _valueList = new();
+    public int GLEnum  { get; }
+    public int Ordinal { get; set; }
 
-    private static int _nextOrdinal = 0;
+    // ------------------------------------------------------------------------
+
+    private readonly static List< TextureFilter > _valueList = new();
+    private readonly        string                _nameValue;
+    private static          int                   _nextOrdinal = 0;
+
+    internal readonly InnerEnum InnerEnumValue;
 
     // ------------------------------------------------------------------------
 
@@ -99,10 +106,7 @@ public class TextureFilter
                                                                    InnerEnum.MipMapLinearLinear,
                                                                    IGL.GL_LINEAR_MIPMAP_LINEAR );
 
-    private readonly string _nameValue;
-
-    internal readonly InnerEnum InnerEnumValue;
-
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     static TextureFilter()
@@ -127,9 +131,6 @@ public class TextureFilter
 
     // ------------------------------------------------------------------------
 
-    public int GLEnum  { get; }
-    public int Ordinal { get; set; }
-
     public bool IsMipMap()
     {
         return ( GLEnum != IGL.GL_NEAREST ) && ( GLEnum != IGL.GL_LINEAR );
@@ -138,12 +139,6 @@ public class TextureFilter
     public static TextureFilter[] Values()
     {
         return _valueList.ToArray();
-    }
-
-    /// <inheritdoc />
-    public override string ToString()
-    {
-        return _nameValue;
     }
 
     public static TextureFilter ValueOf( string name )
@@ -157,5 +152,11 @@ public class TextureFilter
         }
 
         throw new ArgumentException( name );
+    }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return _nameValue;
     }
 }

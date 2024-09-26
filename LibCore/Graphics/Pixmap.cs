@@ -71,10 +71,12 @@ public class Pixmap : IDisposable
     {
         Logger.CheckPoint();
 
-        PixmapData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DPixmapFormat( format ) );
+        PixmapData = new Gdx2DPixmap( width, height, PixmapFormat.ToGdx2DFormat( format ) );
 
         SetColor( Graphics.Color.Red );
         FillWithCurrentColor();
+
+        Debug();
     }
 
     /// <summary>
@@ -143,7 +145,7 @@ public class Pixmap : IDisposable
             var data = File.ReadAllBytes( file.FullName );
 
             PixmapData = new Gdx2DPixmap( data, 0, data.Length, 0 );
-            
+
             Debug();
         }
         catch ( Exception e )
@@ -227,6 +229,11 @@ public class Pixmap : IDisposable
         set => PixmapData.PixmapBuffer = value;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public byte[] PixelData => PixmapData.PixmapDef.Pixels;
+    
     /// <summary>
     /// Downloads an image from http(s) url and passes it as a Pixmap to the
     /// specified <see cref="IDownloadPixmapResponseListener"/>.
@@ -445,14 +452,7 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Returns the <see cref="ColorFormat"/> of this Pixmap.
     /// </summary>
-    public Pixmap.ColorFormat Format => PixmapFormat.FromGdx2DPixmapFormat( ( int ) PixmapData.Format );
-//    {
-//        get
-//            => PixmapFormat.FromGdx2DPixmapFormat( _format != 0
-//                                                       ? _format
-//                                                       : PixmapFormat.GDX_2D_FORMAT_RGB888 );
-//        set => _format = PixmapFormat.ToGdx2DPixmapFormat( value );
-//    }
+    public Pixmap.ColorFormat Format => PixmapFormat.ToPixmapColorFormat( ( int ) PixmapData.Format );
 
     /// <summary>
     /// Creates a Pixmap from a part of the current framebuffer.
@@ -468,14 +468,14 @@ public class Pixmap : IDisposable
 
         Pixmap pixmap = new( width, height, Pixmap.ColorFormat.RGBA8888 );
 
-        fixed ( void* ptr = &pixmap.ByteBuffer.BackingArray()[ 0 ] )
+        fixed ( void* ptr = &pixmap.PixelData[ 0 ] )
         {
             Gdx.GL.glReadPixels( x, y, width, height, IGL.GL_RGBA, IGL.GL_UNSIGNED_BYTE, ptr );
         }
 
         return pixmap;
     }
-    
+
     public static void SaveToFile( FileInfo file, Pixmap pixmap )
     {
         try
@@ -486,7 +486,7 @@ public class Pixmap : IDisposable
             {
                 File.OpenWrite( file.FullName );
             }
-            
+
             PixmapIO.WritePNG( file, pixmap );
 
             Logger.Debug( "Pixmap saved successfully." );
@@ -584,6 +584,7 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Blending functions to be set with <see cref="Pixmap.Blending"/>.
     /// </summary>
+    [PublicAPI]
     public enum BlendTypes
     {
         None,
@@ -593,6 +594,7 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Filters to be used with <see cref="DrawPixmap(Pixmap, int, int, int, int, int, int, int, int)"/>.
     /// </summary>
+    [PublicAPI]
     public enum Filter
     {
         NearestNeighbour,
@@ -602,16 +604,20 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Available Pixmap pixel formats.
     /// </summary>
+    [PublicAPI]
     public enum ColorFormat
     {
         // ----------
+        Dummy,
+
+        // ----------
         Alpha,
-        Intensity,
         LuminanceAlpha,
-        RGB565,
-        RGBA4444,
         RGB888,
         RGBA8888,
+        RGB565,
+        RGBA4444,
+        Intensity,
 
         // ----------
         Default = RGBA8888
@@ -624,9 +630,19 @@ public class Pixmap : IDisposable
 
     public void Debug()
     {
-        Logger.Debug( $"Width: {Width}, Height: {Height}" );
-        Logger.Debug( $"Format: {Format}" );
-        Logger.Debug( $"Color: {Color.R}, {Color.G}, {Color.B}, {Color.A}" );
+        Logger.Debug( $"Width : {Width}, Height: {Height}" );
+        Logger.Debug( $"Format: {Format}:" +
+                      $"{PixmapFormat.ToPixmapColorFormat( ( int ) PixmapData.PixmapDef.Format )}:" +
+                      $"{PixmapFormat.GetFormatString( PixmapFormat.ToGdx2DFormat( Format ) )}" );
+        Logger.Debug( $"Color : {Color.R}, {Color.G}, {Color.B}, {Color.A}" );
+
+        var a = PixmapData.PixmapDef.Pixels;
+
+        for ( var i = 0; i < 100; i += 10 )
+        {
+            Logger.Debug( $"{a[ i + 0 ]},{a[ i + 1 ]},{a[ i + 2 ]},{a[ i + 3 ]},{a[ i + 4 ]}," +
+                          $"{a[ i + 5 ]},{a[ i + 6 ]},{a[ i + 7 ]},{a[ i + 8 ]},{a[ i + 9 ]}" );
+        }
     }
 }
 

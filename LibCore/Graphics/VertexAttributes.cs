@@ -28,7 +28,7 @@ namespace LughSharp.LibCore.Graphics;
 [PublicAPI]
 public class VertexAttributes
 {
-    [PublicAPI]
+    [PublicAPI, StructLayout( LayoutKind.Sequential )]
     public struct Usage
     {
         public const int POSITION            = 1;
@@ -254,6 +254,11 @@ public class VertexAttributes
         return ( int ) ( result ^ ( result >> 32 ) );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="o"></param>
+    /// <returns></returns>
     public int CompareTo( VertexAttributes o )
     {
         if ( _attributes.Length != o._attributes.Length )

@@ -257,7 +257,7 @@ public class Texture : GLTexture, IManageable
                                 pixmap.Height,
                                 pixmap.GLFormat,
                                 pixmap.GLType,
-                                pixmap.ByteBuffer.BackingArray() );
+                                pixmap.PixelData );
     }
 
     /// <summary>

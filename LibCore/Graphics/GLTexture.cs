@@ -429,7 +429,7 @@ public abstract class GLTexture : IDisposable
         }
         else
         {
-            var pixels = pixmap.ByteBuffer;
+//            var pixels = pixmap.ByteBuffer;
 
             Gdx.GL.glTexImage2D( target,
                                  miplevel,
@@ -439,9 +439,9 @@ public abstract class GLTexture : IDisposable
                                  border: 0,
                                  pixmap.GLFormat,
                                  pixmap.GLType,
-                                 pixels.BackingArray() );
+                                 pixmap.PixelData );
 
-            pixmap.ByteBuffer = pixels;
+//            pixmap.ByteBuffer = pixels;
         }
 
         if ( disposePixmap )

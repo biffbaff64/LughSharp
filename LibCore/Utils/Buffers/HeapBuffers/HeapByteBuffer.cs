@@ -31,6 +31,11 @@ namespace LughSharp.LibCore.Utils.Buffers.HeapBuffers;
 [PublicAPI]
 public class HeapByteBuffer : ByteBuffer
 {
+    public HeapByteBuffer()
+        : base( -1, 0, 0, 0 )
+    {
+    }
+    
     /// <summary>
     /// Creates a new HeapByteBuffer with the given limit and  initial capacity. 
     /// </summary>

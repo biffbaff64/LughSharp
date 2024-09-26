@@ -253,6 +253,9 @@ public class VertexAttribute
     /// </summary>
     public override bool Equals( object? obj )
     {
+        // Keeping this method body with this layout because converting
+        // this to a 'return' statement made the code look less readable.
+        // I may revisit this at some point.
         if ( obj is not VertexAttribute attribute )
         {
             return false;
