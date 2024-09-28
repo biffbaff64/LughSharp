@@ -429,7 +429,15 @@ public abstract class GLTexture : IDisposable
         }
         else
         {
-//            var pixels = pixmap.ByteBuffer;
+            Logger.CheckPoint();
+            Logger.Debug( $"target: {target}" );
+            Logger.Debug( $"mipLevel: {miplevel}" );
+            Logger.Debug( $"pixmap.GLInternalFormat: {pixmap.GLInternalFormat}" );
+            Logger.Debug( $"pixmap.Width: {pixmap.Width}" );
+            Logger.Debug( $"pixmap.Height: {pixmap.Height}" );
+            Logger.Debug( $"pixmap.GLFormat: {pixmap.GLFormat}" );
+            Logger.Debug( $"pixmap.GLType: {pixmap.GLType}" );
+            Logger.Debug( $"pixmap.PixelData.Length: {pixmap.PixelData.Length}" );
 
             Gdx.GL.glTexImage2D( target,
                                  miplevel,
@@ -440,8 +448,6 @@ public abstract class GLTexture : IDisposable
                                  pixmap.GLFormat,
                                  pixmap.GLType,
                                  pixmap.PixelData );
-
-//            pixmap.ByteBuffer = pixels;
         }
 
         if ( disposePixmap )

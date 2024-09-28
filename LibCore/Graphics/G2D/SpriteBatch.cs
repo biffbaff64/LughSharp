@@ -248,7 +248,7 @@ public class SpriteBatch : IBatch
     }
 
     // ------------------------------------------------------------------------
-    
+
     #region Drawing methods
 
     public virtual void Draw( Texture texture,
@@ -583,7 +583,7 @@ public class SpriteBatch : IBatch
         const float U2 = 1;
         const float V2 = 0;
 
-        vertices[ this.Idx ]     = locX;
+        vertices[ this.Idx + 0 ] = locX;
         vertices[ this.Idx + 1 ] = locY;
         vertices[ this.Idx + 2 ] = this.PackedColor;
         vertices[ this.Idx + 3 ] = U;

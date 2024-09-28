@@ -30,45 +30,44 @@ public partial class Gdx2DPixmap
     /// Clear the pd defined in the supplied <see cref="PixmapDataType"/>,
     /// setting it to the supplied Color.
     /// </summary>
-    /// <param name="pd"> The NativePixmapDef. </param>
     /// <param name="color"> The Color. </param>
-    public void Clear( PixmapDataType pd, Color color )
+    public void Clear( Color color )
     {
-        Logger.CheckPoint();
+        var size = ( uint ) ( _pixmapDataType.Width
+                            * _pixmapDataType.Height
+                            * PixmapFormat.Gdx2dBytesPerPixel( ( int ) _pixmapDataType.Format ) );
 
-        var size = ( uint ) ( pd.Width * pd.Height * PixmapFormat.Gdx2dBytesPerPixel( ( int ) pd.Format ) );
-
-        Logger.Debug( $"size: {size}, color: {color.R}, {color.G}, {color.B}, {color.A}" );
-
-        switch ( pd.Format )
+        switch ( _pixmapDataType.Format )
         {
             case PixmapFormat.GDX_2D_FORMAT_ALPHA:
-                clear_alpha( pd, color, size );
+                clear_alpha( _pixmapDataType, color, size );
                 break;
 
             case PixmapFormat.GDX_2D_FORMAT_LUMINANCE_ALPHA:
-                clear_luminance_alpha( pd, color, size );
+                clear_luminance_alpha( _pixmapDataType, color, size );
                 break;
 
             case PixmapFormat.GDX_2D_FORMAT_RGB888:
-                clear_RGB888( pd, color, size );
+                clear_RGB888( _pixmapDataType, color, size );
                 break;
 
             case PixmapFormat.GDX_2D_FORMAT_RGBA8888:
-                clear_RGBA8888( pd, color, size );
+                clear_RGBA8888( _pixmapDataType, color, size );
                 break;
 
             case PixmapFormat.GDX_2D_FORMAT_RGB565:
-                clear_RGB565( pd, color, size );
+                clear_RGB565( _pixmapDataType, color, size );
                 break;
 
             case PixmapFormat.GDX_2D_FORMAT_RGBA4444:
-                clear_RGBA4444( pd, color, size );
+                clear_RGBA4444( _pixmapDataType, color, size );
                 break;
 
             default:
                 break;
         }
+
+        Array.Copy( _pixmapDataType.Pixels, PixmapBuffer.Hb!, _pixmapDataType.Pixels.Length );
     }
 
     // ------------------------------------------------------------------------
@@ -95,55 +94,34 @@ public partial class Gdx2DPixmap
 
     internal void clear_RGB888( PixmapDataType pd, Color color, uint size )
     {
-//        int            pixels = pixmap->width * pixmap->height;
-//        unsigned char* ptr    = (unsigned char*)pixmap->pixels;
-//        unsigned char  r      = (col & 0xff0000) >> 16;
-//        unsigned char  g      = (col & 0xff00) >> 8;
-//        unsigned char  b      = (col & 0xff);
-//
-//        for (; pixels > 0; pixels--)
-//        {
-//            *ptr = r;
-//            ptr++;
-//            *ptr = g;
-//            ptr++;
-//            *ptr = b;
-//            ptr++;
-//        }
+        var col = Color.RGB888( color );
+        var b   = ( byte ) ( ( col & 0x0000ff00 ) >> 8 );
+        var g   = ( byte ) ( ( col & 0x00ff0000 ) >> 16 );
+        var r   = ( byte ) ( ( col & 0xff000000 ) >> 24 );
+
+        for ( var pixel = 0; pixel < size; )
+        {
+            pd.Pixels[ pixel++ ] = b;
+            pd.Pixels[ pixel++ ] = g;
+            pd.Pixels[ pixel++ ] = r;
+        }
     }
 
     internal void clear_RGBA8888( PixmapDataType pd, Color color, uint size )
     {
-//        int           pixels = pixmap->width * pixmap->height;
-//        uint32_t*     ptr    = (uint32_t*)pixmap->pixels;
-//        unsigned char r      = (col & 0xff000000) >> 24;
-//        unsigned char g      = (col & 0xff0000) >> 16;
-//        unsigned char b      = (col & 0xff00) >> 8;
-//        unsigned char a      = (col & 0xff);
-//        col = (a << 24) | (b << 16) | (g << 8) | r;
-//
-//        for (; pixels > 0; pixels--)
-//        {
-//            *ptr = col;
-//            ptr++;
-//        }
+        var col  = Color.RGBA8888( color );
+        var a    = ( byte ) ( ( col & 0x000000ff ) );
+        var b    = ( byte ) ( ( col & 0x0000ff00 ) >> 8 );
+        var g    = ( byte ) ( ( col & 0x00ff0000 ) >> 16 );
+        var r    = ( byte ) ( ( col & 0xff000000 ) >> 24 );
 
-//        var r = ( color.ToIntBits() & 0xff000000 ) >> 24;
-//        var g = ( color.ToIntBits() & 0x00ff0000 ) >> 16;
-//        var b = ( color.ToIntBits() & 0x0000ff00 ) >> 8;
-//        var a = ( color.ToIntBits() & 0x000000ff );
-
-//        var col = ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
-
-        var col = ToFormat( PixmapFormat.GDX_2D_FORMAT_RGB888, Color.RGBA8888( color ) );
-
-        Logger.Debug( $"col: {col}"  );
-        Logger.Debug( $"byte 0: {( col & 0x000000ff )}" );
-        Logger.Debug( $"byte 1: {( col & 0x0000ff00 ) >> 8}" );
-        Logger.Debug( $"byte 2: {( col & 0x00ff0000 ) >> 16}" );
-        Logger.Debug( $"byte 3: {( col & 0xff000000 ) >> 24}" );
-
-        pd.Pixels = Enumerable.Repeat( ( byte ) 255, ( int ) size ).ToArray();
+        for ( var pixel = 0; pixel < size; )
+        {
+            pd.Pixels[ pixel++ ] = a;
+            pd.Pixels[ pixel++ ] = b;
+            pd.Pixels[ pixel++ ] = g;
+            pd.Pixels[ pixel++ ] = r;
+        }
     }
 
     internal void clear_RGB565( PixmapDataType pd, Color color, uint size )
@@ -157,6 +135,8 @@ public partial class Gdx2DPixmap
 //            *ptr = l;
 //            ptr++;
 //        }
+        
+        var col  = Color.RGB565( color );
     }
 
     internal void clear_RGBA4444( PixmapDataType pd, Color color, uint size )
@@ -183,6 +163,8 @@ public partial class Gdx2DPixmap
             }
         }
 */
+        
+        var col  = Color.RGBA4444( color );
     }
 
     // ------------------------------------------------------------------------

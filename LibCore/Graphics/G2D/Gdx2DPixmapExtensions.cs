@@ -33,17 +33,24 @@ public partial class Gdx2DPixmap
     /// <param name="x"> X co-ordinate. </param>
     /// <param name="y"> Y co-ordinate. </param>
     /// <returns></returns>
-    public int GetPixel( PixmapDataType pd, int x, int y )
+    public int GetPixel( int x, int y )
     {
-        return gdx2d_get_pixel( pd, x, y );
+        return gdx2d_get_pixel( _pixmapDataType, x, y );
 
         [DllImport( "lib/gdx2d.dll" )]
         static extern int gdx2d_get_pixel( PixmapDataType pd, int x, int y );
     }
 
-    public void SetPixel( PixmapDataType pd, int x, int y, Color color )
+    /// <summary>
+    /// Set the pixel at the given coordinates.
+    /// </summary>
+    /// <param name="pd"> The <see cref="PixmapDataType"/> holding the pixmap info. </param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="color"></param>
+    public void SetPixel( int x, int y, Color color )
     {
-        gdx2d_set_pixel( pd, x, y, color.ToIntBits() );
+        gdx2d_set_pixel( _pixmapDataType, x, y, color.ToIntBits() );
 
         return;
 
@@ -51,9 +58,17 @@ public partial class Gdx2DPixmap
         static extern void gdx2d_set_pixel( PixmapDataType pd, int x, int y, uint color );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="x2"></param>
+    /// <param name="y2"></param>
+    /// <param name="color"></param>
     public void DrawLine( int x, int y, int x2, int y2, Color color )
     {
-        gdx2d_draw_line( PixmapDef, x, y, x2, y2, color.ToIntBits() );
+        gdx2d_draw_line( _pixmapDataType, x, y, x2, y2, color.ToIntBits() );
 
         return;
 
@@ -61,9 +76,17 @@ public partial class Gdx2DPixmap
         static extern void gdx2d_draw_line( PixmapDataType pd, int x1, int y1, int x2, int y2, uint color );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="color"></param>
     public void DrawRect( int x, int y, uint width, uint height, Color color )
     {
-        gdx2d_draw_rect( PixmapDef, x, y, width, height, color.ToIntBits() );
+        gdx2d_draw_rect( _pixmapDataType, x, y, width, height, color.ToIntBits() );
 
         return;
 
@@ -71,9 +94,16 @@ public partial class Gdx2DPixmap
         static extern void gdx2d_draw_rect( PixmapDataType pd, int x, int y, uint width, uint height, uint color );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="radius"></param>
+    /// <param name="color"></param>
     public void DrawCircle( int x, int y, uint radius, Color color )
     {
-        gdx2d_draw_circle( PixmapDef, x, y, radius, color.ToIntBits() );
+        gdx2d_draw_circle( _pixmapDataType, x, y, radius, color.ToIntBits() );
 
         return;
 
@@ -81,9 +111,17 @@ public partial class Gdx2DPixmap
         static extern void gdx2d_draw_circle( PixmapDataType pd, int x, int y, uint radius, uint color );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="color"></param>
     public void FillRect( int x, int y, uint width, uint height, Color color )
     {
-        gdx2d_fill_rect( PixmapDef, x, y, width, height, color.ToIntBits() );
+        gdx2d_fill_rect( _pixmapDataType, x, y, width, height, color.ToIntBits() );
 
         return;
 
@@ -91,9 +129,16 @@ public partial class Gdx2DPixmap
         static extern void gdx2d_fill_rect( PixmapDataType pd, int x, int y, uint width, uint height, uint color );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="radius"></param>
+    /// <param name="color"></param>
     public void FillCircle( int x, int y, uint radius, Color color )
     {
-        gdx2d_fill_circle( PixmapDef, x, y, radius, color.ToIntBits() );
+        gdx2d_fill_circle( _pixmapDataType, x, y, radius, color.ToIntBits() );
 
         return;
 
@@ -101,9 +146,19 @@ public partial class Gdx2DPixmap
         static extern void gdx2d_fill_circle( PixmapDataType pd, int x, int y, uint radius, uint color );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="x1"></param>
+    /// <param name="y1"></param>
+    /// <param name="x2"></param>
+    /// <param name="y2"></param>
+    /// <param name="x3"></param>
+    /// <param name="y3"></param>
+    /// <param name="color"></param>
     public void FillTriangle( int x1, int y1, int x2, int y2, int x3, int y3, Color color )
     {
-        gdx2d_fill_triangle( PixmapDef, x1, y1, x2, y2, x3, y3, color.ToIntBits() );
+        gdx2d_fill_triangle( _pixmapDataType, x1, y1, x2, y2, x3, y3, color.ToIntBits() );
 
         return;
 
@@ -111,9 +166,19 @@ public partial class Gdx2DPixmap
         static extern void gdx2d_fill_triangle( PixmapDataType pd, int x1, int y1, int x2, int y2, int x3, int y3, uint color );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="src"></param>
+    /// <param name="srcX"></param>
+    /// <param name="srcY"></param>
+    /// <param name="dstX"></param>
+    /// <param name="dstY"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
     public void DrawPixmap( Gdx2DPixmap src, int srcX, int srcY, int dstX, int dstY, int width, int height )
     {
-        gdx2d_draw_pixmap( src.PixmapDef, PixmapDef, srcX, srcY, width, height, dstX, dstY, width, height );
+        gdx2d_draw_pixmap( src._pixmapDataType, _pixmapDataType, srcX, srcY, width, height, dstX, dstY, width, height );
 
         return;
         
@@ -130,9 +195,21 @@ public partial class Gdx2DPixmap
                                               int dstHeight );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="src"></param>
+    /// <param name="srcX"></param>
+    /// <param name="srcY"></param>
+    /// <param name="dstX"></param>
+    /// <param name="srcWidth"></param>
+    /// <param name="srcHeight"></param>
+    /// <param name="dstY"></param>
+    /// <param name="dstWidth"></param>
+    /// <param name="dstHeight"></param>
     public void DrawPixmap( Gdx2DPixmap src, int srcX, int srcY, int dstX, int srcWidth, int srcHeight, int dstY, int dstWidth, int dstHeight )
     {
-        gdx2d_draw_pixmap( src.PixmapDef, PixmapDef, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
+        gdx2d_draw_pixmap( src._pixmapDataType, _pixmapDataType, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight );
 
         return;
         

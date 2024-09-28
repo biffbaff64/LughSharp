@@ -232,8 +232,8 @@ public class Pixmap : IDisposable
     /// <summary>
     /// 
     /// </summary>
-    public byte[] PixelData => PixmapData.PixmapDef.Pixels;
-    
+    public byte[] PixelData => PixmapData.PixmapBuffer.BackingArray();
+
     /// <summary>
     /// Downloads an image from http(s) url and passes it as a Pixmap to the
     /// specified <see cref="IDownloadPixmapResponseListener"/>.
@@ -272,7 +272,7 @@ public class Pixmap : IDisposable
     /// </summary>
     public void FillWithCurrentColor()
     {
-        PixmapData.Clear( PixmapData.PixmapDef, this.Color );
+        PixmapData.Clear( this.Color );
     }
 
     /// <summary>
@@ -425,7 +425,7 @@ public class Pixmap : IDisposable
     /// <returns> The pixel color in RGBA8888 format.  </returns>
     public int GetPixel( int x, int y )
     {
-        return PixmapData.GetPixel( PixmapData.PixmapDef, x, y );
+        return PixmapData.GetPixel( x, y );
     }
 
     /// <summary>
@@ -435,7 +435,7 @@ public class Pixmap : IDisposable
     /// <param name="y"> the y-coordinate </param>
     public void DrawPixel( int x, int y )
     {
-        PixmapData.SetPixel( PixmapData.PixmapDef, x, y, this.Color );
+        DrawPixel( x, y, this.Color );
     }
 
     /// <summary>
@@ -446,7 +446,7 @@ public class Pixmap : IDisposable
     /// <param name="color"> the color in RGBA8888 format. </param>
     public void DrawPixel( int x, int y, Color color )
     {
-        PixmapData.SetPixel( PixmapData.PixmapDef, x, y, color );
+        PixmapData.SetPixel( x, y, color );
     }
 
     /// <summary>
@@ -632,16 +632,18 @@ public class Pixmap : IDisposable
     {
         Logger.Debug( $"Width : {Width}, Height: {Height}" );
         Logger.Debug( $"Format: {Format}:" +
-                      $"{PixmapFormat.ToPixmapColorFormat( ( int ) PixmapData.PixmapDef.Format )}:" +
+                      $"{PixmapFormat.ToPixmapColorFormat( ( int ) PixmapData.Format )}:" +
                       $"{PixmapFormat.GetFormatString( PixmapFormat.ToGdx2DFormat( Format ) )}" );
         Logger.Debug( $"Color : {Color.R}, {Color.G}, {Color.B}, {Color.A}" );
 
-        var a = PixmapData.PixmapDef.Pixels;
+        var a = PixmapData.PixmapBuffer.BackingArray();
 
         for ( var i = 0; i < 100; i += 10 )
         {
-            Logger.Debug( $"{a[ i + 0 ]},{a[ i + 1 ]},{a[ i + 2 ]},{a[ i + 3 ]},{a[ i + 4 ]}," +
-                          $"{a[ i + 5 ]},{a[ i + 6 ]},{a[ i + 7 ]},{a[ i + 8 ]},{a[ i + 9 ]}" );
+            Logger.Debug( $"{a[ i + 0 ]},{a[ i + 1 ]},{a[ i + 2 ]},{a[ i + 3 ]},"
+                        + $"{a[ i + 4 ]},{a[ i + 5 ]},{a[ i + 6 ]},{a[ i + 7 ]},"
+                        + $"{a[ i + 8 ]},{a[ i + 9 ]},{a[ i + 10 ]},{a[ i + 11 ]},"
+                        + $"{a[ i + 12 ]},{a[ i + 13 ]},{a[ i + 14 ]},{a[ i + 15 ]}," );
         }
     }
 }

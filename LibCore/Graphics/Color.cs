@@ -41,12 +41,13 @@ public sealed class Color
     public readonly static Color White = new( 1, 1, 1, 1 );
     public readonly static Color Black = new( 0, 0, 0, 1 );
 
-    public readonly static Color LightGray  = new( 0xbfbfbfff );
-    public readonly static Color Gray       = new( 0x7f7f7fff );
-    public readonly static Color DarkGray   = new( 0x3f3f3fff );
+    public readonly static Color Gray      = new( 0x7f7f7fff );
+    public readonly static Color LightGray = new( 0xbfbfbfff );
+    public readonly static Color DarkGray  = new( 0x3f3f3fff );
+    public readonly static Color Slate     = new( 0x708090ff );
+
     public readonly static Color Navy       = new( 0, 0, 0.5f, 1 );
     public readonly static Color Royal      = new( 0x4169e1ff );
-    public readonly static Color Slate      = new( 0x708090ff );
     public readonly static Color Sky        = new( 0x87ceebff );
     public readonly static Color Cyan       = new( 0, 1, 1, 1 );
     public readonly static Color Teal       = new( 0, 0.5f, 0.5f, 1 );
@@ -148,6 +149,22 @@ public sealed class Color
     }
 
     /// <summary>
+    /// Sets this color's component values through an integer representation.
+    /// </summary>
+    /// <param name="rgba"> The integer representation. </param>
+    /// <returns> This color for chaining. </returns>
+    public Color Set( uint rgba )
+    {
+        var color = this;
+
+        RGBA8888ToColor( ref color, rgba );
+
+        Set( color.R, color.G, color.B, color.A );
+
+        return this;
+    }
+
+    /// <summary>
     /// Sets this colors components using the supplied r,g,b,a components.
     /// </summary>
     /// <param name="r"> Red component </param>
@@ -161,22 +178,6 @@ public sealed class Color
         G = g;
         B = b;
         A = a;
-
-        return this;
-    }
-
-    /// <summary>
-    /// Sets this color's component values through an integer representation.
-    /// </summary>
-    /// <param name="rgba"> The integer representation. </param>
-    /// <returns> This color for chaining. </returns>
-    public Color Set( uint rgba )
-    {
-        var color = this;
-
-        RGBA8888ToColor( ref color, rgba );
-
-        Set( color.R, color.G, color.B, color.A );
 
         return this;
     }
@@ -392,108 +393,6 @@ public sealed class Color
     }
 
     /// <summary>
-    /// Determines whether two <see cref="Color"/> objects are equal.
-    /// </summary>
-    /// <param name="c1">The first <see cref="Color"/> object to compare, or <see langword="null"/>.</param>
-    /// <param name="c2">The second object to compare, or <see langword="null"/>.</param>
-    /// <returns><see langword="true"/> if the two objects are equal; otherwise, <see langword="false"/>.</returns>
-    public static bool operator ==( Color? c1, object? c2 )
-    {
-        if ( c1 is null )
-        {
-            return c2 is null;
-        }
-
-        return c1.Equals( c2 );
-    }
-
-    /// <summary>
-    /// Determines whether two <see cref="Color"/> objects are not equal.
-    /// </summary>
-    /// <param name="c1"> The first <see cref="Color"/> object to compare, or null. </param>
-    /// <param name="c2"> The second object to compare, or null. </param>
-    /// <returns><b>true</b> if the two objects are not equal; otherwise, <b>false</b>.</returns>
-    public static bool operator !=( Color? c1, object? c2 )
-    {
-        return !( c1 == c2 );
-    }
-
-    /// <summary>
-    /// Converts a 16-bit RGB565 integer value to a Color object.
-    /// </summary>
-    /// <param name="color"> The Color object to assign the converted values to. </param>
-    /// <param name="value"> The 16-bit RGB565 integer value. </param>
-    public static void RGB565ToColor( ref Color color, uint value )
-    {
-        // Ensure the value is within the valid range for 16-bit RGB565
-        if ( value > 0xFFFF )
-        {
-            throw new ArgumentOutOfRangeException( nameof( value ),
-                                                   "Value must be a 16-bit integer." );
-        }
-
-        color.R = ( ( value & 0xF800 ) >> 11 ) / 31f;
-        color.G = ( ( value & 0x07E0 ) >> 5 ) / 63f;
-        color.B = ( value & 0x001F ) / 31f;
-    }
-
-    /// <summary>
-    /// Converts a 16-bit RGBA4444 integer value to a Color object.
-    /// </summary>
-    /// <param name="color"> The Color object to assign the converted values to. </param>
-    /// <param name="value"> The 16-bit RGBA4444 integer value. </param>
-    public static void RGBA4444ToColor( ref Color color, uint value )
-    {
-        color.R = ( ( value & 0xF000 ) >> 12 ) / 15f;
-        color.G = ( ( value & 0x0F00 ) >> 8 ) / 15f;
-        color.B = ( ( value & 0x00F0 ) >> 4 ) / 15f;
-        color.A = ( value & 0x000F ) / 15f;
-    }
-
-    /// <summary>
-    /// Converts a 32-bit RGBA8888 integer value to a Color object.
-    /// </summary>
-    /// <param name="color"> The Color object to assign the converted values to. </param>
-    /// <param name="value"> The 32-bit RGBA8888 integer value. </param>
-    public static void RGBA8888ToColor( ref Color color, uint value )
-    {
-        color.R = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
-        color.G = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
-        color.B = ( ( value & 0x0000ff00 ) >>> 8 ) / 255f;
-        color.A = ( value & 0x000000ff ) / 255f;
-    }
-
-    /// <summary>
-    /// Converts a 32-bit ARGB8888 integer value to a Color object.
-    /// </summary>
-    /// <param name="color"> The Color object to assign the converted values to. </param>
-    /// <param name="value"> The 32-bit ARGB8888 integer value. </param>
-    public static void ARGB8888ToColor( ref Color color, uint value )
-    {
-        color.A = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
-        color.R = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
-        color.G = ( ( value & 0x0000ff00 ) >>> 8 ) / 255f;
-        color.B = ( value & 0x000000ff ) / 255f;
-    }
-
-    /// <summary>
-    /// Sets the Color components using the specified float value in the format ABGR8888.
-    /// </summary>
-    /// <param name="color">The Color object to assign the converted values to.</param>
-    /// <param name="value">The float value representing the color in ABGR8888 format.</param>
-    public static void ABGR8888ToColor( ref Color color, float value )
-    {
-        // Convert the float value to an integer representing the color
-        var c = NumberUtils.FloatToIntColor( value );
-
-        // Extract and assign color components using bitwise operations
-        color.A = ( ( c & 0xff000000 ) >>> 24 ) / 255f;
-        color.B = ( ( c & 0x00ff0000 ) >>> 16 ) / 255f;
-        color.G = ( ( c & 0x0000ff00 ) >>> 8 ) / 255f;
-        color.R = ( c & 0x000000ff ) / 255f;
-    }
-
-    /// <summary>
     /// Converts the supplied color components to an <b>uint</b>.
     /// </summary>
     /// <param name="r"> Red component. </param>
@@ -656,6 +555,78 @@ public sealed class Color
     }
 
     /// <summary>
+    /// Packs the color components into a 32-bit integer with the format ABGR.
+    /// </summary>
+    /// <returns> the packed color as a 32-bit int. </returns>
+    public uint ToIntBits()
+    {
+        return ( ( uint ) ( 255 * A ) << 24 )
+             | ( ( uint ) ( 255 * B ) << 16 )
+             | ( ( uint ) ( 255 * G ) << 8 )
+             | ( uint ) ( 255 * R );
+    }
+
+    /// <summary>
+    /// Packs the color components into a 32-bit integer with the format RGBA.
+    /// </summary>
+    /// <returns> the packed color as a 32-bit int. </returns>
+    public uint ToIntBitsRGBA()
+    {
+        return ( ( uint ) ( 255 * R ) << 24 )
+             | ( ( uint ) ( 255 * G ) << 16 )
+             | ( ( uint ) ( 255 * B ) << 8 )
+             | ( uint ) ( 255 * A );
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region operators
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Determines whether two <see cref="Color"/> objects are equal.
+    /// </summary>
+    /// <param name="c1">The first <see cref="Color"/> object to compare, or <see langword="null"/>.</param>
+    /// <param name="c2">The second object to compare, or <see langword="null"/>.</param>
+    /// <returns><see langword="true"/> if the two objects are equal; otherwise, <see langword="false"/>.</returns>
+    public static bool operator ==( Color? c1, object? c2 )
+    {
+        if ( c1 is null )
+        {
+            return c2 is null;
+        }
+
+        return c1.Equals( c2 );
+    }
+
+    /// <summary>
+    /// Determines whether two <see cref="Color"/> objects are not equal.
+    /// </summary>
+    /// <param name="c1"> The first <see cref="Color"/> object to compare, or null. </param>
+    /// <param name="c2"> The second object to compare, or null. </param>
+    /// <returns><b>true</b> if the two objects are not equal; otherwise, <b>false</b>.</returns>
+    public static bool operator !=( Color? c1, object? c2 )
+    {
+        return !( c1 == c2 );
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #endregion operators
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region static methods
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    /// <summary>
     /// </summary>
     /// <param name="r"> Red component </param>
     /// <param name="g"> Green component </param>
@@ -704,30 +675,81 @@ public sealed class Color
     /// <summary>
     /// Convenience for frequently used <tt>White.ToFloatBits()</tt>
     /// </summary>
-    public readonly static float WhiteFloatBits = White.ToFloatBits();
+    public static float WhiteFloatBits => White.ToFloatBits();
 
     /// <summary>
-    /// Packs the color components into a 32-bit integer with the format ABGR.
+    /// Converts a 16-bit RGB565 integer value to a Color object.
     /// </summary>
-    /// <returns> the packed color as a 32-bit int. </returns>
-    public uint ToIntBits()
+    /// <param name="color"> The Color object to assign the converted values to. </param>
+    /// <param name="value"> The 16-bit RGB565 integer value. </param>
+    public static void RGB565ToColor( ref Color color, uint value )
     {
-        return ( ( uint ) ( 255 * A ) << 24 )
-             | ( ( uint ) ( 255 * B ) << 16 )
-             | ( ( uint ) ( 255 * G ) << 8 )
-             | ( uint ) ( 255 * R );
+        // Ensure the value is within the valid range for 16-bit RGB565
+        if ( value > 0xFFFF )
+        {
+            throw new ArgumentOutOfRangeException( nameof( value ),
+                                                   "Value must be a 16-bit integer." );
+        }
+
+        color.R = ( ( value & 0xF800 ) >> 11 ) / 31f;
+        color.G = ( ( value & 0x07E0 ) >> 5 ) / 63f;
+        color.B = ( value & 0x001F ) / 31f;
     }
 
     /// <summary>
-    /// Packs the color components into a 32-bit integer with the format RGBA.
+    /// Converts a 16-bit RGBA4444 integer value to a Color object.
     /// </summary>
-    /// <returns> the packed color as a 32-bit int. </returns>
-    public uint ToIntBitsRGBA()
+    /// <param name="color"> The Color object to assign the converted values to. </param>
+    /// <param name="value"> The 16-bit RGBA4444 integer value. </param>
+    public static void RGBA4444ToColor( ref Color color, uint value )
     {
-        return ( ( uint ) R << 24 )
-             | ( ( uint ) G << 16 )
-             | ( ( uint ) B << 8 )
-             | ( uint ) A;
+        color.R = ( ( value & 0xF000 ) >> 12 ) / 15f;
+        color.G = ( ( value & 0x0F00 ) >> 8 ) / 15f;
+        color.B = ( ( value & 0x00F0 ) >> 4 ) / 15f;
+        color.A = ( value & 0x000F ) / 15f;
+    }
+
+    /// <summary>
+    /// Converts a 32-bit RGBA8888 integer value to a Color object.
+    /// </summary>
+    /// <param name="color"> The Color object to assign the converted values to. </param>
+    /// <param name="value"> The 32-bit RGBA8888 integer value. </param>
+    public static void RGBA8888ToColor( ref Color color, uint value )
+    {
+        color.R = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
+        color.G = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
+        color.B = ( ( value & 0x0000ff00 ) >>> 8 ) / 255f;
+        color.A = ( value & 0x000000ff ) / 255f;
+    }
+
+    /// <summary>
+    /// Converts a 32-bit ARGB8888 integer value to a Color object.
+    /// </summary>
+    /// <param name="color"> The Color object to assign the converted values to. </param>
+    /// <param name="value"> The 32-bit ARGB8888 integer value. </param>
+    public static void ARGB8888ToColor( ref Color color, uint value )
+    {
+        color.A = ( ( value & 0xff000000 ) >>> 24 ) / 255f;
+        color.R = ( ( value & 0x00ff0000 ) >>> 16 ) / 255f;
+        color.G = ( ( value & 0x0000ff00 ) >>> 8 ) / 255f;
+        color.B = ( value & 0x000000ff ) / 255f;
+    }
+
+    /// <summary>
+    /// Sets the Color components using the specified float value in the format ABGR8888.
+    /// </summary>
+    /// <param name="color">The Color object to assign the converted values to.</param>
+    /// <param name="value">The float value representing the color in ABGR8888 format.</param>
+    public static void ABGR8888ToColor( ref Color color, float value )
+    {
+        // Convert the float value to an integer representing the color
+        var c = NumberUtils.FloatToIntColor( value );
+
+        // Extract and assign color components using bitwise operations
+        color.A = ( ( c & 0xff000000 ) >>> 24 ) / 255f;
+        color.B = ( ( c & 0x00ff0000 ) >>> 16 ) / 255f;
+        color.G = ( ( c & 0x0000ff00 ) >>> 8 ) / 255f;
+        color.R = ( c & 0x000000ff ) / 255f;
     }
 
     /// <summary>
@@ -1006,6 +1028,22 @@ public sealed class Color
              | ( uint ) ( color.B * 255 );
     }
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #endregion static methods
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    /// <summary>
+    /// Returns a string representation of the Color components RGBA.
+    /// </summary>
+    public string RGBAName()
+    {
+        return $"R:{R},G:{G},B:{B},A:{A}";
+    }
+
     /// <summary>
     /// Creates a copy of this <see cref="Color"/> object.
     /// </summary>
@@ -1045,11 +1083,5 @@ public sealed class Color
         result = ( 31 * result ) + ( DarkGray != 0F ? NumberUtils.FloatToIntBits( DarkGray.ToFloatBits() ) : 0 );
 
         return result;
-    }
-
-    //TODO:
-    public string GetName()
-    {
-        return string.Empty;
     }
 }

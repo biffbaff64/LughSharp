@@ -274,14 +274,14 @@ public class DesktopGLWindow : IDisposable
                 tmpPixmaps[ i ] = rgba;
             }
 
-//            GLFW.Image icon = new()
-//            {
-//                Width  = images[ i ].Width,
-//                Height = images[ i ].Height,
-//                Pixels = images[ i ].Pixels.BackingArray()
-//            };
+            GLFW.Image icon = new()
+            {
+                Width  = images[ i ].Width,
+                Height = images[ i ].Height,
+                Pixels = images[ i ].PixelData
+            };
             
-//            buffer.Add( icon );
+            buffer.Add( icon );
         }
 
         Glfw.SetWindowIcon( window, buffer.ToArray() );
