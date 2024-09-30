@@ -50,7 +50,7 @@ public partial class Gdx2DPixmap
     /// <param name="color"></param>
     public void SetPixel( int x, int y, Color color )
     {
-        gdx2d_set_pixel( _pixmapDataType, x, y, color.ToIntBits() );
+        gdx2d_set_pixel( _pixmapDataType, x, y, color.PackedColorABGR() );
 
         return;
 
@@ -68,7 +68,7 @@ public partial class Gdx2DPixmap
     /// <param name="color"></param>
     public void DrawLine( int x, int y, int x2, int y2, Color color )
     {
-        gdx2d_draw_line( _pixmapDataType, x, y, x2, y2, color.ToIntBits() );
+        gdx2d_draw_line( _pixmapDataType, x, y, x2, y2, color.PackedColorABGR() );
 
         return;
 
@@ -86,7 +86,7 @@ public partial class Gdx2DPixmap
     /// <param name="color"></param>
     public void DrawRect( int x, int y, uint width, uint height, Color color )
     {
-        gdx2d_draw_rect( _pixmapDataType, x, y, width, height, color.ToIntBits() );
+        gdx2d_draw_rect( _pixmapDataType, x, y, width, height, color.PackedColorABGR() );
 
         return;
 
@@ -103,7 +103,7 @@ public partial class Gdx2DPixmap
     /// <param name="color"></param>
     public void DrawCircle( int x, int y, uint radius, Color color )
     {
-        gdx2d_draw_circle( _pixmapDataType, x, y, radius, color.ToIntBits() );
+        gdx2d_draw_circle( _pixmapDataType, x, y, radius, color.PackedColorABGR() );
 
         return;
 
@@ -121,7 +121,7 @@ public partial class Gdx2DPixmap
     /// <param name="color"></param>
     public void FillRect( int x, int y, uint width, uint height, Color color )
     {
-        gdx2d_fill_rect( _pixmapDataType, x, y, width, height, color.ToIntBits() );
+        gdx2d_fill_rect( _pixmapDataType, x, y, width, height, color.PackedColorABGR() );
 
         return;
 
@@ -138,7 +138,7 @@ public partial class Gdx2DPixmap
     /// <param name="color"></param>
     public void FillCircle( int x, int y, uint radius, Color color )
     {
-        gdx2d_fill_circle( _pixmapDataType, x, y, radius, color.ToIntBits() );
+        gdx2d_fill_circle( _pixmapDataType, x, y, radius, color.PackedColorABGR() );
 
         return;
 
@@ -158,7 +158,7 @@ public partial class Gdx2DPixmap
     /// <param name="color"></param>
     public void FillTriangle( int x1, int y1, int x2, int y2, int x3, int y3, Color color )
     {
-        gdx2d_fill_triangle( _pixmapDataType, x1, y1, x2, y2, x3, y3, color.ToIntBits() );
+        gdx2d_fill_triangle( _pixmapDataType, x1, y1, x2, y2, x3, y3, color.PackedColorABGR() );
 
         return;
 

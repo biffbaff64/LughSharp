@@ -301,6 +301,33 @@ public class MathUtils
     /// <param name="min"></param>
     /// <param name="max"></param>
     /// <returns></returns>
+    public static byte ClampByte( byte value, byte min, byte max )
+    {
+        return Clamp( value, ( byte ) min, ( byte ) max );
+    }
+    
+    /// <summary>
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <returns></returns>
+    public static byte Clamp( byte value, byte min, byte max )
+    {
+        if ( value < min )
+        {
+            return min;
+        }
+        
+        return value > max ? max : value;
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <returns></returns>
     public static short Clamp( short value, short min, short max )
     {
         if ( value < min )

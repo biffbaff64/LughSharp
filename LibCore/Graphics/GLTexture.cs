@@ -439,6 +439,16 @@ public abstract class GLTexture : IDisposable
             Logger.Debug( $"pixmap.GLType: {pixmap.GLType}" );
             Logger.Debug( $"pixmap.PixelData.Length: {pixmap.PixelData.Length}" );
 
+            var a = pixmap.PixelData;
+
+            for ( var i = 0; i < 100; i += 10 )
+            {
+                Logger.Debug( $"{a[ i + 0 ]},{a[ i + 1 ]},{a[ i + 2 ]},{a[ i + 3 ]},"
+                            + $"{a[ i + 4 ]},{a[ i + 5 ]},{a[ i + 6 ]},{a[ i + 7 ]},"
+                            + $"{a[ i + 8 ]},{a[ i + 9 ]},{a[ i + 10 ]},{a[ i + 11 ]},"
+                            + $"{a[ i + 12 ]},{a[ i + 13 ]},{a[ i + 14 ]},{a[ i + 15 ]}," );
+            }
+            
             Gdx.GL.glTexImage2D( target,
                                  miplevel,
                                  pixmap.GLInternalFormat,

@@ -61,6 +61,25 @@ public class NumberUtils
     }
 
     /// <summary>
+    /// Converts a float value to its hexadecimal representation.
+    /// <example>
+    /// string hexValue = FloatToHex(-1.7014117E+38f);
+    /// Console.WriteLine(hexValue); // Outputs: FF7FFFFF
+    /// </example>
+    /// </summary>
+    /// <param name="value">The float value to convert.</param>
+    /// <returns>A string representing the hexadecimal value.</returns>
+    public static string FloatToHexString( float value )
+    {
+        // Convert float to its raw integer bits
+        var intBits = FloatToRawIntBits( value );
+
+        // Convert to hexadecimal string, ensuring it's 8 characters
+        // long with leading zeros if necessary
+        return intBits.ToString( "X8" );
+    }
+
+    /// <summary>
     /// Converts the given integer bit representation to its floating-point value.
     /// </summary>
     /// <param name="value"> The integer bit representation to convert. </param>
@@ -103,7 +122,7 @@ public class NumberUtils
     /// <returns> The floating-point color value represented by the integer bits. </returns>
     public static float UIntToFloatColor( uint value )
     {
-        return BitConverter.UInt32BitsToSingle( value );
+        return BitConverter.UInt32BitsToSingle( value & 0xffffffff );
     }
 
     /// <summary>
@@ -135,9 +154,9 @@ public class NumberUtils
     /// </returns>
     public static int? ParseInt( string? str )
     {
-        if ( int.TryParse( str, out var p ) )
+        if ( int.TryParse( str, out var parsedValue ) )
         {
-            return p;
+            return parsedValue;
         }
 
         return null;
@@ -153,9 +172,9 @@ public class NumberUtils
     /// </returns>
     public static float? ParseFloat( string? str )
     {
-        if ( float.TryParse( str, out var p ) )
+        if ( float.TryParse( str, out var parsedValue ) )
         {
-            return p;
+            return parsedValue;
         }
 
         return null;

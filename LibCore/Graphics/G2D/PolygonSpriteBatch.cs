@@ -246,7 +246,7 @@ public class PolygonSpriteBatch : IPolygonBatch
         _colorPacked = _color.ToFloatBits();
     }
 
-    public float PackedColor
+    public float ColorPacked
     {
         get => _colorPacked;
         set

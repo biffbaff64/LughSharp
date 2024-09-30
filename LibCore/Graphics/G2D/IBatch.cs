@@ -94,7 +94,7 @@ public interface IBatch : IDisposable
     /// <returns>
     /// the rendering color of this Batch in vertex format (alpha compressed to 0-254)
     /// </returns>
-    float PackedColor { get; set; }
+    float ColorPacked { get; set; }
 
     int BlendSrcFunc { get; }
 

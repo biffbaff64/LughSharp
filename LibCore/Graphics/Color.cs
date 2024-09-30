@@ -30,27 +30,25 @@ namespace LughSharp.LibCore.Graphics;
 /// All methods perform clamping on the internal values after execution.
 /// </summary>
 [PublicAPI]
-public sealed class Color
+public sealed class Color : ICloneable, IEquatable< Color >
 {
     #region colour values
 
-    public readonly static Color Red   = new( 1, 0, 0, 1 );
-    public readonly static Color Green = new( 0, 1, 0, 1 );
-    public readonly static Color Blue  = new( 0, 0, 1, 1 );
-    public readonly static Color Clear = new( 0, 0, 0, 0 );
-    public readonly static Color White = new( 1, 1, 1, 1 );
-    public readonly static Color Black = new( 0, 0, 0, 1 );
-
-    public readonly static Color Gray      = new( 0x7f7f7fff );
-    public readonly static Color LightGray = new( 0xbfbfbfff );
-    public readonly static Color DarkGray  = new( 0x3f3f3fff );
-    public readonly static Color Slate     = new( 0x708090ff );
-
-    public readonly static Color Navy       = new( 0, 0, 0.5f, 1 );
+    public readonly static Color Red        = new( 0xff0000ff );
+    public readonly static Color Green      = new( 0x00ff00ff );
+    public readonly static Color Blue       = new( 0x0000ff00 );
+    public readonly static Color Clear      = new( 0x00000000 );
+    public readonly static Color White      = new( 0xffffffff );
+    public readonly static Color Black      = new( 0x000000ff );
+    public readonly static Color Gray       = new( 0x7f7f7fff );
+    public readonly static Color LightGray  = new( 0xbfbfbfff );
+    public readonly static Color DarkGray   = new( 0x3f3f3fff );
+    public readonly static Color Slate      = new( 0x708090ff );
+    public readonly static Color Navy       = new( 0x000080ff );
     public readonly static Color Royal      = new( 0x4169e1ff );
     public readonly static Color Sky        = new( 0x87ceebff );
-    public readonly static Color Cyan       = new( 0, 1, 1, 1 );
-    public readonly static Color Teal       = new( 0, 0.5f, 0.5f, 1 );
+    public readonly static Color Cyan       = new( 0x00ffffff );
+    public readonly static Color Teal       = new( 0x007f7fff );
     public readonly static Color Chartreuse = new( 0x7fff00ff );
     public readonly static Color Lime       = new( 0x32cd32ff );
     public readonly static Color Forest     = new( 0x228b22ff );
@@ -66,13 +64,19 @@ public sealed class Color
     public readonly static Color Coral      = new( 0xff7f50ff );
     public readonly static Color Salmon     = new( 0xfa8072ff );
     public readonly static Color Pink       = new( 0xff69b4ff );
-    public readonly static Color Magenta    = new( 1, 0, 1, 1 );
+    public readonly static Color Magenta    = new( 0xff00ffff );
     public readonly static Color Purple     = new( 0xa020f0ff );
     public readonly static Color Violet     = new( 0xee82eeff );
     public readonly static Color Maroon     = new( 0xb03060ff );
 
+    /// <summary>
+    /// Convenience for frequently used <tt>White.ToFloatBits()</tt>
+    /// </summary>
+    public static float WhiteFloatBits => White.ToFloatBits();
+
     #endregion colour values
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     #region Colour Components
@@ -85,10 +89,14 @@ public sealed class Color
     #endregion Colour Components
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     private static Color _color = new();
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region constructors
 
     /// <summary>
     /// Constructor, sets all the components to 0.
@@ -104,12 +112,12 @@ public sealed class Color
     /// <param name="rgba8888"> An uint color value in RGBA8888 format. </param>
     public Color( uint rgba8888 )
     {
-        var r = ParseHexComponent( ( ( rgba8888 & 0xff000000 ) >> 24 ).ToString() );
-        var g = ParseHexComponent( ( ( rgba8888 & 0x00ff0000 ) >> 16 ).ToString() );
-        var b = ParseHexComponent( ( ( rgba8888 & 0x0000ff00 ) >> 8 ).ToString() );
-        var a = ParseHexComponent( ( rgba8888 & 0x000000ff ).ToString() );
+        this.R = ( rgba8888 & 0xff000000 ) >> 24;
+        this.G = ( rgba8888 & 0x00ff0000 ) >> 16;
+        this.B = ( rgba8888 & 0x0000ff00 ) >> 8;
+        this.A = ( rgba8888 & 0x000000ff );
 
-        Set( r, g, b, a );
+        Clamp();
     }
 
     /// <summary>
@@ -121,10 +129,10 @@ public sealed class Color
     /// <param name="a"> Alpha component </param>
     public Color( float r, float g, float b, float a )
     {
-        R = r;
-        G = g;
-        B = b;
-        A = a;
+        this.R = r;
+        this.G = g;
+        this.B = b;
+        this.A = a;
 
         Clamp();
     }
@@ -133,19 +141,26 @@ public sealed class Color
     /// Constructs a new color using the components from the supplied color.
     /// </summary>
     public Color( Color color )
+        : this( color.R, color.G, color.B, color.A )
     {
-        Set( color );
     }
 
+    #endregion constructors
+
+    // ------------------------------------------------------------------------
+
     /// <summary>
-    /// Sets this colors components using the components from the supplied colot.
+    /// Sets this colors components using the components from the supplied color.
     /// </summary>
     /// <returns> This Color for chaining. </returns>
     public Color Set( Color color )
     {
-        Set( color.R, color.G, color.B, color.A );
+        this.R = color.R;
+        this.G = color.G;
+        this.B = color.B;
+        this.A = color.A;
 
-        return this;
+        return Clamp();
     }
 
     /// <summary>
@@ -159,9 +174,12 @@ public sealed class Color
 
         RGBA8888ToColor( ref color, rgba );
 
-        Set( color.R, color.G, color.B, color.A );
+        this.R = color.R;
+        this.G = color.G;
+        this.B = color.B;
+        this.A = color.A;
 
-        return this;
+        return Clamp();
     }
 
     /// <summary>
@@ -174,12 +192,12 @@ public sealed class Color
     /// <returns> This Color for chaining. </returns>
     public Color Set( float r, float g, float b, float a )
     {
-        R = r;
-        G = g;
-        B = b;
-        A = a;
+        this.R = r;
+        this.G = g;
+        this.B = b;
+        this.A = a;
 
-        return this;
+        return Clamp();
     }
 
     /// <summary>
@@ -190,10 +208,10 @@ public sealed class Color
     /// <returns> This Color for chaining. </returns>
     public Color Mul( Color color )
     {
-        R *= color.R;
-        G *= color.G;
-        B *= color.B;
-        A *= color.A;
+        this.R *= color.R;
+        this.G *= color.G;
+        this.B *= color.B;
+        this.A *= color.A;
 
         return Clamp();
     }
@@ -204,10 +222,10 @@ public sealed class Color
     /// <returns> This Color for chaining. </returns>
     public Color Mul( float value )
     {
-        R *= value;
-        G *= value;
-        B *= value;
-        A *= value;
+        this.R *= value;
+        this.G *= value;
+        this.B *= value;
+        this.A *= value;
 
         return Clamp();
     }
@@ -223,10 +241,10 @@ public sealed class Color
     /// <returns>This Color for chaining.</returns>
     public Color Mul( float r, float g, float b, float a )
     {
-        R *= r;
-        G *= g;
-        B *= b;
-        A *= a;
+        this.R *= r;
+        this.G *= g;
+        this.B *= b;
+        this.A *= a;
 
         return Clamp();
     }
@@ -239,10 +257,10 @@ public sealed class Color
     /// <returns> This Color for chaining. </returns>
     public Color Add( Color color )
     {
-        R += color.R;
-        G += color.G;
-        B += color.B;
-        A += color.A;
+        this.R += color.R;
+        this.G += color.G;
+        this.B += color.B;
+        this.A += color.A;
 
         return Clamp();
     }
@@ -257,10 +275,10 @@ public sealed class Color
     /// <returns> This Color for chaining. </returns>
     public Color Add( float r, float g, float b, float a )
     {
-        R += r;
-        G += g;
-        B += b;
-        A += a;
+        this.R += r;
+        this.G += g;
+        this.B += b;
+        this.A += a;
 
         return Clamp();
     }
@@ -273,10 +291,10 @@ public sealed class Color
     /// <returns> This Color for chaining. </returns>
     public Color Sub( Color color )
     {
-        R -= color.R;
-        G -= color.G;
-        B -= color.B;
-        A -= color.A;
+        this.R -= color.R;
+        this.G -= color.G;
+        this.B -= color.B;
+        this.A -= color.A;
 
         return Clamp();
     }
@@ -291,12 +309,63 @@ public sealed class Color
     /// <returns> This Color for chaining. </returns>
     public Color Sub( float r, float g, float b, float a )
     {
-        R -= r;
-        G -= g;
-        B -= b;
-        A -= a;
+        this.R -= r;
+        this.G -= g;
+        this.B -= b;
+        this.A -= a;
 
         return Clamp();
+    }
+
+    /// <summary>
+    /// Multiplies the RGB values by the alpha.
+    /// </summary>
+    /// <returns>This color for chaining.</returns>
+    public Color PremultiplyAlpha()
+    {
+        this.R *= A;
+        this.G *= A;
+        this.B *= A;
+
+        return Clamp();
+    }
+
+    /// <summary>
+    /// Adds the components of the supplied Color object to the components
+    /// of this Color object and returns the result as a new Color object.
+    /// </summary>
+    public Color AddNew( Color color )
+    {
+        return new Color( this.R + color.R,
+                          this.G + color.G,
+                          this.B + color.B,
+                          this.A + color.A ).Clamp();
+    }
+
+    /// <summary>
+    /// Subtracts the components of the supplied Color object from the
+    /// components of this Color object and returns the result as a new
+    /// Color object.
+    /// </summary>
+    public Color SubNew( Color color )
+    {
+        return new Color( this.R - color.R,
+                          this.G - color.G,
+                          this.B - color.B,
+                          this.A - color.A ).Clamp();
+    }
+
+    /// <summary>
+    /// Multiplies the components of this Color object by the3 components
+    /// of the supplied Color object and returns the result as a new Color
+    /// object.
+    /// </summary>
+    public Color MulNew( Color color )
+    {
+        return new Color( this.R * color.R,
+                          this.G * color.G,
+                          this.B * color.B,
+                          this.A * color.A ).Clamp();
     }
 
     /// <summary>
@@ -305,10 +374,10 @@ public sealed class Color
     /// <returns> This Color for chaining. </returns>
     private Color Clamp()
     {
-        R = Math.Clamp( R, 0, 1 );
-        G = Math.Clamp( G, 0, 1 );
-        B = Math.Clamp( B, 0, 1 );
-        A = Math.Clamp( A, 0, 1 );
+        this.R = Math.Clamp( R, 0f, 1.0f );
+        this.G = Math.Clamp( G, 0f, 1.0f );
+        this.B = Math.Clamp( B, 0f, 1.0f );
+        this.A = Math.Clamp( A, 0f, 1.0f );
 
         return this;
     }
@@ -318,10 +387,10 @@ public sealed class Color
     /// </summary>
     private Color Clamp( Color color )
     {
-        color.R = Math.Clamp( color.R, 0, 1 );
-        color.G = Math.Clamp( color.G, 0, 1 );
-        color.B = Math.Clamp( color.B, 0, 1 );
-        color.A = Math.Clamp( color.A, 0, 1 );
+        color.R = Math.Clamp( color.R, 0f, 1.0f );
+        color.G = Math.Clamp( color.G, 0f, 1.0f );
+        color.B = Math.Clamp( color.B, 0f, 1.0f );
+        color.A = Math.Clamp( color.A, 0f, 1.0f );
 
         return color;
     }
@@ -340,14 +409,14 @@ public sealed class Color
 
         if ( interpolationCoefficient is < 0.0f or > 1.0f )
         {
-            throw new ArgumentOutOfRangeException( nameof( interpolationCoefficient ),
-                                                   "Interpolation coefficient must be between 0f and 1f." );
+            throw new ArgumentOutOfRangeException
+                ( nameof( interpolationCoefficient ), "Interpolation coefficient must be between 0f and 1f." );
         }
 
-        R += interpolationCoefficient * ( target.R - R );
-        G += interpolationCoefficient * ( target.G - G );
-        B += interpolationCoefficient * ( target.B - B );
-        A += interpolationCoefficient * ( target.A - A );
+        this.R += interpolationCoefficient * ( target.R - this.R );
+        this.G += interpolationCoefficient * ( target.G - this.G );
+        this.B += interpolationCoefficient * ( target.B - this.B );
+        this.A += interpolationCoefficient * ( target.A - this.A );
 
         return Clamp();
     }
@@ -371,41 +440,12 @@ public sealed class Color
                                                    "Interpolation coefficient must be between 0f and 1f." );
         }
 
-        R += interpolationCoefficient * ( r - R );
-        G += interpolationCoefficient * ( g - G );
-        B += interpolationCoefficient * ( b - B );
-        A += interpolationCoefficient * ( a - A );
+        this.R += interpolationCoefficient * ( r - this.R );
+        this.G += interpolationCoefficient * ( g - this.G );
+        this.B += interpolationCoefficient * ( b - this.B );
+        this.A += interpolationCoefficient * ( a - this.A );
 
         return Clamp();
-    }
-
-    /// <summary>
-    /// Multiplies the RGB values by the alpha.
-    /// </summary>
-    /// <returns>This color for chaining.</returns>
-    public Color PremultiplyAlpha()
-    {
-        R *= A;
-        G *= A;
-        B *= A;
-
-        return Clamp();
-    }
-
-    /// <summary>
-    /// Converts the supplied color components to an <b>uint</b>.
-    /// </summary>
-    /// <param name="r"> Red component. </param>
-    /// <param name="g"> Green component. </param>
-    /// <param name="b"> Blue component. </param>
-    /// <param name="a"> Alpha component. </param>
-    /// <returns></returns>
-    public uint RGBA8888ToInt( float r, float g, float b, float a )
-    {
-        return ( ( uint ) ( r * 255 ) << 24 )
-             | ( ( uint ) ( g * 255 ) << 16 )
-             | ( ( uint ) ( b * 255 ) << 8 )
-             | ( uint ) ( a * 255 );
     }
 
     /// <summary>
@@ -420,7 +460,11 @@ public sealed class Color
     public Color FromHsv( float h, float s, float v )
     {
         h %= 360; // Ensure hue is in the range [0, 360]
-        if ( h < 0 ) h += 360;
+
+        if ( h < 0 )
+        {
+            h += 360;
+        }
 
         var i = ( uint ) ( h / 60 ) % 6;
         var f = ( h / 60 ) - i;
@@ -428,50 +472,15 @@ public sealed class Color
         var q = v * ( 1 - ( s * f ) );
         var t = v * ( 1 - ( s * ( 1 - f ) ) );
 
-        switch ( i )
+        ( this.R, this.G, this.B ) = i switch
         {
-            case 0:
-                R = v;
-                G = t;
-                B = p;
-
-                break;
-
-            case 1:
-                R = q;
-                G = v;
-                B = p;
-
-                break;
-
-            case 2:
-                R = p;
-                G = v;
-                B = t;
-
-                break;
-
-            case 3:
-                R = p;
-                G = q;
-                B = v;
-
-                break;
-
-            case 4:
-                R = t;
-                G = p;
-                B = v;
-
-                break;
-
-            default:
-                R = v;
-                G = p;
-                B = q;
-
-                break;
-        }
+            0 => ( v, t, p ),
+            1 => ( q, v, p ),
+            2 => ( p, v, t ),
+            3 => ( p, q, v ),
+            4 => ( t, p, v ),
+            _ => ( v, p, q )
+        };
 
         return Clamp();
     }
@@ -543,22 +552,19 @@ public sealed class Color
     /// </para>
     /// </summary>
     /// <returns> The resulting float. </returns>
-    /// <seealso cref="NumberUtils.IntToFloatColor(int)"/>
+    /// <seealso cref="NumberUtils.UIntToFloatColor(uint)"/>
     public float ToFloatBits()
     {
-        var color = ( ( uint ) ( 255 * A ) << 24 )
-                  | ( ( uint ) ( 255 * B ) << 16 )
-                  | ( ( uint ) ( 255 * G ) << 8 )
-                  | ( uint ) ( 255 * R );
+//        return NumberUtils.UIntToFloatColor( PackedColorABGR() );
 
-        return NumberUtils.UIntToFloatColor( color );
+        return ToFloatBits( R, G, B, A );
     }
 
     /// <summary>
     /// Packs the color components into a 32-bit integer with the format ABGR.
     /// </summary>
     /// <returns> the packed color as a 32-bit int. </returns>
-    public uint ToIntBits()
+    public uint PackedColorABGR()
     {
         return ( ( uint ) ( 255 * A ) << 24 )
              | ( ( uint ) ( 255 * B ) << 16 )
@@ -570,7 +576,7 @@ public sealed class Color
     /// Packs the color components into a 32-bit integer with the format RGBA.
     /// </summary>
     /// <returns> the packed color as a 32-bit int. </returns>
-    public uint ToIntBitsRGBA()
+    public uint PackedColorRGBA()
     {
         return ( ( uint ) ( 255 * R ) << 24 )
              | ( ( uint ) ( 255 * G ) << 16 )
@@ -578,46 +584,25 @@ public sealed class Color
              | ( uint ) ( 255 * A );
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    #region operators
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
     /// <summary>
-    /// Determines whether two <see cref="Color"/> objects are equal.
+    /// Converts the supplied color components to an <b>uint</b>.
     /// </summary>
-    /// <param name="c1">The first <see cref="Color"/> object to compare, or <see langword="null"/>.</param>
-    /// <param name="c2">The second object to compare, or <see langword="null"/>.</param>
-    /// <returns><see langword="true"/> if the two objects are equal; otherwise, <see langword="false"/>.</returns>
-    public static bool operator ==( Color? c1, object? c2 )
+    /// <param name="r"> Red component. </param>
+    /// <param name="g"> Green component. </param>
+    /// <param name="b"> Blue component. </param>
+    /// <param name="a"> Alpha component. </param>
+    /// <returns></returns>
+    public int RGBA8888ToInt( float r, float g, float b, float a )
     {
-        if ( c1 is null )
-        {
-            return c2 is null;
-        }
-
-        return c1.Equals( c2 );
-    }
-
-    /// <summary>
-    /// Determines whether two <see cref="Color"/> objects are not equal.
-    /// </summary>
-    /// <param name="c1"> The first <see cref="Color"/> object to compare, or null. </param>
-    /// <param name="c2"> The second object to compare, or null. </param>
-    /// <returns><b>true</b> if the two objects are not equal; otherwise, <b>false</b>.</returns>
-    public static bool operator !=( Color? c1, object? c2 )
-    {
-        return !( c1 == c2 );
+        return ( ( int ) ( 255 * r ) << 24 )
+             | ( ( int ) ( 255 * g ) << 16 )
+             | ( ( int ) ( 255 * b ) << 8 )
+             | ( int ) ( 255 * a );
     }
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-
-    #endregion operators
-
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
@@ -627,21 +612,33 @@ public sealed class Color
     // ------------------------------------------------------------------------
 
     /// <summary>
+    /// Packs the color components into a 32-bit integer with the format ABGR and then
+    /// converts it to a float. Alpha is compressed from 0-255 to use only even numbers
+    /// between 0-254 to avoid using float bits in the NaN range.
+    /// <para>
+    /// Note: Converting a color to a float and back can be lossy for alpha.
+    /// </para>
     /// </summary>
     /// <param name="r"> Red component </param>
     /// <param name="g"> Green component </param>
     /// <param name="b"> Blue component </param>
     /// <param name="a"> Alpha component </param>
     /// <returns></returns>
-    public static float ToFloatBits( uint r, uint g, uint b, uint a )
+    public static float ToFloatBits( int r, int g, int b, int a )
     {
         var color      = ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
-        var floatColor = NumberUtils.UIntToFloatColor( color );
+        var floatColor = NumberUtils.IntToFloatColor( color );
 
         return floatColor;
     }
 
     /// <summary>
+    /// Packs the color components into a 32-bit integer with the format ABGR and then
+    /// converts it to a float. Alpha is compressed from 0-255 to use only even numbers
+    /// between 0-254 to avoid using float bits in the NaN range.
+    /// <para>
+    /// Note: Converting a color to a float and back can be lossy for alpha.
+    /// </para>
     /// </summary>
     /// <param name="r"> Red component </param>
     /// <param name="g"> Green component </param>
@@ -650,12 +647,12 @@ public sealed class Color
     /// <returns></returns>
     public static float ToFloatBits( float r, float g, float b, float a )
     {
-        var color = ( ( uint ) ( 255 * a ) << 24 )
-                  | ( ( uint ) ( 255 * b ) << 16 )
-                  | ( ( uint ) ( 255 * g ) << 8 )
-                  | ( uint ) ( 255 * r );
+        var color = ( ( int ) ( 255 * a ) << 24 )
+                  | ( ( int ) ( 255 * b ) << 16 )
+                  | ( ( int ) ( 255 * g ) << 8 )
+                  | ( int ) ( 255 * r );
 
-        return NumberUtils.UIntToFloatColor( color );
+        return NumberUtils.IntToFloatColor( color );
     }
 
     /// <summary>
@@ -671,11 +668,6 @@ public sealed class Color
 
         return _color;
     }
-
-    /// <summary>
-    /// Convenience for frequently used <tt>White.ToFloatBits()</tt>
-    /// </summary>
-    public static float WhiteFloatBits => White.ToFloatBits();
 
     /// <summary>
     /// Converts a 16-bit RGB565 integer value to a Color object.
@@ -761,7 +753,7 @@ public sealed class Color
     /// <param name="b"> Blue component </param>
     /// <param name="a"> Alpha component </param>
     /// <returns> the packed color as a 32-bit int. </returns>
-    public static uint ToIntBits( uint r, uint g, uint b, uint a )
+    public static uint PackedColorABGR( uint r, uint g, uint b, uint a )
     {
         return ( a << 24 ) | ( b << 16 ) | ( g << 8 ) | r;
     }
@@ -927,10 +919,10 @@ public sealed class Color
     /// <summary>
     /// Returns the given seperate colour components as a 32-bit uint in the
     /// following format:-
-    /// <li>Bits  0 - 7  : Blue component</li>
-    /// <li>Bits  8 - 15 : Green component</li>
-    /// <li>Bits 16 - 23 : Red component</li>
-    /// <li>Bits 24 - 31 : Alpha component</li>
+    /// <li> Bits  0 - 7  : Blue component </li>
+    /// <li> Bits  8 - 15 : Green component </li>
+    /// <li> Bits 16 - 23 : Red component </li>
+    /// <li> Bits 24 - 31 : Alpha component </li>
     /// </summary>
     /// <param name="a"> Alpha component </param>
     /// <param name="b"> Blue component </param>
@@ -1039,20 +1031,24 @@ public sealed class Color
     /// <summary>
     /// Returns a string representation of the Color components RGBA.
     /// </summary>
-    public string RGBAName()
+    public string RGBAToString()
     {
         return $"R:{R},G:{G},B:{B},A:{A}";
     }
 
-    /// <summary>
-    /// Creates a copy of this <see cref="Color"/> object.
-    /// </summary>
-    /// <returns>
-    /// A new <see cref="Color"/> object that is a copy of the current instance.
-    /// </returns>
-    public Color Copy()
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region From IEquatable Interface
+
+    public bool Equals( Color? other )
     {
-        return new Color( this );
+        if ( other is null )
+        {
+            return false;
+        }
+
+        return PackedColorABGR() == other.PackedColorABGR();
     }
 
     /// <inheritdoc />
@@ -1070,18 +1066,53 @@ public sealed class Color
 
         var color = ( Color ) obj;
 
-        return ToIntBits() == color.ToIntBits();
+        return this.PackedColorABGR() == color.PackedColorABGR();
     }
 
     /// <inheritdoc />
     public override int GetHashCode()
     {
-        var result = White != 0F ? NumberUtils.FloatToIntBits( White.ToFloatBits() ) : 0;
-
-        result = ( 31 * result ) + ( LightGray != 0F ? NumberUtils.FloatToIntBits( LightGray.ToFloatBits() ) : 0 );
-        result = ( 31 * result ) + ( Gray != 0F ? NumberUtils.FloatToIntBits( Gray.ToFloatBits() ) : 0 );
-        result = ( 31 * result ) + ( DarkGray != 0F ? NumberUtils.FloatToIntBits( DarkGray.ToFloatBits() ) : 0 );
-
-        return result;
+        return PackedColorABGR().GetHashCode();
     }
+
+    /// <summary>
+    /// Determines whether two <see cref="Color"/> objects are equal.
+    /// </summary>
+    /// <param name="c1"> The first <see cref="Color"/> object to compare, or <b>null</b>. </param>
+    /// <param name="c2"> The second object to compare, or <b>null</b>. </param>
+    /// <returns> <b>true</b> if the two objects are equal; otherwise, <b>false</b>. </returns>
+    public static bool operator ==( Color? c1, object? c2 )
+    {
+        if ( c1 is null )
+        {
+            return c2 is null;
+        }
+
+        return c1.Equals( c2 );
+    }
+
+    /// <summary>
+    /// Determines whether two <see cref="Color"/> objects are not equal.
+    /// </summary>
+    /// <param name="c1"> The first <see cref="Color"/> object to compare, or null. </param>
+    /// <param name="c2"> The second object to compare, or null. </param>
+    /// <returns><b>true</b> if the two objects are not equal; otherwise, <b>false</b>.</returns>
+    public static bool operator !=( Color? c1, object? c2 )
+    {
+        return !( c1 == c2 );
+    }
+
+    #endregion From IEquatable Interface
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    #region From ICloneable Interface
+
+    public object Clone()
+    {
+        return new Color( this );
+    }
+
+    #endregion From ICloneable Interface
 }
