@@ -223,7 +223,7 @@ public class PolygonSprite
     {
         Color.Set( tint );
 
-        var color = tint.ToFloatBits();
+        var color = tint.ToFloatBitsABGR();
 
         for ( var i = 2; i < _vertices?.Length; i += Sprite.VERTEX_SIZE )
         {
@@ -237,7 +237,7 @@ public class PolygonSprite
 
         for ( var i = 2; i < _vertices?.Length; i += Sprite.VERTEX_SIZE )
         {
-            _vertices[ i ] = Color.ToFloatBits();
+            _vertices[ i ] = Color.ToFloatBitsABGR();
         }
     }
 
@@ -442,7 +442,7 @@ public class PolygonSprite
         // Set the color and UVs in this sprite's vertices.
         for ( int i = 0, v = 2; v < verticesLength; i += 2, v += 5 )
         {
-            _vertices[ v ]     = Color.ToFloatBits();
+            _vertices[ v ]     = Color.ToFloatBitsABGR();
             _vertices[ v + 1 ] = textureCoords[ i ];
             _vertices[ v + 2 ] = textureCoords[ i + 1 ];
         }

@@ -335,7 +335,7 @@ public class ShapeRenderer : IDisposable
     {
         Check( ShapeTypes.Lines, null, ( segments * 2 ) + 2 );
 
-        var colorBits = _color.ToFloatBits();
+        var colorBits = _color.ToFloatBitsABGR();
 
         // Algorithm from: http://www.antigrain.com/research/bezier_interpolation/index.html#PAGE_BEZIER_INTERPOLATION
         var subdivStep  = 1f / segments;
@@ -395,7 +395,7 @@ public class ShapeRenderer : IDisposable
     {
         Check( ShapeTypes.Lines, ShapeTypes.Filled, 6 );
 
-        var colorBits = _color.ToFloatBits();
+        var colorBits = _color.ToFloatBitsABGR();
 
         if ( ShapeType == ShapeTypes.Lines )
         {
@@ -476,7 +476,7 @@ public class ShapeRenderer : IDisposable
     public void Rect( float x, float y, float width, float height )
     {
         Check( ShapeTypes.Lines, ShapeTypes.Filled, 8 );
-        var colorBits = _color.ToFloatBits();
+        var colorBits = _color.ToFloatBitsABGR();
 
         if ( ShapeType == ShapeTypes.Lines )
         {
@@ -713,7 +713,7 @@ public class ShapeRenderer : IDisposable
     {
         Check( ShapeTypes.Lines, ShapeTypes.Filled, 8 );
 
-        var colorBits = _color.ToFloatBits();
+        var colorBits = _color.ToFloatBitsABGR();
         var t         = _tmp.Set( y2 - y1, x1 - x2 ).Nor();
 
         width *= 0.5f;
@@ -769,8 +769,8 @@ public class ShapeRenderer : IDisposable
     {
         Check( ShapeTypes.Lines, ShapeTypes.Filled, 8 );
 
-        var col1Bits = c1.ToFloatBits();
-        var col2Bits = c2.ToFloatBits();
+        var col1Bits = c1.ToFloatBitsABGR();
+        var col2Bits = c2.ToFloatBitsABGR();
 
         var t = _tmp.Set( y2 - y1, x1 - x2 ).Nor();
 
@@ -832,7 +832,7 @@ public class ShapeRenderer : IDisposable
     public void Box( float x, float y, float z, float width, float height, float depth )
     {
         depth = -depth;
-        var colorBits = _color.ToFloatBits();
+        var colorBits = _color.ToFloatBitsABGR();
 
         if ( ShapeType == ShapeTypes.Lines )
         {
@@ -1036,7 +1036,7 @@ public class ShapeRenderer : IDisposable
             throw new ArgumentException( "segments must be > 0." );
         }
 
-        var colorBits = _color.ToFloatBits();
+        var colorBits = _color.ToFloatBitsABGR();
         var theta     = ( 2 * MathUtils.PI * ( degrees / 360.0f ) ) / segments;
 
         var cos = MathUtils.Cos( theta );
@@ -1124,7 +1124,7 @@ public class ShapeRenderer : IDisposable
             throw new ArgumentException( "segments must be > 0." );
         }
 
-        var colorBits = _color.ToFloatBits();
+        var colorBits = _color.ToFloatBitsABGR();
         var angle     = ( 2 * MathUtils.PI ) / segments;
 
         var   cos = MathUtils.Cos( angle );
@@ -1218,7 +1218,7 @@ public class ShapeRenderer : IDisposable
 
         Check( ShapeTypes.Lines, ShapeTypes.Filled, segments * 3 );
 
-        var colorBits = _color.ToFloatBits();
+        var colorBits = _color.ToFloatBitsABGR();
         var angle     = ( 2 * MathUtils.PI ) / segments;
 
         float cx = x + ( width / 2 ), cy = y + ( height / 2 );
@@ -1290,7 +1290,7 @@ public class ShapeRenderer : IDisposable
 
         Check( ShapeTypes.Lines, ShapeTypes.Filled, segments * 3 );
 
-        var colorBits = _color.ToFloatBits();
+        var colorBits = _color.ToFloatBitsABGR();
         var angle     = ( 2 * MathUtils.PI ) / segments;
 
         rotation = ( MathUtils.PI * rotation ) / 180f;
@@ -1356,7 +1356,7 @@ public class ShapeRenderer : IDisposable
 
         Check( ShapeTypes.Lines, ShapeTypes.Filled, ( segments * 4 ) + 2 );
 
-        var colorBits = _color.ToFloatBits();
+        var colorBits = _color.ToFloatBitsABGR();
         var angle     = ( 2 * MathUtils.PI ) / segments;
 
         var   cos = MathUtils.Cos( angle );
@@ -1462,7 +1462,7 @@ public class ShapeRenderer : IDisposable
 
         Check( ShapeTypes.Lines, null, count );
 
-        var colorBits = _color.ToFloatBits();
+        var colorBits = _color.ToFloatBitsABGR();
         var firstX    = vertices[ 0 ];
         var firstY    = vertices[ 1 ];
 
@@ -1515,7 +1515,7 @@ public class ShapeRenderer : IDisposable
 
         Check( ShapeTypes.Lines, null, count );
 
-        var colorBits = _color.ToFloatBits();
+        var colorBits = _color.ToFloatBitsABGR();
 
         for ( int i = offset, n = ( offset + count ) - 2; i < n; i += 2 )
         {

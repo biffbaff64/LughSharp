@@ -174,7 +174,7 @@ public class BitmapFontCache
     /// </summary>
     public void Tint( Color tint )
     {
-        var newTint = tint.ToFloatBits();
+        var newTint = tint.ToFloatBitsABGR();
 
         if ( _currentTint.Equals( newTint ) )
         {
@@ -198,7 +198,7 @@ public class BitmapFontCache
             {
                 var                      run        = layout.Runs[ ii ];
                 List< BitmapFont.Glyph > glyphs     = run.Glyphs;
-                var                      colorFloat = _tempColor.Set( run.Color ).Mul( tint ).ToFloatBits();
+                var                      colorFloat = _tempColor.Set( run.Color ).Mul( tint ).ToFloatBitsABGR();
 
                 for ( int iii = 0, nnn = glyphs.Count; iii < nnn; iii++ )
                 {
@@ -277,7 +277,7 @@ public class BitmapFontCache
     /// </summary>
     public void SetColors( Color tint )
     {
-        SetColors( tint.ToFloatBits() );
+        SetColors( tint.ToFloatBitsABGR() );
     }
 
     /// <summary>
@@ -304,7 +304,7 @@ public class BitmapFontCache
     /// </summary>
     public void SetColors( Color tint, int start, int end )
     {
-        SetColors( tint.ToFloatBits(), start, end );
+        SetColors( tint.ToFloatBitsABGR(), start, end );
     }
 
     /// <summary>
@@ -610,7 +610,7 @@ public class BitmapFontCache
             List< BitmapFont.Glyph > glyphs    = run.Glyphs;
             List< float >            xAdvances = run.XAdvances;
 
-            var color = run.Color.ToFloatBits();
+            var color = run.Color.ToFloatBitsABGR();
             var gx    = x + run.X;
             var gy    = y + run.Y;
 

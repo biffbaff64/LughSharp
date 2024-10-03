@@ -742,25 +742,25 @@ public class CpuSpriteBatch : SpriteBatch
 
         Vertices[ Idx + 0 ] = ( _adjustAffine.M00 * x1 ) + ( _adjustAffine.M01 * y1 ) + _adjustAffine.M02;
         Vertices[ Idx + 1 ] = ( _adjustAffine.M10 * x1 ) + ( _adjustAffine.M11 * y1 ) + _adjustAffine.M12;
-        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 2 ] = ColorPackedABGR;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = ( _adjustAffine.M00 * x2 ) + ( _adjustAffine.M01 * y2 ) + _adjustAffine.M02;
         Vertices[ Idx + 6 ] = ( _adjustAffine.M10 * x2 ) + ( _adjustAffine.M11 * y2 ) + _adjustAffine.M12;
-        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 7 ] = ColorPackedABGR;
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = ( _adjustAffine.M00 * x3 ) + ( _adjustAffine.M01 * y3 ) + _adjustAffine.M02;
         Vertices[ Idx + 11 ] = ( _adjustAffine.M10 * x3 ) + ( _adjustAffine.M11 * y3 ) + _adjustAffine.M12;
-        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 12 ] = ColorPackedABGR;
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = ( _adjustAffine.M00 * x4 ) + ( _adjustAffine.M01 * y4 ) + _adjustAffine.M02;
         Vertices[ Idx + 16 ] = ( _adjustAffine.M10 * x4 ) + ( _adjustAffine.M11 * y4 ) + _adjustAffine.M12;
-        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 17 ] = ColorPackedABGR;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
@@ -904,25 +904,25 @@ public class CpuSpriteBatch : SpriteBatch
 
         Vertices[ Idx + 0 ] = ( _adjustAffine.M00 * x1 ) + ( _adjustAffine.M01 * y1 ) + _adjustAffine.M02;
         Vertices[ Idx + 1 ] = ( _adjustAffine.M10 * x1 ) + ( _adjustAffine.M11 * y1 ) + _adjustAffine.M12;
-        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 2 ] = ColorPackedABGR;
         Vertices[ Idx + 3 ] = u1;
         Vertices[ Idx + 4 ] = v1;
 
         Vertices[ Idx + 5 ] = ( _adjustAffine.M00 * x2 ) + ( _adjustAffine.M01 * y2 ) + _adjustAffine.M02;
         Vertices[ Idx + 6 ] = ( _adjustAffine.M10 * x2 ) + ( _adjustAffine.M11 * y2 ) + _adjustAffine.M12;
-        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 7 ] = ColorPackedABGR;
         Vertices[ Idx + 8 ] = u2;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = ( _adjustAffine.M00 * x3 ) + ( _adjustAffine.M01 * y3 ) + _adjustAffine.M02;
         Vertices[ Idx + 11 ] = ( _adjustAffine.M10 * x3 ) + ( _adjustAffine.M11 * y3 ) + _adjustAffine.M12;
-        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 12 ] = ColorPackedABGR;
         Vertices[ Idx + 13 ] = u3;
         Vertices[ Idx + 14 ] = v3;
 
         Vertices[ Idx + 15 ] = ( _adjustAffine.M00 * x4 ) + ( _adjustAffine.M01 * y4 ) + _adjustAffine.M02;
         Vertices[ Idx + 16 ] = ( _adjustAffine.M10 * x4 ) + ( _adjustAffine.M11 * y4 ) + _adjustAffine.M12;
-        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 17 ] = ColorPackedABGR;
         Vertices[ Idx + 18 ] = u4;
         Vertices[ Idx + 19 ] = v4;
 
@@ -969,25 +969,25 @@ public class CpuSpriteBatch : SpriteBatch
 
         Vertices[ Idx + 0 ] = ( _adjustAffine.M00 * x1 ) + ( _adjustAffine.M01 * y1 ) + _adjustAffine.M02;
         Vertices[ Idx + 1 ] = ( _adjustAffine.M10 * x1 ) + ( _adjustAffine.M11 * y1 ) + _adjustAffine.M12;
-        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 2 ] = ColorPackedABGR;
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = ( _adjustAffine.M00 * x2 ) + ( _adjustAffine.M01 * y2 ) + _adjustAffine.M02;
         Vertices[ Idx + 6 ] = ( _adjustAffine.M10 * x2 ) + ( _adjustAffine.M11 * y2 ) + _adjustAffine.M12;
-        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 7 ] = ColorPackedABGR;
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = ( _adjustAffine.M00 * x3 ) + ( _adjustAffine.M01 * y3 ) + _adjustAffine.M02;
         Vertices[ Idx + 11 ] = ( _adjustAffine.M10 * x3 ) + ( _adjustAffine.M11 * y3 ) + _adjustAffine.M12;
-        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 12 ] = ColorPackedABGR;
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = ( _adjustAffine.M00 * x4 ) + ( _adjustAffine.M01 * y4 ) + _adjustAffine.M02;
         Vertices[ Idx + 16 ] = ( _adjustAffine.M10 * x4 ) + ( _adjustAffine.M11 * y4 ) + _adjustAffine.M12;
-        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 17 ] = ColorPackedABGR;
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 

@@ -62,7 +62,7 @@ public class TiledDrawable : TextureRegionDrawable
 
         if ( region != null )
         {
-            var oldColor = batch.ColorPacked;
+            var oldColor = batch.ColorPackedABGR;
 
             batch.Color = Color.Mul( batch.Color );
 
@@ -157,7 +157,7 @@ public class TiledDrawable : TextureRegionDrawable
                 }
             }
 
-            batch.ColorPacked = oldColor;
+            batch.ColorPackedABGR = oldColor;
         }
     }
 

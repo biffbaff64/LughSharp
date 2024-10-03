@@ -267,7 +267,7 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 
     public void RenderTileLayer( TiledMapTileLayer layer )
     {
-        var color = Color.ToFloatBits( 1, 1, 1, layer.Opacity );
+        var color = Color.ToFloatBitsABGR( 1, 1, 1, layer.Opacity );
 
         var layerWidth  = layer.Width;
         var layerHeight = layer.Height;
@@ -435,7 +435,7 @@ public class OrthoCachedTiledMapRenderer : ITiledMapRenderer, IDisposable
 
     public void RenderImageLayer( TiledMapImageLayer layer )
     {
-        var color = Color.ToFloatBits( 1.0f, 1.0f, 1.0f, layer.Opacity );
+        var color = Color.ToFloatBitsABGR( 1.0f, 1.0f, 1.0f, layer.Opacity );
 
         var region = layer.Region;
 

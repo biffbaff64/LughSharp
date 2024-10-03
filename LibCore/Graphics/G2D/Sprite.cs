@@ -471,7 +471,7 @@ public class Sprite : TextureRegion
     {
         Color.Set( tint );
 
-        var color = tint.ToFloatBits();
+        var color = tint.ToFloatBitsABGR();
 
         Vertices[ IBatch.C1 ] = color;
         Vertices[ IBatch.C2 ] = color;
@@ -486,7 +486,7 @@ public class Sprite : TextureRegion
     {
         Color.Set( r, g, b, a );
 
-        var color = Color.ToFloatBits();
+        var color = Color.ToFloatBitsABGR();
 
         Vertices[ IBatch.C1 ] = color;
         Vertices[ IBatch.C2 ] = color;
@@ -882,7 +882,7 @@ public class Sprite : TextureRegion
     /// <summary>
     /// Sets the color of this sprite, expanding the alpha from 0-254 to 0-255.
     /// </summary>
-    /// <see cref="Color.ToFloatBits()"/>
+    /// <see cref="Graphics.Color.ToFloatBitsABGR()"/>
     public float PackedColor
     {
         set
@@ -950,7 +950,7 @@ public class Sprite : TextureRegion
         {
             _color.A = value;
 
-            var color = Color.ToFloatBits();
+            var color = Color.ToFloatBitsABGR();
 
             Vertices[ IBatch.C1 ] = color;
             Vertices[ IBatch.C2 ] = color;

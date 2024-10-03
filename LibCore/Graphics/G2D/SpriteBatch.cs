@@ -65,7 +65,7 @@ public class SpriteBatch : IBatch
     private const int MAX_VERTEX_INDEX = 32767;
     private const int MAX_SPRITES      = 8191;
 
-    private readonly Color   _color          = new( 1, 1, 1, 1 );
+    private readonly Color   _color          = Graphics.Color.Red;
     private readonly Matrix4 _combinedMatrix = new();
     private readonly bool    _ownsShader;
 
@@ -215,11 +215,22 @@ public class SpriteBatch : IBatch
         }
     }
 
+    /// <summary>
+    /// Sets the Color for this SpriteBatch to the supplied Color.
+    /// </summary>
     public void SetColor( Color tint )
     {
         SetColor( tint.R, tint.G, tint.B, tint.A );
     }
 
+    /// <summary>
+    /// Sets the Color for this SpriteBatch using the supplied
+    /// RGBA Color components.
+    /// </summary>
+    /// <param name="r"> Red. </param>
+    /// <param name="g"> Green. </param>
+    /// <param name="b"> Blue. </param>
+    /// <param name="a"> Alpha. </param>
     public void SetColor( float r, float g, float b, float a )
     {
         _color.Set( r, g, b, a );
@@ -231,9 +242,9 @@ public class SpriteBatch : IBatch
         set => SetColor( value.R, value.G, value.B, value.A );
     }
 
-    public float ColorPacked
+    public float ColorPackedABGR
     {
-        get => this.Color.ToFloatBits();
+        get => Color.ToFloatBitsABGR();
         set { }
     }
 
@@ -241,6 +252,17 @@ public class SpriteBatch : IBatch
 
     #region Drawing methods
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="texture"></param>
+    /// <param name="region"></param>
+    /// <param name="origin"></param>
+    /// <param name="scale"></param>
+    /// <param name="rotation"></param>
+    /// <param name="src"></param>
+    /// <param name="flipX"></param>
+    /// <param name="flipY"></param>
     public virtual void Draw( Texture texture,
                               GRect region,
                               Point2D origin,
@@ -356,36 +378,40 @@ public class SpriteBatch : IBatch
 
         Vertices[ Idx ]     = x1;
         Vertices[ Idx + 1 ] = y1;
-        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 2 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = x2;
         Vertices[ Idx + 6 ] = y2;
-        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 7 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = x3;
         Vertices[ Idx + 11 ] = y3;
-        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 12 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = x4;
         Vertices[ Idx + 16 ] = y4;
-        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 17 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
         Idx += 20;
     }
 
-    public virtual void Draw( Texture? texture,
-                              GRect region,
-                              GRect src,
-                              bool flipX,
-                              bool flipY )
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="texture"></param>
+    /// <param name="region"></param>
+    /// <param name="src"></param>
+    /// <param name="flipX"></param>
+    /// <param name="flipY"></param>
+    public virtual void Draw( Texture? texture, GRect region, GRect src, bool flipX, bool flipY )
     {
         Validate( texture );
 
@@ -417,31 +443,38 @@ public class SpriteBatch : IBatch
 
         Vertices[ Idx ]     = region.X;
         Vertices[ Idx + 1 ] = region.Y;
-        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 2 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = region.X;
         Vertices[ Idx + 6 ] = fy2;
-        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 7 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = fx2;
         Vertices[ Idx + 11 ] = fy2;
-        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 12 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = fx2;
         Vertices[ Idx + 16 ] = region.Y;
-        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 17 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
         Idx += 20;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="texture"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="src"></param>
     public virtual void Draw( Texture? texture, float x, float y, GRect src )
     {
         Validate( texture );
@@ -464,31 +497,40 @@ public class SpriteBatch : IBatch
 
         Vertices[ Idx ]     = x;
         Vertices[ Idx + 1 ] = y;
-        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 2 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = x;
         Vertices[ Idx + 6 ] = fy2;
-        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 7 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = fx2;
         Vertices[ Idx + 11 ] = fy2;
-        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 12 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = fx2;
         Vertices[ Idx + 16 ] = y;
-        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 17 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
         Idx += 20;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="texture"></param>
+    /// <param name="region"></param>
+    /// <param name="u"></param>
+    /// <param name="v"></param>
+    /// <param name="u2"></param>
+    /// <param name="v2"></param>
     public virtual void Draw( Texture? texture,
                               GRect region,
                               float u,
@@ -510,31 +552,31 @@ public class SpriteBatch : IBatch
         var fx2 = region.X + region.Width;
         var fy2 = region.Y + region.Height;
 
-        Vertices[ this.Idx ]     = region.X;
-        Vertices[ this.Idx + 1 ] = region.Y;
-        Vertices[ this.Idx + 2 ] = this.ColorPacked;
-        Vertices[ this.Idx + 3 ] = u;
-        Vertices[ this.Idx + 4 ] = v;
+        Vertices[ Idx ]     = region.X;
+        Vertices[ Idx + 1 ] = region.Y;
+        Vertices[ Idx + 2 ] = Color.ToFloatBitsABGR();
+        Vertices[ Idx + 3 ] = u;
+        Vertices[ Idx + 4 ] = v;
 
-        Vertices[ this.Idx + 5 ] = region.X;
-        Vertices[ this.Idx + 6 ] = fy2;
-        Vertices[ this.Idx + 7 ] = this.ColorPacked;
-        Vertices[ this.Idx + 8 ] = u;
-        Vertices[ this.Idx + 9 ] = v2;
+        Vertices[ Idx + 5 ] = region.X;
+        Vertices[ Idx + 6 ] = fy2;
+        Vertices[ Idx + 7 ] = Color.ToFloatBitsABGR();
+        Vertices[ Idx + 8 ] = u;
+        Vertices[ Idx + 9 ] = v2;
 
-        Vertices[ this.Idx + 10 ] = fx2;
-        Vertices[ this.Idx + 11 ] = fy2;
-        Vertices[ this.Idx + 12 ] = this.ColorPacked;
-        Vertices[ this.Idx + 13 ] = u2;
-        Vertices[ this.Idx + 14 ] = v2;
+        Vertices[ Idx + 10 ] = fx2;
+        Vertices[ Idx + 11 ] = fy2;
+        Vertices[ Idx + 12 ] = Color.ToFloatBitsABGR();
+        Vertices[ Idx + 13 ] = u2;
+        Vertices[ Idx + 14 ] = v2;
 
-        Vertices[ this.Idx + 15 ] = fx2;
-        Vertices[ this.Idx + 16 ] = region.Y;
-        Vertices[ this.Idx + 17 ] = this.ColorPacked;
-        Vertices[ this.Idx + 18 ] = u2;
-        Vertices[ this.Idx + 19 ] = v;
+        Vertices[ Idx + 15 ] = fx2;
+        Vertices[ Idx + 16 ] = region.Y;
+        Vertices[ Idx + 17 ] = Color.ToFloatBitsABGR();
+        Vertices[ Idx + 18 ] = u2;
+        Vertices[ Idx + 19 ] = v;
 
-        this.Idx += 20;
+        Idx += 20;
     }
 
     /// <summary>
@@ -551,6 +593,14 @@ public class SpriteBatch : IBatch
         Draw( texture, x, y, texture.Width, texture.Height );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="texture"></param>
+    /// <param name="locX"></param>
+    /// <param name="locY"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
     public virtual void Draw( Texture texture, float locX, float locY, int width, int height )
     {
         Validate( texture );
@@ -572,35 +622,43 @@ public class SpriteBatch : IBatch
         const float U2 = 1;
         const float V2 = 0;
 
-        Vertices[ this.Idx + 0 ] = locX;
-        Vertices[ this.Idx + 1 ] = locY;
-        Vertices[ this.Idx + 2 ] = this.ColorPacked;
-        Vertices[ this.Idx + 3 ] = U;
-        Vertices[ this.Idx + 4 ] = V;
+        Vertices[ Idx + 0 ] = locX;
+        Vertices[ Idx + 1 ] = locY;
+        Vertices[ Idx + 2 ] = ColorPackedABGR;
+        Vertices[ Idx + 3 ] = U;
+        Vertices[ Idx + 4 ] = V;
 
-        Vertices[ this.Idx + 5 ] = locX;
-        Vertices[ this.Idx + 6 ] = fy2;
-        Vertices[ this.Idx + 7 ] = this.ColorPacked;
-        Vertices[ this.Idx + 8 ] = U;
-        Vertices[ this.Idx + 9 ] = V2;
+        Vertices[ Idx + 5 ] = locX;
+        Vertices[ Idx + 6 ] = fy2;
+        Vertices[ Idx + 7 ] = ColorPackedABGR;
+        Vertices[ Idx + 8 ] = U;
+        Vertices[ Idx + 9 ] = V2;
 
-        Vertices[ this.Idx + 10 ] = fx2;
-        Vertices[ this.Idx + 11 ] = fy2;
-        Vertices[ this.Idx + 12 ] = this.ColorPacked;
-        Vertices[ this.Idx + 13 ] = U2;
-        Vertices[ this.Idx + 14 ] = V2;
+        Vertices[ Idx + 10 ] = fx2;
+        Vertices[ Idx + 11 ] = fy2;
+        Vertices[ Idx + 12 ] = ColorPackedABGR;
+        Vertices[ Idx + 13 ] = U2;
+        Vertices[ Idx + 14 ] = V2;
 
-        Vertices[ this.Idx + 15 ] = fx2;
-        Vertices[ this.Idx + 16 ] = locY;
-        Vertices[ this.Idx + 17 ] = this.ColorPacked;
-        Vertices[ this.Idx + 18 ] = U2;
-        Vertices[ this.Idx + 19 ] = V;
+        Vertices[ Idx + 15 ] = fx2;
+        Vertices[ Idx + 16 ] = locY;
+        Vertices[ Idx + 17 ] = ColorPackedABGR;
+        Vertices[ Idx + 18 ] = U2;
+        Vertices[ Idx + 19 ] = V;
 
+        //TODO: Remove when drawing is fixed
         DebugVertices();
 
-        this.Idx += 20;
+        Idx += 20;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="texture"></param>
+    /// <param name="spriteVertices"></param>
+    /// <param name="offset"></param>
+    /// <param name="count"></param>
     public virtual void Draw( Texture? texture, float[] spriteVertices, int offset, int count )
     {
         Validate( texture );
@@ -645,6 +703,12 @@ public class SpriteBatch : IBatch
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="region"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     public virtual void Draw( TextureRegion? region, float x, float y )
     {
         Validate( region );
@@ -652,6 +716,14 @@ public class SpriteBatch : IBatch
         Draw( region, x, y, region!.RegionWidth, region.RegionHeight );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="region"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
     public virtual void Draw( TextureRegion? region, float x, float y, float width, float height )
     {
         Validate( region );
@@ -676,31 +748,39 @@ public class SpriteBatch : IBatch
 
         Vertices[ Idx ]     = x;
         Vertices[ Idx + 1 ] = y;
-        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 2 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = x;
         Vertices[ Idx + 6 ] = fy2;
-        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 7 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = fx2;
         Vertices[ Idx + 11 ] = fy2;
-        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 12 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = fx2;
         Vertices[ Idx + 16 ] = y;
-        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 17 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
         Idx += 20;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="textureRegion"></param>
+    /// <param name="region"></param>
+    /// <param name="origin"></param>
+    /// <param name="scale"></param>
+    /// <param name="rotation"></param>
     public virtual void Draw( TextureRegion? textureRegion,
                               GRect region,
                               Point2D origin,
@@ -805,31 +885,40 @@ public class SpriteBatch : IBatch
 
         Vertices[ Idx ]     = x1;
         Vertices[ Idx + 1 ] = y1;
-        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 2 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = x2;
         Vertices[ Idx + 6 ] = y2;
-        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 7 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = x3;
         Vertices[ Idx + 11 ] = y3;
-        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 12 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = x4;
         Vertices[ Idx + 16 ] = y4;
-        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 17 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
         Idx += 20;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="textureRegion"></param>
+    /// <param name="region"></param>
+    /// <param name="origin"></param>
+    /// <param name="scale"></param>
+    /// <param name="rotation"></param>
+    /// <param name="clockwise"></param>
     public virtual void Draw( TextureRegion? textureRegion,
                               GRect region,
                               Point2D origin,
@@ -955,31 +1044,38 @@ public class SpriteBatch : IBatch
 
         Vertices[ Idx ]     = x1;
         Vertices[ Idx + 1 ] = y1;
-        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 2 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 3 ] = u1;
         Vertices[ Idx + 4 ] = v1;
 
         Vertices[ Idx + 5 ] = x2;
         Vertices[ Idx + 6 ] = y2;
-        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 7 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 8 ] = u2;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = x3;
         Vertices[ Idx + 11 ] = y3;
-        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 12 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 13 ] = u3;
         Vertices[ Idx + 14 ] = v3;
 
         Vertices[ Idx + 15 ] = x4;
         Vertices[ Idx + 16 ] = y4;
-        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 17 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 18 ] = u4;
         Vertices[ Idx + 19 ] = v4;
 
         Idx += 20;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="region"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="transform"></param>
     public virtual void Draw( TextureRegion? region, float width, float height, Affine2 transform )
     {
         Validate( region );
@@ -1010,25 +1106,25 @@ public class SpriteBatch : IBatch
 
         Vertices[ Idx ]     = x1;
         Vertices[ Idx + 1 ] = y1;
-        Vertices[ Idx + 2 ] = ColorPacked;
+        Vertices[ Idx + 2 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 3 ] = u;
         Vertices[ Idx + 4 ] = v;
 
         Vertices[ Idx + 5 ] = x2;
         Vertices[ Idx + 6 ] = y2;
-        Vertices[ Idx + 7 ] = ColorPacked;
+        Vertices[ Idx + 7 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 8 ] = u;
         Vertices[ Idx + 9 ] = v2;
 
         Vertices[ Idx + 10 ] = x3;
         Vertices[ Idx + 11 ] = y3;
-        Vertices[ Idx + 12 ] = ColorPacked;
+        Vertices[ Idx + 12 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 13 ] = u2;
         Vertices[ Idx + 14 ] = v2;
 
         Vertices[ Idx + 15 ] = x4;
         Vertices[ Idx + 16 ] = y4;
-        Vertices[ Idx + 17 ] = ColorPacked;
+        Vertices[ Idx + 17 ] = Color.ToFloatBitsABGR();
         Vertices[ Idx + 18 ] = u2;
         Vertices[ Idx + 19 ] = v;
 
@@ -1218,6 +1314,9 @@ public class SpriteBatch : IBatch
         }
     }
 
+    /// <summary>
+    /// Shader property for this SpriteBatch.
+    /// </summary>
     public ShaderProgram? Shader
     {
         get => _customShader ?? _shader;
@@ -1303,6 +1402,9 @@ public class SpriteBatch : IBatch
         return shader;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     protected void SetupMatrices()
     {
         _combinedMatrix.Set( ProjectionMatrix ).Mul( TransformMatrix );
@@ -1392,29 +1494,30 @@ public class SpriteBatch : IBatch
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    private bool _canDebugVertices = true;
+    public bool CanDebugVertices { get; set; } = true;
 
     private void DebugVertices()
     {
-        if ( _canDebugVertices )
+        if ( CanDebugVertices )
         {
             Logger.Debug( "Begin DebugVertices()" );
             
-            Logger.Debug( $"ColorPacked: {NumberUtils.FloatToHexString( ColorPacked )}" );
-            Logger.Debug( $"Color: R:{Color.R}, G:{Color.G}, B:{Color.B}, A:{Color.A}" );
+            Logger.Debug( $"ColorPacked ABGR: {Color.ToFloatBitsABGR():F1}" );
+            Logger.Debug( $"ColorPacked RGBA: {Color.ToFloatBitsRGBA():F1}" );
+            Logger.Debug( $"FloatToHexString ABGR: {NumberUtils.FloatToHexString( Color.ToFloatBitsABGR() )}" );
+            Logger.Debug( $"FloatToHexString RGBA: {NumberUtils.FloatToHexString( Color.ToFloatBitsRGBA() )}" );
+            Logger.Debug( $"Color: {Color.RGBAToString()}" );
             
             for ( var i = 0; i < 20; i++ )
             {
                 Logger.Debug( $"Vertices[{i}]: {Vertices[ i ]}" );
             }
 
-            _canDebugVertices = false;
+            CanDebugVertices = false;
 
             Logger.Debug( "End DebugVertices()" );
             
             // ----------------------------------------------------------------
-            
-            
         }
     }
 }

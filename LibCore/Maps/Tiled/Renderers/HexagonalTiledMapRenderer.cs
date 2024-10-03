@@ -135,7 +135,7 @@ public class HexagonalTiledMapRenderer : BatchTileMapRenderer
     /// <inheritdoc />
     public override void RenderTileLayer( TiledMapTileLayer layer )
     {
-        var color = Color.ToFloatBits( Batch.Color.R, Batch.Color.G, Batch.Color.B, Batch.Color.A * layer.Opacity );
+        var color = Color.ToFloatBitsABGR( Batch.Color.R, Batch.Color.G, Batch.Color.B, Batch.Color.A * layer.Opacity );
 
         var layerWidth      = layer.Width;
         var layerHeight     = layer.Height;

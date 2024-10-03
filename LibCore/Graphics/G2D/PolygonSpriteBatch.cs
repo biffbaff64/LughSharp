@@ -236,17 +236,17 @@ public class PolygonSpriteBatch : IPolygonBatch
         set
         {
             _color.Set( value );
-            _colorPacked = value.ToFloatBits();
+            _colorPacked = value.ToFloatBitsABGR();
         }
     }
 
     public void SetColor( float r, float g, float b, float a )
     {
         _color.Set( r, g, b, a );
-        _colorPacked = _color.ToFloatBits();
+        _colorPacked = _color.ToFloatBitsABGR();
     }
 
-    public float ColorPacked
+    public float ColorPackedABGR
     {
         get => _colorPacked;
         set

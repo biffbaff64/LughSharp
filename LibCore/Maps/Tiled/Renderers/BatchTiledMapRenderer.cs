@@ -174,7 +174,7 @@ public class BatchTileMapRenderer : ITiledMapRenderer
     /// <param name="layer"></param>
     public void RenderImageLayer( TiledMapImageLayer layer )
     {
-        var color = Color.ToFloatBits( Batch.Color.R,
+        var color = Color.ToFloatBitsABGR( Batch.Color.R,
                                        Batch.Color.G,
                                        Batch.Color.B,
                                        Batch.Color.A * layer.Opacity );

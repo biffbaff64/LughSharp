@@ -71,12 +71,13 @@ public class NumberUtils
     /// <returns>A string representing the hexadecimal value.</returns>
     public static string FloatToHexString( float value )
     {
-        // Convert float to its raw integer bits
-        var intBits = FloatToRawIntBits( value );
+        unsafe
+        {
+            var intBits = *( ( int* ) &value );
+            var result  = intBits.ToString( "X8" );
 
-        // Convert to hexadecimal string, ensuring it's 8 characters
-        // long with leading zeros if necessary
-        return intBits.ToString( "X8" );
+            return result;
+        }
     }
 
     /// <summary>
@@ -112,7 +113,7 @@ public class NumberUtils
     /// <returns> The floating-point color value represented by the integer bits. </returns>
     public static float IntToFloatColor( int value )
     {
-        return BitConverter.Int32BitsToSingle( value );
+        return BitConverter.Int32BitsToSingle( value & 0x7fffffff );
     }
 
     /// <summary>
@@ -122,7 +123,7 @@ public class NumberUtils
     /// <returns> The floating-point color value represented by the integer bits. </returns>
     public static float UIntToFloatColor( uint value )
     {
-        return BitConverter.UInt32BitsToSingle( value & 0xffffffff );
+        return BitConverter.UInt32BitsToSingle( value & 0xfeffffff );
     }
 
     /// <summary>
@@ -208,5 +209,15 @@ public class NumberUtils
         }
 
         return 10 + ( ch - 'A' );
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static string IntToBinaryString( int value )
+    {
+        //TODO:
+        return value.ToString( "B8" );
     }
 }
