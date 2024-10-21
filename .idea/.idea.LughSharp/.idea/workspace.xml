@@ -8,7 +8,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/ConsoleApp1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/ConsoleApp1.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/App.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/App.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/DesktopLauncher.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/DesktopLauncher.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Keyboard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Keyboard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/MainGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/MainGame.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/AssetManagerTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/AssetManagerTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/ColorTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/ColorTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/Matrix4Test.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/Matrix4Test.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Logger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Utils/Logger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LughSharp.sln" beforeDir="false" afterPath="$PROJECT_DIR$/LughSharp.sln" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,20 +36,20 @@
         <option value="Richard Ikin / Red 7 Projects &lt;richikin@gmail.com&gt;" />
       </list>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../ConsoleApp1" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "biffbaff64"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;biffbaff64&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/biffbaff64/LughSharp.git",
-    "accountId": "102d38b6-3001-4d45-a8b2-a7129437f3aa"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/biffbaff64/LughSharp.git&quot;,
+    &quot;accountId&quot;: &quot;102d38b6-3001-4d45-a8b2-a7129437f3aa&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGLBindings.cs" root0="SKIP_HIGHLIGHTING" />
@@ -62,7 +73,6 @@
     ".NET Project.ConsoleApp1.executor": "Run",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
@@ -70,30 +80,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "Shelf.Project.Settings",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C#",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration name="ConsoleApp1" type="DotNetProject" factoryName=".NET Project">
-      <option name="EXE_PATH" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="PASS_PARENT_ENVS" value="1" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="PROJECT_PATH" value="$PROJECT_DIR$/../ConsoleApp1/ConsoleApp1.csproj" />
-      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
-      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
-      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
-      <option name="PROJECT_KIND" value="DotNetCore" />
-      <option name="PROJECT_TFM" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -105,6 +95,8 @@
       <workItem from="1729540237966" duration="1565000" />
       <workItem from="1729541820903" duration="1171000" />
       <workItem from="1729543043626" duration="2952000" />
+      <workItem from="1729546075422" duration="587000" />
+      <workItem from="1729546677582" duration="2091000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -132,6 +124,9 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Major Restructuring" />
     <option name="LAST_COMMIT_MESSAGE" value="Major Restructuring" />

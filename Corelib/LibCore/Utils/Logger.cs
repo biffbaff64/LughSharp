@@ -28,11 +28,10 @@ using Environment = System.Environment;
 namespace Corelib.LibCore.Utils;
 
 /// <summary>
-/// A class to write debug messages to console and a text file.
-/// Primarily intended for flow tracing, messages will display calling
-/// file/class/methods and any provided debug message.
-/// Debug messages will not work if (TraceLevel & LOG_DEBUG) is false.
-/// Error Debug messages will not work if (TraceLevel & LOG_ERROR) is false.
+/// A class to write debug messages to console and a text file. Primarily intended for flow
+/// tracing, messages will display calling file/class/methods and any provided debug message.
+/// <li>Debug messages will not work if (TraceLevel &amp; LOG_DEBUG) is false.</li>
+/// <li>Error Debug messages will not work if (TraceLevel &amp; LOG_ERROR) is false.</li>
 /// <para>
 /// To enable writing to file, <see cref="EnableWriteToFile"/> must be TRUE
 /// and <see cref="OpenDebugFile"/> must be called.
@@ -43,11 +42,6 @@ public static class Logger
 {
     // ------------------------------------------------------------------------
 
-    private static string _debugFilePath = "";
-    private static string _debugFileName = "";
-
-    // ------------------------------------------------------------------------
-
     #region constants
 
     // Enable / Disable flags.
@@ -55,13 +49,18 @@ public static class Logger
     public const int LOG_DEBUG = 1;
     public const int LOG_ERROR = 2;
 
-    private const string DEBUG_TAG      = "[DEBUG.....]";
-    private const string ERROR_TAG      = "[ERROR.....]";
-    private const string CHECKPOINT_TAG = "[CHECKPOINT]";
-
-    private const string PREFS_FOLDER = @"\.prefs\";
+    private const string DEBUG_TAG              = "[DEBUG.....]";
+    private const string ERROR_TAG              = "[ERROR.....]";
+    private const string CHECKPOINT_TAG         = "[CHECKPOINT]";
+    private const string PREFS_FOLDER           = @"\.prefs\";
+    private const string DEFAULT_TRACE_FILENAME = "trace.txt";
 
     #endregion constants
+
+    // ------------------------------------------------------------------------
+
+    private static string _debugFilePath = "";
+    private static string _debugFileName = "";
 
     // ------------------------------------------------------------------------
 
@@ -84,7 +83,7 @@ public static class Logger
     /// <param name="filename"> The name of the file to write to. Default is trace.txt. </param>
     public static void Initialise( int logLevel = LOG_DEBUG,
                                    bool enableWriteToFile = true,
-                                   string filename = "trace.txt" )
+                                   string filename = DEFAULT_TRACE_FILENAME )
     {
         TraceLevel        = logLevel;
         EnableWriteToFile = enableWriteToFile;
@@ -205,7 +204,7 @@ public static class Logger
         }
 
         if ( lineBefore ) Divider();
-        
+
         var callerID = MakeCallerID( callerFilePath, callerMethod, callerLine );
 
         var message = $"[CHECKPOINT] : {GetTimeStampInfo()} : {GetCallerInfo( callerID )}";
@@ -227,7 +226,7 @@ public static class Logger
         var sb = new StringBuilder( DEBUG_TAG );
 
         sb.Append( " : " );
-        
+
         for ( var i = 0; i < length; i++ )
         {
             sb.Append( ch );
@@ -250,7 +249,7 @@ public static class Logger
     {
         if ( fileName.Equals( string.Empty ) )
         {
-            return;
+            fileName = DEFAULT_TRACE_FILENAME;
         }
 
         if ( File.Exists( fileName ) && deleteExisting )
@@ -259,17 +258,13 @@ public static class Logger
         }
 
         _debugFilePath = Environment.GetFolderPath( Environment.SpecialFolder.UserProfile ) + PREFS_FOLDER;
-
         _debugFileName = fileName;
 
         using var fs = File.Create( _debugFilePath + _debugFileName );
 
         var dateTime = DateTime.Now;
-
-        var divider = new UTF8Encoding( true )
-           .GetBytes( "-----------------------------------------------------" );
-
-        var time = new UTF8Encoding( true ).GetBytes( dateTime.ToShortTimeString() );
+        var divider  = new UTF8Encoding( true ).GetBytes( "-----------------------------------------------------" );
+        var time     = new UTF8Encoding( true ).GetBytes( dateTime.ToShortTimeString() );
 
         fs.Write( divider, 0, divider.Length );
         fs.Write( time, 0, time.Length );
@@ -366,9 +361,9 @@ public static class Logger
         var c = new GregorianCalendar();
 
         return $"{c.GetHour( DateTime.Now )}"
-             + $":{c.GetMinute( DateTime.Now )}"
-             + $":{c.GetSecond( DateTime.Now )}"
-             + $":{c.GetMilliseconds( DateTime.Now )}";
+               + $":{c.GetMinute( DateTime.Now )}"
+               + $":{c.GetSecond( DateTime.Now )}"
+               + $":{c.GetMilliseconds( DateTime.Now )}";
     }
 
     /// <summary>

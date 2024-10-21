@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopGLBackend", "Desktop
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Corelib", "Corelib\Corelib.csproj", "{2FDBE40C-2703-4C72-B383-FA716D4F5459}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "..\ConsoleApp1\ConsoleApp1.csproj", "{EC2CAFBF-3408-426D-883B-53D461EAAE83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{2FDBE40C-2703-4C72-B383-FA716D4F5459}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FDBE40C-2703-4C72-B383-FA716D4F5459}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FDBE40C-2703-4C72-B383-FA716D4F5459}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC2CAFBF-3408-426D-883B-53D461EAAE83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC2CAFBF-3408-426D-883B-53D461EAAE83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC2CAFBF-3408-426D-883B-53D461EAAE83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC2CAFBF-3408-426D-883B-53D461EAAE83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
