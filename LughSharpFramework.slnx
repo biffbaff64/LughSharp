@@ -1,0 +1,7 @@
+﻿<Solution>
+  <Project Path="..\..\CSharp\ConsoleApp1\ConsoleApp1.csproj" Type="Classic C#" />
+  <Project Path="AndroidBackend\AndroidBackend.csproj" Type="Classic C#" />
+  <Project Path="DesktopGLBackend\DesktopGLBackend.csproj" Type="Classic C#" />
+  <Project Path="Extensions\Extensions.csproj" Type="Classic C#" />
+  <Project Path="LughSharp\LughSharp.csproj" Type="Classic C#" />
+</Solution>
