@@ -171,7 +171,7 @@ public class Cubemap : GLTexture, IManageable
     /// Used internally to reload after context loss. Creates a new GL handle then
     /// calls <see cref="Load(ICubemapData?)"/>.
     /// </summary>
-    protected override void Reload()
+    internal override void Reload()
     {
         if ( !IsManaged )
         {
@@ -228,7 +228,7 @@ public class Cubemap : GLTexture, IManageable
             // first we have to make sure the AssetManager isn't loading anything anymore,
             // otherwise the ref counting trick below wouldn't work (when a cubemap is
             // currently on the task stack of the manager.)
-            AssetManager.FinishLoadingAsync();
+            AssetManager.FinishLoading();
 
             // next we go through each cubemap and reload either directly or via the
             // asset manager.
@@ -270,7 +270,7 @@ public class Cubemap : GLTexture, IManageable
                     };
 
                     // unload the c, create a new gl handle then reload it.
-                    AssetManager.UnloadAsync( fileName );
+                    AssetManager.Unload( fileName );
 
                     cubemap.GLTextureHandle = Gdx.GL.glGenTexture();
                     AssetManager.AddToLoadqueue( fileName, typeof( Cubemap ), parameter );

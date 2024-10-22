@@ -41,8 +41,8 @@ public class FileHandle
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Create a new FileHandle with a default <see cref="FileInfo"/> and
-    /// PathType set to <see cref="PathTypes.Internal"/>
+    /// Create a new FileHandle with a default <see cref="FileInfo"/> and PathType set
+    /// to <see cref="PathTypes.Internal"/>
     /// </summary>
     protected FileHandle()
     {
@@ -51,8 +51,8 @@ public class FileHandle
     }
 
     /// <summary>
-    /// Create a new FileHandle with a <see cref="FileInfo"/> using the supplied
-    /// filename, and PathType set to <see cref="PathTypes.Internal"/>
+    /// Create a new FileHandle with a <see cref="FileInfo"/> using the supplied filename,
+    /// and PathType set to <see cref="PathTypes.Internal"/>
     /// </summary>
     /// <param name="fileName"></param>
     public FileHandle( string fileName )
@@ -72,8 +72,7 @@ public class FileHandle
     }
 
     /// <summary>
-    /// Creates a new FileHandle using the supplied fileName string,
-    /// and <see cref="PathTypes"/> value.
+    /// Creates a new FileHandle using the supplied fileName string, and <see cref="PathTypes"/> value.
     /// </summary>
     /// <param name="fileName"></param>
     /// <param name="type"></param>
@@ -84,8 +83,7 @@ public class FileHandle
     }
 
     /// <summary>
-    /// Creates a new FileHandle using the supplied FileInfo instance,
-    /// and <see cref="PathTypes"/> value.
+    /// Creates a new FileHandle using the supplied FileInfo instance, and <see cref="PathTypes"/> value.
     /// </summary>
     /// <param name="file"></param>
     /// <param name="type"></param>
@@ -110,7 +108,7 @@ public class FileHandle
     /// Gdx.Files.Internal("dir/file.png") -> dir/file.png.
     /// </code>
     /// <para>
-    /// backward slashes will be replaced by forward slashes.
+    /// Backward slashes will be replaced by forward slashes.
     /// </para>
     /// </summary>
     public string FilePath => File.FullName.Replace( "\\", "/" );

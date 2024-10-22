@@ -172,12 +172,12 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Returns the width of the Pixmap in pixels.
     /// </summary>
-    public int Width => ( int ) PixmapData.Width;
+    public int Width => ( int )PixmapData.Width;
 
     /// <summary>
     /// Returns the height of the Pixmap in pixels.
     /// </summary>
-    public int Height => ( int ) PixmapData.Height;
+    public int Height => ( int )PixmapData.Height;
 
     /// <summary>
     /// Sets the type of <see cref="BlendTypes"/> to be used for all operations.
@@ -189,19 +189,19 @@ public class Pixmap : IDisposable
     /// Returns the OpenGL ES format of this Pixmap.
     /// </summary>
     /// <returns> one of GL_ALPHA, GL_RGB, GL_RGBA, GL_LUMINANCE, or GL_LUMINANCE_ALPHA.</returns>
-    public int GLFormat => ( int ) PixmapData.Format;
+    public int GLFormat => ( int )PixmapData.Format;
 
     /// <summary>
     /// Returns the OpenGL ES internal format of this Pixmap.
     /// </summary>
     /// <returns> one of GL_ALPHA, GL_RGB, GL_RGBA, GL_LUMINANCE, or GL_LUMINANCE_ALPHA.</returns>
-    public int GLInternalFormat => Gdx2DPixmap.ToGLFormat( ( int ) PixmapData.Format );
+    public int GLInternalFormat => Gdx2DPixmap.ToGLFormat( ( int )PixmapData.Format );
 
     /// <summary>
     /// Returns the OpenGL ES type of this Pixmap.
     /// </summary>
     /// <returns> one of GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT_5_6_5, GL_UNSIGNED_SHORT_4_4_4_4 </returns>
-    public int GLType => Gdx2DPixmap.ToGLType( ( int ) PixmapData.Format );
+    public int GLType => Gdx2DPixmap.ToGLType( ( int )PixmapData.Format );
 
     /// <summary>
     /// Returns the byte[] array holding the pixel data. For the format Alpha each
@@ -313,7 +313,7 @@ public class Pixmap : IDisposable
     /// <param name="y"> The target y-coordinate (top left corner)  </param>
     public void DrawPixmap( Pixmap pixmap, int x, int y )
     {
-        DrawPixmap( pixmap, x, y, 0, 0, ( int ) pixmap.Width, ( int ) pixmap.Height );
+        DrawPixmap( pixmap, x, y, 0, 0, ( int )pixmap.Width, ( int )pixmap.Height );
     }
 
     /// <summary>
@@ -457,7 +457,7 @@ public class Pixmap : IDisposable
     /// <summary>
     /// Returns the <see cref="ColorFormat"/> of this Pixmap.
     /// </summary>
-    public Pixmap.ColorFormat Format => PixmapFormat.ToPixmapColorFormat( ( int ) PixmapData.Format );
+    public Pixmap.ColorFormat Format => PixmapFormat.ToPixmapColorFormat( ( int )PixmapData.Format );
 
     /// <summary>
     /// Creates a Pixmap from a part of the current framebuffer.
@@ -520,8 +520,8 @@ public class Pixmap : IDisposable
             _filter = value;
 
             Scale = _filter == Filter.NearestNeighbour
-                        ? PixmapFormat.GDX_2D_SCALE_NEAREST
-                        : PixmapFormat.GDX_2D_SCALE_LINEAR;
+                ? PixmapFormat.GDX_2D_SCALE_NEAREST
+                : PixmapFormat.GDX_2D_SCALE_LINEAR;
         }
     }
 
@@ -641,20 +641,23 @@ public class Pixmap : IDisposable
 
     public void Debug()
     {
-        Logger.Debug( $"Width : {Width}, Height: {Height}" );
-        Logger.Debug( $"Format: {Format}:" +
-                      $"{PixmapFormat.ToPixmapColorFormat( ( int ) PixmapData.Format )}:" +
-                      $"{PixmapFormat.GetFormatString( PixmapFormat.ToGdx2DFormat( Format ) )}" );
-        Logger.Debug( $"Color : {Color.R}, {Color.G}, {Color.B}, {Color.A}" );
-
-        var a = PixmapData.PixmapBuffer.BackingArray();
-
-        for ( var i = 0; i < 100; i += 10 )
+        if ( Gdx.DevMode )
         {
-            Logger.Debug( $"{a[ i + 0 ]},{a[ i + 1 ]},{a[ i + 2 ]},{a[ i + 3 ]},"
-                        + $"{a[ i + 4 ]},{a[ i + 5 ]},{a[ i + 6 ]},{a[ i + 7 ]},"
-                        + $"{a[ i + 8 ]},{a[ i + 9 ]},{a[ i + 10 ]},{a[ i + 11 ]},"
-                        + $"{a[ i + 12 ]},{a[ i + 13 ]},{a[ i + 14 ]},{a[ i + 15 ]}," );
+            Logger.Debug( $"Width : {Width}, Height: {Height}" );
+            Logger.Debug( $"Format: {Format}:" +
+                          $"{PixmapFormat.ToPixmapColorFormat( ( int )PixmapData.Format )}:" +
+                          $"{PixmapFormat.GetFormatString( PixmapFormat.ToGdx2DFormat( Format ) )}" );
+            Logger.Debug( $"Color : {Color.R}, {Color.G}, {Color.B}, {Color.A}" );
+
+            var a = PixmapData.PixmapBuffer.BackingArray();
+
+            for ( var i = 0; i < 100; i += 10 )
+            {
+                Logger.Debug( $"{a[ i + 0 ]},{a[ i + 1 ]},{a[ i + 2 ]},{a[ i + 3 ]},"
+                              + $"{a[ i + 4 ]},{a[ i + 5 ]},{a[ i + 6 ]},{a[ i + 7 ]},"
+                              + $"{a[ i + 8 ]},{a[ i + 9 ]},{a[ i + 10 ]},{a[ i + 11 ]},"
+                              + $"{a[ i + 12 ]},{a[ i + 13 ]},{a[ i + 14 ]},{a[ i + 15 ]}," );
+            }
         }
     }
 }

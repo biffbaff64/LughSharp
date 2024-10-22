@@ -8,19 +8,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/ConsoleApp1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/ConsoleApp1.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/App.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/App.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Assets.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/DesktopLauncher.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/DesktopLauncher.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Keyboard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Keyboard.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/MainGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/MainGame.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/AssetManagerTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/AssetManagerTest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/ColorTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/ColorTest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/Matrix4Test.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApp1/Source/Tests/Matrix4Test.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Logger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Utils/Logger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/Core/DesktopGLApplication.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LughSharp.sln" beforeDir="false" afterPath="$PROJECT_DIR$/LughSharp.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidBackend/AndroidBackend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidBackend/AndroidBackend.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/Corelib.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/Corelib.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/AssetLoadingTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Assets/AssetLoadingTask.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/AssetManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Assets/AssetManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/RefCountedContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Assets/RefCountedContainer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/Gdx.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Core/Gdx.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Core/LughVersion.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Core/LughVersion.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Files/FileHandle.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Files/FileHandle.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Color.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Color.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Cubemap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Cubemap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLTexture.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLTexture.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Pixmap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Pixmap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Texture.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Texture.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/TextureArray.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/TextureArray.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Utils/Exceptions/GdxRuntimeException.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Utils/Exceptions/GdxRuntimeException.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DesktopGLBackend/DesktopGLBackend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DesktopGLBackend/DesktopGLBackend.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documents/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/Documents/TODO.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Extensions.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Extensions.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,28 +72,30 @@
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="2nlGQw0OAe9eojp56E5R146ycjG" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="autoscrollToSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Project.ConsoleApp1.executor": "Run",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.sourceCode.C#",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Project.ConsoleApp1.executor&quot;: &quot;Run&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C#&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -96,7 +108,9 @@
       <workItem from="1729541820903" duration="1171000" />
       <workItem from="1729543043626" duration="2952000" />
       <workItem from="1729546075422" duration="587000" />
-      <workItem from="1729546677582" duration="2091000" />
+      <workItem from="1729546677582" duration="3540000" />
+      <workItem from="1729614266492" duration="4073000" />
+      <workItem from="1729628365948" duration="7999000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -114,7 +128,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729545072040</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Restructuring corrections">
+      <option name="closed" value="true" />
+      <created>1729548946212</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1729548946212</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -129,6 +151,26 @@
     </ignored-roots>
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Major Restructuring" />
-    <option name="LAST_COMMIT_MESSAGE" value="Major Restructuring" />
+    <MESSAGE value="Restructuring corrections" />
+    <option name="LAST_COMMIT_MESSAGE" value="Restructuring corrections" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Corelib/LibCore/Graphics/GLTexture.cs</url>
+          <line>330</line>
+          <properties documentPath="C:\Development\Projects\CSharp\LughSharp\Corelib\LibCore\Graphics\GLTexture.cs" containingFunctionPresentation="Method 'SetAnisotropicFilter'">
+            <startOffsets>
+              <option value="13015" />
+            </startOffsets>
+            <endOffsets>
+              <option value="13016" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

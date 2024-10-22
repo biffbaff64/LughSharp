@@ -228,7 +228,7 @@ public class Texture : GLTexture, IManageable
     /// Used internally to reload after context loss. Creates a new GL handle then
     /// calls <see cref="Load(ITextureData)"/>.
     /// </summary>
-    protected override void Reload()
+    internal override void Reload()
     {
         if ( !IsManaged )
         {
@@ -299,7 +299,7 @@ public class Texture : GLTexture, IManageable
             // first we have to make sure the AssetManager isn't loading anything anymore,
             // otherwise the ref counting trick below wouldn't work (when a texture is
             // currently on the task stack of the manager.)
-            AssetManager.FinishLoadingAsync();
+            AssetManager.FinishLoading();
 
             // next we go through each texture and reload either directly or via the
             // asset manager.
@@ -339,7 +339,7 @@ public class Texture : GLTexture, IManageable
                     };
 
                     // unload the texture, create a new gl handle then reload it.
-                    AssetManager.UnloadAsync( fileName );
+                    AssetManager.Unload( fileName );
                     texture.GLTextureHandle = Gdx.GL.glGenTexture();
                     AssetManager.AddToLoadqueue( fileName, typeof( Texture ), parameters );
                 }

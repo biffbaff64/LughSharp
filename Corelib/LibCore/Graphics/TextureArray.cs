@@ -128,7 +128,7 @@ public class TextureArray : GLTexture, IManageable
     /// Attempts to reload the TextureArray.
     /// </summary>
     /// <exception cref="GdxRuntimeException"> If the TextureArray is unmanaged. </exception>
-    protected override void Reload()
+    internal override void Reload()
     {
         if ( !IsManaged )
         {

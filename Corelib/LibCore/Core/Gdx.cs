@@ -86,7 +86,7 @@ public static class Gdx
     {
         App = app;
         
-        Logger.Initialise();
+        Logger.Initialise( enableWriteToFile: false );
         Colors.Reset();
     }
     

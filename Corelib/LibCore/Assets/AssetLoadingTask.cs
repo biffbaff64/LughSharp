@@ -125,37 +125,23 @@ public class AssetLoadingTask
     /// </returns>
     private void LoadDependenciesAsync( AsynchronousAssetLoader loader )
     {
-        Logger.Checkpoint();
-
         if ( !DependenciesLoaded )
         {
-            Logger.Checkpoint();
-
             Dependencies = loader.GetDependencies( AssetDesc.AssetName,
                                                    Resolve( loader, AssetDesc )!,
                                                    AssetDesc.Parameters );
 
-            Logger.Checkpoint();
-
             if ( Dependencies != null )
             {
-                Logger.Checkpoint();
-                
                 RemoveDuplicates( Dependencies );
-                
-                Logger.Checkpoint();
-                
+
                 _manager.InjectDependencies( AssetDesc.AssetName, Dependencies );
             }
             else
             {
-                Logger.Checkpoint();
-                
                 // If we have no dependencies, we load the part of the task immediately.
                 loader.LoadAsync( _manager, Resolve( loader, AssetDesc )!, AssetDesc.Parameters! );
             }
-
-            Logger.Checkpoint();
 
             DependenciesLoaded = true;
         }
@@ -174,20 +160,12 @@ public class AssetLoadingTask
     /// </returns>
     private object? LoadAssetAsync( AsynchronousAssetLoader loader )
     {
-        Logger.Checkpoint();
-
         if ( !DependenciesLoaded )
         {
             LoadDependenciesAsync( loader );
         }
 
-        Task.Run( () => { loader.LoadAsync( _manager, Resolve( loader, AssetDesc )!, AssetDesc.Parameters! ); } );
-
-        var obj = loader.LoadSync( _manager, Resolve( loader, AssetDesc )!, AssetDesc.Parameters! );
-
-        Logger.Debug( "Finished" );
-
-        return obj;
+        return loader.LoadSync( _manager, Resolve( loader, AssetDesc )!, AssetDesc.Parameters! );
     }
 
     /// <summary>
@@ -255,10 +233,9 @@ public class AssetLoadingTask
     /// <param name="array">The list of asset descriptors to process for duplicates.</param>
     private static void RemoveDuplicates( List< AssetDescriptor > array )
     {
-        var uniqueAssets = array
-                           .GroupBy( a => new { a.AssetName, a.AssetType } )
-                           .Select( g => g.First() )
-                           .ToList();
+        var uniqueAssets = array.GroupBy( a => new { a.AssetName, a.AssetType } )
+                                .Select( g => g.First() )
+                                .ToList();
 
         array.Clear();
         array.AddRange( uniqueAssets );

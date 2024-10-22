@@ -31,8 +31,7 @@ namespace Corelib.LibCore.Graphics;
 /// A color class, holding the r, g, b and alpha component as floats in the range [0,1].
 /// All methods perform clamping on the internal values after execution.
 /// </summary>
-[PublicAPI]
-[DebuggerDisplay("RGBADebugString")]
+[PublicAPI, DebuggerDisplay( "RGBADebugString" )]
 public sealed class Color : ICloneable, IEquatable< Color >
 {
     #region colour values
@@ -179,7 +178,7 @@ public sealed class Color : ICloneable, IEquatable< Color >
     /// Constructs a new color using the components from the supplied color.
     /// </summary>
     public Color( Color color )
-                    : this( color.R, color.G, color.B, color.A )
+        : this( color.R, color.G, color.B, color.A )
     {
     }
 
@@ -242,8 +241,8 @@ public sealed class Color : ICloneable, IEquatable< Color >
     }
 
     /// <summary>
-    /// Multiplies each of this color objects components by the corresponding
-    /// components in the supplied Color.
+    /// Multiplies each of this color objects components by the corresponding components
+    /// in the supplied Color.
     /// </summary>
     /// <param name="color"> The supplied color. </param>
     /// <returns> This Color for chaining. </returns>
@@ -272,8 +271,7 @@ public sealed class Color : ICloneable, IEquatable< Color >
     }
 
     /// <summary>
-    /// Multiplies each of this color objects components by the corresponding
-    /// supplied components.
+    /// Multiplies each of this color objects components by the corresponding supplied components.
     /// </summary>
     /// <param name="r"> Red component </param>
     /// <param name="g"> Green component </param>
@@ -378,9 +376,9 @@ public sealed class Color : ICloneable, IEquatable< Color >
     public Color AddNew( Color color )
     {
         return new Color( this.R + color.R,
-                        this.G + color.G,
-                        this.B + color.B,
-                        this.A + color.A ).Clamp();
+                          this.G + color.G,
+                          this.B + color.B,
+                          this.A + color.A ).Clamp();
     }
 
     /// <summary>
@@ -391,9 +389,9 @@ public sealed class Color : ICloneable, IEquatable< Color >
     public Color SubNew( Color color )
     {
         return new Color( this.R - color.R,
-                        this.G - color.G,
-                        this.B - color.B,
-                        this.A - color.A ).Clamp();
+                          this.G - color.G,
+                          this.B - color.B,
+                          this.A - color.A ).Clamp();
     }
 
     /// <summary>
@@ -404,9 +402,9 @@ public sealed class Color : ICloneable, IEquatable< Color >
     public Color MulNew( Color color )
     {
         return new Color( this.R * color.R,
-                        this.G * color.G,
-                        this.B * color.B,
-                        this.A * color.A ).Clamp();
+                          this.G * color.G,
+                          this.B * color.B,
+                          this.A * color.A ).Clamp();
     }
 
     /// <summary>
@@ -450,7 +448,7 @@ public sealed class Color : ICloneable, IEquatable< Color >
         if ( interpolationCoefficient is < 0.0f or > 1.0f )
         {
             throw new ArgumentOutOfRangeException
-                            ( nameof( interpolationCoefficient ), "Interpolation coefficient must be between 0f and 1f." );
+                ( nameof( interpolationCoefficient ), "Interpolation coefficient must be between 0f and 1f." );
         }
 
         this.R += interpolationCoefficient * ( target.R - this.R );
@@ -477,7 +475,7 @@ public sealed class Color : ICloneable, IEquatable< Color >
         if ( interpolationCoefficient is < 0.0f or > 1.0f )
         {
             throw new ArgumentOutOfRangeException( nameof( interpolationCoefficient ),
-                            "Interpolation coefficient must be between 0f and 1f." );
+                                                   "Interpolation coefficient must be between 0f and 1f." );
         }
 
         this.R += interpolationCoefficient * ( r - this.R );
@@ -487,9 +485,6 @@ public sealed class Color : ICloneable, IEquatable< Color >
 
         return Clamp();
     }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
 
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
@@ -513,7 +508,7 @@ public sealed class Color : ICloneable, IEquatable< Color >
         // Remove the leading '#' if present
         if ( hex[ 0 ] == '#' )
         {
-            hex = hex.Substring( 1 );
+            hex = hex[ 1.. ];
         }
 
         if ( ( hex.Length != 6 ) && ( hex.Length != 8 ) )
@@ -833,7 +828,7 @@ public sealed class Color : ICloneable, IEquatable< Color >
         if ( value > 0xFFFF )
         {
             throw new ArgumentOutOfRangeException( nameof( value ),
-                            "Value must be a 16-bit integer." );
+                                                   "Value must be a 16-bit integer." );
         }
 
         color.R = ( ( value & 0xF800 ) >> 11 ) / 31f;
@@ -1086,12 +1081,12 @@ public sealed class Color : ICloneable, IEquatable< Color >
 
         ( this.R, this.G, this.B ) = i switch
         {
-                        0 => ( v, t, p ),
-                        1 => ( q, v, p ),
-                        2 => ( p, v, t ),
-                        3 => ( p, q, v ),
-                        4 => ( t, p, v ),
-                        _ => ( v, p, q )
+            0     => ( v, t, p ),
+            1     => ( q, v, p ),
+            2     => ( p, v, t ),
+            3     => ( p, q, v ),
+            4     => ( t, p, v ),
+            var _ => ( v, p, q )
         };
 
         return Clamp();
@@ -1273,7 +1268,7 @@ public sealed class Color : ICloneable, IEquatable< Color >
     /// Debug string for DebuggerDisplay attribute.
     /// </summary>
     internal string RGBADebugString => $"R: {R}. G: {G}. B: {B}. A: {A}";
-    
+
     /// <summary>
     /// Debugs the various methods and properties for this class.
     /// </summary>

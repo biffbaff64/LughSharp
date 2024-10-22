@@ -226,7 +226,7 @@ FILES
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - FileHandle
-    -      -      - 
+    - IP   - IP   - InputStream
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -270,7 +270,7 @@ GRAPHICS
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - BMPFormatStructs
-    - DONE - IP   - Color
+    - DONE - DONE - Color
     - DONE - DONE - Colors
     - DONE - DONE - Cubemap
     - DONE - DONE - FPSLogger

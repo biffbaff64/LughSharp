@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Maths;
@@ -159,7 +158,7 @@ public abstract class GLTexture : IDisposable
     // ------------------------------------------------------------------------
 
     /// <summary>
-    /// 
+    /// Creates a new GLTexture object using the supplied OpenGL target.
     /// </summary>
     /// <param name="glTarget"></param>
     protected GLTexture( int glTarget )
@@ -185,7 +184,7 @@ public abstract class GLTexture : IDisposable
     /// Used internally to reload after context loss. Creates a new GL handle then
     /// calls <see cref="Texture.Load"/>.
     /// </summary>
-    protected abstract void Reload();
+    internal abstract void Reload();
 
     /// <summary>
     /// Binds this texture. The texture will be bound to the currently active
@@ -197,8 +196,7 @@ public abstract class GLTexture : IDisposable
     }
 
     /// <summary>
-    /// Binds the texture to the given texture unit.
-    /// Sets the currently active texture unit.
+    /// Binds the texture to the given texture unit. Sets the currently active texture unit.
     /// </summary>
     /// <param name="unit"> the unit (0 to MAX_TEXTURE_UNITS).  </param>
     public void Bind( int unit )
@@ -442,6 +440,29 @@ public abstract class GLTexture : IDisposable
         }
         else
         {
+            DebugUploadImageData( target, miplevel, pixmap );
+
+            Gdx.GL.glTexImage2D( target,
+                                 miplevel,
+                                 pixmap.GLInternalFormat,
+                                 pixmap.Width,
+                                 pixmap.Height,
+                                 border: 0,
+                                 pixmap.GLFormat,
+                                 pixmap.GLType,
+                                 pixmap.PixelData );
+        }
+
+        if ( disposePixmap )
+        {
+            pixmap.Dispose();
+        }
+    }
+
+    private static void DebugUploadImageData( int target, int miplevel, Pixmap pixmap )
+    {
+        if ( Gdx.DevMode )
+        {
             Logger.Checkpoint();
             Logger.Debug( $"target: {target}" );
             Logger.Debug( $"mipLevel: {miplevel}" );
@@ -461,21 +482,6 @@ public abstract class GLTexture : IDisposable
                               + $"{a[ i + 8 ]},{a[ i + 9 ]},{a[ i + 10 ]},{a[ i + 11 ]},"
                               + $"{a[ i + 12 ]},{a[ i + 13 ]},{a[ i + 14 ]},{a[ i + 15 ]}," );
             }
-
-            Gdx.GL.glTexImage2D( target,
-                                 miplevel,
-                                 pixmap.GLInternalFormat,
-                                 pixmap.Width,
-                                 pixmap.Height,
-                                 border: 0,
-                                 pixmap.GLFormat,
-                                 pixmap.GLType,
-                                 pixmap.PixelData );
-        }
-
-        if ( disposePixmap )
-        {
-            pixmap.Dispose();
         }
     }
 

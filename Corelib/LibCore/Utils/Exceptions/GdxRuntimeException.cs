@@ -82,10 +82,22 @@ public class GdxRuntimeException : ApplicationException
                                     [CallerArgumentExpression( "argument" )]
                                     string? paramName = null )
     {
-        if ( argument is null )
-        {
-            Throw( paramName );
-        }
+        if ( argument is null ) Throw( paramName );
+    }
+
+    /// <summary>
+    /// Throws an GdxRuntimeException if the supplied condition is TRUE.
+    /// </summary>
+    /// <param name="condition">The condition to validate as true.</param>
+    /// <param name="paramName">
+    /// The name of the parameter with which condition corresponds. If you omit this
+    /// parameter, the name of argument is used.
+    /// </param>
+    public static void ThrowIfTrue( bool condition,
+                                    [CallerArgumentExpression( "condition" )]
+                                    string? paramName = null )
+    {
+        if ( condition ) Throw( paramName );
     }
 
     [DoesNotReturn]

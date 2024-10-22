@@ -83,8 +83,6 @@ public partial class LughVersion
         }
     }
 
-    // ------------------------------------------------------------------------
-
     /// <summary>
     /// Checks the provided version components against the current and reports
     /// TRUE if the CURRENT version is GREATER than the provided version.
@@ -157,6 +155,6 @@ public partial class LughVersion
     /// 
     /// </summary>
     /// <returns></returns>
-    [GeneratedRegex( "\\d+" )]
+    [System.Text.RegularExpressions.GeneratedRegex( "\\d+" )]
     private static partial Regex MyRegex();
 }
