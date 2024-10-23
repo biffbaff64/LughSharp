@@ -82,7 +82,7 @@ public class DesktopGLCursor : ICursor, IDisposable
         {
             Pixels = PixmapCopy.PixelData,
             Width  = PixmapCopy.Width,
-            Height = PixmapCopy.Height
+            Height = PixmapCopy.Height,
         };
 
         GLFWCursor = Glfw.CreateCursor( GLFWImage, xHotspot, yHotspot );
@@ -106,7 +106,7 @@ public class DesktopGLCursor : ICursor, IDisposable
             ICursor.SystemCursor.Hand             => Glfw.CreateStandardCursor( GLFW.CursorShape.Hand ),
             ICursor.SystemCursor.HorizontalResize => Glfw.CreateStandardCursor( GLFW.CursorShape.Hresize ),
             ICursor.SystemCursor.VerticalResize   => Glfw.CreateStandardCursor( GLFW.CursorShape.Vresize ),
-            var _                                 => Glfw.CreateStandardCursor( GLFW.CursorShape.Arrow )
+            var _                                 => Glfw.CreateStandardCursor( GLFW.CursorShape.Arrow ),
         };
         //@formatter:on
 

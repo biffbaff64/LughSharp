@@ -39,7 +39,7 @@ public class Animation< T >
         Loop,
         LoopReversed,
         LoopPingpong,
-        LoopRandom
+        LoopRandom,
     }
 
     // ------------------------------------------------------------------------

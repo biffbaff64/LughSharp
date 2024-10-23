@@ -45,15 +45,15 @@ public class PixmapPackerIO
     /// </param>
     /// <param name="packer"> the PixmapPacker to be written </param>
     /// <exception cref="IOException"> if the atlas file can not be written </exception>
-    public void Save( FileInfo file, PixmapPacker packer )
+    public static void Save( FileInfo file, PixmapPacker packer )
     {
         Save( file, packer, new SaveParameters() );
     }
 
     /// <summary>
-    /// Saves the provided PixmapPacker to the provided file. The resulting file will use the standard TextureAtlas file
-    /// format and
-    /// can be loaded by TextureAtlas as if it had been created using TexturePacker.
+    /// Saves the provided PixmapPacker to the provided file. The resulting file will use the
+    /// standard TextureAtlas file format and can be loaded by TextureAtlas as if it had been
+    /// created using TexturePacker.
     /// </summary>
     /// <param name="file">
     /// the file to which the atlas descriptor will be written, images will be written as siblings
@@ -61,7 +61,7 @@ public class PixmapPackerIO
     /// <param name="packer"> the PixmapPacker to be written </param>
     /// <param name="parameters"> the SaveParameters specifying how to save the PixmapPacker </param>
     /// @throws IOException if the atlas file can not be written
-    public void Save( FileInfo file, PixmapPacker packer, SaveParameters parameters )
+    public static void Save( FileInfo file, PixmapPacker packer, SaveParameters parameters )
     {
         var writer = new StreamWriter( file.FullName ); //= file.writer( false );
         var index  = 0;
@@ -159,6 +159,7 @@ public class PixmapPackerIO
     }
 
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
     [PublicAPI]
     public class ImageFormat
@@ -179,6 +180,7 @@ public class PixmapPackerIO
         public int    FType     { get; }
     }
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     /// <summary>

@@ -52,7 +52,7 @@ public static class PixmapFormatExtensions
             Pixmap.ColorFormat.RGB888         => PixmapFormat.GDX_2D_FORMAT_RGB888,
             Pixmap.ColorFormat.RGBA8888       => PixmapFormat.GDX_2D_FORMAT_RGBA8888,
 
-            var _ => throw new GdxRuntimeException( $"Unknown format: {format}" )
+            var _ => throw new GdxRuntimeException( $"Unknown format: {format}" ),
         };
     }
 }

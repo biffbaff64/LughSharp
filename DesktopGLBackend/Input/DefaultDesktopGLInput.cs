@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Exceptions;
@@ -244,7 +243,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             5     => MouseButton.Button6,
             6     => MouseButton.Button7,
             7     => MouseButton.Button8,
-            var _ => throw new GdxRuntimeException( $"Unknown MouseButton: {button}" )
+            var _ => throw new GdxRuntimeException( $"Unknown MouseButton: {button}" ),
         };
     }
 
@@ -257,7 +256,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             IInput.Keys.FORWARD_DEL  => ( char ) 127,
             IInput.Keys.NUMPAD_ENTER => '\n',
             IInput.Keys.ENTER        => '\n',
-            var _                    => ( char ) 0
+            var _                    => ( char ) 0,
         };
     }
 
@@ -385,7 +384,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             Key.RightAlt     => IInput.Keys.ALT_RIGHT,
             Key.RightSuper   => IInput.Keys.SYM,
             Key.Menu         => IInput.Keys.MENU,
-            var _            => IInput.Keys.UNKNOWN
+            var _            => IInput.Keys.UNKNOWN,
         };
     }
 
@@ -492,7 +491,7 @@ public class DefaultDesktopGLInput : AbstractInput, IDesktopGLInput
             MouseButton.ButtonMiddle => IInput.Buttons.MIDDLE,
             MouseButton.Button4      => IInput.Buttons.BACK,
             MouseButton.Button5      => IInput.Buttons.FORWARD,
-            var _                    => -1
+            var _                    => -1,
         };
 
 

@@ -30,7 +30,7 @@ public class ModelMaterial
     public enum MaterialType
     {
         Lambert,
-        Phong
+        Phong,
     }
 
     public string? ID { get; set; }

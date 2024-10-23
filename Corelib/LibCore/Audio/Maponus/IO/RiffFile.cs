@@ -60,7 +60,7 @@ public class RiffFile
         _riffHeader = new RiffChunkHeader( this )
         {
             CkId   = FourCC( "RIFF" ),
-            CkSize = 0
+            CkSize = 0,
         };
     }
 

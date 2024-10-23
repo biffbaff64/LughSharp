@@ -1086,7 +1086,7 @@ public sealed class Color : ICloneable, IEquatable< Color >
             2     => ( p, v, t ),
             3     => ( p, q, v ),
             4     => ( t, p, v ),
-            var _ => ( v, p, q )
+            var _ => ( v, p, q ),
         };
 
         return Clamp();

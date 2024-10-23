@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Utils.Exceptions;
 

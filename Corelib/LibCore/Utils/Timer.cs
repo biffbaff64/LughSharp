@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Utils.Exceptions;
 using Exception = System.Exception;
 using Monitor = System.Threading.Monitor;
@@ -427,7 +426,7 @@ public class Timer
 
             var thread = new Thread( Run )
             {
-                Name = "Timer"
+                Name = "Timer",
             };
 
             thread.Start();

@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Maths.Collision;
@@ -42,7 +41,7 @@ public class Mesh
         VertexArray,
         VertexBufferObject,
         VertexBufferObjectSubData,
-        VertexBufferObjectWithVAO
+        VertexBufferObjectWithVAO,
     }
 
     // ------------------------------------------------------------------------

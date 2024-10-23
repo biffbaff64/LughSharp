@@ -37,7 +37,7 @@ public interface INet
     [PublicAPI]
     public enum Protocol
     {
-        Tcp
+        Tcp,
     }
 
     /// <summary>

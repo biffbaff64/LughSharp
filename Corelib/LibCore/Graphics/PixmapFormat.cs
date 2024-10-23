@@ -66,7 +66,7 @@ public class PixmapFormat
             Pixmap.ColorFormat.RGBA4444       => GDX_2D_FORMAT_RGBA4444,
             Pixmap.ColorFormat.RGB888         => GDX_2D_FORMAT_RGB888,
             Pixmap.ColorFormat.RGBA8888       => GDX_2D_FORMAT_RGBA8888,
-            var _                             => throw new GdxRuntimeException( $"unknown format: {format}" )
+            var _                             => throw new GdxRuntimeException( $"unknown format: {format}" ),
         };
     }
 
@@ -85,7 +85,7 @@ public class PixmapFormat
             GDX_2D_FORMAT_RGBA8888        => Pixmap.ColorFormat.RGBA8888,
             GDX_2D_FORMAT_RGB565          => Pixmap.ColorFormat.RGB565,
             GDX_2D_FORMAT_RGBA4444        => Pixmap.ColorFormat.RGBA4444,
-            var _                         => throw new GdxRuntimeException( $"unknown format: {format}" )
+            var _                         => throw new GdxRuntimeException( $"unknown format: {format}" ),
         };
     }
 
@@ -122,7 +122,7 @@ public class PixmapFormat
             GDX_2D_FORMAT_RGB565          => IGL.GL_RGB,
             GDX_2D_FORMAT_RGBA8888        => IGL.GL_RGBA,
             GDX_2D_FORMAT_RGBA4444        => IGL.GL_RGBA,
-            var _                         => throw new GdxRuntimeException( $"unknown format: {format}" )
+            var _                         => throw new GdxRuntimeException( $"unknown format: {format}" ),
         };
     }
 
@@ -142,7 +142,7 @@ public class PixmapFormat
             GDX_2D_FORMAT_RGBA8888        => IGL.GL_UNSIGNED_BYTE,
             GDX_2D_FORMAT_RGB565          => IGL.GL_UNSIGNED_SHORT_5_6_5,
             GDX_2D_FORMAT_RGBA4444        => IGL.GL_UNSIGNED_SHORT_4_4_4_4,
-            var _                         => throw new GdxRuntimeException( $"unknown format: {format}" )
+            var _                         => throw new GdxRuntimeException( $"unknown format: {format}" ),
         };
     }
 
@@ -160,7 +160,7 @@ public class PixmapFormat
             GDX_2D_FORMAT_RGBA8888        => "GDX_2D_FORMAT_RGBA8888",
             GDX_2D_FORMAT_RGB565          => "GDX_2D_FORMAT_RGB565",
             GDX_2D_FORMAT_RGBA4444        => "GDX_2D_FORMAT_RGBA4444",
-            var _                         => "Unknown"
+            var _                         => "Unknown",
         };
     }
 

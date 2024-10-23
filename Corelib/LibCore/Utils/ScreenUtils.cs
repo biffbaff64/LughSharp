@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics;
 using Corelib.LibCore.Graphics.G2D;
 using Corelib.LibCore.Graphics.OpenGL;

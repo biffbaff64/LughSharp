@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics;
 using Corelib.LibCore.Graphics.G2D;
 using Corelib.LibCore.Maths;
@@ -85,7 +84,7 @@ public class SelectBox< T > : Widget, IDisableable
         _selection = new ArraySelection< T >( _items )
         {
             Actor    = this,
-            Required = true
+            Required = true,
         };
 
         _selectBoxList = new SelectBoxList( this );
@@ -601,7 +600,7 @@ public class SelectBox< T > : Widget, IDisableable
             ListBox = new ListBox< T >( SelectBox.BoxStyle.ListStyle )
             {
                 Touchable    = Touchable.Disabled,
-                TypeToSelect = true
+                TypeToSelect = true,
             };
 
             SetActor( ListBox );

@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Keys = Corelib.LibCore.Core.IInput.Keys;
 
 namespace Corelib.LibCore.Input;

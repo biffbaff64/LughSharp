@@ -41,7 +41,7 @@ public class OutputChannels
         BothChannels    = 0,
         LeftChannel     = 1,
         RightChannel    = 2,
-        DownmixChannels = 3
+        DownmixChannels = 3,
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ public class OutputChannels
             ( int ) OutputChannelsEnum.RightChannel    => Right,
             ( int ) OutputChannelsEnum.BothChannels    => Both,
             ( int ) OutputChannelsEnum.DownmixChannels => DownMix,
-            var _                                      => throw new ArgumentException( "Invalid channel code: " + code )
+            var _                                      => throw new ArgumentException( "Invalid channel code: " + code ),
         };
     }
 

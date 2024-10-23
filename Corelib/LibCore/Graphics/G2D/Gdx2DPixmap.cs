@@ -88,16 +88,18 @@ public partial class Gdx2DPixmap : IDisposable
     }
 
     /// <summary>
-    /// Creates a new Gdx2DPixmap instance.
+    /// Creates a new Gdx2DPixmap instance using data from the supplied buffer.
+    /// <paramref name="len"/> bytes are copied from <paramref name="buffer"/>, starting
+    /// at position specified by <paramref name="offset"/>.
     /// </summary>
-    /// <param name="buffer"></param>
-    /// <param name="offset"></param>
-    /// <param name="len"></param>
-    /// <param name="requestedFormat"></param>
+    /// <param name="buffer"> The source byte buffer. </param>
+    /// <param name="offset"> The position in buffer to start copying data from. </param>
+    /// <param name="len"> The number of bytes to copy from buffer. </param>
+    /// <param name="requestedFormat"> The desired color format. </param>
     /// <exception cref="IOException"></exception>
     public Gdx2DPixmap( byte[] buffer, int offset, int len, int requestedFormat )
     {
-        ( PixmapBuffer, _pixmapDataType ) = LoadData( buffer, offset, len );
+        ( PixmapBuffer, _pixmapDataType ) = LoadPixmapDataType( buffer, offset, len );
 
         if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
         {
@@ -135,7 +137,7 @@ public partial class Gdx2DPixmap : IDisposable
 
         var buffer = memoryStream.ToArray();
 
-        ( PixmapBuffer, _pixmapDataType ) = LoadData( buffer, 0, buffer.Length );
+        ( PixmapBuffer, _pixmapDataType ) = LoadPixmapDataType( buffer, 0, buffer.Length );
 
         if ( ( requestedFormat != 0 ) && ( requestedFormat != Format ) )
         {
@@ -178,7 +180,7 @@ public partial class Gdx2DPixmap : IDisposable
             Format = this.Format,
             Blend  = this.Blend,
             Scale  = this.Scale,
-            Pixels = new byte[ length ]
+            Pixels = new byte[ length ],
         };
 
         PixmapBuffer = new HeapByteBuffer( _pixmapDataType.Pixels, 0, length );
@@ -203,7 +205,7 @@ public partial class Gdx2DPixmap : IDisposable
     /// <param name="len"></param>
     /// <returns></returns>
     /// <exception cref="IOException"></exception>
-    private ( ByteBuffer, PixmapDataType ) LoadData( byte[] buffer, int offset, int len )
+    private ( ByteBuffer, PixmapDataType ) LoadPixmapDataType( byte[] buffer, int offset, int len )
     {
         var image = Stbi.LoadFromMemory( buffer, PixmapFormat.Gdx2dBytesPerPixel( ( int ) Format ) );
 
@@ -212,12 +214,12 @@ public partial class Gdx2DPixmap : IDisposable
             Width  = ( uint ) image.Width,
             Height = ( uint ) image.Height,
             Format = ( uint ) image.NumChannels,
-            Pixels = image.Data.ToArray()
+            Pixels = image.Data.ToArray(),
         };
 
         return ( new HeapByteBuffer( pixmapDef.Pixels, 0, pixmapDef.Pixels.Length ), pixmapDef );
     }
-
+    
     /// <summary>
     /// </summary>
     /// <param name="format"></param>
@@ -233,7 +235,7 @@ public partial class Gdx2DPixmap : IDisposable
             PixmapFormat.GDX_2D_FORMAT_RGB565          => IGL.GL_RGB,
             PixmapFormat.GDX_2D_FORMAT_RGBA8888        => IGL.GL_RGBA,
             PixmapFormat.GDX_2D_FORMAT_RGBA4444        => IGL.GL_RGBA,
-            var _                                      => throw new GdxRuntimeException( $"unknown format: {format}" )
+            var _                                      => throw new GdxRuntimeException( $"unknown format: {format}" ),
         };
     }
 
@@ -252,7 +254,7 @@ public partial class Gdx2DPixmap : IDisposable
             PixmapFormat.GDX_2D_FORMAT_RGBA8888        => IGL.GL_UNSIGNED_BYTE,
             PixmapFormat.GDX_2D_FORMAT_RGB565          => IGL.GL_UNSIGNED_SHORT_5_6_5,
             PixmapFormat.GDX_2D_FORMAT_RGBA4444        => IGL.GL_UNSIGNED_SHORT_4_4_4_4,
-            var _                                      => throw new GdxRuntimeException( $"unknown format: {format}" )
+            var _                                      => throw new GdxRuntimeException( $"unknown format: {format}" ),
         };
     }
 
@@ -269,7 +271,7 @@ public partial class Gdx2DPixmap : IDisposable
         pixmap.SetBlend( PixmapFormat.GDX_2D_BLEND_NONE );
         pixmap.DrawPixmap( this, 0, 0, 0, 0, ( int ) Width, ( int ) Height );
 
-        Dispose(); // ??????
+//        Dispose(); // ??????
 
         this.Width        = pixmap.Width;
         this.Height       = pixmap.Height;
@@ -335,8 +337,6 @@ public partial class Gdx2DPixmap : IDisposable
     /// Sets this pixmaps scaling value.
     /// </summary>
     /// <param name="scale"></param>
-
-    //TODO: Why is this not a float?
     public void SetScale( int scale )
     {
         this.Scale = ( uint ) scale;

@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Maths;
 using Corelib.LibCore.Utils;
@@ -38,7 +37,7 @@ public class ShapeRenderer : IDisposable
     {
         Points = IGL.GL_POINTS,
         Lines  = IGL.GL_LINES,
-        Filled = IGL.GL_TRIANGLES
+        Filled = IGL.GL_TRIANGLES,
     }
 
     private readonly Color   _color                = new( 1, 1, 1, 1 );

@@ -120,7 +120,7 @@ public class ParticleEffectLoader
 
         if ( p?.AtlasFile != null )
         {
-            deps = [ new AssetDescriptor( p.AtlasFile!, typeof( TextureAtlas ), p ), ];
+            deps = [ new AssetDescriptor( p.AtlasFile!, typeof( TextureAtlas ), p ) ];
         }
 
         return deps!;

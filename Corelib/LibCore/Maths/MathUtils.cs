@@ -104,7 +104,7 @@ public class MathUtils
             {
                 > 0f  => PI / 2,
                 0f    => 0f,
-                var _ => -PI / 2
+                var _ => -PI / 2,
             };
         }
 

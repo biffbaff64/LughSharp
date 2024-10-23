@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.G2D;
 using Corelib.LibCore.Input;
 using Corelib.LibCore.Maths;
@@ -130,7 +129,7 @@ public class ListBox< T > : Widget
         Selection = new ArraySelection< T >( Items )
         {
             Actor    = this,
-            Required = true
+            Required = true,
         };
 
         SetStyle( style );

@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.G2D;
 using Corelib.LibCore.Input;
 using Corelib.LibCore.Scenes.Scene2D.Listeners;
@@ -85,7 +84,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
         _selection = new TreeSelection( this )
         {
             Actor    = this,
-            Multiple = true
+            Multiple = true,
         };
 
         SetStyle( style );
@@ -786,7 +785,7 @@ public class Tree< TNode, TValue > : WidgetGroup where TNode : Tree< TNode, TVal
             {
                 0     => default( TNode ),
                 1     => First(),
-                var _ => _parent.RangeStart
+                var _ => _parent.RangeStart,
             };
         }
     }

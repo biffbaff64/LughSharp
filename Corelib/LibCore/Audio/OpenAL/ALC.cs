@@ -38,7 +38,7 @@ public class ALC
         REFRESH,
         SYNC,
         MONO_SOURCES,
-        STEREO_SOURCES
+        STEREO_SOURCES,
     ];
 
     // ------------------------------------------------------------------------

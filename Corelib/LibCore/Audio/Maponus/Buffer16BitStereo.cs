@@ -159,7 +159,7 @@ public class Buffer16BitStereo : AudioBase
                 // clamp values
                 > 32767.0f  => 32767.0f,
                 < -32767.0f => -32767.0f,
-                var _       => fs
+                var _       => fs,
             };
 
             var sample = ( int ) fs;

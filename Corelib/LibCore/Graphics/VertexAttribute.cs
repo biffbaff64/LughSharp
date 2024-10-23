@@ -246,7 +246,7 @@ public class VertexAttribute
             IGL.GL_SHORT          => 2 * NumComponents,
             IGL.GL_UNSIGNED_BYTE  => NumComponents,
             IGL.GL_BYTE           => NumComponents,
-            var _                 => 0
+            var _                 => 0,
         };
     }
 

@@ -114,5 +114,5 @@ public enum PathTypes
     /// Path relative to the private files directory on Android and to the
     /// application's root directory on the desktop.
     /// </summary>
-    Local
+    Local,
 }

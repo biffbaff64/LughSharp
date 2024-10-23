@@ -22,8 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
-
 namespace Corelib.LibCore.Assets.Loaders.Resolvers;
 
 /// <summary>

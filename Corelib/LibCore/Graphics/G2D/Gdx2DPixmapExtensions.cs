@@ -26,10 +26,11 @@ namespace Corelib.LibCore.Graphics.G2D;
 
 public partial class Gdx2DPixmap
 {
+    private const string DLL_PATH = "lib/gdx2d.dll";
+
     /// <summary>
     /// Gets the pixel at the specified X and Y coordinates.
     /// </summary>
-    /// <param name="pd"> The <see cref="PixmapDataType"/> holding the pixmap info. </param>
     /// <param name="x"> X co-ordinate. </param>
     /// <param name="y"> Y co-ordinate. </param>
     /// <returns></returns>
@@ -37,14 +38,13 @@ public partial class Gdx2DPixmap
     {
         return gdx2d_get_pixel( _pixmapDataType, x, y );
 
-        [DllImport( "lib/gdx2d.dll" )]
+        [DllImport( DLL_PATH )]
         static extern int gdx2d_get_pixel( PixmapDataType pd, int x, int y );
     }
 
     /// <summary>
     /// Set the pixel at the given coordinates.
     /// </summary>
-    /// <param name="pd"> The <see cref="PixmapDataType"/> holding the pixmap info. </param>
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="color"></param>
@@ -54,7 +54,7 @@ public partial class Gdx2DPixmap
 
         return;
 
-        [DllImport( "lib/gdx2d.dll" )]
+        [DllImport( DLL_PATH )]
         static extern void gdx2d_set_pixel( PixmapDataType pd, int x, int y, uint color );
     }
 
@@ -72,7 +72,7 @@ public partial class Gdx2DPixmap
 
         return;
 
-        [DllImport( "lib/gdx2d.dll" )]
+        [DllImport( DLL_PATH )]
         static extern void gdx2d_draw_line( PixmapDataType pd, int x1, int y1, int x2, int y2, uint color );
     }
 
@@ -90,7 +90,7 @@ public partial class Gdx2DPixmap
 
         return;
 
-        [DllImport( "lib/gdx2d.dll" )]
+        [DllImport( DLL_PATH )]
         static extern void gdx2d_draw_rect( PixmapDataType pd, int x, int y, uint width, uint height, uint color );
     }
 
@@ -107,7 +107,7 @@ public partial class Gdx2DPixmap
 
         return;
 
-        [DllImport( "lib/gdx2d.dll" )]
+        [DllImport( DLL_PATH )]
         static extern void gdx2d_draw_circle( PixmapDataType pd, int x, int y, uint radius, uint color );
     }
 
@@ -125,7 +125,7 @@ public partial class Gdx2DPixmap
 
         return;
 
-        [DllImport( "lib/gdx2d.dll" )]
+        [DllImport( DLL_PATH )]
         static extern void gdx2d_fill_rect( PixmapDataType pd, int x, int y, uint width, uint height, uint color );
     }
 
@@ -142,7 +142,7 @@ public partial class Gdx2DPixmap
 
         return;
 
-        [DllImport( "lib/gdx2d.dll" )]
+        [DllImport( DLL_PATH )]
         static extern void gdx2d_fill_circle( PixmapDataType pd, int x, int y, uint radius, uint color );
     }
 
@@ -162,7 +162,7 @@ public partial class Gdx2DPixmap
 
         return;
 
-        [DllImport( "lib/gdx2d.dll" )]
+        [DllImport( DLL_PATH )]
         static extern void gdx2d_fill_triangle( PixmapDataType pd, int x1, int y1, int x2, int y2, int x3, int y3, uint color );
     }
 
@@ -182,7 +182,7 @@ public partial class Gdx2DPixmap
 
         return;
         
-        [DllImport( "lib/gdx2d.dll" )]
+        [DllImport( DLL_PATH )]
         static extern void gdx2d_draw_pixmap( PixmapDataType pd,
                                               PixmapDataType dpd,
                                               int srcX,
@@ -213,7 +213,7 @@ public partial class Gdx2DPixmap
 
         return;
         
-        [DllImport( "lib/gdx2d.dll" )]
+        [DllImport( DLL_PATH )]
         static extern void gdx2d_draw_pixmap( PixmapDataType pd,
                                               PixmapDataType dpd,
                                               int srcX,
@@ -230,8 +230,6 @@ public partial class Gdx2DPixmap
     // ------------------------------------------------------------------------
 //TODO: Convert all of these to C#
 
-//    private const string DLL_PATH = "lib/gdx2d.dll";
-//
 //    [DllImport( DLL_PATH, SetLastError = true )]
 //    private static extern Gdx2dPixmapStruct gdx2d_load( byte[] buffer, int len );
 //

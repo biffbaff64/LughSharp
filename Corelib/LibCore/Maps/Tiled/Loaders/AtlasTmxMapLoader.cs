@@ -129,7 +129,7 @@ public class AtlasTmxMapLoader( IFileHandleResolver resolver )
     {
         var descriptors = new List< AssetDescriptor >
         {
-            new( GetAtlasFileHandle( tmxFile ), typeof( TextureAtlas ), textureLoaderParameters )
+            new( GetAtlasFileHandle( tmxFile ), typeof( TextureAtlas ), textureLoaderParameters ),
         };
 
         return descriptors;

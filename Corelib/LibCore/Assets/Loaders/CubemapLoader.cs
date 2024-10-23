@@ -47,7 +47,7 @@ public class CubemapLoader : AsynchronousAssetLoader
     {
         Filename    = "",
         Cubemap     = null!,
-        CubemapData = null!
+        CubemapData = null!,
     };
 
     /// <summary>

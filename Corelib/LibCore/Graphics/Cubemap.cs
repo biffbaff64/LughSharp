@@ -24,7 +24,6 @@
 
 using Corelib.LibCore.Assets;
 using Corelib.LibCore.Assets.Loaders;
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Utils;
@@ -266,7 +265,7 @@ public class Cubemap : GLTexture, IManageable
 
                         // special parameter which will ensure that the references stay the same.
                         Cubemap        = cubemap,
-                        LoadedCallback = new DefaultLoadedCallback( refCount )
+                        LoadedCallback = new DefaultLoadedCallback( refCount ),
                     };
 
                     // unload the c, create a new gl handle then reload it.
@@ -351,7 +350,7 @@ public class Cubemap : GLTexture, IManageable
             PositiveY,
             NegativeY,
             PositiveZ,
-            NegativeZ
+            NegativeZ,
         }
 
         // --------------------------------------------------------------------

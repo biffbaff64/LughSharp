@@ -88,7 +88,7 @@ public class WaveFile : RiffFile
             ( sbyte ) SupportClass.Identity( 'W' ),
             ( sbyte ) SupportClass.Identity( 'A' ),
             ( sbyte ) SupportClass.Identity( 'V' ),
-            ( sbyte ) SupportClass.Identity( 'E' )
+            ( sbyte ) SupportClass.Identity( 'E' ),
         ];
 
         var retcode = Write( theWave, 4 );

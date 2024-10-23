@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics;
 using Corelib.LibCore.Maths;
 using Corelib.LibCore.Utils;
@@ -280,7 +279,7 @@ public class DesktopGLWindow : IDisposable
             {
                 Width  = images[ i ].Width,
                 Height = images[ i ].Height,
-                Pixels = images[ i ].PixelData
+                Pixels = images[ i ].PixelData,
             };
             
             buffer.Add( icon );

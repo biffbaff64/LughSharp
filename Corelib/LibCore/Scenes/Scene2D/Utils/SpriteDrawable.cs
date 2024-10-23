@@ -142,7 +142,7 @@ public class SpriteDrawable : BaseDrawable, ITransformDrawable
             LeftWidth    = LeftWidth,
             RightWidth   = RightWidth,
             TopHeight    = TopHeight,
-            BottomHeight = BottomHeight
+            BottomHeight = BottomHeight,
         };
 
         return drawable;

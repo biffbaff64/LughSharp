@@ -73,13 +73,13 @@ public partial class Gdx2DPixmap
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    internal void clear_alpha( PixmapDataType pd, Color color, uint size )
+    internal static void clear_alpha( PixmapDataType pd, Color color, uint size )
     {
 //        int pixels = pixmap->width * pixmap->height;
 //        memset((void*)pixmap->pixels, col, pixels);
     }
 
-    internal void clear_luminance_alpha( PixmapDataType pd, Color color, uint size )
+    internal static void clear_luminance_alpha( PixmapDataType pd, Color color, uint size )
     {
 //        int             pixels = pixmap->width * pixmap->height;
 //        unsigned short* ptr    = (unsigned short*)pixmap->pixels;
@@ -92,7 +92,7 @@ public partial class Gdx2DPixmap
 //        }
     }
 
-    internal void clear_RGB888( PixmapDataType pd, Color color, uint size )
+    internal static void clear_RGB888( PixmapDataType pd, Color color, uint size )
     {
         var col = Color.RGB888( color );
         var b   = ( byte ) ( ( col & 0x0000ff00 ) >> 8 );
@@ -107,7 +107,7 @@ public partial class Gdx2DPixmap
         }
     }
 
-    internal void clear_RGBA8888( PixmapDataType pd, Color color, uint size )
+    internal static void clear_RGBA8888( PixmapDataType pd, Color color, uint size )
     {
         var col  = Color.RGBA8888( color );
         var a    = ( byte ) ( ( col & 0x000000ff ) );
@@ -124,7 +124,7 @@ public partial class Gdx2DPixmap
         }
     }
 
-    internal void clear_RGB565( PixmapDataType pd, Color color, uint size )
+    internal static void clear_RGB565( PixmapDataType pd, Color color, uint size )
     {
 //        int             pixels = pixmap->width * pixmap->height;
 //        unsigned short* ptr    = (unsigned short*)pixmap->pixels;
@@ -139,7 +139,7 @@ public partial class Gdx2DPixmap
         var col  = Color.RGB565( color );
     }
 
-    internal void clear_RGBA4444( PixmapDataType pd, Color color, uint size )
+    internal static void clear_RGBA4444( PixmapDataType pd, Color color, uint size )
     {
 //        int             pixels = pixmap->width * pixmap->height;
 //        unsigned short* ptr    = (unsigned short*)pixmap->pixels;
@@ -170,7 +170,7 @@ public partial class Gdx2DPixmap
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    private uint ToFormat( uint format, uint color )
+    private static uint ToFormat( uint format, uint color )
     {
         uint r, g, b, a;
 

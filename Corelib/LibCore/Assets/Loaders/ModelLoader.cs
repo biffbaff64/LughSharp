@@ -132,7 +132,7 @@ public abstract class ModelLoader : AsynchronousAssetLoader
         var item = new ObjectMap< string, ModelData >.Entry
         {
             Key   = fileName,
-            Value = data
+            Value = data,
         };
 
         lock ( Items )

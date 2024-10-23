@@ -50,7 +50,7 @@ public class PooledLinkedList< T >
     {
         _pool = new Pool< Item< T > >( initialCapacity, maxPoolSize )
         {
-            NewObject = GetNewObject
+            NewObject = GetNewObject,
         };
     }
 

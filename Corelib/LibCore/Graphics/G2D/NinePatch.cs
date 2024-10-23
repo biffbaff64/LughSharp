@@ -214,7 +214,7 @@ public class NinePatch
         Load( [
             null, null, null,
             null, region, null,
-            null, null, null
+            null, null, null,
         ] );
     }
 

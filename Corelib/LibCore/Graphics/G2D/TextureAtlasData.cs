@@ -68,7 +68,7 @@ public partial record TextureAtlasData
             { "size",       new PageFieldParse()  },
             { "format",     new PageFieldFormat() },
             { "filter",     new PageFieldFilter() },
-            { "repeat",     new PageFieldRepeat() }
+            { "repeat",     new PageFieldRepeat() },
         };
 
         Dictionary< string, IField< Region > > regionFields = new( 127 )
@@ -80,7 +80,7 @@ public partial record TextureAtlasData
             { "orig",       new RegionFieldOrig()    },
             { "offset",     new RegionFieldOffset()  },
             { "offsets",    new RegionFieldOffsets() },
-            { "index",      new RegionFieldIndex()   }
+            { "index",      new RegionFieldIndex()   },
         };
         //@formatter:on
 
@@ -134,7 +134,7 @@ public partial record TextureAtlasData
                 {
                     page = new Page
                     {
-                        TextureFile = new FileInfo( line.Trim() )
+                        TextureFile = new FileInfo( line.Trim() ),
                     };
 
                     while ( true )
@@ -154,7 +154,7 @@ public partial record TextureAtlasData
                     var region = new Region
                     {
                         Page = page,
-                        Name = line.Trim()
+                        Name = line.Trim(),
                     };
 
                     if ( flip )

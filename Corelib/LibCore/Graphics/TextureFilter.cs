@@ -37,7 +37,7 @@ public class TextureFilter
         MipMapNearestNearest,
         MipMapLinearNearest,
         MipMapNearestLinear,
-        MipMapLinearLinear
+        MipMapLinearLinear,
     }
 
     // ------------------------------------------------------------------------

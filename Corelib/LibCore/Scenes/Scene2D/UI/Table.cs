@@ -44,7 +44,7 @@ public class Table : WidgetGroup
         All,
         Table,
         Cell,
-        Actor
+        Actor,
     }
 
     // ------------------------------------------------------------------------

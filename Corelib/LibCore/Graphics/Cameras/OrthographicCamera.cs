@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Matrix4 = Corelib.LibCore.Maths.Matrix4;
 
 namespace Corelib.LibCore.Graphics.Cameras;

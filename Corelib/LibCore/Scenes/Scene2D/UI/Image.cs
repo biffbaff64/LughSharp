@@ -182,19 +182,19 @@ public class Image : Widget
                     X      = ( int ) ( x + ImageX ),
                     Y      = ( int ) ( y + ImageY ),
                     Width  = ( int ) ImageWidth,
-                    Height = ( int ) ImageHeight
+                    Height = ( int ) ImageHeight,
                 };
 
                 var origin = new Point2D
                 {
                     X = ( int ) ( OriginX - ImageX ),
-                    Y = ( int ) ( OriginY - ImageY )
+                    Y = ( int ) ( OriginY - ImageY ),
                 };
 
                 var scale = new Point2D
                 {
                     X = ( int ) scaleX,
-                    Y = ( int ) scaleY
+                    Y = ( int ) scaleY,
                 };
 
                 drawable.Draw( batch, region, origin, scale, rotation );

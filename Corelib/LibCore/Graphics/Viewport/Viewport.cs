@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.Cameras;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Maths;
@@ -144,7 +143,7 @@ public abstract class Viewport
         {
             X = screenCoords.X,
             Y = screenCoords.Y,
-            Z = 1.0f
+            Z = 1.0f,
         };
 
         Camera.Unproject( _tmp, ScreenX, ScreenY, ScreenWidth, ScreenHeight );

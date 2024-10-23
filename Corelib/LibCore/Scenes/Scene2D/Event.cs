@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Utils.Pooling;
 
 namespace Corelib.LibCore.Scenes.Scene2D;

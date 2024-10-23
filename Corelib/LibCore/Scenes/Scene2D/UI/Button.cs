@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.G2D;
 using Corelib.LibCore.Scenes.Scene2D.Listeners;
 using Corelib.LibCore.Scenes.Scene2D.Utils;

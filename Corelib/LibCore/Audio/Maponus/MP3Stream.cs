@@ -82,7 +82,7 @@ public class Mp3Stream : Stream
             2 => SoundFormat.Pcm16BitStereo,
             var _ => throw new Mp3SharpException
                          ( $"Unhandled channel count rep: {ChannelCount} "
-                         + $"(allowed values are 1-mono and 2-stereo)." )
+                         + $"(allowed values are 1-mono and 2-stereo)." ),
         };
 
         if ( Format == SoundFormat.Pcm16BitMono )

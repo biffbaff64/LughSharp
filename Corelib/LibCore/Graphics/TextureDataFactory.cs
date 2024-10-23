@@ -60,42 +60,21 @@ public static class TextureDataFactory
     {
         ArgumentNullException.ThrowIfNull( file );
 
-        Logger.Checkpoint();
-
-        ITextureData data;
-        
-        switch ( file.Extension.ToLower() )
+        ITextureData data = file.Extension.ToLower() switch
         {
             // Common Information Model image file format.
-            case ".cim":
-            {
-                data = new FileTextureData( file, PixmapIO.ReadCIM( file ), format, useMipMaps );
-                break;
-            }
-            
+            ".cim" => new FileTextureData( file, PixmapIO.ReadCIM( file ), format, useMipMaps ),
+
             // Compressed Texture format for WebGL and OpenGL ES.
-            case ".etc1":
-            {
-                data = new ETC1TextureData( file, useMipMaps );
-                break;
-            }
-            
+            ".etc1" => new ETC1TextureData( file, useMipMaps ),
+
             // Kronos TeXture image file format for OpenGL and OpenGL ES.
-            case ".ktx" or ".zktx":
-            {
-                data = new KtxTextureData( file, useMipMaps );
-                break;
-            }
-            
+            ".ktx" or ".zktx" => new KtxTextureData( file, useMipMaps ),
+
             // Other supported image file formats, PNG, BMP
             // Unsure about JPG/JPEG and TGA
-            case var _:
-            {
-                var pixmap = new Pixmap( file );
-                data = new FileTextureData( file, pixmap, format, useMipMaps );
-                break;
-            }
-        }
+            var _ => new FileTextureData( file, new Pixmap( file ), format, useMipMaps )
+        };
 
         return data;
     }

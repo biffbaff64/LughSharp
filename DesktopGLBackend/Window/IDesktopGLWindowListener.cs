@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using DesktopGLBackend.Core;
 
 namespace DesktopGLBackend.Window;

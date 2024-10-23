@@ -83,7 +83,7 @@ public class InputEvent : Event
         /// <summary>
         /// A keyboard key has been pressed and released.
         /// </summary>
-        KeyTyped
+        KeyTyped,
     }
 
     /// <summary>

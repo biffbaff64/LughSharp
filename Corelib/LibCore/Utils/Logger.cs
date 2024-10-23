@@ -349,7 +349,7 @@ public static class Logger
         {
             FileName   = Path.GetFileNameWithoutExtension( callerFilePath ),
             MethodName = callerMethod,
-            LineNumber = callerLine
+            LineNumber = callerLine,
         };
     }
 
@@ -406,7 +406,7 @@ public static class Logger
         {
             LOG_DEBUG
                 or LOG_ERROR => ( TraceLevel & traceLevel ) != 0,
-            var _ => false
+            var _ => false,
         };
     }
 

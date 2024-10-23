@@ -213,7 +213,7 @@ public class ImmediateModeRenderer20 : IImmediateModeRenderer
     {
         var attribs = new List< VertexAttribute >
         {
-            new( VertexAttributes.Usage.POSITION, 3, ShaderProgram.POSITION_ATTRIBUTE )
+            new( VertexAttributes.Usage.POSITION, 3, ShaderProgram.POSITION_ATTRIBUTE ),
         };
 
         if ( hasNormals )

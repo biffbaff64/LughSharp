@@ -171,7 +171,7 @@ public static partial class BufferUtils
         {
             ByteBuffer  => numElements << 2,
             FloatBuffer => numElements,
-            _           => dst.Limit
+            _           => dst.Limit,
         };
 
         Array.Copy( src, offset, dst.Hb, 0, numElements );
@@ -195,7 +195,7 @@ public static partial class BufferUtils
             ShortBuffer              => dst.Position << 1,
             IntBuffer or FloatBuffer => dst.Position << 2,
             var _ => throw new GdxRuntimeException
-                ( $"Can't get position for {dst.GetType().Name} instance" )
+                ( $"Can't get position for {dst.GetType().Name} instance" ),
         };
     }
 
@@ -213,7 +213,7 @@ public static partial class BufferUtils
             ShortBuffer              => bytes >>> 1,
             IntBuffer or FloatBuffer => bytes >>> 2,
             var _ => throw new GdxRuntimeException
-                ( $"Can't copy to a {dst.GetType().Name} instance" )
+                ( $"Can't copy to a {dst.GetType().Name} instance" ),
         };
     }
 
@@ -231,7 +231,7 @@ public static partial class BufferUtils
             ShortBuffer              => elements << 1,
             IntBuffer or FloatBuffer => elements << 2,
             var _ => throw new GdxRuntimeException
-                ( $"Can't copy to a {dst.GetType().Name} instance" )
+                ( $"Can't copy to a {dst.GetType().Name} instance" ),
         };
     }
 

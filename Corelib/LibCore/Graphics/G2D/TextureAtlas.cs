@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Exceptions;
 
@@ -145,7 +144,7 @@ public class TextureAtlas
                 Rotate         = region.Rotate,
                 Degrees        = region.Degrees,
                 Names          = region.Names,
-                Values         = region.Values
+                Values         = region.Values,
             };
 
             if ( region.Flip )
@@ -167,7 +166,7 @@ public class TextureAtlas
 
         var region = new AtlasRegion( texture, x, y, width, height )
         {
-            Name = name
+            Name = name,
         };
 
         Regions.Add( region );
@@ -190,7 +189,7 @@ public class TextureAtlas
 
         var region = new AtlasRegion( textureRegion )
         {
-            Name = name
+            Name = name,
         };
 
         Regions.Add( region );

@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Scenes.Scene2D.Listeners;
 
 namespace Corelib.LibCore.Scenes.Scene2D.UI;

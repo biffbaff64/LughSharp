@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;
@@ -156,7 +155,7 @@ public class DesktopGLGraphics : AbstractGraphics, IDisposable
             Depth            = GLWindow.Config.Depth,
             Stencil          = GLWindow.Config.Stencil,
             Samples          = GLWindow.Config.Samples,
-            CoverageSampling = false
+            CoverageSampling = false,
         };
     }
 

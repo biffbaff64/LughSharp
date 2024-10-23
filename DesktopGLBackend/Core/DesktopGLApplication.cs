@@ -516,7 +516,7 @@ public class DesktopGLApplication : IDesktopGLApplicationBase, IDisposable
         {
             "CORE"   => OpenGLProfile.CoreProfile,   // Use the core profile.
             "COMPAT" => OpenGLProfile.CompatProfile, // Use the compatibility profile.
-            var _    => throw new Exception( "Invalid OpenGL profile!" )
+            var _    => throw new Exception( "Invalid OpenGL profile!" ),
         };
 
         GLVersion = new GLVersion( Platform.ApplicationType.WindowsGL,

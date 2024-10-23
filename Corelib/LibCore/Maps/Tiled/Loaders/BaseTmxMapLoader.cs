@@ -1061,7 +1061,7 @@ public abstract class BaseTmxMapLoader< TP >( IFileHandleResolver resolver )
 
             var tileSet = new TiledMapTileSet
             {
-                Name = name
+                Name = name,
             };
 
             var tileSetProperties = tileSet.Properties;
@@ -1262,7 +1262,7 @@ public abstract class BaseTmxMapLoader< TP >( IFileHandleResolver resolver )
 
         var animatedTile = new AnimatedTiledMapTile( intervals, staticTiles! )
         {
-            ID = tile.ID
+            ID = tile.ID,
         };
 
         return animatedTile;

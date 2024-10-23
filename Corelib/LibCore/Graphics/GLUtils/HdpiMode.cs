@@ -22,8 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
-
 namespace Corelib.LibCore.Graphics.GLUtils;
 
 [PublicAPI]
@@ -42,5 +40,5 @@ public enum HdpiMode
     /// Mouse coordinates, <see cref="IGraphics.Width"/> and <see cref="IGraphics.Height"/>
     /// will return raw pixel coordinates irrespective of the system defined HDPI scaling.
     /// </summary>
-    Pixels
+    Pixels,
 }

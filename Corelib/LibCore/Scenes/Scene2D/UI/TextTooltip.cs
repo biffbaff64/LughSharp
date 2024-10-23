@@ -62,7 +62,7 @@ public class TextTooltip : Tooltip< Label >
     {
         var label = new Label( text, style.Label )
         {
-            Wrap = true
+            Wrap = true,
         };
 
         Container.SetActor( label );

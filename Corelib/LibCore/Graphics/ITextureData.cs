@@ -47,7 +47,7 @@ public interface ITextureData : IManageable
     public enum TextureType
     {
         Pixmap,
-        Custom
+        Custom,
     }
 
     /// <summary>

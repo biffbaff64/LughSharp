@@ -53,7 +53,7 @@ public class GLVersion : LughVersion
             Platform.ApplicationType.WindowsGL => GraphicsBackend.Type.OpenGL,
             Platform.ApplicationType.WebGL     => GraphicsBackend.Type.WebGL,
 
-            var _ => throw new GdxRuntimeException( $"Unknown Platform ApplicationType: {appType}" )
+            var _ => throw new GdxRuntimeException( $"Unknown Platform ApplicationType: {appType}" ),
         };
 
         VendorString   = vendorString == null ? "" : Marshal.PtrToStringUTF8( ( IntPtr )vendorString );

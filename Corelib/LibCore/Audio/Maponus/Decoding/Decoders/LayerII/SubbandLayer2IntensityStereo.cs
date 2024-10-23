@@ -164,7 +164,7 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
                     {
                         <= 4  => scalefactor1,
                         <= 8  => scalefactor2,
-                        var _ => scalefactor3
+                        var _ => scalefactor3,
                     };
 
                     filter1?.AddSample( sample, subbandnumber );
@@ -176,7 +176,7 @@ public class SubbandLayer2IntensityStereo : SubbandLayer2
                     {
                         <= 4  => channel2Scalefactor1,
                         <= 8  => channel2Scalefactor2,
-                        var _ => channel2Scalefactor3
+                        var _ => channel2Scalefactor3,
                     };
 
                     filter1?.AddSample( sample, subbandnumber );

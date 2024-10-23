@@ -108,7 +108,7 @@ public class TiledDrawable : TextureRegionDrawable
                     X      = ( int ) x,
                     Y      = ( int ) y,
                     Width  = ( int ) remainingX,
-                    Height = ( int ) regionHeight
+                    Height = ( int ) regionHeight,
                 };
 
                 for ( var ii = 0; ii < fullY; ii++ )
@@ -128,7 +128,7 @@ public class TiledDrawable : TextureRegionDrawable
                         X      = ( int ) x,
                         Y      = ( int ) y,
                         Width  = ( int ) remainingX,
-                        Height = ( int ) remainingY
+                        Height = ( int ) remainingY,
                     };
 
                     batch.Draw( texture, rect, u, v2, u2, v );
@@ -148,7 +148,7 @@ public class TiledDrawable : TextureRegionDrawable
                     X      = ( int ) x,
                     Y      = ( int ) y,
                     Width  = ( int ) regionWidth,
-                    Height = ( int ) remainingY
+                    Height = ( int ) remainingY,
                 };
 
                 for ( var i = 0; i < fullX; i++ )

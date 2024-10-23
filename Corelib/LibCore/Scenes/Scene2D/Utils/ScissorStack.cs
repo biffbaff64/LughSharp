@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Drawing;
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.Cameras;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;

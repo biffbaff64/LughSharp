@@ -205,7 +205,7 @@ public class SubbandLayer2Stereo : SubbandLayer2
             {
                 <= 4  => channel2Scalefactor1,
                 <= 8  => channel2Scalefactor2,
-                var _ => channel2Scalefactor3
+                var _ => channel2Scalefactor3,
             };
 
             if ( channels == OutputChannels.BOTH_CHANNELS )

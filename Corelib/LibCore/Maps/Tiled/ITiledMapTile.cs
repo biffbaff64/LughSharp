@@ -36,7 +36,7 @@ public interface ITiledMapTile
     public enum Blendmode
     {
         None,
-        Alpha
+        Alpha,
     }
 
     /// <summary>

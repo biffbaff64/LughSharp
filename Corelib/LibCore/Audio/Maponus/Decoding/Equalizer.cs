@@ -194,7 +194,7 @@ public class Equalizer
             BAND_NOT_PRESENT => eq,
             > 1.0f           => 1.0f,
             < -1.0f          => -1.0f,
-            var _            => eq
+            var _            => eq,
         };
     }
 

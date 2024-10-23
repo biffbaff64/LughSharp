@@ -76,7 +76,7 @@ public class Skin : IDisposable
         typeof( TextTooltip.TextTooltipStyle ),
         typeof( Touchpad.TouchpadStyle ),
         typeof( Tree< , >.TreeStyle ),
-        typeof( Window.WindowStyle )
+        typeof( Window.WindowStyle ),
     ];
 
     // ------------------------------------------------------------------------
@@ -437,7 +437,7 @@ public class Skin : IDisposable
 
         tiled = new TiledDrawable( GetRegion( name ) )
         {
-            Name = name
+            Name = name,
         };
 
         if ( Scale is not 1.0f )

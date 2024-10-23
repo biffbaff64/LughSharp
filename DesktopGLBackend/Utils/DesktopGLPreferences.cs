@@ -23,7 +23,6 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Xml.Linq;
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Utils.Exceptions;
 using Environment = System.Environment;
 

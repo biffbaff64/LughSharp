@@ -126,7 +126,7 @@ public class Sync
             } )
             {
                 Name         = "C# Timer",
-                IsBackground = true
+                IsBackground = true,
             };
 
             timerAccuracyThread.Start();

@@ -67,7 +67,7 @@ public class GLFrameBufferBuilder< TU >( int width, int height )
         var spec = new FrameBufferTextureAttachmentSpec( internalFormat, format, type )
         {
             IsFloat   = true,
-            IsGpuOnly = gpuOnly
+            IsGpuOnly = gpuOnly,
         };
 
         TextureAttachmentSpecs.Add( spec );
@@ -79,7 +79,7 @@ public class GLFrameBufferBuilder< TU >( int width, int height )
     {
         var spec = new FrameBufferTextureAttachmentSpec( internalFormat, IGL.GL_DEPTH_COMPONENT, type )
         {
-            IsDepth = true
+            IsDepth = true,
         };
 
         TextureAttachmentSpecs.Add( spec );
@@ -91,7 +91,7 @@ public class GLFrameBufferBuilder< TU >( int width, int height )
     {
         var spec = new FrameBufferTextureAttachmentSpec( internalFormat, IGL.GL_STENCIL_ATTACHMENT, type )
         {
-            IsStencil = true
+            IsStencil = true,
         };
 
         TextureAttachmentSpecs.Add( spec );

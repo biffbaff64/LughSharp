@@ -42,7 +42,7 @@ public class Frustrum
         new( -1, -1, 1 ),
         new( 1, -1, 1 ),
         new( 1, 1, 1 ),
-        new( -1, 1, 1 )
+        new( -1, 1, 1 ),
     ];
 
     protected static readonly float[] ClipSpacePlanePointsArray = new float[ 8 * 3 ];
@@ -54,7 +54,7 @@ public class Frustrum
     public readonly Vector3[] PlanePoints =
     [
         new(), new(), new(), new(),
-        new(), new(), new(), new()
+        new(), new(), new(), new(),
     ];
 
     protected readonly float[] PlanePointsArray = new float[ 8 * 3 ];

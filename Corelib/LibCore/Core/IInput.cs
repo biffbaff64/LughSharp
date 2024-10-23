@@ -61,7 +61,7 @@ public interface IInput
         PhonePad,
         Email,
         Password,
-        Uri
+        Uri,
     }
 
     // --------------------------------------------------------------------
@@ -74,7 +74,7 @@ public interface IInput
     public enum Orientation
     {
         Landscape,
-        Portrait
+        Portrait,
     }
 
     // --------------------------------------------------------------------
@@ -94,7 +94,7 @@ public interface IInput
         Vibrator,
         Gyroscope,
         RotationVector,
-        Pressure
+        Pressure,
     }
 
     /// <summary>
@@ -581,7 +581,7 @@ public interface IInput
                 SCROLL_LOCK        => "Scroll Lock",
                 PAUSE              => "Pause",
                 PRINT_SCREEN       => "Print",
-                var _              => null
+                var _              => null,
             };
 
             return str;

@@ -23,7 +23,6 @@
 // /////////////////////////////////////////////////////////////////////////////
 
 using System.Numerics;
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.OpenGL;
 
 namespace Corelib.LibCore.Graphics.Profiling;

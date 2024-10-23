@@ -104,7 +104,7 @@ public static class Platform
         /// </summary>
         MacOS,
 
-        Default = WindowsGL
+        Default = WindowsGL,
     }
 
     /// <summary>
@@ -166,7 +166,7 @@ public static class Platform
                     or ApplicationType.MacOS => value,
 
                 // ----------------------------------------
-                var _ => throw new GdxRuntimeException( $"Illegal Target Platform: {value.ToString()}" )
+                var _ => throw new GdxRuntimeException( $"Illegal Target Platform: {value.ToString()}" ),
             };
     }
 
@@ -188,7 +188,7 @@ public static class Platform
 
                 // ----------------------------------------
                 Family.Unknown => throw new GdxRuntimeException( $"Illegal Family Group: {value.ToString()}" ),
-                var _          => throw new GdxRuntimeException( $"Illegal Family Group: {value.ToString()}" )
+                var _          => throw new GdxRuntimeException( $"Illegal Family Group: {value.ToString()}" ),
             };
     }
 
@@ -201,7 +201,7 @@ public static class Platform
         {
             Architecture.Arm   => true,
             Architecture.Arm64 => true,
-            var _              => false
+            var _              => false,
         };
     }
 

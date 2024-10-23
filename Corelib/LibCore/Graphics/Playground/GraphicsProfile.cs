@@ -37,5 +37,5 @@ public enum GraphicsProfile
     /// Use the largest available set of graphic features and capabilities to
     /// target devices, that have more enhanced graphic capabilities.        
     /// </summary>
-    Enhanced
+    Enhanced,
 }

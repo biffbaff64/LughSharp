@@ -37,7 +37,7 @@ public class Plane
     {
         OnPlane,
         Back,
-        Front
+        Front,
     }
 
     /// <summary>

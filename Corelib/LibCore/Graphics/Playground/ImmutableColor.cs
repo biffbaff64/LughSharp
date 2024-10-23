@@ -493,7 +493,7 @@ public sealed class ImmutableColor : ICloneable, IEquatable< ImmutableColor >
             2 => ( p, v, t ),
             3 => ( p, q, v ),
             4 => ( t, p, v ),
-            _ => ( v, p, q )
+            _ => ( v, p, q ),
         };
 
         return Clamp();

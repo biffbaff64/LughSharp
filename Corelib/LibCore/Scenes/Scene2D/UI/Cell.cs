@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Utils;
 using Corelib.LibCore.Utils.Exceptions;
 using Corelib.LibCore.Utils.Pooling;
@@ -1418,7 +1417,7 @@ public class Cell : IPoolable
                 ExpandY     = ZEROI,
                 Colspan     = ONEI,
                 UniformX    = default( bool ),
-                UniformY    = default( bool )
+                UniformY    = default( bool ),
             };
         }
 

@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Maths;
 using Corelib.LibCore.Utils;
@@ -1020,8 +1019,8 @@ public class PixmapPacker : IDisposable
                     X      = packer.Padding,
                     Y      = packer.Padding,
                     Width  = packer.PageWidth - ( packer.Padding * 2 ),
-                    Height = packer.PageHeight - ( packer.Padding * 2 )
-                }
+                    Height = packer.PageHeight - ( packer.Padding * 2 ),
+                },
             };
         }
     }
@@ -1088,7 +1087,7 @@ public class PixmapPacker : IDisposable
                         bestRow = new SkylinePage.RowSpec
                         {
                             Y      = row.Y + row.Height,
-                            Height = rectHeight
+                            Height = rectHeight,
                         };
 
                         page.Rows.Add( bestRow );
@@ -1114,7 +1113,7 @@ public class PixmapPacker : IDisposable
             {
                 X      = padding + rectWidth,
                 Y      = padding,
-                Height = rectHeight
+                Height = rectHeight,
             };
 
             skylinePage.Rows.Add( rowSpec );

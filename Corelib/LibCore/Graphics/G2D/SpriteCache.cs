@@ -22,7 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
 using Corelib.LibCore.Graphics.GLUtils;
 using Corelib.LibCore.Graphics.OpenGL;
 using Corelib.LibCore.Maths;
@@ -152,7 +151,7 @@ public class SpriteCache
                                                2,
                                                ShaderProgram.TEXCOORD_ATTRIBUTE + "0" ) )
         {
-            AutoBind = false
+            AutoBind = false,
         };
 
         if ( useIndices )

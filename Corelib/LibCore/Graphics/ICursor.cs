@@ -22,8 +22,6 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-using Corelib.LibCore.Core;
-
 namespace Corelib.LibCore.Graphics;
 
 /// <summary>
@@ -46,6 +44,6 @@ public interface ICursor
         Crosshair,
         Hand,
         HorizontalResize,
-        VerticalResize
+        VerticalResize,
     }
 }

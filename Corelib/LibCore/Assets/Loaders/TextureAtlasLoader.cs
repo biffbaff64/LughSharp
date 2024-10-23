@@ -105,7 +105,7 @@ public class TextureAtlasLoader
                 Format     = page.Format,
                 GenMipMaps = page.UseMipMaps,
                 MinFilter  = page.MinFilter,
-                MagFilter  = page.MagFilter
+                MagFilter  = page.MagFilter,
             };
 
             if ( page.TextureFile != null )
