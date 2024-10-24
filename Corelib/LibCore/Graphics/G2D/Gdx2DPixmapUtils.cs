@@ -77,6 +77,10 @@ public partial class Gdx2DPixmap
     {
 //        int pixels = pixmap->width * pixmap->height;
 //        memset((void*)pixmap->pixels, col, pixels);
+
+         var numPixels = pd.Width * pd.Height;
+         
+//         Array.Fill< byte >( pd.Pixels, color.RGBAPackedColor, 0, numPixels );
     }
 
     internal static void clear_luminance_alpha( PixmapDataType pd, Color color, uint size )

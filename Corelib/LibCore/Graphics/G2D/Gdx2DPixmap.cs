@@ -69,6 +69,8 @@ public partial class Gdx2DPixmap : IDisposable
     public uint       Blend        { get; set; }
     public uint       Scale        { get; set; }
 
+    // ------------------------------------------------------------------------
+
     private PixmapDataType _pixmapDataType;
 
     // ------------------------------------------------------------------------
@@ -110,7 +112,7 @@ public partial class Gdx2DPixmap : IDisposable
         {
             throw new GdxRuntimeException( "Failed to create PixmapDef object." );
         }
-
+        
         this.Width  = _pixmapDataType.Width;
         this.Height = _pixmapDataType.Height;
         this.Format = _pixmapDataType.Format;
@@ -165,9 +167,9 @@ public partial class Gdx2DPixmap : IDisposable
     /// <exception cref="GdxRuntimeException"></exception>
     public Gdx2DPixmap( int width, int height, int format )
     {
-        this.Width  = ( uint ) width;
-        this.Height = ( uint ) height;
-        this.Format = ( uint ) format;
+        this.Width  = ( uint )width;
+        this.Height = ( uint )height;
+        this.Format = ( uint )format;
         this.Blend  = PixmapFormat.DEFAULT_BLEND;
         this.Scale  = PixmapFormat.DEFAULT_SCALE;
 
@@ -188,7 +190,7 @@ public partial class Gdx2DPixmap : IDisposable
         if ( PixmapBuffer == null )
         {
             throw new GdxRuntimeException( $"Unable to allocate memory for pixmap: "
-                                         + $"{width} x {height}: {PixmapFormat.GetFormatString( format )}" );
+                                           + $"{width} x {height}: {PixmapFormat.GetFormatString( format )}" );
         }
     }
 
@@ -207,19 +209,19 @@ public partial class Gdx2DPixmap : IDisposable
     /// <exception cref="IOException"></exception>
     private ( ByteBuffer, PixmapDataType ) LoadPixmapDataType( byte[] buffer, int offset, int len )
     {
-        var image = Stbi.LoadFromMemory( buffer, PixmapFormat.Gdx2dBytesPerPixel( ( int ) Format ) );
+        var image = Stbi.LoadFromMemory( buffer, PixmapFormat.Gdx2dBytesPerPixel( ( int )Format ) );
 
         var pixmapDef = new PixmapDataType
         {
-            Width  = ( uint ) image.Width,
-            Height = ( uint ) image.Height,
-            Format = ( uint ) image.NumChannels,
+            Width  = ( uint )image.Width,
+            Height = ( uint )image.Height,
+            Format = ( uint )image.NumChannels,
             Pixels = image.Data.ToArray(),
         };
 
         return ( new HeapByteBuffer( pixmapDef.Pixels, 0, pixmapDef.Pixels.Length ), pixmapDef );
     }
-    
+
     /// <summary>
     /// </summary>
     /// <param name="format"></param>
@@ -266,12 +268,12 @@ public partial class Gdx2DPixmap : IDisposable
     {
         Logger.Checkpoint();
 
-        var pixmap = new Gdx2DPixmap( ( int ) Width, ( int ) Height, requestedFormat );
+        var pixmap = new Gdx2DPixmap( ( int )Width, ( int )Height, requestedFormat );
 
         pixmap.SetBlend( PixmapFormat.GDX_2D_BLEND_NONE );
-        pixmap.DrawPixmap( this, 0, 0, 0, 0, ( int ) Width, ( int ) Height );
+        pixmap.DrawPixmap( this, 0, 0, 0, 0, ( int )Width, ( int )Height );
 
-//        Dispose(); // ??????
+//        Dispose();
 
         this.Width        = pixmap.Width;
         this.Height       = pixmap.Height;
@@ -330,7 +332,7 @@ public partial class Gdx2DPixmap : IDisposable
     /// <param name="blend"></param>
     public void SetBlend( int blend )
     {
-        this.Blend = ( uint ) blend;
+        this.Blend = ( uint )blend;
     }
 
     /// <summary>
@@ -339,7 +341,7 @@ public partial class Gdx2DPixmap : IDisposable
     /// <param name="scale"></param>
     public void SetScale( int scale )
     {
-        this.Scale = ( uint ) scale;
+        this.Scale = ( uint )scale;
     }
 
     // ------------------------------------------------------------------------
@@ -351,6 +353,7 @@ public partial class Gdx2DPixmap : IDisposable
     /// </summary>
     public void Dispose()
     {
+        GC.SuppressFinalize( this );
         Dispose( true );
     }
 

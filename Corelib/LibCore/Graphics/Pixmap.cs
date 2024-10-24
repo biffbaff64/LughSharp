@@ -169,7 +169,7 @@ public class Pixmap : IDisposable
             Logger.Debug( $"Reading file {file.FullName} into byte array." );
             
             var data = File.ReadAllBytes( file.FullName );
-
+            
             Gdx2DPixmap = new Gdx2DPixmap( data, 0, data.Length, 0 );
         }
         catch ( Exception e )
@@ -548,25 +548,31 @@ public class Pixmap : IDisposable
         };
     }
 
-    // ------------------------------------------------------------------------
-
     /// <summary>
-    /// Response listener for <see cref="Pixmap.DownloadFromUrl(String, IDownloadPixmapResponseListener)"/>
     /// </summary>
-    [PublicAPI]
-    public interface IDownloadPixmapResponseListener
+    public void Debug()
     {
-        /// <summary>
-        /// Called on the render thread when image was downloaded successfully.
-        /// </summary>
-        void DownloadComplete( Pixmap pixmap );
+        if ( Gdx.DevMode )
+        {
+            Logger.Debug( $"Width : {Width}, Height: {Height}" );
+            Logger.Debug( $"Format: {Format}, size : {Width * Height}" +
+                          $"{PixmapFormat.ToPixmapColorFormat( ( int )Gdx2DPixmap.Format )}:" +
+                          $"{PixmapFormat.GetFormatString( PixmapFormat.ToGdx2DFormat( Format ) )}" );
+            Logger.Debug( $"Color : {Color.R}, {Color.G}, {Color.B}, {Color.A}" );
 
-        /// <summary>
-        /// Called when image download failed. This might get called on a background thread.
-        /// </summary>
-        void DownloadFailed( Exception e );
+            var a = Gdx2DPixmap.PixmapBuffer.BackingArray();
+
+            for ( var i = 0; i < 100; i += 10 )
+            {
+                Logger.Debug( $"{a[ i + 0 ]},{a[ i + 1 ]},{a[ i + 2 ]},{a[ i + 3 ]},"
+                              + $"{a[ i + 4 ]},{a[ i + 5 ]},{a[ i + 6 ]},{a[ i + 7 ]},"
+                              + $"{a[ i + 8 ]},{a[ i + 9 ]},{a[ i + 10 ]},{a[ i + 11 ]},"
+                              + $"{a[ i + 12 ]},{a[ i + 13 ]},{a[ i + 14 ]},{a[ i + 15 ]}," );
+            }
+        }
     }
 
+    // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
     #region dispose pattern
@@ -577,6 +583,7 @@ public class Pixmap : IDisposable
     /// </summary>
     public void Dispose()
     {
+        GC.SuppressFinalize( this );
         Dispose( !IsDisposed );
     }
 
@@ -599,7 +606,7 @@ public class Pixmap : IDisposable
     /// Blending functions to be set with <see cref="Pixmap.Blending"/>.
     /// </summary>
     [PublicAPI]
-    public enum BlendTypes
+    public enum BlendTypes : int
     {
         None,
         SourceOver,
@@ -609,7 +616,7 @@ public class Pixmap : IDisposable
     /// Filters to be used with <see cref="DrawPixmap(Pixmap, int, int, int, int, int, int, int, int)"/>.
     /// </summary>
     [PublicAPI]
-    public enum Filter
+    public enum Filter : int
     {
         NearestNeighbour,
         BiLinear,
@@ -619,7 +626,7 @@ public class Pixmap : IDisposable
     /// Available Pixmap pixel formats.
     /// </summary>
     [PublicAPI]
-    public enum ColorFormat
+    public enum ColorFormat : int
     {
         // ----------
         Dummy,
@@ -642,27 +649,25 @@ public class Pixmap : IDisposable
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
 
-    public void Debug()
+    /// <summary>
+    /// Response listener for <see cref="Pixmap.DownloadFromUrl(String, IDownloadPixmapResponseListener)"/>
+    /// </summary>
+    [PublicAPI]
+    public interface IDownloadPixmapResponseListener
     {
-        if ( Gdx.DevMode )
-        {
-            Logger.Debug( $"Width : {Width}, Height: {Height}" );
-            Logger.Debug( $"Format: {Format}, size : {Width * Height}" +
-                          $"{PixmapFormat.ToPixmapColorFormat( ( int )Gdx2DPixmap.Format )}:" +
-                          $"{PixmapFormat.GetFormatString( PixmapFormat.ToGdx2DFormat( Format ) )}" );
-            Logger.Debug( $"Color : {Color.R}, {Color.G}, {Color.B}, {Color.A}" );
+        /// <summary>
+        /// Called on the render thread when image was downloaded successfully.
+        /// </summary>
+        void DownloadComplete( Pixmap pixmap );
 
-            var a = Gdx2DPixmap.PixmapBuffer.BackingArray();
-
-            for ( var i = 0; i < 100; i += 10 )
-            {
-                Logger.Debug( $"{a[ i + 0 ]},{a[ i + 1 ]},{a[ i + 2 ]},{a[ i + 3 ]},"
-                              + $"{a[ i + 4 ]},{a[ i + 5 ]},{a[ i + 6 ]},{a[ i + 7 ]},"
-                              + $"{a[ i + 8 ]},{a[ i + 9 ]},{a[ i + 10 ]},{a[ i + 11 ]},"
-                              + $"{a[ i + 12 ]},{a[ i + 13 ]},{a[ i + 14 ]},{a[ i + 15 ]}," );
-            }
-        }
+        /// <summary>
+        /// Called when image download failed. This might get called on a background thread.
+        /// </summary>
+        void DownloadFailed( Exception e );
     }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 }
 
 // ------------------------------------------------------------------------
