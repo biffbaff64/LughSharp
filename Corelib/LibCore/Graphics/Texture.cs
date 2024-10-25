@@ -87,7 +87,6 @@ public class Texture : GLTexture, IManageable
     public Texture( string internalPath )
         : this( Gdx.Files.Internal( internalPath ).File, false )
     {
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -98,7 +97,6 @@ public class Texture : GLTexture, IManageable
     public Texture( FileInfo file, bool useMipMaps )
         : this( file, Pixmap.ColorFormat.Default, useMipMaps )
     {
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -114,7 +112,6 @@ public class Texture : GLTexture, IManageable
                     bool useMipMaps = false )
         : this( TextureDataFactory.LoadFromFile( file, format, useMipMaps ) )
     {
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -125,7 +122,6 @@ public class Texture : GLTexture, IManageable
     public Texture( Pixmap pixmap, bool useMipMaps = false )
         : this( new PixmapTextureData( pixmap, null, useMipMaps, false ) )
     {
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -137,7 +133,6 @@ public class Texture : GLTexture, IManageable
     public Texture( Pixmap pixmap, Pixmap.ColorFormat format, bool useMipMaps = false )
         : this( new PixmapTextureData( pixmap, format, useMipMaps, false ) )
     {
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -149,7 +144,6 @@ public class Texture : GLTexture, IManageable
     public Texture( int width, int height, Pixmap.ColorFormat format )
         : this( new PixmapTextureData( new Pixmap( width, height, format ), null, false, true ) )
     {
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -158,7 +152,6 @@ public class Texture : GLTexture, IManageable
     public Texture( ITextureData data )
         : this( IGL.GL_TEXTURE_2D, Gdx.GL.glGenTexture(), data )
     {
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -172,12 +165,6 @@ public class Texture : GLTexture, IManageable
         : base( glTarget, glTextureHandle )
     {
         ArgumentNullException.ThrowIfNull( data );
-
-        Logger.Checkpoint();
-        Logger.Debug( $"data.Width: {data.Width}, data.Height: {data.Height}" );
-        Logger.Debug( $"data.TextureDataType: {data.TextureDataType}" );
-        Logger.Debug( $"data.Format: {data.Format}" );
-        Logger.Debug( $"data.IsPrepared: {data.IsPrepared}" );
 
         TextureData = data;
 
@@ -195,8 +182,6 @@ public class Texture : GLTexture, IManageable
     /// <param name="data"></param>
     public void Load( ITextureData data )
     {
-        Logger.Checkpoint();
-
         if ( data.IsManaged != TextureData.IsManaged )
         {
             throw new GdxRuntimeException( "New data must have the same managed status as the old data" );
@@ -269,7 +254,7 @@ public class Texture : GLTexture, IManageable
     /// <param name="texture"></param>
     private void AddManagedTexture( IApplication app, Texture texture )
     {
-        List< Texture > managedTextureArray = _managedTextures.TryGetValue( app, out List< Texture >? managedTexture )
+        var managedTextureArray = _managedTextures.TryGetValue( app, out var managedTexture )
             ? managedTexture
             : [ ];
 

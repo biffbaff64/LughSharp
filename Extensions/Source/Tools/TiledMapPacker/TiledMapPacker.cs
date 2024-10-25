@@ -23,7 +23,7 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 
-namespace Extensions.Source.Gdx_Tools.TiledMapPacker;
+namespace Extensions.Source.Tools.TiledMapPacker;
 
 public class TiledMapPacker
 {

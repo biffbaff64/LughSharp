@@ -162,12 +162,8 @@ public class Pixmap : IDisposable
     /// </exception>
     public Pixmap( FileInfo file )
     {
-        Logger.Checkpoint();
-
         try
         {
-            Logger.Debug( $"Reading file {file.FullName} into byte array." );
-            
             var data = File.ReadAllBytes( file.FullName );
             
             Gdx2DPixmap = new Gdx2DPixmap( data, 0, data.Length, 0 );

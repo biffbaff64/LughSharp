@@ -28,7 +28,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace Extensions.Source.Gdx_Tools.Tools.ImagePacker;
+namespace Extensions.Source.Tools.ImagePacker;
 
 /// <summary>
 /// A simple image packer class based on the nice algorithm by blackpawn.
@@ -66,7 +66,7 @@ public class ImagePacker
     private readonly Node _root;
 
     // ------------------------------------------------------------------------
-    
+
     /// <summary>
     /// Creates a new ImagePacker which will insert all supplied images into a <tt>width</tt>
     /// by <tt>height</tt> image. <tt>padding</tt> specifies the minimum number of pixels to
@@ -110,10 +110,12 @@ public class ImagePacker
         }
 
         node.LeaveName = name;
-        
-        rect = new Rectangle( node.Rect.X + borderPixels / 2, node.Rect.Y + borderPixels / 2,
-            node.Rect.Width - borderPixels, node.Rect.Height - borderPixels );
-        
+
+        rect = new Rectangle( node.Rect.X + borderPixels / 2,
+                              node.Rect.Y + borderPixels / 2,
+                              node.Rect.Width - borderPixels,
+                              node.Rect.Height - borderPixels );
+
         Rects[ name ] = rect;
 
         Image.Mutate( ctx =>
@@ -139,6 +141,7 @@ public class ImagePacker
     private Node? Insert( Rectangle rect )
     {
         var stack = new Stack< Node >();
+        
         stack.Push( _root );
 
         while ( stack.Count > 0 )
@@ -152,12 +155,12 @@ public class ImagePacker
                 continue;
             }
 
-            if ( node.LeaveName != null || node.Rect.Width < rect.Width || node.Rect.Height < rect.Height )
+            if ( ( node.LeaveName != null ) || ( node.Rect.Width < rect.Width ) || ( node.Rect.Height < rect.Height ) )
             {
                 continue;
             }
 
-            if ( node.Rect.Width == rect.Width && node.Rect.Height == rect.Height )
+            if ( ( node.Rect.Width == rect.Width ) && ( node.Rect.Height == rect.Height ) )
             {
                 return node;
             }
@@ -275,4 +278,3 @@ public class ImagePacker
         }
     }
 }
-

@@ -29,7 +29,7 @@ namespace Corelib.LibCore.Graphics.G2D;
 /// PixmapPacker I/O, saves PixmapPackers to files.
 /// </summary>
 [PublicAPI]
-public class PixmapPackerIO
+public partial class PixmapPackerIO
 {
     /// <summary>
     /// Saves the provided PixmapPacker to the provided file. The resulting
@@ -103,7 +103,7 @@ public class PixmapPackerIO
 
                     if ( parameters.UseIndexes )
                     {
-                        var rx = new Regex( "(.+)_(\\d+)$" );
+                        var rx = MyRegex();
 
                         var matches = rx.Matches( imageName );
 
@@ -213,4 +213,7 @@ public class PixmapPackerIO
             UseIndexes = useIndexes;
         }
     }
+
+    [GeneratedRegex("(.+)_(\\d+)$")]
+    private static partial Regex MyRegex();
 }

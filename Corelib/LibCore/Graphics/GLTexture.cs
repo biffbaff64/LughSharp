@@ -164,7 +164,6 @@ public abstract class GLTexture : IDisposable
     protected GLTexture( int glTarget )
         : this( glTarget, Gdx.GL.glGenTexture() )
     {
-        Logger.Checkpoint();
     }
 
     /// <summary>
@@ -174,8 +173,6 @@ public abstract class GLTexture : IDisposable
     /// <param name="glTextureHandle"></param>
     protected GLTexture( int glTarget, uint glTextureHandle )
     {
-        Logger.Checkpoint();
-
         GLTarget        = glTarget;
         GLTextureHandle = glTextureHandle;
     }
@@ -384,8 +381,6 @@ public abstract class GLTexture : IDisposable
     /// <param name="miplevel"></param>
     public static void UploadImageData( int target, ITextureData? data, int miplevel = 0 )
     {
-        Logger.Checkpoint();
-
         if ( data == null )
         {
             Logger.Error( "NULL ITextureData supplied!" );
@@ -516,3 +511,4 @@ public abstract class GLTexture : IDisposable
         }
     }
 }
+

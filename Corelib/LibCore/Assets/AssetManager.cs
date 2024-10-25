@@ -260,8 +260,6 @@ public class AssetManager
     {
         lock ( this )
         {
-            Logger.Checkpoint();
-
             if ( fileName == null ) return false;
 
             if ( ( _tasks.Count > 0 )
@@ -291,8 +289,6 @@ public class AssetManager
     {
         lock ( this )
         {
-            Logger.Checkpoint();
-
             if ( ( fileName == null ) || ( type == null ) ) return false;
 
             if ( _tasks.Count > 0 )
@@ -325,8 +321,6 @@ public class AssetManager
     {
         lock ( this )
         {
-            Logger.Checkpoint();
-
             if ( asset == null )
             {
                 return false;
@@ -361,8 +355,6 @@ public class AssetManager
         {
             ArgumentNullException.ThrowIfNull( parentAssetFilename );
 
-            Logger.Checkpoint();
-
             foreach ( var desc in dependendAssetDescs )
             {
                 Debug.Assert( desc.AssetName != null, "desc.FilePath is null" );
@@ -393,8 +385,6 @@ public class AssetManager
     {
         lock ( this )
         {
-            Logger.Checkpoint();
-
             _assetDependencies[ parentAssetFilename ].Add( dependendAssetDesc.AssetName );
 
             // If the asset is already loaded, increase its reference count.
@@ -430,8 +420,6 @@ public class AssetManager
     /// <exception cref="GdxRuntimeException">Thrown if the type of a dependency is null.</exception>
     public void IncrementRefCountedDependencies( string parent )
     {
-        Logger.Checkpoint();
-
         var stack = new Stack< string >();
         stack.Push( parent );
 
@@ -478,8 +466,6 @@ public class AssetManager
     {
         lock ( this )
         {
-            Logger.Checkpoint();
-
             var type = _assetTypes[ fileName ];
 
             if ( type == null )
@@ -504,8 +490,6 @@ public class AssetManager
     {
         lock ( this )
         {
-            Logger.Checkpoint();
-
             var type = _assetTypes[ fileName ];
 
             if ( type == null )
@@ -859,8 +843,6 @@ public class AssetManager
             }
         }
 
-        Logger.Debug( $"Loaded loader for type: {type.Name} : {result}" );
-
         return result;
     }
 
@@ -878,8 +860,6 @@ public class AssetManager
     /// <exception cref="GdxRuntimeException">Thrown if no loader is available for the asset type specified in the asset descriptor.</exception>
     private void AddTask( AssetDescriptor assetDesc )
     {
-        Logger.Checkpoint();
-
         var loader = GetLoader( assetDesc.AssetType, assetDesc.AssetName );
 
         if ( loader == null )
@@ -902,13 +882,9 @@ public class AssetManager
     {
         if ( _tasks.TryPeek( out var task ) )
         {
-            Logger.Checkpoint();
-
             try
             {
                 var asset = task.LoadAsync();
-
-                Logger.Debug( $"task cancelled?: {task.Cancel}" );
 
                 if ( !task.Cancel )
                 {
@@ -944,15 +920,8 @@ public class AssetManager
     /// </summary>
     private bool LoadNextTask()
     {
-        Logger.Checkpoint( true, true );
-
-        Logger.Debug( $"_loaded size: {_loaded}" );
-        Logger.Debug( $"_toLoad size: {_toLoad}" );
-        Logger.Debug( $"LoadQueue size: {_loadQueue.Count}" );
-
         var assetDesc = _loadQueue.RemoveIndex( 0 );
-
-        var isLoaded = false;
+        var isLoaded  = false;
 
         if ( IsLoaded( assetDesc.AssetName ) )
         {
@@ -969,8 +938,6 @@ public class AssetManager
 
             isLoaded = true;
         }
-
-        Logger.Checkpoint( true, true );
 
         return isLoaded;
     }
@@ -1042,13 +1009,7 @@ public class AssetManager
     {
         lock ( this )
         {
-            Logger.Checkpoint();
-
-            var isLoaded = ( fileName != null ) && _assetTypes.ContainsKey( fileName );
-
-            Logger.Debug( $"Asset: {fileName} is already loaded: {isLoaded}" );
-
-            return isLoaded;
+            return ( fileName != null ) && _assetTypes.ContainsKey( fileName );
         }
     }
 
@@ -1062,14 +1023,10 @@ public class AssetManager
             ArgumentNullException.ThrowIfNull( type );
             GdxRuntimeException.ThrowIfNull( _assets );
 
-            Logger.Checkpoint();
-
             // Retrieve all assets of the required type
             var assetsByType = _assets.Get( type );
             var isLoaded = ( fileName.Length != 0 ) && ( assetsByType != null )
                                                     && assetsByType.ContainsKey( fileName );
-
-            Logger.Debug( $"Asset: {fileName} is already loaded: {isLoaded}" );
 
             return isLoaded;
         }
@@ -1084,8 +1041,6 @@ public class AssetManager
         lock ( this )
         {
             ArgumentNullException.ThrowIfNull( desc );
-
-            Logger.Checkpoint();
 
             AddToLoadqueue( desc.AssetName, desc.AssetType, desc.Parameters );
         }
@@ -1102,9 +1057,6 @@ public class AssetManager
     {
         lock ( this )
         {
-            Logger.Divider();
-            Logger.Debug( $"fileName: {fileName}, type: {type}" );
-
             AddToLoadqueue( fileName, type, null );
         }
     }
@@ -1125,8 +1077,6 @@ public class AssetManager
             ArgumentNullException.ThrowIfNull( fileName );
             ArgumentNullException.ThrowIfNull( type );
 
-            Logger.Checkpoint();
-
             // The result of GetLoader is discarded here, but the call is made as
             // the method throws an exception if there is no available loader
             // for the supplied asset.
@@ -1146,8 +1096,6 @@ public class AssetManager
             ValidatePreloadQueue( fileName, type );
 
             _toLoad++;
-
-            Logger.Debug( $"Adding asset to Load Queue: Name:{fileName} Type: {type.Name}" );
 
             _loadQueue.Add( new AssetDescriptor
             {
@@ -1205,14 +1153,10 @@ public class AssetManager
     /// <returns></returns>
     public void FinishLoading()
     {
-        Logger.Debug( "Waiting for loading to complete..." );
-
         while ( !Update() )
         {
             Task.Yield();
         }
-
-        Logger.Debug( "Loading complete." );
     }
 
     /// <summary>
@@ -1233,8 +1177,6 @@ public class AssetManager
     {
         ArgumentNullException.ThrowIfNull( fileName );
 
-        Logger.Debug( $"Waiting for asset to be loaded: {fileName}" );
-
         while ( true )
         {
             var type = _assetTypes.Get( fileName );
@@ -1243,16 +1185,10 @@ public class AssetManager
             {
                 var assetsByType   = _assets?.Get( type );
                 var assetContainer = assetsByType?.Get( fileName );
-
-                var asset = assetContainer?.Asset;
-
-                Logger.Debug( $"assetsByType: {assetsByType?.Count}" );
-                Logger.Debug( $"asset       : {assetContainer?.Asset}" );
-                Logger.Debug( $"refCount    : {assetContainer?.RefCount}" );
+                var asset          = assetContainer?.Asset;
 
                 if ( asset != null )
                 {
-                    Logger.Debug( $"Asset loaded: {fileName}" );
                     return asset;
                 }
             }
@@ -1277,8 +1213,6 @@ public class AssetManager
             ArgumentNullException.ThrowIfNull( type );
             ArgumentNullException.ThrowIfNull( loader );
 
-            Logger.Debug( $"{type}:{loader}:{suffix}" );
-
             if ( !_loaders.TryGetValue( type, out var value ) )
             {
                 var typeLoaders = new Dictionary< string, AssetLoader >();
@@ -1300,8 +1234,6 @@ public class AssetManager
     {
         lock ( this )
         {
-            Logger.Checkpoint();
-
             if ( !File.Exists( fileName ) )
             {
                 throw new GdxRuntimeException( $"File '{fileName}' not found!" );
@@ -1342,8 +1274,6 @@ public class AssetManager
             {
                 var otherType = _assetTypes.Get( fileName );
 
-                Logger.Debug( $"Key: {fileName} Value: {otherType}" );
-
                 if ( ( otherType != null ) && ( otherType != type ) )
                 {
                     throw new GdxRuntimeException
@@ -1351,8 +1281,6 @@ public class AssetManager
                           $"type (expected: {type?.Name}, found: {otherType.Name})" );
                 }
             }
-
-            Logger.Debug( $"Asset {fileName}: Validated successfully." );
         }
     }
 
@@ -1408,8 +1336,6 @@ public class AssetManager
     {
         if ( ( _tasks.Count > 0 ) && ( _tasks.Peek().AssetDesc.AssetName == fileName ) )
         {
-            Logger.Debug( $"Unload (from tasks): {fileName}" );
-
             var task = _tasks.Dequeue();
             task.Cancel = true;
             task.Unload();
@@ -1430,13 +1356,10 @@ public class AssetManager
     /// </returns>
     private bool TryRemoveFromQueue( string fileName, Type type )
     {
-        Logger.Checkpoint();
-
         for ( var i = 0; i < _loadQueue.Count; i++ )
         {
             if ( _loadQueue[ i ].AssetName.Equals( fileName ) )
             {
-                Logger.Debug( $"Unload (from queue): {fileName}" );
                 _toLoad--;
 
                 var desc = _loadQueue[ i ];
@@ -1467,8 +1390,6 @@ public class AssetManager
 
         GdxRuntimeException.ThrowIfNull( _assets );
 
-        Logger.Checkpoint();
-
         if ( !_assets.TryGetValue( type, out var assetRef )
              || !assetRef.TryGetValue( fileName, out var container ) )
         {
@@ -1479,8 +1400,6 @@ public class AssetManager
 
         if ( container.RefCount <= 0 )
         {
-            Logger.Debug( $"Unload (dispose): {fileName}" );
-
             DisposeAsset( container );
 
             _assetTypes.Remove( fileName );
@@ -1501,8 +1420,6 @@ public class AssetManager
     /// <param name="container">The container that holds the asset to be disposed.</param>
     private static void DisposeAsset( IRefCountedContainer container )
     {
-        Logger.Checkpoint();
-
         if ( container.Asset is IDisposable disposable )
         {
             disposable.Dispose();
@@ -1516,8 +1433,6 @@ public class AssetManager
     /// <returns>A task representing the asynchronous removal of dependencies.</returns>
     private void RemoveDependencies( string fileName )
     {
-        Logger.Checkpoint();
-
         if ( !_assetDependencies.TryGetValue( fileName, out var dependencies ) )
         {
             return;
@@ -1546,8 +1461,6 @@ public class AssetManager
     /// </summary>
     public void ClearAsync()
     {
-        Logger.Checkpoint();
-
         lock ( this )
         {
             _loadQueue.Clear();

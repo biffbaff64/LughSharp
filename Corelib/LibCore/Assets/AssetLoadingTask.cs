@@ -81,25 +81,19 @@ public class AssetLoadingTask
 
         if ( Cancel )
         {
-            Logger.Debug( "Loading cancelled!" );
-
             return null;
         }
-
-        Logger.Debug( $"_loader: {_loader}" );
 
         switch ( _loader )
         {
             case AsynchronousAssetLoader asyncLoader:
             {
-                Logger.Debug( "Async loader started." );
                 LoadDependenciesAsync( asyncLoader );
                 return LoadAssetAsync( asyncLoader );
             }
 
             case SynchronousAssetLoader< Type, AssetLoaderParameters > syncLoader:
             {
-                Logger.Debug( "Sync loader started." );
                 return LoadSynchronously( syncLoader );
             }
 
@@ -145,8 +139,6 @@ public class AssetLoadingTask
 
             DependenciesLoaded = true;
         }
-
-        Logger.Debug( "Finished" );
     }
 
     /// <summary>

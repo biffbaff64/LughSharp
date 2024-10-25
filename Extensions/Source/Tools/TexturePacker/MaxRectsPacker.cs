@@ -24,10 +24,10 @@
 
 using JetBrains.Annotations;
 
-namespace Extensions.Source.Gdx_Tools.Tools.TexturePacker;
+namespace Extensions.Source.Tools.TexturePacker;
 
 [PublicAPI]
-public class TexturePackerFileProcessor
+public class MaxRectsPacker
 {
     
 }

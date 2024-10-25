@@ -14,8 +14,8 @@ EXTENSIONS/BOX2D
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXTENSIONS/GDX-FREETYPE
------------------------
+EXTENSIONS/FREETYPE
+-------------------
 
     CODE   DOCUMENT
     ----   --------
@@ -27,22 +27,37 @@ EXTENSIONS/GDX-FREETYPE
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-EXTENSIONS/GDX-TOOLS
+EXTENSIONS/TOOLS
 --------------------
 
     CODE   DOCUMENT
     ----   --------
     - IP   - IP   - FileProcessor
 
-EXTENSIONS/GDX-TOOLS/IMAGEPACKER
---------------------------------
+EXTENSIONS/TOOLS/IMAGEPACKER
+----------------------------
 
     CODE   DOCUMENT
     ----   --------
     - DONE - DONE - ImagePacker
     -      -      - ImagePackerTest
 
-EXTENSIONS/GDX-TOOLS/TILEDMAPPACKER
+EXTENSIONS/TOOLS/TEXTUREPACKER
+------------------------------
+
+    CODE   DOCUMENT
+    ----   --------
+    - DONE - IP   - ColorBleedEffect
+    - IP   -      - GridPacker
+    -      -      - ImageProcessor
+    -      -      - MaxRectsPacker
+    - IP   -      - TexturePacker
+    -      -      - TexturePackerFileProcessor
+    -      -      - TexturePackerTest
+    -      -      - TexturePackerUpscaleTest
+    -      -      - TextureUnpacker
+
+EXTENSIONS/TOOLS/TILEDMAPPACKER
 -----------------------------------
 
     CODE   DOCUMENT
@@ -51,24 +66,6 @@ EXTENSIONS/GDX-TOOLS/TILEDMAPPACKER
     -      -      - TiledMapPackerTest
     -      -      - TiledMapPackerTestRender
     -      -      - TileSetLayout
-
-EXTENSIONS/GDX-TOOLS/TOOLS
---------------------------
-
-EXTENSIONS/GDX-TOOLS/TOOLS/TEXTUREPACKER
-----------------------------------------
-
-    CODE   DOCUMENT
-    ----   --------
-    - DONE - IP   - ColorBleedEffect
-    -      -      - GridPacker
-    -      -      - ImageProcessor
-    -      -      - MaxRectsPacker
-    -      -      - TexturePacker
-    -      -      - TexturePackerFileProcessor
-    -      -      - TexturePackerTest
-    -      -      - TexturePackerUpscaleTest
-    -      -      - TextureUnpacker
 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

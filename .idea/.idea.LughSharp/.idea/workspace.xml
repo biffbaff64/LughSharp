@@ -8,13 +8,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37b16c66-7b00-439c-a185-d98ba849df85" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Extensions/Source/Freetype/FreeType.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extensions/Source/Freetype/FreeTypeFontGenerator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extensions/Source/Freetype/FreeTypeFontGeneratorLoader.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extensions/Source/Freetype/FreeTypeFontLoader.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extensions/Source/Tools/IFilenameFilter.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TiledMapPacker/TileSetLayout.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TiledMapPacker/TiledMapPackerTest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TiledMapPacker/TiledMapPackerTestRender.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LughSharp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/Gdx2DPixmap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/Gdx2DPixmap.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/Gdx2DPixmapUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/Gdx2DPixmapUtils.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/AssetLoadingTask.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Assets/AssetLoadingTask.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/AssetManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Assets/AssetManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Assets/RefCountedContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Assets/RefCountedContainer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/PixmapPackerIO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/G2D/PixmapPackerIO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLTexture.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLTexture.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/FileTextureData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/GLUtils/FileTextureData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Pixmap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Pixmap.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/PixmapIO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/PixmapIO.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Texture.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/Texture.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Corelib/LibCore/Graphics/TextureDataFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Corelib/LibCore/Graphics/TextureDataFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Source/Gdx-Tools/FileProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/FileProcessor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Source/Gdx-Tools/TiledMapPacker/TiledMapPacker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TiledMapPacker/TiledMapPacker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Source/Gdx-Tools/Tools/ImagePacker/ImagePacker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/ImagePacker/ImagePacker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Source/Gdx-Tools/Tools/TexturePacker/ColorBleedEffect.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/ColorBleedEffect.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Source/Gdx-Tools/Tools/TexturePacker/GridPacker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/GridPacker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Source/Gdx-Tools/Tools/TexturePacker/ImageProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/ImageProcessor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Source/Gdx-Tools/Tools/TexturePacker/MaxRectsPacker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/MaxRectsPacker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Source/Gdx-Tools/Tools/TexturePacker/TexturePacker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/TexturePacker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Source/Gdx-Tools/Tools/TexturePacker/TexturePackerFileProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/TexturePackerFileProcessor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Source/Gdx-Tools/Tools/TexturePacker/TexturePackerTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/TexturePackerTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Source/Gdx-Tools/Tools/TexturePacker/TexturePackerUpscaleTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/TexturePackerUpscaleTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/Source/Gdx-Tools/Tools/TexturePacker/TextureUnpacker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/Source/Tools/TexturePacker/TextureUnpacker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Extensions/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/Extensions/TODO.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +53,7 @@
         <option value="Richard Ikin / Red 7 Projects &lt;richikin@gmail.com&gt;" />
       </list>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../ConsoleApp1" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -47,6 +70,8 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/GLBindings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Corelib/LibCore/Graphics/OpenGL/IGLBindings.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Corelib/obj/Debug/net7.0/Corelib.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/0fb6ac59fb1edbe4ed3ad62661df0eb7eacd7903/src/libraries/System.Private.CoreLib/src/System/String.Comparison.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c7959eeb5551412ca099f9cce026c00d2000/0e/d803b0e5/StbiImageBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c7959eeb5551412ca099f9cce026c00d2000/80/94d73dc6/Stbi.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c7959eeb5551412ca099f9cce026c00d2000/de/0733946c/StbiImage.cs" root0="SKIP_HIGHLIGHTING" />
@@ -69,22 +94,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Project.ConsoleApp1.executor&quot;: &quot;Run&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Project.ConsoleApp1.executor": "Run",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C#",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -103,7 +128,8 @@
       <workItem from="1729702952622" duration="12125000" />
       <workItem from="1729782584180" duration="3165000" />
       <workItem from="1729795180007" duration="438000" />
-      <workItem from="1729795655067" duration="11110000" />
+      <workItem from="1729795655067" duration="11216000" />
+      <workItem from="1729877618636" duration="16550000" />
     </task>
     <task id="LOCAL-00001" summary="Major Restructuring">
       <option name="closed" value="true" />
@@ -145,7 +171,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729721875320</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Asset Manager updates">
+      <option name="closed" value="true" />
+      <created>1729810183276</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1729810183276</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -161,27 +195,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Major Restructuring" />
     <MESSAGE value="Restructuring corrections" />
-    <MESSAGE value="Asset Manager updates" />
     <MESSAGE value="Code improvements" />
-    <option name="LAST_COMMIT_MESSAGE" value="Code improvements" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Corelib/LibCore/Graphics/GLTexture.cs</url>
-          <line>330</line>
-          <properties documentPath="C:\Development\Projects\CSharp\LughSharp\Corelib\LibCore\Graphics\GLTexture.cs" containingFunctionPresentation="Method 'SetAnisotropicFilter'">
-            <startOffsets>
-              <option value="13015" />
-            </startOffsets>
-            <endOffsets>
-              <option value="13016" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Asset Manager updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="Asset Manager updates" />
   </component>
 </project>

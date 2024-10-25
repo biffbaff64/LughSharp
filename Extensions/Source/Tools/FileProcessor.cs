@@ -23,44 +23,32 @@
 // ///////////////////////////////////////////////////////////////////////////////
 
 using System.Diagnostics;
+using System.Text.RegularExpressions;
+using Corelib.LibCore.Utils.Collections;
 using JetBrains.Annotations;
 
-namespace Extensions.Source.Gdx_Tools;
+namespace Extensions.Source.Tools;
 
-///// <summary>
-/////     Collects files recursively, filtering by file name. Callbacks are provided to
-/////     process files and the results are collected, either <see cref="ProcessFile(Entry)" />
-/////     or <see cref="ProcessDir(Entry, List)" /> can be overridden, or both. The
-/////     entries provided to the callbacks have the original file, the output directory,
-/////     and the output file. If <see cref="SetFlattenOutput(bool)" /> is false, the output
-/////     will match the directory structure of the input.
-///// </summary>
+/// <summary>
+/// Collects files recursively, filtering by file name. Callbacks are provided to
+/// process files and the results are collected, either <see cref="ProcessFile(Entry)" />
+/// or <see cref="ProcessDir(Entry, List{Entry})" /> can be overridden, or both. The
+/// entries provided to the callbacks have the original file, the output directory,
+/// and the output file. If <see cref="SetFlattenOutput(bool)" /> is false, the output
+/// will match the directory structure of the input.
+/// </summary>
 [PublicAPI]
 public class FileProcessor
 {
-//    FilenameFilter inputFilter;
-//
-////    Comparator< File > comparator = new Comparator< File >()
-////    {
-////        public int compare (File o1, File o2)
-////        {
-////            return o1.getName().compareTo(o2.getName());
-////        }
-////    }
+    private          List< Regex >    _inputRegex  = [ ];
+    private readonly List< Entry >    _outputFiles = [ ];
+    private          string           _outputSuffix;
+    private          bool             _flattenOutput;
+    private          bool             _recursive;
+    private          IFilenameFilter? _inputFilter;
 
-//    private List< Pattern > inputRegex = new();
-    private readonly List< Entry > _outputFiles = new();
-    private          bool          _flattenOutput;
-    private          string        _outputSuffix;
-    private          bool          _recursive;
-
-////    Comparator< Entry > entryComparator = new Comparator< Entry >()
-////    {
-////        public int compare (Entry o1, Entry o2)
-////        {
-////            return comparator.compare(o1.inputFile, o2.inputFile);
-////        }
-////    }
+    private static Comparison< FileInfo? > _comparator      = ( o1, o2 ) => string.Compare( o1?.Name, o2?.Name, StringComparison.Ordinal );
+    private static Comparison< Entry >     _entryComparator = ( entry, entry1 ) => _comparator( entry.InputFile, entry1.InputFile );
 
     public FileProcessor()
     {
@@ -70,54 +58,58 @@ public class FileProcessor
         SetRecursive();
     }
 
-//    /** Copy constructor. */
     public FileProcessor( FileProcessor processor )
     {
-//        _inputFilter = processor.inputFilter;
-//        _comparator  = processor.comparator;
-//        _inputRegex.addAll( processor.inputRegex );
+//        comparator   = processor.comparator;
+
+        _inputFilter   = processor._inputFilter;
         _outputSuffix  = processor._outputSuffix;
         _recursive     = processor._recursive;
         _flattenOutput = processor._flattenOutput;
+
+        _inputRegex.AddAll( processor._inputRegex );
     }
 
-//
-//    public FileProcessor setInputFilter( FilenameFilter inputFilter )
-//    {
-//        this.inputFilter = inputFilter;
-//
-//        return this;
-//    }
-//
-//    /** Sets the comparator for {@link #processDir(Entry, List)}. By default the files are sorted by alpha. */
-//    public FileProcessor setComparator( Comparator< File > comparator )
-//    {
-//        this.comparator = comparator;
-//
-//        return this;
-//    }
-//
-//    /** Adds a case insensitive suffix for matching input files. */
-//    public FileProcessor addInputSuffix( params string[] suffixes )
-//    {
-//        foreach ( string suffix in suffixes )
-//        {
+    public FileProcessor SetInputFilter( IFilenameFilter inputFilter )
+    {
+        this._inputFilter = inputFilter;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Set comparator to the provided value. By default the files are sorted by alpha.
+    /// </summary>
+    public FileProcessor SetComparator( Comparison< FileInfo? > comparator )
+    {
+        _comparator = comparator;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Adds a case insensitive suffix for matching input files.
+    /// </summary>
+    public FileProcessor AddInputSuffix( params string[] suffixes )
+    {
+        foreach ( var suffix in suffixes )
+        {
 //            addInputRegex( "(?i).*" + Pattern.quote( suffix ) );
-//        }
-//
-//        return this;
-//    }
-//
-//    public FileProcessor addInputRegex( params string[] regexes )
-//    {
-//        foreach ( string regex in regexes )
-//        {
-//            inputRegex.add( Pattern.compile( regex ) );
-//        }
-//
-//        return this;
-//    }
-//
+        }
+
+        return this;
+    }
+
+    public FileProcessor AddInputRegex( params string[] regexes )
+    {
+        foreach ( var regex in regexes )
+        {
+//            _inputRegex.Add( Pattern.compile( regex ) );
+        }
+
+        return this;
+    }
+
 //    /** Sets the suffix for output files, replacing the extension of the input file. */
 //    public FileProcessor setOutputSuffix( string outputSuffix )
 //    {
@@ -342,7 +334,7 @@ public class FileProcessor
     }
 
     /// <summary>
-    /// Called for each input directory. The files will be <see cref="SetComparator(Comparator)"/>
+    /// Called for each input directory. The files will be <see cref="SetComparator(Comparison{)"/>
     /// sorted. The specified files list can be modified to change which files are processed.
     /// </summary>
     protected void ProcessDir( Entry entryDir, List< Entry > files )
@@ -351,7 +343,7 @@ public class FileProcessor
 
     /// <summary>
     /// This method should be called by <see cref="ProcessFile(Entry)"/> or <see cref="ProcessDir(Entry, List{})"/>
-    /// if the return value of <see cref="Process"/> or <see cref="Process(File[], File)"/> should return
+    /// if the return value of <see cref="Process"/> or <see cref="Process(FileInfo[], FileInfo)"/> should return
     /// all the processed files.
     /// </summary>
     protected void AddProcessedFile( Entry entry )
@@ -359,22 +351,23 @@ public class FileProcessor
         _outputFiles.Add( entry );
     }
 
-    public class Entry
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+
+    [PublicAPI]
+    public class Entry( FileInfo inputFile, FileInfo outputFile )
     {
-//        public File inputFile;
-//        public File outputDir;
-//        public File outputFile;
-//        public int depth;
+        public FileInfo  InputFile  { get; set; } = inputFile;
+        public FileInfo  OutputFile { get; set; } = outputFile;
+        public FileInfo? OutputDir  { get; set; }
+        public int       Depth      { get; set; }
 
-//        public Entry( File inputFile, File outputFile )
-//        {
-//            this.inputFile  = inputFile;
-//            this.outputFile = outputFile;
-//        }
+        // --------------------------------------------------------------------
 
-//        public string tostring()
-//        {
-//            return inputFile.tostring();
-//        }
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return InputFile.ToString();
+        }
     }
 }

@@ -1,4 +1,4 @@
-// /////////////////////////////////////////////////////////////////////////////
+﻿// /////////////////////////////////////////////////////////////////////////////
 //  MIT License
 // 
 //  Copyright (c) 2024 Richard Ikin / Red 7 Projects
@@ -22,12 +22,9 @@
 //  SOFTWARE.
 // /////////////////////////////////////////////////////////////////////////////
 
-using JetBrains.Annotations;
+namespace Extensions.Source.Tools.TiledMapPacker;
 
-namespace Extensions.Source.Gdx_Tools.Tools.TexturePacker;
-
-[PublicAPI]
-public class GridPacker
+public class TiledMapPackerTest
 {
     
 }

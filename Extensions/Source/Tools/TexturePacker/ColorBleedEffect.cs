@@ -22,12 +22,12 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
+using JetBrains.Annotations;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using JetBrains.Annotations;
 
-namespace Extensions.Source.Gdx_Tools.Tools.TexturePacker;
+namespace Extensions.Source.Tools.TexturePacker;
 
 [PublicAPI]
 public class ColorBleedEffect
@@ -55,7 +55,7 @@ public class ColorBleedEffect
             var mask        = new Mask( pixels );
             var iterations  = 0;
             var lastPending = -1;
-            
+
             while ( mask.PendingSize > 0 && mask.PendingSize != lastPending && iterations < maxIterations )
             {
                 lastPending = mask.PendingSize;
@@ -92,14 +92,16 @@ public class ColorBleedEffect
             var pixelIndex = iterator.Next();
             var x          = pixelIndex % width;
             var y          = pixelIndex / width;
-            int r          = 0, g = 0, b = 0;
+            var r          = 0;
+            var g          = 0;
+            var b          = 0;
             var count      = 0;
 
             for ( var i = 0; i < offsets.Length; i += 2 )
             {
                 var column = x + offsets[ i ];
                 var row    = y + offsets[ i + 1 ];
-                
+
                 if ( column < 0 || column >= width || row < 0 || row >= height )
                 {
                     column = x;
@@ -112,18 +114,18 @@ public class ColorBleedEffect
                 if ( !mask.IsBlank( currentPixelIndex ) )
                 {
                     var pixel = pixels[ currentPixelIndex ];
-                    
+
                     r += pixel.R;
                     g += pixel.G;
                     b += pixel.B;
-                    
+
                     count++;
                 }
             }
 
             if ( count != 0 )
             {
-                pixels[ pixelIndex ] = new Rgba32( ( byte )( r / count ),( byte )( g / count ), ( byte )( b / count ), 0 );
+                pixels[ pixelIndex ] = new Rgba32( ( byte )( r / count ), ( byte )( g / count ), ( byte )( b / count ), 0 );
                 iterator.MarkAsInProgress();
             }
         }

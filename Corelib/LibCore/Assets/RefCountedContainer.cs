@@ -22,13 +22,12 @@
 // SOFTWARE.
 // ///////////////////////////////////////////////////////////////////////////////
 
-
 namespace Corelib.LibCore.Assets;
 
 /// <summary>
-/// An interface that provides reference counting functionality for objects.
-/// Implementations of this interface should allow for the reference count to be
-/// incremented or decremented to track how many times an object is being utilized.
+/// An interface that provides reference counting functionality for objects. Implementations
+/// of this interface should allow for the reference count to be incremented or decremented
+/// to track how many times an object is being utilized.
 /// </summary>
 [PublicAPI]
 public interface IRefCountedContainer
@@ -41,10 +40,9 @@ public interface IRefCountedContainer
 // ----------------------------------------------------------------------------
 
 /// <summary>
-/// A class that stores a reference to an object, as well as counts the number
-/// of times it has been referenced. <see cref="RefCount"/> must be incremented
-/// each time you start using the object, and decrement it after you're done
-/// using it. AssetManager handles this automatically.
+/// A class that stores a reference to an object, as well as counts the number of times it
+/// has been referenced. <see cref="RefCount"/> must be incremented each time you start using
+/// the object, and decrement it after you're done using it. AssetManager handles this automatically.
 /// </summary>
 [PublicAPI]
 public class RefCountedContainer : IRefCountedContainer
@@ -57,8 +55,8 @@ public class RefCountedContainer : IRefCountedContainer
     public RefCountedContainer( object asset )
     {
         ArgumentNullException.ThrowIfNull( asset );
-        
-        Asset = asset;
+
+        Asset    = asset;
         RefCount = 1;
     }
 }
